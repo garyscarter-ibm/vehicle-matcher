@@ -1,6 +1,8 @@
 import { createHash, randomBytes } from 'node:crypto';
 import { inputDigest, ok, result } from '../repository/index.js';
 import { createVehicleSnapshot, createEmployeeTerms, freezeVehicleData } from '../../vehicles/index.js';
+import { SchemeOrderTerms, selectionOperationId, selectionProgress } from '../manual-order/index.js';
+import { deriveBuddyHandoffInputs } from './buddy-conversion.js';
 
 export const OFFER_ACCESS_COOKIE = 'gcsp_offer_access';
 export const OFFER_ACCESS_CONSUMER = 'offer-access-session-v1';
@@ -80,7 +82,7 @@ function currentCarComparison(quote) {
     unknowns };
 }
 
-function presentation(offer, hold, quote, stock, clock, followup) {
+function presentation(offer, hold, quote, stock, clock, followup, extra = {}) {
   const snapshot = createVehicleSnapshot(quote.facts);
   const terms = createEmployeeTerms(quote.terms);
   if (snapshot.identityKind !== 'exact-stock' || snapshot.sourceKeys.stockId !== offer.orderUuid
@@ -116,11 +118,11 @@ function presentation(offer, hold, quote, stock, clock, followup) {
   else throw Error('Inconsistent authority');
   const actionable = reason === 'awaiting-decision' && decision.gateStatus === 'eligible';
   const availableActions = actionable
-    ? (Date.parse(clock.now) < Date.parse(quote.validUntil) ? ['accept', 'decline'] : ['decline']) : [];
+    ? (Date.parse(clock.now) < Date.parse(quote.validUntil) && !extra.handoff?.blocker ? ['accept', 'decline'] : ['decline']) : [];
   return freezeVehicleData({ schemaVersion: 1, offerId: offer.offerId, runId: offer.runId, state, reason,
     serverNow: clock.now, clockVersion: clock.clockVersion, expiresAt: hold.expiresAt,
     offerVersion: offer.version, holdVersion: hold.version, offerState: offer.state, holdState: hold.state,
-    availableActions, followup,
+    availableActions, followup, handoff: extra.handoff ?? null, selection: extra.selection ?? null,
     quote: { ...select(quote, ['quoteId', 'configurationId', 'orderUuid', 'briefVersion', 'policyVersion', 'quotedAt', 'validUntil']),
       orderNumber: /^\d{7}$/.test(stock.orderNumber ?? '') ? stock.orderNumber : null,
       revisions: { quote: quote.version, ...safeFields(decision.versions, ['brief', 'facts', 'policy', 'stock', 'snapshot', 'terms', 'clock', 'availability']) },
@@ -362,6 +364,44 @@ export class OfferAccessService {
     return true;
   }
 
+  // Post-selection presentation inputs: the handoff the employee must confirm, or the stored selection's progress.
+  async #extras(state, hold, base, stock) {
+    const { binding, run, clock } = state; const scope = this.#scope(binding.runId); const rows = [];
+    const read = async (entry) => { const found = await this.#repository.read(scope, entry); rows.push([entry, found]); return found; };
+    const extra = {};
+    if (base.state === 'accepted') {
+      const found = await read(ref('pending_operations', binding.runId, { operationId: selectionOperationId({ runId: binding.runId,
+        employeeId: hold.employeeId, entitlementSlotId: hold.entitlementSlotId }) }));
+      if (found.status === 'unavailable') return { error: unavailable() };
+      if (found.status === 'ok' && found.value.operationType === 'selection-order') {
+        extra.selection = { ...selectionProgress(found.value), orderNumber: /^\d{7}$/.test(stock.orderNumber ?? '') ? stock.orderNumber : null };
+      }
+    } else if (base.availableActions.includes('accept')) {
+      const found = await read(ref('employees', binding.runId, { employeeId: hold.employeeId }));
+      if (found.status === 'unavailable') return { error: unavailable() };
+      const derived = deriveBuddyHandoffInputs(found.status === 'ok' ? found.value : {}, { entitlementSlotId: hold.entitlementSlotId, today: clock.now.slice(0, 10) });
+      const terms = await new SchemeOrderTerms({ policy: this.#policy }).read({ runId: binding.runId, policyVersion: run.policyVersion }, { asOf: clock.now });
+      const blocker = !derived.contact ? 'contact-required' : !derived.driver ? 'driver-review-required' : !derived.returnOk ? 'return-data-required'
+        : terms.status !== 'ok' ? 'ordering-terms-unavailable' : null;
+      const t = terms.status === 'ok' ? terms.value : null;
+      extra.handoff = { termsVersion: t?.termsVersion ?? null, termsDigest: t?.termsDigest ?? null, wording: t?.wording ?? null, fictional: true,
+        mode: derived.mode, declarations: (t?.declarations ?? []).filter((d) => d.appliesTo === 'all' || d.appliesTo === derived.mode).map(({ id, label }) => ({ id, label })),
+        contact: derived.contact ? select(derived.contact, ['phone', 'email']) : null,
+        returnCar: derived.returnCar ? { model: derived.returnCar.model, contractEndDate: derived.returnCar.contractEndDate,
+          currentOdometer: derived.returnCar.currentOdometer ? select(derived.returnCar.currentOdometer, ['value', 'unit']) : null } : null, blocker };
+    }
+    extra.rows = rows;
+    return extra;
+  }
+
+  async #sameExtras(extra) {
+    for (const [entry, before] of extra.rows ?? []) {
+      const found = await this.#repository.read(this.#scope(entry.key.runId), entry);
+      if (found.status !== before.status || found.status === 'ok' && found.value.version !== before.value.version) return false;
+    }
+    return true;
+  }
+
   async read(context) {
     try {
       const state = await this.#guard(context); if (state.error) return state.error;
@@ -375,13 +415,15 @@ export class OfferAccessService {
         || ['employeeId', 'orderUuid', 'policyVersion', 'briefVersion'].some((key) => quote[key] !== offer[key])
         || stock.configurationId !== quote.configurationId) return unavailable();
       const followup = await this.#followup(state, hold, quote); if (followup.error) return followup.error;
-      const value = presentation(offer, hold, quote, stock, state.clock, followup.value);
+      const base = presentation(offer, hold, quote, stock, state.clock, followup.value);
+      const extra = await this.#extras(state, hold, base, stock); if (extra.error) return extra.error;
+      const value = extra.handoff || extra.selection ? presentation(offer, hold, quote, stock, state.clock, followup.value, extra) : base;
       const final = await this.#guard(context); if (final.error) return final.error;
       const again = await Promise.all(refs.map((entry) => this.#repository.read(scope, entry)));
       if (final.offer.version !== offer.version || final.clock.clockVersion !== state.clock.clockVersion
         || final.run.version !== state.run.version || final.run.policyVersion !== state.run.policyVersion
         || final.clock.now !== state.clock.now || again.some((row, i) => row.status !== 'ok' || row.value.version !== found[i].value.version)) return unavailable();
-      if (!await this.#sameFollowup(scope, followup)) return unavailable();
+      if (!await this.#sameFollowup(scope, followup) || !await this.#sameExtras(extra)) return unavailable();
       const latest = await this.#guard(context); if (latest.error) return latest.error;
       if (latest.offer.version !== offer.version || latest.clock.clockVersion !== state.clock.clockVersion || latest.clock.now !== state.clock.now
         || latest.run.version !== state.run.version || latest.run.policyVersion !== state.run.policyVersion) return unavailable();

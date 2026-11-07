@@ -85,7 +85,7 @@ async function select(f) {
   assert.equal(submitted.view.state, 'awaiting-approval'); assert.equal(submitted.order.status, 'confirmed');
   assert.deepEqual(good(await f.manualOrder.submit(f.employee, input)), submitted);
   const persisted = good(await f.repository.read(f.employee, ref(f.employee, 'pending_operations', { operationId: submitted.operationId })));
-  assert.equal(persisted.payload.atomicConversion, false); // Current F66 exposes allocate, not the F106 atomic port.
+  assert.equal(persisted.payload.atomicConversion, true); // F66 converts through FUCQ-71's atomic callback.
   assert.equal(persisted.lastKnownState, 'acknowledged');
   assert.equal(good(await f.repository.read(f.employee, ref(f.employee, 'holds', { holdId: reviewed.hold.holdId }))).state, 'allocated');
   return { car, submitted, operation: persisted };
@@ -95,14 +95,16 @@ test('actual manual conversion and shared runtime progress approvals into docume
   const f = await setup(t); good(f.startup);
   assert.equal(f.dependencies.gcspManualOrder, f.manualOrder);
   assert.equal(f.dependencies.gcspLifecycle, f.lifecycle); assert.equal(f.dependencies.gcspDocuments, f.documents);
+  assert.equal(f.dependencies.gcspAppointments, f.appointments); assert.equal(f.dependencies.gcspReturnPlan, f.returnPlan);
   assert.equal(f.orderingAdapter.mode, 'synthetic');
   assert.equal(typeof f.orderingAdapter.status.requestDecision, 'function');
   assert.equal(typeof f.orderingAdapter.documentStatus.start, 'function');
   assert.deepEqual(f.registrations, ['stock-release', 'manual-claim-expiry', 'buddy-expiry', 'buddy-allocation', 'selection-order-reconciliation',
-    'lifecycle-approvals', 'lifecycle-documents', 'renewal-risk-cases', 'captured-outbox']);
+    'lifecycle-approvals', 'lifecycle-documents', 'lifecycle-appointments', 'lifecycle-return-appointments', 'renewal-risk-cases', 'captured-outbox']);
   assert.equal(f.reconciliations(), 1);
-  good(await f.manualOrder.registerClockHandler()); good(await f.lifecycle.start()); good(await f.documents.start());
-  assert.equal(f.registrations.length, 9);
+  good(await f.manualOrder.registerClockHandler()); good(await f.lifecycle.start()); good(await f.documents.start()); good(await f.appointments.start());
+  good(await f.returnPlan.start());
+  assert.equal(f.registrations.length, 11);
   assert.equal((await f.clock.registerHandler({ handlerId: 'too-late', stage: 'pending-reconciliation', handle: async () => ({ status: 'ok', value: {} }) })).status, 'invalid');
   const { car, operation } = await select(f); const query = `?orderUuid=${encodeURIComponent(car.orderUuid)}`;
   const initial = good((await f.request('/api/gcsp/orders/progress' + query)).json);
@@ -120,7 +122,7 @@ test('actual manual conversion and shared runtime progress approvals into docume
   for (let index = 0; index < maxTicks; index += 1) {
     const next = await tick(f, `lifecycle-progress-${index}`); const value = good(next.outcome);
     assert.deepEqual(value.handlerOrder.filter((row) => row.stage === 'pending-reconciliation').map((row) => row.handlerId),
-      ['lifecycle-approvals', 'lifecycle-documents', 'renewal-risk-cases', 'selection-order-reconciliation']);
+      ['lifecycle-appointments', 'lifecycle-approvals', 'lifecycle-documents', 'lifecycle-return-appointments', 'renewal-risk-cases', 'selection-order-reconciliation']);
     if (index === 0) assert.deepEqual(await f.clock.tick(f.presenter, next.input), next.outcome);
     completed = good((await f.request('/api/gcsp/orders/progress' + query)).json);
     if (completed.outcome === 'sent-to-ordering') break;
@@ -138,6 +140,30 @@ test('actual manual conversion and shared runtime progress approvals into docume
   good((await tick(f, 'complete-provider-readiness', delay)).outcome);
   const ready = good((await f.request('/api/gcsp/documents/readiness' + query)).json);
   assert.equal(ready.opened, true); assert.equal(ready.ready, true); assert.equal(ready.documentsComplete, true); assert.equal(ready.vehicleReady, true);
+  // Appointment over HTTP: requested is never booked; a presenter tick past the policy delay schedules it.
+  const aptQuery = `/api/gcsp/appointments${query}`;
+  const open = good((await f.request(aptQuery)).json);
+  assert.equal(open.eligibility.eligible, true); assert.equal(open.state, 'not-requested'); assert.ok(open.offeredSlots.length > 0);
+  const asked = good((await f.request('/api/gcsp/appointments/request', { body: { orderUuid: car.orderUuid, slotId: open.offeredSlots[0].slotId } })).json);
+  assert.deepEqual([asked.state, asked.booked], ['requested', false]);
+  assert.deepEqual(good((await f.request(aptQuery)).json), asked);
+  const confirmation = good(await f.policy.getAssumption('lifecycle.appointments.confirmation.v1', read)).value;
+  good((await tick(f, 'confirm-appointment', confirmation.confirmDelaySeconds)).outcome);
+  const booked = good((await f.request(aptQuery)).json);
+  assert.deepEqual([booked.state, booked.booked, booked.slot], ['scheduled', true, open.offeredSlots[0]]);
+  // Return plan over HTTP on the real replacement selection: its own appointment, and the current car untouched.
+  const planQuery = `/api/gcsp/return-plan${query}`;
+  const plan = good((await f.request(planQuery)).json);
+  assert.deepEqual([plan.applicable, plan.state, plan.scheduled, plan.oldContractId, plan.vehicleSlotId, plan.returnMileage.value],
+    [true, 'not-planned', false, operation.payload.selection.oldContract.contractId, f.employee.entitlementSlotId, operation.payload.selection.draft.choices.expectedReturnMileage]);
+  const returning = good((await f.request('/api/gcsp/return-plan/request', { body: { orderUuid: car.orderUuid, choice: 'separate', slotId: plan.offeredSlots.separate[0].slotId } })).json);
+  assert.deepEqual([returning.state, returning.scheduled, returning.handover.state], ['return-requested', false, 'scheduled']);
+  good((await tick(f, 'confirm-return', confirmation.confirmDelaySeconds)).outcome);
+  const returned = good((await f.request(planQuery)).json);
+  assert.deepEqual([returned.state, returned.scheduled, returned.slot], ['return-scheduled', true, plan.offeredSlots.separate[0]]);
+  assert.notEqual(returned.providerReference, booked.history.at(-1).providerReference);
+  assert.deepEqual(good(await f.repository.read(f.employee, ref(f.employee, 'entitlement_slots', { entitlementSlotId: f.employee.entitlementSlotId }))).contractId,
+    operation.payload.selection.vehicleSlot.contractId, 'the slot still points at the old contract');
   const alex = good(await f.identity.switchPrincipal(f.presenter, 'demo-alex', 'lifecycle-alex'));
   const greg = good(await f.identity.switchPrincipal(f.presenter, 'demo-greg', 'lifecycle-greg'));
   const presenter = good(await f.identity.createPresenterSession('lifecycle-presenter-http'));
@@ -157,11 +183,11 @@ test('actual manual conversion and shared runtime progress approvals into docume
 
 test('actual lifecycle startup propagates ordering approval and document registration failures before seal and HTTP dispatch', async (t) => {
   for (const refuse of [{ service: 'manualOrder', method: 'registerClockHandler' },
-    { service: 'lifecycle', method: 'start' }, { service: 'documents', method: 'start' }]) {
+    { service: 'lifecycle', method: 'start' }, { service: 'documents', method: 'start' }, { service: 'appointments', method: 'start' }, { service: 'returnPlan', method: 'start' }]) {
     const f = await setup(t, { refuse });
     assert.equal(f.startup.status, 'unavailable'); assert.equal(f.startup.code, 'selected-registration-refusal');
     assert.equal(f.reconciliations(), 0);
-    for (const path of ['/api/gcsp/orders/progress?orderUuid=missing', '/api/gcsp/documents', '/api/gcsp/manual/account']) {
+    for (const path of ['/api/gcsp/orders/progress?orderUuid=missing', '/api/gcsp/documents', '/api/gcsp/appointments?orderUuid=missing', '/api/gcsp/return-plan?orderUuid=missing', '/api/gcsp/manual/account']) {
       const response = await f.request(path); assert.equal(response.status, 503); assert.equal(response.json.status, 'unavailable');
     }
     assert.equal((await f.request('/health')).status, 200);

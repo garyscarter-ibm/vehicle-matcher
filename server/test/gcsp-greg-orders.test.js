@@ -11,7 +11,7 @@ import { createGcspHandler } from '../gcsp/identity/http.js';
 import { readFile } from 'node:fs/promises';
 import { createGcspRuntime } from '../gcsp/runtime.js';
 import { buildServer } from '../index.js';
-import { createDemoStockProvider, createDemoUpstream } from '../gcsp/stock/demo-provider.js';
+import { createDemoStockProvider, createDemoUpstream, withConfirmedSupply } from '../gcsp/stock/demo-provider.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { essential, preference } from './helpers/employee-recommendation.js';
 
@@ -311,7 +311,7 @@ test('migration discovery and foundation snapshot include additive supply record
 test('allocation and demand update after a release from a confirmed request', async (t) => {
   const good = (out) => { assert.equal(out?.status, 'ok', JSON.stringify(out)); return out.value; };
   const upstream = createDemoUpstream();
-  const runtime = good(await createGcspRuntime({ mode: 'memory', stockProvider: createDemoStockProvider({ upstream }),
+  const runtime = good(await createGcspRuntime({ mode: 'memory', stockProvider: (deps) => withConfirmedSupply(createDemoStockProvider(deps), upstream),
     production: upstream.production, environmentId: 'orders-runtime-test', policyAsOf: '2026-11-05T09:00:00.000Z',
     commandId: 'orders-bootstrap', sessionNow: () => '2026-11-06T00:00:00.000Z' }));
   t.after(() => runtime.close());

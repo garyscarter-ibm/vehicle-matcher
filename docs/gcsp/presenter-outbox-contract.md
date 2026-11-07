@@ -15,7 +15,7 @@ FUCQ-97 (DEV-2026-11-04-062). A presenter-only viewer for the captured offer ema
 | `gcspOutbox` or its repository missing | 503 `unavailable`, retryable |
 | Repository unavailable | passed through (503) |
 
-Each message: `jobId, messageKind, state, attempts, error` (a fixed code or null), `nextAttemptAt, time` (`capturedAt` when sent, else `attemptedAt`, else null), `recipient { employeeId, name }`, `subject, textBody, htmlBody, offerLink` (null until rendered). `stale` rows are left out. `payload`, `idempotencyKey` and `inputDigest` never leave the server. After a reset the new run has no messages.
+Each message: `jobId, messageKind, state, attempts, error` (a fixed code or null), `nextAttemptAt, time` (`capturedAt` when sent, else `attemptedAt`, else null), `recipient { employeeId, name }`, `subject, textBody, htmlBody, offerLink` (null until rendered). `stale` rows are left out. `payload`, provider attempt/acknowledgment fields, `idempotencyKey`, configured sender/recipient addresses and `inputDigest` never leave the server. After a reset the new run has no messages.
 
 ## Element
 
@@ -31,6 +31,8 @@ State: `{ status: 'ready', messages }`, `{ status: 'empty' }`, `{ status: 'unava
 ## Message view
 
 Rows are buttons (recipient, subject, demo-clock time, status as text and icon). Opening one moves focus to its heading and shows the HTML body in an `<iframe sandbox="">` (no scripts, no same-origin, no popups) set through `srcdoc`, the plain-text alternative in a wrapping `<pre>`, and the offer link as `target="_blank" rel="noopener"` only when it is a single-slash path or an `https:` URL with no credentials; otherwise "Offer link not available". Retrying and failed messages show the safe error as a sentence (`outbox-copy.js`, one table), the attempt count and, for retrying, the next attempt time. Times read like `5 Nov 2026, 09:20 GMT` and are labelled "Demo clock".
+
+FUCQ-98 keeps the existing layout and uses “Captured messages and delivery status.” as introductory copy. Fixed safe provider errors distinguish timeout/unconfirmed acceptance and an expired safe retry window. Capture-only bodies retain “No email has been sent”; configured Brevo bodies explain that provider acceptance does not confirm inbox delivery. The viewer itself still sends nothing. Synthetic desktop/narrow, keyboard-focus, sandbox and overflow checks are retained in [FUCQ-98 evidence](evidence/fucq98/browser-receipt.json); no inbox-delivery claim follows from those fixtures.
 
 ## Embedding rules
 

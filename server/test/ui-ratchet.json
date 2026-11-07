@@ -16,7 +16,10 @@
     "blocks/demo-launcher/components.js",
     "blocks/gcsp/kit/presenter-bar.js",
     "blocks/gcsp/kit/activity-timeline.js",
-    "blocks/gcsp/kit/action-menu.js"
+    "blocks/gcsp/kit/stage-list.js",
+    "blocks/gcsp/kit/action-menu.js",
+    "blocks/gcsp/kit/stage-tracker.js",
+    "blocks/gcsp/kit/task-list.js"
   ],
   "extensions": [
     ".js",
@@ -78,16 +81,31 @@
       "flags": "g",
       "use": "activityTimeline({ events }) (blocks/gcsp/kit/activity-timeline.js)"
     },
+    "stage-list": {
+      "re": "el\\('section', 'gcsp-stage-list'",
+      "flags": "g",
+      "use": "stageList({ heading, stages }) (blocks/gcsp/kit/stage-list.js)"
+    },
     "action-menu": {
       "re": "el\\('div', 'gcsp-action-menu'",
       "flags": "g",
       "use": "actionMenu({ label, items }) (blocks/gcsp/kit/action-menu.js)"
+    },
+    "stage-tracker": {
+      "re": "el\\('section', 'gcsp-stage-tracker'",
+      "flags": "g",
+      "use": "stageTracker({ heading, stages }) (blocks/gcsp/kit/stage-tracker.js)"
+    },
+    "task-list": {
+      "re": "el\\('section', 'gcsp-task-list'",
+      "flags": "g",
+      "use": "taskList({ heading, groups }) (blocks/gcsp/kit/task-list.js)"
     }
   },
   "stylesheets": [
     {
       "path": "blocks/gcsp/kit/form-controls.css",
-      "max_lines": 16
+      "max_lines": 18
     },
     {
       "path": "blocks/gcsp/manual-setup/gcsp-manual-setup.css",
@@ -174,6 +192,10 @@
       "max_lines": 28
     },
     {
+      "path": "blocks/gcsp/kit/stage-list.css",
+      "max_lines": 11
+    },
+    {
       "path": "blocks/gcsp/kit/action-menu.css",
       "max_lines": 9
     },
@@ -208,6 +230,18 @@
     {
       "path": "blocks/gcsp/offer/gcsp-offer.css",
       "max_lines": 12
+    },
+    {
+      "path": "blocks/gcsp/kit/stage-tracker.css",
+      "max_lines": 19
+    },
+    {
+      "path": "blocks/gcsp/kit/task-list.css",
+      "max_lines": 16
+    },
+    {
+      "path": "blocks/gcsp/order-progress/gcsp-order-progress.css",
+      "max_lines": 31
     }
   ],
   "baseline": {

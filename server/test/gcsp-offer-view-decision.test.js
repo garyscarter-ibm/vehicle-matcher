@@ -8,7 +8,11 @@ import { createOfferHttpAdapter } from '../../blocks/gcsp/offer/http-adapter.js'
 import { createOfferController } from '../../blocks/gcsp/offer/offer-controller.js';
 import { createOfferView } from '../../blocks/gcsp/offer/offer-view.js';
 
-const sample = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/producer-access.json', import.meta.url)));
+const handoff = { termsVersion: 'terms-v1', termsDigest: 'terms-digest-1', wording: 'Fictional terms.', fictional: true, mode: 'new', blocker: null,
+  contact: { phone: '07700 900123', email: 'p@example.invalid' }, returnCar: null,
+  declarations: [{ id: 'terms', label: 'Terms.' }, { id: 'driver', label: 'Driver.' }] };
+const tickAll = (controller) => { controller.tickDeclaration('terms', true); controller.tickDeclaration('driver', true); };
+const sample = { ...JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/producer-access.json', import.meta.url))), handoff };
 const declineSample = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/producer-decline-access.json', import.meta.url)));
 const registry = () => ({ schemaVersion: 1, key: 'offer.declineReasons.v1', policyVersion: 'contract-input-v1',
   reasons: [{ code: 'test-body', label: 'Contract input body reason', attribute: 'body' }] });
@@ -39,11 +43,14 @@ function setup(t, { initial = sample, reasonRead, command, read, href } = {}) {
 }
 
 test('accept sends only exact106 intent and all three server revisions, then trusts GET over POST', async (t) => {
-  const f = setup(t); const before = await f.controller.refresh(); await f.controller.decision('accept');
+  const f = setup(t); const before = await f.controller.refresh();
+  await f.controller.decision('accept'); assert.equal(f.calls.find((call) => call.options.method === 'POST'), undefined); // Declarations unticked.
+  tickAll(f.controller); await f.controller.decision('accept');
   const posted = f.calls.find((call) => call.options.method === 'POST');
   assert.equal(posted.url, `https://example.test/api/gcsp/offers/${encodeURIComponent(sample.offerId)}/decision`);
   assert.deepEqual(JSON.parse(posted.options.body), { commandId: 'one-logical-command', runId: sample.runId, decision: 'accept',
-    expectedOfferVersion: sample.offerVersion, expectedHoldVersion: sample.holdVersion, expectedQuoteVersion: sample.quote.revisions.quote });
+    expectedOfferVersion: sample.offerVersion, expectedHoldVersion: sample.holdVersion, expectedQuoteVersion: sample.quote.revisions.quote,
+    termsDigest: 'terms-digest-1', declarations: { terms: true, driver: true } });
   assert.equal(f.controller.snapshot().state, 'pending'); // The POST spy cannot establish a declined or accepted outcome.
   assert.equal(f.controller.snapshot().expiresAt, before.expiresAt);
   assert.equal(f.controller.snapshot().card.members[0].terms[0].value, 1100);
@@ -53,8 +60,11 @@ test('accept sends only exact106 intent and all three server revisions, then tru
 
 test('unbound, changed or untrusted command fields fail before transport', async (t) => {
   const f = setup(t); const offer = (await f.controller.refresh()).reference;
-  const valid = { kind: 'accept', offer, commandId: 'command' }; const before = f.calls.length;
-  for (const input of [{ ...valid, employeeId: 'browser-claim' }, { ...valid, token: 'browser-claim' },
+  const valid = { kind: 'accept', offer, commandId: 'command', termsDigest: 'terms-digest-1', declarations: { terms: true } }; const before = f.calls.length;
+  for (const input of [{ ...valid, employeeId: 'browser-claim' }, { ...valid, termsDigest: undefined }, { ...valid, declarations: {} },
+    { ...valid, declarations: { terms: false } }, { ...valid, declarations: { terms: 'yes' } }, { ...valid, declarations: undefined },
+    { kind: 'decline', offer, commandId: 'command', reasonCode: 'test-body', termsDigest: 'terms-digest-1' },
+    { kind: 'decline', offer, commandId: 'command', reasonCode: 'test-body', declarations: { terms: true } }, { ...valid, token: 'browser-claim' },
     { ...valid, reasonCode: 'test-body' }, { ...valid, commandId: '' }, { ...valid, kind: 'select' },
     ...[{ ...offer, quoteVersion: undefined }, { ...offer, holdVersion: 0 }, { ...offer, quoteVersion: Number.MAX_SAFE_INTEGER + 1 },
       { ...offer, offerId: 'another' }, { ...offer, runId: 'another' }, { ...offer, policyVersion: 'browser-claim' }].map((value) => ({ ...valid, offer: value }))]) {
@@ -86,7 +96,7 @@ test('nested offer preview composes existing base and shell styles before offer 
 });
 
 test('decline opens a server-listed reason prompt; loading, required, unknown and cancel never submit', async (t) => {
-  const waiting = deferred(); const f = setup(t, { reasonRead: () => waiting.promise }); await f.controller.refresh();
+  const waiting = deferred(); const f = setup(t, { reasonRead: () => waiting.promise }); await f.controller.refresh(); tickAll(f.controller);
   const loading = f.controller.decision('decline');
   assert.equal(f.controller.snapshot().declineReason.status, 'loading'); assert.equal(f.controller.snapshot().canAccept, false);
   await f.controller.decision('decline', { reasonCode: 'test-body' });
@@ -166,12 +176,12 @@ test('lost response or failed readback never fabricates success; confirmed readb
   let unavailableRead = false;
   const f = setup(t, { command: async () => { unavailableRead = true; throw Error('contract transport loss'); },
     read: async ({ dto }) => unavailableRead ? response({ status: 'unavailable' }, false) : response({ status: 'ok', value: dto }) });
-  await f.controller.refresh(); await f.controller.decision('accept'); assert.equal(f.controller.snapshot().state, 'uncertain');
+  await f.controller.refresh(); tickAll(f.controller); await f.controller.decision('accept'); assert.equal(f.controller.snapshot().state, 'uncertain');
   const confirmed = setup(t, { command: async ({ dto, setDTO }) => {
-    setDTO({ ...dto, state: 'accepted', reason: 'accepted', offerState: 'accepted', holdState: 'allocated', availableActions: [] });
+    setDTO({ ...dto, state: 'accepted', reason: 'accepted', offerState: 'accepted', holdState: 'allocated', availableActions: [], handoff: null });
     throw Error('contract transport loss after commit');
   } });
-  await confirmed.controller.refresh(); await confirmed.controller.decision('accept'); assert.equal(confirmed.controller.snapshot().state, 'accepted');
+  await confirmed.controller.refresh(); tickAll(confirmed.controller); await confirmed.controller.decision('accept'); assert.equal(confirmed.controller.snapshot().state, 'accepted');
 });
 
 test('stale command refreshes actual server-listed reasons without claiming a decline', async (t) => {

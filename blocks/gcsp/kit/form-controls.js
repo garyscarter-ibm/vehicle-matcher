@@ -18,6 +18,15 @@ export function labelledField({ id, label, control, hint = '', error = '' }) {
   return { root, setError };
 }
 
+/** Native checkbox with its label beside it. The caller owns the checked state. */
+export function checkboxField({ id, label, checked = false, onChange }) {
+  if (!id) throw new TypeError('A unique field id is required.');
+  const root = el('div', 'gcsp-check'); const input = el('input'); input.type = 'checkbox'; input.id = id; input.checked = checked;
+  input.addEventListener('change', () => onChange?.(input.checked));
+  const name = el('label', null, label); name.htmlFor = id; root.append(input, name);
+  return { root, input };
+}
+
 export function errorSummary({ id, title = 'Check your choices', errors = [], onSelect } = {}) {
   if (!id) throw new TypeError('A unique summary id is required.');
   const root = el('section', 'gcsp-error-summary'); const heading = el('h2', 'gcsp-h2', title);

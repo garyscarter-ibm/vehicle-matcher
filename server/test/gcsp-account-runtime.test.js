@@ -29,3 +29,10 @@ test('shared account adapter keeps missing, refused, malformed and failed accoun
   const denied = createAccountHttpAdapter({ fetch: async () => ({ ok: false, json: async () => ({ status: 'ok', value: { state: 'ready', account: { name: 'Paula' } } }) }) });
   assert.deepEqual(await denied.loadAccount(), { status: 'unavailable' });
 });
+
+test('shared account adapter accepts a widened state list only when the caller asks', async () => {
+  const value = { status: 'ok', value: { state: 'no-entitlement', account: { name: 'Paula' } } };
+  const fetch = async () => ({ ok: true, json: async () => value });
+  assert.deepEqual(await createAccountHttpAdapter({ fetch }).loadAccount(), { status: 'unavailable' });
+  assert.deepEqual(await createAccountHttpAdapter({ fetch, states: ['ready', 'no-entitlement'] }).loadAccount(), { status: 'ready', name: 'Paula', context: '' });
+});

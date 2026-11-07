@@ -10,6 +10,7 @@ import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { toAccountView, toDraftView } from '../../blocks/gcsp/account/account-view.js';
 import { createAccountHttpAdapter } from '../../blocks/gcsp/account/http-adapter.js';
 import { ACCOUNT_SNAPSHOT, FIXTURE_NAMES, accountFixture } from '../../blocks/gcsp/account/fixtures.js';
+import { orderProgressFixtures } from '../../blocks/gcsp/order-progress/fixtures.js';
 
 const instant = '2026-11-05T09:00:00.000Z';
 async function setup({ seed = true, principal = 'demo-paula' } = {}) {
@@ -453,4 +454,48 @@ test('account shows a keyboard-operable link to the employee offer only when one
   const view = findButton(withOffer.root, 'View your offer'); assert.ok(view); assert.equal(view.tagName, 'BUTTON'); withOffer.destroy();
   const without = await domMount({ ...readOnlyAdapter(), readOffers: async () => ({ status: 'unavailable' }) });
   assert.equal(findButton(without.root, 'View your offer'), undefined); without.destroy();
+});
+
+// A fake order adapter over one fixture state; `orders` is what the employee's list returns.
+function orderAdapter(name = 'appointment-requested', orders) {
+  const states = orderProgressFixtures().states[name]; const uuid = states.stages.value.orderUuid;
+  const read = (field) => async () => structuredClone(states[field]);
+  return { uuid, calls: [], listOrders: async function list() { return { status: 'ok', value: { orders: orders ?? [{ orderUuid: uuid, source: { receivedAt: instant } }] } }; },
+    readStages: read('stages'), readDocuments: read('documents'), readAppointment: read('appointment'), readReturnPlan: read('returnPlan') };
+}
+const settleOrder = async (root, ready) => { for (let n = 0; n < 40 && !ready(root); n += 1) await new Promise((done) => setTimeout(done, 15)); };
+const selection = (orderUuid, display) => async () => ({ status: 'ok', value: { selection: { stock: { orderUuid, orderNumber: '1000001', facts: { display } } } } });
+
+test('account with an order embeds its progress with the order number, stage names and the selected car', async () => {
+  const orders = orderAdapter(); const names = orderProgressFixtures().states['appointment-requested'].stages.value.stages.map((row) => row.label ?? row.name);
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readOrder: selection(orders.uuid, { name: 'Synthetic i5 eDrive40 Touring', photo: '/img/i5.jpg' }) },
+    { orderAdapter: orders });
+  try {
+    await settleOrder(root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-number'));
+    const area = root.querySelector('.gcsp-account-order'); assert.ok(area, 'order area');
+    assert.equal(area.getAttribute('aria-label'), 'Your order'); assert.equal(root.querySelectorAll('main h1').length, 1);
+    assert.equal(area.querySelector('h2').textContent, 'Order progress');
+    assert.match(area.textContent, /Order no\. 1000001/); assert.match(area.textContent, /Synthetic i5 eDrive40 Touring/);
+    assert.equal(area.querySelector('img.vm-card-photo').getAttribute('src'), '/img/i5.jpg');
+    assert.ok(area.querySelectorAll('.gcsp-stage-tracker li').length >= 3, names.join());
+    const first = area.querySelector('.gcsp-order-progress'); (findButton(root, 'Refresh account') ?? {}).disabled; // a redraw keeps the same mounted body
+    assert.equal(root.querySelector('.gcsp-account-order .gcsp-order-progress'), first);
+  } finally { destroy(); }
+  assert.equal(root.querySelector('.gcsp-account-order'), null);
+});
+
+test('account shows no order area without an order, on a failed list, or for another order car', async () => {
+  const none = await domMount(readOnlyAdapter(), { orderAdapter: orderAdapter('appointment-requested', []) });
+  await tick(); assert.equal(none.root.querySelector('.gcsp-account-order'), null); assert.doesNotMatch(none.root.textContent, /No order yet/); none.destroy();
+  const failed = orderAdapter(); failed.listOrders = async () => ({ status: 'unavailable' });
+  const down = await domMount(readOnlyAdapter(), { orderAdapter: failed }); await tick();
+  assert.equal(down.root.querySelector('.gcsp-account-order'), null); down.destroy();
+  const plain = await domMount(readOnlyAdapter()); assert.equal(plain.root.querySelector('.gcsp-account-order'), null); plain.destroy();
+  const orders = orderAdapter();
+  const other = await domMount({ ...readOnlyAdapter(), readOrder: selection('another-order', { name: 'Not this car' }) }, { orderAdapter: orders });
+  try {
+    await settleOrder(other.root, (node) => node.querySelector('.gcsp-order-number'));
+    assert.match(other.root.querySelector('.gcsp-account-order').textContent, /Car details not supplied/);
+    assert.doesNotMatch(other.root.textContent, /Not this car/);
+  } finally { other.destroy(); }
 });

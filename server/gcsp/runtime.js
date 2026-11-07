@@ -32,6 +32,9 @@ import { createSyntheticOrderingStatus } from './adapters/synthetic-ordering-sta
 import { createSyntheticDocumentStatus } from './adapters/synthetic-ordering-documents.js';
 import { createLifecycleApprovalService } from './lifecycle/approvals/index.js';
 import { createLifecycleDocumentService } from './lifecycle/documents/index.js';
+import { createLifecycleAppointmentService } from './lifecycle/appointments/index.js';
+import { createLifecycleReturnPlanService } from './lifecycle/return-plan/index.js';
+import { createSyntheticAppointments } from './adapters/synthetic-appointments.js';
 import { createManualOrderService, createManualOrderConversion } from './manual-order/index.js';
 
 const unavailable = () => result('unavailable', { reason: 'The trusted demo runtime is unavailable.', retryable: true });
@@ -40,7 +43,7 @@ const scoped = (value, context) => ['runId', 'environmentId', 'employeeId'].ever
 // Explicit composition only. A failed PostgreSQL open never changes providers.
 export async function createGcspRuntime({ mode = 'postgres', repository, repositoryOptions, policy,
   environmentId, policyAsOf, commandId, stockProvider, production, offerLandingUrl = process.env.GCSP_OFFER_LANDING_URL,
-  sessionNow = () => new Date().toISOString(), adoptOfferJourney = false } = {}) {
+  sessionNow = () => new Date().toISOString(), adoptOfferJourney = false, mail } = {}) {
   if (!['postgres', 'memory'].includes(mode)) return result('invalid', { code: 'unsupported-repository-mode' });
   try { offerLandingUrl = resolveOfferLandingUrl(offerLandingUrl); }
   catch { return result('invalid', { code: 'invalid-offer-landing-url' }); }
@@ -51,7 +54,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
   let closing; let notify;
   // The trusted host settles startup and its initiating calls before closing.
   const close = () => closing ??= (async () => {
-    try { notify?.close(); } finally {
+    try { await notify?.close(); } finally {
       try { await repository.close(); } finally { if (ownsPolicy) await readPolicy.close(); }
     }
   })();
@@ -85,13 +88,18 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const activity = createActivityService({ repository, identity, clock });
     const greg = createGregDemandService({ repository, policy, clock, identity });
     const gregPublish = createGregPublishService({ repository, policy, clock, identity });
-    // Prepared scenario fixtures are branded by the exact policy instance used by the clock.
-    const scenarios = createScenarioService({ repository, policy: readPolicy, clock, identity });
     const adapter = createSyntheticManualStockAdapter();
     const manualClaims = createManualClaimsService({ repository, policy, clock, identity, manual: account, adapter });
     // The trusted host supplies the existing pull port. No source is invented here.
-    const stockRelease = stockProvider === undefined ? undefined
-      : createStockReleaseService({ repository, policy, clock, identity, provider: stockProvider });
+    // A factory gets the same policy the release service reads, so provider windows follow policy.
+    // It also gets the repository and a trusted run context, so a source can read and generate a run's stock.
+    const contextForRun = (runId) => ({ runId, environmentId, principalId: 'gcsp-stock-source', roles: ['presenter'] });
+    const pullProvider = typeof stockProvider === 'function' ? stockProvider({ policy, repository, contextForRun, environmentId }) : stockProvider;
+    // Prepared scenario fixtures are branded by the exact policy instance used by the clock.
+    const scenarios = createScenarioService({ repository, policy: readPolicy, clock, identity,
+      afterReset: typeof pullProvider?.prepareRun === 'function' ? (runId) => pullProvider.prepareRun(runId) : undefined });
+    const stockRelease = pullProvider === undefined ? undefined
+      : createStockReleaseService({ repository, policy, clock, identity, provider: pullProvider });
     // Greg's order requests need both the production port and the F92 queue; neither is invented here.
     const supply = production && stockRelease
       ? createSupplyService({ repository, policy, clock, identity, production, releases: stockRelease }) : undefined;
@@ -114,12 +122,17 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const lifecycle = createLifecycleApprovalService({ repository, policy, clock, identity, status: orderingAdapter.status });
     const documents = createLifecycleDocumentService({ repository, policy, clock, identity,
       lifecycleStages: lifecycle.stagePort(), provider: orderingAdapter.documentStatus });
+    orderingAdapter.appointments = createSyntheticAppointments({ repository });
+    const appointments = createLifecycleAppointmentService({ repository, policy, clock, identity,
+      lifecycleStages: lifecycle.stagePort(), provider: orderingAdapter.appointments });
+    const returnPlan = createLifecycleReturnPlanService({ repository, policy, clock, identity,
+      lifecycleStages: lifecycle.stagePort(), provider: orderingAdapter.appointments, handover: appointments });
     const buddy = createBuddyHoldService({ repository, policy, clock, identity, adapter, offerLandingUrl });
     // FUCQ-96 proposes claims on the clock's buddy-allocation stage; only the buddy port writes holds.
     const allocation = createAllocationService({ repository, policy, clock, identity, claim: buddy });
     const offerAccess = createOfferAccessService({ repository, policy, clock, identity, environmentId, sessionNow, verifyOfferToken });
     const offerDecisions = createOfferDecisionService({ repository, policy, clock, access: offerAccess,
-      createStoredSubjectEvaluator: createStoredSubjectRecommendationEvaluator, mode: adapter.mode });
+      createStoredSubjectEvaluator: createStoredSubjectRecommendationEvaluator, mode: adapter.mode, ordering: manualOrder });
     const offerFollowup = createOfferFollowupService({ repository, policy, clock, identity, brief, offers: offerAccess });
     const resolveOfferAccess = async ({ selector, cookie }) => {
       const hasOfferCookie = typeof cookie === 'string' && cookie.split(';')
@@ -129,11 +142,11 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       const resolved = await identity.resolveSession({ authorized: true, cookie });
       return resolved.status === 'ok' ? offerAccess.fromAccount(resolved.value, selector) : session ?? resolved;
     };
-    notify = createNotificationDispatcher({ repository, policy, clock, environmentId });
+    notify = createNotificationDispatcher({ repository, policy, clock, environmentId, mail });
     const dependencies = { gcspRepository: repository, gcspPolicy: policy, gcspGreg: greg, gcspGregPublish: gregPublish,
       gcspScenarios: scenarios, gcspManualClaims: manualClaims, gcspManualRead: manualRead, gcspManualReview: manualReview,
       gcspStockRelease: stockRelease, gcspSupply: supply, gcspCases: cases, gcspManualOrder: manualOrder,
-      gcspLifecycle: lifecycle, gcspDocuments: documents,
+      gcspLifecycle: lifecycle, gcspDocuments: documents, gcspAppointments: appointments, gcspReturnPlan: returnPlan,
       gcspBuddy: buddy, gcspAllocation: allocation, gcspOfferAccess: offerAccess,
       gcspOfferDecisions: offerDecisions, gcspResolveOfferAccess: resolveOfferAccess, gcspOfferFollowup: offerFollowup,
       gcspNotify: notify, gcspOutbox: { repository },
@@ -162,6 +175,13 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       const adopted = await adoptOfferJourneyPolicy({ policy, identity, clock });
       if (adopted.status !== 'ok') { await close(); return adopted; }
     }
-    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, manualRead, manualReview, manualOrder, stockRelease, supply, releaseHistory, cases, orderingAdapter, lifecycle, documents, buddy, allocation, offerAccess, offerDecisions, offerFollowup, resolveOfferAccess, notify, dependencies, createLocalSession, close });
+    // Best effort: a source that cannot prepare the first run is chosen again on its first pull.
+    if (typeof pullProvider?.prepareRun === 'function') {
+      try {
+        const current = await repository.currentRun(environmentId);
+        if (current.status === 'ok') await pullProvider.prepareRun(current.value.runId);
+      } catch (error) { console.warn(`GCSP stock: preparing the first run failed (${error?.message ?? 'error'}).`); }
+    }
+    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, manualRead, manualReview, manualOrder, stockRelease, supply, releaseHistory, cases, orderingAdapter, lifecycle, documents, appointments, returnPlan, buddy, allocation, offerAccess, offerDecisions, offerFollowup, resolveOfferAccess, notify, dependencies, createLocalSession, close });
   } catch { await close(); return unavailable(); }
 }
