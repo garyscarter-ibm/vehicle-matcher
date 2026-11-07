@@ -118,6 +118,7 @@ Feedback is recorded in this repository document and committed through the norma
 | Date UTC | Variant/fixture | Run ID | Build | Result | Feedback / next revision |
 |---|---|---|---|---|---|
 | 2026-11-05 | later-suitable-stock / waiting-for-suitable-stock; v1 | No new run (refused) | `96bc997` | Catalogue declares both variants; actual service preparation/replays unavailable. | FUCQ-128 integrates both variants and records real waiting/offer behaviour. |
+| 2026-11-07 | later-suitable-stock; v2 | `demo-cfd9f03e…` (1280), `demo-d8f0868e…` (375), each from its own reset | `ff69c9f4` | Launched memory demo over a scratch loopback front, headless Chrome. Reset read back 09:30 UTC; Paula's first offer Touring 320i; declined by keyboard (reason select, Enter), chose Saloon, change saved in brief version 2 (waiting); one 60 s Tick (09:31); Check current state showed the Saloon 320i as the next offer beside the declined Touring. PNGs: `evidence/fucq-75/fucq-128/`. | Low: duplicate "Check current state", raw ISO times, slow first loads of presenter controls; an unstyled duplicate "Next offer" block seen once at 375. Waiting variant: FUCQ-173. |
 
 ### Offer expires · `offer-expires` · FUCQ-129
 
