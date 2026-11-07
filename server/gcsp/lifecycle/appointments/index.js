@@ -8,20 +8,19 @@ export const APPOINTMENT_CONTRACT = 'lifecycle.appointments.v1';
 export const APPOINTMENT_HANDLER_ID = 'lifecycle-appointments';
 export const APPOINTMENT_HANDLER_STAGE = 'pending-reconciliation';
 // Versioned per-order projection in the existing receipts table (no schema change); writes ride pending_operations.
-const STATE_CONSUMER = 'lifecycle-appointments:state:v1';
+// The return purpose (FUCQ-118) reuses this machine under its own namespace; the handover names are unchanged.
+const PURPOSES = Object.freeze({
+  handover: { consumer: 'lifecycle-appointments:state:v1', purpose: 'handover', handlerId: APPOINTMENT_HANDLER_ID, opBase: 'appointment', commands: 'lifecycle-appointments',
+    eventType: 'lifecycle-appointment-state' },
+  return: { purpose: 'return', consumer: 'lifecycle-return-appointments:state:v1', handlerId: 'lifecycle-return-appointments', opBase: 'return-appointment',
+    commands: 'lifecycle-return-appointments', eventType: 'lifecycle-return-appointment-state' },
+});
 const METHODS = { request: 'requestSlot', confirm: 'confirm', accept: 'acceptProposal' };
 const text = (v, max = 512) => typeof v === 'string' && v.length > 0 && v.length <= max;
 const object = (v) => v && typeof v === 'object' && !Array.isArray(v);
 const slotShape = (s) => object(s) && text(s.slotId, 64) && validInstant(s.start) && validInstant(s.end);
 const plusSeconds = (instant, seconds) => new Date(Date.parse(instant) + seconds * 1000).toISOString();
-const stateRef = (runId, orderUuid) => ({ table: 'event_receipts', key: { runId, consumerId: STATE_CONSUMER, eventId: orderUuid } });
 const opRef = (runId, operationId) => ({ table: 'pending_operations', key: { runId, operationId } });
-const operationIds = (runId, orderUuid) => {
-  const base = `appointment:${inputDigest([runId, orderUuid]).slice(0, 32)}`;
-  return { request: `${base}:request`, confirm: `${base}:confirm`, accept: `${base}:accept` };
-};
-// Repository writes made by the tick handler carry a system principal, never the presenter's identity.
-const systemContext = (context) => ({ environmentId: context.environmentId, runId: context.runId, principalId: APPOINTMENT_HANDLER_ID, roles: [] });
 const invalid = (field, reason) => result('invalid', { code: 'invalid-appointment-command', reasons: [{ field, reason }], action: 'review-and-retry' });
 const unavailable = () => result('unavailable', { code: 'appointments-unavailable', retryable: true, reason: 'Appointments are unavailable. Try again shortly.' });
 const ELIGIBILITY = { 'opening-stage-not-reached': 'Your order has not been sent to ordering yet.', 'opening-stage-not-in-lifecycle': 'Your order has not been sent to ordering yet.' };
@@ -38,14 +37,25 @@ function expected(step, op, r) {
 }
 
 export class LifecycleAppointmentService {
-  #repository; #policy; #clock; #identity; #stages; #provider; #start;
-  constructor({ repository, policy, clock, identity, lifecycleStages, provider } = {}) {
+  #repository; #policy; #clock; #identity; #stages; #provider; #start; #cfg; #ownershipKey; #slotSource; #fields;
+  // Options default to the handover purpose. `slotSource` replaces provider.offerSlots; `requestFields` are extra caller-validated request keys.
+  constructor({ repository, policy, clock, identity, lifecycleStages, provider, purpose = 'handover', ownershipKey, slotSource, requestFields = [] } = {}) {
+    if (!Object.hasOwn(PURPOSES, purpose)) throw new TypeError('Unknown appointment purpose.');
     this.#repository = repository; this.#policy = policy; this.#clock = clock; this.#identity = identity;
-    this.#stages = lifecycleStages; this.#provider = provider;
+    this.#stages = lifecycleStages; this.#provider = provider; this.#cfg = PURPOSES[purpose];
+    this.#ownershipKey = ownershipKey; this.#slotSource = slotSource; this.#fields = Object.freeze([...requestFields]);
   }
 
+  #stateRef(runId, orderUuid) { return { table: 'event_receipts', key: { runId, consumerId: this.#cfg.consumer, eventId: orderUuid } }; }
+  #operationIds(runId, orderUuid) {
+    const base = `${this.#cfg.opBase}:${inputDigest([runId, orderUuid]).slice(0, 32)}`;
+    return { request: `${base}:request`, confirm: `${base}:confirm`, accept: `${base}:accept` };
+  }
+  // Repository writes made by the tick handler carry a system principal, never the presenter's identity.
+  #system(context) { return { environmentId: context.environmentId, runId: context.runId, principalId: this.#cfg.handlerId, roles: [] }; }
+
   start() {
-    this.#start ??= this.#clock?.registerHandler({ handlerId: APPOINTMENT_HANDLER_ID, stage: APPOINTMENT_HANDLER_STAGE,
+    this.#start ??= this.#clock?.registerHandler({ handlerId: this.#cfg.handlerId, stage: APPOINTMENT_HANDLER_STAGE,
       handle: (tick) => this.#safe(() => this.#tick(tick)) }) ?? Promise.resolve(unavailable());
     return this.#start;
   }
@@ -69,7 +79,7 @@ export class LifecycleAppointmentService {
     return { now: time.value.now, policyVersion: run.value.policyVersion };
   }
 
-  #config(context, now, policyVersion) { return loadAppointmentPolicy(this.#policy, { runId: context.runId, asOf: now, policyVersion }); }
+  #config(context, now, policyVersion) { return loadAppointmentPolicy(this.#policy, { runId: context.runId, asOf: now, policyVersion }, this.#ownershipKey); }
 
   // Classifies one FUCQ-111 stage read; a missing order is not found, anything not yet sent to ordering is not eligible.
   async #observe(context, orderUuid, config) {
@@ -80,9 +90,15 @@ export class LifecycleAppointmentService {
     return { observed: observeStage(raw, { context, orderUuid, openingStage: config.openingStage, openingState: config.openingState }) };
   }
 
-  async #offer(config, now) {
+  async #offer(context, config, now, orderUuid, input = {}) {
     const refused = (code, reason) => ({ blocked: { step: 'offer', code, reason } });
     try {
+      if (this.#slotSource) {
+        const picked = await this.#slotSource(context, { orderUuid, now, slotPolicy: config.slotPolicy, policyVersion: config.policyVersion, input });
+        if (Array.isArray(picked?.slots) && picked.slots.every(slotShape)) return { slots: picked.slots };
+        if (text(picked?.blocked?.code, 128)) return refused(picked.blocked.code, picked.blocked.reason ?? 'Slots are not available in this mode.');
+        return refused('offer-unavailable', 'Slots are unavailable. Try again shortly.');
+      }
       const offer = await this.#provider?.offerSlots({ now, ...config.slotPolicy });
       if (offer?.status === 'ok' && Array.isArray(offer.slots) && offer.slots.every(slotShape)) return { slots: offer.slots };
       if (offer?.status === 'unsupported') return refused(offer.code ?? 'unsupported', offer.reason ?? 'Slots are not available in this mode.');
@@ -95,15 +111,16 @@ export class LifecycleAppointmentService {
     const stuck = p.blocked ?? blocked;
     const unmet = p.state === 'not-requested' && !eligibility.eligible;
     const step = pending ? config.ownership.pending : stuck ? config.ownership.blocked : unmet ? config.ownership.ineligible : config.ownership.states[p.state];
-    return { contractVersion: APPOINTMENT_CONTRACT, runId: p.runId, orderUuid: p.orderUuid, employeeId: p.employeeId, state: p.state,
+    return { contractVersion: APPOINTMENT_CONTRACT, ...(this.#cfg.purpose === 'return' ? { purpose: 'return' } : {}), runId: p.runId, orderUuid: p.orderUuid, employeeId: p.employeeId, state: p.state,
       booked: p.state === 'scheduled', slot: p.slot, requestedSlot: p.requestedSlot, proposedSlot: p.proposedSlot, proposalId: p.proposalId,
       history: p.history, owner: step.owner, nextStep: step.nextStep, pending, blocked: stuck ? { code: stuck.code, reason: stuck.reason } : null,
       offeredSlots, eligibility, policyVersion: p.policyVersion, assumptions: config.assumptions,
+      ...(this.#fields.length ? { plan: p.plan ?? null } : {}),
       provider: { mode: this.#provider?.mode ?? null, synthetic: this.#provider?.mode === 'synthetic' }, fictional: true };
   }
 
   async #readModel(context, scope, orderUuid, prepared) {
-    const found = await this.#repository.read(context, stateRef(context.runId, orderUuid));
+    const found = await this.#repository.read(context, this.#stateRef(context.runId, orderUuid));
     if (found.status === 'ok') {
       const p = found.value.outcome.value;
       if (scope === 'employee' && p.employeeId !== context.employeeId) return result('forbidden', { reason: 'This appointment belongs to another employee.' });
@@ -120,7 +137,7 @@ export class LifecycleAppointmentService {
     const eligible = observed.status === 'open';
     const eligibility = eligible ? { eligible: true, code: null, reason: null }
       : { eligible: false, code: observed.reason ?? 'not-open', reason: ELIGIBILITY[observed.reason] ?? 'Appointments are not available for this order yet.' };
-    const offer = eligible ? await this.#offer(config.value, prepared.now) : {};
+    const offer = eligible ? await this.#offer(context, config.value, prepared.now, orderUuid) : {};
     const blank = { runId: context.runId, orderUuid, employeeId: observed.employeeId ?? context.employeeId ?? null, state: 'not-requested', slot: null,
       requestedSlot: null, proposedSlot: null, proposalId: null, history: [], pending: null, blocked: null, policyVersion: config.value.policyVersion };
     return ok(this.#present(blank, config.value, { eligibility, offeredSlots: offer.slots ?? [], blocked: offer.blocked ?? null }));
@@ -135,17 +152,19 @@ export class LifecycleAppointmentService {
 
   request(context, input = {}) { return this.#safe(async () => {
     const role = await this.#role(context, ['employee']); if (role.status !== 'ok') return role;
-    if (!object(input) || !text(input.orderUuid, 128) || !text(input.slotId, 64) || Object.keys(input).some((key) => !['orderUuid', 'slotId'].includes(key))) {
+    const allowed = ['orderUuid', 'slotId', ...this.#fields];
+    if (!object(input) || !text(input.orderUuid, 128) || !text(input.slotId, 64) || Object.keys(input).some((key) => !allowed.includes(key))) {
       return invalid('request', 'Supply the order and the slot you chose.');
     }
     const prepared = await this.#prepare(context); if (prepared.error) return prepared.error;
     const { orderUuid, slotId } = input;
-    const existing = await this.#repository.read(context, stateRef(context.runId, orderUuid));
+    const extra = Object.fromEntries(this.#fields.map((key) => [key, input[key] ?? null]));
+    const existing = await this.#repository.read(context, this.#stateRef(context.runId, orderUuid));
     if (existing.status === 'ok') {
       const p = existing.value.outcome.value;
       if (p.employeeId !== context.employeeId) return result('forbidden', { reason: 'This appointment belongs to another employee.' });
       // Repeating the same request returns the same appointment; a different slot is a rebooking, which is not built.
-      if (p.requestedSlot?.slotId !== slotId) return result('conflict', { code: 'appointment-already-requested', reason: 'A slot is already requested for this order.' });
+      if (p.requestedSlot?.slotId !== slotId || this.#fields.some((key) => (p.plan?.[key] ?? null) !== extra[key])) return result('conflict', { code: 'appointment-already-requested', reason: 'A slot is already requested for this order.' });
       return this.#readModel(context, 'employee', orderUuid, prepared);
     }
     if (existing.status !== 'not-found') return existing;
@@ -157,11 +176,11 @@ export class LifecycleAppointmentService {
       const reason = ELIGIBILITY[observed.reason] ?? 'Appointments are not available for this order yet.';
       return result('conflict', { code: 'appointment-not-eligible', reason, reasons: [{ field: 'orderUuid', reason }] });
     }
-    const offer = await this.#offer(config.value, prepared.now);
+    const offer = await this.#offer(context, config.value, prepared.now, orderUuid, extra);
     if (offer.blocked) return result('unsupported', { code: offer.blocked.code, reason: offer.blocked.reason });
     const slot = offer.slots.find((s) => s.slotId === slotId);
     if (!slot) return invalid('slotId', 'Choose one of the offered slots.');
-    const opened = await this.#open(context, config.value, prepared, observed, orderUuid, slot);
+    const opened = await this.#open(context, config.value, prepared, observed, orderUuid, slot, extra);
     if (opened.status !== 'ok') return opened;
     const operation = opened.value;
     const settled = operation.state === 'pending' && operation.lastKnownState === 'requesting'
@@ -180,7 +199,7 @@ export class LifecycleAppointmentService {
     }
     const prepared = await this.#prepare(context); if (prepared.error) return prepared.error;
     const { orderUuid } = input;
-    const found = await this.#repository.read(context, stateRef(context.runId, orderUuid));
+    const found = await this.#repository.read(context, this.#stateRef(context.runId, orderUuid));
     if (found.status === 'not-found') return result('not-found', { resourceType: 'appointment', reason: 'No appointment was requested for this order.' });
     if (found.status !== 'ok') return found;
     const p = found.value.outcome.value;
@@ -209,29 +228,29 @@ export class LifecycleAppointmentService {
   }
 
   #operation(context, operationId, step, orderUuid, slot, extra) {
-    const payload = { context: systemContext(context), orderUuid, step, slot, ...extra };
+    const payload = { context: this.#system(context), orderUuid, step, slot, ...extra };
     const { context: _context, ...stable } = payload;
     return { runId: context.runId, operationId, operationType: OPERATION_TYPES[step], idempotencyKey: operationId,
       inputDigest: inputDigest(stable), payload, state: 'pending', lastKnownState: step === 'confirm' ? 'waiting' : 'requesting', attempts: 0 };
   }
 
   // One transaction creates the projection and its request operation, so a crash leaves a recoverable pending write.
-  async #open(context, config, prepared, observed, orderUuid, slot) {
-    const operationId = operationIds(context.runId, orderUuid).request;
+  async #open(context, config, prepared, observed, orderUuid, slot, extra) {
+    const operationId = this.#operationIds(context.runId, orderUuid).request;
     const operation = this.#operation(context, operationId, 'request', orderUuid, slot, { requestedAt: prepared.now });
     const projection = { schemaVersion: 1, runId: context.runId, orderUuid, employeeId: observed.employeeId, policyVersion: config.policyVersion,
       opening: observed.observation, providerMode: this.#provider?.mode ?? 'unavailable', state: 'not-requested', requestedSlot: slot, slot: null,
-      proposedSlot: null, proposalId: null, acceptedProposalId: null, history: [],
+      proposedSlot: null, proposalId: null, acceptedProposalId: null, history: [], ...(this.#fields.length ? { plan: extra } : {}),
       pending: { step: 'request', operationId, lastKnownState: 'requesting' }, blocked: null, operations: { request: operationId, confirm: null, accept: null },
       confirmation: { delaySeconds: config.confirmDelaySeconds, scenario: config.scenario, slotPolicy: config.slotPolicy } };
-    return this.#repository.transaction(context, { commandId: `lifecycle-appointments:open:${orderUuid}`,
+    return this.#repository.transaction(context, { commandId: `${this.#cfg.commands}:open:${orderUuid}`,
       inputDigest: inputDigest([orderUuid, slot.slotId, config.policyVersion]) }, async (tx) => {
       const prior = await tx.get(opRef(context.runId, operationId));
       if (prior.status === 'ok') return ok(prior.value);
       if (prior.status !== 'not-found') return prior;
       const inserted = await tx.insert('pending_operations', operation); if (inserted.status !== 'ok') return inserted;
-      const stored = await tx.insert('event_receipts', { runId: context.runId, consumerId: STATE_CONSUMER, eventId: orderUuid,
-        inputDigest: inputDigest({ orderUuid, slotId: slot.slotId }), eventType: 'lifecycle-appointment-state', handlerId: APPOINTMENT_HANDLER_ID,
+      const stored = await tx.insert('event_receipts', { runId: context.runId, consumerId: this.#cfg.consumer, eventId: orderUuid,
+        inputDigest: inputDigest({ orderUuid, slotId: slot.slotId }), eventType: this.#cfg.eventType, handlerId: this.#cfg.handlerId,
         inputVersions: { policy: config.policyVersion }, state: 'projection', outcome: ok(projection) });
       return stored.status === 'ok' ? ok(inserted.value) : stored;
     });
@@ -239,17 +258,17 @@ export class LifecycleAppointmentService {
 
   // Creates a later-step operation once and links it from the projection; an existing one is returned unchanged.
   async #ensure(context, orderUuid, step, build) {
-    const ids = operationIds(context.runId, orderUuid);
-    return this.#repository.transaction(context, { commandId: `lifecycle-appointments:${step}-open:${orderUuid}`, inputDigest: inputDigest([orderUuid, step]) }, async (tx) => {
+    const ids = this.#operationIds(context.runId, orderUuid);
+    return this.#repository.transaction(context, { commandId: `${this.#cfg.commands}:${step}-open:${orderUuid}`, inputDigest: inputDigest([orderUuid, step]) }, async (tx) => {
       const prior = await tx.get(opRef(context.runId, ids[step]));
       if (prior.status === 'ok') return ok(prior.value);
       if (prior.status !== 'not-found') return prior;
-      const found = await tx.get(stateRef(context.runId, orderUuid)); if (found.status !== 'ok') return found;
+      const found = await tx.get(this.#stateRef(context.runId, orderUuid)); if (found.status !== 'ok') return found;
       const p = found.value.outcome.value;
       const inserted = await tx.insert('pending_operations', build(ids)); if (inserted.status !== 'ok') return inserted;
       const next = { ...p, operations: { ...p.operations, [step]: ids[step] },
         ...(step === 'accept' ? { pending: { step, operationId: ids[step], lastKnownState: 'requesting' }, blocked: null } : {}) };
-      const changed = await tx.compareAndSwap(stateRef(context.runId, orderUuid), found.value.version, { outcome: ok(next) });
+      const changed = await tx.compareAndSwap(this.#stateRef(context.runId, orderUuid), found.value.version, { outcome: ok(next) });
       return changed.status === 'ok' ? ok(inserted.value) : changed;
     });
   }
@@ -285,11 +304,11 @@ export class LifecycleAppointmentService {
     const waiting = step === 'confirm' && response?.status === 'in-progress' && response.operationId === operation.operationId;
     const refused = response?.status === 'unsupported';
     const label = good ? 'applied' : waiting ? 'waiting' : refused ? 'blocked' : 'uncertain';
-    const settled = await this.#repository.transaction(context, { commandId: `lifecycle-appointments:settle:${operation.operationId}:${good ? 'done' : tag}`,
+    const settled = await this.#repository.transaction(context, { commandId: `${this.#cfg.commands}:settle:${operation.operationId}:${good ? 'done' : tag}`,
       inputDigest: inputDigest(good ? response : { label, code: response?.code ?? null }) }, async (tx) => {
       const fresh = await tx.get(opRef(context.runId, operation.operationId)); if (fresh.status !== 'ok') return fresh;
       if (fresh.value.state !== 'pending') return ok('settled');
-      const found = await tx.get(stateRef(context.runId, orderUuid)); if (found.status !== 'ok') return found;
+      const found = await tx.get(this.#stateRef(context.runId, orderUuid)); if (found.status !== 'ok') return found;
       const p = found.value.outcome.value;
       const from = { request: 'not-requested', confirm: 'requested', accept: 'change-proposed' }[step];
       if (p.state !== from) return ok('settled');
@@ -314,7 +333,7 @@ export class LifecycleAppointmentService {
       }
       if (patch) { const changed = await tx.compareAndSwap(opRef(context.runId, operation.operationId), fresh.value.version, patch); if (changed.status !== 'ok') return changed; }
       if (JSON.stringify(next) !== JSON.stringify(p)) {
-        const stored = await tx.compareAndSwap(stateRef(context.runId, orderUuid), found.value.version, { outcome: ok(next) }); if (stored.status !== 'ok') return stored;
+        const stored = await tx.compareAndSwap(this.#stateRef(context.runId, orderUuid), found.value.version, { outcome: ok(next) }); if (stored.status !== 'ok') return stored;
       }
       return ok(label);
     });
@@ -323,12 +342,12 @@ export class LifecycleAppointmentService {
 
   async #tick({ context, tickId, now }) {
     if (!this.#repository || !this.#policy || typeof this.#provider?.reconcile !== 'function') return unavailable();
-    const system = systemContext(context);
+    const system = this.#system(context);
     const run = await this.#repository.read(system, { table: 'tick_runs', key: { runId: system.runId, tickId } }); if (run.status !== 'ok') return run;
     // Startup reconciles uncertain writes only; confirmation progresses on presenter ticks alone (HLD review Q3).
     const startup = run.value.targetClock?.kind === 'startup';
-    const rows = await this.#repository.query(system, 'event_receipts', { consumerId: STATE_CONSUMER }); if (rows.status !== 'ok') return rows;
-    const summary = { handlerId: APPOINTMENT_HANDLER_ID, orders: rows.value.length, applied: 0, waiting: 0, blocked: 0, uncertain: 0, idle: 0, failed: [] };
+    const rows = await this.#repository.query(system, 'event_receipts', { consumerId: this.#cfg.consumer }); if (rows.status !== 'ok') return rows;
+    const summary = { handlerId: this.#cfg.handlerId, orders: rows.value.length, applied: 0, waiting: 0, blocked: 0, uncertain: 0, idle: 0, failed: [] };
     // One order's failure is recorded and skipped so others still progress; stable operation IDs make the retry safe.
     for (const row of [...rows.value].sort((a, b) => (a.eventId < b.eventId ? -1 : 1))) {
       let step; try { step = await this.#progress(system, tickId, now, startup, row.outcome.value); } catch { step = unavailable(); }

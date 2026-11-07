@@ -227,7 +227,7 @@ export function toOfferPresentation(envelope, { reference } = {}) {
       reference: { offerId: v.offerId, runId: v.runId, offerVersion: v.offerVersion, holdVersion: v.holdVersion,
         quoteVersion: revisions.quote },
       now: v.serverNow, clockVersion: v.clockVersion, expiresAt: v.expiresAt, actionable: v.state === 'pending' && !uncertain,
-      actions, handoff, selection, card: cardFor(quote), comparisonAvailable: currentCar?.facts.some((row) => row.value !== null) === true, currentCar,
+      actions, handoff, selection, orderUuid: quote.orderUuid, card: cardFor(quote), comparisonAvailable: currentCar?.facts.some((row) => row.value !== null) === true, currentCar,
       followup: followupHandle(v.followup, ['rejected', 'declined'].includes(v.offerState) && v.holdState === 'released' ? v.state : null) } };
   } catch { return { status: 'unavailable', retryable: true }; }
 }

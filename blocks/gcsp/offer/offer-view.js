@@ -84,7 +84,7 @@ function selectionGroup(selection) {
 }
 
 /** Compose shared primitives only; server projection owns vehicle facts, terms and decisions. */
-export function createOfferView(root, { refresh, decide, tickDeclaration, selectReason, cancelDecline, refreshReasons, mountFollowup } = {}) {
+export function createOfferView(root, { refresh, decide, tickDeclaration, selectReason, cancelDecline, refreshReasons, mountFollowup, mountOrder } = {}) {
   const page = el('div', 'vm gcsp-offer-body');
   page.id = `gcsp-offer-${++sequence}`;
   const content = el('div', 'gcsp-offer-content');
@@ -96,9 +96,13 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
   let messageNode; let clockNode; let asOfNode; let reasonNode;
   let reasonForm; let reasonSelect; let reasonStatus; let reasonField; let reasonSummary;
   let confirmButton; let cancelButton; let reasonsRefresh; let optionsKey; let wasOpen = false; let lastError = '';
-  let followupRoot; let followupKey; let cleanupFollowup;
+  let followupRoot; let followupKey; let cleanupFollowup; let cleanupOrder;
   const clearFollowup = () => {
     const cleanup = cleanupFollowup; cleanupFollowup = undefined; followupKey = undefined;
+    try { cleanup?.(); } catch { /* Teardown cannot prevent the offer from updating. */ }
+  };
+  const clearOrder = () => {
+    const cleanup = cleanupOrder; cleanupOrder = undefined;
     try { cleanup?.(); } catch { /* Teardown cannot prevent the offer from updating. */ }
   };
   const refreshCurrent = () => { clearFollowup(); refresh?.(); };
@@ -110,7 +114,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
   function draw(model) {
     const focused = root.ownerDocument.activeElement?.dataset?.offerAction;
     const followupFocused = followupRoot?.contains(root.ownerDocument.activeElement);
-    clearFollowup(); followupRoot = undefined;
+    clearFollowup(); clearOrder(); followupRoot = undefined;
     content.replaceChildren();
     optionsKey = undefined; wasOpen = false; lastError = '';
     const state = model.state;
@@ -128,6 +132,13 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
       columns.append(offer, comparison(model.currentCar)); content.append(columns);
     }
     if (state === 'pending' && model.handoff) content.append(handoffGroup(model, page.id, tickDeclaration));
+    if (state === 'accepted' && typeof model.orderUuid === 'string' && typeof mountOrder === 'function' && model.card?.members?.length === 1) {
+      const section = el('section', 'gcsp-offer-order'); section.setAttribute('aria-label', 'Your order progress');
+      const { display, media } = model.card.members[0];
+      const cleanup = mountOrder(section, { orderUuid: model.orderUuid, car: { name: display?.name, photo: media?.src || undefined } });
+      if (typeof cleanup === 'function') cleanupOrder = cleanup;
+      content.append(section);
+    }
     if (state === 'pending') {
       clockNode = el('p', 'gcsp-countdown'); asOfNode = el('p', 'gcsp-note');
       content.append(clockNode, asOfNode);
@@ -247,5 +258,5 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     else if (model.state !== previousState || key !== previousIdentity) announce(titles[model.state] || titles.error);
     previousState = model.state; previousIdentity = key;
   }
-  return { update, destroy() { clearFollowup(); page.remove(); } };
+  return { update, destroy() { clearFollowup(); clearOrder(); page.remove(); } };
 }

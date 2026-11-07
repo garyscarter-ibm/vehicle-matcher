@@ -6,6 +6,8 @@ import { createOfferView } from '../../blocks/gcsp/offer/offer-view.js';
 import { offerFixture } from '../../blocks/gcsp/offer/fixtures.js';
 import { createOfferController } from '../../blocks/gcsp/offer/offer-controller.js';
 import { createOfferHttpAdapter } from '../../blocks/gcsp/offer/http-adapter.js';
+import { toOfferPresentation } from '../../blocks/gcsp/offer/offer-projection.js';
+import { orderProgressFixtures } from '../../blocks/gcsp/order-progress/fixtures.js';
 
 let dom;
 before(() => { dom = new JSDOM('<!doctype html><html><body></body></html>', { url: 'https://example.test/' });
@@ -265,4 +267,59 @@ test('an accepted offer without a selection record keeps the recorded message an
   try {
     assert.match(root.textContent, /Your selection is recorded\./); assert.equal(root.querySelector('.gcsp-stage-list'), null);
   } finally { stop(); }
+});
+
+const ORDER = '00000000-0000-4000-8000-000000000001';
+const acceptedModel = (state = 'accepted') => ({ ...offerFixture('accepted').value, state, orderUuid: ORDER, canAccept: false, canDecline: false });
+
+test('accepted offer mounts order progress with its own car and uuid; other states and a missing uuid mount none', () => {
+  const mounts = []; let stops = 0;
+  const root = document.createElement('div'); document.body.append(root);
+  const view = createOfferView(root, { mountOrder: (host, input) => { mounts.push(input); host.textContent = 'progress'; return () => { stops += 1; }; } });
+  view.update(acceptedModel('pending')); view.update(acceptedModel('declined'));
+  assert.equal(mounts.length, 0); assert.equal(root.querySelector('.gcsp-offer-order'), null);
+  view.update(acceptedModel());
+  assert.equal(mounts.length, 1); assert.equal(mounts[0].orderUuid, ORDER);
+  const member = acceptedModel().card.members[0];
+  assert.equal(mounts[0].car.name, member.display.name); assert.equal(mounts[0].car.photo, member.media.src || undefined);
+  assert.equal(root.querySelector('.gcsp-offer-order').getAttribute('aria-label'), 'Your order progress');
+  view.update(acceptedModel()); assert.equal(mounts.length, 1); // an unchanged read keeps the mounted progress
+  view.update(acceptedModel('declined')); assert.equal(stops, 1); assert.equal(root.querySelector('.gcsp-offer-order'), null);
+  view.update(acceptedModel()); view.destroy(); assert.equal(stops, 2);
+  const bare = document.createElement('div'); document.body.append(bare); const count = mounts.length;
+  createOfferView(bare, { mountOrder: (host, input) => { mounts.push(input); return () => {}; } }).update(offerFixture('accepted').value);
+  assert.equal(mounts.length, count); // no order uuid on the read, so nothing is mounted
+});
+
+test('the DTO projection carries the quote order uuid and the real embedded progress shows the offer car and order number', async () => {
+  const sample = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/representative-access.json', import.meta.url)));
+  const projected = toOfferPresentation({ status: 'ok', value: { ...structuredClone(sample), state: 'accepted', reason: 'accepted', offerState: 'accepted',
+    holdState: 'converted', availableActions: [], followup: null } });
+  assert.equal(projected.status, 'ok'); assert.equal(projected.value.orderUuid, sample.quote.orderUuid);
+  const { mountOrderProgress } = await import('../../blocks/gcsp/order-progress/gcsp-order-progress.js');
+  const states = orderProgressFixtures().states['appointment-requested'];
+  const adapter = { readStages: async () => structuredClone(states.stages), readDocuments: async () => structuredClone(states.documents),
+    readAppointment: async () => structuredClone(states.appointment), readReturnPlan: async () => structuredClone(states.returnPlan) };
+  const root = document.createElement('div'); document.body.append(root);
+  const view = createOfferView(root, { mountOrder: (host, { orderUuid, car }) => mountOrderProgress(host, { adapter, orderUuid: ORDER, car, embedded: true, headingLevel: 2 }) });
+  view.update({ ...projected.value, orderUuid: ORDER, canAccept: false, canDecline: false });
+  for (let n = 0; n < 60 && !root.querySelector('.gcsp-offer-order .gcsp-order-number'); n += 1) await new Promise((done) => setTimeout(done, 15));
+  const area = root.querySelector('.gcsp-offer-order');
+  assert.match(area.textContent, /Order no\. 1000001/); assert.match(area.textContent, new RegExp(projected.value.card.members[0].display.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.equal(area.querySelector('h2').textContent, 'Order progress'); assert.ok(area.querySelectorAll('.gcsp-stage-tracker li').length >= 3);
+  view.destroy(); assert.equal(root.querySelector('.gcsp-offer-order'), null);
+});
+
+test('mountOffer forwards the host order port to an accepted offer only', async () => {
+  const sample = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/representative-access.json', import.meta.url)));
+  const { mountOffer } = await import('../../blocks/gcsp/offer/gcsp-offer.js');
+  const read = (state) => async () => toOfferPresentation({ status: 'ok', value: { ...structuredClone(sample), state, reason: state, offerState: state,
+    holdState: 'converted', availableActions: [], followup: null } });
+  const seen = [];
+  for (const state of ['accepted', 'expired']) {
+    const root = document.createElement('div'); document.body.append(root);
+    const stop = mountOffer(root, { read: read(state), order: { mount: (host, input) => { seen.push([state, input.orderUuid]); return () => {}; } } });
+    await new Promise((done) => setTimeout(done, 30)); stop();
+  }
+  assert.deepEqual(seen, [['accepted', sample.quote.orderUuid]]);
 });

@@ -224,6 +224,16 @@ FUCQ-85 owns `DemoClock` and its deterministic registry, not the business handle
 
 Ticks use `(runId, eventId, handlerId)` receipts, retaining event type, payload digest, input versions and outcome. Replaying a completed tick returns its stored outcome; an interrupted tick resumes only incomplete handlers using their stable operation/command IDs. Startup runs pending reconciliation once and the same expiry guard where applicable, without advancing time or manufacturing a release. Read/command guards and presenter ticks are functioning services; there is no unattended scheduling promise (Q3). Browser countdowns never mutate authority.
 
+### Pull-based stock release · FUCQ-92
+
+`server/gcsp/stock/index.js` exports `createStockReleaseService({ repository, policy, clock, identity, provider })` and two replaceable `pull(request)` providers. `register()` installs `stock-release` in `release-pull` before the clock registry seals. A presenter tick pulls the source list; startup or advance alone creates no stock. The [version 1.0.0 stock-release contract](stock-release-contract.md) specifies the exact pull/tranche/confirmed-supply shapes and failure states. Its small source fixtures are explicitly TEST FIXTURES, with FUCQ-77/78 corpus/provider, actual supply producer and shared runtime/consumer integration still required.
+
+One existing repository transaction inserts/promotes only previously unreleased exact cars and records `event_receipts` with `consumerId: 'stock-release'`, `eventType: 'stock-released'`, `eventId: trancheId`, `state: 'completed'`. The successful `outcome.value` contains `{ kind: 'stock-released', runId, trancheId, windowId, supplyId, tickId, releasedAt, orderUuids, visibleOrderUuids, policyVersion, source }`. `orderUuids` contains only newly inserted/promoted cars; `visibleOrderUuids` is the exact source tranche. Allocation consumes this persisted receipt with its own replay identity. Manual/buddy paths share the existing run-scoped `stock` pool. Known held/allocated/released cars are not freed or overwritten.
+
+F92 writes operational `stock.state: 'released'`, with `status: 'available'` and nested `release.availability.state: 'available'`. This aligns existing manual/Greg readers and the F100 hold guard; it does not change the repository's internal conditional-claim protocol. Previously persisted F92 operational `available` rows require an audited reset or separately reviewed data migration before reuse; pull replay never overwrites them. Actual native/deployed exposure remains unverified.
+
+The canonical keys remain `supply.release.size` and `supply.leadTimeDays`; source windows are dated provider inputs. A queued provider confirmation creates only a `stock-supply-queue` receipt, never released stock. Source-supplied `availability.availableUntil` is retained under `stock.release.availability`; absent expiry stays unknown. No table, migration, second policy source, live connection or existing method meaning changes.
+
 ## Policy catalogue and provenance
 
 FUCQ-82 implements the single reviewed seed at **`server/gcsp/policy/seed-v1.json`** and read-only file provider; FUCQ-83 seeds dated PostgreSQL tables idempotently and makes them runtime authority through the same `PolicyService`. FUCQ-82 records this implemented location and the shared read interface in build-rules.md. There is one active source per deployment, no separately maintained browser/test defaults. Historical versions and pinned quotes are retained.
@@ -261,6 +271,8 @@ Key names use lower camel-case dotted namespaces; a suffix states a dimensional 
 | `eligibility.rule.matchField` | `eligibilityModelKey` field name | Assumed bridge of retained series/model/engine labels to matrix rows, since target matching code is undefined (round-3). Exact mapping is versioned/provenanced in the seed; unknown mapping fails. |
 | `eligibility.rule.precedence` | `excludeThenInclude` enum | Assumed deterministic include/exclude evaluation; unknowns cannot widen eligibility. |
 | `supply.release.size` | `20` cars per synthetic tranche | Assumed plausible small demo release; target sizes undocumented (round-2); scenario may explicitly override with provenance. |
+| `supply.release.windows` | Object: a named `cue`, then `windows` of `windowId`, `offsetMinutes` and `cars` (structure, see seed) | Assumed demo windows for the synthetic stock provider, in minutes after the named `clock.scenario.v1` time `cue` (`release`), so one cue change moves them all. |
+| `stock.eligibilityModelKeys.v1` | Object: corpus `agModelCode` to `eligibilityModelKey` (structure, see seed) | Assumed bridge so generated stock on retained corpus configurations can pass model eligibility. Only AG `72HH` to `G61 i5\|i5 40` is evidenced (fleet-plan.json); unmapped cars release but are not eligible. |
 | `supply.leadTimeDays` | `56` calendar days | Assumed eight-week production-to-release planning input; not a BMW delivery promise (round-2). |
 | `brief.slider.minimum` | `0` integer slider units | Assumed `brief.slider.scale`; shared position and importance scale. |
 | `brief.slider.maximum` | `100` integer slider units | Assumed `brief.slider.scale`; dimensions declare categorical alternatives where required. |
@@ -270,6 +282,13 @@ Key names use lower camel-case dotted namespaces; a suffix states a dimensional 
 | `stock.configuration.includePaintAndUpholstery` | `true` boolean | Assumed target detail, supported by configurator; every factory option included, dealer accessories excluded. |
 | `stock.configuration.encoding` | `base64-padded` enum | Assumed target detail (Q13); canonical upper-case sorted list, URL-encode on routes. |
 | `stock.identifiers.stableWithinRun` | `true` boolean | Assumed because target amendment stability is unsettled; reset regenerates order identifiers. |
+| `orderPlan.horizonDays` | 120 days | Assumed synthetic planning horizon covering the demo renewals (FUCQ-117). |
+| `orderPlan.budgetMinor` | 20000000 GBP minor units | Assumed hard synthetic procurement envelope; no BMW budget claim (FUCQ-117). |
+| `orderPlan.currency` | GBP | Assumed synthetic currency; catalogue costs must match (FUCQ-117). |
+| `orderPlan.modelBounds` | min/max new vehicles per model id | Assumed per-model limits over the catalogue's three models (FUCQ-117). |
+| `orderPlan.derivativeBounds` | min/max new vehicles per derivative id | Assumed per-derivative limits over the catalogue's four derivatives (FUCQ-117). |
+| `orderPlan.objectiveWeights` | coverage 100, unallocatedStock 10, costMinor 0 | Assumed objective weights; budget stays hard (FUCQ-117). |
+| `orderPlan.catalog.v1` | Versioned derivatives, unit costs and configurations | Assumed synthetic catalogue bound to the reviewed structural configuration ids; not BMW prices (FUCQ-117). |
 
 FUCQ-82 adds `eligibility.context.mapping` (assumed, source/date: the supplied matrix transcription, 4 November 2026). Its value maps `choices-fs-uk` / `demo-bmw-fs-uk` to `G1-6`, `G7`, `G8-10`, `G11-14`, and `choices-rr-production` / `demo-bmw-rr-production` to `PG1`, `G8-10`, `G11-12`. These are demo identifiers and source grade bands, not a verified BMW company-code crosswalk. `eligibilityModelKey` is the exact matrix Model cell, a `|`, and one Engine token; comma/slash alternatives expand without inventing engine prefixes. For example `G20 Saloon|320i` and `G21 Touring|320i` remain separate. Unknown/unmapped values never use a nearest match. This assumption is the source for generators and context fixtures; callers do not recreate a second crosswalk.
 
@@ -805,6 +824,14 @@ Each aggregate returns `{ count, versions: { brief: [], policy: [] } }`. The ass
 
 The existing `employee.recommendation.v1` registry additively permits optional `essentials.modelLine = { operator: equals, type: string, unit: null }`. Existing generic BriefService persistence/validation and FUCQ-29 essential gates apply unchanged; no older brief requires this field. Unspecified model choices are explicit, never inferred from current cars or rankings. The existing declined-car exclusion key remains authority; pause/resume and provenance-only or equipment-order changes do not reopen an unchanged declined exact car. Typed decline grouping excludes reason free text. The [full dashboard response contract and repeatable scenarios](greg-demand.md) record input shapes, privacy/version/empty/unavailable/refresh states and upstream producer boundaries. Backend-only: no new screen/component or rendered screenshot claim; experience-quality and agreed shell/Used Cars body references continue to govern its future consumer.
 
+## Order plan · FUCQ-117
+
+`createCanonicalOrderPlanService({ repository, policy, identity, clock, supply? }).readPlan(context, { currentDraft? })` is the Greg-only planning read; the route and panel belong to FUCQ-119. Detail, input trust rules and solver limits are in [the order-plan contract](order-plan-contract.md).
+
+Result: `{ contractVersion, planId, runId, asOf, versions, status, quantities, modelQuantities, allocations, expectedAcceptableCoverage, unallocatedStockRisk, spendMinor, currency, objective, bindingConstraints, unmetNeeds, alternatives, currentDraftComparison, policyProvenance, limitations, solver }`. `status` is `feasible`, `infeasible` (with `conflicts`, no quantities), `unsupported` (solver limit) or `invalid`. `planId` and every pinned version derive from the inputs, so equal inputs give the same plan.
+
+Ports (all trusted, in-process): forecast `readForecast(context, read)` (default: saved briefs through the future-choice evaluator), supply `readSupply(context, read)` (F104 records, or an injected port of the same shape), catalog `readCatalog(context, read)` and future terms `readFutureTerms(context, request)`. The policy-backed catalog and terms providers read only PolicyService, so the seven `orderPlan.*` keys above plus `supply.leadTimeDays` are the sole source for horizon, budget, bounds, weights, costs and configuration facts.
+
 ## Ownership and extensions
 
 FUCQ-53's [synthetic identity allocation contract](synthetic-identity-allocation.md) adds offline `allocateSyntheticIdentities` / `allocateInventoryFile` ports, immutable whole-inventory replay, delivered/current-only VIN generation and `publishStockOrders` through the existing repository transaction port. Stock imports start unreleased, carry no VIN and preserve current operational state; `runs.versions.syntheticIdentityInventory` records the artifact revision/digest. Only the seven-digit order reference is exposed by the employee projection. File publication and PostgreSQL import are separate stages with independently atomic failure; this adds no repository table, public write endpoint or scheme-policy source.
@@ -841,6 +868,7 @@ Retail `publicMatch.listings[]` additively retains the evaluator's exact `decisi
 
 | Version / date / owner | Change and keyed assumptions |
 |---|---|
+| 1.0.0 / 2026-11-07 / FUCQ-117 | Adds the order-plan service, policy-backed catalog and future-terms providers and canonical composition; seven assumed `orderPlan.*` keys (horizon, budget, currency, model/derivative bounds, objective weights, synthetic catalogue). No table, route or UI. |
 | 1.0.0 / 2026-11-07 / FUCQ-114 | Adds LifecycleAppointmentService, `lifecycle-appointments` handler, appointment routes, `ordering.appointments.v1` capability and live stub, versioned receipt projection (no table) and per-step pending operations; assumed `lifecycle.appointments.{slots,confirmation,scenario,ownership}.v1`. Consumes `lifecycle.stages.v1` rev 2. No existing meaning changes. |
 | 1.0.0 / 2026-11-06 / FUCQ-116 | Adds LifecycleDocumentService, `lifecycle-documents` handler, document routes, `ordering.documentStatus.v1` capability and live stub, versioned receipt projection (no table) and keyed exception receipts with order-specific renewal identity; assumed `lifecycle.documents.{v1,scenario.v1,exceptions.v1}`. Consumes `lifecycle.stages.v1` rev 2. No existing meaning changes. |
 | 1.0.0 / 2026-11-06 / FUCQ-111 | Adds LifecycleApprovalService, `lifecycle.stages.v1` rev 2 read/listOrders and internal stagePort, synthetic ordering status capability and live stub, versioned receipt transitions (no table), `lifecycle-approvals` handler and assumed `lifecycle.approval.{ticks,declineScenario,ownership}.v1`. |
@@ -853,6 +881,7 @@ Retail `publicMatch.listings[]` additively retains the evaluator's exact `decisi
 | 1.0.0 / 2026-11-05 / FUCQ-83 | Source checkpoint: additive dated policy tables/migration 0002, idempotent seed, PostgreSQL and explicit memory providers, trusted Greg immutable publishing/replay and unchanged pinned reads. Existing assumptions/0003/consumers remain unchanged. Configured native policy/factory/repository proof passes with exact schema cleanup; combined offline full 1,235 total/1,230 passed/5 native skips has matching strict stamp 07aea3ec1a62. No screen or fresh diagram-render claim. |
 | 1.0.0 / 2026-11-05 / FUCQ-98 | Adds backend-configured Brevo transport and private captured outbox provider attempt/acknowledgment fields, canonical retries, safe unconfirmed window expiry and graceful drain. Existing capture default, presenter projection, repository/schema, offer authority and stock/priority behavior remain compatible; live sender/inbox validation is separate. |
 | 1.0.0 / 2026-11-05 / FUCQ-94 | Adds canonical editor context and server-only real unsaved preview through strict employee HTTP routes, explicit draft/base provenance, independent consent and truthful empty-equipment no. No approved recommendation downgrade, writes, holds or new screen. |
+| 1.0.0 / 2026-11-05 / FUCQ-92 | Adds the pull-provider/release handler and exact persisted `stock-release` / `stock-released` receipt contract over existing clock, repository and policy ports. TEST providers and backend presentation evidence are scoped; real source/corpus, producer and runtime-consumer acceptance remain explicit. No migration, new policy key or existing consumer meaning changes. |
 | 1.0.0 / 2026-11-05 / FUCQ-57 | Adds mandatory configured-provider identity classification and successful-result binding checks through the existing retained registry/current-run inventory, preserving the FUCQ-55 envelope and FUCQ-43 real guard. Actual five-WMI generated-store HTTP/in-process/start/reset proofs retain honest US/LHD, unknown and representative-image-contract states. No live authorisation, mutable stock/policy/retail change or new screen. |
 | 1.0.0 / 2026-11-05 / FUCQ-112 | Adds RenewalCaseService/routes, `renewal_cases` and migration `0003`, eight dated `renewalCase.*` assumptions, keyed completed-receipt trigger consumer and same-transaction captured case-update jobs. Employee-confirmed preference remedies verify FUCQ-91 history; no allocation/priority mutation, existing port meaning change or screen. |
 | 1.0.0 / 2026-11-05 / FUCQ-55 | Additive three-identity lookup/HTTP envelope and same-entry offline profile, with exact tiny selected-store packaging only. Preserves exact run/configuration/source identity, typed outcomes and presentation provenance; reuses existing registry, repository and shared gate. No new policy or storage meaning; scoped lookup/HTTP/offline checks and final23/99/125/133integrated whole suite passed (820pass,2configuredSQLskips; stampc06d774bea5a). |
@@ -1028,3 +1057,64 @@ Read model: `contractVersion`, `runId`, `orderUuid`, `employeeId`, `state`, `boo
 
 A refused write returns `unsupported` with `code`, `reason` and, once a slot was offered, the unchanged `appointment` (owner
 scheme-team). This backend-only story adds no screen.
+
+## Lifecycle return plan · FUCQ-118
+
+`LifecycleReturnPlanService` (`server/gcsp/lifecycle/return-plan/`) plans the return of Paula's current car in its own right,
+apart from the new car's handover. It reads FUCQ-71's `selection-order` record read-only (old contract, vehicle slot, collection
+location and the return mileage captured at selection) and books the return through FUCQ-114's service and
+`ordering.appointments.v1` port, run with `purpose: 'return'`. Nothing here writes `employees`, `entitlement_slots` or any
+contract. Only a confirmed return changes her current car, and that belongs to FUCQ-168 (returned and missed outcomes too).
+
+Applicability: a replacement order has a plan; a new order has none (`applicable: false`, `state: null`, no appointment, no
+offers). A replacement selection without its old-car record is an explicit `unavailable` (`return-plan-source-invalid`).
+
+States: `not-planned` -> `return-requested` (appointment `requested` or `change-proposed`) -> `return-scheduled`. `scheduled` is
+true only for `return-scheduled`; a requested or proposed return is never shown as scheduled. Each history row is
+`{state, appointmentState, at, providerReference}` on demo-clock time. The return appointment has its own projection, operation
+IDs (`return-appointment:`) and provider references, so it can never be mistaken for the handover.
+
+Request rule: Paula chooses `same-visit` (the return books the handover's own scheduled slot) or `separate` (a slot the adapter
+offers from the keyed days, filtered to start after the handover ends and within the keyed days after it). Both need the
+handover `scheduled`. A new order, or a handover not yet in a required state, is a `conflict`; an unknown choice or an unoffered
+slot is `invalid`. Repeating the same request returns the same plan; a different choice or slot is a `conflict`. The return
+location is the new car's collection location from the selection (`handover-retailer`). The tick handler
+`lifecycle-return-appointments` (`pending-reconciliation`) confirms, or proposes, after the keyed delay as the handover does;
+a proposal becomes `return-scheduled` only when Paula accepts it.
+
+Appointment service options added in FUCQ-118 (handover defaults unchanged): `purpose` ('handover' | 'return', namespacing the
+state consumer, handler, operation and command IDs), `ownershipKey`, `slotSource` (replaces `offerSlots`) and `requestFields`
+(extra request keys kept on the projection as `plan` and compared on repeats).
+
+Storage adds no migration: one versioned projection per order in `event_receipts` (consumer
+`lifecycle-return-appointments:state:v1`, event = orderUuid), one `pending_operations` row per step and the adapter receipts of
+FUCQ-114.
+
+Routes (browser identity and run claims discarded; context is server-owned): `GET /api/gcsp/return-plan?orderUuid=`,
+`POST /api/gcsp/return-plan/request` `{orderUuid, choice, slotId}` and `POST /api/gcsp/return-plan/accept`
+`{orderUuid, proposalId}`. Employees reach only their own order; Greg and the presenter may read. Another employee is
+`forbidden`; unsupported query keys are `invalid`.
+
+| Key | Assumed default (synthetic demo assumption) |
+|---|---|
+| `lifecycle.return.options.v1` | choices `same-visit` and `separate` with labels; both need the handover `scheduled`; separate slots from 2 clear days, 10 days offered, 60-minute slots at 09:00 and 13:00 UTC, starting after the handover and within 7 days of it; location `handover-retailer` |
+| `lifecycle.return.ownership.v1` | owner and next-step copy per return state, plus ineligible, pending and blocked |
+| `lifecycle.appointments.slots.v1`, `.confirmation.v1`, `.scenario.v1` | reused unchanged (HLD review Q19) |
+
+Read model: `contractVersion`, `runId`, `orderUuid`, `employeeId`, `applicable`, `state`, `scheduled`, `oldContractId`,
+`vehicleSlotId`, `currentCar` (read-only account identity), `returnMileage` (`{value, unit: 'mi', recordedAt, source: 'selection'}`),
+`choice`, `location`, `appointment` (the return appointment read model), `handover` (state, booked, slot, provider reference),
+`slot`, `requestedSlot`, `proposedSlot`, `proposalId`, `providerReference`, `history`, `owner`, `nextStep`, `pending`, `blocked`,
+`choices` (each `{id, label, available, reason, selected}`), `offeredSlots` per choice, `policyVersion`, `assumptions`,
+`fictional`. Shapes for FUCQ-120 are in `server/test/fixtures/gcsp-lifecycle-return-plan-outcomes.json`:
+
+| Case | `state` | `scheduled` | `owner` | Next step |
+|---|---|---|---|---|
+| handover not yet scheduled | `not-planned` | false | employee | Confirm your new car's handover first, then plan the return. |
+| return requested | `return-requested` | false | retailer | Waiting for the retailer to confirm your return slot. |
+| proposed change | `return-requested` (`appointment.state` `change-proposed`) | false | employee | Accept the new time to confirm your return. |
+| return scheduled | `return-scheduled` | true | retailer | Keep driving your current car until the return. |
+| new order | `null` (`applicable: false`) | false | none | none |
+
+A refused write returns `unsupported` with `code`, `reason` and, once a slot was offered, the unchanged `plan`. This
+backend-only story adds no screen.
