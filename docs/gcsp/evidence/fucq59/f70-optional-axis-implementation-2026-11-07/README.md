@@ -1,0 +1,9 @@
+# F70 optional-axis route: scoped implementation
+
+The independently registered `f59-model-axis-batch-20261107.v1` route reuses the existing exact model/line registration, executor, complete capture, binder and collector. Every session has at most eight explicit requests. Each pins exactly one paint, fabric and rim, the original exact mandatory line or explicit empty mandatory query, and one or two additional inputs: at most one directly typed trim and one directly typed package. Unknown, other and transmission extras are refused before solver traffic.
+
+Every requested optional trim/package must survive the actual solver response. Ordinary source-added factory selections and explicit solver changes remain complete. Retained binding independently repeats request/type/context and optional survival checks from the exact matched request and retained options; it never infers requested axes from source additions. Existing strict model-batch v1 retains its fixed three/four-input contract.
+
+`validation.json` records the meaningful RED, the first scoped fixture-budget failure and the final 141/141 checks across the four agreed boundary files, with code/test identities, reviewed dependency edges, bounded aggregate V8 observations and cleanup evidence. No checks were skipped or cancelled in the final scoped run. The existing full-suite fallback was reviewed and excluded. No live source requests, source capacity credit, application acceptance or publication are claimed.
+
+This is an internal extension within the existing source-pipeline component. Its architecture connections and screens are unchanged; no new design-map node or visual gate is needed. No feature or acceptance-criterion expansion is introduced. Parent owns independent review, later source release, shared indexes, Jira and product acceptance.

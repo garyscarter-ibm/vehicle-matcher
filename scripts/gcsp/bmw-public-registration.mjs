@@ -2,7 +2,9 @@ import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { requireValue } from './configuration-key.mjs';
 
 export const BMW_MODEL_BATCH_SOURCE_VERSION = 'f59-model-batch-20261107.v1';
-export const isBmwBatchPlan = plan => [BMW_BATCH_SOURCE_VERSION, BMW_MODEL_BATCH_SOURCE_VERSION].includes(plan?.source?.version);
+export const BMW_MODEL_AXIS_BATCH_SOURCE_VERSION = 'f59-model-axis-batch-20261107.v1';
+export const isBmwModelBatchPlan = plan => [BMW_MODEL_BATCH_SOURCE_VERSION, BMW_MODEL_AXIS_BATCH_SOURCE_VERSION].includes(plan?.source?.version);
+export const isBmwBatchPlan = plan => plan?.source?.version === BMW_BATCH_SOURCE_VERSION || isBmwModelBatchPlan(plan);
 export const BMW_BATCH_SOURCE_VERSION = 'f59-batch-20261107.v1';
 export const BMW_CONTEXT_SOURCE_VERSION = 'f59-context-qualification-20261107.v1';
 export const BMW_MODEL_OPTIONS_SOURCE_VERSION = 'f59-model-options-qualification-20261107.v1';
@@ -115,11 +117,40 @@ export function validateBmwModelBatchCandidateRequest(value, line) {
   return request;
 }
 
-export function bmwModelBatchRequestUrls(input, candidate) {
+export function validateBmwModelAxisBatchCandidateRequest(value, line) {
+  validateBmwModelOptionsRequestRegistration({ model: line.model, line: line.line });
+  const request = candidateRequest(value, 0); const query = line.line.optionsQuery;
+  const baseSize = query.kind === 'trim' ? 4 : 3;
+  requireValue(same(request.mandatoryElements, query.kind === 'trim' ? [query.code] : [])
+    && bounded(request.includedElements.length, baseSize + 1, baseSize + 2),
+  'source-candidate-registration', 'Pin the exact observed line inputs plus one or two optional typed axis inputs.');
+  return request;
+}
+
+/** Classify requested inputs only; source-added selections cannot establish an input axis. */
+export function validateBmwModelAxisBatchCandidateDefinitions(value, binding, definitions) {
+  const request = validateBmwModelAxisBatchCandidateRequest(value, binding);
+  const inputs = request.includedElements.filter(entry => !request.mandatoryElements.includes(entry));
+  const rows = Array.isArray(definitions) ? definitions : [];
+  const typed = inputs.map(entry => rows.find(row => row.code === entry && row.option === entry
+    && Array.isArray(row.issues) && row.issues.length === 0));
+  requireValue(Array.isArray(definitions) && request.includedElements.every(entry => rows.some(row => row.code === entry && row.option === entry
+    && Array.isArray(row.issues) && row.issues.length === 0))
+    && typed.every(row => row && ['paint', 'fabric', 'rim', 'trim', 'package'].includes(row.optionType))
+    && ['paint', 'fabric', 'rim'].every(type => typed.filter(row => row.optionType === type).length === 1)
+    && ['trim', 'package'].every(type => typed.filter(row => row.optionType === type).length <= 1)
+    && typed.some(row => ['trim', 'package'].includes(row.optionType)),
+  'source-candidate-definition', 'Use one direct paint/fabric/rim and at most one direct optional trim and package, with at least one extra.');
+  return typed.filter(row => ['trim', 'package'].includes(row.optionType)).map(row => row.code);
+}
+
+export function bmwModelBatchRequestUrls(input, candidate, sourceVersion = BMW_MODEL_BATCH_SOURCE_VERSION) {
   const binding = validateBmwModelOptionsRequestRegistration({ model: input.model, line: input.line });
   const urls = bmwModelOptionsRequestUrls(binding);
   if (candidate) {
-    const request = validateBmwModelBatchCandidateRequest(candidate, binding); const r = binding.model;
+    const request = sourceVersion === BMW_MODEL_AXIS_BATCH_SOURCE_VERSION
+      ? validateBmwModelAxisBatchCandidateRequest(candidate, binding) : validateBmwModelBatchCandidateRequest(candidate, binding);
+    const r = binding.model;
     urls.solve = `https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/${r.effectDate}/order-dates/${r.orderDate}/models/${r.modelCode}?${new URLSearchParams({
       'add-rules-for-mandatory-element-classes': 'fabric,paint,rim', application: 'connext',
       'included-elements': request.includedElements.join(','), 'mandatory-elements': request.mandatoryElements.join(',') })}`;
@@ -128,8 +159,8 @@ export function bmwModelBatchRequestUrls(input, candidate) {
 }
 
 export function bmwBatchPlanRequestUrls(plan, candidate) {
-  return plan.source.version === BMW_MODEL_BATCH_SOURCE_VERSION
-    ? bmwModelBatchRequestUrls({ model: plan.modelRegistration, line: plan.lineRegistration }, candidate)
+  return isBmwModelBatchPlan(plan)
+    ? bmwModelBatchRequestUrls({ model: plan.modelRegistration, line: plan.lineRegistration }, candidate, plan.source.version)
     : bmwPublicRequestUrls(plan.modelRegistration, candidate);
 }
 
@@ -156,7 +187,7 @@ export function bmwBatchRequestRegistration(plan) {
   validateBmwBatchPlan(plan);
   requireValue(Array.isArray(plan.candidates) && plan.candidates.length === plan.candidateCount,
     'source-candidate-registration', 'Persist the finite candidate list in the exact allocated plan before traffic.');
-  return { model: structuredClone(plan.modelRegistration), ...(plan.source.version === BMW_MODEL_BATCH_SOURCE_VERSION ? { line: structuredClone(plan.lineRegistration) } : {}), candidates: plan.candidates.map((row) => structuredClone(row.request)) };
+  return { model: structuredClone(plan.modelRegistration), ...(isBmwModelBatchPlan(plan) ? { line: structuredClone(plan.lineRegistration) } : {}), candidates: plan.candidates.map((row) => structuredClone(row.request)) };
 }
 
 export function validateBmwBatchRequestRegistration(value) {
@@ -169,22 +200,24 @@ export function validateBmwBatchRequestRegistration(value) {
   return structuredClone(value);
 }
 
-export function validateBmwModelBatchRequestRegistration(value) {
+export function validateBmwModelBatchRequestRegistration(value, sourceVersion = BMW_MODEL_BATCH_SOURCE_VERSION) {
   requireValue(object(value) && same(Object.keys(value).sort(), ['candidates', 'line', 'model'])
     && Array.isArray(value.candidates) && bounded(value.candidates.length, 1, 8),
     'source-candidate-registration', 'Use the exact observed model/line and bounded finite request list.');
   const binding = validateBmwModelOptionsRequestRegistration({ model: value.model, line: value.line });
-  value.candidates.forEach(row => validateBmwModelBatchCandidateRequest(row, binding));
+  value.candidates.forEach(row => sourceVersion === BMW_MODEL_AXIS_BATCH_SOURCE_VERSION
+    ? validateBmwModelAxisBatchCandidateRequest(row, binding) : validateBmwModelBatchCandidateRequest(row, binding));
   requireValue(new Set(value.candidates.map(inputDigest)).size === value.candidates.length,
     'source-candidate-registration', 'Registered requests must be distinct.');
   return structuredClone(value);
 }
 
 export function validateBmwBatchPlan(plan) {
-  const modelBatch = plan?.source?.version === BMW_MODEL_BATCH_SOURCE_VERSION;
+  const modelBatch = isBmwModelBatchPlan(plan); const axisBatch = plan?.source?.version === BMW_MODEL_AXIS_BATCH_SOURCE_VERSION;
   if (modelBatch) {
     validateBmwModelOptionsRequestRegistration({ model: plan.modelRegistration, line: plan.lineRegistration });
     requireValue(plan.candidateCount <= 8 && plan.candidateBaseElements === undefined, 'public-source-plan-refused', 'Keep the observed-line pilot bounded to typed paint/fabric/rim and the explicit line option.');
+    requireValue(!axisBatch || Array.isArray(plan.candidates), 'source-candidate-registration', 'Allocate every optional-axis request explicitly before execution.');
   }
   const r = validateBmwModelRegistration(plan?.modelRegistration); const l = plan?.limits;
   requireValue(plan.source?.id === 'bmw-uk-public' && isBmwBatchPlan(plan)
@@ -208,7 +241,8 @@ export function validateBmwBatchPlan(plan) {
         && typeof row.candidateId === 'string' && /^[A-Za-z0-9][A-Za-z0-9.-]{0,95}$/.test(row.candidateId))
       && new Set(plan.candidates.map((row) => row.candidateId)).size === plan.candidates.length,
     'source-candidate-registration', 'Every planned candidate needs its exact unique identity and request.');
-    plan.candidates.forEach((row) => modelBatch ? validateBmwModelBatchCandidateRequest(row.request, { model: r, line: plan.lineRegistration }) : validateBmwCandidateRequest(row.request));
+    plan.candidates.forEach((row) => axisBatch ? validateBmwModelAxisBatchCandidateRequest(row.request, { model: r, line: plan.lineRegistration })
+      : modelBatch ? validateBmwModelBatchCandidateRequest(row.request, { model: r, line: plan.lineRegistration }) : validateBmwCandidateRequest(row.request));
     requireValue(new Set(plan.candidates.map((row) => inputDigest(row.request))).size === plan.candidates.length,
       'source-candidate-registration', 'Allocate distinct candidate requests.');
   }
