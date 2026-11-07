@@ -1,6 +1,6 @@
 // Shared GCSP host: runtime options, the same-origin page front and the hosted (Render) entry.
 // The launcher and server/index.js both compose through here, so there is one copy.
-import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
+import { createHash, createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
 import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
 import { extname, relative, resolve, sep } from 'node:path';
@@ -85,6 +85,8 @@ export function createGcspFront({ root, services, api, origin, accessKey, access
   };
   const html = (res, status, body, headers = {}) => res.writeHead(status, { 'Content-Type': TYPES['.html'],
     'Cache-Control': 'no-store', 'Referrer-Policy': 'no-referrer', ...headers }).end(body);
+  // The marker names this process, so a restart (Render sleep, deploy) bootstraps a fresh session.
+  const boot = randomBytes(12).toString('hex');
   const nextPath = (value) => (sessionPage(value) ? value : '/gcsp-presenter.html');
 
   async function accessRoute(req, res, url) {
@@ -123,7 +125,7 @@ export function createGcspFront({ root, services, api, origin, accessKey, access
       // API cookies deliberately stay on /api/gcsp, so browsers do not send them
       // on HTML navigation. This non-authority marker only prevents rebootstrap;
       // every API request still authenticates the unchanged identity cookies.
-      const bootstrapped = req.headers.cookie?.split(';').some((value) => value.trim() === `${navigationCookie}=1`);
+      const bootstrapped = req.headers.cookie?.split(';').some((value) => value.trim() === `${navigationCookie}=${boot}`);
       if (sessionPage(path) && !bootstrapped) {
         const session = await services.identity.resolveSession({ authorized: true, cookie: req.headers.cookie });
         if (session.status !== 'ok') {
@@ -132,7 +134,7 @@ export function createGcspFront({ root, services, api, origin, accessKey, access
           const expires = issued.value.setCookie.at(-1).match(/; Expires=([^;]+)/)?.[1];
           if (!expires) { res.writeHead(503).end('The local demo could not start.'); return; }
           res.setHeader('Set-Cookie', [...issued.value.setCookie,
-            `${navigationCookie}=1; Path=/; HttpOnly; Secure; SameSite=Strict; Expires=${expires}`]);
+            `${navigationCookie}=${boot}; Path=/; HttpOnly; Secure; SameSite=Strict; Expires=${expires}`]);
         }
       }
       res.writeHead(200, { 'Content-Type': TYPES[extname(file)] || 'application/octet-stream', 'Cache-Control': 'no-store',
