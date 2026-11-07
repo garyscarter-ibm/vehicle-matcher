@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { inputDigest } from '../../server/gcsp/repository/core.js';
-import { normaliseCodes, requireValue } from './configuration-key.mjs';
+import { CollectionError, normaliseCodes, requireValue } from './configuration-key.mjs';
 import { assertCollectionHttpObservation } from './collection-session.mjs';
 import { createSettingsShapeRefusal } from './settings-shape-report.mjs';
 import { qualifyBmwSourceFields } from './bmw-source-qualification.mjs';
@@ -149,6 +149,13 @@ function inventoryAliases(nodes) {
   });
 }
 
+function inventoryLimit(condition, code, path, kind, count, limit, type) {
+  if (condition) return;
+  const error = new CollectionError(code, 'The finite inventory projection limit was exceeded.');
+  error.inventoryDiagnostic = { schemaVersion: 'bmw-inventory-limit.v1', path, kind, count, limit, type };
+  throw error;
+}
+
 /** Direct bounded full records and line pointers only; unknown response fields are never copied. */
 export function projectBmwRangeInventory(value, input) {
   const r = validateBmwInventoryRequestRegistration(input);
@@ -158,21 +165,46 @@ export function projectBmwRangeInventory(value, input) {
   requireValue(bounded(observedAliases.length, 1, 8) && observedAliases.every(inventoryToken),
     'source-inventory-alias-limit', 'Inspect every direct range alias within the finite inventory limit.');
   const modelNodes = []; const lineRows = [];
-  const containers = new Set(['lines', 'defaultModel', 'includedTransmissionVariants', 'configuration', 'elements', 'model', 'models', 'transmissionVariants', 'variants']);
-  const values = new Set(['modelCode', 'agModelCode', 'option', 'optionCode', 'code', 'trim', 'line', 'lineCode']);
-  const visit = (container, path, depth, dynamic = false) => {
-    requireValue(depth <= 10 && (object(container) || Array.isArray(container)) && Object.keys(container).length <= 128,
-      'source-inventory-line-limit', 'Stop rather than widening line traversal.');
-    for (const [key, entry] of Object.entries(container)) {
-      requireValue(/^[A-Za-z0-9_.+-]{1,64}$/.test(key) && !/[A-HJ-NPR-Z0-9]{17}/.test(key),
-        'source-inventory-line-key', 'Unsafe dynamic line keys cannot be retained.');
-      requireValue(lineRows.length < 768, 'source-inventory-line-limit', 'Stop rather than truncating line pointers.');
-      const row = { pointer: `${path}/${key}`, type: inventoryType(entry) };
-      if (object(entry) || Array.isArray(entry)) row.entries = Object.keys(entry).length;
-      if (values.has(key) && inventoryToken(entry)) row.value = entry;
-      lineRows.push(row);
-      if ((dynamic || Array.isArray(container) || containers.has(key)) && (object(entry) || Array.isArray(entry)))
-        visit(entry, row.pointer, depth + 1, key === 'lines' || key === 'elements' || Array.isArray(entry));
+  // Traverse only the relationship contract. Unrelated properties and element payloads stay in memory.
+  const add = (entry, pointer, retainValue = false) => {
+    inventoryLimit(lineRows.length < 768, 'source-inventory-line-limit', pointer, 'rows', lineRows.length + 1, 768, inventoryType(entry));
+    const row = { pointer, type: inventoryType(entry) };
+    if (retainValue && inventoryToken(entry)) row.value = entry;
+    lineRows.push(row);
+  };
+  const fields = (record, path, names) => {
+    if (!object(record)) return;
+    for (const key of names) if (Object.hasOwn(record, key)) add(record[key], `${path}/${key}`, true);
+  };
+  const lines = (container, path) => {
+    requireValue(object(container), 'source-inventory-line-shape', 'A present lines field must be a bounded object.');
+    inventoryLimit(Object.keys(container).length <= 128, 'source-inventory-line-limit', path, 'entries', Object.keys(container).length, 128, 'object');
+    for (const key of Object.keys(container).sort()) {
+      requireValue(inventoryToken(key), 'source-inventory-line-key', 'Only a literal bounded trim key can form a retained pointer.');
+      const line = container[key]; const pointer = `${path}/${key}`;
+      add(line, pointer); fields(line, pointer, ['option', 'modelCode', 'agModelCode']);
+      if (!object(line)) continue;
+      if (Object.hasOwn(line, 'defaultModel')) {
+        add(line.defaultModel, `${pointer}/defaultModel`);
+        fields(line.defaultModel, `${pointer}/defaultModel`, ['modelCode', 'agModelCode']);
+      }
+      if (!Object.hasOwn(line, 'includedTransmissionVariants')) continue;
+      const variants = line.includedTransmissionVariants; const variantsPath = `${pointer}/includedTransmissionVariants`;
+      add(variants, variantsPath);
+      if (!object(variants) && !Array.isArray(variants)) continue;
+      inventoryLimit(Object.keys(variants).length <= 128, 'source-inventory-line-limit', variantsPath, 'entries', Object.keys(variants).length, 128, inventoryType(variants));
+      for (const index of Object.keys(variants).sort()) {
+        requireValue(/^[A-Za-z0-9_.+-]{1,16}$/.test(index), 'source-inventory-line-key', 'Only a bounded variant key can form a retained pointer.');
+        const variant = variants[index]; const variantPath = `${variantsPath}/${index}`;
+        add(variant, variantPath); fields(variant, variantPath, ['modelCode', 'agModelCode']);
+        if (!object(variant) || !Object.hasOwn(variant, 'configuration')) continue;
+        const configuration = variant.configuration; const configurationPath = `${variantPath}/configuration`;
+        add(configuration, configurationPath); fields(configuration, configurationPath, ['modelCode', 'agModelCode']);
+        if (!object(configuration) || !Object.hasOwn(configuration, 'elements')) continue;
+        const elements = configuration.elements; const elementsPath = `${configurationPath}/elements`;
+        add(elements, elementsPath);
+        if (object(elements) && Object.hasOwn(elements, key)) add(elements[key], `${elementsPath}/${key}`);
+      }
     }
   };
   for (const alias of observedAliases) {
@@ -186,12 +218,13 @@ export function projectBmwRangeInventory(value, input) {
       modelNodes.push(inventoryModelNode(modelKey, models[modelKey], `${prefix}/models/${modelKey}`));
     }
     if (!Object.hasOwn(range, 'lines')) lineRows.push({ pointer: `${prefix}/lines`, type: 'missing' });
-    else { requireValue(object(range.lines), 'source-inventory-line-shape', 'A present lines field must be a bounded object.'); visit(range.lines, `${prefix}/lines`, 0, true); }
+    else lines(range.lines, `${prefix}/lines`);
   }
   const report = { schemaVersion: 'bmw-source-range-inventory-report.v1', requestScope: { role: 'request-input-only', ...r },
     observedAliases, modelNodes, modelAliases: inventoryAliases(modelNodes), seedPresent: modelNodes.some(node => node.modelKey === r.pageModelCode),
     lineRows, additionalConfigurations: 0 };
-  requireValue(Buffer.byteLength(JSON.stringify(report)) <= 112 * 1024, 'source-inventory-output-limit', 'Stop rather than truncating a complete range inventory.');
+  const outputBytes = Buffer.byteLength(JSON.stringify(report));
+  inventoryLimit(outputBytes <= 112 * 1024, 'source-inventory-output-limit', '/', 'bytes', outputBytes, 112 * 1024, 'object');
   return report;
 }
 
@@ -231,10 +264,19 @@ export function validatePublicBmwInventoryObservation(input, retained, mode) {
     && same(report.modelAliases, inventoryAliases(report.modelNodes))
     && report.seedPresent === report.modelNodes.some(node => node.modelKey === r.pageModelCode)
     && new Set(report.lineRows.map(row => row.pointer)).size === report.lineRows.length
-    && report.lineRows.every(row => object(row) && Object.keys(row).every(key => ['pointer', 'type', 'entries', 'value'].includes(key))
+    && report.lineRows.every(row => object(row) && Object.keys(row).every(key => ['pointer', 'type', 'value'].includes(key))
       && typeof row.pointer === 'string' && row.pointer.length <= 1024 && report.observedAliases.some(alias => row.pointer.startsWith(`${inventoryPointer(alias, r.catalogueRangeKey)}/lines`))
       && ['object', 'array', 'string', 'number', 'boolean', 'null', 'missing'].includes(row.type)
-      && (row.entries === undefined || bounded(row.entries, 0, 30000)) && (row.value === undefined || inventoryToken(row.value))),
+      && report.observedAliases.some(alias => {
+        const prefix = `${inventoryPointer(alias, r.catalogueRangeKey)}/lines`;
+        if (row.pointer === prefix) return row.type === 'missing';
+        if (!row.pointer.startsWith(prefix + '/')) return false;
+        const parts = row.pointer.slice(prefix.length + 1).split('/'); const trim = parts.shift();
+        if (!inventoryToken(trim)) return false;
+        const tail = parts.join('/');
+        const field = '(?:modelCode|agModelCode)'; const variant = '[A-Za-z0-9_.+\\-]{1,16}';
+        return tail === '' || tail === 'option' || new RegExp(`^${field}$|^defaultModel(?:/${field})?$|^includedTransmissionVariants(?:/${variant}(?:/${field}|/configuration(?:/${field}|/elements(?:/${trim})?)?)?)?$`).test(tail);
+      }) && (row.value === undefined || (inventoryToken(row.value) && /\/(?:option|modelCode|agModelCode)$/.test(row.pointer)))),
   'source-inventory-binding', 'Preserve the complete observed aliases, conflicts and bounded direct line pointers.');
   return structuredClone(retained);
 }
@@ -249,7 +291,13 @@ export function publicBmwInventoryOperations(input) {
       assertCollectionHttpObservation(metadata);
       requireValue(metadata.sourceVersion === plan.source.version && metadata.observedAt.slice(0, 10) === plan.qualificationDate,
         'source-observation-date', 'Use the pinned actual observation day and executor-owned inventory source.');
-      const result = project(value, request, metadata);
+      let result;
+      try { result = project(value, request, metadata); }
+      catch (error) {
+        if (error.inventoryDiagnostic && treeHeader && Object.values(treeHeader).some(secret => error.inventoryDiagnostic.path.includes(secret)))
+          error.inventoryDiagnostic.path = '/';
+        throw error;
+      }
       JSON.stringify(result, (key, entry) => {
         requireValue(!treeHeader || Object.values(treeHeader).every(secret => !key.includes(secret) && (typeof entry !== 'string' || !entry.includes(secret))),
           'source-sensitive-projection', 'No bootstrap value may enter retained inventory facts.'); return entry;

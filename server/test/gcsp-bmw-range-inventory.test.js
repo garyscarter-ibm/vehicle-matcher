@@ -176,3 +176,36 @@ test('a caller cannot manufacture executor metadata for an inventory response', 
   const api = functions(); const p = plan(); const descriptor = api.publicBmwInventoryOperations(p).discover;
   assert.throws(() => descriptor.project(tree(), {}, {schemaVersion:'collection-http-observation.v1', sourceVersion:version}), {code:'source-observation-metadata'});
 });
+
+
+test('large unrelated line properties and element payloads do not consume relationship rows', () => {
+  const raw = tree();
+  for (const alias of ['2', 'I']) {
+    const line = raw[alias].modelRanges.G42.lines.S0337;
+    for (let i = 0; i < 1600; i++) line['unrelated' + i] = { description: 'PRIVATE_LARGE_LINE', price: i, nested: { text: 'PRIVATE_NESTED' } };
+    for (const variant of line.includedTransmissionVariants) {
+      for (let i = 0; i < 1600; i++) variant.configuration.elements['OTHER' + i] = { code: 'PRIVATE_ELEMENT', type: 'option' };
+      variant.configuration.elements.S0337 = { type: 'option', payload: Object.fromEntries(Array.from({length:1600}, (_,i) => ['p' + i, 'PRIVATE_TRIM_PAYLOAD'])) };
+    }
+  }
+  const report = functions().projectBmwRangeInventory(raw, plan().inventoryRegistration);
+  assert.equal(report.modelNodes.length, 4); assert.deepEqual(report.observedAliases, ['2', 'I']);
+  assert.ok(report.lineRows.length < 48);
+  assert.equal(report.lineRows.find(row => row.pointer.endsWith('/0/configuration/elements/S0337')).type, 'object');
+  assert.doesNotMatch(JSON.stringify(report), /PRIVATE_|unrelated|OTHER|payload|price|description|\/type/);
+});
+
+test('finite relationship collection and row ceilings expose only safe path count and type diagnostics', () => {
+  const raw = tree(); raw[2].modelRanges.G42.lines.S0337.includedTransmissionVariants = Array.from({length:129}, () => ({}));
+  assert.throws(() => functions().projectBmwRangeInventory(raw, plan().inventoryRegistration), error => {
+    assert.equal(error.code, 'source-inventory-line-limit');
+    assert.deepEqual(error.inventoryDiagnostic, {schemaVersion:'bmw-inventory-limit.v1', path:'/2/modelRanges/G42/lines/S0337/includedTransmissionVariants', kind:'entries', count:129, limit:128, type:'array'});
+    return true;
+  });
+  const many = tree(); delete many.I;
+  many[2].modelRanges.G42.lines = Object.fromEntries(Array.from({length:128}, (_,i) => ['S' + i, {option:'S' + i, defaultModel:{modelCode:'2PMC',agModelCode:'12CM'}, includedTransmissionVariants:[{configuration:{modelCode:'2PMC', elements:{['S'+i]:{}}}}]}]));
+  assert.throws(() => functions().projectBmwRangeInventory(many, plan().inventoryRegistration), error => {
+    assert.equal(error.code,'source-inventory-line-limit'); assert.equal(error.inventoryDiagnostic.kind,'rows');
+    assert.equal(error.inventoryDiagnostic.count,769); assert.equal(error.inventoryDiagnostic.limit,768); return true;
+  });
+});
