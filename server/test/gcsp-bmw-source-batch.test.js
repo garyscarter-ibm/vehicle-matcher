@@ -1,7 +1,7 @@
 /** Scripted protocol fixtures only: no public source requests or capacity claims. */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile, writeFile, mkdtemp, rm } from 'node:fs/promises';
+import { readFile, writeFile, mkdtemp, rm, readdir } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -148,4 +148,182 @@ test('escaped bootstrap header text in another profile response is refused befor
   const result = await (await createFleetCollector(input)).run();
   assert.equal(result.reason, 'source-sensitive-projection'); assert.equal(calls.length, 4);
   assert.equal((await readFile(input.statePath, 'utf8')).includes('tree-fixture'), false);
+});
+
+async function interrupted(context, phase = 'outcome') {
+  const fixture = await setup(context);
+  let fired = false;
+  fixture.input.onPhase = async (name, detail) => {
+    if (!fired && (phase === 'outcome' && name === 'outcome-committed'
+      || phase === 'cached' && name === 'before-rename' && detail.kind === 'candidate-outcome')) {
+      fired = true; throw new Error('scripted process interruption');
+    }
+  };
+  await assert.rejects((await createFleetCollector(fixture.input)).run(), /scripted process interruption/);
+  delete fixture.input.onPhase;
+  fixture.originalBytes = await readFile(fixture.input.statePath);
+  fixture.originalState = JSON.parse(fixture.originalBytes).content;
+  return fixture;
+}
+function continuationInput(fixture, id = 'fixture-continuation') {
+  const { input } = fixture;
+  return { ...input, statePath: join(input.statePath, '..', `${id}.json`),
+    continuation: { checkpointPath: input.statePath, checkpointSha256: sha(fixture.originalBytes),
+      limits: { ...input.plan.limits, requestBudgets: { ...input.plan.limits.requestBudgets, solve: 1 }, sourceAttempts: 5 } },
+    http: { ...input.http, allocation: { ...input.http.allocation, id, attempts: 5 } } };
+}
+
+test('continuation preserves predecessor and admissions while fresh explicit bootstrap completes only pending work', async (context) => {
+  const f = await interrupted(context); const originalCalls = [...f.calls]; const next = continuationInput(f);
+  const result = await (await createFleetCollector(next)).run();
+  assert.equal(result.status, 'complete'); assert.equal(result.accepted.length, 2);
+  assert.deepEqual(result.accepted[0], f.originalState.accepted[0]);
+  assert.equal(result.counts.httpAttempts, 10); assert.equal(result.allocationCounts.prior.httpAttempts, 5);
+  assert.equal(result.allocationCounts.fresh.httpAttempts, 5);
+  assert.equal(f.calls.length, 10); assert.equal(f.calls.filter((url) => url === originalCalls.at(-1)).length, 1);
+  assert.deepEqual(await readFile(f.input.statePath), f.originalBytes);
+  assert.equal((await (await createFleetCollector(next)).run()).accepted.length, 2); assert.equal(f.calls.length, 10);
+});
+
+test('continuation recovers retained solver cache without repeating its spent request', async (context) => {
+  const f = await interrupted(context, 'cached'); const spent = f.calls.at(-1); const next = continuationInput(f);
+  const result = await (await createFleetCollector(next)).run();
+  assert.equal(result.accepted.length, 2); assert.equal(result.counts.httpAttempts, 10);
+  assert.equal(f.calls.filter((url) => url === spent).length, 1);
+  assert.equal(result.continuation.recoveredSolverResponses, 1);
+  assert.deepEqual(await readFile(f.input.statePath), f.originalBytes);
+});
+
+test('continuation refuses changed predecessor, allocation reuse and destination rebinding before traffic', async (context) => {
+  const f = await interrupted(context); const calls = f.calls.length;
+  for (const modify of [
+    (next) => { next.continuation.checkpointSha256 = sha('wrong bytes'); },
+    (next) => { next.statePath = f.input.statePath; },
+    (next) => { next.http.allocation.id = f.input.http.allocation.id; },
+    (next) => { next.continuation.limits.requestBudgets.settings = 0; },
+    (next) => { next.batchBinding = { ...next.batchBinding, snapshotVersion: 'other.v2' }; },
+  ]) {
+    const next = continuationInput(f); modify(next);
+    await assert.rejects(async () => (await createFleetCollector(next)).run()); assert.equal(f.calls.length, calls);
+  }
+  const next = continuationInput(f); await (await createFleetCollector(next)).run();
+  const rebound = { ...next, statePath: join(next.statePath, '..', 'rebound.json') };
+  await assert.rejects(async () => (await createFleetCollector(rebound)).run(), { code: 'continuation-allocation-used' });
+  assert.equal(f.calls.length, calls + 5);
+});
+
+test('continuation validates retained solver cache through the strict binder before any fresh traffic', async (context) => {
+  const f = await interrupted(context); const envelope = JSON.parse(f.originalBytes);
+  const cached = envelope.content.cache.find((row) => row.operation === 'solve');
+  cached.payload.document.report.configuration.modelCode = 'OTHER';
+  cached.payload.sha256 = sha(JSON.stringify(cached.payload.document) + '\n');
+  cached.payloadDigest = inputDigest(cached.payload); envelope.contentDigest = inputDigest(envelope.content);
+  f.originalBytes = Buffer.from(JSON.stringify(envelope)); await writeFile(f.input.statePath, f.originalBytes);
+  const calls = f.calls.length;
+  await assert.rejects(async () => (await createFleetCollector(continuationInput(f))).run()); assert.equal(f.calls.length, calls);
+});
+
+test('continuation refuses a valid solver observation rebound to another candidate cache key', async (context) => {
+  const f = await interrupted(context); const envelope = JSON.parse(f.originalBytes); const state = envelope.content;
+  const cached = state.cache.find((row) => row.operation === 'solve'); const oldKey = cached.cacheKey;
+  cached.cacheKey = inputDigest({ operation: 'solve', ...state.identity.sources.solve, request: f.input.plan.candidates[1].request });
+  state.attempts[cached.cacheKey] = state.attempts[oldKey]; delete state.attempts[oldKey];
+  envelope.contentDigest = inputDigest(state); f.originalBytes = Buffer.from(JSON.stringify(envelope));
+  await writeFile(f.input.statePath, f.originalBytes); const calls = f.calls.length;
+  await assert.rejects(async () => (await createFleetCollector(continuationInput(f))).run());
+  assert.equal(f.calls.length, calls);
+});
+
+test('continuation cannot replay its allowance after destination checkpoint loss', async (context) => {
+  const f = await interrupted(context); const next = continuationInput(f);
+  await (await createFleetCollector(next)).run(); const calls = f.calls.length;
+  await rm(next.statePath);
+  await assert.rejects(async () => (await createFleetCollector(next)).run(), { code: 'continuation-allocation-used' });
+  assert.equal(f.calls.length, calls);
+});
+
+test('continuation records a spent solver without retained response as rejected and never reissues it', async (context) => {
+  const f = await setup(context); const fetch = f.input.http.fetch; let spent; let instant = f.input.now();
+  f.input.now = () => instant;
+  f.input.http.fetch = async (url, options) => {
+    const response = await fetch(url, options);
+    if (!spent && url.includes('/rulesolver/')) { spent = url; instant += f.input.plan.limits.deadlineMs + 1; }
+    return response;
+  };
+  const first = await (await createFleetCollector(f.input)).run(); assert.equal(first.reason, 'deadline');
+  f.originalBytes = await readFile(f.input.statePath); f.input.http.fetch = fetch;
+  const result = await (await createFleetCollector(continuationInput(f))).run();
+  assert.equal(result.accepted.length, 1); assert.equal(result.coverage.processedCandidates, 2);
+  assert.deepEqual(result.rejected, [{ candidateId: 'candidate-0', code: 'source-request-spent' }]);
+  assert.equal(f.calls.filter((url) => url === spent).length, 1); assert.equal(result.counts.httpAttempts, 10);
+});
+
+test('continuation refuses durable access rate source refusal substitution and shape stops before marker or traffic', async (context) => {
+  const f = await interrupted(context); const calls = f.calls.length;
+  for (const halted of ['source-http-401', 'source-http-403', 'source-http-429', 'source-redirect-refused',
+    'source-endpoint-refused', 'source-model-substitution', 'source-solver-shape', 'source-json-shape',
+    'source-sensitive-projection', 'source-failure', 'unknown-source-stop']) {
+    const envelope = JSON.parse(f.originalBytes); envelope.content.halted = halted;
+    envelope.contentDigest = inputDigest(envelope.content);
+    const bytes = Buffer.from(JSON.stringify(envelope) + '\n'); await writeFile(f.input.statePath, bytes);
+    const next = continuationInput({ ...f, originalBytes: bytes });
+    const directory = join(f.input.statePath, '..'); const before = (await readdir(directory)).sort();
+    await assert.rejects(async () => (await createFleetCollector(next)).run(), { code: 'continuation-stop-refused' });
+    assert.deepEqual(await readFile(f.input.statePath), bytes); assert.equal(f.calls.length, calls);
+    assert.deepEqual((await readdir(directory)).sort(), before);
+  }
+});
+
+test('continuation source change fails closed before pending solver and finite attempt budget remains effective', async (context) => {
+  for (const variant of ['changed', 'budget']) {
+    const f = await interrupted(context); const next = continuationInput(f); const before = f.calls.length;
+    if (variant === 'changed') {
+      const fetch = next.http.fetch;
+      next.http.fetch = async (url, options) => {
+        const response = await fetch(url, options);
+        if (!url.includes('/options/')) return response;
+        const value = await response.json(); value.P0300.phrases = { longDescription: 'changed source text' };
+        return new Response(JSON.stringify(value), { headers: { 'content-type': 'application/json' } });
+      };
+    } else next.continuation.limits.sourceAttempts = 4;
+    const result = await (await createFleetCollector(next)).run();
+    assert.equal(result.reason, variant === 'changed' ? 'continuation-source-changed' : 'source-attempt-budget');
+    assert.equal(result.accepted.length, 1); assert.equal(f.calls.length, before + 4);
+    assert.deepEqual(await readFile(f.input.statePath), f.originalBytes);
+  }
+});
+
+test('a second interrupted continuation needs another fresh allocation and retains exact cumulative spending', async (context) => {
+  const f = await interrupted(context); const next = continuationInput(f);
+  next.onPhase = async (name, detail) => {
+    if (name === 'before-rename' && detail.kind === 'candidate-outcome') throw new Error('second interruption');
+  };
+  await assert.rejects((await createFleetCollector(next)).run(), /second interruption/);
+  const secondBytes = await readFile(next.statePath); const calls = f.calls.length; const secondSolver = f.calls.at(-1);
+  delete next.onPhase;
+  const finalInput = continuationInput({ input: next, originalBytes: secondBytes }, 'fixture-continuation-third');
+  const result = await (await createFleetCollector(finalInput)).run();
+  assert.equal(result.accepted.length, 2); assert.equal(result.counts.httpAttempts, 14);
+  assert.equal(result.allocationCounts.prior.httpAttempts, 10); assert.equal(result.allocationCounts.fresh.httpAttempts, 4);
+  assert.equal(f.calls.length, calls + 4); assert.equal(f.calls.filter((url) => url === secondSolver).length, 1);
+  assert.deepEqual(await readFile(next.statePath), secondBytes); assert.deepEqual(await readFile(f.input.statePath), f.originalBytes);
+});
+
+test('continuation refuses partial retained bootstrap and honours a fresh lifetime deadline', async (context) => {
+  const partial = await setup(context);
+  partial.input.onPhase = async (name, detail) => {
+    if (name === 'before-rename' && detail.kind === 'batch-source-evidence') throw new Error('partial bootstrap');
+  };
+  await assert.rejects((await createFleetCollector(partial.input)).run(), /partial bootstrap/);
+  delete partial.input.onPhase; partial.originalBytes = await readFile(partial.input.statePath);
+  const calls = partial.calls.length;
+  await assert.rejects(async () => (await createFleetCollector(continuationInput(partial))).run(), { code: 'continuation-bootstrap-required' });
+  assert.equal(partial.calls.length, calls);
+
+  const f = await interrupted(context); const next = continuationInput(f); let instant = next.now(); const fetch = next.http.fetch;
+  next.continuation.limits.deadlineMs = 10000; next.now = () => instant;
+  next.http.fetch = async (url, options) => { const response = await fetch(url, options); instant += 10001; return response; };
+  const result = await (await createFleetCollector(next)).run();
+  assert.equal(result.reason, 'deadline'); assert.equal(result.accepted.length, 1);
+  assert.equal(result.allocationCounts.fresh.httpAttempts, 1); assert.equal(f.calls.length, 6);
 });
