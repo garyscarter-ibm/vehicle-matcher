@@ -9,10 +9,11 @@
     "docs/gcsp/evidence/fucq62/scale-precheck-repair-2026-11-07.json": "4c0aa3af905ded04d7f3f4d3da4d85d3a434a658866a1d3e68393536face15c3",
     "docs/gcsp/evidence/fucq62/scale-proof-failed-2026-11-07.json": "f2c8c9de30124f4ed7f4eff7e9236e3fe6bed5e4f02911e395da0886685fdb62",
     "docs/gcsp/evidence/fucq62/scale-proof-fixture.v1.json": "0d5619e6436034e353726c3af736c829e949cf71e8e61c6f2450d23a9e7f2670",
-    "docs/gcsp/evidence/fucq62/scale-proof-plan-2026-11-07.json": "947ecd2b792643170c2750168bf8e1122d58984d22e96c28e57c126361dd5497",
+    "docs/gcsp/evidence/fucq62/scale-proof-plan-2026-11-07.json": "c644ebaa78f7347c40eae1357c168089b0103db820468f34ee4a41ba60a1244a",
     "docs/gcsp/evidence/fucq62/scale-proof-renewed-failed-2026-11-07.json": "375c5fc3c7a5d8990e51b3b5374ce445bca41dc84f15e49407e0521201da4dab",
     "docs/gcsp/evidence/fucq62/scale-resource-proof.mjs": "e8ee69b5261e880aba2cdc42c3f84692460bde4fa0b559a217611bf48ffd2ecd",
     "docs/gcsp/evidence/fucq62/scale-resource-supervisor.py": "c13848e11754fd960fca8b6d46dbacdf215f5112db62212950f1084f1925ca8d",
+    "docs/gcsp/evidence/fucq62/scale-tracer-smoke-2026-11-07.json": "c95ad45e97b2474159ed447d13127acad7a8e9901dadd7a2661619e1e894c322",
     "scripts/gcsp/fleet-offline-guard.mjs": "881926639dfab681a917212696e50c6420a0a2b0dcd66dd1a126950283239e59",
     "server/data/gcsp/vehicle-evidence/fleet-source.v1/active.json": "3be994005d0555c1598c67fc5f44cdd797c274cec983fac5d1b2d7bb7f9a0f21",
     "server/data/gcsp/vehicle-evidence/fleet-source.v1/identity-inventory.json": "f9fa77cf539d8d7c2368fa701957759642a74d4caacd1fdae11b5c302fcaf58a",
@@ -117,7 +118,7 @@
     "generatedSha256": "8f487b0acda835449dd8ca7d3b50054ac02376b8bb93352c9334904e1b298703"
   },
   "coverageContext": "One required synthetic resource proof, at most three process coverage files, each8MiB and total16MiB; raw files removed with scratch",
-  "renewal": "Scoped latest-stat precheck-race correction +28repository tests and42B red/green, bounded main-process tracing prepared; actual large failure cause remains unproven and third large run held.",
+  "renewal": "Scoped latest-stat correction+28repository tests and42B red/green; actual --import tracer smoke passed on42bytes. Actual large failure cause remains unproven and parent owns any third large-run release.",
   "previousAttempts": [
     {
       "codeCommit": "cc3a9127f480cb6cb20d77e3aa64a123f9c3e635",
@@ -135,5 +136,6 @@
       "diagnostic": "docs/gcsp/evidence/fucq62/scale-identity-sequence-diagnostic-2026-11-07.json",
       "scopedRepairEvidence": "docs/gcsp/evidence/fucq62/scale-precheck-repair-2026-11-07.json"
     }
-  ]
+  ],
+  "traceSmokeEvidence": "docs/gcsp/evidence/fucq62/scale-tracer-smoke-2026-11-07.json"
 }

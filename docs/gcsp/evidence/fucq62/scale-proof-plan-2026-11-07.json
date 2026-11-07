@@ -87,9 +87,10 @@
   ],
   "identityTracing": {
     "path": "docs/gcsp/evidence/fucq62/scale-identity-trace.mjs",
-    "state": "prepared-only; no allocation/execution",
+    "state": "actual small42B --import smoke passed; large proof held",
     "scope": "runtime-only main-process source instrumentation,128event ring,8failures/8successfulconfirmations; path/expected/current/latest/posthash identities and before-return state, unchanged production guard",
     "coldSubprocesses": "Uninstrumented original commands",
-    "limitation": "Syntax/source-transform checks only before independent review; actual large boundary remains unrun after this correction."
+    "limitation": "Actual main-process preload verified on42bytes; both actual large attempts still failed and no third large allocation is released.",
+    "smokeEvidence": "docs/gcsp/evidence/fucq62/scale-tracer-smoke-2026-11-07.json"
   }
 }
