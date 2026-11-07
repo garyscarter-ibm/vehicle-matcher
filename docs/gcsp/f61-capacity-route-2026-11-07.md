@@ -1,0 +1,43 @@
+# Route from bounded source batches to 10,000 configurations
+
+7 November 2026. Offline assessment of retained source evidence. The finite ten-chunk pilot is still executing; its final receipt will supply the measured totals. This document authorises no additional requests and changes no Story acceptance criteria.
+
+The common collector now admits complete actual solver selections with retained source bindings and global canonical deduplication. It has proved this route for one context: `T5MJ` / `72HH` / catalogue `G61E`, raw `G61`, GB, literal `RL`, order/query context 1 November 2026 and resolved model effect date 5 January 2027. It has not proved 10,000 source configurations, broad scheme coverage or five eligible WMI classes.
+
+## What the measurements can support
+
+The first retained 32-request batch admitted 28, with four source-not-constructible outcomes. Pilot01 admitted 30/32. These are 87.5% and 93.75% observed yields in one context, not a future yield guarantee. The interrupted 200-request allocation consumed 53 solver requests but lost its source checkpoint/captures: its 52 accepted callbacks contribute **zero** retained capacity. Its marker and all spent requests remain excluded.
+
+Actual successful 32-candidate chunks complete in roughly half a minute with one worker. The 200 allocation reached 492,797,952-byte child RSS and was stopped. The independent Medium throughput finding identifies repeated requalification/checkpoint work; the approved workaround remains 32-candidate chunks, falling to 16 only after a resource ceiling. Increasing an individual chunk to thousands is not supported. Immutable primary checkpoints now live outside disposable scratch, and forced SIGTERM/SIGKILL proofs plus actual pilot cleanup receipts verify retention.
+
+A yield-and-time extrapolation is only an engineering estimate. Even an unchanged 90% yield would need approximately 11,112 solver requests to obtain 10,000 rows from scratch, before duplicates, model discovery, field qualification, F60 enrichment, images, publication and application checks. At 32 candidates per half-minute, this is several hours of serial collection rather than one short batch. Source capacity and access stability over that period remain unknown. No request budget for that extrapolation is admitted here.
+
+## Why the current candidate list cannot prove the target
+
+The retained T5MJ option definitions list 15 paints, eight fabrics and six rims: 720 core request combinations. All four first-batch requests using `S03G1` with mandatory `S0337` were refused as nonconstructible; the pilot uses the other five rims, giving 600 core combinations. These are request counts; the actual solver may reject, ignore or normalise inputs, and distinct requests may resolve to the same canonical factory selection.
+
+Pilot preparation diversified ten source-listed optional input sets with core index `(37 + 29*n) % 600` and optional-set index `n % 10`. Because 600 is divisible by ten, this paired enumeration repeats after 600 inputs. It does **not** enumerate 6,000 independent combinations. A new offline planner could explicitly cross 600 core combinations with ten optional sets to obtain at most 6,000 candidate requests before exclusion, refusal and canonical collapse. That still would not establish 10,000 accepted rows. Additional independently qualified model contexts and/or further actual optional selections are required.
+
+Canonical novelty uses the complete returned factory selection. Changing date, request order, accessory quantity, VIN or request ID does not create a new configuration. Previously spent requests include the unretained interruption and cannot be replayed merely to improve the count.
+
+## Proposed next bounded increment
+
+Prefer a small multi-context qualification increment over another single-context capacity extrapolation. The existing 5 November F70 discovery retained six full candidate model records: `1F7A` through `1F7F`; their AG codes are `82GE`, `82GE`, `22GE`, `62GE`, `82GE`, `62GE`. Sharing an AG code does not collapse distinct model codes. Their names, exact derivative/engine/body join, all aliases, current dates, options and constructibility still need qualification. F44 returned an empty object only for its exact requested context; no substitute generation or global absence follows.
+
+The next proposal is **up to six serial context chunks**, each limited to one page, one settings, one fresh tree and one dated options GET, then **at most eight distinct solver requests**. The total ceiling is **72 GETs, including 48 solver requests**, one worker, zero retries; 10 seconds per complete request, 120 seconds per context, 1 MiB per decoded response and 4 MiB decoded per context. Use the existing 512 MiB reservation/448 MiB child ceiling and 64 MiB scratch policy. Forecast retained output below 40 MiB; stop and reassess if measurements disagree. Each chunk retains a primary checkpoint from first write, exports before cleanup and carries the cumulative canonical/spent index.
+
+Before traffic, prepare exact frozen inputs and one-shot markers from actual source facts. Derive each registration from full direct source records and all aliases, preserve raw versus catalogue range and separate dates, and obtain dated option classifications. Every candidate input must appear in fresh typed definitions. Do not copy T5MJ's trim, equipment, dates or steering semantics into F70. Missing mandatory context or unsupported source facts stop that context before solving; do not fill them with model-name heuristics. The generic registration/session/binder interface supports these contexts without a per-model adapter. Any necessary route/projection change first receives narrow offline checks and source/code pins; it is not implicit traffic authority.
+
+Review the actual accepted/duplicate/refused counts and model mappings after this maximum 48-solver increment. Further collection should use reviewed cohorts of qualified contexts with small chunks and measured yields. Preserve the scheme's 31 model lines and F77's complete 74 model/engine entries; a convenient current generation cannot replace a historical target. F77's separate requirement is at least eight distinct configurations per mapped entry and 200 overall: 592 if all 74 map. Twenty actual exact deep-link checks, enrichment/imagery and runtime publication acceptance remain separate evidence.
+
+## Five-WMI boundary
+
+`vin-profiles.v1.json` contains five enabled **reference-only** profiles for WBA, WBS, WBY, 5UX and 5YM. They describe US/North American LHD MY2026 structural references, with incomplete model/AG/VG/engine/transmission/equipment joins. They are not GB qualification or new admitted source selections. The UK sample checklist retains 12 sanitised observations; supplied UK X5 and X5 M examples use WBA and WBS respectively. No compatible UK 5UX/5YM profile is established by those observations.
+
+Keep population, scheme and profile qualification as separate evidence joins. A larger UK configurator corpus does not supply WMI/model-year/plant/VIN facts absent from the source. Do not assign WMI by badge or assembly country, force M2 into WBS or iX into WBY, or relabel North American fixtures as GB. Existing research explicitly preserves additional 3MW/3MF/WB5/WBX references when a class needs them.
+
+The next WMI step is independent corroboration of the already sanitised candidates against exact manufacturer/model/market/steering/era/plant evidence, without retaining full VINs or registration plates. For 5UX/5YM, the current UK evidence offers no promised completion route. A compatible additional source or an explicit collaborator decision about the population's market scope is required; neither can be invented by the collector. The 4 November configuration-ID/no-VIN rescope removes VINs from corpus identity and stock-order workflows, but does not silently waive the original five-WMI/profile acceptance contract.
+
+## Evidence and completion limits
+
+This assessment reuses retained local evidence only: `f59-source-batch-plan-2026-11-07.md`, the first32/interrupted200/pilot receipts, `source-batch200-2026-11-07/throughput-diagnosis.md`, `source-interruption-retention-2026-11-07/`, the F70/F44 discovery README, `fleet-plan.json`, `synthetic-vin-rules.md`, `vin-sample-checklist.md` and `vin-profiles.v1.json`. No new research traffic, source request, test scratch, profile activation, Jira acceptance or Done transition was performed for this document. The older 13 November hold in historical plans is superseded by the explicit 6 November continuation recorded in `f58-63-delivery-2026-11-06.md`.
