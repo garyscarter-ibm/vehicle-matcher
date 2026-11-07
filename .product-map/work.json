@@ -2658,7 +2658,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T08:52:02Z",
+      "observed_at": "2026-11-07T08:59:33Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62",
       "claim_evidence": "Claimed owning035 at34a793e3; root checkpoint authorisation, Jira OAuth unavailable. Full acceptance remains open.",
       "slices": [
@@ -2715,8 +2715,8 @@
           "id": "integration",
           "status": "in-progress",
           "title": "Application and deployed integration acceptance",
-          "observed_at": "2026-11-07T08:52:02Z",
-          "evidence": "Actual .12 public31assets/574382841B exact,target15fde2c3,protected.10 unchanged; receiptb7b66e3a. First coldrestore failed33.013s:10HTTP302/200 calls,reasonhidden,0retainedpayload; cleanupverified. Deploymentpending. F58/VINcoverage andconsumerfailures remain separate acceptancegaps."
+          "observed_at": "2026-11-07T08:59:33Z",
+          "evidence": "Public .12 exact31assets/574382841B published; cold failed at30s. Exact fifthasset diagnostic reproduced AbortError at30002ms after190003815/190860237B. Default120s repair passed scoped17artifact/build/blueprint checks,0skip. Fresh restore/recovery/deployment pending;1VIN/10000gap unchanged."
         },
         {
           "id": "large-artifact-restore",

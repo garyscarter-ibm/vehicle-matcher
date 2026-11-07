@@ -15,7 +15,9 @@ async function checkedAsset(root, asset) {
   for (const part of asset.path.split('/')) { current = join(current, part); const st = await lstat(current); if (st.isSymbolicLink()) throw new TypeError('Artifact symlinks forbidden'); }
   const st = await lstat(p); if (!st.isFile() || st.size !== asset.bytes || await sha(p) !== asset.sha256) throw new TypeError('Artifact bytes/hash mismatch');
 }
-export async function downloadAsset(asset, destination, { fetchImpl = fetch, timeoutMs = 30000 } = {}) {
+// The approved corpus assets can reach 256 MiB. Keep the entire transfer bounded,
+// while allowing the 191 MB fleet file to finish beyond the former 30s cutoff.
+export async function downloadAsset(asset, destination, { fetchImpl = fetch, timeoutMs = 120000 } = {}) {
   let url = approvedAssetUrl(asset.url, true); let file; let owned = false;
   const controller = new AbortController(); const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
