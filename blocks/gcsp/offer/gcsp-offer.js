@@ -38,7 +38,7 @@ export function mountOffer(root, adapter = {}) {
     decide: adapter.decide, readReasons: adapter.readReasons, createCommandId: adapter.createCommandId });
   const view = createOfferView(shell.main, { refresh: () => controller.refresh(), decide: (kind, options) => controller.decision(kind, options),
     selectReason: controller.selectDeclineReason, cancelDecline: controller.cancelDecline, refreshReasons: controller.refreshDeclineReasons,
-    mountFollowup: followupMount(adapter.followup) });
+    mountFollowup: followupMount(adapter.followup), mountOrder: typeof adapter.order?.mount === 'function' ? adapter.order.mount : undefined });
   const update = (model) => view.update({ ...model, fixtureNotice: adapter.notice || model.fixtureNotice });
   const unsubscribe = controller.subscribe(update);
   update(controller.snapshot());
