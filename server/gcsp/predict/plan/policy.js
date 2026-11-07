@@ -3,7 +3,7 @@ import { CONTRACT_VERSION, integer } from './input.js';
 export const PLANNING_POLICY_KEYS = Object.freeze(['orderPlan.horizonDays', 'orderPlan.budgetMinor', 'orderPlan.currency',
   'orderPlan.modelBounds', 'orderPlan.derivativeBounds', 'orderPlan.objectiveWeights', 'supply.leadTimeDays']);
 
-// No runtime defaults: pending proposal JSON is deliberately never imported.
+// No runtime defaults: every value is read from the canonical seed via PolicyService.
 export async function readPlanningPolicy(policy, read) {
   if (typeof policy?.getAssumption !== 'function' || !read?.policyVersion) return { status: 'unavailable', code: 'planning-policy-not-configured', contractVersion: CONTRACT_VERSION };
   let rows;

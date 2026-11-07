@@ -345,8 +345,10 @@ test('default forecast fails closed without future evaluation, a known renewal o
   assert.equal((await f.provider.readForecast(f.context, f.read)).code, 'planning-renewal-unconfirmed');
 });
 
-test('typed policy reader has no canonical fallback when new keys are inactive', async () => {
-  const policy = new PolicyService();
+test('typed policy reader has no fallback when the canonical keys are absent', async () => {
+  const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url)));
+  seed.assumptions = seed.assumptions.filter((a) => !a.key.startsWith('orderPlan.'));
+  const policy = new PolicyService({ provider: { async loadVersions() { return [seed]; } } });
   const out = await readPlanningPolicy(policy, { runId: 'policy-test', policyVersion: 'gcsp-policy-v1', asOf: '2026-11-06T00:00:00.000Z' });
   assert.equal(out.status, 'unavailable'); assert.ok(out.keys.includes('orderPlan.budgetMinor'));
 });
@@ -358,8 +360,7 @@ test('real PolicyService reads explicit alternative entries and one source chang
   const entries = { 'orderPlan.horizonDays': source.constraints.horizonDays, 'orderPlan.budgetMinor': source.constraints.budgetMinor,
     'orderPlan.currency': source.constraints.currency, 'orderPlan.modelBounds': source.constraints.modelBounds,
     'orderPlan.derivativeBounds': source.constraints.derivativeBounds, 'orderPlan.objectiveWeights': source.constraints.objectiveWeights };
-  for (const [key, value] of Object.entries(entries)) seed.assumptions.push({ ...seed.assumptions[0], key, value,
-    status: 'assumed', unit: 'explicit alternative test input', basis: 'Fixture-only published source for typed reader validation.' });
+  for (const [key, value] of Object.entries(entries)) seed.assumptions.find((a) => a.key === key).value = value; // Explicit alternative values.
   const load = async () => readPlanningPolicy(new PolicyService({ provider: { async loadVersions() { return [seed]; } } }),
     { runId: source.runId, policyVersion: seed.policyVersion, asOf: source.asOf });
   let read = await load(); assert.equal(read.status, 'ok');

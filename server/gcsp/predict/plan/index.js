@@ -5,3 +5,6 @@ export { createOrderPlanService } from './service.js';
 export { resolveSupplyRecords, createOrderPlanSupplyProvider } from './supply.js';
 export { createExpressedOrderForecastProvider } from './forecast.js';
 export { createFutureChoiceEvaluator } from './future-choices.js';
+export { createPolicyOrderPlanCatalog } from './catalog.js';
+export { createPolicyFutureTermsProvider } from './terms.js';
+export { createCanonicalOrderPlanService } from './compose.js';
