@@ -12,9 +12,23 @@ const validSource = (source, now) => source && ['synthetic', 'dated-snapshot', '
   && ['sourceRef', 'sourceVersion', 'schemaVersion'].every((key) => text(source[key]))
   && ['effectiveFrom', 'observedAt'].every((key) => validInstant(source[key]) && Date.parse(source[key]) <= Date.parse(now));
 
+const units = { boot: 'L', mpg: 'mpg-imperial', zeroTo62: 's', points: 'points-per-month', seats: 'count' };
+// Copy only recorded current-contract facts of the expected type; anything else stays unknown.
+function currentFacts(vehicle) {
+  const facts = {};
+  if (!vehicle || typeof vehicle !== 'object' || Array.isArray(vehicle)) return facts;
+  for (const key of unknowns) {
+    const value = vehicle[key];
+    if (['configuration', 'body', 'fuel'].includes(key) ? text(value) : Number.isFinite(value) && value > 0) {
+      facts[key] = { value, unit: units[key] ?? null };
+    }
+  }
+  return facts;
+}
+
 // Pure projection of rows already read under the producer's authenticated transaction.
 // binding is internal quote evidence. Public readers explicitly project display only.
-// A model label establishes no VIN, configuration, specifications or current points.
+// Facts come only from the recorded current contract; a model label alone establishes none.
 export function createCurrentCarComparison({ context, employee, slot, now } = {}) {
   const binding = { contractId: null, employeeVersion: revision(employee?.version) ? employee.version : null,
     slotVersion: revision(slot?.version) ? slot.version : null, source: null };
@@ -35,8 +49,10 @@ export function createCurrentCarComparison({ context, employee, slot, now } = {}
     || !validSource(contract.source, now)) return unavailable();
   binding.contractId = contract.contractId;
   binding.source = Object.fromEntries(sourceKeys.map((key) => [key, contract.source[key]]));
-  return freeze({ schemaVersion: '1', comparisonAvailable: false, binding,
-    display: { state: 'partial', model: contract.model,
+  const facts = currentFacts(contract.vehicle);
+  const missing = unknowns.filter((key) => !Object.hasOwn(facts, key));
+  return freeze({ schemaVersion: '1', comparisonAvailable: missing.length < unknowns.length, binding,
+    display: { state: missing.length ? 'partial' : 'available', model: contract.model,
       source: { mode: contract.source.mode, sourceVersion: contract.source.sourceVersion, observedAt: contract.source.observedAt },
-      unknowns: [...unknowns] } });
+      ...(missing.length < unknowns.length ? { facts } : {}), unknowns: missing } });
 }

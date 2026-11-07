@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "f62-supervisor-process-uncertainty-correction.v1",
+  "scope": "exact2guardlines plus corresponding frozen code pin; no source or active corpus change",
+  "beforeSupervisorSha256": "66ef05be0987a2cc48f7767e9e2f0fa862000f2918725e2cdad301feb2142d4a",
+  "afterSupervisorSha256": "48fc3c4f122dd4d1bed7fbde59464f0a4880f6ebc329525dcdeb9761ff602950",
+  "beforeContractSha256": "7f2bd275007127527aabd9bb53b2f55fca29a7281dc901755410adb23d0718c7",
+  "afterContractSha256": "a446b148ed00073b25ab61115367bc7a9fd7540d8a73889e6e1da0a7c38e3fd6",
+  "replacements": 2,
+  "changedLines": [
+    37,
+    44
+  ],
+  "staticSyntax": "passed compile without execution",
+  "identityReview": "contract supervisor pin matches exact corrected bytes; all other code/input pins unchanged",
+  "truthTable": [
+    {
+      "helperResult": false,
+      "previousCleanupAllowed": true,
+      "correctedCleanupAllowed": true
+    },
+    {
+      "helperResult": true,
+      "previousCleanupAllowed": false,
+      "correctedCleanupAllowed": false
+    },
+    {
+      "helperResult": null,
+      "previousCleanupAllowed": true,
+      "correctedCleanupAllowed": false
+    }
+  ],
+  "existingPreparationEvidence": "retained historical receipt at prior contract7f2bd275; candidate preparation unchanged and not rerun",
+  "checksUnrun": [
+    "unchanged candidate preparation",
+    "fullsuite",
+    "publication"
+  ],
+  "knownGap": "FUCQ-154 fixed-scratch reconciliation remains deferred; parent manual handling",
+  "sourceRequests": 0,
+  "activeCorpusMutation": false
+}

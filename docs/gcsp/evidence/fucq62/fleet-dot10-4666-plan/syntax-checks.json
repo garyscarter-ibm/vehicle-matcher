@@ -1,0 +1,127 @@
+{
+  "scope": "scoped syntax/read-only static .10 refresh to actual .9 ordinary baseline; candidate execution unrun",
+  "planSha256": "a4f0f766266165b8d48da363c09fbc934647e90cd80a8c19c3b81685fb12ace7",
+  "preparedScripts": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot10-4666-plan/prepare-plan.py",
+      "bytes": 14397,
+      "sha256": "9d7c95e6a9eff09a0725ae1a3dd0f1c2fcdc3245001f70b24fd1868032de2032",
+      "name": "prepare-plan.py"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot10-4666-plan/prepare-candidate.mjs",
+      "bytes": 11611,
+      "sha256": "fb564d6e3cc6f165b5bb09f22f3dfc425c5d069b256402298eebe9bd1986f4ba",
+      "name": "prepare-candidate.mjs"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot10-4666-plan/supervise-candidate.py",
+      "bytes": 10231,
+      "sha256": "71d667408efc51cc34e0332346d4c31567a40ddc8baa996b566b138583c9aa2c",
+      "name": "supervise-candidate.py"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot10-4666-plan/group-proof.py",
+      "bytes": 958,
+      "sha256": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
+      "name": "group-proof.py"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot10-4666-plan/registration.patch",
+      "bytes": 1108,
+      "sha256": "8606efb2f7b089e7a5d33bbce3c6b8a64a15281f7be8a4c1c14ae1b245ddc453",
+      "name": "registration.patch"
+    }
+  ],
+  "checks": [
+    {
+      "check": "in-memory-python-compile",
+      "path": "prepare-plan.py",
+      "passed": true
+    },
+    {
+      "check": "in-memory-python-compile",
+      "path": "supervise-candidate.py",
+      "passed": true
+    },
+    {
+      "check": "in-memory-python-compile",
+      "path": "group-proof.py",
+      "passed": true
+    },
+    {
+      "check": "node-syntax",
+      "passed": true,
+      "executedCandidate": false
+    },
+    {
+      "check": "git-apply-check-only",
+      "passed": true,
+      "executedCandidate": false
+    }
+  ],
+  "static": {
+    "inputPinsMatched": 477,
+    "originFilesMatched": 363,
+    "originalLinesMatched": 2242,
+    "predictedSourceBytes": 50452067,
+    "combinedOriginalBytesSha256": "1f110566c057accf264f90b290e9749254d3e2309a2b644ce2588729425fec23",
+    "shardRows": [
+      1533,
+      709
+    ],
+    "shardDigests": [
+      "34b8befe36cee454171e72dbcea4b67a947a69990098a190d327c033dccbd8b3",
+      "da1eb59e4e5f8dee9dd06e8877da275c2eb79e541dea90c793559fac6cd188ff"
+    ],
+    "dot10SourceRegistrationUnapplied": true,
+    "rootAnd036ProductionCodePinsMatched": 45,
+    "dot9Alignment": {
+      "commit": "76135c84",
+      "exactReviewedPatch": true,
+      "anchorSha256": "b0eaafddedc55f163fdf32a6a77afb3f55eb2096d5e31256e8bf8591f50c085b",
+      "scope": "036 only"
+    },
+    "baselineIsolatedHistoryFiles": 52,
+    "baselineIsolatedVersions": 10,
+    "actualOrdinaryHistoryFiles": 52,
+    "actualOrdinaryVersions": 10,
+    "actualOrdinaryTreeSha256": "ccb40644cc7ef443bf10ea63ccbae63432efcab8ca29050e9d0888a9e6f7c4a2",
+    "ordinaryActivationReceiptSha256": "567fbc0fed031db8ce9c4c1bd43502001637aa4e09e4c29c0f1247dff6c0b1a4",
+    "allHistoryMembershipPreserved": true,
+    "distinctPublicationOwnerFilesPreserved": 2,
+    "frozenDot9PacketsIncludingLiveUnchanged": true,
+    "preparedScriptPinsMatched": true,
+    "outputAndRegisteredSourceCopiesAbsent": true
+  },
+  "groupProofReuse": {
+    "sha256": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
+    "modified": false,
+    "fourStateEvidencePath": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot9-2424-live-plan/syntax-checks.json",
+    "fourStateEvidenceSha256": "388736ff2e97186584560f6813b4c2c75d983fbaeb7dc58bf3275031bcd85883",
+    "semantics": "Only explicit False proves absence; bounded unknown recheck."
+  },
+  "executed": {
+    "sourceCalls": 0,
+    "publicNetworkRequests": 0,
+    "nativeDatabaseAccess": false,
+    "dot10SourceCreation": false,
+    "dot10SourceRegistrationApplied": false,
+    "candidateGeneration": false,
+    "candidateValidation": false,
+    "proof": false,
+    "publication": false,
+    "scratchAllocation": false
+  },
+  "ordinaryBaselineResolved": true,
+  "ordinaryActivationAcceptance": false,
+  "ordinaryProofExecutable": false,
+  "setupNote": "Initial metadata read found newer relative origin files absent from older .036 checkout; corrected resolution to exact root originals. No source, candidate or scratch created by failed preparation.",
+  "cleanup": {
+    "scratchCreated": false,
+    "removedBytes": 0,
+    "retainedSummary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot10-4666-plan/syntax-checks.json",
+    "leftovers": []
+  },
+  "acceptance": false
+}

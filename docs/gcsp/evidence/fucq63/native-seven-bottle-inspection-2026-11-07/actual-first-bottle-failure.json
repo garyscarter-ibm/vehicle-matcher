@@ -1,0 +1,32 @@
+{
+  "status": "exact-first-bottle-preflight-failed",
+  "stage": "verify-embedded-ruby",
+  "errorType": "AssertionError",
+  "frames": [
+    {
+      "file": "preflight.py",
+      "line": 43,
+      "function": "<module>"
+    }
+  ],
+  "requests": 3,
+  "observations": {
+    "actualArchiveBytes": 109619,
+    "actualArchiveSha256": "8589f4e61b3afcc5ea375aab11af1c891ec4c94421c699c2a5a4765078de4443",
+    "expectedArchiveBytes": 109619,
+    "expectedArchiveSha256": "8589f4e61b3afcc5ea375aab11af1c891ec4c94421c699c2a5a4765078de4443",
+    "embeddedBrewMembers": [
+      {
+        "name": "ca-certificates/2026-10-20/.brew/ca-certificates.rb",
+        "bytes": 7949,
+        "regular": true,
+        "sha256": "4abe22fb50b45cd5e113747a92a115e0479c4017502d7e8a87132a340b742d84"
+      }
+    ],
+    "expectedFormulaRubySha256": "535300ac0e99511a36340454bd5287cfff097191de9d7b9675ed924f3a692317"
+  },
+  "elapsedSeconds": 0.7056847500000001,
+  "installed": false,
+  "nativeAttempted": false,
+  "acceptance": false
+}

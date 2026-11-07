@@ -1,0 +1,146 @@
+{
+  "scope": "five distinct actual .12 observations; no fresh runtime execution",
+  "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "selection": [
+    "passing configuration",
+    "1F7A consumer failure",
+    "1F7C consumer failure",
+    "retained VIN",
+    "exact supplemented/image configuration"
+  ],
+  "actual": [
+    {
+      "kind": "configuration",
+      "id": "MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIQyxTMDIzMCxTMDJQQSxTMDJUNCxTMDJUQixTMDJWQixTMDJWRCxTMDJWTCxTMDMwMixTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzMSxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRHUSxTMDRNQyxTMDRVUixTMDUzNCxTMDU0NCxTMDU1MixTMDVBQyxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDY3NixTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxNSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNVSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNQ==",
+      "model": "2PBC",
+      "expected": {
+        "requestKey": "d72c05557861bb646f57484e60d26c3f1f35df5c20b0dd18e01256188c7d0ca2",
+        "dtoSha256": "82712c8d703e6546d6c4298fa3a168b2ea48f09c73931ee9eb061ee36f98e2e4",
+        "directStatus": "partial",
+        "httpStatus": 200,
+        "consumerStatus": "partial",
+        "consumerPassed": true,
+        "consumerFailure": null
+      }
+    },
+    {
+      "kind": "configuration",
+      "id": "MUY3QTpGQkxBVCxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIMixTMDIzMCxTMDJQQSxTMDJURixTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDNETixTMDQyOCxTMDQzMCxTMDQzMSxTMDQzVCxTMDQ3OCxTMDQ5NCxTMDUzNCxTMDU1MixTMDVBQyxTMDVBUyxTMDVBVixTMDVETixTMDYxMCxTMDY1NCxTMDZBRSxTMDZBRixTMDZOWCxTMDZQQSxTMDc2MCxTMDdFVyxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURw==",
+      "model": "1F7A",
+      "expected": {
+        "requestKey": "c05aca200139c8fd87978b4efb34f2af8d7beda2661479b78e1abc8a1be6ee56",
+        "dtoSha256": "6119d7c1e7c0973066063ba1aa5df071cfc6a44e5961c25f3949a41f18451a9a",
+        "directStatus": "partial",
+        "httpStatus": 200,
+        "consumerStatus": "source-unavailable",
+        "consumerPassed": false,
+        "consumerFailure": {
+          "code": "vehicle-source-unavailable",
+          "message": "The local vehicle source is unavailable. Restore or configure its validated published inputs and retry.",
+          "action": "retry-source",
+          "retryable": true
+        }
+      }
+    },
+    {
+      "kind": "configuration",
+      "id": "MUY3QzpGS1ROTCxQMDMwMCxTMDFDQixTMDFERixTMDFINSxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDMyMixTMDNETixTMDNNMSxTMDQyMCxTMDQyOCxTMDQzMCxTMDQzMSxTMDQzVSxTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDUzNCxTMDU1MixTMDVBQyxTMDVBUyxTMDVBVixTMDVETixTMDYxMCxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZOWCxTMDZQQSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdFVyxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMixTMDlUQSxTMDlUQg==",
+      "model": "1F7C",
+      "expected": {
+        "requestKey": "ac0951349de4a90e6cb15de1fda9b38e9bd887ee8accb6e372f29f2ca29aaabe",
+        "dtoSha256": "c10fe9163df208a56c69f364d4aa601de656f233a1fd68f8710de2967f0c2728",
+        "directStatus": "partial",
+        "httpStatus": 200,
+        "consumerStatus": "source-unavailable",
+        "consumerPassed": false,
+        "consumerFailure": {
+          "code": "vehicle-source-unavailable",
+          "message": "The local vehicle source is unavailable. Restore or configure its validated published inputs and retry.",
+          "action": "retry-source",
+          "retryable": true
+        }
+      }
+    },
+    {
+      "kind": "vin",
+      "id": "WBA33DB08TC426611",
+      "model": null,
+      "expected": {
+        "requestKey": "074dd7a2dd46606e3a4ccdf7925ef7c7872ce8f49e1e6d902c18bcd407f97544",
+        "dtoSha256": "b83e2ccfa0af10f20e1d91537b2ccebd56c41f35918d67640683c965ace0de5d",
+        "directStatus": "partial",
+        "httpStatus": 200,
+        "consumerStatus": "partial",
+        "consumerPassed": true,
+        "consumerFailure": null
+      }
+    },
+    {
+      "kind": "configuration",
+      "id": "MUY3RTpGS1VLUCxQMEM0UCxTMDFDQixTMDFDRSxTMDFERixTMDFIOCxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDMzNyxTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDRHUSxTMDUzNCxTMDU1MixTMDVBQyxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDcxMCxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNOSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMg==",
+      "model": "1F7E",
+      "expected": {
+        "requestKey": "829f1ce7363d903d87b2065f9070921fe36668789b0b0d8f55482b2db7db1067",
+        "dtoSha256": "de5dd013e7a1ca6518e6d253f8a6e1fb7369c0e04f1dc17fa78253dcc1dc146b",
+        "directStatus": "partial",
+        "httpStatus": 200,
+        "consumerStatus": "partial",
+        "consumerPassed": true,
+        "consumerFailure": null
+      }
+    }
+  ],
+  "sourceReceipts": [
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/http-chunk0-receipt.json",
+      "bytes": 632368,
+      "sha256": "d5518728f7c6d84f331c242d4b5ed5499998ae6f5ec3e43d8e3ef14bcd1a4929"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/http-chunk1-receipt.json",
+      "bytes": 632532,
+      "sha256": "0e7f7dfc7be9a89c8effbc3997304494c9d782bf48037f271d05063f550d5da8"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/http-chunk2-receipt.json",
+      "bytes": 795773,
+      "sha256": "b73c19b88cc029ddd7099429f7ccdb6ce30dc7373d942bf12421ce2da672b4ca"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/http-chunk3-receipt.json",
+      "bytes": 887477,
+      "sha256": "911d820b53faaa22020a02d13dae5b67094359ae4bb4b005181bbe2b26147ddc"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/http-chunk4-receipt.json",
+      "bytes": 887498,
+      "sha256": "f447c166989b3af9e5092d9fc71b646450e147aa2c323e20e14bf91cf3eb5945"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/http-chunk5-receipt.json",
+      "bytes": 633241,
+      "sha256": "1bd8d1980136a7197473cab061ecdfeba255c7c1f88889111b8f12c4ab11619d"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/http-chunk6-receipt.json",
+      "bytes": 632519,
+      "sha256": "619fabbd81390aab27ff5a146f982e1d9215a97945d49eb778c9286bba980961"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/http-chunk7-receipt.json",
+      "bytes": 632442,
+      "sha256": "4ddcf1575dca9b914e9607887b6548e4e811aabae003bfee2ef0bea32de2111f"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/http-chunk8-receipt.json",
+      "bytes": 632523,
+      "sha256": "cdd755832db77996e6762cde0af25d0f5fa3a2f3d6d69c086c2705f49645b139"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/http-chunk9-receipt.json",
+      "bytes": 485766,
+      "sha256": "50f7db5a588892442535a506456719c99394158a9cbc82eaa76770bccc525c4c"
+    }
+  ],
+  "acceptance": false
+}

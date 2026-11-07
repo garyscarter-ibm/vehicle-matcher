@@ -1,0 +1,198 @@
+{
+  "schemaVersion": "1",
+  "version": "1",
+  "policyRead": {
+    "asOf": "2026-11-06T00:00:00.000Z",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "captureVersion": "bmw-complete-selection.v1",
+  "planId": "breadth30-x1m1-chunk0490-20261107",
+  "seed": "actual30-typed-finite-pool",
+  "source": {
+    "id": "bmw-uk-public",
+    "kind": "public-bmw-uk",
+    "version": "f59-model-batch-20261107.v1"
+  },
+  "context": {
+    "catalogueDate": "2026-11-01",
+    "market": "GB",
+    "locale": "en-GB",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05"
+  },
+  "models": [
+    "X1M1"
+  ],
+  "target": 1,
+  "candidateCount": 8,
+  "qualificationDate": "2026-11-07",
+  "modelRegistration": {
+    "schemaVersion": "bmw-public-model-registration.v1",
+    "modelCode": "X1M1",
+    "agModelCode": "62EE",
+    "catalogueRangeKey": "U11",
+    "rawModelRange": "U11",
+    "aliases": [
+      "X"
+    ],
+    "market": "GB",
+    "locale": "en-GB",
+    "steering": "RL",
+    "catalogueDate": "2026-11-01",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05"
+  },
+  "lineRegistration": {
+    "lineKey": "S0337",
+    "defaultModel": {
+      "modelCode": "IX1I",
+      "agModelCode": "12HM"
+    },
+    "includedIndex": 5,
+    "optionsQuery": {
+      "kind": "trim",
+      "code": "S0337"
+    }
+  },
+  "candidateDefinitionBasis": {
+    "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m1/options.json",
+    "artifactSha256": "6229aa8d41810791f9594ab394d61a445b07589a95e46e25a9d9d3d8a85b0d0e",
+    "role": "actual direct typed definitions; fresh model/line/definitions required before solver"
+  },
+  "limits": {
+    "maxCandidates": 8,
+    "requestBudgets": {
+      "page": 1,
+      "settings": 1,
+      "discover": 1,
+      "options": 1,
+      "solve": 8
+    },
+    "maxAttempts": 1,
+    "operationTimeoutMs": 10000,
+    "deadlineMs": 90000,
+    "retryDelayMs": 0,
+    "concurrency": 1,
+    "cacheEntries": 16,
+    "cacheRetentionMs": 86400000,
+    "checkpointBytes": 4194304,
+    "imageRequests": 0,
+    "sourceAttempts": 12,
+    "sourceBytes": 4194304,
+    "responseBytes": 1048576
+  },
+  "candidates": [
+    {
+      "candidateId": "candidate-b666e17c4dcc1f25b03ae595",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C3N",
+          "S01EK",
+          "S0337"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-76c1fa8d30fb996a15f06380",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C3N",
+          "S01EU",
+          "S0337"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-01d04d1406173dcd6fa1e8e6",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C3N",
+          "S01LS",
+          "S0337"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-b5a4b7cc64a9d6b1d398398a",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C3N",
+          "S01LX",
+          "S0337"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-9bd7a3100d7832b4f3165135",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0C3N",
+          "S01EK",
+          "S0337"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-f62bc5cbefe51fb6c69f9ff8",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0C3N",
+          "S01EU",
+          "S0337"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-3dd5494f5a3814aaeb5ef814",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0C3N",
+          "S01LS",
+          "S0337"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-52e97e8f80712a0233ae64e8",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0C3N",
+          "S01LX",
+          "S0337"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    }
+  ]
+}

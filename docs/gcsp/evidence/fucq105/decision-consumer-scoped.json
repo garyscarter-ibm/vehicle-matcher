@@ -1,0 +1,418 @@
+{
+  "story": "FUCQ-105",
+  "date": "2026-11-06",
+  "scope": "Scoped own-source consumer contract spies only; no actual106/canonical policy/browser/live integration evidence.",
+  "runs": [
+    {
+      "run": "consumer-decision-1793927029466454000",
+      "summary": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/consumer-decision-1793927029466454000/summary.json",
+      "summary_sha256": "20f37306ada8f1417a06c94acb52dd6dfc524e51bdfab33ac4fba6bec187514c",
+      "command": [
+        "/opt/homebrew/bin/node",
+        "--test",
+        "--test-reporter=tap",
+        "--test-concurrency=1",
+        "server/test/gcsp-offer-view-decision.test.js"
+      ],
+      "counts": {
+        "fail": 0,
+        "pass": 14,
+        "skipped": 0,
+        "tests": 14
+      },
+      "wall": 1.0165951249999998,
+      "peak_rss_bytes": 231817216,
+      "peak_combined_bytes": 28864,
+      "limits": {
+        "combinedMiB": 128,
+        "logMiB": 2,
+        "ramMiB": 768,
+        "seconds": 120,
+        "workers": 1
+      },
+      "strict_receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/consumer-decision-1793927029466454000/strict/targeted-f6b779f5ff34620e5ee4be779b355d516c0fbbc2bc39eb7acffb5956bce9de2c-default-1793927031562017000.json",
+      "strict_receipt_sha256": "b9309b9966aba9df7a9bb742edae8f960639c01f1de2e9f3f2ccdd62b4422301",
+      "strict": {
+        "scope": "targeted",
+        "result": "passed",
+        "code_key": "f6b779f5ff34620e5ee4be779b355d516c0fbbc2bc39eb7acffb5956bce9de2c",
+        "head": "dc767ff3d4a9f3ba50eede3a76131c69d06308d0",
+        "tree": "221e4732bbced44d4b116926fe79af92fdfe23f2",
+        "dirty": true,
+        "base_commit": "b95b4c8ad8a4534cbf03f287eb62fc8a57bbda96",
+        "variant": "default",
+        "ran": 14,
+        "skipped": 0,
+        "execution_identity": {
+          "code": "f6b779f5ff34620e5ee4be779b355d516c0fbbc2bc39eb7acffb5956bce9de2c",
+          "environment": "a86c1a5cbc83935b4e808f60bdb14060572675b676b52666fa8cd8a1be159d42",
+          "inputs": {
+            "../../../node_modules/jsdom/lib/api.js": "22a63aa40bad13ea909a115b0c49fbae3493a291414765221942fc5d4396356f",
+            "../../../node_modules/jsdom/package.json": "e87940b12f720a5b735a5df82108b634a238b8c6ebced71050a346a1675575b9",
+            "../../test-runs/fucq105/consumer-supervisor.py": "4e5df4813e979cfd227057d2d217728d47decec864c7e34b37cb41512114e759",
+            "COMPONENTS.md": "efd12f582a943082c437c03593e584c4c5129c830ef4ecd858bfdf1bc5fb9c7b",
+            "_tools/scaffold_git.py": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a",
+            "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+            "_tools/test_stamp.py": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
+            "blocks/gcsp/brief/brief-view-model.js": "7eea953d26aaeded1f6fe5ac219ebcc0f0c739f8f003b7ca61414dc4da1aa366",
+            "blocks/gcsp/employee/gcsp-employee.css": "3cab6080aa52605d92b5f616151087fe289e72c43045a7f396a8bffca7112b6f",
+            "blocks/gcsp/kit/form-controls.css": "0dec8818344defbe8b5718cdeef131d71faae782515f8ea3dce56b9e43002057",
+            "blocks/gcsp/kit/form-controls.js": "4df9e86f3d51f33397bd524b95f35a40240c931b441f91a7b8b05ef89fe508b4",
+            "blocks/gcsp/offer/fixtures.js": "56f099bdc808f6be34f6ba717eaa601d3bd1dfcd9095e55470cefe0f8f392a07",
+            "blocks/gcsp/offer/gcsp-offer.css": "d5e0f0dae8adf3f6e25144f1a0bd2ffc28955b6b5749ac9f24ac686c1060d501",
+            "blocks/gcsp/offer/gcsp-offer.js": "dcb85e16ee55a50398b7576f9c23e3e5bcf1ec81b712983ffd3c47bffeeb173f",
+            "blocks/gcsp/offer/harness.js": "ae8150a6f14498789d5403de9220e13e352cdabd1b490eb3285059a60821e288",
+            "blocks/gcsp/offer/http-adapter.js": "7ed45f955e5bdb437cb94f62bef0dbb3b8ac9d5ad2a8c477f4fe91da5297fbc5",
+            "blocks/gcsp/offer/offer-controller.js": "672d5f113751f2483a10dad219ce77d5d5c25b3b1cb1429cfc9b6aa1cb14f400",
+            "blocks/gcsp/offer/offer-projection.js": "fc8f500cd82ef4d18c9fde4062bb4880534c50e78bbcd729bd0a90b97457e64e",
+            "blocks/gcsp/offer/offer-view.js": "de5d37114ab4a4400d73a7086d8426c00d4d6cf63a77c22463a029316a324d4a",
+            "blocks/gcsp/offer/preview.html": "14779d344511021d8d885bc546161fa132b3d57a1377fa1e566ab62511cd4197",
+            "blocks/gcsp/shell/density-theme.css": "c2a680854e05bf88edc335308797b636038ff5bdd980f101e8f32edd451f3593",
+            "blocks/gcsp/shell/density-typography.css": "6d238b5c4dee9058e9fd32e0e5704e95a94eb7e5cdc82c9fb051534d6ea44641",
+            "blocks/gcsp/shell/fonts/density-fonts.css": "bf13d49ea7fc1d75888a06881e2ce1a0151875a69177c937045ea86ce4ac1e7c",
+            "blocks/gcsp/shell/gcsp-shell.css": "347fd90e22ea14fcdceda92c9da095da86fc1164ebb0926577d6e5cb9068014e",
+            "blocks/gcsp/shell/gcsp-tokens.css": "3a4b773eb4e67734cead53956e39323d3050af6e35465b6c275084096ed93cde",
+            "blocks/gcsp/shell/portal-shell.js": "7e62088d69bfa43ff0ccff2678931fe1e48c7a0b3814184f449f308cf4ebaa01",
+            "blocks/vehicle-matcher/employee-card-fixture.js": "58c90dfef0ee120148bba7dc6663eb985071d4a8e6e2195296966a6987df797d",
+            "blocks/vehicle-matcher/gcsp-kit.css": "ac08fa1725a878af7a6c4c3f1659b934274b4a6ad181aaa66452db4da845c210",
+            "blocks/vehicle-matcher/modes/brand-copy.js": "485098aea61944c5fd62047164b4aabfdd1c95c2ff2be9aacf5dae211d195ec9",
+            "blocks/vehicle-matcher/modes/result-card.js": "cc5d50468f45f1c751c597ece89ca5d7dfe88f70d98dd606104ad3504007f948",
+            "blocks/vehicle-matcher/ui.js": "49107097a7927e388ff78949045827f3a8903fea0bd758dbe1aa597bec82d8b2",
+            "blocks/vehicle-matcher/vehicle-matcher.css": "11d7af7f3f05766c9c32c107f75f31d269d5531de4040938b34cea8b3854ea94",
+            "docs/gcsp/evidence/fucq105/producer-access.json": "e50f3c56f3df4d3437a6fd2ec91e62fd713e0c1c5a42ce0d44753110a5535080",
+            "docs/gcsp/evidence/fucq105/producer-decline-access.json": "c9a63f5b6dacfeb0c3720904ee218c085039903f55a74b551fb463fd70a626f5",
+            "server/test/gcsp-offer-view-decision.test.js": "d07620a3e865a8d3175e12517048a54fcbfbc79730bf025500036812c99ce832",
+            "server/test/ui-ratchet.json": "d74cf7a0e9c0949a43624b6f3ac63b0f8af2d63c8687f24a85964fd9a54914d7"
+          },
+          "interpreter": [
+            "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+            "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]"
+          ],
+          "platform": "macOS-26.5.1-arm64-arm-64bit",
+          "scope": "targeted",
+          "selected": [
+            "/opt/homebrew/bin/node --test --test-reporter=tap --test-concurrency=1 server/test/gcsp-offer-view-decision.test.js"
+          ],
+          "settings": "65c269adb3c6e22a53531684f60dc18add78fc0d925c9f61f0c707641390894c",
+          "variant": "default",
+          "version": 1
+        }
+      },
+      "source_test_asset_hashes": {
+        "blocks/gcsp/brief/brief-view-model.js": "7eea953d26aaeded1f6fe5ac219ebcc0f0c739f8f003b7ca61414dc4da1aa366",
+        "blocks/gcsp/employee/gcsp-employee.css": "3cab6080aa52605d92b5f616151087fe289e72c43045a7f396a8bffca7112b6f",
+        "blocks/gcsp/kit/form-controls.css": "0dec8818344defbe8b5718cdeef131d71faae782515f8ea3dce56b9e43002057",
+        "blocks/gcsp/kit/form-controls.js": "4df9e86f3d51f33397bd524b95f35a40240c931b441f91a7b8b05ef89fe508b4",
+        "blocks/gcsp/offer/fixtures.js": "56f099bdc808f6be34f6ba717eaa601d3bd1dfcd9095e55470cefe0f8f392a07",
+        "blocks/gcsp/offer/gcsp-offer.css": "d5e0f0dae8adf3f6e25144f1a0bd2ffc28955b6b5749ac9f24ac686c1060d501",
+        "blocks/gcsp/offer/gcsp-offer.js": "dcb85e16ee55a50398b7576f9c23e3e5bcf1ec81b712983ffd3c47bffeeb173f",
+        "blocks/gcsp/offer/harness.js": "ae8150a6f14498789d5403de9220e13e352cdabd1b490eb3285059a60821e288",
+        "blocks/gcsp/offer/http-adapter.js": "7ed45f955e5bdb437cb94f62bef0dbb3b8ac9d5ad2a8c477f4fe91da5297fbc5",
+        "blocks/gcsp/offer/offer-controller.js": "672d5f113751f2483a10dad219ce77d5d5c25b3b1cb1429cfc9b6aa1cb14f400",
+        "blocks/gcsp/offer/offer-projection.js": "fc8f500cd82ef4d18c9fde4062bb4880534c50e78bbcd729bd0a90b97457e64e",
+        "blocks/gcsp/offer/offer-view.js": "de5d37114ab4a4400d73a7086d8426c00d4d6cf63a77c22463a029316a324d4a",
+        "blocks/gcsp/offer/preview.html": "14779d344511021d8d885bc546161fa132b3d57a1377fa1e566ab62511cd4197",
+        "blocks/gcsp/shell/density-theme.css": "c2a680854e05bf88edc335308797b636038ff5bdd980f101e8f32edd451f3593",
+        "blocks/gcsp/shell/density-typography.css": "6d238b5c4dee9058e9fd32e0e5704e95a94eb7e5cdc82c9fb051534d6ea44641",
+        "blocks/gcsp/shell/fonts/density-fonts.css": "bf13d49ea7fc1d75888a06881e2ce1a0151875a69177c937045ea86ce4ac1e7c",
+        "blocks/gcsp/shell/gcsp-shell.css": "347fd90e22ea14fcdceda92c9da095da86fc1164ebb0926577d6e5cb9068014e",
+        "blocks/gcsp/shell/gcsp-tokens.css": "3a4b773eb4e67734cead53956e39323d3050af6e35465b6c275084096ed93cde",
+        "blocks/gcsp/shell/portal-shell.js": "7e62088d69bfa43ff0ccff2678931fe1e48c7a0b3814184f449f308cf4ebaa01",
+        "blocks/vehicle-matcher/employee-card-fixture.js": "58c90dfef0ee120148bba7dc6663eb985071d4a8e6e2195296966a6987df797d",
+        "blocks/vehicle-matcher/gcsp-kit.css": "ac08fa1725a878af7a6c4c3f1659b934274b4a6ad181aaa66452db4da845c210",
+        "blocks/vehicle-matcher/modes/brand-copy.js": "485098aea61944c5fd62047164b4aabfdd1c95c2ff2be9aacf5dae211d195ec9",
+        "blocks/vehicle-matcher/modes/result-card.js": "cc5d50468f45f1c751c597ece89ca5d7dfe88f70d98dd606104ad3504007f948",
+        "blocks/vehicle-matcher/ui.js": "49107097a7927e388ff78949045827f3a8903fea0bd758dbe1aa597bec82d8b2",
+        "blocks/vehicle-matcher/vehicle-matcher.css": "11d7af7f3f05766c9c32c107f75f31d269d5531de4040938b34cea8b3854ea94",
+        "docs/gcsp/evidence/fucq105/producer-access.json": "e50f3c56f3df4d3437a6fd2ec91e62fd713e0c1c5a42ce0d44753110a5535080",
+        "docs/gcsp/evidence/fucq105/producer-decline-access.json": "c9a63f5b6dacfeb0c3720904ee218c085039903f55a74b551fb463fd70a626f5",
+        "server/test/gcsp-offer-view-decision.test.js": "d07620a3e865a8d3175e12517048a54fcbfbc79730bf025500036812c99ce832",
+        "server/test/ui-ratchet.json": "d74cf7a0e9c0949a43624b6f3ac63b0f8af2d63c8687f24a85964fd9a54914d7"
+      },
+      "dependencies": {
+        "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/jsdom/lib/api.js": "22a63aa40bad13ea909a115b0c49fbae3493a291414765221942fc5d4396356f",
+        "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/jsdom/package.json": "e87940b12f720a5b735a5df82108b634a238b8c6ebced71050a346a1675575b9"
+      },
+      "installation_identity": [
+        16777232,
+        153860785
+      ],
+      "cleanup": {
+        "groups": [
+          29367
+        ],
+        "groups_absent": true,
+        "reservation_released": true,
+        "root": "/private/tmp/test-stamp-shard-439192f1ca554d24b2dbf98005f84fe3",
+        "scratch_absent": true,
+        "scratch_manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/consumer-decision-1793927029466454000/ownership/439192f1ca554d24b2dbf98005f84fe3.json",
+        "token": "439192f1ca554d24b2dbf98005f84fe3"
+      }
+    },
+    {
+      "run": "consumer-affected-1793927058092590000",
+      "summary": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/consumer-affected-1793927058092590000/summary.json",
+      "summary_sha256": "90777b2f03f648aa9476291f4dd13e2b7eddc378c8c8af9bf39e716f39641156",
+      "command": [
+        "/opt/homebrew/bin/node",
+        "--test",
+        "--test-reporter=tap",
+        "--test-concurrency=1",
+        "server/test/gcsp-offer-view-projection.test.js",
+        "server/test/gcsp-offer-view-http.test.js",
+        "server/test/gcsp-offer-view-controller.test.js",
+        "server/test/gcsp-offer-view-render.test.js",
+        "server/test/ui-ratchet.test.js"
+      ],
+      "counts": {
+        "fail": 0,
+        "pass": 119,
+        "skipped": 0,
+        "tests": 119
+      },
+      "wall": 1.541192791,
+      "peak_rss_bytes": 217645056,
+      "peak_combined_bytes": 65728,
+      "limits": {
+        "combinedMiB": 128,
+        "logMiB": 2,
+        "ramMiB": 384,
+        "seconds": 120,
+        "workers": 1
+      },
+      "strict_receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/consumer-affected-1793927058092590000/strict/targeted-f6b779f5ff34620e5ee4be779b355d516c0fbbc2bc39eb7acffb5956bce9de2c-default-1793927060560155000.json",
+      "strict_receipt_sha256": "6ee81ad878501c5b0e21be8d9c8594ec297f5054848dfa983e276bfda1e55fb6",
+      "strict": {
+        "scope": "targeted",
+        "result": "passed",
+        "code_key": "f6b779f5ff34620e5ee4be779b355d516c0fbbc2bc39eb7acffb5956bce9de2c",
+        "head": "dc767ff3d4a9f3ba50eede3a76131c69d06308d0",
+        "tree": "221e4732bbced44d4b116926fe79af92fdfe23f2",
+        "dirty": true,
+        "base_commit": "b95b4c8ad8a4534cbf03f287eb62fc8a57bbda96",
+        "variant": "default",
+        "ran": 119,
+        "skipped": 0,
+        "execution_identity": {
+          "code": "f6b779f5ff34620e5ee4be779b355d516c0fbbc2bc39eb7acffb5956bce9de2c",
+          "environment": "a86c1a5cbc83935b4e808f60bdb14060572675b676b52666fa8cd8a1be159d42",
+          "inputs": {
+            "../../../node_modules/jsdom/lib/api.js": "22a63aa40bad13ea909a115b0c49fbae3493a291414765221942fc5d4396356f",
+            "../../../node_modules/jsdom/package.json": "e87940b12f720a5b735a5df82108b634a238b8c6ebced71050a346a1675575b9",
+            "../../test-runs/fucq105/consumer-supervisor.py": "6dd77f4d315d391cd18224731a0f019c36c7d17afb4c8266f39dbd772cf48b36",
+            "COMPONENTS.md": "efd12f582a943082c437c03593e584c4c5129c830ef4ecd858bfdf1bc5fb9c7b",
+            "_tools/scaffold_git.py": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a",
+            "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+            "_tools/test_stamp.py": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
+            "blocks/gcsp/brief/brief-view-model.js": "7eea953d26aaeded1f6fe5ac219ebcc0f0c739f8f003b7ca61414dc4da1aa366",
+            "blocks/gcsp/employee/gcsp-employee.css": "3cab6080aa52605d92b5f616151087fe289e72c43045a7f396a8bffca7112b6f",
+            "blocks/gcsp/kit/form-controls.css": "0dec8818344defbe8b5718cdeef131d71faae782515f8ea3dce56b9e43002057",
+            "blocks/gcsp/kit/form-controls.js": "4df9e86f3d51f33397bd524b95f35a40240c931b441f91a7b8b05ef89fe508b4",
+            "blocks/gcsp/offer/fixtures.js": "56f099bdc808f6be34f6ba717eaa601d3bd1dfcd9095e55470cefe0f8f392a07",
+            "blocks/gcsp/offer/gcsp-offer.css": "d5e0f0dae8adf3f6e25144f1a0bd2ffc28955b6b5749ac9f24ac686c1060d501",
+            "blocks/gcsp/offer/gcsp-offer.js": "dcb85e16ee55a50398b7576f9c23e3e5bcf1ec81b712983ffd3c47bffeeb173f",
+            "blocks/gcsp/offer/harness.js": "ae8150a6f14498789d5403de9220e13e352cdabd1b490eb3285059a60821e288",
+            "blocks/gcsp/offer/http-adapter.js": "7ed45f955e5bdb437cb94f62bef0dbb3b8ac9d5ad2a8c477f4fe91da5297fbc5",
+            "blocks/gcsp/offer/offer-controller.js": "672d5f113751f2483a10dad219ce77d5d5c25b3b1cb1429cfc9b6aa1cb14f400",
+            "blocks/gcsp/offer/offer-projection.js": "fc8f500cd82ef4d18c9fde4062bb4880534c50e78bbcd729bd0a90b97457e64e",
+            "blocks/gcsp/offer/offer-view.js": "de5d37114ab4a4400d73a7086d8426c00d4d6cf63a77c22463a029316a324d4a",
+            "blocks/gcsp/offer/preview.html": "14779d344511021d8d885bc546161fa132b3d57a1377fa1e566ab62511cd4197",
+            "blocks/gcsp/shell/density-theme.css": "c2a680854e05bf88edc335308797b636038ff5bdd980f101e8f32edd451f3593",
+            "blocks/gcsp/shell/density-typography.css": "6d238b5c4dee9058e9fd32e0e5704e95a94eb7e5cdc82c9fb051534d6ea44641",
+            "blocks/gcsp/shell/fonts/density-fonts.css": "bf13d49ea7fc1d75888a06881e2ce1a0151875a69177c937045ea86ce4ac1e7c",
+            "blocks/gcsp/shell/gcsp-shell.css": "347fd90e22ea14fcdceda92c9da095da86fc1164ebb0926577d6e5cb9068014e",
+            "blocks/gcsp/shell/gcsp-tokens.css": "3a4b773eb4e67734cead53956e39323d3050af6e35465b6c275084096ed93cde",
+            "blocks/gcsp/shell/portal-shell.js": "7e62088d69bfa43ff0ccff2678931fe1e48c7a0b3814184f449f308cf4ebaa01",
+            "blocks/vehicle-matcher/employee-card-fixture.js": "58c90dfef0ee120148bba7dc6663eb985071d4a8e6e2195296966a6987df797d",
+            "blocks/vehicle-matcher/gcsp-kit.css": "ac08fa1725a878af7a6c4c3f1659b934274b4a6ad181aaa66452db4da845c210",
+            "blocks/vehicle-matcher/modes/brand-copy.js": "485098aea61944c5fd62047164b4aabfdd1c95c2ff2be9aacf5dae211d195ec9",
+            "blocks/vehicle-matcher/modes/result-card.js": "cc5d50468f45f1c751c597ece89ca5d7dfe88f70d98dd606104ad3504007f948",
+            "blocks/vehicle-matcher/ui.js": "49107097a7927e388ff78949045827f3a8903fea0bd758dbe1aa597bec82d8b2",
+            "blocks/vehicle-matcher/vehicle-matcher.css": "11d7af7f3f05766c9c32c107f75f31d269d5531de4040938b34cea8b3854ea94",
+            "docs/gcsp/evidence/fucq105/producer-access.json": "e50f3c56f3df4d3437a6fd2ec91e62fd713e0c1c5a42ce0d44753110a5535080",
+            "docs/gcsp/evidence/fucq105/producer-decline-access.json": "c9a63f5b6dacfeb0c3720904ee218c085039903f55a74b551fb463fd70a626f5",
+            "server/test/gcsp-offer-view-controller.test.js": "6f5f38ff5aed0be5c9311928a686c01ab4497fff8fb11bf9a5e6836880ad7020",
+            "server/test/gcsp-offer-view-http.test.js": "187417ff96edef4519668688f93d2bbb700b3e2d4f28056b193734f280e8cde2",
+            "server/test/gcsp-offer-view-projection.test.js": "f0928fdcc36e66b447f1174d565ea7d9a88bee4d3b20747cdb711c4f48d84c40",
+            "server/test/gcsp-offer-view-render.test.js": "5ebd9e26da6a4a5b13cc952ea34477ddbd8354c1f180b332c04a2beccad0691e",
+            "server/test/ui-ratchet.json": "d74cf7a0e9c0949a43624b6f3ac63b0f8af2d63c8687f24a85964fd9a54914d7",
+            "server/test/ui-ratchet.test.js": "64b1103a846180442466834a766d9da4dab49547cd509f3421ae1a4d946915b7"
+          },
+          "interpreter": [
+            "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+            "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]"
+          ],
+          "platform": "macOS-26.5.1-arm64-arm-64bit",
+          "scope": "targeted",
+          "selected": [
+            "/opt/homebrew/bin/node --test --test-reporter=tap --test-concurrency=1 server/test/gcsp-offer-view-projection.test.js server/test/gcsp-offer-view-http.test.js server/test/gcsp-offer-view-controller.test.js server/test/gcsp-offer-view-render.test.js server/test/ui-ratchet.test.js"
+          ],
+          "settings": "a838e1d356aeecbf6b513f60d062ff3af5e6b4b84a412a1aa55f181098e75e38",
+          "variant": "default",
+          "version": 1
+        }
+      },
+      "source_test_asset_hashes": {
+        "blocks/gcsp/brief/brief-view-model.js": "7eea953d26aaeded1f6fe5ac219ebcc0f0c739f8f003b7ca61414dc4da1aa366",
+        "blocks/gcsp/employee/gcsp-employee.css": "3cab6080aa52605d92b5f616151087fe289e72c43045a7f396a8bffca7112b6f",
+        "blocks/gcsp/kit/form-controls.css": "0dec8818344defbe8b5718cdeef131d71faae782515f8ea3dce56b9e43002057",
+        "blocks/gcsp/kit/form-controls.js": "4df9e86f3d51f33397bd524b95f35a40240c931b441f91a7b8b05ef89fe508b4",
+        "blocks/gcsp/offer/fixtures.js": "56f099bdc808f6be34f6ba717eaa601d3bd1dfcd9095e55470cefe0f8f392a07",
+        "blocks/gcsp/offer/gcsp-offer.css": "d5e0f0dae8adf3f6e25144f1a0bd2ffc28955b6b5749ac9f24ac686c1060d501",
+        "blocks/gcsp/offer/gcsp-offer.js": "dcb85e16ee55a50398b7576f9c23e3e5bcf1ec81b712983ffd3c47bffeeb173f",
+        "blocks/gcsp/offer/harness.js": "ae8150a6f14498789d5403de9220e13e352cdabd1b490eb3285059a60821e288",
+        "blocks/gcsp/offer/http-adapter.js": "7ed45f955e5bdb437cb94f62bef0dbb3b8ac9d5ad2a8c477f4fe91da5297fbc5",
+        "blocks/gcsp/offer/offer-controller.js": "672d5f113751f2483a10dad219ce77d5d5c25b3b1cb1429cfc9b6aa1cb14f400",
+        "blocks/gcsp/offer/offer-projection.js": "fc8f500cd82ef4d18c9fde4062bb4880534c50e78bbcd729bd0a90b97457e64e",
+        "blocks/gcsp/offer/offer-view.js": "de5d37114ab4a4400d73a7086d8426c00d4d6cf63a77c22463a029316a324d4a",
+        "blocks/gcsp/offer/preview.html": "14779d344511021d8d885bc546161fa132b3d57a1377fa1e566ab62511cd4197",
+        "blocks/gcsp/shell/density-theme.css": "c2a680854e05bf88edc335308797b636038ff5bdd980f101e8f32edd451f3593",
+        "blocks/gcsp/shell/density-typography.css": "6d238b5c4dee9058e9fd32e0e5704e95a94eb7e5cdc82c9fb051534d6ea44641",
+        "blocks/gcsp/shell/fonts/density-fonts.css": "bf13d49ea7fc1d75888a06881e2ce1a0151875a69177c937045ea86ce4ac1e7c",
+        "blocks/gcsp/shell/gcsp-shell.css": "347fd90e22ea14fcdceda92c9da095da86fc1164ebb0926577d6e5cb9068014e",
+        "blocks/gcsp/shell/gcsp-tokens.css": "3a4b773eb4e67734cead53956e39323d3050af6e35465b6c275084096ed93cde",
+        "blocks/gcsp/shell/portal-shell.js": "7e62088d69bfa43ff0ccff2678931fe1e48c7a0b3814184f449f308cf4ebaa01",
+        "blocks/vehicle-matcher/employee-card-fixture.js": "58c90dfef0ee120148bba7dc6663eb985071d4a8e6e2195296966a6987df797d",
+        "blocks/vehicle-matcher/gcsp-kit.css": "ac08fa1725a878af7a6c4c3f1659b934274b4a6ad181aaa66452db4da845c210",
+        "blocks/vehicle-matcher/modes/brand-copy.js": "485098aea61944c5fd62047164b4aabfdd1c95c2ff2be9aacf5dae211d195ec9",
+        "blocks/vehicle-matcher/modes/result-card.js": "cc5d50468f45f1c751c597ece89ca5d7dfe88f70d98dd606104ad3504007f948",
+        "blocks/vehicle-matcher/ui.js": "49107097a7927e388ff78949045827f3a8903fea0bd758dbe1aa597bec82d8b2",
+        "blocks/vehicle-matcher/vehicle-matcher.css": "11d7af7f3f05766c9c32c107f75f31d269d5531de4040938b34cea8b3854ea94",
+        "docs/gcsp/evidence/fucq105/producer-access.json": "e50f3c56f3df4d3437a6fd2ec91e62fd713e0c1c5a42ce0d44753110a5535080",
+        "docs/gcsp/evidence/fucq105/producer-decline-access.json": "c9a63f5b6dacfeb0c3720904ee218c085039903f55a74b551fb463fd70a626f5",
+        "server/test/gcsp-offer-view-controller.test.js": "6f5f38ff5aed0be5c9311928a686c01ab4497fff8fb11bf9a5e6836880ad7020",
+        "server/test/gcsp-offer-view-http.test.js": "187417ff96edef4519668688f93d2bbb700b3e2d4f28056b193734f280e8cde2",
+        "server/test/gcsp-offer-view-projection.test.js": "f0928fdcc36e66b447f1174d565ea7d9a88bee4d3b20747cdb711c4f48d84c40",
+        "server/test/gcsp-offer-view-render.test.js": "5ebd9e26da6a4a5b13cc952ea34477ddbd8354c1f180b332c04a2beccad0691e",
+        "server/test/ui-ratchet.json": "d74cf7a0e9c0949a43624b6f3ac63b0f8af2d63c8687f24a85964fd9a54914d7",
+        "server/test/ui-ratchet.test.js": "64b1103a846180442466834a766d9da4dab49547cd509f3421ae1a4d946915b7"
+      },
+      "dependencies": {
+        "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/jsdom/lib/api.js": "22a63aa40bad13ea909a115b0c49fbae3493a291414765221942fc5d4396356f",
+        "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/jsdom/package.json": "e87940b12f720a5b735a5df82108b634a238b8c6ebced71050a346a1675575b9"
+      },
+      "installation_identity": [
+        16777232,
+        153860785
+      ],
+      "cleanup": {
+        "groups": [
+          29975
+        ],
+        "groups_absent": true,
+        "reservation_released": true,
+        "root": "/private/tmp/test-stamp-shard-a4824591b1dc4cd485955e58a8f1f9aa",
+        "scratch_absent": true,
+        "scratch_manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/consumer-affected-1793927058092590000/ownership/a4824591b1dc4cd485955e58a8f1f9aa.json",
+        "token": "a4824591b1dc4cd485955e58a8f1f9aa"
+      }
+    }
+  ],
+  "audit": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/consumer-independent-audit.json",
+    "sha256": "e9db917c2f356b8e4683db5b90528235c790f6dea17e016722c68ef9efe409ac",
+    "result": {
+      "helper_768_sha256": "4e5df4813e979cfd227057d2d217728d47decec864c7e34b37cb41512114e759",
+      "helper_current_sha256": "6dd77f4d315d391cd18224731a0f019c36c7d17afb4c8266f39dbd772cf48b36",
+      "installed_environments": "preserved; no link/install/copy created",
+      "leftovers": [],
+      "manifest_cleanup": "All owned scratch manifests independently checked, then removed. External plans, summaries, strict receipts and bounded failures retained.",
+      "runs": [
+        {
+          "checks": {
+            "groups_absent": true,
+            "owner_exited": true,
+            "reservation_absent": true,
+            "scratch_absent": true,
+            "scratch_manifest_removed_state": true
+          },
+          "removed_allocation": 53248,
+          "run": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/consumer-affected-1793927001397091000",
+          "status": "failed"
+        },
+        {
+          "checks": {
+            "groups_absent": true,
+            "owner_exited": true,
+            "reservation_absent": true,
+            "scratch_absent": true,
+            "scratch_manifest_removed_state": true
+          },
+          "removed_allocation": 0,
+          "run": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/consumer-affected-1793927043245878000",
+          "status": "failed"
+        },
+        {
+          "checks": {
+            "dependency_hashes_preserved": true,
+            "dependency_installation_preserved": true,
+            "groups_absent": true,
+            "owner_exited": true,
+            "product_test_inputs_unchanged": true,
+            "reservation_absent": true,
+            "scratch_absent": true,
+            "scratch_manifest_removed_state": true
+          },
+          "removed_allocation": 32768,
+          "run": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/consumer-affected-1793927058092590000",
+          "status": "passed"
+        },
+        {
+          "checks": {
+            "groups_absent": true,
+            "owner_exited": true,
+            "reservation_absent": true,
+            "scratch_absent": true,
+            "scratch_manifest_removed_state": true
+          },
+          "removed_allocation": 4096,
+          "run": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/consumer-decision-1793926957958257000",
+          "status": "failed"
+        },
+        {
+          "checks": {
+            "groups_absent": true,
+            "owner_exited": true,
+            "reservation_absent": true,
+            "scratch_absent": true,
+            "scratch_manifest_removed_state": true
+          },
+          "removed_allocation": 4096,
+          "run": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/consumer-decision-1793926983648090000",
+          "status": "passed"
+        },
+        {
+          "checks": {
+            "dependency_hashes_preserved": true,
+            "dependency_installation_preserved": true,
+            "groups_absent": true,
+            "owner_exited": true,
+            "product_test_inputs_unchanged": true,
+            "reservation_absent": true,
+            "scratch_absent": true,
+            "scratch_manifest_removed_state": true
+          },
+          "removed_allocation": 4096,
+          "run": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/consumer-decision-1793927029466454000",
+          "status": "passed"
+        }
+      ],
+      "status": "passed"
+    }
+  },
+  "history": {
+    "first_decision_failure": "consumer-decision-1793926957958257000:12pass/2fail; expected URL did not encode offer ID, test changed now instead of DTO serverNow; explicit TAP reporter added for counts.",
+    "superseded_decision_pass": "consumer-decision-1793926983648090000:14pass on sources before CSP helper rename/import-only CSS adjustment. Replaced by current14pass.",
+    "affected_failure": "consumer-affected-1793927001397091000:117pass/2fail; CSP regex treated helper name only as inline event attribute; renamed hasOnlyKeys; form import exceeded12-line cap; import-only composition preserves cap. Checks/baseline unchanged.",
+    "capacity_defer": "consumer-affected-1793927043245878000: no child allocated,805306368B requested versus494993408B available. Reduced reservation to384MiB based on measured232MiB child peak; final sequential119pass.",
+    "audit_correction": "Independent audit initially compared superseded passing source hashes to current tree. Final audit limits current-source checks to the two final runs and audits resource absence for all six attempts; no product rerun."
+  },
+  "open_gates": [
+    "Frozen mixed actual100/102/106 source/test/helper plan and root review before execution",
+    "Canonical decline reason registry adoption for successful canonical decline",
+    "Actual shared access singleton, invalid-cookie refusal and employee account session in delivered host",
+    "Delivered /gcsp/offer mapping and same-origin HTTPS API arrangement",
+    "Full current-car facts, browser1280/375 keyboard/reduced-motion/reload/second-browser/presenter and authored full checks",
+    "Lead review and collaborator acceptance"
+  ]
+}

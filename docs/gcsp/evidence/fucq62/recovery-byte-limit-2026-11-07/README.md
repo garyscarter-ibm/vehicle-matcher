@@ -1,0 +1,9 @@
+# Recovery manifest byte limit — 7 November 2026
+
+The final .12 package includes its .11 predecessor (154,046,635 bytes of configuration JSONL). The production release selector found that code-owned predecessor, then discarded its descriptor limit and applied the 64 MiB default. This blocks the required large-corpus recovery check.
+
+`releaseLimits` now uses the descriptor already selected by the existing exact-current/exact-previous lookup. Unknown digests retain 64 MiB, explicit primary anchors retain precedence, and validated descriptor bounds remain at most 256 MiB. The new regression loads the actual unchanged module against tiny code-owned descriptor fixtures. It failed before the repair at the previous-only bound (64 versus 256 MiB); all three selected descriptor/limit tests then passed, with no skips. The actual .12 append preserves every prior descriptor.
+
+Validation is scoped: descriptor validation, current/previous/unknown resolution, direct-anchor precedence and the caller-limit override. Full suite, source, native database and UI are excluded because this change is the pure descriptor limit selector; real .12 cold restore and recovery remain separate pending integration checks. Each red/green run used one supervised worker, at most 16 MiB scratch and 512 MiB host RAM for 60 seconds. Cleanup receipts prove owned scratch, process groups, temporary dependency link and reservations absent; useful logs remain in the named parent run metadata. No compatibility exception applies.
+
+Severity is Medium. Required recovery integration makes this a concrete delivery blocker worth the small repair. Jira issue capture is pending because the connector OAuth refresh is invalid; no issue key or native link is invented. This is not a Story acceptance or live deployment claim. The final package retains the known 2,707 consumer failures, earlier strict-CLI timeout and unrun native order-reference proof.

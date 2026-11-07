@@ -1,0 +1,7 @@
+# Actual pilot chunk 01 — 7 November 2026
+
+Retained 30 new distinct source-qualified admitted configurations in 26.581 seconds using 36 serial actual GETs and 1,053,467 decoded bytes. Two requests were source-not-constructible; there were no duplicates, HTTP failures, timeouts, substitutions, retries or cache evictions. Source capacity is now 59 including the previous 29. Target 32 was unmet; this chunk remains incomplete with `queue-exhausted`, and no F61 Done/full10k/runtime acceptance is inferred.
+
+The atomic primary `collector-checkpoint.json` lived in this retained directory from its first write. It equals exported `collector-state.json`; checkpoint SHA is in `receipt.json` and `checkpoint-export.json`. Fresh source tree/options and all 30 solver captures, `accepted.jsonl`, exact prior canonical/spent indexes, plan and original producer pins remain retrievable. `outcome-index.json` records all 32 requests including rejections. Existing reference IDs remain separately labelled.
+
+The same tested finalizer exporter confirmed the retained primary before scratch cleanup. Source/binder code identity was unchanged. Child RSS peaked at 345,817,088 bytes; owned scratch allocation was 0 bytes because checkpoints are retained deliverables. Scratch directory, process groups, dependency link and reservation are absent, with no leftover writer metadata or compatibility exception. `resource-receipt.json` records the scoped postcleanup integrity checks and supervisor receipt. Further chunks remain held until root releases the lane after application validation.

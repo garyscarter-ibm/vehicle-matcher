@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "story": "FUCQ-69",
+  "date": "2026-11-06",
+  "state": "incomplete; exactly-once grant consumed; no retry",
+  "grant": "fucq69-history-back-606726c-0644",
+  "revision": "606726c234abbda4dac752b1d6fc59169cc64824",
+  "originalFrozenHashes": {
+    "closure": "c786b36faff60cc984caa5afbf5e13cf2c19d9db983f2e109d57f19e7dc0f0c0",
+    "supervisor": "a1eed95114bd17df4589af65765dea4ce50841260cf640828db27902054b0dc6",
+    "plan": "281eaf1c234e957edc016a493b0f7a0b6d2612618052ff9116ba5dc56b4839fe"
+  },
+  "originalExecution": {
+    "type": "commandExecution",
+    "id": "exec-0f8c3622-9afa-4aa5-b3f7-826548b6174e",
+    "command": "/bin/zsh -c '/usr/bin/python3 -I -B -S docs/gcsp/evidence/fucq69/history-back-supervisor.py --dispatcher-grant fucq69-history-back-606726c-0644 --expected-closure-sha256 c786b36faff60cc984caa5afbf5e13cf2c19d9db983f2e109d57f19e7dc0f0c0'",
+    "cwd": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-068",
+    "status": "failed",
+    "exitCode": 1,
+    "durationMs": 652,
+    "output": {
+      "text": "Traceback (most recent call last):\n  File \"/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-068/docs/gcsp/evidence/fucq69/history-back-supervisor.py\", line 997, in <module>\n    sys.exit(run())\n  File \"/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-068/docs/gcsp/evidence/fucq69/history-back-supervisor.py\", line 286, in run\n    raise RuntimeError('Use the frozen Python executable.')\nRuntimeError: Use the frozen Python executable.\n",
+      "truncated": false
+    }
+  },
+  "originalIndependentAuditStdout": "{\n  \"audit\": \"read-only independent failure/input audit\",\n  \"checks\": 2931,\n  \"failures\": [],\n  \"controllerExit\": 1,\n  \"controllerWallSeconds\": 0.652027625,\n  \"failure\": \"frozen Python executable guard, supervisor line286\",\n  \"expectedPythonPath\": \"/usr/bin/python3\",\n  \"expectedPythonRealpath\": \"/usr/bin/python3\",\n  \"auditorSysExecutable\": \"/Library/Developer/CommandLineTools/usr/bin/python3\",\n  \"auditorExecutableRealpath\": \"/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9\",\n  \"auditorPythonVersionMatches\": true,\n  \"fourCaseTests\": \"not started\",\n  \"tapReceiptCheckpointForGrant\": [],\n  \"sourceDependencyToolPinsUnchanged\": true,\n  \"scope\": \"No helper re-import, test retry, repair, product change or publication\",\n  \"cleanup\": {\n    \"testPids\": [],\n    \"testGroups\": [],\n    \"scratch\": null,\n    \"token\": null,\n    \"manifest\": null,\n    \"controllerPid\": \"not recorded: guard preceded ownership setup\",\n    \"resourceLifecycle\": \"failed before helper import/UUID/HostBudget/scratch/Popen; no owned test allocation created\"\n  },\n  \"ledger\": {\n    \"rows\": 0,\n    \"sha256\": \"ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356\",\n    \"foreignRowsPreserved\": true,\n    \"mutation\": \"none\",\n    \"ownedToken\": \"not generated before failing guard\"\n  },\n  \"closureSha256\": \"c786b36faff60cc984caa5afbf5e13cf2c19d9db983f2e109d57f19e7dc0f0c0\"\n}\n",
+  "independentAudit": {
+    "audit": "read-only independent failure/input audit",
+    "checks": 2931,
+    "failures": [],
+    "controllerExit": 1,
+    "controllerWallSeconds": 0.652027625,
+    "failure": "frozen Python executable guard, supervisor line286",
+    "expectedPythonPath": "/usr/bin/python3",
+    "expectedPythonRealpath": "/usr/bin/python3",
+    "auditorSysExecutable": "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "auditorExecutableRealpath": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+    "auditorPythonVersionMatches": true,
+    "fourCaseTests": "not started",
+    "tapReceiptCheckpointForGrant": [],
+    "sourceDependencyToolPinsUnchanged": true,
+    "scope": "No helper re-import, test retry, repair, product change or publication",
+    "cleanup": {
+      "testPids": [],
+      "testGroups": [],
+      "scratch": null,
+      "token": null,
+      "manifest": null,
+      "controllerPid": "not recorded: guard preceded ownership setup",
+      "resourceLifecycle": "failed before helper import/UUID/HostBudget/scratch/Popen; no owned test allocation created"
+    },
+    "ledger": {
+      "rows": 0,
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "foreignRowsPreserved": true,
+      "mutation": "none",
+      "ownedToken": "not generated before failing guard"
+    },
+    "closureSha256": "c786b36faff60cc984caa5afbf5e13cf2c19d9db983f2e109d57f19e7dc0f0c0"
+  },
+  "provenance": "Exact execution record and independent audit stdout recovered from this chat's original tool results; neither run nor audit was repeated for publication.",
+  "authorization": "Root authorized persistence and minimal executable-identity contract correction only. Fresh independent review, current admission and a new grant are required before another run."
+}

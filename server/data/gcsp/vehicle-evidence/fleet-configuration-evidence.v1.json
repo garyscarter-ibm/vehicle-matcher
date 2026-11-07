@@ -1,0 +1,650 @@
+{
+  "schemaVersion": "1",
+  "selectionId": "f60-selected10000-20261107",
+  "qualification": "reviewed-retained-configuration-plan",
+  "sourceAcceptance": false,
+  "rawSourceRevalidated": false,
+  "sourceCalls": 0,
+  "count": 10000,
+  "counts": {
+    "historicalCandidateRecords": 1,
+    "newSource": 1949,
+    "preservedBaselineSource": 8051,
+    "selectedSource": 10000,
+    "strictV2CandidateRecords": 9999,
+    "surplusSource": 351
+  },
+  "artifacts": [
+    {
+      "artifact": "selection-manifest.json",
+      "bytes": 15991212,
+      "sha256": "216359c111a5169d15a98de1c476a5c62714a3b3a7ee71431c325a45c90f096f"
+    },
+    {
+      "artifact": "coverage.json",
+      "bytes": 2434066,
+      "sha256": "801cb148b1f68f4186bc4855fa8bdabeca275cf43b52ce8f4aa63de17eb94353"
+    },
+    {
+      "artifact": "selection-receipt.json",
+      "bytes": 904,
+      "sha256": "13c8ae1533f8e12e300d345ff5c312b8f97bd9db57a8540626270b6efa8a1203"
+    }
+  ],
+  "canonicalIndexes": {
+    "baseline8051": "27f64e520748836f9f88db39f15725e78daa535db9f253e1ae7b9772ad1f2991",
+    "final10351": "09ca95146b2ae87bb494d9f5bf3fccc12af69ba4cc68ed3d83b79965cd2df4bc"
+  },
+  "context": {
+    "market": "GB",
+    "locale": "en-GB",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05",
+    "taxDate": "2027-01-05",
+    "steeringLiteral": "RL"
+  },
+  "models": [
+    {
+      "vgModelCode": "1F7A",
+      "agModelCode": "82GE",
+      "rawModelRange": "F70",
+      "count": 859
+    },
+    {
+      "vgModelCode": "1F7B",
+      "agModelCode": "82GE",
+      "rawModelRange": "F70",
+      "count": 8
+    },
+    {
+      "vgModelCode": "1F7C",
+      "agModelCode": "22GE",
+      "rawModelRange": "F70",
+      "count": 1848
+    },
+    {
+      "vgModelCode": "1F7D",
+      "agModelCode": "62GE",
+      "rawModelRange": "F70",
+      "count": 1133
+    },
+    {
+      "vgModelCode": "1F7E",
+      "agModelCode": "82GE",
+      "rawModelRange": "F70",
+      "count": 780
+    },
+    {
+      "vgModelCode": "1F7F",
+      "agModelCode": "62GE",
+      "rawModelRange": "F70",
+      "count": 768
+    },
+    {
+      "vgModelCode": "2PBC",
+      "agModelCode": "52FA",
+      "rawModelRange": "G42",
+      "count": 440
+    },
+    {
+      "vgModelCode": "2PMA",
+      "agModelCode": "12CM",
+      "rawModelRange": "G42",
+      "count": 320
+    },
+    {
+      "vgModelCode": "2PMB",
+      "agModelCode": "22CM",
+      "rawModelRange": "G42",
+      "count": 480
+    },
+    {
+      "vgModelCode": "2PMC",
+      "agModelCode": "52FA",
+      "rawModelRange": "G42",
+      "count": 528
+    },
+    {
+      "vgModelCode": "2PPA",
+      "agModelCode": "12CM",
+      "rawModelRange": "G42",
+      "count": 320
+    },
+    {
+      "vgModelCode": "2PPB",
+      "agModelCode": "22CM",
+      "rawModelRange": "G42",
+      "count": 320
+    },
+    {
+      "vgModelCode": "I4MF",
+      "agModelCode": "52HD",
+      "rawModelRange": "G26",
+      "count": 72
+    },
+    {
+      "vgModelCode": "I4MG",
+      "agModelCode": "62HD",
+      "rawModelRange": "G26",
+      "count": 63
+    },
+    {
+      "vgModelCode": "I4PC",
+      "agModelCode": "72HD",
+      "rawModelRange": "G26",
+      "count": 79
+    },
+    {
+      "vgModelCode": "IX1H",
+      "agModelCode": "12HM",
+      "rawModelRange": "U11",
+      "count": 67
+    },
+    {
+      "vgModelCode": "IX1I",
+      "agModelCode": "12HM",
+      "rawModelRange": "U11",
+      "count": 65
+    },
+    {
+      "vgModelCode": "IX1K",
+      "agModelCode": "22HM",
+      "rawModelRange": "U11",
+      "count": 65
+    },
+    {
+      "vgModelCode": "IX1L",
+      "agModelCode": "22HM",
+      "rawModelRange": "U11",
+      "count": 58
+    },
+    {
+      "vgModelCode": "IX24",
+      "agModelCode": "72GN",
+      "rawModelRange": "U10",
+      "count": 68
+    },
+    {
+      "vgModelCode": "IX25",
+      "agModelCode": "82GN",
+      "rawModelRange": "U10",
+      "count": 59
+    },
+    {
+      "vgModelCode": "T3BE",
+      "agModelCode": "22GL",
+      "rawModelRange": "G21",
+      "count": 70
+    },
+    {
+      "vgModelCode": "T3MK",
+      "agModelCode": "22FY",
+      "rawModelRange": "G21",
+      "count": 72
+    },
+    {
+      "vgModelCode": "T3MR",
+      "agModelCode": "42GL",
+      "rawModelRange": "G21",
+      "count": 64
+    },
+    {
+      "vgModelCode": "T3PF",
+      "agModelCode": "22GL",
+      "rawModelRange": "G21",
+      "count": 89
+    },
+    {
+      "vgModelCode": "T3PK",
+      "agModelCode": "22FY",
+      "rawModelRange": "G21",
+      "count": 68
+    },
+    {
+      "vgModelCode": "T3PR",
+      "agModelCode": "42GL",
+      "rawModelRange": "G21",
+      "count": 67
+    },
+    {
+      "vgModelCode": "T5MJ",
+      "agModelCode": "72HH",
+      "rawModelRange": "G61",
+      "count": 341
+    },
+    {
+      "vgModelCode": "X135",
+      "agModelCode": "12EF",
+      "rawModelRange": "U11",
+      "count": 24
+    },
+    {
+      "vgModelCode": "X1M0",
+      "agModelCode": "32EE",
+      "rawModelRange": "U11",
+      "count": 69
+    },
+    {
+      "vgModelCode": "X1M1",
+      "agModelCode": "62EE",
+      "rawModelRange": "U11",
+      "count": 61
+    },
+    {
+      "vgModelCode": "X1M2",
+      "agModelCode": "12EG",
+      "rawModelRange": "U11",
+      "count": 62
+    },
+    {
+      "vgModelCode": "X1M3",
+      "agModelCode": "52EG",
+      "rawModelRange": "U11",
+      "count": 56
+    },
+    {
+      "vgModelCode": "X1M6",
+      "agModelCode": "22EF",
+      "rawModelRange": "U11",
+      "count": 57
+    },
+    {
+      "vgModelCode": "X1M7",
+      "agModelCode": "32EF",
+      "rawModelRange": "U11",
+      "count": 59
+    },
+    {
+      "vgModelCode": "X1X0",
+      "agModelCode": "32EE",
+      "rawModelRange": "U11",
+      "count": 62
+    },
+    {
+      "vgModelCode": "X1X2",
+      "agModelCode": "12EG",
+      "rawModelRange": "U11",
+      "count": 62
+    },
+    {
+      "vgModelCode": "X1X3",
+      "agModelCode": "52EG",
+      "rawModelRange": "U11",
+      "count": 60
+    },
+    {
+      "vgModelCode": "X1X6",
+      "agModelCode": "22EF",
+      "rawModelRange": "U11",
+      "count": 57
+    },
+    {
+      "vgModelCode": "X1X7",
+      "agModelCode": "32EF",
+      "rawModelRange": "U11",
+      "count": 56
+    },
+    {
+      "vgModelCode": "X1XL",
+      "agModelCode": "62EE",
+      "rawModelRange": "U11",
+      "count": 49
+    },
+    {
+      "vgModelCode": "X235",
+      "agModelCode": "82GM",
+      "rawModelRange": "U10",
+      "count": 23
+    },
+    {
+      "vgModelCode": "X2MS",
+      "agModelCode": "22GM",
+      "rawModelRange": "U10",
+      "count": 72
+    }
+  ],
+  "vgModelCodes": [
+    "1F7A",
+    "1F7B",
+    "1F7C",
+    "1F7D",
+    "1F7E",
+    "1F7F",
+    "2PBC",
+    "2PMA",
+    "2PMB",
+    "2PMC",
+    "2PPA",
+    "2PPB",
+    "I4MF",
+    "I4MG",
+    "I4PC",
+    "IX1H",
+    "IX1I",
+    "IX1K",
+    "IX1L",
+    "IX24",
+    "IX25",
+    "T3BE",
+    "T3MK",
+    "T3MR",
+    "T3PF",
+    "T3PK",
+    "T3PR",
+    "T5MJ",
+    "X135",
+    "X1M0",
+    "X1M1",
+    "X1M2",
+    "X1M3",
+    "X1M6",
+    "X1M7",
+    "X1X0",
+    "X1X2",
+    "X1X3",
+    "X1X6",
+    "X1X7",
+    "X1XL",
+    "X235",
+    "X2MS"
+  ],
+  "agModelCodes": [
+    "12CM",
+    "12EF",
+    "12EG",
+    "12HM",
+    "22CM",
+    "22EF",
+    "22FY",
+    "22GE",
+    "22GL",
+    "22GM",
+    "22HM",
+    "32EE",
+    "32EF",
+    "42GL",
+    "52EG",
+    "52FA",
+    "52HD",
+    "62EE",
+    "62GE",
+    "62HD",
+    "72GN",
+    "72HD",
+    "72HH",
+    "82GE",
+    "82GM",
+    "82GN"
+  ],
+  "rawModelRanges": [
+    "F70",
+    "G21",
+    "G26",
+    "G42",
+    "G61",
+    "U10",
+    "U11"
+  ],
+  "options": {
+    "paintCodes": [
+      "P0300",
+      "P0416",
+      "P0475",
+      "P0490",
+      "P0668",
+      "P0A90",
+      "P0A96",
+      "P0C1M",
+      "P0C31",
+      "P0C3N",
+      "P0C3Z",
+      "P0C4A",
+      "P0C4P",
+      "P0C4W",
+      "P0C56",
+      "P0C5A",
+      "P0C5Y",
+      "P0C64",
+      "P0C68",
+      "P0C6E",
+      "P0C6R",
+      "P0X1E"
+    ],
+    "upholsteryCodes": [
+      "FBLAT",
+      "FECI2",
+      "FEPMI",
+      "FKHG6",
+      "FKHG7",
+      "FKHKC",
+      "FKHRI",
+      "FKHSW",
+      "FKSFU",
+      "FKSJX",
+      "FKSSW",
+      "FKTNL",
+      "FKTSW",
+      "FKUCX",
+      "FKUFU",
+      "FKUIC",
+      "FKUKF",
+      "FKUKP",
+      "FKUMY",
+      "FKUSW",
+      "FLKSW",
+      "FMAH7",
+      "FMAL3",
+      "FMAMU",
+      "FMANL",
+      "FMAOI",
+      "FMASW",
+      "FVAEW",
+      "FVATQ",
+      "FVCJL",
+      "FVCJM",
+      "FVCJN",
+      "FZASW"
+    ],
+    "factoryOptionCount": {
+      "maximum": 68,
+      "minimum": 35
+    },
+    "selectedAccessoryCount": [
+      {
+        "count": 8703,
+        "value": 0
+      },
+      {
+        "count": 1297,
+        "value": 1
+      }
+    ],
+    "nonemptyAccessoryQuantities": "unknown",
+    "availability": "unknown",
+    "verifiedFitted": "unknown"
+  },
+  "catalogue": {
+    "completeness": [
+      {
+        "count": 8703,
+        "value": {
+          "accessoryCodes": "complete",
+          "accessoryQuantities": "complete",
+          "availability": "unknown",
+          "definitions": "unknown",
+          "factorySelection": "complete",
+          "measurements": "unknown",
+          "verifiedFitted": "unknown"
+        }
+      },
+      {
+        "count": 1297,
+        "value": {
+          "accessoryCodes": "complete",
+          "accessoryQuantities": "unknown",
+          "availability": "unknown",
+          "definitions": "unknown",
+          "factorySelection": "complete",
+          "measurements": "unknown",
+          "verifiedFitted": "unknown"
+        }
+      }
+    ],
+    "equipmentStates": [
+      {
+        "count": 10000,
+        "value": {
+          "available": "unknown",
+          "selected": "known",
+          "verifiedFitted": "unknown"
+        }
+      }
+    ],
+    "factStates": [
+      {
+        "count": 10000,
+        "value": {
+          "acceleration": {
+            "completeness": "unknown",
+            "definition": "0\u2013100 KM/H",
+            "state": "unknown",
+            "unit": "SECONDS"
+          },
+          "bodyLength": {
+            "completeness": "unknown",
+            "definition": "BODY LENGTH",
+            "state": "unknown",
+            "unit": "MILLIMETRES"
+          },
+          "luggageExpanded": {
+            "completeness": "unknown",
+            "definition": "EXPANDED",
+            "state": "unknown",
+            "unit": "LITRES"
+          },
+          "luggageNormal": {
+            "completeness": "unknown",
+            "definition": "NORMAL",
+            "state": "unknown",
+            "unit": "LITRES"
+          },
+          "seats": {
+            "completeness": "unknown",
+            "definition": "SEATS",
+            "state": "unknown",
+            "unit": "COUNT"
+          }
+        }
+      }
+    ],
+    "observedDate": [
+      {
+        "count": 10000,
+        "value": "2026-11-07"
+      }
+    ],
+    "optionalFactStates": [
+      {
+        "count": 10000,
+        "value": {
+          "catalogueProductionDate": "unknown",
+          "fuelTypeCode": "unknown",
+          "modelName": "unknown",
+          "modelYear": "unknown",
+          "physicalProductionDate": "unknown",
+          "plant": "unknown",
+          "trim": "unknown",
+          "verifiedFitted": "unknown"
+        }
+      }
+    ],
+    "retrievedDate": [
+      {
+        "count": 10000,
+        "value": "2026-11-07"
+      }
+    ],
+    "schemaVersion": [
+      {
+        "count": 10000,
+        "value": "2"
+      }
+    ],
+    "selectedAccessoryCount": [
+      {
+        "count": 8703,
+        "value": 0
+      },
+      {
+        "count": 1297,
+        "value": 1
+      }
+    ],
+    "status": [
+      {
+        "count": 10000,
+        "value": "partial"
+      }
+    ]
+  },
+  "coverageGroups": 1562,
+  "observedCategoryTokens": 4522,
+  "unknownFields": [
+    "body",
+    "physicalSteering",
+    "modelName",
+    "modelYear",
+    "plant",
+    "physicalProductionDate",
+    "trim",
+    "technicalFacts",
+    "availability",
+    "verifiedFitted"
+  ],
+  "images": {
+    "associatedConfigurations": 2,
+    "associations": [
+      {
+        "configurationIdSha256": "cec541411f1b512cdcef09d1013939c166c166385fadb1b3dbf089645102bb53",
+        "contentType": "image/webp",
+        "fidelity": {
+          "equipment": "unknown",
+          "exactVehicle": "unknown",
+          "interior": "unknown",
+          "model": "observed",
+          "paint": "observed",
+          "wheels": "unknown"
+        },
+        "height": 1646,
+        "view": "HEROFRONT",
+        "width": 2560
+      },
+      {
+        "configurationIdSha256": "7ff1dacf6046ecb2bdb10aa7c5c55a41eb532c76ac83ae8b9bbfb3581dae6107",
+        "contentType": "image/webp",
+        "fidelity": {
+          "equipment": "unknown",
+          "exactVehicle": "unknown",
+          "interior": "unknown",
+          "model": "unknown",
+          "paint": "unknown",
+          "wheels": "unknown"
+        },
+        "height": 1646,
+        "view": "HEROFRONT",
+        "width": 2560
+      }
+    ],
+    "generalExactVehicleFidelity": "unknown"
+  },
+  "references": [
+    "docs/gcsp/evidence/fucq60/exact10000-retained-coverage-2026-11-07/receipt.json",
+    "docs/gcsp/evidence/fucq60/exact10000-common-session-results-2026-11-07/final-receipt.json",
+    "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/final-receipt.json"
+  ],
+  "limits": [
+    "Metadata qualification of reviewed retained selection only; no fresh all-row source revalidation or collection authority.",
+    "No coverage of all option combinations, availability, scheme eligibility or physical vehicles is inferred.",
+    "Historical technical observations and the separate exact 1F7E supplement retain their original scope."
+  ]
+}

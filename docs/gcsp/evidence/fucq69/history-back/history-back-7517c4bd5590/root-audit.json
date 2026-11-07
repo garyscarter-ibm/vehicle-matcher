@@ -1,0 +1,97 @@
+{
+  "at": "2026-11-06T07:07:46.524468+00:00",
+  "verdict": "PASS",
+  "checks": 8181,
+  "failures": [],
+  "run": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq69-history-back/history-back-7517c4bd5590",
+  "revision": "1ca7ad523b30d40b3fbe573454fdc4c465ae8fc4",
+  "grant": "fucq69-history-back-1ca7ad5-0655",
+  "counts": {
+    "tests": 4,
+    "suites": 0,
+    "pass": 4,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "originalHashes": {
+    "plan.json": "769fc72e7df56f0b6f6884d6916147e5f3811660699f05cc74bdf28ad279acc9",
+    "receipt.json": "022b47a2aecd62d9332cc94fc8a6679203b3316ea5d19048cae07d2c94c6920a",
+    "test.tap": "5806821e269e3350ef1d67968c0f5780020b449617ab9ea4c75652aa881c3b1c",
+    "checkpoint.json": "713bcb5edff7bd96730eea718d23216eb5007b7d3d06153ee44a18250ca944e5",
+    "ownership/175ff499186c4dd988fb5680c110ecb5.json": "01122b88096372197a67df0d0a1de185c74114a9b1b0468cf323998c2c0f20f2"
+  },
+  "materializedRows": 1854,
+  "sourceRows": 21,
+  "dependencyRows": 1833,
+  "processRows": 756,
+  "ownedIdentities": [
+    {
+      "observations": [
+        {
+          "pgid": 15243,
+          "ppid": 15054
+        }
+      ],
+      "pid": 15243,
+      "start": "Fri Nov  6 07:05:10 2026"
+    },
+    {
+      "observations": [
+        {
+          "pgid": 15243,
+          "ppid": 15243
+        }
+      ],
+      "pid": 15246,
+      "start": "Fri Nov  6 07:05:10 2026"
+    },
+    {
+      "pid": 15054,
+      "start": "Fri Nov  6 07:04:58 2026"
+    }
+  ],
+  "groups": [
+    15243
+  ],
+  "scratchAbsent": "/private/tmp/test-stamp-shard-175ff499186c4dd988fb5680c110ecb5",
+  "scratchInode": 173284754,
+  "reservationAbsent": "175ff499186c4dd988fb5680c110ecb5",
+  "ledgerRows": 0,
+  "ledgerSHA256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+  "retainedActualAllocatedBytes": 249952,
+  "finalAllocatedUpperBoundBytes": 27493536,
+  "finalRSSUpperBoundBytes": 350339072,
+  "probes": [
+    {
+      "command": [
+        "/bin/ps",
+        "-axo",
+        "pid=,ppid=,pgid=,lstart="
+      ],
+      "exit": 0,
+      "stdoutBytes": 35532,
+      "stderrBytes": 0,
+      "sha256": "f3690dd2cae782cf3266be94a5f6f130cbda5ff79e1012c664b2ed335fcfc8ca"
+    },
+    {
+      "command": [
+        "/usr/sbin/lsof",
+        "-nP",
+        "-a",
+        "-p",
+        "15243,15246,15054",
+        "-Fpn"
+      ],
+      "exit": 1,
+      "stdoutBytes": 0,
+      "stderrBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "ledgerWrites": 0,
+  "cleanupMutations": 0,
+  "scope": "Four controlled history/Back component cases only;no host/HTTP/visual/native/full acceptance",
+  "next": "Evidence-only publication after PASS;remaining integration requires separate exactproposal/review/grant."
+}

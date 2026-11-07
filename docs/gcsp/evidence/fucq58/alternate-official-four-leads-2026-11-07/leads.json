@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "f58-alternate-official-four-literal-leads.v1",
+  "preparedDate": "2026-11-07",
+  "status": "dated leads sealed; no follow or qualification",
+  "scope": "four original missing seed rows; no generation or combustion/electric substitution",
+  "research": {
+    "nativeQueries": 4,
+    "nativeResult": "no usable text",
+    "parallelSearchQueries": 6,
+    "parallelSearchCalls": 2,
+    "parallelPageFetches": 4,
+    "parallelFetchCalls": 2,
+    "searchIds": [
+      "search_e495e53dff6a04059839ea24f4f3fd15",
+      "search_dd0424ec6038d1908eb70513a9fbe44e"
+    ],
+    "extractIds": [
+      "extract_4b526263b06034970d53f2f5be23cc55",
+      "extract_21e736b29ec224183dd63a98ab02275e"
+    ],
+    "sessionId": "b2f632ce251a4f7cb90da99cf71eed710",
+    "runtimeModelConfig": "gpt-6.1-sol",
+    "browser": 0,
+    "directCollectorRequests": 0,
+    "settings": 0,
+    "tree": 0,
+    "options": 0,
+    "solver": 0,
+    "retention": "Only official source URLs, literal public configure links, safe token facts and locator metadata retained; no raw search result, sampled VIN, plate, serial, private identifier or identifier-bearing URL retained.",
+    "freshness": "allow_live_fetch true did not guarantee fresh product content; fetched product acquisition dates July-September2026; no current availability claim. No feedback sent."
+  },
+  "leads": [
+    {
+      "id": "u06",
+      "originalRow": "/coverage/schemeModelLines/3",
+      "target": "U06 Active Tourer",
+      "sourcePageUrl": "https://www.bmw.co.uk/en/all-models/2-series/2-series-active-tourer/bmw-2-series-active-tourer.html",
+      "sourceTitle": "BMW 2 Series Active Tourer (U06): overview, configurator, prices",
+      "sourceRequestId": "extract_4b526263b06034970d53f2f5be23cc55",
+      "acquiredAt": "2026-08-15T00:00:00Z",
+      "publishDate": null,
+      "acquisitionDateMeaning": "tool content acquired date, not current live response or catalogue validity",
+      "exactLiteralUrl": "https://configure.bmw.co.uk/en_GB/configure/U06/2DSA/",
+      "excerptIndex": 0,
+      "characterOffsetUTF16": 549,
+      "parsedRequestTokens": {
+        "catalogueRangeKey": "U06",
+        "pageModelCode": "2DSA"
+      },
+      "role": "dated literal request lead only",
+      "qualifiedModelFacts": 0,
+      "qualifiedPhysicalFacts": 0,
+      "qualifiedSchemeJoin": false,
+      "exactLiteralUrlSha256": "634267bbab118e9da57232c0e47ba72b75b4d225a5339a7e17afe644e3840dc8"
+    },
+    {
+      "id": "g20",
+      "originalRow": "/coverage/schemeModelLines/4",
+      "target": "G20 Saloon",
+      "sourcePageUrl": "https://www.bmw.co.uk/en/all-models/3-series/3-series-saloon/bmw-3-series-saloon-technical-data.html",
+      "sourceTitle": "BMW 3 Series Saloon Tech Specs - Dimensions, Engines",
+      "sourceRequestId": "search_e495e53dff6a04059839ea24f4f3fd15",
+      "acquiredAt": null,
+      "publishDate": null,
+      "acquisitionDateMeaning": "search excerpt acquisition date not supplied; not asserted current",
+      "exactLiteralUrl": "https://configure.bmw.co.uk/en_GB/configure/G20/S3MK/FKHG7,P0C4P,S01CB,S01DF,S01DZ,S01PL,S0230,S0248,S0258,S02PA,S02TN,S02VB,S02VF,S02VL,S0302,S0316,S0320,S0322,S0337,S03KA,S0403,S0420,S0428,S0430,S0431,S0459,S0465,S0481,S0493,S0494,S04AW,S04LN,S04NE,S04UR,S0534,S0548,S0552,S05AC,S05AQ,S05AU,S05DA,S05DC,S05DN,S0654,S0688,S06AE,S06AF,S06AK,S06C4,S06CP,S06DR,S06NX,S06PA,S06U3,S06VB,S06WC,S0710,S0715,S0760,S0775,S07EW,S0801,S08EB,S08R3,S08R9,S08S3,S08TF,S08TR,S08WD,S0901,S0991,S09AD",
+      "excerptIndex": 0,
+      "characterOffsetUTF16": 1197,
+      "parsedRequestTokens": {
+        "catalogueRangeKey": "G20",
+        "pageModelCode": "S3MK"
+      },
+      "role": "dated literal request lead only",
+      "qualifiedModelFacts": 0,
+      "qualifiedPhysicalFacts": 0,
+      "qualifiedSchemeJoin": false,
+      "exactLiteralUrlSha256": "8edfad14d944801f68ea64682adaf0bef0a0378ac7d728c9dd139116a74b1168",
+      "samePageSupportingFetch": {
+        "requestId": "extract_4b526263b06034970d53f2f5be23cc55",
+        "acquiredAt": "2026-09-21T00:00:00Z",
+        "role": "Same page and route tokens corroborated; fetched full URL is line-wrapped, so the exact literal URL and offset above use the search excerpt instead."
+      }
+    },
+    {
+      "id": "g22",
+      "originalRow": "/coverage/schemeModelLines/6",
+      "target": "G22 Coupe",
+      "sourcePageUrl": "https://www.bmw.co.uk/en/all-models/4-series/coupe/bmw-4-series-coupe.html",
+      "sourceTitle": "2026 BMW 4 Series Coup\u00e9 - 2-door Sporty Coup\u00e9",
+      "sourceRequestId": "search_e495e53dff6a04059839ea24f4f3fd15",
+      "acquiredAt": null,
+      "publishDate": null,
+      "acquisitionDateMeaning": "search excerpt acquisition date not supplied; not asserted current",
+      "exactLiteralUrl": "https://configure.bmw.co.uk/en_GB/configure/G22/C4MA/FEPMI,P0C68",
+      "excerptIndex": 0,
+      "characterOffsetUTF16": 388,
+      "parsedRequestTokens": {
+        "catalogueRangeKey": "G22",
+        "pageModelCode": "C4MA"
+      },
+      "role": "dated literal request lead only",
+      "qualifiedModelFacts": 0,
+      "qualifiedPhysicalFacts": 0,
+      "qualifiedSchemeJoin": false,
+      "exactLiteralUrlSha256": "185dc37448daf6e0a46b5b061caf66f291504c840b0ce2814e57903c5c344c32"
+    },
+    {
+      "id": "g23",
+      "originalRow": "/coverage/schemeModelLines/7",
+      "target": "G23 Convertible",
+      "sourcePageUrl": "https://www.bmw.co.uk/en/all-models/4-series/4-series-cabrio/bmw-4-series-convertible.html",
+      "sourceTitle": "2026 BMW 4 Series Convertible - Sporty 4-Seat",
+      "sourceRequestId": "extract_4b526263b06034970d53f2f5be23cc55",
+      "acquiredAt": "2026-07-07T00:00:00Z",
+      "publishDate": null,
+      "acquisitionDateMeaning": "tool content acquired date, not current live response or catalogue validity",
+      "exactLiteralUrl": "https://configure.bmw.co.uk/en_GB/configure/G23/A4MA/FMANL,P0A96,S01CB,S01DF,S01HX,S0230,S02PA,S02TB,S02VB,S02VC,S02VL,S0302,S0337,S0387,S0428,S0430,S0431,S0491,S0493,S0494,S04LN,S04NE,S04NW,S04UR,S0534,S0544,S05AQ,S05DA,S05DM,S0654,S06AE,S06AF,S06AK,S06C4,S06PA,S06U2,S06VB,S06WC,S0704,S0710,S0715,S0760,S0812,S0850,S0853,S0880,S08KA,S08R3,S08R9,S08S3,S08SM,S08TF,S08TG,S08WD,S08WM,S09QX",
+      "excerptIndex": 0,
+      "characterOffsetUTF16": 48,
+      "parsedRequestTokens": {
+        "catalogueRangeKey": "G23",
+        "pageModelCode": "A4MA"
+      },
+      "role": "dated literal request lead only",
+      "qualifiedModelFacts": 0,
+      "qualifiedPhysicalFacts": 0,
+      "qualifiedSchemeJoin": false,
+      "exactLiteralUrlSha256": "0414b27684d0b3d9d2649f2dff330a595a85797b396d83ce99c8ce7c45443908"
+    }
+  ],
+  "newAdmissions": 0,
+  "capacityCredit": 0,
+  "acceptance": false
+}

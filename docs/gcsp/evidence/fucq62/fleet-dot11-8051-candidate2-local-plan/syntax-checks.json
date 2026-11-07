@@ -1,0 +1,15 @@
+{
+  "scope": "preparation-only",
+  "nodeSyntax": "passed",
+  "pythonCompile": "passed-without-bytecode",
+  "codePins": 147,
+  "originalCandidateCodePinsUnchanged": 144,
+  "originalNativeCodePinsUnchanged": 167,
+  "inputPinsVerified": 690,
+  "planSha256": "36718de9fe4924d49b2156f66463647f71898d19460b63e89d92b6c7f0ffaf55",
+  "elapsedSeconds": 0.7779099579929607,
+  "candidateExecution": false,
+  "scratchAllocation": false,
+  "network": false,
+  "acceptance": false
+}

@@ -1,0 +1,20 @@
+{
+  "firstAttempt": "live-audit/report.json",
+  "firstCompletedRecords": 0,
+  "firstGets": 1,
+  "readinessFollowup": {
+    "time": "2026-11-07T04:08:32.273Z",
+    "status": 200,
+    "body": {
+      "ok": true
+    },
+    "gets": 1,
+    "decodedBytes": 11
+  },
+  "resume": "live-audit-resume1",
+  "plannedGets": 1136,
+  "aggregateGetCeiling": 1160,
+  "aggregatePlannedGets": 1138,
+  "completedRecordsReplayed": 0,
+  "reason": "Health available after first short failedhealth; zero record requests completed. Unchanged trackedprobe."
+}

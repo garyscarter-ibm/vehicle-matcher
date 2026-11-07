@@ -1,0 +1,28 @@
+# Frozen .11 external candidate — prepared, unexecuted
+
+This packet reconciles the exact parent-proved 8,051 admitted source union into a proposed `2026-11-07.11` candidate. It makes no source request, candidate, source shard, package, publication or native database. The canonical SHA is `27f64e520748836f9f88db39f15725e78daa535db9f253e1ae7b9772ad1f2991`; the spent SHA is `6470ae663fe4d1275c600aff6264f58c58730530b53d847b2ed7053c0b8b1b13`. A later source-10k union must have a separate immutable packet and grant; it cannot replace these inputs.
+
+The retained external `.10` candidate has 4,667 configurations. The frozen union adds 3,385 exact original admitted rows from 547 pinned files, planned into three external shards of 33,554,086, 33,551,571 and 10,262,576 bytes. The target is 8,052 configurations, one retained VIN mapping and two exact representative image associations. Both excluded prior observations remain explicitly recorded. The exact technical supplement remains bound to its single configuration; its measurements do not spread to other rows.
+
+The root ordinary store was restored after the successful `.10` operational proof because the actual repository commit guard limits blobs to 50MiB. The packet independently pins its actual `.9` 52-file/10-version tree and rollback receipt, the actual `.10` activation receipt, and the external `.10` 57-file/11-version isolated history. These are separate facts and ownership labels are preserved. No historical files are discarded or normalized.
+
+All new source shards, candidate JSONL, staging and retained outputs go directly under the owned OneDrive output root. No large configuration blob or source copy enters Git. The candidate uses the existing indexed writer/validator with an explicit build-only 256MiB JSONL bound. Its strict source registration helper reads only the exact pinned previous 15 sources and three new original-byte shards (8,050 v2 registrations, plus the separately retained historical source configuration), revalidates the production v2 envelope and original envelope identity, and uses the frozen signature policy. This explicit tool option breaks the candidate-digest/descriptor cycle without adding production trust or changing runtime fallback. Runtime admission still requires the separately reviewed measured code-owned descriptor.
+
+Only an exact parent `candidate` grant may execute:
+
+```sh
+/usr/bin/python3 -I docs/gcsp/evidence/fucq62/fleet-dot11-8051-external-plan/supervise-candidate.py \
+  --reviewed-plan-sha256 EXACT_PLAN_SHA256 --root-release /absolute/exact-grant.json
+```
+
+The example has `authorized:false`. A grant must include the exact version, complete code pins, `sourceCalls:0`, `ordinaryPublicationExecuted:false` and `externalOnly:true`. The supervisor checks every code, source, canonical, spent, baseline, history and grant pin before and after execution. Destination creation precedes owned scratch allocation. An external ownership manifest and registered finalizer precede execution. One worker is limited to 240 seconds, 512MiB Node heap, 896MiB process-group RSS, 128MiB supervisor headroom, 1GiB host RAM, 128MiB cloud scratch and 768MiB disk reservation. Expected retained candidate/source output is about 256MiB; the whole peak budget includes simultaneous cloud staging. Prior `.10` candidate execution measured 40.64 seconds and 299,761,664 bytes group RSS; this is sizing evidence, not a new-run measurement.
+
+On handled exit the supervisor stops and joins its owned process group, proves group absence, removes only its inode-owned dependency link, checks open files, removes scratch and releases its reservation. It retains compact receipts and the explicitly owned candidate/source outputs. Installed environments, source inputs and ordinary/isolated stores remain unchanged. No compatibility exception is used. There are no agents or concurrent workers.
+
+`artifact-boundary.json` specifies the existing production external pack/restore path: 18 exact source assets and 11 current/previous corpus-store assets, 29 total. Current candidate and mutable store asset hashes stay unknown until measured; no descriptor or release ID is fabricated. The existing `.10` and older public releases/descriptors remain available. After candidate generation, a separate finite packet must prove isolated additive publication/restart, rollback and all 8,053 unique direct/consumer/loopback HTTP references in eight chunks (`7 × 1024 + 885`). Old `.10` results cannot establish `.11` acceptance because the corpus and manifest change. Actual consumer failure sets must be recorded and reconciled; the prior 1,313 failures are not an assumed new total or waiver. Reuse unchanged code/syntax evidence proportionately; no extra full suite is proposed.
+
+Subsequent descriptor registration, packing, local check, publication, anonymous cold restore, recovery, ordinary activation, CI/Render deployment and live probes each require their own exact reviewed grants and measured input pins. The existing `packFleetRelease`/`restoreFleetRelease` implementation already supports the required 256MiB per-asset and 2GiB aggregate bounds. The adapter's existing 10,000-registration bound is a concrete future boundary only if an actual later union requires more registrations; this packet does not change it.
+
+Static syntax and pin checks are the only preparation validation. No candidate, package, source transport, full 8,053-reference proof, native proof, deployment or acceptance is claimed.
+
+Agent: Mike Wazowski, requested/selected `gpt-6.1-sol` / `medium`; runtime unverified; no fallback or descendants. Background-only work; foreground and browser focus remain undisturbed.

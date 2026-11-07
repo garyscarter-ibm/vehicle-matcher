@@ -1,0 +1,119 @@
+{
+  "sourceCommit": "b98561530f56f5824b790f893ede82f9db4465f2",
+  "sharedMerge": "c09efbd5",
+  "totalRecords": 340,
+  "files": [
+    {
+      "path": "docs/gcsp/evidence/fucq59/source-admission-2026-11-07/accepted-record.json",
+      "sha256": "9ed6c672a3e4162dba99b7d559e1e4114a236d9e6d01c47c6ed860d0bb982239",
+      "bytes": 21392,
+      "records": 1
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+      "sha256": "a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265",
+      "bytes": 603088,
+      "records": 28
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+      "sha256": "0c88c06a897d6306ea2adc201a0de19b38e097e7cd166d16968d6cad62af3d78",
+      "bytes": 659703,
+      "records": 30
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+      "sha256": "8be10244442a9d27ce317aa07c6c53a48e3280615879dd774e14104bc3ffdf39",
+      "bytes": 703882,
+      "records": 32
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+      "sha256": "d612ea8c18bb2d5820c36042a8ba092972a7bce88c0e4bf3a8413b6d2ab358a7",
+      "bytes": 678860,
+      "records": 31
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk04/accepted.jsonl",
+      "sha256": "bc060c39c200e149d8108a2d1ecb9be1e9c64fef8403965a8365fc7a7777a71b",
+      "bytes": 681423,
+      "records": 31
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk05/accepted.jsonl",
+      "sha256": "764dd4b427fd637663321ff2a8c47b1d9ab6395701af5f77e50f25457039116b",
+      "bytes": 682709,
+      "records": 31
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk06/accepted.jsonl",
+      "sha256": "dff0e2cce312901fcce03946c4c59f34777768aa96fb6d24bf1442dbb12bac6b",
+      "bytes": 702586,
+      "records": 32
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk07/accepted.jsonl",
+      "sha256": "4677d0f2ea1d632a27533f3976ef5bd1fd7426f5866589b51186b6422b25659f",
+      "bytes": 679957,
+      "records": 31
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk08/accepted.jsonl",
+      "sha256": "9a161bba4b0653bd35de5fb814745eb02cc3eb73cbc1313f93a524bea5a21340",
+      "bytes": 681809,
+      "records": 31
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk09/accepted.jsonl",
+      "sha256": "36737c9166149620fa396bfe38a9b25e009731a01980029ae7a9ca18ec37c849",
+      "bytes": 681603,
+      "records": 31
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk10/accepted.jsonl",
+      "sha256": "38666a2b93d37278357d1246a4a8ea5cf7dd09364af00144746e0df94231d2e5",
+      "bytes": 679587,
+      "records": 31
+    }
+  ],
+  "runId": "f62-actual-pilot340-20261107",
+  "version": "2026-11-07.2",
+  "previousActive": {
+    "directory": "eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3",
+    "manifestDigest": "eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3"
+  },
+  "expected": {
+    "acceptedSourceConfigurations": 340,
+    "pilotAdded": 311,
+    "configurations": 341,
+    "qualifyingCompleteDistinctSourceConfigurations": 340,
+    "vinMappings": 1,
+    "images": 0,
+    "newVinAllocations": 0
+  },
+  "registeredPilot": {
+    "path": "server/data/gcsp/vehicle-evidence/registered-sources/pilot311-2026-11-07.jsonl",
+    "sha256": "00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a",
+    "bytes": 6832119,
+    "records": 311
+  },
+  "publicationStore": "server/data/gcsp/vehicle-evidence/fleet-source.v1",
+  "scratchRoot": "/tmp/vehicle-matcher-f58-63-20261106/f62-pilot340-publication",
+  "resources": {
+    "scratchMiB": 64,
+    "hostRamMiB": 512,
+    "childRamMiB": 448,
+    "seconds": 90,
+    "workers": 1,
+    "expectedRetainedOutputMiB": 14,
+    "expectedPeakAggregateMiB": 48
+  },
+  "sourceRequests": 0,
+  "limitations": [
+    "T5MJ/72HH/G61E GB/RL selections only; full scheme model coverage is not established",
+    "Configuration-only release; no new VIN allocation or physical profile inference",
+    "Direct admitted-envelope projection; F60 enrichment is not executed for the pilot rows",
+    "Original 10000 configuration/VIN and all original acceptance obligations remain open",
+    "No greater-than64MiB resource proof; streaming and eager caps stay64MiB"
+  ]
+}

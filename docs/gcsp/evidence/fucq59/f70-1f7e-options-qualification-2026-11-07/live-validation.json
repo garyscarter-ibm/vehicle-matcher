@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "f70-1f7e-options-live-validation.v1",
+  "scope": "scoped retained actual-source reconciliation; no replay or new source traffic",
+  "summary": {
+    "cancelled": 0,
+    "fail": 0,
+    "pass": 5,
+    "skipped": 0,
+    "tests": 5,
+    "todo": 0
+  },
+  "receiptSha256": "2ad3f25fff6887af889ec7aae13f972c9a74d974a208cdc1b409a2302d9a2885",
+  "primarySha256": "875f29d233dc2a4d4d2d5ec3b7c7292d2e43eb86e12d473287c3565238a258f3",
+  "sourceResult": {
+    "rc": 0,
+    "wallSeconds": 1.470238,
+    "peakRssBytes": 83230720,
+    "peakScratchBytes": 0,
+    "identity": {
+      "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+      "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/prepare.py": "2cdfb5c4cff7b45160a20537516d6d9e272f6b9f99fb50b156f19d76bafac61d",
+      "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/prepared-check.test.mjs": "e19041d82f37dd488d4c14121c02ec17b470b67e3707c9951fc05fa6d341b66a",
+      "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/qualification-plan.json": "eac40811115cef1d25e9911ae252d11fcb7c1c791452cdeee86ed13b50836105",
+      "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/retained-deliverables.json": "c7361341b2bb3333ca271519df1fbaec748293e8498971bdfc7561aa1d5e44aa",
+      "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/run-live.mjs": "d02365476860af1bce53a86d9a7b72611cc6b12265e67f88bbf92df94c9db386",
+      "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/source-relationship-provenance.json": "d646e22ea4b1780466072b791c69bb74f4b0105219414aa8ec7ffa0cc74c3289",
+      "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/supervise.py": "b029ac7227894e872776ac0266f3d9f6cbde50f4976a5beeb810171341cf44c9",
+      "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+      "scripts/gcsp/bmw-public-registration.mjs": "5fa166bc0ce537e54b99c86e0e681a496ce1edcea9652184e3842b9587a009d3",
+      "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+      "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+      "scripts/gcsp/capture-bmw-selection.mjs": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+      "scripts/gcsp/collect-fleet.mjs": "76107aea09f14f6baaf32417f00f7acbc86d77413e18b8a01f289195d0d443bf",
+      "scripts/gcsp/collection-session.mjs": "baa55b0736932ad23ed967d3ebd9cb91086ca03e6e7ad103663d6ad121461f75",
+      "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+      "scripts/gcsp/public-bmw-source.mjs": "43ddf5f9180a22a3147b069f4fdad07f9919302b1c8072e4b679071e08983556",
+      "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+      "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+      "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+      "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+      "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+      "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+      "server/test/gcsp-bmw-options-qualification.test.js": "f2788898e10027366df4fbd4dd1682385dc549c5867b32b2a1210c1aa493146e",
+      "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+      "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+    }
+  },
+  "sourceCleanup": {
+    "checkpointExport": {
+      "accepted": 0,
+      "checkpointSha256": "875f29d233dc2a4d4d2d5ec3b7c7292d2e43eb86e12d473287c3565238a258f3",
+      "cursor": null,
+      "primaryRetained": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/collector-checkpoint.json",
+      "sourceBindingSemantics": "requires-source-binder-verification; hashes-only-export",
+      "sourceCaptures": 0,
+      "status": "exported"
+    },
+    "code_identity_unchanged": true,
+    "compatibility_exception": null,
+    "dependency_link_absent": true,
+    "groups_absent": true,
+    "primaryExists": true,
+    "removed_allocation_bytes": 0,
+    "reservation_absent": true,
+    "retainedPrimary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/collector-checkpoint.json",
+    "retainedWriterMetadata": [],
+    "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/f70-1f7e-options-qualification/live-result.json",
+    "scratch_absent": true
+  },
+  "retainedChecks": {
+    "wallSeconds": 0.249913958,
+    "sampledPeakRssBytes": 2293760,
+    "peakScratchBytes": 368736,
+    "resultSha256": "c3b2257ae59b4543faf753658c4d44afd966399d32c53c356d52cdb8333c9003",
+    "cleanup": {
+      "code_identity_unchanged": true,
+      "compatibility_exception": null,
+      "dependency_link_absent": true,
+      "groups_absent": true,
+      "removed_allocation_bytes": 368736,
+      "reservation_absent": true,
+      "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/1f7e-retained-result.json",
+      "scratch_absent": true
+    }
+  },
+  "typedDefinitions": 240,
+  "actualTypedCodes": {
+    "paint": [
+      "P0C6R",
+      "P0490",
+      "P0C5Y",
+      "P0C68",
+      "P0C5A",
+      "P0C4W",
+      "P0C56",
+      "P0C4P",
+      "P0475",
+      "P0C3Z",
+      "P0C3N",
+      "P0C31",
+      "P0300"
+    ],
+    "fabric": [
+      "FKUMY",
+      "FKUKP",
+      "FKUCX",
+      "FKUSW",
+      "FKTNL"
+    ],
+    "rim": [
+      "S01H8",
+      "S03NA",
+      "S01H0"
+    ]
+  },
+  "explicitPackage": {
+    "code": "S033B",
+    "optionType": "package",
+    "label": "M Sport Pro"
+  },
+  "sourceTrafficReplayed": 0,
+  "sourceCapacityCredit": 0,
+  "cumulativeAdmittedSourceConfigurations": 349,
+  "acceptance": false
+}

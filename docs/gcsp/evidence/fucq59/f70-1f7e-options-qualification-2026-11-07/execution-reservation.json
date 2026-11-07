@@ -1,0 +1,7 @@
+{
+  "status": "prepared-unspent-no-traffic-grant",
+  "allocationId": "f70-1f7e-options-20261107-once",
+  "planDigest": "0a03f19c9e89461aca8c42df209734e73ec6b50e4e720967e00f13712bc760e1",
+  "executionPlanSha256": "8edd27fe4e9060a3f65a1e561c479f419994b5083da56bcd14cc5d31e792b464",
+  "exclusiveMarkerCreatedOnlyByLiveRunner": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/execution-once.json"
+}

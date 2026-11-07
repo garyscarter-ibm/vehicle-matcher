@@ -1,5 +1,6 @@
-import { el, screenIntro, button, statusScreen, factList, formatTerm } from '../../vehicle-matcher/ui.js';
+import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-matcher/ui.js';
 import { matchCard, mediaWell } from '../../vehicle-matcher/modes/result-card.js';
+import { renderOptionList } from '../../vehicle-matcher/modes/question-ui.js';
 import { mountEmployee } from '../employee/gcsp-employee.js';
 import { labelledField } from '../kit/form-controls.js';
 import { createManualGalleryController } from './gallery-controller.js';
@@ -9,6 +10,18 @@ import { createManualGalleryHttpAdapter } from './http-adapter.js';
 let sequence = 0;
 const shown = (value) => value == null || value === '' ? 'Not supplied' : Array.isArray(value) ? value.map(shown).join('; ')
   : typeof value === 'object' ? Object.entries(value).map(([key, item]) => `${key.replaceAll(/([A-Z])/g, ' $1')}: ${shown(item)}`).join(' · ') : String(value);
+const CARD_FACTS = ['exterior', 'interior', 'engine', 'transmission', 'wltpCo2', 'earliestCollection'];
+const carCount = (n) => `${n.toLocaleString('en-GB')} ${n === 1 ? 'car' : 'cars'}`;
+// Card cost hierarchy follows the FUCQ-64 reference; eligibility itself stays server-owned.
+function costSummary({ value, allowance }) {
+  const points = el('p', 'gcsp-points');
+  if (value == null) points.append(el('span', 'gcsp-points-unit', 'Monthly points not supplied'));
+  else points.append(el('span', 'gcsp-points-n', value.toLocaleString('en-GB')), el('span', 'gcsp-points-unit', ' points a month'));
+  if (value == null || allowance == null) return [points, el('p', 'gcsp-note', 'Allowance not supplied')];
+  const left = allowance - value;
+  return [points, el('p', `gcsp-status ${left < 0 ? 'is-over' : 'is-ok'}`, left < 0
+    ? `${(-left).toLocaleString('en-GB')} points over your allowance` : `Within your allowance, ${left.toLocaleString('en-GB')} points left`)];
+}
 const factRows = (rows) => rows.map((row) => ({ ...row, value: row.value == null ? null : shown(row.value) }));
 const states = {
   idle: ['Released cars', ''], loading: ['Loading released cars', 'Checking availability.'],
@@ -17,7 +30,7 @@ const states = {
   'no-visible-releases': ['No released cars are visible to you yet', 'Refresh availability to check for new releases.'],
   'empty-search': ['No cars match these filters', 'Clear your filters to see all released cars.'],
   'no-suitable-stock': ['No suitable cars are available', 'Review the eligibility reasons or return to your choices.'],
-  'source-unavailable': ['Availability is unavailable', 'Retry to check current released cars.'],
+  'source-unavailable': ['Availability cannot be checked right now', 'Retry to check current released cars.'],
   'context-refresh': ['Your choices need refreshing', 'Return to your choices or refresh availability.'],
   'car-taken': ['This car is no longer available', 'Refresh to see the current released cars.'],
 };
@@ -50,13 +63,25 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     control.addEventListener(options ? 'change' : 'input', () => gallery.setControls({ [name]: control.value }));
     return labelledField({ id: `${prefix}-${name}`, label, control }).root;
   }
-  function updateOptions(name, values, all) {
-    const control = controls[name]; const selected = galleryState.controls[name] ?? ''; const signature = JSON.stringify([values, selected]);
-    if (control.dataset.options === signature) return;
-    control.replaceChildren();
-    [['', all], ...values.map((value) => [value, value]), ...(selected && !values.includes(selected) ? [[selected, `${selected} (not currently available)`]] : [])]
-      .forEach(([value, caption]) => { const option = el('option', '', caption); option.value = value; control.append(option); });
-    control.value = selected; control.dataset.options = signature;
+  function navField(name, label) {
+    const wrap = el('div', 'gcsp-field gcsp-gallery-nav'); const heading = el('p', 'gcsp-field-label', label); const slot = el('div', '');
+    heading.id = `${prefix}-${name}-label`; wrap.append(heading, slot); controls[name] = { wrap, slot, heading, signature: null }; return wrap;
+  }
+  // Visual series/body navigation: shared radiogroup chips with counts over every released car.
+  function updateNav(name, values, all, read) {
+    const nav = controls[name]; const selected = galleryState.controls[name] ?? ''; const cars = galleryState.allCars;
+    nav.wrap.hidden = !cars.length;
+    const options = [{ value: '', label: all, sub: carCount(cars.length) },
+      ...values.map((value) => ({ value, label: value, sub: carCount(cars.filter((car) => read(car) === value).length) })),
+      ...(selected && !values.includes(selected) ? [{ value: selected, label: `${selected} (not currently available)`, sub: carCount(0) }] : [])];
+    const signature = JSON.stringify(options);
+    if (nav.signature === signature) { nav.update({ value: selected }); return; }
+    const hadFocus = nav.slot.contains(root.ownerDocument.activeElement);
+    const { list, update } = renderOptionList({ id: `${prefix}-${name}`, options }, null,
+      { value: selected, onValueChange: (value) => gallery.setControls({ [name]: value }) });
+    list.removeAttribute('aria-label'); list.setAttribute('aria-labelledby', nav.heading.id); list.classList.add('vm-options-chips'); list.dataset.nav = name;
+    nav.slot.replaceChildren(list); nav.signature = signature; nav.update = update;
+    if (hadFocus) list.querySelector('[aria-checked="true"]')?.focus();
   }
   function choose(id) { if (!claimState.blocked && !adapter.readOnly) gallery.review(id); }
   function closeDetail() { gallery.closeDetail(); (detailOrigin?.isConnected ? detailOrigin : controls.query)?.focus(); }
@@ -86,7 +111,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     sections.push(detailSection('Images and source information', [{ label: 'Image disclaimer', value: detail.media.caption ?? 'No image supplied' },
       { label: 'Image source', value: detail.media.provenance }, { label: 'Snapshot source', value: detail.snapshot.sourceNamespace },
       { label: 'Snapshot observed', value: detail.snapshot.observedAt }, { label: 'Snapshot version', value: detail.snapshot.snapshotVersion }]));
-    nodes.detail.replaceChildren(back, heading, el('p', 'gcsp-note', `Order no. ${car.identity.orderNumber}`), media, el('p', 'gcsp-gallery-allowance', formatTerm(car.cost)),
+    nodes.detail.replaceChildren(back, heading, el('p', 'gcsp-note', `Order no. ${car.identity.orderNumber}`), media, ...costSummary(car.cost),
       factList(factRows([...Object.values(car.fields), ...car.emissions,
         { label: 'Monthly scheme cost', value: car.cost.value, unit: 'points a month' },
         { label: 'Available allowance', value: car.cost.allowance, unit: 'points a month' },
@@ -110,7 +135,8 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     if (!nodes || disposed) return;
     drawHistory();
     for (const key of ['query', 'sort']) { const value = galleryState.controls[key] ?? (key === 'sort' ? 'name' : ''); if (controls[key].value !== value) controls[key].value = value; }
-    updateOptions('series', galleryState.series, 'All series'); updateOptions('body', galleryState.bodies, 'All body styles');
+    updateNav('series', galleryState.series, 'All series', (car) => car.series.value);
+    updateNav('body', galleryState.bodies, 'All body styles', (car) => car.fields.body.value);
     const c = galleryState.counts;
     nodes.counts.textContent = `${c.records} released cars · ${c.eligible} eligible · ${c.visible} shown · ${c.visibleEligible} eligible shown`;
     const allowances = [...new Set(galleryState.allCars.map((car) => car.cost.allowance).filter((value) => value != null))];
@@ -119,7 +145,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     nodes.status.replaceChildren();
     if (message && galleryState.state !== 'idle') {
       const actions = galleryState.state === 'loading' ? [] : galleryState.state === 'empty-search'
-        ? [button({ label: 'Clear filters', variant: 'ghost', onClick() { for (const key of ['query', 'series', 'body']) controls[key].value = ''; gallery.setControls({ query: '', series: '', body: '' }); } })]
+        ? [button({ label: 'Clear filters', variant: 'ghost', onClick() { controls.query.value = ''; gallery.setControls({ query: '', series: '', body: '' }); } })]
         : [button({ label: 'Refresh availability', variant: 'ghost', onClick: () => gallery.refresh() })];
       nodes.status.append(statusScreen({ title: message[0], message: message[1], actions }));
     }
@@ -127,10 +153,11 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     for (const car of galleryState.cars) {
       const signature = JSON.stringify(car.view); let cached = cards.get(car.id);
       if (!cached || cached.signature !== signature) {
-        const view = structuredClone(car.view); view.members[0].facts = factRows(view.members[0].facts);
+        const view = structuredClone(car.view); view.members[0].facts = factRows(view.members[0].facts.filter((fact) => CARD_FACTS.includes(fact.key)));
         if (adapter.readOnly) view.members[0].actions[0] = { ...view.members[0].actions[0], disabled: true, disabledReason: 'Read-only gallery example.' };
-        const card = matchCard(null, { view, showScore: false, onAction: () => choose(car.id) });
+        const card = matchCard(null, { view, showScore: false, onAction: () => choose(car.id) }); card.classList.add('gcsp-card');
         card.querySelector('.vm-card-head').after(el('p', 'gcsp-note', `Order no. ${car.identity.orderNumber}`));
+        card.querySelector('.vm-card-terms')?.replaceChildren(...costSummary(car.cost));
         card.querySelectorAll('[data-action-id="review-car"]').forEach((control) => { control.dataset.reviewId = car.id; control.dataset.baseDisabled = String(control.disabled); });
         const details = button({ label: 'Vehicle details', variant: 'ghost', onClick() { detailOrigin = details; gallery.openDetail(car.id); } });
         card.querySelector('.vm-card-actions').append(details); cached = { signature, card }; cards.set(car.id, cached);
@@ -153,7 +180,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
   const shell = mountEmployee(root, { brand, loadAccount: adapter.loadAccount?.bind(adapter), renderBody(main) {
     panel = el('section', 'vm gcsp-gallery-body'); cards.clear(); detailId = null;
     const filters = el('div', 'gcsp-gallery-filters'); filters.setAttribute('role', 'search'); filters.setAttribute('aria-label', 'Filter released cars');
-    filters.append(field('query', 'Search cars and equipment'), field('series', 'Series', []), field('body', 'Body style', []),
+    filters.append(field('query', 'Search cars and equipment'),
       field('sort', 'Sort by', [['name', 'Model name'], ['points', 'Monthly points'], ['earliest-collection', 'Earliest collection']]));
     nodes = { counts: el('p', 'gcsp-note'), allowance: el('p', 'gcsp-gallery-allowance'), status: el('div', ''),
       grid: el('div', 'gcsp-gallery-grid'), results: el('div', 'gcsp-gallery-results'), detail: el('section', 'gcsp-gallery-detail'),
@@ -168,7 +195,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     const claimNotice = el('section', 'gcsp-gallery-claim'); claimNotice.setAttribute('aria-label', 'Reservation status'); claimNotice.append(nodes.claimMessage, nodes.check, nodes.retry);
     nodes.results.append(nodes.status, nodes.grid);
     panel.append(screenIntro({ kicker: 'Choose your car', title: 'Released cars', lede: 'Browse the available cars. Review one to reserve it while you check the details.', level: 1 }),
-      nodes.allowance, nodes.history, filters, nodes.counts, claimNotice, nodes.results, nodes.detail, nodes.back, nodes.backReason);
+      nodes.allowance, nodes.history, navField('series', 'Series'), navField('body', 'Body style'), filters, nodes.counts, claimNotice, nodes.results, nodes.detail, nodes.back, nodes.backReason);
     if (adapter.readOnly) panel.prepend(el('p', 'gcsp-note', 'Read-only synthetic gallery · 5 November 2026'));
     main.replaceChildren(panel); draw();
     if (!started) { started = true; gallery.load(); claim.load(); }

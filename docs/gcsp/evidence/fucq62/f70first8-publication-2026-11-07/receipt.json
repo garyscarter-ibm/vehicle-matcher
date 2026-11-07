@@ -1,0 +1,121 @@
+{
+  "status": "published-actual-partial",
+  "output": "server/data/gcsp/vehicle-evidence/fleet-source.v1",
+  "version": "2026-11-07.4",
+  "manifestDigest": "8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9",
+  "counts": {
+    "configurations": 350,
+    "distinctConfigurations": 350,
+    "images": 0,
+    "qualifyingCompleteDistinctSourceConfigurations": 349,
+    "sourceConfigurations": 349,
+    "vinMappings": 1
+  },
+  "acceptedSourceConfigurations": 349,
+  "continuationRowsAdded": 8,
+  "retainedConfigurationRowsUnchanged": 342,
+  "source1V1CollisionPreserved": true,
+  "previousVersion": {
+    "directory": "ba9442f93ae8ac2c77d47631061827a16be42f9d3a4a5e64f9b32866928b6d5a",
+    "manifestDigest": "ba9442f93ae8ac2c77d47631061827a16be42f9d3a4a5e64f9b32866928b6d5a"
+  },
+  "oldVersionFilesRehashedUnchanged": 19,
+  "previousVinBytesIdentical": true,
+  "newVinAllocations": 0,
+  "sourceRequests": 0,
+  "f60EnrichmentExecuted": false,
+  "registeredNovel": {
+    "path": "server/data/gcsp/vehicle-evidence/registered-sources/f70-first8-2026-11-07.jsonl",
+    "sha256": "f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8",
+    "bytes": 159220,
+    "records": 8
+  },
+  "sourceInputFilesRehashedUnchanged": 1,
+  "sourceInputBytes": 159220,
+  "steps": [
+    {
+      "name": "prepare",
+      "status": "ok",
+      "idempotent": null,
+      "wallMs": 2081.1963339999998,
+      "egress": {
+        "externalCalls": 0,
+        "control": "blocked"
+      }
+    },
+    {
+      "name": "publish",
+      "status": "ok",
+      "idempotent": false,
+      "wallMs": 3222.618667,
+      "egress": {
+        "externalCalls": 0,
+        "control": "blocked"
+      }
+    },
+    {
+      "name": "validate",
+      "status": "ok",
+      "idempotent": null,
+      "wallMs": 875.0577499999999,
+      "egress": {
+        "externalCalls": 0,
+        "control": "blocked"
+      }
+    },
+    {
+      "name": "fresh-process-load",
+      "status": "ok",
+      "idempotent": null,
+      "wallMs": 853.6431250000005,
+      "egress": {
+        "externalCalls": 0,
+        "control": "blocked"
+      }
+    },
+    {
+      "name": "idempotent-publish",
+      "status": "ok",
+      "idempotent": true,
+      "wallMs": 1515.5431659999995,
+      "egress": {
+        "externalCalls": 0,
+        "control": "blocked"
+      }
+    }
+  ],
+  "measured": {
+    "node": "v26.7.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "configurationBytes": 6500952,
+    "coldLoadMs": 674.560125,
+    "lookupRuns": [
+      {
+        "name": "first-pass",
+        "configurations": 350,
+        "vinMappings": 1,
+        "totalMs": 26.287249999999403
+      },
+      {
+        "name": "repeated-pass",
+        "configurations": 350,
+        "vinMappings": 1,
+        "totalMs": 26.29833300000064
+      }
+    ]
+  },
+  "egress": {
+    "externalCalls": 0,
+    "control": "blocked"
+  },
+  "streamingLimitBytes": 67108864,
+  "acceptance": "not-established",
+  "limitations": [
+    "Configuration-only eight actual novel 1F7B records; previous342 rows/VIN/versions unchanged",
+    "No new VIN/stock, images, physical inference or broader model/profile/WMI claim",
+    "Direct admitted-envelope projection; F60 enrichment not executed in this publication",
+    "FullF59/F61/F62 acceptance remains open; full10k excluded",
+    "Existing reviewed indexed-jsonl loader unchanged"
+  ]
+}

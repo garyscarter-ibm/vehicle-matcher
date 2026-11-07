@@ -1,0 +1,10 @@
+{
+  "scope": "All351 successful record GETs from the same probe; health excluded from latency samples, included in wall/throughput; no extra requests or SLA.",
+  "samples": 351,
+  "medianMs": 48.161833000000115,
+  "p95Ms": 65.57554199999868,
+  "p99Ms": 76.2745419999992,
+  "maximumMs": 86.20383399999992,
+  "probeSeconds": 26.19,
+  "recordsPerSecond": 13.402061855670102
+}

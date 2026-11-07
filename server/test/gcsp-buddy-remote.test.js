@@ -114,7 +114,7 @@ function offered(f) {
   assert.equal(offer.expiresAt, operation(f).payload.expiresAt);
   assert.equal(offer.quoteId, operation(f).payload.quoteId); assert.equal(offer.state, 'active');
   const currentCar = operation(f).payload.quote.eligibility.currentCarComparison;
-  assert.equal(currentCar.display.state, 'partial'); assert.equal(currentCar.comparisonAvailable, false);
+  assert.equal(currentCar.display.state, 'available'); assert.equal(currentCar.comparisonAvailable, true);
   assert.equal(currentCar.display.model, 'Fictional BMW 320i Touring');
   assert.equal(currentCar.binding.employeeVersion, f.input.expectedEmployeeVersion);
   assert.equal(currentCar.binding.slotVersion, f.input.expectedSlotVersion);
@@ -352,7 +352,7 @@ test('fresh confirmation after a small clock advance accepts the original still-
 test('remote intent and confirmed offer retain the same immutable current-car comparison snapshot', async (t) => {
   const f = await setup(t); await f.allocate();
   const pinned = structuredClone(operation(f).payload.quote.eligibility.currentCarComparison);
-  assert.equal(pinned.display.state, 'partial'); assert.equal(pinned.comparisonAvailable, false);
+  assert.equal(pinned.display.state, 'available'); assert.equal(pinned.comparisonAvailable, true);
   f.control.onReconcile = (op) => acknowledgement(op); assert.equal((await f.service.start()).status, 'ok');
   assert.equal((await tick(f)).status, 'ok'); offered(f);
   const employee = f.store.state.tables.employees.find((row) => row.employeeId === f.context.employeeId);

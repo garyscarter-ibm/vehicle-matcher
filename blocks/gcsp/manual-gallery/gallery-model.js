@@ -2,6 +2,9 @@ const clone = (value) => value === undefined ? undefined : structuredClone(value
 const text = (value) => typeof value === 'string' && value.trim() ? value : null;
 const number = (value) => typeof value === 'number' && Number.isFinite(value) && value >= 0 ? value : null;
 const words = (value) => String(value).replaceAll(/[-_]/g, ' ');
+const FACT_LABELS = { nedcCo2: 'NEDC CO2', wltpCo2: 'WLTP CO2', insuranceGroup: 'Insurance group', earliestCollection: 'Earliest collection' };
+// Detail rows read as sentence case; known acronyms keep their capitals.
+const factLabel = (key) => FACT_LABELS[key] ?? words(key).replaceAll(/([a-z])([A-Z])/g, '$1 $2').toLowerCase().replace(/^./, (c) => c.toUpperCase());
 const known = (fact) => fact?.status === 'known' && fact.value !== null && fact.value !== undefined;
 const valueOf = (fact) => known(fact) ? fact.value : null;
 const first = (...values) => values.find((value) => value !== null && value !== undefined) ?? null;
@@ -82,7 +85,7 @@ export function toManualCar(decision, versions = {}) {
   decision: { gateStatus, score: null, reasons: [], tradeOffs: [], blockers, unknowns },
   versions: clone(decision.versions), evidence: clone(decision), actions: [{ id: 'review-car', kind: 'accept', label: 'Review this car',
     disabled: !reviewAvailable, disabledReason: reason }] };
-  const allFacts = Object.entries(facts).map(([key, source]) => row(key, words(key), source));
+  const allFacts = Object.entries(facts).map(([key, source]) => row(key, factLabel(key), source));
   const exactFacts = allFacts.filter((fact) => ['confirmed-build', 'confirmed-listing', 'synthetic-scenario'].includes(fact.provenance?.assurance));
   const referenceFacts = allFacts.filter((fact) => fact.provenance?.assurance === 'model-reference');
   return { id: decision.orderUuid, identity, gateStatus, fields, emissions, cost, contribution: cash,

@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-06",
+  "state": "AUTHOR-ONLY-NO-EXECUTION-GRANT",
+  "mode": "eligibility-default",
+  "sourcePlanSHA256": "edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9",
+  "productTestFrozenRevision": "f80fc61ca151cb46ad21cb2b19e704f4012d53de",
+  "evidenceOnlyParentRevision": "dc2b5ca06eb6fd7fc9f9d5996f4af47d70fab963",
+  "executionRevisionRequirement": "Exact reviewed published HEAD after this evidence-only checkpoint; substituted in dispatcher handoff, never the earlier tested core or registry revision.",
+  "tests": [
+    "server/test/gcsp-runtime-publication.test.js"
+  ],
+  "testSourceSHA256": "b432eacda2fd5b4d2c042d1de4df3b88879f0709dd138d7be072cb5d72708f0d",
+  "namePattern": "^default Paula HTTP",
+  "expectedMatchedCount": 1,
+  "expectedMatchedNames": [
+    "default Paula HTTP preparation preserves canonical driver parity and single-subject privacy suppression"
+  ],
+  "filteredSourceCount": 5,
+  "filteredSourceNames": [
+    "delivered memory runtime dependencies drive ordinary Greg publish and employee terms while protecting pinned history",
+    "combined runtime serves authenticated scenarios, canonical presenter step and real mechanics reset using original policy identity",
+    "explicit file policy stays read-only under a memory runtime and caller policy is not closed",
+    "runtime closes default policy exactly once and retains the existing injected-repository lifecycle",
+    "explicit postgres policy failure never falls back to memory or file"
+  ],
+  "childCommand": [
+    "/Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "--test",
+    "--test-concurrency=1",
+    "--test-name-pattern=^default Paula HTTP",
+    "server/test/gcsp-runtime-publication.test.js"
+  ],
+  "supervisorCommandTemplate": [
+    "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "-I",
+    "-B",
+    "docs/gcsp/evidence/fucq103/scoped-supervisor.py",
+    "eligibility-default",
+    "--execute",
+    "--source-plan-sha",
+    "edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9",
+    "--revision",
+    "<reviewed-published-evidence-HEAD>",
+    "--dispatcher-grant",
+    "<new-fucq103-eligibility-default-grant>"
+  ],
+  "whyThisChunk": "One actual default employee HTTP boundary before separately reviewing a five-subject weighted/publication trial; current core25 and registry16 do not replace this ordinary runtime/HTTP baseline.",
+  "interfaces": [
+    "createGcspRuntime(memory) -> createLocalSession -> real buildServer dependencies and owned ephemeral HTTP server",
+    "GET manual/account -> brief/draft -> brief/confirm with the same employee session",
+    "employee recommendations + Greg demand/policy/preview through actual service adapters",
+    "canonicalSubject checks stored contract/slot/owned driver -> projectRecommendationFacts -> employee provider parity"
+  ],
+  "observableAssertions": [
+    "Single confirmed brief and released synthetic car produce an eligible employee decision; Greg unmet byGate is empty.",
+    "Raw manual employee facts never gain a flattened driverEligible field; the bound canonical driver fact and runtime provider agree.",
+    "Both active and draft fit meanBestScore are suppressed for one subject with canonical fewerThan5 policy.",
+    "After preview, canonical employee/slot/brief parity and all observed briefs/stock/holds/offers/quotes/employees/entitlement_slots/decisions remain equal to the pre-preview snapshot."
+  ],
+  "limits": {
+    "workers": 1,
+    "seconds": 120,
+    "aggregateRSSBytes": 1073741824,
+    "combinedScratchRetainedBytes": 134217728,
+    "originalMergedLogBytes": 2097152,
+    "separateReceiptHeadroomBytes": 262144,
+    "emergencyDiskReserveBytes": 5368709120,
+    "hostRamReserveBytes": 536870912
+  },
+  "admission": "New exact once grant; unchanged source/dependency/executable/resolver/membership/anchor pins; exact clean published HEAD/upstream. Fresh strict no-follow locked HostBudget charges all reservations/current pressure; earlier run headroom/peaks are not admission. Unknown/mismatch/insufficient admission stops; no retry.",
+  "environment": "Existing closed literal allowlist; database/debug/loader/preload/configuration credentials remain unset. Do not read the approved database file. No dependency installs or changes.",
+  "originalContract": "Preserve the entire bounded original merged log, summary, manifest, checkpoint and impact with byte counts/SHA on all outcomes. Audit exact positive case name/count, actual final totals including any filtered-case reporting, output caps and final allocation. Filtered names never count as exercised proof.",
+  "cleanupContract": "Existing finalizer manifest/process gate: stop/join owned direct/recursive PID/start and groups; closed owned ports; inode-bound scratch/no open files before deletion; scratch plus scratch/worktree dependency absence; exact token absent after strict full-bound locked release/readback, preserving foreign reservations. Unknowns remain named incomplete. Independent lead then root audits precede publication or broader admission.",
+  "exclusions": [
+    "Five filtered cases in the same source file, including weighted publication and runtime/native failure variants.",
+    "No browser/rendered/keyboard, native database, deployment, live BMW, corpus/model training, producer journeys or full-suite/full-story acceptance.",
+    "No 105-to-107 decision lookup/reload, native consumer uptake or learned model acceptance inferred from reviewed-definition registration.",
+    "38 listener-parser design fixtures remain unexecuted. No child agent, probe, listener, service, test or runtime import is launched by authoring this proposal."
+  ],
+  "grantIssued": false,
+  "executions": 0,
+  "agents": "requested/selected gpt-6.1-sol/high; no fallback or descendants"
+}

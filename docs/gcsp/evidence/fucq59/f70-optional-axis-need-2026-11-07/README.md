@@ -1,0 +1,9 @@
+# F70 optional input need: offline evidence
+
+The completed 790-request source series admitted all 790 distinct configurations across 1F7A/C/D/F. Its actual base selections have fixed transmission/interior trim defaults and no technology package. Fresh typed definitions include a different interior trim, S043U, and technology packages S07EV/S07EW. Those are concrete additional inputs to investigate; source constructibility and canonical novelty remain unproven.
+
+`observed-need.json` pins the fresh actual definitions, observed selections and final 2,636-entry spent index. It contains 32 illustrative unspent requests: two actual base cores for each of four models, each with S043U, S07EV, S07EW, or S043U plus S07EW. No request has run and no capacity credit is claimed. All explicitly `other` definitions, default-only transmission variants, S01H0 and additional line alternatives stay outside this first probe.
+
+The existing model-batch v1 route accepts exactly three untrimmed or four trimmed inputs. The recommended bounded extension is an independently registered model-axis source version that reuses the existing model/line qualification, executor, source binder, collector and canonical key. It retains at most eight explicit candidates per session, the same exact mandatory line semantics, and fresh validation of exactly one paint/fabric/rim plus at most one typed trim and one typed package. Retained binding repeats the input/type checks. The current strict source version retains its existing contract.
+
+Parent review of the concrete input/route need precedes code changes. This evidence is preparation only; a later finite live pilot needs a separate source grant and fresh executable/input pins. G42 traffic belongs to Charlie's lane. No publication or application acceptance is represented.

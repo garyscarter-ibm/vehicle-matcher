@@ -1,0 +1,25 @@
+==> Downloading Homebrew API data
+✘ JSON API packages.arm64_golden_gate.jws.json
+Error: curl: (6) Could not resolve host: formulae.brew.sh
+Failure while executing; `/usr/bin/env /opt/homebrew/Library/Homebrew/shims/shared/curl --disable --cookie /dev/null --globoff --user-agent Homebrew/7.0.10-58-g9811f64\ \(Macintosh\;\ arm64\ Mac\ OS\ X\ 27.2\)\ curl/8.7.1 --header Accept-Language:\ en --fail --progress-bar --silent --remote-time --output /Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/install-3-local/.scratch/test-stamp-shard-0a42b6e5944b44f2af7169fe86673252/homebrew-cache/api/internal/packages.arm64_golden_gate.jws.json.new --location --etag-save /Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/install-3-local/.scratch/test-stamp-shard-0a42b6e5944b44f2af7169fe86673252/homebrew-cache/api/internal/packages.arm64_golden_gate.jws.json.etag.new --disable --cookie /dev/null --globoff --show-error --user-agent Homebrew/7.0.10-58-g9811f64\ \(Macintosh\;\ arm64\ Mac\ OS\ X\ 27.2\)\ curl/8.7.1 --header Accept-Language:\ en --fail --progress-bar --silent --compressed --speed-limit 100 --speed-time 5 --write-out \%\{http_code\} https://formulae.brew.sh/api/internal/packages.arm64_golden_gate.jws.json` exited with 6. Here's the output:
+curl: (6) Could not resolve host: formulae.brew.sh
+000
+/opt/homebrew/Library/Homebrew/system_command.rb:668:in 'SystemCommand::Result#assert_success!': Failure while executing; `/usr/bin/env /opt/homebrew/Library/Homebrew/shims/shared/curl --disable --cookie /dev/null --globoff --user-agent Homebrew/7.0.10-58-g9811f64\ \(Macintosh\;\ arm64\ Mac\ OS\ X\ 27.2\)\ curl/8.7.1 --header Accept-Language:\ en --fail --progress-bar --silent --remote-time --output /Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/install-3-local/.scratch/test-stamp-shard-0a42b6e5944b44f2af7169fe86673252/homebrew-cache/api/internal/packages.arm64_golden_gate.jws.json.new --location --etag-save /Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/install-3-local/.scratch/test-stamp-shard-0a42b6e5944b44f2af7169fe86673252/homebrew-cache/api/internal/packages.arm64_golden_gate.jws.json.etag.new --disable --cookie /dev/null --globoff --show-error --user-agent Homebrew/7.0.10-58-g9811f64\ \(Macintosh\;\ arm64\ Mac\ OS\ X\ 27.2\)\ curl/8.7.1 --header Accept-Language:\ en --fail --progress-bar --silent --compressed --speed-limit 100 --speed-time 5 --write-out \%\{http_code\} https://formulae.brew.sh/api/internal/packages.arm64_golden_gate.jws.json` exited with 6. Here's the output: (ErrorDuringExecution)
+curl: (6) Could not resolve host: formulae.brew.sh
+000
+
+	from /opt/homebrew/Library/Homebrew/utils/curl.rb:304:in 'Utils::Curl.curl'
+	from /opt/homebrew/Library/Homebrew/utils/curl.rb:351:in 'Utils::Curl.curl_download'
+	from /opt/homebrew/Library/Homebrew/api.rb:126:in 'Homebrew::API.fetch_json_api_file'
+	from /opt/homebrew/Library/Homebrew/api/internal.rb:77:in 'Homebrew::API::Internal.fetch_packages_api!'
+	from /opt/homebrew/Library/Homebrew/api/internal.rb:116:in 'Homebrew::API::Internal.download_and_cache_data!'
+	from /opt/homebrew/Library/Homebrew/api/internal.rb:167:in 'Homebrew::API::Internal.ensure_formula_data!'
+	from /opt/homebrew/Library/Homebrew/api/internal.rb:237:in 'Homebrew::API::Internal.formula_names'
+	from /opt/homebrew/Library/Homebrew/api.rb:588:in 'Homebrew::API.formula_names'
+	from /opt/homebrew/Library/Homebrew/tap/core_tap.rb:211:in 'CoreTap#formula_files_by_name'
+	from /opt/homebrew/Library/Homebrew/formulary.rb:1279:in 'Formulary.find_formula_in_tap'
+	from /opt/homebrew/Library/Homebrew/formulary.rb:1260:in 'Formulary.core_path'
+	from /opt/homebrew/Library/Homebrew/formulary.rb:889:in 'Formulary::NullLoader#initialize'
+	from /opt/homebrew/Library/Homebrew/formulary.rb:1255:in 'Formulary.loader_for'
+	from /opt/homebrew/Library/Homebrew/formulary.rb:1031:in 'Formulary.factory'
+	from /Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-postgres-bounded-plan-2026-11-07/install-bottle.rb:15:in '<main>'

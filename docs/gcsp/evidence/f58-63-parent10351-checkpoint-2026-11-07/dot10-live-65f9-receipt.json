@@ -1,0 +1,240 @@
+{
+  "schemaVersion": "dot10-readiness-three-get-receipt.v1",
+  "status": "passed",
+  "code": "65f9c728a6791e828fd91f5db33b2042b44507da",
+  "actualDeploymentId": "7617886276",
+  "manifestDigest": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+  "requests": 3,
+  "newGetCeiling": 3,
+  "sourceCalls": 0,
+  "startedAt": "2026-11-07T07:05:19.019Z",
+  "finishedAt": "2026-11-07T07:05:19.354Z",
+  "pending": null,
+  "observations": [
+    {
+      "label": "health",
+      "status": 200,
+      "headers": [
+        [
+          "access-control-allow-headers",
+          "Content-Type, X-Access-Key"
+        ],
+        [
+          "access-control-allow-methods",
+          "GET, POST, OPTIONS"
+        ],
+        [
+          "access-control-allow-origin",
+          "*"
+        ],
+        [
+          "access-control-max-age",
+          "86400"
+        ],
+        [
+          "alt-svc",
+          "h3=\":443\"; ma=86400"
+        ],
+        [
+          "cf-cache-status",
+          "DYNAMIC"
+        ],
+        [
+          "cf-ray",
+          "a56a7d26ae2594db-LHR"
+        ],
+        [
+          "content-encoding",
+          "br"
+        ],
+        [
+          "content-length",
+          "15"
+        ],
+        [
+          "content-type",
+          "application/json; charset=utf-8"
+        ],
+        [
+          "date",
+          "Sat, 07 Nov 2026 07:05:19 GMT"
+        ],
+        [
+          "rndr-id",
+          "c8568d51-1c76-417d"
+        ],
+        [
+          "server",
+          "cloudflare"
+        ],
+        [
+          "vary",
+          "Accept-Encoding"
+        ],
+        [
+          "x-render-origin-server",
+          "Render"
+        ]
+      ],
+      "bodySha256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+      "bodyBytes": 11,
+      "elapsedMs": 181.350583
+    },
+    {
+      "label": "readiness",
+      "status": 200,
+      "headers": [
+        [
+          "access-control-allow-headers",
+          "Content-Type, X-Access-Key"
+        ],
+        [
+          "access-control-allow-methods",
+          "GET, POST, OPTIONS"
+        ],
+        [
+          "access-control-allow-origin",
+          "*"
+        ],
+        [
+          "access-control-max-age",
+          "86400"
+        ],
+        [
+          "alt-svc",
+          "h3=\":443\"; ma=86400"
+        ],
+        [
+          "cf-cache-status",
+          "DYNAMIC"
+        ],
+        [
+          "cf-ray",
+          "a56a7d272e7994db-LHR"
+        ],
+        [
+          "content-encoding",
+          "br"
+        ],
+        [
+          "content-length",
+          "132"
+        ],
+        [
+          "content-type",
+          "application/json; charset=utf-8"
+        ],
+        [
+          "date",
+          "Sat, 07 Nov 2026 07:05:19 GMT"
+        ],
+        [
+          "rndr-id",
+          "05832ac8-44e2-47b0"
+        ],
+        [
+          "server",
+          "cloudflare"
+        ],
+        [
+          "vary",
+          "Accept-Encoding"
+        ],
+        [
+          "x-render-origin-server",
+          "Render"
+        ]
+      ],
+      "bodySha256": "bd170284e1e3675a7c4dea69495b98f167762ea2b4dfd16c93a132238c08c3d7",
+      "bodyBytes": 169,
+      "elapsedMs": 66.41662500000001,
+      "sanitizedReadiness": {
+        "ok": true,
+        "status": "ready",
+        "manifestDigest": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+        "elapsedMs": 311105,
+        "recovered": false
+      }
+    },
+    {
+      "label": "configuration",
+      "status": 200,
+      "headers": [
+        [
+          "access-control-allow-headers",
+          "Content-Type, X-Access-Key"
+        ],
+        [
+          "access-control-allow-methods",
+          "GET, POST, OPTIONS"
+        ],
+        [
+          "access-control-allow-origin",
+          "null"
+        ],
+        [
+          "access-control-max-age",
+          "86400"
+        ],
+        [
+          "alt-svc",
+          "h3=\":443\"; ma=86400"
+        ],
+        [
+          "cache-control",
+          "no-store"
+        ],
+        [
+          "cf-cache-status",
+          "DYNAMIC"
+        ],
+        [
+          "cf-ray",
+          "a56a7d278eac94db-LHR"
+        ],
+        [
+          "content-encoding",
+          "br"
+        ],
+        [
+          "content-length",
+          "2293"
+        ],
+        [
+          "content-type",
+          "application/json; charset=utf-8"
+        ],
+        [
+          "date",
+          "Sat, 07 Nov 2026 07:05:19 GMT"
+        ],
+        [
+          "rndr-id",
+          "60bdbed0-35bc-4f3f"
+        ],
+        [
+          "server",
+          "cloudflare"
+        ],
+        [
+          "vary",
+          "Origin, Accept-Encoding"
+        ],
+        [
+          "x-render-origin-server",
+          "Render"
+        ]
+      ],
+      "bodySha256": "38b6c87f22a36b46bd380d3f9d45135389ced171cdf23990b6cddb82d4a065cb",
+      "bodyBytes": 11532,
+      "elapsedMs": 80.92704200000003,
+      "match": true,
+      "dtoSha256": "38b6c87f22a36b46bd380d3f9d45135389ced171cdf23990b6cddb82d4a065cb",
+      "expectedDtoSha256": "38b6c87f22a36b46bd380d3f9d45135389ced171cdf23990b6cddb82d4a065cb"
+    }
+  ],
+  "failure": null,
+  "expectedDtoSha256": "38b6c87f22a36b46bd380d3f9d45135389ced171cdf23990b6cddb82d4a065cb",
+  "acceptance": false,
+  "originalTimeoutCauseProved": false
+}

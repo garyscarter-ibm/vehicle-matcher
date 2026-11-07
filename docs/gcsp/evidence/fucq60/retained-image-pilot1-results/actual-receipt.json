@@ -1,0 +1,294 @@
+{
+  "audit": {
+    "acceptanceLimits": [
+      "Actual full-target source corpus and declared coverage remain required for story acceptance.",
+      "Stock references are supplied through the repository seam; no native PostgreSQL or stock generation proof is inferred.",
+      "Restart, activation interruption and rollback are tested in owned fixtures; this command does not mutate the active store."
+    ],
+    "activation": {
+      "loaderStatus": "ok",
+      "recovered": false
+    },
+    "activeStore": "/private/tmp/test-stamp-shard-3e79e46302514ec6ad9585ea6b28e76e/store",
+    "actual": {
+      "completeResolvedDistinct": 349,
+      "completeness": {
+        "imagesMissing": 349,
+        "selectedOptions": {
+          "complete": 349,
+          "unknown": 1
+        },
+        "sourceKinds": {
+          "dated-snapshot": 349,
+          "north-american-reference": 1
+        }
+      },
+      "configurations": 350,
+      "coverage": {
+        "markets": {
+          "GB": 349,
+          "US": 1
+        },
+        "models": {
+          "430i": 1,
+          "unknown": 349
+        },
+        "steering": {
+          "LHD": 1,
+          "unknown": 349
+        },
+        "wmis": {
+          "WBA": 1
+        }
+      },
+      "distinctConfigurations": 350,
+      "distributions": {
+        "body": {
+          "omittedCategories": 0,
+          "values": {
+            "Convertible": 1,
+            "unknown": 349
+          }
+        },
+        "factoryOptionCount": {
+          "omittedCategories": 0,
+          "values": {
+            "1": 1,
+            "42": 8,
+            "47": 49,
+            "48": 73,
+            "49": 23,
+            "50": 23,
+            "51": 72,
+            "52": 44,
+            "53": 40,
+            "54": 9,
+            "56": 8
+          }
+        },
+        "imageFidelity": {
+          "omittedCategories": 0,
+          "values": {
+            "representative-configuration": 1
+          }
+        },
+        "model": {
+          "omittedCategories": 0,
+          "values": {
+            "430i": 1,
+            "unknown": 349
+          }
+        },
+        "powertrain": {
+          "omittedCategories": 0,
+          "values": {
+            "petrol": 1,
+            "unknown": 349
+          }
+        },
+        "sourceKind": {
+          "omittedCategories": 0,
+          "values": {
+            "dated-snapshot": 349,
+            "north-american-reference": 1
+          }
+        },
+        "unresolvedFacts": {
+          "omittedCategories": 0,
+          "values": {
+            "agModelCode": 1,
+            "body": 349,
+            "derivative": 349,
+            "drive": 349,
+            "engineCode": 350,
+            "exactEquipment": 1,
+            "exactTrim": 1,
+            "model": 349,
+            "modelYear": 349,
+            "plant": 349,
+            "powertrain": 349,
+            "productionDate": 350,
+            "productionEra": 349,
+            "region": 349,
+            "registrationDate": 1,
+            "steering": 349,
+            "transmission": 350,
+            "vgModelCode": 1
+          }
+        }
+      },
+      "images": 1,
+      "nonQualifyingConfigurations": 1,
+      "omittedCoverageCategories": {
+        "markets": 0,
+        "models": 0,
+        "steering": 0,
+        "wmis": 0
+      },
+      "qualifyingCompleteDistinctSourceConfigurations": 349,
+      "sourceConfigurations": 349,
+      "vinMappings": 1
+    },
+    "audit": {
+      "checked": 351,
+      "concurrency": 1,
+      "elapsedMs": 599.2618750000001,
+      "environment": {
+        "arch": "arm64",
+        "node": "v26.7.0",
+        "platform": "darwin"
+      },
+      "errors": 0,
+      "latencyMs": {
+        "count": 351,
+        "max": 3.8581670000003214,
+        "min": 1.5462080000015703,
+        "p50": 1.6869999999998981,
+        "p95": 1.8348339999993186,
+        "p99": 2.127249999999549
+      },
+      "records": {
+        "configurations": 350,
+        "stockReferences": 0,
+        "vinMappings": 1
+      },
+      "scope": "all-records",
+      "stockScope": "not-supplied",
+      "throughputPerSecond": 585.7205583118397
+    },
+    "egress": {
+      "control": "blocked",
+      "externalCalls": 0,
+      "scope": "this-audit-process",
+      "sourceCalls": 0
+    },
+    "http": {
+      "concurrency": 1,
+      "elapsedMs": 161.6145830000005,
+      "endpoint": "http://127.0.0.1:52113",
+      "errors": 0,
+      "latencyMs": {
+        "count": 351,
+        "max": 5.865125000000262,
+        "min": 0.3908750000009604,
+        "p50": 0.43000000000029104,
+        "p95": 0.5262499999989814,
+        "p99": 0.6813330000004498
+      },
+      "requests": 351,
+      "scope": "all-records",
+      "serverClosed": true,
+      "throughputPerSecond": 2171.8337137930116,
+      "totalRecords": 351
+    },
+    "limitations": [
+      "Compatible profile-family coverage is not inferred from configuration IDs or VIN spelling.",
+      "Staged verification does not establish source-operation budgets, collection replay or full story acceptance.",
+      "Unknown measurements, missing images and representative image fidelity remain explicit; no stock, eligibility or points facts are inferred."
+    ],
+    "manifest": {
+      "datasetId": "gcsp-source-fleet",
+      "generatorVersion": "synthetic-identities.sha256-v1",
+      "path": "/private/tmp/test-stamp-shard-3e79e46302514ec6ad9585ea6b28e76e/store/versions/0f7edad7be5263960259446fab9efdea515fb77b86112b23a37c772e3fc1c05d/manifest.json",
+      "profileRegistryVersion": "vin-profiles.v1",
+      "schemaVersion": "1",
+      "sha256": "0f7edad7be5263960259446fab9efdea515fb77b86112b23a37c772e3fc1c05d",
+      "signaturePolicyVersion": "gcsp-policy-v1",
+      "version": "2026-11-07.4-image-pilot1"
+    },
+    "planned": {
+      "exclusions": [],
+      "families": [],
+      "familyCount": 0,
+      "omittedFamilies": 0,
+      "provided": false
+    },
+    "qualification": "bounded-fixture-or-partial-corpus",
+    "reason": null,
+    "requiredDistinct": 349,
+    "shortfall": 0,
+    "status": "verified-active",
+    "storyAcceptance": "not-established",
+    "targetMet": true
+  },
+  "baselineManifestDigest": "8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9",
+  "baselineVersion": "2026-11-07.4",
+  "candidateManifestDigest": "0f7edad7be5263960259446fab9efdea515fb77b86112b23a37c772e3fc1c05d",
+  "candidateVersion": "2026-11-07.4-image-pilot1",
+  "completeness": {
+    "imagesMissing": 349,
+    "selectedOptions": {
+      "complete": 349,
+      "unknown": 1
+    },
+    "sourceKinds": {
+      "dated-snapshot": 349,
+      "north-american-reference": 1
+    }
+  },
+  "counts": {
+    "configurations": 350,
+    "distinctConfigurations": 350,
+    "images": 1,
+    "qualifyingCompleteDistinctSourceConfigurations": 349,
+    "sourceConfigurations": 349,
+    "vinMappings": 1
+  },
+  "egress": {
+    "auditExternalCalls": 0,
+    "auditSourceCalls": 0,
+    "control": "blocked",
+    "preparationExternalCalls": 0
+  },
+  "history": {
+    "addedDatasetVersions": 1,
+    "baselineInventorySha256": "b103f85885cbb8ee46f555acadb28f9a75999a2ba2d88f1b93e8f9175ce16f0e",
+    "configurationsUnchanged": true,
+    "identitiesUnchanged": true,
+    "priorDatasetsUnchanged": true
+  },
+  "image": {
+    "asset": "assets/gcsp-vehicle-evidence/fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe.webp",
+    "bytes": 82798,
+    "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+    "configurationIdSha256": "cec541411f1b512cdcef09d1013939c166c166385fadb1b3dbf089645102bb53",
+    "contentType": "image/webp",
+    "fidelity": "representative-configuration",
+    "height": 1646,
+    "imageId": "bmw-i5-white-20261101-v1",
+    "modelAndPaint": "observed F42 white i5",
+    "observedDate": "2026-11-01",
+    "physicalProductionDate": null,
+    "role": "representative-configuration",
+    "sha256": "fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe",
+    "sourceKind": "dated-snapshot",
+    "viewpoint": "HEROFRONT",
+    "wheelsInteriorEquipmentAndExactAppearance": "unknown",
+    "width": 2560
+  },
+  "restart": {
+    "defaultLocalComposition": "complete",
+    "imageState": "representative",
+    "registry": "ok"
+  },
+  "retainedBytes": {
+    "configurations": {
+      "bytes": 6500952,
+      "identical": true,
+      "sha256": "da5c54020b9ccf2eddef8160a8df4e501f7ce57884b195bd275e242ff843f2f5"
+    },
+    "vins": {
+      "bytes": 2565,
+      "identical": true,
+      "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd"
+    }
+  },
+  "scope": "One exact retained real image on the unchanged actual 349-source/350-configuration corpus; isolated store only; no source collection, active publication, 10k or whole-story acceptance claim.",
+  "sourceStore": {
+    "activePointerSha256": "69d2b352a51f3861855728a0eb73235b589d3ece8a66bd8f9f742f78fa4b368e",
+    "bytes": 19975738,
+    "files": 27,
+    "treeUnchanged": true
+  },
+  "status": "retained-image-pilot1-proved"
+}

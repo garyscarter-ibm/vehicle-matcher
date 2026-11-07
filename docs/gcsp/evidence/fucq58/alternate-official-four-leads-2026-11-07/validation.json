@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "f58-four-lead-input-integrity.v1",
+  "validatedAt": "2026-11-07T07:11:00.442991+00:00",
+  "scope": "documentation/input preparation, existing pure adapter validator and frozen identity checks; no new lifecycle/transport test result",
+  "selected": [
+    "JSON parse and literal URL SHA/row reconciliation",
+    "pin verification",
+    "existing validatePublicBmwInventoryPlan on all four inputs",
+    "output/control absence and consumed selector plan hash",
+    "git diff --check"
+  ],
+  "excluded": "Source network, live runner/lifecycle tests, repeated existing source/selector tests, app/full suite, UI, SQL and VIN profile activation. No executable application code changed; lifecycle proof remains a release precondition.",
+  "passed": 29,
+  "failed": 0,
+  "checks": [
+    {
+      "name": "source-lead-identity",
+      "pass": true
+    },
+    {
+      "name": "exclusion-snapshot-identity",
+      "pass": true
+    },
+    {
+      "name": "four-original-rows",
+      "pass": true
+    },
+    {
+      "name": "literal-url-sha:u06",
+      "pass": true
+    },
+    {
+      "name": "literal-url-sha:g20",
+      "pass": true
+    },
+    {
+      "name": "literal-url-sha:g22",
+      "pass": true
+    },
+    {
+      "name": "literal-url-sha:g23",
+      "pass": true
+    },
+    {
+      "name": "qualification-plan-pin:u06",
+      "pass": true
+    },
+    {
+      "name": "qualification-plan-pin:g20",
+      "pass": true
+    },
+    {
+      "name": "qualification-plan-pin:g22",
+      "pass": true
+    },
+    {
+      "name": "qualification-plan-pin:g23",
+      "pass": true
+    },
+    {
+      "name": "unchanged-existing-code:scripts/gcsp/bmw-public-registration.mjs",
+      "pass": true
+    },
+    {
+      "name": "unchanged-existing-code:scripts/gcsp/public-bmw-source.mjs",
+      "pass": true
+    },
+    {
+      "name": "unchanged-existing-code:scripts/gcsp/bmw-source-qualification.mjs",
+      "pass": true
+    },
+    {
+      "name": "unchanged-existing-code:scripts/gcsp/collection-session.mjs",
+      "pass": true
+    },
+    {
+      "name": "unchanged-existing-code:scripts/gcsp/configuration-key.mjs",
+      "pass": true
+    },
+    {
+      "name": "unchanged-existing-code:scripts/gcsp/settings-shape-report.mjs",
+      "pass": true
+    },
+    {
+      "name": "unchanged-existing-code:server/gcsp/repository/core.js",
+      "pass": true
+    },
+    {
+      "name": "unchanged-existing-code:server/gcsp/repository/schema.js",
+      "pass": true
+    },
+    {
+      "name": "unchanged-existing-code:docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/diagnostic.mjs",
+      "pass": true
+    },
+    {
+      "name": "unchanged-existing-code:docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/contract-runner.mjs",
+      "pass": true
+    },
+    {
+      "name": "unchanged-existing-code:_tools/test_resources.py",
+      "pass": true
+    },
+    {
+      "name": "no-grant-no-credit",
+      "pass": true
+    },
+    {
+      "name": "exact-budget",
+      "pass": true
+    },
+    {
+      "name": "excluded-snapshot-zero-matches",
+      "pass": true
+    },
+    {
+      "name": "source-output-and-control-not-created",
+      "pass": true
+    },
+    {
+      "name": "frozen-selector-consumed-plan-preserved",
+      "pass": true
+    },
+    {
+      "name": "existing-pure-adapter-validator",
+      "pass": true
+    },
+    {
+      "name": "whitespace",
+      "pass": true
+    }
+  ],
+  "validatorScriptSha256": "354f51a49fdfe5bb4bf187407d89b059a2c68dabdb421fc2f60621516bc6b9d9",
+  "evidencePins": {
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/README.md": "0884eea1f400581eddd95575a1b44ab32ae57495db3ef440a5b4aaa916b55c08",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/g20/qualification-plan.json": "611a40e2deb026166f6eb3875802db747bbe3395fe108636acfbe9b8a22b1da3",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/g22/qualification-plan.json": "0f13f9322e2aeb62cb2fe98ab0aa841d2a13e7790698152a2024000ddab95ad6",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/g23/qualification-plan.json": "62ae6d71b61b4a0eff18e31c64b1a5c438a14036b3d2cda4754b2c01c034872b",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/inventory-proposal.json": "2acc5aa123562fcc8c6099b031dae6ea31a32b1e979934746f1d882fcdb84973",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/leads.json": "b9d834e4329543f1833f8b5eb8e17002b1f8b7c753944288232868537bb4571d",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/prepare.py": "f690f87eeaeb3b2572487458095306a649a71d23394d066c7a2ba184e3fb58fe",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/prior-exclusions.json": "67d56f3fce98c4196610213dd02cb831643429ea2c053e02168449ce59308702",
+    "docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/u06/qualification-plan.json": "81c273efbc46c7fa99537b4784a97447677f94ebda9a50955c0b49809093051b"
+  },
+  "noDisposableScratchCreated": true,
+  "removedAllocationBytes": 0,
+  "compatibilityException": null,
+  "leftovers": [],
+  "sourceRequestsExecuted": 0,
+  "acceptance": false
+}

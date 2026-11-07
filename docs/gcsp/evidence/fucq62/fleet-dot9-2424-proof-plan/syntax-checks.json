@@ -1,0 +1,42 @@
+{
+  "scope": "syntax only; no proof executions",
+  "results": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot9-2424-proof-plan/audit-direct.mjs",
+      "sha256": "2625098705988e5ce980d0b91dd9493ed8014f343ec83a5fa36e60e4ddcef7bb",
+      "rc": 0
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot9-2424-proof-plan/common.mjs",
+      "sha256": "7129a8509d24ccfb732c878e08f0b358ca4e5c365c9b82e54e937509df874c88",
+      "rc": 0
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot9-2424-proof-plan/http-chunk.mjs",
+      "sha256": "25617dd58aa3f4e16f2b2fd021fc58b65fff6fb07e813fde5ea6cf2814c96e42",
+      "rc": 0
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot9-2424-proof-plan/publish-restart.mjs",
+      "sha256": "8eea7d9fc8b9d2b0f969a813da20413e563cedb5e8a56a4c157df99cecc453c9",
+      "rc": 0
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot9-2424-proof-plan/rollback.mjs",
+      "sha256": "4bbd8fd922fb712219e295d5b8d797c4f9ba79bd2331e5d8fee46a76bf8c2e51",
+      "rc": 0
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot9-2424-proof-plan/summarize.mjs",
+      "sha256": "c865557228b09bc1f9eda39f59bbdf542e35bee4f10ae24387a3aaf676911923",
+      "rc": 0
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot9-2424-proof-plan/supervise.py",
+      "sha256": "b9307eb1fb86b2cf9a10047d0fd85bef15ada76d051b04b992edd1b5dc9e53b2",
+      "rc": 0,
+      "method": "in-memorycompile-nobytecode-noexecution"
+    }
+  ],
+  "acceptance": false
+}

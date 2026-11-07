@@ -30,7 +30,8 @@ function comparison(currentCar) {
   }
   const name = currentCar.display?.name || 'Current car not supplied';
   section.append(el('h3', null, name));
-  if (currentCar.status === 'partial') section.append(el('p', 'gcsp-note', 'Partial comparison. Current-car specifications and points are unknown.'));
+  if (currentCar.status === 'partial') section.append(el('p', 'gcsp-note', currentCar.facts?.some((row) => row.value !== null)
+    ? 'Partial comparison. Some current-car facts are unknown.' : 'Partial comparison. Current-car specifications and points are unknown.'));
   section.append(mediaWell(null, '', { placeholder: 'No image for this car yet', view: {
     display: { name }, media: currentCar.media || {} } }).media);
   section.append(factList(currentCar.facts || []));

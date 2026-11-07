@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-06",
+  "story": "FUCQ-103",
+  "state": "ACCEPTED-SCOPED-EDITOR3-EVIDENCE",
+  "run": "fucq103-backend-b831e52166b5485ea28e5b57a78b2e8d",
+  "testedRevision": "a0fc0260ef09a785fd1511bec5d10e3f494259f1",
+  "productTestFrozenRevision": "f80fc61ca151cb46ad21cb2b19e704f4012d53de",
+  "sourcePlanSHA256": "edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9",
+  "grant": "fucq103-eligibility-editor-a0fc026-0911",
+  "grantStatus": "consumed-once; no retry or further execution grant",
+  "mode": "eligibility-editor",
+  "childCommand": [
+    "/Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "--test",
+    "--test-concurrency=1",
+    "server/test/gcsp-greg-publish-editor.test.js"
+  ],
+  "supervisorCommand": [
+    "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "-I",
+    "-B",
+    "docs/gcsp/evidence/fucq103/scoped-supervisor.py",
+    "eligibility-editor",
+    "--execute",
+    "--source-plan-sha",
+    "edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9",
+    "--revision",
+    "a0fc0260ef09a785fd1511bec5d10e3f494259f1",
+    "--dispatcher-grant",
+    "fucq103-eligibility-editor-a0fc026-0911"
+  ],
+  "actualSupervisorToolCompletion": {
+    "launchChunk": "1e272c",
+    "sessionId": 9860,
+    "completionChunk": "03729d",
+    "exitCode": 0
+  },
+  "childExitCode": 0,
+  "reporter": "SPEC; original full bounded log, not TAP",
+  "selectedCaseNames": [
+    "reviewed editor bundle is immutable, digest checked, explicitly assumed and absent from unchanged seed",
+    "missing key keeps exact editing; intentional reviewed adoption projects ranges and preserves pinned rows and old snapshots",
+    "one canonical range change updates every projected control while legal exact values remain unbounded by presentation"
+  ],
+  "sourceCaseCount": 3,
+  "filteredSourceCaseCount": 0,
+  "totals": {
+    "tests": 3,
+    "suites": 0,
+    "pass": 3,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "duration_ms": 1682.475625
+  },
+  "completedModesExcluded": [
+    "eligibility-core25",
+    "eligibility-registry16",
+    "eligibility-default1",
+    "eligibility-weighted1",
+    "eligibility-runtime4"
+  ],
+  "completedCasesRerun": false,
+  "originals": {
+    "summary": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-b831e52166b5485ea28e5b57a78b2e8d-summary.json",
+      "bytes": 2967,
+      "sha256": "50660ecd23b47c0c5b3b483946262415320646b0f3c8d0495ffa70ad28056a48"
+    },
+    "manifest": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-b831e52166b5485ea28e5b57a78b2e8d-manifest.json",
+      "bytes": 2094,
+      "sha256": "fc72a073d5af73cf025f440847465f1c3bd039f00f364d0017e0dd7f0f2c05d8"
+    },
+    "log": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-b831e52166b5485ea28e5b57a78b2e8d/test.log",
+      "bytes": 514,
+      "sha256": "29f6d25d6efc1ee97c5fb63063497c011a3163274b1b43a8f3680d1ed0a1fe00",
+      "publishedCopy": "test.log"
+    },
+    "checkpoint": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-b831e52166b5485ea28e5b57a78b2e8d/checkpoint.json",
+      "bytes": 319,
+      "sha256": "de71307d5b64f4e21a56800c6c19f846a9ac0a91449ffbe846c1f1b47b844768"
+    },
+    "impact": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/impact/edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9-eligibility-editor.json",
+      "bytes": 1303,
+      "sha256": "49127f8dad073a4ae0295f6ff7ff27451a2227ef0b4934249936290172820e12"
+    },
+    "supervisorStdout": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-editor-supervisor-0911.stdout",
+      "bytes": 566,
+      "sha256": "bf8e6081e9d7ea460597f0a87ebeede0a9228c423e5474cfcea906f9d4a767b6"
+    },
+    "supervisorStderr": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-editor-supervisor-0911.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "launcherManifest": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-editor-launcher-manifest-0911.json",
+      "bytes": 1911,
+      "sha256": "593a40b6570b4df59115872d680ffa818fba39bb68351b49a6888eb20cbc615b"
+    },
+    "launcherResult": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-editor-launcher-result-0911.json",
+      "bytes": 2481,
+      "sha256": "4a1cb0b56930421887cf4fe8115f67fa7ccf035fcfb4a2c4210e93269e382eb5"
+    }
+  },
+  "privateAuditReceipts": {
+    "lead": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-editor3-a0fc026-lead-2026-11-06.json",
+      "bytes": 75710,
+      "sha256": "6d8f0f2925889b9696aa737ef8bee359e6edaccdd96cd8ea6549622fe7a04079"
+    },
+    "postwrite": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-editor3-postwrite-0911.json",
+      "bytes": 2793,
+      "sha256": "d10bc72cb7abc8775491e8fc27127f55b1c3ea8d36304a34364f9a0604cc9380"
+    },
+    "root": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-editor3-root-0942.json",
+      "bytes": 3058,
+      "sha256": "ee331a3497e28b607518689493e8c149c5ce160bab9618ba5eac60da715db9f4"
+    }
+  },
+  "publicationBoundary": "Only this concise index, README and the exact original test.log are published. Full originals, raw coordinator and audit reports remain under ignored .claude. Their historical unpublished/awaiting-audit markers are unchanged.",
+  "independentAcceptance": {
+    "leadChecksPassed": 580,
+    "rootChecksPassed": 1019,
+    "rootObservedAt": "2026-11-06T09:45:29.521089+00:00",
+    "acceptedScope": "Three service editor cases only; original spec reporter names/totals, no completed case rerun; no screen/native/live/producer/full/story acceptance",
+    "authorisation": "Root accepts only scoped editor3 evidence and existing cleanup; immutable evidence-only publication and next smallest author-only proposal permitted. No further runtime grant."
+  },
+  "metrics": {
+    "wallSeconds": 4.914049875,
+    "peakAggregateRSSBytes": 1000603648,
+    "peakAggregateRSSMiB": 954.25,
+    "aggregateRSSCapBytes": 1073741824,
+    "peakCombinedBytes": 4348423,
+    "scratchRemovedBytes": 4338401,
+    "historicalPostwriteConservativeRetainedAllocationCapBytes": 118912,
+    "historicalPostwriteConservativeReceiptAllocationCapBytes": 114816,
+    "receiptHeadroomCapBytes": 262144
+  },
+  "acceptedCleanupEvidence": {
+    "ownedPidsAbsent": [
+      65298,
+      65314,
+      65316,
+      65267
+    ],
+    "ownedGroupAbsent": 65298,
+    "ownedListenerInventory": [],
+    "scratchAndDependencyPathsAbsent": true,
+    "exactReservationTokenAbsent": "bc3b5dbea5b54d208c98ce55a55403a6",
+    "ledgerValidation": "physical no-follow locked strict full ledger; no cleanup mutations or ledger writes",
+    "source": "Bound independent lead and root receipts; no cleanup/probe/audit rerun for this publication."
+  },
+  "acceptedFrozenPins": {
+    "sources": 219,
+    "dependencies": 251,
+    "executables": 8,
+    "physicalEntries": 307,
+    "resolverAbsences": 163,
+    "inventories": 3,
+    "editorInterfacePins": 7
+  },
+  "scopeLimits": [
+    "Synthetic memory service fixture, explicit alternative privacy threshold 1, one synthetic employee and directly written quote/hold/offer rows.",
+    "Observed allRows equality excludes entitlement slots.",
+    "The extreme-safe-integer case has no confirmed demand cohort; it does not establish populated scoring behavior.",
+    "No rendered controls, actual producers, native/live integration, full validation or whole-story acceptance."
+  ],
+  "admissionCorrection": "Launcher added an unnecessary empty-global-ledger condition when interpreting no active overlapping test. Ledger was empty, so it did not block or alter this once invocation. The frozen supervisor and HostBudget were unchanged. Preserve the original planned preflight marker as historical evidence. Future admission strictly validates every reservation/full ancestry, preserves foreign rows and charges current pressure/capacity; independent chunks may coexist. Only actual overlap or insufficient remaining capacity blocks admission; no empty-ledger requirement. No restart or duplicate invocation.",
+  "remainingAcceptanceGates": [
+    "Current-source publish15, activation9 and dashboard3.",
+    "Rendered desktop/narrow keyboard and actual92/69/122/126 producer journeys;105-to-107 lookup/reload.",
+    "Native/full/deployed/live/corpus/model/training and final independent story acceptance.",
+    "All 38 parser design fixtures remain unexecuted."
+  ],
+  "nextProposal": "../eligibility-dashboard-proposal-2026-11-06.json",
+  "storyStatus": "In Progress; scoped proof only",
+  "publicationValidation": "Static bytes/JSON/source/Git only; no runtime import, helper/audit/test script, runtime probe, reservation or allocation."
+}

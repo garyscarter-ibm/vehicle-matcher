@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "typed-axis1024-cleanup-reinspection-continuation.v1",
+  "originalSeriesPlanSha256": "96ec8dc874241bfe9b2a2928d226d88a4b9cbb073a8ebddb05ac12c5efa694c2",
+  "scope": "Original chunks15..32 only after448spent; no replay/newsource",
+  "codePins": {
+    "resume15-series.py": "c14604cca086b91bd34595be939b560fc38e3f41526b287fa8ccb02df8c756ef",
+    "reconcile-retained-sync.py": "690c8149c0bfe46fe89e3ca0be116c57ce4d3e2aee3034082faf927b69629061",
+    "verify-retained-sync.py": "a8f2aba9a08c0d4b3a60a4e27b223af3c0c24020948bee79dcaad53f704e4062",
+    "live-check-sync.test.mjs": "23bd3851a4cbf5662b7d3b51697aecadf007b55c2164e737d86117fbbf76577c",
+    "actual-event-history.mjs": "097a2fb56eeca20ef431ed1e9299c049bd4d36b66a5a933276aabb352e888cd4"
+  },
+  "provedChunk14Pins": {
+    "live-validation.json": "b2cf8a39a23983043f09737c9bcbad725bd4b2d7ca0ff81f52aab1d38188c812",
+    "collector-checkpoint.json": "2bfd6145bbbc32282e38caf8419d3e412d84cbf4ad3ddc3418e7b3dd6dbe36aa",
+    "final-canonical-index.json": "818219aaf2581702af494ac4872d022e0e3b7a87f29421766b4ce15521295b0f",
+    "final-spent-request-index.json": "b96b88038993ccd11386012647113fd26b7bdc0f86a7363c5c9bcc847e13f814"
+  },
+  "cleanupRecoverySha256": "8c96ed873f19e60b17e84e9dc241d74cd676e20de548f60db97fa36d45221161",
+  "cleanupRecovery": {
+    "originalUncertainSnapshotPreserved": true,
+    "completedStrictChecksReused": 5,
+    "strictTestsRerun": 0,
+    "groupsIndependentlyAbsent": 21,
+    "scratchLinkReservationsAbsent": true
+  },
+  "remaining": {
+    "chunks": [
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32
+    ],
+    "candidates": 576,
+    "maximumGets": 648,
+    "expectedCurrentSpent": 1006,
+    "alreadySpentFromThisSeries": 448,
+    "cumulativeAdmitted": 797,
+    "canonicalEntries": 800
+  },
+  "bounds": {
+    "originalDeadlineSinceFirstMarkerSeconds": 1800,
+    "totalMaximumGets": 1152,
+    "totalDecodedBytes": 268435456,
+    "singleResponseBytes": 1048576,
+    "hostRamBytes": 536870912,
+    "childRamBytes": 469762048,
+    "scratchBytes": 67108864,
+    "retainedShardBytes": 33554432,
+    "retainedBudgetBytes": 1073741824,
+    "workers": 1,
+    "retries": 0
+  },
+  "acceptance": false
+}

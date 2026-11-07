@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "f70-first8-retained-deliverables.v1",
+  "primary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-1f7e-core03-solver-2026-11-07/collector-checkpoint.json",
+  "disposable": false,
+  "retainOnInterruption": true,
+  "exportBeforeScratchCleanup": true,
+  "exporter": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py",
+  "embeddedArtifacts": [
+    "batchEvidence",
+    "sourceCaptures",
+    "records",
+    "accepted",
+    "rejected",
+    "duplicates"
+  ],
+  "boundary": "Primary persists from first write outside scratch. Join child and use existing exporter before cleanup. Never credit missing callbacks or lost response bodies."
+}

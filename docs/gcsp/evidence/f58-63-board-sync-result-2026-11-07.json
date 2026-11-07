@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "f58-63-board-sync-result.v1",
+  "observedAt": "2026-11-07T12:44:22.530Z",
+  "status": "succeeded",
+  "transitions": [
+    {
+      "issue": "FUCQ-58",
+      "from": "In Progress",
+      "to": "In Review",
+      "method": "background browser UI",
+      "verified": true
+    },
+    {
+      "issue": "FUCQ-59",
+      "from": "In Progress",
+      "to": "In Review",
+      "method": "background browser UI",
+      "verified": true,
+      "observedAt": "2026-11-07 12:37:32 UTC"
+    },
+    {
+      "issue": "FUCQ-60",
+      "from": "In Progress",
+      "to": "In Review",
+      "method": "background browser UI; no script/credentials/focus",
+      "verified": true,
+      "observedAt": "2026-11-07 12:38:21 UTC"
+    },
+    {
+      "issue": "FUCQ-61",
+      "from": "In Progress",
+      "to": "In Review",
+      "method": "background browser UI; no script/credentials/focus",
+      "verified": true,
+      "observedAt": "2026-11-07 12:38:52 UTC"
+    },
+    {
+      "issue": "FUCQ-62",
+      "from": "In Progress",
+      "to": "In Review",
+      "method": "background browser UI; no script/credentials/focus",
+      "verified": true,
+      "observedAt": "2026-11-07 12:40:37 UTC"
+    },
+    {
+      "issue": "FUCQ-63",
+      "from": "In Progress",
+      "to": "In Review",
+      "method": "background browser UI; no script/credentials/focus",
+      "verified": true,
+      "observedAt": "2026-11-07 12:41:08 UTC"
+    }
+  ],
+  "boardColumnReadback": {
+    "count": 7,
+    "elements": [
+      {
+        "attributes": {
+          "data-testid": "board.content.cell.column-header.name"
+        },
+        "tagName": "div",
+        "text": "In Review"
+      },
+      {
+        "attributes": {
+          "href": "/browse/FUCQ-58"
+        },
+        "tagName": "a",
+        "text": "FUCQ-58"
+      },
+      {
+        "attributes": {
+          "href": "/browse/FUCQ-59"
+        },
+        "tagName": "a",
+        "text": "FUCQ-59"
+      },
+      {
+        "attributes": {
+          "href": "/browse/FUCQ-60"
+        },
+        "tagName": "a",
+        "text": "FUCQ-60"
+      },
+      {
+        "attributes": {
+          "href": "/browse/FUCQ-61"
+        },
+        "tagName": "a",
+        "text": "FUCQ-61"
+      },
+      {
+        "attributes": {
+          "href": "/browse/FUCQ-62"
+        },
+        "tagName": "a",
+        "text": "FUCQ-62"
+      },
+      {
+        "attributes": {
+          "href": "/browse/FUCQ-63"
+        },
+        "tagName": "a",
+        "text": "FUCQ-63"
+      }
+    ]
+  },
+  "atlassianMcpReadback": "f58-63-jira-reconciliation-2026-11-07/stories.json",
+  "allSixInReview": true,
+  "acceptedOrDone": [],
+  "backgroundOnly": true,
+  "foregroundOrFocusChanged": false,
+  "credentialsOrBrowserScriptUsed": false,
+  "previousConnectorFailure": "Invalid refresh token at 12:31 UTC; browser fallback succeeded. Connector later restored and this readback verified."
+}

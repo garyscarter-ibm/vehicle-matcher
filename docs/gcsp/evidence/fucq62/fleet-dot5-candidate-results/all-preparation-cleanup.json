@@ -1,0 +1,56 @@
+{
+  "phases": {
+    "prepare": {
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/prepare/command.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/prepare/ownership/8aa3400249434c288f7c4af1aeab4ece.json",
+        "peak_rss": 450265088,
+        "peak_scratch": 42284992,
+        "rc": 0,
+        "wall": 14.94608216699271
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/prepare/ownership/8aa3400249434c288f7c4af1aeab4ece.json",
+        "removedScratchBytes": 42284992,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/prepare/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-8aa3400249434c288f7c4af1aeab4ece",
+        "scratchAbsent": true
+      },
+      "candidateManifestDigest": "08edba92280af0576f8538ab2f24fef023efbbc364f46b46683de817b4a7ee9d",
+      "supersededReason": "Corrected manifest context note from479v2 to478v2; actual source total includes one retained v1. No source/configuration/VIN/image bytes changed."
+    },
+    "prepare-final": {
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/prepare-final/command.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/prepare-final/ownership/31bd46ca11f04a05839ce62fca95a150.json",
+        "peak_rss": 464650240,
+        "peak_scratch": 42547168,
+        "rc": 0,
+        "wall": 14.642958665994229
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/prepare-final/ownership/31bd46ca11f04a05839ce62fca95a150.json",
+        "removedScratchBytes": 42547168,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/prepare-final/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-31bd46ca11f04a05839ce62fca95a150",
+        "scratchAbsent": true
+      },
+      "candidateManifestDigest": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431"
+    }
+  },
+  "removedSampledAllocationBytes": 84832160,
+  "compatibilityException": null,
+  "leftovers": []
+}

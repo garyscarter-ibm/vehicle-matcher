@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "bounded-live-diagnostic-handoff.v1",
+  "runId": 42370480081,
+  "status": "failed-exact-release-readiness-boundary",
+  "integrationCode": "df3f3f439ba0aa2c4f464beaded903709e970ea1",
+  "requests": 2,
+  "configurationGETExecuted": false,
+  "normalReceiptBytes": 3073,
+  "maximumNormalReceiptBytes": 65536,
+  "maximumRetainedOutputBytes": 1048576,
+  "allLocalOwnedScratchAbsent": true,
+  "acceptance": false,
+  "pins": {
+    "README.md": {
+      "bytes": 2696,
+      "sha256": "f2db98666c176a669e10695231b6da5dc65fdf32311c3a80cb3d986cd3ba5bcd"
+    },
+    "decoded-response-evidence.json": {
+      "bytes": 826,
+      "sha256": "efead8ca5ee8e0b3f24c0817aba6b483fd1d8b80b07ecbafd880ff2e200a8c76"
+    },
+    "exact-code-input-pins.json": {
+      "bytes": 2036,
+      "sha256": "1af29da7efef2367a86bb762a38eee049832f2ecf3ae54db01b050591ed8065f"
+    },
+    "health-body.bin": {
+      "bytes": 11,
+      "sha256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93"
+    },
+    "health-headers.json": {
+      "bytes": 579,
+      "sha256": "d619708438b6b89594a4a2a21061992e9b2318d0506d6bc0b9a01edf47998c13"
+    },
+    "job-log.txt": {
+      "bytes": 21768,
+      "sha256": "c2f2260ed0ccfebe714665bfe0e64c2f5008cba69d3ece0bf208971c79c4d7ee"
+    },
+    "local-readback-cleanup.json": {
+      "bytes": 1228,
+      "sha256": "7540977ce6653daffb3c9fa2fd1d1309c181ff5adec0520af8884be57ffb2f4c"
+    },
+    "probe-receipt.json": {
+      "bytes": 1831,
+      "sha256": "cfb6bf969f8d92a8bdd37eeff49c7222ce44b073d3f3ea87bc36b98a695e287d"
+    },
+    "readiness-body.bin": {
+      "bytes": 169,
+      "sha256": "817ab012458b6b50802a7dfcc4b1f97663a288c28d96cc7dec018c8931f792e3"
+    },
+    "readiness-headers.json": {
+      "bytes": 580,
+      "sha256": "02f345c75f05650636af0b934ce3ac2046bcd7495a738980343c9e098080283f"
+    },
+    "result.json": {
+      "bytes": 3073,
+      "sha256": "0e65b1b3cf08543aeb3f3067fe1e9bd8d9ed2ef57fd1537483e44a8e0a557515"
+    },
+    "run-metadata.json": {
+      "bytes": 2642,
+      "sha256": "85dcfcaa9ef93e6fcaca201aec01c77a813bbf629a76a3c0bf75d5780f27a998"
+    },
+    "snapshots.json": {
+      "bytes": 234,
+      "sha256": "64f6d13b981fdd92921bdaeccc413967a3160f71555c046bfaf83ae25b1915ae"
+    },
+    "supervisor-cleanup.json": {
+      "bytes": 344,
+      "sha256": "31391879b75a28da8bd70a400568a9cc6cd610a9fea6c17063a1a60bad9d9f18"
+    }
+  }
+}

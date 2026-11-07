@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "f58-pilot-destination-correction.v1",
+  "problem": "The shipped pilot destination was pinned to the original worktree while the qualifier required the active checkout; actual shared-base checks12/14passed and2failed invalid-pilot-destination.",
+  "failedIntegration": {
+    "base": "7cd01b2",
+    "equivalentTestTree": "e1df6733",
+    "summary": {
+      "cancelled": 0,
+      "fail": 2,
+      "pass": 12,
+      "skipped": 0,
+      "tests": 14,
+      "todo": 0
+    },
+    "externalResult": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/plan-base/plan-result.json"
+  },
+  "change": "Only the two exact approved repository-relative pilot leaves resolve to active-checkout absolute paths. Wrong role, traversal and arbitrary relative destinations still refuse. Ready report exposes absolute paths and input remains unchanged.",
+  "validation": {
+    "scope": "scoped",
+    "command": [
+      "node",
+      "--test",
+      "--test-reporter=tap",
+      "--test-concurrency=1",
+      "server/test/gcsp-fleet-plan.test.js"
+    ],
+    "identity": {
+      "scripts/gcsp/fleet-plan.mjs": "777d0cc878b0778bd4ff25c40756efac8da63c475a9b039786ed12bc0c6ac828",
+      "server/data/gcsp/vehicle-evidence/fleet-plan.json": "2b9d9799722f9f012dcac75d0a08003bb382acf7d077f871546eeb8f85bb1f9b",
+      "server/data/gcsp/vehicle-evidence/vin-profiles.v1.json": "9a107b2b90c21a116e2fb93ca88211b95250c4404f6468924e5e7f53d092a1fa",
+      "server/gcsp/vehicle-evidence/vin-profiles.js": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd",
+      "server/test/gcsp-fleet-plan.test.js": "9ff04c1ca20a07e1ebe5014130bd8ad5c83649dbff8c51f429ace80f58d7b0ba"
+    },
+    "summary": {
+      "cancelled": 0,
+      "fail": 0,
+      "pass": 14,
+      "skipped": 0,
+      "tests": 14,
+      "todo": 0
+    },
+    "seconds": 0.9529406660003588,
+    "integration": "Owning topic passed14/14; actual shared-base rerun is required after root integrates the correction."
+  },
+  "resources": {
+    "sampledPeakRssBytes": 198180864,
+    "scratchBytesRemoved": 3146016,
+    "scratchAbsent": true,
+    "groupsAbsent": true,
+    "reservationAbsent": true,
+    "compatibilityException": null,
+    "leftovers": []
+  },
+  "sourceCalls": 0,
+  "acceptance": "F58 InProgress, AC1/2 remain incomplete; no profile/source/corpus acceptance inferred."
+}

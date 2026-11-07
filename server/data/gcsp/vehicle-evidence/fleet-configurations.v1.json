@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "2",
+  "planVersion": "fleet-configurations.v1",
+  "identityScope": "configuration-corpus",
+  "execution": "retained-offline-only",
+  "selectionId": "f60-selected10000-20261107",
+  "targetCount": 10000,
+  "tool": {
+    "version": "fleet-configurations.v1",
+    "kind": "observed",
+    "source": "scripts/gcsp/fleet-plan.mjs",
+    "observedDate": "2026-11-07",
+    "confidence": "Reviewed retained metadata only; no fresh source re-admission"
+  },
+  "permissions": {
+    "sourceAccess": {
+      "kind": "observed",
+      "source": "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md",
+      "observedDate": "2026-11-05",
+      "confidence": "Recorded human authorisation; not an independently verified BMW API agreement",
+      "status": "approved",
+      "basis": "Gary Carter authorised read-only public BMW UK configurator collection on 5 November 2026"
+    },
+    "dataRetention": {
+      "kind": "observed",
+      "source": "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md",
+      "observedDate": "2026-11-05",
+      "confidence": "Recorded human authorisation; not an independently verified BMW API agreement",
+      "status": "approved",
+      "basis": "Gary reports BMW approval to retain project configuration data and images as long as needed"
+    },
+    "imageDisplay": {
+      "kind": "observed",
+      "source": "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md",
+      "observedDate": "2026-11-05",
+      "confidence": "Recorded human authorisation; not an independently verified BMW API agreement",
+      "status": "approved",
+      "basis": "Gary reports BMW approval to display project configuration data and images as long as needed"
+    }
+  },
+  "retention": {
+    "fields": [
+      "shared-type-codes",
+      "resolved-selections",
+      "sanitised-evidence",
+      "provenance",
+      "technical-facts",
+      "representative-images"
+    ],
+    "discardPrivateIdentifiers": true
+  },
+  "work": {
+    "candidateRequests": 0,
+    "solverCandidates": 0,
+    "otdConfigurations": 0,
+    "imageConfigurations": 0,
+    "viewsPerConfiguration": 0,
+    "imageBytesPerView": 0
+  },
+  "budgets": {
+    "requests": 0,
+    "imageRequests": 0,
+    "cacheEntries": 0,
+    "cacheBytes": 0,
+    "concurrency": 1,
+    "timeoutMs": 1000,
+    "durationMs": 10000
+  },
+  "cache": {
+    "policy": "cold",
+    "key": "full-context+complete-selection+provider-version",
+    "ttlMs": 86400000,
+    "entryBytes": 1,
+    "hits": {
+      "candidate": 0,
+      "solver": 0,
+      "otd": 0,
+      "image": 0
+    }
+  },
+  "retry": {
+    "maxRetries": 0,
+    "initialBackoffMs": 0,
+    "maxBackoffMs": 0,
+    "multiplier": 1,
+    "retryStatuses": []
+  },
+  "destinations": {
+    "evidence": {
+      "path": "docs/gcsp/evidence/fucq-58/configuration-only-qualification-2026-11-07/evidence",
+      "expectedBytes": 0,
+      "public": false,
+      "retention": "reusable-non-personal"
+    },
+    "images": {
+      "path": "docs/gcsp/evidence/fucq-58/configuration-only-qualification-2026-11-07/images",
+      "expectedBytes": 0,
+      "public": false,
+      "retention": "reusable-non-personal"
+    }
+  },
+  "stopConditions": [
+    "budget-exhausted",
+    "permission-revoked",
+    "identity-substitution",
+    "profile-mismatch",
+    "source-failure",
+    "retention-violation",
+    "destination-full"
+  ]
+}

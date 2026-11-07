@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "f62-continuation341-metadata-note-correction.v1",
+  "scope": "new version2026-11-07.3 descriptive context note only; all old corpus/version bytes preserved",
+  "beforeNote": "context.note = '340 actual admitted v2 factory selections; physical build, technical measurements, imagery and scheme model breadth remain unknown';",
+  "afterNote": "context.note = '341 actual admitted v2 factory selections; physical build, technical measurements, imagery and scheme model breadth remain unknown';",
+  "beforeRunnerSha256": "0b842a092112131a6edbc0b7c79443260711be22754ed91790f5a010844aa2f6",
+  "afterRunnerSha256": "794cedcb97d28d4361fb9f464907f64bf89e18d1f870f394508956d12c8c56f8",
+  "beforeContractSha256": "a446b148ed00073b25ab61115367bc7a9fd7540d8a73889e6e1da0a7c38e3fd6",
+  "afterContractSha256": "58266a3d675350c0cb54323ff290e0105ce5b2c3e49ee31b62028e0578dad9f2",
+  "validation": "exact single descriptive literal replacement and runner contract pin; Node syntax checked separately",
+  "existingPreparationEvidence": "reused historical2tests/prepare/validate; unchanged candidate data/projection/counts and source identity; descriptive manifest note changes only",
+  "checksUnrun": [
+    "unchanged preparation/tests",
+    "fullsuite",
+    "publication"
+  ],
+  "sourceRequests": 0,
+  "activeCorpusMutation": false
+}

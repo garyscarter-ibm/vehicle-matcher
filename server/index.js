@@ -892,11 +892,12 @@ export function buildServer(deps = {}) {
   const unavailableGcsp = createGcspHandler({ allowedOrigins });
   const unavailableOfferAccess = createOfferAccessHandler({ allowedOrigins });
   const unavailableOfferDecision = createOfferDecisionHandler({ allowedOrigins });
-  const handleVehicleEvidence = createVehicleEvidenceHandler({
-    lookup: deps.gcspVehicleEvidence?.lookup || createLocalVehicleEvidenceLookup({
+  const vehicleEvidenceLookup = deps.gcspVehicleEvidence?.lookup || createLocalVehicleEvidenceLookup({
       root: deps.gcspVehicleEvidence?.root || process.env.GCSP_VEHICLE_EVIDENCE_ROOT,
       repository: deps.gcspVehicleEvidence?.repository,
-    }),
+    });
+  const handleVehicleEvidence = createVehicleEvidenceHandler({
+    lookup: vehicleEvidenceLookup,
     identity: deps.gcspIdentity,
     resolveContext: deps.gcspVehicleEvidence?.resolveContext,
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
@@ -959,6 +960,13 @@ export function buildServer(deps = {}) {
 
     if (req.method === 'GET' && pathname === '/health') {
       return sendJson(res, 200, { ok: true });
+    }
+
+    if (req.method === 'GET' && pathname === '/health/vehicle-evidence') {
+      const vehicleEvidence = vehicleEvidenceLookup.readiness?.() || { status: 'unavailable', elapsedMs: 0,
+        manifestDigest: null, recovered: false, code: 'readiness-unavailable' };
+      const ok = vehicleEvidence.status === 'ready';
+      return sendJson(res, ok ? 200 : 503, { ok, vehicleEvidence });
     }
 
     // Health and preflight stay open; every API consumer below passes the shared gate.

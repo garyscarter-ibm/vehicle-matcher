@@ -1,0 +1,192 @@
+{
+  "schemaVersion": "dot9-first-live-timeout-diagnosis.v1",
+  "status": "read-only-code-path-established-render-cause-unresolved",
+  "observedAt": "2026-11-07T05:49:17.637202+00:00",
+  "deploymentId": "7617112384",
+  "code": "12657190b786d47b344bcb5e131901652df9c5e8",
+  "manifestDigest": "28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884",
+  "originStory": "FUCQ-62 published corpus; FUCQ-63 exact active/deployed lookup validation",
+  "storyLinkBasis": "Exact published .9 manifest and production vehicle-evidence lookup port under those evidence packets; no Story lifecycle change",
+  "impact": {
+    "observed": "First authorized deployed configuration request exceeded30s fetch deadline, no response/status/headers/bytes and zero DTO comparisons; .9 live parity remains unmet",
+    "provisionalSeverity": "High delivery blocker for required deployed lookup; wider outage scope and final severity await runtime evidence",
+    "notEstablished": [
+      "All endpoints are unavailable",
+      "Application OOM",
+      "Access key is required",
+      "Database stall",
+      "Malformed route",
+      "Full .9 corpus acceptance",
+      "Source service failure"
+    ]
+  },
+  "receiptPins": [
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot9-2424-20261107/live-parity/health/receipt.json",
+      "sha256": "0053ef20ee515fc45c9ba7ff3864cf184cdd5aa1f0d9cd807c66d54bb0f9931b"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot9-2424-20261107/live-parity/refs0/receipt.json",
+      "sha256": "7763ff7b979c48d52980fb8beb67551da309cea9f72c9c0207a9f95d53d4089c"
+    }
+  ],
+  "actual": {
+    "health": {
+      "startedAt": "2026-11-07T05:35:38.101Z",
+      "finishedAt": "2026-11-07T05:35:38.349Z",
+      "status": 200,
+      "elapsedMs": 247.24258299999997,
+      "diagnosticHeaders": {
+        "server": "cloudflare",
+        "x-render-origin-server": "Render",
+        "cf-ray": "a569f9c7dbc28cd8-LHR",
+        "content-type": "application/json; charset=utf-8",
+        "content-length": "15"
+      }
+    },
+    "firstReference": {
+      "startedAt": "2026-11-07T05:36:04.205Z",
+      "finishedAt": "2026-11-07T05:36:39.857Z",
+      "requests": 1,
+      "decodedBytes": 0,
+      "results": [],
+      "failure": {
+        "reason": "request-failed",
+        "name": "TimeoutError",
+        "code": "23",
+        "status": null,
+        "headers": {},
+        "pending": {
+          "rowKey": "d72c05557861bb646f57484e60d26c3f1f35df5c20b0dd18e01256188c7d0ca2",
+          "requestOrdinal": 2,
+          "pathSha256": "0b4003eaeb1b378106ce349a0494b2c051a384e401496c54d3521c6c5fe1b79d",
+          "state": "reserved-before-fetch"
+        }
+      },
+      "configurationIdLength": 520,
+      "encodedPathLength": 566,
+      "idHasSlash": false,
+      "rowAndEncodedPathHashesReconstructed": true
+    },
+    "cumulativeNewGETs": 2,
+    "priorDiagnosticHealthGETs": 5,
+    "totalObservedGETsIncludingPrior": 7
+  },
+  "codePins": [
+    {
+      "path": "server/index.js",
+      "sha256": "378b6b6bf61167d172e558c9f321ecb00ca23251c5baae5f0662f6a5c7de85a7"
+    },
+    {
+      "path": "server/gcsp/vehicle-evidence/local-vehicle-lookup.js",
+      "sha256": "2e68ff0141ad52aea1b0e707aeb391185acf789a463473db4ba45520465bc7db"
+    },
+    {
+      "path": "server/gcsp/vehicle-evidence/vehicle-evidence-handler.js",
+      "sha256": "9e118acfe39f550f06e6c319f536ca8768ca4b41820fd9ca9593e79b18f8c8f0"
+    },
+    {
+      "path": "server/gcsp/vehicle-evidence/synthetic-registry.js",
+      "sha256": "38f86f5121fae767465b81a4615355b7577c35f6b74ed57263441240d617f1e4"
+    },
+    {
+      "path": "server/gcsp/vehicle-evidence/corpus-publisher.js",
+      "sha256": "fa1618642c137c8aa2c0d7749d91e749554bcca6608bac71ae527b147c9ef9bc"
+    },
+    {
+      "path": "server/gcsp/vehicle-evidence/registered-catalogue-sources.js",
+      "sha256": "05cbd91273518c03a9804064126570728c88e32c79b49f815126086d44ba014d"
+    },
+    {
+      "path": "server/vehicle-evidence/bmw-catalogue-adapter.js",
+      "sha256": "90cf9187cb44dc6d17e6984a0fdc25dc13fc9078c23d3652d779a565cedc29a7"
+    },
+    {
+      "path": "server/gcsp/vehicle-evidence/provider-read.js",
+      "sha256": "e194fdeb9ff55faafaadd916b2e0ce34c9d8dce252dc37c3ce04aa8de77bb87b"
+    },
+    {
+      "path": "server/gcsp/vehicle-evidence/vehicle-lookup.js",
+      "sha256": "1184b7cc50565b180284e342183cca02e031a718a55f909b7980c34378a630e9"
+    }
+  ],
+  "all47FrozenLiveCodePinsMatched": true,
+  "sourceRegistrationContext": "Deployed/root .9 source anchor read; .036 .10 source anchor is concurrently parent-owned and is not used to infer deployed code.",
+  "establishedCodePath": [
+    "buildServer constructs local lookup eagerly; registry.load starts before requests",
+    "GET /health returns200 without awaiting corpus readiness",
+    "Vehicle-evidence dispatch occurs before gcspStartup awaited by other GCSP routes; configuration kind never resolves stock/context/native DB",
+    "Handler awaits lookup.resolve; local wrapper awaits entire eager loaded promise without route deadline/readiness state",
+    "registry.load validates durable history, indexes/validates full selected corpus, restores/qualifies every registered source envelope, validates representative imagery/exact supplement, merges history, then selects snapshot",
+    "After load, one configuration is read by indexed key; adapter uses Map registration lookup, not a quadratic registration scan"
+  ],
+  "loadWork": {
+    "configurationBytes": 45277494,
+    "sourceShards": 13,
+    "sourceAssetBytes": 52949027,
+    "v2Configurations": 2423,
+    "networkOrNativeProviderCapability": false
+  },
+  "comparisonEvidence": {
+    "priorDot8LocalStartupPath": "docs/gcsp/evidence/fucq62/local-default-startup-2026-11-07/default-results.json",
+    "priorDot8FirstDTOms": 5958.811750000001,
+    "priorVariant": "localNode26/darwinarm64; not RenderNode20",
+    "currentLocalPreparationInference": "refs0 total35.652s includes first local expected lookup before30s fetch; roughly5.65s local work is consistent, not a Render measurement",
+    "parentReportedLinuxRun": "42343046040 SUCCESS exact12657190; not independently fetched in this lane"
+  },
+  "hypotheses": [
+    {
+      "hypothesis": "Render cold registry validation/CPU/I/O still running after open health and beyond request budget",
+      "supports": "Entire corpus gates first result; health is independent; validation repeats at runtime after build-time restore",
+      "unresolved": "No runtime phase duration, arrival/completion log, CPU/RSS/restart/event evidence proves this happened on Render"
+    },
+    {
+      "hypothesis": "Proxy/service routing or instance restart/availability stalls request before handler",
+      "supports": "No status/headers/bytes received; client cannot distinguish prehandler failure from pending lookup",
+      "unresolved": "Authenticated Render request/service/event logs unavailable"
+    }
+  ],
+  "renderLogs": {
+    "existingBrowserTabsInspected": 2,
+    "authenticatedRenderTabAvailable": false,
+    "retrieved": false,
+    "reason": "Only Jira and GitHubIBM tabs exist. Background existing-tab restriction forbids creating/navigating another tab or copying credentials.",
+    "foregroundOperations": 0
+  },
+  "nextEvidence": [
+    "Parent-owned authenticated Render runtime/deploy/events/metrics for05:35:30\u201305:36:45UTC: appstart/listening, corpus ready/failure, restart/exit/OOM, CPU/RSS, requestarrival/completion/status",
+    "If unavailable, prepare a separately reviewed diagnostic-only code increment logging bounded corpus-load start/done/failure/duration and evidence-handler arrival/done, with no IDs/URLs/credentials; match exact deployment/code before another separately authorized request",
+    "Do not replay spent row or broaden GET ceiling without a new explicit parent grant; preserve the failed receipt and pending reserved row"
+  ],
+  "conditionalFixPlan": {
+    "currentFixJustified": false,
+    "reason": "Pending-load possibility is concrete, but actual runtime cause is unresolved; no speculative heap/timeout increase or data trust bypass",
+    "ifColdLoadConfirmed": "One scoped startup/readiness improvement around the existing same-process loader: preserve full integrity validation, expose finite ready/unavailable state, keep read-only lookup, and ensure deployment readiness waits on the selected corpus before inviting DTO traffic. Review exact behavior against retail health and shared gate before implementation.",
+    "selectedRegressionBeforeImplementation": [
+      "Small synthetic delayed-load fixture proves readiness and request wait behavior without source/network/native DB",
+      "Existing local-vehicle-lookup/vehicle-evidence handler route tests for completed DTO parity, unavailable load, exact manifest and access gate",
+      "One scoped .9 cold-start benchmark via existing resource supervisor only if separately granted; measure stage duration, event-loop responsiveness and RSS; no fullsuite",
+      "Actual Render validation requires a fresh reviewed deployment and finite GET grant; local evidence cannot establish deployment fix"
+    ],
+    "excluded": [
+      "No provider/source traffic or generated corpus",
+      "No existing consumer/citation repair",
+      "No fullsuite/framework expansion",
+      "No .10 execution/ordinary/source-anchor changes in this lane"
+    ]
+  },
+  "cleanup": {
+    "scratchCreated": false,
+    "removedBytes": 0,
+    "rootMutations": 0,
+    "pinned036Mutations": 0,
+    "livePacketMutations": 0,
+    "networkProbeRequests": 0,
+    "sourceCalls": 0,
+    "proofRuns": 0,
+    "publicationRuns": 0,
+    "ownedChildren": 0,
+    "leftovers": []
+  },
+  "acceptance": false
+}

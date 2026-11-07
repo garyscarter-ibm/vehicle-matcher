@@ -1,0 +1,3026 @@
+{
+  "schemaVersion": "f70-f60-session-integration-impact.v1",
+  "identity": {
+    "scripts/gcsp/bmw-public-registration.mjs": "b4eed688fff481af4d422f3612be71184df689ff943fef3d339dc9392a960460",
+    "scripts/gcsp/bmw-selection-binding.mjs": "480f1e3d1496bcb8d808ec75839634808a2923cdbf8411df61b0f819bdec3f38",
+    "scripts/gcsp/capture-bmw-selection.mjs": "14c255be3696d8d0512d9d4ddc03f24bae138d83f4d548bd813b07d1a5eb9892",
+    "scripts/gcsp/collection-session.mjs": "bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790",
+    "scripts/gcsp/public-bmw-source.mjs": "14600d91932c33b691801197ea28812c98bb08ea9603f293829ffeff09b48235",
+    "server/test/gcsp-bmw-enrichment-observation.test.js": "33a7f04ddc0e7e749a4bf0b55b4d9594ae39497c429f0ecd18a022818a56d89c",
+    "server/test/gcsp-bmw-model-batch.test.js": "818bb46fc261093d1e5dd70c2c5c5e27f172e654f67fa80db9d3e4c2b6cdfa1a",
+    "server/test/gcsp-bmw-source-batch.test.js": "2aeadfd650d8b8c79c7e559753d9530dcf885054d66c6e0fe9c8508ad2f6b252",
+    "server/test/gcsp-fleet-collector.test.js": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88"
+  },
+  "affectedCallers": [
+    "registered F60 OTD/image-manifest observer",
+    "optional/model batch finite registration and exact HTTP route allowlist",
+    "batch collector checkpoint/resume and source errors"
+  ],
+  "resolution": "Preserve both registered F60 observation imports and optional-axis isBmwModelBatchPlan/sourceVersion checks. Sole textual conflict was adjacent collection-session imports.",
+  "selectedCommands": [
+    [
+      "node",
+      "--test",
+      "--test-isolation=none",
+      "--test-concurrency=1",
+      "--test-reporter=tap",
+      "server/test/gcsp-bmw-enrichment-observation.test.js",
+      "server/test/gcsp-bmw-model-batch.test.js",
+      "server/test/gcsp-bmw-source-batch.test.js",
+      "server/test/gcsp-fleet-collector.test.js"
+    ],
+    [
+      "node",
+      "--test",
+      "--test-isolation=none",
+      "--test-concurrency=1",
+      "--test-reporter=tap",
+      "server/test/gcsp-bmw-enrichment-observation.test.js"
+    ]
+  ],
+  "result": "133 unchanged boundary checks passed plus10/10 corrected F60 observer checks. This is composite scoped evidence, not one full-suite run.",
+  "firstFailedCheck": "F60 missing-grant test assumed historical spent marker/primary/event files absent; guard itself correctly refused. Actual completed source evidence made absence expectation obsolete.",
+  "followupRepair": "Existing missing-grant test now snapshots before/after bytes, proving pre-existing evidence remains unchanged and absent files remain absent. No source runtime changes.",
+  "observedFunctions": [
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 3811,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/enrichment-observation.mjs",
+      "sha256": "29d41aefcd2b3d74a876219ad960cc901f6677cc7e483710216eb710ab788a29"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 34621,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/collection-session.mjs",
+      "sha256": "bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 21274,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/bmw-public-registration.mjs",
+      "sha256": "b4eed688fff481af4d422f3612be71184df689ff943fef3d339dc9392a960460"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 92439,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/public-bmw-source.mjs",
+      "sha256": "14600d91932c33b691801197ea28812c98bb08ea9603f293829ffeff09b48235"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 30249,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/bmw-selection-binding.mjs",
+      "sha256": "480f1e3d1496bcb8d808ec75839634808a2923cdbf8411df61b0f819bdec3f38"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 92439,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/public-bmw-source.mjs",
+      "sha256": "14600d91932c33b691801197ea28812c98bb08ea9603f293829ffeff09b48235"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 34621,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/collection-session.mjs",
+      "sha256": "bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 21274,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/bmw-public-registration.mjs",
+      "sha256": "b4eed688fff481af4d422f3612be71184df689ff943fef3d339dc9392a960460"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 9632,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/capture-bmw-selection.mjs",
+      "sha256": "14c255be3696d8d0512d9d4ddc03f24bae138d83f4d548bd813b07d1a5eb9892"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 30249,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/bmw-selection-binding.mjs",
+      "sha256": "480f1e3d1496bcb8d808ec75839634808a2923cdbf8411df61b0f819bdec3f38"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 92439,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/public-bmw-source.mjs",
+      "sha256": "14600d91932c33b691801197ea28812c98bb08ea9603f293829ffeff09b48235"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 34621,
+          "name": "",
+          "start": 0
+        },
+        {
+          "calls": 8,
+          "end": 1785,
+          "name": "object",
+          "start": 1706
+        },
+        {
+          "calls": 1,
+          "end": 1843,
+          "name": "same",
+          "start": 1800
+        },
+        {
+          "calls": 10,
+          "end": 1941,
+          "name": "bounded",
+          "start": 1861
+        },
+        {
+          "calls": 6,
+          "end": 2045,
+          "name": "version",
+          "start": 1959
+        },
+        {
+          "calls": 1,
+          "end": 2376,
+          "name": "freshCounts",
+          "start": 2067
+        },
+        {
+          "calls": 2,
+          "end": 2151,
+          "name": "",
+          "start": 2138
+        },
+        {
+          "calls": 2,
+          "end": 2210,
+          "name": "",
+          "start": 2197
+        },
+        {
+          "calls": 2,
+          "end": 2371,
+          "name": "",
+          "start": 2358
+        },
+        {
+          "calls": 5,
+          "end": 8679,
+          "name": "readCollectionJson",
+          "start": 8135
+        },
+        {
+          "calls": 14,
+          "end": 8830,
+          "name": "syncDirectory",
+          "start": 8680
+        },
+        {
+          "calls": 13,
+          "end": 9454,
+          "name": "writeAtomic",
+          "start": 8831
+        },
+        {
+          "calls": 1,
+          "end": 12403,
+          "name": "checkpointLock",
+          "start": 9456
+        },
+        {
+          "calls": 1,
+          "end": 9934,
+          "name": "release",
+          "start": 9848
+        },
+        {
+          "calls": 2,
+          "end": 10268,
+          "name": "writeMarker",
+          "start": 9958
+        },
+        {
+          "calls": 2,
+          "end": 11624,
+          "name": "contenders",
+          "start": 10291
+        },
+        {
+          "calls": 1,
+          "end": 11790,
+          "name": "",
+          "start": 11746
+        },
+        {
+          "calls": 1,
+          "end": 11925,
+          "name": "",
+          "start": 11901
+        },
+        {
+          "calls": 1,
+          "end": 12235,
+          "name": "",
+          "start": 12120
+        },
+        {
+          "calls": 1,
+          "end": 34619,
+          "name": "createCollectionSession",
+          "start": 12518
+        },
+        {
+          "calls": 2,
+          "end": 15437,
+          "name": "",
+          "start": 12895
+        },
+        {
+          "calls": 2,
+          "end": 15632,
+          "name": "",
+          "start": 15575
+        },
+        {
+          "calls": 5,
+          "end": 16179,
+          "name": "",
+          "start": 16075
+        },
+        {
+          "calls": 2,
+          "end": 16386,
+          "name": "",
+          "start": 16334
+        },
+        {
+          "calls": 2,
+          "end": 16489,
+          "name": "",
+          "start": 16437
+        },
+        {
+          "calls": 2,
+          "end": 19362,
+          "name": "",
+          "start": 17646
+        },
+        {
+          "calls": 1,
+          "end": 34614,
+          "name": "withCheckpoint",
+          "start": 19769
+        },
+        {
+          "calls": 13,
+          "end": 23275,
+          "name": "commit",
+          "start": 23110
+        },
+        {
+          "calls": 15,
+          "end": 23624,
+          "name": "checkDeadline",
+          "start": 23574
+        },
+        {
+          "calls": 4,
+          "end": 33020,
+          "name": "perform",
+          "start": 27390
+        },
+        {
+          "calls": 6,
+          "end": 27768,
+          "name": "",
+          "start": 27709
+        },
+        {
+          "calls": 4,
+          "end": 29361,
+          "name": "",
+          "start": 29206
+        },
+        {
+          "calls": 4,
+          "end": 29685,
+          "name": "",
+          "start": 29457
+        },
+        {
+          "calls": 6,
+          "end": 32600,
+          "name": "",
+          "start": 32541
+        },
+        {
+          "calls": 4,
+          "end": 33449,
+          "name": "execute",
+          "start": 33043
+        }
+      ],
+      "path": "scripts/gcsp/collection-session.mjs",
+      "sha256": "bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 21274,
+          "name": "",
+          "start": 0
+        },
+        {
+          "calls": 1,
+          "end": 433,
+          "name": "isBmwModelBatchPlan",
+          "start": 324
+        },
+        {
+          "calls": 1,
+          "end": 552,
+          "name": "isBmwBatchPlan",
+          "start": 465
+        }
+      ],
+      "path": "scripts/gcsp/bmw-public-registration.mjs",
+      "sha256": "b4eed688fff481af4d422f3612be71184df689ff943fef3d339dc9392a960460"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 9632,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/capture-bmw-selection.mjs",
+      "sha256": "14c255be3696d8d0512d9d4ddc03f24bae138d83f4d548bd813b07d1a5eb9892"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 3811,
+          "name": "",
+          "start": 0
+        },
+        {
+          "calls": 6,
+          "end": 3810,
+          "name": "createEnrichmentObserver",
+          "start": 475
+        },
+        {
+          "calls": 36,
+          "end": 2218,
+          "name": "validateState",
+          "start": 671
+        },
+        {
+          "calls": 15,
+          "end": 898,
+          "name": "",
+          "start": 842
+        },
+        {
+          "calls": 6,
+          "end": 3805,
+          "name": "run",
+          "start": 2591
+        },
+        {
+          "calls": 6,
+          "end": 3804,
+          "name": "",
+          "start": 2620
+        },
+        {
+          "calls": 5,
+          "end": 2860,
+          "name": "report",
+          "start": 2679
+        }
+      ],
+      "path": "scripts/gcsp/enrichment-observation.mjs",
+      "sha256": "29d41aefcd2b3d74a876219ad960cc901f6677cc7e483710216eb710ab788a29"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 34621,
+          "name": "",
+          "start": 0
+        },
+        {
+          "calls": 278,
+          "end": 1689,
+          "name": "assertCollectionHttpObservation",
+          "start": 1442
+        },
+        {
+          "calls": 4799,
+          "end": 1785,
+          "name": "object",
+          "start": 1706
+        },
+        {
+          "calls": 529,
+          "end": 1843,
+          "name": "same",
+          "start": 1800
+        },
+        {
+          "calls": 8003,
+          "end": 1941,
+          "name": "bounded",
+          "start": 1861
+        },
+        {
+          "calls": 3159,
+          "end": 2045,
+          "name": "version",
+          "start": 1959
+        },
+        {
+          "calls": 192,
+          "end": 2376,
+          "name": "freshCounts",
+          "start": 2067
+        },
+        {
+          "calls": 730,
+          "end": 2151,
+          "name": "",
+          "start": 2138
+        },
+        {
+          "calls": 730,
+          "end": 2210,
+          "name": "",
+          "start": 2197
+        },
+        {
+          "calls": 730,
+          "end": 2371,
+          "name": "",
+          "start": 2358
+        },
+        {
+          "calls": 587,
+          "end": 7372,
+          "name": "readOnlyRequest",
+          "start": 3267
+        },
+        {
+          "calls": 59,
+          "end": 3599,
+          "name": "exactQuery",
+          "start": 3506
+        },
+        {
+          "calls": 387,
+          "end": 5676,
+          "name": "batchAllowed",
+          "start": 3624
+        },
+        {
+          "calls": 101,
+          "end": 5670,
+          "name": "",
+          "start": 5496
+        },
+        {
+          "calls": 1728,
+          "end": 6828,
+          "name": "",
+          "start": 6777
+        },
+        {
+          "calls": 268,
+          "end": 7123,
+          "name": "",
+          "start": 6902
+        },
+        {
+          "calls": 388,
+          "end": 8126,
+          "name": "duplicateJsonKeys",
+          "start": 7473
+        },
+        {
+          "calls": 1001,
+          "end": 8679,
+          "name": "readCollectionJson",
+          "start": 8135
+        },
+        {
+          "calls": 2354,
+          "end": 8830,
+          "name": "syncDirectory",
+          "start": 8680
+        },
+        {
+          "calls": 2031,
+          "end": 9454,
+          "name": "writeAtomic",
+          "start": 8831
+        },
+        {
+          "calls": 332,
+          "end": 12403,
+          "name": "checkpointLock",
+          "start": 9456
+        },
+        {
+          "calls": 332,
+          "end": 9934,
+          "name": "release",
+          "start": 9848
+        },
+        {
+          "calls": 664,
+          "end": 10268,
+          "name": "writeMarker",
+          "start": 9958
+        },
+        {
+          "calls": 664,
+          "end": 11624,
+          "name": "contenders",
+          "start": 10291
+        },
+        {
+          "calls": 333,
+          "end": 11790,
+          "name": "",
+          "start": 11746
+        },
+        {
+          "calls": 333,
+          "end": 11925,
+          "name": "",
+          "start": 11901
+        },
+        {
+          "calls": 333,
+          "end": 12235,
+          "name": "",
+          "start": 12120
+        },
+        {
+          "calls": 335,
+          "end": 34619,
+          "name": "createCollectionSession",
+          "start": 12518
+        },
+        {
+          "calls": 206,
+          "end": 12666,
+          "name": "validateState",
+          "start": 12658
+        },
+        {
+          "calls": 664,
+          "end": 12708,
+          "name": "onPhase",
+          "start": 12694
+        },
+        {
+          "calls": 1303,
+          "end": 15437,
+          "name": "",
+          "start": 12895
+        },
+        {
+          "calls": 1301,
+          "end": 15632,
+          "name": "",
+          "start": 15575
+        },
+        {
+          "calls": 1399,
+          "end": 16179,
+          "name": "",
+          "start": 16075
+        },
+        {
+          "calls": 374,
+          "end": 16386,
+          "name": "",
+          "start": 16334
+        },
+        {
+          "calls": 1301,
+          "end": 16489,
+          "name": "",
+          "start": 16437
+        },
+        {
+          "calls": 1221,
+          "end": 16535,
+          "name": "",
+          "start": 16495
+        },
+        {
+          "calls": 1297,
+          "end": 19362,
+          "name": "",
+          "start": 17646
+        },
+        {
+          "calls": 332,
+          "end": 34614,
+          "name": "withCheckpoint",
+          "start": 19769
+        },
+        {
+          "calls": 489,
+          "end": 21596,
+          "name": "",
+          "start": 21511
+        },
+        {
+          "calls": 533,
+          "end": 21788,
+          "name": "",
+          "start": 21623
+        },
+        {
+          "calls": 924,
+          "end": 21983,
+          "name": "",
+          "start": 21916
+        },
+        {
+          "calls": 533,
+          "end": 22129,
+          "name": "",
+          "start": 22049
+        },
+        {
+          "calls": 2031,
+          "end": 23275,
+          "name": "commit",
+          "start": 23110
+        },
+        {
+          "calls": 46,
+          "end": 23544,
+          "name": "stop",
+          "start": 23320
+        },
+        {
+          "calls": 3114,
+          "end": 23624,
+          "name": "checkDeadline",
+          "start": 23574
+        },
+        {
+          "calls": 571,
+          "end": 27383,
+          "name": "readHttp",
+          "start": 23632
+        },
+        {
+          "calls": 1,
+          "end": 24765,
+          "name": "abort",
+          "start": 24723
+        },
+        {
+          "calls": 664,
+          "end": 33020,
+          "name": "perform",
+          "start": 27390
+        },
+        {
+          "calls": 577,
+          "end": 27768,
+          "name": "",
+          "start": 27709
+        },
+        {
+          "calls": 621,
+          "end": 29361,
+          "name": "",
+          "start": 29206
+        },
+        {
+          "calls": 621,
+          "end": 29685,
+          "name": "",
+          "start": 29457
+        },
+        {
+          "calls": 3,
+          "end": 29613,
+          "name": "",
+          "start": 29499
+        },
+        {
+          "calls": 20,
+          "end": 30721,
+          "name": "",
+          "start": 30713
+        },
+        {
+          "calls": 207,
+          "end": 32249,
+          "name": "",
+          "start": 32196
+        },
+        {
+          "calls": 440,
+          "end": 32600,
+          "name": "",
+          "start": 32541
+        },
+        {
+          "calls": 664,
+          "end": 33449,
+          "name": "execute",
+          "start": 33043
+        }
+      ],
+      "path": "scripts/gcsp/collection-session.mjs",
+      "sha256": "bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 21274,
+          "name": "",
+          "start": 0
+        },
+        {
+          "calls": 22511,
+          "end": 433,
+          "name": "isBmwModelBatchPlan",
+          "start": 324
+        },
+        {
+          "calls": 9321,
+          "end": 552,
+          "name": "isBmwBatchPlan",
+          "start": 465
+        },
+        {
+          "calls": 152212,
+          "end": 1136,
+          "name": "object",
+          "start": 1073
+        },
+        {
+          "calls": 145736,
+          "end": 1194,
+          "name": "same",
+          "start": 1151
+        },
+        {
+          "calls": 122646,
+          "end": 1276,
+          "name": "bounded",
+          "start": 1212
+        },
+        {
+          "calls": 99656,
+          "end": 1350,
+          "name": "token",
+          "start": 1292
+        },
+        {
+          "calls": 193839,
+          "end": 1423,
+          "name": "code",
+          "start": 1365
+        },
+        {
+          "calls": 94914,
+          "end": 1583,
+          "name": "date",
+          "start": 1438
+        },
+        {
+          "calls": 282,
+          "end": 3194,
+          "name": "validateBmwEnrichmentObservationRegistration",
+          "start": 1688
+        },
+        {
+          "calls": 564,
+          "end": 2192,
+          "name": "",
+          "start": 2113
+        },
+        {
+          "calls": 14333,
+          "end": 2416,
+          "name": "",
+          "start": 2331
+        },
+        {
+          "calls": 83,
+          "end": 4039,
+          "name": "bmwEnrichmentObservationRequestUrls",
+          "start": 3203
+        },
+        {
+          "calls": 30572,
+          "end": 5216,
+          "name": "validateBmwModelRegistration",
+          "start": 4142
+        },
+        {
+          "calls": 366864,
+          "end": 4483,
+          "name": "",
+          "start": 4454
+        },
+        {
+          "calls": 91716,
+          "end": 4834,
+          "name": "",
+          "start": 4809
+        },
+        {
+          "calls": 17388,
+          "end": 9007,
+          "name": "validateBmwModelOptionsRequestRegistration",
+          "start": 7744
+        },
+        {
+          "calls": 3197,
+          "end": 9556,
+          "name": "bmwModelOptionsRequestUrls",
+          "start": 9016
+        },
+        {
+          "calls": 16129,
+          "end": 10381,
+          "name": "candidateRequest",
+          "start": 9558
+        },
+        {
+          "calls": 32254,
+          "end": 10136,
+          "name": "",
+          "start": 9989
+        },
+        {
+          "calls": 82344,
+          "end": 10059,
+          "name": "",
+          "start": 10010
+        },
+        {
+          "calls": 7123,
+          "end": 10224,
+          "name": "",
+          "start": 10175
+        },
+        {
+          "calls": 6898,
+          "end": 10469,
+          "name": "validateBmwCandidateRequest",
+          "start": 10390
+        },
+        {
+          "calls": 529,
+          "end": 11020,
+          "name": "validateBmwModelBatchCandidateRequest",
+          "start": 10478
+        },
+        {
+          "calls": 8702,
+          "end": 11619,
+          "name": "validateBmwModelAxisBatchCandidateRequest",
+          "start": 11029
+        },
+        {
+          "calls": 494,
+          "end": 13042,
+          "name": "validateBmwModelAxisBatchCandidateDefinitions",
+          "start": 11723
+        },
+        {
+          "calls": 2178,
+          "end": 11986,
+          "name": "",
+          "start": 11935
+        },
+        {
+          "calls": 2160,
+          "end": 12207,
+          "name": "",
+          "start": 12078
+        },
+        {
+          "calls": 6629,
+          "end": 12206,
+          "name": "",
+          "start": 12097
+        },
+        {
+          "calls": 2177,
+          "end": 12415,
+          "name": "",
+          "start": 12286
+        },
+        {
+          "calls": 6695,
+          "end": 12414,
+          "name": "",
+          "start": 12305
+        },
+        {
+          "calls": 2150,
+          "end": 12520,
+          "name": "",
+          "start": 12436
+        },
+        {
+          "calls": 1464,
+          "end": 12627,
+          "name": "",
+          "start": 12562
+        },
+        {
+          "calls": 6390,
+          "end": 12613,
+          "name": "",
+          "start": 12583
+        },
+        {
+          "calls": 975,
+          "end": 12726,
+          "name": "",
+          "start": 12662
+        },
+        {
+          "calls": 4255,
+          "end": 12713,
+          "name": "",
+          "start": 12683
+        },
+        {
+          "calls": 1944,
+          "end": 12797,
+          "name": "",
+          "start": 12746
+        },
+        {
+          "calls": 2120,
+          "end": 13017,
+          "name": "",
+          "start": 12966
+        },
+        {
+          "calls": 662,
+          "end": 13038,
+          "name": "",
+          "start": 13023
+        },
+        {
+          "calls": 3014,
+          "end": 14030,
+          "name": "bmwModelBatchRequestUrls",
+          "start": 13051
+        },
+        {
+          "calls": 7080,
+          "end": 14317,
+          "name": "bmwBatchPlanRequestUrls",
+          "start": 14039
+        },
+        {
+          "calls": 7526,
+          "end": 15722,
+          "name": "bmwPublicRequestUrls",
+          "start": 14326
+        },
+        {
+          "calls": 1523,
+          "end": 16351,
+          "name": "bmwBatchRequestRegistration",
+          "start": 15838
+        },
+        {
+          "calls": 5090,
+          "end": 16345,
+          "name": "",
+          "start": 16308
+        },
+        {
+          "calls": 720,
+          "end": 16977,
+          "name": "validateBmwBatchRequestRegistration",
+          "start": 16360
+        },
+        {
+          "calls": 750,
+          "end": 17895,
+          "name": "validateBmwModelBatchRequestRegistration",
+          "start": 16986
+        },
+        {
+          "calls": 830,
+          "end": 17687,
+          "name": "",
+          "start": 17511
+        },
+        {
+          "calls": 3203,
+          "end": 21273,
+          "name": "validateBmwBatchPlan",
+          "start": 17904
+        },
+        {
+          "calls": 12792,
+          "end": 19984,
+          "name": "",
+          "start": 19948
+        },
+        {
+          "calls": 10426,
+          "end": 20525,
+          "name": "",
+          "start": 20337
+        },
+        {
+          "calls": 10426,
+          "end": 20588,
+          "name": "",
+          "start": 20564
+        },
+        {
+          "calls": 10426,
+          "end": 21038,
+          "name": "",
+          "start": 20762
+        },
+        {
+          "calls": 10420,
+          "end": 21119,
+          "name": "",
+          "start": 21086
+        }
+      ],
+      "path": "scripts/gcsp/bmw-public-registration.mjs",
+      "sha256": "b4eed688fff481af4d422f3612be71184df689ff943fef3d339dc9392a960460"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 92439,
+          "name": "",
+          "start": 0
+        },
+        {
+          "calls": 85571,
+          "end": 1356,
+          "name": "object",
+          "start": 1277
+        },
+        {
+          "calls": 4712,
+          "end": 1414,
+          "name": "same",
+          "start": 1371
+        },
+        {
+          "calls": 399,
+          "end": 3168,
+          "name": "calendarDate",
+          "start": 2961
+        },
+        {
+          "calls": 2174,
+          "end": 3266,
+          "name": "bounded",
+          "start": 3186
+        },
+        {
+          "calls": 27,
+          "end": 4495,
+          "name": "validatePublicBmwEnrichmentObservationPlan",
+          "start": 3276
+        },
+        {
+          "calls": 8,
+          "end": 5353,
+          "name": "enrichmentContext",
+          "start": 4497
+        },
+        {
+          "calls": 44,
+          "end": 4919,
+          "name": "",
+          "start": 4848
+        },
+        {
+          "calls": 4,
+          "end": 5239,
+          "name": "",
+          "start": 5194
+        },
+        {
+          "calls": 5,
+          "end": 7043,
+          "name": "technicalObservation",
+          "start": 5355
+        },
+        {
+          "calls": 60,
+          "end": 5749,
+          "name": "scalar",
+          "start": 5639
+        },
+        {
+          "calls": 8,
+          "end": 6596,
+          "name": "",
+          "start": 5799
+        },
+        {
+          "calls": 16,
+          "end": 6093,
+          "name": "",
+          "start": 6044
+        },
+        {
+          "calls": 3,
+          "end": 9047,
+          "name": "imageManifestObservation",
+          "start": 7045
+        },
+        {
+          "calls": 24,
+          "end": 8694,
+          "name": "visit",
+          "start": 7345
+        },
+        {
+          "calls": 36,
+          "end": 8408,
+          "name": "",
+          "start": 8366
+        },
+        {
+          "calls": 21,
+          "end": 13461,
+          "name": "publicBmwEnrichmentObservationOperations",
+          "start": 9172
+        },
+        {
+          "calls": 37,
+          "end": 9760,
+          "name": "observe",
+          "start": 9437
+        },
+        {
+          "calls": 9,
+          "end": 10522,
+          "name": "artifact",
+          "start": 9781
+        },
+        {
+          "calls": 17,
+          "end": 10001,
+          "name": "",
+          "start": 9950
+        },
+        {
+          "calls": 84,
+          "end": 10818,
+          "name": "descriptor",
+          "start": 10545
+        },
+        {
+          "calls": 15,
+          "end": 10796,
+          "name": "prepare",
+          "start": 10747
+        },
+        {
+          "calls": 15,
+          "end": 11316,
+          "name": "",
+          "start": 10875
+        },
+        {
+          "calls": 15,
+          "end": 11093,
+          "name": "",
+          "start": 11018
+        },
+        {
+          "calls": 14,
+          "end": 12399,
+          "name": "settings.descriptor.cache",
+          "start": 11366
+        },
+        {
+          "calls": 39,
+          "end": 12158,
+          "name": "scan",
+          "start": 11746
+        },
+        {
+          "calls": 26,
+          "end": 12148,
+          "name": "",
+          "start": 12115
+        },
+        {
+          "calls": 14,
+          "end": 12686,
+          "name": "prepare",
+          "start": 12426
+        },
+        {
+          "calls": 6,
+          "end": 12835,
+          "name": "",
+          "start": 12744
+        },
+        {
+          "calls": 9,
+          "end": 13050,
+          "name": "prepare",
+          "start": 12854
+        },
+        {
+          "calls": 3,
+          "end": 13234,
+          "name": "",
+          "start": 13134
+        },
+        {
+          "calls": 4,
+          "end": 13450,
+          "name": "prepare",
+          "start": 13253
+        },
+        {
+          "calls": 515,
+          "end": 43178,
+          "name": "modelOptionsRelationships",
+          "start": 41051
+        },
+        {
+          "calls": 515,
+          "end": 43174,
+          "name": "",
+          "start": 41130
+        },
+        {
+          "calls": 542,
+          "end": 42063,
+          "name": "",
+          "start": 42001
+        },
+        {
+          "calls": 542,
+          "end": 42142,
+          "name": "",
+          "start": 42079
+        },
+        {
+          "calls": 519,
+          "end": 43803,
+          "name": "bmwModelLineReport",
+          "start": 43287
+        },
+        {
+          "calls": 517,
+          "end": 43520,
+          "name": "",
+          "start": 43433
+        },
+        {
+          "calls": 517,
+          "end": 43544,
+          "name": "",
+          "start": 43526
+        },
+        {
+          "calls": 479,
+          "end": 45146,
+          "name": "validateBmwModelLineReport",
+          "start": 43812
+        },
+        {
+          "calls": 479,
+          "end": 44948,
+          "name": "",
+          "start": 44204
+        },
+        {
+          "calls": 507,
+          "end": 44382,
+          "name": "",
+          "start": 44372
+        },
+        {
+          "calls": 986,
+          "end": 45637,
+          "name": "bmwModelLineLocators",
+          "start": 45155
+        },
+        {
+          "calls": 986,
+          "end": 45633,
+          "name": "",
+          "start": 45237
+        },
+        {
+          "calls": 200,
+          "end": 58976,
+          "name": "validatePublicBmwDiagnosticPlan",
+          "start": 57655
+        },
+        {
+          "calls": 1200,
+          "end": 57949,
+          "name": "",
+          "start": 57847
+        },
+        {
+          "calls": 1693,
+          "end": 60311,
+          "name": "validatePublicBmwPlan",
+          "start": 58985
+        },
+        {
+          "calls": 611,
+          "end": 59704,
+          "name": "",
+          "start": 59639
+        },
+        {
+          "calls": 52,
+          "end": 59781,
+          "name": "",
+          "start": 59724
+        },
+        {
+          "calls": 52,
+          "end": 60200,
+          "name": "",
+          "start": 60162
+        },
+        {
+          "calls": 343,
+          "end": 62173,
+          "name": "headerFor",
+          "start": 60313
+        },
+        {
+          "calls": 2257,
+          "end": 60882,
+          "name": "visit",
+          "start": 60502
+        },
+        {
+          "calls": 1935,
+          "end": 60983,
+          "name": "",
+          "start": 60902
+        },
+        {
+          "calls": 321,
+          "end": 61453,
+          "name": "candidate",
+          "start": 61346
+        },
+        {
+          "calls": 322,
+          "end": 61816,
+          "name": "",
+          "start": 61504
+        },
+        {
+          "calls": 630,
+          "end": 62525,
+          "name": "safeLabel",
+          "start": 62402
+        },
+        {
+          "calls": 1518,
+          "end": 64974,
+          "name": "strictModelReport",
+          "start": 62534
+        },
+        {
+          "calls": 2506,
+          "end": 64588,
+          "name": "",
+          "start": 63031
+        },
+        {
+          "calls": 15008,
+          "end": 63513,
+          "name": "",
+          "start": 63444
+        },
+        {
+          "calls": 15634,
+          "end": 64579,
+          "name": "",
+          "start": 64544
+        },
+        {
+          "calls": 2493,
+          "end": 64660,
+          "name": "",
+          "start": 64618
+        },
+        {
+          "calls": 19565,
+          "end": 64876,
+          "name": "",
+          "start": 64832
+        },
+        {
+          "calls": 33506,
+          "end": 65423,
+          "name": "optionCode",
+          "start": 65386
+        },
+        {
+          "calls": 78,
+          "end": 67627,
+          "name": "optionsShapeReport",
+          "start": 65425
+        },
+        {
+          "calls": 24459,
+          "end": 67415,
+          "name": "visit",
+          "start": 65565
+        },
+        {
+          "calls": 16775,
+          "end": 66066,
+          "name": "",
+          "start": 66006
+        },
+        {
+          "calls": 8104,
+          "end": 67151,
+          "name": "",
+          "start": 66270
+        },
+        {
+          "calls": 39,
+          "end": 75300,
+          "name": "qualifyPublicBmwDiagnosticFields",
+          "start": 67763
+        },
+        {
+          "calls": 974,
+          "end": 67989,
+          "name": "check",
+          "start": 67840
+        },
+        {
+          "calls": 78,
+          "end": 70273,
+          "name": "",
+          "start": 68102
+        },
+        {
+          "calls": 54,
+          "end": 70968,
+          "name": "",
+          "start": 70861
+        },
+        {
+          "calls": 3126,
+          "end": 72022,
+          "name": "",
+          "start": 71927
+        },
+        {
+          "calls": 16,
+          "end": 72580,
+          "name": "",
+          "start": 72551
+        },
+        {
+          "calls": 16,
+          "end": 72702,
+          "name": "",
+          "start": 72656
+        },
+        {
+          "calls": 8,
+          "end": 73885,
+          "name": "",
+          "start": 73483
+        },
+        {
+          "calls": 331,
+          "end": 74037,
+          "name": "",
+          "start": 74011
+        },
+        {
+          "calls": 8,
+          "end": 75259,
+          "name": "",
+          "start": 74588
+        },
+        {
+          "calls": 8,
+          "end": 75252,
+          "name": "",
+          "start": 75230
+        },
+        {
+          "calls": 80,
+          "end": 80188,
+          "name": "publicBmwQualificationOperations",
+          "start": 75414
+        },
+        {
+          "calls": 172,
+          "end": 76208,
+          "name": "observe",
+          "start": 75605
+        },
+        {
+          "calls": 36,
+          "end": 77129,
+          "name": "artifact",
+          "start": 76229
+        },
+        {
+          "calls": 72,
+          "end": 76572,
+          "name": "",
+          "start": 76525
+        },
+        {
+          "calls": 2847,
+          "end": 77000,
+          "name": "",
+          "start": 76714
+        },
+        {
+          "calls": 5690,
+          "end": 76856,
+          "name": "",
+          "start": 76765
+        },
+        {
+          "calls": 320,
+          "end": 77377,
+          "name": "descriptor",
+          "start": 77152
+        },
+        {
+          "calls": 54,
+          "end": 77355,
+          "name": "prepare",
+          "start": 77306
+        },
+        {
+          "calls": 54,
+          "end": 77905,
+          "name": "",
+          "start": 77432
+        },
+        {
+          "calls": 54,
+          "end": 77650,
+          "name": "",
+          "start": 77575
+        },
+        {
+          "calls": 52,
+          "end": 78679,
+          "name": "settings.descriptor.cache",
+          "start": 77955
+        },
+        {
+          "calls": 53,
+          "end": 78974,
+          "name": "prepare",
+          "start": 78706
+        },
+        {
+          "calls": 29,
+          "end": 79335,
+          "name": "",
+          "start": 79031
+        },
+        {
+          "calls": 29,
+          "end": 79546,
+          "name": "prepare",
+          "start": 79352
+        },
+        {
+          "calls": 15,
+          "end": 79814,
+          "name": "",
+          "start": 79602
+        },
+        {
+          "calls": 19,
+          "end": 80177,
+          "name": "prepare",
+          "start": 79831
+        },
+        {
+          "calls": 1535,
+          "end": 84328,
+          "name": "publicBmwOperations",
+          "start": 80316
+        },
+        {
+          "calls": 48,
+          "end": 80683,
+          "name": "descriptor",
+          "start": 80477
+        },
+        {
+          "calls": 6,
+          "end": 80661,
+          "name": "prepare",
+          "start": 80612
+        },
+        {
+          "calls": 6,
+          "end": 81151,
+          "name": "",
+          "start": 80738
+        },
+        {
+          "calls": 6,
+          "end": 80936,
+          "name": "",
+          "start": 80861
+        },
+        {
+          "calls": 6,
+          "end": 81417,
+          "name": "settings.descriptor.cache",
+          "start": 81201
+        },
+        {
+          "calls": 6,
+          "end": 81721,
+          "name": "prepare",
+          "start": 81444
+        },
+        {
+          "calls": 5,
+          "end": 82657,
+          "name": "",
+          "start": 81778
+        },
+        {
+          "calls": 48,
+          "end": 82213,
+          "name": "",
+          "start": 82174
+        },
+        {
+          "calls": 6,
+          "end": 82576,
+          "name": "",
+          "start": 82558
+        },
+        {
+          "calls": 5,
+          "end": 82909,
+          "name": "prepare",
+          "start": 82670
+        },
+        {
+          "calls": 3,
+          "end": 84093,
+          "name": "",
+          "start": 82961
+        },
+        {
+          "calls": 96,
+          "end": 83706,
+          "name": "",
+          "start": 83553
+        },
+        {
+          "calls": 1,
+          "end": 83994,
+          "name": "",
+          "start": 83939
+        },
+        {
+          "calls": 48,
+          "end": 84083,
+          "name": "",
+          "start": 84036
+        },
+        {
+          "calls": 3,
+          "end": 84317,
+          "name": "prepare",
+          "start": 84106
+        },
+        {
+          "calls": 1523,
+          "end": 91161,
+          "name": "publicBmwBatchOperations",
+          "start": 84429
+        },
+        {
+          "calls": 7615,
+          "end": 85622,
+          "name": "descriptor",
+          "start": 84787
+        },
+        {
+          "calls": 73,
+          "end": 85031,
+          "name": "prepare",
+          "start": 84982
+        },
+        {
+          "calls": 1695,
+          "end": 85609,
+          "name": "project",
+          "start": 85046
+        },
+        {
+          "calls": 5007,
+          "end": 85258,
+          "name": "",
+          "start": 85211
+        },
+        {
+          "calls": 130511,
+          "end": 85580,
+          "name": "",
+          "start": 85290
+        },
+        {
+          "calls": 355486,
+          "end": 85434,
+          "name": "",
+          "start": 85343
+        },
+        {
+          "calls": 85,
+          "end": 85859,
+          "name": "requested",
+          "start": 85644
+        },
+        {
+          "calls": 154,
+          "end": 85739,
+          "name": "",
+          "start": 85712
+        },
+        {
+          "calls": 72,
+          "end": 86319,
+          "name": "",
+          "start": 85916
+        },
+        {
+          "calls": 72,
+          "end": 86114,
+          "name": "",
+          "start": 86039
+        },
+        {
+          "calls": 72,
+          "end": 86876,
+          "name": "settings.descriptor.cache",
+          "start": 86369
+        },
+        {
+          "calls": 216,
+          "end": 86651,
+          "name": "",
+          "start": 86583
+        },
+        {
+          "calls": 72,
+          "end": 87180,
+          "name": "prepare",
+          "start": 86903
+        },
+        {
+          "calls": 72,
+          "end": 87430,
+          "name": "",
+          "start": 87243
+        },
+        {
+          "calls": 72,
+          "end": 87650,
+          "name": "prepare",
+          "start": 87443
+        },
+        {
+          "calls": 63,
+          "end": 88891,
+          "name": "",
+          "start": 87708
+        },
+        {
+          "calls": 8065,
+          "end": 88020,
+          "name": "",
+          "start": 87988
+        },
+        {
+          "calls": 480,
+          "end": 88294,
+          "name": "",
+          "start": 88217
+        },
+        {
+          "calls": 27704,
+          "end": 88293,
+          "name": "",
+          "start": 88244
+        },
+        {
+          "calls": 290,
+          "end": 88479,
+          "name": "",
+          "start": 88342
+        },
+        {
+          "calls": 1400,
+          "end": 88465,
+          "name": "",
+          "start": 88384
+        },
+        {
+          "calls": 199027,
+          "end": 88464,
+          "name": "",
+          "start": 88411
+        },
+        {
+          "calls": 63,
+          "end": 89141,
+          "name": "prepare",
+          "start": 88904
+        },
+        {
+          "calls": 1416,
+          "end": 90819,
+          "name": "",
+          "start": 89188
+        },
+        {
+          "calls": 9027,
+          "end": 89996,
+          "name": "",
+          "start": 89841
+        },
+        {
+          "calls": 9024,
+          "end": 90188,
+          "name": "",
+          "start": 90146
+        },
+        {
+          "calls": 40,
+          "end": 90619,
+          "name": "",
+          "start": 90589
+        },
+        {
+          "calls": 61,
+          "end": 91150,
+          "name": "prepare",
+          "start": 90832
+        },
+        {
+          "calls": 1,
+          "end": 92438,
+          "name": "publicBmwObservation",
+          "start": 91170
+        }
+      ],
+      "path": "scripts/gcsp/public-bmw-source.mjs",
+      "sha256": "14600d91932c33b691801197ea28812c98bb08ea9603f293829ffeff09b48235"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 30249,
+          "name": "",
+          "start": 0
+        },
+        {
+          "calls": 1742492,
+          "end": 888,
+          "name": "object",
+          "start": 825
+        },
+        {
+          "calls": 14945,
+          "end": 953,
+          "name": "sha",
+          "start": 902
+        },
+        {
+          "calls": 16300,
+          "end": 1001,
+          "name": "encode",
+          "start": 970
+        },
+        {
+          "calls": 14339,
+          "end": 1059,
+          "name": "same",
+          "start": 1016
+        },
+        {
+          "calls": 1832443,
+          "end": 1225,
+          "name": "fail",
+          "start": 1074
+        },
+        {
+          "calls": 263364,
+          "end": 1359,
+          "name": "keys",
+          "start": 1240
+        },
+        {
+          "calls": 826772,
+          "end": 1358,
+          "name": "",
+          "start": 1324
+        },
+        {
+          "calls": 247772,
+          "end": 1432,
+          "name": "code",
+          "start": 1374
+        },
+        {
+          "calls": 8154,
+          "end": 1608,
+          "name": "instant",
+          "start": 1450
+        },
+        {
+          "calls": 13069,
+          "end": 1719,
+          "name": "unknown",
+          "start": 1626
+        },
+        {
+          "calls": 14921,
+          "end": 1791,
+          "name": "ref",
+          "start": 1733
+        },
+        {
+          "calls": 10850,
+          "end": 1930,
+          "name": "known",
+          "start": 1807
+        },
+        {
+          "calls": 9478,
+          "end": 2015,
+          "name": "unknownOrigin",
+          "start": 1954
+        },
+        {
+          "calls": 4077,
+          "end": 3201,
+          "name": "readArtifact",
+          "start": 2193
+        },
+        {
+          "calls": 247049,
+          "end": 3585,
+          "name": "locate",
+          "start": 3202
+        },
+        {
+          "calls": 1221098,
+          "end": 3459,
+          "name": "",
+          "start": 3411
+        },
+        {
+          "calls": 4076,
+          "end": 5459,
+          "name": "urlScope",
+          "start": 3586
+        },
+        {
+          "calls": 13144,
+          "end": 4246,
+          "name": "",
+          "start": 4198
+        },
+        {
+          "calls": 12228,
+          "end": 4491,
+          "name": "segment",
+          "start": 4268
+        },
+        {
+          "calls": 199695,
+          "end": 4400,
+          "name": "",
+          "start": 4353
+        },
+        {
+          "calls": 12228,
+          "end": 5066,
+          "name": "set",
+          "start": 4507
+        },
+        {
+          "calls": 4077,
+          "end": 7303,
+          "name": "captureArtifact",
+          "start": 5460
+        },
+        {
+          "calls": 4062,
+          "end": 7739,
+          "name": "evidence",
+          "start": 7304
+        },
+        {
+          "calls": 1359,
+          "end": 9716,
+          "name": "treeFacts",
+          "start": 7740
+        },
+        {
+          "calls": 2234,
+          "end": 8359,
+          "name": "",
+          "start": 8099
+        },
+        {
+          "calls": 2232,
+          "end": 8838,
+          "name": "",
+          "start": 8645
+        },
+        {
+          "calls": 13392,
+          "end": 8837,
+          "name": "",
+          "start": 8701
+        },
+        {
+          "calls": 16284,
+          "end": 9445,
+          "name": "",
+          "start": 9403
+        },
+        {
+          "calls": 8142,
+          "end": 9589,
+          "name": "",
+          "start": 9451
+        },
+        {
+          "calls": 1357,
+          "end": 14307,
+          "name": "solverSelection",
+          "start": 9717
+        },
+        {
+          "calls": 17360,
+          "end": 10424,
+          "name": "",
+          "start": 10373
+        },
+        {
+          "calls": 8680,
+          "end": 10889,
+          "name": "",
+          "start": 10858
+        },
+        {
+          "calls": 6443,
+          "end": 10955,
+          "name": "",
+          "start": 10921
+        },
+        {
+          "calls": 2265,
+          "end": 11503,
+          "name": "",
+          "start": 11405
+        },
+        {
+          "calls": 2251,
+          "end": 11622,
+          "name": "",
+          "start": 11580
+        },
+        {
+          "calls": 14,
+          "end": 11756,
+          "name": "",
+          "start": 11652
+        },
+        {
+          "calls": 14,
+          "end": 12417,
+          "name": "",
+          "start": 12384
+        },
+        {
+          "calls": 4071,
+          "end": 12956,
+          "name": "",
+          "start": 12833
+        },
+        {
+          "calls": 8680,
+          "end": 13220,
+          "name": "",
+          "start": 13175
+        },
+        {
+          "calls": 880,
+          "end": 13672,
+          "name": "",
+          "start": 13226
+        },
+        {
+          "calls": 880,
+          "end": 13908,
+          "name": "",
+          "start": 13773
+        },
+        {
+          "calls": 8680,
+          "end": 14078,
+          "name": "",
+          "start": 14025
+        },
+        {
+          "calls": 4071,
+          "end": 14236,
+          "name": "",
+          "start": 14207
+        },
+        {
+          "calls": 1357,
+          "end": 20644,
+          "name": "batchDefinitionClaims",
+          "start": 17722
+        },
+        {
+          "calls": 226760,
+          "end": 19043,
+          "name": "",
+          "start": 18796
+        },
+        {
+          "calls": 226760,
+          "end": 19093,
+          "name": "",
+          "start": 19076
+        },
+        {
+          "calls": 226760,
+          "end": 19319,
+          "name": "",
+          "start": 19171
+        },
+        {
+          "calls": 578,
+          "end": 19615,
+          "name": "",
+          "start": 19577
+        },
+        {
+          "calls": 453480,
+          "end": 19813,
+          "name": "",
+          "start": 19781
+        },
+        {
+          "calls": 453480,
+          "end": 19896,
+          "name": "",
+          "start": 19822
+        },
+        {
+          "calls": 1360,
+          "end": 28551,
+          "name": "buildBmwSelectionBinding",
+          "start": 20749
+        },
+        {
+          "calls": 2235,
+          "end": 22125,
+          "name": "",
+          "start": 22049
+        },
+        {
+          "calls": 2714,
+          "end": 22483,
+          "name": "",
+          "start": 22404
+        },
+        {
+          "calls": 9499,
+          "end": 22885,
+          "name": "",
+          "start": 22776
+        },
+        {
+          "calls": 5416,
+          "end": 23936,
+          "name": "",
+          "start": 23542
+        },
+        {
+          "calls": 5416,
+          "end": 24119,
+          "name": "",
+          "start": 24061
+        },
+        {
+          "calls": 4062,
+          "end": 24477,
+          "name": "",
+          "start": 24443
+        },
+        {
+          "calls": 880,
+          "end": 25680,
+          "name": "",
+          "start": 25641
+        },
+        {
+          "calls": 6770,
+          "end": 26288,
+          "name": "",
+          "start": 26105
+        },
+        {
+          "calls": 353,
+          "end": 29050,
+          "name": "qualifyBmwSelectionRecord",
+          "start": 28662
+        },
+        {
+          "calls": 57,
+          "end": 30248,
+          "name": "createBmwSelectionRegistration",
+          "start": 29168
+        },
+        {
+          "calls": 1,
+          "end": 30242,
+          "name": "qualifySnapshot",
+          "start": 29763
+        }
+      ],
+      "path": "scripts/gcsp/bmw-selection-binding.mjs",
+      "sha256": "480f1e3d1496bcb8d808ec75839634808a2923cdbf8411df61b0f819bdec3f38"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 9632,
+          "name": "",
+          "start": 0
+        },
+        {
+          "calls": 670,
+          "end": 633,
+          "name": "object",
+          "start": 570
+        },
+        {
+          "calls": 501,
+          "end": 698,
+          "name": "sha",
+          "start": 647
+        },
+        {
+          "calls": 501,
+          "end": 746,
+          "name": "encode",
+          "start": 715
+        },
+        {
+          "calls": 412,
+          "end": 819,
+          "name": "code",
+          "start": 761
+        },
+        {
+          "calls": 206,
+          "end": 1694,
+          "name": "selectedMap",
+          "start": 873
+        },
+        {
+          "calls": 412,
+          "end": 1689,
+          "name": "",
+          "start": 1092
+        },
+        {
+          "calls": 824,
+          "end": 1318,
+          "name": "",
+          "start": 1271
+        },
+        {
+          "calls": 52,
+          "end": 4197,
+          "name": "solverReport",
+          "start": 1696
+        },
+        {
+          "calls": 154,
+          "end": 2109,
+          "name": "",
+          "start": 2031
+        },
+        {
+          "calls": 154,
+          "end": 2316,
+          "name": "",
+          "start": 2273
+        },
+        {
+          "calls": 324,
+          "end": 2437,
+          "name": "",
+          "start": 2399
+        },
+        {
+          "calls": 246,
+          "end": 2512,
+          "name": "",
+          "start": 2478
+        },
+        {
+          "calls": 88,
+          "end": 2747,
+          "name": "",
+          "start": 2626
+        },
+        {
+          "calls": 88,
+          "end": 3200,
+          "name": "",
+          "start": 3078
+        },
+        {
+          "calls": 324,
+          "end": 3938,
+          "name": "",
+          "start": 3893
+        },
+        {
+          "calls": 26,
+          "end": 4191,
+          "name": "",
+          "start": 3944
+        },
+        {
+          "calls": 166,
+          "end": 7869,
+          "name": "publicBmwCompleteSelectionOperations",
+          "start": 4317
+        },
+        {
+          "calls": 167,
+          "end": 5538,
+          "name": "artifact",
+          "start": 4721
+        },
+        {
+          "calls": 830,
+          "end": 7864,
+          "name": "",
+          "start": 5593
+        },
+        {
+          "calls": 338,
+          "end": 7861,
+          "name": "project",
+          "start": 5672
+        },
+        {
+          "calls": 93,
+          "end": 6199,
+          "name": "",
+          "start": 5999
+        },
+        {
+          "calls": 558,
+          "end": 6198,
+          "name": "",
+          "start": 6066
+        },
+        {
+          "calls": 156,
+          "end": 6844,
+          "name": "",
+          "start": 6715
+        },
+        {
+          "calls": 7504,
+          "end": 7785,
+          "name": "",
+          "start": 7633
+        }
+      ],
+      "path": "scripts/gcsp/capture-bmw-selection.mjs",
+      "sha256": "14c255be3696d8d0512d9d4ddc03f24bae138d83f4d548bd813b07d1a5eb9892"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 30249,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/bmw-selection-binding.mjs",
+      "sha256": "480f1e3d1496bcb8d808ec75839634808a2923cdbf8411df61b0f819bdec3f38"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 92439,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/public-bmw-source.mjs",
+      "sha256": "14600d91932c33b691801197ea28812c98bb08ea9603f293829ffeff09b48235"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 34621,
+          "name": "",
+          "start": 0
+        },
+        {
+          "calls": 8,
+          "end": 1785,
+          "name": "object",
+          "start": 1706
+        },
+        {
+          "calls": 1,
+          "end": 1843,
+          "name": "same",
+          "start": 1800
+        },
+        {
+          "calls": 10,
+          "end": 1941,
+          "name": "bounded",
+          "start": 1861
+        },
+        {
+          "calls": 6,
+          "end": 2045,
+          "name": "version",
+          "start": 1959
+        },
+        {
+          "calls": 1,
+          "end": 2376,
+          "name": "freshCounts",
+          "start": 2067
+        },
+        {
+          "calls": 2,
+          "end": 2151,
+          "name": "",
+          "start": 2138
+        },
+        {
+          "calls": 2,
+          "end": 2210,
+          "name": "",
+          "start": 2197
+        },
+        {
+          "calls": 2,
+          "end": 2371,
+          "name": "",
+          "start": 2358
+        },
+        {
+          "calls": 3,
+          "end": 8679,
+          "name": "readCollectionJson",
+          "start": 8135
+        },
+        {
+          "calls": 6,
+          "end": 8830,
+          "name": "syncDirectory",
+          "start": 8680
+        },
+        {
+          "calls": 7,
+          "end": 9454,
+          "name": "writeAtomic",
+          "start": 8831
+        },
+        {
+          "calls": 1,
+          "end": 12403,
+          "name": "checkpointLock",
+          "start": 9456
+        },
+        {
+          "calls": 2,
+          "end": 10268,
+          "name": "writeMarker",
+          "start": 9958
+        },
+        {
+          "calls": 2,
+          "end": 11624,
+          "name": "contenders",
+          "start": 10291
+        },
+        {
+          "calls": 1,
+          "end": 11790,
+          "name": "",
+          "start": 11746
+        },
+        {
+          "calls": 1,
+          "end": 11925,
+          "name": "",
+          "start": 11901
+        },
+        {
+          "calls": 1,
+          "end": 12235,
+          "name": "",
+          "start": 12120
+        },
+        {
+          "calls": 1,
+          "end": 34619,
+          "name": "createCollectionSession",
+          "start": 12518
+        },
+        {
+          "calls": 2,
+          "end": 15437,
+          "name": "",
+          "start": 12895
+        },
+        {
+          "calls": 2,
+          "end": 15632,
+          "name": "",
+          "start": 15575
+        },
+        {
+          "calls": 5,
+          "end": 16179,
+          "name": "",
+          "start": 16075
+        },
+        {
+          "calls": 2,
+          "end": 16386,
+          "name": "",
+          "start": 16334
+        },
+        {
+          "calls": 2,
+          "end": 16489,
+          "name": "",
+          "start": 16437
+        },
+        {
+          "calls": 2,
+          "end": 19362,
+          "name": "",
+          "start": 17646
+        },
+        {
+          "calls": 1,
+          "end": 34614,
+          "name": "withCheckpoint",
+          "start": 19769
+        },
+        {
+          "calls": 7,
+          "end": 23275,
+          "name": "commit",
+          "start": 23110
+        },
+        {
+          "calls": 7,
+          "end": 23624,
+          "name": "checkDeadline",
+          "start": 23574
+        },
+        {
+          "calls": 2,
+          "end": 33020,
+          "name": "perform",
+          "start": 27390
+        },
+        {
+          "calls": 1,
+          "end": 27768,
+          "name": "",
+          "start": 27709
+        },
+        {
+          "calls": 2,
+          "end": 29361,
+          "name": "",
+          "start": 29206
+        },
+        {
+          "calls": 2,
+          "end": 29685,
+          "name": "",
+          "start": 29457
+        },
+        {
+          "calls": 1,
+          "end": 32600,
+          "name": "",
+          "start": 32541
+        },
+        {
+          "calls": 2,
+          "end": 33449,
+          "name": "execute",
+          "start": 33043
+        }
+      ],
+      "path": "scripts/gcsp/collection-session.mjs",
+      "sha256": "bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 21274,
+          "name": "",
+          "start": 0
+        },
+        {
+          "calls": 1,
+          "end": 433,
+          "name": "isBmwModelBatchPlan",
+          "start": 324
+        },
+        {
+          "calls": 1,
+          "end": 552,
+          "name": "isBmwBatchPlan",
+          "start": 465
+        }
+      ],
+      "path": "scripts/gcsp/bmw-public-registration.mjs",
+      "sha256": "b4eed688fff481af4d422f3612be71184df689ff943fef3d339dc9392a960460"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 9632,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/capture-bmw-selection.mjs",
+      "sha256": "14c255be3696d8d0512d9d4ddc03f24bae138d83f4d548bd813b07d1a5eb9892"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 3811,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/enrichment-observation.mjs",
+      "sha256": "29d41aefcd2b3d74a876219ad960cc901f6677cc7e483710216eb710ab788a29"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 34621,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/collection-session.mjs",
+      "sha256": "bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 21274,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/bmw-public-registration.mjs",
+      "sha256": "b4eed688fff481af4d422f3612be71184df689ff943fef3d339dc9392a960460"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 92439,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/public-bmw-source.mjs",
+      "sha256": "14600d91932c33b691801197ea28812c98bb08ea9603f293829ffeff09b48235"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 3811,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/enrichment-observation.mjs",
+      "sha256": "29d41aefcd2b3d74a876219ad960cc901f6677cc7e483710216eb710ab788a29"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 34621,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/collection-session.mjs",
+      "sha256": "bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 21274,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/bmw-public-registration.mjs",
+      "sha256": "b4eed688fff481af4d422f3612be71184df689ff943fef3d339dc9392a960460"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 92439,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/public-bmw-source.mjs",
+      "sha256": "14600d91932c33b691801197ea28812c98bb08ea9603f293829ffeff09b48235"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 30249,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/bmw-selection-binding.mjs",
+      "sha256": "480f1e3d1496bcb8d808ec75839634808a2923cdbf8411df61b0f819bdec3f38"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 92439,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/public-bmw-source.mjs",
+      "sha256": "14600d91932c33b691801197ea28812c98bb08ea9603f293829ffeff09b48235"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 34621,
+          "name": "",
+          "start": 0
+        },
+        {
+          "calls": 2,
+          "end": 8679,
+          "name": "readCollectionJson",
+          "start": 8135
+        }
+      ],
+      "path": "scripts/gcsp/collection-session.mjs",
+      "sha256": "bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 21274,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/bmw-public-registration.mjs",
+      "sha256": "b4eed688fff481af4d422f3612be71184df689ff943fef3d339dc9392a960460"
+    },
+    {
+      "functions": [
+        {
+          "calls": 1,
+          "end": 9632,
+          "name": "",
+          "start": 0
+        }
+      ],
+      "path": "scripts/gcsp/capture-bmw-selection.mjs",
+      "sha256": "14c255be3696d8d0512d9d4ddc03f24bae138d83f4d548bd813b07d1a5eb9892"
+    }
+  ],
+  "observationLimits": "Aggregate V8 context from required scoped validation; no per-test isolation; missing observations do not prove irrelevance.",
+  "cleanup": [
+    {
+      "label": "integration",
+      "scratchRoot": "/private/tmp/test-stamp-shard-ad9ccae749894d8495ef80f0f02d88aa",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f58/f70-optional-axis/integration/ownership/ad9ccae749894d8495ef80f0f02d88aa.json",
+      "groupsAbsent": true,
+      "openFilesAbsent": true,
+      "scratchAbsent": true,
+      "dependencyLinkAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 2896192,
+      "compatibilityException": null,
+      "cleanupErrors": []
+    },
+    {
+      "label": "integration-followup",
+      "scratchRoot": "/private/tmp/test-stamp-shard-bfa5bfba491e4ad390430d2572c4ae6d",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f58/f70-optional-axis/integration-followup/ownership/bfa5bfba491e4ad390430d2572c4ae6d.json",
+      "groupsAbsent": true,
+      "openFilesAbsent": true,
+      "scratchAbsent": true,
+      "dependencyLinkAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 1401024,
+      "compatibilityException": null,
+      "cleanupErrors": []
+    },
+    {
+      "label": "integration-final",
+      "scratchRoot": "/private/tmp/test-stamp-shard-0491b1e966994e67b32044852987d175",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f58/f70-optional-axis/integration-final/ownership/0491b1e966994e67b32044852987d175.json",
+      "groupsAbsent": true,
+      "openFilesAbsent": true,
+      "scratchAbsent": true,
+      "dependencyLinkAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 1401024,
+      "compatibilityException": null,
+      "cleanupErrors": []
+    }
+  ],
+  "timings": [
+    31.955268250007066,
+    1.9679916669992963,
+    1.8751230839989148
+  ],
+  "finalExactBytes": {
+    "command": [
+      "node",
+      "--test",
+      "--test-isolation=none",
+      "--test-concurrency=1",
+      "--test-reporter=tap",
+      "server/test/gcsp-bmw-enrichment-observation.test.js"
+    ],
+    "tests": 10,
+    "pass": 10,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "wallSeconds": 1.8751230839989148,
+    "reason": "Incoming test had trailing whitespace caught by commit diff check; removed it and reran the affected ten checks against exact final bytes."
+  }
+}

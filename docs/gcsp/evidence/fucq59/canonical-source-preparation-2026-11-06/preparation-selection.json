@@ -1,0 +1,38 @@
+{
+  "executable": false,
+  "executionSelectionPending": true,
+  "focusedTests": {
+    "scope": "12 offline cleanup-port methods only",
+    "status": "passed",
+    "validationPath": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/validation.json",
+    "validationSha256": "d3f9bb7e1b5387a5fcf6ed0f234dac7586c6c355cf4e17f10b0cbdd62d37f262"
+  },
+  "freshAbsentPaths": [
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/execution-once.json",
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/observation",
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/supervision/supervisor-registration.json",
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/supervision/allocation.json"
+  ],
+  "handoffSha256": "b461a375c4dd64dc1825d20da63c332d0966940fb30ee09c140c3f1dab43f114",
+  "parentReview": {
+    "independent": true,
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/parent-review.json",
+    "sha256": "edd3c344574c466df7db7aafcc558bd987ad1db51b9c7cb68660253096812732",
+    "verdict": "passed"
+  },
+  "parentReviewPending": false,
+  "planSha256": "e033e926c3da90bd2463dff1bbeb7b141be1923beccacdd5be3312bfb5715452",
+  "portOnly": "Reviewed settings-supervisor release_reservation locked readback + cleanup failure/nonzero status; no new source transport or supervisor architecture",
+  "resourceAuditSha256": "8d790ced7267e26e5314369f0efc4f9db583613dd27b45c1654c3de2acef0fab",
+  "runnerSha256": "5cb5adafd7d1826fc5a953984863c21aca499a402b8f7e5b61521905018e87f7",
+  "runnerUnchanged": true,
+  "schemaVersion": "f59-canonical-four-get-preparation.v1",
+  "sourceAllocationPending": true,
+  "sourceAttemptsAllocated": 0,
+  "sourcePathsVerifiedAbsentAt": "2026-11-06T15:14:27.193501+00:00",
+  "supervisorBase": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/supervise-live.py",
+    "sha256": "2a109f4c9fa453a675458c45563a8f384dc387c5e120cd1dc0aa2f19b43b8cce"
+  },
+  "supervisorSha256": "2e992894ab193d7c65487c4fe1d241e008c4eac1e78c7fe91ad3090634522514"
+}

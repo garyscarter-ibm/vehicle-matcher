@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "linux-live-diagnostic-static-review.v1",
+  "status": "passed-static-only",
+  "planSha256": "0b763e9d72c9fe9cfa1e8e20b988abf1916c2bea6e4eea2d24b2beeba10b5cce",
+  "workflowSha256": "ec5032c998810bb55a73299e8e8240fcdc249c3a94b75d2a677d34c2e53dba9b",
+  "checks": [
+    "Python AST syntax without execution/bytecode",
+    "Node --check without module execution",
+    "Ruby YAML parse and exact narrow push/optional manual triggers",
+    "Extracted Bash -n",
+    "Fixed reviewed planSHA in workflow; optional dispatch input must match",
+    "Four runtime packet pins and exact deployment evidence/projection hashes",
+    "Full retained632368B source receipt hash and one minimal observation projection verified",
+    "Configuration ID SHA, encoded request path and pathSHA match frozen .12 reference",
+    "Reviewed request reservation,3GET ceiling,90/30/30s deadlines,150s total and no redirect/retry",
+    "Reviewed owner manifest/finalizer before scratch/process;160s/groupRSS/scratch/log bounds and process-group/scratch absence",
+    "Original root sealed plan/deployment/results/failed receipt hashes verified read-only"
+  ],
+  "execution": {
+    "networkCalls": 0,
+    "runtimeExecutions": 0,
+    "testsRun": 0,
+    "workflowDispatches": 0,
+    "localScratchAllocatedBytes": 0,
+    "localOwnedScratchLeftovers": []
+  },
+  "scope": "New Linux diagnostic preparation; root owns review/integration trigger and actual result. No production/screens changed, so no visual review applies.",
+  "knownLimits": [
+    "No CI result exists for this diagnostic",
+    "Runtime limits and finalizer behavior reviewed statically, not executed locally",
+    "Runtime RSS sampling is periodic, not a kernel hard memory limit",
+    "Responses beyond log prefix retain hashes/counts only after scratch cleanup",
+    "Success from Linux will not prove original local transport timeout cause"
+  ],
+  "acceptance": false
+}

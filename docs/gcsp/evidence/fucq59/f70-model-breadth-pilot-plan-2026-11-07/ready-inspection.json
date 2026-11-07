@@ -1,0 +1,23 @@
+{
+  "inspection": {
+    "status": "prepared-only",
+    "allocationId": "f70-model-breadth-20261107-a29846efc0977283",
+    "planDigest": "a29846efc09772831e6741ce20d79acfbe858c1fa7ea6ecfbe47a9f7e54a943a",
+    "publicGetCeiling": 20,
+    "sourceTraffic": false
+  },
+  "exactFinalSha256": {
+    "execution-plan.json": "b0e54612f65c08319b80819f3939821f30f67a012468a43fc735908fd43e6e81",
+    "run-live.mjs": "1ada2f41a17c9a9972b35dd10864b1aba3cce53a5a767735b9458624480991b7",
+    "supervise.py": "d0f3930f7c739021739c2722a23ba434e488ebf69bb65572511de49e2ba58ca8",
+    "prepare.mjs": "05c41668c7b4fc86d9863b4dab9652eac50ebc99b12dc14762ac5eac5c91c293",
+    "prepared-check.test.mjs": "176ff3bc1d64b25a98ba9ef4428a94ad9fee00deafadc7d43d8936b09157f313",
+    "candidate-provenance.json": "854555c4b8d827b754f29fb76c1698e19c15d8dc9b10d7854e7d5afd41f664e2"
+  },
+  "capabilityCommit": "4c4bad5aabdfa98f57ef0144f0fa94b41f5e0273",
+  "productionEvidence": "70/70scoped synthetic; unchanged capability",
+  "preparedEvidence": "4/4scoped final prepared checks",
+  "rootGrantRequired": true,
+  "trafficExecuted": false,
+  "onceMarkersAbsent": true
+}

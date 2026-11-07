@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "bmw-settings-shape-refusal-receipt.v1",
+  "qualification": "unqualified-structural-observation",
+  "admission": false,
+  "accepted": [],
+  "distinctConfigurations": 0,
+  "settingsShapeRefusal": {
+    "schemaVersion": "bmw-settings-shape-refusal.v1",
+    "qualification": "unqualified-structural-observation",
+    "admission": false,
+    "failedRole": "tree",
+    "reason": "settings-header-shape",
+    "observation": {
+      "schemaVersion": "collection-http-observation.v1",
+      "operation": "settings",
+      "sourceId": "bmw-uk-public",
+      "sourceVersion": "f59-diagnostic-20261106.v1",
+      "capability": "bmw-settings",
+      "transportKind": "live",
+      "request": {
+        "method": "GET",
+        "url": "https://configure.bmw.co.uk/en_GB/settings.f8e66668.json"
+      },
+      "observedAt": "2026-11-06T14:48:35.838Z",
+      "responseBytes": 620646,
+      "responseSha256": "f8e66668d6a148e556d6890f028beb96d302b214b8b9608d68f974dbd079738b"
+    },
+    "layout": {
+      "status": "unverified",
+      "appKind": "object",
+      "backendKind": "object"
+    },
+    "roles": {
+      "tree": {
+        "profileMatches": 2,
+        "profileNodeKinds": {
+          "object": 2,
+          "array": 0
+        },
+        "exactLabelObjectKeys": 2,
+        "exactLabelScalarValues": 0,
+        "candidates": {
+          "directProperty": 1,
+          "nameValue": 0,
+          "distinctValues": 1
+        },
+        "flags": {
+          "missingProfile": false,
+          "multipleProfiles": true,
+          "missingCandidate": false,
+          "multipleCandidates": false,
+          "conflictingCandidates": false,
+          "empty": false,
+          "oversized": false,
+          "wrongType": false
+        },
+        "strictVerdict": "refused",
+        "traversal": {
+          "visited": 5486,
+          "maxDepth": 13,
+          "limited": false,
+          "countsCapped": false
+        }
+      },
+      "localisation": {
+        "profileMatches": 2,
+        "profileNodeKinds": {
+          "object": 2,
+          "array": 0
+        },
+        "exactLabelObjectKeys": 2,
+        "exactLabelScalarValues": 0,
+        "candidates": {
+          "directProperty": 1,
+          "nameValue": 0,
+          "distinctValues": 1
+        },
+        "flags": {
+          "missingProfile": false,
+          "multipleProfiles": true,
+          "missingCandidate": false,
+          "multipleCandidates": false,
+          "conflictingCandidates": false,
+          "empty": false,
+          "oversized": false,
+          "wrongType": false
+        },
+        "strictVerdict": "refused",
+        "traversal": {
+          "visited": 5489,
+          "maxDepth": 13,
+          "limited": false,
+          "countsCapped": false
+        }
+      }
+    }
+  }
+}
