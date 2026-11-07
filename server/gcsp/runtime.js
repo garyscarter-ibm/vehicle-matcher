@@ -85,7 +85,9 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const greg = createGregDemandService({ repository, policy, clock, identity });
     const gregPublish = createGregPublishService({ repository, policy, clock, identity });
     // Prepared scenario fixtures are branded by the exact policy instance used by the clock.
-    const scenarios = createScenarioService({ repository, policy: readPolicy, clock, identity });
+    const scenarios = createScenarioService({ repository, policy: readPolicy, clock, identity, brief,
+      prepareEmployee: (context) => seedManualDemoContext({ repository, identity, clock, context }),
+      afterReset: adoptOfferJourney ? () => adoptOfferJourneyPolicy({ policy, identity, clock }) : undefined });
     const adapter = createSyntheticManualStockAdapter();
     const manualClaims = createManualClaimsService({ repository, policy, clock, identity, manual: account, adapter });
     // The trusted host supplies the existing pull port. No source is invented here.

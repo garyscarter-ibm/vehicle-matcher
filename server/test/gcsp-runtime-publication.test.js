@@ -166,7 +166,7 @@ test('combined runtime serves authenticated scenarios, canonical presenter step 
   assert.equal(f.dependencies.gcspOfferAccess, f.offerAccess);
   const oldEmployee = f.session.value.context;
   const catalogue = response(await f.http.request('/api/gcsp/presenter/scenarios', { session: f.session }));
-  assert.ok(catalogue.scenarios.filter((row) => row.kind === 'journey').every((row) => !row.availability.available));
+  assert.deepEqual(catalogue.scenarios.filter((row) => row.kind === 'journey' && row.availability.available).map((row) => row.scenarioId), ['decline-then-change']);
   const controls = response(await f.http.request('/api/gcsp/presenter/controls', { session: f.session }));
   assert.equal(controls.controls.step.value, 60);
   const configured = good(await readPolicy.getAssumption('clock.presenter.stepSeconds', {
