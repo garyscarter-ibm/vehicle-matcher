@@ -202,8 +202,11 @@ test('PostgreSQL driver double round-trips complete typed rows and rolls back fa
     if (sql.includes('schema_migrations')) return { rows: migrations.map(({ version, filename, checksum }) => ({ version, filename, checksum })) };
     const table = sql.match(/"unit"\."([a-z_]+)"/)?.[1];
     assert.ok(table && Object.hasOwn(tables, table), sql);
-    if (sql.startsWith('SELECT data')) return { rows: tables[table].filter(({ data }) => data.runId === values[0])
-      .sort((a, b) => a.ordinal - b.ordinal).map(({ data }) => ({ data: structuredClone(data) })) };
+    if (sql.startsWith('SELECT data')) {
+      const found = tables[table].filter(({ data }) => data.runId === values[0]).sort((a, b) => a.ordinal - b.ordinal);
+      if (sql.includes('AS "seedDigest"')) return { rows: found.map(({ data }) => ({ policyVersion: data.seed.policyVersion, seedDigest: data.seedDigest })) };
+      return { rows: found.map(({ data }) => ({ data: structuredClone(data) })) };
+    }
     if (sql.startsWith('INSERT')) {
       if (table === failTable) { failTable = undefined; throw new Error('private driver password must never escape'); }
       if (table === 'policy_versions') tables[table].push({ data: JSON.parse(values[0]), ordinal: tables[table].length });

@@ -95,8 +95,9 @@ export class PostgresPolicyProvider {
     let client;
     try {
       client = await this.#pool.connect();
-      const { rows } = await client.query(`SELECT data FROM ${this.#table('policy_versions')} WHERE run_id = $1 ORDER BY effective_from`, [runId]);
-      return rows.length ? rows.map(({ data }) => `${data.seed.policyVersion}:${data.seedDigest}`).join('|') : undefined;
+      const { rows } = await client.query(`SELECT data->'seed'->>'policyVersion' AS "policyVersion", data->>'seedDigest' AS "seedDigest"
+        FROM ${this.#table('policy_versions')} WHERE run_id = $1 ORDER BY effective_from`, [runId]);
+      return rows.length ? rows.map((row) => `${row.policyVersion}:${row.seedDigest}`).join('|') : undefined;
     } catch { return undefined; } finally { client?.release(); }
   }
 

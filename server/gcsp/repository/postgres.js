@@ -18,19 +18,39 @@ export function createPostgresRepository(options = {}) {
     ? result('conflict', { reason: error.code === '23505' ? 'database-constraint-conflict' : 'missing-reference', current: {} })
     : unavailable();
 
-  // One simple-protocol string: lock first, then the snapshot as its own statement (fresh READ COMMITTED snapshot).
-  function snapshotSql(context, commit) {
-    const scope = context?.runId == null ? ' WHERE false' : ` WHERE run_id = ${pg.escapeLiteral(String(context.runId))}`;
-    const selects = FOUNDATION_TABLES.map((table) => `SELECT ${pg.escapeLiteral(table)} AS t, data FROM ${tableName(table)}${table === 'runs' ? '' : scope}`);
-    const lock = pg.escapeLiteral(`gcsp:run:${schema}:${context?.runId ?? ''}`);
-    return `BEGIN; SELECT pg_advisory_xact_lock(hashtextextended(${lock}, 0)); ${selects.join(' UNION ALL ')}${commit ? '; COMMIT' : ''}`;
-  }
+  // Per table: all rows (runs) or this run's rows. Fingerprint: count and sum(version), which strictly rise on any write.
+  const scopeSql = (context, table) => table === 'runs' ? ''
+    : context?.runId == null ? ' WHERE false' : ` WHERE run_id = ${pg.escapeLiteral(String(context.runId))}`;
+  const union = (context, select) => FOUNDATION_TABLES.map((table) => select(pg.escapeLiteral(table), `${tableName(table)}${scopeSql(context, table)}`)).join(' UNION ALL ');
+  const fingerprintSql = (context, wide) => union(context, (t, from) =>
+    `SELECT ${t} AS t, ${wide ? 'NULL::jsonb AS data, ' : ''}count(*) AS n, coalesce(sum(version), 0) AS v FROM ${from}`);
+  const snapshotSql = (context, wide) => union(context, (t, from) => `SELECT ${t} AS t, data${wide ? ', NULL::bigint AS n, NULL::numeric AS v' : ''} FROM ${from}`);
+  const lockSql = (context) => `BEGIN; SELECT pg_advisory_xact_lock(hashtextextended(${pg.escapeLiteral(`gcsp:run:${schema}:${context?.runId ?? ''}`)}, 0))`;
 
-  function toState(results) {
+  const fingerprintOf = (rows) => {
+    const seen = new Map(rows.filter((row) => row.n != null).map(({ t, n, v }) => [t, `${t}:${BigInt(n)}:${BigInt(v)}`]));
+    return FOUNDATION_TABLES.map((table) => seen.get(table) ?? (() => { throw new Error('fingerprint-incomplete'); })()).join('|');
+  };
+  const localFingerprint = (state) => FOUNDATION_TABLES.map((table) =>
+    `${table}:${state.tables[table].length}:${state.tables[table].reduce((sum, row) => sum + Number(row.version), 0)}`).join('|');
+  const toState = (rows) => {
     const state = createState();
-    for (const { t, data } of results[2].rows) state.tables[t].push(data);
+    for (const { t, data } of rows) if (data != null) state.tables[t].push(data);
     return state;
-  }
+  };
+  // Cache entry: a private copy of the snapshot scope (runs plus this run's rows).
+  const scopedCopy = (state, context) => {
+    const copy = createState();
+    for (const table of FOUNDATION_TABLES) {
+      copy.tables[table] = table === 'runs' ? state.tables.runs : context?.runId == null ? [] : state.tables[table].filter((row) => row.runId === context.runId);
+    }
+    return structuredClone(copy);
+  };
+  const cache = new Map();
+  const remember = (key, entry) => {
+    cache.delete(key); cache.set(key, entry);
+    if (cache.size > 4) cache.delete(cache.keys().next().value);
+  };
 
   // Tables with partial unique indexes on mutable state keep ordered per-row updates.
   const ROW_UPDATE_TABLES = new Set(['runs', 'holds', 'claims']);
@@ -83,23 +103,35 @@ export function createPostgresRepository(options = {}) {
   }
 
   async function run(context, work, write) {
+    const key = String(context?.runId ?? '');
     let client;
     let begun = false;
     try {
       client = await pool.connect();
       begun = true;
-      const state = toState(await client.query(snapshotSql(context, !write)));
+      const probe = await client.query(`${lockSql(context)}; ${fingerprintSql(context)}${write ? '' : '; COMMIT'}`);
+      const fingerprint = fingerprintOf(probe[2].rows);
+      const hit = cache.get(key)?.fingerprint === fingerprint ? cache.get(key) : undefined;
+      if (hit) remember(key, hit);
       if (!write) {
         begun = false;
+        if (hit) return await work(structuredClone(hit.state));
+        const fresh = (await client.query(`${fingerprintSql(context, true)} UNION ALL ${snapshotSql(context, true)}`)).rows;
+        const state = toState(fresh);
+        remember(key, { fingerprint: fingerprintOf(fresh), state: structuredClone(state) });
         return await work(state);
       }
-      const before = structuredClone(state);
+      const state = hit ? structuredClone(hit.state) : toState((await client.query(snapshotSql(context))).rows);
+      const before = hit ? hit.state : structuredClone(state);
       const { commit, outcome } = await work(state);
       if (!commit) { await client.query('ROLLBACK'); begun = false; return outcome; }
       await flush(client, before, state);
+      const after = scopedCopy(state, context);
       await client.query('COMMIT'); begun = false;
+      remember(key, { fingerprint: localFingerprint(after), state: after });
       return outcome;
     } catch (error) {
+      cache.delete(key);
       if (begun) await client?.query('ROLLBACK').catch(() => {});
       return databaseFailure(error);
     } finally {
@@ -135,6 +167,7 @@ export function createPostgresRepository(options = {}) {
       try {
         if (owned && pool) await pool.end();
         if (owned) { pool = undefined; owned = false; }
+        cache.clear();
         return ok({ closed: true });
       } catch { return unavailable(); }
     },

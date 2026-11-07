@@ -500,16 +500,20 @@ function driverDouble({ state = { tables: Object.fromEntries(Object.keys(TABLES)
         return { rows: [] };
       };
       if (sql === 'COMMIT') return commit();
+      // Answers fingerprint (count, sum(version)) and snapshot parts of a UNION ALL, as PostgreSQL would.
+      const answer = (statement) => statement.split(' UNION ALL ').flatMap((part) => {
+        const [, name, scope] = part.match(/^SELECT '([a-z_]+)' AS t, .* FROM "[a-z_]+"\."[a-z_]+"( WHERE .*)?$/);
+        const runId = scope?.match(/^ WHERE run_id = '(.*)'$/)?.[1];
+        const rows = data.tables[name].filter((row) => !scope || (scope !== ' WHERE false' && row.runId === runId));
+        if (part.includes('count(*)')) return [{ t: name, data: null, n: String(rows.length), v: String(rows.reduce((sum, row) => sum + row.version, 0)) }];
+        return rows.map((row) => ({ t: name, data: structuredClone(row), n: null, v: null }));
+      });
       if (sql.startsWith('BEGIN; SELECT pg_advisory_xact_lock')) {
-        // Simple-protocol multi-statement: BEGIN, lock, one UNION ALL snapshot, optional COMMIT.
+        // Simple-protocol multi-statement: BEGIN, lock, one UNION ALL fingerprint, optional COMMIT.
         savepoint = { data: structuredClone(data), applied: structuredClone(applied), exists };
-        const rows = sql.split('; ')[2].split(' UNION ALL ').flatMap((part) => {
-          const [, name, scope] = part.match(/^SELECT '([a-z_]+)' AS t, data FROM "[a-z_]+"\."[a-z_]+"( WHERE .*)?$/);
-          const runId = scope?.match(/^ WHERE run_id = '(.*)'$/)?.[1];
-          return data.tables[name].filter((row) => !scope || (scope !== ' WHERE false' && row.runId === runId)).map((row) => ({ t: name, data: structuredClone(row) }));
-        });
-        return [{ rows: [] }, { rows: [] }, { rows }, ...(sql.endsWith('; COMMIT') ? [commit()] : [])];
+        return [{ rows: [] }, { rows: [] }, { rows: answer(sql.split('; ')[2]) }, ...(sql.endsWith('; COMMIT') ? [commit()] : [])];
       }
+      if (sql.startsWith("SELECT '")) return { rows: answer(sql) };
       if (sql.startsWith('SELECT to_regclass')) return { rows: [{ name: exists ? 'schema_migrations' : null }] };
       if (sql.startsWith('SELECT version, filename, checksum')) return { rows: structuredClone(applied) };
       if (sql.includes('CREATE TABLE IF NOT EXISTS')) { exists = true; return { rows: [] }; }
@@ -665,5 +669,59 @@ test('postgresql driver: round trips stay constant per read and per transaction'
   }));
   assert.ok(edit <= 4, `snapshot, batched update, command record, commit (got ${edit})`);
   assert.deepEqual((await repository.query(ctx(), 'stock', { state: 'held' })).value.map((row) => row.version), [2, 2]);
+  await repository.close();
+});
+
+test('postgresql driver: the snapshot cache serves the next read after a transaction in one round trip', async () => {
+  const driver = driverDouble();
+  const repository = createPostgresRepository({ pool: driver.pool });
+  await repository.open(); await setup(repository);
+  await repository.transaction(ctx(), command(), async (tx) => { await tx.insert('stock', { runId: 'run-a', orderUuid: 'cached-car', orderNumber: 'C1', state: 'available' }); return ok('added'); });
+  const before = driver.queries.length;
+  const rows = (await repository.query(ctx(), 'stock')).value;
+  assert.equal(driver.queries.length - before, 1);
+  assert.ok(rows.some((row) => row.orderUuid === 'cached-car'));
+  assert.deepEqual(rows.map((row) => row.orderUuid).sort(), driver.read().tables.stock.map((row) => row.orderUuid).sort());
+  await repository.close();
+});
+
+test('postgresql driver: a write by another repository instance is seen by the next read', async () => {
+  const driver = driverDouble();
+  const first = createPostgresRepository({ pool: driver.pool });
+  const second = createPostgresRepository({ pool: driver.pool });
+  await first.open(); await second.open(); await setup(first);
+  const count = async () => (await first.query(ctx(), 'stock')).value.length;
+  const known = await count();
+  await second.transaction(ctx(), command(), async (tx) => { await tx.insert('stock', { runId: 'run-a', orderUuid: 'other-process', orderNumber: 'O1', state: 'available' }); return ok('added'); });
+  assert.equal(await count(), known + 1);
+  await second.transaction(ctx(), command(), (tx) => tx.compareAndSwap(ref('stock', { orderUuid: 'other-process' }), 1, { state: 'held' }));
+  assert.equal((await first.query(ctx(), 'stock', { state: 'held' })).value.length, 1);
+  await first.close(); await second.close();
+});
+
+test('postgresql driver: a failed flush leaves no stale snapshot cache', async () => {
+  const driver = driverDouble();
+  const repository = createPostgresRepository({ pool: driver.pool });
+  await repository.open(); await setup(repository);
+  const known = (await repository.query(ctx(), 'stock')).value.map((row) => row.orderUuid).sort();
+  driver.setFailureTable('stock');
+  const failed = await repository.transaction(ctx(), command(), async (tx) => { await tx.insert('stock', { runId: 'run-a', orderUuid: 'never-saved', orderNumber: 'N1', state: 'available' }); return ok('x'); });
+  assert.equal(failed.status, 'unavailable');
+  driver.setFailureTable(undefined);
+  assert.deepEqual((await repository.query(ctx(), 'stock')).value.map((row) => row.orderUuid).sort(), known);
+  await repository.close();
+});
+
+test('postgresql driver: mutating a returned row does not change the next read', async () => {
+  const driver = driverDouble();
+  const repository = createPostgresRepository({ pool: driver.pool });
+  await repository.open(); await setup(repository);
+  const first = (await repository.query(ctx(), 'stock')).value;
+  const original = structuredClone(first);
+  first[0].state = 'tampered'; first.pop();
+  assert.deepEqual((await repository.query(ctx(), 'stock')).value, original);
+  const tampered = (await repository.read(ctx(), ref('stock', { orderUuid: original[0].orderUuid }))).value;
+  tampered.state = 'tampered-again';
+  assert.deepEqual((await repository.query(ctx(), 'stock')).value, original);
   await repository.close();
 });
