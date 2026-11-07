@@ -1,3 +1,4 @@
+import { gregPublishExample } from '../gcsp/greg/publish/gallery.js';
 import { experienceChoice, brandSelector } from '../demo-launcher/components.js';
 import { renderOptionList, renderRangeSlider } from './modes/question-ui.js';
 import { createPreviewFeed } from './modes/preview-feed.js';
@@ -11,6 +12,7 @@ import { messageList } from '../gcsp/presenter/message-list.js';
 import { fixtureMessages } from '../gcsp/presenter/fixtures.js';
 import { metricTile } from '../gcsp/kit/metric-tile.js';
 import { dataTable } from '../gcsp/kit/data-table.js';
+import { mountPresenterControls } from '../gcsp/presenter-controls/controls.js';
 import { formControlsExample } from '../gcsp/kit/form-controls-gallery.js';
 
 const browseSession = `gallery-${Date.now().toString(36)}`;
@@ -124,7 +126,7 @@ function gcspExamples() {
   ];
   for (const [title, account, detailsOpen] of accounts) {
     const frame = el('div', 'vm-gallery-gcsp-frame');
-    const shell = portalShell({ navigation: EMPLOYEE_NAVIGATION, active: 'cars', breadcrumbs: ['Your cars'], account });
+    const shell = portalShell({ navigation: EMPLOYEE_NAVIGATION, active: 'cars', breadcrumbs: ['Your cars'], account, presenterControls: false });
     if (detailsOpen) shell.root.querySelector('.gcsp-account-details').open = true;
     shell.main.append(el('p', 'gcsp-note', 'Page content goes here.'));
     frame.append(shell.root);
@@ -136,6 +138,15 @@ function gcspExamples() {
     group(`accountNavigation: ${expanded ? 'expanded' : 'collapsed'}, pale selected state and unavailable items`).append(frame);
   }
   group('messageList: sent, retrying and failed, first message open').append(messageList({ messages: fixtureMessages(), selectedId: 'job-004' }).root);
+  const presenter = group('Presenter controls: isolated visual fixture, not a live release');
+  const fixture = {
+    readControls: async () => ({ status: 'ok', value: { runId: 'gallery-run', now: '2026-11-05T09:00:00.000Z', clockVersion: '1',
+      currentScenario: null, principals: [], controls: { namedTimes: {}, nextRelease: { status: 'unavailable', reason: 'No future cue supplied' } },
+      lastTick: { state: 'pending', handlerOrder: [{ handlerId: 'gallery-handler', stage: 'outbox-dispatch' }], outcomes: [], missingStages: ['release-pull'] } } }),
+    readContext: async () => ({ status: 'ok', value: { name: 'Gallery presenter', principalId: 'gallery', roles: ['presenter'] } }),
+    readScenarios: async () => ({ status: 'unavailable', reason: 'Isolated visual fixture' }),
+  };
+  const presenterView = mountPresenterControls(presenter, { adapter: fixture }); presenterView.root.open = true;
   section.append(scope);
   return section;
 }
@@ -355,7 +366,7 @@ export function mountComponentGallery(root) {
   exactControls.append(legacyButton, refineButton, exactReset);
   exact.append(exactControls, exactCards);
   sections.append(exact);
-  root.append(heading, sections, employeeDecisionExample(), employeeControlsExample(), gcspExamples(), gregKitExamples(), launcherExamples(), formControlsExample());
+  root.append(heading, sections, employeeDecisionExample(), employeeControlsExample(), gcspExamples(), gregKitExamples(), gregPublishExample(), launcherExamples(), formControlsExample());
 
   function dispatchBrowse(type, target, reason) {
     const result = reduceFeedback(browseFeedback, {
