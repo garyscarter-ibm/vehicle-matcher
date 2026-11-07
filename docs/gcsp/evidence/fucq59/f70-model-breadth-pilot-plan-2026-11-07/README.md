@@ -1,6 +1,21 @@
-# F70 minimal model breadth solver pilot — preparation only
+# F70 minimal model breadth solver pilot — actual result retained
 
-This adds the isolated `f59-model-batch-20261107.v1` capability for the four actual options-qualified contexts 1F7A/82GE, 1F7C/22GE, 1F7D/62GE and 1F7F/62GE. The pilot will use one seeded direct-typed paint/fabric/rim request per context, adding only the observed explicit line option for D/F. Its total ceiling is 20 GETs: four fresh bootstrap requests and one solver request per context, serially, with no retries or replay. No new source allocation is released or executed by this preparation.
+Root released the exact allocation once on 7 November 2026. The pinned supervisor completed all four contexts in 6.672 seconds: 20 GETs, four solver requests, all HTTP200, 3,534,788 decoded bytes, four distinct source-bound admissions, zero duplicates/rejections/retries. The explicit present empty mandatory query succeeded for A/C. Full source responses still leave the optional trim fact unknown for all four contexts; source-added factory codes remain actual solver change evidence.
+
+| Actual context | Full requested AG | Resolved factory codes | Admission |
+| --- | --- | ---: | --- |
+| 1F7A | 82GE | 35 | one source-bound configuration |
+| 1F7C | 22GE | 45 | one source-bound configuration |
+| 1F7D | 62GE | 43 | one source-bound configuration |
+| 1F7F | 62GE | 53 | one source-bound configuration |
+
+`root-release.json`, `series-receipt.json` and `live-results.json` record the release and actual result. Each context retains its durable primary, safe tree/options/solver exports, source events, outcome and admitted record. The exact cumulative indexes now contain 876 canonical IDs, including 873 marked admitted-source, and 1,586 spent solver requests. They preserve all pinned prior entries verbatim and add only these four actual results.
+
+Six retained-only checks pass, including strict semantic binding/catalogue registration, exact request/status/byte accounting, canonical/spent unions, privacy and cleanup. They issued no source requests. The first retained check run had a fixture assertion about the test's own temporary dependency link; it was corrected, and the honest failed/corrected receipts remain in `retained-validation.json`. The live run measured a maximum sampled child RSS of 134,037,504 bytes and zero scratch allocation. All four child groups were stopped/joined, all four scratch roots and reservations are absent, and the dependency link was removed. No raw response/settings bodies, bootstrap header values, images, browser work, source writes, publication or acceptance transition occurred. No leftovers or compatibility exceptions remain.
+
+The frozen preparation below explains the allocation. Its `trafficExecuted:false` and ready-inspection no-marker fields describe the preparation snapshot; they are deliberately preserved byte-for-byte. Actual execution is recorded separately above. The spent once markers must never be replayed. Root owns subsequent integration/publication, and the original distribution/10,000-configuration acceptance remains open.
+
+This adds the isolated `f59-model-batch-20261107.v1` capability for the four actual options-qualified contexts 1F7A/82GE, 1F7C/22GE, 1F7D/62GE and 1F7F/62GE. The frozen pilot uses one seeded direct-typed paint/fabric/rim request per context, adding only the observed explicit line option for D/F. Its total ceiling is 20 GETs: four fresh bootstrap requests and one solver request per context, serially, with no retries or replay. Preparation itself did not release source traffic.
 
 The full requested model/AG, complete aliases, market, steering, separate source dates and exact line/default/included relationship must qualify from each fresh tree before options. A/C preserve the observed line's absent own option and use the exact present empty `mandatory-elements=` query. D/F use their observed line option while retaining their full target separately from the compact line default. The existing solver response, change-map, capture and canonical paths are reused. The old strict batch version retains its nonempty mandatory-code validator and prior behavior.
 

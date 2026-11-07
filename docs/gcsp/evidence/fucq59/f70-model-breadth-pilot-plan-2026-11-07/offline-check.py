@@ -12,8 +12,10 @@ ROOT = Path(__file__).resolve().parents[5]
 spec = importlib.util.spec_from_file_location('owned_resources', ROOT / '_tools/test_resources.py')
 r = importlib.util.module_from_spec(spec); spec.loader.exec_module(r)
 phase = sys.argv[1]
-assert phase in ('red', 'green', 'green2', 'green3', 'prepared', 'prepared2', 'inspect')
+assert phase in ('red', 'green', 'green2', 'green3', 'prepared', 'prepared2', 'inspect', 'retained', 'retained2')
 files = ['server/test/gcsp-bmw-model-batch.test.js']
+if phase.startswith('retained'):
+    files = ['docs/gcsp/evidence/fucq59/f70-model-breadth-pilot-plan-2026-11-07/retained-check.test.mjs']
 if phase == 'inspect':
     files = ['docs/gcsp/evidence/fucq59/f70-model-breadth-pilot-plan-2026-11-07/run-live.mjs']
 if phase.startswith('prepared'):
