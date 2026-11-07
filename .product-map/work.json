@@ -2006,7 +2006,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-58",
-      "observed_at": "2026-11-07T09:11:18Z",
+      "observed_at": "2026-11-07T09:45:35Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -2024,17 +2024,17 @@
           "title": "Authorised finite source budget, dry run and privacy refusal"
         },
         {
-          "evidence": "Q13 approved4Nov supersedes historical fleet VIN/five-WMI gates; delivered/current profile research independent. Exact catalogue/market/date provenance and declared configuration/model/option coverage still require consolidated selected-plan evidence. Count10351/selection10000 achieved; F77 every-scheme-line route separate. docs/gcsp/f58-63-morning-status-2026-11-07.md",
+          "evidence": "Reviewed retainedselection10000/43VG/26AG/exactGBenGBdates; digestpinnedportableprojection,explicitunknownbody/physicalRL/technicalfacts. Q13 configurationidentity; no fleetWMIgate. Independentreviewpassed frozenf0ec6011, merged24584f41; docs/gcsp/evidence/fucq-58/configuration-only-qualification-2026-11-07/",
           "id": "scheme-catalogue",
-          "observed_at": "2026-11-07T09:11:18Z",
-          "status": "in-progress",
+          "observed_at": "2026-11-07T09:45:35Z",
+          "status": "complete",
           "title": "Reconcile declared configuration model and option coverage"
         },
         {
-          "evidence": "Offline plan/budgets/refusal controls built. Reconcile configuration-only selected source/contexts/coverage/unknowns with Q13 approved scope; no VIN per configuration or automatic fiveWMI corpus requirement. No new source run or profile research is a BUILD dependency.",
+          "evidence": "Explicitfleet-configurations.v1offliner etainedqualifier.17focusedpass0fail0skip,14legacyincluded;zeroVINresolve/sourcecalls,caller/tamper/safetyrefusals. Rootverified5identitypins and5scratchrootsabsent; independentreviewpassed. No newsourceadmissionorStoryacceptance. merged24584f41",
           "id": "qualification-integration",
-          "observed_at": "2026-11-07T09:11:18Z",
-          "status": "in-progress",
+          "observed_at": "2026-11-07T09:45:35Z",
+          "status": "complete",
           "title": "Reconcile selected configuration-only plan and qualification"
         }
       ],
@@ -2197,15 +2197,15 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T09:11:18Z",
+      "observed_at": "2026-11-07T09:45:35Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-61",
       "slices": [
         {
           "id": "source-run",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Execute qualified real collection",
-          "observed_at": "2026-11-07T09:11:18Z",
-          "evidence": "Quantity achieved10351admitted/10000selected; currentF60 replay10kpartial/0reject and same-current-session bridge passed. Final consolidated selected-plan/operations/declaredcoverage/completeness/hash/reference/replay evidence pending. Q13 no10000VIN or fleetfiveWMI obligation."
+          "observed_at": "2026-11-07T09:45:35Z",
+          "evidence": "10351actualadmittedunion/exact10000selected/stagedsemanticverified,0shortfall;rootreviewedretained94pins/report; merged d438db5c. Perallocationfiniteplans andactualreceipts retainpartialfailures/exclusions, no fabricatedglobalaggregate. Q13noVINcorpusgate. docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/"
         },
         {
           "id": "semantic-audit",
@@ -2223,10 +2223,10 @@
         },
         {
           "id": "coverage-audit",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Report actual coverage completeness and budgets",
-          "observed_at": "2026-11-07T04:15:34.640812+00:00",
-          "evidence": "RetainedF70/G61E sourceplusG42qualification; original31scheme/profile/year/plant/five-WMI gapsopen. Total10knotmet."
+          "observed_at": "2026-11-07T09:45:35Z",
+          "evidence": "Consolidatedactual43VG26AG/1562groups/4522tokens/unknownbodypowertrainimages;24heterogeneousreceipt+24planobservations,351surplus,explicitnonaggregatedoperations. Originalplanned semanticquota not reconstructed; evidence limitation preserved foracceptance. merged d438db5c, docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/"
         },
         {
           "id": "integration",
@@ -2644,7 +2644,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T09:21:22Z",
+      "observed_at": "2026-11-07T09:45:36Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62",
       "claim_evidence": "Claimed owning035 at34a793e3; root checkpoint authorisation, Jira OAuth unavailable. Full acceptance remains open.",
       "slices": [
@@ -2701,8 +2701,8 @@
           "id": "integration",
           "status": "in-progress",
           "title": "Application and deployed integration acceptance",
-          "observed_at": "2026-11-07T09:21:22Z",
-          "evidence": "Public.12 published10000source+1referenceconfig/1currentVIN. Restore2failed after31asset downloads; causeunproved. Offlinecurrentvalidator20.28s and registryload20.65s pass,active.12/no fallback/0network. RegistryreceiptSHA0ba3afc6631cde9ecd183257a020eef1ddf20aea4b410d6fbd415956f5f714b8; nextoffline storecopy/stagedvalidation. Deploymentunverified; no VIN/native/buildgate added. docs/gcsp/f58-63-morning-status-2026-11-07.md"
+          "observed_at": "2026-11-07T09:45:36Z",
+          "evidence": "Retained-cacheproductioncoldrestorepassed40.496s,.12active,11files350691430B,0network,rawErrornull. ReceiptSHA3c0e8ced7572d327a30b8c03f942baecb3c1757d515c54ab75b2b08e2f1b16b2; cleanup356388956B/rootsgroupslinktokenabsent. Linuxpubliccold/offline/exact31assets/5boundaryrun42360886351 onb85250d5 inprogress; Renderstill.10. Originalcoldcauseunproved."
         },
         {
           "id": "large-artifact-restore",
