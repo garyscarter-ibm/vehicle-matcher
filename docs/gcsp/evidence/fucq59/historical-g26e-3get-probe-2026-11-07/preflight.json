@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "scope": "scoped exact finite historical G26E helper+driver guard preparation",
+  "planSha256": "1348ab7a25d94a4a73858fd08003853327729d03043cb284c94acf759aaaeab5",
+  "tests": {
+    "fail": 0,
+    "pass": 23,
+    "skipped": 0,
+    "tests": 23
+  },
+  "resultSha256": "465479857fd4eae34f4c3ce760b8b0773a7eec8e9a0979a8b8f40c0d2bfeba4a",
+  "sourceTraffic": 0,
+  "codeIdentityUnchanged": true,
+  "newCallerBoundaryJustifiesFinal23CheckChunk": true
+}

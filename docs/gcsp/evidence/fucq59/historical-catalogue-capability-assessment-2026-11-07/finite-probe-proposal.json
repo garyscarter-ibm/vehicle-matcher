@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "historical-g26e-bounded-probe-proposal.v1",
+  "id": "historical-g26e-20241001-proposed-20261107",
+  "status": "read-only capability assessment; finite proposal, no executable client or source release",
+  "preparedAt": "2026-11-07T05:36:39.825551+00:00",
+  "sourcePins": {
+    "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+    "docs/gcsp/bmw-interface-research.md": "82d4edba56abf474e693d45d1b2f79c4b8918e868fb2ff56d6d6ba96db00d00a",
+    "docs/gcsp/evidence/fucq-58/historical-f44-2026-11-05/observation.json": "38162762b2b17100d7b7555e9071b11d3ead3f91b157bac990f2c07d9feceb28",
+    "docs/gcsp/evidence/fucq-58/historical-f44-2026-11-05/plan.json": "59792f1296ea0dfd1f6813b847ab37e856fc143f3f0d82662ee503d395fd5677",
+    "docs/gcsp/evidence/fucq-58/historical-f44-2026-11-05/catalogue.mjs": "17c4e71c7a57bc58917e28c107dedcc9406dd0fb389336eddb3ed0ea47c2866f",
+    "docs/gcsp/evidence/fucq-58/historical-f44-2026-11-05/validation.json": "9f521626216c98cf98d2a800ea9647802c5d35a19af046b861044085a6beb652",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g26e/diagnostic.json": "ba82cee74dcca5fc713cdd23264017ee561c15a0c42c4dbad0dea2e0fdf88cd5",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g26e/live-validation.json": "6d84b2a4253eb3f83594c20dcaeb176125214767de7059f43e6cc88161d2d307",
+    "scripts/gcsp/bmw-public-registration.mjs": "3a9a1afcc128f8356bb296b063d118bc9b7c59531ef75823bb99f8e01f209291",
+    "scripts/gcsp/public-bmw-source.mjs": "4561e844cfe85383ad8ed27521bab157a10dae57f8d82ab29b8f41842bfc8336"
+  },
+  "source": "public-bmw-uk-configurator; unsupported public website interface",
+  "historicalSupport": "unverified; selected request dates do not establish returned historical context",
+  "target": {
+    "schemeModelLine": "G26 i4",
+    "schemeDerivative": "i4 M50",
+    "eligibilityEffectiveDate": "2024-10-01",
+    "eligibilityPointers": [
+      "choices-eligibility-matrices-2024-10.md:70",
+      "choices-eligibility-matrices-2024-10.md:146"
+    ],
+    "catalogueRangeKey": "G26E",
+    "pageModelCode": "I4PC",
+    "pageSeedRole": "actual retained current request lead for bootstrap only; no historical model assertion"
+  },
+  "requestContext": {
+    "country": "gb",
+    "locale": "en_GB",
+    "requestEffectDate": "2024-10-01",
+    "requestOrderDate": "2024-10-01",
+    "futureModels": false,
+    "closestFallback": false
+  },
+  "urls": {
+    "page": "https://configure.bmw.co.uk/en_GB/configure/G26E/I4PC",
+    "settings": "single settings path freshly discovered in exact public page; no caller-selected URL",
+    "discover": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2024-10-01/order-dates/2024-10-01?gfs-policy=none&cluster=default&model-ranges=G26E&future-models=false&closest-fallback=false"
+  },
+  "limits": {
+    "GET": 3,
+    "page": 1,
+    "settings": 1,
+    "tree": 1,
+    "solver": 0,
+    "options": 0,
+    "images": 0,
+    "browser": 0,
+    "sourceWrites": 0,
+    "retries": 0,
+    "dateSweep": 0,
+    "flagFallback": 0,
+    "workers": 1,
+    "requestTimeoutSeconds": 10,
+    "wallSeconds": 45,
+    "bootstrapResponseBytes": 1048576,
+    "treeResponseBytes": 2097152,
+    "aggregateDecodedBytes": 4194304,
+    "retainedOutputBytes": 262144,
+    "scratchBytes": 33554432,
+    "RAMBytes": 268435456
+  },
+  "implementation": "specialize previously tested evidence-only historical F44 client for one literal G26E request, preserve safe direct derivative facts with existing inventory projection validation; do not change production registration or replay F44",
+  "positiveEvidenceRequired": [
+    "exact G26E range and returned full model records",
+    "model/AG/raw-range/steering/order/effect and direct derivative from same response",
+    "returned orderDate equals requested 2024-10-01",
+    "no substitute generation or current M60 badge joined to historical M50",
+    "returned effectDate retained separately; no fabricated production/model-year/plant facts"
+  ],
+  "stopAndRetain": [
+    "first HTTP/refusal/shape/privacy/budget/resource failure",
+    "empty or unmatched response is a dated gap",
+    "M50 absent stays absent; no second date/flag/seed attempt",
+    "no options/solver until exact observed historical context separately selected"
+  ],
+  "sourceTrafficExecuted": 0,
+  "sourceGrant": false,
+  "newAdmissions": 0,
+  "capacityCredit": 0,
+  "acceptance": false,
+  "requiredNext": "bounded specialization, scoped offline proof, exact parent review/release and resource admission before any new source traffic; existing human source authority remains sufficient"
+}
