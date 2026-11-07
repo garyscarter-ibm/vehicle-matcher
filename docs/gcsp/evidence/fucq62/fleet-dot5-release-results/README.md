@@ -1,0 +1,7 @@
+# `.5` release preparation and public artifact proof
+
+The exact reviewed candidate was rebuilt as manifest `7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431`. A20-file,26,096,498-byte descriptor pins19nonempty public assets and one trusted empty local file. It contains current `.5`, previous `.4`, complete durable inventory and nine exact source shards; the five new-only shards apply only to `.5`. The pre-existing `.4` descriptor and public files are unchanged. Full JSONL64MiB and source32MiB bounds remain.
+
+The descriptor phase used the reviewed publisher in an owned isolated store, rechecked every prior350configuration line/VIN bytes/history and compared the rebuilt manifest bytes with the retained measured contract. The previous481+481audit is reused for these identical candidate bytes. Ordinary store and Render blueprint remained unchanged. Phase:11.093seconds,244,465,664byte peakRSS,42,284,992sampled scratch bytes removed; scratch/groups/reservation/dependency link verified absent.
+
+Public publication, actual public restore and changed-edge recovery follow this descriptor checkpoint. Ordinary `.5` store push is coordinated with the root session's build-anchor change. Full-checkout Render layout is a separate deployed gate; the root session retained the actual static-image GET in `../render-build-restore-2026-11-07/layout-source.json`. Node20/Render `.5` proof and whole-story acceptance are not inferred from local evidence.
