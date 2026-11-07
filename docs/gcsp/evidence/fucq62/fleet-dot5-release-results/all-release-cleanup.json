@@ -1,0 +1,112 @@
+{
+  "scope": "Task3/4 immutable public release and scoped recovery before coordinated ordinary activation",
+  "phases": {
+    "descriptor": {
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/descriptor/command.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/descriptor/ownership/afa59b0c221642d28c6dab75ca7b3052.json",
+        "peak_rss": 244465664,
+        "peak_scratch": 42284992,
+        "rc": 0,
+        "wall": 11.09346416599874
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/descriptor/ownership/afa59b0c221642d28c6dab75ca7b3052.json",
+        "removedScratchBytes": 42284992,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/descriptor/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-afa59b0c221642d28c6dab75ca7b3052",
+        "scratchAbsent": true
+      }
+    },
+    "publish": {
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/publish/command.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/publish/ownership/80940ecb13da4048ab7fd572b8b211d5.json",
+        "peak_rss": 278331392,
+        "peak_scratch": 68418720,
+        "rc": 0,
+        "wall": 33.49987895799859
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/publish/ownership/80940ecb13da4048ab7fd572b8b211d5.json",
+        "removedScratchBytes": 68418720,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/publish/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-80940ecb13da4048ab7fd572b8b211d5",
+        "scratchAbsent": true
+      }
+    },
+    "download": {
+      "result": {
+        "issue": "RAM exceeded 469762048-byte chunk budget (measured 474824704)",
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/download/command.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/download/ownership/19e86369fde34a968525dd6b5da04dce.json",
+        "peak_rss": 474824704,
+        "peak_scratch": 51710240,
+        "rc": -15,
+        "wall": 28.667642125001294
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/download/ownership/19e86369fde34a968525dd6b5da04dce.json",
+        "removedScratchBytes": 51710240,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/download/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-19e86369fde34a968525dd6b5da04dce",
+        "scratchAbsent": true
+      }
+    },
+    "recovery": {
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/recovery/command-1.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/recovery/ownership/0473392e68ac4b7e980306e275b46df5.json",
+        "peak_rss": 386924544,
+        "peak_scratch": 66006336,
+        "rc": 0,
+        "wall": 15.352355916998931
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/recovery/ownership/0473392e68ac4b7e980306e275b46df5.json",
+        "removedScratchBytes": 66006336,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/recovery/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-0473392e68ac4b7e980306e275b46df5",
+        "scratchAbsent": true
+      }
+    }
+  },
+  "removedSampledAllocationBytes": 228420288,
+  "compatibilityException": null,
+  "leftovers": [],
+  "resourceFailure": "Combined download+audit+recovery exceeded group RAM by5062656bytes after completed public/481receipts. Supervisor stopped/joined/cleaned; recovery resumed from exact locally repacked bytes in two sequential lower-memory processes. No public GET or481audit repeated.",
+  "reusedCompletedEvidence": [
+    "download actual19anonymousGET/20filehashes",
+    "fresh actual offlineCLI and481direct+481HTTP"
+  ],
+  "unrun": [
+    "Node20",
+    "actual .5 Render build/deploy",
+    "ordinary .5 activation",
+    "fullsuite",
+    "wholeStory acceptance"
+  ]
+}

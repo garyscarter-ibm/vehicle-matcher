@@ -1,0 +1,17 @@
+{
+  "assets": [],
+  "draft": false,
+  "html_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/tag/fleet-2026-11-07-5",
+  "id": 437276294,
+  "prerelease": true,
+  "tag_name": "fleet-2026-11-07-5",
+  "target_commitish": "815d8c40ac846b90d6c5a8339b179af10e29ddc9",
+  "verifiedTag": {
+    "object": {
+      "sha": "815d8c40ac846b90d6c5a8339b179af10e29ddc9",
+      "type": "commit",
+      "url": "https://api.github.com/repos/garyscarter-ibm/vehicle-matcher/git/commits/815d8c40ac846b90d6c5a8339b179af10e29ddc9"
+    },
+    "ref": "refs/tags/fleet-2026-11-07-5"
+  }
+}
