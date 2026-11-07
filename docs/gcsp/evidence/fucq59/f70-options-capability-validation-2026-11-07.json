@@ -1,0 +1,177 @@
+{
+  "schemaVersion": "bmw-options-capability-scoped-validation.v1",
+  "date": "2026-11-07",
+  "scope": "scoped; no source traffic or acceptance evidence",
+  "sourceVersion": "f59-options-qualification-20261107.v1",
+  "regression": "Four-GET options inspection with explicit fresh same-response full-model/line relationship and no candidate/solver capability",
+  "changedPaths": [
+    "scripts/gcsp/bmw-public-registration.mjs",
+    "scripts/gcsp/collection-session.mjs",
+    "scripts/gcsp/public-bmw-source.mjs",
+    "scripts/gcsp/collect-fleet.mjs",
+    "server/test/gcsp-bmw-options-qualification.test.js"
+  ],
+  "selectedTests": [
+    "server/test/gcsp-bmw-context-qualification.test.js",
+    "server/test/gcsp-bmw-source-batch.test.js",
+    "server/test/gcsp-bmw-source-qualification.test.js",
+    "server/test/gcsp-fleet-collector.test.js"
+  ],
+  "boundaries": [
+    "Shared request registration and endpoint allowlist",
+    "Complete model/AG, alias, date and line relationship validation",
+    "Typed directly keyed definitions and closure-only headers",
+    "Retained projection binding, durable refusal and no bootstrap replay"
+  ],
+  "excluded": "Full suite, source traffic, UI, native SQL, corpus and runtime acceptance; unaffected publication paths",
+  "results": {
+    "options-red": {
+      "summary": {
+        "cancelled": 0,
+        "fail": 15,
+        "pass": 0,
+        "skipped": 0,
+        "tests": 15,
+        "todo": 0
+      },
+      "wallSeconds": 0.24632537499999999,
+      "peakScratchBytes": 368736,
+      "peakRssBytes": 2211840,
+      "cleanup": {
+        "code_identity_unchanged": true,
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "groups_absent": true,
+        "removed_allocation_bytes": 368736,
+        "reservation_absent": true,
+        "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/options-red-result.json",
+        "scratch_absent": true
+      },
+      "resultSha256": "2edd98a64c5969a5e155ebcfe055ca307e00bb59871f5387a07a39abd3651d00",
+      "coverageSha256": "16e4c98ad2c592285947175d3c4a450fdb7312628e88b469a3deaf25ee386aa7"
+    },
+    "options-green": {
+      "summary": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 15,
+        "skipped": 0,
+        "tests": 15,
+        "todo": 0
+      },
+      "wallSeconds": 1.5195909579999998,
+      "peakScratchBytes": 725088,
+      "peakRssBytes": 135561216,
+      "cleanup": {
+        "code_identity_unchanged": true,
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "groups_absent": true,
+        "removed_allocation_bytes": 725088,
+        "reservation_absent": true,
+        "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/options-green-result.json",
+        "scratch_absent": true
+      },
+      "resultSha256": "85ef7a08b7668a901069434b695b956d9d11ea0929bb32170c83f242d974caa7",
+      "coverageSha256": "46c792b176c532d29b10e1bf49ce44ed78bf4269e04b235bcb6d536f14350e4c"
+    },
+    "options-boundary": {
+      "summary": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 134,
+        "skipped": 0,
+        "tests": 134,
+        "todo": 0
+      },
+      "wallSeconds": 15.615844833,
+      "peakScratchBytes": 4718944,
+      "peakRssBytes": 359727104,
+      "cleanup": {
+        "code_identity_unchanged": true,
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "groups_absent": true,
+        "removed_allocation_bytes": 4718944,
+        "reservation_absent": true,
+        "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/options-boundary-result.json",
+        "scratch_absent": true
+      },
+      "resultSha256": "e00549ff4f856461365e7e5e031148df4c7cc9e367a326b36bb76522ee26c19a",
+      "coverageSha256": "23ade52cec860fc2aefd45c17ae05f3243f3c6d634f4639defbeb09aff8e1c82"
+    }
+  },
+  "knownDefects": [
+    "Existing Medium throughput Bug FUCQ-151 remains separately prioritised."
+  ],
+  "sourceTraffic": 0,
+  "configurationsAdmitted": 0,
+  "acceptance": false,
+  "codeAndTestIdentity": {
+    "scripts/gcsp/bmw-public-registration.mjs": "5fa166bc0ce537e54b99c86e0e681a496ce1edcea9652184e3842b9587a009d3",
+    "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+    "scripts/gcsp/capture-bmw-selection.mjs": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+    "scripts/gcsp/collect-fleet.mjs": "76107aea09f14f6baaf32417f00f7acbc86d77413e18b8a01f289195d0d443bf",
+    "scripts/gcsp/collection-session.mjs": "baa55b0736932ad23ed967d3ebd9cb91086ca03e6e7ad103663d6ad121461f75",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/public-bmw-source.mjs": "43ddf5f9180a22a3147b069f4fdad07f9919302b1c8072e4b679071e08983556",
+    "server/test/gcsp-bmw-context-qualification.test.js": "31f67d169abbbc076d3355ebda320050ab0ecc7e304012eea5ecad0b295d54f7",
+    "server/test/gcsp-bmw-options-qualification.test.js": "f2788898e10027366df4fbd4dd1682385dc549c5867b32b2a1210c1aa493146e",
+    "server/test/gcsp-bmw-selection-capture.test.js": "277c685eb205014f9470655249ec53641299fc05242ca2aebd346329122c8fc8",
+    "server/test/gcsp-bmw-source-batch.test.js": "209d96dcf7529fe0a646d50d7cd05204237a06b0b6d95ead5434a933074c87af",
+    "server/test/gcsp-bmw-source-qualification.test.js": "1423f176c798b6bdb56f529bf01006596191eefb4d44a1d5d668eb5c4e9b3b7a",
+    "server/test/gcsp-fleet-collector.test.js": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+  },
+  "redExplanation": "15 expected failures because createPublicBmwOptionsQualification was undefined; no import/syntax failure.",
+  "fileFunctionToTest": [
+    {
+      "file": "scripts/gcsp/bmw-public-registration.mjs",
+      "functions": [
+        "validateBmwOptionsRequestRegistration"
+      ],
+      "tests": [
+        "server/test/gcsp-bmw-options-qualification.test.js",
+        "server/test/gcsp-bmw-source-batch.test.js"
+      ]
+    },
+    {
+      "file": "scripts/gcsp/collection-session.mjs",
+      "functions": [
+        "createCollectionSession",
+        "readOnlyRequest"
+      ],
+      "tests": [
+        "server/test/gcsp-bmw-options-qualification.test.js",
+        "server/test/gcsp-fleet-collector.test.js",
+        "server/test/gcsp-bmw-context-qualification.test.js"
+      ]
+    },
+    {
+      "file": "scripts/gcsp/public-bmw-source.mjs",
+      "functions": [
+        "validatePublicBmwOptionsPlan",
+        "publicBmwOptionsOperations",
+        "strictTrimRelationships",
+        "typedOptionsReport",
+        "validatePublicBmwOptionsObservations"
+      ],
+      "tests": [
+        "server/test/gcsp-bmw-options-qualification.test.js",
+        "server/test/gcsp-bmw-source-qualification.test.js",
+        "server/test/gcsp-bmw-source-batch.test.js"
+      ]
+    },
+    {
+      "file": "scripts/gcsp/collect-fleet.mjs",
+      "functions": [
+        "createPublicBmwOptionsQualification"
+      ],
+      "tests": [
+        "server/test/gcsp-bmw-options-qualification.test.js",
+        "server/test/gcsp-fleet-collector.test.js"
+      ]
+    }
+  ]
+}

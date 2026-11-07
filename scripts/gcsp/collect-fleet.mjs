@@ -9,7 +9,8 @@ import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { CollectionError, createConfigurationKey, normaliseCode, normaliseCodes, requireValue } from './configuration-key.mjs';
 import { publicBmwOperations, publicBmwObservation, validatePublicBmwPlan,
   publicBmwQualificationOperations, validatePublicBmwDiagnosticPlan, qualifyPublicBmwDiagnosticFields,
-  validatePublicBmwContextPlan, publicBmwContextOperations, validatePublicBmwContextObservation } from './public-bmw-source.mjs';
+  validatePublicBmwContextPlan, publicBmwContextOperations, validatePublicBmwContextObservation,
+  validatePublicBmwOptionsPlan, publicBmwOptionsOperations, validatePublicBmwOptionsObservations } from './public-bmw-source.mjs';
 import { publicBmwCompleteSelectionOperations } from './capture-bmw-selection.mjs';
 import { BMW_BATCH_SOURCE_VERSION } from './bmw-public-registration.mjs';
 
@@ -460,6 +461,40 @@ export async function createPublicBmwContextQualification({ plan: input, statePa
     }
     return report();
   }, { stage: { id: 'source-context-qualification', version: '1', inputDigest: inputDigest(plan) } }) };
+}
+
+/** Options inspection observes typed definitions; it cannot construct or admit configurations. */
+export async function createPublicBmwOptionsQualification({ plan: input, statePath, http, mode, now = Date.now, onPhase } = {}) {
+  const plan = validatePublicBmwOptionsPlan(input);
+  requireValue(['source-fixture', 'live'].includes(mode) && http?.kind === (mode === 'live' ? 'live' : 'fixture'),
+    'source-allocation-required', 'Use explicit options transport and a separately pinned live allocation.');
+  const session = await createCollectionSession({ identity: { planDigest: inputDigest(plan), sourceVersion: plan.source.version,
+    stage: 'source-options-qualification', version: '1', mode }, operations: publicBmwOptionsOperations(plan),
+    limits: plan.limits, statePath, http, now, onPhase,
+    initialState: { contextObservation: null, trimRelationships: [], optionsObservation: null, accepted: [], rejected: [], duplicates: [] },
+    validateState: (state) => {
+      requireValue(['accepted', 'rejected', 'duplicates'].every((key) => Array.isArray(state[key]) && state[key].length === 0),
+        'checkpoint-corrupt', 'Options qualification cannot admit or construct configurations.');
+      validatePublicBmwOptionsObservations(plan, state, mode);
+    } });
+  return { session, run: () => session.withCheckpoint(async ({ state, execute, commit }) => {
+    const report = () => structuredClone({ status: state.optionsObservation && !state.halted ? 'observed' : 'incomplete',
+      reason: state.halted || (state.optionsObservation ? 'source-options-qualified' : 'options-interrupted'),
+      qualification: 'typed-options-only', admission: false, accepted: state.accepted, rejected: state.rejected, duplicates: state.duplicates,
+      counts: state.counts, tree: state.contextObservation, trimRelationships: state.trimRelationships, options: state.optionsObservation });
+    if (state.halted || state.optionsObservation) return report();
+    if (state.counts.httpAttempts > 0) { state.halted = 'options-interrupted'; await commit('options-stop'); return report(); }
+    try {
+      const page = await execute('page', {}); await execute('settings', { path: page.settingsPath });
+      state.contextObservation = await execute('discover', {}); state.trimRelationships = state.contextObservation.document.trimRelationships;
+      await commit('options-context-observed');
+      state.optionsObservation = await execute('options', {}); await commit('options-observed');
+    } catch (error) {
+      if (!(error instanceof CollectionError)) throw error;
+      state.halted = error.code; await commit('options-stop');
+    }
+    return report();
+  }, { stage: { id: 'source-options-qualification', version: '1', inputDigest: inputDigest(plan) } }) };
 }
 
 export async function createPublicBmwQualificationDiagnostic({ plan: input, statePath, http, mode, now = Date.now, onPhase } = {}) {

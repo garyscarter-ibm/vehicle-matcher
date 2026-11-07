@@ -4,8 +4,8 @@ import { normaliseCodes, requireValue } from './configuration-key.mjs';
 import { assertCollectionHttpObservation } from './collection-session.mjs';
 import { createSettingsShapeRefusal } from './settings-shape-report.mjs';
 import { qualifyBmwSourceFields } from './bmw-source-qualification.mjs';
-import { BMW_BATCH_SOURCE_VERSION, BMW_CONTEXT_SOURCE_VERSION, validateBmwBatchPlan, validateBmwModelRegistration,
-  validateBmwContextRequestRegistration, bmwBatchRequestRegistration, bmwPublicRequestUrls } from './bmw-public-registration.mjs';
+import { BMW_BATCH_SOURCE_VERSION, BMW_CONTEXT_SOURCE_VERSION, BMW_OPTIONS_SOURCE_VERSION, validateBmwBatchPlan, validateBmwModelRegistration,
+  validateBmwContextRequestRegistration, validateBmwOptionsRequestRegistration, bmwBatchRequestRegistration, bmwPublicRequestUrls } from './bmw-public-registration.mjs';
 
 const object = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 const same = (a, b) => inputDigest(a) === inputDigest(b);
@@ -98,6 +98,165 @@ export function publicBmwContextOperations(input) {
     }, { prepare: async () => {
       requireValue(treeHeader, 'source-bootstrap-required', 'The memory-only public tree header is unavailable.');
       return { method: 'GET', url: urls.discover, headers: treeHeader };
+    } }),
+  };
+}
+
+export function validatePublicBmwOptionsPlan(plan) {
+  const l = plan?.limits;
+  requireValue(object(plan) && Object.keys(plan).every((key) => ['schemaVersion', 'planId', 'qualificationDate', 'source', 'modelRegistration', 'limits'].includes(key))
+    && plan.schemaVersion === 'bmw-source-options-plan.v1' && typeof plan.planId === 'string' && /^[A-Za-z0-9][A-Za-z0-9.-]{0,95}$/.test(plan.planId)
+    && calendarDate(plan.qualificationDate) && same(plan.source, { id: 'bmw-uk-public', version: BMW_OPTIONS_SOURCE_VERSION, kind: 'public-bmw-uk' })
+    && object(l) && l.maxAttempts === 1 && l.retryDelayMs === 0 && l.concurrency === 1 && l.imageRequests === 0
+    && l.sourceAttempts === 4 && bounded(l.sourceBytes, 1, 4194304) && bounded(l.responseBytes, 1, 1048576)
+    && bounded(l.operationTimeoutMs, 1, 10000) && bounded(l.deadlineMs, 1, 90000) && bounded(l.checkpointBytes, 1024, 4194304)
+    && bounded(l.cacheEntries, 1, 16) && bounded(l.cacheRetentionMs, 1, 86400000)
+    && same(l.requestBudgets, { page: 1, settings: 1, discover: 1, options: 1 }),
+  'source-options-plan', 'Allocate four exact options-inspection GETs with an explicit trim and no candidate or solver budget.');
+  validateBmwOptionsRequestRegistration({ model: plan.modelRegistration });
+  return structuredClone(plan);
+}
+
+function strictTrimRelationships(value, r) {
+  return r.aliases.map((alias) => {
+    const pointer = `/${alias}/modelRanges/${r.catalogueRangeKey}/lines/${r.optionsTrim}`;
+    const line = value?.[alias]?.modelRanges?.[r.catalogueRangeKey]?.lines?.[r.optionsTrim];
+    requireValue(object(line) && line.option === r.optionsTrim && object(line.defaultModel)
+      && line.defaultModel.modelCode === r.modelCode && line.defaultModel.agModelCode === r.agModelCode
+      && Array.isArray(line.includedTransmissionVariants) && bounded(line.includedTransmissionVariants.length, 1, 256),
+    'source-trim-relationship', 'The fresh line option and compact default model/AG must agree with the full registered model.');
+    const matches = line.includedTransmissionVariants.map((row, index) => ({ configuration: row?.configuration, index }))
+      .filter(({ configuration }) => configuration?.modelCode === r.modelCode);
+    requireValue(matches.length === 1 && object(matches[0].configuration.elements)
+      && Object.keys(matches[0].configuration.elements).length <= 320 && Object.hasOwn(matches[0].configuration.elements, r.optionsTrim),
+    'source-trim-relationship', 'One fresh included variant must name the registered model and contain the explicit line option.');
+    const includedPointer = `${pointer}/includedTransmissionVariants/${matches[0].index}/configuration`;
+    return { pointer, option: { pointer: `${pointer}/option`, value: line.option },
+      defaultModel: { pointer: `${pointer}/defaultModel`, modelCode: line.defaultModel.modelCode, agModelCode: line.defaultModel.agModelCode },
+      included: { pointer: includedPointer, modelCode: matches[0].configuration.modelCode,
+        elementPointer: `${includedPointer}/elements/${r.optionsTrim}`, elementCode: r.optionsTrim } };
+  });
+}
+
+function sealedObservation(document) {
+  const bytes = JSON.stringify(document) + '\n';
+  return { document, bytes: Buffer.byteLength(bytes), sha256: createHash('sha256').update(bytes).digest('hex') };
+}
+
+function typedOptionsReport(value, trim) {
+  const report = optionsShapeReport(value); const definitions = report.candidates[0]?.definitions;
+  requireValue(report.status === 'schema-review-required' && report.candidates.length === 1 && report.candidates[0].pointer === ''
+    && definitions.every((row) => row.issues.length === 0) && definitions.some((row) => row.code === trim && row.option === trim),
+  'source-options-shape', 'Observe one directly keyed typed definition map containing the explicit source line option.');
+  return { status: 'typed-definitions-observed', candidates: [{ pointer: '', definitions }], admission: false };
+}
+
+/** Revalidate safe retained values as well as their byte hashes; an outer checkpoint hash alone is insufficient. */
+export function validatePublicBmwOptionsObservations(input, retained, mode) {
+  const plan = validatePublicBmwOptionsPlan(input); const r = plan.modelRegistration; const urls = bmwPublicRequestUrls(r);
+  const checkArtifact = (artifact, operation, capability, schemaVersion, fields, code) => {
+    const document = artifact?.document; const metadata = document?.observation;
+    requireValue(object(artifact) && same(Object.keys(artifact).sort(), ['bytes', 'document', 'sha256'])
+      && same(sealedObservation(document), artifact) && object(document) && same(Object.keys(document).sort(), fields.sort())
+      && document.schemaVersion === schemaVersion && object(metadata)
+      && same(Object.keys(metadata).sort(), ['capability', 'observedAt', 'operation', 'request', 'responseBytes', 'responseSha256', 'schemaVersion', 'sourceId', 'sourceVersion', 'transportKind'])
+      && metadata.schemaVersion === 'collection-http-observation.v1' && metadata.operation === operation && metadata.capability === capability
+      && metadata.sourceId === plan.source.id && metadata.sourceVersion === plan.source.version
+      && metadata.transportKind === (mode === 'live' ? 'live' : 'fixture') && metadata.observedAt?.slice(0, 10) === plan.qualificationDate
+      && same(metadata.request, { method: 'GET', url: urls[operation] }) && bounded(metadata.responseBytes, 1, plan.limits.responseBytes)
+      && typeof metadata.responseSha256 === 'string' && /^[a-f0-9]{64}$/.test(metadata.responseSha256),
+    code, 'Retain exact safe projection bytes and matching dated executor source/request provenance.');
+    return document;
+  };
+  requireValue(object(retained) && Array.isArray(retained.trimRelationships), 'source-trim-binding', 'Retain the source line relationship beside its full context.');
+  if (retained.contextObservation === null) {
+    requireValue(retained.trimRelationships.length === 0 && retained.optionsObservation === null,
+      'source-trim-binding', 'Options and trim relationships require their fresh full context.');
+    return;
+  }
+  const context = checkArtifact(retained.contextObservation, 'discover', 'bmw-model-tree', 'bmw-source-options-context-observation.v1',
+    ['schemaVersion', 'observation', 'report', 'trimRelationships'], 'source-context-binding');
+  const tree = {};
+  requireValue(Array.isArray(context.report?.nodes) && context.report.nodes.length === r.aliases.length,
+    'source-context-binding', 'Retain every complete registered full-model alias.');
+  for (let i = 0; i < r.aliases.length; i++) tree[r.aliases[i]] = { modelRanges: { [r.catalogueRangeKey]: { models: { [r.modelCode]: context.report.nodes[i].facts }, lines: {} } } };
+  let expectedReport;
+  try { expectedReport = strictModelReport(tree, r); } catch { requireValue(false, 'source-context-binding', 'The retained direct model facts changed.'); }
+  requireValue(same(expectedReport, context.report), 'source-context-binding', 'The retained direct full-model aliases, facts or pointers changed.');
+  requireValue(same(retained.trimRelationships, context.trimRelationships) && context.trimRelationships.length === r.aliases.length,
+    'source-trim-binding', 'The retained line relationships must equal the same-response context projection.');
+  try {
+    context.trimRelationships.forEach((row, i) => {
+      const index = Number(new RegExp(`^/${r.aliases[i]}/modelRanges/${r.catalogueRangeKey}/lines/${r.optionsTrim}/includedTransmissionVariants/([0-9]+)/configuration$`).exec(row.included.pointer)?.[1]);
+      requireValue(bounded(index, 0, 255), 'source-trim-binding', 'Retain the exact bounded included-variant pointer.');
+      const variants = Array.from({ length: index + 1 }, () => ({}));
+      variants[index] = { configuration: { modelCode: row.included.modelCode, elements: { [row.included.elementCode]: {} } } };
+      tree[r.aliases[i]].modelRanges[r.catalogueRangeKey].lines[r.optionsTrim] = { option: row.option.value,
+        defaultModel: { modelCode: row.defaultModel.modelCode, agModelCode: row.defaultModel.agModelCode }, includedTransmissionVariants: variants };
+    });
+    requireValue(same(strictTrimRelationships(tree, r), context.trimRelationships), 'source-trim-binding', 'The retained source line relationship changed.');
+  } catch { requireValue(false, 'source-trim-binding', 'The retained source line relationship changed.'); }
+  if (retained.optionsObservation !== null) {
+    const options = checkArtifact(retained.optionsObservation, 'options', 'bmw-options', 'bmw-source-options-observation.v1',
+      ['schemaVersion', 'observation', 'report'], 'source-options-binding');
+    try {
+      const rows = options.report?.candidates?.[0]?.definitions;
+      requireValue(Array.isArray(rows) && bounded(rows.length, 1, 512) && new Set(rows.map((row) => row.code)).size === rows.length,
+        'source-options-binding', 'Retain distinct directly keyed typed source definitions.');
+      const definitions = Object.fromEntries(rows.map((row) => [row.code, { option: row.option, optionType: row.optionType,
+        ...(Object.hasOwn(row, 'longDescription') ? { phrases: { longDescription: row.longDescription } } : {}) }]));
+      requireValue(same(typedOptionsReport(definitions, r.optionsTrim), options.report), 'source-options-binding', 'The retained typed definitions changed.');
+    } catch { requireValue(false, 'source-options-binding', 'The retained typed source definitions changed.'); }
+  }
+}
+
+/** Four GETs through the existing executor. Headers live only in this operation closure. */
+export function publicBmwOptionsOperations(input) {
+  const plan = validatePublicBmwOptionsPlan(input); const r = plan.modelRegistration; const requestRegistration = { model: r };
+  const urls = bmwPublicRequestUrls(r); let treeHeader; let localisationHeader; let treeQualified = false;
+  const descriptor = (capability, url, project, extra = {}) => ({ sourceId: plan.source.id, sourceVersion: plan.source.version,
+    kind: 'read-only-http', capability, strictJson: true, requestRegistration, prepare: async () => ({ method: 'GET', url, headers: {} }),
+    project: (value, request, metadata) => {
+      assertCollectionHttpObservation(metadata);
+      requireValue(metadata.sourceVersion === plan.source.version && metadata.observedAt.slice(0, 10) === plan.qualificationDate,
+        'source-observation-date', 'Use the pinned qualification day and executor-owned options source.');
+      const result = project(value, request, metadata);
+      const secrets = [treeHeader, localisationHeader].flatMap((header) => header ? Object.values(header) : []);
+      JSON.stringify(result, (key, entry) => {
+        requireValue(secrets.every((secret) => !key.includes(secret) && (typeof entry !== 'string' || !entry.includes(secret))),
+          'source-sensitive-projection', 'No bootstrap header may enter retained options inspection facts.'); return entry;
+      });
+      return result;
+    }, ...extra });
+  return {
+    page: descriptor('bmw-page', urls.page, (html) => {
+      const paths = [...new Set([...html.matchAll(/(?:\/en_GB\/)?settings\.[a-zA-Z0-9]+\.json/g)]
+        .map((match) => match[0].startsWith('/en_GB/') ? match[0] : '/en_GB/' + match[0]))];
+      requireValue(paths.length === 1 && settingsPattern.test(paths[0]), 'settings-discovery-shape', 'The registered model page must identify one settings path.');
+      return { settingsPath: paths[0] };
+    }),
+    settings: descriptor('bmw-settings', null, (value) => {
+      treeHeader = headerFor(value, 'settingsVehicleTree', true); localisationHeader = headerFor(value, 'settingsLocalisation', true);
+      return { treeProfileQualified: true, localisationProfileQualified: true };
+    }, { cache: false, prepare: async ({ path }) => {
+      requireValue(typeof path === 'string' && settingsPattern.test(path), 'settings-discovery-shape', 'Use the one discovered settings path.');
+      return { method: 'GET', url: 'https://configure.bmw.co.uk' + path, headers: {} };
+    } }),
+    discover: descriptor('bmw-model-tree', urls.discover, (value, _request, metadata) => {
+      const report = strictModelReport(value, r);
+      const appearances = Object.entries(value).filter(([, group]) => object(group?.modelRanges?.[r.catalogueRangeKey]?.models?.[r.modelCode])).map(([alias]) => alias).sort();
+      requireValue(same(appearances, [...r.aliases].sort()), 'source-model-alias-conflict', 'Fresh direct aliases must equal the complete registered alias set.');
+      const trimRelationships = strictTrimRelationships(value, r); treeQualified = true;
+      return sealedObservation({ schemaVersion: 'bmw-source-options-context-observation.v1', observation: metadata, report, trimRelationships });
+    }, { prepare: async () => {
+      requireValue(treeHeader, 'source-bootstrap-required', 'The memory-only public tree header is unavailable.');
+      return { method: 'GET', url: urls.discover, headers: treeHeader };
+    } }),
+    options: descriptor('bmw-options', urls.options, (value, _request, metadata) => sealedObservation({
+      schemaVersion: 'bmw-source-options-observation.v1', observation: metadata, report: typedOptionsReport(value, r.optionsTrim) }),
+    { prepare: async () => {
+      requireValue(treeQualified && localisationHeader, 'source-tree-required', 'Corroborate the full model and explicit same-response line relationship before options.');
+      return { method: 'GET', url: urls.options, headers: localisationHeader };
     } }),
   };
 }
