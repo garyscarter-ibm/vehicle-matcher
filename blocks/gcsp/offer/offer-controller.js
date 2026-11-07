@@ -18,7 +18,7 @@ export function countdownText(seconds) {
   return `${hours} ${hours === 1 ? 'hour' : 'hours'}${rest ? ` ${rest} min` : ''} remaining`;
 }
 
-function project(value, hasDecisionPort, hasReasonPort, declineReason) {
+function project(value, hasDecisionPort, hasReasonPort, declineReason, ticks = {}) {
   if (!value || !states.has(value.state)) throw new TypeError('Missing authoritative offer state.');
   const model = copy({ ...value, followup: followupHandle(value.followup, value.state) });
   const seconds = remainingTime(model.expiresAt, model.now);
@@ -27,8 +27,12 @@ function project(value, hasDecisionPort, hasReasonPort, declineReason) {
     && typeof reference.runId === 'string' && reference.runId.length > 0
     && ['offerVersion', 'holdVersion', 'quoteVersion'].every((key) => Number.isSafeInteger(reference[key]) && reference[key] > 0));
   const actionable = model.state === 'pending' && model.actionable === true && bound && seconds !== null && seconds > 0;
-  return { ...model, seconds, countdown: countdownText(seconds),
-    canAccept: actionable && hasDecisionPort && model.actions?.accept === true && !declineReason.open,
+  // Accept needs the server's handoff terms and every required declaration ticked here.
+  const handoff = model.handoff ?? null;
+  const ticked = Object.fromEntries((handoff?.declarations ?? []).map(({ id }) => [id, ticks[id] === true]));
+  const confirmed = handoff !== null && !handoff.blocker && handoff.declarations.length > 0 && Object.values(ticked).every(Boolean);
+  return { ...model, seconds, countdown: countdownText(seconds), ticked,
+    canAccept: actionable && hasDecisionPort && model.actions?.accept === true && confirmed && !declineReason.open,
     canDecline: actionable && hasDecisionPort && hasReasonPort && model.actions?.decline === true,
     declineUnavailable: model.state === 'pending' && hasDecisionPort && !hasReasonPort && model.actions?.decline === true,
     declineReason: copy(declineReason),
@@ -47,7 +51,12 @@ export function createOfferController({ read, decide, readReasons, createCommand
   const snapshot = () => copy(state);
   const emit = () => { if (alive) for (const listener of listeners) listener(snapshot()); };
   const blocked = (next) => ({ ...next, canAccept: false, canDecline: false });
-  const decorate = (value) => project(value, typeof decide === 'function', typeof readReasons === 'function', declineReason);
+  let ticks = {}; let tickKey = '';
+  const decorate = (value) => {
+    const key = JSON.stringify([value?.reference?.offerId, value?.handoff?.termsDigest ?? null, value?.handoff?.mode ?? null]);
+    if (key !== tickKey) { tickKey = key; ticks = {}; }
+    return project(value, typeof decide === 'function', typeof readReasons === 'function', declineReason, ticks);
+  };
   const invalidateReasons = () => { ++reasonTurn; reasonAbort?.abort(); };
   const closeReasons = () => { invalidateReasons(); declineReason = emptyReason(); };
   const sameOffer = (one, two) => one?.runId === two?.runId && one?.offerId === two?.offerId;
@@ -81,6 +90,11 @@ export function createOfferController({ read, decide, readReasons, createCommand
     const valid = code === '' || declineReason.choices.some((row) => row.code === code);
     declineReason = { ...declineReason, selectedCode: valid ? code : '', error: valid ? '' : 'Choose a reason from the current list.' };
     return presentReason();
+  }
+
+  function tickDeclaration(id, checked) {
+    if (!alive || deciding || state.state !== 'pending' || !state.handoff?.declarations.some((d) => d.id === id)) return snapshot();
+    ticks = { ...ticks, [id]: checked === true }; return presentReason();
   }
 
   function cancelDecline() {
@@ -144,7 +158,9 @@ export function createOfferController({ read, decide, readReasons, createCommand
     try {
       // Identity, expected revisions and idempotency binding remain the decision adapter's responsibility.
       outcome = await decide({ kind, offer: current.reference, commandId: createCommandId(),
-        ...(kind === 'decline' ? { reasonCode: options.reasonCode } : {}) }, { signal: abort.signal });
+        ...(kind === 'decline' ? { reasonCode: options.reasonCode }
+          : { termsDigest: current.handoff.termsDigest, declarations: Object.fromEntries(current.handoff.declarations.map(({ id }) => [id, true])) }) },
+      { signal: abort.signal });
     } catch { /* A transport error cannot establish whether the command committed. Read back. */ }
     if (alive) await refresh({ afterDecision: true });
     deciding = false;
@@ -160,7 +176,7 @@ export function createOfferController({ read, decide, readReasons, createCommand
     return snapshot();
   }
 
-  return { snapshot, refresh, decision, selectDeclineReason, cancelDecline, refreshDeclineReasons,
+  return { snapshot, refresh, decision, selectDeclineReason, tickDeclaration, cancelDecline, refreshDeclineReasons,
     subscribe(listener) { listeners.add(listener); return () => listeners.delete(listener); },
     destroy() { alive = false; ++sequence; abort?.abort(); closeReasons(); listeners.clear(); } };
 }

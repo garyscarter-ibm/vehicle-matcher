@@ -128,7 +128,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const allocation = createAllocationService({ repository, policy, clock, identity, claim: buddy });
     const offerAccess = createOfferAccessService({ repository, policy, clock, identity, environmentId, sessionNow, verifyOfferToken });
     const offerDecisions = createOfferDecisionService({ repository, policy, clock, access: offerAccess,
-      createStoredSubjectEvaluator: createStoredSubjectRecommendationEvaluator, mode: adapter.mode });
+      createStoredSubjectEvaluator: createStoredSubjectRecommendationEvaluator, mode: adapter.mode, ordering: manualOrder });
     const offerFollowup = createOfferFollowupService({ repository, policy, clock, identity, brief, offers: offerAccess });
     const resolveOfferAccess = async ({ selector, cookie }) => {
       const hasOfferCookie = typeof cookie === 'string' && cookie.split(';')

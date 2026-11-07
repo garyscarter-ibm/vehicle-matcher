@@ -12,12 +12,22 @@ const conflict = (reason) => result('conflict', { reason, view: { state: 'review
 const invalid = (field) => result('invalid', { reasons: [{ field, reason: 'Review the required selection fields and declarations.' }],
   view: { state: 'validation', action: 'correct-fields' } });
 const operationId = (context) => `selection:${inputDigest([context.runId, context.employeeId, context.entitlementSlotId])}`;
+export const selectionOperationId = operationId;
 const command = (id, value) => ({ commandId: id, inputDigest: inputDigest(value) });
 const active = (o) => o.state === 'pending';
 const scopeMatches = (o, r) => r?.operationId === o.operationId && r.runId === o.runId && r.orderUuid === o.payload.orderUuid;
+// Post-selection names only; approval progress after acknowledgement belongs to the lifecycle service.
+export const selectionProgress = (o) => {
+  const selectionState = o.state === 'completed' ? 'acknowledged' : o.state === 'failed' ? 'handoff-failed' : 'handoff-pending';
+  const names = o.payload.selection.terms.approvalStages;
+  const received = { pending: 'pending', completed: 'complete', failed: 'failed' }[o.state];
+  return { schemaVersion: 1, selectionState, approved: false, current: selectionState === 'acknowledged' ? names[0] : 'selection received',
+    stages: [{ name: 'selection received', state: received },
+      ...names.map((name, i) => ({ name, state: i === 0 && selectionState === 'acknowledged' ? 'waiting' : 'not-started' }))] };
+};
 const projection = (o) => {
   const value = { schemaVersion: 1, operationId: o.operationId, operationState: o.lastKnownState,
-    selectionReceived: true, selection: o.payload.selection,
+    selectionReceived: true, selection: o.payload.selection, progress: selectionProgress(o),
     order: o.state === 'completed' ? o.outcome : null, failure: o.state === 'failed' ? o.outcome : null,
     view: { state: o.state === 'completed' ? 'awaiting-approval' : o.state === 'failed' ? 'handoff-failed' : 'handoff-pending',
       action: o.state === 'completed' ? 'view-order' : o.state === 'failed' ? 'contact-support' : 'check-status' } };
@@ -32,11 +42,11 @@ export class ManualOrderService {
     this.#terms = terms; this.#converters = converters; this.#adapter = adapter;
   }
   async #safe(work) { try { return await work(); } catch { return unavailable(); } }
-  async #guard(context) {
+  async #guard(context, { trusted = false } = {}) {
     if (!this.#repository || !this.#identity || !this.#clock || !this.#terms || !this.#registration
       || (await this.#registration).status !== 'ok' || typeof this.#adapter?.execute !== 'function'
       || typeof this.#adapter?.reconcile !== 'function') return unavailable();
-    const role = await this.#identity.requireRole(context, 'employee'); if (role.status !== 'ok') return role;
+    if (!trusted) { const role = await this.#identity.requireRole(context, 'employee'); if (role.status !== 'ok') return role; }
     const time = await this.#clock.now(context);
     return time.status === 'ok' && time.value.runId === context.runId && Number.isFinite(Date.parse(time.value.now)) ? time
       : time.status === 'ok' ? unavailable() : time;
@@ -68,8 +78,15 @@ export class ManualOrderService {
     const allowed = await this.#guard(context); if (allowed.status !== 'ok') return allowed;
     const found = await this.#read(context); return found.status === 'ok' ? projection(found.value) : found;
   }); }
-  submit(context, input) { return this.#safe(async () => {
-    const time = await this.#guard(context); if (time.status !== 'ok') return time;
+  submit(context, input) { return this.#safe(() => this.#submit(context, input)); }
+  // Trusted composition only, never routed to HTTP: the caller has already authenticated the selection.
+  submitSource(context, input, { converter } = {}) { return this.#safe(async () => {
+    if (input?.source?.type !== 'buddy-offer' || typeof converter?.prepare !== 'function'
+      || typeof converter.convertSelection !== 'function') return unavailable('selection-source-unsupported');
+    return this.#submit(context, input, { converter });
+  }); }
+  async #submit(context, input, { converter: trusted } = {}) {
+    const time = await this.#guard(context, { trusted: Boolean(trusted) }); if (time.status !== 'ok') return time;
     if (!only(input, ['commandId', 'source', 'expectedQuoteId', 'expectedStockVersion', 'termsDigest', 'declarations'])
       || !text(input.commandId) || !text(input.expectedQuoteId) || !text(input.termsDigest) || !positive(input.expectedStockVersion)
       || !only(input.source, ['type', 'holdId', 'expectedHoldVersion', 'expectedDraftVersion'])
@@ -80,7 +97,7 @@ export class ManualOrderService {
     const prior = await this.#read(context);
     if (prior.status === 'ok') return prior.value.inputDigest === digest ? this.#drive(context, id, true) : conflict('active-selection-exists');
     if (prior.status !== 'not-found') return prior;
-    const converter = this.#converters?.[input.source.type];
+    const converter = trusted ?? this.#converters?.[input.source.type];
     if (typeof converter?.prepare !== 'function' || typeof converter.allocate !== 'function' && typeof converter.convertSelection !== 'function') return unavailable('selection-source-unsupported');
     const terms = await this.#terms.read(context, { asOf: time.value.now }); if (terms.status !== 'ok') return terms;
     if (input.termsDigest !== terms.value.termsDigest) return conflict('terms-changed');
@@ -103,10 +120,10 @@ export class ManualOrderService {
       if (h.state !== 'active' || h.version !== input.source.expectedHoldVersion) return conflict('claim-changed');
       if (Date.parse(h.expiresAt) <= Date.parse(time.value.now)) return conflict('claim-expired');
       const quote = await tx.get(ref(context, 'quotes', { quoteId: h.quoteId })); if (quote.status !== 'ok') return quote;
-      const q = quote.value;
+      const q = quote.value; // Buddy quotes pin a brief revision instead of a draft revision.
       if (q.quoteId !== input.expectedQuoteId || q.orderUuid !== h.orderUuid || q.employeeId !== context.employeeId
         || q.entitlementSlotId !== context.entitlementSlotId || q.policyVersion !== context.policyVersion
-        || q.draftVersion !== input.source.expectedDraftVersion) return conflict('quote-changed');
+        || (q.draftVersion ?? q.briefVersion) !== input.source.expectedDraftVersion) return conflict('quote-changed');
       if (!Number.isFinite(Date.parse(q.validUntil)) || Date.parse(q.validUntil) <= Date.parse(time.value.now)) return conflict('quote-expired');
       const stock = await tx.get(ref(context, 'stock', { orderUuid: h.orderUuid })); if (stock.status !== 'ok') return stock;
       if (stock.value.version !== input.expectedStockVersion || stock.value.state !== 'held'
@@ -143,7 +160,7 @@ export class ManualOrderService {
       : await this.#repository.transaction(context, command(`ordering:submit:${id}`, intent), commitSelection);
     if (!['ok', 'pending'].includes(started.status)) return started;
     return this.#drive(context, id, true);
-  }); }
+  }
   async #update(context, operation, patch) {
     const updated = await this.#repository.transaction(context, command(`ordering:update:${operation.operationId}:${operation.version}`, patch), async (tx) => {
       const current = await tx.get(ref(context, 'pending_operations', { operationId: operation.operationId }));

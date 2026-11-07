@@ -1,0 +1,10 @@
+/* Ordered stage status list. Consumers own surrounding page layout. */
+.gcsp .gcsp-stage-heading { margin: 0 0 8px; font-size: 24px; font-weight: 600; line-height: 1.25; }
+.gcsp .gcsp-stage-items { list-style: none; margin: 0; padding: 0; }
+.gcsp .gcsp-stage-item { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 12px 0; border-top: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-stage-name { min-width: 0; overflow-wrap: anywhere; }
+.gcsp .gcsp-stage-name::first-letter { text-transform: uppercase; }
+.gcsp .gcsp-stage-state { flex: none; color: var(--gcsp-text-muted); font-size: 14px; font-weight: 600; }
+.gcsp .gcsp-stage-item.is-complete .gcsp-stage-state { color: var(--gcsp-success); }
+.gcsp .gcsp-stage-item.is-failed .gcsp-stage-state { color: var(--gcsp-danger); }
+.gcsp .gcsp-stage-item.is-waiting .gcsp-stage-name, .gcsp .gcsp-stage-item.is-pending .gcsp-stage-name { font-weight: 600; }

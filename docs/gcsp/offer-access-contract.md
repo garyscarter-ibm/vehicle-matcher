@@ -82,6 +82,7 @@ An `ok` response has `value`:
   offerVersion, holdVersion,
   holdState, offerState,
   availableActions,      // [], ['decline'] or ['accept', 'decline']; no optimistic actions
+  handoff, selection,    // FUCQ-108: pre-accept ordering terms / post-accept stages, else null (shared-contracts.md)
   followup,              // null | { decisionId }; verified completed decline only
   quote: {
     quoteId, configurationId, orderUuid, orderNumber, briefVersion, policyVersion,
