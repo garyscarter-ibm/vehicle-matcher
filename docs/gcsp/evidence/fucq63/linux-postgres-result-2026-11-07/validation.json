@@ -1,0 +1,103 @@
+{
+  "schemaVersion": "f63-linux-postgres-result-observation-validation.v1",
+  "status": "passed-scoped-static-observation-only",
+  "runId": 42370440771,
+  "attempt": 1,
+  "runtimeHead": "51c691bd5437efe47d43225edfb609d0b4dbe176",
+  "observationTopicBase": "bb04965ba6db6e69d564fe60a2321871423bfb55",
+  "selectedChecks": [
+    "Exact terminal API run/head/event/attempt/job identity",
+    "Structured emitted proof/restore/failure/cleanup receipts matched to exact bounded log",
+    "Original failed run preserved; checked0 marked harness fallback, not actual prover count",
+    "JSON parse, file limits, direct whitespace and newline checks"
+  ],
+  "excludedChecks": {
+    "reason": "Observation/evidence only; root owns execution and next diagnostic integration",
+    "unrun": [
+      "Local tests",
+      "Local proof",
+      "Package install",
+      "Restore/download",
+      "Full suite",
+      "Managed Render persistence",
+      "Deployment/browser acceptance"
+    ]
+  },
+  "changedPaths": [
+    "docs/gcsp/evidence/fucq63/linux-postgres-result-2026-11-07/README.md",
+    "docs/gcsp/evidence/fucq63/linux-postgres-result-2026-11-07/events.json",
+    "docs/gcsp/evidence/fucq63/linux-postgres-result-2026-11-07/proof-and-cleanup.log",
+    "docs/gcsp/evidence/fucq63/linux-postgres-result-2026-11-07/run.json",
+    "docs/gcsp/evidence/fucq63/linux-postgres-result-2026-11-07/validation.json"
+  ],
+  "affectedCallers": "No application or workflow changes; retained evidence only. Original proof packet and production remain unchanged.",
+  "files": {
+    "README.md": {
+      "bytes": 4542,
+      "sha256": "170b227e433f5783ea5687c7729c12574ad4bb6158809caa3e0e2f73a9a616fd"
+    },
+    "events.json": {
+      "bytes": 6491,
+      "sha256": "b6357430d2abf8fcdd5cfa28f4626bc930194caf3ae3c5d552672ee1f6e00a8a"
+    },
+    "proof-and-cleanup.log": {
+      "bytes": 8085,
+      "sha256": "f39ac68bb8afda1a876d7bc3b37960a44cd850e628394205a629d888f74eebbe"
+    },
+    "run.json": {
+      "bytes": 3418,
+      "sha256": "6b79e8f296041dfc1468fca86d1ed4fb95da33ee408a3e1176675e4e570ea04c"
+    }
+  },
+  "actualFailedCheck": "Remote orders phase, unchanged-order-reference-proof assertion; exact assertion/proof discarded by original harness",
+  "actualCheckedOrders": null,
+  "actualNativeProof": null,
+  "failureFallbackFields": {
+    "checked": 0,
+    "nativeProof": false,
+    "interpretation": "Defaults from missing report.proof; cannot establish returned prover result"
+  },
+  "localScratch": {
+    "allocatedBytes": 0,
+    "removedBytes": 0,
+    "leftovers": []
+  },
+  "remoteCleanupOutput": [
+    {
+      "cleanup": "passed",
+      "scratchAbsent": true,
+      "serviceAbsent": true,
+      "removedWorkingBytes": 925216870,
+      "issues": []
+    },
+    {
+      "cleanup": "passed",
+      "scratchAbsent": true,
+      "serviceAbsent": true,
+      "removedWorkingBytes": 0,
+      "issues": []
+    }
+  ],
+  "remoteCompatibilityException": "Bounded ephemeral CI PostgreSQL tmpfs and public restore/cache working data; absence reported, full peak metrics unavailable in emitted log.",
+  "knownDefectsPreserved": {
+    "deferredConfiguredConsumerFailures": 2707,
+    "historicalFullSuite": {
+      "tests": 1872,
+      "passed": 1848,
+      "failed": 19,
+      "skipped": 5,
+      "exitCode": 1
+    }
+  },
+  "acceptance": false,
+  "agent": {
+    "name": "Charlie Dog",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "selectedModel": "gpt-6.1-sol",
+    "selectedEffort": "high",
+    "runtimeVerified": false,
+    "fallback": null,
+    "descendants": 0
+  }
+}

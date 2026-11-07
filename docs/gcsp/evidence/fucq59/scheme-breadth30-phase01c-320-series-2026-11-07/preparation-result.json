@@ -1,0 +1,34 @@
+{
+  "status": "passed",
+  "scope": "scoped40exacttemplates81\u2013120/320solver finite continuation preparation; no public traffic",
+  "tests": {
+    "fail": 0,
+    "pass": 10,
+    "skipped": 0,
+    "tests": 10
+  },
+  "wallSeconds": 3.483567792,
+  "peakRssBytes": 442875904,
+  "identityUnchanged": true,
+  "sourceTraffic": 0,
+  "preparedSeriesPlanSha256": "6fc8898be3ed32a3d016e0b5f05486159a3a6f5c695ce7695fb3db6187ed8102",
+  "refreshedSeriesPlanSha256": "fe4a98f8e3ffb0674cd1406858610f8ff1e4bc041b2758b435a3b1cf7e4c43b0",
+  "manifestSha256": "571124e2128695af1bf4e3199c4a04dea5963dab67d16e578469fdac14502ee2",
+  "parentAuditSha256": "dd952b83783445f14f6609ecc30f4cfba9f6f6edc9b9d45300963f0fb0c593eb",
+  "cleanup": {
+    "scratchAbsent": true,
+    "groupsAbsent": true,
+    "reservationAbsent": true,
+    "dependencyLinkAbsent": true,
+    "scratchRoot": "/private/tmp/test-stamp-shard-63a7c4c614df48fda160f33643309260",
+    "groups": [
+      45196
+    ],
+    "token": "63a7c4c614df48fda160f33643309260",
+    "removedBytes": 8530271,
+    "compatibilityException": null,
+    "leftovers": []
+  },
+  "history": "attempt01 nine passes/one deadline fixture path failure; attempt02 ten passes; attempt03 ten passes after explicit smaller retention/accounting ceiling",
+  "sourceGrant": false
+}

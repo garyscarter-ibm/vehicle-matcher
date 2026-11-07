@@ -1,0 +1,118 @@
+{
+  "run": "devpoller-pass1320-f59-settings-shape",
+  "baseCommit": "812e6c6bfda22083d7c40a90a0749b747e460c73",
+  "createdAt": "2026-11-06T13:28:42.932713+00:00",
+  "scope": "offline structural refusal report through existing source/session/diagnostic plus closure-owned safe receipt export",
+  "changedPaths": [
+    "scripts/gcsp/settings-shape-report.mjs",
+    "scripts/gcsp/public-bmw-source.mjs",
+    "scripts/gcsp/collection-session.mjs",
+    "scripts/gcsp/collect-fleet.mjs",
+    "server/test/gcsp-settings-shape-report.test.js",
+    "docs/gcsp/evidence/fucq59/settings-shape-report-2026-11-06/",
+    "_dev/in-progress/DEV-2026-11-04-032.md",
+    ".product-map/work.json"
+  ],
+  "schema": {
+    "version": "bmw-settings-shape-refusal.v1",
+    "top": [
+      "schemaVersion",
+      "qualification",
+      "admission",
+      "failedRole",
+      "reason",
+      "observation",
+      "layout",
+      "roles"
+    ],
+    "failedRole": [
+      "tree",
+      "localisation"
+    ],
+    "reason": [
+      "settings-header-shape",
+      "settings-traversal-limit"
+    ],
+    "qualification": "unqualified-structural-observation",
+    "admission": false,
+    "layout": {
+      "status": "unverified",
+      "appKind": "fixed type enum",
+      "backendKind": "fixed type enum"
+    },
+    "roleFields": [
+      "profileMatches",
+      "profileNodeKinds",
+      "exactLabelObjectKeys",
+      "exactLabelScalarValues",
+      "candidates",
+      "flags",
+      "strictVerdict",
+      "traversal"
+    ],
+    "limits": {
+      "countCap": 30000,
+      "nodeVisits": 30000,
+      "depth": 24
+    },
+    "strings": "fixed enums and strictly validated executor metadata only; no arbitrary source string/key/path/profile/header values or header hashes"
+  },
+  "affectedCallers": [
+    "public diagnostic settings descriptor only; old nonstrict collector header semantics unchanged",
+    "common HTTP metadata observation creation; attestation only, no transport changes",
+    "diagnostic persist/reopen report validation",
+    "new existing-diagnostic export method reopens its own checkpoint and exports fixed report fields only"
+  ],
+  "boundaries": [
+    "existing pinned GET source/stream/metadata",
+    "projection refusal passes through existing session without transport retry",
+    "state validator before every commit and on checkpoint reopen",
+    "exclusive fs receipt export validates same report after full checkpoint identity/integrity validation"
+  ],
+  "selectedTests": {
+    "red": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "--test-name-pattern=settings shape refusal preserves",
+      "server/test/gcsp-settings-shape-report.test.js"
+    ],
+    "greenNew": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "--experimental-test-coverage",
+      "server/test/gcsp-settings-shape-report.test.js"
+    ],
+    "nearest": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "--experimental-test-coverage",
+      "--test-name-pattern=HTTP projection metadata|HTTP cached projection|offline projection|public source refuses|actual qualified source|qualification diagnostic",
+      "server/test/gcsp-fleet-collector.test.js"
+    ]
+  },
+  "regressions": [
+    "both roles absent/duplicate; repeated identical/conflicting candidates; direct and name/value representations; empty/oversized/wrong types; depth/node caps; hostile source keys/strings; strict success; persist/reopen/exclusive safe receipt; tampered report and fixture-to-live relabelling refused; copied/invented metadata refused; zero downstream on refusal"
+  ],
+  "selectorReview": "test_stamp --affected HEAD --dry-run: unspecified language has no affected plugin and proposes npm test. Broad fallback rejected; explicit native diagnostic/metadata/public-source ownership boundaries selected instead. No suite executed by dry-run.",
+  "excluded": {
+    "fullSuite": "bounded internal diagnostic extension; no runtime/application caller",
+    "F39F54PolicyStockF60": "unchanged and outside scope",
+    "oldRunnerPlanMarkersEvidence": "immutable; zero source allocation"
+  },
+  "resources": {
+    "workers": 1,
+    "scratchMiB": 64,
+    "ramMiB": 384,
+    "seconds": 120,
+    "logMiB": 1,
+    "supervisor": "trusted main-root _tools/test_resources.py; host reservation/manifest/finalizer before allocation; owned TMP variables; join/remove/verify each chunk",
+    "dependencies": "dedicated file native only; existing owning collector file statically imports PolicyService/pg, so nearest selected checks use exact owned read-only server/node_modules link to existing DEV069 dependencies; no install/copy/SQL; external manifest and atexit/finally removal",
+    "initialSwapMiB": 2241.19
+  },
+  "trust": "private executor-created metadata membership prevents copied/caller metadata from attesting; injected same-process fetch is trusted and membership alone does not prove a network event; persisted report provenance bound to owning diagnostic mode and checkpoint identity",
+  "acceptanceState": "F59 six complete/two blocked; public accepted0/admissionfalse; all74pending; F61 held13Nov; HLD06/UI unchanged, visual referenceN/A",
+  "environmentAdjustment": "nearest-boundaries failed at module linking before tests due missing pg; same names rerun with bounded existing dependency overlay; no production correction"
+}

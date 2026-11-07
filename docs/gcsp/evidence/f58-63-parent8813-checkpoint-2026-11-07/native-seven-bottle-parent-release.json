@@ -1,0 +1,19 @@
+{
+  "authorized": true,
+  "phase": "seven-bottle-inspection",
+  "planSha256": "c91b399568af0274af9f8ccd503a05ae200c8a91c644dd4f615cae65de010ee5",
+  "codePins": {
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq63/native-seven-bottle-inspection-2026-11-07/group-proof.py": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
+    "docs/gcsp/evidence/fucq63/native-seven-bottle-inspection-2026-11-07/supervise.py": "3c954cd19da1c54d2c3722ebd2f542928818a6affb5c2f3358ff1ab3c94d339b",
+    "docs/gcsp/evidence/fucq63/native-seven-bottle-inspection-2026-11-07/inspect-bottles.py": "4e98e34ee8012597e7f472b1573cd1df55a095fdd6a382235591342528f9d358"
+  },
+  "installAllowed": false,
+  "nativeAllowed": false,
+  "newRequestCeiling": 35,
+  "retainedArchiveCeilingBytes": 66864127,
+  "embeddedRubyExecutionAllowed": false,
+  "rootReviewedAt": "2026-11-07T06:49:21.403547+00:00",
+  "codeReview": "pass; actual inspector and supervisor read; seven exact archives only; tar streaming regular bounded Ruby; no Ruby/install/native execution",
+  "securityReview": "pass; anonymous token memory only, redirect drops auth, twohost HTTPS allowlist; exact hash/bytes trust anchor; all state unchanged; finite35ops240s with owned cleanup"
+}

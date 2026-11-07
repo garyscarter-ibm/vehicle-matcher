@@ -1,0 +1,58 @@
+{
+  "authorized": false,
+  "phase": "download",
+  "phaseIdentity": "download-2",
+  "planSha256": "REPLACE_AFTER_EXACT_REVIEW",
+  "releaseId": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "target": "15fde2c3c24b5da02206501576a3baeb19e9a78c",
+  "codePins": "COPY_EXACT_PLAN_CODEPINS",
+  "runtimeProjectionAllowed": true,
+  "runtimeProjection": {
+    "root": "exact owned cloud scratch/runtime",
+    "sourceModulesUnchanged": false,
+    "anchorRelativePath": "server/gcsp/vehicle-evidence/fleet-releases.json",
+    "anchorBeforeSha256": "cc807e73c08447637b2c909e89ff08075af1236373e568756ab295d14b8fa32c",
+    "anchorProjectedSha256": "e13a5f99167bea65cc9a04e6eae41cec56b55caaa229b640e0e47b20f44301e0",
+    "checkoutAnchorMustStayUnchanged": true,
+    "nodeModules": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules",
+    "nodeModulesAccess": "read-only resolution through an owned scratch symlink; never modify vendor or036dependency path",
+    "sourceStaging": null,
+    "ordinaryStoreMutable": false,
+    "correctedReleaseModule": {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/gcsp/vehicle-evidence/fleet-release.js",
+      "bytes": 4017,
+      "sha256": "1cadb13cbd9851eea93be14096328353970e3210b4f00e1ecf5ae8362f6289b4",
+      "relativePath": "server/gcsp/vehicle-evidence/fleet-release.js"
+    },
+    "priorReleaseModuleSha256": "d6081dc483d9d28da4cce712c8ad762ff275c07ae012d216893d85963d495ff0",
+    "reason": "Root corrected releaseLimits recognizes exact previous .11 descriptor at256MiB as well as current .12; unknown remains64MiB. Root focused3/3 regression pass. Original10002proof used old module; no code-identical fresh replay claim. Attempt2 additionally binds a separate root committed default120second downloader after its narrow virtual regression; public release target stays15fde immutable.",
+    "correctedDownloader": {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/gcsp/vehicle-evidence/fleet-artifacts.js",
+      "bytes": 8183,
+      "sha256": "0bb5079b92a0a8df997708a6f266a2de84603ebd53efdf291a15edffd0d92811",
+      "relativePath": "server/gcsp/vehicle-evidence/fleet-artifacts.js"
+    },
+    "priorDownloaderSha256": "8567ef55e6cf914c1ea8d6f8c7bbb7797f96116030163d58b46eb594feb05de6"
+  },
+  "maxFetchOperations": 124,
+  "sourceRequests": 0,
+  "nativeRequests": 0,
+  "applicationPublicGETs": 0,
+  "publishReceiptPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/public-followthrough/publish/receipt.json",
+  "publishReceiptSha256": "b7b66e3a5bf23ad5fbea7c79a5471bf654bd20051193cdb34271f1e79575c6bf",
+  "deleteExactRetainedRoot": false,
+  "runtimeTarget": "b0f05852f93bad1de8c907b6090c56fc9982e4d8",
+  "receiptPathsForLaterSeparateGrants": {
+    "offline": {
+      "downloadReceiptPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/restored-public-2/download-2/receipt.json",
+      "downloadReceiptSha256": "EXACT_ACTUAL_HASH"
+    },
+    "recovery": {
+      "publicReceiptPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/restored-public-2/offline-2/receipt.json",
+      "publicReceiptSha256": "EXACT_ACTUAL_HASH"
+    },
+    "cleanup": {
+      "deleteExactRetainedRoot": true
+    }
+  }
+}

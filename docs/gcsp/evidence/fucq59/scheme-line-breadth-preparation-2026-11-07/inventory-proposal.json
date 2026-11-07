@@ -1,0 +1,201 @@
+{
+  "schemaVersion": "scheme-line-five-range-inventory-proposal.v1",
+  "id": "scheme-five-range-inventory15-20261107-proposed",
+  "status": "finite exact input proposal; no live command, execution harness or source grant",
+  "qualificationDate": "2026-11-07",
+  "sourceBasis": {
+    "path": "docs/gcsp/evidence/fucq59/broader-range-inventory-assessment-2026-11-07.md",
+    "sha256": "760ada87e38640cbfd00972705b730467b0e70d915af637c1b86e3ad53d603d2",
+    "role": "root-retained historical18October2026 seed leads only"
+  },
+  "contexts": [
+    {
+      "id": "g21",
+      "qualificationPlanPath": "g21/qualification-plan.json",
+      "qualificationPlanSha256": "ddedeb99310bd165cc07aa5906307d31f4f767bbfb0434ab69f80cc01037f04c",
+      "registration": {
+        "schemaVersion": "bmw-public-range-inventory-registration.v1",
+        "market": "GB",
+        "locale": "en-GB",
+        "catalogueRangeKey": "G21",
+        "pageModelCode": "T3PF",
+        "treeEffectDate": "2026-11-01",
+        "treeOrderDate": "2026-11-01"
+      },
+      "urls": {
+        "page": "https://configure.bmw.co.uk/en_GB/configure/G21/T3PF",
+        "discover": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G21&future-models=true&closest-fallback=true"
+      },
+      "candidateTargetIndices": [
+        5
+      ],
+      "historicalSeedBasis": {
+        "path": "docs/gcsp/evidence/fucq59/broader-range-inventory-assessment-2026-11-07.md",
+        "sha256": "760ada87e38640cbfd00972705b730467b0e70d915af637c1b86e3ad53d603d2",
+        "acquiredDate": "2026-10-18",
+        "independentlyRefetched": false,
+        "scope": "literal request lead only; no model/AG/raw-range/alias/line/production facts"
+      }
+    },
+    {
+      "id": "u11",
+      "qualificationPlanPath": "u11/qualification-plan.json",
+      "qualificationPlanSha256": "98f7cc23f37ab5f00ce1b63695ac19efbe1aabdf19d043649cf8d916e6b481f3",
+      "registration": {
+        "schemaVersion": "bmw-public-range-inventory-registration.v1",
+        "market": "GB",
+        "locale": "en-GB",
+        "catalogueRangeKey": "U11",
+        "pageModelCode": "X1S0",
+        "treeEffectDate": "2026-11-01",
+        "treeOrderDate": "2026-11-01"
+      },
+      "urls": {
+        "page": "https://configure.bmw.co.uk/en_GB/configure/U11/X1S0",
+        "discover": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=U11&future-models=true&closest-fallback=true"
+      },
+      "candidateTargetIndices": [
+        12,
+        18
+      ],
+      "historicalSeedBasis": {
+        "path": "docs/gcsp/evidence/fucq59/broader-range-inventory-assessment-2026-11-07.md",
+        "sha256": "760ada87e38640cbfd00972705b730467b0e70d915af637c1b86e3ad53d603d2",
+        "acquiredDate": "2026-10-18",
+        "independentlyRefetched": false,
+        "scope": "literal request lead only; no model/AG/raw-range/alias/line/production facts"
+      }
+    },
+    {
+      "id": "u10",
+      "qualificationPlanPath": "u10/qualification-plan.json",
+      "qualificationPlanSha256": "02a4624c1c98e3624c1984bb4e671c5570555efb3f0f37b154924be79f3e0a0f",
+      "registration": {
+        "schemaVersion": "bmw-public-range-inventory-registration.v1",
+        "market": "GB",
+        "locale": "en-GB",
+        "catalogueRangeKey": "U10",
+        "pageModelCode": "IXS4",
+        "treeEffectDate": "2026-11-01",
+        "treeOrderDate": "2026-11-01"
+      },
+      "urls": {
+        "page": "https://configure.bmw.co.uk/en_GB/configure/U10/IXS4",
+        "discover": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=U10&future-models=true&closest-fallback=true"
+      },
+      "candidateTargetIndices": [
+        13,
+        19
+      ],
+      "historicalSeedBasis": {
+        "path": "docs/gcsp/evidence/fucq59/broader-range-inventory-assessment-2026-11-07.md",
+        "sha256": "760ada87e38640cbfd00972705b730467b0e70d915af637c1b86e3ad53d603d2",
+        "acquiredDate": "2026-10-18",
+        "independentlyRefetched": false,
+        "scope": "literal request lead only; no model/AG/raw-range/alias/line/production facts"
+      }
+    },
+    {
+      "id": "g26e",
+      "qualificationPlanPath": "g26e/qualification-plan.json",
+      "qualificationPlanSha256": "db3f3c3dabde1a7ef172507bbb2309d6f3edc582c20e77541e18c6d61190ce30",
+      "registration": {
+        "schemaVersion": "bmw-public-range-inventory-registration.v1",
+        "market": "GB",
+        "locale": "en-GB",
+        "catalogueRangeKey": "G26E",
+        "pageModelCode": "I4PC",
+        "treeEffectDate": "2026-11-01",
+        "treeOrderDate": "2026-11-01"
+      },
+      "urls": {
+        "page": "https://configure.bmw.co.uk/en_GB/configure/G26E/I4PC",
+        "discover": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G26E&future-models=true&closest-fallback=true"
+      },
+      "candidateTargetIndices": [
+        20
+      ],
+      "historicalSeedBasis": {
+        "path": "docs/gcsp/evidence/fucq59/broader-range-inventory-assessment-2026-11-07.md",
+        "sha256": "760ada87e38640cbfd00972705b730467b0e70d915af637c1b86e3ad53d603d2",
+        "acquiredDate": "2026-10-18",
+        "independentlyRefetched": false,
+        "scope": "literal request lead only; no model/AG/raw-range/alias/line/production facts"
+      }
+    },
+    {
+      "id": "i20",
+      "qualificationPlanPath": "i20/qualification-plan.json",
+      "qualificationPlanSha256": "538425bf3122d518c336e4cddcc5937c218b700d56446a28928ba9f903eaaabf",
+      "registration": {
+        "schemaVersion": "bmw-public-range-inventory-registration.v1",
+        "market": "GB",
+        "locale": "en-GB",
+        "catalogueRangeKey": "I20",
+        "pageModelCode": "IXSC",
+        "treeEffectDate": "2026-11-01",
+        "treeOrderDate": "2026-11-01"
+      },
+      "urls": {
+        "page": "https://configure.bmw.co.uk/en_GB/configure/I20/IXSC",
+        "discover": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=I20&future-models=true&closest-fallback=true"
+      },
+      "candidateTargetIndices": [
+        23
+      ],
+      "historicalSeedBasis": {
+        "path": "docs/gcsp/evidence/fucq59/broader-range-inventory-assessment-2026-11-07.md",
+        "sha256": "760ada87e38640cbfd00972705b730467b0e70d915af637c1b86e3ad53d603d2",
+        "acquiredDate": "2026-10-18",
+        "independentlyRefetched": false,
+        "scope": "literal request lead only; no model/AG/raw-range/alias/line/production facts"
+      }
+    }
+  ],
+  "publicGetCeiling": 15,
+  "perContextRequestSequence": [
+    "page",
+    "settings",
+    "discover"
+  ],
+  "perContextPublicGetCeiling": 3,
+  "resources": {
+    "workers": 1,
+    "hostRamBytes": 536870912,
+    "childRamBytes": 469762048,
+    "scratchBytesPerChunk": 67108864,
+    "sourceSecondsPerChunk": 90,
+    "childSecondsPerChunk": 105,
+    "chunkSeconds": 120,
+    "seriesSeconds": 600,
+    "decodedBytesPerChunk": 4194304,
+    "decodedBytesAggregate": 20971520,
+    "responseBytes": 1048576,
+    "safeReportBytes": 114688,
+    "sealedProjectionBytes": 131072
+  },
+  "forecast": {
+    "seconds": 30,
+    "retainedBytes": 2097152,
+    "scratchBytes": 1048576,
+    "childRamBytes": 134217728
+  },
+  "implementationPath": "Reuse existing createContractDiagnostic, exact generic range registration and finite shared transport. Retain original production inventory refusal as evidence; Medium grammar Bug remains independent and unfixed.",
+  "requiredNext": [
+    "freeze generic serial runner/supervisor/export pins and independent offline proof",
+    "independent parent exact source release",
+    "retain each primary from first write; export after child join before scratch cleanup; exclusive spent markers; no automatic replay",
+    "inspect actual first context sizes and shape before continuation; preserve missing/conflicting/unsupported range gaps"
+  ],
+  "noModelFactsInferred": true,
+  "noSuccessorSubstitution": true,
+  "sourceGrant": false,
+  "options": 0,
+  "solver": 0,
+  "images": 0,
+  "sourceWrites": 0,
+  "retries": 0,
+  "admissions": 0,
+  "capacityCredit": 0,
+  "acceptance": false
+}

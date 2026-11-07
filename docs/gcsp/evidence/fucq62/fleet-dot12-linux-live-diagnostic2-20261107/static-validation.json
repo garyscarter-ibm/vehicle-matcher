@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "linux-live-diagnostic-static-review.v1",
+  "status": "passed-static-only",
+  "diagnosticId": "fleet-dot12-linux-live-20261107-2",
+  "planSha256": "627a4704d1a03f2eb944ab99f01993a11883fbb7175f50f590470a63d3f8e043",
+  "workflowSha256": "c9e63b313d5a098ec08b8b2338052abc8c9fd6ea2c96d898cb042fcba5954397",
+  "pending": [
+    "Root final review and one integration trigger; diagnostic has not executed"
+  ],
+  "changedPaths": [
+    ".github/workflows/gcsp-live-dot12-diagnostic.yml",
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic2-20261107/"
+  ],
+  "selectedChecks": [
+    "node --check new probe.mjs (module not executed)",
+    "Python ast.parse new supervise.py (no bytecode/execution)",
+    "JSON and provisional runtime/target pins; unchanged first-reference/limits/resources and expected projection",
+    "Ruby YAML parse and exact new packet narrow push path",
+    "Extracted workflow Bash via bash -n stdin",
+    "Original diagnostic packet git diff --exit-code HEAD",
+    "Final confirmed success identity and4runtime packet pins",
+    "Fixed final planSHA in workflow and exact4minute job/narrow trigger",
+    "Original packet blob equality against HEAD",
+    "git diff --check"
+  ],
+  "checksPassed": true,
+  "excluded": "No application GET, local runtime tests, dependencies, source/corpus replay, SQL/browser, dispatch/merge or108-pin closure refresh; static authoring only as directed.",
+  "execution": {
+    "networkCalls": 0,
+    "runtimeExecutions": 0,
+    "testsRun": 0,
+    "workflowDispatches": 0,
+    "localScratchAllocatedBytes": 0,
+    "localOwnedScratchLeftovers": []
+  },
+  "resourcePlan": {
+    "workers": 1,
+    "nodeHeapMiB": 256,
+    "groupRssMiB": 320,
+    "supervisorRssMiB": 64,
+    "hostMiB": 384,
+    "scratchMiB": 16,
+    "supervisorSeconds": 160,
+    "jobMinutes": 4,
+    "archives": false
+  },
+  "scope": "Second distinct Linux diagnostic after the reviewed selector fix; no production/screens changed; no visual review applies.",
+  "acceptance": false,
+  "done": false,
+  "knownLimits": [
+    "No CI result exists for diagnostic2",
+    "Runtime limits/finalizer reused and reviewed statically; not executed locally",
+    "Periodic RSS sampling is not a kernel hard memory limit",
+    "Linux success would not establish the earlier local timeout cause"
+  ]
+}

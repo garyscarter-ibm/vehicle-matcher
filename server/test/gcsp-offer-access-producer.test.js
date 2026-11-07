@@ -4,6 +4,7 @@ import { writeFile } from 'node:fs/promises';
 import { createMemoryRepository, createMemoryStore, inputDigest } from '../gcsp/repository/index.js';
 import { createPolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
+import { createGcspRuntime } from '../gcsp/runtime.js';
 import { BriefService } from '../gcsp/brief/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { createOfferAccessService } from '../gcsp/offers/access.js';
@@ -15,12 +16,15 @@ const ref = (f, table, key = {}) => ({ table, key: { runId: f.context.runId, ...
 const cookieOf = (value) => value.split(';')[0];
 const passed = (outcome) => { assert.equal(outcome.status, 'ok'); return outcome.value; };
 
-async function setup(t) {
+async function setup(t, { offerLandingUrl, composed = false } = {}) {
   const store = createMemoryStore(); const repository = createMemoryRepository({ store });
   passed(await repository.open()); t.after(() => repository.close());
   const policy = createPolicyService(); const wall = '2026-11-05T12:00:00.000Z';
-  const runtime = passed(await createDemoRuntime({ repository, policy, environmentId: 'actual-producer-access-proof',
-    environmentKind: 'synthetic', policyAsOf: wall, commandId: 'producer-bootstrap', sessionNow: () => wall }));
+  const options = { repository, policy, environmentId: 'actual-producer-access-proof',
+    policyAsOf: wall, commandId: 'producer-bootstrap', sessionNow: () => wall };
+  const runtime = passed(await (composed ? createGcspRuntime({ ...options, mode: 'memory', offerLandingUrl })
+    : createDemoRuntime({ ...options, environmentKind: 'synthetic' })));
+  if (composed) t.after(() => runtime.close());
   const { clock, identity } = runtime;
   const presenter = passed(await identity.createPresenterSession('producer-presenter'));
   const acting = passed(await identity.switchPrincipal(presenter.context, 'demo-paula', 'producer-paula'));
@@ -40,12 +44,13 @@ async function setup(t) {
       configurationId: car.configurationId, state: 'released', available: true, held: false, allocated: false,
       facts: car.snapshot, release: { eventId: 'explicit-synthetic-release', availability: car.availability },
       visibility: { companyIds: [context.companyId], schemeIds: [context.schemeId], employeeIds: null } })));
-  const f = { repository, store, policy, clock, identity, context, presenter, acting, car };
+  const f = { repository, store, policy, clock, identity, context, presenter, acting, car, runtime };
   const employee = passed(await repository.read(context, ref(f, 'employees', { employeeId: context.employeeId })));
   const slot = passed(await repository.read(context, ref(f, 'entitlement_slots', { entitlementSlotId: context.entitlementSlotId })));
   f.input = { commandId: 'producer-allocate', orderUuid: car.orderUuid, expectedBriefVersion: 1,
     expectedStockVersion: 1, expectedEmployeeVersion: employee.version, expectedSlotVersion: slot.version };
-  f.producer = new BuddyHoldService({ repository, policy, clock, identity, adapter: { mode: 'local-synthetic' } });
+  f.producer = runtime.buddy ?? new BuddyHoldService({ repository, policy, clock, identity,
+    adapter: { mode: 'local-synthetic' }, offerLandingUrl });
   f.allocated = passed(await f.producer.allocate(context, f.input));
   const jobs = passed(await repository.query(context, 'notification_outbox'));
   assert.equal(jobs.length, 1);
@@ -53,6 +58,7 @@ async function setup(t) {
   let link;
   try { link = new URL(jobs[0].payload.offerLink, 'https://explicit-synthetic.test'); }
   catch { throw Error('Producer link shape is unavailable.'); }
+  f.destination = { origin: link.origin, pathname: link.pathname, brand: link.searchParams.get('brand') };
   f.token = new URLSearchParams(link.hash.slice(1)).get('token');
   f.selector = { runId: link.searchParams.get('runId'), offerId: link.searchParams.get('offerId') };
   assert.equal(f.selector.runId, context.runId); assert.equal(f.selector.offerId, f.allocated.offer.offerId);
@@ -110,6 +116,51 @@ test('actual buddy allocation feeds pinned private offer access, cookie/account 
   }
   assertCustody(f, dto, second.setCookie.split(';')[0].split('=')[1]);
   if (process.env.GCSP_OFFER_PRODUCER_SAMPLE) await writeFile(process.env.GCSP_OFFER_PRODUCER_SAMPLE, JSON.stringify(dto, null, 2)+'\n');
+});
+
+test('configured local producer link exchanges to the same cookie and account access', async (t) => {
+  const f = await setup(t, { offerLandingUrl: 'https://static.example/employee/gcsp-offer.html?brand=mini' });
+  assert.deepEqual(f.destination, { origin: 'https://static.example', pathname: '/employee/gcsp-offer.html', brand: 'mini' });
+  const exchanged = passed(await f.exchange());
+  assert.deepEqual(passed(await f.access.fromSession(f.selector, cookieOf(exchanged.setCookie))).offer, exchanged.offer);
+  assert.deepEqual(passed(await f.access.fromAccount(f.context, f.selector)).offer, exchanged.offer);
+  assertCustody(f, { allocated: f.allocated, dto: exchanged.offer });
+});
+
+for (const variant of ['default', 'environment', 'explicit override']) {
+  test(`runtime landing configuration: ${variant} reaches producer and captured delivery`, async (t) => {
+    const previous = process.env.GCSP_OFFER_LANDING_URL;
+    try {
+      if (variant === 'default') delete process.env.GCSP_OFFER_LANDING_URL;
+      else process.env.GCSP_OFFER_LANDING_URL = 'https://deployment.example/gcsp-offer.html?brand=bmw';
+      const f = await setup(t, { composed: true,
+        offerLandingUrl: variant === 'explicit override' ? '/prefix/review.html?brand=mini' : undefined });
+      const expected = variant === 'default' ? { origin: 'https://explicit-synthetic.test', pathname: '/gcsp/offer', brand: null }
+        : variant === 'environment' ? { origin: 'https://deployment.example', pathname: '/gcsp-offer.html', brand: 'bmw' }
+          : { origin: 'https://explicit-synthetic.test', pathname: '/prefix/review.html', brand: 'mini' };
+      assert.deepEqual(f.destination, expected);
+      const dispatched = passed(await f.runtime.notify.dispatchPending(f.context)); assert.equal(dispatched.sent, 1);
+      const [job] = passed(await f.repository.query(f.context, 'notification_outbox'));
+      assert.equal(job.state, 'sent'); assert.equal(job.transport, 'captured');
+      // Compare custody without including a raw credential in assertion diagnostics.
+      assert.equal(job.outcome.message.offerLink === job.payload.offerLink, true);
+      assert.equal(job.outcome.message.textBody.includes(job.payload.offerLink), true);
+      const exchanged = passed(await f.exchange());
+      assert.deepEqual(passed(await f.access.fromAccount(f.context, f.selector)).offer, exchanged.offer);
+      assert.deepEqual(passed(await f.access.fromSession(f.selector, cookieOf(exchanged.setCookie))).offer, exchanged.offer);
+      assertCustody(f, { allocated: f.allocated, dto: exchanged.offer });
+    } finally {
+      if (previous === undefined) delete process.env.GCSP_OFFER_LANDING_URL;
+      else process.env.GCSP_OFFER_LANDING_URL = previous;
+    }
+  });
+}
+
+test('runtime refuses invalid deployment landing configuration before opening storage', async () => {
+  let opened = 0;
+  const repository = { open() { opened += 1; throw Error('must not open'); } };
+  const value = await createGcspRuntime({ mode: 'memory', repository, offerLandingUrl: 'http://static.example/offer' });
+  assert.equal(value.status, 'invalid'); assert.equal(value.code, 'invalid-offer-landing-url'); assert.equal(opened, 0);
 });
 
 test('actual buddy expiry and real reset make old links current or stale without revival', async (t) => {

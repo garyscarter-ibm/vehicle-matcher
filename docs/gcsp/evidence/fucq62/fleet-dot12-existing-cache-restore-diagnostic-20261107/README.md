@@ -1,0 +1,15 @@
+# Proposed single offline restore from the existing .12 cache
+
+Unexecuted; root review and exact grant are required. The standalone current validator and subsequent registry/history load both passed. Their exact plans/results/receipts are frozen as inputs. The registry grant timestamp correction is retained in its execution-report without modifying signed grant bytes.
+
+This runner calls restoreFleetRelease once with releaseId .12, cacheRoot pointing to the existing immutable projected-package/pack directory, offline:true and a fresh absent store at ownedCloudScratch/restored-store. It uses the exact102runtime inputs and projected code-owned .12anchor. There is no production instrumentation. A thrown error reaches the runner directly and is retained with bounded original name/code/message/stack.
+
+The production call itself checks the31existing cache assets, loads the package registry, copies11corpusassets into an owned staging directory and validates the staged current registry before selection. The runner performs no separate validator or registry call. Success requires statusok/modecold-restore/exact .12active/externalCalls0,11restoredfiles and exact aggregate logical bytes. Immutable package/runtime hashes are checked before/after; sockets are denied and no DB credentials enter the sanitized environment.
+
+The31immutable assets total574,382,841B; copying11corpusfiles requires350,691,430B. The bounded runtime tree adds5,381,665B:356,073,095B logical peak before filesystem overhead. One worker,180seconds,512MiB heap,896MiB group+128MiB supervisor=1GiBhost. Expected scratch384MiB; maximum/reservation512MiB (536,870,912B), directly on OneDrive. Existing package cache is read in place. Do not reuse a supervisor's old hardcoded64MiB budget. No archives or second large local copy.
+
+Root reuses the reviewed resource supervisor: external ownership manifest and registered mandatory finalizer before512MiBdisk/1GiBRAM reservation or scratchcreation; exact TMPDIR/TMP/TEMP; bounded1MiBlog/checkpoints. Stop/join groups, proveabsence, lsof owned scratch, remove inode-owned scratch including the350MBnewstore and runtime link, verify physical absence/reservationabsence and immutablepackage/vendoridentity. Retain concise receipt/result and bounded failure logs. No automatic retry; never delete/mutate the package,checkout,vendor or user files.
+
+A passing invocation proves this offline existing-cache/fresh-store path in its actual environment; it does not retrospectively prove why the earlier anonymous cold attempt failed or complete full offline/recovery acceptance. A failure preserves its direct exact error for root triage. The original failedattempts and successful narrower diagnostics remain unchanged.
+
+Approved Q13 stock uses stockorderRef+configuration; VIN applies delivered/current.10000VIN mappings are not a F62 criterion. F58/sourcecoverage/native/order gaps do not gate configuration-only deployment. Historical consumer/strictCLI evidence and lower-severity backlog policy remain intact. No download,source collection,nativeSQL,browser,liveGET,repair,tests/fullsuite or descendants.

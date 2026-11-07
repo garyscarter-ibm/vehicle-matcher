@@ -1,0 +1,39 @@
+{
+  "scope": "static preparation only",
+  "checks": [
+    {
+      "file": "native.py",
+      "inMemoryCompile": true
+    },
+    {
+      "file": "group-proof.py",
+      "inMemoryCompile": true
+    },
+    {
+      "file": "install.py",
+      "inMemoryCompile": true
+    },
+    {
+      "file": "supervise.py",
+      "inMemoryCompile": true
+    },
+    {
+      "file": "seed.mjs",
+      "nodeSyntax": true
+    },
+    {
+      "file": "install-bottle.rb",
+      "rubySyntax": true
+    }
+  ],
+  "codePinsChecked": 167,
+  "storePinsChecked": 52,
+  "sourcePinsChecked": 13,
+  "homebrewPinsChecked": 7,
+  "distinctPriorPassingConfigurations": 3,
+  "archivesDownloaded": false,
+  "packagesInstalled": false,
+  "nativeAttempted": false,
+  "scratchAllocated": false,
+  "acceptance": false
+}

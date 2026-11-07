@@ -1,0 +1,17 @@
+{
+  "authorized": false,
+  "phase": "fifth-asset",
+  "planSha256": "REPLACE_AFTER_EXACT_REVIEW",
+  "codePins": "COPY_EXACT_PLAN_CODEPINS",
+  "publicGETs": 2,
+  "sourceRequests": 0,
+  "nativeRequests": 0,
+  "asset": {
+    "name": "store--versions--3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30--configurations.jsonl",
+    "path": "store/versions/3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30/configurations.jsonl",
+    "bytes": 190860237,
+    "sha256": "dfc4f427479e9cbb8029df52b838b1d682d268059b533d7634e79b63ab810865",
+    "role": "corpus",
+    "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/store--versions--3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30--configurations.jsonl"
+  }
+}

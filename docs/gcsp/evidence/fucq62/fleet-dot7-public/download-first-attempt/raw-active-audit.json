@@ -1,0 +1,20 @@
+{
+  "status": "invalid-active",
+  "targetMet": false,
+  "storyAcceptance": "not-established",
+  "manifest": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot7-public-20261107/.scratch/test-stamp-shard-9ebf4877c7fa4c5cb193c8e62964a041/restored/versions/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/manifest.json",
+    "sha256": "421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d"
+  },
+  "actual": null,
+  "shortfall": null,
+  "reason": {
+    "code": "unregistered-source",
+    "message": "A v2 row must match an independently registered admitted source envelope exactly."
+  },
+  "limitations": [
+    "Compatible profile-family coverage is not inferred from configuration IDs or VIN spelling.",
+    "Staged verification does not establish source-operation budgets, collection replay or full story acceptance.",
+    "Unknown measurements, missing images and representative image fidelity remain explicit; no stock, eligibility or points facts are inferred."
+  ]
+}

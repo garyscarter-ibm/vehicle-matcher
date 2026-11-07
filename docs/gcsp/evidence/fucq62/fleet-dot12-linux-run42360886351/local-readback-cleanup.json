@@ -1,0 +1,32 @@
+{
+  "scope": "bounded GitHub evidence readback only",
+  "attempts": [
+    {
+      "ownershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/linux-run42360886351-readback/ownership.json",
+      "scratchRoot": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/linux-run42360886351-owned-tmp",
+      "cleanup": {
+        "scratchAbsent": true,
+        "removedBytes": 0,
+        "retainedBytes": 1868,
+        "seconds": 2.114777500013588,
+        "leftovers": []
+      }
+    },
+    {
+      "ownershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/linux-run42360886351-readback-log/ownership.json",
+      "scratchRoot": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/linux-run42360886351-log-owned-tmp",
+      "cleanup": {
+        "scratchAbsent": true,
+        "removedBytes": 0,
+        "retainedBytes": 24193,
+        "seconds": 0.8653001669736113,
+        "leftovers": []
+      }
+    }
+  ],
+  "initialLogRead": "gh refused terminal escape sequences; no log retained in first attempt; second fetch stripped ANSI/control sequences before retention",
+  "sourceRequests": 0,
+  "applicationGETs": 0,
+  "scratchAbsent": true,
+  "leftovers": []
+}

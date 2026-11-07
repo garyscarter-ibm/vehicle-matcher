@@ -1,0 +1,12 @@
+✔ keeps literal exact-origin route facts and repeated source offsets only (1.112917ms)
+✔ refuses poisoned hosts, encoded/invented routes, partial codes and query-bearing links (0.101334ms)
+✔ fails closed at byte, unique-lead and occurrence caps (0.468458ms)
+✔ entrypoints refuse absent source grants before allocating or attempting network (211.871166ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 291.489625

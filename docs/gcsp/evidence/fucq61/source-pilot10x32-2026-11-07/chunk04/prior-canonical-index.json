@@ -1,0 +1,1154 @@
+{
+  "schemaVersion": "f61-prior-canonical-index.v1",
+  "basis": "Conservative exact-ID overlap only; admission/source capacity labels remain distinct",
+  "inputs": {
+    "docs/gcsp/evidence/fucq59/source-admission-2026-11-07/accepted-record.json": "9ed6c672a3e4162dba99b7d559e1e4114a236d9e6d01c47c6ed860d0bb982239",
+    "server/data/gcsp/vehicle-evidence/fleet-plan.json": "2b9d9799722f9f012dcac75d0a08003bb382acf7d077f871546eeb8f85bb1f9b",
+    "server/data/gcsp/vehicle-evidence/publication-reference.v1/configurations.jsonl": "9c1fb6a34e324e6e4937baa1e80eabafa44fae394dd138f2f77be9f6867e9855",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/configurations.jsonl": "9c1fb6a34e324e6e4937baa1e80eabafa44fae394dd138f2f77be9f6867e9855",
+    "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl": "a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265"
+  },
+  "entries": [
+    {
+      "configurationId": "UkVGMTpSRUZFUkVOQ0U=",
+      "origins": [
+        {
+          "path": "server/data/gcsp/vehicle-evidence/publication-reference.v1/configurations.jsonl",
+          "kind": "existing-reference-not-new-source-capacity"
+        },
+        {
+          "path": "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/configurations.jsonl",
+          "kind": "existing-reference-not-new-source-capacity"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHRCxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq59/source-admission-2026-11-07/accepted-record.json",
+          "kind": "admitted-source"
+        },
+        {
+          "path": "server/data/gcsp/vehicle-evidence/fleet-plan.json",
+          "kind": "retained-prior-observation"
+        },
+        {
+          "path": "server/data/gcsp/vehicle-evidence/publication-reference.v1/configurations.jsonl",
+          "kind": "existing-reference-not-new-source-capacity"
+        },
+        {
+          "path": "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/configurations.jsonl",
+          "kind": "existing-reference-not-new-source-capacity"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHUSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMDQ3NSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHRCxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMDQ3NSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "server/data/gcsp/vehicle-evidence/fleet-plan.json",
+          "kind": "retained-prior-observation"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMDQ3NSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "server/data/gcsp/vehicle-evidence/fleet-plan.json",
+          "kind": "retained-prior-observation"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMDQ5MCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHUSxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMEE5MCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMEE5MCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHTixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMEM0QSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHRCxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMEM0QSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHVixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDROUixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETixTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDZVMyxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDdFVyxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMEM0UCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHRCxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMEM1QSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHVixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMEM1WSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHRCxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMEM2NCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHUSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMEM2NCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMEM2OCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMEMxTSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMEMzWixTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHTixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMFgxRSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHUSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NKWCxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NKWCxQMDQ3NSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHVixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NKWCxQMDQxNixTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHTixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NKWCxQMEE5MCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHVixTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NKWCxQMEE5NixTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHRCxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NKWCxQMEE5NixTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHVixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NKWCxQMEM0QSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHUSxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NKWCxQMEM0UCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NKWCxQMEM0UCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHUSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NKWCxQMEM1QSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHTixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NKWCxQMEM1QSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHVixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NKWCxQMEM2NCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHTixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NKWCxQMEM2OCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHVixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDROUixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETixTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDZVMyxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDdFVyxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NKWCxQMEMxTSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHUSxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NKWCxQMFgxRSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHRCxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NKWCxQMFgxRSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHUSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NTVyxQMDQ3NSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHUSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NTVyxQMDQ5MCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NTVyxQMDQ5MCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHTixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NTVyxQMDQxNixTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHRCxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NTVyxQMEE5NixTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NTVyxQMEM0UCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHVixTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NTVyxQMEM1QSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHRCxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NTVyxQMEM1WSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHUSxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NTVyxQMEM1WSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NTVyxQMEM2NCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NTVyxQMEM2OCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHUSxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NTVyxQMEMxTSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHTixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NTVyxQMEMzWixTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHRCxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NTVyxQMEMzWixTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHVixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NTVyxQMFgxRSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1RTVyxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHTixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1RTVyxQMDQ5MCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHVixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDROUixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETixTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDZVMyxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDdFVyxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1RTVyxQMDQxNixTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHVixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1RTVyxQMEE5MCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHRCxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1RTVyxQMEE5MCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHVixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1RTVyxQMEE5NixTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHUSxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1RTVyxQMEM0QSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1RTVyxQMEM0QSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHUSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1RTVyxQMEM0UCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHTixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1RTVyxQMEM0UCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHVixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1RTVyxQMEM1WSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHTixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1RTVyxQMEM2NCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHVixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1RTVyxQMEM2OCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHRCxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDROUixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETixTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDZVMyxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDdFVyxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1RTVyxQMEM2OCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHUSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGTEtTVyxQMDMwMCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNBQyxTMDNHRCxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ1MyxTMDRGTCxTMDRIQSxTMDRNQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGTEtTVyxQMDQ3NSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHTixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDRGTCxTMDRIQSxTMDRNQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGTEtTVyxQMDQxNixTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHUSxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ1MyxTMDRGTCxTMDRIQSxTMDRNQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGTEtTVyxQMEE5MCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNBQyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDRGTCxTMDRIQSxTMDRNQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGTEtTVyxQMEE5NixTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHTixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ1MyxTMDRGTCxTMDRIQSxTMDRNQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGTEtTVyxQMEM0QSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHVixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ1MyxTMDRGTCxTMDRIQSxTMDRNQSxTMDROQixTMDROUixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETixTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDZVMyxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDdFVyxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGTEtTVyxQMEM0UCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHRCxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ1MyxTMDRGTCxTMDRIQSxTMDRNQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGTEtTVyxQMEM1QSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNBQyxTMDNHUSxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ1MyxTMDRGTCxTMDRIQSxTMDRNQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGTEtTVyxQMEM1QSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDRGTCxTMDRIQSxTMDRNQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGTEtTVyxQMEM1WSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHOSxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ1MyxTMDRGTCxTMDRIQSxTMDRNQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGTEtTVyxQMEM2OCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHOSxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ1MyxTMDRGTCxTMDRIQSxTMDRNQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGTEtTVyxQMEMxTSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHRCxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDRGTCxTMDRIQSxTMDRNQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGTEtTVyxQMEMxTSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHVixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDRGTCxTMDRIQSxTMDRNQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGTEtTVyxQMFgxRSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNBQyxTMDNHTixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDRGTCxTMDRIQSxTMDRNQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTCxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHVixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTCxQMDQ3NSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHVixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTCxQMDQ5MCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHRCxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDROUixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETixTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDZVMyxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDdFVyxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTCxQMDQ5MCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHVixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTCxQMEE5MCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHUSxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTCxQMEM0QSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHTixTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTCxQMEM0QSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHVixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTCxQMEM1QSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHTixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTCxQMEM1WSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHVixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTCxQMEM2NCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHRCxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTCxQMEM2NCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHUSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTCxQMEMxTSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHUSxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTCxQMEMzWixTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTCxQMEMzWixTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHUSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTCxQMFgxRSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHRCxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHUSxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTSxQMDQ5MCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTSxQMDQxNixTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHOSxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTSxQMDQxNixTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHTixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTSxQMEE5MCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHTixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTSxQMEE5NixTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHRCxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTSxQMEE5NixTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHVixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTSxQMEM0QSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHRCxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDROUixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETixTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDZVMyxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDdFVyxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTSxQMEM0UCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHUSxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTSxQMEM0UCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTSxQMEM1QSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHOSxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTSxQMEM1WSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHUSxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTSxQMEM2NCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTSxQMEM2OCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHTixTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTSxQMEMzWixTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHVixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTSxQMFgxRSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHVixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTixQMDQ3NSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHRCxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTixQMDQ3NSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHVixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTixQMDQ5MCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHUSxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDROUixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETixTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDZVMyxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDdFVyxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTixQMDQxNixTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHVixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTixQMEE5NixTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNBQyxTMDNHUSxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTixQMEM0UCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNBQyxTMDNHTixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTixQMEM1QSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHVixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTixQMEM1WSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHRCxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTixQMEM1WSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHUSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTixQMEM2OCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHRCxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDROUixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETixTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDZVMyxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDdFVyxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTixQMEMxTSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHOSxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTixQMEMxTSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHUSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTixQMEMzWixTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHTixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGVkNKTixQMFgxRSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHUSxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/accepted.jsonl",
+          "kind": "admitted-source"
+        }
+      ]
+    }
+  ]
+}

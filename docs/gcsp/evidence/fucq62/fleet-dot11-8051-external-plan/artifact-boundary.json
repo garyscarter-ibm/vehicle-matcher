@@ -1,0 +1,231 @@
+{
+  "schemaVersion": "fleet-external-build-restore-boundary.v1",
+  "status": "prepared-only-not-a-runtime-trust-anchor",
+  "frozenVersion": "2026-11-07.11",
+  "tag": "fleet-2026-11-07-11",
+  "canonicalSha256": "27f64e520748836f9f88db39f15725e78daa535db9f253e1ae7b9772ad1f2991",
+  "previousManifestDigest": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+  "candidateManifestDigest": null,
+  "gitPolicy": {
+    "maximumBlobBytes": 52428800,
+    "oversizedConfigurationCommitted": false,
+    "newSourceCopiesCommitted": false,
+    "bypass": false,
+    "committedBaseline": "exact retained .9; external .10 and future .11 build restores use existing production API"
+  },
+  "sourceAssets": [
+    {
+      "path": "sources/a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265.jsonl",
+      "origin": "batch32-2026-11-07.jsonl",
+      "sha256": "a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265",
+      "bytes": 603088,
+      "sourcePath": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/registered-sources/batch32-2026-11-07.jsonl",
+      "manifestAssociation": "new .11 and retained .10"
+    },
+    {
+      "path": "sources/1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802.jsonl",
+      "origin": "continuation1-2026-11-07.jsonl",
+      "sha256": "1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802",
+      "bytes": 21408,
+      "sourcePath": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/registered-sources/continuation1-2026-11-07.jsonl",
+      "manifestAssociation": "new .11 and retained .10"
+    },
+    {
+      "path": "sources/f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8.jsonl",
+      "origin": "f70-first8-2026-11-07.jsonl",
+      "sha256": "f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8",
+      "bytes": 159220,
+      "sourcePath": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/registered-sources/f70-first8-2026-11-07.jsonl",
+      "manifestAssociation": "new .11 and retained .10"
+    },
+    {
+      "path": "sources/00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a.jsonl",
+      "origin": "pilot311-2026-11-07.jsonl",
+      "sha256": "00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a",
+      "bytes": 6832119,
+      "sourcePath": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/registered-sources/pilot311-2026-11-07.jsonl",
+      "manifestAssociation": "new .11 and retained .10"
+    },
+    {
+      "path": "sources/845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080.jsonl",
+      "origin": "f70-1f7e-first32-2026-11-07.jsonl",
+      "sha256": "845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080",
+      "bytes": 409709,
+      "sourcePath": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/registered-sources/f70-1f7e-first32-2026-11-07.jsonl",
+      "manifestAssociation": "new .11 and retained .10"
+    },
+    {
+      "path": "sources/5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7.jsonl",
+      "origin": "f70-1f7e-core01-2026-11-07.jsonl",
+      "sha256": "5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7",
+      "bytes": 689849,
+      "sourcePath": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/registered-sources/f70-1f7e-core01-2026-11-07.jsonl",
+      "manifestAssociation": "new .11 and retained .10"
+    },
+    {
+      "path": "sources/14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6.jsonl",
+      "origin": "f70-1f7e-core02-2026-11-07.jsonl",
+      "sha256": "14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6",
+      "bytes": 689844,
+      "sourcePath": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/registered-sources/f70-1f7e-core02-2026-11-07.jsonl",
+      "manifestAssociation": "new .11 and retained .10"
+    },
+    {
+      "path": "sources/c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06.jsonl",
+      "origin": "f70-1f7e-core03-2026-11-07.jsonl",
+      "sha256": "c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06",
+      "bytes": 689836,
+      "sourcePath": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/registered-sources/f70-1f7e-core03-2026-11-07.jsonl",
+      "manifestAssociation": "new .11 and retained .10"
+    },
+    {
+      "path": "sources/acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d.jsonl",
+      "origin": "f70-1f7e-core04-2026-11-07.jsonl",
+      "sha256": "acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d",
+      "bytes": 323364,
+      "sourcePath": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/registered-sources/f70-1f7e-core04-2026-11-07.jsonl",
+      "manifestAssociation": "new .11 and retained .10"
+    },
+    {
+      "path": "sources/6d1df1e9dde9d019e9f3a7dc3e22727d9df11b655ef0128e81c5ed75551a5b11.jsonl",
+      "origin": "f70-typed-axis390-2026-11-07.jsonl",
+      "sha256": "6d1df1e9dde9d019e9f3a7dc3e22727d9df11b655ef0128e81c5ed75551a5b11",
+      "bytes": 8697624,
+      "sourcePath": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/registered-sources/f70-typed-axis390-2026-11-07.jsonl",
+      "manifestAssociation": "new .11 and retained .10"
+    },
+    {
+      "path": "sources/fd8d384e60b2058e27ee0b95c089cb7f7183bfd2d511761e39e566a6fc8cde9c.jsonl",
+      "origin": "f70-model-trim264-2026-11-07.jsonl",
+      "sha256": "fd8d384e60b2058e27ee0b95c089cb7f7183bfd2d511761e39e566a6fc8cde9c",
+      "bytes": 5985315,
+      "sourcePath": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/registered-sources/f70-model-trim264-2026-11-07.jsonl",
+      "manifestAssociation": "new .11 and retained .10"
+    },
+    {
+      "path": "sources/4d5d0766342d817d06f3e60aed1ae87ba4446c4510cf00c18cb32798f56aeeda.jsonl",
+      "origin": "f70-model-axis790-2026-11-07.jsonl",
+      "sha256": "4d5d0766342d817d06f3e60aed1ae87ba4446c4510cf00c18cb32798f56aeeda",
+      "bytes": 16411688,
+      "sourcePath": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/registered-sources/f70-model-axis790-2026-11-07.jsonl",
+      "manifestAssociation": "new .11 and retained .10"
+    },
+    {
+      "path": "sources/00a7db972439971fe87060c4e58e3228875ce7f1ea8e204b715521808d530064.jsonl",
+      "origin": "global-union501-2026-11-07-9.jsonl",
+      "sha256": "00a7db972439971fe87060c4e58e3228875ce7f1ea8e204b715521808d530064",
+      "bytes": 11435963,
+      "sourcePath": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/registered-sources/global-union501-2026-11-07-9.jsonl",
+      "manifestAssociation": "new .11 and retained .10"
+    },
+    {
+      "path": "sources/34b8befe36cee454171e72dbcea4b67a947a69990098a190d327c033dccbd8b3.jsonl",
+      "origin": "global-union2242-part01-2026-11-07-10.jsonl",
+      "sha256": "34b8befe36cee454171e72dbcea4b67a947a69990098a190d327c033dccbd8b3",
+      "bytes": 33542272,
+      "sourcePath": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/registered-sources/global-union2242-part01-2026-11-07-10.jsonl",
+      "manifestAssociation": "new .11 and retained .10"
+    },
+    {
+      "path": "sources/da1eb59e4e5f8dee9dd06e8877da275c2eb79e541dea90c793559fac6cd188ff.jsonl",
+      "origin": "global-union2242-part02-2026-11-07-10.jsonl",
+      "sha256": "da1eb59e4e5f8dee9dd06e8877da275c2eb79e541dea90c793559fac6cd188ff",
+      "bytes": 16909795,
+      "sourcePath": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/registered-sources/global-union2242-part02-2026-11-07-10.jsonl",
+      "manifestAssociation": "new .11 and retained .10"
+    },
+    {
+      "path": "sources/65d24a89759a34c4ebc6827c6c8960f5c7093891b15cd0ff1edc4343402b08a3.jsonl",
+      "origin": "global-union3385-part01-2026-11-07-11.jsonl",
+      "sha256": "65d24a89759a34c4ebc6827c6c8960f5c7093891b15cd0ff1edc4343402b08a3",
+      "bytes": 33554086,
+      "sourcePath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot11-8051-20261107/global-union3385-part01-2026-11-07-11.jsonl",
+      "manifestAssociation": "new .11 only",
+      "created": false
+    },
+    {
+      "path": "sources/d46fc498d664a64196f3f5499dba22bc0bee48eefa12452ea23c5d6104133012.jsonl",
+      "origin": "global-union3385-part02-2026-11-07-11.jsonl",
+      "sha256": "d46fc498d664a64196f3f5499dba22bc0bee48eefa12452ea23c5d6104133012",
+      "bytes": 33551571,
+      "sourcePath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot11-8051-20261107/global-union3385-part02-2026-11-07-11.jsonl",
+      "manifestAssociation": "new .11 only",
+      "created": false
+    },
+    {
+      "path": "sources/19f597db5359212cf0615bbf2ef3518fca4f014c591ee962ccd07db513966874.jsonl",
+      "origin": "global-union3385-part03-2026-11-07-11.jsonl",
+      "sha256": "19f597db5359212cf0615bbf2ef3518fca4f014c591ee962ccd07db513966874",
+      "bytes": 10262576,
+      "sourcePath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot11-8051-20261107/global-union3385-part03-2026-11-07-11.jsonl",
+      "manifestAssociation": "new .11 only",
+      "created": false
+    }
+  ],
+  "expectedAssets": 29,
+  "expectedSources": 18,
+  "assetMaxBytes": 268435456,
+  "aggregateMaxBytes": 2147483648,
+  "descriptor": {
+    "generatedOnlyAfter": "actual candidate + isolated additive publication/restart + exact8053 direct/consumer/HTTP receipts",
+    "currentAndPreviousCorpusVersions": [
+      "measured .11",
+      "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a"
+    ],
+    "oldDescriptorsRetained": true,
+    "oldPublicReleasesRetained": true,
+    "ordinaryOldHistoryRetained": true,
+    "smallFilesCommitted": [
+      "reviewed fleet-releases.json exact descriptor",
+      "CI/Render exact release anchor only",
+      "bounded evidence receipts/plans"
+    ],
+    "allGeneratedAssetPinsRequired": true,
+    "unknownHashesFabricated": false
+  },
+  "buildRestore": {
+    "code": [
+      "server/gcsp/vehicle-evidence/fleet-artifacts.js:packFleetRelease",
+      "server/gcsp/vehicle-evidence/fleet-artifacts.js:restoreFleetRelease",
+      "server/scripts/fleet-artifacts.mjs"
+    ],
+    "sourceRoot": "external approved source bytes only; previous15 exact originals plus new3 pinned shards",
+    "steps": [
+      "Separately review measured descriptor and append its exact release anchor; preserve all old descriptors.",
+      "Pack29 exact raw assets directly OneDrive using existing packFleetRelease; no archive/local staging.",
+      "Local cache check, public publication and anonymous exact-byte cold restore each require a fresh finite reviewed phase grant.",
+      "CI/Render restore exact approved release to build store/cache through existing production restore; source transport stays absent during runtime lookup.",
+      "Verify restored candidate identity, bytes, scoped runtime boundary and clean ownership. Reuse prior full8053 proof only when code/input/runtime identity matches.",
+      "Existing ordinary additive publication preserves actual .9 history and exact associations; external .10 history remains independently retained. Never delete history or stage large generated configs into Git."
+    ],
+    "executionAuthorized": false
+  },
+  "proof": {
+    "uniqueReferences": 8053,
+    "chunks": [
+      1024,
+      1024,
+      1024,
+      1024,
+      1024,
+      1024,
+      1024,
+      885
+    ],
+    "newInputsRequireActualNewProof": true,
+    "reuseUnchangedCodeAndHelperSyntaxEvidence": true,
+    "reuseOldDot10ManifestDtoResultsAsDot11": false,
+    "consumerFailures": "measure and preserve actual failure sets; .10 1313 is prior evidence only",
+    "fullSuiteRequired": false,
+    "sourceRequests": 0,
+    "acceptance": false,
+    "strictV2SourceRegistrations": 8050,
+    "retainedHistoricalSourceConfigurations": 1
+  },
+  "futureBoundary": {
+    "frozen8051MayNotBeSilentlySuperseded": true,
+    "future10000SourceUnionNeedsSeparatePinsGrantAndPlan": true,
+    "concreteLimit": "createBmwCatalogueAdapter accepts at most10000 sourceRegistrations; review a proportional change only if actual future admitted source count plus required history exceeds this cap. Existing frozen8051 needs no change."
+  },
+  "acceptance": false
+}

@@ -1,0 +1,22 @@
+{
+  "status": "unapplied-proposals-no-build-or-deployment",
+  "releaseId": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+  "rootBefore": {
+    "render.gcsp.yaml": "71637ba08bb7cf333e793a462decca96470fa6910104a2669a8e677c413af269",
+    ".github/workflows/gcsp-fleet-build.yml": "f1af8cc5429fa2a63ebe119d20b3d90b041cc051e5b8628264d54a39bde71949"
+  },
+  "proposedAfter": {
+    "render.gcsp.yaml": "1aa9676700d2936566c70e881b4abfe1ae54ad113ea6607bfe44bd715f8fdd7c",
+    ".github/workflows/gcsp-fleet-build.yml": "ef5f823380cefea191959e9a8ef50eeaaf49b9e67a6af2185bc16d33281b2b69"
+  },
+  "newApplicationGETs": 0,
+  "fullReferenceProofReexecuted": false,
+  "linuxScope": "26 exact assets and5actual scopedDTO/consumer/HTTP references; never full4668newruntime proof",
+  "requires": [
+    "Parent review/apply only after exact public receipts",
+    "Exact integrated target and actual Linux result before Linux claim",
+    "Fresh successful meaningful deployment and separately granted live request budget before deployedDTO claim"
+  ],
+  "nativeStockProof": "unrun",
+  "acceptance": false
+}

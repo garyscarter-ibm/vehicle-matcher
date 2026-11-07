@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "f59-live-diagnostic-parent-audit.v1",
+  "at": "2026-11-06T13:16:24.844100+00:00",
+  "producerCommit": "0937991c1335b2b1bfe9b5ea62a949655e382097",
+  "allocationConsumed": true,
+  "maxAttempts": 4,
+  "actualAttempts": 2,
+  "unusedAttemptsAreConsumed": 2,
+  "retries": 0,
+  "sourceDecodedBytes": 638409,
+  "sourceOutcome": "incomplete; settings-header-shape; no tree/options requests or artifacts",
+  "countBasis": "pinned executor final result; matching valid-checkpoint status reported by reviewed runner; removed checkpoint cannot be re-read",
+  "accepted": 0,
+  "admission": false,
+  "markerSha256": "591a9f4cbc2bbaf9ce6333f255650148b7d1a71eea6a7ff8e69407860a2306cf",
+  "receiptSha256": "585ff1e282542638887aed30fd195f993e302a847ef6bed17be701af90ba1afe",
+  "safeOutputFiles": [
+    "receipt.json"
+  ],
+  "retainedRawBodies": 0,
+  "retainedHeaders": 0,
+  "checkpointRetained": false,
+  "scratchRoot": "/private/tmp/test-stamp-shard-be3717485bce40dbb73d1bb9bec983e7",
+  "scratchAbsent": true,
+  "manifestState": "removed",
+  "groups": [
+    {
+      "pgid": 25352,
+      "absent": true
+    }
+  ],
+  "reservationAbsent": true,
+  "sampledScratchRemovedBytes": 8192,
+  "successfulLogRemovedBytes": 407,
+  "sampledPeakRssBytes": 74825728,
+  "supervisedWallSeconds": 1.0720611660000001,
+  "compatibilityException": null,
+  "leftovers": [],
+  "next": "offline profile-shape diagnosis; no automatic retry or new source allocation; retain previous strict header guard and exact source routes"
+}

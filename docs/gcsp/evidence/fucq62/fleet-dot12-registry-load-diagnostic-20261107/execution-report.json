@@ -1,0 +1,67 @@
+{
+  "scope": "actual single root-executed offline registry load",
+  "planSha256": "44098dc3cadeca67e5dd0a706e95e9f6cf97d93b8fe1fd3c264d019c98afdff4",
+  "resultFileSha256": "7ea8a15c834da4e8ffabfdc5c2f26dbf9cd7207c580c506979b69bc139f69dff",
+  "receiptPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/registry-load-diagnostic/receipt.json",
+  "receiptSha256": "0ba3afc6631cde9ecd183257a020eef1ddf20aea4b410d6fbd415956f5f714b8",
+  "actual": {
+    "result": {
+      "issue": null,
+      "issue_kind": null,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/dot12-registry-load-diagnostic/command.log",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/dot12-registry-load-diagnostic/ownership/321cecf7308245c48995ea621a74f44f.json",
+      "peak_rss": 347242496,
+      "peak_scratch": 6176156,
+      "rc": 0,
+      "wall": 20.650239791999997
+    },
+    "publicStatus": "ok",
+    "activeManifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+    "recovered": false,
+    "rawError": null,
+    "registryLoadCalls": 1,
+    "networkRequests": 0,
+    "sourceCalls": 0
+  },
+  "conclusion": "Production registry/history selection passed against exact retained package; no original cold failure was reproduced. Next store-copy/staged-validation stage remains unproved.",
+  "originalAttempt2CauseProved": false,
+  "coldRestoreSucceeded": false,
+  "grantTimestampCorrection": {
+    "grantPath": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/dot12-registry-load-root-release.json",
+    "grantSha256Unchanged": "f8bd809e022729811f87ebf7b1f4c9825692d310ded245dd5cfd0eb591a6f056",
+    "recordedReviewedAt": "2026-11-07T09:22:00Z",
+    "correctionSource": "Explicit root message",
+    "actualReviewAndExecutionWindow": "2026-11-07 09:19\u201309:20 Europe/London",
+    "note": "The grant reviewedAt was mistakenly09:22. Preserve the exact signed grant; this result records root stated correction without rewriting it."
+  },
+  "previousPassedValidatorEvidenceUnchanged": true,
+  "scopeAssessment": {
+    "buildBlocker": "Actual attempt2cold failure remains a BUILD blocker. The currentvalidator diagnostic passed; do not continue attributing failure to production source registrations. Registry/history selection and nextcopy are still unproved.",
+    "approvedQ13Scope": "Stock uses stockorderRef+configuration; VIN applies to delivered/current.10000VIN mappings are not a F62 acceptance criterion.",
+    "F58Gaps": "F58/sourcecoverage/native/order gaps remain separately assessed and do not gate configuration-only deployment.",
+    "historicalConsumerFailures": 2707,
+    "historicalStrictCliCompleted": false,
+    "nativeProof": "unrun; separate from this diagnostic",
+    "lowerSeverityPolicy": "Do not expand claimedStory. BelowCritical/High findings become linked backlog Bugs and do not block currentStory merge; root owns triage and any BUILD blocker repair.",
+    "acceptance": false
+  },
+  "cleanup": {
+    "aggregatePeakRSSUpperBoundBytes": 370212864,
+    "compatibilityException": null,
+    "groupsAbsent": true,
+    "immutablePinsUnchanged": true,
+    "leftovers": [],
+    "removedScratchPeakBytes": 6176156,
+    "reservationAbsent": true,
+    "retainedLogicalBytes": 3391,
+    "retainedOutput": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/registry-load-diagnostic",
+    "runtimeDependencyLinkAbsent": true,
+    "scratchAbsent": true,
+    "scratchRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/registry-load-diagnostic/.scratch/test-stamp-shard-321cecf7308245c48995ea621a74f44f",
+    "supervisorPeakRSSBytes": 22970368,
+    "vendorDirectoryIdentityUnchanged": true,
+    "vendorWritesAuthorizedOrPerformed": false
+  },
+  "independentPhysicalScratchAndScratchParentAbsenceChecked": true,
+  "acceptance": false
+}

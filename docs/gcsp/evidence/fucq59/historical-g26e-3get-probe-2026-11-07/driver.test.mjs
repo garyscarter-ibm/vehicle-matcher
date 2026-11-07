@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {spawnSync} from 'node:child_process';import {existsSync} from 'node:fs';import {fileURLToPath} from 'node:url';
+const driver=fileURLToPath(new URL('./run-live.mjs',import.meta.url));
+// Missing command/grant must stop before opening output or using any transport.
+test('driver refuses a different command before output or source access',()=>{const r=spawnSync(process.execPath,[driver,'--wrong'],{env:{PATH:'/usr/bin:/bin'},encoding:'utf8'});assert.notEqual(r.status,0);assert.match(r.stderr,/explicit-historical-g26e-execution-required/);assert.equal(existsSync(new URL('./actual',import.meta.url)),false);});
+test('driver refuses missing exact source grant before output or source access',()=>{const r=spawnSync(process.execPath,[driver,'--execute-historical-g26e-discovery'],{env:{PATH:'/usr/bin:/bin'},encoding:'utf8'});assert.notEqual(r.status,0);assert.match(r.stderr,/historical-source-grant-required/);assert.equal(existsSync(new URL('./actual',import.meta.url)),false);});

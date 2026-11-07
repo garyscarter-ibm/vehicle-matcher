@@ -1,0 +1,7 @@
+# Isolated root execution: six breadth options contexts
+
+This distinct unspent allocation runs at the root checkout while G42 runs in035. It uses its own external supervisor directory and no dependency link. The first six model/line plans and24GETceiling match the prepared actual30model pool, while absolute execution paths, currentrootproduction code and runtime pins are independently frozen here. No035active pin was changed. The pending native worktree creation remains preserved and must be reconciled if it returns.
+
+One worker,512MiBhost/448MiBchild,64MiBscratch,4MiBdecoded/context,1MiBresponse,90/105/120seconds source/child/chunk and600seconds finite series. Expectedretained80MiB; safe primary/export bytes firstwrite into this directory. Exclusiveconsumedmarkers prohibit replay. Stop on first failed/incomplete source/access/privacy/shape/pin/budget/export/cleanup. Solver,image,browser,admission andcapacitycredit remainzero.
+
+Scoped preparation passed10/10, zero skips, in3.0900565seconds on the currentrootcode. This includes all30actualprovenance proposals,6exactsourcefixtures with complete aliases, no-grant/URL/pin checks and the seven-check retained verifier against copied prior actual evidence with zeroHTTP. validation.json retains independent scratch/group/reservation/link absence. Source qualification remains unrun and requires a separate exactparent release. No sourcecapacity, schemejoin or originalacceptance is established by preparation.

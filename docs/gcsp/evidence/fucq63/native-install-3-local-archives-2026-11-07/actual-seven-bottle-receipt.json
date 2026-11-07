@@ -1,0 +1,225 @@
+{
+  "status": "seven-exact-bottles-and-embedded-ruby-retained-for-review",
+  "requests": 21,
+  "packages": [
+    {
+      "name": "ca-certificates",
+      "pkgVersion": "2026-10-20",
+      "archivePath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/archives/ca-certificates--2026-10-20.all.bottle.tar.gz",
+      "archiveBytes": 109619,
+      "archiveSha256": "8589f4e61b3afcc5ea375aab11af1c891ec4c94421c699c2a5a4765078de4443",
+      "trustAnchor": "Pinned exact official whole bottle SHA256 from frozen package metadata",
+      "embeddedRuby": {
+        "member": "ca-certificates/2026-10-20/.brew/ca-certificates.rb",
+        "bytes": 7949,
+        "sha256": "4abe22fb50b45cd5e113747a92a115e0479c4017502d7e8a87132a340b742d84",
+        "regular": true,
+        "retainedPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/ca-certificates.rb"
+      },
+      "embeddedRubyMembers": [
+        {
+          "member": "ca-certificates/2026-10-20/.brew/ca-certificates.rb",
+          "bytes": 7949,
+          "sha256": "4abe22fb50b45cd5e113747a92a115e0479c4017502d7e8a87132a340b742d84",
+          "regular": true,
+          "retainedPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/ca-certificates.rb"
+        }
+      ],
+      "catalogCurrentFormulaRubySha256": "535300ac0e99511a36340454bd5287cfff097191de9d7b9675ed924f3a692317",
+      "embeddedEqualsCurrentCatalogFormula": false,
+      "currentCatalogFormulaIsEmbeddedPin": false,
+      "archiveMembersInspected": 9,
+      "uncompressedMemberBytes": 193232,
+      "rubyExecuted": false
+    },
+    {
+      "name": "libunistring",
+      "pkgVersion": "1.5",
+      "archivePath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/archives/libunistring--1.5.arm64_golden_gate.bottle.tar.gz",
+      "archiveBytes": 1899259,
+      "archiveSha256": "fec6be46cabaefd1dc5d5ecd029c50aeaef6c93d9c7de4425968047811575e81",
+      "trustAnchor": "Pinned exact official whole bottle SHA256 from frozen package metadata",
+      "embeddedRuby": {
+        "member": "libunistring/1.5/.brew/libunistring.rb",
+        "bytes": 1725,
+        "sha256": "5a0ff014063865e7acebbe3b0e1e5b4434773b8124975898e235e78440279d6d",
+        "regular": true,
+        "retainedPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/libunistring.rb"
+      },
+      "embeddedRubyMembers": [
+        {
+          "member": "libunistring/1.5/.brew/libunistring.rb",
+          "bytes": 1725,
+          "sha256": "5a0ff014063865e7acebbe3b0e1e5b4434773b8124975898e235e78440279d6d",
+          "regular": true,
+          "retainedPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/libunistring.rb"
+        }
+      ],
+      "catalogCurrentFormulaRubySha256": "e19b8847465634aa2ab365c7fa641216450ad26cc02bddfce08c8d17342d21dc",
+      "embeddedEqualsCurrentCatalogFormula": false,
+      "currentCatalogFormulaIsEmbeddedPin": false,
+      "archiveMembersInspected": 67,
+      "uncompressedMemberBytes": 5821681,
+      "rubyExecuted": false
+    },
+    {
+      "name": "readline",
+      "pkgVersion": "8.3.6",
+      "archivePath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/archives/readline--8.3.6.arm64_golden_gate.bottle.tar.gz",
+      "archiveBytes": 757018,
+      "archiveSha256": "74b458562c5a589a612ebba8f8fc12f3ecbe083223eb4a368c723d88b26a454d",
+      "trustAnchor": "Pinned exact official whole bottle SHA256 from frozen package metadata",
+      "embeddedRuby": {
+        "member": "readline/8.3.6/.brew/readline.rb",
+        "bytes": 3791,
+        "sha256": "a65ebe6faf79ab5f39e02d263cac7ec93d9813c4617658453f0ca341922555a0",
+        "regular": true,
+        "retainedPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/readline.rb"
+      },
+      "embeddedRubyMembers": [
+        {
+          "member": "readline/8.3.6/.brew/readline.rb",
+          "bytes": 3791,
+          "sha256": "a65ebe6faf79ab5f39e02d263cac7ec93d9813c4617658453f0ca341922555a0",
+          "regular": true,
+          "retainedPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/readline.rb"
+        }
+      ],
+      "catalogCurrentFormulaRubySha256": "ead60941ba0f81334499b208e26382eefda15eb1b9614c417d70f1d827dc2e64",
+      "embeddedEqualsCurrentCatalogFormula": false,
+      "currentCatalogFormulaIsEmbeddedPin": false,
+      "archiveMembersInspected": 68,
+      "uncompressedMemberBytes": 2641108,
+      "rubyExecuted": false
+    },
+    {
+      "name": "icu4c@79",
+      "pkgVersion": "79.1",
+      "archivePath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/archives/icu4c@79--79.1.arm64_golden_gate.bottle.tar.gz",
+      "archiveBytes": 32063877,
+      "archiveSha256": "8499235357ff52424e3fcc647a6ce57050af9f10904554df90319e6a088f665d",
+      "trustAnchor": "Pinned exact official whole bottle SHA256 from frozen package metadata",
+      "embeddedRuby": {
+        "member": "icu4c@79/79.1/.brew/icu4c@79.rb",
+        "bytes": 1593,
+        "sha256": "dc4e8baf0e49e638e00554492f8ba77bf3c67d074f91dcb30d2346fd5da8dde6",
+        "regular": true,
+        "retainedPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/icu4c@79.rb"
+      },
+      "embeddedRubyMembers": [
+        {
+          "member": "icu4c@79/79.1/.brew/icu4c@79.rb",
+          "bytes": 1593,
+          "sha256": "dc4e8baf0e49e638e00554492f8ba77bf3c67d074f91dcb30d2346fd5da8dde6",
+          "regular": true,
+          "retainedPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/icu4c@79.rb"
+        }
+      ],
+      "catalogCurrentFormulaRubySha256": "501b5029e184ab296555618fb394762996c08090b0ad1a44f675d97abf38afa1",
+      "embeddedEqualsCurrentCatalogFormula": false,
+      "currentCatalogFormulaIsEmbeddedPin": false,
+      "archiveMembersInspected": 296,
+      "uncompressedMemberBytes": 88582028,
+      "rubyExecuted": false
+    },
+    {
+      "name": "openssl@4",
+      "pkgVersion": "4.1.0",
+      "archivePath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/archives/openssl@4--4.1.0.arm64_golden_gate.bottle.tar.gz",
+      "archiveBytes": 11500729,
+      "archiveSha256": "d239639f77a275caa217707e126790b3f5f5c86e5bc6e2a996e5df7fdaed44a6",
+      "trustAnchor": "Pinned exact official whole bottle SHA256 from frozen package metadata",
+      "embeddedRuby": {
+        "member": "openssl@4/4.1.0/.brew/openssl@4.rb",
+        "bytes": 4740,
+        "sha256": "7ff5915f10c5e950f35e65471fae7e04711bc962689f1369e646e2f68b41b19d",
+        "regular": true,
+        "retainedPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/openssl@4.rb"
+      },
+      "embeddedRubyMembers": [
+        {
+          "member": "openssl@4/4.1.0/.brew/openssl@4.rb",
+          "bytes": 4740,
+          "sha256": "7ff5915f10c5e950f35e65471fae7e04711bc962689f1369e646e2f68b41b19d",
+          "regular": true,
+          "retainedPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/openssl@4.rb"
+        }
+      ],
+      "catalogCurrentFormulaRubySha256": "50f58cda0dfd54aabc627e53205a88afc2e1780d83f43a99c525b58950c32049",
+      "embeddedEqualsCurrentCatalogFormula": false,
+      "currentCatalogFormulaIsEmbeddedPin": false,
+      "archiveMembersInspected": 6890,
+      "uncompressedMemberBytes": 24254269,
+      "rubyExecuted": false
+    },
+    {
+      "name": "krb5",
+      "pkgVersion": "1.22.2_2",
+      "archivePath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/archives/krb5--1.22.2_2.arm64_golden_gate.bottle.tar.gz",
+      "archiveBytes": 1333379,
+      "archiveSha256": "678c05de46229f5b35631196808a7f6e4a32f9a18bc9574ec447f6c8290dfff7",
+      "trustAnchor": "Pinned exact official whole bottle SHA256 from frozen package metadata",
+      "embeddedRuby": {
+        "member": "krb5/1.22.2_2/.brew/krb5.rb",
+        "bytes": 1791,
+        "sha256": "dc3dd4e507c10cfc4b3db8ad18d79a26dda5cf1d67d227ce7b9067c54ab26e56",
+        "regular": true,
+        "retainedPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/krb5.rb"
+      },
+      "embeddedRubyMembers": [
+        {
+          "member": "krb5/1.22.2_2/.brew/krb5.rb",
+          "bytes": 1791,
+          "sha256": "dc3dd4e507c10cfc4b3db8ad18d79a26dda5cf1d67d227ce7b9067c54ab26e56",
+          "regular": true,
+          "retainedPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/krb5.rb"
+        }
+      ],
+      "catalogCurrentFormulaRubySha256": "c110a8d383fbf33227f2b57bad52f554620f9c4383fac31c1820b9561425bf0d",
+      "embeddedEqualsCurrentCatalogFormula": false,
+      "currentCatalogFormulaIsEmbeddedPin": false,
+      "archiveMembersInspected": 187,
+      "uncompressedMemberBytes": 5196942,
+      "rubyExecuted": false
+    },
+    {
+      "name": "postgresql@16",
+      "pkgVersion": "16.15_1",
+      "archivePath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/archives/postgresql@16--16.15_1.arm64_golden_gate.1.bottle.tar.gz",
+      "archiveBytes": 19200246,
+      "archiveSha256": "31b8c98844e409376dc0fc7801e09f25c5c7b3c175c77b929ad9bb51aef3095d",
+      "trustAnchor": "Pinned exact official whole bottle SHA256 from frozen package metadata",
+      "embeddedRuby": {
+        "member": "postgresql@16/16.15_1/.brew/postgresql@16.rb",
+        "bytes": 5107,
+        "sha256": "599376de22c948f095f50d290d2e4ea862da2a1facbe1c9850961fb32288a732",
+        "regular": true,
+        "retainedPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/postgresql@16.rb"
+      },
+      "embeddedRubyMembers": [
+        {
+          "member": "postgresql@16/16.15_1/.brew/postgresql@16.rb",
+          "bytes": 5107,
+          "sha256": "599376de22c948f095f50d290d2e4ea862da2a1facbe1c9850961fb32288a732",
+          "regular": true,
+          "retainedPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection/embedded-ruby/postgresql@16.rb"
+        }
+      ],
+      "catalogCurrentFormulaRubySha256": "63dd55f47d0c31de82b5ecb9f3bb0bddfc65d6754fb923800142e6d771d5a5a1",
+      "embeddedEqualsCurrentCatalogFormula": false,
+      "currentCatalogFormulaIsEmbeddedPin": false,
+      "archiveMembersInspected": 3963,
+      "uncompressedMemberBytes": 71923101,
+      "rubyExecuted": false
+    }
+  ],
+  "retainedArchiveBytes": 66864127,
+  "elapsedSeconds": 13.323031667,
+  "separateInstallGrantRequired": true,
+  "actualRubyReviewRequiredBeforeInstall": true,
+  "installed": false,
+  "nativeAttempted": false,
+  "rubyExecuted": false,
+  "sourceCalls": 0,
+  "acceptance": false
+}

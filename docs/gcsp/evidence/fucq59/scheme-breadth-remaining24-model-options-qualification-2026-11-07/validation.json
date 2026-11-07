@@ -1,0 +1,44 @@
+{
+  "scope": "scoped remaining24options preparation; actual30model pool validated; zero liveHTTP",
+  "executionPlanSha256": "4c7911f03d8e199999aef80aa2cba68ab2a67580d8aa1c9fb9f4866f0cbe552a",
+  "sourceBasisSha256": "af7a38937af89388c2920bf614eef8fe7a3893a8e4c020e209abf6de36212c2a",
+  "poolSha256": "e1199ee2ace13730c2e58ef18095fadbff765cbc48f45b93602d9ccf91f3ec3e",
+  "checks": {
+    "fail": 0,
+    "pass": 28,
+    "skipped": 0,
+    "tests": 28
+  },
+  "seconds": 10.309804209000001,
+  "peakRss": 277086208,
+  "cleanup": {
+    "compatibility_exception": null,
+    "groups_absent": true,
+    "leftovers": [],
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth-remaining24-model-options/preparation/ownership/fd8f70b63ca5470e8431eb360e611064.json",
+    "removed_allocation_bytes": 605215,
+    "reservation_absent": true,
+    "scratchRoot": "/private/tmp/test-stamp-shard-fd8f70b63ca5470e8431eb360e611064",
+    "scratch_absent": true
+  },
+  "independentResourceChecks": [
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth-remaining24-model-options/preparation/ownership/fd8f70b63ca5470e8431eb360e611064.json",
+      "root": "/private/tmp/test-stamp-shard-fd8f70b63ca5470e8431eb360e611064",
+      "rootAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 605215
+    }
+  ],
+  "removedAllocationBytes": 605215,
+  "allCodeAndRuntimePinsUnchanged": true,
+  "copiedActualVerifier": "7of7 strict retained prior six-model checks; zeroHTTP",
+  "sourceGrant": false,
+  "sourceTraffic": 0,
+  "admissions": 0,
+  "capacityCredit": 0,
+  "acceptance": false,
+  "compatibilityException": null,
+  "leftovers": []
+}

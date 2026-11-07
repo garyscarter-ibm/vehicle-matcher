@@ -1,0 +1,26 @@
+{
+  "identity": {
+    "docs/gcsp/evidence/fucq62/activate-fleet-dot6.mjs": "dc9b8bf8651dd2054abb292803e3d646924fb48c4a2854856d58eeeaea6ab61b",
+    "render.gcsp.yaml": "a878f555fc36a5525987b2cde1f13e2128c9dc8aa5b284b344e879fa0ed13dce",
+    "render.yaml": "311080d391bebaad1dd23d87e3cc57c867c50c49b172c6a0ba36e369ddbc61b2",
+    "scripts/gcsp/verify-fleet.mjs": "540f5314a58cc061b0bbc052942613263a6ea84a112b0fdea5f3769818133a4b",
+    "server/gcsp/vehicle-evidence/corpus-publisher.js": "9d86e1397aa74d1a1b096aaf6cba2149499a81a524e54eecd2ff83c80b2e6c96",
+    "server/gcsp/vehicle-evidence/fleet-artifacts.js": "8567ef55e6cf914c1ea8d6f8c7bbb7797f96116030163d58b46eb594feb05de6",
+    "server/gcsp/vehicle-evidence/fleet-release.js": "d6081dc483d9d28da4cce712c8ad762ff275c07ae012d216893d85963d495ff0",
+    "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "2e68ff0141ad52aea1b0e707aeb391185acf789a463473db4ba45520465bc7db",
+    "server/gcsp/vehicle-evidence/synthetic-registry.js": "4411a122f0a245dd65b58e8753ed1181afd6dd114474b60134adaf5e27febe47",
+    "server/scripts/fleet-artifacts.mjs": "ffb51fe9e9fb892af4e67cb3ff2edbd561a01fd1f77482842a01030f92fde194"
+  },
+  "issue": null,
+  "issue_kind": null,
+  "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62-dot6-ordinary/checks.log",
+  "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62-dot6-ordinary/ownership/eb661f48460640f582a2d685f8877614.json",
+  "peak_rss": 248725504,
+  "peak_scratch": 0,
+  "rc": 0,
+  "scope": "scoped actual existing publisher ordinary .6activation, matching YAML, immutable history/cold image/idempotence; actualpublic871+871 evidence reused; updatedLinuxNode20CI pending",
+  "sourceIdentityUnchanged": true,
+  "summary": {},
+  "wall": 14.833099875,
+  "metadataCorrection": "Original supervisor result scope copied stale .5 label; corrected here to executed activate-fleet-dot6.mjs identity. Original result retained in private run."
+}

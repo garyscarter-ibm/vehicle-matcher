@@ -1,0 +1,299 @@
+{
+  "allocation_count": 14,
+  "allocations": [
+    {
+      "groups": [
+        {
+          "live": false,
+          "pgid": 57514
+        }
+      ],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/ownership/2bd60fc0a52549e68858bced294eb7ac.json",
+      "peak_bytes_removed": 3436768,
+      "reservation_absent": true,
+      "scratch": "/private/tmp/test-stamp-shard-2bd60fc0a52549e68858bced294eb7ac",
+      "scratch_absent": true
+    },
+    {
+      "groups": [
+        {
+          "live": false,
+          "pgid": 60553
+        }
+      ],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/ownership/3e79e46302514ec6ad9585ea6b28e76e.json",
+      "peak_bytes_removed": 35973120,
+      "reservation_absent": true,
+      "scratch": "/private/tmp/test-stamp-shard-3e79e46302514ec6ad9585ea6b28e76e",
+      "scratch_absent": true
+    },
+    {
+      "groups": [
+        {
+          "live": false,
+          "pgid": 56066
+        }
+      ],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/ownership/41e4cbfc254c4e90b8aad0de2e897d27.json",
+      "peak_bytes_removed": 503904,
+      "reservation_absent": true,
+      "scratch": "/private/tmp/test-stamp-shard-41e4cbfc254c4e90b8aad0de2e897d27",
+      "scratch_absent": true
+    },
+    {
+      "groups": [
+        {
+          "live": false,
+          "pgid": 57451
+        }
+      ],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/ownership/5824279fc99d4190be1dd618b16cdbad.json",
+      "peak_bytes_removed": 864352,
+      "reservation_absent": true,
+      "scratch": "/private/tmp/test-stamp-shard-5824279fc99d4190be1dd618b16cdbad",
+      "scratch_absent": true
+    },
+    {
+      "groups": [
+        {
+          "live": false,
+          "pgid": 58216
+        }
+      ],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/ownership/6c5359a8dfd94a2ea3fc38d45c39ebe7.json",
+      "peak_bytes_removed": 868448,
+      "reservation_absent": true,
+      "scratch": "/private/tmp/test-stamp-shard-6c5359a8dfd94a2ea3fc38d45c39ebe7",
+      "scratch_absent": true
+    },
+    {
+      "groups": [
+        {
+          "live": false,
+          "pgid": 58329
+        }
+      ],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/ownership/6c8a5388a05d4759a01b176ba36c602c.json",
+      "peak_bytes_removed": 6943232,
+      "reservation_absent": true,
+      "scratch": "/private/tmp/test-stamp-shard-6c8a5388a05d4759a01b176ba36c602c",
+      "scratch_absent": true
+    },
+    {
+      "groups": [
+        {
+          "live": false,
+          "pgid": 54840
+        }
+      ],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/ownership/78cc3c7e171544b492bac0f67f36850c.json",
+      "peak_bytes_removed": 553056,
+      "reservation_absent": true,
+      "scratch": "/private/tmp/test-stamp-shard-78cc3c7e171544b492bac0f67f36850c",
+      "scratch_absent": true
+    },
+    {
+      "groups": [
+        {
+          "live": false,
+          "pgid": 54299
+        }
+      ],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/ownership/82b8c2aad769429594112645d08884ec.json",
+      "peak_bytes_removed": 524384,
+      "reservation_absent": true,
+      "scratch": "/private/tmp/test-stamp-shard-82b8c2aad769429594112645d08884ec",
+      "scratch_absent": true
+    },
+    {
+      "groups": [
+        {
+          "live": false,
+          "pgid": 55558
+        }
+      ],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/ownership/91e4899210274c25a765ad74941bdc82.json",
+      "peak_bytes_removed": 872544,
+      "reservation_absent": true,
+      "scratch": "/private/tmp/test-stamp-shard-91e4899210274c25a765ad74941bdc82",
+      "scratch_absent": true
+    },
+    {
+      "groups": [
+        {
+          "live": false,
+          "pgid": 55730
+        }
+      ],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/ownership/a7d80bcc96ef44ae83930dd9a90dc64b.json",
+      "peak_bytes_removed": 864352,
+      "reservation_absent": true,
+      "scratch": "/private/tmp/test-stamp-shard-a7d80bcc96ef44ae83930dd9a90dc64b",
+      "scratch_absent": true
+    },
+    {
+      "groups": [
+        {
+          "live": false,
+          "pgid": 55304
+        }
+      ],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/ownership/a9d58e70f0994992aa2d19bcc134bbcc.json",
+      "peak_bytes_removed": 864352,
+      "reservation_absent": true,
+      "scratch": "/private/tmp/test-stamp-shard-a9d58e70f0994992aa2d19bcc134bbcc",
+      "scratch_absent": true
+    },
+    {
+      "groups": [
+        {
+          "live": false,
+          "pgid": 58574
+        }
+      ],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/ownership/e17f09df49fe4e3d9f406b0f8ea18957.json",
+      "peak_bytes_removed": 819296,
+      "reservation_absent": true,
+      "scratch": "/private/tmp/test-stamp-shard-e17f09df49fe4e3d9f406b0f8ea18957",
+      "scratch_absent": true
+    },
+    {
+      "groups": [
+        {
+          "live": false,
+          "pgid": 57096
+        }
+      ],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/ownership/e79423a029534b60b989c2350d534a31.json",
+      "peak_bytes_removed": 1171584,
+      "reservation_absent": true,
+      "scratch": "/private/tmp/test-stamp-shard-e79423a029534b60b989c2350d534a31",
+      "scratch_absent": true
+    },
+    {
+      "groups": [
+        {
+          "live": false,
+          "pgid": 56785
+        }
+      ],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/ownership/fbaca7ca84684e68b0e31a9cc91a6739.json",
+      "peak_bytes_removed": 2957632,
+      "reservation_absent": true,
+      "scratch": "/private/tmp/test-stamp-shard-fbaca7ca84684e68b0e31a9cc91a6739",
+      "scratch_absent": true
+    }
+  ],
+  "compatibility_exception": null,
+  "dependency_link_absent": true,
+  "leftovers": [],
+  "scope": "all14retained-image-pilot1allocations, including expected reds and setup failure",
+  "successful_output_condensation": {
+    "absence_verified": true,
+    "removed_bytes": 3010454,
+    "removed_failed_aggregate_coverage": [
+      {
+        "bytes": 85817,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/red-coverage.json"
+      },
+      {
+        "bytes": 116399,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/green-coverage.json"
+      },
+      {
+        "bytes": 122589,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/audit-red-coverage.json"
+      }
+    ],
+    "removed_successful_verbose_files": [
+      {
+        "bytes": 122237,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/guard-green-coverage.json"
+      },
+      {
+        "bytes": 476,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/guard-green.log"
+      },
+      {
+        "bytes": 80355,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/publication-coverage.json"
+      },
+      {
+        "bytes": 1018,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/publication.log"
+      },
+      {
+        "bytes": 523495,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/registry-coverage.json"
+      },
+      {
+        "bytes": 1956,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/registry.log"
+      },
+      {
+        "bytes": 114393,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/contracts-coverage.json"
+      },
+      {
+        "bytes": 3283,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/contracts.log"
+      },
+      {
+        "bytes": 340089,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/verifier-coverage.json"
+      },
+      {
+        "bytes": 783,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/verifier.log"
+      },
+      {
+        "bytes": 122946,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/final-guard-coverage.json"
+      },
+      {
+        "bytes": 581,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/final-guard.log"
+      },
+      {
+        "bytes": 125402,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/integrated-pilot-coverage.json"
+      },
+      {
+        "bytes": 581,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/integrated-pilot.log"
+      },
+      {
+        "bytes": 972835,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/integrated-boundaries-coverage.json"
+      },
+      {
+        "bytes": 3527,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/integrated-boundaries.log"
+      },
+      {
+        "bytes": 75799,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/integrated-packaging-coverage.json"
+      },
+      {
+        "bytes": 714,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/integrated-packaging.log"
+      },
+      {
+        "bytes": 194932,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/actual-coverage.json"
+      },
+      {
+        "bytes": 247,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/actual.log"
+      }
+    ],
+    "retained_failed_logs": [
+      "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/red.log",
+      "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/green.log",
+      "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/audit-red.log"
+    ],
+    "scratch_leftovers": [],
+    "summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/impact-summary.json"
+  },
+  "sum_peak_allocations_removed": 57217024
+}

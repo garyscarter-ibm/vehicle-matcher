@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "g42-interruption-review.v1",
+  "scope": "117 completed strict sessions plus actual118source and supplementaryexacteventunion; no replay",
+  "time": "2026-11-07T05:02:02.009497+00:00",
+  "originalFailure": {
+    "session": 118,
+    "source": "rc0,12GET,8solver,6admitted,2rejected",
+    "retained": "4of5; missing actualstarted6inprimary eventfile; exactrow retainedadjacent",
+    "error": "AssertionError: owned stage failed; preserve primary and stop",
+    "originalReceiptPreserved": true,
+    "cause": "unresolved; no logger/OneDrive/PID cause established"
+  },
+  "actual": {
+    "sessionsSpent": 118,
+    "gets": 1416,
+    "solverRequests": 944,
+    "newlyAccepted": 776,
+    "rejected": 168,
+    "duplicates": 0,
+    "cumulativeCanonicalEntries": 3171,
+    "cumulativeAdmittedSourceConfigurations": 3168,
+    "cumulativeSpentSolverRequests": 4148
+  },
+  "completedStrictPrefix": {
+    "sessions": 117,
+    "retainedChecksPerSession": 5,
+    "newlyAccepted": 770,
+    "rejected": 166,
+    "canonical": {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-2248-20261107-once/sessions/session117/final-canonical-index.json",
+      "sha256": "682f8409c2fbbff989a61271daa62b3717902e9a18554217478dbd0a91676aca"
+    },
+    "spent": {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-2248-20261107-once/sessions/session117/final-spent-request-index.json",
+      "sha256": "4a80142f3849db98c9e72117e3496ee2c982ea220f8b57cdd0b39b971b125ad4"
+    }
+  },
+  "session118": {
+    "canonical": {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-2248-20261107-once/sessions/session118/final-canonical-index.json",
+      "sha256": "d5115bb146e8d61a662c7fbaa50f96f0f72e07b6bae68e7496194255aa2c05cf"
+    },
+    "spent": {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-2248-20261107-once/sessions/session118/final-spent-request-index.json",
+      "sha256": "4302e85e4608cbc647d43f7e3cfe3e7208b22fa0542b5f05ded90258855d7b68"
+    },
+    "supplementaryEventEvidence": {
+      "path": "docs/gcsp/evidence/fucq59/g42-unspent2248-series-2026-11-07/session118-supplementary-event-union.json",
+      "sha256": "e5d8c560faf81159ed1d88601e37e94f8bbf599851760e353f9960b2ffde555b"
+    },
+    "original4of5Preserved": true,
+    "additionalActualEventCheck": "passed",
+    "requiresParentActualAudit": true
+  },
+  "phaseReceipts": {
+    "continuation-checkpoint.json": {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-2248-20261107-once/continuation-checkpoint.json",
+      "sha256": "3cbc7cec009a8c95c247c1bc215706b77633181945e19240ff7cbd0b766aec43"
+    },
+    "continuation-receipt.json": {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-2248-20261107-once/continuation-receipt.json",
+      "sha256": "66e63f3bf55ce244c46dfb4762741ffcfc29bfb187c1f9baebf3e788babc745f"
+    },
+    "continuation-cleanup.json": {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-2248-20261107-once/continuation-cleanup.json",
+      "sha256": "93233bf55b9aff1c189034161f07ca29b9d158fec9726c8643dc764cb4bfae7a"
+    },
+    "continuation-process-ownership.json": {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-2248-20261107-once/continuation-process-ownership.json",
+      "sha256": "a727d65eaccaf17b0c8890643b6c65ce6621eb3c42504daa3b37dc6b90326bcc"
+    }
+  },
+  "cleanup": {
+    "ownedManifests": 236,
+    "groups": 236,
+    "groupsAbsent": true,
+    "scratchRootsAbsent": true,
+    "tokensAbsent": true,
+    "dependencyLinkAbsent": true,
+    "removedAllocationBytes": 61885504,
+    "retainedLogicalBytes": 801522490,
+    "compatibilityException": null,
+    "leftovers": []
+  },
+  "remainingUnspent": {
+    "solverRequests": 1304,
+    "bootstrapGets": 652,
+    "publicGets": 1956,
+    "sessions": 163,
+    "separateFreshPacketAndReleaseRequired": true
+  },
+  "acceptance": false,
+  "globalUnionWithF70Required": true,
+  "originalPhaseRemainsConsumed": true
+}

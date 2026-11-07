@@ -17,7 +17,7 @@ async function main(args) {
     : command === 'publish' ? ['--artifacts', '--store'] : ['--store'];
   if (!required.every((key) => typeof values[key] === 'string' && isAbsolute(values[key])) || !values['--run-id']
     || !/^\d{4}-\d{2}-\d{2}T.*(?:Z|[+-]\d\d:\d\d)$/.test(values['--as-of'] || '') || !Number.isFinite(Date.parse(values['--as-of']))) return [2, fail('Supply all required absolute paths, --run-id and a valid ISO --as-of. No paths or policy context are guessed.')];
-  const options = { policyService: createPolicyService(), policyRead: { runId: values['--run-id'], asOf: values['--as-of'],
+  const options = { indexed: true, policyService: createPolicyService(), policyRead: { runId: values['--run-id'], asOf: values['--as-of'],
     ...(values['--policy-version'] ? { policyVersion: values['--policy-version'] } : {}) } };
   let result;
   if (command === 'prepare') result = await writeCorpusCandidate(values['--artifacts'], JSON.parse(await readFile(values['--input'], 'utf8')), options);

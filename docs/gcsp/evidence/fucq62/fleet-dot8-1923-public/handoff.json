@@ -1,0 +1,112 @@
+{
+  "acceptance": false,
+  "checkPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot8-1923-public-20261107/check/check.json",
+  "checkSha256": "5be562f8c3cfe28d1184b8814581c7b332348159bd07b0116b6586029f9398a3",
+  "cleanup": {
+    "check": {
+      "codeIdentityUnchanged": true,
+      "compatibilityException": null,
+      "dependencyLinkAbsent": true,
+      "freeDiskBytes": 55269052416,
+      "groupsAbsent": true,
+      "inputIdentityUnchanged": true,
+      "leftovers": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot8-1923-public/check/ownership/ddc933d2c71b46ef8aee167736012e40.json",
+      "removedScratchPeakBytes": 0,
+      "reservationAbsent": true,
+      "retainedLogicalBytes": 12422,
+      "retainedOutput": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot8-1923-public-20261107/check",
+      "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot8-1923-public-20261107/.scratch/test-stamp-shard-ddc933d2c71b46ef8aee167736012e40",
+      "scratchAbsent": true
+    },
+    "local-check": {
+      "codeIdentityUnchanged": true,
+      "compatibilityException": null,
+      "dependencyLinkAbsent": true,
+      "freeDiskBytes": 55276847104,
+      "groupsAbsent": true,
+      "inputIdentityUnchanged": true,
+      "leftovers": [],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot8-1923-public/local-check/ownership/3ef90a70c19c431c87f6bab2426f0c17.json",
+      "removedScratchPeakBytes": 0,
+      "reservationAbsent": true,
+      "retainedLogicalBytes": 653,
+      "retainedOutput": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot8-1923-public-20261107/local-check",
+      "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot8-1923-public-20261107/.scratch/test-stamp-shard-3ef90a70c19c431c87f6bab2426f0c17",
+      "scratchAbsent": true
+    }
+  },
+  "descriptorSha256": "4bdd52141fc37fa85faca210da96789b8775f6a31c8b004abf4f80c7f58e7305",
+  "expected": {
+    "bytes": 99480791,
+    "configurations": 1924,
+    "configuredConsumerFailed": 469,
+    "configuredConsumerPassed": 1456,
+    "datasets": 9,
+    "direct": 1925,
+    "files": 23,
+    "httpComplement": 901,
+    "httpSample": 1024,
+    "httpUnique": 1925,
+    "images": 2,
+    "sourceConfigurations": 1923,
+    "sourceShards": 12,
+    "vinMappings": 1
+  },
+  "knownConsumerFailureRequestKeysSha256": "daa4913aa1e987416df546c38d48b6cc58340ce6c260f2d93d26c327948d7119",
+  "networkLimits": {
+    "anonymousDownloadChildren": 1,
+    "anonymousMaxRequests": 46,
+    "assetSuccessResponses": 23,
+    "metadataCheckMaxApiCalls": 5,
+    "payloadBytes": 99480791,
+    "publishMaxApiCalls": 32,
+    "retryPolicy": "No automatic retry after any failed public attempt; retain actual status, causes and partial receipt. New bounded attempt requires parent authorization.",
+    "transport": "production fleet-artifacts CLI; anonymous GitHub release asset URLs plus approved redirects; deny Authorization and Cookie headers"
+  },
+  "ordinaryHelper": {
+    "execution": "unrun; root authorized activation after complete public proof and root anchor selection",
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/activate-fleet-dot8.mjs",
+    "sha256": "96e79701eb95fc50f0abeddd99963e44b52985e39443175a27559f71be0b655b",
+    "syntax": "passed"
+  },
+  "ordinaryPublicationExecuted": false,
+  "planSha256": "1ff235ad7ee2ea333d7a85aca0aad235b373629201af679f0d2ab803df04533e",
+  "previousExpected": {
+    "configurations": 1134,
+    "datasets": 8,
+    "images": 2,
+    "sourceConfigurations": 1133,
+    "vinMappings": 1
+  },
+  "proofSchema": "fleet-dot8-public-dto-http-proof.v1",
+  "publicMutationExecuted": false,
+  "releaseId": "9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043",
+  "runnerSha256": "14e9bff9c81d4c01851727111b4441709f2309e929eda5311055a2ebdc3288e0",
+  "schemaVersion": "fleet-dot8-public-preparation-handoff.v1",
+  "status": "prepared-and-readonly-checked-public-mutation-unrun",
+  "supportPins": {
+    "prove-restored.mjs": "4ebf509f9f3e175a6d5da22cb20dae58cd5c9fe38d518180de6100ad0499ecba",
+    "supervise.py": "d9c5cb8b200546e7e096cd8bf5970cd2520d5a0c35a7adcfd8326c423c6ab019"
+  },
+  "tag": "fleet-2026-11-07-8",
+  "target": "f175d3648d199057fc62b67f823214cae84f31e0",
+  "unrun": [
+    ".8 public prerelease creation/asset uploads",
+    "anonymous production CLI download/cold restore",
+    "fresh public-byte DTO/consumer/HTTP/recovery proof",
+    "ordinary .8 activation and CI/Render/live boundary"
+  ],
+  "validation": {
+    "localCheckReceiptSha256": "9c4870991e576067bd5a4d719b7a93d614d01f424eb65aaff4e274d171cd6ff2",
+    "readOnlyCheck": "passed; exact .7 release/tag and .8 absence",
+    "readOnlyGitHubApiCalls": 5,
+    "syntax": [
+      "run.mjs",
+      "prove-restored.mjs",
+      "supervise.py",
+      "../activate-fleet-dot8.mjs"
+    ],
+    "unchangedOfflineProof": "not rerun; pinned .8 evidence reused"
+  }
+}

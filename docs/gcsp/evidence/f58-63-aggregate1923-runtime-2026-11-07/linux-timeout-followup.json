@@ -1,0 +1,12 @@
+{
+  "time": "2026-11-07T04:44:02.956929+00:00",
+  "originalLinuxRun": 42339281451,
+  "originalCode": "f76498aa2a82aaff866b22b6ca3cd01a77ea23b9",
+  "result": "failed-timeout124;originalfailurepreserved",
+  "failurePhase": "noindividualphasemarkers; 150seconds stepwall,90secondproofcap",
+  "cleanup": "originalrunlog confirms ownedroot absent;153884KiB scratch removed",
+  "adjustment": "proofcap210s,totalbudget420s,job8minutes; samepublicreleaseandchecks",
+  "selected": "YAMLparse+bashsyntax passed; unchangedRenderfiltercheck andcanonicalproof reused",
+  "newWorkflowSha256": "504374d66caf99b96b90defd8741be73eefc42d43e8b9e77e0a700f4d5ec1362",
+  "acceptance": false
+}

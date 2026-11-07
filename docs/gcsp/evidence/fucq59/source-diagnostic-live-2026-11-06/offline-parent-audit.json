@@ -1,0 +1,68 @@
+{
+  "at": "2026-11-06T13:12:10.680981+00:00",
+  "git": {
+    "head": {
+      "rc": 0,
+      "out": "a5b48dc9beb0c0be00946b6a4effec7deb9cb0cf\n",
+      "err": ""
+    },
+    "status": {
+      "rc": 0,
+      "out": "",
+      "err": ""
+    },
+    "remote": {
+      "rc": 0,
+      "out": "a5b48dc9beb0c0be00946b6a4effec7deb9cb0cf\trefs/heads/dev/DEV-2026-11-04-032\n",
+      "err": ""
+    }
+  },
+  "mismatchedPins": [],
+  "markerAbsent": true,
+  "observationAbsent": true,
+  "allocations": [
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/live-diagnostic/round1/runs/ownership/00fae08208624ac6ace68697dd7ef40e.json",
+      "root": "/private/tmp/test-stamp-shard-00fae08208624ac6ace68697dd7ef40e",
+      "rootAbsent": true,
+      "state": "removed",
+      "peakRemovedBytes": 0,
+      "groups": [
+        {
+          "pgid": 21525,
+          "absent": true
+        }
+      ]
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/live-diagnostic/round1/runs/ownership/5e88aaaa3c654c279ab543ddb5ec0131.json",
+      "root": "/private/tmp/test-stamp-shard-5e88aaaa3c654c279ab543ddb5ec0131",
+      "rootAbsent": true,
+      "state": "removed",
+      "peakRemovedBytes": 138080,
+      "groups": [
+        {
+          "pgid": 21811,
+          "absent": true
+        }
+      ]
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/pass-1255/supervisor-check/ownership/e26f50570dee47eba5575f6833a18b55.json",
+      "root": "/private/tmp/test-stamp-shard-e26f50570dee47eba5575f6833a18b55",
+      "rootAbsent": true,
+      "state": "removed",
+      "peakRemovedBytes": 29248,
+      "groups": [
+        {
+          "pgid": 24290,
+          "absent": true
+        }
+      ]
+    }
+  ],
+  "sampledScratchRemovedBytes": 167328,
+  "codeTestRunnerHash": "5cb5adafd7d1826fc5a953984863c21aca499a402b8f7e5b61521905018e87f7",
+  "supervisorHash": "2a109f4c9fa453a675458c45563a8f384dc387c5e120cd1dc0aa2f19b43b8cce",
+  "compatibilityException": null
+}

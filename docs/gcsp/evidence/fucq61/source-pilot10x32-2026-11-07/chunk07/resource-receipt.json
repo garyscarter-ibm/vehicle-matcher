@@ -1,0 +1,76 @@
+{
+  "scope": "scoped actual source chunk plus postcleanup retained artifact integrity",
+  "selectedChecks": [
+    "retained primary/export equality and checkpoint digest",
+    "all retained source artifact hashes, bytes and document equality",
+    "accepted/rejected/duplicate/cursor reconciliation",
+    "canonical uniqueness and prior-ID exclusion",
+    "exact plan/prior/spent/code pins and spent-request exclusion",
+    "source attempt and solver accounting",
+    "supervisor process/link/scratch/reservation absence"
+  ],
+  "excluded": "No rerun of unchanged capability tests, full suite, UI/runtime or full F61 acceptance",
+  "verification": {
+    "passed": true,
+    "sourceCaptures": 31,
+    "cumulativeAdmitted": 247,
+    "spentSolverRequestsBefore": 277,
+    "spentSolverRequestsAfter": 309
+  },
+  "supervisorResult": {
+    "identity": {
+      "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk07/collection-plan.json": "18dbb1da5077c62073e69278d784c5bd1e1164b21e9c3a9b35bf7d8eb933e121",
+      "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk07/execution-plan.json": "d07a54645502ae95078cfd27741ba76fb305a658165f45dada6ae4ae31a04eb6",
+      "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk07/prior-canonical-index.json": "a33fd6dbd14e4f4361aafacf4f0cbf5dbf44cc89991e386738796263261b9062",
+      "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk07/run-live.mjs": "f2823bb2d051bcf034cd42eeec1d894d8f44a6d92b28570a9dedc559c6633984",
+      "scripts/gcsp/bmw-public-registration.mjs": "82de1dfa3389ac019d271cfb865af9a395c9c85d4246b09529577e03deb54244",
+      "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+      "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+      "scripts/gcsp/capture-bmw-selection.mjs": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+      "scripts/gcsp/collect-fleet.mjs": "5edbeb880115e52a2e1d0ffa21560cc2c9d3ba46c73c8cc880c15f57d196cb5a",
+      "scripts/gcsp/collection-session.mjs": "1f22fe1cdf27d3e6f2be015e32b69b5ecc435c546fe9964396270e3db6e9421e",
+      "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+      "scripts/gcsp/public-bmw-source.mjs": "4f5c93505c7e558d0ff3cf3afadbfb97ef45bde9b615e9033c8d440628b75f24",
+      "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+      "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+      "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+      "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+      "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+      "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+      "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+      "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+    },
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/pilot10x32/chunk07/live.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/pilot10x32/chunk07/ownership/230663e142af4e41888f0b609860f7b5.json",
+    "peak_rss": 316030976,
+    "peak_scratch": 0,
+    "rc": 0,
+    "scope": "scoped",
+    "summary": {},
+    "wall": 27.332629542000003
+  },
+  "cleanup": {
+    "checkpointExport": {
+      "accepted": 31,
+      "checkpointSha256": "d3b59ad52c448127e303e35b271b7eff159210eb029a4ca57b3e1d98c3bccba9",
+      "cursor": 32,
+      "primaryRetained": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk07/collector-checkpoint.json",
+      "sourceBindingSemantics": "requires-source-binder-verification; hashes-only-export",
+      "sourceCaptures": 31,
+      "status": "exported"
+    },
+    "code_identity_unchanged": true,
+    "compatibility_exception": null,
+    "dependency_link_absent": true,
+    "groups_absent": true,
+    "primaryExists": true,
+    "removed_allocation_bytes": 0,
+    "reservation_absent": true,
+    "retainedPrimary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk07/collector-checkpoint.json",
+    "retainedWriterMetadata": [],
+    "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/pilot10x32/chunk07/live-result.json",
+    "scratch_absent": true
+  }
+}

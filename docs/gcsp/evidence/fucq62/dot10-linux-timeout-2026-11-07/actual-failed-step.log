@@ -1,0 +1,49 @@
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	﻿2026-11-07T06:31:58.0184834Z ##[group]Run set -euo pipefail
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0185262Z ^[[36;1mset -euo pipefail^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0185670Z ^[[36;1mtask_root="$RUNNER_TEMP/gcsp-fleet-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0186708Z ^[[36;1mmanifest="$GITHUB_WORKSPACE/.claude/test-runs/ci-fleet-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.json"^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0187238Z ^[[36;1mtest ! -e "$task_root"^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0187514Z ^[[36;1mmkdir -p "$(dirname "$manifest")"^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0188809Z ^[[36;1mprintf '{"root":"%s","owner":"%s","workers":1,"scratchBudgetMiB":768,"seconds":570,"scope":"Node20Linux exact26asset restore and5scoped runtime references; full4668 proof not replayed;1313 original consumer failures; acceptance false"}\n' "$task_root" "$GITHUB_RUN_ID" > "$manifest"^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0189880Z ^[[36;1mcleanup() {^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0190098Z ^[[36;1m  result=$?^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0190324Z ^[[36;1m  if test -d "$task_root"; then^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0190599Z ^[[36;1m    du -sk "$task_root"^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0190898Z ^[[36;1m    rm -rf -- "$task_root"^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0191141Z ^[[36;1m  fi^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0191346Z ^[[36;1m  test ! -e "$task_root"^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0191719Z ^[[36;1m  printf 'Owned scratch absent; no retained archive; exit=%s\n' "$result"^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0192120Z ^[[36;1m  exit "$result"^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0192336Z ^[[36;1m}^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0192528Z ^[[36;1mtrap cleanup EXIT^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0192762Z ^[[36;1mmkdir "$task_root"^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0193088Z ^[[36;1mexport TMPDIR="$task_root" TMP="$task_root" TEMP="$task_root"^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0193445Z ^[[36;1mnode --version^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0193666Z ^[[36;1mcd server^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0193959Z ^[[36;1mtimeout 120s npm ci --ignore-scripts --no-audit --no-fund^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0194864Z ^[[36;1mtimeout 180s node --max-old-space-size=384 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network download > "$task_root/download.json"^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0196548Z ^[[36;1mtimeout 60s node --max-old-space-size=384 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network offline > "$task_root/offline.json"^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0197383Z ^[[36;1mcd ..^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0197702Z ^[[36;1mproof=docs/gcsp/evidence/fucq62/fleet-dot10-followthrough-plan^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0198373Z ^[[36;1mtimeout 30s node --max-old-space-size=384 "$proof/verify-assets.mjs" "$task_root/store" "$task_root/cache/$RELEASE"^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0199200Z ^[[36;1mtimeout 120s node --max-old-space-size=384 "$proof/boundary.mjs" "$task_root/store" "$task_root/cache/$RELEASE" "$task_root"^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0199820Z ^[[36;1mnode --input-type=module - "$task_root" <<'JS'^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0200199Z ^[[36;1mimport assert from 'node:assert/strict';^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0200529Z ^[[36;1mimport {readFile} from 'node:fs/promises';^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0201036Z ^[[36;1mconst root=process.argv[2];const read=async name=>JSON.parse(await readFile(`${root}/${name}.json`));^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0201768Z ^[[36;1mconst downloaded=await read('download'),offline=await read('offline'),boundary=await read('boundary-receipt');^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0202842Z ^[[36;1massert.equal(downloaded.status,'ok');assert.equal(downloaded.mode,'cold-restore');assert.equal(downloaded.active.manifestDigest,process.env.RELEASE);assert.ok(downloaded.externalCalls<=104);^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0203922Z ^[[36;1massert.equal(offline.status,'ok');assert.equal(offline.idempotent,true);assert.equal(offline.externalCalls,0);^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0204960Z ^[[36;1massert.equal(boundary.count,5);assert.equal(boundary.consumerErrors,2);assert.equal(boundary.sourceCalls+boundary.externalCalls,0);assert.equal(boundary.serverClosed,true);^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0207033Z ^[[36;1mconsole.log(JSON.stringify({scope:'Linux scoped5boundary+exact26assets',runtime:process.version,platform:process.platform,manifestDigest:process.env.RELEASE,scopedReferences:5,scopedConsumerFailures:2,original4668ProofReplayed:false,originalConsumerFailures:1313,buildHTTPSCalls:downloaded.externalCalls,fullSuiteRun:false,acceptance:false}));^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0208618Z ^[[36;1mJS^[[0m
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0234102Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0234528Z env:
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0234844Z   RELEASE: 0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0235424Z ##[endgroup]
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.0370972Z v20.20.2
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.5918926Z 
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:31:58.5919618Z added 14 packages in 492ms
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:34:02.9541621Z 367300	/home/runner/work/_temp/gcsp-fleet-42347409603-1
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:34:02.9927407Z Owned scratch absent; no retained archive; exit=124
+fleet-node20	Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained	2026-11-07T06:34:02.9943392Z ##[error]Process completed with exit code 124.

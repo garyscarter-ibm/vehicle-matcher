@@ -1,0 +1,41 @@
+name: GCSP public health diagnostic
+
+on:
+  push:
+    branches: [gcsp-poc]
+    paths: [.github/workflows/gcsp-health-diagnostic.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  public-health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Read public health once from the Linux runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -I -B - <<'PYTHON'
+          import datetime, hashlib, json, time, urllib.request, urllib.error
+          for name, url in [('gcsp-api', 'https://gcsp-api.onrender.com/health'), ('retail-api', 'https://bmw-matcher-api.onrender.com/health')]:
+              started = time.monotonic()
+              result = {'service': name, 'method': 'GET', 'at': datetime.datetime.now(datetime.timezone.utc).isoformat(), 'attempts': 1, 'scope': 'public health only; no credentials, source traffic, retries, files or acceptance assertion'}
+              try:
+                  try:
+                      response = urllib.request.urlopen(urllib.request.Request(url, headers={'Accept': 'application/json'}), timeout=70)
+                  except urllib.error.HTTPError as error:
+                      response = error
+                  with response:
+                      body = response.read(8193)
+                      result.update(status=response.status, bytes=len(body), bodySha256=hashlib.sha256(body).hexdigest(), bounded=len(body) <= 8192, headers={key: response.headers.get(key) for key in ['server', 'date', 'content-type', 'rndr-id', 'x-render-routing'] if response.headers.get(key)})
+                      if len(body) <= 8192 and 'application/json' in response.headers.get('content-type', ''):
+                          parsed = json.loads(body)
+                          result['healthOk'] = parsed.get('ok') is True if isinstance(parsed, dict) else False
+              except Exception as error:
+                  result['errorType'] = type(error).__name__
+              result['elapsedMs'] = round((time.monotonic() - started) * 1000, 2)
+              print(json.dumps(result, sort_keys=True), flush=True)
+          PYTHON

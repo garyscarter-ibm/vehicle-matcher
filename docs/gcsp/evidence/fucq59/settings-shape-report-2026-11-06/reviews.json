@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "f59-settings-shape-independent-reviews.v1",
+  "reviewedHead": "30d1aae55adbe4e2d48ee530abd215b801ea7fe0",
+  "fullRange": "812e6c6bfda22083d7c40a90a0749b747e460c73..30d1aae55adbe4e2d48ee530abd215b801ea7fe0",
+  "correctionRange": "930e97283b86c749dd8b2af7ef85e8dfc97e0055..30d1aae55adbe4e2d48ee530abd215b801ea7fe0",
+  "codeTestIdentity": "9d63aa36a7bbbb29432d4a8b03f2cd585abfdd4e53d671919a8798f28f674a1b",
+  "currentScopedValidation": {
+    "passed": 33,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "todo": 0,
+    "prior21BoundaryChecks": "historical; not counted as current"
+  },
+  "finding": {
+    "round0": "failedRole array coerced through enum-key lookup and survived resealed checkpoint reopen/export",
+    "round1": "closed: string guard precedes lookup; regression attempts both operations and asserts exact rejection codes; pre-fix behavioral red retained"
+  },
+  "reviews": [
+    {
+      "kind": "code",
+      "name": "Sam Sheepdog",
+      "thread": "01a1b0a9-be2e-7da0-a5e3-d165c7154c78",
+      "turn": "01a1b120-907c-79a3-b5f6-23afa7d9333b",
+      "verdict": "passed",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "requestedModel": "gpt-6.1-sol",
+      "requestedEffort": "high",
+      "effectiveRuntimeVerified": true,
+      "fallback": null,
+      "testsRerun": 0,
+      "sourceRequests": 0,
+      "scratchAllocated": 0
+    },
+    {
+      "kind": "security",
+      "name": "Pugh",
+      "thread": "01a1b084-1d5e-71d2-90d8-0e183d9482bc",
+      "turn": "01a1b120-a187-7990-b04f-d61cdf2ee9f5",
+      "verdict": "passed",
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "requestedModel": "gpt-6.1-sol",
+      "requestedEffort": "high",
+      "effectiveRuntimeVerified": true,
+      "fallback": null,
+      "testsRerun": 0,
+      "sourceRequests": 0,
+      "scratchAllocated": 0
+    }
+  ],
+  "evidence": "round1.json records tested code hashes, commands, red and green evidence and cleanup. Full verbatim review results retained in dispatcher pass-1352.",
+  "cleanup": {
+    "ownedRoots": 2,
+    "rootsOwnersGroupsReservationsAbsent": true,
+    "dependencyOverlayAbsent": true,
+    "sampledScratchRemovedBytes": 12512,
+    "successfulLogsRemovedBytes": 6068,
+    "preexistingUnownedBytecodePreserved": true,
+    "leftovers": [],
+    "compatibilityException": null
+  },
+  "sourceAllocation": 0,
+  "sourceRequestsThisCheckpoint": 0,
+  "acceptance": {
+    "F59": "six complete/two blocked",
+    "freshPublicAccepted": 0,
+    "admission": false,
+    "mappingsPending": 74,
+    "sourceQualification": "open",
+    "currentF39F54Publication": "open",
+    "F60Integration": "open",
+    "fullNativeAcceptance": "open"
+  },
+  "scope": "Offline report checkpoint only; no shared-base merge, story closure or acceptance. Existing public source/retention authority stands; prior execution allowances remain spent."
+}

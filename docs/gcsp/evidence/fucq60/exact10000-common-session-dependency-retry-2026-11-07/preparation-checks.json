@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "f60-dependency-retry-static-preparation.v1",
+  "scope": "Python AST/metadata/byte identity checks only; no runtime proof, imports, source/SQL calls or symlink creation",
+  "planSha256": "0eb2698603bcec192202bd0b743cd0278e807b688537951bd26f10179a17a518",
+  "codeIdentity": "60d013bdd9242e00f33be7a3db33a4b1e57c7273dcd9a2842e0c0ec4ac2fcc51",
+  "dependencyIdentity": "7e32452e4095321cddea576b363be01340b30e88a45c1d9cf00c06f0d06072b8",
+  "checkedPins": 184,
+  "oldPacket37PinsAndPlanUnchanged": true,
+  "unchangedProofScripts": {
+    "common.mjs": "7fc979603512b3a18afd27aabe15182c9fb2efbbe58e63e1ee94a9903ce5eb1f",
+    "collector-bridge.mjs": "42cf4a686c3b2c60bdc650c49d3b3bdba7b315f9ec484ffbe245dc70f40be64d",
+    "proof.mjs": "5789d50756fed5a9179e0959d1f3883dcbbe6f8bd62d216d352cf8f6440fcf55",
+    "summarize.mjs": "11824f266f9236236e80e249995d1da3ffda3a5343432e2ce2fd0db345a2b026"
+  },
+  "sourceManifestBridgeChunksAssertionsUnchanged": true,
+  "dependencyFiles": 139,
+  "dependencyLogicalBytes": 475201,
+  "dependencyMembershipAndLocksPinned": true,
+  "preparationFailurePreserved": {
+    "kind": "static membership-order mismatch before any execution",
+    "cause": "pathlib component ordering differs from string ordering of relative module names",
+    "correction": "generator members explicitly sorted as relative strings, matching verifier",
+    "runtimeCalls": 0
+  },
+  "originalFailurePreserved": {
+    "state": "incomplete",
+    "rc": 1,
+    "rows": 0,
+    "credit": 0,
+    "retainedFiles": 3
+  },
+  "syntax": "2 Python AST parses; unchanged4JS syntax evidence reused; no module evaluation",
+  "selectedRuntime": "parent-reviewed collector-bridge only first, then calibrated exact chunks if released",
+  "unrun": [
+    "collector-bridge retry",
+    "157 bulk chunks",
+    "summary",
+    "runtime dependency resolution/cleanup",
+    "source/live/consumer/native/full suite"
+  ],
+  "authorization": false,
+  "acceptance": false,
+  "resources": {
+    "testsRun": 0,
+    "proofRuns": 0,
+    "sourceCalls": 0,
+    "SQLCalls": 0,
+    "dependencyLinkCreated": false,
+    "scratchCreated": false,
+    "children": 0,
+    "largeOutput": false,
+    "removedAllocationBytes": 0,
+    "compatibilityException": null,
+    "leftovers": []
+  }
+}

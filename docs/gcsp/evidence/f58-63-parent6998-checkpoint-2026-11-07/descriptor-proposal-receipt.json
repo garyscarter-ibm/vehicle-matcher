@@ -1,0 +1,20 @@
+{
+  "status": "offline-descriptor-and-release-anchor-proposal-only",
+  "manifestDigest": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+  "previousManifestDigest": "28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884",
+  "jsonlMaxBytes": 134217728,
+  "assets": 26,
+  "sources": 15,
+  "totalAssetBytes": 239679009,
+  "descriptorSha256": "f74ddd34fd853868f3f43a9528ffe74d4fe187a2b7a0d5fbd7b4c796ef7ae05a",
+  "releaseAnchorBeforeSha256": "b0eaafddedc55f163fdf32a6a77afb3f55eb2096d5e31256e8bf8591f50c085b",
+  "releaseAnchorProposalSha256": "cc807e73c08447637b2c909e89ff08075af1236373e568756ab295d14b8fa32c",
+  "consumerErrors": 1313,
+  "sourceCalls": 0,
+  "externalCalls": 0,
+  "runtimeRegistrationApplied": false,
+  "packageExecuted": false,
+  "ordinaryPublicationExecuted": false,
+  "publicUploadExecuted": false,
+  "acceptance": false
+}

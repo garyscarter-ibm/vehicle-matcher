@@ -1,0 +1,126 @@
+{
+  "at": "2026-11-06T14:50:53.175732+00:00",
+  "sourceAllocationState": "consumed;both attempts used;never replay",
+  "producerCommit": "5d2d3a2a12171314f636e07341060d682ac29bf4",
+  "countBasis": "validated-final-checkpoint",
+  "counts": {
+    "sourceCalls": 2,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "cacheEvictions": 0,
+    "httpAttempts": 2,
+    "decodedBytes": 638409,
+    "operations": {
+      "page": 1,
+      "settings": 1,
+      "discover": 0,
+      "options": 0
+    },
+    "cacheHits": {
+      "page": 0,
+      "settings": 0,
+      "discover": 0,
+      "options": 0
+    },
+    "operationBytes": {
+      "page": 17763,
+      "settings": 620646,
+      "discover": 0,
+      "options": 0
+    }
+  },
+  "status": "settings-refused",
+  "stopCode": "settings-header-shape",
+  "structuralFacts": {
+    "tree": {
+      "profileMatches": 2,
+      "distinctCandidates": 1,
+      "conflictingCandidates": false,
+      "strictVerdict": "refused"
+    },
+    "localisation": {
+      "profileMatches": 2,
+      "distinctCandidates": 1,
+      "conflictingCandidates": false,
+      "strictVerdict": "refused"
+    }
+  },
+  "semanticsQualified": false,
+  "accepted": 0,
+  "admission": false,
+  "cleanup": {
+    "scratchRoot": "/private/tmp/test-stamp-shard-a7317e1ba4c843d3bc12ce753b179d6b",
+    "ownershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/supervision/ownership/a7317e1ba4c843d3bc12ce753b179d6b.json",
+    "scratchAbsent": true,
+    "ownerAbsent": true,
+    "launcherAbsent": true,
+    "groupsAbsent": true,
+    "ownedTokenAbsentUnderLock": true,
+    "removedAllocationBytes": 12288,
+    "sampledScratchRemovedBytes": 12288,
+    "removedLogBytes": 61,
+    "sampledRssBytes": 71598080,
+    "wallSeconds": 0.8372297500027344,
+    "compatibilityException": null,
+    "leftovers": []
+  },
+  "immutableProducerHashes": {
+    "scripts/gcsp/collect-fleet.mjs": "8bc059fcec47c46c6e209b8e64fc11c519083fd62fde1652d7229d7c5adc689b",
+    "scripts/gcsp/collection-session.mjs": "b2cd36ec77c2f63fd58795e83125ef135732e6b768a9e1492caf194c94b9248c",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/public-bmw-source.mjs": "68f5104c3c9f303af89a91e2e3c8c2474b66956e03271bf61bf42e703155d30f",
+    "scripts/gcsp/settings-shape-report.mjs": "e6f4bade6186fc4b122052749fb2a0e518f889f68d771b17524a4e63cc2f0113",
+    "server/gcsp/repository/core.js": "c55c93c543886108f67aa12bc5c7519d50063e90ba4ec78df37aa0df56d6f311",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "06c0910c131fdb0e2e4ef254dc5591f13c90ecb3f36f655aef3cb651aa0052a1",
+    "server/test/gcsp-fleet-collector.test.js": "d8c7c7315faa05c6bd328a9b7f8ada58fe31bf5c229a51c0e63106d920057ff9",
+    "server/test/gcsp-settings-shape-report.test.js": "f1ca4f0b7cccb7a657a987dc6d882f6a8eaec1458ab62b83e88669ae34be4115",
+    "docs/gcsp/evidence/fucq59/source-qualification-plan-2026-11-06/plan.json": "65d78142d43fcf5167e9d4c4e3710f07de97082a7418efad7b05bfa9cbc7c3c4",
+    "docs/gcsp/evidence/fucq59/source-qualification-plan-2026-11-06/projection-contract.json": "d6f6dd16dcd2cf63c1e67b5cccb11ba2e9eeee2ce138b9c2afd44603d7475385",
+    "docs/gcsp/evidence/fucq59/source-qualification-plan-2026-11-06/projection-contract.md": "d6c06138c02bf616b40f69ef783e53e00ff3faf5b8dab8c574534c2147abbc25",
+    "scripts/gcsp-demo.mjs": "b8ce1a7760ada2c7742f7869d1b1d6045af1777a2c3cc67be1ff1bc165345216",
+    "scripts/gcsp/bmw-source-qualification.mjs": "eda2660125ff589a968d861d02f86122ef71df30354351cfe4eee76f43d355e8",
+    "server/gcsp/runtime.js": "f4654b8053d3927a3564a3701784367e976b04549ee66fb1a9a754032f88cb16",
+    "server/gcsp/vehicle-evidence/corpus-publisher.js": "db7e3fd9ff5ff4342872a54c6ca40dd3dda35fc31c51e3dbdb2910b067cd5e49",
+    "server/index.js": "1560e4a99077e4ea648f66b87566b908404312787e5fdfcc59a5ba10debf1741",
+    "server/test/gcsp-bmw-source-qualification.test.js": "532ff51f8c37a2a743553715a14b2ce06db7e6b5c1962bcfaf8eb7b7096543f8",
+    "server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json": "ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3"
+  },
+  "preservedSpentRegistration": true,
+  "preservedSpentMarker": true,
+  "retainedFiles": {
+    "execution-selection.json": {
+      "bytes": 4063,
+      "sha256": "e4ff8ff4572c63e66c7984bcc549901061afc27359b29aa4d50e0b045d3b1364"
+    },
+    "settings-execution-once.json": {
+      "bytes": 311,
+      "sha256": "fe684140b65fd9502c9c00c1f3547c8d422003e813ad282c8ebd98ec6d302421"
+    },
+    "supervision/supervisor-registration.json": {
+      "bytes": 787,
+      "sha256": "b3394d3bfce9ebfb9e0ca085ecb2d53768dc937030bf9c4e51ea8147218e85b1"
+    },
+    "supervision/allocation.json": {
+      "bytes": 1706,
+      "sha256": "36dcd6a52cd8143b5bcb51cb95eba1f239dea5a1c1cc0b34fa1da275ea8985b9"
+    },
+    "supervision/supervisor-receipt.json": {
+      "bytes": 1558,
+      "sha256": "6a2871de37f942da766d22aefd29525ed884d4da019a6a550c7ac8482fd21e7a"
+    },
+    "observation/receipt.json": {
+      "bytes": 2093,
+      "sha256": "13c9a6b036de328c4da5deb77ddcd01572a5ea5babde5f7534ffe6d0530ea112"
+    },
+    "observation/settings-shape.json": {
+      "bytes": 2770,
+      "sha256": "931c77cf08a2e83c72239b74c66515814cd17c5b70205b6df70298c7ec2a550e"
+    },
+    "supervision/ownership/a7317e1ba4c843d3bc12ce753b179d6b.json": {
+      "bytes": 389,
+      "sha256": "7569ca25f17707c53be48ff422ee2a567bb8a7a686f35fc8d6f57083aefc1f8f"
+    }
+  }
+}
