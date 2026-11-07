@@ -1,0 +1,52 @@
+{
+  "status": "exact-restored-input-and-code-proof-reuse-with-scoped-runtime-boundary",
+  "releaseId": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+  "files": 26,
+  "bytes": 239679009,
+  "inventorySha256": "f5d33165ec35d27e9140e465139940b25f1b9a5c124ca067ba2433599db9e20f",
+  "downloadReceiptSha256": "5530ac1aea8a7fb9bb164ab1925362a1e07174ccfc9116e41306eeb85c6665eb",
+  "boundaryReceiptSha256": "c8f0afe953832de13a5736d3720291765a02e49a88fe86fcfa08e9b2b35b2915",
+  "runtime": "v26.7.0",
+  "platform": "darwin",
+  "originalSummarySha256": "49151f3a5a3ff1dd6474ad8b9de8977ee515616c4a163b8ea7b668bb479b9b75",
+  "originalProofReceipts": [
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot10-4666-20261107/http-chunk0-receipt.json",
+      "bytes": 601642,
+      "sha256": "9fe6d85cbb4b60bf073c4ea8e20993d4762118235965c92779a0cfdb25bd8545"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot10-4666-20261107/http-chunk1-receipt.json",
+      "bytes": 799729,
+      "sha256": "b4d6a97ef612fcca87f514a910429bdc4fd9dab969af780921a01ce4f59d075f"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot10-4666-20261107/http-chunk2-receipt.json",
+      "bytes": 730668,
+      "sha256": "5f1bcf8ae26b9facc39d8ce6e28828073454b8cb4f16461531aed1bf55685cb7"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot10-4666-20261107/http-chunk3-receipt.json",
+      "bytes": 601707,
+      "sha256": "87ab662767e4ef1d9bc31c90641ee648dd8a03eb84c3aeebaf26b5d94392418b"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot10-4666-20261107/http-chunk4-receipt.json",
+      "bytes": 336416,
+      "sha256": "8dc53560423b4a5e68172ddbc45ed562ee2d61ec7c519160a3c366e756cbd535"
+    }
+  ],
+  "fullReferenceProofReexecuted": false,
+  "reusedReferences": 4668,
+  "consumerPassed": 3355,
+  "consumerFailed": 1313,
+  "strictStatus": "invalid-active",
+  "consumerAcceptanceWaived": false,
+  "scopedBoundaryReferences": 5,
+  "scopedBoundaryConsumerFailures": 2,
+  "coldOfflineRepeat": true,
+  "sourceCalls": 0,
+  "externalCalls": 0,
+  "nativeStockProof": "unrun",
+  "acceptance": false
+}

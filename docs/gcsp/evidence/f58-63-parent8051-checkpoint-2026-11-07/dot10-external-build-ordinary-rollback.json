@@ -1,0 +1,56 @@
+{
+  "status": "exact-previous-ordinary-restored-for-external-build",
+  "time": "2026-11-07T06:31:16.063232+00:00",
+  "reason": "50MiB repository blob guard refuses88304767byte configs; exactpublic .10 buildrestore already implemented and validated",
+  "ordinaryDot10ProofRetained": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot10-4666-20261107/followthrough/ordinary/receipt.json",
+  "publicReleaseId": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+  "ordinaryManifestDigest": "28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884",
+  "ordinary52BeforePinsAllRestored": true,
+  "metadata": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/active.json",
+      "provedDot10Sha256": "34bd35dbda9a984dc6d38ad443326ad021e520f24d87c8152b18e7c0d7e7539e",
+      "restoredPreviousSha256": "337266f829e1878280898a94968051e465c9462c89dc91eaac9e5e43d39ab814"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/last-good.json",
+      "provedDot10Sha256": "f638f7d9efe40afb3d27e54a3795cda77e6ce735d1409c25caf5e5f317464206",
+      "restoredPreviousSha256": "6a3c3fcecb1f6ef4e06d3685c6e0e0c52285057043f4538a7f5f4d8514e1bf45"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/identity-inventory.json",
+      "provedDot10Sha256": "f5d33165ec35d27e9140e465139940b25f1b9a5c124ca067ba2433599db9e20f",
+      "restoredPreviousSha256": "f7fdf7460388e6012b81e3a3abd1879dc4bbae61e333b86d5afdbc93aa01e439"
+    }
+  ],
+  "removedOnlyGeneratedDot10Version": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+  "newFilesVerifiedBeforeRemoval": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a/manifest.json",
+      "sha256": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+      "bytes": 8255
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a/configurations.jsonl",
+      "sha256": "b801d60721b315c9922e543440a83a6cb3c6090e120cbd973e7ae64496e0f685",
+      "bytes": 88304767
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a/vins.jsonl",
+      "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
+      "bytes": 2565
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a/images.jsonl",
+      "sha256": "eb04f0dca3046b045dd000ef4312eabc3d4b9af59b141cb0bd0e26a32230588a",
+      "bytes": 1410
+    }
+  ],
+  "removedLogicalBytes": 88317078,
+  "removedAllocatedBytes": 88330240,
+  "versionAbsent": true,
+  "publicAssetsAndExternalCandidateRetained": true,
+  "newGitBlobCommitted": false,
+  "acceptance": false,
+  "leftovers": []
+}

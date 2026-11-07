@@ -1848,7 +1848,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T06:23:23Z",
+      "observed_at": "2026-11-07T06:28:35Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60",
       "workers": [
         {
@@ -1959,8 +1959,8 @@
           "id": "real-source",
           "status": "in-progress",
           "title": "Real catalogue source coverage evidence",
-          "observed_at": "2026-11-07T06:23:23Z",
-          "evidence": "7,517 parent-proved source /7,520 canonical /9,759 spent-index entries, including conservative failed-template exclusions. Exact primary/events/chain/test identities,35,435 read-only checks/zero errors. Original acceptance open."
+          "observed_at": "2026-11-07T06:28:35Z",
+          "evidence": "8,051 parent-proved source /8,054 canonical /10,543 spent-index entries, including conservative failed-template exclusions;1,949 short10k.44,322 read-only checks/zero errors. New534 over7517; original acceptance open."
         },
         {
           "id": "real-assets",
@@ -2120,7 +2120,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-58",
-      "observed_at": "2026-11-07T06:23:24Z",
+      "observed_at": "2026-11-07T06:28:35Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -2145,9 +2145,9 @@
           "title": "Corroborate selected GB/RHD descriptor, year, plant and era"
         },
         {
-          "evidence": "7,517 parent-proved source /7,520 canonical /9,759 spent-index entries, including conservative failed-template exclusions. Exact primary/events/chain/test identities,35,435 read-only checks/zero errors. Original acceptance open.",
+          "evidence": "8,051 parent-proved source /8,054 canonical /10,543 spent-index entries, including conservative failed-template exclusions;1,949 short10k.44,322 read-only checks/zero errors. New534 over7517; original acceptance open.",
           "id": "scheme-catalogue",
-          "observed_at": "2026-11-07T06:23:24Z",
+          "observed_at": "2026-11-07T06:28:35Z",
           "status": "in-progress",
           "title": "Join every scheme line to exact dated constructible catalogue contexts"
         },
@@ -2313,7 +2313,7 @@
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-04-032",
       "id": "FUCQ-59",
-      "observed_at": "2026-11-07T06:23:24Z",
+      "observed_at": "2026-11-07T06:28:35Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -2345,9 +2345,9 @@
           "title": "Finite source budgets, deadlines and default no-traffic safety (2 points)"
         },
         {
-          "evidence": "7,517 parent-proved source /7,520 canonical /9,759 spent-index entries, including conservative failed-template exclusions. Exact primary/events/chain/test identities,35,435 read-only checks/zero errors. Original acceptance open.",
+          "evidence": "8,051 parent-proved source /8,054 canonical /10,543 spent-index entries, including conservative failed-template exclusions;1,949 short10k.44,322 read-only checks/zero errors. New534 over7517; original acceptance open.",
           "id": "source-qualification",
-          "observed_at": "2026-11-07T06:23:24Z",
+          "observed_at": "2026-11-07T06:28:35Z",
           "status": "in-progress",
           "title": "Selected real-source model mapping and solver integration (1 point)"
         },
@@ -2559,15 +2559,15 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T06:23:24Z",
+      "observed_at": "2026-11-07T06:28:35Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-61",
       "slices": [
         {
           "id": "source-run",
           "status": "in-progress",
           "title": "Execute qualified real collection",
-          "observed_at": "2026-11-07T06:23:24Z",
-          "evidence": "7,517 parent-proved source /7,520 canonical /9,759 spent-index entries, including conservative failed-template exclusions. Exact primary/events/chain/test identities,35,435 read-only checks/zero errors. Original acceptance open."
+          "observed_at": "2026-11-07T06:28:35Z",
+          "evidence": "8,051 parent-proved source /8,054 canonical /10,543 spent-index entries, including conservative failed-template exclusions;1,949 short10k.44,322 read-only checks/zero errors. New534 over7517; original acceptance open."
         },
         {
           "id": "semantic-audit",
@@ -2745,7 +2745,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T06:23:24Z",
+      "observed_at": "2026-11-07T06:31:35Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62",
       "claim_evidence": "Claimed owning035 at34a793e3; root checkpoint authorisation, Jira OAuth unavailable. Full acceptance remains open.",
       "slices": [
@@ -2788,8 +2788,8 @@
           "id": "source-targets",
           "status": "in-progress",
           "title": "Actual 200 target and scheme model coverage",
-          "observed_at": "2026-11-07T06:23:24Z",
-          "evidence": "7,517 independently reconciled source; numeric200 target exceeded. Original coverage open. .10 immutable4,666source prerelease uploaded; exact26asset anonymous cold restore passed."
+          "observed_at": "2026-11-07T06:28:35Z",
+          "evidence": "8,051 parent-proved source /8,054 canonical /10,543 spent-index entries, including conservative failed-template exclusions;1,949 short10k.44,322 read-only checks/zero errors. New534 over7517; original acceptance open."
         },
         {
           "id": "scale",
@@ -2802,15 +2802,15 @@
           "id": "integration",
           "status": "in-progress",
           "title": "Application and deployed integration acceptance",
-          "observed_at": "2026-11-07T06:23:24Z",
-          "evidence": "Actual Render7617454370 at91fe6cae succeeded. .9health/readiness/oneDTO scoped live pass. .10 public upload/download passed; separate offline/recovery/ordinary steps pending."
+          "observed_at": "2026-11-07T06:31:35Z",
+          "evidence": ".10 public26asset restore/offlinerepeat/5boundaryrefs/4recoveryedges/ordinaryactivation passed. Localordinary restored exact.9 after50MiBGitguard; Renderbuild selects publicpinned.10. ActualLinux/deployment pending; Mediumconsumerdefect deferred."
         },
         {
           "id": "large-artifact-restore",
           "status": "complete",
           "title": "Checksum-pinned external artifacts and offline restore",
-          "observed_at": "2026-11-07T05:49:11.486454+00:00",
-          "evidence": "Public .9actual24rawassets; freshanonymous realCLI plusoffline2426direct/HTTP/recoverypass. Linux42343046040 exact12657190success. Removed221694016Bscratch; ownedgroups/link/token absent."
+          "observed_at": "2026-11-07T06:28:35Z",
+          "evidence": ".10 actual26assets/239679009bytes anonymous coldrestore; genuine offlinerepeat+5boundaryrefs+4newintegrityedges passed. Original4668proof reused at exact code/input/runtime. Removed375956924logicalBcopies; allgroups/link/token/scratch absent."
         }
       ],
       "unsliced": false,

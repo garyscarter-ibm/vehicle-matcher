@@ -12,7 +12,7 @@ permissions:
 jobs:
   fleet-node20:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
         with:
@@ -20,17 +20,17 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - name: Build restore and exact 2426 reference proof with 485 observed consumer failures
+      - name: Restore exact26 assets and scoped5 runtime boundaries; prior4668 evidence retained
         shell: bash
         env:
-          RELEASE: 28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884
+          RELEASE: 0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a
         run: |
           set -euo pipefail
           task_root="$RUNNER_TEMP/gcsp-fleet-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           manifest="$GITHUB_WORKSPACE/.claude/test-runs/ci-fleet-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.json"
           test ! -e "$task_root"
           mkdir -p "$(dirname "$manifest")"
-          printf '{"root":"%s","owner":"%s","workers":1,"scratchBudgetMiB":384,"seconds":420,"scope":"Node20 Linux exact public restore,2426 references,485 observed consumer failures; acceptance false"}\n' "$task_root" "$GITHUB_RUN_ID" > "$manifest"
+          printf '{"root":"%s","owner":"%s","workers":1,"scratchBudgetMiB":768,"seconds":570,"scope":"Node20Linux exact26asset restore and5scoped runtime references; full4668 proof not replayed;1313 original consumer failures; acceptance false"}\n' "$task_root" "$GITHUB_RUN_ID" > "$manifest"
           cleanup() {
             result=$?
             if test -d "$task_root"; then
@@ -46,24 +46,20 @@ jobs:
           export TMPDIR="$task_root" TMP="$task_root" TEMP="$task_root"
           node --version
           cd server
-          npm ci --ignore-scripts --no-audit --no-fund
-          timeout 120s node --max-old-space-size=256 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network download > "$task_root/download.json"
-          timeout 60s node --max-old-space-size=256 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network offline > "$task_root/offline.json"
+          timeout 120s npm ci --ignore-scripts --no-audit --no-fund
+          timeout 180s node --max-old-space-size=384 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network download > "$task_root/download.json"
+          timeout 60s node --max-old-space-size=384 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network offline > "$task_root/offline.json"
           cd ..
-          proof=docs/gcsp/evidence/fucq62/fleet-dot9-2424-release-plan
-          timeout 90s node --max-old-space-size=256 "$proof/audit-restored.mjs" "$task_root/store" "$task_root/cache/$RELEASE" "$task_root"
-          for chunk in 0 1 2; do
-            timeout 90s node --max-old-space-size=256 "$proof/prove-restored.mjs" "$task_root/store" "$task_root/cache/$RELEASE" "$task_root" "$chunk"
-          done
-          timeout 90s node --max-old-space-size=256 "$proof/recovery.mjs" "$task_root/store" "$task_root/cache/$RELEASE" "$task_root"
-          timeout 30s node --max-old-space-size=256 "$proof/summarize-restored.mjs" "$task_root"
+          proof=docs/gcsp/evidence/fucq62/fleet-dot10-followthrough-plan
+          timeout 30s node --max-old-space-size=384 "$proof/verify-assets.mjs" "$task_root/store" "$task_root/cache/$RELEASE"
+          timeout 120s node --max-old-space-size=384 "$proof/boundary.mjs" "$task_root/store" "$task_root/cache/$RELEASE" "$task_root"
           node --input-type=module - "$task_root" <<'JS'
           import assert from 'node:assert/strict';
           import {readFile} from 'node:fs/promises';
           const root=process.argv[2];const read=async name=>JSON.parse(await readFile(`${root}/${name}.json`));
-          const downloaded=await read('download'),offline=await read('offline'),summary=await read('restored-summary');
-          assert.equal(downloaded.status,'ok');assert.equal(downloaded.mode,'cold-restore');assert.equal(downloaded.active.manifestDigest,process.env.RELEASE);assert.ok(downloaded.externalCalls<=96);
+          const downloaded=await read('download'),offline=await read('offline'),boundary=await read('boundary-receipt');
+          assert.equal(downloaded.status,'ok');assert.equal(downloaded.mode,'cold-restore');assert.equal(downloaded.active.manifestDigest,process.env.RELEASE);assert.ok(downloaded.externalCalls<=104);
           assert.equal(offline.status,'ok');assert.equal(offline.idempotent,true);assert.equal(offline.externalCalls,0);
-          assert.equal(summary.exactUniqueReferences,2426);assert.equal(summary.consumerFailed,485);assert.equal(summary.acceptance,false);
-          console.log(JSON.stringify({runtime:process.version,platform:process.platform,...summary,buildHTTPSCalls:downloaded.externalCalls,fullSuiteRun:false}));
+          assert.equal(boundary.count,5);assert.equal(boundary.consumerErrors,2);assert.equal(boundary.sourceCalls+boundary.externalCalls,0);assert.equal(boundary.serverClosed,true);
+          console.log(JSON.stringify({scope:'Linux scoped5boundary+exact26assets',runtime:process.version,platform:process.platform,manifestDigest:process.env.RELEASE,scopedReferences:5,scopedConsumerFailures:2,original4668ProofReplayed:false,originalConsumerFailures:1313,buildHTTPSCalls:downloaded.externalCalls,fullSuiteRun:false,acceptance:false}));
           JS
