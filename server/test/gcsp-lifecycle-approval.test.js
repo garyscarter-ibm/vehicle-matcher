@@ -9,7 +9,6 @@ import { PolicyService, FilePolicyProvider } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { RenewalCaseService } from '../gcsp/cases/index.js';
 import { createLifecycleApprovalService, HANDLER_ID, EXCEPTION_CONSUMER } from '../gcsp/lifecycle/approvals/index.js';
-import { createLifecycleApprovalRoutes } from '../gcsp/lifecycle/approvals/http.js';
 import { createSyntheticOrderingStatus, createLiveOrderingStatusStub } from '../gcsp/adapters/synthetic-ordering-status.js';
 import { acknowledgedSelection, pendingSelection, createRealProducer } from './helpers/gcsp-lifecycle-approval.js';
 
@@ -177,7 +176,7 @@ test('employee and run scoping, presenter/Greg reads, and truthful not-found and
 test('HTTP routes use the server-owned context and ignore browser-supplied employee and run IDs', async (t) => {
   const f = await setup(t); const order = await f.seed(f.paula); await f.tick();
   const { buildServer } = await import('../index.js');
-  const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspRoutes: createLifecycleApprovalRoutes(f.service), gcspAllowedOrigins: ['https://lifecycle.test'] });
+  const server = buildServer({ gcspIdentity: f.identity, gcspClock: f.clock, gcspLifecycle: f.service, gcspAllowedOrigins: ['https://lifecycle.test'] });
   assert.equal((await server.gcspStartup).status, 'ok'); server.listen(0, '127.0.0.1'); await once(server, 'listening');
   t.after(async () => { server.closeAllConnections(); await new Promise((resolve) => server.close(resolve)); });
   const sessions = {};
