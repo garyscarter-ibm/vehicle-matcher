@@ -2197,7 +2197,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T09:52:21Z",
+      "observed_at": "2026-11-07T12:01:06Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-61",
       "slices": [
         {
@@ -2230,10 +2230,10 @@
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Integrate actual collected enriched corpus and cached replay",
-          "observed_at": "2026-11-07T09:52:21Z",
-          "evidence": "Exact 10,000 report merged with 94 evidence pins; public .12 cold BUILD passed on Linux in 121 seconds. Subsequent offline repeat timed out at 90 seconds, later phases unrun. Actual deployed readback and final acceptance assessment remain."
+          "observed_at": "2026-11-07T12:01:06Z",
+          "evidence": "Exact 10,000 replay, cached restart, semantic/staging and 32-allocation accounting reconciled; independent review at aa73fc72 recommends In Review. Preserve irrecoverable outcome, whole-history duration/traffic and RAM overrun limits. docs/gcsp/evidence/fucq61/accounting-reconciliation-2026-11-07/README.md. No new BUILD gate."
         }
       ],
       "unsliced": false,
