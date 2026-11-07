@@ -1,0 +1,109 @@
+{
+  "artifactChecks": [
+    {
+      "id": "tree",
+      "bytesMatch": true,
+      "shaMatch": true,
+      "responseHashMatches": true,
+      "rawSelectionHashMatches": true
+    },
+    {
+      "id": "solver",
+      "bytesMatch": true,
+      "shaMatch": true,
+      "responseHashMatches": true,
+      "rawSelectionHashMatches": true
+    }
+  ],
+  "counts": {
+    "factory": 47,
+    "accessory": 1,
+    "providerAdded": 44
+  },
+  "accessories": [
+    {
+      "code": "SE000001",
+      "type": "accessory",
+      "quantity": {
+        "state": "unknown",
+        "value": null,
+        "reason": "quantity-not-exposed"
+      }
+    }
+  ],
+  "derivedChanges": {
+    "basis": "request-resolved-set-difference",
+    "added": [
+      "S0230",
+      "S02PA",
+      "S02VB",
+      "S02VD",
+      "S0302",
+      "S03DK",
+      "S03G9",
+      "S03M1",
+      "S0428",
+      "S0488",
+      "S0494",
+      "S04T2",
+      "S04U9",
+      "S04UR",
+      "S04V1",
+      "S0552",
+      "S05AS",
+      "S05AV",
+      "S05DM",
+      "S0654",
+      "S0674",
+      "S06AE",
+      "S06AF",
+      "S06AK",
+      "S06C4",
+      "S06NX",
+      "S06PA",
+      "S0704",
+      "S0710",
+      "S0760",
+      "S0775",
+      "S0812",
+      "S0853",
+      "S0880",
+      "S08R3",
+      "S08R9",
+      "S08SM",
+      "S08TF",
+      "S08TG",
+      "S08WM",
+      "S09QV",
+      "S09T1",
+      "S09T2",
+      "SE000001"
+    ],
+    "removed": [],
+    "ignored": {
+      "state": "unknown",
+      "codes": null
+    }
+  },
+  "modelFacts": {
+    "modelCode": "T5MJ",
+    "agModelCode": "72HH",
+    "modelRange": "G61",
+    "steering": "RL",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05",
+    "taxDate": "2027-01-05",
+    "derivative": "I5 40",
+    "bodyStyle": "TO",
+    "agBodyStyle": "TO",
+    "hybridCode": "BEVE",
+    "engineSeries": "HA0",
+    "driveType": "HR",
+    "transmission": "X"
+  },
+  "sourceAttempts": 4,
+  "decodedBytes": 782059,
+  "sourceTransportAll200": true,
+  "admission": false,
+  "accepted": []
+}

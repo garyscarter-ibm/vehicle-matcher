@@ -543,14 +543,112 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-57"
     },
     {
+      "assignee": "Russell Gowers",
       "id": "FUCQ-59",
+      "observed_at": "2026-11-07T00:21:49Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "Lead reviewed target Base64/accessory/alias behavior; two offline regression tests pass, scoped receipt lead59/receipt-identity-green.json; F54 publication compatibility remains separately planned.",
+          "id": "canonical-identity",
+          "observed_at": "2026-11-06T10:10:35Z",
+          "status": "complete",
+          "title": "Canonical configuration identity and factory/accessory separation (2 points)"
+        },
+        {
+          "evidence": "Lead reviewed exact F39 typed selection/context/solver changes; 24/24 offline regressions pass, receipt-lifetime-deadline-green.json. Real source separate.",
+          "id": "resolved-selection",
+          "observed_at": "2026-11-06T10:26:40Z",
+          "status": "complete",
+          "title": "Deterministic candidates and complete solver response validation (3 points)"
+        },
+        {
+          "evidence": "Lead reviewed version2 common session;31collector/session +29F39/F54 scoped tests pass60/60, including generic-stage persisted HTTP stops, deadline-byte accounting, cache/resume, SIGKILL and active writer boundaries. source-executor-2026-11-06/validation-and-cleanup.json.",
+          "id": "atomic-resume",
+          "observed_at": "2026-11-06T10:56:10Z",
+          "status": "complete",
+          "title": "Versioned bounded cache and atomic checkpoint/resume (3 points)"
+        },
+        {
+          "evidence": "Lead verified exact GET allowlist/header restrictions, combined4attempt/2MiB budgets,1MiB response,10s complete-body timeout/join and45s persisted deadline;60/60 scoped tests and actual4GET/200/782059B pilot, zero retries/images/browser/writes. Defaults retain zero traffic.",
+          "id": "finite-offline",
+          "observed_at": "2026-11-06T10:56:10Z",
+          "status": "complete",
+          "title": "Finite source budgets, deadlines and default no-traffic safety (2 points)"
+        },
+        {
+          "evidence": "Actual saved-source non-test collector run persists accepted1, admissiontrue; byte-stable restart and exact registered v2 adapter partial envelope; coherent deletion refuses. Scoped4ingress/8binder/12v2/22v1/77collector pass. Optional facts unknown. Generalised candidate/model registrations next; no new source traffic. source-admission-2026-11-07/validation.json.",
+          "id": "source-qualification",
+          "observed_at": "2026-11-07T00:21:48Z",
+          "status": "in-progress",
+          "title": "Selected real-source model mapping and solver integration (1 point)"
+        },
+        {
+          "evidence": "Source-qualified row now enters persisted shared accepted state and existing registered v2 adapter lookup. F60 is consuming that stable session/registration seam; actual F54 corpus publication and application/default registration still unproved. No acceptance claim from admitted row alone.",
+          "id": "publication-contract",
+          "observed_at": "2026-11-07T00:21:49Z",
+          "status": "in-progress",
+          "title": "F39/F54 identity, provenance and selected-source compatibility (1 point)"
+        },
+        {
+          "evidence": "Lead reviewed authored retailer/API injected-memory scope; node --test server/test/brand.test.js server/test/api.test.js passes132/132, receipt-retailer-api.json.",
+          "id": "retailer-boundary",
+          "observed_at": "2026-11-06T10:26:40Z",
+          "status": "complete",
+          "title": "Retailer mapping and API regression boundary"
+        },
+        {
+          "evidence": "Current8binder checks and actual positive/coherent deletion negative pass. Earlier12v2/77existingcollector scoped proof retained at unchanged target modules before pure binder transport guard; no final full-suite claim. Actual accepted→F60→F54/application integration remains required; preserve8slices.",
+          "id": "full-validation",
+          "observed_at": "2026-11-07T00:13:56Z",
+          "status": "in-progress",
+          "title": "Authored serial npm test integration gate (1 point)"
+        }
+      ],
+      "status": "In Progress",
       "title": "Collect distinct constructible configurations with resumable batches",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59",
+      "workers": [
+        {
+          "name": "Cecil Turtle",
+          "role": "story-lead",
+          "harness": "codex",
+          "source": "thread01a1b054-1167-7820-b9f2-92ec81e37bbe",
+          "observed_at": "2026-11-06T15:38:48.934995+00:00",
+          "expires_at": "2026-11-06T15:38:48.934995+00:00",
+          "status": "stopped; frozen binder checkpoint complete; 69 scoped passes and offline replay; requested/selected/runtime Sol high, no fallback"
+        },
+        {
+          "name": "Sulley",
+          "role": "implementer",
+          "harness": "codex",
+          "source": "thread01a1b15c-c7b7-7ff1-ae8e-5d840ec09dbc",
+          "observed_at": "2026-11-06T15:04:41.021643+00:00",
+          "expires_at": "2026-11-06T15:04:41.021643+00:00",
+          "status": "Completed four-file canonical selector/v2 report correction; requested/selected/runtimeSol medium; no fallback/descendants; no child tests/scratch"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "source-support-lead",
+          "harness": "codex",
+          "source": "thread01a1b348-4753-7ea3-bfb7-c0784b47889e; requested/selected gpt-6.1-sol/high; no fallback",
+          "observed_at": "2026-11-07T00:10:51.020382+00:00",
+          "expires_at": "2026-11-07T00:55:51.020382+00:00",
+          "status": "Actual source binding/review and F58/F59 coherent publication; acceptance remains open"
+        },
+        {
+          "name": "Sally Carrera",
+          "role": "implementer",
+          "harness": "codex",
+          "source": "thread01a1b349-5b20-7d41-acbe-cf0bc002457f; requested/selected gpt-6.1-sol/medium; no fallback",
+          "observed_at": "2026-11-07T00:10:51.020382+00:00",
+          "expires_at": "2026-11-07T00:55:51.020382+00:00",
+          "status": "Final bounded transport-provenance review correction; no descendants/source calls"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-04-032"
     },
     {
       "id": "FUCQ-60",
@@ -1447,20 +1545,20 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-58",
-      "observed_at": "2026-11-05T23:55:18Z",
+      "observed_at": "2026-11-07T00:17:35Z",
       "original_status": "In Progress",
       "slices": [
         {
-          "evidence": "Lead reviewed historical045c9f7/93e890f qualifier and boundary evidence; synthetic contracts do not establish external qualification.",
+          "evidence": "F58 usable checkpoint integrated on gcsp-poc3411af0e. Actual-base14/14 scoped plan/refusal/CLI checks pass after exact portable destination correction; initial12/14 failure retained. Original enabled compatible UK profile, all-scheme-model and five-WMI AC remain open; no Done claim.",
           "id": "plan-contract",
-          "observed_at": "2026-11-05T23:33:04.204649Z",
+          "observed_at": "2026-11-07T00:17:34Z",
           "status": "complete",
           "title": "Offline versioned plan and context/profile refusal contract"
         },
         {
-          "evidence": "Lead reviewed1d3fce7/327cec4,14 scoped tests and current read-only source/retention authority; finite actual pilot settings retained.",
+          "evidence": "Fresh7Nov known-build capture exactly4GET,782059 decoded bytes, zero retry/timeout/substitution/image/browser/source write. All finite allocation spent, no replay. Complete47factory+accessory unknown quantity retained. Approved36GET/32solver next engineering chunk is a separate future allocation, not executed.",
           "id": "source-budget",
-          "observed_at": "2026-11-05T23:33:04.204649Z",
+          "observed_at": "2026-11-07T00:17:34Z",
           "status": "complete",
           "title": "Authorised finite source budget, dry run and privacy refusal"
         },
@@ -1486,9 +1584,9 @@
           "title": "Prove distinct configurations for every required WMI"
         },
         {
-          "evidence": "Final CLI still refuses incomplete qualification;200/every-model coverage and real profile bindings remain outstanding.",
+          "evidence": "Configuration-only capture and source binding now usable; actual7Nov source record and8binder checks pass, independent CODE/SECURITY PASS. This does not close original F58 UK-profile/year/plant, every-model or five-WMI assurance gaps. Persisted F59 admission and F60/F54/application integration are separate active work.",
           "id": "qualification-integration",
-          "observed_at": "2026-11-05T23:33:04.204649Z",
+          "observed_at": "2026-11-07T00:17:35Z",
           "status": "blocked",
           "title": "Final machine-plan qualification and real-run gate integration"
         }
@@ -1507,6 +1605,15 @@
           "role": "story-lead",
           "source": "thread 01a1ae09-0e2c-78d3-8cc7-87d1a60f8a0f; requested/selected/effective gpt-6.1-sol/high; no fallback",
           "status": "stopped; published blocked7aa6bee"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "story-lead",
+          "harness": "codex",
+          "source": "thread01a1b348-4753-7ea3-bfb7-c0784b47889e; requested/selected gpt-6.1-sol/high; no fallback",
+          "observed_at": "2026-11-07T00:17:34.580106+00:00",
+          "expires_at": "2026-11-07T01:02:34.580106+00:00",
+          "status": "F58 usable checkpoint and checkout-path correction integrated; original UK profile/all-model/five-WMI AC still open; supporting F59 source ingress"
         }
       ]
     },
