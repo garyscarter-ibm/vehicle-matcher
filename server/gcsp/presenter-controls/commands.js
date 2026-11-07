@@ -18,9 +18,14 @@ export async function readPresenterClockConfiguration(policy, run) {
   }
   const step = assumption.value;
   const namedTimes = structuredClone(configured.value.scenario.namedTimes);
-  const nextRelease = Object.hasOwn(namedTimes, 'release') && Date.parse(namedTimes.release) > Date.parse(run.clockInstant)
-    ? { status: 'available', to: 'release', at: namedTimes.release }
-    : { status: 'unavailable', reason: 'No future release cue is configured.' };
+  // A run with generated stock releases on its cadence windows; any other run keeps the named release cue.
+  const windows = run.versions?.stockGeneration?.report?.release?.windows;
+  const next = Array.isArray(windows) ? windows.find((at) => Date.parse(at) > Date.parse(run.clockInstant)) : undefined;
+  const nextRelease = Array.isArray(windows)
+    ? next ? { status: 'available', to: 'release-window', at: next } : { status: 'unavailable', reason: 'No future release window.' }
+    : Object.hasOwn(namedTimes, 'release') && Date.parse(namedTimes.release) > Date.parse(run.clockInstant)
+      ? { status: 'available', to: 'release', at: namedTimes.release }
+      : { status: 'unavailable', reason: 'No future release cue is configured.' };
   return ok({ policyVersion: read.policyVersion, step, namedTimes, nextRelease });
 }
 

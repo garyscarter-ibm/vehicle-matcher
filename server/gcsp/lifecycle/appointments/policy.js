@@ -17,10 +17,11 @@ export const policyUnavailable = () => result('unavailable', { code: 'appointmen
   reason: 'Appointment rules are unavailable. Ask the scheme team to check the demonstration setup.' });
 
 // Every slot, delay, scenario and owner comes from PolicyService; there are no consumer defaults.
-export async function loadAppointmentPolicy(policy, read) {
+export async function loadAppointmentPolicy(policy, read, ownershipKey = APPOINTMENT_KEYS.ownership) {
   if (!policy || typeof policy.getAssumption !== 'function') return policyUnavailable();
+  const keys = [APPOINTMENT_KEYS.slots, APPOINTMENT_KEYS.confirmation, APPOINTMENT_KEYS.scenario, ownershipKey];
   let rows;
-  try { rows = await Promise.all(Object.values(APPOINTMENT_KEYS).map((key) => policy.getAssumption(key, read))); } catch { return policyUnavailable(); }
+  try { rows = await Promise.all(keys.map((key) => policy.getAssumption(key, read))); } catch { return policyUnavailable(); }
   if (rows.some((row) => row?.status !== 'ok' || row.policyVersion !== read.policyVersion || !text(row.value?.basis, 2000)
     || !text(row.value?.unit) || !['assumed', 'verified'].includes(row.value.status))) return policyUnavailable();
   const [slots, confirmation, scenario, ownership] = rows.map((row) => row.value.value);

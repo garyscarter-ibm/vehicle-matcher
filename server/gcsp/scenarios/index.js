@@ -11,9 +11,10 @@ const staleVersion = (field, expectedVersion, currentVersion) => result('stale-v
   expectedVersion, currentVersion, resource: { table: 'scenario-catalogue', field }, action: 'refresh',
 });
 export class ScenarioService {
-  #repository; #policy; #clock; #identity;
-  constructor({ repository, policy, clock, identity } = {}) {
+  #repository; #policy; #clock; #identity; #afterReset;
+  constructor({ repository, policy, clock, identity, afterReset } = {}) {
     this.#repository = repository; this.#policy = policy; this.#clock = clock; this.#identity = identity;
+    this.#afterReset = typeof afterReset === 'function' ? afterReset : undefined;
   }
   async #authorize(context, replay = false) {
     if (!(this.#clock instanceof DemoClock) || !(this.#identity instanceof DemoIdentityAdapter)
@@ -62,8 +63,11 @@ export class ScenarioService {
     if (allowed.value?.historical && scenario.kind !== 'mechanics') return result('stale-run', { reason: 'This request belongs to an earlier demonstration run.' });
     const fixture = await prepareScenarioFixture({ scenarioId: scenario.scenarioId, policy: this.#policy, read: this.#read(run.value) });
     if (fixture.status !== 'ok') return fixture;
-    return this.#clock.reset(context, { commandId: `scenario:${inputDigest(input.commandId)}`, expectedRunId: input.expectedRunId,
+    const reset = await this.#clock.reset(context, { commandId: `scenario:${inputDigest(input.commandId)}`, expectedRunId: input.expectedRunId,
       expectedRunVersion: input.expectedRunVersion, scenarioVersion: input.scenarioVersion, fixtureVersion: input.fixtureVersion }, fixture.value);
+    // The new run's stock source is chosen now; a failure only defers it to the first pull.
+    if (reset.status === 'ok' && this.#afterReset && text(reset.value?.runId)) { try { await this.#afterReset(reset.value.runId); } catch { /* deferred to first pull */ } }
+    return reset;
   }
 }
 export const createScenarioService = (options) => new ScenarioService(options);
