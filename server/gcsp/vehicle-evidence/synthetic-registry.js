@@ -196,7 +196,7 @@ export function createSyntheticRegistry({ root, onPhase = async () => {}, ...opt
       if (snapshot?.manifestDigest === checked.manifestDigest) return { status: 'ok', idempotent: true, active: info() };
       staging = join(root, `.stage-${randomUUID()}`); await mkdir(staging, { mode: 0o700 });
       await durableWrite(join(staging, 'publication-owner.json'), canonicalContent({ schemaVersion: '1', pid: process.pid, token: randomUUID() }), true);
-      for (const file of ['manifest.json', ...CORPUS_FILES]) await durableCopy(join(candidatePath, file), join(staging, file), options.jsonlLimits?.maxBytes);
+      for (const file of ['manifest.json', ...CORPUS_FILES]) await durableCopy(join(candidatePath, file), join(staging, file), (options.jsonlLimitsForManifest?.(checked.manifestDigest) ?? options.jsonlLimits)?.maxBytes);
       await syncDirectory(staging);
       const staged = await validateCorpusDirectory(staging, options);
       if (staged.status !== 'ok') return report(staged);
