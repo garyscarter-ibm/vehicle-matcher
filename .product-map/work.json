@@ -2644,7 +2644,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T09:11:18Z",
+      "observed_at": "2026-11-07T09:21:22Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62",
       "claim_evidence": "Claimed owning035 at34a793e3; root checkpoint authorisation, Jira OAuth unavailable. Full acceptance remains open.",
       "slices": [
@@ -2701,8 +2701,8 @@
           "id": "integration",
           "status": "in-progress",
           "title": "Application and deployed integration acceptance",
-          "observed_at": "2026-11-07T09:11:18Z",
-          "evidence": "Public.12 contains31assets/574382841B/10000source+1reference config/1current-car VIN, consistent4NovQ13. Restore2 fetched31CDN200/62requests then failed179.571s; CLI masks cause. Offline/recovery unrun; cleanup removed592098972B, allroots/groups/tokens absent. Local-input diagnosis next; no blindredownload. Deployment unverified."
+          "observed_at": "2026-11-07T09:21:22Z",
+          "evidence": "Public.12 published10000source+1referenceconfig/1currentVIN. Restore2failed after31asset downloads; causeunproved. Offlinecurrentvalidator20.28s and registryload20.65s pass,active.12/no fallback/0network. RegistryreceiptSHA0ba3afc6631cde9ecd183257a020eef1ddf20aea4b410d6fbd415956f5f714b8; nextoffline storecopy/stagedvalidation. Deploymentunverified; no VIN/native/buildgate added. docs/gcsp/f58-63-morning-status-2026-11-07.md"
         },
         {
           "id": "large-artifact-restore",
@@ -2822,7 +2822,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T09:11:18Z",
+      "observed_at": "2026-11-07T09:21:23Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-63",
       "slices": [
         {
@@ -2857,8 +2857,8 @@
           "id": "integration",
           "status": "in-progress",
           "title": "Integrate actual published corpus and authored regression evidence",
-          "observed_at": "2026-11-07T09:11:18Z",
-          "evidence": "Public.12 contains31assets/574382841B/10000source+1reference config/1current-car VIN, consistent4NovQ13. Restore2 fetched31CDN200/62requests then failed179.571s; CLI masks cause. Offline/recovery unrun; cleanup removed592098972B, allroots/groups/tokens absent. Local-input diagnosis next; no blindredownload. Deployment unverified."
+          "observed_at": "2026-11-07T09:21:23Z",
+          "evidence": "Public.12 published10000source+1referenceconfig/1currentVIN. Restore2failed after31asset downloads; causeunproved. Offlinecurrentvalidator20.28s and registryload20.65s pass,active.12/no fallback/0network. RegistryreceiptSHA0ba3afc6631cde9ecd183257a020eef1ddf20aea4b410d6fbd415956f5f714b8; nextoffline storecopy/stagedvalidation. Deploymentunverified; no VIN/native/buildgate added. docs/gcsp/f58-63-morning-status-2026-11-07.md"
         }
       ],
       "unsliced": false,
