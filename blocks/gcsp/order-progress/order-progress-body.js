@@ -80,7 +80,7 @@ function handoverSection(c) {
   node.append(statement(line), factList(ownerRows(a)));
   if (proposed) {
     const accept = c.on.onAcceptAppointment && button({ label: copy.accept, disabled: c.pending, onClick: () => c.on.onAcceptAppointment(a.proposalId) });
-    add(node, c.actions(accept, c.help(copy.cantMakeIt)));
+    add(node, c.actions(accept), c.help(copy.cantMakeIt));
   }
   add(node, c.history(a, false));
   return node;

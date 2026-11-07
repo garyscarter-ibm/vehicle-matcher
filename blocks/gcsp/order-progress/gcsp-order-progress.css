@@ -16,7 +16,7 @@
 .gcsp .gcsp-order-car-name { margin: 0 0 6px; font-size: 24px; line-height: 1.25; font-weight: 600; overflow-wrap: anywhere; }
 .gcsp .gcsp-order-statement { margin: 0; font-size: 18px; font-weight: 600; overflow-wrap: anywhere; }
 .gcsp .gcsp-order-failure { margin: 0; font-size: 16px; color: var(--gcsp-text-muted); }
-.gcsp .gcsp-order-actions, .gcsp .gcsp-order-slots { display: flex; flex-wrap: wrap; gap: 8px 12px; list-style: none; margin: 0; padding: 0; }
+.gcsp .gcsp-order-actions, .gcsp .gcsp-order-slots { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 8px 12px; list-style: none; margin: 0; padding: 0; }
 .gcsp .gcsp-order-choice { display: grid; gap: 8px; width: 100%; }
 .gcsp .gcsp-order-choice-label { margin: 0; font-size: 16px; font-weight: 600; }
 .gcsp .gcsp-order-progress .vm-screen { animation: none; }

@@ -66,10 +66,10 @@
     {
       "id": "A2:real-account-ready",
       "name": "A2 DEFECT: the standalone live page shows the order after a real order, using the real account read (shell needs account state \"ready\")",
-      "pass": false,
+      "pass": true,
       "detail": {
         "accountState": "no-entitlement",
-        "pageText": "Skip to content Group Car Schemes Portal Account unavailable Your account could not be loaded. Retry Presenter controls ORDER PROGRESS Order progress Order progress unavailable Your order could not be loaded. Try again. "
+        "pageText": "Skip to content Group Car Schemes Portal P Paula (fictional) Presenter controls ORDER PROGRESS Order progress All times are demo time (UTC). Your order No image for this car yet Car details not supplied Order no. 9100001"
       }
     },
     {
@@ -1110,7 +1110,7 @@
     {
       "name": "375-02a-real-account-after-order",
       "file": "375-02a-real-account-after-order.png",
-      "bytesPng": 25460,
+      "bytesPng": 106613,
       "evidence": false,
       "innerWidth": 375,
       "scrollWidth": 375,
@@ -1156,7 +1156,7 @@
     {
       "name": "375-08-account-state3",
       "file": "375-08-account-state3.png",
-      "bytesPng": 364077,
+      "bytesPng": 364046,
       "evidence": false,
       "innerWidth": 375,
       "scrollWidth": 375,
@@ -1185,7 +1185,7 @@
     {
       "name": "375-04b-task-completed",
       "file": "375-04b-task-completed.png",
-      "bytesPng": 178337,
+      "bytesPng": 178342,
       "evidence": false,
       "accountReadStubbed": true,
       "innerWidth": 375,
@@ -1215,7 +1215,7 @@
     {
       "name": "375-05-handover-booked",
       "file": "375-05-handover-booked.png",
-      "bytesPng": 245329,
+      "bytesPng": 245305,
       "evidence": false,
       "accountReadStubbed": true,
       "innerWidth": 375,
@@ -1262,7 +1262,7 @@
     {
       "name": "375-09-account-state6",
       "file": "375-09-account-state6.png",
-      "bytesPng": 362680,
+      "bytesPng": 362651,
       "bytesJpeg": 206938,
       "evidence": true,
       "innerWidth": 375,
@@ -1293,7 +1293,7 @@
     {
       "name": "375-11-fixture-declined",
       "file": "375-11-fixture-declined.png",
-      "bytesPng": 214331,
+      "bytesPng": 214364,
       "bytesJpeg": 136247,
       "evidence": true,
       "accountReadStubbed": true,
@@ -1326,7 +1326,7 @@
     {
       "name": "375-13-fixture-appointment-pending",
       "file": "375-13-fixture-appointment-pending.png",
-      "bytesPng": 201982,
+      "bytesPng": 202017,
       "evidence": false,
       "accountReadStubbed": true,
       "innerWidth": 375,
@@ -1375,7 +1375,7 @@
     {
       "name": "375-16-fixture-ready-for-handover",
       "file": "375-16-fixture-ready-for-handover.png",
-      "bytesPng": 190542,
+      "bytesPng": 190514,
       "evidence": false,
       "accountReadStubbed": true,
       "innerWidth": 375,
@@ -1391,7 +1391,7 @@
     {
       "name": "375-17-fixture-return-unavailable",
       "file": "375-17-fixture-return-unavailable.png",
-      "bytesPng": 221285,
+      "bytesPng": 221251,
       "evidence": false,
       "accountReadStubbed": true,
       "innerWidth": 375,
@@ -1455,8 +1455,8 @@
     {
       "name": "375-07a-change-proposed",
       "file": "375-07a-change-proposed.png",
-      "bytesPng": 218392,
-      "bytesJpeg": 124754,
+      "bytesPng": 218590,
+      "bytesJpeg": 124256,
       "evidence": true,
       "accountReadStubbed": true,
       "innerWidth": 375,
@@ -1471,7 +1471,7 @@
     {
       "name": "375-07b-change-accepted",
       "file": "375-07b-change-accepted.png",
-      "bytesPng": 263496,
+      "bytesPng": 263526,
       "evidence": false,
       "accountReadStubbed": true,
       "innerWidth": 375,
@@ -1490,11 +1490,11 @@
     "GET /api/gcsp/manual/account 200 ok": 12,
     "GET /api/gcsp/context 200 ok": 22,
     "GET /api/gcsp/presenter/scenarios 200 ok": 22,
-    "GET /api/gcsp/orders/progress/all 200 ok": 10,
-    "GET /api/gcsp/orders/progress 200 ok": 14,
-    "GET /api/gcsp/documents 200 ok": 14,
-    "GET /api/gcsp/appointments 200 ok": 14,
-    "GET /api/gcsp/return-plan 200 ok": 14,
+    "GET /api/gcsp/orders/progress/all 200 ok": 11,
+    "GET /api/gcsp/orders/progress 200 ok": 15,
+    "GET /api/gcsp/documents 200 ok": 15,
+    "GET /api/gcsp/appointments 200 ok": 15,
+    "GET /api/gcsp/return-plan 200 ok": 15,
     "GET /api/gcsp/manual/draft 200 ok": 2,
     "GET /api/gcsp/offers/current 200 ok": 2,
     "GET /api/gcsp/manual/order 200 ok": 2,
@@ -1508,16 +1508,16 @@
   },
   "processes": {
     "chrome": {
-      "pid": 6776,
-      "group": 6776
+      "pid": 10256,
+      "group": 10256
     },
     "server-main": {
-      "pid": 6775,
-      "port": 64309
+      "pid": 10255,
+      "port": 64656
     },
     "server-proposed": {
-      "pid": 6775,
-      "port": 64393
+      "pid": 10255,
+      "port": 64707
     }
   },
   "notes": [
@@ -1555,7 +1555,6 @@
   "summary": {
     "checks": 139,
     "failed": [
-      "A2:real-account-ready",
       "A2:current-step"
     ],
     "captures": 25
