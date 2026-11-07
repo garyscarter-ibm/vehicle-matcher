@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
+import { readFileSync, realpathSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { isAbsolute, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const MATRIX_PATH = 'docs/gcsp/sources/choices-eligibility-matrices-2024-10.md';
@@ -15,6 +16,13 @@ const sorted = (value) => Array.isArray(value) ? value.map(sorted)
   : object(value) ? Object.fromEntries(Object.keys(value).sort().map((key) => [key, sorted(value[key])])) : value;
 const canonical = (value) => JSON.stringify(sorted(value));
 const same = (left, right) => canonical(left) === canonical(right);
+const DAY_MS = 86400000;
+const MAX_EVIDENCE_AGE_DAYS = 14;
+const EVIDENCE_ROOT = 'docs/gcsp/evidence/';
+const REPO_ROOT = fileURLToPath(new URL('../../', import.meta.url));
+// Evidence must be observed on or before the qualification date and at most 14 days earlier.
+const fresh = (observed, qualified) => date(observed) && date(qualified) && Date.parse(observed) <= Date.parse(qualified)
+  && Date.parse(qualified) - Date.parse(observed) <= MAX_EVIDENCE_AGE_DAYS * DAY_MS;
 const slug = (value) => value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 
 /** An archived policy transcription, not the active PolicyService or a current catalogue. */
@@ -78,10 +86,83 @@ export function createDemoPlan(matrixText, { asOfDate } = {}) {
   };
 }
 
+/** Anti-substitution: the matrix model must open with the raw range and the derivative must be the engine itself. */
+export function derivativeMatchesEngine(matrixModel, engine, derivative, rawRange) {
+  if (![matrixModel, engine, derivative, rawRange].every(text)) return false;
+  if (matrixModel !== rawRange && !matrixModel.startsWith(`${rawRange} `)) return false;
+  const tail = matrixModel.trim().split(/\s+/).pop().toUpperCase();
+  const wanted = engine.toUpperCase(); const actual = derivative.toUpperCase();
+  return actual === wanted || actual === `${tail} ${wanted}`;
+}
+
+function pointerGet(document, pointer) {
+  if (pointer === '') return document;
+  if (typeof pointer !== 'string' || !pointer.startsWith('/')) return undefined;
+  let node = document;
+  for (const raw of pointer.slice(1).split('/')) {
+    const key = raw.replace(/~1/g, '/').replace(/~0/g, '~');
+    if (node === null || typeof node !== 'object' || !Object.hasOwn(node, key)) return undefined;
+    node = node[key];
+  }
+  return node;
+}
+
+const treeRange = (observation) => new URL(observation.request.url).searchParams.get('model-ranges');
+const sameDay = (observation, expected) => typeof observation?.observedAt === 'string' && observation.observedAt.slice(0, 10) === expected;
+
+/** Reads retained bytes only: hash, locator, source facts and the model-identity rule must all hold. */
+export function verifyMappingEvidence(evidence, { line, mapping, root = REPO_ROOT } = {}) {
+  try {
+    if (!object(evidence) || !object(line) || !object(mapping)) return false;
+    const ref = evidence.sourceRef;
+    if (!text(ref) || isAbsolute(ref) || ref.includes('\\') || ref.split('/').includes('..') || !ref.startsWith(EVIDENCE_ROOT)) return false;
+    const base = realpathSync(resolve(root, EVIDENCE_ROOT)); const file = realpathSync(resolve(root, ref));
+    if (!file.startsWith(base + sep)) return false;
+    const bytes = readFileSync(file);
+    if (hash(bytes) !== evidence.sha256) return false;
+    const document = JSON.parse(bytes.toString('utf8'));
+    const raw = evidence.rawModelRange;
+    if (!text(raw) || (line.model !== raw && !line.model.startsWith(`${raw} `))) return false;
+    if (mapping.status === 'mapped') {
+      const match = /^(.*)\/report\/nodes\/\d+$/.exec(evidence.locator);
+      const node = match && pointerGet(document, evidence.locator); const owner = match && pointerGet(document, match[1]);
+      const facts = node?.facts;
+      return Boolean(facts && owner?.observation && facts.modelCode === mapping.vgModelCode && facts.agModelCode === mapping.agModelCode
+        && evidence.vgModelCode === mapping.vgModelCode && evidence.agModelCode === mapping.agModelCode
+        && facts.modelRange === raw && facts.derivative === evidence.derivative
+        && typeof node.pointer === 'string' && node.pointer.endsWith(`/modelRanges/${mapping.modelRange}/models/${mapping.vgModelCode}`)
+        && treeRange(owner.observation) === mapping.modelRange && sameDay(owner.observation, evidence.observedDate)
+        && derivativeMatchesEngine(line.model, line.engine, facts.derivative, facts.modelRange));
+    }
+    const node = pointerGet(document, evidence.locator);
+    if (evidence.listing === 'empty') {
+      // A dated, range-wide tree request that returned an empty object and no range keys.
+      const request = document.requests?.find((item) => item.category === `tree:${evidence.modelRange}`);
+      return Boolean(node && node.requestedRange === evidence.modelRange && node.requestedRangeFound === false
+        && node.schemeModelLine === line.model && Array.isArray(node.returnedRangeKeys) && node.returnedRangeKeys.length === 0
+        && Array.isArray(node.models) && node.models.length === 0 && request?.status === 200 && request.decodedBytes <= 2
+        && sameDay(document, evidence.observedDate));
+    }
+    if (evidence.listing === 'models' && /\/report$/.test(evidence.locator)) {
+      // The complete model listing of one range-wide tree request, none of which is the scheme's engine.
+      const owner = pointerGet(document, evidence.locator.slice(0, -'/report'.length));
+      const nodes = node?.modelNodes;
+      if (!owner?.observation || !Array.isArray(nodes) || nodes.length === 0 || node.requestScope?.catalogueRangeKey !== evidence.modelRange
+        || treeRange(owner.observation) !== evidence.modelRange || !sameDay(owner.observation, evidence.observedDate)) return false;
+      if (!nodes.every((item) => item?.facts?.modelRange === raw && text(item.facts.derivative))) return false;
+      const listed = [...new Set(nodes.map((item) => item.facts.derivative))].sort();
+      return same(listed, evidence.listedDerivatives)
+        && !listed.some((derivative) => derivativeMatchesEngine(line.model, line.engine, derivative, raw));
+    }
+    return false;
+  } catch { return false; }
+}
+
 /** verifyEvidence must check retained bytes/hash/locator and source claims, not just trust this JSON. */
-export function validateDemoPlan(plan, { matrixText, verifyEvidence } = {}) {
+export function validateDemoPlan(plan, { matrixText, verifyEvidence, root = REPO_ROOT } = {}) {
   const errors = []; const blockers = []; const coverage = { sourceRows: 0, modelLines: 0, mapped: 0, excluded: 0, pending: 0 };
-  const sourceIds = new Set();
+  const sourceIds = new Set(); let unverified = 0;
+  const verify = typeof verifyEvidence === 'function' ? verifyEvidence : verifyMappingEvidence;
   const issue = (code, lineId) => ({ code, ...(sourceIds.has(lineId) ? { lineId } : {}) });
   const error = (code, lineId) => errors.push(issue(code, lineId));
   if (!object(plan) || plan.schemaVersion !== DEMO_PLAN_SCHEMA) return { valid: false, ready: false, errors: [{ code: 'plan-schema' }], blockers, coverage };
@@ -126,30 +207,44 @@ export function validateDemoPlan(plan, { matrixText, verifyEvidence } = {}) {
       continue;
     }
     const evidence = mapping.evidence;
-    if (!object(evidence) || !text(evidence.sourceRef) || !/^[a-f0-9]{64}$/.test(evidence.sha256 || '')
-      || !text(evidence.locator) || evidence.kind !== 'observed' || evidence.market !== 'GB'
-      || evidence.observedDate !== plan.qualificationDate || !date(evidence.observedDate)) {
-      error('mapping-source-evidence', line.id); continue;
-    }
+    const shapeOk = (item) => object(item) && text(item.sourceRef) && /^[a-f0-9]{64}$/.test(item.sha256 || '')
+      && text(item.locator) && item.kind === 'observed' && item.market === 'GB' && fresh(item.observedDate, plan.qualificationDate);
+    if (!shapeOk(evidence)) { error('mapping-source-evidence', line.id); continue; }
     if (evidence.matrixModel !== line.model || evidence.engine !== line.engine) error('mapping-identity-mismatch', line.id);
+    const checks = [{ evidence, mapping }];
     if (mapping.status === 'mapped') {
       if (!code(mapping.modelRange) || !code(mapping.vgModelCode) || !code(mapping.agModelCode)
         || ['modelRange', 'vgModelCode', 'agModelCode'].some((field) => evidence[field] !== mapping[field])) error('mapping-code-evidence', line.id);
-      const modelKey = `${mapping.modelRange}:${mapping.vgModelCode}`;
-      if (mappedModels.has(modelKey)) error('duplicate-model-mapping', line.id);
-      mappedModels.add(modelKey);
+      const extras = mapping.additionalModels === undefined ? [] : mapping.additionalModels;
+      if (!Array.isArray(extras)) error('mapping-code-evidence', line.id);
+      for (const extra of Array.isArray(extras) ? extras : []) {
+        if (!object(extra) || !code(extra.vgModelCode) || !code(extra.agModelCode) || !shapeOk(extra.evidence)
+          || extra.evidence.matrixModel !== line.model || extra.evidence.engine !== line.engine
+          || ['vgModelCode', 'agModelCode'].some((field) => extra.evidence[field] !== extra[field])
+          || extra.evidence.modelRange !== mapping.modelRange) { error('mapping-code-evidence', line.id); continue; }
+        checks.push({ evidence: extra.evidence, mapping: { ...mapping, vgModelCode: extra.vgModelCode, agModelCode: extra.agModelCode } });
+      }
+      for (const item of checks) {
+        const modelKey = `${item.mapping.modelRange}:${item.mapping.vgModelCode}`;
+        if (mappedModels.has(modelKey)) error('duplicate-model-mapping', line.id);
+        mappedModels.add(modelKey);
+      }
     } else if (!text(mapping.reason) || evidence.finding !== 'no-current-model'
-      || evidence.scope !== 'complete-current-uk-model-range') error('exclusion-evidence', line.id);
-    let verified = false;
-    try { verified = typeof verifyEvidence === 'function' && verifyEvidence(evidence, { line, mapping }) === true; } catch { /* Unavailable source proof stays blocked. */ }
-    if (!verified) blockers.push(issue('mapping-evidence-not-verified', line.id));
+      || evidence.scope !== 'complete-current-uk-model-range' || mapping.additionalModels !== undefined) error('exclusion-evidence', line.id);
+    let verified = true;
+    for (const item of checks) {
+      try { verified = verify(item.evidence, { line, mapping: item.mapping, root }) === true && verified; } catch { verified = false; /* Unavailable source proof stays blocked. */ }
+    }
+    if (!verified) { unverified++; blockers.push(issue('mapping-evidence-not-verified', line.id)); }
   }
   coverage.sourceRows = plan.sourceRows?.length || 0; coverage.modelLines = seen.size;
   if (seen.size !== expectedLines.size) error('model-line-coverage');
   if (!coverage.mapped && !coverage.pending) error('no-mapped-models');
   const ready = errors.length === 0 && blockers.length === 0 && coverage.mapped > 0;
   if (plan.status === 'ready' && !ready) error('premature-ready-status');
-  return { valid: errors.length === 0, ready: ready && errors.length === 0, errors, blockers, coverage,
+  const gaps = blockers.filter((item) => item.code === 'mapping-pending' && item.lineId).map((item) => item.lineId);
+  return { valid: errors.length === 0, ready: ready && errors.length === 0,
+    mappedReady: errors.length === 0 && unverified === 0 && coverage.mapped > 0, errors, blockers, gaps, coverage,
     requiredDistinct: Math.max(requirements.minimumDistinct || 200, coverage.mapped * (requirements.minimumPerMappedLine || 8)) };
 }
 

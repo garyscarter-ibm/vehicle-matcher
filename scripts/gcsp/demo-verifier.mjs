@@ -101,7 +101,9 @@ export function verifyFleetCoverage({ records, plan, matrixText, verifyEvidence 
   if (!planReport.ready || !Array.isArray(records)) return pending;
   const mapped = plan.modelLines.filter((line) => line.mapping.status === 'mapped');
   const key = (value) => `${value.modelRange}:${value.vgModelCode}:${value.agModelCode}`;
-  const ownership = new Map(mapped.map((line) => [key(line.mapping), line.id]));
+  const ownership = new Map(mapped.flatMap((line) => [line.mapping, ...(line.mapping.additionalModels || [])
+    .map((extra) => ({ ...line.mapping, vgModelCode: extra.vgModelCode, agModelCode: extra.agModelCode }))]
+    .map((mapping) => [key(mapping), line.id])));
   const perLine = new Map(mapped.map((line) => [line.id, new Set()])); const distinct = new Set();
   let invalid = 0; let unassignedConfigurations = 0;
   for (const row of records) {

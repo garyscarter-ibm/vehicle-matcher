@@ -144,6 +144,26 @@ check('eight per line cannot weaken the independent total of 200', () => {
   assert.equal(report.coverageValid, false);
 });
 
+check('additional VG codes of a mapped line count towards that line, not as unassigned', () => {
+  const { plan, variant, mapped } = coverageFixture();
+  const g61 = mapped.find((line) => line.model === 'G61 i5'); const g60 = mapped.find((line) => line.model === 'G60 i5');
+  g60.mapping = { status: 'excluded', reason: 'Fixture-only verified exhaustive absence',
+    evidence: { ...g60.mapping.evidence, finding: 'no-current-model', scope: 'complete-current-uk-model-range' } };
+  g61.mapping.additionalModels = [{ vgModelCode: 'TSTM', agModelCode: 'TSTA',
+    evidence: { ...g61.mapping.evidence, vgModelCode: 'TSTM', agModelCode: 'TSTA' } }];
+  const sibling = (index) => {
+    const row = variant(index, true);
+    for (const identity of [row.catalogue.requestedIdentity, row.catalogue.resolvedIdentity,
+      row.catalogue.lookupIdentity, row.catalogue.resolvedLookupIdentity]) identity.modelRange = 'G61E';
+    rekey(row); return row;
+  };
+  const records = [...Array.from({ length: 4 }, (_, index) => variant(index)), ...Array.from({ length: 4 }, (_, index) => sibling(index))];
+  const report = api.verifyFleetCoverage({ plan, matrixText, records, verifyEvidence: () => true });
+  assert.equal(report.unassignedConfigurations, 0);
+  assert.equal(report.perLineCounts[g61.id], 8);
+  assert.equal(report.perLineValid, true);
+});
+
 check('changed model codes, lost source dates and unknown-without-provenance cannot pass', () => {
   for (const change of [
     (row) => { row.catalogue.requestedIdentity.modelCode = 'OTHER'; },
@@ -228,7 +248,7 @@ check('CLI distinguishes invalid plans exit 1 from a valid 74-pending plan exit 
   }
 });
 
-check('pending plan blocks staged acceptance before any directory, source, key or browser work', async (t) => {
+check('partly evidenced plan blocks staged acceptance before any directory, source, key or browser work', async (t) => {
   const guard = offlineEgressGuard(t);
   const plan = JSON.parse(await readFile(new URL('../data/gcsp/vehicle-evidence/demo-plan.json', import.meta.url), 'utf8'));
   const matrixText = await readFile(new URL('../../docs/gcsp/sources/choices-eligibility-matrices-2024-10.md', import.meta.url), 'utf8');
@@ -236,7 +256,8 @@ check('pending plan blocks staged acceptance before any directory, source, key o
   assert.equal(report.status, 'incomplete');
   assert.equal(report.plan.valid, true);
   assert.equal(report.plan.ready, false);
-  assert.equal(report.plan.coverage.pending, 74);
+  assert.equal(report.plan.mappedReady, true);
+  assert.deepEqual(report.plan.coverage, { sourceRows: 132, modelLines: 74, mapped: 24, excluded: 4, pending: 46 });
   assert.equal(report.acceptanceComplete, false);
   assert.equal(report.acceptedDemoConfigurations, 0);
   guard.assertZero();

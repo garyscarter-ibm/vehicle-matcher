@@ -1,7 +1,7 @@
 {
   "schemaVersion": "gcsp-demo-plan.v1",
   "status": "pending",
-  "qualificationDate": "2026-11-06",
+  "qualificationDate": "2026-11-07",
   "source": {
     "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
     "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
@@ -2220,8 +2220,65 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "F70",
+        "vgModelCode": "1F7A",
+        "agModelCode": "82GE",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context01/collector-checkpoint.json",
+          "sha256": "cee99c709c47841b04cbf90879f71683bc4d18ff7e9e8bda2500c724d726b506",
+          "locator": "/content/contextObservation/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "F70 Sports Hatch",
+          "engine": "120",
+          "modelRange": "F70",
+          "vgModelCode": "1F7A",
+          "agModelCode": "82GE",
+          "rawModelRange": "F70",
+          "derivative": "120"
+        },
+        "additionalModels": [
+          {
+            "vgModelCode": "1F7E",
+            "agModelCode": "82GE",
+            "evidence": {
+              "sourceRef": "docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context05/collector-checkpoint.json",
+              "sha256": "436e8dd862d1e56d05522c2c62c5b1595a9872018f8e8351a6808580efab42bb",
+              "locator": "/content/contextObservation/document/report/nodes/0",
+              "observedDate": "2026-11-07",
+              "kind": "observed",
+              "market": "GB",
+              "matrixModel": "F70 Sports Hatch",
+              "engine": "120",
+              "modelRange": "F70",
+              "vgModelCode": "1F7E",
+              "agModelCode": "82GE",
+              "rawModelRange": "F70",
+              "derivative": "120"
+            }
+          },
+          {
+            "vgModelCode": "1F7B",
+            "agModelCode": "82GE",
+            "evidence": {
+              "sourceRef": "docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context02/collector-checkpoint.json",
+              "sha256": "0e4da61ba2f547bfd3a38596ca6697e727194358e7261721ce87652b29d30ffb",
+              "locator": "/content/contextObservation/document/report/nodes/0",
+              "observedDate": "2026-11-07",
+              "kind": "observed",
+              "market": "GB",
+              "matrixModel": "F70 Sports Hatch",
+              "engine": "120",
+              "modelRange": "F70",
+              "vgModelCode": "1F7B",
+              "agModelCode": "82GE",
+              "rawModelRange": "F70",
+              "derivative": "120"
+            }
+          }
+        ]
       }
     },
     {
@@ -2256,8 +2313,25 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "F70",
+        "vgModelCode": "1F7C",
+        "agModelCode": "22GE",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context03/collector-checkpoint.json",
+          "sha256": "0af9cb267a9a94969f81ce0a69d859ce8a1a5ef7d514f07539b38a6cb4418241",
+          "locator": "/content/contextObservation/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "F70 Sports Hatch",
+          "engine": "M135",
+          "modelRange": "F70",
+          "vgModelCode": "1F7C",
+          "agModelCode": "22GE",
+          "rawModelRange": "F70",
+          "derivative": "M135"
+        }
       }
     },
     {
@@ -2292,8 +2366,23 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "excluded",
+        "reason": "No F44 models in the current UK model tree: the range-wide F44 request (order and effect dates 2026-11-01, future models and closest fallback on) returned an empty object on 2026-11-05. This is that bounded response only, not a claim about global production or other dates.",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq-58/scheme-catalogue-2026-11-05/observation.json",
+          "sha256": "25636b87dfe942d385da5cee721fee8e59d53b216411277031d60626de36c4ec",
+          "locator": "/observations/1",
+          "observedDate": "2026-11-05",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "F44 Gran Coupe",
+          "engine": "218i",
+          "modelRange": "F44",
+          "rawModelRange": "F44",
+          "listing": "empty",
+          "finding": "no-current-model",
+          "scope": "complete-current-uk-model-range"
+        }
       }
     },
     {
@@ -2328,8 +2417,23 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "excluded",
+        "reason": "No F44 models in the current UK model tree: the range-wide F44 request (order and effect dates 2026-11-01, future models and closest fallback on) returned an empty object on 2026-11-05. This is that bounded response only, not a claim about global production or other dates.",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq-58/scheme-catalogue-2026-11-05/observation.json",
+          "sha256": "25636b87dfe942d385da5cee721fee8e59d53b216411277031d60626de36c4ec",
+          "locator": "/observations/1",
+          "observedDate": "2026-11-05",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "F44 Gran Coupe",
+          "engine": "220i",
+          "modelRange": "F44",
+          "rawModelRange": "F44",
+          "listing": "empty",
+          "finding": "no-current-model",
+          "scope": "complete-current-uk-model-range"
+        }
       }
     },
     {
@@ -2364,8 +2468,23 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "excluded",
+        "reason": "No F44 models in the current UK model tree: the range-wide F44 request (order and effect dates 2026-11-01, future models and closest fallback on) returned an empty object on 2026-11-05. This is that bounded response only, not a claim about global production or other dates.",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq-58/scheme-catalogue-2026-11-05/observation.json",
+          "sha256": "25636b87dfe942d385da5cee721fee8e59d53b216411277031d60626de36c4ec",
+          "locator": "/observations/1",
+          "observedDate": "2026-11-05",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "F44 Gran Coupe",
+          "engine": "M235i",
+          "modelRange": "F44",
+          "rawModelRange": "F44",
+          "listing": "empty",
+          "finding": "no-current-model",
+          "scope": "complete-current-uk-model-range"
+        }
       }
     },
     {
@@ -2400,8 +2519,46 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "G42",
+        "vgModelCode": "2PMA",
+        "agModelCode": "12CM",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/2pma/collector-checkpoint.json",
+          "sha256": "a1dc68e67b2e7c3f45a79417b886c589de8792fc5d1b7b67c636eca72adca04a",
+          "locator": "/content/batchEvidence/tree/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "G42 Coupe",
+          "engine": "220i",
+          "modelRange": "G42",
+          "vgModelCode": "2PMA",
+          "agModelCode": "12CM",
+          "rawModelRange": "G42",
+          "derivative": "220I"
+        },
+        "additionalModels": [
+          {
+            "vgModelCode": "2PPA",
+            "agModelCode": "12CM",
+            "evidence": {
+              "sourceRef": "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/2ppa/collector-checkpoint.json",
+              "sha256": "d3a9c25198232b4369541b70bbb903777fffdec44ea32d89eccbc0767b9862d3",
+              "locator": "/content/batchEvidence/tree/document/report/nodes/0",
+              "observedDate": "2026-11-07",
+              "kind": "observed",
+              "market": "GB",
+              "matrixModel": "G42 Coupe",
+              "engine": "220i",
+              "modelRange": "G42",
+              "vgModelCode": "2PPA",
+              "agModelCode": "12CM",
+              "rawModelRange": "G42",
+              "derivative": "220I"
+            }
+          }
+        ]
       }
     },
     {
@@ -2436,8 +2593,46 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "G42",
+        "vgModelCode": "2PMB",
+        "agModelCode": "22CM",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/2pmb/collector-checkpoint.json",
+          "sha256": "1ad5859bcc412f107d65fb75c765b484ea30cd4a2c8103ff4f6ea38056bb68fd",
+          "locator": "/content/batchEvidence/tree/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "G42 Coupe",
+          "engine": "230i",
+          "modelRange": "G42",
+          "vgModelCode": "2PMB",
+          "agModelCode": "22CM",
+          "rawModelRange": "G42",
+          "derivative": "230I"
+        },
+        "additionalModels": [
+          {
+            "vgModelCode": "2PPB",
+            "agModelCode": "22CM",
+            "evidence": {
+              "sourceRef": "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/2ppb/collector-checkpoint.json",
+              "sha256": "2862e78664775c94630bbe9f1403d678bf081b1192f74b97b9b9ee87df054685",
+              "locator": "/content/batchEvidence/tree/document/report/nodes/0",
+              "observedDate": "2026-11-07",
+              "kind": "observed",
+              "market": "GB",
+              "matrixModel": "G42 Coupe",
+              "engine": "230i",
+              "modelRange": "G42",
+              "vgModelCode": "2PPB",
+              "agModelCode": "22CM",
+              "rawModelRange": "G42",
+              "derivative": "230I"
+            }
+          }
+        ]
       }
     },
     {
@@ -2472,8 +2667,46 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "G42",
+        "vgModelCode": "2PMC",
+        "agModelCode": "52FA",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/2pmc/collector-checkpoint.json",
+          "sha256": "d2b21a62915774911ad90b338cd187478179ec38a5ae35473f3a5b75f5931807",
+          "locator": "/content/batchEvidence/tree/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "G42 Coupe",
+          "engine": "M240i",
+          "modelRange": "G42",
+          "vgModelCode": "2PMC",
+          "agModelCode": "52FA",
+          "rawModelRange": "G42",
+          "derivative": "M240I"
+        },
+        "additionalModels": [
+          {
+            "vgModelCode": "2PBC",
+            "agModelCode": "52FA",
+            "evidence": {
+              "sourceRef": "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/2pbc/collector-checkpoint.json",
+              "sha256": "bff2256605f1f03f880c2499ac4d059222c1dae500dfc142debc20d93ce2c1a1",
+              "locator": "/content/batchEvidence/tree/document/report/nodes/0",
+              "observedDate": "2026-11-07",
+              "kind": "observed",
+              "market": "GB",
+              "matrixModel": "G42 Coupe",
+              "engine": "M240i",
+              "modelRange": "G42",
+              "vgModelCode": "2PBC",
+              "agModelCode": "52FA",
+              "rawModelRange": "G42",
+              "derivative": "M240I"
+            }
+          }
+        ]
       }
     },
     {
@@ -2509,7 +2742,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for U06; needs live discovery."
       }
     },
     {
@@ -2545,7 +2778,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for U06; needs live discovery."
       }
     },
     {
@@ -2581,7 +2814,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for U06; needs live discovery."
       }
     },
     {
@@ -2617,7 +2850,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G20; G21 Touring codes are a different body and are not substituted; needs live discovery."
       }
     },
     {
@@ -2653,7 +2886,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G20; G21 Touring codes are a different body and are not substituted; needs live discovery."
       }
     },
     {
@@ -2689,7 +2922,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G20; G21 Touring codes are a different body and are not substituted; needs live discovery."
       }
     },
     {
@@ -2724,8 +2957,46 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "G21",
+        "vgModelCode": "T3MK",
+        "agModelCode": "22FY",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/g21-t3mk/collector-checkpoint.json",
+          "sha256": "4aaaaa47a1967a08143e38ffc59ce1cd1abb84190e598993bc6da9f50b24ccb7",
+          "locator": "/content/contextObservation/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "G21 Touring",
+          "engine": "320i",
+          "modelRange": "G21",
+          "vgModelCode": "T3MK",
+          "agModelCode": "22FY",
+          "rawModelRange": "G21",
+          "derivative": "320I"
+        },
+        "additionalModels": [
+          {
+            "vgModelCode": "T3PK",
+            "agModelCode": "22FY",
+            "evidence": {
+              "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pk/collector-checkpoint.json",
+              "sha256": "8afd1bee863b2e2ddbcd2a6ef7c94b47eec76345c8d81fd4a585c2374eaeef37",
+              "locator": "/content/contextObservation/document/report/nodes/0",
+              "observedDate": "2026-11-07",
+              "kind": "observed",
+              "market": "GB",
+              "matrixModel": "G21 Touring",
+              "engine": "320i",
+              "modelRange": "G21",
+              "vgModelCode": "T3PK",
+              "agModelCode": "22FY",
+              "rawModelRange": "G21",
+              "derivative": "320I"
+            }
+          }
+        ]
       }
     },
     {
@@ -2760,8 +3031,46 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "G21",
+        "vgModelCode": "T3MR",
+        "agModelCode": "42GL",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3mr/collector-checkpoint.json",
+          "sha256": "a0dc7be02bdf1528d59b11e6acd0f983400409f9383455269b992597e2f77ea6",
+          "locator": "/content/contextObservation/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "G21 Touring",
+          "engine": "330e",
+          "modelRange": "G21",
+          "vgModelCode": "T3MR",
+          "agModelCode": "42GL",
+          "rawModelRange": "G21",
+          "derivative": "330E"
+        },
+        "additionalModels": [
+          {
+            "vgModelCode": "T3PR",
+            "agModelCode": "42GL",
+            "evidence": {
+              "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pr/collector-checkpoint.json",
+              "sha256": "c10b3fb77a6a6ffa0de9cbcc0bb37e6d0a7e74a40bae825ba2e9ee2af9f94043",
+              "locator": "/content/contextObservation/document/report/nodes/0",
+              "observedDate": "2026-11-07",
+              "kind": "observed",
+              "market": "GB",
+              "matrixModel": "G21 Touring",
+              "engine": "330e",
+              "modelRange": "G21",
+              "vgModelCode": "T3PR",
+              "agModelCode": "42GL",
+              "rawModelRange": "G21",
+              "derivative": "330E"
+            }
+          }
+        ]
       }
     },
     {
@@ -2796,8 +3105,46 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "G21",
+        "vgModelCode": "T3PF",
+        "agModelCode": "22GL",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3pf/collector-checkpoint.json",
+          "sha256": "a6a1850ee78707f18814b86b1e07d7db4860380462811ba965f4ea54016b5ae6",
+          "locator": "/content/contextObservation/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "G21 Touring",
+          "engine": "M340i",
+          "modelRange": "G21",
+          "vgModelCode": "T3PF",
+          "agModelCode": "22GL",
+          "rawModelRange": "G21",
+          "derivative": "M340I"
+        },
+        "additionalModels": [
+          {
+            "vgModelCode": "T3BE",
+            "agModelCode": "22GL",
+            "evidence": {
+              "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g21-t3be/collector-checkpoint.json",
+              "sha256": "b2bc71eda11486e92c7f8ef77204784b31f6ce566e7a14f7bb4027c83145aae7",
+              "locator": "/content/contextObservation/document/report/nodes/0",
+              "observedDate": "2026-11-07",
+              "kind": "observed",
+              "market": "GB",
+              "matrixModel": "G21 Touring",
+              "engine": "M340i",
+              "modelRange": "G21",
+              "vgModelCode": "T3BE",
+              "agModelCode": "22GL",
+              "rawModelRange": "G21",
+              "derivative": "M340I"
+            }
+          }
+        ]
       }
     },
     {
@@ -2833,7 +3180,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G22; needs live discovery."
       }
     },
     {
@@ -2869,7 +3216,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G22; needs live discovery."
       }
     },
     {
@@ -2905,7 +3252,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G23; needs live discovery."
       }
     },
     {
@@ -2941,7 +3288,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G23; needs live discovery."
       }
     },
     {
@@ -2977,7 +3324,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for the G26 Gran Coupe; the retained G26E tree lists only i4 derivatives; needs live discovery."
       }
     },
     {
@@ -3013,7 +3360,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for the G26 Gran Coupe; the retained G26E tree lists only i4 derivatives; needs live discovery."
       }
     },
     {
@@ -3049,7 +3396,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G60; needs live discovery."
       }
     },
     {
@@ -3085,7 +3432,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G60; needs live discovery."
       }
     },
     {
@@ -3121,7 +3468,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G60; needs live discovery."
       }
     },
     {
@@ -3157,7 +3504,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "Retained G61E evidence covers only the i5 40 selection (T5MJ); no retained UK model-tree observation lists a 530e Touring; needs live discovery."
       }
     },
     {
@@ -3193,7 +3540,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G29; needs live discovery."
       }
     },
     {
@@ -3229,7 +3576,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G29; needs live discovery."
       }
     },
     {
@@ -3264,8 +3611,46 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "U11",
+        "vgModelCode": "X1M2",
+        "agModelCode": "12EG",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m2/collector-checkpoint.json",
+          "sha256": "22efdb4af641245c2cca7d262a59b81087c796ad54e57e5d0cec3f75d381e40a",
+          "locator": "/content/contextObservation/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "U11 X1",
+          "engine": "18d",
+          "modelRange": "U11",
+          "vgModelCode": "X1M2",
+          "agModelCode": "12EG",
+          "rawModelRange": "U11",
+          "derivative": "X1 18D"
+        },
+        "additionalModels": [
+          {
+            "vgModelCode": "X1X2",
+            "agModelCode": "12EG",
+            "evidence": {
+              "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x2/collector-checkpoint.json",
+              "sha256": "b46fb0cac96866f64d13b0d57536d4a6f634e9b7a35020cf03d3a0a3d2509ec2",
+              "locator": "/content/contextObservation/document/report/nodes/0",
+              "observedDate": "2026-11-07",
+              "kind": "observed",
+              "market": "GB",
+              "matrixModel": "U11 X1",
+              "engine": "18d",
+              "modelRange": "U11",
+              "vgModelCode": "X1X2",
+              "agModelCode": "12EG",
+              "rawModelRange": "U11",
+              "derivative": "X1 18D"
+            }
+          }
+        ]
       }
     },
     {
@@ -3300,8 +3685,46 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "U11",
+        "vgModelCode": "X1M0",
+        "agModelCode": "32EE",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/u11-x1m0/collector-checkpoint.json",
+          "sha256": "431e85fc31d83167fee0dc79da9f20e88f1aec9541995ac40ffdc25b0df446e5",
+          "locator": "/content/contextObservation/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "U11 X1",
+          "engine": "20i",
+          "modelRange": "U11",
+          "vgModelCode": "X1M0",
+          "agModelCode": "32EE",
+          "rawModelRange": "U11",
+          "derivative": "X1 20I"
+        },
+        "additionalModels": [
+          {
+            "vgModelCode": "X1X0",
+            "agModelCode": "32EE",
+            "evidence": {
+              "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x0/collector-checkpoint.json",
+              "sha256": "4416ae4667d4ee4c05f3c22d6608c89661b064156baf215ed9e53d432e78bf8d",
+              "locator": "/content/contextObservation/document/report/nodes/0",
+              "observedDate": "2026-11-07",
+              "kind": "observed",
+              "market": "GB",
+              "matrixModel": "U11 X1",
+              "engine": "20i",
+              "modelRange": "U11",
+              "vgModelCode": "X1X0",
+              "agModelCode": "32EE",
+              "rawModelRange": "U11",
+              "derivative": "X1 20I"
+            }
+          }
+        ]
       }
     },
     {
@@ -3336,8 +3759,46 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "U11",
+        "vgModelCode": "X1X3",
+        "agModelCode": "52EG",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x3/collector-checkpoint.json",
+          "sha256": "2e58cf1de75a470b9bcd194a9ea391233d81f76ba401be9159b3c73f9829bdea",
+          "locator": "/content/contextObservation/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "U11 X1",
+          "engine": "23d",
+          "modelRange": "U11",
+          "vgModelCode": "X1X3",
+          "agModelCode": "52EG",
+          "rawModelRange": "U11",
+          "derivative": "X1 23D"
+        },
+        "additionalModels": [
+          {
+            "vgModelCode": "X1M3",
+            "agModelCode": "52EG",
+            "evidence": {
+              "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m3/collector-checkpoint.json",
+              "sha256": "3e4e8510835d0a4cfaec6de565f1ca771bf4178d2f7d2607c1488ac4b369524e",
+              "locator": "/content/contextObservation/document/report/nodes/0",
+              "observedDate": "2026-11-07",
+              "kind": "observed",
+              "market": "GB",
+              "matrixModel": "U11 X1",
+              "engine": "23d",
+              "modelRange": "U11",
+              "vgModelCode": "X1M3",
+              "agModelCode": "52EG",
+              "rawModelRange": "U11",
+              "derivative": "X1 23D"
+            }
+          }
+        ]
       }
     },
     {
@@ -3372,8 +3833,46 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "U11",
+        "vgModelCode": "X1M1",
+        "agModelCode": "62EE",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m1/collector-checkpoint.json",
+          "sha256": "01e200a2f946a3c6d7c11efe9291b10eb30e47f8b7f3b1f771a6fed5cc6c4172",
+          "locator": "/content/contextObservation/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "U11 X1",
+          "engine": "23i",
+          "modelRange": "U11",
+          "vgModelCode": "X1M1",
+          "agModelCode": "62EE",
+          "rawModelRange": "U11",
+          "derivative": "X1 23I"
+        },
+        "additionalModels": [
+          {
+            "vgModelCode": "X1XL",
+            "agModelCode": "62EE",
+            "evidence": {
+              "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1xl/collector-checkpoint.json",
+              "sha256": "519e6fcca90e553324fcd482f57786c1966afc789484e4aefd0206813bd65513",
+              "locator": "/content/contextObservation/document/report/nodes/0",
+              "observedDate": "2026-11-07",
+              "kind": "observed",
+              "market": "GB",
+              "matrixModel": "U11 X1",
+              "engine": "23i",
+              "modelRange": "U11",
+              "vgModelCode": "X1XL",
+              "agModelCode": "62EE",
+              "rawModelRange": "U11",
+              "derivative": "X1 23I"
+            }
+          }
+        ]
       }
     },
     {
@@ -3408,8 +3907,46 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "U11",
+        "vgModelCode": "X1M6",
+        "agModelCode": "22EF",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m6/collector-checkpoint.json",
+          "sha256": "1b297fee6bf07186c9dacbd91ba61ff2a1db92fbbe446dae9745426bb4dec5cd",
+          "locator": "/content/contextObservation/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "U11 X1",
+          "engine": "25e",
+          "modelRange": "U11",
+          "vgModelCode": "X1M6",
+          "agModelCode": "22EF",
+          "rawModelRange": "U11",
+          "derivative": "X1 25E"
+        },
+        "additionalModels": [
+          {
+            "vgModelCode": "X1X6",
+            "agModelCode": "22EF",
+            "evidence": {
+              "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x6/collector-checkpoint.json",
+              "sha256": "d1981abebc6b76f113838e9f1d0732a083dfa7e8a83263dff6c435aba0f83414",
+              "locator": "/content/contextObservation/document/report/nodes/0",
+              "observedDate": "2026-11-07",
+              "kind": "observed",
+              "market": "GB",
+              "matrixModel": "U11 X1",
+              "engine": "25e",
+              "modelRange": "U11",
+              "vgModelCode": "X1X6",
+              "agModelCode": "22EF",
+              "rawModelRange": "U11",
+              "derivative": "X1 25E"
+            }
+          }
+        ]
       }
     },
     {
@@ -3444,8 +3981,46 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "U11",
+        "vgModelCode": "X1M7",
+        "agModelCode": "32EF",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1m7/collector-checkpoint.json",
+          "sha256": "0a261d3dae10c037582f1a486547756443408c1cc113dbd6f89f8da191615f95",
+          "locator": "/content/contextObservation/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "U11 X1",
+          "engine": "30e",
+          "modelRange": "U11",
+          "vgModelCode": "X1M7",
+          "agModelCode": "32EF",
+          "rawModelRange": "U11",
+          "derivative": "X1 30E"
+        },
+        "additionalModels": [
+          {
+            "vgModelCode": "X1X7",
+            "agModelCode": "32EF",
+            "evidence": {
+              "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x1x7/collector-checkpoint.json",
+              "sha256": "c53db5a988f1c508a0588d9b84e6fc902771ab4cab474cd4749a361f8dde76af",
+              "locator": "/content/contextObservation/document/report/nodes/0",
+              "observedDate": "2026-11-07",
+              "kind": "observed",
+              "market": "GB",
+              "matrixModel": "U11 X1",
+              "engine": "30e",
+              "modelRange": "U11",
+              "vgModelCode": "X1X7",
+              "agModelCode": "32EF",
+              "rawModelRange": "U11",
+              "derivative": "X1 30E"
+            }
+          }
+        ]
       }
     },
     {
@@ -3480,8 +4055,25 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "U11",
+        "vgModelCode": "X135",
+        "agModelCode": "12EF",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-x135/collector-checkpoint.json",
+          "sha256": "a89c446071df14b1d636172e7023f774d438e16a51cb78e631480f8efdae26c1",
+          "locator": "/content/contextObservation/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "U11 X1",
+          "engine": "M35i",
+          "modelRange": "U11",
+          "vgModelCode": "X135",
+          "agModelCode": "12EF",
+          "rawModelRange": "U11",
+          "derivative": "X1 M35I"
+        }
       }
     },
     {
@@ -3516,8 +4108,25 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "U10",
+        "vgModelCode": "X2MS",
+        "agModelCode": "22GM",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/u10-x2ms/collector-checkpoint.json",
+          "sha256": "ff8705674b00ed9d97594b83a606b5a042e99d3036530a92734368e67de52721",
+          "locator": "/content/contextObservation/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "U10 X2",
+          "engine": "20i",
+          "modelRange": "U10",
+          "vgModelCode": "X2MS",
+          "agModelCode": "22GM",
+          "rawModelRange": "U10",
+          "derivative": "X2 20I"
+        }
       }
     },
     {
@@ -3552,8 +4161,25 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "U10",
+        "vgModelCode": "X235",
+        "agModelCode": "82GM",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u10-x235/collector-checkpoint.json",
+          "sha256": "de1849bc51a8954c0b95b2bc00e587620f5c869873da20ba6d96568882f2942d",
+          "locator": "/content/contextObservation/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "U10 X2",
+          "engine": "M35i",
+          "modelRange": "U10",
+          "vgModelCode": "X235",
+          "agModelCode": "82GM",
+          "rawModelRange": "U10",
+          "derivative": "X2 M35I"
+        }
       }
     },
     {
@@ -3589,7 +4215,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G01; needs live discovery."
       }
     },
     {
@@ -3625,7 +4251,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G01; needs live discovery."
       }
     },
     {
@@ -3661,7 +4287,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G01; needs live discovery."
       }
     },
     {
@@ -3697,7 +4323,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G01; needs live discovery."
       }
     },
     {
@@ -3733,7 +4359,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G02; needs live discovery."
       }
     },
     {
@@ -3769,7 +4395,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G02; needs live discovery."
       }
     },
     {
@@ -3805,7 +4431,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G05; needs live discovery."
       }
     },
     {
@@ -3841,7 +4467,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G05; needs live discovery."
       }
     },
     {
@@ -3877,7 +4503,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G05; needs live discovery."
       }
     },
     {
@@ -3913,7 +4539,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G05; needs live discovery."
       }
     },
     {
@@ -3949,7 +4575,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G06; needs live discovery."
       }
     },
     {
@@ -3985,7 +4611,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G06; needs live discovery."
       }
     },
     {
@@ -4021,7 +4647,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G06; needs live discovery."
       }
     },
     {
@@ -4057,7 +4683,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G06; needs live discovery."
       }
     },
     {
@@ -4092,8 +4718,46 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "U11",
+        "vgModelCode": "IX1H",
+        "agModelCode": "12HM",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1h/collector-checkpoint.json",
+          "sha256": "ca7baf3765f1b697375f692ddfe38afb0da85fc5dd7314deaa9e9651eeefbc34",
+          "locator": "/content/contextObservation/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "U11 iX1",
+          "engine": "iX1 20",
+          "modelRange": "U11",
+          "vgModelCode": "IX1H",
+          "agModelCode": "12HM",
+          "rawModelRange": "U11",
+          "derivative": "IX1 20"
+        },
+        "additionalModels": [
+          {
+            "vgModelCode": "IX1I",
+            "agModelCode": "12HM",
+            "evidence": {
+              "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/u11-ix1i/collector-checkpoint.json",
+              "sha256": "7cf6ebb1f35969e8992bc5c22015a3fd7906ef1ae5fe0d043f7b955482980de1",
+              "locator": "/content/contextObservation/document/report/nodes/0",
+              "observedDate": "2026-11-07",
+              "kind": "observed",
+              "market": "GB",
+              "matrixModel": "U11 iX1",
+              "engine": "iX1 20",
+              "modelRange": "U11",
+              "vgModelCode": "IX1I",
+              "agModelCode": "12HM",
+              "rawModelRange": "U11",
+              "derivative": "IX1 20"
+            }
+          }
+        ]
       }
     },
     {
@@ -4128,8 +4792,46 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "U11",
+        "vgModelCode": "IX1K",
+        "agModelCode": "22HM",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1k/collector-checkpoint.json",
+          "sha256": "f9091ef2cd37dd2f2953e2af66a689059377efc61464d7c63ef270ec45adbd60",
+          "locator": "/content/contextObservation/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "U11 iX1",
+          "engine": "iX1 30",
+          "modelRange": "U11",
+          "vgModelCode": "IX1K",
+          "agModelCode": "22HM",
+          "rawModelRange": "U11",
+          "derivative": "IX1 30"
+        },
+        "additionalModels": [
+          {
+            "vgModelCode": "IX1L",
+            "agModelCode": "22HM",
+            "evidence": {
+              "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u11-ix1l/collector-checkpoint.json",
+              "sha256": "0e3d4ecf34c3c9aba047b190035b916308cf4194c83e6af7386a64500d23282d",
+              "locator": "/content/contextObservation/document/report/nodes/0",
+              "observedDate": "2026-11-07",
+              "kind": "observed",
+              "market": "GB",
+              "matrixModel": "U11 iX1",
+              "engine": "iX1 30",
+              "modelRange": "U11",
+              "vgModelCode": "IX1L",
+              "agModelCode": "22HM",
+              "rawModelRange": "U11",
+              "derivative": "IX1 30"
+            }
+          }
+        ]
       }
     },
     {
@@ -4164,8 +4866,25 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "U10",
+        "vgModelCode": "IX24",
+        "agModelCode": "72GN",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/u10-ix24/collector-checkpoint.json",
+          "sha256": "6a4a4e8dad3aa1057e3bf8c93131c8c01e355612aca8b0373ca6b9f4f5a827a4",
+          "locator": "/content/contextObservation/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "U10 iX2",
+          "engine": "iX2 20",
+          "modelRange": "U10",
+          "vgModelCode": "IX24",
+          "agModelCode": "72GN",
+          "rawModelRange": "U10",
+          "derivative": "IX2 20"
+        }
       }
     },
     {
@@ -4200,8 +4919,25 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "U10",
+        "vgModelCode": "IX25",
+        "agModelCode": "82GN",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/u10-ix25/collector-checkpoint.json",
+          "sha256": "1d841702310829a9ddf6bb398b62471cf9382bb5517697989e61d1bfb29db930",
+          "locator": "/content/contextObservation/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "U10 iX2",
+          "engine": "iX2 30",
+          "modelRange": "U10",
+          "vgModelCode": "IX25",
+          "agModelCode": "82GN",
+          "rawModelRange": "U10",
+          "derivative": "IX2 30"
+        }
       }
     },
     {
@@ -4236,8 +4972,25 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "G26E",
+        "vgModelCode": "I4MF",
+        "agModelCode": "52HD",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-root-execution-2026-11-07/g26e-i4mf/collector-checkpoint.json",
+          "sha256": "271013016ec861e4d62ec4c760e20d9ecd30d89ea88c7e4c514342fc1614cdcf",
+          "locator": "/content/contextObservation/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "G26 i4",
+          "engine": "i4 35",
+          "modelRange": "G26E",
+          "vgModelCode": "I4MF",
+          "agModelCode": "52HD",
+          "rawModelRange": "G26",
+          "derivative": "I4 35"
+        }
       }
     },
     {
@@ -4272,8 +5025,25 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "G26E",
+        "vgModelCode": "I4MG",
+        "agModelCode": "62HD",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/g26e-i4mg/collector-checkpoint.json",
+          "sha256": "14264b351f605ead3c452caf9f07b208b676907ceb7826c0b18258065a40cdce",
+          "locator": "/content/contextObservation/document/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "G26 i4",
+          "engine": "i4 40",
+          "modelRange": "G26E",
+          "vgModelCode": "I4MG",
+          "agModelCode": "62HD",
+          "rawModelRange": "G26",
+          "derivative": "I4 40"
+        }
       }
     },
     {
@@ -4308,8 +5078,28 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "excluded",
+        "reason": "Current UK G26E tree lists i4 35, i4 40 and i4 M60; i4 M60 is not substituted for the scheme's i4 M50.",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g26e/collector-checkpoint.json",
+          "sha256": "750f2ecad6bcbdaccc667de9efe920773ccd34fa877fffa833db8f06b8f49206",
+          "locator": "/content/diagnosticObservation/document/report",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "G26 i4",
+          "engine": "i4 M50",
+          "modelRange": "G26E",
+          "rawModelRange": "G26",
+          "listing": "models",
+          "listedDerivatives": [
+            "I4 35",
+            "I4 40",
+            "I4 M60"
+          ],
+          "finding": "no-current-model",
+          "scope": "complete-current-uk-model-range"
+        }
       }
     },
     {
@@ -4345,7 +5135,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G60; needs live discovery."
       }
     },
     {
@@ -4381,7 +5171,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for G60; needs live discovery."
       }
     },
     {
@@ -4416,8 +5206,25 @@
         }
       ],
       "mapping": {
-        "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "status": "mapped",
+        "modelRange": "G61E",
+        "vgModelCode": "T5MJ",
+        "agModelCode": "72HH",
+        "evidence": {
+          "sourceRef": "docs/gcsp/evidence/fucq-58/complete-selection-2026-11-07/tree.json",
+          "sha256": "c78e90f7abd0a7f012738f7ccb8e349f7a54e056bff3be5cb9711ad91eed2eb7",
+          "locator": "/report/nodes/0",
+          "observedDate": "2026-11-07",
+          "kind": "observed",
+          "market": "GB",
+          "matrixModel": "G61 i5",
+          "engine": "i5 40",
+          "modelRange": "G61E",
+          "vgModelCode": "T5MJ",
+          "agModelCode": "72HH",
+          "rawModelRange": "G61",
+          "derivative": "I5 40"
+        }
       }
     },
     {
@@ -4453,7 +5260,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "Retained G61E evidence covers only the i5 40 selection (T5MJ); no retained UK model-tree observation lists an i5 M60; needs live discovery."
       }
     },
     {
@@ -4489,7 +5296,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "The retained I20 model-tree response was an empty object and collection stopped; no exclusion is claimed (global availability unknown); needs live discovery."
       }
     },
     {
@@ -4525,7 +5332,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "The retained I20 model-tree response was an empty object and collection stopped; no exclusion is claimed (global availability unknown); needs live discovery."
       }
     },
     {
@@ -4561,7 +5368,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "The retained I20 model-tree response was an empty object and collection stopped; no exclusion is claimed (global availability unknown); needs live discovery."
       }
     },
     {
@@ -4597,7 +5404,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for M Power M2; needs live discovery."
       }
     },
     {
@@ -4633,7 +5440,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for M Power M3; needs live discovery."
       }
     },
     {
@@ -4669,7 +5476,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for M Power M4; needs live discovery."
       }
     },
     {
@@ -4705,7 +5512,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for M Power X3M; needs live discovery."
       }
     },
     {
@@ -4741,7 +5548,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for M Power X4M; needs live discovery."
       }
     },
     {
@@ -4777,7 +5584,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for M Power X5M; needs live discovery."
       }
     },
     {
@@ -4813,7 +5620,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "No retained UK model-tree observation for M Power X6M; needs live discovery."
       }
     },
     {
@@ -4837,7 +5644,7 @@
       ],
       "mapping": {
         "status": "pending",
-        "reason": "Exact current UK model range, VG/AG codes and engine/body evidence have not been qualified."
+        "reason": "The retained range-wide U11 tree lists X1 18D, 20I, 23D, 23I, 25E, 30E and M35I but no 20D; no exclusion has been qualified and no other X1 is substituted."
       }
     }
   ],
