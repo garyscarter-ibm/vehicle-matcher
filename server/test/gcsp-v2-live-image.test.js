@@ -87,9 +87,14 @@ test('prepared runner refuses absent release; isolated complete fixture persists
   const { execFile } = await import('node:child_process'); const { promisify } = await import('node:util');
   const actualRoot = fileURLToPath(new URL('../../', import.meta.url)); const relative = 'docs/gcsp/evidence/fucq60/v2-image-capture-2026-11-07';
   const actualBase = join(actualRoot, relative);
+  const retainedNames = ['execution-once.json', 'image-checkpoint.json', 'captured.webp'];
+  const before = await Promise.all(retainedNames.map(async (name) => { try { return await readFile(join(actualBase, name)); } catch (error) { if (error.code !== 'ENOENT') throw error; return null; } }));
   await assert.rejects(promisify(execFile)(process.execPath, [join(actualBase, 'run-live.mjs')], { env: { PATH: process.env.PATH }, timeout: 10000 }),
     (error) => error.stderr.includes('explicit-root-traffic-grant-required'));
-  for (const name of ['execution-once.json', 'image-checkpoint.json', 'captured.webp']) await assert.rejects(readFile(join(actualBase, name)), { code: 'ENOENT' });
+  for (const [index, name] of retainedNames.entries()) {
+    if (before[index] === null) await assert.rejects(readFile(join(actualBase, name)), { code: 'ENOENT' });
+    else assert.deepEqual(await readFile(join(actualBase, name)), before[index]);
+  }
   const root = await mkdtemp(join(tmpdir(), 'f60-capture-')); t.after(() => rm(root, { recursive: true, force: true }));
   for (const name of ['scripts', 'server', '_tools']) await symlink(join(actualRoot, name), join(root, name), 'dir');
   const allocation = JSON.parse(await readFile(join(actualBase, 'execution-plan.json'))); const base = join(root, relative);
