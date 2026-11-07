@@ -1,7 +1,7 @@
 {
   "schemaVersion": "f58-f70-remaining-model-options-plan.v1",
   "planId": "f58-f70-remaining-options-20261107",
-  "status": "offline capability implemented and scoped tests passed; exact live executable awaiting separate root traffic release",
+  "status": "capability implemented, source-lead reviewed, scoped tests123/123 pass; prepared executable awaits separate root release",
   "runId": "f58-63-overnight-20261106",
   "sourceCapabilityBaseCommit": "ddd1d846319d14acb39f25f6521259dd4402dea9",
   "planWorktreeHead": "3dd1bbecdc8dd0f5d17ef503ca7009f466eddddf",
@@ -393,12 +393,12 @@
     "expectedChildRamMiB": 128,
     "expectedScratchMiB": 8,
     "expectedRetainedMiB": 8,
-    "scratchParent": "/tmp/vehicle-matcher-f58-63-20261106/f58/f70-remaining-options",
     "supervisorOutput": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/f70-remaining-options",
     "retainedPrefix": "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07",
     "largeOutputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/_agent-output/vehicle-matcher/f58-63-overnight-20261106/f58-f70-remaining-options",
     "largeOutputThresholdBytes": 268435456,
-    "archives": "OneDrive directly regardless of size"
+    "archives": "OneDrive directly regardless of size",
+    "scratchRootPattern": "/private/tmp/test-stamp-shard-<manifest-token>"
   },
   "reviewedExistingCodePins": {
     "scripts/gcsp/bmw-public-registration.mjs": "61d9d5283c6995a55556e767f9a722954becd8899c73c5bd784bb796d728c206",
@@ -430,7 +430,7 @@
     "docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context06/qualification-plan.json": "99af876774b58b42d9c2d99c3a1afd30ec41991830ebe8a49ac3debafaa3b3b2"
   },
   "sourceCapabilityGate": {
-    "required": true,
+    "required": false,
     "existingSeamExecutableUnchanged": false,
     "sourceLeadFilesModifiedByThisTask": false,
     "neededSemantics": [
@@ -441,7 +441,12 @@
       "Use the existing bounded collection-session HTTP seam, checkpointing and safe typed parser; expose no solve capability.",
       "Retained per-context model/line and typed-definition semantic revalidation must reject cross-model/date/alias/substitution and mutated definitions."
     ],
-    "requiredReview": "Source lead approved design; actual code review requested. Freeze tested code/runner/plan pins before root traffic release."
+    "requiredReview": "Source lead approved design; actual code review requested. Freeze tested code/runner/plan pins before root traffic release.",
+    "actualCodeSourceLeadReview": {
+      "reviewer": "Minnie Mouse",
+      "commit": "de1e420458f7ef6485f7f091f403e4369ce55616",
+      "result": "no blocking binding finding; read-only actual diff review; no tests/source traffic or source-lead032 edits"
+    }
   },
   "commandAfterCapabilityAndRootTrafficRelease": [
     "/usr/bin/python3",
@@ -450,7 +455,7 @@
     "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/supervise.py",
     "live"
   ],
-  "commandStatus": "Proposed exact entry point to implement after plan approval; deliberately not executable yet. The old strict-trim runner must not be invoked for these contexts.",
+  "commandStatus": "Implemented exact entry point; root release required via F70_REMAINING_OPTIONS_SOURCE_GRANT matching execution-plan.id. No source traffic executed.",
   "retention": [
     "sealed safe context projection and actual line/default/included pointers",
     "sealed directly keyed typed definitions with option/optionType and optional safe description",
@@ -481,5 +486,25 @@
   "trafficExecuted": false,
   "testsExecutedForThisPlan": true,
   "scratchAllocatedForThisPlan": true,
-  "acceptance": false
+  "acceptance": false,
+  "capabilityCommit": "de1e420458f7ef6485f7f091f403e4369ce55616",
+  "testedCodePins": {
+    "scripts/gcsp/bmw-public-registration.mjs": "0ab37aec216703da68f09ffd7006a2f40b4d3e8eca113c4f59e8e0c54e489a74",
+    "scripts/gcsp/public-bmw-source.mjs": "cd318ff5918fa52dd56848b4664d9b68b5096083bc401bbc2cec4fec5c9c7ea6",
+    "scripts/gcsp/collection-session.mjs": "75c116e6119b256a5b576107f2838e2bb5941841ce5f5ffda812a9f2f38ec37b",
+    "scripts/gcsp/collect-fleet.mjs": "a89868ec97add3365bae6ab539e6c88206818cdbe16ac34b1142461382446a1d",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+    "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/test/gcsp-bmw-model-options-qualification.test.js": "b91d6b547690f3370ee9324091c9f565c6f7ef6e0920bfab5fda076adb8590af",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+    "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/run-live.mjs": "8769d6bdbb520f58f8c1c744ca1475d47122b48b15d1d8d7e39ea881fd1863d2",
+    "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/supervise.py": "91026ab0905ae0e64f0998f1fea15af8517c9d4c16b9d9db4bc7753c356d3716",
+    "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/prepared-check.test.mjs": "c995ffb8cfd917eb2a6a234df213cb1b49c0e95a04c4c6c745f3a3ba6eb5ed31"
+  },
+  "preparedExecutionPlan": "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/execution-plan.json",
+  "preparedPlanDigest": "2c4d05cb669da8238a23c5ace1e0298aa80b4b365b05ea0cab50f8daf8a0616e",
+  "trafficGrantEnvironment": "F70_REMAINING_OPTIONS_SOURCE_GRANT"
 }
