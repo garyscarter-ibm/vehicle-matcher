@@ -19,3 +19,5 @@ Local resources: one worker,384MiB Node heap,768MiB host/672MiB group,64MiB clou
 Preparation verification is syntax/static only: six Node scripts, two in-memory Python compilations,170 code pins, two patches against actual root files, five distinct original boundary observations. Runtime, download, recovery, ordinary, Linux, Render and nativeDB proof remain unrun. Consumer repair, source requests, whole-suite expansion and Done acceptance are excluded.
 
 Agent: Mike Wazowski, requested/selected gpt-6.1-sol/medium; runtime unverified; no fallback or descendants.
+
+Parent actual execution: allfour phases completed with zero process issues and verified group/scratch/dependency-link/reservation cleanup. Ordinary rootstore now selects .10; all52 baseline files were checked before the separate mutable transaction. Original1,313consumer failures remain and full4,668proof was not replayed. Download/cache retained copies remain parent-owned until post-publication cleanup; parent holds their external ownership manifest.
