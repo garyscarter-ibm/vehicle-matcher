@@ -12750,6 +12750,289 @@
       "sourceDate": "2026-11-07",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "supply.release.cadence",
+      "value": {
+        "timeZone": "Europe/London",
+        "slots": [
+          {
+            "weekday": 1,
+            "time": "11:30"
+          },
+          {
+            "weekday": 3,
+            "time": "11:30"
+          },
+          {
+            "weekday": 5,
+            "time": "11:30"
+          }
+        ]
+      },
+      "unit": "weekday and local time per release",
+      "status": "assumed",
+      "basis": "Monday, Wednesday and Friday releases and the Monday 11:30 time come from docs/gcsp/background.md. The Wednesday and Friday times are assumed to match Monday; the UK time zone is assumed.",
+      "source": "docs/gcsp/background.md",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "supply.weeklyReleaseVolume",
+      "value": {
+        "min": 300,
+        "max": 400
+      },
+      "unit": "cars per week",
+      "status": "assumed",
+      "basis": "background.md says 300 to 400 new cars are uploaded each week; the generator draws a weekly total inside this range.",
+      "source": "docs/gcsp/background.md",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "stock.optionLabels.v1",
+      "value": {
+        "paint": {
+          "P0300": "Alpine White",
+          "P0475": "Black Sapphire",
+          "P0A96": "Mineral White",
+          "P0C4P": "Brooklyn Grey",
+          "P0C4W": "Skyscraper Grey",
+          "P0C56": "Thundernight",
+          "P0C5A": "BMW Individual Frozen Pure Grey",
+          "P0C68": "Fire Red",
+          "P0C6R": "BMW Individual Frozen Portimao Blue",
+          "P0C31": "Portimao Blue",
+          "P0490": "BMW Individual Paintwork",
+          "P0668": "Jet Black",
+          "P0C5Y": "Cape York Green",
+          "P0C3N": "Storm Bay",
+          "P0C3Z": "Tanzanite Blue",
+          "P0416": "Carbon Black",
+          "P0A90": "Sophisto Grey",
+          "P0C4A": "Oxide Grey",
+          "P0C64": "BMW Individual Frozen Deep Grey",
+          "P0C1M": "Phytonic Blue",
+          "P0X1E": "Frozen Portimao Blue"
+        },
+        "upholstery": {
+          "FEPMI": "M PerformTex Black Cloth with M Piping",
+          "FKHG6": "Sensatec perforated with Tacora Red decor stitching",
+          "FKHRI": "Cognac Perforated Sensatec",
+          "FKHSW": "Black Perforated Sensatec",
+          "FMAH7": "Black with Grey Contrast Stitching Vernasca Leather",
+          "FMAL3": "Black with Red Highlight Vernasca Leather",
+          "FMANL": "Black with Blue stitching Vernasca leather",
+          "FMAOI": "Oyster with Grey contrast stitching Vernasca leather",
+          "FKTNL": "M Alcantara Veganza combination Black contrast stitching",
+          "FKUSW": "Veganza perforated Black",
+          "FBLAT": "Cloth Anthracite",
+          "FECI2": "Econeer Bicolour Blue",
+          "FKUCX": "Veganza perforated Oyster",
+          "FKUKP": "Veganza perforated Coral Red/Black",
+          "FKUMY": "Veganza perforated Mocha",
+          "FKSFU": "Perforated and Quilted Veganza in Smoke White",
+          "FKSJX": "Perforated and Quilted Veganza in Espresso Brown",
+          "FKSSW": "Perforated and Quilted Veganza in Black",
+          "FKTSW": "M Alcantara and Veganza in Black",
+          "FLKSW": "Black Merino Leather",
+          "FVCJL": "BMW Individual Merino leather in Black and Atlas Grey",
+          "FVCJN": "BMW Individual Merino leather in Silverstone II and Atlas Grey",
+          "FVCJM": "BMW Individual Merino leather in Copper Brown and Atlas Grey"
+        }
+      },
+      "unit": "display label by BMW option code (paint, upholstery)",
+      "status": "verified",
+      "basis": "BMW UK catalogue option descriptions retained by FUCQ-61 (and FUCQ-59 for codes absent from its files). Whitespace collapsed, the most frequent wording taken where files differ, and one stray pipe in FKHG6 written as \"with\".",
+      "source": "docs/gcsp/evidence/fucq61/*/options.json and docs/gcsp/evidence/fucq59/*/options.json (longDescription of each code)",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "stock.corpusModelLines.v1",
+      "value": {
+        "F70": {
+          "modelLineId": "f70-sports-hatch",
+          "title": "F70 Sports Hatch"
+        },
+        "G42": {
+          "modelLineId": "g42-coupe",
+          "title": "G42 Coupe"
+        },
+        "G61": {
+          "modelLineId": "g61-i5",
+          "title": "G61 i5"
+        }
+      },
+      "unit": "scheme model line by corpus generation",
+      "status": "assumed",
+      "basis": "The retained corpus carries a generation code but no model names. F70 and G42 map to the scheme lines of the same name; G61 is taken as the G61 i5 line because fleet-plan.json maps T5MJ (G61E) to it. Other lines have no retained corpus rows (FUCQ-77 coverage gap).",
+      "source": "server/data/gcsp/vehicle-evidence/fleet-plan.json",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "stock.aggregate.f70-sports-hatch",
+      "value": {
+        "modelLineId": "f70-sports-hatch",
+        "carCount": 45,
+        "colourShares": {
+          "Alpine White": 0.0805,
+          "BMW Individual Frozen Portimao Blue": 0.0781,
+          "BMW Individual Frozen Pure Grey": 0.0756,
+          "BMW Individual Paintwork": 0.0756,
+          "Black Sapphire": 0.0781,
+          "Brooklyn Grey": 0.0682,
+          "Cape York Green": 0.0829,
+          "Fire Red": 0.0756,
+          "Jet Black": 0.0074,
+          "Portimao Blue": 0.0706,
+          "Skyscraper Grey": 0.0781,
+          "Storm Bay": 0.0756,
+          "Tanzanite Blue": 0.0781,
+          "Thundernight": 0.0756
+        },
+        "upholsteryShares": {
+          "Cloth Anthracite": 0.0173,
+          "Econeer Bicolour Blue": 0.0149,
+          "M Alcantara Veganza combination Black contrast stitching": 0.1822,
+          "Veganza perforated Black": 0.1945,
+          "Veganza perforated Coral Red/Black": 0.1945,
+          "Veganza perforated Mocha": 0.1996,
+          "Veganza perforated Oyster": 0.197
+        },
+        "leadTimeWeeks": {
+          "min": 6,
+          "max": 14
+        },
+        "deliveryDateSpread": {
+          "min": "2026-12-21",
+          "max": "2027-02-15"
+        },
+        "priceBand": {
+          "min": 31000,
+          "max": 46000,
+          "currency": "GBP"
+        },
+        "sourceKind": "assumed-aggregate"
+      },
+      "unit": "cars, share of cars, weeks, GBP, delivery dates",
+      "status": "assumed",
+      "basis": "Assumed demo mix and ranges pending a bounded stock-locator sample (FUCQ-78 sampling acceptance criterion unmet). Colour and upholstery shares are the retained FUCQ-61 corpus configuration mix, a configurator selection mix, not observed stock. Car count, lead times, delivery spread and price band are plausible placeholders, not observations.",
+      "source": "docs/gcsp/evidence/fucq-20/assumed-aggregates-2026-11-07.json",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "stock.aggregate.g42-coupe",
+      "value": {
+        "modelLineId": "g42-coupe",
+        "carCount": 20,
+        "colourShares": {
+          "Alpine White": 0.2049,
+          "BMW Individual Frozen Portimao Blue": 0.0682,
+          "BMW Individual Frozen Pure Grey": 0.0682,
+          "Black Sapphire": 0.2047,
+          "Brooklyn Grey": 0.0682,
+          "Fire Red": 0.0682,
+          "Mineral White": 0.113,
+          "Portimao Blue": 0.0682,
+          "Skyscraper Grey": 0.0682,
+          "Thundernight": 0.0682
+        },
+        "upholsteryShares": {
+          "Black Perforated Sensatec": 0.1173,
+          "Black with Blue stitching Vernasca leather": 0.1109,
+          "Black with Grey Contrast Stitching Vernasca Leather": 0.1109,
+          "Black with Red Highlight Vernasca Leather": 0.1109,
+          "Cognac Perforated Sensatec": 0.1237,
+          "M PerformTex Black Cloth with M Piping": 0.1576,
+          "Oyster with Grey contrast stitching Vernasca leather": 0.1109,
+          "Sensatec perforated with Tacora Red decor stitching": 0.1578
+        },
+        "leadTimeWeeks": {
+          "min": 8,
+          "max": 16
+        },
+        "deliveryDateSpread": {
+          "min": "2027-01-04",
+          "max": "2027-03-01"
+        },
+        "priceBand": {
+          "min": 38000,
+          "max": 55000,
+          "currency": "GBP"
+        },
+        "sourceKind": "assumed-aggregate"
+      },
+      "unit": "cars, share of cars, weeks, GBP, delivery dates",
+      "status": "assumed",
+      "basis": "Assumed demo mix and ranges pending a bounded stock-locator sample (FUCQ-78 sampling acceptance criterion unmet). Colour and upholstery shares are the retained FUCQ-61 corpus configuration mix, a configurator selection mix, not observed stock. Car count, lead times, delivery spread and price band are plausible placeholders, not observations.",
+      "source": "docs/gcsp/evidence/fucq-20/assumed-aggregates-2026-11-07.json",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "stock.aggregate.g61-i5",
+      "value": {
+        "modelLineId": "g61-i5",
+        "carCount": 35,
+        "colourShares": {
+          "Alpine White": 0.0704,
+          "BMW Individual Frozen Deep Grey": 0.0616,
+          "BMW Individual Frozen Pure Grey": 0.0704,
+          "BMW Individual Paintwork": 0.0674,
+          "Black Sapphire": 0.0557,
+          "Brooklyn Grey": 0.0735,
+          "Cape York Green": 0.0704,
+          "Carbon Black": 0.0645,
+          "Fire Red": 0.0674,
+          "Frozen Portimao Blue": 0.0674,
+          "Mineral White": 0.0674,
+          "Oxide Grey": 0.0704,
+          "Phytonic Blue": 0.0674,
+          "Sophisto Grey": 0.0674,
+          "Tanzanite Blue": 0.0587
+        },
+        "upholsteryShares": {
+          "BMW Individual Merino leather in Black and Atlas Grey": 0.1232,
+          "BMW Individual Merino leather in Copper Brown and Atlas Grey": 0.129,
+          "BMW Individual Merino leather in Silverstone II and Atlas Grey": 0.1202,
+          "Black Merino Leather": 0.1144,
+          "M Alcantara and Veganza in Black": 0.1173,
+          "Perforated and Quilted Veganza in Black": 0.129,
+          "Perforated and Quilted Veganza in Espresso Brown": 0.129,
+          "Perforated and Quilted Veganza in Smoke White": 0.1379
+        },
+        "leadTimeWeeks": {
+          "min": 4,
+          "max": 12
+        },
+        "deliveryDateSpread": {
+          "min": "2026-12-07",
+          "max": "2027-02-01"
+        },
+        "priceBand": {
+          "min": 68000,
+          "max": 82000,
+          "currency": "GBP"
+        },
+        "sourceKind": "assumed-aggregate"
+      },
+      "unit": "cars, share of cars, weeks, GBP, delivery dates",
+      "status": "assumed",
+      "basis": "Assumed demo mix and ranges pending a bounded stock-locator sample (FUCQ-78 sampling acceptance criterion unmet). Colour and upholstery shares are the retained FUCQ-61 corpus configuration mix, a configurator selection mix, not observed stock. Car count, lead times, delivery spread and price band are plausible placeholders, not observations.",
+      "source": "docs/gcsp/evidence/fucq-20/assumed-aggregates-2026-11-07.json",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
     }
   ]
 }
