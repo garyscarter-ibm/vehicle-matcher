@@ -1,0 +1,32 @@
+{
+  "at": "2026-11-06T00:57:52.045746+00:00",
+  "grant": "fucq106-canonical-fa3320c-0033",
+  "observerAbsent": true,
+  "observerPid": 23020,
+  "observerOriginalStart": "Fri Nov  6 00:55:36 2026",
+  "supervisorPid": 23089,
+  "testProcesses": [
+    {
+      "pid": 23151,
+      "recordedStart": "Fri Nov  6 00:55:42 2026",
+      "currentStart": null
+    },
+    {
+      "pid": 23154,
+      "recordedStart": "Fri Nov  6 00:55:42 2026",
+      "currentStart": null
+    }
+  ],
+  "groups": [
+    {
+      "group": 23151,
+      "hasLiveMembers": false
+    }
+  ],
+  "scratchRoot": "/private/tmp/test-stamp-shard-17ed3d1320ba442fbea891eda8a39c9f",
+  "scratchAbsent": true,
+  "reservationReleased": true,
+  "existingDependencyPreserved": true,
+  "dependencyLinksCreated": 0,
+  "openFileAudit": "Not established. Post-deletion lsof output is not treated as a successful scan; recorded process/group/PID and scratch absence are independently verified. Observer log FD was closed before it exited."
+}

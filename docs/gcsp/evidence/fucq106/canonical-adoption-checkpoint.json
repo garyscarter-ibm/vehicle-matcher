@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "grant": "fucq106-canonical-fa3320c-0033",
+  "status": "INCOMPLETE: 2 passed, 1 test-contract assertion failure; no retry",
+  "supervisorRuns": 1,
+  "supervisorExit": 1,
+  "observerFailure": null,
+  "totals": {
+    "tests": 3,
+    "suites": 0,
+    "pass": 2,
+    "fail": 1,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "totalsExactlyThreePass": false,
+  "sourceBeforeAfterMatch": true,
+  "moduleJournalMatches43": true,
+  "moduleJournalUniquePerProcess": true,
+  "observedCanonicalPaths": 43,
+  "log": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq106/fucq106-canonical-fa3320c-0033-audit/original-checks.log",
+    "bytes": 1780,
+    "sha256": "2ac202cff2dec14190efb06c9f476e17504987109ca55b418889ce29df95fb4c",
+    "fullOriginalRetained": true
+  },
+  "timing": {
+    "totalWallIncludingIndependentSourcePreparationAndFinalAuditSeconds": 11.446099875,
+    "supervisorWallIncludingImmutablePreparationSeconds": 6.201365541,
+    "childExecutionSeconds": 3.2843455830000003
+  },
+  "measuredChild": {
+    "peakRssBytes": 251609088,
+    "peakScratchBytes": 1167200
+  },
+  "sourcePlanSha256": "ad78da691bf9eaac00e5ffeeda3b851bb096b18bc9640b77ac4b85355b6aa514",
+  "resources": {
+    "scratchRoot": "/private/tmp/test-stamp-shard-17ed3d1320ba442fbea891eda8a39c9f",
+    "scratchAbsent": true,
+    "processIdentities": [
+      {
+        "pid": 23151,
+        "start": "Fri Nov  6 00:55:42 2026"
+      },
+      {
+        "pid": 23154,
+        "start": "Fri Nov  6 00:55:42 2026"
+      }
+    ],
+    "liveOwnedProcesses": [],
+    "groups": [
+      {
+        "group": 23151,
+        "hasLiveMembers": false
+      }
+    ],
+    "supervisorAbsentAndReaped": true,
+    "reservationReleased": true,
+    "existingDependencyPreserved": true,
+    "dependencyLinksCreated": 0,
+    "openFileAudit": {
+      "status": "not-established",
+      "limitation": "Reviewed supervisor invokes lsof only after scratch deletion and ignores its return status. Its empty output is not a successful independent open-file scan. Recorded processes/groups and scratch absence are independently checked here; observer log descriptor was closed before this audit."
+    }
+  },
+  "resultPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq106/fucq106-canonical-fa3320c-0033/result.json",
+  "manifestPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq106/fucq106-canonical-fa3320c-0033/ownership/17ed3d1320ba442fbea891eda8a39c9f.json",
+  "observerPid": 23020,
+  "observerStart": "Fri Nov  6 00:55:36 2026",
+  "limit": "No successful independent open-file scan is claimed. Child 120-second budget excludes immutable preparation. No retry is authorized or launched.",
+  "sourceCheckpoint": "fa3320caddd179ddd4d975324c408eb07d69a9af",
+  "canonical103": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+  "approvedPlanSha256": "ad78da691bf9eaac00e5ffeeda3b851bb096b18bc9640b77ac4b85355b6aa514",
+  "diagnosis": {
+    "reproduction": "One exact reviewed supervisor invocation selected all three new tests; first and third pass, second fails at its initial price comparison.",
+    "actual": "PolicyService returns scalar monthlyPoints 1100; actual 100 quote.monthlyPoints is the retained typed object {value:1100,unit:points}.",
+    "cause": "The new test expected the typed quote object to equal the scalar policy price. Both represent 1100; the asserted shapes differ. No production failure is demonstrated.",
+    "unreached": "The failing second test stops before successor price publication and acceptance; that canonical price-pin integration assertion remains unproved.",
+    "proposedNextCheck": "After separate review/grant, assert the retained quote unit and compare price.monthlyPoints to quote.monthlyPoints.value, then execute only the previously failed new case. No test or source is edited/retried by this receipt."
+  },
+  "reusedEvidence": "25/25 independent and 12/12 actual memory remain unchanged and were not rerun",
+  "finalAudit": {
+    "at": "2026-11-06T00:57:52.045746+00:00",
+    "grant": "fucq106-canonical-fa3320c-0033",
+    "observerAbsent": true,
+    "observerPid": 23020,
+    "observerOriginalStart": "Fri Nov  6 00:55:36 2026",
+    "supervisorPid": 23089,
+    "testProcesses": [
+      {
+        "pid": 23151,
+        "recordedStart": "Fri Nov  6 00:55:42 2026",
+        "currentStart": null
+      },
+      {
+        "pid": 23154,
+        "recordedStart": "Fri Nov  6 00:55:42 2026",
+        "currentStart": null
+      }
+    ],
+    "groups": [
+      {
+        "group": 23151,
+        "hasLiveMembers": false
+      }
+    ],
+    "scratchRoot": "/private/tmp/test-stamp-shard-17ed3d1320ba442fbea891eda8a39c9f",
+    "scratchAbsent": true,
+    "reservationReleased": true,
+    "existingDependencyPreserved": true,
+    "dependencyLinksCreated": 0,
+    "openFileAudit": "Not established. Post-deletion lsof output is not treated as a successful scan; recorded process/group/PID and scratch absence are independently verified. Observer log FD was closed before it exited."
+  },
+  "retainedArtifacts": [
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-original.log",
+      "sha256": "2ac202cff2dec14190efb06c9f476e17504987109ca55b418889ce29df95fb4c",
+      "bytes": 1780
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-run-plan.json",
+      "sha256": "18658341d44f861786e663540972c001fda925d71dd40dcba14a7d220f84bc17",
+      "bytes": 12595
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-run-result.json",
+      "sha256": "8955ed97570e532977b462a3afa374fcf45c1a8e00983fab8363c8d9e6b89383",
+      "bytes": 831
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-module-journal.json",
+      "sha256": "a17dc0f7f16989322fae44150b8eae3479d718c5dfc7554002124ac4708c07fa",
+      "bytes": 14198
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-final-audit.json",
+      "sha256": "87aadc23ffa3a7ca796e3fd2f46e8c078736d8dbe82949ffd17832caac55c1ab",
+      "bytes": 984
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-observer.py",
+      "sha256": "64312498a5992b5b2bbf1a7ddfce9ef75343d331d676d5f56d039fa397c96fce",
+      "bytes": 12021
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-source-audit.json",
+      "sha256": "8a5683ad3762cc8955b843542ef0366b65298c243e0fb54efd15b8c2ae638cb6",
+      "bytes": 29974
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-executed-source-plan.json",
+      "sha256": "ad78da691bf9eaac00e5ffeeda3b851bb096b18bc9640b77ac4b85355b6aa514",
+      "bytes": 34511
+    }
+  ],
+  "artifactAllocation": {
+    "paths": [
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq106/fucq106-canonical-fa3320c-0033",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq106/fucq106-canonical-fa3320c-0033-audit"
+    ],
+    "logicalBytes": 80809,
+    "allocatedBytes": 131072,
+    "scratchRemovedBytesAtSampledPeak": 1167200,
+    "largeOutputOrCompatibilityException": null
+  },
+  "grantConsumed": true,
+  "retryAuthorized": false,
+  "storyStatus": "blocked",
+  "postRunCorrection": {
+    "authorization": "Dispatcher permitted only narrow test expected-value correction after read-only diagnosis; no execution grant.",
+    "testSha256": "f31dcf480816fec2e9fc8040e87a15d1cbf02ef77222ca0ab1f7894329b4b63f",
+    "revisedManifestSha256": "db0dfa478ddef3594abe5c74c0aaeddeefc61e9bd8fcedee4c0ba832ec178746",
+    "supervisorSha256": "18f1ada157ee7ddda8d9a68ef9159d83cee55b2ca7d71fc5bb2d0b2e06e82a73",
+    "loaderSha256": "9fb07801d9b82066aa8ce8b679d085fbf4c8f74d5348e566acf644c7f3ad4a2a",
+    "featureModulePinsUnchanged": true,
+    "jsonInputPinsUnchanged": true,
+    "executed": false,
+    "retryAuthorized": false
+  }
+}
