@@ -195,10 +195,8 @@ test('a confirmed inbound row reduces the new-order quantity', async () => {
   assert.equal(quantity(released, TOURING), 1);
 });
 
-test('the seeded demo employee has no confirmed driver fact, so the need is gated driver-unconfirmed', async () => {
-  const bare = await fixture({ seeded: true, stampRenewal: false });
-  assert.deepEqual([(await bare.planFor()).status, (await bare.planFor()).code], ['unavailable', 'planning-forecast-entitlement-missing']);
-  const f = await fixture({ seeded: true });
+test('the untouched seeded demo employee reaches a plan via the slot renewal, gated driver-unconfirmed', async () => {
+  const f = await fixture({ seeded: true, stampRenewal: false });
   const plan = await f.planFor();
   assert.equal(plan.status, 'feasible'); assert.equal(plan.orderQuantity, 0);
   assert.deepEqual([plan.expectedAcceptableCoverage.covered, plan.expectedAcceptableCoverage.total], [0, 1]);

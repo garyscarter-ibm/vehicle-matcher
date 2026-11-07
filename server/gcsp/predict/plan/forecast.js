@@ -35,7 +35,10 @@ export function createExpressedOrderForecastProvider({ repository, identity, clo
         const derivativeIds = new Set(choices.value.derivatives.map((d) => d.derivativeId));
         const entitlements = []; const evaluations = []; const excluded = [];
         for (const brief of currentBriefs(rows.briefs)) {
-          const employee = rows.employees.find((e) => e.employeeId === brief.employeeId);
+          const row = rows.employees.find((e) => e.employeeId === brief.employeeId);
+          const linked = text(row?.entitlementSlotId) ? rows.entitlement_slots.find((s) => s.entitlementSlotId === row.entitlementSlotId) : undefined;
+          // Demo identity records the renewal on the exact slot only; a value on the employee row must still agree.
+          const employee = row?.renewalId == null && linked?.employeeId === row?.employeeId ? { ...row, renewalId: linked?.renewalId } : row;
           if (!employee || !employee.roles?.includes('employee') || !text(employee.renewalId) || !text(employee.entitlementSlotId)) return unavailable('planning-forecast-entitlement-missing');
           const slot = rows.entitlement_slots.find((s) => s.entitlementSlotId === employee.entitlementSlotId);
           if (!slot || slot.employeeId !== employee.employeeId || slot.renewalId !== employee.renewalId
