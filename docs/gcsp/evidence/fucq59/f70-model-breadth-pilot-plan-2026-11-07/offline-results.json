@@ -155,10 +155,64 @@
       ],
       "sourceTraffic": false,
       "meaning": "70passed,0failed/skipped; new model-batch16plus legacy batch/options/capture/binder checks."
+    },
+    {
+      "cleanup": {
+        "absent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/.claude/f58-63-overnight-20261106/f58/f70-model-breadth/offline/prepared/ownership/a1dca44bb45c423cbbf005b41fa20dbe.json",
+        "root": "/private/tmp/test-stamp-shard-a1dca44bb45c423cbbf005b41fa20dbe",
+        "groupsAbsent": true,
+        "removedAllocationBytes": 79836,
+        "compatibilityException": null
+      },
+      "identity": {
+        "docs/gcsp/evidence/fucq59/f70-model-breadth-pilot-plan-2026-11-07/prepared-check.test.mjs": "3ecfe6bd75c21233ec1eb08036df69305c1a95c4179610efec155d6f00f0ed61",
+        "scripts/gcsp/bmw-public-registration.mjs": "3a9a1afcc128f8356bb296b063d118bc9b7c59531ef75823bb99f8e01f209291",
+        "scripts/gcsp/bmw-selection-binding.mjs": "88820920f57f4509741d6ad291e2fcd36c5b47a65d42acd35e890e3a6f84004e",
+        "scripts/gcsp/capture-bmw-selection.mjs": "b3cea57603e403f41bb326bcdfc955b7f061a7cfc1b071d1ef609de3efc99bc1",
+        "scripts/gcsp/collect-fleet.mjs": "ba3864cee32f480facde57a2d2c9dbf944d571878bb2a9cece220955357ab1de",
+        "scripts/gcsp/collection-session.mjs": "db5a1a1ca6037132eced521f1a9b19d73a4282a113da66480ebec70c0beac7ff",
+        "scripts/gcsp/public-bmw-source.mjs": "4561e844cfe85383ad8ed27521bab157a10dae57f8d82ab29b8f41842bfc8336"
+      },
+      "phase": "prepared",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/.claude/f58-63-overnight-20261106/f58/f70-model-breadth/offline/prepared/test.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/.claude/f58-63-overnight-20261106/f58/f70-model-breadth/offline/prepared/ownership/a1dca44bb45c423cbbf005b41fa20dbe.json",
+        "peak_rss": 172556288,
+        "peak_scratch": 79836,
+        "rc": 0,
+        "wall": 1.2891375000035623
+      },
+      "selected": [
+        "docs/gcsp/evidence/fucq59/f70-model-breadth-pilot-plan-2026-11-07/prepared-check.test.mjs"
+      ],
+      "sourceTraffic": false,
+      "meaning": "4/4 preparation checks passed: deterministic actual-options candidate/pins, no-traffic inspection, no-grant refusal and exit0-without-evidence supervisor stop/cleanup. Nested no-source fixture had64MiB host/48MiB child/8MiB scratch within512MiB outer reservation.",
+      "nestedFixtureCleanup": {
+        "fixtureSupervisorCleanup": [
+          {
+            "compatibilityException": null,
+            "groupsAbsent": true,
+            "manifest": "/private/tmp/test-stamp-shard-a1dca44bb45c423cbbf005b41fa20dbe/f70-supervisor-fixture-0m9kFY/retained/1f7a/ownership/37e84e573c264b4eadf625ba38b2fc00.json",
+            "removedAllocationBytes": 0,
+            "reservationAbsent": true,
+            "scratchAbsent": true,
+            "scratchRoot": "/private/tmp/test-stamp-shard-37e84e573c264b4eadf625ba38b2fc00"
+          }
+        ],
+        "publicGetAttempts": 0
+      },
+      "nestedFixtureManifestsRemovedWithOwnedOuterScratch": true
     }
   ],
   "sourceTraffic": false,
   "fullSuite": false,
   "acceptance": false,
-  "leftovers": []
+  "leftovers": [],
+  "incidentalOwnedBytecodeCleanup": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/_tools/__pycache__/test_resources.cpython-314.pyc",
+    "absent": true
+  }
 }

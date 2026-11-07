@@ -14,6 +14,8 @@ r = importlib.util.module_from_spec(spec); spec.loader.exec_module(r)
 phase = sys.argv[1]
 assert phase in ('red', 'green', 'green2', 'green3', 'prepared')
 files = ['server/test/gcsp-bmw-model-batch.test.js']
+if phase == 'prepared':
+    files = ['docs/gcsp/evidence/fucq59/f70-model-breadth-pilot-plan-2026-11-07/prepared-check.test.mjs']
 if phase.startswith('green'):
     files += ['server/test/gcsp-bmw-source-batch.test.js', 'server/test/gcsp-bmw-model-options-qualification.test.js']
 if phase == 'green3':
@@ -43,7 +45,7 @@ receipt['identity'] = {path: hashlib.sha256((ROOT/path).read_bytes()).hexdigest(
 try:
     host.acquire(scratch.token, 64*r.MIB, (512)*r.MIB, '/private/tmp', root=scratch.root)
     with r.handled_termination(), scratch:
-        if True:
+        if phase != 'prepared':
             link = ROOT / 'server/node_modules'
             assert not os.path.lexists(link)
             r.atomic_json(output/'dependency-link.json', {'path':str(link),'state':'planned','source':'/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules'})
