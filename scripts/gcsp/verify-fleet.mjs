@@ -115,7 +115,7 @@ async function boundedWorkers(items, concurrency, visit) {
     for (;;) { const index = cursor++; if (index >= items.length) return; await visit(items[index], index); }
   }));
 }
-function matchesRetained(result, record, images, manifestDigest) {
+function matchesRetained(result, record, images, manifestDigest, supplement) {
   if (!['partial', 'complete'].includes(result?.status) || !record) return false;
   const source = record.sourceContext; const catalogue = record.catalogue; const configuration = record.configuration;
   return result.identity?.configurationId === record.configurationId && result.versions?.manifestDigest === manifestDigest
@@ -134,7 +134,7 @@ function matchesRetained(result, record, images, manifestDigest) {
     && result.completeness?.selectedOptions === source.selectedOptionCompleteness
     && (catalogue ? isDeepStrictEqual(result.equipment?.selected?.options, record.canonicalIdentity.factoryOptionCodes)
       : result.equipment?.selected?.state === 'unknown')
-    && (!catalogue || Object.entries(catalogue.facts || {}).every(([key, fact]) => isDeepStrictEqual(result.technical?.[key], fact)))
+    && (!catalogue || Object.entries({ ...catalogue.facts, ...supplement?.facts }).every(([key, fact]) => isDeepStrictEqual(result.technical?.[key], fact)))
     && isDeepStrictEqual((result.images?.items || []).map(({ imageId, asset, role, fidelity, sourceKind, observedDate }) =>
       ({ imageId, asset, role, fidelity, sourceKind, observedDate })), images.map(({ imageId, asset, role, fidelity, sourceKind, observedDate }) =>
       ({ imageId, asset, role, fidelity, sourceKind, observedDate })))
@@ -201,7 +201,7 @@ export async function verifyActiveFleet({ root, requiredDistinct = 10000, http =
       const record = configurations.get(direct.identity?.configurationId);
       const images = [...new Set([...(record?.imageIds || []), ...(imageAssociations.get(record?.configurationId) || [])])]
         .map((id) => rows.images.get(id));
-      if (!matchesRetained(direct, record, images, active.manifestDigest) || consumed.status !== direct.status || !consumed.vehicle
+      if (!matchesRetained(direct, record, images, active.manifestDigest, checked.manifest.technicalSupplements?.find(s => s.configurationId === record?.configurationId)) || consumed.status !== direct.status || !consumed.vehicle
         || !isDeepStrictEqual(consumed.vehicle, Object.fromEntries(Object.keys(consumed.vehicle).map((key) => [key, direct[key]])))) errors++;
       latencies.push(performance.now() - start);
     });

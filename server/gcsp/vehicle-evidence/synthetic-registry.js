@@ -256,7 +256,8 @@ export function createSyntheticRegistry({ root, onPhase = async () => {}, ...opt
         if (!image) throw new Error('Indexed image is absent.'); images.push(image);
       }
       return { status: row.catalogue?.status || 'partial', active: info(), sourceKind: row.sourceContext.sourceKind,
-        record: row, images, imageState: images.length ? 'representative' : 'unavailable' };
+        record: row, ...(snapshot.manifest.technicalSupplements?.find(s => s.configurationId === id)
+          ? { technicalSupplement: snapshot.manifest.technicalSupplements.find(s => s.configurationId === id) } : {}), images, imageState: images.length ? 'representative' : 'unavailable' };
     } catch { return { ...unavailable('indexed-corpus-changed', 'The selected indexed corpus changed; reload a complete validated version.'), active: info() }; }
   }
   function getVin(vin) {
