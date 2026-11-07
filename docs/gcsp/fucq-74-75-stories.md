@@ -1,5 +1,7 @@
 # FUCQ-74 and FUCQ-75 · Greg's predictive next order and replayable acceptance scenarios
 
+**Current scope revision, 7 November:** this document preserves the original publication. The [authorised split decision](build-rules.md#scope-split-decision-7-november-2026) retains main presenter operation in FUCQ-126 and matching-second-offer replay in FUCQ-128. Their optional wider chooser and no-second-match replay are new To Do Stories FUCQ-172 and FUCQ-173. Use current Jira/local contracts and the [MoSCoW tables](backlog-moscow-review-2026-11-07.md) for pickup; historical descriptions below do not override that revision. This action does not waive FUCQ-74's learned-model promise.
+
 **Published and verified on 4 November 2026.** This is readiness item C9: 13 native Stories under two Epics that already existed.
 - Six Stories under [FUCQ-74](https://ibm-consulting.atlassian.net/browse/FUCQ-74), Greg's predictive next order.
 - Seven Stories under [FUCQ-75](https://ibm-consulting.atlassian.net/browse/FUCQ-75), replayable manual acceptance scenarios.
