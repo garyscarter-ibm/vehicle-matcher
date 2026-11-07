@@ -20,3 +20,11 @@ G42_UNSPENT2288_PHASE_GRANT=g42-unspent-typed-pool-20261107-once-continuation228
 ```
 
 All original scheme-line joins, distribution, 10,000 distinct admitted target, downstream integration and acceptance obligations remain open. The separate Medium production inventory Bug remains open and unfixed.
+
+## Actual interruption, 7 November 2026
+
+The released suffix consumed five source sessions (original61–65),60GETs and40solver requests before the source supervisor finalizer reported `owned process group absence not proved`. The orchestration assertion stopped the phase. The original error and stopped receipt are preserved; the source child itself returned rc0 with all12HTTP200 attempts in session5. The final atexit cleanup file reports absence. The transient failure cause is unresolved and no logger or process-lifecycle repair is claimed.
+
+Sessions1–4 each passed the original five strict retained checks. After stop, session5 was reconciled read-only and passed the same five strict checks with zeroHTTP. The actual prefix adds34admissions,6source-not-constructible rejects and zero duplicates. Its final base is2,392admitted,2,395canonical and3,204spent solver requests. `interruption-review.json` records the exact index identities and independent absence checks for all10scratch roots, stage groups, dependency link and reservations. Scratch removed2,621,920bytes; durable output retained30,092,863bytes before this summary. There are no leftovers or compatibility exceptions.
+
+The original phase stays consumed and is not restarted. The2,248requests after session5 require a new exact suffix packet and separate release. Acceptance,31scheme-line joins, distribution and downstream obligations remain open.
