@@ -1,4 +1,4 @@
-# Five literal range leads: prepared, unspent
+# Five literal range leads: actual inventory and retained gaps
 
 This evidence-only harness proposes 15 public GETs across five exact retained request leads: G21/T3PF, U11/X1S0, U10/IXS4, G26E/I4PC and I20/IXSC. Each context is a page/settings/tree sequence. The inputs come from the historical 18 October 2026 leads in the preceding breadth ledger; they establish no model, AG, raw range, alias, line or production facts. No live traffic is authorised by these prepared files.
 
@@ -50,3 +50,11 @@ All original 31 scheme-line joins remain open. The five leads are candidates for
 The parent released the exact first three GETs once. G21 completed all three with HTTP 200, 811,124 decoded bytes and a 15,738-byte sealed diagnostic. The phase took 2.381371792 seconds. It observed alias `3`, eight full model nodes and 80 literal relationships, with seed T3PF present. The original production refusal is `source-inventory-line-key` at `/3/modelRanges/G21/lines/BASIC_LINE`. This is retained evidence; the production defect remains unfixed.
 
 All five retained checks passed, including a copied-primary zero-fetch resume. First proof SHA-256 is `3b7a25b735ed3ea4097c618ff8e3d600a9839ac2c4443a16d104a2f6ff32bd63`; primary SHA-256 is `9a6d47820aa93ee6dafc41679a043680b31b077e0d379d1c0d432bfdf6ec4384`. `first-actual-validation.json` records both source/proof resource checks and the joined phase cleanup. Both roots, process groups, child reservations and phase reservation were independently verified absent; no scratch allocation remained. The retained first-phase output measured 57,042 bytes before this summary. Admissions, capacity credit and acceptance remain zero. The remaining 12 GETs require their separate release.
+
+## Actual remaining phase, 7 November 2026
+
+The separately released remaining12GET allocation is consumed. U11, U10 and G26E each completed three HTTP200 requests and five strict retained checks. U11 retained21 full model nodes and173 literal relationships (1,049,471 decoded bytes); U10 retained five nodes and65 relationships (761,978 bytes); G26E retained10 nodes representing five models across two complete aliases and118 relationships (871,970 bytes).
+
+I20 consumed its three GETs, all HTTP200, but the tree response was a two-byte empty object. The collector stopped with `diagnostic-alias-limit` after638,411 decoded bytes. No I20 success proof was run. This is an explicit dated source gap; no replay, inferred registration, substitution or global-unavailability claim follows.
+
+The remaining phase took9.53705925seconds and retained303,234bytes before this summary. All seven actual source/proof scratch roots, process groups and reservations, and the phase reservation were independently verified absent in `remaining-actual-validation.json`. No leftovers or compatibility exceptions remain. All15GETs across both phases are spent; inventory admissions, capacity credit and acceptance remain zero. The original31scheme-line joins remain open.
