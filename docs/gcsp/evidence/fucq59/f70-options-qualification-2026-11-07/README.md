@@ -1,6 +1,6 @@
 # F70 explicit-trim options qualification, prepared 7 November 2026
 
-Status: prepared and unspent. No source traffic has been released or attempted by this preparation.
+Status: **spent and complete**. The parent released this exact allocation on 7 November 2026. It ran once at 01:46:01 UTC and qualified typed options with four HTTP 200 GETs. Never rerun this allocation.
 
 The plan inspects model `1F7B`, AG `82GE`, complete alias set `["1"]`, GB/en-GB and literal `RL`, with catalogue/order date `2026-11-01` and effect date `2027-01-05`. The explicit options trim is `S0337`.
 
@@ -15,3 +15,9 @@ Pinned limits are 1 MiB per response, 4 MiB aggregate decoded bytes, 90 seconds 
 The production capability is committed as `924e8baecf31039373b500a9e2547b84d81cfee8`; 15 focused and 134 scoped boundary checks pass. Six prepared-plan checks pass with zero skips; see `validation.json`. Owned process groups, scratch, dependency link and reservations are absent after verification. Existing Medium throughput Bug FUCQ-151 remains separate.
 
 Only after the parent reviews and releases this exact allocation may it set the documented `F70_OPTIONS_SOURCE_GRANT` and invoke the pinned command in `execution-plan.json`. This document does not grant traffic. Review the actual typed definitions before preparing a finite eight-candidate solver stage; that stage needs a separate allocation counting its fresh replacement bootstrap GETs. No broader corpus or runtime acceptance is established.
+
+Actual result: 879,529 decoded bytes; 1,331 ms source elapsed, 84,541,440 B peak RSS and 0 B scratch allocation. The retained source exposes 234 definitions, including 13 paint, 5 fabric and 4 rim definitions. `S0337` is explicitly a package. No candidate, solver or configuration admission occurred.
+
+Five retained-evidence checks pass with zero skips. The primary/state copy, artifact hashes, exact executor provenance, full model/line binding, request events and spent marker agree. Existing checkpoint export completed; process groups, scratch, dependency link, reservation and writer metadata are absent. See `live-validation.json`. The initial offline preparation checks in `validation.json` are historical; their unspent assertions must not be rerun after this spent allocation.
+
+FUCQ-154 records the explicitly deferred Medium fixed-scratch reconciliation issue. It did not affect this completed run; no reconciliation exception or leftover remains.
