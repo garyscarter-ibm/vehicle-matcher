@@ -37,7 +37,12 @@ async function mount(t, options = {}) {
   return { root, teardown, adapter };
 }
 const click = (root, label) => [...root.querySelectorAll('button')].find((node) => node.textContent === label)?.click();
+const chips = (root, name) => [...root.querySelectorAll(`[data-nav="${name}"] [role="radio"]`)];
 function change(root, name, value) {
+  if (['series', 'body'].includes(name)) {
+    const chip = value ? chips(root, name).find((node) => node.querySelector('.vm-option-label').textContent === value) : chips(root, name)[0];
+    chip.click(); return root.querySelector(`[data-nav="${name}"] [aria-checked="true"]`);
+  }
   const node = root.querySelector(`[name="${name}"]`); node.value = value;
   node.dispatchEvent(new window.Event(node.tagName === 'SELECT' ? 'change' : 'input', { bubbles: true })); return node;
 }
@@ -47,10 +52,15 @@ test('native labelled filters keep focus and expose every exact car, allowance a
   assert.equal(f.root.querySelector('h1').textContent, 'Released cars');
   assert.match(f.root.textContent, /3 released cars · 2 eligible · 3 shown · 2 eligible shown/);
   assert.match(f.root.textContent, /Your allowance: 1,300 points a month/);
-  for (const name of ['query', 'series', 'body', 'sort']) {
+  for (const name of ['query', 'sort']) {
     const control = f.root.querySelector(`[name="${name}"]`);
     assert.equal(f.root.querySelector(`label[for="${control.id}"]`).htmlFor, control.id);
   }
+  for (const name of ['series', 'body']) {
+    const group = f.root.querySelector(`[data-nav="${name}"]`); assert.equal(group.getAttribute('role'), 'radiogroup');
+    assert.ok(document.getElementById(group.getAttribute('aria-labelledby')).textContent);
+  }
+  assert.deepEqual(chips(f.root, 'series').map((node) => node.textContent), ['All series3 cars', '3 Series2 cars', '5 Series1 car']);
   const search = f.root.querySelector('[name="query"]'); search.focus(); change(f.root, 'query', 'Technology Plus');
   assert.equal(document.activeElement, search); assert.equal(f.root.querySelector('[name="query"]'), search);
   assert.equal(f.root.querySelectorAll('.vm-card').length, 1);
@@ -172,12 +182,13 @@ test('terminal readback tied to the issued receipt resolves that exact attempt',
 
 test('removed refreshed filter remains visibly selected and can be cleared without replacing its control', async (t) => {
   let next = createManualGalleryFixture(); const f = await mount(t, { adapter: { browseStock: async () => structuredClone(next) } });
-  const series = change(f.root, 'series', '5 Series'); series.focus(); next.value.decisions = next.value.decisions.slice(0, 2);
+  change(f.root, 'series', '5 Series').focus(); next.value.decisions = next.value.decisions.slice(0, 2);
   await f.teardown.gallery.refresh();
-  assert.equal(f.root.querySelector('[name="series"]'), series); assert.equal(document.activeElement, series);
-  assert.equal(series.value, '5 Series'); assert.match(series.selectedOptions[0].textContent, /not currently available/);
+  const series = f.root.querySelector('[data-nav="series"] [aria-checked="true"]'); assert.equal(document.activeElement, series);
+  assert.match(series.textContent, /5 Series \(not currently available\)0 cars/);
   assert.equal(f.teardown.gallery.getState().controls.series, '5 Series'); assert.match(f.root.textContent, /No cars match these filters/);
-  click(f.root, 'Clear filters'); assert.equal(series.value, ''); assert.equal(f.root.querySelectorAll('.vm-card').length, 2);
+  click(f.root, 'Clear filters'); assert.match(f.root.querySelector('[data-nav="series"] [aria-checked="true"]').textContent, /^All series/);
+  assert.equal(f.root.querySelectorAll('.vm-card').length, 2);
 });
 
 test('mismatched readback never confirms, while a definitive failed command permits fresh browse recovery', async () => {
@@ -237,4 +248,21 @@ test('new harness is external-module-only and registered custom element tears do
   }
   defineGcspManualGallery(); const node = document.createElement('gcsp-manual-gallery'); node.adapter = createManualGalleryFixtureAdapter(); document.body.append(node);
   await waitFor(() => node.querySelectorAll('.vm-card').length === 3); assert.ok(node.claimState); node.remove(); assert.equal(node.querySelector('main'), null);
+});
+
+test('cards lead with points and allowance fit, keep key facts concise, and chips navigate by keyboard', async (t) => {
+  const f = await mount(t); const [first, , third] = f.root.querySelectorAll('.vm-card');
+  assert.match(first.querySelector('.vm-card-terms').textContent, /^1,100 points a monthWithin your allowance, 200 points left$/);
+  assert.match(third.querySelector('.vm-card-terms').textContent, /100 points over your allowance/);
+  assert.deepEqual([...first.querySelectorAll('.vm-fact-label, dt')].map((node) => node.textContent).filter(Boolean).slice(0, 6),
+    ['Engine', 'Exterior', 'Interior', 'Transmission', 'Earliest collection', 'WLTP CO2']);
+  assert.doesNotMatch(first.textContent, /Insurance group/);
+  const series = chips(f.root, 'series'); series[0].focus();
+  series[0].dispatchEvent(new window.KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+  assert.equal(document.activeElement.getAttribute('aria-checked'), 'true'); assert.match(document.activeElement.textContent, /^3 Series/);
+  assert.equal(f.root.querySelectorAll('.vm-card').length, 2);
+  first.querySelector('[data-action-id="review-car"]').parentElement.querySelector('button:last-child').click();
+  const detail = f.root.querySelector('.gcsp-gallery-detail');
+  for (const label of ['Insurance group', 'NEDC / correlated CO2', 'Body style', 'Available allowance', 'Scheme contribution']) assert.match(detail.textContent, new RegExp(label));
+  assert.match(detail.textContent, /Within your allowance, 200 points left/);
 });
