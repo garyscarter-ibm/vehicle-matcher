@@ -183,6 +183,11 @@ export async function verifyActiveFleet({ root, requiredDistinct = 10000, http =
       return activeFailure('active-manifest-changed', 'Active loader and actual retained artifact digest must agree.');
     }
     const rows = checked.corpus; const configurations = rows.configurations;
+    const imageAssociations = new Map();
+    for (const image of rows.images) {
+      const references = imageAssociations.get(image.configurationId) || [];
+      references.push(image.imageId); imageAssociations.set(image.configurationId, references);
+    }
     const lookup = createVehicleEvidenceLookup({ registry, repository });
     const consumer = createConfiguredVehicleDetails({ lookup, timeoutMs: 5000, maxAttempts: 1 });
     const requests = [...rows.configurations.metadataEntries()].map((entry) => ({ kind: 'configuration', id: entry.key }));
@@ -193,7 +198,8 @@ export async function verifyActiveFleet({ root, requiredDistinct = 10000, http =
       const start = performance.now();
       const direct = await lookup.resolve(request, { context }); const consumed = await consumer.resolve(request, { context });
       const record = configurations.get(direct.identity?.configurationId);
-      const images = (record?.imageIds || []).map((id) => rows.images.get(id));
+      const images = [...new Set([...(record?.imageIds || []), ...(imageAssociations.get(record?.configurationId) || [])])]
+        .map((id) => rows.images.get(id));
       if (!matchesRetained(direct, record, images, active.manifestDigest) || consumed.status !== direct.status || !consumed.vehicle
         || !isDeepStrictEqual(consumed.vehicle, Object.fromEntries(Object.keys(consumed.vehicle).map((key) => [key, direct[key]])))) errors++;
       latencies.push(performance.now() - start);

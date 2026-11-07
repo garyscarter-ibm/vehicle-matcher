@@ -154,10 +154,16 @@ export function createSyntheticRegistry({ root, onPhase = async () => {}, ...opt
   }
   function select(loaded) {
     const configurations = loaded.corpus.configurations;
+    const configurationImages = new Map();
+    for (const image of loaded.corpus.images) {
+      const references = configurationImages.get(image.configurationId) || [];
+      references.push(image.imageId); configurationImages.set(image.configurationId, references);
+    }
     const vinIds = new Map();
     for (const entry of loaded.corpus.vins.metadataEntries()) { vinIds.set(entry.vin17, entry.key); vinIds.set(entry.vin7, entry.key); }
     const vins = { get: (vin) => loaded.corpus.vins.get(vinIds.get(vin)) };
-    snapshot = { ...loaded.corpus, manifestDigest: loaded.manifestDigest, selection: loaded.selection, configurations, vins };
+    snapshot = { ...loaded.corpus, manifestDigest: loaded.manifestDigest, selection: loaded.selection,
+      configurations, configurationImages, vins };
   }
   async function load() {
     try {
@@ -245,12 +251,12 @@ export function createSyntheticRegistry({ root, onPhase = async () => {}, ...opt
       const row = snapshot.configurations.get(id);
       if (!row) return { status: 'not-found', active: info() };
       const images = [];
-      for (const imageId of row.imageIds) {
+      for (const imageId of new Set([...row.imageIds, ...(snapshot.configurationImages.get(id) || [])])) {
         const image = snapshot.images.get(imageId);
         if (!image) throw new Error('Indexed image is absent.'); images.push(image);
       }
       return { status: row.catalogue?.status || 'partial', active: info(), sourceKind: row.sourceContext.sourceKind,
-        record: row, images, imageState: row.imageIds.length ? 'representative' : 'unavailable' };
+        record: row, images, imageState: images.length ? 'representative' : 'unavailable' };
     } catch { return { ...unavailable('indexed-corpus-changed', 'The selected indexed corpus changed; reload a complete validated version.'), active: info() }; }
   }
   function getVin(vin) {
