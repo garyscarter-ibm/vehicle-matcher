@@ -1,6 +1,6 @@
 # G42 observation-only range inventory — 7 November 2026
 
-Capability implemented and exact three-GET source allocation prepared, unspent and unreleased. No BMW traffic occurred here.
+The once allocation is spent. All three GETs received HTTP 200, but projection stopped at `source-inventory-line-limit`. No inventory artifact or configurations were admitted; cumulative admitted source capacity remains 349. Do not replay this allocation.
 
 The separate `f59-range-inventory-20261107.v1` version registers only one GB/en-GB range, the literal historical official-page seed and explicit tree query dates. The first proposed request scope is G42 / 2PMC, query effect/order dates 2026-11-01 / 2026-11-01. These remain request inputs. Returned AG, raw range, steering, model dates, complete observed aliases and bounded direct line/default/included pointers come only from the actual response; future returned dates are retained as facts. Missing fields, conflicting aliases, a missing seed and a model-key mismatch remain gaps.
 
@@ -13,3 +13,7 @@ The historical seed provenance and exact executable/input hashes are frozen in `
 All six offline preparation checks passed with zero skips: strict plan/provenance, frozen executable/input pins and resource/retention contract, syntax, and missing-grant runner/supervisor refusals before fetch/marker/resource allocation. Preparation verification took 0.480160 seconds, sampled 109,051,904 bytes peak RSS and removed 602,272 bytes of owned scratch. Cleanup verified all owned groups, scratch, dependency links and reservations absent, with no compatibility exception. `validation.json` retains the receipt. The plan permits three GETs only, 4 MiB aggregate / 1 MiB response, 90/105/120-second limits, one worker/no retries, 512/448 MiB host/child RAM and 64 MiB scratch.
 
 The exact release environment is `BMW_RANGE_INVENTORY_SOURCE_GRANT=g42-range-inventory-20261107-once`; it is required independently by runner and supervisor. The parent owns release and execution. Never infer a source grant from this preparation.
+
+The actual run decoded 757,135 bytes (118,726 tree bytes), completed in 1.341 seconds and sampled 82,280,448 bytes peak RSS. The primary and spent marker are retained. The raw tree was not retained, so the exact live offending path and depth/width/row limit subtype are unknown. Static diagnosis found the broad visitor retained unrelated property rows; this is a projection defect, not evidence of an access or rate failure.
+
+Four retained-only checks passed with zero skips before any production fix: durable projection stop/no admission, all three HTTP 200 observations and byte accounting, original frozen identities/spent marker/export, and absent raw bootstrap/writers/scratch. They took 0.246789 seconds and removed 348,256 bytes of owned scratch; all owned groups, dependency links and reservations are absent. `live-validation.json` preserves the historical verification identity and cleanup. This evidence cannot be rerun against changed production pins as if the original code were still current.
