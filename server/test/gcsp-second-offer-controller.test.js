@@ -56,11 +56,22 @@ test('reload preserves a committed saved receipt when evaluation is unavailable'
   assert.equal(result.state, 'unavailable'); assert.deepEqual(result.savedChange, saved()); assert.match(result.error, /change is saved/);
 });
 
-test('missing evaluation and invented waiting or no-match envelopes fail closed', async () => {
-  for (const state of ['waiting', 'no-match']) {
-    const { controller } = setup({ read: async () => ({ status: 'ok', value: { schemaVersion: 1, state, decisionId,
-      savedChange: saved(), evaluation: { eventId: 'invented', briefVersion: 2 } } }) });
-    await controller.refresh(); assert.equal(controller.snapshot().state, 'unavailable');
+test('calculated waiting and no-match envelopes are accepted; malformed or invented ones fail closed', async () => {
+  const evaluation = { evaluatedAt: '2026-11-06T09:00:00.000Z', carsChecked: 3, suitable: 0 };
+  const envelope = (state, extra = {}) => ({ schemaVersion: 1, state, decisionId, savedChange: saved(), ...extra });
+  const waiting = setup({ read: async () => ({ status: 'ok', value: envelope('waiting') }) });
+  await waiting.controller.refresh(); const w = waiting.controller.snapshot();
+  assert.equal(w.state, 'waiting'); assert.deepEqual(w.savedChange, saved()); assert.equal(w.canConfirm, false);
+  const none = setup({ read: async () => ({ status: 'ok', value: envelope('no-match', { evaluation }) }) });
+  await none.controller.refresh(); const n = none.controller.snapshot();
+  assert.equal(n.state, 'no-match'); assert.deepEqual(n.evaluation, evaluation); assert.deepEqual(n.savedChange, saved());
+  const bad = [envelope('no-match'), envelope('waiting', { evaluation }), envelope('no-match', { evaluation: { ...evaluation, carsChecked: -1 } }),
+    envelope('no-match', { evaluation: { ...evaluation, carsChecked: 1.5 } }), envelope('no-match', { evaluation: { ...evaluation, evaluatedAt: 'soon' } }),
+    envelope('no-match', { evaluation: { ...evaluation, suitable: 1 } }), envelope('no-match', { evaluation: { eventId: 'invented', briefVersion: 2 } }),
+    { ...envelope('waiting'), savedChange: null }, { ...envelope('waiting'), decisionId: 'other' }, { ...envelope('waiting'), extra: true }];
+  for (const value of bad) {
+    const { controller } = setup({ read: async () => ({ status: 'ok', value }) });
+    await controller.refresh(); assert.equal(controller.snapshot().state, 'unavailable', JSON.stringify(value));
   }
 });
 

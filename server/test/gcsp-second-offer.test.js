@@ -8,7 +8,9 @@ import { createBriefService } from '../gcsp/brief/index.js';
 import { createOfferFollowupService } from '../gcsp/offers/followup.js';
 import { createOfferFollowupRoutes } from '../gcsp/offers/followup-http.js';
 import { buildFollowupComparison } from '../gcsp/offers/followup-comparison.js';
-import { preference, essential } from './helpers/employee-recommendation.js';
+import { createBuddyHoldService } from '../gcsp/offers/buddy-hold.js';
+import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
+import { preference, essential, stock, fact as stockFact } from './helpers/employee-recommendation.js';
 
 // These labelled policy values and persisted decline rows are scoped inputs, not a106/103 producer proof.
 const bundle = JSON.parse(await readFile(new URL('../gcsp/offers/followup-policy-definitions.json', import.meta.url), 'utf8'));
@@ -26,7 +28,7 @@ const data = () => ({ schemaVersion: 1,
   currentCarFeedback: { preserve: ['comfort'], change: ['body'], state: 'draft', source: 'employee' } });
 const command = (commandId, payload = {}) => ({ commandId, inputDigest: inputDigest(payload) });
 
-async function setup(t, { alter = () => {}, missingPolicy = false, inputData, briefOverride, slotRenewalId } = {}) {
+async function setup(t, { alter = () => {}, missingPolicy = false, inputData, briefOverride, slotRenewalId, manualContext = false } = {}) {
   const canonical = createPolicyService();
   const policy = { getActiveVersion: (...args) => canonical.getActiveVersion(...args),
     async getAssumption(key, read) {
@@ -46,6 +48,10 @@ async function setup(t, { alter = () => {}, missingPolicy = false, inputData, br
   const presenter = await identity.createPresenterSession('presenter');
   const acting = await identity.switchPrincipal(presenter.value.context, 'demo-paula', 'paula');
   const context = acting.value.context; const brief = createBriefService({ repository, policy, clock, identity });
+  if (manualContext) {
+    assert.equal((await seedManualDemoContext({ repository, identity, clock, context })).status, 'ok');
+    assert.equal((await clock.advance(presenter.value.context, { commandId: 'noon', expectedClockVersion: '1', bySeconds: 10800 })).status, 'ok');
+  }
   const slotRef = { table: 'entitlement_slots', key: { runId: context.runId, entitlementSlotId: context.entitlementSlotId } };
   let slot = (await repository.read(context, slotRef)).value;
   if (slotRenewalId !== undefined) {
@@ -89,7 +95,7 @@ async function setup(t, { alter = () => {}, missingPolicy = false, inputData, br
   });
   assert.equal(seeded.status, 'ok', JSON.stringify(seeded));
   const service = createOfferFollowupService({ repository, policy, clock, identity, brief: briefOverride ?? brief });
-  return { repository, policy, clock, identity, context, presenter, brief, service, slot, slotRef, initial: approved.value.brief, rows };
+  return { repository, policy, canonical, clock, identity, context, presenter, brief, service, slot, slotRef, initial: approved.value.brief, rows };
 }
 
 async function answer(f, additions = {}) {
@@ -132,8 +138,8 @@ test('confirmation uses real BriefService, preserves other inputs, replays and r
   const conflicting = await f.service.confirm(f.context, { ...input, value: 'saloon' });
   assert.equal(conflicting.status, 'conflict'); assert.equal(conflicting.reason, 'idempotency-input-changed');
   const reload = await f.service.read(f.context, { decisionId: 'decline' });
-  assert.equal(reload.status, 'unavailable'); assert.equal(reload.code, 'followup-evaluation-unavailable');
-  assert.deepEqual(reload.savedChange, changed.value);
+  assert.equal(reload.status, 'ok'); assert.equal(reload.value.state, 'waiting');
+  assert.deepEqual(reload.value.savedChange, changed.value);
   assert.equal((await f.brief.readHistory(f.context)).value.versions.length, 2);
   assert.deepEqual((await f.repository.query(f.context, 'offers')).value, beforeOffers);
   assert.equal(JSON.stringify(changed).includes(f.context.principalId), false);
@@ -145,7 +151,7 @@ test('a second command cannot consume the decline and stale concurrent confirmat
   assert.equal(outcomes.filter((o) => o.status === 'ok').length, 1);
   assert.equal(outcomes.filter((o) => o.status === 'stale-version').length, 1);
   const reread = createOfferFollowupService({ repository: f.repository, policy: f.policy, clock: f.clock, identity: f.identity, brief: f.brief });
-  assert.equal((await reread.read(f.context, { decisionId: 'decline' })).savedChange.briefVersion, 2);
+  assert.equal((await reread.read(f.context, { decisionId: 'decline' })).value.savedChange.briefVersion, 2);
   const next = await f.service.confirm(f.context, { ...input, commandId: 'second', expectedBriefVersion: 2 });
   assert.equal(next.status, 'stale-version');
   assert.equal((await f.brief.readHistory(f.context)).value.versions.length, 2);
@@ -246,7 +252,7 @@ async function comparisonCase(t, slotRenewalId) {
     assert.equal(Object.isFrozen(f.context), true);
     assert.equal(f.initial.renewalId, null);
     const reload = await f.service.read(f.context, { decisionId: 'decline' });
-    assert.equal(reload.status, 'unavailable'); assert.deepEqual(reload.savedChange, saved.value);
+    assert.equal(reload.status, 'ok'); assert.deepEqual(reload.value.savedChange, saved.value);
   }
   const now = (await f.clock.now(f.context)).value.now;
   const quote = { ...f.rows.quote, quoteId: 'new-quote', briefVersion: 2, quotedAt: now };
@@ -398,6 +404,105 @@ test('slot content and version changes before question response or brief write r
     assert.equal((await f.repository.read(f.context, f.slotRef)).value.version, f.slot.version + 1);
     assert.equal((await f.brief.readHistory(f.context)).value.versions.length, 1);
   }
+});
+
+// Seeds the FUCQ-96 allocator's persisted run record shape through the repository's normal receipt path.
+async function seedRun(f, { eventId, brief = 2, decisions, evaluatedAt, value = {}, employeeId = f.context.employeeId }) {
+  const at = evaluatedAt ?? (await f.clock.now(f.context)).value.now;
+  const run = { state: 'no-assignment', runId: f.context.runId, evaluatedAt: at, policyVersion: f.context.policyVersion,
+    inputVersions: { briefs: [{ employeeId, brief }], stock: [] }, assignments: [], attempts: [],
+    evaluations: [{ employeeId, versions: {}, decisions }], ...value };
+  const seeded = await f.repository.transaction(f.context, command(`allocation-${eventId}`), (tx) => tx.recordReceipt({
+    consumerId: 'buddy-allocation', eventId, eventType: 'stock-released', state: 'completed',
+    inputVersions: { brief }, inputDigest: inputDigest(run), outcome: ok(run) }));
+  assert.equal(seeded.status, 'ok', JSON.stringify(seeded));
+}
+const decisionRow = (gateStatus, n) => ({ orderUuid: `car-${n}`, gateStatus, score: null, reasons: [],
+  blockers: gateStatus === 'eligible' ? [] : ['declined-unchanged'], unknowns: [], versions: {} });
+
+test('after a saved change the follow-up is waiting until a release evaluates the new brief', async (t) => {
+  const f = await setup(t); const saved = await f.service.confirm(f.context, await answer(f));
+  const before = await snapshot(f);
+  const none = await f.service.read(f.context, { decisionId: 'decline' });
+  assert.equal(none.status, 'ok'); assert.deepEqual(none.value, { schemaVersion: 1, state: 'waiting', decisionId: 'decline', savedChange: saved.value });
+  assert.deepEqual(await snapshot(f), before);
+  await seedRun(f, { eventId: 'older', brief: 1, decisions: [decisionRow('ineligible', 1)] });
+  assert.equal((await f.service.read(f.context, { decisionId: 'decline' })).value.state, 'waiting');
+  await seedRun(f, { eventId: 'other-run', decisions: [decisionRow('ineligible', 1)], value: { runId: 'earlier-run' } });
+  await seedRun(f, { eventId: 'other-employee', decisions: [decisionRow('ineligible', 1)], employeeId: 'someone-else' });
+  assert.equal((await f.service.read(f.context, { decisionId: 'decline' })).value.state, 'waiting');
+});
+
+test('a completed release evaluating the current brief with no eligible car is a calculated no-match', async (t) => {
+  const f = await setup(t); const saved = await f.service.confirm(f.context, await answer(f));
+  await seedRun(f, { eventId: 'release-one', decisions: [1, 2, 3].map((n) => decisionRow('ineligible', n)) });
+  const response = await f.service.read(f.context, { decisionId: 'decline' });
+  assert.equal(response.status, 'ok', JSON.stringify(response)); assert.equal(response.value.state, 'no-match');
+  assert.deepEqual(response.value.savedChange, saved.value);
+  assert.deepEqual(response.value.evaluation, { evaluatedAt: (await f.clock.now(f.context)).value.now, carsChecked: 3, suitable: 0 });
+  assert.equal(JSON.stringify(response).includes(f.context.employeeId), false);
+  const now = Date.parse((await f.clock.now(f.context)).value.now);
+  await seedRun(f, { eventId: 'release-two', evaluatedAt: new Date(now - 60000).toISOString(), decisions: [decisionRow('eligible', 4)] });
+  assert.equal((await f.service.read(f.context, { decisionId: 'decline' })).value.evaluation.carsChecked, 3);
+  await seedRun(f, { eventId: 'release-three', evaluatedAt: new Date(now + 60000).toISOString(), decisions: [] });
+  assert.equal((await f.service.read(f.context, { decisionId: 'decline' })).value.evaluation.carsChecked, 3);
+});
+
+test('eligible cars without an offer wait; the latest evaluation wins', async (t) => {
+  const f = await setup(t); await f.service.confirm(f.context, await answer(f));
+  const now = Date.parse((await f.clock.now(f.context)).value.now);
+  await seedRun(f, { eventId: 'earlier', evaluatedAt: new Date(now - 60000).toISOString(), decisions: [decisionRow('ineligible', 1)] });
+  await seedRun(f, { eventId: 'later', decisions: [decisionRow('ineligible', 1), decisionRow('eligible', 2)] });
+  assert.equal((await f.service.read(f.context, { decisionId: 'decline' })).value.state, 'waiting');
+});
+
+test('malformed allocation records and failed receipt reads keep the saved change with unavailable', async (t) => {
+  for (const value of [{ evaluations: 'none' }, { inputVersions: { briefs: [{ employeeId: 'x' }] , stock: [] }, evaluations: 7 }]) {
+    const f = await setup(t); const saved = await f.service.confirm(f.context, await answer(f));
+    await seedRun(f, { eventId: 'bad', decisions: [], value: { inputVersions: { briefs: [{ employeeId: f.context.employeeId, brief: 2 }] }, ...value } });
+    const response = await f.service.read(f.context, { decisionId: 'decline' });
+    assert.equal(response.status, 'unavailable'); assert.deepEqual(response.savedChange, saved.value);
+  }
+  const f = await setup(t); const saved = await f.service.confirm(f.context, await answer(f));
+  const repository = Object.create(f.repository, { query: { value: async (context, table, filter) =>
+    table === 'event_receipts' && filter?.consumerId === 'buddy-allocation' ? result('unavailable') : f.repository.query(context, table, filter) } });
+  const failing = createOfferFollowupService({ ...f, repository });
+  const response = await failing.read(f.context, { decisionId: 'decline' });
+  assert.equal(response.status, 'unavailable'); assert.deepEqual(response.savedChange, saved.value);
+});
+
+test('a release tick that finds a fitting car yields the second offer through the real hold service', async (t) => {
+  const f = await setup(t, { manualContext: true, inputData: { schemaVersion: 1,
+    preferences: { body: preference('estate') }, essentials: { seats: essential(5) } } }); const saved = await f.service.confirm(f.context, await answer(f));
+  assert.equal((await f.service.read(f.context, { decisionId: 'decline' })).value.state, 'waiting');
+  const car = stock(2, { body: stockFact('suv') });
+  const released = await f.repository.transaction(f.context, command('release-fixture'), (tx) => tx.insert('stock', {
+    runId: f.context.runId, orderUuid: car.orderUuid, orderNumber: '9123456', configurationId: car.configurationId,
+    state: 'released', available: true, held: false, allocated: false, facts: car.snapshot,
+    release: { eventId: 'tick-release', availability: car.availability },
+    visibility: { companyIds: [f.context.companyId], schemeIds: [f.context.schemeId], employeeIds: null } }));
+  assert.equal(released.status, 'ok', JSON.stringify(released));
+  const read = (table, key) => f.repository.read(f.context, { table, key: { runId: f.context.runId, ...key } });
+  const [employee, slot, row] = await Promise.all([read('employees', { employeeId: f.context.employeeId }),
+    read('entitlement_slots', { entitlementSlotId: f.context.entitlementSlotId }), read('stock', { orderUuid: car.orderUuid })]);
+  // The FUCQ-96 allocator makes this claim on the release tick; here the real FUCQ-100 hold service is called directly.
+  const hold = createBuddyHoldService({ repository: f.repository, policy: f.canonical, clock: f.clock, identity: f.identity,
+    adapter: { mode: 'local-synthetic' } });
+  const allocated = await hold.allocate(f.context, { commandId: 'tick', orderUuid: car.orderUuid, expectedBriefVersion: 2,
+    expectedStockVersion: row.value.version, expectedSlotVersion: slot.value.version, expectedEmployeeVersion: employee.value.version });
+  assert.equal(allocated.status, 'ok', JSON.stringify(allocated)); assert.equal(allocated.value.quote.briefVersion, 2);
+  const now = (await f.clock.now(f.context)).value.now;
+  const offers = { async fromAccount(context, { offerId }) {
+    const previous = offerId === 'old-offer'; const quote = previous ? f.rows.quote : allocated.value.quote;
+    return ok({ offer: { schemaVersion: 1, runId: context.runId, offerId, state: previous ? 'declined' : 'pending', quote: {
+      quoteId: quote.quoteId, orderUuid: quote.orderUuid, briefVersion: quote.briefVersion, policyVersion: context.policyVersion,
+      quotedAt: now, facts: { facts: { body: stockFact(previous ? 'estate' : 'suv') } }, decision: { score: previous ? 95 : 70 } } } });
+  } };
+  const response = await createOfferFollowupService({ ...f, offers }).read(f.context, { decisionId: 'decline' });
+  assert.equal(response.status, 'ok', JSON.stringify(response)); assert.equal(response.value.state, 'ready');
+  assert.deepEqual(response.value.savedChange, saved.value);
+  assert.equal(response.value.comparison.next.offer.offerId, allocated.value.offer.offerId);
+  assert.equal(response.value.comparison.next.offer.quote.briefVersion, 2);
 });
 
 test('HTTP descriptors require employee context, exact selector and delegated strict confirmation', async (t) => {

@@ -68,6 +68,25 @@ test('uncertain state offers the same-command retry; unavailable keeps saved rec
   assert.equal(root.querySelector('button'), null);
 });
 
+test('waiting and no-match are calculated states with a focusable refresh and the title announced', (t) => {
+  let reads = 0; const { root, view } = host(t, { refresh: () => { reads += 1; } });
+  const cases = [
+    [{ state: 'waiting' }, 'Waiting for the next release', /Your change is saved\. Your next offer is checked when more cars are released\./],
+    [{ state: 'no-match', evaluation: { evaluatedAt: '2026-11-06T09:00:00.000Z', carsChecked: 3, suitable: 0 } },
+      'Nothing suitable yet', /None of the 3 cars checked fit your updated brief\. We will check again at the next release\./],
+    [{ state: 'no-match', evaluation: { evaluatedAt: '2026-11-06T09:00:00.000Z', carsChecked: 1, suitable: 0 } },
+      'Nothing suitable yet', /The 1 car checked does not fit your updated brief\./],
+  ];
+  for (const [model, title, message] of cases) {
+    view.update({ ...model, savedChange: saved, busy: false });
+    assert.match(root.querySelector('h1, h2').textContent, new RegExp(title)); assert.match(root.textContent, message);
+    assert.equal(root.querySelector('.gcsp-followup-live').textContent, title); assert.doesNotMatch(root.textContent, /\u2014/);
+    const refresh = root.querySelector('[data-followup-action=refresh]'); assert.ok(refresh); assert.equal(refresh.disabled, false);
+    assert.equal(refresh.tagName, 'BUTTON'); refresh.focus(); assert.equal(document.activeElement, refresh);
+  }
+  root.querySelector('[data-followup-action=refresh]').click(); assert.equal(reads, 1);
+});
+
 test('comparison uses the supplied offer projector, shared cards/table and exact units/unknown/source evidence', (t) => {
   const calls = []; const opened = [];
   const projector = ({ value }) => { calls.push(value.offerId); return { status: 'ok', value: { reference: { offerId: value.offerId }, card: {
