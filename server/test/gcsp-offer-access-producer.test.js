@@ -97,9 +97,11 @@ test('actual buddy allocation feeds pinned private offer access, cookie/account 
   assert.deepEqual(dto.quote.facts.sourceKeys, { stockId: f.car.orderUuid });
   assert.deepEqual(dto.quote.facts.facts, f.allocated.quote.facts.facts);
   assert.deepEqual(dto.quote.terms, f.allocated.quote.terms);
-  assert.equal(dto.comparison.status, 'partial'); assert.equal(dto.comparison.comparisonAvailable, false);
-  assert.deepEqual(dto.comparison.currentCar, { model: f.allocated.quote.eligibility.currentCarComparison.display.model,
-    source: f.allocated.quote.eligibility.currentCarComparison.display.source });
+  const pinnedCar = f.allocated.quote.eligibility.currentCarComparison.display;
+  assert.equal(dto.comparison.status, 'available'); assert.equal(dto.comparison.comparisonAvailable, true);
+  assert.deepEqual(dto.comparison.unknowns, []);
+  assert.deepEqual(dto.comparison.currentCar, { model: pinnedCar.model, source: pinnedCar.source, facts: pinnedCar.facts });
+  assert.equal(dto.comparison.currentCar.facts.boot.value, 500);
   assert.equal(JSON.stringify(dto).match(/employeeId|principalId|tokenHash|tokenMetadata|contractId|employeeVersion|slotVersion|"binding"/), null);
   const cookie = cookieOf(exchanged.setCookie); const credential = cookie.split('=')[1];
   assertCustody(f, { allocated: f.allocated, dto }, credential);

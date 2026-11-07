@@ -122,7 +122,7 @@ function currentCar(contract, model, controls) {
 }
 
 // This is page layout rather than a stock decision card: a delivered car has no stock eligibility decision.
-export function renderAccountBody(main, { model, draft, pending = false, message, journey = false, controls } = {}) {
+export function renderAccountBody(main, { model, draft, offers = [], pending = false, message, journey = false, controls } = {}) {
   const wrap = el('div', 'vm gcsp-rep gcsp-account-body');
   wrap.setAttribute('aria-busy', String(pending));
   wrap.append(screenIntro({ title: journey ? 'Your saved journey' : 'Your cars', level: 1, className: 'gcsp-intro' }));
@@ -134,6 +134,12 @@ export function renderAccountBody(main, { model, draft, pending = false, message
     const [title, text] = states[model.state];
     wrap.append(statusScreen({ title, message: text, actions: [controls.supportButton(model.state === 'absent-hr-account'
       ? 'hr-support' : model.supportOwner, 'Contact support')] }));
+  }
+  if (!journey && offers.length && controls.openOffer) {
+    const offer = el('section', 'gcsp-summary'); offer.setAttribute('aria-label', 'Your car offer');
+    offer.append(el('h2', 'gcsp-h2', 'Your car offer'), el('p', 'gcsp-note', 'Your buddy found a car for you. Check its details and deadline.'),
+      button({ label: 'View your offer', disabled: pending, onClick: () => controls.openOffer(offers[0]) }));
+    wrap.append(offer);
   }
   if (draft?.status === 'ok') {
     const value = draft.value;
@@ -200,7 +206,7 @@ export function renderAccountBody(main, { model, draft, pending = false, message
 
 export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', onSupport, print } = {}) {
   const abort = new AbortController();
-  let envelope; let draft; let main; let pending = false; let message = null; let journey = false; let disposed = false;
+  let envelope; let draft; let offers; let main; let pending = false; let message = null; let journey = false; let disposed = false;
   let generation = 0; let teardown; let loading; let finishPrint;
   const notify = (type, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(type,
     { detail, bubbles: true, composed: true }));
@@ -210,6 +216,8 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   const controls = {
     refresh: () => refresh(),
     back: () => { journey = false; draw(true); },
+    openOffer: ({ offerId, runId }) => root.ownerDocument.defaultView.location.assign(
+      `/gcsp/offer?offerId=${encodeURIComponent(offerId)}&runId=${encodeURIComponent(runId)}`),
     resume: () => resume(),
     supportButton: (route, text) => button({ label: text, variant: 'ghost', onClick: () => {
       onSupport?.(route); notify('gcsp:support', { route });
@@ -240,14 +248,15 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   };
   function draw(focus = false) {
     if (!main || disposed) return;
-    renderAccountBody(main, { model: toAccountView(envelope), draft, pending, message, journey, controls });
+    renderAccountBody(main, { model: toAccountView(envelope), draft, offers, pending, message, journey, controls });
     if (focus) { const title = main.querySelector('h1'); title.tabIndex = -1; title.focus(); }
   }
   async function loadAccount() {
     const version = ++generation;
-    const [accountResult, draftResult] = await Promise.all([read('readAccount'), read('readDraft')]);
+    const [accountResult, draftResult, offerResult] = await Promise.all([read('readAccount'), read('readDraft'),
+      typeof adapter.readOffers === 'function' ? read('readOffers') : null]);
     if (disposed || version !== generation) return { status: 'unavailable' };
-    envelope = accountResult; draft = draftResult;
+    envelope = accountResult; draft = draftResult; offers = offerResult?.status === 'ok' ? offerResult.value.offers : [];
     const model = toAccountView(envelope);
     return { status: envelope.status === 'ok' ? 'ready' : 'unavailable', name: model.account?.name ?? 'Account unavailable',
       context: [model.account?.company ?? model.account?.companyId, model.account?.gradeId].filter(Boolean).join(', ') };

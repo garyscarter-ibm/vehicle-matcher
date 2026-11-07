@@ -1,0 +1,168 @@
+{
+  "schema": 1,
+  "kind": "finite-parent-audit-recipe-authoring-only",
+  "date": "2026-11-06",
+  "runtime_grant": false,
+  "reviewed_consumer_commit": "97adc05a3b822b0832d013a934c5e836e0fcfa45",
+  "consumer_source_plan": {
+    "path": "docs/gcsp/evidence/fucq105/followup-consumer-source-plan.json",
+    "sha256": "19af2c40040919e88ed082a484fbb68997964b90be232b2e68e374d64189a243",
+    "bytes": 74919
+  },
+  "recipe": {
+    "path": "docs/gcsp/evidence/fucq105/followup-consumer-parent-audit-recipe.md",
+    "sha256": "682e1195b9f3988dcfb09d88c6b636605bda33bbdc8045b135b94172cd9ef314",
+    "bytes": 18076
+  },
+  "existing_harness": {
+    "server/test/gcsp-offer-view-followup-consumer.test.js": {
+      "sha256": "2539bfc28f99d5ed4e5fe850c5860a2c89f95f273fa62c1c2cb5398418ba17a6",
+      "bytes": 21432
+    },
+    "docs/gcsp/evidence/fucq105/followup-consumer-loader.mjs": {
+      "sha256": "b86ef4c3bff3af565a0d954fd12c845999cb10f0b8f511895dc8976a808cc784",
+      "bytes": 2918
+    },
+    "docs/gcsp/evidence/fucq105/followup-consumer-supervisor.py": {
+      "sha256": "d39d05124555d4067425d7b07205d5e41adc9995bfeb49e85ae228dbea488cda",
+      "bytes": 33431
+    },
+    "docs/gcsp/evidence/fucq105/followup-consumer-audit.py": {
+      "sha256": "316ec21f114625284b828dbead1741043ce3aa7b508912330d819b24cc18eddf",
+      "bytes": 14680
+    },
+    "docs/gcsp/evidence/fucq105/decision-mixed-ledger.py": {
+      "sha256": "14726d310da350b3d8e0b8b2c5e410d9f93167c841e52c9e4ede974a37870f69",
+      "bytes": 13685
+    },
+    "docs/gcsp/evidence/fucq105/decision-mixed-lifecycle.py": {
+      "sha256": "4f204054c465a45efba0256d770b763d60fdd886293dca00378e3d2d05a1852c",
+      "bytes": 6213
+    },
+    "_tools/test_resources.py": {
+      "sha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+      "bytes": 36093
+    },
+    "_tools/test_stamp.py": {
+      "sha256": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
+      "bytes": 36134
+    },
+    "_tools/scaffold_git.py": {
+      "sha256": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a",
+      "bytes": 129000
+    },
+    "docs/gcsp/evidence/fucq105/followup-consumer-bounds.py": {
+      "sha256": "be8176354fb6b17792171be7cc88f5bc76f35100195932dd571e4809ef5d5890",
+      "bytes": 28292
+    }
+  },
+  "parent_contract": {
+    "workers": 1,
+    "audit_seconds": 120,
+    "parent_seconds": 180,
+    "ram_mib": 768,
+    "minimum_ram_mib": 768,
+    "require_full_grant": true,
+    "combined_mib": 128,
+    "retained_mib": 8,
+    "readonly_original_admission_mib": 5,
+    "parent_metadata_allowance_mib": 3,
+    "parent_monitor_limit_mib": 640,
+    "additional_child_transient_charge_mib": 128,
+    "charge_rss": "parent_monitor.checkpoint() + 128*MIB; parent monitor already includes descendants and its own128MiB fixed allowances",
+    "stdout_bytes": 4096,
+    "stderr_bytes": 4096,
+    "supervisor_wait_capture_bytes": 16384,
+    "parent_phase_and_final_bytes": 65536,
+    "parent_manifest_bytes": 262144,
+    "original_snapshot_metadata_bytes": 262144,
+    "original_manifest_copy_bytes": 1048576,
+    "ledger_update_interval_seconds": 0.5,
+    "existing_bounds_contract": {
+      "combined_bytes": 134217728,
+      "ram_bytes": 805306368,
+      "retained_bytes": 8388608,
+      "json_bytes": 1048576,
+      "summary_bytes": 524288,
+      "terminal_bytes": 16384,
+      "audit_bytes": 16384,
+      "stdout_bytes": 4096,
+      "log_bytes": 2097152,
+      "journal_bytes": 262144,
+      "checkpoint_bytes": 65536,
+      "json_depth": 24,
+      "json_nodes": 32768,
+      "json_collection": 4096,
+      "json_string_chars": 65536,
+      "json_total_chars": 524288,
+      "entries": 4096,
+      "process_identities": 512,
+      "probe_bytes": 1048576,
+      "probe_timeout_seconds": 2,
+      "sample_interval_seconds": 0.2,
+      "helper_timeout_seconds": 5,
+      "helper_capture_bytes": 1048576,
+      "supervisor_seconds": 240,
+      "audit_seconds": 120,
+      "probe_ram_allowance": 33554432,
+      "encoding_ram_allowance": 67108864,
+      "ledger_ram_allowance": 33554432,
+      "ledger_disk_allowance": 4194304,
+      "atomic_disk_allowance": 1056768,
+      "terminal_disk_allowance": 65536,
+      "audit_disk_allowance": 65536
+    }
+  },
+  "strict_writer": {
+    "path": "docs/gcsp/evidence/fucq105/decision-mixed-ledger.py",
+    "class": "Budget",
+    "host_budget_source": "unchanged consumer plan.host_budget",
+    "acquire": "budget.acquire(scratch.token,128*MIB,768*MIB,\"/private/tmp\",root=scratch.root,minimum_ram=768*MIB)",
+    "parent_row": null,
+    "release": "only exact owned parent row after child direct wait/group/process/scratch absence, protected-original and actual postwrite proofs; unchanged full-row/foreign/dependent/readback checks"
+  },
+  "child_command": [
+    "<root-pinned-python>",
+    "-B",
+    "<ROOT>/docs/gcsp/evidence/fucq105/followup-consumer-audit.py",
+    "--summary",
+    "<original-run>/summary.json",
+    "--supervisor-exit-code",
+    "<actual code from immutable root tool/handle wait capture>",
+    "--helper-journal",
+    "<owned-parent-output>/audit-helper-ownership.json"
+  ],
+  "grant_required": {
+    "approved": true,
+    "scope": "fucq105-followup-parent-audit",
+    "parent_audit_id": "<unique ASCII suffix1..40>",
+    "parent_audit_pins_sha256": "<SHA256 of this published pin sheet>",
+    "recipe_sha256": "682e1195b9f3988dcfb09d88c6b636605bda33bbdc8045b135b94172cd9ef314",
+    "driver_sha256": "<root-rendered exact one-off driver, reviewed before launch>",
+    "python_path": "<root-pinned resolved executable>",
+    "python_sha256": "<exact executable SHA256>",
+    "consumer_source_plan_sha256": "19af2c40040919e88ed082a484fbb68997964b90be232b2e68e374d64189a243",
+    "original_run_id": "<same root-granted consumer run>",
+    "consumer_grant_sha256": "<immutable original grant>",
+    "supervisor_wait_capture_sha256": "<actual captured tool/handle wait and complete bounded streams>",
+    "summary_sha256": "<immutable original summary>",
+    "terminal_sha256": "<immutable original terminal>"
+  },
+  "execution_boundary": "Recipe specifies orchestration; root supplies and reviews exact one-off driver/Python/current admission before separate grant. No reviewed existing launcher established; monitor alone is not a reservation.",
+  "immutable_originals": "Never overwrite original receipts/source/inputs. Only existing auditor may create independent-audit.json and remove the already verified disposable original scratch manifest; parent retains its bounded byte-identical copy first.",
+  "validation_scope": "Static hash/byte/JSON/contract/order/authority review only; no helper import/execution, probe, test, scratch/resource allocation, live-ledger read/lock/mutation, DB/browser/native/full run or new fake cases.",
+  "agents": {
+    "name": "Hippety Hopper",
+    "requested": {
+      "model": "gpt-6.1-sol",
+      "effort": "high"
+    },
+    "selected": {
+      "model": "gpt-6.1-sol",
+      "effort": "high"
+    },
+    "fallback": false,
+    "descendants": 0
+  },
+  "startup_helper_ownership": "Successor authoring repair from74b9f9d; three consumer helper rows plus minimal parent adapter/refrozen bindings; same graph/scope/budgets; fresh review/grants required; no execution."
+}

@@ -1012,7 +1012,53 @@
       "assignee": "Gary Carter",
       "type": "Story",
       "observed_at": "2026-11-07T14:07:07Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105"
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105",
+      "slices": [
+        {
+          "id": "surface",
+          "status": "in-progress",
+          "title": "Exact pinned offer, shared card and current-car comparison",
+          "observed_at": "2026-11-05T23:21:27Z",
+          "evidence": "Hippety Hopper: existing shared exact-member card, typed terms, mediaWell and shell permit independent composition; other gates remain explicit."
+        },
+        {
+          "id": "controller",
+          "status": "in-progress",
+          "title": "Exclusive states, authoritative countdown and uncertain decisions",
+          "observed_at": "2026-11-06T01:49:12Z",
+          "evidence": "6 November: additive verified followup handle projection/clone, declined unavailable+refresh and account-gated injected107 body port authored; ten regression cases unexecuted. No command retry or URL selector. Old133 checks do not cover changed bytes. Actual102 lookup/final mixed/session/browser/full gates remain. docs/gcsp/evidence/fucq105/followup-entry-plan.md"
+        },
+        {
+          "id": "access-producer",
+          "status": "in-progress",
+          "title": "Published FUCQ102 access bound to actual FUCQ100 producer",
+          "observed_at": "2026-11-06T00:30:56Z",
+          "evidence": "Root granted one fresh exact5f6dab8 memory run:1test/1pass/0fail/0skip, all7 actual100\u2192102 streamedHTTP\u2192105 DOM lifecycle checkpoints. Strict key6db68bd587762e6c79c02309c198045f5b3710340aefb37bcb154c37f5cf8ee2;45 unique products/8overlays plus test, consistent duplicate hook records. Independent cleanup/source/dependency audit PASS; firstfailedreceipt preserved. No actual106/host/browser/full acceptance. Grant consumed, worker parked, root retains review/merge/closure. docs/gcsp/evidence/fucq105"
+        },
+        {
+          "id": "decision-host",
+          "status": "blocked",
+          "title": "Actual FUCQ106 decision and delivered host integration",
+          "observed_at": "2026-11-06T12:52:35Z",
+          "evidence": "Current1000f46baf delivers offer entry, current102 durable lookup, same-instance106/107 and actual gated dispatch; old missing-source blockers cleared.18 selected hashes match passing packet. HTTPS/session behaviour, actual-run policy adoption/readback and candidate merge remain gates. No product/helper edits or rerun. docs/gcsp/evidence/fucq105/followup-consumer-owned-result.md"
+        },
+        {
+          "id": "browser",
+          "status": "blocked",
+          "title": "Desktop and 375px rendered keyboard, reload and second-browser proof",
+          "observed_at": "2026-11-06T12:52:35Z",
+          "evidence": "Current1000f46baf includes /gcsp/offer, entry module and base/shell/offer/107 CSS. Browser lane still unallocated: raw HTTP loopback is refused by default HTTPS transport. Need authorised HTTPS ordinary-session/account-before-offer-cookie flow, lost-response reload and375/1280 keyboard/reduced-motion evidence. Existing passing consumer reused; no new runtime grant. docs/gcsp/evidence/fucq105/followup-consumer-owned-result.md"
+        },
+        {
+          "id": "validation",
+          "status": "blocked",
+          "title": "Authored full-suite and final lead acceptance review",
+          "observed_at": "2026-11-05T23:33:14Z",
+          "evidence": "Authored npm test/full-stamp reserved for root coordinated lane;80/80 narrow checks pass with strict targeted evidence only."
+        }
+      ],
+      "unsliced": false,
+      "workers": []
     },
     {
       "id": "FUCQ-106",
@@ -1475,7 +1521,7 @@
           "title": "Real FUCQ-77/78 source-backed stock and confirmed supply producer"
         },
         {
-          "evidence": "Actual fixed-pin F92→F96→F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
+          "evidence": "Actual fixed-pin F92\u2192F96\u2192F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
           "id": "runtime-consumers",
           "observed_at": "2026-11-05T23:57:50.906138+00:00",
           "status": "blocked",
