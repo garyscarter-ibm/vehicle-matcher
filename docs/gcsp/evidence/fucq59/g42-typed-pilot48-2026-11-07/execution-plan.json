@@ -1,9 +1,9 @@
 {
   "schemaVersion": "g42-typed-pilot48-execution.v1",
   "id": "g42-typed-pilot48-20261107-once",
-  "status": "prepared-unspent; no source grant; cumulative base refresh required",
+  "status": "prepared-unspent; no source grant; fresh audited cumulative base pinned",
   "qualificationDate": "2026-11-07",
-  "baseCommit": "22811d91b06c1f908d1ed9f38cf099e8ca1719b5",
+  "baseCommit": "e4a83bea1e644838a6f71203f89b77a206b4f510",
   "contextIds": [
     "2pma",
     "2pmb",
@@ -67,14 +67,14 @@
     "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/2pmc/collection-plan.json": "5ef2695937861eb221e27c2c21bffff4a0f3243df13fd325316ea53277b70eec",
     "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/2ppa/collection-plan.json": "52fa4922cbdcfc85bbcef21a74d977ae5c32d3c09825c6189f8bb2f1716db4c7",
     "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/2ppb/collection-plan.json": "b55ce8bf56dfef9262211afb3099d74d5a308972f59c2f57aa4fef1a5ab99bbd",
-    "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/base-index-selection.json": "798c0a8532322545dbed5b0dc80449e3c9096cc14e760b6392c0e74b69cc6fd3",
+    "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/base-index-selection.json": "7aafb12575a986984fa36b446d031ad7738e61191a7cd4e91a26f387f0464cbb",
     "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/candidate-provenance.json": "c4d0b22a5e6002f6a6387a72577c7446714be8de23f47d5f0e4e8183d5e4ede5",
-    "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/prepare.py": "695aa38fc6b1bbaa296bac7a7175df90e63ce89836390165bf2bdfa97f695a6c",
+    "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/prepare.py": "c66cd7901f83f0ae474c43155156b6bfa005b6b07d07e207b4b90a692daea329",
     "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/prepared-check.test.mjs": "7c63db8fc90bf19a6268b0ff551532890c45d0579d1905bf9c51fcba891852f1",
     "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/remaining-candidates.json": "f6af1cffc4dc2d78ccaa0507880e47807041c33721f3e7cce808aa6e2af9bb76",
     "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/run-live.mjs": "b2c8ed64e24bee0449bb259b2b67621e054da91618ced0bfeac4a36c4463512c",
     "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/supervise.py": "0ded33f6ac8b91f27abf2f6a0e63e07d92fa279d32c260d030d265cc241b07f9",
-    "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/validate-prepared.py": "dbb759d2b04b2772007061c54d2c992b596627d77b08d3e34adbc7364cf1f8ab",
+    "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/validate-prepared.py": "9611d799f7db04f08a3530f44879b80f4860034b7af8135fbe3f896509446d2b",
     "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
     "scripts/gcsp/bmw-public-registration.mjs": "3a9a1afcc128f8356bb296b063d118bc9b7c59531ef75823bb99f8e01f209291",
     "scripts/gcsp/bmw-selection-binding.mjs": "88820920f57f4509741d6ad291e2fcd36c5b47a65d42acd35e890e3a6f84004e",
@@ -138,20 +138,20 @@
   },
   "indexPins": {
     "canonical": {
-      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session004/final-canonical-index.json",
-      "sha256": "45939c372e6676f58390dd78dd7e2a2fb7110c3489b3d2610d9da807ec296fd3",
-      "digest": "bdc53825a7c4a7c96ead16c1283b4e22d12aa32222f6cc392329a2108abd83e7",
-      "entries": 1168
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session101/final-canonical-index.json",
+      "sha256": "f79d51fdc0461b28cc9e3d4385f6b5ed8e8e12c82de594b6106be0476705cf35",
+      "digest": "438f77e87c3f1d75f19bf4e56bb9c3a2ef4c6ca77cea1fd6e7bba0db067196ee",
+      "entries": 1926
     },
     "spent": {
-      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session004/final-spent-request-index.json",
-      "sha256": "9b2586fb301ec7a5982a33c08baa1ef33ca9966f8a4560f456a17b21710885a8",
-      "digest": "eb9ad3ba3dfcf73f538a43b4501a55f3318cdaed151a7d4b8aa451846389c41d",
-      "entries": 1878
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session101/final-spent-request-index.json",
+      "sha256": "697aa9e7f3864dee829dd8cfd5c033b75e6f2734b28ab0fd88e4a32684a41d1f",
+      "digest": "9ac50334390c3a8b8bceeef3b3925c91a10b9a93e3fb5ac31b5ddaadf21a1ff4",
+      "entries": 2636
     }
   },
-  "baseRefreshRequired": true,
-  "baseRefreshReason": "Parent audited session004 snapshot is preparation evidence only; ongoing F70 suffix must be integrated into a fresh audited cumulative base before source release. G42 candidate identities are disjoint.",
+  "baseRefreshRequired": false,
+  "baseRefreshReason": "Parent independently audited the complete F70 suffix cumulative session101 base; exact parent review hash is pinned in base-index-selection.json. Separate source release still required.",
   "producerPins": {
     "projectorSha256": "b3cea57603e403f41bb326bcdfc955b7f061a7cfc1b071d1ef609de3efc99bc1",
     "qualifierSha256": "88820920f57f4509741d6ad291e2fcd36c5b47a65d42acd35e890e3a6f84004e",

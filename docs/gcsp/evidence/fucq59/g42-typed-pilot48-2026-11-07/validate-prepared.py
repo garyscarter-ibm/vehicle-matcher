@@ -3,6 +3,8 @@ import sys
 sys.dont_write_bytecode=True
 import atexit,hashlib,importlib.util,json,os,pathlib,re,subprocess
 BASE=pathlib.Path(__file__).resolve().parent;ROOT=BASE.parents[4]
+BASE_REFRESH=sys.argv[1:]==['--base-refresh']
+assert not sys.argv[1:] or BASE_REFRESH,'unsupported-validation-selection'
 OUT=pathlib.Path('/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-typed-pilot48/preparation')
 spec=importlib.util.spec_from_file_location('resources',ROOT/'_tools/test_resources.py');R=importlib.util.module_from_spec(spec);spec.loader.exec_module(R)
 policy=R.Policy({'chunk_scratch_mib':64,'chunk_ram_mib':512,'chunk_seconds':120,'log_mib':1})
@@ -10,8 +12,8 @@ scratch=R.Scratch(OUT,ROOT,policy,expected=R.MIB);host=R.HostBudget(policy)
 allocation=json.loads((BASE/'execution-plan.json').read_text())
 names=[str(BASE/'execution-plan.json')]+[str(ROOT/p) for p in {**allocation['codePins'],**allocation['sourcePins']}]+[v['path'] for v in allocation['indexPins'].values()]
 identity={str(pathlib.Path(n).relative_to(ROOT)) if ROOT in pathlib.Path(n).parents else str(pathlib.Path(n)):hashlib.sha256(pathlib.Path(n).read_bytes()).hexdigest() for n in names}
-command=['/opt/homebrew/bin/node','--test','--test-concurrency=1',str(BASE/'prepared-check.test.mjs'),str(ROOT/'server/test/gcsp-bmw-model-batch.test.js')]
-R.atomic_json(OUT/'selected-checks.json',{'scope':'scoped offline six-model typed solver pilot preparation','identity':identity,'changed_paths':[str(BASE.relative_to(ROOT))],'input_paths':names,'regression':'2816 exact actual typed inputs partitioned into pilot48 and remaining2768; six synthetic12GET solver/binding protocols; no-grant/stale-base refusals; pins and false-success supervisor cleanup',
+command=['/opt/homebrew/bin/node','--test','--test-concurrency=1']+(['--test-name-pattern=partition all actual typed pools|offline runner verifies|both live entry points',str(BASE/'prepared-check.test.mjs')] if BASE_REFRESH else [str(BASE/'prepared-check.test.mjs'),str(ROOT/'server/test/gcsp-bmw-model-batch.test.js')])
+R.atomic_json(OUT/'selected-checks.json',{'scope':'scoped cumulative-base refresh (3 affected checks; unchanged 23-check proof reused)' if BASE_REFRESH else 'scoped offline six-model typed solver pilot preparation','identity':identity,'changed_paths':[str(BASE.relative_to(ROOT))],'input_paths':names,'regression':'2816 exact actual typed inputs partitioned into pilot48 and remaining2768; six synthetic12GET solver/binding protocols; no-grant/stale-base refusals; pins and false-success supervisor cleanup',
  'callers':['existing generic model-batch strict binder/registration/executor','evidence-local runner/supervisor/exporter'],'command':command,
  'exclusions':['public source requests','production inventory repair','full suite','public solver/images/admissions/publication'],
  'forecast':{'scratch_bytes':R.MIB,'ram_bytes':128*R.MIB,'seconds':5},'limits':{'workers':1,'scratch_bytes':64*R.MIB,'host_ram_bytes':512*R.MIB,'child_ram_bytes':448*R.MIB,'seconds':120}})

@@ -1,6 +1,6 @@
 {
   "scope": "scoped offline pilot preparation; no source traffic",
-  "executionPlanSha256": "98e448b9243f4015bbd079ef942fe03dbce7ca5f41f50dac4155cc49d949b7e1",
+  "executionPlanSha256": "7ed4d8e5724ba184261139d3ce0187f2129835ef5e92acff5ce7f9d2a67d1d49",
   "planDigest": "29aab9bb015be0b3603f006d7e733ca199f217d79ca64534c095c1c244dd5b1b",
   "tests": {
     "fail": 0,
@@ -66,6 +66,14 @@
       "groupsAbsent": true,
       "reservationAbsent": true,
       "removedBytes": 463008
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-typed-pilot48/preparation/ownership/de8c64166ef24d9787508781e7a704e5.json",
+      "scratchRoot": "/private/tmp/test-stamp-shard-de8c64166ef24d9787508781e7a704e5",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 0
     }
   ],
   "nestedSupervisorProof": [
@@ -94,7 +102,7 @@
   },
   "compatibilityException": null,
   "leftovers": [],
-  "baseRefreshRequired": true,
+  "baseRefreshRequired": false,
   "sourceGrant": false,
   "capacityClaim": 0,
   "acceptance": false,
@@ -109,5 +117,69 @@
       "fallback": null,
       "descendants": 0
     }
-  ]
+  ],
+  "historicalSession004Proof": {
+    "executionPlanSha256": "98e448b9243f4015bbd079ef942fe03dbce7ca5f41f50dac4155cc49d949b7e1",
+    "tests": {
+      "fail": 0,
+      "pass": 26,
+      "skipped": 0,
+      "tests": 26
+    },
+    "wallSeconds": 11.926602333,
+    "sampledPeakRssBytes": 253591552,
+    "removedScratchBytes": 463008,
+    "resultPath": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-typed-pilot48/preparation/historical-session004-result.json",
+    "cleanupPath": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-typed-pilot48/preparation/historical-session004-cleanup.json",
+    "nestedSupervisorProof": [
+      {
+        "dependencyLinkRemoved": true,
+        "fixtureStop": "context-failed-or-incomplete",
+        "fixtureSupervisorCleanup": {
+          "compatibilityException": null,
+          "groupsAbsent": true,
+          "manifest": "/private/tmp/test-stamp-shard-dae9fa4a1edd43d694fbc0777002d660/g42-pilot-false-success-CdQ7zi/retained/2pma/ownership/b108c56c5ce74e5eae27a9d7e68bc252.json",
+          "removedAllocationBytes": 0,
+          "reservationAbsent": true,
+          "scratchAbsent": true,
+          "scratchRoot": "/private/tmp/test-stamp-shard-b108c56c5ce74e5eae27a9d7e68bc252"
+        },
+        "sourceAttempts": 0
+      }
+    ]
+  },
+  "baseRefresh": {
+    "scope": "3 affected checks; remaining 23 unchanged checks reuse retained 26/26 proof",
+    "tests": {
+      "fail": 0,
+      "pass": 3,
+      "skipped": 0,
+      "tests": 3
+    },
+    "wallSeconds": 0.9719399580000001,
+    "sampledPeakRssBytes": 211353600,
+    "removedScratchBytes": 0,
+    "identityUnchanged": true,
+    "prefixPreservation": {
+      "canonical": {
+        "historicalEntries": 1168,
+        "newEntries": 1926,
+        "historicalEntriesByteValuePreserved": true
+      },
+      "spent": {
+        "historicalEntries": 1878,
+        "newEntries": 2636,
+        "historicalEntriesByteValuePreserved": true
+      }
+    },
+    "canonicalAdmittedBase": 1923,
+    "review": {
+      "canonical": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session101/final-canonical-index.json",
+      "spent": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session101/final-spent-request-index.json",
+      "requiresRefreshBeforeRelease": false,
+      "parentReviewReference": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/model-axis758-parent-audit.json",
+      "parentReviewSha256": "0ea5e936f9a8a497eff1207488ad6bbe2800f5da03305c01fe9e6843e1a0b16d"
+    },
+    "allPinsAndFilesystemAbsenceIndependentlyVerified": true
+  }
 }
