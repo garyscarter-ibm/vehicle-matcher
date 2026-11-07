@@ -283,6 +283,46 @@ test('workspace chooses only actual context role and real adapter, never a query
     await done.ready; assert.equal(calls[0][0], role); if (role === 'employee') assert.equal(calls[0][1], account); done();
   }
 });
+function gregFixture(extra = {}) {
+  const host = document.createElement('div'); document.body.append(host);
+  const counts = { dashboard: 0, tracking: 0, destroyed: 0 }; let region; let controlsHost;
+  const mountGreg = () => {
+    region = document.createElement('section'); region.setAttribute('aria-labelledby', 'old'); region.append(document.createElement('h2'));
+    controlsHost = document.createElement('div'); host.append(region, controlsHost);
+    const teardown = () => { counts.destroyed++; }; teardown.refresh = () => { counts.dashboard++; };
+    teardown.regions = { orderTracking: region }; return teardown;
+  };
+  const ordersAdapter = { loadTracking: async () => { counts.tracking++; return { status: 'unavailable', reason: 'none' }; } };
+  const done = workspace(host, { adapter: { readContext: async () => ok({ roles: ['greg'], principalId: 'g' }) }, gregAdapter: {},
+    mountGreg, ordersAdapter, ...extra });
+  return { host, counts, done, region: () => region, controlsHost: () => controlsHost };
+}
+test('Greg workspace mounts one order panel with production controls in the order tracking region and removes it on destroy', async () => {
+  const f = gregFixture(); await f.done.ready; await settle();
+  const region = f.region(); assert.equal(region.querySelectorAll('.gcsp-orders-tracking').length, 1);
+  assert.equal(f.host.querySelectorAll('.gcsp-orders').length, 1); assert.equal(region.querySelector('h2').textContent, 'Order requests');
+  assert.equal(region.getAttribute('aria-labelledby'), region.querySelector('h2').id); assert.equal(region.querySelector('details.gcsp-orders-production').hidden, false);
+  assert.equal(f.counts.tracking, 1); f.done(); assert.equal(f.counts.destroyed, 1); assert.equal(f.host.querySelectorAll('.gcsp-orders').length, 0);
+});
+test('presenter-action event from inside the workspace refreshes dashboard and orders, and stops after destroy', async () => {
+  const f = gregFixture(); await f.done.ready; await settle();
+  f.controlsHost().dispatchEvent(new window.CustomEvent('gcsp:presenter-action', { bubbles: true, detail: { kind: 'tick' } })); await settle();
+  assert.equal(f.counts.dashboard, 1); assert.equal(f.counts.tracking, 2);
+  f.done(); f.host.dispatchEvent(new window.CustomEvent('gcsp:presenter-action')); await settle();
+  assert.equal(f.counts.dashboard, 1); assert.equal(f.counts.tracking, 2);
+});
+test('order changes refresh the dashboard demand figures', async () => {
+  let changed; const f = gregFixture({ mountOrders: (_root, options) => { changed = options.onChanged; assert.equal(options.productionControls, true); return () => {}; } });
+  await f.done.ready; changed(); assert.equal(f.counts.dashboard, 1); f.done();
+});
+test('a successful clock action announces gcsp:presenter-action; reset and failures do not', async () => {
+  const seen = []; let fail = false;
+  const f = setup({ tick: async () => (fail ? { status: 'forbidden' } : ok({})) }); await settle();
+  f.host.addEventListener('gcsp:presenter-action', (event) => seen.push(event.detail.kind));
+  f.click('Tick'); await settle(); assert.deepEqual(seen, ['tick']);
+  fail = true; f.click('Tick'); await settle(); assert.deepEqual(seen, ['tick']);
+  fail = false; f.click('Reset scenario'); f.click('Confirm reset'); await settle(); assert.deepEqual(seen, ['tick']); f.control.destroy();
+});
 test('HTTP transport sends credentialled exact JSON and keeps typed refusal distinct from lost response', async () => {
   const calls = []; const payload = { commandId: 'same', mode: 'step', expectedClockVersion: '1' };
   const adapter = http({ fetchImpl: async (...args) => { calls.push(args); return { ok: false, json: async () => ({ status: 'forbidden', reason: 'Denied' }) }; } });
