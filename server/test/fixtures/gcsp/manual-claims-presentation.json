@@ -1,0 +1,8 @@
+{
+  "quoted": { "status": "ok", "state": "quoted", "view": "quoted", "action": "review-or-cancel" },
+  "released": { "status": "ok", "state": "released", "view": "released", "action": "browse-stock" },
+  "expired": { "status": "ok", "state": "expired", "view": "expired", "action": "browse-stock" },
+  "conflict": { "status": "conflict", "state": null, "view": "conflict", "action": "release-before-change" },
+  "unavailable": { "status": "unavailable", "state": null, "view": "unavailable", "action": "retry" },
+  "pending": { "status": "pending", "state": "claim-pending", "view": "pending", "action": "check-status" }
+}
