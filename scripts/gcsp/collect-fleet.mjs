@@ -9,6 +9,8 @@ import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { CollectionError, createConfigurationKey, normaliseCode, normaliseCodes, requireValue } from './configuration-key.mjs';
 import { publicBmwOperations, publicBmwObservation, validatePublicBmwPlan,
   publicBmwQualificationOperations, validatePublicBmwDiagnosticPlan, qualifyPublicBmwDiagnosticFields } from './public-bmw-source.mjs';
+import { publicBmwCompleteSelectionOperations } from './capture-bmw-selection.mjs';
+import { BMW_BATCH_SOURCE_VERSION } from './bmw-public-registration.mjs';
 
 export const COLLECTOR_VERSION = '2';
 const CONTEXT = ['catalogueDate', 'market', 'locale', 'orderDate', 'effectDate', 'productionDate', 'taxDate'];
@@ -92,7 +94,28 @@ function normaliseDiscovery(plan, value) {
 
 /** Seeded requests are only candidates; the solver, never the generator, establishes selection. */
 export function buildCandidateQueue(input, sourceDiscovery) {
-  const plan = validatePlan(input); const discovered = normaliseDiscovery(plan, sourceDiscovery); const candidates = [];
+  const plan = validatePlan(input);
+  if (plan.source.version === BMW_BATCH_SOURCE_VERSION) {
+    const definitions = sourceDiscovery?.definitions;
+    requireValue(Array.isArray(definitions) && definitions.length > 0 && definitions.length <= 512,
+      'invalid-discovery', 'Enumerate only bounded actual typed definitions.');
+    const groups = ['paint', 'fabric', 'rim'].map((type) => definitions.filter((row) => row.optionType === type && row.option === row.code
+      && Array.isArray(row.issues) && row.issues.length === 0).map((row) => normaliseCode(row.code)).sort());
+    const size = groups.reduce((n, rows) => n * rows.length, 1);
+    requireValue(groups.every((rows) => rows.length > 0 && new Set(rows).size === rows.length) && size <= 10000
+      && size >= plan.candidateCount, 'invalid-discovery', 'The bounded source candidate space must cover the selected finite request count.');
+    const gcd = (a, b) => b ? gcd(b, a % b) : a;
+    let stride = Math.floor(Math.sqrt(size)) + 1; while (gcd(stride, size) !== 1) stride += 1;
+    const offset = parseInt(inputDigest({ seed: plan.seed, model: plan.models[0] }).slice(0, 8), 16) % size;
+    return Array.from({ length: plan.candidateCount }, (_, index) => {
+      let ordinal = (offset + index * stride) % size;
+      const includedElements = groups.map((rows) => { const value = rows[ordinal % rows.length]; ordinal = Math.floor(ordinal / rows.length); return value; });
+      const mandatoryElements = [plan.modelRegistration.optionsTrim || 'S0337'];
+      const request = { includedElements: normaliseCodes([...includedElements, ...mandatoryElements, ...(plan.candidateBaseElements || [])]), mandatoryElements };
+      return { candidateId: 'candidate-' + inputDigest({ model: plan.models[0], request }).slice(0, 24), request };
+    });
+  }
+  const discovered = normaliseDiscovery(plan, sourceDiscovery); const candidates = [];
   for (const model of discovered.models) {
     const { definitions, aliases } = sourceDefinitions(model.definitions);
     const explicit = plan.candidates?.filter((row) => normaliseCode(row.modelCode) === model.modelCode);
@@ -156,7 +179,7 @@ export function validateSolverResponse(candidate, response, key) {
 
 /** No default network transport exists. Only an explicitly injected offline source is executable here. */
 export async function createFleetCollector({ plan: input, source, policyService, policyRead, statePath,
-  operations = {}, http, mode = 'dry-run', now = Date.now, onPhase = async () => {}, captureReplay } = {}) {
+  operations = {}, http, mode = 'dry-run', now = Date.now, onPhase = async () => {}, captureReplay, batchBinding } = {}) {
   const plan = validatePlan(input);
   if (mode === 'capture-replay' || captureReplay !== undefined) {
     requireValue(mode === 'capture-replay' && plan.captureVersion === 'bmw-complete-selection.v1'
@@ -165,6 +188,8 @@ export async function createFleetCollector({ plan: input, source, policyService,
     return createCaptureReplayCollector({ plan, captureReplay, policyService, statePath, operations, now, onPhase });
   }
   if (plan.source.kind === 'public-bmw-uk' && !NO_TRAFFIC.includes(mode)) {
+    if (plan.source.version === BMW_BATCH_SOURCE_VERSION)
+      return createPublicBatchCollector({ plan, source, policyService, policyRead, statePath, operations, http, mode, now, onPhase, batchBinding });
     return createPublicCollector({ plan, source, policyService, policyRead, statePath, operations, http, mode, now, onPhase });
   }
   requireValue(mode !== 'live', 'live-source-unallocated', 'Live source execution requires the qualified public-source plan and explicit allocation.');
@@ -235,6 +260,89 @@ export async function createFleetCollector({ plan: input, source, policyService,
       if (!error.stop) throw error;
       if (error.sticky) state.halted = error.code;
       await commit('stop'); return report(error.code);
+    }
+  }, { stage: { id: 'collection', version: COLLECTOR_VERSION, inputDigest: inputDigest(plan) } }) };
+}
+
+async function createPublicBatchCollector({ plan, source, policyService, policyRead, statePath, operations, http, mode, now, onPhase, batchBinding }) {
+  requireValue(['live', 'source-fixture'].includes(mode) && source?.kind === 'public-bmw-uk' && source.version === plan.source.version
+    && http?.kind === (mode === 'live' ? 'live' : 'fixture') && object(batchBinding)
+    && object(batchBinding.producerPins) && version(batchBinding.snapshotVersion)
+    && Array.isArray(batchBinding.existingConfigurationIds) && batchBinding.existingConfigurationIds.length <= 10000
+    && batchBinding.existingConfigurationIds.every((id) => typeof id === 'string' && id.length > 0 && id.length <= 8192)
+    && (policyRead === undefined || policyRead.asOf === plan.policyRead.asOf && policyRead.policyVersion === plan.policyRead.policyVersion),
+  'source-allocation-required', 'Use the explicit finite batch source, policy, prior canonical index and producer/snapshot binding.');
+  const key = await createConfigurationKey({ policyService, policyRead: { runId: `collector-${plan.planId}`, ...plan.policyRead } });
+  const descriptors = publicBmwCompleteSelectionOperations(plan);
+  requireValue(!Object.keys(operations).some((name) => Object.hasOwn(descriptors, name)), 'invalid-session', 'Additional stages cannot replace source operations.');
+  const catalogueRegistrations = []; const prior = new Set(batchBinding.existingConfigurationIds);
+  const artifact = (entry) => ({ bytes: JSON.stringify(entry.document) + '\n', artifactSha256: entry.sha256, retrievedAt: entry.retrievedAt || entry.document.observation.observedAt });
+  const registration = (state, solver) => ({ plan, configurationKey: key, producerPins: batchBinding.producerPins,
+    snapshotVersion: batchBinding.snapshotVersion, artifacts: { tree: artifact(state.batchEvidence.tree), solver: artifact(solver) },
+    definitionBinding: { options: artifact(state.batchEvidence.options) } });
+  const register = (input) => {
+    const row = buildBmwSelectionBinding(input).record;
+    if (row.sourceKind === 'dated-snapshot' && !catalogueRegistrations.some((value) => same(value.lookupIdentity, row.lookupIdentity)))
+      catalogueRegistrations.push(createBmwSelectionRegistration(input));
+    return row;
+  };
+  const session = await createCollectionSession({ statePath, now, onPhase, http, limits: plan.limits,
+    identity: { planDigest: inputDigest(plan), sourceVersion: plan.source.version, toolVersion: COLLECTOR_VERSION, mode,
+      signaturePolicyVersion: key.policyVersion, batchBindingDigest: inputDigest(batchBinding) }, operations: { ...operations, ...descriptors },
+    initialState: { batchEvidence: null, sourceCaptures: [], cursor: 0, records: [], accepted: [], rejected: [], duplicates: [] },
+    validateState: (state) => {
+      requireValue((state.batchEvidence === null || object(state.batchEvidence) && object(state.batchEvidence.tree) && object(state.batchEvidence.options))
+        && bounded(state.cursor, 0, plan.candidateCount) && ['sourceCaptures', 'records', 'accepted', 'rejected', 'duplicates'].every((field) =>
+          Array.isArray(state[field]) && state[field].length <= plan.candidateCount), 'checkpoint-corrupt', 'Use bounded batch captures and outcomes.');
+      for (const row of state.records) {
+        const captured = state.sourceCaptures.find((entry) => entry.solver?.sha256 === row.sourceEvidence?.solver);
+        requireValue(captured && state.batchEvidence && qualifyBmwSelectionRecord(row, registration(state, captured.solver)).status === 'qualified',
+          'source-selection-mismatch', 'Every persisted record must match its exact source capture.');
+        register(registration(state, captured.solver));
+      }
+      for (const row of state.accepted) requireValue(mode === 'live' && row.admission === true
+        && state.records.some((record) => same(record, { ...row, admission: false })),
+      'source-selection-mismatch', 'Accepted state must retain the exact live source-derived record.');
+    } });
+  return { session, catalogueRegistrations, run: () => session.withCheckpoint(async ({ state, execute, commit, checkDeadline }) => {
+    const report = (reason) => ({ status: state.accepted.length >= plan.target ? 'complete' : 'incomplete', reason,
+      qualification: mode === 'live' ? 'source-configuration-admitted' : 'synthetic-http-fixture', admission: state.accepted.length > 0,
+      ...structuredClone({ records: state.records, accepted: state.accepted, rejected: state.rejected, duplicates: state.duplicates, counts: state.counts }),
+      coverage: { distinctConfigurations: state.accepted.length, observedDistinctConfigurations: state.records.length, target: plan.target,
+        attemptedCandidates: state.counts.operations.solve, processedCandidates: state.cursor,
+        rejectedCandidates: state.rejected.length, duplicateCandidates: state.duplicates.length,
+        plannedCandidates: plan.candidateCount, models: { [plan.models[0]]: state.accepted.length } }, checkpoint: statePath });
+    if (state.halted) return report(state.halted);
+    if (state.cursor === plan.candidateCount) return report('queue-exhausted');
+    // A recreated process cannot replay the spent settings operation to recover ephemeral headers.
+    if (state.counts.httpAttempts > 0) { state.halted = 'source-batch-interrupted'; await commit('batch-stop'); return report(state.halted); }
+    try {
+      const page = await execute('page', {}); await execute('settings', { path: page.settingsPath });
+      const tree = await execute('discover', {}); tree.retrievedAt = new Date(now()).toISOString();
+      const options = await execute('options', {}); options.retrievedAt = new Date(now()).toISOString();
+      state.batchEvidence = { tree, options }; await commit('batch-source-evidence');
+      while (state.cursor < plan.candidateCount) {
+        checkDeadline(); const candidate = plan.candidates[state.cursor];
+        let solver;
+        try { solver = await execute('solve', candidate.request); }
+        catch (error) {
+          if (error.code !== 'source-not-constructible') throw error;
+          state.rejected.push({ candidateId: candidate.candidateId, code: error.code }); state.cursor += 1;
+          await commit('candidate-rejected'); continue;
+        }
+        solver.retrievedAt = new Date(now()).toISOString(); state.sourceCaptures.push({ candidateId: candidate.candidateId, solver });
+        const input = registration(state, solver); const row = register(input);
+        if (prior.has(row.configurationId) || state.records.some((record) => record.configurationId === row.configurationId))
+          state.duplicates.push({ candidateId: candidate.candidateId, configurationId: row.configurationId, solverChanges: row.solverChanges,
+            priorBatch: prior.has(row.configurationId) });
+        else { state.records.push(row); if (mode === 'live') state.accepted.push({ ...row, admission: true }); }
+        state.cursor += 1; await commit('candidate-outcome'); await onPhase('outcome-committed', { cursor: state.cursor });
+      }
+      return report('queue-exhausted');
+    } catch (error) {
+      if (!(error instanceof CollectionError)) throw error;
+      state.halted = error.code; if (error.code === 'source-model-substitution' || error.code === 'source-solver-shape') state.counts.substitutions += 1;
+      await commit('batch-stop'); return report(error.code);
     }
   }, { stage: { id: 'collection', version: COLLECTOR_VERSION, inputDigest: inputDigest(plan) } }) };
 }

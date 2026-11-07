@@ -1,0 +1,260 @@
+{
+  "schemaVersion": "f59-source-batch-validation.v1",
+  "scope": "scoped",
+  "actualSourceRequests": 0,
+  "acceptedCapacityEvidence": false,
+  "finalIdentity": {
+    "scripts/gcsp/bmw-public-registration.mjs": "82de1dfa3389ac019d271cfb865af9a395c9c85d4246b09529577e03deb54244",
+    "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+    "scripts/gcsp/capture-bmw-selection.mjs": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+    "scripts/gcsp/collect-fleet.mjs": "5edbeb880115e52a2e1d0ffa21560cc2c9d3ba46c73c8cc880c15f57d196cb5a",
+    "scripts/gcsp/collection-session.mjs": "1f22fe1cdf27d3e6f2be015e32b69b5ecc435c546fe9964396270e3db6e9421e",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/public-bmw-source.mjs": "4f5c93505c7e558d0ff3cf3afadbfb97ef45bde9b615e9033c8d440628b75f24",
+    "server/test/gcsp-bmw-selection-capture.test.js": "277c685eb205014f9470655249ec53641299fc05242ca2aebd346329122c8fc8",
+    "server/test/gcsp-bmw-source-batch.test.js": "209d96dcf7529fe0a646d50d7cd05204237a06b0b6d95ead5434a933074c87af",
+    "server/test/gcsp-fleet-collector.test.js": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+  },
+  "results": {
+    "red": {
+      "issue": null,
+      "peak_rss": 2228224,
+      "peak_scratch": 454752,
+      "rc": 1,
+      "summary": {
+        "cancelled": 0,
+        "fail": 6,
+        "pass": 0,
+        "skipped": 0,
+        "tests": 6,
+        "todo": 0
+      },
+      "wall": 0.246973625
+    },
+    "green": {
+      "issue": null,
+      "peak_rss": 230440960,
+      "peak_scratch": 835680,
+      "rc": 0,
+      "summary": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 6,
+        "skipped": 0,
+        "tests": 6,
+        "todo": 0
+      },
+      "wall": 2.260928083
+    },
+    "edge-red": {
+      "issue": null,
+      "peak_rss": 238698496,
+      "peak_scratch": 843872,
+      "rc": 1,
+      "summary": {
+        "cancelled": 0,
+        "fail": 1,
+        "pass": 6,
+        "skipped": 0,
+        "tests": 7,
+        "todo": 0
+      },
+      "wall": 2.484439458
+    },
+    "edge-green": {
+      "issue": null,
+      "peak_rss": 234487808,
+      "peak_scratch": 839776,
+      "rc": 0,
+      "summary": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 7,
+        "skipped": 0,
+        "tests": 7,
+        "todo": 0
+      },
+      "wall": 2.4828585000000003
+    },
+    "boundary": {
+      "issue": null,
+      "peak_rss": 338935808,
+      "peak_scratch": 4084032,
+      "rc": 0,
+      "summary": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 94,
+        "skipped": 0,
+        "tests": 94,
+        "todo": 0
+      },
+      "wall": 13.447099167
+    },
+    "redaction-red": {
+      "issue": null,
+      "peak_rss": 240402432,
+      "peak_scratch": 843872,
+      "rc": 1,
+      "summary": {
+        "cancelled": 0,
+        "fail": 1,
+        "pass": 7,
+        "skipped": 0,
+        "tests": 8,
+        "todo": 0
+      },
+      "wall": 2.702900917
+    },
+    "redaction-green": {
+      "issue": null,
+      "peak_rss": 238813184,
+      "peak_scratch": 839776,
+      "rc": 0,
+      "summary": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 8,
+        "skipped": 0,
+        "tests": 8,
+        "todo": 0
+      },
+      "wall": 2.501126417
+    },
+    "final-boundary": {
+      "issue": null,
+      "peak_rss": 304185344,
+      "peak_scratch": 4084032,
+      "rc": 0,
+      "summary": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 94,
+        "skipped": 0,
+        "tests": 94,
+        "todo": 0
+      },
+      "wall": 13.702174999999999
+    }
+  },
+  "expectedRedFailures": {
+    "red": "six public-source-plan-refused failures at original single-selection guard",
+    "edge-red": "missing explicit-removal/unknown-ignored support; six pass and one fail",
+    "redaction-red": "escaped header in another safe report was retained; seven pass and one fail"
+  },
+  "finalChecks": {
+    "batch": 8,
+    "existingCaptureBinderIngressCollector": 94,
+    "pass": 102,
+    "failed": 0,
+    "skipped": 0
+  },
+  "plan": {
+    "path": "docs/gcsp/plans/bmw-source-batch32-2026-11-07.json",
+    "canonicalDigest": "758ec81958cb3471b55c24e2afed45cdafc3a0125b1c3f9228e13a9d6fbff6a2",
+    "solverCandidates": 32,
+    "maximumGetAttempts": 36,
+    "paintRequestCoverage": 15,
+    "fabricRequestCoverage": 8,
+    "rimRequestCoverage": 6,
+    "executed": false
+  },
+  "exclusions": "No actual new public source traffic, full suite, runtime publication/UI or fleet distribution acceptance. Existing v1 source/session boundaries are covered by the selected four files.",
+  "resources": {
+    "oneTestWorker": true,
+    "scratchBudgetBytes": 67108864,
+    "ramBudgetBytes": 536870912,
+    "chunkSeconds": 120,
+    "removedAllocationBytes": 12825792,
+    "peakChildRssBytes": 338935808,
+    "compatibilityException": null,
+    "leftovers": [],
+    "cleanup": {
+      "red": {
+        "code_identity_unchanged": true,
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "groups_absent": true,
+        "removed_allocation_bytes": 454752,
+        "reservation_absent": true,
+        "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/batch/red-result.json",
+        "scratch_absent": true
+      },
+      "green": {
+        "code_identity_unchanged": true,
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "groups_absent": true,
+        "removed_allocation_bytes": 835680,
+        "reservation_absent": true,
+        "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/batch/green-result.json",
+        "scratch_absent": true
+      },
+      "edge-red": {
+        "code_identity_unchanged": true,
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "groups_absent": true,
+        "removed_allocation_bytes": 843872,
+        "reservation_absent": true,
+        "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/batch/edge-red-result.json",
+        "scratch_absent": true
+      },
+      "edge-green": {
+        "code_identity_unchanged": true,
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "groups_absent": true,
+        "removed_allocation_bytes": 839776,
+        "reservation_absent": true,
+        "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/batch/edge-green-result.json",
+        "scratch_absent": true
+      },
+      "boundary": {
+        "code_identity_unchanged": true,
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "groups_absent": true,
+        "removed_allocation_bytes": 4084032,
+        "reservation_absent": true,
+        "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/batch/boundary-result.json",
+        "scratch_absent": true
+      },
+      "redaction-red": {
+        "code_identity_unchanged": true,
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "groups_absent": true,
+        "removed_allocation_bytes": 843872,
+        "reservation_absent": true,
+        "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/batch/redaction-red-result.json",
+        "scratch_absent": true
+      },
+      "redaction-green": {
+        "code_identity_unchanged": true,
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "groups_absent": true,
+        "removed_allocation_bytes": 839776,
+        "reservation_absent": true,
+        "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/batch/redaction-green-result.json",
+        "scratch_absent": true
+      },
+      "final-boundary": {
+        "code_identity_unchanged": true,
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "groups_absent": true,
+        "removed_allocation_bytes": 4084032,
+        "reservation_absent": true,
+        "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/batch/final-boundary-result.json",
+        "scratch_absent": true
+      }
+    },
+    "removedExportedCoverageBytes": 1361474,
+    "retainedCoverage": "Compact identity-keyed function/test/boundary map in shared .claude/test-runs/impact/f59-source-batch.json; verbose exported V8 coverage removed and verified absent."
+  },
+  "coordination": "Lane was explicitly handed off with Charlie/Rocky. Edge-red allocation interval was 2026-11-07T00:31:49.582022Z to 00:31:52.267748Z; Charlie checks his contract interval for any overlap. No overlap is claimed absent without that comparison."
+}
