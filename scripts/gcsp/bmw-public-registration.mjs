@@ -2,6 +2,9 @@ import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { requireValue } from './configuration-key.mjs';
 
 export const BMW_BATCH_SOURCE_VERSION = 'f59-batch-20261107.v1';
+export const BMW_CONTEXT_SOURCE_VERSION = 'f59-context-qualification-20261107.v1';
+export const BMW_OPTIONS_SOURCE_VERSION = 'f59-options-qualification-20261107.v1';
+export const BMW_INVENTORY_SOURCE_VERSION = 'f59-range-inventory-20261107.v1';
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const same = (a, b) => inputDigest(a) === inputDigest(b);
 const bounded = (v, min, max) => Number.isSafeInteger(v) && v >= min && v <= max;
@@ -21,6 +24,43 @@ export function validateBmwModelRegistration(value) {
     && Array.isArray(value.aliases) && bounded(value.aliases.length, 1, 8) && value.aliases.every(token)
     && new Set(value.aliases).size === value.aliases.length && (value.optionsTrim === undefined || code(value.optionsTrim)),
   'source-model-registration', 'Pin a bounded GB/RL model context, exact full aliases and separate source dates.');
+  return structuredClone(value);
+}
+
+/** Qualification has no trim default, candidate allowlist or construction capability. */
+export function validateBmwContextRequestRegistration(value) {
+  requireValue(object(value) && same(Object.keys(value), ['model']) && object(value.model)
+    && !Object.hasOwn(value.model, 'optionsTrim'), 'source-context-plan', 'Inspect direct model facts before allocating trim or candidate requests.');
+  validateBmwModelRegistration(value.model);
+  return structuredClone(value);
+}
+
+/** Inventory inputs identify requests only; all returned vehicle facts remain unqualified observations. */
+export function validateBmwInventoryRequestRegistration(value) {
+  requireValue(object(value) && same(Object.keys(value).sort(), ['catalogueRangeKey', 'locale', 'market', 'pageModelCode',
+    'schemaVersion', 'treeEffectDate', 'treeOrderDate'])
+    && value.schemaVersion === 'bmw-public-range-inventory-registration.v1'
+    && token(value.catalogueRangeKey) && code(value.pageModelCode) && value.market === 'GB' && value.locale === 'en-GB'
+    && date(value.treeEffectDate) && date(value.treeOrderDate),
+  'source-inventory-plan', 'Pin only the literal GB page seed, one range and explicit tree query dates.');
+  return structuredClone(value);
+}
+
+export function bmwInventoryRequestUrls(input) {
+  const r = validateBmwInventoryRequestRegistration(input);
+  return {
+    page: `https://configure.bmw.co.uk/en_GB/configure/${r.catalogueRangeKey}/${r.pageModelCode}`,
+    discover: `https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/${r.treeEffectDate}/order-dates/${r.treeOrderDate}?${new URLSearchParams({
+      'gfs-policy': 'none', cluster: 'default', 'model-ranges': r.catalogueRangeKey, 'future-models': 'true', 'closest-fallback': 'true' })}`,
+  };
+}
+
+/** Options inspection pins an explicit source trim and grants no candidate/solver capability. */
+export function validateBmwOptionsRequestRegistration(value) {
+  requireValue(object(value) && same(Object.keys(value), ['model']) && object(value.model)
+    && code(value.model.optionsTrim), 'source-options-plan', 'Pin an explicit observed trim before allocating options inspection.');
+  try { validateBmwModelRegistration(value.model); }
+  catch { requireValue(false, 'source-options-plan', 'Use the complete registered model context and explicit trim.'); }
   return structuredClone(value);
 }
 

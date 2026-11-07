@@ -1,11 +1,12 @@
 import { createHash } from 'node:crypto';
 import { inputDigest } from '../../server/gcsp/repository/core.js';
-import { normaliseCodes, requireValue } from './configuration-key.mjs';
+import { CollectionError, normaliseCodes, requireValue } from './configuration-key.mjs';
 import { assertCollectionHttpObservation } from './collection-session.mjs';
 import { createSettingsShapeRefusal } from './settings-shape-report.mjs';
 import { qualifyBmwSourceFields } from './bmw-source-qualification.mjs';
-import { BMW_BATCH_SOURCE_VERSION, validateBmwBatchPlan, validateBmwModelRegistration,
-  bmwBatchRequestRegistration, bmwPublicRequestUrls } from './bmw-public-registration.mjs';
+import { BMW_BATCH_SOURCE_VERSION, BMW_CONTEXT_SOURCE_VERSION, BMW_OPTIONS_SOURCE_VERSION, BMW_INVENTORY_SOURCE_VERSION,
+  validateBmwInventoryRequestRegistration, bmwInventoryRequestUrls, validateBmwBatchPlan, validateBmwModelRegistration,
+  validateBmwContextRequestRegistration, validateBmwOptionsRequestRegistration, bmwBatchRequestRegistration, bmwPublicRequestUrls } from './bmw-public-registration.mjs';
 
 const object = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 const same = (a, b) => inputDigest(a) === inputDigest(b);
@@ -23,6 +24,467 @@ const diagnosticContext = { market: 'GB', locale: 'en-GB', modelCode: 'T5MJ', ag
 const calendarDate = (value) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)
   && Number.isFinite(Date.parse(value + 'T00:00:00.000Z')) && new Date(value + 'T00:00:00.000Z').toISOString().slice(0, 10) === value;
 const bounded = (value, min, max) => Number.isSafeInteger(value) && value >= min && value <= max;
+
+export function validatePublicBmwContextPlan(plan) {
+  const l = plan?.limits;
+  requireValue(object(plan) && Object.keys(plan).every((key) => ['schemaVersion', 'planId', 'qualificationDate', 'source', 'modelRegistration', 'limits'].includes(key))
+    && plan.schemaVersion === 'bmw-source-context-plan.v1' && typeof plan.planId === 'string' && /^[A-Za-z0-9][A-Za-z0-9.-]{0,95}$/.test(plan.planId)
+    && calendarDate(plan.qualificationDate) && same(plan.source, { id: 'bmw-uk-public', version: BMW_CONTEXT_SOURCE_VERSION, kind: 'public-bmw-uk' })
+    && object(l) && l.maxAttempts === 1 && l.retryDelayMs === 0 && l.concurrency === 1 && l.imageRequests === 0
+    && l.sourceAttempts === 3 && bounded(l.sourceBytes, 1, 4194304) && bounded(l.responseBytes, 1, 1048576)
+    && bounded(l.operationTimeoutMs, 1, 10000) && bounded(l.deadlineMs, 1, 120000) && bounded(l.checkpointBytes, 1024, 4194304)
+    && bounded(l.cacheEntries, 1, 16) && bounded(l.cacheRetentionMs, 1, 86400000)
+    && same(l.requestBudgets, { page: 1, settings: 1, discover: 1 }),
+  'source-context-plan', 'Allocate only three exact context GETs; options and solver traffic require later source facts and plans.');
+  validateBmwContextRequestRegistration({ model: plan.modelRegistration });
+  return structuredClone(plan);
+}
+
+export function validatePublicBmwContextObservation(input, retained, mode) {
+  const plan = validatePublicBmwContextPlan(input); const document = retained?.document;
+  const bytes = JSON.stringify(document) + '\n'; const metadata = document?.observation;
+  requireValue(object(retained) && same(Object.keys(retained).sort(), ['bytes', 'document', 'sha256'])
+    && retained.bytes === Buffer.byteLength(bytes) && retained.sha256 === createHash('sha256').update(bytes).digest('hex')
+    && object(document) && same(Object.keys(document).sort(), ['observation', 'report', 'schemaVersion'])
+    && document.schemaVersion === 'bmw-source-context-observation.v1' && metadata?.schemaVersion === 'collection-http-observation.v1'
+    && metadata.operation === 'discover' && metadata.capability === 'bmw-model-tree' && metadata.sourceId === plan.source.id
+    && metadata.sourceVersion === plan.source.version && metadata.transportKind === (mode === 'live' ? 'live' : 'fixture')
+    && metadata.observedAt?.slice(0, 10) === plan.qualificationDate,
+  'source-context-binding', 'Retain exact context projection bytes, source identity and dated observation provenance.');
+  const tree = {}; const r = plan.modelRegistration;
+  requireValue(Array.isArray(document.report?.nodes) && document.report.nodes.length === r.aliases.length,
+    'source-context-binding', 'Retain every registered full alias.');
+  for (let i = 0; i < r.aliases.length; i++) tree[r.aliases[i]] = { modelRanges: { [r.catalogueRangeKey]: { models: { [r.modelCode]: document.report.nodes[i].facts } } } };
+  let expectedReport;
+  try { expectedReport = strictModelReport(tree, r); } catch { requireValue(false, 'source-context-binding', 'The retained direct model facts changed.'); }
+  requireValue(same(expectedReport, document.report), 'source-context-binding', 'The retained alias facts, pointers and missing fields changed.');
+  return structuredClone(retained);
+}
+
+/** Context inspection uses the common executor; this source version has no construction capability. */
+export function publicBmwContextOperations(input) {
+  const plan = validatePublicBmwContextPlan(input); const requestRegistration = { model: plan.modelRegistration };
+  const urls = bmwPublicRequestUrls(plan.modelRegistration); let treeHeader;
+  const observe = (metadata) => {
+    assertCollectionHttpObservation(metadata);
+    requireValue(metadata.sourceVersion === plan.source.version && metadata.observedAt.slice(0, 10) === plan.qualificationDate,
+      'source-observation-date', 'Use the pinned qualification day and exact executor-owned context source.');
+    return metadata;
+  };
+  const descriptor = (capability, url, project, extra = {}) => ({ sourceId: plan.source.id, sourceVersion: plan.source.version,
+    kind: 'read-only-http', capability, strictJson: true, requestRegistration, prepare: async () => ({ method: 'GET', url, headers: {} }), project, ...extra });
+  return {
+    page: descriptor('bmw-page', urls.page, (html, _request, metadata) => {
+      const paths = [...new Set([...html.matchAll(/(?:\/en_GB\/)?settings\.[a-zA-Z0-9]+\.json/g)]
+        .map((match) => match[0].startsWith('/en_GB/') ? match[0] : '/en_GB/' + match[0]))];
+      requireValue(paths.length === 1 && settingsPattern.test(paths[0]), 'settings-discovery-shape', 'The registered model page must identify one settings path.');
+      return { settingsPath: paths[0], observation: observe(metadata) };
+    }),
+    settings: descriptor('bmw-settings', null, (value, _request, metadata) => {
+      observe(metadata); treeHeader = headerFor(value, 'settingsVehicleTree', true); return { treeProfileQualified: true };
+    }, { cache: false, prepare: async ({ path }) => {
+      requireValue(typeof path === 'string' && settingsPattern.test(path), 'settings-discovery-shape', 'Use the one discovered settings path.');
+      return { method: 'GET', url: 'https://configure.bmw.co.uk' + path, headers: {} };
+    } }),
+    discover: descriptor('bmw-model-tree', urls.discover, (value, _request, metadata) => {
+      const report = strictModelReport(value, plan.modelRegistration); const r = plan.modelRegistration;
+      const appearances = Object.entries(value).filter(([, group]) => object(group?.modelRanges?.[r.catalogueRangeKey]?.models?.[r.modelCode])).map(([alias]) => alias).sort();
+      requireValue(same(appearances, [...r.aliases].sort()), 'source-model-alias-conflict', 'Fresh direct aliases must equal the registered complete alias set.');
+      const document = { schemaVersion: 'bmw-source-context-observation.v1', observation: observe(metadata), report };
+      const bytes = JSON.stringify(document, (key, entry) => {
+        requireValue(Object.values(treeHeader).every((secret) => !key.includes(secret) && (typeof entry !== 'string' || !entry.includes(secret))),
+          'source-sensitive-projection', 'No bootstrap header may enter retained context facts.'); return entry;
+      }) + '\n';
+      return { document, bytes: Buffer.byteLength(bytes), sha256: createHash('sha256').update(bytes).digest('hex') };
+    }, { prepare: async () => {
+      requireValue(treeHeader, 'source-bootstrap-required', 'The memory-only public tree header is unavailable.');
+      return { method: 'GET', url: urls.discover, headers: treeHeader };
+    } }),
+  };
+}
+
+/** Inventory is a separate request-only scope; it never relaxes full model qualification. */
+export function validatePublicBmwInventoryPlan(plan) {
+  const l = plan?.limits;
+  requireValue(object(plan) && same(Object.keys(plan).sort(), ['inventoryRegistration', 'limits', 'planId', 'qualificationDate', 'schemaVersion', 'source'])
+    && plan.schemaVersion === 'bmw-source-range-inventory-plan.v1' && typeof plan.planId === 'string' && /^[A-Za-z0-9][A-Za-z0-9.-]{0,95}$/.test(plan.planId)
+    && calendarDate(plan.qualificationDate) && same(plan.source, { id: 'bmw-uk-public', version: BMW_INVENTORY_SOURCE_VERSION, kind: 'public-bmw-uk' })
+    && object(l) && l.maxAttempts === 1 && l.retryDelayMs === 0 && l.concurrency === 1 && l.imageRequests === 0
+    && l.sourceAttempts === 3 && bounded(l.sourceBytes, 1, 4194304) && bounded(l.responseBytes, 1, 1048576)
+    && bounded(l.operationTimeoutMs, 1, 10000) && bounded(l.deadlineMs, 1, 90000) && bounded(l.checkpointBytes, 1024, 4194304)
+    && bounded(l.cacheEntries, 1, 16) && bounded(l.cacheRetentionMs, 1, 86400000)
+    && same(l.requestBudgets, { page: 1, settings: 1, discover: 1 }),
+  'source-inventory-plan', 'Allocate only three exact inventory GETs with explicit request scope and no presumed vehicle facts.');
+  validateBmwInventoryRequestRegistration(plan.inventoryRegistration);
+  return structuredClone(plan);
+}
+
+const inventoryRequiredFields = ['modelCode', 'agModelCode', 'modelRange', 'steering', 'orderDate', 'effectDate'];
+const inventoryLabels = ['modelName', 'modelNameRaw', 'derivative'];
+const inventoryToken = (value) => typeof value === 'string' && /^[A-Z0-9]{1,16}$/.test(value);
+const inventoryCode = (value) => typeof value === 'string' && /^[A-Z0-9]{4,12}$/.test(value);
+const inventoryType = (value) => value === null ? 'null' : Array.isArray(value) ? 'array' : typeof value;
+const inventoryPointer = (alias, range) => `/${alias}/modelRanges/${range}`;
+function inventoryModelNode(modelKey, record, pointer) {
+  const facts = {}; const missingFields = []; const invalidFields = [];
+  for (const field of [...inventoryRequiredFields, ...inventoryLabels]) {
+    if (!Object.hasOwn(record, field)) { if (inventoryRequiredFields.includes(field)) missingFields.push(field); continue; }
+    const value = record[field];
+    const valid = ['modelCode', 'agModelCode'].includes(field) ? inventoryCode(value)
+      : ['orderDate', 'effectDate'].includes(field) ? calendarDate(value)
+        : field === 'steering' ? typeof value === 'string' && /^[A-Z]{2}$/.test(value)
+          : field === 'modelRange' ? inventoryToken(value)
+            : safeLabel(value) && !/[A-HJ-NPR-Z0-9]{17}/.test(value);
+    if (valid) facts[field] = value; else invalidFields.push({ field, type: inventoryType(value) });
+  }
+  return { pointer, modelKey, facts, fieldPointers: Object.fromEntries(Object.keys(facts).map(field => [field, `${pointer}/${field}`])),
+    missingFields, invalidFields, issues: Object.hasOwn(facts, 'modelCode') && facts.modelCode !== modelKey ? ['model-key-mismatch'] : [] };
+}
+function inventoryAliases(nodes) {
+  return [...new Set(nodes.map(node => node.modelKey))].sort().map(modelKey => {
+    const rows = nodes.filter(node => node.modelKey === modelKey);
+    const signature = node => ({ facts: node.facts, missingFields: node.missingFields, invalidFields: node.invalidFields, issues: node.issues });
+    return { modelKey, aliases: rows.map(node => node.pointer.split('/')[1]), pointers: rows.map(node => node.pointer),
+      consistent: rows.every(node => same(signature(rows[0]), signature(node))) };
+  });
+}
+
+function inventoryLimit(condition, code, path, kind, count, limit, type) {
+  if (condition) return;
+  const error = new CollectionError(code, 'The finite inventory projection limit was exceeded.');
+  error.inventoryDiagnostic = { schemaVersion: 'bmw-inventory-limit.v1', path, kind, count, limit, type };
+  throw error;
+}
+
+/** Direct bounded full records and line pointers only; unknown response fields are never copied. */
+export function projectBmwRangeInventory(value, input) {
+  const r = validateBmwInventoryRequestRegistration(input);
+  requireValue(object(value) && bounded(Object.keys(value).length, 1, 100), 'source-inventory-tree', 'Use a bounded object of source alias groups.');
+  const observedAliases = Object.keys(value).filter(alias => object(value[alias]?.modelRanges)
+    && Object.hasOwn(value[alias].modelRanges, r.catalogueRangeKey)).sort();
+  requireValue(bounded(observedAliases.length, 1, 8) && observedAliases.every(inventoryToken),
+    'source-inventory-alias-limit', 'Inspect every direct range alias within the finite inventory limit.');
+  const modelNodes = []; const lineRows = [];
+  // Traverse only the relationship contract. Unrelated properties and element payloads stay in memory.
+  const add = (entry, pointer, retainValue = false) => {
+    inventoryLimit(lineRows.length < 768, 'source-inventory-line-limit', pointer, 'rows', lineRows.length + 1, 768, inventoryType(entry));
+    const row = { pointer, type: inventoryType(entry) };
+    if (retainValue && inventoryToken(entry)) row.value = entry;
+    lineRows.push(row);
+  };
+  const fields = (record, path, names) => {
+    if (!object(record)) return;
+    for (const key of names) if (Object.hasOwn(record, key)) add(record[key], `${path}/${key}`, true);
+  };
+  const lines = (container, path) => {
+    requireValue(object(container), 'source-inventory-line-shape', 'A present lines field must be a bounded object.');
+    inventoryLimit(Object.keys(container).length <= 128, 'source-inventory-line-limit', path, 'entries', Object.keys(container).length, 128, 'object');
+    for (const key of Object.keys(container).sort()) {
+      requireValue(inventoryToken(key), 'source-inventory-line-key', 'Only a literal bounded trim key can form a retained pointer.');
+      const line = container[key]; const pointer = `${path}/${key}`;
+      add(line, pointer); fields(line, pointer, ['option', 'modelCode', 'agModelCode']);
+      if (!object(line)) continue;
+      if (Object.hasOwn(line, 'defaultModel')) {
+        add(line.defaultModel, `${pointer}/defaultModel`);
+        fields(line.defaultModel, `${pointer}/defaultModel`, ['modelCode', 'agModelCode']);
+      }
+      if (!Object.hasOwn(line, 'includedTransmissionVariants')) continue;
+      const variants = line.includedTransmissionVariants; const variantsPath = `${pointer}/includedTransmissionVariants`;
+      add(variants, variantsPath);
+      if (!object(variants) && !Array.isArray(variants)) continue;
+      inventoryLimit(Object.keys(variants).length <= 128, 'source-inventory-line-limit', variantsPath, 'entries', Object.keys(variants).length, 128, inventoryType(variants));
+      for (const index of Object.keys(variants).sort()) {
+        requireValue(/^[A-Za-z0-9_.+-]{1,16}$/.test(index), 'source-inventory-line-key', 'Only a bounded variant key can form a retained pointer.');
+        const variant = variants[index]; const variantPath = `${variantsPath}/${index}`;
+        add(variant, variantPath); fields(variant, variantPath, ['modelCode', 'agModelCode']);
+        if (!object(variant) || !Object.hasOwn(variant, 'configuration')) continue;
+        const configuration = variant.configuration; const configurationPath = `${variantPath}/configuration`;
+        add(configuration, configurationPath); fields(configuration, configurationPath, ['modelCode', 'agModelCode']);
+        if (!object(configuration) || !Object.hasOwn(configuration, 'elements')) continue;
+        const elements = configuration.elements; const elementsPath = `${configurationPath}/elements`;
+        add(elements, elementsPath);
+        if (object(elements) && Object.hasOwn(elements, key)) add(elements[key], `${elementsPath}/${key}`);
+      }
+    }
+  };
+  for (const alias of observedAliases) {
+    const range = value[alias].modelRanges[r.catalogueRangeKey]; const models = range?.models;
+    requireValue(object(range) && object(models) && bounded(Object.keys(models).length, 1, 128),
+      'source-inventory-model-limit', 'Full direct model records are required; compact defaults cannot replace them.');
+    const prefix = inventoryPointer(alias, r.catalogueRangeKey);
+    for (const modelKey of Object.keys(models).sort()) {
+      requireValue(inventoryCode(modelKey) && object(models[modelKey]) && modelNodes.length < 512,
+        'source-inventory-model-limit', 'Stop rather than dropping malformed or excess full models.');
+      modelNodes.push(inventoryModelNode(modelKey, models[modelKey], `${prefix}/models/${modelKey}`));
+    }
+    if (!Object.hasOwn(range, 'lines')) lineRows.push({ pointer: `${prefix}/lines`, type: 'missing' });
+    else lines(range.lines, `${prefix}/lines`);
+  }
+  const report = { schemaVersion: 'bmw-source-range-inventory-report.v1', requestScope: { role: 'request-input-only', ...r },
+    observedAliases, modelNodes, modelAliases: inventoryAliases(modelNodes), seedPresent: modelNodes.some(node => node.modelKey === r.pageModelCode),
+    lineRows, additionalConfigurations: 0 };
+  const outputBytes = Buffer.byteLength(JSON.stringify(report));
+  inventoryLimit(outputBytes <= 112 * 1024, 'source-inventory-output-limit', '/', 'bytes', outputBytes, 112 * 1024, 'object');
+  return report;
+}
+
+export function validatePublicBmwInventoryObservation(input, retained, mode) {
+  const plan = validatePublicBmwInventoryPlan(input); const r = plan.inventoryRegistration;
+  const document = retained?.document; const report = document?.report; const metadata = document?.observation;
+  const bytes = JSON.stringify(document) + '\n'; const urls = bmwInventoryRequestUrls(r);
+  requireValue(object(retained) && same(Object.keys(retained).sort(), ['bytes', 'document', 'sha256'])
+    && retained.bytes === Buffer.byteLength(bytes) && retained.bytes <= 128 * 1024 && retained.sha256 === createHash('sha256').update(bytes).digest('hex')
+    && object(document) && same(Object.keys(document).sort(), ['observation', 'report', 'schemaVersion'])
+    && document.schemaVersion === 'bmw-source-range-inventory-observation.v1'
+    && metadata?.schemaVersion === 'collection-http-observation.v1' && metadata.operation === 'discover' && metadata.capability === 'bmw-model-tree'
+    && metadata.sourceId === plan.source.id && metadata.sourceVersion === plan.source.version
+    && metadata.transportKind === (mode === 'live' ? 'live' : 'fixture') && metadata.observedAt?.slice(0, 10) === plan.qualificationDate
+    && same(metadata.request, { method: 'GET', url: urls.discover }) && bounded(metadata.responseBytes, 1, plan.limits.responseBytes)
+    && typeof metadata.responseSha256 === 'string' && /^[a-f0-9]{64}$/.test(metadata.responseSha256)
+    && report?.schemaVersion === 'bmw-source-range-inventory-report.v1' && same(report.requestScope, { role: 'request-input-only', ...r })
+    && Array.isArray(report.modelNodes) && bounded(report.modelNodes.length, 1, 512)
+    && Array.isArray(report.observedAliases) && bounded(report.observedAliases.length, 1, 8)
+    && report.observedAliases.every(inventoryToken) && same([...new Set(report.observedAliases)].sort(), report.observedAliases)
+    && Array.isArray(report.lineRows) && report.lineRows.length <= 768 && report.additionalConfigurations === 0,
+  'source-inventory-binding', 'Retain sealed bounded inventory bytes, exact request provenance and observation-only scope.');
+  const placeholders = { string: '!', number: 0, boolean: false, object: {}, array: [], null: null };
+  for (const node of report.modelNodes) {
+    const alias = node?.pointer?.split('/')[1]; const record = { ...node?.facts };
+    requireValue(inventoryCode(node?.modelKey) && report.observedAliases.includes(alias) && Array.isArray(node.invalidFields),
+      'source-inventory-binding', 'Preserve every bounded direct model pointer and field status.');
+    for (const invalid of node.invalidFields) {
+      requireValue(Object.hasOwn(placeholders, invalid.type), 'source-inventory-binding', 'Preserve safe invalid-field types only.');
+      record[invalid.field] = placeholders[invalid.type];
+    }
+    requireValue(node.pointer === `${inventoryPointer(alias, r.catalogueRangeKey)}/models/${node.modelKey}`
+      && same(inventoryModelNode(node.modelKey, record, node.pointer), node), 'source-inventory-binding', 'Retained direct model facts or field status changed.');
+  }
+  requireValue(new Set(report.modelNodes.map(node => node.pointer)).size === report.modelNodes.length
+    && same([...new Set(report.modelNodes.map(node => node.pointer.split('/')[1]))].sort(), report.observedAliases)
+    && same(report.modelAliases, inventoryAliases(report.modelNodes))
+    && report.seedPresent === report.modelNodes.some(node => node.modelKey === r.pageModelCode)
+    && new Set(report.lineRows.map(row => row.pointer)).size === report.lineRows.length
+    && report.lineRows.every(row => object(row) && Object.keys(row).every(key => ['pointer', 'type', 'value'].includes(key))
+      && typeof row.pointer === 'string' && row.pointer.length <= 1024 && report.observedAliases.some(alias => row.pointer.startsWith(`${inventoryPointer(alias, r.catalogueRangeKey)}/lines`))
+      && ['object', 'array', 'string', 'number', 'boolean', 'null', 'missing'].includes(row.type)
+      && report.observedAliases.some(alias => {
+        const prefix = `${inventoryPointer(alias, r.catalogueRangeKey)}/lines`;
+        if (row.pointer === prefix) return row.type === 'missing';
+        if (!row.pointer.startsWith(prefix + '/')) return false;
+        const parts = row.pointer.slice(prefix.length + 1).split('/'); const trim = parts.shift();
+        if (!inventoryToken(trim)) return false;
+        const tail = parts.join('/');
+        const field = '(?:modelCode|agModelCode)'; const variant = '[A-Za-z0-9_.+\\-]{1,16}';
+        return tail === '' || tail === 'option' || new RegExp(`^${field}$|^defaultModel(?:/${field})?$|^includedTransmissionVariants(?:/${variant}(?:/${field}|/configuration(?:/${field}|/elements(?:/${trim})?)?)?)?$`).test(tail);
+      }) && (row.value === undefined || (inventoryToken(row.value) && /\/(?:option|modelCode|agModelCode)$/.test(row.pointer)))),
+  'source-inventory-binding', 'Preserve the complete observed aliases, conflicts and bounded direct line pointers.');
+  return structuredClone(retained);
+}
+
+/** Exactly page/settings/tree using the common executor; only the closure holds bootstrap values. */
+export function publicBmwInventoryOperations(input) {
+  const plan = validatePublicBmwInventoryPlan(input); const requestRegistration = plan.inventoryRegistration;
+  const urls = bmwInventoryRequestUrls(requestRegistration); let treeHeader;
+  const descriptor = (capability, url, project, extra = {}) => ({ sourceId: plan.source.id, sourceVersion: plan.source.version,
+    kind: 'read-only-http', capability, strictJson: true, requestRegistration, prepare: async () => ({ method: 'GET', url, headers: {} }),
+    project: (value, request, metadata) => {
+      assertCollectionHttpObservation(metadata);
+      requireValue(metadata.sourceVersion === plan.source.version && metadata.observedAt.slice(0, 10) === plan.qualificationDate,
+        'source-observation-date', 'Use the pinned actual observation day and executor-owned inventory source.');
+      let result;
+      try { result = project(value, request, metadata); }
+      catch (error) {
+        if (error.inventoryDiagnostic && treeHeader && Object.values(treeHeader).some(secret => error.inventoryDiagnostic.path.includes(secret)))
+          error.inventoryDiagnostic.path = '/';
+        throw error;
+      }
+      JSON.stringify(result, (key, entry) => {
+        requireValue(!treeHeader || Object.values(treeHeader).every(secret => !key.includes(secret) && (typeof entry !== 'string' || !entry.includes(secret))),
+          'source-sensitive-projection', 'No bootstrap value may enter retained inventory facts.'); return entry;
+      });
+      return result;
+    }, ...extra });
+  return {
+    page: descriptor('bmw-page', urls.page, (html) => {
+      const paths = [...new Set([...html.matchAll(/(?:\/en_GB\/)?settings\.[a-zA-Z0-9]+\.json/g)]
+        .map(match => match[0].startsWith('/en_GB/') ? match[0] : '/en_GB/' + match[0]))];
+      requireValue(paths.length === 1 && settingsPattern.test(paths[0]), 'settings-discovery-shape', 'The literal seed page must identify one settings path.');
+      return { settingsPath: paths[0] };
+    }),
+    settings: descriptor('bmw-settings', null, value => { treeHeader = headerFor(value, 'settingsVehicleTree', true); return { treeProfileQualified: true }; },
+      { cache: false, prepare: async ({ path }) => {
+        requireValue(typeof path === 'string' && settingsPattern.test(path), 'settings-discovery-shape', 'Use the single freshly discovered settings path.');
+        return { method: 'GET', url: 'https://configure.bmw.co.uk' + path, headers: {} };
+      } }),
+    discover: descriptor('bmw-model-tree', urls.discover, (value, _request, metadata) => {
+      const retained = sealedObservation({ schemaVersion: 'bmw-source-range-inventory-observation.v1', observation: metadata,
+        report: projectBmwRangeInventory(value, requestRegistration) });
+      validatePublicBmwInventoryObservation(plan, retained, metadata.transportKind === 'live' ? 'live' : 'source-fixture'); return retained;
+    }, { prepare: async () => {
+      requireValue(treeHeader, 'source-bootstrap-required', 'The fresh memory-only tree header is unavailable.');
+      return { method: 'GET', url: urls.discover, headers: treeHeader };
+    } }),
+  };
+}
+
+export function validatePublicBmwOptionsPlan(plan) {
+  const l = plan?.limits;
+  requireValue(object(plan) && Object.keys(plan).every((key) => ['schemaVersion', 'planId', 'qualificationDate', 'source', 'modelRegistration', 'limits'].includes(key))
+    && plan.schemaVersion === 'bmw-source-options-plan.v1' && typeof plan.planId === 'string' && /^[A-Za-z0-9][A-Za-z0-9.-]{0,95}$/.test(plan.planId)
+    && calendarDate(plan.qualificationDate) && same(plan.source, { id: 'bmw-uk-public', version: BMW_OPTIONS_SOURCE_VERSION, kind: 'public-bmw-uk' })
+    && object(l) && l.maxAttempts === 1 && l.retryDelayMs === 0 && l.concurrency === 1 && l.imageRequests === 0
+    && l.sourceAttempts === 4 && bounded(l.sourceBytes, 1, 4194304) && bounded(l.responseBytes, 1, 1048576)
+    && bounded(l.operationTimeoutMs, 1, 10000) && bounded(l.deadlineMs, 1, 90000) && bounded(l.checkpointBytes, 1024, 4194304)
+    && bounded(l.cacheEntries, 1, 16) && bounded(l.cacheRetentionMs, 1, 86400000)
+    && same(l.requestBudgets, { page: 1, settings: 1, discover: 1, options: 1 }),
+  'source-options-plan', 'Allocate four exact options-inspection GETs with an explicit trim and no candidate or solver budget.');
+  validateBmwOptionsRequestRegistration({ model: plan.modelRegistration });
+  return structuredClone(plan);
+}
+
+function strictTrimRelationships(value, r) {
+  return r.aliases.map((alias) => {
+    const pointer = `/${alias}/modelRanges/${r.catalogueRangeKey}/lines/${r.optionsTrim}`;
+    const line = value?.[alias]?.modelRanges?.[r.catalogueRangeKey]?.lines?.[r.optionsTrim];
+    requireValue(object(line) && line.option === r.optionsTrim && object(line.defaultModel)
+      && line.defaultModel.modelCode === r.modelCode && line.defaultModel.agModelCode === r.agModelCode
+      && Array.isArray(line.includedTransmissionVariants) && bounded(line.includedTransmissionVariants.length, 1, 256),
+    'source-trim-relationship', 'The fresh line option and compact default model/AG must agree with the full registered model.');
+    const matches = line.includedTransmissionVariants.map((row, index) => ({ configuration: row?.configuration, index }))
+      .filter(({ configuration }) => configuration?.modelCode === r.modelCode);
+    requireValue(matches.length === 1 && object(matches[0].configuration.elements)
+      && Object.keys(matches[0].configuration.elements).length <= 320 && Object.hasOwn(matches[0].configuration.elements, r.optionsTrim),
+    'source-trim-relationship', 'One fresh included variant must name the registered model and contain the explicit line option.');
+    const includedPointer = `${pointer}/includedTransmissionVariants/${matches[0].index}/configuration`;
+    return { pointer, option: { pointer: `${pointer}/option`, value: line.option },
+      defaultModel: { pointer: `${pointer}/defaultModel`, modelCode: line.defaultModel.modelCode, agModelCode: line.defaultModel.agModelCode },
+      included: { pointer: includedPointer, modelCode: matches[0].configuration.modelCode,
+        elementPointer: `${includedPointer}/elements/${r.optionsTrim}`, elementCode: r.optionsTrim } };
+  });
+}
+
+function sealedObservation(document) {
+  const bytes = JSON.stringify(document) + '\n';
+  return { document, bytes: Buffer.byteLength(bytes), sha256: createHash('sha256').update(bytes).digest('hex') };
+}
+
+function typedOptionsReport(value, trim) {
+  const report = optionsShapeReport(value); const definitions = report.candidates[0]?.definitions;
+  requireValue(report.status === 'schema-review-required' && report.candidates.length === 1 && report.candidates[0].pointer === ''
+    && definitions.every((row) => row.issues.length === 0) && definitions.some((row) => row.code === trim && row.option === trim),
+  'source-options-shape', 'Observe one directly keyed typed definition map containing the explicit source line option.');
+  return { status: 'typed-definitions-observed', candidates: [{ pointer: '', definitions }], admission: false };
+}
+
+/** Revalidate safe retained values as well as their byte hashes; an outer checkpoint hash alone is insufficient. */
+export function validatePublicBmwOptionsObservations(input, retained, mode) {
+  const plan = validatePublicBmwOptionsPlan(input); const r = plan.modelRegistration; const urls = bmwPublicRequestUrls(r);
+  const checkArtifact = (artifact, operation, capability, schemaVersion, fields, code) => {
+    const document = artifact?.document; const metadata = document?.observation;
+    requireValue(object(artifact) && same(Object.keys(artifact).sort(), ['bytes', 'document', 'sha256'])
+      && same(sealedObservation(document), artifact) && object(document) && same(Object.keys(document).sort(), fields.sort())
+      && document.schemaVersion === schemaVersion && object(metadata)
+      && same(Object.keys(metadata).sort(), ['capability', 'observedAt', 'operation', 'request', 'responseBytes', 'responseSha256', 'schemaVersion', 'sourceId', 'sourceVersion', 'transportKind'])
+      && metadata.schemaVersion === 'collection-http-observation.v1' && metadata.operation === operation && metadata.capability === capability
+      && metadata.sourceId === plan.source.id && metadata.sourceVersion === plan.source.version
+      && metadata.transportKind === (mode === 'live' ? 'live' : 'fixture') && metadata.observedAt?.slice(0, 10) === plan.qualificationDate
+      && same(metadata.request, { method: 'GET', url: urls[operation] }) && bounded(metadata.responseBytes, 1, plan.limits.responseBytes)
+      && typeof metadata.responseSha256 === 'string' && /^[a-f0-9]{64}$/.test(metadata.responseSha256),
+    code, 'Retain exact safe projection bytes and matching dated executor source/request provenance.');
+    return document;
+  };
+  requireValue(object(retained) && Array.isArray(retained.trimRelationships), 'source-trim-binding', 'Retain the source line relationship beside its full context.');
+  if (retained.contextObservation === null) {
+    requireValue(retained.trimRelationships.length === 0 && retained.optionsObservation === null,
+      'source-trim-binding', 'Options and trim relationships require their fresh full context.');
+    return;
+  }
+  const context = checkArtifact(retained.contextObservation, 'discover', 'bmw-model-tree', 'bmw-source-options-context-observation.v1',
+    ['schemaVersion', 'observation', 'report', 'trimRelationships'], 'source-context-binding');
+  const tree = {};
+  requireValue(Array.isArray(context.report?.nodes) && context.report.nodes.length === r.aliases.length,
+    'source-context-binding', 'Retain every complete registered full-model alias.');
+  for (let i = 0; i < r.aliases.length; i++) tree[r.aliases[i]] = { modelRanges: { [r.catalogueRangeKey]: { models: { [r.modelCode]: context.report.nodes[i].facts }, lines: {} } } };
+  let expectedReport;
+  try { expectedReport = strictModelReport(tree, r); } catch { requireValue(false, 'source-context-binding', 'The retained direct model facts changed.'); }
+  requireValue(same(expectedReport, context.report), 'source-context-binding', 'The retained direct full-model aliases, facts or pointers changed.');
+  requireValue(same(retained.trimRelationships, context.trimRelationships) && context.trimRelationships.length === r.aliases.length,
+    'source-trim-binding', 'The retained line relationships must equal the same-response context projection.');
+  try {
+    context.trimRelationships.forEach((row, i) => {
+      const index = Number(new RegExp(`^/${r.aliases[i]}/modelRanges/${r.catalogueRangeKey}/lines/${r.optionsTrim}/includedTransmissionVariants/([0-9]+)/configuration$`).exec(row.included.pointer)?.[1]);
+      requireValue(bounded(index, 0, 255), 'source-trim-binding', 'Retain the exact bounded included-variant pointer.');
+      const variants = Array.from({ length: index + 1 }, () => ({}));
+      variants[index] = { configuration: { modelCode: row.included.modelCode, elements: { [row.included.elementCode]: {} } } };
+      tree[r.aliases[i]].modelRanges[r.catalogueRangeKey].lines[r.optionsTrim] = { option: row.option.value,
+        defaultModel: { modelCode: row.defaultModel.modelCode, agModelCode: row.defaultModel.agModelCode }, includedTransmissionVariants: variants };
+    });
+    requireValue(same(strictTrimRelationships(tree, r), context.trimRelationships), 'source-trim-binding', 'The retained source line relationship changed.');
+  } catch { requireValue(false, 'source-trim-binding', 'The retained source line relationship changed.'); }
+  if (retained.optionsObservation !== null) {
+    const options = checkArtifact(retained.optionsObservation, 'options', 'bmw-options', 'bmw-source-options-observation.v1',
+      ['schemaVersion', 'observation', 'report'], 'source-options-binding');
+    try {
+      const rows = options.report?.candidates?.[0]?.definitions;
+      requireValue(Array.isArray(rows) && bounded(rows.length, 1, 512) && new Set(rows.map((row) => row.code)).size === rows.length,
+        'source-options-binding', 'Retain distinct directly keyed typed source definitions.');
+      const definitions = Object.fromEntries(rows.map((row) => [row.code, { option: row.option, optionType: row.optionType,
+        ...(Object.hasOwn(row, 'longDescription') ? { phrases: { longDescription: row.longDescription } } : {}) }]));
+      requireValue(same(typedOptionsReport(definitions, r.optionsTrim), options.report), 'source-options-binding', 'The retained typed definitions changed.');
+    } catch { requireValue(false, 'source-options-binding', 'The retained typed source definitions changed.'); }
+  }
+}
+
+/** Four GETs through the existing executor. Headers live only in this operation closure. */
+export function publicBmwOptionsOperations(input) {
+  const plan = validatePublicBmwOptionsPlan(input); const r = plan.modelRegistration; const requestRegistration = { model: r };
+  const urls = bmwPublicRequestUrls(r); let treeHeader; let localisationHeader; let treeQualified = false;
+  const descriptor = (capability, url, project, extra = {}) => ({ sourceId: plan.source.id, sourceVersion: plan.source.version,
+    kind: 'read-only-http', capability, strictJson: true, requestRegistration, prepare: async () => ({ method: 'GET', url, headers: {} }),
+    project: (value, request, metadata) => {
+      assertCollectionHttpObservation(metadata);
+      requireValue(metadata.sourceVersion === plan.source.version && metadata.observedAt.slice(0, 10) === plan.qualificationDate,
+        'source-observation-date', 'Use the pinned qualification day and executor-owned options source.');
+      const result = project(value, request, metadata);
+      const secrets = [treeHeader, localisationHeader].flatMap((header) => header ? Object.values(header) : []);
+      JSON.stringify(result, (key, entry) => {
+        requireValue(secrets.every((secret) => !key.includes(secret) && (typeof entry !== 'string' || !entry.includes(secret))),
+          'source-sensitive-projection', 'No bootstrap header may enter retained options inspection facts.'); return entry;
+      });
+      return result;
+    }, ...extra });
+  return {
+    page: descriptor('bmw-page', urls.page, (html) => {
+      const paths = [...new Set([...html.matchAll(/(?:\/en_GB\/)?settings\.[a-zA-Z0-9]+\.json/g)]
+        .map((match) => match[0].startsWith('/en_GB/') ? match[0] : '/en_GB/' + match[0]))];
+      requireValue(paths.length === 1 && settingsPattern.test(paths[0]), 'settings-discovery-shape', 'The registered model page must identify one settings path.');
+      return { settingsPath: paths[0] };
+    }),
+    settings: descriptor('bmw-settings', null, (value) => {
+      treeHeader = headerFor(value, 'settingsVehicleTree', true); localisationHeader = headerFor(value, 'settingsLocalisation', true);
+      return { treeProfileQualified: true, localisationProfileQualified: true };
+    }, { cache: false, prepare: async ({ path }) => {
+      requireValue(typeof path === 'string' && settingsPattern.test(path), 'settings-discovery-shape', 'Use the one discovered settings path.');
+      return { method: 'GET', url: 'https://configure.bmw.co.uk' + path, headers: {} };
+    } }),
+    discover: descriptor('bmw-model-tree', urls.discover, (value, _request, metadata) => {
+      const report = strictModelReport(value, r);
+      const appearances = Object.entries(value).filter(([, group]) => object(group?.modelRanges?.[r.catalogueRangeKey]?.models?.[r.modelCode])).map(([alias]) => alias).sort();
+      requireValue(same(appearances, [...r.aliases].sort()), 'source-model-alias-conflict', 'Fresh direct aliases must equal the complete registered alias set.');
+      const trimRelationships = strictTrimRelationships(value, r); treeQualified = true;
+      return sealedObservation({ schemaVersion: 'bmw-source-options-context-observation.v1', observation: metadata, report, trimRelationships });
+    }, { prepare: async () => {
+      requireValue(treeHeader, 'source-bootstrap-required', 'The memory-only public tree header is unavailable.');
+      return { method: 'GET', url: urls.discover, headers: treeHeader };
+    } }),
+    options: descriptor('bmw-options', urls.options, (value, _request, metadata) => sealedObservation({
+      schemaVersion: 'bmw-source-options-observation.v1', observation: metadata, report: typedOptionsReport(value, r.optionsTrim) }),
+    { prepare: async () => {
+      requireValue(treeQualified && localisationHeader, 'source-tree-required', 'Corroborate the full model and explicit same-response line relationship before options.');
+      return { method: 'GET', url: urls.options, headers: localisationHeader };
+    } }),
+  };
+}
 
 export function validatePublicBmwDiagnosticPlan(plan) {
   const l = plan?.limits;

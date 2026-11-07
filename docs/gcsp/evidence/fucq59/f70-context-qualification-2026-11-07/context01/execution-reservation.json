@@ -1,0 +1,6 @@
+{
+  "status": "prepared-unspent-no-traffic-grant",
+  "allocationId": "f70-context01-20261107-once",
+  "planDigest": "a91bfb509b263ce24b68323b41cf5dc75745d3e58cb0c3e49685d24a6eb98574",
+  "exclusiveMarkerCreatedOnlyByLiveRunner": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context01/execution-once.json"
+}

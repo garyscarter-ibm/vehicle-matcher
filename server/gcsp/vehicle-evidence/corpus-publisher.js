@@ -210,7 +210,7 @@ async function validateRows(configurations, vins, images, manifest, options) {
       if (!catalogueAdapter) {
         const key = (identity) => configurationKey(identity, manifest.signaturePolicy);
         key.policyVersion = manifest.signaturePolicy.policyVersion;
-        const registrations = options.sourceRegistrations ?? await registeredCatalogueSources(key);
+        const registrations = options.sourceRegistrations ?? await registeredCatalogueSources(key, { manifestDigest: options.releaseManifestDigest, artifactDirectory: options.sourceArtifactDirectory, artifactRoot: options.sourceArtifactRoot });
         catalogueAdapter = createBmwCatalogueAdapter({ sourceRegistrations: registrations,
           loadSnapshot: async (_version, { lookupIdentity }) => {
             const envelope = currentEnvelope && equal(currentEnvelope.lookupIdentity, lookupIdentity)
@@ -316,6 +316,10 @@ export async function validateCorpusDirectory(directory, options = {}) {
     const manifestText = await readCorpusFile(directory, 'manifest.json'); let manifest;
     try { manifest = JSON.parse(manifestText); } catch { reject('manifest-schema', 'manifest.json is malformed.'); }
     await validateManifest(manifest, options);
+    // Only the server's code-owned selector can supply release-specific limits.
+    // JSON manifest fields and HTTP request options never widen this boundary.
+    options = { ...options, releaseManifestDigest: contentChecksum(manifestText),
+      ...(options.jsonlLimitsForManifest ? { jsonlLimits: options.jsonlLimitsForManifest(contentChecksum(manifestText)) } : {}) };
     const rows = [];
     for (const [i, file] of CORPUS_FILES.entries()) {
       if (options.indexed === true) {

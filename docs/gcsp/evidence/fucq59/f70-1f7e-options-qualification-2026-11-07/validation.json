@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "f70-1f7e-options-prepared-validation.v1",
+  "scope": "scoped offline preparation only",
+  "summary": {
+    "cancelled": 0,
+    "fail": 0,
+    "pass": 6,
+    "skipped": 0,
+    "tests": 6,
+    "todo": 0
+  },
+  "wallSeconds": 0.476079916,
+  "peakScratchBytes": 614560,
+  "peakRssBytes": 109936640,
+  "cleanup": {
+    "code_identity_unchanged": true,
+    "compatibility_exception": null,
+    "dependency_link_absent": true,
+    "groups_absent": true,
+    "removed_allocation_bytes": 614560,
+    "reservation_absent": true,
+    "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/1f7e-prepared-result.json",
+    "scratch_absent": true
+  },
+  "checks": [
+    "Actual strict production plan validator",
+    "Historical full-model/line same-response relationship hashes and source pointers",
+    "All frozen code pins and finite four-GET allocation",
+    "Python and Node syntax",
+    "Runner missing-grant refusal with fetch tripwire",
+    "Supervisor missing-grant refusal before resource allocation"
+  ],
+  "executionPlanSha256": "8edd27fe4e9060a3f65a1e561c479f419994b5083da56bcd14cc5d31e792b464",
+  "planDigest": "0a03f19c9e89461aca8c42df209734e73ec6b50e4e720967e00f13712bc760e1",
+  "preparedIdentity": {
+    "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/execution-plan.json": "8edd27fe4e9060a3f65a1e561c479f419994b5083da56bcd14cc5d31e792b464",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/execution-reservation.json": "c35991610c5bf33d321f5b6186ca4828df956d53c32ccccc7c0ce1478e5683c0",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/prepare.py": "2cdfb5c4cff7b45160a20537516d6d9e272f6b9f99fb50b156f19d76bafac61d",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/prepared-check.test.mjs": "e19041d82f37dd488d4c14121c02ec17b470b67e3707c9951fc05fa6d341b66a",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/qualification-plan.json": "eac40811115cef1d25e9911ae252d11fcb7c1c791452cdeee86ed13b50836105",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/retained-deliverables.json": "c7361341b2bb3333ca271519df1fbaec748293e8498971bdfc7561aa1d5e44aa",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/run-live.mjs": "d02365476860af1bce53a86d9a7b72611cc6b12265e67f88bbf92df94c9db386",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/source-relationship-provenance.json": "d646e22ea4b1780466072b791c69bb74f4b0105219414aa8ec7ffa0cc74c3289",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/supervise.py": "b029ac7227894e872776ac0266f3d9f6cbde50f4976a5beeb810171341cf44c9",
+    "scripts/gcsp/bmw-public-registration.mjs": "5fa166bc0ce537e54b99c86e0e681a496ce1edcea9652184e3842b9587a009d3",
+    "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+    "scripts/gcsp/capture-bmw-selection.mjs": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+    "scripts/gcsp/collect-fleet.mjs": "76107aea09f14f6baaf32417f00f7acbc86d77413e18b8a01f289195d0d443bf",
+    "scripts/gcsp/collection-session.mjs": "baa55b0736932ad23ed967d3ebd9cb91086ca03e6e7ad103663d6ad121461f75",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/public-bmw-source.mjs": "43ddf5f9180a22a3147b069f4fdad07f9919302b1c8072e4b679071e08983556",
+    "server/test/gcsp-bmw-context-qualification.test.js": "31f67d169abbbc076d3355ebda320050ab0ecc7e304012eea5ecad0b295d54f7",
+    "server/test/gcsp-bmw-selection-capture.test.js": "277c685eb205014f9470655249ec53641299fc05242ca2aebd346329122c8fc8",
+    "server/test/gcsp-bmw-source-batch.test.js": "209d96dcf7529fe0a646d50d7cd05204237a06b0b6d95ead5434a933074c87af",
+    "server/test/gcsp-fleet-collector.test.js": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+  },
+  "sourceTraffic": 0,
+  "sourceGrant": false,
+  "sourceCapacityCredit": 0,
+  "acceptance": false,
+  "knownLimitations": [
+    "Typed definitions are still unobserved for this model; element types may not be inferred from source key prefixes.",
+    "No solver candidates are allocated.",
+    "Historical source allocations are spent and never replayed."
+  ],
+  "retainedResultSha256": "5f6c6ee06fcc501ba0acc9d646486d2a147365d5e5615b354d16778da9746f3d"
+}
