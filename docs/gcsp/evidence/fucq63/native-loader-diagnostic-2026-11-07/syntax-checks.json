@@ -1,0 +1,42 @@
+{
+  "scope": "static scoped preparation only",
+  "planSha256": "c8e210f4617e7a97b67ff09ec47f58d9fd65fc302008a75839cdd31489fc4678",
+  "checks": [
+    {
+      "path": "diagnose.py",
+      "sha256": "8175fbedfc0102522f92879d25908652e51db5fd65b539ee55e9bd4147c4e67b",
+      "check": "Python AST parse",
+      "passed": true
+    },
+    {
+      "path": "supervise.py",
+      "sha256": "85aeb47814e0d20ee65f371d3e445b6000a272f76e78f91687886805401e4c1d",
+      "check": "Python AST parse",
+      "passed": true
+    },
+    {
+      "path": "group-proof.py",
+      "sha256": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
+      "check": "Python AST parse",
+      "passed": true
+    },
+    {
+      "path": "loader-diagnostic.rb",
+      "sha256": "5e724e2f2dedb29d09d9e3b811b926420b3f0c0545cd8e6bfdf7e18153759764",
+      "check": "system Ruby syntax only; no Homebrew/library load",
+      "passed": true,
+      "output": "Syntax OK"
+    },
+    {
+      "check": "all diagnostic code/input and frozen original167 native / proof12 code pins",
+      "passed": true,
+      "diagnosticCodePins": 177,
+      "inputs": 44,
+      "originalNativeCodePins": 167,
+      "proof12CodePins": 170
+    }
+  ],
+  "runtimeExecuted": false,
+  "scratchAllocated": false,
+  "acceptance": false
+}
