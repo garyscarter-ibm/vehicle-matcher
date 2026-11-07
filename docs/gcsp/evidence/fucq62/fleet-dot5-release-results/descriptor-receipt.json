@@ -1,0 +1,30 @@
+{
+  "status": "exact-rebuilt-and-described",
+  "manifestDigest": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+  "counts": {
+    "configurations": 480,
+    "distinctConfigurations": 480,
+    "vinMappings": 1,
+    "images": 1,
+    "sourceConfigurations": 479,
+    "qualifyingCompleteDistinctSourceConfigurations": 479
+  },
+  "sourceStoreUnchanged": true,
+  "priorRowsByteIdentical": 350,
+  "oldHistoryConfigurations": 350,
+  "oldHistoryIdentities": 1,
+  "oldHistoryDatasets": 5,
+  "egress": {
+    "control": "blocked",
+    "externalCalls": 0
+  },
+  "files": 20,
+  "nonemptyPublicFiles": 19,
+  "emptyLocalMaterializations": 1,
+  "bytes": 26096498,
+  "sourceShards": 9,
+  "oldDescriptorUnchanged": true,
+  "ordinaryPublicationExecuted": false,
+  "publicUploadExecuted": false,
+  "descriptorFile": "descriptor.json"
+}
