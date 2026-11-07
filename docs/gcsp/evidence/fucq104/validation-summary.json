@@ -1,0 +1,36 @@
+{
+  "story": "FUCQ-104",
+  "status": "blocked",
+  "observedAt": "2026-11-06T00:41:07Z",
+  "scoped": {
+    "scoped": 119,
+    "copyGuard": 2,
+    "producer": 1,
+    "browserStates": 7,
+    "widths": [
+      1440,
+      390
+    ],
+    "native": false,
+    "full": false,
+    "scopedPeakRss": 257294336,
+    "copyGuardPeakRss": 298598400,
+    "abortedParallelPeakRss": 727465984,
+    "shellCaptureFollowup": "single DOM/continuous geometry;4inspected normal viewport captures; original invalid captures retained red; no product repair"
+  },
+  "sourceCodeKey": "3ff9d1ca64f2f7fae9def66ac00b81ff0b935c0ab9896f497fc81738a5cce465",
+  "resource": {
+    "scratchRoots": 19,
+    "allScratchAbsent": true,
+    "allGroupsAbsent": true,
+    "allReservationsAbsent": true,
+    "overlaysAbsent": true,
+    "recordedRemovedBytes": 36765615,
+    "successfulLogRemovedBytes": 106843,
+    "compatibilityException": "Bounded isolated headless profile/cache and ephemeral synthetic HTTPS certificate; latest matrix9167840bytes/RSS194772992bytes, focused shell8990465bytes/RSS179142656bytes; all removed. Read-only dependency overlays removed; installed dependencies preserved.",
+    "leftovers": []
+  },
+  "evidenceRoot": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead104",
+  "fullAndNative": false,
+  "agents": "Buzz Lightyear; requested/selected/runtime-verified gpt-6.1-sol/high; no fallback or descendants"
+}

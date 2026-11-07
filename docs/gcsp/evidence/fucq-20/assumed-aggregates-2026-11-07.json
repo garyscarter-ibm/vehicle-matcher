@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "kind": "assumed-stock-aggregate-derivation",
+  "derivedFrom": "server/gcsp/policy/seed-v1.json",
+  "corpus": {
+    "path": "server/data/gcsp/vehicle-evidence/fleet-source.v1",
+    "datasetId": "gcsp-source-fleet",
+    "version": "2026-11-07.9",
+    "manifestDigest": "28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884",
+    "rows": 2425
+  },
+  "method": "Configuration mix of retained rows by reviewed display label, rounded to 4 decimals with the largest share absorbing rounding. Not observed stock.",
+  "excluded": {
+    "unmappedGeneration": {
+      "G23": 1
+    },
+    "ambiguousPaint": 0,
+    "ambiguousUpholstery": 0,
+    "unlabelledPaint": 0,
+    "unlabelledUpholstery": 0
+  },
+  "excludedReasons": {
+    "unmappedGeneration": "Generation has no scheme line in stock.corpusModelLines.v1; G23 is the single north-american-reference (REF1) row.",
+    "ambiguousPaint": "Not exactly one paint code.",
+    "ambiguousUpholstery": "Not exactly one upholstery code.",
+    "unlabelledPaint": "Paint code absent from stock.optionLabels.v1.",
+    "unlabelledUpholstery": "Upholstery code absent from stock.optionLabels.v1."
+  },
+  "models": {
+    "f70-sports-hatch": {
+      "title": "F70 Sports Hatch",
+      "usableRows": 1614,
+      "colourCounts": {
+        "Alpine White": 130,
+        "Black Sapphire": 126,
+        "BMW Individual Paintwork": 122,
+        "Jet Black": 12,
+        "Skyscraper Grey": 126,
+        "Thundernight": 122,
+        "BMW Individual Frozen Pure Grey": 122,
+        "Cape York Green": 134,
+        "Fire Red": 122,
+        "BMW Individual Frozen Portimao Blue": 126,
+        "Storm Bay": 122,
+        "Tanzanite Blue": 126,
+        "Brooklyn Grey": 110,
+        "Portimao Blue": 114
+      },
+      "upholsteryCounts": {
+        "M Alcantara Veganza combination Black contrast stitching": 294,
+        "Veganza perforated Black": 314,
+        "Cloth Anthracite": 28,
+        "Econeer Bicolour Blue": 24,
+        "Veganza perforated Oyster": 318,
+        "Veganza perforated Coral Red/Black": 314,
+        "Veganza perforated Mocha": 322
+      },
+      "colourShares": {
+        "Alpine White": 0.0805,
+        "BMW Individual Frozen Portimao Blue": 0.0781,
+        "BMW Individual Frozen Pure Grey": 0.0756,
+        "BMW Individual Paintwork": 0.0756,
+        "Black Sapphire": 0.0781,
+        "Brooklyn Grey": 0.0682,
+        "Cape York Green": 0.0829,
+        "Fire Red": 0.0756,
+        "Jet Black": 0.0074,
+        "Portimao Blue": 0.0706,
+        "Skyscraper Grey": 0.0781,
+        "Storm Bay": 0.0756,
+        "Tanzanite Blue": 0.0781,
+        "Thundernight": 0.0756
+      },
+      "upholsteryShares": {
+        "Cloth Anthracite": 0.0173,
+        "Econeer Bicolour Blue": 0.0149,
+        "M Alcantara Veganza combination Black contrast stitching": 0.1822,
+        "Veganza perforated Black": 0.1945,
+        "Veganza perforated Coral Red/Black": 0.1945,
+        "Veganza perforated Mocha": 0.1996,
+        "Veganza perforated Oyster": 0.197
+      },
+      "seedMatches": true
+    },
+    "g42-coupe": {
+      "title": "G42 Coupe",
+      "usableRows": 469,
+      "colourCounts": {
+        "Alpine White": 96,
+        "Black Sapphire": 96,
+        "Mineral White": 53,
+        "Brooklyn Grey": 32,
+        "Skyscraper Grey": 32,
+        "Thundernight": 32,
+        "BMW Individual Frozen Pure Grey": 32,
+        "Fire Red": 32,
+        "BMW Individual Frozen Portimao Blue": 32,
+        "Portimao Blue": 32
+      },
+      "upholsteryCounts": {
+        "M PerformTex Black Cloth with M Piping": 74,
+        "Sensatec perforated with Tacora Red decor stitching": 74,
+        "Cognac Perforated Sensatec": 58,
+        "Black Perforated Sensatec": 55,
+        "Black with Grey Contrast Stitching Vernasca Leather": 52,
+        "Black with Red Highlight Vernasca Leather": 52,
+        "Black with Blue stitching Vernasca leather": 52,
+        "Oyster with Grey contrast stitching Vernasca leather": 52
+      },
+      "colourShares": {
+        "Alpine White": 0.2049,
+        "BMW Individual Frozen Portimao Blue": 0.0682,
+        "BMW Individual Frozen Pure Grey": 0.0682,
+        "Black Sapphire": 0.2047,
+        "Brooklyn Grey": 0.0682,
+        "Fire Red": 0.0682,
+        "Mineral White": 0.113,
+        "Portimao Blue": 0.0682,
+        "Skyscraper Grey": 0.0682,
+        "Thundernight": 0.0682
+      },
+      "upholsteryShares": {
+        "Black Perforated Sensatec": 0.1173,
+        "Black with Blue stitching Vernasca leather": 0.1109,
+        "Black with Grey Contrast Stitching Vernasca Leather": 0.1109,
+        "Black with Red Highlight Vernasca Leather": 0.1109,
+        "Cognac Perforated Sensatec": 0.1237,
+        "M PerformTex Black Cloth with M Piping": 0.1576,
+        "Oyster with Grey contrast stitching Vernasca leather": 0.1109,
+        "Sensatec perforated with Tacora Red decor stitching": 0.1578
+      },
+      "seedMatches": true
+    },
+    "g61-i5": {
+      "title": "G61 i5",
+      "usableRows": 341,
+      "colourCounts": {
+        "Alpine White": 24,
+        "Black Sapphire": 19,
+        "BMW Individual Paintwork": 23,
+        "Carbon Black": 22,
+        "Sophisto Grey": 23,
+        "Mineral White": 23,
+        "Oxide Grey": 24,
+        "Brooklyn Grey": 25,
+        "BMW Individual Frozen Pure Grey": 24,
+        "Cape York Green": 24,
+        "BMW Individual Frozen Deep Grey": 21,
+        "Fire Red": 23,
+        "Phytonic Blue": 23,
+        "Tanzanite Blue": 20,
+        "Frozen Portimao Blue": 23
+      },
+      "upholsteryCounts": {
+        "Perforated and Quilted Veganza in Smoke White": 47,
+        "Perforated and Quilted Veganza in Espresso Brown": 44,
+        "Perforated and Quilted Veganza in Black": 44,
+        "M Alcantara and Veganza in Black": 40,
+        "Black Merino Leather": 39,
+        "BMW Individual Merino leather in Black and Atlas Grey": 42,
+        "BMW Individual Merino leather in Silverstone II and Atlas Grey": 41,
+        "BMW Individual Merino leather in Copper Brown and Atlas Grey": 44
+      },
+      "colourShares": {
+        "Alpine White": 0.0704,
+        "BMW Individual Frozen Deep Grey": 0.0616,
+        "BMW Individual Frozen Pure Grey": 0.0704,
+        "BMW Individual Paintwork": 0.0674,
+        "Black Sapphire": 0.0557,
+        "Brooklyn Grey": 0.0735,
+        "Cape York Green": 0.0704,
+        "Carbon Black": 0.0645,
+        "Fire Red": 0.0674,
+        "Frozen Portimao Blue": 0.0674,
+        "Mineral White": 0.0674,
+        "Oxide Grey": 0.0704,
+        "Phytonic Blue": 0.0674,
+        "Sophisto Grey": 0.0674,
+        "Tanzanite Blue": 0.0587
+      },
+      "upholsteryShares": {
+        "BMW Individual Merino leather in Black and Atlas Grey": 0.1232,
+        "BMW Individual Merino leather in Copper Brown and Atlas Grey": 0.129,
+        "BMW Individual Merino leather in Silverstone II and Atlas Grey": 0.1202,
+        "Black Merino Leather": 0.1144,
+        "M Alcantara and Veganza in Black": 0.1173,
+        "Perforated and Quilted Veganza in Black": 0.129,
+        "Perforated and Quilted Veganza in Espresso Brown": 0.129,
+        "Perforated and Quilted Veganza in Smoke White": 0.1379
+      },
+      "seedMatches": true
+    }
+  }
+}

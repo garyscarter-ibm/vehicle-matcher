@@ -15,7 +15,8 @@ export class ScenarioService {
   #repository; #policy; #clock; #identity; #brief; #prepareEmployee; #afterReset;
   constructor({ repository, policy, clock, identity, brief, prepareEmployee, afterReset } = {}) {
     this.#repository = repository; this.#policy = policy; this.#clock = clock; this.#identity = identity;
-    this.#brief = brief; this.#prepareEmployee = prepareEmployee; this.#afterReset = afterReset;
+    this.#brief = brief; this.#prepareEmployee = prepareEmployee;
+    this.#afterReset = typeof afterReset === 'function' ? afterReset : undefined;
   }
   async #authorize(context, replay = false) {
     if (!(this.#clock instanceof DemoClock) || !(this.#identity instanceof DemoIdentityAdapter)
@@ -71,8 +72,11 @@ export class ScenarioService {
     const reset = await this.#clock.reset(context, { commandId: `scenario:${inputDigest(input.commandId)}`, expectedRunId: input.expectedRunId,
       expectedRunVersion: input.expectedRunVersion, scenarioVersion: input.scenarioVersion, fixtureVersion: input.fixtureVersion }, fixture.value);
     if (reset.status !== 'ok') return reset;
-    // A new run starts on its own policy version; the host re-adopts any reviewed sets it uses.
-    const adopted = this.#afterReset ? await this.#afterReset(reset.value.runId) : { status: 'ok' };
+    // The host prepares the new run (stock source, reviewed policy sets); policy is per run.
+    let adopted = ok({});
+    if (this.#afterReset && text(reset.value?.runId)) {
+      try { adopted = (await this.#afterReset(reset.value.runId)) ?? ok({}); } catch { adopted = result('unavailable', {}); }
+    }
     if (!journey) return reset;
     if (adopted.status !== 'ok') return ok({ ...reset.value, startState: { status: 'unavailable', step: 'policy', reason: 'The reviewed policy sets could not be adopted.' } });
     const startState = await startDeclineThenChange({ identity: this.#identity, clock: this.#clock, brief: this.#brief,

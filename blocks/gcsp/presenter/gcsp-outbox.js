@@ -46,7 +46,7 @@ export function mountOutbox(root, ctx = {}) {
   });
   const page = el('div', 'vm gcsp-presenter');
   const intro = screenIntro({ kicker: 'Presenter', title: 'Captured emails', level: 1, className: 'gcsp-intro',
-    lede: 'Captured demonstration emails. No email has been sent.' });
+    lede: 'Captured messages and delivery status.' });
   const bar = el('div', 'gcsp-presenter-bar');
   const status = el('p', 'gcsp-note gcsp-presenter-count');
   status.setAttribute('role', 'status');

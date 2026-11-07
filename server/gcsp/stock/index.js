@@ -3,6 +3,10 @@ import { validInstant } from '../policy/file-provider.js';
 import { text, object, invalid, unavailable, validatePull } from './port.js';
 
 export { createSyntheticStockProvider, createStockPullFixtureProvider } from './synthetic-provider.js';
+export { createGeneratedStockProvider } from './generated-provider.js';
+export { createDemoStockProvider } from './demo-provider.js';
+export { createRunStockProvider, createRunStockProviderFactory } from './run-stock.js';
+export { createDemoStockGeneration } from './run-stock-generation.js';
 export { STOCK_PULL_VERSION } from './port.js';
 export const STOCK_RELEASE_HANDLER = 'stock-release';
 export const STOCK_RELEASE_CONSUMER = 'stock-release';

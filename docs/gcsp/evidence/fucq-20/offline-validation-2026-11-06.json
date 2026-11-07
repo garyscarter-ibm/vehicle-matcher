@@ -1,0 +1,191 @@
+{
+  "issue": "FUCQ-78",
+  "date": "2026-11-06",
+  "status": "scoped offline checkpoint; story blocked",
+  "base": "5d9018e",
+  "branch": "dev/DEV-2026-11-04-057",
+  "files_sha256": {
+    "server/gcsp/vehicle-evidence/stock-generator.js": "2a141a9745d75e0759c7c5dc28fc1572a4b1351c2aed71fa835f5d1dd894f9ac",
+    "server/test/gcsp-stock-generator.test.js": "631284cc51e2a7434816b70eb61f46cdd0d734fb99875963e0730f472c8c4e05",
+    "scripts/gcsp/sample-stock-locator.mjs": "a8f4e58fcd432476c35ad44f65f3d1c0ec1f7955a39ff2456196b4821ae679c9",
+    "server/test/gcsp-stock-sampler.test.js": "85bbf873d75ad0a25c28c6bc7a24bf5361f324d01353b2cb13f9222e81516705"
+  },
+  "checks": [
+    {
+      "label": "final-generator",
+      "command": [
+        "node",
+        "--test",
+        "server/test/gcsp-stock-generator.test.js"
+      ],
+      "summary": [
+        "\u2139 tests 9",
+        "\u2139 pass 9",
+        "\u2139 fail 0",
+        "\u2139 skipped 0"
+      ],
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead78/generator-checks/final-generator-receipt.json",
+      "seconds": 1.7343928330083145,
+      "scoped": true
+    },
+    {
+      "label": "lead-sampler-review",
+      "command": [
+        "node",
+        "--test",
+        "server/test/gcsp-stock-sampler.test.js"
+      ],
+      "summary": [
+        "\u2139 tests 17",
+        "\u2139 pass 17",
+        "\u2139 fail 0",
+        "\u2139 skipped 0"
+      ],
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead78/generator-checks/lead-sampler-review-receipt.json",
+      "seconds": 0.7220622909953818,
+      "scoped": true
+    },
+    {
+      "label": "adjacent-allocator",
+      "command": [
+        "node",
+        "--test",
+        "server/test/gcsp-vin-allocation.test.js"
+      ],
+      "summary": [
+        "\u2139 tests 16",
+        "\u2139 pass 16",
+        "\u2139 fail 0",
+        "\u2139 skipped 0"
+      ],
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead78/generator-checks/adjacent-allocator-receipt.json",
+      "seconds": 0.4814876659947913,
+      "scoped": true
+    },
+    {
+      "label": "adjacent-registry",
+      "command": [
+        "node",
+        "--test",
+        "server/test/gcsp-vin-registry.test.js"
+      ],
+      "summary": [
+        "\u2139 tests 11",
+        "\u2139 pass 11",
+        "\u2139 fail 0",
+        "\u2139 skipped 0"
+      ],
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead78/generator-checks/adjacent-registry-receipt.json",
+      "seconds": 3.563142750004772,
+      "scoped": true
+    },
+    {
+      "label": "adjacent-policy",
+      "command": [
+        "node",
+        "--test",
+        "server/test/gcsp-policy-service.test.js"
+      ],
+      "summary": [
+        "\u2139 tests 15",
+        "\u2139 pass 15",
+        "\u2139 fail 0",
+        "\u2139 skipped 0"
+      ],
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead78/generator-checks/adjacent-policy-receipt.json",
+      "seconds": 0.4847660000086762,
+      "scoped": true
+    },
+    {
+      "label": "adjacent-repository",
+      "command": [
+        "node",
+        "--test",
+        "server/test/gcsp-repository-contract.test.js"
+      ],
+      "summary": [
+        "\u2139 tests 44",
+        "\u2139 pass 42",
+        "\u2139 fail 0",
+        "\u2139 skipped 2"
+      ],
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead78/generator-checks/adjacent-repository-receipt.json",
+      "seconds": 0.2471349159895908,
+      "scoped": true
+    }
+  ],
+  "sampler_source_identity_receipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead78/edna/receipt-provenance-green.json",
+  "selection": {
+    "changed_paths": [
+      "server/gcsp/vehicle-evidence/stock-generator.js",
+      "server/test/gcsp-stock-generator.test.js",
+      "scripts/gcsp/sample-stock-locator.mjs",
+      "server/test/gcsp-stock-sampler.test.js"
+    ],
+    "regression": "seeded distribution, F53 retained identity recovery/collision, aggregate-only privacy, policy pins and run isolation",
+    "affected_boundaries": [
+      "F53 allocation file lock/revision",
+      "F54 immutable registry reads",
+      "F81 memory transaction/receipt",
+      "F82 PolicyService versioned assumptions"
+    ],
+    "excluded": {
+      "full npm test": "authored final gate remains; no dispatcher serial grant",
+      "native PostgreSQL": "GC proof and accepted corpus missing",
+      "live source": "actual accepted F77 plan and >=200 configurations absent",
+      "runtime/UI": "no composition or screen change"
+    },
+    "selector": "affected dry plan had no JavaScript plugin and proposed full fallback; reviewed and rejected in favour of explicit modules"
+  },
+  "review": "offline-generator-review-2026-11-06.md; independent findings cleared; lead reviewed sampler",
+  "agents": [
+    {
+      "name": "Granny",
+      "role": "story-lead",
+      "requested_model": "gpt-6.1-sol",
+      "requested_effort": "high",
+      "selected_model": "gpt-6.1-sol",
+      "selected_effort": "high",
+      "runtime": "parent verified",
+      "fallback": null
+    },
+    {
+      "name": "Edna",
+      "role": "sampler implementer; independent generator reviewer",
+      "requested_model": "gpt-6.1-sol",
+      "requested_effort": "medium",
+      "selected_model": "gpt-6.1-sol",
+      "selected_effort": "medium",
+      "runtime": "parent verified",
+      "fallback": null
+    }
+  ],
+  "resources": {
+    "workers_per_chunk": 1,
+    "budget_mib": {
+      "scratch": 128,
+      "RAM": 384
+    },
+    "chunk_limit_seconds": 300,
+    "owned_roots": 24,
+    "removed_peak_bytes_sum": 18000640,
+    "largest_removed_root_bytes": 2589888,
+    "maximum_sampled_rss_bytes": 288161792,
+    "all_owned_roots_absent": true,
+    "all_owned_process_groups_absent": true,
+    "dependency_overlay_absent": true,
+    "compatibility_exception": "temporary owned read-only server/node_modules symlink to pre-existing DEV069 dependencies; removed after every chunk; source preserved",
+    "retained_local_summary": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead78",
+    "impact_maps": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact",
+    "leftovers": []
+  },
+  "gates": [
+    "real accepted F77 source plan and >=200 configurations",
+    "finite live aggregate sample and privacy scan",
+    "coordinated observed aggregate validator and canonical policy publication",
+    "accepted corpus/native PostgreSQL integration",
+    "F85/F92 runtime composition",
+    "authored final npm test in dispatcher serial lane"
+  ],
+  "generated_at": "2026-11-06T10:14:47.076324+00:00"
+}

@@ -362,7 +362,13 @@ export class ManualClaimsService {
     const replay = await this.#replay(context, 'allocate', input, actionFields); if (replay.error) return replay.error;
     return this.#finish(context, input, replay.command, 'allocated');
   }); }
-  async #finish(context, input, command, target, reason) {
+  // FUCQ-71: ordering's trusted callback commits selection intent in the same transaction as allocation.
+  convertSelection(context, input, { commitSelection } = {}) { return this.#safe(async () => {
+    if (typeof commitSelection !== 'function') return unavailable();
+    const replay = await this.#replay(context, 'allocate', input, actionFields); if (replay.error) return replay.error;
+    return this.#finish(context, input, replay.command, 'allocated', undefined, commitSelection);
+  }); }
+  async #finish(context, input, command, target, reason, commitSelection) {
     const held = await this.#active(context, input); if (held.status !== 'ok') return held;
     let checked;
     if (target === 'allocated') {
@@ -375,6 +381,7 @@ export class ManualClaimsService {
       const hold = await tx.get(ref(context, 'holds', { holdId: input.holdId })); if (hold.status !== 'ok') return hold;
       if (hold.value.version !== input.expectedHoldVersion) return stale('hold', input.expectedHoldVersion, hold.value.version);
       if (hold.value.state !== 'active') return conflict('claim-not-active');
+      if (commitSelection) { const committed = await commitSelection(tx); if (committed.status !== 'ok') return committed; }
       if (this.#adapter.mode === 'remote') {
         const operation = await this.#operation(tx, context, hold.value, command, target === 'allocated' ? 'manual-allocate' : 'manual-release', target, reason);
         if (operation.status !== 'pending') return operation;

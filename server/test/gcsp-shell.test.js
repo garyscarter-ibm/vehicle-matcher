@@ -441,7 +441,7 @@ test('every selector in the shell stylesheets starts with .gcsp, and retail toke
 });
 
 test('CSP: no inline scripts, handler attributes, eval, new Function, string timers or innerHTML in GCSP files', () => {
-  const files = [...walk(GCSP_DIR), join(ROOT, 'gcsp-employee.html'), join(ROOT, 'gcsp-account.html'), join(ROOT, 'gcsp-presenter.html'), join(ROOT, 'gcsp-manual-setup.html'), join(ROOT, 'gcsp-brief.html'), ...livePages().map((file) => join(ROOT, file)), join(ROOT, 'components.html'), join(ROOT, 'blocks/vehicle-matcher/component-gallery.js'), join(ROOT, 'blocks/vehicle-matcher/ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/question-ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/preview-feed.js'), join(ROOT, 'blocks/vehicle-matcher/modes/result-card.js'), join(ROOT, 'blocks/vehicle-matcher/decision-card.css'), join(ROOT, 'blocks/vehicle-matcher/employee-card-fixture.js')].filter((f) => /\.(js|html|css)$/.test(f));
+  const files = [...walk(GCSP_DIR), join(ROOT, 'gcsp-employee.html'), join(ROOT, 'gcsp-activity.html'), join(ROOT, 'gcsp-order-progress.html'), join(ROOT, 'gcsp-account.html'), join(ROOT, 'gcsp-presenter.html'), join(ROOT, 'gcsp-manual-setup.html'), join(ROOT, 'gcsp-brief.html'), ...livePages().map((file) => join(ROOT, file)), join(ROOT, 'components.html'), join(ROOT, 'blocks/vehicle-matcher/component-gallery.js'), join(ROOT, 'blocks/vehicle-matcher/ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/question-ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/preview-feed.js'), join(ROOT, 'blocks/vehicle-matcher/modes/result-card.js'), join(ROOT, 'blocks/vehicle-matcher/decision-card.css'), join(ROOT, 'blocks/vehicle-matcher/employee-card-fixture.js')].filter((f) => /\.(js|html|css)$/.test(f));
   assert.ok(files.length >= 10);
   const offenders = [];
   for (const f of files) {
@@ -732,9 +732,39 @@ test('harness page loads the harness module and the body stylesheet; the element
   assert.match(html, /blocks\/gcsp\/employee\/gcsp-employee\.css/);
   const harness = read('blocks/gcsp/employee/harness.js');
   assert.match(harness, /FIXTURE_NAMES\.includes/);
-  for (const f of walk(GCSP_DIR).filter((p) => p.endsWith('.js') && !p.endsWith('harness.js'))) {
+  const liveHosts = ['activity/live.js', 'order-progress/live.js'].map((file) => join(GCSP_DIR, file));
+  for (const f of walk(GCSP_DIR).filter((p) => p.endsWith('.js') && !p.endsWith('harness.js') && !liveHosts.includes(p))) {
     assert.doesNotMatch(readFileSync(f, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:\\])\/\/.*$/gm, '$1'), /\b(?:window|globalThis)\s*\.\s*(?:location|history)\b|\b(?:location|history)\.(?:href|search|pathname|hash|pushState|replaceState|back|forward|go)\b/, rel(f));
   }
+});
+
+test('the activity live host navigates only to the fixed Brief page without URL-selected state', () => {
+  const host = read('blocks/gcsp/activity/live.js');
+  assert.deepEqual([...host.matchAll(/^import .*? from '([^']+)';$/gm)].map((match) => match[1]), [
+    '../shell/account-runtime.js', './activity-http.js', './gcsp-activity.js',
+  ]);
+  assert.match(host, /globalThis\.location\.assign\('\/gcsp-brief-live\.html'\)/);
+  assert.equal((host.match(/\blocation\b/g) || []).length, 1);
+  assert.doesNotMatch(host, /URLSearchParams|location\.(?:search|hash)|\bhistory\./);
+});
+
+test('the order progress pages load the custom element through external modules only and navigate to fixed pages', () => {
+  const live = read('gcsp-order-progress-live.html');
+  assert.match(live, /<gcsp-order-progress[^>]+data-live/);
+  assert.deepEqual([...live.matchAll(/<script\b([^>]*)>/g)].map((m) => m[1].trim()), ['type="module" src="./blocks/gcsp/order-progress/live.js"']);
+  assert.match(live, /blocks\/gcsp\/order-progress\/gcsp-order-progress\.css/);
+  const harness = read('gcsp-order-progress.html');
+  assert.deepEqual([...harness.matchAll(/<script\b([^>]*)>/g)].map((m) => m[1].trim()), ['type="module" src="./blocks/gcsp/order-progress/harness.js"']);
+  assert.match(harness, /id="gcsp-order-progress-preview"/);
+  const host = read('blocks/gcsp/order-progress/live.js');
+  assert.deepEqual([...host.matchAll(/^import .*? from '([^']+)';$/gm)].map((match) => match[1]), [
+    '../shell/account-runtime.js', './order-progress-http.js', '../cases/http-adapter.js', './gcsp-order-progress.js',
+  ]);
+  assert.deepEqual([...host.matchAll(/location\.assign\(([^)]*)\)/g)].map((m) => m[1]), ['page']);
+  assert.deepEqual([...host.matchAll(/'(\/gcsp-[a-z-]+\.html)'/g)].map((m) => m[1]), ['/gcsp-brief-live.html', '/gcsp-activity-live.html']);
+  assert.doesNotMatch(host, /URLSearchParams|location\.(?:search|hash)|\bhistory\./);
+  assert.equal(read('blocks/gcsp/order-progress/register.js').includes('defineGcspOrderProgress()'), true);
+  assert.match(read('scripts/gcsp-demo.mjs'), /'\/gcsp-order-progress-live\.html'/);
 });
 
 test('the single gallery shows the GCSP section with primitives and shell states', async () => {

@@ -11,11 +11,11 @@ import { stock, essential, preference, fact } from './helpers/employee-recommend
 
 const origin = 'https://demo.invalid';
 // Registration order across the composed runtime; other stories add handlers here.
-const HANDLERS = ['manual-claim-expiry', 'buddy-expiry', 'selection-order-reconciliation', 'lifecycle-approvals',
-  'lifecycle-documents', 'renewal-risk-cases', 'captured-outbox'];
+const HANDLERS = ['manual-claim-expiry', 'buddy-expiry', 'buddy-allocation', 'selection-order-reconciliation', 'lifecycle-approvals',
+  'lifecycle-documents', 'lifecycle-appointments', 'lifecycle-return-appointments', 'renewal-risk-cases', 'captured-outbox'];
 // A tick runs handlers in stage order, which differs from registration order.
-const TICK_ORDER = ['manual-claim-expiry', 'buddy-expiry', 'lifecycle-approvals', 'lifecycle-documents', 'renewal-risk-cases',
-  'selection-order-reconciliation', 'captured-outbox'];
+const TICK_ORDER = ['manual-claim-expiry', 'buddy-expiry', 'lifecycle-appointments', 'lifecycle-approvals', 'lifecycle-documents',
+  'lifecycle-return-appointments', 'renewal-risk-cases', 'selection-order-reconciliation', 'buddy-allocation', 'captured-outbox'];
 const command = (commandId) => ({ commandId, inputDigest: inputDigest(commandId) });
 const ref = (context, table, key = {}) => ({ table, key: { runId: context.runId, ...key } });
 const good = (result) => { assert.equal(result.status, 'ok', JSON.stringify(result)); return result.value; };
@@ -133,7 +133,7 @@ test('normal runtime shares services, registers before startup, and serves real 
   assert.equal(f.registrations.length, HANDLERS.length);
   const catalogue = await request(f.server, '/api/gcsp/presenter/scenarios', { session: f.presenterCookie });
   assert.equal(catalogue.status, 200); assert.ok(catalogue.json.value.scenarios.length);
-  assert.ok(catalogue.json.value.scenarios.filter((s) => s.kind === 'journey').every((s) => s.availability.missingCapabilities.length));
+  assert.ok(catalogue.json.value.scenarios.filter((s) => s.kind === 'journey' && s.scenarioId !== 'decline-then-change').every((s) => s.availability.missingCapabilities.length));
   await adoptPresenter(f);
   const controls = await request(f.server, '/api/gcsp/presenter/controls', { session: f.presenterCookie }); assert.equal(controls.status, 200);
   const state = good(await f.clock.now(f.presenter));

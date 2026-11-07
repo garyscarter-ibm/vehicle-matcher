@@ -1,7 +1,11 @@
 import { inputDigest, ok, result } from '../repository/index.js';
 import { CapturedTransport } from './captured.js';
+import { createMailTransport } from './config.js';
+import { MAIL_FAILURE_CODES, confirmedBrevoAcknowledgement } from './brevo.js';
 import { renderOfferMessage } from './templates.js';
 import { renderCaseMessage } from '../cases/notification.js';
+export { BrevoMailTransport } from './brevo.js';
+export { createMailTransport } from './config.js';
 export { MailTransport } from './port.js';
 export { CapturedTransport } from './captured.js';
 export { renderOfferMessage } from './templates.js';
@@ -11,13 +15,19 @@ const ref = (context, jobId) => ({ table: 'notification_outbox', key: { runId: c
 const attempt = ({ jobId, version, attempts, state }) => ({ jobId, version, attempts, state });
 const matchesAttempt = (job, claimed) => job.jobId === claimed.jobId && job.version === claimed.version
   && job.attempts === claimed.attempts && job.state === 'sending' && claimed.state === 'sending';
+// A configured transport may add only its capture and provider custody within the same attempt.
+const snapshot = ({ version, updatedAt, transport, outcome, ...rest }) => {
+  const { message, capturedAt, provider, ...kept } = outcome ?? {}; return inputDigest({ ...rest, outcome: kept });
+};
+const sameAttempt = (found, job, version) => found.jobId === job.jobId && found.attempts === job.attempts
+  && found.state === 'sending' && found.version === version && snapshot(found) === snapshot(job);
 const due = (job, now) => job.state === 'pending' || job.state === 'sending'
   || job.state === 'retrying' && Date.parse(job.outcome?.nextAttemptAt) <= Date.parse(now);
 
 export class NotificationDispatcher {
   #repository; #policy; #clock; #environmentId; #transport; #logger;
   #active; #again = false; #startup; #unsubscribe;
-  constructor({ repository, policy, clock, environmentId, transport = new CapturedTransport({ repository }), logger } = {}) {
+  constructor({ repository, policy, clock, environmentId, mail, transport = createMailTransport({ repository, ...mail }), logger } = {}) {
     if (!repository || !policy || !clock || !environmentId || typeof transport?.send !== 'function') throw new TypeError('Inject notification ports and a trusted environment.');
     this.#repository = repository; this.#policy = policy; this.#clock = clock;
     this.#environmentId = environmentId; this.#transport = transport; this.#logger = logger;
@@ -37,7 +47,7 @@ export class NotificationDispatcher {
     })();
     return this.#startup;
   }
-  close() { this.#unsubscribe?.(); this.#unsubscribe = undefined; }
+  close() { this.#unsubscribe?.(); this.#unsubscribe = undefined; return this.#active ?? Promise.resolve(); }
 
   async dispatchPending(expectedContext) {
     if (expectedContext) {
@@ -84,8 +94,9 @@ export class NotificationDispatcher {
         const job = found.value;
         if (!due(job, now)) return ok(null);
         if (job.state === 'sending') return ok(attempt(job)); // recover an interrupted durable attempt
+        // Keep captured message and provider custody across attempts.
         const changed = await tx.compareAndSwap(ref(context, job.jobId), job.version, { state: 'sending', attempts: (job.attempts ?? 0) + 1,
-          outcome: { attemptedAt: now, error: null, nextAttemptAt: null, policyVersion: configured.policyVersion } });
+          outcome: { ...job.outcome, attemptedAt: now, error: null, nextAttemptAt: null, policyVersion: configured.policyVersion } });
         return changed.status === 'ok' ? ok(attempt(changed.value)) : changed;
       });
       if (claimed.status === 'stale-run') return claimed;
@@ -105,7 +116,8 @@ export class NotificationDispatcher {
       let retryable = true;
       try {
         const caseUpdate = job.messageKind === 'renewal-case-update' && job.messageVersion === '1';
-        if (caseUpdate) {
+        if (confirmedBrevoAcknowledgement(job.outcome?.provider)) delivery = ok({ accepted: true });
+        else if (caseUpdate) {
           const employee = await this.#repository.read(context, { table: 'employees', key: { runId: context.runId, employeeId: job.recipientId } });
           const update = job.payload?.caseUpdate;
           if (employee.status === 'unavailable') throw new Error();
@@ -156,6 +168,7 @@ export class NotificationDispatcher {
         }
       } catch { /* Never retain or emit provider exception text or token-bearing inputs. */ }
       if (obsolete) continue;
+      const custody = Number.isSafeInteger(delivery?.custodyVersion) ? delivery.custodyVersion : job.version;
       if (delivery?.status === 'stale-run') return delivery;
       if (delivery?.status === 'ok') {
         const acknowledged = await this.#repository.transaction(context, {
@@ -164,7 +177,7 @@ export class NotificationDispatcher {
           const found = await tx.get(ref(context, job.jobId));
           if (found.status !== 'ok') return found;
           if (found.value.state === 'sent') return ok({ state: 'sent' });
-          if (!matchesAttempt(found.value, claimed.value) || inputDigest(found.value) !== inputDigest(job)) return ok(null);
+          if (!sameAttempt(found.value, job, custody)) return ok(null);
           const changed = await tx.compareAndSwap(ref(context, job.jobId), found.value.version, {
             state: 'sent', transport: this.#transport instanceof CapturedTransport ? 'captured' : 'configured',
             outcome: { ...found.value.outcome, error: null, nextAttemptAt: null, acknowledgedAt: now },
@@ -175,6 +188,8 @@ export class NotificationDispatcher {
         if (acknowledged.value) counts.sent += 1;
         continue;
       }
+      if (MAIL_FAILURE_CODES.has(delivery?.code)) { error = delivery.code; retryable = delivery.retryable === true; }
+      else if (delivery && typeof delivery.retryable === 'boolean') retryable = delivery.retryable;
       const state = retryable && job.attempts < rules.maxAttempts ? 'retrying' : 'failed';
       const delay = Math.min(rules.retryMaximumSeconds, rules.retryBaseSeconds * 2 ** Math.min(job.attempts - 1, 52));
       const nextAttemptAt = state === 'retrying' ? new Date(Date.parse(now) + delay * 1000).toISOString() : null;
@@ -183,7 +198,7 @@ export class NotificationDispatcher {
       }, async (tx) => {
         const found = await tx.get(ref(context, job.jobId));
         if (found.status !== 'ok') return found;
-        if (!matchesAttempt(found.value, claimed.value) || inputDigest(found.value) !== inputDigest(job)) return ok(null);
+        if (!sameAttempt(found.value, job, custody)) return ok(null);
         const changed = await tx.compareAndSwap(ref(context, job.jobId), found.value.version, {
           state, outcome: { ...found.value.outcome, error, nextAttemptAt },
         });
