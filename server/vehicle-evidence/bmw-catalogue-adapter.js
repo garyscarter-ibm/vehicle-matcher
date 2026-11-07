@@ -11,12 +11,14 @@ const SNAPSHOTS = new Map([[VERSION, new URL('./snapshots/bmw-gb-i5-2026-11-01.v
 const IDENTITY_FIELDS = ['catalogueDate', 'market', 'locale', 'modelCode', 'modelRange', 'rawModelRange', 'agModelCode',
   'trim', 'orderDate', 'effectDate', 'productionDate', 'taxDate'];
 const DATE_FIELDS = ['orderDate', 'effectDate', 'productionDate', 'taxDate'];
-const MEASUREMENTS = {
-  seats: ['N_SITZE', 'SEATS', 'COUNT'],
-  luggageNormal: ['A_GEPR_V211', 'NORMAL', 'LITRES'],
-  luggageExpanded: ['A_GEPR_V214', 'EXPANDED', 'LITRES'],
-  acceleration: ['E_0_100KMH', '0–100 KM/H', 'SECONDS'],
-};
+export const BMW_OTD_MEASUREMENT_MAPPING_VERSION = 'bmw-otd-reference-code-mapping.v1';
+export const BMW_OTD_MEASUREMENT_MAPPING = Object.freeze({
+  seats: Object.freeze(['N_SITZE', 'SEATS', 'COUNT']),
+  luggageNormal: Object.freeze(['A_GEPR_V211', 'NORMAL', 'LITRES']),
+  luggageExpanded: Object.freeze(['A_GEPR_V214', 'EXPANDED', 'LITRES']),
+  acceleration: Object.freeze(['E_0_100KMH', '0–100 KM/H', 'SECONDS']),
+});
+const MEASUREMENTS = BMW_OTD_MEASUREMENT_MAPPING;
 const CODE = /^[A-Z0-9]{4,12}$/;
 const SOURCES = new Set(['BMW UK catalogue', 'BMW UK OTD']);
 const COMPLETENESS = new Set(['complete', 'partial']);

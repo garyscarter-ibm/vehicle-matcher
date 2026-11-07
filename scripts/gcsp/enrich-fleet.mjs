@@ -1,6 +1,7 @@
 import { bmwCatalogueLookupIdentity, mergeBmwCatalogueFacts, describeBmwEquipment }
   from '../../server/vehicle-evidence/bmw-catalogue-adapter.js';
 import { bmwImageLookupIdentity, presentBmwImage } from '../../server/vehicle-evidence/bmw-image-adapter.js';
+import { qualifyBmwTechnicalObservation } from './bmw-technical-qualification.mjs';
 import { inputDigest } from '../../server/gcsp/repository/core.js';
 
 const METRICS = { seats: ['SEATS', 'COUNT'], luggageNormal: ['NORMAL', 'LITRES'],
@@ -323,16 +324,18 @@ const operationName = (name) => typeof name === 'string' && /^[a-z][a-z0-9-]{0,3
  */
 export async function enrichFleet({ session, accepted, catalogueOperation = 'catalogue', imageOperation = null,
   imageRequest = {}, catalogueOptions = {}, imageOptions = {}, retention = null, asOf,
-  stageId = 'enrichment', onPhase = async () => {} } = {}) {
+  technicalOperation = null, technicalOptions = null, stageId = 'enrichment', onPhase = async () => {} } = {}) {
   requireEnrichment(typeof session?.withCheckpoint === 'function' && Array.isArray(accepted) && accepted.length <= 10000
     && operationName(catalogueOperation) && (imageOperation === null || operationName(imageOperation)
       && imageOperation !== catalogueOperation) && imageRequest !== null && typeof imageRequest === 'object'
     && !Array.isArray(imageRequest) && Object.keys(imageRequest).every((key) => ['viewpoint', 'size'].includes(key))
+    && (technicalOperation === null || operationName(technicalOperation) && technicalOperation !== catalogueOperation
+      && technicalOperation !== imageOperation && isV2Options(catalogueOptions) && object(technicalOptions))
     && date(asOf) && typeof onPhase === 'function',
   'invalid-enrichment', 'Inject a collector session, its accepted records, a dated policy and declared offline operations.');
   // Snapshot caller input before any await; a changed selection/policy cannot resume prior outcomes.
   const input = structuredClone({ accepted, catalogueOperation, imageOperation, imageRequest,
-    catalogueOptions, imageOptions, retention, asOf });
+    catalogueOptions, imageOptions, retention, asOf, ...(technicalOperation === null ? {} : { technicalOperation, technicalOptions }) });
   const stage = { id: stageId, version: ENRICHMENT_VERSION, inputDigest: inputDigest(input) };
   return session.withCheckpoint(async ({ state, stageState, execute, commit, stop, checkDeadline }) => {
     requireEnrichment(Array.isArray(state.accepted) && inputDigest(state.accepted) === inputDigest(input.accepted),
@@ -384,11 +387,26 @@ export async function enrichFleet({ session, accepted, catalogueOperation = 'cat
           catalogueOptions: input.catalogueOptions, imageOptions: input.imageOptions, retention: input.retention, asOf: input.asOf });
         if (isV2Options(input.catalogueOptions)) trustedV2Appearance(output, record, catalogue,
           bmwCatalogueLookupIdentity(record.catalogueRequest, input.catalogueOptions));
+        let technicalStop;
+        if (input.technicalOperation && output.status === 'partial' && output.sources.catalogue.outcome === 'ok') {
+          let artifact;
+          try { artifact = await execute(input.technicalOperation, record.catalogueRequest); }
+          catch (error) { if (!error.stop) throw error; technicalStop = error; }
+          if (!technicalStop) {
+            const qualified = qualifyBmwTechnicalObservation({ artifact, accepted: record, ...input.technicalOptions });
+            for (const [name, fact] of Object.entries(qualified.facts)) if (fact.state === 'known') output.facts[name] = fact;
+            output.sources.technical = qualified.source; output.measurementEvidence = qualified.measurementEvidence;
+            output.unmappedMeasurements.push(...qualified.unmappedKeys.map(() => ({ state: 'unknown', value: null, reason: 'unmapped-meaning' })));
+            const measured = Object.keys(METRICS).map((name) => output.facts[name]);
+            output.completeness.measurements = measured.every((fact) => fact.state === 'known' && fact.completeness === 'complete') ? 'complete' : 'partial';
+          } else output.sources.technical = { outcome: 'source-unavailable', execution: { status: 'stopped', reason: technicalStop.code } };
+        }
         output.scope = 'session-enrichment'; output.completeness.sharedAccounting = 'shared-session-offline';
         if (imageStop) output.sources.image.execution = { status: 'stopped', reason: imageStop.code };
         stageState.records.push(output); stageState.cursor += 1; await commit('enrichment-outcome');
         await onPhase('enrichment-outcome-committed', { configurationId: record.configurationId, cursor: stageState.cursor });
         if (imageStop) throw imageStop;
+        if (technicalStop) throw technicalStop;
       }
       return report('enrichment-processed');
     } catch (error) {
