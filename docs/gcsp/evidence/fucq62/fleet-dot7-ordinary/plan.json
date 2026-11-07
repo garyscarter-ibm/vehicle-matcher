@@ -1,0 +1,62 @@
+{
+  "at": "2026-11-07T04:01:20.374041+00:00",
+  "scope": "ordinary .7 existingwriter activation and matchingRender/Linuxbuild anchors; scoped shipping checkpoint, not Storyacceptance",
+  "changedPaths": [
+    "docs/gcsp/evidence/fucq62/activate-fleet-dot7.mjs",
+    "render.gcsp.yaml",
+    ".github/workflows/gcsp-fleet-build.yml"
+  ],
+  "codePins": {
+    "docs/gcsp/evidence/fucq62/activate-fleet-dot7.mjs": "b78e8d1138b96b44f8973771085419c75edfca719d53b4682bf83c141be0900c",
+    "render.gcsp.yaml": "c1fad58454da7c5a4dd24c446945c2194d1f7821fe590fefc43f049b188854d4",
+    ".github/workflows/gcsp-fleet-build.yml": "d080975f3d907efe17246270d2c1bb0adb3892e14954207df834ce3fa3d997d8"
+  },
+  "regression": "Add264source configurations and one representativeimage while preserving oldversionfiles,870oldconfigurationassociations,oneVIN and7datasets; known2consumerfailures remain",
+  "affectedCallers": [
+    "existing SyntheticRegistry.publish/load",
+    "production artifact restore CLI",
+    "Render build command",
+    "Node20 Linux proof helper"
+  ],
+  "integrationBoundaries": [
+    "exact reviewed public22asset restore",
+    "rootordinary .6to.7selection",
+    "newpushedRender deployment",
+    "Linux actualpublicrestore",
+    "actual1135production DTO/manifest parity"
+  ],
+  "selected": [
+    "supervised actualexistingwriter/idempotence/coldrestart/history/images/pins with reusedrealanonymousasset/coldrestore and exact-byteofflineDTO/HTTP/changedrollback proof; publicfailures retained",
+    "supervised Render+workflow YAML/shellsyntax and existing render-blueprint.test.js",
+    "newLinuxNode20 actualpublicrestore plus scoped1135DTO/HTTPunique proof with two namedconsumerfailures",
+    "actualRender1135 DTOparity after deployment success"
+  ],
+  "excluded": [
+    "unchanged69+11engine tests and original .6recoverymatrix reused",
+    "fullnpm notrerun: production engine unchanged; knownfailures separatelydeferred",
+    "nativePostgreSQL credentials, source traffic, newUI/retail flows and10000acceptance"
+  ],
+  "limits": {
+    "workers": 1,
+    "hostRamMiB": 512,
+    "childRamMiB": 448,
+    "scratchMiB": 64,
+    "ordinarySeconds": 90,
+    "blueprintSeconds": 30,
+    "blueprintRamMiB": 256,
+    "blueprintScratchMiB": 16
+  },
+  "scratch": "resourcehelpercreatesmanifestoutside runownedscratch and supervisorfinalizersregistered before execution",
+  "publicBoundaryState": "22anonymousassets/coldCLIrestorepassed; firstpublicparityfailure and retryrestorefailure retained; exact-byteoffline1135DTO/HTTP andchangedrollback passed; newLinux/Renderpublicboundarywillrunonpush",
+  "acceptance": false,
+  "coverage": "Bounded V8 function coverage during required existing-publisher ordinary activation; no second run",
+  "supervisorSha256": "3f415e68cdafcdc4411ca60e14552f5fc3e280857c1798f20ce919266e3e6b14",
+  "operationalGateRevision": {
+    "basis": "User directs getbuilt/live and defer non-blockingdefects; rootoperational gate is not authoredAC",
+    "previous": "completepublicdownload/parityreceipt beforeordinaryactivation",
+    "selected": "firstactual22anonymousassethashes+coldCLIrestore plus independentlyverified exact-byteoffline1135DTO/HTTP/restart/changedrollback; retain publicfailures and require actualLinux/Renderobservations",
+    "criteriaChanged": false,
+    "statusChanged": false,
+    "completePublicProofClaimed": false
+  }
+}
