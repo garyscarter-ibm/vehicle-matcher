@@ -1,6 +1,8 @@
 import { bmwCatalogueLookupIdentity, mergeBmwCatalogueFacts, describeBmwEquipment }
   from '../../server/vehicle-evidence/bmw-catalogue-adapter.js';
 import { bmwImageLookupIdentity, presentBmwImage } from '../../server/vehicle-evidence/bmw-image-adapter.js';
+import { bmwLiveImageLookupIdentity, presentBmwLiveImage } from '../../server/vehicle-evidence/bmw-live-imagery.js';
+import { qualifyBmwTechnicalObservation } from './bmw-technical-qualification.mjs';
 import { inputDigest } from '../../server/gcsp/repository/core.js';
 
 const METRICS = { seats: ['SEATS', 'COUNT'], luggageNormal: ['NORMAL', 'LITRES'],
@@ -261,7 +263,49 @@ export function enrichConfiguration({ configurationId, request, catalogue, image
       }
     }
   } else if (source.outcome === 'ok') source.outcome = 'source-unavailable';
-  if (v2) return output;
+  if (v2) {
+    if (!image) return output;
+    const registration = image.lookupIdentity?.requestRegistration; const shown = presentBmwLiveImage(image);
+    const sourceBinding = v2SourceBinding(catalogue, expected); const canonical = sourceBinding?.sourceBinding.canonicalIdentity;
+    const context = sourceBinding?.sourceBinding.confirmedContext; const sourceScope = sourceBinding?.sourceBinding.requestScope;
+    const lookup = registration && bmwLiveImageLookupIdentity({ configurationId: expected.configurationId, bindingDigest: expected.bindingDigest,
+      viewport: 'desktop', viewpoint: request.viewpoint, size: request.size, variantPointer: '/stage-fullscreen-views-legacy-newnames/desktop/namedImages/0/images/0' }, registration);
+    const expectedImageIdentity = lookup && Object.fromEntries(Object.entries(lookup).filter(([k]) => !['provider', 'providerVersion', 'schemaVersion', 'snapshotVersion', 'viewpoint', 'size', 'viewport', 'variantPointer'].includes(k)));
+    const variant = image.selectedVariant;
+    const exact = output.status === 'partial' && lookup && shown.status === 'ok' && same(lookup, image.lookupIdentity)
+      && same(lookup, image.resolvedLookupIdentity) && ['provider', 'providerVersion', 'schemaVersion', 'snapshotVersion'].every((k) => image[k] === lookup[k])
+      && safeDigest(image.requestedIdentity) === safeDigest(expectedImageIdentity) && safeDigest(image.resolvedIdentity) === safeDigest(expectedImageIdentity)
+      && exactKeys(image.identityProvenance, ['kind', 'observedDate', 'manifestIdentityEchoed', 'registrationDigest', 'acceptedLineSha256'])
+      && image.identityProvenance.kind === 'independent-source-proof' && image.identityProvenance.manifestIdentityEchoed === false
+      && image.identityProvenance.registrationDigest === safeDigest(registration)
+      && image.identityProvenance.acceptedLineSha256 === registration.sourceAcceptedSha256
+      && registration.configurationId === expected.configurationId && registration.bindingDigest === expected.bindingDigest
+      && registration.model.modelCode === canonical?.vgModelCode && registration.model.agModelCode === canonical?.agModelCode
+      && same(registration.factoryOptionCodes, canonical?.factoryOptionCodes)
+      && registration.model.market === sourceScope?.market && registration.model.locale === sourceScope?.locale
+      && registration.model.catalogueRangeKey === sourceScope?.catalogueRangeKey
+      && ['modelCode', 'agModelCode', 'rawModelRange', 'orderDate', 'effectDate'].every((k) => context?.[k]?.value === registration.model[k])
+      && exactKeys(variant, ['pointer', 'namedImage', 'distinctions']) && variant.pointer === lookup.variantPointer
+      && typeof variant.namedImage === 'string' && /^[A-Za-z0-9_-]{1,64}$/.test(variant.namedImage)
+      && exactKeys(variant.distinctions, ['BKGND', 'X', 'Y']) && Object.values(variant.distinctions).every((v) => typeof v === 'string' && /^[A-Za-z0-9_-]{1,32}$/.test(v))
+      && image.image.namedImage === variant.namedImage
+      && same(image.image.size, lookup.size) && image.image.viewpoint === lookup.viewpoint
+      && /^[a-f0-9]{64}$/.test(image.image.sha256) && Number.isSafeInteger(image.image.bytes) && image.image.bytes > 0 && image.image.bytes <= 2097152;
+    output.sources.image = { provider: image.provider, providerVersion: image.providerVersion, schemaVersion: image.schemaVersion,
+      snapshotVersion: image.snapshotVersion, sourceKind: 'dated-snapshot', outcome: exact ? 'ok' : 'identity-mismatch',
+      status: exact ? 'ok' : 'identity-mismatch', observedDate: exact ? image.observedDate : null, retrievedDate: exact ? image.retrievedDate : null,
+      lookupIdentity: exact ? structuredClone(lookup) : null, resolvedLookupIdentity: exact ? structuredClone(lookup) : null,
+      identityProvenance: exact ? structuredClone(image.identityProvenance) : null };
+    if (!exact) return output;
+    if (retention?.status !== 'allowed' || !code(retention.decision)) { output.sources.image.outcome = 'retention-unknown'; return output; }
+    output.image = { assetId: image.image.assetId, sha256: image.image.sha256, bytes: image.image.bytes, contentType: 'image/webp',
+      role: 'representative-catalogue-render', viewpoint: lookup.viewpoint, size: structuredClone(lookup.size),
+      modelCode: registration.model.modelCode, agModelCode: registration.model.agModelCode, modelRange: registration.model.rawModelRange,
+      body: { state: 'unknown', value: null }, paint: { code: registration.paintCode, label: null }, fidelity: structuredClone(shown.fidelity),
+      sourceDate: image.observedDate, observedDate: image.observedDate, retrievedDate: image.retrievedDate,
+      retention: { status: 'allowed', decision: retention.decision }, expiresAt: null, selectedVariant: structuredClone(image.selectedVariant) };
+    output.completeness.image = 'partial'; return output;
+  }
   const imageSource = output.sources.image;
   const shown = presentBmwImage(image);
   if (imageSource.outcome !== 'ok') return output;
@@ -323,16 +367,18 @@ const operationName = (name) => typeof name === 'string' && /^[a-z][a-z0-9-]{0,3
  */
 export async function enrichFleet({ session, accepted, catalogueOperation = 'catalogue', imageOperation = null,
   imageRequest = {}, catalogueOptions = {}, imageOptions = {}, retention = null, asOf,
-  stageId = 'enrichment', onPhase = async () => {} } = {}) {
+  technicalOperation = null, technicalOptions = null, stageId = 'enrichment', onPhase = async () => {} } = {}) {
   requireEnrichment(typeof session?.withCheckpoint === 'function' && Array.isArray(accepted) && accepted.length <= 10000
     && operationName(catalogueOperation) && (imageOperation === null || operationName(imageOperation)
       && imageOperation !== catalogueOperation) && imageRequest !== null && typeof imageRequest === 'object'
     && !Array.isArray(imageRequest) && Object.keys(imageRequest).every((key) => ['viewpoint', 'size'].includes(key))
+    && (technicalOperation === null || operationName(technicalOperation) && technicalOperation !== catalogueOperation
+      && technicalOperation !== imageOperation && isV2Options(catalogueOptions) && object(technicalOptions))
     && date(asOf) && typeof onPhase === 'function',
   'invalid-enrichment', 'Inject a collector session, its accepted records, a dated policy and declared offline operations.');
   // Snapshot caller input before any await; a changed selection/policy cannot resume prior outcomes.
   const input = structuredClone({ accepted, catalogueOperation, imageOperation, imageRequest,
-    catalogueOptions, imageOptions, retention, asOf });
+    catalogueOptions, imageOptions, retention, asOf, ...(technicalOperation === null ? {} : { technicalOperation, technicalOptions }) });
   const stage = { id: stageId, version: ENRICHMENT_VERSION, inputDigest: inputDigest(input) };
   return session.withCheckpoint(async ({ state, stageState, execute, commit, stop, checkDeadline }) => {
     requireEnrichment(Array.isArray(state.accepted) && inputDigest(state.accepted) === inputDigest(input.accepted),
@@ -384,11 +430,26 @@ export async function enrichFleet({ session, accepted, catalogueOperation = 'cat
           catalogueOptions: input.catalogueOptions, imageOptions: input.imageOptions, retention: input.retention, asOf: input.asOf });
         if (isV2Options(input.catalogueOptions)) trustedV2Appearance(output, record, catalogue,
           bmwCatalogueLookupIdentity(record.catalogueRequest, input.catalogueOptions));
+        let technicalStop;
+        if (input.technicalOperation && output.status === 'partial' && output.sources.catalogue.outcome === 'ok') {
+          let artifact;
+          try { artifact = await execute(input.technicalOperation, record.catalogueRequest); }
+          catch (error) { if (!error.stop) throw error; technicalStop = error; }
+          if (!technicalStop) {
+            const qualified = qualifyBmwTechnicalObservation({ artifact, accepted: record, ...input.technicalOptions });
+            for (const [name, fact] of Object.entries(qualified.facts)) if (fact.state === 'known') output.facts[name] = fact;
+            output.sources.technical = qualified.source; output.measurementEvidence = qualified.measurementEvidence;
+            output.unmappedMeasurements.push(...qualified.unmappedKeys.map(() => ({ state: 'unknown', value: null, reason: 'unmapped-meaning' })));
+            const measured = Object.keys(METRICS).map((name) => output.facts[name]);
+            output.completeness.measurements = measured.every((fact) => fact.state === 'known' && fact.completeness === 'complete') ? 'complete' : 'partial';
+          } else output.sources.technical = { outcome: 'source-unavailable', execution: { status: 'stopped', reason: technicalStop.code } };
+        }
         output.scope = 'session-enrichment'; output.completeness.sharedAccounting = 'shared-session-offline';
         if (imageStop) output.sources.image.execution = { status: 'stopped', reason: imageStop.code };
         stageState.records.push(output); stageState.cursor += 1; await commit('enrichment-outcome');
         await onPhase('enrichment-outcome-committed', { configurationId: record.configurationId, cursor: stageState.cursor });
         if (imageStop) throw imageStop;
+        if (technicalStop) throw technicalStop;
       }
       return report('enrichment-processed');
     } catch (error) {
