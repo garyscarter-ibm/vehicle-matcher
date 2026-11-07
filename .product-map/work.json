@@ -544,8 +544,9 @@
     },
     {
       "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-04-032",
       "id": "FUCQ-59",
-      "observed_at": "2026-11-07T00:21:49Z",
+      "observed_at": "2026-11-07T00:34:58Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -577,9 +578,9 @@
           "title": "Finite source budgets, deadlines and default no-traffic safety (2 points)"
         },
         {
-          "evidence": "Actual saved-source non-test collector run persists accepted1, admissiontrue; byte-stable restart and exact registered v2 adapter partial envelope; coherent deletion refuses. Scoped4ingress/8binder/12v2/22v1/77collector pass. Optional facts unknown. Generalised candidate/model registrations next; no new source traffic. source-admission-2026-11-07/validation.json.",
+          "evidence": "Generic data-pinned full model/context/candidate registration through existing common session/source/binder/collector; fresh definitions qualify all inputs, canonical returned selections persist accepted and register existing catalogue adapter. First32 plan covers15paint/8fabric/6rim request definitions, unexecuted. Scoped8batch+94source/binder/ingress/session pass; source-batch-capability-2026-11-07/validation.json.",
           "id": "source-qualification",
-          "observed_at": "2026-11-07T00:21:48Z",
+          "observed_at": "2026-11-07T00:34:58Z",
           "status": "in-progress",
           "title": "Selected real-source model mapping and solver integration (1 point)"
         },
@@ -598,9 +599,9 @@
           "title": "Retailer mapping and API regression boundary"
         },
         {
-          "evidence": "Current8binder checks and actual positive/coherent deletion negative pass. Earlier12v2/77existingcollector scoped proof retained at unchanged target modules before pure binder transport guard; no final full-suite claim. Actual accepted→F60→F54/application integration remains required; preserve8slices.",
+          "evidence": "Final exact-identity scoped8batch+94existing source/capture/binder/ingress/collector pass, zero skipped. Expected red failures retained and corrected. No actual batch requests/full-suite/publication/UI acceptance claim. First32 numerical run belongs to F61 after integration; original acceptance and distribution gaps remain.",
           "id": "full-validation",
-          "observed_at": "2026-11-07T00:13:56Z",
+          "observed_at": "2026-11-07T00:34:58Z",
           "status": "in-progress",
           "title": "Authored serial npm test integration gate (1 point)"
         }
@@ -612,43 +613,42 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59",
       "workers": [
         {
-          "name": "Cecil Turtle",
-          "role": "story-lead",
-          "harness": "codex",
-          "source": "thread01a1b054-1167-7820-b9f2-92ec81e37bbe",
-          "observed_at": "2026-11-06T15:38:48.934995+00:00",
           "expires_at": "2026-11-06T15:38:48.934995+00:00",
+          "harness": "codex",
+          "name": "Cecil Turtle",
+          "observed_at": "2026-11-06T15:38:48.934995+00:00",
+          "role": "story-lead",
+          "source": "thread01a1b054-1167-7820-b9f2-92ec81e37bbe",
           "status": "stopped; frozen binder checkpoint complete; 69 scoped passes and offline replay; requested/selected/runtime Sol high, no fallback"
         },
         {
-          "name": "Sulley",
-          "role": "implementer",
-          "harness": "codex",
-          "source": "thread01a1b15c-c7b7-7ff1-ae8e-5d840ec09dbc",
-          "observed_at": "2026-11-06T15:04:41.021643+00:00",
           "expires_at": "2026-11-06T15:04:41.021643+00:00",
+          "harness": "codex",
+          "name": "Sulley",
+          "observed_at": "2026-11-06T15:04:41.021643+00:00",
+          "role": "implementer",
+          "source": "thread01a1b15c-c7b7-7ff1-ae8e-5d840ec09dbc",
           "status": "Completed four-file canonical selector/v2 report correction; requested/selected/runtimeSol medium; no fallback/descendants; no child tests/scratch"
         },
         {
-          "name": "Minnie Mouse",
-          "role": "source-support-lead",
+          "expires_at": "2026-11-07T01:19:50.165890+00:00",
           "harness": "codex",
+          "name": "Minnie Mouse",
+          "observed_at": "2026-11-07T00:34:50.165765+00:00",
+          "role": "source-support-lead",
           "source": "thread01a1b348-4753-7ea3-bfb7-c0784b47889e; requested/selected gpt-6.1-sol/high; no fallback",
-          "observed_at": "2026-11-07T00:10:51.020382+00:00",
-          "expires_at": "2026-11-07T00:55:51.020382+00:00",
-          "status": "Actual source binding/review and F58/F59 coherent publication; acceptance remains open"
+          "status": "Generic data-pinned model/candidate batch capability validated8+94 scoped tests; first32 plan prepared, no batch source traffic. Requested/selected gpt-6.1-sol high; no fallback."
         },
         {
-          "name": "Sally Carrera",
-          "role": "implementer",
+          "expires_at": "2026-11-07T00:34:50.165765+00:00",
           "harness": "codex",
+          "name": "Sally Carrera",
+          "observed_at": "2026-11-07T00:34:50.165765+00:00",
+          "role": "implementer",
           "source": "thread01a1b349-5b20-7d41-acbe-cf0bc002457f; requested/selected gpt-6.1-sol/medium; no fallback",
-          "observed_at": "2026-11-07T00:10:51.020382+00:00",
-          "expires_at": "2026-11-07T00:55:51.020382+00:00",
-          "status": "Final bounded transport-provenance review correction; no descendants/source calls"
+          "status": "Completed source-admission slices; thread-limited, no active descendant. Requested/selected gpt-6.1-sol medium, no fallback."
         }
-      ],
-      "branch": "dev/DEV-2026-11-04-032"
+      ]
     },
     {
       "id": "FUCQ-60",

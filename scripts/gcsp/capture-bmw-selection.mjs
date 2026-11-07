@@ -23,18 +23,18 @@ function selectedMap(value) {
   }));
 }
 
-function solverReport(value) {
+function solverReport(value, requestCodes = seed) {
   const elements = selectedMap(value.configuration.elements);
   const changesPresent = Object.hasOwn(value, 'configurationChanges');
   const changes = changesPresent ? value.configurationChanges : null;
   requireValue(!changesPresent || object(changes) && Object.keys(changes).every((k) =>
     ['addedElements', 'removedElements', 'ignoredElements'].includes(k)), 'capture-change-shape', 'Unknown solver change maps require review.');
   const retainedChanges = changesPresent ? Object.fromEntries(Object.entries(changes).map(([name, rows]) => [name, selectedMap(rows)])) : null;
-  const selected = Object.keys(elements); const added = selected.filter((item) => !seed.includes(item));
-  const removed = seed.filter((item) => !selected.includes(item));
+  const selected = Object.keys(elements); const added = selected.filter((item) => !requestCodes.includes(item));
+  const removed = requestCodes.filter((item) => !selected.includes(item));
   for (const [name, rows] of Object.entries(retainedChanges || {})) {
     requireValue(Object.keys(rows).every((item) => name === 'addedElements' ? added.includes(item)
-      : seed.includes(item) && !selected.includes(item)), 'capture-change-membership', 'Provider changes must agree with request and resolved membership.');
+      : requestCodes.includes(item) && !selected.includes(item)), 'capture-change-membership', 'Provider changes must agree with request and resolved membership.');
     if (name === 'addedElements') requireValue(Object.keys(rows).length === added.length,
       'capture-change-membership', 'The provider added map must cover the actual added set.');
     requireValue(Object.entries(rows).every(([item, row]) => name === 'addedElements'
@@ -71,7 +71,7 @@ export function publicBmwCompleteSelectionOperations(plan) {
   return Object.fromEntries(Object.entries(base).map(([name, descriptor]) => [name, { ...descriptor, strictJson: true,
     project: (value, request, metadata) => {
       if (name === 'discover') {
-        const report = strictModelReport(value); descriptor.project(value, request, metadata);
+        const report = strictModelReport(value, plan.modelRegistration); descriptor.project(value, request, metadata);
         const result = artifact(report, metadata, name, report.nodes.flatMap((node, index) => Object.entries(node.fieldPointers)
           .map(([field, sourcePointer]) => ({ name: `${index}-${field}`, sourcePointer, retainedPointer: `/report/nodes/${index}/facts/${field}` }))));
         treeObserved = true; return result;
@@ -79,7 +79,7 @@ export function publicBmwCompleteSelectionOperations(plan) {
       if (name === 'solve') {
         requireValue(treeObserved, 'capture-tree-required', 'Observe the exact fresh full model before its solver selection.');
         descriptor.project(value, request, metadata);
-        const report = solverReport(value);
+        const report = solverReport(value, request.includedElements || seed);
         const locators = ['constructible', 'configuration/modelCode', 'configuration/elements'].map((pointer) =>
           ({ name: pointer.split('/').at(-1), sourcePointer: '/' + pointer, retainedPointer: '/report/' + pointer }));
         if (report.configurationChanges.state === 'present') locators.push({ name: 'configurationChanges', sourcePointer: '/configurationChanges',
@@ -88,6 +88,11 @@ export function publicBmwCompleteSelectionOperations(plan) {
           locators.push({ name: `quantity-${code}`, sourcePointer: `/configuration/elements/${code}/quantity`,
             retainedPointer: `/report/configuration/elements/${code}/quantity` });
         return artifact(report, metadata, name, locators);
+      }
+      if (name === 'options') {
+        const report = descriptor.project(value, request, metadata);
+        return artifact(report, metadata, name, report.candidates[0].definitions.map((row, index) => ({ name: `definition-${row.code}`,
+          sourcePointer: row.pointer, retainedPointer: `/report/candidates/0/definitions/${index}` })));
       }
       return descriptor.project(value, request, metadata);
     } }]));
