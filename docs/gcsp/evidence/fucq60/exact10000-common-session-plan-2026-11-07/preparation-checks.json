@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "preparation-checks.v1",
+  "scope": "syntax and static metadata only",
+  "planSha256": "27452f15da2cc3900832815efb811387a982e7197a0d4bcfa67694b10e6cddcc",
+  "codePinsChecked": 37,
+  "bridgeInputPinsChecked": 7,
+  "selectedManifestPinChecked": true,
+  "exact10000ChunkMetadata": true,
+  "sourceFormats": [
+    "json",
+    "jsonl"
+  ],
+  "checks": [
+    {
+      "command": [
+        "/opt/homebrew/bin/node",
+        "--check",
+        "docs/gcsp/evidence/fucq60/exact10000-common-session-plan-2026-11-07/common.mjs"
+      ],
+      "rc": 0,
+      "evaluation": false
+    },
+    {
+      "command": [
+        "/opt/homebrew/bin/node",
+        "--check",
+        "docs/gcsp/evidence/fucq60/exact10000-common-session-plan-2026-11-07/proof.mjs"
+      ],
+      "rc": 0,
+      "evaluation": false
+    },
+    {
+      "command": [
+        "/opt/homebrew/bin/node",
+        "--check",
+        "docs/gcsp/evidence/fucq60/exact10000-common-session-plan-2026-11-07/collector-bridge.mjs"
+      ],
+      "rc": 0,
+      "evaluation": false
+    },
+    {
+      "command": [
+        "/opt/homebrew/bin/node",
+        "--check",
+        "docs/gcsp/evidence/fucq60/exact10000-common-session-plan-2026-11-07/summarize.mjs"
+      ],
+      "rc": 0,
+      "evaluation": false
+    },
+    {
+      "command": [
+        "python compile only",
+        "docs/gcsp/evidence/fucq60/exact10000-common-session-plan-2026-11-07/supervise.py"
+      ],
+      "rc": 0,
+      "evaluation": false
+    },
+    {
+      "command": [
+        "python compile only",
+        "docs/gcsp/evidence/fucq60/exact10000-common-session-plan-2026-11-07/prepare-plan.py"
+      ],
+      "rc": 0,
+      "evaluation": false
+    }
+  ],
+  "integrationProofExecuted": false,
+  "collectorBridgeExecuted": false,
+  "sourceCalls": 0,
+  "scratchCreated": false,
+  "scratchRemovedBytes": 0,
+  "leftovers": [],
+  "acceptance": false
+}
