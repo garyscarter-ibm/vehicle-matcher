@@ -432,13 +432,13 @@
   },
   "destinations": {
     "evidence": {
-      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-031/docs/gcsp/evidence/fucq-58/authorised-pilot-2026-11-05/evidence",
+      "path": "docs/gcsp/evidence/fucq-58/authorised-pilot-2026-11-05/evidence",
       "expectedBytes": 12582912,
       "public": false,
       "retention": "reusable-non-personal"
     },
     "images": {
-      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-031/docs/gcsp/evidence/fucq-58/authorised-pilot-2026-11-05/images",
+      "path": "docs/gcsp/evidence/fucq-58/authorised-pilot-2026-11-05/images",
       "expectedBytes": 2097152,
       "public": false,
       "retention": "reusable-non-personal"
