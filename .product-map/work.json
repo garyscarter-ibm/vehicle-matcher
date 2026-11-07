@@ -2644,7 +2644,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T09:52:21Z",
+      "observed_at": "2026-11-07T12:05:12Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62",
       "claim_evidence": "Claimed owning035 at34a793e3; root checkpoint authorisation, Jira OAuth unavailable. Full acceptance remains open.",
       "slices": [
@@ -2701,8 +2701,8 @@
           "id": "integration",
           "status": "in-progress",
           "title": "Application and deployed integration acceptance",
-          "observed_at": "2026-11-07T09:52:21Z",
-          "evidence": "Public Linux .12 cold restore passed in 121 seconds with 62 HTTPS fetches; retained-cache restore passed in 40.50 seconds with zero network. Offline Linux repeat hit its 90-second ceiling, verify/boundary unrun. Tested Render selector pushed at 56602531; actual deployment/readback pending."
+          "observed_at": "2026-11-07T12:05:12Z",
+          "evidence": "Render deployment succeeded but Linux run 42370480081 returned ready .10 instead of .12. Two GETs, no DTO; concrete live blocker. Scoped .12 cold/offline/assets proof 42361586991 passed. Build-command selector compatibility fix in progress; remote settings cause unproven."
         },
         {
           "id": "large-artifact-restore",
@@ -2822,7 +2822,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T09:52:22Z",
+      "observed_at": "2026-11-07T12:05:12Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-63",
       "slices": [
         {
@@ -2857,8 +2857,8 @@
           "id": "integration",
           "status": "in-progress",
           "title": "Integrate actual published corpus and authored regression evidence",
-          "observed_at": "2026-11-07T09:52:22Z",
-          "evidence": "Public .12 Linux cold BUILD passed in 121 seconds; current retained-cache fresh-store restore passed in 40.50 seconds with zero network. Linux offline repeat timed out at 90 seconds; verify/boundary unrun. Current-release deployed readback and remaining recovery/order-reference evidence are open."
+          "observed_at": "2026-11-07T12:05:12Z",
+          "evidence": "All 10,002 direct/retained/HTTP references matched; .12 Linux offline/boundary passed. PostgreSQL run 42370440771 passed restore, migrations, allocation/publication and reopen, then final proof assertion failed; returned comparisons were discarded by harness. Diagnostic correction pending. Schema/service/scratch absent; 2707 consumers deferred and unfixed."
         }
       ],
       "unsliced": false,
