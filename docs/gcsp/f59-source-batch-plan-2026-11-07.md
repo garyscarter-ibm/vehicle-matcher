@@ -80,3 +80,60 @@ integrated. F59 owns this adapter/collector capability. F60 consumes the stable 
 envelope and source registration through the existing session/adapter ports.
 Large expected outputs and all archives go directly to the authorised OneDrive
 project output area; keep run-owned local scratch bounded and verify teardown.
+
+## Implemented handoff
+
+The existing collector now recognises `f59-batch-20261107.v1`. Its
+`modelRegistration` is explicit data: full alias keys, VG/AG codes, raw and
+catalogue range, GB/RL, and separate catalogue/order/effect dates. The shared
+executor retains the exact finite candidate request list in its checkpoint
+identity and permits only URLs derived from that registration. A later reviewed
+model context uses this same interface; its full source aliases and all returned
+literals must agree before candidate execution. Request inputs establish no
+physical/VIN facts.
+
+The committed first plan is
+`plans/bmw-source-batch32-2026-11-07.json`, canonical plan digest
+`758ec81958cb3471b55c24e2afed45cdafc3a0125b1c3f9228e13a9d6fbff6a2`.
+The existing `buildCandidateQueue` enumerator selects 32 deterministic requests
+covering all 15 paint, 8 fabric and 6 rim definitions in the retained dated report.
+S0337 and S043L are request inputs. Fresh typed definitions must corroborate every
+input before the first solver request. This plan has not been executed and is
+neither an allocation receipt nor evidence of 32 distinct accepted configurations.
+
+`createFleetCollector` takes the explicit `live` mode, matching source/HTTP
+allocation and `batchBinding: {producerPins, snapshotVersion,
+existingConfigurationIds}`. The prior canonical ID index must include previously
+admitted configurations, including the original T5MJ row. The caller persists and
+consumes its one-shot allocation marker before constructing/running the collector;
+the common session pins that allocation and accounts all source attempts, bytes,
+deadlines and per-operation budgets. No default invocation installs transport.
+
+The collector returns its original common `session`, `run`, and additive
+`catalogueRegistrations` array. Successful complete source selections enter
+persisted `accepted` with `admission:true`; the retained `records` preserve the
+pure binder's `admission:false` result. Fixture transport can populate only
+`records`. Different requests that resolve to an existing canonical factory
+selection count as duplicates, with provider changes and prior-batch overlap
+retained. Actual attempts, processed outcomes, rejected candidates, duplicates
+and newly accepted rows are reported separately. Paint and upholstery use fresh
+typed definition evidence; unsupported quantities and physical fields stay
+unknown.
+
+Pass the returned registrations to the existing catalogue adapter and use each
+accepted row's two-key `catalogueRequest` with its versioned lookup options. Later
+enrichment stages can use the same `session`. The source runner exports the safe
+`batchEvidence` and per-candidate `sourceCaptures` from that session alongside
+accepted rows and the exact producer/plan/allocation pins. Completed checkpoints
+requalify rows from retained source artifacts and resume without requests.
+Interrupted batches stop rather than replay a spent settings request to recover
+ephemeral headers; retain their outcomes and review a new allocation explicitly.
+
+Scoped validation is 8 batch tests plus 94 affected capture/binder/ingress/common
+collector tests, all passing with zero skipped tests. The new behavior was first
+observed failing against the old single-selection guard. Additional red/green
+regressions cover explicit provider removals with an absent ignored map, and
+escaped bootstrap-header text in another profile's safe projection. These are
+scripted protocol fixtures, not actual source traffic or capacity evidence.
+Detailed identities and teardown receipts are in
+`evidence/fucq59/source-batch-capability-2026-11-07/validation.json`.

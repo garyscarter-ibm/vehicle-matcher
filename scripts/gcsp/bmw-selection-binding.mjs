@@ -3,6 +3,7 @@ import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { bmwCatalogueLookupIdentity, validateBmwCatalogueV2Envelope } from '../../server/vehicle-evidence/bmw-catalogue-adapter.js';
 import { CollectionError, requireValue } from './configuration-key.mjs';
 import { publicBmwOperations, strictModelReport, validatePublicBmwPlan } from './public-bmw-source.mjs';
+import { BMW_BATCH_SOURCE_VERSION, bmwPublicRequestUrls } from './bmw-public-registration.mjs';
 
 export const BMW_SELECTION_BINDING_VERSION = 'bmw-selection-binding.v1';
 const CAPTURE = 'bmw-complete-selection.v1';
@@ -46,7 +47,8 @@ function urlScope(request, operation) {
   fail(keys(request, ['method', 'url']) && request.method === 'GET' && typeof request.url === 'string');
   let url; try { url = new URL(request.url); } catch { fail(false); }
   fail(url.origin === 'https://prod.ucp.bmw.cloud' && !url.username && !url.password && !url.hash
-    && url.pathname.startsWith(operation === 'discover' ? '/model-matrices/vehicle-trees/' : '/rulesolver/constructibility-check/')
+    && url.pathname.startsWith(operation === 'discover' ? '/model-matrices/vehicle-trees/'
+      : operation === 'options' ? '/localisations/overridden-vehicle-data/' : '/rulesolver/constructibility-check/')
     && url.pathname.includes('/countries/gb/') && [...url.searchParams.keys()].every((key) => !/key|secret|token|password/i.test(key)));
   const segment = (name) => {
     const parts = url.pathname.split('/'); const indices = parts.flatMap((value, index) => value === name ? [index] : []);
@@ -68,7 +70,7 @@ function captureArtifact(entry, plan, operation) {
       'transportKind', 'request', 'observedAt', 'responseBytes', 'responseSha256'])
     && observation.schemaVersion === 'collection-http-observation.v1' && observation.operation === operation
     && observation.sourceId === plan.source.id && observation.sourceVersion === plan.source.version
-    && observation.capability === (operation === 'discover' ? 'bmw-model-tree' : 'bmw-solver')
+    && observation.capability === (operation === 'discover' ? 'bmw-model-tree' : operation === 'options' ? 'bmw-options' : 'bmw-solver')
     && ['live', 'fixture'].includes(observation.transportKind) && observation.observedAt.slice(0, 10) === plan.qualificationDate
     && Number.isSafeInteger(observation.responseBytes) && observation.responseBytes > 0 && observation.responseBytes <= plan.limits.responseBytes
     && typeof observation.responseSha256 === 'string' && /^[a-f0-9]{64}$/.test(observation.responseSha256)
@@ -88,15 +90,16 @@ function evidence(artifact, id, role, locators) {
     request: structuredClone(observed.request), responseSha256: observed.responseSha256, retainedSha256: artifact.artifactSha256,
     observedAt: observed.observedAt, retrievedAt: artifact.retrievedAt, locators };
 }
-function treeFacts(tree) {
+function treeFacts(tree, plan) {
   const report = tree.document.report;
-  fail(Array.isArray(report?.nodes) && report.nodes.length === 2);
-  const raw = Object.fromEntries(['5', 'I'].map((group, index) => {
-    const node = report.nodes[index]; fail(node.pointer === `/${group}/modelRanges/G61E/models/T5MJ` && object(node.facts));
-    return [group, { modelRanges: { G61E: { models: { T5MJ: structuredClone(node.facts) } } } }];
+  const r = plan.modelRegistration; const aliases = r?.aliases || ['5', 'I']; const range = r?.catalogueRangeKey || 'G61E'; const model = r?.modelCode || 'T5MJ';
+  fail(Array.isArray(report?.nodes) && report.nodes.length === aliases.length);
+  const raw = Object.fromEntries(aliases.map((group, index) => {
+    const node = report.nodes[index]; fail(node.pointer === `/${group}/modelRanges/${range}/models/${model}` && object(node.facts));
+    return [group, { modelRanges: { [range]: { models: { [model]: structuredClone(node.facts) } } } }];
   }));
   // Reuse the original projector's exact alias/model/type checks without a new source path.
-  fail(same(strictModelReport(raw), report));
+  fail(same(strictModelReport(raw, r), report));
   const expected = report.nodes.flatMap((node, index) => Object.entries(node.fieldPointers).map(([field, sourcePointer]) =>
     ({ name: `${index}-${field}`, sourcePointer, retainedPointer: `/report/nodes/${index}/facts/${field}` })));
   fail(same(tree.document.locators, expected));
@@ -133,7 +136,8 @@ function solverSelection(solver, plan) {
   const ignoredKnown = object(changes.maps) && Object.hasOwn(changes.maps, 'ignoredElements');
   const providerIgnored = ignoredKnown ? { state: 'known', codes: Object.keys(changes.maps.ignoredElements).sort() } : { state: 'unknown', codes: null };
   // With no missing request codes [] is the derived empty ignored set, never a response echo.
-  fail(ignoredKnown || missing.length === 0);
+  fail(ignoredKnown || missing.length === 0 || plan.source.version === BMW_BATCH_SOURCE_VERSION
+    && object(changes.maps?.removedElements) && same(Object.keys(changes.maps.removedElements).sort(), missing));
   const ignored = ignoredKnown ? providerIgnored.codes : [];
   const removed = missing.filter((name) => !ignored.includes(name));
   if (changes.maps?.removedElements) fail(same(Object.keys(changes.maps.removedElements).sort(), removed));
@@ -194,17 +198,49 @@ function definitionClaims(binding, facts, selectedOptions, transportKind) {
   return { ...result, evidence: evidence(options, 'definitions', 'definitions', locators), pins: { options: options.artifactSha256, fieldReport: report.artifactSha256 } };
 }
 
+function batchDefinitionClaims(binding, facts, selectedOptions, transportKind, plan) {
+  fail(object(binding)); const options = captureArtifact(binding.options, plan, 'options'); const document = options.document; const o = document.observation;
+  const definitions = document.report?.candidates?.[0]?.definitions;
+  fail(document.schemaVersion === CAPTURE && o?.operation === 'options' && o.capability === 'bmw-options'
+    && o.sourceId === plan.source.id && o.sourceVersion === plan.source.version && o.transportKind === transportKind
+    && o.observedAt.slice(0, 10) === plan.qualificationDate && same(o.request, { method: 'GET', url: bmwPublicRequestUrls(plan.modelRegistration).options })
+    && document.requestSha256 === sha(encode(o.request)) && document.rawSelectionSha256 === sha(encode(document.report))
+    && document.report.status === 'schema-review-required' && document.report.candidates.length === 1
+    && document.report.candidates[0].pointer === '' && Array.isArray(definitions) && definitions.length > 0 && definitions.length <= 512
+    && definitions.every((row) => object(row) && code(row.code) && row.option === row.code && row.pointer === '/' + row.code
+      && typeof row.optionType === 'string' && /^[A-Za-z0-9_-]{1,32}$/.test(row.optionType) && Array.isArray(row.issues) && row.issues.length === 0)
+    && new Set(definitions.map((row) => row.code)).size === definitions.length
+    && same(document.locators, definitions.map((row, index) => ({ name: `definition-${row.code}`, sourcePointer: row.pointer,
+      retainedPointer: `/report/candidates/0/definitions/${index}` }))));
+  const locators = []; const result = {};
+  for (const [field, type] of [['paint', 'paint'], ['upholstery', 'fabric']]) {
+    const matches = definitions.map((row, index) => ({ row, index })).filter(({ row }) => selectedOptions.includes(row.code) && row.optionType === type);
+    // A provider-added selection without a unique typed definition remains unknown.
+    if (matches.length !== 1) { result[field] = unknown(); continue; }
+    const { row, index } = matches[0]; const name = `${field}-${row.code}`;
+    fail(code(row.code) && row.option === row.code && row.pointer === '/' + row.code && Array.isArray(row.issues) && row.issues.length === 0);
+    locators.push({ name, sourcePointer: row.pointer, retainedPointer: `/report/candidates/0/definitions/${index}` });
+    result[field] = known({ code: row.code, type: field }, 'definitions', name);
+  }
+  return { ...result, evidence: locators.length ? evidence(options, 'definitions', 'definitions', locators) : null,
+    pins: { options: options.artifactSha256 } };
+}
+
 /** Bind a server-registered capture to actual source values; this function performs no I/O. */
 export function buildBmwSelectionBinding(input = {}) {
   const { plan, configurationKey, producerPins, snapshotVersion, artifacts, definitionBinding } = input;
   fail(object(plan) && plan.captureVersion === CAPTURE && typeof configurationKey === 'function' && object(artifacts)); validatePublicBmwPlan(plan);
   const tree = captureArtifact(artifacts.tree, plan, 'discover'); const solver = captureArtifact(artifacts.solver, plan, 'solve');
-  const { facts, locators: treeLocators } = treeFacts(tree);
+  const { facts, locators: treeLocators } = treeFacts(tree, plan);
   fail(tree.document.observation.transportKind === solver.document.observation.transportKind
     && tree.document.observation.observedAt <= solver.document.observation.observedAt
     && facts.modelCode === plan.models[0] && facts.orderDate === plan.context.orderDate && facts.effectDate === plan.context.effectDate
     && solver.scope.modelCode === facts.modelCode && solver.scope.orderDate === facts.orderDate && solver.scope.effectDate === facts.effectDate
-    && tree.scope.orderDate === facts.orderDate && tree.scope.effectDate === plan.context.catalogueDate && tree.scope.catalogueRangeKey === 'G61E');
+    && tree.scope.orderDate === facts.orderDate && tree.scope.effectDate === plan.context.catalogueDate && tree.scope.catalogueRangeKey === (plan.modelRegistration?.catalogueRangeKey || 'G61E'));
+  if (plan.source.version === BMW_BATCH_SOURCE_VERSION) {
+    const urls = bmwPublicRequestUrls(plan.modelRegistration);
+    fail(tree.scope.url === urls.discover && plan.candidates.some((row) => solver.scope.url === bmwPublicRequestUrls(plan.modelRegistration, row.request).solve));
+  }
   const requestScope = { market: plan.context.market, locale: plan.context.locale, catalogueRangeKey: tree.scope.catalogueRangeKey,
     requests: [tree.scope, solver.scope].map(({ catalogueRangeKey, ...scope }) => ({ ...scope, modelCode: facts.modelCode })) };
   const contextFields = { modelCode: 'modelCode', agModelCode: 'agModelCode', rawModelRange: 'modelRange', orderDate: 'orderDate', effectDate: 'effectDate', taxDate: 'taxDate', steeringLiteral: 'steering' };
@@ -212,7 +248,9 @@ export function buildBmwSelectionBinding(input = {}) {
     [name, Object.hasOwn(facts, source) ? known(facts[source], 'tree', name) : unknown()]));
   const { providerIgnored, ...selection } = solverSelection(solver, plan);
   const canonicalIdentity = { vgModelCode: facts.modelCode, agModelCode: facts.agModelCode, factoryOptionCodes: [...selection.factoryOptionCodes] };
-  const definitions = definitionClaims(definitionBinding, facts, selection.factoryOptionCodes, solver.document.observation.transportKind);
+  const definitions = plan.source.version === BMW_BATCH_SOURCE_VERSION
+    ? batchDefinitionClaims(definitionBinding, facts, selection.factoryOptionCodes, solver.document.observation.transportKind, plan)
+    : definitionClaims(definitionBinding, facts, selection.factoryOptionCodes, solver.document.observation.transportKind);
   const optionalFacts = Object.fromEntries(['trim', 'catalogueProductionDate', 'modelName', 'fuelTypeCode'].map((name) => {
     const source = name === 'catalogueProductionDate' ? 'prodDate' : name === 'modelName' && !Object.hasOwn(facts, name) ? 'modelNameRaw' : name;
     let value = facts[source]; if (source === 'prodDate' && value !== undefined) value = `${value.slice(0, 4)}-${value.slice(4, 6)}-${value.slice(6)}`;

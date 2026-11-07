@@ -4,6 +4,8 @@ import { normaliseCodes, requireValue } from './configuration-key.mjs';
 import { assertCollectionHttpObservation } from './collection-session.mjs';
 import { createSettingsShapeRefusal } from './settings-shape-report.mjs';
 import { qualifyBmwSourceFields } from './bmw-source-qualification.mjs';
+import { BMW_BATCH_SOURCE_VERSION, validateBmwBatchPlan, validateBmwModelRegistration,
+  bmwBatchRequestRegistration, bmwPublicRequestUrls } from './bmw-public-registration.mjs';
 
 const object = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 const same = (a, b) => inputDigest(a) === inputDigest(b);
@@ -39,6 +41,7 @@ export function validatePublicBmwDiagnosticPlan(plan) {
 }
 
 export function validatePublicBmwPlan(plan) {
+  if (plan.source.version === BMW_BATCH_SOURCE_VERSION) return validateBmwBatchPlan(plan);
   const l = plan.limits;
   requireValue(plan.source.version === sourceVersion && same(plan.models, ['T5MJ']) && plan.candidateCount === 1
     && plan.target === 1 && same(plan.context, { catalogueDate: '2026-11-01', market: 'GB', locale: 'en-GB', orderDate: '2026-11-01', effectDate: '2027-01-05' })
@@ -85,15 +88,18 @@ function headerFor(settings, profileName, strict = false) {
 const optionalModelFields = ['taxDate', 'prodDate', 'modelName', 'modelNameRaw', 'derivative', 'bodyStyle', 'agBodyStyle',
   'fuelTypeCode', 'hybridCode', 'engineSeries', 'driveType', 'transmission', 'trim'];
 const safeLabel = (value) => typeof value === 'string' && value.trim().length > 0 && value.length <= 160 && !/[\x00-\x1f\x7f<>]/u.test(value);
-export function strictModelReport(value) {
+export function strictModelReport(value, registration) {
   requireValue(object(value) && Object.keys(value).length <= 100, 'source-tree-shape', 'Use a bounded full model tree.');
-  const nodes = ['5', 'I'].map((group) => {
-    const path = [group, 'modelRanges', 'G61E', 'models', 'T5MJ']; let record = value;
+  const r = registration ? validateBmwModelRegistration(registration) : null;
+  const expectedFacts = r ? { modelCode: r.modelCode, agModelCode: r.agModelCode, modelRange: r.rawModelRange,
+    steering: r.steering, orderDate: r.orderDate, effectDate: r.effectDate } : expected;
+  const nodes = (r?.aliases || ['5', 'I']).map((group) => {
+    const path = [group, 'modelRanges', r?.catalogueRangeKey || 'G61E', 'models', r?.modelCode || 'T5MJ']; let record = value;
     for (const key of path) record = object(record) && Object.hasOwn(record, key) ? record[key] : undefined;
     requireValue(object(record), 'source-full-model-missing', 'Both direct full model records are required.');
-    requireValue(Object.entries(expected).every(([key, field]) => Object.hasOwn(record, key) && record[key] === field),
+    requireValue(Object.entries(expectedFacts).every(([key, field]) => Object.hasOwn(record, key) && record[key] === field),
       'source-model-substitution', 'The exact model, range and date literals must agree.');
-    const pointer = '/' + path.join('/'); const facts = { ...expected };
+    const pointer = '/' + path.join('/'); const facts = { ...expectedFacts };
     for (const key of optionalModelFields) if (Object.hasOwn(record, key)) {
       const field = record[key];
       const valid = key === 'taxDate' ? calendarDate(field)
@@ -106,9 +112,9 @@ export function strictModelReport(value) {
     return { pointer, parentPointer: '/' + path.slice(0, -1).join('/'), facts,
       fieldPointers: Object.fromEntries(Object.keys(facts).map((key) => [key, `${pointer}/${key}`])) };
   });
-  requireValue(same(nodes[0].facts, nodes[1].facts), 'source-model-alias-conflict', 'Both full aliases must agree including optional-field presence.');
+  requireValue(nodes.every((node) => same(nodes[0].facts, node.facts)), 'source-model-alias-conflict', 'All registered full aliases must agree including optional-field presence.');
   return { nodes, missingFields: optionalModelFields.filter((key) => !Object.hasOwn(nodes[0].facts, key)),
-    aliasAppearances: 2, distinctSelectedModels: 1, additionalConfigurations: 0 };
+    aliasAppearances: nodes.length, distinctSelectedModels: 1, additionalConfigurations: 0 };
 }
 
 // These are inspection keys, not a declaration of an API root or semantic compatibility.
@@ -311,6 +317,7 @@ export function publicBmwQualificationOperations(input) {
 
 /** Source projections only. All traffic, deadlines, budgets, caching and persistence belong to the common session. */
 export function publicBmwOperations(plan) {
+  if (plan.source.version === BMW_BATCH_SOURCE_VERSION) return publicBmwBatchOperations(plan);
   let treeHeader; let solverHeader;
   const descriptor = (capability, url, project, extra = {}) => ({ sourceId: plan.source.id, sourceVersion,
     kind: 'read-only-http', capability, prepare: async () => ({ method: 'GET', url, headers: {} }), project, ...extra });
@@ -360,6 +367,80 @@ export function publicBmwOperations(plan) {
     }, { prepare: async () => {
       requireValue(solverHeader, 'source-bootstrap-required', 'The memory-only public settings header is unavailable.');
       return { method: 'GET', url: solverUrl, headers: solverHeader };
+    } }),
+  };
+}
+
+/** Same source/session seams, with explicit data-pinned context and finite request membership. */
+function publicBmwBatchOperations(plan) {
+  const requestRegistration = bmwBatchRequestRegistration(plan); const r = requestRegistration.model;
+  const urls = bmwPublicRequestUrls(r); let treeHeader; let localisationHeader; let solverHeader; let treeQualified = false; let definitionsQualified = false;
+  const descriptor = (capability, url, project, extra = {}) => ({ sourceId: plan.source.id, sourceVersion: BMW_BATCH_SOURCE_VERSION,
+    kind: 'read-only-http', capability, strictJson: true, requestRegistration, prepare: async () => ({ method: 'GET', url, headers: {} }),
+    project: (value, request, metadata) => {
+      const result = project(value, request, metadata);
+      const secrets = [treeHeader, localisationHeader, solverHeader].flatMap((header) => header ? Object.values(header) : []);
+      JSON.stringify(result, (key, entry) => {
+        requireValue(secrets.every((secret) => !key.includes(secret) && (typeof entry !== 'string' || !entry.includes(secret))),
+          'source-sensitive-projection', 'No bootstrap profile value may enter any retained source projection.');
+        return entry;
+      });
+      return result;
+    }, ...extra });
+  const requested = (request) => {
+    requireValue(requestRegistration.candidates.some((row) => same(row, request)), 'source-candidate-registration', 'Only the exact allocated candidate requests may execute.');
+    return request;
+  };
+  return {
+    page: descriptor('bmw-page', urls.page, (html) => {
+      const paths = [...new Set([...html.matchAll(/(?:\/en_GB\/)?settings\.[a-zA-Z0-9]+\.json/g)]
+        .map((match) => match[0].startsWith('/en_GB/') ? match[0] : '/en_GB/' + match[0]))];
+      requireValue(paths.length === 1 && settingsPattern.test(paths[0]), 'settings-discovery-shape', 'The pinned page must identify one settings file.');
+      return { settingsPath: paths[0] };
+    }),
+    settings: descriptor('bmw-settings', null, (value) => {
+      treeHeader = headerFor(value, 'settingsVehicleTree', true); localisationHeader = headerFor(value, 'settingsLocalisation', true);
+      const names = Object.keys(value?.APP?.backend || {}).filter((name) => /^settings(RuleSolver|Rules|Constructibility)$/.test(name));
+      requireValue(names.length === 1, 'settings-header-shape', 'Exactly one direct rule solver profile is required.');
+      solverHeader = headerFor(value, names[0], true); return { publicProfilesQualified: true };
+    }, { cache: false, prepare: async ({ path }) => {
+      requireValue(typeof path === 'string' && settingsPattern.test(path), 'settings-discovery-shape', 'Use the settings file discovered from the pinned page.');
+      return { method: 'GET', url: 'https://configure.bmw.co.uk' + path, headers: {} };
+    } }),
+    discover: descriptor('bmw-model-tree', urls.discover, (value) => {
+      const report = strictModelReport(value, r); treeQualified = true; return report;
+    }, { prepare: async () => {
+      requireValue(treeHeader, 'source-bootstrap-required', 'The memory-only public tree header is unavailable.');
+      return { method: 'GET', url: urls.discover, headers: treeHeader };
+    } }),
+    options: descriptor('bmw-options', urls.options, (value) => {
+      const report = optionsShapeReport(value); const definitions = report.candidates[0]?.definitions;
+      requireValue(report.status === 'schema-review-required' && report.candidates.length === 1 && report.candidates[0].pointer === ''
+        && definitions.every((row) => row.issues.length === 0), 'source-options-shape', 'Use one directly keyed typed source definition map.');
+      for (const request of requestRegistration.candidates) {
+        requireValue(request.includedElements.every((code) => definitions.some((row) => row.code === code && row.option === code))
+          && ['paint', 'fabric', 'rim'].every((type) => request.includedElements.filter((code) => definitions.some((row) => row.code === code && row.optionType === type)).length === 1),
+        'source-candidate-definition', 'Every candidate input and exactly one paint, fabric and rim must occur in the fresh source definitions.');
+      }
+      definitionsQualified = true; return report;
+    }, { prepare: async () => {
+      requireValue(treeQualified && localisationHeader, 'source-tree-required', 'Observe the full registered model before its options.');
+      return { method: 'GET', url: urls.options, headers: localisationHeader };
+    } }),
+    solve: descriptor('bmw-solver', null, (value) => {
+      requireValue(object(value) && typeof value.constructible === 'boolean', 'source-solver-shape', 'The source must declare constructibility.');
+      requireValue(value.constructible, 'source-not-constructible', 'The actual source refused this candidate.');
+      const elements = value.configuration?.elements;
+      requireValue(value.configuration?.modelCode === r.modelCode && object(elements) && Object.keys(elements).length > 0
+        && Object.keys(elements).length <= 320, 'source-solver-shape', 'Retain the complete constructible response for the registered model.');
+      requireValue(Object.entries(elements).every(([code, row]) => /^[A-Z0-9]{4,12}$/.test(code) && object(row) && row.code === code
+        && row.type === (code.startsWith('SE') ? 'accessory' : 'option')), 'source-selection-classification', 'Factory and accessory source types must remain separate.');
+      const factory = Object.keys(elements).filter((code) => elements[code].type === 'option').sort();
+      requireValue(factory.length > 0 && factory.length <= 256, 'source-solver-shape', 'Retain a nonempty bounded factory selection.');
+      return { constructible: true, selectedOptions: factory };
+    }, { prepare: async (request) => {
+      requested(request); requireValue(treeQualified && definitionsQualified && solverHeader, 'source-definitions-required', 'Qualify fresh full model and definitions before solving.');
+      return { method: 'GET', url: bmwPublicRequestUrls(r, request).solve, headers: solverHeader };
     } }),
   };
 }
