@@ -4,9 +4,9 @@ import { CollectionError, normaliseCodes, requireValue } from './configuration-k
 import { assertCollectionHttpObservation } from './collection-session.mjs';
 import { createSettingsShapeRefusal } from './settings-shape-report.mjs';
 import { qualifyBmwSourceFields } from './bmw-source-qualification.mjs';
-import { BMW_BATCH_SOURCE_VERSION, BMW_CONTEXT_SOURCE_VERSION, BMW_OPTIONS_SOURCE_VERSION, BMW_INVENTORY_SOURCE_VERSION,
+import { BMW_BATCH_SOURCE_VERSION, BMW_CONTEXT_SOURCE_VERSION, BMW_OPTIONS_SOURCE_VERSION, BMW_MODEL_OPTIONS_SOURCE_VERSION, BMW_INVENTORY_SOURCE_VERSION,
   validateBmwInventoryRequestRegistration, bmwInventoryRequestUrls, validateBmwBatchPlan, validateBmwModelRegistration,
-  validateBmwContextRequestRegistration, validateBmwOptionsRequestRegistration, bmwBatchRequestRegistration, bmwPublicRequestUrls } from './bmw-public-registration.mjs';
+  validateBmwContextRequestRegistration, validateBmwOptionsRequestRegistration, validateBmwModelOptionsRequestRegistration, bmwModelOptionsRequestUrls, bmwBatchRequestRegistration, bmwPublicRequestUrls } from './bmw-public-registration.mjs';
 
 const object = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 const same = (a, b) => inputDigest(a) === inputDigest(b);
@@ -328,17 +328,18 @@ export function publicBmwInventoryOperations(input) {
 }
 
 export function validatePublicBmwOptionsPlan(plan) {
-  const l = plan?.limits;
-  requireValue(object(plan) && Object.keys(plan).every((key) => ['schemaVersion', 'planId', 'qualificationDate', 'source', 'modelRegistration', 'limits'].includes(key))
-    && plan.schemaVersion === 'bmw-source-options-plan.v1' && typeof plan.planId === 'string' && /^[A-Za-z0-9][A-Za-z0-9.-]{0,95}$/.test(plan.planId)
-    && calendarDate(plan.qualificationDate) && same(plan.source, { id: 'bmw-uk-public', version: BMW_OPTIONS_SOURCE_VERSION, kind: 'public-bmw-uk' })
+  const l = plan?.limits; const modelOptions = plan?.source?.version === BMW_MODEL_OPTIONS_SOURCE_VERSION;
+  requireValue(object(plan) && Object.keys(plan).every((key) => ['schemaVersion', 'planId', 'qualificationDate', 'source', 'modelRegistration', 'limits', ...(modelOptions ? ['lineRegistration'] : [])].includes(key))
+    && plan.schemaVersion === (modelOptions ? 'bmw-source-model-options-plan.v1' : 'bmw-source-options-plan.v1') && typeof plan.planId === 'string' && /^[A-Za-z0-9][A-Za-z0-9.-]{0,95}$/.test(plan.planId)
+    && calendarDate(plan.qualificationDate) && same(plan.source, { id: 'bmw-uk-public', version: modelOptions ? BMW_MODEL_OPTIONS_SOURCE_VERSION : BMW_OPTIONS_SOURCE_VERSION, kind: 'public-bmw-uk' })
     && object(l) && l.maxAttempts === 1 && l.retryDelayMs === 0 && l.concurrency === 1 && l.imageRequests === 0
     && l.sourceAttempts === 4 && bounded(l.sourceBytes, 1, 4194304) && bounded(l.responseBytes, 1, 1048576)
     && bounded(l.operationTimeoutMs, 1, 10000) && bounded(l.deadlineMs, 1, 90000) && bounded(l.checkpointBytes, 1024, 4194304)
     && bounded(l.cacheEntries, 1, 16) && bounded(l.cacheRetentionMs, 1, 86400000)
     && same(l.requestBudgets, { page: 1, settings: 1, discover: 1, options: 1 }),
   'source-options-plan', 'Allocate four exact options-inspection GETs with an explicit trim and no candidate or solver budget.');
-  validateBmwOptionsRequestRegistration({ model: plan.modelRegistration });
+  if (modelOptions) validateBmwModelOptionsRequestRegistration({ model: plan.modelRegistration, line: plan.lineRegistration });
+  else validateBmwOptionsRequestRegistration({ model: plan.modelRegistration });
   return structuredClone(plan);
 }
 
@@ -363,6 +364,36 @@ function strictTrimRelationships(value, r) {
   });
 }
 
+function modelOptionsRelationships(value, r, binding) {
+  return r.aliases.map(alias => {
+    const pointer = `/${alias}/modelRanges/${r.catalogueRangeKey}/lines/${binding.lineKey}`;
+    const line = value?.[alias]?.modelRanges?.[r.catalogueRangeKey]?.lines?.[binding.lineKey];
+    const query = binding.optionsQuery; const trimmed = query.kind === 'trim';
+    requireValue(object(line) && object(line.defaultModel)
+      && line.defaultModel.modelCode === binding.defaultModel.modelCode && line.defaultModel.agModelCode === binding.defaultModel.agModelCode
+      && (trimmed ? line.option === query.code : !Object.hasOwn(line, 'option'))
+      && Array.isArray(line.includedTransmissionVariants) && bounded(line.includedTransmissionVariants.length, 1, 256),
+    'source-line-relationship', 'The fresh exact line, observed compact default and explicit query must match their registration.');
+    const matches = line.includedTransmissionVariants.map((row, index) => ({ configuration: row?.configuration, index }))
+      .filter(({ configuration }) => configuration?.modelCode === r.modelCode);
+    requireValue(matches.length === 1 && matches[0].index === binding.includedIndex && object(matches[0].configuration.elements)
+      && Object.keys(matches[0].configuration.elements).length <= 320 && (!trimmed || Object.hasOwn(matches[0].configuration.elements, query.code)),
+    'source-line-relationship', 'One exact included variant must name the full requested model and any explicit line option.');
+    const includedPointer = `${pointer}/includedTransmissionVariants/${binding.includedIndex}/configuration`;
+    return { pointer, optionsQuery: structuredClone(query), option: trimmed ? { pointer: `${pointer}/option`, value: line.option } : { present: false },
+      defaultModel: { pointer: `${pointer}/defaultModel`, modelCode: line.defaultModel.modelCode, agModelCode: line.defaultModel.agModelCode },
+      included: { pointer: includedPointer, modelCode: matches[0].configuration.modelCode,
+        ...(trimmed ? { elementPointer: `${includedPointer}/elements/${query.code}`, elementCode: query.code } : {}) } };
+  });
+}
+
+function optionsRequestRegistration(plan) {
+  return { model: plan.modelRegistration, ...(plan.lineRegistration ? { line: plan.lineRegistration } : {}) };
+}
+function optionsRequestUrls(plan) {
+  return plan.lineRegistration ? bmwModelOptionsRequestUrls(optionsRequestRegistration(plan)) : bmwPublicRequestUrls(plan.modelRegistration);
+}
+
 function sealedObservation(document) {
   const bytes = JSON.stringify(document) + '\n';
   return { document, bytes: Buffer.byteLength(bytes), sha256: createHash('sha256').update(bytes).digest('hex') };
@@ -371,14 +402,14 @@ function sealedObservation(document) {
 function typedOptionsReport(value, trim) {
   const report = optionsShapeReport(value); const definitions = report.candidates[0]?.definitions;
   requireValue(report.status === 'schema-review-required' && report.candidates.length === 1 && report.candidates[0].pointer === ''
-    && definitions.every((row) => row.issues.length === 0) && definitions.some((row) => row.code === trim && row.option === trim),
+    && definitions.every((row) => row.issues.length === 0) && (trim === undefined || definitions.some((row) => row.code === trim && row.option === trim)),
   'source-options-shape', 'Observe one directly keyed typed definition map containing the explicit source line option.');
   return { status: 'typed-definitions-observed', candidates: [{ pointer: '', definitions }], admission: false };
 }
 
 /** Revalidate safe retained values as well as their byte hashes; an outer checkpoint hash alone is insufficient. */
 export function validatePublicBmwOptionsObservations(input, retained, mode) {
-  const plan = validatePublicBmwOptionsPlan(input); const r = plan.modelRegistration; const urls = bmwPublicRequestUrls(r);
+  const plan = validatePublicBmwOptionsPlan(input); const r = plan.modelRegistration; const urls = optionsRequestUrls(plan);
   const checkArtifact = (artifact, operation, capability, schemaVersion, fields, code) => {
     const document = artifact?.document; const metadata = document?.observation;
     requireValue(object(artifact) && same(Object.keys(artifact).sort(), ['bytes', 'document', 'sha256'])
@@ -411,6 +442,18 @@ export function validatePublicBmwOptionsObservations(input, retained, mode) {
   requireValue(same(retained.trimRelationships, context.trimRelationships) && context.trimRelationships.length === r.aliases.length,
     'source-trim-binding', 'The retained line relationships must equal the same-response context projection.');
   try {
+    if (plan.lineRegistration) {
+      const binding = plan.lineRegistration; const query = binding.optionsQuery;
+      context.trimRelationships.forEach((row, i) => {
+        const variants = Array.from({ length: binding.includedIndex + 1 }, () => ({}));
+        variants[binding.includedIndex] = { configuration: { modelCode: row.included.modelCode,
+          elements: query.kind === 'trim' ? { [row.included.elementCode]: {} } : {} } };
+        tree[r.aliases[i]].modelRanges[r.catalogueRangeKey].lines[binding.lineKey] = {
+          ...(Object.hasOwn(row.option, 'value') ? { option: row.option.value } : {}),
+          defaultModel: { modelCode: row.defaultModel.modelCode, agModelCode: row.defaultModel.agModelCode }, includedTransmissionVariants: variants };
+      });
+      requireValue(same(modelOptionsRelationships(tree, r, binding), context.trimRelationships), 'source-trim-binding', 'The retained registered line/default/included relationship changed.');
+    } else {
     context.trimRelationships.forEach((row, i) => {
       const index = Number(new RegExp(`^/${r.aliases[i]}/modelRanges/${r.catalogueRangeKey}/lines/${r.optionsTrim}/includedTransmissionVariants/([0-9]+)/configuration$`).exec(row.included.pointer)?.[1]);
       requireValue(bounded(index, 0, 255), 'source-trim-binding', 'Retain the exact bounded included-variant pointer.');
@@ -420,6 +463,7 @@ export function validatePublicBmwOptionsObservations(input, retained, mode) {
         defaultModel: { modelCode: row.defaultModel.modelCode, agModelCode: row.defaultModel.agModelCode }, includedTransmissionVariants: variants };
     });
     requireValue(same(strictTrimRelationships(tree, r), context.trimRelationships), 'source-trim-binding', 'The retained source line relationship changed.');
+    }
   } catch { requireValue(false, 'source-trim-binding', 'The retained source line relationship changed.'); }
   if (retained.optionsObservation !== null) {
     const options = checkArtifact(retained.optionsObservation, 'options', 'bmw-options', 'bmw-source-options-observation.v1',
@@ -430,15 +474,15 @@ export function validatePublicBmwOptionsObservations(input, retained, mode) {
         'source-options-binding', 'Retain distinct directly keyed typed source definitions.');
       const definitions = Object.fromEntries(rows.map((row) => [row.code, { option: row.option, optionType: row.optionType,
         ...(Object.hasOwn(row, 'longDescription') ? { phrases: { longDescription: row.longDescription } } : {}) }]));
-      requireValue(same(typedOptionsReport(definitions, r.optionsTrim), options.report), 'source-options-binding', 'The retained typed definitions changed.');
+      requireValue(same(typedOptionsReport(definitions, plan.lineRegistration ? plan.lineRegistration.optionsQuery.code : r.optionsTrim), options.report), 'source-options-binding', 'The retained typed definitions changed.');
     } catch { requireValue(false, 'source-options-binding', 'The retained typed source definitions changed.'); }
   }
 }
 
 /** Four GETs through the existing executor. Headers live only in this operation closure. */
 export function publicBmwOptionsOperations(input) {
-  const plan = validatePublicBmwOptionsPlan(input); const r = plan.modelRegistration; const requestRegistration = { model: r };
-  const urls = bmwPublicRequestUrls(r); let treeHeader; let localisationHeader; let treeQualified = false;
+  const plan = validatePublicBmwOptionsPlan(input); const r = plan.modelRegistration; const requestRegistration = optionsRequestRegistration(plan);
+  const urls = optionsRequestUrls(plan); let treeHeader; let localisationHeader; let treeQualified = false;
   const descriptor = (capability, url, project, extra = {}) => ({ sourceId: plan.source.id, sourceVersion: plan.source.version,
     kind: 'read-only-http', capability, strictJson: true, requestRegistration, prepare: async () => ({ method: 'GET', url, headers: {} }),
     project: (value, request, metadata) => {
@@ -471,14 +515,14 @@ export function publicBmwOptionsOperations(input) {
       const report = strictModelReport(value, r);
       const appearances = Object.entries(value).filter(([, group]) => object(group?.modelRanges?.[r.catalogueRangeKey]?.models?.[r.modelCode])).map(([alias]) => alias).sort();
       requireValue(same(appearances, [...r.aliases].sort()), 'source-model-alias-conflict', 'Fresh direct aliases must equal the complete registered alias set.');
-      const trimRelationships = strictTrimRelationships(value, r); treeQualified = true;
+      const trimRelationships = plan.lineRegistration ? modelOptionsRelationships(value, r, plan.lineRegistration) : strictTrimRelationships(value, r); treeQualified = true;
       return sealedObservation({ schemaVersion: 'bmw-source-options-context-observation.v1', observation: metadata, report, trimRelationships });
     }, { prepare: async () => {
       requireValue(treeHeader, 'source-bootstrap-required', 'The memory-only public tree header is unavailable.');
       return { method: 'GET', url: urls.discover, headers: treeHeader };
     } }),
     options: descriptor('bmw-options', urls.options, (value, _request, metadata) => sealedObservation({
-      schemaVersion: 'bmw-source-options-observation.v1', observation: metadata, report: typedOptionsReport(value, r.optionsTrim) }),
+      schemaVersion: 'bmw-source-options-observation.v1', observation: metadata, report: typedOptionsReport(value, plan.lineRegistration ? plan.lineRegistration.optionsQuery.code : r.optionsTrim) }),
     { prepare: async () => {
       requireValue(treeQualified && localisationHeader, 'source-tree-required', 'Corroborate the full model and explicit same-response line relationship before options.');
       return { method: 'GET', url: urls.options, headers: localisationHeader };

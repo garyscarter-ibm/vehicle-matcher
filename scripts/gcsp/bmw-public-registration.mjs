@@ -3,6 +3,7 @@ import { requireValue } from './configuration-key.mjs';
 
 export const BMW_BATCH_SOURCE_VERSION = 'f59-batch-20261107.v1';
 export const BMW_CONTEXT_SOURCE_VERSION = 'f59-context-qualification-20261107.v1';
+export const BMW_MODEL_OPTIONS_SOURCE_VERSION = 'f59-model-options-qualification-20261107.v1';
 export const BMW_OPTIONS_SOURCE_VERSION = 'f59-options-qualification-20261107.v1';
 export const BMW_INVENTORY_SOURCE_VERSION = 'f59-range-inventory-20261107.v1';
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
@@ -62,6 +63,32 @@ export function validateBmwOptionsRequestRegistration(value) {
   try { validateBmwModelRegistration(value.model); }
   catch { requireValue(false, 'source-options-plan', 'Use the complete registered model context and explicit trim.'); }
   return structuredClone(value);
+}
+
+/** Model-options inspection binds an observed line and explicit query without borrowing its default model. */
+export function validateBmwModelOptionsRequestRegistration(value) {
+  const line = value?.line; const query = line?.optionsQuery;
+  requireValue(object(value) && same(Object.keys(value).sort(), ['line', 'model']) && object(value.model)
+    && !Object.hasOwn(value.model, 'optionsTrim') && object(line)
+    && same(Object.keys(line).sort(), ['defaultModel', 'includedIndex', 'lineKey', 'optionsQuery'])
+    && typeof line.lineKey === 'string' && /^[A-Z0-9_]{1,64}$/.test(line.lineKey)
+    && object(line.defaultModel) && same(Object.keys(line.defaultModel).sort(), ['agModelCode', 'modelCode'])
+    && code(line.defaultModel.modelCode) && code(line.defaultModel.agModelCode) && bounded(line.includedIndex, 0, 255)
+    && object(query) && (query.kind === 'untrimmed' && same(Object.keys(query), ['kind'])
+      || query.kind === 'trim' && same(Object.keys(query).sort(), ['code', 'kind']) && code(query.code) && query.code === line.lineKey),
+  'source-options-plan', 'Pin the exact line/default/included variant and an explicit trim or no-trim query.');
+  try { validateBmwModelRegistration(value.model); }
+  catch { requireValue(false, 'source-options-plan', 'Use the complete registered full model context without a borrowed trim.'); }
+  return structuredClone(value);
+}
+
+export function bmwModelOptionsRequestUrls(input) {
+  const registration = validateBmwModelOptionsRequestRegistration(input);
+  const urls = bmwPublicRequestUrls(registration.model);
+  // Remove the legacy candidate default before constructing this independently registered route.
+  const options = new URL(urls.options); options.search = '';
+  if (registration.line.optionsQuery.kind === 'trim') options.searchParams.set('trim', registration.line.optionsQuery.code);
+  return { page: urls.page, discover: urls.discover, options: options.href };
 }
 
 export function validateBmwCandidateRequest(value) {

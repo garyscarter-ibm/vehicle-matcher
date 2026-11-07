@@ -1,0 +1,132 @@
+{
+  "schemaVersion": "f70-model-options-offline-results.v1",
+  "sourceLeadReview": "Minnie approved separate explicit-query path and no-option semantics; actual diff review requested",
+  "designImpact": "Internal source registration/projection branch only; no component/store/dependency/connection topology change. draw.io skill scope check: unchanged high-level design.",
+  "sourceTraffic": false,
+  "configurationsAdmitted": 0,
+  "capacityCredit": 0,
+  "checks": [
+    {
+      "cleanup": {
+        "absent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/.claude/f58-63-overnight-20261106/f58/f70-remaining-options/offline/red/ownership/22a11ea0320d47928327ae1a30a06146.json",
+        "root": "/private/tmp/test-stamp-shard-22a11ea0320d47928327ae1a30a06146"
+      },
+      "identity": {
+        "scripts/gcsp/bmw-public-registration.mjs": "61d9d5283c6995a55556e767f9a722954becd8899c73c5bd784bb796d728c206",
+        "scripts/gcsp/collect-fleet.mjs": "a89868ec97add3365bae6ab539e6c88206818cdbe16ac34b1142461382446a1d",
+        "scripts/gcsp/collection-session.mjs": "ba4e5b1bf632cb05993fa0b0b4d24de7559f80baed1111999911a3e713ec6a8c",
+        "scripts/gcsp/public-bmw-source.mjs": "3a3172eb5b854784c44b08bcad28ead4f45393d362c026eb802fb643ce04276e",
+        "server/test/gcsp-bmw-model-options-qualification.test.js": "b91d6b547690f3370ee9324091c9f565c6f7ef6e0920bfab5fda076adb8590af"
+      },
+      "phase": "red",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/.claude/f58-63-overnight-20261106/f58/f70-remaining-options/offline/red/test.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/.claude/f58-63-overnight-20261106/f58/f70-remaining-options/offline/red/ownership/22a11ea0320d47928327ae1a30a06146.json",
+        "peak_rss": 2260992,
+        "peak_scratch": 0,
+        "rc": 1,
+        "wall": 0.24599279200000002
+      },
+      "selected": [
+        "server/test/gcsp-bmw-model-options-qualification.test.js"
+      ],
+      "sourceTraffic": false,
+      "testSummary": {
+        "tests": 22,
+        "pass": 1,
+        "fail": 21,
+        "expected": "new source-version plan rejected before implementation"
+      }
+    },
+    {
+      "cleanup": {
+        "absent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/.claude/f58-63-overnight-20261106/f58/f70-remaining-options/offline/green/ownership/2c740632ad82429d8032f2037a52fc63.json",
+        "root": "/private/tmp/test-stamp-shard-2c740632ad82429d8032f2037a52fc63"
+      },
+      "identity": {
+        "scripts/gcsp/bmw-public-registration.mjs": "0ab37aec216703da68f09ffd7006a2f40b4d3e8eca113c4f59e8e0c54e489a74",
+        "scripts/gcsp/collect-fleet.mjs": "a89868ec97add3365bae6ab539e6c88206818cdbe16ac34b1142461382446a1d",
+        "scripts/gcsp/collection-session.mjs": "aa7dc0b1241e2c9536c28d7806940230fc397ca7e057336dc49ef60e73bff078",
+        "scripts/gcsp/public-bmw-source.mjs": "cd318ff5918fa52dd56848b4664d9b68b5096083bc401bbc2cec4fec5c9c7ea6",
+        "server/test/gcsp-bmw-context-qualification.test.js": "31f67d169abbbc076d3355ebda320050ab0ecc7e304012eea5ecad0b295d54f7",
+        "server/test/gcsp-bmw-model-options-qualification.test.js": "b91d6b547690f3370ee9324091c9f565c6f7ef6e0920bfab5fda076adb8590af",
+        "server/test/gcsp-bmw-options-qualification.test.js": "f2788898e10027366df4fbd4dd1682385dc549c5867b32b2a1210c1aa493146e",
+        "server/test/gcsp-fleet-collector.test.js": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88"
+      },
+      "phase": "green",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/.claude/f58-63-overnight-20261106/f58/f70-remaining-options/offline/green/test.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/.claude/f58-63-overnight-20261106/f58/f70-remaining-options/offline/green/ownership/2c740632ad82429d8032f2037a52fc63.json",
+        "peak_rss": 135331840,
+        "peak_scratch": 41216,
+        "rc": 1,
+        "wall": 3.47312
+      },
+      "selected": [
+        "server/test/gcsp-bmw-model-options-qualification.test.js",
+        "server/test/gcsp-bmw-options-qualification.test.js",
+        "server/test/gcsp-bmw-context-qualification.test.js",
+        "server/test/gcsp-fleet-collector.test.js"
+      ],
+      "sourceTraffic": false,
+      "testSummary": {
+        "status": "failed",
+        "reasons": [
+          "new version omitted from executor persisted registration",
+          "existing collector test dependency pg unavailable before owned dependency symlink"
+        ]
+      }
+    },
+    {
+      "cleanup": {
+        "absent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/.claude/f58-63-overnight-20261106/f58/f70-remaining-options/offline/green2/ownership/c7d0ab34d265488ab88da9e07d2b50ef.json",
+        "root": "/private/tmp/test-stamp-shard-c7d0ab34d265488ab88da9e07d2b50ef"
+      },
+      "dependencyLinkRemoved": true,
+      "identity": {
+        "scripts/gcsp/bmw-public-registration.mjs": "0ab37aec216703da68f09ffd7006a2f40b4d3e8eca113c4f59e8e0c54e489a74",
+        "scripts/gcsp/collect-fleet.mjs": "a89868ec97add3365bae6ab539e6c88206818cdbe16ac34b1142461382446a1d",
+        "scripts/gcsp/collection-session.mjs": "75c116e6119b256a5b576107f2838e2bb5941841ce5f5ffda812a9f2f38ec37b",
+        "scripts/gcsp/public-bmw-source.mjs": "cd318ff5918fa52dd56848b4664d9b68b5096083bc401bbc2cec4fec5c9c7ea6",
+        "server/test/gcsp-bmw-context-qualification.test.js": "31f67d169abbbc076d3355ebda320050ab0ecc7e304012eea5ecad0b295d54f7",
+        "server/test/gcsp-bmw-model-options-qualification.test.js": "b91d6b547690f3370ee9324091c9f565c6f7ef6e0920bfab5fda076adb8590af",
+        "server/test/gcsp-bmw-options-qualification.test.js": "f2788898e10027366df4fbd4dd1682385dc549c5867b32b2a1210c1aa493146e",
+        "server/test/gcsp-fleet-collector.test.js": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88"
+      },
+      "phase": "green2",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/.claude/f58-63-overnight-20261106/f58/f70-remaining-options/offline/green2/test.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/.claude/f58-63-overnight-20261106/f58/f70-remaining-options/offline/green2/ownership/c7d0ab34d265488ab88da9e07d2b50ef.json",
+        "peak_rss": 268713984,
+        "peak_scratch": 28832,
+        "rc": 0,
+        "wall": 14.446191208
+      },
+      "selected": [
+        "server/test/gcsp-bmw-model-options-qualification.test.js",
+        "server/test/gcsp-bmw-options-qualification.test.js",
+        "server/test/gcsp-bmw-context-qualification.test.js",
+        "server/test/gcsp-fleet-collector.test.js"
+      ],
+      "sourceTraffic": false,
+      "testSummary": {
+        "tests": 123,
+        "pass": 123,
+        "fail": 0,
+        "skipped": 0,
+        "scope": "new model-options, old strict-trim options, context and common collector boundary"
+      }
+    }
+  ],
+  "retention": "Bounded failure logs retained under launcher output; successful verbose log removed; no copied source bodies",
+  "compatibilityException": null
+}
