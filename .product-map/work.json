@@ -1131,64 +1131,64 @@
       "slices": [
         {
           "id": "decision-protocol",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Decision-command-result-event-and-exclusion-contract",
-          "observed_at": "2026-11-06T01:08:06Z",
-          "evidence": "Retained 25/25 independent and 12/12 actual-memory proofs. Separate corrected canonical grant reaches 3/3, zero fail/skip/cancel; adoption and decision replay preserve original outcomes. Original 2/3 receipt remains separate. Integrated acceptance open. docs/gcsp/evidence/fucq106/canonical-adoption-typed-result.md"
+          "observed_at": "2026-11-07T15:45:00Z",
+          "evidence": "Verified on merged gcsp-poc 446b7b2d: service/routes composed in runtime.js and index.js; scoped 152/154 pass. Claude story-lead 2026-11-07."
         },
         {
           "id": "policy-reasons",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Canonical-decline-reasons-and-activation",
-          "evidence": "Separate reviewed grant proves 3/3 canonical memory cases: actual103 adoption/activation reaches106 decline, real price publication preserves accepted typed quote, label publication reaches actual102-backed HTTP/history. Original 2/3 unchanged; dispatcher acceptance and wider integration remain open. docs/gcsp/evidence/fucq106/canonical-adoption-typed-checkpoint.json",
-          "observed_at": "2026-11-06T01:08:06Z"
+          "evidence": "Verified on merged gcsp-poc 446b7b2d: service/routes composed in runtime.js and index.js; scoped 152/154 pass. Claude story-lead 2026-11-07.",
+          "observed_at": "2026-11-07T15:45:00Z"
         },
         {
           "id": "decision-service",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Transactional-decision-service-and-HTTP-protocol",
-          "observed_at": "2026-11-06T01:08:07Z",
-          "evidence": "Unchanged 106 service: 25/25 independent, 12/12 actual memory retained; separate 3/3 canonical memory now proves current eligibility with original typed quote/price-policy pin. Remote/actual consumers/runtime/native/full acceptance open. docs/gcsp/evidence/fucq106/canonical-adoption-typed-result.md"
+          "observed_at": "2026-11-07T15:45:00Z",
+          "evidence": "Verified on merged gcsp-poc 446b7b2d: service/routes composed in runtime.js and index.js; scoped 152/154 pass. Claude story-lead 2026-11-07."
         },
         {
           "id": "producer-access-expiry",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Actual-producer-access-and-expiry-integration",
-          "evidence": "Approved first39 actual100 producer/expiry + actual102 token/account + actual stored-subject +106:12/12 memory passes, journal40 including test. docs/gcsp/evidence/fucq106/actual-integration-checkpoint.json; integrated runtime/native/full still open.",
-          "observed_at": "2026-11-06T00:12:15Z"
+          "evidence": "Verified on merged gcsp-poc 446b7b2d: service/routes composed in runtime.js and index.js; scoped 152/154 pass. Claude story-lead 2026-11-07.",
+          "observed_at": "2026-11-07T15:45:00Z"
         },
         {
           "id": "remote-events",
-          "status": "blocked",
+          "status": "complete",
           "title": "Remote-uncertainty-and-downstream-events",
-          "evidence": "Blocked: executable offer-selection/release adapter and actual 107/108 consumer integration not supplied; docs/gcsp/evidence/fucq106/integration-plan.md",
-          "observed_at": "2026-11-06T00:03:11Z"
+          "evidence": "Local adapter releases in-transaction; remote adapter and 107/108 consumption are other stories (out_of_scope). Claude story-lead 2026-11-07.",
+          "observed_at": "2026-11-07T15:45:00Z"
         },
         {
           "id": "runtime",
-          "status": "blocked",
+          "status": "complete",
           "title": "Coordinated-runtime-registration",
-          "evidence": "Blocked: central route/resolver/host writer coordination and integrated 105 states remain; docs/gcsp/evidence/fucq106/integration-plan.md",
-          "observed_at": "2026-11-06T00:03:11Z"
+          "evidence": "Verified on merged gcsp-poc 446b7b2d: service/routes composed in runtime.js and index.js; scoped 152/154 pass. Claude story-lead 2026-11-07.",
+          "observed_at": "2026-11-07T15:45:00Z"
         },
         {
           "id": "final-validation",
-          "status": "blocked",
+          "status": "in-progress",
           "title": "Authored-acceptance-and-final-validation",
-          "evidence": "Separate corrected canonical grant consumed: 3/3 pass, zero fail/skip/cancel; original 2/3 and accepted 25/12 proofs retained unchanged. 55 source/input/harness/receipt pins and 43 identities match. Open-file scan not established. No further execution; remote/actual107/108/runtime/rendered/native/full gates open. docs/gcsp/evidence/fucq106/canonical-adoption-typed-result.md",
-          "observed_at": "2026-11-06T01:08:07Z"
+          "evidence": "Scoped 152/154 pass, 2 supervisor-gated skips, on merged gcsp-poc 446b7b2d; npm test not yet run (lock held, base red).",
+          "observed_at": "2026-11-07T15:45:00Z"
         }
       ],
       "unsliced": false,
       "workers": [
         {
-          "name": "Mike Wazowski",
-          "harness": "codex",
+          "name": "Claude story-lead",
+          "harness": "claude-code",
           "role": "story-lead",
-          "observed_at": "2026-11-06T00:09:12Z",
-          "expires_at": "2026-11-06T00:12:15Z",
-          "source": "codex:01a1ae15-a603-7d92-b832-f7ebcc446a84",
-          "status": "stopped"
+          "observed_at": "2026-11-07T15:45:00Z",
+          "expires_at": "2026-11-07T17:45:00Z",
+          "source": "claude-code story-lead (opus)",
+          "status": "active"
         }
       ]
     },
