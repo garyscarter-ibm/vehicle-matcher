@@ -2745,7 +2745,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T07:02:21Z",
+      "observed_at": "2026-11-07T07:06:21Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62",
       "claim_evidence": "Claimed owning035 at34a793e3; root checkpoint authorisation, Jira OAuth unavailable. Full acceptance remains open.",
       "slices": [
@@ -2802,8 +2802,8 @@
           "id": "integration",
           "status": "in-progress",
           "title": "Application and deployed integration acceptance",
-          "observed_at": "2026-11-07T06:31:35Z",
-          "evidence": ".10 public26asset restore/offlinerepeat/5boundaryrefs/4recoveryedges/ordinaryactivation passed. Localordinary restored exact.9 after50MiBGitguard; Renderbuild selects publicpinned.10. ActualLinux/deployment pending; Mediumconsumerdefect deferred."
+          "observed_at": "2026-11-07T07:06:21Z",
+          "evidence": "Actual65f9deployment7617886276 succeeded07:04:44UTC. .10exact health/readiness/firstDTO3GET pass0.489s;4666source live. Final10k selection sealed; .11strictaudit timedout300s, bounded10kproof pending. docs/gcsp/evidence/f58-63-parent10351-checkpoint-2026-11-07."
         },
         {
           "id": "large-artifact-restore",
