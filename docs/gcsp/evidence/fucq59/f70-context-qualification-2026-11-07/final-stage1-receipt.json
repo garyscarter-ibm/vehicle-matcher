@@ -1,0 +1,173 @@
+{
+  "schemaVersion": "f70-context-stage1-final-receipt.v1",
+  "observedAt": "2026-11-07T01:28:04.232316+00:00",
+  "status": "finite qualification-only stage completed; all trim fields unknown; options and solver unallocated",
+  "sourceCapabilityCommit": "03f04ec812b0e8c6aa97850c2595173b6fa850d5",
+  "preparedCommit": "7fdccb66491157c05fed98ea034b45a493adf265",
+  "stage1ManifestDigest": "ce14282252e10dbadedb6f7afcc69ba142947215c5b390fc485e124dd365725b",
+  "stage1ManifestSha256": "094269683d9d6c14638be80afbe642e2e76f57cdce1d2b4f472e4104528723e2",
+  "verifierSha256": "b564b7187f11e84d81dcbc4800314e89efe55e366c5afdb3a3cc52444ead650a",
+  "contexts": [
+    {
+      "context": "context01",
+      "modelCode": "1F7A",
+      "agModelCode": "82GE",
+      "reason": "source-trim-unknown",
+      "attempts": 3,
+      "decodedBytes": 751668,
+      "sourceElapsedMs": 1214,
+      "peakChildRssBytes": 82690048,
+      "sourcePlanDigest": "a91bfb509b263ce24b68323b41cf5dc75745d3e58cb0c3e49685d24a6eb98574",
+      "primarySha256": "cee99c709c47841b04cbf90879f71683bc4d18ff7e9e8bda2500c724d726b506",
+      "treeSha256": "33ef1c5dae8514df06292ad22d1cbbcb4e36fec3a29e42e0e60406fc692d35aa",
+      "validationSha256": "822ad70c6d43f2a7bab1f337eef144a90490f3bb27483952b7f3bd926c97216f",
+      "missingFields": [
+        "prodDate",
+        "modelName",
+        "modelNameRaw",
+        "fuelTypeCode",
+        "trim"
+      ],
+      "cleanupVerified": true
+    },
+    {
+      "context": "context02",
+      "modelCode": "1F7B",
+      "agModelCode": "82GE",
+      "reason": "source-trim-unknown",
+      "attempts": 3,
+      "decodedBytes": 751668,
+      "sourceElapsedMs": 821,
+      "peakChildRssBytes": 82771968,
+      "sourcePlanDigest": "ee2b552cf9be3d1875f364ea14d22df4f7926cac58a337363882d229bac4e897",
+      "primarySha256": "0e4da61ba2f547bfd3a38596ca6697e727194358e7261721ce87652b29d30ffb",
+      "treeSha256": "eb21b10d81c008c77b66d0d5b448183ccc2c8f13330b0ecadc7fc976fbb59fb1",
+      "validationSha256": "cdb301d4f0123cb61322ca1bab5e8e5b95a90f162a6a666e4e0ce49f52dbb389",
+      "missingFields": [
+        "prodDate",
+        "modelName",
+        "modelNameRaw",
+        "fuelTypeCode",
+        "trim"
+      ],
+      "cleanupVerified": true
+    },
+    {
+      "context": "context03",
+      "modelCode": "1F7C",
+      "agModelCode": "22GE",
+      "reason": "source-trim-unknown",
+      "attempts": 3,
+      "decodedBytes": 751668,
+      "sourceElapsedMs": 940,
+      "peakChildRssBytes": 82739200,
+      "sourcePlanDigest": "a990131ada2fd06434aa327c4031b9302a50e2da14d32ed36e4131650536834c",
+      "primarySha256": "0af9cb267a9a94969f81ce0a69d859ce8a1a5ef7d514f07539b38a6cb4418241",
+      "treeSha256": "5596ab84aa7d81db67f136d78d960a3e681cdae707a748a6a1228a4e68672891",
+      "validationSha256": "aa1624b898a09c4eb35bbf16861f699b48876bc68f05b7149703c9f9e7903bf1",
+      "missingFields": [
+        "prodDate",
+        "modelName",
+        "modelNameRaw",
+        "fuelTypeCode",
+        "trim"
+      ],
+      "cleanupVerified": true
+    },
+    {
+      "context": "context04",
+      "modelCode": "1F7D",
+      "agModelCode": "62GE",
+      "reason": "source-trim-unknown",
+      "attempts": 3,
+      "decodedBytes": 751668,
+      "sourceElapsedMs": 798,
+      "peakChildRssBytes": 82149376,
+      "sourcePlanDigest": "13e6be224f7046ed20d36027c32d53c9fb7e5c8cf14f4d4c65b4e27116cc275a",
+      "primarySha256": "eb21a88c0e55b76e0241bc110b533c89a6e60e0a171385037c0e661c0d780295",
+      "treeSha256": "bb9f4ca5611c85901c2ce575cbcdef4d3ebd8b54588336e8c836ae1f1a5181c5",
+      "validationSha256": "7590d3f46f314f08735efa7cd5f74bc5befc0f1891598bcd064fc92b25bc5085",
+      "missingFields": [
+        "prodDate",
+        "modelName",
+        "modelNameRaw",
+        "fuelTypeCode",
+        "trim"
+      ],
+      "cleanupVerified": true
+    },
+    {
+      "context": "context05",
+      "modelCode": "1F7E",
+      "agModelCode": "82GE",
+      "reason": "source-trim-unknown",
+      "attempts": 3,
+      "decodedBytes": 751668,
+      "sourceElapsedMs": 900,
+      "peakChildRssBytes": 82395136,
+      "sourcePlanDigest": "0d79eec14aa78aa516ab49c2243fa746f11859063a04c470a4c775199a3249c9",
+      "primarySha256": "436e8dd862d1e56d05522c2c62c5b1595a9872018f8e8351a6808580efab42bb",
+      "treeSha256": "4ebc879eb551f211709bbe0835b9e29a757522989a6faefe6c29bd388343790e",
+      "validationSha256": "efc5b5f37a9521585890793798f31969ff33b3542dc8660c7046d3a888a276bd",
+      "missingFields": [
+        "prodDate",
+        "modelName",
+        "modelNameRaw",
+        "fuelTypeCode",
+        "trim"
+      ],
+      "cleanupVerified": true
+    },
+    {
+      "context": "context06",
+      "modelCode": "1F7F",
+      "agModelCode": "62GE",
+      "reason": "source-trim-unknown",
+      "attempts": 3,
+      "decodedBytes": 751668,
+      "sourceElapsedMs": 835,
+      "peakChildRssBytes": 82984960,
+      "sourcePlanDigest": "bba8f80e241bae26bb43daf7a8c6678bc6566df5035cde598ed0345a870c1bc6",
+      "primarySha256": "58b0c2918cf4127ade8a269822a051ff1c4a75f1cca7836ae1be24c5bc282f60",
+      "treeSha256": "f336f47d7641ca8520f41e5c226d6cacb24dc576fc850d8b6cd463861be074f1",
+      "validationSha256": "2923e374841efa5742b468b933aad7c35ae85df82d42bc1cd85014d67422d6d4",
+      "missingFields": [
+        "prodDate",
+        "modelName",
+        "modelNameRaw",
+        "fuelTypeCode",
+        "trim"
+      ],
+      "cleanupVerified": true
+    }
+  ],
+  "actualGetRequests": 18,
+  "decodedBytes": 4510008,
+  "sourceElapsedMs": 5508,
+  "peakChildRssBytes": 82984960,
+  "optionsRequests": 0,
+  "solverRequests": 0,
+  "retries": 0,
+  "newConfigurations": 0,
+  "sourceCapacityCredit": 0,
+  "priorAdmittedConfigurationsUnchanged": 340,
+  "allCleanupVerified": true,
+  "removedLiveScratchBytes": 0,
+  "remainingReleasedRequests": 0,
+  "reservedButUnallocated": {
+    "options": 6,
+    "solver": 48
+  },
+  "compatibilityException": null,
+  "disposableLeftovers": [],
+  "retainedBytesAtMeasurement": 282081,
+  "retention": "Direct safe model projections and primary/export/event receipts only; no raw page/settings/tree response bodies or bootstrap headers retained.",
+  "bounds": "Six serial three-GET chunks; each512MiB host448MiB child64MiB scratch,90s source105s child120s supervisor; no resource ceiling reached.",
+  "remaining": [
+    "direct source-qualified trim or independently qualified exact options route",
+    "typed option definitions",
+    "fresh finite candidate lists and separately reviewed source allocation",
+    "original configuration/profile/year/plant/five-WMI acceptance"
+  ],
+  "acceptance": false
+}
