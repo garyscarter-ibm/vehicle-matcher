@@ -1,6 +1,6 @@
 # FUCQ-60 retained image pilot 1
 
-Status: code built and scoped checks passed; actual 349-source candidate proof and ordinary publication are not yet run. The parent integration session reviews this plan before proof execution. Ordinary publication remains its separate decision.
+Status: code built, scoped checks passed, and the parent-approved actual 349-source isolated proof passed once. Ordinary publication is not run and remains the parent integration session's separate decision after independent code and security review. See [the proof receipt](retained-image-pilot1-results/README.md).
 
 The pilot reuses the retained F42 white i5 image for the one exact matching 1 November v1 configuration. It does not bridge v2 selections to a v1 identity. The existing `images.jsonl` association carries the image while every immutable configuration row keeps its original `imageIds: []`. Publisher validation admits that additive association only when the code-owned image registration, complete requested/resolved source identity and actual published bytes all match F42. The registry and active verifier include validated associations in effective image lookup and missing-image counts. There are no new wire fields, UI, dependencies, services or source requests.
 
