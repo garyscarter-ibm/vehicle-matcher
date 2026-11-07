@@ -134,6 +134,12 @@ export function buildDemoPlan({ root = fileURLToPath(new URL('../../', import.me
   }
   emptyRangeExclusions(root, plan);
   listedRangeExclusions(root, plan);
+  // demo-selection.mjs owns this pointer to the published demo store; a rebuild keeps it.
+  try {
+    const staged = JSON.parse(readFileSync(join(root, PLAN_PATH), 'utf8')).publication?.stagedDirectory;
+    if (typeof staged === 'string') plan.publication = { boundary: plan.publication.boundary, stagedDirectory: staged,
+      files: plan.publication.files, reportPath: plan.publication.reportPath };
+  } catch { /* A first build has no plan on disk yet. */ }
   return plan;
 }
 

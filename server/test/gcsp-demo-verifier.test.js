@@ -18,6 +18,7 @@ const available = typeof api.verifyFleetIdentity === 'function';
 const check = (name, run) => test(name, { skip: !available }, run);
 const matrixText = await readFile(new URL('../../docs/gcsp/sources/choices-eligibility-matrices-2024-10.md', import.meta.url), 'utf8');
 const { createDemoPlan } = await import('../../scripts/gcsp/demo-plan.mjs');
+const { auditIdentity, countOtdFacts } = await import('../../scripts/gcsp/demo-verifier.mjs');
 const record = () => structuredClone(fixture);
 function rekey(row) {
   const signature = `${row.canonicalIdentity.vgModelCode}:${row.canonicalIdentity.factoryOptionCodes.join(',')}`;
@@ -248,18 +249,21 @@ check('CLI distinguishes invalid plans exit 1 from a valid 74-pending plan exit 
   }
 });
 
-check('partly evidenced plan blocks staged acceptance before any directory, source, key or browser work', async (t) => {
+check('an evidenced partial plan reads only the named staged directory, never a source, key or browser', async (t) => {
   const guard = offlineEgressGuard(t);
   const plan = JSON.parse(await readFile(new URL('../data/gcsp/vehicle-evidence/demo-plan.json', import.meta.url), 'utf8'));
   const matrixText = await readFile(new URL('../../docs/gcsp/sources/choices-eligibility-matrices-2024-10.md', import.meta.url), 'utf8');
   const report = await api.verifyStagedDemoFleet({ plan, matrixText, directory: '/nonexistent-never-read' });
-  assert.equal(report.status, 'incomplete');
+  assert.equal(report.status, 'invalid');
   assert.equal(report.plan.valid, true);
   assert.equal(report.plan.ready, false);
   assert.equal(report.plan.mappedReady, true);
   assert.deepEqual(report.plan.coverage, { sourceRows: 132, modelLines: 74, mapped: 24, excluded: 4, pending: 46 });
+  assert.equal(typeof report.failure.code, 'string');
   assert.equal(report.acceptanceComplete, false);
   assert.equal(report.acceptedDemoConfigurations, 0);
+  const escaped = await api.verifyStagedDemoFleet({ plan, matrixText, directory: '../outside-the-repository' });
+  assert.equal(escaped.failure.code, 'staged-directory-required');
   guard.assertZero();
 });
 
@@ -294,4 +298,163 @@ check('staged checks use the real F54 schema/hash validator without publishing o
   assert.equal(tampered.status, 'invalid');
   assert.equal(tampered.failure.code, 'checksum-mismatch');
   guard.assertZero();
+});
+
+// A real v2 F54 row (G42 M240i, trimmed to six options); rows below are offline mutations, never source observations.
+const realFixture = JSON.parse(await readFile(new URL('./fixtures/gcsp/demo-real-row.json', import.meta.url), 'utf8'));
+const real = () => structuredClone(realFixture);
+function rekeyReal(row) {
+  const codes = [...row.canonicalIdentity.factoryOptionCodes].sort();
+  row.canonicalIdentity.factoryOptionCodes = codes;
+  row.canonicalSignature = `${row.canonicalIdentity.vgModelCode}:${codes.join(',')}`;
+  row.configurationId = Buffer.from(row.canonicalSignature).toString('base64');
+  const c = row.catalogue; const selection = c.sourceBinding.selection;
+  c.equipment.selected.options = [...codes]; c.sourceBinding.canonicalIdentity.factoryOptionCodes = [...codes];
+  selection.factoryOptionCodes = [...codes];
+  selection.elements = [...codes.map((code) => ({ code, type: 'option' })), ...selection.elements.filter((item) => item.type === 'accessory')];
+  for (const name of ['requestedIdentity', 'resolvedIdentity', 'lookupIdentity', 'resolvedLookupIdentity']) c[name].configurationId = row.configurationId;
+  return row;
+}
+function realVariant(index, { vg, ag } = {}) {
+  const row = real(); row.canonicalIdentity.factoryOptionCodes.push(`ZZT${String(index).padStart(3, '0')}`);
+  if (vg) {
+    const binding = row.catalogue.sourceBinding;
+    Object.assign(row.canonicalIdentity, { vgModelCode: vg, agModelCode: ag }); Object.assign(row.configuration, { vgModelCode: vg, agModelCode: ag });
+    Object.assign(binding.canonicalIdentity, { vgModelCode: vg, agModelCode: ag });
+    binding.confirmedContext.modelCode.value = vg; binding.confirmedContext.agModelCode.value = ag;
+    binding.requestScope.requests.forEach((request) => { request.modelCode = vg; });
+  }
+  return rekeyReal(row);
+}
+
+check('a real-shaped v2 row passes and records requested-versus-resolved identity and solver changes', () => {
+  const row = real(); const audited = auditIdentity(row);
+  assert.deepEqual(audited.errors, []);
+  assert.deepEqual(audited.identityChange, { bindingDigestChanged: false, configurationIdChanged: false });
+  assert.deepEqual(audited.solverChanges, { added: 3, removed: 0, ignored: 0 });
+  assert.equal(audited.rawModelRange, 'G42');
+  assert.deepEqual(audited.paintCodes, ['P0300']);
+  assert.deepEqual(audited.upholsteryCodes, ['FEPMI']);
+  assert.equal(audited.orderDate, '2026-11-01');
+  assert.equal(audited.modelYear, null);
+  assert.deepEqual(row, realFixture, 'audit must not mutate source records');
+  assert.equal(api.verifyFleetIdentity({ records: [row] }).identityValid, true);
+});
+
+check('a model code changed during solving is rejected as changed-model-code', () => {
+  for (const change of [
+    (row) => { row.catalogue.sourceBinding.confirmedContext.modelCode.value = 'OTHER'; },
+    (row) => { row.catalogue.sourceBinding.confirmedContext.agModelCode.value = 'OTHER'; },
+    (row) => { row.catalogue.sourceBinding.requestScope.requests[0].modelCode = 'OTHER'; },
+    (row) => { row.catalogue.requestedIdentity.configurationId = Buffer.from('OTHER:FEPMI,P0300').toString('base64'); },
+  ]) {
+    const row = real(); change(row);
+    assert.ok(auditIdentity(row).errors.includes('changed-model-code'));
+    assert.equal(api.verifyFleetIdentity({ records: [row] }).identityValid, false);
+  }
+  const unconfirmed = real(); unconfirmed.catalogue.sourceBinding.confirmedContext.modelCode = { state: 'unknown', value: null };
+  assert.ok(auditIdentity(unconfirmed).errors.includes('model-identity'));
+});
+
+check('real-shaped rows fail when the ID or signature no longer recomputes', () => {
+  for (const change of [
+    (row) => { row.configurationId = row.configurationId.replace(/=+$/, ''); },
+    (row) => { row.canonicalSignature = `${row.canonicalSignature},ZZZ999`; },
+    (row) => { row.catalogue.resolvedLookupIdentity.configurationId = Buffer.from('2PBC:FEPMI').toString('base64'); },
+  ]) {
+    const row = real(); change(row);
+    assert.ok(auditIdentity(row).errors.includes('configuration-id'));
+  }
+});
+
+check('real-shaped rows reject accessories, missing paint or upholstery and incomplete selections', () => {
+  const accessory = real(); accessory.canonicalIdentity.factoryOptionCodes.push('SE000001'); rekeyReal(accessory);
+  assert.ok(auditIdentity(accessory).errors.includes('dealer-accessory-in-identity'));
+  const noPaint = real(); noPaint.canonicalIdentity.factoryOptionCodes = noPaint.canonicalIdentity.factoryOptionCodes.filter((code) => code !== 'P0300'); rekeyReal(noPaint);
+  assert.ok(auditIdentity(noPaint).errors.includes('paint-upholstery-required'));
+  const noUpholstery = real(); noUpholstery.canonicalIdentity.factoryOptionCodes = noUpholstery.canonicalIdentity.factoryOptionCodes.filter((code) => code !== 'FEPMI'); rekeyReal(noUpholstery);
+  assert.ok(auditIdentity(noUpholstery).errors.includes('paint-upholstery-required'));
+  for (const change of [
+    (row) => { row.catalogue.completeness.factorySelection = 'partial'; },
+    (row) => { row.catalogue.sourceBinding.selection.constructible = false; },
+    (row) => { row.catalogue.equipment.selected.state = 'unknown'; },
+    (row) => { row.catalogue.sourceBinding.selection.elements.pop(); row.catalogue.sourceBinding.selection.elements.pop(); },
+  ]) {
+    const row = real(); change(row);
+    assert.ok(auditIdentity(row).errors.includes('complete-selection-required'));
+  }
+  const missing = real(); delete missing.catalogue.resolvedIdentity;
+  assert.ok(auditIdentity(missing).errors.includes('requested-resolved-identity'));
+});
+
+check('real-shaped rows keep dates, model year and observed source explicit', () => {
+  for (const [change, expected] of [
+    [(row) => { row.catalogue.sourceBinding.confirmedContext.orderDate = { state: 'unknown', value: null }; }, 'source-dates'],
+    [(row) => { row.catalogue.sourceBinding.confirmedContext.effectDate.value = '2027-13-45'; }, 'source-dates'],
+    [(row) => { delete row.configuration.modelYear; }, 'model-year-explicit'],
+    [(row) => { row.sourceContext.unresolvedFacts = []; }, 'model-year-explicit'],
+    [(row) => { row.sourceContext.sourceKind = 'north-american-reference'; }, 'observed-source-required'],
+  ]) {
+    const row = real(); change(row);
+    assert.ok(auditIdentity(row).errors.includes(expected), expected);
+  }
+});
+
+check('duplicate real-shaped rows are rejected and counted once', () => {
+  const report = api.verifyFleetIdentity({ records: [real(), real()] });
+  assert.equal(report.distinctCount, 1);
+  assert.ok(report.errors.some((error) => error.code === 'duplicate-configuration'));
+});
+
+check('real-shaped deep links need the plan range and match the exact sorted options', () => {
+  const row = real();
+  assert.throws(() => api.configurationDeepLink(row), /invalid/);
+  assert.equal(api.configurationDeepLink(row, { modelRange: 'G42' }), 'https://configure.bmw.co.uk/en_GB/configure/G42/2PBC/FEPMI,P0300,S01CB,S0230,S02PA,S033B');
+});
+
+function realCoverage() {
+  const plan = createDemoPlan(matrixText, { asOfDate: '2026-11-06' });
+  const owned = { 'line-g42-coupe-m240i': { vgModelCode: '2PBC', agModelCode: '52FA' }, 'line-g42-coupe-230i': { vgModelCode: '2PMB', agModelCode: '22CM' } };
+  for (const line of plan.modelLines) {
+    const own = owned[line.id];
+    const evidence = { sourceRef: 'fixture-only-not-a-source-observation.json', sha256: 'b'.repeat(64), locator: line.id,
+      observedDate: plan.qualificationDate, kind: 'observed', market: 'GB', matrixModel: line.model, engine: line.engine };
+    if (own) line.mapping = { status: 'mapped', modelRange: 'G42', ...own, evidence: { ...evidence, modelRange: 'G42', rawModelRange: 'G42', ...own } };
+    else line.mapping = { status: 'excluded', reason: 'Fixture-only verified exhaustive absence',
+      evidence: { ...evidence, finding: 'no-current-model', scope: 'complete-current-uk-model-range' } };
+  }
+  const m240 = plan.modelLines.find((line) => line.id === 'line-g42-coupe-m240i');
+  m240.mapping.additionalModels = [{ vgModelCode: '2PMC', agModelCode: '52FA',
+    evidence: { ...m240.mapping.evidence, vgModelCode: '2PMC', agModelCode: '52FA' } }];
+  return plan;
+}
+
+check('real-shaped coverage owns rows by VG code, counts additional models and lists lines without local rows as gaps', () => {
+  const plan = realCoverage();
+  const records = [...Array.from({ length: 5 }, (_, index) => realVariant(index)),
+    ...Array.from({ length: 3 }, (_, index) => realVariant(index + 10, { vg: '2PMC', ag: '52FA' })),
+    realVariant(30, { vg: '2PMB', ag: '22CM' })];
+  const report = api.verifyFleetCoverage({ plan, matrixText, records, verifyEvidence: () => true, retainedCounts: { '2PMB': 117, '2PBC': 8 } });
+  assert.equal(report.perLineCounts['line-g42-coupe-m240i'], 8);
+  assert.equal(report.perLineCounts['line-g42-coupe-230i'], 1);
+  assert.equal(report.localPerLineValid, false);
+  assert.deepEqual(report.underMinimum.map((line) => [line.lineId, line.localRows, line.fucq61Rows]), [['line-g42-coupe-230i', 1, 117]]);
+  assert.equal(report.unassignedConfigurations, 0);
+  assert.equal(report.coverageValid, false);
+  const strange = realVariant(40, { vg: 'ZZZZ', ag: 'ZZZA' });
+  const other = api.verifyFleetCoverage({ plan, matrixText, records: [...records, strange], verifyEvidence: () => true });
+  assert.equal(other.unassignedConfigurations, 1);
+  const wrongRange = realVariant(41); wrongRange.catalogue.sourceBinding.confirmedContext.rawModelRange.value = 'G43';
+  assert.equal(api.verifyFleetCoverage({ plan, matrixText, records: [wrongRange], verifyEvidence: () => true }).unassignedConfigurations, 1);
+  const noLocal = api.verifyFleetCoverage({ plan, matrixText, records: [realVariant(1)], verifyEvidence: () => true, retainedCounts: { '2PMB': 117 } });
+  assert.deepEqual(noLocal.coverageGaps.map((line) => [line.lineId, line.localRows, line.fucq61Rows]), [['line-g42-coupe-230i', 0, 117]]);
+});
+
+check('OTD facts stay unknown unless the record or a registered supplement knows them', () => {
+  const row = real();
+  const unknown = countOtdFacts([row]);
+  assert.deepEqual(Object.values(unknown).map((item) => item.known), [0, 0, 0, 0, 0]);
+  row.catalogue.facts.seats = { ...row.catalogue.facts.seats, state: 'known', value: 4 };
+  const counts = countOtdFacts([row]);
+  assert.deepEqual([counts.seats.known, counts.seats.unknown, counts.co2.unknown], [1, 0, 1]);
 });

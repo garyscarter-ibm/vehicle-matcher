@@ -1,0 +1,626 @@
+{
+ "canonicalIdentity": {
+  "agModelCode": "52FA",
+  "factoryOptionCodes": [
+   "FEPMI",
+   "P0300",
+   "S01CB",
+   "S0230",
+   "S02PA",
+   "S033B"
+  ],
+  "provenance": {
+   "kind": "observed",
+   "observedDate": "2026-11-07",
+   "source": "BMW UK catalogue"
+  },
+  "vgModelCode": "2PBC"
+ },
+ "canonicalSignature": "2PBC:FEPMI,P0300,S01CB,S0230,S02PA,S033B",
+ "catalogue": {
+  "completeness": {
+   "accessoryCodes": "complete",
+   "accessoryQuantities": "complete",
+   "availability": "unknown",
+   "definitions": "unknown",
+   "factorySelection": "complete",
+   "measurements": "unknown",
+   "verifiedFitted": "unknown"
+  },
+  "equipment": {
+   "available": {
+    "codes": [],
+    "complete": false,
+    "completeness": "unknown",
+    "provenance": {
+     "kind": "unknown",
+     "observedDate": null,
+     "source": null
+    },
+    "state": "unknown"
+   },
+   "definitions": [],
+   "selected": {
+    "accessories": [],
+    "accessoryCodesComplete": true,
+    "accessoryQuantitiesComplete": true,
+    "factoryComplete": true,
+    "options": [
+     "FEPMI",
+     "P0300",
+     "S01CB",
+     "S0230",
+     "S02PA",
+     "S033B"
+    ],
+    "provenance": {
+     "kind": "observed",
+     "observedDate": "2026-11-07",
+     "source": "BMW UK catalogue"
+    },
+    "state": "known"
+   },
+   "verifiedFitted": {
+    "codes": [],
+    "provenance": {
+     "kind": "unknown",
+     "observedDate": null,
+     "source": null
+    },
+    "reason": "provider-does-not-verify-fitting",
+    "state": "unknown"
+   }
+  },
+  "facts": {
+   "acceleration": {
+    "completeness": "unknown",
+    "definition": "0\u2013100 KM/H",
+    "provenance": {
+     "kind": "unknown",
+     "observedDate": null,
+     "source": null
+    },
+    "reason": "no-resolved-evidence",
+    "state": "unknown",
+    "unit": "SECONDS",
+    "value": null
+   },
+   "bodyLength": {
+    "completeness": "unknown",
+    "definition": "BODY LENGTH",
+    "provenance": {
+     "kind": "unknown",
+     "observedDate": null,
+     "source": null
+    },
+    "reason": "no-resolved-evidence",
+    "state": "unknown",
+    "unit": "MILLIMETRES",
+    "value": null
+   },
+   "luggageExpanded": {
+    "completeness": "unknown",
+    "definition": "EXPANDED",
+    "provenance": {
+     "kind": "unknown",
+     "observedDate": null,
+     "source": null
+    },
+    "reason": "no-resolved-evidence",
+    "state": "unknown",
+    "unit": "LITRES",
+    "value": null
+   },
+   "luggageNormal": {
+    "completeness": "unknown",
+    "definition": "NORMAL",
+    "provenance": {
+     "kind": "unknown",
+     "observedDate": null,
+     "source": null
+    },
+    "reason": "no-resolved-evidence",
+    "state": "unknown",
+    "unit": "LITRES",
+    "value": null
+   },
+   "seats": {
+    "completeness": "unknown",
+    "definition": "SEATS",
+    "provenance": {
+     "kind": "unknown",
+     "observedDate": null,
+     "source": null
+    },
+    "reason": "no-resolved-evidence",
+    "state": "unknown",
+    "unit": "COUNT",
+    "value": null
+   }
+  },
+  "failure": null,
+  "identityProvenance": {
+   "kind": "observed",
+   "observedDate": "2026-11-07",
+   "source": "BMW UK catalogue"
+  },
+  "lookupIdentity": {
+   "bindingDigest": "e5e6259396f5318b4488fcec563bf5534055ceae4a84cc2d217be5f64d4e2c9f",
+   "configurationId": "MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDIzMCxTMDJQQSxTMDMzQg==",
+   "provider": "bmw-catalogue-snapshot",
+   "providerVersion": "2",
+   "schemaVersion": "2",
+   "snapshotVersion": "bmw-gb-g42-typed-pilot48-2026-11-07.v2",
+   "sourceContractVersion": "bmw-public-solver-selection.v1"
+  },
+  "observedDate": "2026-11-07",
+  "provider": "bmw-catalogue-snapshot",
+  "providerVersion": "2",
+  "requestedIdentity": {
+   "bindingDigest": "e5e6259396f5318b4488fcec563bf5534055ceae4a84cc2d217be5f64d4e2c9f",
+   "configurationId": "MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDIzMCxTMDJQQSxTMDMzQg==",
+   "snapshotVersion": "bmw-gb-g42-typed-pilot48-2026-11-07.v2"
+  },
+  "resolvedIdentity": {
+   "bindingDigest": "e5e6259396f5318b4488fcec563bf5534055ceae4a84cc2d217be5f64d4e2c9f",
+   "configurationId": "MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDIzMCxTMDJQQSxTMDMzQg==",
+   "snapshotVersion": "bmw-gb-g42-typed-pilot48-2026-11-07.v2"
+  },
+  "resolvedLookupIdentity": {
+   "bindingDigest": "e5e6259396f5318b4488fcec563bf5534055ceae4a84cc2d217be5f64d4e2c9f",
+   "configurationId": "MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDIzMCxTMDJQQSxTMDMzQg==",
+   "provider": "bmw-catalogue-snapshot",
+   "providerVersion": "2",
+   "schemaVersion": "2",
+   "snapshotVersion": "bmw-gb-g42-typed-pilot48-2026-11-07.v2",
+   "sourceContractVersion": "bmw-public-solver-selection.v1"
+  },
+  "retrievedDate": "2026-11-07",
+  "schemaVersion": "2",
+  "snapshotVersion": "bmw-gb-g42-typed-pilot48-2026-11-07.v2",
+  "sourceBinding": {
+   "canonicalIdentity": {
+    "agModelCode": "52FA",
+    "factoryOptionCodes": [
+     "FEPMI",
+     "P0300",
+     "S01CB",
+     "S0230",
+     "S02PA",
+     "S033B"
+    ],
+    "vgModelCode": "2PBC"
+   },
+   "confirmedContext": {
+    "agModelCode": {
+     "evidenceRefs": [
+      {
+       "evidenceId": "tree",
+       "locatorName": "agModelCode"
+      }
+     ],
+     "reason": null,
+     "state": "known",
+     "value": "52FA"
+    },
+    "effectDate": {
+     "evidenceRefs": [
+      {
+       "evidenceId": "tree",
+       "locatorName": "effectDate"
+      }
+     ],
+     "reason": null,
+     "state": "known",
+     "value": "2027-01-05"
+    },
+    "modelCode": {
+     "evidenceRefs": [
+      {
+       "evidenceId": "tree",
+       "locatorName": "modelCode"
+      }
+     ],
+     "reason": null,
+     "state": "known",
+     "value": "2PBC"
+    },
+    "orderDate": {
+     "evidenceRefs": [
+      {
+       "evidenceId": "tree",
+       "locatorName": "orderDate"
+      }
+     ],
+     "reason": null,
+     "state": "known",
+     "value": "2026-11-01"
+    },
+    "rawModelRange": {
+     "evidenceRefs": [
+      {
+       "evidenceId": "tree",
+       "locatorName": "rawModelRange"
+      }
+     ],
+     "reason": null,
+     "state": "known",
+     "value": "G42"
+    },
+    "steeringLiteral": {
+     "evidenceRefs": [
+      {
+       "evidenceId": "tree",
+       "locatorName": "steeringLiteral"
+      }
+     ],
+     "reason": null,
+     "state": "known",
+     "value": "RL"
+    },
+    "taxDate": {
+     "evidenceRefs": [
+      {
+       "evidenceId": "tree",
+       "locatorName": "taxDate"
+      }
+     ],
+     "reason": null,
+     "state": "known",
+     "value": "2027-01-05"
+    }
+   },
+   "evidence": [
+    {
+     "id": "definitions",
+     "locators": [
+      {
+       "name": "paint-P0300",
+       "retainedPointer": "/report/candidates/0/definitions/114",
+       "sourcePointer": "/P0300"
+      },
+      {
+       "name": "upholstery-FEPMI",
+       "retainedPointer": "/report/candidates/0/definitions/23",
+       "sourcePointer": "/FEPMI"
+      }
+     ],
+     "observedAt": "2026-11-07T04:13:05.929Z",
+     "operation": "options",
+     "request": {
+      "method": "GET",
+      "url": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/2PBC/options/languages/en?trim=S033B"
+     },
+     "responseSha256": "79972c4e75eff00dd3a0d40547708bc68252286e2f890ca2b87976c21a7917b5",
+     "retainedSha256": "857593ef3f89379e249afd30d7326487df162248686cd0b0c2161a8c595e5a0c",
+     "retrievedAt": "2026-11-07T04:13:05.944Z",
+     "role": "definitions",
+     "sourceId": "bmw-uk-public",
+     "sourceVersion": "f59-model-batch-20261107.v1"
+    },
+    {
+     "id": "solver",
+     "locators": [
+      {
+       "name": "constructible",
+       "retainedPointer": "/report/constructible",
+       "sourcePointer": "/constructible"
+      },
+      {
+       "name": "modelCode",
+       "retainedPointer": "/report/configuration/modelCode",
+       "sourcePointer": "/configuration/modelCode"
+      },
+      {
+       "name": "elements",
+       "retainedPointer": "/report/configuration/elements",
+       "sourcePointer": "/configuration/elements"
+      },
+      {
+       "name": "configurationChanges",
+       "retainedPointer": "/report/configurationChanges/maps",
+       "sourcePointer": "/configurationChanges"
+      }
+     ],
+     "observedAt": "2026-11-07T04:13:06.094Z",
+     "operation": "solve",
+     "request": {
+      "method": "GET",
+      "url": "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/2PBC?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FEPMI%2CP0300%2CS01HC%2CS033B&mandatory-elements=S033B"
+     },
+     "responseSha256": "0e6cdd365e2123179ae63c7b2bbfb2722eb17ee3802614c077c3528847466737",
+     "retainedSha256": "a623b5ba0e33e43900035042698775b985bd3aaa7650a35554e29fc30961cb03",
+     "retrievedAt": "2026-11-07T04:13:06.109Z",
+     "role": "solver",
+     "sourceId": "bmw-uk-public",
+     "sourceVersion": "f59-model-batch-20261107.v1"
+    },
+    {
+     "id": "tree",
+     "locators": [
+      {
+       "name": "modelCode",
+       "retainedPointer": "/report/nodes/0/facts/modelCode",
+       "sourcePointer": "/2/modelRanges/G42/models/2PBC/modelCode"
+      },
+      {
+       "name": "agModelCode",
+       "retainedPointer": "/report/nodes/0/facts/agModelCode",
+       "sourcePointer": "/2/modelRanges/G42/models/2PBC/agModelCode"
+      },
+      {
+       "name": "rawModelRange",
+       "retainedPointer": "/report/nodes/0/facts/modelRange",
+       "sourcePointer": "/2/modelRanges/G42/models/2PBC/modelRange"
+      },
+      {
+       "name": "orderDate",
+       "retainedPointer": "/report/nodes/0/facts/orderDate",
+       "sourcePointer": "/2/modelRanges/G42/models/2PBC/orderDate"
+      },
+      {
+       "name": "effectDate",
+       "retainedPointer": "/report/nodes/0/facts/effectDate",
+       "sourcePointer": "/2/modelRanges/G42/models/2PBC/effectDate"
+      },
+      {
+       "name": "taxDate",
+       "retainedPointer": "/report/nodes/0/facts/taxDate",
+       "sourcePointer": "/2/modelRanges/G42/models/2PBC/taxDate"
+      },
+      {
+       "name": "steeringLiteral",
+       "retainedPointer": "/report/nodes/0/facts/steering",
+       "sourcePointer": "/2/modelRanges/G42/models/2PBC/steering"
+      },
+      {
+       "name": "line-0",
+       "retainedPointer": "/report/lineRelationships/0",
+       "sourcePointer": "/2/modelRanges/G42/lines/S033B"
+      },
+      {
+       "name": "line-default-0",
+       "retainedPointer": "/report/lineRelationships/0/defaultModel",
+       "sourcePointer": "/2/modelRanges/G42/lines/S033B/defaultModel"
+      },
+      {
+       "name": "line-included-0",
+       "retainedPointer": "/report/lineRelationships/0/included",
+       "sourcePointer": "/2/modelRanges/G42/lines/S033B/includedTransmissionVariants/2/configuration"
+      }
+     ],
+     "observedAt": "2026-11-07T04:13:05.848Z",
+     "operation": "discover",
+     "request": {
+      "method": "GET",
+      "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G42&future-models=true&closest-fallback=true"
+     },
+     "responseSha256": "0b560e5c1cd2489629373c464950d5cd2ff0b8cf9b60d4a990ad7cbf26e975b0",
+     "retainedSha256": "c305eaee490118f6a25ee355d9cb424e50247b118337dfffbc1b45712bc2dd03",
+     "retrievedAt": "2026-11-07T04:13:05.857Z",
+     "role": "model-tree",
+     "sourceId": "bmw-uk-public",
+     "sourceVersion": "f59-model-batch-20261107.v1"
+    }
+   ],
+   "optionalFacts": {
+    "catalogueProductionDate": {
+     "evidenceRefs": [],
+     "reason": "absent-evidence",
+     "state": "unknown",
+     "value": null
+    },
+    "fuelTypeCode": {
+     "evidenceRefs": [],
+     "reason": "absent-evidence",
+     "state": "unknown",
+     "value": null
+    },
+    "modelName": {
+     "evidenceRefs": [],
+     "reason": "absent-evidence",
+     "state": "unknown",
+     "value": null
+    },
+    "modelYear": {
+     "evidenceRefs": [],
+     "reason": "unsupported-physical-evidence",
+     "state": "unknown",
+     "value": null
+    },
+    "physicalProductionDate": {
+     "evidenceRefs": [],
+     "reason": "unsupported-physical-evidence",
+     "state": "unknown",
+     "value": null
+    },
+    "plant": {
+     "evidenceRefs": [],
+     "reason": "unsupported-physical-evidence",
+     "state": "unknown",
+     "value": null
+    },
+    "trim": {
+     "evidenceRefs": [],
+     "reason": "absent-evidence",
+     "state": "unknown",
+     "value": null
+    },
+    "verifiedFitted": {
+     "evidenceRefs": [],
+     "reason": "unsupported-physical-evidence",
+     "state": "unknown",
+     "value": null
+    }
+   },
+   "producerPins": {
+    "policyVersion": "gcsp-policy-v1",
+    "projectorSha256": "b3cea57603e403f41bb326bcdfc955b7f061a7cfc1b071d1ef609de3efc99bc1",
+    "qualifierSha256": "88820920f57f4509741d6ad291e2fcd36c5b47a65d42acd35e890e3a6f84004e",
+    "sessionSha256": "db5a1a1ca6037132eced521f1a9b19d73a4282a113da66480ebec70c0beac7ff"
+   },
+   "requestScope": {
+    "catalogueRangeKey": "G42",
+    "locale": "en-GB",
+    "market": "GB",
+    "requests": [
+     {
+      "effectDate": "2026-11-01",
+      "excludedCodes": [],
+      "includedCodes": [],
+      "mandatoryCodes": [],
+      "method": "GET",
+      "modelCode": "2PBC",
+      "operation": "discover",
+      "orderDate": "2026-11-01",
+      "trimInput": null,
+      "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G42&future-models=true&closest-fallback=true"
+     },
+     {
+      "effectDate": "2027-01-05",
+      "excludedCodes": [],
+      "includedCodes": [
+       "FEPMI",
+       "P0300",
+       "S01HC",
+       "S033B"
+      ],
+      "mandatoryCodes": [
+       "S033B"
+      ],
+      "method": "GET",
+      "modelCode": "2PBC",
+      "operation": "solve",
+      "orderDate": "2026-11-01",
+      "trimInput": null,
+      "url": "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/2PBC?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FEPMI%2CP0300%2CS01HC%2CS033B&mandatory-elements=S033B"
+     }
+    ]
+   },
+   "selection": {
+    "accessories": [
+     {
+      "code": "SE000001",
+      "type": "accessory"
+     }
+    ],
+    "accessoryCodesComplete": true,
+    "constructible": true,
+    "elements": [
+     {
+      "code": "FEPMI",
+      "type": "option"
+     },
+     {
+      "code": "P0300",
+      "type": "option"
+     },
+     {
+      "code": "S01CB",
+      "type": "option"
+     },
+     {
+      "code": "S0230",
+      "type": "option"
+     },
+     {
+      "code": "S02PA",
+      "type": "option"
+     },
+     {
+      "code": "S033B",
+      "type": "option"
+     },
+     {
+      "code": "SE000001",
+      "type": "accessory"
+     }
+    ],
+    "evidenceRefs": [
+     {
+      "evidenceId": "solver",
+      "locatorName": "constructible"
+     },
+     {
+      "evidenceId": "solver",
+      "locatorName": "elements"
+     },
+     {
+      "evidenceId": "solver",
+      "locatorName": "modelCode"
+     }
+    ],
+    "factoryComplete": true,
+    "factoryOptionCodes": [
+     "FEPMI",
+     "P0300",
+     "S01CB",
+     "S0230",
+     "S02PA",
+     "S033B"
+    ],
+    "solverChanges": {
+     "added": [
+      "S01CB",
+      "S0230",
+      "S02PA"
+     ],
+     "ignored": [],
+     "removed": []
+    }
+   }
+  },
+  "sourceContractVersion": "bmw-public-solver-selection.v1",
+  "sourceKind": "dated-snapshot",
+  "status": "partial"
+ },
+ "configuration": {
+  "agModelCode": "52FA",
+  "body": null,
+  "derivative": null,
+  "drive": null,
+  "engineCode": null,
+  "generation": "G42",
+  "market": "GB",
+  "model": null,
+  "modelYear": null,
+  "plant": null,
+  "powertrain": null,
+  "productionDate": null,
+  "productionEra": null,
+  "region": null,
+  "steering": null,
+  "transmission": null,
+  "vgModelCode": "2PBC"
+ },
+ "configurationId": "MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDIzMCxTMDJQQSxTMDMzQg==",
+ "imageIds": [],
+ "snapshotVersion": "bmw-gb-g42-typed-pilot48-2026-11-07.v2",
+ "sourceContext": {
+  "catalogueDate": "2026-11-07",
+  "confidence": "Complete source factory selection; physical build unknown",
+  "observedDate": "2026-11-07",
+  "selectedOptionCompleteness": "complete",
+  "sourceKind": "dated-snapshot",
+  "sourceRefs": [
+   "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/2PBC/options/languages/en?trim=S033B",
+   "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G42&future-models=true&closest-fallback=true",
+   "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/2PBC?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FEPMI%2CP0300%2CS01HC%2CS033B&mandatory-elements=S033B"
+  ],
+  "unresolvedFacts": [
+   "model",
+   "derivative",
+   "body",
+   "powertrain",
+   "drive",
+   "transmission",
+   "engineCode",
+   "region",
+   "steering",
+   "modelYear",
+   "productionEra",
+   "productionDate",
+   "plant"
+  ]
+ }
+}
