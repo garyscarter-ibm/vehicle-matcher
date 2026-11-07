@@ -8,6 +8,8 @@ import { validateBmwCatalogueV2Envelope } from '../../vehicle-evidence/bmw-catal
 // Admission anchors are code-owned. Neither candidate manifests nor API callers
 // can supply a new registration or replace this retained source artifact.
 const ADMITTED_SOURCES = [
+  { url: new URL('../../data/gcsp/vehicle-evidence/registered-sources/f70-model-axis790-2026-11-07.jsonl', import.meta.url),
+    sha256: '4d5d0766342d817d06f3e60aed1ae87ba4446c4510cf00c18cb32798f56aeeda' },
   { url: new URL('../../data/gcsp/vehicle-evidence/registered-sources/f70-model-trim264-2026-11-07.jsonl', import.meta.url),
     sha256: 'fd8d384e60b2058e27ee0b95c089cb7f7183bfd2d511761e39e566a6fc8cde9c' },
   { url: new URL('../../data/gcsp/vehicle-evidence/registered-sources/f70-typed-axis390-2026-11-07.jsonl', import.meta.url),

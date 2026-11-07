@@ -21,3 +21,10 @@ Evidence:
 - Original failed command and cleanup: `/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot7-offline/audit/`.
 
 Future Bug acceptance: safely accept the documented present-empty mandatory-elements form; preserve rejection of malformed source references; verify both retained actual configurations through the configured consumer. This increment makes no consumer repair.
+
+
+## .8 measured impact — 7 November 2026
+
+The immutable .8 offline preparation adds 790 audited admissions. The actual configured-consumer audit now passes 1,456 and fails 469 of 1,925 requests: 144 `1F7A` and 325 `1F7C`. All 1,925 direct lookup DTOs match retained records and manifest; all 1,925 HTTP responses match in the exact 1,024/901 union. Every consumer failure has the same present-empty `mandatory-elements=` citation and `source-unavailable` result. The strict report remains `invalid-active`, 469 errors. This expands the measured impact of this existing defect; it does not create a new Bug, claim a repair, waive ACs or establish acceptance. Parent retains the specifically authorised Medium deferral. Native Jira key remains unverified; no duplicate creation attempted.
+
+Evidence: [summary](../fleet-dot8-1923-offline/summary.json), [strict report](../fleet-dot8-1923-offline/strict-audit-report.json), [DTO/consumer diagnosis](../fleet-dot8-1923-offline/diagnose-results.json), [exact HTTP union](../fleet-dot8-1923-offline/http-complement-results.json).
