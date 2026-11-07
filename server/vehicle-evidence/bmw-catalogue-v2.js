@@ -209,12 +209,17 @@ function validateBinding(binding, trusted) {
   must(equal(selection.elements.filter((v) => v.type === 'accessory').map((v) => v.code), selection.accessories.map((v) => v.code)));
   for (const accessory of selection.accessories) {
     must(keys(accessory, ['code', 'type', 'quantity']) && accessory.type === 'accessory');
-    evidenceValue(accessory.quantity, (v) => Number.isSafeInteger(v) && v > 0, 'solver', 'quantity', false, 'quantity-not-exposed');
+    evidenceValue(accessory.quantity, (v) => Number.isSafeInteger(v) && v > 0, 'solver', null, false, 'quantity-not-exposed');
     if (accessory.quantity.state === 'known') {
       const index = selection.elements.findIndex((item) => item.code === accessory.code);
       for (const ref of accessory.quantity.evidenceRefs) {
         const locator = records.get(ref.evidenceId).locators.find((item) => item.name === ref.locatorName);
-        must(locator.sourcePointer === `/elements/${index}/quantity` && locator.retainedPointer === `/elements/${index}/quantity`);
+        const syntheticArray = ref.locatorName === 'quantity' && locator.sourcePointer === `/elements/${index}/quantity`
+          && locator.retainedPointer === `/elements/${index}/quantity`;
+        const sourceMap = ref.locatorName === `quantity-${accessory.code}`
+          && locator.sourcePointer === `/configuration/elements/${accessory.code}/quantity`
+          && locator.retainedPointer === `/report/configuration/elements/${accessory.code}/quantity`;
+        must(syntheticArray || sourceMap);
       }
     }
   }

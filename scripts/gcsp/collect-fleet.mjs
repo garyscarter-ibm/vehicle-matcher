@@ -1,4 +1,5 @@
 import { dirname, isAbsolute, resolve } from 'node:path';
+import { buildBmwSelectionBinding, qualifyBmwSelectionRecord } from './bmw-selection-binding.mjs';
 import { open } from 'node:fs/promises';
 import { settingsShapeReceiptBytes, validateSettingsShapeRefusal } from './settings-shape-report.mjs';
 import { fileURLToPath } from 'node:url';
@@ -155,8 +156,21 @@ export function validateSolverResponse(candidate, response, key) {
 
 /** No default network transport exists. Only an explicitly injected offline source is executable here. */
 export async function createFleetCollector({ plan: input, source, policyService, policyRead, statePath,
-  operations = {}, http, mode = 'dry-run', now = Date.now, onPhase = async () => {} } = {}) {
+  operations = {}, http, mode = 'dry-run', now = Date.now, onPhase = async () => {}, captureReplay } = {}) {
   const plan = validatePlan(input);
+  if (mode === 'capture-replay' || captureReplay !== undefined) {
+    requireValue(mode === 'capture-replay' && plan.captureVersion === 'bmw-complete-selection.v1'
+      && plan.source.kind === 'public-bmw-uk' && object(captureReplay) && http === undefined
+      && policyRead === undefined, 'capture-replay-required', 'Use the explicit capture version and server-owned replay registration without transport.');
+    const configurationKey = await createConfigurationKey({ policyService, policyRead: { runId: `collector-${plan.planId}`, ...plan.policyRead } });
+    const registration = { ...captureReplay, plan, configurationKey };
+    const built = buildBmwSelectionBinding(registration);
+    const qualified = qualifyBmwSelectionRecord(built.record, registration);
+    requireValue(qualified.status === 'qualified', 'source-selection-mismatch', 'The replay must retain the exact source-derived selection.');
+    return { run: async () => structuredClone({ status: 'complete', reason: 'source-capture-qualified', qualification: 'source-selection-qualified-not-admitted',
+      admission: false, records: [qualified.record], accepted: [], rejected: [], duplicates: [], counts: freshCounts(),
+      coverage: { distinctConfigurations: 1, target: plan.target } }) };
+  }
   if (plan.source.kind === 'public-bmw-uk' && !NO_TRAFFIC.includes(mode)) {
     return createPublicCollector({ plan, source, policyService, policyRead, statePath, operations, http, mode, now, onPhase });
   }
