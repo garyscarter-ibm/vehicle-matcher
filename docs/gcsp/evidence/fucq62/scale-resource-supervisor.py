@@ -61,6 +61,7 @@ out.mkdir(parents=True, mode=0o700)
 command = [str(node), '--max-old-space-size=256', proof, '--receipt', str(out / 'receipt.json')]
 selection = {'status': 'approved-execution-starting', 'head': head, 'pinsSha256': sha(root / pins_path),
              'pins': pins, 'command': command, 'changedPaths': [proof, plan_path, pins_path,
+             'server/gcsp/vehicle-evidence/indexed-jsonl.js', 'server/test/gcsp-indexed-jsonl.test.js',
              'docs/gcsp/evidence/fucq62/scale-proof-fixture.v1.json',
              'docs/gcsp/evidence/fucq62/scale-resource-supervisor.py'],
              'boundaries': plan['phases'], 'excluded': plan['excluded'], 'resources': plan['resources']}

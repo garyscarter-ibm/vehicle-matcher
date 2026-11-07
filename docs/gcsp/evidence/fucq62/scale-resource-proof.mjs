@@ -123,6 +123,7 @@ if (process.argv[2] === '--cold-load' || process.argv[2] === '--cold-recovery') 
     } finally { await input.close(); }
     timings.generationMs = performance.now() - start; const generatedSha256 = generatedHash.digest('hex');
     assert.equal(bytes, plan.fixture.expectedConfigurationBytes); assert.ok(bytes > JSONL_MAX_BYTES);
+    assert.equal(generatedSha256, plan.fixture.generatedFileSha256);
     assert.ok(bytes - plan.fixture.serializedBytesPerRow <= JSONL_MAX_BYTES);
     assert.equal((await stat(inputPath)).size, bytes); assert.equal(await hashFile(inputPath), generatedSha256);
     await checkpoint('generated-input-pinned', { rows: plan.fixture.rows, bytes, sha256: generatedSha256 });
@@ -132,6 +133,7 @@ if (process.argv[2] === '--cold-load' || process.argv[2] === '--cold-recovery') 
     const inputValue = { metadata: { ...fixture.metadata, version: 'beyond64.v1' }, configurationsFile: inputPath, images: [] };
     const refused = await writeCorpusCandidate(join(scratch, 'default-rejected'), inputValue, options);
     assert.equal(refused.failure?.code, 'artifact-size'); defaultRefusals.push('default-file-input-preparation');
+    await checkpoint('default-input-boundaries-confirmed', { defaultRefusals, inputSha256: generatedSha256 });
     const candidate = join(scratch, 'candidate'); start = performance.now();
     const prepared = await writeCorpusCandidate(candidate, inputValue, bounded);
     timings.preparationMs = performance.now() - start; assert.equal(prepared.status, 'ok', JSON.stringify(prepared));

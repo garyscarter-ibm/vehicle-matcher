@@ -3,10 +3,12 @@
   "baseCommit": "f4481b711cfcc4a6f04d71486b64b2e2e9a1ee5e",
   "files": {
     "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq62/scale-identity-repair-2026-11-07.json": "d426fe5becdfe4f5f288ee0568cf4f703ea784fb38ddb281bab253a5c35542d2",
+    "docs/gcsp/evidence/fucq62/scale-proof-failed-2026-11-07.json": "f2c8c9de30124f4ed7f4eff7e9236e3fe6bed5e4f02911e395da0886685fdb62",
     "docs/gcsp/evidence/fucq62/scale-proof-fixture.v1.json": "0d5619e6436034e353726c3af736c829e949cf71e8e61c6f2450d23a9e7f2670",
-    "docs/gcsp/evidence/fucq62/scale-proof-plan-2026-11-07.json": "fb034bca22a8038aaa543ba30756224e3475bcde6dc6af986d95af331083f975",
-    "docs/gcsp/evidence/fucq62/scale-resource-proof.mjs": "3ac1da40634bff46bf0cd57c84a4cc5a92ab3f12f13d9bca2194f949e217bff1",
-    "docs/gcsp/evidence/fucq62/scale-resource-supervisor.py": "c442d07412c34572cdb83e2e9f847fece5ab5b6e94c58df700d3de0321630ea0",
+    "docs/gcsp/evidence/fucq62/scale-proof-plan-2026-11-07.json": "182daead6a67bd8fb7f76e31a7de013f1b0adfe690b0ef92fc3a701650e4f842",
+    "docs/gcsp/evidence/fucq62/scale-resource-proof.mjs": "e8ee69b5261e880aba2cdc42c3f84692460bde4fa0b559a217611bf48ffd2ecd",
+    "docs/gcsp/evidence/fucq62/scale-resource-supervisor.py": "358114cdf4cb90cf767ac8237cdd6bec52436db8ce42c25aedf1f6ed252630b3",
     "scripts/gcsp/fleet-offline-guard.mjs": "881926639dfab681a917212696e50c6420a0a2b0dcd66dd1a126950283239e59",
     "server/data/gcsp/vehicle-evidence/fleet-source.v1/active.json": "3be994005d0555c1598c67fc5f44cdd797c274cec983fac5d1b2d7bb7f9a0f21",
     "server/data/gcsp/vehicle-evidence/fleet-source.v1/identity-inventory.json": "f9fa77cf539d8d7c2368fa701957759642a74d4caacd1fdae11b5c302fcaf58a",
@@ -53,7 +55,7 @@
     "server/gcsp/vehicle-evidence/application-vehicle-details.js": "64bb6073a90f8aca27766c314a08073ee9df320e2683122cd05b3c6fe49d808f",
     "server/gcsp/vehicle-evidence/corpus-publisher.js": "8c9dfbe9760ed23c07ee5cab5019b0b1049516e5dbc6b85d5d979a1a14f1080d",
     "server/gcsp/vehicle-evidence/identity-routing.js": "89d805c94c5f7a9dd026daae40e42167355822961d07597bf0cf69c45b649088",
-    "server/gcsp/vehicle-evidence/indexed-jsonl.js": "0f547126eaa18668e8cfcdb293361e75716bd607766b6b2680f2329d45aa7326",
+    "server/gcsp/vehicle-evidence/indexed-jsonl.js": "30be19121e2c250d1736666f365d8900cbf42f47c7daf907c4814eaac818d277",
     "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "9d45f3eb4a22cace97dd6ea8f68707c083bc46568a8ef2d9f7a44353914f6f76",
     "server/gcsp/vehicle-evidence/lookup-adapter.js": "3060d1707c254ff28ee45c7eedf16802aa57aed9b7d9a52a96206bf0cef395e3",
     "server/gcsp/vehicle-evidence/provider-read.js": "e194fdeb9ff55faafaadd916b2e0ce34c9d8dce252dc37c3ce04aa8de77bb87b",
@@ -67,6 +69,10 @@
     "server/gcsp/vehicle-evidence/vin-profiles.js": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd",
     "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
     "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139",
+    "server/test/gcsp-corpus-indexed.test.js": "468b84d3bf59d135b58225b8cd155d9c771e2118305f6c91d9faf363a74100c4",
+    "server/test/gcsp-fleet-publication.test.js": "ced7e6145abe122908ed25128482ef2006467b3019bcbee5062d9f9043c390dd",
+    "server/test/gcsp-indexed-jsonl.test.js": "5f27390f944efc3a85f76e4e4ecb0fe93e295b637f0d9cd3800fe4558e0e7dba",
+    "server/test/gcsp-vin-publication.test.js": "9231d22a886f91ea6a29178634c9fb5b75679c5ea5594874b035ca5ee0459fee",
     "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
     "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56",
     "server/vehicle-evidence/bmw-drivers-guide-provider.js": "b3098765b750132b23edc0beb108ef74b173a8c236bbccb44b262e2a54da8f99",
@@ -97,14 +103,22 @@
   },
   "inputIdentity": {
     "fixtureSha256": "0d5619e6436034e353726c3af736c829e949cf71e8e61c6f2450d23a9e7f2670",
-    "generatorSha256": "3ac1da40634bff46bf0cd57c84a4cc5a92ab3f12f13d9bca2194f949e217bff1",
+    "generatorSha256": "e8ee69b5261e880aba2cdc42c3f84692460bde4fa0b559a217611bf48ffd2ecd",
     "indexRange": [
       1,
       3621
     ],
     "rows": 3621,
     "bytes": 67118856,
-    "generatedSha256": "Unknown before approved generation; stream-hashed then independently rehashed before consumption"
+    "generatedSha256": "8f487b0acda835449dd8ca7d3b50054ac02376b8bb93352c9334904e1b298703"
   },
-  "coverageContext": "One required synthetic resource proof, at most three process coverage files, each8MiB and total16MiB; raw files removed with scratch"
+  "coverageContext": "One required synthetic resource proof, at most three process coverage files, each8MiB and total16MiB; raw files removed with scratch",
+  "previousAttempt": {
+    "commit": "cc3a9127f480cb6cb20d77e3aa64a123f9c3e635",
+    "pinsSha256": "017a66e259a57e0ce517f0a2821a0e25bf1e705eadee670a9a1e2ccdb1dd7463",
+    "status": "failed-incomplete",
+    "bug": "FUCQ-153",
+    "receipt": "docs/gcsp/evidence/fucq62/scale-proof-failed-2026-11-07.json"
+  },
+  "renewal": "FUCQ-153 narrow indexed-JSONL repair and scoped27-test evidence pinned; repeated large proof remains unrun pending exact parent review."
 }
