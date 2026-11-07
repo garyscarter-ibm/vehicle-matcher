@@ -4,6 +4,9 @@ let sequence = 0;
 const format = new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric',
   hour: '2-digit', minute: '2-digit', timeZone: 'UTC' });
 
+/** Demo-time (UTC) text for a valid ISO instant, shared by the timeline and its callers. */
+export const demoTime = (instant) => format.format(new Date(instant));
+
 /** Supplied event order is retained. No event, time or outcome is inferred by the kit. */
 export function activityTimeline({ events = [], heading = 'Activity history', emptyText = 'No activity is recorded.', level = 2 } = {}) {
   const root = el('section', 'gcsp-activity-timeline');
@@ -16,7 +19,7 @@ export function activityTimeline({ events = [], heading = 'Activity history', em
   for (const event of events) {
     const row = el('li', 'gcsp-timeline-event');
     const valid = typeof event.occurredAt === 'string' && Number.isFinite(Date.parse(event.occurredAt));
-    const date = el(valid ? 'time' : 'span', 'gcsp-timeline-time', valid ? format.format(new Date(event.occurredAt)) : 'Time not available');
+    const date = el(valid ? 'time' : 'span', 'gcsp-timeline-time', valid ? demoTime(event.occurredAt) : 'Time not available');
     if (valid) date.dateTime = event.occurredAt;
     const body = el('div', 'gcsp-timeline-detail');
     body.append(el('p', 'gcsp-timeline-label', event.label));

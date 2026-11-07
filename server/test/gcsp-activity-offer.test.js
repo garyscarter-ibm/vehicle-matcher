@@ -9,7 +9,7 @@ const picture = { src: '/assets/brand-hero/bmw.jpg', alt: 'BMW brand scene', kin
 test('no offer and absent imagery stay meaningful; untrusted network sources never become images', () => {
   const none = activityOffer(); assert.match(none.textContent, /No current offer/); assert.equal(none.querySelector('img'), null);
   const bad = activityOffer({ offer: { state: 'active' }, display: { title: 'BMW offer', images: [{ ...picture, src: 'https://remote.example/car.jpg' }] } });
-  assert.equal(bad.querySelector('img'), null); assert.match(bad.textContent, /Image unavailable/); assert.match(bad.textContent, /Active/);
+  assert.equal(bad.querySelector('img'), null); assert.match(bad.textContent, /Image unavailable/); assert.match(bad.textContent, /Waiting for you/);
   const falseExact = activityOffer({ offer: { state: 'active' }, display: { images: [{ ...picture, kind: 'exact' }] } });
   assert.equal(falseExact.querySelector('img'), null); assert.match(falseExact.textContent, /Image unavailable/);
 });

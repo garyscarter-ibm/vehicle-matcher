@@ -4,7 +4,9 @@ import { mountEmployee, EMPLOYEE_NAVIGATION } from '../employee/gcsp-employee.js
 import { activityBody } from './activity-body.js';
 import { activityFixtures } from './activity-fixtures.js';
 
-const names = { offer: 'Offer', 'never-checked': 'No offer', paused: 'Inactive', unavailable: 'Unavailable' };
+const names = { 'never-checked': 'Not searched', searching: 'Searching', offer: 'Offer waiting', 'offer-declined': 'Offer declined',
+  'offer-expired': 'Offer expired', 'paused-offer': 'Paused with offer', paused: 'Paused', 'source-delayed': 'Source delayed',
+  'source-unavailable': 'Source unavailable', unavailable: 'Unavailable' };
 const requested = new URLSearchParams(globalThis.location?.search || '').get('fixture');
 const initial = Object.hasOwn(names, requested) ? requested : 'offer';
 const root = document.getElementById('gcsp-activity-preview');
@@ -27,7 +29,7 @@ if (root) mountEmployee(root, {
       selected = name;
       body.firstElementChild?.destroy?.();
       body.replaceChildren(activityBody({ result: structuredClone(activityFixtures.snapshots[name]),
-        offerDisplay: name === 'offer' ? activityFixtures.offerExample : undefined, onRetry: () => show(selected, true) }));
+        offerDisplay: activityFixtures.offerExample, onRetry: () => show(selected, true) }));
       if (retry) body.querySelector('button')?.focus();
       buttons.forEach((control) => control.setAttribute('aria-pressed', String(control.dataset.fixture === selected)));
       status.textContent = retry ? 'Still unavailable.' : '';

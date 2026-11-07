@@ -6,9 +6,11 @@ import { createAccountHttpAdapter } from '../../blocks/gcsp/shell/account-runtim
 import { createActivityHttpAdapter } from '../../blocks/gcsp/activity/activity-http.js';
 import { createActivityController } from '../../blocks/gcsp/activity/activity-controller.js';
 import { preference, essential } from './helpers/employee-recommendation.js';
+import { createLocalHttpsFixture } from './helpers/local-https.js';
 
-test('actual live entry bootstraps the shared canonical account and current activity commands on one origin',async () => {
-  const opened=await startGcspDemo({runtime:{mode:'memory',environmentId:'activity-live-http',policyAsOf:'2026-11-05T14:00:00.000Z',commandId:'live-http-bootstrap'}});
+test('actual live entry bootstraps the shared canonical account and current activity commands on one origin',async (t) => {
+  const https=await createLocalHttpsFixture(t);const fetch=https.fetch;
+  const opened=await startGcspDemo({runtime:{mode:'memory',environmentId:'activity-live-http',policyAsOf:'2026-11-05T14:00:00.000Z',commandId:'live-http-bootstrap'},port:0,tls:https.configuration});
   assert.equal(opened.status,'ok');const app=opened.value;let controller;
   try{
     const page=await fetch(app.origin+'/gcsp-activity-live.html');assert.equal(page.status,200);assert.match(await page.text(),/gcsp-activity[^>]+data-live/);

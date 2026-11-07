@@ -2,7 +2,7 @@ import { el, button } from '../../vehicle-matcher/ui.js';
 import { mediaWell } from '../../vehicle-matcher/modes/result-card.js';
 // Explicitly approved local image source. Extend only with a reviewed asset manifest.
 const approved = new Map([['/assets/brand-hero/bmw.jpg', 'representative']]);
-const states = { active: 'Active', declined: 'Declined', expired: 'Expired', accepted: 'Accepted' };
+import { offerStateLabel, respondBy } from './activity-copy.js';
 export function activityOffer({ offer, display, level = 2, emptyText = 'No current offer' } = {}) {
   const root = el('section', 'gcsp-activity-offer');
   root.append(el(`h${level}`, 'gcsp-activity-section-title', 'Your offer'));
@@ -29,9 +29,11 @@ export function activityOffer({ offer, display, level = 2, emptyText = 'No curre
   layout.append(visual);
   if (offer) {
     const details = el('div', 'gcsp-activity-offer-details');
-    details.append(el('p', 'gcsp-activity-offer-state', states[offer.state] || 'Status unavailable'),
-      el(`h${Math.min(level + 1, 6)}`, 'gcsp-activity-offer-name', display?.title || 'Offer details unavailable'),
-      el('p', 'gcsp-activity-secondary', 'Offer access unavailable'));
+    const due = respondBy(offer);
+    details.append(el('p', 'gcsp-activity-offer-state', offerStateLabel(offer.state)));
+    if (due) details.append(el('p', 'gcsp-activity-offer-state', due));
+    if (display?.title) details.append(el(`h${Math.min(level + 1, 6)}`, 'gcsp-activity-offer-name', display.title));
+    if (offer.href) details.append(button({ label: 'View offer', variant: 'ghost', href: offer.href }));
     layout.append(details);
   }
   root.append(layout); return root;
