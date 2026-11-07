@@ -1,0 +1,103 @@
+{
+  "version": "g61-field-ledger-plan.v1",
+  "run": "fucq58-20261105-g61-field-ledger",
+  "createdAt": "2026-11-05T16:55:32.636484Z",
+  "scope": "Offline join of five existing local artifacts; link/hash/schema consistency only.",
+  "pathsChanged": [
+    "docs/gcsp/evidence/fucq-58/g61-field-ledger-2026-11-05/",
+    "_dev/in-progress/DEV-2026-11-04-031.md (Result only)"
+  ],
+  "regression": "Accidental field conflation, unsupported profile join, source drift or broken evidence locator.",
+  "affectedCallers": "Human/agent evidence consumers only; no runtime consumer added.",
+  "integrationBoundaries": [
+    "Named pinned local sources",
+    "Existing profile registry remains read-only",
+    "Existing story metadata/acceptance/decided/validate stay byte-identical"
+  ],
+  "storyPrefixSha256": "ae26194bc4f1d8e221a7eb5c90bff18413122b5d4e5499a17421ee7bc8fbb7af",
+  "selectedChecks": [
+    "Versioned ledger schema using retained stdlib validator",
+    "All five named input artifact SHA-256 values",
+    "JSON-pointer/text-line source locators and local README links",
+    "Required separate field rows and explicit unknown/unqualified boundaries",
+    "Story prefix unchanged before Result"
+  ],
+  "command": "python3 -B docs/gcsp/evidence/fucq-58/g61-field-ledger-2026-11-05/validate.py",
+  "excludedChecks": {
+    "fullSuite": "No product/runtime changes; dispatcher selected artifact-only checks.",
+    "regressionSuites": "Prior exact matching proofs unchanged; no rerun.",
+    "browserScreenshots": "No screen/user-visible behavior changes; no browser use authorised.",
+    "externalSources": "No HTTP, browser, lookup, Keychain or new VIN/source observations authorised."
+  },
+  "limits": {
+    "workers": 1,
+    "ramBytes": 67108864,
+    "scratchBytes": 1048576,
+    "wallSeconds": 60,
+    "expectedOutputBytesLessThan": 1048576,
+    "hostAdmissionAttempts": 1,
+    "retries": 0
+  },
+  "expectedRows": [
+    "model-code",
+    "ag-code",
+    "catalogue-range",
+    "payload-range",
+    "reported-generation",
+    "reported-model",
+    "reported-body",
+    "derivative",
+    "powertrain",
+    "drive",
+    "transmission",
+    "source-page-match",
+    "requested-market",
+    "requested-locale",
+    "confirmed-market",
+    "steering-literal",
+    "confirmed-steering",
+    "import-status",
+    "source-observation-date",
+    "candidate-report-date",
+    "order-date",
+    "tree-effect-date",
+    "model-effect-date",
+    "production-date",
+    "production-era",
+    "model-year",
+    "registration-date",
+    "registration-year",
+    "advertised-manufacture-date",
+    "advertised-manufacture-year",
+    "wmi-literal",
+    "positions4to8-literal",
+    "descriptor-boundaries",
+    "ag-descriptor-relation",
+    "position9-arithmetic",
+    "position9-convention",
+    "position10-literal",
+    "position10-meaning",
+    "plant-literal",
+    "plant-dictionary",
+    "plant-allocation",
+    "serial-shape",
+    "sample-count",
+    "constructibility",
+    "registry-compatibility"
+  ],
+  "inputs": {
+    "docs/gcsp/evidence/fucq-58/known-seed-refresh-2026-11-05/evidence/observation.json": "1fa5a52de21d27cc45555b69a29d97c90d5ad800001e880405bb35093ff66ca7",
+    "docs/gcsp/synthetic-vin-rules.md": "d693b957f1004f57e58bfd77104ff097b5e46ee5653b3ea7a03e3b7bd66ba543",
+    "docs/gcsp/vin-sample-checklist.md": "180f3e6abf65641c98442382974e5b0f722e1abb93af2c67e443cd9d1fa03128",
+    "server/data/gcsp/vehicle-evidence/vin-profiles.v1.json": "9a107b2b90c21a116e2fb93ca88211b95250c4404f6468924e5e7f53d092a1fa",
+    "docs/gcsp/evidence/fucq-58/known-seed-refresh-2026-11-05/next-qualification-path.md": "e5bcf034e129b138e0c043b692e48f11ed4ae0b00994a6994ae93b15522f9a1d"
+  },
+  "nonActions": {
+    "networkRequests": 0,
+    "newConfigurations": 0,
+    "profileActivations": 0,
+    "registryEdits": 0,
+    "identifierRetention": 0
+  },
+  "reviewBoundary": "Separate date, literal, semantic, model-scoped and candidate claims; no derivation from 72HH to 72HH0. Actual profile and coverage qualification remain blocked."
+}
