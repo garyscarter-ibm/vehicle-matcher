@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "observed_at": "2026-11-07T12:44:22.530Z",
+  "observed_at": "2026-11-07T12:59:41Z",
   "stories": [
     {
       "id": "FUCQ-2",
@@ -716,22 +716,22 @@
     },
     {
       "id": "FUCQ-77",
-      "title": "Collect a demo set of real BMW configurations for the scheme models",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "title": "Verify scheme coverage using the collected BMW configuration corpus",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T12:59:41Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-77"
     },
     {
       "id": "FUCQ-78",
       "title": "Shape synthetic scheme stock from real stock-locator aggregates",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T12:59:41Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-78"
     },
     {
