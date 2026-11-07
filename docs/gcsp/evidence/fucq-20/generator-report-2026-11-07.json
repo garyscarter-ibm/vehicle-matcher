@@ -1,0 +1,379 @@
+{
+  "schemaVersion": 1,
+  "kind": "synthetic-stock-generator-report",
+  "runId": "fucq78-report-run",
+  "seed": "fucq78-report-seed",
+  "clockInstant": "2026-11-07T09:00:00.000Z",
+  "note": "Synthetic scheme stock on assumed aggregates; not BMW stock. withinFivePoints compares model and colour shares with the plan, for lines with 20 or more cars.",
+  "generatorVersion": "stock-generator.v1",
+  "policyVersion": "gcsp-policy-v1",
+  "totalCars": 370,
+  "configurationSource": {
+    "kind": "retained-corpus",
+    "source": "FUCQ-61 retained corpus server/data/gcsp/vehicle-evidence/fleet-source.v1",
+    "datasetId": "gcsp-source-fleet",
+    "corpusVersion": "2026-11-07.9",
+    "manifestDigest": "28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884"
+  },
+  "release": {
+    "trancheSize": 20,
+    "weeklyVolume": 370,
+    "windows": [
+      {
+        "windowStart": "2026-11-09T11:30:00.000Z",
+        "windowEnd": "2026-11-11T11:30:00.000Z",
+        "cars": 130
+      },
+      {
+        "windowStart": "2026-11-11T11:30:00.000Z",
+        "windowEnd": "2026-11-13T11:30:00.000Z",
+        "cars": 120
+      },
+      {
+        "windowStart": "2026-11-13T11:30:00.000Z",
+        "windowEnd": "2026-11-16T11:30:00.000Z",
+        "cars": 120
+      }
+    ]
+  },
+  "coverage": {
+    "coveredLines": 3,
+    "schemeLines": 31,
+    "note": "Only the scheme lines with retained corpus rows are covered; the rest are the FUCQ-77 coverage gap."
+  },
+  "lines": [
+    {
+      "modelLineId": "f70-sports-hatch",
+      "title": "F70 Sports Hatch",
+      "aggregateKey": "stock.aggregate.f70-sports-hatch",
+      "sourceKind": "assumed-aggregate",
+      "cars": 167,
+      "modelShare": {
+        "planned": 0.45,
+        "actual": 0.4514
+      },
+      "colourShares": [
+        {
+          "colour": "Alpine White",
+          "planned": 0.0805,
+          "cars": 13,
+          "actual": 0.0778
+        },
+        {
+          "colour": "BMW Individual Frozen Portimao Blue",
+          "planned": 0.0781,
+          "cars": 13,
+          "actual": 0.0778
+        },
+        {
+          "colour": "BMW Individual Frozen Pure Grey",
+          "planned": 0.0756,
+          "cars": 13,
+          "actual": 0.0778
+        },
+        {
+          "colour": "BMW Individual Paintwork",
+          "planned": 0.0756,
+          "cars": 13,
+          "actual": 0.0778
+        },
+        {
+          "colour": "Black Sapphire",
+          "planned": 0.0781,
+          "cars": 13,
+          "actual": 0.0778
+        },
+        {
+          "colour": "Brooklyn Grey",
+          "planned": 0.0682,
+          "cars": 11,
+          "actual": 0.0659
+        },
+        {
+          "colour": "Cape York Green",
+          "planned": 0.0829,
+          "cars": 14,
+          "actual": 0.0838
+        },
+        {
+          "colour": "Fire Red",
+          "planned": 0.0756,
+          "cars": 13,
+          "actual": 0.0778
+        },
+        {
+          "colour": "Jet Black",
+          "planned": 0.0074,
+          "cars": 1,
+          "actual": 0.006
+        },
+        {
+          "colour": "Portimao Blue",
+          "planned": 0.0706,
+          "cars": 12,
+          "actual": 0.0719
+        },
+        {
+          "colour": "Skyscraper Grey",
+          "planned": 0.0781,
+          "cars": 13,
+          "actual": 0.0778
+        },
+        {
+          "colour": "Storm Bay",
+          "planned": 0.0756,
+          "cars": 12,
+          "actual": 0.0719
+        },
+        {
+          "colour": "Tanzanite Blue",
+          "planned": 0.0781,
+          "cars": 13,
+          "actual": 0.0778
+        },
+        {
+          "colour": "Thundernight",
+          "planned": 0.0756,
+          "cars": 13,
+          "actual": 0.0778
+        }
+      ],
+      "leadTimeWeeks": {
+        "aggregate": {
+          "min": 6,
+          "max": 14
+        },
+        "min": 6,
+        "max": 14,
+        "histogram": {
+          "6": 26,
+          "7": 15,
+          "8": 13,
+          "9": 19,
+          "10": 18,
+          "11": 12,
+          "12": 20,
+          "13": 19,
+          "14": 25
+        }
+      },
+      "withinFivePoints": true
+    },
+    {
+      "modelLineId": "g42-coupe",
+      "title": "G42 Coupe",
+      "aggregateKey": "stock.aggregate.g42-coupe",
+      "sourceKind": "assumed-aggregate",
+      "cars": 74,
+      "modelShare": {
+        "planned": 0.2,
+        "actual": 0.2
+      },
+      "colourShares": [
+        {
+          "colour": "Alpine White",
+          "planned": 0.2049,
+          "cars": 15,
+          "actual": 0.2027
+        },
+        {
+          "colour": "BMW Individual Frozen Portimao Blue",
+          "planned": 0.0682,
+          "cars": 5,
+          "actual": 0.0676
+        },
+        {
+          "colour": "BMW Individual Frozen Pure Grey",
+          "planned": 0.0682,
+          "cars": 5,
+          "actual": 0.0676
+        },
+        {
+          "colour": "Black Sapphire",
+          "planned": 0.2047,
+          "cars": 15,
+          "actual": 0.2027
+        },
+        {
+          "colour": "Brooklyn Grey",
+          "planned": 0.0682,
+          "cars": 5,
+          "actual": 0.0676
+        },
+        {
+          "colour": "Fire Red",
+          "planned": 0.0682,
+          "cars": 5,
+          "actual": 0.0676
+        },
+        {
+          "colour": "Mineral White",
+          "planned": 0.113,
+          "cars": 9,
+          "actual": 0.1216
+        },
+        {
+          "colour": "Portimao Blue",
+          "planned": 0.0682,
+          "cars": 5,
+          "actual": 0.0676
+        },
+        {
+          "colour": "Skyscraper Grey",
+          "planned": 0.0682,
+          "cars": 5,
+          "actual": 0.0676
+        },
+        {
+          "colour": "Thundernight",
+          "planned": 0.0682,
+          "cars": 5,
+          "actual": 0.0676
+        }
+      ],
+      "leadTimeWeeks": {
+        "aggregate": {
+          "min": 8,
+          "max": 16
+        },
+        "min": 8,
+        "max": 16,
+        "histogram": {
+          "8": 9,
+          "9": 9,
+          "10": 10,
+          "11": 7,
+          "12": 10,
+          "13": 5,
+          "14": 9,
+          "15": 6,
+          "16": 9
+        }
+      },
+      "withinFivePoints": true
+    },
+    {
+      "modelLineId": "g61-i5",
+      "title": "G61 i5",
+      "aggregateKey": "stock.aggregate.g61-i5",
+      "sourceKind": "assumed-aggregate",
+      "cars": 129,
+      "modelShare": {
+        "planned": 0.35,
+        "actual": 0.3486
+      },
+      "colourShares": [
+        {
+          "colour": "Alpine White",
+          "planned": 0.0704,
+          "cars": 9,
+          "actual": 0.0698
+        },
+        {
+          "colour": "BMW Individual Frozen Deep Grey",
+          "planned": 0.0616,
+          "cars": 8,
+          "actual": 0.062
+        },
+        {
+          "colour": "BMW Individual Frozen Pure Grey",
+          "planned": 0.0704,
+          "cars": 9,
+          "actual": 0.0698
+        },
+        {
+          "colour": "BMW Individual Paintwork",
+          "planned": 0.0674,
+          "cars": 9,
+          "actual": 0.0698
+        },
+        {
+          "colour": "Black Sapphire",
+          "planned": 0.0557,
+          "cars": 7,
+          "actual": 0.0543
+        },
+        {
+          "colour": "Brooklyn Grey",
+          "planned": 0.0735,
+          "cars": 9,
+          "actual": 0.0698
+        },
+        {
+          "colour": "Cape York Green",
+          "planned": 0.0704,
+          "cars": 9,
+          "actual": 0.0698
+        },
+        {
+          "colour": "Carbon Black",
+          "planned": 0.0645,
+          "cars": 8,
+          "actual": 0.062
+        },
+        {
+          "colour": "Fire Red",
+          "planned": 0.0674,
+          "cars": 9,
+          "actual": 0.0698
+        },
+        {
+          "colour": "Frozen Portimao Blue",
+          "planned": 0.0674,
+          "cars": 9,
+          "actual": 0.0698
+        },
+        {
+          "colour": "Mineral White",
+          "planned": 0.0674,
+          "cars": 9,
+          "actual": 0.0698
+        },
+        {
+          "colour": "Oxide Grey",
+          "planned": 0.0704,
+          "cars": 9,
+          "actual": 0.0698
+        },
+        {
+          "colour": "Phytonic Blue",
+          "planned": 0.0674,
+          "cars": 9,
+          "actual": 0.0698
+        },
+        {
+          "colour": "Sophisto Grey",
+          "planned": 0.0674,
+          "cars": 9,
+          "actual": 0.0698
+        },
+        {
+          "colour": "Tanzanite Blue",
+          "planned": 0.0587,
+          "cars": 7,
+          "actual": 0.0543
+        }
+      ],
+      "leadTimeWeeks": {
+        "aggregate": {
+          "min": 4,
+          "max": 12
+        },
+        "min": 4,
+        "max": 12,
+        "histogram": {
+          "4": 8,
+          "5": 13,
+          "6": 17,
+          "7": 12,
+          "8": 16,
+          "9": 18,
+          "10": 14,
+          "11": 14,
+          "12": 17
+        }
+      },
+      "withinFivePoints": true
+    }
+  ]
+}

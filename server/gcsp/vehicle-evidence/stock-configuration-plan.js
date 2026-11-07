@@ -79,10 +79,11 @@ export async function buildRetainedCorpusPlan({ root, policyService, read, fleet
     root = resolve(root);
     const corpus = await readRetainedCorpus(root);
     const { lines, excluded } = classifyCorpus(corpus.rows, corpusModelLines, optionLabels);
-    const configurations = []; const aggregateKeys = {};
+    const configurations = []; const aggregateKeys = {}; const modelTitles = {};
     for (const line of Object.values(lines).sort((a, b) => byCode(a.modelLineId, b.modelLineId))) {
       if (!line.configurations.length) continue;
       aggregateKeys[line.modelLineId] = `stock.aggregate.${line.modelLineId}`;
+      modelTitles[line.modelLineId] = line.title;
       const groups = new Map();
       for (const row of line.configurations) groups.set(row.colour, [...(groups.get(row.colour) || []), row]);
       for (const colour of [...groups.keys()].sort(byCode)) {
@@ -102,6 +103,6 @@ export async function buildRetainedCorpusPlan({ root, policyService, read, fleet
     note: 'Only the scheme lines with retained corpus rows are covered; the rest are the FUCQ-77 coverage gap.' };
     if (!configurations.length) return invalid('no-usable-corpus-rows');
     return ok({ plan: { kind: 'retained-corpus', source: `FUCQ-61 retained corpus ${location}`, datasetId: corpus.datasetId,
-      corpusVersion: corpus.corpusVersion, configurations, aggregateKeys }, coverage });
+      corpusVersion: corpus.corpusVersion, configurations, aggregateKeys, titles: modelTitles }, coverage });
   } catch { return unavailable('retained-corpus-unavailable'); }
 }

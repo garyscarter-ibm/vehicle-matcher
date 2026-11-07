@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile, writeFile, mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import pg from 'pg';
 import { createMemoryStore, createMemoryRepository } from '../gcsp/repository/memory.js';
 import { inputDigest } from '../gcsp/repository/core.js';
 import { emptyAllocationInventory, canonicalAllocationContent, readAllocationInventory } from '../gcsp/vehicle-evidence/vin-allocation.js';
@@ -77,6 +78,8 @@ async function setup({ seeds, plan = configurationPlan, registryPort = registry,
     contextForRun: context, configurationPlan: plan, stockAccount: 'fictional-scheme-stock', allocationInventoryPath });
   return { generator, repository, store, reads, policy, allocationInventoryPath };
 }
+// Generated rows carry a VehicleSnapshot: raw fact values sit at facts.facts.<name>.value.
+const fact = (row, name) => row.facts.facts[name].value;
 const stock = async (repository, runId) => (await repository.query(context(runId), 'stock')).value;
 const inventoryDigest = async (path) => inputDigest(JSON.parse(await readFile(path, 'utf8')));
 
@@ -95,17 +98,18 @@ test('seeded stock is deterministic, weighted, explicitly fictional and unreleas
     assert.match(row.orderNumber, /^[0-9]{7}$/);
     assert.ok(row.wholesalerOrderId >= 10000000 && row.wholesalerOrderId <= 99999999);
     assert.ok(ids.includes(row.configurationId));
-    assert.equal(row.facts.syntheticIdentity.identityKind, 'synthetic');
-    assert.equal(row.facts.stockGeneration.identityKind, 'synthetic');
+    assert.equal(fact(row, 'stockIdentityKind'), 'synthetic');
+    assert.equal(row.facts.sourceNamespace, 'synthetic:stock-generator.v1');
     assert.equal(row.state, 'unreleased'); assert.equal(row.available, false);
+    assert.equal(row.release, undefined, 'the release service owns the release object');
     assert.equal(row.account, 'fictional-scheme-stock');
-    assert.equal(row.facts.stockGeneration.policyVersion, 'fixture-policy-v1');
-    assert.ok(row.facts.stockGeneration.leadTimeWeeks >= 2 && row.facts.stockGeneration.leadTimeWeeks <= 4);
-    assert.match(row.facts.stockGeneration.confirmedDeliveryWeek, /^\d{4}-\d{2}-\d{2}$/);
-    assert.ok(Date.parse(row.release.at) >= Date.parse(at));
-    assert.equal(row.release.windowStart, row.release.at);
-    assert.ok(Date.parse(row.release.windowEnd) > Date.parse(row.release.windowStart));
-    assert.equal(new Date(row.facts.stockGeneration.confirmedDeliveryWeek).getUTCDay(), 1);
+    assert.equal(fact(row, 'policyVersion'), 'fixture-policy-v1');
+    assert.ok(fact(row, 'leadTimeWeeks') >= 2 && fact(row, 'leadTimeWeeks') <= 4);
+    assert.match(fact(row, 'confirmedDeliveryWeek'), /^\d{4}-\d{2}-\d{2}$/);
+    const planned = fact(row, 'plannedRelease');
+    assert.ok(Date.parse(planned.windowStart) >= Date.parse(at));
+    assert.ok(Date.parse(planned.windowEnd) > Date.parse(planned.windowStart));
+    assert.equal(new Date(fact(row, 'confirmedDeliveryWeek')).getUTCDay(), 1);
     assert.equal(row.vin17, undefined); assert.equal(row.vin, undefined);
   }
   assert.deepEqual(records, before);
@@ -139,8 +143,8 @@ test('idempotent regeneration and one new policy entry preserve other runs and r
   assert.deepEqual(env.store.state, before);
   assert.equal((await env.generator.generateStock('run-c', 'fictional-seed', changed.policyVersion)).status, 'ok');
   const c = await stock(env.repository, 'run-c');
-  assert.ok(c.filter((row) => row.facts.stockGeneration.modelLineId === 'fixture-a').every((row) => row.facts.stockGeneration.leadTimeWeeks === 8));
-  assert.ok(c.filter((row) => row.facts.stockGeneration.modelLineId === 'fixture-b').every((row) => row.facts.stockGeneration.leadTimeWeeks <= 4));
+  assert.ok(c.filter((row) => fact(row, 'modelLine') === 'fixture-a').every((row) => fact(row, 'leadTimeWeeks') === 8));
+  assert.ok(c.filter((row) => fact(row, 'modelLine') === 'fixture-b').every((row) => fact(row, 'leadTimeWeeks') <= 4));
   assert.deepEqual(await stock(env.repository, 'run-a'), before.tables.stock.filter((row) => row.runId === 'run-a'));
   assert.deepEqual(await stock(env.repository, 'run-b'), before.tables.stock.filter((row) => row.runId === 'run-b'));
   const run = await env.repository.read(context('run-a'), { table: 'runs', key: { runId: 'run-a' } });
@@ -232,7 +236,7 @@ test('release cadence is policy data, and unknown aggregate fields cannot enter 
   };
   const env = await setup({ seeds: [seed] });
   assert.equal((await env.generator.generateStock('run-a', 'fixture', 'fixture-policy-v1')).status, 'ok');
-  assert.ok((await stock(env.repository, 'run-a')).every((row) => new Date(row.release.at).getUTCDay() === 2));
+  assert.ok((await stock(env.repository, 'run-a')).every((row) => new Date(fact(row, 'plannedRelease').windowStart).getUTCDay() === 2));
   const unsafe = await policyFixture();
   unsafe.assumptions.find((row) => row.key === 'stock.aggregate.fixture-a').value.singleCarRecord = 'DO_NOT_RETAIN';
   const rejected = await setup({ seeds: [unsafe] });
@@ -284,10 +288,16 @@ async function realStock() {
   })();
   return realBuilt;
 }
-async function realRun(seeds, { runIds = ['run-a'] } = {}) {
-  const { policy, policyVersion, registry, built } = await realStock();
+// Runs carry the clock scenario's corpus version and its unreleased fixture stock, as after a real reset.
+const CLOCK_CORPUS = 'synthetic-clock-corpus-v1';
+export const clockFixtureRow = (runId) => ({ runId, orderUuid: '11111111-1111-4111-8111-111111111111', orderNumber: '1000001', wholesalerOrderId: 10000001,
+  configurationId: 'clock-fixture-config', corpusVersion: CLOCK_CORPUS, revision: 1, state: 'unreleased', available: false,
+  facts: { syntheticIdentity: { vehicleId: 'clock-fixture-1', identityKind: 'synthetic' } } });
+async function realRun(seeds, { runIds = ['run-a'], policy: custom, versions = {}, repository: given, ...generatorOptions } = {}) {
+  const base = await realStock();
+  const { registry, built } = base; const policy = custom ?? base.policy; const policyVersion = base.policyVersion;
   assert.equal(built.status, 'ok', JSON.stringify(built));
-  const repository = createMemoryRepository({ store: createMemoryStore(), now: () => at });
+  const repository = given ?? createMemoryRepository({ store: createMemoryStore(), now: () => at });
   const directory = await mkdtemp(join(tmpdir(), 'stock-generation-real-')); allocationRoots.push(directory);
   const allocationInventoryPath = join(directory, 'inventory.json');
   await writeFile(allocationInventoryPath, canonicalAllocationContent(emptyAllocationInventory()));
@@ -295,15 +305,17 @@ async function realRun(seeds, { runIds = ['run-a'] } = {}) {
   for (const runId of runIds) {
     await repository.transaction(context(runId), { commandId: 'real-run', inputDigest: inputDigest([runId]) }, async (tx) => tx.insert('runs', {
       runId, environmentId: context(runId).environmentId, current: true, status: 'active', clockInstant: at,
-      corpusVersion: built.value.plan.corpusVersion, policyVersion, versions: {} }));
+      corpusVersion: CLOCK_CORPUS, policyVersion: versions[runId] ?? policyVersion, versions: {} }));
+    await repository.transaction(context(runId), { commandId: 'real-fixture', inputDigest: inputDigest([runId, 'fixture']) }, async (tx) => tx.insert('stock', clockFixtureRow(runId)));
   }
   const generator = generatorModule.createStockGenerator({ repository, registry, policyService: policy, contextForRun: context,
-    configurationPlan: built.value.plan, stockAccount: 'fictional-scheme-stock', allocationInventoryPath });
+    configurationPlan: built.value.plan, stockAccount: 'fictional-scheme-stock', allocationInventoryPath, ...generatorOptions });
   const outcomes = [];
-  for (const [runId, seed] of seeds) outcomes.push(await generator.generateStock(runId, seed, policyVersion));
-  return { outcomes, repository, plan: built.value.plan, coverage: built.value.coverage, registry, policy, policyVersion };
+  for (const [runId, seed] of seeds) outcomes.push(await generator.generateStock(runId, seed, versions[runId] ?? policyVersion));
+  return { outcomes, repository, plan: built.value.plan, coverage: built.value.coverage, registry, policy, policyVersion, allocationInventoryPath };
 }
-const shape = (rows) => rows.map((row) => [row.configurationId, row.facts.stockGeneration.leadTimeWeeks, row.release.at, row.facts.stockGeneration.confirmedDeliveryWeek]);
+const generated = (rows) => rows.filter((row) => row.facts?.sourceNamespace === 'synthetic:stock-generator.v1');
+const shape = (rows) => rows.map((row) => [row.configurationId, fact(row, 'leadTimeWeeks'), fact(row, 'plannedRelease').windowStart, fact(row, 'confirmedDeliveryWeek')]);
 
 test('retained-corpus plan is deterministic, capped per colour and records the coverage gap honestly', async () => {
   const { built } = await realStock();
@@ -327,14 +339,14 @@ test('seeded stock from the real seed and corpus is reproducible, seed-sensitive
   const other = await realRun([['run-a', 'another-real-seed']]);
   assert.equal(a.outcomes[0].status, 'ok', JSON.stringify(a.outcomes[0]));
   assert.deepEqual(a.outcomes[0].value.report, b.outcomes[0].value.report);
-  const rows = (await a.repository.query(context('run-a'), 'stock')).value;
-  assert.deepEqual(shape(rows), shape((await b.repository.query(context('run-a'), 'stock')).value));
-  assert.notDeepEqual(shape(rows), shape((await other.repository.query(context('run-a'), 'stock')).value));
+  const rows = generated((await a.repository.query(context('run-a'), 'stock')).value);
+  assert.deepEqual(shape(rows), shape(generated((await b.repository.query(context('run-a'), 'stock')).value)));
+  assert.notDeepEqual(shape(rows), shape(generated((await other.repository.query(context('run-a'), 'stock')).value)));
   const planned = new Set(a.plan.configurations.map((row) => row.configurationId));
   for (const row of rows) {
     assert.ok(planned.has(row.configurationId));
     assert.ok(['ok', 'complete', 'partial'].includes(a.registry.getConfiguration(row.configurationId).status));
-    assert.equal(row.facts.syntheticIdentity.identityKind, 'synthetic'); assert.equal(row.facts.stockGeneration.identityKind, 'synthetic');
+    assert.equal(fact(row, 'stockIdentityKind'), 'synthetic');
     for (const key of ['vin', 'vin17', 'vin7']) assert.equal(row[key], undefined);
   }
   const report = a.outcomes[0].value.report;
@@ -344,16 +356,16 @@ test('seeded stock from the real seed and corpus is reproducible, seed-sensitive
     const aggregate = (await a.policy.getAssumption(`stock.aggregate.${model.modelLineId}`, { runId: 'run-a', asOf: at, policyVersion: a.policyVersion })).value;
     assert.equal(aggregate.status, 'assumed'); assert.equal(model.sourceKind, 'assumed-aggregate');
     assert.equal(Object.hasOwn(model.observed, 'sampleDate'), false); assert.equal(Object.hasOwn(model.observed, 'requestCount'), false);
-    const own = rows.filter((row) => row.facts.stockGeneration.modelLineId === model.modelLineId);
+    const own = rows.filter((row) => fact(row, 'modelLine') === a.plan.titles[model.modelLineId]);
     assert.equal(own.length, model.cars);
     for (const row of own) {
-      const lead = row.facts.stockGeneration.leadTimeWeeks;
+      const lead = fact(row, 'leadTimeWeeks');
       assert.ok(lead >= model.observed.leadTimeWeeks.min && lead <= model.observed.leadTimeWeeks.max);
     }
     if (model.cars < 20) continue;
     assert.ok(Math.abs(model.actualShare - model.observedShare) <= 0.05);
     for (const [colour, share] of Object.entries(model.observed.colourShares)) {
-      const actual = own.filter((row) => row.facts.stockGeneration.colour === colour).length / own.length;
+      const actual = own.filter((row) => fact(row, 'colour') === colour).length / own.length;
       assert.ok(Math.abs(actual - share) <= 0.05, `${model.modelLineId} ${colour}`);
       assert.ok(Math.abs(model.colourShares[colour] - share) <= 0.05);
     }
@@ -371,4 +383,204 @@ test('a retained-corpus assumed aggregate may not claim a sample, and fixtures c
   for (const row of claimed.assumptions.filter((entry) => entry.key.startsWith('stock.aggregate.'))) { delete row.value.sampleDate; delete row.value.requestCount; }
   const assumed = await setup({ seeds: [claimed], plan });
   assert.equal((await assumed.generator.generateStock('run-a', 'fixture', 'fixture-policy-v1')).status, 'ok');
+});
+
+// ---- Generated rows on the existing release path (FUCQ-92 service, pull port) ----
+const GENERATOR_NAMESPACE = 'synthetic:stock-generator.v1';
+const keysDeep = (value) => (value && typeof value === 'object' ? Object.entries(value).flatMap(([key, child]) => [key, ...keysDeep(child)]) : []);
+const corpusDigest = async () => {
+  const { DEFAULT_VEHICLE_CORPUS_ROOT } = await import('../gcsp/vehicle-evidence/local-vehicle-lookup.js');
+  const active = JSON.parse(await readFile(join(DEFAULT_VEHICLE_CORPUS_ROOT, 'active.json'), 'utf8'));
+  return inputDigest([active, (await readFile(join(DEFAULT_VEHICLE_CORPUS_ROOT, 'versions', active.selected.directory, 'configurations.jsonl'))).toString('base64')]);
+};
+
+test('generated stock is released by the existing release service in the runtime, with facts unchanged', async (t) => {
+  const { registry, built } = await realStock();
+  const { createGcspRuntime } = await import('../gcsp/runtime.js');
+  const { createGeneratedStockProvider } = await import('../gcsp/stock/index.js');
+  const { validatePull } = await import('../gcsp/stock/port.js');
+  const repository = createMemoryRepository({ store: createMemoryStore() });
+  let source;
+  const runtime = await createGcspRuntime({ mode: 'memory', repository, stockProvider: { pull: (request) => source.pull(request) },
+    environmentId: 'generated-release', policyAsOf: '2026-11-05T09:00:00.000Z', commandId: 'generated-release-bootstrap', sessionNow: () => '2026-11-06T00:00:00.000Z' });
+  assert.equal(runtime.status, 'ok', JSON.stringify(runtime));
+  t.after(() => runtime.value.close());
+  const { clock, identity, stockRelease, policy } = runtime.value;
+  assert.equal((await stockRelease.register()).status, 'ok');
+  const presenter = (await identity.createPresenterSession('generated-release-presenter')).value;
+  const ctx = presenter.context; const state = (await clock.readState(ctx)).value;
+  const run = (await repository.read(ctx, { table: 'runs', key: { runId: state.runId } })).value;
+  assert.equal(run.corpusVersion, CLOCK_CORPUS, 'the run carries the clock scenario corpus, not the generator corpus');
+  const clockRows = (await repository.query(ctx, 'stock')).value;
+  assert.ok(clockRows.length > 0 && clockRows.every((row) => row.state === 'unreleased'));
+  const directory = await mkdtemp(join(tmpdir(), 'stock-generation-release-')); allocationRoots.push(directory);
+  const allocationInventoryPath = join(directory, 'inventory.json');
+  await writeFile(allocationInventoryPath, canonicalAllocationContent(emptyAllocationInventory()));
+  const visibility = { companyIds: ['demo-bmw-fs-uk'], schemeIds: ['choices-fs-uk'], employeeIds: null };
+  const generator = generatorModule.createStockGenerator({ repository, registry, policyService: policy, contextForRun: () => ctx,
+    configurationPlan: built.value.plan, stockAccount: 'fictional-scheme-stock', allocationInventoryPath, visibility });
+  const generation = await generator.generateStock(state.runId, 'release-seed', run.policyVersion);
+  assert.equal(generation.status, 'ok', JSON.stringify(generation));
+  const before = new Map(generated((await repository.query(ctx, 'stock')).value).map((row) => [row.orderUuid, row]));
+  assert.equal(before.size, generation.value.generated);
+  assert.ok([...before.values()].every((row) => row.state === 'unreleased' && row.release === undefined && row.visibility.schemeIds[0] === 'choices-fs-uk'));
+  source = createGeneratedStockProvider({ repository, contextForRun: () => ctx });
+  const [first] = generation.value.report.release.windows;
+  const request = { runId: state.runId, asOf: first, releaseSize: 20, released: [], queuedSupply: [], policyVersion: run.policyVersion };
+  const early = validatePull(await source.pull({ ...request, asOf: '2026-11-05T09:30:00.000Z' }), { ...request, asOf: '2026-11-05T09:30:00.000Z' });
+  assert.equal(early.status, 'ok'); assert.equal(early.value.tranche, null);
+  const pulled = validatePull(await source.pull(request), request);
+  assert.equal(pulled.status, 'ok', JSON.stringify(pulled));
+  assert.ok(pulled.value.tranche.orderUuids.length > 0 && pulled.value.tranche.orderUuids.length <= request.releaseSize);
+  const tick = await clock.advanceAndTick(ctx, { commandId: 'generated-release-tick', expectedClockVersion: state.clockVersion, mode: 'to', to: first });
+  assert.equal(tick.status, 'ok', JSON.stringify(tick));
+  const outcome = tick.value.tick.outcomes.find((row) => row.handlerId === 'stock-release').outcome;
+  assert.equal(outcome.status, 'ok', JSON.stringify(outcome)); assert.equal(outcome.value.kind, 'stock-released');
+  assert.deepEqual([...outcome.value.orderUuids].sort(), [...pulled.value.tranche.orderUuids].sort());
+  const after = (await repository.query(ctx, 'stock')).value;
+  for (const row of generated(after)) {
+    const wasReleased = outcome.value.orderUuids.includes(row.orderUuid);
+    assert.equal(row.state, wasReleased ? 'released' : 'unreleased');
+    assert.deepEqual(row.facts, before.get(row.orderUuid).facts);
+    assert.equal(row.release === undefined, !wasReleased);
+  }
+  assert.ok(after.filter((row) => !generated([row]).length).every((row) => row.state === 'unreleased'), 'clock fixture rows stay unreleased');
+});
+
+test('regenerating another run leaves the first run and the retained corpus unchanged', async () => {
+  const corpusBefore = await corpusDigest();
+  const first = await realRun([['run-a', 'real-seed']], { runIds: ['run-a', 'run-b'] });
+  assert.equal(first.outcomes[0].status, 'ok', JSON.stringify(first.outcomes[0]));
+  const runA = await stock(first.repository, 'run-a');
+  const store = first.repository;
+  assert.equal(generated(runA).length, first.outcomes[0].value.generated);
+  const { createStockGenerator } = generatorModule;
+  const second = createStockGenerator({ repository: store, registry: first.registry, policyService: first.policy, contextForRun: context,
+    configurationPlan: first.plan, stockAccount: 'fictional-scheme-stock', allocationInventoryPath: first.allocationInventoryPath });
+  const again = await second.generateStock('run-b', 'another-seed', first.policyVersion);
+  assert.equal(again.status, 'ok', JSON.stringify(again));
+  assert.deepEqual(await stock(store, 'run-a'), runA);
+  assert.ok(generated(await stock(store, 'run-b')).length > 0);
+  assert.equal(await corpusDigest(), corpusBefore);
+});
+
+test('one policy entry changes the next run only: i5 lead times follow the new aggregate, earlier rows keep theirs', async () => {
+  const { policyVersion } = await realStock();
+  const { PolicyService, FilePolicyProvider } = await import('../gcsp/policy/index.js');
+  const [first] = await new FilePolicyProvider().loadVersions();
+  const changed = structuredClone(first); changed.policyVersion = 'gcsp-policy-v2-test'; changed.effectiveFrom = '2026-11-06T00:00:00.000Z';
+  for (const table of ['schemeRuleLinks', 'eligibilityRules', 'pricePlans', 'allowances', 'assumptions']) {
+    for (const row of changed[table]) row.policyVersion = changed.policyVersion;
+  }
+  const i5 = changed.assumptions.find((row) => row.key === 'stock.aggregate.g61-i5');
+  const was = structuredClone(first.assumptions.find((row) => row.key === 'stock.aggregate.g61-i5').value.leadTimeWeeks);
+  i5.value.leadTimeWeeks = { min: 20, max: 24 };
+  const policy = new PolicyService({ provider: { async loadVersions() { return [first, changed]; } } });
+  const env = await realRun([['run-a', 'real-seed'], ['run-c', 'real-seed']], { runIds: ['run-a', 'run-c'], policy, versions: { 'run-c': changed.policyVersion } });
+  assert.deepEqual(env.outcomes.map((row) => row.status), ['ok', 'ok'], JSON.stringify(env.outcomes));
+  const lead = (rows) => generated(rows).filter((row) => fact(row, 'modelLine') === 'G61 i5').map((row) => fact(row, 'leadTimeWeeks'));
+  const a = lead(await stock(env.repository, 'run-a')); const c = lead(await stock(env.repository, 'run-c'));
+  assert.ok(a.length > 0 && c.length > 0);
+  assert.ok(c.every((weeks) => weeks >= 20 && weeks <= 24));
+  assert.ok(a.every((weeks) => weeks >= was.min && weeks <= was.max));
+  assert.ok(generated(await stock(env.repository, 'run-a')).every((row) => fact(row, 'policyVersion') === policyVersion));
+  assert.ok(generated(await stock(env.repository, 'run-c')).every((row) => fact(row, 'policyVersion') === changed.policyVersion));
+});
+
+test('generated facts are a valid synthetic VehicleSnapshot with no VIN key, and the extra-facts seam cannot override generator facts', async () => {
+  const { createVehicleSnapshot } = await import('../vehicles/index.js');
+  const seam = (binding) => ({ eligibilityModelKey: `key-${binding.modelLineId}`, body: 'hatch', boot: { value: 300, unit: 'L' } });
+  const env = await realRun([['run-a', 'real-seed']], { factsForConfiguration: seam });
+  assert.equal(env.outcomes[0].status, 'ok', JSON.stringify(env.outcomes[0]));
+  const rows = generated(await stock(env.repository, 'run-a'));
+  assert.ok(rows.length > 0);
+  for (const row of rows) {
+    assert.deepEqual(createVehicleSnapshot(structuredClone(row.facts)), row.facts);
+    assert.equal(row.facts.identityKind, 'exact-stock'); assert.equal(row.facts.sourceKeys.stockId, row.orderUuid);
+    assert.equal(fact(row, 'stockIdentityKind'), 'synthetic');
+    assert.equal(row.facts.facts.leadTimeWeeks.unit, 'weeks');
+    assert.equal(row.facts.display.name, `${fact(row, 'modelLine')} in ${fact(row, 'colour')}`);
+    assert.match(fact(row, 'eligibilityModelKey'), /^key-/); assert.equal(fact(row, 'boot'), 300);
+    assert.ok(keysDeep(row).every((key) => !['vin', 'vin7', 'vin17'].includes(key.toLowerCase())));
+    assert.ok(row.facts.facts.plannedRelease.value.releaseId.startsWith('run-a:stock:'));
+  }
+  for (const bad of [{ colour: 'Hijack' }, { leadTimeWeeks: 1 }, { vin: 'X' }, { x: null }]) {
+    const refused = await realRun([['run-a', 'real-seed']], { factsForConfiguration: () => bad });
+    assert.equal(refused.outcomes[0].status, 'invalid', JSON.stringify(bad));
+    assert.equal(generated(await stock(refused.repository, 'run-a')).length, 0);
+    assert.equal((await readAllocationInventory(refused.allocationInventoryPath)).inventory.records.length, 0, 'refused before reserving identifiers');
+  }
+});
+
+test('a run that already holds generator rows refuses a second generation, while clock fixture rows do not', async () => {
+  const env = await setup();
+  const insert = (row) => env.repository.transaction(context('run-a'), { commandId: `seed-${row.orderUuid}`, inputDigest: inputDigest(row) }, (tx) => tx.insert('stock', row));
+  assert.equal((await insert({ ...clockFixtureRow('run-a'), corpusVersion: 'synthetic-clock-corpus-v1' })).status, 'ok');
+  const outcome = await env.generator.generateStock('run-a', 'fixture', 'fixture-policy-v1');
+  assert.equal(outcome.status, 'ok', JSON.stringify(outcome));
+  assert.equal((await stock(env.repository, 'run-a')).filter((row) => row.facts.sourceNamespace === GENERATOR_NAMESPACE).length, 350);
+  const other = await setup();
+  const planted = { ...clockFixtureRow('run-b'), orderUuid: '22222222-2222-4222-8222-222222222222', orderNumber: '1000002',
+    facts: { sourceNamespace: GENERATOR_NAMESPACE } };
+  assert.equal((await other.repository.transaction(context('run-b'), { commandId: 'plant', inputDigest: inputDigest(planted) }, (tx) => tx.insert('stock', planted))).status, 'ok');
+  const refused = await other.generator.generateStock('run-b', 'fixture', 'fixture-policy-v1');
+  assert.equal(refused.status, 'conflict'); assert.equal(refused.reason, 'stock-generation-exists');
+});
+
+test('the pull port accepts real corpus identifiers up to 4096 characters, and the provider needs generated rows and a context', async () => {
+  const { validCar } = await import('../gcsp/stock/port.js');
+  const { createGeneratedStockProvider } = await import('../gcsp/stock/generated-provider.js');
+  const car = { orderUuid: 'a1b2c3d4-0000-4000-8000-000000000001', orderNumber: '1234567', configurationId: 'c'.repeat(4096) };
+  assert.equal(validCar(car), true);
+  assert.equal(validCar({ ...car, configurationId: 'c'.repeat(4097) }), false);
+  assert.equal(validCar({ ...car, configurationId: '' }), false);
+  const env = await setup();
+  const request = { runId: 'run-a', asOf: at, releaseSize: 20, released: [], queuedSupply: [], policyVersion: 'fixture-policy-v1' };
+  assert.equal((await createGeneratedStockProvider({ repository: env.repository }).pull(request)).status, 'unavailable');
+  assert.equal((await createGeneratedStockProvider({ repository: env.repository, contextForRun: context }).pull(request)).status, 'unavailable', 'no generated rows yet');
+  assert.equal((await env.generator.generateStock('run-a', 'fixture', 'fixture-policy-v1')).status, 'ok');
+  const pulled = await createGeneratedStockProvider({ repository: env.repository, contextForRun: context }).pull(
+    { ...request, asOf: '2026-12-01T00:00:00.000Z' });
+  assert.equal(pulled.status, 'ok');
+  assert.equal(pulled.value.tranche.orderUuids.length, 20);
+  assert.equal(pulled.value.stock.length, 20);
+  const earliest = generated(await stock(env.repository, 'run-a')).filter((row) => fact(row, 'plannedRelease').windowStart === pulled.value.tranche.availableAt)
+    .sort((x, y) => (x.orderNumber < y.orderNumber ? -1 : 1))[0];
+  assert.equal(pulled.value.tranche.windowId, fact(earliest, 'plannedRelease').releaseId);
+  assert.equal((await createGeneratedStockProvider({ repository: env.repository, contextForRun: context }).pull({ ...request, runId: 'run-b' })).status, 'unavailable');
+});
+
+test('native postgresql: generateStock persists one run-scoped set of synthetic rows', {
+  skip: process.env.GCSP_DATABASE_URL === undefined ? 'GCSP_DATABASE_URL is unset; native PostgreSQL generation was not run' : false,
+}, async () => {
+  const { createPostgresRepository } = await import('../gcsp/repository/postgres.js');
+  const schema = `gcsp_stockgen_${process.pid}_1`;
+  const pool = new pg.Pool({ connectionString: process.env.GCSP_DATABASE_URL, connectionTimeoutMillis: 5000, statement_timeout: 10000 });
+  pool.on('error', () => {});
+  let created = false;
+  const repository = createPostgresRepository({ schema });
+  try {
+    try { await pool.query(`CREATE SCHEMA "${schema}"`); created = true; }
+    catch { throw new Error('PostgreSQL stock-generation fixture unavailable'); }
+    assert.equal((await repository.open()).status, 'ok');
+    const env = await realRun([['run-a', 'native-seed']], { repository });
+    assert.equal(env.outcomes[0].status, 'ok', JSON.stringify(env.outcomes[0]));
+    const rows = (await repository.query(context('run-a'), 'stock')).value;
+    const own = generated(rows);
+    assert.equal(own.length, env.outcomes[0].value.generated);
+    assert.equal(rows.length, own.length + 1, 'the clock-like fixture row is the only other row');
+    assert.ok(own.every((row) => row.runId === 'run-a' && fact(row, 'stockIdentityKind') === 'synthetic' && row.state === 'unreleased' && row.release === undefined));
+    assert.equal((await pool.query(`SELECT count(*)::integer AS count FROM "${schema}".stock`)).rows[0].count, rows.length);
+  } finally {
+    await repository.close();
+    try {
+      if (created) {
+        await pool.query(`DROP SCHEMA "${schema}" CASCADE`);
+        const absent = await pool.query('SELECT count(*)::integer AS count FROM pg_namespace WHERE nspname = $1', [schema]);
+        assert.equal(absent.rows[0].count, 0, 'The exact owned stock-generation schema must be absent.');
+      }
+    }
+    catch { throw new Error('PostgreSQL stock-generation fixture cleanup incomplete'); }
+    finally { await pool.end(); }
+  }
 });
