@@ -1,0 +1,33 @@
+{
+  "GET": 96,
+  "acceptance": false,
+  "actualProofSha256": "d9b612b3d5369de9918917a0d4ce0434ca07b708a0372c03ddf9a29c26c7e566",
+  "admissions": 0,
+  "codeAndRuntimeUnchanged": true,
+  "contexts": 24,
+  "decodedBytes": 26261184,
+  "elapsedSeconds": 46.251,
+  "images": 0,
+  "observedAt": "2026-11-07T05:02:08.855653+00:00",
+  "preparationChecks": 28,
+  "remaining": [
+    "every31scheme-model join",
+    "nine unusableline models andI20emptytree",
+    "GB/RHD/year/plant/era/fiveWMI qualification",
+    "material solver collect and canonical admission"
+  ],
+  "removedScratchBytes": 131168,
+  "retainedSummary": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-root-execution-2026-11-07/actual-summary.json",
+  "schemaVersion": "root-model-options-actual-proof.v1",
+  "scope": "scoped actual public fourGET qualification per explicit model/line, retained production observation binding and zero-fetch copied-primary resume",
+  "scratchGroupsReservationsAbsent": true,
+  "seriesReceiptSha256": "4217d3346327f3d03a8b51d85854acf8ecaae3d3087c8004e5f82052c23359f8",
+  "solver": 0,
+  "sourceCapacityCredit": 0,
+  "strictChecks": {
+    "fail": 0,
+    "pass": 25,
+    "skipped": 0,
+    "tests": 25
+  }
+}

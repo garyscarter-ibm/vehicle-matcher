@@ -1,0 +1,42 @@
+{
+  "GETCeiling": 1956,
+  "acceptance": false,
+  "allocationId": "g42-unspent-typed-pool-1304-20261107-once",
+  "candidateManifestSha256": "0ee1c61fe6f0299ffd8db4e1acdc3f682221293b9029d51967a00528733c14b4",
+  "decision": "released-once",
+  "finalGlobalUnionRequired": true,
+  "limits": {
+    "childRamBytes": 469762048,
+    "childSeconds": 105,
+    "directOneDrive": true,
+    "expectedRetainedBytes": 1500000000,
+    "hostRamBytes": 536870912,
+    "largeOutputThresholdBytes": 268435456,
+    "peakIncludingRetainedBudgetBytes": 4362076160,
+    "perCohortSeconds": 600,
+    "perSessionRetainedShardBytes": 16777216,
+    "perSessionSeconds": 120,
+    "retainedBudgetBytes": 4294967296,
+    "retainedCheckSeconds": 30,
+    "scratchBytes": 67108864,
+    "scratchRootPolicy": "resource-helper-owned-default",
+    "sourceSeconds": 90,
+    "workers": 1
+  },
+  "maximumWallSeconds": 2200,
+  "original118FailurePreserved": true,
+  "parentAuditSha256": "24773169e1693e3df0f20b20a534285a4d52c2e756407a6a41cd2f50352aaee3",
+  "readOnlyChecks": 579,
+  "replay": false,
+  "requiredBeforeExecution": "Breadth48 joins and035dependencylink/scratch/groups/tokens proved absent; no overlapping035source run.",
+  "review": "Root read series/executor/supervisors/reconciler/event-union/group-query code; independent pinned-input and all1304request digest membership/unspent audit against global3854. No blocking CODE/SECURITY finding.",
+  "schemaVersion": "bounded-source-parent-release.v1",
+  "seriesPlanSha256": "9353bceeea61de5d2bd62e6a7e035a1f9163eddeb01aa468db0476cd034ab274",
+  "solverCeiling": 1304,
+  "sourceCapacityCreditBeforeActualEvidence": 0,
+  "sourceGrantEnvironment": {
+    "G42_UNSPENT1304_PHASE_GRANT": "g42-unspent-typed-pool-1304-20261107-once-continuation1304"
+  },
+  "time": "2026-11-07T05:11:00.600343+00:00",
+  "validationSha256": "64da1c34caf8273a13375ef8711cd162cafa455195c5843d7d9ecea569759ffe"
+}
