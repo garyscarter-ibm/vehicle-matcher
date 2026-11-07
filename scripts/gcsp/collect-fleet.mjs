@@ -1,4 +1,5 @@
 import { dirname, isAbsolute, resolve } from 'node:path';
+import { createHash } from 'node:crypto';
 import { buildBmwSelectionBinding, qualifyBmwSelectionRecord, createBmwSelectionRegistration } from './bmw-selection-binding.mjs';
 import { open } from 'node:fs/promises';
 import { settingsShapeReceiptBytes, validateSettingsShapeRefusal } from './settings-shape-report.mjs';
@@ -10,7 +11,7 @@ import { CollectionError, createConfigurationKey, normaliseCode, normaliseCodes,
 import { publicBmwOperations, publicBmwObservation, validatePublicBmwPlan,
   publicBmwQualificationOperations, validatePublicBmwDiagnosticPlan, qualifyPublicBmwDiagnosticFields } from './public-bmw-source.mjs';
 import { publicBmwCompleteSelectionOperations } from './capture-bmw-selection.mjs';
-import { BMW_BATCH_SOURCE_VERSION } from './bmw-public-registration.mjs';
+import { BMW_BATCH_SOURCE_VERSION, bmwPublicRequestUrls } from './bmw-public-registration.mjs';
 
 export const COLLECTOR_VERSION = '2';
 const CONTEXT = ['catalogueDate', 'market', 'locale', 'orderDate', 'effectDate', 'productionDate', 'taxDate'];
@@ -179,7 +180,7 @@ export function validateSolverResponse(candidate, response, key) {
 
 /** No default network transport exists. Only an explicitly injected offline source is executable here. */
 export async function createFleetCollector({ plan: input, source, policyService, policyRead, statePath,
-  operations = {}, http, mode = 'dry-run', now = Date.now, onPhase = async () => {}, captureReplay, batchBinding } = {}) {
+  operations = {}, http, mode = 'dry-run', now = Date.now, onPhase = async () => {}, captureReplay, batchBinding, continuation } = {}) {
   const plan = validatePlan(input);
   if (mode === 'capture-replay' || captureReplay !== undefined) {
     requireValue(mode === 'capture-replay' && plan.captureVersion === 'bmw-complete-selection.v1'
@@ -189,7 +190,7 @@ export async function createFleetCollector({ plan: input, source, policyService,
   }
   if (plan.source.kind === 'public-bmw-uk' && !NO_TRAFFIC.includes(mode)) {
     if (plan.source.version === BMW_BATCH_SOURCE_VERSION)
-      return createPublicBatchCollector({ plan, source, policyService, policyRead, statePath, operations, http, mode, now, onPhase, batchBinding });
+      return createPublicBatchCollector({ plan, source, policyService, policyRead, statePath, operations, http, mode, now, onPhase, batchBinding, continuation });
     return createPublicCollector({ plan, source, policyService, policyRead, statePath, operations, http, mode, now, onPhase });
   }
   requireValue(mode !== 'live', 'live-source-unallocated', 'Live source execution requires the qualified public-source plan and explicit allocation.');
@@ -264,7 +265,21 @@ export async function createFleetCollector({ plan: input, source, policyService,
   }, { stage: { id: 'collection', version: COLLECTOR_VERSION, inputDigest: inputDigest(plan) } }) };
 }
 
-async function createPublicBatchCollector({ plan, source, policyService, policyRead, statePath, operations, http, mode, now, onPhase, batchBinding }) {
+const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
+const addCounts = (a, b) => Object.fromEntries(Object.keys(b).map((name) => [name, object(b[name])
+  ? Object.fromEntries(Object.keys(b[name]).map((operation) => [operation, (a?.[name]?.[operation] || 0) + b[name][operation]]))
+  : (a?.[name] || 0) + b[name]]));
+async function checkpointBytes(path, limit) {
+  const file = await open(path, 'r');
+  try {
+    requireValue((await file.stat()).size <= limit, 'checkpoint-corrupt', 'The predecessor exceeds its finite checkpoint limit.');
+    const buffer = Buffer.alloc(limit + 1); const { bytesRead } = await file.read(buffer, 0, buffer.length, 0);
+    requireValue(bytesRead <= limit, 'checkpoint-corrupt', 'The predecessor exceeds its finite checkpoint limit.');
+    return buffer.subarray(0, bytesRead);
+  } finally { await file.close(); }
+}
+
+async function createPublicBatchCollector({ plan, source, policyService, policyRead, statePath, operations, http, mode, now, onPhase, batchBinding, continuation }) {
   requireValue(['live', 'source-fixture'].includes(mode) && source?.kind === 'public-bmw-uk' && source.version === plan.source.version
     && http?.kind === (mode === 'live' ? 'live' : 'fixture') && object(batchBinding)
     && object(batchBinding.producerPins) && version(batchBinding.snapshotVersion)
@@ -277,39 +292,147 @@ async function createPublicBatchCollector({ plan, source, policyService, policyR
   requireValue(!Object.keys(operations).some((name) => Object.hasOwn(descriptors, name)), 'invalid-session', 'Additional stages cannot replace source operations.');
   const catalogueRegistrations = []; const prior = new Set(batchBinding.existingConfigurationIds);
   const artifact = (entry) => ({ bytes: JSON.stringify(entry.document) + '\n', artifactSha256: entry.sha256, retrievedAt: entry.retrievedAt || entry.document.observation.observedAt });
-  const registration = (state, solver) => ({ plan, configurationKey: key, producerPins: batchBinding.producerPins,
-    snapshotVersion: batchBinding.snapshotVersion, artifacts: { tree: artifact(state.batchEvidence.tree), solver: artifact(solver) },
-    definitionBinding: { options: artifact(state.batchEvidence.options) } });
+  const registration = (state, solver, evidence = state.batchEvidence) => ({ plan, configurationKey: key, producerPins: batchBinding.producerPins,
+    snapshotVersion: batchBinding.snapshotVersion, artifacts: { tree: artifact(evidence.tree), solver: artifact(solver) },
+    definitionBinding: { options: artifact(evidence.options) } });
   const register = (input) => {
     const row = buildBmwSelectionBinding(input).record;
     if (row.sourceKind === 'dated-snapshot' && !catalogueRegistrations.some((value) => same(value.lookupIdentity, row.lookupIdentity)))
       catalogueRegistrations.push(createBmwSelectionRegistration(input));
     return row;
   };
-  const session = await createCollectionSession({ statePath, now, onPhase, http, limits: plan.limits,
-    identity: { planDigest: inputDigest(plan), sourceVersion: plan.source.version, toolVersion: COLLECTOR_VERSION, mode,
-      signaturePolicyVersion: key.policyVersion, batchBindingDigest: inputDigest(batchBinding) }, operations: { ...operations, ...descriptors },
-    initialState: { batchEvidence: null, sourceCaptures: [], cursor: 0, records: [], accepted: [], rejected: [], duplicates: [] },
-    validateState: (state) => {
+  const stageIdentity = { planDigest: inputDigest(plan), sourceVersion: plan.source.version, toolVersion: COLLECTOR_VERSION, mode,
+    signaturePolicyVersion: key.policyVersion, batchBindingDigest: inputDigest(batchBinding) };
+  const validateRetainedCache = (state, allocation) => {
+    requireValue(Array.isArray(allocation.cache) && allocation.cache.length <= plan.limits.cacheEntries && object(allocation.attempts),
+      'cache-corrupt', 'Retained allocation caches and spending must remain bounded.');
+    for (const cached of allocation.cache) {
+      requireValue(inputDigest(cached.payload) === cached.payloadDigest, 'cache-corrupt', 'Retained response bytes must match their digest.');
+      if (cached.operation !== 'solve') continue;
+      const candidate = plan.candidates.find((candidate) => cached.cacheKey === inputDigest({ operation: 'solve',
+        ...state.identity.sources.solve, request: candidate.request }));
+      requireValue(candidate && allocation.attempts[cached.cacheKey] === 1 && allocation.batchEvidence
+        && same(cached.payload?.document?.observation?.request, { method: 'GET', url: bmwPublicRequestUrls(plan.modelRegistration, candidate.request).solve }),
+      'cache-corrupt', 'Retained solver evidence must identify a spent exact planned request.');
+      buildBmwSelectionBinding(registration(state, cached.payload, allocation.batchEvidence));
+    }
+  };
+  const validateState = (state) => {
       requireValue((state.batchEvidence === null || object(state.batchEvidence) && object(state.batchEvidence.tree) && object(state.batchEvidence.options))
         && bounded(state.cursor, 0, plan.candidateCount) && ['sourceCaptures', 'records', 'accepted', 'rejected', 'duplicates'].every((field) =>
           Array.isArray(state[field]) && state[field].length <= plan.candidateCount), 'checkpoint-corrupt', 'Use bounded batch captures and outcomes.');
       for (const row of state.records) {
         const captured = state.sourceCaptures.find((entry) => entry.solver?.sha256 === row.sourceEvidence?.solver);
-        requireValue(captured && state.batchEvidence && qualifyBmwSelectionRecord(row, registration(state, captured.solver)).status === 'qualified',
+        requireValue(captured && state.batchEvidence && qualifyBmwSelectionRecord(row, registration(state, captured.solver, captured.batchEvidence)).status === 'qualified',
           'source-selection-mismatch', 'Every persisted record must match its exact source capture.');
-        register(registration(state, captured.solver));
+        register(registration(state, captured.solver, captured.batchEvidence));
       }
       for (const row of state.accepted) requireValue(mode === 'live' && row.admission === true
         && state.records.some((record) => same(record, { ...row, admission: false })),
       'source-selection-mismatch', 'Accepted state must retain the exact live source-derived record.');
-    } });
-  return { session, catalogueRegistrations, run: () => session.withCheckpoint(async ({ state, execute, commit, checkDeadline }) => {
+      for (const captured of state.sourceCaptures) {
+        const candidate = plan.candidates.find((candidate) => candidate.candidateId === captured.candidateId);
+        requireValue(candidate && same(captured.solver?.document?.observation?.request,
+          { method: 'GET', url: bmwPublicRequestUrls(plan.modelRegistration, candidate.request).solve }),
+        'checkpoint-corrupt', 'Captures belong to their exact planned queue request.');
+        buildBmwSelectionBinding(registration(state, captured.solver, captured.batchEvidence));
+      }
+      if (state.continuation) {
+        requireValue(object(state.continuation.contract) && same(state.continuation.contract.limits, state.continuation.limits)
+          && Array.isArray(state.continuation.retainedAllocations) && state.continuation.retainedAllocations.length <= 32
+          && bounded(state.continuation.recoveredSolverResponses, 0, plan.candidateCount),
+        'checkpoint-corrupt', 'Continuation identity, retained allocation lineage and recovered responses must remain bounded.');
+        for (const allocation of state.continuation.retainedAllocations) validateRetainedCache(state, allocation);
+        validateRetainedCache(state, { cache: state.cache, attempts: state.attempts, batchEvidence: state.activeBatchEvidence });
+        if (lineage) {
+          requireValue(['contract', 'limits', 'allocationIds', 'retainedAllocations', 'priorCounts'].every((field) => same(state.continuation[field], lineage[field]))
+            && ['records', 'accepted', 'rejected', 'duplicates', 'sourceCaptures'].every((field) =>
+              same(state[field].slice(0, initialState[field].length), initialState[field])),
+          'continuation-predecessor-mismatch', 'Preserve every inherited outcome, capture and allocation without rewriting or resetting it.');
+        }
+      }
+    };
+  let initialState = { batchEvidence: null, sourceCaptures: [], cursor: 0, records: [], accepted: [], rejected: [], duplicates: [] };
+  let limits = plan.limits; let lineage;
+  if (continuation !== undefined) {
+    requireValue(mode === 'live' && object(continuation) && isAbsolute(continuation.checkpointPath || '')
+      && isAbsolute(statePath || '') && resolve(continuation.checkpointPath) !== resolve(statePath)
+      && /^[a-f0-9]{64}$/.test(continuation.checkpointSha256 || '') && object(continuation.limits),
+    'continuation-required', 'Use a distinct checkpoint, exact predecessor byte hash and explicit fresh finite limits.');
+    const bytes = await checkpointBytes(continuation.checkpointPath, plan.limits.checkpointBytes);
+    requireValue(sha256(bytes) === continuation.checkpointSha256, 'continuation-predecessor-mismatch', 'Preserve the exact predecessor checkpoint bytes.');
+    let envelope;
+    try { envelope = JSON.parse(bytes); } catch { throw new CollectionError('checkpoint-corrupt', 'The predecessor must be a complete checkpoint.'); }
+    const previous = envelope?.content; const previousLineage = previous?.continuation;
+    const predecessor = await createCollectionSession({ statePath: continuation.checkpointPath, now,
+      http: { ...http, allocation: previous?.identity?.transport?.allocation }, limits: previousLineage?.limits || plan.limits,
+      identity: { ...stageIdentity, ...(previousLineage ? { continuationDigest: inputDigest(previousLineage.contract) } : {}) },
+      operations: { ...operations, ...publicBmwCompleteSelectionOperations(plan) }, validateState });
+    const retained = await predecessor.withCheckpoint(async ({ state }) => {
+      requireValue(sha256(await checkpointBytes(continuation.checkpointPath, plan.limits.checkpointBytes)) === continuation.checkpointSha256,
+        'continuation-predecessor-mismatch', 'The predecessor changed during validation.');
+      validateRetainedCache(state, { cache: state.cache, attempts: state.attempts,
+        batchEvidence: state.activeBatchEvidence || state.batchEvidence });
+      return structuredClone(state);
+    });
+    requireValue(retained.batchEvidence && retained.cursor < plan.candidateCount && retained.counts.httpAttempts > 0,
+      'continuation-bootstrap-required', 'Continue an interrupted batch only after complete retained tree and option evidence.');
+    const allocationIds = [...(previousLineage?.allocationIds || []), retained.identity.transport.allocation.id];
+    requireValue(version(http?.allocation?.id) && !allocationIds.includes(http.allocation.id),
+      'continuation-allocation-used', 'A continuation requires a fresh explicit allocation identity.');
+    limits = structuredClone(continuation.limits);
+    requireValue(Object.keys(plan.limits).every((name) => name === 'requestBudgets'
+      ? same(Object.keys(limits.requestBudgets || {}).sort(), Object.keys(plan.limits.requestBudgets).sort())
+        && ['page', 'settings', 'discover', 'options'].every((operation) => limits.requestBudgets[operation] === 1)
+        && bounded(limits.requestBudgets.solve, 0, plan.candidateCount - retained.cursor)
+      : bounded(limits[name], 0, plan.limits[name])) && limits.sourceAttempts <= 4 + limits.requestBudgets.solve,
+    'continuation-limits', 'Budget the four fresh bootstrap GETs and bounded remaining solver work within the original ceilings.');
+    const contract = { checkpointPath: resolve(continuation.checkpointPath), checkpointSha256: continuation.checkpointSha256, limits,
+      rootPath: previousLineage?.contract.rootPath || resolve(continuation.checkpointPath) };
+    const retainedAllocations = [...(previousLineage?.retainedAllocations || []), {
+      allocationId: retained.identity.transport.allocation.id, cache: retained.cache, attempts: retained.attempts,
+      batchEvidence: retained.activeBatchEvidence || retained.batchEvidence }];
+    requireValue(retainedAllocations.length <= 32, 'continuation-budget', 'The explicit continuation chain is bounded to 32 allocations.');
+    lineage = { contract, limits, allocationIds, retainedAllocations,
+      priorCounts: addCounts(previousLineage?.priorCounts, retained.counts), recoveredSolverResponses: previousLineage?.recoveredSolverResponses || 0 };
+    initialState = { ...Object.fromEntries(['batchEvidence', 'sourceCaptures', 'cursor', 'records', 'accepted', 'rejected', 'duplicates']
+      .map((field) => [field, retained[field]])), activeBatchEvidence: null, continuation: lineage };
+  }
+  const session = await createCollectionSession({ statePath, now, onPhase, http, limits,
+    identity: { ...stageIdentity, ...(lineage ? { continuationDigest: inputDigest(lineage.contract) } : {}) },
+    operations: { ...operations, ...descriptors }, initialState, validateState });
+  return { session, catalogueRegistrations, run: async () => {
+    if (lineage) {
+      const markerPath = `${lineage.contract.rootPath}.continuation-allocation-${inputDigest(http.allocation.id)}.json`;
+      const marker = { schemaVersion: '1', allocation: http.allocation, statePath: resolve(statePath), contract: lineage.contract };
+      let file;
+      try { file = await open(markerPath, 'wx', 0o600); }
+      catch (error) {
+        if (error.code !== 'EEXIST') throw error;
+        requireValue(same(await readBounded(markerPath, 16384, 'continuation-allocation-used'), marker),
+          'continuation-allocation-used', 'This allocation is already bound to another continuation checkpoint.');
+        try { await checkpointBytes(statePath, limits.checkpointBytes); }
+        catch (missing) {
+          if (missing.code !== 'ENOENT') throw missing;
+          throw new CollectionError('continuation-allocation-used', 'A consumed continuation allocation cannot restart after checkpoint loss.');
+        }
+      }
+      if (file) {
+        try { await file.writeFile(JSON.stringify(marker) + '\n'); await file.sync(); } finally { await file.close(); }
+        const directory = await open(dirname(markerPath), 'r'); try { await directory.sync(); } finally { await directory.close(); }
+      }
+    }
+    return session.withCheckpoint(async ({ state, execute, commit, checkDeadline }) => {
     const report = (reason) => ({ status: state.accepted.length >= plan.target ? 'complete' : 'incomplete', reason,
       qualification: mode === 'live' ? 'source-configuration-admitted' : 'synthetic-http-fixture', admission: state.accepted.length > 0,
-      ...structuredClone({ records: state.records, accepted: state.accepted, rejected: state.rejected, duplicates: state.duplicates, counts: state.counts }),
+      ...structuredClone({ records: state.records, accepted: state.accepted, rejected: state.rejected, duplicates: state.duplicates,
+        counts: state.continuation ? addCounts(state.continuation.priorCounts, state.counts) : state.counts }),
+      ...(state.continuation ? { allocationCounts: structuredClone({ prior: state.continuation.priorCounts, fresh: state.counts }),
+        continuation: { checkpointPath: state.continuation.contract.checkpointPath, checkpointSha256: state.continuation.contract.checkpointSha256,
+          recoveredSolverResponses: state.continuation.recoveredSolverResponses,
+          bootstrap: 'fresh-page-settings-tree-options-required-for-ephemeral-capabilities' } } : {}),
       coverage: { distinctConfigurations: state.accepted.length, observedDistinctConfigurations: state.records.length, target: plan.target,
-        attemptedCandidates: state.counts.operations.solve, processedCandidates: state.cursor,
+        attemptedCandidates: state.continuation ? addCounts(state.continuation.priorCounts, state.counts).operations.solve : state.counts.operations.solve, processedCandidates: state.cursor,
         rejectedCandidates: state.rejected.length, duplicateCandidates: state.duplicates.length,
         plannedCandidates: plan.candidateCount, models: { [plan.models[0]]: state.accepted.length } }, checkpoint: statePath });
     if (state.halted) return report(state.halted);
@@ -320,18 +443,39 @@ async function createPublicBatchCollector({ plan, source, policyService, policyR
       const page = await execute('page', {}); await execute('settings', { path: page.settingsPath });
       const tree = await execute('discover', {}); tree.retrievedAt = new Date(now()).toISOString();
       const options = await execute('options', {}); options.retrievedAt = new Date(now()).toISOString();
-      state.batchEvidence = { tree, options }; await commit('batch-source-evidence');
+      if (state.continuation) {
+        for (const [name, entry] of Object.entries({ tree, options })) requireValue(same(entry.document.report, state.batchEvidence[name].document.report)
+          && entry.document.observation.responseSha256 === state.batchEvidence[name].document.observation.responseSha256,
+        'continuation-source-changed', 'The fresh source bootstrap must match the exact retained model and definition context.');
+        state.activeBatchEvidence = { tree, options };
+      } else state.batchEvidence = { tree, options };
+      await commit('batch-source-evidence');
       while (state.cursor < plan.candidateCount) {
         checkDeadline(); const candidate = plan.candidates[state.cursor];
-        let solver;
-        try { solver = await execute('solve', candidate.request); }
+        let solver; let evidence = state.activeBatchEvidence || state.batchEvidence;
+        const cacheKey = inputDigest({ operation: 'solve', ...state.identity.sources.solve, request: candidate.request });
+        const spent = state.continuation?.retainedAllocations.findLast((allocation) => allocation.attempts[cacheKey]);
+        if (spent) {
+          const cached = spent.cache.find((entry) => entry.operation === 'solve' && entry.cacheKey === cacheKey);
+          if (!cached) {
+            state.rejected.push({ candidateId: candidate.candidateId, code: 'source-request-spent' }); state.cursor += 1;
+            await commit('candidate-spent'); continue;
+          }
+          solver = structuredClone(cached.payload); evidence = spent.batchEvidence;
+          // A retained immutable observation remains evidence after its transport cache expiry.
+          buildBmwSelectionBinding(registration(state, solver, evidence));
+          state.continuation.recoveredSolverResponses += 1;
+        }
+        try { solver ||= await execute('solve', candidate.request); }
         catch (error) {
           if (error.code !== 'source-not-constructible') throw error;
           state.rejected.push({ candidateId: candidate.candidateId, code: error.code }); state.cursor += 1;
           await commit('candidate-rejected'); continue;
         }
-        solver.retrievedAt = new Date(now()).toISOString(); state.sourceCaptures.push({ candidateId: candidate.candidateId, solver });
-        const input = registration(state, solver); const row = register(input);
+        solver.retrievedAt ||= spent ? solver.document.observation.observedAt : new Date(now()).toISOString();
+        state.sourceCaptures.push({ candidateId: candidate.candidateId, solver,
+          ...(state.continuation ? { batchEvidence: evidence } : {}) });
+        const input = registration(state, solver, evidence); const row = register(input);
         if (prior.has(row.configurationId) || state.records.some((record) => record.configurationId === row.configurationId))
           state.duplicates.push({ candidateId: candidate.candidateId, configurationId: row.configurationId, solverChanges: row.solverChanges,
             priorBatch: prior.has(row.configurationId) });
@@ -344,7 +488,7 @@ async function createPublicBatchCollector({ plan, source, policyService, policyR
       state.halted = error.code; if (error.code === 'source-model-substitution' || error.code === 'source-solver-shape') state.counts.substitutions += 1;
       await commit('batch-stop'); return report(error.code);
     }
-  }, { stage: { id: 'collection', version: COLLECTOR_VERSION, inputDigest: inputDigest(plan) } }) };
+  }, { stage: { id: 'collection', version: COLLECTOR_VERSION, inputDigest: inputDigest(plan) } }); } };
 }
 
 /** Source-qualified ingress shares the same checkpoint, accounting and later enrichment stages. */

@@ -85,6 +85,16 @@ Current collaborator instruction resumes F58–63, including F61, superseding th
 
 Supporting F59 code checkpoint `eb207527` implements complete safe source capture and the additive v2 closed structural contract. Source checkpoint `c60ea6ee` retains fresh7 November tree+solver artifacts, actual retrieval timestamps and the consumed once marker at `docs/gcsp/evidence/fucq-58/complete-selection-2026-11-07/` on that branch. Exactly 4 GET/782059 decoded bytes, zero retries, within 4 attempts/2 MiB/45 s/one worker limits. All 47 factory codes, SE000001 with unknown quantity, and44 provider-added entries were retained. No new distinct configuration is counted solely for re-observation. Artifact-derived actual collector replay, downstream F60/F54/application validation and broader selected coverage remain separate evidence. Never reset or replay this spent allocation.
 
+An interrupted finite source batch can use the existing collector's
+[explicit continuation contract](f59-source-batch-plan-2026-11-07.md#explicit-interrupted-batch-continuation):
+freeze and hash its predecessor checkpoint, retain all spent allocation markers,
+select a distinct checkpoint and explicitly allocate a fresh bounded bootstrap
+plus remaining unspent solver work. Prior solver requests never repeat. Counts
+remain cumulative, missing responses produce honest rejected work, and changed
+source context fails closed. Four fresh bootstrap GETs are still required to
+recover ephemeral capabilities; scripted offline validation does not establish
+actual LIVE resumption or all of F59 AC4.
+
 ## Offline staged and active corpus audit — FUCQ-61/63
 
 The verifier reads the existing versioned corpus and canonical policy; it never collects source data, allocates stock or writes active selection pointers. Keep source capture/collection and explicit publication as separate operations. An invalid candidate, shortfall or unavailable active store is a nonzero result, not target completion.

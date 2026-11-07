@@ -127,7 +127,8 @@ enrichment stages can use the same `session`. The source runner exports the safe
 accepted rows and the exact producer/plan/allocation pins. Completed checkpoints
 requalify rows from retained source artifacts and resume without requests.
 Interrupted batches stop rather than replay a spent settings request to recover
-ephemeral headers; retain their outcomes and review a new allocation explicitly.
+ephemeral headers. The explicit continuation API below consumes a separate finite
+allocation; restarting the original checkpoint grants no fresh allowance.
 
 Scoped validation is 8 batch tests plus 94 affected capture/binder/ingress/common
 collector tests, all passing with zero skipped tests. The new behavior was first
@@ -137,3 +138,48 @@ escaped bootstrap-header text in another profile's safe projection. These are
 scripted protocol fixtures, not actual source traffic or capacity evidence.
 Detailed identities and teardown receipts are in
 `evidence/fucq59/source-batch-capability-2026-11-07/validation.json`.
+
+## Explicit interrupted-batch continuation
+
+Keep the original plan, policy, source version, producer pins, snapshot version and
+prior canonical index unchanged. Pass a new absolute `statePath`, fresh
+`http.allocation.id`, and
+`continuation: {checkpointPath, checkpointSha256, limits}` to the existing
+`createFleetCollector`. The hash is SHA-256 of the predecessor's exact file bytes;
+the predecessor is read under its normal writer lock and revalidated through the
+existing session and source binder. It must contain complete retained tree/options
+bootstrap evidence. Inherited records, admissions, captures, caches, spending and
+configuration IDs remain intact; the predecessor file and original once marker
+are never rewritten. Completed original checkpoints retain their zero-request
+restart path.
+
+The caller explicitly budgets four fresh page/settings/tree/options GETs plus the
+remaining unspent solver requests, finite combined attempts/bytes, response size,
+timeout and new lifetime deadline, all within the original plan's ceilings. Live
+projector capabilities and ephemeral headers cannot be reconstructed from cached
+safe projections. Fresh tree/options reports and raw response hashes must match
+the retained context before any new solver request. A source change stops the new
+allocation without silently mixing contexts. The original qualification-day pin
+still applies. This prerequisite means cross-allocation bootstrap cache reuse is
+not established; it must not be described as full satisfaction of F59 AC4.
+
+A chain-scoped exclusive allocation marker binds the new allocation to its exact
+predecessor and destination. It refuses another destination, reused predecessor
+allocation IDs, or a consumed allocation whose destination was lost. Preserve
+these markers with the checkpoints. Another interruption requires another
+explicit allocation and checkpoint; the chain supports at most 32 continuations.
+The original checkpoint must remain frozen while its continuation is in use.
+
+Retained valid solver responses are strictly requalified and reused, including
+expired transport-cache entries used as immutable evidence. A solver request
+already started without a retained response is recorded as
+`source-request-spent`, advances the queue and grants no admission; it is never
+reissued. Prior accepted rows retain their exact identities. `counts` are
+cumulative; `allocationCounts.prior` and `.fresh` expose the two contributions,
+and `continuation.recoveredSolverResponses` identifies recovered evidence. A
+shortfall remains incomplete.
+
+The [continuation validation receipt](evidence/fucq59/batch-continuation-2026-11-07/validation.json)
+records scripted offline protocol checks, unchanged producer module hashes,
+selected session boundaries and scratch cleanup. It does not establish actual
+LIVE interruption/continuation, global coverage or the full target.
