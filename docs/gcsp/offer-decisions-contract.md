@@ -1,0 +1,288 @@
+# Offer decisions · FUCQ-106
+
+Contract checkpoint, 5 November, with actual memory integration on 6 November
+2026. The approved producer/private-access/stored-subject/decision/expiry composition
+has 12 scoped passes. Canonical policy, remote/downstream, runtime and native/full
+acceptance remain open.
+No screen or policy seed changes are included. Follow `experience-quality.md`,
+the supplied account/replace-vehicle shell references and current Density tokens.
+FUCQ-105 consumes the outcomes below; an accepted offer is employee selection,
+not an approved order or a changed current car.
+
+## Source and ownership
+
+The clean story base is `2b796010f54d1b720e8b13f044496c8e175c07a7`.
+Readiness uses actual interfaces, not Jira journey order. Immutable source reads:
+
+| Source | Evidence / required use |
+|---|---|
+| FUCQ-100 `a7fc8580efba36c329b2479711d6b66db53962bd` | `buddy-hold.js` persists exact hold/claim/quote/offer and current employee/slot/brief pins; `buddy-remote.js` retains exclusion during uncertainty; `recommendation/index.js` exports the internal stored-subject evaluator using the same calculation kernel. |
+| FUCQ-102 `4a56d386f031e7cf5a1fdeaefdcc612fb35cbd7b` | Actual privately branded account/token capability; `authorizeOffer(context, { runId, offerId }, 'decide')` checks binding/session/current run/stored offer. Verified contract SHA256 `1731acc4e8d50873e4f614836626202107c14d581661206ff0e71ef5f48acc88`, access module `134e9d39253e934618f6cf38b334bb7cf0f8912443ee159e6167b949d4fdb34a`. Historical `ec70522` used account `read` for `decide`; `b876536` corrected it to resource `write`, with regression at `a3fdcdf`. Current `4a56d386` also preserves decline availability after quote expiry until the hold deadline. No current guard or timing-projection defect is claimed. |
+| Current foundation | Repository `decisions`, `pending_operations`, `event_receipts`, immutable quotes/briefs; occupying hold/claim states; real PolicyService, DemoClock, identity and BriefService. |
+
+Owned new paths: `server/gcsp/offers/decision.js`, `decision-http.js`, dedicated
+`server/test/gcsp-offer-decisions*.test.js`, this contract and evidence. Root
+coordinates imports of immutable source paths and central runtime registration.
+The dispatcher subsequently approved only the exact first39 memory-test composition
+recorded in `evidence/fucq106/actual-integration-checkpoint.json`. No whole-branch
+merge, dirty-source copying, schema, producer, identity, brief,
+policy seed, evaluator or central-host edits are part of this allocation.
+
+## Commands and presentation
+
+`OfferDecisionService.decide(accessContext, command)` accepts exactly:
+
+```js
+{
+  commandId, runId, offerId,
+  decision: 'accept' | 'decline',
+  reasonCode,                 // required only for decline; absent for accept
+  expectedOfferVersion, expectedHoldVersion, expectedQuoteVersion
+}
+```
+
+IDs are nonempty bounded strings; versions are positive integers. Browser input
+contains no employee, roles, prices, facts, policy, expiry, operation or event ID.
+`access.authorizeOffer(accessContext, { runId, offerId }, 'decide')` precedes all
+reads/receipts. Token authority is one offer, never an employee session. The
+repository scope is built from the verified binding; the calculation subject is
+built only from current persisted employee/run rows and contains no session roles.
+
+Proposed POST `/api/gcsp/offers/:offerId/decision` body is the command without
+`offerId`; the path supplies it. Existing shared access gate, exact credentialed
+origin check, current account/token resolution and `no-store`/`no-referrer` headers
+are required before the adapter runs. No listener is introduced here.
+
+An `ok` or `pending` response has the following safe `value`:
+
+```js
+{
+  schemaVersion: 1, runId, offerId, commandId, decisionId,
+  requestedDecision: 'accept' | 'decline',
+  state: 'accepted' | 'declined' | 'pending' | 'expired',
+  reason,                    // stable outcome code; no employee facts
+  offerState, holdState, offerVersion, holdVersion, quoteVersion,
+  quoteId, policyVersion, expiresAt, serverNow, clockVersion,
+  availableActions: [],
+  operationId: null | '...', reconciliationRequired: false | true
+}
+```
+
+`pending` means `selection-pending`/`decision-pending` or `release-pending`;
+it asserts neither accepted selection nor available stock. Historical command
+responses stay immutable. `readOperation(accessContext, { runId, offerId,
+operationId })` separately describes current reconciliation and checks the same
+one-offer binding. A new command on terminal/pending authority returns `conflict`
+with safe current state and `action: 'refresh'`; it never repeats a decision.
+Version conflicts are `stale-version`, `action: 'refresh'`. At the exact deadline
+new decisions refuse with current `expired` presentation; FUCQ-100 remains the
+only expiry mutator. Missing policy or unsupported source/adapter fails closed
+as `unavailable`. Malformed input is `invalid`; expired credentials and stale runs
+retain FUCQ-102's safe refusal. No raw token, employee record or brief is returned.
+
+HTTP mappings: `ok` 200, `pending` 202, `invalid` 400, `forbidden` 403,
+`not-found` 404, `conflict`/`stale-version`/`stale-run` 409, `unavailable` 503.
+Account/session refusal mappings remain those of the existing access adapter.
+
+## Transaction and pinned revalidation
+
+Each logical command uses repository command ID
+`offer-decision:<offerId>:<commandId>`. Its digest binds the full validated caller
+command, verified environment/run/offer and operation schema version, including
+decision, reason and every expected revision. Stable decision/operation/event IDs
+derive from that identity. Same input replays its original response; changed
+input conflicts. Authorisation/current-run checks still precede replay.
+
+Inside one repository transaction recheck the current environment/run, clock
+instant/version and current policy pin; load and compare the exact offer, hold,
+single claim, immutable quote, stock, current employee, entitlement slot and latest
+confirmed brief. Compare owner/car/configuration/quote/policy/brief/deadline pins
+across rows, occupying/terminal states and other car/slot/renewal authority. The
+expected offer/hold/quote revisions bind employee intent. Current employee/slot/
+brief/stock/run revisions are captured and compared before commit/reconciliation.
+
+Accept checks live eligibility, essentials, driver permission and explicit
+employee selection authority against the stored subject and shared evaluator.
+Pausing background search does not by itself revoke the employee's ability to
+decide an existing offer. Current confirmed requirements are authoritative; a
+material change asks for review. Evaluate the held exact car as available only in
+the internal calculation view after verifying actual ownership. Use the quote's
+retained policy version for prices/allowance/terms; a newer active points version
+never changes the quote. Check current eligibility rules separately at the current
+run policy version. Validate quote time, facts/terms identity and essentials using
+the shared kernel; do not mint a role or mutate the quote to make it pass.
+
+Local confirmed acceptance atomically sets offer `accepted`, hold/claim
+`allocated`, stock `allocated` with unavailable flags, slot `allocated`, inserts
+the decision and emits its typed event. Allocated hold/slot authority stops new
+buddy holds for this entitlement/renewal. Failure rolls back the complete write
+set. Current-car, approval and handover remain unchanged.
+
+Local decline validates the fixed reason and canonical exclusion rule, then
+atomically records a separate `decline` decision, sets offer `rejected`, hold/claim
+`released`, stock released/available, and emits the typed event. The decision's
+`versions.brief` identifies the approved historical brief for the existing
+`BriefService.changeAfterDecline`; its `versions.exclusion` retains key/value and
+policy provenance. The declined exact car remains excluded for this employee
+until a relevant confirmed brief change under `offer.declinedCar.exclusion`.
+No preference, consent, priority, satisfaction or brief row changes on decline.
+FUCQ-100 expiry creates no decline/reason/exclusion/priority record.
+
+Quote validity gates **acceptance**, not decline. With the current one-hour quote
+and two-hour buddy hold, an employee may still decline after quote expiry while
+the exact hold remains active. At the hold deadline a new decline is refused and
+FUCQ-100 performs expiry without a decline record. FUCQ-102's published
+`4a56d386` now distinguishes the actions: decline-only after quote expiry while
+the eligible hold remains active, and none at the exact hold deadline. The actual
+FUCQ-106 decision path and FUCQ-105 page integration still require proof; this
+story has not edited their files or claimed their acceptance.
+
+## Canonical reason registry proposal
+
+Add exactly one assumption entry through the policy owner, not this story's seed
+edits. Proposed key **`offer.declineReasons.v1`**, unit `reason-registry`, type:
+
+```js
+{
+  schemaVersion: 1,
+  reasons: [
+    { code: 'body-style', label: 'Body style', attribute: 'body' },
+    { code: 'size', label: 'Size', attribute: 'sizeClass' },
+    { code: 'fuel', label: 'Fuel type', attribute: 'fuel' },
+    { code: 'equipment', label: 'Equipment', attribute: 'equipment' }
+  ]
+}
+```
+
+Status `assumed`; source `docs/gcsp/offer-decisions-contract.md`; sourceDate
+`2026-11-05`; basis: FUCQ-106's fixed typed list and HLD blueprint 06/07,
+plausible demo categories, no BMW policy verification. Activate additively in the
+canonical next policy version through the shared policy/activation procedure,
+retain historical pins, and read through `PolicyService.getAssumption` at the
+current run policy pin. Never introduce a consumer fallback list. FUCQ-105 receives
+the server projection of this same registry. A changed label/category is one
+canonical source change; an unregistered reason cannot write a decision.
+
+## Remote uncertainty and events
+
+Remote selection/release persists intent **before** any adapter call, using
+`pending_operations.operationType = 'offer-selection' | 'offer-decline-release'`,
+stable `operationId` as provider idempotency key, digest, attempts, intended
+decision, lastKnownState and exact row/quote/clock/subject pins in `payload`.
+Selection holds/claims become `selection-pending`, offer `decision-pending`;
+release holds/claims/offer become `release-pending`. Stock stays held and the
+slot/car exclusion remains. Network calls run outside the repository transaction.
+Adapter success must confirm the exact operation/car/hold identity; timeout,
+unavailable, malformed or mismatched acknowledgements retain uncertainty.
+Reconciliation uses original intent and never renews TTL or converts expiry into
+decline. Definitive selection refusal restores prior active state and original
+deadline only when authority is unchanged, then FUCQ-100 expiry may act. Decline
+release refusal retains exclusion/pending visibility until release is confirmed.
+
+Proposed native event storage uses existing append-only `event_receipts` with
+`consumerId = 'offer-decisions:events:v1'`, stable `eventId`, eventType
+`offer-accepted` or `offer-declined`, `state: 'completed'`, canonical input digest,
+inputVersions and `outcome: ok({ event })`. No mail outbox job represents a domain
+event. Each confirmed event has:
+
+```js
+{
+  schemaVersion: 1, eventId, type, runId, offerId, holdId, quoteId,
+  decisionId, commandId, employeeId, entitlementSlotId, renewalId, orderUuid,
+  occurredAt, policyVersion, briefVersion,
+  reasonCode: null | '...', exclusion: null | { key, value, policyVersion }
+}
+```
+
+Internal event payloads include scoped employee authority for handoff/second-offer
+consumers, never in the public decision DTO. Consumers query the native event
+namespace, verify run/type/digest/versions and keep their own consumer receipt.
+FUCQ-108 consumes `offer-accepted` idempotently; FUCQ-107 consumes
+`offer-declined` only after confirmed release. Ordering selection versus downstream
+handoff must agree which adapter confirms which action; unknown consumer wiring
+is open acceptance, not replaced with captured mail or a fixture success.
+
+## Stable plan and open integration gates
+
+Product component: existing `offer-journey`; association FUCQ-106 already verified.
+Stable slices are recorded through `_tools/product_map.py`:
+
+1. `decision-protocol`: command/result/event/exclusion/idempotency contract and exact source plan.
+2. `policy-reasons`: canonical additive fixed registry, provenance, activation and real-policy tests.
+3. `decision-service`: independent transactional service/HTTP adapter and meaningful narrow tests.
+4. `producer-access-expiry`: actual FUCQ-100 producer, both real FUCQ-102 capabilities and FUCQ-100 expiry.
+5. `remote-events`: real remote uncertainty protocol and accepted/declined consumer integration.
+6. `runtime`: coordinated central host and handler registration; no competing central writer.
+7. `final-validation`: authored acceptance, native/full-suite and integrated response evidence.
+
+Root coordinated the exact immutable producer/evaluator/access import closure.
+The initial finite proposal in
+`evidence/fucq106/integration-plan.md` reuses the reviewed 35-module/six-overlay
+producer composition, pins current access at `4a56d386`, and records exact source
+hashes/bytes, policy bundle and registration diff. Its first39 memory composition
+was approved and passed 12 actual integration cases. The exact source-plan JSON
+is retained unchanged as the reviewed record. No 103 policy/adoption source was
+imported and no registration patch or policy activation was performed. Remote adapter
+selection/release and downstream consumption need agreed executable ports.
+The independent service can progress with injected ports over real memory/
+PolicyService/DemoClock/identity; fake capability success never closes actual
+access or integration slices. No full suite, native PostgreSQL, browser, listener,
+network/mail or installation is granted in this allocation. Root owns serial
+integration/full-test admission; the authored `npm test` remains an open gate.
+
+## Independent implementation checkpoint
+
+`decision.js` exports `OfferDecisionService` / `createOfferDecisionService`. Trusted
+composition injects `{ repository, policy, clock, access,
+createStoredSubjectEvaluator, mode: 'local-synthetic' }`; the evaluator factory
+is the actual shared stored-subject export when coordinated. Missing evaluator
+refuses acceptance. Remote mode is explicitly unavailable until its separate
+protocol is integrated. `readReasons` projects the current-run canonical registry;
+`readOperation` returns only exact-offer live progress, without editing receipts.
+
+`decision-http.js` exports `createOfferDecisionHandler({ service, resolveAccess,
+allowedOrigins })`. The trusted resolver receives `{ selector, cookie, action }`
+and must resolve the real FUCQ-102 token/account capability, failing closed for an
+invalid presented offer cookie. It returns `ok({ context })`; nothing serializes
+that authority. The handler requires explicit `gateAuthorized: true`, exact Origin
+on commands, bounded JSON and no browser identity claims. GET
+`/api/gcsp/offers/:offerId/decision-reasons?runId=...` projects the same registry.
+Actual central dispatch/resolver composition is still open.
+
+The final independent checkpoint has 25/25 scoped passes and exact code hashes in
+`evidence/fucq106/scoped-service-checkpoint.json`. Fixtures use the actual merged
+shared calculation with a genuine account bridge; they do not establish the
+stored-subject factory or FUCQ-102 capability parity in that independent variant.
+The subsequent approved actual integration below supplies that memory evidence.
+The real-account guard is verified corrected at
+`b876536`, its regression is published at `a3fdcdf`, and the current access
+timing projection is verified at `4a56d386`.
+
+Canonical policy activation is coordinated through FUCQ-103's existing reviewed
+assumption bundle and same-provider adoption/CAS path. There is no seed/provider/
+schema shortcut or active fallback. All seven slice gates remain unfinished.
+
+## Actual memory integration checkpoint · 6 November 2026
+
+The dispatcher reviewed and approved exactly the first 39 modules in the published
+source plan (receipt `.claude/test-runs/ownership/fucq106-source-review-2357.json`).
+`gcsp-offer-decisions-integration.test.js` has **12/12 scoped passes**, zero skips,
+through actual FUCQ-100 producer and expiry, current FUCQ-102 private token/account
+capabilities, the actual stored-subject export and both 106 service/HTTP adapters.
+The hash-checked loader journal records one canonical identity for all 39 modules
+plus the test entry. No unmerged source files were copied into application paths.
+
+The tests prove local selection/decline, cross-route replay, changed intent,
+concurrent contradiction, cross-owner/copied-context/session expiry refusal,
+actual deadline expiry without decline/priority, stale reset, slot exclusion,
+pinned quote prices and current eligibility. Alternative reason-policy input also
+proves distinct current reason/exclusion versus retained price pins; this does
+not prove canonical activation. In-process request streams verify exact Origin,
+shared actual capability use and invalid-cookie refusal without account fallback.
+
+Exact source/test/loader/supervisor identities, module journal, commands, measured
+resources and safe response representatives are recorded in
+`evidence/fucq106/actual-integration-checkpoint.json`. The initial loader-bootstrap
+failure and final independent cleanup audit are retained. No full-suite stamp,
+remote adapter, actual 107/108 delivery, central runtime, browser or native database
+acceptance is claimed. The overall story remains blocked on these explicit gates.

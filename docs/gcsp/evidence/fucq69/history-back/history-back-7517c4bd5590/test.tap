@@ -1,0 +1,34 @@
+TAP version 13
+# Subtest: visible release history survives filters and current ineligibility without changing exact selections
+ok 1 - visible release history survives filters and current ineligibility without changing exact selections
+  ---
+  duration_ms: 24.6475
+  type: 'test'
+  ...
+# Subtest: none-visible stays employee-relative and missing or invalid history never becomes a zero-history fact
+ok 2 - none-visible stays employee-relative and missing or invalid history never becomes a zero-history fact
+  ---
+  duration_ms: 0.517917
+  type: 'test'
+  ...
+# Subtest: rendered history shows visible past releases and unknown current version independently of search
+ok 3 - rendered history shows visible past releases and unknown current version independently of search
+  ---
+  duration_ms: 89.429625
+  type: 'test'
+  ...
+# Subtest: Back stays visible explained and guarded through claim checks until the matching terminal read
+ok 4 - Back stays visible explained and guarded through claim checks until the matching terminal read
+  ---
+  duration_ms: 47.990166
+  type: 'test'
+  ...
+1..4
+# tests 4
+# suites 0
+# pass 4
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 712.981

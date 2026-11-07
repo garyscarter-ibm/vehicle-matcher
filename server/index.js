@@ -873,7 +873,7 @@ export function buildServer(deps = {}) {
   const gregPublish = deps.gcspGregPublish ?? createGregPublishService({ repository: deps.gcspRepository,
     policy: deps.gcspPolicy, clock: deps.gcspClock, identity: deps.gcspIdentity });
   const handleGcsp = createGcspHandler({
-    identity: deps.gcspIdentity,
+    identity: deps.gcspIdentity, prepareEmployee: deps.gcspPrepareEmployee,
     routes: [...createEmployeeRecommendationRoutes(deps.gcspClock && deps.gcspRecommendations
       ? { ...deps.gcspRecommendations, time: deps.gcspClock } : deps.gcspRecommendations),
     ...createClockRoutes(deps.gcspClock), ...createOutboxRoutes(deps.gcspOutbox), ...createScenarioRoutes(deps.gcspScenarios, deps.gcspClock),

@@ -13,7 +13,10 @@ import { fixtureMessages } from '../gcsp/presenter/fixtures.js';
 import { metricTile } from '../gcsp/kit/metric-tile.js';
 import { dataTable } from '../gcsp/kit/data-table.js';
 import { mountPresenterControls } from '../gcsp/presenter-controls/controls.js';
+import { presenterBar } from '../gcsp/kit/presenter-bar.js';
 import { formControlsExample } from '../gcsp/kit/form-controls-gallery.js';
+import { toManualGallery } from '../gcsp/manual-gallery/gallery-model.js';
+import { createManualGalleryFixture } from '../gcsp/manual-gallery/fixtures.js';
 
 const browseSession = `gallery-${Date.now().toString(36)}`;
 let sessionSequence = 0;
@@ -138,13 +141,22 @@ function gcspExamples() {
     group(`accountNavigation: ${expanded ? 'expanded' : 'collapsed'}, pale selected state and unavailable items`).append(frame);
   }
   group('messageList: sent, retrying and failed, first message open').append(messageList({ messages: fixtureMessages(), selectedId: 'job-004' }).root);
-  const presenter = group('Presenter controls: isolated visual fixture, not a live release');
+  const bar = presenterBar({ label: 'Presenter bar: supplied readback', readback: [
+    { label: 'Run', value: 'gallery-run' }, { label: 'DemoClock (UTC)', value: '2026-11-05T09:00:00.000Z' },
+    { label: 'Acting principal', value: 'Gallery presenter' },
+  ] });
+  bar.root.open = true; group('presenterBar: shared disclosure and readback').append(bar.root);
+  const presenter = group('Presenter controls: shared option lists, isolated fixture, not a live release');
   const fixture = {
     readControls: async () => ({ status: 'ok', value: { runId: 'gallery-run', now: '2026-11-05T09:00:00.000Z', clockVersion: '1',
-      currentScenario: null, principals: [], controls: { namedTimes: {}, nextRelease: { status: 'unavailable', reason: 'No future cue supplied' } },
+      currentScenario: { scenarioId: 'gallery-mechanics', name: 'Gallery mechanics' },
+      principals: [{ principalId: 'gallery', name: 'Gallery presenter', roles: ['presenter'] }, { principalId: 'gallery-employee', name: 'Gallery employee', roles: ['employee'] }], controls: { namedTimes: {}, nextRelease: { status: 'unavailable', reason: 'No future cue supplied' } },
       lastTick: { state: 'pending', handlerOrder: [{ handlerId: 'gallery-handler', stage: 'outbox-dispatch' }], outcomes: [], missingStages: ['release-pull'] } } }),
     readContext: async () => ({ status: 'ok', value: { name: 'Gallery presenter', principalId: 'gallery', roles: ['presenter'] } }),
-    readScenarios: async () => ({ status: 'unavailable', reason: 'Isolated visual fixture' }),
+    readScenarios: async () => ({ status: 'ok', value: { scenarios: [
+      { scenarioId: 'gallery-mechanics', name: 'Gallery mechanics', availability: { available: false, missingCapabilities: ['Isolated visual fixture only'] } },
+      { scenarioId: 'gallery-business', name: 'Gallery business journey', availability: { available: false, missingCapabilities: ['Actual release producer'] } },
+    ] } }),
   };
   const presenterView = mountPresenterControls(presenter, { adapter: fixture }); presenterView.root.open = true;
   section.append(scope);
@@ -212,6 +224,24 @@ export function employeeDecisionExample() {
   scope.append(status, card, examples);
   section.append(scope);
   return section;
+}
+
+export function manualGalleryExample() {
+  const section = el('section', 'vm-gallery-section gcsp');
+  section.setAttribute('aria-label', 'Manual released-car cards');
+  const scope = el('div', 'vm vm-gallery-decision-body');
+  scope.append(screenIntro({ title: 'Manual released-car cards', level: 2,
+    lede: 'Synthetic, read-only examples. Each card represents one exact order.' }));
+  const gallery = toManualGallery(createManualGalleryFixture('available'));
+  for (const car of gallery.allCars) {
+    const view = structuredClone(car.view);
+    for (const member of view.members) member.actions = member.actions.map((action) => ({ ...action,
+      disabled: true, disabledReason: 'Read-only gallery example.' }));
+    scope.append(matchCard(null, { view, big: true }));
+  }
+  scope.append(button({ label: 'Try manual browse controls', variant: 'ghost',
+    href: './gcsp-manual-gallery.html?fixture=available' }));
+  section.append(scope); return section;
 }
 
 export function employeeControlsExample() {
@@ -366,7 +396,7 @@ export function mountComponentGallery(root) {
   exactControls.append(legacyButton, refineButton, exactReset);
   exact.append(exactControls, exactCards);
   sections.append(exact);
-  root.append(heading, sections, employeeDecisionExample(), employeeControlsExample(), gcspExamples(), gregKitExamples(), gregPublishExample(), launcherExamples(), formControlsExample());
+  root.append(heading, sections, employeeDecisionExample(), manualGalleryExample(), employeeControlsExample(), gcspExamples(), gregKitExamples(), gregPublishExample(), launcherExamples(), formControlsExample());
 
   function dispatchBrowse(type, target, reason) {
     const result = reduceFeedback(browseFeedback, {

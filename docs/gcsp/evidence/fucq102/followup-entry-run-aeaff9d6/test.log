@@ -1,0 +1,33 @@
+(node:2278) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+TAP version 13
+# Subtest: actual 100/106 decline survives a lost response and cookie/account reload into employee-only 107
+ok 1 - actual 100/106 decline survives a lost response and cookie/account reload into employee-only 107
+# Subtest: follow-up entry keeps the existing private instance, owner, selector and run authority
+ok 2 - follow-up entry keeps the existing private instance, owner, selector and run authority
+# Subtest: active, accepted, expired, superseded and pending releases never query a follow-up selector
+ok 3 - active, accepted, expired, superseded and pending releases never query a follow-up selector
+# Subtest: confirmed historical decline brief can differ from the immutable quoted brief
+ok 4 - confirmed historical decline brief can differ from the immutable quoted brief
+# Subtest: terminal outcome versions survive quote expiry and later car reuse without extending the hold
+ok 5 - terminal outcome versions survive quote expiry and later car reuse without extending the hold
+# Subtest: missing, duplicate or malformed decision sources preserve declined status with no handle
+ok 6 - missing, duplicate or malformed decision sources preserve declined status with no handle
+# Subtest: only one complete native decline receipt with valid digest and pins supplies a handle
+ok 7 - only one complete native decline receipt with valid digest and pins supplies a handle
+# Subtest: valid digests cannot substitute a different employee, run, slot, renewal, car or brief
+ok 8 - valid digests cannot substitute a different employee, run, slot, renewal, car or brief
+# Subtest: pre-write revisions, inconsistent outcome pins and future source times cannot supply a handle
+ok 9 - pre-write revisions, inconsistent outcome pins and future source times cannot supply a handle
+# Subtest: repository query failures and unavailable history return typed unavailable without writes
+ok 10 - repository query failures and unavailable history return typed unavailable without writes
+# Subtest: decision membership, receipt membership, history and clock races refuse a mixed follow-up read
+ok 11 - decision membership, receipt membership, history and clock races refuse a mixed follow-up read
+1..11
+# tests 11
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 11929.630500000001

@@ -1,0 +1,107 @@
+{
+  "code": {
+    "COMPONENTS.md": "efd12f582a943082c437c03593e584c4c5129c830ef4ecd858bfdf1bc5fb9c7b",
+    "blocks/gcsp/offer/fixtures.js": "771447b5d2c821e3d198a5209e0304ffd7f67111d1efe1120ef6e10da5beb1f0",
+    "blocks/gcsp/offer/gcsp-offer.css": "b155ddc1bb4dd5aa412f8993561c51377d7b6a16dff4ef4f52e2d62fa364024f",
+    "blocks/gcsp/offer/gcsp-offer.js": "7475bc77012f75374b0cceea1315a35d0d2b2257c9965ea72b3b6d5ad5d8ed96",
+    "blocks/gcsp/offer/harness.js": "ae8150a6f14498789d5403de9220e13e352cdabd1b490eb3285059a60821e288",
+    "blocks/gcsp/offer/http-adapter.js": "b9f37dc9d935900ab78abf3a0e9cc396b38565a52dc65e8ef4f15f1fa82c2f8d",
+    "blocks/gcsp/offer/offer-controller.js": "71f1c2ba3fc3e42cc3642f12971bf4bb3027fcb2dfddb99121ca50735b0f6561",
+    "blocks/gcsp/offer/offer-projection.js": "33a9f2715f1f35201059e88be4d47f645c6e0604de927c67bce88358bcd48757",
+    "blocks/gcsp/offer/offer-view.js": "315c629f7bccb5f47f496a7c9da47ec97fa554b45aaccf0ec89c8a8604dbd6de",
+    "blocks/gcsp/offer/preview.html": "ec555687573e54a005dfae3d05c1ca6af40a1457670363cd76ce7644569830e0",
+    "docs/gcsp/evidence/fucq105/comparison-access.json": "e3d8a9065ac85e4088768a27db0cb22b1f4f136b5c6b8f68a960dd5e525ddab6",
+    "docs/gcsp/evidence/fucq105/representative-access.json": "9a406c67d7785353c941b2ba294593e188e6ef6045bf099fe222a1131f37d884",
+    "server/test/gcsp-offer-view-controller.test.js": "ec652d2c8db7c1f4abf7f6ca4844e023e3f7c50e3d6b81170ba87cf1ec11d986",
+    "server/test/gcsp-offer-view-http.test.js": "b44d2faf3ef71664c14213af8b17f36cdb0fb40b5a081b224b4a95c59bbe7b7a",
+    "server/test/gcsp-offer-view-projection.test.js": "3800b5423c034b056086a6a16a3c08a5d40081dd4d03506631a410cfc9bce788",
+    "server/test/gcsp-offer-view-render.test.js": "730abf720ec09f60e5c6302862b176a869f6fa9ce0d5624ae7dd8a7ab9c2ae1f",
+    "server/test/ui-ratchet.json": "d74cf7a0e9c0949a43624b6f3ac63b0f8af2d63c8687f24a85964fd9a54914d7"
+  },
+  "groups_absent": true,
+  "issue": null,
+  "issue_kind": null,
+  "log": "/private/tmp/test-stamp-shard-46dfbed342fc4dbbb20c4dfcb7103442/check.log",
+  "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/ownership/46dfbed342fc4dbbb20c4dfcb7103442.json",
+  "peak_rss": 27623424,
+  "peak_scratch": 8192,
+  "rc": 0,
+  "reservation_released": true,
+  "scratch_absent": true,
+  "summary": [
+    "# tests 68",
+    "# pass 68",
+    "# fail 0",
+    "# skipped 0",
+    "# duration_ms 1030.469042"
+  ],
+  "summary_tail": [
+    "# tests 68",
+    "# suites 0",
+    "# pass 68",
+    "# fail 0",
+    "# cancelled 0",
+    "# skipped 0",
+    "# todo 0",
+    "# duration_ms 1030.469042",
+    "  completed 1 unit(s), exit 0; scratch removed",
+    "OK (exit 0), wall 1.5s",
+    "logs: /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/logs/20261105-235238-k4valuhg",
+    "recorded targeted evidence: /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/targeted-dce2865f60ebed5a4be446811a91739ab9d91977599a882a43f14e7d0ba6e59f-default-1793922760683846000.json"
+  ],
+  "wall": 2.8095009579999997,
+  "scope": "Scoped partial model/source DISPLAY only; own projection/HTTP/controller/DOM tests. No real producer/access, full factual comparison,106 decision,host,rendered browser or full-suite acceptance.",
+  "targeted": {
+    "receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/targeted-dce2865f60ebed5a4be446811a91739ab9d91977599a882a43f14e7d0ba6e59f-default-1793922760683846000.json",
+    "code_key": "dce2865f60ebed5a4be446811a91739ab9d91977599a882a43f14e7d0ba6e59f",
+    "base": "b95b4c8ad8a4534cbf03f287eb62fc8a57bbda96",
+    "variant": "default",
+    "command": "node --test --test-concurrency=1 --test-reporter=tap server/test/gcsp-offer-view-controller.test.js server/test/gcsp-offer-view-projection.test.js server/test/gcsp-offer-view-render.test.js server/test/gcsp-offer-view-http.test.js",
+    "not_full_stamp": true
+  },
+  "reference": {
+    "contractCommit": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+    "contractSha256": "af5fa810a650edd14b99e563ec91d1e1a86c8e28087788c94a826e71e5810042",
+    "sampleSha256": "9a406c67d7785353c941b2ba294593e188e6ef6045bf099fe222a1131f37d884",
+    "comparisonSha256": "e3d8a9065ac85e4088768a27db0cb22b1f4f136b5c6b8f68a960dd5e525ddab6",
+    "sampleProvenance": "Approved102 access/evaluator over explicit synthetic rows and pinned reviewed metadata; not actual100 producer-to-access evidence.",
+    "producerRef": "a7fc8580efba36c329b2479711d6b66db53962bd",
+    "currentCar": "partial model/source only; comparisonAvailable false; eight unknown facts; future/malformed/unreviewed metadata falls back to unavailable/null without hiding offer."
+  },
+  "nested_resources": [
+    {
+      "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/60070d15e30f4d6782da636bddd217b3.json",
+      "root": "/private/tmp/test-stamp-shard-60070d15e30f4d6782da636bddd217b3",
+      "root_absent": true,
+      "groups_absent": true,
+      "peak_rss": 248168448,
+      "peak_scratch": 0,
+      "checkpoint": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/checkpoints/4a3f153d2d04c56168e80a0891d335572731bf86edf1c038f2bda5417f474c22.json"
+    }
+  ],
+  "dependency_cleanup": {
+    "absent": true,
+    "inode": 173069434,
+    "link": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-080/server/node_modules",
+    "link_device": 16777232,
+    "owner": {
+      "pid": 65610,
+      "start": "Thu Nov  5 23:52:37 2026"
+    },
+    "state": "removed",
+    "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules",
+    "target_device": 16777232,
+    "target_inode": 172770727
+  },
+  "selection": {
+    "automatic": "dry run refused unspecified language/configured runner; explicit command selected",
+    "changed": [
+      "offer-projection.js",
+      "offer-view.js",
+      "approved102 sample inputs",
+      "own projection/render/HTTP tests"
+    ],
+    "affectedCallers": "HTTP adapter -> projection -> controller -> shared-card/partial fact-list composition",
+    "excluded": "Unchanged shared kit/styles/ratchet; prior96 boundary proof historical, no unrelated rerun. Browser/listener/nativeDB/live network/full reserved by dispatcher."
+  }
+}
