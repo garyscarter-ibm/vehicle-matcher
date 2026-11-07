@@ -1,0 +1,7 @@
+{
+  "phase": "publish",
+  "name": "Error",
+  "message": "Command failed: /Users/usget/.claude-tools/bin/gh api --method POST [URL omitted] -H Content-Type: application/octet-stream --input /Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-public-artifacts/package/8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9/store/versions/8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9/images.jsonl --jq {id,name,size,state,digest,browser_download_url}\ngh: Bad Content-Length (HTTP 400)\n",
+  "code": 1,
+  "stderr": "gh: Bad Content-Length (HTTP 400)\n"
+}

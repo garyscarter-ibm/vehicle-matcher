@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 export const DEFAULT_ARTIFACT_ROOT = fileURLToPath(new URL('../../data/gcsp/vehicle-evidence/fleet-artifacts.v1', import.meta.url));
 const SHA = /^[a-f0-9]{64}$/;
+export const EMPTY_SHA256 = 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855';
 const pathPattern = /^(?:store\/(?:active\.json|last-good\.json|identity-inventory\.json|versions\/[a-f0-9]{64}\/(?:manifest\.json|configurations\.jsonl|vins\.jsonl|images\.jsonl))|sources\/[a-f0-9]{64}\.jsonl)$/;
 const freeze = (v) => { if (v && typeof v === 'object') { Object.values(v).forEach(freeze); Object.freeze(v); } return v; };
 export function approvedAssetUrl(value, initial = false) {
@@ -21,6 +22,7 @@ export function validateRelease(value) {
   for (const a of r.assets) {
     if (!pathPattern.test(a.path) || paths.has(a.path) || !/^[A-Za-z0-9._-]{1,240}$/.test(a.name) || names.has(a.name)
       || !SHA.test(a.sha256) || !Number.isSafeInteger(a.bytes) || a.bytes < 0 || a.bytes > 268435456
+      || a.bytes === 0 && a.sha256 !== EMPTY_SHA256
       || a.role === 'source' && !/^[A-Za-z0-9._-]{1,200}$/.test(a.origin || '')
       || !['corpus', 'source'].includes(a.role) || (a.role === 'source') !== a.path.startsWith('sources/')) throw new TypeError('Invalid release asset');
     approvedAssetUrl(a.url, true); paths.add(a.path); names.add(a.name); total += a.bytes;
