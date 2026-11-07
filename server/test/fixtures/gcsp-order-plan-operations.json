@@ -38,12 +38,12 @@
       ],
       "plan": {
         "contractVersion": "1.0.0",
-        "planId": "order-plan-40f398d1f87d9d23cd22bf9a590888dcdb874023512688ccfae8c0737b25f0cb",
+        "planId": "order-plan-a694a1b2a7c37452dbed1a157f6aff8318077061d7a446a6a4eb0dfd4b161a75",
         "runId": "demo-5bf5c4dfd63f50a06b66661943d25cad",
         "asOf": "2026-11-05T09:00:00.000Z",
         "versions": {
-          "forecast": "6bd3a115189d28ba15002879b9423cbdd781079799bdec772949afda95183a8d",
-          "cohort": "f52ca32fb786ef06289f44c96e328c05c4ace44cc21934c9054038cc8312ac54",
+          "forecast": "24ffdae6d9dec3afdef436b9b6e5d9a35369154355bed8261d69c331f0bcd8f3",
+          "cohort": "0fb6116f8de0629adb29af5d437dd8fa00288441864a537b7e196fb338557cde",
           "policy": "preview-072658e4a98cdebe2c472b72",
           "stock": "a486c73a2beb9e256fddde3acca645f379b814277033dd61175291a4ec2b2feb",
           "supply": "ccd0fa18528bea8dbcbfab17fad46aa8a38c6652a01ed0255ab08930b3aa7e84",
@@ -453,12 +453,12 @@
       },
       "activePlan": {
         "contractVersion": "1.0.0",
-        "planId": "order-plan-2041c171eaceec1bfc57f5a3053ea4c7bcb575a3aab5dccdce97f983a7f3da5a",
+        "planId": "order-plan-76a8e648ced23df065631adacffa2c94c3bf66939a86c09172757564f635587c",
         "runId": "demo-5bf5c4dfd63f50a06b66661943d25cad",
         "asOf": "2026-11-05T09:00:00.000Z",
         "versions": {
-          "forecast": "83824c115953232aafb64ae8c6c56efdea37d2ee83a2d8501976c74ee47d884b",
-          "cohort": "f52ca32fb786ef06289f44c96e328c05c4ace44cc21934c9054038cc8312ac54",
+          "forecast": "a01c49a8998ef7ebc17a307a283c4cdd5a2c6f38adc6a694ea46e185a4fd3490",
+          "cohort": "0fb6116f8de0629adb29af5d437dd8fa00288441864a537b7e196fb338557cde",
           "policy": "gcsp-policy-v1",
           "stock": "a486c73a2beb9e256fddde3acca645f379b814277033dd61175291a4ec2b2feb",
           "supply": "ccd0fa18528bea8dbcbfab17fad46aa8a38c6652a01ed0255ab08930b3aa7e84",
@@ -932,6 +932,55 @@
           "requests": [],
           "responses": []
         }
+      },
+      "presentation": {
+        "forecastBasis": "expressed-saved-demand",
+        "editableKeys": [
+          "orderPlan.modelBounds",
+          "orderPlan.derivativeBounds",
+          "orderPlan.budgetMinor"
+        ],
+        "currency": "GBP",
+        "derivatives": [
+          {
+            "derivativeId": "g20-saloon-320i",
+            "modelId": "g20-saloon",
+            "model": "3 Series Saloon",
+            "derivative": "320i"
+          },
+          {
+            "derivativeId": "g20-saloon-330e",
+            "modelId": "g20-saloon",
+            "model": "3 Series Saloon",
+            "derivative": "330e"
+          },
+          {
+            "derivativeId": "g21-touring-320i",
+            "modelId": "g21-touring",
+            "model": "3 Series Touring",
+            "derivative": "320i"
+          },
+          {
+            "derivativeId": "g61-i5-40",
+            "modelId": "g61-i5",
+            "model": "i5 Touring",
+            "derivative": "eDrive40"
+          }
+        ],
+        "models": [
+          {
+            "modelId": "g20-saloon",
+            "model": "3 Series Saloon"
+          },
+          {
+            "modelId": "g21-touring",
+            "model": "3 Series Touring"
+          },
+          {
+            "modelId": "g61-i5",
+            "model": "i5 Touring"
+          }
+        ]
       }
     },
     "contractVersion": "1.0.0"
@@ -944,10 +993,10 @@
       "stock"
     ],
     "current": {
-      "planId": "order-plan-2041c171eaceec1bfc57f5a3053ea4c7bcb575a3aab5dccdce97f983a7f3da5a",
+      "planId": "order-plan-76a8e648ced23df065631adacffa2c94c3bf66939a86c09172757564f635587c",
       "versions": {
-        "forecast": "83824c115953232aafb64ae8c6c56efdea37d2ee83a2d8501976c74ee47d884b",
-        "cohort": "f52ca32fb786ef06289f44c96e328c05c4ace44cc21934c9054038cc8312ac54",
+        "forecast": "a01c49a8998ef7ebc17a307a283c4cdd5a2c6f38adc6a694ea46e185a4fd3490",
+        "cohort": "0fb6116f8de0629adb29af5d437dd8fa00288441864a537b7e196fb338557cde",
         "policy": "gcsp-policy-v1",
         "stock": "a486c73a2beb9e256fddde3acca645f379b814277033dd61175291a4ec2b2feb",
         "supply": "ccd0fa18528bea8dbcbfab17fad46aa8a38c6652a01ed0255ab08930b3aa7e84",
@@ -964,15 +1013,15 @@
       "preview": false,
       "plan": {
         "contractVersion": "1.0.0",
-        "planId": "order-plan-f204dd885806ec803f7a5f9f425a1cf1517fec304e11b02c60f8415af129da90",
+        "planId": "order-plan-0a1ef28b523ac84e217b39795e4bf3b3abe280a22e52dc71924840a9e30a9300",
         "runId": "demo-5bf5c4dfd63f50a06b66661943d25cad",
         "asOf": "2026-11-05T09:01:00.000Z",
         "versions": {
-          "forecast": "24467c56423c00b241426033a58d960c77303fc7c332f713cad364f2c3283c58",
-          "cohort": "f52ca32fb786ef06289f44c96e328c05c4ace44cc21934c9054038cc8312ac54",
+          "forecast": "aa98996770300f1b0219551e63bb3bbf30533c23b759e8be2329df04e0b68682",
+          "cohort": "0fb6116f8de0629adb29af5d437dd8fa00288441864a537b7e196fb338557cde",
           "policy": "gcsp-policy-v1",
           "stock": "a486c73a2beb9e256fddde3acca645f379b814277033dd61175291a4ec2b2feb",
-          "supply": "4d4cd7760cf9006466d262dba49579c20df4cf905cde3ad6a02fea324c067010",
+          "supply": "8e25c1d313b29fb9ac6113d0cd71571513888f8b1eda641d49124b84db8b118e",
           "catalog": "gcsp-policy-v1:order-plan-catalog.v1",
           "clock": "2"
         },
@@ -1474,9 +1523,9 @@
       },
       "replan": {
         "status": "replanned",
-        "submittedPlanId": "order-plan-40f398d1f87d9d23cd22bf9a590888dcdb874023512688ccfae8c0737b25f0cb",
+        "submittedPlanId": "order-plan-a694a1b2a7c37452dbed1a157f6aff8318077061d7a446a6a4eb0dfd4b161a75",
         "submittedAt": "2026-11-05T09:00:00.000Z",
-        "currentPlanId": "order-plan-f204dd885806ec803f7a5f9f425a1cf1517fec304e11b02c60f8415af129da90",
+        "currentPlanId": "order-plan-0a1ef28b523ac84e217b39795e4bf3b3abe280a22e52dc71924840a9e30a9300",
         "requests": [
           {
             "requestId": "request-ade349d7c5a96254209c384d655646ab",
@@ -1503,6 +1552,846 @@
           "quantity": 1,
           "at": "2026-11-05T09:01:00.000Z"
         }
+      },
+      "presentation": {
+        "forecastBasis": "expressed-saved-demand",
+        "editableKeys": [
+          "orderPlan.modelBounds",
+          "orderPlan.derivativeBounds",
+          "orderPlan.budgetMinor"
+        ],
+        "currency": "GBP",
+        "derivatives": [
+          {
+            "derivativeId": "g20-saloon-320i",
+            "modelId": "g20-saloon",
+            "model": "3 Series Saloon",
+            "derivative": "320i"
+          },
+          {
+            "derivativeId": "g20-saloon-330e",
+            "modelId": "g20-saloon",
+            "model": "3 Series Saloon",
+            "derivative": "330e"
+          },
+          {
+            "derivativeId": "g21-touring-320i",
+            "modelId": "g21-touring",
+            "model": "3 Series Touring",
+            "derivative": "320i"
+          },
+          {
+            "derivativeId": "g61-i5-40",
+            "modelId": "g61-i5",
+            "model": "i5 Touring",
+            "derivative": "eDrive40"
+          }
+        ],
+        "models": [
+          {
+            "modelId": "g20-saloon",
+            "model": "3 Series Saloon"
+          },
+          {
+            "modelId": "g21-touring",
+            "model": "3 Series Touring"
+          },
+          {
+            "modelId": "g61-i5",
+            "model": "i5 Touring"
+          }
+        ]
+      }
+    },
+    "contractVersion": "1.0.0"
+  },
+  "infeasible": {
+    "status": "ok",
+    "value": {
+      "mode": "preview",
+      "preview": true,
+      "writes": "none",
+      "message": "Preview only. Nothing is saved, published or ordered.",
+      "activePolicyVersion": "gcsp-policy-v1",
+      "draftPolicyVersion": "preview-b1512b1df1049fb6c655b8a1",
+      "changes": [
+        {
+          "key": "orderPlan.budgetMinor",
+          "value": 5000000
+        },
+        {
+          "key": "orderPlan.modelBounds",
+          "value": [
+            {
+              "modelId": "g20-saloon",
+              "min": 0,
+              "max": 4
+            },
+            {
+              "modelId": "g21-touring",
+              "min": 0,
+              "max": 3
+            },
+            {
+              "modelId": "g61-i5",
+              "min": 1,
+              "max": 2
+            }
+          ]
+        }
+      ],
+      "plan": {
+        "contractVersion": "1.0.0",
+        "planId": "order-plan-52a5ec2fabf57b0076aba8c7a23f7a6af8a363fc098127bd8ffde95448416a08",
+        "runId": "demo-5bf5c4dfd63f50a06b66661943d25cad",
+        "asOf": "2026-11-05T09:01:00.000Z",
+        "versions": {
+          "forecast": "4f811178ac3b16b6dcb4cb8c9e80e0aeac1793f83820de7a90fa726d7d2cba0c",
+          "cohort": "0fb6116f8de0629adb29af5d437dd8fa00288441864a537b7e196fb338557cde",
+          "policy": "preview-b1512b1df1049fb6c655b8a1",
+          "stock": "a486c73a2beb9e256fddde3acca645f379b814277033dd61175291a4ec2b2feb",
+          "supply": "8e25c1d313b29fb9ac6113d0cd71571513888f8b1eda641d49124b84db8b118e",
+          "catalog": "preview-b1512b1df1049fb6c655b8a1:order-plan-catalog.v1",
+          "clock": "2"
+        },
+        "limitations": [
+          "Saved confirmed briefs only; employees without a saved brief are not inferred.",
+          "Deterministic permitted joint choices are not calibrated acceptance probabilities.",
+          "All represented configurations must pass before a derivative-only quantity can promise coverage.",
+          "Preference fit is advisory; no acceptance threshold or acceptance probability is inferred.",
+          "Exact declined stock exclusions do not exclude other vehicles or future configurations of that derivative.",
+          "Acceptable matching is deterministic feasibility, not calibrated acceptance or employee selection."
+        ],
+        "solver": {
+          "method": "bounded-exhaustive-integer-search-with-capacity-matching",
+          "limits": {
+            "derivatives": 12,
+            "entitlements": 128,
+            "supplyLots": 256,
+            "candidatePlans": 50000,
+            "matchingSteps": 2000000
+          },
+          "complete": true,
+          "visited": 144
+        },
+        "status": "infeasible",
+        "quantities": [],
+        "conflicts": [
+          {
+            "id": "budget",
+            "detail": "Spend 45900000 exceeds 5000000 GBP minor units."
+          },
+          {
+            "id": "model:g20-saloon:max",
+            "detail": "Maximum 4."
+          },
+          {
+            "id": "model:g61-i5:min",
+            "detail": "Minimum 1."
+          }
+        ],
+        "conflictAnalysis": "explanatory-non-minimal-constraint-set",
+        "alternatives": [],
+        "policyProvenance": [
+          {
+            "key": "orderPlan.horizonDays",
+            "value": 120,
+            "unit": "days",
+            "status": "assumed",
+            "basis": "Plausible four-month synthetic planning horizon that covers the demo renewals; revisable through trials. Not a BMW procurement rule.",
+            "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+            "sourceDate": "2026-11-07",
+            "policyVersion": "preview-b1512b1df1049fb6c655b8a1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "orderPlan.budgetMinor",
+            "value": 5000000,
+            "unit": "GBP minor units",
+            "status": "assumed",
+            "basis": "Greg edited this synthetic order-plan constraint.",
+            "source": "greg-order-plan-constraints",
+            "sourceDate": "2026-11-05",
+            "policyVersion": "preview-b1512b1df1049fb6c655b8a1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "orderPlan.currency",
+            "value": "GBP",
+            "unit": "ISO currency",
+            "status": "assumed",
+            "basis": "Synthetic UK planning currency. Every catalogue unit cost must use this currency.",
+            "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+            "sourceDate": "2026-11-07",
+            "policyVersion": "preview-b1512b1df1049fb6c655b8a1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "orderPlan.modelBounds",
+            "value": [
+              {
+                "modelId": "g20-saloon",
+                "min": 0,
+                "max": 4
+              },
+              {
+                "modelId": "g21-touring",
+                "min": 0,
+                "max": 3
+              },
+              {
+                "modelId": "g61-i5",
+                "min": 1,
+                "max": 2
+              }
+            ],
+            "unit": "new vehicles per model",
+            "status": "assumed",
+            "basis": "Greg edited this synthetic order-plan constraint.",
+            "source": "greg-order-plan-constraints",
+            "sourceDate": "2026-11-05",
+            "policyVersion": "preview-b1512b1df1049fb6c655b8a1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "orderPlan.derivativeBounds",
+            "value": [
+              {
+                "derivativeId": "g20-saloon-320i",
+                "min": 0,
+                "max": 3
+              },
+              {
+                "derivativeId": "g20-saloon-330e",
+                "min": 0,
+                "max": 2
+              },
+              {
+                "derivativeId": "g21-touring-320i",
+                "min": 0,
+                "max": 3
+              },
+              {
+                "derivativeId": "g61-i5-40",
+                "min": 0,
+                "max": 2
+              }
+            ],
+            "unit": "new vehicles per derivative",
+            "status": "assumed",
+            "basis": "Synthetic per-derivative order limits over the orderPlan.catalog.v1 derivative ids; small enough for the exhaustive demo search. Revisable through trials.",
+            "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+            "sourceDate": "2026-11-07",
+            "policyVersion": "preview-b1512b1df1049fb6c655b8a1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "orderPlan.objectiveWeights",
+            "value": {
+              "coverage": 100,
+              "unallocatedStock": 10,
+              "costMinor": 0
+            },
+            "unit": "objective utility per covered entitlement / unmatched vehicle / currency minor unit",
+            "status": "assumed",
+            "basis": "Prefer acceptable renewal coverage, then reduce unmatched stock; budget stays a hard limit. Not measured employee utility weights.",
+            "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+            "sourceDate": "2026-11-07",
+            "policyVersion": "preview-b1512b1df1049fb6c655b8a1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "supply.leadTimeDays",
+            "value": 56,
+            "unit": "calendar days",
+            "status": "assumed",
+            "basis": "Assumed eight-week production-to-release planning input; not a BMW delivery promise (round-2).",
+            "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+            "sourceDate": "2026-11-04",
+            "policyVersion": "preview-b1512b1df1049fb6c655b8a1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          }
+        ],
+        "supplyActivity": {
+          "requests": [
+            {
+              "requestId": "request-ade349d7c5a96254209c384d655646ab",
+              "commandId": "sub:g21-touring-320i",
+              "derivativeId": "g21-touring-320i",
+              "quantity": 2,
+              "state": "partly-confirmed",
+              "requestedAt": "2026-11-05T09:00:00.000Z"
+            }
+          ],
+          "responses": [
+            {
+              "kind": "partly-confirmed",
+              "requestId": "request-ade349d7c5a96254209c384d655646ab",
+              "supplyId": "supply-1",
+              "quantity": 1,
+              "at": "2026-11-05T09:01:00.000Z"
+            }
+          ]
+        }
+      },
+      "activePlan": {
+        "contractVersion": "1.0.0",
+        "planId": "order-plan-0a1ef28b523ac84e217b39795e4bf3b3abe280a22e52dc71924840a9e30a9300",
+        "runId": "demo-5bf5c4dfd63f50a06b66661943d25cad",
+        "asOf": "2026-11-05T09:01:00.000Z",
+        "versions": {
+          "forecast": "aa98996770300f1b0219551e63bb3bbf30533c23b759e8be2329df04e0b68682",
+          "cohort": "0fb6116f8de0629adb29af5d437dd8fa00288441864a537b7e196fb338557cde",
+          "policy": "gcsp-policy-v1",
+          "stock": "a486c73a2beb9e256fddde3acca645f379b814277033dd61175291a4ec2b2feb",
+          "supply": "8e25c1d313b29fb9ac6113d0cd71571513888f8b1eda641d49124b84db8b118e",
+          "catalog": "gcsp-policy-v1:order-plan-catalog.v1",
+          "clock": "2"
+        },
+        "limitations": [
+          "Saved confirmed briefs only; employees without a saved brief are not inferred.",
+          "Deterministic permitted joint choices are not calibrated acceptance probabilities.",
+          "All represented configurations must pass before a derivative-only quantity can promise coverage.",
+          "Preference fit is advisory; no acceptance threshold or acceptance probability is inferred.",
+          "Exact declined stock exclusions do not exclude other vehicles or future configurations of that derivative.",
+          "Acceptable matching is deterministic feasibility, not calibrated acceptance or employee selection."
+        ],
+        "solver": {
+          "method": "bounded-exhaustive-integer-search-with-capacity-matching",
+          "limits": {
+            "derivatives": 12,
+            "entitlements": 128,
+            "supplyLots": 256,
+            "candidatePlans": 50000,
+            "matchingSteps": 2000000
+          },
+          "complete": true,
+          "optimalWithinDeclaredModel": true,
+          "visited": 144,
+          "feasibleCount": 52,
+          "matchingSteps": 53
+        },
+        "status": "feasible",
+        "quantities": [
+          {
+            "derivativeId": "g20-saloon-320i",
+            "modelId": "g20-saloon",
+            "quantity": 0
+          },
+          {
+            "derivativeId": "g20-saloon-330e",
+            "modelId": "g20-saloon",
+            "quantity": 0
+          },
+          {
+            "derivativeId": "g21-touring-320i",
+            "modelId": "g21-touring",
+            "quantity": 0
+          },
+          {
+            "derivativeId": "g61-i5-40",
+            "modelId": "g61-i5",
+            "quantity": 0
+          }
+        ],
+        "modelQuantities": [
+          {
+            "modelId": "g20-saloon",
+            "quantity": 0
+          },
+          {
+            "modelId": "g21-touring",
+            "quantity": 0
+          },
+          {
+            "modelId": "g61-i5",
+            "quantity": 0
+          }
+        ],
+        "allocations": [
+          {
+            "entitlementId": "slot-paula",
+            "derivativeId": "g21-touring-320i",
+            "sourceId": "supply:supply-1",
+            "source": "confirmed-inbound",
+            "availableAt": "2026-12-31T09:01:00.000Z",
+            "renewalAt": "2027-02-15T23:59:59.999Z",
+            "requiredBy": "2027-02-15T23:59:59.999Z"
+          }
+        ],
+        "expectedAcceptableCoverage": {
+          "covered": 1,
+          "total": 1,
+          "fraction": 1,
+          "basis": "deterministic-acceptable-matching-before-renewal"
+        },
+        "unallocatedStockRisk": {
+          "quantity": 0,
+          "totalSupply": 1,
+          "basis": "unmatched-supply-within-horizon",
+          "bySource": []
+        },
+        "spendMinor": 0,
+        "currency": "GBP",
+        "orderQuantity": 0,
+        "objective": {
+          "value": 100,
+          "weights": {
+            "coverage": 100,
+            "unallocatedStock": 10,
+            "costMinor": 0
+          },
+          "terms": {
+            "coverage": 100,
+            "unallocatedStock": 0,
+            "cost": 0
+          },
+          "tradeOff": "Maximise weighted acceptable coverage, less unmatched supply and order cost; budget and quantity bounds remain hard."
+        },
+        "bindingConstraints": [
+          {
+            "id": "derivative:g20-saloon-320i:min",
+            "detail": "Quantity meets minimum 0."
+          },
+          {
+            "id": "derivative:g20-saloon-330e:min",
+            "detail": "Quantity meets minimum 0."
+          },
+          {
+            "id": "derivative:g21-touring-320i:min",
+            "detail": "Quantity meets minimum 0."
+          },
+          {
+            "id": "derivative:g61-i5-40:min",
+            "detail": "Quantity meets minimum 0."
+          },
+          {
+            "id": "model:g20-saloon:min",
+            "detail": "Quantity meets minimum 0."
+          },
+          {
+            "id": "model:g21-touring:min",
+            "detail": "Quantity meets minimum 0."
+          },
+          {
+            "id": "model:g61-i5:min",
+            "detail": "Quantity meets minimum 0."
+          }
+        ],
+        "unmetNeeds": [],
+        "alternatives": [
+          {
+            "kind": "zero-new-orders-baseline",
+            "status": "feasible",
+            "quantities": [
+              {
+                "derivativeId": "g20-saloon-320i",
+                "modelId": "g20-saloon",
+                "quantity": 0
+              },
+              {
+                "derivativeId": "g20-saloon-330e",
+                "modelId": "g20-saloon",
+                "quantity": 0
+              },
+              {
+                "derivativeId": "g21-touring-320i",
+                "modelId": "g21-touring",
+                "quantity": 0
+              },
+              {
+                "derivativeId": "g61-i5-40",
+                "modelId": "g61-i5",
+                "quantity": 0
+              }
+            ],
+            "modelQuantities": [
+              {
+                "modelId": "g20-saloon",
+                "quantity": 0
+              },
+              {
+                "modelId": "g21-touring",
+                "quantity": 0
+              },
+              {
+                "modelId": "g61-i5",
+                "quantity": 0
+              }
+            ],
+            "allocations": [
+              {
+                "entitlementId": "slot-paula",
+                "derivativeId": "g21-touring-320i",
+                "sourceId": "supply:supply-1",
+                "source": "confirmed-inbound",
+                "availableAt": "2026-12-31T09:01:00.000Z",
+                "renewalAt": "2027-02-15T23:59:59.999Z",
+                "requiredBy": "2027-02-15T23:59:59.999Z"
+              }
+            ],
+            "expectedAcceptableCoverage": {
+              "covered": 1,
+              "total": 1,
+              "fraction": 1,
+              "basis": "deterministic-acceptable-matching-before-renewal"
+            },
+            "unallocatedStockRisk": {
+              "quantity": 0,
+              "totalSupply": 1,
+              "basis": "unmatched-supply-within-horizon",
+              "bySource": []
+            },
+            "spendMinor": 0,
+            "currency": "GBP",
+            "orderQuantity": 0,
+            "objective": {
+              "value": 100,
+              "weights": {
+                "coverage": 100,
+                "unallocatedStock": 10,
+                "costMinor": 0
+              },
+              "terms": {
+                "coverage": 100,
+                "unallocatedStock": 0,
+                "cost": 0
+              },
+              "tradeOff": "Maximise weighted acceptable coverage, less unmatched supply and order cost; budget and quantity bounds remain hard."
+            },
+            "bindingConstraints": [
+              {
+                "id": "derivative:g20-saloon-320i:min",
+                "detail": "Quantity meets minimum 0."
+              },
+              {
+                "id": "derivative:g20-saloon-330e:min",
+                "detail": "Quantity meets minimum 0."
+              },
+              {
+                "id": "derivative:g21-touring-320i:min",
+                "detail": "Quantity meets minimum 0."
+              },
+              {
+                "id": "derivative:g61-i5-40:min",
+                "detail": "Quantity meets minimum 0."
+              },
+              {
+                "id": "model:g20-saloon:min",
+                "detail": "Quantity meets minimum 0."
+              },
+              {
+                "id": "model:g21-touring:min",
+                "detail": "Quantity meets minimum 0."
+              },
+              {
+                "id": "model:g61-i5:min",
+                "detail": "Quantity meets minimum 0."
+              }
+            ],
+            "unmetNeeds": [],
+            "identicalToRecommendation": true
+          },
+          {
+            "kind": "next-best-distinct-feasible",
+            "status": "feasible",
+            "quantities": [
+              {
+                "derivativeId": "g20-saloon-320i",
+                "modelId": "g20-saloon",
+                "quantity": 1
+              },
+              {
+                "derivativeId": "g20-saloon-330e",
+                "modelId": "g20-saloon",
+                "quantity": 0
+              },
+              {
+                "derivativeId": "g21-touring-320i",
+                "modelId": "g21-touring",
+                "quantity": 0
+              },
+              {
+                "derivativeId": "g61-i5-40",
+                "modelId": "g61-i5",
+                "quantity": 0
+              }
+            ],
+            "modelQuantities": [
+              {
+                "modelId": "g20-saloon",
+                "quantity": 1
+              },
+              {
+                "modelId": "g21-touring",
+                "quantity": 0
+              },
+              {
+                "modelId": "g61-i5",
+                "quantity": 0
+              }
+            ],
+            "allocations": [
+              {
+                "entitlementId": "slot-paula",
+                "derivativeId": "g21-touring-320i",
+                "sourceId": "supply:supply-1",
+                "source": "confirmed-inbound",
+                "availableAt": "2026-12-31T09:01:00.000Z",
+                "renewalAt": "2027-02-15T23:59:59.999Z",
+                "requiredBy": "2027-02-15T23:59:59.999Z"
+              }
+            ],
+            "expectedAcceptableCoverage": {
+              "covered": 1,
+              "total": 1,
+              "fraction": 1,
+              "basis": "deterministic-acceptable-matching-before-renewal"
+            },
+            "unallocatedStockRisk": {
+              "quantity": 1,
+              "totalSupply": 2,
+              "basis": "unmatched-supply-within-horizon",
+              "bySource": [
+                {
+                  "sourceId": "order:g20-saloon-320i",
+                  "quantity": 1
+                }
+              ]
+            },
+            "spendMinor": 3900000,
+            "currency": "GBP",
+            "orderQuantity": 1,
+            "objective": {
+              "value": 90,
+              "weights": {
+                "coverage": 100,
+                "unallocatedStock": 10,
+                "costMinor": 0
+              },
+              "terms": {
+                "coverage": 100,
+                "unallocatedStock": -10,
+                "cost": 0
+              },
+              "tradeOff": "Maximise weighted acceptable coverage, less unmatched supply and order cost; budget and quantity bounds remain hard."
+            },
+            "bindingConstraints": [
+              {
+                "id": "derivative:g20-saloon-330e:min",
+                "detail": "Quantity meets minimum 0."
+              },
+              {
+                "id": "derivative:g21-touring-320i:min",
+                "detail": "Quantity meets minimum 0."
+              },
+              {
+                "id": "derivative:g61-i5-40:min",
+                "detail": "Quantity meets minimum 0."
+              },
+              {
+                "id": "model:g21-touring:min",
+                "detail": "Quantity meets minimum 0."
+              },
+              {
+                "id": "model:g61-i5:min",
+                "detail": "Quantity meets minimum 0."
+              }
+            ],
+            "unmetNeeds": []
+          }
+        ],
+        "currentDraftComparison": null,
+        "policyProvenance": [
+          {
+            "key": "orderPlan.horizonDays",
+            "value": 120,
+            "unit": "days",
+            "status": "assumed",
+            "basis": "Plausible four-month synthetic planning horizon that covers the demo renewals; revisable through trials. Not a BMW procurement rule.",
+            "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+            "sourceDate": "2026-11-07",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "orderPlan.budgetMinor",
+            "value": 20000000,
+            "unit": "GBP minor units",
+            "status": "assumed",
+            "basis": "Synthetic 200,000 GBP hard procurement envelope for the demo catalogue; no BMW budget or cost claim.",
+            "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+            "sourceDate": "2026-11-07",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "orderPlan.currency",
+            "value": "GBP",
+            "unit": "ISO currency",
+            "status": "assumed",
+            "basis": "Synthetic UK planning currency. Every catalogue unit cost must use this currency.",
+            "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+            "sourceDate": "2026-11-07",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "orderPlan.modelBounds",
+            "value": [
+              {
+                "modelId": "g20-saloon",
+                "min": 0,
+                "max": 4
+              },
+              {
+                "modelId": "g21-touring",
+                "min": 0,
+                "max": 3
+              },
+              {
+                "modelId": "g61-i5",
+                "min": 0,
+                "max": 2
+              }
+            ],
+            "unit": "new vehicles per model",
+            "status": "assumed",
+            "basis": "Synthetic per-model order limits over the orderPlan.catalog.v1 model ids; a model bound sums its sibling derivatives. Revisable through trials.",
+            "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+            "sourceDate": "2026-11-07",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "orderPlan.derivativeBounds",
+            "value": [
+              {
+                "derivativeId": "g20-saloon-320i",
+                "min": 0,
+                "max": 3
+              },
+              {
+                "derivativeId": "g20-saloon-330e",
+                "min": 0,
+                "max": 2
+              },
+              {
+                "derivativeId": "g21-touring-320i",
+                "min": 0,
+                "max": 3
+              },
+              {
+                "derivativeId": "g61-i5-40",
+                "min": 0,
+                "max": 2
+              }
+            ],
+            "unit": "new vehicles per derivative",
+            "status": "assumed",
+            "basis": "Synthetic per-derivative order limits over the orderPlan.catalog.v1 derivative ids; small enough for the exhaustive demo search. Revisable through trials.",
+            "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+            "sourceDate": "2026-11-07",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "orderPlan.objectiveWeights",
+            "value": {
+              "coverage": 100,
+              "unallocatedStock": 10,
+              "costMinor": 0
+            },
+            "unit": "objective utility per covered entitlement / unmatched vehicle / currency minor unit",
+            "status": "assumed",
+            "basis": "Prefer acceptable renewal coverage, then reduce unmatched stock; budget stays a hard limit. Not measured employee utility weights.",
+            "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+            "sourceDate": "2026-11-07",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          },
+          {
+            "key": "supply.leadTimeDays",
+            "value": 56,
+            "unit": "calendar days",
+            "status": "assumed",
+            "basis": "Assumed eight-week production-to-release planning input; not a BMW delivery promise (round-2).",
+            "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+            "sourceDate": "2026-11-04",
+            "policyVersion": "gcsp-policy-v1",
+            "effectiveFrom": "2026-11-04T00:00:00.000Z"
+          }
+        ],
+        "supplyActivity": {
+          "requests": [
+            {
+              "requestId": "request-ade349d7c5a96254209c384d655646ab",
+              "commandId": "sub:g21-touring-320i",
+              "derivativeId": "g21-touring-320i",
+              "quantity": 2,
+              "state": "partly-confirmed",
+              "requestedAt": "2026-11-05T09:00:00.000Z"
+            }
+          ],
+          "responses": [
+            {
+              "kind": "partly-confirmed",
+              "requestId": "request-ade349d7c5a96254209c384d655646ab",
+              "supplyId": "supply-1",
+              "quantity": 1,
+              "at": "2026-11-05T09:01:00.000Z"
+            }
+          ]
+        }
+      },
+      "presentation": {
+        "forecastBasis": "expressed-saved-demand",
+        "editableKeys": [
+          "orderPlan.modelBounds",
+          "orderPlan.derivativeBounds",
+          "orderPlan.budgetMinor"
+        ],
+        "currency": "GBP",
+        "derivatives": [
+          {
+            "derivativeId": "g20-saloon-320i",
+            "modelId": "g20-saloon",
+            "model": "3 Series Saloon",
+            "derivative": "320i"
+          },
+          {
+            "derivativeId": "g20-saloon-330e",
+            "modelId": "g20-saloon",
+            "model": "3 Series Saloon",
+            "derivative": "330e"
+          },
+          {
+            "derivativeId": "g21-touring-320i",
+            "modelId": "g21-touring",
+            "model": "3 Series Touring",
+            "derivative": "320i"
+          },
+          {
+            "derivativeId": "g61-i5-40",
+            "modelId": "g61-i5",
+            "model": "i5 Touring",
+            "derivative": "eDrive40"
+          }
+        ],
+        "models": [
+          {
+            "modelId": "g20-saloon",
+            "model": "3 Series Saloon"
+          },
+          {
+            "modelId": "g21-touring",
+            "model": "3 Series Touring"
+          },
+          {
+            "modelId": "g61-i5",
+            "model": "i5 Touring"
+          }
+        ]
       }
     },
     "contractVersion": "1.0.0"

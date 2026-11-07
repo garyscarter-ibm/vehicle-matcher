@@ -840,6 +840,8 @@ Policy key `orderPlan.gregEditableKeys` lists what Greg may change: `orderPlan.m
 
 `submitPlan` rejects a plan whose id or any version changed with `conflict` code `replan-needed` and `changedInputs`. Otherwise it stores a `submission` snapshot, then calls FUCQ-104 `submit` once per derivative (`<commandId>:<derivativeId>`), passing the plan id and versions as `plan`. FUCQ-104 does not yet accept `plan`; connecting it is the open reconnection item. `readPlan` adds `supplyActivity` (requests are intent, never supply; responses are partly-confirmed, confirmed, delayed and released) and `replan` against the latest submission. Response shapes: `server/test/fixtures/gcsp-order-plan-operations.json`.
 
+FUCQ-121 additively adds `presentation: { forecastBasis, editableKeys, currency, derivatives: [{ derivativeId, modelId, model, derivative }], models: [{ modelId, model }] }` to the `readPlan` and `previewPlan` values, with names read from the policy catalogue. No other field changes.
+
 ## Ownership and extensions
 
 FUCQ-53's [synthetic identity allocation contract](synthetic-identity-allocation.md) adds offline `allocateSyntheticIdentities` / `allocateInventoryFile` ports, immutable whole-inventory replay, delivered/current-only VIN generation and `publishStockOrders` through the existing repository transaction port. Stock imports start unreleased, carry no VIN and preserve current operational state; `runs.versions.syntheticIdentityInventory` records the artifact revision/digest. Only the seven-digit order reference is exposed by the employee projection. File publication and PostgreSQL import are separate stages with independently atomic failure; this adds no repository table, public write endpoint or scheme-policy source.
