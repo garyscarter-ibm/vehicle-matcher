@@ -657,7 +657,7 @@
       "original_status": "In Progress",
       "assignee": "usget",
       "type": "Story",
-      "observed_at": "2026-11-06T11:57:05Z",
+      "observed_at": "2026-11-07T00:33:53Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60",
       "workers": [
         {
@@ -668,6 +668,24 @@
           "expires_at": "2026-11-06T12:31:19.407940+00:00",
           "source": "thread 01a1b05f-dcbc-7e50-a2f9-0332b39f082a",
           "status": "Canonical local prepublication checkpoint: scoped 9+6 passed with zero skips; requested/selected/verified Sol/high, no fallback or descendants. Worker expires at handoff; parent exact review/publication and wider runtime/native/source/asset/full gates remain."
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-07T00:33:52.071696+00:00",
+          "expires_at": "2026-11-07T00:33:52.071696+00:00",
+          "source": "thread 01a1b35b-4260-7572-91b6-536cd7b48d9a",
+          "status": "Requested/selected gpt-6.1-sol/high; no fallback; effective unverified. Reviewed source 29301f1b, scoped 82/82 pass; topic handoff, full story incomplete."
+        },
+        {
+          "name": "Rocky",
+          "role": "mechanic",
+          "harness": "codex",
+          "observed_at": "2026-11-07T00:33:52.071696+00:00",
+          "expires_at": "2026-11-07T00:33:52.071696+00:00",
+          "source": "task /root/charlie_dog/rocky",
+          "status": "Requested/selected gpt-6-luna/high; no fallback; effective unverified. Source-only mechanic complete, pure 11/source 3 pass, no descendants; handoff expired."
         }
       ],
       "slices": [
@@ -675,29 +693,29 @@
           "id": "exact-identity",
           "status": "complete",
           "title": "Exact configuration identity and fact projection",
-          "observed_at": "2026-11-06T10:26:24Z",
-          "evidence": "Lead reviewed exact identity/fact/selection projection and 50/50 scoped contracts passed; docs/gcsp/evidence/fucq60/pure-enrichment.md. Shared session/corpus/source gates remain separate."
+          "observed_at": "2026-11-07T00:33:52Z",
+          "evidence": "Scoped pure 11/source 3 plus contracts 53 pass at source 29301f1b. Strict explicit v2 tuple, binding/selection refusal, safe resolved context/evidence and v1 substitution preserved; docs/gcsp/evidence/fucq60/source-v2-enrichment-2026-11-07.md. Wider source/corpus gates separate."
         },
         {
           "id": "image-projection",
           "status": "complete",
           "title": "Honest representative image and partial projection",
-          "observed_at": "2026-11-06T10:26:24Z",
-          "evidence": "Lead reviewed registered image identity/fidelity/retention/expiry and per-source hash references; 50/50 scoped contracts passed. Real asset coverage remains separate."
+          "observed_at": "2026-11-07T00:33:52Z",
+          "evidence": "Focused image contracts remain passing in 53 owning cases; v2 retains image null/unknown without downconversion. Existing registered v1 fidelity/retention/hash handling unchanged. Real retained representative asset coverage remains separate."
         },
         {
           "id": "shared-accounting",
           "status": "in-progress",
           "title": "Canonical collector session cache budget recovery integration",
-          "observed_at": "2026-11-06T12:31:19.407940+00:00",
-          "evidence": "Canonical local F59 4ea9077/F60 candidate passes 9 historical + 6 generic cases, zero skips, with F60_PRODUCER_ROOT unset. Cache/ledger/deadline/lease and recovery share the actual local producer. Prior F2 exact re-reviews passed; parent two-pin/evidence review/publication and shared-runtime integration remain. docs/gcsp/evidence/fucq60/canonical-assembly-2026-11-06/result.json."
+          "observed_at": "2026-11-07T00:33:52Z",
+          "evidence": "Current source-admitted v2 same-session cache interruption/reopen 3/3 and portable existing session 6/6 pass with one catalogue call. Fresh cached historical 9/9 at session db0b4b9e also pass. Shared runtime/native integration remains; evidence/source-v2-enrichment-2026-11-07.md."
         },
         {
           "id": "real-source",
           "status": "in-progress",
           "title": "Real catalogue source coverage evidence",
-          "observed_at": "2026-11-06T11:43:40Z",
-          "evidence": "One pin-verified retained 1 November GB sample admitted by actual F39/F59 and preserved through F60/F54. No new collection/configuration; separate 6 November observation accepted 0. Wider source/scheme coverage and F77 required 200 distinct configurations remain. docs/gcsp/evidence/fucq60/historical-integration-evidence-2026-11-06.md."
+          "observed_at": "2026-11-07T00:33:52Z",
+          "evidence": "Actual retained 7 November GB source admitted through F59 and registered adapter into F60: 47 factory codes, 1 accessory unknown quantity, source-bound paint/upholstery codes, unknown technical/physical facts. One sample; broader source/scheme coverage and F77 breadth remain."
         },
         {
           "id": "real-assets",
@@ -708,15 +726,15 @@
           "id": "focused-contracts",
           "status": "complete",
           "title": "Authored enrichment and F39 F42 focused contracts",
-          "observed_at": "2026-11-06T12:31:19.407940+00:00",
-          "evidence": "Canonical local historical 9/9 plus generic real-session 6/6 pass, zero skips, at reviewed producer session 67eff0ad; F2 immediate caller-pin race preserved. Prior unchanged 50/50 pure/adapter and independently reviewed 35-case producer evidence reused, no rerun. Explicit plan after unsupported selector; final suite remains. docs/gcsp/evidence/fucq60/canonical-assembly-2026-11-06/result.json."
+          "observed_at": "2026-11-07T00:33:52Z",
+          "evidence": "All 82 selected cases pass with zero skips:11 pure + 3 retained-source + 53 catalogue/v2/image contracts + 9 fresh cached historical replay + 6 portable session. Frozen source 29301f1b; old provenance unchanged, current-session pins updated narrowly. Full npm suite unrun."
         },
         {
           "id": "corpus-integration",
           "status": "in-progress",
           "title": "F54 corpus and presentation integration",
-          "observed_at": "2026-11-06T12:31:19.407940+00:00",
-          "evidence": "Canonical local candidate validates original-envelope retained historical candidate/sidecar/isolated registry/lookup and recovery in 9/9 cases. Zero VIN/images; F60 incomplete/offline-session-not-source-qualified; F54 complete means supported catalogue subset. Parent review/publication, shared corpus/presentation activation, native integration, breadth and final validation remain. docs/gcsp/evidence/fucq60/canonical-assembly-2026-11-06/result.json."
+          "observed_at": "2026-11-07T00:33:53Z",
+          "evidence": "Fresh current-session cached historical 9/9 validates existing isolated F54 registry/lookup path. Source v2 enrichment remains partial; F62 owns publisher/loader v2 support. Shared corpus/presentation activation, native integration, breadth/assets and full npm validation remain."
         },
         {
           "id": "final-suite",

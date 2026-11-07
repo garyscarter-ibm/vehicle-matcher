@@ -15,7 +15,20 @@ const date = (value) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(
 const label = (value) => typeof value === 'string' && value.trim().length > 0 && value.length <= 256
   && !/[<>\u0000-\u001f\u007f]|https?:\/\//i.test(value);
 const code = (value) => typeof value === 'string' && /^[a-zA-Z0-9][a-zA-Z0-9.-]{0,95}$/.test(value);
-const same = (left, right) => left !== null && right !== null && JSON.stringify(left) === JSON.stringify(right);
+const same = (left, right) => {
+  if (left === null || right === null || left === undefined || right === undefined) return false;
+  try { return JSON.stringify(left) === JSON.stringify(right); } catch { return false; }
+};
+const object = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
+const V1_CATALOGUE_OPTIONS = ['provider', 'providerVersion', 'schemaVersion', 'snapshotVersion'];
+const V2_CATALOGUE_OPTIONS = ['provider', 'providerVersion', 'schemaVersion', 'sourceContractVersion', 'snapshotVersion'];
+const V2_LOOKUP_FIELDS = [...V2_CATALOGUE_OPTIONS, 'bindingDigest', 'configurationId'];
+const V2_REQUEST_FIELDS = ['configurationId', 'bindingDigest'];
+const V2_REQUEST_IDENTITY_FIELDS = ['snapshotVersion', ...V2_REQUEST_FIELDS];
+const isV2Options = (options) => object(options) && Object.hasOwn(options, 'sourceContractVersion');
+const safeDigest = (value) => { try { return inputDigest(value); } catch { return null; } };
+const exactKeys = (value, fields) => object(value) && Object.keys(value).length === fields.length
+  && fields.every((field) => Object.hasOwn(value, field));
 const completeness = (value) => ['complete', 'partial', 'unknown'].includes(value) ? value : 'unknown';
 const unknownProvenance = () => ({ kind: 'unknown', source: null, observedDate: null });
 function provenance(value) {
@@ -28,27 +41,46 @@ function provenance(value) {
   return unknownProvenance();
 }
 function identity(value, lookup, options) {
-  return value ? lookup({ ...value, selectionComplete: value.selectionComplete ?? true }, options) : null;
+  if (!value || !object(value)) return null;
+  if (isV2Options(options)) {
+    const keys = Object.keys(value).sort();
+    const allowed = [V2_REQUEST_FIELDS, V2_REQUEST_IDENTITY_FIELDS, V2_LOOKUP_FIELDS]
+      .some((fields) => same(keys, [...fields].sort()));
+    if (!allowed || (Object.hasOwn(value, 'snapshotVersion') && value.snapshotVersion !== options.snapshotVersion)
+      || V2_CATALOGUE_OPTIONS.some((field) => Object.hasOwn(value, field) && value[field] !== options[field])) return null;
+    return lookup({ configurationId: value.configurationId, bindingDigest: value.bindingDigest }, options);
+  }
+  return lookup({ ...value, selectionComplete: value.selectionComplete ?? true }, options);
 }
 function vehicleIdentity(lookup) {
   if (!lookup) return null;
+  if (Object.hasOwn(lookup, 'sourceContractVersion')) {
+    return { configurationId: lookup.configurationId, bindingDigest: lookup.bindingDigest };
+  }
   const { provider, providerVersion, schemaVersion, snapshotVersion, viewpoint, size, ...vehicle } = lookup;
   return vehicle;
 }
 function context(result, expected, lookup) {
-  const options = expected && Object.fromEntries(['provider', 'providerVersion', 'schemaVersion', 'snapshotVersion']
+  const v2 = Boolean(expected && Object.hasOwn(expected, 'sourceContractVersion'));
+  const options = expected && Object.fromEntries((v2 ? V2_CATALOGUE_OPTIONS : V1_CATALOGUE_OPTIONS)
     .map((key) => [key, expected[key]]));
   const requestedIdentity = vehicleIdentity(identity(result?.requestedIdentity, bmwCatalogueLookupIdentity, options));
   const resolvedIdentity = vehicleIdentity(identity(result?.resolvedIdentity, bmwCatalogueLookupIdentity, options));
-  const requestedLookup = identity(result?.lookupIdentity, lookup, result?.lookupIdentity);
-  const resolvedLookup = identity(result?.resolvedLookupIdentity, lookup, result?.resolvedLookupIdentity);
+  const requestedLookup = identity(result?.lookupIdentity, lookup, v2 ? options : result?.lookupIdentity);
+  const resolvedLookup = identity(result?.resolvedLookupIdentity, lookup, v2 ? options : result?.resolvedLookupIdentity);
+  const exactV2Shape = !v2 || (exactKeys(result?.requestedIdentity, V2_REQUEST_IDENTITY_FIELDS)
+    && exactKeys(result?.resolvedIdentity, V2_REQUEST_IDENTITY_FIELDS)
+    && exactKeys(result?.lookupIdentity, V2_LOOKUP_FIELDS)
+    && exactKeys(result?.resolvedLookupIdentity, V2_LOOKUP_FIELDS));
   const exact = expected && options && Object.entries(options).every(([key, value]) => result?.[key] === value)
+    && exactV2Shape
     && same(requestedIdentity, vehicleIdentity(expected)) && same(resolvedIdentity, vehicleIdentity(expected))
     && same(requestedLookup, expected) && same(resolvedLookup, expected);
   return { provider: code(result?.provider) ? result.provider : null,
     providerVersion: code(result?.providerVersion) ? result.providerVersion : null,
     schemaVersion: code(result?.schemaVersion) ? result.schemaVersion : null,
     snapshotVersion: code(result?.snapshotVersion) ? result.snapshotVersion : null,
+    ...(v2 ? { sourceContractVersion: code(result?.sourceContractVersion) ? result.sourceContractVersion : null } : {}),
     sourceKind: result?.sourceKind === 'dated-snapshot' ? result.sourceKind : 'unknown',
     status: STATUSES.has(result?.status) ? result.status : 'source-unavailable',
     outcome: exact ? 'ok' : ['ok', 'partial'].includes(result?.status) ? 'identity-mismatch'
@@ -56,6 +88,57 @@ function context(result, expected, lookup) {
     lookupIdentity: requestedLookup, resolvedLookupIdentity: resolvedLookup,
     observedDate: date(result?.observedDate) ? result.observedDate : null,
     retrievedDate: date(result?.retrievedDate) ? result.retrievedDate : null };
+}
+function v2SourceBinding(result, expected) {
+  const sourceBinding = result?.sourceBinding;
+  const selection = sourceBinding?.selection;
+  const canonicalIdentity = sourceBinding?.canonicalIdentity;
+  const selected = result?.equipment?.selected;
+  const equipment = result?.equipment;
+  const requestScope = sourceBinding?.requestScope;
+  const evidence = sourceBinding?.evidence;
+  if (!exactKeys(sourceBinding, ['requestScope', 'confirmedContext', 'canonicalIdentity', 'selection', 'optionalFacts', 'evidence', 'producerPins'])
+    || !exactKeys(selection, ['constructible', 'factoryComplete', 'accessoryCodesComplete', 'elements',
+      'factoryOptionCodes', 'accessories', 'evidenceRefs', 'solverChanges'])
+    || !exactKeys(canonicalIdentity, ['vgModelCode', 'agModelCode', 'factoryOptionCodes'])
+    || !exactKeys(requestScope, ['market', 'locale', 'catalogueRangeKey', 'requests'])
+    || !object(sourceBinding.confirmedContext) || !object(sourceBinding.optionalFacts) || !object(result?.completeness)
+    || !object(sourceBinding.producerPins) || !code(canonicalIdentity.vgModelCode) || !code(canonicalIdentity.agModelCode)
+    || selection.constructible !== true || selection.factoryComplete !== true || selection.accessoryCodesComplete !== true
+    || !Array.isArray(selection.factoryOptionCodes) || !selection.factoryOptionCodes.length
+    || !selection.factoryOptionCodes.every((item, index) => typeof item === 'string' && /^[A-Z0-9]{4,12}$/.test(item)
+      && (!index || selection.factoryOptionCodes[index - 1] < item))
+    || !Array.isArray(selection.accessories) || !Array.isArray(selection.elements) || !Array.isArray(selection.evidenceRefs)
+    || !object(selection.solverChanges) || !Array.isArray(canonicalIdentity.factoryOptionCodes)
+    || !same(canonicalIdentity.factoryOptionCodes, selection.factoryOptionCodes)
+    || !['market', 'locale', 'catalogueRangeKey'].every((name) => typeof requestScope[name] === 'string')
+    || !Array.isArray(requestScope.requests) || !object(result.facts)
+    || !exactKeys(equipment, ['definitions', 'available', 'selected', 'verifiedFitted'])
+    || !Array.isArray(equipment.definitions) || equipment.definitions.length > 256
+    || !equipment.definitions.every((entry) => object(entry) && typeof entry.code === 'string' && object(entry.label))
+    || !object(equipment.available) || !object(equipment.verifiedFitted)
+    || !exactKeys(selected, ['state', 'options', 'accessories', 'factoryComplete', 'accessoryCodesComplete',
+      'accessoryQuantitiesComplete', 'provenance']) || selected.state !== 'known' || selected.factoryComplete !== true
+    || selected.accessoryCodesComplete !== true || !same(selected.options, selection.factoryOptionCodes)
+    || !same(selected.accessories, selection.accessories) || !Array.isArray(evidence) || evidence.length === 0) return null;
+  const evidenceFields = ['id', 'role', 'sourceId', 'sourceVersion', 'operation', 'responseSha256', 'retainedSha256',
+    'observedAt', 'retrievedAt'];
+  const projectedEvidence = [];
+  for (const item of evidence) {
+    if (!object(item) || !evidenceFields.every((name) => Object.hasOwn(item, name))
+      || !evidenceFields.slice(0, 7).every((name) => typeof item[name] === 'string')
+      || typeof item.observedAt !== 'string' || !(item.retrievedAt === null || typeof item.retrievedAt === 'string')) return null;
+    projectedEvidence.push(Object.fromEntries(evidenceFields.map((name) => [name, item[name]])));
+  }
+  if (!expected || safeDigest(sourceBinding) !== expected.bindingDigest) return null;
+  try {
+    return { sourceBinding, selection, projectedEvidence, resolvedConfiguration: {
+      requestScope: { market: requestScope.market, locale: requestScope.locale, catalogueRangeKey: requestScope.catalogueRangeKey },
+      confirmedContext: structuredClone(sourceBinding.confirmedContext),
+      canonicalIdentity: structuredClone(canonicalIdentity), selection: structuredClone(selection),
+      optionalFacts: structuredClone(sourceBinding.optionalFacts),
+    } };
+  } catch { return null; }
 }
 function facts(result) {
   const safe = Object.fromEntries(Object.entries(METRICS).map(([name, [definition, unit]]) => {
@@ -70,15 +153,23 @@ function facts(result) {
   }));
   return { ...safe, ...mergeBmwCatalogueFacts({}, { status: result.status, facts: safe }) };
 }
-function equipment(result, expected) {
+function equipment(result, expected, v2Source = null) {
   const definitions = Array.isArray(result.equipment?.definitions) ? result.equipment.definitions : [];
   const selected = result.equipment?.selected;
-  const selectionExact = same(identity({ ...expected, selectedOptions: selected?.options,
-    selectedAccessories: selected?.accessories }, bmwCatalogueLookupIdentity, expected), expected);
+  const selectionExact = v2Source
+    ? selected?.state === 'known' && same(selected.options, v2Source.selection.factoryOptionCodes)
+      && same(selected.accessories, v2Source.selection.accessories)
+    : same(identity({ ...expected, selectedOptions: selected?.options,
+      selectedAccessories: selected?.accessories }, bmwCatalogueLookupIdentity, expected), expected);
+  const selectedProjection = v2Source ? { state: 'known', options: v2Source.selection.factoryOptionCodes,
+    accessories: v2Source.selection.accessories, complete: v2Source.selection.factoryComplete,
+    completeness: result.completeness?.factorySelection, provenance: selected?.provenance }
+    : selectionExact ? selected : { state: 'unknown', options: null, complete: false };
   const safeResult = { equipment: { definitions,
     available: result.equipment?.available,
-    selected: selectionExact ? selected : { state: 'unknown', options: null, complete: false } } };
-  const codes = new Set([...definitions.map((entry) => entry?.code), ...expected.selectedOptions]);
+    selected: selectionExact ? selectedProjection : { state: 'unknown', options: null, complete: false } } };
+  const codes = new Set([...definitions.map((entry) => entry?.code), ...(v2Source
+    ? v2Source.selection.factoryOptionCodes : expected.selectedOptions)]);
   return [...codes].filter((entry) => typeof entry === 'string' && /^[A-Z0-9]{4,12}$/.test(entry)).sort().map((item) => {
     const claim = describeBmwEquipment(safeResult, item);
     const category = definitions.find((entry) => entry?.code === item)?.category;
@@ -96,11 +187,33 @@ function equipment(result, expected) {
   });
 }
 
+function trustedV2Appearance(output, record, catalogue, expected) {
+  const binding = v2SourceBinding(catalogue, expected);
+  const catalogueDigest = safeDigest(catalogue); const acceptedCatalogueDigest = safeDigest(record?.catalogue);
+  if (!binding || !catalogueDigest || catalogueDigest !== acceptedCatalogueDigest
+    || output.sources.catalogue.outcome !== 'ok' || !['ok', 'partial'].includes(catalogue?.status)
+    || !same(catalogue?.lookupIdentity, expected) || !same(catalogue?.resolvedLookupIdentity, expected)
+    || !object(catalogue.identityProvenance)) return;
+  for (const [field, type] of [['paint', 'paint'], ['upholstery', 'upholstery']]) {
+    const fact = record?.[field]; const value = fact?.value;
+    if (fact?.state !== 'known' || !exactKeys(value, ['code', 'type']) || value.type !== type || !code(value.code)
+      || !binding.selection.factoryOptionCodes.includes(value.code) || !Array.isArray(fact.evidenceRefs)) continue;
+    try {
+      output.appearance[field] = { state: 'known', selections: [{ code: value.code, type, label: null,
+        provenance: structuredClone(catalogue.identityProvenance), evidenceRefs: structuredClone(fact.evidenceRefs) }] };
+    } catch { /* Malformed detached source evidence cannot establish appearance. */ }
+  }
+}
+
 /** Pure adapter-envelope projection only. The caller owns configurationId and all collection I/O/accounting. */
 export function enrichConfiguration({ configurationId, request, catalogue, image, catalogueOptions = {},
   imageOptions = {}, retention, asOf } = {}) {
-  const expected = bmwCatalogueLookupIdentity(request, catalogueOptions);
-  const expectedImage = bmwImageLookupIdentity(request, imageOptions);
+  const v2 = isV2Options(catalogueOptions);
+  const v2RequestValid = !v2 || object(request)
+    && Object.keys(request).every((key) => ['configurationId', 'bindingDigest', 'viewpoint', 'size'].includes(key));
+  const catalogueRequest = v2 ? { configurationId: request?.configurationId, bindingDigest: request?.bindingDigest } : request;
+  const expected = v2RequestValid ? bmwCatalogueLookupIdentity(catalogueRequest, catalogueOptions) : null;
+  const expectedImage = v2 ? null : bmwImageLookupIdentity(request, imageOptions);
   const output = { configurationId: typeof configurationId === 'string' && configurationId.length > 0
     && configurationId.length <= 8192 && !/[\u0000-\u001f\u007f]|https?:\/\//i.test(configurationId) ? configurationId : null,
   scope: 'pure-enrichment', status: 'rejected', identity: vehicleIdentity(expected), facts: {}, unmappedMeasurements: [], equipment: [],
@@ -112,21 +225,43 @@ export function enrichConfiguration({ configurationId, request, catalogue, image
   if (!output.configurationId || !expected || !date(asOf)) return output;
   const source = output.sources.catalogue;
   if (source.outcome === 'ok' && ['ok', 'partial'].includes(source.status) && source.observedDate && source.retrievedDate) {
-    output.facts = facts(catalogue); output.equipment = equipment(catalogue, expected);
-    output.unmappedMeasurements = Array.isArray(catalogue.unmappedMeasurements)
-      ? catalogue.unmappedMeasurements.map(() => ({ state: 'unknown', value: null, reason: 'unmapped-meaning' })) : [];
-    output.completeness.selection = output.equipment.every((claim) => claim.catalogueSelection.state !== 'unknown')
-      ? completeness(catalogue.completeness?.selectedConfiguration) : 'unknown';
-    for (const [name, category] of [['paint', 'paint'], ['upholstery', 'fabric']]) {
-      const selections = output.equipment.filter((claim) => claim.category === category
-        && claim.catalogueSelection.state === 'selected').map((claim) => ({ code: claim.code,
-        label: claim.definition.label, provenance: structuredClone(claim.definition.provenance) }));
-      output.appearance[name] = { state: selections.length ? 'known' : 'unknown', selections };
+    const v2Source = v2 ? v2SourceBinding(catalogue, expected) : null;
+    if (v2 && !v2Source) source.outcome = 'identity-mismatch';
+    else {
+      output.facts = facts(catalogue); output.equipment = equipment(catalogue, expected, v2Source);
+      output.unmappedMeasurements = Array.isArray(catalogue.unmappedMeasurements)
+        ? catalogue.unmappedMeasurements.map(() => ({ state: 'unknown', value: null, reason: 'unmapped-meaning' })) : [];
+      if (v2Source) {
+        const factorySelection = completeness(catalogue.completeness?.factorySelection);
+        const accessoryCodes = completeness(catalogue.completeness?.accessoryCodes);
+        const accessoryQuantities = completeness(catalogue.completeness?.accessoryQuantities);
+        output.completeness.factorySelection = factorySelection;
+        output.completeness.accessoryCodes = accessoryCodes;
+        output.completeness.accessoryQuantities = accessoryQuantities;
+        output.completeness.selection = factorySelection === 'complete' && accessoryCodes === 'complete'
+          ? accessoryQuantities === 'complete' ? 'complete' : 'partial' : 'unknown';
+        const measured = Object.keys(METRICS).map((name) => output.facts[name]);
+        output.completeness.measurements = measured.every((fact) => fact.state === 'unknown') ? 'unknown'
+          : measured.every((fact) => fact.state === 'known' && fact.completeness === 'complete') ? 'complete' : 'partial';
+        output.resolvedConfiguration = v2Source.resolvedConfiguration;
+        output.sources.catalogue.evidence = v2Source.projectedEvidence;
+        output.status = 'partial';
+      } else {
+        output.completeness.selection = output.equipment.every((claim) => claim.catalogueSelection.state !== 'unknown')
+          ? completeness(catalogue.completeness?.selectedConfiguration) : 'unknown';
+        for (const [name, category] of [['paint', 'paint'], ['upholstery', 'fabric']]) {
+          const selections = output.equipment.filter((claim) => claim.category === category
+            && claim.catalogueSelection.state === 'selected').map((claim) => ({ code: claim.code,
+            label: claim.definition.label, provenance: structuredClone(claim.definition.provenance) }));
+          output.appearance[name] = { state: selections.length ? 'known' : 'unknown', selections };
+        }
+        output.completeness.measurements = Object.values(output.facts).every((fact) => fact.state === 'known'
+          && fact.completeness === 'complete') ? 'complete' : 'partial';
+        output.status = Object.values(output.facts).some((fact) => fact.state === 'known') ? 'partial' : 'rejected';
+      }
     }
-    output.completeness.measurements = Object.values(output.facts).every((fact) => fact.state === 'known'
-      && fact.completeness === 'complete') ? 'complete' : 'partial';
-    output.status = Object.values(output.facts).some((fact) => fact.state === 'known') ? 'partial' : 'rejected';
   } else if (source.outcome === 'ok') source.outcome = 'source-unavailable';
+  if (v2) return output;
   const imageSource = output.sources.image;
   const shown = presentBmwImage(image);
   if (imageSource.outcome !== 'ok') return output;
@@ -203,7 +338,7 @@ export async function enrichFleet({ session, accepted, catalogueOperation = 'cat
     requireEnrichment(Array.isArray(state.accepted) && inputDigest(state.accepted) === inputDigest(input.accepted),
       'accepted-input-mismatch', 'Only the same accepted collector records may enter this enrichment stage.');
     const validRecord = (record) => {
-      const lookup = bmwCatalogueLookupIdentity(record?.catalogueRequest);
+      const lookup = bmwCatalogueLookupIdentity(record?.catalogueRequest, input.catalogueOptions);
       return typeof record?.configurationId === 'string' && record.configurationId.length > 0
         && record.configurationId.length <= 4096 && lookup !== null && record.lookupIdentity !== undefined
         && inputDigest(lookup) === inputDigest(record.lookupIdentity);
@@ -233,7 +368,10 @@ export async function enrichFleet({ session, accepted, catalogueOperation = 'cat
         await onPhase('enrichment-response-cached', { configurationId: record.configurationId, operation: input.catalogueOperation });
         const request = { ...record.catalogueRequest, ...input.imageRequest };
         // Image options may add only view/dimensions: they cannot replace a resolved source identity.
-        requireEnrichment(same(bmwCatalogueLookupIdentity(request), record.lookupIdentity),
+        const imageCatalogueIdentity = isV2Options(input.catalogueOptions)
+          ? bmwCatalogueLookupIdentity(record.catalogueRequest, input.catalogueOptions)
+          : bmwCatalogueLookupIdentity(request, input.catalogueOptions);
+        requireEnrichment(same(imageCatalogueIdentity, record.lookupIdentity),
           'image-request-substitution', 'Image view/dimensions cannot substitute accepted catalogue context.');
         let image; let imageStop;
         if (input.imageOperation !== null) {
@@ -244,6 +382,8 @@ export async function enrichFleet({ session, accepted, catalogueOperation = 'cat
           configurationId: record.configurationId, operation: input.imageOperation });
         const output = enrichConfiguration({ configurationId: record.configurationId, request, catalogue, image,
           catalogueOptions: input.catalogueOptions, imageOptions: input.imageOptions, retention: input.retention, asOf: input.asOf });
+        if (isV2Options(input.catalogueOptions)) trustedV2Appearance(output, record, catalogue,
+          bmwCatalogueLookupIdentity(record.catalogueRequest, input.catalogueOptions));
         output.scope = 'session-enrichment'; output.completeness.sharedAccounting = 'shared-session-offline';
         if (imageStop) output.sources.image.execution = { status: 'stopped', reason: imageStop.code };
         stageState.records.push(output); stageState.cursor += 1; await commit('enrichment-outcome');

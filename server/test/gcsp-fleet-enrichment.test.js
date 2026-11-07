@@ -163,3 +163,54 @@ test('pure transform invokes no supplied execution or transport capability', asy
   assert.equal(enrichConfiguration(source).facts.seats.value, 5);
   assert.equal(calls, 0);
 });
+
+test('v2 source selection remains useful with unknown measurements, quantities and physical facts', async () => {
+  const { syntheticV2, V2_OPTIONS } = await import('./helpers/bmw-catalogue-v2-synthetic.js');
+  const fixture = await syntheticV2(); const catalogue = fixture.envelope;
+  const request = { configurationId: catalogue.lookupIdentity.configurationId, bindingDigest: catalogue.lookupIdentity.bindingDigest };
+  const output = enrichConfiguration({ configurationId: request.configurationId, request, catalogue,
+    catalogueOptions: V2_OPTIONS, asOf: '2026-11-07' });
+  assert.equal(output.status, 'partial');
+  assert.equal(output.sources.catalogue.outcome, 'ok');
+  assert.equal(output.sources.catalogue.sourceContractVersion, V2_OPTIONS.sourceContractVersion);
+  assert.equal(output.completeness.selection, 'partial');
+  assert.equal(output.completeness.factorySelection, 'complete');
+  assert.equal(output.completeness.accessoryCodes, 'complete');
+  assert.equal(output.completeness.accessoryQuantities, 'unknown');
+  assert.equal(output.completeness.measurements, 'unknown');
+  assert.equal(output.resolvedConfiguration.requestScope.market, 'GB');
+  assert.equal(output.resolvedConfiguration.confirmedContext.effectDate.value, '2027-02-01');
+  assert.equal(output.resolvedConfiguration.optionalFacts.physicalProductionDate.value, null);
+  assert.equal(output.resolvedConfiguration.optionalFacts.trim.state, 'unknown');
+  assert.equal(output.resolvedConfiguration.selection.accessories[0].quantity.state, 'unknown');
+  assert.equal(output.equipment.length, catalogue.equipment.selected.options.length);
+  assert.ok(output.equipment.every((entry) => entry.catalogueSelection.state === 'selected'
+    && entry.verifiedVinFitted.state === 'unknown'));
+  assert.ok(Object.values(output.facts).every((fact) => fact.state === 'unknown' && fact.value === null));
+  assert.equal(output.image, null);
+  assert.equal(JSON.stringify(output).includes('synthetic.invalid'), false);
+  for (const key of ['vin', 'orderNumber', 'availability', 'schemePoints', 'eligibility', 'connectedUse']) {
+    assert.equal(Object.hasOwn(output, key), false);
+  }
+});
+
+test('v2 selection and source context substitutions are rejected before projection', async () => {
+  const { syntheticV2, V2_OPTIONS } = await import('./helpers/bmw-catalogue-v2-synthetic.js');
+  const fixture = await syntheticV2();
+  for (const mutate of [
+    (value) => { value.resolvedIdentity.bindingDigest = 'f'.repeat(64); },
+    (value) => { value.resolvedIdentity.snapshotVersion = 'other.v2'; },
+    (value) => { value.sourceContractVersion = 'other.v2'; },
+    (value) => { value.sourceBinding.confirmedContext.effectDate.value = '2027-03-01'; },
+    (value) => { value.equipment.selected.options.pop(); },
+    (value) => { value.equipment.selected.accessories[0].quantity = { state: 'known', value: 1 }; },
+  ]) {
+    const catalogue = structuredClone(fixture.envelope); mutate(catalogue);
+    const { configurationId, bindingDigest } = fixture.envelope.lookupIdentity;
+    const output = enrichConfiguration({ configurationId, request: { configurationId, bindingDigest },
+      catalogue, catalogueOptions: V2_OPTIONS, asOf: '2026-11-07' });
+    assert.equal(output.status, 'rejected');
+    assert.deepEqual(output.facts, {});
+    assert.equal(output.resolvedConfiguration, undefined);
+  }
+});
