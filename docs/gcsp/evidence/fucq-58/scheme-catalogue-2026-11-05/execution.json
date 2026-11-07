@@ -1,0 +1,22 @@
+{
+  "version": "scheme-catalogue-execution.v1",
+  "run": "dev-poller-restart-20261105-fucq58",
+  "chunk": "scheme-catalogue-f70-f44",
+  "startedAt": "2026-11-05T23:31:22.129Z",
+  "planSha256": "0d474f6ff20a4ab654e429f08bcfb9ccbeb0f44ca85e4005d27ea39de20d5942",
+  "fileSha256": {
+    "discover.mjs": "fd68df98693ff3cede68a0573e74f500b57208028cf13bec28a369d487b2c360",
+    "catalogue.mjs": "52d053c2acf81815c3df1a49d4ee207e6434044a93d69e98aca77caf2e632051",
+    "catalogue.test.mjs": "80d7e81d7a75404e775bfa045992e7293285fe70ed4e7cf5daf51e047e4fc0c8"
+  },
+  "inputs": {
+    "server/data/gcsp/vehicle-evidence/fleet-plan.json": "7eee9fbc7636d61e83fd93192f1003fac0f711233f0d459b372fabdec3547b0e",
+    "docs/gcsp/bmw-interface-research.md": "82d4edba56abf474e693d45d1b2f79c4b8918e868fb2ff56d6d6ba96db00d00a",
+    "docs/gcsp/evidence/fucq-58/known-seed-refresh-2026-11-05/evidence/qualification.mjs": "c5fd355259c610435055a2934dd2357502c442768c5f6bcc13b0ffdc1101d41c",
+    "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md": "9bc5c9d915373bc812d375823a65fa9a658f285223c45a622877eee2b66bf6d1"
+  },
+  "requestsAdmitted": 4,
+  "concurrency": 1,
+  "retries": 0,
+  "readOnly": true
+}

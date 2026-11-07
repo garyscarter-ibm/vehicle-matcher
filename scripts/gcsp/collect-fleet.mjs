@@ -1,10 +1,14 @@
-import { isAbsolute, resolve } from 'node:path';
+import { dirname, isAbsolute, resolve } from 'node:path';
+import { buildBmwSelectionBinding, qualifyBmwSelectionRecord, createBmwSelectionRegistration } from './bmw-selection-binding.mjs';
+import { open } from 'node:fs/promises';
+import { settingsShapeReceiptBytes, validateSettingsShapeRefusal } from './settings-shape-report.mjs';
 import { fileURLToPath } from 'node:url';
 import { createCollectionSession, readCollectionJson as readBounded } from './collection-session.mjs';
 import { bmwCatalogueLookupIdentity } from '../../server/vehicle-evidence/bmw-catalogue-adapter.js';
 import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { CollectionError, createConfigurationKey, normaliseCode, normaliseCodes, requireValue } from './configuration-key.mjs';
-import { publicBmwOperations, publicBmwObservation, validatePublicBmwPlan } from './public-bmw-source.mjs';
+import { publicBmwOperations, publicBmwObservation, validatePublicBmwPlan,
+  publicBmwQualificationOperations, validatePublicBmwDiagnosticPlan, qualifyPublicBmwDiagnosticFields } from './public-bmw-source.mjs';
 
 export const COLLECTOR_VERSION = '2';
 const CONTEXT = ['catalogueDate', 'market', 'locale', 'orderDate', 'effectDate', 'productionDate', 'taxDate'];
@@ -152,8 +156,14 @@ export function validateSolverResponse(candidate, response, key) {
 
 /** No default network transport exists. Only an explicitly injected offline source is executable here. */
 export async function createFleetCollector({ plan: input, source, policyService, policyRead, statePath,
-  operations = {}, http, mode = 'dry-run', now = Date.now, onPhase = async () => {} } = {}) {
+  operations = {}, http, mode = 'dry-run', now = Date.now, onPhase = async () => {}, captureReplay } = {}) {
   const plan = validatePlan(input);
+  if (mode === 'capture-replay' || captureReplay !== undefined) {
+    requireValue(mode === 'capture-replay' && plan.captureVersion === 'bmw-complete-selection.v1'
+      && plan.source.kind === 'public-bmw-uk' && object(captureReplay) && http === undefined
+      && policyRead === undefined, 'capture-replay-required', 'Use the explicit capture version and server-owned replay registration without transport.');
+    return createCaptureReplayCollector({ plan, captureReplay, policyService, statePath, operations, now, onPhase });
+  }
   if (plan.source.kind === 'public-bmw-uk' && !NO_TRAFFIC.includes(mode)) {
     return createPublicCollector({ plan, source, policyService, policyRead, statePath, operations, http, mode, now, onPhase });
   }
@@ -229,6 +239,51 @@ export async function createFleetCollector({ plan: input, source, policyService,
   }, { stage: { id: 'collection', version: COLLECTOR_VERSION, inputDigest: inputDigest(plan) } }) };
 }
 
+/** Source-qualified ingress shares the same checkpoint, accounting and later enrichment stages. */
+async function createCaptureReplayCollector({ plan, captureReplay, policyService, statePath, operations, now, onPhase }) {
+  const configurationKey = await createConfigurationKey({ policyService, policyRead: { runId: `collector-${plan.planId}`, ...plan.policyRead } });
+  const registration = { ...structuredClone(captureReplay), plan, configurationKey };
+  const expected = buildBmwSelectionBinding(registration).record;
+  requireValue(expected.sourceKind === 'dated-snapshot', 'source-selection-not-live', 'Configuration admission requires retained live source captures.');
+  requireValue(!Object.hasOwn(operations, 'capture'), 'invalid-session', 'Additional stages cannot replace trusted capture ingress.');
+  const catalogueRegistration = createBmwSelectionRegistration(registration);
+  const limits = { ...plan.limits, requestBudgets: { capture: 1,
+    ...Object.fromEntries(Object.keys(operations).map((name) => [name, plan.limits.requestBudgets[name]])) } };
+  const session = await createCollectionSession({
+    identity: { planDigest: inputDigest(plan), sourceVersion: plan.source.version, toolVersion: COLLECTOR_VERSION,
+      signaturePolicyVersion: configurationKey.policyVersion, mode: 'capture-replay', sourceBindingDigest: expected.lookupIdentity.bindingDigest },
+    limits, statePath, now, onPhase, initialState: { accepted: [], rejected: [], duplicates: [] },
+    validateState: (state) => {
+      requireValue(Array.isArray(state.accepted) && state.accepted.length <= 1
+        && ['rejected', 'duplicates'].every((field) => Array.isArray(state[field]) && state[field].length === 0),
+      'checkpoint-corrupt', 'A retained source capture admits at most its exact source-derived configuration.');
+      for (const row of state.accepted) requireValue(row?.admission === true
+        && qualifyBmwSelectionRecord({ ...row, admission: false }, registration).status === 'qualified',
+      'source-selection-mismatch', 'Accepted state must retain the exact registered source selection.');
+    },
+    operations: { ...operations, capture: { kind: 'offline', sourceId: plan.source.id, sourceVersion: plan.source.version,
+      execute: () => structuredClone(expected) } } });
+  return { session, catalogueRegistration, run: () => session.withCheckpoint(async ({ state, execute, commit, checkDeadline }) => {
+    const report = (reason) => ({ status: state.accepted.length >= plan.target ? 'complete' : 'incomplete', reason,
+      qualification: 'source-configuration-admitted', admission: state.accepted.length > 0,
+      ...structuredClone({ records: state.accepted, accepted: state.accepted, rejected: state.rejected, duplicates: state.duplicates, counts: state.counts }),
+      coverage: { distinctConfigurations: state.accepted.length, target: plan.target }, checkpoint: statePath });
+    if (state.halted) return report(state.halted);
+    if (state.accepted.length) return report('source-capture-admitted');
+    try {
+      checkDeadline(); const captured = await execute('capture', {});
+      const qualified = qualifyBmwSelectionRecord(captured, registration);
+      requireValue(qualified.status === 'qualified', 'source-selection-mismatch', 'Ingress must retain the exact source-derived selection.');
+      state.accepted.push({ ...qualified.record, admission: true }); await commit('source-admission');
+      return report('source-capture-admitted');
+    } catch (error) {
+      if (!error.stop) throw error;
+      if (error.sticky) state.halted = error.code;
+      await commit('stop'); return report(error.code);
+    }
+  }, { stage: { id: 'collection', version: COLLECTOR_VERSION, inputDigest: inputDigest(plan) } }) };
+}
+
 async function createPublicCollector({ plan, source, policyService, policyRead, statePath, operations, http, mode, now, onPhase }) {
   requireValue(['source-fixture', 'live'].includes(mode) && source?.kind === 'public-bmw-uk'
     && source.version === plan.source.version && http?.kind === (mode === 'live' ? 'live' : 'fixture'),
@@ -266,6 +321,71 @@ async function createPublicCollector({ plan, source, policyService, policyRead, 
       state.halted = error.code; await commit('source-stop'); return report(error.code);
     }
   }, { stage: { id: 'collection', version: COLLECTOR_VERSION, inputDigest: inputDigest(plan) } }) };
+}
+
+/** Explicit observation-only stage; never invokes the collector's solver or publication ports. */
+export async function createPublicBmwQualificationDiagnostic({ plan: input, statePath, http, mode, now = Date.now, onPhase } = {}) {
+  const plan = validatePublicBmwDiagnosticPlan(input);
+  requireValue(['source-fixture', 'live'].includes(mode) && http?.kind === (mode === 'live' ? 'live' : 'fixture'),
+    'source-allocation-required', 'Use an explicit diagnostic transport and a separate allocation for live work.');
+  const session = await createCollectionSession({
+    identity: { planDigest: inputDigest(plan), sourceVersion: plan.source.version, stage: 'source-qualification-diagnostic', version: '1', mode },
+    operations: publicBmwQualificationOperations(plan), limits: plan.limits, statePath, http, now, onPhase,
+    initialState: { diagnostic: null, accepted: [], rejected: [], duplicates: [] },
+    validateState: (state) => {
+      requireValue((state.diagnostic === null || object(state.diagnostic))
+        && ['accepted', 'rejected', 'duplicates'].every((key) => Array.isArray(state[key]) && state[key].length === 0),
+      'checkpoint-corrupt', 'A source diagnostic cannot contain admitted configurations.');
+      if (state.diagnostic && Object.hasOwn(state.diagnostic, 'settingsShapeRefusal')) {
+        requireValue(Object.keys(state.diagnostic).length === 1, 'settings-shape-report-invalid', 'A refusal retains only its fixed settings report.');
+        validateSettingsShapeRefusal(state.diagnostic.settingsShapeRefusal, { plan, mode });
+        requireValue(state.halted === state.diagnostic.settingsShapeRefusal.reason,
+          'settings-shape-report-invalid', 'A settings report must retain its fail-closed stop.');
+      }
+    } });
+  const qualifyRetained = (retained) => qualifyPublicBmwDiagnosticFields(plan, retained);
+  return { session, qualifyRetained, exportSettingsShapeReceipt: (path) => session.withCheckpoint(async ({ state }) => {
+    requireValue(isAbsolute(path || ''), 'explicit-path-required', 'Supply an absolute owned receipt path.');
+    requireValue(state.diagnostic?.settingsShapeRefusal, 'settings-shape-report-unavailable', 'No validated settings refusal report is available.');
+    const stage = state.stages['source-qualification-diagnostic'];
+    requireValue(stage?.version === '1' && stage.inputDigest === inputDigest(plan), 'settings-shape-report-invalid', 'The diagnostic stage identity changed.');
+    const { bytes, sha256 } = settingsShapeReceiptBytes(state.diagnostic.settingsShapeRefusal, { plan, mode });
+    try {
+      const file = await open(path, 'wx', 0o600);
+      try { await file.writeFile(bytes); await file.sync(); } finally { await file.close(); }
+      const parent = await open(dirname(path), 'r');
+      try { await parent.sync(); } finally { await parent.close(); }
+    } catch { throw new CollectionError('settings-shape-export-failed', 'The safe settings receipt could not be written.'); }
+    return { schemaVersion: 'bmw-settings-shape-refusal-receipt.v1', bytes: bytes.length, sha256 };
+  }), run: () => session.withCheckpoint(async ({ state, execute, commit }) => {
+    const report = (reason) => {
+      let fieldQualification = null;
+      if (state.diagnostic?.tree && state.diagnostic?.options) {
+        try { fieldQualification = qualifyRetained(state.diagnostic); }
+        catch (error) { if (error.code !== 'source-qualification-binding') throw error; }
+      }
+      return structuredClone({ status: 'incomplete', reason: fieldQualification ? 'field-qualification-incomplete' : reason, qualification: 'observation-only-schema-diagnostic',
+      admission: false, accepted: state.accepted, rejected: state.rejected, duplicates: state.duplicates,
+      counts: state.counts, diagnostic: state.diagnostic, fieldQualification, coverage: { distinctConfigurations: 0 } });
+    };
+    if (state.halted) return report(state.halted);
+    if (state.diagnostic) return report('raw-schema-review-required');
+    try {
+      const page = await execute('page', {});
+      const settings = await execute('settings', { path: page.settingsPath });
+      const tree = await execute('discover', {});
+      const options = await execute('options', {});
+      state.diagnostic = { bootstrapObservations: [page.observation, settings.observation], tree, options };
+      await commit('diagnostic-observation');
+      return report('raw-schema-review-required');
+    } catch (error) {
+      if (!(error instanceof CollectionError)) throw error;
+      if (Object.hasOwn(error, 'settingsShapeRefusal')) {
+        state.diagnostic = { settingsShapeRefusal: validateSettingsShapeRefusal(error.settingsShapeRefusal, { plan, mode }) };
+      }
+      state.halted = error.code; await commit('diagnostic-stop'); return report(error.code);
+    }
+  }, { stage: { id: 'source-qualification-diagnostic', version: '1', inputDigest: inputDigest(plan) } }) };
 }
 
 /** Invoking without an explicit offline fixture reports zero operations. Importing performs no work. */

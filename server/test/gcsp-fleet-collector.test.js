@@ -730,3 +730,427 @@ test('actual qualified source shapes use the same collector/session without fabr
     await assert.rejects(createFleetCollector({ ...settings, mode: 'live' }), { code: 'source-allocation-required' });
   } finally { await rm(root, { recursive: true, force: true }); }
 });
+
+// Synthetic shapes below exercise discovery/refusal. They do not assert BMW's unretained raw options schema.
+async function withDiagnostic(change, callback) {
+  const module = await import('../../scripts/gcsp/collect-fleet.mjs');
+  assert.equal(typeof module.createPublicBmwQualificationDiagnostic, 'function', 'an explicit observation-only diagnostic is required');
+  const root = await mkdtemp(join(tmpdir(), 'f59-diagnostic-')); const calls = [];
+  const record = { modelCode: 'T5MJ', agModelCode: '72HH', modelRange: 'G61', steering: 'RL', orderDate: '2026-11-01',
+    effectDate: '2027-01-05', taxDate: '2027-01-05', prodDate: '20270105', modelName: 'Synthetic Touring',
+    bodyStyle: 'TO', fuelTypeCode: 'E', transmission: 'X' };
+  const fixture = { tree: Object.fromEntries(['5', 'I'].map((group) => [group, { modelRanges: { G61E: { models: { T5MJ: { ...record } } } } }])),
+    options: { result: { options: { P0300: { option: 'P0300', optionType: 'paint', phrases: { longDescription: 'Synthetic white' } },
+      FKSFU: { option: 'FKSFU', optionType: 'fabric' }, S0337: { option: 'S0337', optionType: 'option' } } } },
+    profiles: { settingsVehicleTree: { 'x-api-key': 'fixture-tree-header' }, settingsLocalisation: { 'x-api-key': 'fixture-localisation-header' } } };
+  const p = { schemaVersion: 'bmw-source-diagnostic-plan.v1', planId: 'synthetic-diagnostic', qualificationDate: '2026-11-06',
+    source: { id: 'bmw-uk-public', version: 'f59-diagnostic-20261106.v1', kind: 'public-bmw-uk' },
+    context: { market: 'GB', locale: 'en-GB', modelCode: 'T5MJ', agModelCode: '72HH', catalogueRangeKey: 'G61E', rawModelRange: 'G61',
+      steeringLiteral: 'RL', orderDate: '2026-11-01', effectDate: '2027-01-05', trim: 'S0337' },
+    limits: { ...httpLimits(), requestBudgets: { page: 1, settings: 1, discover: 1, options: 1 }, maxAttempts: 1,
+      sourceAttempts: 4, sourceBytes: 2097152, responseBytes: 1048576, operationTimeoutMs: 10000,
+      deadlineMs: 45000, cacheRetentionMs: 86400000 } };
+  fixture.settings = { APP: { backend: fixture.profiles } };
+  change?.(fixture, p);
+  const settings = { plan: p, statePath: join(root, 'state'), mode: 'source-fixture', now: () => Date.parse('2026-11-06T12:30:00.000Z'),
+    http: { kind: 'fixture', fetch: async (url, request) => {
+      calls.push(url); assert.equal(request.method, 'GET'); assert.equal(request.credentials, 'omit'); assert.equal(request.redirect, 'manual');
+      if (url === publicPage) return new Response('settings.fixture.json', { headers: { 'content-type': 'text/html' } });
+      if (url.includes('/settings.')) return Response.json(fixture.settings);
+      if (url.includes('/model-matrices/')) { assert.equal(request.headers['x-api-key'], fixture.profiles.settingsVehicleTree['x-api-key']); return Response.json(fixture.tree); }
+      assert.equal(url, 'https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?trim=S0337');
+      assert.equal(request.headers['x-api-key'], fixture.profiles.settingsLocalisation['x-api-key']);
+      return fixture.rawOptions === undefined ? Response.json(fixture.options)
+        : new Response(fixture.rawOptions, { headers: { 'content-type': 'application/json' } });
+    } } };
+  try { await callback({ fixture, p, settings, calls, root, create: module.createPublicBmwQualificationDiagnostic }); }
+  finally { await rm(root, { recursive: true, force: true }); }
+}
+
+async function withRetainedSource(callback) {
+  const { createHash } = await import('node:crypto');
+  const { createPublicBmwQualificationDiagnostic } = await import('../../scripts/gcsp/collect-fleet.mjs');
+  const base = new URL('../../docs/gcsp/evidence/fucq59/canonical-source-live-2026-11-06/', import.meta.url);
+  const raw = await Promise.all(['tree.json', 'options.json'].map((file) => readFile(new URL(file, base))));
+  const hashes = ['06d13000d124fed336d39379cc6984ede0d6a0eced57cde955389c186932a228',
+    '6883be7544a6c03ef523aa6287a74c03fddd9b0e09b80127c25b72c1bec0061b'];
+  const packed = (bytes) => ({ document: JSON.parse(bytes), bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') });
+  raw.forEach((bytes, index) => assert.equal(packed(bytes).sha256, hashes[index]));
+  const plan = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq59/canonical-source-preparation-2026-11-06/diagnostic-plan.json', import.meta.url)));
+  const root = await mkdtemp(join(tmpdir(), 'f59-retained-binding-')); let fetches = 0;
+  try {
+    const diagnostic = await createPublicBmwQualificationDiagnostic({ plan, statePath: join(root, 'state'), mode: 'source-fixture',
+      http: { kind: 'fixture', fetch: async () => { fetches += 1; throw new Error('offline replay forbids source'); } } });
+    assert.equal(typeof diagnostic.qualifyRetained, 'function', 'the owning diagnostic must expose its actual retained-artifact caller');
+    const reseal = (entry, change) => { const copy = structuredClone(entry.document); change(copy); return packed(Buffer.from(JSON.stringify(copy) + '\n')); };
+    await callback({ diagnostic, tree: packed(raw[0]), options: packed(raw[1]), reseal });
+    assert.equal(fetches, 0);
+    const after = await Promise.all(['tree.json', 'options.json'].map((file) => readFile(new URL(file, base))));
+    after.forEach((bytes, index) => assert.equal(packed(bytes).sha256, hashes[index]));
+  } finally { await rm(root, { recursive: true, force: true }); }
+}
+
+test('retained source binding replays the actual safe outputs through the owning diagnostic caller', async () => {
+  await withRetainedSource(async ({ diagnostic, tree, options }) => {
+    const result = diagnostic.qualifyRetained({ tree, options });
+    assert.equal(result.status, 'incomplete'); assert.equal(result.admission, false);
+    assert.deepEqual(result.accepted, []);
+    assert.equal(result.fields.rawModelRange.value, 'G61'); assert.equal(result.fields.transmission.value, 'X');
+    assert.equal(result.fields.derivative.value, 'I5 40'); assert.equal(result.fields.taxDate.value, '2027-01-05');
+    assert.deepEqual(result.fields.paint.value, { code: 'P0300', type: 'paint' });
+    assert.deepEqual(result.fields.upholstery.value, { code: 'FKSFU', type: 'upholstery' });
+    for (const field of ['productionDate', 'trim', 'accessoryQuantity', 'modelName', 'fuelTypeCode']) assert.equal(result.fields[field].status, 'missing', field);
+    assert.equal(result.sourceBindings.options.definitionRoot, ''); assert.equal(result.sourceBindings.options.definitionCount, 254);
+    assert.equal(result.fields.paint.evidence[0].sourcePointer, '/P0300');
+    assert.equal(result.fields.paint.evidence[0].pointer, '/report/candidates/0/definitions/242');
+    assert.equal(result.sourceBindings.tree.responseSha256, tree.document.observation.responseSha256);
+  });
+});
+
+test('retained source binding rejects changed hashes requests source metadata and request fact promotion', async () => {
+  await withRetainedSource(async ({ diagnostic, tree, options, reseal }) => {
+    const changed = [
+      { ...options, sha256: '0'.repeat(64) },
+      reseal(options, (d) => { d.observation.request.url += '&extra=1'; }),
+      reseal(options, (d) => { d.observation.sourceVersion = 'other'; }),
+      reseal(options, (d) => { d.observation.sourceId = 'other'; }),
+      reseal(options, (d) => { d.observation.transportKind = 'fixture'; }),
+      reseal(options, (d) => { d.observation.observedAt = '2026-11-05T15:16:26.640Z'; }),
+      reseal(options, (d) => { d.observation.observedAt = '2026-11-06T15:16:26.000Z'; }),
+      reseal(options, (d) => { d.observation.observedAt = '2026-11-06T15:17:26.640Z'; }),
+      reseal(options, (d) => { delete d.observation.responseSha256; }),
+      reseal(options, (d) => { d.requestScope.role = 'response'; }),
+      reseal(options, (d) => { d.requestScope.modelCode = 'T5ML'; }),
+    ];
+    for (const entry of changed) assert.throws(() => diagnostic.qualifyRetained({ tree, options: entry }), { code: 'source-qualification-binding' });
+  });
+});
+
+test('retained source binding refuses moved duplicate ambiguous and inconsistent option definitions', async () => {
+  await withRetainedSource(async ({ diagnostic, tree, options, reseal }) => {
+    const changes = [
+      (d) => { d.report.candidates[0].pointer = '/options'; },
+      (d) => { d.report.candidates.push(structuredClone(d.report.candidates[0])); },
+      (d) => { d.report.candidates[0].definitions.push(structuredClone(d.report.candidates[0].definitions[0])); },
+      (d) => { d.report.candidates[0].definitions[0].pointer = '/other'; },
+      (d) => { d.report.candidates[0].definitions[0].option = 'OTHER'; },
+      (d) => { d.report.candidates[0].definitions[0].issues.push('option-key-mismatch'); },
+      (d) => { d.report.candidates[0].definitions[0].longDescription = '<script>unsafe</script>'; },
+    ];
+    for (const change of changes) assert.throws(() => diagnostic.qualifyRetained({ tree, options: reseal(options, change) }), { code: 'source-qualification-binding' });
+  });
+});
+
+test('retained source binding refuses tree aliases field-pointer substitutions and optional-presence changes', async () => {
+  await withRetainedSource(async ({ diagnostic, tree, options, reseal }) => {
+    const changes = [
+      (d) => { d.report.nodes[0].pointer = '/defaultModel'; },
+      (d) => { d.report.nodes[1].pointer = d.report.nodes[0].pointer; },
+      (d) => { d.report.nodes.reverse(); },
+      (d) => { d.report.nodes.push(structuredClone(d.report.nodes[0])); },
+      (d) => { d.report.nodes[0].fieldPointers.taxDate = '/requestScope/orderDate'; },
+      (d) => { d.report.nodes[1].facts.derivative = 'OTHER'; },
+      (d) => { delete d.report.nodes[1].facts.taxDate; },
+      (d) => { d.report.nodes[0].facts.prodDate = '20270230'; d.report.nodes[1].facts.prodDate = '20270230'; },
+    ];
+    for (const change of changes) assert.throws(() => diagnostic.qualifyRetained({ tree: reseal(tree, change), options }), { code: 'source-qualification-binding' });
+  });
+});
+
+test('qualification diagnostic retained source binding uses the same qualifier on run and resume', async () => {
+  await withDiagnostic((fixture) => { fixture.options = fixture.options.result.options; }, async ({ create, settings, calls }) => {
+    const diagnostic = await create(settings); const result = await diagnostic.run();
+    assert.equal(result.reason, 'field-qualification-incomplete');
+    assert.equal(result.fieldQualification.fields.paint.status, 'qualified');
+    assert.equal(result.fieldQualification.fields.taxDate.status, 'qualified');
+    assert.equal(result.fieldQualification.fields.trim.status, 'missing');
+    assert.equal(result.fieldQualification.fields.accessoryQuantity.status, 'missing');
+    assert.deepEqual(result.fieldQualification, diagnostic.qualifyRetained(result.diagnostic));
+    assert.deepEqual(await (await create(settings)).run(), result); assert.equal(calls.length, 4);
+    assert.equal(result.admission, false); assert.deepEqual(result.accepted, []);
+  });
+});
+
+for (const role of ['settingsVehicleTree', 'settingsLocalisation']) {
+  test('qualification diagnostic selects canonical own APP.backend ' + role + ' despite unrelated profiles', async () => {
+    await withDiagnostic((fixture) => {
+      fixture.settings.unrelated = { [role]: { 'x-api-key': 'unrelated-header-must-not-be-selected' } };
+    }, async ({ create, settings, calls }) => {
+      const result = await (await create(settings)).run();
+      assert.equal(result.reason, 'raw-schema-review-required'); assert.equal(calls.length, 4);
+      assert.equal(result.admission, false); assert.deepEqual(result.accepted, []);
+      assert.equal(calls.some((url) => url.includes('/rulesolver/')), false);
+      assert.equal((await readFile(settings.statePath, 'utf8')).includes('unrelated-header-must-not-be-selected'), false);
+    });
+  });
+  for (const kind of ['missing-app', 'alias-app', 'nonobject-app', 'missing-backend', 'alias-backend', 'nonobject-backend',
+    'missing-role', 'alias-role', 'nonobject-role', 'array-role']) {
+    test('qualification diagnostic refuses ' + kind + ' canonical ' + role + ' despite global alternative', async () => {
+      await withDiagnostic((fixture) => {
+        fixture.settings.unrelated = { [role]: fixture.profiles[role] };
+        if (kind === 'missing-app') delete fixture.settings.APP;
+        if (kind === 'alias-app') { fixture.settings.app = fixture.settings.APP; delete fixture.settings.APP; }
+        if (kind === 'nonobject-app') fixture.settings.APP = [];
+        if (kind === 'missing-backend') delete fixture.settings.APP.backend;
+        if (kind === 'alias-backend') { fixture.settings.APP.Backend = fixture.profiles; delete fixture.settings.APP.backend; }
+        if (kind === 'nonobject-backend') fixture.settings.APP.backend = 'invalid';
+        if (kind === 'missing-role') delete fixture.profiles[role];
+        if (kind === 'alias-role') { fixture.profiles[role.toLowerCase()] = fixture.profiles[role]; delete fixture.profiles[role]; }
+        if (kind === 'nonobject-role') fixture.profiles[role] = 'invalid';
+        if (kind === 'array-role') fixture.profiles[role] = [{ 'x-api-key': 'invalid-array-header' }];
+      }, async ({ create, settings, calls }) => {
+        const result = await (await create(settings)).run();
+        assert.equal(result.reason, 'settings-header-shape'); assert.equal(calls.length, 2);
+        assert.equal(result.admission, false); assert.deepEqual(result.accepted, []);
+      });
+    });
+  }
+}
+
+test('qualification diagnostic observes four pinned GETs without solving, classifying or admitting a configuration', async () => {
+  const { createHash } = await import('node:crypto');
+  await withDiagnostic(undefined, async ({ create, settings, calls, fixture }) => {
+    const result = await (await create(settings)).run();
+    assert.equal(result.reason, 'raw-schema-review-required'); assert.equal(result.admission, false);
+    assert.deepEqual(result.accepted, []); assert.equal(result.coverage.distinctConfigurations, 0);
+    assert.equal(calls.length, 4); assert.equal(calls.some((url) => url.includes('/rulesolver/')), false);
+    assert.deepEqual(result.counts.operations, { discover: 1, options: 1, page: 1, settings: 1 });
+    const { tree, options } = result.diagnostic;
+    assert.equal(tree.document.observation.transportKind, 'fixture'); assert.equal(tree.document.observation.operation, 'discover');
+    assert.equal(tree.document.observation.observedAt, '2026-11-06T12:30:00.000Z');
+    assert.equal(tree.document.requestScope.role, 'request-input-only');
+    assert.equal(tree.document.report.nodes[0].pointer, '/5/modelRanges/G61E/models/T5MJ');
+    assert.equal(tree.document.report.nodes[1].pointer, '/I/modelRanges/G61E/models/T5MJ');
+    assert.equal(tree.document.report.nodes[0].facts.prodDate, '20270105');
+    assert.equal(tree.document.report.nodes[0].facts.fuelTypeCode, 'E');
+    assert.equal(tree.document.report.additionalConfigurations, 0);
+    assert.equal(options.document.report.status, 'schema-review-required');
+    assert.equal(options.document.report.candidates[0].pointer, '/result/options');
+    assert.deepEqual(options.document.report.candidates[0].definitions.find((row) => row.code === 'P0300'), {
+      code: 'P0300', pointer: '/result/options/P0300', option: 'P0300', optionType: 'paint', longDescription: 'Synthetic white', issues: [] });
+    assert.equal(Object.hasOwn(options.document.report, 'qualifiedFields'), false);
+    assert.equal(Object.hasOwn(options.document, 'responseContext'), false);
+    assert.equal(options.document.requestScope.trim, 'S0337');
+    assert.equal(options.document.observation.responseBytes, Buffer.byteLength(JSON.stringify(fixture.options)));
+    assert.equal(options.document.observation.responseSha256, createHash('sha256').update(JSON.stringify(fixture.options)).digest('hex'));
+    for (const artifact of [tree, options]) {
+      const bytes = JSON.stringify(artifact.document) + '\n';
+      assert.equal(artifact.bytes, Buffer.byteLength(bytes)); assert.equal(artifact.sha256, createHash('sha256').update(bytes).digest('hex'));
+    }
+    const retained = await readFile(settings.statePath, 'utf8');
+    assert.equal(retained.includes('fixture-tree-header'), false); assert.equal(retained.includes('fixture-localisation-header'), false);
+    const resumed = await (await create(settings)).run(); assert.deepEqual(resumed, result); assert.equal(calls.length, 4);
+  });
+});
+
+test('qualification diagnostic refuses full-record substitution, missing groups, alias conflicts and invalid optional facts', async () => {
+  for (const [kind, want] of [ ['compact', 'source-full-model-missing'], ['missing-group', 'source-full-model-missing'],
+    ['substitution', 'source-model-substitution'], ['optional-conflict', 'source-model-alias-conflict'],
+    ['invalid-date', 'source-model-field-value'], ['unsafe-label', 'source-model-field-value'] ]) {
+    await withDiagnostic((fixture) => {
+      const a = fixture.tree['5'].modelRanges.G61E.models.T5MJ; const b = fixture.tree.I.modelRanges.G61E.models.T5MJ;
+      if (kind === 'compact') { delete fixture.tree['5'].modelRanges.G61E.models; fixture.tree['5'].modelRanges.G61E.defaultModel = a; }
+      if (kind === 'missing-group') delete fixture.tree.I;
+      if (kind === 'substitution') b.agModelCode = 'OTHER';
+      if (kind === 'optional-conflict') delete b.prodDate;
+      if (kind === 'invalid-date') { a.prodDate = '20270230'; b.prodDate = '20270230'; }
+      if (kind === 'unsafe-label') { a.modelName = '<script>'; b.modelName = '<script>'; }
+    }, async ({ create, settings, calls }) => {
+      const result = await (await create(settings)).run(); assert.equal(result.reason, want, kind);
+      assert.equal(calls.length, 3); assert.deepEqual(result.accepted, []); assert.equal(result.diagnostic, null);
+      assert.equal((await (await create(settings)).run()).reason, want); assert.equal(calls.length, 3);
+    });
+  }
+  await withDiagnostic((fixture) => { for (const group of ['5', 'I']) {
+    delete fixture.tree[group].modelRanges.G61E.models.T5MJ.prodDate;
+    delete fixture.tree[group].modelRanges.G61E.models.T5MJ.taxDate;
+  } }, async ({ create, settings }) => {
+    const result = await (await create(settings)).run();
+    assert.equal(result.reason, 'raw-schema-review-required');
+    assert.equal(result.diagnostic.tree.document.report.missingFields.includes('prodDate'), true);
+    assert.equal(result.diagnostic.tree.document.report.missingFields.includes('taxDate'), true);
+    assert.equal(Object.hasOwn(result.diagnostic.tree.document.report.nodes[0].facts, 'prodDate'), false);
+  });
+});
+
+test('qualification diagnostic preserves unresolved and ambiguous schemas instead of treating curated options as a raw contract', async () => {
+  for (const [kind, status, count] of [['unknown', 'unresolved', 0], ['ambiguous', 'ambiguous', 2], ['mismatch', 'schema-review-required', 1]]) {
+    await withDiagnostic((fixture) => {
+      const definitions = fixture.options.result.options;
+      if (kind === 'unknown') fixture.options = { unexpectedRawWrapper: { privateText: 'unreviewed scalar must not be copied', definitions } };
+      if (kind === 'ambiguous') fixture.options = { data: definitions, result: definitions };
+      if (kind === 'mismatch') definitions.P0300.option = 'P0999';
+    }, async ({ create, settings }) => {
+      const result = await (await create(settings)).run(); const report = result.diagnostic.options.document.report;
+      assert.equal(result.reason, 'raw-schema-review-required'); assert.equal(result.admission, false);
+      assert.equal(report.status, status, kind); assert.equal(report.candidates.length, count);
+      if (kind === 'mismatch') assert.deepEqual(report.candidates[0].definitions.find((row) => row.code === 'P0300').issues, ['option-key-mismatch']);
+      assert.equal((await readFile(settings.statePath, 'utf8')).includes('unreviewed scalar must not be copied'), false);
+    });
+  }
+});
+
+test('qualification diagnostic rejects raw invalid UTF8 and duplicate keys before retaining field integrity', async () => {
+  for (const [raw, want] of [ [new Uint8Array([123, 34, 120, 34, 58, 34, 255, 34, 125]), 'source-json-utf8'],
+    ['{"data":{"P0300":{"option":"P0300","optionType":"paint","optionType":"fabric"}}}', 'source-json-duplicate-key'],
+    ['{"data":{"P0300":1,"P0300":2}}', 'source-json-duplicate-key'] ]) {
+    await withDiagnostic((fixture) => { fixture.rawOptions = raw; }, async ({ create, settings, calls }) => {
+      const result = await (await create(settings)).run(); assert.equal(result.reason, want); assert.equal(result.diagnostic, null);
+      assert.equal(calls.length, 4); assert.deepEqual(result.accepted, []);
+      const state = JSON.parse(await readFile(settings.statePath, 'utf8')).content;
+      assert.equal(state.cache.some((row) => row.operation === 'options'), false); assert.equal(state.halted, want);
+      assert.equal((await (await create(settings)).run()).reason, want); assert.equal(calls.length, 4);
+    });
+  }
+});
+
+test('qualification diagnostic scopes unique localisation bootstrap, dates and source admission before traffic', async () => {
+  for (const [kind, expectedCalls, want] of [['profile', 2, 'settings-header-shape'], ['duplicate-profile', 2, 'settings-header-shape'],
+    ['date', 1, 'source-observation-date'], ['version', 0, 'diagnostic-plan-refused']]) {
+    await withDiagnostic((fixture, p) => {
+      if (kind === 'profile') delete fixture.profiles.settingsLocalisation;
+      if (kind === 'duplicate-profile') fixture.profiles.settingsLocalisation.other = { settingsLocalisation: { 'x-api-key': 'fixture-localisation-header' } };
+      if (kind === 'date') p.qualificationDate = '2026-11-07';
+      if (kind === 'version') p.source.version = 'f58-20261105.v1';
+    }, async ({ create, settings, calls }) => {
+      if (kind === 'version') await assert.rejects(create(settings), { code: want });
+      else assert.equal((await (await create(settings)).run()).reason, want);
+      assert.equal(calls.length, expectedCalls, kind);
+    });
+  }
+  await withDiagnostic(undefined, async ({ create, settings, calls }) => {
+    await assert.rejects(create({ ...settings, mode: 'live', http: { ...settings.http, kind: 'live' } }), { code: 'source-allocation-required' });
+    assert.equal(calls.length, 0);
+  });
+});
+
+test('qualification diagnostic keeps a spent bootstrap and aggregate byte allowance across interruption and resume', async () => {
+  await withDiagnostic(undefined, async ({ create, settings, calls }) => {
+    let interrupt = true;
+    const interrupted = { ...settings, onPhase: async (phase, detail) => {
+      if (interrupt && phase === 'before-rename' && detail.kind === 'cache' && calls.length === 3) { interrupt = false; throw new Error('diagnostic interruption'); }
+    } };
+    await assert.rejects((await create(interrupted)).run(), /diagnostic interruption/);
+    assert.equal(calls.length, 3);
+    const result = await (await create(settings)).run(); assert.equal(result.reason, 'request-budget'); assert.equal(calls.length, 3);
+    assert.equal(result.counts.httpAttempts, 3); assert.equal(result.counts.operations.settings, 1); assert.equal(result.diagnostic, null);
+  });
+  await withDiagnostic((_fixture, p) => { p.limits.sourceBytes = 50; }, async ({ create, settings, calls }) => {
+    const result = await (await create(settings)).run(); assert.equal(result.reason, 'source-byte-budget');
+    assert.equal(calls.length, 2); assert.equal(result.counts.httpAttempts, 2); assert.equal(result.counts.decodedBytes > 50, true);
+    assert.equal((await (await create(settings)).run()).reason, 'source-byte-budget'); assert.equal(calls.length, 2);
+  });
+});
+
+test('qualification diagnostic requires the strict tree before options and refuses expanded options routes before I/O', async () => {
+  await withDiagnostic(undefined, async ({ create, settings, calls }) => {
+    const diagnostic = await create(settings);
+    await assert.rejects(diagnostic.session.withCheckpoint(async ({ execute }) => {
+      const page = await execute('page', {}); await execute('settings', { path: page.settingsPath });
+      await execute('options', {});
+    }), { code: 'source-tree-required' });
+    assert.equal(calls.length, 2);
+  });
+  const { createCollectionSession } = await import('../../scripts/gcsp/collection-session.mjs');
+  const root = await mkdtemp(join(tmpdir(), 'f59-diagnostic-routes-')); let calls = 0;
+  const optionsUrl = 'https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?trim=S0337';
+  try {
+    for (const [kind, change, want] of [
+      ['method', { method: 'POST' }, 'source-endpoint-refused'],
+      ['query', { url: optionsUrl + '&trim=S0337' }, 'source-endpoint-refused'],
+      ['language', { url: optionsUrl.replace('/languages/en?', '/languages/de?') }, 'source-endpoint-refused'],
+      ['header', { headers: { authorization: 'not-permitted' } }, 'source-endpoint-refused'],
+      ['old-version', { sourceVersion: 'f58-20261105.v1' }, 'invalid-session'],
+      ['solver', { capability: 'bmw-solver' }, 'invalid-session'],
+    ]) {
+      const { sourceVersion = 'f59-diagnostic-20261106.v1', capability = 'bmw-options', ...request } = change;
+      const invoke = async () => (await createCollectionSession({ identity: { kind }, statePath: join(root, kind),
+        limits: { ...httpLimits(), requestBudgets: { options: 1 }, maxAttempts: 1 },
+        operations: { options: { sourceId: 'bmw-uk-public', sourceVersion, capability, kind: 'read-only-http',
+          prepare: async () => ({ method: 'GET', url: optionsUrl, headers: { 'x-api-key': 'synthetic-header' }, ...request }), project: () => ({ safe: true }) } },
+        http: { kind: 'fixture', fetch: async () => { calls += 1; return Response.json({}); } } })).withCheckpoint(async ({ execute }) => execute('options', {}));
+      await assert.rejects(invoke(), { code: want }, kind);
+    }
+    assert.equal(calls, 0);
+  } finally { await rm(root, { recursive: true, force: true }); }
+});
+
+test('qualification diagnostic bounds raw structural exploration and retains no unsafe definition text', async () => {
+  for (const kind of ['depth', 'definitions', 'unsafe-label']) await withDiagnostic((fixture) => {
+    if (kind === 'depth') for (let i = 0; i < 17; i += 1) fixture.options = { data: fixture.options };
+    if (kind === 'definitions') fixture.options = Object.fromEntries(Array.from({ length: 513 }, (_, index) => ['S' + String(index).padStart(4, '0'), { option: 'S' + String(index).padStart(4, '0'), optionType: 'option' }]));
+    if (kind === 'unsafe-label') fixture.options.result.options.P0300.phrases.longDescription = '<script>unretained unsafe source text</script>';
+  }, async ({ create, settings }) => {
+    const result = await (await create(settings)).run();
+    assert.equal(result.reason, kind === 'unsafe-label' ? 'raw-schema-review-required' : 'source-options-shape-limit');
+    assert.deepEqual(result.accepted, []);
+    assert.equal((await readFile(settings.statePath, 'utf8')).includes('unretained unsafe source text'), false);
+    if (kind === 'unsafe-label') assert.deepEqual(result.diagnostic.options.document.report.candidates[0].definitions.find((row) => row.code === 'P0300').issues, ['long-description-unsafe']);
+  });
+});
+
+test('qualification diagnostic never retains either bootstrap header through a different response profile', async () => {
+  for (const kind of ['tree', 'options']) await withDiagnostic((fixture) => {
+    if (kind === 'tree') for (const group of ['5', 'I']) fixture.tree[group].modelRanges.G61E.models.T5MJ.modelName = 'fixture-localisation-header';
+    else fixture.options.result.options.P0300.phrases.longDescription = 'fixture-tree-header';
+  }, async ({ create, settings, calls }) => {
+    const result = await (await create(settings)).run(); assert.equal(result.reason, 'source-sensitive-projection');
+    assert.equal(calls.length, kind === 'tree' ? 3 : 4); assert.equal(result.diagnostic, null);
+    const saved = await readFile(settings.statePath, 'utf8');
+    assert.equal(saved.includes('fixture-tree-header'), false); assert.equal(saved.includes('fixture-localisation-header'), false);
+    assert.equal((await (await create(settings)).run()).reason, 'source-sensitive-projection');
+    assert.equal(calls.length, kind === 'tree' ? 3 : 4);
+  });
+});
+
+function decodedSecretLocations(value, secret, path = '') {
+  if (typeof value === 'string') return value.includes(secret) ? [path + ':value'] : [];
+  if (value === null || typeof value !== 'object') return [];
+  return Object.entries(value).flatMap(([key, child]) => [
+    ...(key.includes(secret) ? [path + '/' + key + ':key'] : []),
+    ...decodedSecretLocations(child, secret, path + '/' + key),
+  ]);
+}
+
+for (const [syntax, secret] of [['quote', 'synthetic"bootstrap'], ['backslash', 'synthetic\\bootstrap']]) {
+  for (const direction of ['tree', 'options']) {
+    test(`qualification diagnostic refuses escaped bootstrap header ${syntax} in ${direction} cross-profile values`, async () => {
+      await withDiagnostic((fixture) => {
+        const profile = direction === 'tree' ? 'settingsLocalisation' : 'settingsVehicleTree';
+        fixture.profiles[profile]['x-api-key'] = secret;
+        if (direction === 'tree') for (const group of ['5', 'I']) {
+          fixture.tree[group].modelRanges.G61E.models.T5MJ.modelName = 'prefix ' + secret + ' suffix';
+        }
+        else fixture.options.result.options.P0300.phrases.longDescription = 'prefix ' + secret + ' suffix';
+      }, async ({ create, settings, calls }) => {
+        const result = await (await create(settings)).run();
+        const checkpoint = JSON.parse(await readFile(settings.statePath, 'utf8'));
+        assert.deepEqual({ reason: result.reason, returned: decodedSecretLocations(result, secret),
+          retained: decodedSecretLocations(checkpoint, secret) },
+        { reason: 'source-sensitive-projection', returned: [], retained: [] });
+        assert.equal(result.diagnostic, null); assert.deepEqual(result.accepted, []);
+        assert.equal(checkpoint.content.cache.some((row) => row.operation === (direction === 'tree' ? 'discover' : 'options')), false);
+        assert.equal(calls.length, direction === 'tree' ? 3 : 4);
+        const resumed = await (await create(settings)).run();
+        assert.equal(resumed.reason, 'source-sensitive-projection');
+        assert.deepEqual(decodedSecretLocations(resumed, secret), []);
+        assert.equal(calls.length, direction === 'tree' ? 3 : 4);
+      });
+    });
+  }
+}
+
+for (const [profile, secret, expectedCalls] of [['settingsLocalisation', 'facts', 3], ['settingsVehicleTree', 'longDescription', 4]]) {
+  test(`qualification diagnostic refuses bootstrap header property keys from ${profile}`, async () => {
+    await withDiagnostic((fixture) => { fixture.profiles[profile]['x-api-key'] = secret; }, async ({ create, settings, calls }) => {
+      const result = await (await create(settings)).run();
+      const checkpoint = JSON.parse(await readFile(settings.statePath, 'utf8'));
+      assert.deepEqual({ reason: result.reason, returned: decodedSecretLocations(result, secret),
+        retained: decodedSecretLocations(checkpoint, secret) },
+      { reason: 'source-sensitive-projection', returned: [], retained: [] });
+      assert.equal(calls.length, expectedCalls); assert.equal(result.diagnostic, null);
+      assert.equal((await (await create(settings)).run()).reason, 'source-sensitive-projection');
+      assert.equal(calls.length, expectedCalls);
+    });
+  });
+}

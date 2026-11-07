@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "kind": "scoped actual memory/loopback composition evidence; partial story evidence",
+  "sourcePlanSHA256": "af9979d319b2a56d8a1f5b040d998c5e14a4b36d8d8630b1b252f206adac08d2",
+  "productWorker": {
+    "rc": 0,
+    "wall": 16.330454583999998,
+    "issue": null,
+    "issue_kind": null,
+    "peak_scratch": 1400832,
+    "peak_rss": 455507968,
+    "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/offer-runtime/run-01/ownership/943817ea21984ab08e6dd0d2e6ba63fa.json",
+    "log": "/private/tmp/test-stamp-shard-943817ea21984ab08e6dd0d2e6ba63fa/raw.log"
+  },
+  "counts": {
+    "tests": 2,
+    "pass": 2,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "originalSupervisorExit": 1,
+  "originalSupervisorFailure": "KeyError: 'symlink'",
+  "originalSupervisorPassed": false,
+  "cleanupOnlyVerdict": "cleanup-only PASS; original worker 2/2 reused, original supervisor failure preserved",
+  "independentRootReview": false,
+  "originals": {
+    "receipt.json": {
+      "sha256": "9d41373d6811ed8fc55b57aa309a00acce88c99a5893d83601b55cb8f5a818fe",
+      "bytes": 1397
+    },
+    "raw.log": {
+      "sha256": "136a8ea1bfce00cc41b410fc6cf3ffe84a77382023afd9453204921e28439275",
+      "bytes": 681
+    },
+    "esm-modules.jsonl": {
+      "sha256": "df70afea32b2aecb12a6cc3cdec93245f6f30c65db36c1e93a688fdaea3f2517",
+      "bytes": 418559
+    },
+    "cjs-modules.jsonl": {
+      "sha256": "41973b082e398476fa132720db11beba6034ae96316b417c1a456ddf4ce913f5",
+      "bytes": 187875
+    }
+  },
+  "proofLimits": [
+    "No browser or rendered 375/1280/keyboard evidence.",
+    "Loopback HTTP transport with HTTPS-shaped client coordinates is not delivered TLS/Secure-cookie browser acceptance.",
+    "No native DB, live requests, full suite, Resume7 or paused allocation source acceptance.",
+    "Question policy was intentionally adopted/activated through the actual server-only PolicyService command; startup does not silently publish assumptions.",
+    "No new allocation after decline: savedChange remains visible with truthful followup-evaluation-unavailable."
+  ],
+  "remaining": [
+    "Root consequential product/evidence review and independent receipt collection.",
+    "Required combined-source full-suite lane.",
+    "Refresh Resume7 source/catalogue/admission before execution.",
+    "Rebase unapplied lifecycle composition against this central source only after FUCQ-111 stagePort and repaired FUCQ-116 pins are published."
+  ]
+}

@@ -9,7 +9,7 @@ const LABELS = new Set(['modelName', 'derivative']);
 const PHYSICAL = new Set(['physicalProductionDate', 'modelYear', 'plant', 'verifiedFitted']);
 const FIELDS = new Set([...DATES, ...CODES, ...LABELS, ...PHYSICAL, 'paint', 'upholstery', 'accessoryQuantity']);
 const SOURCE_KEYS = { productionDate: ['prodDate', 'productionDate'], modelCode: ['modelCode', 'vgModelCode'],
-  rawModelRange: ['rawModelRange', 'modelRangeField'], modelName: ['modelName', 'modelNameRaw'], steeringLiteral: ['steering', 'steeringLiteral'] };
+  rawModelRange: ['rawModelRange', 'modelRangeField', 'modelRange'], modelName: ['modelName', 'modelNameRaw'], steeringLiteral: ['steering', 'steeringLiteral'] };
 const object = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 const code = (value) => typeof value === 'string' && /^[A-Z0-9]{2,16}$/.test(value);
 const date = (value) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)
@@ -87,12 +87,43 @@ function valueFor(field, value, claim, artifact, target) {
     if (field === 'catalogueDate' && date(value) && value !== target.observedDate) return { reason: 'catalogue-date-mismatch' };
     return date(value) ? { value } : { reason: 'invalid-value' };
   }
-  if (CODES.has(field)) return code(value) ? { value } : { reason: 'invalid-value' };
+  if (CODES.has(field)) return code(value) || (field === 'transmission' && value === 'X') ? { value } : { reason: 'invalid-value' };
   if (LABELS.has(field)) return typeof value === 'string' && value.trim().length > 0 && value.length <= 160 && !/[\x00-\x1f\x7f<>]/u.test(value)
     ? { value: value.trim() } : { reason: 'invalid-value' };
   if (field === 'paint' || field === 'upholstery') {
     const path = segments(claim.pointer);
-    return code(claim.code) && path.at(-1) === claim.code && object(value) && value.option === claim.code
+    // The reviewed diagnostic retains definitions as rows, with their original raw code pointer.
+    // This fixed shape is not permission to reinterpret arbitrary arrays as code-keyed responses.
+    const candidate = artifact.json?.report?.candidates;
+    const retained = artifact.json?.schemaVersion === 'bmw-source-diagnostic-observation.v1'
+      && Object.keys(artifact.json).sort().join(',') === 'observation,report,requestScope,schemaVersion'
+      && object(artifact.json.observation) && artifact.json.observation.schemaVersion === 'collection-http-observation.v1'
+      && Object.keys(artifact.json.observation).sort().join(',') === 'capability,observedAt,operation,request,responseBytes,responseSha256,schemaVersion,sourceId,sourceVersion,transportKind'
+      && artifact.json.observation.operation === 'options' && artifact.json.observation.capability === 'bmw-options'
+      && artifact.json.observation.sourceId === 'bmw-uk-public' && artifact.json.observation.sourceVersion === 'f59-diagnostic-20261106.v1'
+      && ['fixture', 'live'].includes(artifact.json.observation.transportKind)
+      && object(artifact.json.observation.request) && Object.keys(artifact.json.observation.request).sort().join(',') === 'method,url'
+      && artifact.json.observation.request.method === 'GET' && typeof artifact.json.observation.request.url === 'string'
+      && Number.isSafeInteger(artifact.json.observation.responseBytes) && artifact.json.observation.responseBytes > 0
+      && typeof artifact.json.observation.responseSha256 === 'string' && /^[a-f0-9]{64}$/.test(artifact.json.observation.responseSha256)
+      && artifact.observedDatePointer === '/observation/observedAt' && artifact.observedDateFormat === 'iso-timestamp'
+      && artifact.json.requestScope?.role === 'request-input-only'
+      && object(artifact.json.report) && artifact.json.report.status === 'schema-review-required' && artifact.json.report.admission === false
+      && Object.keys(artifact.json.report).sort().join(',') === 'admission,candidates,status,structure,unknownFields'
+      && Array.isArray(artifact.json.report.structure) && artifact.json.report.structure.length <= 4096
+      && Number.isSafeInteger(artifact.json.report.unknownFields) && artifact.json.report.unknownFields >= 0
+      && Array.isArray(candidate) && candidate.length === 1 && object(candidate[0]) && candidate[0].pointer === ''
+      && Object.keys(candidate[0]).sort().join(',') === 'definitions,pointer'
+      && Array.isArray(candidate[0].definitions) && candidate[0].definitions.length > 0 && candidate[0].definitions.length <= 512
+      && new Set(candidate[0].definitions.map((row) => row?.code)).size === candidate[0].definitions.length
+      && path.length === 5 && path.slice(0, 4).join('/') === 'report/candidates/0/definitions'
+      && candidate[0].definitions[path[4]] === value && object(value) && value.code === claim.code
+      && Object.keys(value).every((key) => ['code', 'pointer', 'issues', 'option', 'optionType', 'longDescription'].includes(key))
+      && (!Object.hasOwn(value, 'longDescription') || (typeof value.longDescription === 'string' && value.longDescription.trim().length > 0
+        && value.longDescription.length <= 160 && !/[\x00-\x1f\x7f<>]/u.test(value.longDescription)))
+      && claim.sourcePointer === '/' + claim.code && value.pointer === claim.sourcePointer
+      && Array.isArray(value.issues) && value.issues.length === 0;
+    return code(claim.code) && (path.at(-1) === claim.code || retained) && object(value) && value.option === claim.code
       && value.optionType === (field === 'paint' ? 'paint' : 'fabric')
       ? { value: { code: claim.code, type: field } } : { reason: 'invalid-value' };
   }
@@ -125,6 +156,7 @@ export function qualifyBmwSourceFields({ target, artifacts, claims, requiredFiel
       && segments(artifact.observedDatePointer) && object(artifact.context) && Object.keys(artifact.context).length <= CONTEXT.size
       && Object.entries(artifact.context).every(([key, pointer]) => CONTEXT.has(key) && segments(pointer))
       && [artifact.responseRoots, artifact.requestRoots].every((roots) => Array.isArray(roots) && roots.length <= 32 && roots.every((pointer) => segments(pointer)))
+      && (artifact.contextArtifactId === undefined || (typeof artifact.contextArtifactId === 'string' && /^[A-Za-z0-9._-]{1,80}$/.test(artifact.contextArtifactId)))
       && [undefined, 'iso-date', 'iso-timestamp'].includes(artifact.observedDateFormat));
     const byteLength = typeof artifact.bytes === 'string' ? Buffer.byteLength(artifact.bytes) : artifact.bytes.byteLength;
     total += byteLength;
@@ -149,8 +181,10 @@ export function qualifyBmwSourceFields({ target, artifacts, claims, requiredFiel
       if (!observed.found || !date(observedDate)) entry.reason = 'missing-observation-date';
       else if (observedDate !== target.observedDate) entry.reason = 'observation-date-mismatch';
       else entry.observedDate = observedDate;
+      const contextArtifact = artifact.contextArtifactId === undefined ? entry : loaded.get(artifact.contextArtifactId);
       if (!entry.reason && !Object.entries(target.context).every(([key, expected]) => {
-        const actual = locate(entry.json, artifact.context[key]);
+        if (!contextArtifact || contextArtifact.reason || (artifact.contextArtifactId !== undefined && channel(contextArtifact, artifact.context[key]))) return false;
+        const actual = locate(contextArtifact.json, artifact.context[key]);
         return actual.found && actual.value === expected;
       })) entry.reason = 'context-mismatch';
     }
@@ -158,7 +192,8 @@ export function qualifyBmwSourceFields({ target, artifacts, claims, requiredFiel
   }
   const byField = new Map(requiredFields.map((field) => [field, { evidence: [], reasons: [] }]));
   for (const claim of claims) {
-    fail(object(claim) && FIELDS.has(claim.field) && byField.has(claim.field) && typeof claim.artifactId === 'string' && segments(claim.pointer));
+    fail(object(claim) && FIELDS.has(claim.field) && byField.has(claim.field) && typeof claim.artifactId === 'string' && segments(claim.pointer)
+      && (claim.sourcePointer === undefined || segments(claim.sourcePointer)));
     const field = byField.get(claim.field); const artifact = loaded.get(claim.artifactId);
     let reason = artifact?.reason || (!artifact ? 'missing-artifact' : channel(artifact, claim.pointer));
     if (PHYSICAL.has(claim.field)) continue;
@@ -171,7 +206,9 @@ export function qualifyBmwSourceFields({ target, artifacts, claims, requiredFiel
         const result = valueFor(claim.field, actual.value, claim, artifact, target);
         reason = result.reason;
         if (!reason) field.evidence.push({ artifactId: artifact.id, sha256: artifact.sha256, pointer: claim.pointer,
-          observedDate: artifact.observedDate, context: structuredClone(target.context), confidence: 'direct-response', value: result.value });
+          observedDate: artifact.observedDate, context: structuredClone(target.context), confidence: 'direct-response', value: result.value,
+          ...(claim.sourcePointer === undefined ? {} : { sourcePointer: claim.sourcePointer }),
+          ...(artifact.contextArtifactId === undefined ? {} : { contextArtifactId: artifact.contextArtifactId }) });
       }
     }
     if (reason) field.reasons.push(reason);

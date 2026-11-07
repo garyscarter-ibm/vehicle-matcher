@@ -7,6 +7,14 @@ import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { CollectionError, requireValue } from './configuration-key.mjs';
 
 export const COLLECTION_SESSION_VERSION = '2';
+// Only existing readHttp closures register objects; callers cannot attest copied metadata.
+// Injected same-process fetch remains a trusted port: membership is not network proof.
+const executorObservations = new WeakSet();
+export function assertCollectionHttpObservation(metadata) {
+  requireValue(metadata !== null && typeof metadata === 'object' && executorObservations.has(metadata),
+    'source-observation-metadata', 'Use the existing executor-owned HTTP observation.');
+}
+
 const object = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 const same = (a, b) => inputDigest(a) === inputDigest(b);
 const bounded = (value, min, max) => Number.isSafeInteger(value) && value >= min && value <= max;
@@ -16,10 +24,13 @@ const freshCounts = (names) => ({ sourceCalls: 0, operations: Object.fromEntries
   httpAttempts: 0, decodedBytes: 0, operationBytes: Object.fromEntries(names.map((n) => [n, 0])) });
 
 const PUBLIC_SOURCE_VERSION = 'f58-20261105.v1';
+const DIAGNOSTIC_SOURCE_VERSION = 'f59-diagnostic-20261106.v1';
 const PUBLIC_PAGE = 'https://configure.bmw.co.uk/en_GB/configure/G61E/T5MJ';
 const TREE_PATH = '/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01';
 const SOLVER_PATH = '/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ';
+const OPTIONS_PATH = '/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en';
 const CAPABILITIES = ['bmw-page', 'bmw-settings', 'bmw-model-tree', 'bmw-solver'];
+const DIAGNOSTIC_CAPABILITIES = ['bmw-page', 'bmw-settings', 'bmw-model-tree', 'bmw-options'];
 function readOnlyRequest(capability, request) {
   let url;
   try { url = new URL(request?.url); } catch { /* refused below */ }
@@ -31,14 +42,33 @@ function readOnlyRequest(capability, request) {
         && /^\/en_GB\/settings\.[a-zA-Z0-9]+\.json$/.test(url.pathname) && !url.search
         : url.origin === 'https://prod.ucp.bmw.cloud' && (capability === 'bmw-model-tree'
           ? url.pathname === TREE_PATH && exactQuery({ 'gfs-policy': 'none', cluster: 'default', 'model-ranges': 'G61E', 'future-models': 'true', 'closest-fallback': 'true' })
+          : capability === 'bmw-options' ? url.pathname === OPTIONS_PATH && exactQuery({ trim: 'S0337' })
           : capability === 'bmw-solver' && url.pathname === SOLVER_PATH && exactQuery({
             'add-rules-for-mandatory-element-classes': 'fabric,paint,rim', application: 'connext',
             'included-elements': 'FKSFU,P0300,S0337,S043L', 'mandatory-elements': 'S0337' })));
   requireValue(allowed && request.method === 'GET' && Object.keys(request).every((key) => ['method', 'url', 'headers'].includes(key))
-    && object(request.headers) && Object.entries(request.headers).every(([key, value]) => ['bmw-model-tree', 'bmw-solver'].includes(capability) && key === 'x-api-key'
+    && object(request.headers) && Object.entries(request.headers).every(([key, value]) => ['bmw-model-tree', 'bmw-solver', 'bmw-options'].includes(capability) && key === 'x-api-key'
       && typeof value === 'string' && value.length > 0 && value.length <= 4096),
   'source-endpoint-refused', 'Only the pinned qualified public GET route/query and ephemeral application header are permitted.');
   return Object.freeze({ method: request.method, url: url.href, headers: Object.freeze({ ...request.headers }) });
+}
+
+// JSON.parse has checked grammar. Inspect decoded keys before accepting its last-value semantics.
+function duplicateJsonKeys(text) {
+  const stack = [];
+  for (const token of text.matchAll(/"(?:[^"\\]|\\.)*"|[{}\[\],]/gu)) {
+    const value = token[0]; const top = stack.at(-1);
+    if (value === '{') stack.push({ keys: new Set(), expectingKey: true });
+    else if (value === '[') stack.push({});
+    else if (value === '}' || value === ']') stack.pop();
+    else if (value === ',' && top?.keys) top.expectingKey = true;
+    else if (value.startsWith('"') && top?.keys && top.expectingKey) {
+      const key = JSON.parse(value);
+      if (top.keys.has(key)) return true;
+      top.keys.add(key); top.expectingKey = false;
+    }
+  }
+  return false;
 }
 
 export async function readCollectionJson(path, bytes, code) {
@@ -116,8 +146,10 @@ export async function createCollectionSession({ identity: stageIdentity, operati
     && names.every((name) => /^[a-z][a-z0-9-]{0,31}$/.test(name) && object(operations[name])
       && version(operations[name].sourceId) && version(operations[name].sourceVersion)
       && (operations[name].kind === 'offline' && typeof operations[name].execute === 'function'
-        || operations[name].kind === 'read-only-http' && operations[name].sourceVersion === PUBLIC_SOURCE_VERSION
-          && CAPABILITIES.includes(operations[name].capability) && typeof operations[name].prepare === 'function'
+        || operations[name].kind === 'read-only-http'
+          && (operations[name].sourceVersion === PUBLIC_SOURCE_VERSION && CAPABILITIES.includes(operations[name].capability)
+            || operations[name].sourceVersion === DIAGNOSTIC_SOURCE_VERSION && DIAGNOSTIC_CAPABILITIES.includes(operations[name].capability))
+          && typeof operations[name].prepare === 'function'
           && typeof operations[name].project === 'function'))
     && object(limits) && object(limits.requestBudgets)
     && same(Object.keys(limits.requestBudgets).sort(), names)
@@ -130,18 +162,21 @@ export async function createCollectionSession({ identity: stageIdentity, operati
     && !Object.keys(initialState).some((field) => ['identity', 'counts', 'cache', 'attempts', 'halted', 'stages', 'deadlineAt'].includes(field)),
   'invalid-session', 'Inject named offline operations with explicit finite budgets and a separate stage/input identity.');
   const hasHttp = names.some((name) => operations[name].kind === 'read-only-http');
+  const httpVersions = [...new Set(names.filter((name) => operations[name].kind === 'read-only-http').map((name) => operations[name].sourceVersion))];
   requireValue(!hasHttp || object(http) && ['fixture', 'live'].includes(http.kind) && typeof http.fetch === 'function'
+    && httpVersions.length === 1
     && bounded(limits.sourceAttempts, 1, 3000) && bounded(limits.sourceBytes, 1, 64 * 1024 * 1024)
     && bounded(limits.responseBytes, 1, 2 * 1024 * 1024)
     && (http.kind !== 'live' || object(http.allocation) && version(http.allocation.id)
-      && http.allocation.sourceVersion === PUBLIC_SOURCE_VERSION && http.allocation.planDigest === stageIdentity.planDigest
+      && http.allocation.sourceVersion === httpVersions[0] && http.allocation.planDigest === stageIdentity.planDigest
       && limits.sourceAttempts <= http.allocation.attempts && limits.sourceBytes <= http.allocation.bytes
       && bounded(http.allocation.attempts, 1, 3000) && bounded(http.allocation.bytes, 1, 64 * 1024 * 1024)
       && limits.maxAttempts === 1), 'source-allocation-required', 'Public HTTP execution requires an explicit transport, finite combined attempt/byte limits and a pinned live allocation.');
   requireValue(typeof statePath === 'string' && isAbsolute(statePath), 'explicit-path-required', 'Supply an absolute owned checkpoint path.');
   const sources = Object.fromEntries(names.map((name) => [name, { sourceId: operations[name].sourceId,
     sourceVersion: operations[name].sourceVersion, kind: operations[name].kind,
-    ...(operations[name].kind === 'read-only-http' ? { capability: operations[name].capability, cache: operations[name].cache !== false } : {}) }]));
+    ...(operations[name].kind === 'read-only-http' ? { capability: operations[name].capability, cache: operations[name].cache !== false,
+      ...(operations[name].strictJson === true ? { strictJson: true } : {}) } : {}) }]));
   const identity = { toolVersion: COLLECTION_SESSION_VERSION, stage: structuredClone(stageIdentity), sources,
     limitsDigest: inputDigest(limits), transport: hasHttp ? { kind: http.kind, allocation: http.allocation || null } : null };
   const observationSources = structuredClone(sources); const transportKind = identity.transport?.kind;
@@ -216,10 +251,15 @@ export async function createCollectionSession({ identity: stageIdentity, operati
               chunks.push(part.value);
             }
           } finally { signal.removeEventListener('abort', abort); }
-          const body = Buffer.concat(chunks); const text = body.toString('utf8');
+          const body = Buffer.concat(chunks); let text;
+          const strictJson = (observationSources[operation].sourceVersion === DIAGNOSTIC_SOURCE_VERSION
+            || observationSources[operation].strictJson === true) && expectedType !== 'text/html';
+          try { text = strictJson ? new TextDecoder('utf-8', { fatal: true }).decode(body) : body.toString('utf8'); }
+          catch { stop('source-json-utf8', true); }
           let value = text;
           if (expectedType !== 'text/html') {
             try { value = JSON.parse(text); } catch { stop('source-json-shape', true); }
+            if (strictJson && duplicateJsonKeys(text)) stop('source-json-duplicate-key', true);
           }
           // Exact decoded stream bytes, before UTF-8 decoding/JSON parsing. No body or header
           // value enters this optional handoff, and request input cannot supply its provenance.
@@ -229,6 +269,7 @@ export async function createCollectionSession({ identity: stageIdentity, operati
             request: Object.freeze({ method: prepared.method, url: prepared.url }),
             observedAt: new Date(now()).toISOString(), responseBytes: bytes,
             responseSha256: createHash('sha256').update(body).digest('hex') });
+          executorObservations.add(metadata);
           return { value, metadata };
         } finally {
           if (reader) await reader.cancel().catch(() => {});

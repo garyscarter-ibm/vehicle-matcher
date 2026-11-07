@@ -12,7 +12,7 @@
     "audit": "node scripts/audit-questions.mjs",
     "audit:refine": "node scripts/audit-refinement.mjs",
     "personas": "node scripts/persona-check.mjs",
-    "test": "node --test server/test/**/*.test.js"
+    "test": "node --test --test-concurrency=1 server/test/**/*.test.js"
   },
   "devDependencies": {
     "jsdom": "^30.0.1"

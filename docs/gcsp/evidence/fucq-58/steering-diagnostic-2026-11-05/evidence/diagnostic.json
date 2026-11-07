@@ -1,0 +1,161 @@
+{
+  "version": "fleet-steering-diagnostic-observations.v1",
+  "run": "fucq58-20261105-steering-diagnostic",
+  "observedDate": "2026-11-05T16:03:36.375Z",
+  "source": "public-bmw-uk-configurator",
+  "providerStatus": "unsupported-public-website",
+  "authority": "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md",
+  "planSha256": "a64744725dec447f82523a2d3a686f8b9133086e91903436155465d4f960375b",
+  "clientSha256": "0f7b659a68af59cff42160858a96650ed62370fbee0c10ef164b820e572ff961",
+  "extractorSha256": "5b473d524015b4f148b1125ceeb68f3543fdc88efbc29b359a91f7e9a0d769e4",
+  "testsSha256": "f68af5d37763b5651a159c78e5a520147e0d48df4111284a93494bae7fae70e6",
+  "requestedContext": {
+    "agModelCode": "72HH",
+    "historicalModelEffectDate": "2027-01-05",
+    "locale": "en-GB",
+    "market": "GB",
+    "modelCode": "T5MJ",
+    "modelRange": "G61E",
+    "orderDate": "2026-11-01",
+    "steeringRequested": "RHD",
+    "treeRequestEffectDate": "2026-11-01"
+  },
+  "readOnly": true,
+  "writes": 0,
+  "attempts": 3,
+  "decodedBytes": 777995,
+  "requests": [
+    {
+      "category": "page",
+      "attempt": 1,
+      "status": 200,
+      "decodedBytes": 17763,
+      "elapsedMs": 169,
+      "contentType": "text/html"
+    },
+    {
+      "category": "settings",
+      "attempt": 2,
+      "status": 200,
+      "decodedBytes": 620646,
+      "elapsedMs": 72,
+      "contentType": "application/json"
+    },
+    {
+      "category": "tree",
+      "attempt": 3,
+      "status": 200,
+      "decodedBytes": 139586,
+      "elapsedMs": 208,
+      "contentType": "application/json"
+    }
+  ],
+  "solverGets": 0,
+  "otdGets": 0,
+  "manifestGets": 0,
+  "imageGets": 0,
+  "retries": 0,
+  "additionalConfigurations": 0,
+  "profileActivations": 0,
+  "status": "completed-bounded-diagnostic",
+  "stop": null,
+  "projectionFile": "projection.json",
+  "interpretation": "Literal source facts and explicit tree paths only. No constructibility/profile compatibility or steering semantics inferred from an unrelated literal.",
+  "projectionSha256": "0da1ccbfed44b62f94000eb96e32022e3967a331f9bff9a2b4c9f92fda98dc8b",
+  "projectionBytes": 60031,
+  "matchCounts": {
+    "model": 8,
+    "ag": 12
+  },
+  "sameObjectObservations": [
+    {
+      "path": [
+        "5",
+        "modelRanges",
+        "G61E",
+        "models",
+        "T5MJ"
+      ],
+      "modelCode": "T5MJ",
+      "agModelCode": "72HH",
+      "modelMatchVia": [
+        "key",
+        "field"
+      ],
+      "agMatchVia": [
+        "field"
+      ],
+      "context": {
+        "effectDate": "2027-01-05",
+        "modelRange": "G61",
+        "orderDate": "2026-11-01",
+        "steering": "RL",
+        "taxDate": "2027-01-05"
+      }
+    },
+    {
+      "path": [
+        "5",
+        "modelRanges",
+        "G61E",
+        "lines",
+        "S0337",
+        "defaultModel"
+      ],
+      "modelCode": "T5MJ",
+      "agModelCode": "72HH",
+      "modelMatchVia": [
+        "field"
+      ],
+      "agMatchVia": [
+        "field"
+      ],
+      "context": {}
+    },
+    {
+      "path": [
+        "I",
+        "modelRanges",
+        "G61E",
+        "models",
+        "T5MJ"
+      ],
+      "modelCode": "T5MJ",
+      "agModelCode": "72HH",
+      "modelMatchVia": [
+        "key",
+        "field"
+      ],
+      "agMatchVia": [
+        "field"
+      ],
+      "context": {
+        "effectDate": "2027-01-05",
+        "modelRange": "G61",
+        "orderDate": "2026-11-01",
+        "steering": "RL",
+        "taxDate": "2027-01-05"
+      }
+    },
+    {
+      "path": [
+        "I",
+        "modelRanges",
+        "G61E",
+        "lines",
+        "S0337",
+        "defaultModel"
+      ],
+      "modelCode": "T5MJ",
+      "agModelCode": "72HH",
+      "modelMatchVia": [
+        "field"
+      ],
+      "agMatchVia": [
+        "field"
+      ],
+      "context": {}
+    }
+  ],
+  "elapsedMs": 467
+}

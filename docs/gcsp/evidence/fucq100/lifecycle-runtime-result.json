@@ -1,0 +1,261 @@
+{
+  "schemaVersion": 1,
+  "kind": "actual composed product checkpoint; partial selected validation with one known existing regression failure",
+  "baseRevision": "caedea52d2099c71515f5914ad23acfecef20258",
+  "sourcePlanSHA256": "e587ddce6c3427f9dc703ea5f84c0d0b4870a5ca9ae694eeafd82dfe5069c241",
+  "regressionPlanSHA256": "5ccbfbe4e8323babacfb31b8cfa3995bb3c1c73b70a2d31bd6a85178de9d8c10",
+  "selectedBehavioralCases": {
+    "tests": 25,
+    "pass": 24,
+    "fail": 1,
+    "skipped": 0,
+    "scope": "3/3 new lifecycle cases reused from first combined worker; 19/20 renewal and 2/2 offer cases from subsequent sequential chunks; not one passing combined command"
+  },
+  "verdict": "scoped product proof with FUCQ-122 regression unresolved; not acceptance or full stamp",
+  "attempts": {
+    "run-01": {
+      "receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/lifecycle-runtime/run-01/receipt.json",
+      "receiptSHA256": "cfc86598e4c586e993199612bf15fa2d84cc29e54066950aae6127180a5f9c76",
+      "actual": {
+        "passed": false,
+        "counts": {},
+        "failure": "RuntimeError: Sanitized environment drift",
+        "cleanup": {
+          "scratchAbsent": true,
+          "groupsAbsent": true,
+          "pidsAbsent": true,
+          "joined": true,
+          "openFilesAbsent": false,
+          "reservationAbsent": true
+        },
+        "cleanupErrors": [],
+        "sourceUnchanged": false,
+        "supervisorExitCode": 1,
+        "workerExitCode": null,
+        "scope": "Preallocation refusal: no worker or reservation; sourceUnchanged and openFilesAbsent were not evaluated, rather than failed execution cleanup."
+      },
+      "retainedFiles": {
+        "receipt.json": {
+          "sha256": "cfc86598e4c586e993199612bf15fa2d84cc29e54066950aae6127180a5f9c76",
+          "bytes": 936
+        }
+      },
+      "moduleAndLogBytes": 0
+    },
+    "run-02": {
+      "receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/lifecycle-runtime/run-02/receipt.json",
+      "receiptSHA256": "39ece1740116a03880bf3da867601d3943ddf395f5dad7c9614c134ce133ad36",
+      "actual": {
+        "passed": false,
+        "counts": {
+          "tests": 5,
+          "pass": 3,
+          "fail": 2,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "failure": null,
+        "cleanup": {
+          "scratchAbsent": true,
+          "groupsAbsent": true,
+          "pidsAbsent": true,
+          "joined": true,
+          "openFilesAbsent": true,
+          "reservationAbsent": true
+        },
+        "cleanupErrors": [],
+        "sourceUnchanged": true,
+        "supervisorExitCode": 1,
+        "workerExitCode": 1,
+        "executionPlan": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/lifecycle-runtime/run-02/execution-plan.json",
+        "executionPlanSHA256": "4bc6a0d1b1dc958e5ff65ba470c533e8ce1cadc164f8b38c74fd85b452013a34",
+        "wallSeconds": 18.147683916,
+        "peakScratchBytes": 1454080,
+        "peakRssBytes": 277970944,
+        "scope": "Lifecycle 3/3; two later file-load failures at unchanged 512 KiB ESM journal cap. Combined command failed."
+      },
+      "retainedFiles": {
+        "cjs-modules.jsonl": {
+          "sha256": "079888ffb58ac1d9d45bc41db040596872300d9fed285d713b1a1c0d13defd11",
+          "bytes": 110447
+        },
+        "esm-modules.jsonl": {
+          "sha256": "ad87e76778ff849c8da9d402317b646dc75885db4df589aafe4cf15923827247",
+          "bytes": 524139
+        },
+        "execution-plan.json": {
+          "sha256": "4bc6a0d1b1dc958e5ff65ba470c533e8ce1cadc164f8b38c74fd85b452013a34",
+          "bytes": 119516
+        },
+        "raw.log": {
+          "sha256": "4b2815fe868674f3c90cbaa4c01911802e48bc11a3eaba05ada6a4cbf97f79de",
+          "bytes": 3577
+        },
+        "receipt.json": {
+          "sha256": "39ece1740116a03880bf3da867601d3943ddf395f5dad7c9614c134ce133ad36",
+          "bytes": 1706
+        }
+      },
+      "moduleAndLogBytes": 638163,
+      "ownershipSHA256": "e96d1231d0333e9546a2e1d43c5b236f3221a597a01454ca75b461c962e00985"
+    },
+    "run-03": {
+      "receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/lifecycle-runtime/run-03/receipt.json",
+      "receiptSHA256": "247608f6322f284676c86a8bd0368db81c12eca6bb10c184b80bbd08479989c9",
+      "actual": {
+        "passed": false,
+        "counts": {
+          "tests": 22,
+          "pass": 21,
+          "fail": 1,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0
+        },
+        "failure": null,
+        "cleanup": {
+          "scratchAbsent": true,
+          "groupsAbsent": true,
+          "pidsAbsent": true,
+          "joined": true,
+          "openFilesAbsent": true,
+          "reservationAbsent": true
+        },
+        "cleanupErrors": [],
+        "sourceUnchanged": true,
+        "supervisorExitCode": 1,
+        "workerExitCode": 1,
+        "executionPlan": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/lifecycle-runtime/run-03/execution-plan.json",
+        "executionPlanSHA256": "7c4096908534bdef6c9b112e80f5d85a47e73b8c3bf9a4da631d2b2e240a9061",
+        "wallSeconds": 21.57106775,
+        "peakScratchBytes": 2371584,
+        "peakRssBytes": 419119104,
+        "chunks": [
+          {
+            "selected": "server/test/gcsp-renewal-case.test.js",
+            "workerExitCode": 1,
+            "counts": {
+              "tests": 20,
+              "pass": 19,
+              "fail": 1,
+              "cancelled": 0,
+              "skipped": 0,
+              "todo": 0
+            },
+            "wallSeconds": 3.147418333
+          },
+          {
+            "selected": "server/test/gcsp-offer-runtime-composition.test.js",
+            "workerExitCode": 0,
+            "counts": {
+              "tests": 2,
+              "pass": 2,
+              "fail": 0,
+              "cancelled": 0,
+              "skipped": 0,
+              "todo": 0
+            },
+            "wallSeconds": 17.712242041
+          }
+        ],
+        "scope": "Two sequential commands with separate journals and one shared manifest/reservation/final cleanup; later per-chunk-manifest instruction arrived after launch.",
+        "sharedManifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/lifecycle-runtime/run-03/ownership/e3be931c4c9941f984eda15be9c55160.json"
+      },
+      "retainedFiles": {
+        "0-cjs-modules.jsonl": {
+          "sha256": "a2c00555515dce773dc864c92ea2b690329fe256f8feb8647e2f28dfded8e3ed",
+          "bytes": 6699
+        },
+        "0-esm-modules.jsonl": {
+          "sha256": "ac11a79cdc368b68e65cfd261bea667175f947ff62ac8b5bad98bf6fc36e79dc",
+          "bytes": 111478
+        },
+        "0-raw.log": {
+          "sha256": "7c5fe5d26866905743b1627c4bafb81efcf9ba03a336ceed8fc700ba9c5b4c0f",
+          "bytes": 6296
+        },
+        "1-cjs-modules.jsonl": {
+          "sha256": "41973b082e398476fa132720db11beba6034ae96316b417c1a456ddf4ce913f5",
+          "bytes": 187875
+        },
+        "1-esm-modules.jsonl": {
+          "sha256": "ad5d391f7e377ef250048bc577beab5066a2d8c23e09cc050003f2b990ee7d3c",
+          "bytes": 436097
+        },
+        "1-raw.log": {
+          "sha256": "553c3cb10e13fa9b8ff6776778b48bcec6cd2550d8e1225eb3b96c7d5bef676c",
+          "bytes": 682
+        },
+        "execution-plan.json": {
+          "sha256": "7c4096908534bdef6c9b112e80f5d85a47e73b8c3bf9a4da631d2b2e240a9061",
+          "bytes": 121656
+        },
+        "receipt.json": {
+          "sha256": "247608f6322f284676c86a8bd0368db81c12eca6bb10c184b80bbd08479989c9",
+          "bytes": 2987
+        }
+      },
+      "moduleAndLogBytes": 749127,
+      "ownershipSHA256": "5ad65b6af1ea927203ce9d91f249618cfa7f613545edcd909b10309acc8ecd97"
+    }
+  },
+  "diagnosis": {
+    "symptom": "alternative car uses current eligibility, points, essentials and availability; unresolved charging stays unknown fails invalid != ok at gcsp-renewal-case.test.js:204",
+    "firstFailedBoundary": "Fixture at lines 196-198 inserts stock state available; case service at lines 243-244 requires released before recommendation evaluation.",
+    "causeStatus": "Verified source/fixture state mismatch in unchanged files. No baseline execution or downstream repair validation performed.",
+    "stableInputs": [
+      {
+        "path": "server/gcsp/cases/index.js",
+        "sha256": "a080a47479444a94f041de1b0c094974c3eea655a8076f771ec33f82ecb43379",
+        "baselineRevision": "caedea52d2099c71515f5914ad23acfecef20258",
+        "unchanged": true
+      },
+      {
+        "path": "server/test/gcsp-renewal-case.test.js",
+        "sha256": "1842d3073c5663f3f15e4d6335c69fdea18cd1864cb2242ce95de9bf8aaf07d2",
+        "baselineRevision": "caedea52d2099c71515f5914ad23acfecef20258",
+        "unchanged": true
+      },
+      {
+        "path": "server/test/helpers/employee-recommendation.js",
+        "sha256": "39b7e47f9298d155759fa440bd412ebb86bfc009b7ec9d9d1167bdb88970ce9a",
+        "baselineRevision": "caedea52d2099c71515f5914ad23acfecef20258",
+        "unchanged": true
+      },
+      {
+        "path": "server/gcsp/manual-context/ports.js",
+        "sha256": "c1e7db5012f6d3212b79ad989e6cde5a0e390e2f4bfe50f91ee4c79c8a7a1267",
+        "baselineRevision": "caedea52d2099c71515f5914ad23acfecef20258",
+        "unchanged": true
+      }
+    ],
+    "priorSeedRowsPreserved": true,
+    "nextScope": "Existing FUCQ-122 owner reconciles canonical released-stock setup and validates the complete alternative-car eligibility/visibility path; no foreign fixture/service edited here."
+  },
+  "resourceNote": "The two regression file commands used distinct journals and direct launch entries, sequentially under one strict shared reservation/ownership manifest and one aggregate 120-second work limit. The later dispatcher request for a separate manifest per chunk arrived after launch; no passed chunk was repeated. Root must assess that exact evidence.",
+  "independentRootReview": false,
+  "proofLimits": [
+    "Memory repository and labelled TEST stock only; no native DB/live source/browser/TLS/full proof.",
+    "Real cart converter and F71 internal submit are exercised; no public submit route or UI handoff is claimed.",
+    "Default-slot validated renewal authority is proven. Distinguishing two-slot exceptions are not established by this selection.",
+    "Existing immutable database policy snapshots are not migrated or silently republished by these fresh-seed additions.",
+    "Known F106/F71 atomic and F71/F112 acknowledgement gaps remain.",
+    "Story acceptance, shared map, claims and Jira status unchanged."
+  ],
+  "staticReview": {
+    "kind": "Read-only final source/evidence review; no additional test or probe execution",
+    "sourceHashesPerPlan": 209,
+    "edgesPerPlan": 465,
+    "resourceDirectoriesPerPlan": 2,
+    "exactProductionAdoptions": 13,
+    "exactAddedCanonicalRows": 8,
+    "priorSeedRowsAndMetadataPreserved": true,
+    "exactContractSections": 3,
+    "priorContractSectionsPreserved": true,
+    "ownedPatchReconstructedAndReverseChecked": true,
+    "diagnosisInputsMatchBase": true,
+    "originalLocalReceiptAndRetainedFileHashesVerified": true,
+    "publicationPathCount": 28
+  }
+}

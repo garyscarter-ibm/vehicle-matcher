@@ -1,0 +1,100 @@
+{
+  "version": "historical-f44-discovery-plan.v1",
+  "run": "dev-poller-restart-20261105-fucq58",
+  "chunk": "historical-f44-context",
+  "authority": "Gary public UK read-only source/pilot/retention/display 2026-11-05; dispatcher continuation after70fc4c7",
+  "executable": true,
+  "readOnly": true,
+  "targets": [
+    {
+      "schemeModelLine": "F44 Gran Coupe",
+      "range": "F44"
+    }
+  ],
+  "context": {
+    "country": "gb",
+    "locale": "en_GB",
+    "requestOrderDate": "2024-10-01",
+    "requestEffectDate": "2024-10-01",
+    "futureModels": false,
+    "closestFallback": false
+  },
+  "dateSelection": {
+    "basis": "Retained eligibility source explicitly says orders from1October2024 and names F44; no retained historical F44 catalogue observation exists",
+    "orderDateStatus": "eligibility-anchored request probe, not observed catalogue order date",
+    "effectDateStatus": "selected request probe, unverified until response",
+    "source": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+    "locators": [
+      "title",
+      "lines19-20",
+      "lines95-96"
+    ],
+    "sourceObservedDate": "2026-11-01",
+    "sourceEffectiveDate": "2024-10-01",
+    "confidence": "High for eligibility date/target, unknown for historical catalogue support"
+  },
+  "limits": {
+    "httpAttempts": 3,
+    "pageGets": 1,
+    "settingsGets": 1,
+    "treeGets": 1,
+    "solverGets": 0,
+    "otdGets": 0,
+    "manifestGets": 0,
+    "imageGets": 0,
+    "concurrency": 1,
+    "retries": 0,
+    "backoffMs": 0,
+    "requestTimeoutMs": 10000,
+    "wallMs": 45000,
+    "bootstrapResponseDecodedBytes": 1048576,
+    "responseDecodedBytes": 2097152,
+    "aggregateDecodedBytes": 4194304,
+    "outputBytes": 262144,
+    "modelsPerResponse": 256,
+    "ramBytes": 268435456,
+    "scratchBytes": 33554432,
+    "cacheEntries": 0
+  },
+  "pathsChanged": [
+    "docs/gcsp/evidence/fucq-58/historical-f44-2026-11-05/",
+    "docs/gcsp/fleet-collection-runbook.md",
+    "_dev/in-progress/DEV-2026-11-04-031.md (Result only)"
+  ],
+  "regression": "Unsupported historical date inference, fallback generation substitution, incomplete or conflicting direct model context and finite source/privacy boundaries",
+  "affectedCallers": "Evidence consumers only; no runtime code/callers",
+  "selectedChecks": [
+    "node --test --experimental-test-coverage docs/gcsp/evidence/fucq-58/historical-f44-2026-11-05/catalogue.test.mjs",
+    "node --check docs/gcsp/evidence/fucq-58/historical-f44-2026-11-05/discover.mjs",
+    "offline artifact hash/path/source/date/refusal review"
+  ],
+  "excludedChecks": {
+    "full": "No product/runtime edits; Ralph owns sole full and no full grant",
+    "existingObservation": "Exact70fc4c7 candidate observation and15checks reused without repeat source calls",
+    "UI_DB_registry": "No changed screen/route/component/native database/profile or VIN consumer",
+    "extraSources": "No VIN/plate/customer/private lookup, peer source or unsupported date sweep"
+  },
+  "inputs": {
+    "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+    "docs/gcsp/bmw-interface-research.md": "82d4edba56abf474e693d45d1b2f79c4b8918e868fb2ff56d6d6ba96db00d00a",
+    "docs/gcsp/evidence/fucq-58/scheme-catalogue-2026-11-05/observation.json": "25636b87dfe942d385da5cee721fee8e59d53b216411277031d60626de36c4ec",
+    "docs/gcsp/evidence/fucq-58/scheme-catalogue-2026-11-05/catalogue.mjs": "52d053c2acf81815c3df1a49d4ee207e6434044a93d69e98aca77caf2e632051",
+    "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md": "9bc5c9d915373bc812d375823a65fa9a658f285223c45a622877eee2b66bf6d1"
+  },
+  "stops": [
+    "Any HTTP failure/redirect/auth/rate limit",
+    "Invalid body/type/shape/model context",
+    "Substitute range other than exactF44",
+    "Resource/byte/time/output/request cap",
+    "Empty successful result completes as bounded unmatched historical observation; no later request",
+    "Any repeated execution refused before network"
+  ],
+  "nonActions": {
+    "newConfigurations": 0,
+    "profileActivations": 0,
+    "vinGeneration": 0,
+    "writes": 0,
+    "rawBodyRetention": 0
+  },
+  "interpretation": "Historical F44 catalogue discovery only. A selected request date is not an observed source date or production era; returned model effect dates stay separate. Empty/refused historical response cannot establish global unavailability, current/discontinued production or a substitute generation. Constructibility/profile/every-model/five-WMI qualification remain unresolved."
+}

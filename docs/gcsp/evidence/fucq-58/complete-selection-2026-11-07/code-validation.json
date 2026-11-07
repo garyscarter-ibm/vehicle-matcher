@@ -1,0 +1,130 @@
+{
+  "scope": "F58 supporting F59 additive source-contract/capture checkpoint; scoped proof, no source admission",
+  "date": "2026-11-07",
+  "tests": {
+    "v2": {
+      "pass": 12,
+      "fail": 0
+    },
+    "capture": {
+      "identity": {
+        "scripts/gcsp/capture-bmw-selection.mjs": "6c209b848c5360414c52e47f4eefaf81197e61f23d7ad0bab9115dd08bf3238a",
+        "scripts/gcsp/collection-session.mjs": "db0b4b9ea4e8909c8d0e49cb9b6c36dbb2f23df85839f3f221600429e9668cdc",
+        "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+        "scripts/gcsp/public-bmw-source.mjs": "d10a8532b485e0d9fe434655773fb5ac033653b85b4366ed6125b85f182b33df",
+        "server/test/gcsp-bmw-selection-capture.test.js": "277c685eb205014f9470655249ec53641299fc05242ca2aebd346329122c8fc8",
+        "server/test/gcsp-fleet-collector.test.js": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88",
+        "server/vehicle-evidence/bmw-catalogue-adapter.js": "b8e139087cca5f28c404c54f274d1ae61c4263bb4f2da77926422057e0caf4b6",
+        "server/vehicle-evidence/bmw-catalogue-v2.js": "5c2fd297136364293b6707d3be9e44f5a49e19afdaf1133371f7c032dabd6c8c"
+      },
+      "issue": null,
+      "issue_kind": null,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/capture/capture.log",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/capture/ownership/c276d27e441a49a6ba4e3aebb2768de0.json",
+      "peak_rss": 130203648,
+      "peak_scratch": 704608,
+      "rc": 0,
+      "scope": "scoped",
+      "summary": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 5,
+        "skipped": 0,
+        "tests": 5,
+        "todo": 0
+      },
+      "wall": 1.519999584
+    },
+    "collector_session": {
+      "identity": {
+        "scripts/gcsp/capture-bmw-selection.mjs": "6c209b848c5360414c52e47f4eefaf81197e61f23d7ad0bab9115dd08bf3238a",
+        "scripts/gcsp/collection-session.mjs": "db0b4b9ea4e8909c8d0e49cb9b6c36dbb2f23df85839f3f221600429e9668cdc",
+        "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+        "scripts/gcsp/public-bmw-source.mjs": "d10a8532b485e0d9fe434655773fb5ac033653b85b4366ed6125b85f182b33df",
+        "server/test/gcsp-bmw-selection-capture.test.js": "277c685eb205014f9470655249ec53641299fc05242ca2aebd346329122c8fc8",
+        "server/test/gcsp-fleet-collector.test.js": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88",
+        "server/vehicle-evidence/bmw-catalogue-adapter.js": "b8e139087cca5f28c404c54f274d1ae61c4263bb4f2da77926422057e0caf4b6",
+        "server/vehicle-evidence/bmw-catalogue-v2.js": "5c2fd297136364293b6707d3be9e44f5a49e19afdaf1133371f7c032dabd6c8c"
+      },
+      "issue": null,
+      "issue_kind": null,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/capture/source.log",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/capture/ownership/fe26fc62a0f74747a97c5fe36e2e7ca1.json",
+      "peak_rss": 357056512,
+      "peak_scratch": 1994976,
+      "rc": 0,
+      "scope": "scoped",
+      "summary": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 77,
+        "skipped": 0,
+        "tests": 77,
+        "todo": 0
+      },
+      "wall": 10.92249125
+    },
+    "legacy": {
+      "catalogue": 22,
+      "image": 19,
+      "publication_selected": 3,
+      "note": "Earlier direct boundary proof; final helper guards and v2 failure shape only affect new v2 branch."
+    }
+  },
+  "review": {
+    "code": "PASS",
+    "security": "PASS",
+    "reviewer": "Lego Batman",
+    "freezeDigest": "e60d48cba2760efb0aa1ba85e068928d56efb99a2c75f2e044665870b17394fb"
+  },
+  "resources": {
+    "capture": {
+      "code_identity_unchanged": true,
+      "compatibility_exception": null,
+      "dependency_link_absent": true,
+      "groups_absent": true,
+      "removed_allocation_bytes": 704608,
+      "reservation_absent": true,
+      "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/capture/capture-result.json",
+      "scratch_absent": true
+    },
+    "source": {
+      "code_identity_unchanged": true,
+      "compatibility_exception": null,
+      "dependency_link_absent": true,
+      "groups_absent": true,
+      "removed_allocation_bytes": 1994976,
+      "reservation_absent": true,
+      "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/capture/source-result.json",
+      "scratch_absent": true
+    },
+    "worker": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/sally/summary.json",
+    "scratch": "/tmp/vehicle-matcher-f58-63-20261106/f58",
+    "largeOutput": false,
+    "compatibilityException": null
+  },
+  "remaining": [
+    "Fresh source capture",
+    "Source-qualified real collector replay",
+    "F60/F54/runtime integration",
+    "F58 exact UK-profile/scheme-model/five-WMI acceptance evidence"
+  ],
+  "agents": [
+    {
+      "name": "Minnie Mouse",
+      "model": "gpt-6.1-sol",
+      "effort": "high"
+    },
+    {
+      "name": "Sally Carrera",
+      "model": "gpt-6.1-sol",
+      "effort": "medium",
+      "fallback": null
+    },
+    {
+      "name": "Lego Batman",
+      "model": "gpt-6.1-sol",
+      "effort": "high"
+    }
+  ]
+}

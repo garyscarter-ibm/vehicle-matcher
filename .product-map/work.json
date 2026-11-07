@@ -543,10 +543,10 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-57"
     },
     {
-      "assignee": "",
+      "assignee": "Russell Gowers",
       "id": "FUCQ-59",
-      "observed_at": "2026-11-06T12:15:13Z",
-      "original_status": "To Do",
+      "observed_at": "2026-11-07T00:21:49Z",
+      "original_status": "In Progress",
       "slices": [
         {
           "evidence": "Lead reviewed target Base64/accessory/alias behavior; two offline regression tests pass, scoped receipt lead59/receipt-identity-green.json; F54 publication compatibility remains separately planned.",
@@ -577,17 +577,17 @@
           "title": "Finite source budgets, deadlines and default no-traffic safety (2 points)"
         },
         {
-          "evidence": "Checkpoint2b metadata-only session handoff passes35/35scoped owning-file cases;100%line/97.36%branch/92.45%function session coverage. session-metadata-2026-11-06/result.json pins code/test/4owned roots/groups/overlay absence. No classifier/raw schema/admission/source-version activation; proposed4GET/F39 writer unallocated; accepted0/all74pending. Prior qualifier21case proof unchanged; F60 old9case proof does not cover new session identity. Source/publication slices remain blocked.",
+          "evidence": "Actual saved-source non-test collector run persists accepted1, admissiontrue; byte-stable restart and exact registered v2 adapter partial envelope; coherent deletion refuses. Scoped4ingress/8binder/12v2/22v1/77collector pass. Optional facts unknown. Generalised candidate/model registrations next; no new source traffic. source-admission-2026-11-07/validation.json.",
           "id": "source-qualification",
-          "observed_at": "2026-11-06T12:15:12.743423+00:00",
-          "status": "blocked",
+          "observed_at": "2026-11-07T00:21:48Z",
+          "status": "in-progress",
           "title": "Selected real-source model mapping and solver integration (1 point)"
         },
         {
-          "evidence": "Historical1Nov registered F39 snapshot and original F54 resolvedIdentity already support truthful partial publication (matching60/60 scoped evidence); physical production/modelYear/steering remain unknown. Fresh6Nov observation accepted0 cannot automatically compose through actual F60/F54 schemas. Only new-date/current-session publication remains blocked on explicit qualification/integration. readiness-2026-11-06.md; independent code/security reviews PASS AEE.",
+          "evidence": "Source-qualified row now enters persisted shared accepted state and existing registered v2 adapter lookup. F60 is consuming that stable session/registration seam; actual F54 corpus publication and application/default registration still unproved. No acceptance claim from admitted row alone.",
           "id": "publication-contract",
-          "observed_at": "2026-11-06T11:13:12Z",
-          "status": "blocked",
+          "observed_at": "2026-11-07T00:21:49Z",
+          "status": "in-progress",
           "title": "F39/F54 identity, provenance and selected-source compatibility (1 point)"
         },
         {
@@ -598,29 +598,134 @@
           "title": "Retailer mapping and API regression boundary"
         },
         {
-          "evidence": "Current authored full offline suite at7abeabc00587633211be6e822ea036b3dde16626:68files,1296tests/1291pass/5planned-nativePGskips/0fail,107.99s, complete1435file identity unchanged; AEE source/test pins match. Exact plan/result in current-full-2026-11-06/. Root/group81414/overlay absent,7922848B scratch removed. Shared ledger charging unverified during active run; parent manually counted usage. Native SQL and absent F60v2 assembly remain unproved.",
+          "evidence": "Current8binder checks and actual positive/coherent deletion negative pass. Earlier12v2/77existingcollector scoped proof retained at unchanged target modules before pure binder transport guard; no final full-suite claim. Actual accepted\u2192F60\u2192F54/application integration remains required; preserve8slices.",
           "id": "full-validation",
-          "observed_at": "2026-11-06T11:17:51Z",
-          "status": "complete",
+          "observed_at": "2026-11-07T00:13:56Z",
+          "status": "in-progress",
           "title": "Authored serial npm test integration gate (1 point)"
         }
       ],
-      "status": "To Do",
+      "status": "In Progress",
       "title": "Collect distinct constructible configurations with resumable batches",
       "type": "Story",
       "unsliced": false,
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59",
       "workers": [
         {
-          "expires_at": "2026-11-06T12:15:12.743423+00:00",
-          "harness": "codex",
           "name": "Cecil Turtle",
-          "observed_at": "2026-11-06T12:15:12.743423+00:00",
           "role": "story-lead",
-          "source": "thread 01a1b054-1167-7820-b9f2-92ec81e37bbe",
-          "status": "Checkpoint2b executor metadata scoped35/35pass; exact byte/time/source/request/capability handoff; ready independent review. No source/full/F60-new-pin proof; qualification blocked; Sol/high no descendants"
+          "harness": "codex",
+          "source": "thread01a1b054-1167-7820-b9f2-92ec81e37bbe",
+          "observed_at": "2026-11-06T15:38:48.934995+00:00",
+          "expires_at": "2026-11-06T15:38:48.934995+00:00",
+          "status": "stopped; frozen binder checkpoint complete; 69 scoped passes and offline replay; requested/selected/runtime Sol high, no fallback"
+        },
+        {
+          "name": "Sulley",
+          "role": "implementer",
+          "harness": "codex",
+          "source": "thread01a1b15c-c7b7-7ff1-ae8e-5d840ec09dbc",
+          "observed_at": "2026-11-06T15:04:41.021643+00:00",
+          "expires_at": "2026-11-06T15:04:41.021643+00:00",
+          "status": "Completed four-file canonical selector/v2 report correction; requested/selected/runtimeSol medium; no fallback/descendants; no child tests/scratch"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "source-support-lead",
+          "harness": "codex",
+          "source": "thread01a1b348-4753-7ea3-bfb7-c0784b47889e; requested/selected gpt-6.1-sol/high; no fallback",
+          "observed_at": "2026-11-07T00:10:51.020382+00:00",
+          "expires_at": "2026-11-07T00:55:51.020382+00:00",
+          "status": "Actual source binding/review and F58/F59 coherent publication; acceptance remains open"
+        },
+        {
+          "name": "Sally Carrera",
+          "role": "implementer",
+          "harness": "codex",
+          "source": "thread01a1b349-5b20-7d41-acbe-cf0bc002457f; requested/selected gpt-6.1-sol/medium; no fallback",
+          "observed_at": "2026-11-07T00:10:51.020382+00:00",
+          "expires_at": "2026-11-07T00:55:51.020382+00:00",
+          "status": "Final bounded transport-provenance review correction; no descendants/source calls"
         }
-      ]
+      ],
+      "branch": "dev/DEV-2026-11-04-032"
+    },
+    {
+      "id": "FUCQ-60",
+      "title": "Enrich resolved fleet configurations with matching facts and images",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "usget",
+      "type": "Story",
+      "observed_at": "2026-11-06T11:57:05Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60",
+      "workers": [
+        {
+          "name": "Scooby Doo",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-06T12:31:19.407940+00:00",
+          "expires_at": "2026-11-06T12:31:19.407940+00:00",
+          "source": "thread 01a1b05f-dcbc-7e50-a2f9-0332b39f082a",
+          "status": "Canonical local prepublication checkpoint: scoped 9+6 passed with zero skips; requested/selected/verified Sol/high, no fallback or descendants. Worker expires at handoff; parent exact review/publication and wider runtime/native/source/asset/full gates remain."
+        }
+      ],
+      "slices": [
+        {
+          "id": "exact-identity",
+          "status": "complete",
+          "title": "Exact configuration identity and fact projection",
+          "observed_at": "2026-11-06T10:26:24Z",
+          "evidence": "Lead reviewed exact identity/fact/selection projection and 50/50 scoped contracts passed; docs/gcsp/evidence/fucq60/pure-enrichment.md. Shared session/corpus/source gates remain separate."
+        },
+        {
+          "id": "image-projection",
+          "status": "complete",
+          "title": "Honest representative image and partial projection",
+          "observed_at": "2026-11-06T10:26:24Z",
+          "evidence": "Lead reviewed registered image identity/fidelity/retention/expiry and per-source hash references; 50/50 scoped contracts passed. Real asset coverage remains separate."
+        },
+        {
+          "id": "shared-accounting",
+          "status": "in-progress",
+          "title": "Canonical collector session cache budget recovery integration",
+          "observed_at": "2026-11-06T12:31:19.407940+00:00",
+          "evidence": "Canonical local F59 4ea9077/F60 candidate passes 9 historical + 6 generic cases, zero skips, with F60_PRODUCER_ROOT unset. Cache/ledger/deadline/lease and recovery share the actual local producer. Prior F2 exact re-reviews passed; parent two-pin/evidence review/publication and shared-runtime integration remain. docs/gcsp/evidence/fucq60/canonical-assembly-2026-11-06/result.json."
+        },
+        {
+          "id": "real-source",
+          "status": "in-progress",
+          "title": "Real catalogue source coverage evidence",
+          "observed_at": "2026-11-06T11:43:40Z",
+          "evidence": "One pin-verified retained 1 November GB sample admitted by actual F39/F59 and preserved through F60/F54. No new collection/configuration; separate 6 November observation accepted 0. Wider source/scheme coverage and F77 required 200 distinct configurations remain. docs/gcsp/evidence/fucq60/historical-integration-evidence-2026-11-06.md."
+        },
+        {
+          "id": "real-assets",
+          "status": "not-started",
+          "title": "Representative retained asset fidelity evidence"
+        },
+        {
+          "id": "focused-contracts",
+          "status": "complete",
+          "title": "Authored enrichment and F39 F42 focused contracts",
+          "observed_at": "2026-11-06T12:31:19.407940+00:00",
+          "evidence": "Canonical local historical 9/9 plus generic real-session 6/6 pass, zero skips, at reviewed producer session 67eff0ad; F2 immediate caller-pin race preserved. Prior unchanged 50/50 pure/adapter and independently reviewed 35-case producer evidence reused, no rerun. Explicit plan after unsupported selector; final suite remains. docs/gcsp/evidence/fucq60/canonical-assembly-2026-11-06/result.json."
+        },
+        {
+          "id": "corpus-integration",
+          "status": "in-progress",
+          "title": "F54 corpus and presentation integration",
+          "observed_at": "2026-11-06T12:31:19.407940+00:00",
+          "evidence": "Canonical local candidate validates original-envelope retained historical candidate/sidecar/isolated registry/lookup and recovery in 9/9 cases. Zero VIN/images; F60 incomplete/offline-session-not-source-qualified; F54 complete means supported catalogue subset. Parent review/publication, shared corpus/presentation activation, native integration, breadth and final validation remain. docs/gcsp/evidence/fucq60/canonical-assembly-2026-11-06/result.json."
+        },
+        {
+          "id": "final-suite",
+          "status": "not-started",
+          "title": "Authored final npm test integration gate"
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-04-033"
     },
     {
       "id": "FUCQ-61",
@@ -1031,8 +1136,78 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T23:00:25Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-100"
+      "observed_at": "2026-11-06T11:49:25Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-100",
+      "source_observed_at": "2026-11-05T23:00:25Z",
+      "branch": "dev/DEV-2026-11-04-060",
+      "workers": [
+        {
+          "name": "FUCQ-100 story lead",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-06T00:26:51.920632+00:00",
+          "expires_at": "2026-11-06T00:41:51.920632+00:00",
+          "source": "Codex chat 01a1adbf-732b-7830-a17a-cf2b2f95a092 observed current implementation/audit turn",
+          "status": "active; local runtime9/9 and49manifest audit complete; preparing dispatcher integration checkpoint; final/native/full remain open"
+        }
+      ],
+      "slices": [
+        {
+          "id": "atomic-producer",
+          "status": "complete",
+          "title": "Atomic hold, quote, offer and outbox",
+          "observed_at": "2026-11-05T23:33:16Z",
+          "evidence": "Lead reviewed original5451ec3 atomic57/57 and80/82 repository/outbox/case(2native skips). Additive current-car metadata pin19/19 +193/193 fresh producer/custody/clock boundaries,35manifest/dependency audit test-runs/fucq100/parent-current-car-audit.json. Unknown current specs/points explicit; no full105comparison claim. docs/gcsp/buddy-current-car-comparison.md. Producer published a7fc858; remote readback verified."
+        },
+        {
+          "id": "notification-custody",
+          "status": "complete",
+          "title": "Token custody through notification delivery and receipts",
+          "observed_at": "2026-11-05T23:01:19Z",
+          "evidence": "Lead reviewed/pushed6d6ecf0:28/28 cryptographic dispatch/recovery/races;57/57 strict boundaries;17manifests/dependencies audited. _dev/in-progress/DEV-2026-11-04-060.md;shared test-runs/fucq100/parent-notify-checkpoint-audit.json."
+        },
+        {
+          "id": "allocator-proof",
+          "status": "complete",
+          "title": "Actual published allocator invocation, replay and fallback",
+          "observed_at": "2026-11-05T23:01:19Z",
+          "evidence": "Lead reviewed2/2 exact6f15d4d allocator+identity invocation at frozen6d6ecf0, real stale-stock fallback and replay. Docs7eaa00b;shared test-runs/fucq100/pinned96-plan-v1.json and parent-pinned96-audit.json. Merged startup gate separate."
+        },
+        {
+          "id": "local-expiry",
+          "status": "complete",
+          "title": "Local buddy expiry through real ticks and startup",
+          "observed_at": "2026-11-05T23:01:19Z",
+          "evidence": "Lead reviewed/pushedb4154ce:28/28 exact deadline/startup/replay/rollback/exclusions,97/97 strict boundaries;22manifests/dependencies audited. _dev/in-progress/DEV-2026-11-04-060.md;shared test-runs/fucq100/parent-expiry-checkpoint-audit.json. Central registration separate."
+        },
+        {
+          "id": "remote-lifecycle",
+          "status": "complete",
+          "title": "Remote claim/release intent and reconciliation",
+          "observed_at": "2026-11-05T23:33:16Z",
+          "evidence": "Lead reviewed524294d remote49/49 +142/142 boundaries. Final current-car quote pin adds1remote case and revalidates193/193 fresh affected boundaries,35clean manifests/deps test-runs/fucq100/parent-current-car-audit.json. Internal authentic stored intent/reconciliation/release/expiry module complete; actual producer consumer, manual, central/runtime and full gates separately planned. docs/gcsp/buddy-remote-plan.md. Published a7fc858; remote readback verified."
+        },
+        {
+          "id": "manual-exclusivity",
+          "status": "complete",
+          "title": "Actual completed manual and buddy services exclude each other",
+          "observed_at": "2026-11-05T23:45:57Z",
+          "evidence": "Lead reviewed actual eb5a677b manual account/draft/browse.claimInput/claim vs frozen published a7fc858 buddy:4/4 both ways,same and second branded employee. Replay/refusal authority and outbox/token invariants hold. Strict targeted c38f96f36c3b at a7fc858; shared fucq100/parent-manual66-audit.json:41manifests clean,pinned copies/dependencies unchanged. Memory source integration only; merged runtime/native/full remain separate. docs/gcsp/buddy-manual-proof-plan.md."
+        },
+        {
+          "id": "runtime-integration",
+          "status": "in-progress",
+          "title": "Merged producer, identity and central lifecycle composition",
+          "observed_at": "2026-11-06T11:49:25Z",
+          "evidence": "Published bc8a941adbf8bd74089b11b820c489551742ab12 composes actual102/106/107 durable offer access, decisions, employee follow-up and page entry with shared repository/policy/clock/identity. Lead2/2 actual memory and loopback HTTP cases; independent consequential review PASS and all193 frozen source hashes matched published revision. Original supervisor KeyError symlink retained; separate cleanup-only reconciliation independently collected with exact scratch/groups/PIDs/rows absent. Product evid"
+        },
+        {
+          "id": "full-validation",
+          "status": "not-started",
+          "title": "Authored full-suite acceptance at integrated checkpoint"
+        }
+      ],
+      "unsliced": false
     },
     {
       "id": "FUCQ-101",
@@ -1043,26 +1218,6 @@
       "type": "Story",
       "observed_at": "2026-11-05T22:40:24Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-101"
-    },
-    {
-      "id": "FUCQ-102",
-      "title": "Open an offer from a run-bound link that shows its current state",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "Gary Carter",
-      "type": "Story",
-      "observed_at": "2026-11-05T23:21:35Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-102"
-    },
-    {
-      "id": "FUCQ-103",
-      "title": "Preview and publish points and recommendation weights",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "Gary Carter",
-      "type": "Story",
-      "observed_at": "2026-11-05T23:00:25Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103"
     },
     {
       "id": "FUCQ-105",
@@ -1457,20 +1612,20 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-58",
-      "observed_at": "2026-11-05T23:55:18Z",
+      "observed_at": "2026-11-07T00:17:35Z",
       "original_status": "In Progress",
       "slices": [
         {
-          "evidence": "Lead reviewed historical045c9f7/93e890f qualifier and boundary evidence; synthetic contracts do not establish external qualification.",
+          "evidence": "F58 usable checkpoint integrated on gcsp-poc3411af0e. Actual-base14/14 scoped plan/refusal/CLI checks pass after exact portable destination correction; initial12/14 failure retained. Original enabled compatible UK profile, all-scheme-model and five-WMI AC remain open; no Done claim.",
           "id": "plan-contract",
-          "observed_at": "2026-11-05T23:33:04.204649Z",
+          "observed_at": "2026-11-07T00:17:34Z",
           "status": "complete",
           "title": "Offline versioned plan and context/profile refusal contract"
         },
         {
-          "evidence": "Lead reviewed1d3fce7/327cec4,14 scoped tests and current read-only source/retention authority; finite actual pilot settings retained.",
+          "evidence": "Fresh7Nov known-build capture exactly4GET,782059 decoded bytes, zero retry/timeout/substitution/image/browser/source write. All finite allocation spent, no replay. Complete47factory+accessory unknown quantity retained. Approved36GET/32solver next engineering chunk is a separate future allocation, not executed.",
           "id": "source-budget",
-          "observed_at": "2026-11-05T23:33:04.204649Z",
+          "observed_at": "2026-11-07T00:17:34Z",
           "status": "complete",
           "title": "Authorised finite source budget, dry run and privacy refusal"
         },
@@ -1496,9 +1651,9 @@
           "title": "Prove distinct configurations for every required WMI"
         },
         {
-          "evidence": "Final CLI still refuses incomplete qualification;200/every-model coverage and real profile bindings remain outstanding.",
+          "evidence": "Configuration-only capture and source binding now usable; actual7Nov source record and8binder checks pass, independent CODE/SECURITY PASS. This does not close original F58 UK-profile/year/plant, every-model or five-WMI assurance gaps. Persisted F59 admission and F60/F54/application integration are separate active work.",
           "id": "qualification-integration",
-          "observed_at": "2026-11-05T23:33:04.204649Z",
+          "observed_at": "2026-11-07T00:17:35Z",
           "status": "blocked",
           "title": "Final machine-plan qualification and real-run gate integration"
         }
@@ -1517,6 +1672,15 @@
           "role": "story-lead",
           "source": "thread 01a1ae09-0e2c-78d3-8cc7-87d1a60f8a0f; requested/selected/effective gpt-6.1-sol/high; no fallback",
           "status": "stopped; published blocked7aa6bee"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "story-lead",
+          "harness": "codex",
+          "source": "thread01a1b348-4753-7ea3-bfb7-c0784b47889e; requested/selected gpt-6.1-sol/high; no fallback",
+          "observed_at": "2026-11-07T00:17:34.580106+00:00",
+          "expires_at": "2026-11-07T01:02:34.580106+00:00",
+          "status": "F58 usable checkpoint and checkout-path correction integrated; original UK profile/all-model/five-WMI AC still open; supporting F59 source ingress"
         }
       ]
     },
@@ -1601,7 +1765,7 @@
           "title": "Real FUCQ-77/78 source-backed stock and confirmed supply producer"
         },
         {
-          "evidence": "Actual fixed-pin F92→F96→F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
+          "evidence": "Actual fixed-pin F92\u2192F96\u2192F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
           "id": "runtime-consumers",
           "observed_at": "2026-11-05T23:57:50.906138+00:00",
           "status": "blocked",
@@ -1884,81 +2048,88 @@
       ]
     },
     {
-      "id": "FUCQ-60",
-      "title": "Enrich resolved fleet configurations with matching facts and images",
+      "id": "FUCQ-149",
+      "title": "Resume the saved manual journey through the current claim",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": null,
+      "type": "Story",
+      "observed_at": "2026-11-06T17:11:02Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-149",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-103",
+      "title": "Preview and publish points and recommendation weights",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-06T18:05:53Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103"
+    },
+    {
+      "id": "FUCQ-102",
+      "title": "Open an offer from a run-bound link that shows its current state",
       "status": "In Progress",
       "original_status": "In Progress",
-      "assignee": "usget",
+      "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-06T11:57:05Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60",
-      "workers": [
-        {
-          "name": "Scooby Doo",
-          "role": "story-lead",
-          "harness": "codex",
-          "observed_at": "2026-11-06T12:31:19.407940+00:00",
-          "expires_at": "2026-11-06T12:31:19.407940+00:00",
-          "source": "thread 01a1b05f-dcbc-7e50-a2f9-0332b39f082a",
-          "status": "Canonical local prepublication checkpoint: scoped 9+6 passed with zero skips; requested/selected/verified Sol/high, no fallback or descendants. Worker expires at handoff; parent exact review/publication and wider runtime/native/source/asset/full gates remain."
-        }
-      ],
+      "observed_at": "2026-11-06T21:54:23Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-102",
+      "workers": [],
       "slices": [
         {
-          "id": "exact-identity",
+          "id": "contract",
           "status": "complete",
-          "title": "Exact configuration identity and fact projection",
-          "observed_at": "2026-11-06T10:26:24Z",
-          "evidence": "Lead reviewed exact identity/fact/selection projection and 50/50 scoped contracts passed; docs/gcsp/evidence/fucq60/pure-enrichment.md. Shared session/corpus/source gates remain separate."
+          "title": "One-offer HTTP and durable capability contract",
+          "observed_at": "2026-11-06T19:52:38Z",
+          "evidence": "Current integrated backend32/32, unchanged product source and original tests with canonical imports; docs/gcsp/evidence/fucq102/current-backend-2026-11-06.md. Not browser/native/full acceptance."
         },
         {
-          "id": "image-projection",
+          "id": "access",
           "status": "complete",
-          "title": "Honest representative image and partial projection",
-          "observed_at": "2026-11-06T10:26:24Z",
-          "evidence": "Lead reviewed registered image identity/fidelity/retention/expiry and per-source hash references; 50/50 scoped contracts passed. Real asset coverage remains separate."
+          "title": "Hash exchange and current-state access service",
+          "observed_at": "2026-11-06T19:52:38Z",
+          "evidence": "Current integrated backend32/32, unchanged product source and original tests with canonical imports; docs/gcsp/evidence/fucq102/current-backend-2026-11-06.md. Not browser/native/full acceptance."
         },
         {
-          "id": "shared-accounting",
-          "status": "in-progress",
-          "title": "Canonical collector session cache budget recovery integration",
-          "observed_at": "2026-11-06T12:31:19.407940+00:00",
-          "evidence": "Canonical local F59 4ea9077/F60 candidate passes 9 historical + 6 generic cases, zero skips, with F60_PRODUCER_ROOT unset. Cache/ledger/deadline/lease and recovery share the actual local producer. Prior F2 exact re-reviews passed; parent two-pin/evidence review/publication and shared-runtime integration remain. docs/gcsp/evidence/fucq60/canonical-assembly-2026-11-06/result.json."
-        },
-        {
-          "id": "real-source",
-          "status": "in-progress",
-          "title": "Real catalogue source coverage evidence",
-          "observed_at": "2026-11-06T11:43:40Z",
-          "evidence": "One pin-verified retained 1 November GB sample admitted by actual F39/F59 and preserved through F60/F54. No new collection/configuration; separate 6 November observation accepted 0. Wider source/scheme coverage and F77 required 200 distinct configurations remain. docs/gcsp/evidence/fucq60/historical-integration-evidence-2026-11-06.md."
-        },
-        {
-          "id": "real-assets",
-          "status": "not-started",
-          "title": "Representative retained asset fidelity evidence"
-        },
-        {
-          "id": "focused-contracts",
+          "id": "http",
           "status": "complete",
-          "title": "Authored enrichment and F39 F42 focused contracts",
-          "observed_at": "2026-11-06T12:31:19.407940+00:00",
-          "evidence": "Canonical local historical 9/9 plus generic real-session 6/6 pass, zero skips, at reviewed producer session 67eff0ad; F2 immediate caller-pin race preserved. Prior unchanged 50/50 pure/adapter and independently reviewed 35-case producer evidence reused, no rerun. Explicit plan after unsupported selector; final suite remains. docs/gcsp/evidence/fucq60/canonical-assembly-2026-11-06/result.json."
+          "title": "Origin-gated cookie and account adapter",
+          "observed_at": "2026-11-06T19:52:38Z",
+          "evidence": "Current integrated backend32/32, unchanged product source and original tests with canonical imports; docs/gcsp/evidence/fucq102/current-backend-2026-11-06.md. Not browser/native/full acceptance."
         },
         {
-          "id": "corpus-integration",
+          "id": "producer",
+          "status": "complete",
+          "title": "Actual token producer and local expiry integration",
+          "observed_at": "2026-11-06T19:52:38Z",
+          "evidence": "Current integrated backend32/32, unchanged product source and original tests with canonical imports; docs/gcsp/evidence/fucq102/current-backend-2026-11-06.md. Not browser/native/full acceptance."
+        },
+        {
+          "id": "runtime",
+          "status": "complete",
+          "title": "Central offer route and reload integration",
+          "observed_at": "2026-11-06T19:52:38Z",
+          "evidence": "Current integrated backend32/32, unchanged product source and original tests with canonical imports; docs/gcsp/evidence/fucq102/current-backend-2026-11-06.md. Not browser/native/full acceptance."
+        },
+        {
+          "id": "validation",
           "status": "in-progress",
-          "title": "F54 corpus and presentation integration",
-          "observed_at": "2026-11-06T12:31:19.407940+00:00",
-          "evidence": "Canonical local candidate validates original-envelope retained historical candidate/sidecar/isolated registry/lookup and recovery in 9/9 cases. Zero VIN/images; F60 incomplete/offline-session-not-source-qualified; F54 complete means supported catalogue subset. Parent review/publication, shared corpus/presentation activation, native integration, breadth and final validation remain. docs/gcsp/evidence/fucq60/canonical-assembly-2026-11-06/result.json."
+          "title": "Authored validation and acceptance disposition",
+          "observed_at": "2026-11-06T21:54:23Z",
+          "evidence": "Current 95/95 targeted backend checks pass including original configured destination. Hosted deployment/full acceptance unrun; retained full1590:1569pass16fail5skip and independent deferred Bugs. No Done. docs/gcsp/evidence/fucq102/landing-config-2026-11-06.md"
         },
         {
-          "id": "final-suite",
-          "status": "not-started",
-          "title": "Authored final npm test integration gate"
+          "id": "landing-url",
+          "status": "complete",
+          "title": "Original deployment-configured landing URL",
+          "observed_at": "2026-11-06T21:54:23Z",
+          "evidence": "Original configured landing URL implemented through trusted runtime and both producers. Topic b1c10f7; 95/95 targeted checks, independent parent cleanup verified. docs/gcsp/evidence/fucq102/landing-config-2026-11-06.md. Hosted deployment/full acceptance unrun."
         }
       ],
-      "unsliced": false,
-      "branch": "dev/DEV-2026-11-04-033"
+      "unsliced": false
     }
   ]
 }
