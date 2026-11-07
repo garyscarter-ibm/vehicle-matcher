@@ -1,17 +1,33 @@
 // Actual launcher composition (memory, loopback HTTPS) with the demo stock provider; no browser or native DB.
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
 import { startGcspDemo } from '../../scripts/gcsp-demo.mjs';
 import { createDemoStockProvider } from '../gcsp/stock/demo-provider.js';
 import { result } from '../gcsp/repository/index.js';
+import { PolicyService, createPolicyService } from '../gcsp/policy/index.js';
 import { createLocalHttpsFixture } from './helpers/local-https.js';
 
 const good = (outcome) => { assert.equal(outcome?.status, 'ok', JSON.stringify(outcome)); return outcome.value; };
 const cookie = (value) => [value].flat().map((entry) => entry.split(';')[0]).join('; ');
 
-async function launch(t, stockProvider) {
+const demoStock = (deps) => createDemoStockProvider(deps);
+const read = { runId: 'demo-release-run', asOf: '2026-11-05T09:00:00.000Z' };
+// Window car counts come from the seed through the real PolicyService, not literals.
+async function seedWindows() {
+  const entry = good(await createPolicyService().getAssumption('supply.release.windows', read));
+  return entry.value.windows.map((row) => row.cars.length);
+}
+async function alternativePolicy(edit) {
+  const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
+  edit(seed, (key) => seed.assumptions.find((entry) => entry.key === key));
+  return new PolicyService({ provider: { async loadVersions() { return [seed]; } } });
+}
+
+async function launch(t, stockProvider, policy) {
   const https = await createLocalHttpsFixture(t);
   const app = good(await startGcspDemo({ port: 0, accessKey: '', tls: https.configuration, runtime: { mode: 'memory', stockProvider,
+    ...(policy ? { policy } : {}),
     environmentId: 'demo-release', policyAsOf: '2026-11-05T09:00:00.000Z', commandId: 'demo-release-bootstrap',
     sessionNow: () => '2026-11-06T00:00:00.000Z' } }));
   t.after(() => app.close());
@@ -30,7 +46,7 @@ async function launch(t, stockProvider) {
 const released = (reply) => reply.json.value?.tick?.outcomes?.find((row) => row.handlerId === 'stock-release');
 
 test('Next release through the composed launcher reports the real count and is idempotent by command ID', async (t) => {
-  const f = await launch(t, createDemoStockProvider());
+  const f = await launch(t, demoStock);
   const before = (await f.call('')).json.value;
   assert.equal(before.controls.nextRelease.status, 'available');
   assert.equal((await f.stock()).filter((row) => row.state === 'released').length, 0);
@@ -41,7 +57,8 @@ test('Next release through the composed launcher reports the real count and is i
   assert.equal(outcome.outcome.status, 'ok'); assert.equal(outcome.outcome.value.kind, 'stock-released');
   assert.equal(outcome.outcome.value.source.mode, 'synthetic');
   const count = outcome.outcome.value.orderUuids.length;
-  assert.equal(count, 5);
+  const [firstCount, laterCount] = await seedWindows();
+  assert.equal(count, firstCount);
   const rows = (await f.stock()).filter((row) => row.state === 'released');
   assert.equal(rows.length, count);
   assert.deepEqual(rows.map((row) => row.orderUuid).sort(), [...outcome.outcome.value.orderUuids].sort());
@@ -59,12 +76,12 @@ test('Next release through the composed launcher reports the real count and is i
   const later = await f.call('/tick', { commandId: 'release-3', expectedClockVersion: after.clockVersion, mode: 'to',
     to: '2026-11-05T12:00:00.000Z' });
   assert.equal(later.status, 200, JSON.stringify(later.json));
-  assert.equal(released(later).outcome.value.orderUuids.length, 3);
-  assert.equal((await f.stock()).filter((row) => row.state === 'released').length, count + 3);
+  assert.equal(released(later).outcome.value.orderUuids.length, laterCount);
+  assert.equal((await f.stock()).filter((row) => row.state === 'released').length, count + laterCount);
 });
 
 test('a reset run gets its own stock plan from the same launcher provider', async (t) => {
-  const f = await launch(t, createDemoStockProvider());
+  const f = await launch(t, demoStock);
   const first = (await f.call('')).json.value;
   assert.equal((await f.call('/tick', { commandId: 'a', expectedClockVersion: first.clockVersion, mode: 'next-release' })).status, 200);
   const current = (await f.call('')).json.value;
@@ -76,7 +93,7 @@ test('a reset run gets its own stock plan from the same launcher provider', asyn
   assert.equal(next.controls.nextRelease.status, 'available');
   const reply = await f.call('/tick', { commandId: 'b', expectedClockVersion: next.clockVersion, mode: 'next-release' });
   assert.equal(reply.status, 200, JSON.stringify(reply.json));
-  assert.equal(released(reply).outcome.value.orderUuids.length, 5);
+  assert.equal(released(reply).outcome.value.orderUuids.length, (await seedWindows())[0]);
 });
 
 test('an unavailable provider is reported as such and releases no stock', async (t) => {
@@ -85,4 +102,29 @@ test('an unavailable provider is reported as such and releases no stock', async 
   const reply = await f.call('/tick', { commandId: 'release-down', expectedClockVersion: before.clockVersion, mode: 'next-release' });
   assert.ok(reply.status !== 200 || released(reply)?.outcome?.status !== 'ok', JSON.stringify(reply.json));
   assert.equal((await f.stock()).filter((entry) => entry.state === 'released').length, 0);
+});
+
+test('moving the policy cue and window cars moves Next release with no provider change', async (t) => {
+  const cue = '2026-11-05T09:45:00.000Z';
+  const policy = await alternativePolicy((seed, entry) => {
+    entry('clock.scenario.v1').value.namedTimes.release = cue;
+    entry('supply.release.windows').value.windows[0].cars = ['saloon', 'i5'];
+  });
+  const f = await launch(t, demoStock, policy);
+  const before = (await f.call('')).json.value;
+  assert.equal(before.controls.nextRelease.at, cue);
+  const reply = await f.call('/tick', { commandId: 'moved-cue', expectedClockVersion: before.clockVersion, mode: 'next-release' });
+  assert.equal(reply.status, 200, JSON.stringify(reply.json));
+  assert.equal(released(reply).outcome.value.orderUuids.length, 2);
+  assert.equal(reply.json.value.advance.now ?? reply.json.value.advance.clockInstant, cue);
+  assert.equal((await f.stock()).filter((row) => row.state === 'released').length, 2);
+});
+
+test('a policy without supply.release.windows makes Next release unavailable and releases no stock', async (t) => {
+  const policy = await alternativePolicy((seed) => { seed.assumptions = seed.assumptions.filter((entry) => entry.key !== 'supply.release.windows'); });
+  const f = await launch(t, demoStock, policy);
+  const before = (await f.call('')).json.value;
+  const reply = await f.call('/tick', { commandId: 'no-windows', expectedClockVersion: before.clockVersion, mode: 'next-release' });
+  assert.ok(reply.status !== 200 || released(reply)?.outcome?.status !== 'ok', JSON.stringify(reply.json));
+  assert.equal((await f.stock()).filter((row) => row.state === 'released').length, 0);
 });

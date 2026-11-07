@@ -13124,6 +13124,63 @@
       "sourceDate": "2026-11-07",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "supply.release.windows",
+      "value": {
+        "cue": "release",
+        "windows": [
+          {
+            "windowId": "demo-release-1",
+            "offsetMinutes": 0,
+            "cars": [
+              "saloon",
+              "touring",
+              "touring",
+              "i5",
+              "saloon"
+            ]
+          },
+          {
+            "windowId": "demo-release-2",
+            "offsetMinutes": 150,
+            "cars": [
+              "touring",
+              "saloon",
+              "i5"
+            ]
+          },
+          {
+            "windowId": "demo-release-3",
+            "offsetMinutes": 1410,
+            "cars": [
+              "touring",
+              "i5",
+              "saloon"
+            ]
+          }
+        ]
+      },
+      "unit": "release windows as minutes after the named scenario cue, with car kinds",
+      "status": "assumed",
+      "basis": "Assumed demo release windows for the synthetic stock provider, timed from the scenario release cue so one cue change moves them all.",
+      "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "stock.eligibilityModelKeys.v1",
+      "value": {
+        "72HH": "G61 i5|i5 40"
+      },
+      "unit": "eligibility model key by corpus agModelCode",
+      "status": "assumed",
+      "basis": "Generated stock cars carry the corpus agModelCode but no model name. fleet-plan.json maps AG 72HH (G61, VG T5MJ) to the G61 i5 eDrive40 line, so only that code is mapped. F70 and G42 codes are unmapped (FUCQ-77 gap): those cars release but are not eligible.",
+      "source": "server/data/gcsp/vehicle-evidence/fleet-plan.json",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
     }
   ]
 }
