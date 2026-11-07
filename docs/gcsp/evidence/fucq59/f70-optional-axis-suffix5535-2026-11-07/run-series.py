@@ -30,6 +30,8 @@ release, released_prior, released_spent = release_context.validate_release(serie
 assert not os.path.lexists(ROOT / 'server/node_modules'), 'preserve existing dependency path'
 spec = importlib.util.spec_from_file_location('resources', ROOT / '_tools/test_resources.py')
 R = importlib.util.module_from_spec(spec); spec.loader.exec_module(R)
+spec = importlib.util.spec_from_file_location('group_proof', BASE / 'group-proof.py')
+G = importlib.util.module_from_spec(spec); spec.loader.exec_module(G)
 policy = R.Policy({'chunk_scratch_mib': 64, 'chunk_ram_mib': 512, 'chunk_seconds': 600, 'log_mib': 1})
 host = R.HostBudget(policy); host._dead_owners = lambda: {}
 token = uuid.uuid4().hex
@@ -61,7 +63,7 @@ def finalize():
         except subprocess.TimeoutExpired:
             os.killpg(current.pid, signal.SIGKILL); current.wait(timeout=5)
         children[-1]['joined'] = True
-    groups = all(R.group_has_live_members(row['pid']) is False for row in children)
+    groups = G.prove_groups_absent(R, sorted({row['pid'] for row in children}), output / (name + '-group-queries.json')) if output.exists() else not children
     actual_manifests = []
     for directory in ownership['scratchManifestDirectories']:
         for path in pathlib.Path(directory).glob('*.json'):
@@ -163,7 +165,6 @@ try:
                 'gets': receipt['actualAttempts'], 'solverRequests': receipt['counts']['operations']['solve'], 'decodedBytes': receipt['counts']['decodedBytes'],
                 'cumulativeAdmitted': proof['cumulativeAdmittedSourceConfigurations'], 'retainedShardBytes': shard_bytes})
             checkpoint('session-proved'); print(json.dumps({'stage': 'session-proved', **results[-1]}), flush=True)
-            assert receipt['newlyAccepted'] > 0, 'duplicate-only or rejected-only session stops; original requests remain spent'
         reason = 'finite-' + name + '-exhausted'; active_session = None; active_cohort = None
 except BaseException as error:
     stopped_error = type(error).__name__

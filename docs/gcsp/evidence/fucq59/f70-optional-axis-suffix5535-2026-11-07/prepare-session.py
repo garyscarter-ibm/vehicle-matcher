@@ -41,7 +41,7 @@ else:
     proof = read(previous / 'live-validation.json'); receipt = read(previous / 'receipt.json')
     summary = proof['retainedChecks']['summary']
     assert summary['tests'] == summary['pass'] == 5 and summary['fail'] == summary['skipped'] == 0
-    assert receipt['reason'] == 'queue-exhausted' and receipt['newlyAccepted'] > 0
+    assert receipt['reason'] == 'queue-exhausted'
     assert receipt['processedCandidates'] == series['chunks'][number - 2]['candidates']
     assert sha(previous / 'collector-checkpoint.json') == proof['primarySha256'] == receipt['checkpointSha256']
     assert sha(previous / 'final-canonical-index.json') == proof['finalCanonicalIndexSha256']

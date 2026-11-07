@@ -66,6 +66,14 @@ with tempfile.TemporaryDirectory(prefix='optional-axis-offline-', dir=os.environ
     put(release_path, changed); refuses(lambda: V.validate_release(series, release_path))
     changed = copy.deepcopy(release); changed['concurrentDisjointLane']['modelCodes'].append('1F7A')
     put(release_path, changed); refuses(lambda: V.validate_release(series, release_path))
+    spec = importlib.util.spec_from_file_location('group_proof', BASE / 'group-proof.py')
+    G = importlib.util.module_from_spec(spec); spec.loader.exec_module(G)
+    resources = type('OfflineResources', (), {'atomic_json': staticmethod(put)})
+    for values, expected in [([False], True), ([True], False), ([None, False], True), ([None, None, None], False)]:
+        answers = iter(values); report = scratch / 'group-report.json'
+        assert G.prove_groups_absent(resources, [12345], report, query=lambda _: next(answers), pause=lambda _: None) is expected
+        assert [row['liveMembers'] for row in read(report)['queries']] == values
+        passed()
     changed_series = copy.deepcopy(series)
     changed_series['chunks'][0]['requestDigests'][0] = selected_indexes['spent']['entries'][-1]['requestDigest']
     put(release_path, release); refuses(lambda: V.validate_release(changed_series, release_path))
@@ -83,6 +91,34 @@ with tempfile.TemporaryDirectory(prefix='optional-axis-offline-', dir=os.environ
     result = subprocess.run(['/opt/homebrew/bin/node', '--test', '--test-isolation=none', '--test-concurrency=1', '--test-reporter=tap', str(code / 'live-check.test.mjs')], cwd=ROOT, env=env, capture_output=True, text=True, timeout=30)
     assert result.returncode == 0 and '# tests 5' in result.stdout and '# pass 5' in result.stdout and '# fail 0' in result.stdout, result.stdout[-6000:] + result.stderr[-1000:]
     assert proof_inputs == {str(path): sha(path) for path in selected.rglob('*') if path.is_file()}
+    passed()
+    # A complete synthetic rejected-only previous session must permit the next
+    # exact immutable template, retaining the consumed previous eight digests.
+    fixture_output = scratch / 'fixture-output'; fixture_output.mkdir()
+    previous = fixture_output / 'previous'; previous.mkdir()
+    canonical = selected_indexes['canonical']; spent = copy.deepcopy(selected_indexes['spent'])
+    first_plan = read(ROOT / series['chunks'][0]['templatePath'])
+    for candidate, request_digest in zip(first_plan['candidates'], series['chunks'][0]['requestDigests']):
+        spent['entries'].append({'candidateId': candidate['candidateId'], 'requestDigest': request_digest, 'outcome': 'rejected'})
+    for filename, value in [('collector-checkpoint.json', {'synthetic': 'complete rejected-only previous session; no source claim'}), ('final-canonical-index.json', canonical), ('final-spent-request-index.json', spent)]: put(previous / filename, value)
+    primary_sha = sha(previous / 'collector-checkpoint.json')
+    put(previous / 'receipt.json', {'reason': 'queue-exhausted', 'newlyAccepted': 0, 'processedCandidates': 8, 'checkpointSha256': primary_sha})
+    clean = {key: True for key in ['scratch_absent', 'dependency_link_absent', 'groups_absent', 'reservation_absent', 'code_identity_unchanged']}
+    put(previous / 'live-validation.json', {'retainedChecks': {'summary': {'tests': 5, 'pass': 5, 'fail': 0, 'skipped': 0}}, 'primarySha256': primary_sha, 'finalCanonicalIndexSha256': sha(previous / 'final-canonical-index.json'), 'finalSpentRequestIndexSha256': sha(previous / 'final-spent-request-index.json'), 'cleanup': clean, 'retainedCleanup': clean})
+    put(previous / 'checkpoint-export.json', {'checkpointSha256': primary_sha})
+    fixture = copy.deepcopy(series); fixture['outputRoot'] = str(fixture_output)
+    fixture['chunks'][0]['outputDirectory'] = str(previous)
+    fixture['chunks'][1]['outputDirectory'] = str(fixture_output / 'next')
+    fixture['chunks'][1]['supervisorOutput'] = str(scratch / 'fixture-supervisor')
+    put(code / 'series-plan.json', fixture); shutil.copyfile(BASE / 'prepare-session.py', code / 'prepare-session.py')
+    import datetime
+    put(fixture_output / 'suffix-once.json', {'id': series['phases']['suffix']['grantId'], 'state': 'reserved-and-consumed', 'reservedAt': datetime.datetime.now(datetime.timezone.utc).isoformat()})
+    put(fixture_output / 'output-ownership.json', {'allocationId': series['id']})
+    env = dict(os.environ); env.update(F70_OPTIONAL_AXIS_STAGE=series['id'], F70_OPTIONAL_AXIS_PHASE_GRANT=series['phases']['suffix']['grantId'])
+    result = subprocess.run(['/usr/bin/python3', '-I', '-B', str(code / 'prepare-session.py'), '2'], cwd=ROOT, env=env, capture_output=True, text=True, timeout=15)
+    assert result.returncode == 0, result.stderr
+    assert read(fixture_output / 'next' / 'spent-request-index.json') == spent
+    assert read(fixture_output / 'next' / 'execution-plan.json')['baseline']['admittedSource'] == series['preparedBaseline']['admittedSource']
     passed()
     # The reconciler is byte-identical to the pilot implementation already proved with
     # no-receipt interruption and mismatched actual-event refusal. Reuse that evidence.

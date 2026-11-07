@@ -2,12 +2,12 @@
   "schemaVersion": "f70-optional-axis-suffix5535-offline-validation.v1",
   "scope": "scoped exact5535 unspent suffix membership/release/prefix/replay checks andfive actual retained checks on unchangedpilot004 source artifacts",
   "status": "pass",
-  "seriesPlanSha256": "6ca4ec454e23965ff658f7fdb5a1e5a7780f714e745a6bb2b4d098ff82b10198",
+  "seriesPlanSha256": "0c11910da9254eb051a3f2c092f59a9ebe15c811ca425afd76dc56b6752fe6a3",
   "candidateManifestSha256": "e6711d1863472aedadf0f64a6b15c8b8e9b48ed51c09c7341e38eaca478e8319",
   "result": {
     "scope": "scoped suffix preparation, release guards, prefix preservation and consumed-pilot replay refusal; unchanged interrupted-source reconciler evidence reused",
-    "checks": 23,
-    "pass": 23,
+    "checks": 28,
+    "pass": 28,
     "sourceTraffic": 0,
     "sourceOutputAbsent": true,
     "capacityCredit": 0
@@ -27,23 +27,25 @@
     "-B",
     "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/check-offline.py"
   ],
-  "wallSeconds": 3.1646384999999997,
-  "peakScratchBytes": 1118752,
-  "peakRSSBytes": 184434688,
+  "wallSeconds": 4.1813455,
+  "peakScratchBytes": 6986267,
+  "peakRSSBytes": 181239808,
   "codeTestIdentity": {
-    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/README.md": "3f6ad5e59367071a4702d4bdc8843d9a258df527afe55e8fcb74864e88595a46",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/README.md": "2b9dddab9c38324ef840579b8032314a84f5e4ddc857e0bf4de99ad0439d3c32",
     "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/actual-event-history.mjs": "097a2fb56eeca20ef431ed1e9299c049bd4d36b66a5a933276aabb352e888cd4",
-    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/check-offline.py": "ada6c3047866c74a6fb20085463c0d4ff5bd38329db0c0b0b2b881337e8cdf4f",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/check-offline.py": "f23015d9160e530f1de1bc77f9d3635f795b153236f2f3f98ac4f4af5a8a3463",
     "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/check-prepared.mjs": "4fe072a840a8ca680ea743b93a28a52cc55521202ff55500d7e5e2ba445fc78e",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/group-proof.py": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
     "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/live-check.test.mjs": "8137b4baec3c54a99a875f48831c6e0300f96b6c2fc6011325aca3c789334b74",
-    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/parent-release.example.json": "92cd383f38a7bcc9d0130c9648ed0e8a00ac4f5351cbbd04aa32a2d3f97be7ad",
-    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/prepare-session.py": "e16e6e6ae01688ac5b3f53f0bc3fdf287bb2e5048a91fe2e0cb68b2c1834362a",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/offline-validation.json": "737e8c12f791a77e5e6abc5dda6f6d35a3186f7bf4883b696c2918973498e2e9",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/parent-release.example.json": "7c85b63bde2cdeb3ddc2d3617359a58a553ae91fa316067bf313bd605a555a82",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/prepare-session.py": "ba6a6fb86dc450c241f0929adb43b4c7ff2adf47d5e3067664dc746dbb485866",
     "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/prepare.py": "64eeda3507b0538c7e350e76a4bed777ccf30e2fb6e72f4320eb19d025499d43",
     "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/reconcile-retained.py": "62b74b2092d310f532a731b8c61b8a223b80241da743c1278d9d5e5a094202ac",
     "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/release-context.py": "9e1dab994d3315a74aabb2f68a5e7014ab7a1943026be82b4f9ef0397b0e88f5",
     "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/run-live.mjs": "45304a47dabc631afc69ecc1cd38f76939148bfa5452bfe7e7288065b3660d38",
-    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/run-series.py": "a2dbcfad51d50728f302b2208936a4cf8ceb889846aff674cee4e7aab459055a",
-    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/series-plan.json": "6ca4ec454e23965ff658f7fdb5a1e5a7780f714e745a6bb2b4d098ff82b10198",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/run-series.py": "34a91989ee92ba14b784a2a2168fd17674e33732f7cea660abdc675262978942",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/series-plan.json": "0c11910da9254eb051a3f2c092f59a9ebe15c811ca425afd76dc56b6752fe6a3",
     "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/supervise.py": "9309bd55f90ef18cd0f33620465308e63093ce1b0ef827d1cf029cf44c4de965",
     "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix5535-2026-11-07/verify-retained.py": "fb5863ec4ac86730d95cfef93bdbb2b1874d98e95ab14f8dcb08752748707b74",
     "scripts/gcsp/bmw-public-registration.mjs": "b4eed688fff481af4d422f3612be71184df689ff943fef3d339dc9392a960460",
@@ -103,5 +105,22 @@
   "capacityCredit": 0,
   "acceptance": false,
   "compatibilityException": null,
-  "leftovers": []
+  "leftovers": [],
+  "knownOutcomeContinuation": {
+    "parentDirection": "continue complete strict5/5 proved rejected-only/duplicate-only sessions, keeping all requests spent; genuine source/binding/pin/proof/resource failures still stop",
+    "regression": "synthetic complete rejected-only prior session with0 newadmissions prepared the next exact template and preserved all spent rows",
+    "sourceTraffic": 0
+  },
+  "boundedOuterGroupQueries": {
+    "source": "CharlieDog63475160",
+    "copiedHelperSha256": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
+    "checks": [
+      "False passes immediately",
+      "True fails without retry",
+      "None thenFalse bounded recheck passes",
+      "persistentNone stops after3 andfails"
+    ],
+    "productionChanged": false,
+    "oldPilotDiagnosticPreserved": true
+  }
 }
