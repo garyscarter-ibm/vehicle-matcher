@@ -23,7 +23,7 @@ services:
     buildCommand: >-
       cd server && npm install &&
       node scripts/fleet-artifacts.mjs restore
-      --release 9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043
+      --release 28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884
       --store "$PWD/data/gcsp/vehicle-evidence/fleet-source.v1"
       --cache "$PWD/data/gcsp/vehicle-evidence/fleet-artifacts.v1" --network download
     startCommand: cd server && npm start
