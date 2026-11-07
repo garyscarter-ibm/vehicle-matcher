@@ -2,6 +2,16 @@
 
 Binding direction from Russell, 2 November 2026. Every GCSP story author, designer, implementer and reviewer reads this file and passes the relevant rules to child agents. These decisions supersede earlier scope-reduction suggestions and requirements to settle every demo policy before building.
 
+## Scope split decision, 7 November 2026
+
+Russell explicitly authorised the partial-story splits in the [MoSCoW review](backlog-moscow-review-2026-11-07.md): keep each necessary part under its existing Story number and put its remaining scope into a new native Story in To Do. This is the human contract revision permitted by the claimed-scope rule below. Native descriptions and claimed/local records are reconciled; claims, statuses, existing estimates and historical evidence are preserved.
+
+- FUCQ-114/118/120/124 retain appointment/return planning, progress and connected acceptance through a confirmed plan. FUCQ-167/168/169/171 own later physical completion, no-show/missed-return, rebooking and advanced lifecycle/help verification, after the demo. Planning never changes the current-car relationship.
+- FUCQ-122/126/128 retain useful help with named ownership/status, main presenter controls and the matching-second-offer replay. Optional case operations, wider scenario choice and the no-second-match replay package are FUCQ-170/172/173.
+- FUCQ-136/137/138 retain real multi-seed process measures, immutable results, offline execution, an authorised stored-result read route and honest display/assumptions. Additional experiments, browser worker jobs and interactive reruns are FUCQ-174/175/176.
+
+Every moved capability keeps its relevant functional, integration, access and experience evidence. Preserve canonical policy, exact identity, pending reconciliation and provenance. Each new remainder is unassigned and To Do, linked as a split; it does not block its retained Story. Re-estimate actual remaining work at pickup. The other whole-capability MoSCoW recommendations remain proposals; the learned-model lane and remaining full-build promises are not waived by these ten splits.
+
 ## Demo delivery and scope control
 
 Gary's standing directions, 6 November 2026, apply to story authors, implementers, reviewers, dispatchers and

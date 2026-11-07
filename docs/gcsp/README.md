@@ -6,10 +6,12 @@ Start here for every new GCSP discovery, foundation, design, implementation or r
 
 ## Latest build handover — 6 November 2026
 
-**Backlog review, 7 November (proposal):** the [MoSCoW review for the 12 November demo](backlog-moscow-review-2026-11-07.md)
-maps all 56 unaccepted Stories in the retained Jira snapshot to the user journey and demo brief. It proposes
-smaller delivery outcomes and distinguishes essential behaviour from secondary routes and later work.
-It does not change the full-build direction, Jira priorities, claims or acceptance criteria.
+**Backlog review and authorised splits, 7 November:** the [MoSCoW review for the 12 November demo](backlog-moscow-review-2026-11-07.md)
+maps the 56-Story review baseline to the user journey and demo brief, and now lists all 35 Must Story numbers in
+development/integration order. Russell authorised ten partial-story splits: necessary scope stays under the existing
+numbers; FUCQ-167 through FUCQ-176 contain the remaining scope as unassigned To Do Stories. Native Jira, local contracts
+are reconciled and product-map associations are recorded; existing claims/statuses and historical evidence are preserved.
+Read the [binding split decision](build-rules.md#scope-split-decision-7-november-2026). The other priority recommendations remain proposals.
 
 **Integration handoffs for Russell's next poller pass, Gary, 6 November:** read the
 [FUCQ-100 and FUCQ-122 handover](codex-handover-2026-11-06-integration.md) after pulling.

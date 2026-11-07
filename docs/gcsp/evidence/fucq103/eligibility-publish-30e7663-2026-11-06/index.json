@@ -1,0 +1,189 @@
+{
+ "schemaVersion": 1,
+ "date": "2026-11-06",
+ "story": "FUCQ-103",
+ "state": "LEAD-AUDITED-SCOPED-PUBLISH15-EVIDENCE; root final collection pending",
+ "run": "fucq103-backend-26d6794b74374698a3ab11fd4761a564",
+ "chunk": "fucq103-eligibility-publish-edb1d09-1231",
+ "testedRevision": "30e76636e1c363fe32c786f8d956d7f5608f556f",
+ "productTestFrozenRevision": "f80fc61ca151cb46ad21cb2b19e704f4012d53de",
+ "sourcePlanSHA256": "edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9",
+ "grant": "fucq103-eligibility-publish-30e7663-1320",
+ "grantSource": "assignment claude-assist-fucq103-2026-11-06-02 CONDITIONAL-ONCE-PER-NAMED-CHUNK, satisfied by independent pre-run PASS",
+ "grantStatus": "consumed-once; no retry or further execution grant",
+ "mode": "eligibility-publish",
+ "childCommand": [
+  "/Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+  "--test",
+  "--test-concurrency=1",
+  "server/test/gcsp-greg-publish.test.js"
+ ],
+ "supervisorCommand": [
+  "/Library/Developer/CommandLineTools/usr/bin/python3",
+  "-I",
+  "-B",
+  "docs/gcsp/evidence/fucq103/scoped-supervisor.py",
+  "eligibility-publish",
+  "--execute",
+  "--source-plan-sha",
+  "edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9",
+  "--revision",
+  "30e76636e1c363fe32c786f8d956d7f5608f556f",
+  "--dispatcher-grant",
+  "fucq103-eligibility-publish-30e7663-1320"
+ ],
+ "actualSupervisorToolCompletion": {
+  "exitCode": 0,
+  "wrapper": "perl alarm 280s, exec redirection to exclusive stdout/stderr files"
+ },
+ "childExitCode": 0,
+ "reporter": "SPEC; original full bounded log, not TAP",
+ "testFiles": [
+  "server/test/gcsp-greg-publish.test.js"
+ ],
+ "selectedCaseNames": [
+  "trusted policy snapshot is a cloned immutable validated snapshot; projection exposes only editable rows",
+  "preview uses real demand/points evaluation and writes no repository or policy records",
+  "weight preview changes real aggregate fit without relaxing essentials",
+  "publish appends an immutable version and keeps pinned offers, holds and quotes unchanged",
+  "bounded edits reject gates, unknown shape, duplicates, invalid integers, no-op and stale preview",
+  "real identity refuses non-Greg and forged policy pin contexts",
+  "held count excludes elapsed offers/holds and nonoccupying holds",
+  "privacy bands suppress tiny fit cohorts, including zero",
+  "route definitions enforce Greg role, strict queries and body delegation without registration",
+  "real employee scorer weights reorder contradictory preferences; neutral legacy and zero weights remain valid",
+  "legacy policy adopts neutral weights in a new version through real projection, preview and publication",
+  "legacy migration cannot add other fields, alter protected calibration or omit registered weights",
+  "protected pending offers retain terms in held-offer count",
+  "publication replay preserves original effective instant after demo time advances",
+  "retained scheduled successor prevents an immediate publish without claiming preview as its baseline"
+ ],
+ "namePattern": null,
+ "totals": {
+  "tests": 15,
+  "suites": 0,
+  "pass": 15,
+  "fail": 0,
+  "cancelled": 0,
+  "skipped": 0,
+  "todo": 0,
+  "duration_ms": 6191.916708
+ },
+ "completedModesExcluded": [
+  "eligibility-core25",
+  "eligibility-registry16",
+  "eligibility-default1",
+  "eligibility-weighted1",
+  "eligibility-runtime4",
+  "eligibility-editor3",
+  "eligibility-dashboard3"
+ ],
+ "completedCasesRerun": false,
+ "independentPreRunReview": {
+  "verdict": "PASS",
+  "reviewer": "Foghorn Leghorn",
+  "role": "managed reviewer",
+  "model": "opus (agent file)",
+  "effort": "high (agent file)",
+  "at": "2026-11-06T13:20:00Z",
+  "scope": "read-only: exact command/guards, 219 sources + 251 dependency files + 8 executables + directory/absence anchors, 41-file test closure, 15 top-level cases none skipped, strict locked no-follow all-row ledger, manifest/finalizer before allocation, all-outcome cleanup"
+ },
+ "admission": {
+  "preflight": {
+   "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-publish-preflight-1320.json",
+   "bytes": 361,
+   "sha256": "5c1c67aed6d0818b39205cc9de984f9bae6ab1b233ae69e3c63af0775cd0f661"
+  },
+  "ledgerRowsBefore": 0,
+  "capacityLine": "13:20Z can_start=2 running=6: 6.2 GB free; swap 8670.06M used of 9216M (545.94M free); vm_stat free 5234 pages, inactive 198159 pages; measured available RAM 3359883264 B admits 1024MiB+512MiB reserve"
+ },
+ "originals": {
+  "summary": {
+   "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-26d6794b74374698a3ab11fd4761a564-summary.json",
+   "bytes": 2961,
+   "sha256": "a3c481df02c9f2763413ba6d53eb7ce5b45de00ef1c394e93416c73882a5ba62"
+  },
+  "manifest": {
+   "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-26d6794b74374698a3ab11fd4761a564-manifest.json",
+   "bytes": 2087,
+   "sha256": "3942e63784e2e8bb64614c8352b0e943cf7f9ab56fe4a1310a26529dfb47e5ab"
+  },
+  "log": {
+   "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-26d6794b74374698a3ab11fd4761a564/test.log",
+   "bytes": 1670,
+   "sha256": "9b6cdf5e630c7907c0e0a1a4407920e4c30b6a81ba9548b955d8c27943855936",
+   "publishedCopy": "test.log"
+  },
+  "checkpoint": {
+   "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-26d6794b74374698a3ab11fd4761a564/checkpoint.json",
+   "bytes": 319,
+   "sha256": "4fa10266b655fb3b00824495b7fde035fed774cb67a961f15160f436026572a4"
+  },
+  "impact": {
+   "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/impact/edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9-eligibility-publish.json",
+   "bytes": 1304,
+   "sha256": "177ecc12fcadb58215504983adc9d20d51837900fae9e854d8f1f4f6e8ed8cd7"
+  },
+  "supervisorStdout": {
+   "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-publish-supervisor-1320.stdout",
+   "bytes": 566,
+   "sha256": "df67dbc4f685105f51af271926784aacd677115c772edb2e62df7efd8b1c74a7"
+  },
+  "supervisorStderr": {
+   "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-publish-supervisor-1320.stderr",
+   "bytes": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "launcherManifest": {
+   "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-publish-launcher-manifest-1320.json",
+   "bytes": 2046,
+   "sha256": "d6f454f9d724dbb4ce90d884c0975caeb269b7de82c7014e1f5a6fcb32f38024"
+  },
+  "launcherResult": {
+   "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-publish-launcher-result-1320.json",
+   "bytes": 4315,
+   "sha256": "a2a9a90d08e27cae56e356c1e7dcfc509190dc2de6aa53eaa6d271c4efa209a3"
+  }
+ },
+ "metrics": {
+  "wallSeconds": 9.381953292,
+  "peakAggregateRSSBytes": 977715200,
+  "peakAggregateRSSMiB": 932.4,
+  "aggregateRSSCapBytes": 1073741824,
+  "peakCombinedBytes": 4348416,
+  "scratchRemovedBytes": 4338401,
+  "receiptHeadroomCapBytes": 262144
+ },
+ "cleanupEvidence": {
+  "ownedPidsAbsent": [
+   17988,
+   17998,
+   17999
+  ],
+  "ownedGroupAbsent": [
+   17988
+  ],
+  "ownedListenerInventory": [],
+  "uncertainGroups": [],
+  "scratchRootAbsent": "/private/tmp/test-stamp-shard-968975fd6a85435a9a2e214ce18c046e",
+  "worktreeDependencyPathsAbsent": true,
+  "exactReservationTokenAbsent": "968975fd6a85435a9a2e214ce18c046e",
+  "ledgerAfter": "{} (0 rows)",
+  "source": "supervisor finalizer proof plus lead ps/pgrep/path/ledger readback after exit"
+ },
+ "limits": [
+  "Every case uses the in-memory repository and in-memory policy store; no PostgreSQL connection.",
+  "All fixtures except case 8 use the helper's alternative privacy threshold 1; case 8 alone checks canonical threshold 5.",
+  "Non-legacy fixtures override every preference weight to a neutral 1; legacy cases exercise the neutral migration.",
+  "Case 10 uses a stub provider with synthetic candidates; case 6 forged-pin check asserts only a non-ok status; case 9 calls route handlers directly without HTTP registration; case 1 is mainly a shape check.",
+  "No HTTP listener, DOM, rendered publish panel or actual producer journey was exercised."
+ ],
+ "publicationBoundary": "Only this index, README and the exact original test.log are published. Full originals and receipts stay under ignored .claude.",
+ "remainingAcceptanceGates": [
+  "Activation9 (gcsp-policy-activation + gcsp-greg-publish-http) under its own review and grant.",
+  "Six dashboard-data cases remain unexercised.",
+  "Separately admitted browser preparation and rendered desktop/narrow320 keyboard journeys on canonical prepared composition, with actual employee outcomes, visual reference and COMPONENTS.md gates.",
+  "Actual 92/69/122/126 producer journeys, 105-to-107 lookup/reload and required native/deployed/live/corpus/model/training evidence remain unproven.",
+  "Dispatcher-admitted authored full validation, final independent review and whole-story acceptance; FUCQ-103 stays In Progress."
+ ]
+}

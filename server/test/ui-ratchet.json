@@ -162,6 +162,14 @@
     {
       "path": "blocks/gcsp/offer/gcsp-offer.css",
       "max_lines": 12
+    },
+    {
+      "path": "blocks/gcsp/presenter-controls/presenter-controls.css",
+      "max_lines": 17
+    },
+    {
+      "path": "blocks/gcsp/greg/publish/publish.css",
+      "max_lines": 13
     }
   ],
   "baseline": {

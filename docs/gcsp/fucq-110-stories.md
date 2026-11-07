@@ -1,5 +1,7 @@
 # FUCQ-110 · GCSP lifecycle after selection
 
+**Current scope revision, 7 November:** this document preserves the 4 November publication. Russell's [authorised split decision](build-rules.md#scope-split-decision-7-november-2026) revises the live contracts: FUCQ-114 → FUCQ-167, FUCQ-118 → FUCQ-168, FUCQ-120 → FUCQ-169, FUCQ-122 → FUCQ-170 and FUCQ-124 → FUCQ-171. Existing numbers retain the necessary planning/help scope; new remainders are To Do. Use current Jira and local contracts plus the [MoSCoW scope/order tables](backlog-moscow-review-2026-11-07.md) for pickup. The original descriptions below remain historical evidence.
+
 **Published and verified on 4 November 2026.** One Epic, [FUCQ-110](https://ibm-consulting.atlassian.net/browse/FUCQ-110), "Take a selected car through approval, handover planning and renewal help", with eight native Stories. It covers blueprint columns 08, 12 and 13 and diagram page 07, starting where FUCQ-108 (buddy handoff) and FUCQ-72 (manual handoff) stop, at "sent to ordering".
 - The Epic is In Progress, with Start date 2026-11-04.
 - The Stories are To Do and unassigned, at High (P2, `due 2026-11-12: GCSP demo`). No Story Points were authored.
