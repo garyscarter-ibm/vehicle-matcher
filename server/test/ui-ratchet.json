@@ -16,7 +16,9 @@
     "blocks/demo-launcher/components.js",
     "blocks/gcsp/kit/presenter-bar.js",
     "blocks/gcsp/kit/activity-timeline.js",
-    "blocks/gcsp/kit/action-menu.js"
+    "blocks/gcsp/kit/action-menu.js",
+    "blocks/gcsp/kit/stage-tracker.js",
+    "blocks/gcsp/kit/task-list.js"
   ],
   "extensions": [
     ".js",
@@ -82,6 +84,16 @@
       "re": "el\\('div', 'gcsp-action-menu'",
       "flags": "g",
       "use": "actionMenu({ label, items }) (blocks/gcsp/kit/action-menu.js)"
+    },
+    "stage-tracker": {
+      "re": "el\\('section', 'gcsp-stage-tracker'",
+      "flags": "g",
+      "use": "stageTracker({ heading, stages }) (blocks/gcsp/kit/stage-tracker.js)"
+    },
+    "task-list": {
+      "re": "el\\('section', 'gcsp-task-list'",
+      "flags": "g",
+      "use": "taskList({ heading, groups }) (blocks/gcsp/kit/task-list.js)"
     }
   },
   "stylesheets": [
@@ -204,6 +216,18 @@
     {
       "path": "blocks/gcsp/offer/gcsp-offer.css",
       "max_lines": 12
+    },
+    {
+      "path": "blocks/gcsp/kit/stage-tracker.css",
+      "max_lines": 19
+    },
+    {
+      "path": "blocks/gcsp/kit/task-list.css",
+      "max_lines": 16
+    },
+    {
+      "path": "blocks/gcsp/order-progress/gcsp-order-progress.css",
+      "max_lines": 31
     }
   ],
   "baseline": {
