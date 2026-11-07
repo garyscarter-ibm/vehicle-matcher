@@ -175,7 +175,8 @@ export async function createCollectionSession({ identity: stageIdentity, operati
   requireValue(typeof statePath === 'string' && isAbsolute(statePath), 'explicit-path-required', 'Supply an absolute owned checkpoint path.');
   const sources = Object.fromEntries(names.map((name) => [name, { sourceId: operations[name].sourceId,
     sourceVersion: operations[name].sourceVersion, kind: operations[name].kind,
-    ...(operations[name].kind === 'read-only-http' ? { capability: operations[name].capability, cache: operations[name].cache !== false } : {}) }]));
+    ...(operations[name].kind === 'read-only-http' ? { capability: operations[name].capability, cache: operations[name].cache !== false,
+      ...(operations[name].strictJson === true ? { strictJson: true } : {}) } : {}) }]));
   const identity = { toolVersion: COLLECTION_SESSION_VERSION, stage: structuredClone(stageIdentity), sources,
     limitsDigest: inputDigest(limits), transport: hasHttp ? { kind: http.kind, allocation: http.allocation || null } : null };
   const observationSources = structuredClone(sources); const transportKind = identity.transport?.kind;
@@ -251,7 +252,8 @@ export async function createCollectionSession({ identity: stageIdentity, operati
             }
           } finally { signal.removeEventListener('abort', abort); }
           const body = Buffer.concat(chunks); let text;
-          const strictJson = observationSources[operation].sourceVersion === DIAGNOSTIC_SOURCE_VERSION && expectedType !== 'text/html';
+          const strictJson = (observationSources[operation].sourceVersion === DIAGNOSTIC_SOURCE_VERSION
+            || observationSources[operation].strictJson === true) && expectedType !== 'text/html';
           try { text = strictJson ? new TextDecoder('utf-8', { fatal: true }).decode(body) : body.toString('utf8'); }
           catch { stop('source-json-utf8', true); }
           let value = text;

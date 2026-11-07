@@ -1,4 +1,6 @@
 import { readFile } from 'node:fs/promises';
+import { bmwCatalogueV2LookupIdentity } from './bmw-catalogue-v2.js';
+export { validateBmwCatalogueV2Envelope } from './bmw-catalogue-v2.js';
 
 const VERSION = 'bmw-gb-i5-2026-11-01.v1';
 const PROVIDER = 'bmw-catalogue-snapshot';
@@ -70,6 +72,7 @@ function identity(request) {
 
 /** Stable value identity only: JSON.stringify it for a cache key; no cache or live provider is enabled. */
 export function bmwCatalogueLookupIdentity(request, options = {}) {
+  if (options && Object.hasOwn(options, 'sourceContractVersion')) return bmwCatalogueV2LookupIdentity(request, options);
   if (!validRequest(request) || !options || typeof options !== 'object' || Array.isArray(options)) return null;
   const { provider = PROVIDER, providerVersion = PROVIDER_VERSION, schemaVersion = SCHEMA_VERSION,
     snapshotVersion = VERSION } = options;
@@ -254,6 +257,20 @@ export function createBmwCatalogueAdapter({ loadSnapshot = loadLocalSnapshot, tr
       const lookup = bmwCatalogueLookupIdentity(request, options);
       if (!lookup) return envelope('invalid-input', null);
       const { snapshotVersion, schemaVersion, providerVersion, provider } = lookup;
+      if (Object.hasOwn(lookup, 'sourceContractVersion')) {
+        const requested = { snapshotVersion, bindingDigest: lookup.bindingDigest, configurationId: lookup.configurationId };
+        return { provider, providerVersion, schemaVersion, sourceContractVersion: lookup.sourceContractVersion, snapshotVersion,
+          sourceKind: 'dated-snapshot', status: 'unsupported', observedDate: null, retrievedDate: null,
+          requestedIdentity: requested, resolvedIdentity: null, lookupIdentity: lookup, resolvedLookupIdentity: null,
+          identityProvenance: null, sourceBinding: null, facts: emptyFacts(),
+          equipment: { definitions: [], available: { state: 'unknown', codes: [], complete: false, completeness: 'unknown',
+            provenance: provenance('unknown') }, selected: { state: 'unknown', options: [], accessories: [],
+            factoryComplete: false, accessoryCodesComplete: false, accessoryQuantitiesComplete: false, provenance: provenance('unknown') },
+          verifiedFitted: { state: 'unknown', codes: [], reason: 'provider-does-not-verify-fitting', provenance: provenance('unknown') } },
+          completeness: { factorySelection: 'unknown', accessoryCodes: 'unknown', accessoryQuantities: 'unknown',
+            measurements: 'unknown', definitions: 'unknown', availability: 'unknown', verifiedFitted: 'unknown' },
+          failure: failure('unsupported-snapshot') };
+      }
       const requested = identity(request);
       const unavailable = (reason) => envelope('source-unavailable', snapshotVersion, requested, reason, lookup);
       if (schemaVersion !== SCHEMA_VERSION || providerVersion !== PROVIDER_VERSION || provider !== PROVIDER

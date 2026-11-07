@@ -85,7 +85,7 @@ function headerFor(settings, profileName, strict = false) {
 const optionalModelFields = ['taxDate', 'prodDate', 'modelName', 'modelNameRaw', 'derivative', 'bodyStyle', 'agBodyStyle',
   'fuelTypeCode', 'hybridCode', 'engineSeries', 'driveType', 'transmission', 'trim'];
 const safeLabel = (value) => typeof value === 'string' && value.trim().length > 0 && value.length <= 160 && !/[\x00-\x1f\x7f<>]/u.test(value);
-function strictModelReport(value) {
+export function strictModelReport(value) {
   requireValue(object(value) && Object.keys(value).length <= 100, 'source-tree-shape', 'Use a bounded full model tree.');
   const nodes = ['5', 'I'].map((group) => {
     const path = [group, 'modelRanges', 'G61E', 'models', 'T5MJ']; let record = value;
