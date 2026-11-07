@@ -10,7 +10,8 @@ const VERSION = 'demo-synthetic-stock-v1';
 const LABEL = 'Synthetic demo stock on reviewed structural configurations; not BMW stock or a published corpus';
 const UNTIL = '2027-01-01T00:00:00.000Z';
 // Demo schemes from eligibility.context.mapping; model eligibility is still decided by policy.
-const VISIBILITY = { companyIds: ['demo-bmw-fs-uk', 'demo-bmw-rr-production'],
+export const DEMO_STOCK_NAMESPACE = `synthetic:${VERSION}`;
+export const VISIBILITY = { companyIds: ['demo-bmw-fs-uk', 'demo-bmw-rr-production'],
   schemeIds: ['choices-fs-uk', 'choices-rr-production'], employeeIds: null };
 // Model-line specs follow server/mapping.js MODEL_SPECS; insurance group and tags are synthetic.
 const MODELS = {
@@ -21,12 +22,24 @@ const MODELS = {
   i5: { configurationId: 'Q01QRzYxOlJFRlBBSU5ULFJFRlRSSU0=', key: 'G61 i5|i5 40', name: 'Synthetic i5 eDrive40 Touring',
     body: 'estate', fuel: 'ev', boot: 490, zeroTo62: 6.1, sizeClass: 3, insuranceGroup: 35, tags: ['electric'] },
 };
+// Browse facts of a model line by its eligibility key, as { name: { value, unit } }; shared with generated stock.
+export function modelBrowseFacts(key) {
+  const model = Object.values(MODELS).find((row) => row.key === key);
+  return model ? browseFacts(model) : null;
+}
 const digest = (...parts) => createHash('sha256').update(parts.join('|')).digest();
 function orderUuid(runId, index) {
   const bytes = Buffer.from(digest(VERSION, runId, 'order', index).subarray(0, 16));
   bytes[6] = (bytes[6] & 0x0f) | 0x40; bytes[8] = (bytes[8] & 0x3f) | 0x80;
   const hex = bytes.toString('hex');
   return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+}
+
+function browseFacts(model) {
+  return { body: { value: model.body, unit: null }, fuel: { value: model.fuel, unit: null }, seats: { value: 5, unit: 'count' },
+    boot: { value: model.boot, unit: 'L' }, sizeClass: { value: model.sizeClass, unit: 'ordinal-1-5' }, zeroTo62: { value: model.zeroTo62, unit: 's' },
+    insuranceGroup: { value: model.insuranceGroup, unit: 'insurance-group' }, tags: { value: model.tags, unit: null },
+    ...(model.mpg ? { mpg: { value: model.mpg, unit: 'mpg-imperial' } } : {}) };
 }
 
 // Windows come from policy: supply.release.windows offsets from a clock.scenario.v1 named cue.
@@ -53,12 +66,9 @@ function planFor(runId, windowPlan) {
       const model = MODELS[kind]; const uuid = orderUuid(runId, index);
       const car = { orderUuid: uuid, orderNumber: String(base + index), configurationId: model.configurationId,
         corpusVersion: VERSION, revision: 1, visibility: structuredClone(VISIBILITY), availability: { availableUntil: UNTIL },
-        facts: createVehicleSnapshot({ sourceNamespace: `synthetic:${VERSION}`, identityKind: 'exact-stock',
+        facts: createVehicleSnapshot({ sourceNamespace: DEMO_STOCK_NAMESPACE, identityKind: 'exact-stock',
           sourceKeys: { stockId: uuid }, snapshotVersion: VERSION, observedAt: OBSERVED_AT, display: { name: model.name }, facts: {
-            eligibilityModelKey: fact(model.key), body: fact(model.body), fuel: fact(model.fuel), seats: fact(5, 'count'),
-            boot: fact(model.boot, 'L'), sizeClass: fact(model.sizeClass, 'ordinal-1-5'), zeroTo62: fact(model.zeroTo62, 's'),
-            insuranceGroup: fact(model.insuranceGroup, 'insurance-group'), tags: fact(model.tags),
-            ...(model.mpg ? { mpg: fact(model.mpg, 'mpg-imperial') } : {}) } }) };
+            eligibilityModelKey: fact(model.key), ...Object.fromEntries(Object.entries(browseFacts(model)).map(([name, row]) => [name, fact(row.value, row.unit)])) } }) };
       index += 1; return car;
     }) }));
   return createSyntheticStockProvider({ runId, version: VERSION, label: LABEL, windows });

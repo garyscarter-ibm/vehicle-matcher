@@ -136,3 +136,14 @@ Missing/invalid policy produces unavailable, never local defaults. Previously qu
 The fixture files in `server/gcsp/stock/fixtures/` retain the synthetic tranche plan and target-shaped pull. `docs/gcsp/evidence/fucq92/` records the emitted event, pool and failure presentation states. This backend checkpoint adds no new screen or user control, so no screenshots/component changes are needed. Existing HLD topology remains unchanged; no fresh canonical diagram status/render proof is claimed.
 
 Remaining final gates are real FUCQ-77/FUCQ-78 provider/data integration, FUCQ-104 acknowledgement hookup, shared startup/next-release control composition, manual/buddy integration and the story's serially admitted `npm test`. Native PostgreSQL execution remains unproved without a provisioned test database. This checkpoint is scoped implementation evidence, not a built story or permission to merge/close/release the claim.
+
+## Source selection and fallback (FUCQ-92)
+
+`createRunStockProvider` (`server/gcsp/stock/run-stock.js`) is the launcher's pull provider. It chooses each run's source once and caches the choice per run, so a run never mixes sources.
+
+1. A run that already holds demo stock (`synthetic:demo-synthetic-stock-v1`) stays on the demo provider.
+2. A run whose scenario declares a `published-demo-stock` tranche source (the named scenario replays) uses the demo provider and its `release` cue.
+3. Otherwise (the startup run, or a reset to the mechanics scenario) it uses generated stock: the FUCQ-78 generator runs once for the run (`prepareRun`, also called after composition and after every scenario reset), then `createGeneratedStockProvider` serves the rows. Next release then follows the run's cadence windows (`supply.release.cadence`) from `versions.stockGeneration`.
+4. If generation is not configured or returns a non-ok status, that run falls back to the demo provider, one line naming the run and the reason is logged, and `describe(runId)` returns `{ source, reason }`. A repository read failure is `unavailable` and cached nothing, so it never triggers the fallback.
+
+Generated cars carry `eligibilityModelKey` and the model-line browse facts only where `stock.eligibilityModelKeys.v1` maps their AG code (today `72HH` only); other cars release but are not eligible. `GCSP_STOCK_SOURCE=demo` forces the demo provider; it is meant for a fresh run, because forcing it mid-run mixes sources. `GCSP_STOCK_INVENTORY_PATH` sets the allocation inventory file, default `<tmpdir>/gcsp-stock-inventory/<environment>.json`.

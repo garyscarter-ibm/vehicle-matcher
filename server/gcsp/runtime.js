@@ -86,13 +86,16 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const activity = createActivityService({ repository, identity, clock });
     const greg = createGregDemandService({ repository, policy, clock, identity });
     const gregPublish = createGregPublishService({ repository, policy, clock, identity });
-    // Prepared scenario fixtures are branded by the exact policy instance used by the clock.
-    const scenarios = createScenarioService({ repository, policy: readPolicy, clock, identity });
     const adapter = createSyntheticManualStockAdapter();
     const manualClaims = createManualClaimsService({ repository, policy, clock, identity, manual: account, adapter });
     // The trusted host supplies the existing pull port. No source is invented here.
     // A factory gets the same policy the release service reads, so provider windows follow policy.
-    const pullProvider = typeof stockProvider === 'function' ? stockProvider({ policy }) : stockProvider;
+    // It also gets the repository and a trusted run context, so a source can read and generate a run's stock.
+    const contextForRun = (runId) => ({ runId, environmentId, principalId: 'gcsp-stock-source', roles: ['presenter'] });
+    const pullProvider = typeof stockProvider === 'function' ? stockProvider({ policy, repository, contextForRun, environmentId }) : stockProvider;
+    // Prepared scenario fixtures are branded by the exact policy instance used by the clock.
+    const scenarios = createScenarioService({ repository, policy: readPolicy, clock, identity,
+      afterReset: typeof pullProvider?.prepareRun === 'function' ? (runId) => pullProvider.prepareRun(runId) : undefined });
     const stockRelease = pullProvider === undefined ? undefined
       : createStockReleaseService({ repository, policy, clock, identity, provider: pullProvider });
     const releaseHistory = createStockReleaseHistoryPort({ repository, identity, clock });
@@ -164,6 +167,13 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     if (adoptOfferJourney) {
       const adopted = await adoptOfferJourneyPolicy({ policy, identity, clock });
       if (adopted.status !== 'ok') { await close(); return adopted; }
+    }
+    // Best effort: a source that cannot prepare the first run is chosen again on its first pull.
+    if (typeof pullProvider?.prepareRun === 'function') {
+      try {
+        const current = await repository.currentRun(environmentId);
+        if (current.status === 'ok') await pullProvider.prepareRun(current.value.runId);
+      } catch (error) { console.warn(`GCSP stock: preparing the first run failed (${error?.message ?? 'error'}).`); }
     }
     return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, manualRead, manualReview, manualOrder, stockRelease, releaseHistory, cases, orderingAdapter, lifecycle, documents, appointments, buddy, allocation, offerAccess, offerDecisions, offerFollowup, resolveOfferAccess, notify, dependencies, createLocalSession, close });
   } catch { await close(); return unavailable(); }

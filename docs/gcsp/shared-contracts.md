@@ -272,6 +272,7 @@ Key names use lower camel-case dotted namespaces; a suffix states a dimensional 
 | `eligibility.rule.precedence` | `excludeThenInclude` enum | Assumed deterministic include/exclude evaluation; unknowns cannot widen eligibility. |
 | `supply.release.size` | `20` cars per synthetic tranche | Assumed plausible small demo release; target sizes undocumented (round-2); scenario may explicitly override with provenance. |
 | `supply.release.windows` | Object: a named `cue`, then `windows` of `windowId`, `offsetMinutes` and `cars` (structure, see seed) | Assumed demo windows for the synthetic stock provider, in minutes after the named `clock.scenario.v1` time `cue` (`release`), so one cue change moves them all. |
+| `stock.eligibilityModelKeys.v1` | Object: corpus `agModelCode` to `eligibilityModelKey` (structure, see seed) | Assumed bridge so generated stock on retained corpus configurations can pass model eligibility. Only AG `72HH` to `G61 i5\|i5 40` is evidenced (fleet-plan.json); unmapped cars release but are not eligible. |
 | `supply.leadTimeDays` | `56` calendar days | Assumed eight-week production-to-release planning input; not a BMW delivery promise (round-2). |
 | `brief.slider.minimum` | `0` integer slider units | Assumed `brief.slider.scale`; shared position and importance scale. |
 | `brief.slider.maximum` | `100` integer slider units | Assumed `brief.slider.scale`; dimensions declare categorical alternatives where required. |
