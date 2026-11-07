@@ -1,0 +1,20 @@
+{
+  "scope": "offline artifact/source/context integrity only",
+  "checks": 40,
+  "status": "passed",
+  "networkAttempts": 0,
+  "newConfigurations": 0,
+  "profileActivations": 0,
+  "artifactSha256": {
+    "README.md": "30ae011cbe1102afae787df71b50d0f0c047253a2849fd075d4ee17f703104d3",
+    "catalogue.mjs": "52d053c2acf81815c3df1a49d4ee207e6434044a93d69e98aca77caf2e632051",
+    "catalogue.test.mjs": "80d7e81d7a75404e775bfa045992e7293285fe70ed4e7cf5daf51e047e4fc0c8",
+    "discover.mjs": "fd68df98693ff3cede68a0573e74f500b57208028cf13bec28a369d487b2c360",
+    "execution.json": "9345b3b00fbccbb8df19547e0bdbf0ca42d1a69cd97565e2a3e7e7bf9d1e677a",
+    "observation.json": "25636b87dfe942d385da5cee721fee8e59d53b216411277031d60626de36c4ec",
+    "plan.json": "0d474f6ff20a4ab654e429f08bcfb9ccbeb0f44ca85e4005d27ea39de20d5942",
+    "preflight.json": "ffdee5020b920cae3e3eee0faa20729239483394a66c71064bcd2dd1e28dbd35",
+    "validate.py": "6db5fd21031723d7d99b630c06d0ec00654f0aa650d355d0f585a4d0a22aab4b"
+  },
+  "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead58/catalogue-resources/final-artifact-check.json"
+}

@@ -1,0 +1,16 @@
+{
+  "source": "https://render.com/docs/monorepo-support",
+  "retrievedAt": "2026-11-07T02:42:23.600491+00:00",
+  "extractId": "extract_fc62e914a32bd17c2a9ded1e133cf42f",
+  "finding": "Files outside configured rootDir unavailable at build and runtime; Blueprint sync unaffected by buildfilters",
+  "codeChange": "Full repository checkout; cd server in build/start; narrow APIpaths includes exact rootimage/operatorlocations",
+  "staticImageProof": {
+    "requests": 1,
+    "status": 200,
+    "bytes": 82798,
+    "sha256": "fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe",
+    "contentType": "image/webp",
+    "url": "https://gcsp-site.onrender.com/assets/gcsp-vehicle-evidence/fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe.webp"
+  },
+  "retailBlueprintUnchanged": true
+}

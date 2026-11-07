@@ -1,0 +1,54 @@
+{
+  "status": "completed-clean",
+  "observedAt": "2026-11-07T06:26:42.097546+00:00",
+  "phases": [
+    {
+      "phase": "download",
+      "receiptSha256": "5530ac1aea8a7fb9bb164ab1925362a1e07174ccfc9116e41306eeb85c6665eb"
+    },
+    {
+      "phase": "offline",
+      "receiptSha256": "7dc0f232a4c9927adda6959b743537e70e2e93c493fc510429eb728a1cc2f3ac"
+    },
+    {
+      "phase": "recovery",
+      "receiptSha256": "d5af9f87069548cda489017a716eb11e84353a3768f05d866195467cda30e98a"
+    },
+    {
+      "phase": "ordinary",
+      "receiptSha256": "ab60798c7b826ae7a40c30a652ac933e0dba479c9f43fe42b8b38cd198b34615"
+    }
+  ],
+  "groupsAbsent": [
+    65598,
+    68653,
+    69909,
+    70921
+  ],
+  "tokensAbsent": [
+    "0560e6b3acdf484ab9e3ed76136731e8",
+    "0a48a0e69ee84b8c91d2594e80149e56",
+    "cc2f08b7e7b6483bb39459894551a700",
+    "e925c002d5144f2e929f7a6c485f9c98"
+  ],
+  "removedCopiedInputs": [
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot10-4666-20261107/followthrough/download/restored",
+      "logicalBytes": 136277915,
+      "allocatedBytes": 136310784,
+      "absenceVerified": true
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot10-4666-20261107/followthrough/download/cache",
+      "logicalBytes": 239679009,
+      "allocatedBytes": 239742976,
+      "absenceVerified": true
+    }
+  ],
+  "removedLogicalBytes": 375956924,
+  "removedAllocatedBytes": 376053760,
+  "retainedReceiptsRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot10-4666-20261107/followthrough",
+  "ordinaryStorePreserved": true,
+  "compatibilityException": null,
+  "leftovers": []
+}

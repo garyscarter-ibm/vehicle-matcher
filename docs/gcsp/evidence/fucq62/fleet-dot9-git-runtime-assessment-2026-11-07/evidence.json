@@ -1,0 +1,159 @@
+{
+  "scope": "bounded read-only Git/runtime treatment assessment; no source/proof/publication execution",
+  "observedAt": "2026-11-07T05:36:33.810801+00:00",
+  "rootHead": "12657190b786d47b344bcb5e131901652df9c5e8",
+  "ordinaryGitStatus": [
+    " M server/data/gcsp/vehicle-evidence/fleet-source.v1/active.json",
+    " M server/data/gcsp/vehicle-evidence/fleet-source.v1/identity-inventory.json",
+    " M server/data/gcsp/vehicle-evidence/fleet-source.v1/last-good.json",
+    "?? server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/configurations.jsonl",
+    "?? server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/images.jsonl",
+    "?? server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/manifest.json",
+    "?? server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/publication-owner.json",
+    "?? server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/vins.jsonl"
+  ],
+  "coherentDataIncrementPins": [
+    {
+      "path": "server/data/gcsp/vehicle-evidence/fleet-source.v1/active.json",
+      "bytes": 374,
+      "sha256": "337266f829e1878280898a94968051e465c9462c89dc91eaac9e5e43d39ab814",
+      "gitState": "tracked-modified"
+    },
+    {
+      "path": "server/data/gcsp/vehicle-evidence/fleet-source.v1/identity-inventory.json",
+      "bytes": 1367256,
+      "sha256": "f7fdf7460388e6012b81e3a3abd1879dc4bbae61e333b86d5afdbc93aa01e439",
+      "gitState": "tracked-modified"
+    },
+    {
+      "path": "server/data/gcsp/vehicle-evidence/fleet-source.v1/last-good.json",
+      "bytes": 198,
+      "sha256": "6a3c3fcecb1f6ef4e06d3685c6e0e0c52285057043f4538a7f5f4d8514e1bf45",
+      "gitState": "tracked-modified"
+    },
+    {
+      "path": "server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/configurations.jsonl",
+      "bytes": 45277494,
+      "sha256": "355b05a93af83b60f6801470fff5dbe082f3c3ec662a45a1f2c17e7cf90496ea",
+      "gitState": "untracked"
+    },
+    {
+      "path": "server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/images.jsonl",
+      "bytes": 1410,
+      "sha256": "eb04f0dca3046b045dd000ef4312eabc3d4b9af59b141cb0bd0e26a32230588a",
+      "gitState": "untracked"
+    },
+    {
+      "path": "server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/manifest.json",
+      "bytes": 8254,
+      "sha256": "28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884",
+      "gitState": "untracked"
+    },
+    {
+      "path": "server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/publication-owner.json",
+      "bytes": 81,
+      "sha256": "eaa6a5bf69285d6f38a86e8388098e1cdaad1cd3fc501335d5dec9d93847e862",
+      "gitState": "untracked"
+    },
+    {
+      "path": "server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/vins.jsonl",
+      "bytes": 2565,
+      "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
+      "gitState": "untracked"
+    }
+  ],
+  "trackedOrdinaryFilesAtHead": 47,
+  "actualOrdinaryFiles": 52,
+  "actualVersions": 10,
+  "actualOrdinaryTreeSha256": "ccb40644cc7ef443bf10ea63ccbae63432efcab8ca29050e9d0888a9e6f7c4a2",
+  "ordinaryActivationReceipt": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot9-2424-20261107/release-followthrough/ordinary/receipt.json",
+    "sha256": "567fbc0fed031db8ce9c4c1bd43502001637aa4e09e4c29c0f1247dff6c0b1a4"
+  },
+  "headActive": {
+    "previous": {
+      "directory": "86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f",
+      "manifestDigest": "86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f"
+    },
+    "schemaVersion": "1",
+    "selected": {
+      "directory": "9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043",
+      "manifestDigest": "9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043"
+    }
+  },
+  "ordinaryActive": {
+    "previous": {
+      "directory": "9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043",
+      "manifestDigest": "9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043"
+    },
+    "schemaVersion": "1",
+    "selected": {
+      "directory": "28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884",
+      "manifestDigest": "28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884"
+    }
+  },
+  "inventoryBefore": {
+    "configurations": 1924,
+    "datasets": 9,
+    "identities": 1
+  },
+  "inventoryAfter": {
+    "configurations": 2425,
+    "datasets": 10,
+    "identities": 1
+  },
+  "historyPrecedents": [
+    {
+      "commit": "f76498aa2a82aaff866b22b6ca3cd01a77ea23b9",
+      "release": ".8",
+      "treatment": "same3controlfiles+5newversionfiles committed; oldversions retained; CI/Render anchors advanced"
+    },
+    {
+      "commit": "6feb8f2a22d48188230b6d70e9c74154d3fdae18",
+      "release": ".7",
+      "treatment": "same3controlfiles+5newversionfiles committed; oldversions retained; CI/Render anchors advanced"
+    }
+  ],
+  "sourceFilePins": [
+    {
+      "path": ".gitignore",
+      "sha256": "123565b4008d929a967354ea7c02a3c2538831e4edd7e6c6564c5ea504ca3148"
+    },
+    {
+      "path": "docs/gcsp/build-rules.md",
+      "sha256": "f68bf735f59762abded95c10a12b38881404dcf18c300ec37af6ecd0812c7fd9"
+    },
+    {
+      "path": "render.gcsp.yaml",
+      "sha256": "5eb0c88d23a6eda3291de1bf4d8945760cd7c39c760f1cb5a0bc9c3132f064e3"
+    },
+    {
+      "path": ".github/workflows/gcsp-fleet-build.yml",
+      "sha256": "f1af8cc5429fa2a63ebe119d20b3d90b041cc051e5b8628264d54a39bde71949"
+    },
+    {
+      "path": "server/gcsp/vehicle-evidence/fleet-artifacts.js",
+      "sha256": "8567ef55e6cf914c1ea8d6f8c7bbb7797f96116030163d58b46eb594feb05de6"
+    },
+    {
+      "path": "server/gcsp/vehicle-evidence/local-vehicle-lookup.js",
+      "sha256": "2e68ff0141ad52aea1b0e707aeb391185acf789a463473db4ba45520465bc7db"
+    },
+    {
+      "path": "server/gcsp/vehicle-evidence/synthetic-registry.js",
+      "sha256": "38f86f5121fae767465b81a4615355b7577c35f6b74ed57263441240d617f1e4"
+    }
+  ],
+  "recommendation": "After current .9 live proof stops relying on its exact code/deployment, commit exact eight ordinary data paths together plus already existing linked evidence as needed. Preserve old versions and actual ownership file. Do not reset or delete to clean status, commit pointers alone, replace with isolated ownership, or introduce an ignore migration. Data-only server commit can start another Render build; retain actual current proof and separately identify any subsequent deployment.",
+  "limits": {
+    "networkCalls": 0,
+    "sourceCalls": 0,
+    "proofRuns": 0,
+    "publicationRuns": 0,
+    "rootMutations": 0,
+    "scratchCreated": false,
+    "removedScratchBytes": 0,
+    "leftovers": []
+  },
+  "acceptance": false
+}

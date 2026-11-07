@@ -13,5 +13,5 @@ if (host && FIXTURE_NAMES.includes(requested)) {
   };
   defineGcspAccount();
 } else if (host) {
-  mountManualJourney(host);
+  mountManualJourney(host, { onSupport: () => globalThis.location.assign(new URL('../../../gcsp-help.html', import.meta.url).href) });
 }

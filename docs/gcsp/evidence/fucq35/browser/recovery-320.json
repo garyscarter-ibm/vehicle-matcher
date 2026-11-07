@@ -1,0 +1,126 @@
+{
+  "story": "FUCQ-35",
+  "chunk": "recovery",
+  "width": 320,
+  "runtime": "actual memory repository, PolicyService, identity, manual service, HTTP and delivered account/setup journey",
+  "checks": [
+    "module failure is focused and Retry reaches actual account",
+    "actual provider unavailable recovers",
+    "actual rejected demo gate recovers without losing navigation",
+    "keyboard leaves rejected gate through visible Used cars recovery and returns",
+    "actual expired employee session stays distinct from shared demo password",
+    "unsupported employee brand shows explicit BMW and Used cars recovery"
+  ],
+  "api": [
+    {
+      "path": "/api/gcsp/manual/account",
+      "method": "GET",
+      "status": 200,
+      "envelopeStatus": "ok"
+    },
+    {
+      "path": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "status": 404,
+      "envelopeStatus": "not-found"
+    },
+    {
+      "path": "/api/gcsp/manual/account",
+      "method": "GET",
+      "status": 503,
+      "envelopeStatus": "unavailable"
+    },
+    {
+      "path": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "status": 404,
+      "envelopeStatus": "not-found"
+    },
+    {
+      "path": "/api/gcsp/manual/account",
+      "method": "GET",
+      "status": 200,
+      "envelopeStatus": "ok"
+    },
+    {
+      "path": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "status": 404,
+      "envelopeStatus": "not-found"
+    },
+    {
+      "path": "/api/gcsp/manual/account",
+      "method": "GET",
+      "status": 401,
+      "envelopeStatus": "Unauthorized"
+    },
+    {
+      "path": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "status": 401,
+      "envelopeStatus": "Unauthorized"
+    },
+    {
+      "path": "/api/gcsp/manual/account",
+      "method": "GET",
+      "status": 200,
+      "envelopeStatus": "ok"
+    },
+    {
+      "path": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "status": 404,
+      "envelopeStatus": "not-found"
+    },
+    {
+      "path": "/api/gcsp/manual/account",
+      "method": "GET",
+      "status": 401,
+      "envelopeStatus": "Unauthorized"
+    },
+    {
+      "path": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "status": 401,
+      "envelopeStatus": "Unauthorized"
+    },
+    {
+      "path": "/api/gcsp/manual/account",
+      "method": "GET",
+      "status": 200,
+      "envelopeStatus": "ok"
+    },
+    {
+      "path": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "status": 404,
+      "envelopeStatus": "not-found"
+    },
+    {
+      "path": "/api/gcsp/manual/account",
+      "method": "GET",
+      "status": 401,
+      "envelopeStatus": "expired-session"
+    },
+    {
+      "path": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "status": 401,
+      "envelopeStatus": "expired-session"
+    }
+  ],
+  "pageErrors": [],
+  "screenshots": [
+    "recovery-320-module-error.png",
+    "recovery-320-provider-unavailable.png",
+    "recovery-320-rejected-gate.png",
+    "recovery-320-unsupported-brand.png"
+  ],
+  "external": [],
+  "cleanup": {
+    "browserClosed": true,
+    "listenerClosed": true,
+    "runtimeClosed": true
+  },
+  "status": "passed"
+}

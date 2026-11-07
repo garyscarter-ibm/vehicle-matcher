@@ -1,0 +1,16 @@
+{
+  "scope": "independent filesystem/process/reservation check after corrected offline proof joined",
+  "time": "2026-11-07T05:34:08.687608+00:00",
+  "scratchAbsent": true,
+  "groupsChecked": [
+    18485
+  ],
+  "allGroupsAbsent": true,
+  "reservationAbsent": true,
+  "dependencyLinkAbsent": true,
+  "removedAllocationBytes": 9323871,
+  "peakRssBytes": 383270912,
+  "retainedSummary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth30-phase01-960-series-2026-11-07/validation.json",
+  "compatibilityException": null,
+  "leftovers": []
+}

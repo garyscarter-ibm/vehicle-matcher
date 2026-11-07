@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "f58-63-board-sync-pending.v1",
+  "recordedAt": "2026-11-07T12:32:50.837416+00:00",
+  "source": "Independent delivery reviews and exact retained evidence; tracker mutation unperformed",
+  "observedTrackerStatus": "In Progress",
+  "trackerStatusObservation": "Last successful observation; current read failed authentication",
+  "connectorError": "OAuth token refresh failed: unauthorized_client: refresh_token is invalid",
+  "readyForInReview": [
+    "FUCQ-58",
+    "FUCQ-59",
+    "FUCQ-60",
+    "FUCQ-61",
+    "FUCQ-62"
+  ],
+  "stillDelivering": {
+    "FUCQ-63": "Corrected isolated snapshot publication passed independent static review, merged8c76c963; one actual native proof42372886620 running with unchanged assertions."
+  },
+  "transitionsSucceeded": [],
+  "acceptedOrDone": [],
+  "knownLimits": [
+    "F59 Medium resume/cache gap remains deferred and AC4 partial",
+    "F60 recorded failed/skipped checks and deferred defects remain",
+    "F61 irrecoverable outcome/history accounting limits and original RAM overrun remain",
+    "2707 consumer failures remain deferred and unfixed"
+  ],
+  "statusReport": "docs/gcsp/f58-63-morning-status-2026-11-07.md",
+  "latestTrackerCheckAt": "2026-11-07T12:31:00Z",
+  "historicalCheckpoint": true,
+  "resolvedBy": "f58-63-board-sync-result-2026-11-07.json",
+  "resolvedAt": "2026-11-07T12:44:22.530Z"
+}

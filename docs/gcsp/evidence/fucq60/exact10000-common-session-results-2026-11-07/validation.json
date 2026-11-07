@@ -1,0 +1,24 @@
+{
+  "acceptance": false,
+  "checks": [
+    "Every report JSON parsed",
+    "9 copied evidence files byte-exact with retained originals and expected SHA256/size",
+    "Signed summary release, parent audit, diagnostic pins and all158 ordered input receipt hashes verified",
+    "Exact10000 outcome, allowed unknowns, failed original156 control, separate reconciliation and pending source/Story acceptance preserved",
+    "README local evidence links resolve; editorial review distinguishes child-data result from original supervisor failure",
+    "Prior fresh complete OS snapshot and all159 owned-root/token/link checks recorded with sampled-resource limitations; no runtime replay",
+    "Final report-only scope revision parsed and reviewed against4NovemberQ13/canonical HLD; all9 copied originals unchanged; local links resolve; no new runtime/test/source work"
+  ],
+  "codeOrDataRerun": false,
+  "fullSuiteRun": false,
+  "gitWhitespaceAndCommitPathCheck": "Passed staged git diff --check and exact13file report-only path check in checkout mutex before commit",
+  "initialReportAssemblyAttempt": {
+    "disposition": "Read-only follow-up found zero unproved cleanup. Final report assembly used one fresh complete successful OS pid/pgid/stat snapshot and checked all159 owned groups absent. No runtime replay.",
+    "failure": "AssertionError at composite ownership/current-process-group check; exact failing query/cause not retained",
+    "passed": false
+  },
+  "observedAt": "2026-11-07T09:10:23.187737+00:00",
+  "passed": true,
+  "schemaVersion": "f60-results-report-validation.v1",
+  "scope": "scoped static report validation"
+}

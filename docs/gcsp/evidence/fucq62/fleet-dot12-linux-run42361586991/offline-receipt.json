@@ -1,0 +1,56 @@
+{
+  "status": "ok",
+  "idempotent": true,
+  "active": {
+    "datasetId": "gcsp-source-fleet",
+    "version": "2026-11-07.12",
+    "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+    "counts": {
+      "configurations": 10001,
+      "distinctConfigurations": 10001,
+      "images": 2,
+      "qualifyingCompleteDistinctSourceConfigurations": 10000,
+      "sourceConfigurations": 10000,
+      "vinMappings": 1
+    },
+    "sourceContexts": [
+      {
+        "catalogueDate": null,
+        "market": "US",
+        "note": "Small structural reference fixture; no UK/RHD, full equipment or 200/10000 corpus claim",
+        "observedDate": "2026-11-01",
+        "sourceKind": "north-american-reference",
+        "steering": "LHD"
+      },
+      {
+        "catalogueDate": "2026-11-01",
+        "market": "GB",
+        "note": "Exact retained FUCQ-39 GB catalogue; physical year, build, steering and plant remain unknown",
+        "observedDate": "2026-11-01",
+        "sourceKind": "dated-snapshot",
+        "steering": null
+      },
+      {
+        "catalogueDate": "2026-11-07",
+        "market": "GB",
+        "note": "9999 actual admitted v2 factory selections and one retained historical source configuration; two representative images retain exact dated associations; four qualified measurements apply only to one exact configuration; physical build, visual fidelity and scheme breadth remain unverified",
+        "observedDate": "2026-11-07",
+        "sourceKind": "dated-snapshot",
+        "steering": null
+      }
+    ],
+    "completeness": {
+      "imagesMissing": 9999,
+      "selectedOptions": {
+        "complete": 10000,
+        "unknown": 1
+      },
+      "sourceKinds": {
+        "dated-snapshot": 10000,
+        "north-american-reference": 1
+      }
+    }
+  },
+  "mode": "publish-existing",
+  "externalCalls": 0
+}

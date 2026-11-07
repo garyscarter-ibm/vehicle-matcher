@@ -1,0 +1,14 @@
+{
+  "allocationId": "missing20-selector-20261107-once",
+  "method": "GET",
+  "url": "https://www.bmw.co.uk/en/configurator.html",
+  "sourceRequests": 1,
+  "solverRequests": 0,
+  "newAdmissions": 0,
+  "capacityCredit": 0,
+  "acceptance": false,
+  "status": "stopped",
+  "errorType": "Error",
+  "errorCode": null,
+  "reason": "selector-request-timeout"
+}

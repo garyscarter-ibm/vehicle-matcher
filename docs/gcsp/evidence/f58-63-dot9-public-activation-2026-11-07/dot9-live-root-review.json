@@ -1,0 +1,16 @@
+{
+  "status": "CODE+SECURITY pass",
+  "time": "2026-11-07T05:30:36.055506+00:00",
+  "scope": "scoped read-only complete probe/supervisor review and independent streaming request-set reconstruction; no live traffic",
+  "planSha256": "9aca94d1d0a54d1e0dc089da514eee89803421f2bef92a9fe8ad6bdd727c5718",
+  "codePins": 47,
+  "exactUniqueReferences": 2426,
+  "orderedRequestKeysSha256": "a85172a6bd98c74b415410304ad9393a507bec85ec21bc3cf3aa0b50a0c9aa25",
+  "ordinarySource": 2424,
+  "newGetCeiling": 2427,
+  "priorDiagnosticHealthGets": 5,
+  "replay": "fixed phases, spent reservation/progress beforefetch, successful prior receipts required, stop firstfailure",
+  "cleanup": "owned64MiBcloudscratch; groupexplicitFalse proof; inode link; reservation/openfiles/pins finalizer",
+  "remaining": "actual Linux/Renderdeployment success + exact root phasegrants; images separatelyunrun; native/consumeracceptanceopen",
+  "acceptance": false
+}

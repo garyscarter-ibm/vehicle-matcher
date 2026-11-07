@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "fleet-dot12-fifth-asset-diagnostic.v1",
+  "status": "prepared-unexecuted-exact-root-network-grant-required",
+  "executionRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036",
+  "phase": "fifth-asset",
+  "relatedStory": "FUCQ-62",
+  "storyLinkBasis": "Originating filesystem fleet release publication/restore behavior; no new Story AC",
+  "productionSource": {
+    "path": "/Users/usget/Claude/vehicle-matcher/server/gcsp/vehicle-evidence/fleet-artifacts.js",
+    "bytes": 8019,
+    "sha256": "8567ef55e6cf914c1ea8d6f8c7bbb7797f96116030163d58b46eb594feb05de6"
+  },
+  "functionSha256": "c5b114616b77e55dffcc842bdb9933afc8b683ab65c54ccbac9dacaac7d7e9e7",
+  "exactExtraction": {
+    "start": "export async function downloadAsset(",
+    "endBefore": "\nfunction selected("
+  },
+  "actualFailureInputs": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan/download-results.json",
+      "bytes": 1215,
+      "sha256": "eb3b18f8fe497c8eaa28313b88a595aa05c26ee0f6523c1316b029417bc18bdb"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/restored-public/download/network.json",
+      "bytes": 556,
+      "sha256": "f755770ef1f8bbc052b12792dc24255dbb1c2ab5a1e0256e44ac8a9700cc04b2"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/restored-public/download/stage-1-failure.json",
+      "bytes": 270,
+      "sha256": "a85d039df6b7ab3705a19b53ed6b7f239be21baef0361fbd1da156778a31ab8c"
+    }
+  ],
+  "descriptor": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan/descriptor-proposal.json",
+    "bytes": 25518,
+    "sha256": "86e382d308d61e70c18ad7c4758eaddfa70395142260210d719b6c161ff73758"
+  },
+  "fifthAsset": {
+    "name": "store--versions--3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30--configurations.jsonl",
+    "path": "store/versions/3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30/configurations.jsonl",
+    "bytes": 190860237,
+    "sha256": "dfc4f427479e9cbb8029df52b838b1d682d268059b533d7634e79b63ab810865",
+    "role": "corpus",
+    "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/store--versions--3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30--configurations.jsonl"
+  },
+  "confirmedFacts": [
+    "Actual root cold phase rc1 after33.012985541s",
+    "Exactly10fetches:5GitHub302/CDN200 pairs;0denied;headers alone recorded",
+    "Fifth descriptor asset is190860237B current configurations",
+    "Production default timeout30000ms encloses headers,redirects,streaming,hash andfile sync",
+    "CLI catch discards exception class/reason",
+    "Mandatory retained cleanup physically absent per rootcontroller"
+  ],
+  "hypothesis": "The30s whole-asset deadline aborted the fifth response body. Current actual receipt lacks body bytes/timing/abort, so this is not yet proved for the real attempt.",
+  "selection": {
+    "changedPaths": [
+      "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot12-fifth-asset-diagnostic-20261107"
+    ],
+    "regression": "One exact immutable fifthasset through unchanged productiondownloadAsset and approvedAssetUrl functions; collect bodybytes/abort cause",
+    "affectedCallers": [
+      "restoreFleetRelease",
+      "Linux/Render fleet build"
+    ],
+    "integrationBoundaries": [
+      "anonymousGitHub302\u2192approvedCDN200",
+      "30s wholebody AbortController",
+      "owned bounded streamingfile cleanup"
+    ],
+    "selected": "Single190860237Basset, max2GETincludingredirect, no retry,30s function timer/35s diagnostic cap/45s group watchdog",
+    "excluded": [
+      "31asset replay",
+      "Source/provider/native requests",
+      "Production repair",
+      "PolicyDB/order/consumer/fullsuite/acceptance"
+    ]
+  },
+  "outputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/fifth-asset-diagnostic",
+  "metadataRoot": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot12-fifth-asset-diagnostic",
+  "resources": {
+    "workers": 1,
+    "seconds": 45,
+    "nodeHeapMiB": 64,
+    "cloudScratchMiB": 256,
+    "diskReservationMiB": 320,
+    "hostRamMiB": 512,
+    "groupRamMiB": 448,
+    "supervisorHeadroomMiB": 64,
+    "maximumAssetBytes": 190860237,
+    "retainedEvidenceMaximumBytes": 65536
+  },
+  "acceptance": false,
+  "approvalSource": {
+    "path": "/Users/usget/Claude/vehicle-matcher/server/gcsp/vehicle-evidence/fleet-release.js",
+    "bytes": 4017,
+    "sha256": "1cadb13cbd9851eea93be14096328353970e3210b4f00e1ecf5ae8362f6289b4"
+  },
+  "approvalFunctionSha256": "3c5f895d67d9a327c4db0846a6adc951ad6e641a6a5a07d686951c08a3ccfcac",
+  "emptyConstantSha256": "9fae2a89bb1ce1677bcd55c246a3a44dc45776cf6ac04d3552b492735d5d7229",
+  "network": {
+    "maximumGETsIncludingRedirect": 2,
+    "sourceRequests": 0,
+    "nativeRequests": 0,
+    "anonymous": true,
+    "retries": 0,
+    "onlyInitialUrl": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-12/store--versions--3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30--configurations.jsonl",
+    "functionDeadlineMs": 30000,
+    "diagnosticDeadlineMs": 35000
+  },
+  "codePins": {
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq62/fleet-dot12-fifth-asset-diagnostic-20261107/README.md": "d05e62a62acaea672567b7b6e4cc04ba1823afef136c81496956436d8a8f71bc",
+    "docs/gcsp/evidence/fucq62/fleet-dot12-fifth-asset-diagnostic-20261107/diagnose.mjs": "46a0ca2e788abd6e804f38214d8cdb49310a5869896db62b4871906f053f7f02",
+    "docs/gcsp/evidence/fucq62/fleet-dot12-fifth-asset-diagnostic-20261107/group-proof.py": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
+    "docs/gcsp/evidence/fucq62/fleet-dot12-fifth-asset-diagnostic-20261107/parent-release.UNAUTHORIZED.example.json": "4f94efc1ec304ac95dabb383f0efda9d92609a88f6b5fe8d25f3929430634589",
+    "docs/gcsp/evidence/fucq62/fleet-dot12-fifth-asset-diagnostic-20261107/project-download.mjs": "146501c24af57a1ad03a0587167f45c78690faae1c6c70438e09953c3dae1093",
+    "docs/gcsp/evidence/fucq62/fleet-dot12-fifth-asset-diagnostic-20261107/supervise.py": "75d1b059baace8da39e53fc0b41cce25ad8e57f7ad5158670440afc35e068e6d"
+  }
+}

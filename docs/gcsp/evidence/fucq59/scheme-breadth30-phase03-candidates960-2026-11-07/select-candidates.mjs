@@ -1,0 +1,56 @@
+/** Read-only exact next-pool selection. No source grant, output source root or scratch. */
+import assert from 'node:assert/strict';
+import {readFile,writeFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+import {dirname,join} from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {inputDigest} from '../../../../../server/gcsp/repository/core.js';
+import {validateBmwBatchPlan,bmwBatchPlanRequestUrls} from '../../../../../scripts/gcsp/bmw-public-registration.mjs';
+
+const base=dirname(fileURLToPath(import.meta.url));
+const root=fileURLToPath(new URL('../../../../../',import.meta.url));
+const read=async p=>JSON.parse(await readFile(p));
+const sha=async p=>createHash('sha256').update(await readFile(p)).digest('hex');
+globalThis.fetch=()=>{throw new Error('metadata-selection-forbids-source');};
+const poolPath=join(root,'docs/gcsp/evidence/fucq59/scheme-breadth30-typed-unspent10940-2026-11-07/pool.json');
+const pool=await read(poolPath);
+assert.equal(await sha(poolPath),'51775a86b086e3ffc065fb91b32191fed0ce4f84296e65a41147aeb282652aab');
+const priorPath=join(root,'docs/gcsp/evidence/fucq59/scheme-breadth30-phase02-960-series-2026-11-07/series-plan.json');
+const prior=await read(priorPath);
+assert.equal(await sha(priorPath),'ef251096585a9da6ebaf9c66d379bbabc4e28cde43056290e58c6d35535d596e');
+const auditPath='/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/global-union7517-parent-audit.json';
+const audit=await read(auditPath);
+assert.equal(await sha(auditPath),'73c501d4776fb293477f5e6c4c897b601ae5b021b44752864fd480ec2f1757e8');
+assert.equal(audit.status,'parent-proved');assert.deepEqual(audit.errors,[]);
+assert.equal(audit.admittedSource,7517);assert.equal(audit.canonical,7520);assert.equal(audit.spent,9759);
+const canonical=await read(audit.canonicalPin.path),spent=await read(audit.spentPin.path);
+assert.equal(await sha(audit.canonicalPin.path),audit.canonicalPin.sha256);
+assert.equal(await sha(audit.spentPin.path),audit.spentPin.sha256);
+const used=new Set(spent.entries.map(r=>r.requestDigest));assert.equal(used.size,9759);
+const formerSelection=await read(join(root,'docs/gcsp/evidence/fucq59/scheme-breadth30-phase02-candidates960-2026-11-07/candidate-selection.json'));
+const f70Pin=formerSelection.fullParallelF70Pin;
+assert.equal(await sha(f70Pin.path),f70Pin.sha256);
+const f70=await read(f70Pin.path),parallel=new Set(f70.chunks.flatMap(c=>c.requestDigests));
+assert.equal(parallel.size,3623);
+const priorRequests=new Set(prior.chunks.flatMap(c=>c.requestDigests));assert.equal(priorRequests.size,960);
+const chunks=pool.chunks.slice(240,360),requests=[],distribution={};
+for(const chunk of chunks){
+ const path=join(root,chunk.templatePath),plan=await read(path);
+ assert.equal(await sha(path),chunk.templateSha256);assert.equal(inputDigest(plan),chunk.planDigest);
+ validateBmwBatchPlan(plan);assert.equal(plan.candidateCount,8);assert.equal(chunk.maximumGets,12);
+ const digests=plan.candidates.map(c=>{assert.ok(bmwBatchPlanRequestUrls(plan,c.request).solve);return inputDigest({modelRegistration:plan.modelRegistration,request:c.request});});
+ assert.deepEqual(digests,chunk.requestDigests);
+ assert.equal(digests.some(d=>used.has(d)||parallel.has(d)||priorRequests.has(d)),false);
+ requests.push(...digests);distribution[chunk.modelCode]=(distribution[chunk.modelCode]||0)+1;
+}
+assert.equal(chunks.length,120);assert.equal(requests.length,960);assert.equal(new Set(requests).size,960);
+assert.deepEqual(requests,pool.requestDigests.slice(1920,2880));
+assert.equal(Object.keys(distribution).length,30);assert.equal(Object.values(distribution).every(n=>n===4),true);
+const first1920=new Set(pool.requestDigests.slice(0,1920));assert.equal(requests.some(d=>first1920.has(d)),false);
+const exclusionPath=join(root,'docs/gcsp/evidence/fucq59/scheme-breadth30-phase02-960-series-2026-11-07/exclusion-validation.json');
+assert.equal(await sha(exclusionPath),'c77901874c7d8a73e419c941953ae05f2cc1b9e4f85ce39f822f940583e60466');
+const exclusions=await read(exclusionPath);
+assert.equal(exclusions.exclusions.some(e=>e.conservativelyExcludedRequestDigests.some(d=>requests.includes(d))),false);
+const result={schemaVersion:'breadth30-next-finite-candidates.v1',id:'scheme-breadth30-phase03-960-20261107-prepared-candidates',status:'metadata-only exact next candidates; concrete actual current-prefix refresh and separate exact source release required',time:new Date().toISOString(),poolPin:{path:poolPath,sha256:await sha(poolPath)},priorPhasePin:{path:priorPath,sha256:await sha(priorPath)},preparedBaseline:{admittedSource:7517,canonical:7520,spent:9759},preparedIndexPins:{canonical:audit.canonicalPin,spent:audit.spentPin},preparedParentAudit:{path:auditPath,sha256:await sha(auditPath)},fullParallelF70Pin:f70Pin,priorExclusionsPin:{path:exclusionPath,sha256:await sha(exclusionPath)},chunks,requestDigests:requests,distribution,sessions:120,solverCeiling:960,getCeiling:1440,requestsDisjointFromPreparedSpentAndEntirePrior1920AndF70:true,freshActualParentPrefixRequired:true,fullPriorPhaseCompletionRequired:false,sourceDriverPrepared:false,sourceGrant:false,sourceTraffic:0,admissions:0,capacityCredit:0,acceptance:false,scratchCreated:false,dependencyLinkTouched:false};
+const path=join(base,'candidate-selection.json');await writeFile(path,JSON.stringify(result,null,2)+'\n',{flag:'wx'});
+console.log(JSON.stringify({path,sha256:await sha(path),sessions:120,solver:960,GET:1440,contexts:30,sourceTraffic:0,capacityCredit:0,sourceGrant:false,scratchCreated:false}));

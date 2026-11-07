@@ -1,0 +1,32 @@
+{
+  "status": "source-free-public-cache-recovery-passed",
+  "releaseId": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+  "cases": {
+    "corruptNewSource0": {
+      "previousManifestDigest": "28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884",
+      "selectionAndHistoryUnchanged": true,
+      "priorExactSupplementPreserved": true
+    },
+    "corruptNewSource1": {
+      "previousManifestDigest": "28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884",
+      "selectionAndHistoryUnchanged": true,
+      "priorExactSupplementPreserved": true
+    },
+    "corruptCurrentImages": {
+      "previousManifestDigest": "28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884",
+      "selectionAndHistoryUnchanged": true,
+      "priorExactSupplementPreserved": true
+    },
+    "changedEmbeddedSupplementDigest": {
+      "previousManifestDigest": "28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884",
+      "selectionAndHistoryUnchanged": true,
+      "priorExactSupplementPreserved": true
+    }
+  },
+  "exactOwnedBytesRestored": true,
+  "freshCurrentManifestDigest": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+  "externalCalls": 0,
+  "acceptance": false,
+  "publicReceiptSha256": "7dc0f232a4c9927adda6959b743537e70e2e93c493fc510429eb728a1cc2f3ac",
+  "fullReferenceProofReexecuted": false
+}

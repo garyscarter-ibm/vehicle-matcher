@@ -1,0 +1,219 @@
+{
+  "pin": "65f4a911285161b7fc9d3ec303ecfea2175df2d4",
+  "proof": "public offer source from immutable GC FUCQ-105 branch, over current package inputs in isolated scratch; direct route/module proof only; visual issues recorded separately; fixture/default-unavailable page, no live/access/decision claim",
+  "rows": [
+    {
+      "name": "offer-root-1440-pending",
+      "path": "/blocks/gcsp/offer/preview.html",
+      "fixture": "pending",
+      "heading": "Your car offer",
+      "width": 1440,
+      "scrollWidth": 1614,
+      "focus": {
+        "tag": "A",
+        "text": "Skip to content",
+        "outline": "auto"
+      },
+      "missingImages": []
+    },
+    {
+      "name": "offer-root-1440-unavailable",
+      "path": "/blocks/gcsp/offer/preview.html",
+      "fixture": "actual unconfigured adapter, no locator/token",
+      "heading": "Offer not found",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "focus": {
+        "tag": "A",
+        "text": "Skip to content",
+        "outline": "auto"
+      },
+      "missingImages": []
+    },
+    {
+      "name": "offer-root-375-pending",
+      "path": "/blocks/gcsp/offer/preview.html",
+      "fixture": "pending",
+      "heading": "Your car offer",
+      "width": 375,
+      "scrollWidth": 1614,
+      "focus": {
+        "tag": "A",
+        "text": "Skip to content",
+        "outline": "auto"
+      },
+      "missingImages": []
+    },
+    {
+      "name": "offer-root-375-unavailable",
+      "path": "/blocks/gcsp/offer/preview.html",
+      "fixture": "actual unconfigured adapter, no locator/token",
+      "heading": "Offer not found",
+      "width": 375,
+      "scrollWidth": 375,
+      "focus": {
+        "tag": "A",
+        "text": "Skip to content",
+        "outline": "auto"
+      },
+      "missingImages": []
+    },
+    {
+      "name": "offer-prefix-1440-pending",
+      "path": "/vehicle-matcher/blocks/gcsp/offer/preview.html",
+      "fixture": "pending",
+      "heading": "Your car offer",
+      "width": 1440,
+      "scrollWidth": 1614,
+      "focus": {
+        "tag": "A",
+        "text": "Skip to content",
+        "outline": "auto"
+      },
+      "missingImages": []
+    },
+    {
+      "name": "offer-prefix-1440-unavailable",
+      "path": "/vehicle-matcher/blocks/gcsp/offer/preview.html",
+      "fixture": "actual unconfigured adapter, no locator/token",
+      "heading": "Offer not found",
+      "width": 1440,
+      "scrollWidth": 1440,
+      "focus": {
+        "tag": "A",
+        "text": "Skip to content",
+        "outline": "auto"
+      },
+      "missingImages": []
+    },
+    {
+      "name": "offer-prefix-375-pending",
+      "path": "/vehicle-matcher/blocks/gcsp/offer/preview.html",
+      "fixture": "pending",
+      "heading": "Your car offer",
+      "width": 375,
+      "scrollWidth": 1614,
+      "focus": {
+        "tag": "A",
+        "text": "Skip to content",
+        "outline": "auto"
+      },
+      "missingImages": []
+    },
+    {
+      "name": "offer-prefix-375-unavailable",
+      "path": "/vehicle-matcher/blocks/gcsp/offer/preview.html",
+      "fixture": "actual unconfigured adapter, no locator/token",
+      "heading": "Offer not found",
+      "width": 375,
+      "scrollWidth": 375,
+      "focus": {
+        "tag": "A",
+        "text": "Skip to content",
+        "outline": "auto"
+      },
+      "missingImages": []
+    }
+  ],
+  "errors": [],
+  "failedRequests": [],
+  "assetResponses": [],
+  "visualIssues": [
+    {
+      "name": "offer-root-1440-pending",
+      "overflow": true,
+      "missingImages": []
+    },
+    {
+      "name": "offer-root-375-pending",
+      "overflow": true,
+      "missingImages": []
+    },
+    {
+      "name": "offer-prefix-1440-pending",
+      "overflow": true,
+      "missingImages": []
+    },
+    {
+      "name": "offer-prefix-375-pending",
+      "overflow": true,
+      "missingImages": []
+    }
+  ],
+  "inputs": [
+    {
+      "path": "blocks/gcsp/offer/fixtures.js",
+      "sha256": "771447b5d2c821e3d198a5209e0304ffd7f67111d1efe1120ef6e10da5beb1f0"
+    },
+    {
+      "path": "blocks/gcsp/offer/gcsp-offer.css",
+      "sha256": "b155ddc1bb4dd5aa412f8993561c51377d7b6a16dff4ef4f52e2d62fa364024f"
+    },
+    {
+      "path": "blocks/gcsp/offer/gcsp-offer.js",
+      "sha256": "7475bc77012f75374b0cceea1315a35d0d2b2257c9965ea72b3b6d5ad5d8ed96"
+    },
+    {
+      "path": "blocks/gcsp/offer/harness.js",
+      "sha256": "ae8150a6f14498789d5403de9220e13e352cdabd1b490eb3285059a60821e288"
+    },
+    {
+      "path": "blocks/gcsp/offer/http-adapter.js",
+      "sha256": "b9f37dc9d935900ab78abf3a0e9cc396b38565a52dc65e8ef4f15f1fa82c2f8d"
+    },
+    {
+      "path": "blocks/gcsp/offer/offer-controller.js",
+      "sha256": "71f1c2ba3fc3e42cc3642f12971bf4bb3027fcb2dfddb99121ca50735b0f6561"
+    },
+    {
+      "path": "blocks/gcsp/offer/offer-projection.js",
+      "sha256": "33a9f2715f1f35201059e88be4d47f645c6e0604de927c67bce88358bcd48757"
+    },
+    {
+      "path": "blocks/gcsp/offer/offer-view.js",
+      "sha256": "315c629f7bccb5f47f496a7c9da47ec97fa554b45aaccf0ec89c8a8604dbd6de"
+    },
+    {
+      "path": "blocks/gcsp/offer/preview.html",
+      "sha256": "ec555687573e54a005dfae3d05c1ca6af40a1457670363cd76ce7644569830e0"
+    }
+  ],
+  "manifest": {
+    "blocks": [
+      "account",
+      "brief",
+      "employee",
+      "greg",
+      "kit",
+      "manual-setup",
+      "offer",
+      "presenter",
+      "shell"
+    ],
+    "demoPages": [
+      {
+        "name": "offer",
+        "block": "offer",
+        "file": "blocks/gcsp/offer/preview.html",
+        "available": true
+      },
+      {
+        "name": "greg",
+        "block": "greg",
+        "file": "gcsp-greg.html",
+        "available": true
+      },
+      {
+        "name": "outbox",
+        "block": "presenter",
+        "file": "gcsp-outbox.html",
+        "available": true
+      }
+    ],
+    "files": 148
+  },
+  "missingModuleNamed": true,
+  "routeSmokePassed": true,
+  "visualPassed": false,
+  "passed": true
+}

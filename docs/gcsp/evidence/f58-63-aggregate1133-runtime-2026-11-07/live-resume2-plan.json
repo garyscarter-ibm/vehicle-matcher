@@ -1,0 +1,16 @@
+{
+  "priorAttempts": [
+    "live-audit/report.json",
+    "live-audit-resume1/report.json"
+  ],
+  "completedRecords": 0,
+  "priorProbeGets": 3,
+  "separateReadinessGets": 1,
+  "singleRecordDiagnosticGets": 1,
+  "diagnostic": "single-record-diagnostic.json",
+  "plannedGets": 1136,
+  "aggregateGetCeiling": 1160,
+  "aggregatePlannedGets": 1141,
+  "completedMatchesReplayed": 0,
+  "reason": "Two Render successes are same6febcode; latest7616322037success04:07. Exactmanifest firstrecord now200/172ms. Final bounded1135recordattempt; preservefailuresandcontinueotherworkifitfails."
+}

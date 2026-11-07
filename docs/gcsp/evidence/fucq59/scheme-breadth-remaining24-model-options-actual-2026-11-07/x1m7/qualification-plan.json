@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "bmw-source-model-options-plan.v1",
+  "planId": "u11-x1m7-options-20261107",
+  "qualificationDate": "2026-11-07",
+  "source": {
+    "id": "bmw-uk-public",
+    "kind": "public-bmw-uk",
+    "version": "f59-model-options-qualification-20261107.v1"
+  },
+  "modelRegistration": {
+    "schemaVersion": "bmw-public-model-registration.v1",
+    "modelCode": "X1M7",
+    "agModelCode": "32EF",
+    "catalogueRangeKey": "U11",
+    "rawModelRange": "U11",
+    "aliases": [
+      "X"
+    ],
+    "market": "GB",
+    "locale": "en-GB",
+    "steering": "RL",
+    "catalogueDate": "2026-11-01",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05"
+  },
+  "lineRegistration": {
+    "lineKey": "S0337",
+    "defaultModel": {
+      "modelCode": "IX1I",
+      "agModelCode": "12HM"
+    },
+    "includedIndex": 3,
+    "optionsQuery": {
+      "kind": "trim",
+      "code": "S0337"
+    }
+  },
+  "limits": {
+    "maxAttempts": 1,
+    "retryDelayMs": 0,
+    "concurrency": 1,
+    "imageRequests": 0,
+    "sourceAttempts": 4,
+    "sourceBytes": 4194304,
+    "responseBytes": 1048576,
+    "operationTimeoutMs": 10000,
+    "deadlineMs": 90000,
+    "checkpointBytes": 4194304,
+    "cacheEntries": 8,
+    "cacheRetentionMs": 86400000,
+    "requestBudgets": {
+      "page": 1,
+      "settings": 1,
+      "discover": 1,
+      "options": 1
+    }
+  }
+}

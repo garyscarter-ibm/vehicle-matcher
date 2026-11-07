@@ -1,0 +1,38 @@
+✔ continuation preserves the original consumed clock and refuses an expired deadline before ownership or source creation (157.809917ms)
+✖ real clock keeps a new cohort usable inside an old original phase deadline (145.902375ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 392.704291
+
+✖ failing tests:
+
+test at docs/gcsp/evidence/fucq59/scheme-breadth30-phase01c-320-series-2026-11-07/prepared-check.test.mjs:72:1
+✖ real clock keeps a new cohort usable inside an old original phase deadline (145.902375ms)
+  AssertionError [ERR_ASSERTION]: Traceback (most recent call last):
+    File "<string>", line 19, in <module>
+    File "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth30-phase01c-320-series-2026-11-07/run-series.py", line 120, in run
+      R.atomic_json(output / (name + '-process-ownership.json'), {'allocationId': series['id'], 'phase': name, 'children': children})
+  KeyError: 'id'
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth30-phase01c-320-series-2026-11-07/prepared-check.test.mjs:95:117)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,84 @@
+{
+  "scope": "scoped five-literal-seed15GET diagnostic preparation; zero source traffic",
+  "seriesPlanSha256": "3e93d0e074c3e813fd5a8299dba9e7e69013c3a794b6ce4f57b0cb30834da62f",
+  "codePins": 27,
+  "sourcePins": 14,
+  "runtimePins": 2,
+  "allFrozenPinsVerified": true,
+  "tests": {
+    "fail": 0,
+    "pass": 5,
+    "skipped": 0,
+    "tests": 5
+  },
+  "wallSeconds": 2.413227958,
+  "sampledPeakRssBytes": 149553152,
+  "removedScratchBytes": 934016,
+  "identityUnchanged": true,
+  "fixtureRequests": 15,
+  "fixtureAdmissions": 0,
+  "embeddedCopiedActualStrictChecks": 5,
+  "copiedActualSourceFetches": 0,
+  "resultPath": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth15/prepared-validate/result.json",
+  "cleanupPath": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth15/prepared-validate/cleanup.json",
+  "coverageContextPath": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth15/prepared-validate/coverage-contexts.json",
+  "coverageContexts": 23,
+  "initialProof": {
+    "tests": {
+      "fail": 0,
+      "pass": 5,
+      "skipped": 0,
+      "tests": 5
+    },
+    "reasonForRerun": "Supervisor was updated to capture bounded V8 coverage during required validation and remaining phase ceiling reduced to450s; frozen identity refreshed.",
+    "resultPath": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth15/prepared-validate/initial-without-coverage-result.json",
+    "cleanupPath": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth15/prepared-validate/initial-without-coverage-cleanup.json"
+  },
+  "allOwnedPreparationResourcesVerifiedAbsent": [
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth15/prepared-validate/ownership/522be0bff593471ea24b50739d24fd3c.json",
+      "root": "/private/tmp/test-stamp-shard-522be0bff593471ea24b50739d24fd3c",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 934016
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth15/prepared-validate/ownership/be88867f9ecf4c9bacfa264bbc560100.json",
+      "root": "/private/tmp/test-stamp-shard-be88867f9ecf4c9bacfa264bbc560100",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 185792
+    }
+  ],
+  "liveOutputAndPhaseOwnershipAbsent": true,
+  "compatibilityException": null,
+  "leftovers": [],
+  "sourceGrant": false,
+  "newAdmissions": 0,
+  "capacityCredit": 0,
+  "acceptance": false,
+  "reusedEvidence": [
+    "unchanged diagnostic finite bounds/privacy/resume/export tests and production range inventory checks from prior actual diagnostic",
+    "actual G42 primary/export evidence, copied and audited offline in selected scope"
+  ],
+  "exclusions": [
+    "full suite: evidence-only wrappers, unchanged production/diagnostic grammar and transport",
+    "live requests: separate exact first3 and remaining12 releases",
+    "production Medium inventory defect repair",
+    "UI, scheme-line acceptance, original distribution/publication acceptance"
+  ],
+  "agents": [
+    {
+      "name": "Charlie Dog",
+      "requestedModel": "gpt-6.1-sol",
+      "requestedEffort": "high",
+      "selectedModel": "gpt-6.1-sol",
+      "selectedEffort": "high",
+      "effectiveRuntimeVerified": false,
+      "fallback": null,
+      "descendants": 0
+    }
+  ]
+}

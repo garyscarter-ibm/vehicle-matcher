@@ -1,0 +1,36 @@
+{
+  "at": "2026-11-06T13:11:06.114299+00:00",
+  "changedPaths": [
+    "supervise-live.py"
+  ],
+  "regression": "parseable nonobject receipt crashed supervisor finalizer; misleading post-invocation no-invocation message",
+  "callers": "one parent supervised diagnostic invocation",
+  "boundary": "safe fallback receipt only; no main/live/source call",
+  "selected": [
+    "six offline fallback regression cases"
+  ],
+  "command": [
+    "/usr/bin/python3",
+    "-B",
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/live-diagnostic/supervisor.test.py"
+  ],
+  "excluded": {
+    "live": "allocation0; main unexecuted",
+    "producer suite": "producer unchanged with retained50 scoped evidence",
+    "full": "external fallback helper only"
+  },
+  "fileHashes": {
+    "supervise-live.py": "2a109f4c9fa453a675458c45563a8f384dc387c5e120cd1dc0aa2f19b43b8cce",
+    "supervisor.test.py": "2364daa47658af5445318c32b68974688c98d5e6a30ef10ff8284cecb187c479"
+  },
+  "resources": {
+    "workers": 1,
+    "expectedScratchBytes": 65536,
+    "expectedRssBytes": 67108864,
+    "seconds": 30,
+    "scratchMiB": 8,
+    "ramMiB": 128,
+    "logMiB": 1
+  },
+  "scratch": "trusted test_resources manifest/context before root; TMPDIR/TMP/TEMP propagated; stop/join and cleanup on all handled exits"
+}

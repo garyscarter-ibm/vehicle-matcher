@@ -1,0 +1,262 @@
+{
+  "schemaVersion": "served-map-readback.v1",
+  "observedAt": "2026-11-07T12:52:46.955770+00:00",
+  "url": "https://garyscarter-ibm.github.io/vehicle-matcher/product-map/data.json?verify=202611071253",
+  "httpStatus": 200,
+  "bytes": 548801,
+  "sha256": "1a59e4f47168fecd3a3a11366089df77b4d502fa1020bee59ee305a8d032ac49",
+  "stories": {
+    "FUCQ-58": {
+      "id": "FUCQ-58",
+      "title": "Qualify fleet coverage and budgets before collecting configurations",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "branch": "origin/dev/DEV-2026-11-04-069",
+      "type": "Story",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-58",
+      "pr": "",
+      "sources": [
+        {
+          "branch": "origin/gcsp-poc",
+          "sha": "e60c70e6de6a2636750fdf99943e138b89b63932",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-06T00:49:48Z"
+        },
+        {
+          "branch": "origin/dev/DEV-2026-11-04-069",
+          "sha": "4336075942b4fc13dfdca76fea167b002ba77831",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-05T23:00:25Z"
+        }
+      ],
+      "conflict": true,
+      "historical": false,
+      "unsliced": false,
+      "progress": null,
+      "lower_bound": 0,
+      "state": "unknown",
+      "slice_counts": {
+        "complete": 0,
+        "in_progress": 0,
+        "blocked": 0,
+        "not_started": 0,
+        "unknown": 0,
+        "total": 0
+      },
+      "status_label": "Incomplete progress data",
+      "progress_label": "Unknown"
+    },
+    "FUCQ-59": {
+      "id": "FUCQ-59",
+      "title": "Collect distinct constructible configurations with resumable batches",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "branch": "origin/dev/DEV-2026-11-04-069",
+      "type": "Story",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59",
+      "pr": "",
+      "sources": [
+        {
+          "branch": "origin/gcsp-poc",
+          "sha": "e60c70e6de6a2636750fdf99943e138b89b63932",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-06T00:49:48Z"
+        },
+        {
+          "branch": "origin/dev/DEV-2026-11-04-069",
+          "sha": "4336075942b4fc13dfdca76fea167b002ba77831",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-05T23:00:25Z"
+        }
+      ],
+      "conflict": true,
+      "historical": false,
+      "unsliced": false,
+      "progress": null,
+      "lower_bound": 0,
+      "state": "unknown",
+      "slice_counts": {
+        "complete": 0,
+        "in_progress": 0,
+        "blocked": 0,
+        "not_started": 0,
+        "unknown": 0,
+        "total": 0
+      },
+      "status_label": "Incomplete progress data",
+      "progress_label": "Unknown"
+    },
+    "FUCQ-60": {
+      "id": "FUCQ-60",
+      "title": "Enrich resolved fleet configurations with matching facts and images",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "branch": "origin/dev/DEV-2026-11-04-069",
+      "type": "Story",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60",
+      "pr": "",
+      "sources": [
+        {
+          "branch": "origin/gcsp-poc",
+          "sha": "e60c70e6de6a2636750fdf99943e138b89b63932",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-06T00:49:48Z"
+        },
+        {
+          "branch": "origin/dev/DEV-2026-11-04-069",
+          "sha": "4336075942b4fc13dfdca76fea167b002ba77831",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-05T23:00:25Z"
+        }
+      ],
+      "conflict": true,
+      "historical": false,
+      "unsliced": false,
+      "progress": null,
+      "lower_bound": 0,
+      "state": "unknown",
+      "slice_counts": {
+        "complete": 0,
+        "in_progress": 0,
+        "blocked": 0,
+        "not_started": 0,
+        "unknown": 0,
+        "total": 0
+      },
+      "status_label": "Incomplete progress data",
+      "progress_label": "Unknown"
+    },
+    "FUCQ-61": {
+      "id": "FUCQ-61",
+      "title": "Collect and validate 10,000 genuinely distinct BMW configurations",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "branch": "origin/dev/DEV-2026-11-04-069",
+      "type": "Story",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-61",
+      "pr": "",
+      "sources": [
+        {
+          "branch": "origin/gcsp-poc",
+          "sha": "e60c70e6de6a2636750fdf99943e138b89b63932",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-06T00:49:48Z"
+        },
+        {
+          "branch": "origin/dev/DEV-2026-11-04-069",
+          "sha": "4336075942b4fc13dfdca76fea167b002ba77831",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-05T23:00:25Z"
+        }
+      ],
+      "conflict": true,
+      "historical": false,
+      "unsliced": false,
+      "progress": null,
+      "lower_bound": 0,
+      "state": "unknown",
+      "slice_counts": {
+        "complete": 0,
+        "in_progress": 0,
+        "blocked": 0,
+        "not_started": 0,
+        "unknown": 0,
+        "total": 0
+      },
+      "status_label": "Incomplete progress data",
+      "progress_label": "Unknown"
+    },
+    "FUCQ-62": {
+      "id": "FUCQ-62",
+      "title": "Publish the configuration corpus and generate stock by order reference",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "branch": "origin/dev/DEV-2026-11-04-069",
+      "type": "Story",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62",
+      "pr": "",
+      "sources": [
+        {
+          "branch": "origin/gcsp-poc",
+          "sha": "e60c70e6de6a2636750fdf99943e138b89b63932",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-06T00:49:48Z"
+        },
+        {
+          "branch": "origin/dev/DEV-2026-11-04-069",
+          "sha": "4336075942b4fc13dfdca76fea167b002ba77831",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-05T23:00:25Z"
+        }
+      ],
+      "conflict": true,
+      "historical": false,
+      "unsliced": false,
+      "progress": null,
+      "lower_bound": 0,
+      "state": "unknown",
+      "slice_counts": {
+        "complete": 0,
+        "in_progress": 0,
+        "blocked": 0,
+        "not_started": 0,
+        "unknown": 0,
+        "total": 0
+      },
+      "status_label": "Incomplete progress data",
+      "progress_label": "Unknown"
+    },
+    "FUCQ-63": {
+      "id": "FUCQ-63",
+      "title": "Prove full-corpus lookup and offline recovery through the port",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "observed_at": "2026-11-05T22:40:24Z",
+      "branch": "origin/dev/DEV-2026-11-04-069",
+      "type": "Story",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-63",
+      "pr": "",
+      "sources": [
+        {
+          "branch": "origin/gcsp-poc",
+          "sha": "e60c70e6de6a2636750fdf99943e138b89b63932",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-06T00:49:48Z"
+        },
+        {
+          "branch": "origin/dev/DEV-2026-11-04-069",
+          "sha": "4336075942b4fc13dfdca76fea167b002ba77831",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-05T23:00:25Z"
+        }
+      ],
+      "conflict": true,
+      "historical": false,
+      "unsliced": false,
+      "progress": null,
+      "lower_bound": 0,
+      "state": "unknown",
+      "slice_counts": {
+        "complete": 0,
+        "in_progress": 0,
+        "blocked": 0,
+        "not_started": 0,
+        "unknown": 0,
+        "total": 0
+      },
+      "status_label": "Incomplete progress data",
+      "progress_label": "Unknown"
+    }
+  }
+}

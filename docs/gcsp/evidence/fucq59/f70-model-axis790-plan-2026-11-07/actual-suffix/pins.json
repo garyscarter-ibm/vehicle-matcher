@@ -1,0 +1,16 @@
+{
+  "files": {
+    "actual-suffix.json": "0081da368368072cec1e7039b7c205a18095da6f7496f6a24ad836088d811017",
+    "final-canonical-index.json": "f79d51fdc0461b28cc9e3d4385f6b5ed8e8e12c82de594b6106be0476705cf35",
+    "final-spent-request-index.json": "697aa9e7f3864dee829dd8cfd5c033b75e6f2734b28ab0fd88e4a32684a41d1f",
+    "suffix-cleanup-followup.json": "d1aef7490f43453c91887b7983d265041e6155064e876416152f30374e7a7c8c",
+    "suffix-cleanup.json": "913fddfe33e0ad806cbfa6a48fe270e783487ee2e13e57ca8593b9a5fcd3825a",
+    "suffix-process-ownership.json": "6f6d27a837f65e2a5961e8bb48a65b8f82c868eb303ac6b3a2f551110eef6ecd",
+    "suffix-receipt.json": "e9c42a5848b115efc8746bdc542a6054d1a0b6de25df5af3be7aaba05044378d",
+    "README.md": "14972d9b781d79a3562e4d11f14971e892755ab976095120b3d803d62daeb5c0",
+    "packaging-checks.json": "540e6e8bf705e5855861093e7027843ba1900a0948232cf9daf146fa3d700344"
+  },
+  "impactPath": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/impact/f70-model-axis790-suffix-actual.json",
+  "impactSha256": "4cf837ae11a7bb2897bb7e6deddab1608815b8f0f018cb3b4f0e561a6135ab32",
+  "schemaVersion": "f70-model-axis790-suffix-pins.v1"
+}

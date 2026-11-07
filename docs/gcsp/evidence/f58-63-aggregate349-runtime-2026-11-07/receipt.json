@@ -1,0 +1,84 @@
+{
+  "status": "verified-live-partial-corpus",
+  "stories": [
+    "FUCQ-58",
+    "FUCQ-59",
+    "FUCQ-60",
+    "FUCQ-61",
+    "FUCQ-62",
+    "FUCQ-63"
+  ],
+  "code": "e399799aa19ec537fee11034ed4a42d8366df654",
+  "localHead": "903102dffdb5c3769f0aa84c4d734c6c2457774f",
+  "deployment": 7615138385,
+  "deploymentSucceededAt": "2026-11-07T02:10:12Z",
+  "url": "https://gcsp-api.onrender.com",
+  "manifestDigest": "8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9",
+  "corpus": {
+    "totalConfigurations": 350,
+    "qualifyingDistinctSourceConfigurations": 349,
+    "vinMappings": 1,
+    "images": 0,
+    "shortfall10000": 9651
+  },
+  "actual": {
+    "compared": 351,
+    "GET": 352,
+    "decodedBytes": 3779159,
+    "errors": 0,
+    "retries": 0,
+    "sourceCalls": 0
+  },
+  "probe": "docs/gcsp/evidence/f58-63-aggregate-runtime-2026-11-07/live-probe.mjs",
+  "supervisor": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/aggregate349-runtime/run-live.py",
+  "supervisorResult": {
+    "audit_pass": true,
+    "code_identity_unchanged": true,
+    "expected_published_records": 351,
+    "head": "903102dffdb5c3769f0aa84c4d734c6c2457774f",
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/aggregate349-runtime/live-audit/tests.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/aggregate349-runtime/live-audit/ownership/7386a803fc454d4084cd90c59f510a1d.json",
+    "peak_rss": 193642496,
+    "peak_scratch": 807008,
+    "rc": 0,
+    "scope": "actual Render deployment all-record exactDTO parity",
+    "skipped_lines": [],
+    "summary": {},
+    "wall": 26.433322999999998
+  },
+  "cleanup": {
+    "code_identity_unchanged": true,
+    "compatibility_exception": null,
+    "dependency_link_absent": true,
+    "groups_absent": true,
+    "removed_allocation_bytes": 807008,
+    "reservation_absent": true,
+    "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/aggregate349-runtime/live-audit/result.json",
+    "scratch": "/tmp/vehicle-matcher-f58-63-20261106/aggregate349-live-audit",
+    "scratch_absent": true,
+    "time": "2026-11-07T02:10:52.170823+00:00"
+  },
+  "limits": {
+    "GET": 512,
+    "decodedBytes": 16777216,
+    "responseBytes": 1048576,
+    "requestMs": 10000,
+    "wallMs": 90000,
+    "workers": 1,
+    "retries": 0
+  },
+  "remaining": [
+    "10,000 genuinely distinct source target",
+    "scheme/model and original profile/WMI coverage",
+    "real representative image enrichment",
+    "large artifact publication/restore integration"
+  ],
+  "acceptance": "Stories remain In Progress; count and partial-corpus production correctness do not establish original full acceptance.",
+  "hashes": {
+    "report.json": "941191b3aa2a462c583d92ae668766404d3644077a8b454bb2b1e1ead88cd059",
+    "latency-summary.json": "5b495551ce69f4403f8faffb81d085f39d98332b65eaef042f83c49bfd20313f",
+    "cleanup.json": "1f7c931e9d18e93e6db2716c4906a48dc1a24577edc105877ce152a39242ee86"
+  }
+}

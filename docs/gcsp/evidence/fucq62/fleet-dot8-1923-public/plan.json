@@ -1,0 +1,119 @@
+{
+  "authorizationState": "prepared-only; public metadata, upload, download and activation unrun",
+  "checkPhase": "check",
+  "descriptorSha256": "4bdd52141fc37fa85faca210da96789b8775f6a31c8b004abf4f80c7f58e7305",
+  "excluded": [
+    "new source/provider/image requests or native DB",
+    "ordinary activation, deployment, Render/YAML/CI changes",
+    "foreground/browser operations or descendants",
+    "new consumer repair, AC waiver, Jira mutation or Story acceptance",
+    "unchanged engine69+11 suite and historical failed .7 Mac proofs",
+    "automatic retries or unauthorised cleanup of existing releases/tags/assets"
+  ],
+  "expected": {
+    "bytes": 99480791,
+    "configurations": 1924,
+    "configuredConsumerFailed": 469,
+    "configuredConsumerPassed": 1456,
+    "datasets": 9,
+    "direct": 1925,
+    "files": 23,
+    "httpComplement": 901,
+    "httpSample": 1024,
+    "httpUnique": 1925,
+    "images": 2,
+    "sourceConfigurations": 1923,
+    "sourceShards": 12,
+    "vinMappings": 1
+  },
+  "knownConsumerDefect": {
+    "disposition": "Specifically deferred; existing Bug draft; native Jira key unverified; no repair or AC waiver",
+    "draft": "../fleet-dot7-offline/consumer-bug-draft.md",
+    "expectedFailureRequestKeysSha256": "daa4913aa1e987416df546c38d48b6cc58340ce6c260f2d93d26c327948d7119",
+    "expectedFailuresPerVgModelCode": {
+      "1F7A": 144,
+      "1F7C": 325
+    },
+    "rawVerifierStatus": "invalid-active",
+    "requiredSignature": "source-unavailable only in configured consumer; matching direct DTO; present-empty mandatory-elements= source citation",
+    "severity": "Medium"
+  },
+  "network": {
+    "anonymousDownloadChildren": 1,
+    "anonymousMaxRequests": 46,
+    "assetSuccessResponses": 23,
+    "metadataCheckMaxApiCalls": 5,
+    "payloadBytes": 99480791,
+    "publishMaxApiCalls": 32,
+    "retryPolicy": "No automatic retry after any failed public attempt; retain actual status, causes and partial receipt. New bounded attempt requires parent authorization.",
+    "transport": "production fleet-artifacts CLI; anonymous GitHub release asset URLs plus approved redirects; deny Authorization and Cookie headers"
+  },
+  "offlineEvidence": {
+    "docs/gcsp/evidence/fucq62/fleet-dot8-1923-offline/http-complement-results.json": "18cd87c8e0ff563047409b81ebcb66ad3a35e224edb2c58efbdc377dbeaf0761",
+    "docs/gcsp/evidence/fucq62/fleet-dot8-1923-offline/recovery-results.json": "de09ba5fd226887a8873ea5c1b39710a1223d1d505cab73fcf3d4ab8c935618c",
+    "docs/gcsp/evidence/fucq62/fleet-dot8-1923-offline/strict-audit-report.json": "a6f80f825088e93df9bc0cf84166ba8c4163b918cba489c0ca74e6d7b4ab5102",
+    "docs/gcsp/evidence/fucq62/fleet-dot8-1923-offline/summary.json": "5545d9e1104ab5a5968459933a5c567a1db33de992ffa542840c0e1cfdd84d76"
+  },
+  "ordinaryBaselinePins": {
+    "active.json": "2bc198cab6ca384159f9b9d13c87a088f267c94610e6eeaaf9a1f02686e11480",
+    "identity-inventory.json": "fa727ff8b52b1bfa9c37f56ae0c4bc36c955bf0a39a661515dc23704e0807207",
+    "last-good.json": "b6b8471f01cde3fae2fbb0d4de22796a23b440923b7d5512284d03392f3cccc9",
+    "versions/86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f/configurations.jsonl": "513d7fc5977ad6a6c1ed773ab8d9d456ef75bb7bcceaf361ff939b2d5263d1d8",
+    "versions/86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f/images.jsonl": "eb04f0dca3046b045dd000ef4312eabc3d4b9af59b141cb0bd0e26a32230588a",
+    "versions/86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f/manifest.json": "86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f",
+    "versions/86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f/vins.jsonl": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd"
+  },
+  "ordinaryStore": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1",
+  "outputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot8-1923-public-20261107",
+  "packageRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot8-1923-20261107",
+  "previousExpected": {
+    "configurations": 1134,
+    "datasets": 8,
+    "images": 2,
+    "sourceConfigurations": 1133,
+    "vinMappings": 1
+  },
+  "previousManifestDigest": "86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f",
+  "previousTag": "fleet-2026-11-07-7",
+  "releaseId": "9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043",
+  "repository": "garyscarter-ibm/vehicle-matcher",
+  "resources": {
+    "childRamMiB": 576,
+    "expectedDownloadAuditSeconds": 150,
+    "expectedPeakAggregateRamMiB": 420,
+    "expectedPeakScratchMiB": 160,
+    "expectedRetainedMiB": 8,
+    "hostRamMiB": 640,
+    "scratchLocation": "owned OneDrive",
+    "scratchMiB": 192,
+    "secondsPerChunk": 600,
+    "workers": 1
+  },
+  "runId": "f62-dot8-1923-public-20261107",
+  "schemaVersion": "fleet-dot8-public-plan.v1",
+  "selected": [
+    "Offline --check-local: syntax, exact local descriptor/23asset hashes, committed immutable target and pinned offline evidence; no engine or HTTP rerun and zero network",
+    "After parent authorization, --check reads target, exact previous .7 release/tag identity and .8 absence in at most5 authenticated GitHub API calls",
+    "After exact reviewed grant, create/resume only immutable .8 prerelease/tag; upload exact23assets with checkpoints in at most32 authenticated GitHub API operations; preserve .7 release/tag",
+    "One production anonymous CLI downloads exact23assets in at most46 approved HTTP operations; no credentials or automatic retry; cold restore exact current+previous store and complete9dataset history",
+    "Fresh offline CLI idempotence; raw all1925 audit with actual469 deferred consumer failures; independent full DTO/consumer reconciliation and exact1024+901 HTTP union1925",
+    "Changed new-only790-source and existing two-image edges recover .7 with1133sources/2images while selection and full inventory remain byte unchanged; restore exact owned bytes"
+  ],
+  "staticImages": [
+    {
+      "asset": "assets/gcsp-vehicle-evidence/fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe.webp",
+      "bytes": 82798,
+      "imageId": "bmw-i5-white-20261101-v1",
+      "sha256": "fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe"
+    },
+    {
+      "asset": "assets/gcsp-vehicle-evidence/9704a8616835a1c1ce3b6d65f80e91cabb9edbfc0f83eca06b467bb3b1d236e3.webp",
+      "bytes": 77936,
+      "imageId": "bmw-1f7e-20261107-v2",
+      "sha256": "9704a8616835a1c1ce3b6d65f80e91cabb9edbfc0f83eca06b467bb3b1d236e3"
+    }
+  ],
+  "tag": "fleet-2026-11-07-8",
+  "target": "f175d3648d199057fc62b67f823214cae84f31e0",
+  "version": "2026-11-07.8"
+}

@@ -1,0 +1,459 @@
+{
+  "schemaVersion": "dot9-readiness-three-get-plan.v1",
+  "status": "prepared-no-execution-or-HTTP-authorized",
+  "executionRoot": "/Users/usget/Claude/vehicle-matcher",
+  "code": "91fe6cae774161365b196a342f79cbfce8aef030",
+  "manifestDigest": "28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884",
+  "previousFailedDeploymentId": "7617112384",
+  "deploymentRequirement": "Fresh successful meaningful deployment of exact readiness code; parent identifies deployment and pinned evidence. Blueprint auto-sync is not assumed. Original timeout cause remains unresolved.",
+  "origin": "https://gcsp-api.onrender.com",
+  "ordinaryStore": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1",
+  "ordinaryPins": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/active.json",
+      "bytes": 374,
+      "sha256": "337266f829e1878280898a94968051e465c9462c89dc91eaac9e5e43d39ab814",
+      "relativePath": "active.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/identity-inventory.json",
+      "bytes": 1367256,
+      "sha256": "f7fdf7460388e6012b81e3a3abd1879dc4bbae61e333b86d5afdbc93aa01e439",
+      "relativePath": "identity-inventory.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/last-good.json",
+      "bytes": 198,
+      "sha256": "6a3c3fcecb1f6ef4e06d3685c6e0e0c52285057043f4538a7f5f4d8514e1bf45",
+      "relativePath": "last-good.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/configurations.jsonl",
+      "bytes": 45277494,
+      "sha256": "355b05a93af83b60f6801470fff5dbe082f3c3ec662a45a1f2c17e7cf90496ea",
+      "relativePath": "versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/configurations.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/images.jsonl",
+      "bytes": 1410,
+      "sha256": "eb04f0dca3046b045dd000ef4312eabc3d4b9af59b141cb0bd0e26a32230588a",
+      "relativePath": "versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/images.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/manifest.json",
+      "bytes": 8254,
+      "sha256": "28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884",
+      "relativePath": "versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/manifest.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/publication-owner.json",
+      "bytes": 81,
+      "sha256": "eaa6a5bf69285d6f38a86e8388098e1cdaad1cd3fc501335d5dec9d93847e862",
+      "relativePath": "versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/publication-owner.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/vins.jsonl",
+      "bytes": 2565,
+      "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
+      "relativePath": "versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884/vins.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/configurations.jsonl",
+      "bytes": 16260738,
+      "sha256": "d208b4cb2af18af8e9b31dcff4344edc4e5f5deb848011d79cb92373333475bd",
+      "relativePath": "versions/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/configurations.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/images.jsonl",
+      "bytes": 691,
+      "sha256": "09cb58f5e660c3ba3fa723feb65cd85187788889799a84da853b58302f5546a8",
+      "relativePath": "versions/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/images.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/manifest.json",
+      "bytes": 3539,
+      "sha256": "421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d",
+      "relativePath": "versions/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/manifest.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/publication-owner.json",
+      "bytes": 81,
+      "sha256": "ab6def4da135a998f789099ed656ec12556093386f24db1169d4e25e034b90ee",
+      "relativePath": "versions/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/publication-owner.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/vins.jsonl",
+      "bytes": 2565,
+      "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
+      "relativePath": "versions/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/vins.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6/configurations.jsonl",
+      "bytes": 6344025,
+      "sha256": "08dbfbfca6ed3ef5cc4a9b1749cecce088e3812885f1cd33bd7ee494228895f9",
+      "relativePath": "versions/6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6/configurations.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6/images.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "relativePath": "versions/6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6/images.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6/manifest.json",
+      "bytes": 3476,
+      "sha256": "6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6",
+      "relativePath": "versions/6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6/manifest.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6/publication-owner.json",
+      "bytes": 81,
+      "sha256": "3f8e651228f3a032c4dd8e6bb6e24ae0b0f1b78e357eadce9a54338a586fa161",
+      "relativePath": "versions/6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6/publication-owner.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6/vins.jsonl",
+      "bytes": 2565,
+      "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
+      "relativePath": "versions/6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6/vins.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/configurations.jsonl",
+      "bytes": 8892234,
+      "sha256": "864878c9e93913f2fceef0ad2272933a0c3555cf71f07164b9ddd2f1582c6d84",
+      "relativePath": "versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/configurations.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/images.jsonl",
+      "bytes": 691,
+      "sha256": "09cb58f5e660c3ba3fa723feb65cd85187788889799a84da853b58302f5546a8",
+      "relativePath": "versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/images.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/manifest.json",
+      "bytes": 3539,
+      "sha256": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+      "relativePath": "versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/manifest.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/publication-owner.json",
+      "bytes": 81,
+      "sha256": "dc784050feb7682fc6fd2f610facbcf7f2f63f448761455f846accdd0790ba3f",
+      "relativePath": "versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/publication-owner.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/vins.jsonl",
+      "bytes": 2565,
+      "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
+      "relativePath": "versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/vins.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f/configurations.jsonl",
+      "bytes": 21319409,
+      "sha256": "513d7fc5977ad6a6c1ed773ab8d9d456ef75bb7bcceaf361ff939b2d5263d1d8",
+      "relativePath": "versions/86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f/configurations.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f/images.jsonl",
+      "bytes": 1410,
+      "sha256": "eb04f0dca3046b045dd000ef4312eabc3d4b9af59b141cb0bd0e26a32230588a",
+      "relativePath": "versions/86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f/images.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f/manifest.json",
+      "bytes": 3574,
+      "sha256": "86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f",
+      "relativePath": "versions/86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f/manifest.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f/publication-owner.json",
+      "bytes": 81,
+      "sha256": "4d210346fd4ae1e69f30d96c7ba01da68584f598f221c4cdc8f750df208464b6",
+      "relativePath": "versions/86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f/publication-owner.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f/vins.jsonl",
+      "bytes": 2565,
+      "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
+      "relativePath": "versions/86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f/vins.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9/configurations.jsonl",
+      "bytes": 6500952,
+      "sha256": "da5c54020b9ccf2eddef8160a8df4e501f7ce57884b195bd275e242ff843f2f5",
+      "relativePath": "versions/8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9/configurations.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9/images.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "relativePath": "versions/8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9/images.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9/manifest.json",
+      "bytes": 3476,
+      "sha256": "8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9",
+      "relativePath": "versions/8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9/manifest.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9/publication-owner.json",
+      "bytes": 81,
+      "sha256": "baac2f416792c5f47d5b4bc94ce049d28f625e9411b265595c471f0993554626",
+      "relativePath": "versions/8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9/publication-owner.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9/vins.jsonl",
+      "bytes": 2565,
+      "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
+      "relativePath": "versions/8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9/vins.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043/configurations.jsonl",
+      "bytes": 35564803,
+      "sha256": "81b80d49be0af769de9376095614a1a901a3e83b987390d2a0fab1ea2f64e7de",
+      "relativePath": "versions/9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043/configurations.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043/images.jsonl",
+      "bytes": 1410,
+      "sha256": "eb04f0dca3046b045dd000ef4312eabc3d4b9af59b141cb0bd0e26a32230588a",
+      "relativePath": "versions/9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043/images.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043/manifest.json",
+      "bytes": 3574,
+      "sha256": "9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043",
+      "relativePath": "versions/9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043/manifest.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043/publication-owner.json",
+      "bytes": 81,
+      "sha256": "119130cc0e69cbaac72919dab4705044833dba2f24e9a626c0c8c611f9289b07",
+      "relativePath": "versions/9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043/publication-owner.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043/vins.jsonl",
+      "bytes": 2565,
+      "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
+      "relativePath": "versions/9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043/vins.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/ba9442f93ae8ac2c77d47631061827a16be42f9d3a4a5e64f9b32866928b6d5a/configurations.jsonl",
+      "bytes": 6362364,
+      "sha256": "0cc612453c1ab68a160b9001098710d3654c8c2c8ff173ef5b7edfc6c27a1e32",
+      "relativePath": "versions/ba9442f93ae8ac2c77d47631061827a16be42f9d3a4a5e64f9b32866928b6d5a/configurations.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/ba9442f93ae8ac2c77d47631061827a16be42f9d3a4a5e64f9b32866928b6d5a/images.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "relativePath": "versions/ba9442f93ae8ac2c77d47631061827a16be42f9d3a4a5e64f9b32866928b6d5a/images.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/ba9442f93ae8ac2c77d47631061827a16be42f9d3a4a5e64f9b32866928b6d5a/manifest.json",
+      "bytes": 3476,
+      "sha256": "ba9442f93ae8ac2c77d47631061827a16be42f9d3a4a5e64f9b32866928b6d5a",
+      "relativePath": "versions/ba9442f93ae8ac2c77d47631061827a16be42f9d3a4a5e64f9b32866928b6d5a/manifest.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/ba9442f93ae8ac2c77d47631061827a16be42f9d3a4a5e64f9b32866928b6d5a/publication-owner.json",
+      "bytes": 81,
+      "sha256": "2ca04186f2cf4f2fac096200525f460819087164358b9e3ace7efcd033759bcc",
+      "relativePath": "versions/ba9442f93ae8ac2c77d47631061827a16be42f9d3a4a5e64f9b32866928b6d5a/publication-owner.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/ba9442f93ae8ac2c77d47631061827a16be42f9d3a4a5e64f9b32866928b6d5a/vins.jsonl",
+      "bytes": 2565,
+      "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
+      "relativePath": "versions/ba9442f93ae8ac2c77d47631061827a16be42f9d3a4a5e64f9b32866928b6d5a/vins.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/configurations.jsonl",
+      "bytes": 12296,
+      "sha256": "9c1fb6a34e324e6e4937baa1e80eabafa44fae394dd138f2f77be9f6867e9855",
+      "relativePath": "versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/configurations.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/images.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "relativePath": "versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/images.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/manifest.json",
+      "bytes": 3093,
+      "sha256": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709",
+      "relativePath": "versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/manifest.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/vins.jsonl",
+      "bytes": 2565,
+      "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
+      "relativePath": "versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/vins.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3/configurations.jsonl",
+      "bytes": 527502,
+      "sha256": "2b32175599acdc5961a7dba21a65261e2a7ccafb779c71903e903aaa6139e1bc",
+      "relativePath": "versions/eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3/configurations.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3/images.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "relativePath": "versions/eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3/images.jsonl"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3/manifest.json",
+      "bytes": 3432,
+      "sha256": "eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3",
+      "relativePath": "versions/eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3/manifest.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3/publication-owner.json",
+      "bytes": 81,
+      "sha256": "c880933aa63f58626fb6b4dac8a24f285c134d3626892fc45cf04adad9703e41",
+      "relativePath": "versions/eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3/publication-owner.json"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3/vins.jsonl",
+      "bytes": 2565,
+      "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
+      "relativePath": "versions/eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3/vins.jsonl"
+    }
+  ],
+  "ordinaryTreeSha256": "ccb40644cc7ef443bf10ea63ccbae63432efcab8ca29050e9d0888a9e6f7c4a2",
+  "ordinaryVersions": 10,
+  "firstReference": {
+    "request": {
+      "kind": "configuration",
+      "id": "MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIQyxTMDIzMCxTMDJQQSxTMDJUNCxTMDJUQixTMDJWQixTMDJWRCxTMDJWTCxTMDMwMixTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzMSxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRHUSxTMDRNQyxTMDRVUixTMDUzNCxTMDU0NCxTMDU1MixTMDVBQyxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDY3NixTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxNSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNVSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNQ=="
+    },
+    "rowKey": "d72c05557861bb646f57484e60d26c3f1f35df5c20b0dd18e01256188c7d0ca2",
+    "encodedPath": "/api/gcsp/vehicle-evidence/configurations/MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIQyxTMDIzMCxTMDJQQSxTMDJUNCxTMDJUQixTMDJWQixTMDJWRCxTMDJWTCxTMDMwMixTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzMSxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRHUSxTMDRNQyxTMDRVUixTMDUzNCxTMDU0NCxTMDU1MixTMDVBQyxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDY3NixTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxNSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNVSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNQ%3D%3D",
+    "pathSha256": "0b4003eaeb1b378106ce349a0494b2c051a384e401496c54d3521c6c5fe1b79d",
+    "expectedDtoSha256": "2243502effab87b1a3653d7b67424f7a74af773bf5e656888a248772176d1c77",
+    "priorOfflineDirectAndHttpPassed": true
+  },
+  "priorOfflineReceipt": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot9-2424-20261107/http-chunk0-receipt.json",
+    "bytes": 722002,
+    "sha256": "e84389919edf0eeb3b39ae11d11ea303b0b0080595504343c618f28b3af71f58"
+  },
+  "asOf": "2026-11-07T00:00:00.000Z",
+  "codePins": {
+    "server/gcsp/policy/activation.js": "4e79235b761e8daf94f3cf2744c4bc585146181b410b64497669bd353ee7c4d6",
+    "server/gcsp/policy/adoption.js": "a2cb9a74946cd9eda413d896a0abc2f4299b3b75880a77ddd510667a5187c870",
+    "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+    "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+    "server/gcsp/policy/memory-provider.js": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+    "server/gcsp/policy/postgres-provider.js": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+    "server/gcsp/policy/publish.js": "c521e15966be7762a3348ad860403ef555dd8cbd48405e7d23d9a7c6d262a826",
+    "server/gcsp/policy/reviewed-definitions.js": "75518df649ba542ad32b876f8ee1b680e29b417c3b1f8dc90fcf1d4713a42cbb",
+    "server/gcsp/policy/reviewed/fucq115-choice-model-v1.json": "89565ec7fa05db042e623c6c88c132542505f7757848e61784f38d49b8391987",
+    "server/gcsp/policy/reviewed/greg-publish-editor-v1.json": "7c7680227cdcd6e5f5afbb9fedb06b73c4768b2a3c7526cbf9cb9c03ccdfd8c3",
+    "server/gcsp/policy/reviewed/offer-decline-reasons-v1.json": "1f1b632be83ddef1a5656288b4e40c0378736cda5c21fcf03de68544dfbe688f",
+    "server/gcsp/policy/reviewed/offer-followup-questions-v1.json": "2b634e30a65f8fce6a3cfef67e10b04e9dff72ecb4fe296c51330e98efe86d5d",
+    "server/gcsp/policy/reviewed/presenter-controls-v1.json": "0e09fc7cde7677724153265042eb1f7a122c88115762a736a4bdf02a4b2e470a",
+    "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/vehicle-evidence/alternate-offline-adapter.js": "3c962e8576da4b65141b29fbb53a9f8e3efd45e43b883bc262df68855fc38a9d",
+    "server/gcsp/vehicle-evidence/application-vehicle-details.js": "64bb6073a90f8aca27766c314a08073ee9df320e2683122cd05b3c6fe49d808f",
+    "server/gcsp/vehicle-evidence/corpus-publisher.js": "fa1618642c137c8aa2c0d7749d91e749554bcca6608bac71ae527b147c9ef9bc",
+    "server/gcsp/vehicle-evidence/fleet-artifacts.js": "8567ef55e6cf914c1ea8d6f8c7bbb7797f96116030163d58b46eb594feb05de6",
+    "server/gcsp/vehicle-evidence/fleet-release.js": "d6081dc483d9d28da4cce712c8ad762ff275c07ae012d216893d85963d495ff0",
+    "server/gcsp/vehicle-evidence/fleet-releases.json": "b0eaafddedc55f163fdf32a6a77afb3f55eb2096d5e31256e8bf8591f50c085b",
+    "server/gcsp/vehicle-evidence/identity-routing.js": "89d805c94c5f7a9dd026daae40e42167355822961d07597bf0cf69c45b649088",
+    "server/gcsp/vehicle-evidence/indexed-jsonl.js": "0bb27219a621b101b9dbc629f2bb198785d57ee2da7ec642ff0b9472804ad55a",
+    "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "600691740887daee2e4380189872b76a62273d6629c0bba0b25f46ff6921d774",
+    "server/gcsp/vehicle-evidence/lookup-adapter.js": "3060d1707c254ff28ee45c7eedf16802aa57aed9b7d9a52a96206bf0cef395e3",
+    "server/gcsp/vehicle-evidence/provider-read.js": "e194fdeb9ff55faafaadd916b2e0ce34c9d8dce252dc37c3ce04aa8de77bb87b",
+    "server/gcsp/vehicle-evidence/registered-catalogue-sources.js": "05cbd91273518c03a9804064126570728c88e32c79b49f815126086d44ba014d",
+    "server/gcsp/vehicle-evidence/registered-corpus-images.js": "47d27d11406e5ffe05790be8893395b6399b142d8befd268d30b5c60407b9e8e",
+    "server/gcsp/vehicle-evidence/registered-technical-facts.js": "0109334b8657a225e498d3ff78068827880e6f2d6bff527c349a265792d8018f",
+    "server/gcsp/vehicle-evidence/synthetic-registry.js": "38f86f5121fae767465b81a4615355b7577c35f6b74ed57263441240d617f1e4",
+    "server/gcsp/vehicle-evidence/vehicle-details-contract.js": "28d09b0060646930cc3aa2dd08d4d6f744c65e32b40a2ebd55a1b59b392ca62f",
+    "server/gcsp/vehicle-evidence/vehicle-evidence-handler.js": "9e118acfe39f550f06e6c319f536ca8768ca4b41820fd9ca9593e79b18f8c8f0",
+    "server/gcsp/vehicle-evidence/vehicle-lookup.js": "1184b7cc50565b180284e342183cca02e031a718a55f909b7980c34378a630e9",
+    "server/gcsp/vehicle-evidence/vin-allocation.js": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e",
+    "server/gcsp/vehicle-evidence/vin-generator.js": "56072df720ff4b32d26fcd099852f397f140ae44b4658532fa952d11c717260f",
+    "server/gcsp/vehicle-evidence/vin-profiles.js": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "90cf9187cb44dc6d17e6984a0fdc25dc13fc9078c23d3652d779a565cedc29a7",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56",
+    "server/vehicle-evidence/bmw-drivers-guide-provider.js": "b3098765b750132b23edc0beb108ef74b173a8c236bbccb44b262e2a54da8f99",
+    "server/vehicle-evidence/bmw-image-adapter.js": "56753ac7e47e4790159e7d50fb4deafe1658730e803912f064e6ed09326774ef",
+    "server/vehicle-evidence/bmw-live-imagery.js": "40c9c7fd202e211034c540a5a4b7117ef9fd3f4a16b65ede59147bb1f5fe16ce",
+    "server/vehicle-evidence/bmw-vin-guide-adapter.js": "f910c56a1148831b01712fdce314ac152bb052c8302f5bfa32c95cd44131bba6",
+    "server/vehicle-evidence/bmw-vin-guide-synthetic.js": "2a5c08d01d03ee07afd0495aef595721b74046ce8ea1a625630e8c4cfeb91f5e",
+    "server/vehicle-evidence/fixtures/bmw-vin-guide-synthetic.v1.json": "0d2f5eca90ae10a6a0a1591228d26f93c2c88c5ee91145ae46ec82508898c546",
+    "server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json": "ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3",
+    "server/vehicle-evidence/snapshots/bmw-gb-i5-images-2026-11-01.v1.json": "b6bbe8e39b018b1a38551d818e1dfe9b6504283c95dedd033d59d4df8395d393",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "server/index.js": "17f4982ac5e3420c012db31ac50884d63587e568968ca96f1f0583775e8fec19"
+  },
+  "preparedScripts": [
+    {
+      "name": "probe.mjs",
+      "sha256": "035be9c2901784ae40c7b2c18d9eef29c5fa8d9c260f9e66450585be629e5dfe",
+      "bytes": 7451
+    },
+    {
+      "name": "supervise.py",
+      "sha256": "b31aec90cd9fd0922a8361494e584de3c1b2a8a19dd0cf58d3c89a483164c073",
+      "bytes": 8802
+    },
+    {
+      "name": "group-proof.py",
+      "sha256": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
+      "bytes": 958
+    },
+    {
+      "name": "check-lifecycle.py",
+      "sha256": "92895e0686e075fb201e0bbfe5691000f990bc6834b9236faa4641e7327ab77e",
+      "bytes": 4312
+    }
+  ],
+  "outputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot9-readiness-three-get-20261107",
+  "metadataRoot": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot9-readiness-three-get",
+  "phase": "readiness-first-dto",
+  "requests": [
+    "GET /health",
+    "GET /health/vehicle-evidence",
+    "GET exact first configuration"
+  ],
+  "limits": {
+    "newGETs": 3,
+    "requestMilliseconds": 30000,
+    "totalMilliseconds": 90000,
+    "retries": 0,
+    "redirects": 0,
+    "responseBodyBytes": 1048576,
+    "responseHeaderBytes": 16384,
+    "headerValueBytes": 2048
+  },
+  "resources": {
+    "workers": 1,
+    "hostReservationMiB": 512,
+    "maximumGroupRssMiB": 448,
+    "nodeHeapMiB": 320,
+    "scratchMiB": 64,
+    "diskReservationMiB": 64,
+    "seconds": 90,
+    "cloudScratch": true,
+    "expectedRetainedMiB": 4,
+    "outerLogMiB": 2,
+    "processLogMiB": 1
+  },
+  "stopRule": "Any request failure, non200 health, or readiness without200/ok/ready/exactmanifest stops immediately. The configuration GET is reserved only after exact readiness. No replay.",
+  "rawEvidence": "Each response retains bounded raw body and bounded raw header values with credential/cookie headers redacted, sanitized readiness, status/digest/timing. A failed request retains partial bytes when available and pending reservation.",
+  "sourceCalls": 0,
+  "unrun": [
+    "All three publicGETs; fresh meaningful deployment verification",
+    "Full2426reference parity",
+    "Originaltimeout root-cause proof",
+    "Liveimage/nativeDB/sourceprovider traffic",
+    "Publication,credentials,browser,consumerrepair,Doneacceptance"
+  ],
+  "acceptance": false,
+  "originalTimeoutCauseProved": false
+}

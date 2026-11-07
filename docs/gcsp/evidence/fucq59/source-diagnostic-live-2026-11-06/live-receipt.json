@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "f59-live-diagnostic-receipt.v1",
+  "allocation": "f59-source-diagnostic-20261106",
+  "producerCommit": "0937991c1335b2b1bfe9b5ea62a949655e382097",
+  "codeTestIdentity": "19ac7ff91412b993630659ae1d01f77a1b4b682b5418af9d6ca241e85f2a4b18",
+  "planSha256": "b7b37c394a06e7e9d42cd13aca2cc852c095e11802c8fb7d55ba599925142631",
+  "planDigest": "4e2cbc431db832e68103d2f1c1a2c3f07e0499302416db90218f65d15dd0098e",
+  "startedAt": "2026-11-06T13:14:14.687Z",
+  "completedAt": "2026-11-06T13:14:15.497Z",
+  "reason": "settings-header-shape",
+  "cancelled": false,
+  "counts": {
+    "sourceCalls": 2,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "cacheEvictions": 0,
+    "httpAttempts": 2,
+    "decodedBytes": 638409,
+    "operations": {
+      "page": 1,
+      "settings": 1,
+      "discover": 0,
+      "options": 0
+    },
+    "cacheHits": {
+      "page": 0,
+      "settings": 0,
+      "discover": 0,
+      "options": 0
+    },
+    "operationBytes": {
+      "page": 17763,
+      "settings": 620646,
+      "discover": 0,
+      "options": 0
+    }
+  },
+  "countBasis": "executor final result",
+  "checkpoint": {
+    "status": "valid",
+    "sha256": "43f790fd8e82d1cd6f27377bd0fa70798adc213378586aeaf8b9b4c4be852670",
+    "bytes": 2742,
+    "retained": false
+  },
+  "artifacts": [],
+  "exportFailures": [],
+  "bootstrapObservations": [],
+  "qualification": "observation-only-schema-diagnostic",
+  "admission": false,
+  "accepted": [],
+  "distinctConfigurations": 0,
+  "solver": 0,
+  "sourceWrites": 0,
+  "imageRequests": 0,
+  "browser": 0,
+  "sql": 0,
+  "credentialLookups": 0,
+  "fullRawRetention": 0,
+  "cleanup": "PENDING supervisor process-group join, scratch removal and independent absence receipt; once marker remains spent",
+  "reviewRequired": "actual raw localisation pointer/root binding; no classifier, F39/F54 publication or schema compatibility claim"
+}

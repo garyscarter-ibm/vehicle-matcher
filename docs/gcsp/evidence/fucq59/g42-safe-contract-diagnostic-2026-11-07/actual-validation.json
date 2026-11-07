@@ -1,0 +1,178 @@
+{
+  "schemaVersion": "bmw-safe-contract-diagnostic-actual-validation.v1",
+  "scope": "scoped retained actual evidence; no production repair or acceptance",
+  "sourceExecutionCommit": "b52ba733fe8e7967117636d22c72a35eb86cc5b2",
+  "sourceExecutionPlanSha256": "bab4501c1e12382c01518d432f728e6c4637fe5b97811875f00a9b635841792c",
+  "sourcePinsRemainUnchanged": true,
+  "parentReleaseSha256": "fe145dbf2db8626481fe91f0049c8fb335299068d0475cf1df19a48420dc1385",
+  "sourceResult": {
+    "identity": {
+      "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/diagnostic.mjs": "c3610a8faa86d963a8843b5071f98472c5d6ea183d79bc1eb23ade95a61fc109",
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/diagnostic.test.mjs": "593d35a52de356efedc014fb0c0793d5a8cf4e9b2fd5ea0938986697f706945a",
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/execution-plan.json": "bab4501c1e12382c01518d432f728e6c4637fe5b97811875f00a9b635841792c",
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/export-retained.py": "4f9f2ed9ff2ae2dc45f27476c3a2dab369b4e02dc319f87e6aaf901b269631ef",
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/prepare.py": "357c903b6a90578d1d3689620ebe19eccee409a2b30a662f45d2ee0408516f78",
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/qualification-plan.json": "cc79b73c233215099a0fa2cd8e48f3e54c77a599050548b2a7dbafae2adb597b",
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/run-live.mjs": "9374372d36130724eb6e8b0bb4d59144ae35eaedd2cddfa53314887de3b796f2",
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/supervise.py": "1cd73b7b36094b48290af40d7a3f10148b8d012b048219af08d6b6aa3c27e606",
+      "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+      "scripts/gcsp/bmw-public-registration.mjs": "3a9a1afcc128f8356bb296b063d118bc9b7c59531ef75823bb99f8e01f209291",
+      "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+      "scripts/gcsp/collection-session.mjs": "db5a1a1ca6037132eced521f1a9b19d73a4282a113da66480ebec70c0beac7ff",
+      "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+      "scripts/gcsp/public-bmw-source.mjs": "4561e844cfe85383ad8ed27521bab157a10dae57f8d82ab29b8f41842bfc8336",
+      "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+      "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+      "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+      "server/test/gcsp-bmw-range-inventory.test.js": "cb9c6702f94749ccfb86e84545f8ee32e24013019cd94fed129ea90acd63ad5e"
+    },
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-safe-contract-diagnostic/live/check.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-safe-contract-diagnostic/live/ownership/89a4f686c4d74466ad227263b50c7406.json",
+    "peak_rss": 82558976,
+    "peak_scratch": 0,
+    "rc": 0,
+    "scope": "scoped; source traffic only if exact live release",
+    "testCounts": null,
+    "wall": 1.561059209
+  },
+  "sourceCleanup": {
+    "checkpointExport": {
+      "accepted": 0,
+      "checkpointSha256": "0e277490365f8089fd2b794a44a169b10a5efe64b3d9a4eb4c5bc572dc0897cc",
+      "cursor": null,
+      "primaryRetained": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/collector-checkpoint.json",
+      "sourceBindingSemantics": "requires-source-binder-verification; hashes-only-export",
+      "sourceCaptures": 0,
+      "status": "exported"
+    },
+    "compatibility_exception": null,
+    "exportIssue": null,
+    "groups_absent": true,
+    "leftovers": [],
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-safe-contract-diagnostic/live/ownership/89a4f686c4d74466ad227263b50c7406.json",
+    "removed_allocation_bytes": 0,
+    "reservation_absent": true,
+    "retainedPrimary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/collector-checkpoint.json",
+    "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-safe-contract-diagnostic/live/result.json",
+    "scratchRoot": "/private/tmp/test-stamp-shard-89a4f686c4d74466ad227263b50c7406",
+    "scratch_absent": true
+  },
+  "retainedChecks": {
+    "identity": {
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/accepted.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/actual-check.test.mjs": "2ecc4997a3f3fea4ad0ae6fabebeeb1c23381134857f9782d8719ce05d8d8908",
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/checkpoint-export.json": "48c1b7210b17c360ea5cb2c39f34c58632b3fb98d3c985c1d73625d00ccd34c9",
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/collector-checkpoint.json": "0e277490365f8089fd2b794a44a169b10a5efe64b3d9a4eb4c5bc572dc0897cc",
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/collector-state.json": "0e277490365f8089fd2b794a44a169b10a5efe64b3d9a4eb4c5bc572dc0897cc",
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/diagnostic.json": "76711bca1cfbd20b44ba4aa66c860c8cf1513b92f68a27bb70977fe9f798d743",
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/diagnostic.mjs": "c3610a8faa86d963a8843b5071f98472c5d6ea183d79bc1eb23ade95a61fc109",
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/execution-once.json": "004441bbf8f52a031fa3a74af38a492d20c2885bc02025e0a33bd2763342476b",
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/execution-plan.json": "bab4501c1e12382c01518d432f728e6c4637fe5b97811875f00a9b635841792c",
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/next-qualification.proposed.json": "5af3ec78434a2c53c5c6b324b927bff5e083b1d5546c980ea1486d60619d16d8",
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/qualification-plan.json": "cc79b73c233215099a0fa2cd8e48f3e54c77a599050548b2a7dbafae2adb597b",
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/receipt.json": "fa5b8f905d82797da7bb252bf3bf7d82f2e137993ccafb2bebb710e9f177ba10",
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/source-events.jsonl": "28daa87fa7614150817d68c87a5d1d3d1d8f9e2c9842bd59cb095e715868ea3d",
+      "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/validate-actual.py": "6912c89e3de7e10f271c9513e656f7207f384f5c287d453fba7b65b1da2290dc"
+    },
+    "identityUnchanged": true,
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-safe-contract-diagnostic/actual-validation/check.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-safe-contract-diagnostic/actual-validation/ownership/5a6014b011574845a6b1dff2e8eeb4cf.json",
+    "peak_rss": 2244608,
+    "peak_scratch": 0,
+    "rc": 0,
+    "testCounts": {
+      "fail": 0,
+      "pass": 5,
+      "skipped": 0,
+      "tests": 5
+    },
+    "wall": 0.24607549999999997
+  },
+  "retainedCheckCleanup": {
+    "compatibility_exception": null,
+    "groups_absent": true,
+    "leftovers": [],
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-safe-contract-diagnostic/actual-validation/ownership/5a6014b011574845a6b1dff2e8eeb4cf.json",
+    "removed_allocation_bytes": 0,
+    "reservation_absent": true,
+    "scratchRoot": "/private/tmp/test-stamp-shard-5a6014b011574845a6b1dff2e8eeb4cf",
+    "scratch_absent": true
+  },
+  "allOwnedRunAbsence": [
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-safe-contract-diagnostic/actual-validation/ownership/5a6014b011574845a6b1dff2e8eeb4cf.json",
+      "root": "/private/tmp/test-stamp-shard-5a6014b011574845a6b1dff2e8eeb4cf",
+      "state": "removed",
+      "sampledPeakBytes": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-safe-contract-diagnostic/actual-validation/ownership/c1ca60d7249649258f886d25aba2693b.json",
+      "root": "/private/tmp/test-stamp-shard-c1ca60d7249649258f886d25aba2693b",
+      "state": "removed",
+      "sampledPeakBytes": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-safe-contract-diagnostic/live/ownership/89a4f686c4d74466ad227263b50c7406.json",
+      "root": "/private/tmp/test-stamp-shard-89a4f686c4d74466ad227263b50c7406",
+      "state": "removed",
+      "sampledPeakBytes": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-safe-contract-diagnostic/red/ownership/88633dac5424494cb098fb2778692dd7.json",
+      "root": "/private/tmp/test-stamp-shard-88633dac5424494cb098fb2778692dd7",
+      "state": "removed",
+      "sampledPeakBytes": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-safe-contract-diagnostic/validate/ownership/32588e301cf346979e911e0f522763f3.json",
+      "root": "/private/tmp/test-stamp-shard-32588e301cf346979e911e0f522763f3",
+      "state": "removed",
+      "sampledPeakBytes": 20576
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-safe-contract-diagnostic/validate/ownership/5e719344bdb7422b8f517e23b441e3bf.json",
+      "root": "/private/tmp/test-stamp-shard-5e719344bdb7422b8f517e23b441e3bf",
+      "state": "removed",
+      "sampledPeakBytes": 20576
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-safe-contract-diagnostic/validate/ownership/96e96f0f01a14d8e95089fed439cde80.json",
+      "root": "/private/tmp/test-stamp-shard-96e96f0f01a14d8e95089fed439cde80",
+      "state": "removed",
+      "sampledPeakBytes": 24704
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-safe-contract-diagnostic/validate/ownership/e1c15f5311544f39a10bf4b6b6f1aa46.json",
+      "root": "/private/tmp/test-stamp-shard-e1c15f5311544f39a10bf4b6b6f1aa46",
+      "state": "removed",
+      "sampledPeakBytes": 0
+    }
+  ],
+  "retainedHashes": {
+    "collector-checkpoint.json": "0e277490365f8089fd2b794a44a169b10a5efe64b3d9a4eb4c5bc572dc0897cc",
+    "collector-state.json": "0e277490365f8089fd2b794a44a169b10a5efe64b3d9a4eb4c5bc572dc0897cc",
+    "diagnostic.json": "76711bca1cfbd20b44ba4aa66c860c8cf1513b92f68a27bb70977fe9f798d743",
+    "receipt.json": "fa5b8f905d82797da7bb252bf3bf7d82f2e137993ccafb2bebb710e9f177ba10",
+    "source-events.jsonl": "28daa87fa7614150817d68c87a5d1d3d1d8f9e2c9842bd59cb095e715868ea3d",
+    "execution-once.json": "004441bbf8f52a031fa3a74af38a492d20c2885bc02025e0a33bd2763342476b",
+    "checkpoint-export.json": "48c1b7210b17c360ea5cb2c39f34c58632b3fb98d3c985c1d73625d00ccd34c9",
+    "next-qualification.proposed.json": "5af3ec78434a2c53c5c6b324b927bff5e083b1d5546c980ea1486d60619d16d8"
+  },
+  "samplingLimit": "Short-lived copied-primary scratch and process RSS can occur between 200 ms samples; zero sampled bytes does not establish no allocation. All owned roots were verified absent.",
+  "sourceAttempts": 3,
+  "options": 0,
+  "solver": 0,
+  "images": 0,
+  "admissions": 0,
+  "capacityCredit": 0,
+  "productionBugFixed": false,
+  "acceptance": false,
+  "compatibilityException": null,
+  "largeOutputs": false,
+  "leftovers": []
+}

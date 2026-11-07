@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "fleet-dot12-linux-activation.v1",
+  "observedAt": "2026-11-07T09:42:46.663299+00:00",
+  "status": "workflow-selected-awaiting-actual-run",
+  "changedPaths": [
+    ".github/workflows/gcsp-fleet-build.yml"
+  ],
+  "releaseId": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "workflowSha256": "f918b16ecd7aaa5c7d00cf4e0518300ab1d8a01c9f632036918af84fdc15d34d",
+  "codeOwnedAnchorSha256": "e13a5f99167bea65cc9a04e6eae41cec56b55caaa229b640e0e47b20f44301e0",
+  "preparedPlanSha256": "5041c2445d62e0df299a080bf9b6a69f2cce627dac45a0ed67a70d5bb1e62f28",
+  "selection": {
+    "regression": ".12publicLinuxcoldrestore/offlinerepeat/exactassets/5boundaryreferences",
+    "checks": [
+      "Exact prepared workflow/preserved diagnostics pins",
+      "Portable helper byte identities",
+      "YAML parse and bash syntax",
+      "Actual GitHub Linux job after push"
+    ],
+    "excluded": [
+      "No new source collection,SQL,local public-download replay,full suite or liveGET",
+      "Render selector remains.10 until Linux outcome"
+    ],
+    "reason": "Only existing reviewed CI selector/bounds change.17prior runtime/build/Render tests are unchanged; exact retained-cache production restore just passed40.496s. Linux is the next actual public build check."
+  },
+  "orderingRevision": "Prior proposal requested cold/offline/recovery before application. Existing-cache fresh-store restore now passed; Linux will execute public cold and genuine offline repeat directly. No extra local public redownload or unrelated source/native gate is imposed. Render remains a subsequent step.",
+  "localExistingCacheReceiptSha256": "3c0e8ced7572d327a30b8c03f942baecb3c1757d515c54ab75b2b08e2f1b16b2",
+  "historicalConsumerFailures": 2707,
+  "expectedScopedConsumerFailures": 2,
+  "resources": {
+    "workers": 1,
+    "nodeHeapMiB": 512,
+    "scratchBudgetMiB": 2048,
+    "jobMinutes": 10,
+    "phaseSeconds": {
+      "npm-ci": 90,
+      "download": 240,
+      "offline": 90,
+      "verify-assets": 30,
+      "boundary": 120
+    },
+    "sumPhaseCeilingsSeconds": 570,
+    "jobHeadroomSeconds": 30
+  },
+  "staticChecks": {
+    "portableHelpers": "pass",
+    "YAML": "pass",
+    "bashSyntax": "pass"
+  },
+  "scratchCreatedBytes": 0,
+  "compatibilityException": null,
+  "leftovers": [],
+  "acceptance": false
+}

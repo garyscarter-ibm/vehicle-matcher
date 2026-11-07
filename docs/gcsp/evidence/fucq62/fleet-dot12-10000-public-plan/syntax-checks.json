@@ -1,0 +1,35 @@
+{
+  "scope": "static preparation only",
+  "planSha256": "f76e0360c518885432784687629a5d6e539c995097e16ebf66ae1a517aa65339",
+  "checks": [
+    {
+      "path": "supervise.py",
+      "check": "Python AST parse",
+      "passed": true
+    },
+    {
+      "path": "group-proof.py",
+      "check": "Python AST parse",
+      "passed": true
+    },
+    {
+      "path": "common.mjs",
+      "check": "Node syntax only; no imports/runtime",
+      "passed": true
+    },
+    {
+      "path": "public.mjs",
+      "check": "Node syntax only; no imports/runtime",
+      "passed": true
+    },
+    {
+      "check": "all current code/evidence/runtime/ordinary pins; checkout anchor unchanged",
+      "passed": true,
+      "codePins": 181
+    }
+  ],
+  "runtimeExecuted": false,
+  "networkExecuted": false,
+  "scratchAllocated": false,
+  "acceptance": false
+}

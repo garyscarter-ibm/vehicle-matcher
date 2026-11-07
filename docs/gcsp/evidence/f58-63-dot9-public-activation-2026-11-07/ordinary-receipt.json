@@ -1,0 +1,31 @@
+{
+  "status": "ordinary-dot9-published-operationally-consumer-acceptance-failed",
+  "releaseId": "28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884",
+  "previousManifestDigest": "9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043",
+  "counts": {
+    "configurations": 2425,
+    "distinctConfigurations": 2425,
+    "images": 2,
+    "qualifyingCompleteDistinctSourceConfigurations": 2424,
+    "sourceConfigurations": 2424,
+    "vinMappings": 1
+  },
+  "priorConfigurationHistoryRetained": 1924,
+  "priorVersionFilesByteIdentical": true,
+  "identitiesAndPriorDatasetsRetained": true,
+  "addedDatasetVersions": 1,
+  "idempotentRepeat": true,
+  "coldRestart": true,
+  "supplementExact": true,
+  "bodyLengthUnknown": true,
+  "publicReceiptSha256": "180154a9d90b4e0af698bef36f6774c6aa986663c47751978181900b3fb24609",
+  "consumerPassed": 1941,
+  "consumerFailed": 485,
+  "consumerAcceptanceWaived": false,
+  "operationalDisposition": "Publish the proven additive2424source corpus operationally under the collaborator instruction to get built/live and defer nonblocking defects; preserve all485observed configured-consumer failures and independent backlog limitations. Original acceptance remains false; no defect claimed fixed, native proof unrun.",
+  "sourceCalls": 0,
+  "externalCalls": 0,
+  "nativeStockProof": "unrun",
+  "deploymentExecuted": false,
+  "acceptance": false
+}

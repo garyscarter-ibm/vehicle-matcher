@@ -1,0 +1,129 @@
+{
+  "story": "FUCQ-102",
+  "scope": "Original deployment landing URL criterion; targeted backend increment",
+  "recordedAt": "2026-11-06T21:51:20.212808+00:00",
+  "base": "b9eeb85b29b85611b3dfc33f613c653a48cf0410",
+  "testedDirtyCodeKey": "695696d301810952b4264f79373e110c891cb104c8ff13c24515fc0d93d6c48f",
+  "variant": "default",
+  "command": "node --test --test-reporter=tap --test-concurrency=1 server/test/gcsp-offer-token-coordinate.test.js server/test/gcsp-offer-access.test.js server/test/gcsp-offer-access-producer.test.js server/test/gcsp-buddy-remote.test.js",
+  "selected": [
+    "server/test/gcsp-offer-token-coordinate.test.js",
+    "server/test/gcsp-offer-access.test.js",
+    "server/test/gcsp-offer-access-producer.test.js",
+    "server/test/gcsp-buddy-remote.test.js"
+  ],
+  "counts": {
+    "tests": 95,
+    "pass": 95,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "result": "passed",
+  "sourceSHA256": {
+    "server/test/gcsp-offer-token-coordinate.test.js": "30eb344c5dd57ea1f1054bc39b4c58f4dfd2b20608ee2ee06ed6b60fa385ab60",
+    "server/test/gcsp-offer-access.test.js": "8a3ee60f9b0dad8efbe2071ae83f4a96fff60d74edc3322fb2af5845cc783ac8",
+    "server/test/gcsp-offer-access-producer.test.js": "702fd232f5542b7cd6147d87740108dd7b9e79488561e2675ca0ef1db9d73980",
+    "server/test/gcsp-buddy-remote.test.js": "322f8b1f19bf0b5ac5d2d26a9b2dc32686c2ef7d4b9b5334d8d86da1baa3e83d",
+    "server/gcsp/offers/access.js": "63fac0a89e50b8b4bd5c8bed581dd49bed42519c76b2b6232de155533d37fb3c",
+    "server/gcsp/offers/access-http.js": "f37533eeb5309cb4eff6c6dcf0af5ab8a8819afdaa4d08b4baee0147d360e868",
+    "server/gcsp/offers/offer-token.js": "6d1957788056f276b834df46144205e6cd73195aa60e966f380e1eea97cc930d",
+    "server/gcsp/offers/buddy-hold.js": "0bac9da60039a4947485ef98bf2cc292a65d0786b3baf37e832c62d3b950a8e4",
+    "server/gcsp/offers/buddy-remote.js": "1b7e7e38ee5cbffc76cb7c8cae60d696d1143cbc0cb07a338201151932c5e00e",
+    "server/gcsp/runtime.js": "e08d994c5f473cad70768dff2de5db36772b7b78e7997fb82c91d5309366ca1d",
+    "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+    "server/gcsp/notify/index.js": "f7f132bd7fac580cec1ce0e619d613a9a5de77fcefb92ccf27383348aac50fb7",
+    "server/gcsp/notify/templates.js": "fb9a3b9719c54000409553773698ef620bf35a5ba06c354f33b30cea7df839eb",
+    "server/index.js": "378b6b6bf61167d172e558c9f321ecb00ca23251c5baae5f0662f6a5c7de85a7"
+  },
+  "sourcesUnchanged": true,
+  "targetedReceipt": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/landing-config-2028/targeted-695696d301810952b4264f79373e110c891cb104c8ff13c24515fc0d93d6c48f-default-1794001823651062000.json",
+    "sha256": "5012be70a15e5ad0f42530160963b3ea05c2ed7d67b8b0b49cc1f108e267285c"
+  },
+  "checkpoint": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/landing-config-2028/checkpoints/426125af206ba30c083d5b9d19a998da30cc1f9c0ed2f33eb6eddead5c25895e.json",
+    "sha256": "b35f52ba5c8928a303d5afb466cd15a9da7499e16769df9867cfac7d6154dae7",
+    "state": "complete"
+  },
+  "resources": {
+    "limits": {
+      "chunk_seconds": 60,
+      "chunk_scratch_mib": 128,
+      "chunk_ram_mib": 512,
+      "unit_scratch_mib": 64,
+      "unit_ram_mib": 512,
+      "log_mib": 2,
+      "ram_reserve_mib": 512,
+      "reserve_free_gib": 5,
+      "preferred_free_gib": 30,
+      "inputs": [
+        "server/gcsp/offers/access.js",
+        "server/gcsp/offers/access-http.js",
+        "server/gcsp/offers/offer-token.js",
+        "server/gcsp/offers/buddy-hold.js",
+        "server/gcsp/offers/buddy-remote.js",
+        "server/gcsp/runtime.js",
+        "server/gcsp/policy/seed-v1.json",
+        "server/gcsp/notify/index.js",
+        "server/gcsp/notify/templates.js"
+      ]
+    },
+    "wallSeconds": 7.043195,
+    "checkpointWallSeconds": 7.195,
+    "peakAggregateRSSBytes": 269172736,
+    "peakScratchBytes": 0,
+    "retainedTapTailBytes": 16425,
+    "retainedTapTailSHA256": "0a86b94473b6119e93343702a3cefab9ef997e05cc98a664fd61396010b13555",
+    "retainedTapTailPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/landing-config-2028/logs/20261106-215016-fbm1_xq8/chunk-0001.log",
+    "tapRetention": "Existing test-stamp runner retains the last 16 KiB of successful verbose TAP, including complete aggregate counts; no full transcript or runtime coverage claim.",
+    "ownershipManifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/landing-config-2028/ownership/dcd830414d534fc788f0020242bc9d12.json",
+    "ownershipSHA256": "0caeed3f5f50622e16244d136cb2d76b8976faf9c2900a7cf5c717b12868a0e5"
+  },
+  "cleanup": {
+    "scratchPath": "/private/tmp/test-stamp-shard-dcd830414d534fc788f0020242bc9d12",
+    "scratchAbsent": true,
+    "childPIDAndGroup": [
+      57086
+    ],
+    "childPIDAndGroupAbsent": true,
+    "supervisor": {
+      "pid": 57007,
+      "start": "Fri Nov  6 21:50:14 2026"
+    },
+    "supervisorPIDAbsent": true,
+    "links": [
+      {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/node_modules",
+        "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules",
+        "created": true
+      },
+      {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/server/node_modules",
+        "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules",
+        "created": true
+      }
+    ],
+    "linksAbsent": true,
+    "rawHostReservationRows": 0,
+    "ownedLeftovers": []
+  },
+  "exclusions": [
+    "browser/F105 UI",
+    "native PostgreSQL",
+    "second-offer F107 allocation",
+    "full suite",
+    "real deployed landing/origin/reload",
+    "external notification transport"
+  ],
+  "agents": {
+    "name": "Hugo",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "selectedModel": "gpt-6.1-sol",
+    "selectedEffort": "high",
+    "fallback": null,
+    "descendants": []
+  }
+}

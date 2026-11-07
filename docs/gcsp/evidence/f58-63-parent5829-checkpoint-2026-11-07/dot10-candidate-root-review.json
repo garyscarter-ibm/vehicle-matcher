@@ -1,0 +1,14 @@
+{
+  "status": "CODE+SECURITY pass",
+  "reviewedAt": "2026-11-07T05:47:39.625196+00:00",
+  "scope": "Full prepared candidate/supervisor/planner/source patch review + independent allinputpins and2242original-line/shard reconstruction; no source/public/network traffic",
+  "planSha256": "a4f0f766266165b8d48da363c09fbc934647e90cd80a8c19c3b81685fb12ace7",
+  "inputPins": 477,
+  "productionPins": 45,
+  "novelRows": 2242,
+  "originalBytes": 50452067,
+  "ordinary52files10versionsPreserved": true,
+  "candidateOnly": true,
+  "sourceCalls": 0,
+  "acceptance": false
+}
