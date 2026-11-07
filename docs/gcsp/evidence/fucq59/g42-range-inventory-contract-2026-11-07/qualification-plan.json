@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "bmw-source-range-inventory-plan.v1",
+  "planId": "g42-range-inventory-contract-20261107",
+  "qualificationDate": "2026-11-07",
+  "source": {
+    "id": "bmw-uk-public",
+    "version": "f59-range-inventory-20261107.v1",
+    "kind": "public-bmw-uk"
+  },
+  "inventoryRegistration": {
+    "schemaVersion": "bmw-public-range-inventory-registration.v1",
+    "market": "GB",
+    "locale": "en-GB",
+    "catalogueRangeKey": "G42",
+    "pageModelCode": "2PMC",
+    "treeEffectDate": "2026-11-01",
+    "treeOrderDate": "2026-11-01"
+  },
+  "limits": {
+    "maxAttempts": 1,
+    "retryDelayMs": 0,
+    "concurrency": 1,
+    "imageRequests": 0,
+    "sourceAttempts": 3,
+    "sourceBytes": 4194304,
+    "responseBytes": 1048576,
+    "operationTimeoutMs": 10000,
+    "deadlineMs": 90000,
+    "checkpointBytes": 4194304,
+    "cacheEntries": 8,
+    "cacheRetentionMs": 86400000,
+    "requestBudgets": {
+      "page": 1,
+      "settings": 1,
+      "discover": 1
+    }
+  }
+}
