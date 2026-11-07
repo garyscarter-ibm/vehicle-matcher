@@ -1,0 +1,35 @@
+✖ real clock keeps a new cohort usable inside an old original phase deadline (128.471875ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 209.061459
+
+✖ failing tests:
+
+test at docs/gcsp/evidence/fucq59/scheme-breadth30-phase01c-320-series-2026-11-07/prepared-check.test.mjs:72:1
+✖ real clock keeps a new cohort usable inside an old original phase deadline (128.471875ms)
+  AssertionError [ERR_ASSERTION]: Traceback (most recent call last):
+    File "<string>", line 19, in <module>
+    File "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth30-phase01c-320-series-2026-11-07/run-series.py", line 117, in run
+      assert remaining > 0 and cohort_remaining > 0, 'original finite phase/cohort wall budget'
+  AssertionError: original finite phase/cohort wall budget
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth30-phase01c-320-series-2026-11-07/prepared-check.test.mjs:95:117)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

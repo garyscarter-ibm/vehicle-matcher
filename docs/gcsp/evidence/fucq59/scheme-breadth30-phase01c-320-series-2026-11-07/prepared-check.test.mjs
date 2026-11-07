@@ -68,3 +68,29 @@ test('continuation preserves the original consumed clock and refuses an expired 
   assert.notEqual(r.status,0);assert.match(r.stderr,/original-absolute-deadline-expired/);await assert.rejects(stat(output),{code:'ENOENT'});await assert.rejects(stat(dirname(ownership)),{code:'ENOENT'});
  }finally{await rm(f.temporary,{recursive:true,force:true});}
 });
+
+test('real clock keeps a new cohort usable inside an old original phase deadline',async()=>{
+ const program=String.raw`import ast,pathlib,time,subprocess,datetime
+source=pathlib.Path(__import__('sys').argv[1]);ROOT=source.parent;tree=ast.parse(source.read_text());current=None;children=[];started=time.monotonic()-900;cohort_started=None
+phase={'maximumWallSeconds':1800,'originalConsumedAt':(datetime.datetime.now(datetime.timezone.utc)-datetime.timedelta(seconds=900)).isoformat()};series={'id':'offline-clock-fixture','resources':{'perCohortSeconds':600}};environment={};output=pathlib.Path('/not-written');name='phase01c';waits=[]
+class Child:
+ pid=123
+ def wait(self,timeout):waits.append(timeout);return 0
+ def poll(self):return 0
+class Subprocess:
+ TimeoutExpired=subprocess.TimeoutExpired
+ def Popen(self,*args,**kwargs):return Child()
+subprocess=Subprocess()
+class R:
+ @staticmethod
+ def atomic_json(*args):pass
+assignments=[node for node in ast.walk(tree)if isinstance(node,ast.Assign)and any(isinstance(t,ast.Name)and t.id=='cohort_started'for t in node.targets)and isinstance(node.value,ast.Call)or isinstance(node,ast.Assign)and any(isinstance(t,ast.Name)and t.id=='cohort_started'for t in node.targets)and isinstance(node.value,ast.BinOp)]
+assert len(assignments)==1
+exec(compile(ast.Module(body=[assignments[0]],type_ignores=[]),str(source),'exec'))
+runner=next(node for node in tree.body if isinstance(node,ast.FunctionDef)and node.name=='run');exec(compile(ast.Module(body=[runner],type_ignores=[]),str(source),'exec'))
+run(['offline-clock-fixture'],environment,130)
+assert len(waits)==1 and 0<waits[0]<=130 and children[0]['joined']is True
+assert 899<time.monotonic()-started<910
+`;
+ const r=spawnSync('/usr/bin/python3',['-I','-B','-c',program,join(base,'run-series.py')],{encoding:'utf8'});assert.equal(r.status,0,r.stderr);
+});

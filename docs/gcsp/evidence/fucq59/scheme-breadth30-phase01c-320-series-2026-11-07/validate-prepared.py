@@ -3,7 +3,7 @@ import sys
 sys.dont_write_bytecode=True
 import atexit,hashlib,importlib.util,json,os,pathlib,re,subprocess
 BASE=pathlib.Path(__file__).resolve().parent;ROOT=BASE.parents[4]
-OUT=pathlib.Path('/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth30-phase01c-320/preparation/attempt03')
+OUT=pathlib.Path('/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth30-phase01c-320/preparation/clock-final')
 spec=importlib.util.spec_from_file_location('resources',ROOT/'_tools/test_resources.py');R=importlib.util.module_from_spec(spec);spec.loader.exec_module(R)
 spec = importlib.util.spec_from_file_location('group_proof', BASE / 'group-proof.py')
 G = importlib.util.module_from_spec(spec); spec.loader.exec_module(G)
@@ -12,8 +12,8 @@ scratch=R.Scratch(OUT,ROOT,policy,expected=R.MIB);host=R.HostBudget(policy)
 allocation=json.loads((BASE/'series-plan.json').read_text())
 names=[str(BASE/'series-plan.json')]+[str(ROOT/p) for p in {**allocation['codePins'],**allocation['sourcePins']}]+[v['path'] for v in allocation['indexPins'].values()]
 identity={str(pathlib.Path(n).relative_to(ROOT)) if ROOT in pathlib.Path(n).parents else str(pathlib.Path(n)):hashlib.sha256(pathlib.Path(n).read_bytes()).hexdigest() for n in names}
-command=['/opt/homebrew/bin/node','--test','--test-concurrency=1',str(BASE/'prepared-check.test.mjs')]
-R.atomic_json(OUT/'selected-checks.json',{'scope':'scoped exactphase01c 320solver protocol preparation','identity':identity,'changed_paths':[str(BASE.relative_to(ROOT))],'input_paths':names,'regression':'40exactplans/320unspentpool, all pins, no-grant refusal, first-session freeze, copied actual breadthpilot event/reconcile/strict5protocol',
+command=['/opt/homebrew/bin/node','--test','--test-concurrency=1','--test-name-pattern=real clock keeps|continuation preserves',str(BASE/'prepared-check.test.mjs')]
+R.atomic_json(OUT/'selected-checks.json',{'scope':'scoped continuation new-cohort real monotonic clock regression','identity':identity,'changed_paths':[str(BASE.relative_to(ROOT))],'input_paths':names,'regression':'40exactplans/320unspentpool, all pins, no-grant refusal, first-session freeze, copied actual breadthpilot event/reconcile/strict5protocol',
  'callers':['existing generic model-batch strict binder/registration/executor','evidence-local runner/supervisor/exporter'],'command':command,
  'exclusions':['public source requests','production inventory repair','full suite','public solver/images/admissions/publication'],
  'forecast':{'scratch_bytes':R.MIB,'ram_bytes':384*R.MIB,'seconds':8},'limits':{'workers':1,'scratch_bytes':64*R.MIB,'host_ram_bytes':512*R.MIB,'child_ram_bytes':448*R.MIB,'seconds':120}})

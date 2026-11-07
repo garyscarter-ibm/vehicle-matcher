@@ -150,7 +150,7 @@ try:
         for entry in entries:
             active_session = entry['number']; directory = pathlib.Path(entry['outputDirectory'])
             if active_cohort != entry['cohort']:
-                active_cohort = entry['cohort']; cohort_started = time.monotonic() - (datetime.datetime.now(datetime.timezone.utc)-datetime.datetime.fromisoformat(phase['originalConsumedAt'])).total_seconds()
+                active_cohort = entry['cohort']; cohort_started = time.monotonic()
             checkpoint('preparing-session')
             run(['/usr/bin/python3', '-I', '-B', str(BASE / 'prepare-session.py'), str(active_session)], environment, 10)
             allocation = read(directory / 'execution-plan.json')
