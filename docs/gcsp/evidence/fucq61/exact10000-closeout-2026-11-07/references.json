@@ -597,11 +597,13 @@
       "sha256": "9bc5c9d915373bc812d375823a65fa9a658f285223c45a622877eee2b66bf6d1"
     },
     {
-      "bytes": 6055,
+      "bytes": 6334,
       "id": "E086",
-      "kind": "root status observed 09:16 UTC; not live rechecked",
-      "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/f58-63-morning-status-2026-11-07.md",
-      "sha256": "f194c708ee2a755fb3a5137eb8a23486a7b9187766b1eb18bb62393312b01499"
+      "kind": "exact historical root-status snapshot observed09:21 UTC; copied byte for byte; embedded links retain docs/gcsp source base",
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/root-status-snapshot-2026-11-07-0921.md",
+      "sha256": "6e04937c821293db0b1e224b1a796a2378bbf9348964e333aa4193130c841683",
+      "sourcePathAtObservation": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/f58-63-morning-status-2026-11-07.md",
+      "sourceRelativeLinkBase": "docs/gcsp/"
     },
     {
       "bytes": 11068,

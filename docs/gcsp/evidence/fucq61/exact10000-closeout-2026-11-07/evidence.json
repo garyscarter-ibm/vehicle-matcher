@@ -439,7 +439,7 @@
   "replayLimits": {
     "fullSuite": "unrun for this report",
     "nativeDatabase": "unrun for this report",
-    "publicColdRestore": "Root status at 09:16 UTC records attempt2 failure after downloading31assets; no later restore or live claim is made here",
+    "publicColdRestore": "Exact committed root-status snapshot at09:21 UTC preserves attempt2 failure after31assets/179.571s and adds local registry/history diagnostic success; no public restore or live success claim. Earlier09:16 failure observation remains historical.",
     "upstreamRebuild": "not rerun; no claim that current upstream reproduces all historical source results"
   },
   "schemaVersion": "f61-exact10000-closeout-evidence.v1",

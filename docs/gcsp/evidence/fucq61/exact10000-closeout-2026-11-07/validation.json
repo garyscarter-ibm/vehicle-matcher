@@ -1,5 +1,37 @@
 {
-  "checkedAt": "2026-11-07T09:21:12.064970+00:00",
+  "changedReferenceCorrection": {
+    "changedJsonParsed": [
+      "references.json",
+      "evidence.json",
+      "validation.json"
+    ],
+    "changedLocalLinksVerified": 1,
+    "changedReferencePinsVerified": 1,
+    "checkedAt": "2026-11-07T09:23:42.717007+00:00",
+    "dataProofReplays": 0,
+    "meaning": "Only changed snapshot bytes/hash, link, JSON and whitespace checked. Root owns remaining93 unchanged pin verification.",
+    "newSnapshotReference": {
+      "bytes": 6334,
+      "id": "E086",
+      "kind": "exact historical root-status snapshot observed09:21 UTC; copied byte for byte; embedded links retain docs/gcsp source base",
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/root-status-snapshot-2026-11-07-0921.md",
+      "sha256": "6e04937c821293db0b1e224b1a796a2378bbf9348964e333aa4193130c841683",
+      "sourcePathAtObservation": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/f58-63-morning-status-2026-11-07.md",
+      "sourceRelativeLinkBase": "docs/gcsp/"
+    },
+    "previousMutableReference": {
+      "bytes": 6055,
+      "id": "E086",
+      "kind": "root status observed 09:16 UTC; not live rechecked",
+      "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/f58-63-morning-status-2026-11-07.md",
+      "sha256": "f194c708ee2a755fb3a5137eb8a23486a7b9187766b1eb18bb62393312b01499"
+    },
+    "runtimeTests": 0,
+    "scratchBytes": 0,
+    "sourceCalls": 0,
+    "unchangedPinsNotRerun": 93
+  },
+  "checkedAt": "2026-11-07T09:23:42.717007+00:00",
   "compatibilityException": null,
   "criticalReview": {
     "check0": "No external mechanical checklist supplied; spacing/readability corrected.",
@@ -21,9 +53,15 @@
   },
   "dataProofReplays": 0,
   "disposableLeftovers": [],
-  "evidencePinsVerified": 94,
+  "evidencePinsVerified": 1,
+  "historicalValidation": {
+    "commit": "b749a760696801f2c1ba3b36cb93c9f80e73d477",
+    "evidencePinsVerified": 94,
+    "localLinksVerified": 9,
+    "meaning": "Original static observation. E086 was subsequently found mutable; this correction replaces it with a retained snapshot."
+  },
   "jsonFilesParsedBeforeReceipt": 5,
-  "localLinksVerified": 9,
+  "localLinksVerified": 1,
   "namedAssertions": [
     "94 unique reference ids",
     "E001 exact bytes/hash",
@@ -111,7 +149,6 @@
     "E083 exact bytes/hash",
     "E084 exact bytes/hash",
     "E085 exact bytes/hash",
-    "E086 exact bytes/hash",
     "E087 exact bytes/hash",
     "E088 exact bytes/hash",
     "E089 exact bytes/hash",
@@ -175,13 +212,14 @@
     "readme local link validation-selection.json",
     "scope correction/no acceptance transition present",
     "known failures and unknowns preserved",
-    "no report scratch allocation"
+    "no report scratch allocation",
+    "E086 exact0921 snapshot bytes/hash and README link passed on correction; other assertions reused from b749a760"
   ],
   "reportFilesExcludingThisReceipt": [
     {
-      "bytes": 19413,
+      "bytes": 19737,
       "name": "README.md",
-      "sha256": "aa3b5ea1bb4cb072724696656944acd0a54fd122b167ab69dbe73e1946981e7c"
+      "sha256": "7cace25cb92b5755682a35fa09976c0610eb5396a9760e9d1f9e9adf2efbe726"
     },
     {
       "bytes": 45015,
@@ -189,9 +227,9 @@
       "sha256": "7cd8ed13aeee81a9f5719457ef1101c68e40e8a0ac9cb2a1ead77e03b69a7801"
     },
     {
-      "bytes": 24115,
+      "bytes": 24239,
       "name": "evidence.json",
-      "sha256": "4e4490c8828e4fa15ecd06bda1d4b618ab87ad8dc095770de9d144cf18360127"
+      "sha256": "2c8a7490aa23c603ac60b099f67b746976f48e51f5fe03ac49cf8a9bbc846ad7"
     },
     {
       "bytes": 75173,
@@ -199,9 +237,14 @@
       "sha256": "32d3b29e740a23662073e335dc23c84e68d079be3a83982e5686c4085d251e89"
     },
     {
-      "bytes": 34071,
+      "bytes": 34395,
       "name": "references.json",
-      "sha256": "021a9b2605037d0011937ecaaa315c7d4f0972113f01787ca77d4ba19fa4a259"
+      "sha256": "e369161fd7c4b8b4e033ff0efdfabf574122bf968cd350a37e8b7bdc844d4a9a"
+    },
+    {
+      "bytes": 6334,
+      "name": "root-status-snapshot-2026-11-07-0921.md",
+      "sha256": "6e04937c821293db0b1e224b1a796a2378bbf9348964e333aa4193130c841683"
     },
     {
       "bytes": 1938,
@@ -209,6 +252,7 @@
       "sha256": "deee616941229018bfad132acc887940897a141f8fca80d87ddddb85024958d2"
     }
   ],
+  "reusedPreviouslyCheckedPins": 93,
   "runtimeTests": 0,
   "schemaVersion": "f61-exact10000-closeout-static-validation.v1",
   "scratchCreatedBytes": 0,
