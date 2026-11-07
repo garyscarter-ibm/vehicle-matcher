@@ -6,6 +6,8 @@ The current FUCQ-81 and FUCQ-82 acceptance descriptions were checked on 4 Novemb
 
 ## Common envelope and compatibility
 
+Additive FUCQ-104 storage extension, 6 November 2026: [Greg order requests and production acknowledgements](greg-orders-contract.md) records `future_order_requests` and immutable `confirmed_supply`, introduced by migration `0004_greg_supply.sql`. Existing `stock` plus confirmed F92 release receipts remains the released fact. The two new tables enter the native foundation snapshot automatically and require 0004 at startup; native PostgreSQL evidence remains with Gary. No original table, port or state meaning changes.
+
 Identifiers are opaque strings; row versions are monotonically increasing positive integers. Times are UTC ISO-8601 instants from `DemoClock`, and durations have named units. Every command receives server-owned `Context = { environmentId, runId, principalId, roles, employeeId?, schemeId?, companyId?, gradeId?, entitlementSlotId? }`, a caller-stable `commandId` and the expected row versions it changes. Employee/role/run fields supplied by the browser cannot replace this context.
 
 All four ports return a discriminated result using `status` as the outcome field (for example `{ status: 'ok', value, contractVersion: '1.0.0' }`). Methods below are asynchronous unless stated otherwise; no adapter turns a failure into an empty result or a success.
