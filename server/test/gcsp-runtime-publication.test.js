@@ -176,7 +176,7 @@ test('combined runtime serves authenticated scenarios, canonical presenter step 
     body: { commandId: 'combined-step', expectedClockVersion: controls.clockVersion, mode: 'step' } }));
   assert.equal(Date.parse(tick.advance.now) - Date.parse(controls.now), configured.value * 1000);
   const handlers = ['manual-claim-expiry', 'buddy-expiry', 'lifecycle-appointments', 'lifecycle-approvals', 'lifecycle-documents',
-    'renewal-risk-cases', 'selection-order-reconciliation', 'buddy-allocation', 'captured-outbox'];
+    'lifecycle-return-appointments', 'renewal-risk-cases', 'selection-order-reconciliation', 'buddy-allocation', 'captured-outbox'];
   assert.deepEqual(tick.tick.handlerOrder.map((row) => row.handlerId), handlers);
   const state = response(await f.http.request('/api/gcsp/presenter/scenarios/current', { session: f.session }));
   const scenario = catalogue.scenarios.find((row) => row.kind === 'mechanics'); assert.ok(scenario);

@@ -4,13 +4,13 @@ import { inputDigest } from '../../gcsp/repository/index.js';
 // a real producer integration needs FUCQ-71's own service writing these rows.
 const HR = ['HR approval', 'sales-manager approval', 'sent to ordering'];
 let counter = 0;
-function operation(context, { sourceType = 'cart', stages = HR, state, renewalId } = {}) {
+function operation(context, { sourceType = 'cart', stages = HR, state, renewalId, selection: extra = {} } = {}) {
   counter += 1;
   const orderUuid = `00000000-0000-4000-8000-${String(counter).padStart(12, '0')}`;
   const operationId = `selection:${inputDigest([context.runId, context.employeeId, counter])}`;
   const selection = { schemaVersion: 1, receivedAt: '2026-11-05T09:00:00.000Z', source: { type: sourceType, holdId: `hold-${counter}` },
     quote: { quoteId: `quote-${counter}` }, stock: { orderUuid, orderNumber: String(1000000 + counter), configurationId: `config-${counter}` },
-    terms: { termsVersion: 'fictional-order-terms-v1', termsDigest: 'f'.repeat(64), policyVersion: context.policyVersion, approvalStages: stages } };
+    terms: { termsVersion: 'fictional-order-terms-v1', termsDigest: 'f'.repeat(64), policyVersion: context.policyVersion, approvalStages: stages }, ...extra };
   const confirmed = { status: 'confirmed', operationId, runId: context.runId, orderUuid, configurationId: selection.stock.configurationId,
     orderNumber: selection.stock.orderNumber, orderStatus: stages[0], fictional: true };
   return { renewalId, row: { runId: context.runId, operationId, operationType: 'selection-order', idempotencyKey: operationId, inputDigest: inputDigest(selection),
@@ -58,11 +58,12 @@ export async function createRealProducer({ repository, policy, clock, identity }
   for (const type of ['cart', 'buddy-offer']) converters[type] = converter(type);
   const service = new ManualOrderService({ repository, identity, clock, policy, converters, adapter: createSyntheticOrderingAdapter({ repository }) });
   const registered = await service.registerClockHandler(); if (registered.status !== 'ok') throw new Error(JSON.stringify(registered));
-  async function submit(context, { id, type = 'cart' }) {
+  async function submit(context, { id, type = 'cart', choices, oldContract, declarations = { terms: true, driver: true } }) {
     const car = stock(id, { insuranceGroup: fact(25, 'insurance-group') });
     const hold = `hold-${id}`; const quote = `quote-${id}`; const claim = `claim-${id}`; const now = (await clock.now(context)).value.now;
-    cars[hold] = { hold, claim, orderUuid: car.orderUuid, prepared: { draft: { draftVersion: 1, choices: { mode: 'new',
-      contact: { email: 'chooser@example.invalid' }, driverId: 'fictional-driver' } }, employee: { fictional: true }, driver: { fictional: true } } };
+    cars[hold] = { hold, claim, orderUuid: car.orderUuid, prepared: { draft: { draftVersion: 1, choices: choices ?? { mode: 'new',
+      contact: { email: 'chooser@example.invalid' }, driverId: 'fictional-driver' }, ...(oldContract ? { currentContract: oldContract } : {}) },
+      employee: { fictional: true }, driver: { fictional: true }, ...(oldContract ? { oldContract } : {}) } };
     const seeded = await repository.transaction(context, cmd(`real-seed-${id}`), async (tx) => {
       const inserted = await tx.insert('stock', { runId: context.runId, orderUuid: car.orderUuid, orderNumber: String(id).padStart(7, '0'),
         configurationId: car.configurationId, facts: car.snapshot, state: 'available', available: true });
@@ -80,7 +81,7 @@ export async function createRealProducer({ repository, policy, clock, identity }
     if (seeded.status !== 'ok') throw new Error(JSON.stringify(seeded));
     const terms = await service.readTerms(context); if (terms.status !== 'ok') return terms;
     const submitted = await service.submit(context, { commandId: `submit-${id}`, source: { type, holdId: hold, expectedHoldVersion: 1, expectedDraftVersion: 1 },
-      expectedQuoteId: quote, expectedStockVersion: 2, termsDigest: terms.value.termsDigest, declarations: { terms: true, driver: true } });
+      expectedQuoteId: quote, expectedStockVersion: 2, termsDigest: terms.value.termsDigest, declarations });
     return { submitted, orderUuid: car.orderUuid };
   }
   return { service, submit };
