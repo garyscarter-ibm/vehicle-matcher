@@ -1,0 +1,29 @@
+{
+  "story": "FUCQ-35",
+  "chunk": "disabled",
+  "width": 1280,
+  "runtime": "actual memory repository, PolicyService, identity, manual service, HTTP and delivered account/setup journey",
+  "checks": [
+    "disabled employee route and legacy retail stay usable without employee modules"
+  ],
+  "api": [],
+  "pageErrors": [],
+  "screenshots": [
+    "disabled-1280-disabled.png",
+    "disabled-1280-retail.png"
+  ],
+  "external": [],
+  "cleanup": {
+    "browserClosed": true,
+    "listenerClosed": true,
+    "runtimeClosed": true
+  },
+  "employeeModules": [],
+  "sharedStyleAssets": [
+    "/blocks/gcsp/shell/gcsp-tokens.css",
+    "/blocks/gcsp/shell/density-theme.css",
+    "/blocks/gcsp/shell/density-typography.css",
+    "/blocks/gcsp/shell/fonts/density-fonts.css"
+  ],
+  "status": "passed"
+}

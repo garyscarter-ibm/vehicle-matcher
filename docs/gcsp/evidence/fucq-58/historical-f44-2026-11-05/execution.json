@@ -1,0 +1,23 @@
+{
+  "version": "historical-f44-execution.v1",
+  "run": "dev-poller-restart-20261105-fucq58",
+  "chunk": "historical-f44-context",
+  "startedAt": "2026-11-05T23:45:06.048Z",
+  "planSha256": "59792f1296ea0dfd1f6813b847ab37e856fc143f3f0d82662ee503d395fd5677",
+  "fileSha256": {
+    "discover.mjs": "bb0bc5c516ea15022998957bdb3c21387aef74e35553432ae21c6e73b0a55dc6",
+    "catalogue.mjs": "17c4e71c7a57bc58917e28c107dedcc9406dd0fb389336eddb3ed0ea47c2866f",
+    "catalogue.test.mjs": "6258ece658d7812e87686f22180bd117d11bf795b96ad732b906769e6a647cec"
+  },
+  "inputs": {
+    "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+    "docs/gcsp/bmw-interface-research.md": "82d4edba56abf474e693d45d1b2f79c4b8918e868fb2ff56d6d6ba96db00d00a",
+    "docs/gcsp/evidence/fucq-58/scheme-catalogue-2026-11-05/observation.json": "25636b87dfe942d385da5cee721fee8e59d53b216411277031d60626de36c4ec",
+    "docs/gcsp/evidence/fucq-58/scheme-catalogue-2026-11-05/catalogue.mjs": "52d053c2acf81815c3df1a49d4ee207e6434044a93d69e98aca77caf2e632051",
+    "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md": "9bc5c9d915373bc812d375823a65fa9a658f285223c45a622877eee2b66bf6d1"
+  },
+  "requestsAdmitted": 3,
+  "concurrency": 1,
+  "retries": 0,
+  "readOnly": true
+}

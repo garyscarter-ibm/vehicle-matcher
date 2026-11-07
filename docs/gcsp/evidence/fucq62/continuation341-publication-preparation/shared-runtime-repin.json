@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "f62-continuation341-shared-runtime-repin.v1",
+  "mergeHead": "8a621949353ff343cdd9aeb23e74a33975f8da24",
+  "sharedBaseline": "efcf15b1",
+  "beforeContractSha256": "58266a3d675350c0cb54323ff290e0105ce5b2c3e49ee31b62028e0578dad9f2",
+  "afterContractSha256": "715a5ad2c59e02751058967c86477f5b1750322bce73c7b66d23501b0ae48033",
+  "changedCodePins": [
+    {
+      "path": "server/gcsp/vehicle-evidence/indexed-jsonl.js",
+      "beforeSha256": "0f547126eaa18668e8cfcdb293361e75716bd607766b6b2680f2329d45aa7326",
+      "afterSha256": "30be19121e2c250d1736666f365d8900cbf42f47c7daf907c4814eaac818d277"
+    }
+  ],
+  "codePinsVerified": 82,
+  "inputPinsVerifiedUnchanged": 21,
+  "supervisorSha256": "48fc3c4f122dd4d1bed7fbde59464f0a4880f6ebc329525dcdeb9761ff602950",
+  "runnerSha256": "794cedcb97d28d4361fb9f464907f64bf89e18d1f870f394508956d12c8c56f8",
+  "nodeSha256Verified": true,
+  "planAndSourceInputsUnchanged": true,
+  "expected": {
+    "configurations": 342,
+    "distinctConfigurations": 342,
+    "vinMappings": 1,
+    "images": 0,
+    "sourceConfigurations": 341,
+    "qualifyingCompleteDistinctSourceConfigurations": 341
+  },
+  "reusedEvidence": [
+    "reviewed27loader regressions for identical shared indexed-jsonl code",
+    "reviewed134source-boundary checks for identical shared source code",
+    "historical candidate preparation except descriptive341note"
+  ],
+  "checksUnrun": [
+    "unchanged candidate preparation",
+    "fullsuite",
+    "actual publication gate awaits parent release"
+  ],
+  "activeCorpusMutation": false,
+  "sourceRequests": 0
+}

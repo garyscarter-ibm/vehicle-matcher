@@ -1,0 +1,36 @@
+{
+  "scope": "metadata snapshots and one bounded final log read only",
+  "metadataSnapshotCount": 7,
+  "finalLogReads": 1,
+  "scratch": [
+    {
+      "manifestPath": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/linux-run42361586991-monitor/ownership.json",
+      "scratchRoot": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/linux-run42361586991-monitor/owned-tmp",
+      "actual": {
+        "asOf": "2026-11-07T10:01:35.127005+00:00",
+        "scratchAbsent": true,
+        "removedBytes": 0,
+        "leftovers": []
+      }
+    },
+    {
+      "manifestPath": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/linux-run42361586991-monitor/log-ownership.json",
+      "scratchRoot": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/linux-run42361586991-monitor/log-owned-tmp",
+      "actual": {
+        "scratchAbsent": true,
+        "removedBytes": 0,
+        "retainedOutput": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot12-linux-run42361586991",
+        "retainedBytes": 29839,
+        "leftovers": []
+      }
+    }
+  ],
+  "allOwnedScratchAbsent": true,
+  "allSubprocessesJoined": true,
+  "removedScratchBytes": 0,
+  "retainedArchive": false,
+  "applicationGETs": 0,
+  "sourceRequests": 0,
+  "workflowDispatches": 0,
+  "leftovers": []
+}

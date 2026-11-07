@@ -1,0 +1,21 @@
+{
+  "observedAt": "2026-11-07T04:28:05.228220+00:00",
+  "decision": "release-first3-once",
+  "grant": "scheme-five-range-inventory15-20261107-once-first3",
+  "planSha256": "3e93d0e074c3e813fd5a8299dba9e7e69013c3a794b6ce4f57b0cb30834da62f",
+  "validationSha256": "09110d7ed72929ae18d9eb6d7a8690cd7f6bfd108428a5debc3a3c8ef85a6c12",
+  "pinsVerified": 43,
+  "limits": {
+    "GET": 3,
+    "phaseSeconds": 150,
+    "workers": 1,
+    "decodedBytes": 4194304,
+    "scratchBytes": 67108864,
+    "hostRamBytes": 536870912
+  },
+  "review": "read full phase runner/supervisor and prepared5check evidence; unchanged diagnostic/transport reused; no source/test rerun",
+  "parallelism": "explicit separate3GETinventorylane allowed alongside2768serialsource andpublicartifactdownload; no dependencylink used; sharedhostreservations apply",
+  "sourceCapacityCredited": 0,
+  "acceptance": false,
+  "remaining12Released": false
+}

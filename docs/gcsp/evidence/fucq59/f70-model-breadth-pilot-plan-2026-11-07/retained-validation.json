@@ -1,0 +1,83 @@
+{
+  "scope": "retained actual artifacts only; no HTTP port/grant/source traffic",
+  "checks": [
+    {
+      "cleanup": {
+        "absent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/.claude/f58-63-overnight-20261106/f58/f70-model-breadth/offline/retained/ownership/6d5461231f944f27996d59f745a709e2.json",
+        "root": "/private/tmp/test-stamp-shard-6d5461231f944f27996d59f745a709e2",
+        "groupsAbsent": true,
+        "reservationAbsent": true,
+        "removedAllocationBytes": 0
+      },
+      "dependencyLinkRemoved": true,
+      "identity": {
+        "docs/gcsp/evidence/fucq59/f70-model-breadth-pilot-plan-2026-11-07/retained-check.test.mjs": "ca5ba0d6d63357f4c4a48987c2f031db36fe41dbe9ecaac39e769126765ab4e7",
+        "scripts/gcsp/bmw-public-registration.mjs": "3a9a1afcc128f8356bb296b063d118bc9b7c59531ef75823bb99f8e01f209291",
+        "scripts/gcsp/bmw-selection-binding.mjs": "88820920f57f4509741d6ad291e2fcd36c5b47a65d42acd35e890e3a6f84004e",
+        "scripts/gcsp/capture-bmw-selection.mjs": "b3cea57603e403f41bb326bcdfc955b7f061a7cfc1b071d1ef609de3efc99bc1",
+        "scripts/gcsp/collect-fleet.mjs": "ba3864cee32f480facde57a2d2c9dbf944d571878bb2a9cece220955357ab1de",
+        "scripts/gcsp/collection-session.mjs": "db5a1a1ca6037132eced521f1a9b19d73a4282a113da66480ebec70c0beac7ff",
+        "scripts/gcsp/public-bmw-source.mjs": "4561e844cfe85383ad8ed27521bab157a10dae57f8d82ab29b8f41842bfc8336"
+      },
+      "phase": "retained",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/.claude/f58-63-overnight-20261106/f58/f70-model-breadth/offline/retained/test.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/.claude/f58-63-overnight-20261106/f58/f70-model-breadth/offline/retained/ownership/6d5461231f944f27996d59f745a709e2.json",
+        "peak_rss": 195723264,
+        "peak_scratch": 0,
+        "rc": 1,
+        "wall": 0.4903802080079913
+      },
+      "selected": [
+        "docs/gcsp/evidence/fucq59/f70-model-breadth-pilot-plan-2026-11-07/retained-check.test.mjs"
+      ],
+      "sourceTraffic": false,
+      "meaning": "5passed,1fixture cleanup assertion failed because the retained test itself owns a temporary dependency link; source cleanup was already verified."
+    },
+    {
+      "cleanup": {
+        "absent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/.claude/f58-63-overnight-20261106/f58/f70-model-breadth/offline/retained2/ownership/f760f75f638743459a945cb346340327.json",
+        "root": "/private/tmp/test-stamp-shard-f760f75f638743459a945cb346340327",
+        "groupsAbsent": true,
+        "reservationAbsent": true,
+        "removedAllocationBytes": 0
+      },
+      "dependencyLinkRemoved": true,
+      "identity": {
+        "docs/gcsp/evidence/fucq59/f70-model-breadth-pilot-plan-2026-11-07/retained-check.test.mjs": "8d9780c125effaa62b2c70065417638cc61b91d1c80ca446591c954684862055",
+        "scripts/gcsp/bmw-public-registration.mjs": "3a9a1afcc128f8356bb296b063d118bc9b7c59531ef75823bb99f8e01f209291",
+        "scripts/gcsp/bmw-selection-binding.mjs": "88820920f57f4509741d6ad291e2fcd36c5b47a65d42acd35e890e3a6f84004e",
+        "scripts/gcsp/capture-bmw-selection.mjs": "b3cea57603e403f41bb326bcdfc955b7f061a7cfc1b071d1ef609de3efc99bc1",
+        "scripts/gcsp/collect-fleet.mjs": "ba3864cee32f480facde57a2d2c9dbf944d571878bb2a9cece220955357ab1de",
+        "scripts/gcsp/collection-session.mjs": "db5a1a1ca6037132eced521f1a9b19d73a4282a113da66480ebec70c0beac7ff",
+        "scripts/gcsp/public-bmw-source.mjs": "4561e844cfe85383ad8ed27521bab157a10dae57f8d82ab29b8f41842bfc8336"
+      },
+      "phase": "retained2",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/.claude/f58-63-overnight-20261106/f58/f70-model-breadth/offline/retained2/test.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/.claude/f58-63-overnight-20261106/f58/f70-model-breadth/offline/retained2/ownership/f760f75f638743459a945cb346340327.json",
+        "peak_rss": 198737920,
+        "peak_scratch": 0,
+        "rc": 0,
+        "wall": 0.4795304580038646,
+        "successfulLogRemoved": true
+      },
+      "selected": [
+        "docs/gcsp/evidence/fucq59/f70-model-breadth-pilot-plan-2026-11-07/retained-check.test.mjs"
+      ],
+      "sourceTraffic": false,
+      "meaning": "6/6retained-only checks passed; pure semantic binders, exact events/URLs/index union/privacy/cleanup. No source replay."
+    }
+  ],
+  "finalResult": "6/6passed,0failed/skipped",
+  "sourceTraffic": false,
+  "productionEvidenceReused": "70/70unchanged capability checks",
+  "acceptance": false,
+  "leftovers": []
+}

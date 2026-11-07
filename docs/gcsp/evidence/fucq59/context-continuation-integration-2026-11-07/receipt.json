@@ -1,0 +1,90 @@
+{
+  "scope": "scoped shared-base source/context/continuation integration",
+  "code": "dfeaadc1",
+  "sourceRequests": 0,
+  "result": {
+    "identity": {
+      "scripts/gcsp/bmw-public-registration.mjs": "c0f36030c0696afc51c5e44732064c126434fba5e9d14595833b1c8fc4eb27a2",
+      "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+      "scripts/gcsp/capture-bmw-selection.mjs": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+      "scripts/gcsp/collect-fleet.mjs": "f3eeccddc2d2e235af45864ce3020babea7ae618070a69a9435247620d6a93ad",
+      "scripts/gcsp/collection-session.mjs": "104aed62df3a8934bcda5484e0297a7ab4d84cfd1231b81b921be61aedd31939",
+      "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+      "scripts/gcsp/public-bmw-source.mjs": "0e746b7d9addb56bfb3a7211616b6b8dfa2ff31469ef102aafa57ddfb11fc375",
+      "server/test/gcsp-bmw-context-qualification.test.js": "31f67d169abbbc076d3355ebda320050ab0ecc7e304012eea5ecad0b295d54f7",
+      "server/test/gcsp-bmw-selection-capture.test.js": "277c685eb205014f9470655249ec53641299fc05242ca2aebd346329122c8fc8",
+      "server/test/gcsp-bmw-source-batch.test.js": "2aeadfd650d8b8c79c7e559753d9530dcf885054d66c6e0fe9c8508ad2f6b252",
+      "server/test/gcsp-fleet-collector.test.js": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88",
+      "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+      "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+    },
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f59-context-continuation-integrated/boundary.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f59-context-continuation-integrated/ownership/ffff311f6d7240e697bd4968215d33bc.json",
+    "peak_rss": 378929152,
+    "peak_scratch": 4014400,
+    "rc": 0,
+    "scope": "scoped",
+    "summary": {
+      "cancelled": 0,
+      "fail": 0,
+      "pass": 130,
+      "skipped": 0,
+      "tests": 130,
+      "todo": 0
+    },
+    "wall": 22.367693583
+  },
+  "cleanup": {
+    "code_identity_unchanged": true,
+    "compatibility_exception": null,
+    "dependency_link_absent": true,
+    "groups_absent": true,
+    "removed_allocation_bytes": 4014400,
+    "reservation_absent": true,
+    "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f59-context-continuation-integrated/boundary-result.json",
+    "scratch_absent": true
+  },
+  "selection": {
+    "changed_paths": [
+      "scripts/gcsp/bmw-public-registration.mjs",
+      "scripts/gcsp/collect-fleet.mjs",
+      "scripts/gcsp/bmw-selection-binding.mjs",
+      "server/test/gcsp-bmw-source-batch.test.js",
+      "server/test/gcsp-bmw-context-qualification.test.js",
+      "scripts/gcsp/capture-bmw-selection.mjs",
+      "scripts/gcsp/collection-session.mjs",
+      "scripts/gcsp/public-bmw-source.mjs",
+      "scripts/gcsp/configuration-key.mjs",
+      "server/test/gcsp-bmw-selection-capture.test.js",
+      "server/test/gcsp-fleet-collector.test.js",
+      "server/vehicle-evidence/bmw-catalogue-adapter.js",
+      "server/vehicle-evidence/bmw-catalogue-v2.js"
+    ],
+    "regression": "Combined shared-base integration of observation-only source registration with actual batch continuation and durable-stop guard; preserve no options/solver context capability, checkpoint and HTTP limits",
+    "callers": [
+      "public source descriptors",
+      "shared collection session",
+      "collector/session checkpoints"
+    ],
+    "command": [
+      "/opt/homebrew/bin/node",
+      "--test",
+      "--test-reporter=tap",
+      "--test-concurrency=1",
+      "server/test/gcsp-bmw-context-qualification.test.js",
+      "server/test/gcsp-bmw-source-batch.test.js",
+      "server/test/gcsp-bmw-source-qualification.test.js",
+      "server/test/gcsp-fleet-collector.test.js"
+    ],
+    "selection": "Explicit JS checks; affected selector only implements Python. Entire collector module covers shared session boundary.",
+    "exclusions": "No full suite, live source, UI, native SQL or corpus acceptance; unchanged runtime/publication paths excluded. Existing source binder/capture/ingress evidence reused by reviewed unchanged module and test identities.",
+    "limits": {
+      "ram_bytes": 536870912,
+      "scratch_bytes": 67108864,
+      "seconds": 120,
+      "workers": 1
+    }
+  }
+}

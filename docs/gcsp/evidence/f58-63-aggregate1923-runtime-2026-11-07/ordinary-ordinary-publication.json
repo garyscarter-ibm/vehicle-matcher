@@ -1,0 +1,51 @@
+{
+  "status": "ordinary-dot8-published-operational-exception-known-consumer-limitation",
+  "releaseId": "9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043",
+  "previousManifestDigest": "86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f",
+  "counts": {
+    "configurations": 1924,
+    "distinctConfigurations": 1924,
+    "images": 2,
+    "qualifyingCompleteDistinctSourceConfigurations": 1923,
+    "sourceConfigurations": 1923,
+    "vinMappings": 1
+  },
+  "oldVersionFilesRehashed": 39,
+  "oldHistoryConfigurationsUnchanged": 1134,
+  "oldHistoryIdentitiesUnchanged": 1,
+  "oldHistoryDatasetsUnchanged": 8,
+  "addedConfigurations": 790,
+  "addedDatasets": 1,
+  "allPublicCorpusAssetBytesIdentical": true,
+  "idempotentRepeat": true,
+  "coldRepresentativeImages": 2,
+  "egress": {
+    "control": "blocked",
+    "calls": 0
+  },
+  "publicEvidence": {
+    "exactAnonymousAssetsAndColdRestore": true,
+    "completePublicProof": false,
+    "originalFailedStep": "consumer request-key expected hash used id/kind insertion order",
+    "originalPublicHttpCompletion": "unmet: 1024 public-context sample passed; 901 complement and changed-edge public context unrun",
+    "sameByteOfflineContinuation": false,
+    "previousPassedOfflineEvidenceReused": true,
+    "publicDownloadReceiptSha256": "ce9e4100aecc4cdba613e612f2e3a0f24881dd3d4a683164c77e1aa0050a71da",
+    "offlineSummarySha256": "5545d9e1104ab5a5968459933a5c567a1db33de992ffa542840c0e1cfdd84d76",
+    "failedZeroNetworkFollowup": "active-audit-unavailable: duplicate guard installation before DTO proof; incomplete",
+    "rawAuditStatus": "invalid-active",
+    "operationalDisposition": "Root-authorized ordinary integration; Medium proof harness defects and consumer defect retained; no AC waiver"
+  },
+  "sameByteOfflineDtoAndHttpProofReused": true,
+  "offlineChangedSourceAndImageRollbackReused": true,
+  "linuxPublicBuildAndActualDeploymentProof": "pending",
+  "configuredConsumer": {
+    "passed": 1456,
+    "failed": 469,
+    "severity": "Medium",
+    "acceptanceWaiver": false
+  },
+  "ordinaryStore": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1",
+  "pushOrDeployExecuted": false,
+  "acceptance": false
+}

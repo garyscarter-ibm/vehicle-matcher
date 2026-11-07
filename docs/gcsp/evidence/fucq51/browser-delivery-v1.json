@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "date": "2026-11-05",
+  "status": "passed",
+  "upstreamRequests": 0,
+  "source": "actual-native-v1-assets",
+  "assetHashes": [
+    {
+      "file": "i5-p0300-herofront.webp",
+      "sha256": "fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe"
+    },
+    {
+      "file": "i5-p0475-herofront.webp",
+      "sha256": "4c38cdb43b6438b7ae54fd1c882280bf744e88a17f2ce43597c5dd2c4890b5de"
+    }
+  ],
+  "authorisation": "BMW-approved-project-retention-and-display-2026-11-05",
+  "productionIntegration": false,
+  "profile": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-023/.claude/test-scratch/fucq51/browser/test-stamp-shard-66d00af880714417a549f3248383747d/chrome-profile",
+    "fresh": true,
+    "ownedBySupervisor": true
+  },
+  "instrumentation": "CDP only; application HTML contains no script",
+  "browserClosed": true,
+  "delivery": {
+    "status": "passed",
+    "route": "harness-local-published-assets",
+    "harnessRequests": [
+      "index.html",
+      "i5-p0300-herofront.webp"
+    ],
+    "csp": "default-src 'none'; img-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'",
+    "cacheControl": "no-store",
+    "browserBmwCredentials": false,
+    "browserOpaqueSourceUrls": false,
+    "authorisation": "BMW-approved-project-retention-and-display-2026-11-05",
+    "productionIntegration": false,
+    "browserInspection": {
+      "status": "passed",
+      "decodedImages": 2,
+      "externalRequests": 0,
+      "cspViolations": 0
+    },
+    "browserVisualInspection": "pending"
+  },
+  "browser": {
+    "version": "Chrome/156.0.8078.80",
+    "decodedImages": [
+      {
+        "path": "/i5-p0300-herofront.webp",
+        "width": 2560,
+        "height": 1646,
+        "complete": true,
+        "alt": "Representative BMW i5 white render"
+      },
+      {
+        "path": "/i5-p0475-herofront.webp",
+        "width": 2560,
+        "height": 1646,
+        "complete": true,
+        "alt": "Representative BMW i5 black render"
+      }
+    ],
+    "requests": [
+      {
+        "path": "/index.html",
+        "method": "GET"
+      },
+      {
+        "path": "/i5-p0300-herofront.webp",
+        "method": "GET"
+      },
+      {
+        "path": "/i5-p0475-herofront.webp",
+        "method": "GET"
+      },
+      {
+        "path": "/favicon.ico",
+        "method": "GET"
+      }
+    ],
+    "responses": [
+      {
+        "path": "/index.html",
+        "status": 200,
+        "contentType": "text/html; charset=utf-8",
+        "csp": "default-src 'none'; img-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'",
+        "cacheControl": "no-store",
+        "nosniff": "nosniff"
+      },
+      {
+        "path": "/i5-p0300-herofront.webp",
+        "status": 200,
+        "contentType": "image/webp",
+        "csp": "default-src 'none'; img-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'",
+        "cacheControl": "no-store",
+        "nosniff": "nosniff"
+      },
+      {
+        "path": "/i5-p0475-herofront.webp",
+        "status": 200,
+        "contentType": "image/webp",
+        "csp": "default-src 'none'; img-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'",
+        "cacheControl": "no-store",
+        "nosniff": "nosniff"
+      },
+      {
+        "path": "/favicon.ico",
+        "status": 404,
+        "csp": "default-src 'none'; img-src 'self'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'",
+        "cacheControl": "no-store",
+        "nosniff": "nosniff"
+      }
+    ],
+    "externalRequests": 0,
+    "bmwCredentialHeaders": 0,
+    "cspViolations": 0,
+    "scripts": 0
+  },
+  "ownedPorts": {
+    "harness": "53209",
+    "debugging": "53213"
+  },
+  "browserPid": 72903
+}

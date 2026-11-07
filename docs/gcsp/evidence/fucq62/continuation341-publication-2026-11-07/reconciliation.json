@@ -1,0 +1,40 @@
+{
+  "status": "independently-reconciled",
+  "checkedAt": "2026-11-07T01:59:48.547662+00:00",
+  "manifestDigest": "ba9442f93ae8ac2c77d47631061827a16be42f9d3a4a5e64f9b32866928b6d5a",
+  "counts": {
+    "configurations": 342,
+    "distinctConfigurations": 342,
+    "images": 0,
+    "qualifyingCompleteDistinctSourceConfigurations": 341,
+    "sourceConfigurations": 341,
+    "vinMappings": 1
+  },
+  "manifestChecksumsVerified": {
+    "configurations.jsonl": "0cc612453c1ab68a160b9001098710d3654c8c2c8ff173ef5b7edfc6c27a1e32",
+    "images.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "vins.jsonl": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd"
+  },
+  "oldVersionFilesUnchanged": 14,
+  "priorConfigurationRowsByteIdentical": 341,
+  "vinBytesIdentical": true,
+  "newSource": {
+    "path": "server/data/gcsp/vehicle-evidence/registered-sources/continuation1-2026-11-07.jsonl",
+    "sha256": "1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802",
+    "bytes": 21408,
+    "records": 1
+  },
+  "newConfigurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHRCxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+  "newCatalogueEqualsAcceptedSource": true,
+  "scratchAbsent": true,
+  "dependencyLinkAbsent": true,
+  "publisherTemporaryPaths": [],
+  "retainedReceiptHashes": {
+    "receipt.json": "a8d332947883145ff3278e283b53a2dd7182342354028407ab8ae17e5b591107",
+    "active-audit.json": "6272eb961cdacebed41e82083eed3331ce880f7f613da56de623f8fd3bd01d54",
+    "result.json": "ff24ad98c1ec42c966a5f3d9ec70b4e7966f254574cf4a0daa15053c44ec7f2a",
+    "cleanup.json": "4a4a597139b5c56b15eab73e431b2c3fb17cdadf95757232409c46357bc90e19",
+    "selection.json": "9855135a1b5e27399edd276e8628ca49e93ec21b1761011c9d329c6e6c65728d"
+  },
+  "verificationScope": "Read-only file reconciliation; existing released publication checks reused; no rerun and no source calls"
+}

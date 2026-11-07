@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "definitionSetId": "greg-publish-editor-v1",
+  "revision": "1",
+  "definitions": [
+    {
+      "key": "greg.publish.editor.v1",
+      "value": {
+        "price": {
+          "minimum": 0,
+          "maximum": 4000,
+          "step": 1
+        },
+        "weight": {
+          "minimum": 0,
+          "maximum": 10,
+          "step": 1
+        }
+      },
+      "unit": "editor-presentation-range",
+      "status": "assumed",
+      "basis": "Presentation only, not policy bounds: points 0..4000 cover assumed 800..1900 costs and about twice the largest; weights 0..10 adjust around neutral 1. Exact inputs retain all nonnegative safe integers. Revisable demo assumption, not BMW policy.",
+      "source": "docs/gcsp/greg-publish.md",
+      "sourceDate": "2026-11-05"
+    }
+  ],
+  "digest": "733f035a1f91576e904b76ec73b07e76969b2bc23fe5ea82500d1bf34cbfef5c"
+}

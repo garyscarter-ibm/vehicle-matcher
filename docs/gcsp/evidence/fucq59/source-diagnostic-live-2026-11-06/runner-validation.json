@@ -1,0 +1,108 @@
+{
+  "status": "scoped passed",
+  "tests": 18,
+  "pass": 18,
+  "fail": 0,
+  "runnerSha256": "5cb5adafd7d1826fc5a953984863c21aca499a402b8f7e5b61521905018e87f7",
+  "testSha256": "84f6d69f54f503178c6f65b6a2f9a190ac86267c280c7e8b7cfe7deb0daf635b",
+  "command": [
+    "node",
+    "--test",
+    "--test-concurrency=1",
+    "--experimental-test-coverage",
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/live-diagnostic/round1/runner.test.mjs"
+  ],
+  "red": "module linking refused missing named exports before any runner main could evaluate; bounded red log retained",
+  "greenLog": {
+    "sha256": "21daf8e6c1870453e58eb87210d5c70d36ea01c2efa0a106384c96be1d22a0cf",
+    "bytes": 4800,
+    "retention": "condensed into this summary and impact map; successful verbose log removed"
+  },
+  "durationMs": 580.796125,
+  "supervisedWallSeconds": 0.7926555419981014,
+  "peakScratchBytes": 138080,
+  "peakRssBytes": 115933184,
+  "coverage": {
+    "runnerLinePercent": 59.54,
+    "runnerBranchPercent": 95.59,
+    "runnerFunctionPercent": 84.21,
+    "scope": "helper boundaries covered; main/preflight/live transport intentionally unexecuted; no whole-runner or live proof claimed"
+  },
+  "timings": [
+    {
+      "test": "marker closes file and syncs parent before transport gate",
+      "milliseconds": 9.580459
+    },
+    {
+      "test": "directory sync failure preserves spent marker and prevents transport",
+      "milliseconds": 4.308875
+    },
+    {
+      "test": "existing producer validates checkpoint without execute or rewriting it",
+      "milliseconds": 43.053041
+    },
+    {
+      "test": "invalid checkpoint schema contributes no counts or artifacts",
+      "milliseconds": 36.074875
+    },
+    {
+      "test": "invalid checkpoint digest contributes no counts or artifacts",
+      "milliseconds": 39.775792
+    },
+    {
+      "test": "invalid checkpoint plan contributes no counts or artifacts",
+      "milliseconds": 40.877041
+    },
+    {
+      "test": "invalid checkpoint source contributes no counts or artifacts",
+      "milliseconds": 40.147125
+    },
+    {
+      "test": "invalid checkpoint run contributes no counts or artifacts",
+      "milliseconds": 39.891708
+    },
+    {
+      "test": "invalid checkpoint counters contributes no counts or artifacts",
+      "milliseconds": 42.066625
+    },
+    {
+      "test": "invalid checkpoint negative contributes no counts or artifacts",
+      "milliseconds": 33.245625
+    },
+    {
+      "test": "invalid checkpoint payload contributes no counts or artifacts",
+      "milliseconds": 42.035625
+    },
+    {
+      "test": "invalid checkpoint stage contributes no counts or artifacts",
+      "milliseconds": 47.013666
+    },
+    {
+      "test": "invalid checkpoint missingStage contributes no counts or artifacts",
+      "milliseconds": 39.279459
+    },
+    {
+      "test": "missing checkpoint stays missing without creating lock or fresh state",
+      "milliseconds": 0.5495
+    },
+    {
+      "test": "artifact validation failure writes safe receipt with verified accounting and another export",
+      "milliseconds": 0.975583
+    },
+    {
+      "test": "second export write failure still records first verified export without raw error",
+      "milliseconds": 1.437667
+    },
+    {
+      "test": "validated checkpoint provides lower-bound accounting and cached safe projection after failure",
+      "milliseconds": 44.3575
+    },
+    {
+      "test": "only known numeric accounting fields reach receipt",
+      "milliseconds": 1.176416
+    }
+  ],
+  "sourceFetchExecuteCalls": 0,
+  "actualMarkerOrOutput": false,
+  "cleanupAudit": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/live-diagnostic/round1/cleanup-audit.json"
+}

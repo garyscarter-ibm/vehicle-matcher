@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "f70-core-series-parent-review.v1",
+  "recordedAt": "2026-11-07T02:24:22.881671+00:00",
+  "reviewer": "/root",
+  "executor": "/root/minnie_mouse",
+  "allocationId": "f70-1f7e-priority-core111-20261107-once",
+  "seriesPlanSha256": "a692951f6f3632f7308c450bb54aa58c66fa307b6f2e0aa58ed536ac885710e3",
+  "continuationPlanSha256": "0e0c765a53b1954fb47455ee691723bfc494f1a8a373a263b8aa10bcc690333d",
+  "reviewedPaths": [
+    "run-series.py",
+    "prepare-core.py",
+    "verify-retained.py",
+    "../f70-1f7e-core01-solver-2026-11-07/supervise.py",
+    "series-plan.json"
+  ],
+  "decision": "Authorised exact chunks1-4 once after preparation checks and independent rehash; no active corpus writes.",
+  "reviewFinding": "No blocking finding. Sequential finite111/127GET, spent-request exclusion, prior five-check proof, durable primary/export, selected source pins and per-chunk cleanup reviewed.",
+  "requestedAdjustment": "Aligned resources.maximumAggregateSeconds to720 and priority-series retained/allocation forecast before freeze. Source wrapper and111 request membership unchanged.",
+  "executionBoundary": "Stop source/access/resource failure with durable primary retained; no replay. Parent independently checks actual outputs and owns publication/acceptance.",
+  "independentRehash": {
+    "allCodePinsMatch": true,
+    "pinCount": 52,
+    "seriesMarkerAbsent": true,
+    "dependencyLinkAbsent": true
+  }
+}

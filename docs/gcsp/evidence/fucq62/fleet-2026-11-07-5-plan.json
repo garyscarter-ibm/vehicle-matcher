@@ -1,0 +1,128 @@
+{
+  "schemaVersion": "f62-fleet-20261107-5-plan.v1",
+  "status": "plan-only-parent-review-required-before-execution",
+  "sourceEvidenceCommit": "56bf8719612961a56129f96e8d64981dd8fdf82e",
+  "reviewedPackagingCommit": "f546786b994b453d4089aadb01b64708645e49b2",
+  "reviewedImageCheckpoint": "3dd1bbecdc8dd0f5d17ef503ca7009f466eddddf",
+  "version": "2026-11-07.5",
+  "releaseTag": "fleet-2026-11-07-5",
+  "candidateManifestDigest": null,
+  "baseline": {
+    "manifestDigest": "8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9",
+    "version": "2026-11-07.4",
+    "configurationBytes": 6500952,
+    "configurationSha256": "da5c54020b9ccf2eddef8160a8df4e501f7ce57884b195bd275e242ff843f2f5",
+    "vinSha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
+    "configurations": 350,
+    "sourceConfigurations": 349,
+    "vinMappings": 1,
+    "images": 0
+  },
+  "files": [
+    {
+      "path": "docs/gcsp/evidence/fucq59/f70-1f7e-first32-solver-2026-11-07/accepted.jsonl",
+      "sha256": "845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080",
+      "bytes": 409709,
+      "records": 19,
+      "registeredOrigin": "f70-1f7e-first32-2026-11-07.jsonl",
+      "overlapWithBaselineAndPriorInputs": 0
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/f70-1f7e-core01-solver-2026-11-07/accepted.jsonl",
+      "sha256": "5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7",
+      "bytes": 689849,
+      "records": 32,
+      "registeredOrigin": "f70-1f7e-core01-2026-11-07.jsonl",
+      "overlapWithBaselineAndPriorInputs": 0
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/f70-1f7e-core02-solver-2026-11-07/accepted.jsonl",
+      "sha256": "14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6",
+      "bytes": 689844,
+      "records": 32,
+      "registeredOrigin": "f70-1f7e-core02-2026-11-07.jsonl",
+      "overlapWithBaselineAndPriorInputs": 0
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/f70-1f7e-core03-solver-2026-11-07/accepted.jsonl",
+      "sha256": "c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06",
+      "bytes": 689836,
+      "records": 32,
+      "registeredOrigin": "f70-1f7e-core03-2026-11-07.jsonl",
+      "overlapWithBaselineAndPriorInputs": 0
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/f70-1f7e-core04-solver-2026-11-07/accepted.jsonl",
+      "sha256": "acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d",
+      "bytes": 323364,
+      "records": 15,
+      "registeredOrigin": "f70-1f7e-core04-2026-11-07.jsonl",
+      "overlapWithBaselineAndPriorInputs": 0
+    }
+  ],
+  "reconciliationInputs": [
+    {
+      "path": "docs/gcsp/evidence/fucq59/f70-1f7e-core04-solver-2026-11-07/final-canonical-index.json",
+      "sha256": "f45e3aa2c7ed85fd1c8c4e9a575ecbf8e02985b06401fa678d5b66ab0d4efa2e",
+      "bytes": 306392
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/f70-1f7e-core-continuation-2026-11-07/series-receipt.json",
+      "sha256": "0374776aacfb737802ba426b35a0c08c2eb1ef0ec36bcd9ebf5389a6034e622c",
+      "bytes": 1685
+    }
+  ],
+  "novelConfigurationIds": {
+    "count": 130,
+    "algorithm": "SHA256(UTF8(sorted exact configurationId values joined with newline, plus final newline))",
+    "sha256": "7bd9b9d1f6ff842e577f5120e246b17d39a91f49403a191205949d677e8b33aa"
+  },
+  "canonicalIndex": {
+    "entries": 482,
+    "publishedUnion": 480,
+    "excludedRetainedPriorObservationIdsSha256": [
+      "4b2458c9c59c3361bee12586a5be60937052187c7316de98bd880f4dbd9e1c08",
+      "c17bc4fa593450193cf36514fda1914c7431e8ebddccf4711595511327c1dd76"
+    ]
+  },
+  "expected": {
+    "configurations": 480,
+    "distinctConfigurations": 480,
+    "sourceConfigurations": 479,
+    "qualifyingCompleteDistinctSourceConfigurations": 479,
+    "vinMappings": 1,
+    "images": 1
+  },
+  "image": {
+    "registration": "APPROVED_CORPUS_IMAGES[0]",
+    "asset": "assets/gcsp-vehicle-evidence/fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe.webp",
+    "sha256": "fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe",
+    "bytes": 82798,
+    "configurationIdSha256": "cec541411f1b512cdcef09d1013939c166c166385fadb1b3dbf089645102bb53",
+    "fidelity": "representative-configuration",
+    "distribution": "committed exact static asset in deployment checkout; one images.jsonl association in raw release",
+    "configurationRowRewrite": false
+  },
+  "resources": {
+    "workers": 1,
+    "hostRamMiB": 512,
+    "childRamMiB": 448,
+    "normalScratchMiB": 64,
+    "maximumScratchMiB": 128,
+    "normalChunkSeconds": 90,
+    "maximumChunkSeconds": 180,
+    "jsonlMaxBytes": 67108864,
+    "sourceShardMaxBytes": 33554432,
+    "largeOutputThresholdBytes": 268435456,
+    "largeOutputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/_agent-output/vehicle-matcher/f62-fleet-20261107-5"
+  },
+  "gates": {
+    "parentPlanApprovalRequired": true,
+    "ordinaryPublicationExecuted": false,
+    "candidatePreparationExecuted": false,
+    "publicUploadExecuted": false,
+    "testsExecutedForThisPlan": false,
+    "renderMutationExecuted": false
+  },
+  "evidenceMode": "read-only local hashes and exact-ID reconciliation; no scratch, tests, source/network calls or active-store mutation"
+}

@@ -1,0 +1,23 @@
+{
+  "authorisation": "Russell, 7 November 2026",
+  "stories": [
+    {
+      "key": "FUCQ-122",
+      "remainder": "FUCQ-170",
+      "path": "_dev/in-progress/DEV-2026-11-04-084.md",
+      "claimAndPointsPreserved": true,
+      "historicalResultPreserved": true,
+      "historicalResultSha256": "7900d45859f2104bdb4f509c90ffc61b8afcbc3c82ed7e9f98e361dd1a7cc17c",
+      "scopeFieldsAgreeWithJira": true
+    },
+    {
+      "key": "FUCQ-126",
+      "remainder": "FUCQ-172",
+      "path": "_dev/in-progress/DEV-2026-11-04-096.md",
+      "claimAndPointsPreserved": true,
+      "historicalResultPreserved": true,
+      "historicalResultSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "scopeFieldsAgreeWithJira": true
+    }
+  ]
+}

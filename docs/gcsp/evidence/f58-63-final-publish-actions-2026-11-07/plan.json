@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "f58-63-final-publish-actions-plan.v1",
+  "requestedAt": "2026-11-07T12:46:40.907303+00:00",
+  "reason": "User explicitly requested GitHub Actions build verification after final publication and diagnosis/fix of a failing build. Latest fleet build predates the approved selector compatibility fix, so check final published code once.",
+  "changedRuntimeSincePriorFleetBuild": [
+    "server/scripts/prepare-fleet-build.mjs",
+    "server/scripts/fleet-artifacts.mjs"
+  ],
+  "existingFocusedRegression": "server/test/gcsp-fleet-build-entry.test.js plus standalone offline CLI boundaries:9passed, exact evidence retained; no local repeat",
+  "affectedCallers": [
+    "Render approved Blueprint release selection",
+    "fleet artifacts network-download restore",
+    "standalone offline/pack CLI dependency boundary",
+    "Node20 Linux published31assets/offline repeat/five lookup boundaries"
+  ],
+  "selectedChecks": [
+    {
+      "workflow": ".github/workflows/gcsp-fleet-build.yml",
+      "ref": "final gcsp-poc published SHA",
+      "dispatches": 1,
+      "workerCount": 1,
+      "phases": [
+        "locked npm install",
+        "exact public31asset cold restore",
+        "offline idempotent repeat with zeroexternal calls",
+        "asset checksum verification",
+        "five-reference runtime/egress boundary with two known deferred consumer failures"
+      ],
+      "wallSecondsCeiling": 690,
+      "scratchBudgetMiB": 2048,
+      "expectedScratchMiB": 1000,
+      "nodeMaxOldSpaceMiB": 512,
+      "ownedScratch": "Workflow derives absolute RUNNER_TEMP/gcsp-fleet-RUN_ID-ATTEMPT; verifies nonexistence and records manifest outside before creating",
+      "supervisor": "existing EXIT trap; bounded subprocesses; emits bounded failure JSON and scratch size, removes scratch and verifies absence; no archive"
+    }
+  ],
+  "alsoObserve": [
+    "final push Refresh product map inputs",
+    "its downstream Deploy to GitHub Pages"
+  ],
+  "excluded": [
+    "full1872test suite: no application change in handoff and known independently deferred failures",
+    "full10002 lookup replay: identical production proof pins already retained",
+    "native PostgreSQL repeat: latest exact sample passed unchanged15pins",
+    "additional source collection",
+    "new browser/UI work",
+    "managed Render SQL"
+  ],
+  "checkpoint": "Retain run IDs, exact heads, phase outputs, failures and final cleanup; if build fails diagnose actual cause and apply smallest complete fix, then validate replacement.",
+  "localScratchBytes": 0,
+  "largeOutputs": "No local archive/download or generated directory; CI uses declared bounded working-cache exception and removes allocation.",
+  "acceptance": false
+}

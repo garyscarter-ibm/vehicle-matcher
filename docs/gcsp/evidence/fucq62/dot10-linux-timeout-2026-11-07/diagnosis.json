@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "scoped-linux-ci-failure-diagnosis.v1",
+  "severity": "Medium",
+  "relatedStory": "FUCQ-62",
+  "storyLinkBasis": "The exact pinned fleet external restore and five-reference CI boundary belongs to FUCQ62 vehicle-evidence delivery.",
+  "run": 42347409603,
+  "job": 128328033279,
+  "code": "e3fd747dab2765e314633908e99d3c0c31283606",
+  "runtime": "v20.20.2",
+  "result": "failed-exit124",
+  "evidence": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/dot10-linux-timeout-2026-11-07/actual-failed-step.log",
+    "bytes": 9820,
+    "sha256": "b8391703833a8f0cd077da97851197d3eda26d89289198dc440b9404f4e5e382"
+  },
+  "facts": [
+    "npm ci succeeded in492ms at06:31:58.5918926Z",
+    "cleanup logged06:34:02.9541621Z andexit124, about124.36s after npm completion",
+    "367300KiB owned scratch reported then removed; absence confirmed",
+    "download/offline stdout redirected into owned scratch; original cleanup removed both without logging phase identity or JSON"
+  ],
+  "hypothesis": "download restore completed inabout64s, then the offline60s command timed out; timestamps fit but no retained phase marker/JSON proves which timeout fired",
+  "exactCauseProved": false,
+  "proposedCorrection": {
+    "workflowBefore": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.github/workflows/gcsp-fleet-build.yml",
+      "bytes": 3852,
+      "sha256": "ef5f823380cefea191959e9a8ef50eeaaf49b9e67a6af2185bc16d33281b2b69"
+    },
+    "workflowAfter": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/dot10-linux-timeout-2026-11-07/ci-proposal.yml",
+      "bytes": 4915,
+      "sha256": "4a3cc28cfb6431f671dd3b69b40bb9ff47fbb0db73c67912396e3be19d23a0b8"
+    },
+    "scope": "Only offline cap60to120seconds and bounded phase/timing/restore-result diagnostics",
+    "plannedCapsSeconds": {
+      "npm": 120,
+      "download": 180,
+      "offline": 120,
+      "verifyAssets": 30,
+      "boundary": 120
+    },
+    "sumCaps": 570,
+    "jobCapSeconds": 600,
+    "newSourceCalls": 0,
+    "networkBudgetChanged": false,
+    "referenceScopeChanged": false,
+    "consumerFailurePolicyChanged": false
+  },
+  "retainedAcceptanceGaps": {
+    "originalConsumerFailed": 1313,
+    "scopedConsumerFailed": 2,
+    "acceptance": false
+  },
+  "validation": "proposal syntax and exact patch application only; no workflow rerun or runtime check",
+  "backlogBug": "Parent must reuse or create linked Medium tooling Bug; not a new Story acceptance criterion.",
+  "acceptance": false
+}

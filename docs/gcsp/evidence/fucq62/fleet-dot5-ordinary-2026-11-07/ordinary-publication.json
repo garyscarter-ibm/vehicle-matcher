@@ -1,0 +1,37 @@
+{
+  "status": "ordinary-dot5-published-coherent-anchor-staged",
+  "releaseId": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+  "previousManifestDigest": "8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9",
+  "counts": {
+    "configurations": 480,
+    "distinctConfigurations": 480,
+    "vinMappings": 1,
+    "images": 1,
+    "sourceConfigurations": 479,
+    "qualifyingCompleteDistinctSourceConfigurations": 479
+  },
+  "ordinaryStore": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1",
+  "published": {
+    "status": "ok",
+    "idempotentRepeat": true
+  },
+  "coldImageState": "representative",
+  "oldConfigurationLinesByteIdentical": 350,
+  "vinBytesIdentical": true,
+  "oldVersionFilesRehashed": 24,
+  "oldHistoryConfigurationsUnchanged": 350,
+  "oldHistoryIdentitiesUnchanged": 1,
+  "oldHistoryDatasetsUnchanged": 5,
+  "addedConfigurations": 130,
+  "addedDatasets": 1,
+  "egress": {
+    "control": "blocked",
+    "calls": 0
+  },
+  "activePointerSha256": "538c5cc8643e51a3946bfd142d0e42168695fe93d63fc887d9a3178048e82203",
+  "inventorySha256": "f5ec5791161b9fd3cfe0894f899401fe793cdaefbc3971381bab5e23d71c2549",
+  "previousAll481AuditReused": true,
+  "publicAndLinuxNode20ProofOwnedByRoot": true,
+  "pushOrDeployExecuted": false,
+  "scope": "Actual existing publisher; root stages .5 store and matching YAML as one coherent commit; wholeStory acceptance remains open."
+}

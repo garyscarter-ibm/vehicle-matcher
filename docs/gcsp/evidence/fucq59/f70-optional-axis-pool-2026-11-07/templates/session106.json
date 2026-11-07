@@ -1,0 +1,180 @@
+{
+  "schemaVersion": "1",
+  "planId": "f70-optional-axis5567-20261107-once-session106",
+  "version": "1",
+  "seed": "f70-actual790-optional-axis-direct-product-20261107",
+  "policyRead": {
+    "asOf": "2026-11-06T00:00:00.000Z",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "source": {
+    "id": "bmw-uk-public",
+    "version": "f59-model-axis-batch-20261107.v1",
+    "kind": "public-bmw-uk"
+  },
+  "context": {
+    "catalogueDate": "2026-11-01",
+    "market": "GB",
+    "locale": "en-GB",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05"
+  },
+  "models": [
+    "1F7C"
+  ],
+  "target": 8,
+  "candidateCount": 8,
+  "limits": {
+    "maxCandidates": 8,
+    "requestBudgets": {
+      "page": 1,
+      "settings": 1,
+      "discover": 1,
+      "options": 1,
+      "solve": 8
+    },
+    "maxAttempts": 1,
+    "operationTimeoutMs": 10000,
+    "deadlineMs": 120000,
+    "retryDelayMs": 0,
+    "concurrency": 1,
+    "cacheEntries": 16,
+    "cacheRetentionMs": 86400000,
+    "checkpointBytes": 4194304,
+    "imageRequests": 0,
+    "sourceAttempts": 12,
+    "sourceBytes": 4194304,
+    "responseBytes": 1048576
+  },
+  "captureVersion": "bmw-complete-selection.v1",
+  "qualificationDate": "2026-11-07",
+  "modelRegistration": {
+    "schemaVersion": "bmw-public-model-registration.v1",
+    "modelCode": "1F7C",
+    "agModelCode": "22GE",
+    "catalogueRangeKey": "F70",
+    "rawModelRange": "F70",
+    "aliases": [
+      "1"
+    ],
+    "market": "GB",
+    "locale": "en-GB",
+    "steering": "RL",
+    "catalogueDate": "2026-11-01",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05"
+  },
+  "lineRegistration": {
+    "lineKey": "M_PERFORMANCE_LINE",
+    "defaultModel": {
+      "modelCode": "1F7C",
+      "agModelCode": "22GE"
+    },
+    "includedIndex": 0,
+    "optionsQuery": {
+      "kind": "untrimmed"
+    }
+  },
+  "candidates": [
+    {
+      "candidateId": "candidate-6dec1976f4fb729bbd658f7f",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C56",
+          "S01HA",
+          "S07EV"
+        ],
+        "mandatoryElements": []
+      }
+    },
+    {
+      "candidateId": "candidate-2e59378d99f2221d35202520",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0C3N",
+          "S03NA",
+          "S07EW"
+        ],
+        "mandatoryElements": []
+      }
+    },
+    {
+      "candidateId": "candidate-32046f3e24727fff5da8b5ce",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0475",
+          "S03NB",
+          "S043U",
+          "S07EV"
+        ],
+        "mandatoryElements": []
+      }
+    },
+    {
+      "candidateId": "candidate-b63848db83d9f741ab50a3cb",
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C68",
+          "S01H5",
+          "S033F"
+        ],
+        "mandatoryElements": []
+      }
+    },
+    {
+      "candidateId": "candidate-ec21d0892f8276a596b50687",
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C56",
+          "S033F",
+          "S03NB",
+          "S043U"
+        ],
+        "mandatoryElements": []
+      }
+    },
+    {
+      "candidateId": "candidate-365947d760915c53461f8f8d",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0C3Z",
+          "S01H8",
+          "S043U",
+          "S07EW"
+        ],
+        "mandatoryElements": []
+      }
+    },
+    {
+      "candidateId": "candidate-bef5aa5ecb0a1b5526b1a228",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0C6R",
+          "S01H8",
+          "S043U"
+        ],
+        "mandatoryElements": []
+      }
+    },
+    {
+      "candidateId": "candidate-28c26c94b6f82dd5671ecf70",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0490",
+          "S01H5",
+          "S033F",
+          "S043U"
+        ],
+        "mandatoryElements": []
+      }
+    }
+  ]
+}

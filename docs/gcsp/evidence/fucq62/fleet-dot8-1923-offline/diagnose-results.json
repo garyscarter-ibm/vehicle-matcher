@@ -1,0 +1,52 @@
+{
+  "acceptance": false,
+  "cleanup": {
+    "cloudScratchAbsent": true,
+    "codeIdentityUnchanged": true,
+    "compatibilityException": null,
+    "dependencyLinkAbsent": true,
+    "freeDiskBytes": 55880163328,
+    "groupsAbsent": true,
+    "inputIdentityUnchanged": true,
+    "leftovers": [],
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot8-1923-offline/diagnose/ownership/7ea184e689df4b4981aed1f952b7f9a5.json",
+    "removedCloudScratchAllocationBytes": 0,
+    "removedScratchPeakBytes": 0,
+    "reservationAbsent": true,
+    "retainedAllocationBytes": 262807552,
+    "retainedLogicalBytes": 261762260,
+    "retainedOutput": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot8-1923-20261107",
+    "scratch": "/private/tmp/test-stamp-shard-7ea184e689df4b4981aed1f952b7f9a5",
+    "scratchAbsent": true
+  },
+  "planSha256": "b6ac633c60012173fd861b709ac46c381edfa5161edb83e215e49cdd048eb0ac",
+  "receiptPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot8-1923-20261107/diagnose-receipt.json",
+  "receiptSha256": "ebae405dbbf1b541867b327c8cfb8145c1a5928f32011532c644443fca9f74ec",
+  "receiptSummary": {
+    "allFailuresConfiguredConsumerOnly": true,
+    "allMismatchDtosMatchRetained": true,
+    "detail": "Full pinned diagnosis remains at receiptPath; generated summary avoids duplicating retained source/DTO bodies in Git.",
+    "externalCalls": 0,
+    "failuresPerVgModelCode": {
+      "1F7A": 144,
+      "1F7C": 325
+    },
+    "manifestDigest": "9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043",
+    "mismatches": 469,
+    "ordinaryPublicationExecuted": false,
+    "status": "direct-discrepancies-located"
+  },
+  "result": {
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot8-1923-offline/diagnose/command.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot8-1923-offline/diagnose/ownership/7ea184e689df4b4981aed1f952b7f9a5.json",
+    "peak_rss": 332414976,
+    "peak_scratch": 0,
+    "rc": 0,
+    "wall": 18.57105679200322
+  },
+  "scope": "scoped offline diagnose",
+  "selection": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot8-1923-offline/diagnose/selection.json",
+  "selectionSha256": "ccbb3018f25e7b19cda8ad1ade5fdb04b123ad8f483c6aaa4c16dad18c9d6169"
+}

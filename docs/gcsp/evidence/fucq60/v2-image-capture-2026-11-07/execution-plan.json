@@ -1,0 +1,49 @@
+{
+  "id": "f60-1f7e-one-webp-four-get-20261107.v1",
+  "status": "prepared-awaiting-root-exact-hash-review",
+  "planDigest": "75ed9dcb2078a1ad6ec90ce810e6432a8097c82347634513b1d2e1734a05714b",
+  "primary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq60/v2-image-capture-2026-11-07/image-checkpoint.json",
+  "acceptedSource": {
+    "path": "docs/gcsp/evidence/fucq59/f70-1f7e-first32-solver-2026-11-07/accepted.jsonl",
+    "fileSha256": "845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080",
+    "line": 1,
+    "lineSha256": "cf62b45203b45bc00bf6562141c7df28c3527490ef6a7886da0c981548e5317c"
+  },
+  "technical": {
+    "path": "docs/gcsp/evidence/fucq60/actual-v2-observation-2026-11-07/technical.json",
+    "retainedSha256": "b9faeb98e45ee770d24db8f85881f6c9145f9abfb2939c71ab24c738de9e4735",
+    "responseSha256": "a11eaf979cbfeedbcc639b9367937fd08ddfbfb866855fdddd4cca5c4634ca68"
+  },
+  "codePins": {
+    "server/vehicle-evidence/bmw-live-imagery.js": "40c9c7fd202e211034c540a5a4b7117ef9fd3f4a16b65ede59147bb1f5fe16ce",
+    "server/vehicle-evidence/bmw-image-adapter.js": "56753ac7e47e4790159e7d50fb4deafe1658730e803912f064e6ed09326774ef",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "90cf9187cb44dc6d17e6984a0fdc25dc13fc9078c23d3652d779a565cedc29a7",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56",
+    "scripts/gcsp/verify-live-imagery.mjs": "e0c6ce063dc44c0ba532741befcea2133deec5998349748eff8697bacb56b8ae",
+    "scripts/gcsp/bmw-public-registration.mjs": "965f1ccb0699ae75cbfdd74bb6f2855095bc6f66113158b08948d649eb384d2c",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/bmw-technical-qualification.mjs": "0d5f90b927c4aef72ac620664549fa61f09e556e12378e1f8ffd2c3dc201dbcc",
+    "scripts/gcsp/collection-session.mjs": "918512334fa3a350f9578548f622e1b4de903eec7091b7c7aac05dc5e5344b2e",
+    "scripts/gcsp/enrich-fleet.mjs": "0f77c577ddaf0cf91fdae00377f398723d38c77f30210976a1c94391944db7bd",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq60/v2-image-capture-2026-11-07/run-live.mjs": "ac3c826abc16d886ed3fd93c2b09edd96eff6ffa0b1b4cf28295030bfc78f6e0",
+    "docs/gcsp/evidence/fucq60/v2-image-capture-2026-11-07/supervise.py": "eb5e5f1692c1e81003b037a9362c24f0cb34a2c59487e55c5d369306b33ed0bc",
+    "docs/gcsp/evidence/fucq60/v2-image-capture-2026-11-07/image-plan.json": "17bc34abdb0dac18ce75bed3a8a0374190443c03be45b79c2fcf285d7b589969"
+  },
+  "limits": {
+    "attempts": 4,
+    "totalBytes": 4194304,
+    "responseBytes": 1048576,
+    "assetBytes": 2097152,
+    "operationMs": 10000,
+    "sourceMs": 90000,
+    "supervisorSeconds": 120,
+    "workers": 1,
+    "hostRamMiB": 512,
+    "childRamMiB": 448,
+    "scratchMiB": 64,
+    "retries": 0
+  },
+  "scope": "Exact accepted v2 registration; page/settings/manifest/one pinned WebP; known facts reuse retained OTD offline; no image fallback, source retry, new OTD, or runtime publication"
+}

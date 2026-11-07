@@ -1,0 +1,13 @@
+# Linux .12 run 42361586991: scoped proof passed
+
+Run `42361586991`, attempt1, exact commit `21d34a173f024220806c36ec89567c0ed737a815`, completed successfully at10:00:20Z on7November2026. Node20.20.2/Linux passed the fresh public .12 restore in133s with62 HTTPS calls; the genuine offline repeat passed in169s with `idempotent:true` and zero external calls. Exact31cache assets plus restored-store bytes passed hash verification in1s. Five scoped DTO/HTTP/consumer boundary references passed their agreed gate in112s, retaining two known consumer failures. Total proof time415s; npm-ci rounded to0s.
+
+This proves the scoped Linux public cold/offline/assets/boundary contract at the exact pinned code and .12 release. It does not replay the historical10,002-reference proof, resolve its2,707consumer failures, prove full Story acceptance or mark Done. The original failed run42360886351 remains unchanged; the original local cold-attempt cause remains unresolved. Root owns Render deployment and live application readback separately.
+
+The runner finalizer reported903,568KiB before deletion, proved owned scratch absent, exited0 and retained no archive. This is original hosted log evidence, not independent filesystem access. `result.json` is the compact receipt. Raw cold/offline JSON, asset verification and final scoped summary are retained separately from the26,184-byte ANSI-sanitized job log. The final boundary summary and successful assertions at the exact workflow pin establish zero source/external calls and closed server; the ephemeral full boundary receipt was deleted with runner scratch.
+
+`exact-code-input-pins.json` reuses the reviewed proof helpers and records the exact runtime/release input hashes. Workflow SHA256 remains `c4daf45e49ec149a8f2eb205101810fd62ed53eb554acbf918c3efa7023f4cc9`. The root-approved12-minute remote exception retained npm90s/download240s/boundary120s and allowed offline180s/verification60s; actual415s was below those ceilings.
+
+Seven compact metadata snapshots were spaced roughly60–90s apart, followed by one bounded final log read. Their output stayed below1MiB. External ownership manifests and registered finalizers preceded the tiny local scratch allocations; subprocesses joined and both owned roots are absent. Retained local evidence is small, with no archive or compatibility exception. No workflow dispatch, local proof, source collection, application GET, SQL/native work or browser interaction occurred during this readback. Only this new evidence directory changes in this checkpoint.
+
+Agent: Mike Wazowski; requested/selected `gpt-6.1-sol`/`medium`, runtime unverified, no fallback or descendants.

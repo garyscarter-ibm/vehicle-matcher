@@ -1,0 +1,8 @@
+{
+  "status": "released-once",
+  "allocationId": "missing20-selector-20261107-once",
+  "planSha256": "32356455215c150123ca624caec42c1eed437c7fe5434c0dcbad380739a2ace3",
+  "sourceRequestCeiling": 1,
+  "solverRequestCeiling": 0,
+  "parentReview": "Reviewed exact entrypoint oneGET and literal projection; no follow/redirect/retry or additional reads; no qualification or admission credit."
+}

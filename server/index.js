@@ -45,18 +45,27 @@ import { normalizeBrand, brandTuning } from './brands.js';
 import { fetchDealerDirectory } from './dealers.js';
 import { geocodePostcode } from './geocode.js';
 import { createGcspHandler } from './gcsp/identity/http.js';
+import { createOfferAccessHandler } from './gcsp/offers/access-http.js';
+import { createOfferDecisionHandler } from './gcsp/offers/decision-http.js';
+import { createOfferFollowupRoutes } from './gcsp/offers/followup-http.js';
 import { createEmployeeRecommendationRoutes } from './gcsp/recommendation/http.js';
 import { createClockRoutes } from './gcsp/clock/http.js';
 import { createOutboxRoutes } from './gcsp/notify/http.js';
 import { createScenarioRoutes } from './gcsp/scenarios/http.js';
+import { createPresenterControlsRoutes } from './gcsp/presenter-controls/http.js';
 import { createCaseRoutes } from './gcsp/cases/http.js';
 import { createBriefRoutes } from './gcsp/brief/http.js';
 import { createActivityRoutes } from './gcsp/brief/activity-http.js';
 import { createManualContextRoutes } from './gcsp/manual-context/http.js';
 import { createManualClaimsRoutes } from './gcsp/manual-claims/http.js';
+import { createManualReviewDetailsRoutes } from './gcsp/manual-review/http.js';
+import { createLifecycleApprovalRoutes } from './gcsp/lifecycle/approvals/http.js';
+import { createDocumentRoutes } from './gcsp/lifecycle/documents/http.js';
 import { createVehicleEvidenceHandler, isVehicleEvidencePath } from './gcsp/vehicle-evidence/vehicle-evidence-handler.js';
 import { createLocalVehicleEvidenceLookup } from './gcsp/vehicle-evidence/local-vehicle-lookup.js';
 import { createGregRoutes } from './gcsp/greg/http.js';
+import { createGregPublishService } from './gcsp/greg/publish/index.js';
+import { createGregPublishRoutes } from './gcsp/greg/publish/http.js';
 
 const PORT = process.env.PORT === '0' ? 0 : Number(process.env.PORT) || 8787;
 const MAX_BODY_BYTES = 16 * 1024; // quiz answers are tiny; reject anything bigger
@@ -860,27 +869,64 @@ export function buildServer(deps = {}) {
     geocodePostcode,
     ...deps,
   };
+  const allowedOrigins = deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean);
+  const gregPublish = deps.gcspGregPublish ?? createGregPublishService({ repository: deps.gcspRepository,
+    policy: deps.gcspPolicy, clock: deps.gcspClock, identity: deps.gcspIdentity });
   const handleGcsp = createGcspHandler({
     identity: deps.gcspIdentity,
     routes: [...createEmployeeRecommendationRoutes(deps.gcspClock && deps.gcspRecommendations
       ? { ...deps.gcspRecommendations, time: deps.gcspClock } : deps.gcspRecommendations),
-    ...createClockRoutes(deps.gcspClock), ...createOutboxRoutes(deps.gcspOutbox), ...createScenarioRoutes(deps.gcspScenarios, deps.gcspClock), ...createBriefRoutes(deps.gcspBrief, deps.gcspBriefEditor), ...createActivityRoutes(deps.gcspActivity), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManualClaims || deps.gcspManual), ...createManualClaimsRoutes(deps.gcspManualClaims), ...createGregRoutes(deps.gcspGreg), ...(deps.gcspRoutes || [])],
+    ...createClockRoutes(deps.gcspClock), ...createOutboxRoutes(deps.gcspOutbox), ...createScenarioRoutes(deps.gcspScenarios, deps.gcspClock),
+    ...createPresenterControlsRoutes({ clock: deps.gcspClock, identity: deps.gcspIdentity, scenarios: deps.gcspScenarios }),
+    ...createBriefRoutes(deps.gcspBrief, deps.gcspBriefEditor), ...createActivityRoutes(deps.gcspActivity), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManualRead || deps.gcspManualClaims || deps.gcspManual), ...createManualClaimsRoutes(deps.gcspManualClaims),
+    ...createManualReviewDetailsRoutes(deps.gcspManualReview),
+    ...createOfferFollowupRoutes(deps.gcspOfferFollowup),
+    ...createLifecycleApprovalRoutes(deps.gcspLifecycle), ...createDocumentRoutes(deps.gcspDocuments),
+    ...createGregRoutes(deps.gcspGreg), ...createGregPublishRoutes(gregPublish), ...(deps.gcspRoutes || [])],
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
-  const handleVehicleEvidence = createVehicleEvidenceHandler({
-    lookup: deps.gcspVehicleEvidence?.lookup || createLocalVehicleEvidenceLookup({
+  const handleOfferAccess = createOfferAccessHandler({ service: deps.gcspOfferAccess, identity: deps.gcspIdentity, allowedOrigins });
+  const handleOfferDecision = createOfferDecisionHandler({ service: deps.gcspOfferDecisions,
+    resolveAccess: deps.gcspResolveOfferAccess, allowedOrigins });
+  // Reuse both origin/preflight boundaries while startup blocks business dispatch.
+  const unavailableGcsp = createGcspHandler({ allowedOrigins });
+  const unavailableOfferAccess = createOfferAccessHandler({ allowedOrigins });
+  const unavailableOfferDecision = createOfferDecisionHandler({ allowedOrigins });
+  const vehicleEvidenceLookup = deps.gcspVehicleEvidence?.lookup || createLocalVehicleEvidenceLookup({
       root: deps.gcspVehicleEvidence?.root || process.env.GCSP_VEHICLE_EVIDENCE_ROOT,
       repository: deps.gcspVehicleEvidence?.repository,
-    }),
+    });
+  const handleVehicleEvidence = createVehicleEvidenceHandler({
+    lookup: vehicleEvidenceLookup,
     identity: deps.gcspIdentity,
     resolveContext: deps.gcspVehicleEvidence?.resolveContext,
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
 
   const gcspStartup = deps.gcspClock ? Promise.resolve().then(async () => {
+    if (deps.gcspStockRelease) {
+      const registered = await deps.gcspStockRelease.register();
+      if (registered.status !== 'ok') return registered;
+    }
     if (deps.gcspManualClaims) {
       const registered = await deps.gcspManualClaims.registerClockHandler();
       if (registered.status !== 'ok') return registered;
+    }
+    if (deps.gcspBuddy) {
+      const registered = await deps.gcspBuddy.start();
+      if (registered.status !== 'ok') return registered;
+    }
+    if (deps.gcspManualOrder) {
+      const ordering = await deps.gcspManualOrder.registerClockHandler();
+      if (ordering.status !== 'ok') return ordering;
+    }
+    if (deps.gcspLifecycle) {
+      const lifecycle = await deps.gcspLifecycle.start();
+      if (lifecycle.status !== 'ok') return lifecycle;
+    }
+    if (deps.gcspDocuments) {
+      const documents = await deps.gcspDocuments.start();
+      if (documents.status !== 'ok') return documents;
     }
     // Notification registration precedes the clock sealing its registry. Startup
     // drains already committed jobs even though clock startup omits allocation.
@@ -899,9 +945,13 @@ export function buildServer(deps = {}) {
   const server = createServer(async (req, res) => {
     const { pathname, searchParams } = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
     const isGcsp = pathname === '/api/gcsp' || pathname.startsWith('/api/gcsp/');
+    const isOfferAccess = /^\/api\/gcsp\/offers\/[^/]+$/.test(pathname);
+    const isOfferDecision = /^\/api\/gcsp\/offers\/[^/]+\/(decision|decision-reasons)$/.test(pathname);
     const isVehicleEvidence = isVehicleEvidencePath(req.url);
 
     if (req.method === 'OPTIONS') {
+      if (isOfferDecision) return handleOfferDecision({ req, res, pathname, searchParams, sendJson });
+      if (isOfferAccess) return handleOfferAccess({ req, res, pathname, searchParams, sendJson });
       if (isVehicleEvidence) return handleVehicleEvidence({ req, res, sendJson, corsHeaders: CORS_HEADERS });
       if (isGcsp) return handleGcsp({ req, res, pathname, searchParams, sendJson, corsHeaders: CORS_HEADERS });
       res.writeHead(204, CORS_HEADERS);
@@ -912,8 +962,17 @@ export function buildServer(deps = {}) {
       return sendJson(res, 200, { ok: true });
     }
 
+    if (req.method === 'GET' && pathname === '/health/vehicle-evidence') {
+      const vehicleEvidence = vehicleEvidenceLookup.readiness?.() || { status: 'unavailable', elapsedMs: 0,
+        manifestDigest: null, recovered: false, code: 'readiness-unavailable' };
+      const ok = vehicleEvidence.status === 'ready';
+      return sendJson(res, ok ? 200 : 503, { ok, vehicleEvidence });
+    }
+
     // Health and preflight stay open; every API consumer below passes the shared gate.
     if (!isAuthorized(req)) {
+      if (isOfferDecision) return handleOfferDecision({ req, res, pathname, searchParams, sendJson, gateAuthorized: false });
+      if (isOfferAccess) return handleOfferAccess({ req, res, pathname, searchParams, sendJson, gateAuthorized: false });
       if (isVehicleEvidence) return handleVehicleEvidence({ req, res, sendJson, gateAuthorized: false });
       if (isGcsp) return handleGcsp({ req, res, pathname, searchParams, sendJson, gateAuthorized: false });
       return sendJson(res, 401, { error: 'Unauthorized' });
@@ -922,7 +981,15 @@ export function buildServer(deps = {}) {
     if (isVehicleEvidence) return handleVehicleEvidence({ req, res, sendJson });
 
     if (isGcsp) {
-      await gcspStartup;
+      const startup = await gcspStartup;
+      if (deps.gcspClock && startup?.status !== 'ok') {
+        const unavailable = { status: 'unavailable', reason: 'GCSP startup reconciliation is unavailable.', retryable: true, contractVersion: '1.0.0' };
+        const sendUnavailable = (response, status, payload, headers) => sendJson(response, status, status === 503 ? unavailable : payload, headers);
+        return (isOfferDecision ? unavailableOfferDecision : isOfferAccess ? unavailableOfferAccess : unavailableGcsp)(
+          { req, res, pathname, searchParams, sendJson: sendUnavailable, gateAuthorized: true });
+      }
+      if (isOfferDecision) return handleOfferDecision({ req, res, pathname, searchParams, sendJson, gateAuthorized: true });
+      if (isOfferAccess) return handleOfferAccess({ req, res, pathname, searchParams, sendJson });
       return handleGcsp({ req, res, pathname, searchParams, sendJson });
     }
 

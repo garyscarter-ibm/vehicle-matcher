@@ -1,0 +1,115 @@
+{
+  "schemaVersion": "linux-scoped-proof-result.v1",
+  "status": "passed-scoped",
+  "runId": 42361586991,
+  "attempt": 1,
+  "code": "21d34a173f024220806c36ec89567c0ed737a815",
+  "startedAt": "2026-11-07T09:53:03Z",
+  "completedAt": "2026-11-07T10:00:20Z",
+  "releaseId": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "runtime": "v20.20.2",
+  "platform": "linux",
+  "phases": [
+    {
+      "phase": "npm-ci",
+      "seconds": 0,
+      "elapsedSeconds": 0,
+      "completedAt": "2026-11-07T09:53:22.7371869Z"
+    },
+    {
+      "phase": "download",
+      "seconds": 133,
+      "elapsedSeconds": 133,
+      "completedAt": "2026-11-07T09:55:35.8664678Z"
+    },
+    {
+      "phase": "offline",
+      "seconds": 169,
+      "elapsedSeconds": 302,
+      "completedAt": "2026-11-07T09:58:24.2275549Z"
+    },
+    {
+      "phase": "verify-assets",
+      "seconds": 1,
+      "elapsedSeconds": 303,
+      "completedAt": "2026-11-07T09:58:25.1355431Z"
+    },
+    {
+      "phase": "boundary",
+      "seconds": 112,
+      "elapsedSeconds": 415,
+      "completedAt": "2026-11-07T10:00:17.3494818Z"
+    }
+  ],
+  "phaseElapsedSeconds": 415,
+  "freshPublicColdRestore": {
+    "status": "passed",
+    "httpsCalls": 62,
+    "configurationCount": 10001,
+    "sourceConfigurations": 10000,
+    "vinMappings": 1,
+    "images": 2
+  },
+  "offline": {
+    "status": "passed",
+    "idempotent": true,
+    "externalCalls": 0,
+    "mode": "publish-existing"
+  },
+  "assets": {
+    "status": "exact-cache-and-restored-store-passed",
+    "cacheAssetCount": 31,
+    "cacheBytes": 574382841,
+    "sourceCalls": 0,
+    "externalCalls": 0
+  },
+  "boundary": {
+    "status": "passed-scoped-known-consumer-limitations",
+    "references": 5,
+    "consumerFailures": 2,
+    "sourceCalls": 0,
+    "externalCalls": 0,
+    "serverClosed": true,
+    "evidenceBasis": "Final summary plus successful final workflow assertions at exact pinned commit; ephemeral full boundary receipt was cleaned with runner scratch."
+  },
+  "hostedCleanup": {
+    "removedKiB": 903568,
+    "scratchAbsent": true,
+    "exit": 0,
+    "retainedArchive": false,
+    "evidenceBasis": "Original finalizer log; no independent hosted filesystem access claimed."
+  },
+  "preservedOriginalFailure": {
+    "runId": 42360886351,
+    "path": "../fleet-dot12-linux-run42360886351",
+    "outcome": "offline90s timeout124 after successful cold restore; remains unchanged"
+  },
+  "resourceBudget": {
+    "remoteWorkers": 1,
+    "remoteScratchMiB": 2048,
+    "remoteJobMinutes": 12,
+    "remotePhaseCeilingsSeconds": 690,
+    "exception": "Root-approved remote12min exception; actual proof415s; no local proof or bulk data allocation."
+  },
+  "fullReferenceProofReplayed": false,
+  "historicalReferences": 10002,
+  "historicalConsumerFailures": 2707,
+  "fullSuiteRun": false,
+  "newLocalRuntimeExecutions": 0,
+  "newSourceRequests": 0,
+  "newApplicationGETs": 0,
+  "productionOrWorkflowEdited": false,
+  "acceptance": false,
+  "done": false,
+  "originalLocalColdFailureCauseProved": false,
+  "agent": {
+    "name": "Mike Wazowski",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "medium",
+    "selectedModel": "gpt-6.1-sol",
+    "selectedEffort": "medium",
+    "effectiveRuntimeVerified": false,
+    "fallback": false,
+    "descendants": 0
+  }
+}

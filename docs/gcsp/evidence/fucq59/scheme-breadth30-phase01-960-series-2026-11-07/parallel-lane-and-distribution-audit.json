@@ -1,0 +1,158 @@
+{
+  "scope": "exact prepared breadth phase distribution and active full future F70 lane disjointness; no source/tests",
+  "phaseSeriesBeforeBaseRefresh": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth30-phase01-960-series-2026-11-07/series-plan.json",
+    "sha256": "a8d571fb8708786d353677d1aacb40c9bf04808bbfb6900eb4aa0959cd4f71d8"
+  },
+  "breadthRequests": 960,
+  "breadthUniqueRequests": 960,
+  "contexts": 30,
+  "distribution": {
+    "i4mf": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "i4mg": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "i4pc": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "ix1h": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "ix1i": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "ix1k": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "ix1l": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "ix24": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "ix25": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "t3be": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "t3mk": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "t3mr": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "t3pf": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "t3pk": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "t3pr": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "x135": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "x1m0": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "x1m1": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "x1m2": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "x1m3": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "x1m6": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "x1m7": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "x1x0": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "x1x2": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "x1x3": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "x1x6": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "x1x7": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "x1xl": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "x235": {
+      "sessions": 4,
+      "solverRequests": 32
+    },
+    "x2ms": {
+      "sessions": 4,
+      "solverRequests": 32
+    }
+  },
+  "selection": "unchanged deterministic pool prefix: first24newcontexts then round-robin all30 queues",
+  "f70FullActiveSuffix": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-optional-axis-suffix3623-2026-11-07/series-plan.json",
+    "sha256": "148547bc31b0b139db77c3be9fc159b0d7e2e4e12ea2f0239d57f72afb79dce7",
+    "id": "f70-optional-axis-suffix3623-20261107-once",
+    "candidateManifestPath": "docs/gcsp/evidence/fucq59/f70-optional-axis-pool-2026-11-07/candidate-manifest.json",
+    "candidateManifestSha256": "e6711d1863472aedadf0f64a6b15c8b8e9b48ed51c09c7341e38eaca478e8319",
+    "requests": 3623,
+    "uniqueRequests": 3623,
+    "verifiedTemplateCount": 454,
+    "productionRegistrationAndRequestDigestsRecomputed": true,
+    "productionRegistrationScope": "exact F70 worktree pinned registration/core",
+    "candidateManifestHashVerified": true
+  },
+  "intersectingRequestDigests": [],
+  "sourceRequests": 0,
+  "acceptance": false,
+  "preliminaryCheckFailure": {
+    "reason": "035registration version refused F70model-axis source version; repeated metadata check using F70own pinned production code",
+    "sourceTraffic": 0,
+    "productionDefect": false
+  },
+  "phaseSeriesAfterBaseRefresh": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth30-phase01-960-series-2026-11-07/series-plan.json",
+    "sha256": "d7be10eebb0141166d3ff34d4fabbb3e79b4947a0e25d2952daf1a560a020607"
+  }
+}

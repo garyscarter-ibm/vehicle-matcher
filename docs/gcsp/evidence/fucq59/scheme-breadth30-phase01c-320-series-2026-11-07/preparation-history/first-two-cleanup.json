@@ -1,0 +1,31 @@
+{
+  "time": "2026-11-07T06:02:37.350167+00:00",
+  "checks": [
+    {
+      "attempt": "attempt01",
+      "scratchRoot": "/private/tmp/test-stamp-shard-5c3d85a51a254f4196f9d4c431b898bb",
+      "scratchAbsent": true,
+      "groups": [
+        44156
+      ],
+      "groupsAbsent": true,
+      "token": "5c3d85a51a254f4196f9d4c431b898bb",
+      "reservationAbsent": true,
+      "removedBytes": 8530271
+    },
+    {
+      "attempt": "attempt02",
+      "scratchRoot": "/private/tmp/test-stamp-shard-90efea3a792742169c8b1253b392557e",
+      "scratchAbsent": true,
+      "groups": [
+        44587
+      ],
+      "groupsAbsent": true,
+      "token": "90efea3a792742169c8b1253b392557e",
+      "reservationAbsent": true,
+      "removedBytes": 8530271
+    }
+  ],
+  "compatibilityException": null,
+  "leftovers": []
+}

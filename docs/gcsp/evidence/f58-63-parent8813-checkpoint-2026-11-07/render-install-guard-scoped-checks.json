@@ -1,0 +1,173 @@
+{
+  "scope": "scoped",
+  "checks": {
+    "red": {
+      "selection": {
+        "scope": "scoped",
+        "selected": [
+          "/usr/bin/python3",
+          "-I",
+          "-B",
+          "/Users/usget/Claude/vehicle-matcher/_tools/test_stamp.py",
+          "--targeted",
+          "HEAD",
+          "--reason",
+          "Scoped Render install entry, explicit Blueprint bypass and approved-release failure boundaries; artifact restore tests cover unchanged module; no full suite or external traffic",
+          "--command",
+          "/opt/homebrew/bin/node --test --test-reporter=tap --test-isolation=none --test-concurrency=1 server/test/gcsp-fleet-build-entry.test.js"
+        ],
+        "changedPaths": [
+          "server/package.json",
+          "server/scripts/prepare-fleet-build.mjs",
+          "render.gcsp.yaml",
+          "server/test/gcsp-fleet-build-entry.test.js"
+        ],
+        "regression": "Successful e3fd deploy serves .9 rather than intended .10; npm-only build path has no restore; Render-only install entry mitigates remote build propagation uncertainty",
+        "excluded": "full npm suite, source traffic, production network and business DTO mutation",
+        "acceptance": false
+      },
+      "result": {
+        "rc": 1,
+        "scope": "scoped",
+        "command": [
+          "/usr/bin/python3",
+          "-I",
+          "-B",
+          "/Users/usget/Claude/vehicle-matcher/_tools/test_stamp.py",
+          "--targeted",
+          "HEAD",
+          "--reason",
+          "Scoped Render install entry, explicit Blueprint bypass and approved-release failure boundaries; artifact restore tests cover unchanged module; no full suite or external traffic",
+          "--command",
+          "/opt/homebrew/bin/node --test --test-reporter=tap --test-isolation=none --test-concurrency=1 server/test/gcsp-fleet-build-entry.test.js"
+        ]
+      },
+      "cleanup": {
+        "ownedDependencyLinkAbsent": true,
+        "ownedChildJoined": true,
+        "groupsAbsent": true,
+        "scratch": "test_stamp owns its separately registered scratch and finalizer",
+        "compatibilityException": null,
+        "leftovers": []
+      }
+    },
+    "green": {
+      "selection": {
+        "scope": "scoped",
+        "selected": [
+          "/usr/bin/python3",
+          "-I",
+          "-B",
+          "/Users/usget/Claude/vehicle-matcher/_tools/test_stamp.py",
+          "--targeted",
+          "HEAD",
+          "--reason",
+          "Scoped Render install entry, explicit Blueprint bypass and approved-release failure boundaries; artifact restore tests cover unchanged module; no full suite or external traffic",
+          "--command",
+          "/opt/homebrew/bin/node --test --test-reporter=tap --test-isolation=none --test-concurrency=1 server/test/gcsp-fleet-build-entry.test.js"
+        ],
+        "changedPaths": [
+          "server/package.json",
+          "server/scripts/prepare-fleet-build.mjs",
+          "render.gcsp.yaml",
+          "server/test/gcsp-fleet-build-entry.test.js"
+        ],
+        "regression": "Successful e3fd deploy serves .9 rather than intended .10; npm-only build path has no restore; Render-only install entry mitigates remote build propagation uncertainty",
+        "excluded": "full npm suite, source traffic, production network and business DTO mutation",
+        "acceptance": false
+      },
+      "result": {
+        "rc": 0,
+        "scope": "scoped",
+        "command": [
+          "/usr/bin/python3",
+          "-I",
+          "-B",
+          "/Users/usget/Claude/vehicle-matcher/_tools/test_stamp.py",
+          "--targeted",
+          "HEAD",
+          "--reason",
+          "Scoped Render install entry, explicit Blueprint bypass and approved-release failure boundaries; artifact restore tests cover unchanged module; no full suite or external traffic",
+          "--command",
+          "/opt/homebrew/bin/node --test --test-reporter=tap --test-isolation=none --test-concurrency=1 server/test/gcsp-fleet-build-entry.test.js"
+        ]
+      },
+      "cleanup": {
+        "ownedDependencyLinkAbsent": true,
+        "ownedChildJoined": true,
+        "groupsAbsent": true,
+        "scratch": "test_stamp owns its separately registered scratch and finalizer",
+        "compatibilityException": null,
+        "leftovers": []
+      }
+    },
+    "boundary": {
+      "selection": {
+        "scope": "scoped",
+        "selected": [
+          "/usr/bin/python3",
+          "-I",
+          "-B",
+          "/Users/usget/Claude/vehicle-matcher/_tools/test_stamp.py",
+          "--targeted",
+          "HEAD",
+          "--reason",
+          "Scoped Render install entry, explicit Blueprint bypass and approved-release failure boundaries; artifact restore tests cover unchanged module; no full suite or external traffic",
+          "--command",
+          "/opt/homebrew/bin/node --test --test-reporter=tap --test-isolation=none --test-concurrency=1 server/test/gcsp-fleet-build-entry.test.js server/test/render-blueprint.test.js server/test/gcsp-fleet-artifacts.test.js"
+        ],
+        "changedPaths": [
+          "server/package.json",
+          "server/scripts/prepare-fleet-build.mjs",
+          "render.gcsp.yaml",
+          "server/test/gcsp-fleet-build-entry.test.js"
+        ],
+        "regression": "Successful e3fd deploy serves .9 rather than intended .10; npm-only build path has no restore; Render-only install entry mitigates remote build propagation uncertainty",
+        "excluded": "full npm suite, source traffic, production network and business DTO mutation",
+        "acceptance": false
+      },
+      "result": {
+        "rc": 0,
+        "scope": "scoped",
+        "command": [
+          "/usr/bin/python3",
+          "-I",
+          "-B",
+          "/Users/usget/Claude/vehicle-matcher/_tools/test_stamp.py",
+          "--targeted",
+          "HEAD",
+          "--reason",
+          "Scoped Render install entry, explicit Blueprint bypass and approved-release failure boundaries; artifact restore tests cover unchanged module; no full suite or external traffic",
+          "--command",
+          "/opt/homebrew/bin/node --test --test-reporter=tap --test-isolation=none --test-concurrency=1 server/test/gcsp-fleet-build-entry.test.js server/test/render-blueprint.test.js server/test/gcsp-fleet-artifacts.test.js"
+        ]
+      },
+      "cleanup": {
+        "ownedDependencyLinkAbsent": true,
+        "ownedChildJoined": true,
+        "groupsAbsent": true,
+        "scratch": "test_stamp owns its separately registered scratch and finalizer",
+        "compatibilityException": null,
+        "leftovers": []
+      }
+    }
+  },
+  "review": {
+    "reviewer": "Charlie Dog",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "selectedModel": "gpt-6.1-sol",
+    "selectedEffort": "high",
+    "runtimeModelUnverified": true,
+    "code": "PASS",
+    "security": "PASS",
+    "blockers": [],
+    "limitations": [
+      "remote actual command/root/env remain unverified",
+      "ignore-scripts or nonnpm build bypasses npm install mitigation"
+    ],
+    "reviewedScriptSha256": "f97d31db73403c3d288a593f0d7a16da83e6be056beb69d3cb4b1505e60368ff"
+  },
+  "fullSuiteRun": false,
+  "acceptance": false
+}

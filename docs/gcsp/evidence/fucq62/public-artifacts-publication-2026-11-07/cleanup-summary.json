@@ -1,0 +1,111 @@
+{
+  "scope": "External .4 artifact publication and minimal strict empty-file repair; retained summaries only",
+  "phases": [
+    {
+      "phase": "empty-green",
+      "result": 0,
+      "scratchRemovedBytes": 0,
+      "wallSeconds": 0.258326917,
+      "peakRssBytes": 1605632,
+      "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-public-artifacts",
+      "allOwnedAllocationsAbsent": true
+    },
+    {
+      "phase": "published-check",
+      "result": 0,
+      "scratchRemovedBytes": 7106560,
+      "wallSeconds": 4.192185542000001,
+      "peakRssBytes": 116473856,
+      "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-public-artifacts",
+      "allOwnedAllocationsAbsent": true
+    },
+    {
+      "phase": "cloud-local",
+      "result": 1,
+      "scratchRemovedBytes": 33814304,
+      "wallSeconds": 4.497881333,
+      "peakRssBytes": 212271104,
+      "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-public-artifacts",
+      "allOwnedAllocationsAbsent": true
+    },
+    {
+      "phase": "resume",
+      "result": 1,
+      "scratchRemovedBytes": 20718688,
+      "wallSeconds": 1.548725042,
+      "peakRssBytes": 135348224,
+      "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-public-artifacts",
+      "allOwnedAllocationsAbsent": true
+    },
+    {
+      "phase": "empty-red",
+      "result": 1,
+      "scratchRemovedBytes": 0,
+      "wallSeconds": 0.246341625,
+      "peakRssBytes": 2244608,
+      "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-public-artifacts",
+      "allOwnedAllocationsAbsent": true
+    },
+    {
+      "phase": "publish-corrected",
+      "result": 1,
+      "scratchRemovedBytes": 20718688,
+      "wallSeconds": 9.688568459,
+      "peakRssBytes": 132841472,
+      "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-public-artifacts",
+      "allOwnedAllocationsAbsent": true
+    },
+    {
+      "phase": "publish",
+      "result": 1,
+      "scratchRemovedBytes": 20718688,
+      "wallSeconds": 0.48884829099999993,
+      "peakRssBytes": 2293760,
+      "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-public-artifacts",
+      "allOwnedAllocationsAbsent": true
+    },
+    {
+      "phase": "download",
+      "result": 1,
+      "scratchRemovedBytes": 20718688,
+      "wallSeconds": 8.319017833,
+      "peakRssBytes": 145997824,
+      "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-public-artifacts",
+      "allOwnedAllocationsAbsent": true
+    },
+    {
+      "phase": "download-local",
+      "result": 0,
+      "scratchRemovedBytes": 33818432,
+      "wallSeconds": 11.663534416,
+      "peakRssBytes": 436617216,
+      "scratch": "/tmp/vehicle-matcher-f58-63-20261106/f62-public-artifacts-local",
+      "allOwnedAllocationsAbsent": true
+    },
+    {
+      "phase": "continue",
+      "result": 0,
+      "scratchRemovedBytes": 20718688,
+      "wallSeconds": 8.893214958,
+      "peakRssBytes": 132317184,
+      "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-public-artifacts",
+      "allOwnedAllocationsAbsent": true
+    },
+    {
+      "phase": "cloud-diagnostic",
+      "result": 0,
+      "scratchRemovedBytes": 33818432,
+      "wallSeconds": 8.056723958,
+      "peakRssBytes": 419659776,
+      "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-public-artifacts",
+      "allOwnedAllocationsAbsent": true
+    }
+  ],
+  "removedScratchBytesAcrossChunks": 212151168,
+  "allOwnedGroupsReservationsLinksRootsAbsent": true,
+  "localProofPathExplicitlyAuthorized": true,
+  "compatibilityException": null,
+  "leftovers": [],
+  "outsideScratchCleanup": "First HOME-less gh device-id36B and empty .local parents removed; absence checked",
+  "sourceStoreAndInstalledDependenciesPreserved": true
+}

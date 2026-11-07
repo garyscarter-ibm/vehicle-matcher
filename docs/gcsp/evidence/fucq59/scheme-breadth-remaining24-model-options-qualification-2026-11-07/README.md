@@ -1,0 +1,9 @@
+# Remaining24breadth model options proposals
+
+This separate finite packet contains the24actual fullmodel/explicitline contexts outside the first six proposed breadth contexts. It requests at most96GETs, four per model, and no solver,image,browser,writes or admittedconfiguration. All inputs and complete aliases derive from the same retained actual30context pool; nine observed models with no literal usable line remain explicit gaps. No trim is inferred from BASIC_LINE or M_PERFORMANCE_LINE.
+
+No source grant exists. This preparation does not depend on the first six producing a particular result, and does not replay their contexts. It requires an isolated execution tree with newly reviewed absolute command/path pins before live release.
+
+One worker,512MiBhost/448MiBchild,64MiBscratch,4MiBdecoded per context/1MiBresponse;90/105/120seconds per source/child/chunk; finite series2400seconds. Aggregate decoded cap96MiB; expected retained output128MiB, below the largeoutput threshold. Firstwrite durable primaries, externalownership, exclusiveconsumedmarkers, childjoin/export/cleanup, no retries, and firstincomplete stop remain the same as the validated sixcontext protocol. The internal success label remains the inherited `all-six-model-options-contexts-observed`; the declaredcontextlist and counters are24/96 and establish actual executed scope.
+
+Scoped preparation passed28/28, zero skips, in10.309804209seconds, including all30actualprovenance mappings,24fourGETfixtures, exactpins/no-grant and a copiedactual sevencheck retainedverifier. validation.json records final filesystem/process/reservation absence. No production code or grammar changed; the fullsuite is excluded. Actual sourcequalification is unrun; all31schemejoins,distribution/downstream/originalacceptance obligations remain open.

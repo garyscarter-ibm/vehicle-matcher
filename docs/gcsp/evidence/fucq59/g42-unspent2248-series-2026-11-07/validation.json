@@ -1,0 +1,49 @@
+{
+  "scope": "scoped exact2248unspent continuation preparation; zero liveHTTP",
+  "seriesPlanSha256": "a78b8c1e74d56678a1ce4786a866af04c1f9527e1a5872bfd51c96a38585fb8e",
+  "candidateManifestSha256": "480913b821cd3514d3fe1547716bb383b6b0f0860d719b50701d379079766bd1",
+  "checks": {
+    "fail": 0,
+    "pass": 7,
+    "skipped": 0,
+    "tests": 7
+  },
+  "seconds": 1.917463708,
+  "peakRss": 309608448,
+  "removedAllocationBytes": 6231903,
+  "cleanup": {
+    "compatibility_exception": null,
+    "dependencyLinkAbsent": true,
+    "groups_absent": true,
+    "leftovers": [],
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-unspent2248/preparation/ownership/0c3c76b18ac941bbb3dcfe1ee44e9b44.json",
+    "removed_allocation_bytes": 6231903,
+    "reservation_absent": true,
+    "scratchRoot": "/private/tmp/test-stamp-shard-0c3c76b18ac941bbb3dcfe1ee44e9b44",
+    "scratch_absent": true
+  },
+  "independentChecks": {
+    "rootAbsent": true,
+    "groupsAbsent": true,
+    "reservationAbsent": true,
+    "dependencyLinkAbsent": true,
+    "allPinsUnchanged": true
+  },
+  "groupQueryDiagnostics": {
+    "allGroupsAbsent": true,
+    "maximumQueriesPerGroup": 3,
+    "queries": [
+      {
+        "liveMembers": false,
+        "pgid": 59026,
+        "query": 1
+      }
+    ],
+    "scope": "owned groups only; bounded unknown recheck; no live/unknown bypass",
+    "unknownDelaySeconds": 0.1
+  },
+  "sourceGrant": false,
+  "sourceTraffic": 0,
+  "admissions": 0,
+  "acceptance": false
+}

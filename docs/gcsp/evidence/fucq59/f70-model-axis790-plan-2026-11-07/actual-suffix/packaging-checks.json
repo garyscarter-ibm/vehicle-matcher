@@ -1,0 +1,14 @@
+{
+  "scope": "evidence packaging only; source and 485 retained check outcomes unchanged",
+  "initialCheck": {
+    "command": "git diff --cached --check",
+    "failure": "Raw ps output snapshots contain source-generated trailing spaces. Original bytes remain at their pinned durable paths.",
+    "affectedFiles": [
+      "suffix-process-followup-snapshot1.txt",
+      "suffix-process-followup-snapshot2.txt"
+    ],
+    "outcome": "failed"
+  },
+  "resolution": "Commit raw snapshot hashes and complete reconciliation JSON; keep exact raw snapshots in original OneDrive evidence without rewriting them.",
+  "currentCheck": "git diff --cached --check passed after excluding raw snapshot copies; pinned original bytes retained on OneDrive"
+}

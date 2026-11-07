@@ -1,0 +1,7 @@
+{
+  "status": "prepared-unspent-no-traffic-grant",
+  "allocationId": "f70-1f7e-first32-20261107-once",
+  "planDigest": "2c290dc94f7f2a17741a2ac23ffd5411d4b954dcafaa36e9da4a11441037425a",
+  "executionPlanSha256": "310c6605e17105508f5b30dbc3c71202876f5e4b48db3cbd37c62ce6b66bd573",
+  "exclusiveMarkerCreatedOnlyByLiveRunner": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-1f7e-first32-solver-2026-11-07/execution-once.json"
+}

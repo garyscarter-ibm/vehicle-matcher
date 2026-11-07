@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "observed_at": "2026-11-05T23:00:25Z",
+  "observed_at": "2026-11-07T14:07:07Z",
   "stories": [
     {
       "id": "FUCQ-2",
@@ -114,12 +114,12 @@
     },
     {
       "id": "FUCQ-13",
-      "title": "Choose employee-car or used-car demos from a shared launcher",
-      "status": "In Progress",
-      "original_status": "In Progress",
+      "title": "",
+      "status": "In Review",
+      "original_status": "In Review",
       "assignee": "",
-      "type": "Epic",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "type": "",
+      "observed_at": "2026-11-06T00:49:48Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-13"
     },
     {
@@ -333,26 +333,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-34"
     },
     {
-      "id": "FUCQ-35",
-      "title": "Open the supported employee experience through the shared entry point",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "Russell Gowers",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-35"
-    },
-    {
-      "id": "FUCQ-36",
-      "title": "Package and verify both launcher routes for the GCSP static site",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-36"
-    },
-    {
       "id": "FUCQ-37",
       "title": "Resolve the dated i5 catalogue sample through a snapshot adapter",
       "status": "In Review",
@@ -563,66 +543,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-57"
     },
     {
-      "id": "FUCQ-58",
-      "title": "Qualify fleet coverage and budgets before collecting configurations",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "Russell Gowers",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-58"
-    },
-    {
-      "id": "FUCQ-59",
-      "title": "Collect distinct constructible configurations with resumable batches",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59"
-    },
-    {
-      "id": "FUCQ-60",
-      "title": "Enrich resolved fleet configurations with matching facts and images",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60"
-    },
-    {
-      "id": "FUCQ-61",
-      "title": "Collect and validate 10,000 genuinely distinct BMW configurations",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-61"
-    },
-    {
-      "id": "FUCQ-62",
-      "title": "Publish the configuration corpus and generate stock by order reference",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62"
-    },
-    {
-      "id": "FUCQ-63",
-      "title": "Prove full-corpus lookup and offline recovery through the port",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-63"
-    },
-    {
       "id": "FUCQ-64",
       "title": "Build the shared GCSP shell and review an employee body reference",
       "status": "In Review",
@@ -649,7 +569,7 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T23:00:25Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-66",
       "slices": [
         {
@@ -780,28 +700,70 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T23:00:25Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-69"
     },
     {
       "id": "FUCQ-70",
       "title": "Review a claimed car with contact details and return mileage",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-05T23:21:35Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-70"
     },
     {
-      "id": "FUCQ-71",
-      "title": "Submit manual selections through an idempotent ordering adapter",
-      "status": "In Progress",
-      "original_status": "In Progress",
       "assignee": "Russell Gowers",
+      "id": "FUCQ-71",
+      "observed_at": "2026-11-07T14:07:07Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "Lead reviewed scoped ordering core: 13 ordering tests pass within order/policy 39 passed, 3 native skips. Exact order, pins, duplicate and clock evidence retained in docs/gcsp/evidence/fucq71; actual producer/runtime/native delivery remains blocked.",
+          "id": "ordering-core",
+          "observed_at": "2026-11-05T23:19:15Z",
+          "status": "complete",
+          "title": "Versioned terms, pinned selection and idempotent ordering protocol"
+        },
+        {
+          "evidence": "F71 callback commit/rollback/pending passes repository fixtures; actual Gary-owned F66 producer lacks convertSelection. Held producer compatibility path uses two transactions.",
+          "id": "claim-conversion",
+          "observed_at": "2026-11-05T23:19:16Z",
+          "status": "blocked",
+          "title": "Atomic manual or buddy claim conversion"
+        },
+        {
+          "evidence": "Canonical ordering keys/shared contract implemented; runtime/account/actual source composition remains.",
+          "id": "runtime-contracts",
+          "observed_at": "2026-11-05T23:19:16Z",
+          "status": "in-progress",
+          "title": "Canonical policy, runtime and history contracts"
+        },
+        {
+          "evidence": "Native PostgreSQL URL unset; no credential transfer. Actual source callback and account/runtime proof plus coordinated final npm test remain.",
+          "id": "integration",
+          "observed_at": "2026-11-05T23:19:16Z",
+          "status": "blocked",
+          "title": "Native PostgreSQL reopen and final integration validation"
+        }
+      ],
+      "status": "In Progress",
+      "title": "Submit manual selections through an idempotent ordering adapter",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-71"
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-71",
+      "workers": [
+        {
+          "expires_at": "2026-11-05T23:25:31.151600Z",
+          "harness": "codex",
+          "name": "Mater",
+          "observed_at": "2026-11-05T23:25:31.151600Z",
+          "role": "story-lead",
+          "source": "thread 01a1adf9-5447-7220-8e41-86ea53f403e7; effective gpt-6.1-sol/high verified turn_context",
+          "status": "stopped"
+        }
+      ]
     },
     {
       "id": "FUCQ-72",
@@ -855,22 +817,22 @@
     },
     {
       "id": "FUCQ-77",
-      "title": "Collect a demo set of real BMW configurations for the scheme models",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "title": "Verify scheme coverage using the collected BMW configuration corpus",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-77"
     },
     {
       "id": "FUCQ-78",
       "title": "Shape synthetic scheme stock from real stock-locator aggregates",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-78"
     },
     {
@@ -980,7 +942,7 @@
       "original_status": "In Progress",
       "assignee": "",
       "type": "Epic",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-05T23:21:35Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-89"
     },
     {
@@ -1004,16 +966,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-91"
     },
     {
-      "id": "FUCQ-92",
-      "title": "Release synthetic stock on a presenter tick from the next pull",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "Russell Gowers",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-92"
-    },
-    {
       "id": "FUCQ-93",
       "title": "Dispatch outbox jobs through a transport port into a captured outbox",
       "status": "In Review",
@@ -1034,26 +986,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-94"
     },
     {
-      "id": "FUCQ-95",
-      "title": "Show buddy activity and pause or resume the search",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "Russell Gowers",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-95"
-    },
-    {
-      "id": "FUCQ-96",
-      "title": "Allocate released cars across competing briefs by the policy tie-break",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "Russell Gowers",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-96"
-    },
-    {
       "id": "FUCQ-97",
       "title": "Show the presenter each captured offer email in an outbox viewer",
       "status": "In Review",
@@ -1070,7 +1002,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-98"
     },
     {
@@ -1090,8 +1022,78 @@
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T23:00:25Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-100"
+      "observed_at": "2026-11-07T14:07:07Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-100",
+      "source_observed_at": "2026-11-05T23:00:25Z",
+      "branch": "dev/DEV-2026-11-04-060",
+      "workers": [
+        {
+          "name": "FUCQ-100 story lead",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-06T00:26:51.920632+00:00",
+          "expires_at": "2026-11-06T00:41:51.920632+00:00",
+          "source": "Codex chat 01a1adbf-732b-7830-a17a-cf2b2f95a092 observed current implementation/audit turn",
+          "status": "active; local runtime9/9 and49manifest audit complete; preparing dispatcher integration checkpoint; final/native/full remain open"
+        }
+      ],
+      "slices": [
+        {
+          "id": "atomic-producer",
+          "status": "complete",
+          "title": "Atomic hold, quote, offer and outbox",
+          "observed_at": "2026-11-05T23:33:16Z",
+          "evidence": "Lead reviewed original5451ec3 atomic57/57 and80/82 repository/outbox/case(2native skips). Additive current-car metadata pin19/19 +193/193 fresh producer/custody/clock boundaries,35manifest/dependency audit test-runs/fucq100/parent-current-car-audit.json. Unknown current specs/points explicit; no full105comparison claim. docs/gcsp/buddy-current-car-comparison.md. Producer published a7fc858; remote readback verified."
+        },
+        {
+          "id": "notification-custody",
+          "status": "complete",
+          "title": "Token custody through notification delivery and receipts",
+          "observed_at": "2026-11-05T23:01:19Z",
+          "evidence": "Lead reviewed/pushed6d6ecf0:28/28 cryptographic dispatch/recovery/races;57/57 strict boundaries;17manifests/dependencies audited. _dev/in-progress/DEV-2026-11-04-060.md;shared test-runs/fucq100/parent-notify-checkpoint-audit.json."
+        },
+        {
+          "id": "allocator-proof",
+          "status": "complete",
+          "title": "Actual published allocator invocation, replay and fallback",
+          "observed_at": "2026-11-05T23:01:19Z",
+          "evidence": "Lead reviewed2/2 exact6f15d4d allocator+identity invocation at frozen6d6ecf0, real stale-stock fallback and replay. Docs7eaa00b;shared test-runs/fucq100/pinned96-plan-v1.json and parent-pinned96-audit.json. Merged startup gate separate."
+        },
+        {
+          "id": "local-expiry",
+          "status": "complete",
+          "title": "Local buddy expiry through real ticks and startup",
+          "observed_at": "2026-11-05T23:01:19Z",
+          "evidence": "Lead reviewed/pushedb4154ce:28/28 exact deadline/startup/replay/rollback/exclusions,97/97 strict boundaries;22manifests/dependencies audited. _dev/in-progress/DEV-2026-11-04-060.md;shared test-runs/fucq100/parent-expiry-checkpoint-audit.json. Central registration separate."
+        },
+        {
+          "id": "remote-lifecycle",
+          "status": "complete",
+          "title": "Remote claim/release intent and reconciliation",
+          "observed_at": "2026-11-05T23:33:16Z",
+          "evidence": "Lead reviewed524294d remote49/49 +142/142 boundaries. Final current-car quote pin adds1remote case and revalidates193/193 fresh affected boundaries,35clean manifests/deps test-runs/fucq100/parent-current-car-audit.json. Internal authentic stored intent/reconciliation/release/expiry module complete; actual producer consumer, manual, central/runtime and full gates separately planned. docs/gcsp/buddy-remote-plan.md. Published a7fc858; remote readback verified."
+        },
+        {
+          "id": "manual-exclusivity",
+          "status": "complete",
+          "title": "Actual completed manual and buddy services exclude each other",
+          "observed_at": "2026-11-05T23:45:57Z",
+          "evidence": "Lead reviewed actual eb5a677b manual account/draft/browse.claimInput/claim vs frozen published a7fc858 buddy:4/4 both ways,same and second branded employee. Replay/refusal authority and outbox/token invariants hold. Strict targeted c38f96f36c3b at a7fc858; shared fucq100/parent-manual66-audit.json:41manifests clean,pinned copies/dependencies unchanged. Memory source integration only; merged runtime/native/full remain separate. docs/gcsp/buddy-manual-proof-plan.md."
+        },
+        {
+          "id": "runtime-integration",
+          "status": "in-progress",
+          "title": "Merged producer, identity and central lifecycle composition",
+          "observed_at": "2026-11-06T11:49:25Z",
+          "evidence": "Published bc8a941adbf8bd74089b11b820c489551742ab12 composes actual102/106/107 durable offer access, decisions, employee follow-up and page entry with shared repository/policy/clock/identity. Lead2/2 actual memory and loopback HTTP cases; independent consequential review PASS and all193 frozen source hashes matched published revision. Original supervisor KeyError symlink retained; separate cleanup-only reconciliation independently collected with exact scratch/groups/PIDs/rows absent. Product evid"
+        },
+        {
+          "id": "full-validation",
+          "status": "not-started",
+          "title": "Authored full-suite acceptance at integrated checkpoint"
+        }
+      ],
+      "unsliced": false
     },
     {
       "id": "FUCQ-101",
@@ -1104,63 +1106,33 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-101"
     },
     {
-      "id": "FUCQ-102",
-      "title": "Open an offer from a run-bound link that shows its current state",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-102"
-    },
-    {
-      "id": "FUCQ-103",
-      "title": "Preview and publish points and recommendation weights",
+      "id": "FUCQ-105",
+      "title": "Show the offer's exact quote, current-car comparison and countdown",
       "status": "In Progress",
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T23:00:25Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103"
-    },
-    {
-      "id": "FUCQ-104",
-      "title": "Track order requests from requested to confirmed to released",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-104"
-    },
-    {
-      "id": "FUCQ-105",
-      "title": "Show the offer's exact quote, current-car comparison and countdown",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-105"
     },
     {
       "id": "FUCQ-106",
       "title": "Accept, decline or expire an offer with idempotent outcomes",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-106"
     },
     {
       "id": "FUCQ-107",
       "title": "Confirm one preference change after declining and receive a second offer",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-107"
     },
     {
@@ -1170,7 +1142,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-108"
     },
     {
@@ -1180,7 +1152,7 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-109"
     },
     {
@@ -1196,11 +1168,11 @@
     {
       "id": "FUCQ-111",
       "title": "Progress a selected order through the target approval states on presenter ticks",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-111"
     },
     {
@@ -1225,12 +1197,12 @@
     },
     {
       "id": "FUCQ-114",
-      "title": "Request, confirm and complete a handover appointment, or record a no-show",
+      "title": "Request and confirm a replacement handover appointment",
       "status": "To Do",
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-114"
     },
     {
@@ -1246,31 +1218,21 @@
     {
       "id": "FUCQ-116",
       "title": "Track documents and vehicle readiness with a named owner for each",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-116"
     },
     {
-      "id": "FUCQ-117",
-      "title": "Plan feasible order quantities from expressed demand, supply and policy",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
-      "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-117"
-    },
-    {
       "id": "FUCQ-118",
-      "title": "Plan the old car's return separately from the new car's handover",
+      "title": "Plan and schedule the old car's separate return",
       "status": "To Do",
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-118"
     },
     {
@@ -1280,17 +1242,17 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-119"
     },
     {
       "id": "FUCQ-120",
-      "title": "Show Paula her order progress, handover plan and who owns each next step",
+      "title": "Show Paula order progress, outstanding actions and confirmed handover and return plans",
       "status": "To Do",
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-120"
     },
     {
@@ -1300,17 +1262,17 @@
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-121"
     },
     {
       "id": "FUCQ-122",
-      "title": "Ask for help, and let the scheme team work the renewal-risk case",
+      "title": "Let Paula find help and see named case ownership and status",
       "status": "In Progress",
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T23:00:25Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-122"
     },
     {
@@ -1325,12 +1287,12 @@
     },
     {
       "id": "FUCQ-124",
-      "title": "Verify the lifecycle after selection end to end with browser evidence",
+      "title": "Verify approval, documents and confirmed handover and return planning end to end",
       "status": "To Do",
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-124"
     },
     {
@@ -1345,12 +1307,12 @@
     },
     {
       "id": "FUCQ-126",
-      "title": "Give the presenter controls for ticks, releases, reset, scenarios and role",
+      "title": "Operate the main demo with tick, release, reset and role controls",
       "status": "In Progress",
       "original_status": "In Progress",
       "assignee": "Gary Carter",
       "type": "Story",
-      "observed_at": "2026-11-05T23:00:25Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-126"
     },
     {
@@ -1365,12 +1327,12 @@
     },
     {
       "id": "FUCQ-128",
-      "title": "Replay the decline-then-change scenario",
+      "title": "Replay decline, one confirmed change and a matching second offer",
       "status": "To Do",
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-128"
     },
     {
@@ -1445,33 +1407,1907 @@
     },
     {
       "id": "FUCQ-136",
-      "title": "Measure both routes across seeds and store an unchangeable comparison result",
+      "title": "Measure the process comparison across seeds and store immutable results",
       "status": "To Do",
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-136"
     },
     {
       "id": "FUCQ-137",
-      "title": "Run comparison jobs in a worker, presenter-only, with a command-line twin",
+      "title": "Run the process comparison offline and read its stored result",
       "status": "To Do",
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-137"
     },
     {
       "id": "FUCQ-138",
-      "title": "Show the route comparison panel on Greg's dashboard with assumptions and a hold rerun",
+      "title": "Show the stored process comparison and assumptions on Greg's dashboard",
       "status": "To Do",
       "original_status": "To Do",
       "assignee": "",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
+      "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-138"
+    },
+    {
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-04-046",
+      "id": "FUCQ-35",
+      "observed_at": "2026-11-05T23:55:18Z",
+      "original_status": "In Review",
+      "slices": [
+        {
+          "evidence": "docs/gcsp/evidence/fucq35/restart-validation.md; actual HTTP browser matrix1280/320 and focused129 pass",
+          "id": "entry",
+          "observed_at": "2026-11-05T23:31:17Z",
+          "status": "complete",
+          "title": "Real-lazy-employee-entry"
+        },
+        {
+          "evidence": "docs/gcsp/evidence/fucq35/restart-validation.md; actual HTTP browser matrix1280/320 and focused129 pass",
+          "id": "recovery",
+          "observed_at": "2026-11-05T23:31:17Z",
+          "status": "complete",
+          "title": "Route-context-and-recovery"
+        },
+        {
+          "evidence": "docs/gcsp/evidence/fucq35/restart-validation.md; actual HTTP browser matrix1280/320 and focused129 pass",
+          "id": "runtime",
+          "observed_at": "2026-11-05T23:31:17Z",
+          "status": "complete",
+          "title": "Actual-employee-HTTP-integration"
+        },
+        {
+          "evidence": "docs/gcsp/evidence/fucq35/restart-validation.md; actual HTTP browser matrix1280/320 and focused129 pass",
+          "id": "browser",
+          "observed_at": "2026-11-05T23:31:17Z",
+          "status": "complete",
+          "title": "Desktop-narrow-keyboard"
+        },
+        {
+          "evidence": "Dispatcher merged/pushed bf14ac3, archived0d7d9ae, fully cleaned/pushed406bf66; Jira transitioned to In Review through native ID3 and acknowledged at2026-11-05T23:49:25Z. Full1247pass/5native-skips and actual browser proof retained with metadata equivalence.",
+          "id": "integration",
+          "observed_at": "2026-11-05T23:50:43Z",
+          "status": "complete",
+          "title": "Final-validation"
+        }
+      ],
+      "status": "In Review",
+      "title": "Open the supported employee experience through the shared entry point",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-35",
+      "workers": [
+        {
+          "expires_at": "2026-11-05T23:49:25Z",
+          "harness": "codex",
+          "name": "Ralph Wolf",
+          "observed_at": "2026-11-05T23:49:25Z",
+          "role": "story-lead/direct-capacity-fallback",
+          "source": "thread 01a1adf9-3127-7fa3-b025-a0d6b6456c6a",
+          "status": "stopped; merged/pushed/archived and cleanup verified"
+        }
+      ]
+    },
+    {
+      "assignee": "Russell Gowers",
+      "id": "FUCQ-96",
+      "observed_at": "2026-11-07T14:07:07Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "Updated-base scoped67/67 zero skips; deterministic core13 and identity/recommendation boundaries pass. docs/gcsp/evidence/fucq96/restart-20261105.json",
+          "id": "core-allocation",
+          "observed_at": "2026-11-05T23:38:48.913911+00:00",
+          "status": "complete",
+          "title": "Deterministic cohort allocation and policy tie break"
+        },
+        {
+          "evidence": "Actual F92/F91 receipts at real DemoClock stage proven; namespaced deterministic replay/auth/pending source tests pass. producer-integration.md",
+          "id": "persisted-triggers",
+          "observed_at": "2026-11-05T23:38:48.913911+00:00",
+          "status": "complete",
+          "title": "Persisted release and brief triggers at the clock allocation stage"
+        },
+        {
+          "evidence": "Unchanged actual producer proof b005905f passes3/3 with F92=6b3484fb/F96=d12358bc/F100=b4154ce3: real hold/offer/outbox. Synthetic source input; shared composition/native/runtime/full acceptance pending. lead92-stock-state/producers-checkpoint.json;54167B scratch removed and independently audited.",
+          "id": "claim-port",
+          "observed_at": "2026-11-05T23:55:17.446023+00:00",
+          "status": "in-progress",
+          "title": "Actual F100 hold claim port integration"
+        },
+        {
+          "evidence": "Parent owns central registration; trusted startup identity and actual F77/F78-backed source intervals remain unproved.",
+          "id": "runtime-integration",
+          "observed_at": "2026-11-05T23:38:48.913911+00:00",
+          "status": "blocked",
+          "title": "Trusted startup and source-backed producer integration"
+        },
+        {
+          "evidence": "Scoped checkpoint only; no full grant for knowingly incomplete integration. Required serial npm test/stamp follow repair.",
+          "id": "acceptance-validation",
+          "observed_at": "2026-11-05T23:38:48.913911+00:00",
+          "status": "blocked",
+          "title": "Complete acceptance and final serial validation"
+        }
+      ],
+      "status": "In Progress",
+      "title": "Allocate released cars across competing briefs by the policy tie-break",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-96",
+      "workers": [
+        {
+          "expires_at": "2026-11-05T23:38:48.913911+00:00",
+          "harness": "codex",
+          "name": "The Brain",
+          "observed_at": "2026-11-05T23:38:48.913911+00:00",
+          "role": "story-lead",
+          "source": "Thread01a1adf9-7f4a-7913-9cdb-532060b69a55 delivered scoped blocked checkpoint; requested/selected/effective gpt-6.1-sol/high; no fallback/descendants",
+          "status": "stopped"
+        }
+      ]
+    },
+    {
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-04-058",
+      "id": "FUCQ-92",
+      "observed_at": "2026-11-07T14:07:07Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "Operational released state and atomic producer preserved; scoped 19/19 plus authenticated visible-history 13/13. See fucq92/stock-state-repair.json and release-history-proof.json.",
+          "id": "release-core",
+          "observed_at": "2026-11-05T23:57:50.906138+00:00",
+          "status": "complete",
+          "title": "Pull provider, policy-driven release and atomic receipt"
+        },
+        {
+          "evidence": "Real FUCQ-77/78 configuration corpus and generated stock provider, actual confirmed-supply acknowledgement producer not available in shared tree; TEST fixtures prove port only.",
+          "id": "provider-integration",
+          "observed_at": "2026-11-05T23:14:17Z",
+          "status": "blocked",
+          "title": "Real FUCQ-77/78 source-backed stock and confirmed supply producer"
+        },
+        {
+          "evidence": "Actual fixed-pin F92→F96→F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
+          "id": "runtime-consumers",
+          "observed_at": "2026-11-05T23:57:50.906138+00:00",
+          "status": "blocked",
+          "title": "Startup, presenter cue and manual/buddy shared-pool integration"
+        },
+        {
+          "evidence": "Historical full suite predates state repair; scoped release19/19, fixed-pin consumer3/3, history13/13 retained. Real source/runtime/native acceptance and fresh admitted full suite remain.",
+          "id": "final-validation",
+          "observed_at": "2026-11-05T23:57:50.906138+00:00",
+          "status": "blocked",
+          "title": "Required full suite and complete acceptance evidence"
+        }
+      ],
+      "status": "In Progress",
+      "title": "Release synthetic stock on a presenter tick from the next pull",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-92",
+      "workers": [
+        {
+          "expires_at": "2026-11-05T23:57:50.906138+00:00",
+          "harness": "codex",
+          "name": "The Brain",
+          "observed_at": "2026-11-05T23:57:50.906138+00:00",
+          "role": "story-lead",
+          "source": "Implementation/selected validation complete; publication handoff only. Requested/selected/runtime gpt-6.1-sol/high; no descendants or fallback.",
+          "status": "stopped"
+        }
+      ]
+    },
+    {
+      "assignee": "Russell Gowers",
+      "id": "FUCQ-95",
+      "observed_at": "2026-11-07T14:07:07Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "Published reader/HTTP checkpoint and retained scoped activity/BriefService/identity evidence; genuine search/current-offer integration is separate.",
+          "id": "brief-activity",
+          "observed_at": "2026-11-05T23:59:26.684754Z",
+          "status": "complete",
+          "title": "Scoped brief permission and state-change activity projection"
+        },
+        {
+          "evidence": "Existing shared body/controller/menu/offer/timeline/custom element retained; current shell/CSP/ratchet and actual desktop/375px rendering pass. Actual check/source/current-offer states still require genuine contract-driven extension and all-state acceptance proof.",
+          "id": "activity-ui",
+          "observed_at": "2026-11-05T23:59:26.684754Z",
+          "status": "in-progress",
+          "title": "Shared activity body, controls and embeddable consumer"
+        },
+        {
+          "evidence": "Current base 49a2d0b reviewed: 98 scoped passes; ten actual startGcspDemo memory captures with canonical account, Brief consent, Back/reload, Pause/Resume, pending, 409/503 and keyboard Retry. Complete at trusted consumer boundary; real producers/final acceptance separate. See current-base-validation.json.",
+          "id": "live-consumer",
+          "observed_at": "2026-11-05T23:59:26.684754Z",
+          "status": "complete",
+          "title": "Trusted account/session live runtime consumer"
+        },
+        {
+          "evidence": "Required genuine last-successful-check outcome (including no match), durable source-delay/recovery, and canonical employee/run-scoped current-offer selection, display, link/access and declined/expired lifecycle facts. Existing F96 allocator receipts inspected read-only; runtime composition, F92 source-failure persistence and current-offer contracts remain unintegrated. No fixture closes this slice.",
+          "id": "producer-integration",
+          "observed_at": "2026-11-05T23:59:26.684754Z",
+          "status": "blocked",
+          "title": "Genuine search/source and current-offer lifecycle evidence"
+        },
+        {
+          "evidence": "Required authored projection/scoping/pause-effects tests; every listed state (never searched, searching/no-match, waiting offer, declined/expired offer, paused, source unavailable) at desktop/375px with keyboard-only and visible focus; reload of real server state; shared kit/catalogue/gallery/CSP and falling ratchet; real producer stop effects and current-offer handling; final serial npm test. Human layout review deferred to working end-to-end demo. Missing live states and final suite stay open.",
+          "id": "acceptance",
+          "observed_at": "2026-11-05T23:59:26.684754Z",
+          "status": "blocked",
+          "title": "All required states, full integration and final acceptance validation"
+        }
+      ],
+      "status": "In Progress",
+      "title": "Show buddy activity and pause or resume the search",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-95",
+      "workers": [
+        {
+          "expires_at": "2026-11-05T23:59:26.684754Z",
+          "harness": "codex",
+          "name": "Mater",
+          "observed_at": "2026-11-05T23:59:26.684754Z",
+          "role": "story-lead",
+          "source": "thread 01a1adf9-5447-7220-8e41-86ea53f403e7; requested/selected/effective gpt-6.1-sol/high verified turn_context",
+          "status": "stopped at scoped checkpoint"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-36",
+      "title": "",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "",
+      "observed_at": "2026-11-06T00:49:48Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-36",
+      "slices": [
+        {
+          "id": "manifest",
+          "status": "complete",
+          "title": "Directory-discovered-package-and-dependency-validation",
+          "observed_at": "2026-11-06T00:26:47Z",
+          "evidence": "Lead reviewed final directory graph including gallery-linked public Density preview and nested future offer page;13/13 package cases pass. Frozen assembler SHAe568b983 and package-test SHA56ab5e00; named missing imports/assets/modules and API/CSP boundaries verified."
+        },
+        {
+          "id": "entry",
+          "status": "complete",
+          "title": "API-switch-and-root-prefix-entry-smokes",
+          "observed_at": "2026-11-06T00:24:04Z",
+          "evidence": "Lead reviewed copied API/default/switch bindings, deterministic13 package cases and actual assembled browser116 local plus116 deployed-style HTTPS root/prefix checks with real memory identity/account200, no JS/local HTTP asset errors."
+        },
+        {
+          "id": "release",
+          "status": "complete",
+          "title": "Revision-compatibility-and-release-checklist",
+          "observed_at": "2026-11-06T00:26:47Z",
+          "evidence": "Lead reviewed README/HLD and release/validation notes: exact source/config/migration0001-0003/seed hashes, no later block dependency, employee switch, root/prefix routes, unknown GC provisioning/live state and later authorised release checks; retail workflows untouched."
+        },
+        {
+          "id": "browser",
+          "status": "complete",
+          "title": "Assembled-desktop-narrow-keyboard-and-retail-matrix",
+          "observed_at": "2026-11-06T00:24:04Z",
+          "evidence": "Inspected desktop/narrow launcher/retail/real employee/Greg/outbox/gallery captures and employee-disabled/service-error states. Each API configuration116rows/14captures; root/prefix/reloads,6brandsx5modes and disabled matrix. Immutable later offer proof is separately qualified in evidence."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Final-story-integration-and-required-full-validation",
+          "observed_at": "2026-11-06T00:31:54Z",
+          "evidence": "Lead reviewed all authored acceptance and exact frozen db4fcbe full npm test:1265total/1260pass/5nativePGskipped/0fail; stamp389edc75ff69,59.8s. Both actual browser configs116checks, scoped package13/13 and ratchet42/42; cleanup verified. Later offer source visual issue remains explicitly separate under native no-dependency clause."
+        }
+      ],
+      "unsliced": false,
+      "workers": [
+        {
+          "name": "Mary-Sue Walton",
+          "role": "story-lead",
+          "harness": "codex",
+          "source": "Parent independently verified effective gpt-6.1-sol/high in runtime; final142input hashes and19roots/18groups audited. Frozen db4fcbe full; merged9e7531b.",
+          "observed_at": "2026-11-06T00:52:49.287115+00:00",
+          "expires_at": "2026-11-06T00:52:49.287115+00:00",
+          "status": "stopped; merged9e7531b; native In Review; branch/worktree/lease cleanup complete46c9f69"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-04-067"
+    },
+    {
+      "id": "FUCQ-104",
+      "title": "Track order requests from requested to confirmed to released",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-07T14:07:07Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-104",
+      "slices": [
+        {
+          "id": "records",
+          "status": "complete",
+          "title": "Distinct repository records and additive migration",
+          "observed_at": "2026-11-06T00:19:47Z",
+          "evidence": "Lead reviewed separate durable immutable acknowledgement records;45pass2native skips;docs/gcsp/greg-orders-contract.md. Native integration remains."
+        },
+        {
+          "id": "submission",
+          "status": "complete",
+          "title": "Version-pinned idempotent Greg order requests",
+          "observed_at": "2026-11-06T00:26:32Z",
+          "evidence": "Lead-reviewed service and authenticated HTTP: replay, version/stock/run fences and role refusals; scoped 46/46 with clock and demand; UI/runtime integration remains."
+        },
+        {
+          "id": "confirmation",
+          "status": "complete",
+          "title": "Synthetic production acknowledgement and keyed release queue",
+          "observed_at": "2026-11-06T00:40:44Z",
+          "evidence": "Lead reviewed immutable partial/delay acknowledgements, keyed dates and retryable actual F92 queue. Final scoped119/119 and actual pinned producer1/1; canonical runtime/native gate separate. docs/gcsp/evidence/fucq104/README.md"
+        },
+        {
+          "id": "tracking",
+          "status": "complete",
+          "title": "Shared-kit order-tracking stages and keyboard states",
+          "observed_at": "2026-11-06T00:40:44Z",
+          "evidence": "Shared-kit block plus authenticated HTTPS seven-state desktop/narrow/keyboard proof; CSP/ratchet and119scoped passes. Focused shell counts1/continuous geometry and4inspected viewport captures supersede invalid fullPage artifacts. Canonical host adoption remains separate."
+        },
+        {
+          "id": "release-allocation",
+          "status": "complete",
+          "title": "Actual release, allocation and demand consumer integration",
+          "observed_at": "2026-11-06T00:40:44Z",
+          "evidence": "Actual pinned F92 15a79957/F96 d12358bc/F100 b4154ce3 and published trusted identity composed1/1: policy lead time, release3, real hold/offer/outbox, changed demand and replay. Explicit synthetic inputs/memory only; canonical source/runtime/native gate separate."
+        },
+        {
+          "id": "integration",
+          "status": "blocked",
+          "title": "Composed runtime, browser, native handoff and final validation",
+          "observed_at": "2026-11-06T00:40:44Z",
+          "evidence": "GC-owned canonical runtime/server/Greg host and reviewed identity adoption, versioned source choice/stock bootstrap, Gary native migration0004/foundation snapshot/transaction proof, final authored npm test and canonical walkthrough remain. Module/browser proof does not close these gates."
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-04-089",
+      "workers": [
+        {
+          "name": "Buzz Lightyear",
+          "role": "story-lead",
+          "harness": "codex",
+          "status": "stopped; explicit IBM Global422 Advantage Credits exhaustion; checkpoint preserved",
+          "source": "thread01a1ae35-02f9-7152-a760-c25dc42194f9;requested/selected/runtime-verified gpt-6.1-sol/high;no fallback or descendants",
+          "observed_at": "2026-11-06T00:52:49.287115+00:00",
+          "expires_at": "2026-11-06T00:52:49.287115+00:00"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-117",
+      "title": "Plan feasible order quantities from expressed demand, supply and policy",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-07T14:07:07Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-117",
+      "slices": [
+        {
+          "id": "input-contract",
+          "status": "complete",
+          "title": "Versioned planner inputs and feasibility contract",
+          "observed_at": "2026-11-06T00:38:58Z",
+          "evidence": "Lead reviewed versioned trusted input contract and strict validation; authored scoped checks and panel fixture round-trip passed; docs/gcsp/evidence/fucq117/README.md. Actual producer activation remains separately planned."
+        },
+        {
+          "id": "feasible-solver",
+          "status": "complete",
+          "title": "Deterministic integer solver and substitution",
+          "observed_at": "2026-11-06T00:38:58Z",
+          "evidence": "Lead reviewed integer/model/budget/leadtime matching, exact supply subtraction and safety limits; authored scoped tests plus independent tiny assignment oracle passed; docs/gcsp/evidence/fucq117/README.md."
+        },
+        {
+          "id": "explanations",
+          "status": "complete",
+          "title": "Coverage risks constraints and comparisons",
+          "observed_at": "2026-11-06T00:38:58Z",
+          "evidence": "Lead reviewed feasible/infeasible/alternative/draft DTOs, objective tradeoff and integer budget explanations; exact fixture round-trip and authored scoped checks passed; docs/gcsp/evidence/fucq117/README.md."
+        },
+        {
+          "id": "canonical-policy",
+          "status": "in-progress",
+          "title": "Typed canonical policy activation",
+          "observed_at": "2026-11-06T00:38:58Z",
+          "evidence": "Typed pinned reader and explicit alternative-provider change tests pass. Pending proposal uses placeholder catalog IDs; no canonical activation claimed."
+        },
+        {
+          "id": "producer-integration",
+          "status": "blocked",
+          "title": "Trusted demand and actual supply integration",
+          "observed_at": "2026-11-06T00:51:22.475977+00:00",
+          "evidence": "Latest saved-demand prototype30tests:28pass2fail at entitlement mapping; explicit Global422 interrupted lead. Concrete canonical catalog/evaluator integration remains open."
+        },
+        {
+          "id": "final-validation",
+          "status": "not-started",
+          "title": "Authored acceptance and full validation"
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-04-090",
+      "workers": [
+        {
+          "name": "Doug the Dog",
+          "role": "story-lead",
+          "harness": "codex",
+          "source": "Thread01a1ae41-b758-7521-b89f-8cf6c6afd1ed; requested/selected/effective gpt-6.1-sol/high verified; checkpointc02f363ada73951db4876f6943c882a80f401716; actual live progress",
+          "observed_at": "2026-11-06T00:52:49.287115+00:00",
+          "expires_at": "2026-11-06T00:52:49.287115+00:00",
+          "status": "stopped; explicit IBM Global422 Advantage Credits exhaustion; checkpoint preserved"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-149",
+      "title": "Resume the saved manual journey through the current claim",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": null,
+      "type": "Story",
+      "observed_at": "2026-11-06T17:11:02Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-149",
+      "unsliced": true
+    },
+    {
+      "id": "FUCQ-103",
+      "title": "Preview and publish points and recommendation weights",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-06T13:38:05Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-103",
+      "jira_observed_at": "2026-11-05T22:40:24Z",
+      "workers": [
+        {
+          "name": "FUCQ-103 lead",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-05T23:14:21Z",
+          "expires_at": "2026-11-05T23:29:21Z",
+          "source": "chat:01a1adbc-0652-7943-a5fd-26c807648025 current lead review and focused proof",
+          "status": "working"
+        },
+        {
+          "name": "Timone",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-05T23:14:21Z",
+          "expires_at": "2026-11-05T23:14:21Z",
+          "source": "chat:01a1adea-9faa-7ff0-9063-18a64c221bc1 final handoff and source freeze; completion observed",
+          "status": "completed"
+        }
+      ],
+      "branch": "dev/DEV-2026-11-04-066",
+      "slices": [
+        {
+          "id": "backend-projection",
+          "status": "in-progress",
+          "title": "Editable policy projection and no-write preview",
+          "observed_at": "2026-11-06T13:38:05Z",
+          "evidence": "Current f80fc61 freeze: core25/registry16/default1/weighted1/runtime4/editor3 independently accepted; dashboard3 3/3 at 4c0cbcf, publish15 15/15 at 30e7663 and activation9 9/9 at 1298259 passed (lead-audited, root collection pending); six dashboard-data cases unexercised. Synthetic in-memory service proof, threshold1 except canonical band/HTTP cases; stub faults/provider; shape-only fixture comparison; loopback only; no rendered/native/producer/full acceptance. docs/gcsp/evidence/fucq103/eligibi"
+        },
+        {
+          "id": "activation-http",
+          "status": "complete",
+          "title": "Domain-time activation and ordinary HTTP consumption",
+          "observed_at": "2026-11-05T23:02:41Z",
+          "evidence": "Lead reviewed and pushedb483d20; parent7/7activation +2/2HTTP, d4ad7528/a9b75a99 receipts; held quotes unchanged and same-cookie successor terms."
+        },
+        {
+          "id": "reviewed-adoption-runtime",
+          "status": "in-progress",
+          "title": "Reviewed keyed adoption and delivered runtime",
+          "observed_at": "2026-11-06T09:09:45Z",
+          "evidence": "Registry16 and runtime4 accepted; runtime4 lead557/root992, exact four names/totals/pins/cleanup and postwrite verified. Synthetic mechanics/reset, provider lifetime and empty-Postgres-configuration refusal only; no live DB, producer or 105-to-107 lookup/reload acceptance. Earlier evidence preserved. docs/gcsp/evidence/fucq103/eligibility-runtime-cba833f-2026-11-06/index.json."
+        },
+        {
+          "id": "publish-panel",
+          "status": "complete",
+          "title": "Shared-kit publish panel and canonical interaction ranges",
+          "observed_at": "2026-11-05T23:14:21Z",
+          "evidence": "Lead reviewed stable native controls, real presenter/dashboard composition, privacy, original-command retries and two-invalid-price routing. Parent UI 30/30 b10eea61; unchanged-source callers61 and ratchet87 receipts verified. Separate rendered integration remains open."
+        },
+        {
+          "id": "learning-definitions",
+          "status": "complete",
+          "title": "Integrate reviewed FUCQ-113 canonical definitions",
+          "observed_at": "2026-11-05T23:14:21Z",
+          "evidence": "Exact reviewed artifact from2fd445d717d05ae0d2172eba2a9021efe5285729 registered with digest a49f54884322f5993faf510aa8f5cea6e4a9c02e9fae2d2ddfefd350a69d7782. Lead source review + parent15/15 52ef5d9d prove missing-only same-provider ordinary activation/readback and preserved tuned keys. No113producer/corpus claim."
+        },
+        {
+          "id": "rendered-integration",
+          "status": "blocked",
+          "title": "Desktop and narrow keyboard browser evidence",
+          "observed_at": "2026-11-06T09:09:45Z",
+          "evidence": "Current backend scoped proofs accepted; canonical prepared composition still needs separately admitted desktop/narrow320 keyboard journeys and actual employee outcome. Browser supervisor remains unrepaired/unadmitted. No browser/native/full allocation or acceptance. Producer92/69/122/126 integration remains outstanding; Jira journey links alone do not block independent backend pickup."
+        },
+        {
+          "id": "full-validation",
+          "status": "not-started",
+          "title": "Dispatcher-admitted authored full validation",
+          "observed_at": "2026-11-05T23:02:43Z",
+          "evidence": "Authored npm test required; dispatcher sole lane, request only exact source/base after scoped and browser proof. No grant."
+        },
+        {
+          "id": "final-delivery",
+          "status": "not-started",
+          "title": "Final lead review and delivery receipt",
+          "observed_at": "2026-11-05T23:02:43Z",
+          "evidence": "Requires final acceptance/visual evidence, source-matched full stamp and resource receipt; story remains In Progress."
+        }
+      ],
+      "unsliced": false
+    },
+    {
+      "id": "FUCQ-102",
+      "title": "Open an offer from a run-bound link that shows its current state",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "Gary Carter",
+      "type": "Story",
+      "observed_at": "2026-11-07T14:07:07Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-102",
+      "workers": [],
+      "slices": [
+        {
+          "id": "contract",
+          "status": "complete",
+          "title": "One-offer HTTP and durable capability contract",
+          "observed_at": "2026-11-06T19:52:38Z",
+          "evidence": "Current integrated backend32/32, unchanged product source and original tests with canonical imports; docs/gcsp/evidence/fucq102/current-backend-2026-11-06.md. Not browser/native/full acceptance."
+        },
+        {
+          "id": "access",
+          "status": "complete",
+          "title": "Hash exchange and current-state access service",
+          "observed_at": "2026-11-06T19:52:38Z",
+          "evidence": "Current integrated backend32/32, unchanged product source and original tests with canonical imports; docs/gcsp/evidence/fucq102/current-backend-2026-11-06.md. Not browser/native/full acceptance."
+        },
+        {
+          "id": "http",
+          "status": "complete",
+          "title": "Origin-gated cookie and account adapter",
+          "observed_at": "2026-11-06T19:52:38Z",
+          "evidence": "Current integrated backend32/32, unchanged product source and original tests with canonical imports; docs/gcsp/evidence/fucq102/current-backend-2026-11-06.md. Not browser/native/full acceptance."
+        },
+        {
+          "id": "producer",
+          "status": "complete",
+          "title": "Actual token producer and local expiry integration",
+          "observed_at": "2026-11-06T19:52:38Z",
+          "evidence": "Current integrated backend32/32, unchanged product source and original tests with canonical imports; docs/gcsp/evidence/fucq102/current-backend-2026-11-06.md. Not browser/native/full acceptance."
+        },
+        {
+          "id": "runtime",
+          "status": "complete",
+          "title": "Central offer route and reload integration",
+          "observed_at": "2026-11-06T19:52:38Z",
+          "evidence": "Current integrated backend32/32, unchanged product source and original tests with canonical imports; docs/gcsp/evidence/fucq102/current-backend-2026-11-06.md. Not browser/native/full acceptance."
+        },
+        {
+          "id": "validation",
+          "status": "in-progress",
+          "title": "Authored validation and acceptance disposition",
+          "observed_at": "2026-11-06T21:54:23Z",
+          "evidence": "Current 95/95 targeted backend checks pass including original configured destination. Hosted deployment/full acceptance unrun; retained full1590:1569pass16fail5skip and independent deferred Bugs. No Done. docs/gcsp/evidence/fucq102/landing-config-2026-11-06.md"
+        },
+        {
+          "id": "landing-url",
+          "status": "complete",
+          "title": "Original deployment-configured landing URL",
+          "observed_at": "2026-11-06T21:54:23Z",
+          "evidence": "Original configured landing URL implemented through trusted runtime and both producers. Topic b1c10f7; 95/95 targeted checks, independent parent cleanup verified. docs/gcsp/evidence/fucq102/landing-config-2026-11-06.md. Hosted deployment/full acceptance unrun."
+        }
+      ],
+      "unsliced": false
+    },
+    {
+      "id": "FUCQ-60",
+      "title": "Enrich resolved fleet configurations with matching facts and images",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-07T14:07:07Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60",
+      "workers": [
+        {
+          "name": "Scooby Doo",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-06T12:31:19.407940+00:00",
+          "expires_at": "2026-11-06T12:31:19.407940+00:00",
+          "source": "thread 01a1b05f-dcbc-7e50-a2f9-0332b39f082a",
+          "status": "Canonical local prepublication checkpoint: scoped 9+6 passed with zero skips; requested/selected/verified Sol/high, no fallback or descendants. Worker expires at handoff; parent exact review/publication and wider runtime/native/source/asset/full gates remain."
+        },
+        {
+          "name": "Rocky",
+          "role": "mechanic",
+          "harness": "codex",
+          "observed_at": "2026-11-07T00:33:52.071696+00:00",
+          "expires_at": "2026-11-07T00:33:52.071696+00:00",
+          "source": "task /root/charlie_dog/rocky",
+          "status": "Requested/selected gpt-6-luna/high; no fallback; effective unverified. Source-only mechanic complete, pure 11/source 3 pass, no descendants; handoff expired."
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "firstimage ordinaryrelease integration",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/medium; runtimeunverified; nofallback",
+          "observed_at": "2026-11-07T02:40:43.286002+00:00",
+          "expires_at": "2026-11-07T03:06:23.061001+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "exact v2 technical/image observation capability",
+          "harness": "codex",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:06:23.061001+00:00",
+          "expires_at": "2026-11-07T03:49:35.860351+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "exact v2technical/image enrichment",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected Sol/medium; effective runtime unverified; nofallback",
+          "observed_at": "2026-11-07T03:18:13.087785+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "twoimage .7publication preparation",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "preserved2image associations in next1923sourcepackage",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T04:15:34.640812+00:00",
+          "expires_at": "2026-11-07T04:24:45.127191+00:00",
+          "status": "previousobservation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "technical integration and package",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T04:53:39.807899+00:00",
+          "expires_at": "2026-11-07T05:12:00.973894+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "technical supplement candidate integration",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T05:12:00.973894+00:00",
+          "expires_at": "2026-11-07T06:09:42.607117+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "exact10000 current-session integration preparation",
+          "harness": "codex",
+          "source": "Root directly observed active. Requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T08:23:09.000197+00:00",
+          "expires_at": "2026-11-07T09:23:09.000197+00:00",
+          "status": "active at observation; Story acceptance open"
+        }
+      ],
+      "slices": [
+        {
+          "id": "exact-identity",
+          "status": "complete",
+          "title": "Exact configuration identity and fact projection",
+          "observed_at": "2026-11-07T00:33:52Z",
+          "evidence": "Scoped pure 11/source 3 plus contracts 53 pass at source 29301f1b. Strict explicit v2 tuple, binding/selection refusal, safe resolved context/evidence and v1 substitution preserved; docs/gcsp/evidence/fucq60/source-v2-enrichment-2026-11-07.md. Wider source/corpus gates separate."
+        },
+        {
+          "id": "image-projection",
+          "status": "complete",
+          "title": "Honest representative image and partial projection",
+          "observed_at": "2026-11-07T00:33:52Z",
+          "evidence": "Focused image contracts remain passing in 53 owning cases; v2 retains image null/unknown without downconversion. Existing registered v1 fidelity/retention/hash handling unchanged. Real retained representative asset coverage remains separate."
+        },
+        {
+          "id": "shared-accounting",
+          "status": "complete",
+          "title": "Canonical collector session cache budget recovery integration",
+          "observed_at": "2026-11-07T09:11:18Z",
+          "evidence": "Current-code exact10000 retained replay10kpartial/0reject/0outbound; same-currentcollector-session bridge1partial and finalsummary passed. Finalreceipt cc8604d085b76a37d45d2c095074f17087d0a6e6cf861c846140b670b3b4783e. Phase156 supervisorrc1 preserved, postexitcleanup reconciled; no claim original live session enriched. exact10000-common-session-results-2026-11-07/"
+        },
+        {
+          "id": "real-source",
+          "status": "complete",
+          "title": "Real catalogue source coverage evidence",
+          "observed_at": "2026-11-07T09:52:20Z",
+          "evidence": "Independent five-AC review recommends In Review at exact current code pins. All 10,000 selected retained configurations passed current session integration with explicit partial outcomes and zero rejects/source calls. Original live-session enrichment is not claimed; implementation-readiness-2026-11-07/."
+        },
+        {
+          "id": "real-assets",
+          "status": "complete",
+          "title": "Representative retained asset fidelity evidence",
+          "evidence": "Five-AC review accepts declared coverage: two registered representative images, permitted unknown technical/image outcomes and preserved fidelity limits. No universal image coverage is claimed. docs/gcsp/evidence/fucq60/implementation-readiness-2026-11-07/.",
+          "observed_at": "2026-11-07T09:52:20Z"
+        },
+        {
+          "id": "focused-contracts",
+          "status": "complete",
+          "title": "Authored enrichment and F39 F42 focused contracts",
+          "observed_at": "2026-11-07T01:05:09Z",
+          "evidence": "Earlier 82 and follow-up 18 scoped checks retain their original identities. New pinned actual 28-row source32 proof passes exit 0 in 5.692s; implementation unchanged. Zero outbound/source/image calls; 28 partial, zero rejected; cleanup verified. Root full npm evidence separate. source-batch32-replay-validation.json."
+        },
+        {
+          "id": "corpus-integration",
+          "status": "complete",
+          "title": "F54 corpus and presentation integration",
+          "observed_at": "2026-11-07T09:52:21Z",
+          "evidence": "Independent review recommends In Review. Exact 10,000 current-code session results and actual publisher/port/HTTP evidence meet the F60 boundary; F62/F63 deployment work is separate. Existing 2,707 configured-consumer failures remain deferred, not fixed."
+        },
+        {
+          "id": "final-suite",
+          "status": "complete",
+          "title": "Authored final npm test integration gate",
+          "observed_at": "2026-11-07T09:52:21Z",
+          "evidence": "Final regression disposition is reviewed: historical full npm result remains 1,848 pass / 19 fail / five skip. Scoped repairs and separately deferred lower-severity findings are recorded. No fresh whole-suite pass is claimed; independent five-AC review identifies no new Critical/High/build gap."
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-04-033"
+    },
+    {
+      "assignee": "Russell Gowers",
+      "id": "FUCQ-58",
+      "observed_at": "2026-11-07T14:07:07Z",
+      "original_status": "In Review",
+      "slices": [
+        {
+          "evidence": "The retained configuration-only plan is merged and independently reviewed under Q13. Original VIN/profile wording applies to delivered/current-car generation, not every corpus row. Seventeen scoped checks pass; docs/gcsp/evidence/fucq-58/configuration-only-qualification-2026-11-07/.",
+          "id": "plan-contract",
+          "observed_at": "2026-11-07T09:52:20Z",
+          "status": "complete",
+          "title": "Offline versioned plan and context/profile refusal contract"
+        },
+        {
+          "evidence": "Original finite1024 series completed within1225.765s/1800s; all32chunks proved, failed attempts retained and no replay.160 required scoped checks covered,0skips. docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/actual-series.json",
+          "id": "source-budget",
+          "observed_at": "2026-11-07T03:06:23.061001+00:00",
+          "status": "complete",
+          "title": "Authorised finite source budget, dry run and privacy refusal"
+        },
+        {
+          "evidence": "The reviewed selection contains exactly 10,000 configurations, 43 VG and 26 AG codes with exact GB/en-GB dates. A digest-pinned portable projection preserves unknown body, physical steering and technical facts. Q13 applies. Independent review passed at f0ec6011; merged at24584f41. Evidence: docs/gcsp/evidence/fucq-58/configuration-only-qualification-2026-11-07/.",
+          "id": "scheme-catalogue",
+          "observed_at": "2026-11-07T09:47:05Z",
+          "status": "complete",
+          "title": "Reconcile declared configuration model and option coverage"
+        },
+        {
+          "evidence": "The explicit fleet-configurations.v1 retained-only qualifier passed 17 focused checks, including all14 legacy cases, with zero failures/skips/source calls/VIN resolutions. Root checked five code identities and five absent scratch roots; independent review passed. This grants no new source admission or Story acceptance. Merged at24584f41.",
+          "id": "qualification-integration",
+          "observed_at": "2026-11-07T09:47:06Z",
+          "status": "complete",
+          "title": "Reconcile selected configuration-only plan and qualification"
+        }
+      ],
+      "status": "In Review",
+      "title": "Qualify fleet coverage and budgets before collecting configurations",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-58",
+      "workers": [
+        {
+          "expires_at": "2026-11-05T23:55:17.446023+00:00",
+          "harness": "codex",
+          "name": "Merlin the Magic Mouse",
+          "observed_at": "2026-11-05T23:55:17.446023+00:00",
+          "role": "story-lead",
+          "source": "thread 01a1ae09-0e2c-78d3-8cc7-87d1a60f8a0f; requested/selected/effective gpt-6.1-sol/high; no fallback",
+          "status": "stopped; published blocked7aa6bee"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "finite typed source execution",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; runtimeunverified; nofallback",
+          "observed_at": "2026-11-07T02:40:43.286002+00:00",
+          "expires_at": "2026-11-07T03:06:23.061001+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "four-context model breadth capability",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; runtimeunverified; nofallback",
+          "observed_at": "2026-11-07T02:40:43.286002+00:00",
+          "expires_at": "2026-11-07T03:06:23.061001+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "next source/publishing preparation",
+          "harness": "codex",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:06:23.061001+00:00",
+          "expires_at": "2026-11-07T03:49:35.860351+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "four-model exact solver pilot",
+          "harness": "codex",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:06:23.061001+00:00",
+          "expires_at": "2026-11-07T03:49:35.860351+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "source breadth and finite continuation",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected Sol/high; effective runtime unverified; nofallback",
+          "observed_at": "2026-11-07T03:18:13.087785+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "finite four-model source continuation",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "G42 six-model source qualification preparation",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "sixmodel qualification/finiteG42pilot and31scheme breadth",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T04:15:34.640812+00:00",
+          "expires_at": "2026-11-07T04:24:45.127191+00:00",
+          "status": "previousobservation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "G42actualcollectionandschemebreadth",
+          "harness": "codex",
+          "source": "Coordinator directlyobserved; requested/selected gpt-6.1-sol/high;effective runtimeunverified;nofallback",
+          "observed_at": "2026-11-07T04:24:45.127191+00:00",
+          "expires_at": "2026-11-07T04:53:39.807899+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "scheme breadth and G42 source",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T04:53:39.807899+00:00",
+          "expires_at": "2026-11-07T05:12:00.973894+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "breadth source qualification",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T05:12:00.973894+00:00",
+          "expires_at": "2026-11-07T05:49:11.486454+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "actual breadth960 source",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T05:49:11.486454+00:00",
+          "expires_at": "2026-11-07T06:09:42.607117+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "stopped F70 audit and unspent continuation",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T05:49:11.486454+00:00",
+          "expires_at": "2026-11-07T06:09:42.607117+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "breadth source continuation",
+          "harness": "codex",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T06:09:42.607117+00:00",
+          "expires_at": "2026-11-07T07:09:43.031940+00:00",
+          "status": "previous observation retained; expired or superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "missing original-model source coverage",
+          "harness": "codex",
+          "source": "Root directly observed active. Requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T08:23:09.000197+00:00",
+          "expires_at": "2026-11-07T09:23:09.000197+00:00",
+          "status": "active at observation; Story acceptance open"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-61",
+      "title": "Collect and validate 10,000 genuinely distinct BMW configurations",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-07T14:07:07Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-61",
+      "slices": [
+        {
+          "id": "source-run",
+          "status": "complete",
+          "title": "Execute qualified real collection",
+          "observed_at": "2026-11-07T09:47:06Z",
+          "evidence": "Actual admitted union10,351; exactly10,000 selected and staged; semantic verifier passed with zero shortfall. Root reviewed94 retained evidence pins and the report, merged at d438db5c. Per-allocation plans/receipts preserve failures and exclusions. Evidence: docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/."
+        },
+        {
+          "id": "semantic-audit",
+          "status": "complete",
+          "title": "Recompute all accepted signatures",
+          "observed_at": "2026-11-07T08:23:09.000197+00:00",
+          "evidence": "Actual exact10k staged semantic verifier passed20.547s;10000 complete resolved distinct/10001 configurations. Retained canonical recomputation/selection evidence preserved. Original coverage and current enrichment integration remain separate."
+        },
+        {
+          "id": "staged-verifier",
+          "status": "complete",
+          "title": "Validate staged artifacts and counts",
+          "observed_at": "2026-11-07T08:23:09.000197+00:00",
+          "evidence": "Final .12 candidate manifest3b2a883c: production writer/validator and existing verifyStagedFleet passed exact10000 complete-source target; isolated additive publication/restart/idempotence passed101.355s. Full lookup chunks underway; no acceptance claim."
+        },
+        {
+          "id": "coverage-audit",
+          "status": "complete",
+          "title": "Report actual coverage completeness and budgets",
+          "observed_at": "2026-11-07T09:47:06Z",
+          "evidence": "The consolidated report records43 VG/26 AG codes,1,562 groups,4,522 tokens,351 surplus rows and explicit unknowns.24 receipt and24 finite-plan observations retain their scopes; no invented whole-run totals or advance semantic quota. These limits remain for acceptance review. Report merged at d438db5c."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Integrate actual collected enriched corpus and cached replay",
+          "observed_at": "2026-11-07T12:01:06Z",
+          "evidence": "Exact 10,000 replay, cached restart, semantic/staging and 32-allocation accounting reconciled; independent review at aa73fc72 recommends In Review. Preserve irrecoverable outcome, whole-history duration/traffic and RAM overrun limits. docs/gcsp/evidence/fucq61/accounting-reconciliation-2026-11-07/README.md. No new BUILD gate."
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-04-034",
+      "workers": [
+        {
+          "name": "Minnie Mouse",
+          "role": "strict actual source series",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; runtimeunverified; nofallback",
+          "observed_at": "2026-11-07T02:40:43.286002+00:00",
+          "expires_at": "2026-11-07T03:06:23.061001+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "869-source freeze and finite next collection",
+          "harness": "codex",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:06:23.061001+00:00",
+          "expires_at": "2026-11-07T03:49:35.860351+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "actual source count and original target shortfall",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected Sol/high; effective runtime unverified; nofallback",
+          "observed_at": "2026-11-07T03:18:13.087785+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "actual source count toward10000",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "actualG42sourcecounts and continuation",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T04:15:34.640812+00:00",
+          "expires_at": "2026-11-07T04:24:45.127191+00:00",
+          "status": "previousobservation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "nextoptionalaxis concretepool",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T04:15:34.640812+00:00",
+          "expires_at": "2026-11-07T04:24:45.127191+00:00",
+          "status": "previousobservation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "actual2768finitecollection",
+          "harness": "codex",
+          "source": "Coordinator directlyobserved; requested/selected gpt-6.1-sol/high;effective runtimeunverified;nofallback",
+          "observed_at": "2026-11-07T04:24:45.127191+00:00",
+          "expires_at": "2026-11-07T04:53:39.807899+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "optional5567pool/pilotpreparation",
+          "harness": "codex",
+          "source": "Coordinator directlyobserved; requested/selected gpt-6.1-sol/high;effective runtimeunverified;nofallback",
+          "observed_at": "2026-11-07T04:24:45.127191+00:00",
+          "expires_at": "2026-11-07T04:53:39.807899+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "actual G42 count",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T04:53:39.807899+00:00",
+          "expires_at": "2026-11-07T05:12:00.973894+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "actual optional count",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T04:53:39.807899+00:00",
+          "expires_at": "2026-11-07T05:12:00.973894+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "actual source count",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T05:12:00.973894+00:00",
+          "expires_at": "2026-11-07T05:49:11.486454+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "stopped-prefix evidence and exact unspent continuation preparation",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T05:17:07.348628+00:00",
+          "expires_at": "2026-11-07T05:49:11.486454+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "actual breadth960 source",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T05:49:11.486454+00:00",
+          "expires_at": "2026-11-07T06:09:42.607117+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "stopped F70 audit and unspent continuation",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T05:49:11.486454+00:00",
+          "expires_at": "2026-11-07T06:09:42.607117+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "optional-axis finite source continuation",
+          "harness": "codex",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T06:09:42.607117+00:00",
+          "expires_at": "2026-11-07T07:09:43.393106+00:00",
+          "status": "previous observation retained; expired or superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "exact10000 selection sealed; originalcoverage gaps",
+          "harness": "codex",
+          "source": "Root directly observed active. Requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T08:23:09.000197+00:00",
+          "expires_at": "2026-11-07T09:23:09.000197+00:00",
+          "status": "active at observation; Story acceptance open"
+        }
+      ]
+    },
+    {
+      "assignee": "Russell Gowers",
+      "branch": "dev/DEV-2026-11-04-032",
+      "id": "FUCQ-59",
+      "observed_at": "2026-11-07T14:07:07Z",
+      "original_status": "In Review",
+      "slices": [
+        {
+          "evidence": "Lead reviewed target Base64/accessory/alias behavior; two offline regression tests pass, scoped receipt lead59/receipt-identity-green.json; F54 publication compatibility remains separately planned.",
+          "id": "canonical-identity",
+          "observed_at": "2026-11-06T10:10:35Z",
+          "status": "complete",
+          "title": "Canonical configuration identity and factory/accessory separation (2 points)"
+        },
+        {
+          "evidence": "Lead reviewed exact F39 typed selection/context/solver changes; 24/24 offline regressions pass, receipt-lifetime-deadline-green.json. Real source separate.",
+          "id": "resolved-selection",
+          "observed_at": "2026-11-06T10:26:40Z",
+          "status": "complete",
+          "title": "Deterministic candidates and complete solver response validation (3 points)"
+        },
+        {
+          "evidence": "Independent sixAC review found Medium public-continuation safe-bootstrap cache refetch:10actualGET/0hits;settings fresh justified,3validsafeprojectionsrefetched. Deferred independentBugpayload pendingJiraOAuth; no build/merge dependency,AC4notpassed/waived. Reviewrecommendation remains,notDone.",
+          "id": "atomic-resume",
+          "observed_at": "2026-11-07T09:05:30Z",
+          "status": "in-progress",
+          "title": "Versioned bounded cache and atomic checkpoint/resume (3 points)"
+        },
+        {
+          "evidence": "Lead verified exact GET allowlist/header restrictions, combined4attempt/2MiB budgets,1MiB response,10s complete-body timeout/join and45s persisted deadline;60/60 scoped tests and actual4GET/200/782059B pilot, zero retries/images/browser/writes. Defaults retain zero traffic.",
+          "id": "finite-offline",
+          "observed_at": "2026-11-06T10:56:10Z",
+          "status": "complete",
+          "title": "Finite source budgets, deadlines and default no-traffic safety (2 points)"
+        },
+        {
+          "evidence": "Current six-AC assessment finds collector developed and recommends In Review. Actual10351admitted, sealed10000,133collector/model/source checks+10correctedF60 checks. No own BUILD blocker; F58coverage/profile/WMI notgates. docs/gcsp/evidence/fucq59/completion-assessment-2026-11-07/README.md",
+          "id": "source-qualification",
+          "observed_at": "2026-11-07T08:37:35.957751+00:00",
+          "status": "complete",
+          "title": "Selected real-source model mapping and solver integration (1 point)"
+        },
+        {
+          "evidence": "Public/ordinary .9:2424source,2426exact references on fresh Linux42343046040. Render7617112384success; health200; firstDTOGET30s timeout,0compared. Known485consumerfailures deferred; acceptanceopen.",
+          "id": "publication-contract",
+          "observed_at": "2026-11-07T05:49:11.486454+00:00",
+          "status": "complete",
+          "title": "F39/F54 identity, provenance and selected-source compatibility (1 point)"
+        },
+        {
+          "evidence": "Lead reviewed authored retailer/API injected-memory scope; node --test server/test/brand.test.js server/test/api.test.js passes132/132, receipt-retailer-api.json.",
+          "id": "retailer-boundary",
+          "observed_at": "2026-11-06T10:26:40Z",
+          "status": "complete",
+          "title": "Retailer mapping and API regression boundary"
+        },
+        {
+          "evidence": "Acceptancepending: cross-allocation bootstrap-cache reuse unproved; explicit refresh interpretation required. Current authored npmtest pass notestablished; historicalfailures/skips retained. ConnectorOAuth refresh invalid; noJiratransitionexecuted.",
+          "id": "full-validation",
+          "observed_at": "2026-11-07T08:37:35.957751+00:00",
+          "status": "in-progress",
+          "title": "Authored serial npm test integration gate (1 point)"
+        }
+      ],
+      "status": "In Review",
+      "title": "Collect distinct constructible configurations with resumable batches",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-59",
+      "workers": [
+        {
+          "expires_at": "2026-11-06T15:38:48.934995+00:00",
+          "harness": "codex",
+          "name": "Cecil Turtle",
+          "observed_at": "2026-11-06T15:38:48.934995+00:00",
+          "role": "story-lead",
+          "source": "thread01a1b054-1167-7820-b9f2-92ec81e37bbe",
+          "status": "stopped; frozen binder checkpoint complete; 69 scoped passes and offline replay; requested/selected/runtime Sol high, no fallback"
+        },
+        {
+          "expires_at": "2026-11-06T15:04:41.021643+00:00",
+          "harness": "codex",
+          "name": "Sulley",
+          "observed_at": "2026-11-06T15:04:41.021643+00:00",
+          "role": "implementer",
+          "source": "thread01a1b15c-c7b7-7ff1-ae8e-5d840ec09dbc",
+          "status": "Completed four-file canonical selector/v2 report correction; requested/selected/runtimeSol medium; no fallback/descendants; no child tests/scratch"
+        },
+        {
+          "expires_at": "2026-11-07T00:34:50.165765+00:00",
+          "harness": "codex",
+          "name": "Sally Carrera",
+          "observed_at": "2026-11-07T00:34:50.165765+00:00",
+          "role": "implementer",
+          "source": "thread01a1b349-5b20-7d41-acbe-cf0bc002457f; requested/selected gpt-6.1-sol/medium; no fallback",
+          "status": "Completed source-admission slices; thread-limited, no active descendant. Requested/selected gpt-6.1-sol medium, no fallback."
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "finite typed source execution",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; runtimeunverified; nofallback",
+          "observed_at": "2026-11-07T02:40:43.286002+00:00",
+          "expires_at": "2026-11-07T03:06:23.061001+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "869-source next release and next axes",
+          "harness": "codex",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:06:23.061001+00:00",
+          "expires_at": "2026-11-07T03:49:35.860351+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "four-model exact solver pilot",
+          "harness": "codex",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:06:23.061001+00:00",
+          "expires_at": "2026-11-07T03:49:35.860351+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "source qualification and actual trim/package continuation",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected Sol/high; effective runtime unverified; nofallback",
+          "observed_at": "2026-11-07T03:18:13.087785+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "758suffix actual source execution",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "G42 six-model source qualification preparation",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "optionaltypedaxis route implementation/finitepool",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T04:15:34.640812+00:00",
+          "expires_at": "2026-11-07T04:24:45.127191+00:00",
+          "status": "previousobservation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "G42pilot48 strictaudit and2768continuationprep",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T04:15:34.640812+00:00",
+          "expires_at": "2026-11-07T04:24:45.127191+00:00",
+          "status": "previousobservation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "optionalaxisintegrationandpilot",
+          "harness": "codex",
+          "source": "Coordinator directlyobserved; requested/selected gpt-6.1-sol/high;effective runtimeunverified;nofallback",
+          "observed_at": "2026-11-07T04:24:45.127191+00:00",
+          "expires_at": "2026-11-07T04:53:39.807899+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "exact2248G42 suffix",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T04:53:39.807899+00:00",
+          "expires_at": "2026-11-07T05:12:00.973894+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "exact5535optional suffix",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T04:53:39.807899+00:00",
+          "expires_at": "2026-11-07T05:12:00.973894+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "exact unspent source execution",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T05:12:00.973894+00:00",
+          "expires_at": "2026-11-07T05:49:11.486454+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "stopped-prefix evidence and exact unspent continuation preparation",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T05:17:07.348628+00:00",
+          "expires_at": "2026-11-07T05:49:11.486454+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "actual breadth960 source",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T05:49:11.486454+00:00",
+          "expires_at": "2026-11-07T06:09:42.607117+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "stopped F70 audit and unspent continuation",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T05:49:11.486454+00:00",
+          "expires_at": "2026-11-07T06:09:42.607117+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "optional-axis finite source continuation",
+          "harness": "codex",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T06:09:42.607117+00:00",
+          "expires_at": "2026-11-07T07:09:43.212626+00:00",
+          "status": "previous observation retained; expired or superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "collector integration evidence",
+          "harness": "codex",
+          "source": "Root directly observed active. Requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T08:23:09.000197+00:00",
+          "expires_at": "2026-11-07T09:23:09.000197+00:00",
+          "status": "active at observation; Story acceptance open"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-62",
+      "title": "Publish the configuration corpus and generate stock by order reference",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-07T14:07:07Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62",
+      "claim_evidence": "Claimed owning035 at34a793e3; root checkpoint authorisation, Jira OAuth unavailable. Full acceptance remains open.",
+      "slices": [
+        {
+          "id": "source-v2",
+          "status": "complete",
+          "title": "Registered source v2 qualification",
+          "observed_at": "2026-11-07T00:54:47Z",
+          "evidence": "docs/gcsp/evidence/fucq62/README.md;37 scoped checks, actual30rows/29qualifying source/oldVIN1; full acceptance not established."
+        },
+        {
+          "id": "retained-history",
+          "status": "complete",
+          "title": "Immutable retained rows and VIN history",
+          "observed_at": "2026-11-07T00:54:47Z",
+          "evidence": "docs/gcsp/evidence/fucq62/README.md;37 scoped checks, actual30rows/29qualifying source/oldVIN1; full acceptance not established."
+        },
+        {
+          "id": "manifest",
+          "status": "complete",
+          "title": "Separate total and qualifying source counts",
+          "observed_at": "2026-11-07T00:54:48Z",
+          "evidence": "docs/gcsp/evidence/fucq62/README.md;37 scoped checks, actual30rows/29qualifying source/oldVIN1; full acceptance not established."
+        },
+        {
+          "id": "atomic-loader",
+          "status": "complete",
+          "title": "Existing atomic idempotent loader and recovery",
+          "observed_at": "2026-11-07T00:54:48Z",
+          "evidence": "docs/gcsp/evidence/fucq62/README.md;37 scoped checks, actual30rows/29qualifying source/oldVIN1; full acceptance not established."
+        },
+        {
+          "id": "runtime-package",
+          "status": "complete",
+          "title": "Deployable small offline release",
+          "observed_at": "2026-11-07T00:54:48Z",
+          "evidence": "docs/gcsp/evidence/fucq62/README.md;37 scoped checks, actual30rows/29qualifying source/oldVIN1; full acceptance not established."
+        },
+        {
+          "id": "source-targets",
+          "status": "complete",
+          "title": "Actual 10000 source target and scheme model coverage",
+          "observed_at": "2026-11-07T09:52:21Z",
+          "evidence": "Exactly 10,000 complete distinct source configurations selected from 10,351 admitted; 43 VG / 26 AG codes and all declared groups/tokens retained in reviewed report. Q13 removes blanket VIN/five-WMI gates; F77 owns every-scheme-model demo coverage."
+        },
+        {
+          "id": "scale",
+          "status": "complete",
+          "title": "Existing format scale boundary for 10000",
+          "observed_at": "2026-11-07T08:37:35.957751+00:00",
+          "evidence": "Exact .12 all10002nonoverlappingdirect+HTTPrefs agree; staged10000semantic,publish/restart,rollback passed. Consumer2707failures retained/deferred,acceptancefalse; no strictCLIcompleted claim. SummarySHA2c0f3241701cc0f89b20c6d6207f09ccb096e8d31b145f8ffc3924fa14b208f5"
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Application and deployed integration acceptance",
+          "observed_at": "2026-11-07T12:32:50Z",
+          "evidence": "Actual public .12 live verified by run42372746118 at13144e31: health/readiness/configuration HTTP200, exact manifest3b2a883c...cce30 and expected DTO82712c8d...e2e4. Replacement Render deployment7620961777/c87b6f07 succeeded. Root verified retained hashes and cleanup: groups/scratch absent16946Bremoved. Scoped restore/offline/assets/boundary passed; prior failures and deferred consumers remain explicit. Development ready for review; no acceptance claim."
+        },
+        {
+          "id": "large-artifact-restore",
+          "status": "complete",
+          "title": "Checksum-pinned external artifacts and offline restore",
+          "observed_at": "2026-11-07T09:52:21Z",
+          "evidence": "Actual .12 Linux cold restore succeeded: 31 pinned public assets, 10,000 source configurations, exact manifest, 62 HTTPS fetches. Later offline timeout is preserved separately. CI finalizer removed 903,560 KiB and verified absence. Run 42360886351 at b85250d5."
+        }
+      ],
+      "unsliced": false,
+      "workers": [
+        {
+          "name": "Mike Wazowski",
+          "role": "479source immutable .5release",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/medium; runtimeunverified; nofallback",
+          "observed_at": "2026-11-07T02:40:43.286002+00:00",
+          "expires_at": "2026-11-07T03:06:23.061001+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "869-source immutable release preparation",
+          "harness": "codex",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:06:23.061001+00:00",
+          "expires_at": "2026-11-07T03:49:35.860351+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "immutable .6 public release and fresh offline restore",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected Sol/high; effective runtime unverified; nofallback",
+          "observed_at": "2026-11-07T03:18:13.087785+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "immutable .7publicrelease preparation",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "next1923source .8freeze/package/offlineproof",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T04:15:34.640812+00:00",
+          "expires_at": "2026-11-07T04:24:45.127191+00:00",
+          "status": "previousobservation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "1923source .8publicshipment",
+          "harness": "codex",
+          "source": "Coordinator directlyobserved; requested/selected gpt-6.1-sol/medium;effective runtimeunverified;nofallback",
+          "observed_at": "2026-11-07T04:24:45.127191+00:00",
+          "expires_at": "2026-11-07T04:53:39.807899+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "next immutable package",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T04:53:39.807899+00:00",
+          "expires_at": "2026-11-07T05:12:00.973894+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "2424-source public package",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T05:12:00.973894+00:00",
+          "expires_at": "2026-11-07T05:49:11.486454+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "live cold-loader diagnosis and next4666 package",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T05:49:11.486454+00:00",
+          "expires_at": "2026-11-07T06:09:42.607117+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "publication/native proof preparation",
+          "harness": "codex",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T06:09:42.607117+00:00",
+          "expires_at": "2026-11-07T07:09:43.603914+00:00",
+          "status": "previous observation retained; expired or superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "proof packet reviewed; root executes final10000 proof",
+          "harness": "codex",
+          "source": "Root directly observed active. Requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T08:23:09.000197+00:00",
+          "expires_at": "2026-11-07T09:23:09.000197+00:00",
+          "status": "active at observation; Story acceptance open"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-63",
+      "title": "Prove full-corpus lookup and offline recovery through the port",
+      "status": "In Review",
+      "original_status": "In Review",
+      "assignee": "Russell Gowers",
+      "type": "Story",
+      "observed_at": "2026-11-07T14:07:07Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-63",
+      "slices": [
+        {
+          "id": "active-reconciliation",
+          "status": "complete",
+          "title": "Reconcile loaded immutable corpus and all in-process records",
+          "observed_at": "2026-11-07T12:44:22.530Z",
+          "evidence": "Full .12 retained lookup matched 10,002 direct/HTTP references. Corrected PostgreSQL run42372886620 at8c76c963 passed three exact orders after close/reopen with retained snapshot/runVersion3; direct/consumer/HTTP pass, zero errors/source/egress. 2707 corpus-consumer failures remain deferred/unfixed; evidence/fucq63/linux-postgres-corrected-result-2026-11-07/."
+        },
+        {
+          "id": "http-parity",
+          "status": "complete",
+          "title": "Compare actual local HTTP and consuming port contracts",
+          "observed_at": "2026-11-07T12:44:22.530Z",
+          "evidence": "Current .12 lookup proof matched 10,002 direct/local HTTP references. Live42372746118 passed health/readiness/firstDTO with exact manifest/DTO. Native42372886620 passed direct/consumer/loopback HTTP for all3 selected orders; no managed Render stock/all-stock/full-consumer claim. Deferred2707 failures remain."
+        },
+        {
+          "id": "offline-recovery",
+          "status": "complete",
+          "title": "Instrument egress and verify reload restart invalid activation rollback",
+          "observed_at": "2026-11-07T00:55:07Z",
+          "evidence": "Actual tiny registry restart/idempotent reload/invalid interrupted activation/rollback and HTTP/egress boundaries16/16 passed; fixture scope only"
+        },
+        {
+          "id": "scale-evidence",
+          "status": "complete",
+          "title": "Measure bounded correctness throughput and latency on actual corpus",
+          "observed_at": "2026-11-07T09:52:22Z",
+          "evidence": "Actual .12 proof matched all 10,002 direct/retained/local HTTP references: 10,001 configurations and one current-car VIN, with zero lookup errors. The 2,707 consumer failures remain recorded/deferred. Q13 requires neither 10,000 VINs nor 10,000 stock orders."
+        },
+        {
+          "id": "integration",
+          "status": "complete",
+          "title": "Integrate actual published corpus and authored regression evidence",
+          "observed_at": "2026-11-07T12:44:22.530Z",
+          "evidence": "Corrected snapshot setup passed independent review and actual PostgreSQL16.15 run42372886620 at8c76c963. nativeProof:true, checked3, currentRunUnchanged:true; all direct/consumer/HTTP passes; source/egress/errors0. Evidence merged7c10dd90; cleanup schema/service/scratch absent925223392Bremoved. Both prior failures immutable; acceptance open."
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-04-036",
+      "workers": [
+        {
+          "name": "Mike Wazowski",
+          "role": "actualCLI image/portHTTP proof",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/medium; runtimeunverified; nofallback",
+          "observed_at": "2026-11-07T02:40:43.286002+00:00",
+          "expires_at": "2026-11-07T03:06:23.061001+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "public .6 offline871DTO boundary",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected Sol/high; effective runtime unverified; nofallback",
+          "observed_at": "2026-11-07T03:18:13.087785+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "1135DTO and HTTP/recovery .7proof",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "next1925record allDTO/HTTP proof",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T04:15:34.640812+00:00",
+          "expires_at": "2026-11-07T04:24:45.127191+00:00",
+          "status": "previousobservation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": ".8publicandruntimeproof",
+          "harness": "codex",
+          "source": "Coordinator directlyobserved; requested/selected gpt-6.1-sol/medium;effective runtimeunverified;nofallback",
+          "observed_at": "2026-11-07T04:24:45.127191+00:00",
+          "expires_at": "2026-11-07T04:53:39.807899+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "exact order-reference proof",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T04:53:39.807899+00:00",
+          "expires_at": "2026-11-07T05:12:00.973894+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "all-reference and order-reference proof",
+          "harness": "codex",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T05:12:00.973894+00:00",
+          "expires_at": "2026-11-07T06:09:42.607117+00:00",
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "publication/native proof preparation",
+          "harness": "codex",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T06:09:42.607117+00:00",
+          "expires_at": "2026-11-07T07:09:42.844533+00:00",
+          "status": "previous observation retained; expired or superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "nonmutating native loader diagnostic preparation",
+          "harness": "codex",
+          "source": "Root directly observed active. Requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T08:23:09.000197+00:00",
+          "expires_at": "2026-11-07T09:23:09.000197+00:00",
+          "status": "active at observation; Story acceptance open"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-167",
+      "title": "Record handover completion, no-show and rebooking",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-07T14:07:32Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-167",
+      "unsliced": true,
+      "source_observed_at": "2026-11-07T14:07:07.097Z",
+      "scope_revision": {
+        "split_from": "FUCQ-114",
+        "authorised_by": "Russell Gowers",
+        "date": "2026-11-07",
+        "demo_priority": "Won't"
+      }
+    },
+    {
+      "id": "FUCQ-168",
+      "title": "Confirm an old-car return or missed return and update the current-car relationship",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-07T14:07:32Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-168",
+      "unsliced": true,
+      "source_observed_at": "2026-11-07T14:07:07.097Z",
+      "scope_revision": {
+        "split_from": "FUCQ-118",
+        "authorised_by": "Russell Gowers",
+        "date": "2026-11-07",
+        "demo_priority": "Won't"
+      }
+    },
+    {
+      "id": "FUCQ-169",
+      "title": "Show physical handover and return outcomes with rebooking actions",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-07T14:07:32Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-169",
+      "unsliced": true,
+      "source_observed_at": "2026-11-07T14:07:07.097Z",
+      "scope_revision": {
+        "split_from": "FUCQ-120",
+        "authorised_by": "Russell Gowers",
+        "date": "2026-11-07",
+        "demo_priority": "Won't"
+      }
+    },
+    {
+      "id": "FUCQ-170",
+      "title": "Work the renewal-risk queue, remedies and advanced employee case interactions",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-07T14:07:33Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-170",
+      "unsliced": true,
+      "source_observed_at": "2026-11-07T14:07:07.097Z",
+      "scope_revision": {
+        "split_from": "FUCQ-122",
+        "authorised_by": "Russell Gowers",
+        "date": "2026-11-07",
+        "demo_priority": "Could"
+      }
+    },
+    {
+      "id": "FUCQ-171",
+      "title": "Verify terminal handover, return and advanced renewal-help scenarios",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-07T14:07:33Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-171",
+      "unsliced": true,
+      "source_observed_at": "2026-11-07T14:07:07.097Z",
+      "scope_revision": {
+        "split_from": "FUCQ-124",
+        "authorised_by": "Russell Gowers",
+        "date": "2026-11-07",
+        "demo_priority": "Won't"
+      }
+    },
+    {
+      "id": "FUCQ-172",
+      "title": "Choose and reset the wider presenter scenario catalogue",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-07T14:07:33Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-172",
+      "unsliced": true,
+      "source_observed_at": "2026-11-07T14:07:07.097Z",
+      "scope_revision": {
+        "split_from": "FUCQ-126",
+        "authorised_by": "Russell Gowers",
+        "date": "2026-11-07",
+        "demo_priority": "Could"
+      }
+    },
+    {
+      "id": "FUCQ-173",
+      "title": "Replay a confirmed preference change while no second car is available",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-07T14:07:33Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-173",
+      "unsliced": true,
+      "source_observed_at": "2026-11-07T14:07:07.097Z",
+      "scope_revision": {
+        "split_from": "FUCQ-128",
+        "authorised_by": "Russell Gowers",
+        "date": "2026-11-07",
+        "demo_priority": "Could"
+      }
+    },
+    {
+      "id": "FUCQ-174",
+      "title": "Compare alternative order mixes, points and buddy hold durations",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-07T14:07:33Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-174",
+      "unsliced": true,
+      "source_observed_at": "2026-11-07T14:07:07.097Z",
+      "scope_revision": {
+        "split_from": "FUCQ-136",
+        "authorised_by": "Russell Gowers",
+        "date": "2026-11-07",
+        "demo_priority": "Could"
+      }
+    },
+    {
+      "id": "FUCQ-175",
+      "title": "Start and monitor responsive comparison worker jobs from the browser",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-07T14:07:33Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-175",
+      "unsliced": true,
+      "source_observed_at": "2026-11-07T14:07:07.097Z",
+      "scope_revision": {
+        "split_from": "FUCQ-137",
+        "authorised_by": "Russell Gowers",
+        "date": "2026-11-07",
+        "demo_priority": "Could"
+      }
+    },
+    {
+      "id": "FUCQ-176",
+      "title": "Choose comparison experiments and rerun hold-duration scenarios on the dashboard",
+      "status": "To Do",
+      "original_status": "To Do",
+      "assignee": "",
+      "type": "Story",
+      "observed_at": "2026-11-07T14:07:33Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-176",
+      "unsliced": true,
+      "source_observed_at": "2026-11-07T14:07:07.097Z",
+      "scope_revision": {
+        "split_from": "FUCQ-138",
+        "authorised_by": "Russell Gowers",
+        "date": "2026-11-07",
+        "demo_priority": "Could"
+      }
     }
   ]
 }

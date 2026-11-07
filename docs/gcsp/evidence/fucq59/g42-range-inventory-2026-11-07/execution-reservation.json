@@ -1,0 +1,7 @@
+{
+  "status": "prepared-unspent-no-traffic-grant",
+  "allocationId": "g42-range-inventory-20261107-once",
+  "planDigest": "c71cbbae6ea4d26da8f3fd178fe27e7c498cd13ea52f346576f7a445f3c3cf96",
+  "executionPlanSha256": "5ea0ddc247a35f15156bb8d787e1fd4f716197b586a75789895d03aa4bf61a2e",
+  "exclusiveMarkerCreatedOnlyByLiveRunner": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/g42-range-inventory-2026-11-07/execution-once.json"
+}

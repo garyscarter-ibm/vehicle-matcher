@@ -1,0 +1,9 @@
+# Overnight checkpoint, 7 November 2026
+
+7,517 distinct source configurations are independently reconciled against retained primary captures, event histories, tested identities and cumulative indexes: 7,520 canonical and 9,759 spent-index entries. Conservative failed-template exclusions remain included in spent entries; these are not all observed solver attempts. The 10,000 shortfall is 2,483. The read-only union audit performed 35,435 checks with zero errors, reusing 450 scoped checks without source or test replay. Its 180 absent roots are strict-proof roots; outer source cleanup is recorded separately. Later completed source prefixes are not yet counted here.
+
+The immutable .10 public prerelease contains 4,666 source configurations, 4,667 configurations total, one retained VIN, two images and the exact supplement. All 26 published assets (239,679,009 bytes) passed anonymous cold CLI restore with exact hash and inventory checks. All 4,668 unique references had passed direct/local HTTP parity in the original frozen offline proof. The separate Medium mandatory-elements consumer defect still produces 1,313 consumer errors; acceptance is false, with no waiver. Download, offline repeat, recovery and ordinary activation remain individually supervised steps.
+
+Actual Render deployment 7617454370 of 91fe6cae succeeded. The subsequent three-GET .9 live check passed health, exact manifest readiness and one configuration DTO byte comparison. This is scoped live evidence. The readiness receipt records 168,596ms load time; it does not prove the cause of the earlier 30-second DTO timeout.
+
+All six stories remain In Progress. Actual source collection continues through exact untried bounded continuations. Original model/profile/year/plant/five-WMI, enrichment, native integration and complete-corpus acceptance gaps remain explicit; none is waived or inferred from planned capacity.

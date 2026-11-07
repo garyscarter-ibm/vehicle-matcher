@@ -1,0 +1,56 @@
+[
+  {
+    "run": "fucq-35-restart-20261105-2310",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "server/test/launcher-employee-entry.test.js"
+    ],
+    "status": "passed",
+    "source_digest": "03c20ce5ea64a6ef1e5a1003644f02a3fb3bf961adf98e47b18019576397714d",
+    "identity_digest": "a54d413f2fabbdc4a9b87e38de21fdf2711e975162915012c1a820ba9dadb0d2",
+    "sources_unchanged": true,
+    "scratch_removed": true,
+    "reservation_absent": true,
+    "process_groups_absent": true,
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead35/ownership/7ccb9eb1da7b4131b02220d617119331.json",
+    "result": {
+      "issue": null,
+      "issue_kind": null,
+      "log": "successful verbose output removed",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead35/ownership/7ccb9eb1da7b4131b02220d617119331.json",
+      "peak_rss": 272007168,
+      "peak_scratch": 0,
+      "rc": 0,
+      "wall": 1.441560749997734
+    }
+  },
+  {
+    "run": "fucq-35-restart-20261105-2310",
+    "command": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "server/test/launcher-context.test.js"
+    ],
+    "status": "passed",
+    "source_digest": "df31811d267d9d13acc1f8d8df03c9bafddda80d559e33bad3d6f87317db46ad",
+    "identity_digest": "3d1fc25a15c99c01f01d6e94bd655677395de6813160e05c71f5a2d37d0523ad",
+    "sources_unchanged": true,
+    "scratch_removed": true,
+    "reservation_absent": true,
+    "process_groups_absent": true,
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead35/ownership/8467201165ea439ca6da2e73122c6020.json",
+    "result": {
+      "issue": null,
+      "issue_kind": null,
+      "log": "successful verbose output removed",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead35/ownership/8467201165ea439ca6da2e73122c6020.json",
+      "peak_rss": 249348096,
+      "peak_scratch": 0,
+      "rc": 0,
+      "wall": 2.210551458003465
+    }
+  }
+]

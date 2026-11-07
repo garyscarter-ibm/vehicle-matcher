@@ -1,0 +1,24 @@
+# Reservation cleanup port regression plan and scoped result
+
+Parent-authorized result,6November2026: one trusted main-root resource-supervised offline command passed12regression methods,0failures/errors/skips. The command used one worker,64MiB scratch/384MiB sampled RSS/120seconds/1MiB log. Source main and transport were never invoked; source allocation remains0. Exact helper/finalizer/terminal AST paths cover the plan below. Independent audit verified the owned root/group/token/log absent. The parent code/security review passed independently; publication and executable source selection remain pending. See validation.json and resource-audit.json for frozen identities and scope; the original preparation-only proposal follows.
+
+6 November 2026. Preparation only: zero new source allocations, no execution selection, markers, supervision roots or source outputs created. Never invoke `main`. Requested/selected and independently confirmed runtime remains `gpt-6.1-sol` / `medium`; title Sulley, no fallback or descendants.
+
+Changed path: `canonical-four-get-next/supervise-live.py` only. Port the exact reviewed `release_reservation` helper from `settings-shape-live/fix1/supervise-settings.py`; wire its fixed status into the existing four-GET finalizer, durable receipt, printed summary and exit expression. The runner, transport, preflight, source budgets, once-marker handling, scratch cleanup and group checks remain unchanged. Historical files stay immutable. `regression-plan.md` is the only additional file from this preparation.
+
+The parent must allocate the sole test lane separately, with an absolute owned root, external manifest and registered finalizer before creating test data. Selected future scope: one offline worker, 64 MiB scratch, 384 MiB sampled RSS, 120 seconds, 1 MiB logs. No network, source, SQL, installs or supervisor main. Use synthetic bounded ledger input; independently remove only test-owned tokens and scratch and verify absence. Retain concise identities/results outside scratch; propagate owned TMPDIR/TMP/TEMP.
+
+Proposed narrow checks (unexecuted):
+
+- Release raises while token remains: helper returns `failed` / `absent=false`; finalizer records `reservation-cleanup-failed`, appends exactly `reservation:<owned token>`, and terminal summary/exit expose the failure and return nonzero. Also cover a release that raises after removing its token: absence does not erase the release failure.
+- Release succeeds as a no-op while token remains: return `still-present` / `absent=false`; same cleanup-failure, named-leftover and nonzero obligations.
+- Normal successful release with independently verified absence: return `released` / `absent=true`; no reservation leftover and no new cleanup failure; otherwise successful outcome can exit zero. Keep pre-existing failure/child-error handling intact.
+- Locked bounded ledger readback fails (lock, read/parse, oversize/symlink or non-dict ledger): return `unverified` / `absent=null` unless release already failed; same named-leftover/nonzero obligations. Verify release is still attempted once and arbitrary exception text is absent.
+- Not acquired: retain `not-acquired` / `absent=null`, do not call release or claim verified absence, add no reservation leftover; pre-existing acquire/supervisor failure still exits nonzero.
+- Wiring/terminal checks: receipt and printed summary carry the same `reservationRelease`; failed/still-present/unverified statuses prevent clean completion even with child rc=0, issue=None, scratch absent and groups absent. Existing nonempty scratch/group leftovers and failure precedence survive unchanged.
+
+Testability: import only without executing the main guard for helper cases. For finalizer/summary/exit wiring, a small parent-owned offline harness may extract those exact AST statements into controlled synthetic bindings; do not invoke main or refactor the supervisor into a new framework. If reliable wiring checks require a larger refactor, report that limitation and seek a revised scope.
+
+Reuse: the previous reviewed settings supervisor's release-helper cases and receipts in `settings-shape-live/fix1/supervisor-proof-summary.json` establish historical evidence only for the exact unchanged helper; they do not establish the new four-GET wiring passed. Reuse the original four-GET safe-observation/fallback evidence only when the parent confirms exact unchanged function, runner, inputs and runtime identity. No cumulative pass claim and no repeated broad/full suite solely for this port.
+
+At this preparation checkpoint no test, proof, import, build, main, source request, scratch allocation, Git mutation or acceptance/qualification/layout claim has been made. Parent reviews hashes and the exact delta before allocating focused validation or any future source allowance.

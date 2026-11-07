@@ -1,0 +1,325 @@
+{
+  "schemaVersion": "f61-finite-source-pilot.v1",
+  "id": "f61-pilot10x32-20261107",
+  "status": "prepared-awaiting-root-traffic-authorisation-and-lane",
+  "preparedAt": "2026-11-07T00:52:45.731845+00:00",
+  "sourceVersion": "f59-batch-20261107.v1",
+  "codeCommit": "932ca6006bb5eef0ebc20b55bd2236e606cca6bb",
+  "sourceCodePins": {
+    "scripts/gcsp/bmw-public-registration.mjs": "82de1dfa3389ac019d271cfb865af9a395c9c85d4246b09529577e03deb54244",
+    "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+    "scripts/gcsp/capture-bmw-selection.mjs": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+    "scripts/gcsp/collect-fleet.mjs": "5edbeb880115e52a2e1d0ffa21560cc2c9d3ba46c73c8cc880c15f57d196cb5a",
+    "scripts/gcsp/collection-session.mjs": "1f22fe1cdf27d3e6f2be015e32b69b5ecc435c546fe9964396270e3db6e9421e",
+    "scripts/gcsp/public-bmw-source.mjs": "4f5c93505c7e558d0ff3cf3afadbfb97ef45bde9b615e9033c8d440628b75f24",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+    "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+    "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+    "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+  },
+  "initialSpentSolverRequests": 85,
+  "initialSpentIndexDigest": "a8fc8123791327c362b5ff2523f9b7b1af03bb5baec9ff230f01f191b3a73d7c",
+  "initialCanonicalIndexDigest": "c05d40e564b50072802170391dd889605ed17eccb17b3b49775525153afe5e61",
+  "priorRetainedAdmittedSourceConfigurations": 29,
+  "chunks": [
+    {
+      "chunk": 1,
+      "directory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01",
+      "plans": {
+        "32": {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/collection-plan32.json",
+          "digest": "0755b5469bac48a0c854ced3bb92d8f6e884dead80168cd6083a520ddd0dfdad",
+          "sha256": "12591ebbf2f7be096398625997d01c88398f244af16941d55de57c84df3fbd18",
+          "candidates": 32,
+          "GETs": 36
+        },
+        "16": {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/collection-plan16.json",
+          "digest": "07f2b6e8ba300ec449ddc175eb64c976adfd7578c824557eb8f4d1bd21d3310c",
+          "sha256": "7a93e908f84788f7b44dda6a769270d057839d1cab41c276b888356112006328",
+          "candidates": 16,
+          "GETs": 20
+        }
+      },
+      "runnerSha256": "f2823bb2d051bcf034cd42eeec1d894d8f44a6d92b28570a9dedc559c6633984",
+      "supervisor": {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/pilot10x32/chunk01/run.py",
+        "sha256": "2a5e35928214c4fd3fc09716a855921e0c30b1bb7a46c1cec1dfb28eb39720b5"
+      }
+    },
+    {
+      "chunk": 2,
+      "directory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02",
+      "plans": {
+        "32": {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/collection-plan32.json",
+          "digest": "d8af7b9eeab6ef5321792951f3d4189363df816261f54c196fb8179bd050653b",
+          "sha256": "62f4bc8bab7b6fa6667fd25e59c5a58e28be25cea7b4988d83aff1ed79e959e6",
+          "candidates": 32,
+          "GETs": 36
+        },
+        "16": {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/collection-plan16.json",
+          "digest": "8a8bd9d98a00d6d295a81e2ec1a93edc1ad8e093cd6638b5d217f1925576c867",
+          "sha256": "8fc3fa52addd81a463d0556bb45232ea1846cd6033c12c069f864a51909937f6",
+          "candidates": 16,
+          "GETs": 20
+        }
+      },
+      "runnerSha256": "f2823bb2d051bcf034cd42eeec1d894d8f44a6d92b28570a9dedc559c6633984",
+      "supervisor": {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/pilot10x32/chunk02/run.py",
+        "sha256": "19869e9b58a389491a4fdbe4312cf75167076e5b53be7bc78c885372b2652cb6"
+      }
+    },
+    {
+      "chunk": 3,
+      "directory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03",
+      "plans": {
+        "32": {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/collection-plan32.json",
+          "digest": "d4895f1aa493911010f0ef12733c8be7958024fdb7238ad137fd28bd32e4890a",
+          "sha256": "2d26c40f531e55aae60f59394bc9706738ec1e03807d70845e79c546ff0f1d89",
+          "candidates": 32,
+          "GETs": 36
+        },
+        "16": {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/collection-plan16.json",
+          "digest": "8af81af57939a367142b781ecf83fe8c6ab44f7fcdd253c3bebdbdf9f1a60b11",
+          "sha256": "9623c56ba452d349a3c44ead203604fa3b0e3e3a6d946f672cc09045b3278e7e",
+          "candidates": 16,
+          "GETs": 20
+        }
+      },
+      "runnerSha256": "f2823bb2d051bcf034cd42eeec1d894d8f44a6d92b28570a9dedc559c6633984",
+      "supervisor": {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/pilot10x32/chunk03/run.py",
+        "sha256": "b3f1370bf04db770871fc21a1293850dabb63c6b96c0f4fa69656d35dc9e33a3"
+      }
+    },
+    {
+      "chunk": 4,
+      "directory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk04",
+      "plans": {
+        "32": {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk04/collection-plan32.json",
+          "digest": "a150c6ac01b5238c043cafd11d9efb888f56ab6753179135642a05cd7a49b4e8",
+          "sha256": "9ba481ebed83c5aec1f69e8fdb7743197f071b1d473f903499318955e39647b8",
+          "candidates": 32,
+          "GETs": 36
+        },
+        "16": {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk04/collection-plan16.json",
+          "digest": "78d595cb08fd4437594ff9c1b4b9b62b139a8a65f5993ff041bc795476851dc3",
+          "sha256": "91293d492eaa324fca2ca200fd74ab8212a44ea082b90cb742fadd63126c392f",
+          "candidates": 16,
+          "GETs": 20
+        }
+      },
+      "runnerSha256": "f2823bb2d051bcf034cd42eeec1d894d8f44a6d92b28570a9dedc559c6633984",
+      "supervisor": {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/pilot10x32/chunk04/run.py",
+        "sha256": "5e4d49ea49c494ad35290f920eb27d89d584a20415cad479161e661044690f9f"
+      }
+    },
+    {
+      "chunk": 5,
+      "directory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk05",
+      "plans": {
+        "32": {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk05/collection-plan32.json",
+          "digest": "2127dc9c9790bcc0b5cff21bb57fc82b251116c17fb3ecb0839e4afbcb4a367f",
+          "sha256": "949a49d33a2100a437a8992c593c09fe8ce0cd90779475b6ff122cc6649a58f5",
+          "candidates": 32,
+          "GETs": 36
+        },
+        "16": {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk05/collection-plan16.json",
+          "digest": "c5522eac2a37e406fe2838bf2d602d275ec20474edac2d6e9aeb389baef3a0fd",
+          "sha256": "a0bf5873b85d695c76a9c3017d527e12d8b910bbb81b9f98c6bd555cc5c71bb3",
+          "candidates": 16,
+          "GETs": 20
+        }
+      },
+      "runnerSha256": "f2823bb2d051bcf034cd42eeec1d894d8f44a6d92b28570a9dedc559c6633984",
+      "supervisor": {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/pilot10x32/chunk05/run.py",
+        "sha256": "9715ebf1e203716c933fdd8e667166f2e5e9ef298f6cfbcb1483041faee51067"
+      }
+    },
+    {
+      "chunk": 6,
+      "directory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk06",
+      "plans": {
+        "32": {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk06/collection-plan32.json",
+          "digest": "76b2b3f4645b71ac74b1abbb9f557443e5b53a0667e74f1eee16f9327a721779",
+          "sha256": "82b990f679b5f00a1456264e88c2dc167bc3b74772fe342d48eabde02fb9e012",
+          "candidates": 32,
+          "GETs": 36
+        },
+        "16": {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk06/collection-plan16.json",
+          "digest": "e3a7d4705aff37510012bc9735c6627aabd45877de20b44508f9326d2acc2624",
+          "sha256": "f71ff8e2a3d5050486bc76574da6ee82cbf4d44df50165fba960f35f7d5bda60",
+          "candidates": 16,
+          "GETs": 20
+        }
+      },
+      "runnerSha256": "f2823bb2d051bcf034cd42eeec1d894d8f44a6d92b28570a9dedc559c6633984",
+      "supervisor": {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/pilot10x32/chunk06/run.py",
+        "sha256": "926ac1152c06e6b4a4f8fce8be21ff42e69d9b1e3663e566a4d7dba9ff2c763e"
+      }
+    },
+    {
+      "chunk": 7,
+      "directory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk07",
+      "plans": {
+        "32": {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk07/collection-plan32.json",
+          "digest": "d28e9a4f929ac177e1811fecbec0691f300030c1c6ac0f93fcff13ced68ceda8",
+          "sha256": "18dbb1da5077c62073e69278d784c5bd1e1164b21e9c3a9b35bf7d8eb933e121",
+          "candidates": 32,
+          "GETs": 36
+        },
+        "16": {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk07/collection-plan16.json",
+          "digest": "2d8aaacb5c00db4c89a9b269ba8794a25aaea4e746bb0f93fd2fc847fe8bafb0",
+          "sha256": "8493655134be3d5e7db578cc82255fb40afad482f2468de3fc803be7e4c1c786",
+          "candidates": 16,
+          "GETs": 20
+        }
+      },
+      "runnerSha256": "f2823bb2d051bcf034cd42eeec1d894d8f44a6d92b28570a9dedc559c6633984",
+      "supervisor": {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/pilot10x32/chunk07/run.py",
+        "sha256": "b89a63b5b7752fb49a57afa0c63111dc92eb378afb7a85075123a484f922052f"
+      }
+    },
+    {
+      "chunk": 8,
+      "directory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk08",
+      "plans": {
+        "32": {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk08/collection-plan32.json",
+          "digest": "53217b0ac451f1d66fcc3bc24be8c9715f1fe87fbb9cf0f92d3c596fcb522a20",
+          "sha256": "fdfa4690a8610600cde5aa9fd06ca01be40886df0c0d7feedd3964f5e24bda4f",
+          "candidates": 32,
+          "GETs": 36
+        },
+        "16": {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk08/collection-plan16.json",
+          "digest": "f132daf20621bed27b79d2bf1abbc245d24394874f1445fd23fb26c364d7a447",
+          "sha256": "c57751b70893325027e71038cfa39d07fe3770c62d1a11d2b205b8234ea3febb",
+          "candidates": 16,
+          "GETs": 20
+        }
+      },
+      "runnerSha256": "f2823bb2d051bcf034cd42eeec1d894d8f44a6d92b28570a9dedc559c6633984",
+      "supervisor": {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/pilot10x32/chunk08/run.py",
+        "sha256": "add379fa8d0a0d18338407fde271ef2d64ed865ecde19471281037ae75ef94cf"
+      }
+    },
+    {
+      "chunk": 9,
+      "directory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk09",
+      "plans": {
+        "32": {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk09/collection-plan32.json",
+          "digest": "1a57b39af23bd0f47510c4ae05e94acd8289fd3f205aaddb74dfbc27abb7fd52",
+          "sha256": "f9d3d005b6964f3bd107ac6476185f2f22c9f237e76f567d437a48c990dfd053",
+          "candidates": 32,
+          "GETs": 36
+        },
+        "16": {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk09/collection-plan16.json",
+          "digest": "fb075cbe98ec2993fee6f9aa3c029736866722da79c84651df8faf195e568715",
+          "sha256": "b459aa3beb1c6474113a33b6b97d806ecc3b9fccc4e9bdc810ed17847fe920a5",
+          "candidates": 16,
+          "GETs": 20
+        }
+      },
+      "runnerSha256": "f2823bb2d051bcf034cd42eeec1d894d8f44a6d92b28570a9dedc559c6633984",
+      "supervisor": {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/pilot10x32/chunk09/run.py",
+        "sha256": "c59605db49b18f65456e065504a95ad537f62bd292210827abf362e8db2d137e"
+      }
+    },
+    {
+      "chunk": 10,
+      "directory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk10",
+      "plans": {
+        "32": {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk10/collection-plan32.json",
+          "digest": "8d7f6bdb011d4dc59d01ae9339684669e1e69ea741ffb2f19b49fd20a3a36ee7",
+          "sha256": "33e13fd625b8a43a09f68f00449d4efa30dc1959ad71b0c19009aae530f9b5fd",
+          "candidates": 32,
+          "GETs": 36
+        },
+        "16": {
+          "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk10/collection-plan16.json",
+          "digest": "db596b673f3a6d63ffa16a3024c91e4339ae32a324a56068bff2b43b14261487",
+          "sha256": "cec17fdf1e3786ccf496845e0a6c3a3f7f7257a6d826ba92d300b4654ec3adba",
+          "candidates": 16,
+          "GETs": 20
+        }
+      },
+      "runnerSha256": "f2823bb2d051bcf034cd42eeec1d894d8f44a6d92b28570a9dedc559c6633984",
+      "supervisor": {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/pilot10x32/chunk10/run.py",
+        "sha256": "466b56a8e40155907146e7a5787a6b114cdb4d21fa77f76b055c1c5098b28f1c"
+      }
+    }
+  ],
+  "finiteLimits": {
+    "maxChunks": 10,
+    "maxSolverGETs": 320,
+    "maxTotalGETs": 360,
+    "sourceWorkers": 1,
+    "concurrency": 1,
+    "retries": 0,
+    "perChunkSourceMs": 120000,
+    "perRequestMs": 10000,
+    "perResponseDecodedBytes": 1048576,
+    "perChunkDecodedBytes": 8388608,
+    "maximumAggregateDecodedBytes": 83886080,
+    "perChunkHostReservationBytes": 536870912,
+    "perChunkChildCeilingBytes": 469762048,
+    "perChunkScratchBytes": 67108864,
+    "maxRetainedCheckpointBytes": 8388608
+  },
+  "resourceForecast": {
+    "expectedRetainedDirectoryBytes": 41943040,
+    "expectedPeakScratchBytes": 67108864,
+    "expectedPeakHostRAMBytes": 536870912,
+    "expectedDurationSeconds": 300,
+    "maximumSourceSeconds": 1200,
+    "availableDiskBytesBefore": 58800000000,
+    "compatibilityException": null,
+    "archives": 0
+  },
+  "retention": {
+    "primaryCheckpoint": "each chunk retained evidence directory from outset",
+    "exporterPath": "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py",
+    "exporterSha256": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+    "finalizer": "stop/join children, export available retained checkpoint, preserve named export failure and primary, then remove owned scratch/link/reservation"
+  },
+  "scheduling": "CharlieF62 thenMikebridge/F63 thenrootfinalnpm before source lane unless root explicitly agrees briefslot",
+  "fallback": "After any resource ceiling select the pre-persisted16candidate variant for subsequentchunks; no replay or extra11thchunk",
+  "stop": "Breakpilot on source refusal/HTTP/shape/substitution/export/identity failure; never reset spentmarker or retry requests",
+  "dedup": "Beforeeachchunk persist pinned current canonicalindex from retained admitted previouschunks and prior origins; exclude all85spent and every started request from completed/interruptedpilotchunks",
+  "acceptance": "Collection evidence only; noDone/F61full10k/applicationacceptance inference",
+  "supervisorPolicy": "Each run ownership manifest names retained primary; same proved exporter executes after joined child and before scratch cleanup; any export failure is named, primary never deleted.",
+  "preparer": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/prepare-chunk.py",
+    "sha256": "ce7439e04758d617293603c23f7fa624c77eaf7d8eff69102a3137644ed561c8"
+  }
+}

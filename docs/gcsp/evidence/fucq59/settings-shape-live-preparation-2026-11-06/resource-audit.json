@@ -1,0 +1,404 @@
+{
+  "allRootsOwnersGroupsReservationsAbsent": true,
+  "at": "2026-11-06T14:10:11.592764+00:00",
+  "checkpointLocksRemoved": [
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/test-runs/checkpoints/575cb8a0f25c3880938d28d11d34cb846e21bcbce4e048f1f84bf7b10fb04be5.json.lock",
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/test-runs/checkpoints/77e98c2564cff757944a1871fac6f25d400dabf9530da8e3449d55aec1034437.json.lock",
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/test-runs/checkpoints/998c40b8de18169fbdc4b565118abc0a8594a242b44dba3979f5b23860b8409e.json.lock",
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/test-runs/checkpoints/20a3f323e8b6fddbbe9723ef1436c343dbee128a19b305f2f40742e049d9b9c0.json.lock",
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/test-runs/checkpoints/3ea54bca4519781c2c0dbc5ffc182330a755e9098351a2d80211ca6c0e9ebebf.json.lock"
+  ],
+  "compatibilityException": null,
+  "dependencyInstall": false,
+  "dependencyOverlay": false,
+  "finalSwap": "vm.swapusage: total = 3072.00M  used = 2325.94M  free = 746.06M  (encrypted)",
+  "initialSwap": "vm.swapusage: total = 3072.00M  used = 2333.94M  free = 738.06M  (encrypted)",
+  "largeOutput": false,
+  "leftovers": [],
+  "logs": [
+    {
+      "absentAfterCondense": false,
+      "bytes": 975,
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/logs/red/chunk-0001.log",
+      "retained": true,
+      "sha256": "287b14313b0a6905dbbea43f94c0d23589e277b155f23bc518e0fcd8d6f16f4a"
+    },
+    {
+      "absentAfterCondense": true,
+      "bytes": 5080,
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/logs/runner-final/chunk-0001.log",
+      "retained": false,
+      "sha256": "a7f9a5272a4721b05ecd4e83c7f5da673bc53df6127635e77aee90615032e5e0"
+    },
+    {
+      "absentAfterCondense": true,
+      "bytes": 5083,
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/logs/runner-green/chunk-0001.log",
+      "retained": false,
+      "sha256": "caccab7b040d091c3959cfdd7d672bd2b75e9b84d451dd49d3ccfe8cc7863e8d"
+    },
+    {
+      "absentAfterCondense": true,
+      "bytes": 106,
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/logs/supervisor-final/chunk-0001.log",
+      "retained": false,
+      "sha256": "9540f4372d09725e989a469a2bbfb210a33ef9cc3ebb87b5789b2794aec1e727"
+    },
+    {
+      "absentAfterCondense": true,
+      "bytes": 105,
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/logs/supervisor-green/chunk-0001.log",
+      "retained": false,
+      "sha256": "5b636c55785396258430eb3f9f39ee834e4f00536f0ac9271aadb7221f83892b"
+    }
+  ],
+  "nestedManifestCount": 2,
+  "nestedSumSampledScratchPeaks": 8192,
+  "outerManifestCount": 5,
+  "outerSumSampledScratchPeaks": 594276,
+  "owned": [
+    {
+      "groupsAbsent": {
+        "49542": true
+      },
+      "kind": "outer",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/test-runs/ownership/20080ca67a49427aa54a4e765f6d2921.json",
+      "ownerIdentityAbsent": true,
+      "ownership": {
+        "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/test-runs/checkpoints/77e98c2564cff757944a1871fac6f25d400dabf9530da8e3449d55aec1034437.json",
+        "created": 1793973907.002337,
+        "device": 16777230,
+        "groups": [
+          49542
+        ],
+        "inode": 248371192,
+        "local_scratch_reason": "",
+        "location": "local",
+        "owner": {
+          "pid": 49524,
+          "start": "Fri Nov  6 14:05:06 2026"
+        },
+        "peak": 46850,
+        "removed": 1793973907.7735848,
+        "root": "/private/tmp/test-stamp-shard-20080ca67a49427aa54a4e765f6d2921",
+        "state": "removed",
+        "token": "20080ca67a49427aa54a4e765f6d2921",
+        "version": 1
+      },
+      "reservationAbsent": true,
+      "rootAbsent": true
+    },
+    {
+      "groupsAbsent": {
+        "46977": true
+      },
+      "kind": "outer",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/test-runs/ownership/392c3165e235478798caf7fa202f66c6.json",
+      "ownerIdentityAbsent": true,
+      "ownership": {
+        "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/test-runs/checkpoints/3ea54bca4519781c2c0dbc5ffc182330a755e9098351a2d80211ca6c0e9ebebf.json",
+        "created": 1793973583.450985,
+        "device": 16777230,
+        "groups": [
+          46977
+        ],
+        "inode": 248368948,
+        "local_scratch_reason": "",
+        "location": "local",
+        "owner": {
+          "pid": 46962,
+          "start": "Fri Nov  6 13:59:43 2026"
+        },
+        "peak": 12512,
+        "removed": 1793973583.733382,
+        "root": "/private/tmp/test-stamp-shard-392c3165e235478798caf7fa202f66c6",
+        "state": "removed",
+        "token": "392c3165e235478798caf7fa202f66c6",
+        "version": 1
+      },
+      "reservationAbsent": true,
+      "rootAbsent": true
+    },
+    {
+      "groupsAbsent": {
+        "49235": true
+      },
+      "kind": "outer",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/test-runs/ownership/53d40ffbadf0430d81942749c18b5983.json",
+      "ownerIdentityAbsent": true,
+      "ownership": {
+        "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/test-runs/checkpoints/20a3f323e8b6fddbbe9723ef1436c343dbee128a19b305f2f40742e049d9b9c0.json",
+        "created": 1793973847.898428,
+        "device": 16777230,
+        "groups": [
+          49235
+        ],
+        "inode": 248370678,
+        "local_scratch_reason": "",
+        "location": "local",
+        "owner": {
+          "pid": 49214,
+          "start": "Fri Nov  6 14:04:07 2026"
+        },
+        "peak": 241888,
+        "removed": 1793973849.562739,
+        "root": "/private/tmp/test-stamp-shard-53d40ffbadf0430d81942749c18b5983",
+        "state": "removed",
+        "token": "53d40ffbadf0430d81942749c18b5983",
+        "version": 1
+      },
+      "reservationAbsent": true,
+      "rootAbsent": true
+    },
+    {
+      "groupsAbsent": {
+        "50823": true
+      },
+      "kind": "outer",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/test-runs/ownership/9708c30423314b04bb86eae0087f39d1.json",
+      "ownerIdentityAbsent": true,
+      "ownership": {
+        "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/test-runs/checkpoints/998c40b8de18169fbdc4b565118abc0a8594a242b44dba3979f5b23860b8409e.json",
+        "created": 1793974005.809105,
+        "device": 16777230,
+        "groups": [
+          50823
+        ],
+        "inode": 248371817,
+        "local_scratch_reason": "",
+        "location": "local",
+        "owner": {
+          "pid": 50808,
+          "start": "Fri Nov  6 14:06:45 2026"
+        },
+        "peak": 241888,
+        "removed": 1793974007.455746,
+        "root": "/private/tmp/test-stamp-shard-9708c30423314b04bb86eae0087f39d1",
+        "state": "removed",
+        "token": "9708c30423314b04bb86eae0087f39d1",
+        "version": 1
+      },
+      "reservationAbsent": true,
+      "rootAbsent": true
+    },
+    {
+      "groupsAbsent": {
+        "51357": true
+      },
+      "kind": "outer",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/test-runs/ownership/b1347c238b6446ca9ed367b1cfc3aa94.json",
+      "ownerIdentityAbsent": true,
+      "ownership": {
+        "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/test-runs/checkpoints/575cb8a0f25c3880938d28d11d34cb846e21bcbce4e048f1f84bf7b10fb04be5.json",
+        "created": 1793974092.435443,
+        "device": 16777230,
+        "groups": [
+          51357
+        ],
+        "inode": 248372596,
+        "local_scratch_reason": "",
+        "location": "local",
+        "owner": {
+          "pid": 51343,
+          "start": "Fri Nov  6 14:08:12 2026"
+        },
+        "peak": 51138,
+        "removed": 1793974093.2182279,
+        "root": "/private/tmp/test-stamp-shard-b1347c238b6446ca9ed367b1cfc3aa94",
+        "state": "removed",
+        "token": "b1347c238b6446ca9ed367b1cfc3aa94",
+        "version": 1
+      },
+      "reservationAbsent": true,
+      "rootAbsent": true
+    },
+    {
+      "groupsAbsent": {
+        "49552": true
+      },
+      "kind": "nested-launcher-death-proof",
+      "ownerIdentityAbsent": true,
+      "ownership": {
+        "checkpoint": null,
+        "created": 1793973907.1813388,
+        "device": 16777230,
+        "groups": [
+          49552
+        ],
+        "inode": 248371207,
+        "local_scratch_reason": "",
+        "location": "local",
+        "owner": {
+          "pid": 49542,
+          "start": "Fri Nov  6 14:05:07 2026"
+        },
+        "peak": 4096,
+        "removed": 1793973907.538493,
+        "root": "/private/tmp/test-stamp-shard-523b56e8ab144b64b1fb1f2772b10a21",
+        "state": "removed",
+        "token": "523b56e8ab144b64b1fb1f2772b10a21",
+        "version": 1
+      },
+      "proofPath": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/supervisor-green-proof-summary.json",
+      "receipt": {
+        "accepted": [],
+        "admission": false,
+        "allocation": "f59-settings-shape-observation-20261106.v1",
+        "compatibilityException": null,
+        "completedAt": "2026-11-06T14:05:07.568143+00:00",
+        "failure": null,
+        "finalizerRegisteredBeforeScratch": true,
+        "groups": [
+          {
+            "absent": true,
+            "pgid": 49552
+          }
+        ],
+        "launcherAbsent": true,
+        "launcherOwner": {
+          "pid": 49545,
+          "start": "Fri Nov  6 14:05:07 2026"
+        },
+        "leftovers": [],
+        "limits": {
+          "logBytes": 1048576,
+          "sampledRssBytes": 134217728,
+          "scratchBytes": 8388608,
+          "seconds": 10,
+          "workers": 1
+        },
+        "manifestState": "removed",
+        "markerPresent": false,
+        "observation": {
+          "counts": null,
+          "receiptStatus": "absent-or-invalid",
+          "settingsExport": {
+            "bytes": null,
+            "sha256": null,
+            "status": "unavailable"
+          }
+        },
+        "ownershipManifest": "/private/tmp/test-stamp-shard-20080ca67a49427aa54a4e765f6d2921/settings-supervisor-ak4jqn5p/supervision/ownership/523b56e8ab144b64b1fb1f2772b10a21.json",
+        "process": {
+          "returnCode": -15,
+          "sampledRssBytes": 15302656,
+          "sampledScratchBytes": 4096,
+          "stopIssue": "bounded-process-stop",
+          "wallSeconds": 0.3122932919941377
+        },
+        "qualification": "unqualified-structural-observation",
+        "removedAllocationBytes": 4096,
+        "removedLogBytes": 0,
+        "sampledScratchRemovedBytes": 4096,
+        "schemaVersion": "f59-settings-supervisor-receipt.v1",
+        "scratchAbsent": true,
+        "scratchRoot": "/private/tmp/test-stamp-shard-523b56e8ab144b64b1fb1f2772b10a21",
+        "sourceAllocationAttempts": 2,
+        "sourceRetry": 0
+      },
+      "reservationAbsent": true,
+      "rootAbsent": true
+    },
+    {
+      "groupsAbsent": {
+        "51367": true
+      },
+      "kind": "nested-launcher-death-proof",
+      "ownerIdentityAbsent": true,
+      "ownership": {
+        "checkpoint": null,
+        "created": 1793974092.616823,
+        "device": 16777230,
+        "groups": [
+          51367
+        ],
+        "inode": 248372610,
+        "local_scratch_reason": "",
+        "location": "local",
+        "owner": {
+          "pid": 51357,
+          "start": "Fri Nov  6 14:08:12 2026"
+        },
+        "peak": 4096,
+        "removed": 1793974092.983095,
+        "root": "/private/tmp/test-stamp-shard-ad17d4a39e334886aa61a87a354322ab",
+        "state": "removed",
+        "token": "ad17d4a39e334886aa61a87a354322ab",
+        "version": 1
+      },
+      "proofPath": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/supervisor-proof-summary.json",
+      "receipt": {
+        "accepted": [],
+        "admission": false,
+        "allocation": "f59-settings-shape-observation-20261106.v1",
+        "allocationState": "reserved-and-consumed",
+        "compatibilityException": null,
+        "completedAt": "2026-11-06T14:08:13.012395+00:00",
+        "failure": null,
+        "finalizerRegisteredBeforeScratch": true,
+        "groups": [
+          {
+            "absent": true,
+            "pgid": 51367
+          }
+        ],
+        "launcherAbsent": true,
+        "launcherOwner": {
+          "pid": 51360,
+          "start": "Fri Nov  6 14:08:12 2026"
+        },
+        "leftovers": [],
+        "limits": {
+          "logBytes": 1048576,
+          "sampledRssBytes": 134217728,
+          "scratchBytes": 8388608,
+          "seconds": 10,
+          "workers": 1
+        },
+        "manifestState": "removed",
+        "markerPresent": false,
+        "observation": {
+          "counts": null,
+          "receiptStatus": "absent-or-invalid",
+          "settingsExport": {
+            "bytes": null,
+            "sha256": null,
+            "status": "unavailable"
+          }
+        },
+        "ownershipManifest": "/private/tmp/test-stamp-shard-b1347c238b6446ca9ed367b1cfc3aa94/settings-supervisor-wz1i1062/supervision/ownership/ad17d4a39e334886aa61a87a354322ab.json",
+        "process": {
+          "returnCode": -15,
+          "sampledRssBytes": 15286272,
+          "sampledScratchBytes": 4096,
+          "stopIssue": "bounded-process-stop",
+          "wallSeconds": 0.321141540989629
+        },
+        "qualification": "unqualified-structural-observation",
+        "removedAllocationBytes": 4096,
+        "removedLogBytes": 0,
+        "sampledScratchRemovedBytes": 4096,
+        "schemaVersion": "f59-settings-supervisor-receipt.v1",
+        "scratchAbsent": true,
+        "scratchRoot": "/private/tmp/test-stamp-shard-ad17d4a39e334886aa61a87a354322ab",
+        "sourceAllocationAttempts": 2,
+        "sourceRetry": 0
+      },
+      "reservationAbsent": true,
+      "rootAbsent": true
+    }
+  ],
+  "peakSemantics": "Sum of per-root sampled peaks, not simultaneous actual peak; nested proof may overlap outer allocation.",
+  "removedSuccessfulLogBytes": 10374,
+  "retained": "Compact ownership/checkpoint/selected/result/proof/validation/immutability/impact summaries; bounded expected-red log",
+  "retainedRedLogs": [
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/logs/red/chunk-0001.log"
+  ],
+  "run": "devpoller-pass1352-f59-settings-preparation",
+  "schemaVersion": "f59-settings-preparation-resource-audit.v1",
+  "swapAttribution": "Shared host; no owned test process remains. No attribution to this work.",
+  "unownedBytecodePreserved": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/_tools/__pycache__/test_resources.cpython-314.pyc",
+    "preserved": true
+  }
+}

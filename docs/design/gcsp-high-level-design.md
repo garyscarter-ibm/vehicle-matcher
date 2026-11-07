@@ -10,6 +10,8 @@ The design supports the 12 November demonstration and the proposed 2027 front-en
 
 **Later build direction, Russell, 2 November:** apply the [build rules](../gcsp/build-rules.md) to full planned scope and centrally stored, plausible assumptions that can improve through trials. Earlier stretch/defer descriptions are superseded. Architecture agreement and the agreed backlog/execution workflow remain in place.
 
+**Partial-story scope revision, Russell, 7 November:** follow the [binding split decision](../gcsp/build-rules.md#scope-split-decision-7-november-2026) and [exact Story mapping and Must development order](../gcsp/backlog-moscow-review-2026-11-07.md). Existing numbers retain their necessary demo/supporting scope; FUCQ-167 through FUCQ-176 hold the later physical/exception, case-operation, scenario-choice and interactive-comparison scope in To Do. The architecture below still describes those eventual capabilities. This delivery boundary does not waive policy, identity, access, transactional correctness, provenance or the remaining full-build promises.
+
 ## Review decisions, 4 November 2026
 
 Gary's architecture review is recorded in [hld-review-gc.md](hld-review-gc.md) and applied to the diagram. Where this record disagrees, the review takes precedence. The main changes:

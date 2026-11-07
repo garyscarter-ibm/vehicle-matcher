@@ -1,0 +1,2107 @@
+{
+  "status": "bounded-diagnostic-completed-actual-large-failure-unresolved",
+  "story": "FUCQ-62",
+  "bug": "FUCQ-153",
+  "productionEdited": false,
+  "productionSourceSha256": "30be19121e2c250d1736666f365d8900cbf42f47c7daf907c4814eaac818d277",
+  "runtimeInstrumentedSha256": "7c44dd31f8386f1ba0afebeb4b2ed0612f5b798f4a858be13946f058117dc797",
+  "unchangedLargeProofPinsSha256": "0eeb6d536dae58bec3b37cbcd6c3bcca419d0608688b22adb93d333a73c8c94c",
+  "externalEvidence": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-identity-sequence-diagnostic",
+  "evidenceSha256": {
+    "probe.mjs": "39e4be3da99ec8b71b1bc6445dd950d9353a36b3328e1a08e1417c32f453c2e8",
+    "run.py": "ce36991da987c39ae973c53cad11e13a5f687977e333eb35bdf0b77f0a104dda",
+    "selection.json": "0444ab52d434dbcff079154ac49f8546c3cdbc37bd3b165a3da46c0f5b8a4736",
+    "receipt.json": "b639b615e174b5ed678be79e39b7dd9e2a052738aafe37e23174c0b75b6f6c81",
+    "result.json": "eb129c5496fa94004d59161ff673bdd10e26206acf72ec2a1625343e1dedad6b",
+    "cleanup.json": "78927b422435f664fd1dfe33137e8215545f3cbccf618cb01a41ba4329ed827b",
+    "coverage-summary.json": "1d861a9797662b4be5e5f97f9391d290a51672e45665de02f7e43ab0b9b07276"
+  },
+  "selectedDiagnostic": {
+    "rows": 32,
+    "inputBytes": 593152,
+    "eventsRetained": 128,
+    "eventsRetainedLimit": 128,
+    "eventsObserved": 1101,
+    "olderEventsDropped": 973,
+    "naturalPacing": "6ms per input row; observed candidate elapsed302.109ms. Earlier natural confirmation fstat events were overwritten by the bounded ring; its expected/current identities remain in confirmations.",
+    "controls": "Two deliberate ctime-only changes, between caller/precheck and during hash. These establish guard behavior only, not the actual large-run cause.",
+    "commands": [
+      "/opt/homebrew/bin/node",
+      "--max-old-space-size=256",
+      "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-identity-sequence-diagnostic/probe.mjs"
+    ],
+    "limits": {
+      "childRamMiB": 448,
+      "eventLimit": 128,
+      "hostRamMiB": 512,
+      "inputBytes": 593152,
+      "rows": 32,
+      "scratchMiB": 32,
+      "seconds": 60,
+      "workers": 1
+    },
+    "excluded": [
+      "third large allocation",
+      "production patch or guard relaxation",
+      "new source traffic",
+      "fullsuite",
+      "source/VIN/stock capacity credit"
+    ],
+    "runtimeInstrumentation": "Node synchronous loader hooks instrument the module in memory. Source file unchanged; full stat/error sequence retained for the two controlled failures. Two earlier artifact-size errors have stale read-frame context and are excluded from failure analysis."
+  },
+  "inputHashes": {
+    "before": "16dcaa5854f0d27510504c7c39f761f1a9f6609ce72f3618ffbaab451c7ab301",
+    "after": "16dcaa5854f0d27510504c7c39f761f1a9f6609ce72f3618ffbaab451c7ab301",
+    "unchanged": true
+  },
+  "results": [
+    {
+      "phase": "natural-candidate-window",
+      "elapsedMs": 302.10904100000005,
+      "delayedRows": 32,
+      "result": {
+        "status": "ok",
+        "counts": {
+          "configurations": 32,
+          "distinctConfigurations": 32,
+          "vinMappings": 0,
+          "images": 0
+        }
+      },
+      "meaning": "Natural filesystem metadata; only input scan pacing extended to approximate the original193ms failure window. No deliberate metadata writes in this phase."
+    },
+    {
+      "phase": "controlled-between-stats",
+      "error": {
+        "code": "artifact-changed",
+        "message": "Indexed artifact identity changed.",
+        "stack": "Error: Indexed artifact identity changed.\n    at fail (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:9:82)\n    at confirmMetadataChange (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:19:5)\n    at readIndexedRow (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:47:26)\n    at read (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:102:37)\n    at Object.get (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:104:20)\n    at file:///Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-identity-sequence-diagnostic/probe.mjs:60:184"
+      },
+      "meaning": "Controlled ctime-only movement after caller fstat and before confirmation precheck reproduces the same error text; this does not establish actual large-run causation."
+    },
+    {
+      "phase": "controlled-during-hash",
+      "error": {
+        "code": "artifact-changed",
+        "message": "Indexed artifact bytes or identity changed.",
+        "stack": "Error: Indexed artifact bytes or identity changed.\n    at fail (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:9:82)\n    at confirmMetadataChange (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:28:5)\n    at readIndexedRow (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:47:26)\n    at read (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:102:37)\n    at Object.get (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:104:20)\n    at file:///Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-identity-sequence-diagnostic/probe.mjs:61:172"
+      },
+      "meaning": "Controlled ctime-only movement during full hashing remains rejected by the stable-identity guard."
+    }
+  ],
+  "confirmations": [
+    {
+      "n": 232,
+      "phase": "natural-candidate-window",
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848067",
+        "size": "593152",
+        "mtimeNs": "1794016712318642357",
+        "ctimeNs": "1794016712318642357"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848067",
+        "size": "593152",
+        "mtimeNs": "1794016712318642357",
+        "ctimeNs": "1794016712565412271"
+      },
+      "changedFields": [
+        "ctimeNs"
+      ],
+      "checksumPresent": true,
+      "checksum": "16dcaa5854f0d27510504c7c39f761f1a9f6609ce72f3618ffbaab451c7ab301"
+    },
+    {
+      "n": 1085,
+      "phase": "controlled-between-stats",
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848067",
+        "size": "593152",
+        "mtimeNs": "1794016712318642357",
+        "ctimeNs": "1794016712565412271"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848067",
+        "size": "593152",
+        "mtimeNs": "1794016712318642357",
+        "ctimeNs": "1794016712629122824"
+      },
+      "changedFields": [
+        "ctimeNs"
+      ],
+      "checksumPresent": true,
+      "checksum": "16dcaa5854f0d27510504c7c39f761f1a9f6609ce72f3618ffbaab451c7ab301"
+    },
+    {
+      "n": 1096,
+      "phase": "controlled-during-hash",
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848067",
+        "size": "593152",
+        "mtimeNs": "1794016712318642357",
+        "ctimeNs": "1794016712629255449"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848067",
+        "size": "593152",
+        "mtimeNs": "1794016712318642357",
+        "ctimeNs": "1794016712630569867"
+      },
+      "changedFields": [
+        "ctimeNs"
+      ],
+      "checksumPresent": true,
+      "checksum": "16dcaa5854f0d27510504c7c39f761f1a9f6609ce72f3618ffbaab451c7ab301"
+    }
+  ],
+  "controlledFailures": [
+    {
+      "phase": "controlled-between-stats",
+      "code": "artifact-changed",
+      "message": "Indexed artifact identity changed.",
+      "stack": "Error: Indexed artifact identity changed.\n    at Object.fail (file:///Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-identity-sequence-diagnostic/probe.mjs:22:87)\n    at fail (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:9:56)\n    at confirmMetadataChange (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:19:5)\n    at readIndexedRow (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:47:26)\n    at read (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:102:37)\n    at Object.get (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:104:20)\n    at file:///Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-identity-sequence-diagnostic/probe.mjs:60:184",
+      "frame": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl",
+        "expected": {
+          "dev": "16777230",
+          "ino": "248848067",
+          "size": "593152",
+          "mtimeNs": "1794016712318642357",
+          "ctimeNs": "1794016712565412271"
+        },
+        "entry": {
+          "key": "U0NBTEU6UjAwMDAwMDEsUkVTT1VSQ0U=",
+          "offset": 0,
+          "length": 18536
+        },
+        "checksum": "16dcaa5854f0d27510504c7c39f761f1a9f6609ce72f3618ffbaab451c7ab301"
+      },
+      "confirmation": {
+        "n": 1085,
+        "phase": "controlled-between-stats",
+        "fd": 11,
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl",
+        "expected": {
+          "dev": "16777230",
+          "ino": "248848067",
+          "size": "593152",
+          "mtimeNs": "1794016712318642357",
+          "ctimeNs": "1794016712565412271"
+        },
+        "current": {
+          "dev": "16777230",
+          "ino": "248848067",
+          "size": "593152",
+          "mtimeNs": "1794016712318642357",
+          "ctimeNs": "1794016712629122824"
+        },
+        "changedFields": [
+          "ctimeNs"
+        ],
+        "checksumPresent": true,
+        "checksum": "16dcaa5854f0d27510504c7c39f761f1a9f6609ce72f3618ffbaab451c7ab301"
+      },
+      "currentDuringConfirmation": {
+        "dev": "16777230",
+        "ino": "248848067",
+        "size": "593152",
+        "mtimeNs": "1794016712318642357",
+        "ctimeNs": "1794016712629255449"
+      },
+      "eventRange": [
+        960,
+        1087
+      ]
+    },
+    {
+      "phase": "controlled-during-hash",
+      "code": "artifact-changed",
+      "message": "Indexed artifact bytes or identity changed.",
+      "stack": "Error: Indexed artifact bytes or identity changed.\n    at Object.fail (file:///Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-identity-sequence-diagnostic/probe.mjs:22:87)\n    at fail (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:9:56)\n    at confirmMetadataChange (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:28:5)\n    at readIndexedRow (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:47:26)\n    at read (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:102:37)\n    at Object.get (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:104:20)\n    at file:///Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-identity-sequence-diagnostic/probe.mjs:61:172",
+      "frame": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl",
+        "expected": {
+          "dev": "16777230",
+          "ino": "248848067",
+          "size": "593152",
+          "mtimeNs": "1794016712318642357",
+          "ctimeNs": "1794016712629255449"
+        },
+        "entry": {
+          "key": "U0NBTEU6UjAwMDAwMDEsUkVTT1VSQ0U=",
+          "offset": 0,
+          "length": 18536
+        },
+        "checksum": "16dcaa5854f0d27510504c7c39f761f1a9f6609ce72f3618ffbaab451c7ab301"
+      },
+      "confirmation": {
+        "n": 1096,
+        "phase": "controlled-during-hash",
+        "fd": 11,
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl",
+        "expected": {
+          "dev": "16777230",
+          "ino": "248848067",
+          "size": "593152",
+          "mtimeNs": "1794016712318642357",
+          "ctimeNs": "1794016712629255449"
+        },
+        "current": {
+          "dev": "16777230",
+          "ino": "248848067",
+          "size": "593152",
+          "mtimeNs": "1794016712318642357",
+          "ctimeNs": "1794016712630569867"
+        },
+        "changedFields": [
+          "ctimeNs"
+        ],
+        "checksumPresent": true,
+        "checksum": "16dcaa5854f0d27510504c7c39f761f1a9f6609ce72f3618ffbaab451c7ab301"
+      },
+      "currentDuringConfirmation": {
+        "dev": "16777230",
+        "ino": "248848067",
+        "size": "593152",
+        "mtimeNs": "1794016712318642357",
+        "ctimeNs": "1794016712630635409"
+      },
+      "eventRange": [
+        972,
+        1099
+      ]
+    }
+  ],
+  "retained128EventTrace": [
+    {
+      "n": 974,
+      "phase": "natural-candidate-window",
+      "type": "close-sync",
+      "at": 494.634625,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 975,
+      "phase": "natural-candidate-window",
+      "type": "open-sync",
+      "at": 494.655458,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 976,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 494.657666,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 977,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 494.671291,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 978,
+      "phase": "natural-candidate-window",
+      "type": "before-return",
+      "at": 494.672541,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      }
+    },
+    {
+      "n": 979,
+      "phase": "natural-candidate-window",
+      "type": "close-sync",
+      "at": 494.681208,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 980,
+      "phase": "natural-candidate-window",
+      "type": "open-sync",
+      "at": 494.69925,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 981,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 494.701208,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 982,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 494.7145,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 983,
+      "phase": "natural-candidate-window",
+      "type": "before-return",
+      "at": 494.716083,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      }
+    },
+    {
+      "n": 984,
+      "phase": "natural-candidate-window",
+      "type": "close-sync",
+      "at": 494.727666,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 985,
+      "phase": "natural-candidate-window",
+      "type": "open-sync",
+      "at": 494.749916,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 986,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 494.752125,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 987,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 494.765375,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 988,
+      "phase": "natural-candidate-window",
+      "type": "before-return",
+      "at": 494.766625,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      }
+    },
+    {
+      "n": 989,
+      "phase": "natural-candidate-window",
+      "type": "close-sync",
+      "at": 494.775541,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 990,
+      "phase": "natural-candidate-window",
+      "type": "open-sync",
+      "at": 494.796541,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 991,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 494.79875,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 992,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 494.81225,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 993,
+      "phase": "natural-candidate-window",
+      "type": "before-return",
+      "at": 494.8135,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      }
+    },
+    {
+      "n": 994,
+      "phase": "natural-candidate-window",
+      "type": "close-sync",
+      "at": 494.82225,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 995,
+      "phase": "natural-candidate-window",
+      "type": "open-sync",
+      "at": 494.843375,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 996,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 494.845541,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 997,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 494.861416,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 998,
+      "phase": "natural-candidate-window",
+      "type": "before-return",
+      "at": 494.862666,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      }
+    },
+    {
+      "n": 999,
+      "phase": "natural-candidate-window",
+      "type": "close-sync",
+      "at": 494.871375,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1000,
+      "phase": "natural-candidate-window",
+      "type": "open-sync",
+      "at": 494.891875,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1001,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 494.894041,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1002,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 494.925416,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1003,
+      "phase": "natural-candidate-window",
+      "type": "before-return",
+      "at": 494.926708,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      }
+    },
+    {
+      "n": 1004,
+      "phase": "natural-candidate-window",
+      "type": "close-sync",
+      "at": 494.937041,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1005,
+      "phase": "natural-candidate-window",
+      "type": "open-sync",
+      "at": 494.957583,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1006,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 494.96,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1007,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 494.973583,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1008,
+      "phase": "natural-candidate-window",
+      "type": "before-return",
+      "at": 494.974833,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      }
+    },
+    {
+      "n": 1009,
+      "phase": "natural-candidate-window",
+      "type": "close-sync",
+      "at": 494.98375,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1010,
+      "phase": "natural-candidate-window",
+      "type": "open-sync",
+      "at": 495.003916,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1011,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.006166,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1012,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.0215,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1013,
+      "phase": "natural-candidate-window",
+      "type": "before-return",
+      "at": 495.022791,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      }
+    },
+    {
+      "n": 1014,
+      "phase": "natural-candidate-window",
+      "type": "close-sync",
+      "at": 495.031791,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1015,
+      "phase": "natural-candidate-window",
+      "type": "open-sync",
+      "at": 495.051916,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1016,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.054125,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1017,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.067958,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1018,
+      "phase": "natural-candidate-window",
+      "type": "before-return",
+      "at": 495.06925,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      }
+    },
+    {
+      "n": 1019,
+      "phase": "natural-candidate-window",
+      "type": "close-sync",
+      "at": 495.078333,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1020,
+      "phase": "natural-candidate-window",
+      "type": "open-sync",
+      "at": 495.10225,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1021,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.104541,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1022,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.1185,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1023,
+      "phase": "natural-candidate-window",
+      "type": "before-return",
+      "at": 495.119791,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      }
+    },
+    {
+      "n": 1024,
+      "phase": "natural-candidate-window",
+      "type": "close-sync",
+      "at": 495.129291,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1025,
+      "phase": "natural-candidate-window",
+      "type": "open-sync",
+      "at": 495.152208,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1026,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.1545,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1027,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.1685,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1028,
+      "phase": "natural-candidate-window",
+      "type": "before-return",
+      "at": 495.16975,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      }
+    },
+    {
+      "n": 1029,
+      "phase": "natural-candidate-window",
+      "type": "close-sync",
+      "at": 495.18125,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1030,
+      "phase": "natural-candidate-window",
+      "type": "open-sync",
+      "at": 495.208375,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1031,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.210708,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1032,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.22725,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1033,
+      "phase": "natural-candidate-window",
+      "type": "before-return",
+      "at": 495.228708,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      }
+    },
+    {
+      "n": 1034,
+      "phase": "natural-candidate-window",
+      "type": "close-sync",
+      "at": 495.242833,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1035,
+      "phase": "natural-candidate-window",
+      "type": "open-sync",
+      "at": 495.270333,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1036,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.2725,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1037,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.286791,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1038,
+      "phase": "natural-candidate-window",
+      "type": "before-return",
+      "at": 495.288041,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      }
+    },
+    {
+      "n": 1039,
+      "phase": "natural-candidate-window",
+      "type": "close-sync",
+      "at": 495.297416,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1040,
+      "phase": "natural-candidate-window",
+      "type": "open-sync",
+      "at": 495.3185,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1041,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.32075,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1042,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.334416,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1043,
+      "phase": "natural-candidate-window",
+      "type": "before-return",
+      "at": 495.335666,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      }
+    },
+    {
+      "n": 1044,
+      "phase": "natural-candidate-window",
+      "type": "close-sync",
+      "at": 495.344416,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1045,
+      "phase": "natural-candidate-window",
+      "type": "open-sync",
+      "at": 495.3655,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1046,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.367583,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1047,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.380875,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1048,
+      "phase": "natural-candidate-window",
+      "type": "before-return",
+      "at": 495.382125,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      }
+    },
+    {
+      "n": 1049,
+      "phase": "natural-candidate-window",
+      "type": "close-sync",
+      "at": 495.39325,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1050,
+      "phase": "natural-candidate-window",
+      "type": "open-sync",
+      "at": 495.41875,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1051,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.420958,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1052,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.434208,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1053,
+      "phase": "natural-candidate-window",
+      "type": "before-return",
+      "at": 495.435458,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      }
+    },
+    {
+      "n": 1054,
+      "phase": "natural-candidate-window",
+      "type": "close-sync",
+      "at": 495.446958,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1055,
+      "phase": "natural-candidate-window",
+      "type": "open-sync",
+      "at": 495.470375,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1056,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.472541,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1057,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.485833,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1058,
+      "phase": "natural-candidate-window",
+      "type": "before-return",
+      "at": 495.487041,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      }
+    },
+    {
+      "n": 1059,
+      "phase": "natural-candidate-window",
+      "type": "close-sync",
+      "at": 495.499333,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1060,
+      "phase": "natural-candidate-window",
+      "type": "open-sync",
+      "at": 495.52625,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1061,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.529833,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1062,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.545916,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1063,
+      "phase": "natural-candidate-window",
+      "type": "before-return",
+      "at": 495.549125,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      }
+    },
+    {
+      "n": 1064,
+      "phase": "natural-candidate-window",
+      "type": "close-sync",
+      "at": 495.559208,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1065,
+      "phase": "natural-candidate-window",
+      "type": "open-sync",
+      "at": 495.583375,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1066,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.586958,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1067,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.600416,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1068,
+      "phase": "natural-candidate-window",
+      "type": "before-return",
+      "at": 495.601666,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      }
+    },
+    {
+      "n": 1069,
+      "phase": "natural-candidate-window",
+      "type": "close-sync",
+      "at": 495.612,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1070,
+      "phase": "natural-candidate-window",
+      "type": "open-sync",
+      "at": 495.644708,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1071,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.647291,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1072,
+      "phase": "natural-candidate-window",
+      "type": "fstat-sync",
+      "at": 495.664833,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1073,
+      "phase": "natural-candidate-window",
+      "type": "before-return",
+      "at": 495.666125,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848096",
+        "size": "593152",
+        "mtimeNs": "1794016712596860881",
+        "ctimeNs": "1794016712596860881"
+      }
+    },
+    {
+      "n": 1074,
+      "phase": "natural-candidate-window",
+      "type": "close-sync",
+      "at": 495.67625,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0/configurations.jsonl"
+    },
+    {
+      "n": 1075,
+      "phase": "natural-candidate-window",
+      "type": "open-async",
+      "at": 496.085625,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0"
+    },
+    {
+      "n": 1076,
+      "phase": "natural-candidate-window",
+      "type": "close-async",
+      "at": 500.459708,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/.candidate-0ca2462d-cd14-4da4-be8c-674f4a672bb0"
+    },
+    {
+      "n": 1077,
+      "phase": "natural-candidate-window",
+      "type": "open-async",
+      "at": 500.650041,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19"
+    },
+    {
+      "n": 1078,
+      "phase": "natural-candidate-window",
+      "type": "close-async",
+      "at": 503.623666,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19"
+    },
+    {
+      "n": 1079,
+      "phase": "controlled-between-stats",
+      "type": "open-async",
+      "at": 503.720875,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl"
+    },
+    {
+      "n": 1080,
+      "phase": "controlled-between-stats",
+      "type": "stat-async",
+      "at": 503.73525,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848067",
+        "size": "593152",
+        "mtimeNs": "1794016712318642357",
+        "ctimeNs": "1794016712565412271"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1081,
+      "phase": "controlled-between-stats",
+      "type": "stat-async",
+      "at": 504.792958,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848067",
+        "size": "593152",
+        "mtimeNs": "1794016712318642357",
+        "ctimeNs": "1794016712565412271"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1082,
+      "phase": "controlled-between-stats",
+      "type": "close-async",
+      "at": 504.800958,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl"
+    },
+    {
+      "n": 1083,
+      "phase": "controlled-between-stats",
+      "type": "open-sync",
+      "at": 504.971833,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl"
+    },
+    {
+      "n": 1084,
+      "phase": "controlled-between-stats",
+      "type": "fstat-sync",
+      "at": 504.976125,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848067",
+        "size": "593152",
+        "mtimeNs": "1794016712318642357",
+        "ctimeNs": "1794016712629122824"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1085,
+      "phase": "controlled-between-stats",
+      "type": "confirmation-start",
+      "at": 504.985666,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848067",
+        "size": "593152",
+        "mtimeNs": "1794016712318642357",
+        "ctimeNs": "1794016712565412271"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848067",
+        "size": "593152",
+        "mtimeNs": "1794016712318642357",
+        "ctimeNs": "1794016712629122824"
+      },
+      "changedFields": [
+        "ctimeNs"
+      ],
+      "checksumPresent": true,
+      "checksum": "16dcaa5854f0d27510504c7c39f761f1a9f6609ce72f3618ffbaab451c7ab301"
+    },
+    {
+      "n": 1086,
+      "phase": "controlled-between-stats",
+      "type": "controlled-ctime-change",
+      "at": 505.0615,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl",
+      "where": "after caller stat, before confirmation precheck"
+    },
+    {
+      "n": 1087,
+      "phase": "controlled-between-stats",
+      "type": "fstat-sync",
+      "at": 505.067,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848067",
+        "size": "593152",
+        "mtimeNs": "1794016712318642357",
+        "ctimeNs": "1794016712629255449"
+      },
+      "changedFields": [
+        "ctimeNs"
+      ],
+      "confirmation": 1085
+    },
+    {
+      "n": 1088,
+      "phase": "controlled-between-stats",
+      "type": "throw",
+      "at": 505.110291,
+      "code": "artifact-changed",
+      "message": "Indexed artifact identity changed.",
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl"
+    },
+    {
+      "n": 1089,
+      "phase": "controlled-between-stats",
+      "type": "close-sync",
+      "at": 505.121333,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl"
+    },
+    {
+      "n": 1090,
+      "phase": "controlled-during-hash",
+      "type": "open-async",
+      "at": 505.185583,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl"
+    },
+    {
+      "n": 1091,
+      "phase": "controlled-during-hash",
+      "type": "stat-async",
+      "at": 505.203916,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848067",
+        "size": "593152",
+        "mtimeNs": "1794016712318642357",
+        "ctimeNs": "1794016712629255449"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1092,
+      "phase": "controlled-during-hash",
+      "type": "stat-async",
+      "at": 506.312208,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848067",
+        "size": "593152",
+        "mtimeNs": "1794016712318642357",
+        "ctimeNs": "1794016712629255449"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1093,
+      "phase": "controlled-during-hash",
+      "type": "close-async",
+      "at": 506.317416,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl"
+    },
+    {
+      "n": 1094,
+      "phase": "controlled-during-hash",
+      "type": "open-sync",
+      "at": 506.3925,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl"
+    },
+    {
+      "n": 1095,
+      "phase": "controlled-during-hash",
+      "type": "fstat-sync",
+      "at": 506.395208,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848067",
+        "size": "593152",
+        "mtimeNs": "1794016712318642357",
+        "ctimeNs": "1794016712630569867"
+      },
+      "changedFields": [],
+      "confirmation": null
+    },
+    {
+      "n": 1096,
+      "phase": "controlled-during-hash",
+      "type": "confirmation-start",
+      "at": 506.397833,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl",
+      "expected": {
+        "dev": "16777230",
+        "ino": "248848067",
+        "size": "593152",
+        "mtimeNs": "1794016712318642357",
+        "ctimeNs": "1794016712629255449"
+      },
+      "current": {
+        "dev": "16777230",
+        "ino": "248848067",
+        "size": "593152",
+        "mtimeNs": "1794016712318642357",
+        "ctimeNs": "1794016712630569867"
+      },
+      "changedFields": [
+        "ctimeNs"
+      ],
+      "checksumPresent": true,
+      "checksum": "16dcaa5854f0d27510504c7c39f761f1a9f6609ce72f3618ffbaab451c7ab301"
+    },
+    {
+      "n": 1097,
+      "phase": "controlled-during-hash",
+      "type": "fstat-sync",
+      "at": 506.400958,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848067",
+        "size": "593152",
+        "mtimeNs": "1794016712318642357",
+        "ctimeNs": "1794016712630569867"
+      },
+      "changedFields": [],
+      "confirmation": 1096
+    },
+    {
+      "n": 1098,
+      "phase": "controlled-during-hash",
+      "type": "controlled-ctime-change",
+      "at": 506.430708,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl",
+      "where": "after first confirmation hash read"
+    },
+    {
+      "n": 1099,
+      "phase": "controlled-during-hash",
+      "type": "fstat-sync",
+      "at": 506.653541,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl",
+      "current": {
+        "dev": "16777230",
+        "ino": "248848067",
+        "size": "593152",
+        "mtimeNs": "1794016712318642357",
+        "ctimeNs": "1794016712630635409"
+      },
+      "changedFields": [
+        "ctimeNs"
+      ],
+      "confirmation": 1096
+    },
+    {
+      "n": 1100,
+      "phase": "controlled-during-hash",
+      "type": "throw",
+      "at": 506.666125,
+      "code": "artifact-changed",
+      "message": "Indexed artifact bytes or identity changed.",
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl"
+    },
+    {
+      "n": 1101,
+      "phase": "controlled-during-hash",
+      "type": "close-sync",
+      "at": 506.67175,
+      "fd": 11,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19/configurations-input.jsonl"
+    }
+  ],
+  "conclusion": {
+    "actualLargeCause": "Unresolved: the renewed actual proof retained error code/message but no failing path/expected/current identity. Its payload was correctly removed, so this run cannot recover those missing fields.",
+    "naturalObservation": "The small natural candidate observed ctime-only drift with unchanged dev/ino/size/mtimeNs and bytes, then passed full-checksum confirmation. It did not reproduce the real failure.",
+    "sameMessageControl": "A second ctime-only change between caller fstat and helper precheck produced Indexed artifact identity changed. with exact expected/caller/helper identities.",
+    "differentMessageControl": "Ctime-only movement during hashing produced Indexed artifact bytes or identity changed. and remained rejected.",
+    "remainingPossibilities": "Static first-guard alternatives are missing checksum, a non-ctime identity delta, or current-to-precheck identity movement. The recorded controlled sequence shows one possible path, not which occurred in the actual proof.",
+    "requiredNextStep": "Retain path, expected/current and each confirmation fstat at the next naturally failing small candidate boundary. Keep all data/race guards and no third large proof until a collaborator reviews new evidence. No second production repair is justified by this diagnostic."
+  },
+  "result": {
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-identity-sequence-diagnostic/probe.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-identity-sequence-diagnostic/ownership/de023208df484e3b8d93874249e32e19.json",
+    "peak_rss": 122683392,
+    "peak_scratch": 1917696,
+    "rc": 0,
+    "wall": 0.741063667
+  },
+  "cleanup": {
+    "compatibility_exception": null,
+    "dependency_link_absent": true,
+    "errors": [],
+    "groups": [
+      {
+        "pgid": 39601,
+        "state": "absent"
+      }
+    ],
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-identity-sequence-diagnostic/ownership/de023208df484e3b8d93874249e32e19.json",
+    "manifest_state": "removed",
+    "removed_bytes_sampled_peak": 1917696,
+    "reservation_absent": true,
+    "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-identity-sequence-diagnostic/test-stamp-shard-de023208df484e3b8d93874249e32e19",
+    "scratch_absent": true
+  },
+  "freshCleanupVerification": {
+    "at": "2026-11-07T01:59:28.746929+00:00",
+    "diagnosticAndRenewedLargeRootsAbsent": true,
+    "groupsAbsent": true,
+    "reservationsAbsent": true,
+    "dependencyLinkAbsent": true,
+    "compatibilityException": null,
+    "leftovers": []
+  },
+  "sourceCapacityCredit": 0,
+  "largeProofPassing": false,
+  "storyAcceptance": "not-established"
+}

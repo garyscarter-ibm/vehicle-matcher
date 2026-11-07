@@ -1,0 +1,68 @@
+{
+  "actualEventRows": 24,
+  "admittedSource": 3854,
+  "byteIdenticalOverlaps": 10,
+  "canonical": 3857,
+  "canonicalPin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union3854-20261107/final-canonical-index.json",
+    "sha256": "03085775a0525fe33ac4f9d0fb9c4eb70739d58544991db29449510efa57b3f0"
+  },
+  "cleanup": {
+    "compatibilityException": null,
+    "dependencyLinkAbsent": true,
+    "groups": 236,
+    "groupsAbsent": true,
+    "leftovers": [],
+    "ownedManifests": 236,
+    "removedAllocationBytes": 61885504,
+    "retainedLogicalBytes": 801522490,
+    "scratchRootsAbsent": true,
+    "tokensAbsent": true
+  },
+  "initialParentReadFailure": "relative inputpin path resolved in wrong checkout; no mutations; corrected all71pins under035",
+  "inputPinsUnchanged": 71,
+  "newFrom118": 6,
+  "originalFailureCause": "unestablished; missingstarted6 retained in adjacent actualeventfile",
+  "originalFailureFixed": false,
+  "originalProof": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-unspent2248/session118/retained-result.json",
+    "sha256": "83d5e0920f378337b1d0238f19cd2ee7dfb4a4df692f1eb67ccaa98691ea72e9",
+    "summary": {
+      "cancelled": 0,
+      "fail": 1,
+      "pass": 4,
+      "skipped": 0,
+      "tests": 5,
+      "todo": 0
+    }
+  },
+  "originalProofRewritten": false,
+  "priorParentAuditSha256": "16006342649a8ceb04ae3e51d6fa81ab3053a5ad671f4c3fb527ad93aef03df8",
+  "remaining10000": 6146,
+  "retainedLogicalBytes": 3745652,
+  "schemaVersion": "actual-global-union.v1",
+  "scope": "strict3848milestone plus sixactual118admissions supported by four unchanged strictchecks and independently checked24row actualeventunion; no source/test replay",
+  "scratchCreated": false,
+  "sourceAcceptance": false,
+  "sourceRequests": 0,
+  "spent": 5052,
+  "spentPin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union3854-20261107/final-spent-request-index.json",
+    "sha256": "879d06da124460d41ac956312b7c868f8477167b6024455b53bc7b22d05b6259"
+  },
+  "status": "proved-combined-retained-evidence",
+  "supplementarySourceFiles": [
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-2248-20261107-once/sessions/session118/source-events.jsonl",
+      "rows": 23,
+      "sha256": "7a1a6ccfd9a356dc9eb236729abca6326ccd9b40eb0d934099bd4aaa368b8558"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-2248-20261107-once/sessions/session118/source-events.jsonl 2.jsonl",
+      "rows": 11,
+      "sha256": "5dd52bae14b67e14cf9d635031d431f01352030088b05db9a9238cbeeb67e0e1"
+    }
+  ],
+  "synthesizedEvents": 0,
+  "time": "2026-11-07T05:07:09.001063+00:00"
+}

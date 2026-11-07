@@ -1,0 +1,84 @@
+{
+  "scope": "scoped offline pilot preparation/release/prefix/interrupted-executor checks; production regression evidence reused from dc228aba",
+  "status": "pass",
+  "command": [
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-pilot32-2026-11-07/check-offline.py"
+  ],
+  "seriesPlanSha256": "0ce8c0fac3aeed115772d7cd0b0a24d9736e2e63a37d8f47853394109b482a7b",
+  "candidateManifestSha256": "e6711d1863472aedadf0f64a6b15c8b8e9b48ed51c09c7341e38eaca478e8319",
+  "result": {
+    "scope": "scoped pilot preparation, release guards, prefix preservation and interrupted-source reconciliation",
+    "checks": 21,
+    "pass": 21,
+    "sourceTraffic": 0,
+    "sourceOutputAbsent": true,
+    "capacityCredit": 0
+  },
+  "wallSeconds": 1.9161162919999999,
+  "peakScratchBytes": 648704,
+  "peakRSSBytes": 115179520,
+  "codeTestIdentity": {
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-pilot32-2026-11-07/README.md": "35fb1ed5dddc125373baca48eaef86eb0821158a75bcf278dc14b341e5e2726c",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-pilot32-2026-11-07/actual-event-history.mjs": "097a2fb56eeca20ef431ed1e9299c049bd4d36b66a5a933276aabb352e888cd4",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-pilot32-2026-11-07/check-offline.py": "d00cbc594daf6630bac02dd61f78e4fd78e244b9bb55c223e7c2e0e4b07bdc40",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-pilot32-2026-11-07/check-prepared.mjs": "f0b9a2c83640c6853e3325db090835e308e20323b126418da835d66e2d9e84eb",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-pilot32-2026-11-07/live-check.test.mjs": "5ce42a17c6e4c756ce930e55c58c3b67dca87b7a8c218f94ab9fd296125e4f6b",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-pilot32-2026-11-07/parent-release.example.json": "bdfedd5d2ad6b76012b6be8af586931e22bd1f30e8df7fd004fb17c063104529",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-pilot32-2026-11-07/prepare-session.py": "9e3d4d974431a9b16836a61d0bdf0ecfafcc5ed4ef4b20c779ad1fff2ae4ed60",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-pilot32-2026-11-07/prepare.py": "e17fd7a36163e57e1e27364775e9b2cc17c68f75b6d3c0cbffaac5ecdb6bd737",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-pilot32-2026-11-07/reconcile-retained.py": "62b74b2092d310f532a731b8c61b8a223b80241da743c1278d9d5e5a094202ac",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-pilot32-2026-11-07/release-context.py": "a67aabc52153ead3ade05df1e91ca4361c59c0fc36566cf78209bb19d09f21d2",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-pilot32-2026-11-07/run-live.mjs": "d846533139701d01cbdc1a23e30d423aac99eea0a42e1e99724e2b6852ff2fc1",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-pilot32-2026-11-07/run-series.py": "99c0d039664073a0c02ca7e7d749c50d7997aa6555a91b2dbc55e545fdd97ee3",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-pilot32-2026-11-07/series-plan.json": "0ce8c0fac3aeed115772d7cd0b0a24d9736e2e63a37d8f47853394109b482a7b",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-pilot32-2026-11-07/supervise.py": "9309bd55f90ef18cd0f33620465308e63093ce1b0ef827d1cf029cf44c4de965",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-pilot32-2026-11-07/verify-retained.py": "fb5863ec4ac86730d95cfef93bdbb2b1874d98e95ab14f8dcb08752748707b74",
+    "scripts/gcsp/bmw-public-registration.mjs": "b4eed688fff481af4d422f3612be71184df689ff943fef3d339dc9392a960460",
+    "scripts/gcsp/bmw-selection-binding.mjs": "480f1e3d1496bcb8d808ec75839634808a2923cdbf8411df61b0f819bdec3f38",
+    "scripts/gcsp/capture-bmw-selection.mjs": "14c255be3696d8d0512d9d4ddc03f24bae138d83f4d548bd813b07d1a5eb9892",
+    "scripts/gcsp/collection-session.mjs": "bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790",
+    "scripts/gcsp/public-bmw-source.mjs": "14600d91932c33b691801197ea28812c98bb08ea9603f293829ffeff09b48235",
+    "server/test/gcsp-bmw-model-batch.test.js": "818bb46fc261093d1e5dd70c2c5c5e27f172e654f67fa80db9d3e4c2b6cdfa1a"
+  },
+  "cleanup": {
+    "groupsAbsent": true,
+    "openFilesAbsent": true,
+    "scratchAbsent": true,
+    "dependencyLinkAbsent": true,
+    "reservationAbsent": true,
+    "removedBytes": 590336
+  },
+  "ownershipManifests": [
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f58/f70-optional-axis/pilot-prepared/ownership/e178524ddb0045b7b1b1bb4db6f66562.json",
+      "root": "/private/tmp/test-stamp-shard-e178524ddb0045b7b1b1bb4db6f66562",
+      "state": "removed",
+      "scratchAbsent": true,
+      "peakBytes": 648704
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f58/f70-optional-axis/pilot-prepared/ownership/71e6993dd87c468dafd7f9eae19c7d14.json",
+      "root": "/private/tmp/test-stamp-shard-71e6993dd87c468dafd7f9eae19c7d14",
+      "state": "removed",
+      "scratchAbsent": true,
+      "peakBytes": 200800
+    }
+  ],
+  "initialFailedCheck": {
+    "stage": "offline typed request reconstruction",
+    "issue": "Node path.join prepended repository path to an absolute OneDrive source pin",
+    "resolution": "resolve absolute source pins explicitly; final preparation regenerated before any release",
+    "sourceTraffic": 0
+  },
+  "scopeLimitations": [
+    "No live constructibility/novelty evidence",
+    "No global union yet; G42 continuation active",
+    "No source release or capacity credit",
+    "Historical outer-finalizer finding remains open"
+  ],
+  "compatibilityException": null,
+  "leftovers": []
+}
