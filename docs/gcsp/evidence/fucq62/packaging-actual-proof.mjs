@@ -30,7 +30,7 @@ try {
   downloaded = await restoreFleetRelease({ releaseId: release.releaseId, store: downloadStore, cacheRoot: downloadCache, offline: false,
     fetchImpl: async (url) => { downloadCalls++; const asset = release.assets.find((a) => a.url === url); assert.ok(asset);
       return new Response(await readFile(join(cache, release.releaseId, asset.path))); } });
-  assert.equal(downloaded.externalCalls, release.assets.length); assert.equal(downloadCalls, release.assets.length);
+  assert.equal(downloaded.externalCalls, release.assets.filter((a) => a.bytes > 0).length); assert.equal(downloadCalls, release.assets.filter((a) => a.bytes > 0).length);
   assert.deepEqual(await readFile(join(downloadStore, 'active.json')), original.active);
   assert.deepEqual(await readFile(join(downloadStore, 'identity-inventory.json')), original.inventory);
   await rm(downloadCache, { recursive: true }); await rm(downloadStore, { recursive: true });

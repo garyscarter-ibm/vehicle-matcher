@@ -57,3 +57,18 @@ test('one approved release CDN redirect retains exact hash and original exclusiv
   await assert.rejects(downloadAsset(asset, p, { fetchImpl: async () => new Response(bytes) }));
   assert.deepEqual(await readFile(p), bytes);
 });
+test('zero-byte descriptor assets require the exact empty checksum', () => {
+  assert.throws(() => validateRelease({ ...fixture(), assets: [{ ...asset, bytes: 0 }] }));
+  assert.equal(validateRelease({ ...fixture(), assets: [{ ...asset, bytes: 0, sha256: hash('') }] }).assets[0].bytes, 0);
+});
+test('zero-byte exact assets materialize exclusively without transport; other digests fail closed', async (t) => {
+  const p = await destination(t); let calls = 0;
+  const fetchImpl = async () => { calls++; throw new Error('empty asset must not fetch'); };
+  await assert.rejects(downloadAsset({ ...asset, bytes: 0 }, p, { fetchImpl }));
+  await assert.rejects(stat(p), { code: 'ENOENT' });
+  await downloadAsset({ ...asset, bytes: 0, sha256: hash('') }, p, { fetchImpl });
+  assert.equal((await readFile(p)).length, 0); assert.equal(calls, 0);
+  await writeFile(p, 'existing caller file');
+  await assert.rejects(downloadAsset({ ...asset, bytes: 0, sha256: hash('') }, p, { fetchImpl }));
+  assert.equal(await readFile(p, 'utf8'), 'existing caller file'); assert.equal(calls, 0);
+});
