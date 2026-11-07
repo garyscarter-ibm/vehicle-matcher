@@ -1,0 +1,482 @@
+{
+  "story": "FUCQ-96",
+  "status": "paused at human travel checkpoint; scoped tests passed; story incomplete",
+  "scope": "direct supervised scoped proof; no stamp; cached base identity",
+  "base": "f16c4111bac15fe23c7f7e04c6757cf5ef5e338a",
+  "recordedAt": "2026-11-05T17:36:51.682041+00:00",
+  "codeIdentity": "a63b0dcbb78ada5aa7ec1fb4c4affba0a51b526dfb6179b46ea3e1fbd1e5e464",
+  "sourceHashes": {
+    "server/gcsp/allocation/index.js": "41a2408c17574102891344fcc57f3df56a046199c896037b58b28d00fbab2dc5",
+    "server/gcsp/identity/index.js": "6997dcdb24f4bb4bc7388394229d6a4e219e4aa46f4662b64aca4c6ecb447732",
+    "server/test/helpers/gcsp-allocation.js": "3bba47f7d55308bc2c3a440f2a7b47d2a6a8105813e65d9b75632a16c2d51dc7",
+    "server/test/gcsp-allocation.test.js": "2c9a498c5c132565a4733629717281861570fdd592839e38d287e755ccd371c5",
+    "server/test/gcsp-identity-allocation.test.js": "838a5f13252927b81a0af80cc20bce718a429a674280933747aa92692b4cabdc"
+  },
+  "checks": [
+    {
+      "label": "admitted-identity-allocation-2",
+      "module": "server/test/gcsp-identity-allocation.test.js",
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-identity-allocation.test.js"
+      ],
+      "totals": {
+        "tests": 3,
+        "pass": 3,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "cases": [
+        {
+          "name": "trusted presenter derives frozen employee context with configured scheme authority only",
+          "milliseconds": 292.769042
+        },
+        {
+          "name": "cohort resolution rejects forged, nonpresenter, unknown and cross-run authority",
+          "milliseconds": 229.301208
+        },
+        {
+          "name": "derived employee authority expires with controller and refuses a reset run",
+          "milliseconds": 465.465
+        }
+      ],
+      "wallSeconds": 1.5297496669991233,
+      "maxSampledRssBytes": 197853184,
+      "scratchPeakBytes": 0,
+      "codeIdentity": "a63b0dcbb78ada5aa7ec1fb4c4affba0a51b526dfb6179b46ea3e1fbd1e5e464",
+      "sourceUnchanged": true,
+      "environmentHash": "b7edd1260146089c1c2f81b583bc687c72e3663545c961b8927f0c768c3d9bc8",
+      "nodeHash": "1ef99ea25fe70c9b67e7efe768ef8ee22148d3cabc703db6131b57aeb617d040",
+      "dependencyFileCount": 139,
+      "dependencyTargetIdentity": {
+        "device": 16777230,
+        "inode": 228290152,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules"
+      },
+      "dependencyUnchanged": true,
+      "scratchRoot": "/private/tmp/test-stamp-shard-ffb142c08a25437ead3f98630f6e487d",
+      "ownershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq96-20261105-allocation-core/ownership/ffb142c08a25437ead3f98630f6e487d.json",
+      "reservationReleased": true,
+      "overlayRemoved": true
+    },
+    {
+      "label": "admitted-allocation-1",
+      "module": "server/test/gcsp-allocation.test.js",
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-allocation.test.js"
+      ],
+      "totals": {
+        "tests": 13,
+        "pass": 13,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "cases": [
+        {
+          "name": "three employees compete deterministically for scarce exact cars, one each",
+          "milliseconds": 1314.034791
+        },
+        {
+          "name": "changing the canonical tie-break key changes the winner",
+          "milliseconds": 921.408583
+        },
+        {
+          "name": "claim conflict and stale version fall through to the next appropriate candidate",
+          "milliseconds": 2085.395042
+        },
+        {
+          "name": "replaying an event after service recreation returns original outcome without another claim",
+          "milliseconds": 652.08
+        },
+        {
+          "name": "unchanged decline excludes exact car; expiry has no dislike or priority",
+          "milliseconds": 901.430834
+        },
+        {
+          "name": "recorded run preserves stock, brief, policy, quote, reason and clock versions",
+          "milliseconds": 585.422458
+        },
+        {
+          "name": "uncertain claim retains pending plan and retries the same operation and quote",
+          "milliseconds": 497.369083
+        },
+        {
+          "name": "same-event retry reads repaired source after a rejected pre-plan snapshot",
+          "milliseconds": 658.904583
+        },
+        {
+          "name": "absent dependency, forged controller and unsupported policy fail closed",
+          "milliseconds": 310.263958
+        },
+        {
+          "name": "pause and consent are current; search-only consent evaluates without claiming",
+          "milliseconds": 256.374417
+        },
+        {
+          "name": "relevant confirmed preference change reopens decline; provenance-only version does not",
+          "milliseconds": 833.214791
+        },
+        {
+          "name": "already allocated entitlement is excluded even when no hold remains active",
+          "milliseconds": 522.857208
+        },
+        {
+          "name": "missing exact availability evidence stays unsuitable and empty stock is a completed no-assignment",
+          "milliseconds": 820.193208
+        }
+      ],
+      "wallSeconds": 11.400098333000642,
+      "maxSampledRssBytes": 226623488,
+      "scratchPeakBytes": 0,
+      "codeIdentity": "a63b0dcbb78ada5aa7ec1fb4c4affba0a51b526dfb6179b46ea3e1fbd1e5e464",
+      "sourceUnchanged": true,
+      "environmentHash": "28ec5d5e07fd76881e993b9cc590512e2d6ae0a3d1505e0c4f02d4eeca1fd816",
+      "nodeHash": "1ef99ea25fe70c9b67e7efe768ef8ee22148d3cabc703db6131b57aeb617d040",
+      "dependencyFileCount": 139,
+      "dependencyTargetIdentity": {
+        "device": 16777230,
+        "inode": 228290152,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules"
+      },
+      "dependencyUnchanged": true,
+      "scratchRoot": "/private/tmp/test-stamp-shard-e8b9e414dfb6449f9c45ee7383decae3",
+      "ownershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq96-20261105-allocation-core/ownership/e8b9e414dfb6449f9c45ee7383decae3.json",
+      "reservationReleased": true,
+      "overlayRemoved": true
+    },
+    {
+      "label": "admitted-recommendation-1",
+      "module": "server/test/employee-recommendation.test.js",
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/employee-recommendation.test.js"
+      ],
+      "totals": {
+        "tests": 25,
+        "pass": 25,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "cases": [
+        {
+          "name": "trusted budget opt-out ranks price-free exact cars and leaves retail budget filtering intact",
+          "milliseconds": 2.613417
+        },
+        {
+          "name": "absent configuration and source failures are unavailable, not empty stock",
+          "milliseconds": 90.859084
+        },
+        {
+          "name": "unsupported context and mismatched run or employee fail closed",
+          "milliseconds": 166.437375
+        },
+        {
+          "name": "request whitelist blocks authority, profile downgrade and strategic inference fields",
+          "milliseconds": 392.068417
+        },
+        {
+          "name": "exact decisions preserve source evidence and terms before final display cap",
+          "milliseconds": 41.844667
+        },
+        {
+          "name": "matrix exclusions and monthly points gate before high preference scores",
+          "milliseconds": 27.99425
+        },
+        {
+          "name": "confirmed essentials need exact evidence; inferred and model-reference facts never prove fit",
+          "milliseconds": 119.877333
+        },
+        {
+          "name": "equipment is checked on the exact car rather than sibling configuration union",
+          "milliseconds": 24.813708
+        },
+        {
+          "name": "plug-in charging gate uses confirmed employee facts and canonical assumption",
+          "milliseconds": 74.608625
+        },
+        {
+          "name": "required timing and current availability use injected time and cannot widen provider deadline",
+          "milliseconds": 52.446875
+        },
+        {
+          "name": "unknown eligibility, points and availability stay explicit confirmation outcomes",
+          "milliseconds": 49.747875
+        },
+        {
+          "name": "separate importance and indifference change computed preference order",
+          "milliseconds": 78.550292
+        },
+        {
+          "name": "unconfirmed preferences do not silently override stated requirements",
+          "milliseconds": 22.111583
+        },
+        {
+          "name": "source snapshots are immutable and equivalent provider shapes compute equivalent decisions",
+          "milliseconds": 52.071416
+        },
+        {
+          "name": "central one-entry policy revision changes affordability and preserves pinned historical explanation",
+          "milliseconds": 246.802875
+        },
+        {
+          "name": "unavailable employee facts and missing calibration fail explicitly rather than becoming empty stock",
+          "milliseconds": 130.221375
+        },
+        {
+          "name": "server-supplied carrying essentials cannot be removed or weakened by the request",
+          "milliseconds": 26.810083
+        },
+        {
+          "name": "driver eligibility uses supplied synthetic facts and unknown never qualifies",
+          "milliseconds": 98.627916
+        },
+        {
+          "name": "unregistered prototype names are invalid brief keys and never resolve a policy dimension",
+          "milliseconds": 35.159042
+        },
+        {
+          "name": "malformed or VIN-bearing stock is source failure, not a computed absence",
+          "milliseconds": 141.182875
+        },
+        {
+          "name": "unsupported fuel facts require confirmation even with a matching body preference",
+          "milliseconds": 33.2155
+        },
+        {
+          "name": "comfort, fuel, economy and compact-size preferences exercise the reused curves",
+          "milliseconds": 169.183958
+        },
+        {
+          "name": "critical employee facts need complete provenance before asserting suitability",
+          "milliseconds": 227.551
+        },
+        {
+          "name": "no-stock outcome still preserves brief, facts, policy, stock and clock versions",
+          "milliseconds": 22.574833
+        },
+        {
+          "name": "conflicting canonical slider scales are explicitly unavailable for Brief schema v1",
+          "milliseconds": 41.276292
+        }
+      ],
+      "wallSeconds": 3.2617610830020567,
+      "maxSampledRssBytes": 214319104,
+      "scratchPeakBytes": 0,
+      "codeIdentity": "a63b0dcbb78ada5aa7ec1fb4c4affba0a51b526dfb6179b46ea3e1fbd1e5e464",
+      "sourceUnchanged": true,
+      "environmentHash": "04f26112c88607722c3ac9489ef4c32d52fb8909bb381941867f6914b2b07b33",
+      "nodeHash": "1ef99ea25fe70c9b67e7efe768ef8ee22148d3cabc703db6131b57aeb617d040",
+      "dependencyFileCount": 139,
+      "dependencyTargetIdentity": {
+        "device": 16777230,
+        "inode": 228290152,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules"
+      },
+      "dependencyUnchanged": true,
+      "scratchRoot": "/private/tmp/test-stamp-shard-2520a9ccafc74f6685b5cc426754f70d",
+      "ownershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq96-20261105-allocation-core/ownership/2520a9ccafc74f6685b5cc426754f70d.json",
+      "reservationReleased": true,
+      "overlayRemoved": true
+    },
+    {
+      "label": "admitted-identity-boundary-1",
+      "module": "server/test/gcsp-identity.test.js",
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-identity.test.js"
+      ],
+      "totals": {
+        "tests": 19,
+        "pass": 19,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "cases": [
+        {
+          "name": "configured fictional people seed once per run, with exact policy-owned scheme/grade/slot",
+          "milliseconds": 102.627542
+        },
+        {
+          "name": "sessions require a successful shared gate and distinguish missing, unknown and expired",
+          "milliseconds": 48.696959
+        },
+        {
+          "name": "session cookies are HttpOnly and secure; storage and transaction receipts contain only credential hashes",
+          "milliseconds": 23.091833
+        },
+        {
+          "name": "browser identity fields cannot replace the server context or forge a trusted context",
+          "milliseconds": 23.199583
+        },
+        {
+          "name": "Greg and presenter permissions stay separate from each selected acting person",
+          "milliseconds": 25.916459
+        },
+        {
+          "name": "brief, hold and offer access uses persisted ownership for each read and write",
+          "milliseconds": 30.257916
+        },
+        {
+          "name": "reset makes old sessions, contexts and resource commands stale, then seeds the new run",
+          "milliseconds": 48.466292
+        },
+        {
+          "name": "changing canonical lifetime affects new cookies, with no identity fallback defaults",
+          "milliseconds": 93.536083
+        },
+        {
+          "name": "unknown configured principal and repository outage are explicit session outcomes",
+          "milliseconds": 21.337042
+        },
+        {
+          "name": "every GCSP HTTP handler gets one server context and rejects query/body identity spoofing",
+          "milliseconds": 187.492709
+        },
+        {
+          "name": "HTTP role guards refuse each Greg operation and presenter reset/tick before handlers run",
+          "milliseconds": 160.673292
+        },
+        {
+          "name": "HTTP principal switching sends credentials only in HttpOnly cookies, without URL or response tokens",
+          "milliseconds": 45.254375
+        },
+        {
+          "name": "shared DEMO_ACCESS_KEY gate runs before identity and retail routes keep their response",
+          "milliseconds": 131.259042
+        },
+        {
+          "name": "identity port replacement requires no route change and absent contexts fail closed",
+          "milliseconds": 121.356125
+        },
+        {
+          "name": "unconfigured identity and provider errors fail closed without affecting retail or leaking errors",
+          "milliseconds": 142.040417
+        },
+        {
+          "name": "HTTP resource guards refuse another employee and stale runs before the consumer executes",
+          "milliseconds": 203.582084
+        },
+        {
+          "name": "backend presentation fixtures retain the context and distinct safe refusal shapes",
+          "milliseconds": 217.343875
+        },
+        {
+          "name": "malformed HTTP bodies and browser credentials in URLs are refused without executing consumers",
+          "milliseconds": 38.427541
+        },
+        {
+          "name": "GCSP supports credentialed static-site requests only from exact configured origins; retail CORS is preserved",
+          "milliseconds": 305.793958
+        }
+      ],
+      "wallSeconds": 2.4762935420003487,
+      "maxSampledRssBytes": 258179072,
+      "scratchPeakBytes": 0,
+      "codeIdentity": "a63b0dcbb78ada5aa7ec1fb4c4affba0a51b526dfb6179b46ea3e1fbd1e5e464",
+      "sourceUnchanged": true,
+      "environmentHash": "bfcd9a5424d156dafb228f2efa78fdf014428af071c5589400d672b3ddda3941",
+      "nodeHash": "1ef99ea25fe70c9b67e7efe768ef8ee22148d3cabc703db6131b57aeb617d040",
+      "dependencyFileCount": 139,
+      "dependencyTargetIdentity": {
+        "device": 16777230,
+        "inode": 228290152,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules"
+      },
+      "dependencyUnchanged": true,
+      "scratchRoot": "/private/tmp/test-stamp-shard-76232bb47932484a93dd9393a20160e4",
+      "ownershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq96-20261105-allocation-core/ownership/76232bb47932484a93dd9393a20160e4.json",
+      "reservationReleased": true,
+      "overlayRemoved": true
+    }
+  ],
+  "selectedTotals": {
+    "tests": 60,
+    "passed": 60,
+    "failed": 0,
+    "skipped": 0,
+    "newCasesPassed": 16,
+    "boundaryCasesPassed": 44
+  },
+  "earlierFailure": {
+    "label": "admitted-identity-allocation-1",
+    "passed": 2,
+    "failed": 1,
+    "reason": "Test expected2 sessions although fixture creates1. Fixed to assert complete session records unchanged across derived-context resolution.",
+    "resolvedBy": "admitted-identity-allocation-2",
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq96-20261105-allocation-core/admitted-identity-allocation-1.log"
+  },
+  "cleanup": {
+    "ownedRoots": [
+      "/private/tmp/test-stamp-shard-6a0e5f4c7ab14b4f97b0f729a8569729",
+      "/private/tmp/test-stamp-shard-faa06970c9ce4fb29a020ec3702fc8b0",
+      "/private/tmp/test-stamp-shard-ff0d126694014326bd13abcd24912fb7",
+      "/private/tmp/test-stamp-shard-e8b9e414dfb6449f9c45ee7383decae3",
+      "/private/tmp/test-stamp-shard-76232bb47932484a93dd9393a20160e4",
+      "/private/tmp/test-stamp-shard-ffb142c08a25437ead3f98630f6e487d",
+      "/private/tmp/test-stamp-shard-93a79583c7294069a37f8f807534b368",
+      "/private/tmp/test-stamp-shard-4f8c1684d02249ff9d1ce99c33fed73e",
+      "/private/tmp/test-stamp-shard-2520a9ccafc74f6685b5cc426754f70d",
+      "/private/tmp/test-stamp-shard-6ffa9f309e9543b9a9d89d202f010f57"
+    ],
+    "allOwnedRootsAbsent": true,
+    "ownedProcessGroupsAbsent": true,
+    "activeOwnedReservations": 0,
+    "overlayAbsent": true,
+    "scratchAllocationBytesRemoved": 0,
+    "compatibilityException": "none",
+    "largeOutputsCreated": 0,
+    "leftovers": []
+  },
+  "remaining": [
+    "F92/F91 trigger registration and trusted backend startup identity composition",
+    "F100 actual transactional claim/hold/offer/outbox authority",
+    "source-backed availabilityUntil",
+    "updated-base/contracts integration after helper refresh",
+    "final serial npm test and required stamp after actual integration"
+  ],
+  "excluded": [
+    "external network",
+    "native SQL",
+    "credentials",
+    "installs",
+    "UI",
+    "full suite",
+    "helper/Git/test_stamp commands"
+  ],
+  "resume": "Human pause: start no new chunks, descendants or integration until resumed. Parent owns helper-refresh verification, checkpoint commits, Jira and integration.",
+  "successfulLogsSummarizedAndRemoved": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq96-20261105-allocation-core/admitted-identity-allocation-2.log",
+      "bytes": 413
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq96-20261105-allocation-core/admitted-allocation-1.log",
+      "bytes": 1376
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq96-20261105-allocation-core/admitted-recommendation-1.log",
+      "bytes": 2606
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq96-20261105-allocation-core/admitted-identity-boundary-1.log",
+      "bytes": 2160
+    }
+  ]
+}

@@ -916,6 +916,10 @@ export function buildServer(deps = {}) {
       const registered = await deps.gcspBuddy.start();
       if (registered.status !== 'ok') return registered;
     }
+    if (deps.gcspAllocation) {
+      const registered = await deps.gcspAllocation.register();
+      if (registered.status !== 'ok') return registered;
+    }
     if (deps.gcspManualOrder) {
       const ordering = await deps.gcspManualOrder.registerClockHandler();
       if (ordering.status !== 'ok') return ordering;

@@ -160,7 +160,11 @@ test('actual buddy capture and token access preserve timing, guards and exact-de
   const expired = await request(f.server, path, { session }); assert.equal(expired.json.value.state, 'expired'); assert.deepEqual(expired.json.value.availableActions, []);
   await tick(f);
   assert.equal(good(await f.repository.read(f.contexts.paula, ref(f.contexts.paula, 'holds', { holdId: allocated.hold.holdId }))).state, 'expired');
-  assert.equal(good(await f.repository.read(f.contexts.paula, ref(f.contexts.paula, 'stock', { orderUuid: f.car.orderUuid }))).state, 'released');
+  // The returned car re-enters the pool; the composed FUCQ-96 allocator may re-offer it in the same tick.
+  const reoffered = f.store.state.tables.holds.filter((row) => row.orderUuid === f.car.orderUuid && row.state === 'active');
+  assert.ok(reoffered.every((row) => row.holdId !== allocated.hold.holdId && row.type === 'buddy-offer'));
+  assert.equal(good(await f.repository.read(f.contexts.paula, ref(f.contexts.paula, 'stock', { orderUuid: f.car.orderUuid }))).state,
+    reoffered.length ? 'held' : 'released');
   assert.equal(f.store.state.tables.decisions.length, 0);
 });
 
