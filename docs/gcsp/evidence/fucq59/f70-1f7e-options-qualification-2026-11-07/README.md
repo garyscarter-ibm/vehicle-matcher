@@ -1,6 +1,6 @@
 # F70 1F7E explicit-trim options qualification, prepared 7 November 2026
 
-Status: prepared and unspent. All six scoped offline safety checks passed with zero skipped checks; no source traffic is released.
+Status: the parent independently released and spent this allocation once. All six preparation checks and all five retained actual-source checks passed, with zero skipped checks. Never rerun the live command.
 
 This allocation uses the unchanged `f59-options-qualification-20261107.v1` capability. Model `1F7E`, AG `82GE`, F70, full alias set `["1"]`, GB/en-GB and literal RL are pinned with catalogue/order date `2026-11-01` and effect date `2027-01-05`. Its explicit trim is `S033B`.
 
@@ -13,3 +13,7 @@ Limits are 4 MiB aggregate decoded bytes, 1 MiB per response, 90 seconds source/
 FUCQ-151 and FUCQ-154 remain separately prioritised Medium defects. The parent owns manual reconciliation if a supervisor is killed. No acceptance, publication or runtime integration is established.
 
 Offline validation took 0.476080 seconds, used 614,560 bytes of disposable scratch and peaked at 109,936,640 bytes RSS. The retained result and cleanup receipt are recorded in `validation.json`: process groups, scratch, dependency link and reservations are absent, all tested identities stayed unchanged, and no compatibility exception remains. No live or full-suite result is implied.
+
+The actual run completed four HTTP200 GETs and decoded 884,390 bytes in 1,238 source milliseconds (1.470238 seconds supervisor wall; sampled peak RSS 83,230,720 bytes). The retained primary SHA is `875f29d233dc2a4d4d2d5ec3b7c7292d2e43eb86e12d473287c3565238a258f3`. All 240 typed definitions are source literals: 13 paints, five fabrics and three rims; `S033B` is explicitly the package “M Sport Pro”. Source-typed rims are `S01H8`, `S03NA` and `S01H0`; do not copy the prior S0337 model's rim list.
+
+Five retained checks validated the actual strict production binder, every artifact/source event and frozen pin, exact four requests, privacy, spent marker and zero-admission boundary. Live and verifier cleanup receipts prove process groups, scratch, reservations, dependency link and writer metadata absent, with no compatibility exception. The verifier removed 368,736 bytes of owned scratch. `live-validation.json` records the bounded evidence. This options-only observation adds no configurations; cumulative admitted capacity remains 349. No publication, runtime integration or acceptance is established.
