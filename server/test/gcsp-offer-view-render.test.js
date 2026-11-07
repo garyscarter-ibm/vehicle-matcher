@@ -160,7 +160,7 @@ test('partial model and provenance use text nodes for untrusted display strings'
 test('published decline-only DTO updates mounted actions and accessible explanation without resetting the hold countdown', async () => {
   const initial = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/producer-access.json', import.meta.url), 'utf8'));
   const decline = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/producer-decline-access.json', import.meta.url), 'utf8'));
-  let dto = initial; const calls = [];
+  let dto = { ...initial, handoff: offerFixture('handoff-replacement').value.handoff }; const calls = [];
   const adapter = createOfferHttpAdapter({ location: { href: `https://example.test/gcsp/offer?offerId=${dto.offerId}` },
     fetch: async () => ({ ok: true, headers: { get: () => 'application/json' }, json: async () => ({ status: 'ok', value: dto }) }) });
   // Contract spy only; no actual FUCQ-106 command or successful decision is claimed.
@@ -169,10 +169,11 @@ test('published decline-only DTO updates mounted actions and accessible explanat
   const root = document.createElement('div'); document.body.append(root);
   const view = createOfferView(root, { decide: c.decision }); const unsubscribe = c.subscribe(view.update);
   try {
-    await c.refresh(); const accept = root.querySelector('[data-offer-action="accept"]'); accept.focus();
+    await c.refresh(); for (const id of ['terms', 'driver', 'return']) c.tickDeclaration(id, true);
+    const accept = root.querySelector('[data-offer-action="accept"]'); accept.focus();
     const declineButton = root.querySelector('[data-offer-action="decline"]'); const card = root.querySelector('.vm-card');
     assert.equal(accept.disabled, false); assert.equal(declineButton.disabled, false);
-    dto = decline; await c.refresh();
+    dto = { ...decline, handoff: dto.handoff }; await c.refresh(); // Same handoff, so only the clock read changes.
     assert.equal(root.querySelector('[data-offer-action="accept"]'), accept); assert.equal(root.querySelector('.vm-card'), card);
     assert.equal(accept.disabled, true); assert.equal(declineButton.disabled, false); assert.equal(document.activeElement, declineButton);
     const reason = root.querySelector(`#${accept.getAttribute('aria-describedby')}`);
@@ -194,4 +195,74 @@ test('scoped offer sources and harness obey embed CSP and composition styling bo
   const css = await readFile(new URL('../../blocks/gcsp/offer/gcsp-offer.css', import.meta.url), 'utf8');
   assert.doesNotMatch(css, /\.vm-card|\.vm-btn|#[\da-f]{3,8}\b/i);
   assert.match(css, /minmax\(0, 1fr\)/);
+});
+
+const stageText = (root) => [...root.querySelectorAll('.gcsp-stage-item')].map((row) => [...row.children].map((node) => node.textContent));
+async function mountFixture(name, decide) {
+  const root = document.createElement('div'); document.body.append(root);
+  const c = createOfferController({ read: async () => offerFixture(name), decide, readReasons: async () => ({ status: 'unavailable' }) });
+  const view = createOfferView(root, { decide: c.decision, tickDeclaration: c.tickDeclaration });
+  const unsubscribe = c.subscribe(view.update); await c.refresh();
+  return { root, c, stop: () => { unsubscribe(); c.destroy(); view.destroy(); } };
+}
+
+test('before accepting, the handoff shows contact, return car, wording and one checkbox per declaration gating Accept', async () => {
+  const calls = []; const { root, c, stop } = await mountFixture('handoff-replacement', async (input) => { calls.push(input); return { status: 'ok' }; });
+  try {
+    const group = root.querySelector('[aria-label="Before you accept"]');
+    assert.equal(group.querySelector('h2').textContent, 'Before you accept');
+    for (const text of ['07700 900123', 'paula@example.invalid', 'G20 320d M Sport', '31 December 2026', '41,250 miles', 'Fictional demonstration terms']) assert.match(group.textContent, new RegExp(text));
+    const boxes = [...group.querySelectorAll('input[type="checkbox"]')];
+    assert.equal(boxes.length, 3); assert.ok(boxes.every((box) => box.labels[0].textContent.length > 10 && !box.checked));
+    const accept = root.querySelector('[data-offer-action="accept"]'); assert.equal(accept.disabled, true);
+    assert.match(root.textContent, /Tick each declaration to accept this offer\./);
+    for (const box of boxes.slice(0, 2)) { box.checked = true; box.dispatchEvent(new window.Event('change', { bubbles: true })); }
+    assert.equal(accept.disabled, true); assert.equal(root.querySelector('[aria-label="Before you accept"] input'), boxes[0]);
+    boxes[2].checked = true; boxes[2].dispatchEvent(new window.Event('change', { bubbles: true }));
+    assert.equal(accept.disabled, false);
+    boxes[1].checked = false; boxes[1].dispatchEvent(new window.Event('change', { bubbles: true })); assert.equal(accept.disabled, true);
+    boxes[1].checked = true; boxes[1].dispatchEvent(new window.Event('change', { bubbles: true }));
+    accept.click(); await new Promise((resolve) => setTimeout(resolve, 0));
+    assert.equal(calls.length, 1); assert.equal(calls[0].termsDigest, 'synthetic-terms-digest');
+    assert.deepEqual(calls[0].declarations, { terms: true, driver: true, return: true });
+  } finally { stop(); }
+});
+
+test('a handoff blocker names the reason, points to scheme support and offers no Accept', async () => {
+  const { root, stop } = await mountFixture('handoff-blocked', async () => ({ status: 'ok' }));
+  try {
+    const group = root.querySelector('[aria-label="Before you accept"]');
+    assert.match(group.textContent, /valid contact phone and email are needed/); assert.match(group.textContent, /Contact scheme support\./);
+    assert.equal(group.querySelectorAll('input').length, 0);
+    assert.equal(root.querySelector('[data-offer-action="accept"]').hidden, true);
+    assert.equal(root.querySelector('[data-offer-action="decline"]').hidden, false);
+  } finally { stop(); }
+});
+
+for (const [name, headline, stages] of [
+  ['selection-hr', 'Selection received. Waiting for HR approval.', [['selection received', 'Done'], ['HR approval', 'Waiting'],
+    ['sales-manager approval', 'Not started'], ['sent to ordering', 'Not started']]],
+  ['selection-no-hr', 'Selection received. Waiting for sales-manager approval.', [['selection received', 'Done'],
+    ['sales-manager approval', 'Waiting'], ['sent to ordering', 'Not started']]],
+  ['selection-pending', 'Sending your selection. Check again shortly.', [['selection received', 'Sending'], ['HR approval', 'Not started'],
+    ['sales-manager approval', 'Not started'], ['sent to ordering', 'Not started']]],
+  ['selection-failed', 'Your selection was not accepted for ordering. Contact scheme support.', [['selection received', 'Not accepted'],
+    ['HR approval', 'Not started'], ['sales-manager approval', 'Not started'], ['sent to ordering', 'Not started']]],
+]) test(`accepted offer shows the server's stage names and states: ${name}`, async () => {
+  const { root, stop } = await mountFixture(name);
+  try {
+    assert.equal(root.querySelector('h1').textContent, 'Offer accepted');
+    assert.equal(root.querySelector('p.gcsp-note').textContent, headline);
+    assert.deepEqual(stageText(root), stages);
+    assert.equal(root.querySelector('.gcsp-stage-heading').textContent, 'Your selection');
+    assert.match(root.textContent, /Order number0123456/); assert.equal(root.querySelector('[aria-label="Before you accept"]'), null);
+    assert.doesNotMatch(root.textContent, /\bapproved\b/i); assert.equal(root.querySelector('[data-offer-action="accept"]'), null);
+  } finally { stop(); }
+});
+
+test('an accepted offer without a selection record keeps the recorded message and no stage list', async () => {
+  const { root, stop } = await mountFixture('accepted');
+  try {
+    assert.match(root.textContent, /Your selection is recorded\./); assert.equal(root.querySelector('.gcsp-stage-list'), null);
+  } finally { stop(); }
 });

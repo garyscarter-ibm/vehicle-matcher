@@ -19,7 +19,7 @@ import { activityBody } from '../gcsp/activity/activity-body.js';
 import { activityOffer } from '../gcsp/activity/activity-offer.js';
 import { activityFixtures } from '../gcsp/activity/activity-fixtures.js';
 import { activityEvents } from '../gcsp/activity/activity-copy.js';
-import { formControlsExample } from '../gcsp/kit/form-controls-gallery.js';
+import { formControlsExample, stageListExample } from '../gcsp/kit/form-controls-gallery.js';
 import { toManualGallery } from '../gcsp/manual-gallery/gallery-model.js';
 import { createManualGalleryFixture } from '../gcsp/manual-gallery/fixtures.js';
 
@@ -435,7 +435,7 @@ export function mountComponentGallery(root) {
   exactControls.append(legacyButton, refineButton, exactReset);
   exact.append(exactControls, exactCards);
   sections.append(exact);
-  root.append(heading, sections, employeeDecisionExample(), manualGalleryExample(), employeeControlsExample(), gcspExamples(), gregKitExamples(), gregPublishExample(), launcherExamples(), activityExamples(), formControlsExample());
+  root.append(heading, sections, employeeDecisionExample(), manualGalleryExample(), employeeControlsExample(), gcspExamples(), gregKitExamples(), gregPublishExample(), launcherExamples(), activityExamples(), formControlsExample(), stageListExample());
 
   function dispatchBrowse(type, target, reason) {
     const result = reduceFeedback(browseFeedback, {

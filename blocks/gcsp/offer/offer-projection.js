@@ -10,6 +10,8 @@ const positive = (v) => Number.isInteger(v) && v > 0;
 const instant = (v) => text(v) && /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?Z$/.test(v) && Number.isFinite(Date.parse(v))
   && new Date(v).toISOString().slice(0, 19) === v.slice(0, 19);
 const copy = (v) => structuredClone(v);
+const filled = (v) => text(v) && v.trim().length > 0;
+const nullableText = (v) => v === null || filled(v);
 const refuse = () => { throw new TypeError('Invalid offer display response.'); };
 const need = (condition) => { if (!condition) refuse(); };
 const facts = new Set(['eligibilityModelKey', 'body', 'fuel', 'seats', 'doors', 'boot', 'zeroTo62', 'mileage', 'evRange', 'mpg',
@@ -99,6 +101,38 @@ const valueText = (v) => Array.isArray(v) ? v.length ? v.map((entry) => entry ==
 const detailFact = (label, source, missingLabel = 'Not supplied') => ({ label, value: source?.status === 'known' ? valueText(source.value) : null,
   unit: source?.unit, missingLabel, ...(source?.provenance ? { provenance: copy(source.provenance) } : {}) });
 
+const blockers = new Set(['contact-required', 'driver-review-required', 'return-data-required', 'ordering-terms-unavailable']);
+const stageStates = new Set(['complete', 'waiting', 'not-started', 'pending', 'failed']);
+const selectionStates = new Set(['acknowledged', 'handoff-pending', 'handoff-failed']);
+
+/** Pre-accept confirmation inputs. Malformed values refuse the whole view, so Accept cannot be offered on a guess. */
+function handoffView(v) {
+  if (v === undefined || v === null) return null;
+  need(object(v) && v.fictional === true && ['new', 'replacement'].includes(v.mode) && (v.blocker === null || blockers.has(v.blocker))
+    && ['termsVersion', 'termsDigest', 'wording'].every((key) => nullableText(v[key])) && Array.isArray(v.declarations) && v.declarations.length <= 16
+    && v.declarations.every((d) => object(d) && filled(d.id) && filled(d.label)) && new Set(v.declarations.map((d) => d.id)).size === v.declarations.length);
+  need(v.contact === null || object(v.contact) && filled(v.contact.phone) && filled(v.contact.email));
+  const car = v.returnCar;
+  need(car === null || object(car) && nullableText(car.model) && nullableText(car.contractEndDate) && (car.currentOdometer === null
+    || object(car.currentOdometer) && Number.isFinite(car.currentOdometer.value) && car.currentOdometer.value >= 0 && filled(car.currentOdometer.unit)));
+  if (v.blocker === null) need(['termsVersion', 'termsDigest', 'wording'].every((key) => filled(v[key])) && v.declarations.length > 0 && v.contact !== null);
+  return { termsVersion: v.termsVersion, termsDigest: v.termsDigest, wording: v.wording, fictional: true, mode: v.mode, blocker: v.blocker,
+    declarations: v.declarations.map(({ id, label }) => ({ id, label })), contact: v.contact && { phone: v.contact.phone, email: v.contact.email },
+    returnCar: car && { model: car.model, contractEndDate: car.contractEndDate,
+      currentOdometer: car.currentOdometer && { value: car.currentOdometer.value, unit: car.currentOdometer.unit } } };
+}
+
+/** Server-owned stage names and states; approval is never claimed here. */
+function selectionView(v) {
+  if (v === undefined || v === null) return null;
+  need(object(v) && v.schemaVersion === 1 && selectionStates.has(v.selectionState) && v.approved === false && filled(v.current)
+    && Array.isArray(v.stages) && v.stages.length > 0 && v.stages.length <= 8
+    && v.stages.every((stage) => object(stage) && filled(stage.name) && stageStates.has(stage.state))
+    && (v.orderNumber === null || typeof v.orderNumber === 'string' && /^\d{7}$/.test(v.orderNumber)));
+  return { selectionState: v.selectionState, current: v.current, orderNumber: v.orderNumber,
+    stages: v.stages.map(({ name, state }) => ({ name, state })) };
+}
+
 const comparisonFields = { configuration: 'Configuration', body: 'Body', fuel: 'Fuel', seats: 'Seats', boot: 'Boot',
   mpg: 'MPG', zeroTo62: '0–62 mph', points: 'Points a month' };
 const sourceModes = { synthetic: 'Synthetic', 'dated-snapshot': 'Dated snapshot', 'authorised-live': 'Authorised live' };
@@ -182,16 +216,18 @@ export function toOfferPresentation(envelope, { reference } = {}) {
       briefVersion: q.briefVersion, policyVersion: q.policyVersion, quotedAt: q.quotedAt, validUntil: q.validUntil, revisions,
       facts: snapshot(q.facts, q.orderUuid), decision: decision(q.decision), terms: terms(q.terms), allowance: allowance(q.allowance) };
     need(JSON.stringify(quote.allowance) === JSON.stringify(quote.terms.allowanceInputs));
+    const handoff = handoffView(v.handoff); const selection = selectionView(v.selection);
+    need((handoff === null || v.state === 'pending') && (selection === null || v.state === 'accepted'));
     const currentCar = currentCarFor(v.comparison, quote.quotedAt);
     const uncertain = v.state === 'pending' && ['decision-pending', 'release-pending'].includes(v.reason);
-    const actions = { accept: !uncertain && v.availableActions.includes('accept'), decline: !uncertain && v.availableActions.includes('decline') };
+    const actions = { accept: !uncertain && v.availableActions.includes('accept') && handoff !== null && handoff.blocker === null, decline: !uncertain && v.availableActions.includes('decline') };
     return { status: 'ok', value: { state: uncertain ? 'uncertain' : v.state, reason: v.reason,
       ...(uncertain ? { message: v.reason === 'release-pending' ? 'The release is being confirmed. Actions are unavailable.'
         : 'Your decision is being confirmed. Actions are unavailable.' } : {}),
       reference: { offerId: v.offerId, runId: v.runId, offerVersion: v.offerVersion, holdVersion: v.holdVersion,
         quoteVersion: revisions.quote },
       now: v.serverNow, clockVersion: v.clockVersion, expiresAt: v.expiresAt, actionable: v.state === 'pending' && !uncertain,
-      actions, card: cardFor(quote), comparisonAvailable: currentCar?.facts.some((row) => row.value !== null) === true, currentCar,
+      actions, handoff, selection, card: cardFor(quote), comparisonAvailable: currentCar?.facts.some((row) => row.value !== null) === true, currentCar,
       followup: followupHandle(v.followup, ['rejected', 'declined'].includes(v.offerState) && v.holdState === 'released' ? v.state : null) } };
   } catch { return { status: 'unavailable', retryable: true }; }
 }

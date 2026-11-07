@@ -232,3 +232,40 @@ test('the buddy handoff keeps contact, driver and return-data checks', async (t)
     assert.equal(operations(f).length, 0); assert.equal(authority(f).offer, 'active'); assert.equal(authority(f).hold, 'active');
   }
 });
+
+test('the offer read shows the handoff before accept and the selection progress after, through the runtime', async (t) => {
+  const f = await offered(t); const read = async () => good(await f.offerAccess.read(f.offerContext));
+  const before = await read();
+  assert.equal(before.state, 'pending'); assert.deepEqual(before.availableActions, ['accept', 'decline']); assert.equal(before.selection, null);
+  assert.equal(before.handoff.termsDigest, f.terms.termsDigest); assert.equal(before.handoff.termsVersion, f.terms.termsVersion);
+  assert.equal(before.handoff.fictional, true); assert.equal(before.handoff.mode, 'replacement'); assert.equal(before.handoff.blocker, null);
+  assert.deepEqual(before.handoff.declarations.map((d) => d.id), Object.keys(f.declarations));
+  assert.ok(before.handoff.declarations.every((d) => typeof d.label === 'string' && d.label));
+  assert.match(before.handoff.contact.phone, /\d/); assert.match(before.handoff.contact.email, /@/);
+  assert.ok(before.handoff.returnCar.model); assert.ok(before.handoff.returnCar.contractEndDate);
+  assert.ok(before.handoff.returnCar.currentOdometer.value >= 0); assert.ok(before.handoff.returnCar.currentOdometer.unit);
+  const accepted = good(await accept(f)); assert.equal(accepted.state, 'accepted');
+  const after = await read();
+  assert.equal(after.state, 'accepted'); assert.equal(after.handoff, null); assert.deepEqual(after.availableActions, []);
+  assert.equal(after.selection.selectionState, 'acknowledged'); assert.equal(after.selection.approved, false);
+  assert.equal(after.selection.orderNumber, '9123456'); assert.equal(after.selection.current, 'HR approval');
+  assert.deepEqual(after.selection.stages, [{ name: 'selection received', state: 'complete' }, { name: 'HR approval', state: 'waiting' },
+    { name: 'sales-manager approval', state: 'not-started' }, { name: 'sent to ordering', state: 'not-started' }]);
+  assert.deepEqual(after.selection.stages.map((s) => s.name), STAGES);
+  assert.equal(JSON.stringify(after).includes('"approved":true'), false);
+});
+
+test('the offer read blocks accept with the handoff blocker and shows the configured stage names without HR', async (t) => {
+  const blocked = await offered(t); const context = blocked.contexts.paula;
+  good(await blocked.repository.transaction(context, command('break-contact'), async (tx) => {
+    const found = await tx.get(ref(context, 'employees', { employeeId: context.employeeId }));
+    const manual = structuredClone(found.value.contract.manualContext); manual.account.contact = { phone: 'x', email: 'bad' };
+    return tx.compareAndSwap(ref(context, 'employees', { employeeId: context.employeeId }), found.value.version,
+      { contract: { ...found.value.contract, manualContext: manual } });
+  }));
+  const gated = good(await blocked.offerAccess.read(blocked.offerContext));
+  assert.equal(gated.handoff.blocker, 'contact-required'); assert.equal(gated.handoff.contact, null); assert.deepEqual(gated.availableActions, ['decline']);
+  const f = await offered(t, { policy: await policyWithoutHr() }); good(await accept(f));
+  const { selection } = good(await f.offerAccess.read(f.offerContext));
+  assert.deepEqual(selection.stages.map((s) => [s.name, s.state]), [['selection received', 'complete'], ['sales-manager approval', 'waiting'], ['sent to ordering', 'not-started']]);
+});

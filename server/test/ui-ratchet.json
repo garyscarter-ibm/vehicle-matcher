@@ -16,6 +16,7 @@
     "blocks/demo-launcher/components.js",
     "blocks/gcsp/kit/presenter-bar.js",
     "blocks/gcsp/kit/activity-timeline.js",
+    "blocks/gcsp/kit/stage-list.js",
     "blocks/gcsp/kit/action-menu.js"
   ],
   "extensions": [
@@ -78,6 +79,11 @@
       "flags": "g",
       "use": "activityTimeline({ events }) (blocks/gcsp/kit/activity-timeline.js)"
     },
+    "stage-list": {
+      "re": "el\\('section', 'gcsp-stage-list'",
+      "flags": "g",
+      "use": "stageList({ heading, stages }) (blocks/gcsp/kit/stage-list.js)"
+    },
     "action-menu": {
       "re": "el\\('div', 'gcsp-action-menu'",
       "flags": "g",
@@ -87,7 +93,7 @@
   "stylesheets": [
     {
       "path": "blocks/gcsp/kit/form-controls.css",
-      "max_lines": 16
+      "max_lines": 18
     },
     {
       "path": "blocks/gcsp/manual-setup/gcsp-manual-setup.css",
@@ -172,6 +178,10 @@
     {
       "path": "blocks/gcsp/activity/gcsp-activity.css",
       "max_lines": 28
+    },
+    {
+      "path": "blocks/gcsp/kit/stage-list.css",
+      "max_lines": 11
     },
     {
       "path": "blocks/gcsp/kit/action-menu.css",
