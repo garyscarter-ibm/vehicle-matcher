@@ -873,7 +873,7 @@ export function buildServer(deps = {}) {
   const gregPublish = deps.gcspGregPublish ?? createGregPublishService({ repository: deps.gcspRepository,
     policy: deps.gcspPolicy, clock: deps.gcspClock, identity: deps.gcspIdentity });
   const handleGcsp = createGcspHandler({
-    identity: deps.gcspIdentity,
+    identity: deps.gcspIdentity, prepareEmployee: deps.gcspPrepareEmployee,
     routes: [...createEmployeeRecommendationRoutes(deps.gcspClock && deps.gcspRecommendations
       ? { ...deps.gcspRecommendations, time: deps.gcspClock } : deps.gcspRecommendations),
     ...createClockRoutes(deps.gcspClock), ...createOutboxRoutes(deps.gcspOutbox), ...createScenarioRoutes(deps.gcspScenarios, deps.gcspClock),
@@ -914,6 +914,10 @@ export function buildServer(deps = {}) {
     }
     if (deps.gcspBuddy) {
       const registered = await deps.gcspBuddy.start();
+      if (registered.status !== 'ok') return registered;
+    }
+    if (deps.gcspAllocation) {
+      const registered = await deps.gcspAllocation.register();
       if (registered.status !== 'ok') return registered;
     }
     if (deps.gcspManualOrder) {

@@ -99,3 +99,98 @@ new runtime dependency, live DB or released server/identity/seed lane edit occur
 Next gate: coordinated desktop/375px browser and keyboard evidence against the actual same-origin
 memory runtime, separately labelling injected visual-only states. Authored npm test remains held
 for dispatcher admission. Real release count and full business-scenario reset acceptance remain open.
+
+## Browser lane active
+
+Reviewed checkpoint `3443301` is pushed. Dispatcher granted the coordinated browser lane on
+5 November 2026 at about22:32 GMT: actual same-origin memory runtime/identity/clock/scenarios and
+available HTTP services; desktop1280x900/narrow375x812; keyboard/switch/nonpresenter/reset/
+transport retry/teardown/failure matrix; synthetic visuals explicitly separate. No nativeDB or
+full-suite grant. Source is frozen while the existing UI implementer prepares and runs the proof
+harness. Fresh implementer tier22:31:21 requested/selected Sol/medium; existing effective settings
+unchanged, no fallback. Count telemetry can_start0/free7.4GB; established measured-resource override
+admits this sole child; execution still requires fresh HostBudget2560MiB/min2048 and supervised120s
+chunks,128MiB scratch,2MiB logs,recursive Chrome/detached process/profile/server-port teardown.
+Parent owns capture review, independent filesystem receipts and exact dependency symlink cleanup.
+
+Full stamp status currently none: exact owned temporary dependency symlinks appear as untracked
+paths. No full suite has run; scoped source-bound receipts remain valid. Do not stage these links.
+WAITING on `presenter_ui`: browser harness/proof, then source and evidence review.
+
+## Browser findings and correction plan (22:51 GMT)
+
+Lead inspected actual smoke-desktop/02-idle-open-keyboard.png and narrow13-reset/narrow14-loss:
+correct current-scenario/context data reaches the drawer, isolating two new UI consumer faults
+(origin FUCQ-126, still in progress). Catalogue loading runs after the first controls update, but
+`dataset.initial` is set against an empty select. Reset correctly changes server run/context, but
+only updates the drawer and never invalidates the previous account mount/header. No existing DB
+or core business data fault is indicated. Source basis3443301; screenshots/evidence authored at
+e45732e. Correct selection only when the current scenario exists in loaded options. After an
+acknowledged committed reset, navigate to actual context-selected presenter workspace, including
+session-renewal failure (whose new workspace must give trusted session recovery). Lost/unknown
+reset delivery retains original command retry and must not navigate prematurely. New-run readback
+on the new page is the reset outcome evidence; do not persist credentials/client authority.
+Add delayed/unavailable-first-option catalogue and acknowledged/lost/reset-renewal regressions;
+then fresh desktop/narrow proof with no stale account body after reset. The existing browser
+harness must put all git reads inside checkout_mutex; read-only wrapper calls alone are insufficient.
+
+Shared-base review: a083e28→f690a36 adds FUCQ51 evidence, its CLI verification script and
+bmw-live-imagery tests, plus story/claim metadata. No GCSP runtime or presenter caller changed.
+Integrate after repair checkpoint; no redundant backend suite is justified by that metadata/test
+integration alone. Authored full remains pending serial admission. Prior browser manifests8/8
+independently absent/groupsgone; retained captures3920465bytes. Existing UI child resumed fresh
+22:50:45 tierSol/medium (no fallback),capacitycan_start1/free7.5GB; new tier naming Mike Wazowski,
+child instructed to set that title (verification pending). WAITING on same presenter_ui child for
+bounded source corrections, selected regressions and harness repairs; no browser/server active.
+
+22:54 repair follow-up: title independently verified Mike Wazowski. Controls21/21 reported pass,
+shell ongoing; browser execution remains released/held pending dispatcher exact checkpoint regrant.
+Original browser-results.json preserved byte-for-byte as browser-before-results.json; corrected
+proof will use separate browser-after-repair outputs and fucq126-browser-corrected-20261105 receipts.
+Parent found another concrete existing reset contract edge: headers/cookies may arrive before lost
+body. Exact retry under renewed current-run cookie is refused by ScenarioService expectedRunId gate,
+whereas historical-cookie receipt replay is supported. No backend mechanics edit is authorised.
+Parent approved bounded UI reconciliation: after exact retry receives definitive stale-run, navigate
+without success claim only when fresh successful controls/context agree on a different current run.
+Unknown delivery retains original retry; failed/mismatched fresh reads cannot trigger navigation.
+Implementer adds regression/contract evidence and reruns controls; previous shell result reused if
+unchanged caller contract. Current source/harness uncommitted for active repair; no browser/server.
+WAITING on presenter_ui repair completion; then parent review/push, f690a36 integration and frozen
+updated browser plan to dispatcher. No nativeDB/full-suite grant or complete-business proof.
+
+23:00 lead review: final repair source/diff and guarded stale-run positive+negative cases inspected;
+lead independently reran controls23/23, no skips,241057792byte RSS,3154016byte scratch,owned scratch/
+groups/reservation absent. Child shell41/copy1 applicable; correction results bind exact hashes.
+Authenticated Jira FUCQ126 read confirms explicit `renderOptionList` scenario/principal pickers and
+new `presenterBar` in its UI field. Physical local story had simplified UI metadata; next independent
+slice will align actual kit consumption/catalogue/gallery before corrected browser. No acceptance
+or technical-readiness directive revoked, no Jira write by this story. Product-map skill read from
+scaffolding/plugin/skills/product-map/SKILL.md; full durable slice plan and integration gates will be
+recorded with CLI after integrating current b11a7e61 shared base (adds map tooling/registry, no new
+GCSP runtime delta). Existing pre-repair captures remain truthful earlier evidence with documented
+findings; corrected proof held pending component alignment and dispatcher exact grant.
+
+Validated repair checkpoint8877e2d and shared-base integration1002101 pushed. Sharedb11a7e61
+contains FUCQ51 verification tooling/tests/evidence and map/procedure/story metadata; no GCSP
+runtime/caller delta, so no redundant backend test run. Full7slice plan recorded through vendored
+product_map CLI, including fresh browser/full,stored-policy adoption and actual business-producer
+gates. Only FUCQ126 row changed; existing demo-control association preserved. Worker observations
+are actual current parent/child activity,20minute expiry; historical labels/authorship never used.
+Authenticated Jira UI component metadata aligned locally while preserving technical-readiness notes.
+Same Mike Wazowski worker resumed for5point kit alignment; fresh23:01:16tierSol/medium,no fallback,
+can_start0/free6.1GB measured override,HostBudget mandatory. Browser remains held by root queue.
+WAITING on presenter_ui for component alignment,scoped tests and revised browser selectors/plan.
+
+2026-11-05T23:17:10.412706Z component lead review complete: helper/CSS,controlledrenderOptionList consumer,tests,ratchet,catalogue/gallery,contract/manual/browserselectors inspected. Exact13source hashes verified; independentcontrols27/27PASS,261111808byteRSS,3166304bytescratch. 53 ownedUI/backend/priorbrowser manifests independently absent/groupsgone/reservationsabsent; first uncertainprobe resolved by fullrecheck,no signals. Childshell41/ratchet46/copy1/syntaxonly reused against identicalsource. Exactroot/server dependencylinks remain parentowned. Maponly126row refreshed,completedMike claim expired; visualdependentslices stayinprogress. No newbrowser/full/nativeexecution. Dispatcher69windowclosed34862e7;103nowhaspublicationwindow,thenrootJira/map; GitwritesHELD. Componentcheckpoint uncommitted until explicitrelease. WAITING on dispatcher Gitrelease thencommit/push and exactfrozenbrowsergrant after122.
+
+2026-11-05T23:23:43.133736+00:00 dispatcher released Git window. Root reports published sharedb95b4c8 and localunpublished8bd4067; GitHubfatalcommit_refs_rules blocks root+105pushes despiteordinaryretry. No force/rulesworkaround/unchangedpushloop. Localreviewedcomponentcommit and metadata-onlyintegration ofpublishedb95b4c8 authorised; allincomingnon126maprows must bepreserved. Browser122sole diagnostic/fullnativeNONE.
+
+2026-11-05T23:24:15.871456+00:00 localcomponentcheckpointcaa82e6167784e07308b8fc1b7ae1bdc847cf1bf committed with18namedpaths. Publishedsharedb95b4c8 metadata-onlydelta integrated; allincomingnon126maprows verifiedequal,own126facts preserved. NoGCSP/runtime/callerchange; source-boundscopedchecks reused,none repeatedsolelyformetadata. Storyremote remains274bd020f5f22164e4db6e59d7cc0c77adbd210f; newlocalcommits UNPUBLISHED due dispatcherreportedGitHubcommit_refs_rules. No unchangedpushretry/force/rulesworkaround. Browser122retainssolelane; corrected126proof/authoredfull/native remainheld.
+
+Integrationchecknote: published LICENSE-plex.txt retains original CRLF/trailingwhitespace; localblob exactlymatches b95b4c8:c35c4c618fab33da8695177b3a6cefe0810b7b28. Allotherstagedpaths passdiff--check. No thirdpartylicensebyteschanged. Onlymapmergeconflict resolved byincomingnon126rows+own126; no source conflict.
+
+2026-11-05T23:30:30.803831+00:00 authorisedLOCALd4ce91ff smoke-desktopONLY completed:4functionalchecks/4capturesPASS,0errors,0overflow; allnewcapturespersonallyinspected. Initialscenario/pickerkeyboard+focusidentity/actual60secondtick/missingrelease truthful. PickeroutlineNONE in02b because harnessclicks beforecapture; visiblekeyboardring remainsUNPROVED,noproductdefectclaimed. Peak1740881920byteRSS/1303737bytescratch/376832bytesretained. Parentindependentlyverifiedall12PIDstartidentitiesgone,groups/profilepath/openfiles/scratch/reservationabsent,API60816/CDP60818closed; exactbothdependencylinks preserved. BrowserlaneRELEASED; noauto retry/desktop/narrow/full/native. Proofsource13hashes/harnessunchanged; evidenceawaitslocalcommit,publicationstillblocked.
+
+2026-11-05T23:41:45.817544+00:00 rootpublishingrecoverygrant ordinaryhelperpush succeeded;remoteexact4ffad2beabab69e58e80edf4aeaf0e7973b28e68readbackverified. Sharedb95b4c8→1a55d3a deltaonlymap/story/restartdocs,no executablechange. Rootnextgranted4ffdesktopthennarrowserial; beforeallocation leadresolvedknownharnessfocuscapturegap: pointerrestore replaced with actualarrowkeys,perpickercapturebeforepointerclick,:focus-visible+outline assertions before/afterreadback.11othercomponent-evidencepathsunchanged; no productcodechange. Boundednode--checkPASS,2392064byteRSS/0scratch,manifest72a5ef680745480e9388a41e87689c49removed/groups/reservationabsent. No browser allocated,nograntconsumed,noautorretry. Updatedexactrevision needed; lane remainsreleased.
+
+2026-11-05T23:49:37.876858Z Desktop and narrow each ran once at frozen393dedc8903507b7eeb764791814cedab3f541fc, under separate fresh HostBudget reservations with NODE_OPTIONS unset. Both passed17checks/25captures; lead inspected all50 originals, including actual keyboard outlines before pointer input and after readback, reset/new workspace, exact lost tick retry, cookie-delivered/lost reset-body stale-run reconciliation, access/principal switches and teardown. No horizontal overflow or unexpected runner errors. Synthetic manual inputs and pending/refused visuals remain explicit. Desktop peak2031173632byteRSS/2760120bytescratch; narrow peak2074214400byteRSS; retained outputs bounded. Parent independently verified all13desktop+17narrow PID/start identities, groups/profile/openfiles/API+CDP listeners/scratch/reservations absent, source/harness/dependency links unchanged. Browserlane RELEASED for103; no retries or full/native grants. Authored full, actual release/count/business-reset, immutable-policy adoption remain open; broader plan issuance-replay browser variant/gallery visit unexecuted. Map only126updated:independentUI/kit slices delivered;browser/integratedvalidation remaininprogress and business/policyblocked. Original evidence preserved.

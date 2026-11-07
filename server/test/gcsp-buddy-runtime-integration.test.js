@@ -10,6 +10,12 @@ import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { stock, essential, preference, fact } from './helpers/employee-recommendation.js';
 
 const origin = 'https://demo.invalid';
+// Registration order across the composed runtime; other stories add handlers here.
+const HANDLERS = ['manual-claim-expiry', 'buddy-expiry', 'selection-order-reconciliation', 'lifecycle-approvals',
+  'lifecycle-documents', 'renewal-risk-cases', 'captured-outbox'];
+// A tick runs handlers in stage order, which differs from registration order.
+const TICK_ORDER = ['manual-claim-expiry', 'buddy-expiry', 'lifecycle-approvals', 'lifecycle-documents', 'renewal-risk-cases',
+  'selection-order-reconciliation', 'captured-outbox'];
 const command = (commandId) => ({ commandId, inputDigest: inputDigest(commandId) });
 const ref = (context, table, key = {}) => ({ table, key: { runId: context.runId, ...key } });
 const good = (result) => { assert.equal(result.status, 'ok', JSON.stringify(result)); return result.value; };
@@ -81,7 +87,9 @@ async function tick(f, id = 'expire') {
 async function adoptPresenter(f) {
   const time = good(await f.clock.now(f.presenter));
   const run = good(await f.repository.currentRun('buddy-runtime-test'));
-  good(await f.policy.adoptReviewedAssumptions(f.contexts.greg, { commandId: 'reviewed-presenter', expectedActiveVersion: run.policyVersion,
+  // The presenter-controls definitions are in the base seed now; adopt only when they are not yet active.
+  const active = await f.policy.getAssumption('clock.presenter.stepSeconds', { runId: run.runId, asOf: time.now, policyVersion: run.policyVersion });
+  if (active.status !== 'ok') good(await f.policy.adoptReviewedAssumptions(f.contexts.greg, { commandId: 'reviewed-presenter', expectedActiveVersion: run.policyVersion,
     policyVersion: 'runtime-reviewed-v2', effectiveFrom: time.now, definitionSetId: 'presenter-controls-v1' }));
   f.presenter = good(await f.identity.resolveSession({ authorized: true, cookie: f.presenterCookie, purpose: 'presenter-control' }));
   for (const name of ['paula', 'alex', 'greg']) f.contexts[name] = good(await f.identity.resolveSession({ authorized: true, cookie: f.sessions[name] }));
@@ -120,9 +128,9 @@ test('normal runtime shares services, registers before startup, and serves real 
   const f = await setup(t);
   for (const [key, value] of Object.entries({ gcspBuddy: f.buddy, gcspManualClaims: f.manualClaims, gcspOfferAccess: f.offerAccess,
     gcspNotify: f.notify, gcspRepository: f.repository, gcspPolicy: f.policy, gcspScenarios: f.scenarios })) assert.equal(f.dependencies[key], value);
-  assert.deepEqual(f.registrations, ['manual-claim-expiry', 'buddy-expiry', 'captured-outbox']);
+  assert.deepEqual(f.registrations, HANDLERS);
   good(await f.buddy.start()); good(await f.manualClaims.registerClockHandler()); good(await f.notify.start()); good(await f.server.gcspStartup);
-  assert.equal(f.registrations.length, 3);
+  assert.equal(f.registrations.length, HANDLERS.length);
   const catalogue = await request(f.server, '/api/gcsp/presenter/scenarios', { session: f.presenterCookie });
   assert.equal(catalogue.status, 200); assert.ok(catalogue.json.value.scenarios.length);
   assert.ok(catalogue.json.value.scenarios.filter((s) => s.kind === 'journey').every((s) => s.availability.missingCapabilities.length));
@@ -132,7 +140,7 @@ test('normal runtime shares services, registers before startup, and serves real 
   const stepped = await request(f.server, '/api/gcsp/presenter/controls/tick', { session: f.presenterCookie,
     body: { commandId: 'normal-step', expectedClockVersion: state.clockVersion, mode: 'step' } });
   assert.equal(stepped.status, 200); assert.equal(stepped.json.value.advance.now, '2026-11-05T12:01:00.000Z');
-  assert.deepEqual(stepped.json.value.tick.handlerOrder.map((row) => row.handlerId), ['manual-claim-expiry', 'buddy-expiry', 'captured-outbox']);
+  assert.deepEqual(stepped.json.value.tick.handlerOrder.map((row) => row.handlerId), TICK_ORDER);
 });
 
 test('actual buddy capture and token access preserve timing, guards and exact-deadline expiry', async (t) => {
@@ -152,7 +160,11 @@ test('actual buddy capture and token access preserve timing, guards and exact-de
   const expired = await request(f.server, path, { session }); assert.equal(expired.json.value.state, 'expired'); assert.deepEqual(expired.json.value.availableActions, []);
   await tick(f);
   assert.equal(good(await f.repository.read(f.contexts.paula, ref(f.contexts.paula, 'holds', { holdId: allocated.hold.holdId }))).state, 'expired');
-  assert.equal(good(await f.repository.read(f.contexts.paula, ref(f.contexts.paula, 'stock', { orderUuid: f.car.orderUuid }))).state, 'released');
+  // The returned car re-enters the pool; the composed FUCQ-96 allocator may re-offer it in the same tick.
+  const reoffered = f.store.state.tables.holds.filter((row) => row.orderUuid === f.car.orderUuid && row.state === 'active');
+  assert.ok(reoffered.every((row) => row.holdId !== allocated.hold.holdId && row.type === 'buddy-offer'));
+  assert.equal(good(await f.repository.read(f.contexts.paula, ref(f.contexts.paula, 'stock', { orderUuid: f.car.orderUuid }))).state,
+    reoffered.length ? 'held' : 'released');
   assert.equal(f.store.state.tables.decisions.length, 0);
 });
 
@@ -163,7 +175,7 @@ test('fresh composed backend reconciles overdue memory authority before dispatch
   const read = await request(fresh.server, '/api/gcsp/offers/access', { body: input }); assert.equal(read.status, 200);
   assert.equal(read.json.value.state, 'expired'); assert.deepEqual(read.json.value.availableActions, []);
   assert.equal(f.store.state.tables.holds.find((row) => row.holdId === allocated.hold.holdId).state, 'expired');
-  assert.deepEqual(fresh.registrations, ['manual-claim-expiry', 'buddy-expiry', 'captured-outbox']);
+  assert.deepEqual(fresh.registrations, HANDLERS);
   assert.equal(f.store.state.tables.offers.length, 1);
 });
 
@@ -187,7 +199,7 @@ for (const first of ['manual', 'buddy']) test(`normal composed ${first} claim ex
 test('reviewed publication activates the shared provider while preserving pinned buddy quote and access', async (t) => {
   const f = await setup(t); const allocated = await allocate(f); const before = structuredClone(allocated.quote);
   const input = offerInput(f, allocated.offer); await adoptPresenter(f);
-  assert.equal(good(await f.repository.currentRun('buddy-runtime-test')).versions.policy, 'runtime-reviewed-v2');
+  assert.equal(good(await f.repository.currentRun('buddy-runtime-test')).versions.policy, before.policyVersion);
   const time = good(await f.clock.now(f.presenter));
   assert.equal((await f.policy.getAssumption('clock.presenter.stepSeconds', { runId: f.presenter.runId, asOf: time.now,
     policyVersion: f.presenter.policyVersion })).value.value, 60);
@@ -210,8 +222,8 @@ test('normal named mechanics reset retains handlers and invalidates old employee
   assert.equal((await f.offerAccess.read(exchanged.context)).status, 'stale-run');
   assert.equal((await f.offerAccess.exchange(input)).status, 'stale-run');
   const presenter = good(await f.identity.createPresenterSession('fresh-presenter')); f.presenter = presenter.context;
-  const after = await tick(f, 'new-run-tick'); assert.deepEqual(after.handlerOrder.map((row) => row.handlerId), ['manual-claim-expiry', 'buddy-expiry', 'captured-outbox']);
-  assert.equal(f.registrations.length, 3);
+  const after = await tick(f, 'new-run-tick'); assert.deepEqual(after.handlerOrder.map((row) => row.handlerId), TICK_ORDER);
+  assert.equal(f.registrations.length, HANDLERS.length);
   const fresh = good(await f.createLocalSession()); good(await f.manual.readAccount(fresh.context));
 });
 

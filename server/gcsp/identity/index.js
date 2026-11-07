@@ -226,6 +226,25 @@ export class DemoIdentityAdapter {
     return context.roles.includes(role) ? ok({ authorized: true }) : refused('forbidden');
   }
 
+  // Trusted in-process cohort work only. Never exposed as an employee-ID login route.
+  async resolveEmployeeContext(controller, employeeId) {
+    const state = await this.#guard(controller);
+    if (state.error) return state.error;
+    if (!controller.roles.includes('presenter')) return refused('forbidden');
+    const config = await this.#configuration(state);
+    if (config.error) return config.error;
+    const principal = config.principals.find((p) => p.employeeId === employeeId && p.roles.includes('employee'));
+    if (!principal) return refused('unknown-principal');
+    const seeded = await this.#repository.read(state.scope, { table: 'employees', key: { runId: state.scope.runId, employeeId } });
+    if (seeded.status !== 'ok') return seeded.status === 'not-found' ? refused('unknown-principal') : unavailable();
+    if (!seeded.value.roles?.includes('employee')
+      || ['principalId', 'companyId', 'schemeId', 'gradeId', 'entitlementSlotId'].some((key) => seeded.value[key] !== principal[key])) return refused('forbidden');
+    const slot = await this.#repository.read(state.scope, { table: 'entitlement_slots', key: { runId: state.scope.runId, entitlementSlotId: principal.entitlementSlotId } });
+    if (slot.status !== 'ok' || slot.value.employeeId !== employeeId) return refused('forbidden');
+    return ok(this.#context(state, state.auth, { ...principal,
+      ...(seeded.value.renewalId ? { renewalId: seeded.value.renewalId } : {}) }));
+  }
+
   async authorizeResource(context, resourceRef, action = 'read') {
     const guarded = await this.#guard(context);
     if (guarded.error) return guarded.error;

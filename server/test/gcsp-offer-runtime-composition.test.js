@@ -27,7 +27,7 @@ async function setup(t) {
   t.after(() => app.close());
   const runtime = app.services;
   const local = good(await runtime.createLocalSession()); const session = cookie(local.setCookie);
-  const presenter = good(await runtime.identity.resolveSession({ authorized: true, cookie: session, purpose: 'presenter-control' }));
+  let presenter = good(await runtime.identity.resolveSession({ authorized: true, cookie: session, purpose: 'presenter-control' }));
   const greg = good(await runtime.identity.switchPrincipal(presenter, 'demo-greg', 'offer-policy-greg'));
   const gregCookie = cookie(greg.setCookie);
   // Intentional server-only adoption of the existing registered canonical bundles.
@@ -59,18 +59,18 @@ async function setup(t) {
   good(await runtime.brief.confirm(employee, { commandId: 'offer-consent', expectedBriefVersion: 0, expectedDraftVersion: 1,
     consent: { search: true, hold: true } }));
   const car = await profile.prepare(runtime, employee);
+  // Allocation refuses a controller older than the adopted policy, so re-resolve it like each HTTP request.
+  presenter = good(await runtime.identity.resolveSession({ authorized: true, cookie: session, purpose: 'presenter-control' }));
   const before = good(await runtime.clock.now(presenter));
   good(await runtime.clock.advance(presenter, { commandId: 'release-noon', expectedClockVersion: before.clockVersion,
     to: '2026-11-05T12:00:00.000Z' }));
   const now = good(await runtime.clock.now(presenter));
-  good(await runtime.clock.tick(presenter, { eventId: 'release-offer-stock', inputDigest: inputDigest('release-offer-stock'),
+  const ticked = good(await runtime.clock.tick(presenter, { eventId: 'release-offer-stock', inputDigest: inputDigest('release-offer-stock'),
     expectedClockVersion: now.clockVersion }));
-  const stock = good(await runtime.repository.read(employee, ref(employee, 'stock', { orderUuid: car.orderUuid })));
-  const owner = good(await runtime.repository.read(employee, ref(employee, 'employees', { employeeId: employee.employeeId })));
-  const slot = good(await runtime.repository.read(employee, ref(employee, 'entitlement_slots', { entitlementSlotId: employee.entitlementSlotId })));
-  const allocation = good(await runtime.buddy.allocate(employee, { commandId: 'offer-claim', orderUuid: car.orderUuid,
-    expectedBriefVersion: 1, expectedStockVersion: stock.version, expectedEmployeeVersion: owner.version, expectedSlotVersion: slot.version }));
-  const offer = allocation.offer;
+  // The composed FUCQ-96 allocator secures the buddy offer on this release tick.
+  const assigned = ticked.outcomes.find((row) => row.handlerId === 'buddy-allocation').outcome.value.allocations.flatMap((row) => row.assignments);
+  assert.equal(assigned.length, 1); assert.equal(assigned[0].orderUuid, car.orderUuid);
+  const offer = assigned[0].claim.offer;
   const query = `?runId=${encodeURIComponent(employee.runId)}`;
   const path = `/api/gcsp/offers/${encodeURIComponent(offer.offerId)}`;
   const request = async (url, { body, session: supplied = session, origin = app.origin, method } = {}) => {
