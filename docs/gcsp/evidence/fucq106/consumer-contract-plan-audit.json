@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "at": "2026-11-06T01:33:23.936722+00:00",
+  "basis": "7c280b8eb76dce4a8a65b3017026dc8a74ebbd15",
+  "activity": "Static committed-blob/hash/link/whitespace verification only; no product imports or tests",
+  "sourceModules": 55,
+  "relativeImportEdges": 98,
+  "canonical42Preserved": true,
+  "caller107ServiceBytesMatchEvidencePublication": true,
+  "inputPins": 6,
+  "contractAndEvidencePins": 8,
+  "testsExecuted": 0,
+  "allocation": false,
+  "featureEdits": false,
+  "mapClaimsAndAcceptanceUnchanged": true,
+  "priorEvidenceUnchanged": true,
+  "paths": [
+    {
+      "path": "_dev/in-progress/DEV-2026-11-04-074.md",
+      "sha256": "a8a325c47ff5b3b3bca1bebaf5905ef5b4a0fbab57286d44bec06cead1753af1"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/consumer-contract-plan.md",
+      "sha256": "dc51fca6a4ccffee55c7576d958f27db72057b2de26c9110eebdff94cf988f4e"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/consumer-contract-source-plan.json",
+      "sha256": "222aaba33bb978c8ed466aa7ae780f00fb529b6f358b5646bd142fde687e7f51"
+    }
+  ]
+}

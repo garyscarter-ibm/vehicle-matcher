@@ -1,0 +1,394 @@
+{
+  "version": 1,
+  "entry": "gcsp-manual-gallery.html",
+  "files": {
+    "assets/brand-hero/bmw.jpg": "674a6adc350ce39dde798acda7279f8c1e1c0a5a91daa7a1d1c843616a2b442d",
+    "assets/brand-logos/bmwgroup-bmw-mini.svg": "703c69d19aa0d2eda773a1b4022af2bf474c1058a4bafb84468abf7df63557ac",
+    "blocks/gcsp/account/account-view.js": "c2e71ea6e5b15a1d905e33ab72d78eb0f45039fe2508cad89b11654801749dee",
+    "blocks/gcsp/account/http-adapter.js": "eb89226f9ab8ff04b5c43dfc3c91b6e57c233ef88e273eaf8985895e79106453",
+    "blocks/gcsp/employee/fixtures.js": "e63cf63076f7bfa718b23b3e2a0d39ef6e57c58c4003f238b0059ce560ba0881",
+    "blocks/gcsp/employee/gcsp-employee.css": "3cab6080aa52605d92b5f616151087fe289e72c43045a7f396a8bffca7112b6f",
+    "blocks/gcsp/employee/gcsp-employee.js": "2f35c7983aafef2c8f1eb72f6c78341cbf1c76269110f6a25dca1b775f11df2b",
+    "blocks/gcsp/employee/representative-body.js": "a9146fc18cac0346a20b12c603df65a84dffc7bd46d267f2706f4e2c63b76af4",
+    "blocks/gcsp/kit/form-controls.css": "0dec8818344defbe8b5718cdeef131d71faae782515f8ea3dce56b9e43002057",
+    "blocks/gcsp/kit/form-controls.js": "4df9e86f3d51f33397bd524b95f35a40240c931b441f91a7b8b05ef89fe508b4",
+    "blocks/gcsp/manual-gallery/claim-controller.js": "f53923f660fcb1222431c6500342e75065d10552a38f343900ef7cf234574dc8",
+    "blocks/gcsp/manual-gallery/fixtures.js": "d410598f5d8ce64ea08a56fcdb688229fe76d3211550e65889e924473375ee74",
+    "blocks/gcsp/manual-gallery/gallery-controller.js": "0e11d30e5e31a5b2811b8fe4e84c87c11c66966656af79a8ca64d5ab23f2700f",
+    "blocks/gcsp/manual-gallery/gallery-model.js": "6cc5cfa1483d963038472ddc05227c2368a3ad07ca7a4ab25c6a324bf7f863bf",
+    "blocks/gcsp/manual-gallery/gcsp-manual-gallery.css": "04830129917aa8c43caf135bc333e76b8a1ec3ed030a3fbf00bb945b1385b759",
+    "blocks/gcsp/manual-gallery/gcsp-manual-gallery.js": "f450a71818ee5db9522c314f213c32b98f5b6ad119932cf2daa6ddf0c694ff88",
+    "blocks/gcsp/manual-gallery/harness.js": "4ce3024f2c7303cb6d263d690c55db5dc208caf7945d277d93d2479f78d08ab8",
+    "blocks/gcsp/manual-gallery/http-adapter.js": "5e3dcc8d024ad2cdb3190e4862e4a99ef35a7995623c492ce9e4aff8883eb7de",
+    "blocks/gcsp/shell/density-theme.css": "c2a680854e05bf88edc335308797b636038ff5bdd980f101e8f32edd451f3593",
+    "blocks/gcsp/shell/density-typography.css": "6d238b5c4dee9058e9fd32e0e5704e95a94eb7e5cdc82c9fb051534d6ea44641",
+    "blocks/gcsp/shell/fonts/BMWGroupTNCondensedPro-Medium.woff": "1db2f9dca559860c9519307cbae5cd0bcf557f0b80b6666e580c1492e49f3aee",
+    "blocks/gcsp/shell/fonts/BMWGroupTNCondensedPro-Medium.woff2": "66ecd7139a12627c60c78755cbf664cdca10df33f22a6426ec2693a38d8a5286",
+    "blocks/gcsp/shell/fonts/density-fonts.css": "bf13d49ea7fc1d75888a06881e2ce1a0151875a69177c937045ea86ce4ac1e7c",
+    "blocks/gcsp/shell/gcsp-shell.css": "347fd90e22ea14fcdceda92c9da095da86fc1164ebb0926577d6e5cb9068014e",
+    "blocks/gcsp/shell/gcsp-tokens.css": "3a4b773eb4e67734cead53956e39323d3050af6e35465b6c275084096ed93cde",
+    "blocks/gcsp/shell/portal-shell.js": "7e62088d69bfa43ff0ccff2678931fe1e48c7a0b3814184f449f308cf4ebaa01",
+    "blocks/vehicle-matcher/decision-card.css": "340bded6c89fb3f7635835167cfb8192e6e2fb1ec75c89a37cc48b053a669def",
+    "blocks/vehicle-matcher/fonts/BMWTypeNextLatin-Bold.woff2": "846d0723e935e980c844ca58601fbc812bbcce7df6a4c20b00b5936b0e0ca636",
+    "blocks/vehicle-matcher/fonts/BMWTypeNextLatin-Light.woff2": "1db3e21124be9f69435c77a7f0f66b11ab9b72eeff43af4e99efabe8beb6a94c",
+    "blocks/vehicle-matcher/fonts/BMWTypeNextLatin-Regular.woff2": "aaac20e7ecfbdfe6c8a1969b051dbd05d21d9ffcc20b295d13e7ec2f0b10c0ec",
+    "blocks/vehicle-matcher/fonts/BMWTypeNextLatin-Thin.woff2": "c55e772471baea4350b67ac2780a3f4066e4182f9bf884e56e711f8c9d08cca6",
+    "blocks/vehicle-matcher/fonts/Ferrari-SansMedium.woff": "7f528ce24536231d415fb68ef6ff93ece624dba21c5ba1f43b4b3f2033baa842",
+    "blocks/vehicle-matcher/fonts/Ferrari-SansRegular.woff": "53cf6fdb6c91d61f3afe146919944563c2e66025d11a39f00ccc41ad189507de",
+    "blocks/vehicle-matcher/fonts/FordAntenna-Bold.woff": "21fd363cbe67eae9fcc8626fdba9ddc449e2c06bf24a8a7775cf102856d7bccb",
+    "blocks/vehicle-matcher/fonts/FordAntenna-Regular.woff": "ba5f8c116441700894e0cc6a7cbe915171bac000732d800e3c78f37fb43355d6",
+    "blocks/vehicle-matcher/fonts/FordF1-Bold.woff2": "72e58466f1a9e5211c829aed5f3fab034ff3e0bdec2ad9e9f20ea80d273eed8b",
+    "blocks/vehicle-matcher/fonts/FordF1-Medium.woff2": "3d2a335ed40957ebc0d2f48ec9f7ec468a1253f4c64dfd0ee0280f39f2c221a1",
+    "blocks/vehicle-matcher/fonts/FordF1-Regular.woff2": "366fd3dffa7463fc208b25c83aeda31c7e240debde4dff30c77ecb9857e09b4b",
+    "blocks/vehicle-matcher/fonts/ProximaNova-Regular.woff": "e6f239e73287acfebf8fd391f5745baa42d24eaaf50c88e292fc77beb67dd5d3",
+    "blocks/vehicle-matcher/fonts/ProximaNovaExCn-Light.woff": "e18d8e5629941ccfd786d7a7c66f33c6567cc216638302afbb974c8181412cae",
+    "blocks/vehicle-matcher/fonts/ProximaNovaExCn-Regular.woff": "6c962ff25b9cb7af8b31c3634cf002cc157ff606ca7273aa4a05b4ef506e98fb",
+    "blocks/vehicle-matcher/fonts/ProximaNovaExCn-Semibold.woff": "af3f8bea981124ebb3c53ae0331054bb0c17bdb5d5ee77db8952be0326b91bf6",
+    "blocks/vehicle-matcher/fonts/mini_sans_serif-bold-web.woff": "a2c358cd8edf15a63d2321a499e4330216e7b34f8d68ab1aaba6b8c4aba1016e",
+    "blocks/vehicle-matcher/fonts/mini_sans_serif-regular-web.woff": "c1eb61aad1183f07460d521131b3680090e5ad994e287e3ba12d9af4a9232fdd",
+    "blocks/vehicle-matcher/fonts/mini_serif-bold-web.woff": "8b7ef187353fe10b757e2fa9ade046db43d48837303bf9deadb519b4e9ae793e",
+    "blocks/vehicle-matcher/fonts/mini_serif-regular-web.woff": "93ee7edbfc1a26a0d8a3200e3c93fdfe3ad13f1e8a527c950123ad4546aa9d81",
+    "blocks/vehicle-matcher/gcsp-kit.css": "ac08fa1725a878af7a6c4c3f1659b934274b4a6ad181aaa66452db4da845c210",
+    "blocks/vehicle-matcher/modes/brand-copy.js": "485098aea61944c5fd62047164b4aabfdd1c95c2ff2be9aacf5dae211d195ec9",
+    "blocks/vehicle-matcher/modes/result-card.js": "cc5d50468f45f1c751c597ece89ca5d7dfe88f70d98dd606104ad3504007f948",
+    "blocks/vehicle-matcher/question-controls.css": "cf6c9f81ad4bdb8f2543c93dc4dbd7eca60ea851af8d4a287c2930fbef8a17ec",
+    "blocks/vehicle-matcher/tokens.css": "30d971de3fd89d456b7bc819621ff9f11888da1ca73e8bd80dc70c58a411b1fa",
+    "blocks/vehicle-matcher/ui.js": "49107097a7927e388ff78949045827f3a8903fea0bd758dbe1aa597bec82d8b2",
+    "blocks/vehicle-matcher/vehicle-matcher.css": "11d7af7f3f05766c9c32c107f75f31d269d5531de4040938b34cea8b3854ea94",
+    "gcsp-employee.css": "d4e9c4f51aa326777a623a3072efb5a6c8dd30a9f6266786bbc19f6dc3f96b57",
+    "gcsp-manual-gallery.html": "3de5c38b570970c19679fea41d5216a622387da8c57c2082f50defe3ccae6987"
+  },
+  "edges": [
+    {
+      "from": "blocks/gcsp/account/http-adapter.js",
+      "to": "blocks/gcsp/account/account-view.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/gcsp/employee/fixtures.js",
+      "to": "assets/brand-hero/bmw.jpg",
+      "kind": "module-url"
+    },
+    {
+      "from": "blocks/gcsp/employee/fixtures.js",
+      "to": "blocks/gcsp/employee/representative-body.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/gcsp/employee/gcsp-employee.css",
+      "to": "blocks/vehicle-matcher/gcsp-kit.css",
+      "kind": "css-import"
+    },
+    {
+      "from": "blocks/gcsp/employee/gcsp-employee.js",
+      "to": "blocks/gcsp/employee/fixtures.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/gcsp/employee/gcsp-employee.js",
+      "to": "blocks/gcsp/shell/portal-shell.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/gcsp/employee/gcsp-employee.js",
+      "to": "blocks/vehicle-matcher/ui.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/gcsp/employee/representative-body.js",
+      "to": "blocks/gcsp/shell/portal-shell.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/gcsp/employee/representative-body.js",
+      "to": "blocks/vehicle-matcher/modes/result-card.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/gcsp/employee/representative-body.js",
+      "to": "blocks/vehicle-matcher/ui.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/gcsp/kit/form-controls.js",
+      "to": "blocks/vehicle-matcher/ui.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/gcsp/manual-gallery/fixtures.js",
+      "to": "assets/brand-hero/bmw.jpg",
+      "kind": "fixture-asset-literal"
+    },
+    {
+      "from": "blocks/gcsp/manual-gallery/gallery-controller.js",
+      "to": "blocks/gcsp/account/http-adapter.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/gcsp/manual-gallery/gallery-controller.js",
+      "to": "blocks/gcsp/manual-gallery/gallery-model.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/gcsp/manual-gallery/gcsp-manual-gallery.css",
+      "to": "blocks/gcsp/employee/gcsp-employee.css",
+      "kind": "css-import"
+    },
+    {
+      "from": "blocks/gcsp/manual-gallery/gcsp-manual-gallery.css",
+      "to": "blocks/gcsp/kit/form-controls.css",
+      "kind": "css-import"
+    },
+    {
+      "from": "blocks/gcsp/manual-gallery/gcsp-manual-gallery.js",
+      "to": "blocks/gcsp/employee/gcsp-employee.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/gcsp/manual-gallery/gcsp-manual-gallery.js",
+      "to": "blocks/gcsp/kit/form-controls.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/gcsp/manual-gallery/gcsp-manual-gallery.js",
+      "to": "blocks/gcsp/manual-gallery/claim-controller.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/gcsp/manual-gallery/gcsp-manual-gallery.js",
+      "to": "blocks/gcsp/manual-gallery/gallery-controller.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/gcsp/manual-gallery/gcsp-manual-gallery.js",
+      "to": "blocks/gcsp/manual-gallery/http-adapter.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/gcsp/manual-gallery/gcsp-manual-gallery.js",
+      "to": "blocks/vehicle-matcher/modes/result-card.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/gcsp/manual-gallery/gcsp-manual-gallery.js",
+      "to": "blocks/vehicle-matcher/ui.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/gcsp/manual-gallery/harness.js",
+      "to": "blocks/gcsp/manual-gallery/fixtures.js",
+      "kind": "dynamic-literal-import"
+    },
+    {
+      "from": "blocks/gcsp/manual-gallery/harness.js",
+      "to": "blocks/gcsp/manual-gallery/gcsp-manual-gallery.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/gcsp/manual-gallery/http-adapter.js",
+      "to": "blocks/gcsp/account/http-adapter.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/gcsp/shell/density-theme.css",
+      "to": "blocks/gcsp/shell/density-typography.css",
+      "kind": "css-import"
+    },
+    {
+      "from": "blocks/gcsp/shell/density-typography.css",
+      "to": "blocks/gcsp/shell/fonts/density-fonts.css",
+      "kind": "css-import"
+    },
+    {
+      "from": "blocks/gcsp/shell/fonts/density-fonts.css",
+      "to": "blocks/gcsp/shell/fonts/BMWGroupTNCondensedPro-Medium.woff",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/gcsp/shell/fonts/density-fonts.css",
+      "to": "blocks/gcsp/shell/fonts/BMWGroupTNCondensedPro-Medium.woff2",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/gcsp/shell/gcsp-shell.css",
+      "to": "blocks/gcsp/shell/gcsp-tokens.css",
+      "kind": "css-import"
+    },
+    {
+      "from": "blocks/gcsp/shell/gcsp-tokens.css",
+      "to": "blocks/gcsp/shell/density-theme.css",
+      "kind": "css-import"
+    },
+    {
+      "from": "blocks/gcsp/shell/portal-shell.js",
+      "to": "assets/brand-logos/bmwgroup-bmw-mini.svg",
+      "kind": "reviewed-shell-template"
+    },
+    {
+      "from": "blocks/gcsp/shell/portal-shell.js",
+      "to": "blocks/vehicle-matcher/ui.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/vehicle-matcher/gcsp-kit.css",
+      "to": "blocks/gcsp/shell/gcsp-tokens.css",
+      "kind": "css-import"
+    },
+    {
+      "from": "blocks/vehicle-matcher/modes/brand-copy.js",
+      "to": "blocks/vehicle-matcher/ui.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/vehicle-matcher/modes/result-card.js",
+      "to": "blocks/vehicle-matcher/modes/brand-copy.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/vehicle-matcher/modes/result-card.js",
+      "to": "blocks/vehicle-matcher/ui.js",
+      "kind": "module-import"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/decision-card.css",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/fonts/BMWTypeNextLatin-Bold.woff2",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/fonts/BMWTypeNextLatin-Light.woff2",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/fonts/BMWTypeNextLatin-Regular.woff2",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/fonts/BMWTypeNextLatin-Thin.woff2",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/fonts/Ferrari-SansMedium.woff",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/fonts/Ferrari-SansRegular.woff",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/fonts/FordAntenna-Bold.woff",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/fonts/FordAntenna-Regular.woff",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/fonts/FordF1-Bold.woff2",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/fonts/FordF1-Medium.woff2",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/fonts/FordF1-Regular.woff2",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/fonts/ProximaNova-Regular.woff",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/fonts/ProximaNovaExCn-Light.woff",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/fonts/ProximaNovaExCn-Regular.woff",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/fonts/ProximaNovaExCn-Semibold.woff",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/fonts/mini_sans_serif-bold-web.woff",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/fonts/mini_sans_serif-regular-web.woff",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/fonts/mini_serif-bold-web.woff",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/fonts/mini_serif-regular-web.woff",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/question-controls.css",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "to": "blocks/vehicle-matcher/tokens.css",
+      "kind": "css-url"
+    },
+    {
+      "from": "gcsp-manual-gallery.html",
+      "to": "blocks/gcsp/manual-gallery/gcsp-manual-gallery.css",
+      "kind": "html-link"
+    },
+    {
+      "from": "gcsp-manual-gallery.html",
+      "to": "blocks/gcsp/manual-gallery/harness.js",
+      "kind": "html-src"
+    },
+    {
+      "from": "gcsp-manual-gallery.html",
+      "to": "blocks/gcsp/shell/gcsp-shell.css",
+      "kind": "html-link"
+    },
+    {
+      "from": "gcsp-manual-gallery.html",
+      "to": "blocks/vehicle-matcher/vehicle-matcher.css",
+      "kind": "html-link"
+    },
+    {
+      "from": "gcsp-manual-gallery.html",
+      "to": "gcsp-employee.css",
+      "kind": "html-link"
+    }
+  ],
+  "reviewedDynamicBoundaries": [
+    "Shell LOGO literal call resolves only bmwgroup-bmw-mini.svg; other navigation icons use inline SVG path data.",
+    "Harness new URL(globalThis.location.href) selects a named read-only fixture, not an asset.",
+    "Shared mediaWell accepts fixture photo/image URLs; the pinned fixture supplies only /assets/brand-hero/bmw.jpg or null.",
+    "Imported authenticated HTTP adapters are unused by the explicit fixture adapter; no API is served, external requests remain blocked."
+  ]
+}

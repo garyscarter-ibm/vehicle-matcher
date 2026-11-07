@@ -1,0 +1,713 @@
+{
+  "story": "FUCQ-106",
+  "status": "12 scoped actual producer/access/decision memory integration cases pass; story incomplete",
+  "source_checkpoint": "da4a2c824d7d73b118185c4cfc6395d4e9254e4f",
+  "base": "2b796010f54d1b720e8b13f044496c8e175c07a7",
+  "approval_receipt": ".claude/test-runs/ownership/fucq106-source-review-2357.json",
+  "approval_sha256": "6b18f6f77157895d588b001f8e2c937c56d2f9a8d3ed29ade94828978a06d35f",
+  "source_plan_sha256": "c8b4e892f93e86a09c8011416d51279b7debbc3e44406ac3a6f2a6440407936e",
+  "supervised_command": [
+    "python3",
+    "-I",
+    "-B",
+    "docs/gcsp/evidence/fucq106/integration-supervisor.py",
+    "integration-v2"
+  ],
+  "node_command": [
+    "node",
+    "--no-warnings",
+    "--loader",
+    "/private/tmp/test-stamp-shard-ff3701b9c17b406cbb2361c657ee3670/integration-loader.mjs",
+    "--test",
+    "--test-reporter=tap",
+    "--test-concurrency=1",
+    "server/test/gcsp-offer-decisions-integration.test.js"
+  ],
+  "tests": 12,
+  "passed": 12,
+  "failed": 0,
+  "skipped": 0,
+  "test_identity": {
+    "bytes": 22091,
+    "path": "server/test/gcsp-offer-decisions-integration.test.js",
+    "sha256": "b7ed6b1d9d5e7f731e5897daa5623a0f6e0e4797e86c507f2e2785196abdb31a"
+  },
+  "loader_sha256": "47553e3ccb690a6482aedb2b8487d66ba4a0c76e054a7e170e1bf289dc52601a",
+  "supervisor_sha256": "5c5ab4d1bbaba416d6cbed01c0da750201c05cdbbfc5dff2738f8fd6189ddf30",
+  "file_inputs": {
+    "docs/gcsp/evidence/fucq106/reviewed-offer-decline-reasons-v1.proposal.json": "1f1b632be83ddef1a5656288b4e40c0378736cda5c21fcf03de68544dfbe688f",
+    "server/gcsp/policy/seed-v1.json": "c585213b98631d6e82acc1b3720d47efae49fdb502f5fc86fb440703ef6e41a6"
+  },
+  "source_modules": [
+    {
+      "bytes": 10235,
+      "overlay": false,
+      "path": "blocks/vehicle-matcher/feedback-actions.js",
+      "sha256": "eb6dcfb82aed8045228797f870a5e337ef7f0a8f3e136eb46804995d71838744",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 46965,
+      "overlay": false,
+      "path": "server/brands.js",
+      "sha256": "ea63741b2fcb01dbe35dcdffdd66f7021a3c0219517a8de1487fae65f65299e2",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 42306,
+      "overlay": false,
+      "path": "server/engine.js",
+      "sha256": "bbe8a865d280fb75075e93a139a3badbaa20972a18406baeeafb8ca2fc56a550",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 19768,
+      "overlay": false,
+      "path": "server/gcsp/brief/index.js",
+      "sha256": "22500a517f8232947b33ac274e32bf60746ba9d8199851e750784f57737ee418",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 23255,
+      "overlay": false,
+      "path": "server/gcsp/clock/index.js",
+      "sha256": "a1726ddc4ad11deb0b7044480d745180d4c7dff42b34e77305a090b35d38e40a",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 2686,
+      "overlay": false,
+      "path": "server/gcsp/fixtures/principals.js",
+      "sha256": "848797ec98dd253c8c8daa4e1078f2b6ecc30b2807c713bf13615f2ead18ec2f",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 4895,
+      "overlay": false,
+      "path": "server/gcsp/fixtures/scenario-v1.js",
+      "sha256": "408f135c04ae909e717c30763073a3ea24a82c1e8643fabdea2888e22f1681f4",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 5754,
+      "overlay": false,
+      "path": "server/gcsp/fixtures/scenarios/catalogue-v1.js",
+      "sha256": "eca724465148032750c74c57882c0ee0ae69f3b119330194b9601b9b4bc1b73c",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 4505,
+      "overlay": false,
+      "path": "server/gcsp/fixtures/scenarios/index.js",
+      "sha256": "e1e794e347833ae952352d7bdf2cbc9afae28c65a01edd76c570a6bf38c4cad4",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 12789,
+      "overlay": false,
+      "path": "server/gcsp/identity/index.js",
+      "sha256": "7b23c7a6f251edaa54ce8921eb29734976447239afd3cb58343d79f9e153c152",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 4389,
+      "overlay": false,
+      "path": "server/gcsp/manual-context/fixtures.js",
+      "sha256": "e63bee220e6e563f96ee94a94f37500c67d0c2944b3909a0a8c7d3f1f89b01a6",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 4210,
+      "overlay": false,
+      "path": "server/gcsp/manual-context/ports.js",
+      "sha256": "c1e7db5012f6d3212b79ad989e6cde5a0e390e2f4bfe50f91ee4c79c8a7a1267",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 4706,
+      "overlay": false,
+      "path": "server/gcsp/migrations/index.js",
+      "sha256": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 28746,
+      "overlay": true,
+      "path": "server/gcsp/offers/buddy-hold.js",
+      "sha256": "b9f1a9be9cf42552a56313492bf0703b49ed715ffe2059f477ee11637c44b3d6",
+      "source": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 24229,
+      "overlay": true,
+      "path": "server/gcsp/offers/buddy-remote.js",
+      "sha256": "0284045ab38c22c305019ad4a560724aa233e830c6c37186d5661da430c59e01",
+      "source": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 3135,
+      "overlay": true,
+      "path": "server/gcsp/offers/current-car-comparison.js",
+      "sha256": "c5aaf8b2e3123301d50f3dade21e89e4f88abf12ede4e2c7ed801adbc56099cd",
+      "source": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 1292,
+      "overlay": true,
+      "path": "server/gcsp/offers/offer-token.js",
+      "sha256": "325b699d7dfdb435cd8713015017aa68bf735582f127d7d64a0e0fc819f7b915",
+      "source": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 7809,
+      "overlay": false,
+      "path": "server/gcsp/policy/file-provider.js",
+      "sha256": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 9852,
+      "overlay": false,
+      "path": "server/gcsp/policy/index.js",
+      "sha256": "087267e81d4a780ef300dba144d9de5c4978ca530fe8ea5b2f53e2ec41395a2c",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 1861,
+      "overlay": false,
+      "path": "server/gcsp/policy/memory-provider.js",
+      "sha256": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 6553,
+      "overlay": false,
+      "path": "server/gcsp/policy/postgres-provider.js",
+      "sha256": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 8385,
+      "overlay": false,
+      "path": "server/gcsp/policy/publish.js",
+      "sha256": "5731771b1b7607028cd923c33038a0a0da113d463b8042fdd0b60d9f0a63d023",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 18786,
+      "overlay": true,
+      "path": "server/gcsp/recommendation/index.js",
+      "sha256": "08acfe895804cf60dcc178591ecbdd1816f12ce70944f832f1ae394902c7e172",
+      "source": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 30666,
+      "overlay": true,
+      "path": "server/gcsp/repository/core.js",
+      "sha256": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+      "source": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 247,
+      "overlay": false,
+      "path": "server/gcsp/repository/index.js",
+      "sha256": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 1561,
+      "overlay": false,
+      "path": "server/gcsp/repository/memory.js",
+      "sha256": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 5658,
+      "overlay": false,
+      "path": "server/gcsp/repository/postgres.js",
+      "sha256": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 5562,
+      "overlay": false,
+      "path": "server/gcsp/repository/schema.js",
+      "sha256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 19405,
+      "overlay": false,
+      "path": "server/gcsp/vehicle-evidence/vin-allocation.js",
+      "sha256": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 2849,
+      "overlay": false,
+      "path": "server/gcsp/vehicle-evidence/vin-generator.js",
+      "sha256": "56072df720ff4b32d26fcd099852f397f140ae44b4658532fa952d11c717260f",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 9652,
+      "overlay": false,
+      "path": "server/gcsp/vehicle-evidence/vin-profiles.js",
+      "sha256": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 20998,
+      "overlay": false,
+      "path": "server/questions.js",
+      "sha256": "898716dfaf8a184fef39a9ae12b9d59b01cce94c48356dab5e3b4e81de62c26d",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 8375,
+      "overlay": false,
+      "path": "server/scenarios/employee/index.js",
+      "sha256": "43f50c04794902dd1d10a008f7882d335c1b5179f1c57a3f4ab9ea1293f7d844",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 2798,
+      "overlay": false,
+      "path": "server/test/helpers/employee-recommendation.js",
+      "sha256": "39b7e47f9298d155759fa440bd412ebb86bfc009b7ec9d9d1167bdb88970ce9a",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 9321,
+      "overlay": false,
+      "path": "server/vehicles/index.js",
+      "sha256": "cc02ff92ac13a25fdbe3a2325f60cafe2c16486e2f11d78a391f8664a217b5cc",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "stage": "reuse-102"
+    },
+    {
+      "bytes": 20668,
+      "path": "server/gcsp/offers/access.js",
+      "sha256": "134e9d39253e934618f6cf38b334bb7cf0f8912443ee159e6167b949d4fdb34a",
+      "source": "4a56d386f031e7cf5a1fdeaefdcc612fb35cbd7b",
+      "stage": "additional-106"
+    },
+    {
+      "bytes": 4776,
+      "path": "server/gcsp/offers/access-http.js",
+      "sha256": "f37533eeb5309cb4eff6c6dcf0af5ab8a8819afdaa4d08b4baee0147d360e868",
+      "source": "4a56d386f031e7cf5a1fdeaefdcc612fb35cbd7b",
+      "stage": "additional-106"
+    },
+    {
+      "bytes": 23307,
+      "path": "server/gcsp/offers/decision.js",
+      "sha256": "a934455a09beb13e3682c1f10ebea95f0549ff2fad8db03d54ff947e7ed7789a",
+      "source": "v9-tested-worktree",
+      "stage": "additional-106"
+    },
+    {
+      "bytes": 4782,
+      "path": "server/gcsp/offers/decision-http.js",
+      "sha256": "223e3358569602145ecb2a5f967abf5a9e3ca78d688667d0e6c8bbb0c1779b96",
+      "source": "v9-tested-worktree",
+      "stage": "additional-106"
+    }
+  ],
+  "module_journal": [
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/test/gcsp-offer-decisions-integration.test.js",
+      "overlay": false,
+      "path": "server/test/gcsp-offer-decisions-integration.test.js",
+      "pid": 81358,
+      "sha256": "b7ed6b1d9d5e7f731e5897daa5623a0f6e0e4797e86c507f2e2785196abdb31a",
+      "source": "owned-test"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/repository/index.js",
+      "overlay": false,
+      "path": "server/gcsp/repository/index.js",
+      "pid": 81358,
+      "sha256": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/repository/memory.js",
+      "overlay": false,
+      "path": "server/gcsp/repository/memory.js",
+      "pid": 81358,
+      "sha256": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/repository/core.js",
+      "overlay": true,
+      "path": "server/gcsp/repository/core.js",
+      "pid": 81358,
+      "sha256": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+      "source": "a7fc8580efba36c329b2479711d6b66db53962bd"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/repository/schema.js",
+      "overlay": false,
+      "path": "server/gcsp/repository/schema.js",
+      "pid": 81358,
+      "sha256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/repository/postgres.js",
+      "overlay": false,
+      "path": "server/gcsp/repository/postgres.js",
+      "pid": 81358,
+      "sha256": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/migrations/index.js",
+      "overlay": false,
+      "path": "server/gcsp/migrations/index.js",
+      "pid": 81358,
+      "sha256": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/policy/index.js",
+      "overlay": false,
+      "path": "server/gcsp/policy/index.js",
+      "pid": 81358,
+      "sha256": "087267e81d4a780ef300dba144d9de5c4978ca530fe8ea5b2f53e2ec41395a2c",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/policy/file-provider.js",
+      "overlay": false,
+      "path": "server/gcsp/policy/file-provider.js",
+      "pid": 81358,
+      "sha256": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/policy/postgres-provider.js",
+      "overlay": false,
+      "path": "server/gcsp/policy/postgres-provider.js",
+      "pid": 81358,
+      "sha256": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/policy/publish.js",
+      "overlay": false,
+      "path": "server/gcsp/policy/publish.js",
+      "pid": 81358,
+      "sha256": "5731771b1b7607028cd923c33038a0a0da113d463b8042fdd0b60d9f0a63d023",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/policy/memory-provider.js",
+      "overlay": false,
+      "path": "server/gcsp/policy/memory-provider.js",
+      "pid": 81358,
+      "sha256": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/clock/index.js",
+      "overlay": false,
+      "path": "server/gcsp/clock/index.js",
+      "pid": 81358,
+      "sha256": "a1726ddc4ad11deb0b7044480d745180d4c7dff42b34e77305a090b35d38e40a",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/identity/index.js",
+      "overlay": false,
+      "path": "server/gcsp/identity/index.js",
+      "pid": 81358,
+      "sha256": "7b23c7a6f251edaa54ce8921eb29734976447239afd3cb58343d79f9e153c152",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/fixtures/principals.js",
+      "overlay": false,
+      "path": "server/gcsp/fixtures/principals.js",
+      "pid": 81358,
+      "sha256": "848797ec98dd253c8c8daa4e1078f2b6ecc30b2807c713bf13615f2ead18ec2f",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/fixtures/scenario-v1.js",
+      "overlay": false,
+      "path": "server/gcsp/fixtures/scenario-v1.js",
+      "pid": 81358,
+      "sha256": "408f135c04ae909e717c30763073a3ea24a82c1e8643fabdea2888e22f1681f4",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/vehicle-evidence/vin-allocation.js",
+      "overlay": false,
+      "path": "server/gcsp/vehicle-evidence/vin-allocation.js",
+      "pid": 81358,
+      "sha256": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/vehicle-evidence/vin-generator.js",
+      "overlay": false,
+      "path": "server/gcsp/vehicle-evidence/vin-generator.js",
+      "pid": 81358,
+      "sha256": "56072df720ff4b32d26fcd099852f397f140ae44b4658532fa952d11c717260f",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/vehicle-evidence/vin-profiles.js",
+      "overlay": false,
+      "path": "server/gcsp/vehicle-evidence/vin-profiles.js",
+      "pid": 81358,
+      "sha256": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/fixtures/scenarios/index.js",
+      "overlay": false,
+      "path": "server/gcsp/fixtures/scenarios/index.js",
+      "pid": 81358,
+      "sha256": "e1e794e347833ae952352d7bdf2cbc9afae28c65a01edd76c570a6bf38c4cad4",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/fixtures/scenarios/catalogue-v1.js",
+      "overlay": false,
+      "path": "server/gcsp/fixtures/scenarios/catalogue-v1.js",
+      "pid": 81358,
+      "sha256": "eca724465148032750c74c57882c0ee0ae69f3b119330194b9601b9b4bc1b73c",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/brief/index.js",
+      "overlay": false,
+      "path": "server/gcsp/brief/index.js",
+      "pid": 81358,
+      "sha256": "22500a517f8232947b33ac274e32bf60746ba9d8199851e750784f57737ee418",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/scenarios/employee/index.js",
+      "overlay": false,
+      "path": "server/scenarios/employee/index.js",
+      "pid": 81358,
+      "sha256": "43f50c04794902dd1d10a008f7882d335c1b5179f1c57a3f4ab9ea1293f7d844",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/engine.js",
+      "overlay": false,
+      "path": "server/engine.js",
+      "pid": 81358,
+      "sha256": "bbe8a865d280fb75075e93a139a3badbaa20972a18406baeeafb8ca2fc56a550",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/questions.js",
+      "overlay": false,
+      "path": "server/questions.js",
+      "pid": 81358,
+      "sha256": "898716dfaf8a184fef39a9ae12b9d59b01cce94c48356dab5e3b4e81de62c26d",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/brands.js",
+      "overlay": false,
+      "path": "server/brands.js",
+      "pid": 81358,
+      "sha256": "ea63741b2fcb01dbe35dcdffdd66f7021a3c0219517a8de1487fae65f65299e2",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/recommendation/index.js",
+      "overlay": true,
+      "path": "server/gcsp/recommendation/index.js",
+      "pid": 81358,
+      "sha256": "08acfe895804cf60dcc178591ecbdd1816f12ce70944f832f1ae394902c7e172",
+      "source": "a7fc8580efba36c329b2479711d6b66db53962bd"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/vehicles/index.js",
+      "overlay": false,
+      "path": "server/vehicles/index.js",
+      "pid": 81358,
+      "sha256": "cc02ff92ac13a25fdbe3a2325f60cafe2c16486e2f11d78a391f8664a217b5cc",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/blocks/vehicle-matcher/feedback-actions.js",
+      "overlay": false,
+      "path": "blocks/vehicle-matcher/feedback-actions.js",
+      "pid": 81358,
+      "sha256": "eb6dcfb82aed8045228797f870a5e337ef7f0a8f3e136eb46804995d71838744",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/manual-context/fixtures.js",
+      "overlay": false,
+      "path": "server/gcsp/manual-context/fixtures.js",
+      "pid": 81358,
+      "sha256": "e63bee220e6e563f96ee94a94f37500c67d0c2944b3909a0a8c7d3f1f89b01a6",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/offers/buddy-hold.js",
+      "overlay": true,
+      "path": "server/gcsp/offers/buddy-hold.js",
+      "pid": 81358,
+      "sha256": "b9f1a9be9cf42552a56313492bf0703b49ed715ffe2059f477ee11637c44b3d6",
+      "source": "a7fc8580efba36c329b2479711d6b66db53962bd"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/manual-context/ports.js",
+      "overlay": false,
+      "path": "server/gcsp/manual-context/ports.js",
+      "pid": 81358,
+      "sha256": "c1e7db5012f6d3212b79ad989e6cde5a0e390e2f4bfe50f91ee4c79c8a7a1267",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/offers/offer-token.js",
+      "overlay": true,
+      "path": "server/gcsp/offers/offer-token.js",
+      "pid": 81358,
+      "sha256": "325b699d7dfdb435cd8713015017aa68bf735582f127d7d64a0e0fc819f7b915",
+      "source": "a7fc8580efba36c329b2479711d6b66db53962bd"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/offers/buddy-remote.js",
+      "overlay": true,
+      "path": "server/gcsp/offers/buddy-remote.js",
+      "pid": 81358,
+      "sha256": "0284045ab38c22c305019ad4a560724aa233e830c6c37186d5661da430c59e01",
+      "source": "a7fc8580efba36c329b2479711d6b66db53962bd"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/offers/current-car-comparison.js",
+      "overlay": true,
+      "path": "server/gcsp/offers/current-car-comparison.js",
+      "pid": 81358,
+      "sha256": "c5aaf8b2e3123301d50f3dade21e89e4f88abf12ede4e2c7ed801adbc56099cd",
+      "source": "a7fc8580efba36c329b2479711d6b66db53962bd"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/offers/access.js",
+      "overlay": false,
+      "path": "server/gcsp/offers/access.js",
+      "pid": 81358,
+      "sha256": "134e9d39253e934618f6cf38b334bb7cf0f8912443ee159e6167b949d4fdb34a",
+      "source": "4a56d386f031e7cf5a1fdeaefdcc612fb35cbd7b"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/offers/access-http.js",
+      "overlay": false,
+      "path": "server/gcsp/offers/access-http.js",
+      "pid": 81358,
+      "sha256": "f37533eeb5309cb4eff6c6dcf0af5ab8a8819afdaa4d08b4baee0147d360e868",
+      "source": "4a56d386f031e7cf5a1fdeaefdcc612fb35cbd7b"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/offers/decision.js",
+      "overlay": false,
+      "path": "server/gcsp/offers/decision.js",
+      "pid": 81358,
+      "sha256": "a934455a09beb13e3682c1f10ebea95f0549ff2fad8db03d54ff947e7ed7789a",
+      "source": "v9-tested-worktree"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/gcsp/offers/decision-http.js",
+      "overlay": false,
+      "path": "server/gcsp/offers/decision-http.js",
+      "pid": 81358,
+      "sha256": "223e3358569602145ecb2a5f967abf5a9e3ca78d688667d0e6c8bbb0c1779b96",
+      "source": "v9-tested-worktree"
+    },
+    {
+      "canonical": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-074/server/test/helpers/employee-recommendation.js",
+      "overlay": false,
+      "path": "server/test/helpers/employee-recommendation.js",
+      "pid": 81358,
+      "sha256": "39b7e47f9298d155759fa440bd412ebb86bfc009b7ec9d9d1167bdb88970ce9a",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed"
+    }
+  ],
+  "module_count": 39,
+  "observed_module_count_with_test": 40,
+  "limits": {
+    "logMiB": 2,
+    "ramMiB": 768,
+    "scratchAndOutputMiB": 128,
+    "seconds": 120,
+    "workers": 1
+  },
+  "measured": {
+    "wall": 2.1005518750000003,
+    "peak_rss": 241025024,
+    "peak_scratch": 646432
+  },
+  "cleanup": {
+    "dependencyLinksCreated": 0,
+    "existingDependencyPreserved": true,
+    "groupsAbsent": true,
+    "liveOwnedProcesses": [],
+    "openFiles": [],
+    "reservationReleased": true,
+    "scratchAbsent": true
+  },
+  "result_receipt": ".claude/test-runs/fucq106/integration-v2/result.json",
+  "result_sha256": "461f15f3212fdc786572fe6e02834a7b4ba3dfd23e03390f3fc52703c4891583",
+  "impact": ".claude/test-runs/impact/fucq106-integration-v2.json",
+  "initial_failure": {
+    "receipt": ".claude/test-runs/fucq106/integration-v1/result.json",
+    "failure_log": ".claude/test-runs/fucq106/integration-v1/failure.log",
+    "diagnosis": "Strict loader initially refused Node loader self-registration before any feature imports. Added an exact loader URL/self-hash exception; no feature-source edit. Initial sampled PID raced to exit before start identity and a null/null comparison was reported as live; supervisor now records only nonnull process identities. Final independent audit reconciles absence."
+  },
+  "boundaries": [
+    "Actual100 buddy producer writes hold/quote/offer/outbox and actual clock expiry; no synthetic offer writer",
+    "Actual102 private token exchange/session/account capability from one shared access instance; cross-owner and copied context refused",
+    "Actual100 stored-subject factory/shared evaluation kernel with current persisted subject and confirmed brief",
+    "106 real local transactional service and in-process HTTP adapters; no central runtime",
+    "Explicit alternative reason input only; policy103 adoption modules and registration patch not imported/applied",
+    "Source-event insertion is not actual downstream107/108 delivery",
+    "No remote adapter/native PostgreSQL/full-suite/browser/listener/network/mail/install claim"
+  ]
+}

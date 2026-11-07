@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "at": "2026-11-06T02:45:41.482819+00:00",
+  "story": "FUCQ-106",
+  "status": "Author-only coordination proposal; no feature implementation or execution",
+  "basis106": "90cb70ce951a4c9de934e792b8b7fbee0665d934",
+  "basis71": "ed20ca2a774d9368b4fce87a7e69b5e2ae30a7e8",
+  "pins": [
+    {
+      "source": "ed20ca2a774d9368b4fce87a7e69b5e2ae30a7e8",
+      "path": "docs/gcsp/manual-order-contract.md",
+      "sha256": "e585b84561fc72816cc3df8aead573112a1075de980ed27ba707f6837ddb4caa",
+      "bytes": 10288
+    },
+    {
+      "source": "ed20ca2a774d9368b4fce87a7e69b5e2ae30a7e8",
+      "path": "server/gcsp/manual-order/index.js",
+      "sha256": "b4b7798268cd51929b756ffb4c48e6f56579821094a0fa064f604d5886fcc352",
+      "bytes": 19660
+    },
+    {
+      "source": "ed20ca2a774d9368b4fce87a7e69b5e2ae30a7e8",
+      "path": "server/gcsp/manual-order/manual-conversion.js",
+      "sha256": "330ff1613ad01a08578f32c8cfdeaa763e6a8aa7844b68e433abea4d0ab1cb1f",
+      "bytes": 2336
+    },
+    {
+      "source": "ed20ca2a774d9368b4fce87a7e69b5e2ae30a7e8",
+      "path": "server/gcsp/manual-order/terms.js",
+      "sha256": "239f72b3abfb45944298ac3f0d504a36f501ef88fb3853c6e099a80337969eb6",
+      "bytes": 2207
+    },
+    {
+      "source": "90cb70ce951a4c9de934e792b8b7fbee0665d934",
+      "path": "server/gcsp/offers/decision.js",
+      "sha256": "a934455a09beb13e3682c1f10ebea95f0549ff2fad8db03d54ff947e7ed7789a",
+      "bytes": 23307
+    },
+    {
+      "source": "90cb70ce951a4c9de934e792b8b7fbee0665d934",
+      "path": "server/gcsp/offers/decision-http.js",
+      "sha256": "223e3358569602145ecb2a5f967abf5a9e3ca78d688667d0e6c8bbb0c1779b96",
+      "bytes": 4782
+    },
+    {
+      "source": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "path": "server/gcsp/offers/buddy-hold.js",
+      "sha256": "b9f1a9be9cf42552a56313492bf0703b49ed715ffe2059f477ee11637c44b3d6",
+      "bytes": 28746
+    },
+    {
+      "source": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "path": "server/gcsp/repository/core.js",
+      "sha256": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+      "bytes": 30666
+    },
+    {
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "path": "server/gcsp/manual-context/index.js",
+      "sha256": "13601990b08dc420ffe51948a874de7299fce88991924b8447192c29c0acedf7",
+      "bytes": 28284
+    },
+    {
+      "source": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "path": "server/gcsp/policy/index.js",
+      "sha256": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+      "bytes": 10870
+    }
+  ],
+  "diagnosis": "Static source trace:71 commitSelection requires active hold/unallocated slot in producer transaction, but106 allocates before accepted event. An after-event consumer cannot join.71 also conflates manual-origin quote draft/current policy with buddy quote confirmed-brief/pinned-price provenance. No reproduction executed.",
+  "owned106Seam": {
+    "path": "server/gcsp/offers/decision.js",
+    "publicHttpFieldsChanged": false,
+    "newEndpoint": false,
+    "newAllocationAuthority": false,
+    "signature": "decide(offerAccessContext, input, { selectionJoin } = {})",
+    "selectionJoin": {
+      "contractVersion": "selection-order-join:1",
+      "operationId": "Existing71 stable selection operation key",
+      "intentDigest": "Existing71 inputDigest(intent), including terms/declarations/source/quote/stock revisions",
+      "commitSelection": "Trusted function(tx); never public JSON or persisted"
+    },
+    "placement": "After #load/current rules and #accept return ok, before the first hold/claim/offer/stock/slot CAS. Existing106 transaction only; decline never invokes it.",
+    "newAcceptComposition": "Trusted startup requires selection commit for new integrated accept commands; absent join fails closed INSIDE repository work so identical historical command replay can still return its immutable original receipt before work.",
+    "digest": "Absent join keeps historical schema1 digest exactly. Present join uses schema2 and includes only contractVersion/operationId/intentDigest with existing input/binding; never hash function identity or private credentials. Same command with a different join/intent conflicts.",
+    "callbackResult": "Require complete ok; verify71 selection-order pending operation by operationId in same tx, matching intentDigest/run/employee/slot/exact held order/quote/source and atomicConversion:true. Non-ok, malformed or pending callback response refuses and rolls back.",
+    "allocation": "Only106 retains existing conditional writes, decision row and accepted event. Callback owns selection intent/history only. Any callback, later CAS, decision insert or receipt failure rolls everything back.",
+    "afterCommit": "Existing71 drive/reconciliation uses the same committed operation and existing ordering adapter. No external I/O or nested repository.transaction inside callback.",
+    "replay": "Repository command receipt precedes work, so exact replay invokes no hook/CAS/event. Historical unjoined acceptance never gains ordering intent; same command changed to joined conflicts. Reconciliation may observe existing intent but never call source allocation again.",
+    "startupMode": {
+      "name": "acceptanceMode",
+      "values": [
+        "isolated-checkpoint",
+        "ordering-atomic"
+      ],
+      "missing": "A NEW accept refuses inside repository work. Historical identical receipts still replay before work.",
+      "isolated-checkpoint": "Explicit scoped composition only; never satisfies108 or integrated runtime acceptance.",
+      "ordering-atomic": "Requires valid selectionJoin before any new accepted mutation; root binds existing decision endpoint through108 orchestration."
+    }
+  },
+  "required71Coordination": [
+    "Pass existing operationId/inputDigest(intent) beside commitSelection in trusted converter options. No new ordering adapter or public write endpoint.",
+    "Keep cart/manual quote validation unchanged. Buddy branch validates explicit confirmed-brief origin and pinned quote policy, not q.draftVersion or q.policyVersion===current context policy.",
+    "Retain expectedDraftVersion only for a REAL order-detail draft from existing ManualContextService. It is independent of quote.briefVersion; if missing/incomplete/stale, return typed not-ready/unavailable rather than fabricate a draft.",
+    "Prepared buddy source basis names offer/quote/revisions, pinnedBriefVersion/currentBriefVersion, quotePolicyVersion/currentEligibilityPolicyVersion and real orderingDraftVersion/contextVersion separately. Callback checks persisted versions inside joined transaction; no cached prepare result establishes authority.",
+    "Preserve current71 active hold/expiry/stock/exact identity/employee/slot/clock/declaration checks. Retain raw held quote bytes, current policy terms provenance and source-specific version basis in snapshot.",
+    "Current71 guard requires genuine employee identity.108/root must supply legitimate ordering authority on both offer entry routes; neither106 service scope nor offer capability is an employee credential. Existing token/account decision parity remains an explicit unclosed integration criterion."
+  ],
+  "required108Coordination": [
+    "Implement existing buddy converter prepare/convertSelection and same acceptance orchestration; use actual106 privately branded access and existing71 callback, not direct allocation or a second adapter.",
+    "Use stable71 allocation command ID and join identity on retries; resolve actual unique offer for held source and bind original accept revisions. Do not keep shared mutable per-request callback/capability caches.",
+    "Obtain actual complete ordering details/driver/licence/contact/old-contract and real reviewed declarations through existing authorities. Revalidate their persisted versions in same transaction; never generate them from confirmed preferences.",
+    "Current PolicyService.getAllowance read at current run version compared with original typed held price, with explicit points units and provenance. Never call current getPointsCost to replace held price. Failure rolls joined transaction back.",
+    "Accepted event is a fact of the same commit that already contains selection intent; it may wake/reconcile that exact operation, not begin another selection/transaction.71 remains provider reconciliation/target-state authority.",
+    "No further holds rely on actual allocated slot; brief-selection association must use agreed owned writer/projection while confirmed history remains immutable. Snapshot linkage alone does not close authored brief-records-selection acceptance."
+  ],
+  "policyReadiness": {
+    "canonicalSeedPin": {
+      "path": "server/gcsp/policy/seed-v1.json",
+      "source": "a3fdcdfdc7b5d6c0c4f38744101b355ab6359bed",
+      "sha256": "c585213b98631d6e82acc1b3720d47efae49fdb502f5fc86fb440703ef6e41a6",
+      "bytes": 493400
+    },
+    "missingOrderingKeys": [
+      "ordering.terms.v1",
+      "ordering.approvalStages.v1"
+    ],
+    "requirement": "71 published keys must be adopted/published through the same canonical provider/version machinery. Never replace canonical seed with71 branch seed or invent local active defaults."
+  },
+  "compositionSafety": [
+    "Integrated existing decision handler must route accept through108 orchestration while decline stays106.106 required-join mode rejects unjoined NEW accepts; public route cannot bypass mandatory ordering intent. No new HTTP callback field.",
+    "No retroactive joined mutation for accepted historical offers. Preserve original outcomes and report legacy missing ordering intent explicitly; any migration/repair requires separate bounded ownership.",
+    "Local-synthetic joined path only; remote operation protocol remains unavailable. No generic pending callback creates pretend remote success.71 adapter uncertainty occurs only after confirmed local allocation, which stays occupied."
+  ],
+  "changeScope": {
+    "owned106Future": [
+      "server/gcsp/offers/decision.js: trusted third argument/digest/accept hook/required-join mode",
+      "docs/gcsp/offer-decisions-contract.md: additive trusted join contract",
+      "Dedicated new106 seam regression cases/helper composition, exact final source/harness review before any execution"
+    ],
+    "sharedNotWritten": [
+      "71 manual-order/index.js and contract: metadata plus source-specific version/snapshot validation",
+      "108 converter/orchestration and focused buddy-handoff tests",
+      "Root existing decision handler/runtime composition and actual ordering authority binding",
+      "Policy-owner publication of ordering keys; any actual ManualContext transaction-bound validation support",
+      "BriefService/account/105 state projections only through owning leads"
+    ],
+    "presentCommit": [
+      "proposal JSON/Markdown",
+      "Own story Result reference only"
+    ]
+  },
+  "futureChecksNotExecuted": [
+    "Hook sees active hold/claim and unallocated slot;one71intent/history then106allocation/decision/event atomic commit",
+    "Callback typed refusal/throw/malformed/pending and later CAS/decision/event failures leave no new intent/history/allocation/selection marks",
+    "Exact replay/cross-route retry/reopen has one106decision/event and one71operation/history;changedterms/declarations/join identity conflicts",
+    "No join new integrated accept refuses;unchanged historical unjoined replay returns original without hook/backfill;decline never invokes callback",
+    "Actual buddy quote lacks draftVersion;real ordering draft and confirmed brief versions remain distinct;missing real details fail closed",
+    "Newer current price does not reprice held quote;current allowance can permit/refuse exact originaltypedpoints",
+    "Existing71adapter response-loss/reconcile/unknown/targetstages uses sameoperation,allocatedoccupancy persists",
+    "Real token/account authority,source duplicate conflict,clock/policy races,and transaction-bound manual detail/driver/licence revalidation"
+  ],
+  "executed": false,
+  "allocation": false,
+  "productImports": false,
+  "featureChanges": false,
+  "sharedWrites": false,
+  "excluded": [
+    "remote71/108 execution or fake proof",
+    "new ordering adapter or write endpoint",
+    "native/full/browser/listener/network/mail",
+    "96 source/access or unpause",
+    "Jira/claim/merge changes",
+    "rerun or mutation of frozen25/12/3 and105/107proofs"
+  ]
+}

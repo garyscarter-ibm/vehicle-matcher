@@ -1,0 +1,113 @@
+{
+  "code": {
+    "COMPONENTS.md": "efd12f582a943082c437c03593e584c4c5129c830ef4ecd858bfdf1bc5fb9c7b",
+    "blocks/gcsp/offer/fixtures.js": "771447b5d2c821e3d198a5209e0304ffd7f67111d1efe1120ef6e10da5beb1f0",
+    "blocks/gcsp/offer/gcsp-offer.css": "b155ddc1bb4dd5aa412f8993561c51377d7b6a16dff4ef4f52e2d62fa364024f",
+    "blocks/gcsp/offer/gcsp-offer.js": "7475bc77012f75374b0cceea1315a35d0d2b2257c9965ea72b3b6d5ad5d8ed96",
+    "blocks/gcsp/offer/harness.js": "ae8150a6f14498789d5403de9220e13e352cdabd1b490eb3285059a60821e288",
+    "blocks/gcsp/offer/http-adapter.js": "b9f37dc9d935900ab78abf3a0e9cc396b38565a52dc65e8ef4f15f1fa82c2f8d",
+    "blocks/gcsp/offer/offer-controller.js": "71f1c2ba3fc3e42cc3642f12971bf4bb3027fcb2dfddb99121ca50735b0f6561",
+    "blocks/gcsp/offer/offer-projection.js": "de65b45b01909e5a0e3959b27136933f60e3749a2e7d82874054795085eb721a",
+    "blocks/gcsp/offer/offer-view.js": "d6521a0363d189fd8a62b932e17a4865ec7497ea71f6de88dec0a42ccbed5f09",
+    "blocks/gcsp/offer/preview.html": "ec555687573e54a005dfae3d05c1ca6af40a1457670363cd76ce7644569830e0",
+    "docs/gcsp/evidence/fucq105/comparison-access.json": "e3d8a9065ac85e4088768a27db0cb22b1f4f136b5c6b8f68a960dd5e525ddab6",
+    "docs/gcsp/evidence/fucq105/producer-access.json": "e50f3c56f3df4d3437a6fd2ec91e62fd713e0c1c5a42ce0d44753110a5535080",
+    "docs/gcsp/evidence/fucq105/producer-decline-access.json": "c9a63f5b6dacfeb0c3720904ee218c085039903f55a74b551fb463fd70a626f5",
+    "docs/gcsp/evidence/fucq105/representative-access.json": "9a406c67d7785353c941b2ba294593e188e6ef6045bf099fe222a1131f37d884",
+    "server/test/gcsp-offer-view-controller.test.js": "f79c8febd559e29f150ab182ce311b96f57905b63b81e29970342b555f543928",
+    "server/test/gcsp-offer-view-http.test.js": "738226f9bf62c5e64b5711fe885abf11a26172cc8c11240e299813d888193734",
+    "server/test/gcsp-offer-view-projection.test.js": "a8afbacdc9f02e44bfd7166b7a86694e96dfa6eb9859cb09274ac37af452c46e",
+    "server/test/gcsp-offer-view-render.test.js": "9ecb7431f6fdd42d9e9651a9cb383a4d045b6269ae66735383387640212e85e7",
+    "server/test/ui-ratchet.json": "d74cf7a0e9c0949a43624b6f3ac63b0f8af2d63c8687f24a85964fd9a54914d7"
+  },
+  "groups_absent": true,
+  "issue": null,
+  "issue_kind": null,
+  "log": "/private/tmp/test-stamp-shard-7886e5039fa34347a17c53f6475e0956/check.log",
+  "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/ownership/7886e5039fa34347a17c53f6475e0956.json",
+  "peak_rss": 31490048,
+  "peak_scratch": 8192,
+  "rc": 0,
+  "reservation_released": true,
+  "scratch_absent": true,
+  "summary": [
+    "# tests 73",
+    "# pass 73",
+    "# fail 0",
+    "# skipped 0",
+    "# duration_ms 1147.449708"
+  ],
+  "summary_tail": [
+    "# tests 73",
+    "# suites 0",
+    "# pass 73",
+    "# fail 0",
+    "# cancelled 0",
+    "# skipped 0",
+    "# todo 0",
+    "# duration_ms 1147.449708",
+    "  completed 1 unit(s), exit 0; scratch removed",
+    "OK (exit 0), wall 1.4s",
+    "logs: /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/logs/20261106-000330-9pcbh4yd",
+    "recorded targeted evidence: /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/targeted-9a11cd6977a9eaeec123e61c29c9517e0646e19def5bebbdaa6f22ba86f5f656-default-1793923412172443000.json"
+  ],
+  "wall": 2.892091583,
+  "scope": "73 scoped own projection/controller/HTTP/DOM checks using exact safe actual-producer samples. Actual producer/access source imports, real106,host,rendered browser and full-suite acceptance remain excluded.",
+  "targeted": {
+    "receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/targeted-9a11cd6977a9eaeec123e61c29c9517e0646e19def5bebbdaa6f22ba86f5f656-default-1793923412172443000.json",
+    "code_key": "9a11cd6977a9eaeec123e61c29c9517e0646e19def5bebbdaa6f22ba86f5f656",
+    "base": "b95b4c8ad8a4534cbf03f287eb62fc8a57bbda96",
+    "variant": "default",
+    "command": "node --test --test-concurrency=1 --test-reporter=tap server/test/gcsp-offer-view-controller.test.js server/test/gcsp-offer-view-projection.test.js server/test/gcsp-offer-view-render.test.js server/test/gcsp-offer-view-http.test.js",
+    "not_full_stamp": true
+  },
+  "reference": {
+    "contractCommit": "4a56d386f031e7cf5a1fdeaefdcc612fb35cbd7b",
+    "contractSha256": "1731acc4e8d50873e4f614836626202107c14d581661206ff0e71ef5f48acc88",
+    "accessSha256": "134e9d39253e934618f6cf38b334bb7cf0f8912443ee159e6167b949d4fdb34a",
+    "producerSampleSha256": "e50f3c56f3df4d3437a6fd2ec91e62fd713e0c1c5a42ce0d44753110a5535080",
+    "declineSampleSha256": "c9a63f5b6dacfeb0c3720904ee218c085039903f55a74b551fb463fd70a626f5",
+    "provenance": "Exact published safe DTOs from actual100-to102 memory composition over explicit synthetic inputs. Consumer checks use saved DTOs; no actual producer import/allocation here.",
+    "actions": "before quote expiry accept+decline; quote expiry decline-only until original hold deadline; deadline none; no real106 port injected."
+  },
+  "nested_resources": [
+    {
+      "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/6c8418a210cb4d9ba75146c812cdae04.json",
+      "root": "/private/tmp/test-stamp-shard-6c8418a210cb4d9ba75146c812cdae04",
+      "root_absent": true,
+      "groups_absent": true,
+      "checkpoint": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/checkpoints/2eab28432a5c2356b43bf214469dfd36e15410dabd5a7620ae79fc621dbfdd10.json",
+      "peak_rss": 213057536,
+      "peak_scratch": 0
+    }
+  ],
+  "dependency_cleanup": {
+    "absent": true,
+    "inode": 173089116,
+    "link": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-080/server/node_modules",
+    "link_device": 16777232,
+    "owner": {
+      "pid": 75274,
+      "start": "Fri Nov  6 00:03:28 2026"
+    },
+    "state": "removed",
+    "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules",
+    "target_device": 16777232,
+    "target_inode": 172770727
+  },
+  "successful_log_cleanup": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/logs/20261106-000330-9pcbh4yd",
+    "bytes_removed": 16523,
+    "absent": true
+  },
+  "selection": {
+    "changed": [
+      "offer-projection.js action shape guard",
+      "offer-view.js disabled-action explanation and focus",
+      "four owned regression tests",
+      "exact producer sample inputs"
+    ],
+    "boundary": "DTO -> HTTP adapter/projection/controller/view with contract-spy decision only",
+    "excluded": "Unchanged shared kit/styles/ratchet; actual producer/access imports await plan review; no browser/listener/nativeDB/network/full."
+  }
+}

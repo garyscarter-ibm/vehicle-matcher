@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "at": "2026-11-06T01:08:40.899799+00:00",
+  "basis": "90cb70ce951a4c9de934e792b8b7fbee0665d934",
+  "grant": "fucq106-typed-90cb70c-0033",
+  "scope": "Read-only artifact/source/map/whitespace publication checks; no feature/test/harness execution",
+  "totals": {
+    "tests": 3,
+    "suites": 0,
+    "pass": 3,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "verifiedPins": 55,
+  "verifiedCanonicalIdentities": 43,
+  "retainedArtifactHashesMatch": true,
+  "reviewedManifestTestAndHelpersUnchanged": true,
+  "allPreviouslyCommittedEvidenceBytesPreserved": true,
+  "foreignMapRowsAndObservationsPreserved": true,
+  "ownWorkerAndOtherSlicesPreserved": true,
+  "storyStatus": "blocked",
+  "openFileScan": "not-established; original limitation preserved",
+  "furtherExecutionAuthorized": false,
+  "pathsChecked": 13,
+  "artifacts": [
+    {
+      "path": ".product-map/work.json",
+      "sha256": "1e415dc52929cc6912ac52a0e5768a8a6cef9b28d8f1b4d1fdfa67d1adaa63f7",
+      "bytes": 60620
+    },
+    {
+      "path": "_dev/in-progress/DEV-2026-11-04-074.md",
+      "sha256": "ab9018b9c63cd58599073ac0db662466adf9ab8126f76547376bc761bcb93e47",
+      "bytes": 18410
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-typed-checkpoint.json",
+      "sha256": "6574c9f141c5f6ab85abda892e31565cc5140e8fc7d9e348dbe2a408cda39e52",
+      "bytes": 8027
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-typed-final-audit.json",
+      "sha256": "975d1b496bf41506379db0c47278d0eeb7d5669d9c4382b05f335268f132c672",
+      "bytes": 1078
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-typed-grant.json",
+      "sha256": "43bed70f674ce1505cf56fcf10ddfbc4d9da489daefadb0e870e5ac1a0a52a0b",
+      "bytes": 1199
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-typed-module-journal.json",
+      "sha256": "bd55775a5d64743a179b97104bca003213818a66b2fb491f8b0b894c0a152249",
+      "bytes": 14198
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-typed-observer.py",
+      "sha256": "05409adc54ec432e6c45c391ee326c057b7f211fa45eedfea43e06127bf4b23c",
+      "bytes": 12017
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-typed-original.log",
+      "sha256": "ecb0b74ac212ea73ece17cf98b38ff324e11c8b48273f7f6629104bf3e3a375d",
+      "bytes": 966
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-typed-result.md",
+      "sha256": "6deadd1efecdf07538a02768fcfd31538df9c2b7d7ad8573eb76fdade171016c",
+      "bytes": 5801
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-typed-review.json",
+      "sha256": "0407071becc8df7205d1b3642ce59db2c3a6f1197403df7b1c93212b711090e7",
+      "bytes": 1107
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-typed-run-plan.json",
+      "sha256": "0c1048c4ec3124f13b52e8bf844bd8bdfdbcc9226aa3734fa8027f6da0f186bd",
+      "bytes": 12595
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-typed-run-result.json",
+      "sha256": "4d7741a8e193f0cef10101974b68a1a13c2602b8b64c9393c71723c068d7505f",
+      "bytes": 817
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-typed-source-audit.json",
+      "sha256": "279c33db40735e23fb00de90e25c4fd426c1042ef612eb41681bf67979271cb4",
+      "bytes": 29974
+    }
+  ]
+}

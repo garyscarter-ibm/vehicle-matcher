@@ -1,0 +1,463 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-11-06T00:08:48.806216+00:00",
+  "scope": "Source bytes read from immutable local Git objects only. No product module imported or executed; no integration or test claim.",
+  "presenterInputHead": "828c9b71e4fb0dbd2e959e8ddb96a53ccd017cfd",
+  "publishedSourceCheckpoints": {
+    "FUCQ-100": "95a475acceff50cdfcabfccc3101a08808264767",
+    "FUCQ-103": "3f1cc3414d700b1028ff1fec640a40591324b728",
+    "FUCQ-122-product": "0e8cb1fc6c7520b047fbd639b9b47c9d00c520cc",
+    "FUCQ-122-evidence": "68c6af6435bc6161f53ba7469ef8a2d1dcaa36cb",
+    "FUCQ-126": "828c9b71e4fb0dbd2e959e8ddb96a53ccd017cfd"
+  },
+  "sources": [
+    {
+      "group": "presenter",
+      "commit": "828c9b71e4fb0dbd2e959e8ddb96a53ccd017cfd",
+      "path": "server/index.js",
+      "sha256": "5e9a211b0f7252c5949016b3d52694cefd09381c576783c8df7aa5f6a03a14f2",
+      "bytes": 53144,
+      "lines": 1101
+    },
+    {
+      "group": "presenter",
+      "commit": "828c9b71e4fb0dbd2e959e8ddb96a53ccd017cfd",
+      "path": "server/gcsp/runtime.js",
+      "sha256": "f4654b8053d3927a3564a3701784367e976b04549ee66fb1a9a754032f88cb16",
+      "bytes": 5687,
+      "lines": 68
+    },
+    {
+      "group": "presenter",
+      "commit": "828c9b71e4fb0dbd2e959e8ddb96a53ccd017cfd",
+      "path": "server/gcsp/clock/index.js",
+      "sha256": "98d9e3ad778ad9a38aa3fb5f96f5a68040544ba328b79e263e661ec42c442c45",
+      "bytes": 24094,
+      "lines": 342
+    },
+    {
+      "group": "presenter",
+      "commit": "828c9b71e4fb0dbd2e959e8ddb96a53ccd017cfd",
+      "path": "server/gcsp/fixtures/scenario-v1.js",
+      "sha256": "408f135c04ae909e717c30763073a3ea24a82c1e8643fabdea2888e22f1681f4",
+      "bytes": 4895,
+      "lines": 59
+    },
+    {
+      "group": "presenter",
+      "commit": "828c9b71e4fb0dbd2e959e8ddb96a53ccd017cfd",
+      "path": "server/gcsp/fixtures/scenarios/index.js",
+      "sha256": "e1e794e347833ae952352d7bdf2cbc9afae28c65a01edd76c570a6bf38c4cad4",
+      "bytes": 4505,
+      "lines": 65
+    },
+    {
+      "group": "presenter",
+      "commit": "828c9b71e4fb0dbd2e959e8ddb96a53ccd017cfd",
+      "path": "server/gcsp/fixtures/scenarios/catalogue-v1.js",
+      "sha256": "eca724465148032750c74c57882c0ee0ae69f3b119330194b9601b9b4bc1b73c",
+      "bytes": 5754,
+      "lines": 54
+    },
+    {
+      "group": "presenter",
+      "commit": "828c9b71e4fb0dbd2e959e8ddb96a53ccd017cfd",
+      "path": "server/gcsp/scenarios/index.js",
+      "sha256": "02ec280d1407b9723ec55c4eb740eb209614b236cb8939cb45cd53c2c67b143b",
+      "bytes": 5514,
+      "lines": 69
+    },
+    {
+      "group": "presenter",
+      "commit": "828c9b71e4fb0dbd2e959e8ddb96a53ccd017cfd",
+      "path": "server/gcsp/presenter-controls/index.js",
+      "sha256": "06a518dc1ee15919ded29e938a717943816d591b1b79c442114a2aa8239704bd",
+      "bytes": 1434,
+      "lines": 24
+    },
+    {
+      "group": "presenter",
+      "commit": "828c9b71e4fb0dbd2e959e8ddb96a53ccd017cfd",
+      "path": "server/gcsp/presenter-controls/commands.js",
+      "sha256": "89b21a616e479c27f54d0004fe54d3b93e2cfd557e803b8bc38c717e619a627a",
+      "bytes": 4778,
+      "lines": 68
+    },
+    {
+      "group": "presenter",
+      "commit": "828c9b71e4fb0dbd2e959e8ddb96a53ccd017cfd",
+      "path": "blocks/gcsp/presenter-controls/controls.js",
+      "sha256": "a813f784c9b40091af234cbb247e9af8871ef0ccfd51db59f32a692634ea5c4e",
+      "bytes": 16034,
+      "lines": 240
+    },
+    {
+      "group": "presenter",
+      "commit": "828c9b71e4fb0dbd2e959e8ddb96a53ccd017cfd",
+      "path": "blocks/gcsp/presenter-controls/workspace.js",
+      "sha256": "cc8130f5708781c45afb5fdcd88fd10cffaf002c2d35224c0393b523c6efafc3",
+      "bytes": 2398,
+      "lines": 36
+    },
+    {
+      "group": "presenter",
+      "commit": "828c9b71e4fb0dbd2e959e8ddb96a53ccd017cfd",
+      "path": "gcsp-presenter.html",
+      "sha256": "ff00a6784b38e8142dfe90d7ccf3af510a1c95ce32477a65af71b70f0b23e71e",
+      "bytes": 752,
+      "lines": 18
+    },
+    {
+      "group": "presenter",
+      "commit": "828c9b71e4fb0dbd2e959e8ddb96a53ccd017cfd",
+      "path": "docs/gcsp/evidence/fucq-126/browser-supervisor.py",
+      "sha256": "8c171a3742ecdbaf265a0ff254259389a9e899a7cee0f2e3fe99afa94935bebe",
+      "bytes": 11529,
+      "lines": 228
+    },
+    {
+      "group": "presenter",
+      "commit": "828c9b71e4fb0dbd2e959e8ddb96a53ccd017cfd",
+      "path": "docs/gcsp/evidence/fucq-126/browser-runner.mjs",
+      "sha256": "0230d7151f08e6556521d103511d7af244f150cd233a6268090c7077389b6df8",
+      "bytes": 28955,
+      "lines": 372
+    },
+    {
+      "group": "presenter",
+      "commit": "828c9b71e4fb0dbd2e959e8ddb96a53ccd017cfd",
+      "path": "docs/gcsp/evidence/fucq-126/browser-after-results.json",
+      "sha256": "2011806cf6c4681864670872625cfa038377f59cc961820f86a142586fcd567b",
+      "bytes": 11052,
+      "lines": 1
+    },
+    {
+      "group": "policy",
+      "commit": "3f1cc3414d700b1028ff1fec640a40591324b728",
+      "path": "server/gcsp/runtime.js",
+      "sha256": "25e7c02cda0c3f09f0daec33d191514f88a9ccd2074d90ef6adb687ef1c34aa8",
+      "bytes": 6496,
+      "lines": 80
+    },
+    {
+      "group": "policy",
+      "commit": "3f1cc3414d700b1028ff1fec640a40591324b728",
+      "path": "server/gcsp/identity/index.js",
+      "sha256": "4c60cd226ecceefcedd86c7da73a410bfabbeddbb05aab1aa997c98639f7612c",
+      "bytes": 14177,
+      "lines": 241
+    },
+    {
+      "group": "policy",
+      "commit": "3f1cc3414d700b1028ff1fec640a40591324b728",
+      "path": "server/gcsp/identity/http.js",
+      "sha256": "c9f004bd943a7ed9b975cbe20aa23a5270760d61427e0360b966cb21490fd8d7",
+      "bytes": 6881,
+      "lines": 103
+    },
+    {
+      "group": "policy",
+      "commit": "3f1cc3414d700b1028ff1fec640a40591324b728",
+      "path": "server/index.js",
+      "sha256": "91370902af5b578fd72f8791a8f029b08dcb2079dae157d94a9ecd3c99a1824d",
+      "bytes": 53519,
+      "lines": 1105
+    },
+    {
+      "group": "policy",
+      "commit": "3f1cc3414d700b1028ff1fec640a40591324b728",
+      "path": "server/gcsp/policy/index.js",
+      "sha256": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+      "bytes": 10870,
+      "lines": 175
+    },
+    {
+      "group": "policy",
+      "commit": "3f1cc3414d700b1028ff1fec640a40591324b728",
+      "path": "server/gcsp/policy/publish.js",
+      "sha256": "c521e15966be7762a3348ad860403ef555dd8cbd48405e7d23d9a7c6d262a826",
+      "bytes": 9788,
+      "lines": 137
+    },
+    {
+      "group": "policy",
+      "commit": "3f1cc3414d700b1028ff1fec640a40591324b728",
+      "path": "server/gcsp/policy/adoption.js",
+      "sha256": "a2cb9a74946cd9eda413d896a0abc2f4299b3b75880a77ddd510667a5187c870",
+      "bytes": 4407,
+      "lines": 55
+    },
+    {
+      "group": "policy",
+      "commit": "3f1cc3414d700b1028ff1fec640a40591324b728",
+      "path": "server/gcsp/policy/activation.js",
+      "sha256": "4e79235b761e8daf94f3cf2744c4bc585146181b410b64497669bd353ee7c4d6",
+      "bytes": 2992,
+      "lines": 47
+    },
+    {
+      "group": "policy",
+      "commit": "3f1cc3414d700b1028ff1fec640a40591324b728",
+      "path": "server/gcsp/policy/reviewed-definitions.js",
+      "sha256": "8fa09f48202fd044638c2d602f9c816a440df5b20d4704666a187a45e1c256e8",
+      "bytes": 3252,
+      "lines": 42
+    },
+    {
+      "group": "policy",
+      "commit": "3f1cc3414d700b1028ff1fec640a40591324b728",
+      "path": "server/gcsp/policy/reviewed/presenter-controls-v1.json",
+      "sha256": "0e09fc7cde7677724153265042eb1f7a122c88115762a736a4bdf02a4b2e470a",
+      "bytes": 580,
+      "lines": 17
+    },
+    {
+      "group": "policy",
+      "commit": "3f1cc3414d700b1028ff1fec640a40591324b728",
+      "path": "server/gcsp/policy/reviewed/greg-publish-editor-v1.json",
+      "sha256": "7c7680227cdcd6e5f5afbb9fedb06b73c4768b2a3c7526cbf9cb9c03ccdfd8c3",
+      "bytes": 883,
+      "lines": 28
+    },
+    {
+      "group": "policy",
+      "commit": "3f1cc3414d700b1028ff1fec640a40591324b728",
+      "path": "server/gcsp/predict/records/policy-definitions.json",
+      "sha256": "c083ed58abcde595ac0cbf077b319b9102795506efb736c980d5f0cdba840143",
+      "bytes": 2719,
+      "lines": 76
+    },
+    {
+      "group": "policy",
+      "commit": "3f1cc3414d700b1028ff1fec640a40591324b728",
+      "path": "server/gcsp/greg/publish/index.js",
+      "sha256": "fdfaeee63bf42f39c66ecae357a4a940f2813db7f4b97b94dcb1503e9d79a6fb",
+      "bytes": 14655,
+      "lines": 192
+    },
+    {
+      "group": "policy",
+      "commit": "3f1cc3414d700b1028ff1fec640a40591324b728",
+      "path": "server/gcsp/greg/publish/http.js",
+      "sha256": "237a98fa9894fc1421d2426d14fbd84134ccfffe8a7ab701a265d23ea63b048e",
+      "bytes": 1193,
+      "lines": 18
+    },
+    {
+      "group": "policy",
+      "commit": "3f1cc3414d700b1028ff1fec640a40591324b728",
+      "path": "server/gcsp/greg/publish/fit.js",
+      "sha256": "eb0187dcf268f9d27befdec0f2a5b99aa72f2fe22b5b0824edf24b4c1643ff6c",
+      "bytes": 4826,
+      "lines": 56
+    },
+    {
+      "group": "policy",
+      "commit": "3f1cc3414d700b1028ff1fec640a40591324b728",
+      "path": "blocks/gcsp/greg/http-adapter.js",
+      "sha256": "e148a6f0a2851803d4d6242a9e5c9c1fe5941ae3af0c9b937b6559f74adc72ec",
+      "bytes": 2137,
+      "lines": 38
+    },
+    {
+      "group": "policy",
+      "commit": "3f1cc3414d700b1028ff1fec640a40591324b728",
+      "path": "blocks/gcsp/greg/gcsp-greg.js",
+      "sha256": "3d5c8303d7401b5f593395cc60a57ce2e0dcd25d996b610fb6f46ea2972530a1",
+      "bytes": 14671,
+      "lines": 342
+    },
+    {
+      "group": "policy",
+      "commit": "3f1cc3414d700b1028ff1fec640a40591324b728",
+      "path": "blocks/gcsp/greg/publish/register.js",
+      "sha256": "094abcd13536aa985d5b31b8597c3d9467f7b91da5dbcf2c3921418189c1b480",
+      "bytes": 79,
+      "lines": 2
+    },
+    {
+      "group": "policy",
+      "commit": "3f1cc3414d700b1028ff1fec640a40591324b728",
+      "path": "blocks/gcsp/greg/publish/panel.js",
+      "sha256": "2cf184fa428bce237114ee0b71fe61c778f996338090596ccb580951543016ec",
+      "bytes": 18453,
+      "lines": 245
+    },
+    {
+      "group": "policy",
+      "commit": "3f1cc3414d700b1028ff1fec640a40591324b728",
+      "path": "docs/gcsp/evidence/fucq103/central-integration-handoff.md",
+      "sha256": "551bb42738bd69babce10f0811dfb062e63c6e54fdba62df4364daa4a283b942",
+      "bytes": 2427,
+      "lines": 39
+    },
+    {
+      "group": "buddy",
+      "commit": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "path": "server/gcsp/offers/buddy-hold.js",
+      "sha256": "b9f1a9be9cf42552a56313492bf0703b49ed715ffe2059f477ee11637c44b3d6",
+      "bytes": 28746,
+      "lines": 351
+    },
+    {
+      "group": "buddy",
+      "commit": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "path": "server/gcsp/offers/buddy-remote.js",
+      "sha256": "0284045ab38c22c305019ad4a560724aa233e830c6c37186d5661da430c59e01",
+      "bytes": 24229,
+      "lines": 338
+    },
+    {
+      "group": "buddy",
+      "commit": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "path": "server/gcsp/offers/current-car-comparison.js",
+      "sha256": "c5aaf8b2e3123301d50f3dade21e89e4f88abf12ede4e2c7ed801adbc56099cd",
+      "bytes": 3135,
+      "lines": 42
+    },
+    {
+      "group": "buddy",
+      "commit": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "path": "server/gcsp/offers/offer-token.js",
+      "sha256": "325b699d7dfdb435cd8713015017aa68bf735582f127d7d64a0e0fc819f7b915",
+      "bytes": 1292,
+      "lines": 23
+    },
+    {
+      "group": "buddy",
+      "commit": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "path": "server/gcsp/recommendation/index.js",
+      "sha256": "08acfe895804cf60dcc178591ecbdd1816f12ce70944f832f1ae394902c7e172",
+      "bytes": 18786,
+      "lines": 212
+    },
+    {
+      "group": "buddy",
+      "commit": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "path": "server/gcsp/repository/core.js",
+      "sha256": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+      "bytes": 30666,
+      "lines": 380
+    },
+    {
+      "group": "buddy",
+      "commit": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "path": "server/gcsp/notify/index.js",
+      "sha256": "f7f132bd7fac580cec1ce0e619d613a9a5de77fcefb92ccf27383348aac50fb7",
+      "bytes": 13326,
+      "lines": 202
+    },
+    {
+      "group": "cases",
+      "commit": "0e8cb1fc6c7520b047fbd639b9b47c9d00c520cc",
+      "path": "server/gcsp/cases/index.js",
+      "sha256": "2c62c96bd07cc1dbf57b76dfb0fddc4dc9e77fe22ca689f89d471bd14842ffd3",
+      "bytes": 30115,
+      "lines": 336
+    },
+    {
+      "group": "cases",
+      "commit": "0e8cb1fc6c7520b047fbd639b9b47c9d00c520cc",
+      "path": "server/gcsp/cases/http.js",
+      "sha256": "d1b48cf2b47e2d19f80c61c90fdd234098d1ae480a591878ebb38f9fb51f0d65",
+      "bytes": 1153,
+      "lines": 12
+    },
+    {
+      "group": "cases",
+      "commit": "0e8cb1fc6c7520b047fbd639b9b47c9d00c520cc",
+      "path": "server/gcsp/cases/policy.js",
+      "sha256": "c6ee2d24b019695a8bf3663fe2dd22fee5705aac65a7fff834f21b5c219209e7",
+      "bytes": 1711,
+      "lines": 18
+    },
+    {
+      "group": "cases",
+      "commit": "0e8cb1fc6c7520b047fbd639b9b47c9d00c520cc",
+      "path": "server/gcsp/cases/notification.js",
+      "sha256": "44af7293f900f3a83bda7b98be094f50dd77de33383c279f8c582a013cbfa83e",
+      "bytes": 1689,
+      "lines": 15
+    },
+    {
+      "group": "cases",
+      "commit": "0e8cb1fc6c7520b047fbd639b9b47c9d00c520cc",
+      "path": "blocks/gcsp/cases/register.js",
+      "sha256": "54e3cf1bbcf95ea1900cc55f2384a21f3fe35affdc95ab7ec84248d073eb89d6",
+      "bytes": 150,
+      "lines": 4
+    },
+    {
+      "group": "cases",
+      "commit": "0e8cb1fc6c7520b047fbd639b9b47c9d00c520cc",
+      "path": "blocks/gcsp/cases/gcsp-case-queue.js",
+      "sha256": "34b271b06a423b5a23da3954d365a825a362188fd0f667b3fc0aeafd355ff39e",
+      "bytes": 23477,
+      "lines": 284
+    },
+    {
+      "group": "cases",
+      "commit": "0e8cb1fc6c7520b047fbd639b9b47c9d00c520cc",
+      "path": "blocks/gcsp/cases/gcsp-case-queue.css",
+      "sha256": "ad1b4b361c8bd0509fd084b61762a825f0dd23e3be51d3279fb8a8beed7c6b3b",
+      "bytes": 1018,
+      "lines": 17
+    },
+    {
+      "group": "cases",
+      "commit": "0e8cb1fc6c7520b047fbd639b9b47c9d00c520cc",
+      "path": "blocks/gcsp/cases/gcsp-help.js",
+      "sha256": "b4eb4bc9b5c895240916efea140607b300656f700e22ad7a6e72c6ff3b05ae8a",
+      "bytes": 13822,
+      "lines": 210
+    },
+    {
+      "group": "cases",
+      "commit": "0e8cb1fc6c7520b047fbd639b9b47c9d00c520cc",
+      "path": "blocks/gcsp/cases/gcsp-cases.css",
+      "sha256": "e1c2e1e1fccfbc189af5a0ee127b8fee6aaca872307f176227dd22182dc3a057",
+      "bytes": 2391,
+      "lines": 28
+    },
+    {
+      "group": "cases",
+      "commit": "0e8cb1fc6c7520b047fbd639b9b47c9d00c520cc",
+      "path": "blocks/gcsp/cases/http-adapter.js",
+      "sha256": "fafc58e81354d211f4ea837ac6f14faf59cd96ebae6a51d98654e9a0576ab5fe",
+      "bytes": 4494,
+      "lines": 58
+    },
+    {
+      "group": "cases",
+      "commit": "0e8cb1fc6c7520b047fbd639b9b47c9d00c520cc",
+      "path": "blocks/gcsp/cases/case-content.js",
+      "sha256": "09862d2b5d16c4c2980d6e2c96f97633c7c72ce77b9d9a8efb903c91bf6fb0eb",
+      "bytes": 5006,
+      "lines": 63
+    },
+    {
+      "group": "cases",
+      "commit": "0e8cb1fc6c7520b047fbd639b9b47c9d00c520cc",
+      "path": "blocks/gcsp/cases/queue-harness.js",
+      "sha256": "57e4adf50114b8d6a0403838a77486c56677c7173e63a657b3f2e2b46b20942c",
+      "bytes": 408,
+      "lines": 6
+    },
+    {
+      "group": "cases",
+      "commit": "0e8cb1fc6c7520b047fbd639b9b47c9d00c520cc",
+      "path": "blocks/gcsp/greg/gcsp-greg.js",
+      "sha256": "4ee58cc5bdc8d6e3d44ba7fcb1e9934e9a024bf5803e5c720df0ec9ae11c2031",
+      "bytes": 13998,
+      "lines": 330
+    },
+    {
+      "group": "paused-allocator",
+      "commit": "6f15d4d524e7a207ce705befe1d52d8c54ce1cfa",
+      "path": "server/gcsp/allocation/index.js",
+      "sha256": "41a2408c17574102891344fcc57f3df56a046199c896037b58b28d00fbab2dc5",
+      "bytes": 15958,
+      "lines": 186
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "definitionSetId": "offer-decline-reasons-v1",
+  "revision": "1",
+  "definitions": [
+    {
+      "key": "offer.declineReasons.v1",
+      "value": {
+        "schemaVersion": 1,
+        "reasons": [
+          {
+            "code": "body-style",
+            "label": "Body style",
+            "attribute": "body"
+          },
+          {
+            "code": "size",
+            "label": "Size",
+            "attribute": "sizeClass"
+          },
+          {
+            "code": "fuel",
+            "label": "Fuel type",
+            "attribute": "fuel"
+          },
+          {
+            "code": "equipment",
+            "label": "Equipment",
+            "attribute": "equipment"
+          }
+        ]
+      },
+      "unit": "reason-registry",
+      "basis": "FUCQ-106 fixed typed decline list and HLD blueprint 06/07; plausible demo categories, not verified BMW policy.",
+      "source": "docs/gcsp/offer-decisions-contract.md",
+      "sourceDate": "2026-11-05",
+      "status": "assumed"
+    }
+  ],
+  "digest": "2d7be8d50ff899dd4c72ed3490bcfc888e092196ef19b44d5d0519de76f00b4d"
+}

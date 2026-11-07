@@ -1,0 +1,17 @@
+✔ authenticated pre-release browse retains typed visible absence and unknown provider without creating commands (896.235959ms)
+✔ actual F92 tick and receipt feed authenticated manual stock with unchanged exact decisions and issued claimInput (1196.847958ms)
+✔ a confirmed hidden release remains none-visible rather than a global first-release assertion (1375.101834ms)
+✔ TEST occupied-state mutations retain real confirmed history while current suitability changes without browse writes (1377.130667ms)
+✔ actual missing receipt provenance is unavailable and cannot become an empty-history success (1035.272875ms)
+✔ actual authenticated HTTP rejects absent, nonemployee and fabricated authority (762.162041ms)
+✔ an actual clock advance during the join returns conflict without replaying either service (808.453583ms)
+✔ actual named reset during the join invalidates the original employee instead of returning mixed-run history (1215.247875ms)
+✔ an original manual refusal is returned unchanged and does not trigger history reads (727.511416ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9804.70175

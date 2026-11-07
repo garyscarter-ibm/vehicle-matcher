@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "at": "2026-11-06T02:47:17.001981+00:00",
+  "basis": "5ce74f94a968db081a38d104a4eeacf66860c83f",
+  "activity": "Author-only proposal; static source/hash/scope/link/whitespace validation",
+  "immutableSourceAndContractPins": 10,
+  "noFeatureOrSharedSourceChanges": true,
+  "allFrozenEvidenceAndMapPreserved": true,
+  "acceptanceUnchanged": true,
+  "testsExecuted": 0,
+  "resourcesAllocated": false,
+  "proposed106Path": "server/gcsp/offers/decision.js",
+  "publicHttpFieldsChanged": false,
+  "newEndpointOrOrderingAdapter": false,
+  "paths": [
+    {
+      "path": "_dev/in-progress/DEV-2026-11-04-074.md",
+      "sha256": "4f720de1d5e6babd36e5cd2f652c3c981c6cd2d17865116da8e78e5789e1abc2"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/ordering-join-proposal.json",
+      "sha256": "a9ef2f9e9c9bea8088ec8c29acfb2b9ab24dc7a1544ff71e2da691d180711cf8"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/ordering-join-proposal.md",
+      "sha256": "407f3d73204df6cc3203bef4d94a3db8d79a6d22bad3c49c38b9cd925104d2b1"
+    }
+  ]
+}

@@ -205,6 +205,66 @@ export function repositoryContract(provider, factory) {
       assert.equal((await repository.transaction(ctx(), command(), (tx) => execute(tx, false))).status, 'ok');
       for (const table of ['holds', 'claims', 'offers', 'notification_outbox']) assert.equal((await repository.query(ctx(), table)).value.length, 1);
     }));
+    await t.test('F71 selection intent, ownership and history roll back, replay and survive pending/acknowledged reopen', async (orderT) => withRepository(async (repository, reopen, processRead) => {
+      assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput()))).status, 'ok');
+      const refs = [ref('holds', { holdId: 'hold-a' }), ref('claims', { claimId: 'claim-a' }),
+        ref('stock', { orderUuid: 'car-a' }), ref('entitlement_slots', { entitlementSlotId: 'slot-a' })];
+      const before = await Promise.all(refs.map(async (key) => (await repository.read(ctx(), key)).value));
+      const operationId = 'selection:employee-a:slot-a';
+      const operationRef = ref('pending_operations', { operationId });
+      const consumerId = 'ordering:history:employee-a';
+      const selection = { stock: { orderUuid: 'car-a', orderNumber: '0000001', configurationId: 'same-config' },
+        quote: (await repository.read(ctx(), ref('quotes', { quoteId: 'quote-a' }))).value,
+        terms: { termsVersion: 'repository-contract-fixture', fictional: true }, driver: { driverId: 'fixture-driver' } };
+      const write = async (tx, abort) => {
+        const stored = await tx.insert('pending_operations', { runId: 'run-a', operationId, operationType: 'selection-order',
+          idempotencyKey: operationId, inputDigest: inputDigest(selection), state: 'pending', lastKnownState: 'unknown',
+          attempts: 1, payload: { context: ctx(), orderUuid: 'car-a', selection } });
+        if (stored.status !== 'ok') return stored;
+        const received = await tx.recordReceipt({ consumerId, eventId: `${operationId}:received`, inputDigest: inputDigest(selection),
+          eventType: 'selection-received', state: 'completed', outcome: ok({ operationId, selection }) });
+        if (received.status !== 'ok') return received;
+        for (const key of refs) {
+          const current = await tx.get(key); if (current.status !== 'ok') return current;
+          const changed = await tx.compareAndSwap(key, current.value.version, { state: 'allocated',
+            ...(key.table === 'stock' ? { available: false, held: false, allocated: true } : {}) });
+          if (changed.status !== 'ok') return changed;
+        }
+        return abort ? result('conflict', { reason: 'selection-fixture-rollback' }) : result('pending', {
+          operationId, operationType: 'selection-order', lastKnownState: 'unknown' });
+      };
+      assert.equal((await repository.transaction(ctx(), command(), (tx) => write(tx, true))).reason, 'selection-fixture-rollback');
+      assert.equal((await repository.read(ctx(), operationRef)).status, 'not-found');
+      assert.equal((await repository.query(ctx(), 'event_receipts', { consumerId })).value.length, 0);
+      assert.deepEqual(await Promise.all(refs.map(async (key) => (await repository.read(ctx(), key)).value)), before);
+      const stable = command('selection-durable', selection);
+      const pending = await repository.transaction(ctx(), stable, (tx) => write(tx, false));
+      assert.equal(pending.status, 'pending');
+      repository = await reopen();
+      assert.deepEqual(await repository.transaction(ctx(), stable, () => assert.fail('selection replay must not write')), pending);
+      assert.equal((await repository.transaction(ctx(), command('selection-durable', 'changed'), () => ok(null))).status, 'conflict');
+      const saved = (await repository.read(ctx(), operationRef)).value;
+      assert.deepEqual(saved.payload.selection, selection); assert.equal(saved.state, 'pending');
+      const order = { status: 'confirmed', orderUuid: 'car-a', orderNumber: '0000001', orderStatus: 'HR approval' };
+      assert.equal((await repository.transaction(ctx(), command(), async (tx) => {
+        const updated = await tx.compareAndSwap(operationRef, saved.version, { state: 'completed', lastKnownState: 'acknowledged', outcome: order });
+        if (updated.status !== 'ok') return updated;
+        return tx.recordReceipt({ consumerId, eventId: `${operationId}:outcome`, inputDigest: inputDigest(order),
+          eventType: 'selection-acknowledged', state: 'completed', outcome: ok({ operationId, order }) });
+      })).status, 'ok');
+      repository = await reopen();
+      const acknowledged = (await repository.read(ctx(), operationRef)).value;
+      assert.deepEqual(acknowledged.payload.selection, selection); assert.deepEqual(acknowledged.outcome, order);
+      assert.equal((await repository.query(ctx(), 'event_receipts', { consumerId })).value.length, 2);
+      assert.equal((await repository.read(ctx(), ref('entitlement_slots', { entitlementSlotId: 'slot-a' }))).value.state, 'allocated');
+      const duplicate = await repository.transaction(ctx(), command(), (tx) => tx.insert('pending_operations', {
+        ...saved, payload: { ...saved.payload, orderUuid: 'car-b' } }));
+      assert.equal(duplicate.status, 'conflict');
+      await orderT.test('F71 ordering new-process readback', { skip: !processRead && 'Fixture has no ordering-capable processRead; native new-process proof remains outstanding' }, async () => {
+        const external = await processRead('hold-a');
+        assert.deepEqual(external.operations.find((row) => row.operationId === operationId), acknowledged);
+      });
+    }));
     await t.test('CAS races have one winner; keys and historical rows are immutable', () => withRepository(async (repository) => {
       const outcomes = await Promise.all([1, 2].map((revision) => repository.transaction(ctx(), command(), (tx) => tx.compareAndSwap(ref('stock', { orderUuid: 'car-a' }), 1, { revision }))));
       assert.deepEqual(outcomes.map((outcome) => outcome.status).sort(), ['ok', 'stale-version']);

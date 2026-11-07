@@ -116,9 +116,10 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const resolveOfferAccess = async ({ selector, cookie }) => {
       const hasOfferCookie = typeof cookie === 'string' && cookie.split(';')
         .some((part) => part.trim().startsWith(`${OFFER_ACCESS_COOKIE}=`));
-      if (hasOfferCookie) return offerAccess.fromSession(selector, cookie);
+      const session = hasOfferCookie ? await offerAccess.fromSession(selector, cookie) : null;
+      if (session && !['not-found', 'stale-run'].includes(session.status)) return session;
       const resolved = await identity.resolveSession({ authorized: true, cookie });
-      return resolved.status === 'ok' ? offerAccess.fromAccount(resolved.value, selector) : resolved;
+      return resolved.status === 'ok' ? offerAccess.fromAccount(resolved.value, selector) : session ?? resolved;
     };
     notify = createNotificationDispatcher({ repository, policy, clock, environmentId });
     const dependencies = { gcspRepository: repository, gcspPolicy: policy, gcspGreg: greg, gcspGregPublish: gregPublish,
@@ -128,6 +129,8 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       gcspBuddy: buddy, gcspOfferAccess: offerAccess,
       gcspOfferDecisions: offerDecisions, gcspResolveOfferAccess: resolveOfferAccess, gcspOfferFollowup: offerFollowup,
       gcspNotify: notify, gcspOutbox: { repository },
+      // Backend-only; the switch route calls it with the server-issued employee context, replay-safe per run.
+      gcspPrepareEmployee: (context) => seedManualDemoContext({ repository, identity, clock, context }),
       gcspIdentity: identity, gcspClock: clock, gcspManual: account, gcspBrief: brief,
       gcspBriefEditor: editor, gcspActivity: activity, gcspRecommendations: { provider, policy, time: clock } };
     // Backend-only local bootstrap. The browser cannot choose identities or receive raw credentials in JSON.

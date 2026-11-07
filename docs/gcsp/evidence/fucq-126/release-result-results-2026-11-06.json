@@ -1,0 +1,175 @@
+{
+  "scope": "Owned controller/adapter contract and component ratchet; no foreign runtime imports",
+  "date": "2026-11-06",
+  "base": "906aa44d2a277753327a4c5d0c8d9e77132f10d4",
+  "headDuringTest": "906aa44d2a277753327a4c5d0c8d9e77132f10d4",
+  "sourceDigest": "5ad82861590e2fb08236dbcab79d0f2dd236c03ba8c18a4605fdd0ee16788ba2",
+  "plan": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq126-release-result-20261106/plan.json",
+    "sha256": "d66b172afdd43ce32c582c7359b0b24afd26f7368c2bbab0c25981be47264e02",
+    "fileCount": 2085,
+    "bytesHashed": 24223806
+  },
+  "sourcePins": {
+    "blocks/gcsp/presenter-controls/controls.js": {
+      "bytes": 17673,
+      "sha256": "418f3d4a9b41b3f402bb57bb3413a3838e838300ca7a8e45ccdfbeb451ec08c2"
+    },
+    "server/test/gcsp-presenter-controls-render.test.js": {
+      "bytes": 31477,
+      "sha256": "021ec686c11af71797fce42b32a27d1d5b5908b65760d867abe61ed786949c28"
+    },
+    "server/test/ui-ratchet.test.js": {
+      "bytes": 12741,
+      "sha256": "64b1103a846180442466834a766d9da4dab49547cd509f3421ae1a4d946915b7"
+    },
+    "server/test/ui-ratchet.json": {
+      "bytes": 5219,
+      "sha256": "95beafb593f1a3d6cbd5c2c9bc9d1e1923bc53fae5c4efe6a9d1d5e7645f42de"
+    },
+    "docs/gcsp/evidence/fucq-126/run-release-result-check.py": {
+      "bytes": 12218,
+      "sha256": "dcb8f9a98f58f0e973563a4ced2150b9d77698d385057efcd7d7127704e4d517"
+    }
+  },
+  "executable": {
+    "path": "/opt/homebrew/bin/node",
+    "sha256": "70851490e028b3d699a8d6d4e1de909af2a989359ae807974c92af9c6580a8e8",
+    "target": "/opt/homebrew/Cellar/node/26.5.0/bin/node"
+  },
+  "dependencyLinks": {
+    "node_modules": {
+      "device": 16777232,
+      "inode": 172932728,
+      "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules"
+    },
+    "server/node_modules": {
+      "device": 16777232,
+      "inode": 172925079,
+      "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules"
+    }
+  },
+  "results": {
+    "controls": {
+      "cleanup": {
+        "groupsAbsent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq126-release-result-20261106/ownership/0edf50a943b144c5afd5d2a57c1d0631.json",
+        "removedBytes": 3170400,
+        "reservationAbsent": true,
+        "scratch": "/private/tmp/test-stamp-shard-0edf50a943b144c5afd5d2a57c1d0631",
+        "scratchAbsent": true
+      },
+      "command": [
+        "/opt/homebrew/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-presenter-controls-render.test.js"
+      ],
+      "environment": "Owned TMP; Node/npm options and DB/PG aliases removed.",
+      "failures": [],
+      "outcome": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq126-release-result-20261106/controls.log",
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq126-release-result-20261106/ownership/0edf50a943b144c5afd5d2a57c1d0631.json",
+        "peak_rss": 277299200,
+        "peak_scratch": 3170400,
+        "rc": 0,
+        "wall": 1.115226041
+      },
+      "scope": "selected module only",
+      "sourceDigest": "5ad82861590e2fb08236dbcab79d0f2dd236c03ba8c18a4605fdd0ee16788ba2",
+      "sourceUnchanged": true,
+      "state": "passed",
+      "summary": [],
+      "wallSeconds": 1.482572833
+    },
+    "ratchet": {
+      "cleanup": {
+        "groupsAbsent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq126-release-result-20261106/ownership/95849082d17d4c88b413152080439197.json",
+        "removedBytes": 299104,
+        "reservationAbsent": true,
+        "scratch": "/private/tmp/test-stamp-shard-95849082d17d4c88b413152080439197",
+        "scratchAbsent": true
+      },
+      "command": [
+        "/opt/homebrew/bin/node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/ui-ratchet.test.js"
+      ],
+      "environment": "Owned TMP; Node/npm options and DB/PG aliases removed.",
+      "failures": [],
+      "outcome": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq126-release-result-20261106/ratchet.log",
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq126-release-result-20261106/ownership/95849082d17d4c88b413152080439197.json",
+        "peak_rss": 27262976,
+        "peak_scratch": 299104,
+        "rc": 0,
+        "wall": 0.295240792
+      },
+      "scope": "selected module only",
+      "sourceDigest": "5ad82861590e2fb08236dbcab79d0f2dd236c03ba8c18a4605fdd0ee16788ba2",
+      "sourceUnchanged": true,
+      "state": "passed",
+      "summary": [],
+      "wallSeconds": 0.632220375
+    }
+  },
+  "independentCleanup": {
+    "lsof": {
+      "matchingOwnedPaths": [],
+      "rc": 0,
+      "stderrEmpty": true
+    },
+    "retained": [
+      "plan.json",
+      "controls.json",
+      "ratchet.json",
+      "audit.json",
+      "ownership manifests and impact summaries"
+    ],
+    "rows": [
+      {
+        "childIdentitiesAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq126-release-result-20261106/ownership/95849082d17d4c88b413152080439197.json",
+        "ownerAbsent": true,
+        "removedBytes": 299104,
+        "reservationAbsent": true,
+        "root": "/private/tmp/test-stamp-shard-95849082d17d4c88b413152080439197",
+        "scratchAbsent": true
+      },
+      {
+        "childIdentitiesAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq126-release-result-20261106/ownership/0edf50a943b144c5afd5d2a57c1d0631.json",
+        "ownerAbsent": true,
+        "removedBytes": 3170400,
+        "reservationAbsent": true,
+        "root": "/private/tmp/test-stamp-shard-0edf50a943b144c5afd5d2a57c1d0631",
+        "scratchAbsent": true
+      }
+    ],
+    "sourceDigest": "5ad82861590e2fb08236dbcab79d0f2dd236c03ba8c18a4605fdd0ee16788ba2",
+    "sourceUnchanged": true,
+    "state": "passed",
+    "successfulLogsAbsent": true
+  },
+  "impact": {
+    "controls": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/impact/fucq126-release-result-20261106-controls.json",
+    "ratchet": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/impact/fucq126-release-result-20261106-ratchet.json"
+  },
+  "reporterNote": "Node module exit status and observed block function coverage retained; reporter text did not match the summary extractor, so no numeric test total is claimed.",
+  "limitations": [
+    "Actual FUCQ-92/FUCQ-100 imports or execution",
+    "browser/listener/native database/full suite",
+    "source provider, registry or runtime edits",
+    "six unavailable business preparations",
+    "Changed result copy/count has no new browser capture; earlier browser evidence stays pinned to its original source."
+  ],
+  "agents": "Parent only; no new agents spawned."
+}
