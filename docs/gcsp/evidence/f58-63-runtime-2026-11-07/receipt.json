@@ -1,0 +1,30 @@
+{
+  "code": "e60c70e6de6a2636750fdf99943e138b89b63932",
+  "deployment": 7614329116,
+  "source_qualified_distinct_in_active_corpus": 29,
+  "configurations": 30,
+  "preserved_previous_vins": 1,
+  "source_qualified_distinct_retained_at_checkpoint": 59,
+  "target": 10000,
+  "target_met": false,
+  "known_full_test_counts": {
+    "tests": 1872,
+    "pass": 1848,
+    "fail": 19,
+    "skipped": 5
+  },
+  "native_postgresql": "not proven; no credentials supplied here; Gary route retained",
+  "no_screen_change": "Backend DTO and source labels inspected; no changed UI screenshot claim",
+  "files": {
+    "live-probe.mjs": "614233af6d304a0b91cbd8b0b1dfe3b2a88a6c49cfb94bb132dd62f0b10a9523",
+    "active-cleanup.json": "f033658e53bb504607c31c7697dacbe9062811079d02deb8594581db736e6380",
+    "full-test-cleanup.json": "c9b9fe8d8911c9b777fa6c8009860f0775c91050718aeceedf597935d5667c73",
+    "live-cleanup.json": "d5548035f3389c7b483670eeafc100820e66cd636937db0730045b30e29d7206",
+    "active-result.json": "a3d274797830980a0ec2f30c1bdf74cb4d927bb341f5f5e8b87a5d654e54103f",
+    "active-report.json": "473447f685139c46afd4a7f300ff25f7b87ab5dc1013bef04b4b71a98bf7e545",
+    "live-result.json": "f0e0646e46d08fe05c0208fe42c3db38493c96f75e51de33f8c7f8065f84deac",
+    "live-report.json": "8856086bee1afade07bd76a23c4a8b7b897f5e73792e588b7c36a145912ffebf",
+    "full-test-result.json": "859117eb6cc78dbb5b2e7c69733e336dfb50109cc325e5f4c5ca3de2fe9aba0d",
+    "full-test-failures.log": "4f3bcee32fe5ef01319bbd2c7561b05156b6b963080834a685cc5896b25c14b2"
+  }
+}

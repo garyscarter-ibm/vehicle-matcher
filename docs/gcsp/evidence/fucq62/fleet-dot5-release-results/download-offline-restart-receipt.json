@@ -1,0 +1,279 @@
+{
+  "status": "actual-cli-fresh-offline-restart-passed",
+  "releaseId": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+  "restore": {
+    "status": "ok",
+    "idempotent": true,
+    "active": {
+      "datasetId": "gcsp-source-fleet",
+      "version": "2026-11-07.5",
+      "manifestDigest": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+      "counts": {
+        "configurations": 480,
+        "distinctConfigurations": 480,
+        "images": 1,
+        "qualifyingCompleteDistinctSourceConfigurations": 479,
+        "sourceConfigurations": 479,
+        "vinMappings": 1
+      },
+      "sourceContexts": [
+        {
+          "catalogueDate": null,
+          "market": "US",
+          "note": "Small structural reference fixture; no UK/RHD, full equipment or 200/10000 corpus claim",
+          "observedDate": "2026-11-01",
+          "sourceKind": "north-american-reference",
+          "steering": "LHD"
+        },
+        {
+          "catalogueDate": "2026-11-01",
+          "market": "GB",
+          "note": "Exact retained FUCQ-39 GB catalogue; physical year, build, steering and plant remain unknown",
+          "observedDate": "2026-11-01",
+          "sourceKind": "dated-snapshot",
+          "steering": null
+        },
+        {
+          "catalogueDate": "2026-11-07",
+          "market": "GB",
+          "note": "478 actual admitted v2 factory selections; physical build, technical measurements and scheme model breadth remain unknown; one representative image belongs only to the retained v1 configuration",
+          "observedDate": "2026-11-07",
+          "sourceKind": "dated-snapshot",
+          "steering": null
+        }
+      ],
+      "completeness": {
+        "imagesMissing": 479,
+        "selectedOptions": {
+          "complete": 479,
+          "unknown": 1
+        },
+        "sourceKinds": {
+          "dated-snapshot": 479,
+          "north-american-reference": 1
+        }
+      }
+    },
+    "mode": "publish-existing",
+    "externalCalls": 0
+  },
+  "audit": {
+    "status": "verified-active",
+    "targetMet": true,
+    "storyAcceptance": "not-established",
+    "requiredDistinct": 479,
+    "shortfall": 0,
+    "reason": null,
+    "manifest": {
+      "path": "/private/tmp/test-stamp-shard-19e86369fde34a968525dd6b5da04dce/restored/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/manifest.json",
+      "sha256": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+      "datasetId": "gcsp-source-fleet",
+      "version": "2026-11-07.5",
+      "schemaVersion": "1",
+      "signaturePolicyVersion": "gcsp-policy-v1",
+      "profileRegistryVersion": "vin-profiles.v1",
+      "generatorVersion": "synthetic-identities.sha256-v1"
+    },
+    "qualification": "bounded-fixture-or-partial-corpus",
+    "actual": {
+      "configurations": 480,
+      "distinctConfigurations": 480,
+      "images": 1,
+      "qualifyingCompleteDistinctSourceConfigurations": 479,
+      "sourceConfigurations": 479,
+      "vinMappings": 1,
+      "completeResolvedDistinct": 479,
+      "nonQualifyingConfigurations": 1,
+      "coverage": {
+        "markets": {
+          "GB": 479,
+          "US": 1
+        },
+        "models": {
+          "430i": 1,
+          "unknown": 479
+        },
+        "steering": {
+          "LHD": 1,
+          "unknown": 479
+        },
+        "wmis": {
+          "WBA": 1
+        }
+      },
+      "omittedCoverageCategories": {
+        "markets": 0,
+        "models": 0,
+        "steering": 0,
+        "wmis": 0
+      },
+      "completeness": {
+        "imagesMissing": 479,
+        "selectedOptions": {
+          "complete": 479,
+          "unknown": 1
+        },
+        "sourceKinds": {
+          "dated-snapshot": 479,
+          "north-american-reference": 1
+        }
+      },
+      "distributions": {
+        "model": {
+          "values": {
+            "430i": 1,
+            "unknown": 479
+          },
+          "omittedCategories": 0
+        },
+        "body": {
+          "values": {
+            "Convertible": 1,
+            "unknown": 479
+          },
+          "omittedCategories": 0
+        },
+        "powertrain": {
+          "values": {
+            "petrol": 1,
+            "unknown": 479
+          },
+          "omittedCategories": 0
+        },
+        "factoryOptionCount": {
+          "values": {
+            "1": 1,
+            "42": 8,
+            "47": 49,
+            "48": 73,
+            "49": 23,
+            "50": 23,
+            "51": 202,
+            "52": 44,
+            "53": 40,
+            "54": 9,
+            "56": 8
+          },
+          "omittedCategories": 0
+        },
+        "sourceKind": {
+          "values": {
+            "dated-snapshot": 479,
+            "north-american-reference": 1
+          },
+          "omittedCategories": 0
+        },
+        "unresolvedFacts": {
+          "values": {
+            "agModelCode": 1,
+            "body": 479,
+            "derivative": 479,
+            "drive": 479,
+            "engineCode": 480,
+            "exactEquipment": 1,
+            "exactTrim": 1,
+            "model": 479,
+            "modelYear": 479,
+            "plant": 479,
+            "powertrain": 479,
+            "productionDate": 480,
+            "productionEra": 479,
+            "region": 479,
+            "registrationDate": 1,
+            "steering": 479,
+            "transmission": 480,
+            "vgModelCode": 1
+          },
+          "omittedCategories": 0
+        },
+        "imageFidelity": {
+          "values": {
+            "representative-configuration": 1
+          },
+          "omittedCategories": 0
+        }
+      }
+    },
+    "planned": {
+      "provided": false,
+      "familyCount": 0,
+      "families": [],
+      "omittedFamilies": 0,
+      "exclusions": []
+    },
+    "limitations": [
+      "Compatible profile-family coverage is not inferred from configuration IDs or VIN spelling.",
+      "Staged verification does not establish source-operation budgets, collection replay or full story acceptance.",
+      "Unknown measurements, missing images and representative image fidelity remain explicit; no stock, eligibility or points facts are inferred."
+    ],
+    "activeStore": "/private/tmp/test-stamp-shard-19e86369fde34a968525dd6b5da04dce/restored",
+    "activation": {
+      "loaderStatus": "ok",
+      "recovered": false
+    },
+    "audit": {
+      "scope": "all-records",
+      "records": {
+        "configurations": 480,
+        "vinMappings": 1,
+        "stockReferences": 0
+      },
+      "checked": 481,
+      "errors": 0,
+      "elapsedMs": 1325.751083,
+      "concurrency": 1,
+      "throughputPerSecond": 362.8132054107475,
+      "latencyMs": {
+        "count": 481,
+        "min": 1.7047499999998763,
+        "p50": 2.45508400000017,
+        "p95": 4.6407500000000255,
+        "p99": 5.272207999999864,
+        "max": 6.365957999999864
+      },
+      "environment": {
+        "node": "v26.7.0",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "stockScope": "not-supplied"
+    },
+    "http": {
+      "endpoint": "http://127.0.0.1:53912",
+      "scope": "all-records",
+      "requests": 481,
+      "totalRecords": 481,
+      "concurrency": 1,
+      "errors": 0,
+      "elapsedMs": 278.54620800000066,
+      "throughputPerSecond": 1726.8230052516055,
+      "latencyMs": {
+        "count": 481,
+        "min": 0.2904580000003989,
+        "p50": 0.47870899999998073,
+        "p95": 1.0611660000004122,
+        "p99": 1.4280419999995502,
+        "max": 6.4650000000001455
+      },
+      "serverClosed": true
+    },
+    "egress": {
+      "scope": "this-audit-process",
+      "externalCalls": 0,
+      "sourceCalls": 0,
+      "control": "blocked"
+    },
+    "acceptanceLimits": [
+      "Actual full-target source corpus and declared coverage remain required for story acceptance.",
+      "Stock references are supplied through the repository seam; no native PostgreSQL or stock generation proof is inferred.",
+      "Restart, activation interruption and rollback are tested in owned fixtures; this command does not mutate the active store."
+    ]
+  },
+  "staticImage": {
+    "asset": "assets/gcsp-vehicle-evidence/fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe.webp",
+    "bytes": 82798,
+    "sha256": "fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe",
+    "actualDeployedGetEvidence": "docs/gcsp/evidence/fucq62/render-build-restore-2026-11-07/layout-source.json"
+  },
+  "providerEgress": 0
+}

@@ -1,0 +1,96 @@
+{
+  "status": "prepared-not-executed",
+  "variant": "minimum-whole-row-beyond64-v3-latest-stat-traced",
+  "baseCommit": "f4481b711cfcc4a6f04d71486b64b2e2e9a1ee5e",
+  "pinsPath": "docs/gcsp/evidence/fucq62/scale-proof-pins-2026-11-07.json",
+  "scope": "Existing JSONL/static corpus path after scoped FUCQ-153 latest-stat precheck-race correction; resource-only synthetic byte volume, no source/VIN/stock capacity credit",
+  "fixture": {
+    "expectedConfigurationBytes": 67118856,
+    "firstIndex": 1,
+    "firstRowCanonicalSha256": "fc905b11f9fb4461bd4e56db49de0d134d6929a3aaf5757b6cadc44b9c09f2bc",
+    "generatedFileSha256": "8f487b0acda835449dd8ca7d3b50054ac02376b8bb93352c9334904e1b298703",
+    "lastIndex": 3621,
+    "path": "docs/gcsp/evidence/fucq62/scale-proof-fixture.v1.json",
+    "rows": 3621,
+    "serializedBytesPerRow": 18536,
+    "sha256": "0d5619e6436034e353726c3af736c829e949cf71e8e61c6f2450d23a9e7f2670"
+  },
+  "limits": {
+    "explicitProofMaxBytes": 68157440,
+    "images": 0,
+    "maxRowBytes": 1048576,
+    "maxRows": 5000,
+    "productionDefaultBytesUnchanged": 67108864,
+    "selectedLookupSamples": 128,
+    "sourceCoverageCredit": 0,
+    "vinMappings": 0
+  },
+  "resources": {
+    "childProcessGroupRamMiB": 448,
+    "compatibilityException": null,
+    "controlBase": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-proof-beyond64",
+    "emergencyReserveGiB": 5,
+    "expectedPeakPayloadBytes": 201356568,
+    "expectedPeakScratchMiB": 216,
+    "expectedSeconds": 45,
+    "hardScratchMiB": 256,
+    "hardSeconds": 180,
+    "hostRamMiB": 512,
+    "manifestOutsideOwnedRoot": "<controlBase>/<pins-sha256-prefix>/ownership/<token>.json",
+    "nodeOldSpaceMiB": 256,
+    "oneDriveBase": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-proof",
+    "oneDriveRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude",
+    "ownedRootBasename": "test-stamp-shard-<manifest token>",
+    "preferredFreeGiB": 30,
+    "workers": 1,
+    "workingDirectory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035"
+  },
+  "approvalCommand": "/usr/bin/python3 -I -B docs/gcsp/evidence/fucq62/scale-resource-supervisor.py --parent-approved",
+  "childCommand": "/opt/homebrew/bin/node --max-old-space-size=256 --import /Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq62/scale-identity-trace.mjs docs/gcsp/evidence/fucq62/scale-resource-proof.mjs --receipt <controlBase>/<pins-sha256-prefix>/receipt.json",
+  "selectionReason": "Helper-only precheck race correction has28scoped repository tests plus one standalone42B red-to-green case. Actual large-run cause remains unproven. Prepared main-process tracing retains exact path/identity if the boundary fails again. No further allocation is released by this plan.",
+  "phases": [
+    "Validate pins/containment/budget; publish one-row owned baseline",
+    "Generate first complete row beyond64MiB directly to OneDrive and checkpoint bytes/hash",
+    "Assert default eager/indexed/preparation boundaries reject at64MiB",
+    "Prepare and validate same-format corpus with proof-only65MiB option; checkpoint row/count/checksum/digest then remove input",
+    "Publish through existing registry and assert idempotent reload, original baseline row retention and zero VIN/images",
+    "Fresh child process cold-load;128 deterministic selected lookups and repeated pass, no all-record lookup claim",
+    "Corrupt only owned selected configuration bytes; fail closed then cold-recover baseline; previous files unchanged",
+    "Record resources/coverage/egress/identity/results; stop/join groups, unlink owned dependency symlink, remove OneDrive root and prove absence"
+  ],
+  "excluded": [
+    "No full suite",
+    "No HTTP/UI/SQL/stock generation",
+    "No v2 source-authority workload or admission",
+    "No 10000-record/capacity claim",
+    "No production cap change",
+    "No permanent large artifact or archive"
+  ],
+  "checkpointPolicy": "Completed phase evidence and identities persist outside scratch. Any handled failure/cancellation removes all owned generated payloads. If replay is required, rebuild deterministic materialisations only as needed and reuse matching completed check evidence; no resumable payload is claimed after deletion.",
+  "previousAttempts": [
+    {
+      "codeCommit": "cc3a9127f480cb6cb20d77e3aa64a123f9c3e635",
+      "followup": "FUCQ-153: ctime-only drift with unchanged whole-file bytes; bounded full-checksum confirmation retains data identity, row digest and race guards",
+      "pinsSha256": "017a66e259a57e0ce517f0a2821a0e25bf1e705eadee670a9a1e2ccdb1dd7463",
+      "receipt": "docs/gcsp/evidence/fucq62/scale-proof-failed-2026-11-07.json",
+      "repairEvidence": "docs/gcsp/evidence/fucq62/scale-identity-repair-2026-11-07.json",
+      "status": "failed-incomplete; no passing greater-than64MiB claim"
+    },
+    {
+      "codeCommit": "2c9ca8baa9923638187649001c2f87450af27ff7",
+      "pinsSha256": "0eeb6d536dae58bec3b37cbcd6c3bcca419d0608688b22adb93d333a73c8c94c",
+      "status": "failed-incomplete; exact large-run cause remains unproven",
+      "receipt": "docs/gcsp/evidence/fucq62/scale-proof-renewed-failed-2026-11-07.json",
+      "diagnostic": "docs/gcsp/evidence/fucq62/scale-identity-sequence-diagnostic-2026-11-07.json",
+      "scopedRepairEvidence": "docs/gcsp/evidence/fucq62/scale-precheck-repair-2026-11-07.json"
+    }
+  ],
+  "identityTracing": {
+    "path": "docs/gcsp/evidence/fucq62/scale-identity-trace.mjs",
+    "state": "actual small42B --import smoke passed; large proof held",
+    "scope": "runtime-only main-process source instrumentation,128event ring,8failures/8successfulconfirmations; path/expected/current/latest/posthash identities and before-return state, unchanged production guard",
+    "coldSubprocesses": "Uninstrumented original commands",
+    "limitation": "Actual main-process preload verified on42bytes; both actual large attempts still failed and no third large allocation is released.",
+    "smokeEvidence": "docs/gcsp/evidence/fucq62/scale-tracer-smoke-2026-11-07.json"
+  }
+}

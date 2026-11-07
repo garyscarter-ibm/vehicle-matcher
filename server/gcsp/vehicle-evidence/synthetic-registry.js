@@ -3,7 +3,7 @@ import { mkdir, open, readFile, readdir, rename, rm, unlink } from 'node:fs/prom
 import { isAbsolute, join, resolve } from 'node:path';
 import { inputDigest } from '../repository/core.js';
 import { calculateVinCheckDigit } from './vin-generator.js';
-import { canonicalContent, CORPUS_FILES, durableWrite, readCorpusFile,
+import { canonicalContent, CORPUS_FILES, durableCopy, durableWrite, readCorpusFile,
   syncDirectory, validateCorpusDirectory } from './corpus-publisher.js';
 
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
@@ -43,10 +43,14 @@ function mergeHistory(history, corpus, manifestDigest) {
   const next = structuredClone(history); const manifest = corpus.manifest;
   const existing = next.datasets.find((r) => r.datasetId === manifest.datasetId && r.version === manifest.version);
   if (existing && existing.manifestDigest !== manifestDigest) return failure('conflict', 'dataset-version-conflict', 'An already retained dataset/version has different bytes. Use a new version without changing retained associations.');
-  for (const row of corpus.configurations) {
-    const previous = next.configurations.find((r) => r.configurationId === row.configurationId);
-    if (previous && previous.recordDigest !== inputDigest(row)) return failure('conflict', 'historical-configuration-conflict', 'A stable configurationId already identifies different immutable facts or provenance.');
-    if (!previous) next.configurations.push({ configurationId: row.configurationId, recordDigest: inputDigest(row), originatingDatasetId: manifest.datasetId });
+  const priorConfigurations = new Map(next.configurations.map((row) => [row.configurationId, row]));
+  const records = corpus.configurations.metadataEntries ? corpus.configurations.metadataEntries()
+    : corpus.configurations.map((row) => ({ key: row.configurationId, recordDigest: inputDigest(row) }));
+  for (const entry of records) {
+    const configurationId = entry.key; const recordDigest = entry.recordDigest;
+    const previous = priorConfigurations.get(configurationId);
+    if (previous && previous.recordDigest !== recordDigest) return failure('conflict', 'historical-configuration-conflict', 'A stable configurationId already identifies different immutable facts or provenance.');
+    if (!previous) next.configurations.push({ configurationId, recordDigest, originatingDatasetId: manifest.datasetId });
   }
   for (const row of corpus.vins) {
     const previous = next.identities.find((r) => r.vehicleId === row.vehicleId || r.vin17 === row.vin17 || r.vin7 === row.vin7);
@@ -121,6 +125,7 @@ async function recoverStages(root) {
 /** Read-only lookup port plus explicit local publication operations. No transport, SQL or run-reset capability. */
 export function createSyntheticRegistry({ root, onPhase = async () => {}, ...options } = {}) {
   if (typeof root !== 'string' || !isAbsolute(root)) throw new TypeError('Supply an absolute corpus store root.');
+  options = { ...options, indexed: true };
   root = resolve(root); let snapshot = null; let retained = null;
   const info = () => activeInfo(snapshot);
   const report = (result) => ({ ...result, stillActive: info() });
@@ -148,9 +153,17 @@ export function createSyntheticRegistry({ root, onPhase = async () => {}, ...opt
     return { ...loaded, selection };
   }
   function select(loaded) {
-    const configurations = new Map(loaded.corpus.configurations.map((row) => [row.configurationId, row]));
-    const vins = new Map(); for (const row of loaded.corpus.vins) { vins.set(row.vin17, row); vins.set(row.vin7, row); }
-    snapshot = { ...loaded.corpus, manifestDigest: loaded.manifestDigest, selection: loaded.selection, configurations, vins };
+    const configurations = loaded.corpus.configurations;
+    const configurationImages = new Map();
+    for (const image of loaded.corpus.images) {
+      const references = configurationImages.get(image.configurationId) || [];
+      references.push(image.imageId); configurationImages.set(image.configurationId, references);
+    }
+    const vinIds = new Map();
+    for (const entry of loaded.corpus.vins.metadataEntries()) { vinIds.set(entry.vin17, entry.key); vinIds.set(entry.vin7, entry.key); }
+    const vins = { get: (vin) => loaded.corpus.vins.get(vinIds.get(vin)) };
+    snapshot = { ...loaded.corpus, manifestDigest: loaded.manifestDigest, selection: loaded.selection,
+      configurations, configurationImages, vins };
   }
   async function load() {
     try {
@@ -189,7 +202,7 @@ export function createSyntheticRegistry({ root, onPhase = async () => {}, ...opt
       if (snapshot?.manifestDigest === checked.manifestDigest) return { status: 'ok', idempotent: true, active: info() };
       staging = join(root, `.stage-${randomUUID()}`); await mkdir(staging, { mode: 0o700 });
       await durableWrite(join(staging, 'publication-owner.json'), canonicalContent({ schemaVersion: '1', pid: process.pid, token: randomUUID() }), true);
-      for (const file of ['manifest.json', ...CORPUS_FILES]) await durableWrite(join(staging, file), await readCorpusFile(candidatePath, file), true);
+      for (const file of ['manifest.json', ...CORPUS_FILES]) await durableCopy(join(candidatePath, file), join(staging, file), (options.jsonlLimitsForManifest?.(checked.manifestDigest) ?? options.jsonlLimits)?.maxBytes);
       await syncDirectory(staging);
       const staged = await validateCorpusDirectory(staging, options);
       if (staged.status !== 'ok') return report(staged);
@@ -204,6 +217,8 @@ export function createSyntheticRegistry({ root, onPhase = async () => {}, ...opt
         const existing = await validateCorpusDirectory(destination, options);
         if (existing.status !== 'ok' || existing.manifestDigest !== checked.manifestDigest) return report(unavailable('version-artifact-invalid', 'A retained version directory is damaged; restore it before retrying.'));
       }
+      const published = await validateCorpusDirectory(destination, options);
+      if (published.status !== 'ok' || published.manifestDigest !== checked.manifestDigest) return report(unavailable('version-artifact-invalid', 'A retained version directory changed before selection.'));
       await syncDirectory(join(root, 'versions')); await onPhase('version-persisted');
       if (merged.changed || !retained || retained.revision === 0) await writeAtomic(root, 'identity-inventory.json', merged.history);
       retained = merged.history; await onPhase('inventory-persisted');
@@ -211,7 +226,7 @@ export function createSyntheticRegistry({ root, onPhase = async () => {}, ...opt
       if (previous) await writeAtomic(root, 'last-good.json', { schemaVersion: '1', selected: previous });
       await onPhase('before-select');
       await writeAtomic(root, 'active.json', { schemaVersion: '1', selected: selection, previous });
-      select({ ...staged, selection });
+      select({ ...published, selection });
       return { status: 'ok', idempotent: false, active: info() };
     } catch { return report(unavailable('publication-interrupted', 'Publication did not complete. Reopen the store to discover its validated old-or-new selection; retained identities are never regenerated.')); }
     finally { if (staging) await rm(staging, { recursive: true, force: true }); if (unlock) await unlock(); }
@@ -232,20 +247,31 @@ export function createSyntheticRegistry({ root, onPhase = async () => {}, ...opt
   function getConfiguration(id) {
     if (!snapshot) return { ...unavailable('corpus-absent', 'No validated corpus is selected.'), active: null };
     if (!text(id)) return { status: 'invalid-input', active: info() };
-    const row = snapshot.configurations.get(id);
-    if (!row) return { status: 'not-found', active: info() };
-    return { status: row.catalogue?.status || 'partial', active: info(), sourceKind: row.sourceContext.sourceKind,
-      record: structuredClone(row), images: structuredClone(snapshot.images.filter((image) => row.imageIds.includes(image.imageId))),
-      imageState: row.imageIds.length ? 'representative' : 'unavailable' };
+    try {
+      const row = snapshot.configurations.get(id);
+      if (!row) return { status: 'not-found', active: info() };
+      const images = [];
+      for (const imageId of new Set([...row.imageIds, ...(snapshot.configurationImages.get(id) || [])])) {
+        const image = snapshot.images.get(imageId);
+        if (!image) throw new Error('Indexed image is absent.'); images.push(image);
+      }
+      return { status: row.catalogue?.status || 'partial', active: info(), sourceKind: row.sourceContext.sourceKind,
+        record: row, images, imageState: images.length ? 'representative' : 'unavailable' };
+    } catch { return { ...unavailable('indexed-corpus-changed', 'The selected indexed corpus changed; reload a complete validated version.'), active: info() }; }
   }
   function getVin(vin) {
     if (!snapshot) return { ...unavailable('corpus-absent', 'No validated corpus is selected.'), identityKind: retained?.identities.some((row) => row.vin17 === vin || row.vin7 === vin) ? 'synthetic' : 'unknown', liveEligible: false, active: null };
     if (typeof vin !== 'string' || !/^(?:[A-HJ-NPR-Z0-9]{17}|[A-HJ-NPR-Z0-9]{7})$/.test(vin)) return { status: 'invalid-input', liveEligible: false, active: info() };
-    const row = snapshot.vins.get(vin);
-    if (!row) return { status: 'not-found', identityKind: retained?.identities.some((r) => r.vin17 === vin || r.vin7 === vin) ? 'synthetic' : 'unknown', liveEligible: false, active: info() };
-    return { ...getConfiguration(row.configurationId), vehicle: structuredClone(row), identityKind: 'synthetic', liveEligible: false,
-      notice: 'A fictional VIN association to retained source facts; this is not a factory build or authentication.' };
+    try {
+      const row = snapshot.vins.get(vin);
+      if (!row) return { status: 'not-found', identityKind: retained?.identities.some((r) => r.vin17 === vin || r.vin7 === vin) ? 'synthetic' : 'unknown', liveEligible: false, active: info() };
+      const configuration = getConfiguration(row.configurationId);
+      if (!configuration.record) return { ...configuration, identityKind: 'synthetic', liveEligible: false };
+      return { ...configuration, vehicle: row, identityKind: 'synthetic', liveEligible: false,
+        notice: 'A fictional VIN association to retained source facts; this is not a factory build or authentication.' };
+    } catch { return { ...unavailable('indexed-corpus-changed', 'The selected indexed corpus changed; reload a complete validated version.'), identityKind: 'synthetic', liveEligible: false, active: info() }; }
   }
+
   async function classifyIdentity(vin) {
     const h = await history();
     if (h.status !== 'ok') return { ...h, identityKind: 'unknown', liveEligible: false };

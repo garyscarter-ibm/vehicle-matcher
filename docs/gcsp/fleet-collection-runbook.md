@@ -84,3 +84,39 @@ Use strict targeted evidence with the explicit command; inspect the affected sel
 Current collaborator instruction resumes F58–63, including F61, superseding their earlier pause/date hold. Source permission is already recorded; finite engineering allocations are selected before traffic. HLD configuration corpus identity is independent of delivered/current vehicle VIN allocation. UK profile/year/plant and five-WMI assurance gaps stay visible and prevent claiming full F58 acceptance; they do not prevent a real configuration-only collection/adapter pipeline.
 
 Supporting F59 code checkpoint `eb207527` implements complete safe source capture and the additive v2 closed structural contract. Source checkpoint `c60ea6ee` retains fresh7 November tree+solver artifacts, actual retrieval timestamps and the consumed once marker at `docs/gcsp/evidence/fucq-58/complete-selection-2026-11-07/` on that branch. Exactly 4 GET/782059 decoded bytes, zero retries, within 4 attempts/2 MiB/45 s/one worker limits. All 47 factory codes, SE000001 with unknown quantity, and44 provider-added entries were retained. No new distinct configuration is counted solely for re-observation. Artifact-derived actual collector replay, downstream F60/F54/application validation and broader selected coverage remain separate evidence. Never reset or replay this spent allocation.
+
+An interrupted finite source batch can use the existing collector's
+[explicit continuation contract](f59-source-batch-plan-2026-11-07.md#explicit-interrupted-batch-continuation):
+freeze and hash its predecessor checkpoint, retain all spent allocation markers,
+select a distinct checkpoint and explicitly allocate a fresh bounded bootstrap
+plus remaining unspent solver work. Prior solver requests never repeat. Counts
+remain cumulative, missing responses produce honest rejected work, and changed
+source context fails closed. Four fresh bootstrap GETs are still required to
+recover ephemeral capabilities; scripted offline validation does not establish
+actual LIVE resumption or all of F59 AC4.
+
+## Offline staged and active corpus audit — FUCQ-61/63
+
+The verifier reads the existing versioned corpus and canonical policy; it never collects source data, allocates stock or writes active selection pointers. Keep source capture/collection and explicit publication as separate operations. An invalid candidate, shortfall or unavailable active store is a nonzero result, not target completion.
+
+For staged artifacts, supply the actual absolute version directory because the current pilot plan has no selected staged corpus destination:
+
+```sh
+node scripts/gcsp/verify-fleet.mjs --config server/data/gcsp/vehicle-evidence/fleet-plan.json --staged --artifacts /absolute/versioned/staged-corpus --require-distinct 10000 --run-id fleet-staged-audit --as-of 2026-11-07T00:00:00.000Z
+```
+
+For active verification, select the actual published store. `--endpoint` is an explicit **bind address for an owned audit server**, wrapping the same loaded lookup through the real application `buildServer`; it is not an arbitrary remote service URL. Numeric loopback only is permitted. Port `0` selects an ephemeral port and the report records the actual address. The verifier blocks external HTTP/HTTPS/fetch/socket/TLS operations during the audit, checks that its tripwire denies a positive control, and closes the owned server/restores instrumentation in `finally`.
+
+```sh
+node scripts/gcsp/verify-fleet.mjs --config server/data/gcsp/vehicle-evidence/fleet-plan.json --active --store /absolute/published-corpus-store --require-distinct 10000 --http --offline --endpoint http://127.0.0.1:0 --concurrency 1 --sample-size 128 --run-id fleet-active-audit --as-of 2026-11-07T00:00:00.000Z
+```
+
+The report identifies the exact manifest path/hash and artifact/schema/policy/profile/generator pins. It distinguishes all-record in-process reconciliation from the bounded deterministic HTTP sample, and reports count, workers, process environment, latency percentiles, throughput and errors without a new SLA. HTTP responses are compared with actual lookup DTOs; every enumerated record also passes the consuming adapter and is checked against retained identity, description, source dates/context, equipment, facts/units and image role/fidelity. Exact stock references are optional explicit API inputs with a repository/current-run context; the CLI does not generate stock or assert native PostgreSQL coverage. Zero supplied stock references are labelled `not-supplied`.
+
+Only complete source-backed resolved factory selections qualify toward the target. Retained North American structural references and fixture VINs cannot pad it. Unknown optional measurements/accessory quantities, absent imagery and representative fidelity remain visible. Neither a low explicit fixture threshold nor an audit status establishes all Story acceptance. The real full corpus, declared coverage, actual producer/publication evidence and authored regression gates remain required.
+
+For ordinary runtime startup, configure `GCSP_VEHICLE_EVIDENCE_ROOT` to the pinned published store. `createLocalVehicleEvidenceLookup` loads it through the existing registry, without a source transport. On restart, run the active audit again and compare its manifest digest/counts and identity associations with the retained receipt. Idempotent reload must preserve the same dataset/version/digest. The audit reports when the loader recovered a previous valid selection; it does not silently repair the selection pointer.
+
+For deliberate restore or rollback, use the existing `createSyntheticRegistry({ root, policyService, policyRead }).publish(previousCandidateDirectory)` operation on the selected retained immutable candidate, with the matching retained policy/profile/image approvals. Inspect its outcome and re-run the audit. Do not edit manifest facts, regenerate identities, overwrite `active.json` manually or delete the independent identity inventory. Invalid/interrupted publication and fallback recovery are regression-tested only in owned disposable stores; the verifier never tries these destructive scenarios against the actual store.
+
+For reproducibility retain the selected command, absolute manifest path/digest, source/code/policy/profile/schema versions, actual sample/all-record scope and report alongside the source batch receipts. Source errors, target shortfall, profile/model coverage and missing image fidelity remain acceptance limits. Never relabel fixture proof or lower the real 10,000 target to report completion.

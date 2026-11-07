@@ -1,0 +1,253 @@
+{
+  "checks": [
+    {
+      "cleanup": {
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "groups": [
+          {
+            "live": false,
+            "pgid": 58216
+          }
+        ],
+        "leftovers": [],
+        "removed_bytes": 868448,
+        "reservation_released": true,
+        "scratch": "/private/tmp/test-stamp-shard-6c5359a8dfd94a2ea3fc38d45c39ebe7",
+        "scratch_absent": true
+      },
+      "code_and_test_identity": {
+        "scripts/gcsp/enrich-fleet.mjs": "29301f1b077b0f5b171f103a82174bd9e7e430a5e800fb31c796a8fe698f0519",
+        "scripts/gcsp/verify-fleet.mjs": "12a8bbd3c104f1f0afb131b8733d51bc82251122b856191dc41a9f49bc97217e",
+        "server/gcsp/vehicle-evidence/corpus-publisher.js": "9d86e1397aa74d1a1b096aaf6cba2149499a81a524e54eecd2ff83c80b2e6c96",
+        "server/gcsp/vehicle-evidence/fleet-artifacts.js": "4373eed82a61b25144ba5b39f35bd6f1ef1dba0abdc7eb6fa38dd56c77acf4e8",
+        "server/gcsp/vehicle-evidence/fleet-release.js": "8f9febd9d6e8dafba19ceea7b61795dcd48b540b5c17918708491cd9e13f5ca5",
+        "server/gcsp/vehicle-evidence/fleet-releases.json": "bab0e7ee96e90f0622651f527278b07a60b58f14c33dd094a26f7c552319c942",
+        "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "2c0045c82241dac3a5ac1dcc6c447174cad2eb66d413d9cbe98ece62ed573255",
+        "server/gcsp/vehicle-evidence/registered-catalogue-sources.js": "24b5cd1540b284789cf23a4a985af5c216f18412814387f139528c3fa1bb4fbc",
+        "server/gcsp/vehicle-evidence/registered-corpus-images.js": "1180911ff4e19e54b2dfeb997549d5c52f8c07421d6f31e0b6f45da8bf85a544",
+        "server/gcsp/vehicle-evidence/synthetic-registry.js": "4411a122f0a245dd65b58e8753ed1181afd6dd114474b60134adaf5e27febe47",
+        "server/test/gcsp-corpus-indexed.test.js": "468b84d3bf59d135b58225b8cd155d9c771e2118305f6c91d9faf363a74100c4",
+        "server/test/gcsp-fleet-artifacts.test.js": "710e5292b77e5af98ead97b930eca24b39380d5b89223a39970b4269f037fd63",
+        "server/test/gcsp-fleet-verifier.test.js": "c7bd5a82bd784e32fdbcb356ab8c548e464ae1f8eaaae6b299f7b9e87e44539a",
+        "server/test/gcsp-retained-image.test.js": "db2ce55cc6948b4ae2dae849723eab7b0745f0cbf637d0fd43f9268d1d396271",
+        "server/test/gcsp-vin-publication.test.js": "9231d22a886f91ea6a29178634c9fb5b75679c5ea5594874b035ca5ee0459fee",
+        "server/test/gcsp-vin-registry.test.js": "497b9373d00180fef826833c9e67e9762216a47224c0f1f79160bca63e0f5809",
+        "server/vehicle-evidence/bmw-image-adapter.js": "56753ac7e47e4790159e7d50fb4deafe1658730e803912f064e6ed09326774ef",
+        "server/vehicle-evidence/snapshots/bmw-gb-i5-images-2026-11-01.v1.json": "b6bbe8e39b018b1a38551d818e1dfe9b6504283c95dedd033d59d4df8395d393"
+      },
+      "commands": [
+        "server/test/gcsp-retained-image.test.js"
+      ],
+      "counts": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 4,
+        "skipped": 0,
+        "tests": 4,
+        "todo": 0
+      },
+      "phase": "integrated-pilot",
+      "resources": {
+        "peak_rss": 175751168,
+        "peak_scratch": 868448,
+        "wall": 0.7254255410080077
+      },
+      "reused_unchanged_after_integration": false
+    },
+    {
+      "cleanup": {
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "groups": [
+          {
+            "live": false,
+            "pgid": 58329
+          }
+        ],
+        "leftovers": [],
+        "removed_bytes": 6943232,
+        "reservation_released": true,
+        "scratch": "/private/tmp/test-stamp-shard-6c8a5388a05d4759a01b176ba36c602c",
+        "scratch_absent": true
+      },
+      "code_and_test_identity": {
+        "scripts/gcsp/enrich-fleet.mjs": "29301f1b077b0f5b171f103a82174bd9e7e430a5e800fb31c796a8fe698f0519",
+        "scripts/gcsp/verify-fleet.mjs": "12a8bbd3c104f1f0afb131b8733d51bc82251122b856191dc41a9f49bc97217e",
+        "server/gcsp/vehicle-evidence/corpus-publisher.js": "9d86e1397aa74d1a1b096aaf6cba2149499a81a524e54eecd2ff83c80b2e6c96",
+        "server/gcsp/vehicle-evidence/fleet-artifacts.js": "4373eed82a61b25144ba5b39f35bd6f1ef1dba0abdc7eb6fa38dd56c77acf4e8",
+        "server/gcsp/vehicle-evidence/fleet-release.js": "8f9febd9d6e8dafba19ceea7b61795dcd48b540b5c17918708491cd9e13f5ca5",
+        "server/gcsp/vehicle-evidence/fleet-releases.json": "bab0e7ee96e90f0622651f527278b07a60b58f14c33dd094a26f7c552319c942",
+        "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "2c0045c82241dac3a5ac1dcc6c447174cad2eb66d413d9cbe98ece62ed573255",
+        "server/gcsp/vehicle-evidence/registered-catalogue-sources.js": "24b5cd1540b284789cf23a4a985af5c216f18412814387f139528c3fa1bb4fbc",
+        "server/gcsp/vehicle-evidence/registered-corpus-images.js": "1180911ff4e19e54b2dfeb997549d5c52f8c07421d6f31e0b6f45da8bf85a544",
+        "server/gcsp/vehicle-evidence/synthetic-registry.js": "4411a122f0a245dd65b58e8753ed1181afd6dd114474b60134adaf5e27febe47",
+        "server/test/gcsp-corpus-indexed.test.js": "468b84d3bf59d135b58225b8cd155d9c771e2118305f6c91d9faf363a74100c4",
+        "server/test/gcsp-fleet-artifacts.test.js": "710e5292b77e5af98ead97b930eca24b39380d5b89223a39970b4269f037fd63",
+        "server/test/gcsp-fleet-verifier.test.js": "c7bd5a82bd784e32fdbcb356ab8c548e464ae1f8eaaae6b299f7b9e87e44539a",
+        "server/test/gcsp-retained-image.test.js": "db2ce55cc6948b4ae2dae849723eab7b0745f0cbf637d0fd43f9268d1d396271",
+        "server/test/gcsp-vin-publication.test.js": "9231d22a886f91ea6a29178634c9fb5b75679c5ea5594874b035ca5ee0459fee",
+        "server/test/gcsp-vin-registry.test.js": "497b9373d00180fef826833c9e67e9762216a47224c0f1f79160bca63e0f5809",
+        "server/vehicle-evidence/bmw-image-adapter.js": "56753ac7e47e4790159e7d50fb4deafe1658730e803912f064e6ed09326774ef",
+        "server/vehicle-evidence/snapshots/bmw-gb-i5-images-2026-11-01.v1.json": "b6bbe8e39b018b1a38551d818e1dfe9b6504283c95dedd033d59d4df8395d393"
+      },
+      "commands": [
+        "server/test/gcsp-vin-publication.test.js",
+        "server/test/gcsp-vin-registry.test.js",
+        "server/test/gcsp-corpus-indexed.test.js",
+        "server/test/gcsp-fleet-verifier.test.js"
+      ],
+      "counts": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 28,
+        "skipped": 0,
+        "tests": 28,
+        "todo": 0
+      },
+      "phase": "integrated-boundaries",
+      "resources": {
+        "peak_rss": 270893056,
+        "peak_scratch": 6943232,
+        "wall": 6.353937417006819
+      },
+      "reused_unchanged_after_integration": false
+    },
+    {
+      "cleanup": {
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "groups": [
+          {
+            "live": false,
+            "pgid": 58574
+          }
+        ],
+        "leftovers": [],
+        "removed_bytes": 819296,
+        "reservation_released": true,
+        "scratch": "/private/tmp/test-stamp-shard-e17f09df49fe4e3d9f406b0f8ea18957",
+        "scratch_absent": true
+      },
+      "code_and_test_identity": {
+        "scripts/gcsp/enrich-fleet.mjs": "29301f1b077b0f5b171f103a82174bd9e7e430a5e800fb31c796a8fe698f0519",
+        "scripts/gcsp/verify-fleet.mjs": "12a8bbd3c104f1f0afb131b8733d51bc82251122b856191dc41a9f49bc97217e",
+        "server/gcsp/vehicle-evidence/corpus-publisher.js": "9d86e1397aa74d1a1b096aaf6cba2149499a81a524e54eecd2ff83c80b2e6c96",
+        "server/gcsp/vehicle-evidence/fleet-artifacts.js": "4373eed82a61b25144ba5b39f35bd6f1ef1dba0abdc7eb6fa38dd56c77acf4e8",
+        "server/gcsp/vehicle-evidence/fleet-release.js": "8f9febd9d6e8dafba19ceea7b61795dcd48b540b5c17918708491cd9e13f5ca5",
+        "server/gcsp/vehicle-evidence/fleet-releases.json": "bab0e7ee96e90f0622651f527278b07a60b58f14c33dd094a26f7c552319c942",
+        "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "2c0045c82241dac3a5ac1dcc6c447174cad2eb66d413d9cbe98ece62ed573255",
+        "server/gcsp/vehicle-evidence/registered-catalogue-sources.js": "24b5cd1540b284789cf23a4a985af5c216f18412814387f139528c3fa1bb4fbc",
+        "server/gcsp/vehicle-evidence/registered-corpus-images.js": "1180911ff4e19e54b2dfeb997549d5c52f8c07421d6f31e0b6f45da8bf85a544",
+        "server/gcsp/vehicle-evidence/synthetic-registry.js": "4411a122f0a245dd65b58e8753ed1181afd6dd114474b60134adaf5e27febe47",
+        "server/test/gcsp-corpus-indexed.test.js": "468b84d3bf59d135b58225b8cd155d9c771e2118305f6c91d9faf363a74100c4",
+        "server/test/gcsp-fleet-artifacts.test.js": "710e5292b77e5af98ead97b930eca24b39380d5b89223a39970b4269f037fd63",
+        "server/test/gcsp-fleet-verifier.test.js": "c7bd5a82bd784e32fdbcb356ab8c548e464ae1f8eaaae6b299f7b9e87e44539a",
+        "server/test/gcsp-retained-image.test.js": "db2ce55cc6948b4ae2dae849723eab7b0745f0cbf637d0fd43f9268d1d396271",
+        "server/test/gcsp-vin-publication.test.js": "9231d22a886f91ea6a29178634c9fb5b75679c5ea5594874b035ca5ee0459fee",
+        "server/test/gcsp-vin-registry.test.js": "497b9373d00180fef826833c9e67e9762216a47224c0f1f79160bca63e0f5809",
+        "server/vehicle-evidence/bmw-image-adapter.js": "56753ac7e47e4790159e7d50fb4deafe1658730e803912f064e6ed09326774ef",
+        "server/vehicle-evidence/snapshots/bmw-gb-i5-images-2026-11-01.v1.json": "b6bbe8e39b018b1a38551d818e1dfe9b6504283c95dedd033d59d4df8395d393"
+      },
+      "commands": [
+        "server/test/gcsp-fleet-artifacts.test.js"
+      ],
+      "counts": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 6,
+        "skipped": 0,
+        "tests": 6,
+        "todo": 0
+      },
+      "phase": "integrated-packaging",
+      "resources": {
+        "peak_rss": 161153024,
+        "peak_scratch": 819296,
+        "wall": 0.4771879999898374
+      },
+      "reused_unchanged_after_integration": false
+    },
+    {
+      "cleanup": {
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "groups": [
+          {
+            "live": false,
+            "pgid": 57096
+          }
+        ],
+        "leftovers": [],
+        "removed_bytes": 1171584,
+        "reservation_released": true,
+        "scratch": "/private/tmp/test-stamp-shard-e79423a029534b60b989c2350d534a31",
+        "scratch_absent": true
+      },
+      "code_and_test_identity": {
+        "scripts/gcsp/enrich-fleet.mjs": "29301f1b077b0f5b171f103a82174bd9e7e430a5e800fb31c796a8fe698f0519",
+        "scripts/gcsp/verify-fleet.mjs": "12a8bbd3c104f1f0afb131b8733d51bc82251122b856191dc41a9f49bc97217e",
+        "server/gcsp/vehicle-evidence/corpus-publisher.js": "98d49638b16f9058959b6f31ebad0a73ff83aacb5d1e8b8ced401467c6b67fb1",
+        "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "60e4aa8e66c2bcfc7410a6558ae43650893e1b4a0609d8170d2f1aeb9d378949",
+        "server/gcsp/vehicle-evidence/registered-corpus-images.js": "1180911ff4e19e54b2dfeb997549d5c52f8c07421d6f31e0b6f45da8bf85a544",
+        "server/gcsp/vehicle-evidence/synthetic-registry.js": "0d5f6abaec10a14c1695ef174c74a6b05204f9a05b73363238dc22efff7b8650",
+        "server/test/gcsp-corpus-indexed.test.js": "468b84d3bf59d135b58225b8cd155d9c771e2118305f6c91d9faf363a74100c4",
+        "server/test/gcsp-fleet-verifier.test.js": "c7bd5a82bd784e32fdbcb356ab8c548e464ae1f8eaaae6b299f7b9e87e44539a",
+        "server/test/gcsp-retained-image.test.js": "dda8401c20c72beec30e6a972c550566ab0e477151c6125ebeff19568439c6af",
+        "server/test/gcsp-vin-publication.test.js": "9231d22a886f91ea6a29178634c9fb5b75679c5ea5594874b035ca5ee0459fee",
+        "server/test/gcsp-vin-registry.test.js": "497b9373d00180fef826833c9e67e9762216a47224c0f1f79160bca63e0f5809",
+        "server/vehicle-evidence/bmw-image-adapter.js": "56753ac7e47e4790159e7d50fb4deafe1658730e803912f064e6ed09326774ef",
+        "server/vehicle-evidence/snapshots/bmw-gb-i5-images-2026-11-01.v1.json": "b6bbe8e39b018b1a38551d818e1dfe9b6504283c95dedd033d59d4df8395d393"
+      },
+      "commands": [
+        "server/test/gcsp-fleet-enrichment.test.js",
+        "server/test/bmw-image-adapter.test.js"
+      ],
+      "counts": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 30,
+        "skipped": 0,
+        "tests": 30,
+        "todo": 0
+      },
+      "phase": "contracts",
+      "resources": {
+        "peak_rss": 126861312,
+        "peak_scratch": 1171584,
+        "wall": 0.4733118340082001
+      },
+      "reused_unchanged_after_integration": true
+    }
+  ],
+  "excluded": [
+    "full suite",
+    "browser",
+    "SQL",
+    "source collection",
+    "ordinary-store activation",
+    "10000-configuration proof"
+  ],
+  "known_failed_runs": [
+    {
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/red.log",
+      "phase": "red",
+      "rc": 1,
+      "reason": "Expected original reciprocal-image restriction"
+    },
+    {
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/green.log",
+      "phase": "green",
+      "rc": 1,
+      "reason": "Test setup omitted explicit offline:true; corrected before final checks"
+    },
+    {
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/audit-red.log",
+      "phase": "audit-red",
+      "rc": 1,
+      "reason": "Expected original active verifier image association mismatch"
+    }
+  ],
+  "scope": "scoped JavaScript ownership and integration boundaries; full suite not run",
+  "selected_unique_checks": 68
+}
