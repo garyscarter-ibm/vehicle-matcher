@@ -1,0 +1,1361 @@
+{
+  "schemaVersion": "original31-scheme-source-coverage-status.v1",
+  "time": "2026-11-07T06:44:55.676801+00:00",
+  "scope": "read-only mapping of original31 targets to retained actual source metadata; zero source/test/proof replay",
+  "inputPins": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth-preparation-2026-11-07/target-ledger.json",
+      "sha256": "a6352d3ccc1280e8651be1f528f989a4be4dea405796e57fc4ddffb6935ad612"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/data/gcsp/vehicle-evidence/fleet-plan.json",
+      "sha256": "2b9d9799722f9f012dcac75d0a08003bb382acf7d077f871546eeb8f85bb1f9b"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/global-union8813-parent-audit.json",
+      "sha256": "3272740ef9c4bccab5950890e59e327b575e1875940330bb0fd0ac7153d9627d"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g21/diagnostic.json",
+      "sha256": "83493194da9bbd27d0e0186f175907ddb14e27af93f3774868dbf988dcc37590",
+      "observedAt": "2026-11-07T04:28:20.571Z"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/diagnostic.json",
+      "sha256": "6f9144a4f4e2a55f762c0b1b256fe37918c06a1799d38d11fa63042f8cea0920",
+      "observedAt": "2026-11-07T04:29:03.353Z"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u10/diagnostic.json",
+      "sha256": "40ef6ac391372269b07908c52fcdddce301019dfabc8e6469bd932c753d62be5",
+      "observedAt": "2026-11-07T04:29:05.651Z"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g26e/diagnostic.json",
+      "sha256": "ba82cee74dcca5fc713cdd23264017ee561c15a0c42c4dbad0dea2e0fdf88cd5",
+      "observedAt": "2026-11-07T04:29:08.025Z"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-actual-2026-11-07/typed-axes-index.json",
+      "sha256": "5c1e15c92e359db446fe6eda05fbce7c8d7e781630efa9f7f3193524163365a1"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/typed-axes-index.json",
+      "sha256": "599778c01ee04aa067b50ac34e31499077a050b45a40b95d11bfe3c5539cd37c"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth30-phase02c-864-series-2026-11-07/actual-interruption-audit.json",
+      "sha256": "6af7d6cffcac3b81c00b5958c5e105f84e0fe4c07a892bc82255bd8cae53eb2b"
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02c-864-20261107-once/phase02c-receipt.json",
+      "sha256": "e98d04197ceb9f4fb2f6f4748c18868974be10e085d85051c060521c57180962"
+    }
+  ],
+  "originalTargetCount": 31,
+  "schemeJoinsQualified": 0,
+  "coverageQualified": 0,
+  "actualTypedContexts": 30,
+  "typedContextCandidateRows": 6,
+  "typedContextsByCandidateTarget": {
+    "5": 6,
+    "12": 13,
+    "18": 4,
+    "13": 2,
+    "19": 2,
+    "20": 3
+  },
+  "actualSourceCandidateRows": 9,
+  "explicitDatedOrDiagnosticGaps": 2,
+  "noRetainedSeedRows": 20,
+  "parentGlobalAdmitted": 8813,
+  "parentGlobalCountBasis": "fixed parent union; running phase03 excluded",
+  "phase02cStrictAdmittedCandidateCount": 513,
+  "entries": [
+    {
+      "index": 0,
+      "schemeModelLine": "F70 Sports Hatch",
+      "targetPointer": "/coverage/schemeModelLines/0",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "actual-source-model-evidence; scheme join incomplete",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "retained actual source and strict solver candidates; scheme join unqualified",
+      "sourceEvidence": [
+        "docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/final-stage1-receipt.json",
+        "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/series-receipt.json"
+      ],
+      "requiredNext": "Corroborate exact scheme join from retained source evidence; source capacity is separate from scheme coverage."
+    },
+    {
+      "index": 1,
+      "schemeModelLine": "F44 Gran Coupe",
+      "targetPointer": "/coverage/schemeModelLines/1",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "explicit-unresolved-dated-F44-gap",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "unresolved dated F44 gap",
+      "sourceEvidence": [
+        "docs/gcsp/evidence/fucq-58/scheme-catalogue-2026-11-05/observation.json",
+        "docs/gcsp/evidence/fucq-58/historical-f44-2026-11-05/observation.json"
+      ],
+      "requiredNext": "Preserve HTTP200 empty object and historical HTTP400 as limited observations. Obtain an evidence-backed exact F44 input; do not infer global unavailability or substitute a successor."
+    },
+    {
+      "index": 2,
+      "schemeModelLine": "G42 Coupe",
+      "targetPointer": "/coverage/schemeModelLines/2",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "actual-source-six-model-options; solver allocation prepared",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "retained actual source and strict solver candidates; scheme join unqualified",
+      "sourceEvidence": [
+        "docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/typed-axes-index.json",
+        "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/execution-plan.json"
+      ],
+      "requiredNext": "Corroborate exact scheme join from retained source evidence; source capacity is separate from scheme coverage."
+    },
+    {
+      "index": 3,
+      "schemeModelLine": "U06 Active Tourer",
+      "targetPointer": "/coverage/schemeModelLines/3",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "unresolved-no-retained-exact-page-seed",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "unresolved; no retained exact discovery seed in this evidence slice",
+      "sourceEvidence": [],
+      "requiredNext": "Obtain a separately authorized evidence-backed exact discovery seed; preserve generation/body labels and unknown model/AG/range/alias facts."
+    },
+    {
+      "index": 4,
+      "schemeModelLine": "G20 Saloon",
+      "targetPointer": "/coverage/schemeModelLines/4",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "unresolved-no-retained-exact-page-seed",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "unresolved; no retained exact discovery seed in this evidence slice",
+      "sourceEvidence": [],
+      "requiredNext": "Obtain a separately authorized evidence-backed exact discovery seed; preserve generation/body labels and unknown model/AG/range/alias facts."
+    },
+    {
+      "index": 5,
+      "schemeModelLine": "G21 Touring",
+      "targetPointer": "/coverage/schemeModelLines/5",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "historical-literal-seed; actual inventory unobserved",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [
+        {
+          "modelCode": "T3MK",
+          "agModelCode": "22FY",
+          "catalogueRangeKey": "G21",
+          "rawModelRange": "G21",
+          "literalDerivative": "320I",
+          "aliases": [
+            "3"
+          ],
+          "lineKey": "S0337",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g21/diagnostic.json",
+            "sha256": "83493194da9bbd27d0e0186f175907ddb14e27af93f3774868dbf988dcc37590",
+            "observedAt": "2026-11-07T04:28:20.571Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "T3BE",
+          "agModelCode": "22GL",
+          "catalogueRangeKey": "G21",
+          "rawModelRange": "G21",
+          "literalDerivative": "M340I",
+          "aliases": [
+            "3"
+          ],
+          "lineKey": "S07MU",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S07MU"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g21/diagnostic.json",
+            "sha256": "83493194da9bbd27d0e0186f175907ddb14e27af93f3774868dbf988dcc37590",
+            "observedAt": "2026-11-07T04:28:20.571Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "T3MR",
+          "agModelCode": "42GL",
+          "catalogueRangeKey": "G21",
+          "rawModelRange": "G21",
+          "literalDerivative": "330E",
+          "aliases": [
+            "3"
+          ],
+          "lineKey": "S0337",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g21/diagnostic.json",
+            "sha256": "83493194da9bbd27d0e0186f175907ddb14e27af93f3774868dbf988dcc37590",
+            "observedAt": "2026-11-07T04:28:20.571Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "T3PF",
+          "agModelCode": "22GL",
+          "catalogueRangeKey": "G21",
+          "rawModelRange": "G21",
+          "literalDerivative": "M340I",
+          "aliases": [
+            "3"
+          ],
+          "lineKey": "S033B",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S033B"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g21/diagnostic.json",
+            "sha256": "83493194da9bbd27d0e0186f175907ddb14e27af93f3774868dbf988dcc37590",
+            "observedAt": "2026-11-07T04:28:20.571Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "T3PK",
+          "agModelCode": "22FY",
+          "catalogueRangeKey": "G21",
+          "rawModelRange": "G21",
+          "literalDerivative": "320I",
+          "aliases": [
+            "3"
+          ],
+          "lineKey": "S0337",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g21/diagnostic.json",
+            "sha256": "83493194da9bbd27d0e0186f175907ddb14e27af93f3774868dbf988dcc37590",
+            "observedAt": "2026-11-07T04:28:20.571Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "T3PR",
+          "agModelCode": "42GL",
+          "catalogueRangeKey": "G21",
+          "rawModelRange": "G21",
+          "literalDerivative": "330E",
+          "aliases": [
+            "3"
+          ],
+          "lineKey": "S0337",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g21/diagnostic.json",
+            "sha256": "83493194da9bbd27d0e0186f175907ddb14e27af93f3774868dbf988dcc37590",
+            "observedAt": "2026-11-07T04:28:20.571Z"
+          },
+          "qualificationOnly": true
+        }
+      ],
+      "phase02cStrictAdmittedCandidates": 119,
+      "acceptance": false,
+      "state": "actual literal range/model/options candidates; scheme join unqualified",
+      "requiredNext": "Corroborate exact dated scheme/body/generation join and original profile/year/plant/five-WMI coverage."
+    },
+    {
+      "index": 6,
+      "schemeModelLine": "G22 Coupe",
+      "targetPointer": "/coverage/schemeModelLines/6",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "unresolved-no-retained-exact-page-seed",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "unresolved; no retained exact discovery seed in this evidence slice",
+      "sourceEvidence": [],
+      "requiredNext": "Obtain a separately authorized evidence-backed exact discovery seed; preserve generation/body labels and unknown model/AG/range/alias facts."
+    },
+    {
+      "index": 7,
+      "schemeModelLine": "G23 Convertible",
+      "targetPointer": "/coverage/schemeModelLines/7",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "unresolved-no-retained-exact-page-seed",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "unresolved; no retained exact discovery seed in this evidence slice",
+      "sourceEvidence": [],
+      "requiredNext": "Obtain a separately authorized evidence-backed exact discovery seed; preserve generation/body labels and unknown model/AG/range/alias facts."
+    },
+    {
+      "index": 8,
+      "schemeModelLine": "G26 Gran Coupe",
+      "targetPointer": "/coverage/schemeModelLines/8",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "unresolved-no-retained-exact-page-seed",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "unresolved; no retained exact discovery seed in this evidence slice",
+      "sourceEvidence": [],
+      "requiredNext": "Obtain a separately authorized evidence-backed exact discovery seed; preserve generation/body labels and unknown model/AG/range/alias facts."
+    },
+    {
+      "index": 9,
+      "schemeModelLine": "G60 Saloon",
+      "targetPointer": "/coverage/schemeModelLines/9",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "unresolved-no-retained-exact-page-seed",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "unresolved; no retained exact discovery seed in this evidence slice",
+      "sourceEvidence": [],
+      "requiredNext": "Obtain a separately authorized evidence-backed exact discovery seed; preserve generation/body labels and unknown model/AG/range/alias facts."
+    },
+    {
+      "index": 10,
+      "schemeModelLine": "G61 Touring",
+      "targetPointer": "/coverage/schemeModelLines/10",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "unresolved-no-retained-exact-page-seed",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "unresolved; no retained exact discovery seed in this evidence slice",
+      "sourceEvidence": [],
+      "requiredNext": "Obtain a separately authorized evidence-backed exact discovery seed; preserve generation/body labels and unknown model/AG/range/alias facts."
+    },
+    {
+      "index": 11,
+      "schemeModelLine": "G29 Z4",
+      "targetPointer": "/coverage/schemeModelLines/11",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "unresolved-no-retained-exact-page-seed",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "unresolved; no retained exact discovery seed in this evidence slice",
+      "sourceEvidence": [],
+      "requiredNext": "Obtain a separately authorized evidence-backed exact discovery seed; preserve generation/body labels and unknown model/AG/range/alias facts."
+    },
+    {
+      "index": 12,
+      "schemeModelLine": "U11 X1",
+      "targetPointer": "/coverage/schemeModelLines/12",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "historical-literal-seed; actual inventory unobserved",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [
+        {
+          "modelCode": "X1M0",
+          "agModelCode": "32EE",
+          "catalogueRangeKey": "U11",
+          "rawModelRange": "U11",
+          "literalDerivative": "X1 20I",
+          "aliases": [
+            "X"
+          ],
+          "lineKey": "S0337",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/diagnostic.json",
+            "sha256": "6f9144a4f4e2a55f762c0b1b256fe37918c06a1799d38d11fa63042f8cea0920",
+            "observedAt": "2026-11-07T04:29:03.353Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "X135",
+          "agModelCode": "12EF",
+          "catalogueRangeKey": "U11",
+          "rawModelRange": "U11",
+          "literalDerivative": "X1 M35I",
+          "aliases": [
+            "X"
+          ],
+          "lineKey": "S033B",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S033B"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/diagnostic.json",
+            "sha256": "6f9144a4f4e2a55f762c0b1b256fe37918c06a1799d38d11fa63042f8cea0920",
+            "observedAt": "2026-11-07T04:29:03.353Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "X1M1",
+          "agModelCode": "62EE",
+          "catalogueRangeKey": "U11",
+          "rawModelRange": "U11",
+          "literalDerivative": "X1 23I",
+          "aliases": [
+            "X"
+          ],
+          "lineKey": "S0337",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/diagnostic.json",
+            "sha256": "6f9144a4f4e2a55f762c0b1b256fe37918c06a1799d38d11fa63042f8cea0920",
+            "observedAt": "2026-11-07T04:29:03.353Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "X1M2",
+          "agModelCode": "12EG",
+          "catalogueRangeKey": "U11",
+          "rawModelRange": "U11",
+          "literalDerivative": "X1 18D",
+          "aliases": [
+            "X"
+          ],
+          "lineKey": "S0337",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/diagnostic.json",
+            "sha256": "6f9144a4f4e2a55f762c0b1b256fe37918c06a1799d38d11fa63042f8cea0920",
+            "observedAt": "2026-11-07T04:29:03.353Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "X1M3",
+          "agModelCode": "52EG",
+          "catalogueRangeKey": "U11",
+          "rawModelRange": "U11",
+          "literalDerivative": "X1 23D",
+          "aliases": [
+            "X"
+          ],
+          "lineKey": "S0337",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/diagnostic.json",
+            "sha256": "6f9144a4f4e2a55f762c0b1b256fe37918c06a1799d38d11fa63042f8cea0920",
+            "observedAt": "2026-11-07T04:29:03.353Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "X1M6",
+          "agModelCode": "22EF",
+          "catalogueRangeKey": "U11",
+          "rawModelRange": "U11",
+          "literalDerivative": "X1 25E",
+          "aliases": [
+            "X"
+          ],
+          "lineKey": "S0337",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/diagnostic.json",
+            "sha256": "6f9144a4f4e2a55f762c0b1b256fe37918c06a1799d38d11fa63042f8cea0920",
+            "observedAt": "2026-11-07T04:29:03.353Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "X1M7",
+          "agModelCode": "32EF",
+          "catalogueRangeKey": "U11",
+          "rawModelRange": "U11",
+          "literalDerivative": "X1 30E",
+          "aliases": [
+            "X"
+          ],
+          "lineKey": "S0337",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/diagnostic.json",
+            "sha256": "6f9144a4f4e2a55f762c0b1b256fe37918c06a1799d38d11fa63042f8cea0920",
+            "observedAt": "2026-11-07T04:29:03.353Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "X1X0",
+          "agModelCode": "32EE",
+          "catalogueRangeKey": "U11",
+          "rawModelRange": "U11",
+          "literalDerivative": "X1 20I",
+          "aliases": [
+            "X"
+          ],
+          "lineKey": "S07HW",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S07HW"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/diagnostic.json",
+            "sha256": "6f9144a4f4e2a55f762c0b1b256fe37918c06a1799d38d11fa63042f8cea0920",
+            "observedAt": "2026-11-07T04:29:03.353Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "X1X2",
+          "agModelCode": "12EG",
+          "catalogueRangeKey": "U11",
+          "rawModelRange": "U11",
+          "literalDerivative": "X1 18D",
+          "aliases": [
+            "X"
+          ],
+          "lineKey": "S07HW",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S07HW"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/diagnostic.json",
+            "sha256": "6f9144a4f4e2a55f762c0b1b256fe37918c06a1799d38d11fa63042f8cea0920",
+            "observedAt": "2026-11-07T04:29:03.353Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "X1X3",
+          "agModelCode": "52EG",
+          "catalogueRangeKey": "U11",
+          "rawModelRange": "U11",
+          "literalDerivative": "X1 23D",
+          "aliases": [
+            "X"
+          ],
+          "lineKey": "S07HW",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S07HW"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/diagnostic.json",
+            "sha256": "6f9144a4f4e2a55f762c0b1b256fe37918c06a1799d38d11fa63042f8cea0920",
+            "observedAt": "2026-11-07T04:29:03.353Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "X1X6",
+          "agModelCode": "22EF",
+          "catalogueRangeKey": "U11",
+          "rawModelRange": "U11",
+          "literalDerivative": "X1 25E",
+          "aliases": [
+            "X"
+          ],
+          "lineKey": "S07HW",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S07HW"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/diagnostic.json",
+            "sha256": "6f9144a4f4e2a55f762c0b1b256fe37918c06a1799d38d11fa63042f8cea0920",
+            "observedAt": "2026-11-07T04:29:03.353Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "X1X7",
+          "agModelCode": "32EF",
+          "catalogueRangeKey": "U11",
+          "rawModelRange": "U11",
+          "literalDerivative": "X1 30E",
+          "aliases": [
+            "X"
+          ],
+          "lineKey": "S07HW",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S07HW"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/diagnostic.json",
+            "sha256": "6f9144a4f4e2a55f762c0b1b256fe37918c06a1799d38d11fa63042f8cea0920",
+            "observedAt": "2026-11-07T04:29:03.353Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "X1XL",
+          "agModelCode": "62EE",
+          "catalogueRangeKey": "U11",
+          "rawModelRange": "U11",
+          "literalDerivative": "X1 23I",
+          "aliases": [
+            "X"
+          ],
+          "lineKey": "S07HW",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S07HW"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/diagnostic.json",
+            "sha256": "6f9144a4f4e2a55f762c0b1b256fe37918c06a1799d38d11fa63042f8cea0920",
+            "observedAt": "2026-11-07T04:29:03.353Z"
+          },
+          "qualificationOnly": true
+        }
+      ],
+      "phase02cStrictAdmittedCandidates": 203,
+      "acceptance": false,
+      "state": "actual literal range/model/options candidates; scheme join unqualified",
+      "requiredNext": "Corroborate exact dated scheme/body/generation join and original profile/year/plant/five-WMI coverage."
+    },
+    {
+      "index": 13,
+      "schemeModelLine": "U10 X2",
+      "targetPointer": "/coverage/schemeModelLines/13",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "historical-literal-seed; actual inventory unobserved",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [
+        {
+          "modelCode": "X2MS",
+          "agModelCode": "22GM",
+          "catalogueRangeKey": "U10",
+          "rawModelRange": "U10",
+          "literalDerivative": "X2 20I",
+          "aliases": [
+            "X"
+          ],
+          "lineKey": "S0337",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u10/diagnostic.json",
+            "sha256": "40ef6ac391372269b07908c52fcdddce301019dfabc8e6469bd932c753d62be5",
+            "observedAt": "2026-11-07T04:29:05.651Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "X235",
+          "agModelCode": "82GM",
+          "catalogueRangeKey": "U10",
+          "rawModelRange": "U10",
+          "literalDerivative": "X2 M35I",
+          "aliases": [
+            "X"
+          ],
+          "lineKey": "S033B",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S033B"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u10/diagnostic.json",
+            "sha256": "40ef6ac391372269b07908c52fcdddce301019dfabc8e6469bd932c753d62be5",
+            "observedAt": "2026-11-07T04:29:05.651Z"
+          },
+          "qualificationOnly": true
+        }
+      ],
+      "phase02cStrictAdmittedCandidates": 26,
+      "acceptance": false,
+      "state": "actual literal range/model/options candidates; scheme join unqualified",
+      "requiredNext": "Corroborate exact dated scheme/body/generation join and original profile/year/plant/five-WMI coverage."
+    },
+    {
+      "index": 14,
+      "schemeModelLine": "G01 X3",
+      "targetPointer": "/coverage/schemeModelLines/14",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "unresolved-no-retained-exact-page-seed",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "unresolved; no retained exact discovery seed in this evidence slice",
+      "sourceEvidence": [],
+      "requiredNext": "Obtain a separately authorized evidence-backed exact discovery seed; preserve generation/body labels and unknown model/AG/range/alias facts."
+    },
+    {
+      "index": 15,
+      "schemeModelLine": "G02 X4",
+      "targetPointer": "/coverage/schemeModelLines/15",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "unresolved-no-retained-exact-page-seed",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "unresolved; no retained exact discovery seed in this evidence slice",
+      "sourceEvidence": [],
+      "requiredNext": "Obtain a separately authorized evidence-backed exact discovery seed; preserve generation/body labels and unknown model/AG/range/alias facts."
+    },
+    {
+      "index": 16,
+      "schemeModelLine": "G05 X5",
+      "targetPointer": "/coverage/schemeModelLines/16",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "unresolved-no-retained-exact-page-seed",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "unresolved; no retained exact discovery seed in this evidence slice",
+      "sourceEvidence": [],
+      "requiredNext": "Obtain a separately authorized evidence-backed exact discovery seed; preserve generation/body labels and unknown model/AG/range/alias facts."
+    },
+    {
+      "index": 17,
+      "schemeModelLine": "G06 X6",
+      "targetPointer": "/coverage/schemeModelLines/17",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "unresolved-no-retained-exact-page-seed",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "unresolved; no retained exact discovery seed in this evidence slice",
+      "sourceEvidence": [],
+      "requiredNext": "Obtain a separately authorized evidence-backed exact discovery seed; preserve generation/body labels and unknown model/AG/range/alias facts."
+    },
+    {
+      "index": 18,
+      "schemeModelLine": "U11 iX1",
+      "targetPointer": "/coverage/schemeModelLines/18",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "historical-literal-seed; actual inventory unobserved",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [
+        {
+          "modelCode": "IX1I",
+          "agModelCode": "12HM",
+          "catalogueRangeKey": "U11",
+          "rawModelRange": "U11",
+          "literalDerivative": "IX1 20",
+          "aliases": [
+            "X"
+          ],
+          "lineKey": "S0337",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/diagnostic.json",
+            "sha256": "6f9144a4f4e2a55f762c0b1b256fe37918c06a1799d38d11fa63042f8cea0920",
+            "observedAt": "2026-11-07T04:29:03.353Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "IX1H",
+          "agModelCode": "12HM",
+          "catalogueRangeKey": "U11",
+          "rawModelRange": "U11",
+          "literalDerivative": "IX1 20",
+          "aliases": [
+            "X"
+          ],
+          "lineKey": "S07HW",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S07HW"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/diagnostic.json",
+            "sha256": "6f9144a4f4e2a55f762c0b1b256fe37918c06a1799d38d11fa63042f8cea0920",
+            "observedAt": "2026-11-07T04:29:03.353Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "IX1K",
+          "agModelCode": "22HM",
+          "catalogueRangeKey": "U11",
+          "rawModelRange": "U11",
+          "literalDerivative": "IX1 30",
+          "aliases": [
+            "X"
+          ],
+          "lineKey": "S07HW",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S07HW"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/diagnostic.json",
+            "sha256": "6f9144a4f4e2a55f762c0b1b256fe37918c06a1799d38d11fa63042f8cea0920",
+            "observedAt": "2026-11-07T04:29:03.353Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "IX1L",
+          "agModelCode": "22HM",
+          "catalogueRangeKey": "U11",
+          "rawModelRange": "U11",
+          "literalDerivative": "IX1 30",
+          "aliases": [
+            "X"
+          ],
+          "lineKey": "S0337",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/diagnostic.json",
+            "sha256": "6f9144a4f4e2a55f762c0b1b256fe37918c06a1799d38d11fa63042f8cea0920",
+            "observedAt": "2026-11-07T04:29:03.353Z"
+          },
+          "qualificationOnly": true
+        }
+      ],
+      "phase02cStrictAdmittedCandidates": 66,
+      "acceptance": false,
+      "state": "actual literal range/model/options candidates; scheme join unqualified",
+      "requiredNext": "Corroborate exact dated scheme/body/generation join and original profile/year/plant/five-WMI coverage."
+    },
+    {
+      "index": 19,
+      "schemeModelLine": "U10 iX2",
+      "targetPointer": "/coverage/schemeModelLines/19",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "historical-literal-seed; actual inventory unobserved",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [
+        {
+          "modelCode": "IX24",
+          "agModelCode": "72GN",
+          "catalogueRangeKey": "U10",
+          "rawModelRange": "U10",
+          "literalDerivative": "IX2 20",
+          "aliases": [
+            "X"
+          ],
+          "lineKey": "S0337",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u10/diagnostic.json",
+            "sha256": "40ef6ac391372269b07908c52fcdddce301019dfabc8e6469bd932c753d62be5",
+            "observedAt": "2026-11-07T04:29:05.651Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "IX25",
+          "agModelCode": "82GN",
+          "catalogueRangeKey": "U10",
+          "rawModelRange": "U10",
+          "literalDerivative": "IX2 30",
+          "aliases": [
+            "X"
+          ],
+          "lineKey": "S0337",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u10/diagnostic.json",
+            "sha256": "40ef6ac391372269b07908c52fcdddce301019dfabc8e6469bd932c753d62be5",
+            "observedAt": "2026-11-07T04:29:05.651Z"
+          },
+          "qualificationOnly": true
+        }
+      ],
+      "phase02cStrictAdmittedCandidates": 36,
+      "acceptance": false,
+      "state": "actual literal range/model/options candidates; scheme join unqualified",
+      "requiredNext": "Corroborate exact dated scheme/body/generation join and original profile/year/plant/five-WMI coverage."
+    },
+    {
+      "index": 20,
+      "schemeModelLine": "G26 i4",
+      "targetPointer": "/coverage/schemeModelLines/20",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "historical-literal-seed; actual inventory unobserved",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [
+        {
+          "modelCode": "I4MF",
+          "agModelCode": "52HD",
+          "catalogueRangeKey": "G26E",
+          "rawModelRange": "G26",
+          "literalDerivative": "I4 35",
+          "aliases": [
+            "4",
+            "I"
+          ],
+          "lineKey": "S0337",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g26e/diagnostic.json",
+            "sha256": "ba82cee74dcca5fc713cdd23264017ee561c15a0c42c4dbad0dea2e0fdf88cd5",
+            "observedAt": "2026-11-07T04:29:08.025Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "I4MG",
+          "agModelCode": "62HD",
+          "catalogueRangeKey": "G26E",
+          "rawModelRange": "G26",
+          "literalDerivative": "I4 40",
+          "aliases": [
+            "4",
+            "I"
+          ],
+          "lineKey": "S0337",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g26e/diagnostic.json",
+            "sha256": "ba82cee74dcca5fc713cdd23264017ee561c15a0c42c4dbad0dea2e0fdf88cd5",
+            "observedAt": "2026-11-07T04:29:08.025Z"
+          },
+          "qualificationOnly": true
+        },
+        {
+          "modelCode": "I4PC",
+          "agModelCode": "72HD",
+          "catalogueRangeKey": "G26E",
+          "rawModelRange": "G26",
+          "literalDerivative": "I4 M60",
+          "aliases": [
+            "4",
+            "I"
+          ],
+          "lineKey": "S033B",
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S033B"
+          },
+          "sourcePin": {
+            "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g26e/diagnostic.json",
+            "sha256": "ba82cee74dcca5fc713cdd23264017ee561c15a0c42c4dbad0dea2e0fdf88cd5",
+            "observedAt": "2026-11-07T04:29:08.025Z"
+          },
+          "qualificationOnly": true
+        }
+      ],
+      "phase02cStrictAdmittedCandidates": 63,
+      "acceptance": false,
+      "state": "actual literal range/model/options candidates; scheme join unqualified",
+      "requiredNext": "Corroborate exact dated scheme/body/generation join and original profile/year/plant/five-WMI coverage."
+    },
+    {
+      "index": 21,
+      "schemeModelLine": "G60 i5",
+      "targetPointer": "/coverage/schemeModelLines/21",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "unresolved-no-retained-exact-page-seed",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "unresolved; no retained exact discovery seed in this evidence slice",
+      "sourceEvidence": [],
+      "requiredNext": "Obtain a separately authorized evidence-backed exact discovery seed; preserve generation/body labels and unknown model/AG/range/alias facts."
+    },
+    {
+      "index": 22,
+      "schemeModelLine": "G61 i5",
+      "targetPointer": "/coverage/schemeModelLines/22",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "actual-source-G61E-T5MJ; scheme join incomplete",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "retained actual source and strict solver candidates; scheme join unqualified",
+      "sourceEvidence": [
+        "docs/gcsp/evidence/fucq59/canonical-source-live-2026-11-06/live-receipt.json",
+        "docs/gcsp/evidence/fucq59/continuation-live-proof-2026-11-07/final-receipt.json"
+      ],
+      "requiredNext": "Corroborate exact scheme join from retained source evidence; source capacity is separate from scheme coverage."
+    },
+    {
+      "index": 23,
+      "schemeModelLine": "i20 iX",
+      "targetPointer": "/coverage/schemeModelLines/23",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "historical-literal-seed; actual inventory unobserved",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "actual I20 inventory stopped at diagnostic alias limit; no qualified model inventory",
+      "sourceEvidence": [
+        {
+          "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/i20/receipt.json",
+          "sha256": "2daf6d2d49a5cd83149fdc845ffa19b4393b8d43b025903d3f305476bf2207bf",
+          "reason": "diagnostic-alias-limit",
+          "actualAttempts": 3
+        }
+      ],
+      "requiredNext": "Review the retained failure and a separately authorized bounded discovery route; infer no model facts or successor."
+    },
+    {
+      "index": 24,
+      "schemeModelLine": "M Power: M2",
+      "targetPointer": "/coverage/schemeModelLines/24",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "unresolved-no-retained-exact-page-seed",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "unresolved; no retained exact discovery seed in this evidence slice",
+      "sourceEvidence": [],
+      "requiredNext": "Obtain a separately authorized evidence-backed exact discovery seed; preserve generation/body labels and unknown model/AG/range/alias facts."
+    },
+    {
+      "index": 25,
+      "schemeModelLine": "M Power: M3",
+      "targetPointer": "/coverage/schemeModelLines/25",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "unresolved-no-retained-exact-page-seed",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "unresolved; no retained exact discovery seed in this evidence slice",
+      "sourceEvidence": [],
+      "requiredNext": "Obtain a separately authorized evidence-backed exact discovery seed; preserve generation/body labels and unknown model/AG/range/alias facts."
+    },
+    {
+      "index": 26,
+      "schemeModelLine": "M Power: M4",
+      "targetPointer": "/coverage/schemeModelLines/26",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "unresolved-no-retained-exact-page-seed",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "unresolved; no retained exact discovery seed in this evidence slice",
+      "sourceEvidence": [],
+      "requiredNext": "Obtain a separately authorized evidence-backed exact discovery seed; preserve generation/body labels and unknown model/AG/range/alias facts."
+    },
+    {
+      "index": 27,
+      "schemeModelLine": "M Power: X3M",
+      "targetPointer": "/coverage/schemeModelLines/27",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "unresolved-no-retained-exact-page-seed",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "unresolved; no retained exact discovery seed in this evidence slice",
+      "sourceEvidence": [],
+      "requiredNext": "Obtain a separately authorized evidence-backed exact discovery seed; preserve generation/body labels and unknown model/AG/range/alias facts."
+    },
+    {
+      "index": 28,
+      "schemeModelLine": "M Power: X4M",
+      "targetPointer": "/coverage/schemeModelLines/28",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "unresolved-no-retained-exact-page-seed",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "unresolved; no retained exact discovery seed in this evidence slice",
+      "sourceEvidence": [],
+      "requiredNext": "Obtain a separately authorized evidence-backed exact discovery seed; preserve generation/body labels and unknown model/AG/range/alias facts."
+    },
+    {
+      "index": 29,
+      "schemeModelLine": "M Power: X5M",
+      "targetPointer": "/coverage/schemeModelLines/29",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "unresolved-no-retained-exact-page-seed",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "unresolved; no retained exact discovery seed in this evidence slice",
+      "sourceEvidence": [],
+      "requiredNext": "Obtain a separately authorized evidence-backed exact discovery seed; preserve generation/body labels and unknown model/AG/range/alias facts."
+    },
+    {
+      "index": 30,
+      "schemeModelLine": "M Power: X6M",
+      "targetPointer": "/coverage/schemeModelLines/30",
+      "eligibility": {
+        "path": "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+        "sha256": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+        "effectivePeriod": "October 2024",
+        "role": "retained scheme target only; never current catalogue/model facts"
+      },
+      "priorState": "unresolved-no-retained-exact-page-seed",
+      "schemeJoinQualified": false,
+      "coverageQualified": false,
+      "typedContexts": [],
+      "phase02cStrictAdmittedCandidates": 0,
+      "acceptance": false,
+      "state": "unresolved; no retained exact discovery seed in this evidence slice",
+      "sourceEvidence": [],
+      "requiredNext": "Obtain a separately authorized evidence-backed exact discovery seed; preserve generation/body labels and unknown model/AG/range/alias facts."
+    }
+  ],
+  "sourceRequests": 0,
+  "strictChecksReplayed": 0,
+  "scratchCreated": false,
+  "dependencyLinkTouched": false,
+  "newAdmissions": 0,
+  "capacityCredit": 0,
+  "acceptance": false,
+  "notes": [
+    "30 typed contexts span four catalogue range keys and six candidate original scheme rows; they do not establish30 scheme joins.",
+    "G26 Gran Coupe is not satisfied by G26E/i4, and G61 Touring is not satisfied by G61E/i5.",
+    "Literal returned derivative facts separate X1/iX1 and X2/iX2 candidates; model-code prefixes are not classification evidence.",
+    "The20 no-seed statuses concern this retained evidence slice and do not claim source unavailability."
+  ]
+}
