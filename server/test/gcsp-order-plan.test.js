@@ -5,7 +5,7 @@ import { planOrder, SOLVER_LIMITS, readPlanningPolicy, resolveSupplyRecords, cre
 import { PolicyService } from '../gcsp/policy/index.js';
 import { setup as savedDemandRun, confirm as confirmDemand } from './helpers/greg-demand-run.js';
 
-import { planningInput as input } from './helpers/order-plan-input.js';
+import { planningInput as input, withContractEnd } from './helpers/order-plan-input.js';
 
 const q = (plan, derivative) => plan.quantities.find((d) => d.derivativeId === derivative)?.quantity;
 
@@ -281,7 +281,7 @@ async function forecastRun() {
     const employeeRef = { table: 'employees', key: { runId: f.context.runId, employeeId: f.employee.employeeId } };
     const employee = await tx.get(employeeRef);
     const changed = await tx.compareAndSwap(employeeRef, employee.value.version, { renewalId: 'known-renewal',
-      contract: { ...employee.value.contract, contractEndDate: '2026-11-26' } });
+      contract: withContractEnd(employee.value.contract, '2026-11-26') });
     if (changed.status !== 'ok') return changed;
     const ref = { table: 'entitlement_slots', key: { runId: f.context.runId, entitlementSlotId: f.employee.entitlementSlotId } };
     const slot = await tx.get(ref);
@@ -340,7 +340,7 @@ test('default forecast fails closed without future evaluation, a known renewal o
   await f.write(async (tx) => {
     const ref = { table: 'employees', key: { runId: f.context.runId, employeeId: f.employee.employeeId } };
     const row = await tx.get(ref);
-    return tx.compareAndSwap(ref, row.value.version, { contract: { ...row.value.contract, contractEndDate: null } });
+    return tx.compareAndSwap(ref, row.value.version, { contract: withContractEnd(row.value.contract, null) });
   });
   assert.equal((await f.provider.readForecast(f.context, f.read)).code, 'planning-renewal-unconfirmed');
 });

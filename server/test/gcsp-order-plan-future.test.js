@@ -4,9 +4,13 @@ import * as planning from '../gcsp/predict/plan/index.js';
 import { createEmployeeTerms } from '../vehicles/index.js';
 import { setup, confirm, offer } from './helpers/greg-demand-run.js';
 import { stock, fact as sourceFact, preference } from './helpers/employee-recommendation.js';
-import { planningInput } from './helpers/order-plan-input.js';
+import { planningInput, withContractEnd } from './helpers/order-plan-input.js';
 
 const fact = (...args) => { const value = sourceFact(...args); value.provenance.observedAt = '2026-11-05T00:00:00.000Z'; return value; };
+
+// The seeded manual context leaves driver eligibility unconfirmed; these tests need it confirmed in the stored row.
+const storedFacts = (contract) => ({ ...contract, manualContext: { ...contract.manualContext,
+  employeeFacts: { essentials: {}, driverEligible: fact(true), charging: fact('home') } } });
 
 async function fixture() {
   const f = await setup({ canonical: true });
@@ -14,7 +18,7 @@ async function fixture() {
     const ref = { table: 'employees', key: { runId: f.context.runId, employeeId: f.employee.employeeId } };
     const row = (await tx.get(ref)).value;
     return tx.compareAndSwap(ref, row.version, { renewalId: 'renewal-known',
-      contract: { ...row.contract, contractEndDate: '2026-11-26' } });
+      contract: storedFacts(withContractEnd(row.contract, '2026-11-26')) });
   });
   await f.write(async (tx) => {
     const ref = { table: 'entitlement_slots', key: { runId: f.context.runId, entitlementSlotId: f.employee.entitlementSlotId } };
@@ -166,7 +170,7 @@ test('future evaluator fails closed on absent ports, facts, history and unknown 
   delete f.args.history;
   assert.equal((await f.evaluate()).code, 'planning-future-decline-history-incomplete');
   f.args.history = { decisions: [], offers: [], briefs: [f.args.brief] };
-  delete f.args.employee.contract.contractEndDate;
+  f.args.employee.contract = withContractEnd(f.args.employee.contract, undefined);
   assert.equal((await f.evaluate()).code, 'planning-future-input-invalid');
 });
 

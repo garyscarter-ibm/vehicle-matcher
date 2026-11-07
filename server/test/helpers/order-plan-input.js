@@ -14,3 +14,10 @@ export function planningInput() {
       objectiveWeights: { coverage: 100, unallocatedStock: 10, costMinor: 0 } },
   };
 }
+
+// Sets the renewal end on both the stored contract and F112's current manual-context contract, which renewal reads first.
+export function withContractEnd(contract, contractEndDate) {
+  const manual = contract?.manualContext;
+  const contracts = manual?.contracts?.map((c) => (c.status === 'current' ? { ...c, contractEndDate } : c));
+  return { ...contract, contractEndDate, ...(contracts ? { manualContext: { ...manual, contracts } } : {}) };
+}
