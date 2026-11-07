@@ -1,5 +1,15 @@
 # Missing original scheme rows: finite selector observation
 
+## Actual result, 7 November 2026
+
+The parent released the exact frozen plan in `parent-release.json` and executed this allocation once at 07:01:09 UTC. The single GET stopped with `selector-request-timeout` at 07:01:19 UTC, before any headers. The child joined with exit code 1 after 10.239961334 seconds. It produced no literal leads, admissions, capacity credit or acceptance. All 20 target rows remain unresolved. This transport failure says nothing about model availability, generation or discontinuation.
+
+`execution-once.json` is consumed; **never replay this allocation**. The retained actual events, receipt, process result and cleanup are under `/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/missing20-selector-20261107-once`. `actual-audit.json` records their hashes, the exact release, unchanged frozen pins and independent current scratch/process/reservation/dependency-link checks. The selected audit only reads those metadata and hashes; no source request, installer or four-check offline test was repeated. No owned scratch or process remains, no compatibility exception applies, and zero scratch file bytes were removed. The supervisor's 1,342-byte retained count was measured before its final result/cleanup files; the audit reports the final six-file sum separately.
+
+The following preparation record is historical; its unreleased status was superseded by the exact release and failed execution above. The frozen execution plan is preserved byte for byte.
+
+## Preparation record
+
 This packet prepares **one GET** to the retained BMW UK selector entry point, `https://www.bmw.co.uk/en/configurator.html`. No source traffic is released or executed. It follows the original 31-row mapping; all 20 selected rows have no retained exact page seed in this evidence slice. The other nine rows have actual source candidates and two have explicit dated/diagnostic gaps. All original scheme joins remain unqualified.
 
 The offline scan found no broader retained full selector or bootstrap body. The earlier “full model selector” selects the exact G61E/T5MJ context only. Raw page/settings bodies were deliberately not retained. Existing per-range tree projections do not establish missing ranges or page seeds. `target-rows.json` preserves each exact ledger row ID and unknown aliases/model/AG/profile/year/plant/era/WMI facts.
