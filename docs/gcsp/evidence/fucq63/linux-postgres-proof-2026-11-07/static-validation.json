@@ -1,52 +1,82 @@
 {
   "schemaVersion": "f63-linux-postgres-static-validation.v1",
-  "status": "passed",
-  "scope": "Local authoring/static checks only; first meaningful native execution remains the root-reviewed gcsp-poc integration-push CI run.",
-  "python": "in-memory compilation passed; runner not executed",
-  "node": "orders.mjs --check passed; module imports not executed",
-  "yaml": "Ruby Psych parsed and narrow gcsp-poc push plus preserved workflow_dispatch/service/resource/cleanup structure checked; YAML1.1 on-key true handled explicitly",
-  "codePinsRecomputed": 15,
-  "retainedReceiptPinsVerified": 1,
-  "actualDot12PassingConfigurationsMatched": 3,
-  "relativeImportsResolved": 11,
-  "localReadmeLinksResolved": 4,
-  "resourceArithmetic": "2048MiB working data;1408MiB aggregate RAM;510s phase ceilings;520s supervisor;600s job",
-  "whitespace": "passed",
+  "status": "passed-scoped-static",
+  "scope": "Diagnostic revision authoring only. Original remote run failed; revised runtime execution remains unrun pending root-reviewed integration push.",
+  "validatedAgainstTopicBase": "9d9f3e68f252196eb4b3a1d0c54f930f9246aff3",
+  "previousPacketStaticReceiptAt": "bb04965ba6db6e69d564fe60a2321871423bfb55",
+  "originalActualRun": {
+    "runId": 42370440771,
+    "attempt": 1,
+    "runtimeHead": "51c691bd5437efe47d43225edfb609d0b4dbe176",
+    "conclusion": "failure",
+    "retainedAt": "../linux-postgres-result-2026-11-07/",
+    "cause": "Unresolved order-reference assertion; original catch discarded returned proof. Printed checked0/nativeProoffalse were fallback values."
+  },
+  "selectedChecks": {
+    "node": "node --check orders.mjs passed; imports not executed",
+    "python": "In-memory run.py compilation passed; supervisor not executed",
+    "json": "plan/static JSON parsed; harness identities matched",
+    "criteria": "All five original proof assert.equal argument expressions match the five labelled proofEqual assertions; wrapper calls the same assert.equal",
+    "sanitization": "Static review: assertion expected/actual contain primitive type, enum/count fields only. String values require explicit enum membership; objects expose type only and arrays expose length. No error message, stack or object serialization.",
+    "retention": "Full returned proof captured before acceptance assertions; compact proof <=16384 bytes; complete order receipt <=65536 bytes; absent proof yields null checked/nativeProof",
+    "boundaries": "Workflow, run.py, selection.json, all resource values and production codePins are byte/value-identical to topic baseline. Exact original-run exported prover SHA256 matches retained pin.",
+    "whitespace": "Direct whitespace/newline checks and git diff --check passed"
+  },
+  "harnessIdentities": {
+    "orders.mjs": "f2b2b4b2b0c40c6c53ae9226c2657a672cd0261bacace31659573a3a09b0c0ea",
+    "run.py": "a6f779afe04f142552b302d2e19048c355ebd1c0633ad66a2c3f678f6c59ffce",
+    "selection.json": "dbb5be7d9f776bd97361d34d52a69490fd81d3e614f15cf52d63597179c354b5"
+  },
+  "proofCriteriaChanged": false,
   "productionPathsChanged": [],
+  "workflowChanged": false,
+  "supervisorChanged": false,
+  "selectionChanged": false,
+  "cleanupOwnershipChanged": false,
+  "resourceArithmetic": {
+    "phaseSecondsTotal": 510,
+    "supervisorSeconds": 520,
+    "jobSeconds": 600,
+    "aggregateWorkingMiB": 2048,
+    "aggregateRamMiB": 1408,
+    "postgresContainerMiB": 512,
+    "postgresTmpfsMiB": 192,
+    "maximumReturnedProofBytes": 16384,
+    "maximumOrderReceiptBytes": 65536
+  },
+  "changedPaths": [
+    "orders.mjs",
+    "README.md",
+    "plan.json",
+    "static-validation.json"
+  ],
   "runtimeTests": 0,
   "nativeCalls": 0,
   "localRestoreCalls": 0,
   "packageInstallCalls": 0,
   "sourceCalls": 0,
   "workflowDispatches": 0,
+  "agentMerges": 0,
   "scratchAllocatedBytes": 0,
   "removedAllocationBytes": 0,
   "disposableLeftovers": [],
   "unrun": [
-    "npm ci",
-    "public restore",
-    "PostgreSQL16 service/bootstrap/migrations",
-    "new seed/allocator/publisher/close-reopen/proof",
-    "runtime budgets/finalizer"
+    "Revised diagnostic harness in CI",
+    "Any local proof/database/download/install",
+    "Full suite",
+    "Full corpus configured-consumer replay",
+    "Managed Render persistence or deployed composition"
   ],
+  "knownDeferredConfiguredConsumerFailures": 2707,
   "acceptance": false,
-  "bash": "Both workflow run blocks pass bash -n through stdin; neither executed",
-  "triggerCorrection": {
-    "reason": "Root confirmed default branch main; branch-only manual workflow registration cannot be assumed. A narrow integration-push trigger starts the reviewed run without editing main.",
-    "pushBranches": [
-      "gcsp-poc"
-    ],
-    "pushPaths": [
-      ".github/workflows/gcsp-native-orders.yml",
-      "docs/gcsp/evidence/fucq63/linux-postgres-proof-2026-11-07/**"
-    ],
-    "workflowDispatchPreserved": true,
-    "agentMerges": 0,
-    "workflowDispatches": 0,
-    "runtimeSourceIdentitiesUnchanged": {
-      "run.py": "a6f779afe04f142552b302d2e19048c355ebd1c0633ad66a2c3f678f6c59ffce",
-      "orders.mjs": "2a73ee9ba07ba45b51c28591369fa912a6c0b6db7f2af71d92bcb0a44270b41f",
-      "selection.json": "dbb5be7d9f776bd97361d34d52a69490fd81d3e614f15cf52d63597179c354b5"
-    }
+  "agent": {
+    "name": "Charlie Dog",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "selectedModel": "gpt-6.1-sol",
+    "selectedEffort": "high",
+    "effectiveRuntimeVerified": false,
+    "fallback": null,
+    "descendants": 0
   }
 }

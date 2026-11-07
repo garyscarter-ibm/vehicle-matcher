@@ -18,6 +18,26 @@ import {proveCurrentOrderReferences} from '../order-reference-2026-11-07/prove-o
 const require=createRequire(new URL('../../../../../server/package.json',import.meta.url));
 const pg=require('pg');
 const hash=value=>createHash('sha256').update(value).digest('hex');
+const diagnosticEnums=new Set(['ok','not-found','passed','failed','blocked','complete','partial','unavailable','postgresql']);
+function assertionValue(prefix,value) {
+ const type=value===null?'null':Array.isArray(value)?'array':typeof value;
+ const summary={[`${prefix}Type`]:type};
+ if(value===null||value===undefined||typeof value==='boolean')summary[`${prefix}Enum`]=String(value);
+ else if(typeof value==='number') {
+  if(Number.isSafeInteger(value)&&value>=0)summary[`${prefix}Count`]=value;
+  else summary[`${prefix}Enum`]=Number.isFinite(value)?'finite-number':'non-finite-number';
+ } else if(typeof value==='string') {
+  summary[`${prefix}Count`]=Buffer.byteLength(value);
+  if(diagnosticEnums.has(value))summary[`${prefix}Enum`]=value;
+ } else if(Array.isArray(value))summary[`${prefix}Count`]=value.length;
+ return summary;
+}
+function summarizeAssertion(error,stage,check) {
+ if(error?.name!=='AssertionError')return null;
+ const operators=new Set(['strictEqual','deepStrictEqual','match','==','fail']);
+ return {stage,check:check||'stage-assertion',operator:operators.has(error.operator)?error.operator:'other',
+  ...assertionValue('expected',error.expected),...assertionValue('actual',error.actual)};
+}
 const plan=JSON.parse(await readFile(new URL('./plan.json',import.meta.url)));
 const selectionBytes=await readFile(new URL('./selection.json',import.meta.url));
 assert.equal(hash(selectionBytes),plan.selectionSha256);
@@ -35,6 +55,8 @@ const schema=`f63_ci_${suffix}`;assert.match(schema,/^[a-z_][a-z0-9_]{0,62}$/);
 const context={runId:`f63-ci-${suffix}`,environmentId:`f63-ci-environment-${suffix}`,principalId:'ci-proof-presenter',roles:['presenter']};
 const pool=new pg.Pool({connectionString:process.env.GCSP_DATABASE_URL,max:1,connectionTimeoutMillis:5000,statement_timeout:10000});
 let repository;let seedGuard;let schemaOwned=false;let schemaAbsent=true;let stage='initializing';let failure;let result;
+let returnedProof;let proofBytes=0;let assertionCheck=null;
+const proofEqual=(check,actual,expected)=>{assertionCheck=check;assert.equal(actual,expected);assertionCheck=null;};
 try {
  stage='seed-offline-guard';seedGuard=installFleetOfflineGuard();assert.equal(seedGuard.control(),'blocked');
  stage='postgres16-identity';
@@ -89,15 +111,19 @@ try {
  stage='reopen-production-postgresql';repository=createPostgresRepository({schema,migrate:false});assert.equal((await repository.open()).status,'ok');
  const nativeCounts=await pool.query(`SELECT (SELECT count(*)::int FROM "${schema}".runs) AS runs, (SELECT count(*)::int FROM "${schema}".stock) AS stock`);assert.deepEqual(nativeCounts.rows,[{runs:1,stock:3}]);
  stage='unchanged-order-reference-proof';
- const proof=await proveCurrentOrderReferences({repository,registry,context,stockReferences:rows.map(row=>row.orderUuid),repositoryProvider:'postgresql'});
- assert.equal(proof.status,'passed');assert.equal(proof.nativeProof,true);assert.equal(proof.checked,3);assert.equal(proof.currentRunUnchanged,true);
- assert.equal(proof.directErrors+proof.httpErrors+proof.consumerErrors+proof.sourceCalls+proof.externalConnectAttempts,0);
+ assertionCheck='proof-call';
+ returnedProof=await proveCurrentOrderReferences({repository,registry,context,stockReferences:rows.map(row=>row.orderUuid),repositoryProvider:'postgresql'});
+ const proof=returnedProof;proofBytes=Buffer.byteLength(JSON.stringify(proof));
+ assertionCheck='proof-receipt-byte-budget';assert.ok(proofBytes<=plan.diagnostics.maximumReturnedProofBytes);assertionCheck=null;
+ proofEqual('proof-status',proof.status,'passed');proofEqual('proof-native',proof.nativeProof,true);proofEqual('proof-checked-count',proof.checked,3);proofEqual('proof-current-run-unchanged',proof.currentRunUnchanged,true);
+ proofEqual('proof-total-error-count',proof.directErrors+proof.httpErrors+proof.consumerErrors+proof.sourceCalls+proof.externalConnectAttempts,0);
  result={schemaVersion:'f63-linux-postgres-orders-result.v1',status:'passed',scope:'three exact current-run stock references over actual retained .12 corpus; SQL close/reopen and direct/consumer/loopback HTTP',
   manifestDigest:plan.releaseId,postgresVersion:identity.rows[0].version,migrationLedger:ledger.rows,runId:context.runId,schema,
   stockImported:3,nativeCounts:nativeCounts.rows[0],seedRepositoryClosed:true,freshRepositoryOpened:true,allocationRevision:allocated.inventory.revision,
   allocationContentDigest:allocated.inventory.contentDigest,rows,seedExternalCalls,proof,fullCorpusConsumerReplay:false,deferredConsumerFailures:2707,acceptance:false};
 } catch(error) {
- failure={status:'failed',stage,errorType:error?.name||'Error',errorCode:/^[A-Z0-9_]{1,40}$/.test(error?.code||'')?error.code:null,acceptance:false};
+ failure={status:'failed',stage,errorType:error?.name||'Error',errorCode:/^[A-Z0-9_]{1,40}$/.test(error?.code||'')?error.code:null,
+  assertionSummary:summarizeAssertion(error,stage,assertionCheck),acceptance:false};
 } finally {
  try{if(repository)assert.equal((await repository.close()).status,'ok');}catch{failure={...(failure||{status:'failed',stage:'repository-cleanup',acceptance:false}),repositoryCleanupFailed:true};}seedGuard?.restore();
  try {
@@ -105,7 +131,12 @@ try {
  } catch {failure={...(failure||{status:'failed',stage:'owned-schema-cleanup',acceptance:false}),schemaCleanupFailed:true};}
  await pool.end().catch(()=>{failure={...(failure||{status:'failed',stage:'pool-cleanup',acceptance:false}),poolCleanupFailed:true};});
 }
-const report={...(failure||result),ownedSchemaAbsent:schemaAbsent};
-await writeFile(join(output,'orders.json'),JSON.stringify(report,null,2)+'\n',{flag:'wx',mode:0o600});
-console.log(JSON.stringify({status:report.status,stage:report.stage||'completed',checked:report.proof?.checked||0,nativeProof:report.proof?.nativeProof===true,acceptance:false}));
+const proofReturned=returnedProof!==undefined;
+const proofRetained=proofReturned&&proofBytes<=plan.diagnostics.maximumReturnedProofBytes;
+const report={...(failure||result),proofReturned,proofRetention:{status:proofRetained?'retained':proofReturned?'over-budget':'not-returned',bytes:proofBytes},
+ ...(proofRetained?{proof:returnedProof}:{}),ownedSchemaAbsent:schemaAbsent};
+const reportBytes=JSON.stringify(report,null,2)+'\n';assert.ok(Buffer.byteLength(reportBytes)<=plan.resource.retainedReceiptLimitBytes);
+await writeFile(join(output,'orders.json'),reportBytes,{flag:'wx',mode:0o600});
+console.log(JSON.stringify({status:report.status,stage:report.stage||'completed',proofReturned,checked:report.proof?.checked??null,nativeProof:report.proof?.nativeProof??null,
+ assertionSummary:report.assertionSummary||null,acceptance:false}));
 if(failure)process.exitCode=1;
