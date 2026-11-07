@@ -58,7 +58,7 @@ test('supervisor stops on child success without retained source evidence and rem
   await writeFile(join(fakeBase,'supervise.py'),supervisor.replace(old,`OUT = pathlib.Path(${JSON.stringify(join(scratch,'retained'))})`));
   await writeFile(join(fakeBase,'run-live.mjs'),"console.log('synthetic child success without source requests or retained evidence');\n");
   const codePins={};for(const path of [...copied,`${prefix}/supervise.py`,`${prefix}/run-live.mjs`])codePins[path]=createHash('sha256').update(await readFile(join(scratch,path))).digest('hex');
-  const fake={id:'offline-missing-evidence-fixture',planDigest:'fixture',contextIds:['1f7a','1f7c','1f7d','1f7f'],publicGetCeiling:20,codePins,resources:{hostRamMiB:64,childRamMiB:48,scratchMiB:8,chunkSeconds:30}};
+  const fake={id:'offline-missing-evidence-fixture',planDigest:'fixture',contextIds:['1f7a','1f7c','1f7d','1f7f'],publicGetCeiling:20,codePins,resources:{hostRamMiB:64,childRamMiB:48,scratchMiB:8,chunkSeconds:30,seriesSeconds:30}};
   await mkdir(join(scratch,'server'));
   for(const id of fake.contextIds)await mkdir(join(fakeBase,id));
   await writeFile(join(fakeBase,'execution-plan.json'),JSON.stringify(fake));
@@ -69,4 +69,5 @@ test('supervisor stops on child success without retained source evidence and rem
   assert.equal(receipt.stop,'context-failed-or-incomplete',result.stderr+JSON.stringify(receipt));assert.equal(receipt.contexts.length,1);
   assert.equal(receipt.contexts[0].cleanup.scratchAbsent,true);assert.equal(receipt.contexts[0].cleanup.reservationAbsent,true);
   assert.equal(receipt.publicGetAttempts,0);assert.equal(receipt.dependencyLinkRemoved,true);
+  assert.ok(receipt.contexts[0].allocatedChildSeconds>0&&receipt.contexts[0].allocatedChildSeconds<=30);
 });

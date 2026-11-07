@@ -12,9 +12,11 @@ ROOT = Path(__file__).resolve().parents[5]
 spec = importlib.util.spec_from_file_location('owned_resources', ROOT / '_tools/test_resources.py')
 r = importlib.util.module_from_spec(spec); spec.loader.exec_module(r)
 phase = sys.argv[1]
-assert phase in ('red', 'green', 'green2', 'green3', 'prepared')
+assert phase in ('red', 'green', 'green2', 'green3', 'prepared', 'prepared2', 'inspect')
 files = ['server/test/gcsp-bmw-model-batch.test.js']
-if phase == 'prepared':
+if phase == 'inspect':
+    files = ['docs/gcsp/evidence/fucq59/f70-model-breadth-pilot-plan-2026-11-07/run-live.mjs']
+if phase.startswith('prepared'):
     files = ['docs/gcsp/evidence/fucq59/f70-model-breadth-pilot-plan-2026-11-07/prepared-check.test.mjs']
 if phase.startswith('green'):
     files += ['server/test/gcsp-bmw-source-batch.test.js', 'server/test/gcsp-bmw-model-options-qualification.test.js']
@@ -40,12 +42,12 @@ def finalize():
     r.atomic_json(output / 'receipt.json', receipt)
 atexit.register(finalize)
 env = {'PATH': '/opt/homebrew/bin:/usr/bin:/bin', 'LANG': 'en_GB.UTF-8', 'TZ': 'UTC', 'NODE_OPTIONS': '--max-old-space-size=320'}
-command = ['/opt/homebrew/bin/node', '--test', '--test-concurrency=1', *files]
+command = ['/opt/homebrew/bin/node', '--test', '--test-concurrency=1', *files] if phase != 'inspect' else ['/opt/homebrew/bin/node', *files, '--check']
 receipt['identity'] = {path: hashlib.sha256((ROOT/path).read_bytes()).hexdigest() for path in files + ['scripts/gcsp/bmw-public-registration.mjs', 'scripts/gcsp/public-bmw-source.mjs', 'scripts/gcsp/collect-fleet.mjs', 'scripts/gcsp/collection-session.mjs', 'scripts/gcsp/capture-bmw-selection.mjs', 'scripts/gcsp/bmw-selection-binding.mjs']}
 try:
     host.acquire(scratch.token, 64*r.MIB, (512)*r.MIB, '/private/tmp', root=scratch.root)
     with r.handled_termination(), scratch:
-        if phase != 'prepared':
+        if not phase.startswith('prepared') and phase != 'inspect':
             link = ROOT / 'server/node_modules'
             assert not os.path.lexists(link)
             r.atomic_json(output/'dependency-link.json', {'path':str(link),'state':'planned','source':'/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules'})

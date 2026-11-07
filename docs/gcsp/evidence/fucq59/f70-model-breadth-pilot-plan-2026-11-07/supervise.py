@@ -20,7 +20,7 @@ E = importlib.util.module_from_spec(spec); spec.loader.exec_module(E)
 OUT = pathlib.Path('/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/f70-model-breadth/live')
 OUT.mkdir(parents=True, exist_ok=False)
 resources=allocation['resources']
-assert 0 < resources['childRamMiB'] < resources['hostRamMiB'] <= 512 and 0 < resources['scratchMiB'] <= 64 and 0 < resources['chunkSeconds'] <= 120
+assert 0 < resources['childRamMiB'] < resources['hostRamMiB'] <= 512 and 0 < resources['scratchMiB'] <= 64 and 0 < resources['chunkSeconds'] <= 120 and 0 < resources['seriesSeconds'] <= 300
 policy = R.Policy({'chunk_scratch_mib':resources['scratchMiB'],'chunk_ram_mib':resources['hostRamMiB'],'chunk_seconds':resources['chunkSeconds'],'log_mib':1})
 host = R.HostBudget(policy)
 series = {'allocationId':allocation['id'],'planDigest':allocation['planDigest'],'contexts':[],'newConfigurations':0,'acceptance':False}
@@ -80,7 +80,7 @@ with R.handled_termination():
       link.symlink_to('/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules',target_is_directory=True); owned_link=link.lstat().st_ino
       R.atomic_json(OUT/'dependency-link.json',{'path':str(link),'inode':owned_link,'state':'active'})
     for id in allocation['contextIds']:
-      assert time.monotonic()-started < 270, 'series-source-deadline'
+      assert time.monotonic()-started < resources['seriesSeconds'], 'series-source-deadline'
       assert hashes()==allocation['codePins'], 'source-code-pin-mismatch'
       directory=BASE/id; scratch=R.Scratch(OUT/id,ROOT,policy,expected=min(8,resources['scratchMiB'])*R.MIB,checkpoint=directory/'collector-checkpoint.json')
       row={'id':id,'scope':'one exact fresh full model/line/options context and one solver candidate; acceptance remains open'}
@@ -94,7 +94,11 @@ with R.handled_termination():
         try: os.fsync(parent)
         finally: os.close(parent)
       env={'PATH':'/opt/homebrew/bin:/usr/bin:/bin','LANG':'en_GB.UTF-8','TZ':'UTC','NODE_OPTIONS':'--max-old-space-size=320','F70_MODEL_BREADTH_SOURCE_GRANT':allocation['id']}
-      row['result']=R.run_process(['/opt/homebrew/bin/node',str(BASE/'run-live.mjs'),id],ROOT,env,OUT/id/'child.log',scratch,policy,resources['scratchMiB']*R.MIB,resources['childRamMiB']*R.MIB,min(90,resources['chunkSeconds']),host=host)
+      remaining_seconds=resources['seriesSeconds']-(time.monotonic()-started)
+      assert remaining_seconds > 0, 'series-source-deadline'
+      child_seconds=min(90,resources['chunkSeconds'],remaining_seconds)
+      row['allocatedChildSeconds']=child_seconds
+      row['result']=R.run_process(['/opt/homebrew/bin/node',str(BASE/'run-live.mjs'),id],ROOT,env,OUT/id/'child.log',scratch,policy,resources['scratchMiB']*R.MIB,resources['childRamMiB']*R.MIB,child_seconds,host=host)
       if (directory/'collector-checkpoint.json').exists(): row['checkpointCounts']=read(directory/'collector-checkpoint.json')['content']['counts']
       cleanup_chunk()
       R.atomic_json(OUT/'series-progress.json',series)
