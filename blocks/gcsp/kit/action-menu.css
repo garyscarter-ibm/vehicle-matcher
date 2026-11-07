@@ -1,0 +1,8 @@
+.gcsp .gcsp-action-menu { position: relative; flex: none; }
+.gcsp .gcsp-action-trigger { width: 48px; padding: 0; }
+.gcsp .gcsp-action-popup { position: absolute; right: 0; top: calc(100% + 8px); z-index: 5; min-width: 200px; padding: 8px; background: var(--gcsp-surface); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); box-shadow: 0 8px 24px rgb(29 42 48 / 12%); }
+.gcsp .gcsp-action-popup[hidden] { display: none; }
+.gcsp .gcsp-action-popup[data-align="start"] { right: auto; left: 0; }
+.gcsp .gcsp-action-popup [role="menuitem"] { width: 100%; justify-content: flex-start; border-color: transparent; padding: 0 16px; }
+.gcsp .gcsp-action-popup [aria-disabled="true"] { color: var(--gcsp-text-muted); cursor: not-allowed; }
+.gcsp .gcsp-action-reason { margin: 0 16px 8px; color: var(--gcsp-text-muted); font-size: 13px; }

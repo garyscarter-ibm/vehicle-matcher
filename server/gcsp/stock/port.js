@@ -10,9 +10,11 @@ export const STOCK_FIELDS = Object.freeze(['orderUuid', 'orderNumber', 'configur
   'revision', 'account', 'visibility', 'agModelCode', 'vgModelCode', 'facts', 'corpusVersion', 'availability']);
 const noVin = (value) => !object(value) && !Array.isArray(value) || Object.entries(value)
   .every(([key, child]) => !['vin', 'vin7', 'vin17'].includes(key.toLowerCase()) && noVin(child));
+// Real corpus configuration ids are base64 signatures, longer than text() allows.
+const configurationId = (value) => typeof value === 'string' && value.length > 0 && value.length <= 4096;
 export const validCar = (car) => object(car) && Object.keys(car).every((key) => STOCK_FIELDS.includes(key))
   && /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/.test(car.orderUuid)
-  && typeof car.orderNumber === 'string' && /^\d{7}$/.test(car.orderNumber) && text(car.configurationId)
+  && typeof car.orderNumber === 'string' && /^\d{7}$/.test(car.orderNumber) && configurationId(car.configurationId)
   && (car.wholesalerOrderId === undefined || Number.isInteger(car.wholesalerOrderId)
     && car.wholesalerOrderId >= 10000000 && car.wholesalerOrderId <= 99999999)
   && (car.revision === undefined || Number.isSafeInteger(car.revision) && car.revision > 0)

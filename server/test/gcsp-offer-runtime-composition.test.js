@@ -136,8 +136,9 @@ test('composed offer entry reloads the real declined offer and saves the employe
   const confirm = root.querySelector('[data-followup-action="confirm"]'); assert.ok(confirm); assert.equal(confirm.disabled, false); confirm.click();
   await waitFor(() => root.querySelector('[data-followup-saved]'));
   const afterSave = (await f.request('/api/gcsp/offer-followup' + selector)).json;
-  assert.equal(afterSave.status, 'unavailable'); assert.equal(afterSave.code, 'followup-evaluation-unavailable');
-  const saved = afterSave.savedChange;
+  // No allocation run has evaluated the new brief yet, so the server reports waiting.
+  assert.equal(afterSave.status, 'ok'); assert.equal(afterSave.value.state, 'waiting');
+  const saved = afterSave.value.savedChange;
   assert.equal(saved.state, 'change-saved'); assert.equal(saved.briefVersion, 2);
   assert.equal(saved.change.path, 'preferences.body.value'); assert.equal(saved.change.after, 'saloon');
   assert.ok(requests.filter((request) => request.path === '/api/gcsp/manual/account').length >= 2);

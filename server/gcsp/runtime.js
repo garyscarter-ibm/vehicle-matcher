@@ -10,6 +10,7 @@ import { createActivityService } from './brief/activity.js';
 import { createGregDemandService } from './greg/index.js';
 import { createGregPublishService } from './greg/publish/index.js';
 import { createScenarioService } from './scenarios/index.js';
+import { adoptOfferJourneyPolicy } from './policy/offer-journey-adoption.js';
 import { createSyntheticManualStockAdapter } from './adapters/manual-stock.js';
 import { createManualClaimsService } from './manual-claims/index.js';
 import { createBuddyHoldService } from './offers/buddy-hold.js';
@@ -30,6 +31,8 @@ import { createSyntheticOrderingStatus } from './adapters/synthetic-ordering-sta
 import { createSyntheticDocumentStatus } from './adapters/synthetic-ordering-documents.js';
 import { createLifecycleApprovalService } from './lifecycle/approvals/index.js';
 import { createLifecycleDocumentService } from './lifecycle/documents/index.js';
+import { createLifecycleAppointmentService } from './lifecycle/appointments/index.js';
+import { createSyntheticAppointments } from './adapters/synthetic-appointments.js';
 import { createManualOrderService, createManualOrderConversion } from './manual-order/index.js';
 
 const unavailable = () => result('unavailable', { reason: 'The trusted demo runtime is unavailable.', retryable: true });
@@ -38,7 +41,7 @@ const scoped = (value, context) => ['runId', 'environmentId', 'employeeId'].ever
 // Explicit composition only. A failed PostgreSQL open never changes providers.
 export async function createGcspRuntime({ mode = 'postgres', repository, repositoryOptions, policy,
   environmentId, policyAsOf, commandId, stockProvider, offerLandingUrl = process.env.GCSP_OFFER_LANDING_URL,
-  sessionNow = () => new Date().toISOString() } = {}) {
+  sessionNow = () => new Date().toISOString(), adoptOfferJourney = false, mail } = {}) {
   if (!['postgres', 'memory'].includes(mode)) return result('invalid', { code: 'unsupported-repository-mode' });
   try { offerLandingUrl = resolveOfferLandingUrl(offerLandingUrl); }
   catch { return result('invalid', { code: 'invalid-offer-landing-url' }); }
@@ -49,7 +52,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
   let closing; let notify;
   // The trusted host settles startup and its initiating calls before closing.
   const close = () => closing ??= (async () => {
-    try { notify?.close(); } finally {
+    try { await notify?.close(); } finally {
       try { await repository.close(); } finally { if (ownsPolicy) await readPolicy.close(); }
     }
   })();
@@ -111,6 +114,9 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const lifecycle = createLifecycleApprovalService({ repository, policy, clock, identity, status: orderingAdapter.status });
     const documents = createLifecycleDocumentService({ repository, policy, clock, identity,
       lifecycleStages: lifecycle.stagePort(), provider: orderingAdapter.documentStatus });
+    orderingAdapter.appointments = createSyntheticAppointments({ repository });
+    const appointments = createLifecycleAppointmentService({ repository, policy, clock, identity,
+      lifecycleStages: lifecycle.stagePort(), provider: orderingAdapter.appointments });
     const buddy = createBuddyHoldService({ repository, policy, clock, identity, adapter, offerLandingUrl });
     // FUCQ-96 proposes claims on the clock's buddy-allocation stage; only the buddy port writes holds.
     const allocation = createAllocationService({ repository, policy, clock, identity, claim: buddy });
@@ -126,11 +132,11 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       const resolved = await identity.resolveSession({ authorized: true, cookie });
       return resolved.status === 'ok' ? offerAccess.fromAccount(resolved.value, selector) : session ?? resolved;
     };
-    notify = createNotificationDispatcher({ repository, policy, clock, environmentId });
+    notify = createNotificationDispatcher({ repository, policy, clock, environmentId, mail });
     const dependencies = { gcspRepository: repository, gcspPolicy: policy, gcspGreg: greg, gcspGregPublish: gregPublish,
       gcspScenarios: scenarios, gcspManualClaims: manualClaims, gcspManualRead: manualRead, gcspManualReview: manualReview,
       gcspStockRelease: stockRelease, gcspCases: cases, gcspManualOrder: manualOrder,
-      gcspLifecycle: lifecycle, gcspDocuments: documents,
+      gcspLifecycle: lifecycle, gcspDocuments: documents, gcspAppointments: appointments,
       gcspBuddy: buddy, gcspAllocation: allocation, gcspOfferAccess: offerAccess,
       gcspOfferDecisions: offerDecisions, gcspResolveOfferAccess: resolveOfferAccess, gcspOfferFollowup: offerFollowup,
       gcspNotify: notify, gcspOutbox: { repository },
@@ -154,6 +160,11 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       if (seeded.status !== 'ok') return seeded;
       return ok({ context: acting.value.context, setCookie: [presenter.value.setCookie[1], acting.value.setCookie] });
     }
-    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, manualRead, manualReview, manualOrder, stockRelease, releaseHistory, cases, orderingAdapter, lifecycle, documents, buddy, allocation, offerAccess, offerDecisions, offerFollowup, resolveOfferAccess, notify, dependencies, createLocalSession, close });
+    // Opt-in for the demo launcher; tests that adopt these sets themselves leave it off.
+    if (adoptOfferJourney) {
+      const adopted = await adoptOfferJourneyPolicy({ policy, identity, clock });
+      if (adopted.status !== 'ok') { await close(); return adopted; }
+    }
+    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, manualRead, manualReview, manualOrder, stockRelease, releaseHistory, cases, orderingAdapter, lifecycle, documents, appointments, buddy, allocation, offerAccess, offerDecisions, offerFollowup, resolveOfferAccess, notify, dependencies, createLocalSession, close });
   } catch { await close(); return unavailable(); }
 }

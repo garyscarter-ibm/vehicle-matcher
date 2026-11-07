@@ -1,0 +1,35 @@
+# FUCQ-107 integration after accepted renderer9
+
+6 November 2026. Author-only planning after evidence publication `2c15ca4b84c8ecda88cc2b5f6a195e43b5be1b08`. No implementation or execution grant. FUCQ-107 remains incomplete. This dated addendum preserves `client-composition-plan.md` and all of its historical proposal/wait statements; it updates the next-work assessment after the distinct new renderer9 run was accepted.
+
+## Evidence to reuse
+
+`renderer-uri1-accepted/README.md` records nine exact passing renderer cases, original journal and accepted cleanup. Reuse that unchanged selection. Keep accepted controller14, policy7 and actual102 combined11 evidence separate. The actual102 baseline already proves its real account/native-decline/question/save/reload seam against corrected107 source, as recorded in `accepted-account-entry-pass/`. No rerun of those identical assertions is proposed.
+
+The nine renderer cases use an injected offer projector and DOM fixtures. They do not establish actual105 presentation, host/session/navigation composition, canonical103 runtime registration, a browser, visual appearance or a produced second offer. Own16 backend selection also remains unproved.
+
+## Concrete integration boundaries
+
+| Current code or agreed interface | Remaining proof |
+|---|---|
+| `mountFollowupBody` in `blocks/gcsp/offer-followup/gcsp-offer-followup.js` accepts `decisionId`, transport, `projectOffer` and `openOffer`. `mountOfferFollowup` gates on a ready account and forwards the host context. | Compose the actual authoritative account selector into the host and pass the refreshed decisionId. The mount currently does not derive that selector from the loaded account. Verify ordinary employee authority, cookie reload and stale decision handling through the actual consumer. |
+| `createFollowupHttpAdapter` uses cookie credentials with GET `/api/gcsp/offer-followup?decisionId=…` and POST `/api/gcsp/offer-followup/confirm`. Confirmation admits exactly commandId, decisionId, expectedBriefVersion, questionVersion and value. | Bind the actual owned route descriptors and service in process; prove read/selection have no effect and explicit confirmation/retry has one durable effect. Preserve the exact command across uncertain response and question reread. A later live host check must prove route registration and cookie behavior. |
+| Existing composition plan identifies FUCQ-105 `toOfferPresentation({status:'ok',value:<actual102 public DTO>})`, producing a validated card and quoteVersion-bearing reference. The published historical candidate pin is `b4efefec60577a14a98e6bae934741249bd7c20c`. | Reconfirm the current producer source with its existing owner, then pin the literal production projector and actual102 DTOs in the reviewed union. Render both stored offers through107 with exact terms, units, unknowns, provenance and separately labelled confirmed requirements. Preserve first-offer ownership. |
+| The existing canonical103 registration proposal and accepted mixed102 plan are documented in `client-composition-plan.md`; the mixed run used an explicit107 question-policy input. | Review and adopt the exact canonical registration through the shared PolicyService/activation contract in the new graph. Demonstrate default runtime adoption. The earlier explicit input does not prove it; introduce no client policy table or runtime JSON fallback. |
+| The actual100 hold producer and accepted102 access contract can supply stored public offers independently of the full allocation journey. | A deliberately seeded fitting second stock input may prove actual hold/access/projector/display composition against the revised brief. Keep that selection mechanism explicit. Allocator96 remains paused and must not be read, imported or run. Tick, release selection and calculated waiting/no-match remain separate unavailable proof. |
+
+These are code and contract gaps, not admission holds inferred from Jira dependency links. Independent work can use agreed interfaces while broader journeys remain unfinished. Retain current claims, conflicting file ownership, explicit pauses/date holds and source/access limits. The dispatcher owns shared host/route/style integration; this plan assigns no other collaborator's files or claim.
+
+## Proposed next bounded selection
+
+First prepare a source plan for only the unproved memory/consumer assertions from the existing five capability checks: confirmed-save replay and effect counts, actual105/next-offer display, real identity/stale-run rejection at the composed boundary, and controller transport over real route descriptors. Preserve one repository, clock, identity/access and PolicyService singleton layout. Pin every current immutable producer ref, data input, package/tool and import edge; the historical105 union counts are not the new graph. Review the canonical103 source delta explicitly. Fixtures cannot establish unavailable live producers.
+
+Before execution, the dispatcher must review exact cases, commands, source/asset closure, environment, fresh all-reservation HostBudget accounting, owner manifest, process tree, output cap and all-outcome cleanup. The earlier 120-second / 384-MiB aggregate / 128-MiB combined / 2-MiB original-output / one-worker envelope is a starting proposal for a small memory chunk, subject to actual closure and measured capacity. It supplies no execution authority. No browser, listener, native database or full-suite work is bundled into that selection.
+
+After actual source/consumer composition, propose the host/browser slice separately: the real ordinary-session entry and durable105-to107 navigation, external module/style closure and cleanup, actual offer projection and saved/unavailable states, explicit confirmation with lost-response retry/reload, desktop1280 and narrow375 widths, keyboard/focus, long content, missing facts/imagery, overflow and reduced motion. Use the existing employee shell, shared kit and default Density tokens; load existing external styles in the established order. Preserve the no-inline-script/handler/unsafe-execution contract. Coordinate any additive catalogue/gallery/ratchet/style registration through the shared-file lane.
+
+Visual acceptance follows `docs/gcsp/experience-quality.md`, `COMPONENTS.md`, `docs/gcsp/screens/00-employee-account.webp`, `docs/gcsp/screens/01-replace-vehicle.webp`, the agreed FUCQ-6 body and current offer page. The future owner must inspect actual desktop/narrow captures and relevant interactions. A DOM fixture result supplies no screenshot or visual verdict.
+
+The dispatcher separately admits each runtime or browser chunk and owns integration and final acceptance. This authoring made no product, Jira or product-map change and launched no test, helper, process/ledger probe, service or browser. Source completeness, own16, canonical103 runtime, actual105/client/host/navigation/next-offer, allocator/tick/evaluation/wait/no-match, browser/visual and full integration remain open until their corresponding evidence exists.
+
+Agents: Lego Batman requested/selected `gpt-6.1-sol` / high; no fallback or descendants.

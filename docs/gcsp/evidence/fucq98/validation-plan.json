@@ -1,0 +1,43 @@
+{
+  "run": "fucq98-20261105-brevo-transport",
+  "worktree": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054",
+  "changedPaths": [
+    "server/gcsp/notify/",
+    "server/test/gcsp-mail-transport.test.js",
+    "server/test/gcsp-outbox-route.test.js",
+    "README.md",
+    "docs/gcsp/email-transport.md",
+    "docs/gcsp/shared-contracts.md",
+    "_dev/in-progress/DEV-2026-11-04-054.md",
+    "server/gcsp/runtime.js",
+    "blocks/gcsp/presenter/gcsp-outbox.js",
+    "blocks/gcsp/presenter/outbox-copy.js",
+    "server/test/gcsp-outbox-viewer.test.js"
+  ],
+  "regression": "capture-only remains default; configured provider must capture failures, refuse nonallowlisted recipients, persist stable UUID and confirmed ack, preserve canonical retry/reset/security",
+  "boundaries": [
+    "F93 dispatcher/capture + canonical PolicyService + DemoClock",
+    "F97 presenter safe projection/read permissions",
+    "repository transaction/CAS/reopen memory + existing SQL driver double",
+    "existing offer URL/run boundary; no token generation",
+    "Trusted createGcspRuntime default/configuration/startup/close composition; no server/index/account edits",
+    "F97 existing component truthful neutral transport copy + safe uncertain acceptance; no layout or component addition"
+  ],
+  "commands": [
+    "node --test server/test/gcsp-mail-transport.test.js",
+    "node --test --test-concurrency=1 server/test/gcsp-outbox.test.js server/test/gcsp-outbox-route.test.js server/test/gcsp-outbox-viewer.test.js server/test/gcsp-repository-contract.test.js",
+    "node --test --test-concurrency=1 'server/test/**/*.test.js'",
+    "bounded headless desktop1280x900/narrow375x812 render and keyboard proof of actual shared presenter outbox"
+  ],
+  "exclusions": [
+    "no live email in automation",
+    "no stock/allocator/offer producer/token changes",
+    "native PostgreSQL when unconfigured explicitly skipped",
+    "no credential extraction/provisioning",
+    "no new UI/component/layout; existing outbox status explanatory copy only; component catalogue/gallery/ratchet caps unchanged"
+  ],
+  "fullReason": "story explicitly requires npm test; serial slot required",
+  "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq98-20261105-brevo-transport.json",
+  "supervisor": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq98-20261105-brevo-transport-supervisor.py",
+  "mapStatus": "reviewed ownership selected; unknown new paths require explicit scoped checks; inspect automatic fallback without executing"
+}

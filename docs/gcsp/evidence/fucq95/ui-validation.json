@@ -1,0 +1,216 @@
+{
+  "agents": {
+    "descendants": [],
+    "lead": {
+      "effective": {
+        "effort": "high",
+        "model": "gpt-6.1-sol"
+      },
+      "fallback": null,
+      "requested": {
+        "effort": "high",
+        "model": "gpt-6.1-sol"
+      },
+      "selected": {
+        "effort": "high",
+        "model": "gpt-6.1-sol"
+      }
+    }
+  },
+  "baseAtPlan": "6f0d819a87b0f78bb6244f34dab368349dfdf540",
+  "browser": {
+    "animationCapture": "Capture awaits incumbent finite vm-screen entrance; no new activity animation",
+    "entries": 9,
+    "externalRequests": 0,
+    "failures": 0,
+    "galleryPendingDotCount": [
+      0,
+      0
+    ],
+    "initialFinding": "Synthetic Retry replacement lost focus; fixed and confirmed with visible2px outline at both sizes",
+    "matrix": "confirmed-render-matrix.json",
+    "overflowEntries": 0,
+    "sizes": [
+      1280,
+      375
+    ]
+  },
+  "checkpoint": "first representative activity UI, not whole story",
+  "cleanup": {
+    "allocations": [
+      {
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/1cd4fc1fab0b460ea6013415acef0287.json",
+        "peakScratchBytes": 0,
+        "reservationReleased": true,
+        "scratchAbsent": true
+      },
+      {
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/245b12da48d241079964fd1773786e2e.json",
+        "peakScratchBytes": 0,
+        "reservationReleased": true,
+        "scratchAbsent": true
+      },
+      {
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/3383b13ccf794952b75df68c74342996.json",
+        "peakScratchBytes": 0,
+        "reservationReleased": true,
+        "scratchAbsent": true
+      },
+      {
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/50f25c37f1db4ca88c392b0d91a3a642.json",
+        "peakScratchBytes": 0,
+        "reservationReleased": true,
+        "scratchAbsent": true
+      },
+      {
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/6bb67ed87bde4897994f714d94702972.json",
+        "peakScratchBytes": 16474336,
+        "reservationReleased": true,
+        "scratchAbsent": true
+      },
+      {
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/7bf82836812046a89795a22c120c9e0b.json",
+        "peakScratchBytes": 6996316,
+        "reservationReleased": true,
+        "scratchAbsent": true
+      },
+      {
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/8f138621b4ef412dba3b12d2f6605ae4.json",
+        "peakScratchBytes": 6996316,
+        "reservationReleased": true,
+        "scratchAbsent": true
+      },
+      {
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/b3a222ae3d294139b653a3425dddfee5.json",
+        "peakScratchBytes": 0,
+        "reservationReleased": true,
+        "scratchAbsent": true
+      },
+      {
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/ee16bc130b0b47ebb4b8b9f3509246ad.json",
+        "peakScratchBytes": 0,
+        "reservationReleased": true,
+        "scratchAbsent": true
+      }
+    ],
+    "compatibilityException": "Isolated headless browser profile in owned TMPDIR; peak working data 6996316 bytes, removed and groups absent",
+    "dependencyLinks": [
+      {
+        "linkAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq95-20261105-ui-node_modules-link.json",
+        "targetIdentity": {
+          "bytes": 22381308,
+          "files": 1836,
+          "sha256": "f570a473b0637f762b7d1cea480b702ee4fa401ca45989276627478f7f4dbbc9"
+        },
+        "targetPresentAndUnchanged": true
+      },
+      {
+        "linkAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq95-20261105-ui-server-node_modules-link.json",
+        "targetIdentity": {
+          "bytes": 475201,
+          "files": 139,
+          "sha256": "a3dc2123f15b22efb75053a5c7249e742df6518bb0913d8693d5ab98d6871969"
+        },
+        "targetPresentAndUnchanged": true
+      }
+    ],
+    "leftovers": [],
+    "removedSuccessfulLogsAndSupersededCapturesAllocatedBytes": 1691648,
+    "run": "fucq95-20261105-ui",
+    "scratchBaseAbsent": true
+  },
+  "command": "node --test --test-concurrency=1 --experimental-test-coverage --test-coverage-include=blocks/gcsp/activity/activity-body.js --test-coverage-include=blocks/gcsp/activity/activity-copy.js --test-coverage-include=blocks/gcsp/kit/activity-timeline.js server/test/gcsp-activity-timeline.test.js server/test/gcsp-activity-body.test.js server/test/shared-kit-contracts.test.js server/test/gcsp-shell.test.js server/test/ui-ratchet.test.js server/test/render.test.js server/test/launcher-render.test.js",
+  "coverage": {
+    "activity-body.js": {
+      "branches": 80.95,
+      "functions": 100,
+      "lines": 93.62,
+      "uncoveredLines": [
+        17,
+        18,
+        19
+      ]
+    },
+    "activity-copy.js": {
+      "branches": 75,
+      "functions": 100,
+      "lines": 100
+    },
+    "activity-timeline.js": {
+      "branches": 100,
+      "functions": 100,
+      "lines": 100
+    }
+  },
+  "detector": {
+    "finalChangedUi": [],
+    "historicalStylesheetUnchanged": true,
+    "suppression": null,
+    "triageComponents": []
+  },
+  "environment": "a5ae6431dcc08f6071844c0598c47b95ede6deb22f53957db84192e7783d275e",
+  "exclusions": [
+    "no-confirmed-permission fallback and stored-offer branch not among released three snapshots",
+    "connected commands/controller/custom element",
+    "real check/source producers/current offer/access/lifecycle",
+    "default account/session/runtime composition",
+    "full suite and native PostgreSQL"
+  ],
+  "failed": 0,
+  "headAtRun": "85f25c1a046656d81ff6747288fd161de57734c7",
+  "impactMap": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq95-ui-5abaf4428f9c10116b77bbdd73329da366768da9966dfa37427016ca419ae0f7.json",
+  "integratedBase": "825aad67010a3ee435f6a5861a276488653e9540",
+  "largeOutput": null,
+  "leftovers": [],
+  "node": "v26.7.0",
+  "passed": 140,
+  "peakRecursiveRssBytes": 339410944,
+  "peakScratchBytes": 16474336,
+  "proof": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/targeted-0e20bef38e099bd52fd4c57c08cece6a9db88f1e3008666beaadbc3d830a4d91-default-1793884447547098000.json",
+  "proofCodeKey": "0e20bef38e099bd52fd4c57c08cece6a9db88f1e3008666beaadbc3d830a4d91",
+  "scope": "targeted",
+  "selection": "strict targeted dry-run unsupported for language unspecified; reviewed explicit regression/boundary command; no full fallback",
+  "skipped": 0,
+  "sourceIdentity": {
+    "blocks/gcsp/activity/activity-body.js": "fc9f01c2363ad37eb0b255ed1f65cae4ce8edd1f6fb2ce00bb907cdac4a2106e",
+    "blocks/gcsp/activity/activity-copy.js": "ef49624ad498f7ac12bd6aa5a3fe3cdca8f77477d2b48f4c09bf38efcf818b52",
+    "blocks/gcsp/activity/activity-fixtures.js": "2a45b3d8c51077a3837c4928560141e3ef1d5abf578c874feb4c785e7c172058",
+    "blocks/gcsp/activity/gcsp-activity.css": "a4d6c7af585dbf223d8cf3fe7fd1e10d6a46814354287f06ac1fa7cfb73d99d9",
+    "blocks/gcsp/activity/harness.js": "70bf67fff96d0a8abf2a40fe3d20f5045507ba82209b5d34bd812efe87b5085e",
+    "blocks/gcsp/employee/gcsp-employee.js": "2f35c7983aafef2c8f1eb72f6c78341cbf1c76269110f6a25dca1b775f11df2b",
+    "blocks/gcsp/kit/activity-timeline.css": "1e597c43ed0cd2c7c40e69a9005adf741730736b261bc7e4566475ccb369a1fd",
+    "blocks/gcsp/kit/activity-timeline.js": "848c8fc2f6201b4eb5f24ea9d27b3b004148e58b1c05d06ebd4064c76ba2b46f",
+    "blocks/gcsp/shell/gcsp-shell.css": "d6f35911624c03ee82c22eb349d51228ba849eaf354976f19df905887e9f92a3",
+    "blocks/vehicle-matcher/component-gallery.js": "644fd8f8916ebd2850a2a9c77a92e8894073d483a8089970b450f0bb11a93d07",
+    "blocks/vehicle-matcher/gcsp-kit.css": "64abde7dfc99e40c68270a9ea5850c9a713623014f3beca1f4d5c96263763b86",
+    "blocks/vehicle-matcher/vehicle-matcher.css": "11d7af7f3f05766c9c32c107f75f31d269d5531de4040938b34cea8b3854ea94",
+    "components.html": "2e5abe1ac1bb7e97f1039f06d0462299cb0b2acfadfe00cf72819d2e7ecf97b8",
+    "gcsp-activity.html": "29d39890c527e0d8f224bd902e838eea6c2772c766ad5072b5251084fd2044eb",
+    "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+    "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+    "server/test/gcsp-activity-body.test.js": "4a1bcff063fa94caab78f021ac06ffe5f7dae3b352146d47fad5e86ade8968d2",
+    "server/test/gcsp-activity-timeline.test.js": "0c97378d49895e5fdffe20765bbf79cd5cfa7e4554091aa50bd744487250ebb7",
+    "server/test/gcsp-shell.test.js": "289ea8f15a1c003a14fa9c1d6dfad420f5f95eac0837e17cb7cf60c720bba60b",
+    "server/test/helpers/activity-fixtures.js": "1e1ed17d63aab543d29e2452d58f649f006b6185e4bacb195493e3420e7dfbdb",
+    "server/test/launcher-render.test.js": "e9272282c67c38d152af03e45f694151d9839de267bc1fbd73227a0c07d7f321",
+    "server/test/render.test.js": "98a40f4961e423f8bbd906dacb82b03717f6d6c70b4f26cc89eaeee175f4d5e3",
+    "server/test/shared-kit-contracts.test.js": "5d501022df833d2487ff37cb343741ab7890d8928167fe475a6a09e6a61f57e8",
+    "server/test/ui-ratchet.json": "10754949e08b1eac1a976999ffa87a2a33ac44f4353e7993a71fad1b0b284dbc",
+    "server/test/ui-ratchet.test.js": "64b1103a846180442466834a766d9da4dab49547cd509f3421ae1a4d946915b7"
+  },
+  "sourceTestIdentity": "5abaf4428f9c10116b77bbdd73329da366768da9966dfa37427016ca419ae0f7",
+  "testScratchRemoved": true,
+  "treeAtRun": "3d15c48db029c8d1bb8d61a7e218c3f281b5d7bf",
+  "wallSeconds": 12.4
+}
