@@ -71,7 +71,8 @@ export async function allocationFixture({ rule, cars = 2, claimResult, reverse =
   return { source, policy, repository, store, identity, presenter, context, employees, clock, calls, write, create, event,
     service: create(), expire: () => { now = '2026-11-06T12:00:00.000Z'; },
     retire: async () => {
-      await write((tx) => tx.compareAndSwap({ table: 'runs', key: { runId: current.runId } }, 1, { current: false, status: 'historical' }));
+      await write(async (tx) => { const run = await tx.get({ table: 'runs', key: { runId: current.runId } });
+        return tx.compareAndSwap({ table: 'runs', key: { runId: current.runId } }, run.value.version, { current: false, status: 'historical' }); });
       current = { ...current, runId: 'other-run' };
       const saved = await repository.transaction({ ...scope, ...current }, { commandId: 'new-run', inputDigest: inputDigest('new-run') },
         (tx) => tx.insert('runs', { ...current, current: true, status: 'active', policyVersion: source.policyVersion }));

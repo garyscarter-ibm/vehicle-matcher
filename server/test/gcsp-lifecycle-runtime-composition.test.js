@@ -98,11 +98,11 @@ test('actual manual conversion and shared runtime progress approvals into docume
   assert.equal(f.orderingAdapter.mode, 'synthetic');
   assert.equal(typeof f.orderingAdapter.status.requestDecision, 'function');
   assert.equal(typeof f.orderingAdapter.documentStatus.start, 'function');
-  assert.deepEqual(f.registrations, ['stock-release', 'manual-claim-expiry', 'buddy-expiry', 'selection-order-reconciliation',
+  assert.deepEqual(f.registrations, ['stock-release', 'manual-claim-expiry', 'buddy-expiry', 'buddy-allocation', 'selection-order-reconciliation',
     'lifecycle-approvals', 'lifecycle-documents', 'renewal-risk-cases', 'captured-outbox']);
   assert.equal(f.reconciliations(), 1);
   good(await f.manualOrder.registerClockHandler()); good(await f.lifecycle.start()); good(await f.documents.start());
-  assert.equal(f.registrations.length, 8);
+  assert.equal(f.registrations.length, 9);
   assert.equal((await f.clock.registerHandler({ handlerId: 'too-late', stage: 'pending-reconciliation', handle: async () => ({ status: 'ok', value: {} }) })).status, 'invalid');
   const { car, operation } = await select(f); const query = `?orderUuid=${encodeURIComponent(car.orderUuid)}`;
   const initial = good((await f.request('/api/gcsp/orders/progress' + query)).json);
