@@ -15,6 +15,16 @@ export const statusOf = (state) => STATUS[STATUS_ALIAS[state] || state] || Objec
 
 // One table: safe error code from docs/gcsp/captured-outbox.md to a sentence for the presenter.
 export const ERROR_COPY = Object.freeze({
+  'mail-configuration-invalid': 'The demo sender configuration needs attention.',
+  'recipient-not-allowed': 'The recipient is not an approved demo address.',
+  'offer-link-invalid': 'The offer link is not a public demo address.',
+  'provider-authentication': 'The email provider refused the configured sender credentials.',
+  'provider-rejected': 'The email provider refused this message.',
+  'provider-rate-limited': 'The email provider asked the demo to slow down.',
+  'provider-unavailable': 'The email provider could not confirm acceptance.',
+  'provider-timeout': 'The email provider timed out. Acceptance is not confirmed.',
+  'provider-unconfirmed': 'The email provider has not confirmed acceptance.',
+  'provider-window-expired': 'Acceptance is not confirmed. The safe retry window has ended.',
   'transport-unavailable': 'The demo mail service could not be reached.',
   'message-invalid': 'The email could not be built from the offer details.',
   'message-facts-unavailable': 'The offer or employee details needed for the email were not found.',

@@ -1,0 +1,61 @@
+{
+  "status": "expected-regression-failure",
+  "scope": "scoped original single worker; no rerun",
+  "workerExit": 1,
+  "counts": {
+    "tests": 1,
+    "pass": 0,
+    "fail": 1,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "failure": "Pinned F100 link reaches the actual renderer and adapter; job state failed instead of sent at test line111",
+  "originalReceipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f98-repair/red-ef3d6264fd3a4ec39066c8872099b4c2.json",
+  "originalReceiptSha256": "36cd8f70b609d496704aa28040190307905240d963d4b351e96a292cec3be6ff",
+  "originalLog": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f98-repair/red-ef3d6264fd3a4ec39066c8872099b4c2.log",
+  "originalLogSha256": "ac5801e38767173d547ff3e36b34f81b985ac1002cfc5affee62dd8d3ad32caf",
+  "originalSupervisorStatus": "incomplete due to TAP-only summary parser, not worker/bootstrap failure",
+  "correction": "Future selections explicitly request --test-reporter=tap; parser also recognises retained default \u2139 statistics",
+  "sourceIdentity": {
+    "blocks/gcsp/presenter/gcsp-outbox.js": "91480c766b9672e248b53a25d86df35c1c489ee4dfadeea246bf319bdde934d7",
+    "blocks/gcsp/presenter/outbox-copy.js": "26984f81733b598596f6850933f8165c21f67f71b410a7a4914e476d5fc46d59",
+    "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+    "package.json": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
+    "server/gcsp/notify/brevo.js": "22f9b813a81e93f57c9e31f539ec1a6194ed7ce338b1303cc45e175a1cbb9382",
+    "server/gcsp/notify/index.js": "2edc056423207a9ffd77b281f68d243e22123228da7e3424864fb170255ff6a2",
+    "server/gcsp/notify/templates.js": "fb9a3b9719c54000409553773698ef620bf35a5ba06c354f33b30cea7df839eb",
+    "server/gcsp/runtime.js": "6002f36386f1f05a16f4847173a9c2d9fa1317c4783c0576dc74a93574cdf727",
+    "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+    "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139",
+    "server/test/gcsp-mail-transport.test.js": "ef6a1baf96903fc6a4e8ae76257974f40cec5a469accdafdcb0123082897a2a2",
+    "server/test/gcsp-outbox-route.test.js": "4254b5c252c65e00754bea6505e210732e8b43c81d1cda2b6a2eb311c38d0b5c",
+    "server/test/gcsp-outbox-viewer.test.js": "d5ab218ed2308ba846446d0d41d04278346b4b12de853cf746dc1198ea9b65bd",
+    "server/test/gcsp-outbox.test.js": "cb8c581997d6eca7a6a6d241f98cc7e415248a0d9a3edf75f151969108bcdf91"
+  },
+  "cleanup": {
+    "childrenJoined": true,
+    "dependencyDirectoryAbsent": true,
+    "dependencyLinkAbsent": true,
+    "errors": [],
+    "groupsAbsent": true,
+    "reservationAbsent": true,
+    "scratchAbsent": true,
+    "targetIdentityUnchanged": true
+  },
+  "resources": {
+    "execution": {
+      "issue": null,
+      "issue_kind": null,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f98-repair/red-ef3d6264fd3a4ec39066c8872099b4c2.log",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f98-repair/ownership/205c9ff0278c45668901c57119871b12.json",
+      "peak_rss": 15384576,
+      "peak_scratch": 512096,
+      "rc": 1,
+      "wall": 0.25465175000135787
+    },
+    "supervisorPeakRssBytes": 32292864,
+    "chargedPeakRssBytes": 47677440,
+    "scratchPeakBytesRemoved": 512096
+  }
+}
