@@ -13,18 +13,22 @@ def sha(p):
     return h.hexdigest()
 def run():
     phase_name=sys.argv[1];phase=OUT/phase_name;phase.mkdir(parents=True,exist_ok=False)
-    assert phase_name in ['cli-red','cli-red-fixed','cli-red-intended','cli-red-final','cli-green','cli-boundary','prepare','prepare-final','descriptor']
+    assert phase_name in ['cli-red','cli-red-fixed','cli-red-intended','cli-red-final','cli-green','cli-boundary','prepare','prepare-final','descriptor','publish','download','recovery']
     command=['/opt/homebrew/Cellar/node/26.7.0/bin/node','--max-old-space-size=256','--test','--test-concurrency=1','server/test/gcsp-fleet-image-cli.test.js']
     if phase_name=='cli-boundary':command=['/opt/homebrew/Cellar/node/26.7.0/bin/node','--max-old-space-size=256','--test','--test-concurrency=1','server/test/gcsp-fleet-artifacts.test.js','server/test/gcsp-retained-image.test.js','server/test/gcsp-fleet-verifier.test.js']
     if phase_name.startswith('prepare'):command=['/opt/homebrew/Cellar/node/26.7.0/bin/node','--max-old-space-size=256','--expose-gc','docs/gcsp/evidence/fucq62/prepare-fleet-dot5.mjs','--receipt',str(phase/'receipt.json')]
     if phase_name=='descriptor':command=['/opt/homebrew/Cellar/node/26.7.0/bin/node','--max-old-space-size=256','--expose-gc','docs/gcsp/evidence/fucq62/describe-fleet-dot5.mjs',str(phase)]
-    paths=['docs/gcsp/evidence/fucq62/describe-fleet-dot5.mjs','docs/gcsp/evidence/fucq62/rebuild-fleet-dot5.mjs','docs/gcsp/evidence/fucq62/prepare-fleet-dot5.mjs','docs/gcsp/evidence/fucq62/fleet-2026-11-07-5-plan.json','server/test/gcsp-fleet-image-cli.test.js','scripts/gcsp/verify-fleet.mjs','server/gcsp/vehicle-evidence/registered-corpus-images.js','server/test/gcsp-fleet-artifacts.test.js','server/gcsp/vehicle-evidence/fleet-release.js','server/gcsp/vehicle-evidence/fleet-artifacts.js','server/gcsp/vehicle-evidence/local-vehicle-lookup.js','server/gcsp/vehicle-evidence/corpus-publisher.js','server/gcsp/vehicle-evidence/registered-catalogue-sources.js','server/gcsp/vehicle-evidence/synthetic-registry.js','server/gcsp/vehicle-evidence/fleet-releases.json','server/scripts/fleet-artifacts.mjs','docs/gcsp/evidence/fucq62/public-artifacts-proof.mjs','server/gcsp/vehicle-evidence/indexed-jsonl.js']
-    contract={'codePins':{p:sha(ROOT/p) for p in paths if (ROOT/p).exists()},'inputPins':{str(p.relative_to(ROOT)):sha(p) for area in ['server/data/gcsp/vehicle-evidence/fleet-source.v1','server/data/gcsp/vehicle-evidence/registered-sources'] for p in (ROOT/area).rglob('*') if p.is_file()},'selectedChecks':[command],'excluded':['unchanged published .4 proof','full suite','PG','BMW/source traffic','Render mutation','Node20 unavailable'],'dependencyDirectory':'/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules'}
-    plan={'runId':'f62-fleet-dot5-'+phase_name,'resources':{'workers':1,'hostRamMiB':512,'childRamMiB':448,'scratchMiB':64,'seconds':90}}
+    if phase_name=='publish':command=['/opt/homebrew/Cellar/node/26.7.0/bin/node','--max-old-space-size=256','--expose-gc','docs/gcsp/evidence/fucq62/publish-fleet-dot5.mjs',str(phase),sys.argv[2]]
+    if phase_name=='download':command=['/opt/homebrew/Cellar/node/26.7.0/bin/node','--max-old-space-size=256','--expose-gc','docs/gcsp/evidence/fucq62/download-fleet-dot5.mjs',str(phase)]
+    scratch_mib=128 if phase_name in ['publish','recovery'] else 64
+    seconds=180 if phase_name in ['publish','recovery'] else 90
+    paths=['docs/gcsp/evidence/fucq62/pack-recovery-fleet-dot5.mjs','docs/gcsp/evidence/fucq62/download-fleet-dot5.mjs','docs/gcsp/evidence/fucq62/recover-fleet-dot5.mjs','docs/gcsp/evidence/fucq62/publish-fleet-dot5.mjs','docs/gcsp/evidence/fucq62/describe-fleet-dot5.mjs','docs/gcsp/evidence/fucq62/rebuild-fleet-dot5.mjs','docs/gcsp/evidence/fucq62/prepare-fleet-dot5.mjs','docs/gcsp/evidence/fucq62/fleet-2026-11-07-5-plan.json','server/test/gcsp-fleet-image-cli.test.js','scripts/gcsp/verify-fleet.mjs','server/gcsp/vehicle-evidence/registered-corpus-images.js','server/test/gcsp-fleet-artifacts.test.js','server/gcsp/vehicle-evidence/fleet-release.js','server/gcsp/vehicle-evidence/fleet-artifacts.js','server/gcsp/vehicle-evidence/local-vehicle-lookup.js','server/gcsp/vehicle-evidence/corpus-publisher.js','server/gcsp/vehicle-evidence/registered-catalogue-sources.js','server/gcsp/vehicle-evidence/synthetic-registry.js','server/gcsp/vehicle-evidence/fleet-releases.json','server/scripts/fleet-artifacts.mjs','docs/gcsp/evidence/fucq62/public-artifacts-proof.mjs','server/gcsp/vehicle-evidence/indexed-jsonl.js']
+    contract={'codePins':{p:sha(ROOT/p) for p in paths if (ROOT/p).exists()},'inputPins':{str(p.relative_to(ROOT)):sha(p) for area in ['server/data/gcsp/vehicle-evidence/fleet-source.v1','server/data/gcsp/vehicle-evidence/registered-sources'] for p in (ROOT/area).rglob('*') if p.is_file()},'selectedChecks':([['node','pack-recovery-fleet-dot5.mjs'],['node','--max-old-space-size=192','--expose-gc','recover-fleet-dot5.mjs']] if phase_name=='recovery' else [command]),'excluded':['unchanged published .4 proof','full suite','PG','BMW/source traffic','Render mutation','Node20 unavailable'],'dependencyDirectory':'/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules'}
+    plan={'runId':'f62-fleet-dot5-'+phase_name,'resources':{'workers':1,'hostRamMiB':512,'childRamMiB':448,'scratchMiB':scratch_mib,'seconds':seconds}}
     spec=importlib.util.spec_from_file_location('resources',ROOT/'_tools/test_resources.py');R=importlib.util.module_from_spec(spec);spec.loader.exec_module(R)
     R.atomic_json(phase/'selection.json',{'identity':contract['codePins'],'inputs':contract['inputPins'],'selectedChecks':contract['selectedChecks'],'excluded':contract['excluded'],'resources':plan['resources']})
     R.atomic_json(phase/'retained-output-ownership.json',{'createdFor':plan['runId'],'immutableSourceFiles':contract['inputPins'],'sourceFilesPreserved':True,'expectedRetainedOutputMiB':1,'largeOutput':False,'retainedReceipts':[str(phase/p) for p in ['receipt.json','result.json','cleanup.json','selection.json']],'partialProgress':str(phase/'receipt.json.progress.json')})
-    policy=R.Policy({'chunk_scratch_mib':64,'chunk_ram_mib':512,'chunk_seconds':90,'log_mib':1});scratch=R.Scratch(phase,ROOT,policy,expected=64*R.MIB,checkpoint=phase/'receipt.json.progress.json')
+    policy=R.Policy({'chunk_scratch_mib':scratch_mib,'chunk_ram_mib':512,'chunk_seconds':seconds,'log_mib':1});scratch=R.Scratch(phase,ROOT,policy,expected=scratch_mib*R.MIB,checkpoint=phase/'receipt.json.progress.json')
     host=R.HostBudget(policy);link=ROOT/'server/node_modules';vendor=pathlib.Path(contract['dependencyDirectory']);entered=reserved=finished=False;link_identity=None
     def finish():
         nonlocal entered,reserved,finished,link_identity
@@ -42,12 +46,18 @@ def run():
     atexit.register(finish)
     try:
         with R.handled_termination():
-            host.acquire(scratch.token,64*R.MIB,512*R.MIB,ROOT,root=scratch.root);reserved=True
+            host.acquire(scratch.token,scratch_mib*R.MIB,512*R.MIB,ROOT,root=scratch.root);reserved=True
             scratch.__enter__();entered=True
             assert not os.path.lexists(link),'existing dependency path preserved';link.symlink_to(vendor,target_is_directory=True);st=link.lstat();link_identity=(st.st_dev,st.st_ino)
             R.atomic_json(phase/'dependency-ownership.json',{'path':str(link),'target':str(vendor),'device':st.st_dev,'inode':st.st_ino})
             env={'PATH':'/opt/homebrew/bin:/usr/bin:/bin','LANG':'en_GB.UTF-8','LC_ALL':'en_GB.UTF-8','TZ':'UTC','HOME':os.environ['HOME']}
-            result=R.run_process(command,ROOT,env,phase/'command.log',scratch,policy,64*R.MIB,448*R.MIB,90,host)
+            commands=[command]
+            if phase_name=='recovery':commands=[['/opt/homebrew/Cellar/node/26.7.0/bin/node','--max-old-space-size=256','docs/gcsp/evidence/fucq62/pack-recovery-fleet-dot5.mjs',str(phase)],['/opt/homebrew/Cellar/node/26.7.0/bin/node','--max-old-space-size=192','--expose-gc','docs/gcsp/evidence/fucq62/recover-fleet-dot5.mjs',str(phase)]]
+            results=[]
+            for index,item in enumerate(commands):
+                result=R.run_process(item,ROOT,env,phase/('command-'+str(index)+'.log'),scratch,policy,scratch_mib*R.MIB,448*R.MIB,seconds,host)
+                results.append(result);R.atomic_json(phase/'chunk-results.json',results)
+                if result['rc']!=0 or result['issue'] is not None:break
             R.atomic_json(phase/'result.json',result)
             for name,expected in contract['codePins'].items():assert sha(ROOT/name)==expected,name
             for name,expected in contract['inputPins'].items():assert sha(ROOT/name)==expected,name
