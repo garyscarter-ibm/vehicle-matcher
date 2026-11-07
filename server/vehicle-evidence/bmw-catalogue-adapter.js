@@ -250,7 +250,20 @@ export function describeBmwEquipment(result, code) {
 }
 
 /** Resolve a curated dated catalogue configuration through an injectable in-process port. */
-export function createBmwCatalogueAdapter({ loadSnapshot = loadLocalSnapshot, transport = rejectOutbound } = {}) {
+export function createBmwCatalogueAdapter({ loadSnapshot = loadLocalSnapshot, transport = rejectOutbound, sourceRegistrations = [] } = {}) {
+  if (!Array.isArray(sourceRegistrations) || sourceRegistrations.length > 10000) throw new TypeError('Invalid source registrations');
+  const registered = new Map();
+  for (const registration of sourceRegistrations) {
+    const lookup = registration?.lookupIdentity;
+    const options = lookup && Object.fromEntries(['provider', 'providerVersion', 'schemaVersion', 'sourceContractVersion', 'snapshotVersion']
+      .map((name) => [name, lookup[name]]));
+    const valid = lookup && bmwCatalogueV2LookupIdentity({ configurationId: lookup.configurationId, bindingDigest: lookup.bindingDigest }, options);
+    const key = valid && JSON.stringify(valid);
+    if (!valid || JSON.stringify(lookup) !== key || typeof registration.qualifySnapshot !== 'function' || registered.has(key)) {
+      throw new TypeError('Invalid source registration');
+    }
+    registered.set(key, registration.qualifySnapshot.bind(registration));
+  }
   return {
     async resolve(request, options = {}) {
       // Versions are bounded identifiers; a caller can never turn them into a file path.
@@ -259,7 +272,7 @@ export function createBmwCatalogueAdapter({ loadSnapshot = loadLocalSnapshot, tr
       const { snapshotVersion, schemaVersion, providerVersion, provider } = lookup;
       if (Object.hasOwn(lookup, 'sourceContractVersion')) {
         const requested = { snapshotVersion, bindingDigest: lookup.bindingDigest, configurationId: lookup.configurationId };
-        return { provider, providerVersion, schemaVersion, sourceContractVersion: lookup.sourceContractVersion, snapshotVersion,
+        const result = { provider, providerVersion, schemaVersion, sourceContractVersion: lookup.sourceContractVersion, snapshotVersion,
           sourceKind: 'dated-snapshot', status: 'unsupported', observedDate: null, retrievedDate: null,
           requestedIdentity: requested, resolvedIdentity: null, lookupIdentity: lookup, resolvedLookupIdentity: null,
           identityProvenance: null, sourceBinding: null, facts: emptyFacts(),
@@ -270,6 +283,20 @@ export function createBmwCatalogueAdapter({ loadSnapshot = loadLocalSnapshot, tr
           completeness: { factorySelection: 'unknown', accessoryCodes: 'unknown', accessoryQuantities: 'unknown',
             measurements: 'unknown', definitions: 'unknown', availability: 'unknown', verifiedFitted: 'unknown' },
           failure: failure('unsupported-snapshot') };
+        const qualify = registered.get(JSON.stringify(lookup));
+        if (!qualify) return result;
+        const unavailable = (reason) => ({ ...result, status: 'source-unavailable', failure: failure(reason) });
+        let snapshot;
+        try { snapshot = await loadSnapshot(snapshotVersion, { transport, lookupIdentity: structuredClone(lookup) }); }
+        catch (error) { return unavailable(error instanceof SyntaxError ? 'artifact-malformed'
+          : error?.code === 'ENOENT' ? 'artifact-missing' : 'artifact-unreadable'); }
+        try {
+          const qualified = await qualify(snapshot);
+          if (qualified?.status !== 'qualified' || JSON.stringify(qualified.envelope?.lookupIdentity) !== JSON.stringify(lookup)) {
+            return unavailable('artifact-malformed');
+          }
+          return structuredClone(qualified.envelope);
+        } catch { return unavailable('artifact-malformed'); }
       }
       const requested = identity(request);
       const unavailable = (reason) => envelope('source-unavailable', snapshotVersion, requested, reason, lookup);

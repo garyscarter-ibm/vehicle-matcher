@@ -1,5 +1,5 @@
 import { dirname, isAbsolute, resolve } from 'node:path';
-import { buildBmwSelectionBinding, qualifyBmwSelectionRecord } from './bmw-selection-binding.mjs';
+import { buildBmwSelectionBinding, qualifyBmwSelectionRecord, createBmwSelectionRegistration } from './bmw-selection-binding.mjs';
 import { open } from 'node:fs/promises';
 import { settingsShapeReceiptBytes, validateSettingsShapeRefusal } from './settings-shape-report.mjs';
 import { fileURLToPath } from 'node:url';
@@ -162,14 +162,7 @@ export async function createFleetCollector({ plan: input, source, policyService,
     requireValue(mode === 'capture-replay' && plan.captureVersion === 'bmw-complete-selection.v1'
       && plan.source.kind === 'public-bmw-uk' && object(captureReplay) && http === undefined
       && policyRead === undefined, 'capture-replay-required', 'Use the explicit capture version and server-owned replay registration without transport.');
-    const configurationKey = await createConfigurationKey({ policyService, policyRead: { runId: `collector-${plan.planId}`, ...plan.policyRead } });
-    const registration = { ...captureReplay, plan, configurationKey };
-    const built = buildBmwSelectionBinding(registration);
-    const qualified = qualifyBmwSelectionRecord(built.record, registration);
-    requireValue(qualified.status === 'qualified', 'source-selection-mismatch', 'The replay must retain the exact source-derived selection.');
-    return { run: async () => structuredClone({ status: 'complete', reason: 'source-capture-qualified', qualification: 'source-selection-qualified-not-admitted',
-      admission: false, records: [qualified.record], accepted: [], rejected: [], duplicates: [], counts: freshCounts(),
-      coverage: { distinctConfigurations: 1, target: plan.target } }) };
+    return createCaptureReplayCollector({ plan, captureReplay, policyService, statePath, operations, now, onPhase });
   }
   if (plan.source.kind === 'public-bmw-uk' && !NO_TRAFFIC.includes(mode)) {
     return createPublicCollector({ plan, source, policyService, policyRead, statePath, operations, http, mode, now, onPhase });
@@ -238,6 +231,51 @@ export async function createFleetCollector({ plan: input, source, policyService,
         state.cursor += 1; await commit('outcome'); await onPhase('outcome-committed', { cursor: state.cursor });
       }
       return report('queue-exhausted');
+    } catch (error) {
+      if (!error.stop) throw error;
+      if (error.sticky) state.halted = error.code;
+      await commit('stop'); return report(error.code);
+    }
+  }, { stage: { id: 'collection', version: COLLECTOR_VERSION, inputDigest: inputDigest(plan) } }) };
+}
+
+/** Source-qualified ingress shares the same checkpoint, accounting and later enrichment stages. */
+async function createCaptureReplayCollector({ plan, captureReplay, policyService, statePath, operations, now, onPhase }) {
+  const configurationKey = await createConfigurationKey({ policyService, policyRead: { runId: `collector-${plan.planId}`, ...plan.policyRead } });
+  const registration = { ...structuredClone(captureReplay), plan, configurationKey };
+  const expected = buildBmwSelectionBinding(registration).record;
+  requireValue(expected.sourceKind === 'dated-snapshot', 'source-selection-not-live', 'Configuration admission requires retained live source captures.');
+  requireValue(!Object.hasOwn(operations, 'capture'), 'invalid-session', 'Additional stages cannot replace trusted capture ingress.');
+  const catalogueRegistration = createBmwSelectionRegistration(registration);
+  const limits = { ...plan.limits, requestBudgets: { capture: 1,
+    ...Object.fromEntries(Object.keys(operations).map((name) => [name, plan.limits.requestBudgets[name]])) } };
+  const session = await createCollectionSession({
+    identity: { planDigest: inputDigest(plan), sourceVersion: plan.source.version, toolVersion: COLLECTOR_VERSION,
+      signaturePolicyVersion: configurationKey.policyVersion, mode: 'capture-replay', sourceBindingDigest: expected.lookupIdentity.bindingDigest },
+    limits, statePath, now, onPhase, initialState: { accepted: [], rejected: [], duplicates: [] },
+    validateState: (state) => {
+      requireValue(Array.isArray(state.accepted) && state.accepted.length <= 1
+        && ['rejected', 'duplicates'].every((field) => Array.isArray(state[field]) && state[field].length === 0),
+      'checkpoint-corrupt', 'A retained source capture admits at most its exact source-derived configuration.');
+      for (const row of state.accepted) requireValue(row?.admission === true
+        && qualifyBmwSelectionRecord({ ...row, admission: false }, registration).status === 'qualified',
+      'source-selection-mismatch', 'Accepted state must retain the exact registered source selection.');
+    },
+    operations: { ...operations, capture: { kind: 'offline', sourceId: plan.source.id, sourceVersion: plan.source.version,
+      execute: () => structuredClone(expected) } } });
+  return { session, catalogueRegistration, run: () => session.withCheckpoint(async ({ state, execute, commit, checkDeadline }) => {
+    const report = (reason) => ({ status: state.accepted.length >= plan.target ? 'complete' : 'incomplete', reason,
+      qualification: 'source-configuration-admitted', admission: state.accepted.length > 0,
+      ...structuredClone({ records: state.accepted, accepted: state.accepted, rejected: state.rejected, duplicates: state.duplicates, counts: state.counts }),
+      coverage: { distinctConfigurations: state.accepted.length, target: plan.target }, checkpoint: statePath });
+    if (state.halted) return report(state.halted);
+    if (state.accepted.length) return report('source-capture-admitted');
+    try {
+      checkDeadline(); const captured = await execute('capture', {});
+      const qualified = qualifyBmwSelectionRecord(captured, registration);
+      requireValue(qualified.status === 'qualified', 'source-selection-mismatch', 'Ingress must retain the exact source-derived selection.');
+      state.accepted.push({ ...qualified.record, admission: true }); await commit('source-admission');
+      return report('source-capture-admitted');
     } catch (error) {
       if (!error.stop) throw error;
       if (error.sticky) state.halted = error.code;

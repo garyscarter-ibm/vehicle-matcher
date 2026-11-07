@@ -1,7 +1,9 @@
 /** Synthetic retained protocol observations only; these tests perform no source requests. */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, mkdtemp, rm } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { createHash } from 'node:crypto';
 import { PolicyService, FilePolicyProvider } from '../gcsp/policy/index.js';
 import { createConfigurationKey } from '../../scripts/gcsp/configuration-key.mjs';
@@ -148,18 +150,21 @@ test('actual source map quantity locators retain exact code-specific raw pointer
   assert.throws(() => build(input));
 });
 
-test('collector explicitly replays the source binder without transport or implicit corpus admission', async (context) => {
+test('collector explicitly admits exact live capture through the common session without transport', async (context) => {
   const input = await fixture(); let calls = 0;
+  for (const name of ['tree', 'solver']) rewrite(input, name, (doc) => { doc.observation.transportKind = 'live'; }, true);
+  const dir = await mkdtemp(join(tmpdir(), 'binding-collector-')); context.after(() => rm(dir, { recursive: true, force: true }));
+  const statePath = join(dir, 'checkpoint.json');
   context.mock.method(globalThis, 'fetch', () => { calls += 1; throw new Error('no network'); });
   const replay = { artifacts: input.artifacts, producerPins: input.producerPins, snapshotVersion: input.snapshotVersion };
-  const collector = await createFleetCollector({ plan: input.plan, mode: 'capture-replay', captureReplay: replay,
+  const collector = await createFleetCollector({ plan: input.plan, mode: 'capture-replay', captureReplay: replay, statePath,
     policyService: new PolicyService({ provider: new FilePolicyProvider() }) });
   const result = await collector.run();
-  assert.equal(result.status, 'complete'); assert.equal(result.admission, false); assert.deepEqual(result.accepted, []);
+  assert.equal(result.status, 'complete'); assert.equal(result.admission, true); assert.equal(result.accepted.length, 1);
   assert.equal(result.records.length, 1); assert.equal(result.records[0].configurationId, build(input).record.configurationId);
   assert.equal(result.counts.sourceCalls, 0); assert.equal(calls, 0);
   assert.equal(result.coverage.distinctConfigurations, 1);
-  await assert.rejects(createFleetCollector({ plan: { ...input.plan, captureVersion: undefined }, mode: 'capture-replay', captureReplay: replay,
+  await assert.rejects(createFleetCollector({ plan: { ...input.plan, captureVersion: undefined }, mode: 'capture-replay', captureReplay: replay, statePath,
     policyService: new PolicyService({ provider: new FilePolicyProvider() }) }));
 });
 

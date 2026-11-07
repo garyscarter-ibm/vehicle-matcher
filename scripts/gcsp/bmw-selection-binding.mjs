@@ -247,7 +247,8 @@ export function buildBmwSelectionBinding(input = {}) {
   fail(validated.status === 'valid');
   const record = { configurationId: identityKey.configurationId, canonicalSignature: identityKey.decodedIdentity, canonicalIdentity: identityKey.canonicalIdentity,
     modelRange: facts.modelRange, resolvedOptions: [...selection.factoryOptionCodes], selectedAccessories: structuredClone(selection.accessories),
-    selectedElements: structuredClone(selection.elements), solverChanges: structuredClone(selection.solverChanges), catalogueRequest: identity,
+    selectedElements: structuredClone(selection.elements), solverChanges: structuredClone(selection.solverChanges),
+    catalogueRequest: { configurationId: identity.configurationId, bindingDigest: identity.bindingDigest },
     lookupIdentity: structuredClone(lookupIdentity), catalogue: validated.envelope, source: structuredClone(plan.source),
     sourceKind: solver.document.observation.transportKind === 'live' ? 'dated-snapshot' : 'synthetic-capture-fixture',
     paint: definitions.paint, upholstery: definitions.upholstery, sourceEvidence: { bindingVersion: BMW_SELECTION_BINDING_VERSION,
@@ -263,4 +264,24 @@ export function qualifyBmwSelectionRecord(candidate, registration) {
     if (same(candidate, expected.record)) return expected;
   } catch { /* A bounded refusal also covers unreadable or incompatible registered evidence. */ }
   return { status: 'invalid', code: 'source-selection-mismatch', admission: false, record: null };
+}
+
+
+/** Server composition only: the qualifier closes over source-derived truth, never lookup-supplied pins. */
+export function createBmwSelectionRegistration(input) {
+  const expected = buildBmwSelectionBinding(input).record;
+  fail(expected.sourceKind === 'dated-snapshot');
+  const source = expected.catalogue.sourceBinding;
+  const trusted = { configurationKey: input.configurationKey, producerPins: structuredClone(source.producerPins),
+    evidencePins: structuredClone(source.evidence), requestScope: structuredClone(source.requestScope),
+    confirmedContext: structuredClone(source.confirmedContext) };
+  return Object.freeze({ lookupIdentity: Object.freeze(structuredClone(expected.lookupIdentity)),
+    qualifySnapshot(snapshot) {
+      const invalid = { status: 'invalid', code: 'source-selection-mismatch', envelope: null };
+      try {
+        const validated = validateBmwCatalogueV2Envelope(typeof snapshot === 'string' ? snapshot : encode(snapshot), trusted);
+        if (validated.status !== 'valid' || !same(validated.envelope, expected.catalogue)) return invalid;
+        return { status: 'qualified', envelope: validated.envelope };
+      } catch { return invalid; }
+    } });
 }
