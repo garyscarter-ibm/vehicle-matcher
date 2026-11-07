@@ -752,7 +752,7 @@
       "original_status": "To Do",
       "assignee": "usget",
       "type": "Story",
-      "observed_at": "2026-11-07T00:54:48Z",
+      "observed_at": "2026-11-07T01:16:11Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62",
       "claim_evidence": "Claimed owning035 at34a793e3; root checkpoint authorisation, Jira OAuth unavailable. Full acceptance remains open.",
       "slices": [
@@ -802,8 +802,8 @@
           "id": "scale",
           "status": "in-progress",
           "title": "Existing format scale boundary for 10000",
-          "observed_at": "2026-11-07T00:54:48Z",
-          "evidence": "Measured527502B/30rows;175834000B forecast/10k exceeds64MiB existing per-file loader cap. No bounds increased; design next."
+          "observed_at": "2026-11-07T01:16:11Z",
+          "evidence": "docs/gcsp/evidence/fucq62/scale-plan-2026-11-07.md; bounded indexing/streaming code with55distinct scoped passing tests. Caps64MiB unchanged; >64MiB proof and actual aggregate/deployed acceptance still open."
         },
         {
           "id": "integration",

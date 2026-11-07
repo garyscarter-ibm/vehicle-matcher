@@ -22,13 +22,13 @@ const limitations = Object.freeze([
 ]);
 const invalid = (reason, manifest = null) => ({ status: 'invalid-staged', targetMet: false, storyAcceptance: 'not-established',
   manifest, actual: null, shortfall: null, reason, limitations });
-const count = (rows, select) => {
-  const counts = new Map();
-  for (const row of rows) { const key = select(row) ?? 'unknown'; counts.set(key, (counts.get(key) || 0) + 1); }
+const increment = (counts, value) => { const key = value ?? 'unknown'; counts.set(key, (counts.get(key) || 0) + 1); };
+const boundedCounts = (counts) => {
   // Fixed domain limit keeps CLI output bounded even for adversarial model/option names.
   const ordered = [...counts].sort(([a], [b]) => String(a).localeCompare(String(b)));
   return { values: Object.fromEntries(ordered.slice(0, 128)), omittedCategories: Math.max(0, ordered.length - 128) };
 };
+const count = (rows, select) => { const counts = new Map(); for (const row of rows) increment(counts, select(row)); return boundedCounts(counts); };
 const boundedText = (value) => typeof value === 'string' ? value.slice(0, 512) : null;
 const complete = (row) => row.sourceContext.sourceKind === 'dated-snapshot'
   && row.canonicalIdentity.provenance.kind === 'observed'
@@ -40,7 +40,7 @@ export async function verifyStagedFleet({ artifacts, requiredDistinct = 10000, p
   if (typeof artifacts !== 'string' || !isAbsolute(artifacts)) return invalid({ code: 'explicit-path-required', message: 'Supply an absolute staged artifact directory.' });
   if (!Number.isSafeInteger(requiredDistinct) || requiredDistinct < 1 || requiredDistinct > 100000) return invalid({ code: 'invalid-target', message: 'Required distinct count must be an integer from 1 to 100000.' });
   const manifestPath = join(artifacts, 'manifest.json');
-  const checked = await validateCorpusDirectory(artifacts, options);
+  const checked = await validateCorpusDirectory(artifacts, { ...options, indexed: true });
   if (checked.status !== 'ok') {
     let sha256 = null;
     try { sha256 = contentChecksum(await readCorpusFile(artifacts, 'manifest.json')); } catch { /* Missing/unreadable manifests have no digest. */ }
@@ -52,7 +52,8 @@ export async function verifyStagedFleet({ artifacts, requiredDistinct = 10000, p
     profileRegistryVersion: manifest.profileRegistryVersion, generatorVersion: manifest.generatorVersion };
   try {
     const key = await createConfigurationKey({ ...options, policyRead: { ...options.policyRead, policyVersion: manifest.signaturePolicy.policyVersion } });
-    const distinct = new Set(); const qualifying = new Set(); const optionCounts = [];
+    const distinct = new Set(); const qualifying = new Set(); const familyCounts = new Map();
+    const groups = Object.fromEntries(['model', 'body', 'powertrain', 'factoryOptionCount', 'sourceKind', 'unresolvedFacts'].map((name) => [name, new Map()]));
     for (const row of configurations) {
       const { agModelCode, ...canonicalIdentity } = row.canonicalIdentity;
       const identity = key({ ...canonicalIdentity, ...(agModelCode === null ? {} : { agModelCode }) });
@@ -61,12 +62,13 @@ export async function verifyStagedFleet({ artifacts, requiredDistinct = 10000, p
       }
       distinct.add(identity.configurationId);
       if (complete(row)) qualifying.add(identity.configurationId);
-      optionCounts.push({ count: identity.canonicalIdentity.factoryOptionCodes.length });
+      for (const field of ['model', 'body', 'powertrain']) increment(groups[field], row.configuration[field]);
+      increment(groups.factoryOptionCount, String(identity.canonicalIdentity.factoryOptionCodes.length));
+      increment(groups.sourceKind, row.sourceContext.sourceKind);
+      for (const field of row.sourceContext.unresolvedFacts) increment(groups.unresolvedFacts, field);
+      increment(familyCounts, JSON.stringify([row.configuration.market, row.configuration.vgModelCode]));
     }
-    const distributions = Object.fromEntries(['model', 'body', 'powertrain'].map((field) => [field, count(configurations, (row) => row.configuration[field])]));
-    distributions.factoryOptionCount = count(optionCounts, (row) => String(row.count));
-    distributions.sourceKind = count(configurations, (row) => row.sourceContext.sourceKind);
-    distributions.unresolvedFacts = count(configurations.flatMap((row) => row.sourceContext.unresolvedFacts), (field) => field);
+    const distributions = Object.fromEntries(Object.entries(groups).map(([name, counts]) => [name, boundedCounts(counts)]));
     distributions.imageFidelity = count(images, (row) => row.fidelity);
     const plannedFamilies = Array.isArray(plan?.families) ? plan.families.filter((family) => family && typeof family === 'object') : [];
     const coverage = {}; const omittedCoverageCategories = {};
@@ -77,8 +79,7 @@ export async function verifyStagedFleet({ artifacts, requiredDistinct = 10000, p
     }
     const planned = { provided: Boolean(plan), familyCount: plannedFamilies.length, families: plannedFamilies.slice(0, 128).map((family) => ({
       familyId: boundedText(family.familyId), plannedCount: Number.isSafeInteger(family.plannedCount) ? family.plannedCount : null,
-      actualModelMarketDistinct: configurations.filter((row) => row.configuration.market === family.context?.market
-        && row.configuration.vgModelCode === (family.context?.vgModelCode ?? family.context?.modelCode)).length,
+      actualModelMarketDistinct: familyCounts.get(JSON.stringify([family.context?.market, family.context?.vgModelCode ?? family.context?.modelCode])) || 0,
       profileId: boundedText(family.profileId), wmi: boundedText(family.wmi),
     })), omittedFamilies: Math.max(0, plannedFamilies.length - 128), exclusions: (Array.isArray(plan?.coverage?.exclusions) ? plan.coverage.exclusions : []).slice(0, 128)
       .map((entry) => ({ scope: boundedText(entry?.scope), reason: boundedText(entry?.reason) })) };
@@ -177,21 +178,22 @@ export async function verifyActiveFleet({ root, requiredDistinct = 10000, http =
     const artifacts = join(root, 'versions', active.manifestDigest);
     const staged = await verifyStagedFleet({ artifacts, requiredDistinct, ...options });
     if (staged.status === 'invalid-staged') return { ...staged, status: 'invalid-active' };
-    const checked = await validateCorpusDirectory(artifacts, options);
+    const checked = await validateCorpusDirectory(artifacts, { ...options, indexed: true });
     if (checked.status !== 'ok' || checked.manifestDigest !== active.manifestDigest || staged.manifest.sha256 !== active.manifestDigest) {
       return activeFailure('active-manifest-changed', 'Active loader and actual retained artifact digest must agree.');
     }
-    const rows = checked.corpus; const configurations = new Map(rows.configurations.map((row) => [row.configurationId, row]));
+    const rows = checked.corpus; const configurations = rows.configurations;
     const lookup = createVehicleEvidenceLookup({ registry, repository });
     const consumer = createConfiguredVehicleDetails({ lookup, timeoutMs: 5000, maxAttempts: 1 });
-    const requests = [...rows.configurations.map((row) => ({ kind: 'configuration', id: row.configurationId })),
-      ...rows.vins.map((row) => ({ kind: 'vin', id: row.vin17 })), ...stockReferences.map((id) => ({ kind: 'stock', id }))];
+    const requests = [...rows.configurations.metadataEntries()].map((entry) => ({ kind: 'configuration', id: entry.key }));
+    for (const entry of rows.vins.metadataEntries()) requests.push({ kind: 'vin', id: entry.vin17 });
+    for (const id of stockReferences) requests.push({ kind: 'stock', id });
     const latencies = []; let errors = 0; const started = performance.now();
     await boundedWorkers(requests, concurrency, async (request) => {
       const start = performance.now();
       const direct = await lookup.resolve(request, { context }); const consumed = await consumer.resolve(request, { context });
       const record = configurations.get(direct.identity?.configurationId);
-      const images = rows.images.filter((image) => record?.imageIds.includes(image.imageId));
+      const images = (record?.imageIds || []).map((id) => rows.images.get(id));
       if (!matchesRetained(direct, record, images, active.manifestDigest) || consumed.status !== direct.status || !consumed.vehicle
         || !isDeepStrictEqual(consumed.vehicle, Object.fromEntries(Object.keys(consumed.vehicle).map((key) => [key, direct[key]])))) errors++;
       latencies.push(performance.now() - start);
