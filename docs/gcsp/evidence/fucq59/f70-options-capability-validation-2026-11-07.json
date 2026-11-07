@@ -12,6 +12,7 @@
     "server/test/gcsp-bmw-options-qualification.test.js"
   ],
   "selectedTests": [
+    "server/test/gcsp-bmw-options-qualification.test.js",
     "server/test/gcsp-bmw-context-qualification.test.js",
     "server/test/gcsp-bmw-source-batch.test.js",
     "server/test/gcsp-bmw-source-qualification.test.js",
