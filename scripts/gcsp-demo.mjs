@@ -6,11 +6,12 @@ import { fileURLToPath } from 'node:url';
 import { buildServer } from '../server/index.js';
 import { createGcspRuntime } from '../server/gcsp/runtime.js';
 import { createRunStockProviderFactory } from '../server/gcsp/stock/index.js';
+import { createDemoUpstream, withConfirmedSupply } from '../server/gcsp/stock/demo-provider.js';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json',
   '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff': 'font/woff', '.woff2': 'font/woff2' };
-const sessionPage = (path) => ['/gcsp-brief-live.html', '/gcsp-activity-live.html', '/gcsp-account.html',
+const sessionPage = (path) => ['/gcsp-brief-live.html', '/gcsp-activity-live.html', '/gcsp-order-progress-live.html', '/gcsp-account.html',
   '/gcsp-help.html', '/gcsp-greg.html', '/gcsp-case-queue.html', '/gcsp-presenter.html'].includes(path);
 const navigationCookie = 'GCSP_LOCAL_BOOTSTRAP';
 const publicPath = (path) => sessionPage(path) || ['/gcsp/offer', '/gcsp-offer.html', '/gcsp-employee.css', '/favicon.ico'].includes(path)
@@ -92,8 +93,10 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
   const mode = process.env.GCSP_REPOSITORY_MODE || 'postgres';
   const connectionString = process.env.GCSP_DATABASE_URL;
   const stock = createRunStockProviderFactory();
+  // One synthetic ordering upstream confirms supply and releases it on top of the run's chosen stock source.
+  const upstream = createDemoUpstream();
   const environmentId = process.env.GCSP_ENVIRONMENT_ID || 'gcsp-local-functional';
-  const app = await startGcspDemo({ port: Number(process.env.PORT) || 3001, runtime: { mode, stockProvider: stock,
+  const app = await startGcspDemo({ port: Number(process.env.PORT) || 3001, runtime: { mode, stockProvider: (deps) => withConfirmedSupply(stock(deps), upstream), production: upstream.production,
     repositoryOptions: { connectionString }, environmentId,
     policyAsOf: new Date().toISOString(), commandId: 'local-bootstrap', adoptOfferJourney: true } });
   if (app.status !== 'ok') { console.error(`GCSP local startup: ${app.status}${app.code ? ` (${app.code})` : ''}`); process.exitCode = 1; }

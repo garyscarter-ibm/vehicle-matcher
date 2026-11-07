@@ -4,6 +4,9 @@ import { good } from './helpers/greg-publish-run.js';
 import { startHttpServer } from './helpers/employee-recommendation-http.js';
 import { fixture, TOURING, DERIVATIVES, cap, submitOf } from './helpers/order-plan-fixture.js';
 import { createGcspRuntime } from '../gcsp/runtime.js';
+import { createDemoStockProvider, createDemoUpstream, withConfirmedSupply } from '../gcsp/stock/demo-provider.js';
+import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
+import { essential, preference } from './helpers/employee-recommendation.js';
 
 const BASE = '/api/gcsp/greg/order-plan';
 const quantity = (plan, id) => plan.quantities.find((q) => q.derivativeId === id).quantity;
@@ -96,4 +99,40 @@ test('the delivered runtime exposes the order plan and submit says it is not con
   const greg = good(await runtime.identity.switchPrincipal(presenter, 'demo-greg', 'plan-greg')).context;
   const out = await runtime.dependencies.gcspOrderPlan.submitPlan(greg, { commandId: 'rt', planId: 'order-plan-x', versions: { plan: 'order-plan-x' } });
   assert.deepEqual([out.status, out.code], ['unavailable', 'supply-requests-not-configured']);
+});
+
+// FUCQ-104 reconnection: the delivered runtime submits through the real supply service, which keeps the plan reference.
+test('the delivered runtime with the demo upstream submits the plan through FUCQ-104 and the request keeps the plan', async (t) => {
+  const upstream = createDemoUpstream();
+  const runtime = good(await createGcspRuntime({ mode: 'memory', stockProvider: (deps) => withConfirmedSupply(createDemoStockProvider(deps), upstream),
+    production: upstream.production, environmentId: 'order-plan-f104', policyAsOf: '2026-11-05T09:00:00.000Z',
+    commandId: 'order-plan-f104-bootstrap', sessionNow: () => '2026-11-06T00:00:00.000Z' }));
+  t.after(() => runtime.close());
+  const presenter = good(await runtime.identity.createPresenterSession('f104-presenter')).context;
+  const greg = good(await runtime.identity.switchPrincipal(presenter, 'demo-greg', 'f104-greg')).context;
+  const paula = good(await runtime.identity.switchPrincipal(presenter, 'demo-paula', 'f104-paula')).context;
+  good(await seedManualDemoContext({ repository: runtime.repository, identity: runtime.identity, clock: runtime.clock, context: paula }));
+  good(await runtime.brief.saveDraft(paula, { commandId: 'brief-draft', expectedBriefVersion: 0, expectedDraftVersion: 0,
+    brief: { schemaVersion: 1, preferences: { body: preference('estate') }, essentials: { seats: essential(5) } } }));
+  good(await runtime.brief.confirm(paula, { commandId: 'brief-confirm', expectedBriefVersion: 0, expectedDraftVersion: 1,
+    consent: { search: true, hold: true } }));
+  const ops = runtime.dependencies.gcspOrderPlan;
+  const read = good(await ops.readPlan(greg));
+  assert.equal(read.plan.status, 'feasible', JSON.stringify(read.plan.unmetNeeds ?? read.plan));
+  // Raise the Touring minimum so the plan orders at least one car whatever the generated stock covers.
+  const bounds = (await runtime.policy.getAssumption(DERIVATIVES, { runId: greg.runId, asOf: read.plan.asOf, policyVersion: greg.policyVersion })).value.value;
+  const changes = [{ key: DERIVATIVES, value: cap(bounds, TOURING, { min: 1 }) }];
+  const preview = good(await ops.previewPlan(greg, { changes }));
+  assert.ok(quantity(preview.plan, TOURING) >= 1);
+  const sent = good(await ops.submitPlan(greg, submitOf(preview.plan, 'f104-submit', { changes })));
+  assert.ok(sent.requests.length >= 1);
+  const rows = good(await runtime.repository.query(greg, 'future_order_requests'));
+  assert.equal(rows.length, sent.requests.length);
+  for (const row of rows) {
+    assert.equal(row.state, 'requested'); assert.equal(row.plan.planId, preview.plan.planId);
+    for (const key of ['plan', 'forecast', 'model', 'policy', 'cohort', 'stock', 'supply']) assert.ok(row.plan.versions[key], key);
+  }
+  const after = good(await ops.readPlan(greg));
+  assert.equal(after.replan.status, 'unchanged-since-submission');
+  assert.equal(after.plan.supplyActivity.requests.length, rows.length);
 });
