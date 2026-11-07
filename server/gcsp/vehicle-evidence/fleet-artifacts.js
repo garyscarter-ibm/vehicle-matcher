@@ -7,6 +7,7 @@ import { fleetReleases, approvedAssetUrl, DEFAULT_ARTIFACT_ROOT, releaseLimits, 
 import { durableCopy } from './corpus-publisher.js';
 import { createSyntheticRegistry } from './synthetic-registry.js';
 import { createPolicyService } from '../policy/index.js';
+import { APPROVED_CORPUS_IMAGES } from './registered-corpus-images.js';
 const sha = async (p) => { const h = createHash('sha256'); for await (const b of createReadStream(p)) h.update(b); return h.digest('hex'); };
 const absent = async (p) => { try { await lstat(p); return false; } catch (e) { if (e.code === 'ENOENT') return true; throw e; } };
 async function checkedAsset(root, asset) {
@@ -69,7 +70,7 @@ export async function restoreFleetRelease({ releaseId, store, cacheRoot = DEFAUL
     }
     await complete(cached, release);
     const options = { policyService: createPolicyService(), policyRead: { runId: 'fleet-artifact-restore', asOf },
-      jsonlLimitsForManifest: releaseLimits, sourceArtifactDirectory: cached };
+      jsonlLimitsForManifest: releaseLimits, sourceArtifactDirectory: cached, approvedImages: APPROVED_CORPUS_IMAGES };
     const candidateStore = join(cached, 'store'); const input = createSyntheticRegistry({ root: candidateStore, ...options }); const validated = await input.load();
     if (validated.status !== 'ok' || validated.active.manifestDigest !== release.manifestDigest) throw new TypeError('Cached store failed full validation');
     if (await absent(store)) {
