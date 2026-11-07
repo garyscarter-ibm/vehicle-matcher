@@ -1,0 +1,94 @@
+{
+  "run": "fucq98-fragment-compatibility-20261106",
+  "scope": "scoped offline contract repair; tests not yet run",
+  "base": "d8f9d0160c0a834ae23dade75235ea4b7331cb74",
+  "worktree": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054",
+  "changedProductionPaths": [
+    "server/gcsp/notify/brevo.js"
+  ],
+  "changedTests": [
+    "server/test/gcsp-mail-transport.test.js"
+  ],
+  "regression": "F100 canonical fragment is rejected before provider; preserve exact bearer fragment in text/html outbound bodies and refuse noncanonical fragments",
+  "affectedCallers": [
+    "renderOfferMessage/safeOfferLink",
+    "BrevoMailTransport.send/absoluteLink",
+    "NotificationDispatcher",
+    "createMailTransport/createGcspRuntime",
+    "presenter outbox route/viewer"
+  ],
+  "commands": {
+    "red": "node --test --test-reporter=tap --test-name-pattern='^pinned FUCQ-100 producer fragment survives renderer and configured outbound bodies$' server/test/gcsp-mail-transport.test.js",
+    "mail": "node --test --test-reporter=tap --test-concurrency=1 server/test/gcsp-mail-transport.test.js",
+    "boundaries": "node --test --test-reporter=tap --test-concurrency=1 server/test/gcsp-outbox.test.js server/test/gcsp-outbox-route.test.js server/test/gcsp-outbox-viewer.test.js"
+  },
+  "selector": {
+    "helper": "/Users/usget/Claude/vehicle-matcher/_tools/test_stamp.py",
+    "mode": "--targeted d8f9d016 --command <exact command> --dry-run before any test",
+    "automatic": "No configured JS affected selector; legacy --affected can fall back to full. Use explicit reviewed selection; never execute fallback."
+  },
+  "exclusions": {
+    "fullSuite": "narrow URL conversion correction; frozen historical full remains historical",
+    "nativePostgreSQL": "no repository/schema mutation; clean environment excludes all DB credentials; existing memory/SQL-double boundaries only",
+    "browserAndScreenshots": "no template/layout/copy/component changes; rendered text/html href and escaping asserted offline; live/visual story acceptance remains open",
+    "hostRuntimeFrontend": "GC owns latest composed host and F105; no source edits or integration claim",
+    "liveServices": "stubbed HTTP boundary only; no HTTP, recipient approval access, credentials, Keychain, inbox, email, SQL, install or source collection"
+  },
+  "limits": {
+    "workers": 1,
+    "scratchMiB": 64,
+    "chargedRssMiB": 384,
+    "childRssMiB": 320,
+    "supervisorRssMiB": 64,
+    "secondsPerChunk": 120,
+    "logMiB": 1
+  },
+  "ownership": {
+    "receiptRoot": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f98-repair",
+    "scratch": "fresh unique trusted Scratch manifest outside root before allocation; R.handled_termination finalizer and joined groups; verify absence each chunk",
+    "dependency": "exact absent owned server/node_modules/pg symlink to existing DEV069 target; external manifest before creation; content/device/inode checks before/after; remove own link/empty directory",
+    "sharedReservations": "trusted main-root HostBudget; disable pruning foreign rows; release only exact matching owned row after scratch/link/groups absent"
+  },
+  "producer": {
+    "commit": "1a1caa18bf04b62a38fc7355bd1bd1e3df01b2e5",
+    "path": "server/gcsp/offers/offer-token.js",
+    "sha256": "325b699d7dfdb435cd8713015017aa68bf735582f127d7d64a0e0fc819f7b915",
+    "import": "read immutable blob using supported short-lock scaffold Git; digest-check then in-memory data URL import; only node:crypto dependency; no production copy",
+    "data": "synthetic current memory context; minted token ephemeral; no real offer/live acceptance proof"
+  },
+  "newerHostEvidence": {
+    "commit": "4037b762086113e4970f651161471b603d39b4d5",
+    "source": "HTTPS scripts/gcsp-demo.mjs now serves /gcsp/offer via gcsp-offer.html and F105 entry harness",
+    "evidence": "docs/gcsp/evidence/fucq100/local-https-corrected-result-1357.md: corrected TLS2 2/2 and host1/1 scoped PASS; browser/deployed/live/provider acceptance still open",
+    "producerUnchanged": true
+  },
+  "preRepairHashes": {
+    "server/gcsp/notify/brevo.js": "22f9b813a81e93f57c9e31f539ec1a6194ed7ce338b1303cc45e175a1cbb9382",
+    "server/test/gcsp-mail-transport.test.js": "ef6a1baf96903fc6a4e8ae76257974f40cec5a469accdafdcb0123082897a2a2",
+    "server/gcsp/notify/templates.js": "fb9a3b9719c54000409553773698ef620bf35a5ba06c354f33b30cea7df839eb",
+    "server/gcsp/notify/index.js": "2edc056423207a9ffd77b281f68d243e22123228da7e3424864fb170255ff6a2",
+    "server/gcsp/runtime.js": "6002f36386f1f05a16f4847173a9c2d9fa1317c4783c0576dc74a93574cdf727"
+  },
+  "supervisorInputs": {
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/docs/gcsp/evidence/fucq98/fragment-compatibility-2026-11-06/scoped.py": "931eb6f7b0bd2bfa8af9c6129757d67d72b07b4c2dede9b655858db4d02f6349",
+    "/Users/usget/Claude/vehicle-matcher/_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "/Users/usget/Claude/vehicle-matcher/_tools/test_stamp.py": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
+    "/Users/usget/Claude/vehicle-matcher/_tools/scaffold_git.py": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a"
+  },
+  "coverage": "NODE_V8_COVERAGE during required validation; compact module/range observations per phase/file context only, not individual title/branch ownership",
+  "status": "red reproduced; minimal correction authored; scoped green pending",
+  "originalExecutedRedCommand": "node --test --test-name-pattern='^pinned FUCQ-100 producer fragment survives renderer and configured outbound bodies$' server/test/gcsp-mail-transport.test.js",
+  "correctedHashes": {
+    "server/gcsp/notify/brevo.js": "a6e80bfe650a37f23e2aed2ff7d6ba63f993746c982366d7fe0a49efb4716447",
+    "server/test/gcsp-mail-transport.test.js": "ef6a1baf96903fc6a4e8ae76257974f40cec5a469accdafdcb0123082897a2a2",
+    "server/gcsp/notify/templates.js": "fb9a3b9719c54000409553773698ef620bf35a5ba06c354f33b30cea7df839eb",
+    "server/gcsp/notify/index.js": "2edc056423207a9ffd77b281f68d243e22123228da7e3424864fb170255ff6a2",
+    "server/gcsp/runtime.js": "6002f36386f1f05a16f4847173a9c2d9fa1317c4783c0576dc74a93574cdf727"
+  },
+  "redEvidence": "red-summary.json",
+  "supervisorRevision": {
+    "originalSha256": "cb2d1852ea7d834b39edca96fb36c1c2c2bf7d0614a33d843958974f82df0e29",
+    "currentSha256": "931eb6f7b0bd2bfa8af9c6129757d67d72b07b4c2dede9b655858db4d02f6349",
+    "reason": "explicit TAP reporter, retain default reporter parsing, freeze corrected code and prevent consumed red rerun"
+  }
+}

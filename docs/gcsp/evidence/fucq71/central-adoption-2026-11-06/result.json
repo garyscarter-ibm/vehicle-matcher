@@ -1,0 +1,176 @@
+{
+  "agents": "Sam Sheepdog existing requested/selected gpt-6.1-sol/high; no fallback or descendants.",
+  "authority": "Independent owned F71 acceptance boundary; no GC execution grant, source/test/claim/Jira/product-map mutation. Parent owns publication and closure.",
+  "coverage": {
+    "context": "Required-run V8 file/function/range context for the combined selected IDs, not individual-title attribution or complete branch coverage; unobserved paths remain unknown.",
+    "identity": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f71-central-adoption/coverage.json",
+      "sha256": "28b342b6abbc263bc43961920ec6656fba35748fddf5c78490db5bb918d2f983"
+    },
+    "impact": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq71-central-adoption-c251.json",
+      "sha256": "19902c75a51bc4d6a214ac9f6a8740ca3940d8ce435bdeb4022d96c63bf3e703"
+    },
+    "modules": 43
+  },
+  "date": "2026-11-06",
+  "execution": {
+    "attempts": 1,
+    "command": [
+      "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+      "--max-old-space-size=128",
+      "--test",
+      "--test-reporter=tap",
+      "--test-isolation=none",
+      "--test-concurrency=1",
+      "--test-name-pattern=^(?:(?:acknowledged selection satisfies actual FUCQ-112 renewal deadline consumer|selection pins only consistent actual employee and slot renewal authority|delayed acknowledgement keeps its pinned renewal and does not suppress a later renewal|pending and failed handoffs do not suppress the actual FUCQ-112 deadline consumer|actual manual claims review and allocation feed common ordering without copying its implementation)(?: .*)?|slot only|same default employee only|matching authorities|unknown|hold without employee or slot authority|employee and slot disagree|source hold disagrees|malformed employee authority|unsupported)$",
+      "server/test/gcsp-manual-order.test.js"
+    ],
+    "counts": {
+      "cancelled": 0,
+      "fail": 0,
+      "pass": 15,
+      "skipped": 0,
+      "tests": 15,
+      "todo": 0
+    },
+    "environmentKeys": [
+      "LANG",
+      "LC_ALL",
+      "NODE_V8_COVERAGE",
+      "PATH",
+      "TEMP",
+      "TEST_RESOURCE_PARENT_RESERVATION",
+      "TMP",
+      "TMPDIR",
+      "TZ"
+    ],
+    "environmentSHA256": "5052c3bac51d9d2f0b99ac1d529d5e5f3680b9fc522c1cb22b7a2e8b426d8540",
+    "exitCode": 0,
+    "nodeSHA256": "1ef99ea25fe70c9b67e7efe768ef8ee22148d3cabc703db6131b57aeb617d040",
+    "offlineBoundary": "OS sandbox denies network, process forks and writes outside owned scratch except/dev/null. No native PostgreSQL/BMW/mail/browser/public-service operation selected.",
+    "sandboxCommandPrefix": [
+      "/usr/bin/sandbox-exec",
+      "-f",
+      "/private/tmp/test-stamp-shard-77fd355c4fc5425b83fa1a92f1d04a16/offline.sb"
+    ],
+    "sandboxExecutableSHA256": "10cf4a46a575e4747d2419cf343800db0d11ae6e6e9b8415998d3d8f336b2a92",
+    "sandboxProfileSHA256": "3cd2cf33a1fd5ea786f02576ab75670b25987f628316b4e6556ff940d1d499c0",
+    "selectedScopeExecuted": true,
+    "totalSeconds": 3.4948716249999996,
+    "workerSeconds": 2.735054167,
+    "workingDirectory": "/private/tmp/test-stamp-shard-77fd355c4fc5425b83fa1a92f1d04a16 (removed after execution)"
+  },
+  "experience": "Existing HLD and docs/gcsp/experience-quality.md; backend receipt/order/history semantics checked; no screen/component/style change or new rendered evidence.",
+  "independentReview": {
+    "afterRun": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f71-central-adoption/parent-audit.json",
+      "sha256": "2ad8f20cc62d278d0f959dedcd2e11a2965c908b3dcd749af10d6aa0116e84e4"
+    },
+    "auditAt": "2026-11-06T16:11:10.021656+00:00",
+    "beforeRun": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f71-central-adoption/parent-review.json",
+      "sha256": "d28cc5333f3077fb53f214f461886c29a0f0c4b4bcab48261b9301f2feafbde1"
+    },
+    "decision": "PASS scoped actual central-adoption proof and cleanup",
+    "limitsRespected": true,
+    "parentGrantedSingleSerialRun": true,
+    "testLane": "released after supervisor exit; no further test execution"
+  },
+  "owningWorktreeBaseline": "e109ab07face9c7967e58582fdb0c55a8129ee83",
+  "remaining": [
+    "Actual ManualClaimsService has no convertSelection; passing interoperability uses the original allocate fallback and does not prove single-transaction allocation/ordering intent.",
+    "Actual buddy ordering join and public F71 submit/frontend/account-history integration remain unproved by this run.",
+    "Configured native atomicity/reopen/new-process acceptance and retained SQL-key acceptance remain with the authorised native environment.",
+    "Final parent integration checkpoint and story acceptance remain open."
+  ],
+  "resources": {
+    "compatibilityException": null,
+    "dependencyRootAnd139FileIdentitiesUnchanged": true,
+    "exactReservationAbsent": true,
+    "leftovers": [],
+    "limits": {
+      "chargedRamMiB": 512,
+      "childRamMiB": 448,
+      "logMiB": 1,
+      "retainedCoverageMaximumBytes": 524288,
+      "scratchMiB": 64,
+      "supervisorRamMiB": 64,
+      "teardownReserveSeconds": 30,
+      "totalSeconds": 120,
+      "workDeadlineSeconds": 90,
+      "workers": 1
+    },
+    "maximumChargedBytesConservative": 229654528,
+    "maximumScratchBytes": 1803068,
+    "openFilesAbsentBeforeRemoval": true,
+    "sampledChildPeakRssBytes": 200654848,
+    "scratchAndLinkAbsent": true,
+    "scratchBytesRemoved": 1803068,
+    "successfulTapAndRawCoverage": "removed with owned scratch; compact coverage/impact retained",
+    "supervisorChildrenGroupsAbsent": true,
+    "supervisorPeakRssBytes": 28999680
+  },
+  "retainedEvidence": {
+    "cleanup.json": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f71-central-adoption/cleanup.json",
+      "sha256": "614fbc1ccdbc0deeefd1d5c3919cf70f7e0cbb900504a3b2d2eb2e777cdfc6eb"
+    },
+    "dependency-admission.json": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f71-central-adoption/dependency-admission.json",
+      "sha256": "962e41b9ff1489babce4a28215752046f458084291f76f190a9e277dbe7d9321"
+    },
+    "grant-consumed.json": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f71-central-adoption/grant-consumed.json",
+      "sha256": "f543032e854005188fe6edba1c0df66d77a4790705492b5e3c5d70c53bb60423"
+    },
+    "packet.json": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f71-central-adoption/packet.json",
+      "sha256": "44094357251799530b98c5d2c87ce378e72508a1af0ad3a27481fa042af794a9"
+    },
+    "plan.json": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f71-central-adoption/plan.json",
+      "sha256": "88fef4bf5700756cc009cf9d78f344c0848a059b00f88ff0315348a2bb5d66d1"
+    },
+    "receipt.json": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f71-central-adoption/receipt.json",
+      "sha256": "ffd7f430bbae0e014d1665cd1d51c29cb659b893df4e39c1704290eb0a985e9e"
+    },
+    "run.py": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f71-central-adoption/run.py",
+      "sha256": "3d38e438c03bbd888248258798e0af529cfd1def782bc4c02049f1072f1b9dfc"
+    },
+    "source-admission.json": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f71-central-adoption/source-admission.json",
+      "sha256": "12341393128bd20133b84a2f55fb89442e6b4dd0220f019fe402a673cd88afaf"
+    }
+  },
+  "runId": "fucq71-central-adoption-20261106-c251",
+  "scope": {
+    "inclusiveChecks": 15,
+    "materialisedSourcesUnchanged": true,
+    "notFull": "Selected adopted owning cases only; original proof not rerun, complete adopted suite/full application/native/public acceptance not claimed.",
+    "selected": [
+      "acknowledged selection satisfies actual FUCQ-112 renewal deadline consumer",
+      "selection pins only consistent actual employee and slot renewal authority",
+      "delayed acknowledgement keeps its pinned renewal and does not suppress a later renewal",
+      "pending and failed handoffs do not suppress the actual FUCQ-112 deadline consumer",
+      "actual manual claims review and allocation feed common ordering without copying its implementation"
+    ],
+    "sourceHashes": {
+      "docs/gcsp/evidence/fucq71/response-fixtures.json": "13a9df42020c7b802011c03cd081f04e141b4667da4506bc5a6fb673d220a30d",
+      "server/gcsp/cases/index.js": "a080a47479444a94f041de1b0c094974c3eea655a8076f771ec33f82ecb43379",
+      "server/gcsp/manual-claims/index.js": "32c80ef72d8329fcdbc4a208d9ab911f68156e6234d3917975754415d04ef059",
+      "server/gcsp/manual-context/index.js": "3e694f3a68b9d3c9f40b44ddb785bec2edce3b3ada43d491995be77a2930fd43",
+      "server/gcsp/manual-order/index.js": "a12f7c2abfb4e487355cee999359859b0936b9a22075755884087566c7a42c8c",
+      "server/gcsp/manual-order/manual-conversion.js": "330ff1613ad01a08578f32c8cfdeaa763e6a8aa7844b68e433abea4d0ab1cb1f",
+      "server/test/gcsp-manual-order.test.js": "d6b2a63f9a89139cdc15c2f55136d530b0c04a5450b6c5d6a42b8f8dc847f709"
+    },
+    "sourceIdentitySHA256": "ac5f94e13f77b531d943bd603085919e0bddbe9f2de2236b139b69e1615274f5",
+    "storyDenominator": "Existing four slices unchanged; no map or lifecycle status change.",
+    "topLevelTests": 5,
+    "variant": "54 exact Git blobs including43 JavaScript modules, unchanged static imports; actual central services, in-memory repository/explicit policy inputs and existing synthetic adapters; admitted read-only vendor tree"
+  },
+  "sourcePin": "c251f98f77664377b1d53f76e6182f6837be09bc",
+  "status": "passed scoped central-adoption boundary; FUCQ-71 remains In Progress"
+}

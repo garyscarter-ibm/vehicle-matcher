@@ -1,0 +1,11 @@
+{
+  "status": "red reproduced actual unwanted F112 deadline case; green admitted",
+  "redHashes": {
+    "server/gcsp/manual-order/index.js": "b4b7798268cd51929b756ffb4c48e6f56579821094a0fa064f604d5886fcc352",
+    "server/test/gcsp-manual-order.test.js": "c16e2046535b7dd8389c2a903fb3f7c8d98c90a5da33633fea0b659b28d641e8"
+  },
+  "greenHashes": {
+    "server/gcsp/manual-order/index.js": "a12f7c2abfb4e487355cee999359859b0936b9a22075755884087566c7a42c8c",
+    "server/test/gcsp-manual-order.test.js": "c16e2046535b7dd8389c2a903fb3f7c8d98c90a5da33633fea0b659b28d641e8"
+  }
+}

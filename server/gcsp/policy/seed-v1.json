@@ -12660,6 +12660,98 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "lifecycle.appointments.slots.v1",
+      "value": {
+        "openingStage": "sent to ordering",
+        "openingState": "approved",
+        "earliestLeadDays": 2,
+        "daysOffered": 3,
+        "slotMinutes": 60,
+        "dailyStartTimes": [
+          "09:00",
+          "13:00"
+        ]
+      },
+      "unit": "days from the demo clock date; minutes; UTC HH:MM daily start times",
+      "status": "assumed",
+      "basis": "Plausible synthetic handover slots: two clear days to prepare the car, three days of choice and hour-long slots at two daily times. Not retailer calendar data; revisable here.",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-appointments--fucq-114",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "lifecycle.appointments.confirmation.v1",
+      "value": {
+        "confirmDelaySeconds": 1800,
+        "providerTimeoutMs": 2000
+      },
+      "unit": "seconds of demo-clock time; milliseconds",
+      "status": "assumed",
+      "basis": "A half hour of demo time before the synthetic retailer answers a request makes the wait visible on a presenter tick. The call timeout bounds a stalled provider. Revisable demo assumptions.",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-appointments--fucq-114",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "lifecycle.appointments.scenario.v1",
+      "value": {
+        "proposeChange": false,
+        "proposedSlot": "next-offered",
+        "proposalReason": "The retailer proposed a different time."
+      },
+      "unit": "difficult-case switch; alternative slot rule; reason text",
+      "status": "assumed",
+      "basis": "Difficult-case switch for the synthetic provider. Off by default; when on, the provider answers with the next daily slot instead of the requested one and Paula must accept it.",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-appointments--fucq-114",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "lifecycle.appointments.ownership.v1",
+      "value": {
+        "states": {
+          "not-requested": {
+            "owner": "employee",
+            "nextStep": "Choose a handover slot."
+          },
+          "requested": {
+            "owner": "retailer",
+            "nextStep": "Waiting for the retailer to confirm your slot."
+          },
+          "change-proposed": {
+            "owner": "employee",
+            "nextStep": "Accept the new time to confirm your handover."
+          },
+          "scheduled": {
+            "owner": "retailer",
+            "nextStep": "The retailer prepares your car for the handover."
+          }
+        },
+        "ineligible": {
+          "owner": "scheme-team",
+          "nextStep": "Waiting for your order to be sent to ordering."
+        },
+        "pending": {
+          "owner": "scheme-team",
+          "nextStep": "Waiting for the scheme team to confirm the last update."
+        },
+        "blocked": {
+          "owner": "scheme-team",
+          "nextStep": "The scheme team will review why this was not accepted."
+        }
+      },
+      "unit": "owner and next-step label per appointment state",
+      "status": "assumed",
+      "basis": "Who acts next at each appointment state (HLD review Q19). Owners are Paula (employee), the retailer or the scheme team; labels are concise demo copy, not BMW workflow text.",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-appointments--fucq-114",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "supply.release.cadence",
       "value": {
         "timeZone": "Europe/London",
