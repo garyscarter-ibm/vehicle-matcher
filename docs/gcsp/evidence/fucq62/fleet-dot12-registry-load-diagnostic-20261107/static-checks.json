@@ -1,0 +1,37 @@
+{
+  "scope": "static-only registry-load delta preparation",
+  "planSha256": "44098dc3cadeca67e5dd0a706e95e9f6cf97d93b8fe1fd3c264d019c98afdff4",
+  "runnerSha256": "04d548f233c355ca9e6d23c10f6d62c4bc928140161d7d18af26e25ab5acbb8d",
+  "nodeSyntaxRc": 0,
+  "runtimePinCount": 102,
+  "runtimePinsChecked": true,
+  "retainedInputPins": 31,
+  "retainedInputBytes": 574382841,
+  "retainedInputPathsExist": true,
+  "pointerAndHistorySizeHashPinsChecked": true,
+  "activePointer": {
+    "previous": {
+      "directory": "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab",
+      "manifestDigest": "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab"
+    },
+    "schemaVersion": "1",
+    "selected": {
+      "directory": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+      "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30"
+    }
+  },
+  "lastGoodPointer": {
+    "schemaVersion": "1",
+    "selected": {
+      "directory": "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab",
+      "manifestDigest": "77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab"
+    }
+  },
+  "previousValidatorPlanResultReceiptUnchanged": true,
+  "publicPublicationReceiptChecked": true,
+  "all31InputHashes": "Runner/root must check31selected pins before/aftercall. Staticpreparation checked3pointer/history hashes; completedpriorvalidator checkedcurrent4corpus+20sources. No deleteddownload comparison possible.",
+  "runtimeExecuted": false,
+  "networkRequests": 0,
+  "scratchAllocated": false,
+  "acceptance": false
+}

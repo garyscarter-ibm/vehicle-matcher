@@ -1,0 +1,13 @@
+{
+  "rc": 0,
+  "elapsedSeconds": 0.8342272380000004,
+  "scratchAbsent": true,
+  "groupsAbsent": true,
+  "removedScratchPeakBytes": 16946,
+  "peakGroupRssBytes": 72339456,
+  "peakSupervisorRssBytes": 18059264,
+  "aggregateRssUpperBoundBytes": 90398720,
+  "retainedArchive": false,
+  "retainedLogBytesBeforeCleanupLine": 9852,
+  "leftovers": []
+}

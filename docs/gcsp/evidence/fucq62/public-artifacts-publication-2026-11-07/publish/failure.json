@@ -1,0 +1,7 @@
+{
+  "phase": "publish",
+  "name": "Error",
+  "message": "Command failed: /Users/usget/.claude-tools/bin/gh api --method POST repos/garyscarter-ibm/vehicle-matcher/releases --input /Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/public-artifacts/publish/release-request.json --jq {id,tag_name,target_commitish,prerelease,draft,html_url}\nTo get started with GitHub CLI, please run:  gh auth login\nAlternatively, populate the GH_TOKEN environment variable with a GitHub API authentication token.\n",
+  "code": 4,
+  "stderr": "To get started with GitHub CLI, please run:  gh auth login\nAlternatively, populate the GH_TOKEN environment variable with a GitHub API authentication token.\n"
+}

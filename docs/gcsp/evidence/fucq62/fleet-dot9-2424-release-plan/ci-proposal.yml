@@ -1,0 +1,69 @@
+name: GCSP pinned fleet build
+
+on:
+  push:
+    branches: [gcsp-poc]
+    paths: [.github/workflows/gcsp-fleet-build.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fleet-node20:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Build restore and exact 2426 reference proof with 485 observed consumer failures
+        shell: bash
+        env:
+          RELEASE: 28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884
+        run: |
+          set -euo pipefail
+          task_root="$RUNNER_TEMP/gcsp-fleet-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          manifest="$GITHUB_WORKSPACE/.claude/test-runs/ci-fleet-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.json"
+          test ! -e "$task_root"
+          mkdir -p "$(dirname "$manifest")"
+          printf '{"root":"%s","owner":"%s","workers":1,"scratchBudgetMiB":384,"seconds":420,"scope":"Node20 Linux exact public restore,2426 references,485 observed consumer failures; acceptance false"}\n' "$task_root" "$GITHUB_RUN_ID" > "$manifest"
+          cleanup() {
+            result=$?
+            if test -d "$task_root"; then
+              du -sk "$task_root"
+              rm -rf -- "$task_root"
+            fi
+            test ! -e "$task_root"
+            printf 'Owned scratch absent; no retained archive; exit=%s\n' "$result"
+            exit "$result"
+          }
+          trap cleanup EXIT
+          mkdir "$task_root"
+          export TMPDIR="$task_root" TMP="$task_root" TEMP="$task_root"
+          node --version
+          cd server
+          npm ci --ignore-scripts --no-audit --no-fund
+          timeout 120s node --max-old-space-size=256 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network download > "$task_root/download.json"
+          timeout 60s node --max-old-space-size=256 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network offline > "$task_root/offline.json"
+          cd ..
+          proof=docs/gcsp/evidence/fucq62/fleet-dot9-2424-release-plan
+          timeout 90s node --max-old-space-size=256 "$proof/audit-restored.mjs" "$task_root/store" "$task_root/cache/$RELEASE" "$task_root"
+          for chunk in 0 1 2; do
+            timeout 90s node --max-old-space-size=256 "$proof/prove-restored.mjs" "$task_root/store" "$task_root/cache/$RELEASE" "$task_root" "$chunk"
+          done
+          timeout 90s node --max-old-space-size=256 "$proof/recovery.mjs" "$task_root/store" "$task_root/cache/$RELEASE" "$task_root"
+          timeout 30s node --max-old-space-size=256 "$proof/summarize-restored.mjs" "$task_root"
+          node --input-type=module - "$task_root" <<'JS'
+          import assert from 'node:assert/strict';
+          import {readFile} from 'node:fs/promises';
+          const root=process.argv[2];const read=async name=>JSON.parse(await readFile(`${root}/${name}.json`));
+          const downloaded=await read('download'),offline=await read('offline'),summary=await read('restored-summary');
+          assert.equal(downloaded.status,'ok');assert.equal(downloaded.mode,'cold-restore');assert.equal(downloaded.active.manifestDigest,process.env.RELEASE);assert.ok(downloaded.externalCalls<=96);
+          assert.equal(offline.status,'ok');assert.equal(offline.idempotent,true);assert.equal(offline.externalCalls,0);
+          assert.equal(summary.exactUniqueReferences,2426);assert.equal(summary.consumerFailed,485);assert.equal(summary.acceptance,false);
+          console.log(JSON.stringify({runtime:process.version,platform:process.platform,...summary,buildHTTPSCalls:downloaded.externalCalls,fullSuiteRun:false}));
+          JS

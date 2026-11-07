@@ -1,0 +1,348 @@
+{
+  "date": "2026-11-07",
+  "status": "investigation-and-finite-plan-only; root review required before source traffic",
+  "codeBase": "ba47670d",
+  "activeCorpus": {
+    "version": "2026-11-07.5",
+    "manifestDigest": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+    "totalRows": 480,
+    "sourceRows": 479,
+    "sourceV2Rows": 478,
+    "sourceV1Rows": 1,
+    "sourceV2ByCanonicalModel": {
+      "T5MJ": 340,
+      "1F7B": 8,
+      "1F7E": 130
+    },
+    "approvedImages": 1
+  },
+  "pilot": {
+    "acceptedSource": "docs/gcsp/evidence/fucq59/f70-1f7e-first32-solver-2026-11-07/accepted.jsonl",
+    "fileSha256": "845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080",
+    "line": 1,
+    "lineSha256": "cf62b45203b45bc00bf6562141c7df28c3527490ef6a7886da0c981548e5317c",
+    "configurationId": "MUY3RTpGS1VLUCxQMEM0UCxTMDFDQixTMDFDRSxTMDFERixTMDFIOCxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDMzNyxTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDRHUSxTMDUzNCxTMDU1MixTMDVBQyxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDcxMCxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNOSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMg==",
+    "configurationIdSha256": "7ff1dacf6046ecb2bdb10aa7c5c55a41eb532c76ac83ae8b9bbfb3581dae6107",
+    "catalogueRequest": {
+      "configurationId": "MUY3RTpGS1VLUCxQMEM0UCxTMDFDQixTMDFDRSxTMDFERixTMDFIOCxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDMzNyxTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDRHUSxTMDUzNCxTMDU1MixTMDVBQyxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDcxMCxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNOSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMg==",
+      "bindingDigest": "e6b76de9ba2560c6805021b3968fd9c99710674c702addd2182039ea19e1a77f"
+    },
+    "lookupIdentity": {
+      "provider": "bmw-catalogue-snapshot",
+      "providerVersion": "2",
+      "schemaVersion": "2",
+      "sourceContractVersion": "bmw-public-solver-selection.v1",
+      "snapshotVersion": "bmw-gb-1f7e-first32-2026-11-07.v2",
+      "bindingDigest": "e6b76de9ba2560c6805021b3968fd9c99710674c702addd2182039ea19e1a77f",
+      "configurationId": "MUY3RTpGS1VLUCxQMEM0UCxTMDFDQixTMDFDRSxTMDFERixTMDFIOCxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDMzNyxTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDRHUSxTMDUzNCxTMDU1MixTMDVBQyxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDcxMCxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNOSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMg=="
+    },
+    "canonicalIdentity": {
+      "vgModelCode": "1F7E",
+      "agModelCode": "82GE",
+      "factoryOptionCodes": [
+        "FKUKP",
+        "P0C4P",
+        "S01CB",
+        "S01CE",
+        "S01DF",
+        "S01H8",
+        "S0230",
+        "S02PA",
+        "S02TE",
+        "S02VB",
+        "S02VD",
+        "S02VF",
+        "S0302",
+        "S0337",
+        "S033B",
+        "S03M2",
+        "S03MF",
+        "S0420",
+        "S0428",
+        "S043Z",
+        "S0478",
+        "S0481",
+        "S0494",
+        "S04GQ",
+        "S0534",
+        "S0552",
+        "S05AC",
+        "S05AS",
+        "S05AV",
+        "S05DM",
+        "S0654",
+        "S06AE",
+        "S06AF",
+        "S06PA",
+        "S0710",
+        "S0754",
+        "S0760",
+        "S0775",
+        "S07M9",
+        "S0812",
+        "S0850",
+        "S0853",
+        "S088K",
+        "S08KA",
+        "S08R3",
+        "S08R9",
+        "S08SM",
+        "S08TF",
+        "S08TG",
+        "S09T1",
+        "S09T2"
+      ]
+    },
+    "requestScope": {
+      "market": "GB",
+      "locale": "en-GB",
+      "catalogueRangeKey": "F70",
+      "requests": [
+        {
+          "operation": "discover",
+          "method": "GET",
+          "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=F70&future-models=true&closest-fallback=true",
+          "modelCode": "1F7E",
+          "orderDate": "2026-11-01",
+          "effectDate": "2026-11-01",
+          "includedCodes": [],
+          "mandatoryCodes": [],
+          "excludedCodes": [],
+          "trimInput": null
+        },
+        {
+          "operation": "solve",
+          "method": "GET",
+          "url": "https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/1F7E?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKUKP%2CP0C4P%2CS01H8%2CS033B&mandatory-elements=S033B",
+          "modelCode": "1F7E",
+          "orderDate": "2026-11-01",
+          "effectDate": "2027-01-05",
+          "includedCodes": [
+            "FKUKP",
+            "P0C4P",
+            "S01H8",
+            "S033B"
+          ],
+          "mandatoryCodes": [
+            "S033B"
+          ],
+          "excludedCodes": [],
+          "trimInput": null
+        }
+      ]
+    },
+    "confirmedContext": {
+      "modelCode": {
+        "state": "known",
+        "value": "1F7E",
+        "reason": null,
+        "evidenceRefs": [
+          {
+            "evidenceId": "tree",
+            "locatorName": "modelCode"
+          }
+        ]
+      },
+      "agModelCode": {
+        "state": "known",
+        "value": "82GE",
+        "reason": null,
+        "evidenceRefs": [
+          {
+            "evidenceId": "tree",
+            "locatorName": "agModelCode"
+          }
+        ]
+      },
+      "rawModelRange": {
+        "state": "known",
+        "value": "F70",
+        "reason": null,
+        "evidenceRefs": [
+          {
+            "evidenceId": "tree",
+            "locatorName": "rawModelRange"
+          }
+        ]
+      },
+      "orderDate": {
+        "state": "known",
+        "value": "2026-11-01",
+        "reason": null,
+        "evidenceRefs": [
+          {
+            "evidenceId": "tree",
+            "locatorName": "orderDate"
+          }
+        ]
+      },
+      "effectDate": {
+        "state": "known",
+        "value": "2027-01-05",
+        "reason": null,
+        "evidenceRefs": [
+          {
+            "evidenceId": "tree",
+            "locatorName": "effectDate"
+          }
+        ]
+      },
+      "taxDate": {
+        "state": "known",
+        "value": "2027-01-05",
+        "reason": null,
+        "evidenceRefs": [
+          {
+            "evidenceId": "tree",
+            "locatorName": "taxDate"
+          }
+        ]
+      },
+      "steeringLiteral": {
+        "state": "known",
+        "value": "RL",
+        "reason": null,
+        "evidenceRefs": [
+          {
+            "evidenceId": "tree",
+            "locatorName": "steeringLiteral"
+          }
+        ]
+      }
+    },
+    "selectedAccessories": [],
+    "paint": {
+      "state": "known",
+      "value": {
+        "code": "P0C4P",
+        "type": "paint"
+      },
+      "reason": null,
+      "evidenceRefs": [
+        {
+          "evidenceId": "definitions",
+          "locatorName": "paint-P0C4P"
+        }
+      ]
+    },
+    "upholstery": {
+      "state": "known",
+      "value": {
+        "code": "FKUKP",
+        "type": "upholstery"
+      },
+      "reason": null,
+      "evidenceRefs": [
+        {
+          "evidenceId": "definitions",
+          "locatorName": "upholstery-FKUKP"
+        }
+      ]
+    }
+  },
+  "observationRequests": [
+    {
+      "operation": "page",
+      "method": "GET",
+      "url": "https://configure.bmw.co.uk/en_GB/configure/F70/1F7E",
+      "maxAttempts": 1
+    },
+    {
+      "operation": "settings",
+      "method": "GET",
+      "urlRule": "one exact /en_GB/settings.<hash>.json discovered on that page; same configure.bmw.co.uk origin",
+      "maxAttempts": 1,
+      "retention": "public application key held only in closure; never print or retain settings body/header values"
+    },
+    {
+      "operation": "technical",
+      "method": "GET",
+      "url": "https://prod.ucp.bmw.cloud/otd/country-groups/eu27+/ag-models/82GE/validity-dates/2027-01-05/otd-for-configuration?included-options=FKUKP%2CP0C4P%2CS01CB%2CS01CE%2CS01DF%2CS01H8%2CS0230%2CS02PA%2CS02TE%2CS02VB%2CS02VD%2CS02VF%2CS0302%2CS0337%2CS033B%2CS03M2%2CS03MF%2CS0420%2CS0428%2CS043Z%2CS0478%2CS0481%2CS0494%2CS04GQ%2CS0534%2CS0552%2CS05AC%2CS05AS%2CS05AV%2CS05DM%2CS0654%2CS06AE%2CS06AF%2CS06PA%2CS0710%2CS0754%2CS0760%2CS0775%2CS07M9%2CS0812%2CS0850%2CS0853%2CS088K%2CS08KA%2CS08R3%2CS08R9%2CS08SM%2CS08TF%2CS08TG%2CS09T1%2CS09T2",
+      "maxAttempts": 1
+    },
+    {
+      "operation": "imageManifest",
+      "method": "GET",
+      "url": "https://prod.cosy.bmw.cloud/image-urls/dynamic-named-images/mandators/connext-bmw/collections/stage-fullscreen-views-legacy-newnames/brands/bmwCar/models/82GE?effectdate=20270105&hub=CLOUD_PROD_INTERNET&imagetype=webp&options=FKUKP%2CP0C4P%2CS01CB%2CS01CE%2CS01DF%2CS01H8%2CS0230%2CS02PA%2CS02TE%2CS02VB%2CS02VD%2CS02VF%2CS0302%2CS0337%2CS033B%2CS03M2%2CS03MF%2CS0420%2CS0428%2CS043Z%2CS0478%2CS0481%2CS0494%2CS04GQ%2CS0534%2CS0552%2CS05AC%2CS05AS%2CS05AV%2CS05DM%2CS0654%2CS06AE%2CS06AF%2CS06PA%2CS0710%2CS0754%2CS0760%2CS0775%2CS07M9%2CS0812%2CS0850%2CS0853%2CS088K%2CS08KA%2CS08R3%2CS08R9%2CS08SM%2CS08TF%2CS08TG%2CS09T1%2CS09T2",
+      "maxAttempts": 1,
+      "dateQualification": "source effectDate as declared request validity; never physical productionDate; reject unsupported/mismatched response context"
+    }
+  ],
+  "limits": {
+    "firstObservationGETs": 4,
+    "conditionalImageBinaryGETs": 0,
+    "retries": 0,
+    "concurrency": 1,
+    "aggregateDecodedBytes": 4194304,
+    "responseBytes": 1048576,
+    "operationTimeoutMs": 10000,
+    "sourceDeadlineMs": 90000,
+    "supervisorSeconds": 120,
+    "scratchMiB": 64,
+    "hostRamMiB": 512,
+    "processGroupRamMiB": 448,
+    "workers": 1
+  },
+  "binaryForecast": {
+    "status": "unallocated; stop after four shape observations and return to root",
+    "nextStageMaxGETs": 4,
+    "breakdown": {
+      "freshPage": 1,
+      "freshSettings": 1,
+      "freshManifest": 1,
+      "oneReturnedHEROFRONTWebP": 1
+    },
+    "totalTwoStageGETCeiling": 8,
+    "reason": "Do not persist opaque returned image URLs or public settings keys across root review; fresh manifest needed to consume one exact returned URL in memory",
+    "imageBytesCeiling": 2097152,
+    "imageRequests": 1
+  },
+  "remainingSourceForecast": {
+    "technicalCurrentV2UpperBound": 478,
+    "rule": "one exact accepted-selection OTD request per v2 row; no AG/model-wide fact broadcast; existing v1 evidence reused",
+    "upcomingModels": [
+      {
+        "model": "1F7A",
+        "ag": "82GE"
+      },
+      {
+        "model": "1F7C",
+        "ag": "22GE"
+      },
+      {
+        "model": "1F7D",
+        "ag": "62GE"
+      },
+      {
+        "model": "1F7F",
+        "ag": "62GE"
+      }
+    ],
+    "futureOneAcceptedRowPerUpcomingModelCeiling": {
+      "GETs": 20,
+      "perModel": "page1+settings1+technical1+manifest1+conditionalbinary1; only after separate reviewed exact accepted-row manifests"
+    },
+    "imageCoverage": "Current model/paint inventory is not approved representative coverage; select finite exact representative IDs from typed source paint/body evidence after pilot; no per-option expansion authorised",
+    "grant": "forecast only; first four GETs remain unallocated until root review"
+  },
+  "codePins": {
+    "scripts/gcsp/enrich-fleet.mjs": "29301f1b077b0f5b171f103a82174bd9e7e430a5e800fb31c796a8fe698f0519",
+    "scripts/gcsp/public-bmw-source.mjs": "3a3172eb5b854784c44b08bcad28ead4f45393d362c026eb802fb643ce04276e",
+    "scripts/gcsp/collection-session.mjs": "ba4e5b1bf632cb05993fa0b0b4d24de7559f80baed1111999911a3e713ec6a8c",
+    "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+    "scripts/gcsp/bmw-public-registration.mjs": "61d9d5283c6995a55556e767f9a722954becd8899c73c5bd784bb796d728c206",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56",
+    "server/vehicle-evidence/bmw-image-adapter.js": "56753ac7e47e4790159e7d50fb4deafe1658730e803912f064e6ed09326774ef",
+    "server/gcsp/vehicle-evidence/registered-corpus-images.js": "1180911ff4e19e54b2dfeb997549d5c52f8c07421d6f31e0b6f45da8bf85a544",
+    "server/gcsp/vehicle-evidence/corpus-publisher.js": "9d86e1397aa74d1a1b096aaf6cba2149499a81a524e54eecd2ff83c80b2e6c96",
+    "server/gcsp/vehicle-evidence/synthetic-registry.js": "4411a122f0a245dd65b58e8753ed1181afd6dd114474b60134adaf5e27febe47"
+  },
+  "excluded": [
+    "new source traffic now",
+    "repeated retained311/new9/source32 replay",
+    "new publisher/service",
+    "ordinary data/history edits",
+    "full test suite for plan",
+    "schema widening or supplementary corpus role without reviewed necessity"
+  ]
+}

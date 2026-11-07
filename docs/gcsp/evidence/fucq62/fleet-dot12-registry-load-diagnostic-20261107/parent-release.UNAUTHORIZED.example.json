@@ -1,0 +1,26 @@
+{
+  "authorized": false,
+  "phase": "registry-load",
+  "planSha256": "COPY_REVIEWED_PLAN_SHA256",
+  "runtimeTarget": "b0f05852f93bad1de8c907b6090c56fc9982e4d8",
+  "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "networkRequests": 0,
+  "diagnosticCatchProjectionAllowed": true,
+  "runtimeProjection": {
+    "originalModule": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/server/gcsp/vehicle-evidence/synthetic-registry.js",
+      "bytes": 23014,
+      "sha256": "38f86f5121fae767465b81a4615355b7577c35f6b74ed57263441240d617f1e4",
+      "relativePath": "server/gcsp/vehicle-evidence/synthetic-registry.js"
+    },
+    "loadFunctionSha256": "061b2aa91b8ca633c41be169f1341e64bcd6fb44954c8d9326011c69b8e931e2",
+    "diagnosticModuleSha256": "6429be0275e53358163a1590b842e135c1c38e053693450b59089f3349174502",
+    "functionStart": 12415,
+    "functionEnd": 13978,
+    "exactCatchBefore": "} catch { return report(unavailable('store-unavailable', 'The corpus store is unavailable. The last complete in-memory version remains readable.')); }",
+    "exactCatchAfter": "} catch (error) { globalThis[Symbol.for('dot12-registry-load-error')] = { name: String(error?.name || 'Error').slice(0,64), code: String(error?.code || '').slice(0,128), message: String(error?.message || '').slice(0,2048), stack: String(error?.stack || '').slice(0,4096) }; return report(unavailable('store-unavailable', 'The corpus store is unavailable. The last complete in-memory version remains readable.')); }",
+    "difference": "Only the outer load catch binds its caught error and records bounded fields before the unchanged public store-unavailable return. No instrumentation of validator,validHistory,selection/history checks,or repair.",
+    "nodeModules": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules"
+  },
+  "supervision": "Root must review and establish the same180s/1GiB/64MiB external ownership+mandatoryfinalizer contract before the one load. This example grants no execution."
+}

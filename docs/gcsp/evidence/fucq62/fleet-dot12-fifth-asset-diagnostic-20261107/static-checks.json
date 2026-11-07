@@ -1,0 +1,33 @@
+{
+  "scope": "static-only; no execution/network/tests",
+  "planSha256": "33030ff391113306677544eb3578538c1f4fc210dc54ca35c2e9b3b22cdbc270",
+  "checks": [
+    {
+      "file": "diagnose.mjs",
+      "check": "Node syntax only",
+      "rc": 0
+    },
+    {
+      "file": "project-download.mjs",
+      "check": "Node syntax only",
+      "rc": 0
+    },
+    {
+      "file": "group-proof.py",
+      "check": "Python compile in memory",
+      "rc": 0
+    },
+    {
+      "file": "supervise.py",
+      "check": "Python compile in memory",
+      "rc": 0
+    }
+  ],
+  "codeInputPinsMatch": true,
+  "productionFunctionExtractionMatch": true,
+  "actualRuns": 0,
+  "publicGETs": 0,
+  "sourceRequests": 0,
+  "nativeRequests": 0,
+  "acceptance": false
+}

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "fleet-dot6-package-plan.v1",
+  "runId": "f62-dot6-package-20261107",
+  "candidateRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-offline-20261107",
+  "descriptorInputsSha256": "043f3a859ab26064e93697f81ad383e83c61ac7b56df9ace1b6939faf6f490f6",
+  "manifestDigest": "421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d",
+  "previousManifestDigest": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+  "tag": "fleet-2026-11-07-6",
+  "outputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107",
+  "resources": {
+    "workers": 1,
+    "hostRamMiB": 512,
+    "childRamMiB": 448,
+    "scratchMiB": 64,
+    "secondsPerChunk": 120,
+    "expectedRetainedMiB": 90,
+    "reservedDiskMiBIncludingDurableOutput": 160
+  },
+  "selected": [
+    "Verify immutable candidate and ten registered source input pins; reuse already retained F54 candidate and old480-line evidence",
+    "Existing SyntheticRegistry publishes unchanged candidate only into a complete OneDrive copy of the .5 store",
+    "Check prior version bytes, every retained history association, new active/last-good pointers, and a cold isolated load",
+    "Generate and validate the existing fleet-release.v1 descriptor; retain all previous descriptor entries",
+    "Pack exact descriptor assets through existing packFleetRelease and verify hashes without any transport"
+  ],
+  "excluded": [
+    "Candidate rebuilding and repeat .5 all-record audit: identical already validated inputs",
+    "871 direct plus 871 HTTP checks: assigned to root at the later public boundary",
+    "Full suite and PostgreSQL: no implementation or database changes",
+    "BMW/source requests, public network, upload and release creation",
+    "Ordinary store publication, YAML changes, Render mutation and acceptance transition"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "commit": "cf3ef10c",
+  "poolSha256": "60388ec1d1c8272d1bbf20dc904a3d93c6412ff01a62c89b373fbee80c9716cf",
+  "reason": "parent provided newer independently audited4666/6140 ledger; request pool remains exact10940; original4430proof retained unchanged",
+  "sourceTraffic": 0,
+  "capacityCredit": 0
+}

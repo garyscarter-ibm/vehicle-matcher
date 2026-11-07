@@ -1,0 +1,367 @@
+{
+  "schemaVersion": "f59-source-projection-blocker-contract.v1",
+  "checkpoint": "2a",
+  "status": "contract-only; source projection blocked on actual producer/raw-schema bindings",
+  "observedAt": "2026-11-06T12:01:20.580847+00:00",
+  "baseHead": "eb7a00cbc8846a330740877c9b8842fce0e66f40",
+  "decision": "Dispatcher selected concrete no-code blocker contract; no invented curated format, helper, tests or synthetic compatibility claim.",
+  "agents": {
+    "name": "Cecil Turtle",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "selectedModel": "gpt-6.1-sol",
+    "selectedEffort": "high",
+    "fallback": null,
+    "descendants": 0
+  },
+  "inputs": [
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+      "path": "docs/gcsp/evidence/fucq59/source-qualification-plan-2026-11-06/plan.json",
+      "sha256": "65d78142d43fcf5167e9d4c4e3710f07de97082a7418efad7b05bfa9cbc7c3c4"
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+      "path": "docs/gcsp/evidence/fucq-4/observations-2026-11-01.json",
+      "sha256": "bac972549f3b5cc1c09408535349d6f6e32330f3060056a16f0012e5fad3a3dc"
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+      "path": "docs/gcsp/evidence/fucq-4/response-excerpts-2026-11-01.json",
+      "sha256": "c07cacdf6bb40b45cbceb3885aff5a8cf85b308c41331e6fb964c44599c0c06b"
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+      "path": "docs/gcsp/evidence/fucq-4/requests-2026-11-01.json",
+      "sha256": "95f34ab64e1fea98827170a3b1ead8fef9cd72d62fba28b32f9548bb30fd9c1e"
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+      "path": "docs/gcsp/evidence/fucq-4/public-website-key-native-2026-11-01.json",
+      "sha256": "74f79103bdea542ad26d0290a6fb5b11fbe82b5a4ad3daa70563a3b207316e4e"
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+      "path": "docs/gcsp/evidence/fucq59/source-executor-2026-11-06/observation.json",
+      "sha256": "1ce513909d0196b08808af896914a0e041322ef88d2c06eda73532ff404d29dc"
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+      "path": "scripts/gcsp/collection-session.mjs",
+      "sha256": "7495084c33c84538beb6ae3a04a292dbc0a800af6c9a10144de8e9728fc4b4b2"
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+      "path": "scripts/gcsp/configuration-key.mjs",
+      "sha256": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60"
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+      "path": "scripts/gcsp/public-bmw-source.mjs",
+      "sha256": "4a4137830ba863f1a373d6a01b6b5a7fb3705f465cbec21a7c8933eed55f7703"
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+      "path": "scripts/gcsp/collect-fleet.mjs",
+      "sha256": "d039d3c8a8acf216204bd83831c70d6001d0e277aec94bd51397a9738341449c"
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+      "path": "scripts/gcsp/bmw-source-qualification.mjs",
+      "sha256": "eda2660125ff589a968d861d02f86122ef71df30354351cfe4eee76f43d355e8"
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+      "path": "server/test/gcsp-bmw-source-qualification.test.js",
+      "sha256": "532ff51f8c37a2a743553715a14b2ce06db7e6b5c1962bcfaf8eb7b7096543f8"
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+      "path": "server/vehicle-evidence/bmw-catalogue-adapter.js",
+      "sha256": "06c0910c131fdb0e2e4ef254dc5591f13c90ecb3f36f655aef3cb651aa0052a1"
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+      "path": "server/gcsp/vehicle-evidence/corpus-publisher.js",
+      "sha256": "db7e3fd9ff5ff4342872a54c6ca40dd3dda35fc31c51e3dbdb2910b067cd5e49"
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+      "path": "server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json",
+      "sha256": "ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3"
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-031",
+      "path": "docs/gcsp/evidence/fucq-58/steering-diagnostic-2026-11-05/evidence/projection.json",
+      "sha256": "0da1ccbfed44b62f94000eb96e32022e3967a331f9bff9a2b4c9f92fda98dc8b"
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-031",
+      "path": "docs/gcsp/evidence/fucq-58/steering-diagnostic-2026-11-05/evidence/diagnostic.json",
+      "sha256": "487bf989d25362077cad25cd2bffd4168b1ea3e4f80983d34572949adc39d29b"
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-031",
+      "path": "docs/gcsp/evidence/fucq-58/full-model-selector-2026-11-05/evidence/selection.json",
+      "sha256": "ae259c7a58bfc62576a3c68c5d154584673a22f2b39ab76e2b512a45fa6ae386"
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-031",
+      "path": "docs/gcsp/evidence/fucq-58/known-seed-refresh-2026-11-05/evidence/observation.json",
+      "sha256": "1fa5a52de21d27cc45555b69a29d97c90d5ad800001e880405bb35093ff66ca7"
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-031",
+      "path": "docs/gcsp/evidence/fucq-58/g61-field-ledger-2026-11-05/ledger.json",
+      "sha256": "05ebdf57f35862cd9d3a0c9e1533fb281999274c3a3810519c5c00d6ffe1490d"
+    },
+    {
+      "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-031",
+      "path": "docs/gcsp/evidence/fucq-58/full-model-selector-2026-11-05/evidence/full-model-selector.mjs",
+      "sha256": "f3accdd334a64d9c0eabcfde35a4b26d81dba64fbe6a48558f2daab8f3032b13"
+    }
+  ],
+  "fixedTreeContract": {
+    "modelCode": "T5MJ",
+    "agModelCode": "72HH",
+    "catalogueRangeKey": "G61E",
+    "modelRangeField": "G61",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05",
+    "steeringLiteral": "RL",
+    "groups": [
+      "5",
+      "I"
+    ],
+    "requiredChecks": [
+      "exactly one full node per group",
+      "exact direct parent path",
+      "all required facts direct on full record",
+      "bounded typed optional facts",
+      "equal complete selected facts including presence",
+      "one distinct model; zero added configurations"
+    ]
+  },
+  "retainedTreeNodes": [
+    {
+      "group": "5",
+      "retainedNodePointer": "/nodes/4",
+      "retainedFactsPointer": "/nodes/4/facts",
+      "originalSourcePointer": "/5/modelRanges/G61E/models/T5MJ",
+      "parentPath": [
+        "5",
+        "modelRanges",
+        "G61E",
+        "models"
+      ],
+      "facts": {
+        "agModelCode": "72HH",
+        "effectDate": "2027-01-05",
+        "modelCode": "T5MJ",
+        "modelRange": "G61",
+        "orderDate": "2026-11-01",
+        "steering": "RL",
+        "taxDate": "2027-01-05"
+      }
+    },
+    {
+      "group": "I",
+      "retainedNodePointer": "/nodes/24",
+      "retainedFactsPointer": "/nodes/24/facts",
+      "originalSourcePointer": "/I/modelRanges/G61E/models/T5MJ",
+      "parentPath": [
+        "I",
+        "modelRanges",
+        "G61E",
+        "models"
+      ],
+      "facts": {
+        "agModelCode": "72HH",
+        "effectDate": "2027-01-05",
+        "modelCode": "T5MJ",
+        "modelRange": "G61",
+        "orderDate": "2026-11-01",
+        "steering": "RL",
+        "taxDate": "2027-01-05"
+      }
+    }
+  ],
+  "observationBindings": [
+    {
+      "artifact": "docs/gcsp/evidence/fucq-58/steering-diagnostic-2026-11-05/evidence/projection.json",
+      "embeddedTime": null,
+      "associatedArtifact": "docs/gcsp/evidence/fucq-58/steering-diagnostic-2026-11-05/evidence/diagnostic.json",
+      "timePointer": "/observedDate",
+      "value": "2026-11-05T16:03:36.375Z",
+      "hashPointer": "/projectionSha256",
+      "additionalBinding": "docs/gcsp/evidence/fucq-58/full-model-selector-2026-11-05/evidence/selection.json#/sourceObservedAt; selection pins diagnostic/projection hashes",
+      "scope": "historical strict diagnostic projection"
+    },
+    {
+      "artifact": "docs/gcsp/evidence/fucq-58/known-seed-refresh-2026-11-05/evidence/observation.json",
+      "timePointer": "/observedAt",
+      "value": "2026-11-05T16:29:12.119Z",
+      "associatedArtifact": "docs/gcsp/evidence/fucq-58/g61-field-ledger-2026-11-05/ledger.json",
+      "scope": "separate known-seed refresh; never dates strict projection"
+    },
+    {
+      "artifact": "docs/gcsp/evidence/fucq-4/observations-2026-11-01.json",
+      "timePointer": "/observedDate",
+      "value": "2026-11-01",
+      "scope": "Selected observed values, not a complete API response or runtime fixture"
+    },
+    {
+      "artifact": "docs/gcsp/evidence/fucq59/source-executor-2026-11-06/observation.json",
+      "timePointer": "/result/sourceObservations/0/provenance/observedAt",
+      "value": "2026-11-06T10:53:37.381Z",
+      "scope": "fresh unqualified safe projection only; raw source bytes discarded"
+    }
+  ],
+  "knownCuratedLocators": {
+    "historicalModelFields": [
+      "/model/modelCode",
+      "/model/agModelCode",
+      "/model/modelRange",
+      "/model/rawModelRange",
+      "/model/orderDate",
+      "/model/effectDate",
+      "/model/taxDate",
+      "/model/prodDate",
+      "/model/modelName",
+      "/model/modelNameRaw",
+      "/model/derivative",
+      "/model/bodyStyle",
+      "/model/agBodyStyle",
+      "/model/engineSeries",
+      "/model/fuelTypeCode",
+      "/model/hybridCode",
+      "/model/driveType",
+      "/model/transmission"
+    ],
+    "historicalOptionFields": [
+      "/options/P0300/option",
+      "/options/P0300/optionType",
+      "/options/P0300/phrases/longDescription",
+      "/options/FKSFU/option",
+      "/options/FKSFU/optionType",
+      "/options/FKSFU/phrases/longDescription"
+    ],
+    "optionRequest": "docs/gcsp/evidence/fucq-4/requests-2026-11-01.json#/requests/3",
+    "optionProfile": "docs/gcsp/evidence/fucq-4/public-website-key-native-2026-11-01.json#/results/1/profile",
+    "rawCompatibility": false
+  },
+  "unverifiedBindings": [
+    "complete raw localisation root and exact raw field pointers",
+    "response-owned localisation model/date/market/locale/AG metadata if any",
+    "current settingsLocalisation profile structure and unique ephemeral header",
+    "richer direct current tree fields beyond the retained seven",
+    "executor-owned exact response-byte digest and observation-time handoff to descriptor.project",
+    "raw-to-safe projection field provenance; safe projection digest alone does not prove raw response fields",
+    "explicit source trim role and exact accessory quantity; query/mandatory input and historical pricing do not prove either"
+  ],
+  "smallestOwningEdits": [
+    {
+      "path": "scripts/gcsp/collection-session.mjs",
+      "gate": "allocate after F60 pin-race review",
+      "change": "extend existing bounded readHttp -> descriptor.project(value,request) handoff with executor-owned exact operation/request/source/time/byte-digest binding; bind retained safe projection digest separately; no second executor or body/header retention"
+    },
+    {
+      "path": "scripts/gcsp/public-bmw-source.mjs",
+      "gate": "same allocated producer lane",
+      "change": "fixed strict5/I direct tree projector with typed richer optional facts and complete equality; fixed manifest roots/locators derived internally; keep request scope separate"
+    },
+    {
+      "path": "scripts/gcsp/collection-session.mjs + scripts/gcsp/public-bmw-source.mjs",
+      "gate": "focused offline safety checks and dispatcher allocation before actual diagnostic",
+      "change": "one exact new source-version/options capability via settingsLocalisation; fail closed on unknown raw schema with bounded reviewed safe shape report; review actual raw-to-safe binding before compatibility claim"
+    },
+    {
+      "path": "server/test/gcsp-fleet-collector.test.js",
+      "gate": "producer edits permitted",
+      "change": "focused synthetic route/profile/request-role/5-I-parent-equality/field-type/date-metadata/budget/cancellation/resume boundary cases; no full suite by default"
+    },
+    {
+      "path": "scripts/gcsp/bmw-source-qualification.mjs (only if wired field types require it)",
+      "gate": "explicit compatibility decision and allocation; currently frozen",
+      "change": "review source-specific one-character fuel/transmission values before passing richer fields; do not alter or substitute observed values"
+    }
+  ],
+  "sourceAllocation": {
+    "permission": "existing source authority stands; no renewed human question",
+    "admitted": false,
+    "allocation": null,
+    "proposal": "unchanged exact page/settings/tree/options GETs from original plan",
+    "attempts": 4,
+    "perOperation": 1,
+    "workers": 1,
+    "retries": 0,
+    "responseBytes": 1048576,
+    "totalBytes": 2097152,
+    "operationTimeoutMs": 10000,
+    "absoluteDeadlineMs": 45000,
+    "solver": 0,
+    "images": 0,
+    "browser": 0,
+    "writes": 0,
+    "f39Writer": null
+  },
+  "unchangedAcceptance": {
+    "publicAccepted": 0,
+    "sliceComplete": 6,
+    "sliceBlocked": 2,
+    "sliceTotal": 8,
+    "f77MappingsPending": 74,
+    "minimumPerMapped": 8,
+    "minimumOverall": 200,
+    "minimumIfAllMapped": 592,
+    "minimumRealHeadlessLinks": 20,
+    "fucq61Hold": "2026-11-13",
+    "productionDate": "unknown until current explicit catalogue field",
+    "trimRole": "unknown",
+    "accessoryQuantity": "unknown",
+    "physicalProduction": "unknown",
+    "modelYear": "unknown",
+    "plant": "unknown",
+    "verifiedFitted": "unknown",
+    "steeringMeaning": "unknown; literal RL only"
+  },
+  "validation": {
+    "scope": "static retained-file/hash/JSON/locator/diff checks only",
+    "codeTestsRun": 0,
+    "fullSuite": false,
+    "impactMap": "not changed: code/tests/dependency graph unchanged; previous evidence retained as previous scoped evidence",
+    "sourceCompatibilityProved": false,
+    "frozenOriginalPlanSha256": "65d78142d43fcf5167e9d4c4e3710f07de97082a7418efad7b05bfa9cbc7c3c4",
+    "outputMarkdownSha256": "d6c06138c02bf616b40f69ef783e53e00ff3faf5b8dab8c574534c2147abbc25"
+  },
+  "resources": {
+    "scratchCreated": false,
+    "scratchBytes": 0,
+    "disposableRoots": [],
+    "childGroups": [],
+    "removedAllocationBytes": 0,
+    "retainedSummary": "this JSON and projection-contract.md",
+    "overlaysCreated": false,
+    "largeOutput": false,
+    "compatibilityExceptions": [],
+    "leftovers": []
+  },
+  "operations": {
+    "source": 0,
+    "http": 0,
+    "images": 0,
+    "browser": 0,
+    "sql": 0,
+    "credentials": 0,
+    "activation": 0,
+    "vin": 0
+  },
+  "boundary": "HLD06 unchanged; no screen/user-visible change; visual reference not applicable; entire existing producer graph and F39/F54 frozen.",
+  "priorScopedReview": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/pass-1151/f59-code-review-round1.json",
+    "sha256": "82cdbd5b868a0a5f4546928ee427aa4d3a6723a94dddb7d37078c52d72ef77ec",
+    "range": "c98870fc9c7025c545057ebadfd2ab6e6c7177f8..eb7a00cbc8846a330740877c9b8842fce0e66f40",
+    "verdict": "passed",
+    "evidence": "21/21 scoped cases; prior evidence reused only for unchanged qualifier/test identity; no rerun in checkpoint2a"
+  }
+}

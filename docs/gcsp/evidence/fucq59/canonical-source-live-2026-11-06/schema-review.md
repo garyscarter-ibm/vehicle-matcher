@@ -1,0 +1,11 @@
+# Actual source schema review — 6 November 2026
+
+Cecil Turtle independently reviewed the retained safe artifacts against the owning producer and existing projection/qualification contract. This was read-only: no files, tests, source calls or allocations in the review.
+
+The options response has one observed candidate at raw root `""`: 254 unique code-keyed definitions, all matching their `option` field, zero reported definition issues and 254 safe descriptions. Types: 213 other, 15 paint, 8 fabric, 7 trim, 6 rim and 5 package. All 47 known factory codes occur. Raw field bindings are `/<code>/option`, `/<code>/optionType` and `/<code>/phrases/longDescription`. `P0300` is paint and `FKSFU` fabric. `S0337` is a package labelled M Sport; `S043L` is an interior-material trim. These do not prove the selected model's scheme-trim role. `SE000001` is absent from these definitions, so its quantity remains unknown. The safe structure omits 4,840 unreviewed fields; no complete-schema absence claim is made.
+
+Both exact 5/I tree records agree on all fourteen retained direct facts. In addition to the required identity/date/steering literals, this response contains tax date 2027-01-05, derivative I5 40, body/agBody TO, hybrid BEVE, engine HA0, drive HR and transmission X. Production date, model-name fields, fuel-type code and direct trim are absent from the retained selected record. Physical production, model year, plant, VIN fitting and the meaning of RL remain unknown.
+
+The next independent offline slice binds the real raw pointers to the retained safe pointers and existing qualifier through the actual F59 diagnostic caller. Retained definitions are array rows, so raw `/P0300` is not a locator in the retained artifact. The binding must preserve that distinction, executor metadata and exact tree/request association; request scope cannot become a response fact. Field-specific compatibility is needed for source modelRange and the observed one-character transmission code. No repeat four-GET run is justified before that work. Qualification, F39/F54 publication, collection and final acceptance remain open.
+
+Reviewer requested/selected/runtime-confirmed gpt-6.1-sol/high; no fallback or descendants.

@@ -1,0 +1,412 @@
+{
+  "status": "scoped-precheck-race-correction-verified-large-proof-held",
+  "bug": "FUCQ-153",
+  "story": "FUCQ-62",
+  "actualLargeFailureCause": "Unproven; original and renewed large attempts both failed. Controlled precheck race is reproduced and fixed only within scoped evidence.",
+  "codeIdentity": {
+    "server/gcsp/vehicle-evidence/indexed-jsonl.js": "0bb27219a621b101b9dbc629f2bb198785d57ee2da7ec642ff0b9472804ad55a",
+    "server/test/gcsp-indexed-jsonl.test.js": "894bb2639010259fff22d955223aad85a1c2c8f24aab5db7a447cff69ed89100"
+  },
+  "change": "Capture latest fstat once. Both incoming caller and latest dev/ino/size/mtimeNs must equal original expected. Hash once in64KiB chunks against original anchored checksum, requiring exact latest identity after hashing; refresh to latest. No retry or cap change.",
+  "redToGreen": {
+    "fixtureRows": 2,
+    "fixtureBytes": 42,
+    "red": {
+      "tests": 1,
+      "passed": 0,
+      "failed": 1,
+      "expected": true
+    },
+    "green": {
+      "tests": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "sameExternalDriver": true
+  },
+  "scopedRepositoryTests": {
+    "tests": 28,
+    "passed": 28,
+    "failed": 0,
+    "skipped": 0,
+    "newRegression": 1,
+    "files": [
+      {
+        "production": "indexJsonl/readIndexedRow/confirmMetadataChange",
+        "tests": [
+          "server/test/gcsp-indexed-jsonl.test.js"
+        ],
+        "cases": 10,
+        "boundary": "caller and latest core identities against original expected, ctime-only precheck movement, anchored whole hash, row digest, scan mutation/replacement/removal/limits"
+      },
+      {
+        "production": "corpus input/spooling/validation; fleet/VIN registry publication/load/recovery",
+        "tests": [
+          "server/test/gcsp-corpus-indexed.test.js",
+          "server/test/gcsp-fleet-publication.test.js",
+          "server/test/gcsp-vin-publication.test.js"
+        ],
+        "cases": 18,
+        "boundary": "arrays/iterable/file equivalence, historical rows, strict source trust, publication rename/corruption/idempotence/recovery"
+      }
+    ],
+    "separateExternalGreenRepeatsNewCase": true,
+    "selector": "Prior unspecified-language affected selector full npm fallback reviewed; helper-only correction selected explicit owning primitive + indexed corpus/fleet/VIN publication boundaries. No full-suite claim.",
+    "excluded": [
+      "UI/browser/SQL",
+      "source traffic",
+      "third large proof",
+      "source/VIN/stock capacity credit"
+    ]
+  },
+  "productionDefaultMaxBytes": 67108864,
+  "explicitLargeProofMaxBytes": 68157440,
+  "resources": {
+    "scratchMiB": 64,
+    "hostRamMiB": 512,
+    "childRamMiB": 448,
+    "nodeOldSpaceMiB": 256,
+    "seconds": 90,
+    "workers": 1
+  },
+  "runs": [
+    {
+      "run": "scale-precheck-race-regression-red",
+      "externalEvidence": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-race-regression-red",
+      "selectionSha256": "784a2f7c9a5185e74eada7a5403a2d155ff24944df4a9d09348d285bf10fa3ad",
+      "driverOrSupervisorSha256": "0a7fba12ef55a3a2de0c438863ba18b441a8267908ac817bb94a4f9c8e6f4fd0",
+      "command": [
+        "/opt/homebrew/bin/node",
+        "--max-old-space-size=256",
+        "--test",
+        "--test-concurrency=1",
+        "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-race-regression-red/probe.mjs"
+      ],
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-race-regression-red/probe.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-race-regression-red/ownership/8fee712a7b5243f8be1589ce1db8f5b1.json",
+        "peak_rss": 2277376,
+        "peak_scratch": 360544,
+        "rc": 1,
+        "wall": 0.239438541
+      },
+      "counts": {
+        "tests": 1,
+        "pass": 0,
+        "fail": 1,
+        "skipped": 0
+      },
+      "cleanup": {
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "errors": [],
+        "groups": [
+          {
+            "pgid": 41107,
+            "state": "absent"
+          }
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-race-regression-red/ownership/8fee712a7b5243f8be1589ce1db8f5b1.json",
+        "manifest_state": "removed",
+        "removed_bytes_sampled_peak": 360544,
+        "reservation_absent": true,
+        "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-precheck-race-regression-red/test-stamp-shard-8fee712a7b5243f8be1589ce1db8f5b1",
+        "scratch_absent": true
+      },
+      "fixtureOrErrorDetails": {
+        "expected": {
+          "dev": "16777230",
+          "ino": "248849722",
+          "size": "42",
+          "mtimeNs": "1794016832257080462",
+          "ctimeNs": "1794016832257080462"
+        },
+        "stats": [
+          {
+            "dev": "16777230",
+            "ino": "248849722",
+            "size": "42",
+            "mtimeNs": "1794016832257080462",
+            "ctimeNs": "1794016832258066252"
+          },
+          {
+            "dev": "16777230",
+            "ino": "248849722",
+            "size": "42",
+            "mtimeNs": "1794016832257080462",
+            "ctimeNs": "1794016832258359752"
+          }
+        ],
+        "injected": true,
+        "calls": 2,
+        "error": {
+          "code": "artifact-changed",
+          "message": "Indexed artifact identity changed.",
+          "stack": "Error: Indexed artifact identity changed.\n    at fail (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:9:41)\n    at confirmMetadataChange (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:19:5)\n    at readIndexedRow (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:47:26)\n    at read (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:102:37)\n    at Object.get (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:104:20)\n    at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-race-regression-red/probe.mjs:16:20)\n    at async Test.run (node:internal/test_runner/test:1404:7)\n    at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)"
+        },
+        "inputBytes": 42,
+        "productionEdit": false
+      },
+      "redFailureLog": "\u2716 unchanged indexed bytes survive ctime-only movement between caller stat and confirmation precheck (3.822166ms)\n\u2139 tests 1\n\u2139 suites 0\n\u2139 pass 0\n\u2139 fail 1\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 70.115375\n\n\u2716 failing tests:\n\ntest at ../../f58-63-overnight-20261106/f62/scale-precheck-race-regression-red/probe.mjs:10:1\n\u2716 unchanged indexed bytes survive ctime-only movement between caller stat and confirmation precheck (3.822166ms)\n  AssertionError [ERR_ASSERTION]: Ctime-only drift before hashing must still allow one stable complete-file checksum confirmation\n  + actual - expected\n  \n  + {\n  +   code: 'artifact-changed',\n  +   message: 'Indexed artifact identity changed.',\n  +   stack: 'Error: Indexed artifact identity changed.\\n' +\n  +     '    at fail (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:9:41)\\n' +\n  +     '    at confirmMetadataChange (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:19:5)\\n' +\n  +     '    at readIndexedRow (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:47:26)\\n' +\n  +     '    at read (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:102:37)\\n' +\n  +     '    at Object.get (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:104:20)\\n' +\n  +     '    at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-race-regression-red/probe.mjs:16:20)\\n' +\n  +     '    at async Test.run (node:internal/test_runner/test:1404:7)\\n' +\n  +     '    at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)'\n  + }\n  - null\n  \n      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-race-regression-red/probe.mjs:19:9)\n      at async Test.run (node:internal/test_runner/test:1404:7)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {\n    generatedMessage: false,\n    code: 'ERR_ASSERTION',\n    actual: { code: 'artifact-changed', message: 'Indexed artifact identity changed.', stack: 'Error: Indexed artifact identity changed.\\n    at fail (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:9:41)\\n    at confirmMetadataChange (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:19:5)\\n    at readIndexedRow (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:47:26)\\n    at read (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:102:37)\\n    at Object.get (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:104:20)\\n    at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-race-regression-red/probe.mjs:16:20)\\n    at async Test.run (node:internal/test_runner/test:1404:7)\\n    at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)' },\n    expected: null,\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n",
+      "limits": {
+        "childRamMiB": 448,
+        "eventLimit": 4,
+        "hostRamMiB": 512,
+        "inputBytes": 42,
+        "rows": 2,
+        "scratchMiB": 32,
+        "seconds": 60,
+        "workers": 1
+      }
+    },
+    {
+      "run": "scale-precheck-race-regression-green",
+      "externalEvidence": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-race-regression-green",
+      "selectionSha256": "11ef0998876b25a2624479574f52a95daa91574ab5086f125757abbbdc976dd3",
+      "driverOrSupervisorSha256": "0a7fba12ef55a3a2de0c438863ba18b441a8267908ac817bb94a4f9c8e6f4fd0",
+      "command": [
+        "/opt/homebrew/bin/node",
+        "--max-old-space-size=256",
+        "--test",
+        "--test-concurrency=1",
+        "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-race-regression-green/probe.mjs"
+      ],
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-race-regression-green/probe.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-race-regression-green/ownership/b220d24576e04e07b170d2fa9b8481df.json",
+        "peak_rss": 2244608,
+        "peak_scratch": 360544,
+        "rc": 0,
+        "wall": 0.245504167
+      },
+      "counts": {
+        "tests": 1,
+        "pass": 1,
+        "fail": 0,
+        "skipped": 0
+      },
+      "cleanup": {
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "errors": [],
+        "groups": [
+          {
+            "pgid": 42106,
+            "state": "absent"
+          }
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-race-regression-green/ownership/b220d24576e04e07b170d2fa9b8481df.json",
+        "manifest_state": "removed",
+        "removed_bytes_sampled_peak": 360544,
+        "reservation_absent": true,
+        "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-precheck-race-regression-green/test-stamp-shard-b220d24576e04e07b170d2fa9b8481df",
+        "scratch_absent": true
+      },
+      "fixtureOrErrorDetails": {
+        "expected": {
+          "dev": "16777230",
+          "ino": "248852420",
+          "size": "42",
+          "mtimeNs": "1794016925291828229",
+          "ctimeNs": "1794016925293188351"
+        },
+        "stats": [
+          {
+            "dev": "16777230",
+            "ino": "248852420",
+            "size": "42",
+            "mtimeNs": "1794016925291828229",
+            "ctimeNs": "1794016925292882852"
+          },
+          {
+            "dev": "16777230",
+            "ino": "248852420",
+            "size": "42",
+            "mtimeNs": "1794016925291828229",
+            "ctimeNs": "1794016925293188351"
+          },
+          {
+            "dev": "16777230",
+            "ino": "248852420",
+            "size": "42",
+            "mtimeNs": "1794016925291828229",
+            "ctimeNs": "1794016925293188351"
+          },
+          {
+            "dev": "16777230",
+            "ino": "248852420",
+            "size": "42",
+            "mtimeNs": "1794016925291828229",
+            "ctimeNs": "1794016925293188351"
+          }
+        ],
+        "injected": true,
+        "calls": 4,
+        "error": null,
+        "inputBytes": 42,
+        "productionEdit": false
+      },
+      "redFailureLog": null,
+      "limits": {
+        "childRamMiB": 448,
+        "eventLimit": 4,
+        "hostRamMiB": 512,
+        "inputBytes": 42,
+        "rows": 2,
+        "scratchMiB": 64,
+        "seconds": 90,
+        "workers": 1
+      }
+    },
+    {
+      "run": "scale-precheck-validation/primitive",
+      "externalEvidence": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-validation/primitive",
+      "selectionSha256": "8aca61653256855a2acca779cbecd411f9eac139026450f10b0e1c1181706497",
+      "driverOrSupervisorSha256": "6943f7867cfe04e29ffc6d36ebfadc8e870f0537804a4cef847e6b2b3c00c1d7",
+      "command": [
+        "/opt/homebrew/bin/node",
+        "--max-old-space-size=256",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-indexed-jsonl.test.js"
+      ],
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-validation/primitive/probe.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-validation/primitive/ownership/f629aa1f28e24a999e55354b789ef410.json",
+        "peak_rss": 2785280,
+        "peak_scratch": 368736,
+        "rc": 0,
+        "wall": 0.26213245900000004
+      },
+      "counts": {
+        "tests": 10,
+        "pass": 10,
+        "fail": 0,
+        "skipped": 0
+      },
+      "cleanup": {
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "errors": [],
+        "groups": [
+          {
+            "pgid": 42169,
+            "state": "absent"
+          }
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-validation/primitive/ownership/f629aa1f28e24a999e55354b789ef410.json",
+        "manifest_state": "removed",
+        "removed_bytes_sampled_peak": 368736,
+        "reservation_absent": true,
+        "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-precheck-validation/test-stamp-shard-f629aa1f28e24a999e55354b789ef410",
+        "scratch_absent": true
+      },
+      "fixtureOrErrorDetails": null,
+      "redFailureLog": null,
+      "limits": {
+        "childRamMiB": 448,
+        "hostRamMiB": 512,
+        "scratchMiB": 64,
+        "seconds": 90,
+        "workers": 1
+      }
+    },
+    {
+      "run": "scale-precheck-validation/boundaries",
+      "externalEvidence": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-validation/boundaries",
+      "selectionSha256": "0f5c5c4b3118054653c23cee8e080c54662c16560c0e47efd6a43665070de234",
+      "driverOrSupervisorSha256": "6943f7867cfe04e29ffc6d36ebfadc8e870f0537804a4cef847e6b2b3c00c1d7",
+      "command": [
+        "/opt/homebrew/bin/node",
+        "--max-old-space-size=256",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-corpus-indexed.test.js",
+        "server/test/gcsp-fleet-publication.test.js",
+        "server/test/gcsp-vin-publication.test.js"
+      ],
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-validation/boundaries/probe.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-validation/boundaries/ownership/8826feb5fdd9452c9a2c1c18eaed3060.json",
+        "peak_rss": 280821760,
+        "peak_scratch": 1548448,
+        "rc": 0,
+        "wall": 5.949408417
+      },
+      "counts": {
+        "tests": 18,
+        "pass": 18,
+        "fail": 0,
+        "skipped": 0
+      },
+      "cleanup": {
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "errors": [],
+        "groups": [
+          {
+            "pgid": 42198,
+            "state": "absent"
+          }
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-precheck-validation/boundaries/ownership/8826feb5fdd9452c9a2c1c18eaed3060.json",
+        "manifest_state": "removed",
+        "removed_bytes_sampled_peak": 1548448,
+        "reservation_absent": true,
+        "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-precheck-validation/test-stamp-shard-8826feb5fdd9452c9a2c1c18eaed3060",
+        "scratch_absent": true
+      },
+      "fixtureOrErrorDetails": null,
+      "redFailureLog": null,
+      "limits": {
+        "childRamMiB": 448,
+        "hostRamMiB": 512,
+        "scratchMiB": 64,
+        "seconds": 90,
+        "workers": 1
+      }
+    }
+  ],
+  "impactEvidence": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq62-precheck-race-regression-red.json",
+      "sha256": "9a2310527ff2a17449a4c66e4245375511fdb0d39c9e85271a203e07ead4d207"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq62-precheck-race-regression-green.json",
+      "sha256": "10e3cc215a4cf7c24c19bacc1740a3076809ac79429a01386ba06f59bba6904a"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq62-precheck-validation-primitive.json",
+      "sha256": "39ff668b5e40de3d75001283b85ff16a685895e401c9e07d5230ce53d163442b"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq62-precheck-validation-boundaries.json",
+      "sha256": "ff51d1e5741ebe781f4baab23a066df749ec412af55cb8eb01edfbb3f419700e"
+    }
+  ],
+  "preparedTracing": {
+    "path": "docs/gcsp/evidence/fucq62/scale-identity-trace.mjs",
+    "state": "prepared-only; no allocation/execution",
+    "scope": "runtime-only main-process source instrumentation,128event ring,8failures/8successfulconfirmations; path/expected/current/latest/posthash identities and before-return state, unchanged production guard",
+    "coldSubprocesses": "Uninstrumented original commands",
+    "limitation": "Syntax/source-transform checks only before independent review; actual large boundary remains unrun after this correction."
+  },
+  "cleanup": {
+    "freshVerifiedAt": "2026-11-07T02:03:56.075254+00:00",
+    "allFourRootsGroupsReservationsAndLinkAbsent": true,
+    "removedBytesSampledPeaks": 2638272,
+    "compatibilityException": null,
+    "leftovers": []
+  },
+  "next": "Independent code/tracing/pins review required; no third large allocation released; no further small metadata forensics planned.",
+  "acceptance": "not-established"
+}

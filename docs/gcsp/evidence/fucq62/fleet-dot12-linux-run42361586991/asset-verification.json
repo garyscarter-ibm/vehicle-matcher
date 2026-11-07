@@ -1,0 +1,10 @@
+{
+  "status": "exact31assetcache-and-restored-store-passed",
+  "releaseId": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "files": 31,
+  "bytes": 574382841,
+  "sourceCalls": 0,
+  "externalCalls": 0,
+  "fullReferenceProofReexecuted": false,
+  "acceptance": false
+}

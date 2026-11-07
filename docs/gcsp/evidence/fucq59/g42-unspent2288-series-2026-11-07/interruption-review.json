@@ -1,0 +1,192 @@
+{
+  "schemaVersion": "g42-unspent2288-interruption-review.v1",
+  "observedAt": "2026-11-07T04:36:44.858735+00:00",
+  "scope": "actual5source sessions, zeroHTTP supplementary session5proof and independent filesystem/process check",
+  "originalStoppedReceiptPreserved": true,
+  "originalFailure": {
+    "type": "AssertionError",
+    "sourceSupervisorFinalizerError": "owned process group absence not proved",
+    "sourceResultRc": 0,
+    "sourceResultIssue": null,
+    "originalFinalizerFailurePreserved": true,
+    "finalAtexitCleanupFileReportsAllAbsent": true,
+    "underlyingCause": "unresolved; no PID-reuse or sync-cause claim; no repair"
+  },
+  "completedOriginalSessions": [
+    61,
+    62,
+    63,
+    64,
+    65
+  ],
+  "actualGets": 60,
+  "actualSolverRequests": 40,
+  "http200Headers": 60,
+  "strictProofs": {
+    "sessions1to4": "original5of5 each",
+    "session5": "supplementary5of5 after stop, zeroHTTP"
+  },
+  "actualAccepted": 34,
+  "actualRejected": 6,
+  "actualDuplicates": 0,
+  "canonicalEntries": 2395,
+  "admittedSourceConfigurations": 2392,
+  "spentSolverRequests": 3204,
+  "session5ProofSha256": "179253bf727ed49ed0029739eca67f7633032031dd89d785a2ca9c175b54d655",
+  "finalIndexes": {
+    "final-canonical-index.json": {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-20261107-once/sessions/session005/final-canonical-index.json",
+      "sha256": "43c94058450e3535a46201ed264a98c949305159f96cef23df49824926b79937"
+    },
+    "final-spent-request-index.json": {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-20261107-once/sessions/session005/final-spent-request-index.json",
+      "sha256": "1747cc87440a99233ef340127c92c455274bc4902e70e76a95cf957225bf5475"
+    }
+  },
+  "independentResourceChecks": [
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-unspent2288/session001/ownership/e4341e090d5e4b8da4236a73a44510ce.json",
+      "root": "/private/tmp/test-stamp-shard-e4341e090d5e4b8da4236a73a44510ce",
+      "groups": [
+        {
+          "pgid": 53628,
+          "liveMembers": false
+        }
+      ],
+      "rootAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 524384
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-unspent2288/session001/ownership/e5bffd10ca294b269d7dd0bb72ea64c0.json",
+      "root": "/private/tmp/test-stamp-shard-e5bffd10ca294b269d7dd0bb72ea64c0",
+      "groups": [
+        {
+          "pgid": 53411,
+          "liveMembers": false
+        }
+      ],
+      "rootAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-unspent2288/session002/ownership/16042eb85c234bcfa6cbf10a7cbbf8bd.json",
+      "root": "/private/tmp/test-stamp-shard-16042eb85c234bcfa6cbf10a7cbbf8bd",
+      "groups": [
+        {
+          "pgid": 53661,
+          "liveMembers": false
+        }
+      ],
+      "rootAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-unspent2288/session002/ownership/d801f9c80e724559b398fe8395ad314c.json",
+      "root": "/private/tmp/test-stamp-shard-d801f9c80e724559b398fe8395ad314c",
+      "groups": [
+        {
+          "pgid": 53786,
+          "liveMembers": false
+        }
+      ],
+      "rootAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 524384
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-unspent2288/session003/ownership/84a84fa7ba4c47a58d0fd2a51a8c6266.json",
+      "root": "/private/tmp/test-stamp-shard-84a84fa7ba4c47a58d0fd2a51a8c6266",
+      "groups": [
+        {
+          "pgid": 53940,
+          "liveMembers": false
+        }
+      ],
+      "rootAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 524384
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-unspent2288/session003/ownership/abb1dd01702249e8b3fcbc7fdcc23518.json",
+      "root": "/private/tmp/test-stamp-shard-abb1dd01702249e8b3fcbc7fdcc23518",
+      "groups": [
+        {
+          "pgid": 53830,
+          "liveMembers": false
+        }
+      ],
+      "rootAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-unspent2288/session004/ownership/42f8d10bb1b24a2bbab6a0ddaa3298e4.json",
+      "root": "/private/tmp/test-stamp-shard-42f8d10bb1b24a2bbab6a0ddaa3298e4",
+      "groups": [
+        {
+          "pgid": 53964,
+          "liveMembers": false
+        }
+      ],
+      "rootAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-unspent2288/session004/ownership/695ffc440bf54df886e8aee9876c759a.json",
+      "root": "/private/tmp/test-stamp-shard-695ffc440bf54df886e8aee9876c759a",
+      "groups": [
+        {
+          "pgid": 54168,
+          "liveMembers": false
+        }
+      ],
+      "rootAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 524384
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-unspent2288/session005/ownership/5ced39f693c048798b41dbe5eb060701.json",
+      "root": "/private/tmp/test-stamp-shard-5ced39f693c048798b41dbe5eb060701",
+      "groups": [
+        {
+          "pgid": 55606,
+          "liveMembers": false
+        }
+      ],
+      "rootAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 524384
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-unspent2288/session005/ownership/9aed28001938448bbf8deefd2df0862d.json",
+      "root": "/private/tmp/test-stamp-shard-9aed28001938448bbf8deefd2df0862d",
+      "groups": [
+        {
+          "pgid": 54206,
+          "liveMembers": false
+        }
+      ],
+      "rootAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 0
+    }
+  ],
+  "all10ScratchRootsAbsent": true,
+  "removedAllocationBytes": 2621920,
+  "allPhaseChildrenJoined": true,
+  "allPhaseGroupsAbsent": true,
+  "phaseReservationAbsent": true,
+  "dependencyLinkAbsent": true,
+  "retainedOutput": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-20261107-once",
+  "retainedBytes": 30092863,
+  "compatibilityException": null,
+  "leftovers": [],
+  "sourceGrantConsumed": true,
+  "remainingSolverRequests": 2248,
+  "replay": false,
+  "acceptance": false
+}

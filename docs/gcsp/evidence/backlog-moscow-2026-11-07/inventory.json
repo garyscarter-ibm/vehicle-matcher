@@ -1,0 +1,1227 @@
+{
+  "schemaVersion": 1,
+  "report": "docs/gcsp/backlog-moscow-review-2026-11-07.md",
+  "decisionStatus": "Ten partial-story splits authorised and applied by Russell on 7 November 2026; other whole-capability MoSCoW priorities remain proposed.",
+  "demoDate": "2026-11-12",
+  "reviewDate": "2026-11-07",
+  "statusSource": {
+    "kind": "retained authenticated Jira read",
+    "observedFrom": "2026-11-07T12:55:20.549Z",
+    "observedThrough": "2026-11-07T12:55:38.018Z",
+    "scope": "unaccepted Stories; Bugs are not re-triaged",
+    "freshReadAvailable": false,
+    "note": "No authenticated Jira tab or Jira connector available during this review; no foreground browser operation was used."
+  },
+  "counts": {
+    "stories": 56,
+    "jiraStatus": {
+      "In Progress": 24,
+      "In Review": 6,
+      "To Do": 26
+    },
+    "recordedLargeLocalEstimates": {
+      "In Progress": {
+        "8": 4,
+        "13": 20
+      },
+      "In Review": {
+        "8": 3,
+        "13": 3
+      }
+    },
+    "unclaimedLocalEstimateUnknown": 26,
+    "createdSplitRemainders": 10,
+    "exactMustStories": 35
+  },
+  "estimateCaution": "Original estimates are not remaining effort. Proposed child sizes in the report require re-estimation against the published code and retained acceptance evidence.",
+  "progressCaution": "Published source checkpoints were inspected through local remote-tracking refs and shared Results. No current worker status or latest remote-head claim is made.",
+  "sources": [
+    "docs/gcsp/service-blueprint.html",
+    "docs/gcsp/demo-brief.md",
+    "docs/gcsp/build-rules.md",
+    "docs/gcsp/experience-quality.md",
+    "docs/design/gcsp-high-level-design.md",
+    "docs/design/hld-review-gc.md",
+    "docs/gcsp/shared-contracts.md",
+    "docs/gcsp/fucq-110-stories.md",
+    "docs/gcsp/fucq-132-stories.md",
+    "docs/gcsp/fucq-74-75-stories.md",
+    "docs/gcsp/completion-blockers-2026-11-06.md",
+    "docs/gcsp/codex-handover-2026-11-06-integration.md",
+    "docs/gcsp/fucq-61-downstream-impact-2026-11-07.md",
+    "docs/gcsp/evidence/backlog-splits-2026-11-07/plan.json",
+    "docs/gcsp/evidence/backlog-splits-2026-11-07/jira-readback.json"
+  ],
+  "inventory": [
+    {
+      "key": "FUCQ-27",
+      "title": "Share pure recommendation evaluation behind the retail compatibility layer",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-04T13:36:14.884-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-047.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Won't",
+          "scope": "Shared-engine extraction after 12 November.",
+          "decisionBasis": "already agreed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-28",
+      "title": "Build grouped result views from complete exact-car decisions",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-04T13:36:55.190-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-048.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Won't",
+          "scope": "Shared-engine extraction after 12 November.",
+          "decisionBasis": "already agreed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-46",
+      "title": "Resolve a live catalogue configuration behind the snapshot contract",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-05T07:29:01.345-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-017.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Won't",
+          "scope": "Live catalogue provider work, conditional on qualified offline demo coverage; retain existing source/access holds.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-47",
+      "title": "Bound live catalogue failures and preserve truthful fallback",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-03T08:39:54.113-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-018.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Won't",
+          "scope": "Live catalogue provider work, conditional on qualified offline demo coverage; retain existing source/access holds.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-48",
+      "title": "Verify the selected live catalogue provider with redacted evidence",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-03T08:39:54.136-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-019.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Won't",
+          "scope": "Live catalogue provider work, conditional on qualified offline demo coverage; retain existing source/access holds.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-58",
+      "title": "Qualify fleet coverage and budgets before collecting configurations",
+      "jiraStatus": "In Review",
+      "jiraIssueUpdatedAt": "2026-11-07T06:43:44.455-0600",
+      "localStoryPath": "_dev/done/2026-11/DEV-2026-11-04-031.md",
+      "originalLocalStoryPoints": 8,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "usget",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Review existing source/corpus evidence and reuse delivered prerequisites; no retrospective rebuild.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-59",
+      "title": "Collect distinct constructible configurations with resumable batches",
+      "jiraStatus": "In Review",
+      "jiraIssueUpdatedAt": "2026-11-07T06:48:55.476-0600",
+      "localStoryPath": "_dev/done/2026-11/DEV-2026-11-04-032.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "usget",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Review existing source/corpus evidence and reuse delivered prerequisites; no retrospective rebuild.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-60",
+      "title": "Enrich resolved fleet configurations with matching facts and images",
+      "jiraStatus": "In Review",
+      "jiraIssueUpdatedAt": "2026-11-07T06:48:54.106-0600",
+      "localStoryPath": "_dev/done/2026-11/DEV-2026-11-04-033.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "usget",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Review existing source/corpus evidence and reuse delivered prerequisites; no retrospective rebuild.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-61",
+      "title": "Collect and validate 10,000 genuinely distinct BMW configurations",
+      "jiraStatus": "In Review",
+      "jiraIssueUpdatedAt": "2026-11-07T06:49:55.478-0600",
+      "localStoryPath": "_dev/done/2026-11/DEV-2026-11-04-034.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "usget",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Review existing source/corpus evidence and reuse delivered prerequisites; no retrospective rebuild.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-62",
+      "title": "Publish the configuration corpus and generate stock by order reference",
+      "jiraStatus": "In Review",
+      "jiraIssueUpdatedAt": "2026-11-07T06:49:55.995-0600",
+      "localStoryPath": "_dev/done/2026-11/DEV-2026-11-04-035.md",
+      "originalLocalStoryPoints": 8,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "usget",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Review existing source/corpus evidence and reuse delivered prerequisites; no retrospective rebuild.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-63",
+      "title": "Prove full-corpus lookup and offline recovery through the port",
+      "jiraStatus": "In Review",
+      "jiraIssueUpdatedAt": "2026-11-07T06:49:56.489-0600",
+      "localStoryPath": "_dev/done/2026-11/DEV-2026-11-04-036.md",
+      "originalLocalStoryPoints": 8,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "usget",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Review existing source/corpus evidence and reuse delivered prerequisites; no retrospective rebuild.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-66",
+      "title": "Persist exact manual claims and expiry through a shared authority",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-05T17:34:03.675-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-069.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "garyscarter-ibm",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-69",
+      "title": "Browse released cars with visual cards and complete vehicle details",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-05T18:02:50.997-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-068.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "garyscarter-ibm",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-70",
+      "title": "Review a claimed car with contact details and return mileage",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-06T10:21:37.162-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-070.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "garyscarter-ibm",
+      "proposedDemoSlices": [
+        {
+          "priority": "Should",
+          "scope": "Full manual checkout and additional variants/evidence, after the buddy path; preserve usable exposed actions and every shared buddy handoff input/check.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-71",
+      "title": "Submit manual selections through an idempotent ordering adapter",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-06T10:15:14.289-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-071.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "usget",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-72",
+      "title": "Review declarations and show the actual order handoff outcome",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-05T01:51:21.935-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-072.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Should",
+          "scope": "Full manual checkout and additional variants/evidence, after the buddy path; preserve usable exposed actions and every shared buddy handoff input/check.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-73",
+      "title": "Verify the complete manual journey and its employee entry contract",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-04T14:39:57.537-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-073.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Should",
+          "scope": "Full manual checkout and additional variants/evidence, after the buddy path; preserve usable exposed actions and every shared buddy handoff input/check.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-77",
+      "title": "Verify scheme coverage using the collected BMW configuration corpus",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-07T06:54:28.848-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-056.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "usget",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-78",
+      "title": "Shape synthetic scheme stock from real stock-locator aggregates",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-07T06:54:28.891-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-057.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "usget",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-92",
+      "title": "Release synthetic stock on a presenter tick from the next pull",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-06T10:21:39.112-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-058.md",
+      "originalLocalStoryPoints": 8,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "usget",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-95",
+      "title": "Show buddy activity and pause or resume the search",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-05T10:25:19.993-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-083.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "usget",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-96",
+      "title": "Allocate released cars across competing briefs by the policy tie-break",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-06T11:51:36.416-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-059.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "usget",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-98",
+      "title": "Send offer emails through one real transport once a sender is set up",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-06T09:15:27.884-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-054.md",
+      "originalLocalStoryPoints": 8,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "usget",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-100",
+      "title": "Hold the allocated car and create its offer and outbox job in one transaction",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-06T11:09:45.292-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-060.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "garyscarter-ibm",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-102",
+      "title": "Open an offer from a run-bound link that shows its current state",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-05T17:51:16.672-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-061.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "garyscarter-ibm",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-104",
+      "title": "Track order requests from requested to confirmed to released",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-06T03:59:38.554-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-089.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "usget",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-105",
+      "title": "Show the offer's exact quote, current-car comparison and countdown",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-05T18:30:59.938-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-080.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "garyscarter-ibm",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-106",
+      "title": "Accept, decline or expire an offer with idempotent outcomes",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-05T18:30:08.648-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-074.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "garyscarter-ibm",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-107",
+      "title": "Confirm one preference change after declining and receive a second offer",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-06T03:42:11.744-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-085.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "garyscarter-ibm",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-108",
+      "title": "Hand off a selected buddy offer through the ordering adapter",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-04T15:03:08.399-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-075.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-109",
+      "title": "Verify Paula's critical path end to end with browser evidence",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-04T14:58:56.181-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-086.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-111",
+      "title": "Progress a selected order through the target approval states on presenter ticks",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-06T10:59:51.180-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-076.md",
+      "originalLocalStoryPoints": 8,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "garyscarter-ibm",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-113",
+      "title": "Record learning records for Greg's demand model, observed and synthetic",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-05T16:57:28.638-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-088.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "garyscarter-ibm",
+      "proposedDemoSlices": [
+        {
+          "priority": "Could",
+          "scope": "Synthetic-trained learned alternative after core planning; substantial FUCQ-113/115 implementation already exists, so size only remaining work.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-114",
+      "title": "Request and confirm a replacement handover appointment",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-07T07:57:08.987-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-077.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Request and confirm a replacement handover appointment",
+          "decisionBasis": "authorised split, 7 November 2026"
+        }
+      ],
+      "originalTitle": "Request, confirm and complete a handover appointment, or record a no-show",
+      "scopeRevision": {
+        "authorisedBy": "Russell Gowers",
+        "date": "2026-11-07",
+        "remainder": "FUCQ-167",
+        "existingClaimStatusAndPointsPreserved": true
+      }
+    },
+    {
+      "key": "FUCQ-115",
+      "title": "Train the choice model offline and evaluate it on held-out cycles",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-05T18:09:46.641-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-092.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "garyscarter-ibm",
+      "proposedDemoSlices": [
+        {
+          "priority": "Could",
+          "scope": "Synthetic-trained learned alternative after core planning; substantial FUCQ-113/115 implementation already exists, so size only remaining work.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-116",
+      "title": "Track documents and vehicle readiness with a named owner for each",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-06T10:59:53.328-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-078.md",
+      "originalLocalStoryPoints": 8,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "garyscarter-ibm",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-117",
+      "title": "Plan feasible order quantities from expressed demand, supply and policy",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-06T03:59:39.090-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-090.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "usget",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-118",
+      "title": "Plan and schedule the old car's separate return",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-07T07:57:46.112-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-079.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Plan and schedule the old car's separate return",
+          "decisionBasis": "authorised split, 7 November 2026"
+        }
+      ],
+      "originalTitle": "Plan the old car's return separately from the new car's handover",
+      "scopeRevision": {
+        "authorisedBy": "Russell Gowers",
+        "date": "2026-11-07",
+        "remainder": "FUCQ-168",
+        "existingClaimStatusAndPointsPreserved": true
+      }
+    },
+    {
+      "key": "FUCQ-119",
+      "title": "Preview a replan after constraint edits and submit the plan as a request",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-04T15:02:18.369-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-091.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-120",
+      "title": "Show Paula order progress, outstanding actions and confirmed handover and return plans",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-07T07:57:50.313-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-082.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Show Paula order progress, outstanding actions and confirmed handover and return plans",
+          "decisionBasis": "authorised split, 7 November 2026"
+        }
+      ],
+      "originalTitle": "Show Paula her order progress, handover plan and who owns each next step",
+      "scopeRevision": {
+        "authorisedBy": "Russell Gowers",
+        "date": "2026-11-07",
+        "remainder": "FUCQ-169",
+        "existingClaimStatusAndPointsPreserved": true
+      }
+    },
+    {
+      "key": "FUCQ-121",
+      "title": "Show Greg's recommended order plan as a panel on his dashboard",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-04T15:02:21.377-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-093.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Deliver the connected Paula journey, essential shared services or Greg's expressed-demand order loop.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-122",
+      "title": "Let Paula find help and see named case ownership and status",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-07T07:57:54.806-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-084.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "garyscarter-ibm",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Let Paula find help and see named case ownership and status",
+          "decisionBasis": "authorised split, 7 November 2026"
+        }
+      ],
+      "originalTitle": "Ask for help, and let the scheme team work the renewal-risk case",
+      "scopeRevision": {
+        "authorisedBy": "Russell Gowers",
+        "date": "2026-11-07",
+        "remainder": "FUCQ-170",
+        "existingClaimStatusAndPointsPreserved": true
+      }
+    },
+    {
+      "key": "FUCQ-123",
+      "title": "Forecast demand with the learned model, shown beside the baseline plan",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-04T15:02:22.471-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-094.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Could",
+          "scope": "Synthetic-trained learned alternative after core planning; substantial FUCQ-113/115 implementation already exists, so size only remaining work.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-124",
+      "title": "Verify approval, documents and confirmed handover and return planning end to end",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-07T07:58:07.929-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-087.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Verify approval, documents and confirmed handover and return planning end to end",
+          "decisionBasis": "authorised split, 7 November 2026"
+        }
+      ],
+      "originalTitle": "Verify the lifecycle after selection end to end with browser evidence",
+      "scopeRevision": {
+        "authorisedBy": "Russell Gowers",
+        "date": "2026-11-07",
+        "remainder": "FUCQ-171",
+        "existingClaimStatusAndPointsPreserved": true
+      }
+    },
+    {
+      "key": "FUCQ-126",
+      "title": "Operate the main demo with tick, release, reset and role controls",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-07T07:58:11.890-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-096.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "garyscarter-ibm",
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Operate the main demo with tick, release, reset and role controls",
+          "decisionBasis": "authorised split, 7 November 2026"
+        }
+      ],
+      "originalTitle": "Give the presenter controls for ticks, releases, reset, scenarios and role",
+      "scopeRevision": {
+        "authorisedBy": "Russell Gowers",
+        "date": "2026-11-07",
+        "remainder": "FUCQ-172",
+        "existingClaimStatusAndPointsPreserved": true
+      }
+    },
+    {
+      "key": "FUCQ-127",
+      "title": "Replay the no-suitable-match scenario",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-04T15:02:56.622-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-097.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Could",
+          "scope": "Dedicated difficult-case fixture/catalogue/replay presentation; underlying correct failure behaviour and relevant checks remain Must.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-128",
+      "title": "Replay decline, one confirmed change and a matching second offer",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-07T07:58:15.651-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-098.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Must",
+          "scope": "Replay decline, one confirmed change and a matching second offer",
+          "decisionBasis": "authorised split, 7 November 2026"
+        }
+      ],
+      "originalTitle": "Replay the decline-then-change scenario",
+      "scopeRevision": {
+        "authorisedBy": "Russell Gowers",
+        "date": "2026-11-07",
+        "remainder": "FUCQ-173",
+        "existingClaimStatusAndPointsPreserved": true
+      }
+    },
+    {
+      "key": "FUCQ-129",
+      "title": "Replay the offer-expiry scenario",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-04T15:03:03.371-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-099.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Could",
+          "scope": "Dedicated difficult-case fixture/catalogue/replay presentation; underlying correct failure behaviour and relevant checks remain Must.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-130",
+      "title": "Replay the unavailable-data scenario",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-04T15:03:05.677-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-100.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Could",
+          "scope": "Dedicated difficult-case fixture/catalogue/replay presentation; underlying correct failure behaviour and relevant checks remain Must.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-131",
+      "title": "Replay the uncertain-handoff scenario",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-04T15:03:08.428-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-101.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Could",
+          "scope": "Dedicated difficult-case fixture/catalogue/replay presentation; underlying correct failure behaviour and relevant checks remain Must.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-134",
+      "title": "Replay today's first-come-first-served release for a seeded cohort in an isolated run",
+      "jiraStatus": "In Progress",
+      "jiraIssueUpdatedAt": "2026-11-05T19:36:04.202-0600",
+      "localStoryPath": "_dev/in-progress/DEV-2026-11-04-103.md",
+      "originalLocalStoryPoints": 13,
+      "estimateSource": "local claimed/delivered story header; not remaining effort",
+      "claimedBy": "garyscarter-ibm",
+      "proposedDemoSlices": [
+        {
+          "priority": "Should",
+          "scope": "Reproducible actual 1,000-employee process comparison, after the connected Must journey.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-135",
+      "title": "Replay the buddy route for the same cohort through allocation, holds and decisions",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-04T15:16:26.790-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-104.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Should",
+          "scope": "Reproducible actual 1,000-employee process comparison, after the connected Must journey.",
+          "decisionBasis": "proposed"
+        }
+      ]
+    },
+    {
+      "key": "FUCQ-136",
+      "title": "Measure the process comparison across seeds and store immutable results",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-07T07:58:27.900-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-105.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Should",
+          "scope": "Measure the process comparison across seeds and store immutable results",
+          "decisionBasis": "authorised split, 7 November 2026"
+        }
+      ],
+      "originalTitle": "Measure both routes across seeds and store an unchangeable comparison result",
+      "scopeRevision": {
+        "authorisedBy": "Russell Gowers",
+        "date": "2026-11-07",
+        "remainder": "FUCQ-174",
+        "existingClaimStatusAndPointsPreserved": true
+      }
+    },
+    {
+      "key": "FUCQ-137",
+      "title": "Run the process comparison offline and read its stored result",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-07T07:58:31.788-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-106.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Should",
+          "scope": "Run the process comparison offline and read its stored result",
+          "decisionBasis": "authorised split, 7 November 2026"
+        }
+      ],
+      "originalTitle": "Run comparison jobs in a worker, presenter-only, with a command-line twin",
+      "scopeRevision": {
+        "authorisedBy": "Russell Gowers",
+        "date": "2026-11-07",
+        "remainder": "FUCQ-175",
+        "existingClaimStatusAndPointsPreserved": true
+      }
+    },
+    {
+      "key": "FUCQ-138",
+      "title": "Show the stored process comparison and assumptions on Greg's dashboard",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-07T07:58:35.995-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-04-107.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Should",
+          "scope": "Show the stored process comparison and assumptions on Greg's dashboard",
+          "decisionBasis": "authorised split, 7 November 2026"
+        }
+      ],
+      "originalTitle": "Show the route comparison panel on Greg's dashboard with assumptions and a hold rerun",
+      "scopeRevision": {
+        "authorisedBy": "Russell Gowers",
+        "date": "2026-11-07",
+        "remainder": "FUCQ-176",
+        "existingClaimStatusAndPointsPreserved": true
+      }
+    },
+    {
+      "key": "FUCQ-149",
+      "title": "Resume the saved manual journey through the current claim",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-06T11:09:44.287-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-06-GC-011.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "unclaimed imported record has no points field; current Jira estimate unknown",
+      "claimedBy": null,
+      "proposedDemoSlices": [
+        {
+          "priority": "Won't",
+          "scope": "Additional saved-manual-journey Resume; retain its existing pause and review boundary.",
+          "decisionBasis": "paused proposal; proposed demo deferral"
+        }
+      ]
+    }
+  ],
+  "reconciliationSource": {
+    "nativeMustObservation": "2026-11-07T13:50:43.196Z",
+    "splitReadback": "docs/gcsp/evidence/backlog-splits-2026-11-07/jira-readback.json",
+    "splitObservation": "2026-11-07T13:58:36.717Z",
+    "scope": "35 exact Must identities and 20 original/remainder records; original 56-item review baseline retained"
+  },
+  "splitRemainders": [
+    {
+      "key": "FUCQ-167",
+      "title": "Record handover completion, no-show and rebooking",
+      "splitFrom": "FUCQ-114",
+      "parent": "FUCQ-110",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-07T07:57:09.037-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-07-001.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "new unclaimed remainder; unestimated, re-estimate actual remaining work at pickup",
+      "claimedBy": null,
+      "demoPriority": "Won't",
+      "decisionBasis": "authorised partial-story split, 7 November 2026"
+    },
+    {
+      "key": "FUCQ-168",
+      "title": "Confirm an old-car return or missed return and update the current-car relationship",
+      "splitFrom": "FUCQ-118",
+      "parent": "FUCQ-110",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-07T07:57:46.153-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-07-002.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "new unclaimed remainder; unestimated, re-estimate actual remaining work at pickup",
+      "claimedBy": null,
+      "demoPriority": "Won't",
+      "decisionBasis": "authorised partial-story split, 7 November 2026"
+    },
+    {
+      "key": "FUCQ-169",
+      "title": "Show physical handover and return outcomes with rebooking actions",
+      "splitFrom": "FUCQ-120",
+      "parent": "FUCQ-110",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-07T07:57:50.354-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-07-003.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "new unclaimed remainder; unestimated, re-estimate actual remaining work at pickup",
+      "claimedBy": null,
+      "demoPriority": "Won't",
+      "decisionBasis": "authorised partial-story split, 7 November 2026"
+    },
+    {
+      "key": "FUCQ-170",
+      "title": "Work the renewal-risk queue, remedies and advanced employee case interactions",
+      "splitFrom": "FUCQ-122",
+      "parent": "FUCQ-110",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-07T07:57:54.848-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-07-004.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "new unclaimed remainder; unestimated, re-estimate actual remaining work at pickup",
+      "claimedBy": null,
+      "demoPriority": "Could",
+      "decisionBasis": "authorised partial-story split, 7 November 2026"
+    },
+    {
+      "key": "FUCQ-171",
+      "title": "Verify terminal handover, return and advanced renewal-help scenarios",
+      "splitFrom": "FUCQ-124",
+      "parent": "FUCQ-110",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-07T07:58:07.970-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-07-005.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "new unclaimed remainder; unestimated, re-estimate actual remaining work at pickup",
+      "claimedBy": null,
+      "demoPriority": "Won't",
+      "decisionBasis": "authorised partial-story split, 7 November 2026"
+    },
+    {
+      "key": "FUCQ-172",
+      "title": "Choose and reset the wider presenter scenario catalogue",
+      "splitFrom": "FUCQ-126",
+      "parent": "FUCQ-75",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-07T07:58:11.929-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-07-006.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "new unclaimed remainder; unestimated, re-estimate actual remaining work at pickup",
+      "claimedBy": null,
+      "demoPriority": "Could",
+      "decisionBasis": "authorised partial-story split, 7 November 2026"
+    },
+    {
+      "key": "FUCQ-173",
+      "title": "Replay a confirmed preference change while no second car is available",
+      "splitFrom": "FUCQ-128",
+      "parent": "FUCQ-75",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-07T07:58:15.688-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-07-007.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "new unclaimed remainder; unestimated, re-estimate actual remaining work at pickup",
+      "claimedBy": null,
+      "demoPriority": "Could",
+      "decisionBasis": "authorised partial-story split, 7 November 2026"
+    },
+    {
+      "key": "FUCQ-174",
+      "title": "Compare alternative order mixes, points and buddy hold durations",
+      "splitFrom": "FUCQ-136",
+      "parent": "FUCQ-132",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-07T07:58:27.948-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-07-008.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "new unclaimed remainder; unestimated, re-estimate actual remaining work at pickup",
+      "claimedBy": null,
+      "demoPriority": "Could",
+      "decisionBasis": "authorised partial-story split, 7 November 2026"
+    },
+    {
+      "key": "FUCQ-175",
+      "title": "Start and monitor responsive comparison worker jobs from the browser",
+      "splitFrom": "FUCQ-137",
+      "parent": "FUCQ-132",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-07T07:58:31.823-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-07-009.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "new unclaimed remainder; unestimated, re-estimate actual remaining work at pickup",
+      "claimedBy": null,
+      "demoPriority": "Could",
+      "decisionBasis": "authorised partial-story split, 7 November 2026"
+    },
+    {
+      "key": "FUCQ-176",
+      "title": "Choose comparison experiments and rerun hold-duration scenarios on the dashboard",
+      "splitFrom": "FUCQ-138",
+      "parent": "FUCQ-132",
+      "jiraStatus": "To Do",
+      "jiraIssueUpdatedAt": "2026-11-07T07:58:36.028-0600",
+      "localStoryPath": "_dev/code-inbox/DEV-2026-11-07-010.md",
+      "originalLocalStoryPoints": null,
+      "estimateSource": "new unclaimed remainder; unestimated, re-estimate actual remaining work at pickup",
+      "claimedBy": null,
+      "demoPriority": "Could",
+      "decisionBasis": "authorised partial-story split, 7 November 2026"
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "scope": "prepared-syntax-static-only plus four in-memory owned-group state checks",
+  "planSha256": "adf2361bb798671a069ed42090bf4e1ec45f25c44781ca2edff13ccf28b5c307",
+  "checks": [
+    {
+      "path": "docs/gcsp/evidence/fucq62/fleet-dot9-2424-release-plan/activate.mjs",
+      "sha256": "3c4c3f4ac34d16a36f8e0e28072e044a6741ae43f5bbfddfd9cc45e3aef9ca85",
+      "syntax": "passed"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq62/fleet-dot9-2424-release-plan/audit-restored.mjs",
+      "sha256": "4dffb8bb7fd39d5ab5550fab24a0db0b7ecbf0b41f080e75b635f274d267dfc0",
+      "syntax": "passed"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq62/fleet-dot9-2424-release-plan/common.mjs",
+      "sha256": "ae5f88725810ec2e4c0df83709f10fd7852898bf760e700effc8b2a7a21c7360",
+      "syntax": "passed"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq62/fleet-dot9-2424-release-plan/package.mjs",
+      "sha256": "79ceef651a2b07a981018a55592808c7dbf23c1c1c03488746e9253377e8c6db",
+      "syntax": "passed"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq62/fleet-dot9-2424-release-plan/prove-restored.mjs",
+      "sha256": "6b38d1bcec542d86981e4de776a2768e2a4a5c692fc631a0266375bd69c9ff1b",
+      "syntax": "passed"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq62/fleet-dot9-2424-release-plan/public.mjs",
+      "sha256": "15daa695461fd5fb9e8e777a40f98eae67664e406f21ffa7ae4e4511cbe51baf",
+      "syntax": "passed"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq62/fleet-dot9-2424-release-plan/recovery.mjs",
+      "sha256": "1691eb4903ae5031a66d1491f7685b003c9d397a6b178725e5fce5a9b80622f2",
+      "syntax": "passed"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq62/fleet-dot9-2424-release-plan/summarize-restored.mjs",
+      "sha256": "13ab52afaeaf03d2992c31f2a781e27146c6f1c9ee0479bd0010f990c88694e7",
+      "syntax": "passed"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq62/fleet-dot9-2424-release-plan/supervise.py",
+      "sha256": "d60d417305b4789e1182e4d887d53a82929b51afa65d3b9298f82efe6572956a",
+      "inMemoryCompile": "passed"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq62/fleet-dot9-2424-release-plan/group-proof.py",
+      "sha256": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
+      "inMemoryCompile": "passed"
+    }
+  ],
+  "groupProofExactReusedSha256": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
+  "groupStateChecks": [
+    {
+      "queryStates": [
+        false
+      ],
+      "absenceProved": true
+    },
+    {
+      "queryStates": [
+        null,
+        false
+      ],
+      "absenceProved": true
+    },
+    {
+      "queryStates": [
+        true
+      ],
+      "absenceProved": false
+    },
+    {
+      "queryStates": [
+        null,
+        null,
+        null
+      ],
+      "absenceProved": false
+    }
+  ],
+  "groupTestsFilesystemAllocation": false,
+  "declaredPins": 173,
+  "pinsExactExceptExplicitUnappliedAnchor": true,
+  "descriptorExistingValidator": "passed read-only, unchanged descriptor identity",
+  "patchesApplyCheck": [
+    "registration.patch",
+    "render.patch",
+    "ci.patch"
+  ],
+  "productionTrackedChanges": 0,
+  "runtimePhasesExecuted": [],
+  "publicCalls": 0,
+  "ordinaryPublicationExecuted": false,
+  "nativeDatabaseCalls": 0,
+  "scratchAllocated": false,
+  "acceptance": false
+}

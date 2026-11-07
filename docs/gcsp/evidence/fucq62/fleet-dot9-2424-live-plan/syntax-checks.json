@@ -1,0 +1,100 @@
+{
+  "scope": "scoped syntax/read-only static preparation only",
+  "planSha256": "9aca94d1d0a54d1e0dc089da514eee89803421f2bef92a9fe8ad6bdd727c5718",
+  "preparedScripts": [
+    {
+      "name": "prepare-plan.py",
+      "bytes": 4119,
+      "sha256": "e88e9b828da013a625153c693c21b4c10eedfa335888a33d68e017973ae81162"
+    },
+    {
+      "name": "probe.mjs",
+      "bytes": 9633,
+      "sha256": "30401e162e50fbe78cc8f4c305bb0e362e876e99a1bfc01cd582f4552d70d93d"
+    },
+    {
+      "name": "supervise.py",
+      "bytes": 9172,
+      "sha256": "cca69389d8480c781366782f21ab543a05817874b96683e1a9ee3d929d06215f"
+    },
+    {
+      "name": "group-proof.py",
+      "bytes": 958,
+      "sha256": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c"
+    }
+  ],
+  "checks": [
+    {
+      "check": "in-memory-python-compile",
+      "path": "prepare-plan.py",
+      "passed": true
+    },
+    {
+      "check": "in-memory-python-compile",
+      "path": "supervise.py",
+      "passed": true
+    },
+    {
+      "check": "in-memory-python-compile",
+      "path": "group-proof.py",
+      "passed": true
+    },
+    {
+      "check": "node-syntax",
+      "path": "probe.mjs",
+      "passed": true
+    }
+  ],
+  "static": {
+    "rootCodePinsMatched": 47,
+    "orderedReferences": 2426,
+    "chunks": [
+      512,
+      512,
+      512,
+      512,
+      378
+    ],
+    "newGETCeiling": 2427,
+    "priorDiagnosticHealthGETs": 5,
+    "preparedScriptPinsMatched": true,
+    "frozenDot9PathsEdited": false
+  },
+  "groupHelperInjectedStates": [
+    {
+      "state": "absent",
+      "passed": true,
+      "queries": 1
+    },
+    {
+      "state": "live",
+      "passed": true,
+      "queries": 1
+    },
+    {
+      "state": "unknown",
+      "passed": true,
+      "queries": 3
+    },
+    {
+      "state": "unknown-then-absent",
+      "passed": true,
+      "queries": 2
+    }
+  ],
+  "executed": {
+    "liveRequests": 0,
+    "sourceCalls": 0,
+    "candidateOrProofExecution": false,
+    "ordinaryPublication": false,
+    "scratchAllocation": false
+  },
+  "ordinaryActivation": "unresolved until actual .9 pointer; run gate enforces it",
+  "deployment": "unresolved; exact actualdeployment/code and successful evidence required",
+  "cleanup": {
+    "scratchCreated": false,
+    "scratchRemovedBytes": 0,
+    "leftovers": []
+  },
+  "acceptance": false
+}

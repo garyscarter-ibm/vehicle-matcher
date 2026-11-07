@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "native-install2-first-bottle-preflight.v1",
+  "status": "prepared-unexecuted-separate-exact-parent-grant-required",
+  "executionRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036",
+  "phase": "install-2-preflight",
+  "package": {
+    "name": "ca-certificates",
+    "pkgVersion": "2026-10-20",
+    "bottleRebuild": 0,
+    "manifestTag": "2026-10-20",
+    "bottleTag": "2026-10-20.all",
+    "bottleSha256": "8589f4e61b3afcc5ea375aab11af1c891ec4c94421c699c2a5a4765078de4443",
+    "downloadBytes": 109619,
+    "installedBytes": 193035,
+    "url": "https://ghcr.io/v2/homebrew/core/ca-certificates/blobs/sha256:8589f4e61b3afcc5ea375aab11af1c891ec4c94421c699c2a5a4765078de4443",
+    "manifestSha256": "eef300d56bc7d8621f1cc3f36152f02a05ac66f93a06348c086f66b21ac1fc7a",
+    "formulaRubySha256": "535300ac0e99511a36340454bd5287cfff097191de9d7b9675ed924f3a692317",
+    "kegPath": "/opt/homebrew/Cellar/ca-certificates/2026-10-20",
+    "dependencies": [],
+    "postInstallSteps": [
+      {
+        "command": {
+          "base": "libexec",
+          "path": "post-install"
+        },
+        "type": "run",
+        "args": [
+          "{{pkgshare}}/cacert.pem",
+          "{{pkgetc}}/cert.pem"
+        ]
+      }
+    ]
+  },
+  "inputs": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-postgres-bounded-plan-2026-11-07/package-metadata.json",
+      "bytes": 7785,
+      "sha256": "3c4432141dcb64fef2418c2b1a3bb298b4b8711e2b52467dcd7f161bd9f87112"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-install-first-failure-2026-11-07/diagnosis.json",
+      "bytes": 4456,
+      "sha256": "44f5fe3fc78b191f45e9ce2a82a4165c9c2c65f3c6fd89c5d21ffcc400c80695"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-install-first-failure-2026-11-07/actual-install-results.json",
+      "bytes": 1224,
+      "sha256": "916650e2815a47989f1e127736a150f3711df9ec7fc5cdeb7f6df75ffb83559e"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-install-first-failure-2026-11-07/actual-install-failure.json",
+      "bytes": 174,
+      "sha256": "d73468961d79320d581af19551d1246b6aedf873edd94870d275f2dcc61eb9a3"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-install-first-failure-2026-11-07/actual-command.log",
+      "bytes": 630,
+      "sha256": "a15bdb85ba2fe1d61b484b2ab2671ac531f2f3c22f70b42c56d8472299a7644d"
+    }
+  ],
+  "aliases": {
+    "/opt/homebrew/opt/icu4c": "../Cellar/icu4c@78/78.3",
+    "/opt/homebrew/opt/icu4c@79": null,
+    "/opt/homebrew/opt/openssl": "../Cellar/openssl@3/3.6.3",
+    "/opt/homebrew/opt/openssl@4": null
+  },
+  "codePins": {
+    "docs/gcsp/evidence/fucq63/native-install-2-preflight-2026-11-07/group-proof.py": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
+    "docs/gcsp/evidence/fucq63/native-install-2-preflight-2026-11-07/preflight.py": "706b54901af44d5cd0ed1e0ebb5700e8e654ac06018c773425b1d9046015d6be",
+    "docs/gcsp/evidence/fucq63/native-install-2-preflight-2026-11-07/supervise.py": "74123f4f46d95bfee637b7165c7029d59eab0da1af63a7d693c637b791b639de",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d"
+  },
+  "outputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/install-2-preflight",
+  "metadataRoot": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f63-native-postgres/install-2-preflight",
+  "resources": {
+    "workers": 1,
+    "seconds": 60,
+    "maximumPublicRequests": 5,
+    "requestSeconds": 15,
+    "redirects": 3,
+    "retries": 0,
+    "cloudScratchMiB": 2,
+    "diskReservationMiB": 8,
+    "hostRamMiB": 256,
+    "groupRamMiB": 192,
+    "supervisorHeadroomMiB": 64,
+    "retainedSummaryMaxMiB": 2
+  },
+  "unrun": [
+    "first exact bottle new download/preflight",
+    "all package installation",
+    "other six bottle downloads",
+    "native database and native proof",
+    "source/candidate/public fleet calls",
+    "full Story acceptance/Done"
+  ],
+  "installationInvoked": false,
+  "nativeAttempted": false,
+  "acceptance": false
+}

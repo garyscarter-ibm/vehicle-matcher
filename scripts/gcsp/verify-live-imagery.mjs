@@ -1,3 +1,4 @@
+import { bmwEnrichmentObservationRequestUrls, validateBmwEnrichmentObservationRegistration } from './bmw-public-registration.mjs';
 import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
@@ -21,8 +22,11 @@ const SAFE_CODES = new Set(['budget-exhausted', 'source-invalid', 'access-denied
   'image-unavailable', 'delivery-failed', 'artifact-write-failed']);
 
 /** One shared budget covers settings, manifests and assets, including partially read failure bodies. */
-export function createBoundedTransport({ fetchImpl, now = () => performance.now() } = {}) {
+export function createBoundedTransport({ fetchImpl, now = () => performance.now(), sourceRegistration, onProgress = async () => {} } = {}) {
   if (typeof fetchImpl !== 'function') throw TypeError('Supply an explicit transport.');
+  const registration = sourceRegistration === undefined ? null : validateBmwEnrichmentObservationRegistration(sourceRegistration);
+  const urls = registration && bmwEnrichmentObservationRequestUrls(registration);
+  const limits = registration ? { requests: 4, images: 1, bytes: 4194304, requestMs: 10000, totalMs: 90000 } : LIMITS;
   const started = now(); const requests = []; let bytes = 0; let images = 0; let active = false; let stopped = null;
   const state = () => ({ requests: requests.map((item) => ({ ...item })), requestCount: requests.length,
     imageCount: images, bytes, elapsedMs: Math.max(0, Math.ceil(now() - started)), stopped });
@@ -30,23 +34,26 @@ export function createBoundedTransport({ fetchImpl, now = () => performance.now(
     if (stopped) fail(stopped);
     if (active) { stopped = 'source-busy'; fail(stopped); }
     let url; try { url = new URL(input.url); } catch { stopped = 'source-invalid'; fail(stopped); }
-    const settings = input.url === SETTINGS;
+    const page = registration && input.url === urls.page;
+    const settings = registration ? url.origin === 'https://configure.bmw.co.uk' && /^\/en_GB\/settings\.[a-zA-Z0-9]+\.json$/.test(url.pathname) && !url.search : input.url === SETTINGS;
     const asset = url.origin === ORIGIN && url.pathname === '/connext-bmw/cosySec';
-    const manifest = url.origin === ORIGIN && url.pathname === MANIFEST;
-    if ((!settings && !asset && !manifest) || url.username || url.password || url.hash || url.port
+    const manifest = registration ? input.url === urls['image-manifest'] : url.origin === ORIGIN && url.pathname === MANIFEST;
+    const kind = page ? 'page' : settings ? 'settings' : asset ? 'asset' : 'manifest';
+    if ((!page && !settings && !asset && !manifest) || url.username || url.password || url.hash || url.port
       || input.method !== 'GET' || input.credentials !== 'omit' || input.cache !== 'no-store'
       || input.redirect !== 'error' || input.retries !== 0
       || !Number.isSafeInteger(input.maxResponseBytes) || input.maxResponseBytes < 1
       || input.maxResponseBytes > (asset ? 2097152 : 1048576)
-      || ((settings || asset) && Object.keys(input.headers || {}).some((key) => key.toLowerCase() !== 'accept'))
+      || ((page || settings || asset) && Object.keys(input.headers || {}).some((key) => key.toLowerCase() !== 'accept'))
       || (manifest && Object.keys(input.headers || {}).some((key) => !['accept', 'x-api-key'].includes(key.toLowerCase())))) {
       stopped = 'source-invalid'; fail(stopped);
     }
-    const remaining = LIMITS.totalMs - (now() - started);
-    if (remaining <= 0 || requests.length >= LIMITS.requests || bytes >= LIMITS.bytes || asset && images >= LIMITS.images) {
+    if (registration && kind !== ['page', 'settings', 'manifest', 'asset'][requests.length]) { stopped = 'source-invalid'; fail(stopped); }
+    const remaining = limits.totalMs - (now() - started);
+    if (remaining <= 0 || requests.length >= limits.requests || bytes >= limits.bytes || asset && images >= limits.images) {
       stopped = 'budget-exhausted'; fail(stopped);
     }
-    const entry = { kind: settings ? 'settings' : asset ? 'asset' : 'manifest', status: null, bytes: 0 };
+    const entry = { kind, status: null, bytes: 0 };
     requests.push(entry); if (asset) images += 1; active = true;
     const controller = new AbortController();
     const abort = () => controller.abort(); input.signal?.addEventListener('abort', abort, { once: true });
@@ -54,6 +61,7 @@ export function createBoundedTransport({ fetchImpl, now = () => performance.now(
     let timer; let reader; let response;
     try {
       const work = async () => {
+        await onProgress(state());
         response = await fetchImpl(input.url, { method: 'GET', headers: input.headers,
           credentials: 'omit', cache: 'no-store', redirect: 'error', signal: controller.signal });
         if (controller.signal.aborted) fail('request-timeout');
@@ -62,22 +70,24 @@ export function createBoundedTransport({ fetchImpl, now = () => performance.now(
         if ([401, 403].includes(response.status)) fail('access-denied');
         if (response.status !== 200) fail('http-failure');
         const type = (response.headers.get('content-type') || '').split(';')[0].trim().toLowerCase();
-        if (type !== (asset ? 'image/webp' : 'application/json')) fail('content-type');
+        if (type !== (page ? 'text/html' : asset ? 'image/webp' : 'application/json')) fail('content-type');
         reader = response.body?.getReader(); if (!reader) fail('source-invalid');
         const chunks = [];
         for (;;) {
           const part = await reader.read(); if (part.done) break;
           if (controller.signal.aborted) fail('request-timeout');
           entry.bytes += part.value.byteLength; bytes += part.value.byteLength;
-          if (entry.bytes > input.maxResponseBytes || bytes > LIMITS.bytes) fail('response-byte-cap');
-          if (now() - started >= LIMITS.totalMs) fail('budget-exhausted');
+          if (entry.bytes > input.maxResponseBytes || bytes > limits.bytes) fail('response-byte-cap');
+          if (now() - started >= limits.totalMs) fail('budget-exhausted');
+          await onProgress(state());
           chunks.push(Buffer.from(part.value));
         }
-        if (now() - started >= LIMITS.totalMs) fail('budget-exhausted');
-        return { status: 200, contentType: type, body: Buffer.concat(chunks) };
+        if (now() - started >= limits.totalMs) fail('budget-exhausted');
+        const body = Buffer.concat(chunks); entry.responseSha256 = hash(body); await onProgress(state());
+        return { status: 200, contentType: type, body };
       };
       return await Promise.race([work(), new Promise((_, reject) => {
-        timer = setTimeout(() => { controller.abort(); reject(Error('request-timeout')); }, Math.min(LIMITS.requestMs, remaining));
+        timer = setTimeout(() => { controller.abort(); reject(Error('request-timeout')); }, Math.min(limits.requestMs, remaining));
       })]);
     } catch (error) {
       stopped = SAFE_CODES.has(error?.message) ? error.message : controller.signal.aborted ? 'request-timeout' : 'http-failure';
@@ -85,12 +95,12 @@ export function createBoundedTransport({ fetchImpl, now = () => performance.now(
       if (reader) void reader.cancel().catch(() => {});
       else if (response?.body) void response.body.cancel().catch(() => {});
       fail(stopped);
-    } finally { clearTimeout(timer); input.signal?.removeEventListener('abort', abort); active = false; }
+    } finally { clearTimeout(timer); input.signal?.removeEventListener('abort', abort); active = false; await onProgress(state()); }
   };
   return Object.freeze({ get, state });
 }
 
-function credentialFromSettings(bytes) {
+export function credentialFromSettings(bytes) {
   let data; try { data = JSON.parse(bytes.toString('utf8')); } catch { fail('settings-invalid'); }
   const app = data.APP || data.app; const profile = (app?.backend || app?.BACKEND)?.settingsCosy;
   const nodes = []; const walk = (value) => {

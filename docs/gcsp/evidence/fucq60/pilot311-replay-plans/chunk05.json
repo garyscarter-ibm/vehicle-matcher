@@ -1,0 +1,227 @@
+{
+  "schemaVersion": "f60-source32-offline-replay-plan.v1",
+  "purpose": "F60 bounded actual pilot retained capture replay; no new traffic or live-session rewrite",
+  "sourceRelativeDirectory": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk05",
+  "originalAllocationId": "f61-source-pilot05-32-20261107-once",
+  "originalSourcePlanDigest": "2127dc9c9790bcc0b5cff21bb57fc82b251116c17fb3ecb0839e4afbcb4a367f",
+  "originalSourceCodeCommit": "932ca6006bb5eef0ebc20b55bd2236e606cca6bb",
+  "expectedRows": 31,
+  "asOf": "2026-11-07",
+  "planIdPrefix": "f60-pilot05-offline-replay-20261107",
+  "snapshotVersion": "bmw-gb-t5mj-pilot05-2026-11-07.v2",
+  "producerPins": {
+    "projectorSha256": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+    "qualifierSha256": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+    "sessionSha256": "1f22fe1cdf27d3e6f2be015e32b69b5ecc435c546fe9964396270e3db6e9421e",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "perRowOperations": {
+    "capture": 1,
+    "catalogue": 1
+  },
+  "sourceCalls": 0,
+  "imageCalls": 0,
+  "sourceFiles": {
+    "accepted.jsonl": {
+      "sha256": "764dd4b427fd637663321ff2a8c47b1d9ab6395701af5f77e50f25457039116b",
+      "bytes": 682709
+    },
+    "collection-plan.json": {
+      "sha256": "949a49d33a2100a437a8992c593c09fe8ce0cd90779475b6ff122cc6649a58f5",
+      "bytes": 12094
+    },
+    "execution-plan.json": {
+      "sha256": "8429e60df244da6e47707c3492802e66f67dad17da293a8411aaff65f6931a95",
+      "bytes": 4970
+    },
+    "execution-once.json": {
+      "sha256": "d94aeaf4095ec9cc845284127e949157831238adcdc5dd64860ed91b4714fa9e",
+      "bytes": 197
+    },
+    "collector-state.json": {
+      "sha256": "95efcde1e9253f490bd1697fd04fe6670e9a70235f70ba16b4dc24a3dde769b8",
+      "bytes": 2047224
+    },
+    "receipt.json": {
+      "sha256": "28a0f69bd40bd29b8f606431f83b1820d5ed74f3d4c748a1babd108975d05b05",
+      "bytes": 1643
+    },
+    "tree.json": {
+      "sha256": "bc2838dcf430f94af009af9c7adcc893106eff37e40a1dfa39626f6f77852ef0",
+      "bytes": 7305
+    },
+    "options.json": {
+      "sha256": "2c221220f9a4168330068e5b4f41f848cc2db99e8574b9a44eca4d751befc9f4",
+      "bytes": 121794
+    },
+    "solver/candidate-1499d383ebc26e806d99df41.json": {
+      "sha256": "0b47ebb85d4a09549af309f8942f186168ed737792b4094586659b0aea5738b6",
+      "bytes": 6179
+    },
+    "solver/candidate-1b6759b3ef00a4522d37a68d.json": {
+      "sha256": "e868fa6e21cad87eae290a2c17880078d6aa0ad284cc154f59e8277e32489bb0",
+      "bytes": 6400
+    },
+    "solver/candidate-213c322741c35dd33cb29b57.json": {
+      "sha256": "819f0a1e0ce6f7f46a4d614c16eee42b86c2464a59fdf33992040dd4cf60bb2b",
+      "bytes": 6449
+    },
+    "solver/candidate-229eaeceadddea20ccfe9c62.json": {
+      "sha256": "1c4dcbfea9709e832e2dcd1044756f24a2cf335ac7bf2faf4a6538c94139a4fa",
+      "bytes": 5950
+    },
+    "solver/candidate-3965cafd339b3dc6e6d64dac.json": {
+      "sha256": "72313c49377c24d6bc4834715776907f7d146d1af333a58e83afefd12e0ade96",
+      "bytes": 6179
+    },
+    "solver/candidate-3d5b6537dc7f439a0f7804f4.json": {
+      "sha256": "a211f85d66504813d1351c0e46f62bfbed333159b781bb9081837285c256d8a9",
+      "bytes": 6130
+    },
+    "solver/candidate-4e1065bacdb9d8ef8e5150d0.json": {
+      "sha256": "a0d17f6b9a19e63c6b687a654d3b92b787c139cf7095f56798e041961a50e01b",
+      "bytes": 6359
+    },
+    "solver/candidate-4e192e1c295d83859b92909e.json": {
+      "sha256": "89f7efd62b335bca60432ec945a322d839a673ebb5f2f54265fdfff4a6ecb0c3",
+      "bytes": 6400
+    },
+    "solver/candidate-52bd559c873b895eeff1b181.json": {
+      "sha256": "d8dc35e35e16c5e26fbab7d440b47e687943d971e87acd0f673086da6c862c06",
+      "bytes": 6449
+    },
+    "solver/candidate-54406022fdf68850b5a26f79.json": {
+      "sha256": "e8c4adb83e057f0d47523ee30d5b20247e303de54b2effe5fb7682a22b4b8f35",
+      "bytes": 5950
+    },
+    "solver/candidate-5641abec3093d3457519e0ad.json": {
+      "sha256": "c7f0158b780a54333dfec2f350a621a2928385b4ea7b2a307cd2cbafc4816110",
+      "bytes": 5950
+    },
+    "solver/candidate-5880ef477eb1a57c38add07f.json": {
+      "sha256": "be9a3e72b835abc72b9b366e23870a7e7f5267b66a0d7ed70043adbd469553b0",
+      "bytes": 6179
+    },
+    "solver/candidate-593c559968027a94287ef137.json": {
+      "sha256": "9dd087d45ba3e989ace32344efb32c6af646d65c9e5c4b659130e16629e44828",
+      "bytes": 5950
+    },
+    "solver/candidate-7467e2de0d97e921dbd3c29b.json": {
+      "sha256": "d95374d29b7fa4175f6a192f60d38f572d731f9b24973e34e7914158ca77a6ae",
+      "bytes": 6179
+    },
+    "solver/candidate-7e6a7868f38b0f83b6e050bf.json": {
+      "sha256": "cf4df87d9c2d38b683c974c5bcb6bca75ca511ebe11dfc36e42832463312031a",
+      "bytes": 6130
+    },
+    "solver/candidate-8cac7272949d161ac3ec70fd.json": {
+      "sha256": "c4c800af65bef6a955cc5d946a1dededb1da42383e89f43523fdf69ee2a6119c",
+      "bytes": 5901
+    },
+    "solver/candidate-8ec68c82477814442aaab203.json": {
+      "sha256": "330843d59fcae38d5518a12bb9c60224093f9f81a90e9aeb8e72f9f7ae7aee48",
+      "bytes": 6310
+    },
+    "solver/candidate-8fca950bf8875fe72db78792.json": {
+      "sha256": "43413963e419961c05e0a2f3c98507df99e0302c58eab62fa5aa37ea40952a04",
+      "bytes": 6400
+    },
+    "solver/candidate-ac19cade3418e03dc858fcb4.json": {
+      "sha256": "3c80b49b18d28ba018bc73d86cf66ef424687efb2b33b170710817379a47d595",
+      "bytes": 5901
+    },
+    "solver/candidate-ac4dc4be68fee247eb28f354.json": {
+      "sha256": "7cdcb934f316df795995fa379bcb5e61d8e15c37401fa818db827ebb434a4062",
+      "bytes": 6179
+    },
+    "solver/candidate-b505299381320d87a7bf7aed.json": {
+      "sha256": "7e89f9f9316f4d354b5e60fb4cf1255e3fb93649f5b490cdd5bff8398037b6d6",
+      "bytes": 6179
+    },
+    "solver/candidate-b82a4f6f6dc9c393e60692a5.json": {
+      "sha256": "3d5a3899343e6deadfafdf39f98c4d19c7b62d380bb89d567b1d9669a05032f1",
+      "bytes": 6310
+    },
+    "solver/candidate-c7f0ecf99ab47fb2eb839a31.json": {
+      "sha256": "a28d33718282e57bc3ca3268bdf2afab0b4c4524ce5551c6cf7471c5216b8b60",
+      "bytes": 6629
+    },
+    "solver/candidate-cde763411ff360634571079e.json": {
+      "sha256": "ea05ac1ae934a899b3705542d9a606b304be71c552935ca51f5f144b137be482",
+      "bytes": 5999
+    },
+    "solver/candidate-cfccf82eb58c2e7fd5c65c3b.json": {
+      "sha256": "2d16f59def8db60fa623e5672c52f92bf7c25d824adc3cf1bc537bb2800c3678",
+      "bytes": 6179
+    },
+    "solver/candidate-d8c4dcb951c8c86d14a9b85b.json": {
+      "sha256": "1f8cc405b3ffd2169ef71630cc46de8184cd385e415e430b2fc79d27de60b9d5",
+      "bytes": 5950
+    },
+    "solver/candidate-da94313dd3a29f9b586c5ddb.json": {
+      "sha256": "e4a51aa1994704ed98bd667eaa8b31d8b791256027207755be48dcff3a8a6723",
+      "bytes": 6130
+    },
+    "solver/candidate-e9e4fe3c284f9503702110e6.json": {
+      "sha256": "da00eac2abcdbe861546668cb9a9b8d23da22c94a0027b8123dba57ee4cfa32b",
+      "bytes": 6310
+    },
+    "solver/candidate-f53ba619f6b883802e6d1130.json": {
+      "sha256": "ad1dc129dcd115feef48f31966e4ebd582eb0cb025d2b36775fc560e8a601b54",
+      "bytes": 5950
+    },
+    "solver/candidate-f995a68a219b0107ff45d1d3.json": {
+      "sha256": "9556532df3ca419969ab4896134b1ea5a48e32ce518b024e3719cd74a0a2c256",
+      "bytes": 6400
+    },
+    "solver/candidate-feabca9734de83873440e1bc.json": {
+      "sha256": "84bb9c75d2006c36cd5cfb81bc0222b179ea13af5831589bae7d640d966813c9",
+      "bytes": 5901
+    }
+  },
+  "runtimePins": {
+    "scripts/gcsp/enrich-fleet.mjs": "29301f1b077b0f5b171f103a82174bd9e7e430a5e800fb31c796a8fe698f0519",
+    "scripts/gcsp/collect-fleet.mjs": "f3eeccddc2d2e235af45864ce3020babea7ae618070a69a9435247620d6a93ad",
+    "scripts/gcsp/collection-session.mjs": "104aed62df3a8934bcda5484e0297a7ab4d84cfd1231b81b921be61aedd31939",
+    "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/public-bmw-source.mjs": "0e746b7d9addb56bfb3a7211616b6b8dfa2ff31469ef102aafa57ddfb11fc375",
+    "scripts/gcsp/bmw-public-registration.mjs": "c0f36030c0696afc51c5e44732064c126434fba5e9d14595833b1c8fc4eb27a2",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56",
+    "server/vehicle-evidence/bmw-image-adapter.js": "56753ac7e47e4790159e7d50fb4deafe1658730e803912f064e6ed09326774ef",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+    "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+    "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775"
+  },
+  "resources": {
+    "workers": 1,
+    "scratchBytes": 67108864,
+    "hostRamBytes": 536870912,
+    "processRamBytes": 469762048,
+    "commandSeconds": 90,
+    "scratchRoot": "/tmp/vehicle-matcher-f58-63-20261106/f60-pilot311-replay",
+    "expectedRetainedBytes": 131072
+  },
+  "selection": {
+    "changedPaths": [
+      "docs/gcsp/evidence/fucq60/pilot311-replay-proof.mjs",
+      "docs/gcsp/evidence/fucq60/pilot311-replay-plans/chunk05.json"
+    ],
+    "regression": "All31actual retained pilot05 selections through latest unchanged collector/registered adapter/F60 with first cached-response interruption/reopen and all-row persisted idempotence",
+    "callers": [
+      "createFleetCollector capture-replay",
+      "createBmwCatalogueAdapter",
+      "enrichFleet",
+      "PolicyService FilePolicyProvider"
+    ],
+    "commands": [
+      "node --max-old-space-size=256 docs/gcsp/evidence/fucq60/pilot311-replay-proof.mjs --source-directory ABS --receipt ABS --proof-plan ABS"
+    ],
+    "excluded": "No source/image/network calls, production modifications, native SQL, new profile or model breadth, corpus republish or second full suite",
+    "testSelector": "Explicit real-data integration proof: repository automatic affected selector supports Python, no production code change.",
+    "coverage": "Bounded aggregate V8 function observations from this required proof; no per-test context claim."
+  }
+}

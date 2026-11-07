@@ -1,0 +1,155 @@
+{
+  "nativeObservation": "2026-11-07T13:58:36.717Z",
+  "commandTimeCorrection": "The initial pull supplied 14:03 UTC before that time. The reconciliation pass resets the cursor to the actual native observation, 13:58:36.717 UTC; this does not change Story dates or claims.",
+  "imported": [
+    {
+      "key": "FUCQ-167",
+      "story": "DEV-2026-11-07-001"
+    },
+    {
+      "key": "FUCQ-168",
+      "story": "DEV-2026-11-07-002"
+    },
+    {
+      "key": "FUCQ-169",
+      "story": "DEV-2026-11-07-003"
+    },
+    {
+      "key": "FUCQ-170",
+      "story": "DEV-2026-11-07-004"
+    },
+    {
+      "key": "FUCQ-171",
+      "story": "DEV-2026-11-07-005"
+    },
+    {
+      "key": "FUCQ-172",
+      "story": "DEV-2026-11-07-006"
+    },
+    {
+      "key": "FUCQ-173",
+      "story": "DEV-2026-11-07-007"
+    },
+    {
+      "key": "FUCQ-174",
+      "story": "DEV-2026-11-07-008"
+    },
+    {
+      "key": "FUCQ-175",
+      "story": "DEV-2026-11-07-009"
+    },
+    {
+      "key": "FUCQ-176",
+      "story": "DEV-2026-11-07-010"
+    }
+  ],
+  "updated": [
+    {
+      "key": "FUCQ-114",
+      "story": "DEV-2026-11-04-077"
+    },
+    {
+      "key": "FUCQ-118",
+      "story": "DEV-2026-11-04-079"
+    },
+    {
+      "key": "FUCQ-120",
+      "story": "DEV-2026-11-04-082"
+    },
+    {
+      "key": "FUCQ-124",
+      "story": "DEV-2026-11-04-087"
+    },
+    {
+      "key": "FUCQ-128",
+      "story": "DEV-2026-11-04-098"
+    },
+    {
+      "key": "FUCQ-136",
+      "story": "DEV-2026-11-04-105"
+    },
+    {
+      "key": "FUCQ-137",
+      "story": "DEV-2026-11-04-106"
+    },
+    {
+      "key": "FUCQ-138",
+      "story": "DEV-2026-11-04-107"
+    }
+  ],
+  "changed_in_progress": [
+    {
+      "key": "FUCQ-122",
+      "story": "DEV-2026-11-04-084",
+      "fields": [
+        "title",
+        "depends_on",
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate"
+      ]
+    },
+    {
+      "key": "FUCQ-126",
+      "story": "DEV-2026-11-04-096",
+      "fields": [
+        "title",
+        "depends_on",
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate"
+      ]
+    }
+  ],
+  "skipped": [],
+  "comments": [],
+  "notify": [
+    {
+      "key": "FUCQ-122",
+      "story": "DEV-2026-11-04-084",
+      "fields": [
+        "title",
+        "depends_on",
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate"
+      ],
+      "message": "FUCQ-122 changed in Jira after DEV-2026-11-04-084 was claimed (title, depends_on, goal, acceptance, files_or_areas, decided, out_of_scope, validate); the story is untouched except for a jira_changed line. Tell its story-lead and its owner."
+    },
+    {
+      "key": "FUCQ-126",
+      "story": "DEV-2026-11-04-096",
+      "fields": [
+        "title",
+        "depends_on",
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate"
+      ],
+      "message": "FUCQ-126 changed in Jira after DEV-2026-11-04-096 was claimed (title, depends_on, goal, acceptance, files_or_areas, decided, out_of_scope, validate); the story is untouched except for a jira_changed line. Tell its story-lead and its owner."
+    }
+  ],
+  "failed": [],
+  "evidence_downloads": [
+    {
+      "attachment_id": "937236",
+      "filename": "03-greg-actual-queue.png",
+      "mime_type": "image/png",
+      "size": 411408,
+      "key": "FUCQ-150",
+      "story": "DEV-2026-11-06-GC-012"
+    }
+  ]
+}

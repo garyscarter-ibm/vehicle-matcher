@@ -1,0 +1,24 @@
+# Local GCSP HTTPS host
+
+`scripts/gcsp-demo.mjs` serves the GCSP account, brief, activity and offer entry on one `https://localhost:<port>` origin. It requires an explicitly supplied localhost certificate and matching private key. Certificate provisioning and browser trust are external setup; the host does not generate keys, install trust or downgrade to HTTP.
+
+Set `GCSP_TLS_KEY_FILE` and `GCSP_TLS_CERT_FILE` to absolute paths outside the repository. The certificate must cover `localhost` and be trusted by the intended client. An encrypted key can use `GCSP_TLS_KEY_PASSPHRASE`. Keep all key contents and passphrases outside source control and logs. TLS 1.2 is the minimum supported version.
+
+The CLI uses `PORT` (default 3001) and prints the ordinary `/gcsp-account.html` entry. `GCSP_REPOSITORY_MODE` defaults to `postgres`, which requires `GCSP_DATABASE_URL` in the environment; the CLI does not read a local credential file. Explicit `memory` mode remains transient and does not supply real released stock. `DEMO_ACCESS_KEY` retains its existing shared-gate meaning. Starting this host does not adopt or publish policy.
+
+Programmatic callers use `startGcspDemo({ tls: { keyFile, certFile, passphrase }, runtime, port })`; port zero selects an ephemeral local port. Omitting `tls` reads the same three TLS environment variables. Missing configuration returns `invalid` / `local-tls-configuration-required`. Unreadable files, invalid certificates, mismatched keys and invalid passphrases return `invalid` / `local-tls-configuration-invalid`. These refusals precede repository opening and listener allocation. Diagnostics contain neither file contents nor provider exception text.
+
+Pages, assets and `/api/gcsp/` use that exact HTTPS origin. The host retains its Host check, credentialed allowed-origin boundary and existing trusted-local shared-key injection. It waits for startup registration/reconciliation before serving entries. It does not trust a forwarded scheme or expose an HTTP companion listener. Employee and offer cookies retain their existing Secure, HttpOnly and path restrictions, including offer-cookie refusal precedence. The offer page does not issue an employee session; begin at the ordinary account page for employee authority, or use the actual captured offer link for scoped offer authority.
+
+## Canonical offer policy preparation
+
+The default seed does not contain `offer.declineReasons.v1` or `offer.followupQuestions.v1`. Their immutable server definitions are registered in `server/gcsp/policy/reviewed-definitions.js` as `offer-decline-reasons-v1` and `offer-followup-questions-v1`. The host and frontend contain no replacement lists or question-policy override.
+
+An authorised trusted backend operator prepares the run through the existing services:
+
+1. Obtain a real presenter context through `identity.createPresenterSession`, switch to the configured Greg principal through `identity.switchPrincipal`, and resolve the issued Greg session through `identity.resolveSession({ authorized: true, cookie })`. Keep credentials in memory and outside diagnostics. A browser cannot post assumption rows or call an adoption HTTP endpoint: none exists.
+2. Read the current clock and canonical assumption keys with the resolved Greg context and its pinned policy version. If keys already exist, inspect their actual values and provenance; do not replace them or silently republish a definition.
+3. For each missing reviewed bundle, call `policy.adoptReviewedAssumptions` with exactly `commandId`, `expectedActiveVersion`, a new `policyVersion`, `effectiveFrom` and `definitionSetId`. Supply no definition rows. `adoption.js` checks the real Greg role, publishes through the actual provider, then calls `activateRunPolicy`. The publication must be later than every retained version and at or after demo-clock now. On a fresh run, advance the actual presenter clock by one second between the two publications, as in the existing offer-composition test. A conflicting or future retained publication requires explicit diagnosis, not a time or policy override.
+4. Require `activationRequired: false`, the expected active version and successful canonical readback of the registered definitions. Read the run and verify both `policyVersion` and `versions.policy`. Resolve the ordinary employee session again so it adopts that run version before briefing, offer production or decline. Recheck that the decline/event and follow-up question use the same active version. Pending activation or a read-only provider is an explicit incomplete gate; do not manufacture success.
+
+These are existing trusted service paths, not new startup automation or a new administrative endpoint. Historical snapshots remain immutable. The [source checkpoint and finite validation proposal](evidence/fucq100/local-https-validation-plan.md) distinguish authored source from executed HTTPS/browser evidence.

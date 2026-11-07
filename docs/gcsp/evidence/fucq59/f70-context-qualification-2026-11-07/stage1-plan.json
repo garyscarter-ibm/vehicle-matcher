@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "f70-six-context-qualification-stage1.v1",
+  "preparedAt": "2026-11-07T01:21:13.514041+00:00",
+  "status": "prepared; no live traffic grant",
+  "sourceVersion": "f59-context-qualification-20261107.v1",
+  "contexts": [
+    {
+      "context": "context01",
+      "modelCode": "1F7A",
+      "agModelCode": "82GE",
+      "directory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context01",
+      "planDigest": "a91bfb509b263ce24b68323b41cf5dc75745d3e58cb0c3e49685d24a6eb98574",
+      "allocationSha256": "4bfba9c3aab62d0a5685e32a4c20ef4758d73939561a2db88417ae0ddbb1a663",
+      "attempts": 3,
+      "options": 0,
+      "solver": 0
+    },
+    {
+      "context": "context02",
+      "modelCode": "1F7B",
+      "agModelCode": "82GE",
+      "directory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context02",
+      "planDigest": "ee2b552cf9be3d1875f364ea14d22df4f7926cac58a337363882d229bac4e897",
+      "allocationSha256": "e0551387f4bf91e8201f7cbd9f798b9477fc39eb167a38c4805d2d60812bd793",
+      "attempts": 3,
+      "options": 0,
+      "solver": 0
+    },
+    {
+      "context": "context03",
+      "modelCode": "1F7C",
+      "agModelCode": "22GE",
+      "directory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context03",
+      "planDigest": "a990131ada2fd06434aa327c4031b9302a50e2da14d32ed36e4131650536834c",
+      "allocationSha256": "b2c78590eddf6a46f7cb9d105eb56530fd3ea63d7dbb46ff3275451833ad2aa5",
+      "attempts": 3,
+      "options": 0,
+      "solver": 0
+    },
+    {
+      "context": "context04",
+      "modelCode": "1F7D",
+      "agModelCode": "62GE",
+      "directory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context04",
+      "planDigest": "13e6be224f7046ed20d36027c32d53c9fb7e5c8cf14f4d4c65b4e27116cc275a",
+      "allocationSha256": "4a392620789f14ec661ef123ad8501ff1607f86ed118df644778c5888ba66bb1",
+      "attempts": 3,
+      "options": 0,
+      "solver": 0
+    },
+    {
+      "context": "context05",
+      "modelCode": "1F7E",
+      "agModelCode": "82GE",
+      "directory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context05",
+      "planDigest": "0d79eec14aa78aa516ab49c2243fa746f11859063a04c470a4c775199a3249c9",
+      "allocationSha256": "70c1bbe420a48604f47bcd3b9cdab00489d60c4e3966c1820fae9beed9931d37",
+      "attempts": 3,
+      "options": 0,
+      "solver": 0
+    },
+    {
+      "context": "context06",
+      "modelCode": "1F7F",
+      "agModelCode": "62GE",
+      "directory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context06",
+      "planDigest": "bba8f80e241bae26bb43daf7a8c6678bc6566df5035cde598ed0345a870c1bc6",
+      "allocationSha256": "1dc9dcedd74f54a17c939e2a1f8f4d7d39d8eaf3ff63aa374f477a5ec10b8088",
+      "attempts": 3,
+      "options": 0,
+      "solver": 0
+    }
+  ],
+  "codePins": {
+    "scripts/gcsp/bmw-public-registration.mjs": "c0f36030c0696afc51c5e44732064c126434fba5e9d14595833b1c8fc4eb27a2",
+    "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+    "scripts/gcsp/capture-bmw-selection.mjs": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+    "scripts/gcsp/collect-fleet.mjs": "2c5882cc7e960dd56ec51825e8468642ad84f3284fcd8b16bc49d61fda95fceb",
+    "scripts/gcsp/collection-session.mjs": "104aed62df3a8934bcda5484e0297a7ab4d84cfd1231b81b921be61aedd31939",
+    "scripts/gcsp/public-bmw-source.mjs": "0e746b7d9addb56bfb3a7211616b6b8dfa2ff31469ef102aafa57ddfb11fc375",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+    "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+    "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+    "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56",
+    "docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/run-live.mjs": "c1e13b0439597c67d8813785fe8341a62f3120aa700e36cd2f5909d7d2842dc0",
+    "docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/supervise.py": "5dbb429f1385aca728be906e91f047c59ca803946e9a43a7b24eae72db657b41",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f"
+  },
+  "preparerSha256": "f7176feab8801b6c9f9aab44f98da6f131a4dcad50469ed876fed003c8470e7d",
+  "totalGetCeiling": 18,
+  "workers": 1,
+  "retries": 0,
+  "optionsRequests": 0,
+  "solverRequests": 0,
+  "reservedButUnallocated": {
+    "options": 6,
+    "solver": 48
+  },
+  "expectedRetainedBytes": 6291456,
+  "newConfigurationTarget": 0,
+  "acceptance": false,
+  "stop": [
+    "source/HTTP/shape/substitution/alias/date failure",
+    "resource ceiling",
+    "checkpoint export failure",
+    "identity mismatch"
+  ],
+  "laterBudget": "Fresh typed facts must freeze options/candidates. Any replacement settings/bootstrap calls need explicit accounting and a reviewed later allocation."
+}

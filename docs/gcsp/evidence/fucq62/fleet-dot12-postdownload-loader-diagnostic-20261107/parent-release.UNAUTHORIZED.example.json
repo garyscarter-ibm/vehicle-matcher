@@ -1,0 +1,26 @@
+{
+  "authorized": false,
+  "phase": "current-corpus-loader",
+  "planSha256": "COPY_REVIEWED_PLAN_SHA256",
+  "runtimeTarget": "b0f05852f93bad1de8c907b6090c56fc9982e4d8",
+  "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "networkRequests": 0,
+  "diagnosticCatchProjectionAllowed": true,
+  "runtimeProjection": {
+    "originalModule": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/server/gcsp/vehicle-evidence/corpus-publisher.js",
+      "bytes": 38384,
+      "sha256": "fa1618642c137c8aa2c0d7749d91e749554bcca6608bac71ae527b147c9ef9bc",
+      "relativePath": "server/gcsp/vehicle-evidence/corpus-publisher.js"
+    },
+    "validatorFunctionSha256": "1c3ece390673b6d2c02347cfeb2fabd0820475f17b8b9d5253ae4c3ce420becf",
+    "diagnosticModuleSha256": "3dcf559441c47dd763d87e567c4b60fbb1af2c1d1f1330aa6a1d43e2b852bacf",
+    "functionStart": 27865,
+    "functionEnd": 30389,
+    "exactCatchBefore": "} catch (error) { return corpusFailure(error); }",
+    "exactCatchAfter": "} catch (error) { globalThis[Symbol.for('dot12-postdownload-loader-error')] = { name: String(error?.name || 'Error').slice(0,64), code: String(error?.code || '').slice(0,128), message: String(error?.message || '').slice(0,2048), stack: String(error?.stack || '').slice(0,4096) }; return corpusFailure(error); }",
+    "difference": "One catch records bounded original error fields in process memory before the unchanged return corpusFailure(error). No production source edit or behavior branch change.",
+    "nodeModules": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules"
+  },
+  "supervision": "Root must establish external ownership, reserve resources, propagate exact TMPDIR/TMP/TEMP and register mandatory finalizer before executing. This file confers no authority."
+}

@@ -1,0 +1,187 @@
+{
+  "version": "fleet-known-seed-refresh-observation.v1",
+  "run": "fucq58-20261105-known-seed-refresh",
+  "observedAt": "2026-11-05T16:29:12.119Z",
+  "source": "public-bmw-uk-configurator",
+  "providerStatus": "unsupported-public-website",
+  "readOnly": true,
+  "writes": 0,
+  "attempts": 4,
+  "decodedBytes": 782059,
+  "requests": [
+    {
+      "category": "page",
+      "attempt": 1,
+      "status": 200,
+      "decodedBytes": 17763,
+      "elapsedMs": 264,
+      "contentType": "text/html"
+    },
+    {
+      "category": "settings",
+      "attempt": 2,
+      "status": 200,
+      "decodedBytes": 620646,
+      "elapsedMs": 66,
+      "contentType": "application/json"
+    },
+    {
+      "category": "tree",
+      "attempt": 3,
+      "status": 200,
+      "decodedBytes": 139586,
+      "elapsedMs": 106,
+      "contentType": "application/json"
+    },
+    {
+      "category": "solver",
+      "attempt": 4,
+      "status": 200,
+      "decodedBytes": 4064,
+      "elapsedMs": 228,
+      "contentType": "application/json"
+    }
+  ],
+  "status": "completed-known-seed-refresh",
+  "stop": null,
+  "modelSelection": {
+    "version": "fleet-full-model-selection.v1",
+    "selection": {
+      "modelCode": "T5MJ",
+      "agModelCode": "72HH",
+      "catalogueRangeKey": "G61E",
+      "modelRangeField": "G61",
+      "orderDate": "2026-11-01",
+      "effectDate": "2027-01-05",
+      "steeringLiteral": "RL"
+    },
+    "evidencePaths": [
+      [
+        "5",
+        "modelRanges",
+        "G61E",
+        "models",
+        "T5MJ"
+      ],
+      [
+        "I",
+        "modelRanges",
+        "G61E",
+        "models",
+        "T5MJ"
+      ]
+    ],
+    "aliasAppearances": 2,
+    "distinctSelectedModels": 1,
+    "qualification": {
+      "constructibility": "not-established",
+      "vinProfile": "unqualified",
+      "additionalConfigurations": 0
+    }
+  },
+  "build": {
+    "constructible": true,
+    "resolvedModelCode": "T5MJ",
+    "seedOptions": [
+      "FKSFU",
+      "P0300",
+      "S0337",
+      "S043L"
+    ],
+    "requestedOptionsPreserved": true,
+    "selectionComplete": true,
+    "completeSelectedElements": [
+      "FKSFU",
+      "P0300",
+      "S0230",
+      "S02PA",
+      "S02VB",
+      "S02VD",
+      "S0302",
+      "S0337",
+      "S03DK",
+      "S03G9",
+      "S03M1",
+      "S0428",
+      "S043L",
+      "S0488",
+      "S0494",
+      "S04T2",
+      "S04U9",
+      "S04UR",
+      "S04V1",
+      "S0552",
+      "S05AS",
+      "S05AV",
+      "S05DM",
+      "S0654",
+      "S0674",
+      "S06AE",
+      "S06AF",
+      "S06AK",
+      "S06C4",
+      "S06NX",
+      "S06PA",
+      "S0704",
+      "S0710",
+      "S0760",
+      "S0775",
+      "S0812",
+      "S0853",
+      "S0880",
+      "S08R3",
+      "S08R9",
+      "S08SM",
+      "S08TF",
+      "S08TG",
+      "S08WM",
+      "S09QV",
+      "S09T1",
+      "S09T2",
+      "SE000001"
+    ],
+    "selectedAccessories": [
+      "SE000001"
+    ],
+    "selectedElementCount": 48,
+    "baseOptionCount": 47,
+    "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+    "knownConfiguration": true,
+    "verifiedFitted": "unknown"
+  },
+  "additionalConfigurations": 0,
+  "profileActivations": 0,
+  "profileQualification": "unqualified",
+  "elapsedMs": 699,
+  "requestedContext": {
+    "agModelCode": "72HH",
+    "catalogueRangeKey": "G61E",
+    "localeRequest": "en-GB",
+    "marketRequest": "GB",
+    "modelCode": "T5MJ",
+    "modelEffectDate": "2027-01-05",
+    "modelRangeField": "G61",
+    "orderDate": "2026-11-01",
+    "steeringLiteral": "RL",
+    "treeRequestEffectDate": "2026-11-01"
+  },
+  "planSha256": "2b40bfaa113e7930165bbd18c3d940a19f46f31ac117668250cdc215ea4688ed",
+  "fileSha256": {
+    "qualification-client.mjs": "d99f511679c747cd4635a2df36402ad95df11d32d37c56fded4b6875cc4eaea8",
+    "qualification.mjs": "c5fd355259c610435055a2934dd2357502c442768c5f6bcc13b0ffdc1101d41c",
+    "qualification.test.mjs": "27f79407113cbdecc8bf3be95381c8ded5c945970901cf76bb1622895583efaa"
+  },
+  "inputs": {
+    "docs/gcsp/evidence/fucq-58/full-model-selector-2026-11-05/evidence/full-model-selector.mjs": "f3accdd334a64d9c0eabcfde35a4b26d81dba64fbe6a48558f2daab8f3032b13",
+    "docs/gcsp/evidence/fucq-58/full-model-selector-2026-11-05/evidence/full-model-selector.test.mjs": "e7bb479dcc76f122207359e7ac7d43b0e2245852fb3f125d89985d0c86b6cb16",
+    "docs/gcsp/evidence/fucq-58/full-model-selector-2026-11-05/evidence/selection.json": "ae259c7a58bfc62576a3c68c5d154584673a22f2b39ab76e2b512a45fa6ae386",
+    "docs/gcsp/evidence/fucq-58/full-model-selector-2026-11-05/proposed-next-live-plan.json": "9788a53fc825464ca407b01e9731fd248fa16a24e734f3d87138dc6309e982d3",
+    "docs/gcsp/evidence/fucq-58/steering-diagnostic-2026-11-05/evidence/model-context-projection.mjs": "5b473d524015b4f148b1125ceeb68f3543fdc88efbc29b359a91f7e9a0d769e4",
+    "docs/gcsp/evidence/fucq-58/steering-diagnostic-2026-11-05/evidence/model-context-projection.test.mjs": "f68af5d37763b5651a159c78e5a520147e0d48df4111284a93494bae7fae70e6",
+    "scripts/gcsp/fleet-plan.mjs": "9fd2dbd4bcae887c5e9d9e6b419519b68dada14cc98c9b1aa2b2e1e36b80afe2",
+    "server/data/gcsp/vehicle-evidence/fleet-plan.json": "7eee9fbc7636d61e83fd93192f1003fac0f711233f0d459b372fabdec3547b0e"
+  },
+  "executionRecordSha256": "863483ec5a2b9c99582a36ed3fcf5750e801bd6bf696738dd8fb4cf35c49be7b",
+  "authority": "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md",
+  "interpretation": "Fresh exact known-seed corroboration only. No new configuration, corpus capacity, VIN profile, fitted-equipment, steering-code semantics or year/plant/era qualification."
+}

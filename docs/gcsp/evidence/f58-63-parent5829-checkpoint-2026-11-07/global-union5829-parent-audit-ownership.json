@@ -1,0 +1,10 @@
+{
+  "disposable": false,
+  "expectedBytes": 8388608,
+  "forecastRAMMiB": 128,
+  "forecastSeconds": 30,
+  "outputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union5829-20261107",
+  "owner": 18664,
+  "purpose": "immutable aggregate canonical/spent indexes only, no copiedsourceinputs",
+  "scratchCreated": false
+}

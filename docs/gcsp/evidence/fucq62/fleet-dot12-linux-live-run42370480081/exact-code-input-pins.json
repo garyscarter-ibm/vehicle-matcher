@@ -1,0 +1,43 @@
+{
+  "integrationCode": "df3f3f439ba0aa2c4f464beaded903709e970ea1",
+  "workflowPlanSha256": "0b763e9d72c9fe9cfa1e8e20b988abf1916c2bea6e4eea2d24b2beeba10b5cce",
+  "originalPreparedPacketIdentical": true,
+  "pins": {
+    ".github/workflows/gcsp-live-dot12-diagnostic.yml": {
+      "bytes": 1296,
+      "sha256": "ec5032c998810bb55a73299e8e8240fcdc249c3a94b75d2a677d34c2e53dba9b"
+    },
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic-20261107/README.md": {
+      "bytes": 4504,
+      "sha256": "1cde56d5b16e7150137d79748640245248f9b4a9bd3ead97e514c425f1e9b217"
+    },
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic-20261107/deployment-success.json": {
+      "bytes": 589,
+      "sha256": "53f0838435590700f11947feb1c1b38f68bf224d11e008ce18e19ffcfd11456b"
+    },
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic-20261107/expected-observation.json": {
+      "bytes": 1004,
+      "sha256": "87914bdc9d27f8121c46d73e27dd7992d093fd56d20c1616674ed46aa5c685f1"
+    },
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic-20261107/plan.json": {
+      "bytes": 5921,
+      "sha256": "0b763e9d72c9fe9cfa1e8e20b988abf1916c2bea6e4eea2d24b2beeba10b5cce"
+    },
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic-20261107/probe.mjs": {
+      "bytes": 8378,
+      "sha256": "70612f0d90387b77472d0a6ce69c5c59ec9434254a123a659faf8d2efa8a389d"
+    },
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic-20261107/static-validation.json": {
+      "bytes": 1923,
+      "sha256": "e041072ab78487259546652cb840e2785eb7747fd4c8c02657137d329276f637"
+    },
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic-20261107/supervise.py": {
+      "bytes": 6893,
+      "sha256": "10ba6cb48397b81cab543e0662b0ed06a5da32145e43bc21291378d04ae38ed1"
+    },
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic-20261107/handoff-receipt.json": {
+      "bytes": 1951,
+      "sha256": "bcbf4be1feb57cb5cd94cd228e1edfcb0a091e3d95350f3a76ed470047a9daee"
+    }
+  }
+}

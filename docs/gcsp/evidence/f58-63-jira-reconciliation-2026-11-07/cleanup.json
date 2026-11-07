@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "f58-63-final-cleanup.v1",
+  "observedAt": "2026-11-07T12:51:04.904184+00:00",
+  "storyClaimsArchived": "_dev/done/2026-11/DEV-2026-11-04-031..036.md",
+  "acceptance": false,
+  "sourceWorktrees": [
+    {
+      "id": "DEV-2026-11-04-032",
+      "status": "preserved",
+      "helperReturnCode": 2,
+      "reason": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032 has uncommitted changes; it is not removed"
+    },
+    {
+      "id": "DEV-2026-11-04-035",
+      "status": "preserved",
+      "helperReturnCode": 2,
+      "reason": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035 has uncommitted changes; it is not removed"
+    },
+    {
+      "id": "DEV-2026-11-04-036",
+      "status": "preserved",
+      "helperReturnCode": 2,
+      "reason": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036 has uncommitted changes; it is not removed"
+    },
+    {
+      "id": "DEV-2026-11-04-031",
+      "status": "preserved-source-worktree",
+      "reason": "Source worktree and installed/ignored retained working data are outside disposable test scratch; preservation selected for this stop handoff. No removal claimed."
+    },
+    {
+      "id": "DEV-2026-11-04-033",
+      "status": "preserved-source-worktree",
+      "reason": "Source worktree and installed/ignored retained working data are outside disposable test scratch; preservation selected for this stop handoff. No removal claimed."
+    },
+    {
+      "id": "DEV-2026-11-04-034",
+      "status": "preserved-source-worktree",
+      "reason": "Source worktree and installed/ignored retained working data are outside disposable test scratch; preservation selected for this stop handoff. No removal claimed."
+    }
+  ],
+  "testScratch": "Final native and live exact remote cleanup receipts retained; no new local allocation",
+  "unownedRootPathsPreserved": [
+    "_tools/__pycache__/scaffold_git.cpython-314.pyc",
+    "docs/gcsp/evidence/f58-63-aggregate1923-runtime-2026-11-07/live-probe-next-deployment.mjs"
+  ],
+  "newLocalTestScratchBytes": 0,
+  "archivesCreated": 0
+}

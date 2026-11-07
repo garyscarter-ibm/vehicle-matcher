@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "fleet-dot12-linux-minimal-proposal.v1",
+  "status": "prepared-unapplied-unexecuted",
+  "executionRoot": "/Users/usget/Claude/vehicle-matcher",
+  "releaseId": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "publicTarget": "15fde2c3c24b5da02206501576a3baeb19e9a78c",
+  "publicReceipt": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/public-followthrough/publish/receipt.json",
+    "sha256": "b7b66e3a5bf23ad5fbea7c79a5471bf654bd20051193cdb34271f1e79575c6bf"
+  },
+  "targetPath": ".github/workflows/gcsp-fleet-build.yml",
+  "rootBeforeSha256": "4a3cc28cfb6431f671dd3b69b40bb9ff47fbb0db73c67912396e3be19d23a0b8",
+  "proposedAfterSha256": "f918b16ecd7aaa5c7d00cf4e0518300ab1d8a01c9f632036918af84fdc15d34d",
+  "patchSha256": "d758342e7fe1ff959ed69c19736d8d001fac902aec6a64c1400f1385f18f2607",
+  "diagnosticsPreservedSha256": "788ed57d7f6fe67795bf4a578df3ccc3a13935054340ddd1a03adffaacf15af6",
+  "coldPlan": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan/plan.json",
+    "sha256": "d5068c73528503e492fb4bff81ba8bc5648ea4000e6a04cb1db00a4def49d505"
+  },
+  "portableHelperPins": {
+    "docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan/boundary.mjs": "b1bd0fbad1d9048558c4f36ffab9fba6db94e6773eeff656b74dc0efe09ab82b",
+    "docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan/boundary-observations.json": "90b7b4a5c09f736537c31988b711ee6599801da515a70326ebdf32ae485fc753",
+    "docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan/verify-assets.mjs": "36f95376feb01941be8364a6c59359b55281adeb21018188f80786e296a3f6ab",
+    "docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan/descriptor-proposal.json": "86e382d308d61e70c18ad7c4758eaddfa70395142260210d719b6c161ff73758"
+  },
+  "resources": {
+    "workers": 1,
+    "nodeHeapMiB": 512,
+    "scratchBudgetMiB": 2048,
+    "jobMinutes": 10,
+    "phaseSeconds": {
+      "npm-ci": 90,
+      "download": 240,
+      "offline": 90,
+      "verify-assets": 30,
+      "boundary": 120
+    },
+    "sumPhaseCeilingsSeconds": 570,
+    "jobHeadroomSeconds": 30
+  },
+  "scope": "One Node20Linux31asset anonymous restore, genuine offline repeat, exactasset readback and5actual DTO/HTTP/consumer references; historical10002 proof not replayed",
+  "historicalConsumerFailures": 2707,
+  "expectedScopedConsumerFailures": 2,
+  "diagnostics": "Existing phase_start/phase_done and cleanup failure evidence are byte-identical to root .10 workflow. No unrelated edits.",
+  "operationalBoundaries": "Managed Render policy DB connectivity/state remains a separate real deployment build condition; native-local PostgreSQL/current-run UUID and order acceptance are not proved by this Linux job.",
+  "requires": [
+    "Parent review/apply after cold/offline/recovery actual results",
+    "Exact integrated commit with corrected runtime and descriptor",
+    "Observed fresh Linux result before Linux claim",
+    "Fresh meaningful deployment and separate liveGET grant before live claim"
+  ],
+  "newRuntimeExecution": false,
+  "sourceRequests": 0,
+  "newApplicationGETs": 0,
+  "acceptance": false
+}

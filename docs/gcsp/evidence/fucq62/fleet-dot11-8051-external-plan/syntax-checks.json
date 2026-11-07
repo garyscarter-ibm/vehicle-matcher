@@ -1,0 +1,40 @@
+{
+  "scope": "static preparation only",
+  "planSha256": "c75986da7a9d48797a879cc1fcf5fe4281470d09107e79d7edacf95d540ac757",
+  "checks": [
+    {
+      "file": "group-proof.py",
+      "inMemoryCompile": true
+    },
+    {
+      "file": "prepare-plan.py",
+      "inMemoryCompile": true
+    },
+    {
+      "file": "supervise-candidate.py",
+      "inMemoryCompile": true
+    },
+    {
+      "file": "prepare-candidate.mjs",
+      "nodeSyntax": true
+    },
+    {
+      "file": "source-registrations.mjs",
+      "nodeSyntax": true
+    }
+  ],
+  "codePinsChecked": 144,
+  "inputPinsChecked": 684,
+  "novelOriginalLinesLocated": 3385,
+  "novelOriginFiles": 547,
+  "strictV2Registrations": 8050,
+  "historicalSourceConfigurations": 1,
+  "expectedReferences": 8053,
+  "proofChunks": 8,
+  "candidateCreated": false,
+  "shardsCreated": false,
+  "scratchAllocated": false,
+  "sourceRequests": 0,
+  "nativeAttempted": false,
+  "acceptance": false
+}

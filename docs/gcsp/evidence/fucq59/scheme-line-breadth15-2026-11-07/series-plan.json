@@ -1,0 +1,221 @@
+{
+  "schemaVersion": "scheme-five-range-inventory15-series.v1",
+  "id": "scheme-five-range-inventory15-20261107-once",
+  "qualificationDate": "2026-11-07",
+  "status": "prepared-unspent; no source grant",
+  "codeCommit": "fb3506a5fd2519ca80cfecb3115f1d782dc72d58",
+  "codePins": {
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/diagnostic.mjs": "c3610a8faa86d963a8843b5071f98472c5d6ea183d79bc1eb23ade95a61fc109",
+    "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/diagnostic.test.mjs": "593d35a52de356efedc014fb0c0793d5a8cf4e9b2fd5ea0938986697f706945a",
+    "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/export-retained.py": "4f9f2ed9ff2ae2dc45f27476c3a2dab369b4e02dc319f87e6aaf901b269631ef",
+    "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/prepare.py": "357c903b6a90578d1d3689620ebe19eccee409a2b30a662f45d2ee0408516f78",
+    "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/qualification-plan.json": "cc79b73c233215099a0fa2cd8e48f3e54c77a599050548b2a7dbafae2adb597b",
+    "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/run-live.mjs": "9374372d36130724eb6e8b0bb4d59144ae35eaedd2cddfa53314887de3b796f2",
+    "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/supervise.py": "1cd73b7b36094b48290af40d7a3f10148b8d012b048219af08d6b6aa3c27e606",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/audit-live.mjs": "255d729ee289529950fcfd2db28116234e409e822d7652dfae52aefbbdc5978c",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/audit-retained.mjs": "3fe4144b3340f8cdd4e1a0fb6bc340952a956d00b39106fe4e6a213d7f1beacc",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/contract-runner.mjs": "52ad8fa246bafbfc575a9ea24c750e4055dba0f7ad891dcfd75ecdf116cf0494",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/export-retained.py": "4f9f2ed9ff2ae2dc45f27476c3a2dab369b4e02dc319f87e6aaf901b269631ef",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/prepare.py": "c4da44ce348ac86a07bda1305532ed8c29f1af1224f667519827ded4a9e29b3c",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/prepared-check.test.mjs": "6b52f44f3a4bc2458fca2c92e5ae9c4fc4aed8684856e30da61cabe68270e047",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/run-live.mjs": "0ae55357f692951a67dbc9347a0f0e980b0e7bfb64cec4dfcc1b2df00d13046a",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/run-series.py": "b669e8c99139476bcb5608b81bc3362132a9e2be6640b6b5b5cb418c1119f5b1",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/supervise.py": "de05ecf94a3ac817da53fa8f4972b2377d0395de2848c96c4bb8c504353611d7",
+    "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+    "scripts/gcsp/bmw-public-registration.mjs": "3a9a1afcc128f8356bb296b063d118bc9b7c59531ef75823bb99f8e01f209291",
+    "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+    "scripts/gcsp/collection-session.mjs": "db5a1a1ca6037132eced521f1a9b19d73a4282a113da66480ebec70c0beac7ff",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/public-bmw-source.mjs": "4561e844cfe85383ad8ed27521bab157a10dae57f8d82ab29b8f41842bfc8336",
+    "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "server/test/gcsp-bmw-range-inventory.test.js": "cb9c6702f94749ccfb86e84545f8ee32e24013019cd94fed129ea90acd63ad5e"
+  },
+  "sourcePins": {
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth-preparation-2026-11-07/inventory-proposal.json": "69405e839d5c9c87ac01242a7c7d8ef1250e5c65587db9cd3eff6b55dc0d303a",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth-preparation-2026-11-07/target-ledger.json": "a6352d3ccc1280e8651be1f528f989a4be4dea405796e57fc4ddffb6935ad612",
+    "docs/gcsp/evidence/fucq59/broader-range-inventory-assessment-2026-11-07.md": "760ada87e38640cbfd00972705b730467b0e70d915af637c1b86e3ad53d603d2",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth-preparation-2026-11-07/g21/qualification-plan.json": "ddedeb99310bd165cc07aa5906307d31f4f767bbfb0434ab69f80cc01037f04c",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth-preparation-2026-11-07/u11/qualification-plan.json": "98f7cc23f37ab5f00ce1b63695ac19efbe1aabdf19d043649cf8d916e6b481f3",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth-preparation-2026-11-07/u10/qualification-plan.json": "02a4624c1c98e3624c1984bb4e671c5570555efb3f0f37b154924be79f3e0a0f",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth-preparation-2026-11-07/g26e/qualification-plan.json": "db3f3c3dabde1a7ef172507bbb2309d6f3edc582c20e77541e18c6d61190ce30",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth-preparation-2026-11-07/i20/qualification-plan.json": "538425bf3122d518c336e4cddcc5937c218b700d56446a28928ba9f903eaaabf",
+    "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/collector-checkpoint.json": "0e277490365f8089fd2b794a44a169b10a5efe64b3d9a4eb4c5bc572dc0897cc",
+    "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/collector-state.json": "0e277490365f8089fd2b794a44a169b10a5efe64b3d9a4eb4c5bc572dc0897cc",
+    "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/diagnostic.json": "76711bca1cfbd20b44ba4aa66c860c8cf1513b92f68a27bb70977fe9f798d743",
+    "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/source-events.jsonl": "28daa87fa7614150817d68c87a5d1d3d1d8f9e2c9842bd59cb095e715868ea3d",
+    "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/receipt.json": "fa5b8f905d82797da7bb252bf3bf7d82f2e137993ccafb2bebb710e9f177ba10",
+    "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/qualification-plan.json": "cc79b73c233215099a0fa2cd8e48f3e54c77a599050548b2a7dbafae2adb597b"
+  },
+  "runtimePins": {
+    "/opt/homebrew/Cellar/node/26.7.0/bin/node": "1ef99ea25fe70c9b67e7efe768ef8ee22148d3cabc703db6131b57aeb617d040",
+    "/usr/bin/python3": "ed6f5284033aa2aae6a58427c25ba3ab119947b40365627b24e5d51a4b70a1cd"
+  },
+  "contexts": [
+    {
+      "id": "g21",
+      "phase": "first",
+      "allocationId": "scheme-five-range-inventory15-20261107-once-g21",
+      "qualificationPlanPath": "docs/gcsp/evidence/fucq59/scheme-line-breadth-preparation-2026-11-07/g21/qualification-plan.json",
+      "qualificationPlanSha256": "ddedeb99310bd165cc07aa5906307d31f4f767bbfb0434ab69f80cc01037f04c",
+      "registration": {
+        "schemaVersion": "bmw-public-range-inventory-registration.v1",
+        "market": "GB",
+        "locale": "en-GB",
+        "catalogueRangeKey": "G21",
+        "pageModelCode": "T3PF",
+        "treeEffectDate": "2026-11-01",
+        "treeOrderDate": "2026-11-01"
+      },
+      "candidateTargetIndices": [
+        5
+      ]
+    },
+    {
+      "id": "u11",
+      "phase": "remaining",
+      "allocationId": "scheme-five-range-inventory15-20261107-once-u11",
+      "qualificationPlanPath": "docs/gcsp/evidence/fucq59/scheme-line-breadth-preparation-2026-11-07/u11/qualification-plan.json",
+      "qualificationPlanSha256": "98f7cc23f37ab5f00ce1b63695ac19efbe1aabdf19d043649cf8d916e6b481f3",
+      "registration": {
+        "schemaVersion": "bmw-public-range-inventory-registration.v1",
+        "market": "GB",
+        "locale": "en-GB",
+        "catalogueRangeKey": "U11",
+        "pageModelCode": "X1S0",
+        "treeEffectDate": "2026-11-01",
+        "treeOrderDate": "2026-11-01"
+      },
+      "candidateTargetIndices": [
+        12,
+        18
+      ]
+    },
+    {
+      "id": "u10",
+      "phase": "remaining",
+      "allocationId": "scheme-five-range-inventory15-20261107-once-u10",
+      "qualificationPlanPath": "docs/gcsp/evidence/fucq59/scheme-line-breadth-preparation-2026-11-07/u10/qualification-plan.json",
+      "qualificationPlanSha256": "02a4624c1c98e3624c1984bb4e671c5570555efb3f0f37b154924be79f3e0a0f",
+      "registration": {
+        "schemaVersion": "bmw-public-range-inventory-registration.v1",
+        "market": "GB",
+        "locale": "en-GB",
+        "catalogueRangeKey": "U10",
+        "pageModelCode": "IXS4",
+        "treeEffectDate": "2026-11-01",
+        "treeOrderDate": "2026-11-01"
+      },
+      "candidateTargetIndices": [
+        13,
+        19
+      ]
+    },
+    {
+      "id": "g26e",
+      "phase": "remaining",
+      "allocationId": "scheme-five-range-inventory15-20261107-once-g26e",
+      "qualificationPlanPath": "docs/gcsp/evidence/fucq59/scheme-line-breadth-preparation-2026-11-07/g26e/qualification-plan.json",
+      "qualificationPlanSha256": "db3f3c3dabde1a7ef172507bbb2309d6f3edc582c20e77541e18c6d61190ce30",
+      "registration": {
+        "schemaVersion": "bmw-public-range-inventory-registration.v1",
+        "market": "GB",
+        "locale": "en-GB",
+        "catalogueRangeKey": "G26E",
+        "pageModelCode": "I4PC",
+        "treeEffectDate": "2026-11-01",
+        "treeOrderDate": "2026-11-01"
+      },
+      "candidateTargetIndices": [
+        20
+      ]
+    },
+    {
+      "id": "i20",
+      "phase": "remaining",
+      "allocationId": "scheme-five-range-inventory15-20261107-once-i20",
+      "qualificationPlanPath": "docs/gcsp/evidence/fucq59/scheme-line-breadth-preparation-2026-11-07/i20/qualification-plan.json",
+      "qualificationPlanSha256": "538425bf3122d518c336e4cddcc5937c218b700d56446a28928ba9f903eaaabf",
+      "registration": {
+        "schemaVersion": "bmw-public-range-inventory-registration.v1",
+        "market": "GB",
+        "locale": "en-GB",
+        "catalogueRangeKey": "I20",
+        "pageModelCode": "IXSC",
+        "treeEffectDate": "2026-11-01",
+        "treeOrderDate": "2026-11-01"
+      },
+      "candidateTargetIndices": [
+        23
+      ]
+    }
+  ],
+  "phases": {
+    "first": {
+      "grantId": "scheme-five-range-inventory15-20261107-once-first3",
+      "contexts": [
+        "g21"
+      ],
+      "getCeiling": 3,
+      "maximumWallSeconds": 150,
+      "exactParentReleaseRequired": true
+    },
+    "remaining": {
+      "grantId": "scheme-five-range-inventory15-20261107-once-remaining12",
+      "contexts": [
+        "u11",
+        "u10",
+        "g26e",
+        "i20"
+      ],
+      "getCeiling": 12,
+      "maximumWallSeconds": 450,
+      "exactParentReleaseRequired": true,
+      "reviewedFirstProofSha256Environment": "BMW_BREADTH15_FIRST_PROOF_SHA256"
+    }
+  },
+  "outputRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual",
+  "supervisorRoot": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth15",
+  "resources": {
+    "workers": 1,
+    "hostRamBytes": 536870912,
+    "childRamBytes": 469762048,
+    "scratchBytesPerChunk": 67108864,
+    "sourceSecondsPerChunk": 90,
+    "childSecondsPerChunk": 105,
+    "chunkSeconds": 120,
+    "seriesSeconds": 600,
+    "decodedBytesPerChunk": 4194304,
+    "decodedBytesAggregate": 20971520,
+    "responseBytes": 1048576,
+    "safeReportBytes": 114688,
+    "sealedProjectionBytes": 131072,
+    "retainedBudgetBytes": 16777216
+  },
+  "forecast": {
+    "seconds": 30,
+    "retainedBytes": 2097152,
+    "scratchBytes": 1048576,
+    "childRamBytes": 134217728
+  },
+  "sourceGrant": false,
+  "publicGetCeiling": 15,
+  "options": 0,
+  "solver": 0,
+  "images": 0,
+  "retries": 0,
+  "sourceWrites": 0,
+  "admissions": 0,
+  "capacityCredit": 0,
+  "acceptance": false,
+  "stop": "First incomplete source, pin, access, budget, export, retained proof or cleanup stops. Preserve actual primary and consumed phase. Never replay or substitute. Production refusal is retained independently and is not repaired.",
+  "remaining": [
+    "31 scheme-line joins",
+    "20 targets lack exact retained page seed",
+    "3 existing lanes remain scheme-join incomplete",
+    "F44 dated gap remains",
+    "all original distribution and acceptance obligations"
+  ]
+}
