@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "scope": "Node identity only. No installed packages are permitted or required; four package metadata inputs are frozen as source rows.",
+  "packages": [],
+  "files": [],
+  "locks": [],
+  "node": {
+    "path": "/opt/homebrew/Cellar/node/26.5.0/bin/node",
+    "sha256": "70851490e028b3d699a8d6d4e1de909af2a989359ae807974c92af9c6580a8e8",
+    "bytes": 50320,
+    "device": 16777232,
+    "inode": 149228790,
+    "version": "v26.5.0"
+  },
+  "parentAllowlist": []
+}

@@ -1,0 +1,155 @@
+{
+  "checkpoint": "HTTP activity binding",
+  "scope": "targeted",
+  "passed": 117,
+  "failed": 0,
+  "skipped": 0,
+  "codeIdentity": "bd577688f7c80fe492a7fbb29f47419c3b4a708484e9cc037e3280027a0f4bde",
+  "headAtRun": "a769053991341965cbb60c09233130d01a599118",
+  "treeAtRun": "6a550967f50ce51a005fd06b82a04ed048843c5e",
+  "baseComparisonCommit": "95f7648ecef7b5c7664b83d56d48b13da71c0786",
+  "sourceMergeBase": "dda80202d29aadfe1caf48bc80eed24822665024",
+  "variant": "default",
+  "environment": "a5ae6431dcc08f6071844c0598c47b95ede6deb22f53957db84192e7783d275e",
+  "node": "v26.7.0",
+  "sourceIdentity": {
+    "server/gcsp/brief/activity.js": "dbf317b5aba98b1f6a723692e108a1b1a83637fb61e76ca33729dd90fe8b8f6f",
+    "server/gcsp/brief/activity-http.js": "b4384eb61ea60afb31570a3d2819ea686dff6aad0724cfda3f0b96788c01f2c4",
+    "server/index.js": "7500640c216a9a29f0a8e12a48589cd52d4b1ce40b9a7d18f6e4b24a0cc3c8c2",
+    "server/test/gcsp-activity.test.js": "f219e98be0b088f8838a80e73b0a7733a56c5fc322bfc9f61cf4b31bb9dc7dc2",
+    "server/test/gcsp-activity-http.test.js": "97640ce82b46a0b28c350b1cc98ab471b06f29203bcebdb2ab3c7e9254df4134",
+    "docs/gcsp/shared-contracts.md": "2b4400380976055135c936dc95c2aa2682633222e0fa62962f0513c08af837d6"
+  },
+  "command": "node --test --test-concurrency=1 --experimental-test-coverage --test-coverage-include=server/gcsp/brief/activity.js --test-coverage-include=server/gcsp/brief/activity-http.js server/test/gcsp-activity-http.test.js server/test/gcsp-activity.test.js server/test/gcsp-brief.test.js server/test/gcsp-identity.test.js server/test/api.test.js",
+  "proof": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/targeted-bd577688f7c80fe492a7fbb29f47419c3b4a708484e9cc037e3280027a0f4bde-default-1793883218839093000.json",
+  "checkpointReceipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/4b2662e322c8bee12ff32466204d94818e62339db3e968f44cc02077ae6310fa.json",
+  "coverage": {
+    "activity-http.js": {
+      "lines": 100,
+      "branches": 100,
+      "functions": 100
+    },
+    "activity.js": {
+      "lines": 100,
+      "branches": 93.33,
+      "functions": 96.43
+    }
+  },
+  "testMilliseconds": 7634.768792,
+  "wallSeconds": 8.0,
+  "peakScratchBytes": 3551424,
+  "peakRecursiveRssBytes": 289832960,
+  "cleanup": [
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/39461b05460e45d5a1d0240bdcb99ee1.json",
+      "removedBytes": 0,
+      "scratchAbsent": true,
+      "liveGroups": false,
+      "reservationReleased": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/806231bbfb5e4b258e7e9889df52d1c5.json",
+      "removedBytes": 0,
+      "scratchAbsent": true,
+      "liveGroups": false,
+      "reservationReleased": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/13efcd11233144c3bcb2c7a02189d10b.json",
+      "removedBytes": 0,
+      "scratchAbsent": true,
+      "liveGroups": false,
+      "reservationReleased": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/6013c0eb04be41d8b22771ac39dd47f5.json",
+      "removedBytes": 0,
+      "scratchAbsent": true,
+      "liveGroups": false,
+      "reservationReleased": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/7fb36fdf453f48c98172341135da15c8.json",
+      "removedBytes": 3551424,
+      "scratchAbsent": true,
+      "liveGroups": false,
+      "reservationReleased": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/d462ac4359b345e794507c9110539c55.json",
+      "removedBytes": 2572448,
+      "scratchAbsent": true,
+      "liveGroups": false,
+      "reservationReleased": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/c257628e511a4faba3c8fc7890e7791e.json",
+      "removedBytes": 0,
+      "scratchAbsent": true,
+      "liveGroups": false,
+      "reservationReleased": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/9f554dcdb30c48b09ee37fc2a5407059.json",
+      "removedBytes": 0,
+      "scratchAbsent": true,
+      "liveGroups": false,
+      "reservationReleased": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/b2ad19af886c4ad0af3aba03314d2e68.json",
+      "removedBytes": 0,
+      "scratchAbsent": true,
+      "liveGroups": false,
+      "reservationReleased": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/e2e8e81f2e034a078e1936eb0a295f75.json",
+      "removedBytes": 0,
+      "scratchAbsent": true,
+      "liveGroups": false,
+      "reservationReleased": true
+    }
+  ],
+  "supervisorManifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq95-20261105-activity.json",
+  "scratchBaseAbsent": true,
+  "dependencyLinkCleanup": {
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq95-20261105-activity-http-dependency-link.json",
+    "linkAbsent": true,
+    "targetPresentAndUnchanged": true,
+    "targetIdentity": {
+      "sha256": "a3dc2123f15b22efb75053a5c7249e742df6518bb0913d8693d5ab98d6871969",
+      "files": 139,
+      "bytes": 475201
+    }
+  },
+  "agents": {
+    "runner": {
+      "requested": {
+        "model": "gpt-6-luna",
+        "effort": "high"
+      },
+      "selected": {
+        "model": "gpt-6-luna",
+        "effort": "high"
+      },
+      "effective": {
+        "model": "gpt-6-luna",
+        "effort": "high"
+      },
+      "runtimeEvidence": "/Users/usget/.codex/sessions/2026/11/05/rollout-2026-11-05T12-52-48-01a1abc4-de93-7733-8180-8a6e845a48f3.jsonl",
+      "fallback": null
+    }
+  },
+  "exclusions": [
+    "full npm test and UI/browser/ratchet acceptance not run",
+    "native PostgreSQL not run; prior configured skips remain unvalidated",
+    "repository/clock unchanged: prior113pass/2skip boundary evidence reused",
+    "source branch is not integrated with merged95f7648 kit",
+    "genuine search-check/source-health producer, offer-access and default runtime composition not implemented"
+  ],
+  "largeOutput": null,
+  "exception": null,
+  "leftovers": [],
+  "successfulVerboseLogsRemovedBytes": 16384
+}

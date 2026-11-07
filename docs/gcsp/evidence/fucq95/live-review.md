@@ -1,0 +1,18 @@
+# Live Activity checkpoint
+
+5 November 2026. The actual trusted demo host now serves an Activity entry using its canonical Paula account, same-origin Activity transport and current BriefService permissions/history. The consumer navigates to the real Brief page and refreshes when restored by browser Back. Its embeddable custom element also preserves adapters assigned before registration. No new styles, component copies or fabricated search/offer results.
+
+Validation:101/101 scoped tests passed with no skips across nine explicit files. The first run found the legacy no-location scan treating the new host as an embedded element; the corrected boundary exempts only `activity/live.js`, checks its exact pure imports and fixed `/gcsp-brief-live.html` route, and retains restrictions for all embedded modules. CSP covers both preview pages and all live entry pages; all existing Activity and Brief caps remain enforced. Four additive merge conflicts retained exact94 index wiring and both contracts/coverage/caps. Full-suite admission remains with the parent; this result is scoped.
+
+The actual memory runtime browser proof produced10captures at1280/375px. It starts with no brief, navigates to Brief, edits and confirms independent search/hold permission, returns with Back, suppresses a duplicate pending pause, persists pause across reload, resumes, recovers actual stale409 through a fresh read, clears stale controls on503 and recovers through keyboard Retry. Both widths end on real brief version4. No unexpected errors, failed/external requests or horizontal overflow. Lead inspected `live-saved-active-desktop.png`, `live-pending-narrow-375.png` and `live-unavailable-narrow-375.png`: existing shell/body hierarchy, visible focus and contained menu remain consistent with reference `a7fc178`. No human layout pause.
+
+Resource receipt: four owned allocation roots, process groups and reservations are absent. Exact temporary dependency links are absent; both069installation targets rehashed unchanged. Node peak282,378,240bytes RSS/zero measured scratch; browser peak217,448,448bytes RSS/6,975,803bytes bounded local profile, removed. Successful logs reclaimed20,480allocated bytes; concise receipts and useful initial failure remain in shared test-run records. No large output or leftover. Exact source/test identity, mapping and cleanup are in `live-validation.json` and shared impact record `dc180d8aa0ab986577e7512ebb35d9101864623ccc2d16b8c9dc796e251100b8`.
+
+## Repeatable manual trial
+
+1. From the repository, run `GCSP_REPOSITORY_MODE=memory node scripts/gcsp-demo.mjs`. Use the printed origin and open `/gcsp-activity-live.html`. This explicit memory session lasts for the server process; restarting starts fresh.
+2. Expect Paula (fictional) and No confirmed search. Select Your car brief, change a preference, select Search for cars for me and Hold a suitable car for me, then Save this brief.
+3. Use browser Back. Activity becomes Active. Open Search actions and Pause Search; reload and expect Inactive. Resume Search and expect Active with real persisted version/history changes.
+4. The automated matrix additionally exercises competing-version conflict, pending duplicate prevention and failed-read Retry at both widths.
+
+The actual stock is empty. Last successful check remains unavailable and there is no current offer. FUCQ92/96 genuine check/no-match/source-delay producers, and FUCQ100/102/105/106 canonical current-offer selection/display/access/lifecycle remain open. No URL is derived from an offer identifier. PostgreSQL capability is separate and unvalidated when unconfigured. Whole-story acceptance, claim, mainline integration and closure remain with the parent.

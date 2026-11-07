@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "at": "2026-11-06T08:24:06.380380+00:00",
+  "story": "FUCQ-107",
+  "verdict": "PASS-lead-manual-original-input-cleanup-audit",
+  "checksPassed": 19892,
+  "run": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-6b69f98c9b5643689d6c69c8762958a0",
+  "grant": "fucq107-renderer9-uri1-a8b8eb1-0708",
+  "revision": "a8b8eb123e2ebd21093ddcb70257e500f6833b9c",
+  "admissionSHA256": "d5893900496e23cc5d38907af05bb92672b6b9125b11ca7f4b2dceeea66ad866",
+  "actualSupervisorExit": 0,
+  "childExit": 0,
+  "originalCounts": {
+    "tests": 9,
+    "suites": 0,
+    "pass": 9,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "originalNames": [
+    "shared options preserve keyboard focus and do not confirm on selection",
+    "shared slider and labelled equipment textarea retain focused controls across edits",
+    "invalid, busy and saved states disable confirmation and move completed focus to the heading",
+    "uncertain state offers the same-command retry; unavailable keeps saved receipt without a no-match claim",
+    "comparison uses the supplied offer projector, shared cards/table and exact units/unknown/source evidence",
+    "absent or failed canonical offer projection never paints an unverified ready page",
+    "body teardown suppresses a late read; aborted mount performs no work",
+    "standard element retains a pre-upgrade adapter and disconnect cleans its pending body",
+    "owned block sources have no inline handlers, unsafe execution or stylesheet changes inside kit controls"
+  ],
+  "originalFiles": [
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-6b69f98c9b5643689d6c69c8762958a0/summary.json",
+      "bytes": 2432,
+      "sha256": "81c6f537366240d84d5b7c51c6dc4907b27f9e96cdcaa366fcded2eb40a10b5c"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-6b69f98c9b5643689d6c69c8762958a0/plan.json",
+      "bytes": 1434,
+      "sha256": "3a74b2d3a5be7ca3256d8a1836d0cea3c09ab386a57da5969b9d210b09f033e3"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-6b69f98c9b5643689d6c69c8762958a0/checkpoint.json",
+      "bytes": 337,
+      "sha256": "e675712478410c3716ccba2cf6d9773b4bfe9cbf9eebc156d93362a84881abaf"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-6b69f98c9b5643689d6c69c8762958a0/lead-supervisor-tool-result.json",
+      "bytes": 1682,
+      "sha256": "35afbd3822105c56c5382597665fd5a9a91e48c1383c9e2fe4339077c7d4e4ff"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-6b69f98c9b5643689d6c69c8762958a0/ownership/7ae6cb38a14d4d0aa83457641834f9da.json",
+      "bytes": 1344,
+      "sha256": "232910f7cbcf4e8304b21ce362c2f5ee837ca0645a4a9d2e8a46f3f0e252673e"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-6b69f98c9b5643689d6c69c8762958a0/output.log",
+      "bytes": 2330,
+      "sha256": "0124963a55df2c32a0352e2ed239e6ed37f035536dd86652811200a97a5d1b7b"
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-6b69f98c9b5643689d6c69c8762958a0/modules.jsonl",
+      "bytes": 1401126,
+      "sha256": "cb1166a7e9b62b2c09c77d52f43c08399c802895f78cb773f414c9363f4214c2"
+    }
+  ],
+  "journalCounts": {
+    "application-load": 17,
+    "application-resolution": 33,
+    "dependency-load": 1148,
+    "dependency-resolution": 3378,
+    "optional-miss": 1
+  },
+  "uniqueDependencyModules": 1145,
+  "inputPins": 2112,
+  "absentCandidates": 129,
+  "directoriesWithExactEntries": 228,
+  "metrics": {
+    "wallSeconds": 13.254159416999999,
+    "peakAggregateRSSBytes": 308117504,
+    "peakCombinedBytes": 10902240,
+    "retainedBeforeAuditBytes": 10959680,
+    "auditWriteHeadroomBytes": 131072
+  },
+  "cleanup": {
+    "owner": {
+      "pid": 24134,
+      "start": "Fri Nov  6 07:57:23 2026"
+    },
+    "ownedPids": [
+      {
+        "direct": true,
+        "owned": true,
+        "pgid": 24356,
+        "pid": 24356,
+        "ppid": 24134,
+        "start": "Fri Nov  6 07:57:29 2026"
+      },
+      {
+        "owned": true,
+        "pgid": 24356,
+        "pid": 24371,
+        "ppid": 24356,
+        "start": "Fri Nov  6 07:57:29 2026"
+      }
+    ],
+    "groups": [
+      24356
+    ],
+    "allRecordedIdentitiesAbsent": true,
+    "numericGroupsAbsent": true,
+    "scratchAbsent": "/private/tmp/test-stamp-shard-7ae6cb38a14d4d0aa83457641834f9da",
+    "tokenAbsent": "7ae6cb38a14d4d0aa83457641834f9da",
+    "ledgerRows": 0,
+    "ledgerSHA256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "ledgerWrites": 0,
+    "cleanupMutations": 0,
+    "rawProcessSnapshot": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-6b69f98c9b5643689d6c69c8762958a0/lead-process-snapshot.txt",
+      "bytes": 45371,
+      "sha256": "0ca1e1fb4f3b80345610984bc40173cb71175777d64cbeceb3bab9d6663d65f7",
+      "rows": 769,
+      "trimmedTerminalWhitespaceRows": 769
+    },
+    "predeleteOpenFileAndInodeProof": "Recorded by admitted finalizer; historical probe output not separately retained. This manual audit verifies current exact-path absence and does not recreate or probe deleted scratch."
+  },
+  "separateAuditHelperExecuted": false,
+  "rendererProofAccepted": false,
+  "scope": "Manual stdlib original TAP/journal, fresh full physical pins, immutable source and cleanup readback only; no admitted audit helper, retry, repair, product import, publication, browser/full/live/whole-story acceptance. Root owns final receipt.",
+  "agents": "Lego Batman requested/selected gpt-6.1-sol/high; no fallback or descendants."
+}

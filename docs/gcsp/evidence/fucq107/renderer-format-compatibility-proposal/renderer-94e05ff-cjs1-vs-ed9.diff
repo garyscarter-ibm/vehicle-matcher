@@ -1,0 +1,206 @@
+--- ed9f619/loader.mjs (new prefix normalised)
++++ cjs1/loader.mjs
+@@ -12,9 +12,15 @@
+ };
+ const source = manifest('source.json', 'fb9cb018534ca934ebb74582a440f0fab3d2ab4b6ccfa05880d9f1f5f103cda8');
+ const dependencies = manifest('dependencies.json', '59838f3f60cc54ffffd4150aad7d9fbfdeef0bfc3408de3e7b1c76929a852597');
++const formats = manifest('formats.json', '5c5188be909988c0a7d19b6df1f4a7a3eaea8e120acb9008ac8a3bd971cf288e');
+ const declared = new Map(source.rows.map((row) => [row.url, row]));
+ const paths = new Map(source.rows.map((row) => [row.path, row.url]));
+ const dependencyFiles = new Map(dependencies.files.map((row) => [pathToFileURL(row.path).href, row]));
++const commonjsHints = new Map(formats.rows.map((row) => [pathToFileURL(row.path).href, row]));
++if (commonjsHints.size !== 205 || formats.rows.length !== 205
++  || formats.dependencyPlanSHA256 !== '59838f3f60cc54ffffd4150aad7d9fbfdeef0bfc3408de3e7b1c76929a852597') {
++  throw Error('Reviewed CommonJS hint boundary differs');
++}
+ const edges = new Map(source.edges.map((edge) => [paths.get(edge.from) + '\0' + edge.specifier,
+   edge.to.startsWith('node:') || edge.to.startsWith('file:') ? edge.to : paths.get(edge.to)]));
+ const roots = dependencies.packages.map((row) => row.path).sort((a, b) => b.length - a.length);
+@@ -37,6 +43,10 @@
+   record({ kind: 'refused-resolution', why, parentURL, specifier });
+   throw Error('Reviewed renderer graph refused: ' + why);
+ };
++// JSON omits undefined: retain its identity explicitly in success and refusal rows.
++const formatValue = (value) => value === undefined ? { type: 'undefined' }
++  : value === null ? { type: 'null' }
++    : { type: typeof value, value: typeof value === 'string' ? value : null };
+ registerHooks({
+   resolve(specifier, context, nextResolve) {
+     const parent = context.parentURL;
+@@ -94,14 +104,43 @@
+     if (bytes.length !== row.bytes || sha(bytes) !== row.sha256) {
+       record({ kind: 'refused-load', url }); throw Error('Pinned executable bytes differ');
+     }
+-    // Preserve the Node-selected CommonJS/module/json format and its package
+-    // semantics, while supplying the exact hash-checked bytes synchronously.
+-    const loaded = nextLoad(url, context);
++    // Node's synchronous CJS default loader can return the incoming nullish
++    // context format for typeless .js. Supply only the exact reviewed CJS hint;
++    // other files retain Node's format detection and the original format set.
++    const inputFormat = formatValue(context.format);
++    const hint = commonjsHints.get(url);
++    let formatHint = null;
++    if (hint) {
++      const basis = formats.basis[hint.basis];
++      const metadata = dependencyFiles.get(pathToFileURL(basis.packageJson).href);
++      const metadataBytes = readFileSync(basis.packageJson);
++      if (!dependency || !url.endsWith('.js') || hint.format !== 'commonjs'
++        || hint.sha256 !== row.sha256 || hint.bytes !== row.bytes
++        || packageOf(url) !== basis.packageRoot || !metadata
++        || metadata.sha256 !== basis.packageJsonSHA256 || metadata.bytes !== basis.packageJsonBytes
++        || metadataBytes.length !== metadata.bytes || sha(metadataBytes) !== metadata.sha256
++        || Object.hasOwn(JSON.parse(metadataBytes), 'type')
++        || context.format != null && context.format !== 'commonjs') {
++        record({ kind: 'refused-load', why: 'CommonJS hint conflicts with pinned source or context', url, inputFormat });
++        throw Error('Reviewed CommonJS hint differs');
++      }
++      if (context.format == null) formatHint = 'commonjs';
++    }
++    // nextLoad merges the supplied context into its shared object; inputFormat
++    // above records the original value before that documented merge.
++    const loaded = nextLoad(url, formatHint ? { ...context, format: formatHint } : context);
+     if (!['module', 'commonjs', 'json'].includes(loaded.format)) {
+-      record({ kind: 'refused-load', url }); throw Error('Unreviewed executable format');
++      record({ kind: 'refused-load', why: 'Unreviewed executable format', url,
++        inputFormat, formatHint, returnedFormat: formatValue(loaded.format) });
++      throw Error('Unreviewed executable format');
++    }
++    if (application && loaded.format !== 'module' || hint && loaded.format !== 'commonjs') {
++      record({ kind: 'refused-load', why: 'Returned format conflicts with reviewed file', url,
++        inputFormat, formatHint, returnedFormat: formatValue(loaded.format) });
++      throw Error('Reviewed file format differs');
+     }
+     record({ kind: application ? 'application-load' : 'dependency-load', url,
+-      sha256: row.sha256, bytes: row.bytes, format: loaded.format });
++      sha256: row.sha256, bytes: row.bytes, format: loaded.format, inputFormat, formatHint });
+     return { ...loaded, source: bytes, shortCircuit: true };
+   },
+ });
+--- ed9f619/supervisor.py (new prefix normalised)
++++ cjs1/supervisor.py
+@@ -118,6 +118,26 @@
+     dependencies = strict_json((OUT / (PREFIX + 'dependencies.json')).read_bytes())
+     wanted = {row['url']: row['sha256'] for row in source['rows'] if row['kind'] == 'module'}
+     dependency = {Path(row['path']).as_uri(): row for row in dependencies['files']}
++    formats = strict_json((OUT / (PREFIX + 'formats.json')).read_bytes())
++    hints = {Path(row['path']).as_uri(): row for row in formats['rows']}
++    if len(hints) != len(formats['rows']) or len(hints) != 205:
++        raise RuntimeError('Reviewed finite CommonJS hints differ')
++    def format_permitted(row):
++        if set(row) != {'kind', 'url', 'sha256', 'bytes', 'format', 'inputFormat', 'formatHint'}:
++            return False
++        incoming = row['inputFormat']
++        nullish = incoming in [{'type': 'undefined'}, {'type': 'null'}]
++        if not nullish and incoming not in [{'type': 'string', 'value': value} for value in ['module', 'commonjs', 'json']]:
++            return False
++        if row['format'] not in ['module', 'commonjs', 'json']:
++            return False
++        hint = hints.get(row['url'])
++        if hint is None:
++            return row['formatHint'] is None
++        return (row['kind'] == 'dependency-load' and row['sha256'] == hint['sha256'] and row['bytes'] == hint['bytes']
++            and hint['format'] == row['format'] == 'commonjs'
++            and (row['formatHint'] == 'commonjs' if nullish else
++                incoming == {'type': 'string', 'value': 'commonjs'} and row['formatHint'] is None))
+     roots = sorted((row['path'] for row in dependencies['packages']), key=len, reverse=True)
+     def package(url):
+         return next((root for root in roots if url.startswith(Path(root).as_uri() + '/')), None)
+@@ -150,7 +170,8 @@
+         kind = row['kind']
+         if kind in ['application-load', 'dependency-load']:
+             expected_row = next((value for value in source['rows'] if value['url'] == row['url'] and value['kind'] == 'module'), None) if kind == 'application-load' else dependency.get(row['url'])
+-            if not expected_row or row['sha256'] != expected_row['sha256'] or row['bytes'] != expected_row['bytes'] or row['format'] not in ['commonjs', 'module', 'json']:
++            if (not expected_row or row['sha256'] != expected_row['sha256'] or row['bytes'] != expected_row['bytes']
++                or not format_permitted(row) or kind == 'application-load' and row['format'] != 'module'):
+                 raise RuntimeError('Unlisted/changed executable load')
+         elif kind in ['dependency-resolution', 'optional-miss']:
+             if not permitted(row):
+--- ed9f619/audit.py (new prefix normalised)
++++ cjs1/audit.py
+@@ -112,12 +112,32 @@
+     wanted = {row['url']: row for row in source['rows'] if row['kind'] == 'module'}
+     dependencies = strict((OUT / (PREFIX + 'dependencies.json')).read_bytes())
+     pinned = {Path(row['path']).as_uri(): row for row in dependencies['files']}
++    formats = strict((OUT / (PREFIX + 'formats.json')).read_bytes())
++    hints = {Path(row['path']).as_uri(): row for row in formats['rows']}
++    require(len(hints) == len(formats['rows']) == 205, 'finite205-CommonJS-hints')
++    def validate_format(row):
++        require(set(row) == {'kind', 'url', 'sha256', 'bytes', 'format', 'inputFormat', 'formatHint'}, 'load-format-fields')
++        incoming = row['inputFormat']
++        nullish = incoming in [{'type': 'undefined'}, {'type': 'null'}]
++        require(nullish or incoming in [{'type': 'string', 'value': value} for value in ['module', 'commonjs', 'json']], 'recorded-input-format')
++        require(row['format'] in ['commonjs', 'module', 'json'], 'original-returned-format-set')
++        hint = hints.get(row['url'])
++        if hint is None:
++            require(row['formatHint'] is None, 'no-unlisted-format-hint')
++        else:
++            require(row['kind'] == 'dependency-load' and row['sha256'] == hint['sha256'] and row['bytes'] == hint['bytes']
++                and hint['format'] == row['format'] == 'commonjs', 'exact-pinned-CommonJS-hint')
++            if nullish:
++                require(row['formatHint'] == 'commonjs', 'nullish-input-received-reviewed-hint')
++            else:
++                require(incoming == {'type': 'string', 'value': 'commonjs'} and row['formatHint'] is None, 'explicit-CommonJS-preserved')
+     package_roots = sorted([row['path'] for row in dependencies['packages']], key=len, reverse=True)
+     def owning(url):
+         return next((root for root in package_roots if url.startswith(Path(root).as_uri() + '/')), None)
+     loads = [row for row in journal if row['kind'] == 'application-load']
+     require({row['url'] for row in loads} == set(wanted) and len(wanted) == 17, 'all17-application-modules')
+     for row in loads:
++        validate_format(row)
+         expected = wanted.get(row['url'])
+         require(expected is not None and row['sha256'] == expected['sha256'] and row['bytes'] == expected['bytes']
+             and row['format'] == 'module', 'every-application-load-pinned')
+@@ -131,6 +151,7 @@
+     dependency_loads = [row for row in journal if row['kind'] == 'dependency-load']
+     require(Path(dependencies['entry']).as_uri() in {row['url'] for row in dependency_loads}, 'exact-jsdom-entry-observed')
+     for row in dependency_loads:
++        validate_format(row)
+         expected = pinned.get(row['url'])
+         require(expected is not None and row['sha256'] == expected['sha256'] and row['bytes'] == expected['bytes']
+             and row['format'] in ['commonjs', 'module', 'json'] and not row['url'].endswith('.node'), 'every-dependency-load-pinned')
+--- ed9f619/freeze.py (new prefix normalised)
++++ cjs1/freeze.py
+@@ -84,7 +84,25 @@
+     absent = dependencies['absentResolutionCandidates']
+     if len(absent) != 129 or any(os.path.lexists(path) for path in absent):
+         raise RuntimeError('Optional/resolution absence differs')
+-    external = ['dependencies.json', 'impact.json', 'source.json', 'node.json', 'loader.mjs', 'launch.py', 'resources.py', 'supervisor.py', 'audit.py', 'freeze.py']
++    format_data = (OUT / (PREFIX + 'formats.json')).read_bytes()
++    formats = json.loads(format_data)
++    if (formats['dependencyPlanSHA256'] != hashlib.sha256((OUT / (PREFIX + 'dependencies.json')).read_bytes()).hexdigest()
++        or len(formats['rows']) != 205 or len({row['path'] for row in formats['rows']}) != 205):
++        raise RuntimeError('Finite format hint boundary differs')
++    for row in formats['rows']:
++        basis = formats['basis'][row['basis']]
++        item, metadata = expected_files[row['path']], expected_files[basis['packageJson']]
++        if (not row['path'].endswith('.js') or row['format'] != 'commonjs'
++            or row['bytes'] != item['bytes'] or row['sha256'] != item['sha256']
++            or metadata['sha256'] != basis['packageJsonSHA256'] or metadata['bytes'] != basis['packageJsonBytes']
++            or 'type' in json.loads(Path(basis['packageJson']).read_bytes())):
++            raise RuntimeError('Pinned CommonJS metadata differs')
++        parent = Path(row['path']).parent
++        while parent != Path(basis['packageRoot']):
++            if parent == parent.parent or str(parent / 'package.json') in expected_files:
++                raise RuntimeError('Reviewed nearest package scope differs')
++            parent = parent.parent
++    external = ['dependencies.json', 'formats.json', 'impact.json', 'source.json', 'node.json', 'loader.mjs', 'launch.py', 'resources.py', 'supervisor.py', 'audit.py', 'freeze.py']
+     for name in external:
+         path = OUT / (PREFIX + name)
+         nodes[str(path)] = identity(path)
+@@ -110,7 +128,7 @@
+         expected_node['path'], '--import', str(OUT / (PREFIX + 'loader.mjs')),
+         '--test', '--test-reporter=tap', '--test-concurrency=1', test]
+     plan = {'schemaVersion': 1, 'story': 'FUCQ-107', 'status': 'proposal-awaiting-independent-review-and-new-execution-grant',
+-        'variant': 'strict-renderer9-94e05ff', 'sourceCommit': SOURCE_COMMIT, 'sourceFiles': 22,
++        'variant': 'strict-renderer9-94e05ff-cjs1', 'sourceCommit': SOURCE_COMMIT, 'sourceFiles': 22,
+         'applicationModules': 17, 'applicationSourceEdges': 33, 'expectedCases': 9,
+         'expectedNames': source['expectedNames'], 'sourceBytes': sum(row['bytes'] for row in source['rows']),
+         'sourcePlanSHA256': hashlib.sha256((OUT / (PREFIX + 'source.json')).read_bytes()).hexdigest(),
+@@ -118,6 +136,7 @@
+         'nodes': dict(sorted(nodes.items())), 'installedPackages': dependencies['packages'], 'environment': environment,
+         'dependencyInventoryRows': 1850, 'dependencyUniqueFiles': 1833, 'dependencyUniqueBytes': sum(nodes[path]['bytes'] for path in wanted),
+         'dependencyPlanSHA256': hashlib.sha256((OUT / (PREFIX + 'dependencies.json')).read_bytes()).hexdigest(),
++        'formatPlanSHA256': hashlib.sha256(format_data).hexdigest(), 'finiteCommonjsHints': 205,
+         'absentPaths': sorted(absent),
+         'ledgerDirectory': str(ledger), 'retainedChargedRoot': str(OUT),
+         'limits': {'seconds': 120, 'ramBytes': 384 * 1024 ** 2, 'scratchAndEntireRetainedBytes': 128 * 1024 ** 2,

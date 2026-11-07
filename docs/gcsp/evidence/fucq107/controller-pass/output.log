@@ -1,0 +1,97 @@
+TAP version 13
+# (node:79076) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+# --import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/controller-94e05ff-loader.mjs", pathToFileURL("./")); register("/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/controller-94e05ff-loader.mjs", pathToFileURL("./"));'
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: question load and local choice write nothing; only explicit confirmation sends the five fields
+ok 1 - question load and local choice write nothing; only explicit confirmation sends the five fields
+  ---
+  duration_ms: 1.99425
+  type: 'test'
+  ...
+# Subtest: unchanged and invalid choices cannot confirm for options, slider or equipment
+ok 2 - unchanged and invalid choices cannot confirm for options, slider or equipment
+  ---
+  duration_ms: 0.321292
+  type: 'test'
+  ...
+# Subtest: uncertain retries retain the identical command even when a status read still returns the question
+ok 3 - uncertain retries retain the identical command even when a status read still returns the question
+  ---
+  duration_ms: 0.261834
+  type: 'test'
+  ...
+# Subtest: reload preserves a committed saved receipt when evaluation is unavailable
+ok 4 - reload preserves a committed saved receipt when evaluation is unavailable
+  ---
+  duration_ms: 0.178459
+  type: 'test'
+  ...
+# Subtest: missing evaluation and invented waiting or no-match envelopes fail closed
+ok 5 - missing evaluation and invented waiting or no-match envelopes fail closed
+  ---
+  duration_ms: 0.239541
+  type: 'test'
+  ...
+# Subtest: ready requires a distinct offer and the current quote brief; malformed requirement rows fail closed
+ok 6 - ready requires a distinct offer and the current quote brief; malformed requirement rows fail closed
+  ---
+  duration_ms: 0.385125
+  type: 'test'
+  ...
+# Subtest: stale version requires a refresh; forbidden and earlier-run responses do not retain account data
+ok 7 - stale version requires a refresh; forbidden and earlier-run responses do not retain account data
+  ---
+  duration_ms: 0.859167
+  type: 'test'
+  ...
+# Subtest: authentication loss clears a saved receipt while non-auth source failure preserves it
+ok 8 - authentication loss clears a saved receipt while non-auth source failure preserves it
+  ---
+  duration_ms: 0.328875
+  type: 'test'
+  ...
+# Subtest: duplicate confirmation is suppressed and teardown ignores late server replies
+ok 9 - duplicate confirmation is suppressed and teardown ignores late server replies
+  ---
+  duration_ms: 0.193417
+  type: 'test'
+  ...
+# Subtest: snapshots and observers cannot mutate the server question or retained command
+ok 10 - snapshots and observers cannot mutate the server question or retained command
+  ---
+  duration_ms: 0.205334
+  type: 'test'
+  ...
+# Subtest: malformed questions and malformed success receipts cannot produce a confirmed save
+ok 11 - malformed questions and malformed success receipts cannot produce a confirmed save
+  ---
+  duration_ms: 0.148375
+  type: 'test'
+  ...
+# Subtest: HTTP adapter sends strict selectors and confirmation with session cookies and no-store
+ok 12 - HTTP adapter sends strict selectors and confirmation with session cookies and no-store
+  ---
+  duration_ms: 0.337458
+  type: 'test'
+  ...
+# Subtest: HTTP adapter rejects extra authority and incomplete bodies without fetching
+ok 13 - HTTP adapter rejects extra authority and incomplete bodies without fetching
+  ---
+  duration_ms: 0.110625
+  type: 'test'
+  ...
+# Subtest: HTTP abort, malformed JSON and unsuccessful HTTP success envelopes remain unavailable
+ok 14 - HTTP abort, malformed JSON and unsuccessful HTTP success envelopes remain unavailable
+  ---
+  duration_ms: 0.195167
+  type: 'test'
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 171.09025

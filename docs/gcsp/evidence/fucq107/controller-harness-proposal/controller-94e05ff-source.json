@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "sourceRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085",
+  "sourceCommit": "94e05ff9070aa19f5deb3e9997dfed96cc268473",
+  "tests": [
+    "server/test/gcsp-second-offer-controller.test.js"
+  ],
+  "rows": [
+    {
+      "path": "blocks/gcsp/offer-followup/followup-controller.js",
+      "url": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085/blocks/gcsp/offer-followup/followup-controller.js",
+      "sha256": "038336ab02fa578cc487313e25bf37831d476669527f2b6f4e2fd391d00ffbad",
+      "bytes": 10128,
+      "source": {
+        "kind": "immutable-ref",
+        "ref": "94e05ff9070aa19f5deb3e9997dfed96cc268473"
+      },
+      "kind": "module"
+    },
+    {
+      "path": "blocks/gcsp/offer-followup/http-adapter.js",
+      "url": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085/blocks/gcsp/offer-followup/http-adapter.js",
+      "sha256": "5482dfa819d857a07add85b85e4117a0cb24ecaf010c83c47be34b6ed7cc45c6",
+      "bytes": 2187,
+      "source": {
+        "kind": "immutable-ref",
+        "ref": "94e05ff9070aa19f5deb3e9997dfed96cc268473"
+      },
+      "kind": "module"
+    },
+    {
+      "path": "server/test/gcsp-second-offer-controller.test.js",
+      "url": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085/server/test/gcsp-second-offer-controller.test.js",
+      "sha256": "64ba51f1b4bb03f3ee81893f953ee05e87e0798154e3a51f71d96b7d99dd3b64",
+      "bytes": 11552,
+      "source": {
+        "kind": "immutable-ref",
+        "ref": "94e05ff9070aa19f5deb3e9997dfed96cc268473"
+      },
+      "kind": "module"
+    },
+    {
+      "path": "package.json",
+      "url": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085/package.json",
+      "sha256": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
+      "bytes": 662,
+      "source": {
+        "kind": "immutable-ref",
+        "ref": "94e05ff9070aa19f5deb3e9997dfed96cc268473"
+      },
+      "kind": "input"
+    },
+    {
+      "path": "package-lock.json",
+      "url": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085/package-lock.json",
+      "sha256": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+      "bytes": 19167,
+      "source": {
+        "kind": "immutable-ref",
+        "ref": "94e05ff9070aa19f5deb3e9997dfed96cc268473"
+      },
+      "kind": "input"
+    },
+    {
+      "path": "server/package.json",
+      "url": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085/server/package.json",
+      "sha256": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139",
+      "bytes": 373,
+      "source": {
+        "kind": "immutable-ref",
+        "ref": "94e05ff9070aa19f5deb3e9997dfed96cc268473"
+      },
+      "kind": "input"
+    },
+    {
+      "path": "server/package-lock.json",
+      "url": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085/server/package-lock.json",
+      "sha256": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+      "bytes": 5706,
+      "source": {
+        "kind": "immutable-ref",
+        "ref": "94e05ff9070aa19f5deb3e9997dfed96cc268473"
+      },
+      "kind": "input"
+    }
+  ],
+  "edges": [
+    {
+      "from": "server/test/gcsp-second-offer-controller.test.js",
+      "specifier": "node:test",
+      "to": "node:test"
+    },
+    {
+      "from": "server/test/gcsp-second-offer-controller.test.js",
+      "specifier": "node:assert/strict",
+      "to": "node:assert/strict"
+    },
+    {
+      "from": "server/test/gcsp-second-offer-controller.test.js",
+      "specifier": "../../blocks/gcsp/offer-followup/followup-controller.js",
+      "to": "blocks/gcsp/offer-followup/followup-controller.js"
+    },
+    {
+      "from": "server/test/gcsp-second-offer-controller.test.js",
+      "specifier": "../../blocks/gcsp/offer-followup/http-adapter.js",
+      "to": "blocks/gcsp/offer-followup/http-adapter.js"
+    }
+  ],
+  "scope": "Exact controller14 graph: three JavaScript modules, four package metadata inputs, two application imports and two builtins; no installed packages.",
+  "expectedNames": [
+    "question load and local choice write nothing; only explicit confirmation sends the five fields",
+    "unchanged and invalid choices cannot confirm for options, slider or equipment",
+    "uncertain retries retain the identical command even when a status read still returns the question",
+    "reload preserves a committed saved receipt when evaluation is unavailable",
+    "missing evaluation and invented waiting or no-match envelopes fail closed",
+    "ready requires a distinct offer and the current quote brief; malformed requirement rows fail closed",
+    "stale version requires a refresh; forbidden and earlier-run responses do not retain account data",
+    "authentication loss clears a saved receipt while non-auth source failure preserves it",
+    "duplicate confirmation is suppressed and teardown ignores late server replies",
+    "snapshots and observers cannot mutate the server question or retained command",
+    "malformed questions and malformed success receipts cannot produce a confirmed save",
+    "HTTP adapter sends strict selectors and confirmation with session cookies and no-store",
+    "HTTP adapter rejects extra authority and incomplete bodies without fetching",
+    "HTTP abort, malformed JSON and unsuccessful HTTP success envelopes remain unavailable"
+  ]
+}
