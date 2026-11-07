@@ -1,5 +1,17 @@
 # FUCQ-77 offline plan checkpoint
 
+## 7 November 2026 update (supersedes the pending-plan statements below)
+
+The plan is now evidenced from retained BMW UK model-tree observations: 24 lines mapped, 4 excluded
+(F44 Gran Coupe x3: empty UK tree; i4 M50: the G26E tree lists only i4 35, i4 40 and i4 M60), 46 pending.
+`scripts/gcsp/demo-plan-mappings.mjs` rebuilds the mappings; `verifyMappingEvidence` checks hash, locator and
+the no-substitution rule. `scripts/gcsp/demo-selection.mjs --write` selected 241 retained FUCQ-61 rows for the
+six lines the local store covers and published them through FUCQ-54 as `server/data/gcsp/vehicle-evidence/demo-fleet.v1`.
+The staged verifier passes offline; round trips, enrichment, 18 coverage gaps and 46 pending lines stay open.
+See `docs/gcsp/evidence/fucq-20/demo-collection-report.json` and the story Result.
+
+## 6 November 2026 checkpoint
+
 6 November 2026. This checkpoint adds an executable **offline plan contract**, not collected demo data.
 The [proposed plan](../../../../server/data/gcsp/vehicle-evidence/demo-plan.json) remains pending.
 All 74 model-and-engine entries need exact current UK source qualification; none is an exclusion.
