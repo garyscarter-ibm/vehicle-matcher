@@ -79,7 +79,7 @@ try {
 const metadata = { ...structuredClone(old.manifest), version: plan.version };
 for (const field of ['signaturePolicy', 'qualification', 'counts', 'coverage', 'completeness', 'checksums']) delete metadata[field];
 for (const context of metadata.sourceContexts) if (context.observedDate === '2026-11-07' && context.market === 'GB') {
-  context.note = '340 actual admitted v2 factory selections; physical build, technical measurements, imagery and scheme model breadth remain unknown';
+  context.note = '341 actual admitted v2 factory selections; physical build, technical measurements, imagery and scheme model breadth remain unknown';
 }
 const inputPath = join(scratch, 'input.json'); const candidate = join(scratch, 'candidate');
 await writeFile(inputPath, JSON.stringify({ metadata, retainedCorpusDirectory: previous, configurationsFile, images: [] }) + '\n');
