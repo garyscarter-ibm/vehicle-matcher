@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-06",
+  "scope": "root-accepted-scoped-registry16-proof-only",
+  "run": "fucq103-backend-5e9d2fa62f674dca8ee608f71873038f",
+  "testedRevision": "dc2b5ca06eb6fd7fc9f9d5996f4af47d70fab963",
+  "sourcePlanSHA256": "edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9",
+  "grant": "fucq103-eligibility-registry-dc2b5ca-0655",
+  "grantStatus": "consumed-once-no-retry-no-nextmode",
+  "result": {
+    "tests": 16,
+    "pass": 16,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "childExitCode": 0,
+    "supervisorExitCode": 0
+  },
+  "sourceCaseCounts": {
+    "server/test/gcsp-policy-consumer-adoption.test.js": 8,
+    "server/test/gcsp-policy-adoption.test.js": 5,
+    "server/test/gcsp-policy-learning-adoption.test.js": 3
+  },
+  "leadAuditChecks": 523,
+  "rootAuditChecks": 2533,
+  "files": [
+    {
+      "path": "summary.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-5e9d2fa62f674dca8ee608f71873038f-summary.json",
+      "bytes": 3340,
+      "sha256": "cec0dad931e480dbe57f64ba56c700f65ca7a2f6268b366b5e0b87147b66c40f",
+      "copy": "exact-original-bytes"
+    },
+    {
+      "path": "manifest.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-5e9d2fa62f674dca8ee608f71873038f-manifest.json",
+      "bytes": 2600,
+      "sha256": "5545464dc8f8f7f5d67a653c412ca4c7bee44e08e5f1dcb75fa121fa74f6b5e6",
+      "copy": "exact-original-bytes"
+    },
+    {
+      "path": "test.log",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-5e9d2fa62f674dca8ee608f71873038f/test.log",
+      "bytes": 2063,
+      "sha256": "32906aeba370862b074dfc00629b824163070ba1e4dd063782891b487e8c4936",
+      "copy": "exact-original-bytes"
+    },
+    {
+      "path": "checkpoint.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-5e9d2fa62f674dca8ee608f71873038f/checkpoint.json",
+      "bytes": 319,
+      "sha256": "07924af1ea68b51ac7295bdd76e8570431e5a99a25f0b2aa3384bf3692fcc7f1",
+      "copy": "exact-original-bytes"
+    },
+    {
+      "path": "impact.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/impact/edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9-eligibility-registry.json",
+      "bytes": 1305,
+      "sha256": "5715ddfd519e1d9f92fc2f13eae5e3a7f947d669fd21a270dec3a0958d4281f7",
+      "copy": "exact-original-bytes"
+    },
+    {
+      "path": "lead-audit.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-registry-dc2b5ca-lead-2026-11-06.json",
+      "bytes": 85758,
+      "sha256": "6fbb2aed1a71a4ffcb56afd9b0391fa899e59b5fbdfdd3c409d928b1cf1bf12d",
+      "copy": "exact-original-bytes"
+    },
+    {
+      "path": "root-audit-original.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-registry16-root-0655.json",
+      "bytes": 3927,
+      "sha256": "7dd0514adc2f887a3c0192b52026011962d174d1ae03786667ea24599abcdee7",
+      "copy": "exact-original-bytes"
+    },
+    {
+      "path": "root-audit.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-registry16-root-0655-corrected.json",
+      "bytes": 4412,
+      "sha256": "de3c6796ffddb45540faebab9702089d4f67c22916c44ca9a760c229e40f8ecf",
+      "copy": "exact-original-bytes"
+    }
+  ],
+  "originalCopyBytes": 103724,
+  "rootPublicationAuthorised": true,
+  "preservation": "All eight files are byte-for-byte copies; original state/timestamps/paths remain unchanged, including the lead unpublished marker and superseded root HOLD. Corrected root-audit.json is the final accepted scope. Prior failed attempts and accepted core25 proof remain unchanged.",
+  "rootAuditCorrection": "The superseded checker expected mode text in the minimal complete checkpoint. Corrected check binds exact original manifest and summary paths; mode is bound by summary/chunk/grant. No test result, original, product or harness change.",
+  "metrics": {
+    "wallSeconds": 18.352187958000002,
+    "peakAggregateRSSBytes": 760053760,
+    "peakAggregateRSSMiB": 724.84375,
+    "aggregateRSSCapBytes": 1073741824,
+    "peakCombinedBytes": 4348854,
+    "scratchRemovedBytes": 4338401,
+    "rootRetainedAllocationUpperBoundBytes": 147456
+  },
+  "cleanup": "Runtime, lead and root verified five owned PID/start pairs plus owner, group12723, all13ports, scratch and dependency paths, strict full-bound locked empty ledger/token absence. No cleanup mutation; raw predelete lsof output is not separately retained, but its gate is enforced by the exact admitted finalizer.",
+  "sourceFreeze": {
+    "sameExactHeadUpstreamRemote": true,
+    "cleanTestedTree": true,
+    "runtimeSourcesPreserved": true,
+    "leadVerifiedSourcePins": 219,
+    "installedBytePins": 251,
+    "executablePins": 8,
+    "physicalDependencyEntries": 307,
+    "resolverAbsences": 163,
+    "sourceDirectoryInventories": 3,
+    "productTestFrozenRevision": "f80fc61ca151cb46ad21cb2b19e704f4012d53de",
+    "earlierCoreAndFailedReceiptsUnchanged": true
+  },
+  "authoredParserFixtures": 38,
+  "executedParserFixtures": 0,
+  "boundaries": "Only sixteen canonical reviewed-registry/adoption cases. Not remaining default/weighted/runtime/publish/activation/editor/dashboard, browser/native/full/deployed/producer/corpus/model/live or full-story acceptance; no 105-to-107 decision lookup/reload uptake proof. No next execution, merge/closure/Jira/product-map acceptance change inferred.",
+  "nextAuthorOnlyProposal": "../eligibility-default-proposal-2026-11-06.json",
+  "agents": "requested/selected gpt-6.1-sol/high; no fallback or descendants"
+}
