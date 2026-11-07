@@ -1115,8 +1115,7 @@ export { PREVIEW_COUNT, FIELD_MAX, clampFieldSize };
 // / `npm start`). Importing the module in a test gets buildServer with none of
 // these side effects — no socket, no live feed.
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
-  const server = buildServer();
-  server.listen(PORT, () => {
+  const onListening = (server) => {
     console.log(`Matcher API listening on http://localhost:${server.address().port}`);
     if (process.env.GCSP_OFFLINE === '1') {
       console.log('[gcsp] offline vehicle evidence; live startup warmers disabled');
@@ -1184,5 +1183,15 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
         startColourWarmer();
       }
     });
-  });
+  };
+  if (process.env.GCSP_RUNTIME === '1') {
+    // Hosted demo: one origin serves the GCSP pages, /api/gcsp and this API (see gcsp/host.js).
+    const { startHostedGcsp } = await import('./gcsp/host.js');
+    const hosted = await startHostedGcsp({ buildServer, env: process.env, port: PORT });
+    if (hosted.status !== 'ok') { console.error(`GCSP hosted startup: ${hosted.status}${hosted.code ? ` (${hosted.code})` : ''}`); process.exit(1); }
+    onListening(hosted.value.server);
+  } else {
+    const server = buildServer();
+    server.listen(PORT, () => onListening(server));
+  }
 }
