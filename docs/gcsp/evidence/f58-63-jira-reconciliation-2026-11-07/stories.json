@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "f58-63-jira-reconciliation.v1",
+  "observedAt": "2026-11-07T12:44:22.530Z",
+  "source": "Authenticated Atlassian MCP readback after background UI transitions",
+  "cloudId": "9024e134-9d2e-4f15-af8d-4df1fd4c2cb1",
+  "issues": [
+    {
+      "id": "124512",
+      "key": "FUCQ-58",
+      "fields": {
+        "summary": "Qualify fleet coverage and budgets before collecting configurations",
+        "status": {
+          "name": "In Review",
+          "statusCategory": {
+            "name": "In Progress"
+          }
+        },
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        }
+      }
+    },
+    {
+      "id": "124513",
+      "key": "FUCQ-59",
+      "fields": {
+        "summary": "Collect distinct constructible configurations with resumable batches",
+        "status": {
+          "name": "In Review",
+          "statusCategory": {
+            "name": "In Progress"
+          }
+        },
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        }
+      }
+    },
+    {
+      "id": "124514",
+      "key": "FUCQ-60",
+      "fields": {
+        "summary": "Enrich resolved fleet configurations with matching facts and images",
+        "status": {
+          "name": "In Review",
+          "statusCategory": {
+            "name": "In Progress"
+          }
+        },
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        }
+      }
+    },
+    {
+      "id": "124515",
+      "key": "FUCQ-61",
+      "fields": {
+        "summary": "Collect and validate 10,000 genuinely distinct BMW configurations",
+        "status": {
+          "name": "In Review",
+          "statusCategory": {
+            "name": "In Progress"
+          }
+        },
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        }
+      }
+    },
+    {
+      "id": "124516",
+      "key": "FUCQ-62",
+      "fields": {
+        "summary": "Publish the configuration corpus and generate stock by order reference",
+        "status": {
+          "name": "In Review",
+          "statusCategory": {
+            "name": "In Progress"
+          }
+        },
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        }
+      }
+    },
+    {
+      "id": "124517",
+      "key": "FUCQ-63",
+      "fields": {
+        "summary": "Prove full-corpus lookup and offline recovery through the port",
+        "status": {
+          "name": "In Review",
+          "statusCategory": {
+            "name": "In Progress"
+          }
+        },
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        }
+      }
+    }
+  ],
+  "comments": [
+    {
+      "issue": "FUCQ-58",
+      "commentId": "3627783",
+      "body": "F58–63 delivery handoff — 7 November 2026\n\nFUCQ-58 is verified In Review. Development is ready for review; acceptance and Done remain open.\n\nConfiguration-only qualification is merged and independently reviewed; 17 focused checks passed, including 14 legacy cases. The sealed selection covers exactly 10,000 configurations with digest-pinned context, coverage and explicit unknowns. Evidence: https://github.com/garyscarter-ibm/vehicle-matcher/blob/7c10dd90074e5c8c48698dae59c0e6329c7022f4/docs/gcsp/evidence/fucq-58/configuration-only-qualification-2026-11-07/\n\nScope correction superseding the earlier overnight gate assessment: the agreed Q13 identity contract uses configurationId for corpus records and order reference plus configuration for stock. VIN/profile/five-WMI requirements apply to delivered/current cars; there is no 10,000-VIN or 10,000-stock gate. FUCQ-77 owns every-scheme-model demo coverage. No new source collection is authorized by qualification.",
+      "verifiedAt": "2026-11-07T12:44:23.620Z"
+    },
+    {
+      "issue": "FUCQ-59",
+      "commentId": "3627784",
+      "body": "F58–63 delivery handoff — 7 November 2026\n\nFUCQ-59 is verified In Review. Development is ready for review; acceptance and Done remain open.\n\nCollector implementation is merged and independently reviewed. Exactly 10,000 configurations were selected from 10,351 admitted configurations. Evidence and the six-criterion assessment: https://github.com/garyscarter-ibm/vehicle-matcher/blob/7c10dd90074e5c8c48698dae59c0e6329c7022f4/docs/gcsp/evidence/fucq59/completion-assessment-2026-11-07/\n\nOriginal AC4 remains partial: public continuation refetches three still-valid safe bootstrap projections (10 actual GETs, zero cache hits in the retained proof). This independently deferred Medium defect is distinct from FUCQ-152; it is being reconciled to a linked backlog Bug, without making it a build/merge dependency. No repair or AC waiver is claimed. Historical full-suite failures/skips remain recorded.",
+      "verifiedAt": "2026-11-07T12:44:23.620Z"
+    },
+    {
+      "issue": "FUCQ-60",
+      "commentId": "3627785",
+      "body": "F58–63 delivery handoff — 7 November 2026\n\nFUCQ-60 is verified In Review. Development is ready for review; acceptance and Done remain open.\n\nThe current-code integration processed and reconciled all 10,000 selected configurations: 10,000 explicit partial outcomes, zero rejected results and zero outbound calls. The same-current-collector-session bridge and final reconciliation passed; independent five-AC review recommends In Review. Evidence: https://github.com/garyscarter-ibm/vehicle-matcher/blob/7c10dd90074e5c8c48698dae59c0e6329c7022f4/docs/gcsp/evidence/fucq60/implementation-readiness-2026-11-07/\n\nThe declared two image associations and unknown technical/image facts remain explicit. This retained replay does not assert that the original live source collection executed enrichment. The historical suite remains 1,848 passed / 19 failed / five skipped; deferred defects remain unresolved.",
+      "verifiedAt": "2026-11-07T12:44:23.620Z"
+    },
+    {
+      "issue": "FUCQ-61",
+      "commentId": "3627786",
+      "body": "F58–63 delivery handoff — 7 November 2026\n\nFUCQ-61 is verified In Review. Development is ready for review; acceptance and Done remain open.\n\nThe numerical target is delivered: 10,351 genuinely distinct admitted configurations, exactly 10,000 selected and staged. Semantic/staging verification and cached replay passed. The 32-allocation accounting reconciliation records 19,978 GETs and 13,744 solver operations. Evidence: https://github.com/garyscarter-ibm/vehicle-matcher/blob/7c10dd90074e5c8c48698dae59c0e6329c7022f4/docs/gcsp/evidence/fucq61/accounting-reconciliation-2026-11-07/\n\nAcceptance must retain one irrecoverable interrupted outcome, incomplete whole-history traffic/comparable-duration observations and the original allocation RAM overrun. These limits are documented; no unobserved aggregate is claimed. The explicit 6 November request superseded the earlier post-demo scheduling hold for this sequence.",
+      "verifiedAt": "2026-11-07T12:44:23.620Z"
+    },
+    {
+      "issue": "FUCQ-62",
+      "commentId": "3627787",
+      "body": "F58–63 delivery handoff — 7 November 2026\n\nFUCQ-62 is verified In Review. Development is ready for review; acceptance and Done remain open.\n\nRelease fleet-2026-11-07-12 is published: 31 checksum-pinned assets, 574,382,841 bytes, 10,000 selected source configurations plus one retained reference/current-car VIN. Scoped Linux build 42361586991 passed cold restore, offline repeat, exact assets and five-reference boundaries. Replacement Render deployment 7620961777 (dep-dbnhane8bjmc73a7v5qg), code c87b6f075c4e79bee93b71e1965ad23310ab8473, succeeded at 12:28:04 UTC.\n\nActual live run 42372746118 passed at 12:30:19 UTC: health, readiness and configuration each returned HTTP 200, with exact .12 manifest and first DTO hashes. Evidence: https://github.com/garyscarter-ibm/vehicle-matcher/blob/7c10dd90074e5c8c48698dae59c0e6329c7022f4/docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-run42372746118/\n\nEarlier failed/time-limited runs remain failed evidence. Known consumer and image-fixture defects are independently deferred. Stock generator ownership remains FUCQ-78; no claim of managed Render stock persistence is added.",
+      "verifiedAt": "2026-11-07T12:44:23.620Z"
+    },
+    {
+      "issue": "FUCQ-63",
+      "commentId": "3627788",
+      "body": "F58–63 delivery handoff — 7 November 2026\n\nFUCQ-63 is verified In Review. Development is ready for review; acceptance and Done remain open.\n\nFinal native PostgreSQL run 42372886620 passed on 7 November at 12:35:46 UTC, exact integration 8c76c96341701dd3fbfa1ddb6ead207cff323b4a. Three exact current-run orders passed direct, configured-consumer and loopback HTTP checks after repository close/reopen; nativeProof:true, checked:3, currentRunUnchanged:true, and zero source/egress/errors. The separately published inventory snapshot was retained at run version 3. Evidence: https://github.com/garyscarter-ibm/vehicle-matcher/blob/7c10dd90074e5c8c48698dae59c0e6329c7022f4/docs/gcsp/evidence/fucq63/linux-postgres-corrected-result-2026-11-07/\n\nThe full retained .12 lookup proof matched 10,002 direct/local-HTTP references. Prior failed native runs remain immutable; the setup correction used the existing repository transaction/CAS and unchanged prover assertions. All 2,707 known configuration-consumer failures remain deferred/unfixed. This three-order CI sample does not prove full consumer replay, all-stock enumeration or managed Render stock persistence.\n\nRemote cleanup passed: schema, service and scratch absent; 925,223,392 bytes removed.",
+      "verifiedAt": "2026-11-07T12:44:23.620Z"
+    }
+  ],
+  "acceptedOrDone": [],
+  "defectsReceipt": "defects.json",
+  "defectsReconciliation": "in progress independently; no Story build dependency"
+}

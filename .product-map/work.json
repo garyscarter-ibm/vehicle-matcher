@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "observed_at": "2026-11-07T01:39:46Z",
+  "observed_at": "2026-11-07T12:44:22.530Z",
   "stories": [
     {
       "id": "FUCQ-2",
@@ -1844,11 +1844,11 @@
     {
       "id": "FUCQ-60",
       "title": "Enrich resolved fleet configurations with matching facts and images",
-      "status": "In Progress",
-      "original_status": "In Progress",
+      "status": "In Review",
+      "original_status": "In Review",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T09:52:21Z",
+      "observed_at": "2026-11-07T12:44:22.530Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60",
       "workers": [
         {
@@ -2006,8 +2006,8 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-58",
-      "observed_at": "2026-11-07T09:52:20Z",
-      "original_status": "In Progress",
+      "observed_at": "2026-11-07T12:44:22.530Z",
+      "original_status": "In Review",
       "slices": [
         {
           "evidence": "The retained configuration-only plan is merged and independently reviewed under Q13. Original VIN/profile wording applies to delivered/current-car generation, not every corpus row. Seventeen scoped checks pass; docs/gcsp/evidence/fucq-58/configuration-only-qualification-2026-11-07/.",
@@ -2038,7 +2038,7 @@
           "title": "Reconcile selected configuration-only plan and qualification"
         }
       ],
-      "status": "In Progress",
+      "status": "In Review",
       "title": "Qualify fleet coverage and budgets before collecting configurations",
       "type": "Story",
       "unsliced": false,
@@ -2193,11 +2193,11 @@
     {
       "id": "FUCQ-61",
       "title": "Collect and validate 10,000 genuinely distinct BMW configurations",
-      "status": "In Progress",
-      "original_status": "In Progress",
+      "status": "In Review",
+      "original_status": "In Review",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T12:01:06Z",
+      "observed_at": "2026-11-07T12:44:22.530Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-61",
       "slices": [
         {
@@ -2389,8 +2389,8 @@
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-04-032",
       "id": "FUCQ-59",
-      "observed_at": "2026-11-07T09:05:30Z",
-      "original_status": "In Progress",
+      "observed_at": "2026-11-07T12:44:22.530Z",
+      "original_status": "In Review",
       "slices": [
         {
           "evidence": "Lead reviewed target Base64/accessory/alias behavior; two offline regression tests pass, scoped receipt lead59/receipt-identity-green.json; F54 publication compatibility remains separately planned.",
@@ -2449,7 +2449,7 @@
           "title": "Authored serial npm test integration gate (1 point)"
         }
       ],
-      "status": "In Progress",
+      "status": "In Review",
       "title": "Collect distinct constructible configurations with resumable batches",
       "type": "Story",
       "unsliced": false,
@@ -2640,11 +2640,11 @@
     {
       "id": "FUCQ-62",
       "title": "Publish the configuration corpus and generate stock by order reference",
-      "status": "In Progress",
-      "original_status": "In Progress",
+      "status": "In Review",
+      "original_status": "In Review",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T12:32:50Z",
+      "observed_at": "2026-11-07T12:44:22.530Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62",
       "claim_evidence": "Claimed owning035 at34a793e3; root checkpoint authorisation, Jira OAuth unavailable. Full acceptance remains open.",
       "slices": [
@@ -2818,26 +2818,26 @@
     {
       "id": "FUCQ-63",
       "title": "Prove full-corpus lookup and offline recovery through the port",
-      "status": "In Progress",
-      "original_status": "In Progress",
+      "status": "In Review",
+      "original_status": "In Review",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T12:28:03Z",
+      "observed_at": "2026-11-07T12:44:22.530Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-63",
       "slices": [
         {
           "id": "active-reconciliation",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Reconcile loaded immutable corpus and all in-process records",
-          "observed_at": "2026-11-07T12:28:02Z",
-          "evidence": "Actual .12 proof matched 10,002 direct/retained/HTTP references. Native diagnostic42371231686 checked3 real PostgreSQL orders after reopen: direct/HTTP0errors, consumers3source-unavailable, current run unchanged, source/egress0. Proof setup omitted separately published inventory snapshot; ordinary scenario seed includes it. Correction prepared separately. 2707 prior consumer failures deferred/unfixed."
+          "observed_at": "2026-11-07T12:44:22.530Z",
+          "evidence": "Full .12 retained lookup matched 10,002 direct/HTTP references. Corrected PostgreSQL run42372886620 at8c76c963 passed three exact orders after close/reopen with retained snapshot/runVersion3; direct/consumer/HTTP pass, zero errors/source/egress. 2707 corpus-consumer failures remain deferred/unfixed; evidence/fucq63/linux-postgres-corrected-result-2026-11-07/."
         },
         {
           "id": "http-parity",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Compare actual local HTTP and consuming port contracts",
-          "observed_at": "2026-11-07T08:37:35.957751+00:00",
-          "evidence": "Final .12 tenboundedchunks exact10002direct+HTTP0errors,consumer2707errors. Fresh finaldeployment-boundliveproofpending; old .10 livehealth/readiness/firstDTOpassed."
+          "observed_at": "2026-11-07T12:44:22.530Z",
+          "evidence": "Current .12 lookup proof matched 10,002 direct/local HTTP references. Live42372746118 passed health/readiness/firstDTO with exact manifest/DTO. Native42372886620 passed direct/consumer/loopback HTTP for all3 selected orders; no managed Render stock/all-stock/full-consumer claim. Deferred2707 failures remain."
         },
         {
           "id": "offline-recovery",
@@ -2855,10 +2855,10 @@
         },
         {
           "id": "integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Integrate actual published corpus and authored regression evidence",
-          "observed_at": "2026-11-07T12:28:03Z",
-          "evidence": "Native diagnostic42371231686 at b0e0ee6e failed unchanged proof-status assertion; nativeProof:false. Code-only diagnosis identifies omitted retained snapshot in isolated setup, distinct from ordinary scenario reset and2707consumer issue. Immutable result merged49f74f5f; schema/service/scratch absent,925220226Bremoved. Corrected setup will use existing repository/CAS, same3orders/prover/limits; no product repair or weakened checks."
+          "observed_at": "2026-11-07T12:44:22.530Z",
+          "evidence": "Corrected snapshot setup passed independent review and actual PostgreSQL16.15 run42372886620 at8c76c963. nativeProof:true, checked3, currentRunUnchanged:true; all direct/consumer/HTTP passes; source/egress/errors0. Evidence merged7c10dd90; cleanup schema/service/scratch absent925223392Bremoved. Both prior failures immutable; acceptance open."
         }
       ],
       "unsliced": false,

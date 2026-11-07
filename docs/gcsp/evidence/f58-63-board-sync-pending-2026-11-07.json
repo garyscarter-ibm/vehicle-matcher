@@ -24,5 +24,8 @@
     "2707 consumer failures remain deferred and unfixed"
   ],
   "statusReport": "docs/gcsp/f58-63-morning-status-2026-11-07.md",
-  "latestTrackerCheckAt": "2026-11-07T12:31:00Z"
+  "latestTrackerCheckAt": "2026-11-07T12:31:00Z",
+  "historicalCheckpoint": true,
+  "resolvedBy": "f58-63-board-sync-result-2026-11-07.json",
+  "resolvedAt": "2026-11-07T12:44:22.530Z"
 }
