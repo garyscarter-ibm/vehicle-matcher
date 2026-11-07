@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "prepared-linux-live-packet-handoff.v1",
+  "status": "prepared-unexecuted",
+  "diagnosticId": "fleet-dot12-linux-live-20261107-2",
+  "targetCode": "c87b6f075c4e79bee93b71e1965ad23310ab8473",
+  "githubDeploymentId": 7620961777,
+  "actualDeploymentId": "dep-dbnhane8bjmc73a7v5qg",
+  "successObserved": true,
+  "planSha256": "627a4704d1a03f2eb944ab99f01993a11883fbb7175f50f590470a63d3f8e043",
+  "workflowSha256": "c9e63b313d5a098ec08b8b2338052abc8c9fd6ea2c96d898cb042fcba5954397",
+  "preparedDirectory": "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic2-20261107",
+  "workflow": ".github/workflows/gcsp-live-dot12-diagnostic.yml",
+  "preparedFiles": [
+    "README.md",
+    "deployment-success.json",
+    "deployment-target.json",
+    "expected-observation.json",
+    "handoff-receipt.json",
+    "plan.json",
+    "probe.mjs",
+    "static-validation.json",
+    "supervise.py"
+  ],
+  "localScratchAllocatedBytes": 0,
+  "localOwnedScratchLeftovers": [],
+  "agents": [
+    {
+      "name": "Minnie Mouse",
+      "requestedModel": "gpt-6.1-sol",
+      "requestedEffort": "medium",
+      "selectedModel": "gpt-6.1-sol",
+      "selectedEffort": "medium",
+      "effectiveRuntimeVerified": false,
+      "descendants": 0
+    }
+  ],
+  "acceptance": false,
+  "done": false,
+  "completedAt": "2026-11-07T12:28:04Z",
+  "observedAt": "2026-11-07T12:28:20Z",
+  "githubDeploymentStatusId": 21650333270,
+  "pins": {
+    ".github/workflows/gcsp-live-dot12-diagnostic.yml": {
+      "bytes": 1300,
+      "sha256": "c9e63b313d5a098ec08b8b2338052abc8c9fd6ea2c96d898cb042fcba5954397"
+    },
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic2-20261107/README.md": {
+      "bytes": 4035,
+      "sha256": "9895052d39ccc22910ff8a2dd38f455021f5419609d1476c62b9850f5c5faae5"
+    },
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic2-20261107/deployment-success.json": {
+      "bytes": 851,
+      "sha256": "bcef1530370d5a4316392f7b856e731d2cc8b848d772a9d65de70a898a2d4c17"
+    },
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic2-20261107/deployment-target.json": {
+      "bytes": 579,
+      "sha256": "c4856c264b45f046663ea031cae89a85e81993981a85f14b8fb5a4d69af74a43"
+    },
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic2-20261107/expected-observation.json": {
+      "bytes": 1004,
+      "sha256": "87914bdc9d27f8121c46d73e27dd7992d093fd56d20c1616674ed46aa5c685f1"
+    },
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic2-20261107/plan.json": {
+      "bytes": 8292,
+      "sha256": "627a4704d1a03f2eb944ab99f01993a11883fbb7175f50f590470a63d3f8e043"
+    },
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic2-20261107/probe.mjs": {
+      "bytes": 8648,
+      "sha256": "fd45a268d184fbe55494d0695005889d85de6a97c70204d7dd557186089e5060"
+    },
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic2-20261107/static-validation.json": {
+      "bytes": 2331,
+      "sha256": "ce20190376cbf99f14d012ede3e9c81301705da7246d2fd3732808055205071a"
+    },
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic2-20261107/supervise.py": {
+      "bytes": 7196,
+      "sha256": "5694b56230f9ae26e5b7a5bf95f8c9f46e4353e7dcb8de2a056c36026f31a3bb"
+    }
+  }
+}

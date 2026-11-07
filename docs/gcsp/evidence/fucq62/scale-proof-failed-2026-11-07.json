@@ -1,0 +1,79 @@
+{
+  "status": "failed-incomplete",
+  "executedOnce": true,
+  "codeCommit": "cc3a9127f480cb6cb20d77e3aa64a123f9c3e635",
+  "pinsSha256": "017a66e259a57e0ce517f0a2821a0e25bf1e705eadee670a9a1e2ccdb1dd7463",
+  "syntheticResourceProofOnly": true,
+  "sourceCoverageCredit": 0,
+  "acceptance": "not-established",
+  "generatedInput": {
+    "at": "2026-11-07T01:37:28.457Z",
+    "bytes": 67118856,
+    "phase": "generated-input-pinned",
+    "rows": 3621,
+    "sha256": "8f487b0acda835449dd8ca7d3b50054ac02376b8bb93352c9334904e1b298703"
+  },
+  "completed": [
+    "owned-one-row-baseline-publication",
+    "deterministic-input-generation-and-independent-hash",
+    "default-eager64MiB-rejection",
+    "default-index64MiB-rejection",
+    "default-file-input-preparation64MiB-rejection"
+  ],
+  "failed": "proof-only65MiB writeCorpusCandidate returned artifact-changed: Indexed artifact identity changed.",
+  "unrun": [
+    "candidate validation",
+    "legacy/indexed validation default-boundary checks",
+    "large candidate publication and idempotence",
+    "fresh-process cold load and selected/repeated lookups",
+    "corruption and recovery"
+  ],
+  "failureLog": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: {\"status\":\"invalid-corpus\",\"failure\":{\"code\":\"artifact-changed\",\"message\":\"Indexed artifact identity changed.\"}}\n+ actual - expected\n\n+ 'invalid-corpus'\n- 'ok'\n\n    at file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq62/scale-resource-proof.mjs:137:63 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 'invalid-corpus',\n  expected: 'ok',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v26.7.0\n",
+  "result": {
+    "acceptance": "not-established",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "--max-old-space-size=256",
+      "docs/gcsp/evidence/fucq62/scale-resource-proof.mjs",
+      "--receipt",
+      "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-proof-beyond64/017a66e259a57e0c/receipt.json"
+    ],
+    "head": "cc3a9127f480cb6cb20d77e3aa64a123f9c3e635",
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-proof-beyond64/017a66e259a57e0c/proof.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-proof-beyond64/017a66e259a57e0c/ownership/415b957973d347ddafc7c033a878b84a.json",
+    "peak_rss": 143491072,
+    "peak_scratch": 67863104,
+    "pinsSha256": "017a66e259a57e0ce517f0a2821a0e25bf1e705eadee670a9a1e2ccdb1dd7463",
+    "rc": 1,
+    "scope": "synthetic-byte-volume-only",
+    "wall": 0.724731542
+  },
+  "cleanup": {
+    "compatibility_exception": null,
+    "dependency_link_absent": true,
+    "errors": [],
+    "groups": [
+      {
+        "pgid": 26926,
+        "state": "absent"
+      }
+    ],
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-proof-beyond64/017a66e259a57e0c/ownership/415b957973d347ddafc7c033a878b84a.json",
+    "manifest_state": "removed",
+    "rawCoverageRemovedWithScratch": true,
+    "removed_bytes_sampled_peak": 67863104,
+    "reservation_absent": true,
+    "retainedSummaryDirectory": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-proof-beyond64/017a66e259a57e0c",
+    "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-proof/test-stamp-shard-415b957973d347ddafc7c033a878b84a",
+    "scratch_absent": true
+  },
+  "diagnosis": {
+    "status": "unresolved",
+    "confirmed": "The failure is the immutable file-identity guard, not a maxBytes/production-cap rejection. Candidate completion and its later removal/rename were not reached.",
+    "unknown": "Exact changed identity field/path was not recorded by the original error. OneDrive metadata churn is only a hypothesis.",
+    "next": "Separately owned <=64-row/2MiB-input OneDrive stat/fstat diagnostic, no production changes or large repeat."
+  },
+  "externalRetainedEvidence": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-proof-beyond64/017a66e259a57e0c"
+}

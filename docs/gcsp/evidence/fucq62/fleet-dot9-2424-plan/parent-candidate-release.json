@@ -1,0 +1,18 @@
+{
+  "acceptance": false,
+  "limits": {
+    "childRAMMiB": 672,
+    "hostRAMMiB": 768,
+    "scratchMiB": 64,
+    "seconds": 180,
+    "workers": 1
+  },
+  "planSha256": "2d10f2cd1f75ffdbbab92653125130c534251654fac7c5ee5971a00f5257e849",
+  "registrationAfterSha256": "05cbd91273518c03a9804064126570728c88e32c79b49f815126086d44ba014d",
+  "reviewPath": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/dot9-parent-input-review.json",
+  "reviewSha256": "e4f7b250ddee45657c87f6c1d87496a016d500710e131d7ba3070ae870bb4d42",
+  "schemaVersion": "offline-candidate-parent-release.v1",
+  "scope": "Apply exact reviewed036 registration.patch; execute supervised candidate-only prepare once. No ordinary store, public packaging/upload, network or activation. Preserve prior .8 inputs, original failures and retained candidate.",
+  "sourceAggregateSha256": "00a7db972439971fe87060c4e58e3228875ce7f1ea8e204b715521808d530064",
+  "time": "2026-11-07T05:00:51.989115+00:00"
+}

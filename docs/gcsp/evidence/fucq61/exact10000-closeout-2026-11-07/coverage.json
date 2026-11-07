@@ -1,0 +1,2208 @@
+{
+  "categoryPreservation": {
+    "allDeclaredObservedTokensPreserved": true,
+    "tokens": 4522
+  },
+  "completeResolvedMeaning": "Complete resolved factory selection; unknown technical/image/body facts stay unknown. Q13 confines five-WMI assurance to delivered/current VIN generation.",
+  "counts": {
+    "additions": 1949,
+    "admittedDistinctUnion": 10351,
+    "baseline": 8051,
+    "referenceConfigurations": 1,
+    "selectedSource": 10000,
+    "stagedSource": 10000,
+    "stagedTotalConfigurations": 10001,
+    "surplus": 351
+  },
+  "declaredPlannedVersusActual": {
+    "distributionBasis": "Retained observed source codes/context. Exact sealed selection is compared with staged result, not an invented representative population.",
+    "originalDistinctTarget": 10000,
+    "sealedAdditionPlanAndActual": 1949,
+    "sealedBaselinePlanAndActual": 8051,
+    "selectedPlan": 10000,
+    "semanticBodyPowertrainQuota": "No whole-run advance quota reconciled by this consolidation; actual unknowns declared explicitly.",
+    "shortfall": 0,
+    "stagedActualCompleteResolvedDistinctSource": 10000,
+    "surplusExcludedFromSelectedCohort": 351
+  },
+  "factoryOptionCountHistogramSourceOnly": {
+    "35": 95,
+    "36": 207,
+    "37": 52,
+    "38": 96,
+    "39": 158,
+    "40": 67,
+    "41": 282,
+    "42": 160,
+    "43": 648,
+    "44": 156,
+    "45": 884,
+    "46": 233,
+    "47": 49,
+    "48": 73,
+    "49": 66,
+    "50": 467,
+    "51": 351,
+    "52": 1016,
+    "53": 296,
+    "54": 716,
+    "55": 380,
+    "56": 568,
+    "57": 79,
+    "58": 603,
+    "59": 88,
+    "60": 308,
+    "62": 198,
+    "63": 495,
+    "64": 422,
+    "65": 385,
+    "66": 288,
+    "67": 70,
+    "68": 44
+  },
+  "final10351Dimensions": {
+    "agModelCode": [
+      {
+        "count": 640,
+        "value": "12CM"
+      },
+      {
+        "count": 25,
+        "value": "12EF"
+      },
+      {
+        "count": 132,
+        "value": "12EG"
+      },
+      {
+        "count": 144,
+        "value": "12HM"
+      },
+      {
+        "count": 800,
+        "value": "22CM"
+      },
+      {
+        "count": 132,
+        "value": "22EF"
+      },
+      {
+        "count": 150,
+        "value": "22FY"
+      },
+      {
+        "count": 1980,
+        "value": "22GE"
+      },
+      {
+        "count": 176,
+        "value": "22GL"
+      },
+      {
+        "count": 77,
+        "value": "22GM"
+      },
+      {
+        "count": 138,
+        "value": "22HM"
+      },
+      {
+        "count": 138,
+        "value": "32EE"
+      },
+      {
+        "count": 132,
+        "value": "32EF"
+      },
+      {
+        "count": 149,
+        "value": "42GL"
+      },
+      {
+        "count": 126,
+        "value": "52EG"
+      },
+      {
+        "count": 968,
+        "value": "52FA"
+      },
+      {
+        "count": 76,
+        "value": "52HD"
+      },
+      {
+        "count": 126,
+        "value": "62EE"
+      },
+      {
+        "count": 1933,
+        "value": "62GE"
+      },
+      {
+        "count": 69,
+        "value": "62HD"
+      },
+      {
+        "count": 72,
+        "value": "72GN"
+      },
+      {
+        "count": 88,
+        "value": "72HD"
+      },
+      {
+        "count": 341,
+        "value": "72HH"
+      },
+      {
+        "count": 1647,
+        "value": "82GE"
+      },
+      {
+        "count": 26,
+        "value": "82GM"
+      },
+      {
+        "count": 66,
+        "value": "82GN"
+      }
+    ],
+    "body": [
+      {
+        "count": 10351,
+        "value": {
+          "state": "unknown",
+          "value": null
+        }
+      }
+    ],
+    "effectDate": [
+      {
+        "count": 10351,
+        "value": {
+          "state": "known",
+          "value": "2027-01-05"
+        }
+      }
+    ],
+    "locale": [
+      {
+        "count": 10351,
+        "value": "en-GB"
+      }
+    ],
+    "market": [
+      {
+        "count": 10351,
+        "value": "GB"
+      }
+    ],
+    "orderDate": [
+      {
+        "count": 10351,
+        "value": {
+          "state": "known",
+          "value": "2026-11-01"
+        }
+      }
+    ],
+    "paint": [
+      {
+        "count": 1429,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0300",
+            "type": "paint"
+          }
+        }
+      },
+      {
+        "count": 22,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0416",
+            "type": "paint"
+          }
+        }
+      },
+      {
+        "count": 1306,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0475",
+            "type": "paint"
+          }
+        }
+      },
+      {
+        "count": 832,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0490",
+            "type": "paint"
+          }
+        }
+      },
+      {
+        "count": 174,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0668",
+            "type": "paint"
+          }
+        }
+      },
+      {
+        "count": 23,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0A90",
+            "type": "paint"
+          }
+        }
+      },
+      {
+        "count": 351,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0A96",
+            "type": "paint"
+          }
+        }
+      },
+      {
+        "count": 23,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0C1M",
+            "type": "paint"
+          }
+        }
+      },
+      {
+        "count": 708,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0C31",
+            "type": "paint"
+          }
+        }
+      },
+      {
+        "count": 433,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0C3N",
+            "type": "paint"
+          }
+        }
+      },
+      {
+        "count": 450,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0C3Z",
+            "type": "paint"
+          }
+        }
+      },
+      {
+        "count": 24,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0C4A",
+            "type": "paint"
+          }
+        }
+      },
+      {
+        "count": 621,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0C4P",
+            "type": "paint"
+          }
+        }
+      },
+      {
+        "count": 667,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0C4W",
+            "type": "paint"
+          }
+        }
+      },
+      {
+        "count": 661,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0C56",
+            "type": "paint"
+          }
+        }
+      },
+      {
+        "count": 688,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0C5A",
+            "type": "paint"
+          }
+        }
+      },
+      {
+        "count": 459,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0C5Y",
+            "type": "paint"
+          }
+        }
+      },
+      {
+        "count": 21,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0C64",
+            "type": "paint"
+          }
+        }
+      },
+      {
+        "count": 686,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0C68",
+            "type": "paint"
+          }
+        }
+      },
+      {
+        "count": 88,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0C6E",
+            "type": "paint"
+          }
+        }
+      },
+      {
+        "count": 662,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0C6R",
+            "type": "paint"
+          }
+        }
+      },
+      {
+        "count": 23,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "P0X1E",
+            "type": "paint"
+          }
+        }
+      }
+    ],
+    "rawModelRange": [
+      {
+        "count": 5560,
+        "value": {
+          "state": "known",
+          "value": "F70"
+        }
+      },
+      {
+        "count": 475,
+        "value": {
+          "state": "known",
+          "value": "G21"
+        }
+      },
+      {
+        "count": 233,
+        "value": {
+          "state": "known",
+          "value": "G26"
+        }
+      },
+      {
+        "count": 2408,
+        "value": {
+          "state": "known",
+          "value": "G42"
+        }
+      },
+      {
+        "count": 341,
+        "value": {
+          "state": "known",
+          "value": "G61"
+        }
+      },
+      {
+        "count": 241,
+        "value": {
+          "state": "known",
+          "value": "U10"
+        }
+      },
+      {
+        "count": 1093,
+        "value": {
+          "state": "known",
+          "value": "U11"
+        }
+      }
+    ],
+    "steeringLiteral": [
+      {
+        "count": 10351,
+        "value": {
+          "state": "known",
+          "value": "RL"
+        }
+      }
+    ],
+    "taxDate": [
+      {
+        "count": 10351,
+        "value": {
+          "state": "known",
+          "value": "2027-01-05"
+        }
+      }
+    ],
+    "upholstery": [
+      {
+        "count": 144,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FBLAT",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 144,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FECI2",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 385,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FEPMI",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 301,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FKHG6",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 91,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FKHG7",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 93,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FKHKC",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 301,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FKHRI",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 392,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FKHSW",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 47,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FKSFU",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 44,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FKSJX",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 44,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FKSSW",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 1100,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FKTNL",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 40,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FKTSW",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 1078,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FKUCX",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 207,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FKUFU",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 240,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FKUIC",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 222,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FKUKF",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 1235,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FKUKP",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 1061,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FKUMY",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 1291,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FKUSW",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 39,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FLKSW",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 383,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FMAH7",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 327,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FMAL3",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 74,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FMAMU",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 369,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FMANL",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 369,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FMAOI",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 172,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FMASW",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 13,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FVAEW",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 13,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FVATQ",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 42,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FVCJL",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 44,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FVCJM",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 41,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FVCJN",
+            "type": "upholstery"
+          }
+        }
+      },
+      {
+        "count": 5,
+        "value": {
+          "state": "known",
+          "value": {
+            "code": "FZASW",
+            "type": "upholstery"
+          }
+        }
+      }
+    ],
+    "vgModelCode": [
+      {
+        "count": 859,
+        "value": "1F7A"
+      },
+      {
+        "count": 8,
+        "value": "1F7B"
+      },
+      {
+        "count": 1980,
+        "value": "1F7C"
+      },
+      {
+        "count": 1165,
+        "value": "1F7D"
+      },
+      {
+        "count": 780,
+        "value": "1F7E"
+      },
+      {
+        "count": 768,
+        "value": "1F7F"
+      },
+      {
+        "count": 440,
+        "value": "2PBC"
+      },
+      {
+        "count": 320,
+        "value": "2PMA"
+      },
+      {
+        "count": 480,
+        "value": "2PMB"
+      },
+      {
+        "count": 528,
+        "value": "2PMC"
+      },
+      {
+        "count": 320,
+        "value": "2PPA"
+      },
+      {
+        "count": 320,
+        "value": "2PPB"
+      },
+      {
+        "count": 76,
+        "value": "I4MF"
+      },
+      {
+        "count": 69,
+        "value": "I4MG"
+      },
+      {
+        "count": 88,
+        "value": "I4PC"
+      },
+      {
+        "count": 72,
+        "value": "IX1H"
+      },
+      {
+        "count": 72,
+        "value": "IX1I"
+      },
+      {
+        "count": 72,
+        "value": "IX1K"
+      },
+      {
+        "count": 66,
+        "value": "IX1L"
+      },
+      {
+        "count": 72,
+        "value": "IX24"
+      },
+      {
+        "count": 66,
+        "value": "IX25"
+      },
+      {
+        "count": 80,
+        "value": "T3BE"
+      },
+      {
+        "count": 78,
+        "value": "T3MK"
+      },
+      {
+        "count": 77,
+        "value": "T3MR"
+      },
+      {
+        "count": 96,
+        "value": "T3PF"
+      },
+      {
+        "count": 72,
+        "value": "T3PK"
+      },
+      {
+        "count": 72,
+        "value": "T3PR"
+      },
+      {
+        "count": 341,
+        "value": "T5MJ"
+      },
+      {
+        "count": 25,
+        "value": "X135"
+      },
+      {
+        "count": 72,
+        "value": "X1M0"
+      },
+      {
+        "count": 66,
+        "value": "X1M1"
+      },
+      {
+        "count": 66,
+        "value": "X1M2"
+      },
+      {
+        "count": 60,
+        "value": "X1M3"
+      },
+      {
+        "count": 66,
+        "value": "X1M6"
+      },
+      {
+        "count": 66,
+        "value": "X1M7"
+      },
+      {
+        "count": 66,
+        "value": "X1X0"
+      },
+      {
+        "count": 66,
+        "value": "X1X2"
+      },
+      {
+        "count": 66,
+        "value": "X1X3"
+      },
+      {
+        "count": 66,
+        "value": "X1X6"
+      },
+      {
+        "count": 66,
+        "value": "X1X7"
+      },
+      {
+        "count": 60,
+        "value": "X1XL"
+      },
+      {
+        "count": 26,
+        "value": "X235"
+      },
+      {
+        "count": 77,
+        "value": "X2MS"
+      }
+    ]
+  },
+  "observedGroups": {
+    "fullExactGroupsReference": "E002",
+    "meaning": "Tuple of VG/AG/market/locale/source dates/raw range/paint/upholstery/body state; count coverage is observed, not every possible configuration.",
+    "sameGroupValueSet": true,
+    "selectedCount": 1562,
+    "selectedCountSum": 10000,
+    "selectedGroupsCanonicalJsonSha256": "f6b659413c7bcbf9ea4354082686c09a242afba3dd678b69a4613a1173fd229d",
+    "unionCount": 1562,
+    "unionGroupsCanonicalJsonSha256": "7fe32c75e356b85550112c53afb8db3f63de971481eb6351473c0cb9c18f86d2"
+  },
+  "registeredImageAssociations": [
+    {
+      "baseline8051": true,
+      "configurationIdSha256": "cec541411f1b512cdcef09d1013939c166c166385fadb1b3dbf089645102bb53",
+      "contentType": "image/webp",
+      "fidelity": {
+        "equipment": "unknown",
+        "exactVehicle": "unknown",
+        "interior": "unknown",
+        "model": "observed",
+        "paint": "observed",
+        "wheels": "unknown"
+      },
+      "height": 1646,
+      "kind": "exact-code-owned-association",
+      "selected10000": true,
+      "view": "HEROFRONT",
+      "width": 2560
+    },
+    {
+      "baseline8051": true,
+      "configurationIdSha256": "7ff1dacf6046ecb2bdb10aa7c5c55a41eb532c76ac83ae8b9bbfb3581dae6107",
+      "contentType": "image/webp",
+      "fidelity": {
+        "equipment": "unknown",
+        "exactVehicle": "unknown",
+        "interior": "unknown",
+        "model": "unknown",
+        "paint": "unknown",
+        "wheels": "unknown"
+      },
+      "height": 1646,
+      "kind": "exact-code-owned-association",
+      "selected10000": true,
+      "view": "HEROFRONT",
+      "width": 2560
+    }
+  ],
+  "schemaVersion": "f61-exact10000-closeout-coverage.v1",
+  "selected10000": {
+    "catalogue": {
+      "completeness": [
+        {
+          "count": 8703,
+          "value": {
+            "accessoryCodes": "complete",
+            "accessoryQuantities": "complete",
+            "availability": "unknown",
+            "definitions": "unknown",
+            "factorySelection": "complete",
+            "measurements": "unknown",
+            "verifiedFitted": "unknown"
+          }
+        },
+        {
+          "count": 1297,
+          "value": {
+            "accessoryCodes": "complete",
+            "accessoryQuantities": "unknown",
+            "availability": "unknown",
+            "definitions": "unknown",
+            "factorySelection": "complete",
+            "measurements": "unknown",
+            "verifiedFitted": "unknown"
+          }
+        }
+      ],
+      "equipmentStates": [
+        {
+          "count": 10000,
+          "value": {
+            "available": "unknown",
+            "selected": "known",
+            "verifiedFitted": "unknown"
+          }
+        }
+      ],
+      "factStates": [
+        {
+          "count": 10000,
+          "value": {
+            "acceleration": {
+              "completeness": "unknown",
+              "definition": "0\u2013100 KM/H",
+              "state": "unknown",
+              "unit": "SECONDS"
+            },
+            "bodyLength": {
+              "completeness": "unknown",
+              "definition": "BODY LENGTH",
+              "state": "unknown",
+              "unit": "MILLIMETRES"
+            },
+            "luggageExpanded": {
+              "completeness": "unknown",
+              "definition": "EXPANDED",
+              "state": "unknown",
+              "unit": "LITRES"
+            },
+            "luggageNormal": {
+              "completeness": "unknown",
+              "definition": "NORMAL",
+              "state": "unknown",
+              "unit": "LITRES"
+            },
+            "seats": {
+              "completeness": "unknown",
+              "definition": "SEATS",
+              "state": "unknown",
+              "unit": "COUNT"
+            }
+          }
+        }
+      ],
+      "observedDate": [
+        {
+          "count": 10000,
+          "value": "2026-11-07"
+        }
+      ],
+      "optionalFactStates": [
+        {
+          "count": 10000,
+          "value": {
+            "catalogueProductionDate": "unknown",
+            "fuelTypeCode": "unknown",
+            "modelName": "unknown",
+            "modelYear": "unknown",
+            "physicalProductionDate": "unknown",
+            "plant": "unknown",
+            "trim": "unknown",
+            "verifiedFitted": "unknown"
+          }
+        }
+      ],
+      "retrievedDate": [
+        {
+          "count": 10000,
+          "value": "2026-11-07"
+        }
+      ],
+      "schemaVersion": [
+        {
+          "count": 10000,
+          "value": "2"
+        }
+      ],
+      "selectedAccessoryCount": [
+        {
+          "count": 8703,
+          "value": 0
+        },
+        {
+          "count": 1297,
+          "value": 1
+        }
+      ],
+      "status": [
+        {
+          "count": 10000,
+          "value": "partial"
+        }
+      ]
+    },
+    "configurations": 10000,
+    "dimensions": {
+      "agModelCode": [
+        {
+          "count": 640,
+          "value": "12CM"
+        },
+        {
+          "count": 24,
+          "value": "12EF"
+        },
+        {
+          "count": 124,
+          "value": "12EG"
+        },
+        {
+          "count": 132,
+          "value": "12HM"
+        },
+        {
+          "count": 800,
+          "value": "22CM"
+        },
+        {
+          "count": 114,
+          "value": "22EF"
+        },
+        {
+          "count": 140,
+          "value": "22FY"
+        },
+        {
+          "count": 1848,
+          "value": "22GE"
+        },
+        {
+          "count": 159,
+          "value": "22GL"
+        },
+        {
+          "count": 72,
+          "value": "22GM"
+        },
+        {
+          "count": 123,
+          "value": "22HM"
+        },
+        {
+          "count": 131,
+          "value": "32EE"
+        },
+        {
+          "count": 115,
+          "value": "32EF"
+        },
+        {
+          "count": 131,
+          "value": "42GL"
+        },
+        {
+          "count": 116,
+          "value": "52EG"
+        },
+        {
+          "count": 968,
+          "value": "52FA"
+        },
+        {
+          "count": 72,
+          "value": "52HD"
+        },
+        {
+          "count": 110,
+          "value": "62EE"
+        },
+        {
+          "count": 1901,
+          "value": "62GE"
+        },
+        {
+          "count": 63,
+          "value": "62HD"
+        },
+        {
+          "count": 68,
+          "value": "72GN"
+        },
+        {
+          "count": 79,
+          "value": "72HD"
+        },
+        {
+          "count": 341,
+          "value": "72HH"
+        },
+        {
+          "count": 1647,
+          "value": "82GE"
+        },
+        {
+          "count": 23,
+          "value": "82GM"
+        },
+        {
+          "count": 59,
+          "value": "82GN"
+        }
+      ],
+      "body": [
+        {
+          "count": 10000,
+          "value": {
+            "state": "unknown",
+            "value": null
+          }
+        }
+      ],
+      "effectDate": [
+        {
+          "count": 10000,
+          "value": {
+            "state": "known",
+            "value": "2027-01-05"
+          }
+        }
+      ],
+      "locale": [
+        {
+          "count": 10000,
+          "value": "en-GB"
+        }
+      ],
+      "market": [
+        {
+          "count": 10000,
+          "value": "GB"
+        }
+      ],
+      "orderDate": [
+        {
+          "count": 10000,
+          "value": {
+            "state": "known",
+            "value": "2026-11-01"
+          }
+        }
+      ],
+      "paint": [
+        {
+          "count": 1402,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0300",
+              "type": "paint"
+            }
+          }
+        },
+        {
+          "count": 22,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0416",
+              "type": "paint"
+            }
+          }
+        },
+        {
+          "count": 1229,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0475",
+              "type": "paint"
+            }
+          }
+        },
+        {
+          "count": 761,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0490",
+              "type": "paint"
+            }
+          }
+        },
+        {
+          "count": 152,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0668",
+              "type": "paint"
+            }
+          }
+        },
+        {
+          "count": 23,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0A90",
+              "type": "paint"
+            }
+          }
+        },
+        {
+          "count": 343,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0A96",
+              "type": "paint"
+            }
+          }
+        },
+        {
+          "count": 23,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0C1M",
+              "type": "paint"
+            }
+          }
+        },
+        {
+          "count": 676,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0C31",
+              "type": "paint"
+            }
+          }
+        },
+        {
+          "count": 419,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0C3N",
+              "type": "paint"
+            }
+          }
+        },
+        {
+          "count": 444,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0C3Z",
+              "type": "paint"
+            }
+          }
+        },
+        {
+          "count": 24,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0C4A",
+              "type": "paint"
+            }
+          }
+        },
+        {
+          "count": 610,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0C4P",
+              "type": "paint"
+            }
+          }
+        },
+        {
+          "count": 656,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0C4W",
+              "type": "paint"
+            }
+          }
+        },
+        {
+          "count": 649,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0C56",
+              "type": "paint"
+            }
+          }
+        },
+        {
+          "count": 675,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0C5A",
+              "type": "paint"
+            }
+          }
+        },
+        {
+          "count": 443,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0C5Y",
+              "type": "paint"
+            }
+          }
+        },
+        {
+          "count": 21,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0C64",
+              "type": "paint"
+            }
+          }
+        },
+        {
+          "count": 672,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0C68",
+              "type": "paint"
+            }
+          }
+        },
+        {
+          "count": 88,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0C6E",
+              "type": "paint"
+            }
+          }
+        },
+        {
+          "count": 645,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0C6R",
+              "type": "paint"
+            }
+          }
+        },
+        {
+          "count": 23,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "P0X1E",
+              "type": "paint"
+            }
+          }
+        }
+      ],
+      "rawModelRange": [
+        {
+          "count": 5396,
+          "value": {
+            "state": "known",
+            "value": "F70"
+          }
+        },
+        {
+          "count": 430,
+          "value": {
+            "state": "known",
+            "value": "G21"
+          }
+        },
+        {
+          "count": 214,
+          "value": {
+            "state": "known",
+            "value": "G26"
+          }
+        },
+        {
+          "count": 2408,
+          "value": {
+            "state": "known",
+            "value": "G42"
+          }
+        },
+        {
+          "count": 341,
+          "value": {
+            "state": "known",
+            "value": "G61"
+          }
+        },
+        {
+          "count": 222,
+          "value": {
+            "state": "known",
+            "value": "U10"
+          }
+        },
+        {
+          "count": 989,
+          "value": {
+            "state": "known",
+            "value": "U11"
+          }
+        }
+      ],
+      "steeringLiteral": [
+        {
+          "count": 10000,
+          "value": {
+            "state": "known",
+            "value": "RL"
+          }
+        }
+      ],
+      "taxDate": [
+        {
+          "count": 10000,
+          "value": {
+            "state": "known",
+            "value": "2027-01-05"
+          }
+        }
+      ],
+      "upholstery": [
+        {
+          "count": 144,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FBLAT",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 144,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FECI2",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 379,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FEPMI",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 301,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FKHG6",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 87,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FKHG7",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 83,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FKHKC",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 301,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FKHRI",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 388,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FKHSW",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 47,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FKSFU",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 44,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FKSJX",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 44,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FKSSW",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 1056,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FKTNL",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 40,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FKTSW",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 1046,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FKUCX",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 190,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FKUFU",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 220,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FKUIC",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 194,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FKUKF",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 1181,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FKUKP",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 1038,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FKUMY",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 1240,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FKUSW",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 39,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FLKSW",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 380,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FMAH7",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 322,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FMAL3",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 63,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FMAMU",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 363,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FMANL",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 356,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FMAOI",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 154,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FMASW",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 12,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FVAEW",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 12,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FVATQ",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 42,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FVCJL",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 44,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FVCJM",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 41,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FVCJN",
+              "type": "upholstery"
+            }
+          }
+        },
+        {
+          "count": 5,
+          "value": {
+            "state": "known",
+            "value": {
+              "code": "FZASW",
+              "type": "upholstery"
+            }
+          }
+        }
+      ],
+      "vgModelCode": [
+        {
+          "count": 859,
+          "value": "1F7A"
+        },
+        {
+          "count": 8,
+          "value": "1F7B"
+        },
+        {
+          "count": 1848,
+          "value": "1F7C"
+        },
+        {
+          "count": 1133,
+          "value": "1F7D"
+        },
+        {
+          "count": 780,
+          "value": "1F7E"
+        },
+        {
+          "count": 768,
+          "value": "1F7F"
+        },
+        {
+          "count": 440,
+          "value": "2PBC"
+        },
+        {
+          "count": 320,
+          "value": "2PMA"
+        },
+        {
+          "count": 480,
+          "value": "2PMB"
+        },
+        {
+          "count": 528,
+          "value": "2PMC"
+        },
+        {
+          "count": 320,
+          "value": "2PPA"
+        },
+        {
+          "count": 320,
+          "value": "2PPB"
+        },
+        {
+          "count": 72,
+          "value": "I4MF"
+        },
+        {
+          "count": 63,
+          "value": "I4MG"
+        },
+        {
+          "count": 79,
+          "value": "I4PC"
+        },
+        {
+          "count": 67,
+          "value": "IX1H"
+        },
+        {
+          "count": 65,
+          "value": "IX1I"
+        },
+        {
+          "count": 65,
+          "value": "IX1K"
+        },
+        {
+          "count": 58,
+          "value": "IX1L"
+        },
+        {
+          "count": 68,
+          "value": "IX24"
+        },
+        {
+          "count": 59,
+          "value": "IX25"
+        },
+        {
+          "count": 70,
+          "value": "T3BE"
+        },
+        {
+          "count": 72,
+          "value": "T3MK"
+        },
+        {
+          "count": 64,
+          "value": "T3MR"
+        },
+        {
+          "count": 89,
+          "value": "T3PF"
+        },
+        {
+          "count": 68,
+          "value": "T3PK"
+        },
+        {
+          "count": 67,
+          "value": "T3PR"
+        },
+        {
+          "count": 341,
+          "value": "T5MJ"
+        },
+        {
+          "count": 24,
+          "value": "X135"
+        },
+        {
+          "count": 69,
+          "value": "X1M0"
+        },
+        {
+          "count": 61,
+          "value": "X1M1"
+        },
+        {
+          "count": 62,
+          "value": "X1M2"
+        },
+        {
+          "count": 56,
+          "value": "X1M3"
+        },
+        {
+          "count": 57,
+          "value": "X1M6"
+        },
+        {
+          "count": 59,
+          "value": "X1M7"
+        },
+        {
+          "count": 62,
+          "value": "X1X0"
+        },
+        {
+          "count": 62,
+          "value": "X1X2"
+        },
+        {
+          "count": 60,
+          "value": "X1X3"
+        },
+        {
+          "count": 57,
+          "value": "X1X6"
+        },
+        {
+          "count": 56,
+          "value": "X1X7"
+        },
+        {
+          "count": 49,
+          "value": "X1XL"
+        },
+        {
+          "count": 23,
+          "value": "X235"
+        },
+        {
+          "count": 72,
+          "value": "X2MS"
+        }
+      ]
+    },
+    "factoryOptionCount": {
+      "maximum": 68,
+      "minimum": 35
+    },
+    "observedCategoryTokens": 4522
+  },
+  "selectionMethod": {
+    "fullNoveltyPicksReference": "E001",
+    "hashOrderedFiller": 1583,
+    "noInference": [
+      "body from range",
+      "availability",
+      "policy or scheme coverage",
+      "VIN/stock identity",
+      "image fidelity from requested options"
+    ],
+    "noveltyPickCount": 366,
+    "noveltyPicksCanonicalJsonSha256": "7cb974bd64f63e1506db5399679240624e67e4c0e4f89e031627e3a9fd7b351f",
+    "order": [
+      "all8051 baseline ids",
+      "greedy maximum newly represented observed categories",
+      "ascending sha256(configurationId), then configurationId"
+    ],
+    "tokens": [
+      "exact source model/AG/context/paint/upholstery/body-state group",
+      "individual source dimension values including unknowns",
+      "selected factory/accessory code within source model/AG"
+    ]
+  },
+  "sourceFileInventoryGroups": {
+    "f70-model-axis790-20261107-once": 101,
+    "f70-optional-axis-pilot32-20261107-once": 4,
+    "f70-optional-axis-suffix1156-20261107-once": 145,
+    "f70-optional-axis-suffix1556-20261107-once": 49,
+    "f70-optional-axis-suffix2660-20261107-once": 137,
+    "f70-optional-axis-suffix2815-20261107-once": 19,
+    "f70-optional-axis-suffix3623-20261107-once": 100,
+    "f70-optional-axis-suffix5535-20261107-once": 239,
+    "f70-trim-package260-20261107-once": 9,
+    "f70-typed-axis1024-20261107-once": 14,
+    "fucq59/continuation-live-proof-2026-11-07": 1,
+    "fucq59/f70-1f7e-core01-solver-2026-11-07": 1,
+    "fucq59/f70-1f7e-core02-solver-2026-11-07": 1,
+    "fucq59/f70-1f7e-core03-solver-2026-11-07": 1,
+    "fucq59/f70-1f7e-core04-solver-2026-11-07": 1,
+    "fucq59/f70-1f7e-first32-solver-2026-11-07": 1,
+    "fucq59/f70-first8-solver-2026-11-07": 1,
+    "fucq59/f70-model-breadth-pilot-plan-2026-11-07": 4,
+    "fucq59/g42-typed-pilot48-2026-11-07": 6,
+    "fucq59/scheme-breadth-typed-pilot48-2026-11-07": 6,
+    "fucq59/source-admission-2026-11-07": 1,
+    "fucq61/source-batch32-2026-11-07": 1,
+    "fucq61/source-pilot10x32-2026-11-07": 10,
+    "g42-remaining-typed-pool-20261107-once": 60,
+    "g42-unspent-typed-pool-1304-20261107-once": 163,
+    "g42-unspent-typed-pool-20261107-once": 5,
+    "g42-unspent-typed-pool-2248-20261107-once": 118,
+    "scheme-breadth30-phase01-960-20261107-once": 78,
+    "scheme-breadth30-phase01c-320-20261107-once": 39,
+    "scheme-breadth30-phase02-960-20261107-once": 11,
+    "scheme-breadth30-phase02c-864-20261107-once": 84,
+    "scheme-breadth30-phase03-960-20261107-once": 118
+  },
+  "sourceReferences": [
+    "E001",
+    "E002",
+    "E003",
+    "E004"
+  ],
+  "sourceSnapshotVsPublishedPreservation": "Immutable selected inventory is distinct from preserved historical T5MJ technical facts and one exact qualified 1F7E supplement; neither broadcasts technical facts across the cohort.",
+  "unknowns": {
+    "body": 10000,
+    "imageOutcomesCurrentF60": 10000,
+    "physicalSteeringMeaning": 10000,
+    "powertrain": 10000,
+    "registeredRepresentativeImageAssociations": 2,
+    "selectedAccessoryQuantityComplete": 8703,
+    "selectedAccessoryQuantityUnknown": 1297,
+    "semanticModelName": 10000,
+    "sourceSteeringLiteral": "RL",
+    "technicalFacts": 10000
+  }
+}

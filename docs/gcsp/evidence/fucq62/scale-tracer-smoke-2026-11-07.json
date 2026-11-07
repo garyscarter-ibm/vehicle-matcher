@@ -1,0 +1,462 @@
+{
+  "status": "small-actual-preload-smoke-passed-large-proof-held",
+  "story": "FUCQ-62",
+  "bug": "FUCQ-153",
+  "codeCommit": "234d75b762ea9b593dcf1d4c26c34cbc9b0cba74",
+  "reviewedPinsBeforeSmoke": "c0613279e4eb133bc2c8f48fe8724d7d698734b24e631970a100ee048f2d03b2",
+  "all85PinnedFilesUnchangedDuringSmoke": true,
+  "externalEvidence": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-tracer-smoke",
+  "evidenceSha256": {
+    "probe.mjs": "998a59afc3f7f27c68f1eb582817bcbbb5248fc5cdbb519d620646a930e1fe99",
+    "run.py": "ca81a76a207d810f72c0ad1f60bdd4b1b3a3bf13a189052a463dac70610bfbf2",
+    "selection.json": "10b056d27829d369b07babd22bffdc0a6a82f55fb5e99ff437ae4d7c7fd96679",
+    "receipt.json": "87bc20a655c1ca3f4121d12bbcc6ece5294d50af6387bf6de5b07d0aa5e65418",
+    "identity-trace.json": "d3a7489e8d6d8270e001db2ef391ee4df4f5766ef310ad4480ad9b2cb506edb4",
+    "result.json": "04ca7493ffe3da56ee5a392c5146759511c00ec5514b608e4d4f76077bc1827c",
+    "cleanup.json": "28836d2893981e0dccfbfcc9cb35f5a14a5b17fe4ce785f02fb8e4df8112da1a",
+    "coverage-summary.json": "7f2e1de5849e3f8ca2c314a79e8c2b7df45660eea268553e4ec23c6f4eb2a1b7"
+  },
+  "selection": {
+    "command": [
+      "/opt/homebrew/bin/node",
+      "--max-old-space-size=256",
+      "--import",
+      "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq62/scale-identity-trace.mjs",
+      "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-tracer-smoke/probe.mjs"
+    ],
+    "limits": {
+      "childRamMiB": 448,
+      "eventLimit": 128,
+      "hostRamMiB": 512,
+      "inputBytes": 42,
+      "rows": 2,
+      "scratchMiB": 32,
+      "seconds": 60,
+      "workers": 1
+    },
+    "scope": "Actual reviewed --import tracer with current indexed loader,2rows42B; no production edits, source or large allocation. Existing28guard tests reused.",
+    "excluded": [
+      "greater-than64MiB proof",
+      "third large allocation",
+      "source traffic/capacity credit",
+      "fullsuite",
+      "production/tracer changes"
+    ]
+  },
+  "smoke": {
+    "status": "small-tracer-smoke-passed",
+    "fixtureRows": 2,
+    "inputBytes": 42,
+    "actualPreload": true,
+    "expectedTransformSha256": "3e2fd168d89c967b6c4f37ee92880b490900b22722ce6011b1909c35ffbb338b",
+    "traceSourceSha256": "ae326b260adbc2e459d7b966de254497286494fd2f979c70f054f72f10decc34",
+    "productionBeforeAfter": {
+      "before": {
+        "server/gcsp/vehicle-evidence/indexed-jsonl.js": "0bb27219a621b101b9dbc629f2bb198785d57ee2da7ec642ff0b9472804ad55a",
+        "server/test/gcsp-indexed-jsonl.test.js": "894bb2639010259fff22d955223aad85a1c2c8f24aab5db7a447cff69ed89100",
+        "docs/gcsp/evidence/fucq62/scale-identity-trace.mjs": "ae326b260adbc2e459d7b966de254497286494fd2f979c70f054f72f10decc34"
+      },
+      "after": {
+        "server/gcsp/vehicle-evidence/indexed-jsonl.js": "0bb27219a621b101b9dbc629f2bb198785d57ee2da7ec642ff0b9472804ad55a",
+        "server/test/gcsp-indexed-jsonl.test.js": "894bb2639010259fff22d955223aad85a1c2c8f24aab5db7a447cff69ed89100",
+        "docs/gcsp/evidence/fucq62/scale-identity-trace.mjs": "ae326b260adbc2e459d7b966de254497286494fd2f979c70f054f72f10decc34"
+      },
+      "unchanged": true
+    },
+    "inputBeforeTamperSha256": "eccc9d964ffd4ea8c38326e26483cec5a350b2ad8110d8f48ace916aaec2763e",
+    "successes": [
+      "actual --import preload transformed expected module source",
+      "current indexed loader reads exact row",
+      "ctime-only full checksum confirmation retains stable latest/posthash identity",
+      "before-return expected/current captured",
+      "unrequested-row byte mutation with restored mtime fails closed",
+      "failure path/expected/current/latest/fullstack captured",
+      "event ring bounded128",
+      "production/test/tracer bytes unchanged"
+    ],
+    "intentionalGuardRejection": {
+      "code": "artifact-changed",
+      "message": "Indexed artifact bytes or identity changed.",
+      "stack": "Error: Indexed artifact bytes or identity changed.\n    at fail (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:9:97)\n    at confirmMetadataChange (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:29:5)\n    at readIndexedRow (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:48:26)\n    at read (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:103:37)\n    at Object.get (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:105:20)\n    at file:///Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-tracer-smoke/probe.mjs:24:31"
+    },
+    "traceSummary": {
+      "status": "indexed-identity-failure-captured",
+      "productionSourceSha256": "0bb27219a621b101b9dbc629f2bb198785d57ee2da7ec642ff0b9472804ad55a",
+      "transformedSha256": "3e2fd168d89c967b6c4f37ee92880b490900b22722ce6011b1909c35ffbb338b",
+      "eventLimit": 128,
+      "eventTotal": 14,
+      "eventRetained": 14,
+      "confirmationCount": 1,
+      "failureCount": 1
+    },
+    "egress": {
+      "externalCalls": 0,
+      "control": "blocked"
+    },
+    "sourceCapacityCredit": 0,
+    "largeAllocation": false,
+    "note": "Existing28guard tests reused. This tests the real tracer preload using42bytes, not the greater-than64MiB resource proof."
+  },
+  "exactTrace": {
+    "status": "indexed-identity-failure-captured",
+    "pid": 45584,
+    "productionSourceSha256": "0bb27219a621b101b9dbc629f2bb198785d57ee2da7ec642ff0b9472804ad55a",
+    "transformedSha256": "3e2fd168d89c967b6c4f37ee92880b490900b22722ce6011b1909c35ffbb338b",
+    "scope": "Main proof process only; cold subprocesses keep their original command",
+    "eventLimit": 128,
+    "eventTotal": 14,
+    "dropped": 0,
+    "events": [
+      {
+        "sequence": 1,
+        "type": "FileHandle.stat",
+        "fd": 11,
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-tracer-smoke/test-stamp-shard-80b558dea3ec4e8fb7247c367469de29/rows.jsonl",
+        "current": {
+          "dev": "16777230",
+          "ino": "248856241",
+          "size": "42",
+          "mtimeNs": "1700000000000000000",
+          "ctimeNs": "1794017270800665054"
+        }
+      },
+      {
+        "sequence": 2,
+        "type": "FileHandle.stat",
+        "fd": 11,
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-tracer-smoke/test-stamp-shard-80b558dea3ec4e8fb7247c367469de29/rows.jsonl",
+        "current": {
+          "dev": "16777230",
+          "ino": "248856241",
+          "size": "42",
+          "mtimeNs": "1700000000000000000",
+          "ctimeNs": "1794017270800665054"
+        }
+      },
+      {
+        "sequence": 3,
+        "type": "fstatSync",
+        "fd": 11,
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-tracer-smoke/test-stamp-shard-80b558dea3ec4e8fb7247c367469de29/rows.jsonl",
+        "current": {
+          "dev": "16777230",
+          "ino": "248856241",
+          "size": "42",
+          "mtimeNs": "1700000000000000000",
+          "ctimeNs": "1794017270800665054"
+        }
+      },
+      {
+        "sequence": 4,
+        "type": "fstatSync",
+        "fd": 11,
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-tracer-smoke/test-stamp-shard-80b558dea3ec4e8fb7247c367469de29/rows.jsonl",
+        "current": {
+          "dev": "16777230",
+          "ino": "248856241",
+          "size": "42",
+          "mtimeNs": "1700000000000000000",
+          "ctimeNs": "1794017270800665054"
+        }
+      },
+      {
+        "sequence": 5,
+        "type": "before-return",
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-tracer-smoke/test-stamp-shard-80b558dea3ec4e8fb7247c367469de29/rows.jsonl",
+        "expected": {
+          "dev": "16777230",
+          "ino": "248856241",
+          "size": "42",
+          "mtimeNs": "1700000000000000000",
+          "ctimeNs": "1794017270800665054"
+        },
+        "current": {
+          "dev": "16777230",
+          "ino": "248856241",
+          "size": "42",
+          "mtimeNs": "1700000000000000000",
+          "ctimeNs": "1794017270800665054"
+        }
+      },
+      {
+        "sequence": 6,
+        "type": "fstatSync",
+        "fd": 11,
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-tracer-smoke/test-stamp-shard-80b558dea3ec4e8fb7247c367469de29/rows.jsonl",
+        "current": {
+          "dev": "16777230",
+          "ino": "248856241",
+          "size": "42",
+          "mtimeNs": "1700000000000000000",
+          "ctimeNs": "1794017270801781426"
+        }
+      },
+      {
+        "sequence": 7,
+        "type": "confirmation-start",
+        "fd": 11,
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-tracer-smoke/test-stamp-shard-80b558dea3ec4e8fb7247c367469de29/rows.jsonl",
+        "expected": {
+          "dev": "16777230",
+          "ino": "248856241",
+          "size": "42",
+          "mtimeNs": "1700000000000000000",
+          "ctimeNs": "1794017270800665054"
+        },
+        "current": {
+          "dev": "16777230",
+          "ino": "248856241",
+          "size": "42",
+          "mtimeNs": "1700000000000000000",
+          "ctimeNs": "1794017270801781426"
+        }
+      },
+      {
+        "sequence": 8,
+        "type": "fstatSync",
+        "fd": 11,
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-tracer-smoke/test-stamp-shard-80b558dea3ec4e8fb7247c367469de29/rows.jsonl",
+        "current": {
+          "dev": "16777230",
+          "ino": "248856241",
+          "size": "42",
+          "mtimeNs": "1700000000000000000",
+          "ctimeNs": "1794017270801781426"
+        }
+      },
+      {
+        "sequence": 9,
+        "type": "fstatSync",
+        "fd": 11,
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-tracer-smoke/test-stamp-shard-80b558dea3ec4e8fb7247c367469de29/rows.jsonl",
+        "current": {
+          "dev": "16777230",
+          "ino": "248856241",
+          "size": "42",
+          "mtimeNs": "1700000000000000000",
+          "ctimeNs": "1794017270801781426"
+        }
+      },
+      {
+        "sequence": 10,
+        "type": "fstatSync",
+        "fd": 11,
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-tracer-smoke/test-stamp-shard-80b558dea3ec4e8fb7247c367469de29/rows.jsonl",
+        "current": {
+          "dev": "16777230",
+          "ino": "248856241",
+          "size": "42",
+          "mtimeNs": "1700000000000000000",
+          "ctimeNs": "1794017270801781426"
+        }
+      },
+      {
+        "sequence": 11,
+        "type": "before-return",
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-tracer-smoke/test-stamp-shard-80b558dea3ec4e8fb7247c367469de29/rows.jsonl",
+        "expected": {
+          "dev": "16777230",
+          "ino": "248856241",
+          "size": "42",
+          "mtimeNs": "1700000000000000000",
+          "ctimeNs": "1794017270801781426"
+        },
+        "current": {
+          "dev": "16777230",
+          "ino": "248856241",
+          "size": "42",
+          "mtimeNs": "1700000000000000000",
+          "ctimeNs": "1794017270801781426"
+        }
+      },
+      {
+        "sequence": 12,
+        "type": "fstatSync",
+        "fd": 11,
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-tracer-smoke/test-stamp-shard-80b558dea3ec4e8fb7247c367469de29/rows.jsonl",
+        "current": {
+          "dev": "16777230",
+          "ino": "248856241",
+          "size": "42",
+          "mtimeNs": "1700000000000000000",
+          "ctimeNs": "1794017270802235176"
+        }
+      },
+      {
+        "sequence": 13,
+        "type": "confirmation-start",
+        "fd": 11,
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-tracer-smoke/test-stamp-shard-80b558dea3ec4e8fb7247c367469de29/rows.jsonl",
+        "expected": {
+          "dev": "16777230",
+          "ino": "248856241",
+          "size": "42",
+          "mtimeNs": "1700000000000000000",
+          "ctimeNs": "1794017270801781426"
+        },
+        "current": {
+          "dev": "16777230",
+          "ino": "248856241",
+          "size": "42",
+          "mtimeNs": "1700000000000000000",
+          "ctimeNs": "1794017270802235176"
+        }
+      },
+      {
+        "sequence": 14,
+        "type": "fstatSync",
+        "fd": 11,
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-tracer-smoke/test-stamp-shard-80b558dea3ec4e8fb7247c367469de29/rows.jsonl",
+        "current": {
+          "dev": "16777230",
+          "ino": "248856241",
+          "size": "42",
+          "mtimeNs": "1700000000000000000",
+          "ctimeNs": "1794017270802235176"
+        }
+      }
+    ],
+    "confirmations": [
+      {
+        "fd": 11,
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-tracer-smoke/test-stamp-shard-80b558dea3ec4e8fb7247c367469de29/rows.jsonl",
+        "expected": {
+          "dev": "16777230",
+          "ino": "248856241",
+          "size": "42",
+          "mtimeNs": "1700000000000000000",
+          "ctimeNs": "1794017270800665054"
+        },
+        "current": {
+          "dev": "16777230",
+          "ino": "248856241",
+          "size": "42",
+          "mtimeNs": "1700000000000000000",
+          "ctimeNs": "1794017270801781426"
+        },
+        "checksum": "eccc9d964ffd4ea8c38326e26483cec5a350b2ad8110d8f48ace916aaec2763e",
+        "stats": [
+          {
+            "dev": "16777230",
+            "ino": "248856241",
+            "size": "42",
+            "mtimeNs": "1700000000000000000",
+            "ctimeNs": "1794017270801781426"
+          },
+          {
+            "dev": "16777230",
+            "ino": "248856241",
+            "size": "42",
+            "mtimeNs": "1700000000000000000",
+            "ctimeNs": "1794017270801781426"
+          }
+        ],
+        "returnedIdentity": {
+          "dev": "16777230",
+          "ino": "248856241",
+          "size": "42",
+          "mtimeNs": "1700000000000000000",
+          "ctimeNs": "1794017270801781426"
+        }
+      }
+    ],
+    "failures": [
+      {
+        "code": "artifact-changed",
+        "message": "Indexed artifact bytes or identity changed.",
+        "frame": {
+          "kind": "indexed-row",
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-tracer-smoke/test-stamp-shard-80b558dea3ec4e8fb7247c367469de29/rows.jsonl",
+          "expected": {
+            "dev": "16777230",
+            "ino": "248856241",
+            "size": "42",
+            "mtimeNs": "1700000000000000000",
+            "ctimeNs": "1794017270801781426"
+          },
+          "entry": {
+            "key": "a",
+            "offset": 0,
+            "length": 21
+          },
+          "checksum": "eccc9d964ffd4ea8c38326e26483cec5a350b2ad8110d8f48ace916aaec2763e"
+        },
+        "confirmation": {
+          "fd": 11,
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-tracer-smoke/test-stamp-shard-80b558dea3ec4e8fb7247c367469de29/rows.jsonl",
+          "expected": {
+            "dev": "16777230",
+            "ino": "248856241",
+            "size": "42",
+            "mtimeNs": "1700000000000000000",
+            "ctimeNs": "1794017270801781426"
+          },
+          "current": {
+            "dev": "16777230",
+            "ino": "248856241",
+            "size": "42",
+            "mtimeNs": "1700000000000000000",
+            "ctimeNs": "1794017270802235176"
+          },
+          "checksum": "eccc9d964ffd4ea8c38326e26483cec5a350b2ad8110d8f48ace916aaec2763e",
+          "stats": [
+            {
+              "dev": "16777230",
+              "ino": "248856241",
+              "size": "42",
+              "mtimeNs": "1700000000000000000",
+              "ctimeNs": "1794017270802235176"
+            }
+          ]
+        },
+        "stack": "Error: Indexed artifact bytes or identity changed.\n    at Object.fail (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq62/scale-identity-trace.mjs:64:36)\n    at fail (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:9:70)\n    at confirmMetadataChange (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:29:5)\n    at readIndexedRow (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:48:26)\n    at read (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:103:37)\n    at Object.get (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/indexed-jsonl.js:105:20)\n    at file:///Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-tracer-smoke/probe.mjs:24:31"
+      }
+    ]
+  },
+  "result": {
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-tracer-smoke/probe.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-tracer-smoke/ownership/80b558dea3ec4e8fb7247c367469de29.json",
+    "peak_rss": 2260992,
+    "peak_scratch": 544864,
+    "rc": 0,
+    "wall": 0.24724000000000002
+  },
+  "measurementLimit": "Sampled RSS of this subsecond process is a lower-bound observation, not its proven absolute peak.",
+  "impactEvidence": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq62-tracer-smoke.json",
+    "sha256": "01475ae92d5d8e513e8d023d74d2b8922e41359669ea694d1ea8e9bda5f2c8f3"
+  },
+  "cleanup": {
+    "compatibility_exception": null,
+    "dependency_link_absent": true,
+    "errors": [],
+    "groups": [
+      {
+        "pgid": 45584,
+        "state": "absent"
+      }
+    ],
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-tracer-smoke/ownership/80b558dea3ec4e8fb7247c367469de29.json",
+    "manifest_state": "removed",
+    "removed_bytes_sampled_peak": 544864,
+    "reservation_absent": true,
+    "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-tracer-smoke/test-stamp-shard-80b558dea3ec4e8fb7247c367469de29",
+    "scratch_absent": true
+  },
+  "freshFilesystemVerification": {
+    "at": "2026-11-07T02:08:23.457270+00:00",
+    "rootAbsent": true,
+    "groupsAbsent": true,
+    "reservationAbsent": true,
+    "dependencyLinkAbsent": true,
+    "noLinkWasNeededOrCreated": true,
+    "compatibilityException": null,
+    "leftovers": []
+  },
+  "actualLargeFailureCause": "Still unproven. The intentionally corrupted42B input tests trace/guard behavior only. Neither actual large attempt passed.",
+  "largeProofRelease": "Held for parent verification of final pins; no large allocation authorised or executed by this smoke.",
+  "sourceCapacityCredit": 0,
+  "storyAcceptance": "not-established"
+}

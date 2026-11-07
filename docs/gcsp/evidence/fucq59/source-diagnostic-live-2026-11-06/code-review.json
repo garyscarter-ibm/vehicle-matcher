@@ -1,0 +1,47 @@
+{
+  "review": "code",
+  "round": 1,
+  "verdict": "passed",
+  "reviewedHashes": {
+    "run-live.mjs": "5cb5adafd7d1826fc5a953984863c21aca499a402b8f7e5b61521905018e87f7",
+    "supervise-live.py": "2a109f4c9fa453a675458c45563a8f384dc387c5e120cd1dc0aa2f19b43b8cce",
+    "diagnostic-plan.json": "b7b37c394a06e7e9d42cd13aca2cc852c095e11802c8fb7d55ba599925142631",
+    "execution-handoff.json": "cd404f42058d3e40158c1657b6060356836d47ea0ad287ff8fdb2c40b0e54889"
+  },
+  "poll": {
+    "schemaVersion": 1,
+    "cursor": "74080edc-dbdb-4d68-9afd-bc0b90c5dcdf:27",
+    "revision": 27,
+    "changed": true,
+    "thread": {
+      "id": "01a1b0a9-be2e-7da0-a5e3-d165c7154c78",
+      "hostId": "local",
+      "status": {
+        "type": "idle"
+      }
+    },
+    "latestTurn": {
+      "id": "01a1b0fa-cf99-79b3-ac6a-c53f27c7401c",
+      "status": "completed",
+      "error": null,
+      "startedAt": 1793970589,
+      "completedAt": 1793970745,
+      "durationMs": 155891
+    },
+    "latestAssistantMessageId": "msg_04f10b78c8f58adc016aedd235a6d087d198a03f006e4986cb",
+    "latestAssistantMessage": {
+      "id": "msg_04f10b78c8f58adc016aedd235a6d087d198a03f006e4986cb",
+      "turnId": "01a1b0fa-cf99-79b3-ac6a-c53f27c7401c",
+      "phase": "final_answer",
+      "text": "No remaining CODE findings. The marker durability, checkpoint integrity, export failure receipt and supervisor reporting fixes are closed. Verified frozen SHA-256 identities: Runner: 5cb5adafd7d1826fc5a953984863c21aca499a402b8f7e5b61521905018e87f7 Supervisor: 2a109f4c9fa453a675458c45563a8f384dc387c5e120cd1dc0aa2f19b43b8cce Plan: b7b37c394a06e7e9d42cd13aca2cc852c095e11802c8fb7d55ba599925142631 Handoff: cd404f42058d3e40158c1657b6060356836d47ea0ad287ff8fdb2c40b0e54889 This was a static review. Retained evidence reports 18/18 runner and 6/6 supervisor scoped offline checks passing against matching identities. All three manifested scratch roots remain absent; retained receipts report their owned process groups absent and no leftovers. Runner tests removed 138,080 measured scratch bytes; supervisor tests peaked at 29,248 bytes. No compatibility exception. I executed no tests, imports, source requests or mutations and created no scratch. Live marker and observation remain absent. Separate executable allocation and subsequent source/schema review remain gates; qualification and admission are unproved. Sam Sheepdog: requested/selected gpt-6.1-sol / high; no fallback or descendants. VERDICT: passed"
+    },
+    "latestToolMarkerId": "exec-608e12ae-cdfc-4b13-bcb8-4fe3baa9a3e9",
+    "latestToolMarker": {
+      "id": "exec-608e12ae-cdfc-4b13-bcb8-4fe3baa9a3e9",
+      "turnId": "01a1b0fa-cf99-79b3-ac6a-c53f27c7401c",
+      "type": "commandExecution",
+      "name": "commandExecution",
+      "status": "completed"
+    }
+  }
+}

@@ -8,6 +8,9 @@ export { renderOfferMessage } from './templates.js';
 
 const unavailable = () => result('unavailable', { reason: 'Captured notifications are unavailable.', retryable: true });
 const ref = (context, jobId) => ({ table: 'notification_outbox', key: { runId: context.runId, jobId } });
+const attempt = ({ jobId, version, attempts, state }) => ({ jobId, version, attempts, state });
+const matchesAttempt = (job, claimed) => job.jobId === claimed.jobId && job.version === claimed.version
+  && job.attempts === claimed.attempts && job.state === 'sending' && claimed.state === 'sending';
 const due = (job, now) => job.state === 'pending' || job.state === 'sending'
   || job.state === 'retrying' && Date.parse(job.outcome?.nextAttemptAt) <= Date.parse(now);
 
@@ -80,13 +83,23 @@ export class NotificationDispatcher {
         if (found.status !== 'ok') return found;
         const job = found.value;
         if (!due(job, now)) return ok(null);
-        if (job.state === 'sending') return ok(job); // recover an interrupted durable attempt
-        return tx.compareAndSwap(ref(context, job.jobId), job.version, { state: 'sending', attempts: (job.attempts ?? 0) + 1,
+        if (job.state === 'sending') return ok(attempt(job)); // recover an interrupted durable attempt
+        const changed = await tx.compareAndSwap(ref(context, job.jobId), job.version, { state: 'sending', attempts: (job.attempts ?? 0) + 1,
           outcome: { attemptedAt: now, error: null, nextAttemptAt: null, policyVersion: configured.policyVersion } });
+        return changed.status === 'ok' ? ok(attempt(changed.value)) : changed;
       });
       if (claimed.status === 'stale-run') return claimed;
       if (claimed.status !== 'ok' || !claimed.value) continue;
-      const job = claimed.value;
+      const found = await this.#repository.read(context, ref(context, claimed.value.jobId));
+      if (found.status === 'stale-run') return found;
+      if (found.status !== 'ok' || !matchesAttempt(found.value, claimed.value)) continue;
+      const job = found.value;
+      const stillCurrent = async () => {
+        const current = await this.#repository.read(context, ref(context, job.jobId));
+        if (current.status !== 'ok') return current;
+        return ok(matchesAttempt(current.value, claimed.value) && inputDigest(current.value) === inputDigest(job));
+      };
+      let obsolete = false;
       let delivery;
       let error = 'transport-unavailable';
       let retryable = true;
@@ -105,7 +118,12 @@ export class NotificationDispatcher {
             let message;
             try { message = renderCaseMessage({ update, employee: employee.value }); }
             catch { error = 'message-invalid'; retryable = false; }
-            if (message) delivery = await this.#transport.send({ context, job, message, now });
+            if (message) {
+              const current = await stillCurrent();
+              if (current.status === 'stale-run') return current;
+              obsolete = current.status === 'ok' && !current.value;
+              if (current.status === 'ok' && current.value) delivery = await this.#transport.send({ context, job, message, now });
+            }
           }
         } else {
           const offer = await this.#repository.read(context, { table: 'offers', key: { runId: context.runId, offerId: job.offerId } });
@@ -128,10 +146,16 @@ export class NotificationDispatcher {
             let message;
             try { message = renderOfferMessage({ offer: offer.value, quote: quote.value, employee: employee.value, offerLink: job.payload?.offerLink, now }); }
             catch { error = 'message-invalid'; retryable = false; }
-            if (message) delivery = await this.#transport.send({ context, job, message, now });
+            if (message) {
+              const current = await stillCurrent();
+              if (current.status === 'stale-run') return current;
+              obsolete = current.status === 'ok' && !current.value;
+              if (current.status === 'ok' && current.value) delivery = await this.#transport.send({ context, job, message, now });
+            }
           }
         }
       } catch { /* Never retain or emit provider exception text or token-bearing inputs. */ }
+      if (obsolete) continue;
       if (delivery?.status === 'stale-run') return delivery;
       if (delivery?.status === 'ok') {
         const acknowledged = await this.#repository.transaction(context, {
@@ -140,7 +164,7 @@ export class NotificationDispatcher {
           const found = await tx.get(ref(context, job.jobId));
           if (found.status !== 'ok') return found;
           if (found.value.state === 'sent') return ok({ state: 'sent' });
-          if (found.value.state !== 'sending' || found.value.attempts !== job.attempts) return ok(null);
+          if (!matchesAttempt(found.value, claimed.value) || inputDigest(found.value) !== inputDigest(job)) return ok(null);
           const changed = await tx.compareAndSwap(ref(context, job.jobId), found.value.version, {
             state: 'sent', transport: this.#transport instanceof CapturedTransport ? 'captured' : 'configured',
             outcome: { ...found.value.outcome, error: null, nextAttemptAt: null, acknowledgedAt: now },
@@ -159,10 +183,11 @@ export class NotificationDispatcher {
       }, async (tx) => {
         const found = await tx.get(ref(context, job.jobId));
         if (found.status !== 'ok') return found;
-        if (found.value.state !== 'sending' || found.value.attempts !== job.attempts) return ok(null);
-        return tx.compareAndSwap(ref(context, job.jobId), found.value.version, {
+        if (!matchesAttempt(found.value, claimed.value) || inputDigest(found.value) !== inputDigest(job)) return ok(null);
+        const changed = await tx.compareAndSwap(ref(context, job.jobId), found.value.version, {
           state, outcome: { ...found.value.outcome, error, nextAttemptAt },
         });
+        return changed.status === 'ok' ? ok({ state: changed.value.state }) : changed;
       });
       if (failure.status === 'stale-run') return failure;
       if (failure.status === 'ok' && failure.value) {

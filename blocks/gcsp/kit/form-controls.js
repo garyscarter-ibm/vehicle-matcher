@@ -31,7 +31,7 @@ export function errorSummary({ id, title = 'Check your choices', errors = [], on
       link.href = `#${value.id}`;
       link.addEventListener('click', (event) => {
         event.preventDefault();
-        if (onSelect) onSelect(value.id); else root.ownerDocument.getElementById(value.id)?.focus();
+        if (onSelect) onSelect(value.id, value.selectionId); else root.ownerDocument.getElementById(value.id)?.focus();
       });
       row.append(link); items.append(row);
     }

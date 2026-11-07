@@ -1,0 +1,120 @@
+✖ historical G26E packet selects exact current bootstrap and one no-fallback dated tree (2.29875ms)
+✖ direct derivative M50 is preserved independently of model effect date without acceptance (1.35875ms)
+✖ current M60 badge stays M60 and cannot qualify historical M50 (0.196542ms)
+✖ unsafe derivative input is refused before any evidence is retained (0.250208ms)
+✖ memory-only public header values cannot enter a projected derivative (0.114541ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 0
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 94.75775
+
+✖ failing tests:
+
+test at docs/gcsp/evidence/fucq59/historical-g26e-3get-probe-2026-11-07/catalogue.test.mjs:142:1
+✖ historical G26E packet selects exact current bootstrap and one no-fallback dated tree (2.29875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+  +     range: 'F44',
+  +     schemeModelLine: 'F44 Gran Coupe'
+  -     range: 'G26E',
+  -     schemeModelLine: 'G26 i4'
+      }
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/historical-g26e-3get-probe-2026-11-07/catalogue.test.mjs:143:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { schemeModelLine: 'F44 Gran Coupe', range: 'F44' } ],
+    expected: [ { schemeModelLine: 'G26 i4', range: 'G26E' } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at docs/gcsp/evidence/fucq59/historical-g26e-3get-probe-2026-11-07/catalogue.test.mjs:148:1
+✖ direct derivative M50 is preserved independently of model effect date without acceptance (1.35875ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  null !== 'I4 M50'
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/historical-g26e-3get-probe-2026-11-07/catalogue.test.mjs:150:48)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: 'I4 M50',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at docs/gcsp/evidence/fucq59/historical-g26e-3get-probe-2026-11-07/catalogue.test.mjs:153:1
+✖ current M60 badge stays M60 and cannot qualify historical M50 (0.196542ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  null !== 'I4 M60'
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/historical-g26e-3get-probe-2026-11-07/catalogue.test.mjs:155:48)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: 'I4 M60',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at docs/gcsp/evidence/fucq59/historical-g26e-3get-probe-2026-11-07/catalogue.test.mjs:157:1
+✖ unsafe derivative input is refused before any evidence is retained (0.250208ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/historical-g26e-3get-probe-2026-11-07/catalogue.test.mjs:159:94)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /derivative-privacy-refused/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at docs/gcsp/evidence/fucq59/historical-g26e-3get-probe-2026-11-07/catalogue.test.mjs:162:1
+✖ memory-only public header values cannot enter a projected derivative (0.114541ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/historical-g26e-3get-probe-2026-11-07/catalogue.test.mjs:164:9)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:969:18)
+      at Test.postRun (node:internal/test_runner/test:1537:19)
+      at Test.run (node:internal/test_runner/test:1462:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /catalogue-privacy-refused/,
+    operator: 'throws',
+    diff: 'simple'
+  }

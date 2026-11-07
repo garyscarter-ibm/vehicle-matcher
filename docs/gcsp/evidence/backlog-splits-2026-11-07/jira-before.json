@@ -1,0 +1,2015 @@
+{
+  "observedAt": "2026-11-07T13:50:43.196Z",
+  "issues": [
+    {
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-04T14:53:25.255-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Jira supplies story ID/title/parent/priority; kind/size/design impact are labels. Story points are assigned by the implementing agent.\n\nkind: code\ndesign_impact: yes\nrequested: 2026-11-04, by Gary via Claude Code (backlog FUCQ-110, lifecycle from HLD readiness section C7)\nepic: FUCQ-110\npriority: P2\npriority_reason: due 2026-11-12: GCSP demo\nsize: M\ndepends_on: FUCQ-111\n\n## Goal\n\nAs Paula, once my order is sent to ordering, I want to request a handover slot and see when it is actually confirmed, so that I never plan around a booking that does not exist.\n\n## Acceptance criteria\n\n- [ ] **Appointment port:** an appointment port with a synthetic adapter and a live-shaped stub, following FUCQ-111's pattern. The stub reports each write as unsupported with a reviewable reason and leaves the state where it was.\n- [ ] **Target appointment states (Q19):** an appointment moves through requested, then scheduled (confirmed by the provider), then completed or no-show. Each state records its demo-clock time and provider reference. Requested is never shown or returned as booked.\n- [ ] **Request rules:** Paula can request a slot only after her order reaches sent to ordering in FUCQ-111. She chooses from slots the synthetic adapter offers, and earliest dates and slot lengths are PolicyService keys. Repeating the same request returns the same appointment.\n- [ ] **Confirmation on a tick:** the synthetic adapter confirms or proposes another slot from a tick handler on FUCQ-85's clock, after a keyed delay. A proposed change needs Paula's acceptance before it becomes scheduled.\n- [ ] **Completion gate:** an appointment can be marked completed only when the documents and the car's readiness from the documents Story in FUCQ-110 are all complete. If that Story is not yet merged, the gate reads a port that returns not ready, so completion is refused rather than assumed.\n- [ ] **No-show:** a scenario key or presenter action can record a no-show. It records a lifecycle-exception event receipt of type no-show, leaves the order allocated, and lets Paula request a new slot.\n- [ ] **Uncertain outcomes:** a timeout stays pending under the same idempotency key and is reconciled on FUCQ-85's reconciliation tick before any retry.\n- [ ] **Read model and routes:** `/api/gcsp` routes request a slot, accept a proposed change and read the current appointment, with who owns the next step (Paula, the retailer or the scheme team). Another employee's appointment is refused, and browser-supplied employee or run IDs are ignored.\n## Files or areas\n\n- `server/gcsp/lifecycle/appointments (proposed)`\n- `server/gcsp/adapters/synthetic-appointments (proposed)`\n- `server/gcsp/migrations/ (additive appointment tables)`\n- `server/index.js (routes under /api/gcsp)`\n- `server/test/gcsp-lifecycle-appointment.test.js (proposed)`\n- `docs/gcsp/shared-contracts.md (appointment shape)`\n## Decided\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026 (`docs/design/handover-section-c7-c9-2026-11-04.md`, C7; `docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md`, `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`: \"Greg's supply loop\" (the lifecycle paragraph), \"Paula's version-4 blueprint\" column 13 and \"Lifecycle and help\". Carry these decisions and acceptance criteria into every child-agent brief.\n\nBlueprint column 13: requested differs from confirmed; signing may follow booking; completed documents and a ready vehicle gate physical handover. GCSP unifies ordering and the former ISA handover system (`docs/gcsp/demo-brief.md`), so the appointment belongs in the same experience.\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q19: the target's appointment states (scheduled, completed), with no-show as the failure case.\n- Q14: adapters model the target AWS platform.\n- Q3: presenter ticks drive confirmation; no unattended promises.\n## Out of scope\n\nThe old car's return (the return plan Story in FUCQ-110); document and readiness tracking (the documents Story); the screens; physical collection; real retailer calendars.\n\n## Validate\n\nRun commands from the worktree root. Named new test files are deliverables of this story.\n\n- `node --test server/test/gcsp-lifecycle-appointment.test.js`: these pass:\n\n- request refused before sent to ordering;\n- requested then scheduled on a tick, and an idempotent repeat request;\n- a proposed slot change needing acceptance;\n- completion refused until documents and readiness are complete;\n- no-show with its exception event and a new request;\n- the live stub reporting unsupported;\n- an uncertain write reconciled before retry;\n- employee and run scoping.\n- `npm test` passes.\n- Backend-only: no screen. Record each appointment state's response shape in fixtures for the order progress screen (`docs/gcsp/experience-quality.md`).\n",
+        "issuelinks": [
+          {
+            "id": "62605",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "This work item is being actively worked on at the moment by the assignee.",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "11561",
+                  "name": "In Progress",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/11561",
+                  "statusCategory": {
+                    "colorName": "yellow",
+                    "id": 4,
+                    "key": "indeterminate",
+                    "name": "In Progress",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/4"
+                  }
+                }
+              },
+              "key": "FUCQ-111"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62607",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-118"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62608",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-120"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "size:M"
+        ],
+        "parent": {
+          "key": "FUCQ-110"
+        },
+        "priority": {
+          "id": "2",
+          "name": "High"
+        },
+        "reporter": {
+          "displayName": "Gary Carter"
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+          "id": "10000",
+          "name": "To Do",
+          "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+          }
+        },
+        "summary": "Request, confirm and complete a handover appointment, or record a no-show",
+        "updated": "2026-11-04T14:58:44.948-0600"
+      },
+      "id": "125261",
+      "key": "FUCQ-114"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-04T14:54:40.499-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Jira supplies story ID/title/parent/priority; kind/size/design impact are labels. Story points are assigned by the implementing agent.\n\nkind: code\ndesign_impact: yes\nrequested: 2026-11-04, by Gary via Claude Code (backlog FUCQ-110, lifecycle from HLD readiness section C7)\nepic: FUCQ-110\npriority: P2\npriority_reason: due 2026-11-12: GCSP demo\nsize: S\ndepends_on: FUCQ-114\n\n## Goal\n\nAs Paula, I want my current car's return planned in its own right, so that I know when I hand it back and I keep it until the new one is actually mine.\n\n## Acceptance criteria\n\n- [ ] **Separate return plan:** a replacement order has a return plan for the current car, linked to the old contract and vehicle slot FUCQ-71 recorded, and separate from the new car's handover appointment. A new order (no current car) has none.\n- [ ] **Return states:** the plan moves through not planned, return requested, return scheduled, then returned or missed. It records the return location, the slot from FUCQ-114's appointment port (the same port, a separate appointment), the demo-clock time and a provider reference. Requested is never shown as scheduled.\n- [ ] **Same-visit or separate:** Paula can ask to return the old car at the new car's handover or at a separate slot. The choice and its rules are PolicyService keys, labelled synthetic assumptions.\n- [ ] **Current-car relationship:** only a confirmed handover completion or a confirmed return changes Paula's current car. Acceptance, approval or a scheduled slot never does. A test proves her current car is unchanged until then.\n- [ ] **Missed return:** a missed return records a lifecycle-exception event receipt of a keyed type, for the renewal-risk trigger.\n- [ ] **Return mileage:** the plan carries the return mileage FUCQ-70 captured, read-only, as recorded at selection.\n- [ ] **Read model and routes:** `/api/gcsp` routes read the return plan and request a return slot, using FUCQ-84's server-owned context. Another employee's plan is refused, and browser-supplied employee or run IDs are ignored.\n## Files or areas\n\n- `server/gcsp/lifecycle/return-plan (proposed)`\n- `server/gcsp/migrations/ (additive return-plan tables)`\n- `server/index.js (routes under /api/gcsp)`\n- `server/test/gcsp-lifecycle-return.test.js (proposed)`\n- `docs/gcsp/shared-contracts.md (return-plan shape)`\n## Decided\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026 (`docs/design/handover-section-c7-c9-2026-11-04.md`, C7; `docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md`, `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`: \"Paula's version-4 blueprint\" column 13 and the paragraph after the blueprint table. Carry these decisions and acceptance criteria into every child-agent brief.\n\nBlueprint column 13 names a separate old-car return plan. The HLD: only confirmed collection or return changes the current-car relationship; acceptance alone does not. Physical collection and return stay outside the main walkthrough, so the confirmations come from the synthetic adapter.\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q19: appointment states reused for the return slot.\n- Q13: the current car is a delivered car with a VIN; the new car is keyed by `orderUuid` until delivery.\n## Out of scope\n\nThe new car's appointment (FUCQ-114); vehicle inspection, damage or end-of-contract charges; used-market resale; the screens.\n\n## Validate\n\nRun commands from the worktree root. Named new test files are deliverables of this story.\n\n- `node --test server/test/gcsp-lifecycle-return.test.js`: these pass:\n\n- a return plan only for a replacement order;\n- requested then scheduled, separate from the handover appointment;\n- same-visit and separate-slot choices read from PolicyService;\n- the current car unchanged until confirmed completion or return;\n- a missed return with its exception event;\n- employee and run scoping.\n- `npm test` passes.\n- Backend-only: no screen. Record the return-plan response shapes in fixtures for the order progress screen (`docs/gcsp/experience-quality.md`).\n",
+        "issuelinks": [
+          {
+            "id": "62607",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-114"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62610",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-120"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "size:S"
+        ],
+        "parent": {
+          "key": "FUCQ-110"
+        },
+        "priority": {
+          "id": "2",
+          "name": "High"
+        },
+        "reporter": {
+          "displayName": "Gary Carter"
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+          "id": "10000",
+          "name": "To Do",
+          "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+          }
+        },
+        "summary": "Plan the old car's return separately from the new car's handover",
+        "updated": "2026-11-04T14:58:47.011-0600"
+      },
+      "id": "125265",
+      "key": "FUCQ-118"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-04T14:55:24.275-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Jira supplies story ID/title/parent/priority; kind/size/design impact are labels. Story points are assigned by the implementing agent.\n\nkind: ui\ndesign_impact: yes\nui: el, mediaWell; screenIntro, button and statusScreen (all listed under \"Not yet in the kit\"; reuse them if already added); FUCQ-31's shared fact and status components; FUCQ-95's activityTimeline (reuse for dated history if added); new: stageTracker, because no kit component shows ordered stages with an owner and a current step, and taskList, because none lists actionable owned items with due times\nrequested: 2026-11-04, by Gary via Claude Code (backlog FUCQ-110, lifecycle from HLD readiness section C7)\nepic: FUCQ-110\npriority: P2\npriority_reason: due 2026-11-12: GCSP demo\nsize: L\ndepends_on: FUCQ-114, FUCQ-116, FUCQ-118, FUCQ-105, FUCQ-67\n\n## Goal\n\nAs Paula, after selecting my car, I want one clear place that shows how far my order has got, what my handover and return look like, and who has the next step, so that I never have to ask anyone where it stands.\n\n## Acceptance criteria\n\n- [ ] **Order progress:** on her account (FUCQ-67) and on the offer page (FUCQ-105) once selected, Paula sees the selected car (with `mediaWell` and its 7-digit `orderNumber`) and the approval stages from FUCQ-111 in the target's names. The current stage, its owner (HR, sales manager or ordering) and the expected next step are shown. HR approval appears only when the policy key includes it.\n- [ ] **Handover appointment:** the appointment from FUCQ-114 shows as requested, scheduled, completed or no-show, never calling a requested slot booked. Paula can request a slot once the order is sent to ordering, and accept or refuse a proposed change.\n- [ ] **Documents and readiness:** the items from FUCQ-116 show as a task list, with Paula's own tasks first and their actions, then items others own with their owner and due time. Overdue and failed items are distinct.\n- [ ] **Old-car return:** for a replacement order, the return plan from FUCQ-118 shows separately from the new car's handover, with her current car still shown as current until a confirmed completion or return.\n- [ ] **Every state rendered:**\n\n- waiting for HR or sales-manager approval;\n- approval declined, with what happens next and the help entry;\n- sent to ordering, no slot requested;\n- slot requested, then scheduled, and a proposed change;\n- documents waiting for Paula, in progress, overdue, failed;\n- ready for handover;\n- no-show, with a new request;\n- completed;\n- unsupported provider write, shown as not done rather than done;\n- loading and source failure.\nReload and reopening show the server's current state, never a cached client state.\n- [ ] **Copy:** labels use the target's stage names and say plainly who is acting. The demo signing stand-in is labelled synthetic. No em dashes.\n- [ ] **Shared kit:** the views are built from the shared kit per `COMPONENTS.md`. New or extended components go into the kit, the catalogue and the gallery in the same commit. The ratchet baseline only falls.\n- [ ] **Embeddable (Q18):** the block mounts as a custom element, with no inline scripts, inline handlers or `eval`. Keyboard access, visible focus and status announcements throughout.\n## Files or areas\n\n- `blocks/gcsp/ (proposed order progress view, used by the account and offer views)`\n- `COMPONENTS.md`, kit gallery, `server/test/ui-ratchet.json`\n- `server/test/gcsp-order-progress-view.test.js (proposed)`\n## Decided\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026 (`docs/design/handover-section-c7-c9-2026-11-04.md`, C7; `docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md`, `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/screens/README.md`, `COMPONENTS.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`: \"Paula's version-4 blueprint\" columns 12 and 13. Carry the experience contract, the visual reference and these criteria into every child-agent brief.\n\nVisual reference: the screenshots govern the shell, and FUCQ-64's reviewed body reference governs the body. Blueprint column 12: show who owns outstanding work and delays.\n\nFoundation (FUCQ-79): server-owned context from FUCQ-84, and time from FUCQ-85's demo clock. All labels and stage lists come from the server projection, which reads PolicyService.\n\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q19: target approval and appointment state names.\n- Q8: GCSP UI lives in separate blocks under `blocks/gcsp/` that import the shared kit; `vehicle-matcher` stays retail-only.\n- Q18: custom element, with no inline scripts, inline event handlers or `eval`.\n- Q3: no copy claims the platform progresses overnight unattended.\n## Out of scope\n\nThe help entry and case views (the help Story in FUCQ-110); the services behind each state (FUCQ-111, 114, 116, 118); Greg's views.\n\n## Validate\n\nRun commands from the worktree root. Named new test files are deliverables of this story.\n\n- `node --test server/test/gcsp-order-progress-view.test.js`: rendering from fixtures of each listed state passes, including HR approval on and off.\n- `npm test` passes, including the UI ratchet and the em-dash test.\n- Browser evidence at desktop and narrow (375 px) widths, with keyboard-only operation, of each listed state on the account and the offer page, with the screenshot paths recorded (`docs/gcsp/experience-quality.md`).\n",
+        "issuelinks": [
+          {
+            "id": "62608",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-114"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62609",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "This work item is being actively worked on at the moment by the assignee.",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "11561",
+                  "name": "In Progress",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/11561",
+                  "statusCategory": {
+                    "colorName": "yellow",
+                    "id": 4,
+                    "key": "indeterminate",
+                    "name": "In Progress",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/4"
+                  }
+                }
+              },
+              "key": "FUCQ-116"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62610",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-118"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62611",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "This work item is being actively worked on at the moment by the assignee.",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "11561",
+                  "name": "In Progress",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/11561",
+                  "statusCategory": {
+                    "colorName": "yellow",
+                    "id": 4,
+                    "key": "indeterminate",
+                    "name": "In Progress",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/4"
+                  }
+                }
+              },
+              "key": "FUCQ-105"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62612",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10018",
+                  "name": "Done",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10018",
+                  "statusCategory": {
+                    "colorName": "green",
+                    "id": 3,
+                    "key": "done",
+                    "name": "Done",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/3"
+                  }
+                }
+              },
+              "key": "FUCQ-67"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62616",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-124"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:ui",
+          "size:L"
+        ],
+        "parent": {
+          "key": "FUCQ-110"
+        },
+        "priority": {
+          "id": "2",
+          "name": "High"
+        },
+        "reporter": {
+          "displayName": "Gary Carter"
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+          "id": "10000",
+          "name": "To Do",
+          "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+          }
+        },
+        "summary": "Show Paula her order progress, handover plan and who owns each next step",
+        "updated": "2026-11-04T14:58:53.918-0600"
+      },
+      "id": "125267",
+      "key": "FUCQ-120"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "accountId": "5ae6eda0ba41192e23d86320",
+          "displayName": "Gary Carter"
+        },
+        "created": "2026-11-04T14:55:44.038-0600",
+        "customfield_10016": 13,
+        "description": "Scaffolding template: `_dev/story-template.md`. Jira supplies story ID/title/parent/priority; kind/size/design impact are labels. Story points are assigned by the implementing agent.\n\nkind: ui\ndesign_impact: yes\nui: el, gbp; screenIntro, button and statusScreen (all listed under \"Not yet in the kit\"; reuse them if already added); FUCQ-31's shared fact and decision components; FUCQ-95's activityTimeline for case history (reuse if added); FUCQ-101's dataTable for Greg's case queue (reuse if added); new: caseSummary, because no kit component shows an owned case with its next action and due time\nrequested: 2026-11-04, by Gary via Claude Code (backlog FUCQ-110, lifecycle from HLD readiness section C7)\nepic: FUCQ-110\npriority: P2\npriority_reason: due 2026-11-12: GCSP demo\nsize: M\ndepends_on: FUCQ-112, FUCQ-95, FUCQ-101\n\n## Goal\n\nAs Paula, I want to ask for help and see who owns my case and what they will do, and as Greg, I want a queue of at-risk renewals with reasons and feasible options, so that no one runs out of time without a named person acting.\n\n## Acceptance criteria\n\n- [ ] **Help entry for Paula:** a help entry on her activity view (FUCQ-95) and order progress view explains what help can do. Opening it changes nothing. Asking for help states the effect before she confirms, then opens or adds to her case through FUCQ-112.\n- [ ] **Paula's case view:** shows the case owner (the scheme team role), the reason, the next action and its due time in demo-clock time, the dated history and any remedy proposed for her. An employee-approved relaxation is confirmed through FUCQ-91's single-change operation and states what it changes.\n- [ ] **Greg's case queue:** in Greg's dashboard (FUCQ-101), a queue of the run's cases shows employee, renewal deadline, trigger or request, reason, status, owner and next-action due time. It sorts by deadline and status.\n- [ ] **Working a case:** Greg can open a case and see feasible next options. They are other suitable available cars from the existing evaluation, a preference relaxation, a later release with its realistic date, a manual decision, and an extension only where the policy key permits it. He records an update or a remedy, which Paula's view shows on reload.\n- [ ] **No priority promise:** no copy promises a specific next car or greater priority. The views say remedies need the scheme team's decision.\n- [ ] **Every state rendered:**\n\n- no case, help available;\n- case open from a request, and from a trigger;\n- in progress;\n- remedy proposed and waiting for Paula;\n- resolved and closed;\n- empty queue;\n- loading and source failure.\nReload shows the server's current state.\n- [ ] **Shared kit:** the views are built from the shared kit per `COMPONENTS.md`. New or extended components go into the kit, the catalogue and the gallery in the same commit. The ratchet baseline only falls.\n- [ ] **Embeddable (Q18):** both blocks mount as custom elements, with no inline scripts, inline handlers or `eval`. Keyboard access, visible focus and status announcements throughout.\n## Files or areas\n\n- `blocks/gcsp/ (proposed help and case views in the employee block; case queue in Greg's block)`\n- `COMPONENTS.md`, kit gallery, `server/test/ui-ratchet.json`\n- `server/test/gcsp-case-views.test.js (proposed)`\n## Decided\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026 (`docs/design/handover-section-c7-c9-2026-11-04.md`, C7; `docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md` (\"Unresolved renewals and recovery\"), `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/screens/README.md`, `COMPONENTS.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`: \"Paula's version-4 blueprint\" column 08 and \"Lifecycle and help\". Carry the experience contract, the visual reference and these criteria into every child-agent brief.\n\nVisual reference: the screenshots govern the shell, and FUCQ-64's reviewed body reference governs the body. Greg's views use the denser operational treatment FUCQ-101 establishes, in the same shell and visual language.\n\nThe demo brief asks for a manual-intervention job on Greg's page with reasons and feasible next-best options, and for the flow to show who owns the case and how the employee hears about progress.\n\nFoundation (FUCQ-79): server-owned context from FUCQ-84, so only Greg's role can record remedies; time from FUCQ-85's demo clock.\n\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q8: GCSP UI lives in separate blocks under `blocks/gcsp/` that import the shared kit.\n- Q18: custom elements, with no inline scripts, inline event handlers or `eval`.\n- Q16: a relaxation is one confirmed preference change.\n## Out of scope\n\nThe case service and its triggers (FUCQ-112); a recovery-priority policy; the order progress view (the order progress Story in FUCQ-110).\n\n## Validate\n\nRun commands from the worktree root. Named new test files are deliverables of this story.\n\n- `node --test server/test/gcsp-case-views.test.js`: rendering from fixtures of each listed state passes, for Paula's views and Greg's queue.\n- `npm test` passes, including the UI ratchet and the em-dash test.\n- Browser evidence at desktop and narrow (375 px) widths, with keyboard-only operation, of each listed state for Paula and Greg, with the screenshot paths recorded (`docs/gcsp/experience-quality.md`).\n",
+        "issuelinks": [
+          {
+            "id": "62613",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10018",
+                  "name": "Done",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10018",
+                  "statusCategory": {
+                    "colorName": "green",
+                    "id": 3,
+                    "key": "done",
+                    "name": "Done",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/3"
+                  }
+                }
+              },
+              "key": "FUCQ-112"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62614",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "This work item is being actively worked on at the moment by the assignee.",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "11561",
+                  "name": "In Progress",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/11561",
+                  "statusCategory": {
+                    "colorName": "yellow",
+                    "id": 4,
+                    "key": "indeterminate",
+                    "name": "In Progress",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/4"
+                  }
+                }
+              },
+              "key": "FUCQ-95"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62615",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10018",
+                  "name": "Done",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10018",
+                  "statusCategory": {
+                    "colorName": "green",
+                    "id": 3,
+                    "key": "done",
+                    "name": "Done",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/3"
+                  }
+                }
+              },
+              "key": "FUCQ-101"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62617",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-124"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "339976",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10303,
+                  "description": "A problem or error.",
+                  "entityId": "21b9d4d0-e1c5-4a2a-b35b-9bcd2dfc710e",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium",
+                  "id": "11090",
+                  "name": "Bug",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11090",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-150"
+            },
+            "type": {
+              "id": "10003",
+              "inward": "relates to",
+              "name": "Relates",
+              "outward": "relates to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:garys-macbook-pro",
+          "kind:ui",
+          "size:M"
+        ],
+        "parent": {
+          "key": "FUCQ-110"
+        },
+        "priority": {
+          "id": "2",
+          "name": "High"
+        },
+        "reporter": {
+          "displayName": "Gary Carter"
+        },
+        "status": {
+          "description": "This work item is being actively worked on at the moment by the assignee.",
+          "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+          "id": "11561",
+          "name": "In Progress",
+          "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/11561",
+          "statusCategory": {
+            "colorName": "yellow",
+            "id": 4,
+            "key": "indeterminate",
+            "name": "In Progress",
+            "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/4"
+          }
+        },
+        "summary": "Ask for help, and let the scheme team work the renewal-risk case",
+        "updated": "2026-11-06T11:28:48.159-0600"
+      },
+      "id": "125269",
+      "key": "FUCQ-122"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-04T14:56:30.586-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Jira supplies story ID/title/parent/priority; kind/size/design impact are labels. Story points are assigned by the implementing agent.\n\nkind: code\ndesign_impact: no\nrequested: 2026-11-04, by Gary via Claude Code (backlog FUCQ-110, lifecycle from HLD readiness section C7)\nepic: FUCQ-110\npriority: P2\npriority_reason: due 2026-11-12: GCSP demo\nsize: M\ndepends_on: FUCQ-120, FUCQ-122, FUCQ-109\n\n## Goal\n\nAs the presenter, I want the whole journey from selection to handover, and the renewal-risk route, proven on the running app with a repeatable scenario, so that I can demonstrate it on cue and Russell can trial it.\n\n## Acceptance criteria\n\n- [ ] **Happy path, buddy route:** from FUCQ-109's end state (Paula has selected her second offer), ticks move the order through HR approval (when on), sales-manager approval and sent to ordering. Paula requests a slot, it is scheduled, she completes her document tasks, the car becomes ready, her old-car return is scheduled, and the handover completes. Only then does her current car change.\n- [ ] **Manual route:** the same lifecycle runs for an order handed off through FUCQ-72, proving both routes share it.\n- [ ] **Difficult cases:** each runs from a scenario key on a fresh run:\n\n- HR approval switched off by its policy key;\n- an approval declined, which opens a renewal-risk case;\n- an appointment no-show, then a new request;\n- an overdue document task;\n- Paula asking for help near her deadline, and Greg recording a remedy she sees;\n- the live-shaped stub reporting an unsupported write, shown as not done.\n- [ ] **Repeatable scenarios:** each path has a known starting state, reset through FUCQ-85, short click-through steps, the expected outcome and a place to record observed behaviour, following `docs/gcsp/manual-acceptance-scenarios.md` and FUCQ-75's shared setup.\n- [ ] **Policy change proven:** changing the HR-approval key and one delay key in the policy source changes the stages and timing consistently on every screen (`docs/gcsp/build-rules.md`, acceptance).\n- [ ] **No recovery priority:** an automated check shows that opening and resolving a case leaves allocation input unchanged.\n## Files or areas\n\n- `server/test/gcsp-lifecycle-e2e.test.js (proposed)`\n- `docs/gcsp/manual-acceptance-scenarios.md (lifecycle scenarios)`\n- `docs/gcsp/evidence/fucq-110/ (captures and observations)`\n## Decided\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026 (`docs/design/handover-section-c7-c9-2026-11-04.md`, C7; `docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md`, `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md` (\"Repeatable manual trials\" and \"Verify before declaring a UI story built\"), `docs/gcsp/manual-acceptance-scenarios.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`: blueprint columns 08, 12 and 13 and diagram page 07. Carry these decisions and acceptance criteria into every child-agent brief.\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock, and reset runs through it.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here: Q19 (target state names), Q3 (presenter ticks), Q15 and Q9 (this follows the critical path, which FUCQ-109 proves first).\n\n## Out of scope\n\nNew features; fixes belong to the Story that owns the defect. Physical collection and after-use feedback stay outside the walkthrough.\n\n## Validate\n\nRun commands from the worktree root. Named new test files are deliverables of this story.\n\n- `node --test server/test/gcsp-lifecycle-e2e.test.js`: the buddy and manual paths and each difficult case pass against the in-memory repository double, and on the configured PostgreSQL provider where available.\n- `npm test` passes.\n- Browser evidence at desktop and narrow (375 px) widths, with keyboard-only operation, for every path above, as Paula and as Greg, with the screenshot paths and observations recorded in `docs/gcsp/evidence/fucq-110/` (`docs/gcsp/experience-quality.md`).\n",
+        "issuelinks": [
+          {
+            "id": "62616",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-120"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62617",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "This work item is being actively worked on at the moment by the assignee.",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "11561",
+                  "name": "In Progress",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/11561",
+                  "statusCategory": {
+                    "colorName": "yellow",
+                    "id": 4,
+                    "key": "indeterminate",
+                    "name": "In Progress",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/4"
+                  }
+                }
+              },
+              "key": "FUCQ-122"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62618",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-109"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "kind:code",
+          "size:M"
+        ],
+        "parent": {
+          "key": "FUCQ-110"
+        },
+        "priority": {
+          "id": "2",
+          "name": "High"
+        },
+        "reporter": {
+          "displayName": "Gary Carter"
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+          "id": "10000",
+          "name": "To Do",
+          "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+          }
+        },
+        "summary": "Verify the lifecycle after selection end to end with browser evidence",
+        "updated": "2026-11-04T14:58:56.207-0600"
+      },
+      "id": "125271",
+      "key": "FUCQ-124"
+    },
+    {
+      "fields": {
+        "assignee": {
+          "accountId": "5ae6eda0ba41192e23d86320",
+          "displayName": "Gary Carter"
+        },
+        "created": "2026-11-04T14:57:42.670-0600",
+        "customfield_10016": 13,
+        "description": "Scaffolding template: `_dev/story-template.md`. Jira supplies story ID/title/parent/priority; kind/size/design impact are labels. Story points are assigned by the implementing agent.\n\nkind: ui\ndesign_impact: yes\nui: el, renderOptionList (scenario and principal pickers); button and statusScreen (both listed under \"Not yet in the kit\"; reuse them if already added); FUCQ-64's portalShell; new: presenterBar, because no kit component gives a compact control strip with run and clock read-back\nrequested: 2026-11-04, by Gary via Claude Code (backlog FUCQ-75, HLD readiness section C9)\nepic: FUCQ-75\npriority: P2\npriority_reason: due 2026-11-12: GCSP demo\nsize: M\ndepends_on: FUCQ-125, FUCQ-64, FUCQ-92\n\n## Goal\n\nAs the presenter, I want one small set of controls to move time on, release stock, reset, pick a scenario and switch who I am acting as, so that I can run the 12 November walkthrough on cue without typing commands.\n\n## Acceptance criteria\n\n- [ ] **Controls:** a presenter control block, available only to the presenter role, offers:\n\n- **Tick:** advance by the policy's step, or to a named time, through FUCQ-85;\n- **Next release:** a tick that runs FUCQ-92's release handler, showing how many cars appeared;\n- **Reset:** reset into the current or a chosen scenario through FUCQ-125, with a confirmation step;\n- **Scenario picker:** FUCQ-125's catalogue, with the \"not available yet\" state for scenarios whose capabilities are missing;\n- **Acting principal:** switch between Paula, the competing employees and Greg through FUCQ-84's server-issued session, with no ID in the URL.\n- [ ] **Read-back:** the block always shows the current scenario, run ID, demo-clock time, acting principal and last tick outcome, including each handler's result in order.\n- [ ] **Safe actions:** each action is idempotent by command ID, so a double click or a retry returns the original outcome. A failed or refused action shows its reason, and the screen never claims an outcome the backend did not report.\n- [ ] **Placement:** the controls sit in a compact strip or drawer within FUCQ-64's shell. They can be collapsed during the walkthrough, and are hidden entirely for non-presenter roles. Switching principal reloads the employee or Greg surface with the new server context.\n- [ ] **States:** idle, action in progress, tick result, reset done (new run), scenario not available yet, refused, and backend unavailable.\n- [ ] **Kit and embedding (Q18):** built from the shared kit. New components go into the kit, `COMPONENTS.md` and the gallery in the same commit, and the ratchet baseline only falls. Mounts as a custom element, with no inline scripts, inline handlers or `eval`. Keyboard operable throughout, with visible focus.\n## Files or areas\n\n- `blocks/gcsp/ (proposed presenter control block)`\n- `COMPONENTS.md`, kit gallery, `server/test/ui-ratchet.json`\n- `server/test/ (render test for the presenter controls)`\n- `docs/gcsp/manual-acceptance-scenarios.md (how to use the controls)`\n## Decided\n\nGary approved this Epic's Stories, their titles and the dependency order on 4 November 2026, and placed this Story at P2 because the presenter needs it to run the walkthrough (`docs/design/handover-section-c7-c9-2026-11-04.md`, C9; `docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). FUCQ-85 explicitly leaves the presenter control UI to FUCQ-75. Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md` (demo clock, reset and presenter navigation), `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/screens/README.md`, `COMPONENTS.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`, \"Demo access and offer links\" and \"Transaction and event invariants\". Carry the experience contract, the visual reference and these criteria into every child-agent brief.\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q3: presenter ticks, with no unattended runner.\n- Q8: a separate GCSP block.\n- Q18: custom element and CSP.\n- Q9: the presenter needs this to run Gary's critical path, but FUCQ-109 proves the path through the presenter routes directly and does not wait on this Story.\n## Out of scope\n\nNew clock, tick, reset or identity mechanics (FUCQ-85, FUCQ-84); the outbox viewer (FUCQ-97); scenario walkthroughs.\n\n## Validate\n\nRun commands from the worktree root.\n\n- `npm test` passes, including the UI ratchet, the em-dash test and a render test for the presenter controls (hidden for non-presenter roles).\n- Browser evidence at desktop and narrow (375 px) widths, with keyboard-only operation, of these states: idle with read-back, after a tick, after a release, reset into another scenario, scenario not available yet, switching from Paula to Greg and back, refused, and backend unavailable. Record the screenshot paths (`docs/gcsp/experience-quality.md`).\n",
+        "issuelinks": [
+          {
+            "id": "62633",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10018",
+                  "name": "Done",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10018",
+                  "statusCategory": {
+                    "colorName": "green",
+                    "id": 3,
+                    "key": "done",
+                    "name": "Done",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/3"
+                  }
+                }
+              },
+              "key": "FUCQ-125"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62634",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10018",
+                  "name": "Done",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10018",
+                  "statusCategory": {
+                    "colorName": "green",
+                    "id": 3,
+                    "key": "done",
+                    "name": "Done",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/3"
+                  }
+                }
+              },
+              "key": "FUCQ-64"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62635",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "This work item is being actively worked on at the moment by the assignee.",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "11561",
+                  "name": "In Progress",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/11561",
+                  "statusCategory": {
+                    "colorName": "yellow",
+                    "id": 4,
+                    "key": "indeterminate",
+                    "name": "In Progress",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/4"
+                  }
+                }
+              },
+              "key": "FUCQ-92"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62636",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-127"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62639",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-128"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62641",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-129"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62643",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-130"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62645",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-131"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "339959",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10303,
+                  "description": "A problem or error.",
+                  "entityId": "21b9d4d0-e1c5-4a2a-b35b-9bcd2dfc710e",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium",
+                  "id": "11090",
+                  "name": "Bug",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11090",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-140"
+            },
+            "type": {
+              "id": "10003",
+              "inward": "relates to",
+              "name": "Relates",
+              "outward": "relates to"
+            }
+          },
+          {
+            "id": "339963",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10303,
+                  "description": "A problem or error.",
+                  "entityId": "21b9d4d0-e1c5-4a2a-b35b-9bcd2dfc710e",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium",
+                  "id": "11090",
+                  "name": "Bug",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11090",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-142"
+            },
+            "type": {
+              "id": "10003",
+              "inward": "relates to",
+              "name": "Relates",
+              "outward": "relates to"
+            }
+          },
+          {
+            "id": "339966",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10303,
+                  "description": "A problem or error.",
+                  "entityId": "21b9d4d0-e1c5-4a2a-b35b-9bcd2dfc710e",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10303?size=medium",
+                  "id": "11090",
+                  "name": "Bug",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11090",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-143"
+            },
+            "type": {
+              "id": "10003",
+              "inward": "relates to",
+              "name": "Relates",
+              "outward": "relates to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:garys-macbook-pro",
+          "kind:ui",
+          "size:M"
+        ],
+        "parent": {
+          "key": "FUCQ-75"
+        },
+        "priority": {
+          "id": "2",
+          "name": "High"
+        },
+        "reporter": {
+          "displayName": "Gary Carter"
+        },
+        "status": {
+          "description": "This work item is being actively worked on at the moment by the assignee.",
+          "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+          "id": "11561",
+          "name": "In Progress",
+          "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/11561",
+          "statusCategory": {
+            "colorName": "yellow",
+            "id": 4,
+            "key": "indeterminate",
+            "name": "In Progress",
+            "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/4"
+          }
+        },
+        "summary": "Give the presenter controls for ticks, releases, reset, scenarios and role",
+        "updated": "2026-11-06T10:21:40.396-0600"
+      },
+      "id": "125273",
+      "key": "FUCQ-126"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-04T14:58:49.993-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Jira supplies story ID/title/parent/priority; kind/size/design impact are labels. Story points are assigned by the implementing agent.\n\nkind: code\ndesign_impact: yes\nrequested: 2026-11-04, by Gary via Claude Code (backlog FUCQ-75, HLD readiness section C9)\nepic: FUCQ-75\npriority: P2\npriority_reason: due 2026-11-12: GCSP demo\nsize: S\ndepends_on: FUCQ-126, FUCQ-107\n\n## Goal\n\nAs Russell, I want to replay a decline followed by one preference change, including the case where no second offer comes straight away, so that I can refine how the follow-up feels beyond the happy path.\n\n## Acceptance criteria\n\n- [ ] **Fixture and catalogue entry:** a versioned \"decline then change\" start state in FUCQ-125's catalogue, with Paula holding a first offer. It has two variants:\n\n- a later release contains a car that suits the changed brief;\n- no released car suits it yet.\n- [ ] **What happens:** Paula declines with a typed reason and confirms one preference change (FUCQ-107, Q16). The declined car is excluded from her later offers by employee policy, and it returns to the pool for others. Then:\n\n- in the first variant, the next release gives a second offer that reflects the change;\n- in the second, her screens show \"change saved, waiting for the next release\", with no offer.\n- [ ] **Separate records:** the decline, the brief change and any later satisfaction are separate records. The decline is not treated as an expiry.\n- [ ] **Replay test:** an automated replay drives both variants through the presenter and employee routes after a reset, and asserts these outcomes twice, across two resets.\n- [ ] **Manual scenario:** the scenario's entry in `docs/gcsp/manual-acceptance-scenarios.md` follows FUCQ-125's format, for both variants.\n## Files or areas\n\n- `server/gcsp/fixtures/scenarios/ (decline-then-change start states)`\n- `server/test/gcsp-scenario-decline-change.test.js (proposed)`\n- `docs/gcsp/manual-acceptance-scenarios.md`\n- `docs/gcsp/evidence/fucq-75/ (screenshots)`\n## Decided\n\nGary approved this Epic's Stories, their titles and the dependency order on 4 November 2026 (`docs/design/handover-section-c7-c9-2026-11-04.md`, C9; `docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md`, `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md` (\"Repeatable manual trials\"), `docs/gcsp/shared-contracts.md` (FUCQ-80), `docs/gcsp/manual-acceptance-scenarios.md` (\"Reject and change the brief\") and `docs/design/gcsp-high-level-design.md`, blueprint columns 05 to 09 and \"Transaction and event invariants\". Carry these decisions and acceptance criteria into every child-agent brief.\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q16: one preference change after a decline, not a contribution ceiling.\n- Q3: presenter ticks drive the releases.\nFUCQ-109 covers the case where the second offer arrives; this Story adds the waiting variant and makes both replayable from the catalogue. If a screen defect shows up, it is fixed in the owning Story or raised as a Bug, not patched in the fixture.\n\n## Out of scope\n\nNew decision or change behaviour (FUCQ-106, FUCQ-107); a contribution ceiling.\n\n## Validate\n\nRun commands from the worktree root. Named new test files are deliverables of this story.\n\n- `node --test server/test/gcsp-scenario-decline-change.test.js`: both variants, the declined-car exclusion, the car returned to the pool, the separate records and the repeat after a second reset all pass.\n- `npm test` passes.\n- Browser evidence at desktop and 375 px, with keyboard operation, of the waiting state and the second offer, saved under `docs/gcsp/evidence/fucq-75/` (`docs/gcsp/experience-quality.md`).\n- Russell can run both variants from the presenter controls (FUCQ-126).\n",
+        "issuelinks": [
+          {
+            "id": "62639",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "This work item is being actively worked on at the moment by the assignee.",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "11561",
+                  "name": "In Progress",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/11561",
+                  "statusCategory": {
+                    "colorName": "yellow",
+                    "id": 4,
+                    "key": "indeterminate",
+                    "name": "In Progress",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/4"
+                  }
+                }
+              },
+              "key": "FUCQ-126"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62640",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "This work item is being actively worked on at the moment by the assignee.",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "11561",
+                  "name": "In Progress",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/11561",
+                  "statusCategory": {
+                    "colorName": "yellow",
+                    "id": 4,
+                    "key": "indeterminate",
+                    "name": "In Progress",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/4"
+                  }
+                }
+              },
+              "key": "FUCQ-107"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "size:S"
+        ],
+        "parent": {
+          "key": "FUCQ-75"
+        },
+        "priority": {
+          "id": "2",
+          "name": "High"
+        },
+        "reporter": {
+          "displayName": "Gary Carter"
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+          "id": "10000",
+          "name": "To Do",
+          "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+          }
+        },
+        "summary": "Replay the decline-then-change scenario",
+        "updated": "2026-11-04T15:02:59.644-0600"
+      },
+      "id": "125275",
+      "key": "FUCQ-128"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-04T15:10:56.680-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Jira supplies story ID/title/parent/priority; kind/size/design impact are labels. Story points are assigned by the implementing agent.\n\nkind: code\ndesign_impact: yes\nrequested: 2026-11-04, by Gary via Claude Code (backlog FUCQ-132, 1,000-employee comparison from HLD readiness item C8)\nepic: FUCQ-132\npriority: P2\npriority_reason: due 2026-11-12: GCSP demo\nsize: M\ndepends_on: FUCQ-135\n\n## Goal\n\nAs Greg, I want the two routes' outcomes summarised across several seeds and kept as an explainable record, so that I can see what changed, by how much and how much it varies.\n\n## Acceptance criteria\n\n- [ ] **Experiment runner:** `runComparison(experiment)` runs both routes for every seed in the experiment's seed list and returns one result. The experiment types are: process only (identical inputs), alternative order mix or points (an explicit overlay), and buddy hold-duration sweep (a list of `hold.buddy` values).\n- [ ] **Measures per route:** for each, the mean, minimum and maximum across seeds:\n\n- the share of employees with an acceptable car before renewal;\n- unused stock: released cars never allocated, and car-days held but not taken;\n- declined and expired offers, and failed claims and retries;\n- mean calculated fit of accepted cars;\n- the same coverage share for each access group.\n- [ ] **Honest differences:** the result reports the difference between the routes with its range, and labels it \"no clear difference\" when the ranges overlap (rule key `comparison.noClearDifferenceRule`). It never reports only the measures where the buddy wins.\n- [ ] **Immutable result:** each result is stored once in FUCQ-81's repository, with its manifest: experiment, seeds, policy version, overlays, generator version and code revision. It is never edited; a new run makes a new result. Results are outside the live run's reset (FUCQ-85), so a reset does not delete them.\n- [ ] **Read model:** a read returns the latest result for each experiment, and whether its policy version is still the active one.\n- [ ] **Labels:** the result carries the assumption set used (key, value, assumed or verified, basis) and the fixed caveat that calculated fit is not observed satisfaction.\n## Files or areas\n\n- `server/gcsp/comparison/measures.js (proposed)`\n- `server/gcsp/comparison/experiments.js (proposed)`\n- `server/gcsp/migrations/ (additive comparison results table)`\n- `server/test/gcsp-comparison-measures.test.js (proposed)`\n- `docs/gcsp/shared-contracts.md (result shape)`\n## Decided\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026, with the design agreed the same day (`docs/design/hld-story-readiness-2026-11-04.md`, item C8; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md` (\"Compare 1,000 fictional employees\"), `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`, \"The 1,000-employee comparison\", plus diagram page 09. Carry these decisions and acceptance criteria into every child-agent brief.\n\nFirst isolate the process change; then run the order-mix and points scenarios separately, so the source of any improvement is clear (demo brief). Financial and residual measures are out until there are declared economic assumptions.\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q2: managed PostgreSQL behind the repository port.\n- Q6: results record the policy version they used.\n## Out of scope\n\nRunning jobs and their API (the next Story in FUCQ-132); the panel; financial or residual-value scenarios.\n\n## Validate\n\nRun commands from the worktree root. Named new test files are deliverables of this story.\n\n- `node --test server/test/gcsp-comparison-measures.test.js`: these pass:\n\n- measures computed correctly on a hand-checked small cohort;\n- mean and range across seeds;\n- \"no clear difference\" when ranges overlap;\n- a fixture where today's route does better is reported as such;\n- overlays and sweep values recorded in the manifest;\n- results are immutable and survive a run reset;\n- the latest-result read flags a superseded policy version.\n- `npm test` passes.\n- Backend-only: no screen. Record the result shape in fixtures for the panel (`docs/gcsp/experience-quality.md`).\n",
+        "issuelinks": [
+          {
+            "id": "62659",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-135"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62660",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-137"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "size:M"
+        ],
+        "parent": {
+          "key": "FUCQ-132"
+        },
+        "priority": {
+          "id": "2",
+          "name": "High"
+        },
+        "reporter": {
+          "displayName": "Gary Carter"
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+          "id": "10000",
+          "name": "To Do",
+          "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+          }
+        },
+        "summary": "Measure both routes across seeds and store an unchangeable comparison result",
+        "updated": "2026-11-04T15:16:34.573-0600"
+      },
+      "id": "125283",
+      "key": "FUCQ-136"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-04T15:11:42.092-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Jira supplies story ID/title/parent/priority; kind/size/design impact are labels. Story points are assigned by the implementing agent.\n\nkind: code\ndesign_impact: yes\nrequested: 2026-11-04, by Gary via Claude Code (backlog FUCQ-132, 1,000-employee comparison from HLD readiness item C8)\nepic: FUCQ-132\npriority: P2\npriority_reason: due 2026-11-12: GCSP demo\nsize: M\ndepends_on: FUCQ-136, FUCQ-84\n\n## Goal\n\nAs the presenter, I want to start a comparison run from the demo without the app freezing, and to run the same thing from the command line, so that results are ready before and during the walkthrough.\n\n## Acceptance criteria\n\n- [ ] **Worker job:** a comparison job runs FUCQ-136's `runComparison` in a Node `worker_threads` worker inside the GCSP backend. API requests stay responsive while it runs (a test checks a request is served mid-run). One job runs at a time; starting another while one runs is refused with the running job's ID.\n- [ ] **Routes:** under `/api/gcsp`, start a job (experiment type, and an optional overlay or hold-duration list), read its progress (seeds done of total) and outcome, and read the latest result for each experiment. Starting a job is presenter-only and also allowed for Greg (FUCQ-84 roles); reading results is allowed for Greg and the presenter. Other roles are refused.\n- [ ] **Validation:** overlays and sweep values are checked against each key's declared unit and range. An invalid request is refused with the key named, and starts nothing.\n- [ ] **Clear outcomes:** a worker error or timeout (`comparison.jobTimeoutSeconds`) marks the job failed with a reason and stores no partial result. A backend restart marks any running job interrupted.\n- [ ] **Command-line twin:** `node scripts/gcsp-comparison.mjs --experiment <type> [--seeds ...]` runs the same module, prints the measures table and writes the result through the same repository port (in-memory or `GCSP_DATABASE_URL`). It is how the demo's results are prepared in advance.\n- [ ] **No unattended work:** nothing starts a job on a timer or at startup (Q3).\n## Files or areas\n\n- `server/gcsp/comparison/job.js (proposed)`\n- `server/gcsp/comparison/worker.js (proposed)`\n- `server/index.js (routes under /api/gcsp)`\n- `scripts/gcsp-comparison.mjs (proposed)`\n- `server/test/gcsp-comparison-job.test.js (proposed)`\n## Decided\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026, with the design agreed the same day (`docs/design/hld-story-readiness-2026-11-04.md`, item C8; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md` (\"Compare 1,000 fictional employees\"), `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`, \"The 1,000-employee comparison\" and \"Technical deployment and recovery\", plus diagram pages 05 and 09. Carry these decisions and acceptance criteria into every child-agent brief.\n\nThe comparison is a module in the GCSP backend, not a separate service. `worker_threads` is part of Node, so no runtime dependency is added (Q4).\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q1: GCSP runs in its own Render environment.\n- Q3: presenter-started work only, with no unattended runner.\n- Q4: no runtime dependency beyond `pg`.\n## Out of scope\n\nThe panel (the next Story in FUCQ-132); scheduling or unattended runs; a separate service or queue.\n\n## Validate\n\nRun commands from the worktree root. Named new test files are deliverables of this story.\n\n- `node --test server/test/gcsp-comparison-job.test.js`: these pass:\n\n- a job runs in a worker and the API stays responsive;\n- one job at a time;\n- role checks for start and read;\n- invalid overlays refused with the key named;\n- failure and timeout store no partial result;\n- restart marks a running job interrupted;\n- the command-line twin writes the same result shape.\n- `node scripts/gcsp-comparison.mjs --experiment process` completes against the in-memory repository and prints the measures table.\n- `npm test` passes.\n- Backend-only: no screen. Record the job and progress shapes in fixtures for the panel (`docs/gcsp/experience-quality.md`).\n",
+        "issuelinks": [
+          {
+            "id": "62660",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-136"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62661",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10018",
+                  "name": "Done",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10018",
+                  "statusCategory": {
+                    "colorName": "green",
+                    "id": 3,
+                    "key": "done",
+                    "name": "Done",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/3"
+                  }
+                }
+              },
+              "key": "FUCQ-84"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62662",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-138"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "size:M"
+        ],
+        "parent": {
+          "key": "FUCQ-132"
+        },
+        "priority": {
+          "id": "2",
+          "name": "High"
+        },
+        "reporter": {
+          "displayName": "Gary Carter"
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+          "id": "10000",
+          "name": "To Do",
+          "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+          }
+        },
+        "summary": "Run comparison jobs in a worker, presenter-only, with a command-line twin",
+        "updated": "2026-11-04T15:16:51.656-0600"
+      },
+      "id": "125284",
+      "key": "FUCQ-137"
+    },
+    {
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-04T15:12:25.768-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Jira supplies story ID/title/parent/priority; kind/size/design impact are labels. Story points are assigned by the implementing agent.\n\nkind: ui\ndesign_impact: yes\nui: el, cardinal; screenIntro and statusScreen (both listed under \"Not yet in the kit\"; reuse them if already added); FUCQ-101's metricTile and dataTable; FUCQ-31's shared fact and decision components; new: rangeBar, because the kit has no way to show a mean with its range across seeds\nrequested: 2026-11-04, by Gary via Claude Code (backlog FUCQ-132, 1,000-employee comparison from HLD readiness item C8)\nepic: FUCQ-132\npriority: P2\npriority_reason: due 2026-11-12: GCSP demo\nsize: L\ndepends_on: FUCQ-137, FUCQ-101\n\n## Goal\n\nAs the presenter showing Greg's dashboard, I want today's route and the buddy route side by side, with the assumptions behind them and a quick hold-duration rerun, so that the audience sees an honest comparison they can question.\n\n## Acceptance criteria\n\n- [ ] **Panel in its own region:** a route comparison panel in a defined region of FUCQ-101's dashboard, inside FUCQ-64's shell. It loads the latest stored result for the chosen experiment at once, so the walkthrough never waits for a run.\n- [ ] **Side by side:** for each measure (coverage before renewal, unused stock, declines, expiries, retries, fit of accepted cars, and coverage by access group), today's route and the buddy route with mean and range across seeds, and the difference. \"No clear difference\" and a result where today's route does better are shown as plainly as a buddy win.\n- [ ] **Assumptions:** an expandable list of the assumptions used (key, value, unit, assumed or verified, basis), the seeds, the policy version and when the result was made. The caveat that calculated fit is not observed satisfaction is always visible.\n- [ ] **Experiments and rerun:** a picker for process only, alternative order mix or points, and hold-duration sweep. A hold-duration control starts FUCQ-137's job with chosen values, shows progress, and then the new result. While it runs, the previous result stays on screen, labelled as the previous result.\n- [ ] **States:** no result yet (with a start action), running, failed (with the reason), result for an older policy version (labelled), source unavailable, and refused for a role other than Greg or the presenter.\n- [ ] **Respectful copy:** the baseline is called \"today's release route\". Copy explains behaviours and does not disparage the delivered GCSP interface (demo-brief positioning). No em dashes.\n- [ ] **Kit and embeddable (Q18):** new components go into the kit, `COMPONENTS.md` and the gallery in the same commit, and the ratchet baseline only falls. The panel mounts as part of the dashboard custom element, with no inline scripts, inline handlers or `eval`. Keyboard operable, with readable contrast.\n## Files or areas\n\n- `blocks/gcsp/ (Greg dashboard block: comparison panel)`\n- `COMPONENTS.md`, kit gallery, `server/test/ui-ratchet.json`\n- `server/test/ (render test for the comparison panel)`\n## Decided\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026, with the design agreed the same day (`docs/design/hld-story-readiness-2026-11-04.md`, item C8; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md` (\"Compare 1,000 fictional employees\" and the positioning section), `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md` (\"Establish Greg's denser operational treatment\"), `docs/gcsp/shared-contracts.md` (FUCQ-80), `docs/gcsp/screens/README.md`, `COMPONENTS.md`, `docs/gcsp/personas/scheme-ordering-lead.md` and `docs/design/gcsp-high-level-design.md`, \"The 1,000-employee comparison\", plus diagram page 09. Carry the experience contract, the visual reference and these criteria into every child-agent brief.\n\nThe demo interaction the brief suggests is changing the reservation duration: a longer hold may relieve time pressure while keeping scarce stock unavailable for longer. The panel lets the simulation show that balance rather than asserting it.\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q8: separate GCSP blocks.\n- Q9: Greg's dashboard is on the critical path; this panel adds to it.\n- Q18: custom element and CSP.\n## Out of scope\n\nPublishing policy from the panel (FUCQ-103 publishes; the panel's overlays are what-ifs only); FUCQ-74's prediction panel; the comparison computation itself.\n\n## Validate\n\nRun commands from the worktree root.\n\n- `npm test` passes, including the UI ratchet, the em-dash test and a render test for the panel.\n- Browser evidence at desktop and narrow (375 px) widths, with keyboard-only operation, of these states: a result with a buddy improvement, \"no clear difference\", a result where today's route does better, assumptions expanded, a hold-duration rerun in progress and its new result, no result yet, failed, older policy version, unavailable, and refused for a non-Greg role. Record the screenshot paths (`docs/gcsp/experience-quality.md`).\n",
+        "issuelinks": [
+          {
+            "id": "62662",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10000",
+                  "name": "To Do",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-137"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62663",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "avatarId": 10315,
+                  "description": "Created by Jira Agile - do not edit or delete. Issue type for a user story.",
+                  "entityId": "f40f1573-1b7e-4a47-9d19-5783a72beed8",
+                  "hierarchyLevel": 0,
+                  "iconUrl": "https://ibm-consulting.atlassian.net/rest/api/2/universal_avatar/view/type/issuetype/avatar/10315?size=medium",
+                  "id": "11089",
+                  "name": "Story",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/issuetype/11089",
+                  "subtask": false
+                },
+                "status": {
+                  "description": "",
+                  "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+                  "id": "10018",
+                  "name": "Done",
+                  "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10018",
+                  "statusCategory": {
+                    "colorName": "green",
+                    "id": 3,
+                    "key": "done",
+                    "name": "Done",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/3"
+                  }
+                }
+              },
+              "key": "FUCQ-101"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:ui",
+          "size:L"
+        ],
+        "parent": {
+          "key": "FUCQ-132"
+        },
+        "priority": {
+          "id": "2",
+          "name": "High"
+        },
+        "reporter": {
+          "displayName": "Gary Carter"
+        },
+        "status": {
+          "description": "",
+          "iconUrl": "https://ibm-consulting.atlassian.net/images/icons/statuses/generic.png",
+          "id": "10000",
+          "name": "To Do",
+          "self": "https://ibm-consulting.atlassian.net/rest/api/3/status/10000",
+          "statusCategory": {
+            "colorName": "blue-gray",
+            "id": 2,
+            "key": "new",
+            "name": "To Do",
+            "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+          }
+        },
+        "summary": "Show the route comparison panel on Greg's dashboard with assumptions and a hold rerun",
+        "updated": "2026-11-04T15:16:59.066-0600"
+      },
+      "id": "125285",
+      "key": "FUCQ-138"
+    }
+  ]
+}

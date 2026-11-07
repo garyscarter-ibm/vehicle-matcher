@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "f59-settings-observation-receipt.v1",
+  "runnerVersion": "f59-settings-shape-runner.v1",
+  "qualification": "unqualified-structural-observation",
+  "admission": false,
+  "accepted": [],
+  "distinctConfigurations": 0,
+  "provenance": {
+    "allocation": "f59-settings-shape-observation-20261106.v1",
+    "producerCommit": "5d2d3a2a12171314f636e07341060d682ac29bf4",
+    "codeTestIdentity": "9d63aa36a7bbbb29432d4a8b03f2cd585abfdd4e53d671919a8798f28f674a1b",
+    "planSha256": "951458bc15139afeaaa836a8c58e11bb0f0113a87ee73898147945d81c3b107c",
+    "planDigest": "a4c5ec2f914e113eb716cf9b70f99d1f02aea160c672f4caf5fc1f64b91d85dc",
+    "runnerSha256": "0a83a709c886fa1297d412f23488c8fce7f8722df0c77e1d7f3259c0f237e9f8",
+    "transportKind": "live",
+    "qualificationDate": "2026-11-06"
+  },
+  "status": "settings-refused",
+  "stopCode": "settings-header-shape",
+  "cancelled": false,
+  "counts": {
+    "sourceCalls": 2,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "cacheEvictions": 0,
+    "httpAttempts": 2,
+    "decodedBytes": 638409,
+    "operations": {
+      "page": 1,
+      "settings": 1,
+      "discover": 0,
+      "options": 0
+    },
+    "cacheHits": {
+      "page": 0,
+      "settings": 0,
+      "discover": 0,
+      "options": 0
+    },
+    "operationBytes": {
+      "page": 17763,
+      "settings": 620646,
+      "discover": 0,
+      "options": 0
+    }
+  },
+  "countBasis": "validated-final-checkpoint",
+  "checkpoint": {
+    "status": "valid",
+    "bytes": 4459,
+    "sha256": "cb3f955c78ae8e1a9aeb15f69c39ea9aef1efea660e69763c5bd587f720c059d"
+  },
+  "settingsExport": {
+    "status": "exported",
+    "bytes": 2770,
+    "sha256": "931c77cf08a2e83c72239b74c66515814cd17c5b70205b6df70298c7ec2a550e"
+  },
+  "constraints": {
+    "maxGetAttempts": 2,
+    "downstreamRequests": 0,
+    "retries": 0,
+    "solver": 0,
+    "sourceWrites": 0,
+    "imageRequests": 0,
+    "browser": 0,
+    "sql": 0,
+    "credentialLookups": 0,
+    "rawRetention": 0
+  },
+  "reviewRequired": "source-layout-and-qualification-before-admission-or-new-date-publication"
+}

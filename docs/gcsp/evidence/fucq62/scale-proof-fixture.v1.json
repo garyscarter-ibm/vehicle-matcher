@@ -1,0 +1,90 @@
+{
+  "authority": {
+    "kind": "synthetic-resource-fixture",
+    "admission": false,
+    "liveSourceCoverageCredit": 0,
+    "vinStockOrModelCoverageCredit": 0,
+    "purpose": "Byte-volume proxy only; sourceRefs are explicitly fictional payload, no actual observed/live selection is represented."
+  },
+  "identity": {
+    "modelCode": "SCALE",
+    "fixedOptionCode": "RESOURCE",
+    "varyingOptionPrefix": "R",
+    "varyingOptionDigits": 7,
+    "snapshotVersion": "resource-proof.v1"
+  },
+  "payload": {
+    "referenceCount": 8,
+    "referenceBytes": 2160,
+    "prefix": "fixture:gcsp-f62-scale-proof/ref-",
+    "pattern": "RESOURCE-FIXTURE-BYTES-NO-LIVE-FACTS-"
+  },
+  "configuration": {
+    "model": null,
+    "derivative": null,
+    "generation": null,
+    "body": null,
+    "powertrain": null,
+    "drive": null,
+    "transmission": null,
+    "engineCode": null,
+    "agModelCode": null,
+    "vgModelCode": null,
+    "market": "US",
+    "region": null,
+    "steering": "LHD",
+    "modelYear": null,
+    "productionEra": null,
+    "productionDate": null,
+    "plant": null
+  },
+  "provenance": {
+    "kind": "synthetic",
+    "source": "Resource-only fixture: SCALE and R codes are fictional; no BMW selection, physical build or source capacity claim",
+    "observedDate": null
+  },
+  "sourceContext": {
+    "observedDate": "2026-11-07",
+    "catalogueDate": null,
+    "sourceKind": "north-american-reference",
+    "confidence": "Synthetic resource-only byte fixture; the date is an input pin, not a live source observation",
+    "selectedOptionCompleteness": "unknown",
+    "unresolvedFacts": [
+      "model",
+      "derivative",
+      "generation",
+      "body",
+      "powertrain",
+      "drive",
+      "transmission",
+      "engineCode",
+      "agModelCode",
+      "vgModelCode",
+      "region",
+      "modelYear",
+      "productionEra",
+      "productionDate",
+      "plant"
+    ]
+  },
+  "metadata": {
+    "datasetId": "resource-only-beyond64",
+    "schemaVersion": "1",
+    "profileRegistryVersion": "vin-profiles.v1",
+    "generatorVersion": "synthetic-identities.sha256-v1",
+    "seed": {
+      "value": "f62-resource-beyond64-v1",
+      "kind": "synthetic"
+    },
+    "sourceContexts": [
+      {
+        "sourceKind": "north-american-reference",
+        "observedDate": "2026-11-07",
+        "market": "US",
+        "steering": "LHD",
+        "catalogueDate": null,
+        "note": "Synthetic resource-only fixture; no live observations, VIN, stock, 200/10000 source or scheme coverage credit"
+      }
+    ]
+  }
+}

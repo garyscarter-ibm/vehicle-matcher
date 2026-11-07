@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "f59-continuation-stop-review.v1",
+  "date": "2026-11-07",
+  "story": "FUCQ-59",
+  "reviewedCommit": "e08b63d48cc8d5a6170c3cf3df5ca7039c597293",
+  "severity": "High",
+  "diagnosis": {
+    "reproduction": "A valid interrupted predecessor with halted source-http-401 was accepted for fresh bootstrap and continuation; narrow regression observed missing rejection.",
+    "cause": "Fresh session initialState omitted predecessor halted, so session initialized halted:null without classifying prior durable stop.",
+    "affected": "createPublicBatchCollector continuation intake; inherited checkpoint stays immutable but old code bypassed access/rate/refusal/substitution/shape stops through fresh allocation.",
+    "fix": "Explicitly allow only null, source-batch-interrupted, request-budget, source-attempt-budget, source-byte-budget, response-byte-budget, deadline and operation-timeout. Reject every other stop before allocation marker or HTTP."
+  },
+  "result": {
+    "narrowRed": {
+      "tests": 2,
+      "passed": 1,
+      "failed": 1
+    },
+    "narrowGreen": {
+      "tests": 2,
+      "passed": 2,
+      "failed": 0
+    },
+    "batch": {
+      "tests": 19,
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "scope": "scoped",
+      "wallSeconds": 10.717971499994746
+    },
+    "negativeStops": [
+      "source-http-401",
+      "source-http-403",
+      "source-http-429",
+      "source-redirect-refused",
+      "source-endpoint-refused",
+      "source-model-substitution",
+      "source-solver-shape",
+      "source-json-shape",
+      "source-sensitive-projection",
+      "source-failure",
+      "unknown-source-stop"
+    ],
+    "assertions": "Each refusal leaves exact predecessor bytes, HTTP call count and directory entries including allocation marker namespace unchanged."
+  },
+  "identity": {
+    "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+    "scripts/gcsp/capture-bmw-selection.mjs": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+    "scripts/gcsp/collect-fleet.mjs": "e1f473486cefc55c9aea8a342c614e6beefd05594ec12e46584bf12af82103cb",
+    "scripts/gcsp/collection-session.mjs": "1f22fe1cdf27d3e6f2be015e32b69b5ecc435c546fe9964396270e3db6e9421e",
+    "scripts/gcsp/public-bmw-source.mjs": "4f5c93505c7e558d0ff3cf3afadbfb97ef45bde9b615e9033c8d440628b75f24",
+    "server/test/gcsp-bmw-source-batch.test.js": "2aeadfd650d8b8c79c7e559753d9530dcf885054d66c6e0fe9c8508ad2f6b252",
+    "server/test/gcsp-fleet-collector.test.js": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88"
+  },
+  "reuse": {
+    "previousReceipt": "validation.json",
+    "tests": 77,
+    "testFile": "server/test/gcsp-fleet-collector.test.js",
+    "unchangedIdentity": {
+      "scripts/gcsp/collection-session.mjs": "1f22fe1cdf27d3e6f2be015e32b69b5ecc435c546fe9964396270e3db6e9421e",
+      "scripts/gcsp/capture-bmw-selection.mjs": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+      "scripts/gcsp/public-bmw-source.mjs": "4f5c93505c7e558d0ff3cf3afadbfb97ef45bde9b615e9033c8d440628b75f24",
+      "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+      "server/test/gcsp-fleet-collector.test.js": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88"
+    },
+    "reason": "Three-line intake guard only inside public batch continuation; shared executor/projector/binder modules, generic collector functions, fixtures, test file and environment unchanged. Original95 receipt remains historical; latest19 batch checks rerun. No claim of a new96-test combined run."
+  },
+  "knownDefects": [
+    {
+      "key": "FUCQ-152",
+      "severity": "Medium",
+      "status": "backlog; root saved/readback verified",
+      "relatedStory": "FUCQ-59",
+      "parent": "FUCQ-20",
+      "diagnosis": "Different new allocation IDs can fork from one predecessor and repeat pending work. Per-allocation marker does not enforce one successor per predecessor.",
+      "reproduction": "independent review finding; not separately executed in this repair",
+      "disposition": "not repaired; root-owned independent backlog; no merge dependency; preserve one chosen successor chain operationally"
+    }
+  ],
+  "sourceTraffic": 0,
+  "fullSuite": "not selected; narrow owning boundary correction, existing generic77 reused with reviewed identity",
+  "resources": {
+    "workers": 1,
+    "scratchMiB": 64,
+    "hostRamMiB": 512,
+    "childRamMiB": 448,
+    "seconds": 90,
+    "peakScratchBytes": 1372416,
+    "peakRssBytes": 321290240
+  },
+  "cleanup": {
+    "compatibility_exception": null,
+    "dependency_link_absent": true,
+    "removed_bytes": 1372416,
+    "scratch_absent": true
+  },
+  "externalReceipts": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f59-continuation-stop-review",
+  "acceptance": "High guard regression fixed offline; actual LIVE continuation and cross-allocation bootstrap cache reuse remain unproved; no Story Done claim."
+}

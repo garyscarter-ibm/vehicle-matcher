@@ -1,0 +1,243 @@
+{
+  "status": "public-retry-failed-cold-restore-unestablished",
+  "result": {
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot7-public/download-retry/command.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot7-public/download-retry/ownership/fa15affb9c5746e9af5dae36cbf2eed1.json",
+    "peak_rss": 313196544,
+    "peak_scratch": 64980288,
+    "rc": 1,
+    "wall": 20.816121875
+  },
+  "cleanup": {
+    "codeIdentityUnchanged": true,
+    "compatibilityException": null,
+    "dependencyLinkAbsent": true,
+    "freeDiskBytes": 56650240000,
+    "groupsAbsent": true,
+    "inputIdentityUnchanged": true,
+    "leftovers": [],
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot7-public/download-retry/ownership/fa15affb9c5746e9af5dae36cbf2eed1.json",
+    "removedScratchPeakBytes": 64980288,
+    "reservationAbsent": true,
+    "retainedLogicalBytes": 2339,
+    "retainedOutput": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot7-public-20261107/download-retry",
+    "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot7-public-20261107/.scratch/test-stamp-shard-fa15affb9c5746e9af5dae36cbf2eed1",
+    "scratchAbsent": true
+  },
+  "network": {
+    "requests": [
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      }
+    ],
+    "denied": 0,
+    "authorization": false,
+    "cookie": false
+  },
+  "retryNetworkLimit": {
+    "attempts": 44,
+    "limit": 44,
+    "denied": 0,
+    "approvedOnly": true,
+    "authorization": false,
+    "cookie": false
+  },
+  "retryWrapper": {
+    "downloadChildren": 1,
+    "reviewedRunnerUnchanged": true,
+    "networkLimit": 44
+  },
+  "verifiedAssetCount": null,
+  "lookupDtoParity": "not-run",
+  "configuredConsumer": "not-run; known two failures remain independently documented",
+  "httpUnion": "not-run",
+  "changedRecovery": "not-run",
+  "cause": "unestablished; generic productionCLI artifact-release-failed",
+  "publicMutationExecuted": false,
+  "ordinaryPublicationExecuted": false,
+  "acceptance": false,
+  "pins": {
+    "plan.json": "c757e3d5306fa7060cd4ca86536acdb054feae5995bd06191c60c1f428d71e4a",
+    "run.mjs": "1c8f9b3cf8eba3a4aefb8ccba0f87a079ec463254ed5508d180f0948b2ba5b5c",
+    "prove-restored.mjs": "c61e15476c696869e784242900476ce8a9e3816028693bcbf980153e64312d49",
+    "supervise.py": "f8f726dba6917935cf7fa7c48d2705ede4cc9f6e97f71aed6ac689122a6b27eb",
+    "retry-download.py": "2e192fbe226b92968131555a05aeac1016a1949e8fd03abd4002422aca76d8f9",
+    "retry-network-cap.mjs": "3bd180513cd140a2da4709ad5973d21db22dfe2ed61363c40131924a29ec0849"
+  },
+  "originalCommandLog": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot7-public/download-retry/command.log"
+}

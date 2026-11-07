@@ -1,0 +1,109 @@
+{
+  "schemaVersion": "1",
+  "planId": "f59-continuation-proof-two-20261107",
+  "version": "1",
+  "seed": "f59-reserved-continuation-proof",
+  "policyRead": {
+    "asOf": "2026-11-06T00:00:00.000Z",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "source": {
+    "id": "bmw-uk-public",
+    "version": "f59-batch-20261107.v1",
+    "kind": "public-bmw-uk"
+  },
+  "context": {
+    "catalogueDate": "2026-11-01",
+    "market": "GB",
+    "locale": "en-GB",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05"
+  },
+  "models": [
+    "T5MJ"
+  ],
+  "target": 2,
+  "candidateCount": 2,
+  "limits": {
+    "maxCandidates": 2,
+    "requestBudgets": {
+      "page": 1,
+      "settings": 1,
+      "discover": 1,
+      "options": 1,
+      "solve": 2
+    },
+    "maxAttempts": 1,
+    "operationTimeoutMs": 10000,
+    "deadlineMs": 45000,
+    "retryDelayMs": 0,
+    "concurrency": 1,
+    "cacheEntries": 10,
+    "cacheRetentionMs": 86400000,
+    "checkpointBytes": 8388608,
+    "imageRequests": 0,
+    "sourceAttempts": 5,
+    "sourceBytes": 2097152,
+    "responseBytes": 1048576
+  },
+  "captureVersion": "bmw-complete-selection.v1",
+  "qualificationDate": "2026-11-07",
+  "modelRegistration": {
+    "schemaVersion": "bmw-public-model-registration.v1",
+    "modelCode": "T5MJ",
+    "agModelCode": "72HH",
+    "catalogueRangeKey": "G61E",
+    "rawModelRange": "G61",
+    "aliases": [
+      "5",
+      "I"
+    ],
+    "market": "GB",
+    "locale": "en-GB",
+    "steering": "RL",
+    "catalogueDate": "2026-11-01",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05",
+    "optionsTrim": "S0337"
+  },
+  "candidateBaseElements": [
+    "S043L"
+  ],
+  "candidateDefinitionBasis": {
+    "path": "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk10/options.json",
+    "artifactSha256": "55a13acfe621cb96aafe635de9948fdccd15e52da10d814c41cfd52d1c94e1e3",
+    "role": "dated-request-candidates-require-fresh-definition-corroboration"
+  },
+  "candidates": [
+    {
+      "candidateId": "candidate-e384e23e4375b5f677c65619",
+      "request": {
+        "includedElements": [
+          "FKSFU",
+          "P0300",
+          "S0337",
+          "S03G9",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-c9eeb5c73605462a742f76bf",
+      "request": {
+        "includedElements": [
+          "FKSFU",
+          "P0300",
+          "S0337",
+          "S03GD",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    }
+  ]
+}

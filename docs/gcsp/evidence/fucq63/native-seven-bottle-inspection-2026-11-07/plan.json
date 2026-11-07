@@ -1,0 +1,279 @@
+{
+  "schemaVersion": "native-seven-bottle-inspection.v1",
+  "status": "prepared-unexecuted-separate-exact-parent-grant-required",
+  "phase": "seven-bottle-inspection",
+  "executionRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036",
+  "packages": [
+    {
+      "name": "ca-certificates",
+      "pkgVersion": "2026-10-20",
+      "bottleRebuild": 0,
+      "manifestTag": "2026-10-20",
+      "bottleTag": "2026-10-20.all",
+      "bottleSha256": "8589f4e61b3afcc5ea375aab11af1c891ec4c94421c699c2a5a4765078de4443",
+      "downloadBytes": 109619,
+      "installedBytes": 193035,
+      "url": "https://ghcr.io/v2/homebrew/core/ca-certificates/blobs/sha256:8589f4e61b3afcc5ea375aab11af1c891ec4c94421c699c2a5a4765078de4443",
+      "manifestSha256": "eef300d56bc7d8621f1cc3f36152f02a05ac66f93a06348c086f66b21ac1fc7a",
+      "formulaRubySha256": "535300ac0e99511a36340454bd5287cfff097191de9d7b9675ed924f3a692317",
+      "kegPath": "/opt/homebrew/Cellar/ca-certificates/2026-10-20",
+      "dependencies": [],
+      "postInstallSteps": [
+        {
+          "command": {
+            "base": "libexec",
+            "path": "post-install"
+          },
+          "type": "run",
+          "args": [
+            "{{pkgshare}}/cacert.pem",
+            "{{pkgetc}}/cert.pem"
+          ]
+        }
+      ],
+      "archiveName": "ca-certificates--2026-10-20.all.bottle.tar.gz"
+    },
+    {
+      "name": "libunistring",
+      "pkgVersion": "1.5",
+      "bottleRebuild": 0,
+      "manifestTag": "1.5",
+      "bottleTag": "1.5.arm64_golden_gate",
+      "bottleSha256": "fec6be46cabaefd1dc5d5ecd029c50aeaef6c93d9c7de4425968047811575e81",
+      "downloadBytes": 1899259,
+      "installedBytes": 5823609,
+      "url": "https://ghcr.io/v2/homebrew/core/libunistring/blobs/sha256:fec6be46cabaefd1dc5d5ecd029c50aeaef6c93d9c7de4425968047811575e81",
+      "manifestSha256": "b3cdb5514cf3add0e18f63a51437d7d800f4f5c5a56a312099194ed563c9daf9",
+      "formulaRubySha256": "e19b8847465634aa2ab365c7fa641216450ad26cc02bddfce08c8d17342d21dc",
+      "kegPath": "/opt/homebrew/Cellar/libunistring/1.5",
+      "dependencies": [],
+      "postInstallSteps": [],
+      "archiveName": "libunistring--1.5.arm64_golden_gate.bottle.tar.gz"
+    },
+    {
+      "name": "readline",
+      "pkgVersion": "8.3.6",
+      "bottleRebuild": 0,
+      "manifestTag": "8.3.6",
+      "bottleTag": "8.3.6.arm64_golden_gate",
+      "bottleSha256": "74b458562c5a589a612ebba8f8fc12f3ecbe083223eb4a368c723d88b26a454d",
+      "downloadBytes": 757018,
+      "installedBytes": 2639000,
+      "url": "https://ghcr.io/v2/homebrew/core/readline/blobs/sha256:74b458562c5a589a612ebba8f8fc12f3ecbe083223eb4a368c723d88b26a454d",
+      "manifestSha256": "cf6434889ede9b443c44a678b7467b6a196038eaebc74e310e5d72060d3903ac",
+      "formulaRubySha256": "ead60941ba0f81334499b208e26382eefda15eb1b9614c417d70f1d827dc2e64",
+      "kegPath": "/opt/homebrew/Cellar/readline/8.3.6",
+      "dependencies": [],
+      "postInstallSteps": [],
+      "archiveName": "readline--8.3.6.arm64_golden_gate.bottle.tar.gz"
+    },
+    {
+      "name": "icu4c@79",
+      "pkgVersion": "79.1",
+      "bottleRebuild": 0,
+      "manifestTag": "79.1",
+      "bottleTag": "79.1.arm64_golden_gate",
+      "bottleSha256": "8499235357ff52424e3fcc647a6ce57050af9f10904554df90319e6a088f665d",
+      "downloadBytes": 32063877,
+      "installedBytes": 88592070,
+      "url": "https://ghcr.io/v2/homebrew/core/icu4c/79/blobs/sha256:8499235357ff52424e3fcc647a6ce57050af9f10904554df90319e6a088f665d",
+      "manifestSha256": "b100e6d8b5225d02fb5fc4eabd3ab0c891be0611b1e2741ca73ebb725f0638f1",
+      "formulaRubySha256": "501b5029e184ab296555618fb394762996c08090b0ad1a44f675d97abf38afa1",
+      "kegPath": "/opt/homebrew/Cellar/icu4c@79/79.1",
+      "dependencies": [],
+      "postInstallSteps": [],
+      "archiveName": "icu4c@79--79.1.arm64_golden_gate.bottle.tar.gz"
+    },
+    {
+      "name": "openssl@4",
+      "pkgVersion": "4.1.0",
+      "bottleRebuild": 0,
+      "manifestTag": "4.1.0",
+      "bottleTag": "4.1.0.arm64_golden_gate",
+      "bottleSha256": "d239639f77a275caa217707e126790b3f5f5c86e5bc6e2a996e5df7fdaed44a6",
+      "downloadBytes": 11500729,
+      "installedBytes": 24609595,
+      "url": "https://ghcr.io/v2/homebrew/core/openssl/4/blobs/sha256:d239639f77a275caa217707e126790b3f5f5c86e5bc6e2a996e5df7fdaed44a6",
+      "manifestSha256": "5334787c00d0174476fcb17e00b3bd4ef11379589acec0ae3d2639d5bdddd541",
+      "formulaRubySha256": "50f58cda0dfd54aabc627e53205a88afc2e1780d83f43a99c525b58950c32049",
+      "kegPath": "/opt/homebrew/Cellar/openssl@4/4.1.0",
+      "dependencies": [
+        {
+          "ca-certificates": ":no_linkage"
+        }
+      ],
+      "postInstallSteps": [
+        {
+          "source": {
+            "path": "{{etc}}/ca-certificates/cert.pem"
+          },
+          "target": {
+            "path": "{{pkgetc}}/cert.pem"
+          },
+          "force": true,
+          "type": "symlink"
+        }
+      ],
+      "archiveName": "openssl@4--4.1.0.arm64_golden_gate.bottle.tar.gz"
+    },
+    {
+      "name": "krb5",
+      "pkgVersion": "1.22.2_2",
+      "bottleRebuild": 0,
+      "manifestTag": "1.22.2_2",
+      "bottleTag": "1.22.2_2.arm64_golden_gate",
+      "bottleSha256": "678c05de46229f5b35631196808a7f6e4a32f9a18bc9574ec447f6c8290dfff7",
+      "downloadBytes": 1333379,
+      "installedBytes": 5203651,
+      "url": "https://ghcr.io/v2/homebrew/core/krb5/blobs/sha256:678c05de46229f5b35631196808a7f6e4a32f9a18bc9574ec447f6c8290dfff7",
+      "manifestSha256": "d848b80b199fb97bfe660066cc1a87fe4736bec11489bb2e3f2e2c5c1490aa0e",
+      "formulaRubySha256": "c110a8d383fbf33227f2b57bad52f554620f9c4383fac31c1820b9561425bf0d",
+      "kegPath": "/opt/homebrew/Cellar/krb5/1.22.2_2",
+      "dependencies": [
+        "openssl@4"
+      ],
+      "postInstallSteps": [],
+      "archiveName": "krb5--1.22.2_2.arm64_golden_gate.bottle.tar.gz"
+    },
+    {
+      "name": "postgresql@16",
+      "pkgVersion": "16.15_1",
+      "bottleRebuild": 1,
+      "manifestTag": "16.15_1-1",
+      "bottleTag": "16.15_1.arm64_golden_gate.1",
+      "bottleSha256": "31b8c98844e409376dc0fc7801e09f25c5c7b3c175c77b929ad9bb51aef3095d",
+      "downloadBytes": 19200246,
+      "installedBytes": 72060825,
+      "url": "https://ghcr.io/v2/homebrew/core/postgresql/16/blobs/sha256:31b8c98844e409376dc0fc7801e09f25c5c7b3c175c77b929ad9bb51aef3095d",
+      "manifestSha256": "7086129ff7bb9a0a5faaf21c4596f795f2449310b57a4f5503f0cdca10e0647e",
+      "formulaRubySha256": "63dd55f47d0c31de82b5ecb9f3bb0bddfc65d6754fb923800142e6d771d5a5a1",
+      "kegPath": "/opt/homebrew/Cellar/postgresql@16/16.15_1",
+      "dependencies": [
+        "icu4c@79",
+        "krb5",
+        "lz4",
+        "openssl@4",
+        "readline",
+        "zstd",
+        "gettext",
+        {
+          "gettext": ":build"
+        },
+        {
+          "pkgconf": ":build"
+        }
+      ],
+      "postInstallSteps": [
+        {
+          "path": {
+            "base": "var",
+            "path": "log"
+          },
+          "type": "mkdir_p"
+        },
+        {
+          "path": {
+            "base": "var",
+            "path": "postgresql@16"
+          },
+          "using": "postgresql_initdb",
+          "type": "init_data_dir"
+        }
+      ],
+      "archiveName": "postgresql@16--16.15_1.arm64_golden_gate.1.bottle.tar.gz"
+    }
+  ],
+  "aliases": {
+    "/opt/homebrew/opt/icu4c": "../Cellar/icu4c@78/78.3",
+    "/opt/homebrew/opt/icu4c@79": null,
+    "/opt/homebrew/opt/openssl": "../Cellar/openssl@3/3.6.3",
+    "/opt/homebrew/opt/openssl@4": null
+  },
+  "kegs": {
+    "/opt/homebrew/Cellar/ca-certificates/2026-10-20": false,
+    "/opt/homebrew/Cellar/libunistring/1.5": false,
+    "/opt/homebrew/Cellar/readline/8.3.6": false,
+    "/opt/homebrew/Cellar/icu4c@79/79.1": false,
+    "/opt/homebrew/Cellar/openssl@4/4.1.0": false,
+    "/opt/homebrew/Cellar/krb5/1.22.2_2": false,
+    "/opt/homebrew/Cellar/postgresql@16/16.15_1": false
+  },
+  "defaultPostgresCluster": {
+    "path": "/opt/homebrew/var/postgresql@16",
+    "exists": false
+  },
+  "inputs": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-postgres-bounded-plan-2026-11-07/plan.json",
+      "bytes": 52496,
+      "sha256": "019c1db8d7b73f21a790f9224eca058297a0be6514a27d3055008e335d160d26"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-postgres-bounded-plan-2026-11-07/package-metadata.json",
+      "bytes": 7785,
+      "sha256": "3c4432141dcb64fef2418c2b1a3bb298b4b8711e2b52467dcd7f161bd9f87112"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-install-2-preflight-2026-11-07/plan.json",
+      "bytes": 4493,
+      "sha256": "5453c8680cf2302bca7dfc9ba9491abcb1f3dcd973a3b07788daa38bfdc1c8a5"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-seven-bottle-inspection-2026-11-07/actual-first-bottle-failure.json",
+      "bytes": 1003,
+      "sha256": "9fd1962f2e6ef01ca42dbbe6064832437e89bc3f571d3f9a7abe484e43635f25"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-seven-bottle-inspection-2026-11-07/actual-first-bottle-results.json",
+      "bytes": 2215,
+      "sha256": "dc297a789aa7df109e3259d24f748690240368735512365ca22eaad0a0ce80de"
+    }
+  ],
+  "codePins": {
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq63/native-seven-bottle-inspection-2026-11-07/group-proof.py": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
+    "docs/gcsp/evidence/fucq63/native-seven-bottle-inspection-2026-11-07/supervise.py": "3c954cd19da1c54d2c3722ebd2f542928818a6affb5c2f3358ff1ab3c94d339b",
+    "docs/gcsp/evidence/fucq63/native-seven-bottle-inspection-2026-11-07/inspect-bottles.py": "4e98e34ee8012597e7f472b1573cd1df55a095fdd6a382235591342528f9d358"
+  },
+  "outputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/seven-bottle-inspection",
+  "metadataRoot": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f63-native-postgres/seven-bottle-inspection",
+  "trustContract": {
+    "anchor": "Each exact whole bottle SHA256 and byte count in frozen original official package metadata",
+    "embeddedFormula": "Actual regular .brew/name.rb bytes are retained, hashed and reviewed separately; no Ruby execution",
+    "currentFormula": "Catalog formula source checksum is recorded as a separate identity, never substituted for an embedded build formula pin",
+    "firstBottle": "Reuse proved first embedded Ruby identity7949bytes SHA4abe22fb50b45cd5e113747a92a115e0479c4017502d7e8a87132a340b742d84; no replay of original preflight phase",
+    "laterInstall": "Requires actual Ruby review followed by a separate exact install grant"
+  },
+  "resources": {
+    "workers": 1,
+    "seconds": 240,
+    "maximumPublicRequests": 35,
+    "requestSeconds": 30,
+    "redirectsPerBottle": 3,
+    "retries": 0,
+    "totalDownloadBytes": 66864127,
+    "cloudScratchMiB": 2,
+    "diskReservationMiB": 128,
+    "hostRamMiB": 256,
+    "groupRamMiB": 192,
+    "supervisorHeadroomMiB": 64,
+    "retainedArchiveMiB": 64,
+    "embeddedRubyMaxPerFileBytes": 1048576,
+    "embeddedRubyMaxMembersPerBottle": 8,
+    "maxTarMembersPerBottle": 30000,
+    "maxUncompressedMemberBytesPerBottle": 402653184
+  },
+  "unrun": [
+    "seven exact new downloads and embedded Ruby extraction/inspection",
+    "actual retained Ruby review",
+    "all package installation",
+    "native database and native proof",
+    "source/candidate/public fleet calls",
+    "full Story acceptance/Done"
+  ],
+  "sourceCalls": 0,
+  "installationInvoked": false,
+  "nativeAttempted": false,
+  "rubyExecuted": false,
+  "acceptance": false
+}

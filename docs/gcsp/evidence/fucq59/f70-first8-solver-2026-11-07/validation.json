@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "f70-first8-prepared-validation.v1",
+  "scope": "scoped offline exact-registration and preparation verification",
+  "summary": {
+    "cancelled": 0,
+    "fail": 0,
+    "pass": 6,
+    "skipped": 0,
+    "tests": 6,
+    "todo": 0
+  },
+  "wallSeconds": 1.9464800409999998,
+  "peakScratchBytes": 1171616,
+  "peakRssBytes": 271925248,
+  "cleanup": {
+    "code_identity_unchanged": true,
+    "compatibility_exception": null,
+    "dependency_link_absent": true,
+    "groups_absent": true,
+    "removed_allocation_bytes": 1171616,
+    "reservation_absent": true,
+    "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/first8-prepared-result.json",
+    "scratch_absent": true
+  },
+  "checks": [
+    "Existing batch plan validator accepts exact model/AG/trim and eight finite candidates",
+    "Candidate codes/types and pointers match actual retained definitions",
+    "No overlap with 407 cumulative spent requests; canonical index344/source341 retained",
+    "Existing collector fixture processes eight distinct synthetic selections through twelve fixture GETs with no admission",
+    "All frozen pins/index/retention/reservation bindings match",
+    "Python/Node syntax and missing-grant refusals before egress"
+  ],
+  "executionPlanSha256": "3a649885afdff7725987803d31c71402604429280ee80ef032d0864401817b08",
+  "planDigest": "85f154dad6a314bed1433a51f98af9a07295e4c4daebc7db3416a2a427e0bff0",
+  "priorIndexDigest": "c7c096d456c1f9802edee02b2d0aee02d21a50dbf05810d4f75e51ae1f3634ed",
+  "spentIndexDigest": "293eb92bade137332c45700cec30593d2aa7425b27eb071596696397d1c60779",
+  "preparedIdentity": {
+    "docs/gcsp/evidence/fucq59/f70-first8-solver-2026-11-07/candidate-provenance.json": "3df7088900af752d0adb3bcc0a39fd8ecf8f57ae440a47b99e6629f59c9e531b",
+    "docs/gcsp/evidence/fucq59/f70-first8-solver-2026-11-07/collection-plan.json": "30e1b41d8e2361fe4a188c6a0d30f66a6fa97cf8341b948006652de5d209d45a",
+    "docs/gcsp/evidence/fucq59/f70-first8-solver-2026-11-07/execution-plan.json": "3a649885afdff7725987803d31c71402604429280ee80ef032d0864401817b08",
+    "docs/gcsp/evidence/fucq59/f70-first8-solver-2026-11-07/execution-reservation.json": "9a4f1965bdac1bcfdd9d0e4316f8b1cbf3034a945315e06f7b08e311c69b6463",
+    "docs/gcsp/evidence/fucq59/f70-first8-solver-2026-11-07/prepare.py": "a82d63bf714fb6ba25278f4ee700886171cee90dea10009161a1c824247c9ff4",
+    "docs/gcsp/evidence/fucq59/f70-first8-solver-2026-11-07/prepared-check.test.mjs": "7f0744dad076c1ca863e38bf14f0d00295b7b488d5a9f44eafdf7427dfc21cd8",
+    "docs/gcsp/evidence/fucq59/f70-first8-solver-2026-11-07/prior-canonical-index.json": "5f03107a20ce0681d66e0fe982852956bbb840cde696fb41b7ffb868b3afaba2",
+    "docs/gcsp/evidence/fucq59/f70-first8-solver-2026-11-07/retained-deliverables.json": "d4df3586e89cdf94cb9c677fe0c77d9718e4a074b0cf84df6040f63216a1f8c3",
+    "docs/gcsp/evidence/fucq59/f70-first8-solver-2026-11-07/run-live.mjs": "8b25e9f20625fbc73a93c911c9bac183b68a070c7950b003caeff15a1a00b992",
+    "docs/gcsp/evidence/fucq59/f70-first8-solver-2026-11-07/spent-request-index.json": "01c24c7b0b2c1c26fc92229e382f59cd8792aaa928fb248e23d61bbd6a06ed0e",
+    "docs/gcsp/evidence/fucq59/f70-first8-solver-2026-11-07/supervise.py": "1a8d8301d3dacdf0c26f1ee93c5eada9f9882bfb6d0034e5cd58c16376b18322",
+    "scripts/gcsp/bmw-public-registration.mjs": "5fa166bc0ce537e54b99c86e0e681a496ce1edcea9652184e3842b9587a009d3",
+    "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+    "scripts/gcsp/capture-bmw-selection.mjs": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+    "scripts/gcsp/collect-fleet.mjs": "76107aea09f14f6baaf32417f00f7acbc86d77413e18b8a01f289195d0d443bf",
+    "scripts/gcsp/collection-session.mjs": "baa55b0736932ad23ed967d3ebd9cb91086ca03e6e7ad103663d6ad121461f75",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/public-bmw-source.mjs": "43ddf5f9180a22a3147b069f4fdad07f9919302b1c8072e4b679071e08983556",
+    "server/test/gcsp-bmw-context-qualification.test.js": "31f67d169abbbc076d3355ebda320050ab0ecc7e304012eea5ecad0b295d54f7",
+    "server/test/gcsp-bmw-selection-capture.test.js": "277c685eb205014f9470655249ec53641299fc05242ca2aebd346329122c8fc8",
+    "server/test/gcsp-bmw-source-batch.test.js": "209d96dcf7529fe0a646d50d7cd05204237a06b0b6d95ead5434a933074c87af",
+    "server/test/gcsp-fleet-collector.test.js": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+  },
+  "sourceTraffic": 0,
+  "solverSourceTraffic": 0,
+  "sourceGrant": false,
+  "sourceCapacityCredit": 0,
+  "acceptance": false,
+  "knownDefects": [
+    "FUCQ-151 Medium throughput; independently prioritised.",
+    "FUCQ-154 Medium fixed-scratch reconciliation; explicitly deferred, parent owns manual reconciliation if killed."
+  ]
+}

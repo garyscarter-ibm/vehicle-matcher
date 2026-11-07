@@ -1,0 +1,201 @@
+{
+  "schemaVersion": "f61-f63-readiness-assessment.v1",
+  "date": "2026-11-07",
+  "branch": "dev/DEV-2026-11-04-035",
+  "frozenBase": "83f6173cd0b09e3d7d7c2839ff384bf1c2e3d43a",
+  "sourceRoot": "/Users/usget/Claude/vehicle-matcher",
+  "sourceHeadAtPinObservation": "21d34a173f024220806c36ec89567c0ed737a815",
+  "meaning": "Direct retained-byte observations from the shared root; this branch was not refreshed. Pins are a reading boundary, not replay or verification of all cited underlying proofs. The root status file is mutable after this observation.",
+  "latestParentLinuxObservation": {
+    "runId": "42360886351",
+    "revision": "b85250d5",
+    "build": {
+      "status": "passed",
+      "seconds": 121,
+      "httpsFetches": 62
+    },
+    "offline": {
+      "status": "timeout",
+      "ceilingSeconds": 90,
+      "exitCode": 124
+    },
+    "laterPhases": "unrun",
+    "deployment": "not established by selector merge"
+  },
+  "selectedChecks": [
+    "Parse new JSON documents",
+    "Recompute direct source-byte pins",
+    "Resolve Markdown local links against new documents or shared source root",
+    "Check git whitespace and owned-path diff",
+    "Confirm new document total below 32768 bytes"
+  ],
+  "excludedChecks": {
+    "tests": "Documentation-only assessment; no runtime behavior changed and parent expressly prohibited tests. Existing scoped/full outcomes are retained without replay.",
+    "nativeNetworkSourceUI": "Not authorized by this task.",
+    "fullUnderlyingEvidenceReplay": "Direct pins select the reading boundary only; no data proof replay or new all-reference validation claim."
+  },
+  "resource": {
+    "scratchAllocatedBytes": 0,
+    "removedAllocationBytes": 0,
+    "ownedProcesses": 0,
+    "descendants": 0,
+    "compatibilityException": null,
+    "disposableLeftovers": []
+  },
+  "agent": {
+    "name": "Charlie Dog",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "selectedModel": "gpt-6.1-sol",
+    "selectedEffort": "high",
+    "effectiveRuntime": "unverified",
+    "fallback": null
+  },
+  "references": [
+    {
+      "path": "AGENTS.md",
+      "bytes": 12290,
+      "sha256": "69c7eb1adad9c21d8d86578c883cc288836328934224b719b1bcdf0574a755c8"
+    },
+    {
+      "path": "docs/gcsp/fucq-13-19-stories.md",
+      "bytes": 183529,
+      "sha256": "435a62e8bcc23f1e82f59603622734a32b089e17a1ed0478686cdbd9dd73b8f5"
+    },
+    {
+      "path": "docs/gcsp/hld-agreement-2026-11-04.md",
+      "bytes": 2958,
+      "sha256": "b95c2fc548310edb90e1f7b746933418c7b0e98da9b45ac0ec3447940d8bca67"
+    },
+    {
+      "path": "docs/gcsp/build-rules.md",
+      "bytes": 9333,
+      "sha256": "f68bf735f59762abded95c10a12b38881404dcf18c300ec37af6ecd0812c7fd9"
+    },
+    {
+      "path": "docs/gcsp/experience-quality.md",
+      "bytes": 10493,
+      "sha256": "5d30701b637877b3a056ad933e9dbce3a8ace97d3af3e5b6720ea05072cb501d"
+    },
+    {
+      "path": "docs/design/gcsp-high-level-design.md",
+      "bytes": 68093,
+      "sha256": "93eb6023b3c2c4c7ce95efab0200402f38c72571e300f5000dd76fd52882bd7f"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/README.md",
+      "bytes": 19737,
+      "sha256": "7cace25cb92b5755682a35fa09976c0610eb5396a9760e9d1f9e9adf2efbe726"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/coverage.json",
+      "bytes": 45015,
+      "sha256": "7cd8ed13aeee81a9f5719457ef1101c68e40e8a0ac9cb2a1ead77e03b69a7801"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/operations.json",
+      "bytes": 75173,
+      "sha256": "32d3b29e740a23662073e335dc23c84e68d079be3a83982e5686c4085d251e89"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/validation.json",
+      "bytes": 9938,
+      "sha256": "10c2fd622dcf9b23130bc3d8574d49bdf74159850ef2d9033c41771aa7d01f28"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq63/implementation-plan-2026-11-07.md",
+      "bytes": 3743,
+      "sha256": "6e47f1798b3eea57396f0a6b154e31d3637d857e36c2a9e3154f9f6679fb9ee1"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq63/order-reference-2026-11-07/README.md",
+      "bytes": 1963,
+      "sha256": "eeb2db0b58c9eddf06bd92b37e3e174d38772a4ba86f0781d27176db66b896f1"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq63/order-reference-2026-11-07/summary.json",
+      "bytes": 1143,
+      "sha256": "57fb9c0d413129b16e81883f167245c5dc7f7682e4f9303f3a66cac708692bc3"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq63/order-reference-2026-11-07/prove-orders.mjs",
+      "bytes": 9960,
+      "sha256": "d768ba9636e564842433627750c6530cca8c4161836da0bb38f9e65dbf2f8847"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan/README.md",
+      "bytes": 5492,
+      "sha256": "e0119bd3941483d9f5d259733c63f0226bc0db1338c528d9e622547708619371"
+    },
+    {
+      "path": "docs/gcsp/evidence/f58-63-runtime-2026-11-07/README.md",
+      "bytes": 6046,
+      "sha256": "23c261f58ba5675e728eb47da1823af3d4a7cb72cba8f0c384b2a17b1462d03d"
+    },
+    {
+      "path": "docs/gcsp/f58-63-morning-status-2026-11-07.md",
+      "bytes": 7259,
+      "sha256": "e79abdc9d15779dff6d0d27934584c0b667d112a3d9a0eeb3cc47cb53760534f"
+    },
+    {
+      "path": "server/gcsp/vehicle-evidence/vehicle-lookup.js",
+      "bytes": 7416,
+      "sha256": "1184b7cc50565b180284e342183cca02e031a718a55f909b7980c34378a630e9"
+    },
+    {
+      "path": "server/gcsp/vehicle-evidence/local-vehicle-lookup.js",
+      "bytes": 2514,
+      "sha256": "600691740887daee2e4380189872b76a62273d6629c0bba0b25f46ff6921d774"
+    },
+    {
+      "path": "server/gcsp/vehicle-evidence/application-vehicle-details.js",
+      "bytes": 22987,
+      "sha256": "64bb6073a90f8aca27766c314a08073ee9df320e2683122cd05b3c6fe49d808f"
+    },
+    {
+      "path": "server/gcsp/vehicle-evidence/vin-allocation.js",
+      "bytes": 19405,
+      "sha256": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e"
+    },
+    {
+      "path": "server/gcsp/repository/README.md",
+      "bytes": 4811,
+      "sha256": "410908591a2f026baab59a235ac4714824cee826f2f541e617cd44cf2b16b00f"
+    },
+    {
+      "path": "server/gcsp/repository/postgres.js",
+      "bytes": 5658,
+      "sha256": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da"
+    },
+    {
+      "path": "server/gcsp/runtime.js",
+      "bytes": 12456,
+      "sha256": "e08d994c5f473cad70768dff2de5db36772b7b78e7997fb82c91d5309366ca1d"
+    },
+    {
+      "path": "server/index.js",
+      "bytes": 57982,
+      "sha256": "17f4982ac5e3420c012db31ac50884d63587e568968ca96f1f0583775e8fec19"
+    },
+    {
+      "path": "scripts/gcsp/verify-fleet.mjs",
+      "bytes": 24725,
+      "sha256": "0511976dbbaafcbad22672625bbf29bba644ed24848b9bbdb9375faad92f62f4"
+    },
+    {
+      "path": "scripts/gcsp/collect-fleet.mjs",
+      "bytes": 61807,
+      "sha256": "ba3864cee32f480facde57a2d2c9dbf944d571878bb2a9cece220955357ab1de"
+    },
+    {
+      "path": "server/test/gcsp-fleet-integration.test.js",
+      "bytes": 7187,
+      "sha256": "04cd2865d5417ae76936a444927307ce2adabf88b724af48b8847a7c00e99acb"
+    },
+    {
+      "path": "server/test/gcsp-offline-start.test.js",
+      "bytes": 10434,
+      "sha256": "89a4eaff6cd6d5514eec550445794f83ccb5c3f7f5b478f4b57044dc6b2acd57"
+    }
+  ]
+}

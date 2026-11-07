@@ -1,0 +1,227 @@
+{
+  "story": "FUCQ-122",
+  "preparedAt": "2026-11-06T19:27:21.190578+00:00",
+  "state": "UNEXECUTED SOURCE PREPARATION; no execution grant or allocation",
+  "ownedBaseCommit": "26700fcf2f83799267a771b57fc0bd201abbcf43",
+  "sharedAdoptionCommit": "e93a6140d43f85e664b0968ee7bce321aa7bff11",
+  "purpose": "One original desktop resolved/closed state gap; reuse reached narrow terminal business proof without rerunning completed narrow or waiting variants.",
+  "selectedMode": "journey-desktop",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "selectedCommandAfterSeparateExactGrant": "FUCQ122_BROWSER_LANE_GRANTED=explicit-root-release /usr/bin/python3 -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/browser-supervisor.py journey-desktop",
+  "binding": {
+    "browser-runner.mjs": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/browser-runner.mjs",
+      "sha256": "36ee4f152878e74b39976f2ca595a68f3f420f1c9b68494e7f4197a306ca84fc"
+    },
+    "browser-supervisor.py": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/browser-supervisor.py",
+      "sha256": "b8a8d71f3c37abea0fce8bfc3c943821235011c406e9125f7126b7e923c7157b"
+    },
+    "source-plan.json": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/source-plan.json",
+      "sha256": "0d8856ded4dfe45ea1ab6a1808826fd719f2dc1670042768706a59b5963ba02f"
+    }
+  },
+  "scenario": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/scenario-resolved-closed-proposed.mjs",
+    "sha256": "32825b37f6dd3ed69d4b79856cbd662a9bceb49cc938b2e6379ae223a5d1027d",
+    "copiedOrModified": false
+  },
+  "executableDiff": {
+    "changedBytes": false,
+    "diff": [],
+    "newRunnerIdenticalTo": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/resolved-closed-selected-1819/browser-runner.mjs",
+    "newWrapperIdenticalTo": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/resolved-closed-selected-1819/browser-supervisor.py",
+    "reason": "Existing runner supports journey-desktop and selects 1280x900; reached scenario already accepts width1280. Only invocation and new catalogue selectedContinuation metadata select the desktop variant. Inherited two-mode allowlist remains; no other mode is authorised."
+  },
+  "inheritance": {
+    "sourceCatalogue": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/resolved-closed-selected-1819/source-plan.json",
+      "sha256": "d7a532714144af66cda6490a9f66173bc7a224fed25ea383afa6fb8bfe0e0bd5"
+    },
+    "binding": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/resolved-closed-selected-1819/binding-ready.json",
+      "sha256": "48fc3b5a06e92f184b67a8520502a5158ce690bd45035156c9cf5fd635e00628"
+    },
+    "allInheritedPinsRetainedUnchanged": true,
+    "inheritedPins": 698,
+    "addedPaths": [
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/browser-runner.mjs",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/browser-supervisor.py"
+    ],
+    "sourcePins": 700,
+    "sourceMismatches": [],
+    "sourceMembership": {
+      "count": 284,
+      "unchanged": true,
+      "roots": [
+        "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/server/gcsp",
+        "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/gcsp",
+        "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/blocks/vehicle-matcher",
+        "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/assets"
+      ],
+      "sha256": "cc4b35d4167a598748a7eb83a3e6d610d605e1ad4c97c8868be6530ec5bb7408"
+    },
+    "productSourcePins": 119,
+    "executablesAndPlaywrightUnchanged": true,
+    "supervisorAndStrictBudgetUnchanged": true,
+    "driftDisposition": "Preserve inherited expected hashes; report any future mismatch or membership change to root for assessment. No autonomous repin."
+  },
+  "observations": {
+    "startingJourney": "Fresh empty memory-mode HTTPS host; ordinary HTML bootstrap cookies; real Paula help request; presenter UI Greg manual-decision/in-progress; Paula ordinary reload/history. No direct repository mutation or policy override.",
+    "selectedTransitions": [
+      "in-progress -> resolved",
+      "resolved -> closed"
+    ],
+    "assertions": [
+      "Each actual Greg projection offers the selected next status; read-only review preserves every stored field and POST count.",
+      "Each explicit confirmation appends exactly one version/history event while retaining case ID, original reason, owner, manual remedy and prior history.",
+      "Resolved nextStatuses equals [closed]; closed nextStatuses equals [].",
+      "Paula returns through presenter UI, ordinary help navigation and actual reload; complete persisted record, state, facts, remedy and dated history match."
+    ],
+    "expectedPosts": {
+      "help": 1,
+      "updatesIncludingInitialManualSetup": 3
+    },
+    "captures": [
+      "01-greg-resolved-review.png",
+      "02-paula-resolved-reload-history.png",
+      "03-greg-closed-review.png",
+      "04-paula-closed-reload-history.png"
+    ],
+    "errorsAndClassificationUnchanged": true,
+    "keyboardBoundary": "Inherited Tab/native select/radio helpers and visible-focus assertions; text/date fill remains automated after Tab. Partial keyboard evidence; status announcements not proved."
+  },
+  "priorTerminalEvidence": {
+    "summary": "terminal375-summary.json",
+    "receiptSha256": "b037881f87d457deb27f6ffbd31167ae6f9256744eb335623a17cf1c9f832f05",
+    "state": "incomplete",
+    "exitCode": 1,
+    "checksReached": [
+      "Rendered help and review are read-only; one explicit confirmation creates one case",
+      "Actual presenter Greg queue mounts once; review is read-only; one confirmation records the manual update",
+      "Resolved: reviewed without writing, explicitly confirmed, ordinary Paula reload/history equals the stored record",
+      "Closed: reviewed without writing, explicitly confirmed, ordinary Paula reload/history equals the stored record"
+    ],
+    "errorsRetained": 15,
+    "requestFailureCounts": {
+      "total": 14,
+      "expectedNavigationCancellations": 6,
+      "unclassified": 8
+    },
+    "rerun": false,
+    "boundary": "All resolved/closed narrow assertions were reached; inherited final errors-empty audit failed. Three draft404/console pairs and eight unclassified aborts among fourteen failed reads remain. Desktop is unexecuted."
+  },
+  "limits": {
+    "attempts": 1,
+    "retries": 0,
+    "workers": 1,
+    "chromeInstances": 1,
+    "monitoredSeconds": 120,
+    "maximumRecursiveRssMiB": 2560,
+    "minimumFreshAdmissionMiB": 2048,
+    "combinedScratchOutputManifestMiB": 128,
+    "logMiB": 2
+  },
+  "freshAdmission": {
+    "allocatedDuringPreparation": false,
+    "registry": "/Users/garycarter/.cache/agent-scaffolding/test-resources/reservations.json",
+    "lockDeadlineSeconds": 2,
+    "diskReserveGiB": 5,
+    "ramReserveMiB": 512,
+    "newToken": true,
+    "freshMeasuredDiskAndRam": true,
+    "chargeAllRawRows": true,
+    "deadOwnerPruning": false,
+    "parentExemption": false,
+    "foreignReconciliation": false,
+    "automaticRetries": 0,
+    "actualAdmittedRamEnforced": true
+  },
+  "ownership": {
+    "runPattern": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/journey-desktop-<uuid>",
+    "externalManifestPattern": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/ownership/journey-desktop-<uuid>.json",
+    "checkpointReceiptPattern": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/desktop-terminal-source-proposed/journey-desktop-<uuid>/receipt.json",
+    "scratchPattern": "/private/tmp/test-stamp-shard-<token>",
+    "profile": "<scratch>/chrome-profile",
+    "tmpdirTmpTemp": "<scratch>",
+    "driverLedger": "<run>/process-ledger.json",
+    "observedIdentities": "<run>/owned-identities.json",
+    "workerObservationPattern": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/coordination/fucq122-desktop-terminal-worker-observation-<grant>.json",
+    "rootObservationPattern": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/coordination/fucq122-desktop-terminal-root-observation-<grant>.json",
+    "rootCollectionPattern": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/coordination/fucq122-desktop-terminal-root-collection-<grant>.json",
+    "fullUnion": "Exact launcher PID/start/PGID plus driver/TLS/Chrome ledger and all sampled descendant/observer helper PID/start/PGID identities; actual ephemeral HTTPS/CDP/listening ports; profile/scratch/token. Never assume prior counts or ports.",
+    "finalizerRegisteredBeforeScratch": true,
+    "independentRootCollectionRequired": true,
+    "noRootFilesOverwritten": true
+  },
+  "finiteTeardown": {
+    "monitorIntervalSeconds": 0.5,
+    "driverTlsSeconds": 6,
+    "driverDevtoolsSeconds": 8,
+    "driverCdpSeconds": 8,
+    "driverNavigationSeconds": 10,
+    "driverCloseSecondsEach": 3,
+    "driverCloseCalls": [
+      "context",
+      "browser",
+      "currentDemoHost"
+    ],
+    "driverChromeExitSeconds": 3,
+    "supervisorMonitorJoinSeconds": 6,
+    "supervisorSignalPasses": [
+      "TERM",
+      "KILL"
+    ],
+    "pauseAfterEachSignalPassSeconds": 0.2,
+    "supervisorChildJoinSecondsEach": 3,
+    "supervisorReaderJoinSecondsEach": 3,
+    "processSnapshotTimeoutSeconds": 4,
+    "ownedPortLsofTimeoutSeconds": 4,
+    "scratchOpenFilesLsofTimeoutSeconds": 6,
+    "portProbeSecondsEachAddress": 0.3,
+    "addresses": [
+      "127.0.0.1",
+      "::1"
+    ],
+    "finalReceiptSettlingPasses": 3,
+    "wallBoundary": "120s monitored elapsed-work deadline; existing finite process/driver finalizer waits may extend total wall time. Source hash/directory IO and filesystem removal have no new OS-wide watchdog.",
+    "safeRemoval": "Only matching device/inode scratch after monitor/readers/children joined, matching identities/groups absent, ports closed, and profile-path processes/open files absent. Uncertainty preserves named scratch and reports failure. Release only owned reservation; verify source before/after and write actual peaks/removed/retained bytes.",
+    "sigkillBoundary": "SIGKILL cannot run finalizer; independent manifest-owned reconciliation requires owner/process/group/path/open-file checks."
+  },
+  "scopeMetadata": {
+    "rawExcludedTextUnchanged": true,
+    "staleText": "FUCQ-122 selected 375px manual setup/resolved/closed/reload only; no waiting setup, HTTP/full-suite replay, native PostgreSQL, producer/stock/decline/lifecycle, other state/remedy/placement matrix or F149 acceptance.",
+    "disposition": "Inherited width wording is stale metadata. This exact desktop binding and a separate exact execution grant govern selected desktop scope and account for all setup. Do not rewrite the inherited wrapper."
+  },
+  "experienceReferences": [
+    "docs/gcsp/experience-quality.md",
+    "docs/gcsp/screens/README.md",
+    "FUCQ-64 reviewed employee body reference in original Story decided section",
+    "Current shared Density shell and Greg operational treatment",
+    "COMPONENTS.md"
+  ],
+  "preservation": {
+    "originalAcValidatePrefixSha256": "9e8eb4b8c1c6817e16f8c5e242f0235800f081fc0978c88b53bd44dbbfd314ea",
+    "askedCowork": "MSG-2026-11-06-GC-001 awaits Cowork relay/owner response; preserve FUCQ-95 routing and FUCQ-120 seam. No acknowledgement inferred.",
+    "knownFindings": [
+      "FUCQ-150 Medium cramped Greg queue remains independent",
+      "FUCQ-146 alternative-car test failure remains recorded"
+    ],
+    "wholeNpm": "FAIL:1590 total,1569 pass,16 fail,5 skipped; no rerun",
+    "remainingGaps": "All cumulative original-AC gaps remain, including desktop terminal until actual proof, help placements/repeat request, queue readability/sorting/traversal, applicable other remedies, trigger/empty/loading/source failure and complete keyboard/focus/announcements.",
+    "noProductForeignHostOriginalAcResultJiraOrFrameworkChange": true,
+    "noNewAgentsOrClaims": true,
+    "noSyntaxTestApplicationHelperOrBrowserExecution": true,
+    "noServicesDbScratchOrReservationsAllocated": true,
+    "noRuntimeGrant": true,
+    "noAcceptancePassOrDoneRecommendation": true
+  },
+  "durablePaths": [
+    "docs/gcsp/evidence/fucq122/current-host-browser-2026-11-06/desktop-resolved-closed-source-proposal.md",
+    "docs/gcsp/evidence/fucq122/current-host-browser-2026-11-06/desktop-resolved-closed-source-binding.json"
+  ]
+}

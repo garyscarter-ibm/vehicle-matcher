@@ -1,0 +1,7 @@
+{
+  "status": "prepared-unspent-no-traffic-grant",
+  "allocationId": "g42-range-inventory-contract-20261107-once",
+  "planDigest": "6fe17bd106598c568c06bb07cb78a34aab4c53945f6fe77bf8359d7d6277c2fd",
+  "executionPlanSha256": "1620e00b45a8b7a7e67a26d4d902b67eff80f8b04ae45ea03f3d2361f6237371",
+  "exclusiveMarkerCreatedOnlyByLiveRunner": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/g42-range-inventory-contract-2026-11-07/execution-once.json"
+}

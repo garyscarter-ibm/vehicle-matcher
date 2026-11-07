@@ -1,0 +1,1885 @@
+{
+  "schemaVersion": "g61-field-ledger.v1",
+  "createdAt": "2026-11-05T16:55:32.636484Z",
+  "story": "FUCQ-58",
+  "purpose": "Offline field-level evidence join only; not a reusable profile, source corroboration or activation.",
+  "inputHashMeaning": "artifactSha256 values hash the complete named local input artifacts for reproducibility. They are not hashes of real VINs, plates, serials or other identifiers.",
+  "sources": [
+    {
+      "id": "observation",
+      "path": "docs/gcsp/evidence/fucq-58/known-seed-refresh-2026-11-05/evidence/observation.json",
+      "artifactSha256": "1fa5a52de21d27cc45555b69a29d97c90d5ad800001e880405bb35093ff66ca7",
+      "sourceDate": null,
+      "observedAt": "2026-11-05T16:29:12.119Z",
+      "dateBasis": "Retained HTTP observation timestamp; source publication date unknown."
+    },
+    {
+      "id": "rules",
+      "path": "docs/gcsp/synthetic-vin-rules.md",
+      "artifactSha256": "d693b957f1004f57e58bfd77104ff097b5e46ee5653b3ea7a03e3b7bd66ba543",
+      "sourceDate": "2026-11-02",
+      "observedAt": "2026-11-02",
+      "dateBasis": "Sanitised research source date recorded by registry sources/VIN-RULES; candidate was supplied on 2 November, not independently reopened."
+    },
+    {
+      "id": "checklist",
+      "path": "docs/gcsp/vin-sample-checklist.md",
+      "artifactSha256": "180f3e6abf65641c98442382974e5b0f722e1abb93af2c67e443cd9d1fa03128",
+      "sourceDate": "2026-11-02",
+      "observedAt": "2026-11-02",
+      "dateBasis": "Document heading and reported receipt date; not a fresh source-page observation."
+    },
+    {
+      "id": "registry",
+      "path": "server/data/gcsp/vehicle-evidence/vin-profiles.v1.json",
+      "artifactSha256": "9a107b2b90c21a116e2fb93ca88211b95250c4404f6468924e5e7f53d092a1fa",
+      "sourceDate": null,
+      "observedAt": null,
+      "dateBasis": "Registry publication date unknown; individual reference profiles record observedDate 2026-11-01, VIN-RULES source metadata records 2026-11-02."
+    },
+    {
+      "id": "next-path",
+      "path": "docs/gcsp/evidence/fucq-58/known-seed-refresh-2026-11-05/next-qualification-path.md",
+      "artifactSha256": "e5bcf034e129b138e0c043b692e48f11ed4ae0b00994a6994ae93b15522f9a1d",
+      "sourceDate": "2026-11-05",
+      "observedAt": null,
+      "dateBasis": "Dated prior checkpoint; planning document only, no source observation."
+    }
+  ],
+  "relation": {
+    "candidateObservationId": "UK-OBS-004",
+    "configuratorModelCode": "T5MJ",
+    "independentlyMatchedVehicle": false,
+    "independentlyMatchedProfile": false,
+    "status": "unqualified",
+    "basis": "Reported G61/i5/Touring and shared text do not independently join the supplied candidate to the model-scoped configurator family."
+  },
+  "qualification": {
+    "status": "unqualified",
+    "registryEdited": false,
+    "profileActivations": 0,
+    "newSourceObservations": 0,
+    "newConfigurations": 0,
+    "historicalDistinctConfigurations": 3,
+    "fiveWmiCoverageProved": false,
+    "everySchemeModelCoverageProved": false
+  },
+  "retention": {
+    "allowed": "Arbitrary observation IDs, non-personal shared type/format facts, explicit artifact hashes and local source locators.",
+    "excluded": "Real VINs, plates, individual serials, identifier hashes/URLs/captures and the individual observed position-nine check character."
+  },
+  "rows": [
+    {
+      "id": "model-code",
+      "field": "Configurator model code",
+      "configuratorValue": "T5MJ",
+      "candidateValue": null,
+      "status": "observed-literal",
+      "confidence": "high for the selected model-scoped configuration",
+      "evidence": [
+        {
+          "sourceId": "observation",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/modelSelection/selection/modelCode",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-05T16:29:12.119Z",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "literal retained source field"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "200",
+            "contains": "UK-OBS-004"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Independently match the candidate exact derivative to this catalogue model; no candidate model code is established."
+    },
+    {
+      "id": "ag-code",
+      "field": "AG model code",
+      "configuratorValue": "72HH",
+      "candidateValue": null,
+      "status": "observed-literal",
+      "confidence": "high for catalogue literal; candidate join unqualified",
+      "evidence": [
+        {
+          "sourceId": "observation",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/modelSelection/selection/agModelCode",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-05T16:29:12.119Z",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "literal retained source field"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "185",
+            "contains": "No `AG code + 0` rule"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Establish the candidate AG/model association independently; do not derive a VIN descriptor."
+    },
+    {
+      "id": "catalogue-range",
+      "field": "Catalogue map key",
+      "configuratorValue": "G61E",
+      "candidateValue": null,
+      "status": "observed-literal",
+      "confidence": "high for catalogue literal",
+      "evidence": [
+        {
+          "sourceId": "observation",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/modelSelection/selection/catalogueRangeKey",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-05T16:29:12.119Z",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "literal retained source field"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "191",
+            "contains": "separate fields"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Keep map key separate from generation and payload model range; match the candidate through independent evidence."
+    },
+    {
+      "id": "payload-range",
+      "field": "Payload model range",
+      "configuratorValue": "G61",
+      "candidateValue": "G61 (reported generation; separate semantic field)",
+      "status": "observed-literal",
+      "confidence": "high for payload literal; reported only for candidate generation",
+      "evidence": [
+        {
+          "sourceId": "observation",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/modelSelection/selection/modelRangeField",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-05T16:29:12.119Z",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "literal retained source field"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "200",
+            "contains": "UK-OBS-004"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "checklist",
+          "locator": {
+            "kind": "line",
+            "value": "10",
+            "contains": "G61 Touring"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Confirm the relation without substituting a generation label for a range key or descriptor."
+    },
+    {
+      "id": "reported-generation",
+      "field": "Candidate generation",
+      "configuratorValue": null,
+      "candidateValue": "G61",
+      "status": "reported-only",
+      "confidence": "single supplied report",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "200",
+            "contains": "UK-OBS-004"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "checklist",
+          "locator": {
+            "kind": "line",
+            "value": "10",
+            "contains": "G61 Touring"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Corroborate exact generation with independently matched vehicle/type evidence."
+    },
+    {
+      "id": "reported-model",
+      "field": "Candidate model",
+      "configuratorValue": null,
+      "candidateValue": "i5",
+      "status": "reported-only",
+      "confidence": "single supplied report",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "200",
+            "contains": "UK-OBS-004"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "checklist",
+          "locator": {
+            "kind": "line",
+            "value": "10",
+            "contains": "G61 Touring"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Corroborate model and exact derivative independently; source pages were not checked."
+    },
+    {
+      "id": "reported-body",
+      "field": "Candidate body",
+      "configuratorValue": null,
+      "candidateValue": "Touring",
+      "status": "reported-only",
+      "confidence": "single supplied report",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "200",
+            "contains": "UK-OBS-004"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "checklist",
+          "locator": {
+            "kind": "line",
+            "value": "10",
+            "contains": "G61 Touring"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "registry",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/profiles/2/binding/body",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-01",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "versioned registry snapshot; applicability limited to its explicit bindings"
+        }
+      ],
+      "unresolvedRequirement": "Confirm body and bounded reusable profile; a G60 Sedan reference does not establish G61 Touring."
+    },
+    {
+      "id": "derivative",
+      "field": "Exact derivative",
+      "configuratorValue": null,
+      "candidateValue": null,
+      "status": "unresolved",
+      "confidence": "no independent candidate derivative proof",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "177",
+            "contains": "`72HH` as i5 eDrive40 model code"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "200",
+            "contains": "UK-OBS-004"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "checklist",
+          "locator": {
+            "kind": "line",
+            "value": "10",
+            "contains": "G61 Touring"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Match the exact derivative between advert, lookup and selected model. Retained primary product context labels 72HH as i5 eDrive40 model code only; this does not establish UK-OBS-004 derivative."
+    },
+    {
+      "id": "powertrain",
+      "field": "Exact powertrain / engine code",
+      "configuratorValue": null,
+      "candidateValue": null,
+      "status": "unresolved",
+      "confidence": "i5 report does not establish exact technical binding",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "212",
+            "contains": "Exact i5 engine/drive badges remain unconfirmed"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "checklist",
+          "locator": {
+            "kind": "line",
+            "value": "10",
+            "contains": "G61 Touring"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "registry",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/profiles/2/binding/powertrain",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-01",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "versioned registry snapshot; applicability limited to its explicit bindings"
+        }
+      ],
+      "unresolvedRequirement": "Confirm candidate engine/powertrain and applicable model/era; do not import the US G60 reference technical labels."
+    },
+    {
+      "id": "drive",
+      "field": "Drive",
+      "configuratorValue": null,
+      "candidateValue": null,
+      "status": "unresolved",
+      "confidence": "not independently established",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "212",
+            "contains": "Exact i5 engine/drive badges remain unconfirmed"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "222",
+            "contains": "drive/transmission"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Corroborate exact drive for candidate and selected derivative."
+    },
+    {
+      "id": "transmission",
+      "field": "Transmission",
+      "configuratorValue": null,
+      "candidateValue": null,
+      "status": "unresolved",
+      "confidence": "not independently established",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "222",
+            "contains": "drive/transmission"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "registry",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/profiles/2/binding/transmission",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-01",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "versioned registry snapshot; applicability limited to its explicit bindings"
+        }
+      ],
+      "unresolvedRequirement": "Corroborate exact transmission; unknown reference transmission cannot silently join to a known candidate."
+    },
+    {
+      "id": "source-page-match",
+      "field": "Independent advert-to-lookup match",
+      "configuratorValue": null,
+      "candidateValue": false,
+      "status": "unresolved",
+      "confidence": "reported pair; pages not independently checked",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "200",
+            "contains": "UK-OBS-004"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "212",
+            "contains": "source-page matching unverified"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "checklist",
+          "locator": {
+            "kind": "line",
+            "value": "22",
+            "contains": "not independently reopened"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Independently match candidate source pages transiently under a separately admitted plan."
+    },
+    {
+      "id": "requested-market",
+      "field": "Requested configurator market",
+      "configuratorValue": "GB",
+      "candidateValue": null,
+      "status": "context-only",
+      "confidence": "high for request context only",
+      "evidence": [
+        {
+          "sourceId": "observation",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/requestedContext/marketRequest",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-05T16:29:12.119Z",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "literal retained source field"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "212",
+            "contains": "UK/RHD/import context"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Confirm candidate UK-market specification separately; request market is not individual market evidence."
+    },
+    {
+      "id": "requested-locale",
+      "field": "Requested configurator locale",
+      "configuratorValue": "en-GB",
+      "candidateValue": null,
+      "status": "context-only",
+      "confidence": "high for request locale only",
+      "evidence": [
+        {
+          "sourceId": "observation",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/requestedContext/localeRequest",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-05T16:29:12.119Z",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "literal retained source field"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "222",
+            "contains": "UK registration alone does not exclude an import"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Locale does not establish candidate market, steering or import history."
+    },
+    {
+      "id": "confirmed-market",
+      "field": "Confirmed candidate market",
+      "configuratorValue": null,
+      "candidateValue": null,
+      "status": "unresolved",
+      "confidence": "no independent market confirmation",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "212",
+            "contains": "UK/RHD/import context"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "222",
+            "contains": "UK registration alone does not exclude an import"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Confirm GB specification independently; UK registration alone is insufficient."
+    },
+    {
+      "id": "steering-literal",
+      "field": "Source steering literal",
+      "configuratorValue": "RL",
+      "candidateValue": null,
+      "status": "observed-literal",
+      "confidence": "high for literal; semantics unqualified",
+      "evidence": [
+        {
+          "sourceId": "observation",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/modelSelection/selection/steeringLiteral",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-05T16:29:12.119Z",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "literal retained source field"
+        },
+        {
+          "sourceId": "observation",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/interpretation",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-05T16:29:12.119Z",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "literal retained source field"
+        },
+        {
+          "sourceId": "checklist",
+          "locator": {
+            "kind": "line",
+            "value": "10",
+            "contains": "G61 Touring"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Establish source-code semantics and separately confirm candidate steering; RL is not treated as universal RHD proof."
+    },
+    {
+      "id": "confirmed-steering",
+      "field": "Confirmed candidate steering",
+      "configuratorValue": null,
+      "candidateValue": null,
+      "status": "unresolved",
+      "confidence": "candidate RHD not confirmed",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "212",
+            "contains": "UK/RHD/import context"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "checklist",
+          "locator": {
+            "kind": "line",
+            "value": "10",
+            "contains": "G61 Touring"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Corroborate RHD independently and bind the same model/body/market/era."
+    },
+    {
+      "id": "import-status",
+      "field": "Candidate import status",
+      "configuratorValue": null,
+      "candidateValue": null,
+      "status": "unresolved",
+      "confidence": "not independently established",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "222",
+            "contains": "UK registration alone does not exclude an import"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Confirm import status separately from registration and market request."
+    },
+    {
+      "id": "source-observation-date",
+      "field": "Configurator source observation date",
+      "configuratorValue": "2026-11-05T16:29:12.119Z",
+      "candidateValue": null,
+      "status": "observed-literal",
+      "confidence": "high for retained observation timestamp",
+      "evidence": [
+        {
+          "sourceId": "observation",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/observedAt",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-05T16:29:12.119Z",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "literal retained source field"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "124",
+            "contains": "Store **model year separately"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Timestamp proves when the source was observed, not build/model/registration year."
+    },
+    {
+      "id": "candidate-report-date",
+      "field": "Candidate supplied/report date",
+      "configuratorValue": null,
+      "candidateValue": "2026-11-02",
+      "status": "reported-only",
+      "confidence": "documented supplied-pair date",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "200",
+            "contains": "UK-OBS-004"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "checklist",
+          "locator": {
+            "kind": "line",
+            "value": "10",
+            "contains": "G61 Touring"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Keep receipt date separate from source-page observation and all vehicle dates."
+    },
+    {
+      "id": "order-date",
+      "field": "Catalogue model order date",
+      "configuratorValue": "2026-11-01",
+      "candidateValue": null,
+      "status": "observed-literal",
+      "confidence": "high for source field",
+      "evidence": [
+        {
+          "sourceId": "observation",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/modelSelection/selection/orderDate",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-05T16:29:12.119Z",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "literal retained source field"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "124",
+            "contains": "catalogue order date"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "No actual production/model/registration date may be inferred from this field."
+    },
+    {
+      "id": "tree-effect-date",
+      "field": "Tree request effect date",
+      "configuratorValue": "2026-11-01",
+      "candidateValue": null,
+      "status": "context-only",
+      "confidence": "high for request field",
+      "evidence": [
+        {
+          "sourceId": "observation",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/requestedContext/treeRequestEffectDate",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-05T16:29:12.119Z",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "literal retained source field"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "124",
+            "contains": "catalogue effect date"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Keep requested tree date distinct from returned model effect and actual vehicle dates."
+    },
+    {
+      "id": "model-effect-date",
+      "field": "Returned model effect date",
+      "configuratorValue": "2027-01-05",
+      "candidateValue": null,
+      "status": "observed-literal",
+      "confidence": "high for source field",
+      "evidence": [
+        {
+          "sourceId": "observation",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/modelSelection/selection/effectDate",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-05T16:29:12.119Z",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "literal retained source field"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "124",
+            "contains": "A January 2027 catalogue effect does not establish MY2027"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "No MY2027 or actual build date is established by this future catalogue effect."
+    },
+    {
+      "id": "production-date",
+      "field": "Actual production date",
+      "configuratorValue": null,
+      "candidateValue": null,
+      "status": "unresolved",
+      "confidence": "no candidate-specific build evidence",
+      "evidence": [
+        {
+          "sourceId": "checklist",
+          "locator": {
+            "kind": "line",
+            "value": "10",
+            "contains": "G61 Touring"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "224",
+            "contains": "Keep registration, advertised year, model year, build date and catalogue dates separate"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Obtain separately labelled actual production date; catalogue dates are not a substitute."
+    },
+    {
+      "id": "production-era",
+      "field": "Applicable production era",
+      "configuratorValue": null,
+      "candidateValue": null,
+      "status": "unresolved",
+      "confidence": "no bounded candidate era",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "225",
+            "contains": "bounded model/body/powertrain/market/era profile"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "checklist",
+          "locator": {
+            "kind": "line",
+            "value": "34",
+            "contains": "steering/market/era semantics resolved"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Establish the applicable era needed for format, descriptor and plant allocation."
+    },
+    {
+      "id": "model-year",
+      "field": "Model year",
+      "configuratorValue": null,
+      "candidateValue": null,
+      "status": "unresolved",
+      "confidence": "no named source directly reports G61 model year",
+      "evidence": [
+        {
+          "sourceId": "checklist",
+          "locator": {
+            "kind": "line",
+            "value": "10",
+            "contains": "G61 Touring"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "214",
+            "contains": "latest eight as 2026 models"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "218",
+            "contains": "do not establish the true build/model year"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Do not infer from 2026 catalogue dates, position-ten zero or the later eight samples being reported as 2026."
+    },
+    {
+      "id": "registration-date",
+      "field": "Registration date",
+      "configuratorValue": null,
+      "candidateValue": null,
+      "status": "unresolved",
+      "confidence": "supplied registration pair does not establish a registration date",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "224",
+            "contains": "Keep registration, advertised year, model year, build date and catalogue dates separate"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "checklist",
+          "locator": {
+            "kind": "line",
+            "value": "10",
+            "contains": "G61 Touring"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Obtain explicit registration-date provenance without retaining the plate."
+    },
+    {
+      "id": "registration-year",
+      "field": "Registration year",
+      "configuratorValue": null,
+      "candidateValue": null,
+      "status": "unresolved",
+      "confidence": "no retained G61 registration-year fact",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "224",
+            "contains": "Keep registration, advertised year, model year, build date and catalogue dates separate"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "checklist",
+          "locator": {
+            "kind": "line",
+            "value": "10",
+            "contains": "G61 Touring"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Do not infer from plate/report date; retain only separately sourced non-personal date facts."
+    },
+    {
+      "id": "advertised-manufacture-date",
+      "field": "Advertised manufacture date",
+      "configuratorValue": null,
+      "candidateValue": null,
+      "status": "unresolved",
+      "confidence": "no G61 advert independently checked",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "200",
+            "contains": "UK-OBS-004"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "214",
+            "contains": "For the F95"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Obtain separately labelled advertised manufacture date if available; the F95 statement does not apply to G61."
+    },
+    {
+      "id": "advertised-manufacture-year",
+      "field": "Advertised manufacture year",
+      "configuratorValue": null,
+      "candidateValue": null,
+      "status": "unresolved",
+      "confidence": "no G61 advertised manufacture year retained",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "200",
+            "contains": "UK-OBS-004"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "214",
+            "contains": "For the F95"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "checklist",
+          "locator": {
+            "kind": "line",
+            "value": "30",
+            "contains": "all eight as 2026 models"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Do not transfer the F95 advertised 2026 manufacture report or later-eight report to UK-OBS-004."
+    },
+    {
+      "id": "wmi-literal",
+      "field": "Candidate WMI literal",
+      "configuratorValue": null,
+      "candidateValue": "WBY",
+      "status": "reported-only",
+      "confidence": "one sanitised positional observation",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "200",
+            "contains": "UK-OBS-004"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "191",
+            "contains": "separate fields"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Corroborate the complete bounded model/body/market/era association; WMI alone cannot establish derivative."
+    },
+    {
+      "id": "positions4to8-literal",
+      "field": "Candidate literal positions 4–8",
+      "configuratorValue": null,
+      "candidateValue": "72HH0",
+      "status": "reported-only",
+      "confidence": "one sanitised positional observation",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "200",
+            "contains": "UK-OBS-004"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "193",
+            "contains": "calling them a five-character VDS is conditional"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Corroborate independently; preserve as observed positions, not a qualified five-character VDS."
+    },
+    {
+      "id": "descriptor-boundaries",
+      "field": "Descriptor format boundaries / semantics",
+      "configuratorValue": null,
+      "candidateValue": null,
+      "status": "unresolved",
+      "confidence": "applicable format not established",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "128",
+            "contains": "WMI 3 + VDS 6 + VIS 8"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "130",
+            "contains": "WMI 3 + VDS 5"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "193",
+            "contains": "conditional on establishing"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Establish whether the applicable profile uses five VDS characters plus checksum or a different historical convention."
+    },
+    {
+      "id": "ag-descriptor-relation",
+      "field": "AG-to-VIN-descriptor mapping",
+      "configuratorValue": null,
+      "candidateValue": null,
+      "status": "unresolved",
+      "confidence": "shared text is not a derivation rule",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "185",
+            "contains": "No `AG code + 0` rule"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "216",
+            "contains": "no basis for a universal rule"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "observation",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/modelSelection/selection/agModelCode",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-05T16:29:12.119Z",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "literal retained source field"
+        }
+      ],
+      "unresolvedRequirement": "Obtain explicit BMW/type-approval mapping. Do not derive 72HH0 from 72HH or use their prefix as proof of exact vehicle identity."
+    },
+    {
+      "id": "position9-arithmetic",
+      "field": "Position-nine arithmetic result",
+      "configuratorValue": null,
+      "candidateValue": "matches modulo-11 calculation",
+      "status": "observed-arithmetic",
+      "confidence": "retained offline arithmetic outcome for one supplied candidate",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "200",
+            "contains": "UK-OBS-004"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "218",
+            "contains": "do not establish the position-nine rule"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Arithmetic success does not establish the applicable UK format/convention. Individual observed check character intentionally omitted."
+    },
+    {
+      "id": "position9-convention",
+      "field": "Applicable position-nine convention",
+      "configuratorValue": null,
+      "candidateValue": null,
+      "status": "unresolved",
+      "confidence": "checksum convention remains separate from arithmetic",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "116",
+            "contains": "Arithmetic correctness and profile applicability are separate"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "218",
+            "contains": "Never copy these observed check characters"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Establish applicable market/era format before enabling checksum-based generation; never copy the observed character."
+    },
+    {
+      "id": "position10-literal",
+      "field": "Candidate literal position ten",
+      "configuratorValue": null,
+      "candidateValue": "0",
+      "status": "reported-only",
+      "confidence": "one sanitised positional observation",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "200",
+            "contains": "UK-OBS-004"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "218",
+            "contains": "Avoid inserting the US `T` year character"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Corroborate literal in a second distinct consistent sample; no US T/V substitution."
+    },
+    {
+      "id": "position10-meaning",
+      "field": "Position-ten meaning",
+      "configuratorValue": null,
+      "candidateValue": null,
+      "status": "unresolved",
+      "confidence": "literal zero does not establish year or universal zero convention",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "218",
+            "contains": "universal BMW zero convention"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "130",
+            "contains": "US position-ten model-year convention universal"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Obtain bounded BMW/type-approval format evidence; actual model year remains separate."
+    },
+    {
+      "id": "plant-literal",
+      "field": "Candidate literal position eleven",
+      "configuratorValue": null,
+      "candidateValue": "C",
+      "status": "reported-only",
+      "confidence": "one sanitised positional observation",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "200",
+            "contains": "UK-OBS-004"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Corroborate candidate and applicable model/era allocation independently."
+    },
+    {
+      "id": "plant-dictionary",
+      "field": "Independent plant dictionary",
+      "configuratorValue": null,
+      "candidateValue": "C = Dingolfing, Germany",
+      "status": "context-only",
+      "confidence": "retained manufacturer-filed dictionary context",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "236",
+            "contains": "Dingolfing, Germany"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "retained dictionary; allocation explicitly constrained"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "249",
+            "contains": "i5 Sedan/Touring production at Dingolfing"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "retained production-source context; no fresh verification"
+        }
+      ],
+      "unresolvedRequirement": "Dictionary/production context does not establish candidate-specific or bounded GB G61 era allocation."
+    },
+    {
+      "id": "plant-allocation",
+      "field": "Bounded UK model/era plant allocation",
+      "configuratorValue": null,
+      "candidateValue": null,
+      "status": "unresolved",
+      "confidence": "production context is insufficient for activation",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "245",
+            "contains": "Do not cross-join"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "249",
+            "contains": "not proof of a UK VDS"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "225",
+            "contains": "bounded model/body/powertrain/market/era profile"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Corroborate plant allocation for exact G61 derivative/GB/RHD/era; do not cross-join the dictionary."
+    },
+    {
+      "id": "serial-shape",
+      "field": "Candidate serial shape",
+      "configuratorValue": null,
+      "candidateValue": "ANNNNN (one letter followed by five digits)",
+      "status": "reported-only",
+      "confidence": "one shared shape; no individual serial retained",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "200",
+            "contains": "UK-OBS-004"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "226",
+            "contains": "Discard full VINs"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "269",
+            "contains": "No supplied or observed full real VIN"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Corroborate applicable model/era sequence shape; no observed suffix/serial/identifier hash may become a template or seed."
+    },
+    {
+      "id": "sample-count",
+      "field": "Distinct corroborating G61 sample count",
+      "configuratorValue": null,
+      "candidateValue": {
+        "candidateObservations": 1,
+        "additionalDistinctCorroborations": 0
+      },
+      "status": "unqualified",
+      "confidence": "one candidate; no independent matched G61 corroboration",
+      "evidence": [
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "200",
+            "contains": "UK-OBS-004"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "rules",
+          "locator": {
+            "kind": "line",
+            "value": "223",
+            "contains": "second distinct, consistent vehicle"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        },
+        {
+          "sourceId": "checklist",
+          "locator": {
+            "kind": "line",
+            "value": "34",
+            "contains": "One sample identifies a candidate pattern"
+          },
+          "sourceDate": "2026-11-02",
+          "observedAt": "2026-11-02",
+          "dateBasis": "Report/receipt date retained in local research; not independent page observation.",
+          "confidence": "single user-reported candidate; not independently source-matched"
+        }
+      ],
+      "unresolvedRequirement": "Seek a second distinct matched vehicle and preferred manufacturer/type-approval evidence under a separately admitted finite plan."
+    },
+    {
+      "id": "constructibility",
+      "field": "Existing model-scoped configuration",
+      "configuratorValue": {
+        "constructible": true,
+        "selectedElements": 48,
+        "baseOptions": 47,
+        "accessories": 1,
+        "additionalConfigurations": 0
+      },
+      "candidateValue": null,
+      "status": "context-only",
+      "confidence": "exact known complete selection refreshed; no individual vehicle match",
+      "evidence": [
+        {
+          "sourceId": "observation",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/build/constructible",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-05T16:29:12.119Z",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "literal retained source field"
+        },
+        {
+          "sourceId": "observation",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/build/selectedElementCount",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-05T16:29:12.119Z",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "literal retained source field"
+        },
+        {
+          "sourceId": "observation",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/build/baseOptionCount",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-05T16:29:12.119Z",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "literal retained source field"
+        },
+        {
+          "sourceId": "observation",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/build/selectedAccessories",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-05T16:29:12.119Z",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "literal retained source field"
+        },
+        {
+          "sourceId": "observation",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/additionalConfigurations",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-05T16:29:12.119Z",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "literal retained source field"
+        },
+        {
+          "sourceId": "observation",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/build/verifiedFitted",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-05T16:29:12.119Z",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "literal retained source field"
+        }
+      ],
+      "unresolvedRequirement": "Do not transfer model-scoped solver proof to candidate identity, verified equipment, reusable UK profile or additional corpus coverage."
+    },
+    {
+      "id": "registry-compatibility",
+      "field": "Enabled compatible GB/RHD G61 profile",
+      "configuratorValue": null,
+      "candidateValue": false,
+      "status": "incompatible",
+      "confidence": "direct registry inspection; no compatible enabled binding",
+      "evidence": [
+        {
+          "sourceId": "registry",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/registryVersion",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": null,
+          "dateBasis": "Source publication/observation date not stated for this field.",
+          "confidence": "versioned registry snapshot; applicability limited to its explicit bindings"
+        },
+        {
+          "sourceId": "registry",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/identityScope",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": null,
+          "dateBasis": "Source publication/observation date not stated for this field.",
+          "confidence": "versioned registry snapshot; applicability limited to its explicit bindings"
+        },
+        {
+          "sourceId": "registry",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/profiles",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": null,
+          "dateBasis": "Source publication/observation date not stated for this field.",
+          "confidence": "versioned registry snapshot; applicability limited to its explicit bindings"
+        },
+        {
+          "sourceId": "registry",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/profiles/2/binding",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-01",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "versioned registry snapshot; applicability limited to its explicit bindings"
+        },
+        {
+          "sourceId": "registry",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/profiles/5/profileId",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-01",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "versioned registry snapshot; applicability limited to its explicit bindings"
+        },
+        {
+          "sourceId": "registry",
+          "locator": {
+            "kind": "json-pointer",
+            "value": "/profiles/6/profileId",
+            "contains": null
+          },
+          "sourceDate": null,
+          "observedAt": "2026-11-01",
+          "dateBasis": "Retained source observation date; no fresh lookup.",
+          "confidence": "versioned registry snapshot; applicability limited to its explicit bindings"
+        }
+      ],
+      "unresolvedRequirement": "Registry has five enabled US/LHD references and only UK-OBS-001/002 candidates. UK-OBS-004 is absent. Qualify required facts before proposing any separate profile change."
+    }
+  ]
+}

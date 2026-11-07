@@ -1,0 +1,513 @@
+{
+  "state": "incomplete",
+  "commandExitCode": 1,
+  "run": "journey-desktop-0c607ead664842f1b8775d8dc3106c54",
+  "scope": "one explicitly granted third changed-input desktop confirmation; collection and evidence publication only after cleanup",
+  "sourcePlanSha256": "0b6c8c636764ec21fee54fcb630b2567e5fa25f36b750f724386ebd21a6b433f",
+  "sourcePinCount": 695,
+  "selectedProductHelperFiles": 293,
+  "scenarioSha256": "f109c63e26f4477267372f2f89c0b032fab1ecdea07827b98ddd48f8404a0a76",
+  "sourceUnchanged": true,
+  "allPinsRecheckedAtCollection": true,
+  "receiptSha256": "3f31cd59b3a5f26c86ebf6b5fc47636fcac54c58a08052ce639d18a7f4525357",
+  "resultsSha256": "9ff9e512d340698a7ca5b2e92d034f9944bc6a6c11b806eb1eb3741eac43caff",
+  "boundary": "Existing current HTTPS launcher and delivered HTML/modules; explicit memory mode; untrusted local self-signed certificate accepted only by this test browser context. No certificate-trust/native/live acceptance claim.",
+  "setup": "Fresh empty browser context; first ordinary HTML GET adopts actual bootstrap cookies; presenter UI switches actors. No cookie injection or policy overrides.",
+  "checksPassedMarkers": [
+    "Rendered help and review are read-only; one explicit confirmation creates one case",
+    "Actual presenter Greg queue mounts once; review is read-only; one confirmation records the manual update"
+  ],
+  "additionalAssertionsReachedBeforeFinalAudit": [
+    "Same-URL presenter switch back to Paula completed a fresh document navigation and preserved run ID.",
+    "Ordinary help navigation and actual same-page reload both completed; all five document responses were HTTP 200 with authorityOnHtml false.",
+    "After reload, employee cases equalled every persisted Greg case field apart from his display-only employeeName.",
+    "Reloaded visible case contained original ID/reason, in-progress status, owner, next action, UTC due time and manual decision; no-priority copy was present.",
+    "Keyboard-opened dated history contained Greg principal ID, with visible focus in fifth capture.",
+    "Exactly one help POST and one case-update POST were asserted after reload; scoped secure/HttpOnly session and bootstrap cookie assertions passed."
+  ],
+  "reportShapeNote": "Only two explicit check markers were emitted. The reload marker, report.case assignment and passed state follow the failed final error audit and were never reached; reached reload assertions are evidenced by source ordering, five confirmed transitions, cookie observations and the fifth capture.",
+  "posts": [
+    {
+      "requestId": 49,
+      "path": "/api/gcsp/cases",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "requestId": 53,
+      "path": "/api/gcsp/session/switch",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "requestId": 145,
+      "path": "/api/gcsp/scheme-team/cases/update",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "requestId": 149,
+      "path": "/api/gcsp/session/switch",
+      "method": "POST",
+      "status": 200
+    }
+  ],
+  "draftResponses": [
+    {
+      "requestId": 231,
+      "path": "/api/gcsp/manual/draft",
+      "method": "GET",
+      "status": 404
+    }
+  ],
+  "errors": [
+    {
+      "kind": "http",
+      "path": "/api/gcsp/manual/draft",
+      "status": 404
+    },
+    {
+      "kind": "console",
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "kind": "scenario",
+      "message": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n+ [\n+   {\n+     kind: 'http',\n+     path: '/api/gcsp/manual/draft',\n+     status: 404\n+   },\n+   {\n+     kind: 'console',\n+     message: 'Failed to load resource: the server responded with a status of 404 (Not Found)'\n+   }\n+ ]\n- []\n\n    at runCaseJourney (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/scenario.mjs:221:45)\n    at async file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/browser-runner.mjs:52:17"
+    },
+    {
+      "kind": "request",
+      "id": 37,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:49826/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 1,
+      "failureDocumentURL": "https://localhost:49826/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "kind": "request",
+      "id": 36,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:49826/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 1,
+      "failureDocumentURL": "https://localhost:49826/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "kind": "request",
+      "id": 277,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:49826/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 4,
+      "failureDocumentURL": "https://localhost:49826/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "kind": "request",
+      "id": 276,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:49826/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 4,
+      "failureDocumentURL": "https://localhost:49826/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    }
+  ],
+  "requestFailures": [
+    {
+      "id": 37,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:49826/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 1,
+      "failureDocumentURL": "https://localhost:49826/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "id": 36,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:49826/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 1,
+      "failureDocumentURL": "https://localhost:49826/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "id": 277,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:49826/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 4,
+      "failureDocumentURL": "https://localhost:49826/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "id": 276,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:49826/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 4,
+      "failureDocumentURL": "https://localhost:49826/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "id": 326,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:49826/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 5,
+      "failureDocumentURL": "https://localhost:49826/gcsp-help.html",
+      "expectedNavigationCancellation": true
+    },
+    {
+      "id": 325,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:49826/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 5,
+      "failureDocumentURL": "https://localhost:49826/gcsp-help.html",
+      "expectedNavigationCancellation": true
+    }
+  ],
+  "transitions": [
+    {
+      "id": 1,
+      "from": "about:blank",
+      "target": "https://localhost:49826/gcsp-help.html",
+      "action": "Ordinary help navigation",
+      "confirmed": true
+    },
+    {
+      "id": 2,
+      "from": "https://localhost:49826/gcsp-help.html",
+      "target": "https://localhost:49826/gcsp-presenter.html",
+      "action": "Presenter UI switch to demo-greg",
+      "confirmed": true
+    },
+    {
+      "id": 3,
+      "from": "https://localhost:49826/gcsp-presenter.html",
+      "target": "https://localhost:49826/gcsp-presenter.html",
+      "action": "Presenter UI switch to demo-paula",
+      "confirmed": true
+    },
+    {
+      "id": 4,
+      "from": "https://localhost:49826/gcsp-presenter.html",
+      "target": "https://localhost:49826/gcsp-help.html",
+      "action": "Ordinary help navigation",
+      "confirmed": true
+    },
+    {
+      "id": 5,
+      "from": "https://localhost:49826/gcsp-help.html",
+      "target": "https://localhost:49826/gcsp-help.html",
+      "action": "Paula reload",
+      "confirmed": true
+    }
+  ],
+  "navigations": [
+    {
+      "path": "/gcsp-help.html",
+      "status": 200,
+      "authorityOnHtml": false
+    },
+    {
+      "path": "/gcsp-presenter.html",
+      "status": 200,
+      "authorityOnHtml": false
+    },
+    {
+      "path": "/gcsp-presenter.html",
+      "status": 200,
+      "authorityOnHtml": false
+    },
+    {
+      "path": "/gcsp-help.html",
+      "status": 200,
+      "authorityOnHtml": false
+    },
+    {
+      "path": "/gcsp-help.html",
+      "status": 200,
+      "authorityOnHtml": false
+    }
+  ],
+  "cookieAttributes": [
+    {
+      "name": "gcsp_presenter",
+      "path": "/api/gcsp",
+      "secure": true,
+      "httpOnly": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "gcsp_session",
+      "path": "/api/gcsp",
+      "secure": true,
+      "httpOnly": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "GCSP_LOCAL_BOOTSTRAP",
+      "path": "/",
+      "secure": true,
+      "httpOnly": true,
+      "sameSite": "Strict"
+    }
+  ],
+  "sourceDiagnosis": {
+    "manualDraft404": "Registered GET /api/gcsp/manual/draft calls readDraft; no saved draft returns not-found/manual-draft, mapped by the common HTTP handler to 404. The account adapter preserves non-ok envelopes and account rendering/start controls accept not-found. Thus the observed 404 is consistent with a normal absent-draft contract; the actual response JSON was not retained, so its exact envelope is unproved. The HTTP and console observations remain unchanged in errors.",
+    "readAborts": "Six exact GET aborts retained. Requests 325/326 match the source URL of confirmed deliberate reload transition 5 and are classified expectedNavigationCancellation true. Requests 36/37 (transition 1) and 276/277 (transition 4) originate in the new help document, not the departing document, and remain false/unclassified in errors. Source shows connected/attribute callbacks can remount the help element and teardown aborts shell reads; this is a hypothesis for the four remount-era aborts, without runtime lifecycle proof.",
+    "files": [
+      {
+        "path": "server/gcsp/manual-context/index.js",
+        "sha256": "3e694f3a68b9d3c9f40b44ddb785bec2edce3b3ada43d491995be77a2930fd43",
+        "includedInRunPins": true
+      },
+      {
+        "path": "server/gcsp/manual-context/http.js",
+        "sha256": "d49bbb756447e8b91ee90dd54e2240914b45e554d79428e54345a59585d4dc37",
+        "includedInRunPins": true
+      },
+      {
+        "path": "server/gcsp/identity/http.js",
+        "sha256": "86d3aa6bfc13ae6773c3861b7ef6c72fecfd31270b7c4f0609e240bd017b713e",
+        "includedInRunPins": true
+      },
+      {
+        "path": "blocks/gcsp/account/http-adapter.js",
+        "sha256": "eb89226f9ab8ff04b5c43dfc3c91b6e57c233ef88e273eaf8985895e79106453",
+        "includedInRunPins": true
+      },
+      {
+        "path": "blocks/gcsp/account/gcsp-account.js",
+        "sha256": "6e55cfc13a86b715584ce85a76315248d61ae33bd5526399b64f87ad2b53c80c",
+        "includedInRunPins": true
+      },
+      {
+        "path": "blocks/gcsp/cases/gcsp-help.js",
+        "sha256": "b4eb4bc9b5c895240916efea140607b300656f700e22ad7a6e72c6ff3b05ae8a",
+        "includedInRunPins": true
+      },
+      {
+        "path": "blocks/gcsp/employee/gcsp-employee.js",
+        "sha256": "fae4437b83d48338ee4435738e3b65efc9b4955f1b0279255ed185a17ab1082b",
+        "includedInRunPins": true
+      }
+    ],
+    "productRepair": false,
+    "errorSuppression": false
+  },
+  "captures": [
+    {
+      "file": "third-01-paula-help.png",
+      "sha256": "271334259238d9cdee9be3d3b67872eda88e4792f019a0b1cfb7cb1a09fb8ac5",
+      "bytes": 56954,
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "visible": true
+      },
+      "shape": {
+        "width": 1280,
+        "scrollWidth": 1280,
+        "status": [
+          "Presenter controls ready",
+          "",
+          "",
+          "No renewal caseHelp is available if you need the scheme team to review your renewal."
+        ]
+      },
+      "visuallyInspected": true
+    },
+    {
+      "file": "third-02-paula-confirmation.png",
+      "sha256": "fe2ce5464a63e2f5eaefe73cf51f9e3fbf71834c7648ed89114b442e8d11f3af",
+      "bytes": 80806,
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "visible": true
+      },
+      "shape": {
+        "width": 1280,
+        "scrollWidth": 1280,
+        "status": [
+          "Presenter controls ready",
+          "",
+          "",
+          "No renewal caseHelp is available if you need the scheme team to review your renewal."
+        ]
+      },
+      "visuallyInspected": true
+    },
+    {
+      "file": "third-03-greg-actual-queue.png",
+      "sha256": "cfb2e73bce830f3372d245883b4f9d323dbc21396be4924a0e17e209f3331d2f",
+      "bytes": 411492,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-selection",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "visible": true
+      },
+      "shape": {
+        "width": 1280,
+        "scrollWidth": 1280,
+        "status": [
+          "Presenter controls ready",
+          "",
+          "Figures updated for 5 Nov 2026, 09:00 GMT.",
+          "DemandNo briefs yetNo employee has confirmed a brief yet, so there is no demand to show. Stock figures are still current.",
+          "Draft. Change values, then preview their effect.",
+          "1 renewal case loaded."
+        ]
+      },
+      "visuallyInspected": true
+    },
+    {
+      "file": "third-04-greg-update-review.png",
+      "sha256": "2e55c59fae605ba73e3c661579f4344030429be2635bfa36078c4d30a6ce62d5",
+      "bytes": 612057,
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "visible": true
+      },
+      "shape": {
+        "width": 1280,
+        "scrollWidth": 1280,
+        "status": [
+          "Presenter controls ready",
+          "",
+          "Figures updated for 5 Nov 2026, 09:00 GMT.",
+          "DemandNo briefs yetNo employee has confirmed a brief yet, so there is no demand to show. Stock figures are still current.",
+          "Draft. Change values, then preview their effect.",
+          "Current case options loaded."
+        ]
+      },
+      "visuallyInspected": true
+    },
+    {
+      "file": "third-05-paula-reload-history.png",
+      "sha256": "e48a8932c042d9872362683f806bbe5f3dfbe9a80f69304f92d107cb31a9eb56",
+      "bytes": 169775,
+      "focus": {
+        "tag": "SUMMARY",
+        "id": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "visible": true
+      },
+      "shape": {
+        "width": 1280,
+        "scrollWidth": 1280,
+        "status": [
+          "Presenter controls ready",
+          "",
+          ""
+        ]
+      },
+      "visuallyInspected": true
+    }
+  ],
+  "keyboardActions": 58,
+  "admitted": {
+    "disk": 134217728,
+    "ram": 2383036416
+  },
+  "peakRecursiveRssBytes": 1965408256,
+  "peakCombinedBytes": 11794232,
+  "compatibilityException": "OneDrive unavailable; bounded local Chrome profile/IPC compatibility working set; small local retained evidence.",
+  "limits": {
+    "chromeInstances": 1,
+    "combinedBytes": 134217728,
+    "logBytes": 2097152,
+    "minimumRssBytes": 2147483648,
+    "requestedRssBytes": 2684354560,
+    "seconds": 120,
+    "workers": 1
+  },
+  "cleanup": {
+    "ownedPidEntries": 18,
+    "processGroups": [
+      "85863"
+    ],
+    "ownedPidsAbsent": true,
+    "groupsAbsent": true,
+    "profileArgumentsAbsent": true,
+    "portsClosed": {
+      "49826": true,
+      "49829": true
+    },
+    "scratchAbsent": true,
+    "tokenAbsent": true,
+    "rawHostRows": 0,
+    "sourcePinsPreserved": true,
+    "noNarrowAllocated": true,
+    "cleanup": {
+      "dependencyLinks": [],
+      "groupsAbsent": true,
+      "liveIdentities": [],
+      "monitorJoined": true,
+      "openFilesAbsent": true,
+      "portsClosed": {
+        "49826": true,
+        "49829": true
+      },
+      "profilePathProcesses": [],
+      "readersJoined": true,
+      "reservationReleased": true,
+      "scratchAbsent": true
+    }
+  },
+  "independentRootCleanupReceipt": ".claude/coordination/fucq122-third-desktop-root-collection-1725.json",
+  "preflightRecordNote": "The standalone script intended to create third-desktop-selection.json did not create it and is not claimed to have passed. The existing next-desktop-selection/current catalogue supplied the changed input; the actual supervisor independently validated all 695 pins before allocation. Manifest/finalizer and owned resource contract were created normally.",
+  "separateBug": {
+    "key": "FUCQ-150",
+    "severity": "Medium",
+    "state": "To Do",
+    "relation": "Relates FUCQ-122",
+    "attachmentId": "937236",
+    "repairOrBlockingLinkAdded": false
+  },
+  "remaining": [
+    "Overall desktop runner remains incomplete/exit 1; retained draft 404/console observation and four unclassified aborted reads were not waived.",
+    "375px browser coverage and keyboard/focus/status/visual coverage of every original state remain unrun in this allocation.",
+    "Activity/order-progress help placement and adding to an existing case remain unproved by this journey.",
+    "Queue full row-field and meaningful deadline/status sorting acceptance remain unproved; FUCQ-150 width defect is independently backlogged.",
+    "Actual available-car, employee-approved single-preference relaxation, later-release and policy-gated extension integration remain outside this journey.",
+    "Trigger-open, waiting-for-Paula, resolved/closed, empty queue, loading/source-failure and remaining original state/remedy matrix remain outside this journey.",
+    "Whole corrected npm suite remains FAIL (1590 total, 1569 passed, 16 failed, five native PostgreSQL skipped); earlier launcher/controller and CookieJar passes retain their recorded scope.",
+    "Native PostgreSQL, actual producer/stock/decline/lifecycle integration and FUCQ-149 acceptance remain outside this allocation; no compound original AC is marked complete."
+  ],
+  "noFurtherRuntimeAuthorized": true,
+  "narrowRunExecuted": false,
+  "fullSuiteRerun": false,
+  "agentsSpawned": 0
+}

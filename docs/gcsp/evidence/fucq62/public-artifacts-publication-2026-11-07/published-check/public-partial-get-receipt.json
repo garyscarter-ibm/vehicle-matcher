@@ -1,0 +1,89 @@
+{
+  "status": "six-published-assets-public-get-passed",
+  "runtime": "v26.7.0",
+  "releaseId": "8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9",
+  "files": [
+    {
+      "name": "store--active.json",
+      "bytes": 374,
+      "sha256": "69d2b352a51f3861855728a0eb73235b589d3ece8a66bd8f9f742f78fa4b368e"
+    },
+    {
+      "name": "store--identity-inventory.json",
+      "bytes": 197925,
+      "sha256": "b103f85885cbb8ee46f555acadb28f9a75999a2ba2d88f1b93e8f9175ce16f0e"
+    },
+    {
+      "name": "store--last-good.json",
+      "bytes": 198,
+      "sha256": "fe9e34bce7ba3ce131be4e6aa8dce7fc9143d4e4d980a8ae3c35c48311459916"
+    },
+    {
+      "name": "store--versions--8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9--configurations.jsonl",
+      "bytes": 6500952,
+      "sha256": "da5c54020b9ccf2eddef8160a8df4e501f7ce57884b195bd275e242ff843f2f5"
+    },
+    {
+      "name": "store--versions--8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9--manifest.json",
+      "bytes": 3476,
+      "sha256": "8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9"
+    },
+    {
+      "name": "store--versions--8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9--vins.jsonl",
+      "bytes": 2565,
+      "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd"
+    }
+  ],
+  "requests": [
+    {
+      "host": "github.com",
+      "status": 302
+    },
+    {
+      "host": "release-assets.githubusercontent.com",
+      "status": 200
+    },
+    {
+      "host": "github.com",
+      "status": 302
+    },
+    {
+      "host": "release-assets.githubusercontent.com",
+      "status": 200
+    },
+    {
+      "host": "github.com",
+      "status": 302
+    },
+    {
+      "host": "release-assets.githubusercontent.com",
+      "status": 200
+    },
+    {
+      "host": "github.com",
+      "status": 302
+    },
+    {
+      "host": "release-assets.githubusercontent.com",
+      "status": 200
+    },
+    {
+      "host": "github.com",
+      "status": 302
+    },
+    {
+      "host": "release-assets.githubusercontent.com",
+      "status": 200
+    },
+    {
+      "host": "github.com",
+      "status": 302
+    },
+    {
+      "host": "release-assets.githubusercontent.com",
+      "status": 200
+    }
+  ],
+  "completePackage": false,
+  "fullRestoreAnd351Checks": "unrun: zero-byte asset upload rejected"
+}

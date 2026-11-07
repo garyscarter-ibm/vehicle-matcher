@@ -1,0 +1,286 @@
+{
+  "schemaVersion": "f59-versioned-source-impact-plan.v1",
+  "status": "proposed-documentation-only-unadmitted",
+  "date": "2026-11-06",
+  "baseline": "ee4c0f76dc7f3536c9ef73041d62408b33a11397",
+  "admission": false,
+  "accepted": [],
+  "examplePayloads": "None; any future JSON fixture is synthetic and unadmitted.",
+  "designStep0": "Existing components/stores/connections unchanged; internal additive protocol; no draw.io operations.",
+  "preserve": [
+    "F39-v1-keys-and-registration",
+    "historical-artifacts",
+    "canonical-configurationId",
+    "F60-historical-ingress",
+    "spent-allocations"
+  ],
+  "ports": [
+    {
+      "file": "server/vehicle-evidence/bmw-catalogue-adapter.js",
+      "functions": [
+        "bmwCatalogueLookupIdentity",
+        "validSnapshot",
+        "createBmwCatalogueAdapter",
+        "presentBmwCatalogue"
+      ],
+      "change": "Explicit v2 dispatch and registered digest-bound snapshots; preserve v1 branches."
+    },
+    {
+      "file": "scripts/gcsp/public-bmw-source.mjs",
+      "functions": [
+        "publicBmwOperations",
+        "publicBmwObservation"
+      ],
+      "change": "Versioned safe complete solver evidence and exact source associations; preserve optional unknowns."
+    },
+    {
+      "file": "scripts/gcsp/bmw-source-qualification.mjs",
+      "functions": [
+        "qualifyBmwSourceFields"
+      ],
+      "change": "Reuse field proof; add separate selection/binding qualification, never promote request scope."
+    },
+    {
+      "file": "scripts/gcsp/collect-fleet.mjs",
+      "functions": [
+        "validateSolverResponse",
+        "createPublicCollector"
+      ],
+      "change": "Versioned admission and checkpoint validation through the existing common session."
+    },
+    {
+      "file": "scripts/gcsp/enrich-fleet.mjs",
+      "functions": [
+        "context",
+        "equipment",
+        "enrichConfiguration",
+        "enrichFleet",
+        "proposed:buildSourceCorpusCandidate"
+      ],
+      "change": "V2 exact equality; selection/quantity completeness; partial unknown measurements; pure actual F54 candidate assembly, preserving historical ingress."
+    },
+    {
+      "file": "server/gcsp/vehicle-evidence/corpus-publisher.js",
+      "functions": [
+        "validateConfiguration"
+      ],
+      "change": "V2 envelope branch; exact canonical/binding/equipment crosschecks; unchanged v1 history."
+    },
+    {
+      "file": "server/gcsp/vehicle-evidence/application-vehicle-details.js",
+      "functions": [
+        "sourceEvidence",
+        "catalogueIdentity",
+        "validSuccess",
+        "matches",
+        "createVehicleDetailsConsumer"
+      ],
+      "change": "Wire-v2 dispatch, exact trusted binding/context validation and truthful unknown/catalogue dates; retain wire-v1."
+    },
+    {
+      "file": "server/gcsp/vehicle-evidence/vehicle-details-contract.js",
+      "functions": [
+        "vehicleEvidenceDetails",
+        "equipmentFacts",
+        "technicalFacts"
+      ],
+      "change": "Wire-v2 source projection, complete factory selection with unknown accessory quantity/physical facts; unchanged wire-v1."
+    },
+    {
+      "file": "server/vehicle-evidence/bmw-image-adapter.js",
+      "functions": [
+        "bmwImageLookupIdentity"
+      ],
+      "change": "Explicit v2-unavailable result; no coercion or asset fallback."
+    }
+  ],
+  "implementationOrder": [
+    "closed-schema-and-v1-regressions",
+    "source-binding-and-admission",
+    "F60-F54-application-composition",
+    "separately-reviewed-finite-source-observation",
+    "actual-consumer-proof-and-registration"
+  ],
+  "plannedCommands": [
+    "node --test --test-concurrency=1 server/test/bmw-catalogue-adapter.test.js server/test/gcsp-bmw-source-qualification.test.js server/test/gcsp-fleet-collector.test.js",
+    "node --test --test-concurrency=1 server/test/gcsp-fleet-enrichment.test.js server/test/gcsp-historical-enrichment.test.js server/test/gcsp-vin-publication.test.js",
+    "node --test --test-concurrency=1 server/test/gcsp-vehicle-details-contract.test.js server/test/gcsp-vehicle-evidence-lookup.test.js server/test/bmw-image-adapter.test.js server/test/bmw-live-imagery.test.js"
+  ],
+  "requiredCases": [
+    "unchanged-v1-identities-and-history",
+    "unknown-versus-known-never-wildcard",
+    "wrong-model-date-market-binding",
+    "mixed-version-and-checkpoint-rejection",
+    "hash-pointer-request-only-refusal",
+    "truncated-duplicate-or-incomplete-solver",
+    "source-added-ignored-options",
+    "SE000001-retained-null-quantity",
+    "genuinely-empty-accessories-only",
+    "zero-measurement-valid-selection",
+    "same-ID-different-source-binding",
+    "actual-shared-session-to-publication-and-lookup",
+    "unavailable-image-and-zero-egress"
+  ],
+  "selectionRationale": "Narrow suites own changed validators and exact producer/consumer, fixture, immutable-artifact and checkpoint edges. Review affected-test selector before execution; unknown coverage does not exclude callers. Extend plan for any new edge. Authored full suite remains a separately serialized integration checkpoint; no routine broad fallback.",
+  "exclusions": [
+    "retail-runtime-unchanged",
+    "native-PostgreSQL-no-storage-change",
+    "browser-no-screen-change",
+    "live-images-unavailable",
+    "F77-coverage-not-proved"
+  ],
+  "resourceExecution": "Parent registers owned scratch/manifests/finalizers and impact-map code/test/environment identity before checks; one worker and bounded chunks; no commands run in this documentation task.",
+  "freshObservationProposal": {
+    "allocated": false,
+    "operations": [
+      "page",
+      "settings",
+      "discover",
+      "solve"
+    ],
+    "maximumAttempts": 4,
+    "retries": 0,
+    "maximumDecodedBytes": 2097152,
+    "deadlineMs": 45000,
+    "workers": 1,
+    "images": 0,
+    "browser": 0,
+    "sourceWrites": 0,
+    "optionalDefinitionsRefresh": "Requires a predeclared fifth GET; never spend implicitly."
+  },
+  "performed": {
+    "network": 0,
+    "tests": 0,
+    "imports": 0,
+    "scratch": 0,
+    "descendants": 0,
+    "git": 0,
+    "jira": 0
+  },
+  "remainingGates": [
+    "parent-design-review",
+    "coordinated-shared-port-ownership",
+    "implemented-version-contract",
+    "actual-source-selection-binding",
+    "actual-consumer-proof",
+    "source-registration",
+    "F58-F77-qualification-and-coverage"
+  ],
+  "reviewedInputPins": {
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/canonical-source-live-2026-11-06/tree.json": "06d13000d124fed336d39379cc6984ede0d6a0eced57cde955389c186932a228",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/canonical-source-live-2026-11-06/options.json": "6883be7544a6c03ef523aa6287a74c03fddd9b0e09b80127c25b72c1bec0061b",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/source-executor-2026-11-06/observation.json": "1ce513909d0196b08808af896914a0e041322ef88d2c06eda73532ff404d29dc",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json": "ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-033/scripts/gcsp/enrich-fleet.mjs": "f6bc477435cb3caada23ddc3113b59e35a39ad7593a1dfd648d491125ea7a900",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-033/scripts/gcsp/historical-enrichment.mjs": "103eeb0c51a225440f54355acfe1b344321c96b688d3855a795db70e34826a8c"
+  },
+  "sourceAdoption": {
+    "requiredBeforeCommands": true,
+    "expectedPublishedF60Commit": "e74f4180c64e1a473e30f413613b17ced6bdad21",
+    "publicationVerification": "Parent verifies immutable publication; this correction performed filesystem/hash reads only, no Git verification.",
+    "consumerPins": {
+      "scripts/gcsp/enrich-fleet.mjs": "f6bc477435cb3caada23ddc3113b59e35a39ad7593a1dfd648d491125ea7a900",
+      "scripts/gcsp/historical-enrichment.mjs": "103eeb0c51a225440f54355acfe1b344321c96b688d3855a795db70e34826a8c",
+      "server/test/gcsp-fleet-enrichment.test.js": "f4458d2d4f863e32c75cad3f92beda584b125016a58ff6662e22f3a5490c5607",
+      "server/test/gcsp-historical-enrichment.test.js": "01427a27071d91e258c1baeb92f9e8253ff423a36d658958cb5239e73cbb25fc",
+      "docs/gcsp/evidence/fucq60/session-reuse-proof.mjs": "4dd2973aa24ff243db14e36e1ab305444ba2e4f59ebbcc67a546308d02185fbf"
+    },
+    "F59ProducerPins": {
+      "scripts/gcsp/collect-fleet.mjs": "0f5719673495c4b6c24c364dc698ed74ca05743a60027c11c7212d3580003129",
+      "scripts/gcsp/collection-session.mjs": "b2cd36ec77c2f63fd58795e83125ef135732e6b768a9e1492caf194c94b9248c",
+      "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+      "scripts/gcsp/public-bmw-source.mjs": "10de2170d9db2a50019c4a5949c8540a72500ec1b1ca6f8d7e6f51b50407223a"
+    },
+    "assemblyRule": "Adopt owned F60 source/tests/proof into one coherent candidate retaining current F59 producers; review actual loaded graph/pins after implementation; F60_PRODUCER_ROOT unset; no mutable cross-worktree imports."
+  },
+  "testInventory": [
+    {
+      "path": "server/test/bmw-catalogue-adapter.test.js",
+      "F59exists": true,
+      "F60exists": true,
+      "status": "existing-both",
+      "intendedSource": "F59-baseline",
+      "reviewedSha256": "69ed84e3157230e2a6773ffc4a8eecbdd3a1f35a0fe804566679033eb9bf7f8f"
+    },
+    {
+      "path": "server/test/bmw-image-adapter.test.js",
+      "F59exists": true,
+      "F60exists": true,
+      "status": "existing-both",
+      "intendedSource": "F59-baseline",
+      "reviewedSha256": "fe5e5b01b3bee4206f8d82e5ab5140d484c9424c490f518f165343fdbf40cb58"
+    },
+    {
+      "path": "server/test/bmw-live-imagery.test.js",
+      "F59exists": true,
+      "F60exists": true,
+      "status": "existing-both",
+      "intendedSource": "F59-baseline",
+      "reviewedSha256": "122e5c129ae94212098323d501d3e49ddac6230affe27f0c088cfbb227585f4d"
+    },
+    {
+      "path": "server/test/gcsp-bmw-source-qualification.test.js",
+      "F59exists": true,
+      "F60exists": true,
+      "status": "existing-both",
+      "intendedSource": "F59-baseline",
+      "reviewedSha256": "1423f176c798b6bdb56f529bf01006596191eefb4d44a1d5d668eb5c4e9b3b7a"
+    },
+    {
+      "path": "server/test/gcsp-fleet-collector.test.js",
+      "F59exists": true,
+      "F60exists": true,
+      "status": "existing-both",
+      "intendedSource": "F59-baseline",
+      "reviewedSha256": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88"
+    },
+    {
+      "path": "server/test/gcsp-fleet-enrichment.test.js",
+      "F59exists": false,
+      "F60exists": true,
+      "status": "existing-F60-adoption-required",
+      "intendedSource": "F60-owned-adoption",
+      "reviewedSha256": "f4458d2d4f863e32c75cad3f92beda584b125016a58ff6662e22f3a5490c5607"
+    },
+    {
+      "path": "server/test/gcsp-historical-enrichment.test.js",
+      "F59exists": false,
+      "F60exists": true,
+      "status": "existing-F60-adoption-required",
+      "intendedSource": "F60-owned-adoption",
+      "reviewedSha256": "01427a27071d91e258c1baeb92f9e8253ff423a36d658958cb5239e73cbb25fc"
+    },
+    {
+      "path": "server/test/gcsp-vehicle-details-contract.test.js",
+      "F59exists": true,
+      "F60exists": true,
+      "status": "existing-both",
+      "intendedSource": "F59-baseline",
+      "reviewedSha256": "92053b8b03e2575a64e6909bf475a5524a59a2575c6926e51b6cded9ea3736b4"
+    },
+    {
+      "path": "server/test/gcsp-vehicle-evidence-lookup.test.js",
+      "F59exists": true,
+      "F60exists": true,
+      "status": "existing-both",
+      "intendedSource": "F59-baseline",
+      "reviewedSha256": "021db46e480fab71c38fb62adad07e531c4fdf0a153d1f03a2ea652401c79c61"
+    },
+    {
+      "path": "server/test/gcsp-vin-publication.test.js",
+      "F59exists": true,
+      "F60exists": true,
+      "status": "existing-both",
+      "intendedSource": "F59-baseline",
+      "reviewedSha256": "9231d22a886f91ea6a29178634c9fb5b75679c5ea5594874b035ca5ee0459fee"
+    }
+  ],
+  "requiredCasesStatus": "V2 cases are future additions/extensions, not existing passing evidence.",
+  "dateAssociationBasis": "Exact dated solver request + matching returned tree model/order/effect + returned solver modelCode in one reviewed source session. Tree query date stays separate. Neither solver orderDate nor effectDate is claimed as a response echo.",
+  "sharedSessionProof": {
+    "path": "docs/gcsp/evidence/fucq60/session-reuse-proof.mjs",
+    "status": "existing-F60-adoption-required",
+    "plannedCommand": "node docs/gcsp/evidence/fucq60/session-reuse-proof.mjs --producer <absolute-coherent-collector> --producer-sha256 <frozen-collector-hash> --session-sha256 <frozen-session-hash>",
+    "placeholders": "Resolve only after source adoption and implementation freeze; this command was not run."
+  }
+}

@@ -43,7 +43,7 @@ const items = [
 ];
 
 test('shell exposes banner, Portal nav, main and a skip link to main', () => {
-  const shell = shellMod.portalShell({ navigation: items, active: 'a', breadcrumbs: ['Home', 'Alpha'] });
+  const shell = shellMod.portalShell({ navigation: items, active: 'a', breadcrumbs: ['Home', 'Alpha'], presenterControls: false });
   document.body.append(shell.root);
   assert.ok(shell.root.querySelector('header.gcsp-header'));
   assert.equal(shell.root.querySelector('nav[aria-label="Portal"]')?.tagName, 'NAV');
@@ -441,7 +441,7 @@ test('every selector in the shell stylesheets starts with .gcsp, and retail toke
 });
 
 test('CSP: no inline scripts, handler attributes, eval, new Function, string timers or innerHTML in GCSP files', () => {
-  const files = [...walk(GCSP_DIR), join(ROOT, 'gcsp-employee.html'), join(ROOT, 'gcsp-account.html'), join(ROOT, 'gcsp-manual-setup.html'), join(ROOT, 'gcsp-brief.html'), ...livePages().map((file) => join(ROOT, file)), join(ROOT, 'components.html'), join(ROOT, 'blocks/vehicle-matcher/component-gallery.js'), join(ROOT, 'blocks/vehicle-matcher/ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/question-ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/preview-feed.js'), join(ROOT, 'blocks/vehicle-matcher/modes/result-card.js'), join(ROOT, 'blocks/vehicle-matcher/decision-card.css'), join(ROOT, 'blocks/vehicle-matcher/employee-card-fixture.js')].filter((f) => /\.(js|html|css)$/.test(f));
+  const files = [...walk(GCSP_DIR), join(ROOT, 'gcsp-employee.html'), join(ROOT, 'gcsp-account.html'), join(ROOT, 'gcsp-presenter.html'), join(ROOT, 'gcsp-manual-setup.html'), join(ROOT, 'gcsp-brief.html'), ...livePages().map((file) => join(ROOT, file)), join(ROOT, 'components.html'), join(ROOT, 'blocks/vehicle-matcher/component-gallery.js'), join(ROOT, 'blocks/vehicle-matcher/ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/question-ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/preview-feed.js'), join(ROOT, 'blocks/vehicle-matcher/modes/result-card.js'), join(ROOT, 'blocks/vehicle-matcher/decision-card.css'), join(ROOT, 'blocks/vehicle-matcher/employee-card-fixture.js')].filter((f) => /\.(js|html|css)$/.test(f));
   assert.ok(files.length >= 10);
   const offenders = [];
   for (const f of files) {
@@ -762,4 +762,14 @@ test('the single gallery shows the GCSP section with primitives and shell states
   assert.ok(read('components.html').includes('blocks/gcsp/shell/gcsp-shell.css'));
   assert.ok(read('components.html').includes('blocks/gcsp/employee/gcsp-employee.css'));
   assert.equal(statSync(join(ROOT, 'components.html')).isFile(), true);
+});
+
+
+test('shell presenter region mounts an injected CONTROL adapter and tears it down', async () => {
+  let signal;
+  const adapter = { readControls: async (options) => { signal = options.signal; return { status: 'forbidden' }; } };
+  const shell = shellMod.portalShell({ presenterControls: { adapter } }); document.body.append(shell.root); await tick();
+  assert.ok(shell.presenterRegion); assert.equal(shell.presenterRegion.querySelector('details').hidden, true);
+  shell.destroy(); assert.equal(signal.aborted, true);
+  const offline = shellMod.portalShell({ presenterControls: false }); assert.equal(offline.presenterRegion.children.length, 0); offline.destroy();
 });

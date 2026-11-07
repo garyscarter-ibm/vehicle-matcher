@@ -1,0 +1,215 @@
+{
+  "acceptance": {
+    "accepted": 0,
+    "actualRawSchemaCompatibility": "not established; pointer/root/definition binding needs independent review after safe observation",
+    "admission": false,
+    "all74Mappings": "pending",
+    "browser": 0,
+    "credentials": 0,
+    "f39F54Publication": 0,
+    "f59Slices": "five complete/one in-progress/two blocked; final combined-source full validation outstanding",
+    "fucq61Hold": "2026-11-13",
+    "images": 0,
+    "newConfigurations": 0,
+    "rawRetention": 0,
+    "semanticClassification": false,
+    "solver": 0,
+    "sourceWrites": 0,
+    "sql": 0,
+    "thresholds": "8per mapping/200overall/592if all74mapped/20exact headless deep links unchanged"
+  },
+  "agent": {
+    "descendants": 1,
+    "fallback": null,
+    "implementer": {
+      "descendants": 0,
+      "fallback": null,
+      "name": "Sulley",
+      "requestedEffort": "medium",
+      "requestedModel": "gpt-6.1-sol",
+      "runtimeConfirmed": true,
+      "scope": "passive fresh supervisor cleanup port only; no tests/source",
+      "selectedEffort": "medium",
+      "selectedModel": "gpt-6.1-sol"
+    },
+    "name": "Cecil Turtle",
+    "requestedEffort": "high",
+    "requestedModel": "gpt-6.1-sol",
+    "selectedEffort": "high",
+    "selectedModel": "gpt-6.1-sol"
+  },
+  "allocationTemplate": {
+    "attempts": 4,
+    "bytes": 2097152,
+    "executable": false,
+    "handoffSha256": "DERIVE_FROM_FINAL_EXECUTION_HANDOFF_BYTES",
+    "id": "f59-canonical-source-20261106",
+    "outputRoot": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/observation",
+    "ownershipManifest": "PENDING_ABSOLUTE_EXTERNAL_MANIFEST",
+    "planDigest": "3b0094041a34dba309d3cd83c775aaef721b3769c3d0d39bc144bae135caf533",
+    "planSha256": "e033e926c3da90bd2463dff1bbeb7b141be1923beccacdd5be3312bfb5715452",
+    "producerCommit": "d466b9c9efbb1203e01d04fb31dbc308e8185d89",
+    "producerRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+    "remoteVerifiedCommit": "d466b9c9efbb1203e01d04fb31dbc308e8185d89",
+    "reviewVerdicts": {
+      "code": "passed",
+      "security": "passed"
+    },
+    "reviewedCodeTestIdentity": "29f3d4b9641af6787bd153ab0d8f2a2ce657cca649ac73416e9358459b5c8613",
+    "runnerSha256": "5cb5adafd7d1826fc5a953984863c21aca499a402b8f7e5b61521905018e87f7",
+    "runtimeSha256": "PENDING",
+    "scratchRoot": "PENDING_OWNED_ABSOLUTE_ROOT",
+    "sourceVersion": "f59-diagnostic-20261106.v1",
+    "supervisorFinalizerRegistered": false
+  },
+  "authority": {
+    "background": "no browser used; keep foreground app/tab/focus undisturbed; no OpenTabs/Playwright fallback under this plan",
+    "descendants": 0,
+    "directive": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-directive.md",
+    "gateway422": "child422 does not stop authorized launcher work or establish exhaustion; preserve exact model diagnostic, retain gateway/credentials; stop for suspected credits only if launcher also fully refuses required model calls. This does not retry source HTTP failures.",
+    "humanPermission": "existing permission stands; no human approval question; parent finite engineering allocation required",
+    "parentAllocationNow": false,
+    "priorFourGetPilot": "all historical allocations/markers remain consumed; no replay or reset",
+    "sourceRecord": "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md"
+  },
+  "executable": false,
+  "experience": "HLD06 topology/UI unchanged, visual referenceN/A; request roles/unknown/unqualified states preserved",
+  "onceMarker": {
+    "existsNow": false,
+    "mode": "wx0600; file write/fsync/close then parent directory fsync before create/run diagnostic; any failure stops before transport; reserved-and-consumed even if source refuses/fails/cancels; never delete or reset to retry",
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/execution-once.json"
+  },
+  "plan": {
+    "inputDigest": "3b0094041a34dba309d3cd83c775aaef721b3769c3d0d39bc144bae135caf533",
+    "originalQualificationPlanUnchanged": "65d78142d43fcf5167e9d4c4e3710f07de97082a7418efad7b05bfa9cbc7c3c4",
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/diagnostic-plan.json",
+    "sha256": "e033e926c3da90bd2463dff1bbeb7b141be1923beccacdd5be3312bfb5715452"
+  },
+  "preparedAt": "2026-11-06T15:13:26.760308+00:00",
+  "producer": {
+    "commit": "d466b9c9efbb1203e01d04fb31dbc308e8185d89",
+    "frozenContractHashes": {
+      "docs/gcsp/evidence/fucq59/source-qualification-plan-2026-11-06/plan.json": "65d78142d43fcf5167e9d4c4e3710f07de97082a7418efad7b05bfa9cbc7c3c4",
+      "docs/gcsp/evidence/fucq59/source-qualification-plan-2026-11-06/projection-contract.json": "d6f6dd16dcd2cf63c1e67b5cccb11ba2e9eeee2ce138b9c2afd44603d7475385",
+      "docs/gcsp/evidence/fucq59/source-qualification-plan-2026-11-06/projection-contract.md": "d6c06138c02bf616b40f69ef783e53e00ff3faf5b8dab8c574534c2147abbc25",
+      "scripts/gcsp-demo.mjs": "b8ce1a7760ada2c7742f7869d1b1d6045af1777a2c3cc67be1ff1bc165345216",
+      "scripts/gcsp/bmw-source-qualification.mjs": "eda2660125ff589a968d861d02f86122ef71df30354351cfe4eee76f43d355e8",
+      "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+      "server/gcsp/runtime.js": "f4654b8053d3927a3564a3701784367e976b04549ee66fb1a9a754032f88cb16",
+      "server/gcsp/vehicle-evidence/corpus-publisher.js": "db7e3fd9ff5ff4342872a54c6ca40dd3dda35fc31c51e3dbdb2910b067cd5e49",
+      "server/index.js": "1560e4a99077e4ea648f66b87566b908404312787e5fdfcc59a5ba10debf1741",
+      "server/test/gcsp-bmw-source-qualification.test.js": "532ff51f8c37a2a743553715a14b2ce06db7e6b5c1962bcfaf8eb7b7096543f8",
+      "server/vehicle-evidence/bmw-catalogue-adapter.js": "06c0910c131fdb0e2e4ef254dc5591f13c90ecb3f36f655aef3cb651aa0052a1",
+      "server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json": "ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3"
+    },
+    "moduleHashes": {
+      "scripts/gcsp/collect-fleet.mjs": "8bc059fcec47c46c6e209b8e64fc11c519083fd62fde1652d7229d7c5adc689b",
+      "scripts/gcsp/collection-session.mjs": "b2cd36ec77c2f63fd58795e83125ef135732e6b768a9e1492caf194c94b9248c",
+      "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+      "scripts/gcsp/public-bmw-source.mjs": "514682f7ec5612ab73e3aa16fc90396757bf4f6836967e106d8f751c6b7079d2",
+      "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+      "server/gcsp/repository/core.js": "c55c93c543886108f67aa12bc5c7519d50063e90ba4ec78df37aa0df56d6f311",
+      "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+      "server/vehicle-evidence/bmw-catalogue-adapter.js": "06c0910c131fdb0e2e4ef254dc5591f13c90ecb3f36f655aef3cb651aa0052a1"
+    },
+    "nativeDependenciesOnly": "diagnostic import graph has only local producer modules and node builtins; no PolicyService construction, database/dependency overlay/install",
+    "publication": "Canonical correction published/pushed/remote-verified at d466b9c9efbb1203e01d04fb31dbc308e8185d89. Fresh supervisor port has12scoped offline passes and independent parent code/security review PASS. Parent owns preparation commit/push and must repin later reviewed preparation publication before execution if HEAD advances.",
+    "reviewedCodeTestIdentity": "29f3d4b9641af6787bd153ab0d8f2a2ce657cca649ac73416e9358459b5c8613",
+    "reviewedEightPathHashes": {
+      ".product-map/work.json": "4d1feeca0836197280e6f786477cef56415f9f0010f54621f703fa79332ea1de",
+      "_dev/in-progress/DEV-2026-11-04-032.md": "ab966254821c1d00ceacae8c7bd0986a43a62c0cea8df97513e551ac146bb173",
+      "docs/gcsp/evidence/fucq59/settings-compatibility-2026-11-06/README.md": "f0f7ab78a1403283a6644db5aa1085bcac33606f12016c9d64f5f3fcda971c50",
+      "docs/gcsp/evidence/fucq59/settings-compatibility-2026-11-06/validation.json": "9c73a38ddcdef33ea7c8cbb9338008fb8bf5c27242c63ab9abb6aae3ebce0246",
+      "scripts/gcsp/public-bmw-source.mjs": "514682f7ec5612ab73e3aa16fc90396757bf4f6836967e106d8f751c6b7079d2",
+      "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+      "server/test/gcsp-fleet-collector.test.js": "7dd8a63844991a81fc463d00206dc0ae6721fa6104ac70ea59c3029f65a31c0f",
+      "server/test/gcsp-settings-shape-report.test.js": "40c99ab187b2c271d018c043e75136f3886bed987fbfc5f03135ef0492790e9f"
+    }
+  },
+  "resources": {
+    "activeSessionDeadlineMs": 45000,
+    "cancellation": "runner marks SIGINT/SIGTERM and throws at next existing persistence phase; active HTTP remains under existing10s complete-request/45s absolute deadline. Supervisor joins, escalates only owned group after grace; SIGKILL requires manifest reconciliation and last persisted counts are lower bounds, never fabricated exact usage. Marker stays consumed.",
+    "expectedRssBytes": 201326592,
+    "expectedScratchBytes": 2097152,
+    "expectedSeconds": 45,
+    "finalizer": "supervisor owns process group, stop/join on all exits and handled cancel, extract only bounded useful safe artifacts and receipt, remove root/owned staging, verify all roots/groups absence and report bytes/leftovers. Runner never recursively deletes arbitrary caller paths. No dependency overlay required.",
+    "largeOutputDestination": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/F59-canonical-source-20261106",
+    "largeOutputExpected": false,
+    "logLimitBytes": 1048576,
+    "outputs": "tree.json/options.json only from safe executor-projected artifacts with exact bytes/digest/operation/request role and read-back verification; receipt.json records safe failures, verified available accounting/partial exports, checkpoint validation status and digests; no unchecked fallback, raw body/header/error text or checkpoint copy",
+    "requestCompleteTimeoutMs": 10000,
+    "retainedOutputRoot": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/observation",
+    "rssLimitBytes": 402653184,
+    "scratch": "parent trusted test_resources supervisor creates absolute root only after external ownership manifest/finalizer registration; propagate identical TMPDIR/TMP/TEMP; no scratch now",
+    "scratchLimitBytes": 67108864,
+    "supervisorSeconds": 120,
+    "workers": 1
+  },
+  "runner": {
+    "checkpointFallback": "existing pinned producer session.withCheckpoint validates envelope schema/contentDigest, exact session/source/plan/transport/limits identity, counters/attempts/cache payloadDigest; expected diagnostic stage separately checked; no stage option/commit/execute/replay; invalid or missing checkpoint contributes no counts or artifacts",
+    "failureReceipt": "artifact validation/export errors retained as fixed safe codes; receipt preserves verified accounting, verified successful exports and explicit invalid/missing checkpoint status; unavailable counts are null/unknown; supervisor fallback covers receipt I/O failure or forced kill",
+    "offlineValidation": "Unchanged18runner-helper tests remain historical evidence within exact unchanged runner/helper boundaries. Fresh12scoped offline methods validate supervisor cleanup helper and exact finalizer/terminal AST only; source main and transport never invoked.",
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/run-live.mjs",
+    "sha256": "5cb5adafd7d1826fc5a953984863c21aca499a402b8f7e5b61521905018e87f7",
+    "status": "Unchanged reviewed four-GET runner; main unexecuted for fresh preparation; no v2 refusal export is claimed"
+  },
+  "schemaVersion": "f59-live-diagnostic-handoff.v1",
+  "sequence": [
+    {
+      "method": "GET",
+      "operation": "page",
+      "url": "https://configure.bmw.co.uk/en_GB/configure/G61E/T5MJ"
+    },
+    {
+      "headerRetention": "memory only; never recorded",
+      "method": "GET",
+      "operation": "settings",
+      "profileNames": [
+        "settingsVehicleTree",
+        "settingsLocalisation"
+      ],
+      "url": "https://configure.bmw.co.uk/en_GB/settings.<single page-discovered alphanumeric id>.json"
+    },
+    {
+      "method": "GET",
+      "operation": "discover",
+      "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true"
+    },
+    {
+      "method": "GET",
+      "operation": "options",
+      "url": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?trim=S0337"
+    }
+  ],
+  "status": "PREPARATION ONLY; canonical producer published; cleanup port12scoped offline passes and parent code/security review passed; preparation publication/executable source selection pending; zero source allocation",
+  "stopConditions": [
+    "any missing allocation/review/published commit/hash/date/runtime/scratch/finalizer gate: zero source operations",
+    "one attempt per pinned operation; no retry or replacement route/profile/schema guess; maximum4attempts and2MiB decoded total",
+    "source401/403/429 or other non200, redirect/content-type/parsing/duplicate-key/UTF8/byte/deadline/cancellation errors stop durably within existing executor",
+    "strict5/I mandatory record/literal mismatch, optional disagreement/type error or unsafe bootstrap reflection stop before options/persistence",
+    "unresolved/ambiguous options structure remains an observation-only unqualified report; stop after allocated options with no fallback endpoint",
+    "after any stop, failure or cancellation: preserve spent marker, retain concise safe receipt, supervisor cleanup; no automatic resume/replenishment"
+  ],
+  "supervisor": {
+    "baseSha256": "2a109f4c9fa453a675458c45563a8f384dc387c5e120cd1dc0aa2f19b43b8cce",
+    "codeReview": {
+      "independent": true,
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/parent-review.json",
+      "sha256": "edd3c344574c466df7db7aafcc558bd987ad1db51b9c7cb68660253096812732",
+      "verdict": "passed"
+    },
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/supervise-live.py",
+    "releaseHelperExactReviewedPort": true,
+    "securityReview": {
+      "independent": true,
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/parent-review.json",
+      "sha256": "edd3c344574c466df7db7aafcc558bd987ad1db51b9c7cb68660253096812732",
+      "verdict": "passed"
+    },
+    "sha256": "2e992894ab193d7c65487c4fe1d241e008c4eac1e78c7fe91ad3090634522514",
+    "validation": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/validation.json",
+      "sha256": "d3f9bb7e1b5387a5fcf6ed0f234dac7586c6c355cf4e17f10b0cbdd62d37f262"
+    }
+  }
+}

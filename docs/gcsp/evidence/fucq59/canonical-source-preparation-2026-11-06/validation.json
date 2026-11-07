@@ -1,0 +1,44 @@
+{
+  "codeTestIdentity": "6497e13988fcf6809f54c5b8330eb84a3c9e9f3e29b79b1a872f2f5a11760a2b",
+  "command": [
+    "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "-I",
+    "-B",
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/supervisor-regressions.py"
+  ],
+  "errors": 0,
+  "executionSelectionPending": true,
+  "failures": 0,
+  "historicalDefectComparison": "three historical finalizer paths return zero/no named leftover while release fails/token remains/readback unavailable; current release/finalizer paths now fail truthfully",
+  "impact": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/6497e13988fcf6809f54c5b8330eb84a3c9e9f3e29b79b1a872f2f5a11760a2b.json",
+    "sha256": "be550445404e6ef4c7e4081e369b3f1685502892ea8f1e7b17ac57f4d908c048"
+  },
+  "noFullValidationClaim": true,
+  "parentReview": {
+    "independent": true,
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/parent-review.json",
+    "sha256": "edd3c344574c466df7db7aafcc558bd987ad1db51b9c7cb68660253096812732",
+    "verdict": "passed"
+  },
+  "parentReviewPending": false,
+  "passes": 12,
+  "proof": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/regression-proof-summary.json",
+    "sha256": "7e199ca7ee8cfc9810a2af4ddce49aa7b61c6adbc7a372e383a5ce1c1bf052ac"
+  },
+  "receipt": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/regression-run/receipt.json",
+    "sha256": "c363ad1dc5ae76593df03c6f4a34665e81fd44a7562af64850da9b023bde9f67"
+  },
+  "resourceAudit": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/resource-audit.json",
+    "sha256": "8d790ced7267e26e5314369f0efc4f9db583613dd27b45c1654c3de2acef0fab"
+  },
+  "schemaVersion": "f59-canonical-four-get-supervisor-validation.v1",
+  "scope": "scoped offline cleanup port only",
+  "skipped": 0,
+  "sourceAttemptsAllocated": 0,
+  "sourceMainInvoked": false,
+  "tests": 12
+}

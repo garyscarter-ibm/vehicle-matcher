@@ -76,6 +76,10 @@
       "max_lines": 23
     },
     {
+      "path": "blocks/gcsp/manual-gallery/gcsp-manual-gallery.css",
+      "max_lines": 30
+    },
+    {
       "path": "blocks/gcsp/account/gcsp-account.css",
       "max_lines": 22
     },
@@ -128,6 +132,22 @@
       "max_lines": 38
     },
     {
+      "path": "blocks/gcsp/cases/gcsp-cases.css",
+      "max_lines": 29
+    },
+    {
+      "path": "blocks/gcsp/cases/gcsp-case-queue.css",
+      "max_lines": 18
+    },
+    {
+      "path": "blocks/gcsp/greg/publish/publish.css",
+      "max_lines": 13
+    },
+    {
+      "path": "blocks/gcsp/presenter-controls/presenter-controls.css",
+      "max_lines": 17
+    },
+    {
       "path": "blocks/gcsp/brief/gcsp-brief.css",
       "max_lines": 37
     },
@@ -142,6 +162,18 @@
     {
       "path": "blocks/gcsp/shell/density-typography.css",
       "max_lines": 50
+    },
+    {
+      "path": "blocks/gcsp/offer/gcsp-offer.css",
+      "max_lines": 12
+    },
+    {
+      "path": "blocks/gcsp/presenter-controls/presenter-controls.css",
+      "max_lines": 17
+    },
+    {
+      "path": "blocks/gcsp/greg/publish/publish.css",
+      "max_lines": 13
     }
   ],
   "baseline": {

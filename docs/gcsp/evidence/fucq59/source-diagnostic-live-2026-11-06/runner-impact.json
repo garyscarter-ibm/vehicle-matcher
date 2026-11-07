@@ -1,0 +1,113 @@
+{
+  "codeIdentity": "5cb5adafd7d1826fc5a953984863c21aca499a402b8f7e5b61521905018e87f7",
+  "testIdentity": "84f6d69f54f503178c6f65b6a2f9a190ac86267c280c7e8b7cfe7deb0daf635b",
+  "fileFunctionMap": {
+    "run-live.mjs:consumeOnceMarker": [
+      "marker closes file and syncs parent before transport gate",
+      "directory sync failure preserves spent marker and prevents transport"
+    ],
+    "run-live.mjs:inspectCheckpoint": [
+      "existing producer validates checkpoint without execute or rewriting it",
+      "invalid checkpoint variants",
+      "missing checkpoint stays missing without creating lock or fresh state"
+    ],
+    "run-live.mjs:retainDiagnosticReceipt": [
+      "invalid checkpoint variants",
+      "artifact validation failure",
+      "second export write failure",
+      "validated checkpoint lower-bound fallback",
+      "known numeric accounting allowlist"
+    ]
+  },
+  "fixtureConfigSubprocessEdges": [
+    "owned TMPDIR/TMP/TEMP synthetic filesystem fixtures",
+    "existing pinned producer session and source-fixture identity only",
+    "one trusted resource-supervised node --test subprocess"
+  ],
+  "knownBoundaries": [
+    "no main invocation or executable allocation",
+    "no source execution/network/browser/SQL/credentials",
+    "no producer/full-suite rerun; producer unchanged"
+  ],
+  "coverageEvidence": {
+    "runnerLinePercent": 59.54,
+    "runnerBranchPercent": 95.59,
+    "runnerFunctionPercent": 84.21,
+    "scope": "helper boundaries covered; main/preflight/live transport intentionally unexecuted; no whole-runner or live proof claimed"
+  },
+  "timings": [
+    {
+      "test": "marker closes file and syncs parent before transport gate",
+      "milliseconds": 9.580459
+    },
+    {
+      "test": "directory sync failure preserves spent marker and prevents transport",
+      "milliseconds": 4.308875
+    },
+    {
+      "test": "existing producer validates checkpoint without execute or rewriting it",
+      "milliseconds": 43.053041
+    },
+    {
+      "test": "invalid checkpoint schema contributes no counts or artifacts",
+      "milliseconds": 36.074875
+    },
+    {
+      "test": "invalid checkpoint digest contributes no counts or artifacts",
+      "milliseconds": 39.775792
+    },
+    {
+      "test": "invalid checkpoint plan contributes no counts or artifacts",
+      "milliseconds": 40.877041
+    },
+    {
+      "test": "invalid checkpoint source contributes no counts or artifacts",
+      "milliseconds": 40.147125
+    },
+    {
+      "test": "invalid checkpoint run contributes no counts or artifacts",
+      "milliseconds": 39.891708
+    },
+    {
+      "test": "invalid checkpoint counters contributes no counts or artifacts",
+      "milliseconds": 42.066625
+    },
+    {
+      "test": "invalid checkpoint negative contributes no counts or artifacts",
+      "milliseconds": 33.245625
+    },
+    {
+      "test": "invalid checkpoint payload contributes no counts or artifacts",
+      "milliseconds": 42.035625
+    },
+    {
+      "test": "invalid checkpoint stage contributes no counts or artifacts",
+      "milliseconds": 47.013666
+    },
+    {
+      "test": "invalid checkpoint missingStage contributes no counts or artifacts",
+      "milliseconds": 39.279459
+    },
+    {
+      "test": "missing checkpoint stays missing without creating lock or fresh state",
+      "milliseconds": 0.5495
+    },
+    {
+      "test": "artifact validation failure writes safe receipt with verified accounting and another export",
+      "milliseconds": 0.975583
+    },
+    {
+      "test": "second export write failure still records first verified export without raw error",
+      "milliseconds": 1.437667
+    },
+    {
+      "test": "validated checkpoint provides lower-bound accounting and cached safe projection after failure",
+      "milliseconds": 44.3575
+    },
+    {
+      "test": "only known numeric accounting fields reach receipt",
+      "milliseconds": 1.176416
+    }
+  ],
+  "locationReason": "authorized edits external directory only; parent can register shared impact evidence"
+}

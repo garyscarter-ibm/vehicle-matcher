@@ -1,0 +1,138 @@
+{
+  "acceptedAt": "2026-11-06T10:09:44.493923+00:00",
+  "acceptedScope": "One actual per-run synthetic TEST producer/authenticated in-process HTTP/delivered host gallery/quoted review case; no live/default/reset source, active-quote resume, browser/visual/native/F71/full-suite/story acceptance",
+  "actualNodeExit": 0,
+  "actualSupervisorExit": 0,
+  "actualSupervisorSession": 33650,
+  "argv": [
+    "/opt/homebrew/bin/node",
+    "--no-global-search-paths",
+    "--max-old-space-size=512",
+    "--test",
+    "--test-concurrency=1",
+    "--test-reporter=tap",
+    "server/test/gcsp-manual-gallery-review-journey.test.js"
+  ],
+  "cleanup": {
+    "foreignReservationsPreserved": true,
+    "parentCleanupMutations": [],
+    "probeHandlesJoined": 728,
+    "recordedGroupsAbsent": 729,
+    "recordedPidsAbsent": 731,
+    "reservationAbsent": true,
+    "rootIndependentPostExitAudit": "PASS",
+    "scratchAbsent": true
+  },
+  "closureSha256": "beb5bad0286805802085954e95cf09421d3f975fcc151e9de4ffae8a7a793683",
+  "copiedOriginals": [
+    "test.tap"
+  ],
+  "counts": {
+    "cancelled": 0,
+    "fail": 0,
+    "pass": 1,
+    "skipped": 0,
+    "suites": 0,
+    "tests": 1,
+    "todo": 0
+  },
+  "grantState": "Both0959tokens consumed once; no rerun, broader test or next mode",
+  "kind": "Published one-case evidence index; not a replacement run receipt",
+  "mutationJournal": {
+    "claimPosts": 1,
+    "confirmations": 1,
+    "continuations": 1,
+    "producerPulls": 1,
+    "readyEvents": 1,
+    "releaseReceipts": 1,
+    "reviewBegins": 1,
+    "reviewSaves": 2,
+    "scope": "actual-TEST-producer-HTTP-host"
+  },
+  "originals": {
+    ".claude/test-runs/fucq69-host-journey/host-journey-32bcd3746127/checkpoint.json": {
+      "bytes": 385,
+      "sha256": "272111195f87886797b12d1ac9ecfadf11d87cc6b5c52d7920f556de932b1fdf"
+    },
+    ".claude/test-runs/fucq69-host-journey/host-journey-32bcd3746127/ownership/88114b9e87dc42deb56daf3679b98391.json": {
+      "bytes": 844,
+      "sha256": "b0e0ace1a2117ca4ac41006b2961d2ede2a61dfb2d823b33ba5903e36fa3bd62"
+    },
+    ".claude/test-runs/fucq69-host-journey/host-journey-32bcd3746127/plan.json": {
+      "bytes": 3832,
+      "sha256": "b297ed25cff233e8f67199bf43b2f531d2c67180e2328af6b79fe824e1896c30"
+    },
+    ".claude/test-runs/fucq69-host-journey/host-journey-32bcd3746127/probe-ownership.json": {
+      "bytes": 131979,
+      "sha256": "494de2012afa6ad4855be69b01dfb0bf64f985a9b772e96541c74c4730e50928"
+    },
+    ".claude/test-runs/fucq69-host-journey/host-journey-32bcd3746127/provisional-ownership.json": {
+      "bytes": 710,
+      "sha256": "61a64db1625f67bb61b1494da7df6ce5a91e194c467e5d74c8d223d5d4473420"
+    },
+    ".claude/test-runs/fucq69-host-journey/host-journey-32bcd3746127/receipt.json": {
+      "bytes": 278653,
+      "sha256": "6916d6cd4caeb6df64266ee0dca6c5cf10e0f0023c706e34b4875131a9e1cf89"
+    },
+    ".claude/test-runs/fucq69-host-journey/host-journey-32bcd3746127/test.tap": {
+      "bytes": 575,
+      "sha256": "2233825b70170dc2b3725e737b21180fad67a41efdbee6dba008a6c152e4bc24"
+    },
+    ".claude/test-runs/ownership/fucq69-host-supervisor-0959.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    ".claude/test-runs/ownership/fucq69-host-supervisor-0959.stdout": {
+      "bytes": 309,
+      "sha256": "dbdd9b3f9a07bed5492afd6c7182c33894171d8b0ea5aa2648514f4b4b923920"
+    },
+    ".claude/test-runs/ownership/fucq69-host-supervisor-wait-0959.json": {
+      "bytes": 1037,
+      "sha256": "c3bd8b57fe074a491119af46d50f7b5adc4aa1ba02103cd34a2ddd11452ffd19"
+    }
+  },
+  "priorFailure": "Original0911 preparation incomplete and independent cleanupPASS1932 preserved; exact rejected row unknown",
+  "productSnapshot": "9948bff11ed27f847436c6880db035fe8a54a784",
+  "remaining": "Second quoted reload/current F100 Resume source adoption/default reset/visual/browser/native/live/full/story acceptance remain open.",
+  "resourceResult": {
+    "completeAbsenceThroughCommand": 728,
+    "finalRSSChargeUpperBoundBytes": 603275264,
+    "limits": {
+      "combinedScratchRetainedMiB": 128,
+      "executionSeconds": 120,
+      "minimumDiskMiB": 48,
+      "minimumRssMiB": 512,
+      "originalLogMiB": 2,
+      "preparationSeconds": 120,
+      "rssMiB": 768,
+      "verificationSeconds": 120,
+      "workers": 1
+    },
+    "peakCombinedBytes": 30593120,
+    "probeCalls": 728,
+    "probeSeconds": 59.8591191899999,
+    "retainedAllocatedBytes": 446464,
+    "timings": {
+      "executionAndStopSeconds": 7.4572359580000125,
+      "preparationSeconds": 84.985885083,
+      "receiptCleanupSeconds": 1.276335208000006,
+      "verificationSeconds": 1.9764380840000086
+    }
+  },
+  "rootAudit": {
+    "path": ".claude/test-runs/ownership/fucq69-host-root-audit-0959.json",
+    "rawPublished": false,
+    "sha256": "5079ccc4909116e0b2df012793b1dc93621a8fb3edc346290d5c64e0a788de67",
+    "state": "PASS"
+  },
+  "schemaVersion": 1,
+  "selected": [
+    "actual released TEST stock reaches the delivered host gallery and one quoted review without reclaim"
+  ],
+  "story": "FUCQ-69",
+  "testPath": "server/test/gcsp-manual-gallery-review-journey.test.js",
+  "testRepeatedForPublication": false,
+  "testSha256": "29f6f1d5b99472283d0d8586949d625476127ccf7ad28fb983ad8044acb4ae65",
+  "testSnapshot": "89fe959752f3437734bb8bf2eef288b9a8510de1",
+  "testedCheckpoint": "16f3448effec89fcdce9e0dd9907a8df7f6379a9"
+}

@@ -1,0 +1,10 @@
+2026-11-07T09:43:07.2615942Z phase=npm-ci state=start elapsed_s=0
+2026-11-07T09:43:07.8218362Z phase=npm-ci state=passed seconds=0 elapsed_s=0
+2026-11-07T09:43:07.8219125Z phase=download state=start elapsed_s=0
+2026-11-07T09:45:08.4027373Z phase=download state=passed seconds=121 elapsed_s=121
+2026-11-07T09:45:08.4028123Z phase=offline state=start elapsed_s=121
+2026-11-07T09:46:38.4221779Z phase=offline state=exit exit=124 phase_seconds=90 elapsed_s=211
+2026-11-07T09:46:38.4246436Z phase_evidence=download bytes=1416
+2026-11-07T09:46:38.4278426Z phase_evidence=offline bytes=0
+2026-11-07T09:46:38.4311791Z 903560	/home/runner/work/_temp/gcsp-fleet-42360886351-1
+2026-11-07T09:46:38.5013376Z Owned scratch absent; no retained archive; exit=124

@@ -14,6 +14,18 @@ session, skill and workflow, including any requirement phrased as approval by a 
 Follow `AGENTS.md`, section "Commit and push during sessions", for this repository's standing authorization
 and checkpoint cadence.
 
+### IBM gateway 422 responses
+
+Follow `AGENTS.md`, section "IBM gateway 422 responses", including its launcher refusal condition, in this
+session and every descendant agent.
+
+### Demo delivery, defects and claimed scope
+
+Follow `AGENTS.md`, section "Demo delivery, defects and claimed scope", and `docs/gcsp/build-rules.md`,
+section "Demo delivery and scope control", in this session and every descendant brief. Prioritise the working
+demo, backlog defects below Critical/High independently, and put new features/proposed AC changes into
+separate backlog Stories for collaborator review and prioritisation before build.
+
 ### Comments
 - **Keep code comments to 2 lines max**, unless a longer note is genuinely unavoidable
   (e.g. a subtle gotcha that will bite the next person). Prefer explaining *why*, not *what*.

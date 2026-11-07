@@ -1,0 +1,25 @@
+{
+  "scope": "static preparation only",
+  "planSha256": "91c29afcefa8ba27fec9cf8ebc781a87787bfadf3ca55845d241999463fe8205",
+  "checks": [
+    {
+      "check": "ast.parse supervise.py",
+      "status": "passed"
+    },
+    {
+      "check": "ast.parse group-proof.py",
+      "status": "passed"
+    },
+    {
+      "check": "node --check probe.mjs",
+      "status": "passed"
+    },
+    {
+      "check": "51 actual deployment git blobs and prepared script/resource pins",
+      "status": "passed"
+    }
+  ],
+  "requestsExecuted": 0,
+  "scratchAllocated": false,
+  "acceptance": false
+}

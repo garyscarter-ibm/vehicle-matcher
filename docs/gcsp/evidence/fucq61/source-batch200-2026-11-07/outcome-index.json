@@ -1,0 +1,1082 @@
+{
+  "schemaVersion": "f61-interrupted-source-outcome-index.v1",
+  "checkpointRetained": false,
+  "acceptedCapturesRetained": false,
+  "capacityCredit": 0,
+  "attemptedOutcomes": [
+    {
+      "candidateId": "candidate-8db978489fe6e5b6cedcdb23",
+      "request": {
+        "includedElements": [
+          "FKSSW",
+          "P0C3Z",
+          "S0337",
+          "S03G9",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1NTVyxQMEMzWixTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-d73514196ffef5c5a8c27cfc",
+      "request": {
+        "includedElements": [
+          "FLKSW",
+          "P0C1M",
+          "S0248",
+          "S0337",
+          "S03G9",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGTEtTVyxQMEMxTSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDRGTCxTMDRIQSxTMDRNQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-54c8eb029be11698337ec6d5",
+      "request": {
+        "includedElements": [
+          "FVCJM",
+          "P0A96",
+          "S0337",
+          "S03G9",
+          "S0402",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGVkNKTSxQMEE5NixTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-5bc4c0fe3d622d698c6edc1b",
+      "request": {
+        "includedElements": [
+          "FKSFU",
+          "P0A90",
+          "S0337",
+          "S03AC",
+          "S03GD",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1NGVSxQMEE5MCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHRCxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-7066e8b58ac7018ff414ed91",
+      "request": {
+        "includedElements": [
+          "FKSSW",
+          "P0490",
+          "S0337",
+          "S03GD",
+          "S0417",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1NTVyxQMDQ5MCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHRCxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-bdf660ed1b7e6c79e69ce056",
+      "request": {
+        "includedElements": [
+          "FLKSW",
+          "P0475",
+          "S0337",
+          "S03GD",
+          "S043L",
+          "S0456"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "processed-without-callback",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": null,
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-812ba195745541f4cfbcdb72",
+      "request": {
+        "includedElements": [
+          "FVCJM",
+          "P0416",
+          "S0248",
+          "S0337",
+          "S03GD",
+          "S0402",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGVkNKTSxQMDQxNixTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHRCxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-e77534ab84bd0a61f906f0a2",
+      "request": {
+        "includedElements": [
+          "FKSFU",
+          "P0300",
+          "S0337",
+          "S03AC",
+          "S03GN",
+          "S0402",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHTixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-d38c3897fefc93fef68a5c43",
+      "request": {
+        "includedElements": [
+          "FKSJX",
+          "P0X1E",
+          "S0248",
+          "S0337",
+          "S03GN",
+          "S0417",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1NKWCxQMFgxRSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHTixTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-a74d997446bbba195b3eec9a",
+      "request": {
+        "includedElements": [
+          "FKTSW",
+          "P0C68",
+          "S0337",
+          "S03GN",
+          "S0402",
+          "S043L",
+          "S05DN"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1RTVyxQMEM2OCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHTixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDROUixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETixTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDZVMyxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDdFVyxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-62f663685f87d1065d83e1f6",
+      "request": {
+        "includedElements": [
+          "FVCJL",
+          "P0C64",
+          "S0337",
+          "S03GN",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGVkNKTCxQMEM2NCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHTixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-0b18fdbd0d2843826da4107e",
+      "request": {
+        "includedElements": [
+          "FVCJN",
+          "P0C5Y",
+          "S0248",
+          "S0337",
+          "S03GN",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGVkNKTixQMEM1WSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHTixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-3c3ce95262267c9cba393075",
+      "request": {
+        "includedElements": [
+          "FKSJX",
+          "P0C5A",
+          "S0337",
+          "S03GQ",
+          "S0402",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1NKWCxQMEM1QSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHUSxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-72042f4b1078e0d5e80ea784",
+      "request": {
+        "includedElements": [
+          "FKTSW",
+          "P0C4P",
+          "S0337",
+          "S03AC",
+          "S03GQ",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1RTVyxQMEM0UCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHUSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-bb37d51ae5b0bff14128aea7",
+      "request": {
+        "includedElements": [
+          "FVCJL",
+          "P0C4A",
+          "S0337",
+          "S03GQ",
+          "S0417",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGVkNKTCxQMEM0QSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHUSxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-cd6c894d25a35cd1c8cef8d7",
+      "request": {
+        "includedElements": [
+          "FVCJN",
+          "P0C3Z",
+          "S0337",
+          "S03GQ",
+          "S043L",
+          "S0456"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGVkNKTixQMEMzWixTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHUSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-693dc4c94276c2b0c3c342d5",
+      "request": {
+        "includedElements": [
+          "FKSJX",
+          "P0C1M",
+          "S0248",
+          "S0337",
+          "S03GV",
+          "S0402",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1NKWCxQMEMxTSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHVixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-d755a5b9e5f9494e7546dad9",
+      "request": {
+        "includedElements": [
+          "FKTSW",
+          "P0A96",
+          "S0337",
+          "S03AC",
+          "S03GV",
+          "S0402",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1RTVyxQMEE5NixTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHVixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-544b38ba29ad5d3cdc24e67e",
+      "request": {
+        "includedElements": [
+          "FVCJL",
+          "P0A90",
+          "S0248",
+          "S0337",
+          "S03GV",
+          "S0417",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGVkNKTCxQMEE5MCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHVixTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-5d16c319038cd655c8084b33",
+      "request": {
+        "includedElements": [
+          "FVCJN",
+          "P0490",
+          "S0337",
+          "S03GV",
+          "S0402",
+          "S043L",
+          "S05DN"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGVkNKTixQMDQ5MCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHVixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDROUixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETixTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDZVMyxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDdFVyxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-ec66c7491c6a6954dbabaff1",
+      "request": {
+        "includedElements": [
+          "FKSJX",
+          "P0475",
+          "S0337",
+          "S03G9",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1NKWCxQMDQ3NSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-05226303d588e3c1ed87de98",
+      "request": {
+        "includedElements": [
+          "FKTSW",
+          "P0416",
+          "S0248",
+          "S0337",
+          "S03G9",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1RTVyxQMDQxNixTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-a7c12861433338e44d9c28c8",
+      "request": {
+        "includedElements": [
+          "FVCJL",
+          "P0300",
+          "S0337",
+          "S03G9",
+          "S0402",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGVkNKTCxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-0fdf30b3dd50ddcdaa87c133",
+      "request": {
+        "includedElements": [
+          "FVCJM",
+          "P0X1E",
+          "S0337",
+          "S03AC",
+          "S03G9",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGVkNKTSxQMFgxRSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-44b9f005ab06df87e70c6e7c",
+      "request": {
+        "includedElements": [
+          "FKSFU",
+          "P0C68",
+          "S0337",
+          "S03GD",
+          "S0417",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1NGVSxQMEM2OCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHRCxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-ad271d87c89c420e13b9bd67",
+      "request": {
+        "includedElements": [
+          "FKSSW",
+          "P0C64",
+          "S0337",
+          "S03GD",
+          "S043L",
+          "S0456"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1NTVyxQMEM2NCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHRCxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-833098c3f75eaa999f03cf04",
+      "request": {
+        "includedElements": [
+          "FLKSW",
+          "P0C5Y",
+          "S0248",
+          "S0337",
+          "S03GD",
+          "S0402",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGTEtTVyxQMEM1WSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHRCxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ1MyxTMDRGTCxTMDRIQSxTMDRNQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-1719c39d11e0f0bfe38606af",
+      "request": {
+        "includedElements": [
+          "FVCJM",
+          "P0C5A",
+          "S0337",
+          "S03AC",
+          "S03GD",
+          "S0402",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGVkNKTSxQMEM1QSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHRCxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-b08aa06665c6cadcf4592205",
+      "request": {
+        "includedElements": [
+          "FKSFU",
+          "P0C4P",
+          "S0248",
+          "S0337",
+          "S03GN",
+          "S0417",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1NGVSxQMEM0UCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHTixTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-d547d5a50e0b075bbbadc004",
+      "request": {
+        "includedElements": [
+          "FKSSW",
+          "P0C4A",
+          "S0337",
+          "S03GN",
+          "S0402",
+          "S043L",
+          "S05DN"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1NTVyxQMEM0QSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHTixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDROUixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETixTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDZVMyxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDdFVyxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-de2647404fcaf8abed6063d7",
+      "request": {
+        "includedElements": [
+          "FLKSW",
+          "P0C3Z",
+          "S0337",
+          "S03GN",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGTEtTVyxQMEMzWixTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHTixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDRGTCxTMDRIQSxTMDRNQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-90cc84441caccf9889115c5d",
+      "request": {
+        "includedElements": [
+          "FVCJM",
+          "P0C1M",
+          "S0248",
+          "S0337",
+          "S03GN",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGVkNKTSxQMEMxTSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHTixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-2a5f322935eed162469c824c",
+      "request": {
+        "includedElements": [
+          "FKSFU",
+          "P0A96",
+          "S0337",
+          "S03GQ",
+          "S0402",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1NGVSxQMEE5NixTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHUSxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-b9a23420ec08a31c81e1a90a",
+      "request": {
+        "includedElements": [
+          "FKSSW",
+          "P0A90",
+          "S0337",
+          "S03AC",
+          "S03GQ",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1NTVyxQMEE5MCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHUSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-502a07e0aeb0dbcc82fadce6",
+      "request": {
+        "includedElements": [
+          "FLKSW",
+          "P0490",
+          "S0337",
+          "S03GQ",
+          "S0417",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGTEtTVyxQMDQ5MCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHUSxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ1MyxTMDRGTCxTMDRIQSxTMDRNQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-480b70eb03b38886def70753",
+      "request": {
+        "includedElements": [
+          "FVCJM",
+          "P0475",
+          "S0337",
+          "S03GQ",
+          "S043L",
+          "S0456"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGVkNKTSxQMDQ3NSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHUSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-6eccb181abdaa75a2cb75352",
+      "request": {
+        "includedElements": [
+          "FKSFU",
+          "P0416",
+          "S0248",
+          "S0337",
+          "S03GV",
+          "S0402",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1NGVSxQMDQxNixTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHVixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-3c43b2e008bb1aca7b8a3d70",
+      "request": {
+        "includedElements": [
+          "FKSSW",
+          "P0300",
+          "S0337",
+          "S03AC",
+          "S03GV",
+          "S0402",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1NTVyxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHVixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-881e817445fbae74855fd128",
+      "request": {
+        "includedElements": [
+          "FKTSW",
+          "P0X1E",
+          "S0248",
+          "S0337",
+          "S03GV",
+          "S0417",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1RTVyxQMFgxRSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHVixTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-c2105044dbc3c5597681f98d",
+      "request": {
+        "includedElements": [
+          "FVCJL",
+          "P0C68",
+          "S0337",
+          "S03GV",
+          "S0402",
+          "S043L",
+          "S05DN"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGVkNKTCxQMEM2OCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHVixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDROUixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETixTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDZVMyxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDdFVyxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-22d77654079b4738d9027bfb",
+      "request": {
+        "includedElements": [
+          "FVCJN",
+          "P0C64",
+          "S0337",
+          "S03GV",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGVkNKTixQMEM2NCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHVixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-adb38edeed31b162b1584ea8",
+      "request": {
+        "includedElements": [
+          "FKSJX",
+          "P0C5Y",
+          "S0248",
+          "S0337",
+          "S03G9",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1NKWCxQMEM1WSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-9ea2bd45ceb2f730dad881bd",
+      "request": {
+        "includedElements": [
+          "FKTSW",
+          "P0C5A",
+          "S0337",
+          "S03G9",
+          "S0402",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1RTVyxQMEM1QSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-5ac4eb40f6165f46cac320e5",
+      "request": {
+        "includedElements": [
+          "FVCJL",
+          "P0C4P",
+          "S0337",
+          "S03AC",
+          "S03G9",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGVkNKTCxQMEM0UCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-b650a34927d3af9e76d6eefb",
+      "request": {
+        "includedElements": [
+          "FVCJN",
+          "P0C4A",
+          "S0337",
+          "S03G9",
+          "S0417",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGVkNKTixQMEM0QSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHOSxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-dacc23aa5d372f21de07ee11",
+      "request": {
+        "includedElements": [
+          "FKSJX",
+          "P0C3Z",
+          "S0337",
+          "S03GD",
+          "S043L",
+          "S0456"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1NKWCxQMEMzWixTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHRCxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-f04eb69c9eedf36f589dcaef",
+      "request": {
+        "includedElements": [
+          "FKTSW",
+          "P0C1M",
+          "S0248",
+          "S0337",
+          "S03GD",
+          "S0402",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1RTVyxQMEMxTSxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHRCxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-6725c48e194e28f625b4f6c2",
+      "request": {
+        "includedElements": [
+          "FVCJL",
+          "P0A96",
+          "S0337",
+          "S03AC",
+          "S03GD",
+          "S0402",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGVkNKTCxQMEE5NixTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHRCxTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-5991eb167b1de37f6c0cd50b",
+      "request": {
+        "includedElements": [
+          "FVCJN",
+          "P0A90",
+          "S0248",
+          "S0337",
+          "S03GD",
+          "S0417",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGVkNKTixQMEE5MCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHRCxTMDNNMSxTMDQxNyxTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-d30992d9ee4305449ca7af89",
+      "request": {
+        "includedElements": [
+          "FKSJX",
+          "P0490",
+          "S0337",
+          "S03GN",
+          "S0402",
+          "S043L",
+          "S05DN"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1NKWCxQMDQ5MCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHTixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDROUixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETixTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDZVMyxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDdFVyxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-be1c2e19c1f371decdebb048",
+      "request": {
+        "includedElements": [
+          "FKTSW",
+          "P0475",
+          "S0337",
+          "S03GN",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGS1RTVyxQMDQ3NSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHTixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-856505c6acffeb8b7af7fb2b",
+      "request": {
+        "includedElements": [
+          "FVCJL",
+          "P0416",
+          "S0248",
+          "S0337",
+          "S03GN",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGVkNKTCxQMDQxNixTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHTixTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRGTCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHTQ==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    },
+    {
+      "candidateId": "candidate-d968cbf32811a314602ec8b0",
+      "request": {
+        "includedElements": [
+          "FVCJN",
+          "P0300",
+          "S0337",
+          "S03GN",
+          "S0402",
+          "S043L"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "traceOutcome": "accepted",
+      "status": "unretained-unverified-source-binding",
+      "configurationIdTrace": "VDVNSjpGVkNKTixQMDMwMCxTMDIzMCxTMDI0OCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMyMixTMDMzNyxTMDNHTixTMDNNMSxTMDQwMixTMDQyOCxTMDQzTCxTMDQ1MyxTMDQ1NixTMDRGTCxTMDRIQSxTMDROQixTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMixTMFpHWA==",
+      "note": "Callback trace is not a retained source capture or sufficient admission evidence."
+    }
+  ]
+}

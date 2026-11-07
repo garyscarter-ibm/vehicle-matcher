@@ -1,0 +1,569 @@
+{
+  "schemaVersion": "test-impact.v1",
+  "scope": "scoped actual32 model-axis pilot and20 retained semantic checks",
+  "codeIdentity": {
+    "scripts/gcsp/bmw-public-registration.mjs": "3a9a1afcc128f8356bb296b063d118bc9b7c59531ef75823bb99f8e01f209291",
+    "scripts/gcsp/public-bmw-source.mjs": "4561e844cfe85383ad8ed27521bab157a10dae57f8d82ab29b8f41842bfc8336",
+    "scripts/gcsp/collection-session.mjs": "db5a1a1ca6037132eced521f1a9b19d73a4282a113da66480ebec70c0beac7ff",
+    "scripts/gcsp/collect-fleet.mjs": "ba3864cee32f480facde57a2d2c9dbf944d571878bb2a9cece220955357ab1de",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/bmw-selection-binding.mjs": "88820920f57f4509741d6ad291e2fcd36c5b47a65d42acd35e890e3a6f84004e",
+    "scripts/gcsp/capture-bmw-selection.mjs": "b3cea57603e403f41bb326bcdfc955b7f061a7cfc1b071d1ef609de3efc99bc1",
+    "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+    "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+    "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+    "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/prepare.py": "ed40506c8ac4e7315810c789c2040df0504796bac0a776b72f12e421c8611289",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/prepare-session.py": "d49f2121d6e9acb87fa60581f6032944bcfbfea5267a08bbeb32576cacf5f67a",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/run-series.py": "3764c9b57d9a5492faa5e95f1dca60d7a7a327f0ba5ebe9203562ce576e551ca",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/run-live.mjs": "09ed8d1102b51883cc03ee66f9e0506d5c551d6a2d4c6e463e4e2780341408e6",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/supervise.py": "108fc10c770221d1411ce30a46054b1244bbd0af1bc3b4f7765a1b074f76d0a6",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/verify-retained.py": "0b93bc2c58b95e0c3a7a98b8f585bc22bc95e3da0d9fafe304a37947e64a75f4",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/reconcile-retained.py": "463e63c762afa6076f845e0ca0a435d32a18882b17dc1e47861f553a2a4c697f",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/live-check.test.mjs": "3371c3a723ffcfc4105c91b6fbb6d9cdd8f2c80a8c1dc9593559c58b0ab85d6f",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/actual-event-history.mjs": "097a2fb56eeca20ef431ed1e9299c049bd4d36b66a5a933276aabb352e888cd4",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/check-offline.py": "c8da4d77cfa421773c2e626f60f5949255a7f81239d6b2e7aedd2b342ec12f1f",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/check-prepared.mjs": "4f3074abed99d4f14980421bdbeabbbd12a54720d7fccfdde1a83b70eb3e05d4",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/README.md": "f4a19ddc761a2288d753b2c06dcf0697410f8476a5c5fcaaaeaa76f0aa3f0ecc"
+  },
+  "inputIdentity": {
+    "seriesPlanSha256": "42d75fd088e9adb9eb6df68010fc33625bd3cc700a645a53c7debe1769861562",
+    "manifestSha256": "f632a6af62a43178fe55b1d9b68277f5cba956181a691d5c17f1b54e2c75dade",
+    "sourceProofPins": {
+      "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session001/receipt.json": "6ad601a1da106f401885e80b07437445fea69f99a3cdb7b6797f040ae22dc8c2",
+      "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session001/live-validation.json": "6411bf4c500b122e7f810c11ae80bfe0943a3270382763d9c235b3f8788cff20",
+      "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session002/receipt.json": "1b5ed69a17ff13df54c50ef22ec7f51aafe356efcc6c24a9600100f1c818aa88",
+      "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session002/live-validation.json": "ba3c67be315f509c66f89f2568e3b398605dff6647fa6a69332fd30fa954f9ab",
+      "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session003/receipt.json": "00afa8d03ccdd6dbe271a8d6c261f6180984e2fe4512ea767f2f79bbbf84b727",
+      "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session003/live-validation.json": "16253355fbfe96c8eba561992ace36bd604de578d1cb466e6c8b53bffe79d1ce",
+      "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session004/receipt.json": "a0f22361e433165a0a68e8444d9caa10f7eaa4d33fddf1339c0dd0ee5bf5c696",
+      "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session004/live-validation.json": "39549d60c71591dcf2bbc1ac741ba871401c9e538a8e138065ccdaf9b3631533"
+    }
+  },
+  "functionToTest": [
+    {
+      "path": "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/actual-event-history.mjs",
+      "observedFunctions": [
+        "<module>",
+        "actualEventHistory"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/live-check.test.mjs",
+      "observedFunctions": [
+        "<module>",
+        "artifact",
+        "read",
+        "sha"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "scripts/gcsp/bmw-public-registration.mjs",
+      "observedFunctions": [
+        "<module>",
+        "bmwBatchPlanRequestUrls",
+        "bmwBatchRequestRegistration",
+        "bmwModelBatchRequestUrls",
+        "bmwModelOptionsRequestUrls",
+        "bmwPublicRequestUrls",
+        "bounded",
+        "candidateRequest",
+        "code",
+        "date",
+        "isBmwBatchPlan",
+        "object",
+        "same",
+        "token",
+        "validateBmwBatchPlan",
+        "validateBmwModelBatchCandidateRequest",
+        "validateBmwModelOptionsRequestRegistration",
+        "validateBmwModelRegistration"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "scripts/gcsp/bmw-selection-binding.mjs",
+      "observedFunctions": [
+        "<module>",
+        "batchDefinitionClaims",
+        "buildBmwSelectionBinding",
+        "captureArtifact",
+        "code",
+        "createBmwSelectionRegistration",
+        "encode",
+        "evidence",
+        "fail",
+        "instant",
+        "keys",
+        "known",
+        "locate",
+        "object",
+        "qualifyBmwSelectionRecord",
+        "readArtifact",
+        "ref",
+        "same",
+        "segment",
+        "set",
+        "sha",
+        "solverSelection",
+        "treeFacts",
+        "unknown",
+        "unknownOrigin",
+        "urlScope"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "scripts/gcsp/bmw-source-qualification.mjs",
+      "observedFunctions": [
+        "<module>"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "scripts/gcsp/collection-session.mjs",
+      "observedFunctions": [
+        "<module>"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "scripts/gcsp/configuration-key.mjs",
+      "observedFunctions": [
+        "<module>",
+        "createConfigurationKey",
+        "key",
+        "normaliseCode",
+        "normaliseCodes",
+        "requireValue",
+        "resolve"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "scripts/gcsp/public-bmw-source.mjs",
+      "observedFunctions": [
+        "<module>",
+        "bmwModelLineLocators",
+        "bmwModelLineReport",
+        "bounded",
+        "calendarDate",
+        "descriptor",
+        "modelOptionsRelationships",
+        "object",
+        "project",
+        "publicBmwBatchOperations",
+        "publicBmwOperations",
+        "safeLabel",
+        "same",
+        "strictModelReport",
+        "validateBmwModelLineReport",
+        "validatePublicBmwPlan"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "scripts/gcsp/settings-shape-report.mjs",
+      "observedFunctions": [
+        "<module>"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "server/gcsp/migrations/index.js",
+      "observedFunctions": [
+        "<module>"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "server/gcsp/policy/activation.js",
+      "observedFunctions": [
+        "<module>"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "server/gcsp/policy/adoption.js",
+      "observedFunctions": [
+        "<module>"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "server/gcsp/policy/file-provider.js",
+      "observedFunctions": [
+        "<instance_members_initializer>",
+        "<module>",
+        "FilePolicyProvider",
+        "dates",
+        "freeze",
+        "knownScheme",
+        "loadVersions",
+        "nonoverlapping",
+        "object",
+        "rejectDuplicateJsonKeys",
+        "requireSource",
+        "snapshotVersions",
+        "text",
+        "unique",
+        "validDay",
+        "validInstant"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "server/gcsp/policy/index.js",
+      "observedFunctions": [
+        "#resolve",
+        "<instance_members_initializer>",
+        "<module>",
+        "PolicyService",
+        "activeAt",
+        "getAssumption",
+        "ok",
+        "outcome",
+        "rows",
+        "text"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "server/gcsp/policy/memory-provider.js",
+      "observedFunctions": [
+        "<module>"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "server/gcsp/policy/postgres-provider.js",
+      "observedFunctions": [
+        "<module>"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "server/gcsp/policy/publish.js",
+      "observedFunctions": [
+        "<module>"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "server/gcsp/policy/reviewed-definitions.js",
+      "observedFunctions": [
+        "<module>",
+        "finiteJson",
+        "freeze",
+        "object",
+        "only",
+        "text",
+        "validDay",
+        "validateReviewedDefinitionSet"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "server/gcsp/repository/core.js",
+      "observedFunctions": [
+        "<module>",
+        "canonical",
+        "inputDigest",
+        "jsonValue",
+        "plain"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "server/gcsp/repository/index.js",
+      "observedFunctions": [
+        "<module>"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "server/gcsp/repository/memory.js",
+      "observedFunctions": [
+        "<module>"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "server/gcsp/repository/postgres.js",
+      "observedFunctions": [
+        "<module>"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "server/gcsp/repository/schema.js",
+      "observedFunctions": [
+        "<module>",
+        "definition"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "server/vehicle-evidence/bmw-catalogue-adapter.js",
+      "observedFunctions": [
+        "<module>",
+        "bmwCatalogueLookupIdentity"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    },
+    {
+      "path": "server/vehicle-evidence/bmw-catalogue-v2.js",
+      "observedFunctions": [
+        "<module>",
+        "bmwCatalogueV2LookupIdentity",
+        "codes",
+        "date",
+        "equal",
+        "evidenceValue",
+        "instant",
+        "keys",
+        "must",
+        "parseClosedJson",
+        "plain",
+        "pointer",
+        "provenance",
+        "refs",
+        "safeUrl",
+        "string",
+        "text",
+        "typed",
+        "validConfigurationId",
+        "validateBinding",
+        "validateBmwCatalogueV2Envelope",
+        "value",
+        "whitespace"
+      ],
+      "tests": "live-check.test.mjs: five strict semantic checks per actual model session"
+    }
+  ],
+  "integrationEdges": [
+    "registered model/line -> fresh page/settings/tree/options -> exact solver requests",
+    "strict source binder -> canonical admission -> cumulative indexes",
+    "actual primary -> interruption-safe export -> owned finalizers"
+  ],
+  "knownBoundaries": [
+    "Only32 candidates across four model contexts observed.",
+    "No suffix source, physical profile qualification, broader scheme coverage, full suite, publication or application acceptance."
+  ],
+  "perSessionEvidence": [
+    {
+      "model": "1F7A",
+      "session": 1,
+      "proof": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session001/live-validation.json",
+      "proofSha256": "6411bf4c500b122e7f810c11ae80bfe0943a3270382763d9c235b3f8788cff20",
+      "primary": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session001/collector-checkpoint.json",
+      "primarySha256": "c9bb86e821e75adaee68c76a250834b734877f2e45712b60f637c74efea0c499",
+      "summary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "counts": {
+        "sourceCalls": 12,
+        "operations": {
+          "discover": 1,
+          "options": 1,
+          "page": 1,
+          "settings": 1,
+          "solve": 8
+        },
+        "cacheHits": {
+          "discover": 0,
+          "options": 0,
+          "page": 0,
+          "settings": 0,
+          "solve": 0
+        },
+        "failures": 0,
+        "timeouts": 0,
+        "substitutions": 0,
+        "cacheEvictions": 0,
+        "httpAttempts": 12,
+        "decodedBytes": 896812,
+        "operationBytes": {
+          "discover": 113259,
+          "options": 119566,
+          "page": 17763,
+          "settings": 620646,
+          "solve": 25578
+        }
+      },
+      "newlyAccepted": 8,
+      "duplicates": 0,
+      "rejected": 0,
+      "sourcePeakRssBytes": 214269952,
+      "retainedPeakRssBytes": 135004160
+    },
+    {
+      "model": "1F7C",
+      "session": 2,
+      "proof": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session002/live-validation.json",
+      "proofSha256": "ba3c67be315f509c66f89f2568e3b398605dff6647fa6a69332fd30fa954f9ab",
+      "primary": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session002/collector-checkpoint.json",
+      "primarySha256": "363e7cf265d7ba1b77f8b0a00ac78fb8c18889dc3016df2fa078dc9c468a1469",
+      "summary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "counts": {
+        "sourceCalls": 12,
+        "operations": {
+          "discover": 1,
+          "options": 1,
+          "page": 1,
+          "settings": 1,
+          "solve": 8
+        },
+        "cacheHits": {
+          "discover": 0,
+          "options": 0,
+          "page": 0,
+          "settings": 0,
+          "solve": 0
+        },
+        "failures": 0,
+        "timeouts": 0,
+        "substitutions": 0,
+        "cacheEvictions": 0,
+        "httpAttempts": 12,
+        "decodedBytes": 912701,
+        "operationBytes": {
+          "discover": 113259,
+          "options": 129753,
+          "page": 17763,
+          "settings": 620646,
+          "solve": 31280
+        }
+      },
+      "newlyAccepted": 8,
+      "duplicates": 0,
+      "rejected": 0,
+      "sourcePeakRssBytes": 201031680,
+      "retainedPeakRssBytes": 139345920
+    },
+    {
+      "model": "1F7D",
+      "session": 3,
+      "proof": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session003/live-validation.json",
+      "proofSha256": "16253355fbfe96c8eba561992ace36bd604de578d1cb466e6c8b53bffe79d1ce",
+      "primary": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session003/collector-checkpoint.json",
+      "primarySha256": "304b34b43268e4ec40dbb8eaf2feed8bbc96b2b6c9ee5cf49e6dae8fedcce4d6",
+      "summary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "counts": {
+        "sourceCalls": 12,
+        "operations": {
+          "discover": 1,
+          "options": 1,
+          "page": 1,
+          "settings": 1,
+          "solve": 8
+        },
+        "cacheHits": {
+          "discover": 0,
+          "options": 0,
+          "page": 0,
+          "settings": 0,
+          "solve": 0
+        },
+        "failures": 0,
+        "timeouts": 0,
+        "substitutions": 0,
+        "cacheEvictions": 0,
+        "httpAttempts": 12,
+        "decodedBytes": 910730,
+        "operationBytes": {
+          "discover": 113259,
+          "options": 128974,
+          "page": 17763,
+          "settings": 620646,
+          "solve": 30088
+        }
+      },
+      "newlyAccepted": 8,
+      "duplicates": 0,
+      "rejected": 0,
+      "sourcePeakRssBytes": 210780160,
+      "retainedPeakRssBytes": 138117120
+    },
+    {
+      "model": "1F7F",
+      "session": 4,
+      "proof": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session004/live-validation.json",
+      "proofSha256": "39549d60c71591dcf2bbc1ac741ba871401c9e538a8e138065ccdaf9b3631533",
+      "primary": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session004/collector-checkpoint.json",
+      "primarySha256": "b69a70e2aad4bdcdeae7aa55f4db329873310308ab4d365117d58fb56388991e",
+      "summary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "counts": {
+        "sourceCalls": 12,
+        "operations": {
+          "discover": 1,
+          "options": 1,
+          "page": 1,
+          "settings": 1,
+          "solve": 8
+        },
+        "cacheHits": {
+          "discover": 0,
+          "options": 0,
+          "page": 0,
+          "settings": 0,
+          "solve": 0
+        },
+        "failures": 0,
+        "timeouts": 0,
+        "substitutions": 0,
+        "cacheEvictions": 0,
+        "httpAttempts": 12,
+        "decodedBytes": 922741,
+        "operationBytes": {
+          "discover": 113259,
+          "options": 134425,
+          "page": 17763,
+          "settings": 620646,
+          "solve": 36648
+        }
+      },
+      "newlyAccepted": 8,
+      "duplicates": 0,
+      "rejected": 0,
+      "sourcePeakRssBytes": 213106688,
+      "retainedPeakRssBytes": 143802368
+    }
+  ],
+  "phaseSeconds": 35.699694083
+}

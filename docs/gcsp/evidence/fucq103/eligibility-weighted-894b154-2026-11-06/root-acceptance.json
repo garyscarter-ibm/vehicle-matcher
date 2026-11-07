@@ -1,0 +1,17 @@
+{
+  "at": "2026-11-06T08:39:18.498898+00:00",
+  "verdict": "PASS",
+  "run": "fucq103-backend-dfc2b42a450b4565be68a74424bb0832",
+  "grant": "fucq103-eligibility-weighted-894b154-0813",
+  "revision": "894b154da8ff681e8202cc458e2bfea747ce1fb9",
+  "scope": "One weighted delivered-memory HTTP case with four synthetic stored subjects; five source cases unexercised",
+  "rootAudit": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-weighted1-root-0813.json",
+  "rootChecks": 991,
+  "leadAudit": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-weighted-894b154-lead-2026-11-06.json",
+  "leadSHA256": "0016348fdc978aab5947f0cb0c898a22e156965ae3c2caa59c437c80e39ece7b",
+  "leadChecks": 557,
+  "postwrite": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-weighted1-postwrite-0813.json",
+  "postwriteSHA256": "3bfd6bb8b6cbb9f71f189beec41a2952a867fd1d904a5c3cc713cae2a9137504",
+  "publication": "Authorized immutable evidence-only <=1MiB; exact original copies/index; no next-mode execution or whole-story acceptance",
+  "parserFixtures": "38authored, zeroexecuted"
+}

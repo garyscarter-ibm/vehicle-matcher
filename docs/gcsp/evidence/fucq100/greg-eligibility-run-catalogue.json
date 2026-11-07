@@ -1,0 +1,2460 @@
+{
+  "kind": "finite ordinary owned-source Greg eligibility validation; not executed",
+  "base": "f5f83cbaac71740d25e3de18498022c3f416998f",
+  "selected": [
+    "server/test/gcsp-greg-driver-eligibility.test.js",
+    "server/test/gcsp-greg-demand.test.js"
+  ],
+  "changed": [
+    "server/gcsp/manual-context/recommendation-facts.js",
+    "server/gcsp/greg/index.js",
+    "server/gcsp/greg/publish/index.js",
+    "server/gcsp/greg/publish/fit.js",
+    "server/test/gcsp-greg-driver-eligibility.test.js",
+    "server/test/gcsp-greg-demand.test.js"
+  ],
+  "sources": {
+    "blocks/vehicle-matcher/feedback-actions.js": "eb6dcfb82aed8045228797f870a5e337ef7f0a8f3e136eb46804995d71838744",
+    "package-lock.json": "67cb7cd3fc2baeec4f4aa6fc7acc6ccc6b2944ae8ff6451274a874d22bffa071",
+    "package.json": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
+    "server/brands.js": "ea63741b2fcb01dbe35dcdffdd66f7021a3c0219517a8de1487fae65f65299e2",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/active.json": "8c797f87d050687c6d4efd4392061c65c753e5ee0177e77f9b5cab86dc3383bb",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/identity-inventory.json": "dd702f37aa81480d61b7a8a74d761abe026d25b39f056cf1d50698bbdf0edd4f",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/configurations.jsonl": "9c1fb6a34e324e6e4937baa1e80eabafa44fae394dd138f2f77be9f6867e9855",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/images.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/manifest.json": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/vins.jsonl": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
+    "server/data/gcsp/vehicle-evidence/vin-profiles.v1.json": "9a107b2b90c21a116e2fb93ca88211b95250c4404f6468924e5e7f53d092a1fa",
+    "server/dealers.js": "7fd5b02df86c495971fc07ee310e8ffd02b351aecb09a124778d8d4d7147012e",
+    "server/engine.js": "bbe8a865d280fb75075e93a139a3badbaa20972a18406baeeafb8ca2fc56a550",
+    "server/ferrari-listing.js": "df483d2070913e193072f9e6561519bac7a2db670d55b058777f7010c4f83b4d",
+    "server/gcsp/adapters/manual-stock.js": "66e8d7de1662ac778ebc789aa9f93085abb9d2fafed528baf0fd90a9cb6bc771",
+    "server/gcsp/brief/activity-http.js": "b4384eb61ea60afb31570a3d2819ea686dff6aad0724cfda3f0b96788c01f2c4",
+    "server/gcsp/brief/activity.js": "dbf317b5aba98b1f6a723692e108a1b1a83637fb61e76ca33729dd90fe8b8f6f",
+    "server/gcsp/brief/editor.js": "df70b807923069db3b9d2b4a99ecd3ca887bc7683c5e536065c145c2664e8dc1",
+    "server/gcsp/brief/http.js": "20a88f4cafa5c0009b54398682e1540cfabc2afea2b16935962b1406cbef8402",
+    "server/gcsp/brief/index.js": "22500a517f8232947b33ac274e32bf60746ba9d8199851e750784f57737ee418",
+    "server/gcsp/cases/http.js": "53a2cbe7fec5079d5d84c0d7a3090cad94e94788779153607d38530c6b10431f",
+    "server/gcsp/cases/notification.js": "44af7293f900f3a83bda7b98be094f50dd77de33383c279f8c582a013cbfa83e",
+    "server/gcsp/clock/http.js": "da019f6f766ec6ff22ab7346091ca9ef6744cde2608465f20d942c07ec083535",
+    "server/gcsp/clock/index.js": "98d9e3ad778ad9a38aa3fb5f96f5a68040544ba328b79e263e661ec42c442c45",
+    "server/gcsp/fixtures/principals.js": "848797ec98dd253c8c8daa4e1078f2b6ecc30b2807c713bf13615f2ead18ec2f",
+    "server/gcsp/fixtures/scenario-v1.js": "408f135c04ae909e717c30763073a3ea24a82c1e8643fabdea2888e22f1681f4",
+    "server/gcsp/fixtures/scenarios/catalogue-v1.js": "eca724465148032750c74c57882c0ee0ae69f3b119330194b9601b9b4bc1b73c",
+    "server/gcsp/fixtures/scenarios/index.js": "e1e794e347833ae952352d7bdf2cbc9afae28c65a01edd76c570a6bf38c4cad4",
+    "server/gcsp/greg/http.js": "dfa42aedf5851af618311950100f9186a11880ce51d7a122bc115a2d8ea8aa2e",
+    "server/gcsp/greg/index.js": "62452edd55d8834f029b1a4ab3dee2d252f3a4bc04c76431ad999909839f974c",
+    "server/gcsp/greg/publish/fit.js": "d3249720c2d3a15164a3bfb402e5316ea8f4016dfe58db028590c56e728d6674",
+    "server/gcsp/greg/publish/http.js": "237a98fa9894fc1421d2426d14fbd84134ccfffe8a7ab701a265d23ea63b048e",
+    "server/gcsp/greg/publish/index.js": "63621b317268cfc9e9d6b99b71306eb5327a102ab4e4a1b1f98542dfd6edd1ae",
+    "server/gcsp/identity/http.js": "86d3aa6bfc13ae6773c3861b7ef6c72fecfd31270b7c4f0609e240bd017b713e",
+    "server/gcsp/identity/index.js": "4c60cd226ecceefcedd86c7da73a410bfabbeddbb05aab1aa997c98639f7612c",
+    "server/gcsp/manual-claims/http.js": "909926cc334b74b1d000fa12987fa8541d66eb445499d7fdaf03b241a29be6b7",
+    "server/gcsp/manual-claims/index.js": "32c80ef72d8329fcdbc4a208d9ab911f68156e6234d3917975754415d04ef059",
+    "server/gcsp/manual-context/fixtures.js": "e63bee220e6e563f96ee94a94f37500c67d0c2944b3909a0a8c7d3f1f89b01a6",
+    "server/gcsp/manual-context/http.js": "d49bbb756447e8b91ee90dd54e2240914b45e554d79428e54345a59585d4dc37",
+    "server/gcsp/manual-context/index.js": "3e694f3a68b9d3c9f40b44ddb785bec2edce3b3ada43d491995be77a2930fd43",
+    "server/gcsp/manual-context/ports.js": "c1e7db5012f6d3212b79ad989e6cde5a0e390e2f4bfe50f91ee4c79c8a7a1267",
+    "server/gcsp/manual-context/recommendation-facts.js": "4901d85a1a718529e3d85bba64b8de098105e945ae444127796c931b239571ec",
+    "server/gcsp/migrations/0001_transaction_foundation.sql": "3bde8db01f103141ca9bbe7398a6e1172df9b9789df745244a0071a00b9629d1",
+    "server/gcsp/migrations/0002_policy_tables.sql": "65346093f811df63b225436a0ca35cd4061990a78caacb44ffde7b1effd1edd0",
+    "server/gcsp/migrations/0003_renewal_cases.sql": "e76750fddd75b9d363fd209c243169ce1f9b06c78f96b7dbb74fe3c296f08c98",
+    "server/gcsp/migrations/index.js": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f",
+    "server/gcsp/notify/captured.js": "df162186e33887287ebde5852c56a926f3c20873f17c80654989938af6feff58",
+    "server/gcsp/notify/http.js": "ae3fd2f84fa3ddf1cea1e3bc05fe01944c7fc2094843b34e8b9eb8a2f16231ed",
+    "server/gcsp/notify/index.js": "f7f132bd7fac580cec1ce0e619d613a9a5de77fcefb92ccf27383348aac50fb7",
+    "server/gcsp/notify/port.js": "fa2895408bd05a5f5a7da2b1d4476df134886500578ca91342495b157f840a6e",
+    "server/gcsp/notify/templates.js": "fb9a3b9719c54000409553773698ef620bf35a5ba06c354f33b30cea7df839eb",
+    "server/gcsp/offers/access-http.js": "f37533eeb5309cb4eff6c6dcf0af5ab8a8819afdaa4d08b4baee0147d360e868",
+    "server/gcsp/offers/access.js": "134e9d39253e934618f6cf38b334bb7cf0f8912443ee159e6167b949d4fdb34a",
+    "server/gcsp/offers/buddy-hold.js": "b9f1a9be9cf42552a56313492bf0703b49ed715ffe2059f477ee11637c44b3d6",
+    "server/gcsp/offers/buddy-remote.js": "0284045ab38c22c305019ad4a560724aa233e830c6c37186d5661da430c59e01",
+    "server/gcsp/offers/current-car-comparison.js": "c5aaf8b2e3123301d50f3dade21e89e4f88abf12ede4e2c7ed801adbc56099cd",
+    "server/gcsp/offers/offer-token.js": "325b699d7dfdb435cd8713015017aa68bf735582f127d7d64a0e0fc819f7b915",
+    "server/gcsp/policy/activation.js": "4e79235b761e8daf94f3cf2744c4bc585146181b410b64497669bd353ee7c4d6",
+    "server/gcsp/policy/adoption.js": "a2cb9a74946cd9eda413d896a0abc2f4299b3b75880a77ddd510667a5187c870",
+    "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+    "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+    "server/gcsp/policy/memory-provider.js": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+    "server/gcsp/policy/postgres-provider.js": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+    "server/gcsp/policy/publish.js": "c521e15966be7762a3348ad860403ef555dd8cbd48405e7d23d9a7c6d262a826",
+    "server/gcsp/policy/reviewed-definitions.js": "8fa09f48202fd044638c2d602f9c816a440df5b20d4704666a187a45e1c256e8",
+    "server/gcsp/policy/reviewed/greg-publish-editor-v1.json": "7c7680227cdcd6e5f5afbb9fedb06b73c4768b2a3c7526cbf9cb9c03ccdfd8c3",
+    "server/gcsp/policy/reviewed/presenter-controls-v1.json": "0e09fc7cde7677724153265042eb1f7a122c88115762a736a4bdf02a4b2e470a",
+    "server/gcsp/policy/seed-v1.json": "c585213b98631d6e82acc1b3720d47efae49fdb502f5fc86fb440703ef6e41a6",
+    "server/gcsp/predict/records/policy-definitions.json": "c083ed58abcde595ac0cbf077b319b9102795506efb736c980d5f0cdba840143",
+    "server/gcsp/presenter-controls/commands.js": "89b21a616e479c27f54d0004fe54d3b93e2cfd557e803b8bc38c717e619a627a",
+    "server/gcsp/presenter-controls/http.js": "d575c0ea6b4ac3fb659fe05fa66535d942215342215c8e1a8ed73b000efaf672",
+    "server/gcsp/presenter-controls/index.js": "06a518dc1ee15919ded29e938a717943816d591b1b79c442114a2aa8239704bd",
+    "server/gcsp/recommendation/http.js": "166f6f3c7d972a04903039c5b25fe5e24ec23155bc345c859fee45f1e06a54fd",
+    "server/gcsp/recommendation/index.js": "08acfe895804cf60dcc178591ecbdd1816f12ce70944f832f1ae394902c7e172",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/repository/index.js": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16",
+    "server/gcsp/repository/memory.js": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866",
+    "server/gcsp/repository/postgres.js": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "server/gcsp/runtime.js": "6ac589363f8a6c5abc67e7d63d861389265a942b8da8cfa721bb6942a1461fa7",
+    "server/gcsp/scenarios/http.js": "4170f3760f9fd23478c286ab5a3140e9ad201b6e7c11d00c7f7beb75be773085",
+    "server/gcsp/scenarios/index.js": "02ec280d1407b9723ec55c4eb740eb209614b236cb8939cb45cd53c2c67b143b",
+    "server/gcsp/vehicle-evidence/corpus-publisher.js": "db7e3fd9ff5ff4342872a54c6ca40dd3dda35fc31c51e3dbdb2910b067cd5e49",
+    "server/gcsp/vehicle-evidence/identity-routing.js": "89d805c94c5f7a9dd026daae40e42167355822961d07597bf0cf69c45b649088",
+    "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "c616bfed3ed62b4152a5636d6bcff442dbe0fa6793eb5b8efc894d0e486a8785",
+    "server/gcsp/vehicle-evidence/synthetic-registry.js": "758f3a20ec9d0bbb6fd4853df16e0e3c8e891f732165a5584d7de5698aa7221f",
+    "server/gcsp/vehicle-evidence/vehicle-details-contract.js": "3886ac9377f3688d2bfe2c2af5a6fe330bb4b49d2f18bb049c8cc7f71d485cc8",
+    "server/gcsp/vehicle-evidence/vehicle-evidence-handler.js": "9e118acfe39f550f06e6c319f536ca8768ca4b41820fd9ca9593e79b18f8c8f0",
+    "server/gcsp/vehicle-evidence/vehicle-lookup.js": "1184b7cc50565b180284e342183cca02e031a718a55f909b7980c34378a630e9",
+    "server/gcsp/vehicle-evidence/vin-allocation.js": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e",
+    "server/gcsp/vehicle-evidence/vin-generator.js": "56072df720ff4b32d26fcd099852f397f140ae44b4658532fa952d11c717260f",
+    "server/gcsp/vehicle-evidence/vin-profiles.js": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd",
+    "server/geocode.js": "861414be6b2f715bfd890e36286c51df004162ae295e6997287582342f3d892c",
+    "server/honda-listing.js": "8fcc91b1adc729b0b7c0119c00608a8856d87144c6f16e08423924f100dd9534",
+    "server/index.js": "3d400ee9490130a8cf1e39cbf7df40101e60816b74eab72dd29afe00fec00182",
+    "server/mapping.js": "142563394d5a3ba579c6d16787c97aa51dbaa8aa229947e2ac3534163f59585a",
+    "server/motorrad-listing.js": "9666ef1e6fe931378111b783ffefc26732af9ddc2d80834d7da2326155ee05fe",
+    "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+    "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139",
+    "server/questions.js": "898716dfaf8a184fef39a9ae12b9d59b01cce94c48356dab5e3b4e81de62c26d",
+    "server/scenarios/employee/index.js": "43f50c04794902dd1d10a008f7882d335c1b5179f1c57a3f4ab9ea1293f7d844",
+    "server/stock.js": "a9b59844ea5b862cc5effe509e988d41462f2a77683624d97ae51a18e4a6c133",
+    "server/test/gcsp-greg-demand.test.js": "005d6025f98a03a3c013be08d013cd3d0c9b7faa9487ffe2c124d2bb9ec914ba",
+    "server/test/gcsp-greg-driver-eligibility.test.js": "f7b0ec23ff95f8cef01a6b332f4a4342156d91df24702fcb9023683f3d7f6148",
+    "server/test/helpers/employee-recommendation.js": "39b7e47f9298d155759fa440bd412ebb86bfc009b7ec9d9d1167bdb88970ce9a",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "06c0910c131fdb0e2e4ef254dc5591f13c90ecb3f36f655aef3cb651aa0052a1",
+    "server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json": "ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3",
+    "server/vehicles/index.js": "cc02ff92ac13a25fdbe3a2325f60cafe2c16486e2f11d78a391f8664a217b5cc"
+  },
+  "edges": [
+    {
+      "from": "server/test/gcsp-greg-demand.test.js",
+      "specifier": "node:test",
+      "builtin": true
+    },
+    {
+      "from": "server/test/gcsp-greg-demand.test.js",
+      "specifier": "node:assert/strict",
+      "builtin": true
+    },
+    {
+      "from": "server/test/gcsp-greg-demand.test.js",
+      "specifier": "node:fs/promises",
+      "builtin": true
+    },
+    {
+      "from": "server/test/gcsp-greg-demand.test.js",
+      "specifier": "node:events",
+      "builtin": true
+    },
+    {
+      "from": "server/test/gcsp-greg-demand.test.js",
+      "specifier": "../index.js",
+      "path": "server/index.js"
+    },
+    {
+      "from": "server/test/gcsp-greg-demand.test.js",
+      "specifier": "../gcsp/repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/test/gcsp-greg-demand.test.js",
+      "specifier": "../gcsp/policy/index.js",
+      "path": "server/gcsp/policy/index.js"
+    },
+    {
+      "from": "server/test/gcsp-greg-demand.test.js",
+      "specifier": "../gcsp/clock/index.js",
+      "path": "server/gcsp/clock/index.js"
+    },
+    {
+      "from": "server/test/gcsp-greg-demand.test.js",
+      "specifier": "../gcsp/brief/index.js",
+      "path": "server/gcsp/brief/index.js"
+    },
+    {
+      "from": "server/test/gcsp-greg-demand.test.js",
+      "specifier": "../gcsp/identity/http.js",
+      "path": "server/gcsp/identity/http.js"
+    },
+    {
+      "from": "server/test/gcsp-greg-demand.test.js",
+      "specifier": "../gcsp/greg/index.js",
+      "path": "server/gcsp/greg/index.js"
+    },
+    {
+      "from": "server/test/gcsp-greg-demand.test.js",
+      "specifier": "../gcsp/greg/http.js",
+      "path": "server/gcsp/greg/http.js"
+    },
+    {
+      "from": "server/test/gcsp-greg-demand.test.js",
+      "specifier": "../gcsp/manual-context/fixtures.js",
+      "path": "server/gcsp/manual-context/fixtures.js"
+    },
+    {
+      "from": "server/test/gcsp-greg-demand.test.js",
+      "specifier": "./helpers/employee-recommendation.js",
+      "path": "server/test/helpers/employee-recommendation.js"
+    },
+    {
+      "from": "server/test/gcsp-greg-demand.test.js",
+      "specifier": "../gcsp/policy/seed-v1.json",
+      "path": "server/gcsp/policy/seed-v1.json"
+    },
+    {
+      "from": "server/test/helpers/employee-recommendation.js",
+      "specifier": "../../gcsp/policy/index.js",
+      "path": "server/gcsp/policy/index.js"
+    },
+    {
+      "from": "server/test/helpers/employee-recommendation.js",
+      "specifier": "../../vehicles/index.js",
+      "path": "server/vehicles/index.js"
+    },
+    {
+      "from": "server/gcsp/policy/index.js",
+      "specifier": "./file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/policy/index.js",
+      "specifier": "./postgres-provider.js",
+      "path": "server/gcsp/policy/postgres-provider.js"
+    },
+    {
+      "from": "server/gcsp/policy/index.js",
+      "specifier": "./publish.js",
+      "path": "server/gcsp/policy/publish.js"
+    },
+    {
+      "from": "server/gcsp/policy/index.js",
+      "specifier": "./adoption.js",
+      "path": "server/gcsp/policy/adoption.js"
+    },
+    {
+      "from": "server/gcsp/policy/index.js",
+      "specifier": "./file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/policy/index.js",
+      "specifier": "./postgres-provider.js",
+      "path": "server/gcsp/policy/postgres-provider.js"
+    },
+    {
+      "from": "server/gcsp/policy/index.js",
+      "specifier": "./memory-provider.js",
+      "path": "server/gcsp/policy/memory-provider.js"
+    },
+    {
+      "from": "server/gcsp/policy/memory-provider.js",
+      "specifier": "./file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/policy/memory-provider.js",
+      "specifier": "../repository/core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/repository/core.js",
+      "specifier": "node:crypto",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/repository/core.js",
+      "specifier": "./schema.js",
+      "path": "server/gcsp/repository/schema.js"
+    },
+    {
+      "from": "server/gcsp/repository/core.js",
+      "specifier": "./schema.js",
+      "path": "server/gcsp/repository/schema.js"
+    },
+    {
+      "from": "server/gcsp/policy/file-provider.js",
+      "specifier": "node:fs/promises",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/policy/file-provider.js",
+      "specifier": "./seed-v1.json",
+      "path": "server/gcsp/policy/seed-v1.json"
+    },
+    {
+      "from": "server/gcsp/policy/postgres-provider.js",
+      "specifier": "pg",
+      "installed": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/esm/index.mjs"
+    },
+    {
+      "from": "server/gcsp/policy/postgres-provider.js",
+      "specifier": "./file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/policy/postgres-provider.js",
+      "specifier": "../migrations/index.js",
+      "path": "server/gcsp/migrations/index.js"
+    },
+    {
+      "from": "server/gcsp/policy/postgres-provider.js",
+      "specifier": "../repository/core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/policy/postgres-provider.js",
+      "specifier": "./publish.js",
+      "path": "server/gcsp/policy/publish.js"
+    },
+    {
+      "from": "server/gcsp/policy/publish.js",
+      "specifier": "./file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/policy/publish.js",
+      "specifier": "../repository/core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/migrations/index.js",
+      "specifier": "node:fs/promises",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/migrations/index.js",
+      "specifier": "node:crypto",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/migrations/index.js",
+      "specifier": "node:url",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/migrations/index.js",
+      "specifier": "node:path",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/migrations/index.js",
+      "specifier": "../repository/core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/migrations/index.js",
+      "specifier": "./",
+      "path": "server/gcsp/migrations"
+    },
+    {
+      "directory": "server/gcsp/migrations",
+      "members": [
+        "server/gcsp/migrations/0001_transaction_foundation.sql",
+        "server/gcsp/migrations/0002_policy_tables.sql",
+        "server/gcsp/migrations/0003_renewal_cases.sql",
+        "server/gcsp/migrations/index.js"
+      ]
+    },
+    {
+      "from": "server/gcsp/policy/adoption.js",
+      "specifier": "./file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/policy/adoption.js",
+      "specifier": "./reviewed-definitions.js",
+      "path": "server/gcsp/policy/reviewed-definitions.js"
+    },
+    {
+      "from": "server/gcsp/policy/adoption.js",
+      "specifier": "./publish.js",
+      "path": "server/gcsp/policy/publish.js"
+    },
+    {
+      "from": "server/gcsp/policy/adoption.js",
+      "specifier": "./activation.js",
+      "path": "server/gcsp/policy/activation.js"
+    },
+    {
+      "from": "server/gcsp/policy/activation.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/policy/activation.js",
+      "specifier": "./file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/repository/index.js",
+      "specifier": "./memory.js",
+      "path": "server/gcsp/repository/memory.js"
+    },
+    {
+      "from": "server/gcsp/repository/index.js",
+      "specifier": "./postgres.js",
+      "path": "server/gcsp/repository/postgres.js"
+    },
+    {
+      "from": "server/gcsp/repository/index.js",
+      "specifier": "./core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/repository/postgres.js",
+      "specifier": "pg",
+      "installed": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/esm/index.mjs"
+    },
+    {
+      "from": "server/gcsp/repository/postgres.js",
+      "specifier": "./core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/repository/postgres.js",
+      "specifier": "../migrations/index.js",
+      "path": "server/gcsp/migrations/index.js"
+    },
+    {
+      "from": "server/gcsp/repository/memory.js",
+      "specifier": "./core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/policy/reviewed-definitions.js",
+      "specifier": "node:fs/promises",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/policy/reviewed-definitions.js",
+      "specifier": "../repository/core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/policy/reviewed-definitions.js",
+      "specifier": "./reviewed/presenter-controls-v1.json",
+      "path": "server/gcsp/policy/reviewed/presenter-controls-v1.json"
+    },
+    {
+      "from": "server/gcsp/policy/reviewed-definitions.js",
+      "specifier": "./reviewed/greg-publish-editor-v1.json",
+      "path": "server/gcsp/policy/reviewed/greg-publish-editor-v1.json"
+    },
+    {
+      "from": "server/gcsp/policy/reviewed-definitions.js",
+      "specifier": "../predict/records/policy-definitions.json",
+      "path": "server/gcsp/predict/records/policy-definitions.json"
+    },
+    {
+      "from": "server/gcsp/manual-context/fixtures.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/greg/http.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/greg/index.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/greg/index.js",
+      "specifier": "../policy/file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/greg/index.js",
+      "specifier": "../recommendation/index.js",
+      "path": "server/gcsp/recommendation/index.js"
+    },
+    {
+      "from": "server/gcsp/greg/index.js",
+      "specifier": "../manual-context/recommendation-facts.js",
+      "path": "server/gcsp/manual-context/recommendation-facts.js"
+    },
+    {
+      "from": "server/gcsp/manual-context/recommendation-facts.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/manual-context/recommendation-facts.js",
+      "specifier": "../policy/file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/recommendation/index.js",
+      "specifier": "../../vehicles/index.js",
+      "path": "server/vehicles/index.js"
+    },
+    {
+      "from": "server/gcsp/recommendation/index.js",
+      "specifier": "../policy/file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/recommendation/index.js",
+      "specifier": "../../scenarios/employee/index.js",
+      "path": "server/scenarios/employee/index.js"
+    },
+    {
+      "from": "server/scenarios/employee/index.js",
+      "specifier": "../../engine.js",
+      "path": "server/engine.js"
+    },
+    {
+      "from": "server/scenarios/employee/index.js",
+      "specifier": "../../gcsp/policy/file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/engine.js",
+      "specifier": "./questions.js",
+      "path": "server/questions.js"
+    },
+    {
+      "from": "server/engine.js",
+      "specifier": "./brands.js",
+      "path": "server/brands.js"
+    },
+    {
+      "from": "server/questions.js",
+      "specifier": "./brands.js",
+      "path": "server/brands.js"
+    },
+    {
+      "from": "server/gcsp/brief/index.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/brief/index.js",
+      "specifier": "../policy/file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/brief/index.js",
+      "specifier": "../../scenarios/employee/index.js",
+      "path": "server/scenarios/employee/index.js"
+    },
+    {
+      "from": "server/gcsp/brief/index.js",
+      "specifier": "../recommendation/index.js",
+      "path": "server/gcsp/recommendation/index.js"
+    },
+    {
+      "from": "server/gcsp/brief/index.js",
+      "specifier": "../../../blocks/vehicle-matcher/feedback-actions.js",
+      "path": "blocks/vehicle-matcher/feedback-actions.js"
+    },
+    {
+      "from": "server/gcsp/clock/index.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/clock/index.js",
+      "specifier": "../identity/index.js",
+      "path": "server/gcsp/identity/index.js"
+    },
+    {
+      "from": "server/gcsp/clock/index.js",
+      "specifier": "../policy/file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/clock/index.js",
+      "specifier": "../fixtures/scenario-v1.js",
+      "path": "server/gcsp/fixtures/scenario-v1.js"
+    },
+    {
+      "from": "server/gcsp/clock/index.js",
+      "specifier": "node:crypto",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/clock/index.js",
+      "specifier": "../fixtures/scenarios/index.js",
+      "path": "server/gcsp/fixtures/scenarios/index.js"
+    },
+    {
+      "from": "server/gcsp/clock/index.js",
+      "specifier": "../presenter-controls/commands.js",
+      "path": "server/gcsp/presenter-controls/commands.js"
+    },
+    {
+      "from": "server/gcsp/presenter-controls/commands.js",
+      "specifier": "../repository/core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/presenter-controls/commands.js",
+      "specifier": "../fixtures/scenario-v1.js",
+      "path": "server/gcsp/fixtures/scenario-v1.js"
+    },
+    {
+      "from": "server/gcsp/presenter-controls/commands.js",
+      "specifier": "../policy/file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/fixtures/scenario-v1.js",
+      "specifier": "./principals.js",
+      "path": "server/gcsp/fixtures/principals.js"
+    },
+    {
+      "from": "server/gcsp/fixtures/scenario-v1.js",
+      "specifier": "../vehicle-evidence/vin-allocation.js",
+      "path": "server/gcsp/vehicle-evidence/vin-allocation.js"
+    },
+    {
+      "from": "server/gcsp/fixtures/scenario-v1.js",
+      "specifier": "../repository/core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/fixtures/scenario-v1.js",
+      "specifier": "../policy/file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/vin-allocation.js",
+      "specifier": "node:crypto",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/vin-allocation.js",
+      "specifier": "node:fs/promises",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/vin-allocation.js",
+      "specifier": "node:path",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/vin-allocation.js",
+      "specifier": "../repository/core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/vin-allocation.js",
+      "specifier": "./vin-generator.js",
+      "path": "server/gcsp/vehicle-evidence/vin-generator.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/vin-generator.js",
+      "specifier": "./vin-profiles.js",
+      "path": "server/gcsp/vehicle-evidence/vin-profiles.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/vin-profiles.js",
+      "specifier": "node:fs/promises",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/vin-profiles.js",
+      "specifier": "../../data/gcsp/vehicle-evidence/vin-profiles.v1.json",
+      "path": "server/data/gcsp/vehicle-evidence/vin-profiles.v1.json"
+    },
+    {
+      "from": "server/gcsp/fixtures/scenarios/index.js",
+      "specifier": "../scenario-v1.js",
+      "path": "server/gcsp/fixtures/scenario-v1.js"
+    },
+    {
+      "from": "server/gcsp/fixtures/scenarios/index.js",
+      "specifier": "../principals.js",
+      "path": "server/gcsp/fixtures/principals.js"
+    },
+    {
+      "from": "server/gcsp/fixtures/scenarios/index.js",
+      "specifier": "../../repository/core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/fixtures/scenarios/index.js",
+      "specifier": "../../policy/index.js",
+      "path": "server/gcsp/policy/index.js"
+    },
+    {
+      "from": "server/gcsp/fixtures/scenarios/index.js",
+      "specifier": "./catalogue-v1.js",
+      "path": "server/gcsp/fixtures/scenarios/catalogue-v1.js"
+    },
+    {
+      "from": "server/gcsp/identity/index.js",
+      "specifier": "node:crypto",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/identity/index.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/identity/index.js",
+      "specifier": "../fixtures/principals.js",
+      "path": "server/gcsp/fixtures/principals.js"
+    },
+    {
+      "from": "server/gcsp/identity/index.js",
+      "specifier": "../policy/activation.js",
+      "path": "server/gcsp/policy/activation.js"
+    },
+    {
+      "from": "server/gcsp/identity/index.js",
+      "specifier": "../policy/file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "node:http",
+      "builtin": true
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "node:url",
+      "builtin": true
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "node:crypto",
+      "builtin": true
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./engine.js",
+      "path": "server/engine.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./stock.js",
+      "path": "server/stock.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./questions.js",
+      "path": "server/questions.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./brands.js",
+      "path": "server/brands.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./dealers.js",
+      "path": "server/dealers.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./geocode.js",
+      "path": "server/geocode.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./gcsp/identity/http.js",
+      "path": "server/gcsp/identity/http.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./gcsp/offers/access-http.js",
+      "path": "server/gcsp/offers/access-http.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./gcsp/recommendation/http.js",
+      "path": "server/gcsp/recommendation/http.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./gcsp/clock/http.js",
+      "path": "server/gcsp/clock/http.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./gcsp/notify/http.js",
+      "path": "server/gcsp/notify/http.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./gcsp/scenarios/http.js",
+      "path": "server/gcsp/scenarios/http.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./gcsp/presenter-controls/http.js",
+      "path": "server/gcsp/presenter-controls/http.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./gcsp/cases/http.js",
+      "path": "server/gcsp/cases/http.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./gcsp/brief/http.js",
+      "path": "server/gcsp/brief/http.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./gcsp/brief/activity-http.js",
+      "path": "server/gcsp/brief/activity-http.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./gcsp/manual-context/http.js",
+      "path": "server/gcsp/manual-context/http.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./gcsp/manual-claims/http.js",
+      "path": "server/gcsp/manual-claims/http.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./gcsp/vehicle-evidence/vehicle-evidence-handler.js",
+      "path": "server/gcsp/vehicle-evidence/vehicle-evidence-handler.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./gcsp/vehicle-evidence/local-vehicle-lookup.js",
+      "path": "server/gcsp/vehicle-evidence/local-vehicle-lookup.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./gcsp/greg/http.js",
+      "path": "server/gcsp/greg/http.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./gcsp/greg/publish/index.js",
+      "path": "server/gcsp/greg/publish/index.js"
+    },
+    {
+      "from": "server/index.js",
+      "specifier": "./gcsp/greg/publish/http.js",
+      "path": "server/gcsp/greg/publish/http.js"
+    },
+    {
+      "from": "server/gcsp/greg/publish/http.js",
+      "specifier": "../../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/greg/publish/index.js",
+      "specifier": "../../policy/index.js",
+      "path": "server/gcsp/policy/index.js"
+    },
+    {
+      "from": "server/gcsp/greg/publish/index.js",
+      "specifier": "../../policy/activation.js",
+      "path": "server/gcsp/policy/activation.js"
+    },
+    {
+      "from": "server/gcsp/greg/publish/index.js",
+      "specifier": "../../policy/file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/greg/publish/index.js",
+      "specifier": "../../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/greg/publish/index.js",
+      "specifier": "../index.js",
+      "path": "server/gcsp/greg/index.js"
+    },
+    {
+      "from": "server/gcsp/greg/publish/index.js",
+      "specifier": "./fit.js",
+      "path": "server/gcsp/greg/publish/fit.js"
+    },
+    {
+      "from": "server/gcsp/greg/publish/fit.js",
+      "specifier": "../../recommendation/index.js",
+      "path": "server/gcsp/recommendation/index.js"
+    },
+    {
+      "from": "server/gcsp/greg/publish/fit.js",
+      "specifier": "../../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/greg/publish/fit.js",
+      "specifier": "../../manual-context/recommendation-facts.js",
+      "path": "server/gcsp/manual-context/recommendation-facts.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/local-vehicle-lookup.js",
+      "specifier": "node:url",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/local-vehicle-lookup.js",
+      "specifier": "node:path",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/local-vehicle-lookup.js",
+      "specifier": "../policy/index.js",
+      "path": "server/gcsp/policy/index.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/local-vehicle-lookup.js",
+      "specifier": "./synthetic-registry.js",
+      "path": "server/gcsp/vehicle-evidence/synthetic-registry.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/local-vehicle-lookup.js",
+      "specifier": "./vehicle-lookup.js",
+      "path": "server/gcsp/vehicle-evidence/vehicle-lookup.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/local-vehicle-lookup.js",
+      "specifier": "../../data/gcsp/vehicle-evidence/lookup-reference.v1",
+      "path": "server/data/gcsp/vehicle-evidence/lookup-reference.v1"
+    },
+    {
+      "directory": "server/data/gcsp/vehicle-evidence/lookup-reference.v1",
+      "members": [
+        "server/data/gcsp/vehicle-evidence/lookup-reference.v1/active.json",
+        "server/data/gcsp/vehicle-evidence/lookup-reference.v1/identity-inventory.json",
+        "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/configurations.jsonl",
+        "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/images.jsonl",
+        "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/manifest.json",
+        "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/vins.jsonl"
+      ]
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/vehicle-lookup.js",
+      "specifier": "../repository/core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/vehicle-lookup.js",
+      "specifier": "./vehicle-details-contract.js",
+      "path": "server/gcsp/vehicle-evidence/vehicle-details-contract.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/vehicle-lookup.js",
+      "specifier": "./identity-routing.js",
+      "path": "server/gcsp/vehicle-evidence/identity-routing.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/identity-routing.js",
+      "specifier": "./vin-allocation.js",
+      "path": "server/gcsp/vehicle-evidence/vin-allocation.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/identity-routing.js",
+      "specifier": "./vehicle-details-contract.js",
+      "path": "server/gcsp/vehicle-evidence/vehicle-details-contract.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/synthetic-registry.js",
+      "specifier": "node:crypto",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/synthetic-registry.js",
+      "specifier": "node:fs/promises",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/synthetic-registry.js",
+      "specifier": "node:path",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/synthetic-registry.js",
+      "specifier": "../repository/core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/synthetic-registry.js",
+      "specifier": "./vin-generator.js",
+      "path": "server/gcsp/vehicle-evidence/vin-generator.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/synthetic-registry.js",
+      "specifier": "./corpus-publisher.js",
+      "path": "server/gcsp/vehicle-evidence/corpus-publisher.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/corpus-publisher.js",
+      "specifier": "node:crypto",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/corpus-publisher.js",
+      "specifier": "node:fs/promises",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/corpus-publisher.js",
+      "specifier": "node:path",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/corpus-publisher.js",
+      "specifier": "../../vehicle-evidence/bmw-catalogue-adapter.js",
+      "path": "server/vehicle-evidence/bmw-catalogue-adapter.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/corpus-publisher.js",
+      "specifier": "../repository/core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/corpus-publisher.js",
+      "specifier": "./vin-profiles.js",
+      "path": "server/gcsp/vehicle-evidence/vin-profiles.js"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/corpus-publisher.js",
+      "specifier": "./vin-generator.js",
+      "path": "server/gcsp/vehicle-evidence/vin-generator.js"
+    },
+    {
+      "from": "server/vehicle-evidence/bmw-catalogue-adapter.js",
+      "specifier": "node:fs/promises",
+      "builtin": true
+    },
+    {
+      "from": "server/vehicle-evidence/bmw-catalogue-adapter.js",
+      "specifier": "./snapshots/bmw-gb-i5-2026-11-01.v1.json",
+      "path": "server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json"
+    },
+    {
+      "from": "server/gcsp/vehicle-evidence/vehicle-evidence-handler.js",
+      "specifier": "./vehicle-details-contract.js",
+      "path": "server/gcsp/vehicle-evidence/vehicle-details-contract.js"
+    },
+    {
+      "from": "server/gcsp/manual-claims/http.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/manual-context/http.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/brief/activity-http.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/brief/http.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/cases/http.js",
+      "specifier": "../repository/core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/presenter-controls/http.js",
+      "specifier": "../repository/core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/presenter-controls/http.js",
+      "specifier": "./index.js",
+      "path": "server/gcsp/presenter-controls/index.js"
+    },
+    {
+      "from": "server/gcsp/presenter-controls/index.js",
+      "specifier": "../repository/core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/scenarios/http.js",
+      "specifier": "../repository/core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/scenarios/http.js",
+      "specifier": "../clock/http.js",
+      "path": "server/gcsp/clock/http.js"
+    },
+    {
+      "from": "server/gcsp/clock/http.js",
+      "specifier": "node:crypto",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/clock/http.js",
+      "specifier": "../repository/core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/notify/http.js",
+      "specifier": "../repository/core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/recommendation/http.js",
+      "specifier": "./index.js",
+      "path": "server/gcsp/recommendation/index.js"
+    },
+    {
+      "from": "server/gcsp/offers/access-http.js",
+      "specifier": "./access.js",
+      "path": "server/gcsp/offers/access.js"
+    },
+    {
+      "from": "server/gcsp/offers/access.js",
+      "specifier": "node:crypto",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/offers/access.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/offers/access.js",
+      "specifier": "../../vehicles/index.js",
+      "path": "server/vehicles/index.js"
+    },
+    {
+      "from": "server/geocode.js",
+      "specifier": "node:https",
+      "builtin": true
+    },
+    {
+      "from": "server/dealers.js",
+      "specifier": "node:https",
+      "builtin": true
+    },
+    {
+      "from": "server/stock.js",
+      "specifier": "node:https",
+      "builtin": true
+    },
+    {
+      "from": "server/stock.js",
+      "specifier": "node:fs",
+      "builtin": true
+    },
+    {
+      "from": "server/stock.js",
+      "specifier": "node:url",
+      "builtin": true
+    },
+    {
+      "from": "server/stock.js",
+      "specifier": "node:path",
+      "builtin": true
+    },
+    {
+      "from": "server/stock.js",
+      "specifier": "./dealers.js",
+      "path": "server/dealers.js"
+    },
+    {
+      "from": "server/stock.js",
+      "specifier": "./mapping.js",
+      "path": "server/mapping.js"
+    },
+    {
+      "from": "server/stock.js",
+      "specifier": "./brands.js",
+      "path": "server/brands.js"
+    },
+    {
+      "from": "server/stock.js",
+      "specifier": "./honda-listing.js",
+      "path": "server/honda-listing.js"
+    },
+    {
+      "from": "server/stock.js",
+      "specifier": "./motorrad-listing.js",
+      "path": "server/motorrad-listing.js"
+    },
+    {
+      "from": "server/stock.js",
+      "specifier": "./ferrari-listing.js",
+      "path": "server/ferrari-listing.js"
+    },
+    {
+      "from": "server/mapping.js",
+      "specifier": "./brands.js",
+      "path": "server/brands.js"
+    },
+    {
+      "from": "server/test/gcsp-greg-driver-eligibility.test.js",
+      "specifier": "node:test",
+      "builtin": true
+    },
+    {
+      "from": "server/test/gcsp-greg-driver-eligibility.test.js",
+      "specifier": "node:assert/strict",
+      "builtin": true
+    },
+    {
+      "from": "server/test/gcsp-greg-driver-eligibility.test.js",
+      "specifier": "../gcsp/runtime.js",
+      "path": "server/gcsp/runtime.js"
+    },
+    {
+      "from": "server/test/gcsp-greg-driver-eligibility.test.js",
+      "specifier": "../gcsp/repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/test/gcsp-greg-driver-eligibility.test.js",
+      "specifier": "../gcsp/manual-context/recommendation-facts.js",
+      "path": "server/gcsp/manual-context/recommendation-facts.js"
+    },
+    {
+      "from": "server/test/gcsp-greg-driver-eligibility.test.js",
+      "specifier": "../gcsp/recommendation/index.js",
+      "path": "server/gcsp/recommendation/index.js"
+    },
+    {
+      "from": "server/test/gcsp-greg-driver-eligibility.test.js",
+      "specifier": "../gcsp/greg/index.js",
+      "path": "server/gcsp/greg/index.js"
+    },
+    {
+      "from": "server/test/gcsp-greg-driver-eligibility.test.js",
+      "specifier": "../gcsp/greg/publish/index.js",
+      "path": "server/gcsp/greg/publish/index.js"
+    },
+    {
+      "from": "server/test/gcsp-greg-driver-eligibility.test.js",
+      "specifier": "../gcsp/greg/publish/fit.js",
+      "path": "server/gcsp/greg/publish/fit.js"
+    },
+    {
+      "from": "server/test/gcsp-greg-driver-eligibility.test.js",
+      "specifier": "./helpers/employee-recommendation.js",
+      "path": "server/test/helpers/employee-recommendation.js"
+    },
+    {
+      "from": "server/gcsp/runtime.js",
+      "specifier": "node:crypto",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/runtime.js",
+      "specifier": "./repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/runtime.js",
+      "specifier": "./policy/index.js",
+      "path": "server/gcsp/policy/index.js"
+    },
+    {
+      "from": "server/gcsp/runtime.js",
+      "specifier": "./clock/index.js",
+      "path": "server/gcsp/clock/index.js"
+    },
+    {
+      "from": "server/gcsp/runtime.js",
+      "specifier": "./manual-context/index.js",
+      "path": "server/gcsp/manual-context/index.js"
+    },
+    {
+      "from": "server/gcsp/runtime.js",
+      "specifier": "./manual-context/fixtures.js",
+      "path": "server/gcsp/manual-context/fixtures.js"
+    },
+    {
+      "from": "server/gcsp/runtime.js",
+      "specifier": "./brief/index.js",
+      "path": "server/gcsp/brief/index.js"
+    },
+    {
+      "from": "server/gcsp/runtime.js",
+      "specifier": "./brief/editor.js",
+      "path": "server/gcsp/brief/editor.js"
+    },
+    {
+      "from": "server/gcsp/runtime.js",
+      "specifier": "./brief/activity.js",
+      "path": "server/gcsp/brief/activity.js"
+    },
+    {
+      "from": "server/gcsp/runtime.js",
+      "specifier": "./greg/index.js",
+      "path": "server/gcsp/greg/index.js"
+    },
+    {
+      "from": "server/gcsp/runtime.js",
+      "specifier": "./greg/publish/index.js",
+      "path": "server/gcsp/greg/publish/index.js"
+    },
+    {
+      "from": "server/gcsp/runtime.js",
+      "specifier": "./scenarios/index.js",
+      "path": "server/gcsp/scenarios/index.js"
+    },
+    {
+      "from": "server/gcsp/runtime.js",
+      "specifier": "./adapters/manual-stock.js",
+      "path": "server/gcsp/adapters/manual-stock.js"
+    },
+    {
+      "from": "server/gcsp/runtime.js",
+      "specifier": "./manual-claims/index.js",
+      "path": "server/gcsp/manual-claims/index.js"
+    },
+    {
+      "from": "server/gcsp/runtime.js",
+      "specifier": "./offers/buddy-hold.js",
+      "path": "server/gcsp/offers/buddy-hold.js"
+    },
+    {
+      "from": "server/gcsp/runtime.js",
+      "specifier": "./offers/access.js",
+      "path": "server/gcsp/offers/access.js"
+    },
+    {
+      "from": "server/gcsp/runtime.js",
+      "specifier": "./offers/offer-token.js",
+      "path": "server/gcsp/offers/offer-token.js"
+    },
+    {
+      "from": "server/gcsp/runtime.js",
+      "specifier": "./notify/index.js",
+      "path": "server/gcsp/notify/index.js"
+    },
+    {
+      "from": "server/gcsp/notify/index.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/notify/index.js",
+      "specifier": "./captured.js",
+      "path": "server/gcsp/notify/captured.js"
+    },
+    {
+      "from": "server/gcsp/notify/index.js",
+      "specifier": "./templates.js",
+      "path": "server/gcsp/notify/templates.js"
+    },
+    {
+      "from": "server/gcsp/notify/index.js",
+      "specifier": "../cases/notification.js",
+      "path": "server/gcsp/cases/notification.js"
+    },
+    {
+      "from": "server/gcsp/notify/index.js",
+      "specifier": "./port.js",
+      "path": "server/gcsp/notify/port.js"
+    },
+    {
+      "from": "server/gcsp/notify/index.js",
+      "specifier": "./captured.js",
+      "path": "server/gcsp/notify/captured.js"
+    },
+    {
+      "from": "server/gcsp/notify/index.js",
+      "specifier": "./templates.js",
+      "path": "server/gcsp/notify/templates.js"
+    },
+    {
+      "from": "server/gcsp/notify/templates.js",
+      "specifier": "../policy/file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/notify/captured.js",
+      "specifier": "./port.js",
+      "path": "server/gcsp/notify/port.js"
+    },
+    {
+      "from": "server/gcsp/notify/captured.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/cases/notification.js",
+      "specifier": "../policy/file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/offers/offer-token.js",
+      "specifier": "node:crypto",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/offers/buddy-hold.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/offers/buddy-hold.js",
+      "specifier": "../brief/index.js",
+      "path": "server/gcsp/brief/index.js"
+    },
+    {
+      "from": "server/gcsp/offers/buddy-hold.js",
+      "specifier": "../manual-context/ports.js",
+      "path": "server/gcsp/manual-context/ports.js"
+    },
+    {
+      "from": "server/gcsp/offers/buddy-hold.js",
+      "specifier": "./offer-token.js",
+      "path": "server/gcsp/offers/offer-token.js"
+    },
+    {
+      "from": "server/gcsp/offers/buddy-hold.js",
+      "specifier": "./buddy-remote.js",
+      "path": "server/gcsp/offers/buddy-remote.js"
+    },
+    {
+      "from": "server/gcsp/offers/buddy-hold.js",
+      "specifier": "./current-car-comparison.js",
+      "path": "server/gcsp/offers/current-car-comparison.js"
+    },
+    {
+      "from": "server/gcsp/offers/current-car-comparison.js",
+      "specifier": "../policy/file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/offers/buddy-remote.js",
+      "specifier": "node:crypto",
+      "builtin": true
+    },
+    {
+      "from": "server/gcsp/offers/buddy-remote.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/offers/buddy-remote.js",
+      "specifier": "../manual-context/ports.js",
+      "path": "server/gcsp/manual-context/ports.js"
+    },
+    {
+      "from": "server/gcsp/offers/buddy-remote.js",
+      "specifier": "../recommendation/index.js",
+      "path": "server/gcsp/recommendation/index.js"
+    },
+    {
+      "from": "server/gcsp/offers/buddy-remote.js",
+      "specifier": "./offer-token.js",
+      "path": "server/gcsp/offers/offer-token.js"
+    },
+    {
+      "from": "server/gcsp/manual-context/ports.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/manual-claims/index.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/scenarios/index.js",
+      "specifier": "../clock/index.js",
+      "path": "server/gcsp/clock/index.js"
+    },
+    {
+      "from": "server/gcsp/scenarios/index.js",
+      "specifier": "../identity/index.js",
+      "path": "server/gcsp/identity/index.js"
+    },
+    {
+      "from": "server/gcsp/scenarios/index.js",
+      "specifier": "../policy/index.js",
+      "path": "server/gcsp/policy/index.js"
+    },
+    {
+      "from": "server/gcsp/scenarios/index.js",
+      "specifier": "../fixtures/scenarios/index.js",
+      "path": "server/gcsp/fixtures/scenarios/index.js"
+    },
+    {
+      "from": "server/gcsp/scenarios/index.js",
+      "specifier": "../repository/core.js",
+      "path": "server/gcsp/repository/core.js"
+    },
+    {
+      "from": "server/gcsp/brief/activity.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/brief/activity.js",
+      "specifier": "../policy/file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/brief/editor.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/brief/editor.js",
+      "specifier": "../policy/file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/brief/editor.js",
+      "specifier": "../recommendation/index.js",
+      "path": "server/gcsp/recommendation/index.js"
+    },
+    {
+      "from": "server/gcsp/brief/editor.js",
+      "specifier": "../../scenarios/employee/index.js",
+      "path": "server/scenarios/employee/index.js"
+    },
+    {
+      "from": "server/gcsp/manual-context/index.js",
+      "specifier": "../repository/index.js",
+      "path": "server/gcsp/repository/index.js"
+    },
+    {
+      "from": "server/gcsp/manual-context/index.js",
+      "specifier": "../policy/file-provider.js",
+      "path": "server/gcsp/policy/file-provider.js"
+    },
+    {
+      "from": "server/gcsp/manual-context/index.js",
+      "specifier": "../recommendation/index.js",
+      "path": "server/gcsp/recommendation/index.js"
+    },
+    {
+      "from": "server/gcsp/manual-context/index.js",
+      "specifier": "../../scenarios/employee/index.js",
+      "path": "server/scenarios/employee/index.js"
+    },
+    {
+      "from": "server/gcsp/manual-context/index.js",
+      "specifier": "./ports.js",
+      "path": "server/gcsp/manual-context/ports.js"
+    }
+  ],
+  "installed": {
+    "files": {
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/package.json": {
+        "sha256": "b1e53333a3d0c2c47c49a5cb919d221135dc03145df740925b899bc2baacc435",
+        "imports": [],
+        "kind": "resolution-metadata"
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/esm/index.mjs": {
+        "sha256": "5ef4d06556eeb775987759c2c09229dca2139421ee40e819b566612db2b4a8dc",
+        "imports": [
+          {
+            "specifier": "../lib/index.js",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/index.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/index.js": {
+        "sha256": "3fad6e6d3d976edbabe0cbc9e1d39f4340bcb719bbbb186a0d3a24f3dbd4a94c",
+        "imports": [
+          {
+            "specifier": "./client",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/client.js"
+          },
+          {
+            "specifier": "./defaults",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/defaults.js"
+          },
+          {
+            "specifier": "./connection",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/connection.js"
+          },
+          {
+            "specifier": "./result",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/result.js"
+          },
+          {
+            "specifier": "./utils",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/utils.js"
+          },
+          {
+            "specifier": "pg-pool",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/index.js"
+          },
+          {
+            "specifier": "./type-overrides",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/type-overrides.js"
+          },
+          {
+            "specifier": "pg-protocol",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/index.js"
+          },
+          {
+            "specifier": "./utils",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/utils.js"
+          },
+          {
+            "specifier": "pg-types",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/index.js"
+          },
+          {
+            "specifier": "./native",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/index.js"
+          },
+          {
+            "specifier": "./native",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/index.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/index.js": {
+        "sha256": "99fb61cb78a6d78b7a5fc0b9ac264ad58272af48be4bc50bfdb948b1342e3292",
+        "imports": [
+          {
+            "specifier": "./client",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/client.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/client.js": {
+        "sha256": "53d4a4756bb7a33b08154c08047c48421216297bf9033a31445bbb24dc233ebe",
+        "imports": [
+          {
+            "specifier": "../type-overrides",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/type-overrides.js"
+          },
+          {
+            "specifier": "../connection-parameters",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/connection-parameters.js"
+          },
+          {
+            "specifier": "./query",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/query.js"
+          },
+          {
+            "specifier": "../utils",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/utils.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/utils.js": {
+        "sha256": "0348fa1818f4490823187cafc3d31738de7fe3bd30dd0cd12711c272367b2d80",
+        "imports": [
+          {
+            "specifier": "./defaults",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/defaults.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/defaults.js": {
+        "sha256": "d91c22d082ec974f9f878a71e8d9d56a7e5fa9a711cc63f32522b43f5e9169d4",
+        "imports": [
+          {
+            "specifier": "pg-types",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/index.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/package.json": {
+        "sha256": "3ec0293cb38cc8d9475e3eb32ac5f19d195bf9fccc8b19a0714e6ecd6e7c2cf0",
+        "imports": [],
+        "kind": "resolution-metadata"
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/index.js": {
+        "sha256": "ece6d549270ba55d08126b10c9997324d808ee828ef00dad236e84e54d9d556d",
+        "imports": [
+          {
+            "specifier": "./lib/textParsers",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/textParsers.js"
+          },
+          {
+            "specifier": "./lib/binaryParsers",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/binaryParsers.js"
+          },
+          {
+            "specifier": "./lib/arrayParser",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/arrayParser.js"
+          },
+          {
+            "specifier": "./lib/builtins",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/builtins.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/builtins.js": {
+        "sha256": "09213197e4b44012e4c83669aa80884a189e90c777ddfef1f44c90c412167354",
+        "imports": []
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/arrayParser.js": {
+        "sha256": "cad20b20e6312125b45f74480eba3ef46b456997da4f53bbec56356d66edd730",
+        "imports": [
+          {
+            "specifier": "postgres-array",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/index.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/package.json": {
+        "sha256": "dcd6a505fcbc032b409ee2838ab2c776dea3a9cfe02b736364b6cb82a946665f",
+        "imports": [],
+        "kind": "resolution-metadata"
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/index.js": {
+        "sha256": "807ba580ed423e518672c27b4022a56acb693be04349733ffc1fe6f324fbcee2",
+        "imports": []
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/binaryParsers.js": {
+        "sha256": "4b0105414068ea96450ef0d420db9449c00c565c5894683955af15bf94075fb9",
+        "imports": [
+          {
+            "specifier": "pg-int8",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/index.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/package.json": {
+        "sha256": "147155887a41bb6f69ff98b3dde827b7e6a8214c3a71938da4babf8e12adff2e",
+        "imports": [],
+        "kind": "resolution-metadata"
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/index.js": {
+        "sha256": "f991b0a41119bce0efbb471275dbd02de31a79fe6f87f8f5e5678e373a0f1627",
+        "imports": []
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/textParsers.js": {
+        "sha256": "bd811a530000508b6b90c1db462078e122f0404769d73f57ad41fe90aca159bd",
+        "imports": [
+          {
+            "specifier": "postgres-array",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/index.js"
+          },
+          {
+            "specifier": "./arrayParser",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/arrayParser.js"
+          },
+          {
+            "specifier": "postgres-date",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/index.js"
+          },
+          {
+            "specifier": "postgres-interval",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/index.js"
+          },
+          {
+            "specifier": "postgres-bytea",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/index.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/package.json": {
+        "sha256": "9125568c5fb51a65b8f11adb0080c2775b99ee82822d73bff8b56b2a9d47d7aa",
+        "imports": [],
+        "kind": "resolution-metadata"
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/index.js": {
+        "sha256": "c078b99e1009c4bcf6e3ab59d9fe808b12caee3461204ae599cdd9cccd990801",
+        "imports": []
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/package.json": {
+        "sha256": "cc3056db105e66c9128cb8a387cda782d5f1ae9281be90de0b8d26a90af89c57",
+        "imports": [],
+        "kind": "resolution-metadata"
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/index.js": {
+        "sha256": "836fe0a39e52f051d62583d8375d3b270b4cb93dd026b125438a89e5a0258c41",
+        "imports": [
+          {
+            "specifier": "xtend/mutable",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/mutable.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/package.json": {
+        "sha256": "b02ffef8cda96c5c3ee00a00390e63f608362c2ddfb3ed754e181d013a45d48a",
+        "imports": [],
+        "kind": "resolution-metadata"
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/mutable.js": {
+        "sha256": "71a38649c77408217483f81f55daee1d6646d6c670e3d034a4482cb3453886e9",
+        "imports": []
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/package.json": {
+        "sha256": "03f9edefa96697072075e02df045cc61ed4ca2f8dfffb1ff87f4070bc3404151",
+        "imports": [],
+        "kind": "resolution-metadata"
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/index.js": {
+        "sha256": "9a09e3ec0775237576b1f6ff0fba0ed6171235aeded635a42c174b517e34cb1a",
+        "imports": []
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/query.js": {
+        "sha256": "6a9a594fe12682d25b5dbc03c6e36d44ef303ca338cd4d59db3ce9c0919a3f8e",
+        "imports": [
+          {
+            "specifier": "../utils",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/utils.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/connection-parameters.js": {
+        "sha256": "6b6548f99acba3502663a17a180582ba8e1f1725aa9d94b5f47cac19dcb6211b",
+        "imports": [
+          {
+            "specifier": "./defaults",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/defaults.js"
+          },
+          {
+            "specifier": "pg-connection-string",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/index.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/package.json": {
+        "sha256": "53d453c5a426e69a11ff479e0d8a293505faa1833e6eb3ff7ceefdaac569e3ea",
+        "imports": [],
+        "kind": "resolution-metadata"
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/index.js": {
+        "sha256": "d8c0ca43dc70daf05a9ff5469c92fd0a3cbcd11cacf68156ebb19ee32d127cfd",
+        "imports": []
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/type-overrides.js": {
+        "sha256": "47cb7f7bc6a6e1b1d4dc7c92bacacb436f12e99242b77da8391fd5b71991d2a5",
+        "imports": [
+          {
+            "specifier": "pg-types",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/index.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/package.json": {
+        "sha256": "a4a4e23027b26c72be7729d045d0100ad9329959db0449c535fa7b2ba2e717c6",
+        "imports": [],
+        "kind": "resolution-metadata"
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/index.js": {
+        "sha256": "e7a99ac02633393d8c3ef16cd6385b8246100d28c838b02420844068429a46c9",
+        "imports": [
+          {
+            "specifier": "./messages",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/messages.js"
+          },
+          {
+            "specifier": "./serializer",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/serializer.js"
+          },
+          {
+            "specifier": "./parser",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/parser.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/parser.js": {
+        "sha256": "6f841aabda7240df44e1b08bbe8e202502ead969576c1ecc17311af48f57f2ef",
+        "imports": [
+          {
+            "specifier": "./messages",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/messages.js"
+          },
+          {
+            "specifier": "./buffer-reader",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-reader.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-reader.js": {
+        "sha256": "fdae5fd80c1ad1015f91a92da667467752eabdf531f19558897e205559e6b714",
+        "imports": []
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/messages.js": {
+        "sha256": "dfd22ad639f3030b41617ff0ee201ece7cdbce4adb7e1aae7978541b1384cd31",
+        "imports": []
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/serializer.js": {
+        "sha256": "0c81a499cd210334e14bc65ee514b2ecf842588e27533f5e9a461f914d0b9623",
+        "imports": [
+          {
+            "specifier": "./buffer-writer",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-writer.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-writer.js": {
+        "sha256": "78428fc0607cd87c28009159e87ca3704faf7bda000ea44d2ec46a97805cec9d",
+        "imports": []
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/package.json": {
+        "sha256": "0a9924def9e06f791b09a44eaefb227f323a39199887f6ce17b44cb5a9193134",
+        "imports": [],
+        "kind": "resolution-metadata"
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/index.js": {
+        "sha256": "6f304776edaabde2954cbf8c4366fa6d9512bfba0e408e78cc56b3c46c69d058",
+        "imports": [
+          {
+            "specifier": "pg",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/index.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/result.js": {
+        "sha256": "6d7193da53f8557600a065e4356626026e8c5baf12c477dc19e439d8f204225c",
+        "imports": [
+          {
+            "specifier": "pg-types",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/index.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/connection.js": {
+        "sha256": "f93e914bf408657f2301393489da561a5a464e9c30f4f51b681b18a21a5f1c84",
+        "imports": [
+          {
+            "specifier": "pg-protocol",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/index.js"
+          },
+          {
+            "specifier": "./stream",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/stream.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/stream.js": {
+        "sha256": "0bd4001775301604ddf7c94152e05f6f30a9354876717bdae2ab636d00eb12ba",
+        "imports": [
+          {
+            "specifier": "pg-cloudflare",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/empty.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/package.json": {
+        "sha256": "93b30ce3bed1ce3b836aa344c8afdaab74a42c03720e8d5baa801b6ae84ca3e7",
+        "imports": [],
+        "kind": "resolution-metadata"
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/empty.js": {
+        "sha256": "3f83d105df21adbeeffb03450deb422644c30023ece93b2d6191fac3c620a316",
+        "imports": []
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/client.js": {
+        "sha256": "ad6aa93c26b0bf26db1f2ebe74216212790a04c41af5585c63760f9fa8322a32",
+        "imports": [
+          {
+            "specifier": "./utils",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/utils.js"
+          },
+          {
+            "specifier": "./crypto/sasl",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/sasl.js"
+          },
+          {
+            "specifier": "./type-overrides",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/type-overrides.js"
+          },
+          {
+            "specifier": "./connection-parameters",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/connection-parameters.js"
+          },
+          {
+            "specifier": "./query",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/query.js"
+          },
+          {
+            "specifier": "./defaults",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/defaults.js"
+          },
+          {
+            "specifier": "./connection",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/connection.js"
+          },
+          {
+            "specifier": "./crypto/utils",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/utils.js"
+          },
+          {
+            "specifier": "pgpass",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/lib/index.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/package.json": {
+        "sha256": "d75240eb4fe759c10db9f903838275348676a8bdc1f329e20a833713cd7c99bd",
+        "imports": [],
+        "kind": "resolution-metadata"
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/lib/index.js": {
+        "sha256": "cc95b8ef6c32a9afdc48b85a5e7128d5e29567f8ded02d9bf7acd27c3d870c39",
+        "imports": [
+          {
+            "specifier": "./helper.js",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/lib/helper.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/lib/helper.js": {
+        "sha256": "28d823dcde115f31848ba93d9cb55ba20089ac701b6a38b228d185d96df4f1b5",
+        "imports": [
+          {
+            "specifier": "split2",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/index.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/package.json": {
+        "sha256": "87b734c3087c8d9ed5d76d1bff00db30f960831ba8705dd18d73b180d08d2140",
+        "imports": [],
+        "kind": "resolution-metadata"
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/index.js": {
+        "sha256": "842471719e0e901e01ae1a1d3a6a4d1ff3e36747a7f50d5644f09d1d595c1857",
+        "imports": []
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/utils.js": {
+        "sha256": "a849cfe22d7590d79ddee76c8d7a058e2b67360a0d76683275d34133e5637117",
+        "imports": []
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/query.js": {
+        "sha256": "ecf885185f0ad8b82c680a184d65bc08462fd2adee047218268c35dade9f8913",
+        "imports": [
+          {
+            "specifier": "./result",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/result.js"
+          },
+          {
+            "specifier": "./utils",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/utils.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/sasl.js": {
+        "sha256": "99f1a2607fe2a29f1c4dd1aaf43dec0fc2b5de8755de72b39d3aa8c575bd6a71",
+        "imports": [
+          {
+            "specifier": "./utils",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/utils.js"
+          },
+          {
+            "specifier": "./cert-signatures",
+            "target": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/cert-signatures.js"
+          }
+        ]
+      },
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/cert-signatures.js": {
+        "sha256": "c4b666a8d8b0dedc0724fbeeb55333d15ced942d1b10f9cd854d77d7861b3d08",
+        "imports": []
+      }
+    },
+    "optional": [
+      {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/client.js",
+        "specifier": "pg-native",
+        "reason": "conditional optional provider; not selected in ordinary Node memory variant"
+      }
+    ]
+  },
+  "installed_identities": {
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/package.json": {
+      "device": 16777232,
+      "inode": 172770867,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/package.json",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/esm/index.mjs": {
+      "device": 16777232,
+      "inode": 172770871,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/esm/index.mjs",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/index.js": {
+      "device": 16777232,
+      "inode": 172770845,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/index.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/index.js": {
+      "device": 16777232,
+      "inode": 172770848,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/index.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/client.js": {
+      "device": 16777232,
+      "inode": 172770825,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/client.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/utils.js": {
+      "device": 16777232,
+      "inode": 172770866,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/utils.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/defaults.js": {
+      "device": 16777232,
+      "inode": 172770843,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/defaults.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/package.json": {
+      "device": 16777232,
+      "inode": 172770752,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/package.json",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/index.js": {
+      "device": 16777232,
+      "inode": 172770789,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/index.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/builtins.js": {
+      "device": 16777232,
+      "inode": 172770824,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/builtins.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/arrayParser.js": {
+      "device": 16777232,
+      "inode": 172770816,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/arrayParser.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/package.json": {
+      "device": 16777232,
+      "inode": 172770747,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/package.json",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/index.js": {
+      "device": 16777232,
+      "inode": 172770774,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/index.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/binaryParsers.js": {
+      "device": 16777232,
+      "inode": 172770821,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/binaryParsers.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/package.json": {
+      "device": 16777232,
+      "inode": 172770749,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/package.json",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/index.js": {
+      "device": 16777232,
+      "inode": 172770764,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/index.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/textParsers.js": {
+      "device": 16777232,
+      "inode": 172770831,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/textParsers.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/package.json": {
+      "device": 16777232,
+      "inode": 172770775,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/package.json",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/index.js": {
+      "device": 16777232,
+      "inode": 172770765,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/index.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/package.json": {
+      "device": 16777232,
+      "inode": 172770744,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/package.json",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/index.js": {
+      "device": 16777232,
+      "inode": 172770772,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/index.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/package.json": {
+      "device": 16777232,
+      "inode": 172770748,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/package.json",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/mutable.js": {
+      "device": 16777232,
+      "inode": 172770795,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/mutable.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/package.json": {
+      "device": 16777232,
+      "inode": 172770771,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/package.json",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/index.js": {
+      "device": 16777232,
+      "inode": 172770761,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/index.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/query.js": {
+      "device": 16777232,
+      "inode": 172770852,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/query.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/connection-parameters.js": {
+      "device": 16777232,
+      "inode": 172770832,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/connection-parameters.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/package.json": {
+      "device": 16777232,
+      "inode": 172770783,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/package.json",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/index.js": {
+      "device": 16777232,
+      "inode": 172770767,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/index.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/type-overrides.js": {
+      "device": 16777232,
+      "inode": 172770861,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/type-overrides.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/package.json": {
+      "device": 16777232,
+      "inode": 172770851,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/package.json",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/index.js": {
+      "device": 16777232,
+      "inode": 172770827,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/index.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/parser.js": {
+      "device": 16777232,
+      "inode": 172770846,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/parser.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-reader.js": {
+      "device": 16777232,
+      "inode": 172770802,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-reader.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/messages.js": {
+      "device": 16777232,
+      "inode": 172770836,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/messages.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/serializer.js": {
+      "device": 16777232,
+      "inode": 172770850,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/serializer.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-writer.js": {
+      "device": 16777232,
+      "inode": 172770814,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-writer.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/package.json": {
+      "device": 16777232,
+      "inode": 172770799,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/package.json",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/index.js": {
+      "device": 16777232,
+      "inode": 172770768,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/index.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/result.js": {
+      "device": 16777232,
+      "inode": 172770856,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/result.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/connection.js": {
+      "device": 16777232,
+      "inode": 172770839,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/connection.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/stream.js": {
+      "device": 16777232,
+      "inode": 172770860,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/stream.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/package.json": {
+      "device": 16777232,
+      "inode": 172770811,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/package.json",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/empty.js": {
+      "device": 16777232,
+      "inode": 172770780,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/empty.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/client.js": {
+      "device": 16777232,
+      "inode": 172770812,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/client.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/package.json": {
+      "device": 16777232,
+      "inode": 172770803,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/package.json",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/lib/index.js": {
+      "device": 16777232,
+      "inode": 172770797,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/lib/index.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/lib/helper.js": {
+      "device": 16777232,
+      "inode": 172770770,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/lib/helper.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/package.json": {
+      "device": 16777232,
+      "inode": 172770793,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/package.json",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/index.js": {
+      "device": 16777232,
+      "inode": 172770773,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/index.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/utils.js": {
+      "device": 16777232,
+      "inode": 172770864,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/utils.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/query.js": {
+      "device": 16777232,
+      "inode": 172770853,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/query.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/sasl.js": {
+      "device": 16777232,
+      "inode": 172770859,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/sasl.js",
+      "symlink": false
+    },
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/cert-signatures.js": {
+      "device": 16777232,
+      "inode": 172770791,
+      "realpath": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/cert-signatures.js",
+      "symlink": false
+    }
+  },
+  "python": {
+    "path": "/usr/bin/python3",
+    "sha256": "179301dcb41ea78accc3fa0048a7e6f6710d891945a751a34addd622020c1818"
+  },
+  "helpers": {
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/greg-eligibility-supervisor.py": "e5c61567e00d1cfb567301ebe1164c74c8dbd300e7a144a67187eb8b45feda61",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-supervisor.py": "43026a725b6305fb8537e032049f0c19cf345bcdb8ee851c408e7dba5255bcc6",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/runtime-installed-closure.json": "3cb38953d0bd475e6e13913e4b6c0f00ffb3a12e6547c3bf820bd64cbefaebee",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/_tools/scaffold_git.py": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/_tools/test_stamp.py": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/.claude/scaffolding.json": "c55d2bf32288b5e19f6ac6e7c7b35d22013c80b757d5328c8257a4eac4ac560a",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-060/docs/gcsp/evidence/fucq100/greg-eligibility-stamp.py": "0f8525994aba6a60fce172be30e2bb6c02d964403f2e870fd02d1351b27f02e2"
+  },
+  "node": {
+    "path": "/opt/homebrew/bin/node",
+    "sha256": "70851490e028b3d699a8d6d4e1de909af2a989359ae807974c92af9c6580a8e8"
+  },
+  "tests": {
+    "server/test/gcsp-greg-driver-eligibility.test.js": [
+      "default manual preparation supplies the same actual driver fact to employee and Greg without a persisted flattened field",
+      "bound false, absent, unknown, nonboolean and uncertain provenance retain their shared recommendation refusal",
+      "explicit current driver binding selects the owned nominated driver and never chooses an eligible fallback",
+      "absent driver choice stays unconfirmed only when no explicit contract reference requires it",
+      "foreign, duplicate, dangling and malformed source bindings return only generic unavailable",
+      "invalid subject bindings are refused before demand can take the no-stock or hidden-stock shortcut",
+      "coherent synthetic cohort preserves canonical suppression and never persists the derived driver fact",
+      "employee and slot revisions participate in both Greg read fences"
+    ],
+    "server/test/gcsp-greg-demand.test.js": [
+      "saved current brief, not draft/history/current-car/retail sample, drives model/body/fuel/essentials",
+      "unspecified model and indifferent/unconfirmed preferences remain explicit instead of inferred demand",
+      "unmet demand distinguishes no released stock, shared essential gate, and sufficient actual release",
+      "unknown employee authority stays needs-confirmation and stock visibility cannot widen eligibility",
+      "real offer/decision/hold/allocation records drive outcomes with typed declines and versions",
+      "all counts below canonical threshold are bands without a raw count or personal fields",
+      "threshold policy alternatives change every projection consistently; absent or invalid threshold fails closed",
+      "Greg service refuses employees, presenters and forged server context; old run after reset is stale",
+      "registered HTTP route enforces role and rejects browser run selectors under server identity",
+      "successive brief/release/decline/selection inputs change actual projection identity and figures",
+      "canonical optional model-line essential persists through BriefService and gates an actual wrong model",
+      "same declined exact car remains blocked until a relevant confirmed brief change, including pause/resume",
+      "a concurrent repository revision causes refresh conflict instead of a mixed projection",
+      "unmet evaluation reads all repository candidates beyond a retail-sized display limit",
+      "unregistered decline types and free text are replaced with a counted unclassified reason",
+      "buildServer exposes a no-store trusted Greg GET, origin/session/gate refusal and stale-run protection",
+      "equipment set order and duplicate keys cannot reopen an unchanged declined car"
+    ]
+  },
+  "expected_test_count": 25,
+  "command_template": [
+    "/opt/homebrew/bin/node",
+    "--no-warnings",
+    "--experimental-loader",
+    "<owned-root>/loader.mjs",
+    "--test-concurrency=1",
+    "--test-reporter=tap",
+    "--test",
+    "server/test/gcsp-greg-driver-eligibility.test.js",
+    "server/test/gcsp-greg-demand.test.js"
+  ],
+  "limits": {
+    "seconds": 120,
+    "rss_bytes": 805306368,
+    "scratch_bytes": 134217728,
+    "combined_logs_bytes": 2097152,
+    "workers": 1
+  },
+  "listener": "One existing gcsp-greg-demand buildServer test uses an owned ephemeral127.0.0.1 listener; explicit grant required",
+  "exclusions": [
+    "no browser/native/full/external provider",
+    "no103 scorer/source adoption",
+    "no unchanged100 nine-case rerun",
+    "no production-source overlay",
+    "no unrelated shared files"
+  ]
+}

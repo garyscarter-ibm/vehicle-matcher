@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "current-order-reference-proof.v1",
+  "status": "passed",
+  "repositoryProvider": "memory-fixture",
+  "nativeProof": false,
+  "currentRunUnchanged": true,
+  "checked": 5,
+  "directErrors": 0,
+  "httpErrors": 0,
+  "consumerErrors": 0,
+  "metrics": {
+    "scope": "sequential exact-order sample; direct plus consumer plus loopback HTTP per observation",
+    "count": 5,
+    "elapsedMs": 47.92070899999999,
+    "ordersPerSecond": 104.33902386544409,
+    "p50Ms": 7.320875000000001,
+    "p95Ms": 16.47950000000003,
+    "p99Ms": 16.47950000000003,
+    "node": "v26.7.0",
+    "platform": "darwin",
+    "architecture": "arm64",
+    "noSlaClaim": true
+  },
+  "sourceCalls": 0,
+  "externalConnectAttempts": 0,
+  "acceptance": false
+}

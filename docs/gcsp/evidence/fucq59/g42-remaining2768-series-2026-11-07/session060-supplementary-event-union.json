@@ -1,0 +1,189 @@
+{
+  "scope": "supplementary exact distinct actual row union; original files and failed strict result preserved",
+  "sourceFiles": [
+    {
+      "path": "docs/gcsp/evidence/fucq59/g42-remaining2768-series-2026-11-07/session060-event-files/source-events.jsonl",
+      "sha256": "95adadd4fb7d3db6686da5a1feef9b399748f43574b85024846f8543ecc229ea",
+      "bytes": 2632
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/g42-remaining2768-series-2026-11-07/session060-event-files/source-events.jsonl 2.jsonl",
+      "sha256": "f0227308fd2d66a36313020c7acb7b4b1aad8207b220b80557be0abe0af0d7b7",
+      "bytes": 538
+    }
+  ],
+  "actualRows": [
+    {
+      "attempt": 1,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:12.473Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 1,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:12.473Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:28:12.633Z"
+    },
+    {
+      "attempt": 2,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:12.669Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 2,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:12.669Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:28:12.737Z"
+    },
+    {
+      "attempt": 3,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:13.193Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 3,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:13.193Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:28:13.341Z"
+    },
+    {
+      "attempt": 4,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:13.436Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 4,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:13.436Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:28:13.462Z"
+    },
+    {
+      "attempt": 5,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:13.536Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 5,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:13.536Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:28:13.701Z"
+    },
+    {
+      "attempt": 6,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:13.799Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 6,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:13.799Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:28:13.931Z"
+    },
+    {
+      "attempt": 7,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:14.016Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 7,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:14.016Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:28:14.137Z"
+    },
+    {
+      "attempt": 8,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:14.267Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 8,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:14.267Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:28:14.387Z"
+    },
+    {
+      "attempt": 9,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:14.558Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 9,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:14.558Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:28:14.678Z"
+    },
+    {
+      "attempt": 10,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:14.903Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 10,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:14.903Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:28:15.016Z"
+    },
+    {
+      "attempt": 11,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:15.261Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 11,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:15.261Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:28:15.384Z"
+    },
+    {
+      "attempt": 12,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:15.679Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 12,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:28:15.679Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:28:15.809Z"
+    }
+  ],
+  "duplicateIdenticalRows": 4,
+  "syntheticRows": 0,
+  "originalStrictCheckStillFailed": true,
+  "origin": "unresolved:adjacent conflict-named file; no verifiedwriter attribution"
+}

@@ -1,0 +1,99 @@
+{
+  "acceptance": false,
+  "capacityCredit": 0,
+  "codePins": {
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq58/missing20-selector-plan-2026-11-07/prepare-plan.py": "afaf63a7f5f5e0c6a34a6cd04ec964d5b2de3d8bea39c14bec04e28dfabc8f8a",
+    "docs/gcsp/evidence/fucq58/missing20-selector-plan-2026-11-07/run-live.mjs": "bd3a0563034d4070aa045967233ef1fcec58d73f5dbdb6d5f86722d2a1ba22f3",
+    "docs/gcsp/evidence/fucq58/missing20-selector-plan-2026-11-07/selector.mjs": "f51f56282116eb9fd7292d7d5e9a1c9940463427d2ff4d624b1aa2229e51fcb0",
+    "docs/gcsp/evidence/fucq58/missing20-selector-plan-2026-11-07/selector.test.mjs": "7a128aad375ad2156a15b3170c6a7b691e22ecd5ae1b65e105d30d17b16d561c",
+    "docs/gcsp/evidence/fucq58/missing20-selector-plan-2026-11-07/supervise.py": "e1062ce8ac43ed02776cd533cdd6ba5b88b06c76fd96d7f7a7ddc8f89c14b3c3",
+    "docs/gcsp/evidence/fucq58/missing20-selector-plan-2026-11-07/validate-prepared.py": "96ccc4dc01946344cdba26bbac84057b6a8b0c0ea250dee600f82ba6432e6e8c"
+  },
+  "controlRoot": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/missing20-selector",
+  "excluded": [
+    "F44 historical failed/empty queries",
+    "I20 diagnostic-alias-limit allocation",
+    "all existing tree/options/solver URLs and variants",
+    "generation successors or combustion/electric substitution",
+    "physical UK profile/year/plant/era/fiveWMI qualification"
+  ],
+  "freshSourcePreconditions": [
+    "exact parent release after scoped offline proof; no release or network in preparation",
+    "parent independently reviews exactplan/code/input/runtime pins and selector URL observation history",
+    "any future literal candidate URL checked against actual prior allocated/spent identities before separate inventory release"
+  ],
+  "id": "missing20-selector-20261107-once",
+  "inputPins": {
+    "docs/gcsp/bmw-interface-research.md": "82d4edba56abf474e693d45d1b2f79c4b8918e868fb2ff56d6d6ba96db00d00a",
+    "docs/gcsp/evidence/fucq-58/full-model-selector-2026-11-05/evidence/selection.json": "ae259c7a58bfc62576a3c68c5d154584673a22f2b39ab76e2b512a45fa6ae386",
+    "docs/gcsp/evidence/fucq-58/steering-diagnostic-2026-11-05/evidence/projection.json": "0da1ccbfed44b62f94000eb96e32022e3967a331f9bff9a2b4c9f92fda98dc8b",
+    "docs/gcsp/evidence/fucq58/missing20-selector-plan-2026-11-07/target-rows.json": "04758735b5823dd9d78d3c0b60270ea5a11e180c63112deb1c0afb1e9098ff54",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth-preparation-2026-11-07/target-ledger.json": "a6352d3ccc1280e8651be1f528f989a4be4dea405796e57fc4ddffb6935ad612",
+    "docs/gcsp/evidence/fucq59/scheme31-coverage-status-2026-11-07/mapping.json": "1f618c5d816ff613b4998f46fcbb543e71962498bc065e562a03cd9c2c37250d"
+  },
+  "limits": {
+    "GET": 1,
+    "RAMBytes": 268435456,
+    "browser": 0,
+    "childSeconds": 30,
+    "expectedRetainedBytes": 131072,
+    "linkFollowing": 0,
+    "maximumLeads": 128,
+    "maximumOccurrences": 256,
+    "options": 0,
+    "projectionBytes": 65536,
+    "redirects": 0,
+    "requestMilliseconds": 10000,
+    "responseBytes": 2097152,
+    "retries": 0,
+    "scratchBytes": 16777216,
+    "selectorPage": 1,
+    "settings": 0,
+    "solver": 0,
+    "sourceWrites": 0,
+    "supervisorSeconds": 45,
+    "tree": 0,
+    "workers": 1
+  },
+  "newAdmissions": 0,
+  "observedAliasCaveats": [
+    {
+      "originalRow": "/coverage/schemeModelLines/8",
+      "target": "G26 Gran Coupe",
+      "unusableAlternative": "G26E has rawmodelRangeG26 and aliases4/I; directI4 derivative means it cannot supply combustionGranCoupe row"
+    },
+    {
+      "originalRow": "/coverage/schemeModelLines/10",
+      "target": "G61 Touring",
+      "unusableAlternative": "G61E/T5MJ has rawmodelRangeG61 and aliases5/I; it cannot supply combustionTouring row"
+    }
+  ],
+  "outputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/missing20-selector-20261107-once",
+  "physicalFactsQualified": 0,
+  "preparedAt": "2026-11-07T06:54:24.021735+00:00",
+  "request": {
+    "maximum": 1,
+    "method": "GET",
+    "provenance": "docs/gcsp/bmw-interface-research.md:39 retained entry point; a fresh selector observation, not a model registration",
+    "requestIdentity": "GET https://www.bmw.co.uk/en/configurator.html",
+    "url": "https://www.bmw.co.uk/en/configurator.html"
+  },
+  "retention": "exclusive consumed marker, actual bounded event metadata and safe literal links/pointers/hash/bytes only; no rawHTML/settings/application header/cookies/private identifiers",
+  "runtime": {
+    "path": "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+    "sha256": "1ef99ea25fe70c9b67e7efe768ef8ee22148d3cabc703db6131b57aeb617d040"
+  },
+  "schemaVersion": "missing20-selector-single-observation-plan.v1",
+  "schemeJoinsQualified": 0,
+  "scope": "one fresh literal BMW UK selector-page observation for the20 unresolved original scheme ledger rows; no following links",
+  "sourceGrant": false,
+  "sourceRequests": 0,
+  "status": "prepared-unreleased; independent root review and exact plan release required",
+  "stops": [
+    "first status/type/encoding/redirect/transport/byte/time/projection/cleanup failure",
+    "no literal leads is a limited dated observation; no automatic settings/script/tree fallback",
+    "no model context/options/solver or source acceptance from selector links"
+  ],
+  "targetRows": "docs/gcsp/evidence/fucq58/missing20-selector-plan-2026-11-07/target-rows.json"
+}

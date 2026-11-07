@@ -1,0 +1,206 @@
+{
+  "schemaVersion": "1",
+  "planId": "f70-optional-axis5567-20261107-once-session607",
+  "version": "1",
+  "seed": "f70-actual790-optional-axis-direct-product-20261107",
+  "policyRead": {
+    "asOf": "2026-11-06T00:00:00.000Z",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "source": {
+    "id": "bmw-uk-public",
+    "version": "f59-model-axis-batch-20261107.v1",
+    "kind": "public-bmw-uk"
+  },
+  "context": {
+    "catalogueDate": "2026-11-01",
+    "market": "GB",
+    "locale": "en-GB",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05"
+  },
+  "models": [
+    "1F7D"
+  ],
+  "target": 8,
+  "candidateCount": 8,
+  "limits": {
+    "maxCandidates": 8,
+    "requestBudgets": {
+      "page": 1,
+      "settings": 1,
+      "discover": 1,
+      "options": 1,
+      "solve": 8
+    },
+    "maxAttempts": 1,
+    "operationTimeoutMs": 10000,
+    "deadlineMs": 120000,
+    "retryDelayMs": 0,
+    "concurrency": 1,
+    "cacheEntries": 16,
+    "cacheRetentionMs": 86400000,
+    "checkpointBytes": 4194304,
+    "imageRequests": 0,
+    "sourceAttempts": 12,
+    "sourceBytes": 4194304,
+    "responseBytes": 1048576
+  },
+  "captureVersion": "bmw-complete-selection.v1",
+  "qualificationDate": "2026-11-07",
+  "modelRegistration": {
+    "schemaVersion": "bmw-public-model-registration.v1",
+    "modelCode": "1F7D",
+    "agModelCode": "62GE",
+    "catalogueRangeKey": "F70",
+    "rawModelRange": "F70",
+    "aliases": [
+      "1"
+    ],
+    "market": "GB",
+    "locale": "en-GB",
+    "steering": "RL",
+    "catalogueDate": "2026-11-01",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05"
+  },
+  "lineRegistration": {
+    "lineKey": "S0337",
+    "defaultModel": {
+      "modelCode": "1F7B",
+      "agModelCode": "82GE"
+    },
+    "includedIndex": 2,
+    "optionsQuery": {
+      "kind": "trim",
+      "code": "S0337"
+    }
+  },
+  "candidates": [
+    {
+      "candidateId": "candidate-4a98b6ff60fe7c634c586622",
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C5Y",
+          "S01H5",
+          "S0337",
+          "S043T"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-3c478aea6d478cc5841aa710",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0490",
+          "S0337",
+          "S03NA",
+          "S043T",
+          "S07EW"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-de816c2db976fb7c26f5c2f9",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C31",
+          "S0337",
+          "S03NA",
+          "S043U",
+          "S07EV"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-0d1233530c5aa7642519cce6",
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C3N",
+          "S0337",
+          "S03NA",
+          "S043T",
+          "S07EV"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-c8239678da24dd24ab447198",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0C5Y",
+          "S0337",
+          "S03NA",
+          "S07EV"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-a2f35b150a5e0547237262bd",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0475",
+          "S0337",
+          "S03NA",
+          "S043U",
+          "S07EW"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-51adc43612156f9d3068961a",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C4W",
+          "S01H8",
+          "S0337",
+          "S043U",
+          "S07EV"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-dbfe4e11639add99a34d6686",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0C4W",
+          "S0337",
+          "S03NA",
+          "S043T"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    }
+  ]
+}

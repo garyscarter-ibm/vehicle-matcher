@@ -1,0 +1,42 @@
+{
+  "scope": "actual1304completed; independent parent global union follows separate child candidate audit",
+  "sourceReceipt": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-1304-20261107-once/continuation-receipt.json",
+    "sha256": "bdfde569c7effadac2d3f1baf0403c2343a331eea1343c9b842d7cc3ee973419"
+  },
+  "solver": 1304,
+  "GET": 1956,
+  "strictSessions": 163,
+  "strictChecks": 815,
+  "newDistinctAdmissions": 1163,
+  "rejects": 141,
+  "duplicates": 0,
+  "decodedBytes": 139808430,
+  "sourceWallSeconds": 1074.408236375,
+  "sourceAcceptance": false,
+  "parentAudit": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/global-union5829-parent-audit.json",
+    "sha256": "bef371608f9790def22d33d770e06c7871f824c8562220970f8282a68bd6e4d7",
+    "checks": 29740,
+    "errors": []
+  },
+  "parentGlobalBaseline": {
+    "admittedSource": 5829,
+    "canonical": 5832,
+    "spent": 7444
+  },
+  "cleanup": {
+    "allGroupsAbsent": true,
+    "allReservationsAbsent": true,
+    "compatibilityException": null,
+    "dependencyLinkAbsent": true,
+    "groupsChecked": 978,
+    "leftovers": [],
+    "reservationTokensChecked": 327,
+    "scratchRootsAbsent": 326
+  },
+  "sourceRetainedLogicalBytes": 1448257810,
+  "scratchRemovedBytes": 85474592,
+  "remainingOriginalAcceptanceGates": true,
+  "currentF70ContinuationStillNeedsFreshUnion": true
+}

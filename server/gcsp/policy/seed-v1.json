@@ -11601,6 +11601,17 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "clock.presenter.stepSeconds",
+      "value": 60,
+      "unit": "seconds",
+      "status": "assumed",
+      "basis": "A one-minute presenter step makes small time changes visible; named cues cover longer walkthrough jumps. Revisable demo assumption, not BMW policy.",
+      "source": "docs/gcsp/presenter-controls-contract.md",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "clock.commands.v1",
       "value": {
         "advanceAndTickSeparate": true,
@@ -12428,6 +12439,223 @@
       "basis": "Contract extension remains unavailable until the scheme explicitly permits it; no default entitlement.",
       "source": "docs/gcsp/shared-contracts.md#owned-renewal-risk-cases--fucq-112",
       "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "unit": "versioned synthetic ordering contract",
+      "status": "assumed",
+      "basis": "Coherent fictional terms and target approval-stage names for the demonstration; approved BMW wording and workflow configuration remain unverified.",
+      "source": "docs/gcsp/manual-order-contract.md",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z",
+      "key": "ordering.terms.v1",
+      "value": {
+        "schemaVersion": 1,
+        "termsVersion": "fictional-order-terms-v1",
+        "fictional": true,
+        "wording": "Fictional demonstration terms: selection requests allocation of this exact scheme stock order under the recorded quote. The nominated driver and licence details must be correct. For a replacement, the recorded old contract and expected return mileage must be correct. Approval, appointment and collection are separate decisions; submission does not end the current contract.",
+        "validUntil": "2026-12-01T00:00:00.000Z",
+        "declarations": [
+          {
+            "id": "terms",
+            "label": "I accept these fictional scheme terms.",
+            "appliesTo": "all"
+          },
+          {
+            "id": "driver",
+            "label": "The nominated driver and licence details are correct.",
+            "appliesTo": "all"
+          },
+          {
+            "id": "return",
+            "label": "The old contract and expected return mileage are correct.",
+            "appliesTo": "replacement"
+          }
+        ]
+      }
+    },
+    {
+      "unit": "versioned synthetic ordering contract",
+      "status": "assumed",
+      "basis": "Coherent fictional terms and target approval-stage names for the demonstration; approved BMW wording and workflow configuration remain unverified.",
+      "source": "docs/gcsp/manual-order-contract.md",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z",
+      "key": "ordering.approvalStages.v1",
+      "value": [
+        "HR approval",
+        "sales-manager approval",
+        "sent to ordering"
+      ]
+    },
+    {
+      "key": "lifecycle.approval.ticks.v1",
+      "value": {
+        "HR approval": 2,
+        "sales-manager approval": 2,
+        "sent to ordering": 1
+      },
+      "unit": "presenter ticks per stage",
+      "status": "assumed",
+      "basis": "Two presenter ticks per approval keeps each wait visible in a walkthrough; real approval turnaround is unknown and is revised through trials.",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
+      "sourceDate": "2026-11-06",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "lifecycle.approval.declineScenario.v1",
+      "value": {
+        "enabled": false,
+        "stage": "sales-manager approval",
+        "eventType": "approval-declined",
+        "reasonCode": "sales-manager-declined",
+        "reason": "The sales manager declined this order. The scheme team will contact you."
+      },
+      "unit": "scenario selection",
+      "status": "assumed",
+      "basis": "Off by default; a presenter scenario enables it to show the difficult case. The event type matches renewalCase.lifecycle.eventTypes.",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
+      "sourceDate": "2026-11-06",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "lifecycle.approval.ownership.v1",
+      "value": {
+        "stages": {
+          "selection received": {
+            "owner": "ordering",
+            "nextStep": "Approval checks start"
+          },
+          "HR approval": {
+            "owner": "HR",
+            "nextStep": "HR decision"
+          },
+          "sales-manager approval": {
+            "owner": "sales manager",
+            "nextStep": "Sales-manager decision"
+          },
+          "sent to ordering": {
+            "owner": "ordering",
+            "nextStep": "Ordering confirms the order"
+          }
+        },
+        "outcomes": {
+          "declined": {
+            "owner": "scheme team",
+            "nextStep": "Scheme team reviews the decline"
+          },
+          "sent-to-ordering": {
+            "owner": "ordering",
+            "nextStep": "Appointment to be arranged"
+          }
+        }
+      },
+      "unit": "owner and next-step labels",
+      "status": "assumed",
+      "basis": "Target platform owners per stage (HLD review Q19); labels are concise demo copy, not BMW workflow text.",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
+      "sourceDate": "2026-11-06",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "lifecycle.documents.v1",
+      "value": {
+        "openingStage": "sent to ordering",
+        "openingState": "approved",
+        "items": [
+          {
+            "itemId": "agreement-acknowledgement",
+            "kind": "document",
+            "label": "Vehicle agreement",
+            "owner": "employee",
+            "action": "Acknowledge the agreement",
+            "dueSeconds": 172800,
+            "schemeIds": [
+              "choices-fs-uk",
+              "choices-rr-production"
+            ],
+            "basis": "Synthetic stand-in for signing the vehicle agreement; two demo days is a plausible response window. Signing may follow booking."
+          },
+          {
+            "itemId": "licence-check",
+            "kind": "document",
+            "label": "Driving licence check",
+            "owner": "scheme-team",
+            "progressSeconds": 3600,
+            "dueSeconds": 86400,
+            "schemeIds": [
+              "choices-fs-uk",
+              "choices-rr-production"
+            ],
+            "basis": "Synthetic scheme-team check of the employee's licence; an hour of demo time is a plausible turnaround."
+          },
+          {
+            "itemId": "vehicle-preparation",
+            "kind": "readiness",
+            "label": "Vehicle preparation",
+            "owner": "retailer",
+            "progressSeconds": 86400,
+            "dueSeconds": 259200,
+            "schemeIds": [
+              "choices-fs-uk",
+              "choices-rr-production"
+            ],
+            "basis": "Synthetic retailer preparation (valet, plates, handover pack); one demo day is plausible."
+          },
+          {
+            "itemId": "delivery-to-retailer",
+            "kind": "readiness",
+            "label": "Delivery to the retailer",
+            "owner": "retailer",
+            "progressSeconds": 172800,
+            "dueSeconds": 432000,
+            "schemeIds": [
+              "choices-fs-uk",
+              "choices-rr-production"
+            ],
+            "basis": "Synthetic transport of the car to the collecting retailer; two demo days is plausible."
+          }
+        ]
+      },
+      "unit": "document and readiness item registry; seconds of demo-clock time",
+      "status": "assumed",
+      "basis": "Plausible synthetic document and vehicle-readiness steps after an order is sent to ordering (HLD columns 12 and 13). Not BMW policy; owners, delays and the opening stage are revisable here.",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-documents-and-readiness--fucq-116",
+      "sourceDate": "2026-11-06",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "lifecycle.documents.scenario.v1",
+      "value": {
+        "failItemIds": [],
+        "failureReason": "The synthetic provider reported this step as failed."
+      },
+      "unit": "item IDs selected to fail; reason text",
+      "status": "assumed",
+      "basis": "Difficult-case switch for the synthetic provider. Empty by default; a scenario version lists the scheme-team or retailer items that fail.",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-documents-and-readiness--fucq-116",
+      "sourceDate": "2026-11-06",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "lifecycle.documents.exceptions.v1",
+      "value": {
+        "overdue": "document-overdue",
+        "failed": "document-failed"
+      },
+      "unit": "lifecycle-exception event type keys",
+      "status": "assumed",
+      "basis": "Keyed exception types recorded with the renewal-case receipt shape. The renewal-risk trigger uses them only when renewalCase.lifecycle.eventTypes selects them.",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-documents-and-readiness--fucq-116",
+      "sourceDate": "2026-11-06",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     }

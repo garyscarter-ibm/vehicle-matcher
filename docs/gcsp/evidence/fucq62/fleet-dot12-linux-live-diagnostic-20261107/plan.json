@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "linux-live-three-get-diagnostic.v1",
+  "status": "prepared-unexecuted-root-review-and-narrow-integration-push-required",
+  "diagnosticId": "fleet-dot12-linux-live-20261107-1",
+  "executionEnvironment": "GitHubActions ubuntu-latest Linux Node20; distinct from local failed transport attempt",
+  "origin": "https://gcsp-api.onrender.com",
+  "deployment": {
+    "code": "e7cf50acd58bda6b0f2b3738c4408f1f374682f8",
+    "githubDeploymentId": 7619569590,
+    "actualDeploymentId": "dep-dbnf8g3hf81s73b22ee0",
+    "completedAt": "2026-11-07T09:59:44Z",
+    "evidenceFile": "deployment-success.json",
+    "evidenceSha256": "53f0838435590700f11947feb1c1b38f68bf224d11e008ce18e19ffcfd11456b"
+  },
+  "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "firstReference": {
+    "request": {
+      "kind": "configuration",
+      "id": "MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIQyxTMDIzMCxTMDJQQSxTMDJUNCxTMDJUQixTMDJWQixTMDJWRCxTMDJWTCxTMDMwMixTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzMSxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRHUSxTMDRNQyxTMDRVUixTMDUzNCxTMDU0NCxTMDU1MixTMDVBQyxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDY3NixTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxNSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNVSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNQ=="
+    },
+    "rowKey": "d72c05557861bb646f57484e60d26c3f1f35df5c20b0dd18e01256188c7d0ca2",
+    "encodedPath": "/api/gcsp/vehicle-evidence/configurations/MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIQyxTMDIzMCxTMDJQQSxTMDJUNCxTMDJUQixTMDJWQixTMDJWRCxTMDJWTCxTMDMwMixTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzMSxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRHUSxTMDRNQyxTMDRVUixTMDUzNCxTMDU0NCxTMDU1MixTMDVBQyxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDY3NixTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxNSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNVSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNQ%3D%3D",
+    "pathSha256": "0b4003eaeb1b378106ce349a0494b2c051a384e401496c54d3521c6c5fe1b79d",
+    "expectedDtoSha256": "82712c8d703e6546d6c4298fa3a168b2ea48f09c73931ee9eb061ee36f98e2e4",
+    "priorOfflineDirectAndHttpPassed": true
+  },
+  "expectedObservationFile": "expected-observation.json",
+  "expectedObservationSha256": "87914bdc9d27f8121c46d73e27dd7992d093fd56d20c1616674ed46aa5c685f1",
+  "rootReviewedInput": {
+    "sealedPlanPath": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq62/fleet-dot12-live-three-get-plan/plan.json",
+    "sealedPlanBytes": 23688,
+    "sealedPlanSha256": "b9ac9cf4b0bc1451edb6c448b83511760f3b924650696dc1a80b6eb5319c3d3f",
+    "dependencyReviewComplete": true,
+    "rootCodePinCount": 108,
+    "closureNotReplayed": "Prior exact deployment identity/proof reused; this diagnostic performs only application GETs."
+  },
+  "originalLocalAttempt": {
+    "receiptPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-live-three-get-20261107/receipt.json",
+    "receiptSha256": "d3681c7d72498191d006f56e4409feb4ff6875462810a9682fa075c665773a6b",
+    "rootResultsSha256": "e3623f93b8442f7a5cb6ee6730f032be34fd95a74210c5b524c1bd45175290c8",
+    "requests": 1,
+    "healthDeadlineMs": 30000,
+    "healthReceivedBytes": 0,
+    "outcome": "health request timed out; readiness/configuration unrun; proves neither service failure nor .12 readiness; no retry in that packet"
+  },
+  "limits": {
+    "newGETs": 3,
+    "healthMilliseconds": 90000,
+    "laterRequestMilliseconds": 30000,
+    "totalMilliseconds": 150000,
+    "retries": 0,
+    "redirects": 0,
+    "responseBodyBytes": 1048576,
+    "responseHeaderBytes": 16384,
+    "headerValueBytes": 2048,
+    "bodyLogPrefixBytes": 2048,
+    "headerLogPrefixBytes": 1024,
+    "totalRetainedLogBytes": 65536
+  },
+  "wakeupBasis": "Root-authorized90s health ceiling for possible Render free-service wake-up; no claim this timeout cause was proved. This is a new Linux environment/input/run identity, not an automatic replay of the local packet.",
+  "resources": {
+    "workers": 1,
+    "nodeHeapMiB": 256,
+    "groupRssMiB": 320,
+    "supervisorRssMiB": 64,
+    "hostMiB": 384,
+    "scratchMiB": 16,
+    "supervisorSeconds": 160,
+    "jobMinutes": 4,
+    "archives": false
+  },
+  "dispatchRequirement": "Root review/integration push to gcsp-poc triggers one new diagnostic only when newworkflow or this packet changes. Optional workflow_dispatch uses same fixed reviewed plan SHA; optional supplied SHA must equal it. RunAttempt must1. No manual duplicate, retry or rerun. Followup actual results belong in a distinct run-evidence directory outside these trigger paths.",
+  "serverBoundary": "Agent sends only unauthenticated application GETs, no SQL/source/provider/image calls or credentials. Application handling may use server policyDB internally.",
+  "runtimePins": {
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic-20261107/probe.mjs": "70612f0d90387b77472d0a6ce69c5c59ec9434254a123a659faf8d2efa8a389d",
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic-20261107/supervise.py": "10ba6cb48397b81cab543e0662b0ed06a5da32145e43bc21291378d04ae38ed1",
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic-20261107/expected-observation.json": "87914bdc9d27f8121c46d73e27dd7992d093fd56d20c1616674ed46aa5c685f1",
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic-20261107/deployment-success.json": "53f0838435590700f11947feb1c1b38f68bf224d11e008ce18e19ffcfd11456b"
+  },
+  "acceptance": false,
+  "done": false,
+  "originalLocalTimeoutCauseProved": false,
+  "workflowHashSeparation": "Workflow embeds this exact reviewed plan SHA. This plan pins4runtime packet files; static-review receipt separately pins workflow to avoid a circular workflow/plan hash dependency."
+}

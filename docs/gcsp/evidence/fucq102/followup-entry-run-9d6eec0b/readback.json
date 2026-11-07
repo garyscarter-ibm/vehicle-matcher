@@ -1,0 +1,161 @@
+{
+  "at": "2026-11-06T02:08:06.283633+00:00",
+  "scope": "Read-only evidence audit; no harness import, test, retry, repair or resource allocation. Original artifacts are unchanged.",
+  "run": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/followup-9d6eec0b291741f1ba7fa06a4586a751",
+  "testedHarnessCommit": "da78f25d2214b60f34f8c2b2c18992c43592cfb4",
+  "grant": "fucq102-followup-da78f25-0159",
+  "outcome": "failed",
+  "originalArtifacts": {
+    "test.log": {
+      "original": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/followup-9d6eec0b291741f1ba7fa06a4586a751/test.log",
+      "bytes": 4128,
+      "sha256": "7a8efa031bd0caefbe78d77230b8cdfc447174d36c7c045e1cc79ad69beba088",
+      "copy": "docs/gcsp/evidence/fucq102/followup-entry-run-9d6eec0b/test.log"
+    },
+    "modules.jsonl": {
+      "original": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/followup-9d6eec0b291741f1ba7fa06a4586a751/modules.jsonl",
+      "bytes": 5363,
+      "sha256": "0594f9b49126868327be81eba732186d83a06711c0435b7d8a3047a2ac6e4a97",
+      "copy": "docs/gcsp/evidence/fucq102/followup-entry-run-9d6eec0b/modules.jsonl"
+    },
+    "plan.json": {
+      "original": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/followup-9d6eec0b291741f1ba7fa06a4586a751/plan.json",
+      "bytes": 7288,
+      "sha256": "3a0e12f966f5fb4c56ba6fc7e69e5d41e7d9a156e73d24de163aa3c80507a91b",
+      "copy": "docs/gcsp/evidence/fucq102/followup-entry-run-9d6eec0b/plan.json"
+    },
+    "checkpoint.json": {
+      "original": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/followup-9d6eec0b291741f1ba7fa06a4586a751/checkpoint.json",
+      "bytes": 337,
+      "sha256": "7ca2c4be7b4271144ddfdfeb002a90f27c89053bd0ee36bcc29d4c491f07d1d7",
+      "copy": "docs/gcsp/evidence/fucq102/followup-entry-run-9d6eec0b/checkpoint.json"
+    },
+    "summary.json": {
+      "original": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/followup-9d6eec0b291741f1ba7fa06a4586a751/summary.json",
+      "bytes": 8330,
+      "sha256": "a3d385146605e21668629fc03a9b263a02b3ff1ee278f1d2d677402826f3e530",
+      "copy": "docs/gcsp/evidence/fucq102/followup-entry-run-9d6eec0b/summary.json"
+    },
+    "ownership/c48bb4a0b4dd464ba62cad1b692668c5.json": {
+      "original": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/followup-9d6eec0b291741f1ba7fa06a4586a751/ownership/c48bb4a0b4dd464ba62cad1b692668c5.json",
+      "bytes": 1374,
+      "sha256": "5b5fc2a9160671c6d8f9ed53c1a7b93cc91999d153199b8251506b51abc6adeb",
+      "copy": "docs/gcsp/evidence/fucq102/followup-entry-run-9d6eec0b/ownership/c48bb4a0b4dd464ba62cad1b692668c5.json"
+    }
+  },
+  "derivedReporter": "spec",
+  "derivedCounts": {
+    "tests": 11,
+    "suites": 0,
+    "pass": 8,
+    "fail": 3,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "derivedCases": [
+    {
+      "name": "actual 100/106 decline survives a lost response and cookie/account reload into employee-only 107",
+      "passed": false
+    },
+    {
+      "name": "follow-up entry keeps the existing private instance, owner, selector and run authority",
+      "passed": true
+    },
+    {
+      "name": "active, accepted, expired, superseded and pending releases never query a follow-up selector",
+      "passed": true
+    },
+    {
+      "name": "confirmed historical decline brief can differ from the immutable quoted brief",
+      "passed": false
+    },
+    {
+      "name": "terminal outcome versions survive quote expiry and later car reuse without extending the hold",
+      "passed": false
+    },
+    {
+      "name": "missing, duplicate or malformed decision sources preserve declined status with no handle",
+      "passed": true
+    },
+    {
+      "name": "only one complete native decline receipt with valid digest and pins supplies a handle",
+      "passed": true
+    },
+    {
+      "name": "valid digests cannot substitute a different employee, run, slot, renewal, car or brief",
+      "passed": true
+    },
+    {
+      "name": "pre-write revisions, inconsistent outcome pins and future source times cannot supply a handle",
+      "passed": true
+    },
+    {
+      "name": "repository query failures and unavailable history return typed unavailable without writes",
+      "passed": true
+    },
+    {
+      "name": "decision membership, receipt membership, history and clock races refuse a mixed follow-up read",
+      "passed": true
+    }
+  ],
+  "selectedNamesMatch": true,
+  "originalStructuredCounts": {},
+  "reporterMismatch": "Supervisor searches not ok/# TAP lines; original child emits spec symbols and \u2139 totals. Stop-first-failure was not enforced; all eleven ran.",
+  "budget": {
+    "admitted": true,
+    "basis": "Inference from frozen supervisor control flow: strict locked acquire_owned and reservation write/readback precede mirror and launch; retained manifest proves child launch and successful strict release. No separate initial headroom snapshot was persisted.",
+    "reserveDiskBytes": 5368709120,
+    "reserveRAMBytes": 536870912,
+    "limits": {
+      "combinedBytes": 134217728,
+      "logBytes": 2097152,
+      "ramBytes": 805306368,
+      "seconds": 120,
+      "workers": 1
+    },
+    "peakAggregateRSS": 249839616,
+    "peakCombinedBytes": 1236992,
+    "wallSeconds": 14.712469500000001
+  },
+  "readback": {
+    "frozenPhysicalNodes": 193,
+    "physicalIdentitiesMatch": true,
+    "physicalMismatches": [],
+    "immutableSources": 51,
+    "immutableSourcesMatch": true,
+    "sourceMismatches": [],
+    "absentCandidatesMatch": true,
+    "dependencyLinkAbsent": true,
+    "admissionSHA256": "33a737bdf8e6dff86f9fe806b831243f0984c64e34aed68a0022c1dace11ed60",
+    "sourcePlanSHA256": "fd2eb341905bba23414e799bb011c0d415564c0c4ac656a0b0047d82a8111c3a",
+    "moduleJournalMatches": true,
+    "moduleCount": 44
+  },
+  "cleanupReadback": {
+    "scratch": "/private/tmp/test-stamp-shard-c48bb4a0b4dd464ba62cad1b692668c5",
+    "scratchAbsent": true,
+    "reservationAbsentUnderValidatedLockedLedger": true,
+    "ownedIdentitiesAbsent": true,
+    "groupsAbsent": true,
+    "originalCleanup": {
+      "groups": [
+        81295
+      ],
+      "groupsAbsent": true,
+      "joined": true,
+      "observedPids": 1,
+      "passed": true,
+      "pidsAbsent": true,
+      "reservationAbsent": true,
+      "sampledAt": 1793930740.8804212,
+      "scratchAbsent": true
+    }
+  },
+  "limitations": [
+    "Three expected follow-up handles are null; application cause is not yet diagnosed.",
+    "Spec/TAP mismatch prevents first-failure stop and structured count capture.",
+    "Original checkpoint is incomplete; no repair/retry is authorised by this grant.",
+    "Cancellation injection,105/client/host,canonical107default questions,runtime/deployment,remote/browser/native DB/full integration and story acceptance remain unproved."
+  ]
+}

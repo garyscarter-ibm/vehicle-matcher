@@ -1,0 +1,18 @@
+{
+  "changedPaths": [
+    "render.gcsp.yaml",
+    ".github/workflows/gcsp-fleet-build.yml"
+  ],
+  "regression": "matching.8releasebuildselection andLinuxproofscript",
+  "selected": [
+    "twoYAMLparse",
+    "bashsyntax",
+    "oneRenderBlueprintfiltertest"
+  ],
+  "excluded": "no fullsuite; configonly; unchangedruntime coveredbyexisting1925DTOandHTTPproof",
+  "limits": {
+    "scratchMiB": 32,
+    "RAMMiB": 256,
+    "seconds": 30
+  }
+}

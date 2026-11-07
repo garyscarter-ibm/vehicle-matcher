@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "f63-order-reference-preparation.v1",
+  "scope": "scoped fixture runner mechanics only",
+  "status": "fixture-proven-native-blocked",
+  "checks": {
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0
+  },
+  "fixtureReferences": 5,
+  "nativeConfiguration": {
+    "GCSP_DATABASE_URL_present": false,
+    "credentialOrSecretRead": false,
+    "connectionAttempted": false
+  },
+  "nativeProof": false,
+  "acceptance": false,
+  "unrun": [
+    "native current-run stock repository proof",
+    "native real exact-order UUID list",
+    "full suite",
+    "source traffic",
+    "public restore",
+    "ordinary activation"
+  ],
+  "failedEarlierPhase": "fixture: 2 passed, 1 failed because runner incorrectly compared stock generator with configuration null; preserved and corrected",
+  "resource": {
+    "codeIdentityUnchanged": true,
+    "compatibilityException": null,
+    "dependencyLinkAbsent": true,
+    "groupsAbsent": true,
+    "leftovers": [],
+    "removedScratchPeakBytes": 107296,
+    "reservationAbsent": true,
+    "scratch": "/private/tmp/test-stamp-shard-a530ccaf82a145efa2ce1ce5bcaa56e7",
+    "scratchAbsent": true
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "schemaVersion": "dot10-readiness-three-get-plan.v1",
+  "status": "prepared-unexecuted-deployment-success-and-exact-parent-grant-required",
+  "executionRoot": "/Users/usget/Claude/vehicle-matcher",
+  "code": "65f9c728a6791e828fd91f5db33b2042b44507da",
+  "manifestDigest": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+  "previousFailedDeploymentId": "7617678535",
+  "deploymentRequirement": "Actual meaningful deployment7617886276 of exact65f9 code must succeed; parent retains actual successful deployment evidence and issues exact grant. Current in-progress state confers no execution permission.",
+  "origin": "https://gcsp-api.onrender.com",
+  "firstReference": {
+    "request": {
+      "kind": "configuration",
+      "id": "MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIQyxTMDIzMCxTMDJQQSxTMDJUNCxTMDJUQixTMDJWQixTMDJWRCxTMDJWTCxTMDMwMixTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzMSxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRHUSxTMDRNQyxTMDRVUixTMDUzNCxTMDU0NCxTMDU1MixTMDVBQyxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDY3NixTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxNSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNVSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNQ=="
+    },
+    "rowKey": "d72c05557861bb646f57484e60d26c3f1f35df5c20b0dd18e01256188c7d0ca2",
+    "encodedPath": "/api/gcsp/vehicle-evidence/configurations/MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIQyxTMDIzMCxTMDJQQSxTMDJUNCxTMDJUQixTMDJWQixTMDJWRCxTMDJWTCxTMDMwMixTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzMSxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRHUSxTMDRNQyxTMDRVUixTMDUzNCxTMDU0NCxTMDU1MixTMDVBQyxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDY3NixTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxNSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNVSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNQ%3D%3D",
+    "pathSha256": "0b4003eaeb1b378106ce349a0494b2c051a384e401496c54d3521c6c5fe1b79d",
+    "expectedDtoSha256": "38b6c87f22a36b46bd380d3f9d45135389ced171cdf23990b6cddb82d4a065cb",
+    "priorOfflineDirectAndHttpPassed": true
+  },
+  "priorOfflineReceipt": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot10-4666-20261107/http-chunk0-receipt.json",
+    "bytes": 601642,
+    "sha256": "9fe6d85cbb4b60bf073c4ea8e20993d4762118235965c92779a0cfdb25bd8545"
+  },
+  "asOf": "2026-11-07T00:00:00.000Z",
+  "preparedScripts": [
+    {
+      "name": "probe.mjs",
+      "sha256": "9aa1cd843afa89870339c04710131c518cc6938b0e935e0944d02c2f27e4c21c",
+      "bytes": 7531
+    },
+    {
+      "name": "supervise.py",
+      "sha256": "7bcc0b310af72d3e02657f636b1eb3d8f0ebd49eacb0cff2ad94ae320dd123e8",
+      "bytes": 7947
+    },
+    {
+      "name": "group-proof.py",
+      "sha256": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
+      "bytes": 958
+    }
+  ],
+  "outputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot10-live-65f9-three-get-20261107",
+  "metadataRoot": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot10-live-65f9-three-get",
+  "phase": "readiness-first-dto",
+  "requests": [
+    "GET /health",
+    "GET /health/vehicle-evidence",
+    "GET exact first configuration"
+  ],
+  "limits": {
+    "newGETs": 3,
+    "requestMilliseconds": 30000,
+    "totalMilliseconds": 90000,
+    "retries": 0,
+    "redirects": 0,
+    "responseBodyBytes": 1048576,
+    "responseHeaderBytes": 16384,
+    "headerValueBytes": 2048
+  },
+  "resources": {
+    "workers": 1,
+    "hostReservationMiB": 512,
+    "maximumGroupRssMiB": 448,
+    "nodeHeapMiB": 320,
+    "scratchMiB": 64,
+    "diskReservationMiB": 64,
+    "seconds": 90,
+    "cloudScratch": true,
+    "expectedRetainedMiB": 4,
+    "outerLogMiB": 2,
+    "processLogMiB": 1,
+    "supervisorHeadroomMiB": 64
+  },
+  "stopRule": "Any request failure, non200health, or readiness without200/ok/ready/exact .10manifest stops immediately. The one exact configuration GET is reserved only after exact readiness. No retry/redirect/replay.",
+  "rawEvidence": "Each response retains bounded raw body and bounded raw header values with credential/cookie headers redacted, sanitized readiness, status/digest/timing. A failed request retains partial bytes when available and pending reservation.",
+  "sourceCalls": 0,
+  "unrun": [
+    "Three new public GETs",
+    "Full4668 reference replay excluded",
+    "Original timeout cause remains unresolved",
+    "Source/provider/native DB/image traffic excluded",
+    "Full Story acceptance and Done excluded"
+  ],
+  "acceptance": false,
+  "originalTimeoutCauseProved": false,
+  "ordinaryStoreRequired": false,
+  "deploymentCodePins": {
+    "server/gcsp/policy/activation.js": "4e79235b761e8daf94f3cf2744c4bc585146181b410b64497669bd353ee7c4d6",
+    "server/gcsp/policy/adoption.js": "a2cb9a74946cd9eda413d896a0abc2f4299b3b75880a77ddd510667a5187c870",
+    "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+    "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+    "server/gcsp/policy/memory-provider.js": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+    "server/gcsp/policy/postgres-provider.js": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+    "server/gcsp/policy/publish.js": "c521e15966be7762a3348ad860403ef555dd8cbd48405e7d23d9a7c6d262a826",
+    "server/gcsp/policy/reviewed-definitions.js": "75518df649ba542ad32b876f8ee1b680e29b417c3b1f8dc90fcf1d4713a42cbb",
+    "server/gcsp/policy/reviewed/fucq115-choice-model-v1.json": "89565ec7fa05db042e623c6c88c132542505f7757848e61784f38d49b8391987",
+    "server/gcsp/policy/reviewed/greg-publish-editor-v1.json": "7c7680227cdcd6e5f5afbb9fedb06b73c4768b2a3c7526cbf9cb9c03ccdfd8c3",
+    "server/gcsp/policy/reviewed/offer-decline-reasons-v1.json": "1f1b632be83ddef1a5656288b4e40c0378736cda5c21fcf03de68544dfbe688f",
+    "server/gcsp/policy/reviewed/offer-followup-questions-v1.json": "2b634e30a65f8fce6a3cfef67e10b04e9dff72ecb4fe296c51330e98efe86d5d",
+    "server/gcsp/policy/reviewed/presenter-controls-v1.json": "0e09fc7cde7677724153265042eb1f7a122c88115762a736a4bdf02a4b2e470a",
+    "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/vehicle-evidence/alternate-offline-adapter.js": "3c962e8576da4b65141b29fbb53a9f8e3efd45e43b883bc262df68855fc38a9d",
+    "server/gcsp/vehicle-evidence/application-vehicle-details.js": "64bb6073a90f8aca27766c314a08073ee9df320e2683122cd05b3c6fe49d808f",
+    "server/gcsp/vehicle-evidence/corpus-publisher.js": "fa1618642c137c8aa2c0d7749d91e749554bcca6608bac71ae527b147c9ef9bc",
+    "server/gcsp/vehicle-evidence/fleet-artifacts.js": "8567ef55e6cf914c1ea8d6f8c7bbb7797f96116030163d58b46eb594feb05de6",
+    "server/gcsp/vehicle-evidence/fleet-release.js": "d6081dc483d9d28da4cce712c8ad762ff275c07ae012d216893d85963d495ff0",
+    "server/gcsp/vehicle-evidence/fleet-releases.json": "cc807e73c08447637b2c909e89ff08075af1236373e568756ab295d14b8fa32c",
+    "server/gcsp/vehicle-evidence/identity-routing.js": "89d805c94c5f7a9dd026daae40e42167355822961d07597bf0cf69c45b649088",
+    "server/gcsp/vehicle-evidence/indexed-jsonl.js": "0bb27219a621b101b9dbc629f2bb198785d57ee2da7ec642ff0b9472804ad55a",
+    "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "600691740887daee2e4380189872b76a62273d6629c0bba0b25f46ff6921d774",
+    "server/gcsp/vehicle-evidence/lookup-adapter.js": "3060d1707c254ff28ee45c7eedf16802aa57aed9b7d9a52a96206bf0cef395e3",
+    "server/gcsp/vehicle-evidence/provider-read.js": "e194fdeb9ff55faafaadd916b2e0ce34c9d8dce252dc37c3ce04aa8de77bb87b",
+    "server/gcsp/vehicle-evidence/registered-catalogue-sources.js": "16d88f7d8974169ed25725b1e643d0c752aec564e6927aea74199e0e6a2841f3",
+    "server/gcsp/vehicle-evidence/registered-corpus-images.js": "47d27d11406e5ffe05790be8893395b6399b142d8befd268d30b5c60407b9e8e",
+    "server/gcsp/vehicle-evidence/registered-technical-facts.js": "0109334b8657a225e498d3ff78068827880e6f2d6bff527c349a265792d8018f",
+    "server/gcsp/vehicle-evidence/synthetic-registry.js": "38f86f5121fae767465b81a4615355b7577c35f6b74ed57263441240d617f1e4",
+    "server/gcsp/vehicle-evidence/vehicle-details-contract.js": "28d09b0060646930cc3aa2dd08d4d6f744c65e32b40a2ebd55a1b59b392ca62f",
+    "server/gcsp/vehicle-evidence/vehicle-evidence-handler.js": "9e118acfe39f550f06e6c319f536ca8768ca4b41820fd9ca9593e79b18f8c8f0",
+    "server/gcsp/vehicle-evidence/vehicle-lookup.js": "1184b7cc50565b180284e342183cca02e031a718a55f909b7980c34378a630e9",
+    "server/gcsp/vehicle-evidence/vin-allocation.js": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e",
+    "server/gcsp/vehicle-evidence/vin-generator.js": "56072df720ff4b32d26fcd099852f397f140ae44b4658532fa952d11c717260f",
+    "server/gcsp/vehicle-evidence/vin-profiles.js": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "90cf9187cb44dc6d17e6984a0fdc25dc13fc9078c23d3652d779a565cedc29a7",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56",
+    "server/vehicle-evidence/bmw-drivers-guide-provider.js": "b3098765b750132b23edc0beb108ef74b173a8c236bbccb44b262e2a54da8f99",
+    "server/vehicle-evidence/bmw-image-adapter.js": "56753ac7e47e4790159e7d50fb4deafe1658730e803912f064e6ed09326774ef",
+    "server/vehicle-evidence/bmw-live-imagery.js": "40c9c7fd202e211034c540a5a4b7117ef9fd3f4a16b65ede59147bb1f5fe16ce",
+    "server/vehicle-evidence/bmw-vin-guide-adapter.js": "f910c56a1148831b01712fdce314ac152bb052c8302f5bfa32c95cd44131bba6",
+    "server/vehicle-evidence/bmw-vin-guide-synthetic.js": "2a5c08d01d03ee07afd0495aef595721b74046ce8ea1a625630e8c4cfeb91f5e",
+    "server/vehicle-evidence/fixtures/bmw-vin-guide-synthetic.v1.json": "0d2f5eca90ae10a6a0a1591228d26f93c2c88c5ee91145ae46ec82508898c546",
+    "server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json": "ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3",
+    "server/vehicle-evidence/snapshots/bmw-gb-i5-images-2026-11-01.v1.json": "b6bbe8e39b018b1a38551d818e1dfe9b6504283c95dedd033d59d4df8395d393",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "server/index.js": "17f4982ac5e3420c012db31ac50884d63587e568968ca96f1f0583775e8fec19",
+    "server/package.json": "2f4a5fb161b15aa241fbd1d23e82fd319f916fffd30bb7167fae0b71f68044e8",
+    "server/scripts/prepare-fleet-build.mjs": "f97d31db73403c3d288a593f0d7a16da83e6be056beb69d3cb4b1505e60368ff",
+    "render.gcsp.yaml": "4bd41b73fe8b469114eb089be09fa7b7307cf68ea176ac991fbe123f09ce23b5"
+  },
+  "codePins": {
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d"
+  },
+  "actualDeploymentId": "7617886276",
+  "actualDeploymentCompletedAt": null,
+  "expectedDerivation": "Only frozen actual .10 http-chunk0 receipt requestKey/dtoSha256; builtins only; no local lookup, offline/source replay or ordinary store dependency.",
+  "priorObservedFailure": {
+    "deploymentId": "7617678535",
+    "code": "e3fd747dab2765e314633908e99d3c0c31283606",
+    "receiptSha256": "66f560544461f3719cd22989c99821c3a882c30895f1bd83d19d57db30e80e0b",
+    "requests": 2,
+    "healthStatus": 200,
+    "readinessStatus": 200,
+    "actualManifestDigest": "28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884",
+    "configurationGetExecuted": false,
+    "causeProved": false
+  }
+}
