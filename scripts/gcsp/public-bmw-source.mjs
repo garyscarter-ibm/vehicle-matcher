@@ -4,8 +4,8 @@ import { normaliseCodes, requireValue } from './configuration-key.mjs';
 import { assertCollectionHttpObservation } from './collection-session.mjs';
 import { createSettingsShapeRefusal } from './settings-shape-report.mjs';
 import { qualifyBmwSourceFields } from './bmw-source-qualification.mjs';
-import { BMW_BATCH_SOURCE_VERSION, validateBmwBatchPlan, validateBmwModelRegistration,
-  bmwBatchRequestRegistration, bmwPublicRequestUrls } from './bmw-public-registration.mjs';
+import { BMW_BATCH_SOURCE_VERSION, BMW_CONTEXT_SOURCE_VERSION, validateBmwBatchPlan, validateBmwModelRegistration,
+  validateBmwContextRequestRegistration, bmwBatchRequestRegistration, bmwPublicRequestUrls } from './bmw-public-registration.mjs';
 
 const object = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 const same = (a, b) => inputDigest(a) === inputDigest(b);
@@ -23,6 +23,84 @@ const diagnosticContext = { market: 'GB', locale: 'en-GB', modelCode: 'T5MJ', ag
 const calendarDate = (value) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)
   && Number.isFinite(Date.parse(value + 'T00:00:00.000Z')) && new Date(value + 'T00:00:00.000Z').toISOString().slice(0, 10) === value;
 const bounded = (value, min, max) => Number.isSafeInteger(value) && value >= min && value <= max;
+
+export function validatePublicBmwContextPlan(plan) {
+  const l = plan?.limits;
+  requireValue(object(plan) && Object.keys(plan).every((key) => ['schemaVersion', 'planId', 'qualificationDate', 'source', 'modelRegistration', 'limits'].includes(key))
+    && plan.schemaVersion === 'bmw-source-context-plan.v1' && typeof plan.planId === 'string' && /^[A-Za-z0-9][A-Za-z0-9.-]{0,95}$/.test(plan.planId)
+    && calendarDate(plan.qualificationDate) && same(plan.source, { id: 'bmw-uk-public', version: BMW_CONTEXT_SOURCE_VERSION, kind: 'public-bmw-uk' })
+    && object(l) && l.maxAttempts === 1 && l.retryDelayMs === 0 && l.concurrency === 1 && l.imageRequests === 0
+    && l.sourceAttempts === 3 && bounded(l.sourceBytes, 1, 4194304) && bounded(l.responseBytes, 1, 1048576)
+    && bounded(l.operationTimeoutMs, 1, 10000) && bounded(l.deadlineMs, 1, 120000) && bounded(l.checkpointBytes, 1024, 4194304)
+    && bounded(l.cacheEntries, 1, 16) && bounded(l.cacheRetentionMs, 1, 86400000)
+    && same(l.requestBudgets, { page: 1, settings: 1, discover: 1 }),
+  'source-context-plan', 'Allocate only three exact context GETs; options and solver traffic require later source facts and plans.');
+  validateBmwContextRequestRegistration({ model: plan.modelRegistration });
+  return structuredClone(plan);
+}
+
+export function validatePublicBmwContextObservation(input, retained, mode) {
+  const plan = validatePublicBmwContextPlan(input); const document = retained?.document;
+  const bytes = JSON.stringify(document) + '\n'; const metadata = document?.observation;
+  requireValue(object(retained) && same(Object.keys(retained).sort(), ['bytes', 'document', 'sha256'])
+    && retained.bytes === Buffer.byteLength(bytes) && retained.sha256 === createHash('sha256').update(bytes).digest('hex')
+    && object(document) && same(Object.keys(document).sort(), ['observation', 'report', 'schemaVersion'])
+    && document.schemaVersion === 'bmw-source-context-observation.v1' && metadata?.schemaVersion === 'collection-http-observation.v1'
+    && metadata.operation === 'discover' && metadata.capability === 'bmw-model-tree' && metadata.sourceId === plan.source.id
+    && metadata.sourceVersion === plan.source.version && metadata.transportKind === (mode === 'live' ? 'live' : 'fixture')
+    && metadata.observedAt?.slice(0, 10) === plan.qualificationDate,
+  'source-context-binding', 'Retain exact context projection bytes, source identity and dated observation provenance.');
+  const tree = {}; const r = plan.modelRegistration;
+  requireValue(Array.isArray(document.report?.nodes) && document.report.nodes.length === r.aliases.length,
+    'source-context-binding', 'Retain every registered full alias.');
+  for (let i = 0; i < r.aliases.length; i++) tree[r.aliases[i]] = { modelRanges: { [r.catalogueRangeKey]: { models: { [r.modelCode]: document.report.nodes[i].facts } } } };
+  let expectedReport;
+  try { expectedReport = strictModelReport(tree, r); } catch { requireValue(false, 'source-context-binding', 'The retained direct model facts changed.'); }
+  requireValue(same(expectedReport, document.report), 'source-context-binding', 'The retained alias facts, pointers and missing fields changed.');
+  return structuredClone(retained);
+}
+
+/** Context inspection uses the common executor; this source version has no construction capability. */
+export function publicBmwContextOperations(input) {
+  const plan = validatePublicBmwContextPlan(input); const requestRegistration = { model: plan.modelRegistration };
+  const urls = bmwPublicRequestUrls(plan.modelRegistration); let treeHeader;
+  const observe = (metadata) => {
+    assertCollectionHttpObservation(metadata);
+    requireValue(metadata.sourceVersion === plan.source.version && metadata.observedAt.slice(0, 10) === plan.qualificationDate,
+      'source-observation-date', 'Use the pinned qualification day and exact executor-owned context source.');
+    return metadata;
+  };
+  const descriptor = (capability, url, project, extra = {}) => ({ sourceId: plan.source.id, sourceVersion: plan.source.version,
+    kind: 'read-only-http', capability, strictJson: true, requestRegistration, prepare: async () => ({ method: 'GET', url, headers: {} }), project, ...extra });
+  return {
+    page: descriptor('bmw-page', urls.page, (html, _request, metadata) => {
+      const paths = [...new Set([...html.matchAll(/(?:\/en_GB\/)?settings\.[a-zA-Z0-9]+\.json/g)]
+        .map((match) => match[0].startsWith('/en_GB/') ? match[0] : '/en_GB/' + match[0]))];
+      requireValue(paths.length === 1 && settingsPattern.test(paths[0]), 'settings-discovery-shape', 'The registered model page must identify one settings path.');
+      return { settingsPath: paths[0], observation: observe(metadata) };
+    }),
+    settings: descriptor('bmw-settings', null, (value, _request, metadata) => {
+      observe(metadata); treeHeader = headerFor(value, 'settingsVehicleTree', true); return { treeProfileQualified: true };
+    }, { cache: false, prepare: async ({ path }) => {
+      requireValue(typeof path === 'string' && settingsPattern.test(path), 'settings-discovery-shape', 'Use the one discovered settings path.');
+      return { method: 'GET', url: 'https://configure.bmw.co.uk' + path, headers: {} };
+    } }),
+    discover: descriptor('bmw-model-tree', urls.discover, (value, _request, metadata) => {
+      const report = strictModelReport(value, plan.modelRegistration); const r = plan.modelRegistration;
+      const appearances = Object.entries(value).filter(([, group]) => object(group?.modelRanges?.[r.catalogueRangeKey]?.models?.[r.modelCode])).map(([alias]) => alias).sort();
+      requireValue(same(appearances, [...r.aliases].sort()), 'source-model-alias-conflict', 'Fresh direct aliases must equal the registered complete alias set.');
+      const document = { schemaVersion: 'bmw-source-context-observation.v1', observation: observe(metadata), report };
+      const bytes = JSON.stringify(document, (key, entry) => {
+        requireValue(Object.values(treeHeader).every((secret) => !key.includes(secret) && (typeof entry !== 'string' || !entry.includes(secret))),
+          'source-sensitive-projection', 'No bootstrap header may enter retained context facts.'); return entry;
+      }) + '\n';
+      return { document, bytes: Buffer.byteLength(bytes), sha256: createHash('sha256').update(bytes).digest('hex') };
+    }, { prepare: async () => {
+      requireValue(treeHeader, 'source-bootstrap-required', 'The memory-only public tree header is unavailable.');
+      return { method: 'GET', url: urls.discover, headers: treeHeader };
+    } }),
+  };
+}
 
 export function validatePublicBmwDiagnosticPlan(plan) {
   const l = plan?.limits;

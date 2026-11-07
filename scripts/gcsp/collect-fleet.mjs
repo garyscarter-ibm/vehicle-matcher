@@ -9,7 +9,8 @@ import { bmwCatalogueLookupIdentity } from '../../server/vehicle-evidence/bmw-ca
 import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { CollectionError, createConfigurationKey, normaliseCode, normaliseCodes, requireValue } from './configuration-key.mjs';
 import { publicBmwOperations, publicBmwObservation, validatePublicBmwPlan,
-  publicBmwQualificationOperations, validatePublicBmwDiagnosticPlan, qualifyPublicBmwDiagnosticFields } from './public-bmw-source.mjs';
+  publicBmwQualificationOperations, validatePublicBmwDiagnosticPlan, qualifyPublicBmwDiagnosticFields,
+  validatePublicBmwContextPlan, publicBmwContextOperations, validatePublicBmwContextObservation } from './public-bmw-source.mjs';
 import { publicBmwCompleteSelectionOperations } from './capture-bmw-selection.mjs';
 import { BMW_BATCH_SOURCE_VERSION, bmwPublicRequestUrls } from './bmw-public-registration.mjs';
 
@@ -579,6 +580,35 @@ async function createPublicCollector({ plan, source, policyService, policyRead, 
 }
 
 /** Explicit observation-only stage; never invokes the collector's solver or publication ports. */
+export async function createPublicBmwContextQualification({ plan: input, statePath, http, mode, now = Date.now, onPhase } = {}) {
+  const plan = validatePublicBmwContextPlan(input);
+  requireValue(['source-fixture', 'live'].includes(mode) && http?.kind === (mode === 'live' ? 'live' : 'fixture'),
+    'source-allocation-required', 'Use explicit context transport and a separately pinned live allocation.');
+  const session = await createCollectionSession({ identity: { planDigest: inputDigest(plan), sourceVersion: plan.source.version,
+    stage: 'source-context-qualification', version: '1', mode }, operations: publicBmwContextOperations(plan),
+    limits: plan.limits, statePath, http, now, onPhase, initialState: { contextObservation: null, accepted: [], rejected: [], duplicates: [] },
+    validateState: (state) => {
+      requireValue(['accepted', 'rejected', 'duplicates'].every((key) => Array.isArray(state[key]) && state[key].length === 0),
+        'checkpoint-corrupt', 'Context qualification cannot admit or construct configurations.');
+      if (state.contextObservation !== null) validatePublicBmwContextObservation(plan, state.contextObservation, mode);
+    } });
+  return { session, run: () => session.withCheckpoint(async ({ state, execute, commit }) => {
+    const report = () => structuredClone({ status: 'incomplete', reason: state.halted || (state.contextObservation?.document.report.nodes[0].facts.trim
+      ? 'context-observed-options-unallocated' : 'source-trim-unknown'), qualification: 'model-context-only', admission: false,
+      accepted: state.accepted, rejected: state.rejected, duplicates: state.duplicates, counts: state.counts, tree: state.contextObservation });
+    if (state.halted || state.contextObservation) return report();
+    if (state.counts.httpAttempts > 0) { state.halted = 'context-interrupted'; await commit('context-stop'); return report(); }
+    try {
+      const page = await execute('page', {}); await execute('settings', { path: page.settingsPath });
+      state.contextObservation = await execute('discover', {}); await commit('context-observed');
+    } catch (error) {
+      if (!(error instanceof CollectionError)) throw error;
+      state.halted = error.code; await commit('context-stop');
+    }
+    return report();
+  }, { stage: { id: 'source-context-qualification', version: '1', inputDigest: inputDigest(plan) } }) };
+}
+
 export async function createPublicBmwQualificationDiagnostic({ plan: input, statePath, http, mode, now = Date.now, onPhase } = {}) {
   const plan = validatePublicBmwDiagnosticPlan(input);
   requireValue(['source-fixture', 'live'].includes(mode) && http?.kind === (mode === 'live' ? 'live' : 'fixture'),
