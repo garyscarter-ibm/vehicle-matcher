@@ -212,6 +212,25 @@ export class OfferAccessService {
     } catch { return unavailable(); }
   }
 
+  // Offers the signed-in employee may open from the account, newest first. The offer page reads their state.
+  async listForAccount(identityContext) {
+    try {
+      const current = await this.#current(); if (current.error) return current.error;
+      const runId = current.run.runId;
+      if (identityContext?.runId !== runId || !text(identityContext.employeeId)) return ok({ offers: [] });
+      const found = await this.#repository.query(this.#scope(runId), 'offers', { employeeId: identityContext.employeeId });
+      if (found.status !== 'ok' || !Array.isArray(found.value)) return unavailable();
+      const offers = [];
+      for (const row of found.value) {
+        if (!text(row?.offerId) || row.runId !== runId) continue;
+        const allowed = await this.#identity.authorizeResource(identityContext, ref('offers', runId, { offerId: row.offerId }), 'read');
+        if (allowed.status === 'ok') offers.push({ offerId: row.offerId, runId, createdAt: instant(row.createdAt) ? row.createdAt : null });
+      }
+      offers.sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
+      return ok({ offers: offers.slice(0, 5) });
+    } catch { return unavailable(); }
+  }
+
   async fromAccount(identityContext, selector) {
     if (!only(selector, ['runId', 'offerId']) || !text(selector.offerId) || selector.runId !== undefined && !text(selector.runId)) return invalid();
     try {

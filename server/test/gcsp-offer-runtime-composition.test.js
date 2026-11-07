@@ -160,8 +160,10 @@ test('composed offer access preserves Secure cookies and invalid-cookie, employe
   const offerCookie = cookie(exchange.headers.get('set-cookie'));
   assert.equal((await f.request(f.path + f.query, { session: offerCookie })).status, 200);
   const invalid = `${f.session}; gcsp_offer_access=invalid`;
-  assert.equal((await f.request(f.path + f.query, { session: invalid })).status, 404);
-  assert.equal((await f.request(`${f.path}/decision-reasons${f.query}`, { session: invalid })).status, 404);
+  // An unusable offer cookie falls back to the employee's own account authority, never beyond it.
+  assert.equal((await f.request(f.path + f.query, { session: invalid })).status, 200);
+  assert.equal((await f.request(`${f.path}/decision-reasons${f.query}`, { session: invalid })).status, 200);
+  assert.equal((await f.request(f.path + f.query, { session: 'gcsp_offer_access=invalid' })).status, 404);
   assert.equal((await f.request(`${f.path}/decision-reasons${f.query}`, { origin: 'https://foreign.invalid' })).status, 403);
   const other = good(await f.identity.switchPrincipal(f.presenter, 'demo-alex', 'foreign-offer-reader'));
   assert.equal((await f.request(f.path + f.query, { session: cookie(other.setCookie) })).status, 404);
@@ -171,4 +173,15 @@ test('composed offer access preserves Secure cookies and invalid-cookie, employe
   assert.equal((await f.request(`/api/gcsp/offer-followup?decisionId=${handle}&employeeId=forged`)).status, 400);
   assert.equal((await f.request(`/api/gcsp/offer-followup?decisionId=${handle}`, { session: cookie(other.setCookie) })).status, 404);
   assert.equal(good(await f.repository.query(f.employee, 'decisions')).length, 0);
+});
+
+test('account lists its offer and a leftover offer cookie does not hide account access', async (t) => {
+  const f = await setup(t);
+  const listed = good((await f.request('/api/gcsp/offers/current')).json);
+  assert.deepEqual(listed.offers.map(({ offerId, runId }) => ({ offerId, runId })), [{ offerId: f.offer.offerId, runId: f.employee.runId }]);
+  assert.equal((await f.request('/api/gcsp/offers/current', { session: null })).json.status === 'ok', false);
+  assert.equal((await f.request('/api/gcsp/offers/current?runId=x')).json.status, 'invalid');
+  const stale = `${f.session}; gcsp_offer_access=leftover-from-an-earlier-offer`;
+  const read = good((await f.request(f.path + f.query, { session: stale })).json);
+  assert.equal(read.offerId, f.offer.offerId); assert.equal(read.state, 'pending');
 });
