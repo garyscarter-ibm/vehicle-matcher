@@ -69,6 +69,7 @@ import { createLocalVehicleEvidenceLookup } from './gcsp/vehicle-evidence/local-
 import { createGregRoutes } from './gcsp/greg/http.js';
 import { createGregPublishService } from './gcsp/greg/publish/index.js';
 import { createGregPublishRoutes } from './gcsp/greg/publish/http.js';
+import { createOrderPlanRoutes } from './gcsp/predict/plan/http.js';
 
 const PORT = process.env.PORT === '0' ? 0 : Number(process.env.PORT) || 8787;
 const MAX_BODY_BYTES = 16 * 1024; // quiz answers are tiny; reject anything bigger
@@ -886,7 +887,7 @@ export function buildServer(deps = {}) {
     ...createOfferFollowupRoutes(deps.gcspOfferFollowup),
     ...createLifecycleApprovalRoutes(deps.gcspLifecycle), ...createDocumentRoutes(deps.gcspDocuments),
     ...createAppointmentRoutes(deps.gcspAppointments), ...createReturnPlanRoutes(deps.gcspReturnPlan),
-    ...createGregRoutes(deps.gcspGreg), ...createGregPublishRoutes(gregPublish), ...(deps.gcspRoutes || [])],
+    ...createGregRoutes(deps.gcspGreg), ...createGregPublishRoutes(gregPublish), ...createOrderPlanRoutes(deps.gcspOrderPlan), ...(deps.gcspRoutes || [])],
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
   const handleOfferAccess = createOfferAccessHandler({ service: deps.gcspOfferAccess, identity: deps.gcspIdentity, allowedOrigins });
