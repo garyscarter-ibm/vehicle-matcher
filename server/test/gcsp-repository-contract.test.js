@@ -113,10 +113,13 @@ export function repositoryContract(provider, factory) {
       const stale = outcomes.find((outcome) => outcome.status === 'stale-version');
       assert.deepEqual(stale, responseFixtures.staleVersion);
       assert.equal((await repository.query(ctx(), 'claims')).value.length, 1);
-      const conflict = await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput({ holdId: 'hold-b', claimId: 'claim-b', employeeId: 'employee-b', entitlementSlotId: 'slot-b', quoteId: 'quote-ba', expectedStockVersion: 2 })));
+      // Independent native pools may let either contender win; the loser retries at the new stock version.
+      const aWon = outcomes[0].status === 'ok';
+      const loser = aWon ? { holdId: 'hold-b', claimId: 'claim-b', employeeId: 'employee-b', entitlementSlotId: 'slot-b', quoteId: 'quote-ba' } : {};
+      const conflict = await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput({ ...loser, expectedStockVersion: 2 })));
       assert.equal(conflict.status, 'conflict'); assert.equal(conflict.reason, 'car-occupied');
       assert.deepEqual(conflict, responseFixtures.conflict);
-      assert.equal(JSON.stringify(conflict).includes('employee-a'), false);
+      assert.equal(JSON.stringify(conflict).includes(aWon ? 'employee-a' : 'employee-b'), false);
     }));
     await t.test('configuration identity never collapses two exact cars', () => withRepository(async (repository) => {
       assert.equal((await repository.transaction(ctx(), command(), (tx) => tx.conditionalClaim(claimInput()))).status, 'ok');

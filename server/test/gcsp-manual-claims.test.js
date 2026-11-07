@@ -677,7 +677,8 @@ test('native PostgreSQL uncertain release excludes stock past deadline and reope
     assert.equal((await advance(f, previewRule.value.value + 1)).status, 'ok');
     assert.equal((await f.service.readClaim(f.context)).value.state, 'release-pending');
     const uncertainRelease = fixture.processRead(f, holdId);
-    assert.equal(uncertainRelease.stock.available, false); assert.equal(uncertainRelease.claims[0].state, 'release-pending');
+    // Exclusion is the occupying hold/claim the native unique constraint enforces, not a stock flag.
+    assert.equal(uncertainRelease.hold.state, 'release-pending'); assert.equal(uncertainRelease.claims[0].state, 'release-pending');
     f = await fixture.reopen(f);
     assert.equal((await f.service.browseStock(f.context)).value.cars.length, 1);
     adapter.set('confirmed'); assert.equal((await f.service.readClaim(f.context)).value.state, 'released');
@@ -704,7 +705,8 @@ test('native PostgreSQL uncertain selection persists past deadline and restart u
     assert.equal((await f.service.readClaim(f.context)).value.state, 'selection-pending');
     f = await fixture.reopen(f);
     const uncertainSelection = fixture.processRead(f, holdId);
-    assert.equal(uncertainSelection.hold.state, 'selection-pending'); assert.equal(uncertainSelection.stock.available, false);
+    assert.equal(uncertainSelection.hold.state, 'selection-pending'); assert.equal(uncertainSelection.claims[0].state, 'selection-pending');
+    assert.notEqual(uncertainSelection.stock.state, 'allocated');
     adapter.set('confirmed'); const saved = await f.service.readClaim(f.context);
     assert.equal(saved.value.state, 'allocated');
     const allocated = fixture.processRead(f, holdId);
