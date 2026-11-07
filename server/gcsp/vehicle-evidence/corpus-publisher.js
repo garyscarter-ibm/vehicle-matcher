@@ -4,6 +4,7 @@ import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { bmwCatalogueLookupIdentity, createBmwCatalogueAdapter } from '../../vehicle-evidence/bmw-catalogue-adapter.js';
 import { registeredCatalogueSources } from './registered-catalogue-sources.js';
 import { validateRegisteredCorpusImage } from './registered-corpus-images.js';
+import { validateRegisteredTechnicalSupplement } from './registered-technical-facts.js';
 import { inputDigest } from '../repository/core.js';
 import { indexJsonl, JsonlError, JSONL_MAX_BYTES } from './indexed-jsonl.js';
 import { createVinProfileRegistry, VIN_PROFILE_REGISTRY_VERSION } from './vin-profiles.js';
@@ -284,8 +285,12 @@ async function validateRows(configurations, vins, images, manifest, options) {
 }
 async function validateManifest(manifest, options) {
   requireValue(keys(manifest, ['datasetId', 'version', 'schemaVersion', 'profileRegistryVersion', 'generatorVersion', 'seed',
-    'sourceContexts', 'signaturePolicy', 'qualification', 'counts', 'coverage', 'completeness', 'checksums'])
-    && version(manifest.datasetId) && version(manifest.version) && manifest.schemaVersion === CORPUS_SCHEMA_VERSION
+    'sourceContexts', 'signaturePolicy', 'qualification', 'counts', 'coverage', 'completeness', 'checksums', 'technicalSupplements'])
+    && version(manifest.datasetId) && version(manifest.version) && (['1', '2'].includes(manifest.schemaVersion))
+    && (manifest.schemaVersion === '1' ? !Object.hasOwn(manifest, 'technicalSupplements')
+      : Array.isArray(manifest.technicalSupplements) && manifest.technicalSupplements.length > 0
+        && manifest.technicalSupplements.length <= 32
+        && new Set(manifest.technicalSupplements.map(s => s?.configurationId)).size === manifest.technicalSupplements.length)
     && manifest.profileRegistryVersion === VIN_PROFILE_REGISTRY_VERSION && manifest.generatorVersion === VIN_GENERATOR_VERSION
     && keys(manifest.seed, ['value', 'kind']) && text(manifest.seed.value) && manifest.seed.kind === 'synthetic'
     && Array.isArray(manifest.sourceContexts) && manifest.sourceContexts.length > 0
@@ -335,6 +340,12 @@ export async function validateCorpusDirectory(directory, options = {}) {
       }
     }
     await validateRows(...rows, manifest, options);
+    for (const supplement of manifest.technicalSupplements || []) {
+      const row = options.indexed === true ? rows[0].get(supplement.configurationId)
+        : rows[0].find(row => row.configurationId === supplement.configurationId);
+      requireValue(await validateRegisteredTechnicalSupplement(supplement, row), 'technical-supplement-mismatch',
+        'Technical facts must match the independently registered exact source selection, catalogue digest and qualified unit/meaning evidence.');
+    }
     return { status: 'ok', manifest, manifestDigest: contentChecksum(manifestText),
       corpus: freezeCorpus({ manifest, configurations: rows[0], vins: rows[1], images: rows[2] }) };
   } catch (error) { return corpusFailure(error); }
@@ -426,7 +437,19 @@ export async function writeCorpusCandidate(directory, input, options = {}) {
     prepared.push(await spoolRows(staging, CORPUS_FILES[2], retained.images, input.images || [], 'imageId', options));
     const checksums = {};
     for (const [i, file] of CORPUS_FILES.entries()) checksums[file] = await writeRows(join(staging, file), prepared[i].rows, options.jsonlLimits);
-    const manifest = { ...structuredClone(input.metadata), signaturePolicy: policy, qualification: 'bounded-fixture-or-partial-corpus',
+    requireValue(input.technicalSupplements === undefined || Array.isArray(input.technicalSupplements),
+      'technical-supplement-mismatch', 'Supply an explicit bounded array of registered technical supplements.');
+    const supplements = new Map((retained.manifest?.technicalSupplements || []).map(s => [s.configurationId, s]));
+    for (const entry of input.technicalSupplements || []) {
+      requireValue(entry && typeof entry.configurationId === 'string'
+        && (!supplements.has(entry.configurationId) || equal(supplements.get(entry.configurationId), entry)),
+      'technical-supplement-mismatch', 'Preserve an already published supplement; do not replace its exact source facts.');
+      supplements.set(entry.configurationId, entry);
+    }
+    const technical = [...supplements.values()].sort((a, b) => a.configurationId.localeCompare(b.configurationId));
+    const metadata = structuredClone(input.metadata); delete metadata.technicalSupplements;
+    const manifest = { ...metadata, schemaVersion: technical.length ? '2' : CORPUS_SCHEMA_VERSION,
+      ...(technical.length ? { technicalSupplements: technical } : {}), signaturePolicy: policy, qualification: 'bounded-fixture-or-partial-corpus',
       ...summary(...prepared.map((item) => item.rows)), checksums };
     await durableWrite(join(staging, 'manifest.json'), canonicalContent(manifest), true);
     const validated = await validateCorpusDirectory(staging, { ...options, indexed: true });
