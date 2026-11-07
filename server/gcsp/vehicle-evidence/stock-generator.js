@@ -5,6 +5,8 @@ import { allocateInventoryFile, readAllocationInventory } from './vin-allocation
 
 export const STOCK_GENERATOR_VERSION = 'stock-generator.v1';
 const text = (v) => typeof v === 'string' && v.trim().length > 0 && v.length <= 512;
+// Real corpus configuration ids are base64 signatures that can exceed 512 characters.
+const identifier = (v) => typeof v === 'string' && v.length > 0 && v.length <= 4096;
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const keysExactly = (v, keys) => object(v) && Object.keys(v).length === keys.length && Object.keys(v).every((key) => keys.includes(key));
 const positive = (v) => Number.isSafeInteger(v) && v > 0;
@@ -72,22 +74,25 @@ function confirmedWeek(releaseAt, weeks, timeZone) {
   return date.toISOString().slice(0, 10);
 }
 function validPlan(plan) {
-  return object(plan) && ['synthetic-fixture', 'accepted-f77'].includes(plan.kind) && ['source', 'datasetId', 'corpusVersion'].every((key) => text(plan[key]))
+  return object(plan) && ['synthetic-fixture', 'accepted-f77', 'retained-corpus'].includes(plan.kind) && ['source', 'datasetId', 'corpusVersion'].every((key) => text(plan[key]))
     && Array.isArray(plan.configurations) && plan.configurations.length > 0 && plan.configurations.length <= 10000
     && new Set(plan.configurations.map((row) => row?.configurationId)).size === plan.configurations.length
     && object(plan.aggregateKeys) && Object.keys(plan.aggregateKeys).length > 0
     && Object.entries(plan.aggregateKeys).every(([key, value]) => text(key) && text(value))
-    && plan.configurations.every((row) => object(row) && ['configurationId', 'modelLineId', 'colour'].every((key) => text(row[key]))
+    && plan.configurations.every((row) => object(row) && identifier(row.configurationId) && ['modelLineId', 'colour'].every((key) => text(row[key]))
       && Object.hasOwn(plan.aggregateKeys, row.modelLineId));
 }
-function validAggregate(value, modelLineId) {
+// A retained-corpus assumed aggregate claims no sample, so sampleDate and requestCount must be absent.
+function validAggregate(value, modelLineId, plan) {
+  const assumed = plan.kind === 'retained-corpus' && value?.sourceKind === 'assumed-aggregate';
+  const sampled = assumed ? !Object.hasOwn(value, 'sampleDate') && !Object.hasOwn(value, 'requestCount')
+    : day(value?.sampleDate) && positive(value?.requestCount) && value.requestCount <= 400;
   return object(value) && Object.keys(value).every((key) => ['modelLineId', 'carCount', 'colourShares', 'upholsteryShares',
     'leadTimeWeeks', 'deliveryDateSpread', 'priceBand', 'sampleDate', 'requestCount', 'sourceKind'].includes(key))
     && value.modelLineId === modelLineId && Number.isSafeInteger(value.carCount) && value.carCount >= 0
     && shares(value.colourShares) && shares(value.upholsteryShares) && range(value.leadTimeWeeks)
     && keysExactly(value.deliveryDateSpread, ['min', 'max']) && day(value.deliveryDateSpread.min) && day(value.deliveryDateSpread.max)
-    && value.deliveryDateSpread.min <= value.deliveryDateSpread.max && day(value.sampleDate)
-    && positive(value.requestCount) && value.requestCount <= 400 && keysExactly(value.priceBand, ['min', 'max', 'currency'])
+    && value.deliveryDateSpread.min <= value.deliveryDateSpread.max && sampled && keysExactly(value.priceBand, ['min', 'max', 'currency'])
     && value.priceBand.currency === 'GBP' && Number.isFinite(value.priceBand.min) && value.priceBand.min >= 0
     && Number.isFinite(value.priceBand.max) && value.priceBand.max >= value.priceBand.min;
 }
@@ -140,13 +145,14 @@ export function createStockGenerator({ repository, registry, policyService, cont
         const aggregates = Object.entries(plan.aggregateKeys).sort(([a], [b]) => a.localeCompare(b)).map(([modelLineId, key]) => ({
           modelLineId, key, observed: values.get(key),
         }));
-        if (!aggregates.every((row) => validAggregate(row.observed, row.modelLineId))
+        if (!aggregates.every((row) => validAggregate(row.observed, row.modelLineId, plan))
           || aggregates.reduce((sum, row) => sum + row.observed.carCount, 0) === 0) return invalid('unsupported-stock-aggregate');
         if (aggregates.some((row) => {
           const provenanceRow = provenance.find((entry) => entry.key === row.key);
-          return plan.kind === 'synthetic-fixture'
-            ? row.observed.sourceKind !== 'synthetic-fixture' || provenanceRow.status !== 'assumed'
-            : row.observed.sourceKind !== 'observed-aggregate' || provenanceRow.status !== 'observed aggregate';
+          const accepted = plan.kind === 'synthetic-fixture' ? [['synthetic-fixture', 'assumed']]
+            : plan.kind === 'retained-corpus' ? [['assumed-aggregate', 'assumed'], ['observed-aggregate', 'observed aggregate']]
+              : [['observed-aggregate', 'observed aggregate']];
+          return !accepted.some(([kind, status]) => row.observed.sourceKind === kind && provenanceRow.status === status);
         })) return invalid('aggregate-provenance-mismatch');
         const configurations = new Map(); let activeDigest;
         for (const binding of [...plan.configurations].sort((a, b) => a.configurationId.localeCompare(b.configurationId))) {
@@ -175,7 +181,7 @@ export function createStockGenerator({ repository, registry, policyService, cont
               const car = { vehicleId, binding, leadTimeWeeks }; modelCars.push(car); vehicles.push(car);
             }
           }
-          models.push({ modelLineId: model.modelLineId, cars: count,
+          models.push({ modelLineId: model.modelLineId, sourceKind: model.observed.sourceKind, cars: count,
             observedShare: model.observed.carCount / aggregates.reduce((sum, row) => sum + row.observed.carCount, 0), actualShare: count / total,
             colourShares: Object.fromEntries(colours.map((row) => [row.key, count ? row.count / count : 0])),
             leadTimeWeeks: count ? { min: Math.min(...modelCars.map((row) => row.leadTimeWeeks)), max: Math.max(...modelCars.map((row) => row.leadTimeWeeks)) } : null,

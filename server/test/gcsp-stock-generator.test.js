@@ -262,3 +262,113 @@ test('nested aggregate records are rejected before allocating or persisting any 
     assert.equal(await readFile(env.allocationInventoryPath, 'utf8'), before);
   }
 });
+
+// The real seed, the real retained corpus and the real registry port: assumed aggregates, never observed stock.
+let realBuilt;
+async function realStock() {
+  realBuilt ||= (async () => {
+    const { createPolicyService, FilePolicyProvider } = await import('../gcsp/policy/index.js');
+    const { DEFAULT_VEHICLE_CORPUS_ROOT } = await import('../gcsp/vehicle-evidence/local-vehicle-lookup.js');
+    const { releaseLimits, DEFAULT_ARTIFACT_ROOT } = await import('../gcsp/vehicle-evidence/fleet-release.js');
+    const { APPROVED_CORPUS_IMAGES } = await import('../gcsp/vehicle-evidence/registered-corpus-images.js');
+    const { createSyntheticRegistry } = await import('../gcsp/vehicle-evidence/synthetic-registry.js');
+    const { buildRetainedCorpusPlan } = await import('../gcsp/vehicle-evidence/stock-configuration-plan.js');
+    const policy = createPolicyService({ provider: new FilePolicyProvider() });
+    const policyVersion = (await policy.getActiveVersion({ runId: 'run-a', asOf: at })).value?.policyVersion ?? 'gcsp-policy-v1';
+    const read = { runId: 'run-a', asOf: at, policyVersion };
+    const registry = createSyntheticRegistry({ root: DEFAULT_VEHICLE_CORPUS_ROOT, policyService: policy, approvedImages: APPROVED_CORPUS_IMAGES,
+      jsonlLimitsForManifest: releaseLimits, sourceArtifactRoot: DEFAULT_ARTIFACT_ROOT, policyRead: { runId: 'local-vehicle-evidence', asOf: new Date().toISOString() } });
+    assert.equal((await registry.load()).status, 'ok');
+    const built = await buildRetainedCorpusPlan({ root: DEFAULT_VEHICLE_CORPUS_ROOT, policyService: policy, read });
+    return { policy, policyVersion, read, registry, built };
+  })();
+  return realBuilt;
+}
+async function realRun(seeds, { runIds = ['run-a'] } = {}) {
+  const { policy, policyVersion, registry, built } = await realStock();
+  assert.equal(built.status, 'ok', JSON.stringify(built));
+  const repository = createMemoryRepository({ store: createMemoryStore(), now: () => at });
+  const directory = await mkdtemp(join(tmpdir(), 'stock-generation-real-')); allocationRoots.push(directory);
+  const allocationInventoryPath = join(directory, 'inventory.json');
+  await writeFile(allocationInventoryPath, canonicalAllocationContent(emptyAllocationInventory()));
+  await repository.open();
+  for (const runId of runIds) {
+    await repository.transaction(context(runId), { commandId: 'real-run', inputDigest: inputDigest([runId]) }, async (tx) => tx.insert('runs', {
+      runId, environmentId: context(runId).environmentId, current: true, status: 'active', clockInstant: at,
+      corpusVersion: built.value.plan.corpusVersion, policyVersion, versions: {} }));
+  }
+  const generator = generatorModule.createStockGenerator({ repository, registry, policyService: policy, contextForRun: context,
+    configurationPlan: built.value.plan, stockAccount: 'fictional-scheme-stock', allocationInventoryPath });
+  const outcomes = [];
+  for (const [runId, seed] of seeds) outcomes.push(await generator.generateStock(runId, seed, policyVersion));
+  return { outcomes, repository, plan: built.value.plan, coverage: built.value.coverage, registry, policy, policyVersion };
+}
+const shape = (rows) => rows.map((row) => [row.configurationId, row.facts.stockGeneration.leadTimeWeeks, row.release.at, row.facts.stockGeneration.confirmedDeliveryWeek]);
+
+test('retained-corpus plan is deterministic, capped per colour and records the coverage gap honestly', async () => {
+  const { built } = await realStock();
+  assert.equal(built.status, 'ok', JSON.stringify(built));
+  const { plan, coverage } = built.value;
+  assert.equal(plan.kind, 'retained-corpus'); assert.match(plan.source, /^FUCQ-61 retained corpus server\/data\/gcsp\/vehicle-evidence\/fleet-source\.v1$/);
+  assert.deepEqual(Object.keys(plan.aggregateKeys).sort(), ['f70-sports-hatch', 'g42-coupe', 'g61-i5']);
+  const groups = new Map();
+  for (const row of plan.configurations) groups.set(`${row.modelLineId}|${row.colour}`, (groups.get(`${row.modelLineId}|${row.colour}`) || 0) + 1);
+  assert.ok([...groups.values()].every((count) => count >= 1 && count <= 8));
+  assert.equal(coverage.coveredCount, 3); assert.equal(coverage.totalCount, 31);
+  assert.deepEqual(coverage.schemeModelLines.filter((row) => row.covered).map((row) => row.title).sort(), ['F70 Sports Hatch', 'G42 Coupe', 'G61 i5']);
+  assert.deepEqual(coverage.excluded.unmappedGeneration, { G23: 1 });
+  const again = await (await import('../gcsp/vehicle-evidence/stock-configuration-plan.js')).buildRetainedCorpusPlan({
+    root: (await import('../gcsp/vehicle-evidence/local-vehicle-lookup.js')).DEFAULT_VEHICLE_CORPUS_ROOT, policyService: (await realStock()).policy, read: (await realStock()).read });
+  assert.deepEqual(again.value, built.value);
+});
+
+test('seeded stock from the real seed and corpus is reproducible, seed-sensitive and within the planned aggregates', async () => {
+  const a = await realRun([['run-a', 'real-seed']]); const b = await realRun([['run-a', 'real-seed']]);
+  const other = await realRun([['run-a', 'another-real-seed']]);
+  assert.equal(a.outcomes[0].status, 'ok', JSON.stringify(a.outcomes[0]));
+  assert.deepEqual(a.outcomes[0].value.report, b.outcomes[0].value.report);
+  const rows = (await a.repository.query(context('run-a'), 'stock')).value;
+  assert.deepEqual(shape(rows), shape((await b.repository.query(context('run-a'), 'stock')).value));
+  assert.notDeepEqual(shape(rows), shape((await other.repository.query(context('run-a'), 'stock')).value));
+  const planned = new Set(a.plan.configurations.map((row) => row.configurationId));
+  for (const row of rows) {
+    assert.ok(planned.has(row.configurationId));
+    assert.ok(['ok', 'complete', 'partial'].includes(a.registry.getConfiguration(row.configurationId).status));
+    assert.equal(row.facts.syntheticIdentity.identityKind, 'synthetic'); assert.equal(row.facts.stockGeneration.identityKind, 'synthetic');
+    for (const key of ['vin', 'vin17', 'vin7']) assert.equal(row[key], undefined);
+  }
+  const report = a.outcomes[0].value.report;
+  assert.equal(report.configurationSource.kind, 'retained-corpus'); assert.equal(report.models.length, 3);
+  assert.equal(report.totalCars, rows.length);
+  for (const model of report.models) {
+    const aggregate = (await a.policy.getAssumption(`stock.aggregate.${model.modelLineId}`, { runId: 'run-a', asOf: at, policyVersion: a.policyVersion })).value;
+    assert.equal(aggregate.status, 'assumed'); assert.equal(model.sourceKind, 'assumed-aggregate');
+    assert.equal(Object.hasOwn(model.observed, 'sampleDate'), false); assert.equal(Object.hasOwn(model.observed, 'requestCount'), false);
+    const own = rows.filter((row) => row.facts.stockGeneration.modelLineId === model.modelLineId);
+    assert.equal(own.length, model.cars);
+    for (const row of own) {
+      const lead = row.facts.stockGeneration.leadTimeWeeks;
+      assert.ok(lead >= model.observed.leadTimeWeeks.min && lead <= model.observed.leadTimeWeeks.max);
+    }
+    if (model.cars < 20) continue;
+    assert.ok(Math.abs(model.actualShare - model.observedShare) <= 0.05);
+    for (const [colour, share] of Object.entries(model.observed.colourShares)) {
+      const actual = own.filter((row) => row.facts.stockGeneration.colour === colour).length / own.length;
+      assert.ok(Math.abs(actual - share) <= 0.05, `${model.modelLineId} ${colour}`);
+      assert.ok(Math.abs(model.colourShares[colour] - share) <= 0.05);
+    }
+  }
+});
+
+test('a retained-corpus assumed aggregate may not claim a sample, and fixtures cannot pose as assumed aggregates', async () => {
+  const plan = { ...structuredClone(configurationPlan), kind: 'retained-corpus' };
+  const fixture = await setup({ plan });
+  assert.equal((await fixture.generator.generateStock('run-a', 'fixture', 'fixture-policy-v1')).code, 'aggregate-provenance-mismatch');
+  const claimed = await policyFixture();
+  for (const row of claimed.assumptions.filter((entry) => entry.key.startsWith('stock.aggregate.'))) row.value.sourceKind = 'assumed-aggregate';
+  const sampled = await setup({ seeds: [claimed], plan });
+  assert.equal((await sampled.generator.generateStock('run-a', 'fixture', 'fixture-policy-v1')).code, 'unsupported-stock-aggregate');
+  for (const row of claimed.assumptions.filter((entry) => entry.key.startsWith('stock.aggregate.'))) { delete row.value.sampleDate; delete row.value.requestCount; }
+  const assumed = await setup({ seeds: [claimed], plan });
+  assert.equal((await assumed.generator.generateStock('run-a', 'fixture', 'fixture-policy-v1')).status, 'ok');
+});
