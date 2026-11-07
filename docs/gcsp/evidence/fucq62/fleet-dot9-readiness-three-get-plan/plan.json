@@ -399,13 +399,18 @@
     },
     {
       "name": "supervise.py",
-      "sha256": "a6177a1f5cab883385382c4abc9e4345c44c9b3a5c984d93b9cd3fa8dffdb8ec",
+      "sha256": "b31aec90cd9fd0922a8361494e584de3c1b2a8a19dd0cf58d3c89a483164c073",
       "bytes": 8802
     },
     {
       "name": "group-proof.py",
       "sha256": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
       "bytes": 958
+    },
+    {
+      "name": "check-lifecycle.py",
+      "sha256": "92895e0686e075fb201e0bbfe5691000f990bc6834b9236faa4641e7327ab77e",
+      "bytes": 4312
     }
   ],
   "outputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot9-readiness-three-get-20261107",

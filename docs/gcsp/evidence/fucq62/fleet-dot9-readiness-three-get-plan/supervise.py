@@ -61,7 +61,7 @@ def finish():
 atexit.register(finish)
 try:
  with R.handled_termination():
-  host.acquire(scratch.token,64*R.MIB,512*R.MIB,cloud,root=scratch.root);reserved=True;scratch.__enter__();entered=True;destination.mkdir(parents=True,mode=0o700)
+  host.acquire(scratch.token,64*R.MIB,512*R.MIB,cloud,root=scratch.root);reserved=True;destination.mkdir(parents=True,mode=0o700);scratch.__enter__();entered=True
   if not existing:
    link.symlink_to(vendor,target_is_directory=True);st=link.lstat();linkIdentity=(st.st_dev,st.st_ino);R.atomic_json(meta/'dependency-ownership.json',{'path':str(link),'target':str(vendor),'device':st.st_dev,'inode':st.st_ino})
   result=R.run_process(command,ROOT,{'PATH':'/opt/homebrew/bin:/usr/bin:/bin','LANG':'en_GB.UTF-8','LC_ALL':'en_GB.UTF-8','TZ':'UTC','GCSP_OFFLINE':'1','REVIEWED_PLAN_SHA256':reviewed,'ROOT_RELEASE_PATH':str(grantPath),'PHASE_OUTPUT':str(destination)},meta/'command.log',scratch,policy,64*R.MIB,448*R.MIB,90,host);R.atomic_json(meta/'result.json',result)

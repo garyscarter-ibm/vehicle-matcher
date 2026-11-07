@@ -1,6 +1,6 @@
 {
-  "scope": "scoped preparation syntax and read-only identity checks only",
-  "planSha256": "05fdd50183ffa801bc05c2708bc7831ca6c55f4d95ed93b644858c00bd2bff67",
+  "scope": "scoped preparation syntax, read-only identity and actual nonnetwork allocation lifecycle regression",
+  "planSha256": "61beb7b879fd45d7bd61ee847dfb92684984007853b0ca6f9b117100ebb5dc01",
   "checks": [
     {
       "file": "probe.mjs",
@@ -13,6 +13,11 @@
     {
       "file": "supervise.py",
       "syntax": "in-memory passed"
+    },
+    {
+      "file": "check-lifecycle.py",
+      "syntax": "in-memory passed",
+      "regression": "actual legacy prefix reproduces FileExistsError; fixed supervisor prefix passes; both cleaned"
     }
   ],
   "rootCodePinsVerified": 48,
@@ -24,6 +29,8 @@
   "execution": false,
   "sourceCalls": 0,
   "publicGETs": 0,
-  "scratchCreated": false,
-  "acceptance": false
+  "scratchCreated": true,
+  "acceptance": false,
+  "lifecycleChecksSha256": "b6a4eae3e502c59afdc241697a47da5ab74d73631e1f03c772e8e64ae4d24021",
+  "liveExecution": false
 }

@@ -19,3 +19,7 @@ The supervisor requires `--reviewed-plan-sha256` and `--root-release` pointing t
 Resources: one worker, 320 MiB Node heap, 512/448 MiB host/group RAM, 64 MiB cloud scratch/disk reservation, 90 seconds, at most 4 MiB retained response evidence. No live compatibility exception. Syntax and read-only code/ordinary/first-row identity checks are the preparation validation; no network/proof execution or successful deployment is inferred.
 
 Agents: Mike Wazowski; requested/selected gpt-6.1-sol / medium; no fallback or descendants; effective runtime settings unverified.
+
+## Allocation lifecycle correction
+
+The supervisor creates its absent retained output directory before entering nested scratch. Ownership and the finalizer are registered first. `check-lifecycle.py` extracts and exercises the exact supervisor allocation prefix without probe, network or dependency-link operations: the legacy order reproduces `FileExistsError`; the corrected order passes. Both sequential cases proved scratch/output/reservation absence after cleanup, with zero source calls and public GETs. `lifecycle-checks.json` retains the scoped result; live execution remains unrun and requires the newly sealed plan grant.
