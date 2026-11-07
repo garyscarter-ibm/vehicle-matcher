@@ -42,3 +42,9 @@ G42_REMAINING2768_PHASE_GRANT=g42-remaining-typed-pool-20261107-once-continuatio
 ```
 
 The original scheme-line coverage joins, distribution evidence, 10,000 distinct admitted target, downstream enrichment/publication and original F61 acceptance remain open. The separate Medium production inventory defect remains open and unfixed.
+
+## Actual interruption, 7 November 2026
+
+The original phase consumed 720 GETs and 480 solver requests across sessions 1–60, then stopped at session 60's retained event check. Sessions 1–59 passed all five checks. Session 60's source completed (seven strict-bound admissions, one `source-not-constructible` rejection), but its original retained result is 4/5: the primary event file lacked attempt 3's started row. The original failed result and log remain preserved. An adjacent conflict-named event file contains that actual row, with the same timestamp as its matching headers event. Both original files are copied unchanged under `session060-event-files/`; `session060-supplementary-event-union.json` records their exact 24-row distinct union without synthesizing rows. No writer attribution or production fix is claimed.
+
+`interruption-review.json` records the original cleanup failure and fresh independent absence checks for all 120 owned scratch roots/reservations and all 240 joined stage process groups, with 31,471,232 bytes scratch removed. The original cleanup receipt is unchanged. The fresh parent audit (`parent-first60-audit.json`, SHA-256 `24a711eda891e6ac150b95b3fbd1aaf5761296d2a235091bf2a657e58a339ff0`) passes 494 independent checks and accepts the corroborated seven admissions, yielding 387 new / 2,358 cumulative admitted, 2,361 canonical and 3,164 spent. The original phase remains consumed. A new separately released unspent suffix preserves that actual prefix and original sessions 61–346.
