@@ -21,13 +21,6 @@ const MODELS = {
   i5: { configurationId: 'Q01QRzYxOlJFRlBBSU5ULFJFRlRSSU0=', key: 'G61 i5|i5 40', name: 'Synthetic i5 eDrive40 Touring',
     body: 'estate', fuel: 'ev', boot: 490, zeroTo62: 6.1, sizeClass: 3, insuranceGroup: 35, tags: ['electric'] },
 };
-// The first window is the presenter release cue; later windows release on later ticks.
-const WINDOWS = [
-  { windowId: 'demo-release-1', availableAt: '2026-11-05T09:30:00.000Z', cars: ['saloon', 'touring', 'touring', 'i5', 'saloon'] },
-  { windowId: 'demo-release-2', availableAt: '2026-11-05T12:00:00.000Z', cars: ['touring', 'saloon', 'i5'] },
-  { windowId: 'demo-release-3', availableAt: '2026-11-06T09:00:00.000Z', cars: ['touring', 'i5', 'saloon'] },
-];
-
 const digest = (...parts) => createHash('sha256').update(parts.join('|')).digest();
 function orderUuid(runId, index) {
   const bytes = Buffer.from(digest(VERSION, runId, 'order', index).subarray(0, 16));
@@ -36,12 +29,26 @@ function orderUuid(runId, index) {
   return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
 }
 
-function planFor(runId) {
+// Windows come from policy: supply.release.windows offsets from a clock.scenario.v1 named cue.
+async function windowsFor(policy, request) {
+  const read = { runId: request.runId, asOf: request.asOf, policyVersion: request.policyVersion };
+  const [spec, clock] = await Promise.all([policy.getAssumption('supply.release.windows', read), policy.getAssumption('clock.scenario.v1', read)]);
+  const config = spec.value?.value; const times = clock.value?.value?.namedTimes;
+  const at = typeof config?.cue === 'string' && times && Object.hasOwn(times, config.cue) ? Date.parse(times[config.cue]) : NaN;
+  const list = config?.windows;
+  if (spec.status !== 'ok' || clock.status !== 'ok' || !Number.isFinite(at) || !Array.isArray(list) || list.length === 0
+    || new Set(list.map((row) => row?.windowId)).size !== list.length
+    || list.some((row) => typeof row?.windowId !== 'string' || !row.windowId || !Number.isSafeInteger(row.offsetMinutes)
+      || !Array.isArray(row.cars) || row.cars.length === 0 || row.cars.some((kind) => !Object.hasOwn(MODELS, kind)))) return null;
+  return list.map((row) => ({ windowId: row.windowId, availableAt: new Date(at + row.offsetMinutes * 60000).toISOString(), cars: row.cars }));
+}
+
+function planFor(runId, windowPlan) {
   const fact = (value, unit = null) => ({ status: 'known', value, unit,
     provenance: { sourceRef: `fixture:${VERSION}`, observedAt: OBSERVED_AT, version: VERSION, assurance: 'synthetic-scenario' } });
   const base = 1000000 + digest(VERSION, runId, 'number').readUInt32BE(0) % 8000000;
   let index = 0;
-  const windows = WINDOWS.map((window) => ({ windowId: window.windowId, availableAt: window.availableAt, supplyId: null,
+  const windows = windowPlan.map((window) => ({ windowId: window.windowId, availableAt: window.availableAt, supplyId: null,
     stock: window.cars.map((kind) => {
       const model = MODELS[kind]; const uuid = orderUuid(runId, index);
       const car = { orderUuid: uuid, orderNumber: String(base + index), configurationId: model.configurationId,
@@ -57,13 +64,19 @@ function planFor(runId) {
   return createSyntheticStockProvider({ runId, version: VERSION, label: LABEL, windows });
 }
 
-/** Resolves a run's plan on first pull, so a presenter reset (a new run) needs no re-preparation. */
-export function createDemoStockProvider() {
+/** Resolves a run's plan on first pull from PolicyService, so a presenter reset (a new run) needs no re-preparation. */
+export function createDemoStockProvider({ policy } = {}) {
   const plans = new Map();
+  const unavailable = () => result('unavailable', { reason: 'Stock source is unavailable.', retryable: true });
   return Object.freeze({
     async pull(request) {
-      if (typeof request?.runId !== 'string' || !request.runId) return result('unavailable', { reason: 'Stock source is unavailable.', retryable: true });
-      if (!plans.has(request.runId)) plans.set(request.runId, planFor(request.runId));
+      if (typeof request?.runId !== 'string' || !request.runId || typeof policy?.getAssumption !== 'function') return unavailable();
+      if (!plans.has(request.runId)) {
+        let windowPlan;
+        try { windowPlan = await windowsFor(policy, request); } catch { windowPlan = null; }
+        if (!windowPlan) return unavailable();
+        plans.set(request.runId, planFor(request.runId, windowPlan));
+      }
       return plans.get(request.runId).pull(request);
     },
   });

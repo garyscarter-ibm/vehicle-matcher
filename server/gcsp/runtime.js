@@ -88,8 +88,10 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const adapter = createSyntheticManualStockAdapter();
     const manualClaims = createManualClaimsService({ repository, policy, clock, identity, manual: account, adapter });
     // The trusted host supplies the existing pull port. No source is invented here.
-    const stockRelease = stockProvider === undefined ? undefined
-      : createStockReleaseService({ repository, policy, clock, identity, provider: stockProvider });
+    // A factory gets the same policy the release service reads, so provider windows follow policy.
+    const pullProvider = typeof stockProvider === 'function' ? stockProvider({ policy }) : stockProvider;
+    const stockRelease = pullProvider === undefined ? undefined
+      : createStockReleaseService({ repository, policy, clock, identity, provider: pullProvider });
     const releaseHistory = createStockReleaseHistoryPort({ repository, identity, clock });
     const galleryRead = createManualGalleryStockRead({ manual: manualClaims, releaseHistory, identity, clock });
     // Route reads through this facade; lifecycle and mutations keep the original instance.

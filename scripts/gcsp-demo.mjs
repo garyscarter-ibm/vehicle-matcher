@@ -91,7 +91,7 @@ export async function startGcspDemo({ runtime = {}, port = 0, root = ROOT, acces
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   const mode = process.env.GCSP_REPOSITORY_MODE || 'postgres';
   const connectionString = process.env.GCSP_DATABASE_URL;
-  const app = await startGcspDemo({ port: Number(process.env.PORT) || 3001, runtime: { mode, stockProvider: createDemoStockProvider(),
+  const app = await startGcspDemo({ port: Number(process.env.PORT) || 3001, runtime: { mode, stockProvider: (deps) => createDemoStockProvider(deps),
     repositoryOptions: { connectionString }, environmentId: process.env.GCSP_ENVIRONMENT_ID || 'gcsp-local-functional',
     policyAsOf: new Date().toISOString(), commandId: 'local-bootstrap' } });
   if (app.status !== 'ok') { console.error(`GCSP local startup: ${app.status}${app.code ? ` (${app.code})` : ''}`); process.exitCode = 1; }

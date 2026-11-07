@@ -11190,6 +11190,24 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "supply.release.windows",
+      "value": {
+        "cue": "release",
+        "windows": [
+          { "windowId": "demo-release-1", "offsetMinutes": 0, "cars": ["saloon", "touring", "touring", "i5", "saloon"] },
+          { "windowId": "demo-release-2", "offsetMinutes": 150, "cars": ["touring", "saloon", "i5"] },
+          { "windowId": "demo-release-3", "offsetMinutes": 1410, "cars": ["touring", "i5", "saloon"] }
+        ]
+      },
+      "unit": "release windows as minutes after the named scenario cue, with car kinds",
+      "status": "assumed",
+      "basis": "Assumed demo release windows for the synthetic stock provider, timed from the scenario release cue so one cue change moves them all.",
+      "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "supply.leadTimeDays",
       "value": 56,
       "unit": "calendar days",
