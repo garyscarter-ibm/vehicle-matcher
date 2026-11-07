@@ -97,12 +97,14 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const contextForRun = (runId) => ({ runId, environmentId, principalId: 'gcsp-stock-source', roles: ['presenter'] });
     const pullProvider = typeof stockProvider === 'function' ? stockProvider({ policy, repository, contextForRun, environmentId }) : stockProvider;
     // Prepared scenario fixtures are branded by the exact policy instance used by the clock.
-    // Run-published policy is per run, so a reset re-adopts the offer-journey sets before stock is prepared.
-    const afterReset = adoptOfferJourney || typeof pullProvider?.prepareRun === 'function' ? async (runId) => {
-      if (adoptOfferJourney) await adoptOfferJourneyPolicy({ policy, identity, clock });
-      if (typeof pullProvider?.prepareRun === 'function') await pullProvider.prepareRun(runId);
-    } : undefined;
-    const scenarios = createScenarioService({ repository, policy: readPolicy, clock, identity, afterReset });
+    // After a reset: choose the new run's stock source (a failure defers it to the first pull), then
+    // re-adopt the reviewed offer-journey sets, because policy publications are per run.
+    const afterReset = async (runId) => {
+      if (typeof pullProvider?.prepareRun === 'function') { try { await pullProvider.prepareRun(runId); } catch { /* deferred */ } }
+      return adoptOfferJourney ? adoptOfferJourneyPolicy({ policy, identity, clock }) : ok({});
+    };
+    const scenarios = createScenarioService({ repository, policy: readPolicy, clock, identity, brief, afterReset,
+      prepareEmployee: (context) => seedManualDemoContext({ repository, identity, clock, context }) });
     const stockRelease = pullProvider === undefined ? undefined
       : createStockReleaseService({ repository, policy, clock, identity, provider: pullProvider });
     // Greg's order requests need both the production port and the F92 queue; neither is invented here.
