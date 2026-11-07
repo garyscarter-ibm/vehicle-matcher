@@ -1,0 +1,86 @@
+(node:81295) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✖ actual 100/106 decline survives a lost response and cookie/account reload into employee-only 107 (984.306417ms)
+✔ follow-up entry keeps the existing private instance, owner, selector and run authority (1060.707167ms)
+✔ active, accepted, expired, superseded and pending releases never query a follow-up selector (980.60875ms)
+✖ confirmed historical decline brief can differ from the immutable quoted brief (923.877791ms)
+✖ terminal outcome versions survive quote expiry and later car reuse without extending the hold (896.278334ms)
+✔ missing, duplicate or malformed decision sources preserve declined status with no handle (1041.854708ms)
+✔ only one complete native decline receipt with valid digest and pins supplies a handle (1046.164875ms)
+✔ valid digests cannot substitute a different employee, run, slot, renewal, car or brief (1124.85075ms)
+✔ pre-write revisions, inconsistent outcome pins and future source times cannot supply a handle (973.462458ms)
+✔ repository query failures and unavailable history return typed unavailable without writes (856.664208ms)
+✔ decision membership, receipt membership, history and clock races refuse a mixed follow-up read (997.883875ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 8
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 10898.938083
+
+✖ failing tests:
+
+test at server/test/gcsp-offer-access-followup.test.mjs:114:1
+✖ actual 100/106 decline survives a lost response and cookie/account reload into employee-only 107 (984.306417ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + null
+  - {
+  -   decisionId: 'offer-decision:07b44d8c1871004f8224e310f88d5ac74adf18cbebbb491cc0a48446c6dd0998'
+  - }
+  
+      at TestContext.<anonymous> (file:///private/tmp/test-stamp-shard-c48bb4a0b4dd464ba62cad1b692668c5/mirror/server/test/gcsp-offer-access-followup.test.mjs:117:59)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: [Object],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at server/test/gcsp-offer-access-followup.test.mjs:166:1
+✖ confirmed historical decline brief can differ from the immutable quoted brief (923.877791ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + null
+  - {
+  -   decisionId: 'offer-decision:07b44d8c1871004f8224e310f88d5ac74adf18cbebbb491cc0a48446c6dd0998'
+  - }
+  
+      at TestContext.<anonymous> (file:///private/tmp/test-stamp-shard-c48bb4a0b4dd464ba62cad1b692668c5/mirror/server/test/gcsp-offer-access-followup.test.mjs:169:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: [Object],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at server/test/gcsp-offer-access-followup.test.mjs:173:1
+✖ terminal outcome versions survive quote expiry and later car reuse without extending the hold (896.278334ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + null
+  - {
+  -   decisionId: 'offer-decision:07b44d8c1871004f8224e310f88d5ac74adf18cbebbb491cc0a48446c6dd0998'
+  - }
+  
+      at TestContext.<anonymous> (file:///private/tmp/test-stamp-shard-c48bb4a0b4dd464ba62cad1b692668c5/mirror/server/test/gcsp-offer-access-followup.test.mjs:182:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: null,
+    expected: [Object],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
