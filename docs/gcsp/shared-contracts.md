@@ -112,6 +112,18 @@ all context still comes from the authenticated server session. Protected claims 
 Other GCSP routes retain their existing strict rejection. A different employee sees only their own brief/history;
 forged service contexts are refused and sessions from a reset run return `stale-run`. Stale version conflicts map to HTTP 409.
 
+### Activity HTTP binding · FUCQ-95, 5 November 2026
+
+`createActivityRoutes(service)` in `server/gcsp/brief/activity-http.js` registers employee-only `GET /api/gcsp/activity`.
+`buildServer({ gcspIdentity, gcspActivity, gcspAllowedOrigins })` injects the existing activity service instance; the route calls
+`gcspActivity.readActivity(context)` with the shared boundary's trusted current employee/run context. It accepts no query selectors
+and retains strict rejection of browser identity/run claims. Shared access, exact-origin, session/role/current-run and `no-store`
+guards and outcome/status mapping remain unchanged. Missing/nonfunctional service composition returns unavailable/503, with no
+fallback provider. Pause/resume remain the existing BriefService POST endpoints; subsequent GETs read their persisted state.
+The reader projects confirmed brief permission, valid existing change receipts and whitelisted stored offers with safe offer references.
+`lastSuccessfulCheck` stays null and search/source evidence explicitly unavailable until the real producer contract is integrated.
+No activity command, check producer, offer URL, storage schema or screen is introduced by this HTTP binding.
+
 ### Brief editor context and unsaved preview · FUCQ-94
 
 `createBriefEditorService({ brief, account, provider, policy, clock, identity })` composes the existing BriefService,
@@ -809,6 +821,7 @@ Retail `publicMatch.listings[]` additively retains the evaluator's exact `decisi
 | 1.0.0 / 2026-11-05 / FUCQ-71 | Adds the isolated shared selection-ordering port, durable scoped synthetic provider and DemoClock reconciliation; canonical assumed `ordering.terms.v1` / `ordering.approvalStages.v1` and a trusted source transaction callback. Uses existing repository tables, preserves exact stock order identity and target approval names. F71 callback commit/rollback/pending and policy boundaries are scoped evidence; Gary's actual transactional producer, configured SQL/reopen, account/runtime and final whole-suite gates remain incomplete. |
 | 1.0.0 / 2026-11-05 / FUCQ-66 | Adds the manual claim binding, exact versioned claim/review/release/current reads, immutable quote/receipt conventions, pending 202 mapping and expiry handler on existing foundation ports. Existing keyed manual timings are pinned without another default source. No schema/migration or existing contract meaning changes. Deterministic backend fixtures/trials are recorded; required configured PostgreSQL proof remains blocked and no built/deployed or diagram-render claim is made. |
 | 1.0.0 / 2026-11-05 / FUCQ-103 | Adds trusted snapshot reads, the bounded monthly-points/preference-weight projection, no-write demand/fit preview and intentional dated publishing. A narrowly validated successor may adopt `employee.recommendation.v1.preferenceWeights` over an unchanged legacy calibration; historical rows/quotes and legacy employee-importance output remain intact. Activation and rendered integration evidence are tracked separately until verified. |
+| 1.0.0 / 2026-11-05 / FUCQ-95 | Adds injected employee-only activity GET through the existing shared HTTP boundary, with strict query/context rejection, current-run/no-store reads and explicit missing composition. Consumes the existing read-only brief/receipt/offer projection; no new producer, schema, policy key, command or screen. |
 | 1.0.0 / 2026-11-05 / FUCQ-83 | Source checkpoint: additive dated policy tables/migration 0002, idempotent seed, PostgreSQL and explicit memory providers, trusted Greg immutable publishing/replay and unchanged pinned reads. Existing assumptions/0003/consumers remain unchanged. Configured native policy/factory/repository proof passes with exact schema cleanup; combined offline full 1,235 total/1,230 passed/5 native skips has matching strict stamp 07aea3ec1a62. No screen or fresh diagram-render claim. |
 | 1.0.0 / 2026-11-05 / FUCQ-94 | Adds canonical editor context and server-only real unsaved preview through strict employee HTTP routes, explicit draft/base provenance, independent consent and truthful empty-equipment no. No approved recommendation downgrade, writes, holds or new screen. |
 | 1.0.0 / 2026-11-05 / FUCQ-57 | Adds mandatory configured-provider identity classification and successful-result binding checks through the existing retained registry/current-run inventory, preserving the FUCQ-55 envelope and FUCQ-43 real guard. Actual five-WMI generated-store HTTP/in-process/start/reset proofs retain honest US/LHD, unknown and representative-image-contract states. No live authorisation, mutable stock/policy/retail change or new screen. |
