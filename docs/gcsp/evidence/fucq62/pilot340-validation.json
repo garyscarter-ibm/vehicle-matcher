@@ -1,0 +1,135 @@
+{
+  "status": "scoped-passing",
+  "actualRelease": "6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6",
+  "identity": {
+    "docs/gcsp/evidence/fucq62/pilot340-release-plan.json": "0a405c1af7e797fa814a918f219f3e63e57b367797c28f9afbccf8e1698b2b14",
+    "docs/gcsp/evidence/fucq62/reproduce-pilot340-release.mjs": "4d98b345e0b55f1f59ceba27b7e748f1f8033189bb0fe62a9cfa9d070d556ddb",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/fleet-offline-guard.mjs": "881926639dfab681a917212696e50c6420a0a2b0dcd66dd1a126950283239e59",
+    "scripts/gcsp/verify-fleet.mjs": "af8f8e8985c8b5fdf259994c16603f48f03d9f5a2d5c333c0f5d6b340457ca4a",
+    "server/gcsp/policy/activation.js": "4e79235b761e8daf94f3cf2744c4bc585146181b410b64497669bd353ee7c4d6",
+    "server/gcsp/policy/adoption.js": "a2cb9a74946cd9eda413d896a0abc2f4299b3b75880a77ddd510667a5187c870",
+    "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+    "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+    "server/gcsp/policy/memory-provider.js": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+    "server/gcsp/policy/postgres-provider.js": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+    "server/gcsp/policy/publish.js": "c521e15966be7762a3348ad860403ef555dd8cbd48405e7d23d9a7c6d262a826",
+    "server/gcsp/policy/reviewed-definitions.js": "75518df649ba542ad32b876f8ee1b680e29b417c3b1f8dc90fcf1d4713a42cbb",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/vehicle-evidence/alternate-offline-adapter.js": "3c962e8576da4b65141b29fbb53a9f8e3efd45e43b883bc262df68855fc38a9d",
+    "server/gcsp/vehicle-evidence/application-vehicle-details.js": "64bb6073a90f8aca27766c314a08073ee9df320e2683122cd05b3c6fe49d808f",
+    "server/gcsp/vehicle-evidence/corpus-publisher.js": "8c9dfbe9760ed23c07ee5cab5019b0b1049516e5dbc6b85d5d979a1a14f1080d",
+    "server/gcsp/vehicle-evidence/identity-routing.js": "89d805c94c5f7a9dd026daae40e42167355822961d07597bf0cf69c45b649088",
+    "server/gcsp/vehicle-evidence/indexed-jsonl.js": "0f547126eaa18668e8cfcdb293361e75716bd607766b6b2680f2329d45aa7326",
+    "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "9d45f3eb4a22cace97dd6ea8f68707c083bc46568a8ef2d9f7a44353914f6f76",
+    "server/gcsp/vehicle-evidence/lookup-adapter.js": "3060d1707c254ff28ee45c7eedf16802aa57aed9b7d9a52a96206bf0cef395e3",
+    "server/gcsp/vehicle-evidence/provider-read.js": "e194fdeb9ff55faafaadd916b2e0ce34c9d8dce252dc37c3ce04aa8de77bb87b",
+    "server/gcsp/vehicle-evidence/registered-catalogue-sources.js": "8b9643608d1f8a68e04ba08381d6c50a86e3d533c2c3a8ee98aa1925c76a2c80",
+    "server/gcsp/vehicle-evidence/synthetic-registry.js": "5ef11abfba62251fbec28eca1f4717e73ddf575bc642e264e7c190f7bc65b86e",
+    "server/gcsp/vehicle-evidence/vehicle-details-contract.js": "c980408fdb5143fb6c546891a9090097b256cfea97675c258b9a1250326aade0",
+    "server/gcsp/vehicle-evidence/vehicle-evidence-handler.js": "9e118acfe39f550f06e6c319f536ca8768ca4b41820fd9ca9593e79b18f8c8f0",
+    "server/gcsp/vehicle-evidence/vehicle-lookup.js": "1184b7cc50565b180284e342183cca02e031a718a55f909b7980c34378a630e9",
+    "server/gcsp/vehicle-evidence/vin-allocation.js": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e",
+    "server/gcsp/vehicle-evidence/vin-generator.js": "56072df720ff4b32d26fcd099852f397f140ae44b4658532fa952d11c717260f",
+    "server/gcsp/vehicle-evidence/vin-profiles.js": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd",
+    "server/index.js": "378b6b6bf61167d172e558c9f321ecb00ca23251c5baae5f0662f6a5c7de85a7",
+    "server/scripts/publish-synthetic-vin-dataset.mjs": "7710dd9e726f6fcf4965f4fd35bad9e98c419149d5189414f2e61e0c6224c0c9",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56",
+    "server/vehicle-evidence/bmw-drivers-guide-provider.js": "b3098765b750132b23edc0beb108ef74b173a8c236bbccb44b262e2a54da8f99",
+    "server/vehicle-evidence/bmw-image-adapter.js": "56753ac7e47e4790159e7d50fb4deafe1658730e803912f064e6ed09326774ef",
+    "server/vehicle-evidence/bmw-live-imagery.js": "876e7e21b98d33ae3a124e696102ad56e4e5d2e771fee0d370764a0b684ffc3d",
+    "server/vehicle-evidence/bmw-vin-guide-adapter.js": "f910c56a1148831b01712fdce314ac152bb052c8302f5bfa32c95cd44131bba6",
+    "server/vehicle-evidence/bmw-vin-guide-synthetic.js": "2a5c08d01d03ee07afd0495aef595721b74046ce8ea1a625630e8c4cfeb91f5e"
+  },
+  "sourceInputPlan": "pilot340-release-plan.json",
+  "resources": {
+    "publication": {
+      "wall": 16.186814000000002,
+      "peak_rss": 333185024,
+      "peak_scratch": 18424096
+    },
+    "focusedRegression": {
+      "wall": 4.955287708,
+      "peak_rss": 228130816,
+      "peak_scratch": 1200352
+    },
+    "sampledScratchBytesRemoved": 19624448,
+    "retainedNewOrChangedPackageBytes": 13375851,
+    "compatibilityException": null,
+    "leftovers": []
+  },
+  "commands": [
+    [
+      "/opt/homebrew/bin/node",
+      "--max-old-space-size=256",
+      "docs/gcsp/evidence/fucq62/reproduce-pilot340-release.mjs",
+      "--receipt",
+      "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/pilot340-publication/receipt.json"
+    ],
+    [
+      "/opt/homebrew/bin/node",
+      "--max-old-space-size=256",
+      "--test",
+      "--test-concurrency=1",
+      "server/test/gcsp-registered-catalogue-sources.test.js",
+      "server/test/gcsp-fleet-publication.test.js"
+    ]
+  ],
+  "focusedTests": {
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0
+  },
+  "fullNpm": "not-run for this release",
+  "deployedRemoteParity": "parent-owned, not run by this child",
+  "largerThan64MiBProof": "not-run; caps unchanged64MiB",
+  "cleanup": [
+    {
+      "compatibility_exception": null,
+      "dependency_link_absent": true,
+      "groups": [
+        {
+          "pgid": 16073,
+          "state": "ESRCH"
+        }
+      ],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/pilot340-publication/ownership/a9d3d5c7b2ad4add9c9bc22c1566f9e2.json",
+      "manifest_state": "removed",
+      "removed_bytes": 18424096,
+      "reservation_absent": true,
+      "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/pilot340-publication/retained-output-ownership.json",
+      "scratch": "/tmp/vehicle-matcher-f58-63-20261106/f62-pilot340-publication",
+      "scratch_absent": true
+    },
+    {
+      "compatibility_exception": null,
+      "dependency_link_absent": true,
+      "groups": [
+        {
+          "pgid": 16386,
+          "state": "ESRCH"
+        }
+      ],
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-narrow/aggregate-pin/ownership/296567fa5f1840d481ad6e476bfe33cf.json",
+      "manifest_state": "removed",
+      "removed_bytes": 1200352,
+      "reservation_absent": true,
+      "scratch": "/private/tmp/test-stamp-shard-296567fa5f1840d481ad6e476bfe33cf",
+      "scratch_absent": true
+    }
+  ],
+  "externalEvidence": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/pilot340-publication",
+  "externalFocusedRegression": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-narrow/aggregate-pin",
+  "acceptance": "200 source count met; full scheme model coverage, original10000/VIN and full originalAC acceptance not established",
+  "agents": [
+    {
+      "name": "Charlie Dog",
+      "requested": "gpt-6.1-sol/high",
+      "selected": "gpt-6.1-sol/high",
+      "effective": "unverified",
+      "fallback": null,
+      "additionalAgents": 0
+    }
+  ]
+}

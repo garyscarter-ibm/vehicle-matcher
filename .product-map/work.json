@@ -752,7 +752,7 @@
       "original_status": "To Do",
       "assignee": "usget",
       "type": "Story",
-      "observed_at": "2026-11-07T01:16:11Z",
+      "observed_at": "2026-11-07T01:23:13Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62",
       "claim_evidence": "Claimed owning035 at34a793e3; root checkpoint authorisation, Jira OAuth unavailable. Full acceptance remains open.",
       "slices": [
@@ -795,22 +795,22 @@
           "id": "source-targets",
           "status": "in-progress",
           "title": "Actual 200 target and scheme model coverage",
-          "observed_at": "2026-11-07T00:54:48Z",
-          "evidence": "Actual standalone shortfall171/200; oneT5MJ model;10kpost-demo. No fixture padding or new source calls."
+          "observed_at": "2026-11-07T01:23:13Z",
+          "evidence": "docs/gcsp/evidence/fucq62/README.md; actual341total/340qualifying source/oldVIN1,200countmet. T5MJ/72HH/G61E GB/RL only: fullscheme coverage and10k/VIN obligations remain open. OriginalACs/status unchanged."
         },
         {
           "id": "scale",
           "status": "in-progress",
           "title": "Existing format scale boundary for 10000",
-          "observed_at": "2026-11-07T01:16:11Z",
-          "evidence": "docs/gcsp/evidence/fucq62/scale-plan-2026-11-07.md; bounded indexing/streaming code with55distinct scoped passing tests. Caps64MiB unchanged; >64MiB proof and actual aggregate/deployed acceptance still open."
+          "observed_at": "2026-11-07T01:23:13Z",
+          "evidence": "docs/gcsp/evidence/fucq62/pilot340-validation.json; actual341rows6344025B,coldload1148.99ms,scoped55+newpin9checks;64MiB capsunchanged. Greater-than64MiB/10k resourceproof unrun."
         },
         {
           "id": "integration",
           "status": "in-progress",
           "title": "Application and deployed integration acceptance",
-          "observed_at": "2026-11-07T00:54:48Z",
-          "evidence": "Core offline lookup passes; F63 bridgeb4d02dbb separate. Root live deployment/API/fullnpm pending."
+          "observed_at": "2026-11-07T01:23:13Z",
+          "evidence": "docs/gcsp/evidence/fucq62/pilot340-active-audit.json;342application+342localHTTP reads,errors0,zeroegress. Parent-owneddeployed/remote parity remains unrun bychild; noDone/fullACclaim."
         }
       ],
       "unsliced": false
