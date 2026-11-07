@@ -31,6 +31,8 @@ import { createSyntheticOrderingStatus } from './adapters/synthetic-ordering-sta
 import { createSyntheticDocumentStatus } from './adapters/synthetic-ordering-documents.js';
 import { createLifecycleApprovalService } from './lifecycle/approvals/index.js';
 import { createLifecycleDocumentService } from './lifecycle/documents/index.js';
+import { createLifecycleAppointmentService } from './lifecycle/appointments/index.js';
+import { createSyntheticAppointments } from './adapters/synthetic-appointments.js';
 import { createManualOrderService, createManualOrderConversion } from './manual-order/index.js';
 
 const unavailable = () => result('unavailable', { reason: 'The trusted demo runtime is unavailable.', retryable: true });
@@ -110,6 +112,9 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const lifecycle = createLifecycleApprovalService({ repository, policy, clock, identity, status: orderingAdapter.status });
     const documents = createLifecycleDocumentService({ repository, policy, clock, identity,
       lifecycleStages: lifecycle.stagePort(), provider: orderingAdapter.documentStatus });
+    orderingAdapter.appointments = createSyntheticAppointments({ repository });
+    const appointments = createLifecycleAppointmentService({ repository, policy, clock, identity,
+      lifecycleStages: lifecycle.stagePort(), provider: orderingAdapter.appointments });
     const buddy = createBuddyHoldService({ repository, policy, clock, identity, adapter, offerLandingUrl });
     // FUCQ-96 proposes claims on the clock's buddy-allocation stage; only the buddy port writes holds.
     const allocation = createAllocationService({ repository, policy, clock, identity, claim: buddy });
@@ -129,7 +134,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const dependencies = { gcspRepository: repository, gcspPolicy: policy, gcspGreg: greg, gcspGregPublish: gregPublish,
       gcspScenarios: scenarios, gcspManualClaims: manualClaims, gcspManualRead: manualRead, gcspManualReview: manualReview,
       gcspStockRelease: stockRelease, gcspCases: cases, gcspManualOrder: manualOrder,
-      gcspLifecycle: lifecycle, gcspDocuments: documents,
+      gcspLifecycle: lifecycle, gcspDocuments: documents, gcspAppointments: appointments,
       gcspBuddy: buddy, gcspAllocation: allocation, gcspOfferAccess: offerAccess,
       gcspOfferDecisions: offerDecisions, gcspResolveOfferAccess: resolveOfferAccess, gcspOfferFollowup: offerFollowup,
       gcspNotify: notify, gcspOutbox: { repository },
@@ -158,6 +163,6 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       const adopted = await adoptOfferJourneyPolicy({ policy, identity, clock });
       if (adopted.status !== 'ok') { await close(); return adopted; }
     }
-    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, manualRead, manualReview, manualOrder, stockRelease, releaseHistory, cases, orderingAdapter, lifecycle, documents, buddy, allocation, offerAccess, offerDecisions, offerFollowup, resolveOfferAccess, notify, dependencies, createLocalSession, close });
+    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, manualRead, manualReview, manualOrder, stockRelease, releaseHistory, cases, orderingAdapter, lifecycle, documents, appointments, buddy, allocation, offerAccess, offerDecisions, offerFollowup, resolveOfferAccess, notify, dependencies, createLocalSession, close });
   } catch { await close(); return unavailable(); }
 }

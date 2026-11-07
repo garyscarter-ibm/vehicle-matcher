@@ -1,0 +1,47 @@
+{
+  "purpose": "Response shapes for the later appointment screen (FUCQ-120). Backend-only story: no screen, so screenshots are inapplicable. Asserted by server/test/gcsp-lifecycle-appointment.test.js.",
+  "routes": {
+    "GET /api/gcsp/appointments?orderUuid=": "ok readModel; employee (own order), greg or presenter; forbidden for another employee; unsupported query keys are invalid",
+    "POST /api/gcsp/appointments/request": "{ orderUuid, slotId } -> ok readModel (state requested, booked false); employee only; repeat returns the same appointment; another slot is a conflict; before sent to ordering it is a conflict",
+    "POST /api/gcsp/appointments/accept": "{ orderUuid, proposalId } -> ok readModel (state scheduled, booked true); employee only; conflict when nothing is proposed"
+  },
+  "readModelKeys": [
+    "contractVersion", "runId", "orderUuid", "employeeId", "state", "booked", "slot", "requestedSlot", "proposedSlot", "proposalId",
+    "history", "owner", "nextStep", "pending", "blocked", "offeredSlots", "eligibility", "policyVersion", "assumptions", "provider", "fictional"
+  ],
+  "historyKeys": ["state", "at", "providerReference"],
+  "slotKeys": ["slotId", "start", "end"],
+  "pendingKeys": ["step", "reason"],
+  "enums": {
+    "state": ["not-requested", "requested", "change-proposed", "scheduled"],
+    "owner": ["employee", "retailer", "scheme-team"]
+  },
+  "states": {
+    "not-requested": {
+      "state": "not-requested", "booked": false, "owner": "employee", "nextStep": "Choose a handover slot.",
+      "pendingStep": null, "blockedCode": null, "history": []
+    },
+    "requested": {
+      "state": "requested", "booked": false, "owner": "retailer", "nextStep": "Waiting for the retailer to confirm your slot.",
+      "pendingStep": null, "blockedCode": null, "history": ["requested"]
+    },
+    "change-proposed": {
+      "state": "change-proposed", "booked": false, "owner": "employee", "nextStep": "Accept the new time to confirm your handover.",
+      "pendingStep": null, "blockedCode": null, "history": ["requested", "change-proposed"]
+    },
+    "pending": {
+      "state": "requested", "booked": false, "owner": "scheme-team", "nextStep": "Waiting for the scheme team to confirm the last update.",
+      "pendingStep": "confirm", "blockedCode": null, "history": ["requested"]
+    },
+    "scheduled": {
+      "state": "scheduled", "booked": true, "owner": "retailer", "nextStep": "The retailer prepares your car for the handover.",
+      "pendingStep": null, "blockedCode": null, "history": ["requested", "scheduled"]
+    }
+  },
+  "unsupported": {
+    "status": "unsupported",
+    "code": "live-appointments-unsupported",
+    "keys": ["code", "contractVersion", "reason", "status"],
+    "keysWhenProviderRefusesAfterOffering": ["appointment", "code", "contractVersion", "reason", "status"]
+  }
+}

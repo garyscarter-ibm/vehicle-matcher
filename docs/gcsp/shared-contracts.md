@@ -824,6 +824,7 @@ Retail `publicMatch.listings[]` additively retains the evaluator's exact `decisi
 
 | Version / date / owner | Change and keyed assumptions |
 |---|---|
+| 1.0.0 / 2026-11-07 / FUCQ-114 | Adds LifecycleAppointmentService, `lifecycle-appointments` handler, appointment routes, `ordering.appointments.v1` capability and live stub, versioned receipt projection (no table) and per-step pending operations; assumed `lifecycle.appointments.{slots,confirmation,scenario,ownership}.v1`. Consumes `lifecycle.stages.v1` rev 2. No existing meaning changes. |
 | 1.0.0 / 2026-11-06 / FUCQ-116 | Adds LifecycleDocumentService, `lifecycle-documents` handler, document routes, `ordering.documentStatus.v1` capability and live stub, versioned receipt projection (no table) and keyed exception receipts with order-specific renewal identity; assumed `lifecycle.documents.{v1,scenario.v1,exceptions.v1}`. Consumes `lifecycle.stages.v1` rev 2. No existing meaning changes. |
 | 1.0.0 / 2026-11-06 / FUCQ-111 | Adds LifecycleApprovalService, `lifecycle.stages.v1` rev 2 read/listOrders and internal stagePort, synthetic ordering status capability and live stub, versioned receipt transitions (no table), `lifecycle-approvals` handler and assumed `lifecycle.approval.{ticks,declineScenario,ownership}.v1`. |
 | 1.0.0 / 2026-11-05 / FUCQ-71 | Adds the isolated shared selection-ordering port, durable scoped synthetic provider and DemoClock reconciliation; canonical assumed `ordering.terms.v1` / `ordering.approvalStages.v1` and a trusted source transaction callback. Uses existing repository tables, preserves exact stock order identity and target approval names. F71 callback commit/rollback/pending and policy boundaries are scoped evidence; Gary's actual transactional producer, configured SQL/reopen, account/runtime and final whole-suite gates remain incomplete. |
@@ -959,3 +960,52 @@ readiness. A producer `forbidden` read and another employee's order at any stage
 shapes for the later order progress screen are `server/test/fixtures/gcsp-lifecycle-documents-outcomes.json`; this
 backend-only story adds no screen. Remaining: runtime and route composition (FUCQ-100's lane), FUCQ-114's readiness
 consumer, actual producer integration evidence, native PostgreSQL and the full suite.
+
+## Lifecycle appointments · FUCQ-114
+
+`LifecycleAppointmentService` (`server/gcsp/lifecycle/appointments/`) lets Paula request and see a replacement handover slot.
+The `ordering.appointments.v1` capability beside FUCQ-71's ordering adapter has `offerSlots`, `requestSlot`, `confirm`,
+`acceptProposal` and `reconcile`. The synthetic adapter is deterministic and receipts each write once
+(`synthetic-appointments:v1`). The live-shaped stub offers no slots and reports every write `unsupported`
+(`live-appointments-unsupported`, with a reviewable reason), leaving the state where it was.
+
+States: `requested` -> (`change-proposed` -> Paula accepts) -> `scheduled`. `booked` is true only when `scheduled`. Each
+history row is `{state, at, providerReference}` on demo-clock time. Completion and no-show belong to FUCQ-167.
+
+Request rule: FUCQ-111's stage port must show `sent to ordering` approved. Paula picks one of the slots the adapter offers
+(from the keyed lead days, days offered, slot length and daily start times). Repeating the same request returns the same
+appointment; a different slot is a `conflict`. A tick handler `lifecycle-appointments` (`pending-reconciliation`) confirms,
+or proposes the next daily slot when the scenario key is on, after the keyed delay. A proposal becomes `scheduled` only when
+Paula accepts it; no tick accepts for her. The startup tick only reconciles. An uncertain or timed-out write stays pending
+under the same operation ID and is reconciled before any retry; only `not-found` allows the same write once more.
+
+Storage adds no migration: one versioned projection per order in `event_receipts` (consumer
+`lifecycle-appointments:state:v1`, event = orderUuid), one `pending_operations` row per step (request, confirm, accept)
+and the adapter receipts above.
+
+Routes (browser identity and run claims discarded; context is server-owned): `GET /api/gcsp/appointments?orderUuid=`,
+`POST /api/gcsp/appointments/request` `{orderUuid, slotId}` and `POST /api/gcsp/appointments/accept`
+`{orderUuid, proposalId}`. Employees reach only their own order; Greg and the presenter may read. Another employee is
+`forbidden`; unsupported query keys are `invalid`.
+
+| Key | Assumed default |
+|---|---|
+| `lifecycle.appointments.slots.v1` | opens at `sent to ordering`; 2 clear days, 3 days offered, 60-minute slots at 09:00 and 13:00 UTC |
+| `lifecycle.appointments.confirmation.v1` | 1800 seconds of demo time before confirmation; 2000 ms provider call timeout |
+| `lifecycle.appointments.scenario.v1` | no proposed change; proposal reason text |
+| `lifecycle.appointments.ownership.v1` | owner (`employee`, `retailer`, `scheme-team`) and next-step copy per state, plus ineligible, pending and blocked |
+
+Read model: `contractVersion`, `runId`, `orderUuid`, `employeeId`, `state`, `booked`, `slot`, `requestedSlot`,
+`proposedSlot`, `proposalId`, `history`, `owner`, `nextStep`, `pending`, `blocked`, `offeredSlots`, `eligibility`,
+`policyVersion`, `assumptions`, `provider`, `fictional`. Shapes for FUCQ-120 are in
+`server/test/fixtures/gcsp-lifecycle-appointment-outcomes.json`:
+
+| Case | `state` | `booked` | `owner` | Next step |
+|---|---|---|---|---|
+| requested | `requested` | false | retailer | Waiting for the retailer to confirm your slot. |
+| proposed change | `change-proposed` | false | employee | Accept the new time to confirm your handover. |
+| pending (uncertain write) | unchanged, `pending.step` set | false | scheme-team | Waiting for the scheme team to confirm the last update. |
+| scheduled | `scheduled` | true | retailer | The retailer prepares your car for the handover. |
+
+A refused write returns `unsupported` with `code`, `reason` and, once a slot was offered, the unchanged `appointment` (owner
+scheme-team). This backend-only story adds no screen.
