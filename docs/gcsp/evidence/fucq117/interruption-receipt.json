@@ -1,0 +1,123 @@
+{
+  "story": "FUCQ-117",
+  "observed_at": "2026-11-06T00:51:22.475977+00:00",
+  "status": "failed scoped prototype; credit interruption",
+  "latest_selection": "node --test server/test/gcsp-order-plan.test.js",
+  "latest_total": 30,
+  "latest_pass": 28,
+  "latest_fail": 2,
+  "latest_failure_log": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/logs/20261106-004105-r3k0cyiu/chunk-0001.log",
+  "failing_tests": [
+    "trusted expressed forecast reads actual F99 saved briefs without inverting public suppression",
+    "default forecast fails closed without future evaluation, a known renewal or matching versions"
+  ],
+  "failure_boundary": "new forecast producer reports planning-forecast-entitlement-mismatch; earlier pure27/27 scope does not establish current30/30",
+  "unchanged_boundary_evidence": {
+    "total": 76,
+    "pass": 74,
+    "native_skips": 2,
+    "fail": 0
+  },
+  "scratch": [
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/1c878008fd3a4784aa39f1382def9ad0.json",
+      "root": "/private/tmp/test-stamp-shard-1c878008fd3a4784aa39f1382def9ad0",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true,
+      "sampled_peak": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/5de1dbadeefc4a428217f468050eac1b.json",
+      "root": "/private/tmp/test-stamp-shard-5de1dbadeefc4a428217f468050eac1b",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true,
+      "sampled_peak": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/0f13ee6e393e4da5962e58c5c5349b18.json",
+      "root": "/private/tmp/test-stamp-shard-0f13ee6e393e4da5962e58c5c5349b18",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true,
+      "sampled_peak": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/e41251f6318b483eb7493ce3997ee673.json",
+      "root": "/private/tmp/test-stamp-shard-e41251f6318b483eb7493ce3997ee673",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true,
+      "sampled_peak": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/e870e12e4a9f42ca844ef236b65f89b4.json",
+      "root": "/private/tmp/test-stamp-shard-e870e12e4a9f42ca844ef236b65f89b4",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true,
+      "sampled_peak": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/7479fd0f4899458cb99a2e5ad4b8a288.json",
+      "root": "/private/tmp/test-stamp-shard-7479fd0f4899458cb99a2e5ad4b8a288",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true,
+      "sampled_peak": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/e70bad3cbb6b40a489715b4e0a05a517.json",
+      "root": "/private/tmp/test-stamp-shard-e70bad3cbb6b40a489715b4e0a05a517",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true,
+      "sampled_peak": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/28b8da3ef56548938230c318f2d1157e.json",
+      "root": "/private/tmp/test-stamp-shard-28b8da3ef56548938230c318f2d1157e",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true,
+      "sampled_peak": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/a3f6ff3c62df4e458ce789613c4e05dd.json",
+      "root": "/private/tmp/test-stamp-shard-a3f6ff3c62df4e458ce789613c4e05dd",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true,
+      "sampled_peak": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/eb8e0a34781f40eabd45972813b0e0ed.json",
+      "root": "/private/tmp/test-stamp-shard-eb8e0a34781f40eabd45972813b0e0ed",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true,
+      "sampled_peak": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/2a65d2375156432598329a83a017d6db.json",
+      "root": "/private/tmp/test-stamp-shard-2a65d2375156432598329a83a017d6db",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true,
+      "sampled_peak": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/13421b98aeac46a3bafc54e8495443c1.json",
+      "root": "/private/tmp/test-stamp-shard-13421b98aeac46a3bafc54e8495443c1",
+      "root_absent": true,
+      "live_groups": [],
+      "reservation_absent": true,
+      "sampled_peak": 0
+    }
+  ],
+  "dependency_overlay_absent": true,
+  "removed_success_logs_bytes": 18201,
+  "leftovers": [],
+  "interruption": "IBM Global explicit HTTP422 Advantage Credits exhausted before final checkpoint; parent preserved code without new tests/model fallback"
+}
