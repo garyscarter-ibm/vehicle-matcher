@@ -1,6 +1,6 @@
 {
   "schemaVersion": "f58-63-board-sync-pending.v1",
-  "recordedAt": "2026-11-07T12:14:00Z",
+  "recordedAt": "2026-11-07T12:28:39.065740+00:00",
   "source": "Independent delivery reviews and exact retained evidence; tracker mutation unperformed",
   "observedTrackerStatus": "In Progress",
   "trackerStatusObservation": "Last successful observation; current read failed authentication",
@@ -12,8 +12,8 @@
     "FUCQ-61"
   ],
   "stillDelivering": {
-    "FUCQ-62": "Actual .10/.12 public release mismatch; compatibility fix deployed target in progress",
-    "FUCQ-63": "Diagnostic returned three direct/HTTP PostgreSQL order passes and three configured-consumer source-unavailable failures; nativeProof false; code-only diagnosis active"
+    "FUCQ-62": "Replacement Render deployment7620961777 at c87b6f07 succeeded2026-11-07T12:28:04Z; separate exact .12 release and DTO readback pending.",
+    "FUCQ-63": "Three direct/HTTP PostgreSQL order comparisons pass; consumer proof setup omitted retained inventory snapshot. Separate setup correction being prepared with unchanged criteria; nativeProof remains false."
   },
   "transitionsSucceeded": [],
   "acceptedOrDone": [],

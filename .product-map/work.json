@@ -2644,7 +2644,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T12:05:12Z",
+      "observed_at": "2026-11-07T12:28:02Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62",
       "claim_evidence": "Claimed owning035 at34a793e3; root checkpoint authorisation, Jira OAuth unavailable. Full acceptance remains open.",
       "slices": [
@@ -2701,8 +2701,8 @@
           "id": "integration",
           "status": "in-progress",
           "title": "Application and deployed integration acceptance",
-          "observed_at": "2026-11-07T12:05:12Z",
-          "evidence": "Render deployment succeeded but Linux run 42370480081 returned ready .10 instead of .12. Two GETs, no DTO; concrete live blocker. Scoped .12 cold/offline/assets proof 42361586991 passed. Build-command selector compatibility fix in progress; remote settings cause unproven."
+          "observed_at": "2026-11-07T12:28:02Z",
+          "evidence": "Linux readback 42370480081 returned ready .10; .12 is not verified live. Reviewed Render-selector fix c87b6f07 passed 9 focused regressions and deployment 7620961777 is pending. Prepared separate three-GET diagnostic2 remains unexecuted. Public .12 Linux restore/offline/assets/boundary evidence passed; deployment success will require exact release/DTO readback."
         },
         {
           "id": "large-artifact-restore",
@@ -2822,15 +2822,15 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T12:05:12Z",
+      "observed_at": "2026-11-07T12:28:03Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-63",
       "slices": [
         {
           "id": "active-reconciliation",
           "status": "in-progress",
           "title": "Reconcile loaded immutable corpus and all in-process records",
-          "observed_at": "2026-11-07T09:52:21Z",
-          "evidence": "All 10,002 actual .12 direct/retained/local HTTP references matched with zero lookup errors. Existing 2,707 consumer failures remain deferred. Exact current-run PostgreSQL order-reference producer proof is unrun; it is not a configuration BUILD dependency."
+          "observed_at": "2026-11-07T12:28:02Z",
+          "evidence": "Actual .12 proof matched 10,002 direct/retained/HTTP references. Native diagnostic42371231686 checked3 real PostgreSQL orders after reopen: direct/HTTP0errors, consumers3source-unavailable, current run unchanged, source/egress0. Proof setup omitted separately published inventory snapshot; ordinary scenario seed includes it. Correction prepared separately. 2707 prior consumer failures deferred/unfixed."
         },
         {
           "id": "http-parity",
@@ -2857,8 +2857,8 @@
           "id": "integration",
           "status": "in-progress",
           "title": "Integrate actual published corpus and authored regression evidence",
-          "observed_at": "2026-11-07T12:05:12Z",
-          "evidence": "All 10,002 direct/retained/HTTP references matched; .12 Linux offline/boundary passed. PostgreSQL run 42370440771 passed restore, migrations, allocation/publication and reopen, then final proof assertion failed; returned comparisons were discarded by harness. Diagnostic correction pending. Schema/service/scratch absent; 2707 consumers deferred and unfixed."
+          "observed_at": "2026-11-07T12:28:03Z",
+          "evidence": "Native diagnostic42371231686 at b0e0ee6e failed unchanged proof-status assertion; nativeProof:false. Code-only diagnosis identifies omitted retained snapshot in isolated setup, distinct from ordinary scenario reset and2707consumer issue. Immutable result merged49f74f5f; schema/service/scratch absent,925220226Bremoved. Corrected setup will use existing repository/CAS, same3orders/prover/limits; no product repair or weakened checks."
         }
       ],
       "unsliced": false,
