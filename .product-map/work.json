@@ -600,7 +600,66 @@
       "assignee": "Gary Carter",
       "type": "Story",
       "observed_at": "2026-11-07T14:07:07Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-69"
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-69",
+      "slices": [
+        {
+          "id": "projection",
+          "status": "complete",
+          "title": "Complete exact-stock projection and read-only controller",
+          "observed_at": "2026-11-05T23:38:00Z",
+          "evidence": "Lead reviewed exact projection/controller; independent parent gallery/render/shared-kit/ratchet/render131/0/0 on frozen current source, metadata and verified resource receipt in docs/gcsp/evidence/fucq69/README.md. Released-run integration is separately planned and remains open."
+        },
+        {
+          "id": "rendered-browser",
+          "status": "in-progress",
+          "title": "Rendered exact-car browser, claim reconciliation and visual acceptance",
+          "observed_at": "2026-11-06T02:39:19Z",
+          "evidence": "bc741b1 cleanup/ledger/source review retained; one final-output edge authored: finite pre-encoded1MiB receipt/16KiB checkpoint,64MiB RAM+4MiB atomic-write headroom, incomplete on bounds/unknown/write error, independent parent postwrite audit. Helper/plan/catalogue only; product0fa03f5/all inputs/tools/admission/limits/4cases unchanged. No syntax/import/probe/test/allocation; root single-path review/grant pending."
+        },
+        {
+          "id": "released-integration",
+          "status": "in-progress",
+          "title": "Actual release-history and released-run browse-to-claim integration",
+          "observed_at": "2026-11-06T10:12:03Z",
+          "evidence": "Root accepted exact16f3448 one-case actual TEST release -> authenticated HTTP -> delivered gallery -> one claim/current read -> F70 review/save/host continuation: TAP1/1, supervisor/Node0, independent post-exit PASS. Original TAP/pins/resources: docs/gcsp/evidence/fucq69/host-journey/host-journey-32bcd3746127/README.md. Later F100 Resume adoption, second reload, normal/default/reset/principal, visual/native/live/full/story acceptance remain open;0959grants consumed, no rerun."
+        },
+        {
+          "id": "final-validation",
+          "status": "not-started",
+          "title": "Final acceptance and authored serial full-suite verification"
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-04-068",
+      "workers": [
+        {
+          "name": "FUCQ-69 released car browser",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-06T00:15:28.582925Z",
+          "expires_at": "2026-11-06T00:30:28.582925Z",
+          "source": "Current chat01a1adde-8f98-7302-9b8a-e3d5d7f34dc5; Sol/high verified; no active child/browser workers",
+          "status": "publishing incomplete smoke evidence; browser lane released"
+        },
+        {
+          "name": "Sniffles",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-05T23:38:00.512077Z",
+          "expires_at": "2026-11-05T23:38:00.512077Z",
+          "source": "Child/root/manual_projection completed; gpt-6.1-sol/medium verified; parent source/resource audit passed",
+          "status": "completed"
+        },
+        {
+          "name": "Taz",
+          "harness": "codex",
+          "role": "runner",
+          "observed_at": "2026-11-05T23:38:00.512077Z",
+          "expires_at": "2026-11-05T23:38:00.512077Z",
+          "source": "Child/root/taz ended after transient mutex probe; gpt-6-luna/high verified; no tests launched, parent continued same plan",
+          "status": "completed"
+        }
+      ]
     },
     {
       "id": "FUCQ-70",
