@@ -1018,3 +1018,64 @@ Read model: `contractVersion`, `runId`, `orderUuid`, `employeeId`, `state`, `boo
 
 A refused write returns `unsupported` with `code`, `reason` and, once a slot was offered, the unchanged `appointment` (owner
 scheme-team). This backend-only story adds no screen.
+
+## Lifecycle return plan · FUCQ-118
+
+`LifecycleReturnPlanService` (`server/gcsp/lifecycle/return-plan/`) plans the return of Paula's current car in its own right,
+apart from the new car's handover. It reads FUCQ-71's `selection-order` record read-only (old contract, vehicle slot, collection
+location and the return mileage captured at selection) and books the return through FUCQ-114's service and
+`ordering.appointments.v1` port, run with `purpose: 'return'`. Nothing here writes `employees`, `entitlement_slots` or any
+contract. Only a confirmed return changes her current car, and that belongs to FUCQ-168 (returned and missed outcomes too).
+
+Applicability: a replacement order has a plan; a new order has none (`applicable: false`, `state: null`, no appointment, no
+offers). A replacement selection without its old-car record is an explicit `unavailable` (`return-plan-source-invalid`).
+
+States: `not-planned` -> `return-requested` (appointment `requested` or `change-proposed`) -> `return-scheduled`. `scheduled` is
+true only for `return-scheduled`; a requested or proposed return is never shown as scheduled. Each history row is
+`{state, appointmentState, at, providerReference}` on demo-clock time. The return appointment has its own projection, operation
+IDs (`return-appointment:`) and provider references, so it can never be mistaken for the handover.
+
+Request rule: Paula chooses `same-visit` (the return books the handover's own scheduled slot) or `separate` (a slot the adapter
+offers from the keyed days, filtered to start after the handover ends and within the keyed days after it). Both need the
+handover `scheduled`. A new order, or a handover not yet in a required state, is a `conflict`; an unknown choice or an unoffered
+slot is `invalid`. Repeating the same request returns the same plan; a different choice or slot is a `conflict`. The return
+location is the new car's collection location from the selection (`handover-retailer`). The tick handler
+`lifecycle-return-appointments` (`pending-reconciliation`) confirms, or proposes, after the keyed delay as the handover does;
+a proposal becomes `return-scheduled` only when Paula accepts it.
+
+Appointment service options added in FUCQ-118 (handover defaults unchanged): `purpose` ('handover' | 'return', namespacing the
+state consumer, handler, operation and command IDs), `ownershipKey`, `slotSource` (replaces `offerSlots`) and `requestFields`
+(extra request keys kept on the projection as `plan` and compared on repeats).
+
+Storage adds no migration: one versioned projection per order in `event_receipts` (consumer
+`lifecycle-return-appointments:state:v1`, event = orderUuid), one `pending_operations` row per step and the adapter receipts of
+FUCQ-114.
+
+Routes (browser identity and run claims discarded; context is server-owned): `GET /api/gcsp/return-plan?orderUuid=`,
+`POST /api/gcsp/return-plan/request` `{orderUuid, choice, slotId}` and `POST /api/gcsp/return-plan/accept`
+`{orderUuid, proposalId}`. Employees reach only their own order; Greg and the presenter may read. Another employee is
+`forbidden`; unsupported query keys are `invalid`.
+
+| Key | Assumed default (synthetic demo assumption) |
+|---|---|
+| `lifecycle.return.options.v1` | choices `same-visit` and `separate` with labels; both need the handover `scheduled`; separate slots from 2 clear days, 10 days offered, 60-minute slots at 09:00 and 13:00 UTC, starting after the handover and within 7 days of it; location `handover-retailer` |
+| `lifecycle.return.ownership.v1` | owner and next-step copy per return state, plus ineligible, pending and blocked |
+| `lifecycle.appointments.slots.v1`, `.confirmation.v1`, `.scenario.v1` | reused unchanged (HLD review Q19) |
+
+Read model: `contractVersion`, `runId`, `orderUuid`, `employeeId`, `applicable`, `state`, `scheduled`, `oldContractId`,
+`vehicleSlotId`, `currentCar` (read-only account identity), `returnMileage` (`{value, unit: 'mi', recordedAt, source: 'selection'}`),
+`choice`, `location`, `appointment` (the return appointment read model), `handover` (state, booked, slot, provider reference),
+`slot`, `requestedSlot`, `proposedSlot`, `proposalId`, `providerReference`, `history`, `owner`, `nextStep`, `pending`, `blocked`,
+`choices` (each `{id, label, available, reason, selected}`), `offeredSlots` per choice, `policyVersion`, `assumptions`,
+`fictional`. Shapes for FUCQ-120 are in `server/test/fixtures/gcsp-lifecycle-return-plan-outcomes.json`:
+
+| Case | `state` | `scheduled` | `owner` | Next step |
+|---|---|---|---|---|
+| handover not yet scheduled | `not-planned` | false | employee | Confirm your new car's handover first, then plan the return. |
+| return requested | `return-requested` | false | retailer | Waiting for the retailer to confirm your return slot. |
+| proposed change | `return-requested` (`appointment.state` `change-proposed`) | false | employee | Accept the new time to confirm your return. |
+| return scheduled | `return-scheduled` | true | retailer | Keep driving your current car until the return. |
+| new order | `null` (`applicable: false`) | false | none | none |
+
+A refused write returns `unsupported` with `code`, `reason` and, once a slot was offered, the unchanged `plan`. This
+backend-only story adds no screen.
