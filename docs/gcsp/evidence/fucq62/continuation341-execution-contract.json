@@ -60,7 +60,7 @@
     "server/gcsp/vehicle-evidence/application-vehicle-details.js": "64bb6073a90f8aca27766c314a08073ee9df320e2683122cd05b3c6fe49d808f",
     "server/gcsp/vehicle-evidence/corpus-publisher.js": "8c9dfbe9760ed23c07ee5cab5019b0b1049516e5dbc6b85d5d979a1a14f1080d",
     "server/gcsp/vehicle-evidence/identity-routing.js": "89d805c94c5f7a9dd026daae40e42167355822961d07597bf0cf69c45b649088",
-    "server/gcsp/vehicle-evidence/indexed-jsonl.js": "0f547126eaa18668e8cfcdb293361e75716bd607766b6b2680f2329d45aa7326",
+    "server/gcsp/vehicle-evidence/indexed-jsonl.js": "30be19121e2c250d1736666f365d8900cbf42f47c7daf907c4814eaac818d277",
     "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "9d45f3eb4a22cace97dd6ea8f68707c083bc46568a8ef2d9f7a44353914f6f76",
     "server/gcsp/vehicle-evidence/lookup-adapter.js": "3060d1707c254ff28ee45c7eedf16802aa57aed9b7d9a52a96206bf0cef395e3",
     "server/gcsp/vehicle-evidence/provider-read.js": "e194fdeb9ff55faafaadd916b2e0ce34c9d8dce252dc37c3ce04aa8de77bb87b",
