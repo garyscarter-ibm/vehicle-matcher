@@ -1,0 +1,645 @@
+{
+  "phase": "initial",
+  "scope": "first representative UI checkpoint only",
+  "headless": true,
+  "isolated": true,
+  "profile": "supervisor-owned temporary browser working data; browser and contexts closed in finally",
+  "sourceIdentity": {
+    "gcsp-activity.html": "29d39890c527e0d8f224bd902e838eea6c2772c766ad5072b5251084fd2044eb",
+    "components.html": "2e5abe1ac1bb7e97f1039f06d0462299cb0b2acfadfe00cf72819d2e7ecf97b8",
+    "blocks/gcsp/activity/activity-body.js": "7d5021ab88f6662bfae7477fec92bd3ea2fae2169477a336de40df8941bc8c76",
+    "blocks/gcsp/activity/activity-copy.js": "ef49624ad498f7ac12bd6aa5a3fe3cdca8f77477d2b48f4c09bf38efcf818b52",
+    "blocks/gcsp/activity/activity-fixtures.js": "2a45b3d8c51077a3837c4928560141e3ef1d5abf578c874feb4c785e7c172058",
+    "blocks/gcsp/activity/harness.js": "91efcd5b886e8b167c1feeef697c559b29cbe6f3ba403492bfa5f71e3b85c9ca",
+    "blocks/gcsp/activity/gcsp-activity.css": "a4d6c7af585dbf223d8cf3fe7fd1e10d6a46814354287f06ac1fa7cfb73d99d9",
+    "blocks/gcsp/kit/activity-timeline.js": "848c8fc2f6201b4eb5f24ea9d27b3b004148e58b1c05d06ebd4064c76ba2b46f",
+    "blocks/gcsp/kit/activity-timeline.css": "1e597c43ed0cd2c7c40e69a9005adf741730736b261bc7e4566475ccb369a1fd",
+    "blocks/vehicle-matcher/component-gallery.js": "644fd8f8916ebd2850a2a9c77a92e8894073d483a8089970b450f0bb11a93d07",
+    "blocks/vehicle-matcher/vehicle-matcher.css": "11d7af7f3f05766c9c32c107f75f31d269d5531de4040938b34cea8b3854ea94",
+    "blocks/vehicle-matcher/gcsp-kit.css": "64abde7dfc99e40c68270a9ea5850c9a713623014f3beca1f4d5c96263763b86",
+    "blocks/gcsp/shell/gcsp-shell.css": "d6f35911624c03ee82c22eb349d51228ba849eaf354976f19df905887e9f92a3",
+    "blocks/gcsp/employee/gcsp-employee.js": "2f35c7983aafef2c8f1eb72f6c78341cbf1c76269110f6a25dca1b775f11df2b"
+  },
+  "results": [
+    {
+      "name": "never-checked-desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "file": "initial-never-checked-desktop.png",
+      "overflowPx": 0,
+      "title": "Your buddy activity",
+      "text": "Your buddy activity\n\nSee where your search stands and what happens next.\n\nYour buddy is active\n\nThe buddy has permission to search. New checks run when the presenter advances this demonstration.\n\nPause search\n\nSynthetic design preview. Pause and resume do not change a saved search here.\n\nSearch checks\n\nCheck information is unavailable. We cannot tell you what the buddy found yet.\n\nLast successful check\nNot available\nSearch brief\nVersion 1\nYour offer\n\nNo offer is recorded in this activity.\n\nYou have not given permission to hold a car.\n\nActivity history\n\nAll dates are demo time (UTC).\n\n5 Nov 2026, 09:00\n\nSearch brief confirmed\n\nBrief version 1",
+      "times": [
+        {
+          "value": "2026-11-05T09:00:00.000Z",
+          "text": "5 Nov 2026, 09:00"
+        }
+      ],
+      "disabled": [
+        {
+          "name": "Pause search",
+          "reason": "Synthetic design preview. Pause and resume do not change a saved search here."
+        }
+      ],
+      "animations": 0,
+      "keyboardStateSwitch": {
+        "found": true,
+        "focusRetained": true
+      },
+      "firstTab": {
+        "found": true,
+        "order": [
+          {
+            "tag": "A",
+            "name": "Skip to content",
+            "outline": "solid 2px",
+            "classes": "gcsp-skip"
+          }
+        ]
+      },
+      "skipTarget": {
+        "tag": "MAIN",
+        "name": "Your buddy activitySee where your search stands and what happens next.Your buddy",
+        "outline": "solid 2px",
+        "classes": "gcsp-main"
+      },
+      "console": [],
+      "failures": [],
+      "external": []
+    },
+    {
+      "name": "paused-desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "file": "initial-paused-desktop.png",
+      "overflowPx": 0,
+      "title": "Your buddy activity",
+      "text": "Your buddy activity\n\nSee where your search stands and what happens next.\n\nYour buddy is paused\n\nNew searches and new holds are paused. Pausing does not cancel an existing offer.\n\nResume search\n\nSynthetic design preview. Pause and resume do not change a saved search here.\n\nSearch checks\n\nCheck information is unavailable. We cannot tell you what the buddy found yet.\n\nLast successful check\nNot available\nSearch brief\nVersion 2\nYour offer\n\nNo offer is recorded in this activity.\n\nActivity history\n\nAll dates are demo time (UTC).\n\n5 Nov 2026, 09:00\n\nSearch brief confirmed\n\nBrief version 1\n\n5 Nov 2026, 09:00\n\nSearch paused\n\nBrief version 2",
+      "times": [
+        {
+          "value": "2026-11-05T09:00:00.000Z",
+          "text": "5 Nov 2026, 09:00"
+        },
+        {
+          "value": "2026-11-05T09:00:00.000Z",
+          "text": "5 Nov 2026, 09:00"
+        }
+      ],
+      "disabled": [
+        {
+          "name": "Resume search",
+          "reason": "Synthetic design preview. Pause and resume do not change a saved search here."
+        }
+      ],
+      "animations": 0,
+      "keyboardStateSwitch": {
+        "found": true,
+        "focusRetained": true
+      },
+      "firstTab": {
+        "found": true,
+        "order": [
+          {
+            "tag": "A",
+            "name": "Skip to content",
+            "outline": "solid 2px",
+            "classes": "gcsp-skip"
+          }
+        ]
+      },
+      "skipTarget": {
+        "tag": "MAIN",
+        "name": "Your buddy activitySee where your search stands and what happens next.Your buddy",
+        "outline": "solid 2px",
+        "classes": "gcsp-main"
+      },
+      "console": [],
+      "failures": [],
+      "external": []
+    },
+    {
+      "name": "unavailable-desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "file": "initial-unavailable-desktop.png",
+      "overflowPx": 0,
+      "title": "Your buddy activity",
+      "text": "Your buddy activity\n\nSee where your search stands and what happens next.\n\nActivity is unavailable\n\nWe could not load your activity. Your search permission and offers are hidden until a fresh view is available.\n\nRetry",
+      "times": [],
+      "disabled": [],
+      "animations": 1,
+      "firstTab": {
+        "found": true,
+        "order": [
+          {
+            "tag": "A",
+            "name": "Skip to content",
+            "outline": "solid 2px",
+            "classes": "gcsp-skip"
+          }
+        ]
+      },
+      "skipTarget": {
+        "tag": "MAIN",
+        "name": "Your buddy activitySee where your search stands and what happens next.Activity i",
+        "outline": "solid 2px",
+        "classes": "gcsp-main"
+      },
+      "retry": {
+        "tabbed": {
+          "found": true,
+          "order": [
+            {
+              "tag": "BUTTON",
+              "name": "Retry",
+              "outline": "solid 2px",
+              "classes": "vm-btn vm-btn-primary"
+            }
+          ]
+        },
+        "focusAfter": {
+          "tag": "BODY",
+          "name": "Skip to contentGroup Car Schemes PortalPPaula (synthetic)Choices, synthetic demo",
+          "outline": "none 3px",
+          "classes": ""
+        },
+        "announcement": "Preview reloaded. The simulated outage is still present.",
+        "focusRetained": false
+      },
+      "console": [],
+      "failures": [],
+      "external": []
+    },
+    {
+      "name": "gallery-desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "files": [
+        "initial-gallery-activity-desktop.png",
+        "initial-gallery-reference-desktop.png"
+      ],
+      "pendingDots": [],
+      "overflowPx": 0,
+      "console": [],
+      "failures": [],
+      "external": []
+    },
+    {
+      "name": "never-checked-narrow-375",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "file": "initial-never-checked-narrow-375.png",
+      "overflowPx": 0,
+      "title": "Your buddy activity",
+      "text": "Your buddy activity\n\nSee where your search stands and what happens next.\n\nYour buddy is active\n\nThe buddy has permission to search. New checks run when the presenter advances this demonstration.\n\nPause search\n\nSynthetic design preview. Pause and resume do not change a saved search here.\n\nSearch checks\n\nCheck information is unavailable. We cannot tell you what the buddy found yet.\n\nLast successful check\nNot available\nSearch brief\nVersion 1\nYour offer\n\nNo offer is recorded in this activity.\n\nYou have not given permission to hold a car.\n\nActivity history\n\nAll dates are demo time (UTC).\n\n5 Nov 2026, 09:00\n\nSearch brief confirmed\n\nBrief version 1",
+      "times": [
+        {
+          "value": "2026-11-05T09:00:00.000Z",
+          "text": "5 Nov 2026, 09:00"
+        }
+      ],
+      "disabled": [
+        {
+          "name": "Pause search",
+          "reason": "Synthetic design preview. Pause and resume do not change a saved search here."
+        }
+      ],
+      "animations": 0,
+      "keyboardStateSwitch": {
+        "found": true,
+        "focusRetained": true
+      },
+      "firstTab": {
+        "found": true,
+        "order": [
+          {
+            "tag": "A",
+            "name": "Skip to content",
+            "outline": "solid 2px",
+            "classes": "gcsp-skip"
+          }
+        ]
+      },
+      "skipTarget": {
+        "tag": "MAIN",
+        "name": "Your buddy activitySee where your search stands and what happens next.Your buddy",
+        "outline": "solid 2px",
+        "classes": "gcsp-main"
+      },
+      "console": [],
+      "failures": [],
+      "external": []
+    },
+    {
+      "name": "paused-narrow-375",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "file": "initial-paused-narrow-375.png",
+      "overflowPx": 0,
+      "title": "Your buddy activity",
+      "text": "Your buddy activity\n\nSee where your search stands and what happens next.\n\nYour buddy is paused\n\nNew searches and new holds are paused. Pausing does not cancel an existing offer.\n\nResume search\n\nSynthetic design preview. Pause and resume do not change a saved search here.\n\nSearch checks\n\nCheck information is unavailable. We cannot tell you what the buddy found yet.\n\nLast successful check\nNot available\nSearch brief\nVersion 2\nYour offer\n\nNo offer is recorded in this activity.\n\nActivity history\n\nAll dates are demo time (UTC).\n\n5 Nov 2026, 09:00\n\nSearch brief confirmed\n\nBrief version 1\n\n5 Nov 2026, 09:00\n\nSearch paused\n\nBrief version 2",
+      "times": [
+        {
+          "value": "2026-11-05T09:00:00.000Z",
+          "text": "5 Nov 2026, 09:00"
+        },
+        {
+          "value": "2026-11-05T09:00:00.000Z",
+          "text": "5 Nov 2026, 09:00"
+        }
+      ],
+      "disabled": [
+        {
+          "name": "Resume search",
+          "reason": "Synthetic design preview. Pause and resume do not change a saved search here."
+        }
+      ],
+      "animations": 0,
+      "keyboardStateSwitch": {
+        "found": true,
+        "focusRetained": true
+      },
+      "firstTab": {
+        "found": true,
+        "order": [
+          {
+            "tag": "A",
+            "name": "Skip to content",
+            "outline": "solid 2px",
+            "classes": "gcsp-skip"
+          }
+        ]
+      },
+      "skipTarget": {
+        "tag": "MAIN",
+        "name": "Your buddy activitySee where your search stands and what happens next.Your buddy",
+        "outline": "solid 2px",
+        "classes": "gcsp-main"
+      },
+      "console": [],
+      "failures": [],
+      "external": []
+    },
+    {
+      "name": "unavailable-narrow-375",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "file": "initial-unavailable-narrow-375.png",
+      "overflowPx": 0,
+      "title": "Your buddy activity",
+      "text": "Your buddy activity\n\nSee where your search stands and what happens next.\n\nActivity is unavailable\n\nWe could not load your activity. Your search permission and offers are hidden until a fresh view is available.\n\nRetry",
+      "times": [],
+      "disabled": [],
+      "animations": 1,
+      "firstTab": {
+        "found": true,
+        "order": [
+          {
+            "tag": "A",
+            "name": "Skip to content",
+            "outline": "solid 2px",
+            "classes": "gcsp-skip"
+          }
+        ]
+      },
+      "skipTarget": {
+        "tag": "MAIN",
+        "name": "Your buddy activitySee where your search stands and what happens next.Activity i",
+        "outline": "solid 2px",
+        "classes": "gcsp-main"
+      },
+      "retry": {
+        "tabbed": {
+          "found": true,
+          "order": [
+            {
+              "tag": "BUTTON",
+              "name": "Retry",
+              "outline": "solid 2px",
+              "classes": "vm-btn vm-btn-primary"
+            }
+          ]
+        },
+        "focusAfter": {
+          "tag": "BODY",
+          "name": "Skip to contentGroup Car Schemes PortalPPaula (synthetic)Choices, synthetic demo",
+          "outline": "none 3px",
+          "classes": ""
+        },
+        "announcement": "Preview reloaded. The simulated outage is still present.",
+        "focusRetained": false
+      },
+      "console": [],
+      "failures": [],
+      "external": []
+    },
+    {
+      "name": "gallery-narrow-375",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "files": [
+        "initial-gallery-activity-narrow-375.png",
+        "initial-gallery-reference-narrow-375.png"
+      ],
+      "pendingDots": [],
+      "overflowPx": 0,
+      "console": [],
+      "failures": [],
+      "external": []
+    },
+    {
+      "name": "reduced-motion-menu-narrow",
+      "menu": {
+        "found": false,
+        "order": [
+          {
+            "tag": "A",
+            "name": "Skip to content",
+            "outline": "solid 2px",
+            "classes": "gcsp-skip"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Menu",
+            "outline": "solid 2px",
+            "classes": "gcsp-menu-toggle"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Active, no check information",
+            "outline": "solid 2px",
+            "classes": "vm-btn vm-btn-ghost"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Paused",
+            "outline": "solid 2px",
+            "classes": "vm-btn vm-btn-ghost"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Unavailable",
+            "outline": "solid 2px",
+            "classes": "vm-btn vm-btn-ghost"
+          },
+          {
+            "tag": "BODY",
+            "name": "Skip to contentGroup Car Schemes PortalPPaula (synthetic)Choices, synthetic demo",
+            "outline": "none 3px",
+            "classes": ""
+          },
+          {
+            "tag": "A",
+            "name": "Skip to content",
+            "outline": "solid 2px",
+            "classes": "gcsp-skip"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Menu",
+            "outline": "solid 2px",
+            "classes": "gcsp-menu-toggle"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Active, no check information",
+            "outline": "solid 2px",
+            "classes": "vm-btn vm-btn-ghost"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Paused",
+            "outline": "solid 2px",
+            "classes": "vm-btn vm-btn-ghost"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Unavailable",
+            "outline": "solid 2px",
+            "classes": "vm-btn vm-btn-ghost"
+          },
+          {
+            "tag": "A",
+            "name": "Skip to content",
+            "outline": "solid 2px",
+            "classes": "gcsp-skip"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Menu",
+            "outline": "solid 2px",
+            "classes": "gcsp-menu-toggle"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Active, no check information",
+            "outline": "solid 2px",
+            "classes": "vm-btn vm-btn-ghost"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Paused",
+            "outline": "solid 2px",
+            "classes": "vm-btn vm-btn-ghost"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Unavailable",
+            "outline": "solid 2px",
+            "classes": "vm-btn vm-btn-ghost"
+          },
+          {
+            "tag": "BODY",
+            "name": "Skip to contentGroup Car Schemes PortalPPaula (synthetic)Choices, synthetic demo",
+            "outline": "none 3px",
+            "classes": ""
+          },
+          {
+            "tag": "A",
+            "name": "Skip to content",
+            "outline": "solid 2px",
+            "classes": "gcsp-skip"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Menu",
+            "outline": "solid 2px",
+            "classes": "gcsp-menu-toggle"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Active, no check information",
+            "outline": "solid 2px",
+            "classes": "vm-btn vm-btn-ghost"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Paused",
+            "outline": "solid 2px",
+            "classes": "vm-btn vm-btn-ghost"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Unavailable",
+            "outline": "solid 2px",
+            "classes": "vm-btn vm-btn-ghost"
+          },
+          {
+            "tag": "A",
+            "name": "Skip to content",
+            "outline": "solid 2px",
+            "classes": "gcsp-skip"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Menu",
+            "outline": "solid 2px",
+            "classes": "gcsp-menu-toggle"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Active, no check information",
+            "outline": "solid 2px",
+            "classes": "vm-btn vm-btn-ghost"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Paused",
+            "outline": "solid 2px",
+            "classes": "vm-btn vm-btn-ghost"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Unavailable",
+            "outline": "solid 2px",
+            "classes": "vm-btn vm-btn-ghost"
+          },
+          {
+            "tag": "BODY",
+            "name": "Skip to contentGroup Car Schemes PortalPPaula (synthetic)Choices, synthetic demo",
+            "outline": "none 3px",
+            "classes": ""
+          },
+          {
+            "tag": "A",
+            "name": "Skip to content",
+            "outline": "solid 2px",
+            "classes": "gcsp-skip"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Menu",
+            "outline": "solid 2px",
+            "classes": "gcsp-menu-toggle"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Active, no check information",
+            "outline": "solid 2px",
+            "classes": "vm-btn vm-btn-ghost"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Paused",
+            "outline": "solid 2px",
+            "classes": "vm-btn vm-btn-ghost"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Unavailable",
+            "outline": "solid 2px",
+            "classes": "vm-btn vm-btn-ghost"
+          },
+          {
+            "tag": "A",
+            "name": "Skip to content",
+            "outline": "solid 2px",
+            "classes": "gcsp-skip"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Menu",
+            "outline": "solid 2px",
+            "classes": "gcsp-menu-toggle"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Active, no check information",
+            "outline": "solid 2px",
+            "classes": "vm-btn vm-btn-ghost"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Paused",
+            "outline": "solid 2px",
+            "classes": "vm-btn vm-btn-ghost"
+          },
+          {
+            "tag": "BUTTON",
+            "name": "Unavailable",
+            "outline": "solid 2px",
+            "classes": "vm-btn vm-btn-ghost"
+          },
+          {
+            "tag": "BODY",
+            "name": "Skip to contentGroup Car Schemes PortalPPaula (synthetic)Choices, synthetic demo",
+            "outline": "none 3px",
+            "classes": ""
+          },
+          {
+            "tag": "A",
+            "name": "Skip to content",
+            "outline": "solid 2px",
+            "classes": "gcsp-skip"
+          }
+        ]
+      },
+      "expanded": "false",
+      "focusAfterEscape": {
+        "tag": "MAIN",
+        "name": "Your buddy activitySee where your search stands and what happens next.Your buddy",
+        "outline": "solid 2px",
+        "classes": "gcsp-main"
+      },
+      "overflowPx": 0,
+      "title": "Your buddy activity",
+      "text": "Your buddy activity\n\nSee where your search stands and what happens next.\n\nYour buddy is paused\n\nNew searches and new holds are paused. Pausing does not cancel an existing offer.\n\nResume search\n\nSynthetic design preview. Pause and resume do not change a saved search here.\n\nSearch checks\n\nCheck information is unavailable. We cannot tell you what the buddy found yet.\n\nLast successful check\nNot available\nSearch brief\nVersion 2\nYour offer\n\nNo offer is recorded in this activity.\n\nActivity history\n\nAll dates are demo time (UTC).\n\n5 Nov 2026, 09:00\n\nSearch brief confirmed\n\nBrief version 1\n\n5 Nov 2026, 09:00\n\nSearch paused\n\nBrief version 2",
+      "times": [
+        {
+          "value": "2026-11-05T09:00:00.000Z",
+          "text": "5 Nov 2026, 09:00"
+        },
+        {
+          "value": "2026-11-05T09:00:00.000Z",
+          "text": "5 Nov 2026, 09:00"
+        }
+      ],
+      "disabled": [
+        {
+          "name": "Resume search",
+          "reason": "Synthetic design preview. Pause and resume do not change a saved search here."
+        }
+      ],
+      "animations": 0,
+      "console": [],
+      "failures": [],
+      "external": []
+    }
+  ]
+}

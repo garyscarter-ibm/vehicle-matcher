@@ -1,0 +1,310 @@
+{
+  "headless": true,
+  "isolated": true,
+  "scope": "activity consumer, real HTTP and BriefService commands; no integrated search or allocation producer",
+  "sourceIdentity": {
+    "blocks/gcsp/activity/activity-controller.js": "03bb97e828bb5b276fbbb3fa0858283b1868f1953cb063f6774caae33e081dec",
+    "blocks/gcsp/activity/activity-http.js": "1a6170c023a735387963046c7e83bea71df252a2ece7ae77fbb8b9fc23a24af1",
+    "blocks/gcsp/activity/gcsp-activity.js": "0f108c36f1713c3fb09f8ad15e85342bd6346585c1cdc5a3ce12290087c39fa9",
+    "blocks/gcsp/activity/activity-body.js": "7f07ec0bfac29838d0d300d066303b9e259ddb92acfd67b05911afd84eadc307",
+    "blocks/gcsp/activity/activity-offer.js": "d224542cfba0468f998ef12485bfffc95cfc8db0c734bd2d575b07ddcb7fa018",
+    "blocks/gcsp/activity/gcsp-activity.css": "d7bb392aec8f9be4e898d8f46decd5ca90a608f2e7686b9c7ba70c99d0332cc0",
+    "blocks/gcsp/employee/gcsp-employee.js": "2f35c7983aafef2c8f1eb72f6c78341cbf1c76269110f6a25dca1b775f11df2b",
+    "blocks/gcsp/kit/action-menu.js": "b860abfe6045a1833270ac83d7f6ded2c1af268f54f65107c180e83411a1ae81",
+    "server/gcsp/brief/activity.js": "dbf317b5aba98b1f6a723692e108a1b1a83637fb61e76ca33729dd90fe8b8f6f",
+    "server/gcsp/brief/activity-http.js": "b4384eb61ea60afb31570a3d2819ea686dff6aad0724cfda3f0b96788c01f2c4",
+    "server/gcsp/brief/index.js": "22500a517f8232947b33ac274e32bf60746ba9d8199851e750784f57737ee418",
+    "server/index.js": "7500640c216a9a29f0a8e12a48589cd52d4b1ce40b9a7d18f6e4b24a0cc3c8c2",
+    "server/test/helpers/activity-client-runtime.js": "a1b378af87ae3b3aef630e177214acf959b661eb6abb6c72412cdfe4afa75ed6"
+  },
+  "results": [
+    {
+      "size": "desktop",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "captures": [
+        {
+          "file": "functional-no-brief-desktop.png",
+          "text": "Your buddy\nNo confirmed search\n\nConfirm a search brief to begin.",
+          "overflowPx": 0,
+          "headings": [
+            "Your buddy",
+            "No confirmed search"
+          ],
+          "datedEvents": 0,
+          "images": 0,
+          "animations": 0
+        },
+        {
+          "file": "functional-active-desktop.png",
+          "text": "Your buddy\n\nActive\n\nYour offer\nNo current offer\nActivity\n\nAll dates are demo time (UTC).\n\nLast successful check: unavailable\n\nCheck and source information unavailable\n\n5 Nov 2026, 09:00\n\nSearch confirmed",
+          "overflowPx": 0,
+          "headings": [
+            "Your buddy",
+            "Your offer",
+            "Activity"
+          ],
+          "datedEvents": 1,
+          "images": 0,
+          "animations": 0
+        },
+        {
+          "file": "functional-pending-desktop.png",
+          "text": "Your buddy\n\nActive\n\nPause Search\n\nUpdating search\n\nYour offer\nNo current offer\nActivity\n\nAll dates are demo time (UTC).\n\nLast successful check: unavailable\n\nCheck and source information unavailable\n\n5 Nov 2026, 09:00\n\nSearch confirmed",
+          "overflowPx": 0,
+          "headings": [
+            "Your buddy",
+            "Your offer",
+            "Activity"
+          ],
+          "datedEvents": 1,
+          "images": 0,
+          "animations": 0
+        },
+        {
+          "file": "functional-paused-desktop.png",
+          "text": "Your buddy\n\nInactive\n\nSearches and holds paused. Existing offers remain.\n\nYour offer\nNo current offer\nActivity\n\nAll dates are demo time (UTC).\n\nLast successful check: unavailable\n\nCheck and source information unavailable\n\n5 Nov 2026, 09:00\n\nSearch confirmed\n\n5 Nov 2026, 09:00\n\nSearch paused",
+          "overflowPx": 0,
+          "headings": [
+            "Your buddy",
+            "Your offer",
+            "Activity"
+          ],
+          "datedEvents": 2,
+          "images": 0,
+          "animations": 0
+        },
+        {
+          "file": "functional-unavailable-desktop.png",
+          "text": "Your buddy\nActivity unavailable\n\nSearch status and offers are unavailable. Try again.\n\nRetry",
+          "overflowPx": 0,
+          "headings": [
+            "Your buddy",
+            "Activity unavailable"
+          ],
+          "datedEvents": 0,
+          "images": 0,
+          "animations": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/api/gcsp/activity"
+        },
+        {
+          "method": "GET",
+          "path": "/api/gcsp/activity"
+        },
+        {
+          "method": "POST",
+          "path": "/api/gcsp/brief/pause"
+        },
+        {
+          "method": "GET",
+          "path": "/api/gcsp/activity"
+        },
+        {
+          "method": "GET",
+          "path": "/api/gcsp/activity"
+        },
+        {
+          "method": "POST",
+          "path": "/api/gcsp/brief/resume"
+        },
+        {
+          "method": "GET",
+          "path": "/api/gcsp/activity"
+        },
+        {
+          "method": "POST",
+          "path": "/api/gcsp/brief/pause"
+        },
+        {
+          "method": "GET",
+          "path": "/api/gcsp/activity"
+        },
+        {
+          "method": "GET",
+          "path": "/api/gcsp/activity"
+        },
+        {
+          "method": "GET",
+          "path": "/api/gcsp/activity"
+        },
+        {
+          "method": "GET",
+          "path": "/api/gcsp/activity"
+        },
+        {
+          "method": "GET",
+          "path": "/api/gcsp/activity"
+        }
+      ],
+      "console": [],
+      "failedRequests": [],
+      "external": [],
+      "responses": [
+        {
+          "status": 409,
+          "path": "/api/gcsp/brief/pause"
+        },
+        {
+          "status": 503,
+          "path": "/api/gcsp/activity"
+        },
+        {
+          "status": 409,
+          "path": "/api/gcsp/activity"
+        }
+      ],
+      "proof": "real pause/resume/reload/stale-version/failure/retry/nonmutating-read/reset; synthetic trusted test account"
+    },
+    {
+      "size": "narrow-375",
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "captures": [
+        {
+          "file": "functional-no-brief-narrow-375.png",
+          "text": "Your buddy\nNo confirmed search\n\nConfirm a search brief to begin.",
+          "overflowPx": 0,
+          "headings": [
+            "Your buddy",
+            "No confirmed search"
+          ],
+          "datedEvents": 0,
+          "images": 0,
+          "animations": 0
+        },
+        {
+          "file": "functional-active-narrow-375.png",
+          "text": "Your buddy\n\nActive\n\nYour offer\nNo current offer\nActivity\n\nAll dates are demo time (UTC).\n\nLast successful check: unavailable\n\nCheck and source information unavailable\n\n5 Nov 2026, 09:00\n\nSearch confirmed",
+          "overflowPx": 0,
+          "headings": [
+            "Your buddy",
+            "Your offer",
+            "Activity"
+          ],
+          "datedEvents": 1,
+          "images": 0,
+          "animations": 0
+        },
+        {
+          "file": "functional-pending-narrow-375.png",
+          "text": "Your buddy\n\nActive\n\nPause Search\n\nUpdating search\n\nYour offer\nNo current offer\nActivity\n\nAll dates are demo time (UTC).\n\nLast successful check: unavailable\n\nCheck and source information unavailable\n\n5 Nov 2026, 09:00\n\nSearch confirmed",
+          "overflowPx": 0,
+          "headings": [
+            "Your buddy",
+            "Your offer",
+            "Activity"
+          ],
+          "datedEvents": 1,
+          "images": 0,
+          "animations": 0
+        },
+        {
+          "file": "functional-paused-narrow-375.png",
+          "text": "Your buddy\n\nInactive\n\nSearches and holds paused. Existing offers remain.\n\nYour offer\nNo current offer\nActivity\n\nAll dates are demo time (UTC).\n\nLast successful check: unavailable\n\nCheck and source information unavailable\n\n5 Nov 2026, 09:00\n\nSearch confirmed\n\n5 Nov 2026, 09:00\n\nSearch paused",
+          "overflowPx": 0,
+          "headings": [
+            "Your buddy",
+            "Your offer",
+            "Activity"
+          ],
+          "datedEvents": 2,
+          "images": 0,
+          "animations": 0
+        },
+        {
+          "file": "functional-unavailable-narrow-375.png",
+          "text": "Your buddy\nActivity unavailable\n\nSearch status and offers are unavailable. Try again.\n\nRetry",
+          "overflowPx": 0,
+          "headings": [
+            "Your buddy",
+            "Activity unavailable"
+          ],
+          "datedEvents": 0,
+          "images": 0,
+          "animations": 0
+        }
+      ],
+      "requests": [
+        {
+          "method": "GET",
+          "path": "/api/gcsp/activity"
+        },
+        {
+          "method": "GET",
+          "path": "/api/gcsp/activity"
+        },
+        {
+          "method": "POST",
+          "path": "/api/gcsp/brief/pause"
+        },
+        {
+          "method": "GET",
+          "path": "/api/gcsp/activity"
+        },
+        {
+          "method": "GET",
+          "path": "/api/gcsp/activity"
+        },
+        {
+          "method": "POST",
+          "path": "/api/gcsp/brief/resume"
+        },
+        {
+          "method": "GET",
+          "path": "/api/gcsp/activity"
+        },
+        {
+          "method": "POST",
+          "path": "/api/gcsp/brief/pause"
+        },
+        {
+          "method": "GET",
+          "path": "/api/gcsp/activity"
+        },
+        {
+          "method": "GET",
+          "path": "/api/gcsp/activity"
+        },
+        {
+          "method": "GET",
+          "path": "/api/gcsp/activity"
+        },
+        {
+          "method": "GET",
+          "path": "/api/gcsp/activity"
+        },
+        {
+          "method": "GET",
+          "path": "/api/gcsp/activity"
+        }
+      ],
+      "console": [],
+      "failedRequests": [],
+      "external": [],
+      "responses": [
+        {
+          "status": 409,
+          "path": "/api/gcsp/brief/pause"
+        },
+        {
+          "status": 503,
+          "path": "/api/gcsp/activity"
+        },
+        {
+          "status": 409,
+          "path": "/api/gcsp/activity"
+        }
+      ],
+      "proof": "real pause/resume/reload/stale-version/failure/retry/nonmutating-read/reset; synthetic trusted test account"
+    }
+  ]
+}

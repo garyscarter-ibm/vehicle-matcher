@@ -441,7 +441,7 @@ test('every selector in the shell stylesheets starts with .gcsp, and retail toke
 });
 
 test('CSP: no inline scripts, handler attributes, eval, new Function, string timers or innerHTML in GCSP files', () => {
-  const files = [...walk(GCSP_DIR), join(ROOT, 'gcsp-employee.html'), join(ROOT, 'gcsp-account.html'), join(ROOT, 'gcsp-presenter.html'), join(ROOT, 'gcsp-manual-setup.html'), join(ROOT, 'gcsp-brief.html'), ...livePages().map((file) => join(ROOT, file)), join(ROOT, 'components.html'), join(ROOT, 'blocks/vehicle-matcher/component-gallery.js'), join(ROOT, 'blocks/vehicle-matcher/ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/question-ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/preview-feed.js'), join(ROOT, 'blocks/vehicle-matcher/modes/result-card.js'), join(ROOT, 'blocks/vehicle-matcher/decision-card.css'), join(ROOT, 'blocks/vehicle-matcher/employee-card-fixture.js')].filter((f) => /\.(js|html|css)$/.test(f));
+  const files = [...walk(GCSP_DIR), join(ROOT, 'gcsp-employee.html'), join(ROOT, 'gcsp-activity.html'), join(ROOT, 'gcsp-account.html'), join(ROOT, 'gcsp-presenter.html'), join(ROOT, 'gcsp-manual-setup.html'), join(ROOT, 'gcsp-brief.html'), ...livePages().map((file) => join(ROOT, file)), join(ROOT, 'components.html'), join(ROOT, 'blocks/vehicle-matcher/component-gallery.js'), join(ROOT, 'blocks/vehicle-matcher/ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/question-ui.js'), join(ROOT, 'blocks/vehicle-matcher/modes/preview-feed.js'), join(ROOT, 'blocks/vehicle-matcher/modes/result-card.js'), join(ROOT, 'blocks/vehicle-matcher/decision-card.css'), join(ROOT, 'blocks/vehicle-matcher/employee-card-fixture.js')].filter((f) => /\.(js|html|css)$/.test(f));
   assert.ok(files.length >= 10);
   const offenders = [];
   for (const f of files) {
@@ -732,9 +732,20 @@ test('harness page loads the harness module and the body stylesheet; the element
   assert.match(html, /blocks\/gcsp\/employee\/gcsp-employee\.css/);
   const harness = read('blocks/gcsp/employee/harness.js');
   assert.match(harness, /FIXTURE_NAMES\.includes/);
-  for (const f of walk(GCSP_DIR).filter((p) => p.endsWith('.js') && !p.endsWith('harness.js'))) {
+  const activityHost = join(GCSP_DIR, 'activity/live.js');
+  for (const f of walk(GCSP_DIR).filter((p) => p.endsWith('.js') && !p.endsWith('harness.js') && p !== activityHost)) {
     assert.doesNotMatch(readFileSync(f, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:\\])\/\/.*$/gm, '$1'), /\b(?:window|globalThis)\s*\.\s*(?:location|history)\b|\b(?:location|history)\.(?:href|search|pathname|hash|pushState|replaceState|back|forward|go)\b/, rel(f));
   }
+});
+
+test('the activity live host navigates only to the fixed Brief page without URL-selected state', () => {
+  const host = read('blocks/gcsp/activity/live.js');
+  assert.deepEqual([...host.matchAll(/^import .*? from '([^']+)';$/gm)].map((match) => match[1]), [
+    '../shell/account-runtime.js', './activity-http.js', './gcsp-activity.js',
+  ]);
+  assert.match(host, /globalThis\.location\.assign\('\/gcsp-brief-live\.html'\)/);
+  assert.equal((host.match(/\blocation\b/g) || []).length, 1);
+  assert.doesNotMatch(host, /URLSearchParams|location\.(?:search|hash)|\bhistory\./);
 });
 
 test('the single gallery shows the GCSP section with primitives and shell states', async () => {
