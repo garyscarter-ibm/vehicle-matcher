@@ -1,6 +1,11 @@
 name: GCSP native three-order proof
 
 on:
+  push:
+    branches: [gcsp-poc]
+    paths:
+      - .github/workflows/gcsp-native-orders.yml
+      - docs/gcsp/evidence/fucq63/linux-postgres-proof-2026-11-07/**
   workflow_dispatch:
 
 permissions:

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "f63-linux-postgres-orders-plan.v1",
-  "status": "prepared-unexecuted-root-review-and-manual-dispatch-required",
+  "status": "prepared-unexecuted-reviewed-integration-push-required",
   "releaseId": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
   "corpusVersion": "2026-11-07.12",
   "datasetId": "gcsp-source-fleet",
@@ -106,5 +106,19 @@
       ]
     },
     "fixtureEdges": "Exact public .12 corpus, three retained passing source IDs, one isolated run/schema and ephemeral PostgreSQL16 service. No managed database, external source or full consumer coverage inference."
+  },
+  "executionTrigger": {
+    "push": {
+      "branches": [
+        "gcsp-poc"
+      ],
+      "paths": [
+        ".github/workflows/gcsp-native-orders.yml",
+        "docs/gcsp/evidence/fucq63/linux-postgres-proof-2026-11-07/**"
+      ]
+    },
+    "workflowDispatchPreserved": true,
+    "operation": "Root merges once and observes the resulting integration-push run; topic branch pushes do not match. No agent manual dispatch or merge.",
+    "repeatBehavior": "Future gcsp-poc pushes changing these exact paths also trigger this workflow; concurrency remains one job."
   }
 }
