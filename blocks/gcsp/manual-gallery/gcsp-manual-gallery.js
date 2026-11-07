@@ -30,7 +30,7 @@ const states = {
   'no-visible-releases': ['No released cars are visible to you yet', 'Refresh availability to check for new releases.'],
   'empty-search': ['No cars match these filters', 'Clear your filters to see all released cars.'],
   'no-suitable-stock': ['No suitable cars are available', 'Review the eligibility reasons or return to your choices.'],
-  'source-unavailable': ['Availability is unavailable', 'Retry to check current released cars.'],
+  'source-unavailable': ['Availability cannot be checked right now', 'Retry to check current released cars.'],
   'context-refresh': ['Your choices need refreshing', 'Return to your choices or refresh availability.'],
   'car-taken': ['This car is no longer available', 'Refresh to see the current released cars.'],
 };

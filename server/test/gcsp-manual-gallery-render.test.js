@@ -223,7 +223,7 @@ test('every authored recovery fixture renders a distinct state and Back notifies
     t.after(() => { teardown(); root.remove(); });
     await waitFor(() => !['idle', 'loading'].includes(teardown.gallery.getState().state));
     const expected = { 'empty-stock': 'No cars are available', 'nothing-released-yet': 'No cars have been released yet',
-      'no-suitable-stock': 'No suitable cars are available', 'source-unavailable': 'Availability is unavailable',
+      'no-suitable-stock': 'No suitable cars are available', 'source-unavailable': 'Availability cannot be checked right now',
       'context-refresh': 'Your choices need refreshing', 'car-taken': 'This car is no longer available' };
     assert.ok(root.textContent.includes(expected[name]), name); click(root, 'Back to your choices'); assert.equal(back, 1);
   }
