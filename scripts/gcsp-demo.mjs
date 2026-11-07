@@ -92,7 +92,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1
   const connectionString = process.env.GCSP_DATABASE_URL;
   const app = await startGcspDemo({ port: Number(process.env.PORT) || 3001, runtime: { mode,
     repositoryOptions: { connectionString }, environmentId: process.env.GCSP_ENVIRONMENT_ID || 'gcsp-local-functional',
-    policyAsOf: new Date().toISOString(), commandId: 'local-bootstrap' } });
+    policyAsOf: new Date().toISOString(), commandId: 'local-bootstrap', adoptOfferJourney: true } });
   if (app.status !== 'ok') { console.error(`GCSP local startup: ${app.status}${app.code ? ` (${app.code})` : ''}`); process.exitCode = 1; }
   else {
     console.log(`GCSP local demo: ${app.value.origin}/gcsp-account.html`);

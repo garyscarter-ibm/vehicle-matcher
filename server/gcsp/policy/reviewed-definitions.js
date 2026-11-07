@@ -43,7 +43,13 @@ const choiceModel = JSON.parse(await readFile(new URL('./reviewed/fucq115-choice
 if (!validateReviewedDefinitionSet(choiceModel)) throw new TypeError('The reviewed choice model assumption definition is invalid.');
 const offerFollowupQuestions = JSON.parse(await readFile(new URL('./reviewed/offer-followup-questions-v1.json', import.meta.url), 'utf8'));
 if (!validateReviewedDefinitionSet(offerFollowupQuestions)) throw new TypeError('The reviewed offer follow-up question definition is invalid.');
+// The demo offer journey adopts both offer sets in one publication; their rows stay in their own files.
+const offerJourneyDefinition = { schemaVersion: 1, definitionSetId: 'offer-journey-v1', revision: '1',
+  definitions: [...offerDeclineReasons.definitions, ...offerFollowupQuestions.definitions] };
+const offerJourney = { ...offerJourneyDefinition, digest: inputDigest(offerJourneyDefinition) };
+if (!validateReviewedDefinitionSet(offerJourney)) throw new TypeError('The combined offer journey definition is invalid.');
 const registry = freeze({ [presenter.definitionSetId]: presenter, [gregEditor.definitionSetId]: gregEditor,
   [learning.definitionSetId]: learning, [offerDeclineReasons.definitionSetId]: offerDeclineReasons,
-  [choiceModel.definitionSetId]: choiceModel, [offerFollowupQuestions.definitionSetId]: offerFollowupQuestions });
+  [choiceModel.definitionSetId]: choiceModel, [offerFollowupQuestions.definitionSetId]: offerFollowupQuestions,
+  [offerJourney.definitionSetId]: offerJourney });
 export const getReviewedDefinitionSet = (definitionSetId) => Object.hasOwn(registry, definitionSetId) ? registry[definitionSetId] : null;

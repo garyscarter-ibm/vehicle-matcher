@@ -10,6 +10,7 @@ import { createActivityService } from './brief/activity.js';
 import { createGregDemandService } from './greg/index.js';
 import { createGregPublishService } from './greg/publish/index.js';
 import { createScenarioService } from './scenarios/index.js';
+import { adoptOfferJourneyPolicy } from './policy/offer-journey-adoption.js';
 import { createSyntheticManualStockAdapter } from './adapters/manual-stock.js';
 import { createManualClaimsService } from './manual-claims/index.js';
 import { createBuddyHoldService } from './offers/buddy-hold.js';
@@ -37,7 +38,7 @@ const scoped = (value, context) => ['runId', 'environmentId', 'employeeId'].ever
 // Explicit composition only. A failed PostgreSQL open never changes providers.
 export async function createGcspRuntime({ mode = 'postgres', repository, repositoryOptions, policy,
   environmentId, policyAsOf, commandId, stockProvider, offerLandingUrl = process.env.GCSP_OFFER_LANDING_URL,
-  sessionNow = () => new Date().toISOString() } = {}) {
+  sessionNow = () => new Date().toISOString(), adoptOfferJourney = false } = {}) {
   if (!['postgres', 'memory'].includes(mode)) return result('invalid', { code: 'unsupported-repository-mode' });
   try { offerLandingUrl = resolveOfferLandingUrl(offerLandingUrl); }
   catch { return result('invalid', { code: 'invalid-offer-landing-url' }); }
@@ -146,6 +147,11 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       const seeded = await seedManualDemoContext({ repository, identity, clock, context: acting.value.context });
       if (seeded.status !== 'ok') return seeded;
       return ok({ context: acting.value.context, setCookie: [presenter.value.setCookie[1], acting.value.setCookie] });
+    }
+    // Opt-in for the demo launcher; tests that adopt these sets themselves leave it off.
+    if (adoptOfferJourney) {
+      const adopted = await adoptOfferJourneyPolicy({ policy, identity, clock });
+      if (adopted.status !== 'ok') { await close(); return adopted; }
     }
     return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, manualRead, manualReview, manualOrder, stockRelease, releaseHistory, cases, orderingAdapter, lifecycle, documents, buddy, offerAccess, offerDecisions, offerFollowup, resolveOfferAccess, notify, dependencies, createLocalSession, close });
   } catch { await close(); return unavailable(); }
