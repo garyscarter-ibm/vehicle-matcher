@@ -300,3 +300,95 @@ test('CLI subprocess proves synthetic contract success, shipped refusal and zero
     { cwd: root, encoding: 'utf8', timeout: 15000 });
   assert.equal(cli.status, 1, cli.stderr); assert.equal(JSON.parse(cli.stdout).coverage.distinctProved, 3);
 });
+
+
+function retainedConfigurationPlan() {
+  return {
+    schemaVersion: '2', planVersion: 'fleet-configurations.v1', identityScope: 'configuration-corpus',
+    execution: 'retained-offline-only', selectionId: 'f60-selected10000-20261107', targetCount: 10000,
+    tool: { version: 'fleet-configurations.v1', kind: 'observed', source: 'scripts/gcsp/fleet-plan.mjs',
+      observedDate: '2026-11-07', confidence: 'Reviewed retained metadata only; no fresh source re-admission' },
+    permissions: clone(shipped.permissions), retention: clone(shipped.retention),
+    work: Object.fromEntries(Object.keys(shipped.work).map((key) => [key, 0])),
+    budgets: { requests: 0, imageRequests: 0, cacheEntries: 0, cacheBytes: 0, concurrency: 1, timeoutMs: 1000, durationMs: 10000 },
+    cache: { policy: 'cold', key: 'full-context+complete-selection+provider-version', ttlMs: 86400000, entryBytes: 1,
+      hits: { candidate: 0, solver: 0, otd: 0, image: 0 } },
+    retry: { maxRetries: 0, initialBackoffMs: 0, maxBackoffMs: 0, multiplier: 1, retryStatuses: [] },
+    destinations: Object.fromEntries(['evidence', 'images'].map((kind) => [kind, {
+      path: `docs/gcsp/evidence/fucq-58/configuration-only-qualification-2026-11-07/${kind}`,
+      expectedBytes: 0, public: false, retention: 'reusable-non-personal' }])),
+    stopConditions: clone(shipped.stopConditions),
+  };
+}
+
+test('reviewed retained configuration plan qualifies without resolving a VIN profile or re-admitting source rows', async () => {
+  const plan = retainedConfigurationPlan(); const before = JSON.stringify(plan); let resolutions = 0;
+  const report = await qualifyFleetPlan(plan, { registry: { resolve: () => { resolutions++; throw Error('VIN profile called'); } },
+    configurationEvidence: { count: 99999, sourceAcceptance: true }, syntheticContract: true });
+  assert.equal(report.contractQualified, true, report.errors.join(',')); assert.equal(resolutions, 0);
+  assert.equal(report.qualified, true); assert.equal(report.qualification, 'reviewed-retained-configuration-plan');
+  assert.equal(report.sourceAcceptance, false); assert.equal(report.collectionQualified, false);
+  assert.equal(report.rawSourceRevalidated, false); assert.equal(report.outboundRequests, 0);
+  assert.equal(report.coverage.distinctProved, 10000); assert.equal(report.coverage.shortfall, 0);
+  assert.equal(report.coverage.vgModelCodes.length, 43); assert.equal(report.coverage.agModelCodes.length, 26);
+  assert.deepEqual(report.coverage.context, { market: 'GB', locale: 'en-GB', orderDate: '2026-11-01',
+    effectDate: '2027-01-05', taxDate: '2027-01-05', steeringLiteral: 'RL' });
+  assert.equal(report.presentation.physicalSteering, 'unknown'); assert.equal(report.presentation.body, 'unknown');
+  assert.equal(report.presentation.technicalFacts, 'unknown'); assert.equal(report.presentation.profileStatus, 'not-applicable-to-configurations');
+  assert.equal(report.projection.totalRequests, 0); assert.equal(report.projection.cacheEntries, 0);
+  assert.deepEqual(Object.values(report.projection.hits), [0, 0, 0, 0]);
+  assert.equal(JSON.stringify(plan), before);
+});
+
+test('configuration plan refuses caller authority, unsupported targets, new work and shared safety violations', async () => {
+  for (const [mutate, expected] of [
+    [(p) => { p.selectionId = 'caller-selected'; }, 'unregistered-configuration-selection'],
+    [(p) => { p.targetCount = 10001; }, 'unsupported-configuration-target'],
+    [(p) => { p.targetCount = 200; }, 'unsupported-configuration-target'],
+    [(p) => { p.evidence = { count: 99999, admission: true }; }, 'unknown-retained-payload'],
+    [(p) => { p.work.solverCandidates = 10000; }, 'invalid-work-counts'],
+    [(p) => { p.budgets.requests = 1; }, 'retained-only-run-required'],
+    [(p) => { p.budgets = null; }, 'missing-numeric-budgets'],
+    [(p) => { p.cache.hits.solver = 10000; }, 'retained-only-run-required'],
+    [(p) => { p.retry.maxRetries = 1; }, 'retained-only-run-required'],
+    [(p) => { p.permissions.sourceAccess = null; }, 'permission-unselected'],
+    [(p) => { p.permissions.dataRetention.kind = 'synthetic'; }, 'unproved-configuration-authority'],
+    [(p) => { p.retention.fields.push('raw-provider-captures'); }, 'invalid-retention'],
+    [(p) => { p.destinations.images.public = true; }, 'invalid-destination:images'],
+    [(p) => { p.destinations.evidence.path = '../escape'; }, 'invalid-destination:evidence'],
+    [(p) => { p.destinations.evidence.path = 'docs/gcsp/evidence/%2e%2e/%2e%2e/escape'; }, 'invalid-destination:evidence'],
+    [(p) => { p.destinations.evidence.path = 'docs/gcsp/evidence/proof#alias'; }, 'invalid-destination:evidence'],
+    [(p) => { p.stopConditions = []; }, 'missing-stop-conditions'],
+    [(p) => { p.extension = { customerId: 'PRIVATE-MARKER' }; }, 'private-retention'],
+    [(p) => { p.execution = 'collect'; }, 'invalid-configuration-version-or-identity'],
+  ]) {
+    const plan = retainedConfigurationPlan(); mutate(plan); const report = await qualifyFleetPlan(plan);
+    assert.equal(report.contractQualified, false, expected); assert.ok(report.errors.some((e) => e.includes(expected)), report.errors.join(','));
+    assert.equal(report.outboundRequests, 0); assert.equal(JSON.stringify(report).includes('PRIVATE-MARKER'), false);
+  }
+});
+
+test('shipped retained CLI is portable, zero-egress and refuses changed projection bytes', async () => {
+  assert.deepEqual(await load('server/data/gcsp/vehicle-evidence/fleet-configurations.v1.json'), retainedConfigurationPlan());
+  const code = `import fs from 'node:fs/promises'; import { syncBuiltinESMExports } from 'node:module';
+    import http from 'node:http'; import https from 'node:https'; import net from 'node:net';
+    let calls = 0; const deny = () => { calls++; throw Error('network forbidden'); };
+    globalThis.fetch = deny; globalThis.WebSocket = class { constructor() { deny(); } };
+    http.request = https.request = http.get = https.get = net.connect = net.createConnection = deny;
+    const read = fs.readFile; const mode = process.argv[1];
+    if (mode === 'tamper') fs.readFile = (p, ...args) => String(p).endsWith('/fleet-configuration-evidence.v1.json')
+      ? Promise.resolve(Buffer.from('{"count":99999,"sourceAcceptance":true}')) : read(p, ...args);
+    syncBuiltinESMExports(); const { runCli } = await import('./scripts/gcsp/fleet-plan.mjs');
+    const status = await runCli(['--config', 'server/data/gcsp/vehicle-evidence/fleet-configurations.v1.json', '--offline']);
+    if (calls) throw Error('outbound calls'); process.exitCode = status;`;
+  const run = (mode) => spawnSync(process.execPath, ['--input-type=module', '-e', code, mode],
+    { cwd: root, encoding: 'utf8', timeout: 15000, maxBuffer: 1024 * 1024 });
+  const good = run('retained'); assert.equal(good.status, 0, good.stderr + good.stdout);
+  const report = JSON.parse(good.stdout);
+  assert.equal(report.qualification, 'reviewed-retained-configuration-plan');
+  assert.equal(report.coverage.distinctProved, 10000); assert.equal(report.outboundRequests, 0);
+  assert.ok(report.evidence.artifacts.every((a) => !a.artifact.startsWith('/') && /^[a-f0-9]{64}$/.test(a.sha256)));
+  const changed = run('tamper'); assert.equal(changed.status, 1, changed.stderr + changed.stdout);
+  assert.deepEqual(JSON.parse(changed.stdout).errors, ['reviewed-configuration-evidence-unavailable']);
+  assert.equal(JSON.parse(changed.stdout).coverage.distinctProved, 0);
+});

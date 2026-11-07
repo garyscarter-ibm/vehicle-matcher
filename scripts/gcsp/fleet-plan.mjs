@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
@@ -5,6 +6,11 @@ import { createVinProfileRegistry } from '../../server/gcsp/vehicle-evidence/vin
 
 export const FLEET_PLAN_VERSION = 'fleet-plan.v1';
 export const PILOT_PLAN_VERSION = 'fleet-pilot.v1';
+export const CONFIGURATION_PLAN_VERSION = 'fleet-configurations.v1';
+const CONFIGURATION_SELECTION = 'f60-selected10000-20261107';
+const CONFIGURATION_EVIDENCE = 'server/data/gcsp/vehicle-evidence/fleet-configuration-evidence.v1.json';
+// Reviewed retained metadata pin; changing it requires a code review, never caller admission.
+const CONFIGURATION_EVIDENCE_SHA256 = '055af52d56d47477239174e6b99ea2ef97dff3c450e36685eb39f03cbe22a8b7';
 const AUTHORITY = 'docs/gcsp/fucq-58-source-authorisation-2026-11-05.md';
 const ROOT = new URL('../../', import.meta.url);
 const PILOT = 'docs/gcsp/evidence/fucq-4/configuration-generation-native-2026-11-01.json';
@@ -80,6 +86,13 @@ const PLAN_SCHEMA = {
   destinations: Object.fromEntries(['evidence', 'images'].map((key) => [key, fields('path expectedBytes public retention')])), stopConditions: [null],
   pilot: PILOT_SCHEMA,
 };
+const CONFIGURATION_PLAN_SCHEMA = {
+  ...fields('schemaVersion planVersion identityScope execution selectionId targetCount'),
+  tool: { ...EVIDENCE_SCHEMA, version: null },
+  ...Object.fromEntries(['permissions', 'work', 'budgets', 'cache', 'retry', 'retention', 'destinations', 'stopConditions']
+    .map((key) => [key, PLAN_SCHEMA[key]])),
+};
+
 function retainedSchema(value, schema, add, depth = 0) {
   if (value === null || value === undefined) return;
   if (depth > 24) { add('invalid-retained-schema'); return; }
@@ -170,8 +183,60 @@ export function qualifyPilotPlan(plan) {
   return report;
 }
 
+/** Review-bound retained metadata qualification. Never resolves profiles or reads caller evidence. */
+async function qualifyConfigurationPlan(plan) {
+  const errors = []; const add = (code) => { if (!errors.includes(code)) errors.push(code); };
+  const report = { schemaVersion: '2', planVersion: CONFIGURATION_PLAN_VERSION, qualified: false,
+    contractQualified: false, qualification: 'reviewed-retained-configuration-plan',
+    collectionImplemented: false, collectionQualified: false, sourceAcceptance: false,
+    rawSourceRevalidated: false, outboundRequests: 0,
+    identity: 'configurationId:Base64(vgModelCode:sorted-base-option-codes);accessories-excluded',
+    coverage: { distinctProved: 0, synthetic: 0, target: 10000, shortfall: 10000 },
+    projection: { status: 'unavailable', reason: 'missing or invalid explicit retained run inputs' },
+    presentation: { status: 'unqualified', profileStatus: 'not-applicable-to-configurations',
+      body: 'unknown', physicalSteering: 'unknown', technicalFacts: 'unknown', verifiedFitted: 'unknown' }, errors };
+  privateRetention(plan, add); retainedSchema(plan, CONFIGURATION_PLAN_SCHEMA, add);
+  if (errors.length) return report;
+  if (plan.schemaVersion !== '2' || plan.identityScope !== 'configuration-corpus'
+    || plan.execution !== 'retained-offline-only' || !evidence(plan.tool) || plan.tool.kind !== 'observed'
+    || plan.tool.version !== CONFIGURATION_PLAN_VERSION || plan.tool.source !== 'scripts/gcsp/fleet-plan.mjs') add('invalid-configuration-version-or-identity');
+  if (plan.selectionId !== CONFIGURATION_SELECTION) add('unregistered-configuration-selection');
+  if (plan.targetCount !== 10000) add('unsupported-configuration-target');
+  for (const permission of ['sourceAccess', 'dataRetention', 'imageDisplay']) {
+    const e = plan.permissions?.[permission];
+    if (!evidence(e) || e.kind !== 'observed' || e.source !== AUTHORITY || e.observedDate !== '2026-11-05') add('unproved-configuration-authority');
+  }
+  // Relative destinations are portable, canonical repository evidence paths. Qualification writes nothing.
+  const destinations = Object.fromEntries(['evidence', 'images'].map((kind) => {
+    const d = plan.destinations?.[kind]; let resolved = d?.path;
+    if (text(resolved) && /^docs\/gcsp\/evidence\/[A-Za-z0-9._/-]+$/.test(resolved) && path.posix.normalize(resolved) === resolved) resolved = fileURLToPath(new URL(resolved, ROOT));
+    return [kind, object(d) ? { ...d, path: resolved } : d];
+  }));
+  let retained;
+  try {
+    const bytes = await readFile(new URL(CONFIGURATION_EVIDENCE, ROOT));
+    if (createHash('sha256').update(bytes).digest('hex') !== CONFIGURATION_EVIDENCE_SHA256) throw Error();
+    retained = JSON.parse(bytes);
+    if (retained.selectionId !== CONFIGURATION_SELECTION || retained.count !== 10000) throw Error();
+  } catch { add('reviewed-configuration-evidence-unavailable'); return report; }
+  report.coverage = { ...report.coverage, distinctProved: retained.count,
+    shortfall: Math.max(0, (integer(plan.targetCount) ? plan.targetCount : 10000) - retained.count),
+    context: retained.context, vgModelCodes: retained.vgModelCodes, agModelCodes: retained.agModelCodes,
+    rawModelRanges: retained.rawModelRanges, models: retained.models, options: retained.options,
+    coverageGroups: retained.coverageGroups, observedCategoryTokens: retained.observedCategoryTokens };
+  report.evidence = { selectionId: retained.selectionId, projectionSha256: CONFIGURATION_EVIDENCE_SHA256,
+    artifacts: retained.artifacts, canonicalIndexes: retained.canonicalIndexes, references: retained.references };
+  report.presentation = { ...report.presentation, unknownFields: retained.unknownFields, images: retained.images,
+    catalogue: retained.catalogue, limits: retained.limits };
+  validateRun({ ...plan, destinations }, report, add, { retainedOnly: true });
+  report.contractQualified = errors.length === 0; report.qualified = report.contractQualified;
+  if (report.contractQualified) report.presentation.status = report.qualification;
+  return report;
+}
+
 /** Pure offline qualification over trusted, locally loaded evidence. Injected evidence is for isolated tests. */
 export async function qualifyFleetPlan(plan, supplied) {
+  if (object(plan) && plan.planVersion === CONFIGURATION_PLAN_VERSION) return qualifyConfigurationPlan(plan);
   const errors = []; let issueCount = 0;
   const add = (code) => { issueCount++; if (errors.length < 80 && !errors.includes(code)) errors.push(code); };
   const report = { schemaVersion: '1', planVersion: FLEET_PLAN_VERSION, qualified: false, contractQualified: false, collectionImplemented: false,
@@ -284,7 +349,7 @@ export async function qualifyFleetPlan(plan, supplied) {
   return report;
 }
 
-function validateRun(plan, report, add) {
+function validateRun(plan, report, add, { retainedOnly = false } = {}) {
   for (const permission of ['sourceAccess', 'dataRetention', 'imageDisplay']) {
     const p = plan.permissions?.[permission];
     if (!object(p) || p.status !== 'approved' || !evidence(p) || !text(p.basis)) add(`permission-unselected:${permission}`);
@@ -308,9 +373,15 @@ function validateRun(plan, report, add) {
   const cacheOK = object(c) && ['cold', 'verified-hits'].includes(c.policy) && c.key === 'full-context+complete-selection+provider-version'
     && integer(c.ttlMs, 1) && integer(c.entryBytes, 1) && object(c.hits)
     && ['candidate', 'solver', 'otd', 'image'].every((k) => integer(c.hits[k]));
-  const workOK = object(work) && ['candidateRequests', 'solverCandidates', 'otdConfigurations', 'imageConfigurations', 'viewsPerConfiguration', 'imageBytesPerView'].every((k) => integer(work[k]))
-    && work.solverCandidates >= report.coverage.distinctProved + report.coverage.synthetic
-    && work.otdConfigurations >= report.coverage.distinctProved + report.coverage.synthetic;
+  const workKeys = ['candidateRequests', 'solverCandidates', 'otdConfigurations', 'imageConfigurations', 'viewsPerConfiguration', 'imageBytesPerView'];
+  const workOK = object(work) && workKeys.every((k) => integer(work[k]))
+    && (retainedOnly ? workKeys.every((k) => work[k] === 0)
+      : work.solverCandidates >= report.coverage.distinctProved + report.coverage.synthetic
+        && work.otdConfigurations >= report.coverage.distinctProved + report.coverage.synthetic);
+  if (retainedOnly && (!limitsOK || ['requests', 'imageRequests', 'cacheEntries', 'cacheBytes'].some((k) => b[k] !== 0)
+    || b.concurrency !== 1 || !cacheOK || c.policy !== 'cold' || Object.values(c.hits).some((n) => n !== 0)
+    || !retryOK || r.maxRetries !== 0 || r.initialBackoffMs !== 0 || r.maxBackoffMs !== 0
+    || r.multiplier !== 1 || r.retryStatuses.length !== 0)) add('retained-only-run-required');
   if (!limitsOK) add('missing-numeric-budgets');
   if (!retryOK) add('invalid-retry-backoff');
   if (!cacheOK) add('invalid-cache-policy');
