@@ -5,14 +5,14 @@
   "sourceGrant": false,
   "sourceCapacityCredit": 0,
   "acceptance": false,
-  "seriesPlanSha256": "012457d5104f1937b82a54e55687fc6b782d8df5f7d7fb58666bb91f471ab92c",
+  "seriesPlanSha256": "96ec8dc874241bfe9b2a2928d226d88a4b9cbb073a8ebddb05ac12c5efa694c2",
   "candidateManifestSha256": "7b6a47a7cdfe835faafc506e22d3bd70570abe1e0f8da032aef06c48eccd370a",
   "selected": {
-    "preparationChecks": 4,
+    "preparationChecks": 5,
     "externalRouteFixtureChecks": 1,
     "nestedStrictChildChecks": 10,
-    "topLevelTests": 5,
-    "pass": 5,
+    "topLevelTests": 6,
+    "pass": 6,
     "fail": 0,
     "skipped": 0
   },
@@ -25,12 +25,12 @@
           "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/live-check.test.mjs": "d6e11803cb23a7de62db8fdf1663fb73114785093db509c9756a4ed94e6c341e",
           "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/prepare-chunk.py": "468c4c4e8a62676f9eff81b43ea545c242d8ffcf73d8da761a093725a4af14fd",
           "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/prepare-series.py": "7a0578063c5425b47a90697083d711c685c7c1268337f0d851c6491d51cfdbcf",
-          "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/prepared-check.test.mjs": "9fadd5f896bfafb9a431c32210efdb9dfd01c29680ce870bf6fa0e4f0ce9bb2a",
+          "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/prepared-check.test.mjs": "28122129f9662875df1c0139e71824adf123a05aba44670a9e1027c0bb0a09af",
           "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/reconcile-retained.py": "eb83d91e568b6dc17035ea5d46536e6a2b780590b512a05c066729ffd761c350",
           "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/retained-route.test.mjs": "65c977889f4fdd744d29b1c49f1fa859135a20198a852d6ce60ad4c9f70248db",
           "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/run-live.mjs": "c5babe81854f2b2bc21c75660105216b7842faada29ff917e0dc2f772a5fc12e",
           "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/run-series.py": "2f259686490a3ce6fec90a484b464c119d249892833edf82c2b34b6b8849bfa5",
-          "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/series-plan.json": "012457d5104f1937b82a54e55687fc6b782d8df5f7d7fb58666bb91f471ab92c",
+          "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/series-plan.json": "96ec8dc874241bfe9b2a2928d226d88a4b9cbb073a8ebddb05ac12c5efa694c2",
           "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/supervise.py": "5eab6279f8c0b75babdb23d4ecb0f70654ea37b402f8385c867fc1ffab30c44d",
           "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/templates/chunk01.json": "fcbc481948b903b529051f032ad9a55cc48534b4276f7fa164994270edd4efcc",
           "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/templates/chunk02.json": "9f84288f1754f2697fbd8cc7fddc8b59737d413c0fccc9bbe9fce2813a44085f",
@@ -82,27 +82,27 @@
         "issue": null,
         "issue_kind": null,
         "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/typed-axis1024-prepared.log",
-        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/ownership/74a89772113144cca24f7fee51752d42.json",
-        "peak_rss": 311001088,
-        "peak_scratch": 426144,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/ownership/60ba7b20f1b7422e8ad4c1e4a0dfc9e1.json",
+        "peak_rss": 325730304,
+        "peak_scratch": 1361361,
         "rc": 0,
         "scope": "scoped",
         "summary": {
           "cancelled": 0,
           "fail": 0,
-          "pass": 4,
+          "pass": 5,
           "skipped": 0,
-          "tests": 4,
+          "tests": 5,
           "todo": 0
         },
-        "wall": 1.4654475
+        "wall": 1.69725225
       },
       "cleanup": {
         "code_identity_unchanged": true,
         "compatibility_exception": null,
         "dependency_link_absent": true,
         "groups_absent": true,
-        "removed_allocation_bytes": 426144,
+        "removed_allocation_bytes": 1361361,
         "reservation_absent": true,
         "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/typed-axis1024-prepared-result.json",
         "scratch_absent": true
@@ -110,19 +110,19 @@
       "receipts": {
         "result": {
           "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/typed-axis1024-prepared-result.json",
-          "sha256": "232a5b24d274c8f45b7a6e8cb64c0045420a58453c1506b487bed494f2602816"
+          "sha256": "7c35ee88ab77ec051f8cb2377f9fef845075d041518df348301873fa7a474ba7"
         },
         "cleanup": {
           "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/typed-axis1024-prepared-cleanup.json",
-          "sha256": "337d00e56d4ce8f49256a040dfc460b3716e1203bb3c3f2638a1e92bc1165cfc"
+          "sha256": "bf30385546e50fb701847cfd7f41af718e9a59fb3e87497bc6b66168ee2c7589"
         },
         "plan": {
           "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/typed-axis1024-prepared-plan.json",
-          "sha256": "a424b1538a8f078d73b8c3350bd86052f115931f0ed61218f184ddb570568fe6"
+          "sha256": "92cc3639e18a25fe85dc73647af24f86c6c0617e24266692fca0c20037fe705c"
         },
         "coverage": {
           "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/typed-axis1024-prepared-coverage.json",
-          "sha256": "a2a2095d3a48fe301123242492fc95bdaedf8be7ed50666a942bb0a0f35c7d66"
+          "sha256": "217dbd5ba1b0f3d7963d85617f82f4e934d85c7d461b50107bc0c6a35cc2cd85"
         }
       }
     },
@@ -134,12 +134,12 @@
           "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/live-check.test.mjs": "d6e11803cb23a7de62db8fdf1663fb73114785093db509c9756a4ed94e6c341e",
           "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/prepare-chunk.py": "468c4c4e8a62676f9eff81b43ea545c242d8ffcf73d8da761a093725a4af14fd",
           "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/prepare-series.py": "7a0578063c5425b47a90697083d711c685c7c1268337f0d851c6491d51cfdbcf",
-          "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/prepared-check.test.mjs": "9fadd5f896bfafb9a431c32210efdb9dfd01c29680ce870bf6fa0e4f0ce9bb2a",
+          "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/prepared-check.test.mjs": "28122129f9662875df1c0139e71824adf123a05aba44670a9e1027c0bb0a09af",
           "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/reconcile-retained.py": "eb83d91e568b6dc17035ea5d46536e6a2b780590b512a05c066729ffd761c350",
           "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/retained-route.test.mjs": "65c977889f4fdd744d29b1c49f1fa859135a20198a852d6ce60ad4c9f70248db",
           "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/run-live.mjs": "c5babe81854f2b2bc21c75660105216b7842faada29ff917e0dc2f772a5fc12e",
           "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/run-series.py": "2f259686490a3ce6fec90a484b464c119d249892833edf82c2b34b6b8849bfa5",
-          "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/series-plan.json": "012457d5104f1937b82a54e55687fc6b782d8df5f7d7fb58666bb91f471ab92c",
+          "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/series-plan.json": "96ec8dc874241bfe9b2a2928d226d88a4b9cbb073a8ebddb05ac12c5efa694c2",
           "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/supervise.py": "5eab6279f8c0b75babdb23d4ecb0f70654ea37b402f8385c867fc1ffab30c44d",
           "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/templates/chunk01.json": "fcbc481948b903b529051f032ad9a55cc48534b4276f7fa164994270edd4efcc",
           "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/templates/chunk02.json": "9f84288f1754f2697fbd8cc7fddc8b59737d413c0fccc9bbe9fce2813a44085f",
@@ -191,9 +191,9 @@
         "issue": null,
         "issue_kind": null,
         "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/typed-axis1024-route.log",
-        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/ownership/17eb1e518717487d96199d7d1ad331c3.json",
-        "peak_rss": 354107392,
-        "peak_scratch": 1704776,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/ownership/3f6739336480416cabe78b0bde92e1e3.json",
+        "peak_rss": 354320384,
+        "peak_scratch": 2167656,
         "rc": 0,
         "scope": "scoped",
         "summary": {
@@ -204,14 +204,14 @@
           "tests": 1,
           "todo": 0
         },
-        "wall": 1.7287554170000001
+        "wall": 1.9852477920000002
       },
       "cleanup": {
         "code_identity_unchanged": true,
         "compatibility_exception": null,
         "dependency_link_absent": true,
         "groups_absent": true,
-        "removed_allocation_bytes": 1704776,
+        "removed_allocation_bytes": 2167656,
         "reservation_absent": true,
         "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/typed-axis1024-route-result.json",
         "scratch_absent": true
@@ -219,19 +219,19 @@
       "receipts": {
         "result": {
           "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/typed-axis1024-route-result.json",
-          "sha256": "4232f53d7485eefa04f40735001f92981be40f5dde66cdefb2a2e670ad508435"
+          "sha256": "264d6a0be591b5571d9509595dbae86ec5e64072ed6296ecec2e410a13e12c55"
         },
         "cleanup": {
           "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/typed-axis1024-route-cleanup.json",
-          "sha256": "e68c7aa6dbf4ee80968d6746d4f2eb3b417764f50912d595f48fa6091d47bc7e"
+          "sha256": "b0fe09230f33cbeb7a10fd6459f6e6987e41790547734a958e919cada9a5d0fb"
         },
         "plan": {
           "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/typed-axis1024-route-plan.json",
-          "sha256": "2c4ef41e55f90570c78b4292701ac21cd86d53484f02500cc6b3c702044b6a7a"
+          "sha256": "d4ddd9d217c82dcdcd1d124adef6ecb2ae9bf7b573d8e327ffee1955878a57d9"
         },
         "coverage": {
           "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/typed-axis1024-route-coverage.json",
-          "sha256": "325dbf2c722f77a9be0b8bdb479ac91a0659ba01562f587db9acd22fd2fa7a0d"
+          "sha256": "d40c68a5d518a7585519a185674ef33bb84858bbaed4b3ea7082a2b04d62fbfc"
         }
       }
     }
@@ -418,12 +418,12 @@
     "allGroupsAbsent": true,
     "dependencyLinkAbsent": true,
     "allReservationsAbsent": true,
-    "removedAllocationBytes": 2130920,
-    "peakRssBytes": 354107392,
+    "removedAllocationBytes": 3529017,
+    "peakRssBytes": 354320384,
     "compatibilityException": null,
     "leftovers": []
   },
-  "selection": "1024 exact unspent requests,130 actual admitted core sources, seven actual typed optional definitions, public batch-plan validation, all frozen pins/budgets/script syntax, missing series release refusal, incomplete predecessor/retained cleanup refusals, five strict checks against externally routed actual32 inputs and five against a zero-admission synthetic projection.",
+  "selection": "1024 exact unspent requests,130 actual admitted core sources, seven actual typed optional definitions, public batch-plan validation, all frozen pins/budgets/script syntax, missing series release refusal, incomplete predecessor/retained cleanup refusals, five strict checks against externally routed actual32 inputs and five against a zero-admission synthetic projection. Positive exact external-input freezing and repeat-freeze preservation also passed in an isolated owned fixture.",
   "exclusions": "No actual source, full series-wrapper execution, full suite, browser/UI, native SQL, active corpus, publication/runtime integration or acceptance. New outside-Git runner inputs and allocation integrity are checked by code and parent review; no end-to-end source supervisor fixture ran.",
   "outputAllocated": false,
   "oneDriveOutputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-typed-axis1024-20261107-once"
