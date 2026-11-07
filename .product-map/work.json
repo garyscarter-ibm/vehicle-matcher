@@ -1844,7 +1844,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-58",
-      "observed_at": "2026-11-07T03:32:24Z",
+      "observed_at": "2026-11-07T03:49:36Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -1869,9 +1869,9 @@
           "title": "Corroborate selected GB/RHD descriptor, year, plant and era"
         },
         {
-          "evidence": "1133actualsource nowretained after4model and260trimpackagepilot+suffix; all45retained semanticchecks passed; original31scheme-line/profile/year/plant/five-WMI evidenceopen. docs/gcsp/evidence/fucq59/f70-trim-package-suffix-2026-11-07/actual/actual-series.json",
+          "evidence": "1165 admitted source configurations after actual32modelaxis pilot;32new/0duplicate/0reject and20scopedchecks. G42 diagnostic retained6complete model facts/61relationships; no admissions. Original allscheme/profile/year/plant/five-WMI obligations remain open.",
           "id": "scheme-catalogue",
-          "observed_at": "2026-11-07T03:32:24.005412+00:00",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
           "status": "in-progress",
           "title": "Join every scheme line to exact dated constructible catalogue contexts"
         },
@@ -1929,8 +1929,8 @@
           "harness": "codex",
           "source": "Coordinator observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
           "observed_at": "2026-11-07T03:06:23.061001+00:00",
-          "expires_at": "2026-11-07T03:51:23.061001+00:00",
-          "status": "active at observation; original acceptance open"
+          "expires_at": "2026-11-07T03:49:35.860351+00:00",
+          "status": "previous role completed or superseded; retain observation"
         },
         {
           "name": "Charlie Dog",
@@ -1938,8 +1938,8 @@
           "harness": "codex",
           "source": "Coordinator observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
           "observed_at": "2026-11-07T03:06:23.061001+00:00",
-          "expires_at": "2026-11-07T03:51:23.061001+00:00",
-          "status": "active at observation; original acceptance open"
+          "expires_at": "2026-11-07T03:49:35.860351+00:00",
+          "status": "previous role completed or superseded; retain observation"
         },
         {
           "name": "Minnie Mouse",
@@ -1949,6 +1949,24 @@
           "observed_at": "2026-11-07T03:18:13.087785+00:00",
           "expires_at": "2026-11-07T03:48:13.087785+00:00",
           "status": "active at observation; original acceptance open"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "finite four-model source continuation",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:19:35.860351+00:00",
+          "status": "active at observation; original acceptance open"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "G42 six-model source qualification preparation",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:19:35.860351+00:00",
+          "status": "active at observation; original acceptance open"
         }
       ]
     },
@@ -1956,7 +1974,7 @@
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-04-032",
       "id": "FUCQ-59",
-      "observed_at": "2026-11-07T03:32:24Z",
+      "observed_at": "2026-11-07T03:49:36Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -1988,9 +2006,9 @@
           "title": "Finite source budgets, deadlines and default no-traffic safety (2 points)"
         },
         {
-          "evidence": "Actual1133admitted/1136canonical/1846spent; mostrecent260solver/296GET/9214530decodedB yielded260novel/0dupe/0reject,130eachrequestedEV/EW retained. All9primary hashes independentlymatched, everyprior884entryverbatim and1594spentprefix preserved;45strict retainedchecks reused. Source breadth and MediumOneDriveeventpersistence remainopen.",
+          "evidence": "32pilot requests admitted8each1F7A/C/D/F;48GET/3642984decodedB/20retainedchecks passed. Parent primary/index audit verified1165admitted1168canonical1878spent and prior entries/prefix unchanged. Separate758suffix nowrunning; do not credit unfinished results. docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/actual-pilot/actual-pilot.json",
           "id": "source-qualification",
-          "observed_at": "2026-11-07T03:32:24.005412+00:00",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
           "status": "in-progress",
           "title": "Selected real-source model mapping and solver integration (1 point)"
         },
@@ -2064,8 +2082,8 @@
           "harness": "codex",
           "source": "Coordinator observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
           "observed_at": "2026-11-07T03:06:23.061001+00:00",
-          "expires_at": "2026-11-07T03:51:23.061001+00:00",
-          "status": "active at observation; original acceptance open"
+          "expires_at": "2026-11-07T03:49:35.860351+00:00",
+          "status": "previous role completed or superseded; retain observation"
         },
         {
           "name": "Charlie Dog",
@@ -2073,8 +2091,8 @@
           "harness": "codex",
           "source": "Coordinator observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
           "observed_at": "2026-11-07T03:06:23.061001+00:00",
-          "expires_at": "2026-11-07T03:51:23.061001+00:00",
-          "status": "active at observation; original acceptance open"
+          "expires_at": "2026-11-07T03:49:35.860351+00:00",
+          "status": "previous role completed or superseded; retain observation"
         },
         {
           "name": "Minnie Mouse",
@@ -2083,6 +2101,24 @@
           "source": "Coordinator directly observed active; requested/selected Sol/high; effective runtime unverified; nofallback",
           "observed_at": "2026-11-07T03:18:13.087785+00:00",
           "expires_at": "2026-11-07T03:48:13.087785+00:00",
+          "status": "active at observation; original acceptance open"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "758suffix actual source execution",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:19:35.860351+00:00",
+          "status": "active at observation; original acceptance open"
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "G42 six-model source qualification preparation",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:19:35.860351+00:00",
           "status": "active at observation; original acceptance open"
         }
       ]
@@ -2094,7 +2130,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T03:32:24Z",
+      "observed_at": "2026-11-07T03:49:36Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60",
       "workers": [
         {
@@ -2130,8 +2166,8 @@
           "harness": "codex",
           "source": "Coordinator observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
           "observed_at": "2026-11-07T03:06:23.061001+00:00",
-          "expires_at": "2026-11-07T03:51:23.061001+00:00",
-          "status": "active at observation; original acceptance open"
+          "expires_at": "2026-11-07T03:49:35.860351+00:00",
+          "status": "previous role completed or superseded; retain observation"
         },
         {
           "name": "Mike Wazowski",
@@ -2140,6 +2176,15 @@
           "source": "Coordinator directly observed active; requested/selected Sol/medium; effective runtime unverified; nofallback",
           "observed_at": "2026-11-07T03:18:13.087785+00:00",
           "expires_at": "2026-11-07T03:48:13.087785+00:00",
+          "status": "active at observation; original acceptance open"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "twoimage .7publication preparation",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:19:35.860351+00:00",
           "status": "active at observation; original acceptance open"
         }
       ],
@@ -2211,22 +2256,22 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T03:32:24Z",
+      "observed_at": "2026-11-07T03:49:36Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-61",
       "slices": [
         {
           "id": "source-run",
           "status": "in-progress",
           "title": "Execute qualified real collection",
-          "observed_at": "2026-11-07T03:32:24.005412+00:00",
-          "evidence": "Actual1133qualifieddistinctsource;8867shortof10000. Finite260requestseries completed622.483s/original900s, no reset/replay. Next790unspentmodelvariantpoolpreparing; no trafficreleased."
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "evidence": "1165actualdistinctadmitted source;8835shortof10000. Actual32pilot passed; finite758suffix released separately andrunning. Projected requests do not count as distinct outcomes."
         },
         {
           "id": "semantic-audit",
           "status": "in-progress",
           "title": "Recompute all accepted signatures",
-          "observed_at": "2026-11-07T03:32:24.005412+00:00",
-          "evidence": "1136canonical/1133admitted/1846spentindices pinned; all9primaries independentlyhashed and45requiredsemanticchecks passed. Fixturesandpriorobservations excludedfromactualcount."
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "evidence": "Parent audited4pilotprimary/index hashes;20required strict retainedchecks passed;1168canonical/1165admitted/1878spent, prior1136entries and1846spent prefix unchanged."
         },
         {
           "id": "staged-verifier",
@@ -2246,8 +2291,8 @@
           "id": "integration",
           "status": "in-progress",
           "title": "Integrate actual collected enriched corpus and cached replay",
-          "observed_at": "2026-11-07T03:32:24.005412+00:00",
-          "evidence": "1133retainedsourcesintegratedroot; .6ordinary/public/deployed869source fully871DTOverified. Preparing1133 .7candidate through existingpublisher."
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "evidence": "Root integrated1133source .7package prep and32newsource pilot checkpoint; .6ordinary/public/deployed still869source. .7offline1135DTO+1135HTTPunion passed with2configuredconsumerMediumfailures retained."
         }
       ],
       "unsliced": false,
@@ -2268,8 +2313,8 @@
           "harness": "codex",
           "source": "Coordinator observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
           "observed_at": "2026-11-07T03:06:23.061001+00:00",
-          "expires_at": "2026-11-07T03:51:23.061001+00:00",
-          "status": "active at observation; original acceptance open"
+          "expires_at": "2026-11-07T03:49:35.860351+00:00",
+          "status": "previous role completed or superseded; retain observation"
         },
         {
           "name": "Minnie Mouse",
@@ -2278,6 +2323,15 @@
           "source": "Coordinator directly observed active; requested/selected Sol/high; effective runtime unverified; nofallback",
           "observed_at": "2026-11-07T03:18:13.087785+00:00",
           "expires_at": "2026-11-07T03:48:13.087785+00:00",
+          "status": "active at observation; original acceptance open"
+        },
+        {
+          "name": "Minnie Mouse",
+          "role": "actual source count toward10000",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:19:35.860351+00:00",
           "status": "active at observation; original acceptance open"
         }
       ]
@@ -2289,7 +2343,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T03:32:24Z",
+      "observed_at": "2026-11-07T03:49:36Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62",
       "claim_evidence": "Claimed owning035 at34a793e3; root checkpoint authorisation, Jira OAuth unavailable. Full acceptance remains open.",
       "slices": [
@@ -2332,8 +2386,8 @@
           "id": "source-targets",
           "status": "in-progress",
           "title": "Actual 200 target and scheme model coverage",
-          "observed_at": "2026-11-07T03:32:24.005412+00:00",
-          "evidence": "869actualsource .6publicrelease/ordinary/Renderactive, retained1133readyfornextincrement. Numeric200met; fullscheme/profile/coverage/10000originalobligationsopen."
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "evidence": "869sources live;1133in .7offline package;1165retained. Numeric200met; original allscheme/profile/coverage/10000obligations open."
         },
         {
           "id": "scale",
@@ -2346,8 +2400,8 @@
           "id": "integration",
           "status": "in-progress",
           "title": "Application and deployed integration acceptance",
-          "observed_at": "2026-11-07T03:32:24.005412+00:00",
-          "evidence": "Exact .6manifest421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d, releasefleet-2026-11-07-6,21assets/44787324B. Ordinaryactivationandoldassociationspreserved; Renderdeployment7615917737code d028839596158fcbc42a2969793dda881b385ab2success. LinuxNode20run42333763377passed;all871actualproductionDTOsmatched. .7prepstarted1133source/2images."
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "evidence": "Offline .7manifest86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f;1134config1133source1VIN2images;22assets63361942B. Root independently rehashed all assets.1135lookupDTOs and1024+111HTTPunique union passed;2configuredconsumerMediumfailures deferred. Publicrelease preparing; .6remainslive."
         },
         {
           "id": "large-artifact-restore",
@@ -2374,8 +2428,8 @@
           "harness": "codex",
           "source": "Coordinator observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
           "observed_at": "2026-11-07T03:06:23.061001+00:00",
-          "expires_at": "2026-11-07T03:51:23.061001+00:00",
-          "status": "active at observation; original acceptance open"
+          "expires_at": "2026-11-07T03:49:35.860351+00:00",
+          "status": "previous role completed or superseded; retain observation"
         },
         {
           "name": "Charlie Dog",
@@ -2384,6 +2438,15 @@
           "source": "Coordinator directly observed active; requested/selected Sol/high; effective runtime unverified; nofallback",
           "observed_at": "2026-11-07T03:18:13.087785+00:00",
           "expires_at": "2026-11-07T03:48:13.087785+00:00",
+          "status": "active at observation; original acceptance open"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "immutable .7publicrelease preparation",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:19:35.860351+00:00",
           "status": "active at observation; original acceptance open"
         }
       ]
@@ -2395,7 +2458,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T03:32:24Z",
+      "observed_at": "2026-11-07T03:49:36Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-63",
       "slices": [
         {
@@ -2430,8 +2493,8 @@
           "id": "integration",
           "status": "in-progress",
           "title": "Integrate actual published corpus and authored regression evidence",
-          "observed_at": "2026-11-07T03:32:24.005412+00:00",
-          "evidence": "869source .6public/ordinary/liveproofcomplete; .7for1133source/2imagespreparing. Originalfullcorpus/profile/WMI/orderreferenceacceptanceremainsopen; no Doneclaim."
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "evidence": "Offline .7actual1135lookupDTO parity,1024+111HTTPunion unique1135/0overlap/0egress and5recovery cases passed. Configuredconsumer1133/1135;2Medium failures retained and deferred. ExistingHTTPsamplecap1024 limitation recorded. .7publicpreparing; .6live871DTOverified."
         }
       ],
       "unsliced": false,
@@ -2453,6 +2516,15 @@
           "source": "Coordinator directly observed active; requested/selected Sol/high; effective runtime unverified; nofallback",
           "observed_at": "2026-11-07T03:18:13.087785+00:00",
           "expires_at": "2026-11-07T03:48:13.087785+00:00",
+          "status": "active at observation; original acceptance open"
+        },
+        {
+          "name": "Mike Wazowski",
+          "role": "1135DTO and HTTP/recovery .7proof",
+          "harness": "codex",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:19:35.860351+00:00",
           "status": "active at observation; original acceptance open"
         }
       ]
