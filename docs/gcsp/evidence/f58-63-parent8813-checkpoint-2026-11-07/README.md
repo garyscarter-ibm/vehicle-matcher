@@ -9,3 +9,10 @@ The external .11candidate attempt stopped with artifact-changed after18.657secon
 The native PostgreSQL attempt stopped before any package installed, after three requests. The original exception was suppressed and the bounded receipt does not prove its cause. The installer’s source stage boundary is under diagnosis. All owned scratch, groups, links and reservations were removed;14,811,520scratch bytes were reclaimed. No native database proof ran.
 
 The exact untried F70 remainder and separate breadth phase03 are authorised within their recorded limits. Medium consumer/event-persistence defects remain deferred; no consumer failure, missing coverage, source shortfall or original acceptance criterion is waived. All six stories remain In Progress.
+
+
+## Build and native checkpoint, 06:54 UTC
+
+Linux run42348157842 passed at exact84056a18:26assets,5scopedreferences,publicdownload/offlinerepeat; full4668proof was reused only for unchanged inputs. Renderdeployment7617678535 succeeded at06:46:15 but the actual new2GETprobe returned ready `.9` manifest28374a10, so `.10` live acceptance is not established and noDTOcall was attempted. Actual dashboard build configuration/root remains unverified. The scoped Render npm-install entry mitigation restores the code-approved YAMLrelease for the exactGCSPservice; updated explicit Blueprint builds skip that duplicate step. Four focused tests and14boundary tests pass; independent code/security review passed. Ordinary/retail installs make no artifact calls; runtime lookup stays offline. Exact deployed follow-through is still required.
+
+The `.11` candidate2 passed with8051source/8052configuration/8053references; manifest77f4dc0a. Its567407232B local active-build working set was removed with scratch/group/link/reservation absence. Actual proof is separately chunked. All seven exact PostgreSQL bottles and their actual embedded formula bytes were retained and reviewed separately from catalog formula hashes; installation/native proof remain unrun. Seven-bottle inspection took13.876s,21publicoperations and retained66916816bytes; no aliases/kegs changed and no scratch/partial/group/reservation remains.

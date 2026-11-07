@@ -21,7 +21,7 @@ services:
     branch: gcsp-poc
     # Restore the code-pinned corpus at build time; runtime lookup stays offline.
     buildCommand: >-
-      cd server && npm install &&
+      cd server && GCSP_FLEET_BUILD_EXPLICIT=1 npm install &&
       node scripts/fleet-artifacts.mjs restore
       --release 0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a
       --store "$PWD/data/gcsp/vehicle-evidence/fleet-source.v1"
