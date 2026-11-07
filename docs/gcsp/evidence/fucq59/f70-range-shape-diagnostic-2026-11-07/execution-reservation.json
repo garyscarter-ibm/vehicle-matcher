@@ -1,0 +1,7 @@
+{
+  "status": "prepared-unspent-no-traffic-grant",
+  "allocationId": "f70-1f7a-range-shape-20261107-once",
+  "planDigest": "df0b77a4e6a779ef17c09f130858930400f67ae858110098a8bd316aa5fb18f9",
+  "executionPlanSha256": "fa98d9f5a38d96899f865992735f97e913e12cdc1d5a013869b3561c6d5d0938",
+  "exclusiveMarkerCreatedOnlyByLiveRunner": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-range-shape-diagnostic-2026-11-07/execution-once.json"
+}
