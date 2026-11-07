@@ -1,0 +1,13 @@
+{
+  "scope": "Linux scoped5boundary+exact31assets",
+  "runtime": "v20.20.2",
+  "platform": "linux",
+  "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "scopedReferences": 5,
+  "scopedConsumerFailures": 2,
+  "historical10002ProofReplayed": false,
+  "originalConsumerFailures": 2707,
+  "buildHTTPSCalls": 62,
+  "fullSuiteRun": false,
+  "acceptance": false
+}
