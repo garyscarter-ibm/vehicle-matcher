@@ -2,8 +2,8 @@ import { createHash } from 'node:crypto';
 import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { bmwCatalogueLookupIdentity, validateBmwCatalogueV2Envelope } from '../../server/vehicle-evidence/bmw-catalogue-adapter.js';
 import { CollectionError, requireValue } from './configuration-key.mjs';
-import { publicBmwOperations, strictModelReport, validatePublicBmwPlan } from './public-bmw-source.mjs';
-import { BMW_BATCH_SOURCE_VERSION, bmwPublicRequestUrls } from './bmw-public-registration.mjs';
+import { publicBmwOperations, strictModelReport, validateBmwModelLineReport, bmwModelLineLocators, validatePublicBmwPlan } from './public-bmw-source.mjs';
+import { BMW_BATCH_SOURCE_VERSION, BMW_MODEL_BATCH_SOURCE_VERSION, isBmwBatchPlan, bmwBatchPlanRequestUrls } from './bmw-public-registration.mjs';
 
 export const BMW_SELECTION_BINDING_VERSION = 'bmw-selection-binding.v1';
 const CAPTURE = 'bmw-complete-selection.v1';
@@ -43,7 +43,7 @@ function locate(value, pointer) {
   }
   return value;
 }
-function urlScope(request, operation) {
+function urlScope(request, operation, plan) {
   fail(keys(request, ['method', 'url']) && request.method === 'GET' && typeof request.url === 'string');
   let url; try { url = new URL(request.url); } catch { fail(false); }
   fail(url.origin === 'https://prod.ucp.bmw.cloud' && !url.username && !url.password && !url.hash
@@ -56,7 +56,10 @@ function urlScope(request, operation) {
   };
   const set = (name) => {
     fail(url.searchParams.getAll(name).length <= 1);
-    const value = url.searchParams.get(name); const result = value === null ? [] : value.split(',').sort();
+    const value = url.searchParams.get(name);
+    const explicitEmpty = name === 'mandatory-elements' && operation === 'solve' && plan.source.version === BMW_MODEL_BATCH_SOURCE_VERSION && plan.lineRegistration.optionsQuery.kind === 'untrimmed';
+    if (explicitEmpty) fail(url.searchParams.getAll(name).length === 1 && value === '');
+    const result = value === null || explicitEmpty && value === '' ? [] : value.split(',').sort();
     fail(result.every(code) && new Set(result).size === result.length); return result;
   };
   return { operation, method: 'GET', url: request.url, modelCode: segment('models'), orderDate: segment('order-dates'),
@@ -82,7 +85,7 @@ function captureArtifact(entry, plan, operation) {
       && locator.name.length <= 96 && !names.has(locator.name)); names.add(locator.name);
     locate(document, locator.retainedPointer);
   }
-  return { ...artifact, scope: urlScope(observation.request, operation) };
+  return { ...artifact, scope: urlScope(observation.request, operation, plan) };
 }
 function evidence(artifact, id, role, locators) {
   const observed = artifact.document.observation;
@@ -99,16 +102,17 @@ function treeFacts(tree, plan) {
     return [group, { modelRanges: { [range]: { models: { [model]: structuredClone(node.facts) } } } }];
   }));
   // Reuse the original projector's exact alias/model/type checks without a new source path.
-  fail(same(strictModelReport(raw, r), report));
+  if (plan.source.version === BMW_MODEL_BATCH_SOURCE_VERSION) validateBmwModelLineReport(report, r, plan.lineRegistration);
+  else fail(same(strictModelReport(raw, r), report));
   const expected = report.nodes.flatMap((node, index) => Object.entries(node.fieldPointers).map(([field, sourcePointer]) =>
-    ({ name: `${index}-${field}`, sourcePointer, retainedPointer: `/report/nodes/${index}/facts/${field}` })));
+    ({ name: `${index}-${field}`, sourcePointer, retainedPointer: `/report/nodes/${index}/facts/${field}` }))).concat(plan.source.version === BMW_MODEL_BATCH_SOURCE_VERSION ? bmwModelLineLocators(report) : []);
   fail(same(tree.document.locators, expected));
   const rename = { modelRange: 'rawModelRange', steering: 'steeringLiteral', prodDate: 'catalogueProductionDate', modelNameRaw: 'modelName' };
   const first = report.nodes[0]; const fields = ['modelCode', 'agModelCode', 'modelRange', 'orderDate', 'effectDate', 'taxDate', 'steering', 'trim', 'prodDate', 'modelName', 'fuelTypeCode'];
   if (!Object.hasOwn(first.facts, 'modelName')) fields.push('modelNameRaw');
   const locators = fields.filter((name) => Object.hasOwn(first.facts, name)).map((name) => ({ name: rename[name] || name,
     sourcePointer: first.fieldPointers[name], retainedPointer: `/report/nodes/0/facts/${name}` }));
-  return { facts: first.facts, locators };
+  return { facts: first.facts, locators: locators.concat(plan.source.version === BMW_MODEL_BATCH_SOURCE_VERSION ? bmwModelLineLocators(report) : []) };
 }
 function solverSelection(solver, plan) {
   const report = solver.document.report;
@@ -136,7 +140,7 @@ function solverSelection(solver, plan) {
   const ignoredKnown = object(changes.maps) && Object.hasOwn(changes.maps, 'ignoredElements');
   const providerIgnored = ignoredKnown ? { state: 'known', codes: Object.keys(changes.maps.ignoredElements).sort() } : { state: 'unknown', codes: null };
   // With no missing request codes [] is the derived empty ignored set, never a response echo.
-  fail(ignoredKnown || missing.length === 0 || plan.source.version === BMW_BATCH_SOURCE_VERSION
+  fail(ignoredKnown || missing.length === 0 || isBmwBatchPlan(plan)
     && object(changes.maps?.removedElements) && same(Object.keys(changes.maps.removedElements).sort(), missing));
   const ignored = ignoredKnown ? providerIgnored.codes : [];
   const removed = missing.filter((name) => !ignored.includes(name));
@@ -203,7 +207,7 @@ function batchDefinitionClaims(binding, facts, selectedOptions, transportKind, p
   const definitions = document.report?.candidates?.[0]?.definitions;
   fail(document.schemaVersion === CAPTURE && o?.operation === 'options' && o.capability === 'bmw-options'
     && o.sourceId === plan.source.id && o.sourceVersion === plan.source.version && o.transportKind === transportKind
-    && o.observedAt.slice(0, 10) === plan.qualificationDate && same(o.request, { method: 'GET', url: bmwPublicRequestUrls(plan.modelRegistration).options })
+    && o.observedAt.slice(0, 10) === plan.qualificationDate && same(o.request, { method: 'GET', url: bmwBatchPlanRequestUrls(plan).options })
     && document.requestSha256 === sha(encode(o.request)) && document.rawSelectionSha256 === sha(encode(document.report))
     && document.report.status === 'schema-review-required' && document.report.candidates.length === 1
     && document.report.candidates[0].pointer === '' && Array.isArray(definitions) && definitions.length > 0 && definitions.length <= 512
@@ -237,9 +241,9 @@ export function buildBmwSelectionBinding(input = {}) {
     && facts.modelCode === plan.models[0] && facts.orderDate === plan.context.orderDate && facts.effectDate === plan.context.effectDate
     && solver.scope.modelCode === facts.modelCode && solver.scope.orderDate === facts.orderDate && solver.scope.effectDate === facts.effectDate
     && tree.scope.orderDate === facts.orderDate && tree.scope.effectDate === plan.context.catalogueDate && tree.scope.catalogueRangeKey === (plan.modelRegistration?.catalogueRangeKey || 'G61E'));
-  if (plan.source.version === BMW_BATCH_SOURCE_VERSION) {
-    const urls = bmwPublicRequestUrls(plan.modelRegistration);
-    fail(tree.scope.url === urls.discover && plan.candidates.some((row) => solver.scope.url === bmwPublicRequestUrls(plan.modelRegistration, row.request).solve));
+  if (isBmwBatchPlan(plan)) {
+    const urls = bmwBatchPlanRequestUrls(plan);
+    fail(tree.scope.url === urls.discover && plan.candidates.some((row) => solver.scope.url === bmwBatchPlanRequestUrls(plan, row.request).solve));
   }
   const requestScope = { market: plan.context.market, locale: plan.context.locale, catalogueRangeKey: tree.scope.catalogueRangeKey,
     requests: [tree.scope, solver.scope].map(({ catalogueRangeKey, ...scope }) => ({ ...scope, modelCode: facts.modelCode })) };
@@ -248,7 +252,7 @@ export function buildBmwSelectionBinding(input = {}) {
     [name, Object.hasOwn(facts, source) ? known(facts[source], 'tree', name) : unknown()]));
   const { providerIgnored, ...selection } = solverSelection(solver, plan);
   const canonicalIdentity = { vgModelCode: facts.modelCode, agModelCode: facts.agModelCode, factoryOptionCodes: [...selection.factoryOptionCodes] };
-  const definitions = plan.source.version === BMW_BATCH_SOURCE_VERSION
+  const definitions = isBmwBatchPlan(plan)
     ? batchDefinitionClaims(definitionBinding, facts, selection.factoryOptionCodes, solver.document.observation.transportKind, plan)
     : definitionClaims(definitionBinding, facts, selection.factoryOptionCodes, solver.document.observation.transportKind);
   const optionalFacts = Object.fromEntries(['trim', 'catalogueProductionDate', 'modelName', 'fuelTypeCode'].map((name) => {

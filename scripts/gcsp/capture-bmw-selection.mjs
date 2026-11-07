@@ -1,7 +1,8 @@
 import { createHash } from 'node:crypto';
 import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { createCollectionSession, assertCollectionHttpObservation } from './collection-session.mjs';
-import { publicBmwOperations, strictModelReport, validatePublicBmwPlan } from './public-bmw-source.mjs';
+import { publicBmwOperations, strictModelReport, bmwModelLineLocators, validatePublicBmwPlan } from './public-bmw-source.mjs';
+import { BMW_MODEL_BATCH_SOURCE_VERSION } from './bmw-public-registration.mjs';
 import { CollectionError, requireValue } from './configuration-key.mjs';
 
 export const BMW_SELECTION_CAPTURE_VERSION = 'bmw-complete-selection.v1';
@@ -71,9 +72,10 @@ export function publicBmwCompleteSelectionOperations(plan) {
   return Object.fromEntries(Object.entries(base).map(([name, descriptor]) => [name, { ...descriptor, strictJson: true,
     project: (value, request, metadata) => {
       if (name === 'discover') {
-        const report = strictModelReport(value, plan.modelRegistration); descriptor.project(value, request, metadata);
+        const projected = descriptor.project(value, request, metadata);
+        const report = plan.source.version === BMW_MODEL_BATCH_SOURCE_VERSION ? projected : strictModelReport(value, plan.modelRegistration);
         const result = artifact(report, metadata, name, report.nodes.flatMap((node, index) => Object.entries(node.fieldPointers)
-          .map(([field, sourcePointer]) => ({ name: `${index}-${field}`, sourcePointer, retainedPointer: `/report/nodes/${index}/facts/${field}` }))));
+          .map(([field, sourcePointer]) => ({ name: `${index}-${field}`, sourcePointer, retainedPointer: `/report/nodes/${index}/facts/${field}` }))).concat(plan.source.version === BMW_MODEL_BATCH_SOURCE_VERSION ? bmwModelLineLocators(report) : []));
         treeObserved = true; return result;
       }
       if (name === 'solve') {
