@@ -117,7 +117,7 @@ database's external address. Render filled in the internal one for `gcsp-api`.
 
 ## Fleet artifact restore (7 November 2026)
 
-The GCSP API build now restores the checksum-pinned fleet release after `npm install`. The build downloads public immutable artifacts into its local cache; runtime lookup and restart use local files offline. The `.4` release contains349 admitted source configurations,350 total records and1 preserved VIN, with no images. See [actual CLI proof](evidence/fucq62/render-build-restore-2026-11-07/README.md). The original public tag predates the empty-asset transport repair, so use the current application checkout with the immutable descriptor. A newer release must update the descriptor and Blueprint digest together.
+The GCSP API uses the complete repository checkout so its pinned root image assets and operator modules are available. Its build and start commands enter `server` explicitly. The build restores the checksum-pinned fleet release after `npm install`. The build downloads public immutable artifacts into its local cache; runtime lookup and restart use local files offline. The `.4` release contains349 admitted source configurations,350 total records and1 preserved VIN, with no images. See [actual CLI proof](evidence/fucq62/render-build-restore-2026-11-07/README.md). The original public tag predates the empty-asset transport repair, so use the current application checkout with the immutable descriptor. A newer release must update the descriptor and Blueprint digest together.
 
 The command has passed with actual public assets and an offline restart locally. Confirm the deployed build separately; a Blueprint commit does not itself prove Render executed it. Native PostgreSQL setup remains a separate credential-dependent step.
 
@@ -125,8 +125,8 @@ The command has passed with actual public assets and an offline restart locally.
 
 - Every push to `gcsp-poc`, which is every merge the pollers make, redeploys `gcsp-api` and `gcsp-site`. To control
   timing, change `autoDeployTrigger: commit` to `off` for each service in the file, and use **Manual Deploy**.
-- Build filters skip commits that can't change what runs. `gcsp-api` redeploys only for `server/` changes outside
-  its tests and markdown. `gcsp-site` redeploys only for the files its build copies, so `_dev/` and `docs/` commits
+- Build filters skip commits that can't change what runs. `gcsp-api` redeploys for API code, GCSP operator modules and pinned vehicle-image assets, excluding
+  its tests and server markdown. `gcsp-site` redeploys only for the files its build copies, so `_dev/` and `docs/` commits
   deploy nothing. If you add a file to the site's `cp` list, add it to `buildFilter.paths` too (a test checks).
 - Change GCSP's Render settings by editing `render.gcsp.yaml` and pushing. The exception is `DEMO_ACCESS_KEY`, which
   lives only in the dashboard.
