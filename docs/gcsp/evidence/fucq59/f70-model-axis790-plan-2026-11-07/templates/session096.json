@@ -1,0 +1,168 @@
+{
+  "schemaVersion": "1",
+  "planId": "f70-model-axis790-20261107-once-session096",
+  "version": "1",
+  "seed": "f70-model-axis790-direct-sorted-digests-20261107",
+  "policyRead": {
+    "asOf": "2026-11-06T00:00:00.000Z",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "source": {
+    "id": "bmw-uk-public",
+    "version": "f59-model-batch-20261107.v1",
+    "kind": "public-bmw-uk"
+  },
+  "context": {
+    "catalogueDate": "2026-11-01",
+    "market": "GB",
+    "locale": "en-GB",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05"
+  },
+  "models": [
+    "1F7C"
+  ],
+  "target": 8,
+  "candidateCount": 8,
+  "limits": {
+    "maxCandidates": 8,
+    "requestBudgets": {
+      "page": 1,
+      "settings": 1,
+      "discover": 1,
+      "options": 1,
+      "solve": 8
+    },
+    "maxAttempts": 1,
+    "operationTimeoutMs": 10000,
+    "deadlineMs": 120000,
+    "retryDelayMs": 0,
+    "concurrency": 1,
+    "cacheEntries": 16,
+    "cacheRetentionMs": 86400000,
+    "checkpointBytes": 4194304,
+    "imageRequests": 0,
+    "sourceAttempts": 12,
+    "sourceBytes": 4194304,
+    "responseBytes": 1048576
+  },
+  "captureVersion": "bmw-complete-selection.v1",
+  "qualificationDate": "2026-11-07",
+  "modelRegistration": {
+    "schemaVersion": "bmw-public-model-registration.v1",
+    "modelCode": "1F7C",
+    "agModelCode": "22GE",
+    "catalogueRangeKey": "F70",
+    "rawModelRange": "F70",
+    "aliases": [
+      "1"
+    ],
+    "market": "GB",
+    "locale": "en-GB",
+    "steering": "RL",
+    "catalogueDate": "2026-11-01",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05"
+  },
+  "lineRegistration": {
+    "lineKey": "M_PERFORMANCE_LINE",
+    "defaultModel": {
+      "modelCode": "1F7C",
+      "agModelCode": "22GE"
+    },
+    "includedIndex": 0,
+    "optionsQuery": {
+      "kind": "untrimmed"
+    }
+  },
+  "candidates": [
+    {
+      "candidateId": "candidate-b923e5e6f565ebcbad8a24cf",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C3Z",
+          "S03NA"
+        ],
+        "mandatoryElements": []
+      }
+    },
+    {
+      "candidateId": "candidate-3774bd64741e6116bec7f738",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0C4P",
+          "S01HA"
+        ],
+        "mandatoryElements": []
+      }
+    },
+    {
+      "candidateId": "candidate-dfef61334d9e6e90cd66c933",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0300",
+          "S01H5"
+        ],
+        "mandatoryElements": []
+      }
+    },
+    {
+      "candidateId": "candidate-cc8626ab9f802bf4f61caa62",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C3N",
+          "S03NB"
+        ],
+        "mandatoryElements": []
+      }
+    },
+    {
+      "candidateId": "candidate-61cf34e530bc8e25f4b59976",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0C5A",
+          "S01HA"
+        ],
+        "mandatoryElements": []
+      }
+    },
+    {
+      "candidateId": "candidate-d74714469fccadd84e593fbb",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0C3Z",
+          "S01HA"
+        ],
+        "mandatoryElements": []
+      }
+    },
+    {
+      "candidateId": "candidate-96ab0a8d4575515d95aec1af",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C4P",
+          "S03NA"
+        ],
+        "mandatoryElements": []
+      }
+    },
+    {
+      "candidateId": "candidate-04d56c40fef438d610701f30",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C4P",
+          "S03NA"
+        ],
+        "mandatoryElements": []
+      }
+    }
+  ]
+}
