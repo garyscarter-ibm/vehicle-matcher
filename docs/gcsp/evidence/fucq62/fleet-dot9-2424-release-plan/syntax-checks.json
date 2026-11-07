@@ -1,6 +1,6 @@
 {
-  "scope": "prepared-syntax-static-only",
-  "planSha256": "d8a3bc7e95693853557c15bca261675f8d4eef114e0e293fef56206be66587f6",
+  "scope": "prepared-syntax-static-only plus four in-memory owned-group state checks",
+  "planSha256": "adf2361bb798671a069ed42090bf4e1ec45f25c44781ca2edff13ccf28b5c307",
   "checks": [
     {
       "path": "docs/gcsp/evidence/fucq62/fleet-dot9-2424-release-plan/activate.mjs",
@@ -29,7 +29,7 @@
     },
     {
       "path": "docs/gcsp/evidence/fucq62/fleet-dot9-2424-release-plan/public.mjs",
-      "sha256": "95ddd4d06524314d3a70dc552c9feaf84015614ad5f284fc43bfb5e1430fc4c0",
+      "sha256": "15daa695461fd5fb9e8e777a40f98eae67664e406f21ffa7ae4e4511cbe51baf",
       "syntax": "passed"
     },
     {
@@ -44,13 +44,49 @@
     },
     {
       "path": "docs/gcsp/evidence/fucq62/fleet-dot9-2424-release-plan/supervise.py",
-      "sha256": "1dcff9aedffde4b4d51b57bc8349a48904b3c5796e6fd3f0bd3e1137e22adcd4",
+      "sha256": "d60d417305b4789e1182e4d887d53a82929b51afa65d3b9298f82efe6572956a",
+      "inMemoryCompile": "passed"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq62/fleet-dot9-2424-release-plan/group-proof.py",
+      "sha256": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
       "inMemoryCompile": "passed"
     }
   ],
-  "declaredPins": 172,
+  "groupProofExactReusedSha256": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
+  "groupStateChecks": [
+    {
+      "queryStates": [
+        false
+      ],
+      "absenceProved": true
+    },
+    {
+      "queryStates": [
+        null,
+        false
+      ],
+      "absenceProved": true
+    },
+    {
+      "queryStates": [
+        true
+      ],
+      "absenceProved": false
+    },
+    {
+      "queryStates": [
+        null,
+        null,
+        null
+      ],
+      "absenceProved": false
+    }
+  ],
+  "groupTestsFilesystemAllocation": false,
+  "declaredPins": 173,
   "pinsExactExceptExplicitUnappliedAnchor": true,
-  "descriptorExistingValidator": "passed read-only",
+  "descriptorExistingValidator": "passed read-only, unchanged descriptor identity",
   "patchesApplyCheck": [
     "registration.patch",
     "render.patch",

@@ -19,6 +19,18 @@ identity={str(ROOT/p):h for p,h in plan['codePins'].items()};identity[str(BASE/'
 assert grant['codePins']==plan['codePins'];assert all(sha(pathlib.Path(p))==h for p,h in identity.items());assert sha(ROOT/'server/gcsp/vehicle-evidence/fleet-releases.json')==plan['registrationProposal']['afterSha256']
 output=pathlib.Path(plan['outputRoot']);cloud=pathlib.Path('/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude').resolve();assert cloud.is_dir() and cloud in output.resolve().parents
 meta=pathlib.Path('/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot9-2424-release')/phaseIdentity;destination=output/phaseIdentity;assert not meta.exists() and not destination.exists(),'Fresh phase only; preserve actual prior attempts. Resume requires a newly reviewed plan/phase identity.'
+# Retained outer control log includes finalizer traceback, independently of terminal truncation.
+meta.mkdir(parents=True,mode=0o700);controlLog=(meta/'invocation.log').open('xb');remaining=[2*1024*1024]
+class ControlTee:
+ def __init__(self,original):self.original=original
+ def write(self,value):
+  if remaining[0]>0:
+   kept=value.encode('utf8')[:remaining[0]];controlLog.write(kept);controlLog.flush();remaining[0]-=len(kept)
+  try:self.original.write(value);self.original.flush()
+  except BrokenPipeError:pass
+  return len(value)
+ def flush(self):self.original.flush();controlLog.flush()
+sys.stdout=ControlTee(sys.stdout);sys.stderr=ControlTee(sys.stderr)
 inputs={str(grantPath):sha(grantPath)}
 for pin in [plan['offlineSummary'],plan['candidateReceipt'],plan['previousDescriptor']]:inputs[pin['path']]=pin['sha256']
 for p in pathlib.Path(plan['isolatedStore']).rglob('*'):
@@ -33,6 +45,7 @@ else:
  # Ordinary state is checked before and after by activate.mjs; it is deliberately excluded from immutable code/input pins.
 for path,digest in inputs.items():assert sha(pathlib.Path(path))==digest
 spec=importlib.util.spec_from_file_location('resources',ROOT/'_tools/test_resources.py');R=importlib.util.module_from_spec(spec);spec.loader.exec_module(R)
+spec=importlib.util.spec_from_file_location('group_proof',BASE/'group-proof.py');G=importlib.util.module_from_spec(spec);spec.loader.exec_module(G)
 seconds=600 if phase=='download' else 180;diskMiB=384 if phase in ['pack','download','ordinary'] else 64
 policy=R.Policy({'chunk_scratch_mib':320 if phase=='download' else 64,'chunk_ram_mib':768,'chunk_seconds':seconds,'log_mib':1});scratch=R.Scratch(meta,ROOT,policy,expected=(320 if phase=='download' else 64)*R.MIB,checkpoint=destination/'receipt.json');scratch.root=output/'.scratch'/('test-stamp-shard-'+scratch.token);scratch.record.update(root=str(scratch.root),location='cloud');host=R.HostBudget(policy)
 script='package.mjs' if phase=='pack' else ('activate.mjs' if phase=='ordinary' else 'public.mjs');command=['/opt/homebrew/bin/node','--max-old-space-size=256',str(BASE/script)]+([] if phase in ['pack','ordinary'] else [phase])
@@ -43,7 +56,7 @@ R.atomic_json(meta/'ownership.json',{'owner':R.owner(),'runId':'dot9-release-'+p
 def finish():
  global reserved,entered,finished,linkIdentity
  if finished:return
- assert all(R.group_has_live_members(g) is False for g in scratch.record['groups'])
+ assert G.prove_groups_absent(R,scratch.record['groups'],meta/'group-queries.json'),'Owned group absence not proved; live/unknown cannot bypass cleanup.'
  if linkIdentity:
   st=link.lstat();assert link.is_symlink() and (st.st_dev,st.st_ino)==linkIdentity and link.resolve()==vendor;link.unlink();linkIdentity=None
  if entered:
@@ -51,7 +64,7 @@ def finish():
  if scratch.root.parent.exists() and not any(scratch.root.parent.iterdir()):scratch.root.parent.rmdir()
  if reserved:host.release(scratch.token);reserved=False
  assert all(sha(pathlib.Path(p))==h for p,h in {**identity,**inputs}.items()),'Immutable code/input changed'
- cleanup={'scratchAbsent':not os.path.lexists(scratch.root),'groupsAbsent':True,'ownedDependencyLinkAbsent':existing or not os.path.lexists(link),'existingDependencyPreserved':existing,'reservationAbsent':scratch.token not in (R.read_json(host.path,{}) or {}),'removedScratchPeakBytes':scratch.record['peak'],'retainedOutput':str(destination),'retainedLogicalBytes':sum(p.stat().st_size for p in destination.rglob('*') if p.is_file()),'codeInputPinsUnchanged':True,'ordinaryStoreSeparateMutableTransaction':phase=='ordinary','compatibilityException':None,'leftovers':[]};R.atomic_json(meta/'cleanup.json',cleanup);finished=True
+ cleanup={'scratchAbsent':not os.path.lexists(scratch.root),'groupsAbsent':True,'ownedDependencyLinkAbsent':existing or not os.path.lexists(link),'existingDependencyPreserved':existing,'reservationAbsent':scratch.token not in (R.read_json(host.path,{}) or {}),'removedScratchPeakBytes':scratch.record['peak'],'retainedOutput':str(destination),'retainedLogicalBytes':sum(p.stat().st_size for p in destination.rglob('*') if p.is_file()),'codeInputPinsUnchanged':True,'groupQueryReceipt':str(meta/'group-queries.json'),'outerInvocationLog':str(meta/'invocation.log'),'ordinaryStoreSeparateMutableTransaction':phase=='ordinary','compatibilityException':None,'leftovers':[]};R.atomic_json(meta/'cleanup.json',cleanup);finished=True
 atexit.register(finish)
 try:
  with R.handled_termination():
