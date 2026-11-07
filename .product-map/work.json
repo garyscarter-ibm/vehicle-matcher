@@ -1848,7 +1848,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T09:11:18Z",
+      "observed_at": "2026-11-07T09:52:21Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60",
       "workers": [
         {
@@ -1966,17 +1966,17 @@
         },
         {
           "id": "real-source",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Real catalogue source coverage evidence",
-          "observed_at": "2026-11-07T09:11:18Z",
-          "evidence": "10351admitted/10000selected; all10000 replayedcurrentcode. Exactcontext and unknowntechnical/imagefacts preserved. Q13 removes per-configVIN/fiveWMI gate; final applicable source/image coverage review remains. No original-live-session enrichment claim."
+          "observed_at": "2026-11-07T09:52:20Z",
+          "evidence": "Independent five-AC review recommends In Review at exact current code pins. All 10,000 selected retained configurations passed current session integration with explicit partial outcomes and zero rejects/source calls. Original live-session enrichment is not claimed; implementation-readiness-2026-11-07/."
         },
         {
           "id": "real-assets",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Representative retained asset fidelity evidence",
-          "evidence": "Two representative images and one exact four-value technical supplement retained through actual .9public/ordinary/Linux. Complete applicable enrichment and visual fidelity remain open.",
-          "observed_at": "2026-11-07T05:49:11.486454+00:00"
+          "evidence": "Five-AC review accepts declared coverage: two registered representative images, permitted unknown technical/image outcomes and preserved fidelity limits. No universal image coverage is claimed. docs/gcsp/evidence/fucq60/implementation-readiness-2026-11-07/.",
+          "observed_at": "2026-11-07T09:52:20Z"
         },
         {
           "id": "focused-contracts",
@@ -1987,17 +1987,17 @@
         },
         {
           "id": "corpus-integration",
-          "status": "in-progress",
+          "status": "complete",
           "title": "F54 corpus and presentation integration",
-          "observed_at": "2026-11-07T06:09:42.607117+00:00",
-          "evidence": ".10 offline candidate retains two representative images and one exact supplement; all 4,668 direct/HTTP references match. Applicable enrichment coverage remains incomplete; known 1,313 consumer failures recorded."
+          "observed_at": "2026-11-07T09:52:21Z",
+          "evidence": "Independent review recommends In Review. Exact 10,000 current-code session results and actual publisher/port/HTTP evidence meet the F60 boundary; F62/F63 deployment work is separate. Existing 2,707 configured-consumer failures remain deferred, not fixed."
         },
         {
           "id": "final-suite",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Authored final npm test integration gate",
-          "observed_at": "2026-11-07T01:40:23Z",
-          "evidence": "Historical full npm at e60c70e6 remains 1,872 tests: 1,848 passed, 19 failed, five skipped. The owning fixture repair passed 12 scoped tests; 16 independent failures are deferred under FUCQ-144–146. Later 130 boundary checks and the 311-row replay passed within their stated scope. No new full-suite passing claim."
+          "observed_at": "2026-11-07T09:52:21Z",
+          "evidence": "Final regression disposition is reviewed: historical full npm result remains 1,848 pass / 19 fail / five skip. Scoped repairs and separately deferred lower-severity findings are recorded. No fresh whole-suite pass is claimed; independent five-AC review identifies no new Critical/High/build gap."
         }
       ],
       "unsliced": false,
@@ -2006,13 +2006,13 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-58",
-      "observed_at": "2026-11-07T09:45:35Z",
+      "observed_at": "2026-11-07T09:52:20Z",
       "original_status": "In Progress",
       "slices": [
         {
-          "evidence": "F58 usable checkpoint integrated on gcsp-poc3411af0e. Actual-base14/14 scoped plan/refusal/CLI checks pass after exact portable destination correction; initial12/14 failure retained. Original enabled compatible UK profile, all-scheme-model and five-WMI AC remain open; no Done claim.",
+          "evidence": "The retained configuration-only plan is merged and independently reviewed under Q13. Original VIN/profile wording applies to delivered/current-car generation, not every corpus row. Seventeen scoped checks pass; docs/gcsp/evidence/fucq-58/configuration-only-qualification-2026-11-07/.",
           "id": "plan-contract",
-          "observed_at": "2026-11-07T00:17:34Z",
+          "observed_at": "2026-11-07T09:52:20Z",
           "status": "complete",
           "title": "Offline versioned plan and context/profile refusal contract"
         },
@@ -2024,16 +2024,16 @@
           "title": "Authorised finite source budget, dry run and privacy refusal"
         },
         {
-          "evidence": "Reviewed retainedselection10000/43VG/26AG/exactGBenGBdates; digestpinnedportableprojection,explicitunknownbody/physicalRL/technicalfacts. Q13 configurationidentity; no fleetWMIgate. Independentreviewpassed frozenf0ec6011, merged24584f41; docs/gcsp/evidence/fucq-58/configuration-only-qualification-2026-11-07/",
+          "evidence": "The reviewed selection contains exactly 10,000 configurations, 43 VG and 26 AG codes with exact GB/en-GB dates. A digest-pinned portable projection preserves unknown body, physical steering and technical facts. Q13 applies. Independent review passed at f0ec6011; merged at24584f41. Evidence: docs/gcsp/evidence/fucq-58/configuration-only-qualification-2026-11-07/.",
           "id": "scheme-catalogue",
-          "observed_at": "2026-11-07T09:45:35Z",
+          "observed_at": "2026-11-07T09:47:05Z",
           "status": "complete",
           "title": "Reconcile declared configuration model and option coverage"
         },
         {
-          "evidence": "Explicitfleet-configurations.v1offliner etainedqualifier.17focusedpass0fail0skip,14legacyincluded;zeroVINresolve/sourcecalls,caller/tamper/safetyrefusals. Rootverified5identitypins and5scratchrootsabsent; independentreviewpassed. No newsourceadmissionorStoryacceptance. merged24584f41",
+          "evidence": "The explicit fleet-configurations.v1 retained-only qualifier passed 17 focused checks, including all14 legacy cases, with zero failures/skips/source calls/VIN resolutions. Root checked five code identities and five absent scratch roots; independent review passed. This grants no new source admission or Story acceptance. Merged at24584f41.",
           "id": "qualification-integration",
-          "observed_at": "2026-11-07T09:45:35Z",
+          "observed_at": "2026-11-07T09:47:06Z",
           "status": "complete",
           "title": "Reconcile selected configuration-only plan and qualification"
         }
@@ -2197,15 +2197,15 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T09:45:35Z",
+      "observed_at": "2026-11-07T09:52:21Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-61",
       "slices": [
         {
           "id": "source-run",
           "status": "complete",
           "title": "Execute qualified real collection",
-          "observed_at": "2026-11-07T09:45:35Z",
-          "evidence": "10351actualadmittedunion/exact10000selected/stagedsemanticverified,0shortfall;rootreviewedretained94pins/report; merged d438db5c. Perallocationfiniteplans andactualreceipts retainpartialfailures/exclusions, no fabricatedglobalaggregate. Q13noVINcorpusgate. docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/"
+          "observed_at": "2026-11-07T09:47:06Z",
+          "evidence": "Actual admitted union10,351; exactly10,000 selected and staged; semantic verifier passed with zero shortfall. Root reviewed94 retained evidence pins and the report, merged at d438db5c. Per-allocation plans/receipts preserve failures and exclusions. Evidence: docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/."
         },
         {
           "id": "semantic-audit",
@@ -2225,15 +2225,15 @@
           "id": "coverage-audit",
           "status": "complete",
           "title": "Report actual coverage completeness and budgets",
-          "observed_at": "2026-11-07T09:45:35Z",
-          "evidence": "Consolidatedactual43VG26AG/1562groups/4522tokens/unknownbodypowertrainimages;24heterogeneousreceipt+24planobservations,351surplus,explicitnonaggregatedoperations. Originalplanned semanticquota not reconstructed; evidence limitation preserved foracceptance. merged d438db5c, docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/"
+          "observed_at": "2026-11-07T09:47:06Z",
+          "evidence": "The consolidated report records43 VG/26 AG codes,1,562 groups,4,522 tokens,351 surplus rows and explicit unknowns.24 receipt and24 finite-plan observations retain their scopes; no invented whole-run totals or advance semantic quota. These limits remain for acceptance review. Report merged at d438db5c."
         },
         {
           "id": "integration",
           "status": "in-progress",
           "title": "Integrate actual collected enriched corpus and cached replay",
-          "observed_at": "2026-11-07T06:09:42.607117+00:00",
-          "evidence": ".9 public/ordinary restore and Linux 2,426-reference proof passed. New .10 ten offline phases complete; public/ordinary followthrough preparing. Live DTO proof remains incomplete."
+          "observed_at": "2026-11-07T09:52:21Z",
+          "evidence": "Exact 10,000 report merged with 94 evidence pins; public .12 cold BUILD passed on Linux in 121 seconds. Subsequent offline repeat timed out at 90 seconds, later phases unrun. Actual deployed readback and final acceptance assessment remain."
         }
       ],
       "unsliced": false,
@@ -2644,7 +2644,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T09:45:36Z",
+      "observed_at": "2026-11-07T09:52:21Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62",
       "claim_evidence": "Claimed owning035 at34a793e3; root checkpoint authorisation, Jira OAuth unavailable. Full acceptance remains open.",
       "slices": [
@@ -2685,10 +2685,10 @@
         },
         {
           "id": "source-targets",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Actual 10000 source target and scheme model coverage",
-          "observed_at": "2026-11-07T09:11:18Z",
-          "evidence": "Numerical10000source target achieved from10351admitted. Q13 supersedes historical10000VIN/fiveWMI corpus gates. Final selected-plan/source/completeness coverage evidence remains; stock generation F78 separate. One retained current-carVIN is consistent scope."
+          "observed_at": "2026-11-07T09:52:21Z",
+          "evidence": "Exactly 10,000 complete distinct source configurations selected from 10,351 admitted; 43 VG / 26 AG codes and all declared groups/tokens retained in reviewed report. Q13 removes blanket VIN/five-WMI gates; F77 owns every-scheme-model demo coverage."
         },
         {
           "id": "scale",
@@ -2701,15 +2701,15 @@
           "id": "integration",
           "status": "in-progress",
           "title": "Application and deployed integration acceptance",
-          "observed_at": "2026-11-07T09:45:36Z",
-          "evidence": "Retained-cacheproductioncoldrestorepassed40.496s,.12active,11files350691430B,0network,rawErrornull. ReceiptSHA3c0e8ced7572d327a30b8c03f942baecb3c1757d515c54ab75b2b08e2f1b16b2; cleanup356388956B/rootsgroupslinktokenabsent. Linuxpubliccold/offline/exact31assets/5boundaryrun42360886351 onb85250d5 inprogress; Renderstill.10. Originalcoldcauseunproved."
+          "observed_at": "2026-11-07T09:52:21Z",
+          "evidence": "Public Linux .12 cold restore passed in 121 seconds with 62 HTTPS fetches; retained-cache restore passed in 40.50 seconds with zero network. Offline Linux repeat hit its 90-second ceiling, verify/boundary unrun. Tested Render selector pushed at 56602531; actual deployment/readback pending."
         },
         {
           "id": "large-artifact-restore",
           "status": "complete",
           "title": "Checksum-pinned external artifacts and offline restore",
-          "observed_at": "2026-11-07T06:28:35Z",
-          "evidence": ".10 actual26assets/239679009bytes anonymous coldrestore; genuine offlinerepeat+5boundaryrefs+4newintegrityedges passed. Original4668proof reused at exact code/input/runtime. Removed375956924logicalBcopies; allgroups/link/token/scratch absent."
+          "observed_at": "2026-11-07T09:52:21Z",
+          "evidence": "Actual .12 Linux cold restore succeeded: 31 pinned public assets, 10,000 source configurations, exact manifest, 62 HTTPS fetches. Later offline timeout is preserved separately. CI finalizer removed 903,560 KiB and verified absence. Run 42360886351 at b85250d5."
         }
       ],
       "unsliced": false,
@@ -2822,15 +2822,15 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T09:21:23Z",
+      "observed_at": "2026-11-07T09:52:22Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-63",
       "slices": [
         {
           "id": "active-reconciliation",
           "status": "in-progress",
           "title": "Reconcile loaded immutable corpus and all in-process records",
-          "observed_at": "2026-11-07T08:37:35.957751+00:00",
-          "evidence": "Final .12 all10002direct/retained/HTTPrefs exact0errors;2707consumerfailures (1F7A859/1F7C1848)retained. Consumeracceptanceopen; nativeorderUUIDunrun."
+          "observed_at": "2026-11-07T09:52:21Z",
+          "evidence": "All 10,002 actual .12 direct/retained/local HTTP references matched with zero lookup errors. Existing 2,707 consumer failures remain deferred. Exact current-run PostgreSQL order-reference producer proof is unrun; it is not a configuration BUILD dependency."
         },
         {
           "id": "http-parity",
@@ -2848,17 +2848,17 @@
         },
         {
           "id": "scale-evidence",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Measure bounded correctness throughput and latency on actual corpus",
-          "observed_at": "2026-11-07T09:11:18Z",
-          "evidence": "All10002direct/retained/localHTTPrefs matched0lookuperrors. Scope10001configuration+1currentVIN, consistentQ13; consumer2707failures retained/deferred. Current-release restore/recovery/deployment evidence pending; no automatic fleetfiveWMI or10000stock/VIN requirement."
+          "observed_at": "2026-11-07T09:52:22Z",
+          "evidence": "Actual .12 proof matched all 10,002 direct/retained/local HTTP references: 10,001 configurations and one current-car VIN, with zero lookup errors. The 2,707 consumer failures remain recorded/deferred. Q13 requires neither 10,000 VINs nor 10,000 stock orders."
         },
         {
           "id": "integration",
           "status": "in-progress",
           "title": "Integrate actual published corpus and authored regression evidence",
-          "observed_at": "2026-11-07T09:21:23Z",
-          "evidence": "Public.12 published10000source+1referenceconfig/1currentVIN. Restore2failed after31asset downloads; causeunproved. Offlinecurrentvalidator20.28s and registryload20.65s pass,active.12/no fallback/0network. RegistryreceiptSHA0ba3afc6631cde9ecd183257a020eef1ddf20aea4b410d6fbd415956f5f714b8; nextoffline storecopy/stagedvalidation. Deploymentunverified; no VIN/native/buildgate added. docs/gcsp/f58-63-morning-status-2026-11-07.md"
+          "observed_at": "2026-11-07T09:52:22Z",
+          "evidence": "Public .12 Linux cold BUILD passed in 121 seconds; current retained-cache fresh-store restore passed in 40.50 seconds with zero network. Linux offline repeat timed out at 90 seconds; verify/boundary unrun. Current-release deployed readback and remaining recovery/order-reference evidence are open."
         }
       ],
       "unsliced": false,
