@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "bounded-evidence-readback.v1",
+  "status": "passed-scoped",
+  "checks": [
+    "Run metadata matches the exact push head and attempt 1.",
+    "Receipt contains three HTTP 200 observations, exact .12 readiness manifest and expected DTO match.",
+    "All four runtime pins match the integrated plan; plan SHA matches the root-authorised identity.",
+    "Full decoded excerpts match logged SHA; the 2048-byte configuration prefix is preserved without reconstructing omitted bytes.",
+    "Remote cleanup has rc 0, groups and scratch absent, with no archive or leftovers.",
+    "Original job log is 31757 bytes, below 65536 bytes; no new scratch or test run."
+  ],
+  "retainedFiles": {
+    "README.md": {
+      "bytes": 2503,
+      "sha256": "b5309aa348a116e1334135d1560aa105ce22ef323891cab6f70ca0ee5dca0a0e"
+    },
+    "integrated-input-pins.json": {
+      "bytes": 1542,
+      "sha256": "7097b1901eb5f030d0d908c8e93289d6f33604b1ed7aedb6607a9d4d433f643c"
+    },
+    "job.log": {
+      "bytes": 31757,
+      "sha256": "af10f56107f0ec494349b3dd1f7693e5aee2822d37f824c920570ee5816760fe"
+    },
+    "probe-receipt.json": {
+      "bytes": 1984,
+      "sha256": "cba5d8dfeee1bb3865d1b83cc23b94150fcaedc5b6ea1011993ad7e12b4be60d"
+    },
+    "remote-cleanup.json": {
+      "bytes": 345,
+      "sha256": "85bf668dfbe382d2e5b05e2b38e3f59250846d5836cb88190593711f57342181"
+    },
+    "response-excerpts.json": {
+      "bytes": 6438,
+      "sha256": "4c80354cb225bd61c7819daed2ae08c0f431602616e40c2a96edc1ab415df1c6"
+    },
+    "responses/configuration-body.bin.prefix": {
+      "bytes": 2048,
+      "sha256": "54b7581f640639f9d4fad43c75e729272abb37dc0e58e1cf55007f702fa992cd"
+    },
+    "responses/configuration-headers.json": {
+      "bytes": 621,
+      "sha256": "c9a60ae10fca30d841a10d7bd837eacd3818891f04530261483801444bb62d44"
+    },
+    "responses/health-body.bin": {
+      "bytes": 11,
+      "sha256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93"
+    },
+    "responses/health-headers.json": {
+      "bytes": 579,
+      "sha256": "ad95f7b65edf11542abaa844c11032184aec8c1ba91e0ddfcc2da0b75af32f72"
+    },
+    "responses/readiness-body.bin": {
+      "bytes": 169,
+      "sha256": "57c493087f05ed96cd3646918c2dfac8c37695163dc35d1cbefb3200b1a2682b"
+    },
+    "responses/readiness-headers.json": {
+      "bytes": 580,
+      "sha256": "4756b39426c8ec0f7c124a95474ad209b14115610aa6a6ee1c966f7e18ea3093"
+    },
+    "result.json": {
+      "bytes": 2666,
+      "sha256": "e37637bb01d00f84eeba9ecfec3890fff0e1896eb8b091dddc17b6027f69ad7a"
+    },
+    "run.json": {
+      "bytes": 2521,
+      "sha256": "bb9681cfef44a595ae3d57c25750f2bdcb813e28b6e454df95cb3116dd0da2da"
+    }
+  },
+  "retainedBytesExcludingThisReceipt": 53764,
+  "sourceTreesPreserved": true,
+  "localScratchRemovedBytes": 0,
+  "localScratchCreated": false,
+  "leftovers": []
+}
