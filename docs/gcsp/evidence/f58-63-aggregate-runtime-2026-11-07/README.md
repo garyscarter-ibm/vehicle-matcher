@@ -1,0 +1,9 @@
+# Actual aggregate production checkpoint, 7 November 2026
+
+Render deployment `7614657680` of `f4481b711cfcc4a6f04d71486b64b2e2e9a1ee5e` succeeded at 01:25:36 UTC in `gcsp-poc - gcsp-api`. The active `fleet-source.v1` version `2026-11-07.2` has 341 configurations (340 qualifying distinct source configurations and one retained reference), one unchanged previous VIN and zero images. Manifest: `6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6`.
+
+The production probe compared every active configuration and the retained VIN against the actual local loader. All 342 JSON results matched exactly, with zero errors. Health plus record lookups made 343 serial GETs and transferred 3,687,707 decoded bytes in 19.678 seconds. The probe allowed at most 512 GETs, 16 MiB total decoded data, 1 MiB per response and 90 seconds, with one worker and zero retries. It changed no production state and made no collection/source calls. `live-probe.mjs` is the runnable probe; the retained receipts identify the deployed/tested code and all record results.
+
+All supervised processes were joined. Peak RSS was 194,707,456 bytes. Cleanup removed 807,008 scratch bytes and verified the owned scratch, process groups, reservation and dependency symlink absent. There is no compatibility exception or named leftover. The wrapper's initial Python preflight incompatibility was corrected before allocation or requests; the retained successful run is the evidence here.
+
+The 10,000 target, compatible profile/WMI joins, wider model coverage and declared imagery/enrichment coverage remain incomplete. This proves the actual partial corpus through the deployment boundary; no Story is declared Done. The historical full-suite result and independently tracked nonblocking defects remain in the earlier runtime checkpoint, rather than being relabelled by this scoped production result. Native PostgreSQL validation stays on Gary's credential-dependent route. No screen changed.
