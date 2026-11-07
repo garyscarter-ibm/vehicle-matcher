@@ -1,0 +1,1153 @@
+{
+  "schemaVersion": "g42-actual48-optional-axis-observed-need.v1",
+  "sourceProof": {
+    "path": "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/actual-validation.json",
+    "sha256": "0d0d06d386043a1efeaadbb4e02a4bb02b244698f1bcfa9f7fd2dc1b958e3f74"
+  },
+  "baseline": {
+    "canonical": 1974,
+    "admittedSource": 1971,
+    "spent": 2684
+  },
+  "contexts": [
+    {
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "2PMA",
+        "agModelCode": "12CM",
+        "catalogueRangeKey": "G42",
+        "rawModelRange": "G42",
+        "aliases": [
+          "2"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "2PMA",
+          "agModelCode": "12CM"
+        },
+        "includedIndex": 1,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "typedBasis": {
+        "path": "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/2pma/options.json",
+        "sha256": "76442bb9aa36841562f09d18139c40c21d217ead7e475524bc69dbadf7977284"
+      },
+      "observedDefaultAxisCodes": [
+        "S0337",
+        "S043W"
+      ],
+      "additionalAxes": {
+        "trim": [
+          "S04H0",
+          "S04H1",
+          "S04LN",
+          "S04MC",
+          "S04P6"
+        ],
+        "package": [
+          "S07A2",
+          "S07VK"
+        ]
+      },
+      "counts": {
+        "actualCores": 8,
+        "optionalVariantsPerCore": 17,
+        "unspent": 136
+      }
+    },
+    {
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "2PMB",
+        "agModelCode": "22CM",
+        "catalogueRangeKey": "G42",
+        "rawModelRange": "G42",
+        "aliases": [
+          "2"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "2PMA",
+          "agModelCode": "12CM"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "typedBasis": {
+        "path": "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/2pmb/options.json",
+        "sha256": "d025fd17bcd44a4679d0cee32dea30bf92327f259ede90ca5a7364288f4da538"
+      },
+      "observedDefaultAxisCodes": [
+        "S0337",
+        "S043W"
+      ],
+      "additionalAxes": {
+        "trim": [
+          "S04H0",
+          "S04H1",
+          "S04LN",
+          "S04MC",
+          "S04P6"
+        ],
+        "package": [
+          "S07A2",
+          "S07VK"
+        ]
+      },
+      "counts": {
+        "actualCores": 8,
+        "optionalVariantsPerCore": 17,
+        "unspent": 136
+      }
+    },
+    {
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "2PPA",
+        "agModelCode": "12CM",
+        "catalogueRangeKey": "G42",
+        "rawModelRange": "G42",
+        "aliases": [
+          "2"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S033B",
+        "defaultModel": {
+          "modelCode": "2PPA",
+          "agModelCode": "12CM"
+        },
+        "includedIndex": 3,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S033B"
+        }
+      },
+      "typedBasis": {
+        "path": "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/2ppa/options.json",
+        "sha256": "d71e4142e7b6f578b6be35c35485cc3778ffd1887dc7d1f6a3642313320ea040"
+      },
+      "observedDefaultAxisCodes": [
+        "S0337",
+        "S033B",
+        "S043W"
+      ],
+      "additionalAxes": {
+        "trim": [
+          "S04H0",
+          "S04H1",
+          "S04LN",
+          "S04MC",
+          "S04P6"
+        ],
+        "package": [
+          "S07A2",
+          "S07VK"
+        ]
+      },
+      "counts": {
+        "actualCores": 8,
+        "optionalVariantsPerCore": 17,
+        "unspent": 136
+      }
+    },
+    {
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "2PPB",
+        "agModelCode": "22CM",
+        "catalogueRangeKey": "G42",
+        "rawModelRange": "G42",
+        "aliases": [
+          "2"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S033B",
+        "defaultModel": {
+          "modelCode": "2PPA",
+          "agModelCode": "12CM"
+        },
+        "includedIndex": 1,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S033B"
+        }
+      },
+      "typedBasis": {
+        "path": "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/2ppb/options.json",
+        "sha256": "6b2afd150c62f6aa081f2d1b804efa2ee7d01f8152c5034e113cf40076f3df35"
+      },
+      "observedDefaultAxisCodes": [
+        "S0337",
+        "S033B",
+        "S043W"
+      ],
+      "additionalAxes": {
+        "trim": [
+          "S04H0",
+          "S04H1",
+          "S04LN",
+          "S04MC",
+          "S04P6"
+        ],
+        "package": [
+          "S07A2",
+          "S07VK"
+        ]
+      },
+      "counts": {
+        "actualCores": 8,
+        "optionalVariantsPerCore": 17,
+        "unspent": 136
+      }
+    },
+    {
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "2PMC",
+        "agModelCode": "52FA",
+        "catalogueRangeKey": "G42",
+        "rawModelRange": "G42",
+        "aliases": [
+          "2"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S033B",
+        "defaultModel": {
+          "modelCode": "2PPA",
+          "agModelCode": "12CM"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S033B"
+        }
+      },
+      "typedBasis": {
+        "path": "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/2pmc/options.json",
+        "sha256": "6d5a91a262a50fd202db198f535af7a0ef402e3b106327ef112baf49d22b7775"
+      },
+      "observedDefaultAxisCodes": [
+        "S033B",
+        "S043W"
+      ],
+      "additionalAxes": {
+        "trim": [
+          "S04H0",
+          "S04H1",
+          "S04LN",
+          "S04MC"
+        ],
+        "package": [
+          "S07A2",
+          "S07VK"
+        ]
+      },
+      "counts": {
+        "actualCores": 8,
+        "optionalVariantsPerCore": 14,
+        "unspent": 112
+      }
+    },
+    {
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "2PBC",
+        "agModelCode": "52FA",
+        "catalogueRangeKey": "G42",
+        "rawModelRange": "G42",
+        "aliases": [
+          "2"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S033B",
+        "defaultModel": {
+          "modelCode": "2PPA",
+          "agModelCode": "12CM"
+        },
+        "includedIndex": 2,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S033B"
+        }
+      },
+      "typedBasis": {
+        "path": "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/2pbc/options.json",
+        "sha256": "857593ef3f89379e249afd30d7326487df162248686cd0b0c2161a8c595e5a0c"
+      },
+      "observedDefaultAxisCodes": [
+        "S033B",
+        "S04MC",
+        "S07MU"
+      ],
+      "additionalAxes": {
+        "trim": [
+          "S043W",
+          "S04H0",
+          "S04H1",
+          "S04LN"
+        ],
+        "package": [
+          "S07A2",
+          "S07VK"
+        ]
+      },
+      "counts": {
+        "actualCores": 8,
+        "optionalVariantsPerCore": 14,
+        "unspent": 112
+      }
+    }
+  ],
+  "illustrativeUnspentRequests": [
+    {
+      "modelCode": "2PMA",
+      "requestDigest": "014bb69ce44e7d350e40c747d2e8327a722dda9213642f3afd1281b54757721f",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0300",
+          "S01HF",
+          "S0337",
+          "S04H0",
+          "S07A2"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMA",
+      "requestDigest": "0329e8434b3e1ba20df41019f115b130827266d8fe706639f0df7bac92023f0c",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0300",
+          "S01HC",
+          "S0337",
+          "S04P6"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMA",
+      "requestDigest": "04e717dd21ee5e56afdf10073edfa42ceaa8b012a243150c9f069553dbe16aea",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0300",
+          "S01HF",
+          "S0337",
+          "S04H1",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMA",
+      "requestDigest": "0a3d90fcaedbabd13997ebb1dce426781880444a566a742b3c41598dc33eca42",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0475",
+          "S01HC",
+          "S0337",
+          "S07A2"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMA",
+      "requestDigest": "0d6640c455ff9e077458d72df44a628ca84b75ba1fdd93bb67361d4d2d9856b2",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0300",
+          "S01HC",
+          "S0337",
+          "S04MC"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMA",
+      "requestDigest": "103d648fcff393aef464a348b58379cc3f5beed27569e3702b0356e5cca3a1ae",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0475",
+          "S01HF",
+          "S0337",
+          "S04MC",
+          "S07A2"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMA",
+      "requestDigest": "1087c42b96dc3d109136dc8d0a4146d6808732a64d327130f21afd016d50eec0",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0475",
+          "S01HF",
+          "S0337",
+          "S04H1"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMA",
+      "requestDigest": "10ba71537c1e48b8a9c3bf3bad77523e7591ebe0d3578ea12dc16ed5d88b6f12",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0475",
+          "S01HF",
+          "S0337",
+          "S07A2"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMB",
+      "requestDigest": "027cf23d11b21af777c64b3cbb56d48d19fcf2ce1ec8d4c714c914f70bfc22ea",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0475",
+          "S01HD",
+          "S0337",
+          "S04H1",
+          "S07A2"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMB",
+      "requestDigest": "0281fca3dccc191835fd4d75cfd1bdd503422c213448619ac381ebb6cff7b0e3",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0300",
+          "S01HC",
+          "S0337",
+          "S04P6"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMB",
+      "requestDigest": "0592ab48d01ceac9c32dfd2b47bf2e4e29acaacaab49b00dc00b2b7d1ea2bab4",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0300",
+          "S01HD",
+          "S0337",
+          "S04H0"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMB",
+      "requestDigest": "07d98cfcbfbc83433c370a941fe36ed5028d8349f8fb5da61bb53afb28faf63d",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0300",
+          "S01HD",
+          "S0337",
+          "S04H1",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMB",
+      "requestDigest": "09cb3f10af2016edd0226c4e1df37801dda0691c198198bf3de9ca6493c7853b",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0300",
+          "S01HC",
+          "S0337",
+          "S04H0",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMB",
+      "requestDigest": "0a0f13a29106e162f64e886e5d3ec1c16ad8f7a59bd5bb991c8ffa945ffb1cb0",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0475",
+          "S01HD",
+          "S0337",
+          "S04LN",
+          "S07A2"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMB",
+      "requestDigest": "0c703bde45ace1c1e97ef3ebdb21e491254961fe7218e11b449f9a1c6af24b54",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0475",
+          "S01HD",
+          "S0337",
+          "S04H1"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMB",
+      "requestDigest": "0ca5f5b86f8f436140018f68a1047c6fc8ddd77830993831d450a0a70a6614b4",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0300",
+          "S01HC",
+          "S0337",
+          "S04MC",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PPA",
+      "requestDigest": "00db514c9a9131a85dad22bff8d7e82a2610a5cbc84f4191e9c720d82724d340",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0475",
+          "S01HC",
+          "S033B",
+          "S04P6"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PPA",
+      "requestDigest": "028f1068bc7f0b8d1dae04655b06116bb410f793b74f7445b137e9027d11ddce",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0300",
+          "S01HD",
+          "S033B",
+          "S04P6"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PPA",
+      "requestDigest": "03bee31fc23bf6d5d8a6dd53bbef5d2d1d1ee12fc18367a64ffa81a6cb3189c6",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0475",
+          "S01HD",
+          "S033B",
+          "S04H1",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PPA",
+      "requestDigest": "044ab58a392941a13d04b45d305192fd946479d9478f3d5bcd7f440f5b4858b9",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0475",
+          "S01HC",
+          "S033B",
+          "S04LN",
+          "S07A2"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PPA",
+      "requestDigest": "052a50809908a16e0f1b9d3914958efa705d81138eaf994efe5653dae357691b",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0300",
+          "S01HD",
+          "S033B",
+          "S07A2"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PPA",
+      "requestDigest": "05a546a70dbd69ba1fbe441fefcafd9caeafa6ff410c273f526a096e6935b69b",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0475",
+          "S01HD",
+          "S033B",
+          "S04H0"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PPA",
+      "requestDigest": "076aaf2e3140e7f65afd1b2be2985d2ec7de37ba8dcd2c28a1dd9faec4db87c3",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0475",
+          "S01HC",
+          "S033B",
+          "S04H0"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PPA",
+      "requestDigest": "0b3aa2d992d189a296ec878e353ea851be8e637423c7242514ac6e7b8a424910",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0475",
+          "S01HD",
+          "S033B",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PPB",
+      "requestDigest": "0210472a575dafc9fe96ed9e99bb0b7de01f1754ea84b2afabd46c70be33d360",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0300",
+          "S01HC",
+          "S033B",
+          "S04H1",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PPB",
+      "requestDigest": "022979f929348dbb645e24674d401babb753de4bd42b36bde67c65396f156f17",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0475",
+          "S01HC",
+          "S033B",
+          "S04MC",
+          "S07A2"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PPB",
+      "requestDigest": "027cb4cfb9a9c4de1b6b8a541f68c59420a638f3aebaec79c0e72e5ddf879a3c",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0300",
+          "S01HD",
+          "S033B",
+          "S04P6",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PPB",
+      "requestDigest": "082a41b06440660f8ef350cf7d65a04a00c1220f663879aa4e51eb04e5804786",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0475",
+          "S01HC",
+          "S033B",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PPB",
+      "requestDigest": "0fff392ac1de27031c582ca28d44e5f8f3da1a6f4802138e609f6d7f50484362",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0300",
+          "S01HD",
+          "S033B",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PPB",
+      "requestDigest": "1081af4adc7135bde6db657da660d9f9b7dd26cccd6b5c9a1273ef5efd8e2950",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0300",
+          "S01HC",
+          "S033B",
+          "S04H1"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PPB",
+      "requestDigest": "1792f7cfc1cc0cdbdb29cec6e580cb9c1899f613b29e2833bd6b48161fcabe2a",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0300",
+          "S01HC",
+          "S033B",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PPB",
+      "requestDigest": "1892b38cb12e1e1969c406466c5ff131b7611549172887a4e4e071f80d0d3e1e",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0475",
+          "S01HD",
+          "S033B",
+          "S04H1",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMC",
+      "requestDigest": "0219731bc497ddb28a5fbc39c63bb79174fa400dfa1db1d385752d93bdd7c5a6",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0300",
+          "S01HC",
+          "S033B",
+          "S04H0",
+          "S07A2"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMC",
+      "requestDigest": "034c301e95118925f888fc24dbe3b2cc2ce270cd65688d74f2edbbd92b63a8c8",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0475",
+          "S01HD",
+          "S033B",
+          "S04LN",
+          "S07A2"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMC",
+      "requestDigest": "0637cf758c4d59cde05e3d6d9f0cf995024e350843e4307148b02c0e6642c5ea",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0300",
+          "S01HD",
+          "S033B",
+          "S04MC",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMC",
+      "requestDigest": "099d077d7355e2156e5f43bf9f8c122d61ed0f006faf9532fd8604ea51ab38b9",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0475",
+          "S01HC",
+          "S033B",
+          "S04LN"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMC",
+      "requestDigest": "09cd9142e1fbd6c0a4f667122ec685401329da74659d4609344eed7bf28c31c1",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0300",
+          "S01HC",
+          "S033B",
+          "S04H0",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMC",
+      "requestDigest": "0c6a48a9be79bff12ab80725ffb28113e33d11746adc69bdb57ccc20a628b3fa",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0475",
+          "S01HC",
+          "S033B",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMC",
+      "requestDigest": "0dc3b306f744aee73d8b1adbf5505ce52921b929dbeaafe598a77e566f91b4d1",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0475",
+          "S01HD",
+          "S033B",
+          "S04MC",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PMC",
+      "requestDigest": "0e07b8ddb5e3ea875424477371c16417220275f52a4a3312f6045febf135e293",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0300",
+          "S01HD",
+          "S033B",
+          "S04H1",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PBC",
+      "requestDigest": "03669e167948aff7ff97156da17bb9e86a739beb01d5c8da48e8df1be8e7009b",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0475",
+          "S01HC",
+          "S033B",
+          "S04LN",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PBC",
+      "requestDigest": "06d5c66119bd28250fe664f96ba448d8950096b1736b278a5f1067e71e8ca72a",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0475",
+          "S01HD",
+          "S033B",
+          "S043W",
+          "S07A2"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PBC",
+      "requestDigest": "09d20ee2a2c282d16d316dc3ac8a4e1cb4f05490099ec422eb8efc6e5c1eb2cc",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0475",
+          "S01HD",
+          "S033B",
+          "S04H0"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PBC",
+      "requestDigest": "0aab24010b6573b1ab04354a28f2376131c7572a6eee954570e13e039b20ff31",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0300",
+          "S01HC",
+          "S033B",
+          "S043W",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PBC",
+      "requestDigest": "0d3d2934eff90aadb572bb12176f47f4a410a6a16af161be3c1f22e6f1e5efaa",
+      "request": {
+        "includedElements": [
+          "FKHG6",
+          "P0300",
+          "S01HC",
+          "S033B",
+          "S04H1",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PBC",
+      "requestDigest": "0f95ea5d6de023c02afe783d20c164f3e0df3384bec256f02c5ad221bb7a1d20",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0300",
+          "S01HD",
+          "S033B",
+          "S04LN",
+          "S07A2"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PBC",
+      "requestDigest": "1047401319b8dd30460dcb870a0fdf0964c67088c77162d391114809d06298e7",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0475",
+          "S01HC",
+          "S033B",
+          "S04H0"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "modelCode": "2PBC",
+      "requestDigest": "14c6ab4db8c060213833c7acded05d762e23daad5dac5fea359fc0edbf476887",
+      "request": {
+        "includedElements": [
+          "FEPMI",
+          "P0300",
+          "S01HD",
+          "S033B",
+          "S04H0",
+          "S07VK"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    }
+  ],
+  "coreCount": 48,
+  "unspentPool": 768,
+  "sourceTraffic": 0,
+  "capacityCredit": 0,
+  "liveConstructibility": "unproven",
+  "futureActualContinuationCores": "excluded from this48-core manifest"
+}

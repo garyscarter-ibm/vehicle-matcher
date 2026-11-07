@@ -1,0 +1,1 @@
+{"allGroupsAbsent":true,"maximumQueriesPerGroup":3,"queries":[{"liveMembers":false,"pgid":2015,"query":1}],"scope":"owned groups only; bounded unknown recheck; no live/unknown bypass","unknownDelaySeconds":0.1}

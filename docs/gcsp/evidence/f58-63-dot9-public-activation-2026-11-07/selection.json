@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "test-impact.v1",
+  "time": "2026-11-07T05:30:00.268467+00:00",
+  "scope": "scoped .9 Linux build/deployment activation",
+  "changedPaths": [
+    "render.gcsp.yaml",
+    ".github/workflows/gcsp-fleet-build.yml"
+  ],
+  "regression": "code-pinned .9 restore and exact2426-reference/485consumer-failure boundary under Node20 Linux and actualRender",
+  "affectedCallers": [
+    "build-time fleet-artifacts restore",
+    "portable audit/proof/recovery",
+    "Render startup"
+  ],
+  "selected": [
+    "actual GCSP pinned fleet build workflow on pushed exact commit",
+    "one exact .9 deployment success receipt then scoped live health/parity packet"
+  ],
+  "reused": "public download236.034s,2426matches,485consumerfailures, offline0egress,recoverypass; identical helper/code/input pins",
+  "excluded": "No full suite: deployment pins and narrow Linux proof change only; unchanged productionmodules/contract. NativePG unconfigured; source/enrichment/coverage acceptance unchanged.",
+  "fullSuiteRun": false,
+  "acceptance": false,
+  "affectedSelector": {
+    "command": "python3 -I -B _tools/test_stamp.py --affected HEAD --dry-run",
+    "output": "no affected-test plug-in for unspecified; full suite fallback npm test",
+    "disposition": "Fallback plan reviewed, no suite executed. Explicit boundary validation selected: unchanged production/helper/source identities already publicly proved, plus actual Node20 Linux workflow for exact new release pin and actualRender/live checks. Unknown selector does not silently authorize full suite."
+  },
+  "ordinaryAllocatedKiB": 145120
+}

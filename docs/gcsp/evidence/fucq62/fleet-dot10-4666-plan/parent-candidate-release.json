@@ -1,0 +1,13 @@
+{
+  "authorized": true,
+  "phase": "candidate",
+  "planSha256": "a4f0f766266165b8d48da363c09fbc934647e90cd80a8c19c3b81685fb12ace7",
+  "version": "2026-11-07.10",
+  "sourceRegistrationAfterSha256": "16d88f7d8974169ed25725b1e643d0c752aec564e6927aea74199e0e6a2841f3",
+  "sourceCalls": 0,
+  "ordinaryPublicationExecuted": false,
+  "review": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/dot10-candidate-root-review.json",
+    "sha256": "9274bdde9d38f579f44dedf827411574e48cf30149442c176b5a864847ccaee7"
+  }
+}

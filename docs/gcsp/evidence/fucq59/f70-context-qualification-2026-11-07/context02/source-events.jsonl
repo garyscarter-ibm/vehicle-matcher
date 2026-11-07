@@ -1,0 +1,6 @@
+{"attempt":1,"method":"GET","url":"https://configure.bmw.co.uk/en_GB/configure/F70/1F7B","startedAt":"2026-11-07T01:26:25.702Z","phase":"started"}
+{"attempt":1,"method":"GET","url":"https://configure.bmw.co.uk/en_GB/configure/F70/1F7B","startedAt":"2026-11-07T01:26:25.702Z","phase":"headers-received","status":200}
+{"attempt":2,"method":"GET","url":"https://configure.bmw.co.uk/en_GB/settings.f8e66668.json","startedAt":"2026-11-07T01:26:25.879Z","phase":"started"}
+{"attempt":2,"method":"GET","url":"https://configure.bmw.co.uk/en_GB/settings.f8e66668.json","startedAt":"2026-11-07T01:26:25.879Z","phase":"headers-received","status":200}
+{"attempt":3,"method":"GET","url":"https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=F70&future-models=true&closest-fallback=true","startedAt":"2026-11-07T01:26:26.334Z","phase":"started"}
+{"attempt":3,"method":"GET","url":"https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=F70&future-models=true&closest-fallback=true","startedAt":"2026-11-07T01:26:26.334Z","phase":"headers-received","status":200}

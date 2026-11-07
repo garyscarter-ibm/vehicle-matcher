@@ -1,0 +1,203 @@
+{
+  "schemaVersion": "g42-six-model-options-source-basis.v1",
+  "diagnostic": "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/diagnostic.json",
+  "diagnosticSha256": "76711bca1cfbd20b44ba4aa66c860c8cf1513b92f68a27bb70977fe9f798d743",
+  "primarySha256": "0e277490365f8089fd2b794a44a169b10a5efe64b3d9a4eb4c5bc572dc0897cc",
+  "rawTreeResponseSha256": "0b560e5c1cd2489629373c464950d5cd2ff0b8cf9b60d4a990ad7cbf26e975b0",
+  "observedAt": "2026-11-07T03:46:04.757Z",
+  "contexts": [
+    {
+      "id": "2pma",
+      "fullModelPointer": "/2/modelRanges/G42/models/2PMA",
+      "fullModelFacts": {
+        "modelCode": "2PMA",
+        "agModelCode": "12CM",
+        "modelRange": "G42",
+        "steering": "RL",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05",
+        "derivative": "220I"
+      },
+      "completeAliases": [
+        "2"
+      ],
+      "sameResponseRelationshipValues": {
+        "/2/modelRanges/G42/lines/S0337/option": "S0337",
+        "/2/modelRanges/G42/lines/S0337/defaultModel/modelCode": "2PMA",
+        "/2/modelRanges/G42/lines/S0337/defaultModel/agModelCode": "12CM",
+        "/2/modelRanges/G42/lines/S0337/includedTransmissionVariants/1/configuration/modelCode": "2PMA"
+      },
+      "literalTrimPresence": {
+        "path": "/2/modelRanges/G42/lines/S0337/includedTransmissionVariants/1/configuration/elements/S0337",
+        "type": "object"
+      },
+      "futureChecks": [
+        "fresh full model/AG/date/range/steering and complete aliases",
+        "exact default/included index and literal option",
+        "elements object count and unique matching variant",
+        "typed options definitions and privacy"
+      ]
+    },
+    {
+      "id": "2pmb",
+      "fullModelPointer": "/2/modelRanges/G42/models/2PMB",
+      "fullModelFacts": {
+        "modelCode": "2PMB",
+        "agModelCode": "22CM",
+        "modelRange": "G42",
+        "steering": "RL",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05",
+        "derivative": "230I"
+      },
+      "completeAliases": [
+        "2"
+      ],
+      "sameResponseRelationshipValues": {
+        "/2/modelRanges/G42/lines/S0337/option": "S0337",
+        "/2/modelRanges/G42/lines/S0337/defaultModel/modelCode": "2PMA",
+        "/2/modelRanges/G42/lines/S0337/defaultModel/agModelCode": "12CM",
+        "/2/modelRanges/G42/lines/S0337/includedTransmissionVariants/0/configuration/modelCode": "2PMB"
+      },
+      "literalTrimPresence": {
+        "path": "/2/modelRanges/G42/lines/S0337/includedTransmissionVariants/0/configuration/elements/S0337",
+        "type": "object"
+      },
+      "futureChecks": [
+        "fresh full model/AG/date/range/steering and complete aliases",
+        "exact default/included index and literal option",
+        "elements object count and unique matching variant",
+        "typed options definitions and privacy"
+      ]
+    },
+    {
+      "id": "2ppa",
+      "fullModelPointer": "/2/modelRanges/G42/models/2PPA",
+      "fullModelFacts": {
+        "modelCode": "2PPA",
+        "agModelCode": "12CM",
+        "modelRange": "G42",
+        "steering": "RL",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05",
+        "derivative": "220I"
+      },
+      "completeAliases": [
+        "2"
+      ],
+      "sameResponseRelationshipValues": {
+        "/2/modelRanges/G42/lines/S033B/option": "S033B",
+        "/2/modelRanges/G42/lines/S033B/defaultModel/modelCode": "2PPA",
+        "/2/modelRanges/G42/lines/S033B/defaultModel/agModelCode": "12CM",
+        "/2/modelRanges/G42/lines/S033B/includedTransmissionVariants/3/configuration/modelCode": "2PPA"
+      },
+      "literalTrimPresence": {
+        "path": "/2/modelRanges/G42/lines/S033B/includedTransmissionVariants/3/configuration/elements/S033B",
+        "type": "object"
+      },
+      "futureChecks": [
+        "fresh full model/AG/date/range/steering and complete aliases",
+        "exact default/included index and literal option",
+        "elements object count and unique matching variant",
+        "typed options definitions and privacy"
+      ]
+    },
+    {
+      "id": "2ppb",
+      "fullModelPointer": "/2/modelRanges/G42/models/2PPB",
+      "fullModelFacts": {
+        "modelCode": "2PPB",
+        "agModelCode": "22CM",
+        "modelRange": "G42",
+        "steering": "RL",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05",
+        "derivative": "230I"
+      },
+      "completeAliases": [
+        "2"
+      ],
+      "sameResponseRelationshipValues": {
+        "/2/modelRanges/G42/lines/S033B/option": "S033B",
+        "/2/modelRanges/G42/lines/S033B/defaultModel/modelCode": "2PPA",
+        "/2/modelRanges/G42/lines/S033B/defaultModel/agModelCode": "12CM",
+        "/2/modelRanges/G42/lines/S033B/includedTransmissionVariants/1/configuration/modelCode": "2PPB"
+      },
+      "literalTrimPresence": {
+        "path": "/2/modelRanges/G42/lines/S033B/includedTransmissionVariants/1/configuration/elements/S033B",
+        "type": "object"
+      },
+      "futureChecks": [
+        "fresh full model/AG/date/range/steering and complete aliases",
+        "exact default/included index and literal option",
+        "elements object count and unique matching variant",
+        "typed options definitions and privacy"
+      ]
+    },
+    {
+      "id": "2pbc",
+      "fullModelPointer": "/2/modelRanges/G42/models/2PBC",
+      "fullModelFacts": {
+        "modelCode": "2PBC",
+        "agModelCode": "52FA",
+        "modelRange": "G42",
+        "steering": "RL",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05",
+        "derivative": "M240I"
+      },
+      "completeAliases": [
+        "2"
+      ],
+      "sameResponseRelationshipValues": {
+        "/2/modelRanges/G42/lines/S033B/option": "S033B",
+        "/2/modelRanges/G42/lines/S033B/defaultModel/modelCode": "2PPA",
+        "/2/modelRanges/G42/lines/S033B/defaultModel/agModelCode": "12CM",
+        "/2/modelRanges/G42/lines/S033B/includedTransmissionVariants/2/configuration/modelCode": "2PBC"
+      },
+      "literalTrimPresence": {
+        "path": "/2/modelRanges/G42/lines/S033B/includedTransmissionVariants/2/configuration/elements/S033B",
+        "type": "object"
+      },
+      "futureChecks": [
+        "fresh full model/AG/date/range/steering and complete aliases",
+        "exact default/included index and literal option",
+        "elements object count and unique matching variant",
+        "typed options definitions and privacy"
+      ]
+    },
+    {
+      "id": "2pmc",
+      "fullModelPointer": "/2/modelRanges/G42/models/2PMC",
+      "fullModelFacts": {
+        "modelCode": "2PMC",
+        "agModelCode": "52FA",
+        "modelRange": "G42",
+        "steering": "RL",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05",
+        "derivative": "M240I"
+      },
+      "completeAliases": [
+        "2"
+      ],
+      "sameResponseRelationshipValues": {
+        "/2/modelRanges/G42/lines/S033B/option": "S033B",
+        "/2/modelRanges/G42/lines/S033B/defaultModel/modelCode": "2PPA",
+        "/2/modelRanges/G42/lines/S033B/defaultModel/agModelCode": "12CM",
+        "/2/modelRanges/G42/lines/S033B/includedTransmissionVariants/0/configuration/modelCode": "2PMC"
+      },
+      "literalTrimPresence": {
+        "path": "/2/modelRanges/G42/lines/S033B/includedTransmissionVariants/0/configuration/elements/S033B",
+        "type": "object"
+      },
+      "futureChecks": [
+        "fresh full model/AG/date/range/steering and complete aliases",
+        "exact default/included index and literal option",
+        "elements object count and unique matching variant",
+        "typed options definitions and privacy"
+      ]
+    }
+  ],
+  "boundary": "Actual returned full facts and same-response lines justify request inputs only. Fresh source must corroborate them before typed options; no construction, admitted configuration, inventory repair or capacity claim. M_PERFORMANCE_LINE is not used as a trim."
+}

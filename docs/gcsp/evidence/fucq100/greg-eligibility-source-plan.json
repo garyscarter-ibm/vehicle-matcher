@@ -1,0 +1,203 @@
+{
+  "client_date": "2026-11-06",
+  "kind": "read-only diagnosis and proposed source scope; no source change or execution grant",
+  "canonical100": "95d77416361f54eb558bbcb40b382cbb45149c27",
+  "published103combined": "f6a66e88a3ab264681b389c43d5d60aa81dfa9fb",
+  "published103remote_readback": "f6a66e88a3ab264681b389c43d5d60aa81dfa9fb",
+  "reported_reproduction": "Root accepted first25/26 with one weighted HTTP meanBestScore suppression; not rerun here",
+  "controlled_result": "Focused5/5, earlier21 reused; defaultRuntimeWeightedPreviewAcceptance remains false",
+  "shared_receipts": [
+    ".claude/test-runs/ownership/fucq103-runtime-first-parent-review-20261106.json",
+    ".claude/test-runs/ownership/fucq103-runtime-focus-parent-review-20261106.json"
+  ],
+  "story_link_basis": {
+    "FUCQ-99": "Closed DEV-2026-11-04-063 authors actual saved-demand reader and eligibility/privacy acceptance; merged1d137e04377bc1e3fb1e2728cd52c94ece9e7990",
+    "FUCQ-103": "DEV-2026-11-04-066 authors actual preview/fit consumer and unchanged eligibility/quote acceptance"
+  },
+  "source_pins": [
+    {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/gcsp/runtime.js",
+      "sha256": "6ac589363f8a6c5abc67e7d63d861389265a942b8da8cfa721bb6942a1461fa7"
+    },
+    {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/gcsp/manual-context/fixtures.js",
+      "sha256": "e63bee220e6e563f96ee94a94f37500c67d0c2944b3909a0a8c7d3f1f89b01a6"
+    },
+    {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/gcsp/manual-context/ports.js",
+      "sha256": "c1e7db5012f6d3212b79ad989e6cde5a0e390e2f4bfe50f91ee4c79c8a7a1267"
+    },
+    {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/gcsp/manual-context/index.js",
+      "sha256": "3e694f3a68b9d3c9f40b44ddb785bec2edce3b3ada43d491995be77a2930fd43"
+    },
+    {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/gcsp/greg/index.js",
+      "sha256": "2457f2a122a9c1ee9b4014a65ae384f36bf83916d496fce744bcc8fc24182e0b"
+    },
+    {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/gcsp/greg/publish/index.js",
+      "sha256": "fdfaeee63bf42f39c66ecae357a4a940f2813db7f4b97b94dcb1503e9d79a6fb"
+    },
+    {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/gcsp/greg/publish/fit.js",
+      "sha256": "eb0187dcf268f9d27befdec0f2a5b99aa72f2fe22b5b0824edf24b4c1643ff6c"
+    },
+    {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/gcsp/recommendation/index.js",
+      "sha256": "08acfe895804cf60dcc178591ecbdd1816f12ce70944f832f1ae394902c7e172"
+    },
+    {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/gcsp/offers/buddy-hold.js",
+      "sha256": "b9f1a9be9cf42552a56313492bf0703b49ed715ffe2059f477ee11637c44b3d6"
+    },
+    {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/gcsp/offers/buddy-remote.js",
+      "sha256": "0284045ab38c22c305019ad4a560724aa233e830c6c37186d5661da430c59e01"
+    },
+    {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/gcsp/offers/current-car-comparison.js",
+      "sha256": "c5aaf8b2e3123301d50f3dade21e89e4f88abf12ede4e2c7ed801adbc56099cd"
+    },
+    {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/gcsp/repository/schema.js",
+      "sha256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a"
+    },
+    {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/gcsp/brief/index.js",
+      "sha256": "22500a517f8232947b33ac274e32bf60746ba9d8199851e750784f57737ee418"
+    },
+    {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/test/gcsp-greg-demand.test.js",
+      "sha256": "d086cd067667ad6b0d71c5beaf4513b240ccb86cc5fdc2dcaf0ae86ec54e3357"
+    },
+    {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/test/helpers/greg-demand-run.js",
+      "sha256": "7321afef4a06bf719e65143d2fe8e9784ddf92b5fd42ab2f5216364737f790e1"
+    },
+    {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "_dev/done/2026-11/DEV-2026-11-04-063.md",
+      "sha256": "57727e5f54a2b47c1137ec57fddf9cdee1762677a07e86da47e1655f3ef93c05"
+    },
+    {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "_dev/in-progress/DEV-2026-11-04-066.md",
+      "sha256": "5b11e86b3e7e2af6d222dd0e53bac919760a3e1f788b0a41f672d507fed23b8a"
+    },
+    {
+      "ref": "f6a66e88a3ab264681b389c43d5d60aa81dfa9fb",
+      "path": "server/gcsp/greg/index.js",
+      "sha256": "2457f2a122a9c1ee9b4014a65ae384f36bf83916d496fce744bcc8fc24182e0b"
+    },
+    {
+      "ref": "f6a66e88a3ab264681b389c43d5d60aa81dfa9fb",
+      "path": "server/gcsp/greg/publish/index.js",
+      "sha256": "fdfaeee63bf42f39c66ecae357a4a940f2813db7f4b97b94dcb1503e9d79a6fb"
+    },
+    {
+      "ref": "f6a66e88a3ab264681b389c43d5d60aa81dfa9fb",
+      "path": "server/gcsp/greg/publish/fit.js",
+      "sha256": "eb0187dcf268f9d27befdec0f2a5b99aa72f2fe22b5b0824edf24b4c1643ff6c"
+    },
+    {
+      "ref": "f6a66e88a3ab264681b389c43d5d60aa81dfa9fb",
+      "path": "server/scenarios/employee/index.js",
+      "sha256": "50e3b25317158c29605420af080c1ec6bd76ded94d298d33badfc90a4dc0d91c"
+    },
+    {
+      "ref": "f6a66e88a3ab264681b389c43d5d60aa81dfa9fb",
+      "path": "server/test/gcsp-runtime-publication.test.js",
+      "sha256": "e50036d21fad90aed68eccb7f166cfda33aa9d9bbb3a08adb23fbb24856efd2a"
+    },
+    {
+      "ref": "f6a66e88a3ab264681b389c43d5d60aa81dfa9fb",
+      "path": "docs/gcsp/evidence/fucq103/runtime-combined-2026-11-06.md",
+      "sha256": "1b17e0e763d5ef17695e36dde5627ce75127e45ddd9b41fd7f7699455792898d"
+    }
+  ],
+  "source_observations": {
+    "canonical_writer": "manualContext.drivers[].eligible; employeeFacts omits driverEligible",
+    "runtime_reader": "coherent account+driver ports; currentContract driverId then employee-kind fallback; maps selected eligible fact",
+    "greg_readers": "clone employeeFacts only; both loaders omit entitlement_slots",
+    "shared_gate": "missing driverEligible produces driver-unconfirmed; only eligible decisions score",
+    "privacy_threshold": 5,
+    "buddy_readers": "own employee-kind driver; fill missing flattened field only; distinct existing behavior, no new adoption",
+    "legacy_isolation_fixtures": "Some Greg fixtures persist only flattened facts, so they do not prove canonical manual preparation"
+  },
+  "proposed_product_paths": [
+    {
+      "path": "server/gcsp/manual-context/recommendation-facts.js",
+      "new": true,
+      "purpose": "pure projection of exact persisted employee/brief/slot/current-contract driver into cloned facts"
+    },
+    {
+      "path": "server/gcsp/greg/index.js",
+      "purpose": "add entitlement_slots to load/fence and use shared projector"
+    },
+    {
+      "path": "server/gcsp/greg/publish/index.js",
+      "purpose": "add entitlement_slots to shared active/draft rows and final fence"
+    },
+    {
+      "path": "server/gcsp/greg/publish/fit.js",
+      "purpose": "use the same bound facts projector"
+    }
+  ],
+  "proposed_test_authoring_paths": [
+    "server/test/gcsp-greg-driver-eligibility.test.js",
+    "server/test/gcsp-greg-demand.test.js"
+  ],
+  "ownership_gate": "Root coordinates99/103 writers and explicit source grant before implementation;103 existing tests remain separately owned",
+  "binding_contract": [
+    "brief/employee/slot run+employee+entitlement identity agree",
+    "canonical account company/scheme/grade/employee and dated source record-set validated",
+    "explicit slot contractId resolves exactly one current employee/slot/scheme contract and its exact driverId; no fallback for dangling explicit reference",
+    "with no current contract reference require exactly one employee-kind driver owned by that employee",
+    "copy original eligible typed fact and provenance without inventing known true/assurance/time",
+    "bound false/unknown cannot be overridden by a contradictory flattened fact",
+    "missing/ambiguous driver evidence remains unconfirmed; foreign source binding fails closed; generic public outcomes need final review",
+    "project on read; no persisted cache/backfill or policy/scorer change"
+  ],
+  "future_validation": [
+    "actual canonical preparation without flattened fact",
+    "true/false/unknown/malformed/absent facts and exact foreign/duplicate/dangling/nominated/no-contract bindings",
+    "unchanged privacy threshold and private aggregate allowlist",
+    "retained103 scorer active/draft difference after adequate correctly bound cohort",
+    "slot/employee concurrent change fences",
+    "non-Greg/stale-run/visibility/decline/charging refusals",
+    "original fact provenance and repository/quote pins unchanged"
+  ],
+  "proposed_limits": {
+    "workers": 1,
+    "seconds": 120,
+    "rss_bytes": 805306368,
+    "scratch_bytes": 134217728,
+    "combined_log_bytes": 2097152,
+    "admitted": false
+  },
+  "execution_gate": "Before execution freeze combined finite import/input/environment graph, executable/installed identities, exact selection, manifest/checkpoint/teardown; this is not that run catalogue",
+  "excluded": [
+    "product edits now",
+    "tests/listeners/browser/native/full/provider runs now",
+    "runtime/index source adoption",
+    "identity/core/policy seed/weighted scorer changes",
+    "buddy/manual mutation or allocator96/remote/case/bootstrap host changes",
+    "Jira/backlog or claim changes"
+  ]
+}

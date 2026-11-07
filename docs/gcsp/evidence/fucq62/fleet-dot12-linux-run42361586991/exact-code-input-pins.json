@@ -1,0 +1,40 @@
+{
+  "commit": "21d34a173f024220806c36ec89567c0ed737a815",
+  "releaseId": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "pins": {
+    ".github/workflows/gcsp-fleet-build.yml": {
+      "bytes": 4920,
+      "sha256": "c4daf45e49ec149a8f2eb205101810fd62ed53eb554acbf918c3efa7023f4cc9"
+    },
+    "docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan/boundary.mjs": {
+      "bytes": 6773,
+      "sha256": "b1bd0fbad1d9048558c4f36ffab9fba6db94e6773eeff656b74dc0efe09ab82b"
+    },
+    "docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan/boundary-observations.json": {
+      "bytes": 7656,
+      "sha256": "90b7b4a5c09f736537c31988b711ee6599801da515a70326ebdf32ae485fc753"
+    },
+    "docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan/verify-assets.mjs": {
+      "bytes": 1263,
+      "sha256": "36f95376feb01941be8364a6c59359b55281adeb21018188f80786e296a3f6ab"
+    },
+    "docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan/descriptor-proposal.json": {
+      "bytes": 25518,
+      "sha256": "86e382d308d61e70c18ad7c4758eaddfa70395142260210d719b6c161ff73758"
+    },
+    "server/gcsp/vehicle-evidence/fleet-artifacts.js": {
+      "bytes": 8183,
+      "sha256": "0bb5079b92a0a8df997708a6f266a2de84603ebd53efdf291a15edffd0d92811"
+    },
+    "server/gcsp/vehicle-evidence/fleet-release.js": {
+      "bytes": 4017,
+      "sha256": "1cadb13cbd9851eea93be14096328353970e3210b4f00e1ecf5ae8362f6289b4"
+    },
+    "server/gcsp/vehicle-evidence/fleet-releases.json": {
+      "bytes": 143918,
+      "sha256": "e13a5f99167bea65cc9a04e6eae41cec56b55caaa229b640e0e47b20f44301e0"
+    }
+  },
+  "portableHelpersUnchangedFromReviewedProposal": true,
+  "fullCodeIdentity": "Git commit identity above; this pin set highlights reused proof/runtime release inputs, not a new closure claim."
+}

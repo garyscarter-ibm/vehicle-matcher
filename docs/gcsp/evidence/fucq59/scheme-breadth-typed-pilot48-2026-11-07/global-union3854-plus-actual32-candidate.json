@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "actual-global-union-candidate.v1",
+  "status": "candidate; independent parent audit required",
+  "time": "2026-11-07T05:13:01.548666+00:00",
+  "scope": "frozen parent-audited3854 global union plus actual32 strict breadth admissions and all48spent outcomes",
+  "inputs": {
+    "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union3854-20261107/final-canonical-index.json": "03085775a0525fe33ac4f9d0fb9c4eb70739d58544991db29449510efa57b3f0",
+    "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union3854-20261107/final-spent-request-index.json": "879d06da124460d41ac956312b7c868f8477167b6024455b53bc7b22d05b6259",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-typed-pilot48-2026-11-07/final-canonical-index.json": "439292c8de01fc312fc0262ab339c1d6b7bef43cb75095baeb2cf9671b19b115",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-typed-pilot48-2026-11-07/final-spent-request-index.json": "fa0af6da229b26e6936f682d1e6e27f57c855b28795a16a8b1686b66b891d7fd",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth-typed-pilot48-2026-11-07/actual-validation.json": "8bda2daf68d246f1d45b9869bdfd5359cd61fd8590ad74e000c37d252e6f85ef"
+  },
+  "preserved": {
+    "canonicalPrefix": 3857,
+    "spentPrefix": 5052,
+    "pilotFrozenSharedCanonical": 2427,
+    "pilotFrozenSharedSpent": 3236,
+    "allSharedOriginsPreserved": true
+  },
+  "actualAddition": {
+    "admitted": 32,
+    "solverSpent": 48,
+    "rejected": 16,
+    "duplicates": 0
+  },
+  "result": {
+    "canonical": 3889,
+    "admitted": 3886,
+    "spent": 5100,
+    "canonicalPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union3886-breadthpilot32-20261107-candidate/final-canonical-index.json",
+    "canonicalSha256": "96f8f25af07d503ef91362dc20382ebbbaa84eae7119a39650c980d1548bfca5",
+    "spentPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union3886-breadthpilot32-20261107-candidate/final-spent-request-index.json",
+    "spentSha256": "4ddd4318d466b568ff72314256510c992f4303fdb1ceae00f28512d1a7fc2d2a"
+  },
+  "latestF70And1304UnionStillRequired": true,
+  "sourceTraffic": 0,
+  "acceptance": false
+}

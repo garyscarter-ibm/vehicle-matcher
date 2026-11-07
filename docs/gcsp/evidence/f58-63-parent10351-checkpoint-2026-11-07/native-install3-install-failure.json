@@ -1,0 +1,83 @@
+{
+  "status": "failed-no-retry-or-source-fallback",
+  "stage": "verify-native-keg-and-preserved-existing-state",
+  "package": "ca-certificates",
+  "errorType": "AssertionError",
+  "frames": [
+    {
+      "file": "install-local.py",
+      "line": 63,
+      "function": "<module>"
+    }
+  ],
+  "observations": {
+    "archiveBytes": 109619,
+    "archiveSha256": "8589f4e61b3afcc5ea375aab11af1c891ec4c94421c699c2a5a4765078de4443",
+    "canonicalArchiveName": "ca-certificates--2026-10-20.all.bottle.tar.gz",
+    "actualEmbeddedRuby": {
+      "member": "ca-certificates/2026-10-20/.brew/ca-certificates.rb",
+      "bytes": 7949,
+      "sha256": "4abe22fb50b45cd5e113747a92a115e0479c4017502d7e8a87132a340b742d84"
+    },
+    "catalogCurrentFormulaRubySha256": "535300ac0e99511a36340454bd5287cfff097191de9d7b9675ed924f3a692317",
+    "embeddedEqualsCurrentFormula": false,
+    "installer": {
+      "returncode": 1,
+      "bytes": 4291,
+      "sha256": "037f5fcde0ae2f6771dac4e4a0b1a3b979d99a6e8587fbd51a819cccb336a075",
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/install-3-local/install-ca-certificates.log"
+    }
+  },
+  "installed": [],
+  "observedKegs": {
+    "ca-certificates": [
+      "2026-07-16",
+      "2026-08-13"
+    ],
+    "libunistring": [
+      "1.4.2"
+    ],
+    "readline": [
+      "8.3.3"
+    ],
+    "icu4c@79": [],
+    "openssl@4": [],
+    "krb5": [],
+    "postgresql@16": []
+  },
+  "logs": [
+    {
+      "returncode": 1,
+      "bytes": 4291,
+      "sha256": "037f5fcde0ae2f6771dac4e4a0b1a3b979d99a6e8587fbd51a819cccb336a075",
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/install-3-local/install-ca-certificates.log"
+    }
+  ],
+  "optLinksBefore": {
+    "/opt/homebrew/opt/ca-certificates": "../Cellar/ca-certificates/2026-08-13",
+    "/opt/homebrew/opt/libunistring": "../Cellar/libunistring/1.4.2",
+    "/opt/homebrew/opt/readline": "../Cellar/readline/8.3.3",
+    "/opt/homebrew/opt/icu4c@79": null,
+    "/opt/homebrew/opt/openssl@4": null,
+    "/opt/homebrew/opt/krb5": null,
+    "/opt/homebrew/opt/postgresql@16": null,
+    "/opt/homebrew/opt/icu4c": "../Cellar/icu4c@78/78.3",
+    "/opt/homebrew/opt/openssl": "../Cellar/openssl@3/3.6.3"
+  },
+  "optLinksAfter": {
+    "/opt/homebrew/opt/ca-certificates": "../Cellar/ca-certificates/2026-08-13",
+    "/opt/homebrew/opt/libunistring": "../Cellar/libunistring/1.4.2",
+    "/opt/homebrew/opt/readline": "../Cellar/readline/8.3.3",
+    "/opt/homebrew/opt/icu4c@79": null,
+    "/opt/homebrew/opt/openssl@4": null,
+    "/opt/homebrew/opt/krb5": null,
+    "/opt/homebrew/opt/postgresql@16": null,
+    "/opt/homebrew/opt/icu4c": "../Cellar/icu4c@78/78.3",
+    "/opt/homebrew/opt/openssl": "../Cellar/openssl@3/3.6.3"
+  },
+  "publicRequests": 0,
+  "redownloadBytes": 0,
+  "installedKegsPreserved": true,
+  "nativeDatabaseAttempted": false,
+  "acceptance": false
+}

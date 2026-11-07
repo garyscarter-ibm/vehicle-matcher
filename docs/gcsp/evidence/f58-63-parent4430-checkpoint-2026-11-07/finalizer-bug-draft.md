@@ -1,0 +1,11 @@
+# Pending linked Bug: retained-check finalization can interrupt proof publication
+
+Origin: FUCQ-59. Severity: Medium. This is independent later pickup and is not a dependency for merging the current source collection work. Related earlier process-inspection finding FUCQ-155 does not establish this failure has the same cause. Jira connector authentication is unavailable; no new issue key is claimed.
+
+The original F70 optional5535 run stopped after source session239 processed all8 candidates (6admitted,2source-not-constructible) and12GET. Its strict retained test process returned0 with5/5 passing checks, but live-validation.json was not written. The verifier exited during finalization, before proof assembly. The outer retained error is AssertionError: owned stage failed; preserve primary and stop. The exact first verifier-finalizer exception is unavailable in the bounded original terminal output and was not retained in the successful-test log. Cause remains unestablished.
+
+Both source and retained cleanup receipts report scratch/link/groups/reservation absent and code identity unchanged. The original phase finalizer joined its children and preserved the actual primary, canonical/spent indexes and1,781,334,636 retained bytes. No source corruption, access failure or failed strict check is established. Actual239 traffic remains spent; never replay it. Sessions1–238 are proved.
+
+Evidence root: /Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix5535-20261107-once/. Session239 and original finalizer/error records must remain unchanged. Reconcile239 from its actual retained evidence, then use a separately pinned original240+ suffix (3,623solver/5,439GET) with bounded group-query helpers and retained stage stderr. That continuation does not claim the original defect repaired.
+
+Independent repair acceptance: retain the first stage/finalizer diagnostic without overwriting successful strict-check results; reproduce the failure or identify the exact lifecycle path; prove bounded explicit process-group absence, primary preservation and eventual proof publication using proportionate fixtures. Do not infer cause from an unknown process query alone.

@@ -1,0 +1,34 @@
+{
+  "status": "failed-read-only-runner-check",
+  "cause": "gh --jq .sha emits a bare string; helper expected JSON. Changed query to {sha}, preserving exact immutable commit assertion.",
+  "publicMutationExecuted": false,
+  "result": {
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot6-public/check/command.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot6-public/check/ownership/26a2b211a5ca45dc992c31c0354750eb.json",
+    "peak_rss": 134529024,
+    "peak_scratch": 0,
+    "rc": 1,
+    "wall": 0.968314459
+  },
+  "cleanup": {
+    "codeIdentityUnchanged": true,
+    "compatibilityException": null,
+    "dependencyLinkAbsent": true,
+    "freeDiskBytes": 57466732544,
+    "groupsAbsent": true,
+    "inputIdentityUnchanged": true,
+    "leftovers": [],
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot6-public/check/ownership/26a2b211a5ca45dc992c31c0354750eb.json",
+    "removedScratchPeakBytes": 0,
+    "reservationAbsent": true,
+    "retainedLogicalBytes": 0,
+    "retainedOutput": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-public-20261107/check",
+    "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-public-20261107/.scratch/test-stamp-shard-26a2b211a5ca45dc992c31c0354750eb",
+    "scratchAbsent": true
+  },
+  "failureLog": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot6-public/check/command.log",
+  "failureLogSha256": "f8205e5d70c3bffb5b4754f9119010c99d65b6e5c28214fc45a5ac9b72097c83",
+  "nextCheck": "check-2; separate retained phase; no evidence overwritten"
+}

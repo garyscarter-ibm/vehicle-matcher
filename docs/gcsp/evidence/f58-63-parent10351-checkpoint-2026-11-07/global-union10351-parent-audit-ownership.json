@@ -1,0 +1,10 @@
+{
+  "expectedBytes": 12582912,
+  "forecastRAMMiB": 192,
+  "forecastSeconds": 30,
+  "ownerPid": 11468,
+  "retainedOutputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union10351-20261107",
+  "scratchCreated": false,
+  "sourceHTTP": 0,
+  "testsReplayed": 0
+}

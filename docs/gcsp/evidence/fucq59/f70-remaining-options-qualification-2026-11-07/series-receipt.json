@@ -1,0 +1,507 @@
+{
+  "acceptance": false,
+  "allocationId": "f70-model-options-20261107-2c4d05cb669da823",
+  "codeIdentityUnchanged": true,
+  "contexts": [
+    {
+      "checkpointCounts": {
+        "cacheEvictions": 0,
+        "cacheHits": {
+          "discover": 0,
+          "options": 0,
+          "page": 0,
+          "settings": 0
+        },
+        "decodedBytes": 871234,
+        "failures": 0,
+        "httpAttempts": 4,
+        "operationBytes": {
+          "discover": 113259,
+          "options": 119566,
+          "page": 17763,
+          "settings": 620646
+        },
+        "operations": {
+          "discover": 1,
+          "options": 1,
+          "page": 1,
+          "settings": 1
+        },
+        "sourceCalls": 4,
+        "substitutions": 0,
+        "timeouts": 0
+      },
+      "checkpointExport": {
+        "accepted": 0,
+        "checkpointSha256": "e049359f50f6d3d6309e9aa588d4564f8722a75c8466cc83b1b7f72a01056e22",
+        "cursor": null,
+        "primaryRetained": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7a/collector-checkpoint.json",
+        "sourceBindingSemantics": "requires-source-binder-verification; hashes-only-export",
+        "sourceCaptures": 0,
+        "status": "exported"
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/f70-remaining-options/live/1f7a/ownership/4badfda4aed143139a4fd89de2c854d2.json",
+        "removedAllocationBytes": 0,
+        "reservationAbsent": true,
+        "scratchAbsent": true,
+        "scratchRoot": "/private/tmp/test-stamp-shard-4badfda4aed143139a4fd89de2c854d2"
+      },
+      "id": "1f7a",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/f70-remaining-options/live/1f7a/child.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/f70-remaining-options/live/1f7a/ownership/4badfda4aed143139a4fd89de2c854d2.json",
+        "peak_rss": 85819392,
+        "peak_scratch": 0,
+        "rc": 0,
+        "wall": 1.548813041
+      },
+      "retainedReceipt": {
+        "acceptance": false,
+        "actualAttempts": 4,
+        "admitted": 0,
+        "agModelCode": "82GE",
+        "allocationId": "f70-model-options-20261107-2c4d05cb669da823",
+        "browser": 0,
+        "checkpointSha256": "e049359f50f6d3d6309e9aa588d4564f8722a75c8466cc83b1b7f72a01056e22",
+        "codeCommit": "de1e420458f7ef6485f7f091f403e4369ce55616",
+        "counts": {
+          "cacheEvictions": 0,
+          "cacheHits": {
+            "discover": 0,
+            "options": 0,
+            "page": 0,
+            "settings": 0
+          },
+          "decodedBytes": 871234,
+          "failures": 0,
+          "httpAttempts": 4,
+          "operationBytes": {
+            "discover": 113259,
+            "options": 119566,
+            "page": 17763,
+            "settings": 620646
+          },
+          "operations": {
+            "discover": 1,
+            "options": 1,
+            "page": 1,
+            "settings": 1
+          },
+          "sourceCalls": 4,
+          "substitutions": 0,
+          "timeouts": 0
+        },
+        "elapsedMs": 1284,
+        "imageRequests": 0,
+        "line": {
+          "defaultModel": {
+            "agModelCode": "82GE",
+            "modelCode": "1F7A"
+          },
+          "includedIndex": 0,
+          "lineKey": "BASIC_LINE",
+          "optionsQuery": {
+            "kind": "untrimmed"
+          }
+        },
+        "modelCode": "1F7A",
+        "newConfigurations": 0,
+        "planDigest": "e0124d1a26b3d164bd4c623f92315485b910e8accb1c68982a6024cf66de2b96",
+        "rawBodiesRetained": false,
+        "reason": "source-options-qualified",
+        "retries": 0,
+        "schemaVersion": "f70-model-options-context-receipt.v1",
+        "settingsRetained": false,
+        "solverRequests": 0,
+        "sourceCapacityCredit": 0,
+        "sourceWrites": 0,
+        "status": "observed-typed-options-only"
+      },
+      "scope": "one exact fresh model/options context; zero configuration capacity",
+      "sourceEventsStarted": 4,
+      "writerMetadata": []
+    },
+    {
+      "checkpointCounts": {
+        "cacheEvictions": 0,
+        "cacheHits": {
+          "discover": 0,
+          "options": 0,
+          "page": 0,
+          "settings": 0
+        },
+        "decodedBytes": 881421,
+        "failures": 0,
+        "httpAttempts": 4,
+        "operationBytes": {
+          "discover": 113259,
+          "options": 129753,
+          "page": 17763,
+          "settings": 620646
+        },
+        "operations": {
+          "discover": 1,
+          "options": 1,
+          "page": 1,
+          "settings": 1
+        },
+        "sourceCalls": 4,
+        "substitutions": 0,
+        "timeouts": 0
+      },
+      "checkpointExport": {
+        "accepted": 0,
+        "checkpointSha256": "8b2ada78b27b56a80f5cf9194e0f6b030bc9d47a9c7b3d3539122274b2f219c8",
+        "cursor": null,
+        "primaryRetained": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7c/collector-checkpoint.json",
+        "sourceBindingSemantics": "requires-source-binder-verification; hashes-only-export",
+        "sourceCaptures": 0,
+        "status": "exported"
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/f70-remaining-options/live/1f7c/ownership/a9ca2a78ab3c4eeb97f9c4729b357b94.json",
+        "removedAllocationBytes": 0,
+        "reservationAbsent": true,
+        "scratchAbsent": true,
+        "scratchRoot": "/private/tmp/test-stamp-shard-a9ca2a78ab3c4eeb97f9c4729b357b94"
+      },
+      "id": "1f7c",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/f70-remaining-options/live/1f7c/child.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/f70-remaining-options/live/1f7c/ownership/a9ca2a78ab3c4eeb97f9c4729b357b94.json",
+        "peak_rss": 84934656,
+        "peak_scratch": 0,
+        "rc": 0,
+        "wall": 1.320399167
+      },
+      "retainedReceipt": {
+        "acceptance": false,
+        "actualAttempts": 4,
+        "admitted": 0,
+        "agModelCode": "22GE",
+        "allocationId": "f70-model-options-20261107-2c4d05cb669da823",
+        "browser": 0,
+        "checkpointSha256": "8b2ada78b27b56a80f5cf9194e0f6b030bc9d47a9c7b3d3539122274b2f219c8",
+        "codeCommit": "de1e420458f7ef6485f7f091f403e4369ce55616",
+        "counts": {
+          "cacheEvictions": 0,
+          "cacheHits": {
+            "discover": 0,
+            "options": 0,
+            "page": 0,
+            "settings": 0
+          },
+          "decodedBytes": 881421,
+          "failures": 0,
+          "httpAttempts": 4,
+          "operationBytes": {
+            "discover": 113259,
+            "options": 129753,
+            "page": 17763,
+            "settings": 620646
+          },
+          "operations": {
+            "discover": 1,
+            "options": 1,
+            "page": 1,
+            "settings": 1
+          },
+          "sourceCalls": 4,
+          "substitutions": 0,
+          "timeouts": 0
+        },
+        "elapsedMs": 1109,
+        "imageRequests": 0,
+        "line": {
+          "defaultModel": {
+            "agModelCode": "22GE",
+            "modelCode": "1F7C"
+          },
+          "includedIndex": 0,
+          "lineKey": "M_PERFORMANCE_LINE",
+          "optionsQuery": {
+            "kind": "untrimmed"
+          }
+        },
+        "modelCode": "1F7C",
+        "newConfigurations": 0,
+        "planDigest": "cc08b2ccac57db32ced188058421389bc1ed144c8eb084086aba3b76a6cd70ac",
+        "rawBodiesRetained": false,
+        "reason": "source-options-qualified",
+        "retries": 0,
+        "schemaVersion": "f70-model-options-context-receipt.v1",
+        "settingsRetained": false,
+        "solverRequests": 0,
+        "sourceCapacityCredit": 0,
+        "sourceWrites": 0,
+        "status": "observed-typed-options-only"
+      },
+      "scope": "one exact fresh model/options context; zero configuration capacity",
+      "sourceEventsStarted": 4,
+      "writerMetadata": []
+    },
+    {
+      "checkpointCounts": {
+        "cacheEvictions": 0,
+        "cacheHits": {
+          "discover": 0,
+          "options": 0,
+          "page": 0,
+          "settings": 0
+        },
+        "decodedBytes": 880642,
+        "failures": 0,
+        "httpAttempts": 4,
+        "operationBytes": {
+          "discover": 113259,
+          "options": 128974,
+          "page": 17763,
+          "settings": 620646
+        },
+        "operations": {
+          "discover": 1,
+          "options": 1,
+          "page": 1,
+          "settings": 1
+        },
+        "sourceCalls": 4,
+        "substitutions": 0,
+        "timeouts": 0
+      },
+      "checkpointExport": {
+        "accepted": 0,
+        "checkpointSha256": "2a9ce4353e5e9d3234776a8e330dbb613c5aee36c30104d4cb97560cdf0ad5a4",
+        "cursor": null,
+        "primaryRetained": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7d/collector-checkpoint.json",
+        "sourceBindingSemantics": "requires-source-binder-verification; hashes-only-export",
+        "sourceCaptures": 0,
+        "status": "exported"
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/f70-remaining-options/live/1f7d/ownership/dfcf341531b247f38ba79379472d087b.json",
+        "removedAllocationBytes": 0,
+        "reservationAbsent": true,
+        "scratchAbsent": true,
+        "scratchRoot": "/private/tmp/test-stamp-shard-dfcf341531b247f38ba79379472d087b"
+      },
+      "id": "1f7d",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/f70-remaining-options/live/1f7d/child.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/f70-remaining-options/live/1f7d/ownership/dfcf341531b247f38ba79379472d087b.json",
+        "peak_rss": 84885504,
+        "peak_scratch": 0,
+        "rc": 0,
+        "wall": 1.2865477079999996
+      },
+      "retainedReceipt": {
+        "acceptance": false,
+        "actualAttempts": 4,
+        "admitted": 0,
+        "agModelCode": "62GE",
+        "allocationId": "f70-model-options-20261107-2c4d05cb669da823",
+        "browser": 0,
+        "checkpointSha256": "2a9ce4353e5e9d3234776a8e330dbb613c5aee36c30104d4cb97560cdf0ad5a4",
+        "codeCommit": "de1e420458f7ef6485f7f091f403e4369ce55616",
+        "counts": {
+          "cacheEvictions": 0,
+          "cacheHits": {
+            "discover": 0,
+            "options": 0,
+            "page": 0,
+            "settings": 0
+          },
+          "decodedBytes": 880642,
+          "failures": 0,
+          "httpAttempts": 4,
+          "operationBytes": {
+            "discover": 113259,
+            "options": 128974,
+            "page": 17763,
+            "settings": 620646
+          },
+          "operations": {
+            "discover": 1,
+            "options": 1,
+            "page": 1,
+            "settings": 1
+          },
+          "sourceCalls": 4,
+          "substitutions": 0,
+          "timeouts": 0
+        },
+        "elapsedMs": 1207,
+        "imageRequests": 0,
+        "line": {
+          "defaultModel": {
+            "agModelCode": "82GE",
+            "modelCode": "1F7B"
+          },
+          "includedIndex": 2,
+          "lineKey": "S0337",
+          "optionsQuery": {
+            "code": "S0337",
+            "kind": "trim"
+          }
+        },
+        "modelCode": "1F7D",
+        "newConfigurations": 0,
+        "planDigest": "f9513a9ff471dbe5a675b328364e595ec8426991c0471732d4934c05a825146b",
+        "rawBodiesRetained": false,
+        "reason": "source-options-qualified",
+        "retries": 0,
+        "schemaVersion": "f70-model-options-context-receipt.v1",
+        "settingsRetained": false,
+        "solverRequests": 0,
+        "sourceCapacityCredit": 0,
+        "sourceWrites": 0,
+        "status": "observed-typed-options-only"
+      },
+      "scope": "one exact fresh model/options context; zero configuration capacity",
+      "sourceEventsStarted": 4,
+      "writerMetadata": []
+    },
+    {
+      "checkpointCounts": {
+        "cacheEvictions": 0,
+        "cacheHits": {
+          "discover": 0,
+          "options": 0,
+          "page": 0,
+          "settings": 0
+        },
+        "decodedBytes": 886093,
+        "failures": 0,
+        "httpAttempts": 4,
+        "operationBytes": {
+          "discover": 113259,
+          "options": 134425,
+          "page": 17763,
+          "settings": 620646
+        },
+        "operations": {
+          "discover": 1,
+          "options": 1,
+          "page": 1,
+          "settings": 1
+        },
+        "sourceCalls": 4,
+        "substitutions": 0,
+        "timeouts": 0
+      },
+      "checkpointExport": {
+        "accepted": 0,
+        "checkpointSha256": "d0488fd0769a435b4c4be3ac3c38cf7c09c7071c9b8ccdbe59e59636754169f8",
+        "cursor": null,
+        "primaryRetained": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7f/collector-checkpoint.json",
+        "sourceBindingSemantics": "requires-source-binder-verification; hashes-only-export",
+        "sourceCaptures": 0,
+        "status": "exported"
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/f70-remaining-options/live/1f7f/ownership/f89a8668d0154b4f9eb3539631ecf054.json",
+        "removedAllocationBytes": 0,
+        "reservationAbsent": true,
+        "scratchAbsent": true,
+        "scratchRoot": "/private/tmp/test-stamp-shard-f89a8668d0154b4f9eb3539631ecf054"
+      },
+      "id": "1f7f",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/f70-remaining-options/live/1f7f/child.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/f70-remaining-options/live/1f7f/ownership/f89a8668d0154b4f9eb3539631ecf054.json",
+        "peak_rss": 85032960,
+        "peak_scratch": 0,
+        "rc": 0,
+        "wall": 1.3310699579999996
+      },
+      "retainedReceipt": {
+        "acceptance": false,
+        "actualAttempts": 4,
+        "admitted": 0,
+        "agModelCode": "62GE",
+        "allocationId": "f70-model-options-20261107-2c4d05cb669da823",
+        "browser": 0,
+        "checkpointSha256": "d0488fd0769a435b4c4be3ac3c38cf7c09c7071c9b8ccdbe59e59636754169f8",
+        "codeCommit": "de1e420458f7ef6485f7f091f403e4369ce55616",
+        "counts": {
+          "cacheEvictions": 0,
+          "cacheHits": {
+            "discover": 0,
+            "options": 0,
+            "page": 0,
+            "settings": 0
+          },
+          "decodedBytes": 886093,
+          "failures": 0,
+          "httpAttempts": 4,
+          "operationBytes": {
+            "discover": 113259,
+            "options": 134425,
+            "page": 17763,
+            "settings": 620646
+          },
+          "operations": {
+            "discover": 1,
+            "options": 1,
+            "page": 1,
+            "settings": 1
+          },
+          "sourceCalls": 4,
+          "substitutions": 0,
+          "timeouts": 0
+        },
+        "elapsedMs": 1159,
+        "imageRequests": 0,
+        "line": {
+          "defaultModel": {
+            "agModelCode": "82GE",
+            "modelCode": "1F7E"
+          },
+          "includedIndex": 0,
+          "lineKey": "S033B",
+          "optionsQuery": {
+            "code": "S033B",
+            "kind": "trim"
+          }
+        },
+        "modelCode": "1F7F",
+        "newConfigurations": 0,
+        "planDigest": "d042546ab2f15b805632a116e081b734a5deb0d1c5c9c1962fe76a06fccc1652",
+        "rawBodiesRetained": false,
+        "reason": "source-options-qualified",
+        "retries": 0,
+        "schemaVersion": "f70-model-options-context-receipt.v1",
+        "settingsRetained": false,
+        "solverRequests": 0,
+        "sourceCapacityCredit": 0,
+        "sourceWrites": 0,
+        "status": "observed-typed-options-only"
+      },
+      "scope": "one exact fresh model/options context; zero configuration capacity",
+      "sourceEventsStarted": 4,
+      "writerMetadata": []
+    }
+  ],
+  "elapsedSeconds": 5.917,
+  "newConfigurations": 0,
+  "planDigest": "2c4d05cb669da8238a23c5ace1e0298aa80b4b365b05ea0cab50f8daf8a0616e",
+  "publicGetAttempts": 16,
+  "sourceCapacityCredit": 0,
+  "stop": "all-four-model-options-contexts-observed"
+}

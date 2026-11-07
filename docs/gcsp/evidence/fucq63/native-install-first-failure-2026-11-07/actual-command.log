@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq63/native-postgres-bounded-plan-2026-11-07/install.py", line 76, in <module>
+    save('install-failure.json',{'status':'failed-no-retry-or-source-fallback','installed':installed,'requests':requests,'installedKegsPreserved':True,'nativeAttempted':False,'acceptance':False});raise RuntimeError('Pinned installation failed; bounded sanitized logs retained, installed kegs preserved') from None
+RuntimeError: Pinned installation failed; bounded sanitized logs retained, installed kegs preserved

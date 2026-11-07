@@ -1,0 +1,123 @@
+{
+  "schemaVersion": "bmw-range-inventory-execution-plan.v1",
+  "id": "g42-range-inventory-20261107-once",
+  "status": "prepared-unspent; no traffic grant",
+  "codeCommit": "f6273b88c5992788c548d1a4816002f36295ed00",
+  "sourceVersion": "f59-range-inventory-20261107.v1",
+  "planDigest": "c71cbbae6ea4d26da8f3fd178fe27e7c498cd13ea52f346576f7a445f3c3cf96",
+  "codePins": {
+    "scripts/gcsp/bmw-public-registration.mjs": "61d9d5283c6995a55556e767f9a722954becd8899c73c5bd784bb796d728c206",
+    "scripts/gcsp/collection-session.mjs": "ba4e5b1bf632cb05993fa0b0b4d24de7559f80baed1111999911a3e713ec6a8c",
+    "scripts/gcsp/public-bmw-source.mjs": "5f60e1c18c636e6cd1a6fe66e0117c1bbbc092d8a5b796d748d85aa681bc4487",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+    "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+    "server/test/gcsp-bmw-range-inventory.test.js": "d08968ad6b6c0833c6b57fe527c858569cc337d625bd311eb0605752b3dec8b9",
+    "docs/gcsp/evidence/fucq59/g42-range-inventory-2026-11-07/prepare.py": "543d985b522ec7a4e139aec52f3f03b2c1891d98375a51b13eb264a9d1726fe5",
+    "docs/gcsp/evidence/fucq59/g42-range-inventory-2026-11-07/run-live.mjs": "532cd3507726e28515a0786c5cbb1cf7824bc74be6ba8a89a6f6bd70327f5569",
+    "docs/gcsp/evidence/fucq59/g42-range-inventory-2026-11-07/supervise.py": "fb36fcd446d2c021d6ffde4b061806f450cc726991cb5977767bf1de653eaeff",
+    "docs/gcsp/evidence/fucq59/g42-range-inventory-2026-11-07/prepared-check.test.mjs": "59eb431348654df5dbaccbdfa6a29d6c4d9c1310dafe610dec9a93b4a8f8803f",
+    "docs/gcsp/evidence/fucq59/g42-range-inventory-2026-11-07/inventory-source.mjs": "f1d417cb85554f1c9da169d831b798958cff577921f28a93233b150480813a53",
+    "docs/gcsp/evidence/fucq59/g42-range-inventory-2026-11-07/inventory-source.test.mjs": "251a51ef9265c44b0d7cac5b09b7868aea102a85b6dbf2796309fec94d60666b",
+    "docs/gcsp/evidence/fucq59/g42-range-inventory-2026-11-07/qualification-plan.json": "e8ec9e877084c6c7006c7624d4f2f5c8ced7b8bcf93f515d836ee5c0b847b985",
+    "docs/gcsp/evidence/fucq59/g42-range-inventory-2026-11-07/retained-deliverables.json": "44f056cb3f38a4048e74e18757b93a24d190222881ec87e9fdb9b080c15d686c",
+    "docs/gcsp/evidence/fucq59/g42-range-inventory-2026-11-07/seed-provenance.json": "ebe24f802d7e353d1ec6884ba427c4b4b17f31631492ab3ee0b0d0f79400d8df"
+  },
+  "preparerSha256": "543d985b522ec7a4e139aec52f3f03b2c1891d98375a51b13eb264a9d1726fe5",
+  "historicalSeedBasis": {
+    "schemaVersion": "bmw-range-inventory-seed-provenance.v1",
+    "source": "Parent-supplied official BMW UK configurator page link in a historical Parallel extract",
+    "historicalExtractAcquiredDate": "2026-10-18",
+    "pageUrl": "https://configure.bmw.co.uk/en_GB/configure/G42/2PMC",
+    "currentSourceVerified": false,
+    "originalExtractIndependentlyFetched": false,
+    "requestScope": {
+      "schemaVersion": "bmw-public-range-inventory-registration.v1",
+      "market": "GB",
+      "locale": "en-GB",
+      "catalogueRangeKey": "G42",
+      "pageModelCode": "2PMC",
+      "treeEffectDate": "2026-11-01",
+      "treeOrderDate": "2026-11-01"
+    },
+    "queryDatesBasis": "Explicit request inputs retained from the existing corpus query window, reviewed by the parent; not returned-model dates.",
+    "unknownReturnedFacts": [
+      "agModelCode",
+      "rawModelRange",
+      "aliases",
+      "steering",
+      "modelOrderDate",
+      "modelEffectDate",
+      "lineRelationships"
+    ],
+    "boundary": "Historical seed is a request lead only. Direct actual facts, including any future model effect date, must come from the new response. No guessed AG or construction capability."
+  },
+  "attempts": 3,
+  "requestSequence": [
+    "page",
+    "settings",
+    "discover"
+  ],
+  "optionsAllowance": 0,
+  "solverAllowance": 0,
+  "candidateAllowance": 0,
+  "decodedBytes": 4194304,
+  "responseBytes": 1048576,
+  "operationProjectionBytes": 131072,
+  "projection": "Direct full model/AG/raw-range/steering/model dates, complete observed aliases and bounded actual line/default/included pointers. Request dates and page seed never become returned facts.",
+  "forecast": {
+    "decodedBytes": 1048576,
+    "retainedBytes": 2097152,
+    "childRamBytes": 134217728,
+    "sourceSeconds": 5
+  },
+  "sourceDeadlineSeconds": 90,
+  "supervisorChildSeconds": 105,
+  "supervisorChunkSeconds": 120,
+  "resources": {
+    "workers": 1,
+    "retries": 0,
+    "scratchBytes": 67108864,
+    "hostRamBytes": 536870912,
+    "childRamBytes": 469762048
+  },
+  "scratchRoot": "/tmp/vehicle-matcher-f58-63-20261106/f58/g42-range-inventory",
+  "supervisorOutput": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-range-inventory",
+  "retainedPrimary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/g42-range-inventory-2026-11-07/collector-checkpoint.json",
+  "retainedDeliverables": {
+    "schemaVersion": "bmw-range-inventory-retained-deliverables.v1",
+    "primary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/g42-range-inventory-2026-11-07/collector-checkpoint.json",
+    "disposable": false,
+    "retainOnInterruption": true,
+    "exportBeforeScratchCleanup": true,
+    "exporter": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py",
+    "embeddedArtifacts": [
+      "inventoryObservation"
+    ],
+    "boundary": "Primary retained from first write; child join and existing primary exporter plus safe inventory export precede scratch cleanup."
+  },
+  "oneShotMarker": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/g42-range-inventory-2026-11-07/execution-once.json",
+  "sourceCapacityCredit": 0,
+  "acceptance": false,
+  "sourceGrantEnvironment": {
+    "BMW_RANGE_INVENTORY_SOURCE_GRANT": "g42-range-inventory-20261107-once"
+  },
+  "commandAfterSeparateRelease": [
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/g42-range-inventory-2026-11-07/supervise.py",
+    "live"
+  ],
+  "stop": [
+    "HTTP/access/rate/shape/privacy failure",
+    "finite response/traversal/output/resource ceiling",
+    "identity mismatch",
+    "checkpoint export or cleanup failure"
+  ],
+  "laterWork": "Review actual full model facts, complete aliases and source line relationships, then prepare existing strict options qualification under a separate release. This allocation admits zero configurations."
+}

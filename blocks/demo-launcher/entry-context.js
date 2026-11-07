@@ -1,7 +1,7 @@
 import { retailContextUrl } from '../vehicle-matcher/share-context.js';
 
 /* Static entry navigation only. These values confer no identity, entitlement
- * or recommendation-policy authority. Employee mounting belongs to FUCQ-35. */
+ * or recommendation-policy authority. Consumers register the employee mount. */
 export const ENTRY_REGISTRY = Object.freeze({
   experiences: Object.freeze(['launcher', 'used-cars', 'employee-cars']),
   retailBrands: Object.freeze(['bmw', 'mini', 'ford', 'honda', 'motorrad', 'ferrari']),
@@ -28,9 +28,11 @@ export function buildEntryUrl(input, { experience, brand } = {}) {
 
   if (url.searchParams.get('experience') === 'employee-cars') {
     const query = new URLSearchParams();
-    for (const key of ['experience', 'brand', 'api']) {
+    for (const key of ['experience', 'brand']) {
       if (url.searchParams.has(key)) query.set(key, url.searchParams.get(key));
     }
+    const api = new URL(retailContextUrl(url, { api: url.searchParams.get('api') })).searchParams.get('api');
+    if (api) query.set('api', api);
     url.search = query.toString();
     url.hash = '';
   }

@@ -1,0 +1,132 @@
+--- a/server/gcsp/runtime.js
++++ b/server/gcsp/runtime.js
+@@ -18,0 +19,5 @@
++import { createStockReleaseService } from './stock/index.js';
++import { createStockReleaseHistoryPort } from './stock/history-port.js';
++import { createManualGalleryStockRead } from './manual-gallery/stock-read.js';
++import { createRenewalCaseService } from './cases/index.js';
++import { ManualReviewDetailsService } from './manual-review/index.js';
+@@ -25 +30 @@
+-  environmentId, policyAsOf, commandId, sessionNow = () => new Date().toISOString() } = {}) {
++  environmentId, policyAsOf, commandId, stockProvider, sessionNow = () => new Date().toISOString() } = {}) {
+@@ -71,0 +77,14 @@
++    // The trusted host supplies the existing pull port. No source is invented here.
++    const stockRelease = stockProvider === undefined ? undefined
++      : createStockReleaseService({ repository, policy, clock, identity, provider: stockProvider });
++    const releaseHistory = createStockReleaseHistoryPort({ repository, identity, clock });
++    const galleryRead = createManualGalleryStockRead({ manual: manualClaims, releaseHistory, identity, clock });
++    // Route reads through this facade; lifecycle and mutations keep the original instance.
++    const manualRead = Object.freeze({
++      readAccount: manualClaims.readAccount.bind(manualClaims),
++      readDraft: manualClaims.readDraft.bind(manualClaims),
++      saveDraft: manualClaims.saveDraft.bind(manualClaims),
++      browseStock: galleryRead.browseStock.bind(galleryRead),
++    });
++    const manualReview = new ManualReviewDetailsService({ repository, policy, identity, manualClaims });
++    const cases = createRenewalCaseService({ repository, policy, clock, identity });
+@@ -76 +95,2 @@
+-      gcspScenarios: scenarios, gcspManualClaims: manualClaims, gcspBuddy: buddy, gcspOfferAccess: offerAccess,
++      gcspScenarios: scenarios, gcspManualClaims: manualClaims, gcspManualRead: manualRead, gcspManualReview: manualReview,
++      gcspStockRelease: stockRelease, gcspCases: cases, gcspBuddy: buddy, gcspOfferAccess: offerAccess,
+@@ -96 +116 @@
+-    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, buddy, offerAccess, notify, dependencies, createLocalSession, close });
++    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, manualRead, manualReview, stockRelease, releaseHistory, cases, buddy, offerAccess, notify, dependencies, createLocalSession, close });
+--- a/server/index.js
++++ b/server/index.js
+@@ -58,0 +59 @@
++import { createManualReviewDetailsRoutes } from './gcsp/manual-review/http.js';
+@@ -876 +877,2 @@
+-    ...createBriefRoutes(deps.gcspBrief, deps.gcspBriefEditor), ...createActivityRoutes(deps.gcspActivity), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManualClaims || deps.gcspManual), ...createManualClaimsRoutes(deps.gcspManualClaims),
++    ...createBriefRoutes(deps.gcspBrief, deps.gcspBriefEditor), ...createActivityRoutes(deps.gcspActivity), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManualRead || deps.gcspManualClaims || deps.gcspManual), ...createManualClaimsRoutes(deps.gcspManualClaims),
++    ...createManualReviewDetailsRoutes(deps.gcspManualReview),
+@@ -894,0 +897,4 @@
++    if (deps.gcspStockRelease) {
++      const registered = await deps.gcspStockRelease.register();
++      if (registered.status !== 'ok') return registered;
++    }
+--- a/blocks/gcsp/manual-setup/journey.js
++++ b/blocks/gcsp/manual-setup/journey.js
+@@ -2,0 +3,2 @@
++import { mountManualGallery } from '../manual-gallery/gcsp-manual-gallery.js';
++import { mountManualReview } from '../manual-review/gcsp-manual-review.js';
+@@ -5,2 +7,41 @@
+-  let teardown; let disposed = false;
+-  const account = () => { if (!disposed) { teardown?.(); teardown = mountAccount(root, options); } };
++  const { galleryAdapter, reviewAdapter, subscribeClock, onReviewContinue, ...shared } = options;
++  let teardown; let disposed = false; let generation = 0; let view; let hint;
++  function mount(next, render) {
++    if (disposed) return;
++    generation += 1; view = next;
++    teardown?.(); teardown = render(generation);
++  }
++  // Let the emitting controller finish before disposing its screen.
++  function later(ticket, work) {
++    queueMicrotask(() => { if (!disposed && ticket === generation) work(); });
++  }
++  function account() { mount('account', () => mountAccount(root, shared)); }
++  function setup(nextHint = hint) {
++    hint = nextHint;
++    mount('setup', (ticket) => mountManualSetup(root, { ...shared, hint, onBack: () => later(ticket, account) }));
++  }
++  function gallery() {
++    mount('gallery', (ticket) => mountManualGallery(root, { brand: shared.brand, adapter: galleryAdapter,
++      commandId: shared.commandId,
++      onBack() {
++        // Keep the unresolved attempt and its retry command in its existing controller.
++        if (teardown?.claim.getState().blocked !== false) return;
++        later(ticket, () => setup());
++      },
++      onClaimState(state) {
++        // Reloaded claims have no new selection descriptor; review rereads authority.
++        if (state.state === 'existing-claim' && state.claim?.status === 'ok'
++          && state.claim.value?.state === 'quoted' && state.claim.value.pendingOperation === null
++          && state.claim.value.hold?.state === 'active') later(ticket, () => review());
++      },
++      onClaimConfirmed(detail) { later(ticket, () => review(detail)); },
++    }));
++  }
++  function review(handoff) {
++    mount('review', (ticket) => mountManualReview(root, { brand: shared.brand, adapter: reviewAdapter,
++      commandId: shared.commandId, handoff,
++      onContinue(detail) { if (!disposed && ticket === generation) onReviewContinue?.(detail); },
++      onReleased() { later(ticket, gallery); },
++      onBrowse() { later(ticket, gallery); },
++    }));
++  }
+@@ -8,3 +49 @@
+-    if (disposed || event.target !== root) return;
+-    const hint = event.detail; teardown?.();
+-    teardown = mountManualSetup(root, { ...options, hint, onBack: account });
++    if (!disposed && event.target === root && view === 'account') setup(event.detail);
+@@ -12,2 +51,19 @@
+-  root.addEventListener('gcsp:journey-start', start); account();
+-  return () => { disposed = true; root.removeEventListener('gcsp:journey-start', start); teardown?.(); };
++  const ready = (event) => {
++    if (!disposed && event.target === root && view === 'setup') {
++      hint = event.detail; later(generation, gallery);
++    }
++  };
++  root.addEventListener('gcsp:journey-start', start);
++  root.addEventListener('gcsp:setup-ready', ready);
++  const unsubscribe = subscribeClock?.(() => {
++    if (disposed) return;
++    if (view === 'gallery') { teardown?.gallery.refresh(); teardown?.claim.checkStatus(); }
++    else if (view === 'review' || view === 'setup') teardown?.refresh();
++  });
++  account();
++  return () => {
++    if (disposed) return;
++    disposed = true; generation += 1; unsubscribe?.();
++    root.removeEventListener('gcsp:journey-start', start);
++    root.removeEventListener('gcsp:setup-ready', ready); teardown?.();
++  };
+--- a/scripts/gcsp-demo.mjs
++++ b/scripts/gcsp-demo.mjs
+@@ -12 +12 @@
+-const sessionPage = (path) => ['/gcsp-brief-live.html', '/gcsp-activity-live.html'].includes(path);
++const sessionPage = (path) => ['/gcsp-brief-live.html', '/gcsp-activity-live.html', '/gcsp-account.html'].includes(path);
+--- a/gcsp-account.html
++++ b/gcsp-account.html
+@@ -11,0 +12,2 @@
++  <link rel="stylesheet" href="./blocks/gcsp/manual-gallery/gcsp-manual-gallery.css">
++  <link rel="stylesheet" href="./blocks/gcsp/manual-review/manual-review.css">

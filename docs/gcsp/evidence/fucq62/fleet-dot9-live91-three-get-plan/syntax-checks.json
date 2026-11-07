@@ -1,0 +1,12 @@
+{
+  "scope": "preparation only; no runtime/network",
+  "nodeSyntax": true,
+  "pythonInMemoryCompile": 2,
+  "deployedGitBlobPinsChecked": 48,
+  "planSha256": "bd6b2c6af9a5a05775a1e9711db99ed8afe88c340d0d860d6248a8cd2fcaa192",
+  "localLookupExecuted": false,
+  "sourceReplayExecuted": false,
+  "networkExecuted": false,
+  "scratchAllocated": false,
+  "acceptance": false
+}

@@ -1,0 +1,39 @@
+{
+  "status": "incomplete",
+  "startedAt": "2026-11-07T03:06:49.283Z",
+  "finishedAt": "2026-11-07T03:07:07.279Z",
+  "code": "08c91544f175e30808d0a0e0e8f5d6763981e75e",
+  "deployment": 7615710917,
+  "manifestDigest": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+  "requests": 2,
+  "decodedBytes": 11,
+  "limits": {
+    "GET": 512,
+    "decodedBytes": 16777216,
+    "responseBytes": 1048576,
+    "requestMs": 30000,
+    "wallMs": 120000,
+    "workers": 1,
+    "retries": 0
+  },
+  "compared": 1,
+  "expected": 481,
+  "errors": 1,
+  "failure": "deployed-dto-mismatch",
+  "failureDetail": {
+    "name": "Error",
+    "code": null
+  },
+  "results": [
+    {
+      "kind": "configuration",
+      "id": "MUY3QjpGS1ROTCxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFINSxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDMzNyxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMg==",
+      "status": 503,
+      "match": false,
+      "elapsedMs": 45.62145899999814
+    }
+  ],
+  "sourceQualifiedDistinct": 479,
+  "target10000Met": false,
+  "scope": "Every active configuration and retained VIN; exact JSON parity with the local loader. Read-only production GETs."
+}

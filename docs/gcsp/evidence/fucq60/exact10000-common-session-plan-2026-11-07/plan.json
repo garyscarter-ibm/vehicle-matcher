@@ -1,0 +1,1396 @@
+{
+  "schemaVersion": "f60-exact10000-common-session-plan.v1",
+  "status": "prepared-unrun",
+  "runId": "f60-exact10000-common-session-20261107",
+  "executionWorktree": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+  "node": "/opt/homebrew/bin/node",
+  "environment": {
+    "node": "v26.7.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "offline": true
+  },
+  "selectionManifest": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f60-exact10000-retained-coverage-20261107/selection-manifest.json",
+    "bytes": 15991212,
+    "sha256": "216359c111a5169d15a98de1c476a5c62714a3b3a7ee71431c325a45c90f096f"
+  },
+  "codePins": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/_tools/test_resources.py",
+      "bytes": 36093,
+      "sha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq60/exact10000-common-session-plan-2026-11-07/collector-bridge.mjs",
+      "bytes": 9379,
+      "sha256": "42cf4a686c3b2c60bdc650c49d3b3bdba7b315f9ec484ffbe245dc70f40be64d"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq60/exact10000-common-session-plan-2026-11-07/common.mjs",
+      "bytes": 4783,
+      "sha256": "7fc979603512b3a18afd27aabe15182c9fb2efbbe58e63e1ee94a9903ce5eb1f"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq60/exact10000-common-session-plan-2026-11-07/prepare-plan.py",
+      "bytes": 11580,
+      "sha256": "8ebb52d32ef0a335a0e4991eddb332f487cb104ea24a20d9491827ab863540a7"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq60/exact10000-common-session-plan-2026-11-07/proof.mjs",
+      "bytes": 12907,
+      "sha256": "5789d50756fed5a9179e0959d1f3883dcbbe6f8bd62d216d352cf8f6440fcf55"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq60/exact10000-common-session-plan-2026-11-07/summarize.mjs",
+      "bytes": 5935,
+      "sha256": "11824f266f9236236e80e249995d1da3ffda3a5343432e2ce2fd0db345a2b026"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq60/exact10000-common-session-plan-2026-11-07/supervise.py",
+      "bytes": 8215,
+      "sha256": "7648254866cf1016b20a25967fcb0532872935bc04bfcc548fd8e5f2feea4acf"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/scripts/gcsp/bmw-public-registration.mjs",
+      "bytes": 21274,
+      "sha256": "b4eed688fff481af4d422f3612be71184df689ff943fef3d339dc9392a960460"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/scripts/gcsp/bmw-selection-binding.mjs",
+      "bytes": 30251,
+      "sha256": "480f1e3d1496bcb8d808ec75839634808a2923cdbf8411df61b0f819bdec3f38"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/scripts/gcsp/bmw-source-qualification.mjs",
+      "bytes": 16832,
+      "sha256": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/scripts/gcsp/bmw-technical-qualification.mjs",
+      "bytes": 6120,
+      "sha256": "0d5f90b927c4aef72ac620664549fa61f09e556e12378e1f8ffd2c3dc201dbcc"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/scripts/gcsp/capture-bmw-selection.mjs",
+      "bytes": 9632,
+      "sha256": "14c255be3696d8d0512d9d4ddc03f24bae138d83f4d548bd813b07d1a5eb9892"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/scripts/gcsp/collect-fleet.mjs",
+      "bytes": 61807,
+      "sha256": "ba3864cee32f480facde57a2d2c9dbf944d571878bb2a9cece220955357ab1de"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/scripts/gcsp/collection-session.mjs",
+      "bytes": 34621,
+      "sha256": "bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/scripts/gcsp/configuration-key.mjs",
+      "bytes": 3865,
+      "sha256": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/scripts/gcsp/enrich-fleet.mjs",
+      "bytes": 36421,
+      "sha256": "0f77c577ddaf0cf91fdae00377f398723d38c77f30210976a1c94391944db7bd"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/scripts/gcsp/public-bmw-source.mjs",
+      "bytes": 92441,
+      "sha256": "14600d91932c33b691801197ea28812c98bb08ea9603f293829ffeff09b48235"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/scripts/gcsp/settings-shape-report.mjs",
+      "bytes": 11379,
+      "sha256": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/gcsp/migrations/index.js",
+      "bytes": 4706,
+      "sha256": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/gcsp/policy/activation.js",
+      "bytes": 2992,
+      "sha256": "4e79235b761e8daf94f3cf2744c4bc585146181b410b64497669bd353ee7c4d6"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/gcsp/policy/adoption.js",
+      "bytes": 4407,
+      "sha256": "a2cb9a74946cd9eda413d896a0abc2f4299b3b75880a77ddd510667a5187c870"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/gcsp/policy/file-provider.js",
+      "bytes": 7809,
+      "sha256": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/gcsp/policy/index.js",
+      "bytes": 10870,
+      "sha256": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/gcsp/policy/memory-provider.js",
+      "bytes": 1861,
+      "sha256": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/gcsp/policy/postgres-provider.js",
+      "bytes": 6553,
+      "sha256": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/gcsp/policy/publish.js",
+      "bytes": 9788,
+      "sha256": "c521e15966be7762a3348ad860403ef555dd8cbd48405e7d23d9a7c6d262a826"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/gcsp/policy/reviewed-definitions.js",
+      "bytes": 4243,
+      "sha256": "75518df649ba542ad32b876f8ee1b680e29b417c3b1f8dc90fcf1d4713a42cbb"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/gcsp/policy/seed-v1.json",
+      "bytes": 502725,
+      "sha256": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/gcsp/repository/core.js",
+      "bytes": 30666,
+      "sha256": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/gcsp/repository/index.js",
+      "bytes": 247,
+      "sha256": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/gcsp/repository/memory.js",
+      "bytes": 1561,
+      "sha256": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/gcsp/repository/postgres.js",
+      "bytes": 5658,
+      "sha256": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/gcsp/repository/schema.js",
+      "bytes": 5562,
+      "sha256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/vehicle-evidence/bmw-catalogue-adapter.js",
+      "bytes": 26024,
+      "sha256": "90cf9187cb44dc6d17e6984a0fdc25dc13fc9078c23d3652d779a565cedc29a7"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/vehicle-evidence/bmw-catalogue-v2.js",
+      "bytes": 23590,
+      "sha256": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/vehicle-evidence/bmw-image-adapter.js",
+      "bytes": 15373,
+      "sha256": "56753ac7e47e4790159e7d50fb4deafe1658730e803912f064e6ed09326774ef"
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/server/vehicle-evidence/bmw-live-imagery.js",
+      "bytes": 26150,
+      "sha256": "40c9c7fd202e211034c540a5a4b7117ef9fd3f4a16b65ede59147bb1f5fe16ce"
+    }
+  ],
+  "codeIdentity": "2395d383cd8d075377b79d5b6c072d3cb56c5171c653722c78a68c4eb941eaf2",
+  "outputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f60-exact10000-common-session-20261107",
+  "metadataRoot": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/f60-exact10000-common-session-20261107",
+  "asOf": "2026-11-07",
+  "policyRead": {
+    "runId": "f60-retained10000-proof",
+    "asOf": "2026-11-07T00:00:00.000Z",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "sessionLimits": {
+    "requestBudgets": {
+      "catalogue": 1
+    },
+    "maxAttempts": 1,
+    "operationTimeoutMs": 5000,
+    "deadlineMs": 15000,
+    "retryDelayMs": 0,
+    "concurrency": 1,
+    "imageRequests": 0,
+    "cacheEntries": 1,
+    "cacheRetentionMs": 86400000,
+    "checkpointBytes": 1048576
+  },
+  "collectorBridge": {
+    "phase": "collector-bridge",
+    "rows": 1,
+    "pilotPlanPin": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq60/pilot311-replay-plans/chunk01.json",
+      "bytes": 10330,
+      "sha256": "651bbd1fdf96fa55c8f5854003bc3a217e5c5b28e1319d225f028a9e37d6f356"
+    },
+    "sourceFiles": {
+      "accepted.jsonl": {
+        "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/accepted.jsonl",
+        "bytes": 659703,
+        "sha256": "0c88c06a897d6306ea2adc201a0de19b38e097e7cd166d16968d6cad62af3d78"
+      },
+      "collection-plan.json": {
+        "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/collection-plan.json",
+        "bytes": 12094,
+        "sha256": "12591ebbf2f7be096398625997d01c88398f244af16941d55de57c84df3fbd18"
+      },
+      "execution-plan.json": {
+        "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/execution-plan.json",
+        "bytes": 4970,
+        "sha256": "d602cb11a5d29a86480d11cc04a36fd2b53eb0d425356fd0a6a81d3738a8277f"
+      },
+      "collector-state.json": {
+        "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/collector-state.json",
+        "bytes": 1987432,
+        "sha256": "5de52ba37d2254b0aa7d6eff6627025dc35d34fcaacfd7a4ddbe38d2ee69def7"
+      },
+      "tree.json": {
+        "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/tree.json",
+        "bytes": 7305,
+        "sha256": "e5b11fbc7f0d9988e18d833a57e24b9b3719165d7205f64d32c8367d144724b5"
+      },
+      "options.json": {
+        "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/options.json",
+        "bytes": 121794,
+        "sha256": "d02b49c7451d54bb895f9dd7c301bd36f060bb46e70a83cf0258a09ffbad2c6b"
+      },
+      "solver/candidate-ee60088483a835210ddef69c.json": {
+        "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/solver/candidate-ee60088483a835210ddef69c.json",
+        "bytes": 5950,
+        "sha256": "ddf31569d7490980a9d7bc923325a614d4c7b20cce2028a5a8d4e1781bcd0573"
+      }
+    },
+    "acceptedLineBytes": 21534,
+    "acceptedLineSha256": "bd0fe44739608650d971178f995995c512a119b419171f849830fa40cbf8f06b",
+    "configurationIdSha256": "b4f27d8b86f2dec52886d6b2ee771f01137a1ed007a96bcb5a990e5cc4b363e8",
+    "candidateId": "candidate-ee60088483a835210ddef69c",
+    "solverFile": "solver/candidate-ee60088483a835210ddef69c.json",
+    "replayPlanId": "f60-current-collector-one-bridge-20261107",
+    "purpose": "Current actual collector admits one exact retained source capture, and F60 enriches through that same actual session with durable cache/deadline/reopen assertions. No source/live replay or additional cohort count."
+  },
+  "chunks": [
+    {
+      "index": 0,
+      "start": 0,
+      "end": 64,
+      "selectedEntriesSha256": "ce38c29af728d86db6fbfa20c3e8ea53a3a98964c07421b674870fea7967aaca"
+    },
+    {
+      "index": 1,
+      "start": 64,
+      "end": 128,
+      "selectedEntriesSha256": "3f0fe5b41fde1396675b78ec89ae722afc2dc6e530285f77708ee65ce91eb458"
+    },
+    {
+      "index": 2,
+      "start": 128,
+      "end": 192,
+      "selectedEntriesSha256": "f591698319c493a7a69729c1c9bbd4dc278f7731fc3920986addd735a63e9789"
+    },
+    {
+      "index": 3,
+      "start": 192,
+      "end": 256,
+      "selectedEntriesSha256": "8a504d278d7be7bdcfddd34a8ddf2161cb29de241d930015e5306ac8ae6502f4"
+    },
+    {
+      "index": 4,
+      "start": 256,
+      "end": 320,
+      "selectedEntriesSha256": "ad5efb2ad8909c7509cce2a687a7e004b3e135fa753f70d48811ed8a50d9946e"
+    },
+    {
+      "index": 5,
+      "start": 320,
+      "end": 384,
+      "selectedEntriesSha256": "8960be3d2b9c2a7be58f1f7a0f754bb1104ed3847a0fd2d1743ce39f58f464ea"
+    },
+    {
+      "index": 6,
+      "start": 384,
+      "end": 448,
+      "selectedEntriesSha256": "1eda899219d4c7f98827b493aa6208329c25382261ec8807023a3adaaa0cae53"
+    },
+    {
+      "index": 7,
+      "start": 448,
+      "end": 512,
+      "selectedEntriesSha256": "adc5cb4b244ea2e3eb49692a3d0334e02be8f6efa0f58bbc92a5a1c0205653c6"
+    },
+    {
+      "index": 8,
+      "start": 512,
+      "end": 576,
+      "selectedEntriesSha256": "c44b51a1fc2666b770d8161848bf3a623d001497a62b421fe6bd8daacf1f03a6"
+    },
+    {
+      "index": 9,
+      "start": 576,
+      "end": 640,
+      "selectedEntriesSha256": "2e33ac592231383cfe15bd4defbc809c438c6358c634bf7fa53db8c0896ca157"
+    },
+    {
+      "index": 10,
+      "start": 640,
+      "end": 704,
+      "selectedEntriesSha256": "66ebc343b4fd1bbe98a34b50abbaba1066d373e52ffe2d87f15bb1a6d1167eb7"
+    },
+    {
+      "index": 11,
+      "start": 704,
+      "end": 768,
+      "selectedEntriesSha256": "ddc992a63c9ef569056384f09cb5b2ece13722b450242b1439590c10a4de1305"
+    },
+    {
+      "index": 12,
+      "start": 768,
+      "end": 832,
+      "selectedEntriesSha256": "bf56600aa51a3ce695e192dc39f2c5976d0e0abea774d97a5b680da26fa7ce03"
+    },
+    {
+      "index": 13,
+      "start": 832,
+      "end": 896,
+      "selectedEntriesSha256": "66c2c14a3c798f9db5a44f5639a4476a2e50a2cdf8c4b26da6c73a6f2ffc9556"
+    },
+    {
+      "index": 14,
+      "start": 896,
+      "end": 960,
+      "selectedEntriesSha256": "fa967fa170da066f674edb56e343fa116102db440ec598bbca563e89b2245be0"
+    },
+    {
+      "index": 15,
+      "start": 960,
+      "end": 1024,
+      "selectedEntriesSha256": "9c0490f3f0cc059bcdf75249e820bbf19cd1f3ebe93113573b4c0f385bda55c4"
+    },
+    {
+      "index": 16,
+      "start": 1024,
+      "end": 1088,
+      "selectedEntriesSha256": "bb2134128f160d76df5e1e1943ef9c12641bcd4348aebafd90825d4f8de4bbb2"
+    },
+    {
+      "index": 17,
+      "start": 1088,
+      "end": 1152,
+      "selectedEntriesSha256": "5ce4ea103b6be6a995ebc486b345a6a770d521e86ee380709196374f7d32a0f3"
+    },
+    {
+      "index": 18,
+      "start": 1152,
+      "end": 1216,
+      "selectedEntriesSha256": "51a96bcdb5dda3540f58f78d73626e0b2c21b0028be015a59dff06a0e0fab2b0"
+    },
+    {
+      "index": 19,
+      "start": 1216,
+      "end": 1280,
+      "selectedEntriesSha256": "8af8f435e0d87c231fb966055e60a6ee0d9bab60703cfb0dd1c2e0b414cce95f"
+    },
+    {
+      "index": 20,
+      "start": 1280,
+      "end": 1344,
+      "selectedEntriesSha256": "9e8567536610b53d08f4e8765a5fd0c948b0428d3fb1a8d8919aed7c0e754a02"
+    },
+    {
+      "index": 21,
+      "start": 1344,
+      "end": 1408,
+      "selectedEntriesSha256": "3c0ede482a852a3988635285e02087a26bf45019b51618de37e6e23fd04918ff"
+    },
+    {
+      "index": 22,
+      "start": 1408,
+      "end": 1472,
+      "selectedEntriesSha256": "c70f2fe788c4980e4315ed29add18a6bac9c4d3b38c2ffd336064b3764cb6fc1"
+    },
+    {
+      "index": 23,
+      "start": 1472,
+      "end": 1536,
+      "selectedEntriesSha256": "4fec506bc62685876a6cb9c1c348c7f350762a137b6160b88428b0a0648580c2"
+    },
+    {
+      "index": 24,
+      "start": 1536,
+      "end": 1600,
+      "selectedEntriesSha256": "d58482576196e4b8fcdcc69547c696a99e32af56d4cacb8f60e0ca90f4a24909"
+    },
+    {
+      "index": 25,
+      "start": 1600,
+      "end": 1664,
+      "selectedEntriesSha256": "8e40caca9730419fd193467cdf275d0e61dcff22fbb2245a07aa3ceb84f85575"
+    },
+    {
+      "index": 26,
+      "start": 1664,
+      "end": 1728,
+      "selectedEntriesSha256": "7a389eeb681faaa3b584f1395fa4bedab028d58824d03931a5049b418a5851bb"
+    },
+    {
+      "index": 27,
+      "start": 1728,
+      "end": 1792,
+      "selectedEntriesSha256": "655940254e6020cb9d3368791a1c0c4c688f3548fb73359311fc16cc884680a6"
+    },
+    {
+      "index": 28,
+      "start": 1792,
+      "end": 1856,
+      "selectedEntriesSha256": "ba26dac9d53ee66897e1440d41b8af0d97e5e3da8cbb87f70c982b81e4f21256"
+    },
+    {
+      "index": 29,
+      "start": 1856,
+      "end": 1920,
+      "selectedEntriesSha256": "45f20b641688af50b38b80d3ff197684e4a066b38798b6bf5a6b394dd01b8fb9"
+    },
+    {
+      "index": 30,
+      "start": 1920,
+      "end": 1984,
+      "selectedEntriesSha256": "0f22aced3875f9072b7cb250f50458ee85803709febbde1571552f066fe08a92"
+    },
+    {
+      "index": 31,
+      "start": 1984,
+      "end": 2048,
+      "selectedEntriesSha256": "71c307ce457c4674ca986f0771944acbc8f7eff3dcc3661ba98833b2b16fcd3f"
+    },
+    {
+      "index": 32,
+      "start": 2048,
+      "end": 2112,
+      "selectedEntriesSha256": "e94a81fd62c8c9c8d13b2a67405dd13a483dec120d24adf4e026ceafc26d6689"
+    },
+    {
+      "index": 33,
+      "start": 2112,
+      "end": 2176,
+      "selectedEntriesSha256": "41e2625bf3202c6069fef8266a5145a5bfcb7b117afb638cd6c1b84e7da42954"
+    },
+    {
+      "index": 34,
+      "start": 2176,
+      "end": 2240,
+      "selectedEntriesSha256": "4d52e143e58004c40ebd3788ed6a199f9fbceadc5446b45b9d5b9895e02c81a3"
+    },
+    {
+      "index": 35,
+      "start": 2240,
+      "end": 2304,
+      "selectedEntriesSha256": "3d28194f76c476d5ca203c98173b85e5ab7ddc62e374227cc52d00d5f133d8f2"
+    },
+    {
+      "index": 36,
+      "start": 2304,
+      "end": 2368,
+      "selectedEntriesSha256": "02ea941dca38068b2b32b5ecdbfb1924d7d040c6c0281c015e36474f1ac59495"
+    },
+    {
+      "index": 37,
+      "start": 2368,
+      "end": 2432,
+      "selectedEntriesSha256": "6645de89faf037364c0d9f63f5964b5e6977bd3cb2f9eac056f8497cf57d8399"
+    },
+    {
+      "index": 38,
+      "start": 2432,
+      "end": 2496,
+      "selectedEntriesSha256": "cd0c2304f0b5707cdb0bc02dd30b855469084dae0b40696d2e1c530ce137c7e2"
+    },
+    {
+      "index": 39,
+      "start": 2496,
+      "end": 2560,
+      "selectedEntriesSha256": "7c4d3d1f4634ae14bcfc6b0121bc5ca1242512bcac6ff0e3a2ce457764a72366"
+    },
+    {
+      "index": 40,
+      "start": 2560,
+      "end": 2624,
+      "selectedEntriesSha256": "386edef3c7916b0f03c406202f316901e2d3fe9f53a7c96b3fd1f62bf14345bb"
+    },
+    {
+      "index": 41,
+      "start": 2624,
+      "end": 2688,
+      "selectedEntriesSha256": "826d4125350bc22006de44cd4679ef9282c597dcff59cb9c332da4ecceb1ac24"
+    },
+    {
+      "index": 42,
+      "start": 2688,
+      "end": 2752,
+      "selectedEntriesSha256": "dc30bf6338478a4afc7044060ca1d291ceeb0f99cfd5de0b58154ab76147bd7e"
+    },
+    {
+      "index": 43,
+      "start": 2752,
+      "end": 2816,
+      "selectedEntriesSha256": "cc7f4ef179fb827bd2b1c093a65151405141e1940ca39e1cc3367a6e66d166ef"
+    },
+    {
+      "index": 44,
+      "start": 2816,
+      "end": 2880,
+      "selectedEntriesSha256": "854ccadeb993e2d5bfc678aa7f4007b8ed8ecc01a62ddcfd3113b0f3df4d8f3a"
+    },
+    {
+      "index": 45,
+      "start": 2880,
+      "end": 2944,
+      "selectedEntriesSha256": "baaed8e57f2dd090b5ac508b7b6dc26ef83ad6797d0ea23886ded0b9a278beee"
+    },
+    {
+      "index": 46,
+      "start": 2944,
+      "end": 3008,
+      "selectedEntriesSha256": "23998646772646b09533719a949999e24434647205c70e6914cde1bc93074362"
+    },
+    {
+      "index": 47,
+      "start": 3008,
+      "end": 3072,
+      "selectedEntriesSha256": "ce9cbda082fb3346ea2b2ca4ff6280ec16fdef6e426e2765bbb9f0dac006b29a"
+    },
+    {
+      "index": 48,
+      "start": 3072,
+      "end": 3136,
+      "selectedEntriesSha256": "e65b5125afd4f00fba1afa356d15c0c9dea5473f66cdab9481f8f471492f531e"
+    },
+    {
+      "index": 49,
+      "start": 3136,
+      "end": 3200,
+      "selectedEntriesSha256": "60c490ac9c236a2964af337a93e68669cdaaee40b1b6de0c5125b79c2f1cbc4f"
+    },
+    {
+      "index": 50,
+      "start": 3200,
+      "end": 3264,
+      "selectedEntriesSha256": "2f3c2f8e42c084f001d5e0f24309e0c0aa0ce27eec215a897d3f1621fb63b4a1"
+    },
+    {
+      "index": 51,
+      "start": 3264,
+      "end": 3328,
+      "selectedEntriesSha256": "9d8b0062162d7541298786771243d2d959d6f7494396de6890e991d355582f3a"
+    },
+    {
+      "index": 52,
+      "start": 3328,
+      "end": 3392,
+      "selectedEntriesSha256": "c396c5cfcac83e39b235b2820f5d597c68cca2b20ced2c59bf228efd0da9f0fd"
+    },
+    {
+      "index": 53,
+      "start": 3392,
+      "end": 3456,
+      "selectedEntriesSha256": "2e968f5ce03f7fd25d39c8915dbc640ee4021e4cd032e40bfad8b3350b073008"
+    },
+    {
+      "index": 54,
+      "start": 3456,
+      "end": 3520,
+      "selectedEntriesSha256": "e0da956f44b0b321a2bfc7f8eb2fb6d69562a6d499c7ddbc66c6c2e1f8abc31b"
+    },
+    {
+      "index": 55,
+      "start": 3520,
+      "end": 3584,
+      "selectedEntriesSha256": "12f0ff65dabf548b146713f11b42fddf745df79d50dfff6b550899fb50b57df9"
+    },
+    {
+      "index": 56,
+      "start": 3584,
+      "end": 3648,
+      "selectedEntriesSha256": "0e3b4b6f14cd8e20b331a9e45a8719d6c76385f9705100f1157f9be640b9bdaf"
+    },
+    {
+      "index": 57,
+      "start": 3648,
+      "end": 3712,
+      "selectedEntriesSha256": "985be507e82a5fbbad59ad6839f3a7f9d5df90885ebee50102bbf5834f8b76a3"
+    },
+    {
+      "index": 58,
+      "start": 3712,
+      "end": 3776,
+      "selectedEntriesSha256": "3b67b79fc7ed4c142f440e5d91e87b3e274515e5313b115c3a98abc78998df61"
+    },
+    {
+      "index": 59,
+      "start": 3776,
+      "end": 3840,
+      "selectedEntriesSha256": "01dbda2f9d0f4fee784693f45aacd68d0c655380e5aff106badd6759c19c45b8"
+    },
+    {
+      "index": 60,
+      "start": 3840,
+      "end": 3904,
+      "selectedEntriesSha256": "ddc67569dd23dca106f641260b021370059e7c2783383988f4428e3b4b92655a"
+    },
+    {
+      "index": 61,
+      "start": 3904,
+      "end": 3968,
+      "selectedEntriesSha256": "5f9db10b961291d14bbbe917d0c4ee47466c3eddd1ed13a706c2fc12c9bacb95"
+    },
+    {
+      "index": 62,
+      "start": 3968,
+      "end": 4032,
+      "selectedEntriesSha256": "0d4a1ba416da36c0b77afbc53fc2ab7484b9ed9599047abb288841dee9e3603c"
+    },
+    {
+      "index": 63,
+      "start": 4032,
+      "end": 4096,
+      "selectedEntriesSha256": "46c80dda62c75fb0104ed69a4ef789fe96a342431383fbd0c267c5e3118f9350"
+    },
+    {
+      "index": 64,
+      "start": 4096,
+      "end": 4160,
+      "selectedEntriesSha256": "241913bbe4d5924f8e63d81aebd9f0a5590f6b8e84757412a44eb5dd55b2cd3b"
+    },
+    {
+      "index": 65,
+      "start": 4160,
+      "end": 4224,
+      "selectedEntriesSha256": "8820f3d7f9affd55df6289e57741c86601ed5fdc57554f3c4ee75a5fdca8eeba"
+    },
+    {
+      "index": 66,
+      "start": 4224,
+      "end": 4288,
+      "selectedEntriesSha256": "4546d9c62200f7acd776dbf97082bdbe097cf7dc5f07a56eff70084553c0713a"
+    },
+    {
+      "index": 67,
+      "start": 4288,
+      "end": 4352,
+      "selectedEntriesSha256": "3b37145223809b24fefb8ae1e8e92df88c57aba52ef49620326c5eba32423d9c"
+    },
+    {
+      "index": 68,
+      "start": 4352,
+      "end": 4416,
+      "selectedEntriesSha256": "76436ffc12bdfa17017ca2342308937d587f60f08d3c7b531c81766f21a736dd"
+    },
+    {
+      "index": 69,
+      "start": 4416,
+      "end": 4480,
+      "selectedEntriesSha256": "11b7fe610a70043861f1149a8da1aee3fb808bc9f4443da2990c6d08979fb082"
+    },
+    {
+      "index": 70,
+      "start": 4480,
+      "end": 4544,
+      "selectedEntriesSha256": "fea5f1631439e57e3a817072a1e7304396d9561e73d9edfe8210fc27b9ae6781"
+    },
+    {
+      "index": 71,
+      "start": 4544,
+      "end": 4608,
+      "selectedEntriesSha256": "5e5691bac3c7773158afea92c9ded167f201b4a68b79e2c05569c813edd8d829"
+    },
+    {
+      "index": 72,
+      "start": 4608,
+      "end": 4672,
+      "selectedEntriesSha256": "24f56a5731009a6e4c530531f111e6ee1502574745eafdc5d5a31082766827e4"
+    },
+    {
+      "index": 73,
+      "start": 4672,
+      "end": 4736,
+      "selectedEntriesSha256": "65d3f1ca4b8c6fefe4e961ed5a5b5c689297c57b3b4e2d5df7d1a901fa4159bc"
+    },
+    {
+      "index": 74,
+      "start": 4736,
+      "end": 4800,
+      "selectedEntriesSha256": "b8bd482dacc17389cb3921aaddb792053d35f9da2680021c4dc8a1c329d99a4a"
+    },
+    {
+      "index": 75,
+      "start": 4800,
+      "end": 4864,
+      "selectedEntriesSha256": "71bcf49bb1d070ea743e8b3e0d3eb634af58341a5bfd47792cd99f3271d747a6"
+    },
+    {
+      "index": 76,
+      "start": 4864,
+      "end": 4928,
+      "selectedEntriesSha256": "25d4b9e89d9e901db00e6fb2cdb3aa6ae433d56be279b34ba1b904d34155cfb5"
+    },
+    {
+      "index": 77,
+      "start": 4928,
+      "end": 4992,
+      "selectedEntriesSha256": "790e4504b08df08dafe98ea29e7210adb1ee81e7da5c6e4d441b21ef6d21bc18"
+    },
+    {
+      "index": 78,
+      "start": 4992,
+      "end": 5056,
+      "selectedEntriesSha256": "cf17720fe7301f42ab005fe9a5d7a4561702176fecf6dd585fea760173b27e6b"
+    },
+    {
+      "index": 79,
+      "start": 5056,
+      "end": 5120,
+      "selectedEntriesSha256": "a906210f9d0018e07002628d13e6b243f56d32e09763e68ebfd123a7f1fc73c8"
+    },
+    {
+      "index": 80,
+      "start": 5120,
+      "end": 5184,
+      "selectedEntriesSha256": "ef35481f1cff93fdd6ff9eb79651627a41d1b1c9f05091d8dcf665b345eb74f1"
+    },
+    {
+      "index": 81,
+      "start": 5184,
+      "end": 5248,
+      "selectedEntriesSha256": "1b83e5c7163978053c095a9f5633432ef0000d431eccce8a871569df3a1350f5"
+    },
+    {
+      "index": 82,
+      "start": 5248,
+      "end": 5312,
+      "selectedEntriesSha256": "ad7b741442a6c1762e596b9e5dbd838fd015061393969b5f938ce261ccc75f10"
+    },
+    {
+      "index": 83,
+      "start": 5312,
+      "end": 5376,
+      "selectedEntriesSha256": "6c28b7a122a0330bfece68f5afe30746c60d3fb6f7df7905e99d05bcf2abaa27"
+    },
+    {
+      "index": 84,
+      "start": 5376,
+      "end": 5440,
+      "selectedEntriesSha256": "9017eef887290e7cabb7ddc7fa2889da4a1ceeb1a9add72a7353182351034040"
+    },
+    {
+      "index": 85,
+      "start": 5440,
+      "end": 5504,
+      "selectedEntriesSha256": "0c8ec42e8b8ebe0a9047296ef18a6c94945fadcb0286cb2cf22d6dcd473b7df6"
+    },
+    {
+      "index": 86,
+      "start": 5504,
+      "end": 5568,
+      "selectedEntriesSha256": "9ef46f283a8666869d1f0e7501950f5f0c909ffc903441df392b49252087dc22"
+    },
+    {
+      "index": 87,
+      "start": 5568,
+      "end": 5632,
+      "selectedEntriesSha256": "3219ffdc90fa3624568d38ba2f89a2f832d05dfd9c9f8dd458c4473ad6aef5e6"
+    },
+    {
+      "index": 88,
+      "start": 5632,
+      "end": 5696,
+      "selectedEntriesSha256": "b25312c624313baeca0fe94eb0cb2277e23a698913221d5d42beb4cb099a167a"
+    },
+    {
+      "index": 89,
+      "start": 5696,
+      "end": 5760,
+      "selectedEntriesSha256": "1b4e7e000681da68220e2ffbfd7147bae66cb8fe091fec1ac32bd2dd95023d18"
+    },
+    {
+      "index": 90,
+      "start": 5760,
+      "end": 5824,
+      "selectedEntriesSha256": "741158c1697d5d81943a3d8c18efe49fd58c75bf3874f7b7859a4ae0e3bc78cf"
+    },
+    {
+      "index": 91,
+      "start": 5824,
+      "end": 5888,
+      "selectedEntriesSha256": "1481eec78dfb115fcaa8413c6ff8707950143e729a281f02638d941f4103a233"
+    },
+    {
+      "index": 92,
+      "start": 5888,
+      "end": 5952,
+      "selectedEntriesSha256": "511a320951f8600c49438852bcd33ed585489be487ec2bb9e8bdc66ba4d68824"
+    },
+    {
+      "index": 93,
+      "start": 5952,
+      "end": 6016,
+      "selectedEntriesSha256": "bd65345b57655c97b4038a23df3a3b5547b6a4abed7f83c2f84b54cd3db2c07e"
+    },
+    {
+      "index": 94,
+      "start": 6016,
+      "end": 6080,
+      "selectedEntriesSha256": "09544e50835568460adc7f76ff7479508b9252bf6d64812af0c3f222e1122deb"
+    },
+    {
+      "index": 95,
+      "start": 6080,
+      "end": 6144,
+      "selectedEntriesSha256": "dc62d58be354341bece4948ddb6d5b7c14ca1d5929ae438cb54ea81f168731c9"
+    },
+    {
+      "index": 96,
+      "start": 6144,
+      "end": 6208,
+      "selectedEntriesSha256": "2e47c69e59d8fff2cc79608834f84e289cfb7d7c6a56b90c6810f9cf22e3c2d3"
+    },
+    {
+      "index": 97,
+      "start": 6208,
+      "end": 6272,
+      "selectedEntriesSha256": "b5dbcdb64c46741999f08b5816dcbf8d2fa57e3839a25433257f1c010abe396a"
+    },
+    {
+      "index": 98,
+      "start": 6272,
+      "end": 6336,
+      "selectedEntriesSha256": "baa20daee33d232b2e9fe6d3cced95ea9d38c814eca25779a4990f87c6df1730"
+    },
+    {
+      "index": 99,
+      "start": 6336,
+      "end": 6400,
+      "selectedEntriesSha256": "50ccc5b2500c65618cf73a583928a0a89008cc12da9eee44bb94f595cc43c773"
+    },
+    {
+      "index": 100,
+      "start": 6400,
+      "end": 6464,
+      "selectedEntriesSha256": "f6a3c5656d464632279486d9a49f12582681b1668ba774a2154ee1009adf8437"
+    },
+    {
+      "index": 101,
+      "start": 6464,
+      "end": 6528,
+      "selectedEntriesSha256": "5ed75b095315424b8665a91cd4ea88d6c03b041de72e518710e503b6c401bf19"
+    },
+    {
+      "index": 102,
+      "start": 6528,
+      "end": 6592,
+      "selectedEntriesSha256": "b19742cafcefef02e90259d413e9ee8a49e754dbe76dee8c0d1518652b131b77"
+    },
+    {
+      "index": 103,
+      "start": 6592,
+      "end": 6656,
+      "selectedEntriesSha256": "18754d80a8a9d9555d6f4d293e2b7a6b76f6a5ee437a04894f37372c9b29afec"
+    },
+    {
+      "index": 104,
+      "start": 6656,
+      "end": 6720,
+      "selectedEntriesSha256": "842707a3f383a5980b9f8ac7c8703d168be17aff810e4ba725c7beceff0c83ae"
+    },
+    {
+      "index": 105,
+      "start": 6720,
+      "end": 6784,
+      "selectedEntriesSha256": "3c54dbbd7f0bfc1c0f6e39ec21cd05cdab17d0c4cef990bfe1cb8a2c4b0d296d"
+    },
+    {
+      "index": 106,
+      "start": 6784,
+      "end": 6848,
+      "selectedEntriesSha256": "5c4f9e2a0b158572b0349cac865647f81eb41144abd00f991cd4600e36417c3e"
+    },
+    {
+      "index": 107,
+      "start": 6848,
+      "end": 6912,
+      "selectedEntriesSha256": "2be196b5ecac541f16bfd6acb77141bc188882446ac9119c8ec2784a35a973e6"
+    },
+    {
+      "index": 108,
+      "start": 6912,
+      "end": 6976,
+      "selectedEntriesSha256": "694983b14bc99e7ca6f65d83a1571e18bab0013035f70257939bc41895bb68c8"
+    },
+    {
+      "index": 109,
+      "start": 6976,
+      "end": 7040,
+      "selectedEntriesSha256": "1d60965198d3f6d1c36993e6dec87d8bbde74e75abed7e2d7a3ae3513f289a7d"
+    },
+    {
+      "index": 110,
+      "start": 7040,
+      "end": 7104,
+      "selectedEntriesSha256": "e6da507d543469ce9f432f3ebc0f0d7036e09cff75999363fa6364c4fed31159"
+    },
+    {
+      "index": 111,
+      "start": 7104,
+      "end": 7168,
+      "selectedEntriesSha256": "f64b1be5ffa1b40a78fede33a6987a1b5ad1befe2acadf4b67397f0d750ec7c8"
+    },
+    {
+      "index": 112,
+      "start": 7168,
+      "end": 7232,
+      "selectedEntriesSha256": "2bb25d32258e3faf1188a756d17a7c1c2dc0041865c2a2d97a3c63a0302b95ae"
+    },
+    {
+      "index": 113,
+      "start": 7232,
+      "end": 7296,
+      "selectedEntriesSha256": "40130dec1df1fc3433f8c8c828fb8b3ae6c8e9d6068feb9cd2e16df83e69bdaa"
+    },
+    {
+      "index": 114,
+      "start": 7296,
+      "end": 7360,
+      "selectedEntriesSha256": "bfcb8a50dbccaeb330b24f67193de1479bc1103e6a6c818a078fd0473c4905b5"
+    },
+    {
+      "index": 115,
+      "start": 7360,
+      "end": 7424,
+      "selectedEntriesSha256": "807f5675a9a31e3fa8c106897c6ccfc9a8577d49ffc5533f3a590920b0f5ba99"
+    },
+    {
+      "index": 116,
+      "start": 7424,
+      "end": 7488,
+      "selectedEntriesSha256": "d951cd9a965883896795152c42203f86261ecd33d98d1b18870687355530baff"
+    },
+    {
+      "index": 117,
+      "start": 7488,
+      "end": 7552,
+      "selectedEntriesSha256": "db08f1c017ac9a7859c10be46b31b337dee2b41269ce04243020b5cc8a3b58b9"
+    },
+    {
+      "index": 118,
+      "start": 7552,
+      "end": 7616,
+      "selectedEntriesSha256": "034972327b308df752c3eb2396351095744f2476c216a4583f55282c194b38ac"
+    },
+    {
+      "index": 119,
+      "start": 7616,
+      "end": 7680,
+      "selectedEntriesSha256": "2761fa850d6f4dd3f580f4427b87a04bfffd28b22c404c66f6f325e1739680a6"
+    },
+    {
+      "index": 120,
+      "start": 7680,
+      "end": 7744,
+      "selectedEntriesSha256": "3650e7db325f069a3eddaa1e999f16b00023386ba2698fd00c7165f094c1630b"
+    },
+    {
+      "index": 121,
+      "start": 7744,
+      "end": 7808,
+      "selectedEntriesSha256": "4ec468ab2ca6f04d58353bd2afa19ec07fc60a5951846167344e232588a24e89"
+    },
+    {
+      "index": 122,
+      "start": 7808,
+      "end": 7872,
+      "selectedEntriesSha256": "5e42cf5d6654662bd1ace00136a76127300f2b54670de852e415baeedb5a4a67"
+    },
+    {
+      "index": 123,
+      "start": 7872,
+      "end": 7936,
+      "selectedEntriesSha256": "c1de4a1387b974cf6231245768a31b38c36b8b87056980705ad2c4001e61186c"
+    },
+    {
+      "index": 124,
+      "start": 7936,
+      "end": 8000,
+      "selectedEntriesSha256": "4dc8f96597488f20902f43d087e90a349b786786960a8f31439442c924c579ca"
+    },
+    {
+      "index": 125,
+      "start": 8000,
+      "end": 8064,
+      "selectedEntriesSha256": "e722cd7976708eb7d2e0a05ff90c3cac440a5f0a0875cc98d721a5d7864ca459"
+    },
+    {
+      "index": 126,
+      "start": 8064,
+      "end": 8128,
+      "selectedEntriesSha256": "c467f9bbb538db89ad9aabcf2760b6d872d7b65b7a745d8b8b84091d0d92e336"
+    },
+    {
+      "index": 127,
+      "start": 8128,
+      "end": 8192,
+      "selectedEntriesSha256": "b6f28e9849cd8afcb54b50dfc7ce44e30b4c0fc86118a3d7d6fc19a30222ce89"
+    },
+    {
+      "index": 128,
+      "start": 8192,
+      "end": 8256,
+      "selectedEntriesSha256": "c3813f9ae1afee35ad970b2d76fe5a89d6f129a3ddd9bfb3e9e696bb1f589104"
+    },
+    {
+      "index": 129,
+      "start": 8256,
+      "end": 8320,
+      "selectedEntriesSha256": "15d805eb8ae17270d9de303693b2361d24a647277d8e0c7d114a6cf38038ea9e"
+    },
+    {
+      "index": 130,
+      "start": 8320,
+      "end": 8384,
+      "selectedEntriesSha256": "4a1929732a011b897119995c037bebc49883a52c86d6a59658d7350fc8bcd1de"
+    },
+    {
+      "index": 131,
+      "start": 8384,
+      "end": 8448,
+      "selectedEntriesSha256": "a761db6c3e2d4246022c9d235897c17f6984db9a0f1db881a873b9176309b63f"
+    },
+    {
+      "index": 132,
+      "start": 8448,
+      "end": 8512,
+      "selectedEntriesSha256": "44e5d472cf0af447313986c715ee17a7ef3df2bd4bbb6f90ecd693a36d82cb32"
+    },
+    {
+      "index": 133,
+      "start": 8512,
+      "end": 8576,
+      "selectedEntriesSha256": "365ea07cae081394a241fd889ce6d64c10ccb14475672007c9111b9c0169f26f"
+    },
+    {
+      "index": 134,
+      "start": 8576,
+      "end": 8640,
+      "selectedEntriesSha256": "06b788454fe3c367ce2abe8d15e58a56669b5ded46ba51c9f493e74fba7eca5c"
+    },
+    {
+      "index": 135,
+      "start": 8640,
+      "end": 8704,
+      "selectedEntriesSha256": "24b0148870b0306e039accf3c0174ff7dfd590894384033829adc3bcaa433c59"
+    },
+    {
+      "index": 136,
+      "start": 8704,
+      "end": 8768,
+      "selectedEntriesSha256": "5c883f50e99579b8f552d9885f1bf46c0d4b81369a82dade5bbe3b63389cf636"
+    },
+    {
+      "index": 137,
+      "start": 8768,
+      "end": 8832,
+      "selectedEntriesSha256": "4294761d551e163e01fc2be7e62865c47c08ed6dc154f447a6a577dff9814c10"
+    },
+    {
+      "index": 138,
+      "start": 8832,
+      "end": 8896,
+      "selectedEntriesSha256": "ee3d471b156ec28e65c7caf6efd05ee3171e0e27b51afcc4f85f37d14e5c31ab"
+    },
+    {
+      "index": 139,
+      "start": 8896,
+      "end": 8960,
+      "selectedEntriesSha256": "fad5f27ae1664056741935fd9bb18c56d3dc2d8b1211f3ad0851fbf30fcd4a8c"
+    },
+    {
+      "index": 140,
+      "start": 8960,
+      "end": 9024,
+      "selectedEntriesSha256": "1363f9006ef01e2b73f0f224608937a224a17f1022ba85d3556cafd7bd95732a"
+    },
+    {
+      "index": 141,
+      "start": 9024,
+      "end": 9088,
+      "selectedEntriesSha256": "ddb80cde66aaa9882372bdc7aabdcd3aadaa355ef6eed5f264aa21140beedb18"
+    },
+    {
+      "index": 142,
+      "start": 9088,
+      "end": 9152,
+      "selectedEntriesSha256": "bafac89b52e53d84cc1fd94302dc4b98b061b9ccd242051f8059a8b38e210f23"
+    },
+    {
+      "index": 143,
+      "start": 9152,
+      "end": 9216,
+      "selectedEntriesSha256": "a5925a0a97ec94d72acc09d497ce047397a10ef1a297aec234f362c6fa1a30a8"
+    },
+    {
+      "index": 144,
+      "start": 9216,
+      "end": 9280,
+      "selectedEntriesSha256": "558f6bb6c46c7ceb3a14bce5578f285fc17a89f035c503de35e5f4fb57c1b5dc"
+    },
+    {
+      "index": 145,
+      "start": 9280,
+      "end": 9344,
+      "selectedEntriesSha256": "1ef8596995533a0f21bdb7afef8169ffb88cdabf29dd8f9e536baa24998280d8"
+    },
+    {
+      "index": 146,
+      "start": 9344,
+      "end": 9408,
+      "selectedEntriesSha256": "30f60cfdd9961e13c56701c305773b8a81170d776f8f40f46c7a0e4a5e7b421e"
+    },
+    {
+      "index": 147,
+      "start": 9408,
+      "end": 9472,
+      "selectedEntriesSha256": "c7c2069e2432a57b94e7d551f24cf29d3be5e9768cafd0d02039a0bde28792b6"
+    },
+    {
+      "index": 148,
+      "start": 9472,
+      "end": 9536,
+      "selectedEntriesSha256": "2e4cccf51b41820a5c2a0cdf974a2c65b3b8005ca29583487690178efdef3ff0"
+    },
+    {
+      "index": 149,
+      "start": 9536,
+      "end": 9600,
+      "selectedEntriesSha256": "6c41f569eb66bdbb1255a6122627df1f1f349af78a1facd6f07be08f9a623793"
+    },
+    {
+      "index": 150,
+      "start": 9600,
+      "end": 9664,
+      "selectedEntriesSha256": "981be3088e9593b13b02dad90de58815479aaa13733de6dc77be79aa74eb69e2"
+    },
+    {
+      "index": 151,
+      "start": 9664,
+      "end": 9728,
+      "selectedEntriesSha256": "9a391627b3d4a584a5f21aed9654584a753e5fbfe1a2e28077b72d655dcabf0b"
+    },
+    {
+      "index": 152,
+      "start": 9728,
+      "end": 9792,
+      "selectedEntriesSha256": "9feb017531ae33c607a89d038f69cf47b6c53ceca9b8b853d477e7dd78782fe2"
+    },
+    {
+      "index": 153,
+      "start": 9792,
+      "end": 9856,
+      "selectedEntriesSha256": "13fd4b1802f3cc58b3954e8d69b8574772b4bea990c1b873e0c4aaba6329a0a0"
+    },
+    {
+      "index": 154,
+      "start": 9856,
+      "end": 9920,
+      "selectedEntriesSha256": "1e5b7dcc834f6d0d84b5af5c40037baba3083094660514d51218d1caee0017ef"
+    },
+    {
+      "index": 155,
+      "start": 9920,
+      "end": 9984,
+      "selectedEntriesSha256": "aae6616ed29113cc8132e8b9a62ccc4ce00d3391f7e19e99d8ba726218c4ed1e"
+    },
+    {
+      "index": 156,
+      "start": 9984,
+      "end": 10000,
+      "selectedEntriesSha256": "31d7ce262dcb7f9138dc51db0cb5485ead3d200e1cb4a6cfc92e4010774db197"
+    }
+  ],
+  "regression": "Current F60 silently rejects, substitutes or loses exact retained context/selection; shared accounting/cache/cursor not durable",
+  "affectedCallers": [
+    "createConfigurationKey/PolicyService",
+    "createBmwCatalogueAdapter/strict V2 qualifier",
+    "createCollectionSession actual executor/checkpoint",
+    "enrichFleet current stage"
+  ],
+  "integrationBoundaries": [
+    "External sealed raw accepted-row SHA/offset/length authority -> exact original schema2 row, including historical source row",
+    "Exact retained admission -> explicit initialState.accepted handoff in actual session; original collector admission is not replayed",
+    "Actual catalogue adapter -> exact externally anchored V2 envelope qualification -> shared offline executor -> actual current F60",
+    "Separate one-row pinned retained pilot capture -> current actual collector admission -> its same session -> current F60; current code identity and original exact capture/context verified",
+    "Every row exact request/lookup/context/identity/full selection/accessory quantities/optional facts/paint/upholstery and five explicit technical unknowns",
+    "Every row actual persisted accepted record, counts, cursor and output; first global row only durable-cache interrupt/reopen/deadline and finished-stage idempotence",
+    "Exact ordered union10000/nonoverlap/current code/environment/manifest identity; historical candidate representation and supplements untouched"
+  ],
+  "resources": {
+    "workers": 1,
+    "chunkRows": 64,
+    "chunks": 157,
+    "nodeHeapMiB": 256,
+    "groupRamMiB": 384,
+    "supervisorRamMiB": 128,
+    "hostReservationMiB": 512,
+    "scratchMiBCap": 16,
+    "scratchMiBMinimum": 2,
+    "checkpointMiBPerBulkRow": 1,
+    "chunkSecondsHard": 180,
+    "collectorBridge": "One independent phase, same512MiB/16MiB/180s allocation, original finite source-plan limits but no HTTP operation installed",
+    "expectedRetainedOutputMiB": 16,
+    "estimatedTotalMinutes": "15-35; calibrate after first chunk; no unchanged replay",
+    "checkpoint": "Atomic compact progress after each completed row outside scratch; matching incomplete chunk resumes completed prefix",
+    "placement": "Retained compact outputs directly OneDrive; bounded active per-row JSON checkpoint in owned local scratch",
+    "compatibilityException": null,
+    "lowHeadroom": "Only one row checkpoint lives at a time; resource supervisor automatically reduces the16MiB cap to available headroom above5GiB emergency reserve, with2MiB minimum for atomic checkpoint+staging. Exact minimum and incomplete scope recorded if indivisible row cannot fit; retain prefixes and continue independent safe work.",
+    "cleanup": "Registered resource supervisor finalizer stop/join owned group, verify absence/open files, remove scratch, release reservation and retain bounded progress/failure receipts"
+  },
+  "reuse": {
+    "pilotReceipt": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq60/pilot311-replay-results/chunk01-receipt.json",
+      "bytes": 46600,
+      "sha256": "5685795cc17c7edaf12c56a67fefd589c07f851750943f64fa62247e13ee745d"
+    },
+    "pilotRows": 311,
+    "pilotRuntimeComparison": [
+      {
+        "path": "scripts/gcsp/enrich-fleet.mjs",
+        "oldSha256": "29301f1b077b0f5b171f103a82174bd9e7e430a5e800fb31c796a8fe698f0519",
+        "currentSha256": "0f77c577ddaf0cf91fdae00377f398723d38c77f30210976a1c94391944db7bd",
+        "unchanged": false
+      },
+      {
+        "path": "scripts/gcsp/collect-fleet.mjs",
+        "oldSha256": "f3eeccddc2d2e235af45864ce3020babea7ae618070a69a9435247620d6a93ad",
+        "currentSha256": "ba3864cee32f480facde57a2d2c9dbf944d571878bb2a9cece220955357ab1de",
+        "unchanged": false
+      },
+      {
+        "path": "scripts/gcsp/collection-session.mjs",
+        "oldSha256": "104aed62df3a8934bcda5484e0297a7ab4d84cfd1231b81b921be61aedd31939",
+        "currentSha256": "bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790",
+        "unchanged": false
+      },
+      {
+        "path": "scripts/gcsp/bmw-selection-binding.mjs",
+        "oldSha256": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+        "currentSha256": "480f1e3d1496bcb8d808ec75839634808a2923cdbf8411df61b0f819bdec3f38",
+        "unchanged": false
+      },
+      {
+        "path": "scripts/gcsp/configuration-key.mjs",
+        "oldSha256": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+        "currentSha256": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+        "unchanged": true
+      },
+      {
+        "path": "scripts/gcsp/public-bmw-source.mjs",
+        "oldSha256": "0e746b7d9addb56bfb3a7211616b6b8dfa2ff31469ef102aafa57ddfb11fc375",
+        "currentSha256": "14600d91932c33b691801197ea28812c98bb08ea9603f293829ffeff09b48235",
+        "unchanged": false
+      },
+      {
+        "path": "scripts/gcsp/bmw-public-registration.mjs",
+        "oldSha256": "c0f36030c0696afc51c5e44732064c126434fba5e9d14595833b1c8fc4eb27a2",
+        "currentSha256": "b4eed688fff481af4d422f3612be71184df689ff943fef3d339dc9392a960460",
+        "unchanged": false
+      },
+      {
+        "path": "server/vehicle-evidence/bmw-catalogue-adapter.js",
+        "oldSha256": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+        "currentSha256": "90cf9187cb44dc6d17e6984a0fdc25dc13fc9078c23d3652d779a565cedc29a7",
+        "unchanged": false
+      },
+      {
+        "path": "server/vehicle-evidence/bmw-catalogue-v2.js",
+        "oldSha256": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56",
+        "currentSha256": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56",
+        "unchanged": true
+      },
+      {
+        "path": "server/vehicle-evidence/bmw-image-adapter.js",
+        "oldSha256": "56753ac7e47e4790159e7d50fb4deafe1658730e803912f064e6ed09326774ef",
+        "currentSha256": "56753ac7e47e4790159e7d50fb4deafe1658730e803912f064e6ed09326774ef",
+        "unchanged": true
+      },
+      {
+        "path": "server/gcsp/repository/core.js",
+        "oldSha256": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+        "currentSha256": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+        "unchanged": true
+      },
+      {
+        "path": "server/gcsp/repository/schema.js",
+        "oldSha256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+        "currentSha256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+        "unchanged": true
+      },
+      {
+        "path": "server/gcsp/policy/index.js",
+        "oldSha256": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+        "currentSha256": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+        "unchanged": true
+      },
+      {
+        "path": "server/gcsp/policy/file-provider.js",
+        "oldSha256": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+        "currentSha256": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+        "unchanged": true
+      },
+      {
+        "path": "server/gcsp/policy/seed-v1.json",
+        "oldSha256": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+        "currentSha256": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+        "unchanged": true
+      }
+    ],
+    "validScope": "Unchanged policy/signature/V2 components and retained admission/cache observations at historical code identity only. Does not credit old311 outcomes as current whole-pipeline passes. Exactly one old retained capture is selected for a new current collector bridge.",
+    "qualifiedImageTechnical": "Retain exact existing qualified observations separately; no broadcast or bulk image/technical operation."
+  },
+  "expected": {
+    "rows": 10000,
+    "schema2AcceptedRows": 10000,
+    "historicalCandidateV1Rows": 1,
+    "strictV2CandidateRows": 9999,
+    "retainedObservedGroups": 1562,
+    "offlineCatalogueCalls": 10000,
+    "catalogueCacheHits": 1,
+    "partial": 10000,
+    "rejected": 0,
+    "unknownTechnicalRows": 10000,
+    "unknownImageRows": 10000
+  },
+  "sourceCalls": 0,
+  "networkCalls": 0,
+  "excluded": [
+    "Source/network/provider traffic and broad source admission replay",
+    "Original live-session enrichment/source qualification claim",
+    "Image/technical acquisition or guessed/broadcast facts",
+    "Production code/export changes",
+    "Historical candidateV1 representation, existing image associations and exact supplement mutation",
+    "Corpus publication/active HTTP consumer proof (Mike proof12 owns it)",
+    "Full suite, native stock/current-run/orderUUID, F58/profile/WMI gaps and Story acceptance"
+  ],
+  "unrun": [
+    "One-row current collector bridge",
+    "Every integration chunk",
+    "Current common-session final summary",
+    "Source/live/consumer/native/full suite"
+  ],
+  "authority": "Preparation confers no execution authority. Exact parent-reviewed plan SHA and per-phase release required.",
+  "acceptance": false
+}

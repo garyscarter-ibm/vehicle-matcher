@@ -1,0 +1,21 @@
+// Summarize retained failed audit and diagnosis without repeating identical checks.
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {readFile,writeFile} from 'node:fs/promises';
+import {join} from 'node:path';
+import {indexJsonl} from '../../../../../server/gcsp/vehicle-evidence/indexed-jsonl.js';
+const plan=JSON.parse(await readFile(new URL('./plan.json',import.meta.url)));const output=plan.outputRoot;
+const metadata='/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot7-offline';
+const auditPath=join(metadata,'audit/command.log');const diagnosisPath=join(output,'diagnose-receipt.json');
+const hash=b=>createHash('sha256').update(b).digest('hex');const log=await readFile(auditPath);const diagnosisBytes=await readFile(diagnosisPath);const diagnosis=JSON.parse(diagnosisBytes);
+const prefix='AssertionError [ERR_ASSERTION]: ';const lines=log.toString().split('\n').filter(l=>l.startsWith(prefix));assert.equal(lines.length,1);const report=JSON.parse(lines[0].slice(prefix.length));
+const release=JSON.parse(await readFile(join(output,'descriptor.json')));assert.equal(report.manifest.sha256,release.releaseId);assert.equal(diagnosis.manifestDigest,release.releaseId);
+assert.equal(report.status,'invalid-active');assert.equal(report.audit.checked,1135);assert.equal(report.audit.errors,2);assert.equal(report.http.requests,1024);assert.equal(report.http.errors,0);assert.equal(report.http.serverClosed,true);assert.equal(report.egress.externalCalls,0);assert.equal(report.egress.sourceCalls,0);assert.equal(diagnosis.externalCalls,0);
+assert.equal(diagnosis.mismatches.length,2);assert.deepEqual(diagnosis.mismatches.map(m=>m.row.configuration.vgModelCode).sort(),['1F7A','1F7C']);assert(diagnosis.mismatches.every(m=>m.matchesRetained&&!m.consumerMatches&&m.consumed.status==='source-unavailable'));
+// Verify the production code and source/image identities used by both retained checks.
+for(const phase of ['audit','diagnose']){const selection=JSON.parse(await readFile(join(metadata,phase,'selection.json')));for(const [path,pin] of Object.entries({...selection.identity,...selection.inputs})){if(path.includes('/server/')||path.endsWith('/verify-fleet.mjs'))assert.equal(hash(await readFile(path)),pin,path);}}
+const configurations=await indexJsonl(join(plan.candidateDirectory,'configurations.jsonl'),{key:r=>r.configurationId});const vins=await indexJsonl(join(plan.candidateDirectory,'vins.jsonl'),{key:r=>r.vehicleId,metadata:r=>({vin17:r.vin17})});
+const requests=[...configurations.metadataEntries()].map(e=>({kind:'configuration',id:e.key}));for(const e of vins.metadataEntries())requests.push({kind:'vin',id:e.vin17});assert.equal(requests.length,1135);
+const key=r=>hash(JSON.stringify(r));const all=requests.map(key);const sample=Array.from({length:1024},(_,i)=>key(requests[Math.floor(i*requests.length/1024)]));const sampled=new Set(sample);assert.equal(new Set(all).size,1135);assert.equal(sampled.size,1024);
+const receipt={status:'retained-audit-failed-consumer-only-http-sample-passed',manifestDigest:release.releaseId,report,retainedAudit:{path:auditPath,sha256:hash(log)},retainedDiagnosis:{path:diagnosisPath,sha256:hash(diagnosisBytes)},lookupDtoParity:{checked:1135,passed:1135,failed:0},configuredConsumer:{checked:1135,passed:1133,failed:2,failures:diagnosis.mismatches.map(m=>({request:m.request,vgModelCode:m.row.configuration.vgModelCode,status:m.consumed.status}))},allRequestKeys:all,httpSampleRequestKeys:sample,httpSampleAlgorithm:'requests[Math.floor(index*requests.length/1024)] in unchanged verifyActiveFleet',remainingHttpKeys:all.filter(k=>!sampled.has(k)),limitations:[{severity:'Medium',issue:'Configured consumer rejects documented empty mandatory-elements on actual 1F7A/1F7C source citations',backlogBug:'native Jira pending; separate Bug draft retained'},{severity:'Medium',issue:'Existing verifier sampleSize cap1024; exact111 complement checked operationally',backlogBug:'native Jira pending'}],ordinaryPublicationExecuted:false,acceptance:false};
+assert.equal(receipt.remainingHttpKeys.length,111);await writeFile(join(output,'audit-receipt.json'),JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify({lookupDtoParity:'1135/1135',configuredConsumer:'1133/1135',http:'1024/1024',remainingHttp:111,acceptance:false}));

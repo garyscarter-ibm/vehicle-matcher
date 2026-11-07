@@ -1,0 +1,1174 @@
+{
+  "schemaVersion": "public-map-final-readback.v1",
+  "observedAt": "2026-11-07T13:02:59.638982+00:00",
+  "url": "https://garyscarter-ibm.github.io/vehicle-matcher/product-map/data.json?receipt=202611071303",
+  "status": 200,
+  "bytes": 717053,
+  "sha256": "7de5ad3b07e60fcddd82640831ff9ede8552875676bad55ac556246415abb194",
+  "headers": {
+    "Date": "Sat, 07 Nov 2026 13:02:58 GMT",
+    "Last-Modified": "Sat, 07 Nov 2026 13:02:27 GMT",
+    "ETag": "\"6aef2163-af0fd\"",
+    "Age": "0",
+    "X-Cache": "MISS",
+    "X-GitHub-Request-Id": "5322:184B27:1CFCA4:1E8D3E:6AEF2182",
+    "x-github-edge-region": "uksouth"
+  },
+  "generatedAt": "2026-11-07T13:02:23Z",
+  "dataHead": "693844ae9ffbb00763c2a1e50fe35f866176e164",
+  "mainHead": "9ab7e1729a08ac0a35da4b3684d2ad143e3551c6",
+  "syncedBranchHead": "4f7635afc27a73f0d397659ee8eba992334e0db8",
+  "stories": [
+    {
+      "id": "FUCQ-58",
+      "status": "In Review",
+      "state": "review",
+      "progress": 100,
+      "status_label": "Development complete \u00b7 awaiting acceptance",
+      "conflict": false,
+      "sources": [
+        {
+          "branch": "origin/gcsp-poc",
+          "sha": "693844ae9ffbb00763c2a1e50fe35f866176e164",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:44:22.530Z"
+        },
+        {
+          "branch": "origin/dev/DEV-2026-11-04-069",
+          "sha": "4f7635afc27a73f0d397659ee8eba992334e0db8",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:44:22.530Z"
+        },
+        {
+          "branch": "main",
+          "sha": "9ab7e1729a08ac0a35da4b3684d2ad143e3551c6",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:59:41Z"
+        }
+      ],
+      "slice_counts": {
+        "complete": 4,
+        "in_progress": 0,
+        "blocked": 0,
+        "not_started": 0,
+        "unknown": 0,
+        "total": 4
+      },
+      "workers": [
+        {
+          "name": "Merlin the Magic Mouse",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-05T23:55:17.446023+00:00",
+          "expires_at": "2026-11-05T23:55:17.446023+00:00",
+          "source": "thread 01a1ae09-0e2c-78d3-8cc7-87d1a60f8a0f; requested/selected/effective gpt-6.1-sol/high; no fallback",
+          "active": false,
+          "status": "stopped; published blocked7aa6bee"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "finite typed source execution",
+          "observed_at": "2026-11-07T02:40:43.286002+00:00",
+          "expires_at": "2026-11-07T03:06:23.061001+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; runtimeunverified; nofallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "four-context model breadth capability",
+          "observed_at": "2026-11-07T02:40:43.286002+00:00",
+          "expires_at": "2026-11-07T03:06:23.061001+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; runtimeunverified; nofallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "next source/publishing preparation",
+          "observed_at": "2026-11-07T03:06:23.061001+00:00",
+          "expires_at": "2026-11-07T03:49:35.860351+00:00",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "four-model exact solver pilot",
+          "observed_at": "2026-11-07T03:06:23.061001+00:00",
+          "expires_at": "2026-11-07T03:49:35.860351+00:00",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "source breadth and finite continuation",
+          "observed_at": "2026-11-07T03:18:13.087785+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "source": "Coordinator directly observed active; requested/selected Sol/high; effective runtime unverified; nofallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "finite four-model source continuation",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "G42 six-model source qualification preparation",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "sixmodel qualification/finiteG42pilot and31scheme breadth",
+          "observed_at": "2026-11-07T04:15:34.640812+00:00",
+          "expires_at": "2026-11-07T04:24:45.127191+00:00",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previousobservation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "G42actualcollectionandschemebreadth",
+          "observed_at": "2026-11-07T04:24:45.127191+00:00",
+          "expires_at": "2026-11-07T04:53:39.807899+00:00",
+          "source": "Coordinator directlyobserved; requested/selected gpt-6.1-sol/high;effective runtimeunverified;nofallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "scheme breadth and G42 source",
+          "observed_at": "2026-11-07T04:53:39.807899+00:00",
+          "expires_at": "2026-11-07T05:12:00.973894+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "breadth source qualification",
+          "observed_at": "2026-11-07T05:12:00.973894+00:00",
+          "expires_at": "2026-11-07T05:49:11.486454+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "actual breadth960 source",
+          "observed_at": "2026-11-07T05:49:11.486454+00:00",
+          "expires_at": "2026-11-07T06:09:42.607117+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "stopped F70 audit and unspent continuation",
+          "observed_at": "2026-11-07T05:49:11.486454+00:00",
+          "expires_at": "2026-11-07T06:09:42.607117+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "breadth source continuation",
+          "observed_at": "2026-11-07T06:09:42.607117+00:00",
+          "expires_at": "2026-11-07T07:09:43.031940+00:00",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation retained; expired or superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "missing original-model source coverage",
+          "observed_at": "2026-11-07T08:23:09.000197+00:00",
+          "expires_at": "2026-11-07T09:23:09.000197+00:00",
+          "source": "Root directly observed active. Requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "active at observation; Story acceptance open"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-59",
+      "status": "In Review",
+      "state": "review",
+      "progress": 100,
+      "status_label": "Development complete \u00b7 awaiting acceptance",
+      "conflict": false,
+      "sources": [
+        {
+          "branch": "origin/gcsp-poc",
+          "sha": "693844ae9ffbb00763c2a1e50fe35f866176e164",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:44:22.530Z"
+        },
+        {
+          "branch": "origin/dev/DEV-2026-11-04-069",
+          "sha": "4f7635afc27a73f0d397659ee8eba992334e0db8",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:44:22.530Z"
+        },
+        {
+          "branch": "main",
+          "sha": "9ab7e1729a08ac0a35da4b3684d2ad143e3551c6",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:59:41Z"
+        }
+      ],
+      "slice_counts": {
+        "complete": 6,
+        "in_progress": 2,
+        "blocked": 0,
+        "not_started": 0,
+        "unknown": 0,
+        "total": 8
+      },
+      "workers": [
+        {
+          "name": "Cecil Turtle",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-06T15:38:48.934995+00:00",
+          "expires_at": "2026-11-06T15:38:48.934995+00:00",
+          "source": "thread01a1b054-1167-7820-b9f2-92ec81e37bbe",
+          "active": false,
+          "status": "stopped; frozen binder checkpoint complete; 69 scoped passes and offline replay; requested/selected/"
+        },
+        {
+          "name": "Sulley",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-06T15:04:41.021643+00:00",
+          "expires_at": "2026-11-06T15:04:41.021643+00:00",
+          "source": "thread01a1b15c-c7b7-7ff1-ae8e-5d840ec09dbc",
+          "active": false,
+          "status": "Completed four-file canonical selector/v2 report correction; requested/selected/runtimeSol medium; n"
+        },
+        {
+          "name": "Sally Carrera",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-07T00:34:50.165765+00:00",
+          "expires_at": "2026-11-07T00:34:50.165765+00:00",
+          "source": "thread01a1b349-5b20-7d41-acbe-cf0bc002457f; requested/selected gpt-6.1-sol/medium; no fallback",
+          "active": false,
+          "status": "Completed source-admission slices; thread-limited, no active descendant. Requested/selected gpt-6.1-"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "finite typed source execution",
+          "observed_at": "2026-11-07T02:40:43.286002+00:00",
+          "expires_at": "2026-11-07T03:06:23.061001+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; runtimeunverified; nofallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "869-source next release and next axes",
+          "observed_at": "2026-11-07T03:06:23.061001+00:00",
+          "expires_at": "2026-11-07T03:49:35.860351+00:00",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "four-model exact solver pilot",
+          "observed_at": "2026-11-07T03:06:23.061001+00:00",
+          "expires_at": "2026-11-07T03:49:35.860351+00:00",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "source qualification and actual trim/package continuation",
+          "observed_at": "2026-11-07T03:18:13.087785+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "source": "Coordinator directly observed active; requested/selected Sol/high; effective runtime unverified; nofallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "758suffix actual source execution",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "G42 six-model source qualification preparation",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "optionaltypedaxis route implementation/finitepool",
+          "observed_at": "2026-11-07T04:15:34.640812+00:00",
+          "expires_at": "2026-11-07T04:24:45.127191+00:00",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previousobservation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "G42pilot48 strictaudit and2768continuationprep",
+          "observed_at": "2026-11-07T04:15:34.640812+00:00",
+          "expires_at": "2026-11-07T04:24:45.127191+00:00",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previousobservation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "optionalaxisintegrationandpilot",
+          "observed_at": "2026-11-07T04:24:45.127191+00:00",
+          "expires_at": "2026-11-07T04:53:39.807899+00:00",
+          "source": "Coordinator directlyobserved; requested/selected gpt-6.1-sol/high;effective runtimeunverified;nofallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "exact2248G42 suffix",
+          "observed_at": "2026-11-07T04:53:39.807899+00:00",
+          "expires_at": "2026-11-07T05:12:00.973894+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "exact5535optional suffix",
+          "observed_at": "2026-11-07T04:53:39.807899+00:00",
+          "expires_at": "2026-11-07T05:12:00.973894+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "exact unspent source execution",
+          "observed_at": "2026-11-07T05:12:00.973894+00:00",
+          "expires_at": "2026-11-07T05:49:11.486454+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "stopped-prefix evidence and exact unspent continuation preparation",
+          "observed_at": "2026-11-07T05:17:07.348628+00:00",
+          "expires_at": "2026-11-07T05:49:11.486454+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "actual breadth960 source",
+          "observed_at": "2026-11-07T05:49:11.486454+00:00",
+          "expires_at": "2026-11-07T06:09:42.607117+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "stopped F70 audit and unspent continuation",
+          "observed_at": "2026-11-07T05:49:11.486454+00:00",
+          "expires_at": "2026-11-07T06:09:42.607117+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "optional-axis finite source continuation",
+          "observed_at": "2026-11-07T06:09:42.607117+00:00",
+          "expires_at": "2026-11-07T07:09:43.212626+00:00",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation retained; expired or superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "collector integration evidence",
+          "observed_at": "2026-11-07T08:23:09.000197+00:00",
+          "expires_at": "2026-11-07T09:23:09.000197+00:00",
+          "source": "Root directly observed active. Requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "active at observation; Story acceptance open"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-60",
+      "status": "In Review",
+      "state": "review",
+      "progress": 100,
+      "status_label": "Development complete \u00b7 awaiting acceptance",
+      "conflict": false,
+      "sources": [
+        {
+          "branch": "origin/gcsp-poc",
+          "sha": "693844ae9ffbb00763c2a1e50fe35f866176e164",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:44:22.530Z"
+        },
+        {
+          "branch": "origin/dev/DEV-2026-11-04-069",
+          "sha": "4f7635afc27a73f0d397659ee8eba992334e0db8",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:44:22.530Z"
+        },
+        {
+          "branch": "main",
+          "sha": "9ab7e1729a08ac0a35da4b3684d2ad143e3551c6",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:59:41Z"
+        }
+      ],
+      "slice_counts": {
+        "complete": 8,
+        "in_progress": 0,
+        "blocked": 0,
+        "not_started": 0,
+        "unknown": 0,
+        "total": 8
+      },
+      "workers": [
+        {
+          "name": "Scooby Doo",
+          "harness": "codex",
+          "role": "story-lead",
+          "observed_at": "2026-11-06T12:31:19.407940+00:00",
+          "expires_at": "2026-11-06T12:31:19.407940+00:00",
+          "source": "thread 01a1b05f-dcbc-7e50-a2f9-0332b39f082a",
+          "active": false,
+          "status": "Canonical local prepublication checkpoint: scoped 9+6 passed with zero skips; requested/selected/ver"
+        },
+        {
+          "name": "Rocky",
+          "harness": "codex",
+          "role": "mechanic",
+          "observed_at": "2026-11-07T00:33:52.071696+00:00",
+          "expires_at": "2026-11-07T00:33:52.071696+00:00",
+          "source": "task /root/charlie_dog/rocky",
+          "active": false,
+          "status": "Requested/selected gpt-6-luna/high; no fallback; effective unverified. Source-only mechanic complete"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "firstimage ordinaryrelease integration",
+          "observed_at": "2026-11-07T02:40:43.286002+00:00",
+          "expires_at": "2026-11-07T03:06:23.061001+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/medium; runtimeunverified; nofallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "exact v2 technical/image observation capability",
+          "observed_at": "2026-11-07T03:06:23.061001+00:00",
+          "expires_at": "2026-11-07T03:49:35.860351+00:00",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "exact v2technical/image enrichment",
+          "observed_at": "2026-11-07T03:18:13.087785+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "source": "Coordinator directly observed active; requested/selected Sol/medium; effective runtime unverified; nofallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "twoimage .7publication preparation",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "preserved2image associations in next1923sourcepackage",
+          "observed_at": "2026-11-07T04:15:34.640812+00:00",
+          "expires_at": "2026-11-07T04:24:45.127191+00:00",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previousobservation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "technical integration and package",
+          "observed_at": "2026-11-07T04:53:39.807899+00:00",
+          "expires_at": "2026-11-07T05:12:00.973894+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "technical supplement candidate integration",
+          "observed_at": "2026-11-07T05:12:00.973894+00:00",
+          "expires_at": "2026-11-07T06:09:42.607117+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "exact10000 current-session integration preparation",
+          "observed_at": "2026-11-07T08:23:09.000197+00:00",
+          "expires_at": "2026-11-07T09:23:09.000197+00:00",
+          "source": "Root directly observed active. Requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "active at observation; Story acceptance open"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-61",
+      "status": "In Review",
+      "state": "review",
+      "progress": 100,
+      "status_label": "Development complete \u00b7 awaiting acceptance",
+      "conflict": false,
+      "sources": [
+        {
+          "branch": "origin/gcsp-poc",
+          "sha": "693844ae9ffbb00763c2a1e50fe35f866176e164",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:44:22.530Z"
+        },
+        {
+          "branch": "origin/dev/DEV-2026-11-04-069",
+          "sha": "4f7635afc27a73f0d397659ee8eba992334e0db8",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:44:22.530Z"
+        },
+        {
+          "branch": "main",
+          "sha": "9ab7e1729a08ac0a35da4b3684d2ad143e3551c6",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:59:41Z"
+        }
+      ],
+      "slice_counts": {
+        "complete": 5,
+        "in_progress": 0,
+        "blocked": 0,
+        "not_started": 0,
+        "unknown": 0,
+        "total": 5
+      },
+      "workers": [
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "strict actual source series",
+          "observed_at": "2026-11-07T02:40:43.286002+00:00",
+          "expires_at": "2026-11-07T03:06:23.061001+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; runtimeunverified; nofallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "869-source freeze and finite next collection",
+          "observed_at": "2026-11-07T03:06:23.061001+00:00",
+          "expires_at": "2026-11-07T03:49:35.860351+00:00",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "actual source count and original target shortfall",
+          "observed_at": "2026-11-07T03:18:13.087785+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "source": "Coordinator directly observed active; requested/selected Sol/high; effective runtime unverified; nofallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "actual source count toward10000",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "actualG42sourcecounts and continuation",
+          "observed_at": "2026-11-07T04:15:34.640812+00:00",
+          "expires_at": "2026-11-07T04:24:45.127191+00:00",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previousobservation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "nextoptionalaxis concretepool",
+          "observed_at": "2026-11-07T04:15:34.640812+00:00",
+          "expires_at": "2026-11-07T04:24:45.127191+00:00",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previousobservation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "actual2768finitecollection",
+          "observed_at": "2026-11-07T04:24:45.127191+00:00",
+          "expires_at": "2026-11-07T04:53:39.807899+00:00",
+          "source": "Coordinator directlyobserved; requested/selected gpt-6.1-sol/high;effective runtimeunverified;nofallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "optional5567pool/pilotpreparation",
+          "observed_at": "2026-11-07T04:24:45.127191+00:00",
+          "expires_at": "2026-11-07T04:53:39.807899+00:00",
+          "source": "Coordinator directlyobserved; requested/selected gpt-6.1-sol/high;effective runtimeunverified;nofallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "actual G42 count",
+          "observed_at": "2026-11-07T04:53:39.807899+00:00",
+          "expires_at": "2026-11-07T05:12:00.973894+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "actual optional count",
+          "observed_at": "2026-11-07T04:53:39.807899+00:00",
+          "expires_at": "2026-11-07T05:12:00.973894+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "actual source count",
+          "observed_at": "2026-11-07T05:12:00.973894+00:00",
+          "expires_at": "2026-11-07T05:49:11.486454+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "stopped-prefix evidence and exact unspent continuation preparation",
+          "observed_at": "2026-11-07T05:17:07.348628+00:00",
+          "expires_at": "2026-11-07T05:49:11.486454+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "actual breadth960 source",
+          "observed_at": "2026-11-07T05:49:11.486454+00:00",
+          "expires_at": "2026-11-07T06:09:42.607117+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "stopped F70 audit and unspent continuation",
+          "observed_at": "2026-11-07T05:49:11.486454+00:00",
+          "expires_at": "2026-11-07T06:09:42.607117+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "optional-axis finite source continuation",
+          "observed_at": "2026-11-07T06:09:42.607117+00:00",
+          "expires_at": "2026-11-07T07:09:43.393106+00:00",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation retained; expired or superseded"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "exact10000 selection sealed; originalcoverage gaps",
+          "observed_at": "2026-11-07T08:23:09.000197+00:00",
+          "expires_at": "2026-11-07T09:23:09.000197+00:00",
+          "source": "Root directly observed active. Requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "active at observation; Story acceptance open"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-62",
+      "status": "In Review",
+      "state": "review",
+      "progress": 100,
+      "status_label": "Development complete \u00b7 awaiting acceptance",
+      "conflict": false,
+      "sources": [
+        {
+          "branch": "origin/gcsp-poc",
+          "sha": "693844ae9ffbb00763c2a1e50fe35f866176e164",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:44:22.530Z"
+        },
+        {
+          "branch": "origin/dev/DEV-2026-11-04-069",
+          "sha": "4f7635afc27a73f0d397659ee8eba992334e0db8",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:44:22.530Z"
+        },
+        {
+          "branch": "main",
+          "sha": "9ab7e1729a08ac0a35da4b3684d2ad143e3551c6",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:59:41Z"
+        }
+      ],
+      "slice_counts": {
+        "complete": 9,
+        "in_progress": 0,
+        "blocked": 0,
+        "not_started": 0,
+        "unknown": 0,
+        "total": 9
+      },
+      "workers": [
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "479source immutable .5release",
+          "observed_at": "2026-11-07T02:40:43.286002+00:00",
+          "expires_at": "2026-11-07T03:06:23.061001+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/medium; runtimeunverified; nofallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Minnie Mouse",
+          "harness": "codex",
+          "role": "869-source immutable release preparation",
+          "observed_at": "2026-11-07T03:06:23.061001+00:00",
+          "expires_at": "2026-11-07T03:49:35.860351+00:00",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/high; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "immutable .6 public release and fresh offline restore",
+          "observed_at": "2026-11-07T03:18:13.087785+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "source": "Coordinator directly observed active; requested/selected Sol/high; effective runtime unverified; nofallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "immutable .7publicrelease preparation",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "next1923source .8freeze/package/offlineproof",
+          "observed_at": "2026-11-07T04:15:34.640812+00:00",
+          "expires_at": "2026-11-07T04:24:45.127191+00:00",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previousobservation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "1923source .8publicshipment",
+          "observed_at": "2026-11-07T04:24:45.127191+00:00",
+          "expires_at": "2026-11-07T04:53:39.807899+00:00",
+          "source": "Coordinator directlyobserved; requested/selected gpt-6.1-sol/medium;effective runtimeunverified;nofallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "next immutable package",
+          "observed_at": "2026-11-07T04:53:39.807899+00:00",
+          "expires_at": "2026-11-07T05:12:00.973894+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "2424-source public package",
+          "observed_at": "2026-11-07T05:12:00.973894+00:00",
+          "expires_at": "2026-11-07T05:49:11.486454+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "live cold-loader diagnosis and next4666 package",
+          "observed_at": "2026-11-07T05:49:11.486454+00:00",
+          "expires_at": "2026-11-07T06:09:42.607117+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "publication/native proof preparation",
+          "observed_at": "2026-11-07T06:09:42.607117+00:00",
+          "expires_at": "2026-11-07T07:09:43.603914+00:00",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation retained; expired or superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "proof packet reviewed; root executes final10000 proof",
+          "observed_at": "2026-11-07T08:23:09.000197+00:00",
+          "expires_at": "2026-11-07T09:23:09.000197+00:00",
+          "source": "Root directly observed active. Requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "active at observation; Story acceptance open"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-63",
+      "status": "In Review",
+      "state": "review",
+      "progress": 100,
+      "status_label": "Development complete \u00b7 awaiting acceptance",
+      "conflict": false,
+      "sources": [
+        {
+          "branch": "origin/gcsp-poc",
+          "sha": "693844ae9ffbb00763c2a1e50fe35f866176e164",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:44:22.530Z"
+        },
+        {
+          "branch": "origin/dev/DEV-2026-11-04-069",
+          "sha": "4f7635afc27a73f0d397659ee8eba992334e0db8",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:44:22.530Z"
+        },
+        {
+          "branch": "main",
+          "sha": "9ab7e1729a08ac0a35da4b3684d2ad143e3551c6",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:59:41Z"
+        }
+      ],
+      "slice_counts": {
+        "complete": 5,
+        "in_progress": 0,
+        "blocked": 0,
+        "not_started": 0,
+        "unknown": 0,
+        "total": 5
+      },
+      "workers": [
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "actualCLI image/portHTTP proof",
+          "observed_at": "2026-11-07T02:40:43.286002+00:00",
+          "expires_at": "2026-11-07T03:06:23.061001+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/medium; runtimeunverified; nofallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Charlie Dog",
+          "harness": "codex",
+          "role": "public .6 offline871DTO boundary",
+          "observed_at": "2026-11-07T03:18:13.087785+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "source": "Coordinator directly observed active; requested/selected Sol/high; effective runtime unverified; nofallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "1135DTO and HTTP/recovery .7proof",
+          "observed_at": "2026-11-07T03:49:35.860351+00:00",
+          "expires_at": "2026-11-07T04:15:34.640812+00:00",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous role completed or superseded; retain observation"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "next1925record allDTO/HTTP proof",
+          "observed_at": "2026-11-07T04:15:34.640812+00:00",
+          "expires_at": "2026-11-07T04:24:45.127191+00:00",
+          "source": "Coordinator directly observed active; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previousobservation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": ".8publicandruntimeproof",
+          "observed_at": "2026-11-07T04:24:45.127191+00:00",
+          "expires_at": "2026-11-07T04:53:39.807899+00:00",
+          "source": "Coordinator directlyobserved; requested/selected gpt-6.1-sol/medium;effective runtimeunverified;nofallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "exact order-reference proof",
+          "observed_at": "2026-11-07T04:53:39.807899+00:00",
+          "expires_at": "2026-11-07T05:12:00.973894+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "all-reference and order-reference proof",
+          "observed_at": "2026-11-07T05:12:00.973894+00:00",
+          "expires_at": "2026-11-07T06:09:42.607117+00:00",
+          "source": "Coordinator directly observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation preserved; superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "publication/native proof preparation",
+          "observed_at": "2026-11-07T06:09:42.607117+00:00",
+          "expires_at": "2026-11-07T07:09:42.844533+00:00",
+          "source": "Coordinator observed; requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "previous observation retained; expired or superseded"
+        },
+        {
+          "name": "Mike Wazowski",
+          "harness": "codex",
+          "role": "nonmutating native loader diagnostic preparation",
+          "observed_at": "2026-11-07T08:23:09.000197+00:00",
+          "expires_at": "2026-11-07T09:23:09.000197+00:00",
+          "source": "Root directly observed active. Requested/selected gpt-6.1-sol/medium; effective runtime unverified; no fallback",
+          "active": false,
+          "status": "active at observation; Story acceptance open"
+        }
+      ]
+    }
+  ],
+  "deployment": {
+    "conclusion": "success",
+    "headSha": "9ab7e1729a08ac0a35da4b3684d2ad143e3551c6",
+    "jobs": [
+      {
+        "completedAt": "2026-11-07T13:02:34Z",
+        "conclusion": "success",
+        "databaseId": 128410930278,
+        "name": "deploy",
+        "startedAt": "2026-11-07T13:02:13Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-11-07T13:02:15Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-11-07T13:02:14Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-07T13:02:21Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v5",
+            "number": 2,
+            "startedAt": "2026-11-07T13:02:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-07T13:02:21Z",
+            "conclusion": "success",
+            "name": "Collect pushed product map inputs",
+            "number": 3,
+            "startedAt": "2026-11-07T13:02:21Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-07T13:02:21Z",
+            "conclusion": "success",
+            "name": "Assemble the site",
+            "number": 4,
+            "startedAt": "2026-11-07T13:02:21Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-07T13:02:23Z",
+            "conclusion": "success",
+            "name": "Build the connected product map",
+            "number": 5,
+            "startedAt": "2026-11-07T13:02:21Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-07T13:02:23Z",
+            "conclusion": "success",
+            "name": "Run actions/configure-pages@v5",
+            "number": 6,
+            "startedAt": "2026-11-07T13:02:23Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-07T13:02:25Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-pages-artifact@v3",
+            "number": 7,
+            "startedAt": "2026-11-07T13:02:23Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-07T13:02:32Z",
+            "conclusion": "success",
+            "name": "Run actions/deploy-pages@v4",
+            "number": 8,
+            "startedAt": "2026-11-07T13:02:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-07T13:02:32Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v5",
+            "number": 16,
+            "startedAt": "2026-11-07T13:02:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-07T13:02:32Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 17,
+            "startedAt": "2026-11-07T13:02:32Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/actions/runs/42375092002/job/128410930278"
+      }
+    ],
+    "status": "completed",
+    "updatedAt": "2026-11-07T13:02:34Z",
+    "url": "https://github.com/garyscarter-ibm/vehicle-matcher/actions/runs/42375092002"
+  },
+  "earlierStaleReadPreserved": "served-map-readback.json",
+  "acceptance": false,
+  "recurringPublicationDefect": "FUCQ-166 independently deferred; current data publication succeeded, cause not established"
+}

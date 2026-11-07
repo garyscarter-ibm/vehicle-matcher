@@ -1,0 +1,30 @@
+{
+  "scope": "preparation-only",
+  "checks": [
+    {
+      "file": "group-proof.py",
+      "PythonCompile": "passed-no-bytecode"
+    },
+    {
+      "file": "install-local.py",
+      "PythonCompile": "passed-no-bytecode"
+    },
+    {
+      "file": "supervise.py",
+      "PythonCompile": "passed-no-bytecode"
+    }
+  ],
+  "planSha256": "5ec34f1dd790d091409b48fc214a82d53b1a9e971a2b3a5d8490b2a8c31eb73d",
+  "codePinsVerified": 170,
+  "inputPinsVerified": 27,
+  "originalNative167CodePinsUnchanged": true,
+  "originalDriverAndSevenHomebrewPinsUnchanged": true,
+  "retainedArchiveBytesVerified": 66864127,
+  "actualEmbeddedRubyPinsVerified": 7,
+  "newRequests": 0,
+  "scratchAllocation": false,
+  "installationExecution": false,
+  "nativeDatabaseExecution": false,
+  "elapsedSeconds": 0.1106290000025183,
+  "acceptance": false
+}

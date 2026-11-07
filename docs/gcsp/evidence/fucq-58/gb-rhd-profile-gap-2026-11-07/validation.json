@@ -1,0 +1,20 @@
+{
+  "scope": "documentation integrity only; no application tests or source requests",
+  "checks": {
+    "jsonParsed": true,
+    "retainedInputHashesUnchanged": true,
+    "twelveSingleObservationsReconciled": true,
+    "oneAdvertToLookupRouteReconciled": true,
+    "fiveUsLhdEnabledProfilesUnchanged": true,
+    "ukCandidatesUnchanged": true,
+    "publicOperationLimitReconciled": true,
+    "localLinksExist": true,
+    "sourceUrlSyntaxCheckedOffline": true
+  },
+  "profileRegistrySha256": "9a107b2b90c21a116e2fb93ca88211b95250c4404f6468924e5e7f53d092a1fa",
+  "profilesActivated": 0,
+  "applicationTestsRun": false,
+  "newSourceRequests": 0,
+  "scratchCreated": false,
+  "leftovers": []
+}

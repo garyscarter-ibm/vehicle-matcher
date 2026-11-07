@@ -1,0 +1,82 @@
+{
+  "kind": "static host subscription/navigation interface facts; no implementation or execution grant",
+  "date": "2026-11-06",
+  "source_checkpoint": "9c890d9dc14e21086fa231ca13d817693f2c110b",
+  "product_checkpoint": "f179ae6043414a2b07de3edb2b425338299ea37b",
+  "source_files": {
+    "gcsp-account.html": {
+      "sha256": "2156befc328297a2658c3d9c0a4aff49835a581c3962180b22bf29544ec23067",
+      "bytes": 920
+    },
+    "blocks/gcsp/account/harness.js": {
+      "sha256": "606ec0b4b0f489d4e65340be292a4f2f5350c7ca81883393b7672f5fcd5c3991",
+      "bytes": 773
+    },
+    "blocks/gcsp/manual-setup/journey.js": {
+      "sha256": "f063c660a1d5ffe868fb01d88c250081e5ef0b5f8de7c14a36ffba36b277b095",
+      "bytes": 3208
+    },
+    "blocks/gcsp/presenter-controls/controls.js": {
+      "sha256": "418f3d4a9b41b3f402bb57bb3413a3838e838300ca7a8e45ccdfbeb451ec08c2",
+      "bytes": 17673
+    },
+    "blocks/gcsp/presenter-controls/http-adapter.js": {
+      "sha256": "3f4aa95412149f1f987024d6f755b6c02852c81ae561db0ff784dc3317121ab4",
+      "bytes": 1447
+    },
+    "blocks/gcsp/employee/gcsp-employee.js": {
+      "sha256": "2f35c7983aafef2c8f1eb72f6c78341cbf1c76269110f6a25dca1b775f11df2b",
+      "bytes": 8131
+    },
+    "blocks/gcsp/shell/portal-shell.js": {
+      "sha256": "7e62088d69bfa43ff0ccff2678931fe1e48c7a0b3814184f449f308cf4ebaa01",
+      "bytes": 10428
+    },
+    "scripts/gcsp-demo.mjs": {
+      "sha256": "6e537cc11f76286b89c5951d74079c6277c66140bb0a27b0d05be878f5dff2c2",
+      "bytes": 4991
+    },
+    "server/gcsp/identity/http.js": {
+      "sha256": "86d3aa6bfc13ae6773c3861b7ef6c72fecfd31270b7c4f0609e240bd017b713e",
+      "bytes": 6895
+    },
+    "server/gcsp/identity/index.js": {
+      "sha256": "4c60cd226ecceefcedd86c7da73a410bfabbeddbb05aab1aa997c98639f7612c",
+      "bytes": 14177
+    },
+    "server/gcsp/clock/http.js": {
+      "sha256": "da019f6f766ec6ff22ab7346091ca9ef6744cde2608465f20d942c07ec083535",
+      "bytes": 1978
+    },
+    "server/gcsp/runtime.js": {
+      "sha256": "d728142ebbf5d5cfe451e95e90cbacaeda6168bf1f158043780da67fc707a36f",
+      "bytes": 9550
+    }
+  },
+  "absent_in_this_checkout": [
+    "gcsp-presenter.html"
+  ],
+  "frozen_C1_catalogue_sha256": "c6a977a08972cc183a5bda8b962bb8630889859b0f411a2233fe0beab87b85d1",
+  "facts": [
+    "Account harness mounts mountManualJourney(host) without options.",
+    "Journey subscribes only when subscribeClock is supplied; callback refreshes gallery/claim or setup/review, not account.",
+    "Account page loads only account/harness.js. Employee shell path does not import or mount presenter controls.",
+    "Presenter controls expose adapter, commandId, navigate options; no change emitter/subscriber is exported.",
+    "Controls reset success or independently confirmed principal switch navigates to gcsp-presenter.html; no in-place account notification.",
+    "gcsp-presenter.html is absent here and outside the local demo public/session page allowlist.",
+    "Local session-page bootstrap calls createLocalSession only if acting-session resolution is not ok.",
+    "Successful reset renews presenter cookies; a valid presenter acting session does not cause default employee preparation on page reload."
+  ],
+  "unchanged": [
+    "all product files",
+    "seven C1/host tests",
+    "TEST profile01c07f8",
+    "frozen harness9c890d9 and cataloguec6a977a0"
+  ],
+  "boundaries": [
+    "No global event name, cross-tab protocol, timer/poll interval or new trusted authority is agreed.",
+    "Do not treat a browser notification as identity/run authority, replay a mutation, relabel old-run stock or fabricate fresh preparation.",
+    "126 owns controls/workspace behavior;100 owns manual host composition; future source changes need a separately reviewed checkpoint."
+  ],
+  "execution_granted": false
+}

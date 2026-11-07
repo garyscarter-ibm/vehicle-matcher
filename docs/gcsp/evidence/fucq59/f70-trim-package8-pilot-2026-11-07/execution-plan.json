@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "f70-trim-package8-allocation.v1",
+  "id": "f70-trim-package260-20261107-once-chunk01",
+  "status": "prepared-unspent; exact parent source release still required",
+  "codeCommit": "d0404b22dbb86c26378818480f1581bd7160bb78",
+  "codePins": {
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq59/f70-trim-package8-pilot-2026-11-07/actual-event-history.mjs": "097a2fb56eeca20ef431ed1e9299c049bd4d36b66a5a933276aabb352e888cd4",
+    "docs/gcsp/evidence/fucq59/f70-trim-package8-pilot-2026-11-07/prepare.py": "6ce304a602d1b3035fe7e110e1a4fc809a0181f38011d20cc2ee245e5981fa57",
+    "docs/gcsp/evidence/fucq59/f70-trim-package8-pilot-2026-11-07/reconcile-retained.py": "d1587c5ed04a8fd7b516788103dc6c277e76de1933da5886773e105c185cdc00",
+    "docs/gcsp/evidence/fucq59/f70-trim-package8-pilot-2026-11-07/retained-check.test.mjs": "569f45fccf5bc5427d4fe78cacab0f47106f762c55a57581b9587061ff8d8e3a",
+    "docs/gcsp/evidence/fucq59/f70-trim-package8-pilot-2026-11-07/run-live.mjs": "bd48b598b49e0c7952c2fc5e70c3fb80480486f9efdd88a63d588b29c49a9bf9",
+    "docs/gcsp/evidence/fucq59/f70-trim-package8-pilot-2026-11-07/supervise.py": "60c6c857fa6537e7d682cb99f6589cbde9862fa934283259506c3bc134b27a11",
+    "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+    "scripts/gcsp/bmw-public-registration.mjs": "3a9a1afcc128f8356bb296b063d118bc9b7c59531ef75823bb99f8e01f209291",
+    "scripts/gcsp/bmw-selection-binding.mjs": "88820920f57f4509741d6ad291e2fcd36c5b47a65d42acd35e890e3a6f84004e",
+    "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+    "scripts/gcsp/capture-bmw-selection.mjs": "b3cea57603e403f41bb326bcdfc955b7f061a7cfc1b071d1ef609de3efc99bc1",
+    "scripts/gcsp/collect-fleet.mjs": "ba3864cee32f480facde57a2d2c9dbf944d571878bb2a9cece220955357ab1de",
+    "scripts/gcsp/collection-session.mjs": "db5a1a1ca6037132eced521f1a9b19d73a4282a113da66480ebec70c0beac7ff",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/public-bmw-source.mjs": "4561e844cfe85383ad8ed27521bab157a10dae57f8d82ab29b8f41842bfc8336",
+    "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+    "server/gcsp/migrations/index.js": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f",
+    "server/gcsp/policy/activation.js": "4e79235b761e8daf94f3cf2744c4bc585146181b410b64497669bd353ee7c4d6",
+    "server/gcsp/policy/adoption.js": "a2cb9a74946cd9eda413d896a0abc2f4299b3b75880a77ddd510667a5187c870",
+    "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+    "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+    "server/gcsp/policy/memory-provider.js": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+    "server/gcsp/policy/postgres-provider.js": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+    "server/gcsp/policy/publish.js": "c521e15966be7762a3348ad860403ef555dd8cbd48405e7d23d9a7c6d262a826",
+    "server/gcsp/policy/reviewed-definitions.js": "75518df649ba542ad32b876f8ee1b680e29b417c3b1f8dc90fcf1d4713a42cbb",
+    "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/repository/index.js": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16",
+    "server/gcsp/repository/memory.js": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866",
+    "server/gcsp/repository/postgres.js": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+    "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139",
+    "server/test/gcsp-bmw-options-qualification.test.js": "f2788898e10027366df4fbd4dd1682385dc549c5867b32b2a1210c1aa493146e",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+  },
+  "inputPins": {
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-trim-package-plan-2026-11-07/plan.json": "f16fd35c8a1a47105c49f8892452670a36e8bec2ce9a420a264858544478621e",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-trim-package-plan-2026-11-07/candidate-manifest.json": "09f0892590918a3919d48b2f69a48876df1d4aa0e68449895bb715ff6a3a7d4e",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-trim-package-plan-2026-11-07/templates/chunk01.json": "85a9acb36a714c426c3101884c5aec2692cfbce6454f927ff34cdb89b847e6f9",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-trim-package-plan-2026-11-07/validation.json": "fb82a36ed9193698f494dee735df4fc602354bb4a3113be8bb3af9669cd686fd",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-model-breadth-pilot-plan-2026-11-07/final-canonical-index.json": "b7557284d1a0cd7a9dca49f240bc740d9bb91ec915ea10998bac05305de7699b",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-model-breadth-pilot-plan-2026-11-07/final-spent-request-index.json": "a8ffac65e2c8541552f33dd9c4a1f775ff46724e68e8a26de3192cde848ea5d7",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-model-breadth-pilot-plan-2026-11-07/retained-validation.json": "62d74522bd069dfa05177f33d948be9a678568a0eabd4d696bf337221dc868eb",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-model-breadth-pilot-plan-2026-11-07/series-receipt.json": "631868bd49c1aa356b00e255525abb29ba4ab0d56185b96f8e8a59f1f900a84f",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-1f7e-core04-solver-2026-11-07/options.json": "f3da89e3ebd679923f39a6b5c535e50036e36367fa831fe7e24fba54cc962b24",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-trim-package8-pilot-2026-11-07/collection-plan.json": "85a9acb36a714c426c3101884c5aec2692cfbce6454f927ff34cdb89b847e6f9"
+  },
+  "indexPins": {
+    "canonical": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-model-breadth-pilot-plan-2026-11-07/final-canonical-index.json",
+      "sha256": "b7557284d1a0cd7a9dca49f240bc740d9bb91ec915ea10998bac05305de7699b",
+      "digest": "f5651a80b332d6ebd4c82a70534504e91b53b1d02688141555366be0dee4e3d3",
+      "entries": 876
+    },
+    "spent": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-model-breadth-pilot-plan-2026-11-07/final-spent-request-index.json",
+      "sha256": "a8ffac65e2c8541552f33dd9c4a1f775ff46724e68e8a26de3192cde848ea5d7",
+      "digest": "32c335394c4214db938411fbadfe4aa232c6d1db8497b7d87cb4b166c5a5965f",
+      "entries": 1586
+    }
+  },
+  "planDigest": "cf3f1a079be229504e8418b5376e71a5c7d285e43c1288718f97dbb74e037c3c",
+  "priorIndexDigest": "f5651a80b332d6ebd4c82a70534504e91b53b1d02688141555366be0dee4e3d3",
+  "spentIndexDigest": "32c335394c4214db938411fbadfe4aa232c6d1db8497b7d87cb4b166c5a5965f",
+  "baseline": {
+    "canonical": 876,
+    "admittedSource": 873,
+    "spent": 1586
+  },
+  "originalProposal": {
+    "commit": "21bdddbd60f00851b8e27a64b0208a90aea36c82",
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-trim-package-plan-2026-11-07/plan.json",
+    "sha256": "f16fd35c8a1a47105c49f8892452670a36e8bec2ce9a420a264858544478621e",
+    "candidateManifestSha256": "09f0892590918a3919d48b2f69a48876df1d4aa0e68449895bb715ff6a3a7d4e",
+    "templateSha256": "85a9acb36a714c426c3101884c5aec2692cfbce6454f927ff34cdb89b847e6f9",
+    "runtimePinRule": "Original proposal sourceCodePins remain historical; codePins here freeze current integrated capability after c47efdf and 46777fb3."
+  },
+  "requestDigests": [
+    "d7db18c872cf3a527f0f58d5baf008c734dc5a9d149fd08a8a18e641c62d7666",
+    "2ae5a8843ea0f416d0928701c4ac2b4f0e2f8e42013146e7567df642f0271eea",
+    "f3f2ab60cceddfda72dea381846601d9e5ca8e4feba76cb26461101a87ed5db6",
+    "f615d55eb11767d34817b3500f4db934c7ac41f0d033d142fb26c18da6d4e3df",
+    "c70f7c2da73b17d9653a54be5f2bc06130f1228afa21ed04f6e973015071469e",
+    "47fa61324011189a2025709b0c193e989829c26683212f7527439913edc51957",
+    "4be1ce1ade1c9cb7bbb048ee346040ace2c8baacca872018839273b59d3fdfd4",
+    "d9fb43681875001de1e7795f73a790ffe960e6b745420a4497e1491e2ea43f63"
+  ],
+  "candidateAllowance": 8,
+  "solverAllowance": 8,
+  "attempts": 12,
+  "decodedBytes": 8388608,
+  "responseBytes": 1048576,
+  "seriesId": "f70-trim-package260-20261107-once",
+  "maximumWallSecondsFromFirstMarker": 900,
+  "chunkSeconds": 120,
+  "outputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-trim-package260-20261107-once",
+  "artifactDestination": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-trim-package260-20261107-once/chunks/chunk01",
+  "checkpointFile": "collector-checkpoint.json",
+  "producerPins": {
+    "projectorSha256": "b3cea57603e403f41bb326bcdfc955b7f061a7cfc1b071d1ef609de3efc99bc1",
+    "qualifierSha256": "88820920f57f4509741d6ad291e2fcd36c5b47a65d42acd35e890e3a6f84004e",
+    "sessionSha256": "db5a1a1ca6037132eced521f1a9b19d73a4282a113da66480ebec70c0beac7ff",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "snapshotVersion": "bmw-gb-trim-package8-2026-11-07.v2",
+  "sourceGrantEnvironment": {
+    "F70_TRIM_PACKAGE8_SOURCE_GRANT": "f70-trim-package260-20261107-once-chunk01"
+  },
+  "resources": {
+    "workers": 1,
+    "hostRamBytes": 536870912,
+    "childRamBytes": 469762048,
+    "scratchBytes": 67108864,
+    "seconds": 120,
+    "retainedShardBytes": 33554432
+  },
+  "retainedDeliverables": {
+    "primary": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-trim-package260-20261107-once/chunks/chunk01/collector-checkpoint.json",
+    "disposable": false,
+    "retainOnInterruption": true,
+    "exportBeforeScratchCleanup": true,
+    "oneDriveDirect": true
+  },
+  "continuationReleased": false,
+  "capacityCreditBeforeSource": 0,
+  "acceptance": false
+}

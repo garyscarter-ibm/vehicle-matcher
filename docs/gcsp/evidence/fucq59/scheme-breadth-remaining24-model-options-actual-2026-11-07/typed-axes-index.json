@@ -1,0 +1,4498 @@
+{
+  "schemaVersion": "breadth-actual-typed-axes.v1",
+  "sourceAllocation": "scheme-breadth-remaining24-model-options-root-20261107-once",
+  "sourceCapacityCredit": 0,
+  "acceptance": false,
+  "contexts": [
+    {
+      "id": "t3be",
+      "sourceContextId": "g21-t3be",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "T3BE",
+        "agModelCode": "22GL",
+        "catalogueRangeKey": "G21",
+        "rawModelRange": "G21",
+        "aliases": [
+          "3"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S07MU",
+        "defaultModel": {
+          "modelCode": "T3BE",
+          "agModelCode": "22GL"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S07MU"
+        }
+      },
+      "primarySha256": "b2bc71eda11486e92c7f8ef77204784b31f6ce566e7a14f7bb4027c83145aae7",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3be/options.json",
+      "optionsSha256": "f7c808f9474677ce22d66dd0ed3c4b75b217c4ad95363a2ebee1daa746c738eb",
+      "sourceReceiptSha256": "79b80284d0318b84984d88353eac6e17c005eaa0137981df71cc5e2df1b6e928",
+      "definitionCount": 261,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/9"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/11"
+          },
+          {
+            "code": "P0C4P",
+            "option": "P0C4P",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/34"
+          },
+          {
+            "code": "P0C4F",
+            "option": "P0C4F",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/39"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/41"
+          },
+          {
+            "code": "P0C3Z",
+            "option": "P0C3Z",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/43"
+          },
+          {
+            "code": "P0C36",
+            "option": "P0C36",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/77"
+          },
+          {
+            "code": "P0C31",
+            "option": "P0C31",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/84"
+          },
+          {
+            "code": "P0X1G",
+            "option": "P0X1G",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/110"
+          },
+          {
+            "code": "P0X1F",
+            "option": "P0X1F",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/112"
+          },
+          {
+            "code": "P0A96",
+            "option": "P0A96",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/161"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/250"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKHSW",
+            "option": "FKHSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/28"
+          },
+          {
+            "code": "FMAOI",
+            "option": "FMAOI",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/38"
+          },
+          {
+            "code": "FMANL",
+            "option": "FMANL",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/60"
+          },
+          {
+            "code": "FMAMU",
+            "option": "FMAMU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/80"
+          },
+          {
+            "code": "FEPMI",
+            "option": "FEPMI",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/157"
+          },
+          {
+            "code": "FMAH7",
+            "option": "FMAH7",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/158"
+          },
+          {
+            "code": "FKHKC",
+            "option": "FKHKC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/163"
+          },
+          {
+            "code": "FKHG7",
+            "option": "FKHG7",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/237"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S01R3",
+            "option": "S01R3",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/12"
+          },
+          {
+            "code": "S01HZ",
+            "option": "S01HZ",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/143"
+          },
+          {
+            "code": "S01HC",
+            "option": "S01HC",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/150"
+          },
+          {
+            "code": "S01HF",
+            "option": "S01HF",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/159"
+          },
+          {
+            "code": "S01HK",
+            "option": "S01HK",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/160"
+          },
+          {
+            "code": "S01G2",
+            "option": "S01G2",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/257"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S07MU",
+        "optionType": "package",
+        "pointer": "/report/candidates/0/definitions/66"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "t3mr",
+      "sourceContextId": "g21-t3mr",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "T3MR",
+        "agModelCode": "42GL",
+        "catalogueRangeKey": "G21",
+        "rawModelRange": "G21",
+        "aliases": [
+          "3"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "T3MK",
+          "agModelCode": "22FY"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "primarySha256": "a0dc7be02bdf1528d59b11e6acd0f983400409f9383455269b992597e2f77ea6",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3mr/options.json",
+      "optionsSha256": "78041a211040603865faa840652ee9d5ec07b9841de6e02afef82bd5b121140b",
+      "sourceReceiptSha256": "04c7d9adcb34985b054cd79981e370405f8e3e266bf4eb7b18c2238f001861d4",
+      "definitionCount": 264,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/8"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/11"
+          },
+          {
+            "code": "P0C4P",
+            "option": "P0C4P",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/32"
+          },
+          {
+            "code": "P0C4F",
+            "option": "P0C4F",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/37"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/39"
+          },
+          {
+            "code": "P0C3Z",
+            "option": "P0C3Z",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/41"
+          },
+          {
+            "code": "P0C36",
+            "option": "P0C36",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/75"
+          },
+          {
+            "code": "P0C31",
+            "option": "P0C31",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/82"
+          },
+          {
+            "code": "P0X1G",
+            "option": "P0X1G",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/110"
+          },
+          {
+            "code": "P0X1F",
+            "option": "P0X1F",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/113"
+          },
+          {
+            "code": "P0A96",
+            "option": "P0A96",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/162"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/254"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKHSW",
+            "option": "FKHSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/26"
+          },
+          {
+            "code": "FMAOI",
+            "option": "FMAOI",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/36"
+          },
+          {
+            "code": "FMANL",
+            "option": "FMANL",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/57"
+          },
+          {
+            "code": "FMAMU",
+            "option": "FMAMU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/78"
+          },
+          {
+            "code": "FEPMI",
+            "option": "FEPMI",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/159"
+          },
+          {
+            "code": "FMAH7",
+            "option": "FMAH7",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/160"
+          },
+          {
+            "code": "FKHKC",
+            "option": "FKHKC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/164"
+          },
+          {
+            "code": "FKHG7",
+            "option": "FKHG7",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/240"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S01R3",
+            "option": "S01R3",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/12"
+          },
+          {
+            "code": "S01HC",
+            "option": "S01HC",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/152"
+          },
+          {
+            "code": "S01HL",
+            "option": "S01HL",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/155"
+          },
+          {
+            "code": "S01HF",
+            "option": "S01HF",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/161"
+          },
+          {
+            "code": "S01WG",
+            "option": "S01WG",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/239"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S0337",
+        "optionType": "package",
+        "pointer": "/report/candidates/0/definitions/112"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "t3pf",
+      "sourceContextId": "g21-t3pf",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "T3PF",
+        "agModelCode": "22GL",
+        "catalogueRangeKey": "G21",
+        "rawModelRange": "G21",
+        "aliases": [
+          "3"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S033B",
+        "defaultModel": {
+          "modelCode": "T3PK",
+          "agModelCode": "22FY"
+        },
+        "includedIndex": 1,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S033B"
+        }
+      },
+      "primarySha256": "a6a1850ee78707f18814b86b1e07d7db4860380462811ba965f4ea54016b5ae6",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pf/options.json",
+      "optionsSha256": "46e14ee12b3f0a9b856a8cdf7cf1821750757aab5d7bf1e9c4f1c11814f9bd55",
+      "sourceReceiptSha256": "6a626199648ea6549da6fbebba5e5d98afc602ec365e75279b9fb841fcddc139",
+      "definitionCount": 265,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/9"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/12"
+          },
+          {
+            "code": "P0C4P",
+            "option": "P0C4P",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/35"
+          },
+          {
+            "code": "P0C4F",
+            "option": "P0C4F",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/40"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/42"
+          },
+          {
+            "code": "P0C3Z",
+            "option": "P0C3Z",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/44"
+          },
+          {
+            "code": "P0C36",
+            "option": "P0C36",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/79"
+          },
+          {
+            "code": "P0C31",
+            "option": "P0C31",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/86"
+          },
+          {
+            "code": "P0X1G",
+            "option": "P0X1G",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/112"
+          },
+          {
+            "code": "P0X1F",
+            "option": "P0X1F",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/114"
+          },
+          {
+            "code": "P0A96",
+            "option": "P0A96",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/165"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/254"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKHSW",
+            "option": "FKHSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/29"
+          },
+          {
+            "code": "FMAOI",
+            "option": "FMAOI",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/39"
+          },
+          {
+            "code": "FMANL",
+            "option": "FMANL",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/61"
+          },
+          {
+            "code": "FMAMU",
+            "option": "FMAMU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/82"
+          },
+          {
+            "code": "FEPMI",
+            "option": "FEPMI",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/161"
+          },
+          {
+            "code": "FMAH7",
+            "option": "FMAH7",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/162"
+          },
+          {
+            "code": "FKHKC",
+            "option": "FKHKC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/167"
+          },
+          {
+            "code": "FKHG7",
+            "option": "FKHG7",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/241"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S01R3",
+            "option": "S01R3",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/13"
+          },
+          {
+            "code": "S01HZ",
+            "option": "S01HZ",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/145"
+          },
+          {
+            "code": "S01HC",
+            "option": "S01HC",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/152"
+          },
+          {
+            "code": "S01HL",
+            "option": "S01HL",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/155"
+          },
+          {
+            "code": "S01HP",
+            "option": "S01HP",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/159"
+          },
+          {
+            "code": "S01HF",
+            "option": "S01HF",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/163"
+          },
+          {
+            "code": "S01HK",
+            "option": "S01HK",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/164"
+          },
+          {
+            "code": "S01G2",
+            "option": "S01G2",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/261"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S033B",
+        "optionType": "package",
+        "pointer": "/report/candidates/0/definitions/22"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "t3pk",
+      "sourceContextId": "g21-t3pk",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "T3PK",
+        "agModelCode": "22FY",
+        "catalogueRangeKey": "G21",
+        "rawModelRange": "G21",
+        "aliases": [
+          "3"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "T3MK",
+          "agModelCode": "22FY"
+        },
+        "includedIndex": 3,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "primarySha256": "8afd1bee863b2e2ddbcd2a6ef7c94b47eec76345c8d81fd4a585c2374eaeef37",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pk/options.json",
+      "optionsSha256": "6999d04f9ee50cd95fd54ab4d1e0c77496bb392c351c42e84f4ef0dffb6fc452",
+      "sourceReceiptSha256": "e79c9b92d27ab506860fcd4f0ec9b8fd8643fb747d130f86b260fb6b6caa4fc2",
+      "definitionCount": 265,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/9"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/12"
+          },
+          {
+            "code": "P0C4P",
+            "option": "P0C4P",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/33"
+          },
+          {
+            "code": "P0C4F",
+            "option": "P0C4F",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/38"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/40"
+          },
+          {
+            "code": "P0C3Z",
+            "option": "P0C3Z",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/42"
+          },
+          {
+            "code": "P0C36",
+            "option": "P0C36",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/76"
+          },
+          {
+            "code": "P0C31",
+            "option": "P0C31",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/84"
+          },
+          {
+            "code": "P0X1G",
+            "option": "P0X1G",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/111"
+          },
+          {
+            "code": "P0X1F",
+            "option": "P0X1F",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/114"
+          },
+          {
+            "code": "P0A96",
+            "option": "P0A96",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/164"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/255"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKHSW",
+            "option": "FKHSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/27"
+          },
+          {
+            "code": "FMAOI",
+            "option": "FMAOI",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/37"
+          },
+          {
+            "code": "FMANL",
+            "option": "FMANL",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/58"
+          },
+          {
+            "code": "FMAMU",
+            "option": "FMAMU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/79"
+          },
+          {
+            "code": "FEPMI",
+            "option": "FEPMI",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/161"
+          },
+          {
+            "code": "FMAH7",
+            "option": "FMAH7",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/162"
+          },
+          {
+            "code": "FKHKC",
+            "option": "FKHKC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/166"
+          },
+          {
+            "code": "FKHG7",
+            "option": "FKHG7",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/241"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S01S3",
+            "option": "S01S3",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/80"
+          },
+          {
+            "code": "S01HC",
+            "option": "S01HC",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/153"
+          },
+          {
+            "code": "S01HL",
+            "option": "S01HL",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/156"
+          },
+          {
+            "code": "S01HF",
+            "option": "S01HF",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/163"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S0337",
+        "optionType": "package",
+        "pointer": "/report/candidates/0/definitions/113"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "t3pr",
+      "sourceContextId": "g21-t3pr",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "T3PR",
+        "agModelCode": "42GL",
+        "catalogueRangeKey": "G21",
+        "rawModelRange": "G21",
+        "aliases": [
+          "3"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "T3MK",
+          "agModelCode": "22FY"
+        },
+        "includedIndex": 1,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "primarySha256": "c10b3fb77a6a6ffa0de9cbcc0bb37e6d0a7e74a40bae825ba2e9ee2af9f94043",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pr/options.json",
+      "optionsSha256": "f77eb7089da29c4210656d2810996e0dc4b3d338066b2a722276190176426395",
+      "sourceReceiptSha256": "715c33580d72771788246e43a98d52b42b936c48df714ed73ba6c1ab8ddcb17e",
+      "definitionCount": 267,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/9"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/12"
+          },
+          {
+            "code": "P0C4P",
+            "option": "P0C4P",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/33"
+          },
+          {
+            "code": "P0C4F",
+            "option": "P0C4F",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/38"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/40"
+          },
+          {
+            "code": "P0C3Z",
+            "option": "P0C3Z",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/42"
+          },
+          {
+            "code": "P0C36",
+            "option": "P0C36",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/76"
+          },
+          {
+            "code": "P0C31",
+            "option": "P0C31",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/83"
+          },
+          {
+            "code": "P0X1G",
+            "option": "P0X1G",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/111"
+          },
+          {
+            "code": "P0X1F",
+            "option": "P0X1F",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/114"
+          },
+          {
+            "code": "P0A96",
+            "option": "P0A96",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/165"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/257"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKHSW",
+            "option": "FKHSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/27"
+          },
+          {
+            "code": "FMAOI",
+            "option": "FMAOI",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/37"
+          },
+          {
+            "code": "FMANL",
+            "option": "FMANL",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/58"
+          },
+          {
+            "code": "FMAMU",
+            "option": "FMAMU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/79"
+          },
+          {
+            "code": "FEPMI",
+            "option": "FEPMI",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/162"
+          },
+          {
+            "code": "FMAH7",
+            "option": "FMAH7",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/163"
+          },
+          {
+            "code": "FKHKC",
+            "option": "FKHKC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/167"
+          },
+          {
+            "code": "FKHG7",
+            "option": "FKHG7",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/243"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S01HC",
+            "option": "S01HC",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/154"
+          },
+          {
+            "code": "S01HL",
+            "option": "S01HL",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/157"
+          },
+          {
+            "code": "S01HF",
+            "option": "S01HF",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/164"
+          },
+          {
+            "code": "S01WG",
+            "option": "S01WG",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/242"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S0337",
+        "optionType": "package",
+        "pointer": "/report/candidates/0/definitions/113"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "ix1h",
+      "sourceContextId": "u11-ix1h",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "IX1H",
+        "agModelCode": "12HM",
+        "catalogueRangeKey": "U11",
+        "rawModelRange": "U11",
+        "aliases": [
+          "X"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S07HW",
+        "defaultModel": {
+          "modelCode": "IX1H",
+          "agModelCode": "12HM"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S07HW"
+        }
+      },
+      "primarySha256": "ca7baf3765f1b697375f692ddfe38afb0da85fc5dd7314deaa9e9651eeefbc34",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1h/options.json",
+      "optionsSha256": "655b15b5a9772ea82a49b354bb82015483ddbb6dab817536c49bdd729987be88",
+      "sourceReceiptSha256": "01520ef081515bc3b3bb78c867b30719f036b44ff1f10f99cc0d3928ee2c7de1",
+      "definitionCount": 226,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0C6R",
+            "option": "P0C6R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/1"
+          },
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/9"
+          },
+          {
+            "code": "P0C5Y",
+            "option": "P0C5Y",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/11"
+          },
+          {
+            "code": "P0C67",
+            "option": "P0C67",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/12"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/14"
+          },
+          {
+            "code": "P0C5A",
+            "option": "P0C5A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/23"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/36"
+          },
+          {
+            "code": "P0C7R",
+            "option": "P0C7R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/100"
+          },
+          {
+            "code": "P0C7A",
+            "option": "P0C7A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/109"
+          },
+          {
+            "code": "P0A96",
+            "option": "P0A96",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/136"
+          },
+          {
+            "code": "P0668",
+            "option": "P0668",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/211"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/216"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKUKF",
+            "option": "FKUKF",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/64"
+          },
+          {
+            "code": "FKUIC",
+            "option": "FKUIC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/87"
+          },
+          {
+            "code": "FKUFU",
+            "option": "FKUFU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/117"
+          },
+          {
+            "code": "FKUSW",
+            "option": "FKUSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/157"
+          },
+          {
+            "code": "FMASW",
+            "option": "FMASW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/198"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S01EP",
+            "option": "S01EP",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/175"
+          },
+          {
+            "code": "S01EC",
+            "option": "S01EC",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/179"
+          },
+          {
+            "code": "S01EE",
+            "option": "S01EE",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/183"
+          },
+          {
+            "code": "S01EU",
+            "option": "S01EU",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/215"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S07HW",
+        "optionType": "line",
+        "pointer": "/report/candidates/0/definitions/69"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "ix1k",
+      "sourceContextId": "u11-ix1k",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "IX1K",
+        "agModelCode": "22HM",
+        "catalogueRangeKey": "U11",
+        "rawModelRange": "U11",
+        "aliases": [
+          "X"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S07HW",
+        "defaultModel": {
+          "modelCode": "IX1H",
+          "agModelCode": "12HM"
+        },
+        "includedIndex": 2,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S07HW"
+        }
+      },
+      "primarySha256": "f9091ef2cd37dd2f2953e2af66a689059377efc61464d7c63ef270ec45adbd60",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1k/options.json",
+      "optionsSha256": "ce1b4d545105a1e65bea1356b233fb95a96fe6ec79d5d7e50ae0746e07131b85",
+      "sourceReceiptSha256": "908f7f902fee74d17fab6d30cf29b20ec6158dd593191363dbc62604795d65b4",
+      "definitionCount": 228,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0C6R",
+            "option": "P0C6R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/1"
+          },
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/9"
+          },
+          {
+            "code": "P0C5Y",
+            "option": "P0C5Y",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/11"
+          },
+          {
+            "code": "P0C67",
+            "option": "P0C67",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/12"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/14"
+          },
+          {
+            "code": "P0C5A",
+            "option": "P0C5A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/23"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/36"
+          },
+          {
+            "code": "P0C7R",
+            "option": "P0C7R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/100"
+          },
+          {
+            "code": "P0C7A",
+            "option": "P0C7A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/109"
+          },
+          {
+            "code": "P0A96",
+            "option": "P0A96",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/137"
+          },
+          {
+            "code": "P0668",
+            "option": "P0668",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/213"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/218"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKUKF",
+            "option": "FKUKF",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/64"
+          },
+          {
+            "code": "FKUIC",
+            "option": "FKUIC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/87"
+          },
+          {
+            "code": "FKUFU",
+            "option": "FKUFU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/117"
+          },
+          {
+            "code": "FKUSW",
+            "option": "FKUSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/158"
+          },
+          {
+            "code": "FMASW",
+            "option": "FMASW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/200"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S01EP",
+            "option": "S01EP",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/176"
+          },
+          {
+            "code": "S01EC",
+            "option": "S01EC",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/180"
+          },
+          {
+            "code": "S01EE",
+            "option": "S01EE",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/184"
+          },
+          {
+            "code": "S01EU",
+            "option": "S01EU",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/217"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S07HW",
+        "optionType": "line",
+        "pointer": "/report/candidates/0/definitions/69"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "ix1l",
+      "sourceContextId": "u11-ix1l",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "IX1L",
+        "agModelCode": "22HM",
+        "catalogueRangeKey": "U11",
+        "rawModelRange": "U11",
+        "aliases": [
+          "X"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "IX1I",
+          "agModelCode": "12HM"
+        },
+        "includedIndex": 1,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "primarySha256": "0e3d4ecf34c3c9aba047b190035b916308cf4194c83e6af7386a64500d23282d",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1l/options.json",
+      "optionsSha256": "3b3e15efc99dcd22f986ececc62b20ea01fd2c53e7d9611a0497fde5d2ec2dd0",
+      "sourceReceiptSha256": "da72896a0c794c1089e5df642b48ef6388f60945c4987de4f859e66141a41ae8",
+      "definitionCount": 242,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0C6R",
+            "option": "P0C6R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/1"
+          },
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/10"
+          },
+          {
+            "code": "P0C5Y",
+            "option": "P0C5Y",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/12"
+          },
+          {
+            "code": "P0C67",
+            "option": "P0C67",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/13"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/15"
+          },
+          {
+            "code": "P0C5A",
+            "option": "P0C5A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/25"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/38"
+          },
+          {
+            "code": "P0C3N",
+            "option": "P0C3N",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/52"
+          },
+          {
+            "code": "P0C31",
+            "option": "P0C31",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/76"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/232"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKUKP",
+            "option": "FKUKP",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/56"
+          },
+          {
+            "code": "FKUKF",
+            "option": "FKUKF",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/71"
+          },
+          {
+            "code": "FKUIC",
+            "option": "FKUIC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/95"
+          },
+          {
+            "code": "FKUFU",
+            "option": "FKUFU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/123"
+          },
+          {
+            "code": "FKUSW",
+            "option": "FKUSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/169"
+          },
+          {
+            "code": "FMASW",
+            "option": "FMASW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/214"
+          },
+          {
+            "code": "FKTNL",
+            "option": "FKTNL",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/218"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S01LX",
+            "option": "S01LX",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/78"
+          },
+          {
+            "code": "S01EK",
+            "option": "S01EK",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/183"
+          },
+          {
+            "code": "S01EP",
+            "option": "S01EP",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/191"
+          },
+          {
+            "code": "S01EU",
+            "option": "S01EU",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/231"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S0337",
+        "optionType": "package",
+        "pointer": "/report/candidates/0/definitions/100"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "x135",
+      "sourceContextId": "u11-x135",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "X135",
+        "agModelCode": "12EF",
+        "catalogueRangeKey": "U11",
+        "rawModelRange": "U11",
+        "aliases": [
+          "X"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S033B",
+        "defaultModel": {
+          "modelCode": "IX1I",
+          "agModelCode": "12HM"
+        },
+        "includedIndex": 4,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S033B"
+        }
+      },
+      "primarySha256": "a89c446071df14b1d636172e7023f774d438e16a51cb78e631480f8efdae26c1",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x135/options.json",
+      "optionsSha256": "838b2f44c2f8d24da163e6cdd18aca8f3c5c677b88d84719a45346e84025f39a",
+      "sourceReceiptSha256": "fad82ca618441d723b8e0273d4ef9d66acb79c706b769e08a09c0608bcc19e42",
+      "definitionCount": 249,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0C6R",
+            "option": "P0C6R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/1"
+          },
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/13"
+          },
+          {
+            "code": "P0C5Y",
+            "option": "P0C5Y",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/14"
+          },
+          {
+            "code": "P0C67",
+            "option": "P0C67",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/15"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/17"
+          },
+          {
+            "code": "P0C5A",
+            "option": "P0C5A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/27"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/41"
+          },
+          {
+            "code": "P0C3N",
+            "option": "P0C3N",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/56"
+          },
+          {
+            "code": "P0C31",
+            "option": "P0C31",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/83"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/239"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKUKP",
+            "option": "FKUKP",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/60"
+          },
+          {
+            "code": "FKUKF",
+            "option": "FKUKF",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/76"
+          },
+          {
+            "code": "FKUIC",
+            "option": "FKUIC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/100"
+          },
+          {
+            "code": "FKUFU",
+            "option": "FKUFU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/123"
+          },
+          {
+            "code": "FKUSW",
+            "option": "FKUSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/170"
+          },
+          {
+            "code": "FMASW",
+            "option": "FMASW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/220"
+          },
+          {
+            "code": "FKTNL",
+            "option": "FKTNL",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/223"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S01EK",
+            "option": "S01EK",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/185"
+          },
+          {
+            "code": "S01EN",
+            "option": "S01EN",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/191"
+          },
+          {
+            "code": "S01EU",
+            "option": "S01EU",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/238"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S033B",
+        "optionType": "package",
+        "pointer": "/report/candidates/0/definitions/25"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "x1m1",
+      "sourceContextId": "u11-x1m1",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "X1M1",
+        "agModelCode": "62EE",
+        "catalogueRangeKey": "U11",
+        "rawModelRange": "U11",
+        "aliases": [
+          "X"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "IX1I",
+          "agModelCode": "12HM"
+        },
+        "includedIndex": 5,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "primarySha256": "01e200a2f946a3c6d7c11efe9291b10eb30e47f8b7f3b1f771a6fed5cc6c4172",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m1/options.json",
+      "optionsSha256": "6229aa8d41810791f9594ab394d61a445b07589a95e46e25a9d9d3d8a85b0d0e",
+      "sourceReceiptSha256": "21828da1178d1a618855c5b7bff8eff032396b04c5e6a08a4ca8617e34360dac",
+      "definitionCount": 247,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0C6R",
+            "option": "P0C6R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/1"
+          },
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/11"
+          },
+          {
+            "code": "P0C5Y",
+            "option": "P0C5Y",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/13"
+          },
+          {
+            "code": "P0C67",
+            "option": "P0C67",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/14"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/16"
+          },
+          {
+            "code": "P0C5A",
+            "option": "P0C5A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/26"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/40"
+          },
+          {
+            "code": "P0C3N",
+            "option": "P0C3N",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/56"
+          },
+          {
+            "code": "P0C31",
+            "option": "P0C31",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/84"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/237"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKUKP",
+            "option": "FKUKP",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/61"
+          },
+          {
+            "code": "FKUKF",
+            "option": "FKUKF",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/78"
+          },
+          {
+            "code": "FKUIC",
+            "option": "FKUIC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/104"
+          },
+          {
+            "code": "FKUFU",
+            "option": "FKUFU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/128"
+          },
+          {
+            "code": "FKUSW",
+            "option": "FKUSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/172"
+          },
+          {
+            "code": "FMASW",
+            "option": "FMASW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/219"
+          },
+          {
+            "code": "FKTNL",
+            "option": "FKTNL",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/222"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S01LX",
+            "option": "S01LX",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/86"
+          },
+          {
+            "code": "S01LS",
+            "option": "S01LS",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/102"
+          },
+          {
+            "code": "S01EK",
+            "option": "S01EK",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/187"
+          },
+          {
+            "code": "S01EU",
+            "option": "S01EU",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/236"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S0337",
+        "optionType": "package",
+        "pointer": "/report/candidates/0/definitions/109"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "x1m2",
+      "sourceContextId": "u11-x1m2",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "X1M2",
+        "agModelCode": "12EG",
+        "catalogueRangeKey": "U11",
+        "rawModelRange": "U11",
+        "aliases": [
+          "X"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "IX1I",
+          "agModelCode": "12HM"
+        },
+        "includedIndex": 6,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "primarySha256": "22efdb4af641245c2cca7d262a59b81087c796ad54e57e5d0cec3f75d381e40a",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m2/options.json",
+      "optionsSha256": "b5f140d587e9e6fabbccfbfdb3a499b1904f6048bec9370b17950eabf1a1c1bf",
+      "sourceReceiptSha256": "269d7ce58d94885b492d8c9782a093348917580f08c3ed8c16dc2bc2264869c6",
+      "definitionCount": 244,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0C6R",
+            "option": "P0C6R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/1"
+          },
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/11"
+          },
+          {
+            "code": "P0C5Y",
+            "option": "P0C5Y",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/13"
+          },
+          {
+            "code": "P0C67",
+            "option": "P0C67",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/14"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/16"
+          },
+          {
+            "code": "P0C5A",
+            "option": "P0C5A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/26"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/40"
+          },
+          {
+            "code": "P0C3N",
+            "option": "P0C3N",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/55"
+          },
+          {
+            "code": "P0C31",
+            "option": "P0C31",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/82"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/234"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKUKP",
+            "option": "FKUKP",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/59"
+          },
+          {
+            "code": "FKUKF",
+            "option": "FKUKF",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/76"
+          },
+          {
+            "code": "FKUIC",
+            "option": "FKUIC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/101"
+          },
+          {
+            "code": "FKUFU",
+            "option": "FKUFU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/126"
+          },
+          {
+            "code": "FKUSW",
+            "option": "FKUSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/170"
+          },
+          {
+            "code": "FMASW",
+            "option": "FMASW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/216"
+          },
+          {
+            "code": "FKTNL",
+            "option": "FKTNL",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/219"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S01LX",
+            "option": "S01LX",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/83"
+          },
+          {
+            "code": "S01LS",
+            "option": "S01LS",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/99"
+          },
+          {
+            "code": "S01EK",
+            "option": "S01EK",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/185"
+          },
+          {
+            "code": "S01EU",
+            "option": "S01EU",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/233"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S0337",
+        "optionType": "package",
+        "pointer": "/report/candidates/0/definitions/107"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "x1m3",
+      "sourceContextId": "u11-x1m3",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "X1M3",
+        "agModelCode": "52EG",
+        "catalogueRangeKey": "U11",
+        "rawModelRange": "U11",
+        "aliases": [
+          "X"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "IX1I",
+          "agModelCode": "12HM"
+        },
+        "includedIndex": 7,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "primarySha256": "3e4e8510835d0a4cfaec6de565f1ca771bf4178d2f7d2607c1488ac4b369524e",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m3/options.json",
+      "optionsSha256": "b3810a3ebdde7838b645953b32fff3bd48cdf3968d652b793551944c270b0a77",
+      "sourceReceiptSha256": "0202ab36e7a9e3c4f8ffaafd54ea8297e1b0100dd5362be09d2a7beea884b118",
+      "definitionCount": 246,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0C6R",
+            "option": "P0C6R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/1"
+          },
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/11"
+          },
+          {
+            "code": "P0C5Y",
+            "option": "P0C5Y",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/13"
+          },
+          {
+            "code": "P0C67",
+            "option": "P0C67",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/14"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/16"
+          },
+          {
+            "code": "P0C5A",
+            "option": "P0C5A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/26"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/40"
+          },
+          {
+            "code": "P0C3N",
+            "option": "P0C3N",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/56"
+          },
+          {
+            "code": "P0C31",
+            "option": "P0C31",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/84"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/236"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKUKP",
+            "option": "FKUKP",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/61"
+          },
+          {
+            "code": "FKUKF",
+            "option": "FKUKF",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/78"
+          },
+          {
+            "code": "FKUIC",
+            "option": "FKUIC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/104"
+          },
+          {
+            "code": "FKUFU",
+            "option": "FKUFU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/128"
+          },
+          {
+            "code": "FKUSW",
+            "option": "FKUSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/172"
+          },
+          {
+            "code": "FMASW",
+            "option": "FMASW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/218"
+          },
+          {
+            "code": "FKTNL",
+            "option": "FKTNL",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/221"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S01LX",
+            "option": "S01LX",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/86"
+          },
+          {
+            "code": "S01LS",
+            "option": "S01LS",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/102"
+          },
+          {
+            "code": "S01EK",
+            "option": "S01EK",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/187"
+          },
+          {
+            "code": "S01EU",
+            "option": "S01EU",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/235"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S0337",
+        "optionType": "package",
+        "pointer": "/report/candidates/0/definitions/109"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "x1m6",
+      "sourceContextId": "u11-x1m6",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "X1M6",
+        "agModelCode": "22EF",
+        "catalogueRangeKey": "U11",
+        "rawModelRange": "U11",
+        "aliases": [
+          "X"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "IX1I",
+          "agModelCode": "12HM"
+        },
+        "includedIndex": 2,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "primarySha256": "1b297fee6bf07186c9dacbd91ba61ff2a1db92fbbe446dae9745426bb4dec5cd",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m6/options.json",
+      "optionsSha256": "ef3e5c37190a10ea8dd7c9f655fe8cbe7d267fa5b98a4ebffcdcf45f5a6b484e",
+      "sourceReceiptSha256": "2e5b5a6ba0078b5e6846b5840f7cd0658774cbe4daedc8bdab81ae5eac1c6d68",
+      "definitionCount": 247,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0C6R",
+            "option": "P0C6R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/1"
+          },
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/10"
+          },
+          {
+            "code": "P0C5Y",
+            "option": "P0C5Y",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/12"
+          },
+          {
+            "code": "P0C67",
+            "option": "P0C67",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/13"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/15"
+          },
+          {
+            "code": "P0C5A",
+            "option": "P0C5A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/25"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/38"
+          },
+          {
+            "code": "P0C3N",
+            "option": "P0C3N",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/53"
+          },
+          {
+            "code": "P0C31",
+            "option": "P0C31",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/79"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/237"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKUKP",
+            "option": "FKUKP",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/57"
+          },
+          {
+            "code": "FKUKF",
+            "option": "FKUKF",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/73"
+          },
+          {
+            "code": "FKUIC",
+            "option": "FKUIC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/100"
+          },
+          {
+            "code": "FKUFU",
+            "option": "FKUFU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/128"
+          },
+          {
+            "code": "FKUSW",
+            "option": "FKUSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/173"
+          },
+          {
+            "code": "FMASW",
+            "option": "FMASW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/219"
+          },
+          {
+            "code": "FKTNL",
+            "option": "FKTNL",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/222"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S01LX",
+            "option": "S01LX",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/81"
+          },
+          {
+            "code": "S01LS",
+            "option": "S01LS",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/98"
+          },
+          {
+            "code": "S01EK",
+            "option": "S01EK",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/188"
+          },
+          {
+            "code": "S01EU",
+            "option": "S01EU",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/236"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S0337",
+        "optionType": "package",
+        "pointer": "/report/candidates/0/definitions/105"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "x1m7",
+      "sourceContextId": "u11-x1m7",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "X1M7",
+        "agModelCode": "32EF",
+        "catalogueRangeKey": "U11",
+        "rawModelRange": "U11",
+        "aliases": [
+          "X"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "IX1I",
+          "agModelCode": "12HM"
+        },
+        "includedIndex": 3,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "primarySha256": "0a261d3dae10c037582f1a486547756443408c1cc113dbd6f89f8da191615f95",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m7/options.json",
+      "optionsSha256": "196a0250bacd175b01d309aab706ee51e8ab20fcff220233cd9579f8020d1cdd",
+      "sourceReceiptSha256": "7c4889a5ccde99b518d13654b4e67c566d93dcc7f372f47f7fdc90087374c296",
+      "definitionCount": 248,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0C6R",
+            "option": "P0C6R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/1"
+          },
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/11"
+          },
+          {
+            "code": "P0C5Y",
+            "option": "P0C5Y",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/13"
+          },
+          {
+            "code": "P0C67",
+            "option": "P0C67",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/14"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/16"
+          },
+          {
+            "code": "P0C5A",
+            "option": "P0C5A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/26"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/39"
+          },
+          {
+            "code": "P0C3N",
+            "option": "P0C3N",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/54"
+          },
+          {
+            "code": "P0C31",
+            "option": "P0C31",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/80"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/238"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKUKP",
+            "option": "FKUKP",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/58"
+          },
+          {
+            "code": "FKUKF",
+            "option": "FKUKF",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/74"
+          },
+          {
+            "code": "FKUIC",
+            "option": "FKUIC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/101"
+          },
+          {
+            "code": "FKUFU",
+            "option": "FKUFU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/129"
+          },
+          {
+            "code": "FKUSW",
+            "option": "FKUSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/174"
+          },
+          {
+            "code": "FMASW",
+            "option": "FMASW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/220"
+          },
+          {
+            "code": "FKTNL",
+            "option": "FKTNL",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/223"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S01LX",
+            "option": "S01LX",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/82"
+          },
+          {
+            "code": "S01LS",
+            "option": "S01LS",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/99"
+          },
+          {
+            "code": "S01EK",
+            "option": "S01EK",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/189"
+          },
+          {
+            "code": "S01EU",
+            "option": "S01EU",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/237"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S0337",
+        "optionType": "package",
+        "pointer": "/report/candidates/0/definitions/106"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "x1x0",
+      "sourceContextId": "u11-x1x0",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "X1X0",
+        "agModelCode": "32EE",
+        "catalogueRangeKey": "U11",
+        "rawModelRange": "U11",
+        "aliases": [
+          "X"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S07HW",
+        "defaultModel": {
+          "modelCode": "IX1H",
+          "agModelCode": "12HM"
+        },
+        "includedIndex": 4,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S07HW"
+        }
+      },
+      "primarySha256": "4416ae4667d4ee4c05f3c22d6608c89661b064156baf215ed9e53d432e78bf8d",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x0/options.json",
+      "optionsSha256": "1935032d615fe53d7dae2c0a6dbd99bd9a0a9f0897b99640265e8cd880b34a63",
+      "sourceReceiptSha256": "43098750f058f81671e2b3030c1d06fb4ccf4a3b87460ea8b03f17367a66bdce",
+      "definitionCount": 230,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0C6R",
+            "option": "P0C6R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/1"
+          },
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/10"
+          },
+          {
+            "code": "P0C5Y",
+            "option": "P0C5Y",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/12"
+          },
+          {
+            "code": "P0C67",
+            "option": "P0C67",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/13"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/15"
+          },
+          {
+            "code": "P0C5A",
+            "option": "P0C5A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/24"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/38"
+          },
+          {
+            "code": "P0C7R",
+            "option": "P0C7R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/106"
+          },
+          {
+            "code": "P0C7A",
+            "option": "P0C7A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/114"
+          },
+          {
+            "code": "P0A96",
+            "option": "P0A96",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/139"
+          },
+          {
+            "code": "P0668",
+            "option": "P0668",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/215"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/220"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKUKF",
+            "option": "FKUKF",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/70"
+          },
+          {
+            "code": "FKUIC",
+            "option": "FKUIC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/95"
+          },
+          {
+            "code": "FKUFU",
+            "option": "FKUFU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/121"
+          },
+          {
+            "code": "FKUSW",
+            "option": "FKUSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/160"
+          },
+          {
+            "code": "FMASW",
+            "option": "FMASW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/202"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S01LS",
+            "option": "S01LS",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/93"
+          },
+          {
+            "code": "S01EC",
+            "option": "S01EC",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/182"
+          },
+          {
+            "code": "S01EE",
+            "option": "S01EE",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/186"
+          },
+          {
+            "code": "S01EU",
+            "option": "S01EU",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/219"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S07HW",
+        "optionType": "line",
+        "pointer": "/report/candidates/0/definitions/76"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "x1x2",
+      "sourceContextId": "u11-x1x2",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "X1X2",
+        "agModelCode": "12EG",
+        "catalogueRangeKey": "U11",
+        "rawModelRange": "U11",
+        "aliases": [
+          "X"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S07HW",
+        "defaultModel": {
+          "modelCode": "IX1H",
+          "agModelCode": "12HM"
+        },
+        "includedIndex": 5,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S07HW"
+        }
+      },
+      "primarySha256": "b46fb0cac96866f64d13b0d57536d4a6f634e9b7a35020cf03d3a0a3d2509ec2",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x2/options.json",
+      "optionsSha256": "c5a333ae9238141c046f73e8ba0f0e42f8cdd0972f3ab0c016e1a547eb049f97",
+      "sourceReceiptSha256": "6ac577b8141f40df838024d67fb081ed0fb06d6aa709cee083a2970c62d27c6e",
+      "definitionCount": 227,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0C6R",
+            "option": "P0C6R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/1"
+          },
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/10"
+          },
+          {
+            "code": "P0C5Y",
+            "option": "P0C5Y",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/12"
+          },
+          {
+            "code": "P0C67",
+            "option": "P0C67",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/13"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/15"
+          },
+          {
+            "code": "P0C5A",
+            "option": "P0C5A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/24"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/38"
+          },
+          {
+            "code": "P0C7R",
+            "option": "P0C7R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/104"
+          },
+          {
+            "code": "P0C7A",
+            "option": "P0C7A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/112"
+          },
+          {
+            "code": "P0A96",
+            "option": "P0A96",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/137"
+          },
+          {
+            "code": "P0668",
+            "option": "P0668",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/212"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/217"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKUKF",
+            "option": "FKUKF",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/68"
+          },
+          {
+            "code": "FKUIC",
+            "option": "FKUIC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/92"
+          },
+          {
+            "code": "FKUFU",
+            "option": "FKUFU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/119"
+          },
+          {
+            "code": "FKUSW",
+            "option": "FKUSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/158"
+          },
+          {
+            "code": "FMASW",
+            "option": "FMASW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/199"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S01LS",
+            "option": "S01LS",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/90"
+          },
+          {
+            "code": "S01EC",
+            "option": "S01EC",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/180"
+          },
+          {
+            "code": "S01EE",
+            "option": "S01EE",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/184"
+          },
+          {
+            "code": "S01EU",
+            "option": "S01EU",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/216"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S07HW",
+        "optionType": "line",
+        "pointer": "/report/candidates/0/definitions/74"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "x1x3",
+      "sourceContextId": "u11-x1x3",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "X1X3",
+        "agModelCode": "52EG",
+        "catalogueRangeKey": "U11",
+        "rawModelRange": "U11",
+        "aliases": [
+          "X"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S07HW",
+        "defaultModel": {
+          "modelCode": "IX1H",
+          "agModelCode": "12HM"
+        },
+        "includedIndex": 6,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S07HW"
+        }
+      },
+      "primarySha256": "2e58cf1de75a470b9bcd194a9ea391233d81f76ba401be9159b3c73f9829bdea",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x3/options.json",
+      "optionsSha256": "10877464330bee3002715d52b1603b15c719b7ad61e80972258016bb4b17bcb0",
+      "sourceReceiptSha256": "5562e66837eb4b67b51f95c7ce55d52ae444a2e46e084f928889ec357cf598fb",
+      "definitionCount": 230,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0C6R",
+            "option": "P0C6R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/1"
+          },
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/10"
+          },
+          {
+            "code": "P0C5Y",
+            "option": "P0C5Y",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/12"
+          },
+          {
+            "code": "P0C67",
+            "option": "P0C67",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/13"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/15"
+          },
+          {
+            "code": "P0C5A",
+            "option": "P0C5A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/24"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/38"
+          },
+          {
+            "code": "P0C7R",
+            "option": "P0C7R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/106"
+          },
+          {
+            "code": "P0C7A",
+            "option": "P0C7A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/114"
+          },
+          {
+            "code": "P0A96",
+            "option": "P0A96",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/139"
+          },
+          {
+            "code": "P0668",
+            "option": "P0668",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/215"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/220"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKUKF",
+            "option": "FKUKF",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/70"
+          },
+          {
+            "code": "FKUIC",
+            "option": "FKUIC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/95"
+          },
+          {
+            "code": "FKUFU",
+            "option": "FKUFU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/121"
+          },
+          {
+            "code": "FKUSW",
+            "option": "FKUSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/160"
+          },
+          {
+            "code": "FMASW",
+            "option": "FMASW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/202"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S01LS",
+            "option": "S01LS",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/93"
+          },
+          {
+            "code": "S01EC",
+            "option": "S01EC",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/182"
+          },
+          {
+            "code": "S01EE",
+            "option": "S01EE",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/186"
+          },
+          {
+            "code": "S01EU",
+            "option": "S01EU",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/219"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S07HW",
+        "optionType": "line",
+        "pointer": "/report/candidates/0/definitions/76"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "x1x6",
+      "sourceContextId": "u11-x1x6",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "X1X6",
+        "agModelCode": "22EF",
+        "catalogueRangeKey": "U11",
+        "rawModelRange": "U11",
+        "aliases": [
+          "X"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S07HW",
+        "defaultModel": {
+          "modelCode": "IX1H",
+          "agModelCode": "12HM"
+        },
+        "includedIndex": 7,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S07HW"
+        }
+      },
+      "primarySha256": "d1981abebc6b76f113838e9f1d0732a083dfa7e8a83263dff6c435aba0f83414",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x6/options.json",
+      "optionsSha256": "52dd007a96138e052a8ce120c0747141cf549104222aac3a1ff706b2364ea8b3",
+      "sourceReceiptSha256": "a13e215554be8cdd70d806bd2c949c9a43e09bdc6b5e3893de530d8d320b8d6e",
+      "definitionCount": 229,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0C6R",
+            "option": "P0C6R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/1"
+          },
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/9"
+          },
+          {
+            "code": "P0C5Y",
+            "option": "P0C5Y",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/11"
+          },
+          {
+            "code": "P0C67",
+            "option": "P0C67",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/12"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/14"
+          },
+          {
+            "code": "P0C5A",
+            "option": "P0C5A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/23"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/36"
+          },
+          {
+            "code": "P0C7R",
+            "option": "P0C7R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/104"
+          },
+          {
+            "code": "P0C7A",
+            "option": "P0C7A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/113"
+          },
+          {
+            "code": "P0A96",
+            "option": "P0A96",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/139"
+          },
+          {
+            "code": "P0668",
+            "option": "P0668",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/214"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/219"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKUKF",
+            "option": "FKUKF",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/65"
+          },
+          {
+            "code": "FKUIC",
+            "option": "FKUIC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/91"
+          },
+          {
+            "code": "FKUFU",
+            "option": "FKUFU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/121"
+          },
+          {
+            "code": "FKUSW",
+            "option": "FKUSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/160"
+          },
+          {
+            "code": "FMASW",
+            "option": "FMASW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/201"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S01LS",
+            "option": "S01LS",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/89"
+          },
+          {
+            "code": "S01EC",
+            "option": "S01EC",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/181"
+          },
+          {
+            "code": "S01EE",
+            "option": "S01EE",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/185"
+          },
+          {
+            "code": "S01EU",
+            "option": "S01EU",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/218"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S07HW",
+        "optionType": "line",
+        "pointer": "/report/candidates/0/definitions/71"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "x1x7",
+      "sourceContextId": "u11-x1x7",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "X1X7",
+        "agModelCode": "32EF",
+        "catalogueRangeKey": "U11",
+        "rawModelRange": "U11",
+        "aliases": [
+          "X"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S07HW",
+        "defaultModel": {
+          "modelCode": "IX1H",
+          "agModelCode": "12HM"
+        },
+        "includedIndex": 3,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S07HW"
+        }
+      },
+      "primarySha256": "c53db5a988f1c508a0588d9b84e6fc902771ab4cab474cd4749a361f8dde76af",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x7/options.json",
+      "optionsSha256": "0e9a8d84004f5291e316ce60e47e3e32311c86d74eac487ee74dbdd310cbc805",
+      "sourceReceiptSha256": "5c7689c928ff6fa4cd1504946959300e4d7de7a2f313f80ba96b4896cf7bd6dd",
+      "definitionCount": 231,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0C6R",
+            "option": "P0C6R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/1"
+          },
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/10"
+          },
+          {
+            "code": "P0C5Y",
+            "option": "P0C5Y",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/12"
+          },
+          {
+            "code": "P0C67",
+            "option": "P0C67",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/13"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/15"
+          },
+          {
+            "code": "P0C5A",
+            "option": "P0C5A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/24"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/37"
+          },
+          {
+            "code": "P0C7R",
+            "option": "P0C7R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/106"
+          },
+          {
+            "code": "P0C7A",
+            "option": "P0C7A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/115"
+          },
+          {
+            "code": "P0A96",
+            "option": "P0A96",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/141"
+          },
+          {
+            "code": "P0668",
+            "option": "P0668",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/216"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/221"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKUKF",
+            "option": "FKUKF",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/66"
+          },
+          {
+            "code": "FKUIC",
+            "option": "FKUIC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/93"
+          },
+          {
+            "code": "FKUFU",
+            "option": "FKUFU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/123"
+          },
+          {
+            "code": "FKUSW",
+            "option": "FKUSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/162"
+          },
+          {
+            "code": "FMASW",
+            "option": "FMASW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/203"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S01LS",
+            "option": "S01LS",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/91"
+          },
+          {
+            "code": "S01EC",
+            "option": "S01EC",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/183"
+          },
+          {
+            "code": "S01EE",
+            "option": "S01EE",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/187"
+          },
+          {
+            "code": "S01EU",
+            "option": "S01EU",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/220"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S07HW",
+        "optionType": "line",
+        "pointer": "/report/candidates/0/definitions/72"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "x1xl",
+      "sourceContextId": "u11-x1xl",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "X1XL",
+        "agModelCode": "62EE",
+        "catalogueRangeKey": "U11",
+        "rawModelRange": "U11",
+        "aliases": [
+          "X"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S07HW",
+        "defaultModel": {
+          "modelCode": "IX1H",
+          "agModelCode": "12HM"
+        },
+        "includedIndex": 1,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S07HW"
+        }
+      },
+      "primarySha256": "519e6fcca90e553324fcd482f57786c1966afc789484e4aefd0206813bd65513",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1xl/options.json",
+      "optionsSha256": "66460565e46d77e6022c833e6e0a174cc7d86bcb5c3e073c6a624d08326d0bf4",
+      "sourceReceiptSha256": "b993c6e35d5d29deb99ae72e4083ea8ee54e8127c005f002f8e469c354cd28bb",
+      "definitionCount": 230,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0C6R",
+            "option": "P0C6R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/1"
+          },
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/10"
+          },
+          {
+            "code": "P0C5Y",
+            "option": "P0C5Y",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/12"
+          },
+          {
+            "code": "P0C67",
+            "option": "P0C67",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/13"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/15"
+          },
+          {
+            "code": "P0C5A",
+            "option": "P0C5A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/24"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/38"
+          },
+          {
+            "code": "P0C7R",
+            "option": "P0C7R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/106"
+          },
+          {
+            "code": "P0C7A",
+            "option": "P0C7A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/114"
+          },
+          {
+            "code": "P0A96",
+            "option": "P0A96",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/139"
+          },
+          {
+            "code": "P0668",
+            "option": "P0668",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/215"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/220"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKUKF",
+            "option": "FKUKF",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/70"
+          },
+          {
+            "code": "FKUIC",
+            "option": "FKUIC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/95"
+          },
+          {
+            "code": "FKUFU",
+            "option": "FKUFU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/121"
+          },
+          {
+            "code": "FKUSW",
+            "option": "FKUSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/160"
+          },
+          {
+            "code": "FMASW",
+            "option": "FMASW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/202"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S01LS",
+            "option": "S01LS",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/93"
+          },
+          {
+            "code": "S01EC",
+            "option": "S01EC",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/182"
+          },
+          {
+            "code": "S01EE",
+            "option": "S01EE",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/186"
+          },
+          {
+            "code": "S01EU",
+            "option": "S01EU",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/219"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S07HW",
+        "optionType": "line",
+        "pointer": "/report/candidates/0/definitions/76"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "ix25",
+      "sourceContextId": "u10-ix25",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "IX25",
+        "agModelCode": "82GN",
+        "catalogueRangeKey": "U10",
+        "rawModelRange": "U10",
+        "aliases": [
+          "X"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "IX24",
+          "agModelCode": "72GN"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "primarySha256": "1d841702310829a9ddf6bb398b62471cf9382bb5517697989e61d1bfb29db930",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix25/options.json",
+      "optionsSha256": "980e764e04fd4a5bda4d2d4d0aaa2982fb01a033b05043906686b05971f0fe87",
+      "sourceReceiptSha256": "dd034a333e7c40e6bfc1cdc39e9a59e6b173939102c9ea51d4e62ebe1d89e9bc",
+      "definitionCount": 244,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0C6R",
+            "option": "P0C6R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/1"
+          },
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/11"
+          },
+          {
+            "code": "P0C5Y",
+            "option": "P0C5Y",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/13"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/15"
+          },
+          {
+            "code": "P0C5A",
+            "option": "P0C5A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/25"
+          },
+          {
+            "code": "P0C4W",
+            "option": "P0C4W",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/29"
+          },
+          {
+            "code": "P0C4P",
+            "option": "P0C4P",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/36"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/40"
+          },
+          {
+            "code": "P0C3N",
+            "option": "P0C3N",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/54"
+          },
+          {
+            "code": "P0C31",
+            "option": "P0C31",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/78"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/234"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKUKP",
+            "option": "FKUKP",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/58"
+          },
+          {
+            "code": "FKUKF",
+            "option": "FKUKF",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/73"
+          },
+          {
+            "code": "FKUIC",
+            "option": "FKUIC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/97"
+          },
+          {
+            "code": "FKUFU",
+            "option": "FKUFU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/125"
+          },
+          {
+            "code": "FKUSW",
+            "option": "FKUSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/168"
+          },
+          {
+            "code": "FMASW",
+            "option": "FMASW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/214"
+          },
+          {
+            "code": "FKTNL",
+            "option": "FKTNL",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/219"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S01EK",
+            "option": "S01EK",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/183"
+          },
+          {
+            "code": "S01EP",
+            "option": "S01EP",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/191"
+          },
+          {
+            "code": "S01GL",
+            "option": "S01GL",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/221"
+          },
+          {
+            "code": "S01EU",
+            "option": "S01EU",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/233"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S0337",
+        "optionType": "package",
+        "pointer": "/report/candidates/0/definitions/102"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "x235",
+      "sourceContextId": "u10-x235",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "X235",
+        "agModelCode": "82GM",
+        "catalogueRangeKey": "U10",
+        "rawModelRange": "U10",
+        "aliases": [
+          "X"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S033B",
+        "defaultModel": {
+          "modelCode": "IX24",
+          "agModelCode": "72GN"
+        },
+        "includedIndex": 2,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S033B"
+        }
+      },
+      "primarySha256": "de1849bc51a8954c0b95b2bc00e587620f5c869873da20ba6d96568882f2942d",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x235/options.json",
+      "optionsSha256": "c079666996bd42db14440a5a87401110e9d4888cc7e0ab049c1712b1e1ec821f",
+      "sourceReceiptSha256": "d0574ce7dcd77b22edf730e9c8b7fd5f4760c10374336bbeda86989e03f97b21",
+      "definitionCount": 247,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0C6R",
+            "option": "P0C6R",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/1"
+          },
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/13"
+          },
+          {
+            "code": "P0C5Y",
+            "option": "P0C5Y",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/14"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/16"
+          },
+          {
+            "code": "P0C5A",
+            "option": "P0C5A",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/26"
+          },
+          {
+            "code": "P0C4W",
+            "option": "P0C4W",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/30"
+          },
+          {
+            "code": "P0C4P",
+            "option": "P0C4P",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/37"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/41"
+          },
+          {
+            "code": "P0C3N",
+            "option": "P0C3N",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/56"
+          },
+          {
+            "code": "P0C31",
+            "option": "P0C31",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/83"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/237"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKUKP",
+            "option": "FKUKP",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/61"
+          },
+          {
+            "code": "FKUKF",
+            "option": "FKUKF",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/77"
+          },
+          {
+            "code": "FKUIC",
+            "option": "FKUIC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/101"
+          },
+          {
+            "code": "FKUFU",
+            "option": "FKUFU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/124"
+          },
+          {
+            "code": "FKUSW",
+            "option": "FKUSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/168"
+          },
+          {
+            "code": "FMASW",
+            "option": "FMASW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/215"
+          },
+          {
+            "code": "FKTNL",
+            "option": "FKTNL",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/219"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S03F9",
+            "option": "S03F9",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/57"
+          },
+          {
+            "code": "S01GL",
+            "option": "S01GL",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/221"
+          },
+          {
+            "code": "S01GN",
+            "option": "S01GN",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/224"
+          },
+          {
+            "code": "S01GP",
+            "option": "S01GP",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/226"
+          },
+          {
+            "code": "S01EU",
+            "option": "S01EU",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/236"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S033B",
+        "optionType": "package",
+        "pointer": "/report/candidates/0/definitions/24"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "i4mg",
+      "sourceContextId": "g26e-i4mg",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "I4MG",
+        "agModelCode": "62HD",
+        "catalogueRangeKey": "G26E",
+        "rawModelRange": "G26",
+        "aliases": [
+          "4",
+          "I"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "I4MF",
+          "agModelCode": "52HD"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "primarySha256": "14264b351f605ead3c452caf9f07b208b676907ceb7826c0b18258065a40cdce",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4mg/options.json",
+      "optionsSha256": "5d2bc9ff7ee2a64b025fe77e52590b34fd1e8e12515244d77053959fd3b5e889",
+      "sourceReceiptSha256": "920c3fbb803b5eca5aa8d24d567ec336d210a963ac7ba241a9d1b9765433ce91",
+      "definitionCount": 267,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/9"
+          },
+          {
+            "code": "P0C5Y",
+            "option": "P0C5Y",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/11"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/13"
+          },
+          {
+            "code": "P0C4P",
+            "option": "P0C4P",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/36"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/42"
+          },
+          {
+            "code": "P0C3Z",
+            "option": "P0C3Z",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/44"
+          },
+          {
+            "code": "P0C36",
+            "option": "P0C36",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/79"
+          },
+          {
+            "code": "P0C31",
+            "option": "P0C31",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/86"
+          },
+          {
+            "code": "P0X1E",
+            "option": "P0X1E",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/115"
+          },
+          {
+            "code": "P0X1F",
+            "option": "P0X1F",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/117"
+          },
+          {
+            "code": "P0A96",
+            "option": "P0A96",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/165"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/255"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKHSW",
+            "option": "FKHSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/29"
+          },
+          {
+            "code": "FMAOI",
+            "option": "FMAOI",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/40"
+          },
+          {
+            "code": "FMANL",
+            "option": "FMANL",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/60"
+          },
+          {
+            "code": "FMAMU",
+            "option": "FMAMU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/83"
+          },
+          {
+            "code": "FMAL3",
+            "option": "FMAL3",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/111"
+          },
+          {
+            "code": "FZASW",
+            "option": "FZASW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/152"
+          },
+          {
+            "code": "FEPMI",
+            "option": "FEPMI",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/163"
+          },
+          {
+            "code": "FMAH7",
+            "option": "FMAH7",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/164"
+          },
+          {
+            "code": "FKHKC",
+            "option": "FKHKC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/167"
+          },
+          {
+            "code": "FVATQ",
+            "option": "FVATQ",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/229"
+          },
+          {
+            "code": "FKHG7",
+            "option": "FKHG7",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/241"
+          },
+          {
+            "code": "FVAEW",
+            "option": "FVAEW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/248"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S03FX",
+            "option": "S03FX",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/35"
+          },
+          {
+            "code": "S03F0",
+            "option": "S03F0",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/63"
+          },
+          {
+            "code": "S03FK",
+            "option": "S03FK",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/76"
+          },
+          {
+            "code": "S03FA",
+            "option": "S03FA",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/82"
+          },
+          {
+            "code": "S03GX",
+            "option": "S03GX",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/233"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S0337",
+        "optionType": "package",
+        "pointer": "/report/candidates/0/definitions/116"
+      },
+      "qualificationOnly": true
+    },
+    {
+      "id": "i4pc",
+      "sourceContextId": "g26e-i4pc",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "I4PC",
+        "agModelCode": "72HD",
+        "catalogueRangeKey": "G26E",
+        "rawModelRange": "G26",
+        "aliases": [
+          "4",
+          "I"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S033B",
+        "defaultModel": {
+          "modelCode": "I4MF",
+          "agModelCode": "52HD"
+        },
+        "includedIndex": 2,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S033B"
+        }
+      },
+      "primarySha256": "0ff9cd21aa93e5e82ce48aaa8774159cda57c40b1add12ef44e4104d5751560f",
+      "optionsPath": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4pc/options.json",
+      "optionsSha256": "0d55a4799e9d2c08085b13f90359e7dee203c737a4073134ba29f32d988753fe",
+      "sourceReceiptSha256": "eb2db6ed98108ca47b2bccfff04d3729bc8de2d7756846ad157cef5d20d76390",
+      "definitionCount": 264,
+      "typedPools": {
+        "paint": [
+          {
+            "code": "P0490",
+            "option": "P0490",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/8"
+          },
+          {
+            "code": "P0C5Y",
+            "option": "P0C5Y",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/10"
+          },
+          {
+            "code": "P0C68",
+            "option": "P0C68",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/12"
+          },
+          {
+            "code": "P0C4P",
+            "option": "P0C4P",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/35"
+          },
+          {
+            "code": "P0475",
+            "option": "P0475",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/42"
+          },
+          {
+            "code": "P0C3Z",
+            "option": "P0C3Z",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/44"
+          },
+          {
+            "code": "P0C36",
+            "option": "P0C36",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/78"
+          },
+          {
+            "code": "P0C31",
+            "option": "P0C31",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/85"
+          },
+          {
+            "code": "P0X1E",
+            "option": "P0X1E",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/113"
+          },
+          {
+            "code": "P0X1F",
+            "option": "P0X1F",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/114"
+          },
+          {
+            "code": "P0A96",
+            "option": "P0A96",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/163"
+          },
+          {
+            "code": "P0300",
+            "option": "P0300",
+            "optionType": "paint",
+            "pointer": "/report/candidates/0/definitions/252"
+          }
+        ],
+        "fabric": [
+          {
+            "code": "FKHSW",
+            "option": "FKHSW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/28"
+          },
+          {
+            "code": "FMAOI",
+            "option": "FMAOI",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/39"
+          },
+          {
+            "code": "FMANL",
+            "option": "FMANL",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/60"
+          },
+          {
+            "code": "FMAMU",
+            "option": "FMAMU",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/82"
+          },
+          {
+            "code": "FMAL3",
+            "option": "FMAL3",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/109"
+          },
+          {
+            "code": "FZASW",
+            "option": "FZASW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/151"
+          },
+          {
+            "code": "FEPMI",
+            "option": "FEPMI",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/161"
+          },
+          {
+            "code": "FMAH7",
+            "option": "FMAH7",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/162"
+          },
+          {
+            "code": "FKHKC",
+            "option": "FKHKC",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/165"
+          },
+          {
+            "code": "FVATQ",
+            "option": "FVATQ",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/226"
+          },
+          {
+            "code": "FKHG7",
+            "option": "FKHG7",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/238"
+          },
+          {
+            "code": "FVAEW",
+            "option": "FVAEW",
+            "optionType": "fabric",
+            "pointer": "/report/candidates/0/definitions/245"
+          }
+        ],
+        "rim": [
+          {
+            "code": "S03FX",
+            "option": "S03FX",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/34"
+          },
+          {
+            "code": "S03FT",
+            "option": "S03FT",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/40"
+          },
+          {
+            "code": "S03FK",
+            "option": "S03FK",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/75"
+          },
+          {
+            "code": "S03FA",
+            "option": "S03FA",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/81"
+          },
+          {
+            "code": "S03GX",
+            "option": "S03GX",
+            "optionType": "rim",
+            "pointer": "/report/candidates/0/definitions/230"
+          }
+        ]
+      },
+      "mandatoryLineDefinition": {
+        "code": "S033B",
+        "optionType": "package",
+        "pointer": "/report/candidates/0/definitions/20"
+      },
+      "qualificationOnly": true
+    }
+  ]
+}

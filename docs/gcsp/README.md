@@ -4,7 +4,32 @@ Jira moved on 3 November 2026. Use the new site and keys below; the [migration r
 
 Start here for every new GCSP discovery, foundation, design, implementation or review session. Repository documents hold the project decisions; this chat history is not required context.
 
-## Latest build handover — 5 November 2026
+## Latest build handover — 6 November 2026
+
+**Backlog review, 7 November (proposal):** the [MoSCoW review for the 12 November demo](backlog-moscow-review-2026-11-07.md)
+maps all 56 unaccepted Stories in the retained Jira snapshot to the user journey and demo brief. It proposes
+smaller delivery outcomes and distinguishes essential behaviour from secondary routes and later work.
+It does not change the full-build direction, Jira priorities, claims or acceptance criteria.
+
+**Integration handoffs for Russell's next poller pass, Gary, 6 November:** read the
+[FUCQ-100 and FUCQ-122 handover](codex-handover-2026-11-06-integration.md) after pulling.
+It identifies the existing FUCQ-96/FUCQ-95 owner actions, the unclaimed FUCQ-120 host,
+and the evidence still needed; it does not create new Stories or transfer claims.
+
+**Demo delivery and scope control, Gary, 6 November:** follow the shared [standing rules](build-rules.md#demo-delivery-and-scope-control)
+in every session and descendant: prioritise a complete working demo; backlog defects below Critical/High
+independently; keep claimed ACs fixed and raise new features/proposed AC changes as separate Stories for
+review and prioritisation before build. FUCQ-149 holds the Resume scope extracted from FUCQ-100.
+
+**Laptop pause, Russell, 6 November:** the local dev poller and its heartbeat are PAUSED on explicit human direction. All owned agents are stopped and cleanup is verified. Read [the current pause handover](../HANDOVER-2026-11-06-LAPTOP-PAUSE.md); scheduled messages cannot resume this run.
+
+**Dispatcher resumed, 6 November:** Russell explicitly resumed the local dev poller. Read the
+[resume record](dev-poller-2026-11-06-resume.md) and current local directive. FUCQ-104/117 retain their existing
+claims and branches; the updated project HTTP422 rule supersedes the obsolete credential-refresh stop.
+
+**Completion priority, Russell, 6 November:** finish existing In Progress stories first. The
+[current blocker checklist](completion-blockers-2026-11-06.md) identifies concrete source, mail,
+runtime and native-storage actions and corrects historical blockers against the latest published work.
 
 **Scaffolding and component map, Russell, 5 November:** the [connected product map](https://garyscarter-ibm.github.io/vehicle-matcher/product-map/) links capabilities, Stories, development evidence and acceptance. GC pollers read [the tooling handoff](product-map-2026-11-05.md) after pulling; retain all current claims and pause boundaries.
 
@@ -66,7 +91,7 @@ Russell confirmed at FUCQ-5 closeout on 1 November that backlog Epics are indepe
 
 **Vehicle-evidence implementation stories, 1 November:** [27 native Stories](fucq-13-19-stories.md), FUCQ-37–63, now refine FUCQ-14–20, with [structured records](fucq-13-19-stories.json) and [publication verification](evidence/fucq-13-19/story-publication.json). Russell confirmed the HLD is canonical; all seven epic descriptions now reflect it and the agreed visual direction. Their child Stories remain To Do; the independent Epics are In Progress under the authoring procedure. The 41 story dependencies cover catalogue, imagery, handbook, live-provider gates, plausible synthetic identities, the actual HTTP adapter and the 10,000-distinct corpus. This authoring did not start implementation, a dispatcher or a bulk run.
 
-**Demo data route, Gary, 4 November:** real configurations with synthetic stock on top. [FUCQ-77](https://ibm-consulting.atlassian.net/browse/FUCQ-77) collects at least 200 real, constructible configurations covering every scheme model line, each of which opens in BMW's configurator. [FUCQ-78](https://ibm-consulting.atlassian.net/browse/FUCQ-78) generates synthetic scheme stock on them, shaped by aggregate figures from BMW's public new-car stock locator. FUCQ-61's 10,000-configuration run follows after 12 November if still wanted; FUCQ-62 keeps corpus publication. Evidence: [interface research](bmw-interface-research.md), 4 November follow-ups.
+**Demo data route, Gary, 4 November; revised by Russell, 7 November:** real configurations with synthetic stock on top. FUCQ-61 has delivered a retained, verified 10,000-configuration cohort and is In Review. [FUCQ-77](https://ibm-consulting.atlassian.net/browse/FUCQ-77) now reuses that corpus, verifies every scheme model-line mapping and configurator round trips, and collects or enriches only genuine gaps; the eight-per-mapped-line and 200-total requirements remain. [FUCQ-78](https://ibm-consulting.atlassian.net/browse/FUCQ-78) can use the existing corpus and is no longer blocked by FUCQ-77. It still owns synthetic scheme stock shaped by bounded real stock-locator aggregates; FUCQ-62 keeps corpus publication. The [decision and downstream impact audit](fucq-61-downstream-impact-2026-11-07.md) identify other consumers and their remaining evidence. Source context: [interface research](bmw-interface-research.md), 4 November follow-ups.
 
 **FUCQ-58 source authorisation, Gary, 5 November:** read-only collection from BMW’s public UK configurator and the bounded pilot are authorised. Gary confirms BMW approval to retain and display all resulting configuration data and images for as long as needed. The [decision and execution handoff](fucq-58-source-authorisation-2026-11-05.md) supersede earlier source/retention decision holds; the existing claim owner resumes qualification with explicit finite engineering budgets and measured coverage.
 

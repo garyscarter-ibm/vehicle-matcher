@@ -36,9 +36,9 @@ const measurements = {
   seats: ['SEATS', 'COUNT'], luggageNormal: ['NORMAL', 'LITRES'], luggageExpanded: ['EXPANDED', 'LITRES'],
   acceleration: ['0–100 KM/H', 'SECONDS'], bodyLength: ['BODY LENGTH', 'MILLIMETRES'],
 };
-function technicalFacts(catalogue) {
+function technicalFacts(catalogue, supplement) {
   return Object.fromEntries(Object.entries(measurements).map(([key, [definition, unit]]) => {
-    const fact = catalogue?.facts?.[key];
+    const fact = supplement?.facts?.[key] || catalogue?.facts?.[key];
     return [key, fact && ['known', 'unknown'].includes(fact.state) && fact.definition === definition && fact.unit === unit
       ? copy(fact) : { ...unknown(), definition, unit }];
   }));
@@ -92,7 +92,7 @@ export function vehicleEvidenceDetails(request, source, stock = null) {
         transmission: attributed(configuration.transmission, provenance), engine: attributed(configuration.engineCode, provenance) },
       paint: selectedAppearance(equipment, 'paint'), upholstery: selectedAppearance(equipment, 'fabric'),
     },
-    technical: technicalFacts(catalogue), equipment,
+    technical: technicalFacts(catalogue, source.technicalSupplement), equipment,
     images: { state: images.length ? 'representative' : 'unknown', label: images.length ? 'Representative imagery' : 'Images unavailable', items: images },
     source: { kind: evidence.sourceKind, references: copy(evidence.sourceRefs), confidence: evidence.confidence,
       observedDate: evidence.observedDate, retrievedDate: catalogue?.retrievedDate || null,
@@ -107,9 +107,9 @@ export function vehicleEvidenceDetails(request, source, stock = null) {
       profileConfidence: vehicle?.confidence || null, completeVinDecoded: false,
       unresolvedFacts: copy(evidence.unresolvedFacts), identityProvenance: copy(record.canonicalIdentity.provenance) },
     completeness: { record: status, selectedOptions: evidence.selectedOptionCompleteness,
-      measurements: catalogue?.completeness?.measurements || 'unknown',
-      optionDefinitions: catalogue?.completeness?.optionDefinitions || 'unknown',
-      availableOptions: catalogue?.completeness?.availableOptions || 'unknown', verifiedFitted: 'unknown',
+      measurements: source.technicalSupplement ? 'partial' : catalogue?.completeness?.measurements || 'unknown',
+      optionDefinitions: (catalogue?.schemaVersion === '2' ? catalogue.completeness?.definitions : catalogue?.completeness?.optionDefinitions) || 'unknown',
+      availableOptions: (catalogue?.schemaVersion === '2' ? catalogue.completeness?.availability : catalogue?.completeness?.availableOptions) || 'unknown', verifiedFitted: 'unknown',
       images: images.length ? 'representative' : 'unknown' },
     presentation: { syntheticLabel: 'Synthetic identity',
       associationLabel: 'Fictional identity association to retained configuration evidence; not a factory build or authentication.',

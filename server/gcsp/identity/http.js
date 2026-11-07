@@ -1,6 +1,6 @@
 const protectedFields = new Set(['principalId', 'employeeId', 'roles', 'role', 'grade', 'gradeId', 'scheme', 'schemeId', 'companyId', 'runId', 'context', 'entitlementSlotId', 'token', 'session', 'sessionId']);
 const statusCode = (status) => ({
-  ok: 200, invalid: 400, 'missing-session': 401, 'unknown-session': 401,
+  ok: 200, pending: 202, invalid: 400, 'missing-session': 401, 'unknown-session': 401,
   'expired-session': 401, 'unknown-principal': 404, forbidden: 403,
   'stale-run': 409, 'stale-version': 409, conflict: 409, 'not-found': 404, unavailable: 503,
 })[status] || 500;

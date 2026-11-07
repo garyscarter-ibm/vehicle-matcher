@@ -1,0 +1,216 @@
+{
+  "status": "fresh-process-offline-restart-passed",
+  "runtime": "v26.7.0",
+  "zeroProviderEgress": true,
+  "offlineCacheFetchCalls": 0,
+  "audit": {
+    "status": "verified-active",
+    "targetMet": true,
+    "storyAcceptance": "not-established",
+    "requiredDistinct": 200,
+    "shortfall": 0,
+    "reason": null,
+    "manifest": {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-public-artifacts/store/versions/8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9/manifest.json",
+      "sha256": "8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9",
+      "datasetId": "gcsp-source-fleet",
+      "version": "2026-11-07.4",
+      "schemaVersion": "1",
+      "signaturePolicyVersion": "gcsp-policy-v1",
+      "profileRegistryVersion": "vin-profiles.v1",
+      "generatorVersion": "synthetic-identities.sha256-v1"
+    },
+    "qualification": "bounded-fixture-or-partial-corpus",
+    "actual": {
+      "configurations": 350,
+      "distinctConfigurations": 350,
+      "images": 0,
+      "qualifyingCompleteDistinctSourceConfigurations": 349,
+      "sourceConfigurations": 349,
+      "vinMappings": 1,
+      "completeResolvedDistinct": 349,
+      "nonQualifyingConfigurations": 1,
+      "coverage": {
+        "markets": {
+          "GB": 349,
+          "US": 1
+        },
+        "models": {
+          "430i": 1,
+          "unknown": 349
+        },
+        "steering": {
+          "LHD": 1,
+          "unknown": 349
+        },
+        "wmis": {
+          "WBA": 1
+        }
+      },
+      "omittedCoverageCategories": {
+        "markets": 0,
+        "models": 0,
+        "steering": 0,
+        "wmis": 0
+      },
+      "completeness": {
+        "imagesMissing": 350,
+        "selectedOptions": {
+          "complete": 349,
+          "unknown": 1
+        },
+        "sourceKinds": {
+          "dated-snapshot": 349,
+          "north-american-reference": 1
+        }
+      },
+      "distributions": {
+        "model": {
+          "values": {
+            "430i": 1,
+            "unknown": 349
+          },
+          "omittedCategories": 0
+        },
+        "body": {
+          "values": {
+            "Convertible": 1,
+            "unknown": 349
+          },
+          "omittedCategories": 0
+        },
+        "powertrain": {
+          "values": {
+            "petrol": 1,
+            "unknown": 349
+          },
+          "omittedCategories": 0
+        },
+        "factoryOptionCount": {
+          "values": {
+            "1": 1,
+            "42": 8,
+            "47": 49,
+            "48": 73,
+            "49": 23,
+            "50": 23,
+            "51": 72,
+            "52": 44,
+            "53": 40,
+            "54": 9,
+            "56": 8
+          },
+          "omittedCategories": 0
+        },
+        "sourceKind": {
+          "values": {
+            "dated-snapshot": 349,
+            "north-american-reference": 1
+          },
+          "omittedCategories": 0
+        },
+        "unresolvedFacts": {
+          "values": {
+            "agModelCode": 1,
+            "body": 349,
+            "derivative": 349,
+            "drive": 349,
+            "engineCode": 350,
+            "exactEquipment": 1,
+            "exactTrim": 1,
+            "model": 349,
+            "modelYear": 349,
+            "plant": 349,
+            "powertrain": 349,
+            "productionDate": 350,
+            "productionEra": 349,
+            "region": 349,
+            "registrationDate": 1,
+            "steering": 349,
+            "transmission": 350,
+            "vgModelCode": 1
+          },
+          "omittedCategories": 0
+        },
+        "imageFidelity": {
+          "values": {},
+          "omittedCategories": 0
+        }
+      }
+    },
+    "planned": {
+      "provided": false,
+      "familyCount": 0,
+      "families": [],
+      "omittedFamilies": 0,
+      "exclusions": []
+    },
+    "limitations": [
+      "Compatible profile-family coverage is not inferred from configuration IDs or VIN spelling.",
+      "Staged verification does not establish source-operation budgets, collection replay or full story acceptance.",
+      "Unknown measurements, missing images and representative image fidelity remain explicit; no stock, eligibility or points facts are inferred."
+    ],
+    "activeStore": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-public-artifacts/store",
+    "activation": {
+      "loaderStatus": "ok",
+      "recovered": false
+    },
+    "audit": {
+      "scope": "all-records",
+      "records": {
+        "configurations": 350,
+        "vinMappings": 1,
+        "stockReferences": 0
+      },
+      "checked": 351,
+      "errors": 0,
+      "elapsedMs": 545.969083,
+      "concurrency": 1,
+      "throughputPerSecond": 642.8935464098432,
+      "latencyMs": {
+        "count": 351,
+        "min": 1.375250000000051,
+        "p50": 1.5008340000003955,
+        "p95": 1.825166999999965,
+        "p99": 2.106792000000496,
+        "max": 5.783916999999747
+      },
+      "environment": {
+        "node": "v26.7.0",
+        "platform": "darwin",
+        "arch": "arm64"
+      },
+      "stockScope": "not-supplied"
+    },
+    "http": {
+      "endpoint": "http://127.0.0.1:51934",
+      "scope": "all-records",
+      "requests": 351,
+      "totalRecords": 351,
+      "concurrency": 1,
+      "errors": 0,
+      "elapsedMs": 148.47720900000058,
+      "throughputPerSecond": 2363.9991778132,
+      "latencyMs": {
+        "count": 351,
+        "min": 0.3569999999999709,
+        "p50": 0.3845000000001164,
+        "p95": 0.541374999999789,
+        "p99": 0.8025840000000244,
+        "max": 4.947208000000501
+      },
+      "serverClosed": true
+    },
+    "egress": {
+      "scope": "this-audit-process",
+      "externalCalls": 0,
+      "sourceCalls": 0,
+      "control": "blocked"
+    },
+    "acceptanceLimits": [
+      "Actual full-target source corpus and declared coverage remain required for story acceptance.",
+      "Stock references are supplied through the repository seam; no native PostgreSQL or stock generation proof is inferred.",
+      "Restart, activation interruption and rollback are tested in owned fixtures; this command does not mutate the active store."
+    ]
+  }
+}

@@ -132,6 +132,22 @@
       "max_lines": 38
     },
     {
+      "path": "blocks/gcsp/cases/gcsp-cases.css",
+      "max_lines": 29
+    },
+    {
+      "path": "blocks/gcsp/cases/gcsp-case-queue.css",
+      "max_lines": 18
+    },
+    {
+      "path": "blocks/gcsp/greg/publish/publish.css",
+      "max_lines": 13
+    },
+    {
+      "path": "blocks/gcsp/presenter-controls/presenter-controls.css",
+      "max_lines": 17
+    },
+    {
       "path": "blocks/gcsp/brief/gcsp-brief.css",
       "max_lines": 37
     },

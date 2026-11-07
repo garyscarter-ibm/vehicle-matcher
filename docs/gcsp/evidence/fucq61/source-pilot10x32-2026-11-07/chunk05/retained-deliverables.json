@@ -1,0 +1,8 @@
+{
+  "primary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk05/collector-checkpoint.json",
+  "disposable": false,
+  "neverDeletePrimary": true,
+  "expectedCheckpointBytes": 2097152,
+  "maximumCheckpointBytes": 8388608,
+  "expectedTotalRetainedBytes": 4194304
+}

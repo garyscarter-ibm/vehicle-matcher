@@ -1,0 +1,187 @@
+{
+  "status": "failed-incomplete",
+  "story": "FUCQ-62",
+  "bug": "FUCQ-153",
+  "codeCommit": "2c9ca8baa9923638187649001c2f87450af27ff7",
+  "pinsSha256": "0eeb6d536dae58bec3b37cbcd6c3bcca419d0608688b22adb93d333a73c8c94c",
+  "externalEvidence": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-proof-beyond64/0eeb6d536dae58be",
+  "result": {
+    "acceptance": "not-established",
+    "command": [
+      "/opt/homebrew/bin/node",
+      "--max-old-space-size=256",
+      "docs/gcsp/evidence/fucq62/scale-resource-proof.mjs",
+      "--receipt",
+      "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-proof-beyond64/0eeb6d536dae58be/receipt.json"
+    ],
+    "head": "2c9ca8baa9923638187649001c2f87450af27ff7",
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-proof-beyond64/0eeb6d536dae58be/proof.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-proof-beyond64/0eeb6d536dae58be/ownership/5d8c5dda058640f3800eff4781e578b0.json",
+    "peak_rss": 151535616,
+    "peak_scratch": 67863104,
+    "pinsSha256": "0eeb6d536dae58bec3b37cbcd6c3bcca419d0608688b22adb93d333a73c8c94c",
+    "rc": 1,
+    "scope": "synthetic-byte-volume-only",
+    "wall": 0.733637166
+  },
+  "checkpoint": {
+    "cleanupErrors": [],
+    "completed": [
+      {
+        "at": "2026-11-07T01:53:44.435Z",
+        "configurations": 1,
+        "manifestDigest": "86e66995bc8750709a1d47ec16731027d5f5febb21e0e8366b98c0ba0822a9c9",
+        "phase": "baseline-published",
+        "vins": 0
+      },
+      {
+        "at": "2026-11-07T01:53:44.451Z",
+        "bytes": 4745216,
+        "phase": "generation-progress",
+        "rows": 256
+      },
+      {
+        "at": "2026-11-07T01:53:44.467Z",
+        "bytes": 9490432,
+        "phase": "generation-progress",
+        "rows": 512
+      },
+      {
+        "at": "2026-11-07T01:53:44.478Z",
+        "bytes": 14235648,
+        "phase": "generation-progress",
+        "rows": 768
+      },
+      {
+        "at": "2026-11-07T01:53:44.491Z",
+        "bytes": 18980864,
+        "phase": "generation-progress",
+        "rows": 1024
+      },
+      {
+        "at": "2026-11-07T01:53:44.502Z",
+        "bytes": 23726080,
+        "phase": "generation-progress",
+        "rows": 1280
+      },
+      {
+        "at": "2026-11-07T01:53:44.514Z",
+        "bytes": 28471296,
+        "phase": "generation-progress",
+        "rows": 1536
+      },
+      {
+        "at": "2026-11-07T01:53:44.525Z",
+        "bytes": 33216512,
+        "phase": "generation-progress",
+        "rows": 1792
+      },
+      {
+        "at": "2026-11-07T01:53:44.538Z",
+        "bytes": 37961728,
+        "phase": "generation-progress",
+        "rows": 2048
+      },
+      {
+        "at": "2026-11-07T01:53:44.552Z",
+        "bytes": 42706944,
+        "phase": "generation-progress",
+        "rows": 2304
+      },
+      {
+        "at": "2026-11-07T01:53:44.561Z",
+        "bytes": 47452160,
+        "phase": "generation-progress",
+        "rows": 2560
+      },
+      {
+        "at": "2026-11-07T01:53:44.573Z",
+        "bytes": 52197376,
+        "phase": "generation-progress",
+        "rows": 2816
+      },
+      {
+        "at": "2026-11-07T01:53:44.583Z",
+        "bytes": 56942592,
+        "phase": "generation-progress",
+        "rows": 3072
+      },
+      {
+        "at": "2026-11-07T01:53:44.598Z",
+        "bytes": 61687808,
+        "phase": "generation-progress",
+        "rows": 3328
+      },
+      {
+        "at": "2026-11-07T01:53:44.609Z",
+        "bytes": 66433024,
+        "phase": "generation-progress",
+        "rows": 3584
+      },
+      {
+        "at": "2026-11-07T01:53:44.654Z",
+        "bytes": 67118856,
+        "phase": "generated-input-pinned",
+        "rows": 3621,
+        "sha256": "8f487b0acda835449dd8ca7d3b50054ac02376b8bb93352c9334904e1b298703"
+      },
+      {
+        "at": "2026-11-07T01:53:44.656Z",
+        "defaultRefusals": [
+          "legacy-eager-file-reader",
+          "default-index-scanner",
+          "default-file-input-preparation"
+        ],
+        "inputSha256": "8f487b0acda835449dd8ca7d3b50054ac02376b8bb93352c9334904e1b298703",
+        "phase": "default-input-boundaries-confirmed"
+      },
+      {
+        "at": "2026-11-07T01:53:44.849Z",
+        "code": "ERR_ASSERTION",
+        "message": "{\"status\":\"invalid-corpus\",\"failure\":{\"code\":\"artifact-changed\",\"message\":\"Indexed artifact identity changed.\"}}\n+ actual - expected\n\n+ 'invalid-corpus'\n- 'ok'\n",
+        "name": "AssertionError",
+        "phase": "failed"
+      }
+    ],
+    "payloadResumable": false,
+    "payloadRetained": false,
+    "status": "failed"
+  },
+  "cleanup": {
+    "compatibility_exception": null,
+    "dependency_link_absent": true,
+    "errors": [],
+    "groups": [
+      {
+        "pgid": 37201,
+        "state": "absent"
+      }
+    ],
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-proof-beyond64/0eeb6d536dae58be/ownership/5d8c5dda058640f3800eff4781e578b0.json",
+    "manifest_state": "removed",
+    "rawCoverageRemovedWithScratch": true,
+    "removed_bytes_sampled_peak": 67863104,
+    "reservation_absent": true,
+    "retainedSummaryDirectory": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/scale-proof-beyond64/0eeb6d536dae58be",
+    "scratch": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/_agent-output/f58-63-overnight-20261106/f62-scale-proof/test-stamp-shard-5d8c5dda058640f3800eff4781e578b0",
+    "scratch_absent": true
+  },
+  "errorLog": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nAssertionError [ERR_ASSERTION]: {\"status\":\"invalid-corpus\",\"failure\":{\"code\":\"artifact-changed\",\"message\":\"Indexed artifact identity changed.\"}}\n+ actual - expected\n\n+ 'invalid-corpus'\n- 'ok'\n\n    at file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq62/scale-resource-proof.mjs:139:63 {\n  generatedMessage: false,\n  code: 'ERR_ASSERTION',\n  actual: 'invalid-corpus',\n  expected: 'ok',\n  operator: 'strictEqual',\n  diff: 'simple'\n}\n\nNode.js v26.7.0\n",
+  "diagnosis": "Unresolved for actual greater-than64MiB boundary. The retained failure lacks failing file/expected/current identities. No third large allocation or production patch authorised before exact evidence. Multiple successive ctime changes is a hypothesis only.",
+  "completed": [
+    "baseline publication",
+    "3621rows/67118856B generated and exact SHA independently verified",
+    "three default64MiB input refusals"
+  ],
+  "unrun": [
+    "large candidate completed preparation",
+    "large validation/publication",
+    "cold selected lookups",
+    "large corruption recovery"
+  ],
+  "sourceCapacityCredit": 0,
+  "productionCapsUnchanged": true,
+  "largeRerunHeld": true
+}

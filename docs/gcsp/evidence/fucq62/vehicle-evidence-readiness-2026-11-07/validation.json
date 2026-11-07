@@ -1,0 +1,89 @@
+{
+  "scope": "scoped",
+  "codeIdentity": {
+    "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "600691740887daee2e4380189872b76a62273d6629c0bba0b25f46ff6921d774",
+    "server/index.js": "17f4982ac5e3420c012db31ac50884d63587e568968ca96f1f0583775e8fec19",
+    "render.gcsp.yaml": "71637ba08bb7cf333e793a462decca96470fa6910104a2669a8e677c413af269",
+    "server/test/gcsp-vehicle-evidence-readiness.test.js": "3874591d84f67814f3d6e5fe2da2296712bebe98748ba3810d51a5bd217f9d2c",
+    "server/test/render-blueprint.test.js": "e798fc156851afb60d0d378feb8f9d22d69fe9ee686a049e6e31c2c118d16358"
+  },
+  "selected": [
+    "five actual-reference, fallback, absent-store, loopback readiness/liveness/API gate tests",
+    "two Render blueprint checks",
+    "fifteen existing local policy, consumer and vehicle-details contract tests"
+  ],
+  "results": {
+    "readiness": 5,
+    "blueprint": 2,
+    "affectedCallers": 15,
+    "passed": 22,
+    "failed": 0
+  },
+  "reuse": "blueprint checks passed at identical render/code identity in boundary; readiness expanded to five checks thereafter",
+  "redEvidence": [
+    "red expected missingreadiness/route failures",
+    "red2 expectedmissingreadiness/route/healthpath failures"
+  ],
+  "excluded": "full npm suite, full source dataset proof, public traffic, native database: no businessDTO/corpus changes",
+  "integrationBoundaries": [
+    "registry validation and fallback",
+    "localresolve and classify await same startup",
+    "platform readiness public before APIkeygate",
+    "Render deployment health path"
+  ],
+  "rootCause": "actual previous Render30s lookup timeout remains unresolved; readiness is a bounded mitigation only",
+  "cleanup": {
+    "red": {
+      "ownedDependencyLinkAbsent": true,
+      "ownedChildJoined": true,
+      "groupsAbsent": true,
+      "scratch": "test_stamp owns its separately registered scratch and finalizer",
+      "compatibilityException": null,
+      "leftovers": []
+    },
+    "red2": {
+      "ownedDependencyLinkAbsent": true,
+      "ownedChildJoined": true,
+      "groupsAbsent": true,
+      "scratch": "test_stamp owns its separately registered scratch and finalizer",
+      "compatibilityException": null,
+      "leftovers": []
+    },
+    "boundary": {
+      "ownedDependencyLinkAbsent": true,
+      "ownedChildJoined": true,
+      "groupsAbsent": true,
+      "scratch": "test_stamp owns its separately registered scratch and finalizer",
+      "compatibilityException": null,
+      "leftovers": []
+    },
+    "green": {
+      "ownedDependencyLinkAbsent": true,
+      "ownedChildJoined": true,
+      "groupsAbsent": true,
+      "scratch": "test_stamp owns its separately registered scratch and finalizer",
+      "compatibilityException": null,
+      "leftovers": []
+    },
+    "callers": {
+      "ownedDependencyLinkAbsent": true,
+      "ownedChildJoined": true,
+      "groupsAbsent": true,
+      "scratch": "test_stamp owns its separately registered scratch and finalizer",
+      "compatibilityException": null,
+      "leftovers": []
+    }
+  },
+  "acceptance": false,
+  "independentReview": {
+    "reviewer": "Charlie Dog",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "selectedModel": "gpt-6.1-sol",
+    "selectedEffort": "high",
+    "fallback": null,
+    "effectiveRuntimeConfirmed": false,
+    "verdict": "passed",
+    "scope": "production/test/blueprint/diagnosis code-security-evidence read-only; no replay"
+  }
+}
