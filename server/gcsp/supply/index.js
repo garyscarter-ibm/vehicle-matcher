@@ -53,9 +53,12 @@ export function createSupplyService({ repository, policy, clock, identity, produ
   const methods = {
     async submit(context, input) {
       const time = await current(context, 'greg'); if (time.status !== 'ok') return time;
-      if (!fields(input, ['commandId', 'model', 'derivative', 'quantity', 'expectedPolicyVersion', 'expectedStockVersion'])
+      if (!fields(input, ['commandId', 'model', 'derivative', 'quantity', 'expectedPolicyVersion', 'expectedStockVersion', 'plan'])
         || !['commandId', 'model', 'derivative', 'expectedPolicyVersion', 'expectedStockVersion'].every((k) => text(input[k]))
         || !positive(input.quantity)) return invalid('request', 'Supply model, derivative, positive quantity and current policy/stock versions.');
+      // FUCQ-119: an optional server-made plan reference (id and input versions) is kept on the request.
+      if (input.plan !== undefined && !(fields(input.plan, ['planId', 'submissionId', 'versions']) && text(input.plan.planId)
+        && object(input.plan.versions) && Object.values(input.plan.versions).every(text))) return invalid('plan', 'Supply the plan id and its input versions.');
       const command = cmd(context, 'submit', input); const prior = await replay(context, command); if (prior) return prior;
       if (input.expectedPolicyVersion !== time.value.policyVersion) return stale({ table: 'policy' }, input.expectedPolicyVersion, time.value.policyVersion);
       const rows = await repository.query(context, 'stock'); if (rows.status !== 'ok') return rows;
@@ -75,7 +78,8 @@ export function createSupplyService({ repository, policy, clock, identity, produ
         const added = await tx.insert('future_order_requests', { runId: context.runId, requestId, commandId: input.commandId,
           model: input.model, derivative: input.derivative, quantity: input.quantity, state: 'requested', requestedAt: time.value.now,
           requestedBy: context.principalId, policyVersion: time.value.policyVersion, stockVersion,
-          providerReference: response.value.providerReference, provenance: response.value.provenance, history: [] });
+          providerReference: response.value.providerReference, provenance: response.value.provenance, history: [],
+          ...(input.plan ? { plan: structuredClone(input.plan) } : {}) });
         return added.status === 'ok' ? ok({ request: added.value }) : added;
       });
     },
