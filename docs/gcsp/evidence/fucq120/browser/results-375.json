@@ -65,7 +65,7 @@
     },
     {
       "id": "A2:real-account-ready",
-      "name": "A2 DEFECT: the standalone live page shows the order after a real order, using the real account read (shell needs account state \"ready\")",
+      "name": "A2: the standalone live page shows the order after a real order, using the real account read (no stub anywhere)",
       "pass": true,
       "detail": {
         "accountState": "no-entitlement",
@@ -629,7 +629,7 @@
         "stubbedRoutes": [
           "GET /api/gcsp/offers/buddy-offer%3A6a617ef0d42fa32b788b34e00a684d0037382fad83db7e4b03a499cd4e5a1cdf"
         ],
-        "note": "offer read stubbed (and the shell account read, see 02a); page served at a stubbed https origin because the offer transport requires https"
+        "note": "offer read stubbed page served at a stubbed https origin because the offer transport requires https"
       }
     },
     {
@@ -968,6 +968,185 @@
       "pass": true
     },
     {
+      "id": "B-kbd:tab",
+      "name": "B-kbd: Tab alone reaches the employee task action in the embedded \"Your order\" area",
+      "pass": true,
+      "detail": {
+        "tabs": 9,
+        "lastStops": [
+          "Request 7 Nov 2026, 13:00",
+          "Request 8 Nov 2026, 09:00",
+          "Request 8 Nov 2026, 13:00",
+          "Request 9 Nov 2026, 09:00",
+          "Request 9 Nov 2026, 13:00",
+          "Acknowledge the agreement"
+        ]
+      }
+    },
+    {
+      "id": "B-kbd:focus-visible",
+      "name": "B-kbd: the control shows a visible keyboard focus ring (:focus-visible with outline or box-shadow)",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "role": null,
+        "label": "Acknowledge the agreement",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "B-kbd:status",
+      "name": "B-kbd: Enter produces the role=status message \"Task completed.\"",
+      "pass": true,
+      "detail": [
+        "status:Presenter controls ready",
+        "status:",
+        "status:No ordering entitlementScheme support can check your entitlement.Contact support",
+        "status:Task completed."
+      ]
+    },
+    {
+      "id": "B-kbd:focus-kept",
+      "name": "B-kbd: focus is not lost to the page body after the repaint",
+      "pass": true,
+      "detail": {
+        "tag": "p",
+        "role": "status",
+        "label": "Task completed.",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "12-account-keyboard:layout",
+      "name": "12-account-keyboard: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "wide": []
+      }
+    },
+    {
+      "id": "12-account-keyboard:copy",
+      "name": "12-account-keyboard: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "12-account-keyboard:console",
+      "name": "12-account-keyboard: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "12-account-keyboard:embedded order shown",
+      "name": "12-account-keyboard: embedded order shown",
+      "pass": true
+    },
+    {
+      "id": "12-account-keyboard:task now complete",
+      "name": "12-account-keyboard: task now complete",
+      "pass": true
+    },
+    {
+      "id": "C-kbd:shown",
+      "name": "C-kbd: offer host (offer read stubbed) shows the embedded order progress",
+      "pass": true
+    },
+    {
+      "id": "C-kbd:tab",
+      "name": "C-kbd: Tab alone reaches a handover slot button in the embedded order progress",
+      "pass": true,
+      "detail": {
+        "tabs": 5,
+        "lastStops": [
+          "Skip to content",
+          "BUTTON",
+          "Retry",
+          "Presenter controls",
+          "Request 7 Nov 2026, 09:00"
+        ]
+      }
+    },
+    {
+      "id": "C-kbd:focus-visible",
+      "name": "C-kbd: the control shows a visible keyboard focus ring (:focus-visible with outline or box-shadow)",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "role": null,
+        "label": "Request 7 Nov 2026, 09:00",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "C-kbd:status",
+      "name": "C-kbd: Enter produces the role=status message \"Handover time requested.\"",
+      "pass": true,
+      "detail": [
+        "status:Presenter controls ready",
+        "status:",
+        "status:Handover time requested.",
+        "status:Offer accepted"
+      ]
+    },
+    {
+      "id": "C-kbd:focus-kept",
+      "name": "C-kbd: focus is not lost to the page body after the repaint",
+      "pass": true,
+      "detail": {
+        "tag": "p",
+        "role": "status",
+        "label": "Handover time requested.",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "13-offer-keyboard:layout",
+      "name": "13-offer-keyboard: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "wide": []
+      }
+    },
+    {
+      "id": "13-offer-keyboard:copy",
+      "name": "13-offer-keyboard: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "13-offer-keyboard:console",
+      "name": "13-offer-keyboard: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "13-offer-keyboard:handover requested, not booked",
+      "name": "13-offer-keyboard: handover requested, not booked",
+      "pass": true
+    },
+    {
       "id": "07a-change-proposed:layout",
       "name": "07a-change-proposed: no horizontal scroll, nothing wider than the viewport",
       "pass": true,
@@ -1127,7 +1306,6 @@
       "bytesPng": 106613,
       "bytesJpeg": 59078,
       "evidence": true,
-      "accountReadStubbed": true,
       "innerWidth": 375,
       "scrollWidth": 375,
       "horizontalScroll": false,
@@ -1143,7 +1321,6 @@
       "bytesPng": 183564,
       "bytesJpeg": 109083,
       "evidence": true,
-      "accountReadStubbed": true,
       "innerWidth": 375,
       "scrollWidth": 375,
       "horizontalScroll": false,
@@ -1156,7 +1333,7 @@
     {
       "name": "375-08-account-state3",
       "file": "375-08-account-state3.png",
-      "bytesPng": 364046,
+      "bytesPng": 364077,
       "evidence": false,
       "innerWidth": 375,
       "scrollWidth": 375,
@@ -1172,7 +1349,6 @@
       "file": "375-04a-task-focus.png",
       "bytesPng": 183881,
       "evidence": false,
-      "accountReadStubbed": true,
       "innerWidth": 375,
       "scrollWidth": 375,
       "horizontalScroll": false,
@@ -1187,7 +1363,6 @@
       "file": "375-04b-task-completed.png",
       "bytesPng": 178342,
       "evidence": false,
-      "accountReadStubbed": true,
       "innerWidth": 375,
       "scrollWidth": 375,
       "horizontalScroll": false,
@@ -1200,9 +1375,8 @@
     {
       "name": "375-04c-handover-requested",
       "file": "375-04c-handover-requested.png",
-      "bytesPng": 165109,
+      "bytesPng": 165110,
       "evidence": false,
-      "accountReadStubbed": true,
       "innerWidth": 375,
       "scrollWidth": 375,
       "horizontalScroll": false,
@@ -1217,7 +1391,6 @@
       "file": "375-05-handover-booked.png",
       "bytesPng": 245305,
       "evidence": false,
-      "accountReadStubbed": true,
       "innerWidth": 375,
       "scrollWidth": 375,
       "horizontalScroll": false,
@@ -1230,10 +1403,9 @@
     {
       "name": "375-05b-return-requested",
       "file": "375-05b-return-requested.png",
-      "bytesPng": 177246,
+      "bytesPng": 177253,
       "bytesJpeg": 98889,
       "evidence": true,
-      "accountReadStubbed": true,
       "innerWidth": 375,
       "scrollWidth": 375,
       "horizontalScroll": false,
@@ -1246,10 +1418,9 @@
     {
       "name": "375-06-return-booked",
       "file": "375-06-return-booked.png",
-      "bytesPng": 181845,
+      "bytesPng": 181835,
       "bytesJpeg": 99391,
       "evidence": true,
-      "accountReadStubbed": true,
       "innerWidth": 375,
       "scrollWidth": 375,
       "horizontalScroll": false,
@@ -1280,7 +1451,6 @@
       "bytesPng": 305603,
       "bytesJpeg": 171053,
       "evidence": true,
-      "accountReadStubbed": true,
       "innerWidth": 375,
       "scrollWidth": 375,
       "horizontalScroll": false,
@@ -1293,10 +1463,9 @@
     {
       "name": "375-11-fixture-declined",
       "file": "375-11-fixture-declined.png",
-      "bytesPng": 214364,
+      "bytesPng": 214331,
       "bytesJpeg": 136247,
       "evidence": true,
-      "accountReadStubbed": true,
       "innerWidth": 375,
       "scrollWidth": 375,
       "horizontalScroll": false,
@@ -1312,7 +1481,6 @@
       "file": "375-12-fixture-provider-unsupported.png",
       "bytesPng": 147351,
       "evidence": false,
-      "accountReadStubbed": true,
       "innerWidth": 375,
       "scrollWidth": 375,
       "horizontalScroll": false,
@@ -1328,7 +1496,6 @@
       "file": "375-13-fixture-appointment-pending.png",
       "bytesPng": 202017,
       "evidence": false,
-      "accountReadStubbed": true,
       "innerWidth": 375,
       "scrollWidth": 375,
       "horizontalScroll": false,
@@ -1342,9 +1509,8 @@
     {
       "name": "375-14-fixture-documents-overdue",
       "file": "375-14-fixture-documents-overdue.png",
-      "bytesPng": 215299,
+      "bytesPng": 215271,
       "evidence": false,
-      "accountReadStubbed": true,
       "innerWidth": 375,
       "scrollWidth": 375,
       "horizontalScroll": false,
@@ -1361,7 +1527,6 @@
       "bytesPng": 211562,
       "bytesJpeg": 138048,
       "evidence": true,
-      "accountReadStubbed": true,
       "innerWidth": 375,
       "scrollWidth": 375,
       "horizontalScroll": false,
@@ -1377,7 +1542,6 @@
       "file": "375-16-fixture-ready-for-handover.png",
       "bytesPng": 190514,
       "evidence": false,
-      "accountReadStubbed": true,
       "innerWidth": 375,
       "scrollWidth": 375,
       "horizontalScroll": false,
@@ -1391,9 +1555,8 @@
     {
       "name": "375-17-fixture-return-unavailable",
       "file": "375-17-fixture-return-unavailable.png",
-      "bytesPng": 221251,
+      "bytesPng": 221285,
       "evidence": false,
-      "accountReadStubbed": true,
       "innerWidth": 375,
       "scrollWidth": 375,
       "horizontalScroll": false,
@@ -1409,7 +1572,6 @@
       "file": "375-18-fixture-unavailable.png",
       "bytesPng": 84816,
       "evidence": false,
-      "accountReadStubbed": true,
       "innerWidth": 375,
       "scrollWidth": 375,
       "horizontalScroll": false,
@@ -1425,7 +1587,6 @@
       "file": "375-19-fixture-loading.png",
       "bytesPng": 76982,
       "evidence": false,
-      "accountReadStubbed": true,
       "innerWidth": 375,
       "scrollWidth": 375,
       "horizontalScroll": false,
@@ -1441,7 +1602,6 @@
       "file": "375-20-fixture-partial-failure.png",
       "bytesPng": 143050,
       "evidence": false,
-      "accountReadStubbed": true,
       "innerWidth": 375,
       "scrollWidth": 375,
       "horizontalScroll": false,
@@ -1453,12 +1613,41 @@
       "excerpt": "Skip to content Group Car Schemes Portal P Paula (synthetic) Presenter controls ORDER PROGRESS Order progress All times are demo time (UTC). Your order No image for this car yet FICTIONAL EXAMPLE Fictional BMW i4 eDrive40 M Sport Order no. 1000001 Steps Selection received Done 5 Nov 2026, 09:00 HR approval Done 5 Nov 2026, 11:00 Sales-manager approval Current step 5 Nov 2026, 11:00 With the sales "
     },
     {
+      "name": "375-12-account-keyboard",
+      "file": "375-12-account-keyboard.png",
+      "bytesPng": 358811,
+      "bytesJpeg": 211214,
+      "evidence": true,
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "375-13-offer-keyboard",
+      "file": "375-13-offer-keyboard.png",
+      "bytesPng": 288340,
+      "bytesJpeg": 164467,
+      "evidence": true,
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
       "name": "375-07a-change-proposed",
       "file": "375-07a-change-proposed.png",
-      "bytesPng": 218590,
-      "bytesJpeg": 124256,
+      "bytesPng": 210496,
+      "bytesJpeg": 117101,
       "evidence": true,
-      "accountReadStubbed": true,
       "innerWidth": 375,
       "scrollWidth": 375,
       "horizontalScroll": false,
@@ -1471,9 +1660,8 @@
     {
       "name": "375-07b-change-accepted",
       "file": "375-07b-change-accepted.png",
-      "bytesPng": 263526,
+      "bytesPng": 255454,
       "evidence": false,
-      "accountReadStubbed": true,
       "innerWidth": 375,
       "scrollWidth": 375,
       "horizontalScroll": false,
@@ -1486,43 +1674,41 @@
   ],
   "errors": [],
   "requests": {
-    "GET /api/gcsp/presenter/controls 200 ok": 22,
-    "GET /api/gcsp/manual/account 200 ok": 12,
-    "GET /api/gcsp/context 200 ok": 22,
-    "GET /api/gcsp/presenter/scenarios 200 ok": 22,
-    "GET /api/gcsp/orders/progress/all 200 ok": 11,
-    "GET /api/gcsp/orders/progress 200 ok": 15,
-    "GET /api/gcsp/documents 200 ok": 15,
-    "GET /api/gcsp/appointments 200 ok": 15,
-    "GET /api/gcsp/return-plan 200 ok": 15,
-    "GET /api/gcsp/manual/draft 200 ok": 2,
-    "GET /api/gcsp/offers/current 200 ok": 2,
-    "GET /api/gcsp/manual/order 200 ok": 2,
-    "POST /api/gcsp/documents/tasks/complete 200 ok": 1,
-    "POST /api/gcsp/appointments/request 200 ok": 1,
+    "GET /api/gcsp/presenter/controls 200 ok": 24,
+    "GET /api/gcsp/manual/account 200 ok": 14,
+    "GET /api/gcsp/context 200 ok": 24,
+    "GET /api/gcsp/presenter/scenarios 200 ok": 24,
+    "GET /api/gcsp/orders/progress/all 200 ok": 12,
+    "GET /api/gcsp/orders/progress 200 ok": 19,
+    "GET /api/gcsp/documents 200 ok": 19,
+    "GET /api/gcsp/appointments 200 ok": 19,
+    "GET /api/gcsp/return-plan 200 ok": 19,
+    "GET /api/gcsp/manual/draft 200 ok": 3,
+    "GET /api/gcsp/offers/current 200 ok": 3,
+    "GET /api/gcsp/manual/order 200 ok": 3,
+    "POST /api/gcsp/documents/tasks/complete 200 ok": 2,
+    "POST /api/gcsp/appointments/request 200 ok": 2,
     "POST /api/gcsp/return-plan/request 200 ok": 1,
-    "GET /api/gcsp/offers/buddy-offer%3A6a617ef0d42fa32b788b34e00a684d0037382fad83db7e4b03a499cd4e5a1cdf 200 ok": 1,
+    "GET /api/gcsp/offers/buddy-offer%3A6a617ef0d42fa32b788b34e00a684d0037382fad83db7e4b03a499cd4e5a1cdf 200 ok": 2,
     "GET /api/gcsp/help 200 ok": 2,
     "GET /api/gcsp/cases 200 ok": 2,
     "POST /api/gcsp/appointments/accept 200 ok": 1
   },
   "processes": {
     "chrome": {
-      "pid": 10256,
-      "group": 10256
+      "pid": 14624,
+      "group": 14624
     },
     "server-main": {
-      "pid": 10255,
-      "port": 64656
+      "pid": 14595,
+      "port": 64856
     },
     "server-proposed": {
-      "pid": 10255,
-      "port": 64707
+      "pid": 14595,
+      "port": 64915
     }
   },
-  "notes": [
-    "Live-page captures after 02a stub ONLY GET /api/gcsp/manual/account (state ready); order-progress routes are real."
-  ],
+  "notes": [],
   "failedRequests": [
     "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
     "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
@@ -1553,10 +1739,10 @@
     "GET /api/gcsp/presenter/controls net::ERR_ABORTED"
   ],
   "summary": {
-    "checks": 139,
+    "checks": 157,
     "failed": [
       "A2:current-step"
     ],
-    "captures": 25
+    "captures": 27
   }
 }

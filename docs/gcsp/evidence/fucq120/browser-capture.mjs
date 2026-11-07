@@ -175,11 +175,6 @@ async function openBrowserPage(world) {
     if (url.startsWith(FAKE_OFFER_ORIGIN + '/') || url.startsWith('data:')) return route.fallback();
     report.errors.push({ type: 'external-request', url }); return route.abort();
   });
-  // After a real order the seeded account reads state "no-entitlement", which the shell treats as unavailable. A flag swaps in a ready account (shell header only).
-  await context.route('**/api/gcsp/manual/account', async (route) => {
-    if (!world.accountStub || route.request().method() !== 'GET') return route.fallback();
-    return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ status: 'ok', value: { state: 'ready', account: world.accountStub } }) });
-  });
   await context.addInitScript(() => {
     window.__csp = [];
     addEventListener('securitypolicyviolation', (event) => { window.__csp.push(`${event.violatedDirective} ${event.blockedURI}`); });
@@ -219,7 +214,7 @@ async function cap(world, name, { evidence = false, expectText = [] } = {}) {
   const png = await page.screenshot({ path: path.join(scratch, 'raw', file), fullPage: true });
   let jpgBytes = null;
   if (evidence) jpgBytes = (await page.screenshot({ path: path.join(scratch, 'raw', `${vp}-${name}.jpg`), fullPage: true, type: 'jpeg', quality: 70 })).length;
-  const entry = { name: `${vp}-${name}`, file, bytesPng: png.length, ...(jpgBytes ? { bytesJpeg: jpgBytes } : {}), evidence, ...(world.accountStub ? { accountReadStubbed: true } : {}), innerWidth: m.iw, scrollWidth: m.sw,
+  const entry = { name: `${vp}-${name}`, file, bytesPng: png.length, ...(jpgBytes ? { bytesJpeg: jpgBytes } : {}), evidence, innerWidth: m.iw, scrollWidth: m.sw,
     horizontalScroll: m.sw > m.iw, wideElements: m.wide, emDash: m.emDash, consoleErrors, resourceErrors, cspViolations: m.csp };
   report.captures.push(entry);
   rec(`${name}:layout`, `${name}: no horizontal scroll, nothing wider than the viewport`, m.sw <= m.iw && !m.wide.length, { scrollWidth: m.sw, innerWidth: m.iw, wide: m.wide });
@@ -278,20 +273,16 @@ async function runLive(world) {
   const { page } = world;
   let orderUuid; let car; let controller; let wait_;
   await step('A1', async () => {
-    const real = good(await world.request('/api/gcsp/manual/account')); world.realAccount = { name: real.account.name, gradeId: real.account.gradeId };
     await gotoLive(world, { none: true });
     await cap(world, '01-no-order', { expectText: [['reads "No order yet"', /No order yet/]] });
   });
   await step('A2', async () => {
     car = await submitOrder(world); orderUuid = car.orderUuid;
-    // Unstubbed: the real account read after the order.
     await gotoLive(world);
     const defect = await cap(world, '02a-real-account-after-order');
     const after = good(await world.request('/api/gcsp/manual/account'));
-    rec('A2:real-account-ready', 'A2 DEFECT: the standalone live page shows the order after a real order, using the real account read (shell needs account state "ready")',
+    rec('A2:real-account-ready', 'A2: the standalone live page shows the order after a real order, using the real account read (no stub anywhere)',
       /Order no\. \d{7}/.test(defect), { accountState: after.state, pageText: defect.slice(0, 220) });
-    // From here only the manual account read is stubbed as ready; every order-progress route stays real.
-    world.accountStub = world.realAccount; report.notes.push('Live-page captures after 02a stub ONLY GET /api/gcsp/manual/account (state ready); order-progress routes are real.');
     await gotoLive(world);
     const text = await cap(world, '02-approval-in-progress', { evidence: true, expectText: [['order number has 7 digits', /Order no\. \d{7}\b/], ['current stage shown (Selection received)', /Selection received/], ['owner shown on the current stage ("With ...")', /With [a-z]+/i], ['next step shown on the current stage ("Next: ...")', /Next: \S/], ['approval in progress, no handover yet', /Handover times open once your order is sent to ordering/]] });
     const current = await page.locator('[aria-current="step"]').count();
@@ -312,12 +303,10 @@ async function runLive(world) {
     rec('A3:stage', 'A3: sent to ordering is the current stage', /Sent to ordering/.test(text));
   });
   await step('B3', async () => {
-    const stub = world.accountStub; world.accountStub = null;
     await page.goto(world.origin + '/gcsp-account.html');
     await page.waitForFunction(() => /Your order/.test(document.body.innerText), null, { timeout: 15000 }).catch(() => {});
     await settle(world);
     await cap(world, '08-account-state3', { expectText: [['"Your order" area present', /Your order/], ['order number', /Order no\. \d{7}\b/], ['stage names', /Sent to ordering/]] });
-    world.accountStub = stub;
   });
   await step('A4', async () => {
     await gotoLive(world);
@@ -374,19 +363,18 @@ async function runLive(world) {
     rec('A6:text', 'A6: both handover and return are booked', /Booked:/.test(text) && /Return booked/.test(text));
   });
   await step('B6', async () => {
-    const stub = world.accountStub; world.accountStub = null;
     await page.goto(world.origin + '/gcsp-account.html');
     await page.waitForFunction(() => /Your order/.test(document.body.innerText), null, { timeout: 15000 }).catch(() => {});
     await settle(world);
     await cap(world, '09-account-state6', { evidence: true, expectText: [['"Your order" area present', /Your order/], ['order number', /Order no\. \d{7}\b/], ['stages shown', /Sent to ordering/], ['return booked shown', /Return booked/]] });
-    world.accountStub = stub;
   });
   await step('C', async () => { await runOffer(world, orderUuid, car); });
   controller?.destroy();
 }
 
-async function runOffer(world, orderUuid, car) {
-  const { page, context } = world;
+// Registers the stubbed https offer origin for this world; only /api/gcsp/offers/ reads are stubbed.
+async function offerRoute(world, orderUuid, car) {
+  const { context } = world;
   const base = JSON.parse(await readFile(path.join(ROOT, 'docs/gcsp/evidence/fucq105/producer-access.json'), 'utf8'));
   const dto = structuredClone(base);
   Object.assign(dto, { state: 'accepted', reason: 'accepted', offerState: 'accepted', holdState: 'allocated', availableActions: [] });
@@ -404,7 +392,11 @@ async function runOffer(world, orderUuid, car) {
     const response = await route.fetch({ url: world.origin + url.pathname + url.search, headers });
     return route.fulfill({ response, headers: { ...response.headers(), 'content-security-policy': CSP } });
   });
-  const target = `${FAKE_OFFER_ORIGIN}/gcsp-offer.html?offerId=${encodeURIComponent(dto.offerId)}&runId=${encodeURIComponent(dto.runId)}`;
+  return { stubbed, target: `${FAKE_OFFER_ORIGIN}/gcsp-offer.html?offerId=${encodeURIComponent(dto.offerId)}&runId=${encodeURIComponent(dto.runId)}` };
+}
+
+async function openOffer(world, route) {
+  const { page } = world; const { target } = route;
   // Chrome treats the stubbed https origin as secure, which the offer transport requires; its pages and order APIs are fetched from the real loopback server.
   let attempt = 0; let shown = false;
   while (attempt < 2 && !shown) {
@@ -412,11 +404,30 @@ async function runOffer(world, orderUuid, car) {
     await page.goto(target);
     shown = await page.waitForFunction(() => /Your order/.test(document.body.innerText) && !/Loading your order/.test(document.body.innerText), null, { timeout: 15000 }).then(() => true, () => false);
   }
-  rec('C:stub', 'C: offer read stubbed (accepted offer; quote.orderUuid is the real order). Order progress routes are real', shown, { attempts: attempt, stubbedRoutes: [...new Set(stubbed)], note: 'offer read stubbed (and the shell account read, see 02a); page served at a stubbed https origin because the offer transport requires https' });
+  return { shown, attempt };
+}
+
+async function runOffer(world, orderUuid, car) {
+  const { page } = world; const route = await offerRoute(world, orderUuid, car); const { stubbed } = route;
+  const { shown, attempt } = await openOffer(world, route);
+  rec('C:stub', 'C: offer read stubbed (accepted offer; quote.orderUuid is the real order). Order progress routes are real', shown, { attempts: attempt, stubbedRoutes: [...new Set(stubbed)], note: 'offer read stubbed page served at a stubbed https origin because the offer transport requires https' });
   if (!shown) { report.notes.push('C skipped: the offer projection or page did not show embedded progress after two attempts.'); await cap(world, '10-offer-not-shown'); return; }
   await settle(world);
   await cap(world, '10-offer-accepted', { evidence: true, expectText: [['offer shows accepted', /accepted/i], ['embedded order progress shows order number', /Order no\. \d{7}\b/], ['embedded stages shown', /Sent to ordering/]] });
   rec('C:embedded', 'C: embedded progress is inside the "Your order progress" region', await page.locator('section[aria-label="Your order progress"] .gcsp-order-progress').count() === 1);
+}
+
+// Keyboard only: Tab to the control, check the focus ring, press Enter, check the role=status message and where focus went.
+async function keyboardOperate(world, { id, label, selector, status, capName, expectText = [] }) {
+  const { page } = world;
+  const t = await tabTo(page, selector, 150);
+  rec(`${id}:tab`, `${id}: Tab alone reaches ${label}`, t.found, { tabs: t.tabs, lastStops: t.trail.slice(-6) });
+  const f = await focusInfo(page);
+  rec(`${id}:focus-visible`, `${id}: the control shows a visible keyboard focus ring (:focus-visible with outline or box-shadow)`, t.found && f.ring, f);
+  const r = await pressEnterAndRead(world, status);
+  rec(`${id}:status`, `${id}: Enter produces the role=status message "${status}"`, r.announced, r.status);
+  rec(`${id}:focus-kept`, `${id}: focus is not lost to the page body after the repaint`, r.focusAfter.tag !== 'body' && r.focusAfter.ring, r.focusAfter);
+  return cap(world, capName, { evidence: true, expectText });
 }
 
 async function runProposed() {
@@ -424,12 +435,28 @@ async function runProposed() {
   try {
     await openBrowserPage(world);
     const { page } = world;
-    const real = good(await world.request('/api/gcsp/manual/account')); world.accountStub = { name: real.account.name, gradeId: real.account.gradeId };
     const car = await submitOrder(world);
     const controller = await open(world, { orderUuid: car.orderUuid });
     await step('A7', async () => {
       await approve(world, controller); const wait_ = await delays(world);
-      await controller.requestAppointment(value(controller, 'appointment').offeredSlots[0].slotId);
+      // Keyboard-only checks on the account and offer hosts (this order is at "sent to ordering", task outstanding, slots offered).
+      await step('B-kbd', async () => {
+        await world.page.goto(world.origin + '/gcsp-account.html');
+        await world.page.waitForFunction(() => /Your order/.test(document.body.innerText), null, { timeout: 15000 }).catch(() => {});
+        await settle(world);
+        await keyboardOperate(world, { id: 'B-kbd', label: 'the employee task action in the embedded "Your order" area', selector: '.gcsp-order-progress .gcsp-order-documents button',
+          status: 'Task completed.', capName: '12-account-keyboard', expectText: [['embedded order shown', /Order no\. \d{7}\b/], ['task now complete', /Complete/]] });
+      });
+      await step('C-kbd', async () => {
+        const route = await offerRoute(world, car.orderUuid, car);
+        const { shown } = await openOffer(world, route);
+        rec('C-kbd:shown', 'C-kbd: offer host (offer read stubbed) shows the embedded order progress', shown);
+        await settle(world);
+        await keyboardOperate(world, { id: 'C-kbd', label: 'a handover slot button in the embedded order progress', selector: '.gcsp-order-progress .gcsp-order-handover .gcsp-order-slot button',
+          status: 'Handover time requested.', capName: '13-offer-keyboard', expectText: [['handover requested, not booked', /Not booked yet/]] });
+      });
+      await controller.refresh();
+      if (value(controller, 'appointment').state === 'not-requested') await controller.requestAppointment(value(controller, 'appointment').offeredSlots[0].slotId);
       good(await tick(world, 'op-propose-appointment', wait_.appointment));
       await gotoLive(world);
       const text = await cap(world, '07a-change-proposed', { evidence: true, expectText: [['New time proposed', /New time proposed/], ['"Accept new time" offered', /Accept new time/], ['not booked yet', /Not booked yet/]] });
