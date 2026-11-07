@@ -1,6 +1,6 @@
 # Wider BMW range inventory assessment — 7 November 2026
 
-Status: offline assessment followed by parent-authorised minimal implementation in `g42-range-inventory-2026-11-07/`. No source allocation is yet prepared or released, and no additional source traffic has occurred. This is within the existing F58/F59 discovery lane; it does not change claimed acceptance criteria, publish catalogue data or create backlog scope.
+Status: offline assessment followed by parent-authorised minimal implementation in `g42-range-inventory-2026-11-07/`. The exact G42 three-GET allocation is prepared and unspent; none is released, and no additional source traffic has occurred. This is within the existing F58/F59 discovery lane; it does not change claimed acceptance criteria, publish catalogue data or create backlog scope.
 
 ## Smallest path
 

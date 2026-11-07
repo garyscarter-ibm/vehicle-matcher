@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "bmw-range-inventory-retained-deliverables.v1",
+  "primary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/g42-range-inventory-2026-11-07/collector-checkpoint.json",
+  "disposable": false,
+  "retainOnInterruption": true,
+  "exportBeforeScratchCleanup": true,
+  "exporter": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py",
+  "embeddedArtifacts": [
+    "inventoryObservation"
+  ],
+  "boundary": "Primary retained from first write; child join and existing primary exporter plus safe inventory export precede scratch cleanup."
+}

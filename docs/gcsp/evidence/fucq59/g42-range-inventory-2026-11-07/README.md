@@ -1,6 +1,6 @@
 # G42 observation-only range inventory — 7 November 2026
 
-Capability implemented; the exact three-GET source allocation is not yet prepared or released. No BMW traffic occurred here.
+Capability implemented and exact three-GET source allocation prepared, unspent and unreleased. No BMW traffic occurred here.
 
 The separate `f59-range-inventory-20261107.v1` version registers only one GB/en-GB range, the literal historical official-page seed and explicit tree query dates. The first proposed request scope is G42 / 2PMC, query effect/order dates 2026-11-01 / 2026-11-01. These remain request inputs. Returned AG, raw range, steering, model dates, complete observed aliases and bounded direct line/default/included pointers come only from the actual response; future returned dates are retained as facts. Missing fields, conflicting aliases, a missing seed and a model-key mismatch remain gaps.
 
@@ -8,4 +8,8 @@ The existing common executor owns page/settings/tree, budgets, strict JSON, HTTP
 
 The initial seven tests failed for the expected absent capability before implementation. Ten focused tests then passed. After two additional bound/provenance checks, all 121 selected inventory, context, options, batch and shared collector boundary tests passed with zero skips in 16.674 seconds. Peak sampled RSS was 266,584,064 bytes and scratch peaked at 5,796,224 bytes. All owned groups, scratch, dependency links and host reservations are absent; no compatibility exception remains. The red, focused and boundary receipts/identities are retained in `capability-validation.json`. A full suite, runtime integration, live inventory or acceptance is not implied.
 
-The historical seed provenance and exact executable/input hashes will be frozen in a separately prepared allocation. The parent independently reviews and releases every source allocation. FUCQ-151/FUCQ-154 remain separately prioritised Medium defects. Retain the primary from its first write and export the primary and safe inventory artifact before scratch cleanup.
+The historical seed provenance and exact executable/input hashes are frozen in `execution-plan.json`. The parent independently reviews and releases every source allocation. FUCQ-151/FUCQ-154 remain separately prioritised Medium defects. Retain the primary from its first write and export the primary and safe inventory artifact before scratch cleanup.
+
+All six offline preparation checks passed with zero skips: strict plan/provenance, frozen executable/input pins and resource/retention contract, syntax, and missing-grant runner/supervisor refusals before fetch/marker/resource allocation. Preparation verification took 0.480160 seconds, sampled 109,051,904 bytes peak RSS and removed 602,272 bytes of owned scratch. Cleanup verified all owned groups, scratch, dependency links and reservations absent, with no compatibility exception. `validation.json` retains the receipt. The plan permits three GETs only, 4 MiB aggregate / 1 MiB response, 90/105/120-second limits, one worker/no retries, 512/448 MiB host/child RAM and 64 MiB scratch.
+
+The exact release environment is `BMW_RANGE_INVENTORY_SOURCE_GRANT=g42-range-inventory-20261107-once`; it is required independently by runner and supervisor. The parent owns release and execution. Never infer a source grant from this preparation.
