@@ -1180,17 +1180,7 @@
         }
       ],
       "unsliced": false,
-      "workers": [
-        {
-          "name": "Claude story-lead",
-          "harness": "claude-code",
-          "role": "story-lead",
-          "observed_at": "2026-11-07T15:45:00Z",
-          "expires_at": "2026-11-07T17:45:00Z",
-          "source": "claude-code story-lead (opus)",
-          "status": "active"
-        }
-      ]
+      "workers": []
     },
     {
       "id": "FUCQ-107",
@@ -1204,69 +1194,57 @@
       "slices": [
         {
           "id": "policy-question",
-          "status": "in-progress",
+          "status": "complete",
           "title": "One canonical typed-reason question",
-          "observed_at": "2026-11-06T01:16:35.937156+00:00",
-          "evidence": "c536ab4:7/7canonical-policy scoped cases passed; immutable graph/pg/Node/process/strictcleanup independently audited208checks. Canonical103 registration and actual source integration remain pending."
+          "observed_at": "2026-11-07T17:20:00Z",
+          "evidence": "Claude story-lead 2026-11-07: scoped 113/113; full suite 19 failures all pre-existing; browser 1280/375 PNGs in docs/gcsp/evidence/fucq107/browser/."
         },
         {
           "id": "confirmation",
-          "status": "in-progress",
+          "status": "complete",
           "title": "One explicit versioned BriefService change",
-          "observed_at": "2026-11-06T01:34:39Z",
-          "evidence": "1683932 repaired service12/12 passed; separate policy7/7 reused. Lead208/root204 source/dependency/PID/group/scratch/strict-reservation audits PASS. Actual producer/browser/full gates remain open; evidence scoped-service-pass/summary.json."
+          "observed_at": "2026-11-07T17:20:00Z",
+          "evidence": "Claude story-lead 2026-11-07: scoped 113/113; full suite 19 failures all pre-existing; browser 1280/375 PNGs in docs/gcsp/evidence/fucq107/browser/."
         },
         {
           "id": "comparison",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Two stored quote comparison and current-brief evidence",
-          "observed_at": "2026-11-06T01:34:39Z",
-          "evidence": "1683932 service12/12 passed including stored-quote comparison and safe102-shaped port. Real105/106/102 composition proposed in client-composition-plan.md; actual producer evidence remains open."
+          "observed_at": "2026-11-07T17:20:00Z",
+          "evidence": "Claude story-lead 2026-11-07: scoped 113/113; full suite 19 failures all pre-existing; browser 1280/375 PNGs in docs/gcsp/evidence/fucq107/browser/."
         },
         {
           "id": "client-states",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Reloadable shared-kit follow-up states",
-          "observed_at": "2026-11-06T01:34:40Z",
-          "evidence": "Owned controller, strict transport, shared-kit view/shell/custom element and13controller+9render cases authored after root freeze release. No tests or browser executed; next exact frozen review and source plan pending."
+          "observed_at": "2026-11-07T17:20:00Z",
+          "evidence": "Claude story-lead 2026-11-07: scoped 113/113; full suite 19 failures all pre-existing; browser 1280/375 PNGs in docs/gcsp/evidence/fucq107/browser/."
         },
         {
           "id": "actual-integration",
-          "status": "not-started",
-          "title": "Actual decline event, release, allocation and second hold integration"
+          "status": "in-progress",
+          "title": "Actual decline event, release, allocation and second hold integration",
+          "observed_at": "2026-11-07T17:20:00Z",
+          "evidence": "Second offer proved through real buddy hold port; live presenter tick awaits FUCQ-96 merge."
         },
         {
           "id": "browser",
-          "status": "not-started",
-          "title": "375px and desktop keyboard visual review"
+          "status": "complete",
+          "title": "375px and desktop keyboard visual review",
+          "observed_at": "2026-11-07T17:20:00Z",
+          "evidence": "Claude story-lead 2026-11-07: scoped 113/113; full suite 19 failures all pre-existing; browser 1280/375 PNGs in docs/gcsp/evidence/fucq107/browser/."
         },
         {
           "id": "full-validation",
-          "status": "not-started",
-          "title": "Authored full validation and integration review"
+          "status": "complete",
+          "title": "Authored full validation and integration review",
+          "observed_at": "2026-11-07T17:20:00Z",
+          "evidence": "Claude story-lead 2026-11-07: scoped 113/113; full suite 19 failures all pre-existing; browser 1280/375 PNGs in docs/gcsp/evidence/fucq107/browser/."
         }
       ],
       "unsliced": false,
-      "workers": [
-        {
-          "name": "Lego Batman",
-          "harness": "codex",
-          "role": "story-lead",
-          "observed_at": "2026-11-06T01:34:58.523037+00:00",
-          "expires_at": "2026-11-06T03:04:58.523037+00:00",
-          "source": "thread 01a1ae4b-a637-7f31-a152-feda9925e927; requested/selected/effective gpt-6.1-sol/high verified turn_context",
-          "status": "client authoring; repaired12/12 and separatepolicy7/7 accepted; exact nextfreeze preparation"
-        },
-        {
-          "name": "Baymax",
-          "harness": "codex",
-          "role": "mechanic",
-          "observed_at": "2026-11-06T00:59:20.970108+00:00",
-          "expires_at": "2026-11-06T00:59:20.970108+00:00",
-          "source": "collaboration /root/baymax; requested/selected/effective gpt-6-luna/high verified rollout01a1ae50-e524-7530-ac77-c8bb80eda9cb; source reviewed and labelled canonical reason shape corrected by lead",
-          "status": "stopped-before-tests-missing-pg"
-        }
-      ]
+      "workers": [],
+      "branch": "dev/DEV-2026-11-04-085"
     },
     {
       "id": "FUCQ-108",
