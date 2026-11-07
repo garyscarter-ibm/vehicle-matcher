@@ -748,12 +748,72 @@
     {
       "id": "FUCQ-62",
       "title": "Publish the configuration corpus and generate stock by order reference",
-      "status": "To Do",
+      "status": "In Progress",
       "original_status": "To Do",
-      "assignee": "",
+      "assignee": "usget",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62"
+      "observed_at": "2026-11-07T00:54:48Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62",
+      "claim_evidence": "Claimed owning035 at34a793e3; root checkpoint authorisation, Jira OAuth unavailable. Full acceptance remains open.",
+      "slices": [
+        {
+          "id": "source-v2",
+          "status": "complete",
+          "title": "Registered source v2 qualification",
+          "observed_at": "2026-11-07T00:54:47Z",
+          "evidence": "docs/gcsp/evidence/fucq62/README.md;37 scoped checks, actual30rows/29qualifying source/oldVIN1; full acceptance not established."
+        },
+        {
+          "id": "retained-history",
+          "status": "complete",
+          "title": "Immutable retained rows and VIN history",
+          "observed_at": "2026-11-07T00:54:47Z",
+          "evidence": "docs/gcsp/evidence/fucq62/README.md;37 scoped checks, actual30rows/29qualifying source/oldVIN1; full acceptance not established."
+        },
+        {
+          "id": "manifest",
+          "status": "complete",
+          "title": "Separate total and qualifying source counts",
+          "observed_at": "2026-11-07T00:54:48Z",
+          "evidence": "docs/gcsp/evidence/fucq62/README.md;37 scoped checks, actual30rows/29qualifying source/oldVIN1; full acceptance not established."
+        },
+        {
+          "id": "atomic-loader",
+          "status": "complete",
+          "title": "Existing atomic idempotent loader and recovery",
+          "observed_at": "2026-11-07T00:54:48Z",
+          "evidence": "docs/gcsp/evidence/fucq62/README.md;37 scoped checks, actual30rows/29qualifying source/oldVIN1; full acceptance not established."
+        },
+        {
+          "id": "runtime-package",
+          "status": "complete",
+          "title": "Deployable small offline release",
+          "observed_at": "2026-11-07T00:54:48Z",
+          "evidence": "docs/gcsp/evidence/fucq62/README.md;37 scoped checks, actual30rows/29qualifying source/oldVIN1; full acceptance not established."
+        },
+        {
+          "id": "source-targets",
+          "status": "in-progress",
+          "title": "Actual 200 target and scheme model coverage",
+          "observed_at": "2026-11-07T00:54:48Z",
+          "evidence": "Actual standalone shortfall171/200; oneT5MJ model;10kpost-demo. No fixture padding or new source calls."
+        },
+        {
+          "id": "scale",
+          "status": "in-progress",
+          "title": "Existing format scale boundary for 10000",
+          "observed_at": "2026-11-07T00:54:48Z",
+          "evidence": "Measured527502B/30rows;175834000B forecast/10k exceeds64MiB existing per-file loader cap. No bounds increased; design next."
+        },
+        {
+          "id": "integration",
+          "status": "in-progress",
+          "title": "Application and deployed integration acceptance",
+          "observed_at": "2026-11-07T00:54:48Z",
+          "evidence": "Core offline lookup passes; F63 bridgeb4d02dbb separate. Root live deployment/API/fullnpm pending."
+        }
+      ],
+      "unsliced": false
     },
     {
       "id": "FUCQ-63",
@@ -1773,7 +1833,7 @@
           "title": "Real FUCQ-77/78 source-backed stock and confirmed supply producer"
         },
         {
-          "evidence": "Actual fixed-pin F92→F96→F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
+          "evidence": "Actual fixed-pin F92\u2192F96\u2192F100 proof3/3 and manual projection pass; producer-owned visible-history read port13/13. Shared startup/F69 route/gallery composition and cases-reader compatibility remain.",
           "id": "runtime-consumers",
           "observed_at": "2026-11-05T23:57:50.906138+00:00",
           "status": "blocked",

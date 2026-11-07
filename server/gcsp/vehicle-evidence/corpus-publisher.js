@@ -1,7 +1,8 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { mkdir, open, readFile, rename, rm, stat } from 'node:fs/promises';
 import { dirname, isAbsolute, join, resolve } from 'node:path';
-import { bmwCatalogueLookupIdentity } from '../../vehicle-evidence/bmw-catalogue-adapter.js';
+import { bmwCatalogueLookupIdentity, createBmwCatalogueAdapter } from '../../vehicle-evidence/bmw-catalogue-adapter.js';
+import { registeredCatalogueSources } from './registered-catalogue-sources.js';
 import { inputDigest } from '../repository/core.js';
 import { createVinProfileRegistry, VIN_PROFILE_REGISTRY_VERSION } from './vin-profiles.js';
 import { generateVin, VIN_GENERATOR_VERSION } from './vin-generator.js';
@@ -57,8 +58,7 @@ async function signaturePolicy({ policyService, policyRead }, pin) {
   'unsupported-signature-policy', 'This code supports a named model-code field, one separator, all factory codes and padded Base64. Publish no IDs under an unsupported rule.');
   return { policyVersion: rows[0].policyVersion, assumptions: Object.fromEntries(rows.map((r, i) => [SIGNATURE_KEYS[i], r.value])) };
 }
-function configurationSignature(row, policy) {
-  const identity = row.canonicalIdentity;
+function configurationKey(identity, policy) {
   requireValue(keys(identity, ['vgModelCode', 'agModelCode', 'factoryOptionCodes', 'provenance']), 'configuration-signature', 'Supply a separate explicit canonical model/code identity.');
   const field = policy.assumptions[SIGNATURE_KEYS[0]].value;
   const model = identity[field]; const codes = identity.factoryOptionCodes;
@@ -66,14 +66,18 @@ function configurationSignature(row, policy) {
     && codes.length > 0 && codes.length <= 256 && codes.every((v) => typeof v === 'string' && /^[A-Z0-9]{2,16}$/.test(v))
     && new Set(codes).size === codes.length, 'configuration-signature', 'Canonical identity needs an explicit upper-case model code and every unique factory code; unknown source codes cannot be invented as observed.');
   const signature = `${model}:${[...codes].sort().join(policy.assumptions[SIGNATURE_KEYS[1]].value)}`;
-  requireValue(row.configurationId === Buffer.from(signature).toString('base64'), 'configuration-signature', 'configurationId must match the canonical model and sorted complete identity codes.');
-  return signature;
+  return { configurationId: Buffer.from(signature).toString('base64'), decodedIdentity: signature, signaturePolicyVersion: policy.policyVersion };
+}
+function configurationSignature(row, policy) {
+  const identity = configurationKey(row.canonicalIdentity, policy);
+  requireValue(row.configurationId === identity.configurationId, 'configuration-signature', 'configurationId must match the canonical model and sorted complete identity codes.');
+  return identity.decodedIdentity;
 }
 function validProvenance(p) {
   return keys(p, ['kind', 'source', 'observedDate']) && ['observed', 'synthetic'].includes(p.kind) && text(p.source)
     && (p.kind === 'observed' ? date(p.observedDate) : p.observedDate === null);
 }
-function validateConfiguration(row, policy) {
+async function validateConfiguration(row, policy, catalogueAdapter) {
   requireValue(keys(row, configFields) && text(row.configurationId) && version(row.snapshotVersion)
     && object(row.configuration) && keys(row.configuration, bindingFields)
     && Array.isArray(row.imageIds) && row.imageIds.every(text) && new Set(row.imageIds).size === row.imageIds.length,
@@ -101,6 +105,25 @@ function validateConfiguration(row, policy) {
     requireValue(config.market === 'US' && config.steering === 'LHD' && source.selectedOptionCompleteness === 'unknown'
       && row.canonicalIdentity.provenance.kind === 'synthetic' && row.catalogue === null,
     'configuration-provenance', 'Partial North American structural references do not establish full selections, UK/RHD profiles or real canonical option codes.');
+  } else if (row.catalogue?.schemaVersion === '2') {
+    const c = row.catalogue; const binding = c.sourceBinding;
+    const options = Object.fromEntries(['provider', 'providerVersion', 'schemaVersion', 'sourceContractVersion', 'snapshotVersion']
+      .map((name) => [name, c[name]]));
+    const qualified = await catalogueAdapter.resolve({ configurationId: row.configurationId, bindingDigest: c.lookupIdentity?.bindingDigest }, options);
+    requireValue(['ok', 'partial'].includes(qualified.status) && equal(qualified, c),
+      'unregistered-source', 'A v2 row must match an independently registered admitted source envelope exactly.');
+    const expected = Object.fromEntries(bindingFields.map((field) => [field, null]));
+    Object.assign(expected, { model: binding.optionalFacts.modelName.value, generation: binding.confirmedContext.rawModelRange.value,
+      agModelCode: binding.canonicalIdentity.agModelCode, vgModelCode: binding.canonicalIdentity.vgModelCode,
+      market: binding.requestScope.market });
+    requireValue(equal(config, expected) && equal(row.canonicalIdentity, { ...binding.canonicalIdentity, provenance: c.identityProvenance })
+      && row.snapshotVersion === c.snapshotVersion && source.observedDate === c.observedDate
+      && source.catalogueDate === c.observedDate && source.selectedOptionCompleteness === c.completeness.factorySelection
+      && c.completeness.factorySelection === 'complete' && c.equipment.selected.factoryComplete === true
+      && equal(source.sourceRefs, [...new Set(binding.evidence.map((e) => e.request.url))].sort())
+      && row.canonicalIdentity.provenance.kind === 'observed'
+      && binding.evidence.every((e) => e.sourceId === 'bmw-uk-public'),
+    'configuration-provenance', 'Retain exact complete factory selection and source context; physical build, technical and accessory quantity unknowns do not become observed facts.');
   } else {
     const c = row.catalogue;
     const lookup = c?.resolvedIdentity ? bmwCatalogueLookupIdentity({ ...c.resolvedIdentity, selectionComplete: true },
@@ -132,8 +155,16 @@ function validateConfiguration(row, policy) {
 }
 function summary(configurations, vins, images) {
   const count = (items, selector) => items.reduce((result, item) => { const key = selector(item); result[key] = (result[key] || 0) + 1; return result; }, {});
+  const v2 = configurations.some((r) => r.catalogue?.schemaVersion === '2');
+  const observed = configurations.filter((r) => r.sourceContext.sourceKind === 'dated-snapshot'
+    && r.canonicalIdentity.provenance.kind === 'observed');
+  const qualifying = observed.filter((r) => r.catalogue?.schemaVersion === '2'
+    ? r.catalogue.sourceBinding.selection.constructible === true && r.catalogue.sourceBinding.selection.factoryComplete === true
+      && r.catalogue.completeness.factorySelection === 'complete'
+    : r.catalogue?.completeness?.selectedConfiguration === 'complete');
   return { counts: { configurations: configurations.length, distinctConfigurations: new Set(configurations.map((r) => r.canonicalSignature)).size,
-    vinMappings: vins.length, images: images.length },
+    vinMappings: vins.length, images: images.length, ...(v2 ? { sourceConfigurations: observed.length,
+      qualifyingCompleteDistinctSourceConfigurations: new Set(qualifying.map((r) => r.canonicalSignature)).size } : {}) },
   coverage: { markets: count(configurations, (r) => r.configuration.market), steering: count(configurations, (r) => r.configuration.steering ?? 'unknown'),
     models: count(configurations, (r) => r.configuration.model ?? 'unknown'), wmis: count(vins, (r) => r.vin17.slice(0, 3)) },
   completeness: { selectedOptions: count(configurations, (r) => r.sourceContext.selectedOptionCompleteness),
@@ -159,9 +190,28 @@ function projectVins(inventory) {
 async function validateRows(configurations, vins, images, manifest, options) {
   requireValue(configurations.length > 0 && configurations.length <= 100000, 'configuration-schema', 'A valid corpus needs at least one configuration; absence is source-unavailable.');
   const ids = new Map(); const signatures = new Set();
+  let catalogueAdapter;
+  if (configurations.some((row) => row.catalogue?.schemaVersion === '2')) {
+    const key = (identity) => configurationKey(identity, manifest.signaturePolicy);
+    key.policyVersion = manifest.signaturePolicy.policyVersion;
+    const registrations = options.sourceRegistrations ?? await registeredCatalogueSources(key);
+    const envelopes = new Map(configurations.filter((row) => row.catalogue?.schemaVersion === '2')
+      .map((row) => [inputDigest(row.catalogue.lookupIdentity), row.catalogue]));
+    catalogueAdapter = createBmwCatalogueAdapter({ sourceRegistrations: registrations,
+      loadSnapshot: async (version, { lookupIdentity }) => {
+        const envelope = structuredClone(envelopes.get(inputDigest(lookupIdentity)));
+        // JSONL canonicalises object member order. Restore the adapter's lookup
+        // representation only after both retained identities already agree.
+        if (envelope && equal(envelope.lookupIdentity, lookupIdentity) && equal(envelope.resolvedLookupIdentity, lookupIdentity)) {
+          envelope.lookupIdentity = structuredClone(lookupIdentity);
+          envelope.resolvedLookupIdentity = structuredClone(lookupIdentity);
+        }
+        return envelope;
+      } });
+  }
   for (const row of configurations) {
     requireValue(!ids.has(row.configurationId), 'duplicate-configuration', 'Duplicate configurationId.');
-    validateConfiguration(row, manifest.signaturePolicy);
+    await validateConfiguration(row, manifest.signaturePolicy, catalogueAdapter);
     requireValue(!signatures.has(row.canonicalSignature), 'duplicate-configuration', 'Duplicate canonical configuration signature.');
     ids.set(row.configurationId, row); signatures.add(row.canonicalSignature);
   }
@@ -270,12 +320,35 @@ export async function writeCorpusCandidate(directory, input, options = {}) {
   try {
     requireValue(typeof directory === 'string' && isAbsolute(directory), 'explicit-path-required', 'Supply an absolute candidate output directory.');
     const policy = await signaturePolicy(options);
-    const configurations = structuredClone(input.configurations).sort((a, b) => a.configurationId.localeCompare(b.configurationId));
+    let retained = { configurations: [], vins: [], images: [] };
+    if (input.retainedCorpusDirectory !== undefined) {
+      const checked = await validateCorpusDirectory(input.retainedCorpusDirectory, options);
+      requireValue(checked.status === 'ok', 'retained-corpus-invalid', 'Restore a complete validated prior corpus before retaining its immutable rows.');
+      retained = checked.corpus;
+    }
+    const configurations = structuredClone(input.configurations);
     for (const row of configurations) {
       row.canonicalSignature = configurationSignature(row, policy);
       row.canonicalIdentity.factoryOptionCodes.sort();
     }
-    const vins = projectVins(input.allocationInventory); const images = structuredClone(input.images || []).sort((a, b) => a.imageId.localeCompare(b.imageId));
+    for (const row of retained.configurations) {
+      const existing = configurations.find((candidate) => candidate.configurationId === row.configurationId);
+      requireValue(!existing || equal(existing, row), 'historical-configuration-conflict', 'A retained configurationId cannot acquire different immutable facts or provenance.');
+      if (!existing) configurations.push(structuredClone(row));
+    }
+    configurations.sort((a, b) => a.configurationId.localeCompare(b.configurationId));
+    const additions = input.allocationInventory === undefined ? [] : projectVins(input.allocationInventory);
+    const mergeRetained = (prior, next, field) => {
+      const merged = structuredClone(prior);
+      for (const row of next) {
+        const existing = merged.find((candidate) => candidate[field] === row[field]);
+        requireValue(!existing || equal(existing, row), 'conflicting-association', 'A retained VIN or image association cannot change.');
+        if (!existing) merged.push(structuredClone(row));
+      }
+      return merged.sort((a, b) => a[field].localeCompare(b[field]));
+    };
+    const vins = mergeRetained(retained.vins, additions, 'vehicleId');
+    const images = mergeRetained(retained.images, input.images || [], 'imageId');
     const artifacts = [configurations, vins, images].map((rows) => rows.map(canonicalContent).join(''));
     const manifest = { ...structuredClone(input.metadata), signaturePolicy: policy, qualification: 'bounded-fixture-or-partial-corpus',
       ...summary(configurations, vins, images), checksums: Object.fromEntries(CORPUS_FILES.map((name, i) => [name, contentChecksum(artifacts[i])])) };
