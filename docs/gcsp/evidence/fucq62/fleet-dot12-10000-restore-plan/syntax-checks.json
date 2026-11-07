@@ -1,6 +1,6 @@
 {
   "scope": "static-only preparation",
-  "planSha256": "b5bad9f75f27220f8d821e783feb282ac3093701a8d7c3fadfe01b4cd2dd01b2",
+  "planSha256": "d5068c73528503e492fb4bff81ba8bc5648ea4000e6a04cb1db00a4def49d505",
   "codePins": 220,
   "runtimePins": 102,
   "checks": [

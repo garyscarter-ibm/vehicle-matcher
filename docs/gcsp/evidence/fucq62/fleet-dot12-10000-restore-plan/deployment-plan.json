@@ -16,11 +16,12 @@
   "nativeStockProof": "unrun; separate native PostgreSQL/current-run UUID acceptance evidence",
   "orderProof": "not exercised; no order workflow claims from fleet restore",
   "nativeRequiredForFleetArtifactBuild": false,
-  "boundaryReason": "Fleet artifact CLI restores filesystem cache/store, and scoped local HTTP injects the local evidence lookup with denied stock fetchers. Native database and order writes are not invoked. Story-specific native/order AC remain independent acceptance obligations.",
+  "boundaryReason": "Local cold CLI runs with a filtered env without GCSP_DATABASE_URL, and scoped local HTTP explicitly injects FilePolicyProvider with denied stock fetchers. Native local PostgreSQL/current-run UUID and order writes are not invoked. Render injects managed GCSP_DATABASE_URL, so createPolicyService selects PostgresPolicyProvider during fleet signature-policy validation: managed policy DB connectivity/state is an actual Render build boundary. That is distinct from native-local story acceptance.",
   "requires": [
     "Root review/apply after exact public receipt and cold/offline results",
     "Exact integrated target with corrected fleet-release.js and observed Linux result before Linux claim",
     "Fresh successful meaningful deployment and separately granted live request budget before deployedDTO claim"
   ],
-  "acceptance": false
+  "acceptance": false,
+  "managedPolicyDatabaseRequiredForRenderBuild": true
 }
