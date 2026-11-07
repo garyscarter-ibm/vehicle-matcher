@@ -109,18 +109,32 @@ function noLaterThan(value, limit) {
   return a.padEnd(length, '0') <= b.padEnd(length, '0');
 }
 
+const capital = (value) => value.charAt(0).toUpperCase() + value.slice(1);
+function formatCurrent(key, { value } = {}) {
+  if (['configuration', 'body', 'fuel'].includes(key)) return text(value) && value.trim() ? (key === 'configuration' ? value : capital(value)) : null;
+  if (!Number.isFinite(value) || value <= 0) return null;
+  const n = value.toLocaleString('en-GB');
+  return { boot: `${n} litres`, mpg: `${n} mpg`, zeroTo62: `${n} s`, points: `${n} points`, seats: n }[key];
+}
+
 function currentCarFor(v, quotedAt) {
   const car = v?.currentCar; const source = car?.source;
-  if (!object(v) || v.status !== 'partial' || v.reason !== 'current-car-facts-unavailable' || v.comparisonAvailable !== false
-    || !Array.isArray(v.unknowns) || v.unknowns.length !== 8 || new Set(v.unknowns).size !== 8
-    || !v.unknowns.every((key) => typeof key === 'string' && Object.hasOwn(comparisonFields, key))
+  const facts = object(car?.facts) ? car.facts : {};
+  const known = Object.keys(facts);
+  if (!object(v) || !['partial', 'available'].includes(v.status) || v.comparisonAvailable !== known.length > 0
+    || v.reason !== (known.length ? 'current-car-facts-recorded' : 'current-car-facts-unavailable')
+    || !Array.isArray(v.unknowns) || new Set(v.unknowns).size !== v.unknowns.length
+    || v.unknowns.length + known.length !== 8 || (v.status === 'available') !== (v.unknowns.length === 0)
+    || ![...v.unknowns, ...known].every((key) => typeof key === 'string' && Object.hasOwn(comparisonFields, key))
+    || known.some((key) => v.unknowns.includes(key) || !object(facts[key]) || formatCurrent(key, facts[key]) === null)
     || !object(car) || !text(car.model) || !car.model.trim() || car.model.length > 256
     || !object(source) || typeof source.mode !== 'string' || !Object.hasOwn(sourceModes, source.mode)
     || !text(source.sourceVersion) || !source.sourceVersion.trim()
     || !instant(source.observedAt) || !noLaterThan(source.observedAt, quotedAt)) return null;
-  // Only the reviewed model/source metadata crosses. Specifications and current points remain unknown.
-  return { status: 'partial', display: { name: car.model }, media: {},
-    facts: Object.values(comparisonFields).map((label) => ({ label, value: null, missingLabel: 'Unknown' })),
+  // Only recorded contract facts cross; every other field stays labelled unknown.
+  return { status: v.status, display: { name: car.model }, media: {},
+    facts: Object.entries(comparisonFields).map(([key, label]) => ({ label,
+      value: known.includes(key) ? formatCurrent(key, facts[key]) : null, missingLabel: 'Unknown' })),
     source: { mode: source.mode, sourceVersion: source.sourceVersion, observedAt: source.observedAt },
     provenance: `${sourceModes[source.mode]} source: ${source.sourceVersion}. Observed ${source.observedAt}.` };
 }
@@ -177,7 +191,7 @@ export function toOfferPresentation(envelope, { reference } = {}) {
       reference: { offerId: v.offerId, runId: v.runId, offerVersion: v.offerVersion, holdVersion: v.holdVersion,
         quoteVersion: revisions.quote },
       now: v.serverNow, clockVersion: v.clockVersion, expiresAt: v.expiresAt, actionable: v.state === 'pending' && !uncertain,
-      actions, card: cardFor(quote), comparisonAvailable: false, currentCar,
+      actions, card: cardFor(quote), comparisonAvailable: currentCar?.facts.some((row) => row.value !== null) === true, currentCar,
       followup: followupHandle(v.followup, ['rejected', 'declined'].includes(v.offerState) && v.holdState === 'released' ? v.state : null) } };
   } catch { return { status: 'unavailable', retryable: true }; }
 }

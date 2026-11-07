@@ -58,16 +58,26 @@ function currentCarComparison(quote) {
   const display = pinned?.display;
   const fallback = { status: 'unavailable', reason: 'pinned-current-car-comparison-unavailable', comparisonAvailable: false,
     currentCar: null, unknowns: [...comparisonFields] };
-  if (pinned?.schemaVersion !== '1' || pinned.comparisonAvailable !== false || !display
-    || !['partial', 'unavailable'].includes(display.state)) return fallback;
-  if (display.state !== 'partial' || typeof display.model !== 'string' || !display.model.trim() || display.model.length > 256
+  if (pinned?.schemaVersion !== '1' || typeof pinned.comparisonAvailable !== 'boolean' || !display
+    || !['partial', 'available', 'unavailable'].includes(display.state)) return fallback;
+  if (display.state === 'unavailable' || typeof display.model !== 'string' || !display.model.trim() || display.model.length > 256
     || !['synthetic', 'dated-snapshot', 'authorised-live'].includes(display.source?.mode)
     || !text(display.source.sourceVersion) || !instant(display.source.observedAt)
     || Date.parse(display.source.observedAt) > Date.parse(quote.quotedAt)) return fallback;
   // The producer owns current-contract authentication. Never copy its internal binding.
-  return { status: 'partial', reason: 'current-car-facts-unavailable', comparisonAvailable: false,
-    currentCar: { model: display.model, source: textFields(display.source, ['mode', 'sourceVersion', 'observedAt']) },
-    unknowns: [...comparisonFields] };
+  const facts = {};
+  for (const key of comparisonFields) {
+    const row = display.facts?.[key];
+    const wordy = ['configuration', 'body', 'fuel'].includes(key);
+    if (row && (wordy ? typeof row.value === 'string' && text(row.value) : Number.isFinite(row.value) && row.value > 0)
+      && (row.unit === null || text(row.unit))) facts[key] = { value: row.value, unit: row.unit };
+  }
+  const unknowns = comparisonFields.filter((key) => !Object.hasOwn(facts, key));
+  const known = unknowns.length < comparisonFields.length;
+  return { status: unknowns.length ? 'partial' : 'available', reason: known ? 'current-car-facts-recorded' : 'current-car-facts-unavailable',
+    comparisonAvailable: known,
+    currentCar: { model: display.model, source: textFields(display.source, ['mode', 'sourceVersion', 'observedAt']), ...(known ? { facts } : {}) },
+    unknowns };
 }
 
 function presentation(offer, hold, quote, stock, clock, followup) {

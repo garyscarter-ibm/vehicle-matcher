@@ -195,12 +195,47 @@ test('private comparison bindings and unreviewed facts never cross or replace th
   const dto = partial(); const marker = 'private-comparison-marker'; const car = dto.comparison.currentCar;
   Object.assign(dto.comparison, { binding: { employeeId: marker }, sourceRef: marker, rawRecords: [marker] });
   Object.assign(car, { binding: marker, employeeId: marker, contractId: marker, slotId: marker, contractRevision: marker,
-    configurationId: marker, points: 999, body: 'Estate', facts: { seats: 5 }, media: { src: marker } });
+    configurationId: marker, points: 999, body: 'Estate', media: { src: marker } });
   Object.assign(car.source, { sourceRef: marker, rawRecord: marker, revision: marker });
   const result = toOfferPresentation(envelope(dto)); assert.equal(result.status, 'ok');
   assert.equal(JSON.stringify(result).includes(marker), false);
   assert.deepEqual(Object.keys(result.value.currentCar.source).sort(), ['mode', 'observedAt', 'sourceVersion']);
   assert.ok(result.value.currentCar.facts.every((f) => f.value === null));
+});
+
+const recorded = (dto, facts) => {
+  const c = dto.comparison; const keys = Object.keys(facts);
+  c.currentCar.facts = Object.fromEntries(keys.map((k) => [k, { value: facts[k], unit: null }]));
+  c.unknowns = c.unknowns.filter((k) => !keys.includes(k));
+  c.comparisonAvailable = true; c.reason = 'current-car-facts-recorded'; c.status = c.unknowns.length ? 'partial' : 'available';
+  return dto;
+};
+
+test('recorded current-car facts display formatted beside Unknown ones', () => {
+  const dto = recorded(partial(), { configuration: 'G21 320i M Sport Touring', body: 'estate', boot: 500, mpg: 42.8, zeroTo62: 7.6, points: 1100 });
+  const { value } = toOfferPresentation(envelope(dto)); const by = Object.fromEntries(value.currentCar.facts.map((f) => [f.label, f.value]));
+  assert.equal(value.comparisonAvailable, true); assert.equal(value.currentCar.status, 'partial');
+  assert.deepEqual(by, { Configuration: 'G21 320i M Sport Touring', Body: 'Estate', Fuel: null, Seats: null, Boot: '500 litres',
+    MPG: '42.8 mpg', '0–62 mph': '7.6 s', 'Points a month': '1,100 points' });
+});
+
+test('all eight recorded facts give an available comparison with no unknowns', () => {
+  const dto = recorded(partial(), { configuration: 'G21 320i M Sport Touring', body: 'estate', fuel: 'petrol', seats: 5, boot: 500, mpg: 42.8, zeroTo62: 7.6, points: 1100 });
+  const { value } = toOfferPresentation(envelope(dto));
+  assert.equal(value.currentCar.status, 'available'); assert.ok(value.currentCar.facts.every((f) => f.value !== null));
+  assert.equal(value.currentCar.facts.find((f) => f.label === 'Fuel').value, 'Petrol');
+});
+
+for (const [name, bad] of [['string number', '500'], ['negative', -1], ['NaN', null], ['object', { v: 1 }]]) {
+  test(`malformed recorded fact (${name}) is refused rather than shown`, () => {
+    const dto = recorded(partial(), { boot: 500 }); dto.comparison.currentCar.facts.boot.value = bad;
+    const { value } = toOfferPresentation(envelope(dto)); assert.equal(value.currentCar, null); assert.equal(value.comparisonAvailable, false);
+  });
+}
+
+test('facts that contradict the unknowns list are refused', () => {
+  const dto = recorded(partial(), { boot: 500 }); dto.comparison.unknowns.push('boot');
+  assert.equal(toOfferPresentation(envelope(dto)).value.currentCar, null);
 });
 
 const invalidComparisons = [

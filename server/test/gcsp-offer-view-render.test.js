@@ -101,6 +101,24 @@ test('approved DTO flows through the default HTTP adapter/controller into the sh
   unsubscribe(); c.destroy(); view.destroy();
 });
 
+test('recorded current-car facts render formatted beside Unknown ones with the subset note', async () => {
+  const dto = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/comparison-access.json', import.meta.url), 'utf8'));
+  const c = dto.comparison;
+  c.currentCar.facts = { boot: { value: 500, unit: 'L' }, mpg: { value: 42.8, unit: 'mpg-imperial' }, zeroTo62: { value: 7.6, unit: 's' } };
+  c.unknowns = c.unknowns.filter((k) => !['boot', 'mpg', 'zeroTo62'].includes(k)); c.comparisonAvailable = true; c.reason = 'current-car-facts-recorded';
+  const adapter = createOfferHttpAdapter({ location: { href: `https://example.test/gcsp/offer?offerId=${dto.offerId}` },
+    fetch: async () => ({ ok: true, headers: { get: () => 'application/json' }, json: async () => ({ status: 'ok', value: dto }) }) });
+  const root = document.createElement('div'); document.body.append(root);
+  const ctl = createOfferController(adapter); const view = createOfferView(root); const unsub = ctl.subscribe(view.update);
+  try {
+    await ctl.refresh(); const text = root.querySelector('.gcsp-offer-current').textContent;
+    assert.match(text, /Partial comparison\. Some current-car facts are unknown\./);
+    for (const known of [/500 litres/, /42\.8 mpg/, /7\.6 s/]) assert.match(text, known);
+    assert.equal(root.querySelectorAll('.gcsp-offer-current dd.is-missing').length, 5);
+    assert.equal(root.querySelectorAll('.gcsp-offer-current dd').length, 8);
+  } finally { unsub(); ctl.destroy(); view.destroy(); }
+});
+
 test('approved partial DTO renders dated provenance and eight unknowns through HTTP/controller while retaining focus on reads', async () => {
   const dto = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq105/comparison-access.json', import.meta.url), 'utf8'));
   const adapter = createOfferHttpAdapter({ location: { href: `https://example.test/gcsp/offer?offerId=${dto.offerId}` },

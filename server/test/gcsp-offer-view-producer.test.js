@@ -146,14 +146,14 @@ test('actual producer to access HTTP to offer view preserves authority, custody,
     assert.equal(member.identity.orderUuid, allocated.quote.orderUuid); assert.equal(member.identity.configurationId, allocated.quote.configurationId);
     assert.equal(member.provenance.quoteId, allocated.quote.quoteId); assert.deepEqual(member.provenance.revisions, latestDTO.quote.revisions);
     assert.equal(member.display.line, 'Order no. 0123456'); assert.equal(member.terms[0].value, 1100); assert.equal(member.terms[0].allowance, 1300);
-    assert.equal(initial.currentCar.status, 'partial'); assert.equal(initial.comparisonAvailable, false);
+    assert.equal(initial.currentCar.status, 'available'); assert.equal(initial.comparisonAvailable, true);
     assert.deepEqual(initial.currentCar.source, allocated.quote.eligibility.currentCarComparison.display.source);
     assert.equal(initial.currentCar.display.name, allocated.quote.eligibility.currentCarComparison.display.model);
-    assert.equal(initial.currentCar.facts.length, 8); assert.ok(initial.currentCar.facts.every((f) => f.value === null));
+    assert.equal(initial.currentCar.facts.length, 8); assert.ok(initial.currentCar.facts.every((f) => f.value !== null));
     assert.match(root.textContent, /Order no\. 0123456/); assert.match(root.textContent, /1,100 points a month.*1,300 points a month allowance/);
-    assert.match(root.textContent, /Partial comparison/); assert.match(root.textContent, /Fitted equipment unknown/);
+    assert.match(root.textContent, /500 litres/); assert.match(root.textContent, /Fitted equipment unknown/);
     assert.match(root.textContent, /Observed 2026-11-05T09:00:00\.000Z/); assert.match(root.textContent, /2 hours remaining/);
-    assert.equal(root.querySelectorAll('.vm-card').length, 1); assert.equal(root.querySelectorAll('.gcsp-offer-current dd.is-missing').length, 8);
+    assert.equal(root.querySelectorAll('.vm-card').length, 1); assert.equal(root.querySelectorAll('.gcsp-offer-current dd.is-missing').length, 0);
     assert.ok([...root.querySelectorAll('[data-offer-action="accept"], [data-offer-action="decline"]')].every((node) => node.disabled));
     custody({ allocated, initial }); await checkpoint(phase);
 

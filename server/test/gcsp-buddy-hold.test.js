@@ -72,7 +72,8 @@ test('atomic local allocation pins truthful quote, hold, offer and one notificat
   assert.equal(quote.facts.sourceKeys.stockId, f.car.orderUuid); assert.equal(quote.eligibility.decision.gateStatus, 'eligible');
   assert.equal(quote.terms.points.value > 0, true); assert.equal(quote.eligibility.employeeVersion, f.input.expectedEmployeeVersion);
   const currentCar = quote.eligibility.currentCarComparison;
-  assert.equal(currentCar.comparisonAvailable, false); assert.equal(currentCar.display.state, 'partial');
+  assert.equal(currentCar.comparisonAvailable, true); assert.equal(currentCar.display.state, 'available');
+  assert.deepEqual(currentCar.display.unknowns, []); assert.equal(currentCar.display.facts.boot.value, 500);
   assert.equal(currentCar.display.model, 'Fictional BMW 320i Touring');
   assert.equal(currentCar.binding.employeeVersion, f.input.expectedEmployeeVersion);
   assert.equal(currentCar.binding.slotVersion, f.input.expectedSlotVersion);
