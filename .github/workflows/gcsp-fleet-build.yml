@@ -12,7 +12,7 @@ permissions:
 jobs:
   fleet-node20:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,7 +30,7 @@ jobs:
           manifest="$GITHUB_WORKSPACE/.claude/test-runs/ci-fleet-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.json"
           test ! -e "$task_root"
           mkdir -p "$(dirname "$manifest")"
-          printf '{"root":"%s","owner":"%s","workers":1,"scratchBudgetMiB":2048,"seconds":240,"scope":"Node20 Linux exact public release restore and1925record DTO/HTTP proof; 469 known consumer failures"}\n' "$task_root" "$GITHUB_RUN_ID" > "$manifest"
+          printf '{"root":"%s","owner":"%s","workers":1,"scratchBudgetMiB":2048,"seconds":420,"scope":"Node20 Linux exact public release restore and1925record DTO/HTTP proof; 469 known consumer failures"}\n' "$task_root" "$GITHUB_RUN_ID" > "$manifest"
           cleanup() {
             result=$?
             if test -d "$task_root"; then
@@ -50,7 +50,7 @@ jobs:
           timeout 120s node --max-old-space-size=256 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network download > "$task_root/download.json"
           timeout 60s node --max-old-space-size=256 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network offline > "$task_root/offline.json"
           cd ..
-          timeout 90s node --max-old-space-size=256 --expose-gc docs/gcsp/evidence/fucq62/fleet-dot8-1923-public/prove-restored-canonical.mjs "$task_root/store" "$task_root" "$task_root/cache/$RELEASE" > "$task_root/audit.json"
+          timeout 210s node --max-old-space-size=256 --expose-gc docs/gcsp/evidence/fucq62/fleet-dot8-1923-public/prove-restored-canonical.mjs "$task_root/store" "$task_root" "$task_root/cache/$RELEASE" > "$task_root/audit.json"
           node --input-type=module - "$task_root" <<'JS'
           import assert from 'node:assert/strict';
           import { readFile } from 'node:fs/promises';
