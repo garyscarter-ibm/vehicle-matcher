@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "native-postgres-feasibility.v1",
+  "assessmentDate": "2026-11-07",
+  "codeCommit": "bbd5786eb5663d28e12063818e532a4547e03fa0",
+  "worktree": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036",
+  "method": "read-only source inspection; no install, database, bootstrap or proof execution",
+  "files": [
+    {
+      "path": "docs/gcsp/evidence/fucq63/order-reference-2026-11-07/prove-orders.mjs",
+      "sha256": "d768ba9636e564842433627750c6530cca8c4161836da0bb38f9e65dbf2f8847"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq63/order-reference-2026-11-07/supervise.py",
+      "sha256": "899bd5b99d88f8e26dee8dc9146228235b0f6c9d9bfb91d93022f017e3542c78"
+    },
+    {
+      "path": "server/test/gcsp-order-reference-proof.test.js",
+      "sha256": "fb568fd94c38d9a30cb2846844b00a6624002aaea9dd4f8712199d4bd3282105"
+    },
+    {
+      "path": "server/test/helpers/offline-vehicle-fixture.js",
+      "sha256": "098f20716fe3262a33856fb14e642f14723c38177e3556293b9cad5cf7faf8c9"
+    },
+    {
+      "path": "server/gcsp/repository/postgres.js",
+      "sha256": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da"
+    },
+    {
+      "path": "server/gcsp/repository/core.js",
+      "sha256": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0"
+    },
+    {
+      "path": "server/gcsp/repository/schema.js",
+      "sha256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a"
+    },
+    {
+      "path": "server/gcsp/migrations/index.js",
+      "sha256": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f"
+    },
+    {
+      "path": "server/gcsp/migrations/0001_transaction_foundation.sql",
+      "sha256": "3bde8db01f103141ca9bbe7398a6e1172df9b9789df745244a0071a00b9629d1"
+    },
+    {
+      "path": "server/gcsp/migrations/0002_policy_tables.sql",
+      "sha256": "65346093f811df63b225436a0ca35cd4061990a78caacb44ffde7b1effd1edd0"
+    },
+    {
+      "path": "server/gcsp/migrations/0003_renewal_cases.sql",
+      "sha256": "e76750fddd75b9d363fd209c243169ce1f9b06c78f96b7dbb74fe3c296f08c98"
+    },
+    {
+      "path": "server/gcsp/vehicle-evidence/vin-allocation.js",
+      "sha256": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e"
+    },
+    {
+      "path": "server/gcsp/fixtures/scenario-v1.js",
+      "sha256": "408f135c04ae909e717c30763073a3ea24a82c1e8643fabdea2888e22f1681f4"
+    },
+    {
+      "path": "scripts/gcsp/fleet-offline-guard.mjs",
+      "sha256": "881926639dfab681a917212696e50c6420a0a2b0dcd66dd1a126950283239e59"
+    }
+  ],
+  "nativeAttempted": false,
+  "nativeProof": false,
+  "acceptance": false,
+  "scratchCreated": false,
+  "processesStarted": false,
+  "sourceRequests": 0,
+  "publicResearch": {
+    "nativeHostedSearch": "attempt returned blank; used next available research tool",
+    "parallelSearchId": "search_0a4b8ef95332e064d8cad3fd9e84771f",
+    "sources": [
+      "https://www.postgresql.org/download/macosx/",
+      "https://formulae.brew.sh/formula/postgresql@16"
+    ],
+    "versionCaveat": "Recommendation is major version 16 only. Verify actual available bottle/dependency metadata before installation; search patch metadata is not an installation pin."
+  }
+}
