@@ -5,6 +5,8 @@ let dom; let actionMenu;
 before(async () => {
   dom = new JSDOM('<!doctype html><body><button id="outside">Outside</button></body>', { pretendToBeVisual: true });
   globalThis.document = dom.window.document;
+  // The shared shell imports presenter controls, which define a custom element at load.
+  globalThis.HTMLElement ??= dom.window.HTMLElement;
   ({ actionMenu } = await import('../../blocks/gcsp/kit/action-menu.js'));
 });
 after(() => dom?.window.close());
