@@ -63,7 +63,7 @@ test('GET activity returns explicit no-brief evidence without writes and disable
     assert.equal(response.headers.get('Access-Control-Allow-Credentials'), 'true');
     assert.equal(response.json.value.state, 'no-brief'); assert.equal(response.json.value.briefVersion, null);
     assert.equal(response.json.value.lastSuccessfulCheck, null); assert.equal(response.json.value.searchEvidence.status, 'not-recorded');
-    assert.equal(response.json.value.sourceStatus, 'evidence-unavailable'); assert.deepEqual(response.json.value.offers, []);
+    assert.equal(response.json.value.sourceStatus, 'not-checked'); assert.deepEqual(response.json.value.offers, []);
     assert.deepEqual(f.store.state, before);
   });
 });

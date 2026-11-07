@@ -59,7 +59,8 @@ activity('no brief is explicit and storage timestamps do not invent search evide
   const f = await setup(); const value = await read(f);
   assert.equal(value.state, 'no-brief'); assert.equal(value.briefVersion, null); assert.equal(value.permission, null);
   assert.equal(value.lastSuccessfulCheck, null); assert.equal(value.searchEvidence.status, 'not-recorded');
-  assert.equal(value.sourceStatus, 'evidence-unavailable'); assert.deepEqual(value.offers, []); assert.deepEqual(value.stateChanges, []);
+  assert.equal(value.sourceStatus, 'not-checked'); assert.equal(value.currentOffer, null);
+  assert.deepEqual(value.offers, []); assert.deepEqual(value.stateChanges, []);
   await f.brief.saveDraft(f.context, { commandId: 'draft-only', expectedBriefVersion: 0, expectedDraftVersion: 0, brief: draft() });
   assert.equal((await read(f)).state, 'no-brief');
 });
@@ -147,7 +148,7 @@ activity('clock ticks, completed handlers, command replays and evaluations are n
   assert.equal((await f.repository.query(f.context, 'event_receipts', { consumerId: 'clock:handler:activity-test-observation' })).value[0].state, 'completed');
   const value = await read(f); assert.equal(value.lastSuccessfulCheck, null);
   assert.equal(value.state, 'never-searched'); assert.equal(value.searchEvidence.status, 'not-recorded');
-  assert.equal(value.sourceStatus, 'evidence-unavailable'); assert.equal(value.stateChanges.length, 1);
+  assert.equal(value.sourceStatus, 'ok'); assert.equal(value.stateChanges.length, 1);
 });
 
 activity('actual offer states and quoted versions survive projection without invented expiry or private fields', async () => {
@@ -163,7 +164,8 @@ activity('actual offer states and quoted versions survive projection without inv
     assert.equal(projected.orderUuid, offer.orderUuid); assert.equal(value.lastSuccessfulCheck, null);
     assert.ok(!JSON.stringify(value).includes('private-'));
     assert.deepEqual(Object.keys(projected).sort(), ['offerRef', 'holdId', 'orderUuid', 'state', 'briefVersion', 'policyVersion',
-      'quoteId', 'expiresAt', 'version'].sort());
+      'quoteId', 'expiresAt', 'version', 'createdAt'].sort());
+    assert.equal(value.currentOffer.state, state); assert.ok(!JSON.stringify(value.currentOffer).includes('private-'));
   }
 });
 
@@ -193,7 +195,7 @@ activity('concurrent brief or clock changes refuse mixed snapshots without writi
   for (const kind of ['brief', 'clock', 'offer', 'receipt']) {
     const f = await setup(); await confirm(f); await offerFixture(f); let reads = 0;
     const repository = { query: async (context, table, filter) => {
-      if (++reads === 4) {
+      if (++reads === 5) {
         if (kind === 'brief') await f.brief.pause(f.context, { commandId: 'during-read', expectedBriefVersion: 1 });
         else if (kind === 'clock') await f.clock.advance(f.presenter, { commandId: 'during-read', expectedClockVersion: '1', bySeconds: 1 });
         else if (kind === 'offer') await f.repository.transaction(f.context, command('during-read'), (tx) => tx.compareAndSwap(
@@ -249,4 +251,111 @@ activity('reset during the final clock read refuses and the trusted identity is 
     return f.clock.now(context);
   } };
   assert.equal((await implementation.createActivityService({ ...f, clock }).readActivity(f.context)).status, 'stale-run');
+});
+
+const NOW = '2026-11-05T00:00:00.000Z';
+const OTHER = 'private-other-employee';
+async function receipt(f, eventId, { at = NOW, own, others = [{ orderUuid: 'o-x', gateStatus: 'eligible', score: 99 }], assigned = false,
+  state = 'completed', status = 'ok', included = true } = {}) {
+  const mine = own ?? [{ orderUuid: 'o-1', gateStatus: 'eligible', score: 7 }, { orderUuid: 'o-2', gateStatus: 'ineligible', score: 1 }, { orderUuid: 'o-3', gateStatus: 'eligible', score: 5 }];
+  const evaluations = [{ employeeId: OTHER, decisions: others }, ...(included ? [{ employeeId: f.context.employeeId, decisions: mine }] : [])];
+  const assignments = [{ employeeId: OTHER, orderUuid: 'o-x' }, ...(assigned ? [{ employeeId: f.context.employeeId, orderUuid: 'o-1' }] : [])];
+  const outcome = status === 'ok' ? ok({ state: 'allocated', runId: f.context.runId, evaluatedAt: at, inputVersions: { clock: '3' }, assignments, evaluations })
+    : result('unavailable');
+  const done = await f.repository.transaction(f.context, command(`receipt-${eventId}`), (tx) => tx.recordReceipt({ consumerId: 'buddy-allocation',
+    eventId, eventType: 'stock-released', inputDigest: inputDigest({ eventId }), inputVersions: {}, state, outcome }));
+  assert.equal(done.status, 'ok', JSON.stringify(done));
+}
+async function tickWith(f, id, stages) {
+  for (const [stage, handle] of Object.entries(stages)) {
+    assert.equal((await f.clock.registerHandler({ handlerId: `h-${stage}`, stage, handle: async () => handle })).status, 'ok');
+  }
+  const state = (await f.clock.readState(f.presenter)).value;
+  return f.clock.tick(f.presenter, { eventId: id, expectedClockVersion: state.clockVersion, inputDigest: inputDigest({}) });
+}
+const pendingOutcome = { status: 'pending', operationId: 'op', operationType: 'release-pull', lastKnownState: 'waiting' };
+
+activity('search checks drive last successful check, evidence and the searching state without leaking others', async () => {
+  const f = await setup(); await confirm(f);
+  await receipt(f, 'ev-other-only', { included: false, at: '2026-11-04T23:00:00.000Z' });
+  await receipt(f, 'ev-future', { at: '2027-01-01T00:00:00.000Z' });
+  await receipt(f, 'ev-failed', { status: 'unavailable' }); await receipt(f, 'ev-pending', { state: 'pending' });
+  let value = await read(f);
+  assert.equal(value.state, 'never-searched'); assert.equal(value.lastSuccessfulCheck, null);
+  assert.deepEqual(value.searchEvidence, { status: 'not-recorded', reason: 'no-search-check-yet' });
+  await receipt(f, 'ev-old', { at: '2026-11-04T10:00:00.000Z', assigned: true });
+  await receipt(f, 'ev-new', { at: '2026-11-04T23:30:00.000Z' });
+  value = await read(f);
+  assert.equal(value.state, 'searching'); assert.deepEqual(value.searchEvidence, { status: 'recorded', checks: 2 });
+  assert.deepEqual(value.lastSuccessfulCheck, { checkedAt: '2026-11-04T23:30:00.000Z', clockVersion: '3', carsChecked: 3, suitableCars: 2, outcome: 'no-match' });
+  await receipt(f, 'ev-aaa', { at: '2026-11-04T23:30:00.000Z', assigned: true });
+  assert.equal((await read(f)).lastSuccessfulCheck.outcome, 'no-match');
+  await receipt(f, 'ev-zz', { at: '2026-11-04T23:30:00.000Z', assigned: true });
+  value = await read(f); assert.equal(value.lastSuccessfulCheck.outcome, 'offer-held');
+  const text = JSON.stringify(value);
+  assert.ok(!text.includes(OTHER)); assert.ok(!text.includes('o-x')); assert.ok(!text.includes('"score"'));
+});
+
+activity('every state value is reported, with pause winning and the offer still shown', async () => {
+  const f = await setup(); assert.equal((await read(f)).state, 'no-brief'); await confirm(f);
+  assert.equal((await read(f)).state, 'never-searched');
+  await receipt(f, 'ev-1'); assert.equal((await read(f)).state, 'searching');
+  const offer = await offerFixture(f); const swap = async (state) => assert.equal((await f.repository.transaction(f.context, command(`s-${state}`),
+    (tx) => tx.compareAndSwap({ table: 'offers', key: { runId: f.context.runId, offerId: 'offer' } },
+      f.store.state.tables.offers[0].version, { state }))).status, 'ok');
+  assert.equal(offer.offerId, 'offer'); assert.equal((await read(f)).state, 'offer');
+  for (const state of ['declined', 'rejected', 'expired', 'accepted']) { await swap(state); assert.equal((await read(f)).state, 'offer-closed', state); }
+  await swap('active');
+  assert.equal((await f.brief.pause(f.context, { commandId: 'pause', expectedBriefVersion: 1 })).status, 'ok');
+  const value = await read(f); assert.equal(value.state, 'paused');
+  assert.equal(value.currentOffer.offerRef.offerId, 'offer'); assert.equal(value.currentOffer.state, 'active');
+  assert.equal(value.permission.canSearch, false); assert.equal(value.lastSuccessfulCheck.carsChecked, 3);
+});
+
+activity('the current offer is the newest by createdAt and carries the canonical encoded link', async () => {
+  const f = await setup(); await confirm(f); const first = await offerFixture(f);
+  assert.equal((await read(f)).currentOffer.href, `/gcsp/offer?offerId=offer&runId=${encodeURIComponent(f.context.runId)}`);
+  const older = { ...structuredClone(first), offerId: 'offer b&c', holdId: 'hold-2', createdAt: '2020-01-01T00:00:00.000Z' };
+  f.store.state.tables.offers.push(older);
+  let value = await read(f); assert.equal(value.currentOffer.offerRef.offerId, 'offer'); assert.equal(value.offers.length, 2);
+  f.store.state.tables.offers[1].createdAt = '2030-01-01T00:00:00.000Z';
+  value = await read(f); assert.equal(value.currentOffer.offerRef.offerId, 'offer b&c');
+  assert.equal(value.currentOffer.href, `/gcsp/offer?offerId=offer%20b%26c&runId=${encodeURIComponent(f.context.runId)}`);
+  assert.ok(!JSON.stringify(value).includes('private-'));
+});
+
+activity('source status distinguishes not-checked, ok, delayed and unavailable from the latest tick', async () => {
+  const f = await setup(); await confirm(f); assert.equal((await read(f)).sourceStatus, 'not-checked');
+  assert.equal((await tickWith(f, 'tick-ok', { 'release-pull': ok({ pulled: 0 }), 'buddy-allocation': ok({}) })).status, 'ok');
+  assert.equal((await read(f)).sourceStatus, 'ok');
+  const row = () => f.store.state.tables.tick_runs.find((r) => r.tickId === 'tick-ok');
+  row().state = 'pending'; row().outcomes[0].outcome = pendingOutcome; assert.equal((await read(f)).sourceStatus, 'delayed');
+  row().state = 'running'; row().outcomes[0].outcome = ok({}); assert.equal((await read(f)).sourceStatus, 'delayed');
+  row().state = 'interrupted'; assert.equal((await read(f)).sourceStatus, 'unavailable');
+  row().state = 'completed'; row().outcomes[1].outcome = result('unavailable'); assert.equal((await read(f)).sourceStatus, 'unavailable');
+  row().outcomes = [row().outcomes[0]]; assert.equal((await read(f)).sourceStatus, 'unavailable');
+  row().outcomes = []; row().handlerOrder = [{ handlerId: 'other', stage: 'notifications' }]; assert.equal((await read(f)).sourceStatus, 'not-checked');
+});
+
+activity('a handler that fails really marks the tick interrupted and the source unavailable', async () => {
+  const f = await setup(); await confirm(f);
+  assert.notEqual((await tickWith(f, 'tick-bad', { 'release-pull': result('unavailable') })).status, 'ok');
+  assert.equal((await read(f)).sourceStatus, 'unavailable');
+});
+
+activity('an unreadable tick source degrades to evidence-unavailable without failing the read', async () => {
+  const f = await setup(); await confirm(f);
+  const repository = { query: (c, t, q) => f.repository.query(c, t, q), read: async () => result('unavailable') };
+  const value = (await implementation.createActivityService({ ...f, repository }).readActivity(f.context)).value;
+  assert.equal(value.sourceStatus, 'evidence-unavailable'); assert.equal(value.state, 'never-searched');
+});
+
+activity('a foreign employee context is refused and sees none of another employee check data', async () => {
+  const f = await setup(); await confirm(f); await receipt(f, 'ev-1');
+  const principals = (await f.policy.getAssumption('identity.demo.principals', { runId: f.context.runId, asOf: NOW })).value.value;
+  const other = principals.find((p) => p.roles.includes('employee') && p.employeeId !== f.context.employeeId);
+  const otherContext = (await f.identity.switchPrincipal(f.presenter, other.principalId, 'other')).value.context;
+  const value = (await f.service.readActivity(otherContext)).value;
+  assert.equal(value.lastSuccessfulCheck, null); assert.equal(value.currentOffer, null); assert.equal(value.state, 'no-brief');
+  assert.equal((await f.service.readActivity({ ...f.context, employeeId: other.employeeId })).status, 'forbidden');
 });
