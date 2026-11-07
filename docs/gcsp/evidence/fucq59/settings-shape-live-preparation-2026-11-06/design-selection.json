@@ -1,0 +1,93 @@
+{
+  "at": "2026-11-06T13:59:42.720946+00:00",
+  "base": "0f0696861dbffd3f75ee21e2396341c701689a4d",
+  "editable": [
+    "new docs/gcsp/evidence/fucq59/settings-shape-live-preparation-2026-11-06/",
+    "ignored lead59/settings-shape-live/",
+    "own story result",
+    "F59-only map evidence/observation/expired worker"
+  ],
+  "exclusions": [
+    "Unchanged producer33-case evidence reused at exact sixfile hashes; no duplicate producer suite",
+    "No full/native SQL/browser/source/credential/network calls; git read-only supported wrapper only",
+    "Old allocations/markers/runner/plan/handoff/supervisor/receipt and12contracts/22live files/prior settings evidence immutable"
+  ],
+  "frozenProducer": {
+    "scripts/gcsp/collect-fleet.mjs": "8bc059fcec47c46c6e209b8e64fc11c519083fd62fde1652d7229d7c5adc689b",
+    "scripts/gcsp/collection-session.mjs": "b2cd36ec77c2f63fd58795e83125ef135732e6b768a9e1492caf194c94b9248c",
+    "scripts/gcsp/public-bmw-source.mjs": "68f5104c3c9f303af89a91e2e3c8c2474b66956e03271bf61bf42e703155d30f",
+    "scripts/gcsp/settings-shape-report.mjs": "e6f4bade6186fc4b122052749fb2a0e518f889f68d771b17524a4e63cc2f0113",
+    "server/test/gcsp-fleet-collector.test.js": "d8c7c7315faa05c6bd328a9b7f8ada58fe31bf5c229a51c0e63106d920057ff9",
+    "server/test/gcsp-settings-shape-report.test.js": "f1ca4f0b7cccb7a657a987dc6d882f6a8eaec1458ab62b83e88669ae34be4115"
+  },
+  "limits": {
+    "cacheEntries": 16,
+    "cacheRetentionMs": 86400000,
+    "checkpointBytes": 1048576,
+    "concurrency": 1,
+    "deadlineMs": 30000,
+    "imageRequests": 0,
+    "maxAttempts": 1,
+    "operationTimeoutMs": 10000,
+    "requestBudgets": {
+      "discover": 1,
+      "options": 1,
+      "page": 1,
+      "settings": 1
+    },
+    "responseBytes": 1048576,
+    "retryDelayMs": 0,
+    "sourceAttempts": 2,
+    "sourceBytes": 2097152
+  },
+  "oneShotMarker": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/settings-execution-once.json",
+  "outputRoot": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/observation",
+  "producerIdentity": "9d63aa36a7bbbb29432d4a8b03f2cd585abfdd4e53d671919a8798f28f674a1b",
+  "refinementBeforeFinalValidation": "Typed receipt additionally binds sourceCalls to fixture/live mode and countBasis/checkpoint. Supervisor durable exclusive invocation registration consumes prelaunch failures and prevents duplicate registration overwrite before allocation; actual source marker still precedes transport.",
+  "regressions": [
+    "existing canonical refusal must export only through diagnostic closure with full checkpoint validation",
+    "exclusive marker file+directory fsync before any fetch, single use after success/failure",
+    "only pinned page/settings GETs with redirectmanual/credentialsomit; twoattempts, no downstream even strict success",
+    "request timeout/deadline/byte overshoot stops; fixed safe receipt/export failure/accounting fallback",
+    "supervisor bounded typed fallback and actual launcher-death process-group stop/join/root/reservation cleanup"
+  ],
+  "resources": {
+    "initialSwap": "vm.swapusage: total = 3072.00M  used = 2333.94M  free = 738.06M  (encrypted)",
+    "largeOutputExpected": false,
+    "logBytes": 1048576,
+    "overlay": false,
+    "rssTargetBytes": 402653184,
+    "scratchBytes": 67108864,
+    "seconds": 120,
+    "supervisor": "trusted main-root test_resources.py manifest before scratch, reservation/finalizer, ownedTMPs, group join/remove/absence receipts",
+    "worker": 1
+  },
+  "run": "devpoller-pass1352-f59-settings-preparation",
+  "schemaVersion": "f59-settings-live-preparation-selection.v1",
+  "scope": "offline distinct2GET settings observation plan/runner/once/supervisor/typed export contract; production/test bytes frozen",
+  "selected": {
+    "red": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "--test-name-pattern=actual settings refusal",
+      "tests/runner-tests.mjs"
+    ],
+    "runnerGreen": [
+      "node",
+      "--test",
+      "--test-concurrency=1",
+      "--experimental-test-coverage",
+      "tests/runner-tests.mjs"
+    ],
+    "supervisorGreen": [
+      "python3",
+      "-I",
+      "-B",
+      "tests/supervisor-tests.py"
+    ]
+  },
+  "selectorReview": "affected HEAD dry-run proposed unsupported-language npm test fallback; inspected, not run. New evidence/passive runner is validated using explicit helper commands only.",
+  "sourceAllocation": 0,
+  "status": "OFFLINE PROPOSAL; no executable allocation"
+}

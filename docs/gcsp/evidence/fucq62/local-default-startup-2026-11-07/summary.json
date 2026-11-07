@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "local-startup-diagnosis.v1",
+  "status": "local-default-startup-passed-render-cause-unresolved",
+  "rootHead": "a641e77e85a97d696735ee3b822cfae899d45c4a",
+  "ordinaryManifest": "9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043",
+  "scope": "actual rootbuildServer/defaultlocalregistry plus one exact existing configuration; localNode26 only",
+  "reportedLiveSymptoms": {
+    "parentReportedSuccessfulDeploys": [
+      "f764",
+      "5176"
+    ],
+    "parentReportedHealth": "503 within about0.24seconds",
+    "parentReportedSpentHealthGETs": 4,
+    "independentlyRepeatedByThisLane": false
+  },
+  "hypothesis": "uncappedNode startup registryload exceeds deployment memory",
+  "finding": "not reproduced in this local variant; no memory-bound failure supports capped comparison or aheapmitigation proposal",
+  "measurements": {
+    "health": {
+      "body": {
+        "ok": true
+      },
+      "bytes": 11,
+      "elapsedMs": 12.382666999999998,
+      "statusCode": 200
+    },
+    "dto": {
+      "bytes": 10105,
+      "elapsedMs": 5958.811750000001,
+      "identityMatches": true,
+      "manifestMatches": true,
+      "sha256": "07008ce69fdaf794eea4a7708b3d76abd68e8ab07a90c491247602f693852a24",
+      "status": "partial",
+      "statusCode": 200
+    },
+    "elapsedMs": 6021.0723339999995,
+    "groupPeakRssBytes": 186384384,
+    "selfMaxRssBytes": 190824448,
+    "heapSizeLimitBytes": 4395630592,
+    "externalConnectAttempts": 0
+  },
+  "cappedComparison": {
+    "status": "unrun",
+    "reason": "conditional step requires failure/resource evidence; uncapped passed under448MiBbound"
+  },
+  "productionOrDeploymentChanges": false,
+  "sourceRequests": 0,
+  "nativeDatabaseRequests": 0,
+  "renderOomEstablished": false,
+  "acceptance": false,
+  "nextEvidence": "actualRender runtime/service/route logs and serviceconfiguration remain parent-owned; localNoOOMdoesnotexcludeNode20orplatformdifferences",
+  "cleanup": {
+    "compatibilityException": null,
+    "dependencyLinkAbsent": true,
+    "groupsAbsent": true,
+    "immutablePinsUnchanged": true,
+    "leftovers": [],
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/local-default-startup/default/ownership/127c983d32ad40e1b06d3cbe7e98467a.json",
+    "removedScratchPeakBytes": 4096,
+    "reservationAbsent": true,
+    "scratch": "/private/tmp/test-stamp-shard-127c983d32ad40e1b06d3cbe7e98467a",
+    "scratchAbsent": true
+  },
+  "preflight": "initial probe syntax/active-pointer-shape mistakes corrected before any childallocation; nofailed runtime receipt overwritten"
+}

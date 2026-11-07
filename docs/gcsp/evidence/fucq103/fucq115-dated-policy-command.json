@@ -1,0 +1,63 @@
+{
+  "commandId": "fucq115-isolated-dataset-80x4",
+  "expectedActiveVersion": "fucq115-choice-model-v3",
+  "policyVersion": "fucq115-dataset-80x4-v4",
+  "effectiveFrom": "2026-11-06T09:00:02.000Z",
+  "changes": [
+    {
+      "table": "assumptions",
+      "key": "learning.cohortSize",
+      "patch": {
+        "value": 80,
+        "status": "assumed",
+        "basis": "Explicit isolated FUCQ-115 trial: 80 fictional employees across four cycles; not a live cohort.",
+        "source": "docs/gcsp/models/fucq115-contract.md",
+        "sourceDate": "2026-11-06"
+      }
+    },
+    {
+      "table": "assumptions",
+      "key": "learning.cycles",
+      "patch": {
+        "value": 4,
+        "status": "assumed",
+        "basis": "Four nonoverlapping synthetic cycles support the reviewed earlier/later and G8-10 holdout split.",
+        "source": "docs/gcsp/models/fucq115-contract.md",
+        "sourceDate": "2026-11-06"
+      }
+    },
+    {
+      "table": "assumptions",
+      "key": "learning.maximumGeneratedRecords",
+      "patch": {
+        "value": 320,
+        "status": "assumed",
+        "basis": "Finite isolated engineering cap: 80 employees times four cycles, without changing canonical defaults.",
+        "source": "docs/gcsp/models/fucq115-contract.md",
+        "sourceDate": "2026-11-06"
+      }
+    },
+    {
+      "table": "assumptions",
+      "key": "learning.maximumChoiceEntries",
+      "patch": {
+        "value": 40000,
+        "status": "assumed",
+        "basis": "Explicit finite alternative-entry cap for this isolated trial; not an assertion of generated support.",
+        "source": "docs/gcsp/models/fucq115-contract.md",
+        "sourceDate": "2026-11-06"
+      }
+    },
+    {
+      "table": "assumptions",
+      "key": "comparison.startsAt",
+      "patch": {
+        "value": "2026-11-06T09:00:02.000Z",
+        "status": "assumed",
+        "basis": "Cycle zero begins at the pinned preparation instant so no generated choice predates feature provenance.",
+        "source": "docs/gcsp/models/fucq115-contract.md",
+        "sourceDate": "2026-11-06"
+      }
+    }
+  ]
+}

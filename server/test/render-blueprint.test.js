@@ -15,3 +15,8 @@ test('gcsp-site build filter covers exactly what its build copies', () => {
   const filtered = [...block[1].matchAll(/- (\S+)/g)].map((m) => m[1]);
   assert.deepEqual([...filtered].sort(), [...copied].sort());
 });
+
+test('gcsp-api waits for vehicle corpus readiness before deployment selection', () => {
+  const api = yaml.slice(yaml.indexOf('name: gcsp-api'), yaml.indexOf('name: gcsp-site'));
+  assert.match(api, /^    healthCheckPath: \/health\/vehicle-evidence$/m);
+});

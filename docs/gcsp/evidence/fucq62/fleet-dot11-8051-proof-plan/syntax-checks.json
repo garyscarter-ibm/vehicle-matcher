@@ -1,0 +1,94 @@
+{
+  "scope": "preparation-only",
+  "checks": [
+    {
+      "file": "audit-direct.mjs",
+      "check": "Node syntax only",
+      "status": "passed"
+    },
+    {
+      "file": "common.mjs",
+      "check": "Node syntax only",
+      "status": "passed"
+    },
+    {
+      "file": "descriptor.mjs",
+      "check": "Node syntax only",
+      "status": "passed"
+    },
+    {
+      "file": "group-proof.py",
+      "check": "Python compile no bytecode",
+      "status": "passed"
+    },
+    {
+      "file": "http-chunk.mjs",
+      "check": "Node syntax only",
+      "status": "passed"
+    },
+    {
+      "file": "package.mjs",
+      "check": "Node syntax only",
+      "status": "passed"
+    },
+    {
+      "file": "prepare-followthrough.mjs",
+      "check": "Node syntax only",
+      "status": "passed"
+    },
+    {
+      "file": "prepare-grant.py",
+      "check": "Python compile no bytecode",
+      "status": "passed"
+    },
+    {
+      "file": "publish-restart.mjs",
+      "check": "Node syntax only",
+      "status": "passed"
+    },
+    {
+      "file": "rollback.mjs",
+      "check": "Node syntax only",
+      "status": "passed"
+    },
+    {
+      "file": "summarize.mjs",
+      "check": "Node syntax only",
+      "status": "passed"
+    },
+    {
+      "file": "supervise-package.py",
+      "check": "Python compile no bytecode",
+      "status": "passed"
+    },
+    {
+      "file": "supervise.py",
+      "check": "Python compile no bytecode",
+      "status": "passed"
+    }
+  ],
+  "codePinsVerified": 160,
+  "inputPinsVerified": 140,
+  "originalCandidate144PinsUnchanged": true,
+  "originalNative167PinsUnchanged": true,
+  "candidate2ActualResultRetained": true,
+  "actualCandidateReceiptSha256": "ab8dc7381bedb5ae700ee9fca0e4dbff238a1a59191a8333dcaed6146f90bfb2",
+  "historyMembership": "57external .10 files and52ordinary .9 files unchanged",
+  "httpChunkCounts": [
+    1024,
+    1024,
+    1024,
+    1024,
+    1024,
+    1024,
+    1024,
+    885
+  ],
+  "planSha256": "53f75243e8be8c52be25e262aab3f896d1348773b1b9ea548ae545645afc8133",
+  "elapsedSeconds": 1.4767491249949671,
+  "runtimeProof": false,
+  "package": false,
+  "network": false,
+  "scratchAllocation": false,
+  "acceptance": false
+}

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "f70-options-retained-deliverables.v1",
+  "primary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-options-qualification-2026-11-07/collector-checkpoint.json",
+  "disposable": false,
+  "retainOnInterruption": true,
+  "exportBeforeScratchCleanup": true,
+  "exporter": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py",
+  "embeddedArtifacts": [
+    "contextObservation",
+    "trimRelationships",
+    "optionsObservation"
+  ],
+  "boundary": "Retain the primary from its first write. The supervisor joins the child, invokes the existing checkpoint exporter and exports every durable safe artifact before scratch cleanup. No callback or lost response is capacity evidence."
+}

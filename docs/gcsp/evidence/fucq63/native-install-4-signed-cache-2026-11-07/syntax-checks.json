@@ -1,0 +1,14 @@
+{
+  "scope": "static preparation only",
+  "planSha256": "d00ca447b2c246a2805719a7f65c27e12810aedb0cc4fc9cbb56d8afb572bcef",
+  "pythonSyntax": "passed",
+  "codePins": 173,
+  "inputs": 40,
+  "allPinsUnchanged": true,
+  "original170PinsPreserved": true,
+  "sourceRequests": 0,
+  "newPublicRequests": 0,
+  "installationRun": false,
+  "scratchAllocated": false,
+  "acceptance": false
+}

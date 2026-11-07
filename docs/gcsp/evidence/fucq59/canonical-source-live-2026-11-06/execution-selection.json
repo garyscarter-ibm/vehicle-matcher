@@ -1,0 +1,71 @@
+{
+  "authority": "Existing F58 public source permission and active completion directive;no renewed human approval required. All old allocations remain consumed and untouched.",
+  "executable": true,
+  "fileHashes": {
+    "diagnostic-plan.json": "e033e926c3da90bd2463dff1bbeb7b141be1923beccacdd5be3312bfb5715452",
+    "execution-handoff.json": "349a9224410629b5c199b6dd100224b58d79e9fbe3f1ed38896ec69a1d5907d0",
+    "run-live.mjs": "5cb5adafd7d1826fc5a953984863c21aca499a402b8f7e5b61521905018e87f7"
+  },
+  "finiteSelection": {
+    "acceptance": "observation-only;accepted0;admissionfalse;schema/pointers/semantic qualification pending",
+    "browser": 0,
+    "credentials": 0,
+    "images": 0,
+    "maximumAttempts": 4,
+    "maximumDecodedBytes": 2097152,
+    "retry": 0,
+    "solver": 0,
+    "sourceOperations": [
+      "page",
+      "settings",
+      "discover",
+      "options"
+    ],
+    "sql": 0,
+    "writes": 0
+  },
+  "gitToolSha256": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a",
+  "nodeRuntime": "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+  "producerCommit": "f8a3e21ec7b476ba93b359b16d066b7648104728",
+  "producerReview": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/pass-1423/settings-compatibility-parent-audit.json",
+    "scope": "84scoped producer passes;unchanged executable hashes;12scoped supervisor methods",
+    "sha256": "d4653061540a2420b241b118d20d430ed4de43634527810500af1d4fcaf66def"
+  },
+  "producerRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+  "qualificationDate": "2026-11-06",
+  "remoteVerifiedCommit": "f8a3e21ec7b476ba93b359b16d066b7648104728",
+  "resourceToolSha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+  "resources": {
+    "activeDeadlineMs": 45000,
+    "expectedRssBytes": 201326592,
+    "expectedScratchBytes": 2097152,
+    "expectedSeconds": 45,
+    "largeOutputExpected": false,
+    "logBytes": 1048576,
+    "measuredAvailableDiskKiB": 59588584,
+    "measuredSwapUsedMiB": 2327.56,
+    "ownership": "trusted supervisor registers external manifest/finalizer before scratch;exact owner/group/token cleanup required",
+    "rssLimitBytes": 402653184,
+    "scratchLimitBytes": 67108864,
+    "serialLane": "no other owned test worker active",
+    "supervisorSeconds": 120,
+    "worker": 1
+  },
+  "reviews": {
+    "code": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/parent-review.json",
+      "sha256": "edd3c344574c466df7db7aafcc558bd987ad1db51b9c7cb68660253096812732",
+      "verdict": "passed"
+    },
+    "security": {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/canonical-four-get-next/parent-review.json",
+      "sha256": "edd3c344574c466df7db7aafcc558bd987ad1db51b9c7cb68660253096812732",
+      "verdict": "passed"
+    }
+  },
+  "runtimeSha256": "1ef99ea25fe70c9b67e7efe768ef8ee22148d3cabc703db6131b57aeb617d040",
+  "schemaVersion": "f59-parent-execution-selection.v1",
+  "selectedAt": "2026-11-06T15:16:18.305872+00:00",
+  "supervisorSha256": "2e992894ab193d7c65487c4fe1d241e008c4eac1e78c7fe91ad3090634522514"
+}

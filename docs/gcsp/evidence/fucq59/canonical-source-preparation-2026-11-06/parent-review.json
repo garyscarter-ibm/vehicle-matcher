@@ -1,0 +1,24 @@
+{
+  "at": "2026-11-06T15:13:27.340921+00:00",
+  "reviewer": "parent independent of supervisor port implementer",
+  "code": "PASS",
+  "security": "PASS",
+  "reviewBasis": "minimal exact release helper/readback under ledger lock; explicit leftover/failure/nonzero status; no runner or source transport changes",
+  "scopedMethods": 12,
+  "regressionReceiptSha256": "c363ad1dc5ae76593df03c6f4a34665e81fd44a7562af64850da9b023bde9f67",
+  "supervisorSha256": "2e992894ab193d7c65487c4fe1d241e008c4eac1e78c7fe91ad3090634522514",
+  "runnerSha256": "5cb5adafd7d1826fc5a953984863c21aca499a402b8f7e5b61521905018e87f7",
+  "resourceFindings": [
+    {
+      "rootAbsent": true,
+      "ownerAbsent": true,
+      "groupsAbsent": true,
+      "tokenAbsentUnderLock": true,
+      "root": "/private/tmp/test-stamp-shard-647abb47a97942babaf59c1fb3d3fb46",
+      "token": "647abb47a97942babaf59c1fb3d3fb46"
+    }
+  ],
+  "testsRerun": 0,
+  "sourceCalls": 0,
+  "leftovers": []
+}

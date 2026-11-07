@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "candidate-receipt-annotation.v1",
+  "candidateReceiptSha256": "8c4a13db6713ee36b5be7a1907d6de73b8ec650c1791770ef7313b389bf0ee95",
+  "candidateManifestDigest": "28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884",
+  "status": "candidate-created-and-validated",
+  "aggregateActuallyCreated": true,
+  "planningFieldCaveat": "novelSourceAggregate.creationNotExecuted:true is copied planning metadata; actual successful status, retained file/hash and ownership receipt establish completed creation. Original receipt is unchanged.",
+  "ordinaryPublicationExecuted": false,
+  "publicUploadExecuted": false,
+  "proofPacketExecuted": false,
+  "acceptance": false
+}

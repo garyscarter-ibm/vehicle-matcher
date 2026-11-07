@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/g42-range-inventory-contract-2026-11-07/supervise.py", line 90, in <module>
+    finally: finalize()
+  File "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/g42-range-inventory-contract-2026-11-07/supervise.py", line 41, in finalize
+    if not groups_absent: raise RuntimeError('owned process group absence not proved')
+RuntimeError: owned process group absence not proved

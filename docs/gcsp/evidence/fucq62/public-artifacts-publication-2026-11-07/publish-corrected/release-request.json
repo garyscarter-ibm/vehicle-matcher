@@ -1,0 +1,8 @@
+{
+  "tag_name": "fleet-2026-11-07-4",
+  "target_commitish": "2540479cb3e1630d458083cc9656454d4b308577",
+  "name": "GCSP configuration corpus 2026-11-07.4",
+  "prerelease": true,
+  "draft": false,
+  "body": "Checksum-pinned offline build artifact for the GCSP demonstration. Contains 349 retained complete distinct source configurations, 350 configurations in total, one previously allocated synthetic VIN and zero images. Coverage is partial; this is not full scheme-model/WMI coverage or Story acceptance. Raw assets preserve the current and previous corpus selections, durable synthetic identity inventory and exact admitted source shards. Runtime lookup remains offline. Manifest: 8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9. Retrieval and restore runbook is in docs/gcsp/evidence/fucq62/static-artifact-packaging-2026-11-07.md at the target commit. No released stock, points, holds or employee usage is created."
+}

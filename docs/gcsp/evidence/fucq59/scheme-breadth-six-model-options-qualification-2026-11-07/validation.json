@@ -1,0 +1,52 @@
+{
+  "scope": "scoped first6options preparation; actual30model pool validated; zero liveHTTP",
+  "executionPlanSha256": "fb9e43123e6db974c65fd8ef4b17e25c960cc84a6c78db39ce4bd5871d84be89",
+  "sourceBasisSha256": "f3a1b2f3469453e1ee552a551d009d9748a62c66a9db87065c682ccac2ead64d",
+  "poolSha256": "e1199ee2ace13730c2e58ef18095fadbff765cbc48f45b93602d9ccf91f3ec3e",
+  "checks": {
+    "fail": 0,
+    "pass": 10,
+    "skipped": 0,
+    "tests": 10
+  },
+  "seconds": 2.511135333,
+  "peakRss": 176209920,
+  "finalCleanup": {
+    "compatibility_exception": null,
+    "groups_absent": true,
+    "leftovers": [],
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth-six-model-options/preparation/ownership/b82dde8ff3da47d5b22672e063f13046.json",
+    "removed_allocation_bytes": 555935,
+    "reservation_absent": true,
+    "scratchRoot": "/private/tmp/test-stamp-shard-b82dde8ff3da47d5b22672e063f13046",
+    "scratch_absent": true
+  },
+  "allPreparationResourceChecks": [
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth-six-model-options/preparation/ownership/b02ef8946c9b414ea9fba86469b34476.json",
+      "root": "/private/tmp/test-stamp-shard-b02ef8946c9b414ea9fba86469b34476",
+      "rootAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 20640
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth-six-model-options/preparation/ownership/b82dde8ff3da47d5b22672e063f13046.json",
+      "root": "/private/tmp/test-stamp-shard-b82dde8ff3da47d5b22672e063f13046",
+      "rootAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 555935
+    }
+  ],
+  "removedAllocationBytesAcrossPreparations": 576575,
+  "allCodeAndRuntimePinsUnchanged": true,
+  "copiedActualVerifier": "7of7 strict retained prior six-model checks; zeroHTTP",
+  "sourceGrant": false,
+  "sourceTraffic": 0,
+  "admissions": 0,
+  "capacityCredit": 0,
+  "acceptance": false,
+  "compatibilityException": null,
+  "leftovers": []
+}

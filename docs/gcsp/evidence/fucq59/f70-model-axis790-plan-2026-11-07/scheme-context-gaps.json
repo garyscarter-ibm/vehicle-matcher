@@ -1,0 +1,287 @@
+{
+  "schemaVersion": "f70-model-axis790-scheme-context-gaps.v1",
+  "basis": "Existing FS&UK Choices October2024 policy transcription; model keys are demo assumptions, not BMW catalogue mappings.",
+  "policyPath": "server/gcsp/policy/seed-v1.json",
+  "policySha256": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+  "schemeModelLines": [
+    {
+      "modelLine": "F44 Gran Coupe",
+      "engines": [
+        "218i",
+        "220i",
+        "M235i"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "F70 Sports Hatch",
+      "engines": [
+        "120",
+        "M135"
+      ],
+      "sourceState": "actual F70 catalogue/line/options context only; exact dated scheme-engine mapping remains separate"
+    },
+    {
+      "modelLine": "G01 X3",
+      "engines": [
+        "20i",
+        "30e",
+        "M40i",
+        "xDrive20d"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "G02 X4",
+      "engines": [
+        "M40i",
+        "xDrive20d"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "G05 X5",
+      "engines": [
+        "40d",
+        "50e",
+        "xDrive M60i",
+        "xDrive30d"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "G06 X6",
+      "engines": [
+        "40d",
+        "xDrive M60i",
+        "xDrive30d",
+        "xDrive40i"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "G20 Saloon",
+      "engines": [
+        "320i",
+        "330e",
+        "M340i"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "G21 Touring",
+      "engines": [
+        "320i",
+        "330e",
+        "M340i"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "G22 Coupe",
+      "engines": [
+        "420i",
+        "M440i"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "G23 Convertible",
+      "engines": [
+        "420i",
+        "M440i"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "G26 Gran Coupe",
+      "engines": [
+        "420i",
+        "M440i"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "G26 i4",
+      "engines": [
+        "i4 35",
+        "i4 40",
+        "i4 M50"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "G29 Z4",
+      "engines": [
+        "20i",
+        "M40i"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "G42 Coupe",
+      "engines": [
+        "220i",
+        "230i",
+        "M240i"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "G60 Saloon",
+      "engines": [
+        "520i",
+        "530e",
+        "550e"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "G60 i5",
+      "engines": [
+        "i5 40",
+        "i5 M60"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "G61 Touring",
+      "engines": [
+        "530e"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "G61 i5",
+      "engines": [
+        "i5 40",
+        "i5 M60"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "M Power",
+      "engines": [
+        "M2",
+        "M3",
+        "M4",
+        "X3M",
+        "X4M",
+        "X5M",
+        "X6M"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "U06 Active Tourer",
+      "engines": [
+        "220i",
+        "225xe",
+        "230e"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "U10 X2",
+      "engines": [
+        "20i",
+        "M35i"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "U10 iX2",
+      "engines": [
+        "iX2 20",
+        "iX2 30"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "U11 X1",
+      "engines": [
+        "18d",
+        "20i",
+        "23d",
+        "23i",
+        "25e",
+        "30e",
+        "M35i"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "U11 iX1",
+      "engines": [
+        "iX1 20",
+        "iX1 30"
+      ],
+      "sourceState": "not qualified by this series"
+    },
+    {
+      "modelLine": "i20 iX",
+      "engines": [
+        "iX 40",
+        "iX 50",
+        "iX M60"
+      ],
+      "sourceState": "not qualified by this series"
+    }
+  ],
+  "historicalDiscoveryLeadsOnly": [
+    {
+      "range": "G42",
+      "seed": "2PMC",
+      "observedDate": "2026-10-18"
+    },
+    {
+      "range": "G21",
+      "seed": "T3PF",
+      "observedDate": "2026-10-18"
+    },
+    {
+      "range": "U11",
+      "seed": "X1S0",
+      "observedDate": "2026-10-18"
+    },
+    {
+      "range": "U10",
+      "seed": "IXS4",
+      "observedDate": "2026-10-18"
+    },
+    {
+      "range": "G26E",
+      "seed": "I4PC",
+      "observedDate": "2026-10-18"
+    },
+    {
+      "range": "I20",
+      "seed": "IXSC",
+      "observedDate": "2026-10-18"
+    }
+  ],
+  "g42": {
+    "furtherTraffic": 0,
+    "pendingBug": "local Medium draft; parent owns Jira reference",
+    "evidencePath": "docs/gcsp/evidence/fucq59/g42-range-inventory-contract-2026-11-07",
+    "primarySha256": "6525fcd590931c04ed47bfaacacc17de3217f6a174934bcc43eb0cc7cbe539e2",
+    "spentFailures": [
+      "source-inventory-line-limit",
+      "source-inventory-line-key"
+    ],
+    "unknown": "Exact rejected live line/variant key and path; no raw tree or safe diagnostic retained."
+  },
+  "f44": "One historical requested tree response was unmatched; this does not prove global unavailability.",
+  "physicalProfile": {
+    "status": "unqualified",
+    "modelYear": null,
+    "plant": null,
+    "wmi": null,
+    "profileActivations": 0
+  },
+  "remainingToTarget": 8867,
+  "maximumPossibleAfterThisSeries": 1923,
+  "guaranteedAdmissions": 0,
+  "acceptance": false,
+  "dateHold": "FUCQ-61 bulk target remains after12November2026 if still wanted."
+}

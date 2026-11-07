@@ -1,0 +1,48 @@
+{
+  "status": "offline-prepared-public-boundaries-unrun",
+  "target": "883b6a4393cabe001be346768b662c02ac21b3d4",
+  "manifestDigest": "86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f",
+  "descriptorSha256": "0ae8f96be792f83c7b43a6f8408e62f12ba39cf1039a0c0ab885f3a3cfbcacf2",
+  "planSha256": "c757e3d5306fa7060cd4ca86536acdb054feae5995bd06191c60c1f428d71e4a",
+  "runnerSha256": "1c8f9b3cf8eba3a4aefb8ccba0f87a079ec463254ed5508d180f0948b2ba5b5c",
+  "supportPins": {
+    "prove-restored.mjs": "c61e15476c696869e784242900476ce8a9e3816028693bcbf980153e64312d49",
+    "supervise.py": "f8f726dba6917935cf7fa7c48d2705ede4cc9f6e97f71aed6ac689122a6b27eb"
+  },
+  "assets": {
+    "files": 22,
+    "bytes": 63361942,
+    "sourceShards": 11,
+    "configurations": 1134,
+    "sourceConfigurations": 1133,
+    "vinMappings": 1,
+    "images": 2,
+    "datasets": 8,
+    "direct": 1135,
+    "httpSample": 1024,
+    "httpComplement": 111,
+    "httpUnique": 1135,
+    "configuredConsumerPassed": 1133,
+    "configuredConsumerFailed": 2
+  },
+  "localCheckReceiptSha256": "804df01dd169fe8cef91ce16a6b774e7c956e4ec436a4d4ecdd523c0656b3566",
+  "localProofReceiptSha256": "dbe6910369957d973cbb1e9e4d338a9b55532969c575d57747c9c53eedfc763c",
+  "proofScope": "new proof helper actual retained1135-record isolated store; not public download",
+  "lookupDtoParity": 1135,
+  "configuredConsumerPassed": 1133,
+  "configuredConsumerFailed": 2,
+  "httpUnique": 1135,
+  "httpOverlap": 0,
+  "helperEvidenceReusedAfterMetadataOnlyChange": "Helper bytes/inputs/environment/variant unchanged. Supervisor impact filename namespace corrected and local-check2 added; runner child now explicitly passes --expose-gc matching executed local-proof. local-check2 smoke passed final runner/supervisor. No second all-record proof necessary.",
+  "publicMetadataReadbackExecuted": false,
+  "publicGetExecuted": false,
+  "publicUploadExecuted": false,
+  "ordinaryPublicationExecuted": false,
+  "acceptance": false,
+  "cleanup": {
+    "leftovers": [],
+    "compatibilityException": null,
+    "retainedPublicProofLogicalBytes": 201099
+  },
+  "next": "Root review pins; authorize check; review check.json then exactroot grant with supportPins before publish/download"
+}

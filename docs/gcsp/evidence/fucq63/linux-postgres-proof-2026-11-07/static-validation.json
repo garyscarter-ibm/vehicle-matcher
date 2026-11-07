@@ -1,0 +1,116 @@
+{
+  "schemaVersion": "f63-linux-postgres-static-validation.v1",
+  "status": "passed-scoped-static",
+  "scope": "Fixture publication correction authoring only. Both failed remote runs remain immutable; corrected runtime execution is unrun pending root-reviewed integration push.",
+  "validatedAgainstTopicBase": "222c738f44168ce80ac1adcbb1c6019f732a9ef8",
+  "previousPacketStaticReceiptAt": "58c14328936f53e1e8c5780975b62be78dbe228c",
+  "originalActualRun": {
+    "runId": 42370440771,
+    "attempt": 1,
+    "runtimeHead": "51c691bd5437efe47d43225edfb609d0b4dbe176",
+    "conclusion": "failure",
+    "retainedAt": "../linux-postgres-result-2026-11-07/",
+    "cause": "Original catch discarded returned proof; diagnostic run establishes the fixture lacked the full authoritative inventory snapshot. Original printed checked0/nativeProoffalse were fallback values."
+  },
+  "selectedChecks": {
+    "node": "node --check orders.mjs passed; imports not executed",
+    "python": "In-memory run.py compilation passed; supervisor not executed",
+    "json": "Plan/static JSON parsed; revised orders hash and unchanged run.py/selection hashes matched",
+    "criteria": "All five labelled proofEqual argument expressions are byte-identical to diagnostic baseline; wrapper still calls assert.equal",
+    "sanitization": "Static review: assertion expected/actual contain primitive type, enum/count fields only. String values require explicit enum membership; objects expose type only and arrays expose length. No error message, stack or object serialization.",
+    "retention": "Full returned proof captured before acceptance assertions; compact proof <=16384 bytes; complete order receipt <=65536 bytes; absent proof yields null checked/nativeProof",
+    "boundaries": "Workflow, run.py, selection.json, .12 identity, all resource/trigger values and existing15 production/prover pins unchanged from222c738f. Exact integration-target prover matches original d768ba pin. Both prior failed evidence directories unchanged.",
+    "whitespace": "Direct whitespace/newline checks and git diff --check passed",
+    "setup": "Static port/sequence review: separate repository.transaction and tx.compareAndSwap after publishStockOrders uses imported.value.runVersion, preserves other run versions, retains exact allocated snapshot/revision/digest; same snapshot and publication version checked after close/reopen"
+  },
+  "harnessIdentities": {
+    "orders.mjs": "2adc9b1f84c7f5e8854aa9dacf5e2ecfced03c0ba058ed1f4fabc1d78d9fa880",
+    "run.py": "a6f779afe04f142552b302d2e19048c355ebd1c0633ad66a2c3f678f6c59ffce",
+    "selection.json": "dbb5be7d9f776bd97361d34d52a69490fd81d3e614f15cf52d63597179c354b5"
+  },
+  "proofCriteriaChanged": false,
+  "productionPathsChanged": [],
+  "workflowChanged": false,
+  "supervisorChanged": false,
+  "selectionChanged": false,
+  "cleanupOwnershipChanged": false,
+  "resourceArithmetic": {
+    "phaseSecondsTotal": 510,
+    "supervisorSeconds": 520,
+    "jobSeconds": 600,
+    "aggregateWorkingMiB": 2048,
+    "aggregateRamMiB": 1408,
+    "postgresContainerMiB": 512,
+    "postgresTmpfsMiB": 192,
+    "maximumReturnedProofBytes": 16384,
+    "maximumOrderReceiptBytes": 65536
+  },
+  "changedPaths": [
+    "orders.mjs",
+    "README.md",
+    "plan.json",
+    "static-validation.json"
+  ],
+  "runtimeTests": 0,
+  "nativeCalls": 0,
+  "localRestoreCalls": 0,
+  "packageInstallCalls": 0,
+  "sourceCalls": 0,
+  "workflowDispatches": 0,
+  "agentMerges": 0,
+  "scratchAllocatedBytes": 0,
+  "removedAllocationBytes": 0,
+  "disposableLeftovers": [],
+  "unrun": [
+    "Corrected publication setup and proof in CI",
+    "Any local proof/database/download/install",
+    "Full suite",
+    "Full corpus configured-consumer replay",
+    "Managed Render persistence or deployed composition"
+  ],
+  "knownDeferredConfiguredConsumerFailures": 2707,
+  "acceptance": false,
+  "agent": {
+    "name": "Charlie Dog",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "selectedModel": "gpt-6.1-sol",
+    "selectedEffort": "high",
+    "effectiveRuntimeVerified": false,
+    "fallback": null,
+    "descendants": 0
+  },
+  "diagnosticActualRun": {
+    "runId": 42371231686,
+    "attempt": 1,
+    "runtimeHead": "b0e0ee6e71a1dd7f24c680d34d64967df7109646",
+    "conclusion": "failure",
+    "checked": 3,
+    "directErrors": 0,
+    "httpErrors": 0,
+    "consumerErrors": 3,
+    "sourceCalls": 0,
+    "externalConnectAttempts": 0,
+    "nativeProof": false,
+    "retainedAt": "../linux-postgres-diagnostic-result-2026-11-07/"
+  },
+  "workflowSha256": "db49d6a27a5328cc61d41986b80ae0cf624562eead17d0d5c74890fe6075dff0",
+  "fixturePublicationCorrection": {
+    "scope": "Proof fixture setup only; unchanged production and exported prover",
+    "sequence": "After publishStockOrders, before repository close and unchanged proof",
+    "port": "repository.transaction with tx.get and tx.compareAndSwap",
+    "expectedRunVersion": "imported.value.runVersion",
+    "retainedValue": "syntheticIdentityInventory {revision: allocated.inventory.revision, contentDigest: allocated.inventory.contentDigest, snapshot: allocated.inventory}",
+    "reopenCheck": "Exact current run, publication version and full retained inventory snapshot",
+    "existingContractEvidence": [
+      "server/gcsp/vehicle-evidence/vin-allocation.js: publishStockOrders separate offline publication comment and returned runVersion",
+      "server/gcsp/fixtures/scenario-v1.js: buildScenarioSeed full retained inventory",
+      "server/test/helpers/offline-vehicle-fixture.js: original memory proof uses scenario/runtime fixture",
+      "server/gcsp/vehicle-evidence/identity-routing.js: stock classification requires consistent retained snapshot"
+    ],
+    "productionPinsReused": 15,
+    "criteriaChanged": false,
+    "productionChanged": false,
+    "executed": false
+  }
+}

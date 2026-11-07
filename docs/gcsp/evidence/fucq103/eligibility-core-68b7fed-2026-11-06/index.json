@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-06",
+  "scope": "root-accepted-scoped-core25-proof-only",
+  "run": "fucq103-backend-4c44677bd6724608a994b0086021d29b",
+  "testedRevision": "68b7fed87888a9b806087bab0ba4df5f4716cfd6",
+  "sourcePlanSHA256": "edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9",
+  "grant": "fucq103-eligibility-core-68b7fed-0639",
+  "grantStatus": "consumed-once-no-retry-no-nextmode",
+  "result": {
+    "tests": 25,
+    "pass": 25,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0,
+    "childExitCode": 0,
+    "supervisorExitCode": 0
+  },
+  "sourceCaseCounts": {
+    "server/test/gcsp-greg-driver-eligibility.test.js": 8,
+    "server/test/gcsp-greg-demand.test.js": 17
+  },
+  "leadAuditChecks": 516,
+  "rootAuditChecks": 514,
+  "files": [
+    {
+      "path": "summary.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-4c44677bd6724608a994b0086021d29b-summary.json",
+      "bytes": 3068,
+      "sha256": "27e5525e42f9190cefcf6d367de65eb9ab5d11ce5dc1793fd1cad8cf0303b76a",
+      "copy": "exact-original-bytes"
+    },
+    {
+      "path": "manifest.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-4c44677bd6724608a994b0086021d29b-manifest.json",
+      "bytes": 2239,
+      "sha256": "2a836e1049932607cf6fba99bca3be51b3010acd98da88a45ebdf21cb5f71119",
+      "copy": "exact-original-bytes"
+    },
+    {
+      "path": "test.log",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-4c44677bd6724608a994b0086021d29b/test.log",
+      "bytes": 2991,
+      "sha256": "3586833fc51ba2a1a7e11f7e352a97986735f30acf4c89dc82e7a18d3e7deb79",
+      "copy": "exact-original-bytes"
+    },
+    {
+      "path": "checkpoint.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-4c44677bd6724608a994b0086021d29b/checkpoint.json",
+      "bytes": 319,
+      "sha256": "dc7e75e3067c71a7e18491e36ee80d2f83abdca2ce82a0ca9c2b532fc18cc5cc",
+      "copy": "exact-original-bytes"
+    },
+    {
+      "path": "lead-audit.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-core-68b7fed-lead-2026-11-06.json",
+      "bytes": 79657,
+      "sha256": "a5777b53b9ca5a9f55ae13569d8daed85ef024967ac92e81bd14da97586c123d",
+      "copy": "exact-original-bytes"
+    },
+    {
+      "path": "root-audit.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-core25-root-0642.json",
+      "bytes": 2197,
+      "sha256": "203c92611840c375fd5956c3bedcfae4b91b4b202a7dc934421c26dc84812971",
+      "copy": "exact-original-bytes"
+    }
+  ],
+  "originalCopyBytes": 90471,
+  "rootPublicationAuthorised": true,
+  "preservation": "All six files are byte-for-byte copies; original JSON state/timestamps/absolute paths are unchanged, including the historical unpublished marker in the lead audit. Root subsequently accepted the result and authorised this publication; root-audit.json is the final independent scoped audit. Earlier failed attempts remain unchanged.",
+  "metrics": {
+    "wallSeconds": 18.042076708,
+    "peakAggregateRSSBytes": 1036320768,
+    "peakAggregateRSSMiB": 988.3125,
+    "aggregateRSSCapBytes": 1073741824,
+    "peakCombinedBytes": 4348560,
+    "scratchRemovedBytes": 4338401
+  },
+  "cleanup": "Runtime, lead and root audits confirm owned PID/start/group/port absence, scratch and worktree dependency paths absent, and exact owned token absent under strict no-follow locked ledger. Raw predelete lsof output is not separately retained; its gate is enforced by the exact admitted finalizer.",
+  "sourceFreeze": {
+    "sameExactHeadUpstreamRemote": true,
+    "cleanTestedTree": true,
+    "runtimeSourcesPreserved": true,
+    "leadVerifiedSourcePins": 219,
+    "installedBytePins": 251,
+    "executablePins": 8,
+    "physicalDependencyEntries": 307,
+    "resolverAbsences": 163,
+    "sourceDirectoryInventories": 3,
+    "productTestFrozenRevision": "f80fc61ca151cb46ad21cb2b19e704f4012d53de",
+    "historicalAttemptReceiptsUnchanged": true
+  },
+  "authoredParserFixtures": 38,
+  "executedParserFixtures": 0,
+  "boundaries": "Core25 only: registry16, remaining integration modes, browser/native/full/deployed/live acceptance and full-story completion are not proven. No next grant, retry, merge, closure, Jira or product-map acceptance change is inferred.",
+  "agents": "requested/selected gpt-6.1-sol/high; no fallback or descendants"
+}

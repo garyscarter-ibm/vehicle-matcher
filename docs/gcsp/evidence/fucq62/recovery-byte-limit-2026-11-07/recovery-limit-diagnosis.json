@@ -1,0 +1,27 @@
+{
+  "observedAt": "2026-11-07T08:39:30.267578+00:00",
+  "relatedStory": "FUCQ-62",
+  "relatedStoryBasis": "F62 external release restore and previous-manifest recovery; F63 recovery consumer",
+  "severity": "Medium",
+  "actualImpact": "Large previous manifests registered only as a predecessor retain default64MiB limit, while .12 recovery .11 configurations are154046635B; requires correction for required final recovery integration. Current live .10 unaffected by this new pair.",
+  "reproduction": "Load actual production fleet-release.js against bounded code-owned descriptor fixture: current/previous max268435456, unknown67108864, direct-owned previous priority67108864. New focused regression then actual cold-recovery proof.",
+  "cause": "releaseForManifest already resolves exact current or previous digest; releaseLimits explicitly discards matched previous descriptor bound.",
+  "changedPaths": [
+    "server/gcsp/vehicle-evidence/fleet-release.js",
+    "server/test/gcsp-fleet-artifacts.test.js"
+  ],
+  "affectedCallers": [
+    "fleet-artifacts release restore/validateCorpusDirectory",
+    "syntheticRegistry recovery"
+  ],
+  "selected": "node --test --test-name-pattern=release descriptor|validator selects limits|recovery manifests server/test/gcsp-fleet-artifacts.test.js",
+  "excluded": "Fullsuite/source/native/UI: one pure code-owned descriptor lookup; coldrestore/recovery selected separately after package.",
+  "resourceBudget": {
+    "worker": 1,
+    "scratchMiB": 16,
+    "hostRamMiB": 512,
+    "seconds": 60
+  },
+  "jira": "Connector OAuth refresh invalid; capture pending rather than invent issue/link.",
+  "acceptance": false
+}

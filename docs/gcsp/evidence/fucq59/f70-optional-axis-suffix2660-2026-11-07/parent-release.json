@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "f70-optional-axis-parent-release.v1",
+  "released": true,
+  "allocationId": "f70-optional-axis-suffix2660-20261107-once",
+  "grantId": "f70-optional-axis-suffix2660-20261107-once-suffix2660",
+  "seriesPlanSha256": "d59bc0b1e3f33052dfa75a16244f48f262eab1753130f0df21963426e6160ddd",
+  "candidateManifestSha256": "e6711d1863472aedadf0f64a6b15c8b8e9b48ed51c09c7341e38eaca478e8319",
+  "codePins": {
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix2660-2026-11-07/README.md": "af1bdda0a7456a18447508c14030504bdbd6c9e0a8a9aed4b70f5e65431db620",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix2660-2026-11-07/actual-event-history.mjs": "097a2fb56eeca20ef431ed1e9299c049bd4d36b66a5a933276aabb352e888cd4",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix2660-2026-11-07/check-exclusions.py": "f642c40673696df06fb3d1e287bcd051c1157335dfaa26086f50c831a804b16c",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix2660-2026-11-07/check-offline.py": "41995a70054f5b89baa5b1577b4337c8209d60fb3a29e48d9e2c1dc934e0df3d",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix2660-2026-11-07/check-prepared.mjs": "60773986e51b6acc4dc87ed218cd12545dbe6eeae23ce71fcd1329939779b2ab",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix2660-2026-11-07/group-proof.py": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix2660-2026-11-07/live-check.test.mjs": "8137b4baec3c54a99a875f48831c6e0300f96b6c2fc6011325aca3c789334b74",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix2660-2026-11-07/prepare-session.py": "16281eb073826628349240ea2d7944278419deb997fd9649a644bdface15cd8c",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix2660-2026-11-07/prepare.py": "c715712fc3302e7e10014b2bef10fd5c1af8750950928205591f3c6f158f94dd",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix2660-2026-11-07/reconcile-retained.py": "62b74b2092d310f532a731b8c61b8a223b80241da743c1278d9d5e5a094202ac",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix2660-2026-11-07/release-context.py": "b50d1f8208ec2f0350347ec309a1d9a11b34bb8474fcf1a7b5c0a5f7db09c1b0",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix2660-2026-11-07/run-live.mjs": "9d9968c88640401c4435da98b21c0dcd75b74cbe320f8646e0102087e2559f21",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix2660-2026-11-07/run-series.py": "518947ff1e942418f5724dfdfea88034bee5eff72a8484eff24151a2f1cf4060",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix2660-2026-11-07/supervise.py": "9017f83418a31dc49dee216a4c1c62fa6dbf8129db6ced3880a557e02543e795",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-suffix2660-2026-11-07/verify-retained.py": "fa7857f2473b982d971400c26251bc1df5f08be1cb6717d5c6db6d85965cfdc3",
+    "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+    "scripts/gcsp/bmw-public-registration.mjs": "b4eed688fff481af4d422f3612be71184df689ff943fef3d339dc9392a960460",
+    "scripts/gcsp/bmw-selection-binding.mjs": "480f1e3d1496bcb8d808ec75839634808a2923cdbf8411df61b0f819bdec3f38",
+    "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+    "scripts/gcsp/capture-bmw-selection.mjs": "14c255be3696d8d0512d9d4ddc03f24bae138d83f4d548bd813b07d1a5eb9892",
+    "scripts/gcsp/collect-fleet.mjs": "ba3864cee32f480facde57a2d2c9dbf944d571878bb2a9cece220955357ab1de",
+    "scripts/gcsp/collection-session.mjs": "bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/public-bmw-source.mjs": "14600d91932c33b691801197ea28812c98bb08ea9603f293829ffeff09b48235",
+    "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+    "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+    "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+    "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "90cf9187cb44dc6d17e6984a0fdc25dc13fc9078c23d3652d779a565cedc29a7",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+  },
+  "qualificationDate": "2026-11-07",
+  "indexPins": {
+    "canonical": {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session019/final-canonical-index.json",
+      "sha256": "e698dec733782d7b8d38cabd62d2f1ba523d84cdf5ac6721ddf3d13266460dba",
+      "digest": "f1ac8b8d20a9520e88b1203cb3f8daf90e8f0622fc1127dbee8258af084ff6de",
+      "entries": 4512
+    },
+    "spent": {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session019/final-spent-request-index.json",
+      "sha256": "c96ff5b17c1deeeb20e8110118d46c041bc7fb62de44c6bdec1f309a9126239c",
+      "digest": "7793cf0e135d8494fe49b3beb12f09b63743c51d9d774bb07ad012e5b897da72",
+      "entries": 6055
+    }
+  },
+  "strictProof": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session019/live-validation.json",
+    "sha256": "691623211b87b776517c3fb4011d9f10a34204d9c1c9582e73be6264019b04b1"
+  },
+  "baseline": {
+    "admittedSource": 4509,
+    "canonical": 4512,
+    "spent": 6055
+  },
+  "executionBaseline": {
+    "admittedSource": 4509,
+    "canonical": 4512,
+    "spent": 6063
+  },
+  "conservativeExclusionsSha256": "ba144748222698f6a8b0edd803348cacbf94df591ea7a22c4aebe68ad142735e",
+  "acknowledgedOriginalStoppedDiagnostic": true,
+  "originalPhase": {
+    "allocationId": "f70-optional-axis-suffix5535-20261107-once",
+    "markerPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix5535-20261107-once/suffix-once.json",
+    "markerSha256": "0dba1f301481e7f7dcb5f1f27c9389058fb94dc665c998b7519e7580c6a90646",
+    "reservedAt": "2026-11-07T04:47:51.950882+00:00",
+    "maximumWallSeconds": 21600,
+    "deadlineAt": "2026-11-07T10:47:51.950882+00:00",
+    "stoppedReceiptPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix5535-20261107-once/suffix-receipt.json",
+    "stoppedReceiptSha256": "37d3bff987eda29c4df5e7e55fdcfb04b62e2d12ddef85f3789adc6e63ac8657",
+    "consumedSessions": 239,
+    "consumedSolverCandidates": 1912,
+    "consumedGets": 2868
+  },
+  "preserveOriginalPhaseDeadline": true,
+  "concurrentDisjointLane": {
+    "permitted": true,
+    "catalogueRangeKey": "G42",
+    "modelCodes": [
+      "2PMA",
+      "2PMB",
+      "2PPA",
+      "2PPB",
+      "2PMC",
+      "2PBC"
+    ]
+  },
+  "finalGlobalUnionRequiredBeforeCumulativeCredit": true
+}

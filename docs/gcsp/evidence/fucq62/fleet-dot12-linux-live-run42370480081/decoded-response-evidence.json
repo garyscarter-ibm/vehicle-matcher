@@ -1,0 +1,25 @@
+{
+  "scope": "Complete small response files recovered from bounded original log prefixes; no additional GETs",
+  "files": {
+    "health-body.bin": {
+      "bytes": 11,
+      "sha256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+      "completeResponseFile": true
+    },
+    "health-headers.json": {
+      "bytes": 579,
+      "sha256": "d619708438b6b89594a4a2a21061992e9b2318d0506d6bc0b9a01edf47998c13",
+      "completeResponseFile": true
+    },
+    "readiness-body.bin": {
+      "bytes": 169,
+      "sha256": "817ab012458b6b50802a7dfcc4b1f97663a288c28d96cc7dec018c8931f792e3",
+      "completeResponseFile": true
+    },
+    "readiness-headers.json": {
+      "bytes": 580,
+      "sha256": "02f345c75f05650636af0b934ce3ac2046bcd7495a738980343c9e098080283f",
+      "completeResponseFile": true
+    }
+  }
+}

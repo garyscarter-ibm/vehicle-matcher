@@ -1,0 +1,27 @@
+{
+  "status": "unapplied proposals; no Linux build/deployment/live request executed",
+  "releaseId": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "publicTarget": "15fde2c3c24b5da02206501576a3baeb19e9a78c",
+  "rootBefore": {
+    "render.gcsp.yaml": "4bd41b73fe8b469114eb089be09fa7b7307cf68ea176ac991fbe123f09ce23b5",
+    ".github/workflows/gcsp-fleet-build.yml": "4a3cc28cfb6431f671dd3b69b40bb9ff47fbb0db73c67912396e3be19d23a0b8"
+  },
+  "proposedAfter": {
+    "render.gcsp.yaml": "973657b5de11dbbf341156a8f8a2abaf70f0e81bf8e5adcd555239aa9580aa60",
+    ".github/workflows/gcsp-fleet-build.yml": "4b0ffb2f537e2fa3022d55876c8e0561c4a5105b550ebabd86728106f0fbf1ad"
+  },
+  "newApplicationGETs": 0,
+  "fullReferenceProofReexecuted": false,
+  "linuxScope": "31exact assets,5actual .12 DTO/consumer/local HTTP references on Node20 Linux; historical10002proof not replayed;2707 historical consumer failures",
+  "nativeStockProof": "unrun; separate native PostgreSQL/current-run UUID acceptance evidence",
+  "orderProof": "not exercised; no order workflow claims from fleet restore",
+  "nativeRequiredForFleetArtifactBuild": false,
+  "boundaryReason": "Local cold CLI runs with a filtered env without GCSP_DATABASE_URL, and scoped local HTTP explicitly injects FilePolicyProvider with denied stock fetchers. Native local PostgreSQL/current-run UUID and order writes are not invoked. Render injects managed GCSP_DATABASE_URL, so createPolicyService selects PostgresPolicyProvider during fleet signature-policy validation: managed policy DB connectivity/state is an actual Render build boundary. That is distinct from native-local story acceptance.",
+  "requires": [
+    "Root review/apply after exact public receipt and cold/offline results",
+    "Exact integrated target with corrected fleet-release.js and observed Linux result before Linux claim",
+    "Fresh successful meaningful deployment and separately granted live request budget before deployedDTO claim"
+  ],
+  "acceptance": false,
+  "managedPolicyDatabaseRequiredForRenderBuild": true
+}

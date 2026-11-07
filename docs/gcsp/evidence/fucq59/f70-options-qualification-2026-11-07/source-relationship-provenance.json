@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "f70-options-source-relationship-provenance.v1",
+  "fullContext": "docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context02/tree.json",
+  "fullContextSha256": "eb21b10d81c008c77b66d0d5b448183ccc2c8f13330b0ecadc7fc976fbb59fb1",
+  "lineDiagnostic": "docs/gcsp/evidence/fucq59/f70-range-shape-diagnostic-2026-11-07/range-shape.json",
+  "lineDiagnosticSha256": "857859212ed61c5e2c06b9d233bf53de29354a9caf932b4fcae8cd98c6d3a21f",
+  "lineDiagnosticContext": "docs/gcsp/evidence/fucq59/f70-range-shape-diagnostic-2026-11-07/tree.json",
+  "lineDiagnosticContextSha256": "eb3e3a1c5e10cc0aa573d0a7b399f85c08c2d12e8ec805f9a95780eb682c9eff",
+  "sharedRawTreeResponseSha256": "3ac1bf64e1f6605867cb4ffc4bd6783d460020f43fe8388e7401cc92df82e687",
+  "explicitSourceRelationships": {
+    "/1/modelRanges/F70/lines/S0337/option": "S0337",
+    "/1/modelRanges/F70/lines/S0337/defaultModel/modelCode": "1F7B",
+    "/1/modelRanges/F70/lines/S0337/defaultModel/agModelCode": "82GE",
+    "/1/modelRanges/F70/lines/S0337/includedTransmissionVariants/3/configuration/modelCode": "1F7B"
+  },
+  "includedTrimElementPointer": "/1/modelRanges/F70/lines/S0337/includedTransmissionVariants/3/configuration/elements/S0337",
+  "elementTypes": "Unobserved; no prefix-based classification is allowed.",
+  "boundary": "Historical actual source facts justify the exact options route only. All full model/AG/date/alias and line relationships must be freshly corroborated before the fourth GET. No constructibility or configuration count is established."
+}

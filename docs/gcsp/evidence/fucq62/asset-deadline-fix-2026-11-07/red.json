@@ -1,0 +1,38 @@
+{
+  "result": {
+    "completed": {},
+    "identity": {
+      "server/gcsp/vehicle-evidence/fleet-artifacts.js": "8567ef55e6cf914c1ea8d6f8c7bbb7797f96116030163d58b46eb594feb05de6",
+      "server/test/gcsp-artifact-deadline.test.js": "0646ffa93c851f2c671a619674a13abf76280f30f3165634d408d08457ec1b43",
+      "server/test/gcsp-fleet-artifacts.test.js": "b5a38623f2298db55d2ac24f2d6caef1b4c94db45eeb59f0a735d6b131f0042f",
+      "server/test/gcsp-fleet-build-entry.test.js": "0bea74109e326d1385be05133068057f7d94ded2a7d08a4846ea1465299e930c",
+      "server/test/render-blueprint.test.js": "e798fc156851afb60d0d378feb8f9d22d69fe9ee686a049e6e31c2c118d16358"
+    },
+    "issues": [
+      "focused regression failed"
+    ],
+    "selected": [
+      "red"
+    ],
+    "state": "incomplete",
+    "units": [
+      {
+        "disk": 2097152,
+        "id": "red",
+        "ram": 536870912,
+        "seconds": 60
+      }
+    ],
+    "updated": 1794041930.5155892,
+    "version": 1,
+    "wall": 0.573
+  },
+  "cleanup": {
+    "groupsAbsent": true,
+    "leftovers": [],
+    "ownedDependencyLinkAbsent": true,
+    "removedScratchBytes": 0,
+    "reservationAbsent": true,
+    "scratchAbsent": true
+  }
+}

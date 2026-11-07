@@ -1,0 +1,11 @@
+# Parent checkpoint: 5,829 actual source configurations
+
+Independent audit of the completed 1,304-request G42 extension adds 1,163 admissions, with 141 source-not-constructible outcomes and zero duplicates. The union has 5,832 canonical identities and 7,444 spent requests: 4,171 short of 10,000. The parent performed 29,740 read-only checks and reused 815 unchanged strict retained checks; zero source or test replay. The separate continuing F70 lane is not credited here.
+
+The .9 public release and ordinary activation remain exactly 2,424 source configurations, 2,425 configuration identities, one VIN, two representative image associations and one exact technical supplement. Linux Action 42343046040 passed at 12657190, including fresh public restore and all 2,426 references. Render deployment 7617112384 succeeded. Its actual health GET passed, but the first vehicle GET timed out after 30 seconds, before headers or any DTO comparison. Live parity remains unverified. The failed one-shot packet is retained without retry; a separate cold-loader diagnosis is active.
+
+This checkpoint commits the exact eight ordinary-store changes from the already-proved additive .9 activation, preserving all prior versions and the actual publication-owner file. No data regeneration or pointer-only update occurred. This follows the .7/.8 Git publication pattern. A resulting deployment must be observed separately.
+
+The 485 configured-consumer failures remain a deferred Medium defect, not a fix or acceptance waiver. Native current-run order proof, original model/profile/year/plant/five-WMI coverage, applicable enrichment and 10,000 source acceptance remain open; all six stories remain In Progress. The next bounded breadth phase has 960 new solver requests across 30 actual contexts, independently disjoint from all 3,623 requests in the F70 lane.
+
+Completed source audit removed 85,474,592 scratch bytes; 326 scratch roots, 978 groups and 327 reservation tokens were independently absent. Source evidence (1,448,257,810 bytes) remains directly in OneDrive. Both current live phases left scratch, links, groups and reservations absent; no compatibility exception or leftovers. Ongoing children own separate allocations.

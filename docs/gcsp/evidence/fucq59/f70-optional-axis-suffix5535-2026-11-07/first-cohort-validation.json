@@ -1,0 +1,122 @@
+{
+  "scope": "first originalfour-session cohort2, no globalunion credit",
+  "observedAt": "2026-11-07T04:48:40.147943+00:00",
+  "completedSessions": [
+    {
+      "accepted": 8,
+      "allocationId": "f70-optional-axis-suffix5535-20261107-once-session001",
+      "cohort": 2,
+      "cumulativeAdmitted": 2391,
+      "decodedBytes": 900379,
+      "duplicates": 0,
+      "gets": 12,
+      "model": "1F7A",
+      "primarySha256": "dc074f653c8deeb9c44c18b9a946f1ed1db73199108c63728b1588da0fb43954",
+      "proofSha256": "4cbb524e836ca86916e26e59b4c0a680a408695442a709e8baa88a737bb2377d",
+      "rejected": 0,
+      "retainedShardBytes": 6227641,
+      "session": 1,
+      "solverRequests": 8
+    },
+    {
+      "accepted": 5,
+      "allocationId": "f70-optional-axis-suffix5535-20261107-once-session002",
+      "cohort": 2,
+      "cumulativeAdmitted": 2396,
+      "decodedBytes": 918340,
+      "duplicates": 0,
+      "gets": 12,
+      "model": "1F7C",
+      "primarySha256": "8baf64cbc2e7051bb92cc0ba42ba68824b665e78db849c8cb1c3a740f678e0e5",
+      "proofSha256": "aa992d02ffce41ad2ff8a0076947915fb9a47d229aed552b0faa000396dc968a",
+      "rejected": 3,
+      "retainedShardBytes": 5962510,
+      "session": 2,
+      "solverRequests": 8
+    },
+    {
+      "accepted": 7,
+      "allocationId": "f70-optional-axis-suffix5535-20261107-once-session003",
+      "cohort": 2,
+      "cumulativeAdmitted": 2403,
+      "decodedBytes": 914892,
+      "duplicates": 0,
+      "gets": 12,
+      "model": "1F7D",
+      "primarySha256": "797ca02ad6536c812f78dac257ea20db845d5801cae090a7c7b8cda14b3d1ed2",
+      "proofSha256": "3aad94ed88ef572e80ced417dc0c58b8b30c22f78bfa0258b25b2552ec8ce110",
+      "rejected": 1,
+      "retainedShardBytes": 6237202,
+      "session": 3,
+      "solverRequests": 8
+    },
+    {
+      "accepted": 6,
+      "allocationId": "f70-optional-axis-suffix5535-20261107-once-session004",
+      "cohort": 2,
+      "cumulativeAdmitted": 2409,
+      "decodedBytes": 925366,
+      "duplicates": 0,
+      "gets": 12,
+      "model": "1F7F",
+      "primarySha256": "ea25c7248db8b5dfdf785d36c2f88aae18af467695e40c8f3a72d048d5a9ed7a",
+      "proofSha256": "a77a6876ff6e281d9f8887a7f98d82feae2fd1f5f06ae792708da1e5cd5805b2",
+      "rejected": 2,
+      "retainedShardBytes": 6197444,
+      "session": 4,
+      "solverRequests": 8
+    }
+  ],
+  "strictChecks": {
+    "tests": 20,
+    "pass": 20,
+    "fail": 0,
+    "skipped": 0
+  },
+  "gets": 48,
+  "solverRequests": 32,
+  "newAdmissions": 26,
+  "duplicates": 0,
+  "rejected": 6,
+  "decodedBytes": 3658977,
+  "proofs": [
+    {
+      "session": 1,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix5535-20261107-once/sessions/session001/live-validation.json",
+      "sha256": "4cbb524e836ca86916e26e59b4c0a680a408695442a709e8baa88a737bb2377d",
+      "allOwnedScratchGroupsLinksReservationsAbsent": true
+    },
+    {
+      "session": 2,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix5535-20261107-once/sessions/session002/live-validation.json",
+      "sha256": "aa992d02ffce41ad2ff8a0076947915fb9a47d229aed552b0faa000396dc968a",
+      "allOwnedScratchGroupsLinksReservationsAbsent": true
+    },
+    {
+      "session": 3,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix5535-20261107-once/sessions/session003/live-validation.json",
+      "sha256": "3aad94ed88ef572e80ced417dc0c58b8b30c22f78bfa0258b25b2552ec8ce110",
+      "allOwnedScratchGroupsLinksReservationsAbsent": true
+    },
+    {
+      "session": 4,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix5535-20261107-once/sessions/session004/live-validation.json",
+      "sha256": "a77a6876ff6e281d9f8887a7f98d82feae2fd1f5f06ae792708da1e5cd5805b2",
+      "allOwnedScratchGroupsLinksReservationsAbsent": true
+    }
+  ],
+  "originalPhaseClockUnchanged": true,
+  "sourceContinuesWithinExactFiniteAllocation": true,
+  "globalUnionRequired": true,
+  "acceptance": false,
+  "status": "first cohort proved; originalfinitephase still running",
+  "parentReleaseSha256": "5c271cd58dd390c17831a2ed2fa2b56f00a9e9e61f2dfab3d79a31969b076a6b",
+  "durableSummaryPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix5535-20261107-once/cohort002-proof-summary.json",
+  "durableSummarySha256": "9b44a628438a8010a2f9e696829aa18e288c6671d84ff10b2851f1c2c60ed2c2",
+  "localCumulativeAtFirstCohort": {
+    "admittedSource": 2409,
+    "canonical": 2412,
+    "spent": 3220
+  },
+  "cumulativeCapacityCredit": 0
+}

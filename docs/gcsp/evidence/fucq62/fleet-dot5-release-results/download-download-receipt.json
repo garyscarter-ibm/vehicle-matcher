@@ -1,0 +1,347 @@
+{
+  "status": "real-cli-anonymous-public-restore-passed",
+  "releaseId": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+  "runtime": "v26.7.0",
+  "files": [
+    {
+      "name": "store--active.json",
+      "path": "store/active.json",
+      "bytes": 374,
+      "sha256": "538c5cc8643e51a3946bfd142d0e42168695fe93d63fc887d9a3178048e82203"
+    },
+    {
+      "name": "store--last-good.json",
+      "path": "store/last-good.json",
+      "bytes": 198,
+      "sha256": "cc97c981fe2d62cb145916781cc95b0188e9a87ccf3996cab8b29ef7ea109dc8"
+    },
+    {
+      "name": "store--identity-inventory.json",
+      "path": "store/identity-inventory.json",
+      "bytes": 271467,
+      "sha256": "f5ec5791161b9fd3cfe0894f899401fe793cdaefbc3971381bab5e23d71c2549"
+    },
+    {
+      "name": "store--versions--7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431--manifest.json",
+      "path": "store/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/manifest.json",
+      "bytes": 3539,
+      "sha256": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431"
+    },
+    {
+      "name": "store--versions--7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431--configurations.jsonl",
+      "path": "store/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/configurations.jsonl",
+      "bytes": 8892234,
+      "sha256": "864878c9e93913f2fceef0ad2272933a0c3555cf71f07164b9ddd2f1582c6d84"
+    },
+    {
+      "name": "store--versions--7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431--vins.jsonl",
+      "path": "store/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/vins.jsonl",
+      "bytes": 2565,
+      "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd"
+    },
+    {
+      "name": "store--versions--7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431--images.jsonl",
+      "path": "store/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/images.jsonl",
+      "bytes": 691,
+      "sha256": "09cb58f5e660c3ba3fa723feb65cd85187788889799a84da853b58302f5546a8"
+    },
+    {
+      "name": "store--versions--8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9--manifest.json",
+      "path": "store/versions/8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9/manifest.json",
+      "bytes": 3476,
+      "sha256": "8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9"
+    },
+    {
+      "name": "store--versions--8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9--configurations.jsonl",
+      "path": "store/versions/8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9/configurations.jsonl",
+      "bytes": 6500952,
+      "sha256": "da5c54020b9ccf2eddef8160a8df4e501f7ce57884b195bd275e242ff843f2f5"
+    },
+    {
+      "name": "store--versions--8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9--vins.jsonl",
+      "path": "store/versions/8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9/vins.jsonl",
+      "bytes": 2565,
+      "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd"
+    },
+    {
+      "name": "store--versions--8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9--images.jsonl",
+      "path": "store/versions/8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9/images.jsonl",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "sources--a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265.jsonl",
+      "path": "sources/a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265.jsonl",
+      "bytes": 603088,
+      "sha256": "a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265"
+    },
+    {
+      "name": "sources--1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802.jsonl",
+      "path": "sources/1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802.jsonl",
+      "bytes": 21408,
+      "sha256": "1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802"
+    },
+    {
+      "name": "sources--f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8.jsonl",
+      "path": "sources/f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8.jsonl",
+      "bytes": 159220,
+      "sha256": "f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8"
+    },
+    {
+      "name": "sources--00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a.jsonl",
+      "path": "sources/00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a.jsonl",
+      "bytes": 6832119,
+      "sha256": "00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a"
+    },
+    {
+      "name": "sources--845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080.jsonl",
+      "path": "sources/845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080.jsonl",
+      "bytes": 409709,
+      "sha256": "845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080"
+    },
+    {
+      "name": "sources--5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7.jsonl",
+      "path": "sources/5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7.jsonl",
+      "bytes": 689849,
+      "sha256": "5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7"
+    },
+    {
+      "name": "sources--14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6.jsonl",
+      "path": "sources/14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6.jsonl",
+      "bytes": 689844,
+      "sha256": "14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6"
+    },
+    {
+      "name": "sources--c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06.jsonl",
+      "path": "sources/c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06.jsonl",
+      "bytes": 689836,
+      "sha256": "c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06"
+    },
+    {
+      "name": "sources--acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d.jsonl",
+      "path": "sources/acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d.jsonl",
+      "bytes": 323364,
+      "sha256": "acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d"
+    }
+  ],
+  "bytes": 26096498,
+  "network": {
+    "requests": [
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      }
+    ],
+    "denied": 0,
+    "authorization": false,
+    "cookie": false
+  },
+  "publicFiles": 19,
+  "trustedEmptyLocalFiles": 1,
+  "restore": {
+    "status": "ok",
+    "mode": "cold-restore",
+    "active": {
+      "datasetId": "gcsp-source-fleet",
+      "version": "2026-11-07.5",
+      "manifestDigest": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+      "counts": {
+        "configurations": 480,
+        "distinctConfigurations": 480,
+        "images": 1,
+        "qualifyingCompleteDistinctSourceConfigurations": 479,
+        "sourceConfigurations": 479,
+        "vinMappings": 1
+      },
+      "sourceContexts": [
+        {
+          "catalogueDate": null,
+          "market": "US",
+          "note": "Small structural reference fixture; no UK/RHD, full equipment or 200/10000 corpus claim",
+          "observedDate": "2026-11-01",
+          "sourceKind": "north-american-reference",
+          "steering": "LHD"
+        },
+        {
+          "catalogueDate": "2026-11-01",
+          "market": "GB",
+          "note": "Exact retained FUCQ-39 GB catalogue; physical year, build, steering and plant remain unknown",
+          "observedDate": "2026-11-01",
+          "sourceKind": "dated-snapshot",
+          "steering": null
+        },
+        {
+          "catalogueDate": "2026-11-07",
+          "market": "GB",
+          "note": "478 actual admitted v2 factory selections; physical build, technical measurements and scheme model breadth remain unknown; one representative image belongs only to the retained v1 configuration",
+          "observedDate": "2026-11-07",
+          "sourceKind": "dated-snapshot",
+          "steering": null
+        }
+      ],
+      "completeness": {
+        "imagesMissing": 479,
+        "selectedOptions": {
+          "complete": 479,
+          "unknown": 1
+        },
+        "sourceKinds": {
+          "dated-snapshot": 479,
+          "north-american-reference": 1
+        }
+      }
+    },
+    "externalCalls": 38
+  },
+  "authorization": false,
+  "cookie": false,
+  "ordinaryPublicationExecuted": false
+}

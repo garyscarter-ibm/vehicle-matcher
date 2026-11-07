@@ -1,0 +1,284 @@
+{
+  "schemaVersion": "f63-actions-log-extract.v1",
+  "source": {
+    "runId": 42371231686,
+    "attempt": 1,
+    "jobId": 128399612638,
+    "command": "gh run view 42371231686 --repo garyscarter-ibm/vehicle-matcher --job 128399612638 --log",
+    "returnedLogCharacters": 44851,
+    "returnedOriginalTokens": 11218,
+    "returnedLogNotTruncated": true
+  },
+  "method": "Complete JSON events from proof and always-cleanup steps parsed without changing values; exact relevant log lines retained separately. orders.json duplicates the complete emitted order failure/proof receipt for direct diagnosis.",
+  "events": [
+    {
+      "step": "Restore exact .12 and prove three native order references",
+      "timestamp": "2026-11-07T12:10:13.5709393Z",
+      "value": {
+        "phase": "npm-ci",
+        "state": "start"
+      }
+    },
+    {
+      "step": "Restore exact .12 and prove three native order references",
+      "timestamp": "2026-11-07T12:10:14.5916722Z",
+      "value": {
+        "phase": "npm-ci",
+        "exitCode": 0,
+        "seconds": 1.021,
+        "state": "passed"
+      }
+    },
+    {
+      "step": "Restore exact .12 and prove three native order references",
+      "timestamp": "2026-11-07T12:10:14.5917590Z",
+      "value": {
+        "phase": "restore",
+        "state": "start"
+      }
+    },
+    {
+      "step": "Restore exact .12 and prove three native order references",
+      "timestamp": "2026-11-07T12:12:23.2795622Z",
+      "value": {
+        "phase": "restore",
+        "exitCode": 0,
+        "seconds": 128.685,
+        "state": "passed"
+      }
+    },
+    {
+      "step": "Restore exact .12 and prove three native order references",
+      "timestamp": "2026-11-07T12:12:23.2796996Z",
+      "value": {
+        "phase": "orders",
+        "state": "start"
+      }
+    },
+    {
+      "step": "Restore exact .12 and prove three native order references",
+      "timestamp": "2026-11-07T12:13:20.7321011Z",
+      "value": {
+        "phaseFailure": {
+          "stage": "orders",
+          "boundedLog": "{\"status\":\"failed\",\"stage\":\"unchanged-order-reference-proof\",\"proofReturned\":true,\"checked\":3,\"nativeProof\":false,\"assertionSummary\":{\"stage\":\"unchanged-order-reference-proof\",\"check\":\"proof-status\",\"operator\":\"strictEqual\",\"expectedType\":\"string\",\"expectedCount\":6,\"expectedEnum\":\"passed\",\"actualType\":\"string\",\"actualCount\":6,\"actualEnum\":\"failed\"},\"acceptance\":false}\n"
+        }
+      }
+    },
+    {
+      "step": "Restore exact .12 and prove three native order references",
+      "timestamp": "2026-11-07T12:13:20.7524487Z",
+      "value": {
+        "receipt": "download.json",
+        "value": {
+          "status": "ok",
+          "mode": "cold-restore",
+          "active": {
+            "datasetId": "gcsp-source-fleet",
+            "version": "2026-11-07.12",
+            "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+            "counts": {
+              "configurations": 10001,
+              "distinctConfigurations": 10001,
+              "images": 2,
+              "qualifyingCompleteDistinctSourceConfigurations": 10000,
+              "sourceConfigurations": 10000,
+              "vinMappings": 1
+            },
+            "sourceContexts": [
+              {
+                "catalogueDate": null,
+                "market": "US",
+                "note": "Small structural reference fixture; no UK/RHD, full equipment or 200/10000 corpus claim",
+                "observedDate": "2026-11-01",
+                "sourceKind": "north-american-reference",
+                "steering": "LHD"
+              },
+              {
+                "catalogueDate": "2026-11-01",
+                "market": "GB",
+                "note": "Exact retained FUCQ-39 GB catalogue; physical year, build, steering and plant remain unknown",
+                "observedDate": "2026-11-01",
+                "sourceKind": "dated-snapshot",
+                "steering": null
+              },
+              {
+                "catalogueDate": "2026-11-07",
+                "market": "GB",
+                "note": "9999 actual admitted v2 factory selections and one retained historical source configuration; two representative images retain exact dated associations; four qualified measurements apply only to one exact configuration; physical build, visual fidelity and scheme breadth remain unverified",
+                "observedDate": "2026-11-07",
+                "sourceKind": "dated-snapshot",
+                "steering": null
+              }
+            ],
+            "completeness": {
+              "imagesMissing": 9999,
+              "selectedOptions": {
+                "complete": 10000,
+                "unknown": 1
+              },
+              "sourceKinds": {
+                "dated-snapshot": 10000,
+                "north-american-reference": 1
+              }
+            }
+          },
+          "externalCalls": 62
+        }
+      }
+    },
+    {
+      "step": "Restore exact .12 and prove three native order references",
+      "timestamp": "2026-11-07T12:13:20.7551645Z",
+      "value": {
+        "receipt": "orders.json",
+        "value": {
+          "status": "failed",
+          "stage": "unchanged-order-reference-proof",
+          "errorType": "AssertionError",
+          "errorCode": "ERR_ASSERTION",
+          "assertionSummary": {
+            "stage": "unchanged-order-reference-proof",
+            "check": "proof-status",
+            "operator": "strictEqual",
+            "expectedType": "string",
+            "expectedCount": 6,
+            "expectedEnum": "passed",
+            "actualType": "string",
+            "actualCount": 6,
+            "actualEnum": "failed"
+          },
+          "acceptance": false,
+          "proofReturned": true,
+          "proofRetention": {
+            "status": "retained",
+            "bytes": 2134
+          },
+          "proof": {
+            "schemaVersion": "current-order-reference-proof.v1",
+            "status": "failed",
+            "repositoryProvider": "postgresql",
+            "nativeAttempted": true,
+            "nativeProof": false,
+            "metrics": {
+              "scope": "sequential exact-order sample; direct plus consumer plus loopback HTTP per observation",
+              "count": 3,
+              "elapsedMs": 158.3903219999993,
+              "ordersPerSecond": 18.94055117837322,
+              "p50Ms": 39.95217300000513,
+              "p95Ms": 50.742159000001266,
+              "p99Ms": 50.742159000001266,
+              "node": "v20.20.2",
+              "platform": "linux",
+              "architecture": "x64",
+              "noSlaClaim": true
+            },
+            "runId": "f63-ci-42371231686_1",
+            "environmentId": "f63-ci-environment-42371231686_1",
+            "currentRunUnchanged": true,
+            "scope": "explicit exact current-run orderUUID sample",
+            "checked": 3,
+            "directErrors": 0,
+            "httpErrors": 0,
+            "consumerErrors": 3,
+            "observations": [
+              {
+                "orderUuid": "2c841356-1512-462d-84eb-e780bdccffca",
+                "orderNumber": "3542853",
+                "configurationIdSha256": "3c8ef0f80272d06bd5ad8feb9b78a32a3477c7a4455e01c7c748a3b129d4396b",
+                "directStatus": "partial",
+                "directPassed": true,
+                "httpPassed": true,
+                "consumerStatus": "source-unavailable",
+                "consumerPassed": false,
+                "dtoSha256": "1cbea0a4180bf510613f98c782f73fd09395c494f0039c5519ce5d0c16e10868",
+                "elapsedMs": 50.742159000001266
+              },
+              {
+                "orderUuid": "67196c0d-5f86-409a-bd43-d6a2ab58f812",
+                "orderNumber": "2896550",
+                "configurationIdSha256": "c4903cd98e98ca52561beff6f7adf04772efe4856d643aaf1f9f97ae67b3d752",
+                "directStatus": "partial",
+                "directPassed": true,
+                "httpPassed": true,
+                "consumerStatus": "source-unavailable",
+                "consumerPassed": false,
+                "dtoSha256": "49387112677f40b18b312c9da6fbd8dadf2340eb3ef3d0bf8883597a18cb3c44",
+                "elapsedMs": 35.3755669999955
+              },
+              {
+                "orderUuid": "84d878dd-a74c-46ca-b668-e40e1e728cac",
+                "orderNumber": "5900975",
+                "configurationIdSha256": "4b835d8777c03b2633728c0878d7d211f23220d94e7a82fa2a863817fbfaa783",
+                "directStatus": "partial",
+                "directPassed": true,
+                "httpPassed": true,
+                "consumerStatus": "source-unavailable",
+                "consumerPassed": false,
+                "dtoSha256": "d9e19b16d00e79c55f40c033bd784db6efb2ac06936aa65af83da00648e8702e",
+                "elapsedMs": 39.95217300000513
+              }
+            ],
+            "sourceCalls": 0,
+            "externalConnectAttempts": 0,
+            "databaseTraffic": "Existing injected repository reads; native execution requires separately approved runtime plan. No fixture fallback.",
+            "acceptance": false
+          },
+          "ownedSchemaAbsent": true
+        }
+      }
+    },
+    {
+      "step": "Restore exact .12 and prove three native order references",
+      "timestamp": "2026-11-07T12:13:21.0311711Z",
+      "value": {
+        "cleanup": "passed",
+        "scratchAbsent": true,
+        "serviceAbsent": true,
+        "removedWorkingBytes": 925220226,
+        "issues": []
+      }
+    },
+    {
+      "step": "Restore exact .12 and prove three native order references",
+      "timestamp": "2026-11-07T12:13:21.0315314Z",
+      "value": {
+        "status": "failed",
+        "stage": "orders",
+        "acceptance": false,
+        "errorType": "AssertionError",
+        "reason": "orders failed",
+        "phases": [
+          {
+            "phase": "npm-ci",
+            "exitCode": 0,
+            "seconds": 1.021
+          },
+          {
+            "phase": "restore",
+            "exitCode": 0,
+            "seconds": 128.685
+          },
+          {
+            "phase": "orders",
+            "exitCode": 1,
+            "seconds": 57.451
+          }
+        ],
+        "cleanupPassed": true
+      }
+    },
+    {
+      "step": "Verify owned scratch and service absent",
+      "timestamp": "2026-11-07T12:13:21.1539157Z",
+      "value": {
+        "cleanup": "passed",
+        "scratchAbsent": true,
+        "serviceAbsent": true,
+        "removedWorkingBytes": 0,
+        "issues": []
+      }
+    }
+  ],
+  "acceptance": false
+}

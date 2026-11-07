@@ -1,0 +1,209 @@
+{
+  "status": "verified-active",
+  "targetMet": true,
+  "storyAcceptance": "not-established",
+  "requiredDistinct": 200,
+  "shortfall": 0,
+  "reason": null,
+  "manifest": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6/manifest.json",
+    "sha256": "6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6",
+    "datasetId": "gcsp-source-fleet",
+    "version": "2026-11-07.2",
+    "schemaVersion": "1",
+    "signaturePolicyVersion": "gcsp-policy-v1",
+    "profileRegistryVersion": "vin-profiles.v1",
+    "generatorVersion": "synthetic-identities.sha256-v1"
+  },
+  "qualification": "bounded-fixture-or-partial-corpus",
+  "actual": {
+    "configurations": 341,
+    "distinctConfigurations": 341,
+    "images": 0,
+    "qualifyingCompleteDistinctSourceConfigurations": 340,
+    "sourceConfigurations": 340,
+    "vinMappings": 1,
+    "completeResolvedDistinct": 340,
+    "nonQualifyingConfigurations": 1,
+    "coverage": {
+      "markets": {
+        "GB": 340,
+        "US": 1
+      },
+      "models": {
+        "430i": 1,
+        "unknown": 340
+      },
+      "steering": {
+        "LHD": 1,
+        "unknown": 340
+      },
+      "wmis": {
+        "WBA": 1
+      }
+    },
+    "omittedCoverageCategories": {
+      "markets": 0,
+      "models": 0,
+      "steering": 0,
+      "wmis": 0
+    },
+    "completeness": {
+      "imagesMissing": 341,
+      "selectedOptions": {
+        "complete": 340,
+        "unknown": 1
+      },
+      "sourceKinds": {
+        "dated-snapshot": 340,
+        "north-american-reference": 1
+      }
+    },
+    "distributions": {
+      "model": {
+        "values": {
+          "430i": 1,
+          "unknown": 340
+        },
+        "omittedCategories": 0
+      },
+      "body": {
+        "values": {
+          "Convertible": 1,
+          "unknown": 340
+        },
+        "omittedCategories": 0
+      },
+      "powertrain": {
+        "values": {
+          "petrol": 1,
+          "unknown": 340
+        },
+        "omittedCategories": 0
+      },
+      "factoryOptionCount": {
+        "values": {
+          "1": 1,
+          "47": 48,
+          "48": 73,
+          "49": 23,
+          "50": 23,
+          "51": 72,
+          "52": 44,
+          "53": 40,
+          "54": 9,
+          "56": 8
+        },
+        "omittedCategories": 0
+      },
+      "sourceKind": {
+        "values": {
+          "dated-snapshot": 340,
+          "north-american-reference": 1
+        },
+        "omittedCategories": 0
+      },
+      "unresolvedFacts": {
+        "values": {
+          "agModelCode": 1,
+          "body": 340,
+          "derivative": 340,
+          "drive": 340,
+          "engineCode": 341,
+          "exactEquipment": 1,
+          "exactTrim": 1,
+          "model": 340,
+          "modelYear": 340,
+          "plant": 340,
+          "powertrain": 340,
+          "productionDate": 341,
+          "productionEra": 340,
+          "region": 340,
+          "registrationDate": 1,
+          "steering": 340,
+          "transmission": 341,
+          "vgModelCode": 1
+        },
+        "omittedCategories": 0
+      },
+      "imageFidelity": {
+        "values": {},
+        "omittedCategories": 0
+      }
+    }
+  },
+  "planned": {
+    "provided": false,
+    "familyCount": 0,
+    "families": [],
+    "omittedFamilies": 0,
+    "exclusions": []
+  },
+  "limitations": [
+    "Compatible profile-family coverage is not inferred from configuration IDs or VIN spelling.",
+    "Staged verification does not establish source-operation budgets, collection replay or full story acceptance.",
+    "Unknown measurements, missing images and representative image fidelity remain explicit; no stock, eligibility or points facts are inferred."
+  ],
+  "activeStore": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/data/gcsp/vehicle-evidence/fleet-source.v1",
+  "activation": {
+    "loaderStatus": "ok",
+    "recovered": false
+  },
+  "audit": {
+    "scope": "all-records",
+    "records": {
+      "configurations": 341,
+      "vinMappings": 1,
+      "stockReferences": 0
+    },
+    "checked": 342,
+    "errors": 0,
+    "elapsedMs": 572.8972919999997,
+    "concurrency": 1,
+    "throughputPerSecond": 596.9656424907664,
+    "latencyMs": {
+      "count": 342,
+      "min": 1.523790999999619,
+      "p50": 1.6453330000003916,
+      "p95": 1.8455419999991136,
+      "p99": 2.5085420000013983,
+      "max": 3.692041000000245
+    },
+    "environment": {
+      "node": "v26.7.0",
+      "platform": "darwin",
+      "arch": "arm64"
+    },
+    "stockScope": "not-supplied"
+  },
+  "http": {
+    "endpoint": "http://127.0.0.1:63431",
+    "scope": "all-records",
+    "requests": 342,
+    "totalRecords": 342,
+    "concurrency": 1,
+    "errors": 0,
+    "elapsedMs": 159.90270799999962,
+    "throughputPerSecond": 2138.800551145143,
+    "latencyMs": {
+      "count": 342,
+      "min": 0.4028330000001006,
+      "p50": 0.4407089999986056,
+      "p95": 0.5275419999998121,
+      "p99": 0.738707999998951,
+      "max": 4.658499999999549
+    },
+    "serverClosed": true
+  },
+  "egress": {
+    "scope": "this-audit-process",
+    "externalCalls": 0,
+    "sourceCalls": 0,
+    "control": "blocked"
+  },
+  "acceptanceLimits": [
+    "Actual full-target source corpus and declared coverage remain required for story acceptance.",
+    "Stock references are supplied through the repository seam; no native PostgreSQL or stock generation proof is inferred.",
+    "Restart, activation interruption and rollback are tested in owned fixtures; this command does not mutate the active store."
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "stage": "invoke-seven-bottle-loader-diagnostic",
+  "errorType": "TimeoutError",
+  "frames": [
+    {
+      "file": "diagnose.py",
+      "line": 41,
+      "function": "<module>"
+    }
+  ],
+  "logs": [],
+  "elapsedSeconds": 1.9231492919999997,
+  "publicRequests": 0,
+  "installationAttempted": false,
+  "nativeDatabaseAttempted": false,
+  "acceptance": false
+}

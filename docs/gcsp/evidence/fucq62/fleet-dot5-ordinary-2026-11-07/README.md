@@ -1,0 +1,7 @@
+Ordinary `.5` activation and matching Render anchor, 7 November 2026
+
+Existing publisher activated exact public manifest `7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431`:479qualifying source configurations,480total,one retained syntheticVIN andone representative image. The same checkpoint switches the full-checkout Render build restore anchor. Repeated publication is idempotent; cold registry resolves the approved representative image. All350previous configuration lines,24oldversionfiles,oldVIN anddurableidentity/dataset history are unchanged;130configurations andone dataset added,0externalcalls. No stock generated.
+
+Actual activation used `activate-fleet-dot5.mjs --receipt` under the external64MiB/512MiBhost/448MiBchild/90s supervisor:20.547s,260587520BsampledRSS,42289120Bsampledscratch removed. Allowned scratch/processgroups/reservation/dependencylink absence verified. The initial custom scratch path was refused before work; its failure/cleanup receipts are retained, then the standard manifest-owned path passed. Narrow YAML/shell/Renderfilter check passed1/1,0scratch. No compatibilityexception orleftover.
+
+Identical candidatebytes reuse realanonymous19publicasset/20filechecksum validation,offline481direct+481localHTTP/recovery checks and LinuxNode20 Actions42331038232. The CI receipt is beside the build runbook. Actual newRender .5 deployment/API parity remains separate; no original10k/modelbreadth/profile/fullacceptance claim.

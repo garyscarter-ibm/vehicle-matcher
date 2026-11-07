@@ -1,0 +1,616 @@
+{
+  "time": "2026-11-07T04:16:15.018192+00:00",
+  "scope": "read-only retainedactualprimaries/receipts/cumulativeprefix/pins/filesystemaudit; no source/test replay",
+  "passed": true,
+  "checks": [
+    {
+      "check": "actualvalidation exactpin",
+      "pass": true
+    },
+    {
+      "check": "release",
+      "pass": true
+    },
+    {
+      "check": "execution pin",
+      "pass": true
+    },
+    {
+      "check": "retained58pass",
+      "pass": true
+    },
+    {
+      "check": "codePins:_tools/test_resources.py",
+      "pass": true
+    },
+    {
+      "check": "codePins:docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/2pbc/collection-plan.json",
+      "pass": true
+    },
+    {
+      "check": "codePins:docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/2pma/collection-plan.json",
+      "pass": true
+    },
+    {
+      "check": "codePins:docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/2pmb/collection-plan.json",
+      "pass": true
+    },
+    {
+      "check": "codePins:docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/2pmc/collection-plan.json",
+      "pass": true
+    },
+    {
+      "check": "codePins:docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/2ppa/collection-plan.json",
+      "pass": true
+    },
+    {
+      "check": "codePins:docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/2ppb/collection-plan.json",
+      "pass": true
+    },
+    {
+      "check": "codePins:docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/base-index-selection.json",
+      "pass": true
+    },
+    {
+      "check": "codePins:docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/candidate-provenance.json",
+      "pass": true
+    },
+    {
+      "check": "codePins:docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/prepare.py",
+      "pass": true
+    },
+    {
+      "check": "codePins:docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/prepared-check.test.mjs",
+      "pass": true
+    },
+    {
+      "check": "codePins:docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/remaining-candidates.json",
+      "pass": true
+    },
+    {
+      "check": "codePins:docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/run-live.mjs",
+      "pass": true
+    },
+    {
+      "check": "codePins:docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/supervise.py",
+      "pass": true
+    },
+    {
+      "check": "codePins:docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/validate-prepared.py",
+      "pass": true
+    },
+    {
+      "check": "codePins:docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py",
+      "pass": true
+    },
+    {
+      "check": "codePins:scripts/gcsp/bmw-public-registration.mjs",
+      "pass": true
+    },
+    {
+      "check": "codePins:scripts/gcsp/bmw-selection-binding.mjs",
+      "pass": true
+    },
+    {
+      "check": "codePins:scripts/gcsp/bmw-source-qualification.mjs",
+      "pass": true
+    },
+    {
+      "check": "codePins:scripts/gcsp/capture-bmw-selection.mjs",
+      "pass": true
+    },
+    {
+      "check": "codePins:scripts/gcsp/collect-fleet.mjs",
+      "pass": true
+    },
+    {
+      "check": "codePins:scripts/gcsp/collection-session.mjs",
+      "pass": true
+    },
+    {
+      "check": "codePins:scripts/gcsp/configuration-key.mjs",
+      "pass": true
+    },
+    {
+      "check": "codePins:scripts/gcsp/public-bmw-source.mjs",
+      "pass": true
+    },
+    {
+      "check": "codePins:scripts/gcsp/settings-shape-report.mjs",
+      "pass": true
+    },
+    {
+      "check": "codePins:server/gcsp/migrations/index.js",
+      "pass": true
+    },
+    {
+      "check": "codePins:server/gcsp/policy/activation.js",
+      "pass": true
+    },
+    {
+      "check": "codePins:server/gcsp/policy/adoption.js",
+      "pass": true
+    },
+    {
+      "check": "codePins:server/gcsp/policy/file-provider.js",
+      "pass": true
+    },
+    {
+      "check": "codePins:server/gcsp/policy/index.js",
+      "pass": true
+    },
+    {
+      "check": "codePins:server/gcsp/policy/memory-provider.js",
+      "pass": true
+    },
+    {
+      "check": "codePins:server/gcsp/policy/postgres-provider.js",
+      "pass": true
+    },
+    {
+      "check": "codePins:server/gcsp/policy/publish.js",
+      "pass": true
+    },
+    {
+      "check": "codePins:server/gcsp/policy/reviewed-definitions.js",
+      "pass": true
+    },
+    {
+      "check": "codePins:server/gcsp/policy/seed-v1.json",
+      "pass": true
+    },
+    {
+      "check": "codePins:server/gcsp/repository/core.js",
+      "pass": true
+    },
+    {
+      "check": "codePins:server/gcsp/repository/index.js",
+      "pass": true
+    },
+    {
+      "check": "codePins:server/gcsp/repository/memory.js",
+      "pass": true
+    },
+    {
+      "check": "codePins:server/gcsp/repository/postgres.js",
+      "pass": true
+    },
+    {
+      "check": "codePins:server/gcsp/repository/schema.js",
+      "pass": true
+    },
+    {
+      "check": "codePins:server/package-lock.json",
+      "pass": true
+    },
+    {
+      "check": "codePins:server/test/gcsp-bmw-model-batch.test.js",
+      "pass": true
+    },
+    {
+      "check": "codePins:server/vehicle-evidence/bmw-catalogue-adapter.js",
+      "pass": true
+    },
+    {
+      "check": "codePins:server/vehicle-evidence/bmw-catalogue-v2.js",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2pma/collector-checkpoint.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2pma/options.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2pma/qualification-plan.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2pma/receipt.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2pmb/collector-checkpoint.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2pmb/options.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2pmb/qualification-plan.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2pmb/receipt.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2ppa/collector-checkpoint.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2ppa/options.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2ppa/qualification-plan.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2ppa/receipt.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2ppb/collector-checkpoint.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2ppb/options.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2ppb/qualification-plan.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2ppb/receipt.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2pbc/collector-checkpoint.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2pbc/options.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2pbc/qualification-plan.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2pbc/receipt.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2pmc/collector-checkpoint.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2pmc/options.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2pmc/qualification-plan.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/2pmc/receipt.json",
+      "pass": true
+    },
+    {
+      "check": "sourcePins:docs/gcsp/evidence/fucq59/g42-six-model-options-qualification-2026-11-07/typed-axes-index.json",
+      "pass": true
+    },
+    {
+      "check": "runtimePins:/opt/homebrew/Cellar/node/26.7.0/bin/node",
+      "pass": true
+    },
+    {
+      "check": "runtimePins:/usr/bin/python3",
+      "pass": true
+    },
+    {
+      "check": "canonical baselineprefix",
+      "pass": true
+    },
+    {
+      "check": "canonical adds48",
+      "pass": true
+    },
+    {
+      "check": "canonical exactpin",
+      "pass": true
+    },
+    {
+      "check": "spent baselineprefix",
+      "pass": true
+    },
+    {
+      "check": "spent adds48",
+      "pass": true
+    },
+    {
+      "check": "spent exactpin",
+      "pass": true
+    },
+    {
+      "check": "2pma primaryhash",
+      "pass": true
+    },
+    {
+      "check": "2pma eightadmissions",
+      "pass": true
+    },
+    {
+      "check": "2pma outcomes",
+      "pass": true
+    },
+    {
+      "check": "2pma http12",
+      "pass": true
+    },
+    {
+      "check": "2pma sourcecounts",
+      "pass": true
+    },
+    {
+      "check": "2pmb primaryhash",
+      "pass": true
+    },
+    {
+      "check": "2pmb eightadmissions",
+      "pass": true
+    },
+    {
+      "check": "2pmb outcomes",
+      "pass": true
+    },
+    {
+      "check": "2pmb http12",
+      "pass": true
+    },
+    {
+      "check": "2pmb sourcecounts",
+      "pass": true
+    },
+    {
+      "check": "2ppa primaryhash",
+      "pass": true
+    },
+    {
+      "check": "2ppa eightadmissions",
+      "pass": true
+    },
+    {
+      "check": "2ppa outcomes",
+      "pass": true
+    },
+    {
+      "check": "2ppa http12",
+      "pass": true
+    },
+    {
+      "check": "2ppa sourcecounts",
+      "pass": true
+    },
+    {
+      "check": "2ppb primaryhash",
+      "pass": true
+    },
+    {
+      "check": "2ppb eightadmissions",
+      "pass": true
+    },
+    {
+      "check": "2ppb outcomes",
+      "pass": true
+    },
+    {
+      "check": "2ppb http12",
+      "pass": true
+    },
+    {
+      "check": "2ppb sourcecounts",
+      "pass": true
+    },
+    {
+      "check": "2pbc primaryhash",
+      "pass": true
+    },
+    {
+      "check": "2pbc eightadmissions",
+      "pass": true
+    },
+    {
+      "check": "2pbc outcomes",
+      "pass": true
+    },
+    {
+      "check": "2pbc http12",
+      "pass": true
+    },
+    {
+      "check": "2pbc sourcecounts",
+      "pass": true
+    },
+    {
+      "check": "2pmc primaryhash",
+      "pass": true
+    },
+    {
+      "check": "2pmc eightadmissions",
+      "pass": true
+    },
+    {
+      "check": "2pmc outcomes",
+      "pass": true
+    },
+    {
+      "check": "2pmc http12",
+      "pass": true
+    },
+    {
+      "check": "2pmc sourcecounts",
+      "pass": true
+    },
+    {
+      "check": "48distinct IDs",
+      "pass": true
+    },
+    {
+      "check": "newcanonical IDsjoin",
+      "pass": true
+    },
+    {
+      "check": "source72",
+      "pass": true
+    },
+    {
+      "check": "decoded5135881",
+      "pass": true
+    },
+    {
+      "check": "scratchabsent:/private/tmp/test-stamp-shard-87a38c9ea8644042b5bae953c5dfffbf",
+      "pass": true
+    },
+    {
+      "check": "reservationabsent:/private/tmp/test-stamp-shard-87a38c9ea8644042b5bae953c5dfffbf",
+      "pass": true
+    },
+    {
+      "check": "groupabsent:35252",
+      "pass": true
+    },
+    {
+      "check": "scratchabsent:/private/tmp/test-stamp-shard-387286e5d7004f3d8a45ef3820b60054",
+      "pass": true
+    },
+    {
+      "check": "reservationabsent:/private/tmp/test-stamp-shard-387286e5d7004f3d8a45ef3820b60054",
+      "pass": true
+    },
+    {
+      "check": "groupabsent:35330",
+      "pass": true
+    },
+    {
+      "check": "scratchabsent:/private/tmp/test-stamp-shard-067d4521eddb445296ea25d4cabaef81",
+      "pass": true
+    },
+    {
+      "check": "reservationabsent:/private/tmp/test-stamp-shard-067d4521eddb445296ea25d4cabaef81",
+      "pass": true
+    },
+    {
+      "check": "groupabsent:35445",
+      "pass": true
+    },
+    {
+      "check": "scratchabsent:/private/tmp/test-stamp-shard-082e15ab744741c9a3180ac90899d28b",
+      "pass": true
+    },
+    {
+      "check": "reservationabsent:/private/tmp/test-stamp-shard-082e15ab744741c9a3180ac90899d28b",
+      "pass": true
+    },
+    {
+      "check": "groupabsent:35529",
+      "pass": true
+    },
+    {
+      "check": "scratchabsent:/private/tmp/test-stamp-shard-78faedfda9374f49b6a7f6e2fd36171a",
+      "pass": true
+    },
+    {
+      "check": "reservationabsent:/private/tmp/test-stamp-shard-78faedfda9374f49b6a7f6e2fd36171a",
+      "pass": true
+    },
+    {
+      "check": "groupabsent:35642",
+      "pass": true
+    },
+    {
+      "check": "scratchabsent:/private/tmp/test-stamp-shard-fd85f9662f684c8d8bc9bbc1e22744b5",
+      "pass": true
+    },
+    {
+      "check": "reservationabsent:/private/tmp/test-stamp-shard-fd85f9662f684c8d8bc9bbc1e22744b5",
+      "pass": true
+    },
+    {
+      "check": "groupabsent:35727",
+      "pass": true
+    },
+    {
+      "check": "scratchabsent:/private/tmp/test-stamp-shard-cc7e3bd19e964dcf9bbe2911cebe2242",
+      "pass": true
+    },
+    {
+      "check": "reservationabsent:/private/tmp/test-stamp-shard-cc7e3bd19e964dcf9bbe2911cebe2242",
+      "pass": true
+    },
+    {
+      "check": "groupabsent:36961",
+      "pass": true
+    },
+    {
+      "check": "scratchabsent:/private/tmp/test-stamp-shard-be148f5c98254af19ed73f96272b0cf6",
+      "pass": true
+    },
+    {
+      "check": "reservationabsent:/private/tmp/test-stamp-shard-be148f5c98254af19ed73f96272b0cf6",
+      "pass": true
+    },
+    {
+      "check": "groupabsent:36681",
+      "pass": true
+    },
+    {
+      "check": "dependencylinkabsent",
+      "pass": true
+    }
+  ],
+  "sourceGET": 72,
+  "decodedBytes": 5135881,
+  "newAdmissions": 48,
+  "duplicates": 0,
+  "rejected": 0,
+  "admittedSource": 1971,
+  "canonical": 1974,
+  "spent": 2684,
+  "canonicalPath": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/final-canonical-index.json",
+  "canonicalSha256": "5812a9802afce48c77fead80fef9394de479fd44b34ea5ffa1ecd6f2ae26c1d7",
+  "spentPath": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/final-spent-request-index.json",
+  "spentSha256": "507e73d4014348adb4ff1cf4e0728851fd90ef3e6aadaa56f03fac485ab4c373",
+  "primaries": [
+    {
+      "context": "2pma",
+      "primarySha256": "a1dc68e67b2e7c3f45a79417b886c589de8792fc5d1b7b67c636eca72adca04a",
+      "receiptSha256": "6ae75ea1c967c689ee922abdf96865bb30127c5d2ddb159c24e34fbb6d94287d"
+    },
+    {
+      "context": "2pmb",
+      "primarySha256": "1ad5859bcc412f107d65fb75c765b484ea30cd4a2c8103ff4f6ea38056bb68fd",
+      "receiptSha256": "6b4665f0b16bf01184f878b28e595e9025b64bda8f9a4e509a06dcaf848c6ebb"
+    },
+    {
+      "context": "2ppa",
+      "primarySha256": "d3a9c25198232b4369541b70bbb903777fffdec44ea32d89eccbc0767b9862d3",
+      "receiptSha256": "8a20dd7a26f617d2b2b997dbef19db0f24525b551b0e797eb01ed8c5cd3db396"
+    },
+    {
+      "context": "2ppb",
+      "primarySha256": "2862e78664775c94630bbe9f1403d678bf081b1192f74b97b9b9ee87df054685",
+      "receiptSha256": "edacf42901104c5dbbef5d3aa2ad84458b17c4462b5332ff9c6dd18143459e95"
+    },
+    {
+      "context": "2pbc",
+      "primarySha256": "bff2256605f1f03f880c2499ac4d059222c1dae500dfc142debc20d93ce2c1a1",
+      "receiptSha256": "4edcc301d00e2a8cf1d9c2e18661db79bb2b700251c08a0c80db6a74be836111"
+    },
+    {
+      "context": "2pmc",
+      "primarySha256": "d2b21a62915774911ad90b338cd187478179ec38a5ae35473f3a5b75f5931807",
+      "receiptSha256": "33e880dbfacfc2398577def455b1c4a098049ed84730b16148f8ddd172baef79"
+    }
+  ],
+  "retained58checksReused": true,
+  "initialAuditJoinFailurePreserved": true,
+  "acceptance": false,
+  "capacityProjection": 0,
+  "scratchCreated": false
+}

@@ -1,0 +1,345 @@
+{
+  "schemaVersion": "f59-concrete-proof-offline-validation.v1",
+  "classification": "scoped scripted contract only; zero source traffic; not Story acceptance",
+  "result": {
+    "tests": 3,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "wallSeconds": 3.150812833,
+    "actualSourceRequests": 0,
+    "scriptedHttpAttempts": 15
+  },
+  "contractSha256": "850c5219c098d55aadd8833aa3b6b2e7c3f07234cd2ab489ce93e09a33bac28f",
+  "identity": {
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq59/canonical-source-live-2026-11-06/options.json": "6883be7544a6c03ef523aa6287a74c03fddd9b0e09b80127c25b72c1bec0061b",
+    "docs/gcsp/evidence/fucq59/continuation-live-proof-prepared-2026-11-07/collection-plan.json": "067ff3523ba174789f37bceeb935f2067aa40d0fcd440315757f292d05bc890e",
+    "docs/gcsp/evidence/fucq59/continuation-live-proof-prepared-2026-11-07/execution-contract.json": "850c5219c098d55aadd8833aa3b6b2e7c3f07234cd2ab489ce93e09a33bac28f",
+    "docs/gcsp/evidence/fucq59/continuation-live-proof-prepared-2026-11-07/preparation.json": "4bda7a6b198f8786c231bb7367190f6bbf8fd0a3e19a4d0db37052831aaf8c3f",
+    "docs/gcsp/evidence/fucq59/continuation-live-proof-prepared-2026-11-07/run-phase.mjs": "792c50e0ec5564cf0d74b12603bcab46bab87853bf2a309e8c174311e52b6ba4",
+    "docs/gcsp/evidence/fucq59/continuation-live-proof-prepared-2026-11-07/supervise-proof.py": "722a564c4149932588fbc1469ebb48393594545d1b83022f27af46bde71db64f",
+    "docs/gcsp/evidence/fucq59/continuation-live-proof-prepared-2026-11-07/tests/fixture-transport.mjs": "f29c7561fae9b050911b15ebce5e70e230a572967f165b0b377aeba6780ebdcd",
+    "docs/gcsp/evidence/fucq59/continuation-live-proof-prepared-2026-11-07/tests/offline-proof.py": "da75e8a5aa55aa1f83fa68b6b78e4207e4da0243cc5c273a73a4ae041d93cbd2",
+    "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+    "scripts/gcsp/bmw-public-registration.mjs": "c0f36030c0696afc51c5e44732064c126434fba5e9d14595833b1c8fc4eb27a2",
+    "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+    "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+    "scripts/gcsp/capture-bmw-selection.mjs": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+    "scripts/gcsp/collect-fleet.mjs": "f3eeccddc2d2e235af45864ce3020babea7ae618070a69a9435247620d6a93ad",
+    "scripts/gcsp/collection-session.mjs": "104aed62df3a8934bcda5484e0297a7ab4d84cfd1231b81b921be61aedd31939",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/public-bmw-source.mjs": "0e746b7d9addb56bfb3a7211616b6b8dfa2ff31469ef102aafa57ddfb11fc375",
+    "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+    "server/gcsp/migrations/index.js": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f",
+    "server/gcsp/policy/activation.js": "4e79235b761e8daf94f3cf2744c4bc585146181b410b64497669bd353ee7c4d6",
+    "server/gcsp/policy/adoption.js": "a2cb9a74946cd9eda413d896a0abc2f4299b3b75880a77ddd510667a5187c870",
+    "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+    "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+    "server/gcsp/policy/memory-provider.js": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+    "server/gcsp/policy/postgres-provider.js": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+    "server/gcsp/policy/publish.js": "c521e15966be7762a3348ad860403ef555dd8cbd48405e7d23d9a7c6d262a826",
+    "server/gcsp/policy/reviewed-definitions.js": "75518df649ba542ad32b876f8ee1b680e29b417c3b1f8dc90fcf1d4713a42cbb",
+    "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/repository/index.js": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16",
+    "server/gcsp/repository/memory.js": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866",
+    "server/gcsp/repository/postgres.js": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+  },
+  "checks": [
+    "forced SIGKILL only after durable cursor1; primary and export byteexact",
+    "new-process fresh-allocation continuation; predecessor bytes and prior outcomes preserved",
+    "combined10 scripted GETs; each candidate solver once; completed restart zero calls",
+    "exclusive supervisor and selected-successor markers refuse repeated phase execution",
+    "ungranted/sourceLaneClearfalse/changedcontract rejected before metadata or primary allocation",
+    "graceful committed interruption exits75 with valid retained primary"
+  ],
+  "phases": {
+    "forcedA": {
+      "proofReady": true,
+      "exitCode": -9,
+      "checkpointSha256": "57ed13fa576d581b31b19aa32903620a3a788696f65b41919e17b47bfe69ddd0",
+      "checkpointBytes": 212263,
+      "checkpointExportByteIdentical": true,
+      "allocationCounts": {
+        "sourceCalls": 5,
+        "operations": {
+          "discover": 1,
+          "options": 1,
+          "page": 1,
+          "settings": 1,
+          "solve": 1
+        },
+        "cacheHits": {
+          "discover": 0,
+          "options": 0,
+          "page": 0,
+          "settings": 0,
+          "solve": 0
+        },
+        "failures": 0,
+        "timeouts": 0,
+        "substitutions": 0,
+        "cacheEvictions": 0,
+        "httpAttempts": 5,
+        "decodedBytes": 13221,
+        "operationBytes": {
+          "discover": 355,
+          "options": 12192,
+          "page": 45,
+          "settings": 185,
+          "solve": 444
+        }
+      },
+      "cumulativeCounts": {
+        "sourceCalls": 5,
+        "operations": {
+          "discover": 1,
+          "options": 1,
+          "page": 1,
+          "settings": 1,
+          "solve": 1
+        },
+        "cacheHits": {
+          "discover": 0,
+          "options": 0,
+          "page": 0,
+          "settings": 0,
+          "solve": 0
+        },
+        "failures": 0,
+        "timeouts": 0,
+        "substitutions": 0,
+        "cacheEvictions": 0,
+        "httpAttempts": 5,
+        "decodedBytes": 13221,
+        "operationBytes": {
+          "discover": 355,
+          "options": 12192,
+          "page": 45,
+          "settings": 185,
+          "solve": 444
+        }
+      },
+      "actualSourceRequests": 0,
+      "peakChildRssBytes": 125861888,
+      "wallSeconds": 0.731148584,
+      "cleanup": {
+        "cleanupIssues": [],
+        "compatibilityException": null,
+        "dependencyLinkPresent": true,
+        "exportFailure": null,
+        "groupsAbsent": true,
+        "ownedDependencyLinkRemoved": true,
+        "primaryPreserved": true,
+        "removedScratchBytes": 0,
+        "reservationAbsent": true,
+        "retainedBytes": 557536,
+        "scratchAbsent": true
+      },
+      "retainedReceipt": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f59-concrete-runner/final/forced/retained/phase-a/supervisor-receipt.json"
+    },
+    "forcedB": {
+      "proofReady": true,
+      "exitCode": 0,
+      "checkpointSha256": "72f21495cb7508e9d9c5b98b68b3960a01167bfa8eff9be08acdd244865d166b",
+      "checkpointBytes": 596815,
+      "checkpointExportByteIdentical": true,
+      "allocationCounts": {
+        "sourceCalls": 5,
+        "operations": {
+          "discover": 1,
+          "options": 1,
+          "page": 1,
+          "settings": 1,
+          "solve": 1
+        },
+        "cacheHits": {
+          "discover": 0,
+          "options": 0,
+          "page": 0,
+          "settings": 0,
+          "solve": 0
+        },
+        "failures": 0,
+        "timeouts": 0,
+        "substitutions": 0,
+        "cacheEvictions": 0,
+        "httpAttempts": 5,
+        "decodedBytes": 13221,
+        "operationBytes": {
+          "discover": 355,
+          "options": 12192,
+          "page": 45,
+          "settings": 185,
+          "solve": 444
+        }
+      },
+      "cumulativeCounts": {
+        "sourceCalls": 10,
+        "operations": {
+          "discover": 2,
+          "options": 2,
+          "page": 2,
+          "settings": 2,
+          "solve": 2
+        },
+        "cacheHits": {
+          "discover": 0,
+          "options": 0,
+          "page": 0,
+          "settings": 0,
+          "solve": 0
+        },
+        "failures": 0,
+        "timeouts": 0,
+        "substitutions": 0,
+        "cacheEvictions": 0,
+        "httpAttempts": 10,
+        "decodedBytes": 26442,
+        "operationBytes": {
+          "discover": 710,
+          "options": 24384,
+          "page": 90,
+          "settings": 370,
+          "solve": 888
+        }
+      },
+      "actualSourceRequests": 0,
+      "peakChildRssBytes": 153665536,
+      "wallSeconds": 0.970842,
+      "cleanup": {
+        "cleanupIssues": [],
+        "compatibilityException": null,
+        "dependencyLinkPresent": true,
+        "exportFailure": null,
+        "groupsAbsent": true,
+        "ownedDependencyLinkRemoved": true,
+        "primaryPreserved": true,
+        "removedScratchBytes": 0,
+        "reservationAbsent": true,
+        "retainedBytes": 1909792,
+        "scratchAbsent": true
+      },
+      "retainedReceipt": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f59-concrete-runner/final/forced/retained/phase-b/supervisor-receipt.json"
+    },
+    "gracefulA": {
+      "proofReady": true,
+      "exitCode": 75,
+      "checkpointSha256": "1924e9f177ce1abf9b3a2d7a9df95bf2227c2d6a22b9096b45824154aed461ad",
+      "checkpointBytes": 212265,
+      "checkpointExportByteIdentical": true,
+      "allocationCounts": {
+        "sourceCalls": 5,
+        "operations": {
+          "discover": 1,
+          "options": 1,
+          "page": 1,
+          "settings": 1,
+          "solve": 1
+        },
+        "cacheHits": {
+          "discover": 0,
+          "options": 0,
+          "page": 0,
+          "settings": 0,
+          "solve": 0
+        },
+        "failures": 0,
+        "timeouts": 0,
+        "substitutions": 0,
+        "cacheEvictions": 0,
+        "httpAttempts": 5,
+        "decodedBytes": 13221,
+        "operationBytes": {
+          "discover": 355,
+          "options": 12192,
+          "page": 45,
+          "settings": 185,
+          "solve": 444
+        }
+      },
+      "cumulativeCounts": {
+        "sourceCalls": 5,
+        "operations": {
+          "discover": 1,
+          "options": 1,
+          "page": 1,
+          "settings": 1,
+          "solve": 1
+        },
+        "cacheHits": {
+          "discover": 0,
+          "options": 0,
+          "page": 0,
+          "settings": 0,
+          "solve": 0
+        },
+        "failures": 0,
+        "timeouts": 0,
+        "substitutions": 0,
+        "cacheEvictions": 0,
+        "httpAttempts": 5,
+        "decodedBytes": 13221,
+        "operationBytes": {
+          "discover": 355,
+          "options": 12192,
+          "page": 45,
+          "settings": 185,
+          "solve": 444
+        }
+      },
+      "actualSourceRequests": 0,
+      "peakChildRssBytes": 124944384,
+      "wallSeconds": 0.7098013329999997,
+      "cleanup": {
+        "cleanupIssues": [],
+        "compatibilityException": null,
+        "dependencyLinkPresent": true,
+        "exportFailure": null,
+        "groupsAbsent": true,
+        "ownedDependencyLinkRemoved": true,
+        "primaryPreserved": true,
+        "removedScratchBytes": 0,
+        "reservationAbsent": true,
+        "retainedBytes": 561664,
+        "scratchAbsent": true
+      },
+      "retainedReceipt": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f59-concrete-runner/final/graceful/retained/phase-a/supervisor-receipt.json"
+    }
+  },
+  "outerCleanup": {
+    "compatibility_exception": null,
+    "dependency_link_absent": true,
+    "removed_bytes": 0,
+    "scratch_absent": true
+  },
+  "dependencyLinkAbsent": true,
+  "peakOuterRssBytes": 28868608,
+  "scratchPeakBytes": 0,
+  "retainedExternalAllocatedBytes": 7245824,
+  "retainedExternalRoot": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f59-concrete-runner",
+  "externalImpactPlan": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f59-concrete-runner/final-plan.json",
+  "historicalFailures": [
+    {
+      "phase": "green1",
+      "issue": "harness Unicode digest used ASCII escaping; corrected to existing exporter digest"
+    },
+    {
+      "phase": "green2",
+      "issue": "test conflated fresh allocation5 with cumulative10; now checks both"
+    },
+    {
+      "phase": "green3",
+      "issue": "harness syntax error; fixed before final3/3"
+    }
+  ],
+  "compatibilityException": null,
+  "knownLimitations": [
+    "FUCQ-152 Medium remains unfixed; this supervisor selects one operational successor",
+    "no actual live proof; no fullAC4 acceptance; no cross-allocation bootstrap reuse proof"
+  ]
+}

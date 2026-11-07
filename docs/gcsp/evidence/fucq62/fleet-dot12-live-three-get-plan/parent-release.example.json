@@ -1,0 +1,16 @@
+{
+  "authorized": false,
+  "phase": "readiness-first-dto",
+  "planSha256": "7c2ff29f07feee409de8dc4c99663ce09db960ad94f260c2da3aa8e41ec388cf",
+  "code": null,
+  "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "actualDeploymentId": null,
+  "deploymentSucceeded": false,
+  "freshReadinessDeployment": false,
+  "deploymentEvidence": {
+    "path": null,
+    "sha256": null
+  },
+  "sourceCalls": 0,
+  "newGetCeiling": 3
+}

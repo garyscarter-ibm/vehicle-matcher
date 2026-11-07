@@ -1,0 +1,221 @@
+{
+  "state": "incomplete",
+  "run": "journey-desktop-89f7e33056e14d459e67a2f5f52557da",
+  "scope": "one newly granted changed-input desktop confirmation",
+  "sourcePlanSha256": "f4648fdb7ad5be612e474571d8384bfe27bc983021b0776fcd4f8832a276fb89",
+  "scenarioSha256": "07178ac5c034f387a3f1379a10886dc852b0af5ac76cc4cb3f96273adcac9f28",
+  "sourceUnchanged": true,
+  "receiptSha256": "ab0f2bb8f22611af9693a04c038bd7e367b69c2e2e5e4c004cae949a4ae79169",
+  "checksPassed": [
+    "Rendered help and review are read-only; one explicit confirmation creates one case",
+    "Actual presenter Greg queue mounts once; review is read-only; one confirmation records the manual update"
+  ],
+  "posts": [
+    {
+      "path": "/api/gcsp/cases",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/gcsp/session/switch",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/gcsp/scheme-team/cases/update",
+      "method": "POST",
+      "status": 200
+    },
+    {
+      "path": "/api/gcsp/session/switch",
+      "method": "POST",
+      "status": 200
+    }
+  ],
+  "errors": [
+    {
+      "kind": "scenario",
+      "message": "page.evaluate: Execution context was destroyed, most likely because of a navigation.\n    at read (/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/scenario.mjs:40:48)\n    at switchTo (/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/scenario.mjs:150:29)\n    at async runCaseJourney (/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/scenario.mjs:202:22)\n    at async file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/browser-runner.mjs:52:17"
+    },
+    {
+      "kind": "request",
+      "id": 41,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:49611/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 1,
+      "failureDocumentURL": "https://localhost:49611/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "kind": "request",
+      "id": 40,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:49611/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 1,
+      "failureDocumentURL": "https://localhost:49611/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    }
+  ],
+  "requestFailures": [
+    {
+      "id": 41,
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "documentURL": "https://localhost:49611/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 1,
+      "failureDocumentURL": "https://localhost:49611/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    },
+    {
+      "id": 40,
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "documentURL": "https://localhost:49611/gcsp-help.html",
+      "failure": "net::ERR_ABORTED",
+      "transitionId": 1,
+      "failureDocumentURL": "https://localhost:49611/gcsp-help.html",
+      "expectedNavigationCancellation": false
+    }
+  ],
+  "transitions": [
+    {
+      "id": 1,
+      "from": "about:blank",
+      "target": "https://localhost:49611/gcsp-help.html",
+      "action": "Ordinary help navigation",
+      "confirmed": true
+    },
+    {
+      "id": 2,
+      "from": "https://localhost:49611/gcsp-help.html",
+      "target": "https://localhost:49611/gcsp-presenter.html",
+      "action": "Presenter UI switch to demo-greg",
+      "confirmed": true
+    },
+    {
+      "id": 3,
+      "from": "https://localhost:49611/gcsp-presenter.html",
+      "target": "https://localhost:49611/gcsp-presenter.html",
+      "action": "Presenter UI switch to demo-paula",
+      "confirmed": false
+    }
+  ],
+  "navigation": [
+    {
+      "path": "/gcsp-help.html",
+      "status": 200,
+      "authorityOnHtml": false
+    },
+    {
+      "path": "/gcsp-presenter.html",
+      "status": 200,
+      "authorityOnHtml": false
+    },
+    {
+      "path": "/gcsp-presenter.html",
+      "status": 200,
+      "authorityOnHtml": false
+    }
+  ],
+  "captures": [
+    {
+      "file": "second-01-paula-help.png",
+      "sha256": "271334259238d9cdee9be3d3b67872eda88e4792f019a0b1cfb7cb1a09fb8ac5",
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "visible": true
+      },
+      "documentWidth": 1280
+    },
+    {
+      "file": "second-02-paula-confirmation.png",
+      "sha256": "fe2ce5464a63e2f5eaefe73cf51f9e3fbf71834c7648ed89114b442e8d11f3af",
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "visible": true
+      },
+      "documentWidth": 1280
+    },
+    {
+      "file": "second-03-greg-actual-queue.png",
+      "sha256": "4f3c6fe214ad98c08a4bf7e03c399dc5daf70a536c3f420d27faf46c86fe4c17",
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-selection",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "visible": true
+      },
+      "documentWidth": 1280
+    },
+    {
+      "file": "second-04-greg-update-review.png",
+      "sha256": "7424566c894995a78e42e481c646203fc7c096e812251ba6d60d84615b5c0ac9",
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "visible": true
+      },
+      "documentWidth": 1280
+    }
+  ],
+  "keyboardActions": 55,
+  "admitted": {
+    "disk": 134217728,
+    "ram": 2684354560
+  },
+  "peakRecursiveRssBytes": 1808367616,
+  "peakCombinedBytes": 11572633,
+  "cleanup": {
+    "ownedPidEntries": 18,
+    "processGroups": [
+      "82254"
+    ],
+    "ownedPidsAbsent": true,
+    "groupsAbsent": true,
+    "profileArgumentsAbsent": true,
+    "portsClosed": {
+      "49611": true,
+      "49613": true
+    },
+    "scratchAbsent": true,
+    "tokenAbsent": true,
+    "rawHostRows": 0,
+    "sourcePinsPreserved": true,
+    "noNarrowAllocated": true,
+    "cleanup": {
+      "dependencyLinks": [],
+      "groupsAbsent": true,
+      "liveIdentities": [],
+      "monitorJoined": true,
+      "openFilesAbsent": true,
+      "portsClosed": {
+        "49611": true,
+        "49613": true
+      },
+      "profilePathProcesses": [],
+      "readersJoined": true,
+      "reservationReleased": true,
+      "scratchAbsent": true
+    }
+  },
+  "nextInputPreparation": "Fresh document-navigation wait replaces same-URL wait; no third browser run authorised or executed. Original two startup read cancellations stay recorded/unclassified.",
+  "acceptance": "Greg deliberate manual update and complete readback assertions passed; Paula post-update reload not reached; no complete browser PASS, narrow/native/full-suite stamp or AC completion."
+}

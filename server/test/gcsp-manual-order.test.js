@@ -1,7 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { pathToFileURL } from 'node:url';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok, result } from '../gcsp/repository/index.js';
 import { PolicyService, createPolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
@@ -9,6 +8,10 @@ import { ManualOrderService, SchemeOrderTerms, createManualOrderConversion } fro
 import { createSyntheticOrderingAdapter } from '../gcsp/adapters/synthetic-ordering.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { stock, fact } from './helpers/employee-recommendation.js';
+import { RenewalCaseService } from '../gcsp/cases/index.js';
+import { createManualClaimsService } from '../gcsp/manual-claims/index.js';
+import { ManualContextService, createRepositoryManualPorts } from '../gcsp/manual-context/index.js';
+import { createSyntheticManualStockAdapter } from '../gcsp/adapters/manual-stock.js';
 
 const instant = '2026-11-05T09:00:00.000Z';
 const fixtures = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq71/response-fixtures.json', import.meta.url), 'utf8'));
@@ -93,6 +96,101 @@ async function advance(f, bySeconds) {
   if (advanced.status !== 'ok') return advanced;
   return f.clock.tick(f.presenter.context, { eventId: `tick-${state.clockVersion}-${bySeconds}`, expectedClockVersion: advanced.value.clockVersion, inputDigest: inputDigest({ bySeconds }) });
 }
+
+async function renewalAuthority(f, { employeeRenewal = null, slotRenewal = null, holdRenewal } = {}) {
+  const changed = await f.repository.transaction(f.context, cmd(`renewal:${inputDigest({ employeeRenewal, slotRenewal, holdRenewal: holdRenewal ?? null })}`), async (tx) => {
+    const employee = await tx.get(ref(f, 'employees', { employeeId: f.context.employeeId }));
+    const updated = await tx.compareAndSwap(ref(f, 'employees', { employeeId: f.context.employeeId }), employee.value.version,
+      { renewalId: employeeRenewal, contract: { ...employee.value.contract, contractEndDate: '2026-11-10' } });
+    if (updated.status !== 'ok') return updated;
+    const slot = await tx.get(ref(f, 'entitlement_slots', { entitlementSlotId: f.context.entitlementSlotId }));
+    const entitled = await tx.compareAndSwap(ref(f, 'entitlement_slots', { entitlementSlotId: f.context.entitlementSlotId }), slot.value.version, { renewalId: slotRenewal });
+    if (entitled.status !== 'ok' || holdRenewal === undefined) return entitled;
+    const hold = await tx.get(ref(f, 'holds', { holdId: 'hold' }));
+    const held = await tx.compareAndSwap(ref(f, 'holds', { holdId: 'hold' }), hold.value.version, { renewalId: holdRenewal });
+    if (held.status === 'ok') f.input.source.expectedHoldVersion = held.value.version;
+    return held;
+  });
+  assert.equal(changed.status, 'ok', JSON.stringify(changed));
+}
+
+test('acknowledged selection satisfies actual FUCQ-112 renewal deadline consumer', async (t) => {
+  const f = await setup(); t.after(() => f.repository.close());
+  await renewalAuthority(f, { slotRenewal: 'renewal-original' });
+  const cases = new RenewalCaseService(f); assert.equal((await cases.start()).status, 'ok');
+  const submitted = await f.service.submit(f.context, f.input); assert.equal(submitted.status, 'ok');
+  assert.equal((await advance(f, 1)).status, 'ok');
+  const found = await cases.readOwn(f.context);
+  assert.equal(found.status, 'ok', JSON.stringify(found));
+  assert.equal(found.value.cases.length, 0, 'Actual acknowledged selection must suppress its renewal deadline case');
+  const receipts = (await f.repository.query(f.context, 'event_receipts', { eventType: 'selection-acknowledged' })).value;
+  assert.equal(receipts.length, 1);
+  assert.equal(receipts[0].outcome.value.renewalId, 'renewal-original');
+  assert.equal(receipts[0].outcome.value.orderUuid, '00000000-0000-4000-8000-000000000011');
+  assert.equal(receipts[0].outcome.value.occurredAt, instant);
+  assert.equal(receipts[0].outcome.value.at, instant);
+  assert.deepEqual(receipts[0].outcome.value.order, submitted.value.order);
+  assert.deepEqual(await f.service.submit(f.context, { ...f.input, commandId: 'repeat' }), submitted);
+  assert.equal((await f.repository.query(f.context, 'event_receipts', { eventType: 'selection-acknowledged' })).value.length, 1);
+});
+
+test('selection pins only consistent actual employee and slot renewal authority', async (t) => {
+  for (const [name, authority, expected] of [
+    ['slot only', { slotRenewal: 'slot-renewal' }, 'slot-renewal'],
+    ['same default employee only', { employeeRenewal: 'employee-renewal' }, 'employee-renewal'],
+    ['matching authorities', { employeeRenewal: 'same-renewal', slotRenewal: 'same-renewal', holdRenewal: 'same-renewal' }, 'same-renewal'],
+    ['unknown', {}, null],
+    ['hold without employee or slot authority', { holdRenewal: 'unbound-renewal' }, null],
+    ['employee and slot disagree', { employeeRenewal: 'employee-renewal', slotRenewal: 'slot-renewal' }, null],
+    ['source hold disagrees', { slotRenewal: 'slot-renewal', holdRenewal: 'different-renewal' }, null],
+    ['malformed employee authority', { employeeRenewal: 42, slotRenewal: 'slot-renewal' }, null],
+  ]) await t.test(name, async (row) => {
+    const f = await setup(); row.after(() => f.repository.close());
+    await renewalAuthority(f, authority);
+    const submitted = await f.service.submit(f.context, f.input); assert.equal(submitted.status, 'ok', JSON.stringify(submitted));
+    assert.equal(submitted.value.selection.renewalId, expected);
+    assert.equal((await readOperation(f)).payload.selection.renewalId, expected);
+    const receipt = (await f.repository.query(f.context, 'event_receipts', { eventType: 'selection-acknowledged' })).value[0];
+    assert.equal(receipt.outcome.value.renewalId, expected);
+  });
+});
+
+test('delayed acknowledgement keeps its pinned renewal and does not suppress a later renewal', async (t) => {
+  let writes = 0;
+  const f = await setup({ adapter: (g) => {
+    const provider = createSyntheticOrderingAdapter(g);
+    return { async execute(operation) { writes += 1; await provider.execute(operation); throw Error('lost acknowledgement'); },
+      reconcile: (operation) => provider.reconcile(operation) };
+  } }); t.after(() => f.repository.close());
+  await renewalAuthority(f, { employeeRenewal: 'renewal-original', slotRenewal: 'renewal-original' });
+  const cases = new RenewalCaseService(f); assert.equal((await cases.start()).status, 'ok');
+  assert.equal((await f.service.submit(f.context, f.input)).status, 'pending');
+  await renewalAuthority(f, { employeeRenewal: 'renewal-next', slotRenewal: 'renewal-next' });
+  const reconciled = await f.service.submit(f.context, { ...f.input, commandId: 'reconcile' });
+  assert.equal(reconciled.status, 'ok'); assert.equal(writes, 1);
+  const receipt = (await f.repository.query(f.context, 'event_receipts', { eventType: 'selection-acknowledged' })).value[0];
+  assert.equal(receipt.outcome.value.renewalId, 'renewal-original');
+  assert.equal((await advance(f, 1)).status, 'ok');
+  const found = await cases.readOwn(f.context); assert.equal(found.status, 'ok', JSON.stringify(found));
+  assert.equal(found.value.cases.length, 1);
+  assert.equal(found.value.cases[0].renewalId, 'renewal-next');
+  assert.equal(found.value.cases[0].trigger.type, 'renewal-deadline');
+});
+
+test('pending and failed handoffs do not suppress the actual FUCQ-112 deadline consumer', async (t) => {
+  for (const state of ['unknown', 'unsupported']) await t.test(state, async (row) => {
+    const f = await setup({ adapter: () => ({ async reconcile(operation) { return scoped(operation, 'not-found'); },
+      async execute(operation) { return scoped(operation, state); } }) }); row.after(() => f.repository.close());
+    await renewalAuthority(f, { slotRenewal: 'renewal-original' });
+    const cases = new RenewalCaseService(f); assert.equal((await cases.start()).status, 'ok');
+    const response = await f.service.submit(f.context, f.input);
+    assert.equal(response.value.order, null);
+    assert.equal((await advance(f, 1)).status, 'ok');
+    const found = await cases.readOwn(f.context); assert.equal(found.status, 'ok', JSON.stringify(found));
+    assert.equal(found.value.cases.length, 1);
+    assert.equal((await f.repository.query(f.context, 'event_receipts', { eventType: 'selection-acknowledged' })).value.length, 0);
+  });
+});
 
 test('terms are versioned explicit fictional policy reads, missing central keys fail closed', async () => {
   const f = await setup(); const terms = await f.service.readTerms(f.context);
@@ -283,13 +381,9 @@ test('converter revalidation and definitive allocation refusals stay reviewable,
   assert.equal((await missing.submit(after.context, after.input)).status, 'unavailable');
 });
 
-const claimsRoot = process.env.GCSP_F66_CONTRACT_ROOT;
-test('verified held F66 producer: real manual review/allocate feeds common ordering without copying its implementation', { skip: !claimsRoot }, async () => {
-  const { createManualClaimsService } = await import(pathToFileURL(`${claimsRoot}/server/gcsp/manual-claims/index.js`).href);
-  const { ManualContextService: HeldManualContextService, createRepositoryManualPorts: heldPorts } = await import(pathToFileURL(`${claimsRoot}/server/gcsp/manual-context/index.js`).href);
-  const { createSyntheticManualStockAdapter } = await import(pathToFileURL(`${claimsRoot}/server/gcsp/adapters/manual-stock.js`).href);
+test('actual manual claims review and allocation feed common ordering without copying its implementation', async () => {
   const f = await runtime(await policyWith()); await seedManualDemoContext(f);
-  f.manual = new HeldManualContextService({ ...f, ports: heldPorts(f) });
+  f.manual = new ManualContextService({ ...f, ports: createRepositoryManualPorts(f) });
   f.claims = createManualClaimsService({ ...f, adapter: createSyntheticManualStockAdapter() });
   assert.equal((await f.claims.registerClockHandler()).status, 'ok');
   const account = await f.manual.readAccount(f.context);

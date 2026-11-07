@@ -1,0 +1,25 @@
+{
+  "stage": "invoke-seven-bottle-loader-diagnostic",
+  "errorType": "AssertionError",
+  "frames": [
+    {
+      "file": "diagnose.py",
+      "line": 50,
+      "function": "<module>"
+    }
+  ],
+  "logs": [
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f63-native-postgres-20261107/loader-diagnostic/loader.log",
+      "bytes": 133,
+      "sha256": "d9db715e0193093916f853c01a71e5089f3fda35a5fb64bb1f598695168d1c4c",
+      "returncode": 127,
+      "networkAttemptMarkers": []
+    }
+  ],
+  "elapsedSeconds": 0.22118166699999997,
+  "publicRequests": 0,
+  "installationAttempted": false,
+  "nativeDatabaseAttempted": false,
+  "acceptance": false
+}

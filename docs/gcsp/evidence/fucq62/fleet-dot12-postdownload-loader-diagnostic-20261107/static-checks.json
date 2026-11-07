@@ -1,0 +1,15 @@
+{
+  "scope": "static-only proposed runner preparation",
+  "planSha256": "1d22829890374cadde28fb152eacce3b58633129a1c374be0618e5b801f9df94",
+  "runnerSha256": "3151fd1149ce1a3d3a60c9f8dbb10afb91e721b0372020fcc36c96f34de3f574",
+  "nodeSyntaxRc": 0,
+  "runtimePinCount": 102,
+  "runtimePinsChecked": true,
+  "retainedInputPins": 24,
+  "retainedInputPathsExist": true,
+  "retainedInputHashes": "Prior package receipt records all exact hashes. Runner/root must check24selected pins before execution; preparation did not replay data validation.",
+  "runtimeExecuted": false,
+  "networkRequests": 0,
+  "scratchAllocated": false,
+  "acceptance": false
+}
