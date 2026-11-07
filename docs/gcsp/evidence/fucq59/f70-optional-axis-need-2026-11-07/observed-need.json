@@ -1,0 +1,2648 @@
+{
+  "schemaVersion": "f70-optional-axis-observed-need.v1",
+  "scope": "offline concrete input/route need within F59 source collection; no source allocation",
+  "basisCommit": "a958a94100b363309dde590e39dfc46aeefa0f03",
+  "inputPins": {
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/actual-suffix/actual-suffix.json": "0081da368368072cec1e7039b7c205a18095da6f7496f6a24ad836088d811017",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/actual-suffix/final-canonical-index.json": "f79d51fdc0461b28cc9e3d4385f6b5ed8e8e12c82de594b6106be0476705cf35",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/actual-suffix/final-spent-request-index.json": "697aa9e7f3864dee829dd8cfd5c033b75e6f2734b28ab0fd88e4a32684a41d1f"
+  },
+  "baseline": {
+    "admittedSource": 1923,
+    "canonical": 1926,
+    "canonicalSha256": "f79d51fdc0461b28cc9e3d4385f6b5ed8e8e12c82de594b6106be0476705cf35",
+    "lastPrimarySha256": "7750ffe0c6a0ff2abe20c442164ab0c0818fe14c7d84464cc0f6dbc76024072d",
+    "lastProofSha256": "be0097664349e7fa328fc94afa1a141cfba547d888c5d3bf263715738fa78c16",
+    "spent": 2636,
+    "spentSha256": "697aa9e7f3864dee829dd8cfd5c033b75e6f2734b28ab0fd88e4a32684a41d1f"
+  },
+  "contexts": [
+    {
+      "modelCode": "1F7A",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7A",
+        "agModelCode": "82GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "BASIC_LINE",
+        "defaultModel": {
+          "modelCode": "1F7A",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "untrimmed"
+        }
+      },
+      "freshOptionsPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session069/options.json",
+      "freshOptionsSha256": "a1b9e376fe0fefd0b55913a780f01ad73ce79d685535885871c853ecd01080b0",
+      "lastProofPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session069/live-validation.json",
+      "lastProofSha256": "dc7517d65af625e703ca0edfc00b45bb58cd73f500c6d97b1233d69592319baf",
+      "all790SeriesObservedAdmissions": 143,
+      "observedAxisSets": [
+        {
+          "codes": [
+            "S02TF",
+            "S043T"
+          ],
+          "count": 143
+        }
+      ],
+      "directAdditionalTypes": [
+        {
+          "code": "S02TF",
+          "pointer": "/S02TF",
+          "issues": [],
+          "option": "S02TF",
+          "optionType": "transmission",
+          "longDescription": "Automatic DCT Transmission"
+        },
+        {
+          "code": "S043T",
+          "pointer": "/S043T",
+          "issues": [],
+          "option": "S043T",
+          "optionType": "trim",
+          "longDescription": "Dark Silver interior d\u00e9cor"
+        },
+        {
+          "code": "S043U",
+          "pointer": "/S043U",
+          "issues": [],
+          "option": "S043U",
+          "optionType": "trim",
+          "longDescription": "'Illuminated' Aluminium Graphite Interior Trim"
+        },
+        {
+          "code": "S07EV",
+          "pointer": "/S07EV",
+          "issues": [],
+          "option": "S07EV",
+          "optionType": "package",
+          "longDescription": "Technology Pack"
+        },
+        {
+          "code": "S07EW",
+          "pointer": "/S07EW",
+          "issues": [],
+          "option": "S07EW",
+          "optionType": "package",
+          "longDescription": "Technology Plus Pack"
+        }
+      ],
+      "otherCount": 196
+    },
+    {
+      "modelCode": "1F7C",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7C",
+        "agModelCode": "22GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "M_PERFORMANCE_LINE",
+        "defaultModel": {
+          "modelCode": "1F7C",
+          "agModelCode": "22GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "untrimmed"
+        }
+      },
+      "freshOptionsPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session101/options.json",
+      "freshOptionsSha256": "b9c28dca6dfc030c1ea31281bfbd51938cd9a63c26e5457d44be291ad8d897c8",
+      "lastProofPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session101/live-validation.json",
+      "lastProofSha256": "be0097664349e7fa328fc94afa1a141cfba547d888c5d3bf263715738fa78c16",
+      "all790SeriesObservedAdmissions": 324,
+      "observedAxisSets": [
+        {
+          "codes": [
+            "S02TE",
+            "S043Z"
+          ],
+          "count": 324
+        }
+      ],
+      "directAdditionalTypes": [
+        {
+          "code": "S033F",
+          "pointer": "/S033F",
+          "issues": [],
+          "option": "S033F",
+          "optionType": "package",
+          "longDescription": "M Dynamic Pack"
+        },
+        {
+          "code": "S033B",
+          "pointer": "/S033B",
+          "issues": [],
+          "option": "S033B",
+          "optionType": "package",
+          "longDescription": "M Sport Pro Pack M135"
+        },
+        {
+          "code": "S02TE",
+          "pointer": "/S02TE",
+          "issues": [],
+          "option": "S02TE",
+          "optionType": "transmission",
+          "longDescription": "Automatic Transmission with Gearshift Paddles"
+        },
+        {
+          "code": "S043U",
+          "pointer": "/S043U",
+          "issues": [],
+          "option": "S043U",
+          "optionType": "trim",
+          "longDescription": "'Illuminated' Aluminium Graphite Interior Trim"
+        },
+        {
+          "code": "S043Z",
+          "pointer": "/S043Z",
+          "issues": [],
+          "option": "S043Z",
+          "optionType": "trim",
+          "longDescription": "M Illuminated Aluminium Hexacube Interior Decor, Matt"
+        },
+        {
+          "code": "S07EV",
+          "pointer": "/S07EV",
+          "issues": [],
+          "option": "S07EV",
+          "optionType": "package",
+          "longDescription": "Technology Pack"
+        },
+        {
+          "code": "S07EW",
+          "pointer": "/S07EW",
+          "issues": [],
+          "option": "S07EW",
+          "optionType": "package",
+          "longDescription": "Technology Plus Pack"
+        }
+      ],
+      "otherCount": 211
+    },
+    {
+      "modelCode": "1F7D",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7D",
+        "agModelCode": "62GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "1F7B",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 2,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "freshOptionsPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session085/options.json",
+      "freshOptionsSha256": "2b64652e6f19db04969ce9ed352c65c2790438758916ffa9b9a927da5047729b",
+      "lastProofPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session085/live-validation.json",
+      "lastProofSha256": "1a31825b4ba6e734726d2e322f4ea23ecb6318c792fdb13d1d48ba0d4839d36d",
+      "all790SeriesObservedAdmissions": 194,
+      "observedAxisSets": [
+        {
+          "codes": [
+            "S02TE",
+            "S0337",
+            "S043Z"
+          ],
+          "count": 194
+        }
+      ],
+      "directAdditionalTypes": [
+        {
+          "code": "S02TE",
+          "pointer": "/S02TE",
+          "issues": [],
+          "option": "S02TE",
+          "optionType": "transmission",
+          "longDescription": "Automatic Transmission with Gearshift Paddles"
+        },
+        {
+          "code": "S02TF",
+          "pointer": "/S02TF",
+          "issues": [],
+          "option": "S02TF",
+          "optionType": "transmission",
+          "longDescription": "Automatic DCT Transmission"
+        },
+        {
+          "code": "S0337",
+          "pointer": "/S0337",
+          "issues": [],
+          "option": "S0337",
+          "optionType": "package",
+          "longDescription": "M Sport"
+        },
+        {
+          "code": "S043T",
+          "pointer": "/S043T",
+          "issues": [],
+          "option": "S043T",
+          "optionType": "trim",
+          "longDescription": "Dark Silver interior d\u00e9cor"
+        },
+        {
+          "code": "S043U",
+          "pointer": "/S043U",
+          "issues": [],
+          "option": "S043U",
+          "optionType": "trim",
+          "longDescription": "'Illuminated' Aluminium graphite interior decor"
+        },
+        {
+          "code": "S043Z",
+          "pointer": "/S043Z",
+          "issues": [],
+          "option": "S043Z",
+          "optionType": "trim",
+          "longDescription": "M Illuminated Aluminium hexacube interior decor, matt"
+        },
+        {
+          "code": "S07EV",
+          "pointer": "/S07EV",
+          "issues": [],
+          "option": "S07EV",
+          "optionType": "package",
+          "longDescription": "Technology Pack"
+        },
+        {
+          "code": "S07EW",
+          "pointer": "/S07EW",
+          "issues": [],
+          "option": "S07EW",
+          "optionType": "package",
+          "longDescription": "Technology Plus Pack"
+        }
+      ],
+      "otherCount": 206
+    },
+    {
+      "modelCode": "1F7F",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7F",
+        "agModelCode": "62GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S033B",
+        "defaultModel": {
+          "modelCode": "1F7E",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S033B"
+        }
+      },
+      "freshOptionsPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session068/options.json",
+      "freshOptionsSha256": "a0f8058ae583f9d4aaafb39cfa95ad03da69b6c812458d337a1731e267867811",
+      "lastProofPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session068/live-validation.json",
+      "lastProofSha256": "5e2dc758c6286d1fa52896862eb2935b023f94a6ff5c4d38fb07619424f0415a",
+      "all790SeriesObservedAdmissions": 129,
+      "observedAxisSets": [
+        {
+          "codes": [
+            "S02TE",
+            "S0337",
+            "S033B",
+            "S043Z"
+          ],
+          "count": 129
+        }
+      ],
+      "directAdditionalTypes": [
+        {
+          "code": "S033B",
+          "pointer": "/S033B",
+          "issues": [],
+          "option": "S033B",
+          "optionType": "package",
+          "longDescription": "M Sport Pro"
+        },
+        {
+          "code": "S02TE",
+          "pointer": "/S02TE",
+          "issues": [],
+          "option": "S02TE",
+          "optionType": "transmission",
+          "longDescription": "Automatic Transmission with Gearshift Paddles"
+        },
+        {
+          "code": "S02TF",
+          "pointer": "/S02TF",
+          "issues": [],
+          "option": "S02TF",
+          "optionType": "transmission",
+          "longDescription": "Automatic DCT Transmission"
+        },
+        {
+          "code": "S0337",
+          "pointer": "/S0337",
+          "issues": [],
+          "option": "S0337",
+          "optionType": "package",
+          "longDescription": "M Sport"
+        },
+        {
+          "code": "S043T",
+          "pointer": "/S043T",
+          "issues": [],
+          "option": "S043T",
+          "optionType": "trim",
+          "longDescription": "Dark Chrome interior decor"
+        },
+        {
+          "code": "S043U",
+          "pointer": "/S043U",
+          "issues": [],
+          "option": "S043U",
+          "optionType": "trim",
+          "longDescription": "'Illuminated' Aluminium graphite interior decor"
+        },
+        {
+          "code": "S043Z",
+          "pointer": "/S043Z",
+          "issues": [],
+          "option": "S043Z",
+          "optionType": "trim",
+          "longDescription": "M Illuminated Aluminium hexacube interior decor, matt"
+        },
+        {
+          "code": "S07EV",
+          "pointer": "/S07EV",
+          "issues": [],
+          "option": "S07EV",
+          "optionType": "package",
+          "longDescription": "Technology Pack"
+        },
+        {
+          "code": "S07EW",
+          "pointer": "/S07EW",
+          "issues": [],
+          "option": "S07EW",
+          "optionType": "package",
+          "longDescription": "Technology Plus Pack"
+        }
+      ],
+      "otherCount": 213
+    }
+  ],
+  "illustrativeUnspentRequests": [
+    {
+      "modelCode": "1F7A",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7A",
+        "agModelCode": "82GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "BASIC_LINE",
+        "defaultModel": {
+          "modelCode": "1F7A",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "untrimmed"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FBLAT",
+          "P0C5Y",
+          "S01H2"
+        ],
+        "mandatoryElements": []
+      },
+      "illustrativeCore": 1,
+      "optionalInputDefinitions": [
+        {
+          "code": "S043U",
+          "pointer": "/S043U",
+          "issues": [],
+          "option": "S043U",
+          "optionType": "trim",
+          "longDescription": "'Illuminated' Aluminium Graphite Interior Trim"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FBLAT",
+          "P0C5Y",
+          "S01H2",
+          "S043U"
+        ],
+        "mandatoryElements": []
+      },
+      "requestDigest": "6dcfe85beaefada76951db3e82668991b110183da3bd7f92ce5ad840f4c4f191",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7A",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7A",
+        "agModelCode": "82GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "BASIC_LINE",
+        "defaultModel": {
+          "modelCode": "1F7A",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "untrimmed"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FBLAT",
+          "P0C5Y",
+          "S01H2"
+        ],
+        "mandatoryElements": []
+      },
+      "illustrativeCore": 1,
+      "optionalInputDefinitions": [
+        {
+          "code": "S07EV",
+          "pointer": "/S07EV",
+          "issues": [],
+          "option": "S07EV",
+          "optionType": "package",
+          "longDescription": "Technology Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FBLAT",
+          "P0C5Y",
+          "S01H2",
+          "S07EV"
+        ],
+        "mandatoryElements": []
+      },
+      "requestDigest": "c726d16b477bfb0971cf94870fabf258a6eef502fc32347c2dc4a38c45ebde08",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7A",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7A",
+        "agModelCode": "82GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "BASIC_LINE",
+        "defaultModel": {
+          "modelCode": "1F7A",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "untrimmed"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FBLAT",
+          "P0C5Y",
+          "S01H2"
+        ],
+        "mandatoryElements": []
+      },
+      "illustrativeCore": 1,
+      "optionalInputDefinitions": [
+        {
+          "code": "S07EW",
+          "pointer": "/S07EW",
+          "issues": [],
+          "option": "S07EW",
+          "optionType": "package",
+          "longDescription": "Technology Plus Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FBLAT",
+          "P0C5Y",
+          "S01H2",
+          "S07EW"
+        ],
+        "mandatoryElements": []
+      },
+      "requestDigest": "d96f9c8f71197aa542287d6dc509c53dfe501b0294c03dc7fa12a5eea2de14fd",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7A",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7A",
+        "agModelCode": "82GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "BASIC_LINE",
+        "defaultModel": {
+          "modelCode": "1F7A",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "untrimmed"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FBLAT",
+          "P0C5Y",
+          "S01H2"
+        ],
+        "mandatoryElements": []
+      },
+      "illustrativeCore": 1,
+      "optionalInputDefinitions": [
+        {
+          "code": "S043U",
+          "pointer": "/S043U",
+          "issues": [],
+          "option": "S043U",
+          "optionType": "trim",
+          "longDescription": "'Illuminated' Aluminium Graphite Interior Trim"
+        },
+        {
+          "code": "S07EW",
+          "pointer": "/S07EW",
+          "issues": [],
+          "option": "S07EW",
+          "optionType": "package",
+          "longDescription": "Technology Plus Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FBLAT",
+          "P0C5Y",
+          "S01H2",
+          "S043U",
+          "S07EW"
+        ],
+        "mandatoryElements": []
+      },
+      "requestDigest": "481d5a14e2e3ccb6250a4c73f21146c5ce55d268f54df55c4f94f992b31a96f8",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7A",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7A",
+        "agModelCode": "82GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "BASIC_LINE",
+        "defaultModel": {
+          "modelCode": "1F7A",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "untrimmed"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUCX",
+          "P0C5Y",
+          "S01H1"
+        ],
+        "mandatoryElements": []
+      },
+      "illustrativeCore": 2,
+      "optionalInputDefinitions": [
+        {
+          "code": "S043U",
+          "pointer": "/S043U",
+          "issues": [],
+          "option": "S043U",
+          "optionType": "trim",
+          "longDescription": "'Illuminated' Aluminium Graphite Interior Trim"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C5Y",
+          "S01H1",
+          "S043U"
+        ],
+        "mandatoryElements": []
+      },
+      "requestDigest": "59277c0eea33dda2a23af978c34243fab5bcfe095101143f2a12701d1d12604b",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7A",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7A",
+        "agModelCode": "82GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "BASIC_LINE",
+        "defaultModel": {
+          "modelCode": "1F7A",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "untrimmed"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUCX",
+          "P0C5Y",
+          "S01H1"
+        ],
+        "mandatoryElements": []
+      },
+      "illustrativeCore": 2,
+      "optionalInputDefinitions": [
+        {
+          "code": "S07EV",
+          "pointer": "/S07EV",
+          "issues": [],
+          "option": "S07EV",
+          "optionType": "package",
+          "longDescription": "Technology Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C5Y",
+          "S01H1",
+          "S07EV"
+        ],
+        "mandatoryElements": []
+      },
+      "requestDigest": "269ecb0adfb842548e673e86df71202308ef9f67cf00c6f8bcc44b6d28ad3f98",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7A",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7A",
+        "agModelCode": "82GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "BASIC_LINE",
+        "defaultModel": {
+          "modelCode": "1F7A",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "untrimmed"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUCX",
+          "P0C5Y",
+          "S01H1"
+        ],
+        "mandatoryElements": []
+      },
+      "illustrativeCore": 2,
+      "optionalInputDefinitions": [
+        {
+          "code": "S07EW",
+          "pointer": "/S07EW",
+          "issues": [],
+          "option": "S07EW",
+          "optionType": "package",
+          "longDescription": "Technology Plus Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C5Y",
+          "S01H1",
+          "S07EW"
+        ],
+        "mandatoryElements": []
+      },
+      "requestDigest": "1e4955fafbbc116c9c1ea6a871608c7d8d694bfe6b889d7612df29ccfb737cd5",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7A",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7A",
+        "agModelCode": "82GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "BASIC_LINE",
+        "defaultModel": {
+          "modelCode": "1F7A",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "untrimmed"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUCX",
+          "P0C5Y",
+          "S01H1"
+        ],
+        "mandatoryElements": []
+      },
+      "illustrativeCore": 2,
+      "optionalInputDefinitions": [
+        {
+          "code": "S043U",
+          "pointer": "/S043U",
+          "issues": [],
+          "option": "S043U",
+          "optionType": "trim",
+          "longDescription": "'Illuminated' Aluminium Graphite Interior Trim"
+        },
+        {
+          "code": "S07EW",
+          "pointer": "/S07EW",
+          "issues": [],
+          "option": "S07EW",
+          "optionType": "package",
+          "longDescription": "Technology Plus Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C5Y",
+          "S01H1",
+          "S043U",
+          "S07EW"
+        ],
+        "mandatoryElements": []
+      },
+      "requestDigest": "ce239af9c9429e61cf13455ecc97a91e0805ead7bbb217e96025d1d99663dcac",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7C",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7C",
+        "agModelCode": "22GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "M_PERFORMANCE_LINE",
+        "defaultModel": {
+          "modelCode": "1F7C",
+          "agModelCode": "22GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "untrimmed"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUMY",
+          "P0300",
+          "S03NB"
+        ],
+        "mandatoryElements": []
+      },
+      "illustrativeCore": 1,
+      "optionalInputDefinitions": [
+        {
+          "code": "S043U",
+          "pointer": "/S043U",
+          "issues": [],
+          "option": "S043U",
+          "optionType": "trim",
+          "longDescription": "'Illuminated' Aluminium Graphite Interior Trim"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0300",
+          "S03NB",
+          "S043U"
+        ],
+        "mandatoryElements": []
+      },
+      "requestDigest": "4857b90a1dbb73e307e176659ff216f8ec12b3cbfb5eeaad29cc684fd96d7a1a",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7C",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7C",
+        "agModelCode": "22GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "M_PERFORMANCE_LINE",
+        "defaultModel": {
+          "modelCode": "1F7C",
+          "agModelCode": "22GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "untrimmed"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUMY",
+          "P0300",
+          "S03NB"
+        ],
+        "mandatoryElements": []
+      },
+      "illustrativeCore": 1,
+      "optionalInputDefinitions": [
+        {
+          "code": "S07EV",
+          "pointer": "/S07EV",
+          "issues": [],
+          "option": "S07EV",
+          "optionType": "package",
+          "longDescription": "Technology Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0300",
+          "S03NB",
+          "S07EV"
+        ],
+        "mandatoryElements": []
+      },
+      "requestDigest": "d0c877b2ee7a7df6aaeb63489b1268ae5558272c47d81dd5a872a48c7a61f87b",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7C",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7C",
+        "agModelCode": "22GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "M_PERFORMANCE_LINE",
+        "defaultModel": {
+          "modelCode": "1F7C",
+          "agModelCode": "22GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "untrimmed"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUMY",
+          "P0300",
+          "S03NB"
+        ],
+        "mandatoryElements": []
+      },
+      "illustrativeCore": 1,
+      "optionalInputDefinitions": [
+        {
+          "code": "S07EW",
+          "pointer": "/S07EW",
+          "issues": [],
+          "option": "S07EW",
+          "optionType": "package",
+          "longDescription": "Technology Plus Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0300",
+          "S03NB",
+          "S07EW"
+        ],
+        "mandatoryElements": []
+      },
+      "requestDigest": "30220a7be646263269f31a47092f7c0fe5a117fe222ae5a6ed2c8917c71f0e15",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7C",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7C",
+        "agModelCode": "22GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "M_PERFORMANCE_LINE",
+        "defaultModel": {
+          "modelCode": "1F7C",
+          "agModelCode": "22GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "untrimmed"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUMY",
+          "P0300",
+          "S03NB"
+        ],
+        "mandatoryElements": []
+      },
+      "illustrativeCore": 1,
+      "optionalInputDefinitions": [
+        {
+          "code": "S043U",
+          "pointer": "/S043U",
+          "issues": [],
+          "option": "S043U",
+          "optionType": "trim",
+          "longDescription": "'Illuminated' Aluminium Graphite Interior Trim"
+        },
+        {
+          "code": "S07EW",
+          "pointer": "/S07EW",
+          "issues": [],
+          "option": "S07EW",
+          "optionType": "package",
+          "longDescription": "Technology Plus Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0300",
+          "S03NB",
+          "S043U",
+          "S07EW"
+        ],
+        "mandatoryElements": []
+      },
+      "requestDigest": "fd138f6ddb98d5ca7a1a466f6e8584d308707dbe6e11c12cb675aa820deb53a4",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7C",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7C",
+        "agModelCode": "22GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "M_PERFORMANCE_LINE",
+        "defaultModel": {
+          "modelCode": "1F7C",
+          "agModelCode": "22GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "untrimmed"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUMY",
+          "P0C6R",
+          "S01H5"
+        ],
+        "mandatoryElements": []
+      },
+      "illustrativeCore": 2,
+      "optionalInputDefinitions": [
+        {
+          "code": "S043U",
+          "pointer": "/S043U",
+          "issues": [],
+          "option": "S043U",
+          "optionType": "trim",
+          "longDescription": "'Illuminated' Aluminium Graphite Interior Trim"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C6R",
+          "S01H5",
+          "S043U"
+        ],
+        "mandatoryElements": []
+      },
+      "requestDigest": "9bcaed940bd563dfd4e7ec77a614e6cb5296545d3e074fe3b4ff5e629285a39f",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7C",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7C",
+        "agModelCode": "22GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "M_PERFORMANCE_LINE",
+        "defaultModel": {
+          "modelCode": "1F7C",
+          "agModelCode": "22GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "untrimmed"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUMY",
+          "P0C6R",
+          "S01H5"
+        ],
+        "mandatoryElements": []
+      },
+      "illustrativeCore": 2,
+      "optionalInputDefinitions": [
+        {
+          "code": "S07EV",
+          "pointer": "/S07EV",
+          "issues": [],
+          "option": "S07EV",
+          "optionType": "package",
+          "longDescription": "Technology Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C6R",
+          "S01H5",
+          "S07EV"
+        ],
+        "mandatoryElements": []
+      },
+      "requestDigest": "498d3b3c917f7458d74dc3302b00104c309810ae11573c3535e9aa2a157648bf",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7C",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7C",
+        "agModelCode": "22GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "M_PERFORMANCE_LINE",
+        "defaultModel": {
+          "modelCode": "1F7C",
+          "agModelCode": "22GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "untrimmed"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUMY",
+          "P0C6R",
+          "S01H5"
+        ],
+        "mandatoryElements": []
+      },
+      "illustrativeCore": 2,
+      "optionalInputDefinitions": [
+        {
+          "code": "S07EW",
+          "pointer": "/S07EW",
+          "issues": [],
+          "option": "S07EW",
+          "optionType": "package",
+          "longDescription": "Technology Plus Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C6R",
+          "S01H5",
+          "S07EW"
+        ],
+        "mandatoryElements": []
+      },
+      "requestDigest": "bd044c2a5b30e386b0177fe8e1c4efb417a26bf5bbae941c87dcaa9858fd2e66",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7C",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7C",
+        "agModelCode": "22GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "M_PERFORMANCE_LINE",
+        "defaultModel": {
+          "modelCode": "1F7C",
+          "agModelCode": "22GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "untrimmed"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUMY",
+          "P0C6R",
+          "S01H5"
+        ],
+        "mandatoryElements": []
+      },
+      "illustrativeCore": 2,
+      "optionalInputDefinitions": [
+        {
+          "code": "S043U",
+          "pointer": "/S043U",
+          "issues": [],
+          "option": "S043U",
+          "optionType": "trim",
+          "longDescription": "'Illuminated' Aluminium Graphite Interior Trim"
+        },
+        {
+          "code": "S07EW",
+          "pointer": "/S07EW",
+          "issues": [],
+          "option": "S07EW",
+          "optionType": "package",
+          "longDescription": "Technology Plus Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C6R",
+          "S01H5",
+          "S043U",
+          "S07EW"
+        ],
+        "mandatoryElements": []
+      },
+      "requestDigest": "dcc5c70126a7591483c8df5c1061dd0fec6a6b67746b52f0352c62dea76ce682",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7D",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7D",
+        "agModelCode": "62GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "1F7B",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 2,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUMY",
+          "P0C5Y",
+          "S01H8",
+          "S0337"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "illustrativeCore": 1,
+      "optionalInputDefinitions": [
+        {
+          "code": "S043U",
+          "pointer": "/S043U",
+          "issues": [],
+          "option": "S043U",
+          "optionType": "trim",
+          "longDescription": "'Illuminated' Aluminium graphite interior decor"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C5Y",
+          "S01H8",
+          "S0337",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "requestDigest": "79ec564c0573246ab781fecf849c351b2a59a811c2c1365f1ce7cdb4f27e8276",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7D",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7D",
+        "agModelCode": "62GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "1F7B",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 2,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUMY",
+          "P0C5Y",
+          "S01H8",
+          "S0337"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "illustrativeCore": 1,
+      "optionalInputDefinitions": [
+        {
+          "code": "S07EV",
+          "pointer": "/S07EV",
+          "issues": [],
+          "option": "S07EV",
+          "optionType": "package",
+          "longDescription": "Technology Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C5Y",
+          "S01H8",
+          "S0337",
+          "S07EV"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "requestDigest": "22dd15e8fbdb2ea0462325a6e9f3375409fc730899638ba703577a4c45c143b3",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7D",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7D",
+        "agModelCode": "62GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "1F7B",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 2,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUMY",
+          "P0C5Y",
+          "S01H8",
+          "S0337"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "illustrativeCore": 1,
+      "optionalInputDefinitions": [
+        {
+          "code": "S07EW",
+          "pointer": "/S07EW",
+          "issues": [],
+          "option": "S07EW",
+          "optionType": "package",
+          "longDescription": "Technology Plus Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C5Y",
+          "S01H8",
+          "S0337",
+          "S07EW"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "requestDigest": "4683902929ca001f9f91ff6f23e76727b05b3ad48b744c4e71b8ed640ebe4869",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7D",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7D",
+        "agModelCode": "62GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "1F7B",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 2,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUMY",
+          "P0C5Y",
+          "S01H8",
+          "S0337"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "illustrativeCore": 1,
+      "optionalInputDefinitions": [
+        {
+          "code": "S043U",
+          "pointer": "/S043U",
+          "issues": [],
+          "option": "S043U",
+          "optionType": "trim",
+          "longDescription": "'Illuminated' Aluminium graphite interior decor"
+        },
+        {
+          "code": "S07EW",
+          "pointer": "/S07EW",
+          "issues": [],
+          "option": "S07EW",
+          "optionType": "package",
+          "longDescription": "Technology Plus Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C5Y",
+          "S01H8",
+          "S0337",
+          "S043U",
+          "S07EW"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "requestDigest": "f39d3ffcb0875eac16f919a3b6f29ef181c58cb5be3dab3404f29ae1ca8d9c8e",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7D",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7D",
+        "agModelCode": "62GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "1F7B",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 2,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKTNL",
+          "P0C4W",
+          "S0337",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "illustrativeCore": 2,
+      "optionalInputDefinitions": [
+        {
+          "code": "S043U",
+          "pointer": "/S043U",
+          "issues": [],
+          "option": "S043U",
+          "optionType": "trim",
+          "longDescription": "'Illuminated' Aluminium graphite interior decor"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0C4W",
+          "S0337",
+          "S03NA",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "requestDigest": "42b40eb8b62853b753d6e4ab0cc3abd13afef94ca85d499071c0b82c0e3bb64e",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7D",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7D",
+        "agModelCode": "62GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "1F7B",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 2,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKTNL",
+          "P0C4W",
+          "S0337",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "illustrativeCore": 2,
+      "optionalInputDefinitions": [
+        {
+          "code": "S07EV",
+          "pointer": "/S07EV",
+          "issues": [],
+          "option": "S07EV",
+          "optionType": "package",
+          "longDescription": "Technology Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0C4W",
+          "S0337",
+          "S03NA",
+          "S07EV"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "requestDigest": "82dac30683bb2c854a808ff15cb02120da55d6d83d447482818441f97863f56c",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7D",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7D",
+        "agModelCode": "62GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "1F7B",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 2,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKTNL",
+          "P0C4W",
+          "S0337",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "illustrativeCore": 2,
+      "optionalInputDefinitions": [
+        {
+          "code": "S07EW",
+          "pointer": "/S07EW",
+          "issues": [],
+          "option": "S07EW",
+          "optionType": "package",
+          "longDescription": "Technology Plus Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0C4W",
+          "S0337",
+          "S03NA",
+          "S07EW"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "requestDigest": "d5d78424d3a3b1954c69c556a24bea06406fdb61e1d8013b7ee4c6903020502a",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7D",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7D",
+        "agModelCode": "62GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "1F7B",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 2,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKTNL",
+          "P0C4W",
+          "S0337",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "illustrativeCore": 2,
+      "optionalInputDefinitions": [
+        {
+          "code": "S043U",
+          "pointer": "/S043U",
+          "issues": [],
+          "option": "S043U",
+          "optionType": "trim",
+          "longDescription": "'Illuminated' Aluminium graphite interior decor"
+        },
+        {
+          "code": "S07EW",
+          "pointer": "/S07EW",
+          "issues": [],
+          "option": "S07EW",
+          "optionType": "package",
+          "longDescription": "Technology Plus Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0C4W",
+          "S0337",
+          "S03NA",
+          "S043U",
+          "S07EW"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      },
+      "requestDigest": "ad55e6aec08ed21e522a9fa255406a7f6c689a79bc7d8d95250bbfada7fc96b5",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7F",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7F",
+        "agModelCode": "62GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S033B",
+        "defaultModel": {
+          "modelCode": "1F7E",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S033B"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUKP",
+          "P0C31",
+          "S033B",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      },
+      "illustrativeCore": 1,
+      "optionalInputDefinitions": [
+        {
+          "code": "S043U",
+          "pointer": "/S043U",
+          "issues": [],
+          "option": "S043U",
+          "optionType": "trim",
+          "longDescription": "'Illuminated' Aluminium graphite interior decor"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C31",
+          "S033B",
+          "S03NA",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      },
+      "requestDigest": "5f87cac0ea3006fc17d02f84ac0585cea356e009e492f72779a1703d7bf88a93",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7F",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7F",
+        "agModelCode": "62GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S033B",
+        "defaultModel": {
+          "modelCode": "1F7E",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S033B"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUKP",
+          "P0C31",
+          "S033B",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      },
+      "illustrativeCore": 1,
+      "optionalInputDefinitions": [
+        {
+          "code": "S07EV",
+          "pointer": "/S07EV",
+          "issues": [],
+          "option": "S07EV",
+          "optionType": "package",
+          "longDescription": "Technology Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C31",
+          "S033B",
+          "S03NA",
+          "S07EV"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      },
+      "requestDigest": "cff89e5e937051cfc4a4c4909adae0eaf6971bb420d0804ad5a1b83245e4562f",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7F",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7F",
+        "agModelCode": "62GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S033B",
+        "defaultModel": {
+          "modelCode": "1F7E",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S033B"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUKP",
+          "P0C31",
+          "S033B",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      },
+      "illustrativeCore": 1,
+      "optionalInputDefinitions": [
+        {
+          "code": "S07EW",
+          "pointer": "/S07EW",
+          "issues": [],
+          "option": "S07EW",
+          "optionType": "package",
+          "longDescription": "Technology Plus Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C31",
+          "S033B",
+          "S03NA",
+          "S07EW"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      },
+      "requestDigest": "01802306a4b0c4853d2a0019facfcdc2cf246bdc42636f2ea7b5f52abf61c73e",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7F",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7F",
+        "agModelCode": "62GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S033B",
+        "defaultModel": {
+          "modelCode": "1F7E",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S033B"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUKP",
+          "P0C31",
+          "S033B",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      },
+      "illustrativeCore": 1,
+      "optionalInputDefinitions": [
+        {
+          "code": "S043U",
+          "pointer": "/S043U",
+          "issues": [],
+          "option": "S043U",
+          "optionType": "trim",
+          "longDescription": "'Illuminated' Aluminium graphite interior decor"
+        },
+        {
+          "code": "S07EW",
+          "pointer": "/S07EW",
+          "issues": [],
+          "option": "S07EW",
+          "optionType": "package",
+          "longDescription": "Technology Plus Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C31",
+          "S033B",
+          "S03NA",
+          "S043U",
+          "S07EW"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      },
+      "requestDigest": "5a0aa4106bc0e505aaf511031487f73ddf5495127ca887f6a21bf73432b7aa50",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7F",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7F",
+        "agModelCode": "62GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S033B",
+        "defaultModel": {
+          "modelCode": "1F7E",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S033B"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUCX",
+          "P0C3Z",
+          "S033B",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      },
+      "illustrativeCore": 2,
+      "optionalInputDefinitions": [
+        {
+          "code": "S043U",
+          "pointer": "/S043U",
+          "issues": [],
+          "option": "S043U",
+          "optionType": "trim",
+          "longDescription": "'Illuminated' Aluminium graphite interior decor"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C3Z",
+          "S033B",
+          "S03NA",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      },
+      "requestDigest": "b63a4e11f152e5a0bd9f740e7fd93157f02969ef87e93b24c3c8d5c0a925e148",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7F",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7F",
+        "agModelCode": "62GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S033B",
+        "defaultModel": {
+          "modelCode": "1F7E",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S033B"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUCX",
+          "P0C3Z",
+          "S033B",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      },
+      "illustrativeCore": 2,
+      "optionalInputDefinitions": [
+        {
+          "code": "S07EV",
+          "pointer": "/S07EV",
+          "issues": [],
+          "option": "S07EV",
+          "optionType": "package",
+          "longDescription": "Technology Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C3Z",
+          "S033B",
+          "S03NA",
+          "S07EV"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      },
+      "requestDigest": "3f2d3e554e8794c94df3a5263cf3b95a613cdd2caf09a4ddebaa59c12864eeaa",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7F",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7F",
+        "agModelCode": "62GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S033B",
+        "defaultModel": {
+          "modelCode": "1F7E",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S033B"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUCX",
+          "P0C3Z",
+          "S033B",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      },
+      "illustrativeCore": 2,
+      "optionalInputDefinitions": [
+        {
+          "code": "S07EW",
+          "pointer": "/S07EW",
+          "issues": [],
+          "option": "S07EW",
+          "optionType": "package",
+          "longDescription": "Technology Plus Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C3Z",
+          "S033B",
+          "S03NA",
+          "S07EW"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      },
+      "requestDigest": "86e0e0eb6e1cb7072e15f8874808f13e1db3ffd981eda13be23c8c860a6cd9f0",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    },
+    {
+      "modelCode": "1F7F",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7F",
+        "agModelCode": "62GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S033B",
+        "defaultModel": {
+          "modelCode": "1F7E",
+          "agModelCode": "82GE"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S033B"
+        }
+      },
+      "actualBaseRequest": {
+        "includedElements": [
+          "FKUCX",
+          "P0C3Z",
+          "S033B",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      },
+      "illustrativeCore": 2,
+      "optionalInputDefinitions": [
+        {
+          "code": "S043U",
+          "pointer": "/S043U",
+          "issues": [],
+          "option": "S043U",
+          "optionType": "trim",
+          "longDescription": "'Illuminated' Aluminium graphite interior decor"
+        },
+        {
+          "code": "S07EW",
+          "pointer": "/S07EW",
+          "issues": [],
+          "option": "S07EW",
+          "optionType": "package",
+          "longDescription": "Technology Plus Pack"
+        }
+      ],
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C3Z",
+          "S033B",
+          "S03NA",
+          "S043U",
+          "S07EW"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      },
+      "requestDigest": "1ae7d3a0e8dbba2a2fbc0ca33df57aa80f3becb3674c083e9361e6c6a6af99df",
+      "currentModelBatchContract": "refused by fixed input length; static code review only",
+      "newSourceRequests": 0,
+      "actualConfigurationCapacityCredit": 0
+    }
+  ],
+  "sourceTrafficGranted": false,
+  "sourceRequestsExecuted": 0,
+  "configurationCapacityCredit": 0,
+  "canonicalNoveltyStatus": "unproven until actual complete strict solver selections and cumulative canonical admission",
+  "excludedFromInitialProbe": [
+    "S01H0",
+    "S0337/S033B line alternatives",
+    "all definitions explicitly typed other",
+    "default-only transmission requests",
+    "multi-package combinations",
+    "1F7E request variants likely to resolve to existing selections"
+  ],
+  "existingBoundary": {
+    "path": "scripts/gcsp/bmw-public-registration.mjs",
+    "function": "validateBmwModelBatchCandidateRequest",
+    "line": 109,
+    "contract": "Exactly3 untrimmed or4 trimmed inputs with only the exact line mandatory code; the illustrative optional inputs exceed this registration.",
+    "sourceVersionPreserved": "f59-model-batch-20261107.v1"
+  },
+  "proposedBoundedContract": {
+    "sourceVersion": "f59-model-axis-batch-20261107.v1",
+    "sameCollectorContextAndBinder": true,
+    "candidatesPerSession": 8,
+    "explicitCandidatesRequired": true,
+    "baseInputs": "Exactly one directly typed paint/fabric/rim, plus existing exact line input if present.",
+    "optionalInputs": "At most one directly typed trim and one directly typed package; at least one optional input. Fresh options must corroborate every code/type; other and transmission extras refused.",
+    "mandatorySemantics": "Existing exact line mandatory code, or explicit empty mandatory array for an untrimmed line.",
+    "retainedSemantics": "Complete actual resolved selection and solver changes; full source-context and request binding; exact cumulative canonical distinctness.",
+    "sourceGrant": "None. A separately reviewed finite pilot and new frozen pins would be required."
+  },
+  "codeChangeApproval": "Parent internal review of this concrete need/design required before implementation; no human confirmation request needed under existing authorisation.",
+  "acceptance": false
+}
