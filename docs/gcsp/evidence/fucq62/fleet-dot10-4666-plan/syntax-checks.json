@@ -1,23 +1,23 @@
 {
-  "scope": "scoped syntax/read-only static preparation only; candidate execution unrun",
-  "planSha256": "e51b8c7d50b6cee0a5a7def23be47fc83791ca3689c8d72106934a04fb0fd913",
+  "scope": "scoped syntax/read-only static .10 refresh to actual .9 ordinary baseline; candidate execution unrun",
+  "planSha256": "a4f0f766266165b8d48da363c09fbc934647e90cd80a8c19c3b81685fb12ace7",
   "preparedScripts": [
     {
       "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot10-4666-plan/prepare-plan.py",
-      "bytes": 11366,
-      "sha256": "25a177e4a9d05b57f7ff51213e4a0956b63e36c82b78ea0fa20b396cc2632d12",
+      "bytes": 14397,
+      "sha256": "9d7c95e6a9eff09a0725ae1a3dd0f1c2fcdc3245001f70b24fd1868032de2032",
       "name": "prepare-plan.py"
     },
     {
       "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot10-4666-plan/prepare-candidate.mjs",
-      "bytes": 10346,
-      "sha256": "43f3a84ebd8f15f96acf4bf2703ea0a848197262b6eb55041a11f0ff69d89f0e",
+      "bytes": 11611,
+      "sha256": "fb564d6e3cc6f165b5bb09f22f3dfc425c5d069b256402298eebe9bd1986f4ba",
       "name": "prepare-candidate.mjs"
     },
     {
       "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot10-4666-plan/supervise-candidate.py",
-      "bytes": 9473,
-      "sha256": "ad4c9d4ff41d3854c18d7d7f10dafa8eaee732ccd1fa2cca33870935405bd8a5",
+      "bytes": 10231,
+      "sha256": "71d667408efc51cc34e0332346d4c31567a40ddc8baa996b566b138583c9aa2c",
       "name": "supervise-candidate.py"
     },
     {
@@ -51,18 +51,17 @@
     },
     {
       "check": "node-syntax",
-      "path": "prepare-candidate.mjs",
-      "passed": true
+      "passed": true,
+      "executedCandidate": false
     },
     {
       "check": "git-apply-check-only",
-      "path": "registration.patch",
       "passed": true,
-      "applied": false
+      "executedCandidate": false
     }
   ],
   "static": {
-    "inputPinsMatched": 424,
+    "inputPinsMatched": 477,
     "originFilesMatched": 363,
     "originalLinesMatched": 2242,
     "predictedSourceBytes": 50452067,
@@ -75,14 +74,23 @@
       "34b8befe36cee454171e72dbcea4b67a947a69990098a190d327c033dccbd8b3",
       "da1eb59e4e5f8dee9dd06e8877da275c2eb79e541dea90c793559fac6cd188ff"
     ],
-    "sourceRegistrationUnapplied": true,
-    "rootProductionCodePinsMatched": 45,
-    "olderWorktreePendingReleaseContext": [
-      "server/gcsp/vehicle-evidence/fleet-releases.json"
-    ],
+    "dot10SourceRegistrationUnapplied": true,
+    "rootAnd036ProductionCodePinsMatched": 45,
+    "dot9Alignment": {
+      "commit": "76135c84",
+      "exactReviewedPatch": true,
+      "anchorSha256": "b0eaafddedc55f163fdf32a6a77afb3f55eb2096d5e31256e8bf8591f50c085b",
+      "scope": "036 only"
+    },
     "baselineIsolatedHistoryFiles": 52,
     "baselineIsolatedVersions": 10,
-    "frozenDot9PacketsAndProductionCodeUnchanged": true,
+    "actualOrdinaryHistoryFiles": 52,
+    "actualOrdinaryVersions": 10,
+    "actualOrdinaryTreeSha256": "ccb40644cc7ef443bf10ea63ccbae63432efcab8ca29050e9d0888a9e6f7c4a2",
+    "ordinaryActivationReceiptSha256": "567fbc0fed031db8ce9c4c1bd43502001637aa4e09e4c29c0f1247dff6c0b1a4",
+    "allHistoryMembershipPreserved": true,
+    "distinctPublicationOwnerFilesPreserved": 2,
+    "frozenDot9PacketsIncludingLiveUnchanged": true,
     "preparedScriptPinsMatched": true,
     "outputAndRegisteredSourceCopiesAbsent": true
   },
@@ -97,16 +105,16 @@
     "sourceCalls": 0,
     "publicNetworkRequests": 0,
     "nativeDatabaseAccess": false,
-    "sourceCreation": false,
-    "sourceRegistrationApplied": false,
+    "dot10SourceCreation": false,
+    "dot10SourceRegistrationApplied": false,
     "candidateGeneration": false,
     "candidateValidation": false,
     "proof": false,
     "publication": false,
     "scratchAllocation": false
   },
-  "ordinaryBaseline": null,
-  "ordinaryActivationReceipt": null,
+  "ordinaryBaselineResolved": true,
+  "ordinaryActivationAcceptance": false,
   "ordinaryProofExecutable": false,
   "setupNote": "Initial metadata read found newer relative origin files absent from older .036 checkout; corrected resolution to exact root originals. No source, candidate or scratch created by failed preparation.",
   "cleanup": {
