@@ -1,0 +1,296 @@
+{
+  "status": "scoped correction passed; story remains In Progress",
+  "base": "d8f9d0160c0a834ae23dade75235ea4b7331cb74",
+  "variant": "default, small synthetic memory repository, stub provider, pinned immutable F100 token module",
+  "sourceHashes": {
+    "server/gcsp/notify/brevo.js": "a6e80bfe650a37f23e2aed2ff7d6ba63f993746c982366d7fe0a49efb4716447",
+    "server/test/gcsp-mail-transport.test.js": "ef6a1baf96903fc6a4e8ae76257974f40cec5a469accdafdcb0123082897a2a2",
+    "server/gcsp/notify/templates.js": "fb9a3b9719c54000409553773698ef620bf35a5ba06c354f33b30cea7df839eb",
+    "server/gcsp/notify/index.js": "2edc056423207a9ffd77b281f68d243e22123228da7e3424864fb170255ff6a2",
+    "server/gcsp/runtime.js": "6002f36386f1f05a16f4847173a9c2d9fa1317c4783c0576dc74a93574cdf727"
+  },
+  "red": "red-summary.json: original worker1 expectedfailure; supervisor parser metadata gate failed, preserved; no red rerun",
+  "chunks": [
+    {
+      "phase": "red",
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f98-repair/red-ef3d6264fd3a4ec39066c8872099b4c2.json",
+      "receiptSha256": "36cd8f70b609d496704aa28040190307905240d963d4b351e96a292cec3be6ff",
+      "status": "incomplete",
+      "counts": {},
+      "wallSeconds": 0.25465175000135787,
+      "sampledChargedPeakRssBytes": 47677440,
+      "scratchBytesRemoved": 512096,
+      "coverageContexts": [
+        {
+          "coveredRanges": 14,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/index.js",
+          "observedRanges": 59
+        },
+        {
+          "coveredRanges": 1,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/captured.js",
+          "observedRanges": 4
+        },
+        {
+          "coveredRanges": 1,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/port.js",
+          "observedRanges": 2
+        },
+        {
+          "coveredRanges": 2,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/config.js",
+          "observedRanges": 7
+        },
+        {
+          "coveredRanges": 15,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/brevo.js",
+          "observedRanges": 60
+        },
+        {
+          "coveredRanges": 7,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/templates.js",
+          "observedRanges": 21
+        },
+        {
+          "coveredRanges": 1,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/http.js",
+          "observedRanges": 6
+        }
+      ],
+      "targetedEvidence": null
+    },
+    {
+      "phase": "mail",
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f98-repair/mail-f63b022dbed647e286b77e3c64ca4340.json",
+      "receiptSha256": "d587a7e02b30f78af8e90dbb85106096ded2dbef5da53c4dd2646aa3fa93306c",
+      "status": "passed",
+      "counts": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 51,
+        "skipped": 0,
+        "tests": 51,
+        "todo": 0
+      },
+      "wallSeconds": 0.9505174590012757,
+      "sampledChargedPeakRssBytes": 275611648,
+      "scratchBytesRemoved": 544864,
+      "coverageContexts": [
+        {
+          "coveredRanges": 58,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/index.js",
+          "observedRanges": 99
+        },
+        {
+          "coveredRanges": 5,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/captured.js",
+          "observedRanges": 9
+        },
+        {
+          "coveredRanges": 1,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/port.js",
+          "observedRanges": 2
+        },
+        {
+          "coveredRanges": 12,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/config.js",
+          "observedRanges": 12
+        },
+        {
+          "coveredRanges": 147,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/brevo.js",
+          "observedRanges": 168
+        },
+        {
+          "coveredRanges": 28,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/templates.js",
+          "observedRanges": 35
+        },
+        {
+          "coveredRanges": 13,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/http.js",
+          "observedRanges": 28
+        }
+      ],
+      "targetedEvidence": "recorded targeted evidence: /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f98-repair/mail-f63b022dbed647e286b77e3c64ca4340-targeted/targeted-8abe3e3864554610bc6a82b69cd818b624b3fcd0676701c14c45cf93867f12c2-default-1793977710762021000.json"
+    },
+    {
+      "phase": "boundaries",
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f98-repair/boundaries-73d9e8d5494c4e469b70f036d94ca4bc.json",
+      "receiptSha256": "68f267e4e0b36ddf88d7bcbd3cc45c6231bb9199c83517fb83cb7cb1f89e9da6",
+      "status": "passed",
+      "counts": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 41,
+        "skipped": 0,
+        "tests": 41,
+        "todo": 0
+      },
+      "wallSeconds": 2.184286665986292,
+      "sampledChargedPeakRssBytes": 336674816,
+      "scratchBytesRemoved": 7581856,
+      "coverageContexts": [
+        {
+          "coveredRanges": 34,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/index.js",
+          "observedRanges": 82
+        },
+        {
+          "coveredRanges": 5,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/captured.js",
+          "observedRanges": 9
+        },
+        {
+          "coveredRanges": 1,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/port.js",
+          "observedRanges": 2
+        },
+        {
+          "coveredRanges": 1,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/config.js",
+          "observedRanges": 2
+        },
+        {
+          "coveredRanges": 2,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/brevo.js",
+          "observedRanges": 18
+        },
+        {
+          "coveredRanges": 7,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/templates.js",
+          "observedRanges": 21
+        },
+        {
+          "coveredRanges": 42,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/http.js",
+          "observedRanges": 52
+        },
+        {
+          "coveredRanges": 66,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/index.js",
+          "observedRanges": 104
+        },
+        {
+          "coveredRanges": 5,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/captured.js",
+          "observedRanges": 9
+        },
+        {
+          "coveredRanges": 1,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/port.js",
+          "observedRanges": 2
+        },
+        {
+          "coveredRanges": 2,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/config.js",
+          "observedRanges": 8
+        },
+        {
+          "coveredRanges": 2,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/brevo.js",
+          "observedRanges": 18
+        },
+        {
+          "coveredRanges": 34,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/templates.js",
+          "observedRanges": 37
+        },
+        {
+          "coveredRanges": 2,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-054/server/gcsp/notify/http.js",
+          "observedRanges": 7
+        }
+      ],
+      "targetedEvidence": "recorded targeted evidence: /Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f98-repair/boundaries-73d9e8d5494c4e469b70f036d94ca4bc-targeted/targeted-8abe3e3864554610bc6a82b69cd818b624b3fcd0676701c14c45cf93867f12c2-default-1793977725161176000.json"
+    }
+  ],
+  "greenTotals": {
+    "tests": 92,
+    "pass": 92,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0
+  },
+  "cleanup": {
+    "status": "verified",
+    "checks": [
+      {
+        "phase": "red",
+        "scratchRoot": "/private/tmp/test-stamp-shard-205c9ff0278c45668901c57119871b12",
+        "scratchAbsent": true,
+        "groupOwners": [
+          {
+            "pid": 80742,
+            "start": "Fri Nov  6 15:07:06 2026"
+          }
+        ],
+        "ownerIdentitiesAbsent": true,
+        "groupsAbsent": true,
+        "reservationToken": "205c9ff0278c45668901c57119871b12",
+        "reservationAbsent": true,
+        "dependencyFiles": 20,
+        "dependencyContentAndInodesPreserved": true,
+        "manifestSha256": "7cfed85b7ecfed8351a12cfcf2a5f0da31ec5c4423a0cb5b24773f3d90c3b86d"
+      },
+      {
+        "phase": "mail",
+        "scratchRoot": "/private/tmp/test-stamp-shard-06211980ab3c422cb63280def63016ff",
+        "scratchAbsent": true,
+        "groupOwners": [
+          {
+            "pid": 81866,
+            "start": "Fri Nov  6 15:08:29 2026"
+          }
+        ],
+        "ownerIdentitiesAbsent": true,
+        "groupsAbsent": true,
+        "reservationToken": "06211980ab3c422cb63280def63016ff",
+        "reservationAbsent": true,
+        "dependencyFiles": 20,
+        "dependencyContentAndInodesPreserved": true,
+        "manifestSha256": "9fe8f9172674a26771fa7cc9dd1a048bd482c15593bc9f49bcfa4d9030d80b69"
+      },
+      {
+        "phase": "boundaries",
+        "scratchRoot": "/private/tmp/test-stamp-shard-5de1def6c242487693d0501e8ea8dd7e",
+        "scratchAbsent": true,
+        "groupOwners": [
+          {
+            "pid": 82021,
+            "start": "Fri Nov  6 15:08:42 2026"
+          }
+        ],
+        "ownerIdentitiesAbsent": true,
+        "groupsAbsent": true,
+        "reservationToken": "5de1def6c242487693d0501e8ea8dd7e",
+        "reservationAbsent": true,
+        "dependencyFiles": 20,
+        "dependencyContentAndInodesPreserved": true,
+        "manifestSha256": "dfcbadbc71c5f2b7f6e62c0a8946a1767b4c64f2b9c25b40f1c80c79209cd02a"
+      }
+    ],
+    "dependencyLinkAbsent": true,
+    "ownedEmptyDirectoryAbsent": true,
+    "scratchPeakBytesRemovedTotal": 8638816,
+    "compatibilityException": null,
+    "leftovers": [],
+    "retained": "concise receipts/targeted proofs/coverage summaries plus original useful red log; successful worker logs removed",
+    "noArchivesOrLargeOutput": true
+  },
+  "plan": "plan.json",
+  "originalAudit": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f98-readiness.md",
+  "currentHostEvidence": {
+    "publishedF100": "4037b762086113e4970f651161471b603d39b4d5",
+    "publishedF105": "9ae87ae0a79d30133a975ed5a67ffef5f80aed7a",
+    "facts": "HTTPS host provides account and same-origin API/offer routes and serves /gcsp/offer via adopted F105 page; retained2TLS+1hostchecks pass; F98 real brevo.js adapter/config.js absent from this F100 pin; exact composition/main/deployed integration/browser/inbox not proved here"
+  },
+  "remaining": [
+    "Parent review/publication and exact shared integration",
+    "Actual backend sender/configuration/deployed authentication",
+    "Actual service-produced offer normal outbox send, confirmed provider ID, approved inbox receipt and public link/current-state/expiry evidence",
+    "No native PostgreSQL or fresh full-suite claim"
+  ],
+  "agents": "Sam Sheepdog requested/selected/runtime-confirmed gpt-6.1-sol/high; no fallback or descendants",
+  "scopeGuard": "No live network/provider/credentials/Keychain/browser/email/SQL/install, Git mutation, Jira/map/runtime/host/frontend/shared-policy change"
+}

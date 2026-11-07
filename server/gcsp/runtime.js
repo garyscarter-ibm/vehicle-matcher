@@ -41,7 +41,7 @@ const scoped = (value, context) => ['runId', 'environmentId', 'employeeId'].ever
 // Explicit composition only. A failed PostgreSQL open never changes providers.
 export async function createGcspRuntime({ mode = 'postgres', repository, repositoryOptions, policy,
   environmentId, policyAsOf, commandId, stockProvider, offerLandingUrl = process.env.GCSP_OFFER_LANDING_URL,
-  sessionNow = () => new Date().toISOString(), adoptOfferJourney = false } = {}) {
+  sessionNow = () => new Date().toISOString(), adoptOfferJourney = false, mail } = {}) {
   if (!['postgres', 'memory'].includes(mode)) return result('invalid', { code: 'unsupported-repository-mode' });
   try { offerLandingUrl = resolveOfferLandingUrl(offerLandingUrl); }
   catch { return result('invalid', { code: 'invalid-offer-landing-url' }); }
@@ -52,7 +52,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
   let closing; let notify;
   // The trusted host settles startup and its initiating calls before closing.
   const close = () => closing ??= (async () => {
-    try { notify?.close(); } finally {
+    try { await notify?.close(); } finally {
       try { await repository.close(); } finally { if (ownsPolicy) await readPolicy.close(); }
     }
   })();
@@ -130,7 +130,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       const resolved = await identity.resolveSession({ authorized: true, cookie });
       return resolved.status === 'ok' ? offerAccess.fromAccount(resolved.value, selector) : session ?? resolved;
     };
-    notify = createNotificationDispatcher({ repository, policy, clock, environmentId });
+    notify = createNotificationDispatcher({ repository, policy, clock, environmentId, mail });
     const dependencies = { gcspRepository: repository, gcspPolicy: policy, gcspGreg: greg, gcspGregPublish: gregPublish,
       gcspScenarios: scenarios, gcspManualClaims: manualClaims, gcspManualRead: manualRead, gcspManualReview: manualReview,
       gcspStockRelease: stockRelease, gcspCases: cases, gcspManualOrder: manualOrder,
