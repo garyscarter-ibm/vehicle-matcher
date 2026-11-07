@@ -1,0 +1,150 @@
+{
+  "schemaVersion": "dot12-readiness-three-get-plan.v1",
+  "status": "prepared-unexecuted-unsealed-awaiting-linux-pass-and-actual-deployment-identity",
+  "executionRoot": "/Users/usget/Claude/vehicle-matcher",
+  "code": null,
+  "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "previousFailedDeploymentId": null,
+  "deploymentRequirement": "Linux fresh public cold/offline/boundary checks must pass before Render selector changes from .10. Then the root records exact deployment commit, actual successful deployment ID, retained success evidence, complete dependency pins, reseals this plan and issues an exact grant. Null placeholders and preparation confer no execution authority.",
+  "origin": "https://gcsp-api.onrender.com",
+  "firstReference": {
+    "request": {
+      "kind": "configuration",
+      "id": "MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIQyxTMDIzMCxTMDJQQSxTMDJUNCxTMDJUQixTMDJWQixTMDJWRCxTMDJWTCxTMDMwMixTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzMSxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRHUSxTMDRNQyxTMDRVUixTMDUzNCxTMDU0NCxTMDU1MixTMDVBQyxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDY3NixTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxNSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNVSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNQ=="
+    },
+    "rowKey": "d72c05557861bb646f57484e60d26c3f1f35df5c20b0dd18e01256188c7d0ca2",
+    "encodedPath": "/api/gcsp/vehicle-evidence/configurations/MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIQyxTMDIzMCxTMDJQQSxTMDJUNCxTMDJUQixTMDJWQixTMDJWRCxTMDJWTCxTMDMwMixTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzMSxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRHUSxTMDRNQyxTMDRVUixTMDUzNCxTMDU0NCxTMDU1MixTMDVBQyxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDY3NixTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxNSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNVSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNQ%3D%3D",
+    "pathSha256": "0b4003eaeb1b378106ce349a0494b2c051a384e401496c54d3521c6c5fe1b79d",
+    "expectedDtoSha256": "82712c8d703e6546d6c4298fa3a168b2ea48f09c73931ee9eb061ee36f98e2e4",
+    "priorOfflineDirectAndHttpPassed": true
+  },
+  "priorOfflineReceipt": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/http-chunk0-receipt.json",
+    "bytes": 632368,
+    "sha256": "d5518728f7c6d84f331c242d4b5ed5499998ae6f5ec3e43d8e3ef14bcd1a4929"
+  },
+  "asOf": "2026-11-07T00:00:00.000Z",
+  "preparedScripts": [
+    {
+      "name": "probe.mjs",
+      "sha256": "2d0d2a7eb9bd2160888712a55be35b947a99f86c1c9ecd661a0fc7a1e1eea44b",
+      "bytes": 7946
+    },
+    {
+      "name": "supervise.py",
+      "sha256": "9888b7317cb692e17255897daee6f19768df310df83c35ad177c9cb8f7c93749",
+      "bytes": 8325
+    },
+    {
+      "name": "group-proof.py",
+      "sha256": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
+      "bytes": 958
+    }
+  ],
+  "outputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-live-three-get-20261107",
+  "metadataRoot": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot12-live-three-get",
+  "phase": "readiness-first-dto",
+  "requests": [
+    "GET /health",
+    "GET /health/vehicle-evidence",
+    "GET exact first configuration"
+  ],
+  "limits": {
+    "newGETs": 3,
+    "requestMilliseconds": 30000,
+    "totalMilliseconds": 90000,
+    "retries": 0,
+    "redirects": 0,
+    "responseBodyBytes": 1048576,
+    "responseHeaderBytes": 16384,
+    "headerValueBytes": 2048
+  },
+  "resources": {
+    "workers": 1,
+    "hostReservationMiB": 512,
+    "maximumGroupRssMiB": 448,
+    "nodeHeapMiB": 320,
+    "scratchMiB": 64,
+    "diskReservationMiB": 64,
+    "seconds": 90,
+    "cloudScratch": true,
+    "expectedRetainedMiB": 4,
+    "outerLogMiB": 2,
+    "processLogMiB": 1,
+    "supervisorHeadroomMiB": 64
+  },
+  "stopRule": "Any request failure, non200health, or readiness without200/ok/ready/exact .12manifest stops immediately. The one exact configuration GET is reserved only after exact readiness. No retry/redirect/replay.",
+  "rawEvidence": "Each response retains bounded raw body and bounded raw header values with credential/cookie headers redacted, sanitized readiness, status/digest/timing. A failed request retains partial bytes when available and pending reservation.",
+  "sourceCalls": 0,
+  "unrun": [
+    "Three new public GETs; packet unsealed and unauthorized",
+    "Linux fresh public cold/offline/boundary acceptance belongs to root; pending evidence",
+    "Full10002 reference replay excluded",
+    "Original public cold attempt cause remains unresolved",
+    "Agent source/provider/native DB/image traffic excluded; application requests may use server policyDB internally",
+    "Full Story acceptance and Done excluded"
+  ],
+  "acceptance": false,
+  "originalTimeoutCauseProved": false,
+  "ordinaryStoreRequired": false,
+  "deploymentCodePins": {},
+  "codePins": {
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d"
+  },
+  "actualDeploymentId": null,
+  "actualDeploymentCompletedAt": null,
+  "expectedDerivation": "Only frozen actual .12 http-chunk0 receipt requestKey/dtoSha256; builtins only; no local lookup, offline/source replay or ordinary store dependency.",
+  "executionSeal": "unsealed",
+  "requiredDeploymentPinPaths": [
+    "_tools/test_resources.py",
+    "server/gcsp/policy/activation.js",
+    "server/gcsp/policy/adoption.js",
+    "server/gcsp/policy/file-provider.js",
+    "server/gcsp/policy/index.js",
+    "server/gcsp/policy/memory-provider.js",
+    "server/gcsp/policy/postgres-provider.js",
+    "server/gcsp/policy/publish.js",
+    "server/gcsp/policy/reviewed-definitions.js",
+    "server/gcsp/policy/reviewed/fucq115-choice-model-v1.json",
+    "server/gcsp/policy/reviewed/greg-publish-editor-v1.json",
+    "server/gcsp/policy/reviewed/offer-decline-reasons-v1.json",
+    "server/gcsp/policy/reviewed/offer-followup-questions-v1.json",
+    "server/gcsp/policy/reviewed/presenter-controls-v1.json",
+    "server/gcsp/policy/seed-v1.json",
+    "server/gcsp/repository/core.js",
+    "server/gcsp/vehicle-evidence/alternate-offline-adapter.js",
+    "server/gcsp/vehicle-evidence/application-vehicle-details.js",
+    "server/gcsp/vehicle-evidence/corpus-publisher.js",
+    "server/gcsp/vehicle-evidence/fleet-artifacts.js",
+    "server/gcsp/vehicle-evidence/fleet-release.js",
+    "server/gcsp/vehicle-evidence/fleet-releases.json",
+    "server/gcsp/vehicle-evidence/identity-routing.js",
+    "server/gcsp/vehicle-evidence/indexed-jsonl.js",
+    "server/gcsp/vehicle-evidence/local-vehicle-lookup.js",
+    "server/gcsp/vehicle-evidence/lookup-adapter.js",
+    "server/gcsp/vehicle-evidence/provider-read.js",
+    "server/gcsp/vehicle-evidence/registered-catalogue-sources.js",
+    "server/gcsp/vehicle-evidence/registered-corpus-images.js",
+    "server/gcsp/vehicle-evidence/registered-technical-facts.js",
+    "server/gcsp/vehicle-evidence/synthetic-registry.js",
+    "server/gcsp/vehicle-evidence/vehicle-details-contract.js",
+    "server/gcsp/vehicle-evidence/vehicle-evidence-handler.js",
+    "server/gcsp/vehicle-evidence/vehicle-lookup.js",
+    "server/gcsp/vehicle-evidence/vin-allocation.js",
+    "server/gcsp/vehicle-evidence/vin-generator.js",
+    "server/gcsp/vehicle-evidence/vin-profiles.js",
+    "server/index.js",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js",
+    "server/vehicle-evidence/bmw-catalogue-v2.js",
+    "server/vehicle-evidence/bmw-drivers-guide-provider.js",
+    "server/vehicle-evidence/bmw-image-adapter.js",
+    "server/vehicle-evidence/bmw-live-imagery.js",
+    "server/vehicle-evidence/bmw-vin-guide-adapter.js",
+    "server/vehicle-evidence/bmw-vin-guide-synthetic.js",
+    "server/vehicle-evidence/fixtures/bmw-vin-guide-synthetic.v1.json",
+    "server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json",
+    "server/vehicle-evidence/snapshots/bmw-gb-i5-images-2026-11-01.v1.json"
+  ],
+  "deploymentDependencyReviewComplete": false,
+  "deploymentPinRequirement": "The 48 paths are the inherited dependency baseline. Root must review dependency closure at the exact deployment commit, extend requiredDeploymentPinPaths when needed, fill every digest and mark deploymentDependencyReviewComplete true before sealing."
+}
