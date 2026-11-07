@@ -3,7 +3,7 @@ import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { bmwCatalogueLookupIdentity, validateBmwCatalogueV2Envelope } from '../../server/vehicle-evidence/bmw-catalogue-adapter.js';
 import { CollectionError, requireValue } from './configuration-key.mjs';
 import { publicBmwOperations, strictModelReport, validateBmwModelLineReport, bmwModelLineLocators, validatePublicBmwPlan } from './public-bmw-source.mjs';
-import { BMW_BATCH_SOURCE_VERSION, BMW_MODEL_BATCH_SOURCE_VERSION, isBmwBatchPlan, bmwBatchPlanRequestUrls } from './bmw-public-registration.mjs';
+import { BMW_BATCH_SOURCE_VERSION, BMW_MODEL_AXIS_BATCH_SOURCE_VERSION, isBmwModelBatchPlan, isBmwBatchPlan, bmwBatchPlanRequestUrls, validateBmwModelAxisBatchCandidateDefinitions } from './bmw-public-registration.mjs';
 
 export const BMW_SELECTION_BINDING_VERSION = 'bmw-selection-binding.v1';
 const CAPTURE = 'bmw-complete-selection.v1';
@@ -57,7 +57,7 @@ function urlScope(request, operation, plan) {
   const set = (name) => {
     fail(url.searchParams.getAll(name).length <= 1);
     const value = url.searchParams.get(name);
-    const explicitEmpty = name === 'mandatory-elements' && operation === 'solve' && plan.source.version === BMW_MODEL_BATCH_SOURCE_VERSION && plan.lineRegistration.optionsQuery.kind === 'untrimmed';
+    const explicitEmpty = name === 'mandatory-elements' && operation === 'solve' && isBmwModelBatchPlan(plan) && plan.lineRegistration.optionsQuery.kind === 'untrimmed';
     if (explicitEmpty) fail(url.searchParams.getAll(name).length === 1 && value === '');
     const result = value === null || explicitEmpty && value === '' ? [] : value.split(',').sort();
     fail(result.every(code) && new Set(result).size === result.length); return result;
@@ -102,17 +102,17 @@ function treeFacts(tree, plan) {
     return [group, { modelRanges: { [range]: { models: { [model]: structuredClone(node.facts) } } } }];
   }));
   // Reuse the original projector's exact alias/model/type checks without a new source path.
-  if (plan.source.version === BMW_MODEL_BATCH_SOURCE_VERSION) validateBmwModelLineReport(report, r, plan.lineRegistration);
+  if (isBmwModelBatchPlan(plan)) validateBmwModelLineReport(report, r, plan.lineRegistration);
   else fail(same(strictModelReport(raw, r), report));
   const expected = report.nodes.flatMap((node, index) => Object.entries(node.fieldPointers).map(([field, sourcePointer]) =>
-    ({ name: `${index}-${field}`, sourcePointer, retainedPointer: `/report/nodes/${index}/facts/${field}` }))).concat(plan.source.version === BMW_MODEL_BATCH_SOURCE_VERSION ? bmwModelLineLocators(report) : []);
+    ({ name: `${index}-${field}`, sourcePointer, retainedPointer: `/report/nodes/${index}/facts/${field}` }))).concat(isBmwModelBatchPlan(plan) ? bmwModelLineLocators(report) : []);
   fail(same(tree.document.locators, expected));
   const rename = { modelRange: 'rawModelRange', steering: 'steeringLiteral', prodDate: 'catalogueProductionDate', modelNameRaw: 'modelName' };
   const first = report.nodes[0]; const fields = ['modelCode', 'agModelCode', 'modelRange', 'orderDate', 'effectDate', 'taxDate', 'steering', 'trim', 'prodDate', 'modelName', 'fuelTypeCode'];
   if (!Object.hasOwn(first.facts, 'modelName')) fields.push('modelNameRaw');
   const locators = fields.filter((name) => Object.hasOwn(first.facts, name)).map((name) => ({ name: rename[name] || name,
     sourcePointer: first.fieldPointers[name], retainedPointer: `/report/nodes/0/facts/${name}` }));
-  return { facts: first.facts, locators: locators.concat(plan.source.version === BMW_MODEL_BATCH_SOURCE_VERSION ? bmwModelLineLocators(report) : []) };
+  return { facts: first.facts, locators: locators.concat(isBmwModelBatchPlan(plan) ? bmwModelLineLocators(report) : []) };
 }
 function solverSelection(solver, plan) {
   const report = solver.document.report;
@@ -202,7 +202,7 @@ function definitionClaims(binding, facts, selectedOptions, transportKind) {
   return { ...result, evidence: evidence(options, 'definitions', 'definitions', locators), pins: { options: options.artifactSha256, fieldReport: report.artifactSha256 } };
 }
 
-function batchDefinitionClaims(binding, facts, selectedOptions, transportKind, plan) {
+function batchDefinitionClaims(binding, facts, selectedOptions, transportKind, plan, request) {
   fail(object(binding)); const options = captureArtifact(binding.options, plan, 'options'); const document = options.document; const o = document.observation;
   const definitions = document.report?.candidates?.[0]?.definitions;
   fail(document.schemaVersion === CAPTURE && o?.operation === 'options' && o.capability === 'bmw-options'
@@ -216,6 +216,11 @@ function batchDefinitionClaims(binding, facts, selectedOptions, transportKind, p
     && new Set(definitions.map((row) => row.code)).size === definitions.length
     && same(document.locators, definitions.map((row, index) => ({ name: `definition-${row.code}`, sourcePointer: row.pointer,
       retainedPointer: `/report/candidates/0/definitions/${index}` }))));
+  if (plan.source.version === BMW_MODEL_AXIS_BATCH_SOURCE_VERSION) {
+    const optional = validateBmwModelAxisBatchCandidateDefinitions(request,
+      { model: plan.modelRegistration, line: plan.lineRegistration }, definitions);
+    fail(optional.every(code => selectedOptions.includes(code)));
+  }
   const locators = []; const result = {};
   for (const [field, type] of [['paint', 'paint'], ['upholstery', 'fabric']]) {
     const matches = definitions.map((row, index) => ({ row, index })).filter(({ row }) => selectedOptions.includes(row.code) && row.optionType === type);
@@ -241,9 +246,11 @@ export function buildBmwSelectionBinding(input = {}) {
     && facts.modelCode === plan.models[0] && facts.orderDate === plan.context.orderDate && facts.effectDate === plan.context.effectDate
     && solver.scope.modelCode === facts.modelCode && solver.scope.orderDate === facts.orderDate && solver.scope.effectDate === facts.effectDate
     && tree.scope.orderDate === facts.orderDate && tree.scope.effectDate === plan.context.catalogueDate && tree.scope.catalogueRangeKey === (plan.modelRegistration?.catalogueRangeKey || 'G61E'));
+  let candidateRequest;
   if (isBmwBatchPlan(plan)) {
     const urls = bmwBatchPlanRequestUrls(plan);
-    fail(tree.scope.url === urls.discover && plan.candidates.some((row) => solver.scope.url === bmwBatchPlanRequestUrls(plan, row.request).solve));
+    const candidate = plan.candidates.find(row => solver.scope.url === bmwBatchPlanRequestUrls(plan, row.request).solve);
+    fail(tree.scope.url === urls.discover && candidate); candidateRequest = candidate.request;
   }
   const requestScope = { market: plan.context.market, locale: plan.context.locale, catalogueRangeKey: tree.scope.catalogueRangeKey,
     requests: [tree.scope, solver.scope].map(({ catalogueRangeKey, ...scope }) => ({ ...scope, modelCode: facts.modelCode })) };
@@ -253,7 +260,7 @@ export function buildBmwSelectionBinding(input = {}) {
   const { providerIgnored, ...selection } = solverSelection(solver, plan);
   const canonicalIdentity = { vgModelCode: facts.modelCode, agModelCode: facts.agModelCode, factoryOptionCodes: [...selection.factoryOptionCodes] };
   const definitions = isBmwBatchPlan(plan)
-    ? batchDefinitionClaims(definitionBinding, facts, selection.factoryOptionCodes, solver.document.observation.transportKind, plan)
+    ? batchDefinitionClaims(definitionBinding, facts, selection.factoryOptionCodes, solver.document.observation.transportKind, plan, candidateRequest)
     : definitionClaims(definitionBinding, facts, selection.factoryOptionCodes, solver.document.observation.transportKind);
   const optionalFacts = Object.fromEntries(['trim', 'catalogueProductionDate', 'modelName', 'fuelTypeCode'].map((name) => {
     const source = name === 'catalogueProductionDate' ? 'prodDate' : name === 'modelName' && !Object.hasOwn(facts, name) ? 'modelNameRaw' : name;

@@ -6,7 +6,7 @@ import { BMW_ENRICHMENT_OBSERVATION_SOURCE_VERSION, bmwEnrichmentObservationRequ
   validateBmwEnrichmentObservationRegistration } from './bmw-public-registration.mjs';
 import { createSettingsShapeRefusal } from './settings-shape-report.mjs';
 import { qualifyBmwSourceFields } from './bmw-source-qualification.mjs';
-import { BMW_BATCH_SOURCE_VERSION, BMW_MODEL_BATCH_SOURCE_VERSION, isBmwBatchPlan, bmwBatchPlanRequestUrls, BMW_CONTEXT_SOURCE_VERSION, BMW_OPTIONS_SOURCE_VERSION, BMW_MODEL_OPTIONS_SOURCE_VERSION, BMW_INVENTORY_SOURCE_VERSION,
+import { BMW_BATCH_SOURCE_VERSION, BMW_MODEL_AXIS_BATCH_SOURCE_VERSION, isBmwModelBatchPlan, isBmwBatchPlan, bmwBatchPlanRequestUrls, validateBmwModelAxisBatchCandidateDefinitions, BMW_CONTEXT_SOURCE_VERSION, BMW_OPTIONS_SOURCE_VERSION, BMW_MODEL_OPTIONS_SOURCE_VERSION, BMW_INVENTORY_SOURCE_VERSION,
   validateBmwInventoryRequestRegistration, bmwInventoryRequestUrls, validateBmwBatchPlan, validateBmwModelRegistration,
   validateBmwContextRequestRegistration, validateBmwOptionsRequestRegistration, validateBmwModelOptionsRequestRegistration, bmwModelOptionsRequestUrls, bmwBatchRequestRegistration, bmwPublicRequestUrls } from './bmw-public-registration.mjs';
 
@@ -1044,7 +1044,8 @@ export function publicBmwOperations(plan) {
 /** Same source/session seams, with explicit data-pinned context and finite request membership. */
 function publicBmwBatchOperations(plan) {
   const requestRegistration = bmwBatchRequestRegistration(plan); const r = requestRegistration.model;
-  const urls = bmwBatchPlanRequestUrls(plan); let treeHeader; let localisationHeader; let solverHeader; let treeQualified = false; let definitionsQualified = false;
+  const urls = bmwBatchPlanRequestUrls(plan); let treeHeader; let localisationHeader; let solverHeader; let qualifiedDefinitions;
+  let treeQualified = false; let definitionsQualified = false;
   const descriptor = (capability, url, project, extra = {}) => ({ sourceId: plan.source.id, sourceVersion: plan.source.version,
     kind: 'read-only-http', capability, strictJson: true, requestRegistration, prepare: async () => ({ method: 'GET', url, headers: {} }),
     project: (value, request, metadata) => {
@@ -1078,7 +1079,7 @@ function publicBmwBatchOperations(plan) {
       return { method: 'GET', url: 'https://configure.bmw.co.uk' + path, headers: {} };
     } }),
     discover: descriptor('bmw-model-tree', urls.discover, (value) => {
-      const report = plan.source.version === BMW_MODEL_BATCH_SOURCE_VERSION ? bmwModelLineReport(value, r, plan.lineRegistration) : strictModelReport(value, r); treeQualified = true; return report;
+      const report = isBmwModelBatchPlan(plan) ? bmwModelLineReport(value, r, plan.lineRegistration) : strictModelReport(value, r); treeQualified = true; return report;
     }, { prepare: async () => {
       requireValue(treeHeader, 'source-bootstrap-required', 'The memory-only public tree header is unavailable.');
       return { method: 'GET', url: urls.discover, headers: treeHeader };
@@ -1091,13 +1092,14 @@ function publicBmwBatchOperations(plan) {
         requireValue(request.includedElements.every((code) => definitions.some((row) => row.code === code && row.option === code))
           && ['paint', 'fabric', 'rim'].every((type) => request.includedElements.filter((code) => definitions.some((row) => row.code === code && row.optionType === type)).length === 1),
         'source-candidate-definition', 'Every candidate input and exactly one paint, fabric and rim must occur in the fresh source definitions.');
+        if (plan.source.version === BMW_MODEL_AXIS_BATCH_SOURCE_VERSION) validateBmwModelAxisBatchCandidateDefinitions(request, requestRegistration, definitions);
       }
-      definitionsQualified = true; return report;
+      qualifiedDefinitions = definitions; definitionsQualified = true; return report;
     }, { prepare: async () => {
       requireValue(treeQualified && localisationHeader, 'source-tree-required', 'Observe the full registered model before its options.');
       return { method: 'GET', url: urls.options, headers: localisationHeader };
     } }),
-    solve: descriptor('bmw-solver', null, (value) => {
+    solve: descriptor('bmw-solver', null, (value, request) => {
       requireValue(object(value) && typeof value.constructible === 'boolean', 'source-solver-shape', 'The source must declare constructibility.');
       requireValue(value.constructible, 'source-not-constructible', 'The actual source refused this candidate.');
       const elements = value.configuration?.elements;
@@ -1107,6 +1109,10 @@ function publicBmwBatchOperations(plan) {
         && row.type === (code.startsWith('SE') ? 'accessory' : 'option')), 'source-selection-classification', 'Factory and accessory source types must remain separate.');
       const factory = Object.keys(elements).filter((code) => elements[code].type === 'option').sort();
       requireValue(factory.length > 0 && factory.length <= 256, 'source-solver-shape', 'Retain a nonempty bounded factory selection.');
+      if (plan.source.version === BMW_MODEL_AXIS_BATCH_SOURCE_VERSION && request) {
+        const optional = validateBmwModelAxisBatchCandidateDefinitions(requested(request), requestRegistration, qualifiedDefinitions);
+        requireValue(optional.every(code => factory.includes(code)), 'source-optional-input-changed', 'Every requested optional trim and package must survive the actual solver response.');
+      }
       return { constructible: true, selectedOptions: factory };
     }, { prepare: async (request) => {
       requested(request); requireValue(treeQualified && definitionsQualified && solverHeader, 'source-definitions-required', 'Qualify fresh full model and definitions before solving.');

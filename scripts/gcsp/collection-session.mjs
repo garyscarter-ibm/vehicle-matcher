@@ -7,7 +7,7 @@ import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { CollectionError, requireValue } from './configuration-key.mjs';
 import { BMW_ENRICHMENT_OBSERVATION_SOURCE_VERSION, bmwEnrichmentObservationRequestUrls,
   validateBmwEnrichmentObservationRegistration } from './bmw-public-registration.mjs';
-import { BMW_BATCH_SOURCE_VERSION, BMW_MODEL_BATCH_SOURCE_VERSION, BMW_CONTEXT_SOURCE_VERSION, BMW_OPTIONS_SOURCE_VERSION, BMW_MODEL_OPTIONS_SOURCE_VERSION, BMW_INVENTORY_SOURCE_VERSION,
+import { BMW_BATCH_SOURCE_VERSION, isBmwModelBatchPlan, BMW_CONTEXT_SOURCE_VERSION, BMW_OPTIONS_SOURCE_VERSION, BMW_MODEL_OPTIONS_SOURCE_VERSION, BMW_INVENTORY_SOURCE_VERSION,
   bmwPublicRequestUrls, bmwModelBatchRequestUrls, validateBmwModelBatchRequestRegistration, bmwModelOptionsRequestUrls, validateBmwModelOptionsRequestRegistration, bmwInventoryRequestUrls, validateBmwInventoryRequestRegistration,
   validateBmwBatchRequestRegistration, validateBmwContextRequestRegistration, validateBmwOptionsRequestRegistration } from './bmw-public-registration.mjs';
 
@@ -36,7 +36,7 @@ const SOLVER_PATH = '/rulesolver/constructibility-check/rule-sets/pcaso,con/bran
 const OPTIONS_PATH = '/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en';
 const CAPABILITIES = ['bmw-page', 'bmw-settings', 'bmw-model-tree', 'bmw-solver'];
 const DIAGNOSTIC_CAPABILITIES = ['bmw-page', 'bmw-settings', 'bmw-model-tree', 'bmw-options'];
-function readOnlyRequest(capability, request, registration) {
+function readOnlyRequest(capability, request, registration, sourceVersion) {
   let url;
   try { url = new URL(request?.url); } catch { /* refused below */ }
   const query = url && Object.fromEntries(url.searchParams);
@@ -64,7 +64,7 @@ function readOnlyRequest(capability, request, registration) {
           : capability === 'bmw-settings' ? url.origin === 'https://configure.bmw.co.uk'
             && /^\/en_GB\/settings\.[a-zA-Z0-9]+\.json$/.test(url.pathname) && !url.search
             : capability === 'bmw-solver' && Array.isArray(registration.candidates)
-              && registration.candidates.some((row) => url.href === (Object.hasOwn(registration, 'line') ? bmwModelBatchRequestUrls(registration, row) : bmwPublicRequestUrls(registration.model, row)).solve);
+              && registration.candidates.some((row) => url.href === (Object.hasOwn(registration, 'line') ? bmwModelBatchRequestUrls(registration, row, sourceVersion) : bmwPublicRequestUrls(registration.model, row)).solve);
   };
   const allowed = url && url.protocol === 'https:' && !url.username && !url.password && !url.hash
     && (registration ? batchAllowed() : capability === 'bmw-page' ? url.href === PUBLIC_PAGE
@@ -184,8 +184,8 @@ export async function createCollectionSession({ identity: stageIdentity, operati
             || operations[name].sourceVersion === DIAGNOSTIC_SOURCE_VERSION && DIAGNOSTIC_CAPABILITIES.includes(operations[name].capability)
             || operations[name].sourceVersion === BMW_BATCH_SOURCE_VERSION && [...CAPABILITIES, 'bmw-options'].includes(operations[name].capability)
               && validateBmwBatchRequestRegistration(operations[name].requestRegistration)
-            || operations[name].sourceVersion === BMW_MODEL_BATCH_SOURCE_VERSION && [...CAPABILITIES, 'bmw-options'].includes(operations[name].capability)
-              && validateBmwModelBatchRequestRegistration(operations[name].requestRegistration)
+            || isBmwModelBatchPlan({ source: { version: operations[name].sourceVersion } }) && [...CAPABILITIES, 'bmw-options'].includes(operations[name].capability)
+              && validateBmwModelBatchRequestRegistration(operations[name].requestRegistration, operations[name].sourceVersion)
             || operations[name].sourceVersion === BMW_CONTEXT_SOURCE_VERSION && ['bmw-page', 'bmw-settings', 'bmw-model-tree'].includes(operations[name].capability)
               && validateBmwContextRequestRegistration(operations[name].requestRegistration)
             || operations[name].sourceVersion === BMW_OPTIONS_SOURCE_VERSION && DIAGNOSTIC_CAPABILITIES.includes(operations[name].capability)
@@ -223,7 +223,7 @@ export async function createCollectionSession({ identity: stageIdentity, operati
     ...(operations[name].kind === 'read-only-http' ? { capability: operations[name].capability, cache: operations[name].cache !== false,
       ...(operations[name].sourceVersion === BMW_ENRICHMENT_OBSERVATION_SOURCE_VERSION ? { requestRegistration: validateBmwEnrichmentObservationRegistration(operations[name].requestRegistration) } : {}),
       ...(operations[name].sourceVersion === BMW_BATCH_SOURCE_VERSION ? { requestRegistration: validateBmwBatchRequestRegistration(operations[name].requestRegistration) } : {}),
-      ...(operations[name].sourceVersion === BMW_MODEL_BATCH_SOURCE_VERSION ? { requestRegistration: validateBmwModelBatchRequestRegistration(operations[name].requestRegistration) } : {}),
+      ...(isBmwModelBatchPlan({ source: { version: operations[name].sourceVersion } }) ? { requestRegistration: validateBmwModelBatchRequestRegistration(operations[name].requestRegistration, operations[name].sourceVersion) } : {}),
       ...(operations[name].sourceVersion === BMW_CONTEXT_SOURCE_VERSION ? { requestRegistration: validateBmwContextRequestRegistration(operations[name].requestRegistration) } : {}),
       ...(operations[name].sourceVersion === BMW_OPTIONS_SOURCE_VERSION ? { requestRegistration: validateBmwOptionsRequestRegistration(operations[name].requestRegistration) } : {}),
       ...(operations[name].sourceVersion === BMW_MODEL_OPTIONS_SOURCE_VERSION ? { requestRegistration: validateBmwModelOptionsRequestRegistration(operations[name].requestRegistration) } : {}),
@@ -339,7 +339,7 @@ export async function createCollectionSession({ identity: stageIdentity, operati
           if (state.counts.operations[operation] >= limits.requestBudgets[operation]) stop('request-budget');
           if ((state.attempts[cacheKey] || 0) >= limits.maxAttempts) stop('retry-budget', true);
           const isHttp = descriptor.kind === 'read-only-http';
-          const prepared = isHttp ? readOnlyRequest(observationSources[operation].capability, await descriptor.prepare(structuredClone(request)), observationSources[operation].requestRegistration) : null;
+          const prepared = isHttp ? readOnlyRequest(observationSources[operation].capability, await descriptor.prepare(structuredClone(request)), observationSources[operation].requestRegistration, observationSources[operation].sourceVersion) : null;
           if (isHttp) {
             if (state.counts.httpAttempts >= limits.sourceAttempts) stop('source-attempt-budget', true);
             if (state.counts.decodedBytes >= limits.sourceBytes) stop('source-byte-budget', true);

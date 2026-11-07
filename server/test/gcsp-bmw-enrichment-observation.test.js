@@ -57,7 +57,7 @@ async function setup(t, mutate = () => {}, hooks = {}) {
     const technical = await execute('technical', {}); const image = await execute('image-manifest', {});
     return { technical, image, counts: structuredClone(state.counts) };
   });
-  return { p, calls, secret, statePath, operations, session, run, urls, fetch }; 
+  return { p, calls, secret, statePath, operations, session, run, urls, fetch };
 }
 
 test('four exact GETs observe technical/COSY shape without admitting facts, retaining keys/opaque URLs or downloading images', async (t) => {
@@ -157,13 +157,19 @@ test('interrupted bootstrap never obtains a second memory-only key', async (t) =
   assert.equal(resumed.counts.httpAttempts, 1); assert.equal(f.calls.length, 1);
 });
 
-test('prepared executable refuses absent grant before consuming marker or creating primary', async () => {
+test('prepared executable refuses absent grant without changing existing source evidence', async () => {
   const { execFile } = await import('node:child_process');
   const { promisify } = await import('node:util');
   const base = new URL('../../docs/gcsp/evidence/fucq60/actual-v2-observation-2026-11-07/', import.meta.url);
+  const names = ['execution-once.json', 'observer-checkpoint.json', 'source-events.jsonl'];
+  const retained = async name => readFile(new URL(name, base)).catch(error => {
+    if (error.code === 'ENOENT') return null;
+    throw error;
+  });
+  const before = await Promise.all(names.map(retained));
   await assert.rejects(promisify(execFile)(process.execPath, [new URL('run-live.mjs', base).pathname],
     { env: { PATH: process.env.PATH }, timeout: 10000 }), (error) => /explicit-root-traffic-grant-required/.test(error.stderr));
-  for (const name of ['execution-once.json', 'observer-checkpoint.json', 'source-events.jsonl']) await assert.rejects(readFile(new URL(name, base)), { code: 'ENOENT' });
+  assert.deepEqual(await Promise.all(names.map(retained)), before);
 });
 
 test('prepared executable rejects changed plan/code hashes before any consumed marker or primary', async (t) => {

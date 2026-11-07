@@ -129,3 +129,144 @@ test('no-option request registration rejects omission semantics, borrowed mandat
     await assert.rejects(createFleetCollector(f.input)); assert.equal(f.calls.length, 0);
   }
 });
+
+const axisVersion = 'f59-model-axis-batch-20261107.v1';
+const optionalDefinitions = [['S043U', 'trim'], ['S043Z', 'trim'], ['S07EV', 'package'], ['S07EW', 'package']];
+function axisCandidates(f, extras) {
+  const base = f.plan.candidates[0].request;
+  f.plan.candidates = extras.map((codes, index) => ({ candidateId: `axis-${index}`, request: {
+    includedElements: [...base.includedElements, ...codes].sort(), mandatoryElements: [...base.mandatoryElements],
+  } }));
+  f.plan.candidateCount = extras.length; f.plan.target = extras.length;
+  f.plan.limits.maxCandidates = extras.length;
+  f.plan.limits.requestBudgets.solve = extras.length; f.plan.limits.sourceAttempts = extras.length + 4;
+}
+async function axisFixture(t, context = contexts[0], mutate = () => {}, extras = [['S043U', 'S07EW']]) {
+  return fixture(t, context, f => {
+    f.plan.source.version = axisVersion;
+    for (const [code, optionType] of optionalDefinitions) f.definitions[code] = { option: code, optionType };
+    axisCandidates(f, extras); mutate(f);
+  });
+}
+function resealArtifact(artifact) {
+  artifact.document.requestSha256 = sha(JSON.stringify(artifact.document.observation.request) + '\n');
+  artifact.document.rawSelectionSha256 = sha(JSON.stringify(artifact.document.report) + '\n');
+  const bytes = JSON.stringify(artifact.document) + '\n'; artifact.bytes = Buffer.byteLength(bytes); artifact.sha256 = sha(bytes);
+}
+for (const context of contexts) test(`optional axes preserve ${context[0]} exact context, complete solver selection and traffic-free resume`, async t => {
+  const f = await axisFixture(t, context); const collector = await createFleetCollector(f.input); assert.equal(f.calls.length, 0);
+  const result = await collector.run(); assert.equal(result.reason, 'queue-exhausted'); assert.equal(result.records.length, 1);
+  assert.equal(result.accepted.length, 0); assert.equal(f.calls.length, 5);
+  const request = new URL(f.calls[4]); assert.equal(request.searchParams.has('mandatory-elements'), true);
+  assert.equal(request.searchParams.get('mandatory-elements'), context[6] || '');
+  assert.equal(new URL(f.calls[3]).search, context[6] ? `?trim=${context[6]}` : '');
+  const record = result.records[0];
+  assert.equal(record.canonicalIdentity.vgModelCode, context[0]); assert.equal(record.canonicalIdentity.agModelCode, context[1]);
+  for (const code of ['S043U', 'S07EW', 'S0230']) assert.ok(record.resolvedOptions.includes(code));
+  assert.deepEqual(record.solverChanges.added, ['S0230']);
+  assert.deepEqual((await (await createFleetCollector(f.input)).run()).records, result.records); assert.equal(f.calls.length, 5);
+});
+test('optional axis registration allows exactly eight explicit requests and keeps strict v1 unchanged', async t => {
+  const extras = [['S043U'], ['S043Z'], ['S07EV'], ['S07EW'], ['S043U', 'S07EV'], ['S043U', 'S07EW'], ['S043Z', 'S07EV'], ['S043Z', 'S07EW']];
+  const f = await axisFixture(t, contexts[0], () => {}, extras);
+  const result = await (await createFleetCollector(f.input)).run(); assert.equal(result.records.length, 8); assert.equal(f.calls.length, 12);
+  const old = await axisFixture(t, contexts[0], f => { f.plan.source.version = 'f59-model-batch-20261107.v1'; });
+  await assert.rejects(createFleetCollector(old.input), { code: 'source-candidate-registration' }); assert.equal(old.calls.length, 0);
+});
+test('optional axis registration rejects absent extras, borrowed or omitted mandatory semantics and implicit or widened candidates before traffic', async t => {
+  for (const mutate of [
+    f => { f.plan.candidates[0].request.includedElements = ['FKTNL', 'P0300', 'S01H5']; },
+    f => { f.plan.candidates[0].request.mandatoryElements = ['S043U']; },
+    f => { delete f.plan.candidates[0].request.mandatoryElements; },
+    f => { delete f.plan.candidates; },
+    f => { axisCandidates(f, Array.from({ length: 9 }, () => ['S07EV'])); },
+    f => { f.plan.candidateBaseElements = ['S043U']; },
+  ]) {
+    const f = await axisFixture(t, contexts[0], mutate);
+    await assert.rejects(createFleetCollector(f.input)); assert.equal(f.calls.length, 0);
+  }
+  const f = await axisFixture(t, contexts[2], f => { f.plan.candidates[0].request.mandatoryElements = []; });
+  await assert.rejects(createFleetCollector(f.input)); assert.equal(f.calls.length, 0);
+});
+for (const [name, mutate, extras] of [
+  ['missing optional definition', f => { delete f.definitions.S043U; }],
+  ['other optional definition', f => { f.definitions.S043U.optionType = 'other'; }],
+  ['transmission optional definition', f => { f.definitions.S043U.optionType = 'transmission'; }],
+  ['two trim inputs', () => {}, [['S043U', 'S043Z']]],
+  ['two package inputs', () => {}, [['S07EV', 'S07EW']]],
+  ['extra paint input', f => { f.definitions.S043U.optionType = 'paint'; }],
+]) test(`${name} refuses optional axes from fresh definitions before solver traffic`, async t => {
+  const f = await axisFixture(t, contexts[0], mutate, extras); const result = await (await createFleetCollector(f.input)).run();
+  assert.equal(result.reason, 'source-candidate-definition'); assert.equal(result.records.length, 0); assert.equal(f.calls.length, 4);
+  await (await createFleetCollector(f.input)).run(); assert.equal(f.calls.length, 4);
+});
+for (const [name, mutate, reason] of [
+  ['AG substitution', f => { f.model.agModelCode = '99ZZ'; }, 'source-model-substitution'],
+  ['default model substitution', f => { f.line.defaultModel.modelCode = '1F7B'; }, 'source-line-relationship'],
+]) test(`optional axes reject ${name} before definitions or solver traffic`, async t => {
+  const f = await axisFixture(t, contexts[0], mutate); const result = await (await createFleetCollector(f.input)).run();
+  assert.equal(result.reason, reason); assert.equal(f.calls.length, 3); assert.equal(result.records.length, 0);
+});
+for (const optional of ['S043U', 'S07EW']) for (const change of ['removedElements', 'ignoredElements']) {
+  test(`optional axes refuse requested ${optional} lost by the solver with honest ${change}`, async t => {
+    const f = await axisFixture(t, contexts[0], f => { f.solver = value => {
+      const row = value.configuration.elements[optional]; delete value.configuration.elements[optional];
+      value.configurationChanges[change][optional] = row;
+    }; });
+    const result = await (await createFleetCollector(f.input)).run();
+    assert.equal(result.reason, 'source-optional-input-changed'); assert.equal(result.records.length, 0); assert.equal(f.calls.length, 5);
+    await (await createFleetCollector(f.input)).run(); assert.equal(f.calls.length, 5);
+  });
+}
+test('optional axes do not borrow a source-added typed option to classify an invalid requested extra', async t => {
+  const f = await axisFixture(t, contexts[0], f => {
+    f.definitions.S043U.optionType = 'other'; f.definitions.S0230 = { option: 'S0230', optionType: 'trim' };
+  });
+  const result = await (await createFleetCollector(f.input)).run();
+  assert.equal(result.reason, 'source-candidate-definition'); assert.equal(f.calls.length, 4);
+});
+test('optional axis requests resolving to one complete selection remain one canonical record', async t => {
+  const f = await axisFixture(t, contexts[0], f => {
+    f.definitions.P0400 = { option: 'P0400', optionType: 'paint' };
+    f.plan.candidates[1].request.includedElements = f.plan.candidates[1].request.includedElements.map(code => code === 'P0300' ? 'P0400' : code).sort();
+    f.solver = value => {
+      if (!value.configuration.elements.P0400) return;
+      const removed = value.configuration.elements.P0400; delete value.configuration.elements.P0400;
+      value.configuration.elements.P0300 = { code: 'P0300', type: 'option' };
+      value.configurationChanges.addedElements.P0300 = value.configuration.elements.P0300;
+      value.configurationChanges.removedElements.P0400 = removed;
+    };
+  }, [['S043U'], ['S043U']]);
+  const result = await (await createFleetCollector(f.input)).run();
+  assert.equal(result.records.length, 1); assert.equal(result.duplicates.length, 1); assert.equal(result.accepted.length, 0);
+  assert.deepEqual(result.duplicates[0].solverChanges.removed, ['P0400']); assert.equal(f.calls.length, 6);
+});
+test('resealed retained optional definitions, input scope and context fail binding without traffic', async t => {
+  for (const kind of ['missing-definition', 'other-type', 'transmission-type', 'wrong-query', 'wrong-line', 'lost-optional']) {
+    const f = await axisFixture(t); await (await createFleetCollector(f.input)).run();
+    const envelope = JSON.parse(await readFile(f.input.statePath)); const state = envelope.content;
+    const options = state.batchEvidence.options; const definitions = options.document.report.candidates[0].definitions;
+    if (kind === 'missing-definition') {
+      const index = definitions.findIndex(row => row.code === 'S043U'); definitions.splice(index, 1);
+      options.document.locators = definitions.map((row, index) => ({ name: `definition-${row.code}`, sourcePointer: row.pointer,
+        retainedPointer: `/report/candidates/0/definitions/${index}` })); resealArtifact(options);
+    } else if (kind === 'other-type' || kind === 'transmission-type') {
+      definitions.find(row => row.code === 'S043U').optionType = kind === 'other-type' ? 'other' : 'transmission'; resealArtifact(options);
+    } else if (kind === 'wrong-line') {
+      state.batchEvidence.tree.document.report.lineRelationships[0].defaultModel.agModelCode = '99ZZ'; resealArtifact(state.batchEvidence.tree);
+    } else {
+      const solver = state.sourceCaptures[0].solver;
+      if (kind === 'wrong-query') {
+        const url = new URL(solver.document.observation.request.url); url.searchParams.set('included-elements', 'FKTNL,P0300,S01H5,S043Z,S07EW');
+        solver.document.observation.request.url = url.href;
+      } else {
+        const report = solver.document.report; const row = report.configuration.elements.S043U;
+        delete report.configuration.elements.S043U; report.configurationChanges.maps.removedElements.S043U = row;
+        report.derivedChanges.removed = ['S043U'];
+      }
+      resealArtifact(solver);
+    }
+    envelope.contentDigest = inputDigest(state); await writeFile(f.input.statePath, JSON.stringify(envelope));
+    await assert.rejects(async () => (await createFleetCollector(f.input)).run()); assert.equal(f.calls.length, 5);
+  }
+});
