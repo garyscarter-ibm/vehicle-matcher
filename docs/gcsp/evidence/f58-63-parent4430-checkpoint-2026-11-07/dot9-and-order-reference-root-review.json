@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "root-code-security-review.v1",
+  "time": "2026-11-07T05:14:19.738204+00:00",
+  "branchTip": "7e43e4a7bec65bfb196d69aab602520c73bde329",
+  "CODE": "pass; bounded orderUUID direct/configuration/consumer/actualHTTP association; nativeCLI uses existing read-only repository with migrate:false; strict testedinputs/2426requestunion independently reconciled; no blocking finding",
+  "SECURITY": "pass; bounded localresponses, offline guard and denied source callbacks; exact pin checking; fixed owned cloud/scratch paths; no credential output or fixture fallback; no blocking finding",
+  "readOnlyChecks": 253,
+  "requestUnion": 2426,
+  "directErrors": 0,
+  "httpErrors": 0,
+  "consumerErrors": 485,
+  "strictStatus": "invalid-active",
+  "orderFixtureChecks": 3,
+  "orderFixtureReferences": 5,
+  "nativeProof": false,
+  "sourceTrafficDuringReview": 0,
+  "testsReplayed": 0,
+  "scratchCreated": false,
+  "acceptance": false,
+  "unmet": [
+    "native current-run order references",
+    "configured consumer failures",
+    "full original count/coverage/enrichment",
+    "public/ordinary release and actual live parity"
+  ]
+}
