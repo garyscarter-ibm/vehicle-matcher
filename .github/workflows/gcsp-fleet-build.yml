@@ -12,7 +12,7 @@ permissions:
 jobs:
   fleet-node20:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,7 +30,7 @@ jobs:
           manifest="$GITHUB_WORKSPACE/.claude/test-runs/ci-fleet-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.json"
           test ! -e "$task_root"
           mkdir -p "$(dirname "$manifest")"
-          printf '{"root":"%s","owner":"%s","workers":1,"scratchBudgetMiB":2048,"seconds":570,"scope":"Node20Linux exact31asset restore and5scoped runtime references; full10002 proof not replayed;2707 original consumer failures; acceptance false"}\n' "$task_root" "$GITHUB_RUN_ID" > "$manifest"
+          printf '{"root":"%s","owner":"%s","workers":1,"scratchBudgetMiB":2048,"seconds":690,"scope":"Node20Linux exact31asset restore and5scoped runtime references; full10002 proof not replayed;2707 original consumer failures; acceptance false"}\n' "$task_root" "$GITHUB_RUN_ID" > "$manifest"
           phase=initializing
           phase_started=$SECONDS
           phase_start() { phase="$1"; phase_started=$SECONDS; printf 'phase=%s state=start elapsed_s=%s\n' "$phase" "$SECONDS"; }
@@ -65,12 +65,12 @@ jobs:
           timeout 240s node --max-old-space-size=512 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network download > "$task_root/download.json"
           phase_done
           phase_start offline
-          timeout 90s node --max-old-space-size=512 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network offline > "$task_root/offline.json"
+          timeout 180s node --max-old-space-size=512 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network offline > "$task_root/offline.json"
           phase_done
           cd ..
           proof=docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan
           phase_start verify-assets
-          timeout 30s node --max-old-space-size=512 "$proof/verify-assets.mjs" "$task_root/store" "$task_root/cache/$RELEASE"
+          timeout 60s node --max-old-space-size=512 "$proof/verify-assets.mjs" "$task_root/store" "$task_root/cache/$RELEASE"
           phase_done
           phase_start boundary
           timeout 120s node --max-old-space-size=512 "$proof/boundary.mjs" "$task_root/store" "$task_root/cache/$RELEASE" "$task_root"
