@@ -11,3 +11,13 @@ All seven changed-edge cases passed: corrupt new-only source rejected restore wh
 A combined proof hit the469,762,048-byte group RAM budget at474,824,704bytes **after** persisting the successful public download and481audit receipts. It was stopped/joined and cleaned; its resource failure is retained, not counted as a completed recovery. Recovery resumed from an exact locally repacked cache in two sequential processes, without repeating public GETs or the completed481audit. The local-input phase took10.785seconds/237,699,072byte peakRSS; recovery took15.352seconds/386,924,544byte peakRSS. All phase scratch/groups/reservations/dependency links were verified absent. **228,420,288sampled scratch bytes removed**, no compatibility exception or leftovers. Exact results and cleanup are in `all-release-cleanup.json`.
 
 Ordinary `.4` remains selected. `ready-for-ordinary-publication.json` is the root handoff: activate these exact bytes with the existing publisher and update the `.5` build anchor in one coherent deployment checkpoint. The full-checkout YAML layout belongs to root; no YAML was modified by this child. Actual Node20 and Render `.5` deployment are separate gates; no10k, broad model/profile/WMI/year/plant coverage, physical identity inference, fullStory acceptance or Done transition is claimed.
+
+## Root-owned ordinary activation command
+
+After root stages the API build anchor `--release 7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431` in `render.gcsp.yaml`, its external resource supervisor may invoke from the root checkout:
+
+```text
+/opt/homebrew/Cellar/node/26.7.0/bin/node --max-old-space-size=256 --expose-gc docs/gcsp/evidence/fucq62/activate-fleet-dot5.mjs --receipt <absolute-owned-retained-output>/ordinary-publication.json
+```
+
+Use one worker,512MiB host/448MiB process-group RAM,64MiB scratch and90seconds; owned `TMPDIR/TMP/TEMP` must use the supervisor's `/.../test-stamp-shard-<hex>` root, with external ownership/finalizer registered first. The command writes the ordinary store intentionally: exclude its declared active/last-good/inventory/new-version outputs from blanket unchanged-input assertions while requiring every previous version hash and source input unchanged. The script refuses a mismatched local YAML anchor, requires ordinary `.4` first, recreates the exact measured candidate, publishes with the existing registry, checks idempotence/cold image/history and records a concise receipt. It reuses the identical481audit and public/Node20 evidence; it performs no push/deploy. Root stages the resulting store and matching YAML together. This helper was syntax-checked only here; it has not been executed and ordinary `.4` remains unchanged.
