@@ -4,7 +4,7 @@ import { CollectionError, normaliseCodes, requireValue } from './configuration-k
 import { assertCollectionHttpObservation } from './collection-session.mjs';
 import { createSettingsShapeRefusal } from './settings-shape-report.mjs';
 import { qualifyBmwSourceFields } from './bmw-source-qualification.mjs';
-import { BMW_BATCH_SOURCE_VERSION, BMW_CONTEXT_SOURCE_VERSION, BMW_OPTIONS_SOURCE_VERSION, BMW_MODEL_OPTIONS_SOURCE_VERSION, BMW_INVENTORY_SOURCE_VERSION,
+import { BMW_BATCH_SOURCE_VERSION, BMW_MODEL_BATCH_SOURCE_VERSION, isBmwBatchPlan, bmwBatchPlanRequestUrls, BMW_CONTEXT_SOURCE_VERSION, BMW_OPTIONS_SOURCE_VERSION, BMW_MODEL_OPTIONS_SOURCE_VERSION, BMW_INVENTORY_SOURCE_VERSION,
   validateBmwInventoryRequestRegistration, bmwInventoryRequestUrls, validateBmwBatchPlan, validateBmwModelRegistration,
   validateBmwContextRequestRegistration, validateBmwOptionsRequestRegistration, validateBmwModelOptionsRequestRegistration, bmwModelOptionsRequestUrls, bmwBatchRequestRegistration, bmwPublicRequestUrls } from './bmw-public-registration.mjs';
 
@@ -364,7 +364,7 @@ function strictTrimRelationships(value, r) {
   });
 }
 
-function modelOptionsRelationships(value, r, binding) {
+export function modelOptionsRelationships(value, r, binding) {
   return r.aliases.map(alias => {
     const pointer = `/${alias}/modelRanges/${r.catalogueRangeKey}/lines/${binding.lineKey}`;
     const line = value?.[alias]?.modelRanges?.[r.catalogueRangeKey]?.lines?.[binding.lineKey];
@@ -385,6 +385,39 @@ function modelOptionsRelationships(value, r, binding) {
       included: { pointer: includedPointer, modelCode: matches[0].configuration.modelCode,
         ...(trimmed ? { elementPointer: `${includedPointer}/elements/${query.code}`, elementCode: query.code } : {}) } };
   });
+}
+
+/** Version-specific complete tree report retains source line semantics beside full model facts. */
+export function bmwModelLineReport(value, r, binding) {
+  const report = strictModelReport(value, r);
+  const appearances = Object.entries(value).filter(([, group]) => object(group?.modelRanges?.[r.catalogueRangeKey]?.models?.[r.modelCode])).map(([alias]) => alias).sort();
+  requireValue(same(appearances, [...r.aliases].sort()), 'source-model-alias-conflict', 'Fresh direct aliases must equal the complete registered alias set.');
+  return { ...report, lineRelationships: modelOptionsRelationships(value, r, binding) };
+}
+
+export function validateBmwModelLineReport(report, r, binding) {
+  requireValue(Array.isArray(report?.nodes) && report.nodes.length === r.aliases.length
+    && Array.isArray(report.lineRelationships) && report.lineRelationships.length === r.aliases.length,
+    'source-line-relationship', 'Retain every registered full-model and line relationship.');
+  const tree = Object.fromEntries(r.aliases.map((alias, i) => {
+    const row = report.lineRelationships[i]; const query = binding.optionsQuery;
+    const variants = Array.from({ length: binding.includedIndex + 1 }, () => ({}));
+    variants[binding.includedIndex] = { configuration: { modelCode: row.included.modelCode,
+      elements: query.kind === 'trim' ? { [row.included.elementCode]: {} } : {} } };
+    return [alias, { modelRanges: { [r.catalogueRangeKey]: { models: { [r.modelCode]: report.nodes[i].facts },
+      lines: { [binding.lineKey]: { ...(Object.hasOwn(row.option, 'value') ? { option: row.option.value } : {}),
+        defaultModel: { modelCode: row.defaultModel.modelCode, agModelCode: row.defaultModel.agModelCode }, includedTransmissionVariants: variants } } } } }];
+  }));
+  requireValue(same(bmwModelLineReport(tree, r, binding), report), 'source-line-relationship', 'Retained full model, exact line/default/included or query semantics changed.');
+  return report;
+}
+
+export function bmwModelLineLocators(report) {
+  return report.lineRelationships.flatMap((row, i) => [
+    { name: `line-${i}`, sourcePointer: row.pointer, retainedPointer: `/report/lineRelationships/${i}` },
+    { name: `line-default-${i}`, sourcePointer: row.defaultModel.pointer, retainedPointer: `/report/lineRelationships/${i}/defaultModel` },
+    { name: `line-included-${i}`, sourcePointer: row.included.pointer, retainedPointer: `/report/lineRelationships/${i}/included` },
+  ]);
 }
 
 function optionsRequestRegistration(plan) {
@@ -547,7 +580,7 @@ export function validatePublicBmwDiagnosticPlan(plan) {
 }
 
 export function validatePublicBmwPlan(plan) {
-  if (plan.source.version === BMW_BATCH_SOURCE_VERSION) return validateBmwBatchPlan(plan);
+  if (isBmwBatchPlan(plan)) return validateBmwBatchPlan(plan);
   const l = plan.limits;
   requireValue(plan.source.version === sourceVersion && same(plan.models, ['T5MJ']) && plan.candidateCount === 1
     && plan.target === 1 && same(plan.context, { catalogueDate: '2026-11-01', market: 'GB', locale: 'en-GB', orderDate: '2026-11-01', effectDate: '2027-01-05' })
@@ -823,7 +856,7 @@ export function publicBmwQualificationOperations(input) {
 
 /** Source projections only. All traffic, deadlines, budgets, caching and persistence belong to the common session. */
 export function publicBmwOperations(plan) {
-  if (plan.source.version === BMW_BATCH_SOURCE_VERSION) return publicBmwBatchOperations(plan);
+  if (isBmwBatchPlan(plan)) return publicBmwBatchOperations(plan);
   let treeHeader; let solverHeader;
   const descriptor = (capability, url, project, extra = {}) => ({ sourceId: plan.source.id, sourceVersion,
     kind: 'read-only-http', capability, prepare: async () => ({ method: 'GET', url, headers: {} }), project, ...extra });
@@ -880,8 +913,8 @@ export function publicBmwOperations(plan) {
 /** Same source/session seams, with explicit data-pinned context and finite request membership. */
 function publicBmwBatchOperations(plan) {
   const requestRegistration = bmwBatchRequestRegistration(plan); const r = requestRegistration.model;
-  const urls = bmwPublicRequestUrls(r); let treeHeader; let localisationHeader; let solverHeader; let treeQualified = false; let definitionsQualified = false;
-  const descriptor = (capability, url, project, extra = {}) => ({ sourceId: plan.source.id, sourceVersion: BMW_BATCH_SOURCE_VERSION,
+  const urls = bmwBatchPlanRequestUrls(plan); let treeHeader; let localisationHeader; let solverHeader; let treeQualified = false; let definitionsQualified = false;
+  const descriptor = (capability, url, project, extra = {}) => ({ sourceId: plan.source.id, sourceVersion: plan.source.version,
     kind: 'read-only-http', capability, strictJson: true, requestRegistration, prepare: async () => ({ method: 'GET', url, headers: {} }),
     project: (value, request, metadata) => {
       const result = project(value, request, metadata);
@@ -914,7 +947,7 @@ function publicBmwBatchOperations(plan) {
       return { method: 'GET', url: 'https://configure.bmw.co.uk' + path, headers: {} };
     } }),
     discover: descriptor('bmw-model-tree', urls.discover, (value) => {
-      const report = strictModelReport(value, r); treeQualified = true; return report;
+      const report = plan.source.version === BMW_MODEL_BATCH_SOURCE_VERSION ? bmwModelLineReport(value, r, plan.lineRegistration) : strictModelReport(value, r); treeQualified = true; return report;
     }, { prepare: async () => {
       requireValue(treeHeader, 'source-bootstrap-required', 'The memory-only public tree header is unavailable.');
       return { method: 'GET', url: urls.discover, headers: treeHeader };
@@ -946,7 +979,7 @@ function publicBmwBatchOperations(plan) {
       return { constructible: true, selectedOptions: factory };
     }, { prepare: async (request) => {
       requested(request); requireValue(treeQualified && definitionsQualified && solverHeader, 'source-definitions-required', 'Qualify fresh full model and definitions before solving.');
-      return { method: 'GET', url: bmwPublicRequestUrls(r, request).solve, headers: solverHeader };
+      return { method: 'GET', url: bmwBatchPlanRequestUrls(plan, request).solve, headers: solverHeader };
     } }),
   };
 }

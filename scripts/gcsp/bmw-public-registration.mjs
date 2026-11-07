@@ -1,6 +1,8 @@
 import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { requireValue } from './configuration-key.mjs';
 
+export const BMW_MODEL_BATCH_SOURCE_VERSION = 'f59-model-batch-20261107.v1';
+export const isBmwBatchPlan = plan => [BMW_BATCH_SOURCE_VERSION, BMW_MODEL_BATCH_SOURCE_VERSION].includes(plan?.source?.version);
 export const BMW_BATCH_SOURCE_VERSION = 'f59-batch-20261107.v1';
 export const BMW_CONTEXT_SOURCE_VERSION = 'f59-context-qualification-20261107.v1';
 export const BMW_MODEL_OPTIONS_SOURCE_VERSION = 'f59-model-options-qualification-20261107.v1';
@@ -91,15 +93,44 @@ export function bmwModelOptionsRequestUrls(input) {
   return { page: urls.page, discover: urls.discover, options: options.href };
 }
 
-export function validateBmwCandidateRequest(value) {
+function candidateRequest(value, minimumMandatory = 1) {
   requireValue(object(value) && same(Object.keys(value).sort(), ['includedElements', 'mandatoryElements'])
     && Array.isArray(value.includedElements) && bounded(value.includedElements.length, 3, 24)
-    && Array.isArray(value.mandatoryElements) && bounded(value.mandatoryElements.length, 1, 4)
+    && Array.isArray(value.mandatoryElements) && bounded(value.mandatoryElements.length, minimumMandatory, 4)
     && [value.includedElements, value.mandatoryElements].every((rows) => rows.every((entry) => code(entry) && !entry.startsWith('SE'))
       && new Set(rows).size === rows.length && same([...rows].sort(), rows))
     && value.mandatoryElements.every((entry) => value.includedElements.includes(entry)),
   'source-candidate-registration', 'Register exact sorted factory request codes and their included mandatory inputs.');
   return structuredClone(value);
+}
+
+export function validateBmwCandidateRequest(value) { return candidateRequest(value); }
+
+export function validateBmwModelBatchCandidateRequest(value, line) {
+  validateBmwModelOptionsRequestRegistration({ model: line.model, line: line.line });
+  const request = candidateRequest(value, 0); const query = line.line.optionsQuery;
+  requireValue(same(request.mandatoryElements, query.kind === 'trim' ? [query.code] : [])
+    && request.includedElements.length === (query.kind === 'trim' ? 4 : 3),
+    'source-candidate-registration', 'Use three direct typed inputs and only the exact observed line option when present.');
+  return request;
+}
+
+export function bmwModelBatchRequestUrls(input, candidate) {
+  const binding = validateBmwModelOptionsRequestRegistration({ model: input.model, line: input.line });
+  const urls = bmwModelOptionsRequestUrls(binding);
+  if (candidate) {
+    const request = validateBmwModelBatchCandidateRequest(candidate, binding); const r = binding.model;
+    urls.solve = `https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/${r.effectDate}/order-dates/${r.orderDate}/models/${r.modelCode}?${new URLSearchParams({
+      'add-rules-for-mandatory-element-classes': 'fabric,paint,rim', application: 'connext',
+      'included-elements': request.includedElements.join(','), 'mandatory-elements': request.mandatoryElements.join(',') })}`;
+  }
+  return urls;
+}
+
+export function bmwBatchPlanRequestUrls(plan, candidate) {
+  return plan.source.version === BMW_MODEL_BATCH_SOURCE_VERSION
+    ? bmwModelBatchRequestUrls({ model: plan.modelRegistration, line: plan.lineRegistration }, candidate)
+    : bmwPublicRequestUrls(plan.modelRegistration, candidate);
 }
 
 export function bmwPublicRequestUrls(registration, candidate) {
@@ -125,7 +156,7 @@ export function bmwBatchRequestRegistration(plan) {
   validateBmwBatchPlan(plan);
   requireValue(Array.isArray(plan.candidates) && plan.candidates.length === plan.candidateCount,
     'source-candidate-registration', 'Persist the finite candidate list in the exact allocated plan before traffic.');
-  return { model: structuredClone(plan.modelRegistration), candidates: plan.candidates.map((row) => structuredClone(row.request)) };
+  return { model: structuredClone(plan.modelRegistration), ...(plan.source.version === BMW_MODEL_BATCH_SOURCE_VERSION ? { line: structuredClone(plan.lineRegistration) } : {}), candidates: plan.candidates.map((row) => structuredClone(row.request)) };
 }
 
 export function validateBmwBatchRequestRegistration(value) {
@@ -138,9 +169,25 @@ export function validateBmwBatchRequestRegistration(value) {
   return structuredClone(value);
 }
 
+export function validateBmwModelBatchRequestRegistration(value) {
+  requireValue(object(value) && same(Object.keys(value).sort(), ['candidates', 'line', 'model'])
+    && Array.isArray(value.candidates) && bounded(value.candidates.length, 1, 8),
+    'source-candidate-registration', 'Use the exact observed model/line and bounded finite request list.');
+  const binding = validateBmwModelOptionsRequestRegistration({ model: value.model, line: value.line });
+  value.candidates.forEach(row => validateBmwModelBatchCandidateRequest(row, binding));
+  requireValue(new Set(value.candidates.map(inputDigest)).size === value.candidates.length,
+    'source-candidate-registration', 'Registered requests must be distinct.');
+  return structuredClone(value);
+}
+
 export function validateBmwBatchPlan(plan) {
+  const modelBatch = plan?.source?.version === BMW_MODEL_BATCH_SOURCE_VERSION;
+  if (modelBatch) {
+    validateBmwModelOptionsRequestRegistration({ model: plan.modelRegistration, line: plan.lineRegistration });
+    requireValue(plan.candidateCount <= 8 && plan.candidateBaseElements === undefined, 'public-source-plan-refused', 'Keep the observed-line pilot bounded to typed paint/fabric/rim and the explicit line option.');
+  }
   const r = validateBmwModelRegistration(plan?.modelRegistration); const l = plan?.limits;
-  requireValue(plan.source?.id === 'bmw-uk-public' && plan.source?.version === BMW_BATCH_SOURCE_VERSION
+  requireValue(plan.source?.id === 'bmw-uk-public' && isBmwBatchPlan(plan)
     && plan.source.kind === 'public-bmw-uk' && same(plan.models, [r.modelCode])
     && same(plan.context, { catalogueDate: r.catalogueDate, market: r.market, locale: r.locale, orderDate: r.orderDate, effectDate: r.effectDate })
     && plan.captureVersion === 'bmw-complete-selection.v1' && date(plan.qualificationDate)
@@ -161,7 +208,7 @@ export function validateBmwBatchPlan(plan) {
         && typeof row.candidateId === 'string' && /^[A-Za-z0-9][A-Za-z0-9.-]{0,95}$/.test(row.candidateId))
       && new Set(plan.candidates.map((row) => row.candidateId)).size === plan.candidates.length,
     'source-candidate-registration', 'Every planned candidate needs its exact unique identity and request.');
-    plan.candidates.forEach((row) => validateBmwCandidateRequest(row.request));
+    plan.candidates.forEach((row) => modelBatch ? validateBmwModelBatchCandidateRequest(row.request, { model: r, line: plan.lineRegistration }) : validateBmwCandidateRequest(row.request));
     requireValue(new Set(plan.candidates.map((row) => inputDigest(row.request))).size === plan.candidates.length,
       'source-candidate-registration', 'Allocate distinct candidate requests.');
   }

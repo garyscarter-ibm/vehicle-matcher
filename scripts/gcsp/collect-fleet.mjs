@@ -13,7 +13,7 @@ import { publicBmwOperations, publicBmwObservation, validatePublicBmwPlan,
   validatePublicBmwContextPlan, publicBmwContextOperations, validatePublicBmwContextObservation,
   validatePublicBmwOptionsPlan, publicBmwOptionsOperations, validatePublicBmwOptionsObservations } from './public-bmw-source.mjs';
 import { publicBmwCompleteSelectionOperations } from './capture-bmw-selection.mjs';
-import { BMW_BATCH_SOURCE_VERSION, bmwPublicRequestUrls } from './bmw-public-registration.mjs';
+import { BMW_BATCH_SOURCE_VERSION, BMW_MODEL_BATCH_SOURCE_VERSION, isBmwBatchPlan, bmwBatchPlanRequestUrls } from './bmw-public-registration.mjs';
 
 export const COLLECTOR_VERSION = '2';
 const CONTEXT = ['catalogueDate', 'market', 'locale', 'orderDate', 'effectDate', 'productionDate', 'taxDate'];
@@ -98,7 +98,7 @@ function normaliseDiscovery(plan, value) {
 /** Seeded requests are only candidates; the solver, never the generator, establishes selection. */
 export function buildCandidateQueue(input, sourceDiscovery) {
   const plan = validatePlan(input);
-  if (plan.source.version === BMW_BATCH_SOURCE_VERSION) {
+  if (isBmwBatchPlan(plan)) {
     const definitions = sourceDiscovery?.definitions;
     requireValue(Array.isArray(definitions) && definitions.length > 0 && definitions.length <= 512,
       'invalid-discovery', 'Enumerate only bounded actual typed definitions.');
@@ -113,7 +113,9 @@ export function buildCandidateQueue(input, sourceDiscovery) {
     return Array.from({ length: plan.candidateCount }, (_, index) => {
       let ordinal = (offset + index * stride) % size;
       const includedElements = groups.map((rows) => { const value = rows[ordinal % rows.length]; ordinal = Math.floor(ordinal / rows.length); return value; });
-      const mandatoryElements = [plan.modelRegistration.optionsTrim || 'S0337'];
+      const mandatoryElements = plan.source.version === BMW_MODEL_BATCH_SOURCE_VERSION
+        ? plan.lineRegistration.optionsQuery.kind === 'trim' ? [plan.lineRegistration.optionsQuery.code] : []
+        : [plan.modelRegistration.optionsTrim || 'S0337'];
       const request = { includedElements: normaliseCodes([...includedElements, ...mandatoryElements, ...(plan.candidateBaseElements || [])]), mandatoryElements };
       return { candidateId: 'candidate-' + inputDigest({ model: plan.models[0], request }).slice(0, 24), request };
     });
@@ -191,7 +193,7 @@ export async function createFleetCollector({ plan: input, source, policyService,
     return createCaptureReplayCollector({ plan, captureReplay, policyService, statePath, operations, now, onPhase });
   }
   if (plan.source.kind === 'public-bmw-uk' && !NO_TRAFFIC.includes(mode)) {
-    if (plan.source.version === BMW_BATCH_SOURCE_VERSION)
+    if (isBmwBatchPlan(plan))
       return createPublicBatchCollector({ plan, source, policyService, policyRead, statePath, operations, http, mode, now, onPhase, batchBinding, continuation });
     return createPublicCollector({ plan, source, policyService, policyRead, statePath, operations, http, mode, now, onPhase });
   }
@@ -314,7 +316,7 @@ async function createPublicBatchCollector({ plan, source, policyService, policyR
       const candidate = plan.candidates.find((candidate) => cached.cacheKey === inputDigest({ operation: 'solve',
         ...state.identity.sources.solve, request: candidate.request }));
       requireValue(candidate && allocation.attempts[cached.cacheKey] === 1 && allocation.batchEvidence
-        && same(cached.payload?.document?.observation?.request, { method: 'GET', url: bmwPublicRequestUrls(plan.modelRegistration, candidate.request).solve }),
+        && same(cached.payload?.document?.observation?.request, { method: 'GET', url: bmwBatchPlanRequestUrls(plan, candidate.request).solve }),
       'cache-corrupt', 'Retained solver evidence must identify a spent exact planned request.');
       buildBmwSelectionBinding(registration(state, cached.payload, allocation.batchEvidence));
     }
@@ -335,7 +337,7 @@ async function createPublicBatchCollector({ plan, source, policyService, policyR
       for (const captured of state.sourceCaptures) {
         const candidate = plan.candidates.find((candidate) => candidate.candidateId === captured.candidateId);
         requireValue(candidate && same(captured.solver?.document?.observation?.request,
-          { method: 'GET', url: bmwPublicRequestUrls(plan.modelRegistration, candidate.request).solve }),
+          { method: 'GET', url: bmwBatchPlanRequestUrls(plan, candidate.request).solve }),
         'checkpoint-corrupt', 'Captures belong to their exact planned queue request.');
         buildBmwSelectionBinding(registration(state, captured.solver, captured.batchEvidence));
       }

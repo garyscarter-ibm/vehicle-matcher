@@ -5,8 +5,8 @@ import { hostname } from 'node:os';
 import { setTimeout as delay } from 'node:timers/promises';
 import { inputDigest } from '../../server/gcsp/repository/core.js';
 import { CollectionError, requireValue } from './configuration-key.mjs';
-import { BMW_BATCH_SOURCE_VERSION, BMW_CONTEXT_SOURCE_VERSION, BMW_OPTIONS_SOURCE_VERSION, BMW_MODEL_OPTIONS_SOURCE_VERSION, BMW_INVENTORY_SOURCE_VERSION,
-  bmwPublicRequestUrls, bmwModelOptionsRequestUrls, validateBmwModelOptionsRequestRegistration, bmwInventoryRequestUrls, validateBmwInventoryRequestRegistration,
+import { BMW_BATCH_SOURCE_VERSION, BMW_MODEL_BATCH_SOURCE_VERSION, BMW_CONTEXT_SOURCE_VERSION, BMW_OPTIONS_SOURCE_VERSION, BMW_MODEL_OPTIONS_SOURCE_VERSION, BMW_INVENTORY_SOURCE_VERSION,
+  bmwPublicRequestUrls, bmwModelBatchRequestUrls, validateBmwModelBatchRequestRegistration, bmwModelOptionsRequestUrls, validateBmwModelOptionsRequestRegistration, bmwInventoryRequestUrls, validateBmwInventoryRequestRegistration,
   validateBmwBatchRequestRegistration, validateBmwContextRequestRegistration, validateBmwOptionsRequestRegistration } from './bmw-public-registration.mjs';
 
 export const COLLECTION_SESSION_VERSION = '2';
@@ -47,14 +47,14 @@ function readOnlyRequest(capability, request, registration) {
           : capability === 'bmw-settings' && url.origin === 'https://configure.bmw.co.uk'
             && /^\/en_GB\/settings\.[a-zA-Z0-9]+\.json$/.test(url.pathname) && !url.search;
     }
-    const urls = Object.hasOwn(registration, 'line') ? bmwModelOptionsRequestUrls(registration) : bmwPublicRequestUrls(registration.model);
+    const urls = Object.hasOwn(registration, 'line') ? bmwModelOptionsRequestUrls({ model: registration.model, line: registration.line }) : bmwPublicRequestUrls(registration.model);
     return capability === 'bmw-page' ? url.href === urls.page
       : capability === 'bmw-model-tree' ? url.href === urls.discover
         : capability === 'bmw-options' ? (Object.hasOwn(registration, 'line') || Array.isArray(registration.candidates) || Object.hasOwn(registration.model, 'optionsTrim')) && url.href === urls.options
           : capability === 'bmw-settings' ? url.origin === 'https://configure.bmw.co.uk'
             && /^\/en_GB\/settings\.[a-zA-Z0-9]+\.json$/.test(url.pathname) && !url.search
             : capability === 'bmw-solver' && Array.isArray(registration.candidates)
-              && registration.candidates.some((row) => url.href === bmwPublicRequestUrls(registration.model, row).solve);
+              && registration.candidates.some((row) => url.href === (Object.hasOwn(registration, 'line') ? bmwModelBatchRequestUrls(registration, row) : bmwPublicRequestUrls(registration.model, row)).solve);
   };
   const allowed = url && url.protocol === 'https:' && !url.username && !url.password && !url.hash
     && (registration ? batchAllowed() : capability === 'bmw-page' ? url.href === PUBLIC_PAGE
@@ -171,6 +171,8 @@ export async function createCollectionSession({ identity: stageIdentity, operati
             || operations[name].sourceVersion === DIAGNOSTIC_SOURCE_VERSION && DIAGNOSTIC_CAPABILITIES.includes(operations[name].capability)
             || operations[name].sourceVersion === BMW_BATCH_SOURCE_VERSION && [...CAPABILITIES, 'bmw-options'].includes(operations[name].capability)
               && validateBmwBatchRequestRegistration(operations[name].requestRegistration)
+            || operations[name].sourceVersion === BMW_MODEL_BATCH_SOURCE_VERSION && [...CAPABILITIES, 'bmw-options'].includes(operations[name].capability)
+              && validateBmwModelBatchRequestRegistration(operations[name].requestRegistration)
             || operations[name].sourceVersion === BMW_CONTEXT_SOURCE_VERSION && ['bmw-page', 'bmw-settings', 'bmw-model-tree'].includes(operations[name].capability)
               && validateBmwContextRequestRegistration(operations[name].requestRegistration)
             || operations[name].sourceVersion === BMW_OPTIONS_SOURCE_VERSION && DIAGNOSTIC_CAPABILITIES.includes(operations[name].capability)
@@ -207,6 +209,7 @@ export async function createCollectionSession({ identity: stageIdentity, operati
     sourceVersion: operations[name].sourceVersion, kind: operations[name].kind,
     ...(operations[name].kind === 'read-only-http' ? { capability: operations[name].capability, cache: operations[name].cache !== false,
       ...(operations[name].sourceVersion === BMW_BATCH_SOURCE_VERSION ? { requestRegistration: validateBmwBatchRequestRegistration(operations[name].requestRegistration) } : {}),
+      ...(operations[name].sourceVersion === BMW_MODEL_BATCH_SOURCE_VERSION ? { requestRegistration: validateBmwModelBatchRequestRegistration(operations[name].requestRegistration) } : {}),
       ...(operations[name].sourceVersion === BMW_CONTEXT_SOURCE_VERSION ? { requestRegistration: validateBmwContextRequestRegistration(operations[name].requestRegistration) } : {}),
       ...(operations[name].sourceVersion === BMW_OPTIONS_SOURCE_VERSION ? { requestRegistration: validateBmwOptionsRequestRegistration(operations[name].requestRegistration) } : {}),
       ...(operations[name].sourceVersion === BMW_MODEL_OPTIONS_SOURCE_VERSION ? { requestRegistration: validateBmwModelOptionsRequestRegistration(operations[name].requestRegistration) } : {}),
