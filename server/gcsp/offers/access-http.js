@@ -56,6 +56,12 @@ export function createOfferAccessHandler({ service, identity, allowedOrigins = [
         res.setHeader('Set-Cookie', exchanged.value.setCookie);
         return send({ status: 'ok', value: exchanged.value.offer, contractVersion: exchanged.contractVersion });
       }
+      if (req.method === 'GET' && pathname === '/api/gcsp/offers/current') {
+        if ([...searchParams].length) return send(invalid());
+        const resolved = await identity.resolveSession({ authorized: true, cookie: req.headers.cookie });
+        if (resolved.status !== 'ok') return send(resolved);
+        return send(await service.listForAccount(resolved.value));
+      }
       const match = /^\/api\/gcsp\/offers\/([^/]+)$/.exec(pathname);
       if (req.method !== 'GET' || !match || match[1] === 'access') return send(outcome('not-found', 'Offer not found.'));
       if ([...searchParams.keys()].some((key) => key !== 'runId') || searchParams.getAll('runId').length > 1) return send(invalid());
@@ -63,10 +69,11 @@ export function createOfferAccessHandler({ service, identity, allowedOrigins = [
       const hasCookie = typeof req.headers.cookie === 'string' && req.headers.cookie.split(';').some((part) => part.trim().startsWith(`${OFFER_ACCESS_COOKIE}=`));
       let read;
       if (hasCookie) read = await service.fromSession(selector, req.headers.cookie);
-      else {
+      // A leftover cookie for another offer must not hide one the signed-in employee can open.
+      if (!hasCookie || ['not-found', 'stale-run'].includes(read.status)) {
         const resolved = await identity.resolveSession({ authorized: true, cookie: req.headers.cookie });
-        if (resolved.status !== 'ok') return send(resolved);
-        read = await service.fromAccount(resolved.value, selector);
+        if (resolved.status === 'ok') read = await service.fromAccount(resolved.value, selector);
+        else if (!hasCookie) return send(resolved);
       }
       return send(read.status === 'ok' ? { status: 'ok', value: read.value.offer, contractVersion: read.contractVersion } : read);
     } catch {

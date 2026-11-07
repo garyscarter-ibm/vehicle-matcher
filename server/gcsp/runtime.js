@@ -116,9 +116,10 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const resolveOfferAccess = async ({ selector, cookie }) => {
       const hasOfferCookie = typeof cookie === 'string' && cookie.split(';')
         .some((part) => part.trim().startsWith(`${OFFER_ACCESS_COOKIE}=`));
-      if (hasOfferCookie) return offerAccess.fromSession(selector, cookie);
+      const session = hasOfferCookie ? await offerAccess.fromSession(selector, cookie) : null;
+      if (session && !['not-found', 'stale-run'].includes(session.status)) return session;
       const resolved = await identity.resolveSession({ authorized: true, cookie });
-      return resolved.status === 'ok' ? offerAccess.fromAccount(resolved.value, selector) : resolved;
+      return resolved.status === 'ok' ? offerAccess.fromAccount(resolved.value, selector) : session ?? resolved;
     };
     notify = createNotificationDispatcher({ repository, policy, clock, environmentId });
     const dependencies = { gcspRepository: repository, gcspPolicy: policy, gcspGreg: greg, gcspGregPublish: gregPublish,

@@ -1,0 +1,324 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-105",
+  "date": "2026-11-06T01:49:55.601888+00:00",
+  "status": "Authored consumer delta; UNEXECUTED. Not an executable mixed-source plan or grant.",
+  "consumer_base": "9090aff3b5779a6c80c4c9af099e8363726d2718",
+  "publication_pin": "The immutable commit containing this manifest pins all authored-local-delta rows; external publication receipt records that exact ref.",
+  "contract": {
+    "read": "followup:null|{decisionId:offer-decision:<64 lowercase hex>}; missing legacy field is null",
+    "mount": "adapter.followup:{loadAccount({signal}),mount(body,{decisionId,signal})->teardown}; fresh ready trusted employee account required",
+    "url_keys": [
+      "offerId",
+      "runId"
+    ],
+    "no_post_result_dependency": true,
+    "employee_authority": "107 independently authenticates and authorizes every request"
+  },
+  "upstream": {
+    "102-reviewed-plan": {
+      "ref": "373d89a61fe1ea0a8728fffc6a4a1ac52de1e0ed",
+      "files": {
+        "docs/gcsp/evidence/fucq102/followup-entry-plan.md": {
+          "sha256": "e5c7c2d1aaf7bd2999a8b8a67edddac103133f66735e56dd9c1de97df82a174b",
+          "bytes": 15231
+        },
+        "docs/gcsp/evidence/fucq102/followup-entry-source-plan.json": {
+          "sha256": "fe27ff5f63b607613dfba32d64a3cedcf4c8de0e0f494cd33edb20cedc46f952",
+          "bytes": 4472
+        }
+      },
+      "role": "Inspected immutable port/source basis only; no imports or execution"
+    },
+    "107-client-auth-fix": {
+      "ref": "94e05ff9070aa19f5deb3e9997dfed96cc268473",
+      "files": {
+        "blocks/gcsp/offer-followup/gcsp-offer-followup.js": {
+          "sha256": "4c7f57574a9869f664b3e044955df95dab3b505e3a1eeefa6b2753a20539daa6",
+          "bytes": 3880
+        },
+        "blocks/gcsp/offer-followup/followup-controller.js": {
+          "sha256": "038336ab02fa578cc487313e25bf37831d476669527f2b6f4e2fd391d00ffbad",
+          "bytes": 10128
+        },
+        "blocks/gcsp/offer-followup/followup-view.js": {
+          "sha256": "c8d04d4c38e4011202295b23dff29836509fd02a8c5b5e77d74b8552b740ccd8",
+          "bytes": 11854
+        },
+        "blocks/gcsp/offer-followup/http-adapter.js": {
+          "sha256": "5482dfa819d857a07add85b85e4117a0cb24ecaf010c83c47be34b6ed7cc45c6",
+          "bytes": 2187
+        },
+        "server/gcsp/offers/followup.js": {
+          "sha256": "bdd9dc0c57e62a08b866b9e204bbbb17b148a0534b65c37be92d3d8d7e49d875",
+          "bytes": 16389
+        },
+        "server/gcsp/offers/followup-http.js": {
+          "sha256": "b9c1f59fa083a658d0c801fc59c335cb84ddf7b454d3fc60636fcc85306375d0",
+          "bytes": 1420
+        }
+      },
+      "role": "Inspected immutable port/source basis only; no imports or execution"
+    },
+    "106-canonical-package": {
+      "ref": "90cb70ce951a4c9de934e792b8b7fbee0665d934",
+      "files": {
+        "server/gcsp/offers/decision.js": {
+          "sha256": "a934455a09beb13e3682c1f10ebea95f0549ff2fad8db03d54ff947e7ed7789a",
+          "bytes": 23307
+        },
+        "server/gcsp/offers/decision-http.js": {
+          "sha256": "223e3358569602145ecb2a5f967abf5a9e3ca78d688667d0e6c8bbb0c1779b96",
+          "bytes": 4782
+        }
+      },
+      "role": "Inspected immutable port/source basis only; no imports or execution"
+    }
+  },
+  "entries": [
+    "blocks/gcsp/offer/gcsp-offer.js",
+    "server/test/gcsp-offer-view-followup-entry.test.js"
+  ],
+  "modules": {
+    "blocks/gcsp/brief/brief-view-model.js": {
+      "sha256": "7eea953d26aaeded1f6fe5ac219ebcc0f0c739f8f003b7ca61414dc4da1aa366",
+      "bytes": 4268,
+      "basis": "unchanged-immutable-base",
+      "ref": "9090aff3b5779a6c80c4c9af099e8363726d2718"
+    },
+    "blocks/gcsp/kit/form-controls.js": {
+      "sha256": "4df9e86f3d51f33397bd524b95f35a40240c931b441f91a7b8b05ef89fe508b4",
+      "bytes": 2179,
+      "basis": "unchanged-immutable-base",
+      "ref": "9090aff3b5779a6c80c4c9af099e8363726d2718"
+    },
+    "blocks/gcsp/offer/followup-entry.js": {
+      "sha256": "c2e0d1fdb977e305f044d3dae984b5dbb846fefde159ed15289c6368bcf7ad68",
+      "bytes": 583,
+      "basis": "authored-local-delta"
+    },
+    "blocks/gcsp/offer/gcsp-offer.js": {
+      "sha256": "d4b30a6ce545bcfd1b732c35465abd9fce77c10cb39e79abd9c5e0f5debe8075",
+      "bytes": 4042,
+      "basis": "authored-local-delta"
+    },
+    "blocks/gcsp/offer/http-adapter.js": {
+      "sha256": "7ed45f955e5bdb437cb94f62bef0dbb3b8ac9d5ad2a8c477f4fe91da5297fbc5",
+      "bytes": 8303,
+      "basis": "unchanged-immutable-base",
+      "ref": "9090aff3b5779a6c80c4c9af099e8363726d2718"
+    },
+    "blocks/gcsp/offer/offer-controller.js": {
+      "sha256": "6efd77fd935cd7ec2e8eb00f8c67ac07bd1f75dd3e8a1166ed89e38604ede037",
+      "bytes": 10527,
+      "basis": "authored-local-delta"
+    },
+    "blocks/gcsp/offer/offer-projection.js": {
+      "sha256": "d07917ddf7d0e2b6ccaa7faaeb2e57a6e7d66d9e01ddba2618f9e2282f23c51d",
+      "bytes": 13481,
+      "basis": "authored-local-delta"
+    },
+    "blocks/gcsp/offer/offer-view.js": {
+      "sha256": "cb02f5e3f3836d86bebd58ca5db2920555dd47a1062c8c13c2bc93f3afdfb4c0",
+      "bytes": 13399,
+      "basis": "authored-local-delta"
+    },
+    "blocks/gcsp/shell/portal-shell.js": {
+      "sha256": "7e62088d69bfa43ff0ccff2678931fe1e48c7a0b3814184f449f308cf4ebaa01",
+      "bytes": 10428,
+      "basis": "unchanged-immutable-base",
+      "ref": "9090aff3b5779a6c80c4c9af099e8363726d2718"
+    },
+    "blocks/vehicle-matcher/modes/brand-copy.js": {
+      "sha256": "485098aea61944c5fd62047164b4aabfdd1c95c2ff2be9aacf5dae211d195ec9",
+      "bytes": 36275,
+      "basis": "unchanged-immutable-base",
+      "ref": "9090aff3b5779a6c80c4c9af099e8363726d2718"
+    },
+    "blocks/vehicle-matcher/modes/result-card.js": {
+      "sha256": "cc5d50468f45f1c751c597ece89ca5d7dfe88f70d98dd606104ad3504007f948",
+      "bytes": 32636,
+      "basis": "unchanged-immutable-base",
+      "ref": "9090aff3b5779a6c80c4c9af099e8363726d2718"
+    },
+    "blocks/vehicle-matcher/ui.js": {
+      "sha256": "49107097a7927e388ff78949045827f3a8903fea0bd758dbe1aa597bec82d8b2",
+      "bytes": 4277,
+      "basis": "unchanged-immutable-base",
+      "ref": "9090aff3b5779a6c80c4c9af099e8363726d2718"
+    },
+    "server/test/gcsp-offer-view-followup-entry.test.js": {
+      "sha256": "d7f7ff0b3bb84a151f32ff4fc0d2d55e659b8d4b3b4a7d7565a0519f85b08a1e",
+      "bytes": 11587,
+      "basis": "authored-local-delta"
+    }
+  },
+  "module_count": 13,
+  "relative_edges": [
+    {
+      "from": "blocks/gcsp/brief/brief-view-model.js",
+      "specifier": "../../vehicle-matcher/modes/result-card.js",
+      "to": "blocks/vehicle-matcher/modes/result-card.js"
+    },
+    {
+      "from": "blocks/gcsp/kit/form-controls.js",
+      "specifier": "../../vehicle-matcher/ui.js",
+      "to": "blocks/vehicle-matcher/ui.js"
+    },
+    {
+      "from": "blocks/gcsp/offer/gcsp-offer.js",
+      "specifier": "./offer-controller.js",
+      "to": "blocks/gcsp/offer/offer-controller.js"
+    },
+    {
+      "from": "blocks/gcsp/offer/gcsp-offer.js",
+      "specifier": "./offer-view.js",
+      "to": "blocks/gcsp/offer/offer-view.js"
+    },
+    {
+      "from": "blocks/gcsp/offer/gcsp-offer.js",
+      "specifier": "../shell/portal-shell.js",
+      "to": "blocks/gcsp/shell/portal-shell.js"
+    },
+    {
+      "from": "blocks/gcsp/offer/gcsp-offer.js",
+      "specifier": "../../vehicle-matcher/ui.js",
+      "to": "blocks/vehicle-matcher/ui.js"
+    },
+    {
+      "from": "blocks/gcsp/offer/http-adapter.js",
+      "specifier": "./offer-projection.js",
+      "to": "blocks/gcsp/offer/offer-projection.js"
+    },
+    {
+      "from": "blocks/gcsp/offer/offer-controller.js",
+      "specifier": "./followup-entry.js",
+      "to": "blocks/gcsp/offer/followup-entry.js"
+    },
+    {
+      "from": "blocks/gcsp/offer/offer-projection.js",
+      "specifier": "../brief/brief-view-model.js",
+      "to": "blocks/gcsp/brief/brief-view-model.js"
+    },
+    {
+      "from": "blocks/gcsp/offer/offer-projection.js",
+      "specifier": "./followup-entry.js",
+      "to": "blocks/gcsp/offer/followup-entry.js"
+    },
+    {
+      "from": "blocks/gcsp/offer/offer-view.js",
+      "specifier": "../kit/form-controls.js",
+      "to": "blocks/gcsp/kit/form-controls.js"
+    },
+    {
+      "from": "blocks/gcsp/offer/offer-view.js",
+      "specifier": "./followup-entry.js",
+      "to": "blocks/gcsp/offer/followup-entry.js"
+    },
+    {
+      "from": "blocks/gcsp/offer/offer-view.js",
+      "specifier": "../../vehicle-matcher/modes/result-card.js",
+      "to": "blocks/vehicle-matcher/modes/result-card.js"
+    },
+    {
+      "from": "blocks/gcsp/offer/offer-view.js",
+      "specifier": "../../vehicle-matcher/ui.js",
+      "to": "blocks/vehicle-matcher/ui.js"
+    },
+    {
+      "from": "blocks/gcsp/shell/portal-shell.js",
+      "specifier": "../../vehicle-matcher/ui.js",
+      "to": "blocks/vehicle-matcher/ui.js"
+    },
+    {
+      "from": "blocks/vehicle-matcher/modes/brand-copy.js",
+      "specifier": "../ui.js",
+      "to": "blocks/vehicle-matcher/ui.js"
+    },
+    {
+      "from": "blocks/vehicle-matcher/modes/result-card.js",
+      "specifier": "./brand-copy.js",
+      "to": "blocks/vehicle-matcher/modes/brand-copy.js"
+    },
+    {
+      "from": "blocks/vehicle-matcher/modes/result-card.js",
+      "specifier": "../ui.js",
+      "to": "blocks/vehicle-matcher/ui.js"
+    },
+    {
+      "from": "server/test/gcsp-offer-view-followup-entry.test.js",
+      "specifier": "../../blocks/gcsp/offer/gcsp-offer.js",
+      "to": "blocks/gcsp/offer/gcsp-offer.js"
+    },
+    {
+      "from": "server/test/gcsp-offer-view-followup-entry.test.js",
+      "specifier": "../../blocks/gcsp/offer/http-adapter.js",
+      "to": "blocks/gcsp/offer/http-adapter.js"
+    },
+    {
+      "from": "server/test/gcsp-offer-view-followup-entry.test.js",
+      "specifier": "../../blocks/gcsp/offer/offer-controller.js",
+      "to": "blocks/gcsp/offer/offer-controller.js"
+    },
+    {
+      "from": "server/test/gcsp-offer-view-followup-entry.test.js",
+      "specifier": "../../blocks/gcsp/offer/offer-projection.js",
+      "to": "blocks/gcsp/offer/offer-projection.js"
+    },
+    {
+      "from": "server/test/gcsp-offer-view-followup-entry.test.js",
+      "specifier": "../../blocks/gcsp/offer/offer-view.js",
+      "to": "blocks/gcsp/offer/offer-view.js"
+    }
+  ],
+  "relative_edge_count": 23,
+  "external_imports": [
+    "jsdom",
+    "node:assert/strict",
+    "node:fs/promises",
+    "node:test"
+  ],
+  "file_inputs": {
+    "docs/gcsp/evidence/fucq105/representative-access.json": {
+      "sha256": "9a406c67d7785353c941b2ba294593e188e6ef6045bf099fe222a1131f37d884",
+      "bytes": 7571
+    }
+  },
+  "authored_test_count": 10,
+  "executed_test_count": 0,
+  "node_invocations": 0,
+  "proof_allocations": false,
+  "selected_future_checks": [
+    "server/test/gcsp-offer-view-followup-entry.test.js",
+    "server/test/gcsp-offer-view-projection.test.js",
+    "server/test/gcsp-offer-view-controller.test.js",
+    "server/test/gcsp-offer-view-http.test.js",
+    "server/test/gcsp-offer-view-render.test.js",
+    "server/test/gcsp-offer-view-decision.test.js",
+    "affected UI ratchet and CSP checks"
+  ],
+  "outstanding": [
+    "Immutable102 implementation pin",
+    "Cross-owner port confirmation and root combined source union",
+    "Exact future supervisor/loader/command/dependency/environment pins and separate one-run grant",
+    "Actual100/102/106 lost-response reload and real107 employee-session question/confirm/saved reload proof",
+    "Delivered host/shared gate/same-origin/email/account/browser/full acceptance"
+  ],
+  "old_mixed_plan": {
+    "ref": "9090aff3b5779a6c80c4c9af099e8363726d2718",
+    "path": "docs/gcsp/evidence/fucq105/decision-mixed-source-plan.json",
+    "sha256": "ce28e76ff4df809c7d68717eb8b2d6c65d7b50da863cf8ceac5b6f304174e4b1",
+    "bytes": 50364,
+    "unchanged": true,
+    "current_local_consumer_matches_old_plan": false,
+    "execution": "Separate original pins; do not substitute this delta or launch old helper against this changed worktree"
+  },
+  "static_validation": {
+    "relative_source_closure": "lexical literal import/export and dynamic import path reads only; no runtime coverage claim",
+    "ten_authored_cases": true,
+    "old_mixed_manifest_unchanged": true,
+    "product_map": "Only FUCQ-105 changed; six slices and parked workers preserved",
+    "javascript_syntax": "not invoked",
+    "product_imports": false
+  }
+}
