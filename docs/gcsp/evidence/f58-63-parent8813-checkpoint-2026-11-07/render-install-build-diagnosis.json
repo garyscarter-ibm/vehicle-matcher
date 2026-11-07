@@ -1,0 +1,19 @@
+{
+  "related_story": "FUCQ-62",
+  "story_link_basis": "FUCQ-62 external corpus publication/build activation; .10 exact deployment probe",
+  "severity": "Medium",
+  "blocking_scope": "exact .10 live build activation; independent source/proof work continues",
+  "reproduction": "Actual successful deployment7617678535 sha e3fd747d returned health200/readiness200 ready manifest28374a10 (.9), expected0bfe3139(.10); no DTO call made",
+  "verified": "Current npm install script performs no restore; YAML has .10 restore; local/Linux exact .10 public restore pass; rootdefault corpus is committed .9",
+  "cause": "Remote build command/config propagation or root override remains unverified; no authenticated Render logs. Mitigation makes the known GCSP npm-install build path prepare code-pinned release, independent of dashboard command; no runtime transport added.",
+  "actual_receipt": "66f560544461f3719cd22989c99821c3a882c30895f1bd83d19d57db30e80e0b",
+  "selected_checks": [
+    "gcsp-fleet-build-entry.test.js",
+    "render-blueprint.test.js",
+    "gcsp-fleet-artifacts.test.js"
+  ],
+  "excluded": "No full corpus/source replay; unchanged production artifact module; actual deployment proof still required",
+  "docs": "https://render.com/docs/environment-variables",
+  "docs_check": "Parallel extract_4b80d3e2ac20cfad7b9c3b10b14644fc confirms RENDER=true, RENDER_SERVICE_ID and RENDER_GIT_COMMIT at build/runtime; native web empty so fallback used",
+  "acceptance": false
+}

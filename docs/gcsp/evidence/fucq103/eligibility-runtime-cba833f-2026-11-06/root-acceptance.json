@@ -1,0 +1,29 @@
+{
+  "at": "2026-11-06T09:07:02.532388+00:00",
+  "verdict": "PASS",
+  "run": "fucq103-backend-6112414b50b948c9896c93d3727d0838",
+  "grant": "fucq103-eligibility-runtime-cba833f-0853",
+  "revision": "cba833fa0de733c51ff5fffcf02519d7f18da63c",
+  "scope": "Four selected memory runtime/reset/provider-lifetime/configuration-refusal cases; completed default and weighted cases filtered/unexercised by this run",
+  "rootAudit": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-runtime4-root-0853.json",
+  "rootSHA256": "ccf02a7a20819ddda1a66dcffe030b819216d930500cfb9805af9e5d77bc87bd",
+  "rootChecks": 992,
+  "leadAudit": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-runtime4-cba833f-lead-2026-11-06.json",
+  "leadSHA256": "65d9e136f18d7a2f6a9c4e07286478fed2b7add467c24f5d4c387c7057cfb8f4",
+  "leadChecks": 557,
+  "postwrite": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-runtime4-postwrite-0853.json",
+  "postwriteSHA256": "996e09ad77c5cf4988870448f30b8f8208520136ae00fd4455f962277d25f3a5",
+  "fiveOriginalsRebound": true,
+  "counts": {
+    "tests": 4,
+    "suites": 0,
+    "pass": 4,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "publication": "Authorized exact immutable evidence-only copies/index <=1MiB; local polling/coordination excluded; no next-mode execution or whole-story acceptance",
+  "parserFixtures": "38 authored, zero executed",
+  "exclusions": "Browser, full suite, native database/PostgreSQL connection, deployed/live systems, producer92/69/122/126 journeys,105\u2192107 decision lookup/reload,113corpus/115training acceptance."
+}

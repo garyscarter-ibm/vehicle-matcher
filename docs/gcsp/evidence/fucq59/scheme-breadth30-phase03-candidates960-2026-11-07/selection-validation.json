@@ -1,0 +1,43 @@
+{
+  "callers": [
+    "production BMW batch registration validator",
+    "production URL constructor",
+    "production inputDigest"
+  ],
+  "candidateSelectionSha256": "c23d9c84875f6631aad0fbff8304ada2faa99359ce6b528f147fafcd577bcafe",
+  "capacityCredit": 0,
+  "changedPaths": [
+    "docs/gcsp/evidence/fucq59/scheme-breadth30-phase03-candidates960-2026-11-07"
+  ],
+  "command": [
+    "/opt/homebrew/bin/node",
+    "docs/gcsp/evidence/fucq59/scheme-breadth30-phase03-candidates960-2026-11-07/select-candidates.mjs"
+  ],
+  "compatibilityException": null,
+  "dependencyLinkTouched": false,
+  "exclusions": [
+    "public source traffic",
+    "source driver/test preparation",
+    "production suite",
+    "application integration",
+    "F61 acceptance"
+  ],
+  "leftovers": [],
+  "ownedChildrenJoined": true,
+  "rc": 0,
+  "regression": "next pool templates241\u2013360, exact production plan and request digests, current spent/prior allocation/full F70/failed template exclusions",
+  "schemaVersion": "scoped-next-candidate-selection.v1",
+  "scope": "read-only metadata production-contract check; no tests/source replay",
+  "scratchCreated": false,
+  "selectedChecks": [
+    "all120 original template hashes/plan digests",
+    "all960 typed request identities/solve URL construction",
+    "960 unique/unspent against current 9759 spent",
+    "disjoint entire prior1920 and F70 future3623",
+    "three complete failed8-template exclusions",
+    "all30 contexts/four sessions each"
+  ],
+  "sourceTraffic": 0,
+  "time": "2026-11-07T06:20:07.237818+00:00",
+  "wallSeconds": 0.245481708
+}

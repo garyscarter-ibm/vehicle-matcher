@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "f70-interrupted-session-conservative-exclusions.v1",
+  "reason": "Parent-directed entire interrupted101 template exclusion; no replay or capacity credit",
+  "interruptedAllocationId": "f70-optional-axis-suffix3623-20261107-once-session101",
+  "sourceTemplatePath": "docs/gcsp/evidence/fucq59/f70-optional-axis-pool-2026-11-07/templates/session344.json",
+  "sourceTemplateSha256": "3b1e08e762c6481cf8f095b01cc96a8f6d64b67f9fc875131fa10b5fed446355",
+  "sourceReceiptPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session101/receipt.json",
+  "sourceReceiptSha256": "280be712b9efa6ace678c02f9aa485a7b36557e7b9286aa949d1823916036fa0",
+  "actualChargedSolverAttempts": 2,
+  "actualChargedGETAttempts": 6,
+  "loggedSolverStarts": 1,
+  "loggedGETStarts": 5,
+  "observedAttemptsFromExclusionCount": false,
+  "capacityCredit": 0,
+  "entries": [
+    {
+      "candidateId": "candidate-2708c7c449f2007e4c78e916",
+      "requestDigest": "a3cdc6c8e85dd018ed0854e9ac35c2b75530e2be051174dbca4cb1e7065b314f",
+      "outcome": "conservatively-excluded-interrupted-session"
+    },
+    {
+      "candidateId": "candidate-152b260f494e23c75604d2e6",
+      "requestDigest": "a3ecc6b4ba56f1a93f85fc4d9044efd8c11f1956f678225bebc1dd74aa0a3f50",
+      "outcome": "conservatively-excluded-interrupted-session"
+    },
+    {
+      "candidateId": "candidate-d1c1f1dffea68006ee802e38",
+      "requestDigest": "a41fed5f5d41a2875b6ecf44616006dcd9e0c2fbfdd43c77cd6937a93214e918",
+      "outcome": "conservatively-excluded-interrupted-session"
+    },
+    {
+      "candidateId": "candidate-b5abad3cb123d8c98761456e",
+      "requestDigest": "a46c0dceac9e7e88ed2f6ecee245012b80e2d27012f559a8fee80b98e6fa8670",
+      "outcome": "conservatively-excluded-interrupted-session"
+    },
+    {
+      "candidateId": "candidate-84bd6b12d804cc2f1e376c17",
+      "requestDigest": "a47d69085353ac038d5519b2905de242fbf556c7a6865d364d2833bef6b19c0f",
+      "outcome": "conservatively-excluded-interrupted-session"
+    },
+    {
+      "candidateId": "candidate-002b77dffd1e70b9e345e2e1",
+      "requestDigest": "a4869d35ded4e925532976376caa059d9293c68622ffcc6661d79d9fd984b28a",
+      "outcome": "conservatively-excluded-interrupted-session"
+    },
+    {
+      "candidateId": "candidate-5a84fe0c1cf7414a02792226",
+      "requestDigest": "a4c015fc91dbf4d41feedc394d8f7c618612f416ba11448f2e0d6d9d71f27a86",
+      "outcome": "conservatively-excluded-interrupted-session"
+    },
+    {
+      "candidateId": "candidate-88df311ead5c92e76a726132",
+      "requestDigest": "a51e61200dc69de517560f4087f222417c39f5e412d81cb9c6f075ad2543d587",
+      "outcome": "conservatively-excluded-interrupted-session"
+    }
+  ]
+}

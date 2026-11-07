@@ -1,0 +1,62 @@
+{
+  "scope": "static-only preparation",
+  "planSha256": "d5068c73528503e492fb4bff81ba8bc5648ea4000e6a04cb1db00a4def49d505",
+  "codePins": 220,
+  "runtimePins": 102,
+  "checks": [
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan/boundary.mjs",
+      "kind": "Node syntax only",
+      "rc": 0,
+      "stderr": ""
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan/common.mjs",
+      "kind": "Node syntax only",
+      "rc": 0,
+      "stderr": ""
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan/followthrough.mjs",
+      "kind": "Node syntax only",
+      "rc": 0,
+      "stderr": ""
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan/group-proof.py",
+      "kind": "Python compile in memory",
+      "rc": 0
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan/recovery.mjs",
+      "kind": "Node syntax only",
+      "rc": 0,
+      "stderr": ""
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan/supervise.py",
+      "kind": "Python compile in memory",
+      "rc": 0
+    },
+    {
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan/verify-assets.mjs",
+      "kind": "Node syntax only",
+      "rc": 0,
+      "stderr": ""
+    },
+    {
+      "path": "ci.patch",
+      "kind": "git apply --check against actual root; unapplied",
+      "rc": 0
+    },
+    {
+      "path": "render.patch",
+      "kind": "git apply --check against actual root; unapplied",
+      "rc": 0
+    }
+  ],
+  "sourceRequests": 0,
+  "runtimeExecuted": false,
+  "publicRequests": 0,
+  "acceptance": false
+}

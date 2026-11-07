@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "historical-g26e-independent-source-audit.v1",
+  "time": "2026-11-07T06:01:37.000441+00:00",
+  "status": "bounded probe stopped at actual historical tree HTTP400; returned context unknown",
+  "checks": {
+    "scratchAbsent": true,
+    "groupsAbsent": true,
+    "reservationAbsent": true,
+    "manifestRemoved": true,
+    "pinsUnchanged": true,
+    "actual3GET": true,
+    "zeroAdmission": true
+  },
+  "result": {
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/historical-g26e-3get/source/source.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/historical-g26e-3get/source/ownership/8cad69ffcc6b4551b9b21859d99cff2c.json",
+    "peak_rss": 69419008,
+    "peak_scratch": 0,
+    "rc": 1,
+    "wall": 0.504159292
+  },
+  "cleanup": {
+    "compatibilityException": null,
+    "dependencyPathTouched": false,
+    "groups": [
+      42481
+    ],
+    "groupsAbsent": true,
+    "leftovers": [],
+    "removedAllocationBytes": 0,
+    "reservationAbsent": true,
+    "retainedBytes": 4749,
+    "retainedOutput": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/historical-g26e-3get-probe-2026-11-07/actual",
+    "scratchAbsent": true,
+    "scratchRoot": "/private/tmp/test-stamp-shard-8cad69ffcc6b4551b9b21859d99cff2c"
+  },
+  "planSha256": "1348ab7a25d94a4a73858fd08003853327729d03043cb284c94acf759aaaeab5",
+  "parentReleaseSha256": "1536eec1df3b10470daffef7d1e58ff550f8483079964dbb1a8cd69428b282e7",
+  "observationPin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/historical-g26e-3get-probe-2026-11-07/actual/observation.json",
+    "sha256": "6de6e5640ed788d390a199a895316be0c235f53f1dc8069ce35715d3abe57740"
+  },
+  "actualGET": 3,
+  "decodedBytes": 638409,
+  "sourceElapsedMs": 344,
+  "sourceTrafficDuringAudit": 0,
+  "testReplay": 0,
+  "scope": "read-only actual3GET evidence/pins and independent root/group/token absence; no retry",
+  "interpretation": "Historical G26E request dates2024-10-01/flagsfalse returned400 with no model context; does not establish all history unsupported or scheme/constructibility/eligibility acceptance."
+}

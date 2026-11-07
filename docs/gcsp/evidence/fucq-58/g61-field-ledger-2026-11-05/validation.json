@@ -1,0 +1,50 @@
+{
+  "version": "g61-field-ledger-validation.v1",
+  "status": "pass",
+  "run": "fucq58-20261105-g61-field-ledger",
+  "validatedAt": "2026-11-05T16:57:25.483958Z",
+  "scope": "Local link/hash/schema consistency only; no runtime/full/regression suite.",
+  "command": "python3 -B docs/gcsp/evidence/fucq-58/g61-field-ledger-2026-11-05/validate.py",
+  "proof": {
+    "artifactsSha256": {
+      "README.md": "0053aab7c58bcffb6f9ed8eb7ee89614ea9ae711a987c3c020507929b19fa19c",
+      "ledger.json": "05ebdf57f35862cd9d3a0c9e1533fb281999274c3a3810519c5c00d6ffe1490d",
+      "plan.json": "16b364a47f401a1a2ffaba0fa35129f2666b19d81b8f88fbb2d1418138df0b34",
+      "schema.json": "b7543b0227f58b1229fb198a6deb569f3293b5717689e86c4ae391949b6c4274",
+      "validate.py": "0ad56cf6be68fd4ace0bee0c46c73b6aebdcae20544b16c8acf263944f9d9f18"
+    },
+    "inputArtifacts": 5,
+    "localReadmeLinks": 10,
+    "networkRequests": 0,
+    "profileActivations": 0,
+    "rows": 45,
+    "schemaNodesChecked": 1541,
+    "scope": "artifact-only; no runtime/full/regression suite",
+    "sourceLocators": 109,
+    "status": "pass",
+    "storySha256": "be2896a0e85f5e0f580ce53396c200ef828df17c2a91cf89bc5d3c98220fdf17"
+  },
+  "resourceSummary": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/checkpoints/fucq58-20261105-g61-field-ledger/summary.json",
+  "cleanupReceipt": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq58-20261105-g61-field-ledger.cleanup.json",
+  "resources": {
+    "admissionAttempts": 1,
+    "workers": 1,
+    "ramLimitBytes": 67108864,
+    "scratchLimitBytes": 1048576,
+    "wallLimitSeconds": 60,
+    "observedProcessWallSeconds": 0.34244212500198046,
+    "sampledGroupPeakRssBytes": 32768,
+    "sampledScratchPeakBytes": 0,
+    "samplingLimitation": "Short-process sampling is not an exhaustive peak measurement.",
+    "rootAbsent": true,
+    "groupsStoppedAndJoined": true,
+    "reservationReleased": true,
+    "compatibilityException": null,
+    "leftovers": []
+  },
+  "claimLimits": [
+    "Source facts are retained assertions, not independently reverified.",
+    "Schema/hash/link consistency does not qualify a VIN profile or coverage.",
+    "No observed check character or personal identifier retained."
+  ]
+}

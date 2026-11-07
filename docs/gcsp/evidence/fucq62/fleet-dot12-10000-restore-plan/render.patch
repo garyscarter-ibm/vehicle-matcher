@@ -1,0 +1,11 @@
+--- a/render.gcsp.yaml
++++ b/render.gcsp.yaml
+@@ -23,7 +23,7 @@
+     buildCommand: >-
+       cd server && GCSP_FLEET_BUILD_EXPLICIT=1 npm install &&
+       node scripts/fleet-artifacts.mjs restore
+-      --release 0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a
++      --release 3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30
+       --store "$PWD/data/gcsp/vehicle-evidence/fleet-source.v1"
+       --cache "$PWD/data/gcsp/vehicle-evidence/fleet-artifacts.v1" --network download
+     startCommand: cd server && npm start

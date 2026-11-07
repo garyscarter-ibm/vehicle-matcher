@@ -1,0 +1,58 @@
+{
+  "kegsBefore": {
+    "ca-certificates": [
+      "2026-07-16",
+      "2026-08-13"
+    ],
+    "libunistring": [
+      "1.4.2"
+    ],
+    "readline": [
+      "8.3.3"
+    ],
+    "icu4c@79": [],
+    "openssl@4": [],
+    "krb5": [],
+    "postgresql@16": []
+  },
+  "kegsAfter": {
+    "ca-certificates": [
+      "2026-07-16",
+      "2026-08-13"
+    ],
+    "libunistring": [
+      "1.4.2"
+    ],
+    "readline": [
+      "8.3.3"
+    ],
+    "icu4c@79": [],
+    "openssl@4": [],
+    "krb5": [],
+    "postgresql@16": []
+  },
+  "optLinksBefore": {
+    "/opt/homebrew/opt/ca-certificates": "../Cellar/ca-certificates/2026-08-13",
+    "/opt/homebrew/opt/libunistring": "../Cellar/libunistring/1.4.2",
+    "/opt/homebrew/opt/readline": "../Cellar/readline/8.3.3",
+    "/opt/homebrew/opt/icu4c@79": null,
+    "/opt/homebrew/opt/openssl@4": null,
+    "/opt/homebrew/opt/krb5": null,
+    "/opt/homebrew/opt/postgresql@16": null,
+    "/opt/homebrew/opt/icu4c": "../Cellar/icu4c@78/78.3",
+    "/opt/homebrew/opt/openssl": "../Cellar/openssl@3/3.6.3"
+  },
+  "optLinksAfter": {
+    "/opt/homebrew/opt/ca-certificates": "../Cellar/ca-certificates/2026-08-13",
+    "/opt/homebrew/opt/libunistring": "../Cellar/libunistring/1.4.2",
+    "/opt/homebrew/opt/readline": "../Cellar/readline/8.3.3",
+    "/opt/homebrew/opt/icu4c@79": null,
+    "/opt/homebrew/opt/openssl@4": null,
+    "/opt/homebrew/opt/krb5": null,
+    "/opt/homebrew/opt/postgresql@16": null,
+    "/opt/homebrew/opt/icu4c": "../Cellar/icu4c@78/78.3",
+    "/opt/homebrew/opt/openssl": "../Cellar/openssl@3/3.6.3"
+  },
+  "existingPrefixLinksPreserved": true,
+  "defaultClusterAbsent": true
+}

@@ -1,0 +1,608 @@
+{
+  "schemaVersion": "f59-local-scheme-profile-gap-assessment.v1",
+  "observedAt": "2026-11-07T05:27:11.644698+00:00",
+  "scope": "Read-only retained evidence comparison while the separately released F70 exact-unspent continuation runs. No extra source traffic or profile activation.",
+  "sourcePins": [
+    {
+      "path": "server/gcsp/policy/seed-v1.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+      "sha256": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-line-breadth-preparation-2026-11-07/target-ledger.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "a6352d3ccc1280e8651be1f528f989a4be4dea405796e57fc4ddffb6935ad612"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth30-typed-unspent10940-2026-11-07/pool.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "51775a86b086e3ffc065fb91b32191fed0ce4f84296e65a41147aeb282652aab"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-58/gb-rhd-profile-gap-2026-11-07/qualification.v1.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+      "sha256": "6a598a0b998f5fc186423feb3715e53495f236a20dac32bf8bb7b9a055c5d52d"
+    },
+    {
+      "path": "server/data/gcsp/vehicle-evidence/vin-profiles.v1.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+      "sha256": "9a107b2b90c21a116e2fb93ca88211b95250c4404f6468924e5e7f53d092a1fa"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-actual-2026-11-07/t3mk/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "a36febaf7817922051df4632e0887a6acc341b0374abe5c309e80cf374d3cde7"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-actual-2026-11-07/x1m0/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "25efb92bc68a6c340ab0be1dbe441818287c602e4df7a357777d3ecf8ee9e256"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-actual-2026-11-07/ix1i/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "a66c52a937e000a56d20b5f78a99ecc3b6527259c3641e9b4b8beecbf2d72daa"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-actual-2026-11-07/x2ms/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "57bbfaeb9b74726104d4c29d0256236a2c5d400a0f65e7ee312fd7e1bed75ce4"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-actual-2026-11-07/ix24/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "25d5043b2917154a0e8ac66507d915b6a0f48cdcb43d6bb3f90c3943cbea6eb0"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-six-model-options-actual-2026-11-07/i4mf/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "a1d222af9e43394644e44855e1df2928846c79a0cf093e19ae11fa37c0986241"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3be/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "87a9de880f37656929b451ccd34e402a8a3c2d2efb3ce48abb656e32c60287a6"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3mr/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "38bd0c667c802a60c10a53713bcef82edbc1ee4a9db805c5e5039e80ce4d1583"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pf/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "9152b9b557bc7648f32dc671f27e5459932ed4ddb83a4fe44faa1481e0e1c144"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pk/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "5fd00de5fda06c57903e980f3c3dbdbb047e053d5fc03ece4c1d9731fe3efe87"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/t3pr/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "8723f2a3002891d25400fac32ec66cdf67c517f24dee7ee9e330489f0ad52acf"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1h/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "cff24421dd6e72106121962d1c0a3fa47646c90b640a0e8869c1467246b733f9"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1k/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "8106d956668db3a9b910b9487d140745639f95a28243ad50338cd365ef940f7f"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix1l/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "aff6ac249b7f438219e4091c7d93826883186af7c216f75526848f8f0f30009e"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x135/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "da8b7a5a4741d701d0d8484cc3cb114b2ef91ab7c1a87935cba4184e7c27cba0"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m1/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "15f660f0895ca7b755474e3814c0f23d1936a4c4d7334a5f4fc71c12ad2da8c1"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m2/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "cc5e908c456b2d57c67ab943dc803404572dd46383653960e7f0518992da9439"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m3/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "376058c6dcc8c3db81995161593d178c2e1db9cc8519484032f6a37c769d6010"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m6/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "903c3f8799284e044356bd1adce83fddf052386750aafbc577160a5c89e9a067"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1m7/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "90c5339fd54e02209895dfbd00edb94faf33e6d9c8adefdda8ea24cc788c01f0"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x0/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "576111385aa18afdb1a64a432180f30e7e589bba4f106a6a102b55b52d94448e"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x2/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "d6bc8ce5a6d4323deaef11b286cb55f0c4daa97b61b3c18c00c59a3805eb6b1d"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x3/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "5fe75d64f9c78d4fa22b7f4fe992692fb43c0d0796a2c4971af2fccbe9ddea04"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x6/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "cc14baca7dd4f39fff050f05d3ef7ce534f7e68da9e8bb15f8ccef7fef12f566"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1x7/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "081923e19bb4e3aa53546b350699fa7d42cc8bcaa8c924041c9ce04ed6cf3ceb"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x1xl/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "beae907b19495688115cc01745c53834ef18a56a815f2a847a0573309448a527"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/ix25/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "18f9668a0a24d7a83ebbd3732aaa91671f847ef45cbca7b8a082df813c1914f8"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/x235/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "6ae9917472523561f56f4788fe7d80390f84f75ea5228037c8a94d95f9fcb652"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4mg/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "270045aa90f0ceb466ab4c66aad0d3b92498f8ea73a5920134c1e9368883d4cc"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-breadth-remaining24-model-options-actual-2026-11-07/i4pc/tree.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "c8bdaed9f21a7f65d6903581cc2df951c52675af3b31571cc762ef7c92ac83a2"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/remaining-actual-validation.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "dfa846ab127827dde5646ecd3d5fb068913a8c1d341dc021686b03752b6ecb8a"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/README.md",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035",
+      "sha256": "e296c13795a73687e7d29c5c697f23e4671dcb53676f98e431e7a59b7fd09d4b"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-58/scheme-catalogue-2026-11-05/observation.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+      "sha256": "25636b87dfe942d385da5cee721fee8e59d53b216411277031d60626de36c4ec"
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-58/historical-f44-2026-11-05/observation.json",
+      "readRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+      "sha256": "38162762b2b17100d7b7555e9071b11d3ead3f91b157bac990f2c07d9feceb28"
+    }
+  ],
+  "originalContract": {
+    "schemeTargetRows": 31,
+    "distinctPolicyModelEngineIncludeKeys": 74,
+    "authoritativeTargetLedgerUnqualifiedRows": 31,
+    "currentSchemeJoinQualifiedRowsInLedger": 0
+  },
+  "breadth30": {
+    "actualTypedContexts": 30,
+    "catalogueRangeKeys": [
+      "G21",
+      "G26E",
+      "U10",
+      "U11"
+    ],
+    "actualDerivativesByRange": {
+      "G21": [
+        "320I",
+        "330E",
+        "M340I"
+      ],
+      "U11": [
+        "IX1 20",
+        "IX1 30",
+        "X1 18D",
+        "X1 20I",
+        "X1 23D",
+        "X1 23I",
+        "X1 25E",
+        "X1 30E",
+        "X1 M35I"
+      ],
+      "U10": [
+        "IX2 20",
+        "IX2 30",
+        "X2 20I",
+        "X2 M35I"
+      ],
+      "G26E": [
+        "I4 35",
+        "I4 40",
+        "I4 M60"
+      ]
+    },
+    "inputRequestPoolRemaining": 10940,
+    "capacityCreditFromPool": 0,
+    "targetFamilyComparisons": [
+      {
+        "schemeModelLine": "G21 Touring",
+        "policyEngineLabels": [
+          "320i",
+          "330e",
+          "M340i"
+        ],
+        "actualDerivativeLiterals": [
+          "320I",
+          "330E",
+          "M340I"
+        ],
+        "labelOnlyCandidateOverlaps": [
+          {
+            "policyEngineLabel": "320i",
+            "sourceDerivativeLiteral": "320I",
+            "actualContextIds": [
+              "t3mk",
+              "t3pk"
+            ]
+          },
+          {
+            "policyEngineLabel": "330e",
+            "sourceDerivativeLiteral": "330E",
+            "actualContextIds": [
+              "t3mr",
+              "t3pr"
+            ]
+          },
+          {
+            "policyEngineLabel": "M340i",
+            "sourceDerivativeLiteral": "M340I",
+            "actualContextIds": [
+              "t3be",
+              "t3pf"
+            ]
+          }
+        ],
+        "unmatchedPolicyEngineLabels": [],
+        "sourceLabelsWithoutPolicyEngineLabel": [],
+        "schemeJoinQualified": false,
+        "coverageQualified": false
+      },
+      {
+        "schemeModelLine": "U11 X1",
+        "policyEngineLabels": [
+          "18d",
+          "20d",
+          "20i",
+          "23d",
+          "23i",
+          "25e",
+          "30e",
+          "M35i"
+        ],
+        "actualDerivativeLiterals": [
+          "X1 18D",
+          "X1 20I",
+          "X1 23D",
+          "X1 23I",
+          "X1 25E",
+          "X1 30E",
+          "X1 M35I"
+        ],
+        "labelOnlyCandidateOverlaps": [
+          {
+            "policyEngineLabel": "18d",
+            "sourceDerivativeLiteral": "X1 18D",
+            "actualContextIds": [
+              "x1m2",
+              "x1x2"
+            ]
+          },
+          {
+            "policyEngineLabel": "20i",
+            "sourceDerivativeLiteral": "X1 20I",
+            "actualContextIds": [
+              "x1m0",
+              "x1x0"
+            ]
+          },
+          {
+            "policyEngineLabel": "23d",
+            "sourceDerivativeLiteral": "X1 23D",
+            "actualContextIds": [
+              "x1m3",
+              "x1x3"
+            ]
+          },
+          {
+            "policyEngineLabel": "23i",
+            "sourceDerivativeLiteral": "X1 23I",
+            "actualContextIds": [
+              "x1m1",
+              "x1xl"
+            ]
+          },
+          {
+            "policyEngineLabel": "25e",
+            "sourceDerivativeLiteral": "X1 25E",
+            "actualContextIds": [
+              "x1m6",
+              "x1x6"
+            ]
+          },
+          {
+            "policyEngineLabel": "30e",
+            "sourceDerivativeLiteral": "X1 30E",
+            "actualContextIds": [
+              "x1m7",
+              "x1x7"
+            ]
+          },
+          {
+            "policyEngineLabel": "M35i",
+            "sourceDerivativeLiteral": "X1 M35I",
+            "actualContextIds": [
+              "x135"
+            ]
+          }
+        ],
+        "unmatchedPolicyEngineLabels": [
+          "20d"
+        ],
+        "sourceLabelsWithoutPolicyEngineLabel": [],
+        "schemeJoinQualified": false,
+        "coverageQualified": false
+      },
+      {
+        "schemeModelLine": "U11 iX1",
+        "policyEngineLabels": [
+          "iX1 20",
+          "iX1 30"
+        ],
+        "actualDerivativeLiterals": [
+          "IX1 20",
+          "IX1 30"
+        ],
+        "labelOnlyCandidateOverlaps": [
+          {
+            "policyEngineLabel": "iX1 20",
+            "sourceDerivativeLiteral": "IX1 20",
+            "actualContextIds": [
+              "ix1i",
+              "ix1h"
+            ]
+          },
+          {
+            "policyEngineLabel": "iX1 30",
+            "sourceDerivativeLiteral": "IX1 30",
+            "actualContextIds": [
+              "ix1k",
+              "ix1l"
+            ]
+          }
+        ],
+        "unmatchedPolicyEngineLabels": [],
+        "sourceLabelsWithoutPolicyEngineLabel": [],
+        "schemeJoinQualified": false,
+        "coverageQualified": false
+      },
+      {
+        "schemeModelLine": "U10 X2",
+        "policyEngineLabels": [
+          "20i",
+          "M35i"
+        ],
+        "actualDerivativeLiterals": [
+          "X2 20I",
+          "X2 M35I"
+        ],
+        "labelOnlyCandidateOverlaps": [
+          {
+            "policyEngineLabel": "20i",
+            "sourceDerivativeLiteral": "X2 20I",
+            "actualContextIds": [
+              "x2ms"
+            ]
+          },
+          {
+            "policyEngineLabel": "M35i",
+            "sourceDerivativeLiteral": "X2 M35I",
+            "actualContextIds": [
+              "x235"
+            ]
+          }
+        ],
+        "unmatchedPolicyEngineLabels": [],
+        "sourceLabelsWithoutPolicyEngineLabel": [],
+        "schemeJoinQualified": false,
+        "coverageQualified": false
+      },
+      {
+        "schemeModelLine": "U10 iX2",
+        "policyEngineLabels": [
+          "iX2 20",
+          "iX2 30"
+        ],
+        "actualDerivativeLiterals": [
+          "IX2 20",
+          "IX2 30"
+        ],
+        "labelOnlyCandidateOverlaps": [
+          {
+            "policyEngineLabel": "iX2 20",
+            "sourceDerivativeLiteral": "IX2 20",
+            "actualContextIds": [
+              "ix24"
+            ]
+          },
+          {
+            "policyEngineLabel": "iX2 30",
+            "sourceDerivativeLiteral": "IX2 30",
+            "actualContextIds": [
+              "ix25"
+            ]
+          }
+        ],
+        "unmatchedPolicyEngineLabels": [],
+        "sourceLabelsWithoutPolicyEngineLabel": [],
+        "schemeJoinQualified": false,
+        "coverageQualified": false
+      },
+      {
+        "schemeModelLine": "G26 i4",
+        "policyEngineLabels": [
+          "i4 35",
+          "i4 40",
+          "i4 M50"
+        ],
+        "actualDerivativeLiterals": [
+          "I4 35",
+          "I4 40",
+          "I4 M60"
+        ],
+        "labelOnlyCandidateOverlaps": [
+          {
+            "policyEngineLabel": "i4 35",
+            "sourceDerivativeLiteral": "I4 35",
+            "actualContextIds": [
+              "i4mf"
+            ]
+          },
+          {
+            "policyEngineLabel": "i4 40",
+            "sourceDerivativeLiteral": "I4 40",
+            "actualContextIds": [
+              "i4mg"
+            ]
+          }
+        ],
+        "unmatchedPolicyEngineLabels": [
+          "i4 M50"
+        ],
+        "sourceLabelsWithoutPolicyEngineLabel": [
+          "I4 M60"
+        ],
+        "schemeJoinQualified": false,
+        "coverageQualified": false
+      }
+    ],
+    "labelOnlyCandidateOverlapCount": 18,
+    "policyLabelsAcrossComparedFamilies": 20,
+    "qualificationCredit": 0,
+    "comparisonMethod": "Explicit named family candidate grouping by retained range and derivative literals; case-only engine-label comparison, with X1/X2 prefix for labels that omit it. This is an assessment of literal label overlap, not an executable scheme mapping or proof of eligibility."
+  },
+  "explicitGaps": [
+    {
+      "target": "U11 X1|20d",
+      "finding": "No X1 20D derivative occurs among the30 retained typed contexts. The earlier F70 model-axis790 scheme-context-gaps summary omitted this policy engine label."
+    },
+    {
+      "target": "G26 i4|i4 M50",
+      "finding": "Retained I4PC/72HD derivative is I4 M60. M60 does not fill the historical M50 target; no successor substitution."
+    },
+    {
+      "target": "F44 Gran Coupe",
+      "finding": "Retained dated empty-tree and separate historical HTTP400 remain limited observations; no global-unavailability conclusion."
+    },
+    {
+      "target": "i20 iX",
+      "finding": "The released I20 inventory consumed three HTTP200 GETs; tree was a two-byte empty object and diagnostic-alias-limit stopped it. No I20 success proof or replay."
+    }
+  ],
+  "profile": {
+    "retainedAssessmentStatus": "context-corroborated-profile-unqualified",
+    "enabledProfiles": 5,
+    "enabledContext": "US/North America/LHD structural references",
+    "enabledGbRhdProfiles": 0,
+    "ukSingleObservations": 12,
+    "secondDistinctSameDerivativeCorroborations": 0,
+    "minimalRemainingEvidence": [
+      {
+        "fields": [
+          "exactDerivative",
+          "generation",
+          "body",
+          "powertrain",
+          "drive",
+          "transmission",
+          "agModelAssociation"
+        ],
+        "requiredProof": "Independently match the same candidate/type to the selected catalogue family. Public model facts may describe a family but cannot identify the retained single observation."
+      },
+      {
+        "fields": [
+          "market",
+          "steering",
+          "importContext"
+        ],
+        "requiredProof": "Explicit GB specification and RHD evidence bound to that type and era, with import/mismatch context. UK registration, UK launch, locale or the unexplained RL literal alone are insufficient."
+      },
+      {
+        "fields": [
+          "wmi",
+          "wholeDescriptor",
+          "descriptorBoundaries",
+          "position9Convention",
+          "position10Meaning",
+          "serialShape"
+        ],
+        "requiredProof": "BMW or applicable type-approval format evidence for the bounded GB/RHD type, supported by a second distinct consistent sample under an authorised privacy-preserving method. Never derive descriptor = AG code + zero or copy a sampled checksum/serial."
+      },
+      {
+        "fields": [
+          "modelYear",
+          "productionEra",
+          "applicablePlantCharacter"
+        ],
+        "requiredProof": "Separately labelled manufacturer/type-era evidence and a matched plant-code allocation. Keep UK delivery launch, catalogue order/effect date, advertised year, registration year and actual production date separate."
+      }
+    ],
+    "acceptanceStillOpen": true
+  },
+  "dateBoundaries": {
+    "catalogueOrderDate": "2026-11-01",
+    "resolvedModelEffectDate": "2027-01-05",
+    "physicalProductionDate": null,
+    "modelYear": null,
+    "rule": "Catalogue order/effect/tax dates, literal RL and GB request context do not establish production date, model year, RHD VIN encoding, applicable plant allocation or WMI."
+  },
+  "nextEvidenceOnly": "Reconcile the actual global strict-admission/spent union separately. For coverage, qualify exact historical scheme joins and unmet model/engine contexts, retaining unresolved generations; for GB profiles, obtain the bounded exact derivative/GB-RHD/era/descriptor/plant package already specified by the retained assessment. Any new collection requires its own exact release.",
+  "noChanges": {
+    "sourceTraffic": 0,
+    "vehicleObservationsAdded": 0,
+    "configurationsAddedByThisAssessment": 0,
+    "profilesActivated": 0,
+    "registryEdited": false,
+    "policyEdited": false,
+    "sourceLedgersEdited": false,
+    "storyCriteriaOrStatusChanged": false,
+    "scratchCreated": false,
+    "largeOutputsCreated": false,
+    "leftovers": []
+  },
+  "validation": {
+    "selected": "JSON/hash/input consistency, expected30 contexts/18 overlaps/20 slice labels, original31 unqualified rows and enabled-profile counts; no application suite because executable code and contracts are unchanged.",
+    "scope": "scoped retained-evidence assessment",
+    "fullAcceptance": false
+  }
+}

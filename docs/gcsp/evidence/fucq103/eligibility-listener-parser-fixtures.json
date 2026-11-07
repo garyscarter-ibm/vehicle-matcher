@@ -1,0 +1,647 @@
+{
+  "schemaVersion": 1,
+  "scope": "source-review-design-fixtures-only",
+  "status": "AUTHORED-NOT-EXECUTED",
+  "rawRuntimeOutput": false,
+  "parser": "scoped-resources.py:listener_ports",
+  "commandFieldSelection": "-Fpfn",
+  "diagnosticBound": "ascii(field[:64])[:128]; at most128 ASCII characters for offending-field sample",
+  "cases": [
+    {
+      "name": "legacy491-mandatory-f-frame",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf8\nn127.0.0.1:4242\n",
+      "expectedPorts": [
+        4242
+      ],
+      "expectedError": null
+    },
+    {
+      "name": "explicit-pfn-numeric-ipv4",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf9\nn127.0.0.1:65535\n",
+      "expectedPorts": [
+        65535
+      ],
+      "expectedError": null
+    },
+    {
+      "name": "ipv6-wildcard-multiple-owned-processes",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf8\nn[::1]:4242\nf9\nn*:4243\np102\nf8\nn127.0.0.1:4244\n",
+      "expectedPorts": [
+        4242,
+        4243,
+        4244
+      ],
+      "expectedError": null
+    },
+    {
+      "name": "same-port-different-file-frames",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf8\nn127.0.0.1:4242\nf9\nn[::1]:4242\n",
+      "expectedPorts": [
+        4242
+      ],
+      "expectedError": null
+    },
+    {
+      "name": "numeric-fd-zero-and-port-one",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf0\nn*:1\n",
+      "expectedPorts": [
+        1
+      ],
+      "expectedError": null
+    },
+    {
+      "name": "empty-no-match-output",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "",
+      "expectedPorts": [],
+      "expectedError": null
+    },
+    {
+      "name": "foreign-pid",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p999\nf8\nn*:4242\n",
+      "expectedPorts": null,
+      "expectedError": "foreign or duplicate PID"
+    },
+    {
+      "name": "name-before-process",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "n*:4242\n",
+      "expectedPorts": null,
+      "expectedError": "name outside file or duplicate name"
+    },
+    {
+      "name": "file-before-process",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "f8\nn*:4242\n",
+      "expectedPorts": null,
+      "expectedError": "file outside process or missing name"
+    },
+    {
+      "name": "name-before-file",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nn*:4242\n",
+      "expectedPorts": null,
+      "expectedError": "name outside file or duplicate name"
+    },
+    {
+      "name": "process-without-file-at-eof",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\n",
+      "expectedPorts": null,
+      "expectedError": "incomplete process/file frame"
+    },
+    {
+      "name": "file-without-name-at-eof",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf8\n",
+      "expectedPorts": null,
+      "expectedError": "incomplete process/file frame"
+    },
+    {
+      "name": "file-replaced-before-name",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf8\nf9\nn*:4242\n",
+      "expectedPorts": null,
+      "expectedError": "file outside process or missing name"
+    },
+    {
+      "name": "process-replaced-before-file",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\np102\nf8\nn*:4242\n",
+      "expectedPorts": null,
+      "expectedError": "incomplete process/file frame"
+    },
+    {
+      "name": "process-replaced-before-name",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf8\np102\nf8\nn*:4242\n",
+      "expectedPorts": null,
+      "expectedError": "incomplete process/file frame"
+    },
+    {
+      "name": "duplicate-name-in-file",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf8\nn*:4242\nn*:4243\n",
+      "expectedPorts": null,
+      "expectedError": "name outside file or duplicate name"
+    },
+    {
+      "name": "duplicate-process-frame",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf8\nn*:4242\np101\nf9\nn*:4243\n",
+      "expectedPorts": null,
+      "expectedError": "foreign or duplicate PID"
+    },
+    {
+      "name": "duplicate-file-frame",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf8\nn*:4242\nf8\nn*:4243\n",
+      "expectedPorts": null,
+      "expectedError": "duplicate file descriptor"
+    },
+    {
+      "name": "descriptor-access-suffix-not-selected",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf8u\nn*:4242\n",
+      "expectedPorts": null,
+      "expectedError": "unknown field"
+    },
+    {
+      "name": "unknown-access-field",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf8\nau\nn*:4242\n",
+      "expectedPorts": null,
+      "expectedError": "unknown field"
+    },
+    {
+      "name": "unknown-tcp-state-field",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf8\nn*:4242\nTST=LISTEN\n",
+      "expectedPorts": null,
+      "expectedError": "unknown field"
+    },
+    {
+      "name": "unknown-blank-field",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf8\n\nn*:4242\n",
+      "expectedPorts": null,
+      "expectedError": "unknown field"
+    },
+    {
+      "name": "nonnumeric-pid",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "punknown\nf8\nn*:4242\n",
+      "expectedPorts": null,
+      "expectedError": "unknown field"
+    },
+    {
+      "name": "zero-port",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf8\nn*:0\n",
+      "expectedPorts": null,
+      "expectedError": "invalid listener port"
+    },
+    {
+      "name": "too-large-port",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf8\nn*:65536\n",
+      "expectedPorts": null,
+      "expectedError": "invalid listener port"
+    },
+    {
+      "name": "long-port",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf8\nn*:123456\n",
+      "expectedPorts": null,
+      "expectedError": "invalid listener port"
+    },
+    {
+      "name": "nonnumeric-port",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf8\nn*:https\n",
+      "expectedPorts": null,
+      "expectedError": "invalid listener port"
+    },
+    {
+      "name": "missing-address",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf8\nn:4242\n",
+      "expectedPorts": null,
+      "expectedError": "invalid listener port"
+    },
+    {
+      "name": "trailing-state-in-name",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf8\nn*:4242 (LISTEN)\n",
+      "expectedPorts": null,
+      "expectedError": "invalid listener port"
+    },
+    {
+      "name": "bounded-offending-field",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf8\nXzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz\n",
+      "expectedPorts": null,
+      "expectedError": "unknown field"
+    },
+    {
+      "name": "unique-port-cap-128",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf0\nn*:4000\nf1\nn*:4001\nf2\nn*:4002\nf3\nn*:4003\nf4\nn*:4004\nf5\nn*:4005\nf6\nn*:4006\nf7\nn*:4007\nf8\nn*:4008\nf9\nn*:4009\nf10\nn*:4010\nf11\nn*:4011\nf12\nn*:4012\nf13\nn*:4013\nf14\nn*:4014\nf15\nn*:4015\nf16\nn*:4016\nf17\nn*:4017\nf18\nn*:4018\nf19\nn*:4019\nf20\nn*:4020\nf21\nn*:4021\nf22\nn*:4022\nf23\nn*:4023\nf24\nn*:4024\nf25\nn*:4025\nf26\nn*:4026\nf27\nn*:4027\nf28\nn*:4028\nf29\nn*:4029\nf30\nn*:4030\nf31\nn*:4031\nf32\nn*:4032\nf33\nn*:4033\nf34\nn*:4034\nf35\nn*:4035\nf36\nn*:4036\nf37\nn*:4037\nf38\nn*:4038\nf39\nn*:4039\nf40\nn*:4040\nf41\nn*:4041\nf42\nn*:4042\nf43\nn*:4043\nf44\nn*:4044\nf45\nn*:4045\nf46\nn*:4046\nf47\nn*:4047\nf48\nn*:4048\nf49\nn*:4049\nf50\nn*:4050\nf51\nn*:4051\nf52\nn*:4052\nf53\nn*:4053\nf54\nn*:4054\nf55\nn*:4055\nf56\nn*:4056\nf57\nn*:4057\nf58\nn*:4058\nf59\nn*:4059\nf60\nn*:4060\nf61\nn*:4061\nf62\nn*:4062\nf63\nn*:4063\nf64\nn*:4064\nf65\nn*:4065\nf66\nn*:4066\nf67\nn*:4067\nf68\nn*:4068\nf69\nn*:4069\nf70\nn*:4070\nf71\nn*:4071\nf72\nn*:4072\nf73\nn*:4073\nf74\nn*:4074\nf75\nn*:4075\nf76\nn*:4076\nf77\nn*:4077\nf78\nn*:4078\nf79\nn*:4079\nf80\nn*:4080\nf81\nn*:4081\nf82\nn*:4082\nf83\nn*:4083\nf84\nn*:4084\nf85\nn*:4085\nf86\nn*:4086\nf87\nn*:4087\nf88\nn*:4088\nf89\nn*:4089\nf90\nn*:4090\nf91\nn*:4091\nf92\nn*:4092\nf93\nn*:4093\nf94\nn*:4094\nf95\nn*:4095\nf96\nn*:4096\nf97\nn*:4097\nf98\nn*:4098\nf99\nn*:4099\nf100\nn*:4100\nf101\nn*:4101\nf102\nn*:4102\nf103\nn*:4103\nf104\nn*:4104\nf105\nn*:4105\nf106\nn*:4106\nf107\nn*:4107\nf108\nn*:4108\nf109\nn*:4109\nf110\nn*:4110\nf111\nn*:4111\nf112\nn*:4112\nf113\nn*:4113\nf114\nn*:4114\nf115\nn*:4115\nf116\nn*:4116\nf117\nn*:4117\nf118\nn*:4118\nf119\nn*:4119\nf120\nn*:4120\nf121\nn*:4121\nf122\nn*:4122\nf123\nn*:4123\nf124\nn*:4124\nf125\nn*:4125\nf126\nn*:4126\nf127\nn*:4127\n",
+      "expectedPorts": [
+        4000,
+        4001,
+        4002,
+        4003,
+        4004,
+        4005,
+        4006,
+        4007,
+        4008,
+        4009,
+        4010,
+        4011,
+        4012,
+        4013,
+        4014,
+        4015,
+        4016,
+        4017,
+        4018,
+        4019,
+        4020,
+        4021,
+        4022,
+        4023,
+        4024,
+        4025,
+        4026,
+        4027,
+        4028,
+        4029,
+        4030,
+        4031,
+        4032,
+        4033,
+        4034,
+        4035,
+        4036,
+        4037,
+        4038,
+        4039,
+        4040,
+        4041,
+        4042,
+        4043,
+        4044,
+        4045,
+        4046,
+        4047,
+        4048,
+        4049,
+        4050,
+        4051,
+        4052,
+        4053,
+        4054,
+        4055,
+        4056,
+        4057,
+        4058,
+        4059,
+        4060,
+        4061,
+        4062,
+        4063,
+        4064,
+        4065,
+        4066,
+        4067,
+        4068,
+        4069,
+        4070,
+        4071,
+        4072,
+        4073,
+        4074,
+        4075,
+        4076,
+        4077,
+        4078,
+        4079,
+        4080,
+        4081,
+        4082,
+        4083,
+        4084,
+        4085,
+        4086,
+        4087,
+        4088,
+        4089,
+        4090,
+        4091,
+        4092,
+        4093,
+        4094,
+        4095,
+        4096,
+        4097,
+        4098,
+        4099,
+        4100,
+        4101,
+        4102,
+        4103,
+        4104,
+        4105,
+        4106,
+        4107,
+        4108,
+        4109,
+        4110,
+        4111,
+        4112,
+        4113,
+        4114,
+        4115,
+        4116,
+        4117,
+        4118,
+        4119,
+        4120,
+        4121,
+        4122,
+        4123,
+        4124,
+        4125,
+        4126,
+        4127
+      ],
+      "expectedError": null
+    },
+    {
+      "name": "unique-port-cap-129",
+      "ownedPids": [
+        101,
+        102
+      ],
+      "stdout": "p101\nf0\nn*:4000\nf1\nn*:4001\nf2\nn*:4002\nf3\nn*:4003\nf4\nn*:4004\nf5\nn*:4005\nf6\nn*:4006\nf7\nn*:4007\nf8\nn*:4008\nf9\nn*:4009\nf10\nn*:4010\nf11\nn*:4011\nf12\nn*:4012\nf13\nn*:4013\nf14\nn*:4014\nf15\nn*:4015\nf16\nn*:4016\nf17\nn*:4017\nf18\nn*:4018\nf19\nn*:4019\nf20\nn*:4020\nf21\nn*:4021\nf22\nn*:4022\nf23\nn*:4023\nf24\nn*:4024\nf25\nn*:4025\nf26\nn*:4026\nf27\nn*:4027\nf28\nn*:4028\nf29\nn*:4029\nf30\nn*:4030\nf31\nn*:4031\nf32\nn*:4032\nf33\nn*:4033\nf34\nn*:4034\nf35\nn*:4035\nf36\nn*:4036\nf37\nn*:4037\nf38\nn*:4038\nf39\nn*:4039\nf40\nn*:4040\nf41\nn*:4041\nf42\nn*:4042\nf43\nn*:4043\nf44\nn*:4044\nf45\nn*:4045\nf46\nn*:4046\nf47\nn*:4047\nf48\nn*:4048\nf49\nn*:4049\nf50\nn*:4050\nf51\nn*:4051\nf52\nn*:4052\nf53\nn*:4053\nf54\nn*:4054\nf55\nn*:4055\nf56\nn*:4056\nf57\nn*:4057\nf58\nn*:4058\nf59\nn*:4059\nf60\nn*:4060\nf61\nn*:4061\nf62\nn*:4062\nf63\nn*:4063\nf64\nn*:4064\nf65\nn*:4065\nf66\nn*:4066\nf67\nn*:4067\nf68\nn*:4068\nf69\nn*:4069\nf70\nn*:4070\nf71\nn*:4071\nf72\nn*:4072\nf73\nn*:4073\nf74\nn*:4074\nf75\nn*:4075\nf76\nn*:4076\nf77\nn*:4077\nf78\nn*:4078\nf79\nn*:4079\nf80\nn*:4080\nf81\nn*:4081\nf82\nn*:4082\nf83\nn*:4083\nf84\nn*:4084\nf85\nn*:4085\nf86\nn*:4086\nf87\nn*:4087\nf88\nn*:4088\nf89\nn*:4089\nf90\nn*:4090\nf91\nn*:4091\nf92\nn*:4092\nf93\nn*:4093\nf94\nn*:4094\nf95\nn*:4095\nf96\nn*:4096\nf97\nn*:4097\nf98\nn*:4098\nf99\nn*:4099\nf100\nn*:4100\nf101\nn*:4101\nf102\nn*:4102\nf103\nn*:4103\nf104\nn*:4104\nf105\nn*:4105\nf106\nn*:4106\nf107\nn*:4107\nf108\nn*:4108\nf109\nn*:4109\nf110\nn*:4110\nf111\nn*:4111\nf112\nn*:4112\nf113\nn*:4113\nf114\nn*:4114\nf115\nn*:4115\nf116\nn*:4116\nf117\nn*:4117\nf118\nn*:4118\nf119\nn*:4119\nf120\nn*:4120\nf121\nn*:4121\nf122\nn*:4122\nf123\nn*:4123\nf124\nn*:4124\nf125\nn*:4125\nf126\nn*:4126\nf127\nn*:4127\nf128\nn*:4128\n",
+      "expectedPorts": null,
+      "expectedError": "Owned listener observation cap exceeded"
+    }
+  ],
+  "wrapperCases": [
+    {
+      "name": "no-match-return1-empty",
+      "returncode": 1,
+      "stderr": "",
+      "stdout": "",
+      "expected": "empty ports"
+    },
+    {
+      "name": "success-return0-empty",
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "",
+      "expected": "Empty successful listener query"
+    },
+    {
+      "name": "return1-with-data",
+      "returncode": 1,
+      "stderr": "",
+      "stdout": "p101\nf8\nn*:4242\n",
+      "expected": "Owned listener query is unknown"
+    },
+    {
+      "name": "failed-query",
+      "returncode": 2,
+      "stderr": "",
+      "stdout": "",
+      "expected": "Owned listener query is unknown"
+    },
+    {
+      "name": "stderr-despite-success",
+      "returncode": 0,
+      "stderr": "warning\n",
+      "stdout": "p101\nf8\nn*:4242\n",
+      "expected": "Owned listener query is unknown"
+    },
+    {
+      "name": "cumulative-port-cap",
+      "priorPorts": [
+        4000,
+        4001,
+        4002,
+        4003,
+        4004,
+        4005,
+        4006,
+        4007,
+        4008,
+        4009,
+        4010,
+        4011,
+        4012,
+        4013,
+        4014,
+        4015,
+        4016,
+        4017,
+        4018,
+        4019,
+        4020,
+        4021,
+        4022,
+        4023,
+        4024,
+        4025,
+        4026,
+        4027,
+        4028,
+        4029,
+        4030,
+        4031,
+        4032,
+        4033,
+        4034,
+        4035,
+        4036,
+        4037,
+        4038,
+        4039,
+        4040,
+        4041,
+        4042,
+        4043,
+        4044,
+        4045,
+        4046,
+        4047,
+        4048,
+        4049,
+        4050,
+        4051,
+        4052,
+        4053,
+        4054,
+        4055,
+        4056,
+        4057,
+        4058,
+        4059,
+        4060,
+        4061,
+        4062,
+        4063,
+        4064,
+        4065,
+        4066,
+        4067,
+        4068,
+        4069,
+        4070,
+        4071,
+        4072,
+        4073,
+        4074,
+        4075,
+        4076,
+        4077,
+        4078,
+        4079,
+        4080,
+        4081,
+        4082,
+        4083,
+        4084,
+        4085,
+        4086,
+        4087,
+        4088,
+        4089,
+        4090,
+        4091,
+        4092,
+        4093,
+        4094,
+        4095,
+        4096,
+        4097,
+        4098,
+        4099,
+        4100,
+        4101,
+        4102,
+        4103,
+        4104,
+        4105,
+        4106,
+        4107,
+        4108,
+        4109,
+        4110,
+        4111,
+        4112,
+        4113,
+        4114,
+        4115,
+        4116,
+        4117,
+        4118,
+        4119,
+        4120,
+        4121,
+        4122,
+        4123,
+        4124,
+        4125,
+        4126,
+        4127
+      ],
+      "observedPorts": [
+        5000
+      ],
+      "expected": "Owned listener observation cap exceeded"
+    }
+  ],
+  "limitations": "Synthetic expected observations for static review; parser/helper not imported or executed, no lsof probe/listener/runtime reproduction/reservation/scratch allocation."
+}

@@ -1,0 +1,145 @@
+{
+  "schemaVersion": "bmw-range-inventory-capability-validation.v1",
+  "scope": "scoped synthetic fixtures and shared executor boundaries; no source traffic",
+  "phases": {
+    "inventory-red": {
+      "summary": {
+        "cancelled": 0,
+        "fail": 7,
+        "pass": 0,
+        "skipped": 0,
+        "tests": 7,
+        "todo": 0
+      },
+      "wallSeconds": 0.251614208,
+      "sampledPeakRssBytes": 2211840,
+      "peakScratchBytes": 360544,
+      "resultSha256": "ab3bb2f5b39ac72dd1d2c32c6722d1967a025be373cb3045852887c11d5fa59c",
+      "cleanup": {
+        "code_identity_unchanged": true,
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "groups_absent": true,
+        "removed_allocation_bytes": 360544,
+        "reservation_absent": true,
+        "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/inventory-red-result.json",
+        "scratch_absent": true
+      },
+      "codeIdentity": {
+        "docs/gcsp/evidence/fucq59/g42-range-inventory-2026-11-07/inventory-source.mjs": "f1d417cb85554f1c9da169d831b798958cff577921f28a93233b150480813a53",
+        "docs/gcsp/evidence/fucq59/g42-range-inventory-2026-11-07/inventory-source.test.mjs": "251a51ef9265c44b0d7cac5b09b7868aea102a85b6dbf2796309fec94d60666b",
+        "scripts/gcsp/bmw-public-registration.mjs": "5fa166bc0ce537e54b99c86e0e681a496ce1edcea9652184e3842b9587a009d3",
+        "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+        "scripts/gcsp/capture-bmw-selection.mjs": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+        "scripts/gcsp/collect-fleet.mjs": "76107aea09f14f6baaf32417f00f7acbc86d77413e18b8a01f289195d0d443bf",
+        "scripts/gcsp/collection-session.mjs": "baa55b0736932ad23ed967d3ebd9cb91086ca03e6e7ad103663d6ad121461f75",
+        "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+        "scripts/gcsp/public-bmw-source.mjs": "43ddf5f9180a22a3147b069f4fdad07f9919302b1c8072e4b679071e08983556",
+        "server/test/gcsp-bmw-context-qualification.test.js": "31f67d169abbbc076d3355ebda320050ab0ecc7e304012eea5ecad0b295d54f7",
+        "server/test/gcsp-bmw-range-inventory.test.js": "309bcfe217093d3e34e914bcb9cfa6ed52ab4c4b6a0aaf51c23572629f578ff2",
+        "server/test/gcsp-bmw-selection-capture.test.js": "277c685eb205014f9470655249ec53641299fc05242ca2aebd346329122c8fc8",
+        "server/test/gcsp-bmw-source-batch.test.js": "209d96dcf7529fe0a646d50d7cd05204237a06b0b6d95ead5434a933074c87af",
+        "server/test/gcsp-fleet-collector.test.js": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88",
+        "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+        "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+      }
+    },
+    "inventory-green": {
+      "summary": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 10,
+        "skipped": 0,
+        "tests": 10,
+        "todo": 0
+      },
+      "wallSeconds": 1.314802958,
+      "sampledPeakRssBytes": 131842048,
+      "peakScratchBytes": 1421440,
+      "resultSha256": "0b25f5b1c557bb1666535f84601fc06b9215b52a20c721cc1afe1a8ea2426d75",
+      "cleanup": {
+        "code_identity_unchanged": true,
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "groups_absent": true,
+        "removed_allocation_bytes": 1421440,
+        "reservation_absent": true,
+        "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/inventory-green-result.json",
+        "scratch_absent": true
+      },
+      "codeIdentity": {
+        "docs/gcsp/evidence/fucq59/g42-range-inventory-2026-11-07/inventory-source.mjs": "f1d417cb85554f1c9da169d831b798958cff577921f28a93233b150480813a53",
+        "docs/gcsp/evidence/fucq59/g42-range-inventory-2026-11-07/inventory-source.test.mjs": "251a51ef9265c44b0d7cac5b09b7868aea102a85b6dbf2796309fec94d60666b",
+        "scripts/gcsp/bmw-public-registration.mjs": "61d9d5283c6995a55556e767f9a722954becd8899c73c5bd784bb796d728c206",
+        "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+        "scripts/gcsp/capture-bmw-selection.mjs": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+        "scripts/gcsp/collect-fleet.mjs": "76107aea09f14f6baaf32417f00f7acbc86d77413e18b8a01f289195d0d443bf",
+        "scripts/gcsp/collection-session.mjs": "ba4e5b1bf632cb05993fa0b0b4d24de7559f80baed1111999911a3e713ec6a8c",
+        "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+        "scripts/gcsp/public-bmw-source.mjs": "5f60e1c18c636e6cd1a6fe66e0117c1bbbc092d8a5b796d748d85aa681bc4487",
+        "server/test/gcsp-bmw-context-qualification.test.js": "31f67d169abbbc076d3355ebda320050ab0ecc7e304012eea5ecad0b295d54f7",
+        "server/test/gcsp-bmw-range-inventory.test.js": "309bcfe217093d3e34e914bcb9cfa6ed52ab4c4b6a0aaf51c23572629f578ff2",
+        "server/test/gcsp-bmw-selection-capture.test.js": "277c685eb205014f9470655249ec53641299fc05242ca2aebd346329122c8fc8",
+        "server/test/gcsp-bmw-source-batch.test.js": "209d96dcf7529fe0a646d50d7cd05204237a06b0b6d95ead5434a933074c87af",
+        "server/test/gcsp-fleet-collector.test.js": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88",
+        "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+        "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+      }
+    },
+    "inventory-boundary": {
+      "summary": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 121,
+        "skipped": 0,
+        "tests": 121,
+        "todo": 0
+      },
+      "wallSeconds": 16.673967958000002,
+      "sampledPeakRssBytes": 266584064,
+      "peakScratchBytes": 5796224,
+      "resultSha256": "12dbe39f3e1c7785d10758b8f6bb7e18514d08bd35055801719a1b3278502705",
+      "cleanup": {
+        "code_identity_unchanged": true,
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "groups_absent": true,
+        "removed_allocation_bytes": 5796224,
+        "reservation_absent": true,
+        "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/context-qualification/inventory-boundary-result.json",
+        "scratch_absent": true
+      },
+      "codeIdentity": {
+        "docs/gcsp/evidence/fucq59/g42-range-inventory-2026-11-07/inventory-source.mjs": "f1d417cb85554f1c9da169d831b798958cff577921f28a93233b150480813a53",
+        "docs/gcsp/evidence/fucq59/g42-range-inventory-2026-11-07/inventory-source.test.mjs": "251a51ef9265c44b0d7cac5b09b7868aea102a85b6dbf2796309fec94d60666b",
+        "scripts/gcsp/bmw-public-registration.mjs": "61d9d5283c6995a55556e767f9a722954becd8899c73c5bd784bb796d728c206",
+        "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+        "scripts/gcsp/capture-bmw-selection.mjs": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+        "scripts/gcsp/collect-fleet.mjs": "76107aea09f14f6baaf32417f00f7acbc86d77413e18b8a01f289195d0d443bf",
+        "scripts/gcsp/collection-session.mjs": "ba4e5b1bf632cb05993fa0b0b4d24de7559f80baed1111999911a3e713ec6a8c",
+        "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+        "scripts/gcsp/public-bmw-source.mjs": "5f60e1c18c636e6cd1a6fe66e0117c1bbbc092d8a5b796d748d85aa681bc4487",
+        "server/test/gcsp-bmw-context-qualification.test.js": "31f67d169abbbc076d3355ebda320050ab0ecc7e304012eea5ecad0b295d54f7",
+        "server/test/gcsp-bmw-options-qualification.test.js": "f2788898e10027366df4fbd4dd1682385dc549c5867b32b2a1210c1aa493146e",
+        "server/test/gcsp-bmw-range-inventory.test.js": "d08968ad6b6c0833c6b57fe527c858569cc337d625bd311eb0605752b3dec8b9",
+        "server/test/gcsp-bmw-selection-capture.test.js": "277c685eb205014f9470655249ec53641299fc05242ca2aebd346329122c8fc8",
+        "server/test/gcsp-bmw-source-batch.test.js": "209d96dcf7529fe0a646d50d7cd05204237a06b0b6d95ead5434a933074c87af",
+        "server/test/gcsp-fleet-collector.test.js": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88",
+        "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+        "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+      }
+    }
+  },
+  "sourceTraffic": 0,
+  "admittedConfigurations": 0,
+  "acceptance": false,
+  "nonVisualReason": "Observation-only source tooling and evidence-local caller; no application screen or user-visible runtime behavior changed.",
+  "excludedChecks": [
+    "Full application suite",
+    "UI/browser validation",
+    "Native SQL",
+    "Live source or acceptance",
+    "Corpus publication and physical-production profiles"
+  ],
+  "selectionReason": "Three existing source modules add a distinct registration/allowlist/projection branch. New protocol/lifecycle tests and existing context/options/batch/collector tests cover those changed callers and their shared executor boundary."
+}

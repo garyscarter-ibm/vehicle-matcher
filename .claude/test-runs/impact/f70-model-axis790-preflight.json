@@ -1,0 +1,412 @@
+{
+  "schemaVersion": "test-impact.v1",
+  "scope": "scoped offline model-axis790 preparation",
+  "identity": {
+    "scripts/gcsp/bmw-public-registration.mjs": "3a9a1afcc128f8356bb296b063d118bc9b7c59531ef75823bb99f8e01f209291",
+    "scripts/gcsp/public-bmw-source.mjs": "4561e844cfe85383ad8ed27521bab157a10dae57f8d82ab29b8f41842bfc8336",
+    "scripts/gcsp/collection-session.mjs": "db5a1a1ca6037132eced521f1a9b19d73a4282a113da66480ebec70c0beac7ff",
+    "scripts/gcsp/collect-fleet.mjs": "ba3864cee32f480facde57a2d2c9dbf944d571878bb2a9cece220955357ab1de",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/bmw-selection-binding.mjs": "88820920f57f4509741d6ad291e2fcd36c5b47a65d42acd35e890e3a6f84004e",
+    "scripts/gcsp/capture-bmw-selection.mjs": "b3cea57603e403f41bb326bcdfc955b7f061a7cfc1b071d1ef609de3efc99bc1",
+    "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+    "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+    "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+    "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/prepare.py": "ed40506c8ac4e7315810c789c2040df0504796bac0a776b72f12e421c8611289",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/prepare-session.py": "d49f2121d6e9acb87fa60581f6032944bcfbfea5267a08bbeb32576cacf5f67a",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/run-series.py": "3764c9b57d9a5492faa5e95f1dca60d7a7a327f0ba5ebe9203562ce576e551ca",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/run-live.mjs": "09ed8d1102b51883cc03ee66f9e0506d5c551d6a2d4c6e463e4e2780341408e6",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/supervise.py": "108fc10c770221d1411ce30a46054b1244bbd0af1bc3b4f7765a1b074f76d0a6",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/verify-retained.py": "0b93bc2c58b95e0c3a7a98b8f585bc22bc95e3da0d9fafe304a37947e64a75f4",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/reconcile-retained.py": "463e63c762afa6076f845e0ca0a435d32a18882b17dc1e47861f553a2a4c697f",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/live-check.test.mjs": "3371c3a723ffcfc4105c91b6fbb6d9cdd8f2c80a8c1dc9593559c58b0ab85d6f",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/actual-event-history.mjs": "097a2fb56eeca20ef431ed1e9299c049bd4d36b66a5a933276aabb352e888cd4",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/check-offline.py": "c8da4d77cfa421773c2e626f60f5949255a7f81239d6b2e7aedd2b342ec12f1f",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/check-prepared.mjs": "4f3074abed99d4f14980421bdbeabbbd12a54720d7fccfdde1a83b70eb3e05d4",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/README.md": "f4a19ddc761a2288d753b2c06dcf0697410f8476a5c5fcaaaeaa76f0aa3f0ecc"
+  },
+  "inputIdentity": {
+    "candidateManifestSha256": "f632a6af62a43178fe55b1d9b68277f5cba956181a691d5c17f1b54e2c75dade",
+    "seriesPlanSha256": "42d75fd088e9adb9eb6df68010fc33625bd3cc700a645a53c7debe1769861562",
+    "sourcePins": {
+      "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7a/qualification-plan.json": "1bd104af755c0daae071c836490f46b4be28547acc11bf069fe88111a9bd089b",
+      "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7a/tree.json": "c0180999529232d7ff2567e322fad58986176b2f54761ee6148348275319c809",
+      "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7a/options.json": "07dae508184e9b42f3b3b8cd788988fb4f3ccf29aea91c51314720359f7ffe30",
+      "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7a/line-relationships.json": "51c9dd1ebdc128158bac289a81d3b7f0b274392e5fd59bfd8d71987304df7d26",
+      "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7a/receipt.json": "e1dd656a36fcc9bd361c43be8bb8003f06cfc625ce56df6f9d5a5c33eecb6563",
+      "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7c/qualification-plan.json": "6d301498f4bdcfcb47a9e6b38781618580ac0fce62c0a01548d89560ab94bd46",
+      "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7c/tree.json": "a8361e297874ac2c5e0f7ef851cce524f038760c469cf4e265a89e3d1efe34fc",
+      "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7c/options.json": "edaa568768a71899eb860b720533711ced0a40fe054824833698888ba7daafa0",
+      "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7c/line-relationships.json": "7b9838f8945c746faf00a94e39809102f4142a12ba9ab5cc6e37294ba2a0d241",
+      "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7c/receipt.json": "cdda12c7dba92d4626d268522a81e3db09a456d990f488ac0a630f51930ff5b0",
+      "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7d/qualification-plan.json": "1090a72f8ae59ee20f05036298827cf5d1dbf8d7a70269a4be4a4860297942b1",
+      "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7d/tree.json": "40422ee75b62f6810181ea0fac0e4722507c5544ef1cefd93509535f95eeb8a6",
+      "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7d/options.json": "9d502370d0b113185991857164ff0630051e60f115d7d84c180968c24db3715e",
+      "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7d/line-relationships.json": "7669563e901fe49385d926fd87c7d69f5ad11e5c60f138f67a8a9eb5b0f4bc31",
+      "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7d/receipt.json": "6cb2b8f1b2c06677382d7a540ed380d46e35b404b29cb23951b533c4a9dad95e",
+      "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7f/qualification-plan.json": "38f86af0d3c3dbc0371a191aa36579cb9f7e5a274282bf7f2fa7dc969db3f537",
+      "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7f/tree.json": "424b57b95578b19ff09cb0a418143140abde600ca46268f2aedcfea1f77a1025",
+      "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7f/options.json": "36a34df391d4634c6cde7070f9acfbf258c0600cd1a9ced8e0739a70849814d8",
+      "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7f/line-relationships.json": "171b1b46925a788a07439bb569a99fbfcf806a3deeeb9dadd9b4afea891ad108",
+      "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7f/receipt.json": "cd961e747cafad198db3e1b6379c834fd8336a7253e4016b36726b51c68b594c"
+    },
+    "indexPins": {
+      "canonical": {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-trim-package-suffix-2026-11-07/actual/final-canonical-index.json",
+        "sha256": "e7d999556fddd2bb3e7170975272cc6a2da5880dc095d02a9e7bb3613468e6d1",
+        "digest": "0e12e9771f5f334c968e45e00fd8268cd2ad7bf503722798fbf1573c6eebeaa0",
+        "entries": 1136,
+        "admittedSourceEntries": 1133
+      },
+      "spent": {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-trim-package-suffix-2026-11-07/actual/final-spent-request-index.json",
+        "sha256": "f1de84016579c549436231b111032853f73a919159ac14364e5cef005a594b3a",
+        "digest": "6bf49ead30b5eed4ad8e859302c90527e011e4d6eda43b0c3107a0e0f3f1d1c4",
+        "entries": 1846
+      }
+    }
+  },
+  "functionToTest": [
+    {
+      "path": "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/check-prepared.mjs",
+      "observedFunctions": [
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 5088
+        },
+        {
+          "name": "read",
+          "callsOrObservedRanges": 113
+        },
+        {
+          "name": "sha",
+          "callsOrObservedRanges": 159
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 1136
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 1137
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 1846
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 4
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 12
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 3000
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 87
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 537
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 243
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 2626
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 101
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 101
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 101
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 202
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 101
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 101
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 101
+        }
+      ],
+      "check": "check-prepared.mjs"
+    },
+    {
+      "path": "server/gcsp/repository/core.js",
+      "observedFunctions": [
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 1
+        },
+        {
+          "name": "plain",
+          "callsOrObservedRanges": 220533
+        },
+        {
+          "name": "jsonValue",
+          "callsOrObservedRanges": 683400
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 159593
+        },
+        {
+          "name": "canonical",
+          "callsOrObservedRanges": 558483
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 54255
+        },
+        {
+          "name": "inputDigest",
+          "callsOrObservedRanges": 43597
+        }
+      ],
+      "check": "check-prepared.mjs"
+    },
+    {
+      "path": "server/gcsp/repository/schema.js",
+      "observedFunctions": [
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 1
+        },
+        {
+          "name": "definition",
+          "callsOrObservedRanges": 24
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 24
+        }
+      ],
+      "check": "check-prepared.mjs"
+    },
+    {
+      "path": "scripts/gcsp/public-bmw-source.mjs",
+      "observedFunctions": [
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 1
+        },
+        {
+          "name": "validatePublicBmwPlan",
+          "callsOrObservedRanges": 101
+        }
+      ],
+      "check": "check-prepared.mjs"
+    },
+    {
+      "path": "scripts/gcsp/configuration-key.mjs",
+      "observedFunctions": [
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 1
+        },
+        {
+          "name": "requireValue",
+          "callsOrObservedRanges": 10977
+        }
+      ],
+      "check": "check-prepared.mjs"
+    },
+    {
+      "path": "scripts/gcsp/collection-session.mjs",
+      "observedFunctions": [
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 1
+        }
+      ],
+      "check": "check-prepared.mjs"
+    },
+    {
+      "path": "scripts/gcsp/bmw-public-registration.mjs",
+      "observedFunctions": [
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 1
+        },
+        {
+          "name": "isBmwBatchPlan",
+          "callsOrObservedRanges": 202
+        },
+        {
+          "name": "object",
+          "callsOrObservedRanges": 23029
+        },
+        {
+          "name": "same",
+          "callsOrObservedRanges": 20356
+        },
+        {
+          "name": "bounded",
+          "callsOrObservedRanges": 11583
+        },
+        {
+          "name": "token",
+          "callsOrObservedRanges": 12456
+        },
+        {
+          "name": "code",
+          "callsOrObservedRanges": 22192
+        },
+        {
+          "name": "date",
+          "callsOrObservedRanges": 12557
+        },
+        {
+          "name": "validateBmwModelRegistration",
+          "callsOrObservedRanges": 4152
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 49824
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 12456
+        },
+        {
+          "name": "validateBmwModelOptionsRequestRegistration",
+          "callsOrObservedRanges": 6522
+        },
+        {
+          "name": "bmwModelOptionsRequestUrls",
+          "callsOrObservedRanges": 1113
+        },
+        {
+          "name": "candidateRequest",
+          "callsOrObservedRanges": 1580
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 3160
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 6032
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 646
+        },
+        {
+          "name": "validateBmwModelBatchCandidateRequest",
+          "callsOrObservedRanges": 4740
+        },
+        {
+          "name": "bmwModelBatchRequestUrls",
+          "callsOrObservedRanges": 790
+        },
+        {
+          "name": "bmwBatchPlanRequestUrls",
+          "callsOrObservedRanges": 790
+        },
+        {
+          "name": "bmwPublicRequestUrls",
+          "callsOrObservedRanges": 790
+        },
+        {
+          "name": "validateBmwBatchPlan",
+          "callsOrObservedRanges": 101
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 404
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 790
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 790
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 790
+        },
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 790
+        }
+      ],
+      "check": "check-prepared.mjs"
+    },
+    {
+      "path": "scripts/gcsp/settings-shape-report.mjs",
+      "observedFunctions": [
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 1
+        }
+      ],
+      "check": "check-prepared.mjs"
+    },
+    {
+      "path": "scripts/gcsp/bmw-source-qualification.mjs",
+      "observedFunctions": [
+        {
+          "name": "<module>",
+          "callsOrObservedRanges": 1
+        }
+      ],
+      "check": "check-prepared.mjs"
+    }
+  ],
+  "fixtures": "Actual retained model/options/line observations and exact cumulative indexes; no synthetic fixture or live call.",
+  "subprocessEdges": [
+    "resource supervisor -> Node prepared check",
+    "Node check -> Python pilot/suffix no-grant refusal"
+  ],
+  "knownBoundaries": [
+    "Source, per-session preparer with a release, actual solver binder and post-source retained checks remain unrun for this proposed pool.",
+    "Observed imported coverage does not prove live HTTP integration or complete scheme coverage."
+  ],
+  "timing": {
+    "preparedSeconds": 0.479042458,
+    "lifecycleSeconds": 0.253564334
+  },
+  "selector": {
+    "command": "/usr/bin/python3 -I -B _tools/test_stamp.py --affected 6ef33c22 --dry-run",
+    "result": "unspecified-language npm test fallback; reviewed and excluded as disproportionate to new operational evidence package"
+  },
+  "selected": [
+    "check-offline.py",
+    "check-offline.py --lifecycle-probe",
+    "Python ast.parse for7executables",
+    "node --check for4executables"
+  ]
+}

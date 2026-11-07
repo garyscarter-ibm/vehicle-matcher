@@ -1,0 +1,32 @@
+{
+  "id": "f58-complete-selection-20261107-once",
+  "purpose": "complete-known-selection-source-qualification",
+  "selectedAt": "2026-11-07T00:02:58.238306+00:00",
+  "authorisation": "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md and docs/gcsp/f58-63-delivery-2026-11-06.md",
+  "planDigest": "5ccbd0db795e36908bc889bd855e0f3be68fde378fc174da3d849f99cc4f3e91",
+  "attempts": 4,
+  "retries": 0,
+  "concurrency": 1,
+  "decodedBytes": 2097152,
+  "responseBytes": 1048576,
+  "completeRequestTimeoutMs": 10000,
+  "activeDeadlineMs": 45000,
+  "cacheEntries": 16,
+  "cacheRetentionMs": 86400000,
+  "images": 0,
+  "browser": 0,
+  "writes": 0,
+  "stop": "any source/identity/transport/parse/budget failure; never retry or replay spent marker",
+  "artifactDestination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq-58/complete-selection-2026-11-07",
+  "codeCommit": "eb207527",
+  "codePins": {
+    "scripts/gcsp/capture-bmw-selection.mjs": "6c209b848c5360414c52e47f4eefaf81197e61f23d7ad0bab9115dd08bf3238a",
+    "scripts/gcsp/public-bmw-source.mjs": "d10a8532b485e0d9fe434655773fb5ac033653b85b4366ed6125b85f182b33df",
+    "scripts/gcsp/collection-session.mjs": "db0b4b9ea4e8909c8d0e49cb9b6c36dbb2f23df85839f3f221600429e9668cdc",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+    "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+    "server/gcsp/repository/core.js": "c55c93c543886108f67aa12bc5c7519d50063e90ba4ec78df37aa0df56d6f311",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a"
+  }
+}

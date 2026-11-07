@@ -1,0 +1,5 @@
+RuntimeError: owned process group absence not proved
+  supervise.py:87 finally: finalize()
+  supervise.py:46 cleanup gate
+AssertionError
+  run-series.py:152 source status/queue-exhausted/processed-count gate

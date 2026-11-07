@@ -1,0 +1,44 @@
+{
+  "affectedCallersAndBoundaries": "Human evidence review only; no runtime, collector, source adapter, corpus or active-pointer change.",
+  "agents": {
+    "descendants": 0,
+    "effectiveRuntime": "unverified",
+    "fallback": null,
+    "name": "Minnie Mouse",
+    "requestedEffort": "medium",
+    "requestedModel": "gpt-6.1-sol",
+    "selectedEffort": "medium",
+    "selectedModel": "gpt-6.1-sol"
+  },
+  "changedPaths": [
+    "docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/"
+  ],
+  "excluded": [
+    {
+      "area": "Source/network/native/UI/full suite and all collector/enrichment/semantic replay",
+      "reason": "Docs-only consolidation reuses retained identical evidence; no runtime code/input changes and root explicitly prohibited reruns."
+    },
+    {
+      "area": "Large source JSONL, images, canonical full payload scans",
+      "reason": "Existing sealed receipts/manifests/audits contain required provenance; raw rescan adds no authorised validation."
+    }
+  ],
+  "regression": "Documentation could misstate original F61 scope, count duplicate/cumulative observations, overclaim replay/acceptance, or break evidence pins.",
+  "runId": "f61-docs-closeout-20261107",
+  "schemaVersion": "f61-exact10000-closeout-validation-selection.v1",
+  "scratch": {
+    "compatibilityException": null,
+    "created": false,
+    "leftovers": [],
+    "removedAllocationBytes": 0
+  },
+  "selectedChecks": [
+    "Parse new JSON",
+    "Verify all referenced existing small receipt/manifest/audit hashes and sizes",
+    "Assert exact selected/staged10000, union10351, group/category preservation and VG/AG distributions/histogram sums",
+    "Check report local links and targeted git whitespace/path scope",
+    "Verify new report aggregate stays below256KiB and preserve unowned pyc"
+  ],
+  "status": "selected; static validation follows",
+  "worktree": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032"
+}

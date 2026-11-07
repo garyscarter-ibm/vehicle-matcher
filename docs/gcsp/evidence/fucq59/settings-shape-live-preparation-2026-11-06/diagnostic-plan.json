@@ -1,0 +1,42 @@
+{
+  "context": {
+    "agModelCode": "72HH",
+    "catalogueRangeKey": "G61E",
+    "effectDate": "2027-01-05",
+    "locale": "en-GB",
+    "market": "GB",
+    "modelCode": "T5MJ",
+    "orderDate": "2026-11-01",
+    "rawModelRange": "G61",
+    "steeringLiteral": "RL",
+    "trim": "S0337"
+  },
+  "limits": {
+    "cacheEntries": 16,
+    "cacheRetentionMs": 86400000,
+    "checkpointBytes": 1048576,
+    "concurrency": 1,
+    "deadlineMs": 30000,
+    "imageRequests": 0,
+    "maxAttempts": 1,
+    "operationTimeoutMs": 10000,
+    "requestBudgets": {
+      "discover": 1,
+      "options": 1,
+      "page": 1,
+      "settings": 1
+    },
+    "responseBytes": 1048576,
+    "retryDelayMs": 0,
+    "sourceAttempts": 2,
+    "sourceBytes": 2097152
+  },
+  "planId": "f59-settings-shape-observation-20261106.v1",
+  "qualificationDate": "2026-11-06",
+  "schemaVersion": "bmw-source-diagnostic-plan.v1",
+  "source": {
+    "id": "bmw-uk-public",
+    "kind": "public-bmw-uk",
+    "version": "f59-diagnostic-20261106.v1"
+  }
+}

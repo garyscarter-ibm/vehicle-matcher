@@ -1,0 +1,322 @@
+{
+  "schemaVersion": "f70-model-axis790-offline-validation.v1",
+  "scope": "scoped complete finite preparation only",
+  "sourceTraffic": 0,
+  "capacityCredit": 0,
+  "acceptance": false,
+  "codeCommitBeforePreparation": "6ef33c220d159494c54cafca879e80ef285e8340",
+  "currentCodePins": {
+    "scripts/gcsp/bmw-public-registration.mjs": "3a9a1afcc128f8356bb296b063d118bc9b7c59531ef75823bb99f8e01f209291",
+    "scripts/gcsp/public-bmw-source.mjs": "4561e844cfe85383ad8ed27521bab157a10dae57f8d82ab29b8f41842bfc8336",
+    "scripts/gcsp/collection-session.mjs": "db5a1a1ca6037132eced521f1a9b19d73a4282a113da66480ebec70c0beac7ff",
+    "scripts/gcsp/collect-fleet.mjs": "ba3864cee32f480facde57a2d2c9dbf944d571878bb2a9cece220955357ab1de",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/bmw-selection-binding.mjs": "88820920f57f4509741d6ad291e2fcd36c5b47a65d42acd35e890e3a6f84004e",
+    "scripts/gcsp/capture-bmw-selection.mjs": "b3cea57603e403f41bb326bcdfc955b7f061a7cfc1b071d1ef609de3efc99bc1",
+    "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+    "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+    "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+    "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/prepare.py": "ed40506c8ac4e7315810c789c2040df0504796bac0a776b72f12e421c8611289",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/prepare-session.py": "d49f2121d6e9acb87fa60581f6032944bcfbfea5267a08bbeb32576cacf5f67a",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/run-series.py": "3764c9b57d9a5492faa5e95f1dca60d7a7a327f0ba5ebe9203562ce576e551ca",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/run-live.mjs": "09ed8d1102b51883cc03ee66f9e0506d5c551d6a2d4c6e463e4e2780341408e6",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/supervise.py": "108fc10c770221d1411ce30a46054b1244bbd0af1bc3b4f7765a1b074f76d0a6",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/verify-retained.py": "0b93bc2c58b95e0c3a7a98b8f585bc22bc95e3da0d9fafe304a37947e64a75f4",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/reconcile-retained.py": "463e63c762afa6076f845e0ca0a435d32a18882b17dc1e47861f553a2a4c697f",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/live-check.test.mjs": "3371c3a723ffcfc4105c91b6fbb6d9cdd8f2c80a8c1dc9593559c58b0ab85d6f",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/actual-event-history.mjs": "097a2fb56eeca20ef431ed1e9299c049bd4d36b66a5a933276aabb352e888cd4",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/check-offline.py": "c8da4d77cfa421773c2e626f60f5949255a7f81239d6b2e7aedd2b342ec12f1f",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/check-prepared.mjs": "4f3074abed99d4f14980421bdbeabbbd12a54720d7fccfdde1a83b70eb3e05d4",
+    "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/README.md": "f4a19ddc761a2288d753b2c06dcf0697410f8476a5c5fcaaaeaa76f0aa3f0ecc"
+  },
+  "candidateManifestSha256": "f632a6af62a43178fe55b1d9b68277f5cba956181a691d5c17f1b54e2c75dade",
+  "seriesPlanSha256": "42d75fd088e9adb9eb6df68010fc33625bd3cc700a645a53c7debe1769861562",
+  "runs": [
+    {
+      "directory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-model-axis790-20261107/check-1794022452135987000",
+      "resultSha256": "615c227c84d157ea9bd7ca64daf2c6ca290637fc9dcd86798ed40c4cbf2a70a1",
+      "cleanup": {
+        "code_identity_unchanged": true,
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "groups_absent": true,
+        "ownership_manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-model-axis790-20261107/check-1794022452135987000/ownership/3690987167f54e83aa24224d87619e61.json",
+        "removed_allocation_bytes": 213088,
+        "reservation_absent": true,
+        "scratch_absent": true,
+        "scratch_root": "/private/tmp/test-stamp-shard-3690987167f54e83aa24224d87619e61",
+        "source_output_absent": true
+      },
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-model-axis790-20261107/check-1794022452135987000/check.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-model-axis790-20261107/check-1794022452135987000/ownership/3690987167f54e83aa24224d87619e61.json",
+        "peak_rss": 2326528,
+        "peak_scratch": 213088,
+        "rc": 1,
+        "wall": 0.250209625
+      },
+      "diagnosis": "New prepared check incorrectly called the legacy URL builder for empty-mandatory model requests. Corrected new offline and retained checks to use the unchanged model route; no source executed.",
+      "failureLogPath": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-model-axis790-20261107/check-1794022452135987000/check.log",
+      "failureLogSha256": "e5bbe1d33178e6098244ca1d2788f924875e24f843c90394f5edacc8d677bbcf"
+    },
+    {
+      "directory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-model-axis790-20261107/check-1794022505368379000",
+      "resultSha256": "e20faeac75a376f7c4ed192f96931cdd90cc3cc215225d04210b4d6786bacec0",
+      "cleanup": {
+        "code_identity_unchanged": true,
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "groups_absent": true,
+        "ownership_manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-model-axis790-20261107/check-1794022505368379000/ownership/a00095c3eb994bc28fa8020588c95b98.json",
+        "removed_allocation_bytes": 258144,
+        "reservation_absent": true,
+        "scratch_absent": true,
+        "scratch_root": "/private/tmp/test-stamp-shard-a00095c3eb994bc28fa8020588c95b98",
+        "source_output_absent": true
+      },
+      "result": {
+        "cleanup": {
+          "code_identity_unchanged": true,
+          "compatibility_exception": null,
+          "dependency_link_absent": true,
+          "groups_absent": true,
+          "ownership_manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-model-axis790-20261107/check-1794022505368379000/ownership/a00095c3eb994bc28fa8020588c95b98.json",
+          "removed_allocation_bytes": 258144,
+          "reservation_absent": true,
+          "scratch_absent": true,
+          "scratch_root": "/private/tmp/test-stamp-shard-a00095c3eb994bc28fa8020588c95b98",
+          "source_output_absent": true
+        },
+        "identity": {
+          "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/README.md": "f4a19ddc761a2288d753b2c06dcf0697410f8476a5c5fcaaaeaa76f0aa3f0ecc",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/actual-event-history.mjs": "097a2fb56eeca20ef431ed1e9299c049bd4d36b66a5a933276aabb352e888cd4",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/check-offline.py": "c8da4d77cfa421773c2e626f60f5949255a7f81239d6b2e7aedd2b342ec12f1f",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/check-prepared.mjs": "4f3074abed99d4f14980421bdbeabbbd12a54720d7fccfdde1a83b70eb3e05d4",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/live-check.test.mjs": "3371c3a723ffcfc4105c91b6fbb6d9cdd8f2c80a8c1dc9593559c58b0ab85d6f",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/prepare-session.py": "d49f2121d6e9acb87fa60581f6032944bcfbfea5267a08bbeb32576cacf5f67a",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/prepare.py": "ed40506c8ac4e7315810c789c2040df0504796bac0a776b72f12e421c8611289",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/reconcile-retained.py": "463e63c762afa6076f845e0ca0a435d32a18882b17dc1e47861f553a2a4c697f",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/run-live.mjs": "09ed8d1102b51883cc03ee66f9e0506d5c551d6a2d4c6e463e4e2780341408e6",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/run-series.py": "3764c9b57d9a5492faa5e95f1dca60d7a7a327f0ba5ebe9203562ce576e551ca",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/supervise.py": "108fc10c770221d1411ce30a46054b1244bbd0af1bc3b4f7765a1b074f76d0a6",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/verify-retained.py": "0b93bc2c58b95e0c3a7a98b8f585bc22bc95e3da0d9fafe304a37947e64a75f4",
+          "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+          "scripts/gcsp/bmw-public-registration.mjs": "3a9a1afcc128f8356bb296b063d118bc9b7c59531ef75823bb99f8e01f209291",
+          "scripts/gcsp/bmw-selection-binding.mjs": "88820920f57f4509741d6ad291e2fcd36c5b47a65d42acd35e890e3a6f84004e",
+          "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+          "scripts/gcsp/capture-bmw-selection.mjs": "b3cea57603e403f41bb326bcdfc955b7f061a7cfc1b071d1ef609de3efc99bc1",
+          "scripts/gcsp/collect-fleet.mjs": "ba3864cee32f480facde57a2d2c9dbf944d571878bb2a9cece220955357ab1de",
+          "scripts/gcsp/collection-session.mjs": "db5a1a1ca6037132eced521f1a9b19d73a4282a113da66480ebec70c0beac7ff",
+          "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+          "scripts/gcsp/public-bmw-source.mjs": "4561e844cfe85383ad8ed27521bab157a10dae57f8d82ab29b8f41842bfc8336",
+          "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+          "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+          "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+          "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+          "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+          "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+          "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+          "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+        },
+        "result": {
+          "check": {
+            "alreadySpentExclusions": 4,
+            "baseline": {
+              "admittedSource": 1133,
+              "canonical": 1136,
+              "spent": 1846
+            },
+            "bothMissingGrantsRefused": true,
+            "capacityCredit": 0,
+            "cohorts": 26,
+            "explicitS01H0Exclusions": 202,
+            "models": {
+              "1F7A": 143,
+              "1F7C": 324,
+              "1F7D": 194,
+              "1F7F": 129
+            },
+            "pilot": {
+              "getCeiling": 48,
+              "solverCeiling": 32
+            },
+            "sessions": 101,
+            "sourceOutputAbsent": true,
+            "sourceTraffic": 0,
+            "status": "prepared-only",
+            "suffix": {
+              "getCeiling": 1146,
+              "solverCeiling": 758
+            },
+            "trueUnspentPool": 790,
+            "wholeGetCeiling": 1194
+          },
+          "issue": null,
+          "issue_kind": null,
+          "log": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-model-axis790-20261107/check-1794022505368379000/check.log",
+          "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-model-axis790-20261107/check-1794022505368379000/ownership/a00095c3eb994bc28fa8020588c95b98.json",
+          "peak_rss": 90112000,
+          "peak_scratch": 258144,
+          "rc": 0,
+          "wall": 0.479042458
+        },
+        "scope": "scoped",
+        "sourceTraffic": 0
+      }
+    },
+    {
+      "directory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-model-axis790-20261107/check-1794022532564770000",
+      "resultSha256": "c13a86df7407ec0508745b2602c233cf2f13fc09be660e0d1778352447f902ca",
+      "cleanup": {
+        "code_identity_unchanged": true,
+        "compatibility_exception": null,
+        "dependency_link_absent": true,
+        "groups_absent": true,
+        "ownership_manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-model-axis790-20261107/check-1794022532564770000/ownership/5e3f3c15c94b41da923fd81462b30f96.json",
+        "removed_allocation_bytes": 4096,
+        "reservation_absent": true,
+        "scratch_absent": true,
+        "scratch_root": "/private/tmp/test-stamp-shard-5e3f3c15c94b41da923fd81462b30f96",
+        "source_output_absent": true
+      },
+      "result": {
+        "cleanup": {
+          "code_identity_unchanged": true,
+          "compatibility_exception": null,
+          "dependency_link_absent": true,
+          "groups_absent": true,
+          "ownership_manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-model-axis790-20261107/check-1794022532564770000/ownership/5e3f3c15c94b41da923fd81462b30f96.json",
+          "removed_allocation_bytes": 4096,
+          "reservation_absent": true,
+          "scratch_absent": true,
+          "scratch_root": "/private/tmp/test-stamp-shard-5e3f3c15c94b41da923fd81462b30f96",
+          "source_output_absent": true
+        },
+        "identity": {
+          "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/README.md": "f4a19ddc761a2288d753b2c06dcf0697410f8476a5c5fcaaaeaa76f0aa3f0ecc",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/actual-event-history.mjs": "097a2fb56eeca20ef431ed1e9299c049bd4d36b66a5a933276aabb352e888cd4",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/check-offline.py": "c8da4d77cfa421773c2e626f60f5949255a7f81239d6b2e7aedd2b342ec12f1f",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/check-prepared.mjs": "4f3074abed99d4f14980421bdbeabbbd12a54720d7fccfdde1a83b70eb3e05d4",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/live-check.test.mjs": "3371c3a723ffcfc4105c91b6fbb6d9cdd8f2c80a8c1dc9593559c58b0ab85d6f",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/prepare-session.py": "d49f2121d6e9acb87fa60581f6032944bcfbfea5267a08bbeb32576cacf5f67a",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/prepare.py": "ed40506c8ac4e7315810c789c2040df0504796bac0a776b72f12e421c8611289",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/reconcile-retained.py": "463e63c762afa6076f845e0ca0a435d32a18882b17dc1e47861f553a2a4c697f",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/run-live.mjs": "09ed8d1102b51883cc03ee66f9e0506d5c551d6a2d4c6e463e4e2780341408e6",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/run-series.py": "3764c9b57d9a5492faa5e95f1dca60d7a7a327f0ba5ebe9203562ce576e551ca",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/supervise.py": "108fc10c770221d1411ce30a46054b1244bbd0af1bc3b4f7765a1b074f76d0a6",
+          "docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/verify-retained.py": "0b93bc2c58b95e0c3a7a98b8f585bc22bc95e3da0d9fafe304a37947e64a75f4",
+          "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+          "scripts/gcsp/bmw-public-registration.mjs": "3a9a1afcc128f8356bb296b063d118bc9b7c59531ef75823bb99f8e01f209291",
+          "scripts/gcsp/bmw-selection-binding.mjs": "88820920f57f4509741d6ad291e2fcd36c5b47a65d42acd35e890e3a6f84004e",
+          "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+          "scripts/gcsp/capture-bmw-selection.mjs": "b3cea57603e403f41bb326bcdfc955b7f061a7cfc1b071d1ef609de3efc99bc1",
+          "scripts/gcsp/collect-fleet.mjs": "ba3864cee32f480facde57a2d2c9dbf944d571878bb2a9cece220955357ab1de",
+          "scripts/gcsp/collection-session.mjs": "db5a1a1ca6037132eced521f1a9b19d73a4282a113da66480ebec70c0beac7ff",
+          "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+          "scripts/gcsp/public-bmw-source.mjs": "4561e844cfe85383ad8ed27521bab157a10dae57f8d82ab29b8f41842bfc8336",
+          "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+          "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+          "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+          "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+          "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+          "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+          "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+          "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+        },
+        "result": {
+          "check": {
+            "sourceTraffic": 0,
+            "status": "owned-scratch-lifecycle-probe"
+          },
+          "issue": null,
+          "issue_kind": null,
+          "log": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-model-axis790-20261107/check-1794022532564770000/check.log",
+          "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-model-axis790-20261107/check-1794022532564770000/ownership/5e3f3c15c94b41da923fd81462b30f96.json",
+          "peak_rss": 32768,
+          "peak_scratch": 4096,
+          "rc": 0,
+          "wall": 0.253564334
+        },
+        "scope": "scoped",
+        "sourceTraffic": 0
+      }
+    }
+  ],
+  "preparedCheck": {
+    "alreadySpentExclusions": 4,
+    "baseline": {
+      "admittedSource": 1133,
+      "canonical": 1136,
+      "spent": 1846
+    },
+    "bothMissingGrantsRefused": true,
+    "capacityCredit": 0,
+    "cohorts": 26,
+    "explicitS01H0Exclusions": 202,
+    "models": {
+      "1F7A": 143,
+      "1F7C": 324,
+      "1F7D": 194,
+      "1F7F": 129
+    },
+    "pilot": {
+      "getCeiling": 48,
+      "solverCeiling": 32
+    },
+    "sessions": 101,
+    "sourceOutputAbsent": true,
+    "sourceTraffic": 0,
+    "status": "prepared-only",
+    "suffix": {
+      "getCeiling": 1146,
+      "solverCeiling": 758
+    },
+    "trueUnspentPool": 790,
+    "wholeGetCeiling": 1194
+  },
+  "lifecycleProbe": {
+    "sourceTraffic": 0,
+    "status": "owned-scratch-lifecycle-probe"
+  },
+  "syntax": {
+    "pythonExecutables": 7,
+    "javascriptExecutables": 4,
+    "rc": 0,
+    "bytecodeWritten": false
+  },
+  "unrun": [
+    "Actual32pilot source and20retained semantic tests",
+    "758suffix source and485retained semantic tests",
+    "full application suite",
+    "publication/application acceptance"
+  ],
+  "cleanup": {
+    "ownedScratchManifests": 3,
+    "allScratchAbsent": true,
+    "allGroupsAbsent": true,
+    "dependencyLinkAbsent": true,
+    "allReservationsAbsent": true,
+    "removedAllocationBytes": 475328,
+    "sourceOutputRootAbsent": true,
+    "retainedSummaryPaths": [
+      "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-model-axis790-plan-2026-11-07/offline-validation.json",
+      "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/impact/f70-model-axis790-preflight.json"
+    ],
+    "compatibilityException": null,
+    "leftovers": []
+  },
+  "impactPath": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/impact/f70-model-axis790-preflight.json",
+  "impactSha256": "a0d488326dc11e1eabab7503c6f318a3c4e599c94c13d9f0b61c670f1acc61a6"
+}

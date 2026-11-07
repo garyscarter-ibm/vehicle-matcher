@@ -1,0 +1,59 @@
+{
+  "result": {
+    "completed": {
+      "5865e27dd5eeef3662c18906b3327dbf0e096d34f79354f7c4a4601180735420": {
+        "ids": [
+          "contracts"
+        ],
+        "result": {
+          "cleanup": {
+            "local_scratch_reason": "",
+            "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/asset-deadline-contracts/ownership/0e13c68e98634f6c9d2fbeae0ea25ea0.json",
+            "peak": 64,
+            "removed": true,
+            "root": "/private/tmp/test-stamp-shard-0e13c68e98634f6c9d2fbeae0ea25ea0"
+          },
+          "issue": null,
+          "issue_kind": null,
+          "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/asset-deadline-contracts/logs/chunk-0001.log",
+          "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/asset-deadline-contracts/ownership/0e13c68e98634f6c9d2fbeae0ea25ea0.json",
+          "peak_rss": 160415744,
+          "peak_scratch": 64,
+          "rc": 0,
+          "wall": 0.504421417
+        }
+      }
+    },
+    "identity": {
+      "server/gcsp/vehicle-evidence/fleet-artifacts.js": "0bb5079b92a0a8df997708a6f266a2de84603ebd53efdf291a15edffd0d92811",
+      "server/test/gcsp-artifact-deadline.test.js": "0646ffa93c851f2c671a619674a13abf76280f30f3165634d408d08457ec1b43",
+      "server/test/gcsp-fleet-artifacts.test.js": "b5a38623f2298db55d2ac24f2d6caef1b4c94db45eeb59f0a735d6b131f0042f",
+      "server/test/gcsp-fleet-build-entry.test.js": "0bea74109e326d1385be05133068057f7d94ded2a7d08a4846ea1465299e930c",
+      "server/test/render-blueprint.test.js": "e798fc156851afb60d0d378feb8f9d22d69fe9ee686a049e6e31c2c118d16358"
+    },
+    "issues": [],
+    "selected": [
+      "contracts"
+    ],
+    "state": "complete",
+    "units": [
+      {
+        "disk": 2097152,
+        "id": "contracts",
+        "ram": 536870912,
+        "seconds": 60
+      }
+    ],
+    "updated": 1794041942.292402,
+    "version": 1,
+    "wall": 0.786
+  },
+  "cleanup": {
+    "groupsAbsent": true,
+    "leftovers": [],
+    "ownedDependencyLinkAbsent": true,
+    "removedScratchBytes": 64,
+    "reservationAbsent": true,
+    "scratchAbsent": true
+  }
+}

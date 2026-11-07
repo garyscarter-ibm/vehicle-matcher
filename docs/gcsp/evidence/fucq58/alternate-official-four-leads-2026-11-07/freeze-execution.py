@@ -1,0 +1,26 @@
+"""Freeze the executable, still unreleased packet. No requests or allocations."""
+import sys
+sys.dont_write_bytecode=True
+import datetime,hashlib,json,os,pathlib
+BASE=pathlib.Path(__file__).resolve().parent;ROOT=BASE.parents[4]
+read=lambda p:json.loads(p.read_text());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+proposal=read(BASE/'inventory-proposal.json');old=read(ROOT/'docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/series-plan.json')
+assert sha(BASE/'inventory-proposal.json')=='2acc5aa123562fcc8c6099b031dae6ea31a32b1e979934746f1d882fcdb84973'
+assert sha(BASE/'leads.json')=='b9d834e4329543f1833f8b5eb8e17002b1f8b7c753944288232868537bb4571d'
+assert all(sha(ROOT/p)==h for p,h in old['codePins'].items()),'unchanged-existing-code-required'
+code=dict(old['codePins'])
+for n in ['prepare.py','freeze-execution.py','request-guard.mjs','run-live.mjs','audit-live.mjs','release.py','supervise.py','run-series.py','prepared-check.test.mjs']:
+ p=BASE/n;code[str(p.relative_to(ROOT))]=sha(p)
+source={str((BASE/n).relative_to(ROOT)):sha(BASE/n) for n in ['leads.json','inventory-proposal.json','prior-exclusions.json','validation.json']}
+for e in proposal['contexts']:source[e['qualificationPlanPath']]=e['qualificationPlanSha256'];assert sha(ROOT/e['qualificationPlanPath'])==e['qualificationPlanSha256']
+contexts=[{**e,'phase':'first' if e['id']=='u06' else 'remaining'} for e in proposal['contexts']]
+output=pathlib.Path(proposal['resourcePlan']['outputRoot']);control=pathlib.Path(proposal['resourcePlan']['supervisorRoot']);cloud=pathlib.Path('/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude')
+assert cloud.is_dir() and output.is_relative_to(cloud) and not output.is_symlink(),'required-OneDrive-destination'
+assert not os.path.lexists(output),'preserve-prior-source-output'
+assert not any((control/'ownership'/('durable-'+n+'.json')).exists() for n in ['first','remaining']),'preserve-prior-phase-ownership'
+phases={n:{'contexts':ids,'getCeiling':len(ids)*3,'settingsBootstrapGET':len(ids),'grantId':proposal['id']+'-'+n,'releaseFile':'parent-release-'+n+'.json','maximumWallSeconds':150 if n=='first' else 450} for n,ids in [('first',['u06']),('remaining',['g20','g22','g23'])]}
+resources={**proposal['sourceBudget'],**{k:v for k,v in proposal['resourcePlan'].items() if k not in ['outputRoot','supervisorRoot','chunks','ownership','checkpoint','teardown']},'stageHostRAMBytes':512*1048576,'stageChildRAMBytes':448*1048576,'stageScratchBytes':64*1048576,'phaseHostRAMBytes':576*1048576,'phaseReservationDiskBytes':80*1048576,'phaseMinimumRAMBytes':320*1048576,'phaseMinimumDiskBytes':24*1048576,'stageMinimumRAMBytes':256*1048576,'stageMinimumDiskBytes':16*1048576,'phaseSupervisorHeadroomBytes':64*1048576,'phaseReservationPurpose':'Serial stage reservation inherits outer phase token; 64MiB phase supervisor RAM and 16MiB disk headroom are added to the original stage budget. No parallel workers. Host lock is held only for ledger updates.'}
+series={'schemaVersion':'f58-four-model-inventory-executable.v1','id':proposal['id'],'qualificationDate':proposal['qualificationDate'],'preparedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'status':'prepared-unspent; separate exact root releases required','baseInputCommit':'38ab08ca','codePins':code,'sourcePins':source,'runtimePins':{proposal['runtime']['path']:proposal['runtime']['sha256'],'/usr/bin/python3':sha(pathlib.Path('/usr/bin/python3'))},'nodeRuntime':proposal['runtime']['path'],'outputRoot':str(output),'supervisorRoot':str(control),'contexts':contexts,'phases':phases,'resources':resources,'settingsRules':{'sequence':['page','one-literal-discovered-settings','discover'],'grammar':'https://configure.bmw.co.uk/en_GB/settings.[a-zA-Z0-9]+.json; no whitespace; actual safe page cache must match','unknownBeforePage':True,'bootstrapGETMayReuseInfrastructureURL':True,'countedBootstrapGET':4,'redirect':'manual; no follow; original transport rejects redirects','retention':'safe request URL/SHA only; no request headers, raw HTML or settings document'},'commands':{n:f"BMW_F58_FOUR_MODEL_PHASE_GRANT={p['grantId']} /usr/bin/python3 -I -B {BASE/'run-series.py'} {n}" for n,p in phases.items()},'releaseTemplates':{n:{'status':'released-once','phase':n,'allocationId':proposal['id'],'planSha256':'REPLACE_WITH_EXACT_SERIES_PLAN_SHA256','GET':p['getCeiling'],'contexts':p['contexts'],'settingsBootstrapGET':len(p['contexts']),**({'reviewedFirstProofSha256':'REPLACE_WITH_ACTUAL_REVIEWED_U06_PROOF_SHA256','reviewedFirstReceiptSha256':'REPLACE_WITH_ACTUAL_REVIEWED_FIRST_RECEIPT_SHA256'} if n=='remaining' else {})} for n,p in phases.items()},'releasePreconditions':proposal['releasePreconditions'],'resourceLifecycle':proposal['resourcePlan'],'claimBoundary':proposal['claimBoundary'],'excluded':proposal['excluded'],'sourceGrant':False,'additionalSourceRequests':0,'admitted':0,'qualifiedSchemeJoins':0,'qualifiedPhysicalFacts':0,'acceptance':False}
+for p,h in series['runtimePins'].items():assert sha(pathlib.Path(p))==h,'frozen-runtime-mismatch'
+(BASE/'series-plan.json').write_text(json.dumps(series,indent=2)+'\n')
+print(json.dumps({'seriesPlanSha256':sha(BASE/'series-plan.json'),'codePins':len(code),'sourcePins':len(source),'sourceGrant':False,'contexts':[e['id'] for e in contexts],'GET':12}))

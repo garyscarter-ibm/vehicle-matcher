@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "g42-unspent2288-parent-release.v1",
+  "observedAt": "2026-11-07T04:34:06.056551+00:00",
+  "decision": "released-once",
+  "branchTip": "ec197a19",
+  "seriesPlanSha256": "e2b92e3f3f4444cd0731fa491603b266ecf2bf8ba75b26a115d94aa2468cf8b1",
+  "validationSha256": "e7fa5e3055a54a4ccdeb8b789ec25bf880c6a187a88b9730f1d7a9d24102b6e8",
+  "pinsVerified": 367,
+  "exactUnspentOriginalSessions": [
+    61,
+    346
+  ],
+  "uniqueUnspentRequests": 2288,
+  "grant": "g42-unspent-typed-pool-20261107-once-continuation2288",
+  "limits": {
+    "GET": 3432,
+    "solver": 2288,
+    "workers": 1,
+    "phaseSeconds": 3400,
+    "cohortSeconds": 600,
+    "scratchBytes": 67108864,
+    "hostRamBytes": 536870912,
+    "retainedBytes": 4294967296
+  },
+  "baseline": {
+    "canonical": 2361,
+    "admittedSource": 2358,
+    "spent": 3164
+  },
+  "parentAudit": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-first60-parent-audit.json",
+    "sha256": "24a711eda891e6ac150b95b3fbd1aaf5761296d2a235091bf2a657e58a339ff0",
+    "scope": "independent session60 strict binding and actual two-file event corroboration; original failed check preserved"
+  },
+  "review": "Read actual adaptedseries/preparation/sourceguard and retainedvalidation; verified unchangedexactunspenttemplates and actual60prefix; no source replay. Originalphasefailure+supplementaryactualunion retained.",
+  "parallelism": "F70pilot32disjointmodels permitted; explicitfinalglobalunion required before cumulativecredit",
+  "sourceCapacityCredited": 0,
+  "originalPhaseRemainsConsumed": true,
+  "acceptance": false
+}

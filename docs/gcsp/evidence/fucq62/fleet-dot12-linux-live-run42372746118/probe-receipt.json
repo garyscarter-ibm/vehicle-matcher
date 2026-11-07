@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "linux-live-three-get-receipt.v1",
+  "diagnosticId": "fleet-dot12-linux-live-20261107-2",
+  "githubRunId": "42372746118",
+  "attempt": 1,
+  "environment": "Linux-GitHubActions",
+  "status": "passed",
+  "code": "c87b6f075c4e79bee93b71e1965ad23310ab8473",
+  "actualDeploymentId": "dep-dbnhane8bjmc73a7v5qg",
+  "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "requests": 3,
+  "newGetCeiling": 3,
+  "sourceCalls": 0,
+  "startedAt": "2026-11-07T12:30:15.977Z",
+  "finishedAt": "2026-11-07T12:30:16.708Z",
+  "pending": null,
+  "observations": [
+    {
+      "label": "health",
+      "status": 200,
+      "bodySha256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+      "bodyBytes": 11,
+      "headersSha256": "14fa1d65dbde8e995b21864d8a6078e85fe53d9d324ac4fdb53d0985f92f685a",
+      "elapsedMs": 271.579978
+    },
+    {
+      "label": "readiness",
+      "status": 200,
+      "bodySha256": "57c493087f05ed96cd3646918c2dfac8c37695163dc35d1cbefb3200b1a2682b",
+      "bodyBytes": 169,
+      "headersSha256": "02e52d29c0a6d496f5c5a7c93c98cb998fa088549f9e19e4a5e32e2fa9cb5c4a",
+      "elapsedMs": 137.573603,
+      "sanitizedReadiness": {
+        "ok": true,
+        "status": "ready",
+        "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+        "recovered": false
+      }
+    },
+    {
+      "label": "configuration",
+      "status": 200,
+      "bodySha256": "82712c8d703e6546d6c4298fa3a168b2ea48f09c73931ee9eb061ee36f98e2e4",
+      "bodyBytes": 11532,
+      "headersSha256": "59e9cca6f56afd65b96321b190c6a6b5db42a492cd4860c22b3170aea4cd2d82",
+      "elapsedMs": 314.137715,
+      "dtoSha256": "82712c8d703e6546d6c4298fa3a168b2ea48f09c73931ee9eb061ee36f98e2e4",
+      "match": true
+    }
+  ],
+  "failure": null,
+  "expectedDtoSha256": "82712c8d703e6546d6c4298fa3a168b2ea48f09c73931ee9eb061ee36f98e2e4",
+  "acceptance": false,
+  "originalLocalTimeoutCauseProved": false
+}

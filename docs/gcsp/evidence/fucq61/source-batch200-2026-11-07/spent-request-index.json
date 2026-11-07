@@ -1,0 +1,167 @@
+{
+  "schemaVersion": "f61-spent-source-requests.v1",
+  "basis": "All32 actual solver requests, accepted and rejected; exact context+request digests prevent replay",
+  "sourcePlanDigest": "758ec81958cb3471b55c24e2afed45cdafc3a0125b1c3f9228e13a9d6fbff6a2",
+  "entries": [
+    {
+      "candidateId": "candidate-be6ff5e25a5c0ba20c53e0cd",
+      "requestDigest": "333516b7344f7d0f055dcbd8f0ec032d44d2d1d5d3aa6a79b30de1895439bf4c",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-d0db51a314bdcaf1d0d7ddf0",
+      "requestDigest": "80c28de7a0818d6705c9dfaa8c14eb0bf3329313725e4f8b143927ce1e959af1",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-47b9d81e544d6ba6b2b0e8b2",
+      "requestDigest": "4b1549eb4f9252f1850acc7c710a2d04fd427f6a161747bd9651720cc67b6c00",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-a2fca1bd8de4f65379286337",
+      "requestDigest": "779c2384c2f5d9cbeab9b798e469cf85e622ebdf2c4c5b91fec0671355d0761d",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-feaf6686f1f2b67930da2acd",
+      "requestDigest": "efa061a6291b6fb249b4dc1317dc43b81dd3482d971fe3ac907d7611856a834b",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-0176246547761ee6c6507eaf",
+      "requestDigest": "e08e0d9804db9db19a8e14f61c7b48f1a79dc82035a55d2bced80688babf8a94",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-b661af9223bc3a104d59e267",
+      "requestDigest": "dbcf71c3da0a109ef19631741cfc68c15850e7ebc8377e94ff8d567b8fb0974a",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-3e6b70b52fd132b0859e4f0d",
+      "requestDigest": "60d7ac12f800c98b15b14422b0a123a9717cece3190537816da002f73b592710",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-35869332e369c023dd23c273",
+      "requestDigest": "4990b6733a10e252034e81bd586d9e542f874189590eb54be2391967769bed5b",
+      "outcome": "rejected"
+    },
+    {
+      "candidateId": "candidate-efd8e3e5eda00bfcf3439d6d",
+      "requestDigest": "e8849385120c282ad3c2b0559a3a756e6c19ae6bb152cd68fbf8a545e586bee7",
+      "outcome": "rejected"
+    },
+    {
+      "candidateId": "candidate-f6337128ada4cce3e8c078bd",
+      "requestDigest": "bfeecba2454e7c94a4e3b42941af45d53205a6c464fb4f24f424c85d76843a55",
+      "outcome": "rejected"
+    },
+    {
+      "candidateId": "candidate-75f7f5c7d8e612187e5ed265",
+      "requestDigest": "d53588423a2fd9d7016ef718d235ef16e91407a95aad6d8ffd13a78271265aae",
+      "outcome": "rejected"
+    },
+    {
+      "candidateId": "candidate-91033a57b90005904c1817a6",
+      "requestDigest": "5febbf8d158b17386c6c03ee6c3c820e05bb40b3102330a7c154ff9b3871cae0",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-384676c68a3d817ee693ebe8",
+      "requestDigest": "22d8d9cd57b980476eaf160d4f504bed9fe221d1e6d3bd199715cd03eb1a97de",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-073b8ab3b92ea5f5f7347e6f",
+      "requestDigest": "57e9a582b29f1d8fd26d9582710f14cb2c499ac45091b0f8732afba46e414835",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-e0c5cb80402245b375630148",
+      "requestDigest": "73769f8ba83f8f84c10318601341ec91276d8b23aaa6fead4c0658dfb20792ea",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-3e767c24026d18f71cdfb13e",
+      "requestDigest": "dde4f3b3748308fee8dee64c8478b501d35d984ba188f1f9caa955f77c9024aa",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-e7a685024e0ed702bc68bb64",
+      "requestDigest": "c4083b8beaa166b85d892b5425d1f56055975b30b90ce1322a104afb911f9ccc",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-ffa226ff02bed705aad748b1",
+      "requestDigest": "7a831f8a79e663ebf1669cef98252a1938594eb52c07bcfde4ba2330bf9bfa4c",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-e2d250789d4caba7a5b4a541",
+      "requestDigest": "2566b44867775462f82df3bd4416efaa4cbae1e0bf1339e08223c83867f53bbb",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-9603d49c035ef0b2c46d1d2d",
+      "requestDigest": "c29e29bc9c123dde228a6e879efe433126e2a7425637769a1d964efdb399c712",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-dd28a91b8b372c9f8610339d",
+      "requestDigest": "f4eb214ffd1cdb9116d11134d6a440ad1a7e058d66313f6b344d1644461bba7e",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-881f5701c0dd0bf9e723efa9",
+      "requestDigest": "2f5717577fe932c42ae625b166c4a31b0409f493381df1c4c584f3110c839a15",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-51c5a7a080ef74898ce64086",
+      "requestDigest": "49942dcb86288d99a3c8fab3dc80007f93b4036ff25a90b1964ea81600cc2a3e",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-b3f15c2e5511ae87a8b4818f",
+      "requestDigest": "4d6f8b0c4e1cb319e0697ffc36dc649a9aa919c484ba75aa44591b204ee285c9",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-47220eaa827aa3bfa967e075",
+      "requestDigest": "209775dd7fae07b9b0b118e2ce0d56e182cac45395314ed941db44b62810df9a",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-86b620fbbef98dcbf86323f2",
+      "requestDigest": "897faf5f612321b3374f6d69f30a3e38cfdfbb3b8773ec31f7bd765e5318fa18",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-a0e6bdb26887870895b1ca8f",
+      "requestDigest": "6565c5aeb1a403b0c27afbee24df9f8c514cd3e7a92746f397a82185692050cf",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-5ce124e68595edca10442e13",
+      "requestDigest": "8ab914715ca6f3d779fb6fa86b2b6e26f4dae6216de04be8da13448984c8e7a7",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-a029c14e6fbca3c9bbaa30b5",
+      "requestDigest": "446897d94e228b5044e0e53304f5081255a199bf6284ddb578763334180c5d9a",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-780ed0ff2e3b3035a42dd2d1",
+      "requestDigest": "b67e50093bd9bf0d3ef10c6d5bca030ba5bf5e6dd98f9ce53c47fa629b10ec8a",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-0e7d819fb8e60c751b3a0f4a",
+      "requestDigest": "21fd283a8e6db5bb18d3bc73561c326a298147999de59d05fe309dd604eb4ce2",
+      "outcome": "accepted"
+    }
+  ]
+}

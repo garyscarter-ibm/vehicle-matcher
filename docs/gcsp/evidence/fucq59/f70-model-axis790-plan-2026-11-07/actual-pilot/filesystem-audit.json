@@ -1,0 +1,19 @@
+{
+  "scope": "fresh read-only final filesystem evidence; no source replay",
+  "scratchManifests": 8,
+  "scratchAbsent": true,
+  "outerChildren": 16,
+  "allOuterChildrenJoined": true,
+  "allOuterGroupsAbsent": true,
+  "allNestedGroupsAbsent": true,
+  "dependencyLinkAbsent": true,
+  "reservationAbsent": true,
+  "removedAllocationBytes": 2097536,
+  "retainedAllocatedBytes": 16753088,
+  "retainedLogicalBytes": 16447385,
+  "retainedRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once",
+  "compatibilityException": null,
+  "leftovers": [],
+  "suffixMarkerAbsent": true,
+  "sourcePeakRssBytes": 214269952
+}

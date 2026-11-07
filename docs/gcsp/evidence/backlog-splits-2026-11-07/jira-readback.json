@@ -1,0 +1,2416 @@
+{
+  "observedAt": "2026-11-07T13:58:36.717Z",
+  "issues": [
+    {
+      "descriptionHash": "4a4a5a6669b6655b552aa0e8c6bdcb15a6339c3df057ed6d275100bc52bd1405",
+      "expectedDescriptionHash": "4a4a5a6669b6655b552aa0e8c6bdcb15a6339c3df057ed6d275100bc52bd1405",
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-04T14:53:25.255-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Jira supplies story ID/title/parent/priority; kind/size/design impact are labels. Story points are assigned by the implementing agent.\n\nkind: code\ndesign_impact: yes\nrequested: 2026-11-04, by Gary via Claude Code (backlog FUCQ-110, lifecycle from HLD readiness section C7)\nepic: FUCQ-110\npriority: P2\npriority_reason: due 2026-11-12: GCSP demo\nsize: M\ndepends_on: FUCQ-111\n\n## Goal\n\nAs Paula, once my order is sent to ordering, I want to request a handover slot and see when it is actually confirmed, so that I never plan around a booking that does not exist.\n\n## Acceptance criteria\n\n- [ ] **Appointment port:** an appointment port with a synthetic adapter and a live-shaped stub, following FUCQ-111's pattern. The stub reports each write as unsupported with a reviewable reason and leaves the state where it was.\n- [ ] **Target appointment states (Q19):** an appointment moves from requested to scheduled, confirmed by the provider. Each state records its demo-clock time and provider reference. Requested is never shown or returned as booked. Physical completion and no-show outcomes belong to FUCQ-167.\n- [ ] **Request rules:** Paula can request a slot only after her order reaches sent to ordering in FUCQ-111. She chooses from slots the synthetic adapter offers, and earliest dates and slot lengths are PolicyService keys. Repeating the same request returns the same appointment.\n- [ ] **Confirmation on a tick:** the synthetic adapter confirms or proposes another slot from a tick handler on FUCQ-85's clock, after a keyed delay. A proposed change needs Paula's acceptance before it becomes scheduled.\n- [ ] **Uncertain outcomes:** a timeout stays pending under the same idempotency key and is reconciled on FUCQ-85's reconciliation tick before any retry.\n- [ ] **Read model and routes:** `/api/gcsp` routes request a slot, accept a proposed change and read the current appointment, with who owns the next step (Paula, the retailer or the scheme team). Another employee's appointment is refused, and browser-supplied employee or run IDs are ignored.\n## Files or areas\n\n- `server/gcsp/lifecycle/appointments (proposed)`\n- `server/gcsp/adapters/synthetic-appointments (proposed)`\n- `server/gcsp/migrations/ (additive appointment tables)`\n- `server/index.js (routes under /api/gcsp)`\n- `server/test/gcsp-lifecycle-appointment.test.js (proposed)`\n- `docs/gcsp/shared-contracts.md (appointment shape)`\n## Decided\n\nScope revision authorised by Russell on 7 November 2026: keep the necessary demo scope under this existing Story number and move the remainder into a new To Do Story, following docs/gcsp/backlog-moscow-review-2026-11-07.md. This explicit human revision supersedes earlier instructions to keep the previous combined acceptance unchanged. Preserve implemented work, claims, original evidence and recorded failures. Existing estimates are historical and need re-estimation; this split does not establish completion.\n\nThe remaining scope is tracked in FUCQ-167. That Story is not a prerequisite for accepting this retained scope.\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026 (`docs/design/handover-section-c7-c9-2026-11-04.md`, C7; `docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md`, `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`: \"Greg's supply loop\" (the lifecycle paragraph), \"Paula's version-4 blueprint\" column 13 and \"Lifecycle and help\". Carry these decisions and acceptance criteria into every child-agent brief.\n\nBlueprint column 13: requested differs from confirmed; signing may follow booking; completed documents and a ready vehicle gate physical handover. GCSP unifies ordering and the former ISA handover system (`docs/gcsp/demo-brief.md`), so the appointment belongs in the same experience.\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q19: the target's appointment states (scheduled, completed), with no-show as the failure case.\n- Q14: adapters model the target AWS platform.\n- Q3: presenter ticks drive confirmation; no unattended promises.\n## Out of scope\n\nPhysical completion, the readiness gate on completion, no-show and rebooking (FUCQ-167); the old car's separate return plan (FUCQ-118); document/readiness tracking (FUCQ-116); screens; real retailer calendars.\n\n## Validate\n\nRun commands from the worktree root. Named new test files remain deliverables.\n\n- `node --test server/test/gcsp-lifecycle-appointment.test.js`: request refused before sent to ordering; requested then scheduled on a tick; idempotent repeat; proposed slot change requiring Paula's acceptance; live stub reporting unsupported without changing state; uncertain write reconciled under the same key before retry; employee and run scoping.\n- `npm test` passes.\n- Backend-only: record requested, proposed-change, pending and scheduled response shapes for FUCQ-120, including named next-step ownership. Completion/no-show cases move with their implementation to FUCQ-167.\n",
+        "issuelinks": [
+          {
+            "id": "62605",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "In Progress",
+                  "statusCategory": {
+                    "colorName": "yellow",
+                    "id": 4,
+                    "key": "indeterminate",
+                    "name": "In Progress",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/4"
+                  }
+                }
+              },
+              "key": "FUCQ-111"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62607",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-118"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62608",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-120"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "340020",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-167"
+            },
+            "type": {
+              "id": "10179",
+              "inward": "split from",
+              "name": "Issue Split",
+              "outward": "split to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "size:M"
+        ],
+        "parent": {
+          "key": "FUCQ-110"
+        },
+        "priority": {
+          "id": "2",
+          "name": "High"
+        },
+        "reporter": {
+          "displayName": "Gary Carter"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Request and confirm a replacement handover appointment",
+        "updated": "2026-11-07T07:57:08.987-0600"
+      },
+      "id": "125261",
+      "key": "FUCQ-114"
+    },
+    {
+      "descriptionHash": "05deaecdbd13cdf7ca59857c61a0dba7ab30f9de52ca27cc1382467c7c95e5fe",
+      "expectedDescriptionHash": null,
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-07T07:56:36.495-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Native Story split authorised by Russell on 7 November 2026.\n\nkind: code\ndesign_impact: yes\nrequested: 2026-11-07, by Russell Gowers, split from FUCQ-114\nepic: FUCQ-110\nsize: M\n\nDemo priority: Won't. This remainder stays To Do for later prioritisation. Estimate at pickup from actual remaining work.\n\n## Goal\n\nAs Paula and the scheme team, I want a confirmed appointment to be completed only when the car and documents are ready, or recorded as a no-show with a new request, so that the physical handover outcome is truthful.\n\n## Acceptance criteria\n\n- [ ] **Terminal appointment states:** extend FUCQ-114's same appointment port, synthetic adapter and repository with completed and no-show outcomes, each with demo-clock time and provider reference. The live-shaped stub still reports unsupported writes without inventing success.\n- [ ] **Completion gate:** mark completed only when FUCQ-116 reports all required documents and vehicle readiness complete. If the port is unavailable or not ready, refuse completion.\n- [ ] **No-show and rebooking:** a scenario key or presenter action records a no-show, emits the original no-show lifecycle-exception receipt, leaves the order allocated and lets Paula request a new slot through FUCQ-114.\n- [ ] **Uncertain outcomes and access:** retain the same idempotency key, reconciliation-before-retry rule, server-owned principal/run scope and named next-step ownership for these writes and reads.\n## Files or areas\n\n- `server/gcsp/lifecycle/appointments (proposed)`\n- `server/gcsp/adapters/synthetic-appointments (proposed)`\n- `server/gcsp/migrations/ (additive appointment tables)`\n- `server/index.js (routes under /api/gcsp)`\n- `server/test/gcsp-lifecycle-appointment.test.js (proposed)`\n- `docs/gcsp/shared-contracts.md (appointment shape)`\n## Decided\n\nScope revision authorised by Russell on 7 November 2026: keep the necessary demo scope under this existing Story number and move the remainder into a new To Do Story, following docs/gcsp/backlog-moscow-review-2026-11-07.md. This explicit human revision supersedes earlier instructions to keep the previous combined acceptance unchanged. Preserve implemented work, claims, original evidence and recorded failures. Existing estimates are historical and need re-estimation; this split does not establish completion.\n\nSplit from FUCQ-114. The necessary scope stays in FUCQ-114. This remainder stays To Do, unassigned, for later prioritisation; reuse existing code and evidence rather than rebuilding it.\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026 (`docs/design/handover-section-c7-c9-2026-11-04.md`, C7; `docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md`, `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`: \"Greg's supply loop\" (the lifecycle paragraph), \"Paula's version-4 blueprint\" column 13 and \"Lifecycle and help\". Carry these decisions and acceptance criteria into every child-agent brief.\n\nBlueprint column 13: requested differs from confirmed; signing may follow booking; completed documents and a ready vehicle gate physical handover. GCSP unifies ordering and the former ISA handover system (`docs/gcsp/demo-brief.md`), so the appointment belongs in the same experience.\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q19: the target's appointment states (scheduled, completed), with no-show as the failure case.\n- Q14: adapters model the target AWS platform.\n- Q3: presenter ticks drive confirmation; no unattended promises.\n## Out of scope\n\nRequest/provider confirmation and proposed-change acceptance already retained in FUCQ-114; the return plan's terminal outcomes (split from FUCQ-118); screens; real physical collection or retailer-calendar integration.\n\n## Validate\n\n- Extend `server/test/gcsp-lifecycle-appointment.test.js` with completion refused until documents/readiness complete, successful synthetic completion, no-show receipt/order allocation/new request, idempotency, unsupported writes, pending reconciliation and employee/run scope.\n- `npm test` passes.\n- Backend-only: publish the completed/no-show response shapes for the later order-progress UI. Exercise the actual retained appointment/document interfaces; fixtures alone do not establish an unavailable integration.\nAdded by: Russell Gowers (authorised split from FUCQ-114, 7 November 2026).\n\n",
+        "issuelinks": [
+          {
+            "id": "340020",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-114"
+            },
+            "type": {
+              "id": "10179",
+              "inward": "split from",
+              "name": "Issue Split",
+              "outward": "split to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "moscow-after-demo",
+          "scope-split-2026-11-07",
+          "size:M",
+          "split-from-FUCQ-114"
+        ],
+        "parent": {
+          "key": "FUCQ-110"
+        },
+        "priority": {
+          "id": "3",
+          "name": "Medium"
+        },
+        "reporter": {
+          "displayName": "Russell Gowers"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Record handover completion, no-show and rebooking",
+        "updated": "2026-11-07T07:57:09.037-0600"
+      },
+      "id": "1501437",
+      "key": "FUCQ-167"
+    },
+    {
+      "descriptionHash": "cc019d202b8e8b1ede92b372273cbb539f0da3dd2ce68a5d578501f6fe1539e6",
+      "expectedDescriptionHash": "cc019d202b8e8b1ede92b372273cbb539f0da3dd2ce68a5d578501f6fe1539e6",
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-04T14:54:40.499-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Jira supplies story ID/title/parent/priority; kind/size/design impact are labels. Story points are assigned by the implementing agent.\n\nkind: code\ndesign_impact: yes\nrequested: 2026-11-04, by Gary via Claude Code (backlog FUCQ-110, lifecycle from HLD readiness section C7)\nepic: FUCQ-110\npriority: P2\npriority_reason: due 2026-11-12: GCSP demo\nsize: S\ndepends_on: FUCQ-114\n\n## Goal\n\nAs Paula, I want my current car's return planned in its own right, so that I know when I hand it back and I keep it until the new one is actually mine.\n\n## Acceptance criteria\n\n- [ ] **Separate return plan:** a replacement order has a return plan for the current car, linked to the old contract and vehicle slot FUCQ-71 recorded, and separate from the new car's handover appointment. A new order (no current car) has none.\n- [ ] **Return states:** the plan moves through not planned, return requested and return scheduled. It records the return location, a separate appointment through FUCQ-114's port, demo-clock time and provider reference. Requested is never shown as scheduled. Returned/missed outcomes move to FUCQ-168.\n- [ ] **Same-visit or separate:** Paula can ask to return the old car at the new car's handover or at a separate slot. The choice and its rules are PolicyService keys, labelled synthetic assumptions.\n- [ ] **Current-car relationship:** acceptance, approval, a requested slot and a scheduled handover or return never change Paula's current car. A test proves her current-car identity remains unchanged throughout this planning scope. Only later confirmed completion/return may change it, implemented in FUCQ-168.\n- [ ] **Return mileage:** the plan carries the return mileage FUCQ-70 captured, read-only, as recorded at selection.\n- [ ] **Read model and routes:** `/api/gcsp` routes read the return plan and request a return slot, using FUCQ-84's server-owned context. Another employee's plan is refused, and browser-supplied employee or run IDs are ignored.\n## Files or areas\n\n- `server/gcsp/lifecycle/return-plan (proposed)`\n- `server/gcsp/migrations/ (additive return-plan tables)`\n- `server/index.js (routes under /api/gcsp)`\n- `server/test/gcsp-lifecycle-return.test.js (proposed)`\n- `docs/gcsp/shared-contracts.md (return-plan shape)`\n## Decided\n\nScope revision authorised by Russell on 7 November 2026: keep the necessary demo scope under this existing Story number and move the remainder into a new To Do Story, following docs/gcsp/backlog-moscow-review-2026-11-07.md. This explicit human revision supersedes earlier instructions to keep the previous combined acceptance unchanged. Preserve implemented work, claims, original evidence and recorded failures. Existing estimates are historical and need re-estimation; this split does not establish completion.\n\nThe remaining scope is tracked in FUCQ-168. That Story is not a prerequisite for accepting this retained scope.\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026 (`docs/design/handover-section-c7-c9-2026-11-04.md`, C7; `docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md`, `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`: \"Paula's version-4 blueprint\" column 13 and the paragraph after the blueprint table. Carry these decisions and acceptance criteria into every child-agent brief.\n\nBlueprint column 13 names a separate old-car return plan. The HLD: only confirmed collection or return changes the current-car relationship; acceptance alone does not. Physical collection and return stay outside the main walkthrough, so the confirmations come from the synthetic adapter.\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q19: appointment states reused for the return slot.\n- Q13: the current car is a delivered car with a VIN; the new car is keyed by `orderUuid` until delivery.\n## Out of scope\n\nConfirmed physical return, missed-return receipts and current-car updates on confirmed completion/return (FUCQ-168); the new-car appointment (FUCQ-114); inspection, damage/charges or resale; screens.\n\n## Validate\n\n- `node --test server/test/gcsp-lifecycle-return.test.js`: replacement-only return plan; requested then scheduled as a distinct appointment; same-visit/separate choices and their canonical policy; recorded return mileage; current car unchanged through acceptance, approvals and planning; employee/run scoping.\n- `npm test` passes.\n- Backend-only: record the planning response shapes for FUCQ-120. Returned/missed states and their checks move to FUCQ-168.\n",
+        "issuelinks": [
+          {
+            "id": "62607",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-114"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62610",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-120"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "340021",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-168"
+            },
+            "type": {
+              "id": "10179",
+              "inward": "split from",
+              "name": "Issue Split",
+              "outward": "split to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "size:S"
+        ],
+        "parent": {
+          "key": "FUCQ-110"
+        },
+        "priority": {
+          "id": "2",
+          "name": "High"
+        },
+        "reporter": {
+          "displayName": "Gary Carter"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Plan and schedule the old car's separate return",
+        "updated": "2026-11-07T07:57:46.112-0600"
+      },
+      "id": "125265",
+      "key": "FUCQ-118"
+    },
+    {
+      "descriptionHash": "ee6baf4e34a273f0124f70bdb8da62755da29a145757da3deaac8a362ab8ad4a",
+      "expectedDescriptionHash": null,
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-07T07:57:43.479-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Native Story split authorised by Russell on 7 November 2026.\n\nkind: code\ndesign_impact: yes\nrequested: 2026-11-07, by Russell Gowers, split from FUCQ-118\nepic: FUCQ-110\nsize: S\n\nDemo priority: Won't. This remainder stays To Do for later prioritisation. Estimate at pickup from actual remaining work.\n\n## Goal\n\nAs Paula and the scheme team, I want confirmed return and missed-return outcomes recorded separately from my replacement handover, so that my actual current-car relationship changes only after a confirmed physical event.\n\n## Acceptance criteria\n\n- [ ] **Returned and missed states:** extend FUCQ-118's separate old-contract/vehicle return plan with returned and missed outcomes, retaining location, appointment identity, demo-clock time and provider reference.\n- [ ] **Confirmed current-car relationship:** only a confirmed handover completion or confirmed return changes Paula's current car. Acceptance, approval and scheduling never do. Use the existing exact vehicle/order/contract identities; new-order cases still have no old-car return plan.\n- [ ] **Missed-return receipt:** a missed return emits the original keyed lifecycle-exception receipt for the renewal-risk trigger.\n- [ ] **Existing boundaries:** use the retained appointment port and server-owned identity/run, repository, canonical policy and clock. Preserve idempotent/pending reconciliation semantics when recording outcomes.\n## Files or areas\n\n- `server/gcsp/lifecycle/return-plan (proposed)`\n- `server/gcsp/migrations/ (additive return-plan tables)`\n- `server/index.js (routes under /api/gcsp)`\n- `server/test/gcsp-lifecycle-return.test.js (proposed)`\n- `docs/gcsp/shared-contracts.md (return-plan shape)`\n## Decided\n\nScope revision authorised by Russell on 7 November 2026: keep the necessary demo scope under this existing Story number and move the remainder into a new To Do Story, following docs/gcsp/backlog-moscow-review-2026-11-07.md. This explicit human revision supersedes earlier instructions to keep the previous combined acceptance unchanged. Preserve implemented work, claims, original evidence and recorded failures. Existing estimates are historical and need re-estimation; this split does not establish completion.\n\nSplit from FUCQ-118. The necessary scope stays in FUCQ-118. This remainder stays To Do, unassigned, for later prioritisation; reuse existing code and evidence rather than rebuilding it.\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026 (`docs/design/handover-section-c7-c9-2026-11-04.md`, C7; `docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md`, `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`: \"Paula's version-4 blueprint\" column 13 and the paragraph after the blueprint table. Carry these decisions and acceptance criteria into every child-agent brief.\n\nBlueprint column 13 names a separate old-car return plan. The HLD: only confirmed collection or return changes the current-car relationship; acceptance alone does not. Physical collection and return stay outside the main walkthrough, so the confirmations come from the synthetic adapter.\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q19: appointment states reused for the return slot.\n- Q13: the current car is a delivered car with a VIN; the new car is keyed by `orderUuid` until delivery.\n## Out of scope\n\nPlanning, same-visit/separate slot choices and recorded mileage remain in FUCQ-118; handover completion/no-show mechanics are the separate FUCQ-114 remainder; physical inspections, charges, resale and screens.\n\n## Validate\n\n- Extend `server/test/gcsp-lifecycle-return.test.js` with confirmed returned/missed outcomes, exception receipt, current-car changes only on confirmed completion/return, separate old/new identities, duplicate/pending outcomes and employee/run scoping.\n- `npm test` passes.\n- Publish terminal return response shapes for the later UI and verify against the retained appointment/lifecycle ports.\nAdded by: Russell Gowers (authorised split from FUCQ-118, 7 November 2026).\n\n",
+        "issuelinks": [
+          {
+            "id": "340021",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-118"
+            },
+            "type": {
+              "id": "10179",
+              "inward": "split from",
+              "name": "Issue Split",
+              "outward": "split to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "moscow-after-demo",
+          "scope-split-2026-11-07",
+          "size:S",
+          "split-from-FUCQ-118"
+        ],
+        "parent": {
+          "key": "FUCQ-110"
+        },
+        "priority": {
+          "id": "3",
+          "name": "Medium"
+        },
+        "reporter": {
+          "displayName": "Russell Gowers"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Confirm an old-car return or missed return and update the current-car relationship",
+        "updated": "2026-11-07T07:57:46.153-0600"
+      },
+      "id": "1501438",
+      "key": "FUCQ-168"
+    },
+    {
+      "descriptionHash": "d15584ded4160da3e9358da078f11899feb7a4afc47eb390134fb716208742f8",
+      "expectedDescriptionHash": "d15584ded4160da3e9358da078f11899feb7a4afc47eb390134fb716208742f8",
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-04T14:55:24.275-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Jira supplies story ID/title/parent/priority; kind/size/design impact are labels. Story points are assigned by the implementing agent.\n\nkind: ui\ndesign_impact: yes\nui: el, mediaWell; screenIntro, button and statusScreen (all listed under \"Not yet in the kit\"; reuse them if already added); FUCQ-31's shared fact and status components; FUCQ-95's activityTimeline (reuse for dated history if added); new: stageTracker, because no kit component shows ordered stages with an owner and a current step, and taskList, because none lists actionable owned items with due times\nrequested: 2026-11-04, by Gary via Claude Code (backlog FUCQ-110, lifecycle from HLD readiness section C7)\nepic: FUCQ-110\npriority: P2\npriority_reason: due 2026-11-12: GCSP demo\nsize: L\ndepends_on: FUCQ-114, FUCQ-116, FUCQ-118, FUCQ-105, FUCQ-67\n\n## Goal\n\nAs Paula, after selecting my car, I want one clear place that shows how far my order has got, what my handover and return look like, and who has the next step, so that I never have to ask anyone where it stands.\n\n## Acceptance criteria\n\n- [ ] **Order progress:** on her account (FUCQ-67) and on the offer page (FUCQ-105) once selected, Paula sees the selected car (with `mediaWell` and its 7-digit `orderNumber`) and the approval stages from FUCQ-111 in the target's names. The current stage, its owner (HR, sales manager or ordering) and the expected next step are shown. HR approval appears only when the policy key includes it.\n- [ ] **Handover appointment:** show FUCQ-114's requested, proposed-change, pending and scheduled states, never calling a requested slot booked. Paula can request once sent to ordering and accept or refuse a proposed change. Completion/no-show UI moves to FUCQ-169.\n- [ ] **Documents and readiness:** the items from FUCQ-116 show as a task list, with Paula's own tasks first and their actions, then items others own with their owner and due time. Overdue and failed items are distinct.\n- [ ] **Old-car return:** for a replacement order, show FUCQ-118's distinct requested/scheduled return plan separately from the new-car appointment. Her existing car remains current throughout planning.\n- [ ] **Every state rendered:** waiting for HR/sales-manager approval; approval declined with its next step and help entry; sent to ordering with no slot; requested/scheduled and proposed-change/pending appointments; documents waiting for Paula, in progress, overdue or failed; ready for handover; separately requested/scheduled old-car return; unsupported provider write shown as not done; loading and source failure. Reload/reopening read the server's actual state. Completed/no-show/missed-return presentation moves to FUCQ-169.\n- [ ] **Copy:** labels use the target's stage names and say plainly who is acting. The demo signing stand-in is labelled synthetic. No em dashes.\n- [ ] **Shared kit:** the views are built from the shared kit per `COMPONENTS.md`. New or extended components go into the kit, the catalogue and the gallery in the same commit. The ratchet baseline only falls.\n- [ ] **Embeddable (Q18):** the block mounts as a custom element, with no inline scripts, inline handlers or `eval`. Keyboard access, visible focus and status announcements throughout.\n## Files or areas\n\n- `blocks/gcsp/ (proposed order progress view, used by the account and offer views)`\n- `COMPONENTS.md`, kit gallery, `server/test/ui-ratchet.json`\n- `server/test/gcsp-order-progress-view.test.js (proposed)`\n## Decided\n\nScope revision authorised by Russell on 7 November 2026: keep the necessary demo scope under this existing Story number and move the remainder into a new To Do Story, following docs/gcsp/backlog-moscow-review-2026-11-07.md. This explicit human revision supersedes earlier instructions to keep the previous combined acceptance unchanged. Preserve implemented work, claims, original evidence and recorded failures. Existing estimates are historical and need re-estimation; this split does not establish completion.\n\nThe remaining scope is tracked in FUCQ-169. That Story is not a prerequisite for accepting this retained scope.\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026 (`docs/design/handover-section-c7-c9-2026-11-04.md`, C7; `docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md`, `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/screens/README.md`, `COMPONENTS.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`: \"Paula's version-4 blueprint\" columns 12 and 13. Carry the experience contract, the visual reference and these criteria into every child-agent brief.\n\nVisual reference: the screenshots govern the shell, and FUCQ-64's reviewed body reference governs the body. Blueprint column 12: show who owns outstanding work and delays.\n\nFoundation (FUCQ-79): server-owned context from FUCQ-84, and time from FUCQ-85's demo clock. All labels and stage lists come from the server projection, which reads PolicyService.\n\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q19: target approval and appointment state names.\n- Q8: GCSP UI lives in separate blocks under `blocks/gcsp/` that import the shared kit; `vehicle-matcher` stays retail-only.\n- Q18: custom element, with no inline scripts, inline event handlers or `eval`.\n- Q3: no copy claims the platform progresses overnight unattended.\n## Out of scope\n\nPhysical completion, no-show/missed-return and rebooking presentation (FUCQ-169); case operations (the FUCQ-122 remainder); services behind states (FUCQ-111/114/116/118); Greg's views.\n\n## Validate\n\n- `node --test server/test/gcsp-order-progress-view.test.js`: render every retained planning/progress state, including HR on/off, real requested-versus-confirmed wording, separate return plan and unchanged current-car identity.\n- `npm test` passes, including the UI ratchet and em-dash test.\n- Record desktop and 375px browser evidence with keyboard-only operation on both account and selected-offer hosts, using the actual available lifecycle/document/appointment/return interfaces. Preserve the shared kit, custom-element/CSP, focus and status-announcement obligations.\n",
+        "issuelinks": [
+          {
+            "id": "62608",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-114"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62609",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "In Progress",
+                  "statusCategory": {
+                    "colorName": "yellow",
+                    "id": 4,
+                    "key": "indeterminate",
+                    "name": "In Progress",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/4"
+                  }
+                }
+              },
+              "key": "FUCQ-116"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62610",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-118"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62611",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "In Progress",
+                  "statusCategory": {
+                    "colorName": "yellow",
+                    "id": 4,
+                    "key": "indeterminate",
+                    "name": "In Progress",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/4"
+                  }
+                }
+              },
+              "key": "FUCQ-105"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62612",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "Done",
+                  "statusCategory": {
+                    "colorName": "green",
+                    "id": 3,
+                    "key": "done",
+                    "name": "Done",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/3"
+                  }
+                }
+              },
+              "key": "FUCQ-67"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62616",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-124"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "340022",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-169"
+            },
+            "type": {
+              "id": "10179",
+              "inward": "split from",
+              "name": "Issue Split",
+              "outward": "split to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:ui",
+          "size:L"
+        ],
+        "parent": {
+          "key": "FUCQ-110"
+        },
+        "priority": {
+          "id": "2",
+          "name": "High"
+        },
+        "reporter": {
+          "displayName": "Gary Carter"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Show Paula order progress, outstanding actions and confirmed handover and return plans",
+        "updated": "2026-11-07T07:57:50.313-0600"
+      },
+      "id": "125267",
+      "key": "FUCQ-120"
+    },
+    {
+      "descriptionHash": "95ea97eb643b616051bcd61c62dd673dd49c6785ce2df8ddc78c57320a13f3c2",
+      "expectedDescriptionHash": null,
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-07T07:57:47.932-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Native Story split authorised by Russell on 7 November 2026.\n\nkind: ui\ndesign_impact: yes\nui: el, mediaWell; screenIntro, button and statusScreen (all listed under \"Not yet in the kit\"; reuse them if already added); FUCQ-31's shared fact and status components; FUCQ-95's activityTimeline (reuse for dated history if added); new: stageTracker, because no kit component shows ordered stages with an owner and a current step, and taskList, because none lists actionable owned items with due times\nrequested: 2026-11-07, by Russell Gowers, split from FUCQ-120\nepic: FUCQ-110\nsize: M\n\nDemo priority: Won't. This remainder stays To Do for later prioritisation. Estimate at pickup from actual remaining work.\n\n## Goal\n\nAs Paula, I want my order-progress view to show confirmed completion, missed appointments/returns and the available rebooking action, so that the screen reflects physical outcomes accurately.\n\n## Acceptance criteria\n\n- [ ] **Handover outcome:** extend FUCQ-120's account and selected-offer views to show completed and no-show states from the FUCQ-114 remainder, with a new slot request after a no-show and truthful named ownership.\n- [ ] **Separate return outcome:** show returned/missed-return states from the FUCQ-118 remainder separately from the replacement handover, with actual server-reported current-car identity after confirmation. Scheduled/requested states never imply completion.\n- [ ] **Read-back and failures:** reload/reopening use current server state; duplicate actions, pending reconciliation, unsupported writes, loading and source failure do not invent an outcome.\n- [ ] **Experience quality:** retain the target stage names, concise copy, labelled synthetic stand-ins, shared kit/catalogue/gallery and ratchet, custom element/CSP, keyboard access, visible focus and status announcements for all added states.\n## Files or areas\n\n- `blocks/gcsp/ (proposed order progress view, used by the account and offer views)`\n- `COMPONENTS.md`, kit gallery, `server/test/ui-ratchet.json`\n- `server/test/gcsp-order-progress-view.test.js (proposed)`\n## Decided\n\nScope revision authorised by Russell on 7 November 2026: keep the necessary demo scope under this existing Story number and move the remainder into a new To Do Story, following docs/gcsp/backlog-moscow-review-2026-11-07.md. This explicit human revision supersedes earlier instructions to keep the previous combined acceptance unchanged. Preserve implemented work, claims, original evidence and recorded failures. Existing estimates are historical and need re-estimation; this split does not establish completion.\n\nSplit from FUCQ-120. The necessary scope stays in FUCQ-120. This remainder stays To Do, unassigned, for later prioritisation; reuse existing code and evidence rather than rebuilding it.\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026 (`docs/design/handover-section-c7-c9-2026-11-04.md`, C7; `docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md`, `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/screens/README.md`, `COMPONENTS.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`: \"Paula's version-4 blueprint\" columns 12 and 13. Carry the experience contract, the visual reference and these criteria into every child-agent brief.\n\nVisual reference: the screenshots govern the shell, and FUCQ-64's reviewed body reference governs the body. Blueprint column 12: show who owns outstanding work and delays.\n\nFoundation (FUCQ-79): server-owned context from FUCQ-84, and time from FUCQ-85's demo clock. All labels and stage lists come from the server projection, which reads PolicyService.\n\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q19: target approval and appointment state names.\n- Q8: GCSP UI lives in separate blocks under `blocks/gcsp/` that import the shared kit; `vehicle-matcher` stays retail-only.\n- Q18: custom element, with no inline scripts, inline event handlers or `eval`.\n- Q3: no copy claims the platform progresses overnight unattended.\n## Out of scope\n\nThe core progress, documents/actions and handover/return planning remain in FUCQ-120. Physical-outcome services belong to their appointment/return remainders; no new case-management or retailer integration.\n\n## Validate\n\n- Extend `server/test/gcsp-order-progress-view.test.js` for completed/no-show/rebooking and returned/missed-return states on both existing hosts, including server read-back, current-car identity and failures.\n- `npm test` passes, including the UI ratchet and em-dash test.\n- Record desktop and 375px browser/keyboard evidence of these terminal and rebooking states against the actual services.\nAdded by: Russell Gowers (authorised split from FUCQ-120, 7 November 2026).\n\n",
+        "issuelinks": [
+          {
+            "id": "340022",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-120"
+            },
+            "type": {
+              "id": "10179",
+              "inward": "split from",
+              "name": "Issue Split",
+              "outward": "split to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:ui",
+          "moscow-after-demo",
+          "scope-split-2026-11-07",
+          "size:M",
+          "split-from-FUCQ-120"
+        ],
+        "parent": {
+          "key": "FUCQ-110"
+        },
+        "priority": {
+          "id": "3",
+          "name": "Medium"
+        },
+        "reporter": {
+          "displayName": "Russell Gowers"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Show physical handover and return outcomes with rebooking actions",
+        "updated": "2026-11-07T07:57:50.354-0600"
+      },
+      "id": "1501439",
+      "key": "FUCQ-169"
+    },
+    {
+      "descriptionHash": "4cbdc0c74f756caa551e044d453a23432436b8461ad07d3395d8d856cf296d0b",
+      "expectedDescriptionHash": "4cbdc0c74f756caa551e044d453a23432436b8461ad07d3395d8d856cf296d0b",
+      "fields": {
+        "assignee": {
+          "accountId": "5ae6eda0ba41192e23d86320",
+          "displayName": "Gary Carter"
+        },
+        "created": "2026-11-04T14:55:44.038-0600",
+        "customfield_10016": 13,
+        "description": "Scaffolding template: `_dev/story-template.md`. Jira supplies story ID/title/parent/priority; kind/size/design impact are labels. Story points are assigned by the implementing agent.\n\nkind: ui\ndesign_impact: yes\nui: portalShell, screenIntro, button, statusScreen, factList, dataTable\nrequested: 2026-11-04, by Gary via Claude Code (backlog FUCQ-110, lifecycle from HLD readiness section C7)\nepic: FUCQ-110\npriority: P2\npriority_reason: due 2026-11-12: GCSP demo\nsize: M\ndepends_on: FUCQ-112, FUCQ-95, FUCQ-101\n\n## Goal\n\nAs Paula, I want useful help options and a clear named contact, case status and next action, so that I know who is helping without altering my search or allocation priority.\n\n## Acceptance criteria\n\n- [ ] **Help entry for Paula:** retain the help entry on FUCQ-95's activity and FUCQ-120's order-progress views. Opening it changes nothing. Explain the effect before an explicit request opens or adds to a case through the existing FUCQ-112 service.\n- [ ] **Named ownership and status:** show the scheme-team owner/contact, case reason, current status, next action and its due time on the demo clock. Reload reads the actual case. Retain truthful basic facts for requested/trigger-open, in-progress, resolved and closed cases; advanced history/remedy actions move to FUCQ-170.\n- [ ] **No priority promise:** opening/requesting help changes neither the brief, active search nor allocation priority and promises no specific car. Remedies still require the scheme team's decision; no automatic remedy is applied by help entry.\n- [ ] **Every retained state rendered:** no case/help available; case open from request or trigger; in progress; resolved/closed basic status; loading and source failure. Preserve server-owned employee/run scope.\n- [ ] **Shared kit:** retain shared components, catalogue/gallery and ratchet obligations for the retained employee view and host integration. Existing operational code and evidence are preserved.\n- [ ] **Embeddable (Q18):** the employee block remains a custom element with no inline scripts, inline handlers or eval, keyboard access, visible focus and status announcements.\n## Files or areas\n\n- `blocks/gcsp/ (proposed help and case views in the employee block; case queue in Greg's block)`\n- `COMPONENTS.md`, kit gallery, `server/test/ui-ratchet.json`\n- `server/test/gcsp-case-views.test.js (proposed)`\n## Decided\n\nScope revision authorised by Russell on 7 November 2026: keep the necessary demo scope under this existing Story number and move the remainder into a new To Do Story, following docs/gcsp/backlog-moscow-review-2026-11-07.md. This explicit human revision supersedes earlier instructions to keep the previous combined acceptance unchanged. Preserve implemented work, claims, original evidence and recorded failures. Existing estimates are historical and need re-estimation; this split does not establish completion.\n\nThe remaining scope is tracked in FUCQ-170. That Story is not a prerequisite for accepting this retained scope.\n\nTechnical pickup assessment, Gary direction 5 November 2026: Jira depends_on links remain context, not admission gates. See docs/gcsp/technical-readiness-2026-11-05.md. Actual help/case/update service routes and Greg caseQueue region permit independent employee/help/queue implementation now. Add server-owned feasible-remedy read projection through existing evaluation/policy gates. Activity/order-progress host placement and actual lifecycle-trigger proof remain outstanding until exercised. Own blocks/gcsp/cases and existing cases/http service additions; initial Greg host composition lane granted here, release after clean pushed checkpoint for FUCQ-103. Do not edit Russ activity files. Preserve original acceptance; no built claim from fixtures alone.\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026 (`docs/design/handover-section-c7-c9-2026-11-04.md`, C7; `docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md` (\"Unresolved renewals and recovery\"), `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/screens/README.md`, `COMPONENTS.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`: \"Paula's version-4 blueprint\" column 08 and \"Lifecycle and help\". Carry the experience contract, the visual reference and these criteria into every child-agent brief.\n\nVisual reference: the screenshots govern the shell, and FUCQ-64's reviewed body reference governs the body. Greg's views use the denser operational treatment FUCQ-101 establishes, in the same shell and visual language.\n\nThe demo brief asks for a manual-intervention job on Greg's page with reasons and feasible next-best options, and for the flow to show who owns the case and how the employee hears about progress.\n\nFoundation (FUCQ-79): server-owned context from FUCQ-84, so only Greg's role can record remedies; time from FUCQ-85's demo clock.\n\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q8: GCSP UI lives in separate blocks under `blocks/gcsp/` that import the shared kit.\n- Q18: custom elements, with no inline scripts, inline event handlers or `eval`.\n- Q16: a relaxation is one confirmed preference change.\n## Out of scope\n\nGreg's queue/sorting/case operations, feasible-remedy review and recording, full dated history, employee remedy/preference confirmation and their advanced states (FUCQ-170); the existing case service/triggers (FUCQ-112); recovery priority; the general order-progress host (FUCQ-120).\n\n## Validate\n\n- `node --test server/test/gcsp-case-views.test.js`: retained help/confirmation/basic owner-status-next-action rendering and reload, access boundaries, and no brief/search/allocation-priority change from opening/requesting help.\n- `npm test` passes, including the UI ratchet and em-dash test; preserve all recorded failures/skips/unrun checks rather than claiming they passed.\n- Desktop and 375px browser evidence with keyboard-only operation for retained states and actual activity/order-progress host placement. Existing isolated consumer evidence alone does not establish those host integrations.\n",
+        "issuelinks": [
+          {
+            "id": "62613",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "Done",
+                  "statusCategory": {
+                    "colorName": "green",
+                    "id": 3,
+                    "key": "done",
+                    "name": "Done",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/3"
+                  }
+                }
+              },
+              "key": "FUCQ-112"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62614",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "In Progress",
+                  "statusCategory": {
+                    "colorName": "yellow",
+                    "id": 4,
+                    "key": "indeterminate",
+                    "name": "In Progress",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/4"
+                  }
+                }
+              },
+              "key": "FUCQ-95"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62615",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "Done",
+                  "statusCategory": {
+                    "colorName": "green",
+                    "id": 3,
+                    "key": "done",
+                    "name": "Done",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/3"
+                  }
+                }
+              },
+              "key": "FUCQ-101"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62617",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-124"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "339976",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Bug"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-150"
+            },
+            "type": {
+              "id": "10003",
+              "inward": "relates to",
+              "name": "Relates",
+              "outward": "relates to"
+            }
+          },
+          {
+            "id": "340023",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-170"
+            },
+            "type": {
+              "id": "10179",
+              "inward": "split from",
+              "name": "Issue Split",
+              "outward": "split to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:garys-macbook-pro",
+          "kind:ui",
+          "size:M"
+        ],
+        "parent": {
+          "key": "FUCQ-110"
+        },
+        "priority": {
+          "id": "2",
+          "name": "High"
+        },
+        "reporter": {
+          "displayName": "Gary Carter"
+        },
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Let Paula find help and see named case ownership and status",
+        "updated": "2026-11-07T07:57:54.806-0600"
+      },
+      "id": "125269",
+      "key": "FUCQ-122"
+    },
+    {
+      "descriptionHash": "210334db218b84c6653d023b4569cc508945461a051a65dca3c79aa7e70d796e",
+      "expectedDescriptionHash": null,
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-07T07:57:52.335-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Native Story split authorised by Russell on 7 November 2026.\n\nkind: ui\ndesign_impact: yes\nui: portalShell, screenIntro, button, statusScreen, factList, dataTable\nrequested: 2026-11-07, by Russell Gowers, split from FUCQ-122\nepic: FUCQ-110\nsize: M\n\nDemo priority: Could. This remainder stays To Do for later prioritisation. Estimate at pickup from actual remaining work.\n\n## Goal\n\nAs Greg, I want to prioritise and work the renewal-risk queue with feasible remedies, and as Paula I want to review the dated history and confirm any proposed preference change, so that help can progress transparently.\n\n## Acceptance criteria\n\n- [ ] **Advanced Paula case view:** preserve the full dated history, proposed remedy and its ownership/due time from the original FUCQ-122. A preference relaxation uses FUCQ-91's one explicitly confirmed change and states what will change.\n- [ ] **Greg's queue:** the actual FUCQ-101 dashboard queue shows employee, deadline, trigger/request, reason, status, owner and next-action due time, sorted meaningfully by deadline and status.\n- [ ] **Working a case:** use existing evaluation/policy-backed feasible options: suitable available cars, a preference relaxation, a realistically dated later release, a manual decision, and an extension only where canonical policy permits. Greg records an update or remedy; Paula sees the persisted result on reload.\n- [ ] **Proposal, approval and application:** keep these distinct, retain server-owned role/run permissions, require employee confirmation for a relaxation and never give automatic allocation priority or promise a specific car.\n- [ ] **Advanced states:** remedy proposed/waiting for Paula; resolved/closed full history and remedy; empty queue, loading/source failure and role refusal, including the original basic context where it supports these interactions.\n- [ ] **Experience quality:** retain shared kit/catalogue/gallery, ratchet and custom-element/CSP obligations, readable operational rows, keyboard traversal, visible focus and status announcements on both employee and Greg surfaces.\n## Files or areas\n\n- `blocks/gcsp/ (proposed help and case views in the employee block; case queue in Greg's block)`\n- `COMPONENTS.md`, kit gallery, `server/test/ui-ratchet.json`\n- `server/test/gcsp-case-views.test.js (proposed)`\n## Decided\n\nScope revision authorised by Russell on 7 November 2026: keep the necessary demo scope under this existing Story number and move the remainder into a new To Do Story, following docs/gcsp/backlog-moscow-review-2026-11-07.md. This explicit human revision supersedes earlier instructions to keep the previous combined acceptance unchanged. Preserve implemented work, claims, original evidence and recorded failures. Existing estimates are historical and need re-estimation; this split does not establish completion.\n\nSplit from FUCQ-122. The necessary scope stays in FUCQ-122. This remainder stays To Do, unassigned, for later prioritisation; reuse existing code and evidence rather than rebuilding it.\n\nTechnical pickup assessment, Gary direction 5 November 2026: Jira depends_on links remain context, not admission gates. See docs/gcsp/technical-readiness-2026-11-05.md. Actual help/case/update service routes and Greg caseQueue region permit independent employee/help/queue implementation now. Add server-owned feasible-remedy read projection through existing evaluation/policy gates. Activity/order-progress host placement and actual lifecycle-trigger proof remain outstanding until exercised. Own blocks/gcsp/cases and existing cases/http service additions; initial Greg host composition lane granted here, release after clean pushed checkpoint for FUCQ-103. Do not edit Russ activity files. Preserve original acceptance; no built claim from fixtures alone.\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026 (`docs/design/handover-section-c7-c9-2026-11-04.md`, C7; `docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md` (\"Unresolved renewals and recovery\"), `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/screens/README.md`, `COMPONENTS.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`: \"Paula's version-4 blueprint\" column 08 and \"Lifecycle and help\". Carry the experience contract, the visual reference and these criteria into every child-agent brief.\n\nVisual reference: the screenshots govern the shell, and FUCQ-64's reviewed body reference governs the body. Greg's views use the denser operational treatment FUCQ-101 establishes, in the same shell and visual language.\n\nThe demo brief asks for a manual-intervention job on Greg's page with reasons and feasible next-best options, and for the flow to show who owns the case and how the employee hears about progress.\n\nFoundation (FUCQ-79): server-owned context from FUCQ-84, so only Greg's role can record remedies; time from FUCQ-85's demo clock.\n\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q8: GCSP UI lives in separate blocks under `blocks/gcsp/` that import the shared kit.\n- Q18: custom elements, with no inline scripts, inline event handlers or `eval`.\n- Q16: a relaxation is one confirmed preference change.\n## Out of scope\n\nThe necessary help entry and basic named ownership/status remain in FUCQ-122; FUCQ-112 owns case service/triggers; no recovery-priority policy or unrelated host work. Reuse integrated implementation and keep FUCQ-146/FUCQ-150 and other recorded Bugs independently prioritised.\n\n## Validate\n\n- Extend/reuse `server/test/gcsp-case-views.test.js` for full employee history/remedy/confirmation and Greg queue sorting, options, updates and access; verify actual case/brief/evaluation interfaces and that resolution/remedies do not create allocation priority.\n- `npm test` passes, including the UI ratchet and em-dash test; retain existing failed/skipped/unrun results and scope them to their original revisions.\n- Desktop and 375px browser evidence with keyboard-only operation of advanced Paula and Greg states and persisted reload. Reuse valid implementation/evidence; the split itself supplies no passing result.\nAdded by: Russell Gowers (authorised split from FUCQ-122, 7 November 2026).\n\n",
+        "issuelinks": [
+          {
+            "id": "340023",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "In Progress",
+                  "statusCategory": {
+                    "colorName": "yellow",
+                    "id": 4,
+                    "key": "indeterminate",
+                    "name": "In Progress",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/4"
+                  }
+                }
+              },
+              "key": "FUCQ-122"
+            },
+            "type": {
+              "id": "10179",
+              "inward": "split from",
+              "name": "Issue Split",
+              "outward": "split to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:ui",
+          "moscow-could",
+          "scope-split-2026-11-07",
+          "size:M",
+          "split-from-FUCQ-122"
+        ],
+        "parent": {
+          "key": "FUCQ-110"
+        },
+        "priority": {
+          "id": "3",
+          "name": "Medium"
+        },
+        "reporter": {
+          "displayName": "Russell Gowers"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Work the renewal-risk queue, remedies and advanced employee case interactions",
+        "updated": "2026-11-07T07:57:54.848-0600"
+      },
+      "id": "1501440",
+      "key": "FUCQ-170"
+    },
+    {
+      "descriptionHash": "fb3cbf0e1d28d126dd81adfdf06d08f9488436d8313ad5496a54f2285a8e77f5",
+      "expectedDescriptionHash": "fb3cbf0e1d28d126dd81adfdf06d08f9488436d8313ad5496a54f2285a8e77f5",
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-04T14:56:30.586-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Jira supplies story ID/title/parent/priority; kind/size/design impact are labels. Story points are assigned by the implementing agent.\n\nkind: code\ndesign_impact: no\nrequested: 2026-11-04, by Gary via Claude Code (backlog FUCQ-110, lifecycle from HLD readiness section C7)\nepic: FUCQ-110\npriority: P2\npriority_reason: due 2026-11-12: GCSP demo\nsize: M\ndepends_on: FUCQ-120, FUCQ-122, FUCQ-109\n\n## Goal\n\nAs the presenter, I want the connected selected-order journey through approval, documents and confirmed replacement and return plans proven on the running application, so that I can demonstrate the mapped endpoint repeatably.\n\n## Acceptance criteria\n\n- [ ] **Happy path, buddy route:** start from FUCQ-109's selected second offer, tick through HR approval when enabled, sales-manager approval and sent to ordering; request and confirm the replacement appointment, complete the document tasks, show readiness and schedule the separate old-car return. Stop at a confirmed plan and prove the current car is unchanged.\n- [ ] **Shared lifecycle entry:** verify that the retained approval/document/planning services accept the shared order record used by buddy and manual handoff. The full manual checkout/walkthrough remains FUCQ-73's supporting route; physical completion and the full terminal manual lifecycle move to FUCQ-171.\n- [ ] **Retained difficult cases:** HR approval off; approval declined with a named renewal-risk case; an overdue document; basic help request/ownership; and the live-shaped stub reporting unsupported without claiming success. Preserve pending reconciliation, access and stale/read-back correctness in the owning capabilities.\n- [ ] **Repeatable scenarios:** retain known start/reset via FUCQ-85, short click-through steps, expected outcome and observation/feedback location for each retained path, using FUCQ-75's setup.\n- [ ] **Policy change proven:** changing the HR-approval key and one delay key changes stages/timing consistently across the retained screens.\n- [ ] **No recovery priority:** opening/requesting a case leaves allocation input unchanged. The advanced remedy/resolution check moves with that capability to FUCQ-171.\n## Files or areas\n\n- `server/test/gcsp-lifecycle-e2e.test.js (proposed)`\n- `docs/gcsp/manual-acceptance-scenarios.md (lifecycle scenarios)`\n- `docs/gcsp/evidence/fucq-110/ (captures and observations)`\n## Decided\n\nScope revision authorised by Russell on 7 November 2026: keep the necessary demo scope under this existing Story number and move the remainder into a new To Do Story, following docs/gcsp/backlog-moscow-review-2026-11-07.md. This explicit human revision supersedes earlier instructions to keep the previous combined acceptance unchanged. Preserve implemented work, claims, original evidence and recorded failures. Existing estimates are historical and need re-estimation; this split does not establish completion.\n\nThe remaining scope is tracked in FUCQ-171. That Story is not a prerequisite for accepting this retained scope.\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026 (`docs/design/handover-section-c7-c9-2026-11-04.md`, C7; `docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md`, `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md` (\"Repeatable manual trials\" and \"Verify before declaring a UI story built\"), `docs/gcsp/manual-acceptance-scenarios.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`: blueprint columns 08, 12 and 13 and diagram page 07. Carry these decisions and acceptance criteria into every child-agent brief.\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock, and reset runs through it.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here: Q19 (target state names), Q3 (presenter ticks), Q15 and Q9 (this follows the critical path, which FUCQ-109 proves first).\n\n## Out of scope\n\nPhysical completion/current-car transition, no-show/rebooking, returned/missed-return outcomes, full terminal manual lifecycle and Greg-to-Paula remedy walkthroughs (FUCQ-171). New features remain separate; apply the project's severity-based Bug policy to findings.\n\n## Validate\n\n- `node --test server/test/gcsp-lifecycle-e2e.test.js`: retained buddy-to-confirmed-plan path, shared lifecycle entry and difficult cases against the repository double and the configured PostgreSQL provider where available. Record actual unavailable/native integration as unrun, not passed.\n- `npm test` passes.\n- Desktop and 375px browser evidence with keyboard-only operation of the retained connected approval, document, appointment, separate return-plan and basic help states, with paths/observations in `docs/gcsp/evidence/fucq-110/`. No completed physical event is needed for the retained endpoint.\n",
+        "issuelinks": [
+          {
+            "id": "62616",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-120"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62617",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "In Progress",
+                  "statusCategory": {
+                    "colorName": "yellow",
+                    "id": 4,
+                    "key": "indeterminate",
+                    "name": "In Progress",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/4"
+                  }
+                }
+              },
+              "key": "FUCQ-122"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62618",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-109"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "340024",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-171"
+            },
+            "type": {
+              "id": "10179",
+              "inward": "split from",
+              "name": "Issue Split",
+              "outward": "split to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "kind:code",
+          "size:M"
+        ],
+        "parent": {
+          "key": "FUCQ-110"
+        },
+        "priority": {
+          "id": "2",
+          "name": "High"
+        },
+        "reporter": {
+          "displayName": "Gary Carter"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Verify approval, documents and confirmed handover and return planning end to end",
+        "updated": "2026-11-07T07:58:07.929-0600"
+      },
+      "id": "125271",
+      "key": "FUCQ-124"
+    },
+    {
+      "descriptionHash": "93f81ae681f15fb0338abbf89084e4cb5285b8fc4f9bd5137985d08142ddd90d",
+      "expectedDescriptionHash": null,
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-07T07:58:05.547-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Native Story split authorised by Russell on 7 November 2026.\n\nkind: code\ndesign_impact: no\nrequested: 2026-11-07, by Russell Gowers, split from FUCQ-124\nepic: FUCQ-110\nsize: M\n\nDemo priority: Won't. This remainder stays To Do for later prioritisation. Estimate at pickup from actual remaining work.\n\n## Goal\n\nAs the presenter, I want the later physical handover/return and advanced help routes proven repeatably, so that completed, missed and remedied outcomes are trustworthy when those capabilities are demonstrated.\n\n## Acceptance criteria\n\n- [ ] **Terminal lifecycle, buddy and manual:** extend the original FUCQ-124 paths beyond confirmed planning to confirmed synthetic handover completion and the corresponding current-car change; prove the same full lifecycle for an actual manual handoff through FUCQ-72.\n- [ ] **Physical/exception scenarios:** prove appointment no-show then rebooking, completion blocked until documents/readiness complete, confirmed old-car return and missed-return receipt, with separate new/old-car identities and truthful UI.\n- [ ] **Advanced help:** Paula asks for help near the deadline, Greg records a feasible remedy through the FUCQ-122 remainder, and Paula sees the persisted outcome; proposal, approval and applied changes remain distinct.\n- [ ] **No recovery priority:** opening and resolving a case, or recording a remedy, leave allocation input unchanged except for a separately explicitly confirmed brief change.\n- [ ] **Repeatable and policy-aware:** retain known start/reset, click-through steps, expected/observed outcomes, canonical policy/stage/delay provenance and actual interface integration for every moved route.\n- [ ] **Evidence and defects:** retain original failed/skipped/unrun results; use actual memory/native storage as available and the experience contract's desktop/narrow/keyboard evidence. Apply the severity-based Bug policy without expanding unrelated claimed Stories.\n## Files or areas\n\n- `server/test/gcsp-lifecycle-e2e.test.js (proposed)`\n- `docs/gcsp/manual-acceptance-scenarios.md (lifecycle scenarios)`\n- `docs/gcsp/evidence/fucq-110/ (captures and observations)`\n## Decided\n\nScope revision authorised by Russell on 7 November 2026: keep the necessary demo scope under this existing Story number and move the remainder into a new To Do Story, following docs/gcsp/backlog-moscow-review-2026-11-07.md. This explicit human revision supersedes earlier instructions to keep the previous combined acceptance unchanged. Preserve implemented work, claims, original evidence and recorded failures. Existing estimates are historical and need re-estimation; this split does not establish completion.\n\nSplit from FUCQ-124. The necessary scope stays in FUCQ-124. This remainder stays To Do, unassigned, for later prioritisation; reuse existing code and evidence rather than rebuilding it.\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026 (`docs/design/handover-section-c7-c9-2026-11-04.md`, C7; `docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md`, `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md` (\"Repeatable manual trials\" and \"Verify before declaring a UI story built\"), `docs/gcsp/manual-acceptance-scenarios.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`: blueprint columns 08, 12 and 13 and diagram page 07. Carry these decisions and acceptance criteria into every child-agent brief.\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock, and reset runs through it.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here: Q19 (target state names), Q3 (presenter ticks), Q15 and Q9 (this follows the critical path, which FUCQ-109 proves first).\n\n## Out of scope\n\nThe connected approval/document/confirmed-plan core is FUCQ-124. This Story verifies the later capabilities; it does not create new physical or case features, live BMW integration or a new validation framework.\n\n## Validate\n\n- Extend `server/test/gcsp-lifecycle-e2e.test.js` for terminal buddy/manual lifecycles, no-show/rebooking, returned/missed return, advanced help/remedy and no recovery priority, using the actual owning interfaces and configured repository providers where available.\n- `npm test` passes.\n- Desktop and 375px browser/keyboard evidence of each later route as Paula and Greg, with setup/reset and observations under `docs/gcsp/evidence/fucq-110/`. Fixtures or a merge alone do not establish an unavailable live/native integration.\nAdded by: Russell Gowers (authorised split from FUCQ-124, 7 November 2026).\n\n",
+        "issuelinks": [
+          {
+            "id": "340024",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-124"
+            },
+            "type": {
+              "id": "10179",
+              "inward": "split from",
+              "name": "Issue Split",
+              "outward": "split to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "kind:code",
+          "moscow-after-demo",
+          "scope-split-2026-11-07",
+          "size:M",
+          "split-from-FUCQ-124"
+        ],
+        "parent": {
+          "key": "FUCQ-110"
+        },
+        "priority": {
+          "id": "3",
+          "name": "Medium"
+        },
+        "reporter": {
+          "displayName": "Russell Gowers"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Verify terminal handover, return and advanced renewal-help scenarios",
+        "updated": "2026-11-07T07:58:07.970-0600"
+      },
+      "id": "1501441",
+      "key": "FUCQ-171"
+    },
+    {
+      "descriptionHash": "d9b84e229e9df47b325fef8ab23eac8b63c35cc3126004c6a98de644456deb43",
+      "expectedDescriptionHash": "d9b84e229e9df47b325fef8ab23eac8b63c35cc3126004c6a98de644456deb43",
+      "fields": {
+        "assignee": {
+          "accountId": "5ae6eda0ba41192e23d86320",
+          "displayName": "Gary Carter"
+        },
+        "created": "2026-11-04T14:57:42.670-0600",
+        "customfield_10016": 13,
+        "description": "Scaffolding template: `_dev/story-template.md`. Jira supplies story ID/title/parent/priority; kind/size/design impact are labels. Story points are assigned by the implementing agent.\n\nkind: ui\ndesign_impact: yes\nui: portalShell, screenIntro, button, statusScreen, factList\nrequested: 2026-11-04, by Gary via Claude Code (backlog FUCQ-75, HLD readiness section C9)\nepic: FUCQ-75\npriority: P2\npriority_reason: due 2026-11-12: GCSP demo\nsize: M\ndepends_on: FUCQ-125, FUCQ-64, FUCQ-92\n\n## Goal\n\nAs the presenter, I want compact controls to advance time, release stock, reset the main walkthrough and switch between Paula, competing employees and Greg, so that I can operate the connected demo without commands.\n\n## Acceptance criteria\n\n- [ ] **Controls:** presenter-only controls provide Tick by the canonical step or a named time through FUCQ-85; Next release through FUCQ-92 with the actual count; confirmed Reset of the main walkthrough through FUCQ-125; and Acting principal for Paula, competing employees and Greg through FUCQ-84's server-issued session, with no browser-supplied identity in the URL. The wider scenario picker/reset target selection moves to FUCQ-172.\n- [ ] **Read-back:** the block always shows the current scenario, run ID, demo-clock time, acting principal and last tick outcome, including each handler's result in order.\n- [ ] **Safe actions:** each action is idempotent by command ID, so a double click or a retry returns the original outcome. A failed or refused action shows its reason, and the screen never claims an outcome the backend did not report.\n- [ ] **Placement:** the controls sit in a compact strip or drawer within FUCQ-64's shell. They can be collapsed during the walkthrough, and are hidden entirely for non-presenter roles. Switching principal reloads the employee or Greg surface with the new server context.\n- [ ] **States:** idle, action in progress, actual tick/release result, reset done with the new run, refused/unavailable main-scenario capability and backend unavailable. Read-back remains truthful.\n- [ ] **Kit and embedding (Q18):** built from the shared kit. New components go into the kit, `COMPONENTS.md` and the gallery in the same commit, and the ratchet baseline only falls. Mounts as a custom element, with no inline scripts, inline handlers or `eval`. Keyboard operable throughout, with visible focus.\n## Files or areas\n\n- `blocks/gcsp/ (proposed presenter control block)`\n- `COMPONENTS.md`, kit gallery, `server/test/ui-ratchet.json`\n- `server/test/ (render test for the presenter controls)`\n- `docs/gcsp/manual-acceptance-scenarios.md (how to use the controls)`\n## Decided\n\nScope revision authorised by Russell on 7 November 2026: keep the necessary demo scope under this existing Story number and move the remainder into a new To Do Story, following docs/gcsp/backlog-moscow-review-2026-11-07.md. This explicit human revision supersedes earlier instructions to keep the previous combined acceptance unchanged. Preserve implemented work, claims, original evidence and recorded failures. Existing estimates are historical and need re-estimation; this split does not establish completion.\n\nThe remaining scope is tracked in FUCQ-172. That Story is not a prerequisite for accepting this retained scope.\n\nTechnical pickup assessment, Gary direction 5 November 2026: Jira depends_on links remain context, not admission gates. See docs/gcsp/technical-readiness-2026-11-05.md. Actual clock/scenario/identity HTTP services permit independent presenter-control implementation now. Add server-owned tick/principal projection; preserve truthful missing release/scenario capability and issuance-replay outcomes. Real release-count/full-reset acceptance remains outstanding until exercised. Own presenter-controls modules and portal-shell optional placement. Initial server/index.js integration lane granted here; release that lane after a clean pushed checkpoint for FUCQ-103. Preserve original acceptance; no built claim from fixtures alone.\n\nGary approved this Epic's Stories, their titles and the dependency order on 4 November 2026, and placed this Story at P2 because the presenter needs it to run the walkthrough (`docs/design/handover-section-c7-c9-2026-11-04.md`, C9; `docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). FUCQ-85 explicitly leaves the presenter control UI to FUCQ-75. Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md` (demo clock, reset and presenter navigation), `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/screens/README.md`, `COMPONENTS.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`, \"Demo access and offer links\" and \"Transaction and event invariants\". Carry the experience contract, the visual reference and these criteria into every child-agent brief.\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q3: presenter ticks, with no unattended runner.\n- Q8: a separate GCSP block.\n- Q18: custom element and CSP.\n- Q9: the presenter needs this to run Gary's critical path, but FUCQ-109 proves the path through the presenter routes directly and does not wait on this Story.\n## Out of scope\n\nThe wider scenario catalogue/picker, selecting other reset scenarios and their not-available states (FUCQ-172); new clock/reset/identity mechanics (FUCQ-85/84); outbox viewer; scenario walkthroughs.\n\n## Validate\n\n- `npm test` passes, including the UI ratchet, em-dash test and presenter-control render/access tests.\n- Desktop and 375px browser evidence with keyboard-only operation: idle/read-back, tick, real release count, confirmed main-scenario reset with a new run, Paula/competitor/Greg switching, refused/unavailable main capability and backend unavailable. Verify idempotent commands and actual server read-back. Reset into other scenarios and wider catalogue states move to FUCQ-172.\n",
+        "issuelinks": [
+          {
+            "id": "62633",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "Done",
+                  "statusCategory": {
+                    "colorName": "green",
+                    "id": 3,
+                    "key": "done",
+                    "name": "Done",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/3"
+                  }
+                }
+              },
+              "key": "FUCQ-125"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62634",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "Done",
+                  "statusCategory": {
+                    "colorName": "green",
+                    "id": 3,
+                    "key": "done",
+                    "name": "Done",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/3"
+                  }
+                }
+              },
+              "key": "FUCQ-64"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62635",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "In Progress",
+                  "statusCategory": {
+                    "colorName": "yellow",
+                    "id": 4,
+                    "key": "indeterminate",
+                    "name": "In Progress",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/4"
+                  }
+                }
+              },
+              "key": "FUCQ-92"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62636",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-127"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62639",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-128"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62641",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-129"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62643",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-130"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62645",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-131"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "339959",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Bug"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-140"
+            },
+            "type": {
+              "id": "10003",
+              "inward": "relates to",
+              "name": "Relates",
+              "outward": "relates to"
+            }
+          },
+          {
+            "id": "339963",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Bug"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-142"
+            },
+            "type": {
+              "id": "10003",
+              "inward": "relates to",
+              "name": "Relates",
+              "outward": "relates to"
+            }
+          },
+          {
+            "id": "339966",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Bug"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-143"
+            },
+            "type": {
+              "id": "10003",
+              "inward": "relates to",
+              "name": "Relates",
+              "outward": "relates to"
+            }
+          },
+          {
+            "id": "340025",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-172"
+            },
+            "type": {
+              "id": "10179",
+              "inward": "split from",
+              "name": "Issue Split",
+              "outward": "split to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "agent:codex",
+          "backlog",
+          "design-impact",
+          "host:garys-macbook-pro",
+          "kind:ui",
+          "size:M"
+        ],
+        "parent": {
+          "key": "FUCQ-75"
+        },
+        "priority": {
+          "id": "2",
+          "name": "High"
+        },
+        "reporter": {
+          "displayName": "Gary Carter"
+        },
+        "status": {
+          "name": "In Progress"
+        },
+        "summary": "Operate the main demo with tick, release, reset and role controls",
+        "updated": "2026-11-07T07:58:11.890-0600"
+      },
+      "id": "125273",
+      "key": "FUCQ-126"
+    },
+    {
+      "descriptionHash": "bbde291cf274fd36466e647f8d00315d82b46b495357fad78b3249d2111e6bf6",
+      "expectedDescriptionHash": null,
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-07T07:58:09.717-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Native Story split authorised by Russell on 7 November 2026.\n\nkind: ui\ndesign_impact: yes\nui: portalShell, screenIntro, button, statusScreen, factList\nrequested: 2026-11-07, by Russell Gowers, split from FUCQ-126\nepic: FUCQ-75\nsize: S\n\nDemo priority: Could. This remainder stays To Do for later prioritisation. Estimate at pickup from actual remaining work.\n\n## Goal\n\nAs the presenter, I want to select and reset into the wider scenario catalogue, with unavailable cases clearly identified, so that I can rehearse and discuss optional exception journeys.\n\n## Acceptance criteria\n\n- [ ] **Scenario picker:** add FUCQ-125's wider versioned catalogue to the existing FUCQ-126 controls. A scenario whose capabilities are missing is shown as not available yet and cannot be presented as runnable.\n- [ ] **Chosen-scenario reset:** with confirmation, reset into the current or another selected supported scenario through the existing reset service. Show the real scenario/run/time/acting-principal and ordered handler result afterward.\n- [ ] **Safe presenter actions:** preserve presenter-only access, server-issued context, idempotent command IDs, duplicate/retry outcomes, truthful refusal/backend errors and principal reload behaviour; the picker never invents capabilities.\n- [ ] **Placement and experience:** reuse the compact collapsible strip/drawer, shared kit/catalogue/gallery and ratchet, custom element/CSP and keyboard/focus requirements. Keep the main FUCQ-126 walkthrough operable independently.\n## Files or areas\n\n- `blocks/gcsp/ (proposed presenter control block)`\n- `COMPONENTS.md`, kit gallery, `server/test/ui-ratchet.json`\n- `server/test/ (render test for the presenter controls)`\n- `docs/gcsp/manual-acceptance-scenarios.md (how to use the controls)`\n## Decided\n\nScope revision authorised by Russell on 7 November 2026: keep the necessary demo scope under this existing Story number and move the remainder into a new To Do Story, following docs/gcsp/backlog-moscow-review-2026-11-07.md. This explicit human revision supersedes earlier instructions to keep the previous combined acceptance unchanged. Preserve implemented work, claims, original evidence and recorded failures. Existing estimates are historical and need re-estimation; this split does not establish completion.\n\nSplit from FUCQ-126. The necessary scope stays in FUCQ-126. This remainder stays To Do, unassigned, for later prioritisation; reuse existing code and evidence rather than rebuilding it.\n\nTechnical pickup assessment, Gary direction 5 November 2026: Jira depends_on links remain context, not admission gates. See docs/gcsp/technical-readiness-2026-11-05.md. Actual clock/scenario/identity HTTP services permit independent presenter-control implementation now. Add server-owned tick/principal projection; preserve truthful missing release/scenario capability and issuance-replay outcomes. Real release-count/full-reset acceptance remains outstanding until exercised. Own presenter-controls modules and portal-shell optional placement. Initial server/index.js integration lane granted here; release that lane after a clean pushed checkpoint for FUCQ-103. Preserve original acceptance; no built claim from fixtures alone.\n\nGary approved this Epic's Stories, their titles and the dependency order on 4 November 2026, and placed this Story at P2 because the presenter needs it to run the walkthrough (`docs/design/handover-section-c7-c9-2026-11-04.md`, C9; `docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). FUCQ-85 explicitly leaves the presenter control UI to FUCQ-75. Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md` (demo clock, reset and presenter navigation), `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/screens/README.md`, `COMPONENTS.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`, \"Demo access and offer links\" and \"Transaction and event invariants\". Carry the experience contract, the visual reference and these criteria into every child-agent brief.\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q3: presenter ticks, with no unattended runner.\n- Q8: a separate GCSP block.\n- Q18: custom element and CSP.\n- Q9: the presenter needs this to run Gary's critical path, but FUCQ-109 proves the path through the presenter routes directly and does not wait on this Story.\n## Out of scope\n\nMain walkthrough tick/release/reset/role controls remain FUCQ-126. New clock/identity/reset mechanics and scenario fixture/walkthrough implementation remain with their owning Stories.\n\n## Validate\n\n- Extend existing presenter-control rendering/access/idempotency checks for catalogue selection, supported reset and missing-capability states.\n- `npm test` passes, including the UI ratchet and em-dash test.\n- Desktop and 375px browser/keyboard evidence of picking/resetting another scenario, unavailable scenario, confirmation/refusal/error and actual read-back with the existing main controls.\nAdded by: Russell Gowers (authorised split from FUCQ-126, 7 November 2026).\n\n",
+        "issuelinks": [
+          {
+            "id": "340025",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "In Progress",
+                  "statusCategory": {
+                    "colorName": "yellow",
+                    "id": 4,
+                    "key": "indeterminate",
+                    "name": "In Progress",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/4"
+                  }
+                }
+              },
+              "key": "FUCQ-126"
+            },
+            "type": {
+              "id": "10179",
+              "inward": "split from",
+              "name": "Issue Split",
+              "outward": "split to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:ui",
+          "moscow-could",
+          "scope-split-2026-11-07",
+          "size:S",
+          "split-from-FUCQ-126"
+        ],
+        "parent": {
+          "key": "FUCQ-75"
+        },
+        "priority": {
+          "id": "3",
+          "name": "Medium"
+        },
+        "reporter": {
+          "displayName": "Russell Gowers"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Choose and reset the wider presenter scenario catalogue",
+        "updated": "2026-11-07T07:58:11.929-0600"
+      },
+      "id": "1501442",
+      "key": "FUCQ-172"
+    },
+    {
+      "descriptionHash": "661f13599284636fa6a0b3fa1026afe92e1fa8d37a83d57d2cb4f035f840b2b2",
+      "expectedDescriptionHash": "661f13599284636fa6a0b3fa1026afe92e1fa8d37a83d57d2cb4f035f840b2b2",
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-04T14:58:49.993-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Jira supplies story ID/title/parent/priority; kind/size/design impact are labels. Story points are assigned by the implementing agent.\n\nkind: code\ndesign_impact: yes\nrequested: 2026-11-04, by Gary via Claude Code (backlog FUCQ-75, HLD readiness section C9)\nepic: FUCQ-75\npriority: P2\npriority_reason: due 2026-11-12: GCSP demo\nsize: S\ndepends_on: FUCQ-126, FUCQ-107\n\n## Goal\n\nAs the presenter, I want to replay Paula declining an offer, confirming one preference change and receiving a matching second offer, so that the main mapped journey is repeatable.\n\n## Acceptance criteria\n\n- [ ] **Fixture and catalogue entry:** retain a versioned decline-then-change start state in FUCQ-125's catalogue with Paula holding a first offer and a later release containing a car that suits the changed brief. The additional no-second-match variant moves to FUCQ-173.\n- [ ] **What happens:** Paula declines with a typed reason and separately confirms one preference change through FUCQ-107. The declined car is excluded from her later offers and returns to the pool for others. The next suitable release produces the second offer reflecting that confirmed change.\n- [ ] **Separate records:** the decline, the brief change and any later satisfaction are separate records. The decline is not treated as an expiry.\n- [ ] **Replay test:** drive the retained matching-second-offer variant through the actual presenter/employee routes after reset, asserting outcomes twice across two resets. Reuse FUCQ-109's core route/evidence rather than duplicate an independent implementation.\n- [ ] **Manual scenario:** document the retained successful variant using FUCQ-125's known start/reset/click-through/expected-observed format.\n## Files or areas\n\n- `server/gcsp/fixtures/scenarios/ (decline-then-change start states)`\n- `server/test/gcsp-scenario-decline-change.test.js (proposed)`\n- `docs/gcsp/manual-acceptance-scenarios.md`\n- `docs/gcsp/evidence/fucq-75/ (screenshots)`\n## Decided\n\nScope revision authorised by Russell on 7 November 2026: keep the necessary demo scope under this existing Story number and move the remainder into a new To Do Story, following docs/gcsp/backlog-moscow-review-2026-11-07.md. This explicit human revision supersedes earlier instructions to keep the previous combined acceptance unchanged. Preserve implemented work, claims, original evidence and recorded failures. Existing estimates are historical and need re-estimation; this split does not establish completion.\n\nThe remaining scope is tracked in FUCQ-173. That Story is not a prerequisite for accepting this retained scope.\n\nGary approved this Epic's Stories, their titles and the dependency order on 4 November 2026 (`docs/design/handover-section-c7-c9-2026-11-04.md`, C9; `docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md`, `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md` (\"Repeatable manual trials\"), `docs/gcsp/shared-contracts.md` (FUCQ-80), `docs/gcsp/manual-acceptance-scenarios.md` (\"Reject and change the brief\") and `docs/design/gcsp-high-level-design.md`, blueprint columns 05 to 09 and \"Transaction and event invariants\". Carry these decisions and acceptance criteria into every child-agent brief.\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q16: one preference change after a decline, not a contribution ceiling.\n- Q3: presenter ticks drive the releases.\nFUCQ-109 covers the case where the second offer arrives; the retained Story packages that successful route for repeatable replay; the waiting variant is moved to FUCQ-173. If a screen defect shows up, it is fixed in the owning Story or raised as a Bug, not patched in the fixture.\n\n## Out of scope\n\nNo-second-match fixture/catalogue/replay package (FUCQ-173); new offer-decision/change mechanics (FUCQ-106/107); contribution ceiling. Correct waiting/no-match service behaviour remains an obligation of its owning Must capability.\n\n## Validate\n\n- `node --test server/test/gcsp-scenario-decline-change.test.js`: matching-second-offer variant, declined-car exclusion, car returned to the pool, distinct decline/change records and repeat after a second reset.\n- `npm test` passes.\n- Desktop and 375px browser/keyboard evidence of decline, separate explicit change and the actual matching second offer, reusing valid FUCQ-109 evidence; the presenter can run this main variant through FUCQ-126.\n",
+        "issuelinks": [
+          {
+            "id": "62639",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "In Progress",
+                  "statusCategory": {
+                    "colorName": "yellow",
+                    "id": 4,
+                    "key": "indeterminate",
+                    "name": "In Progress",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/4"
+                  }
+                }
+              },
+              "key": "FUCQ-126"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62640",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "In Progress",
+                  "statusCategory": {
+                    "colorName": "yellow",
+                    "id": 4,
+                    "key": "indeterminate",
+                    "name": "In Progress",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/4"
+                  }
+                }
+              },
+              "key": "FUCQ-107"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "340026",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-173"
+            },
+            "type": {
+              "id": "10179",
+              "inward": "split from",
+              "name": "Issue Split",
+              "outward": "split to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "size:S"
+        ],
+        "parent": {
+          "key": "FUCQ-75"
+        },
+        "priority": {
+          "id": "2",
+          "name": "High"
+        },
+        "reporter": {
+          "displayName": "Gary Carter"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Replay decline, one confirmed change and a matching second offer",
+        "updated": "2026-11-07T07:58:15.651-0600"
+      },
+      "id": "125275",
+      "key": "FUCQ-128"
+    },
+    {
+      "descriptionHash": "b18f9a1e2c783e9cd1f8501f9ff503abbbcd8d8e4e95f0524784f35895b166e9",
+      "expectedDescriptionHash": null,
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-07T07:58:13.663-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Native Story split authorised by Russell on 7 November 2026.\n\nkind: code\ndesign_impact: yes\nrequested: 2026-11-07, by Russell Gowers, split from FUCQ-128\nepic: FUCQ-75\nsize: S\n\nDemo priority: Could. This remainder stays To Do for later prioritisation. Estimate at pickup from actual remaining work.\n\n## Goal\n\nAs the presenter, I want a replay where Paula's confirmed change has no suitable released second car yet, so that I can demonstrate the truthful waiting experience beyond the main happy path.\n\n## Acceptance criteria\n\n- [ ] **Waiting fixture/catalogue variant:** add the original versioned decline-then-change variant in which no released car suits the changed brief, using FUCQ-125's existing reset/catalogue.\n- [ ] **Truthful waiting:** Paula declines with a reason and confirms one change through FUCQ-107; show change saved, waiting for the next release, with no fabricated offer. Exclude the declined car for Paula and return it to the pool for others.\n- [ ] **Distinct records and repeatability:** keep decline, brief change and any later satisfaction distinct; decline is not expiry. Replay through actual presenter/employee routes twice across two resets.\n- [ ] **Manual and rendered evidence:** document the start/reset/steps/expected-observed format and inspect the waiting state at desktop and 375px with keyboard operation. Reuse existing owning screens/services and raise defects under the project's Bug policy.\n## Files or areas\n\n- `server/gcsp/fixtures/scenarios/ (decline-then-change start states)`\n- `server/test/gcsp-scenario-decline-change.test.js (proposed)`\n- `docs/gcsp/manual-acceptance-scenarios.md`\n- `docs/gcsp/evidence/fucq-75/ (screenshots)`\n## Decided\n\nScope revision authorised by Russell on 7 November 2026: keep the necessary demo scope under this existing Story number and move the remainder into a new To Do Story, following docs/gcsp/backlog-moscow-review-2026-11-07.md. This explicit human revision supersedes earlier instructions to keep the previous combined acceptance unchanged. Preserve implemented work, claims, original evidence and recorded failures. Existing estimates are historical and need re-estimation; this split does not establish completion.\n\nSplit from FUCQ-128. The necessary scope stays in FUCQ-128. This remainder stays To Do, unassigned, for later prioritisation; reuse existing code and evidence rather than rebuilding it.\n\nGary approved this Epic's Stories, their titles and the dependency order on 4 November 2026 (`docs/design/handover-section-c7-c9-2026-11-04.md`, C9; `docs/design/hld-story-readiness-2026-11-04.md`, section C; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md`, `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md` (\"Repeatable manual trials\"), `docs/gcsp/shared-contracts.md` (FUCQ-80), `docs/gcsp/manual-acceptance-scenarios.md` (\"Reject and change the brief\") and `docs/design/gcsp-high-level-design.md`, blueprint columns 05 to 09 and \"Transaction and event invariants\". Carry these decisions and acceptance criteria into every child-agent brief.\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q16: one preference change after a decline, not a contribution ceiling.\n- Q3: presenter ticks drive the releases.\nFUCQ-109 covers the case where the second offer arrives; this Story adds the waiting variant and makes both replayable from the catalogue. If a screen defect shows up, it is fixed in the owning Story or raised as a Bug, not patched in the fixture.\n\n## Out of scope\n\nThe matching-second-offer main variant remains FUCQ-128. No new decision/change algorithm, contribution ceiling or duplicate happy-path implementation; baseline waiting/no-match correctness is not deferred.\n\n## Validate\n\n- Extend `server/test/gcsp-scenario-decline-change.test.js` for no-second-match/waiting, exclusion/pool release, separate records and a second reset.\n- `npm test` passes.\n- Desktop and 375px browser/keyboard evidence of the actual waiting variant; it is runnable using the applicable presenter controls.\nAdded by: Russell Gowers (authorised split from FUCQ-128, 7 November 2026).\n\n",
+        "issuelinks": [
+          {
+            "id": "340026",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-128"
+            },
+            "type": {
+              "id": "10179",
+              "inward": "split from",
+              "name": "Issue Split",
+              "outward": "split to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "moscow-could",
+          "scope-split-2026-11-07",
+          "size:S",
+          "split-from-FUCQ-128"
+        ],
+        "parent": {
+          "key": "FUCQ-75"
+        },
+        "priority": {
+          "id": "3",
+          "name": "Medium"
+        },
+        "reporter": {
+          "displayName": "Russell Gowers"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Replay a confirmed preference change while no second car is available",
+        "updated": "2026-11-07T07:58:15.688-0600"
+      },
+      "id": "1501443",
+      "key": "FUCQ-173"
+    },
+    {
+      "descriptionHash": "fc0cf82d08f3d77c54fbf6b6aa09b03de4a4337a63bd1d5ec58416f75809cc83",
+      "expectedDescriptionHash": "fc0cf82d08f3d77c54fbf6b6aa09b03de4a4337a63bd1d5ec58416f75809cc83",
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-04T15:10:56.680-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Jira supplies story ID/title/parent/priority; kind/size/design impact are labels. Story points are assigned by the implementing agent.\n\nkind: code\ndesign_impact: yes\nrequested: 2026-11-04, by Gary via Claude Code (backlog FUCQ-132, 1,000-employee comparison from HLD readiness item C8)\nepic: FUCQ-132\npriority: P2\npriority_reason: due 2026-11-12: GCSP demo\nsize: M\ndepends_on: FUCQ-135\n\n## Goal\n\nAs Greg, I want the two routes' outcomes summarised across several seeds and kept as an explainable record, so that I can see what changed, by how much and how much it varies.\n\n## Acceptance criteria\n\n- [ ] **Experiment runner:** `runComparison(experiment)` runs both routes for every seed of the process-only experiment using identical inputs and returns one result. Additional order-mix/points overlays and buddy hold-duration sweeps move to FUCQ-174.\n- [ ] **Measures per route:** for each, the mean, minimum and maximum across seeds:\nthe share of employees with an acceptable car before renewal;\nunused stock: released cars never allocated, and car-days held but not taken;\ndeclined and expired offers, and failed claims and retries;\nmean calculated fit of accepted cars;\nthe same coverage share for each access group.\n- [ ] **Honest differences:** the result reports the difference between the routes with its range, and labels it \"no clear difference\" when the ranges overlap (rule key `comparison.noClearDifferenceRule`). It never reports only the measures where the buddy wins.\n- [ ] **Immutable result:** each result is stored once in FUCQ-81's repository, with its manifest: experiment, seeds, policy version, overlays, generator version and code revision. It is never edited; a new run makes a new result. Results are outside the live run's reset (FUCQ-85), so a reset does not delete them.\n- [ ] **Read model:** read the latest stored process-comparison result and whether its recorded policy version is still active.\n- [ ] **Labels:** the result carries the assumption set used (key, value, assumed or verified, basis) and the fixed caveat that calculated fit is not observed satisfaction.\n## Files or areas\n\n- `server/gcsp/comparison/measures.js (proposed)`\n- `server/gcsp/comparison/experiments.js (proposed)`\n- `server/gcsp/migrations/ (additive comparison results table)`\n- `server/test/gcsp-comparison-measures.test.js (proposed)`\n- `docs/gcsp/shared-contracts.md (result shape)`\n## Decided\n\nScope revision authorised by Russell on 7 November 2026: keep the necessary demo scope under this existing Story number and move the remainder into a new To Do Story, following docs/gcsp/backlog-moscow-review-2026-11-07.md. This explicit human revision supersedes earlier instructions to keep the previous combined acceptance unchanged. Preserve implemented work, claims, original evidence and recorded failures. Existing estimates are historical and need re-estimation; this split does not establish completion.\n\nThe remaining scope is tracked in FUCQ-174. That Story is not a prerequisite for accepting this retained scope.\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026, with the design agreed the same day (`docs/design/hld-story-readiness-2026-11-04.md`, item C8; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md` (\"Compare 1,000 fictional employees\"), `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`, \"The 1,000-employee comparison\", plus diagram page 09. Carry these decisions and acceptance criteria into every child-agent brief.\n\nFirst isolate the process change; then run the order-mix and points scenarios separately, so the source of any improvement is clear (demo brief). Financial and residual measures are out until there are declared economic assumptions.\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q2: managed PostgreSQL behind the repository port.\n- Q6: results record the policy version they used.\n## Out of scope\n\nAlternative order-mix/points experiments and hold-duration sweeps (FUCQ-174); offline/API execution and result-read route (FUCQ-137); panel (FUCQ-138); financial/residual scenarios.\n\n## Validate\n\n- `node --test server/test/gcsp-comparison-measures.test.js`: hand-checked small-cohort measures; mean/min/max across seeds; honest overlapping-range/no-clear-difference and baseline-better outcomes; complete process manifest with seeds/policy/generator/code/assumptions; immutable results surviving reset; latest-result superseded-policy flag.\n- `npm test` passes.\n- Backend-only: publish actual stored process-result shapes for the panel. Preserve the common repository, provenance and all original measures; an invented chart or fixture does not prove a real 1,000-employee result.\n",
+        "issuelinks": [
+          {
+            "id": "62659",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-135"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62660",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-137"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "340027",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-174"
+            },
+            "type": {
+              "id": "10179",
+              "inward": "split from",
+              "name": "Issue Split",
+              "outward": "split to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "size:M"
+        ],
+        "parent": {
+          "key": "FUCQ-132"
+        },
+        "priority": {
+          "id": "2",
+          "name": "High"
+        },
+        "reporter": {
+          "displayName": "Gary Carter"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Measure the process comparison across seeds and store immutable results",
+        "updated": "2026-11-07T07:58:27.900-0600"
+      },
+      "id": "125283",
+      "key": "FUCQ-136"
+    },
+    {
+      "descriptionHash": "fe3468a438886817532f73de914f8009088db0b3f1dd2ece156de94b3530ff9b",
+      "expectedDescriptionHash": null,
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-07T07:58:25.678-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Native Story split authorised by Russell on 7 November 2026.\n\nkind: code\ndesign_impact: yes\nrequested: 2026-11-07, by Russell Gowers, split from FUCQ-136\nepic: FUCQ-132\nsize: M\n\nDemo priority: Could. This remainder stays To Do for later prioritisation. Estimate at pickup from actual remaining work.\n\n## Goal\n\nAs Greg, I want separately labelled order-mix/points and hold-duration experiments alongside the process baseline, so that I can see which explicit change caused each result.\n\n## Acceptance criteria\n\n- [ ] **Experiment types:** extend the existing FUCQ-136 runner with alternative order mix or points as an explicit overlay, and a buddy hold-duration sweep over a list of `hold.buddy` values. Keep process-only identical-input comparison separate.\n- [ ] **Validation and assumptions:** use canonical key units/ranges and record every overlay/sweep value and its assumption basis. Experiments are what-ifs; they do not publish live policy.\n- [ ] **Same honest measures:** run both real route services across the declared seeds and reuse all coverage, unused-stock/car-days, declined/expired, failed-claim/retry, fit and access-group mean/min/max measures and the no-clear-difference rule. Report baseline-better outcomes too.\n- [ ] **Immutable provenance/read:** store each new result once via the existing repository, with experiment, seeds, policy/overlays, generator and code revision, assumption set and fit-not-satisfaction caveat; survive live reset and return latest per experiment with policy freshness.\n## Files or areas\n\n- `server/gcsp/comparison/measures.js (proposed)`\n- `server/gcsp/comparison/experiments.js (proposed)`\n- `server/gcsp/migrations/ (additive comparison results table)`\n- `server/test/gcsp-comparison-measures.test.js (proposed)`\n- `docs/gcsp/shared-contracts.md (result shape)`\n## Decided\n\nScope revision authorised by Russell on 7 November 2026: keep the necessary demo scope under this existing Story number and move the remainder into a new To Do Story, following docs/gcsp/backlog-moscow-review-2026-11-07.md. This explicit human revision supersedes earlier instructions to keep the previous combined acceptance unchanged. Preserve implemented work, claims, original evidence and recorded failures. Existing estimates are historical and need re-estimation; this split does not establish completion.\n\nSplit from FUCQ-136. The necessary scope stays in FUCQ-136. This remainder stays To Do, unassigned, for later prioritisation; reuse existing code and evidence rather than rebuilding it.\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026, with the design agreed the same day (`docs/design/hld-story-readiness-2026-11-04.md`, item C8; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md` (\"Compare 1,000 fictional employees\"), `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`, \"The 1,000-employee comparison\", plus diagram page 09. Carry these decisions and acceptance criteria into every child-agent brief.\n\nFirst isolate the process change; then run the order-mix and points scenarios separately, so the source of any improvement is clear (demo brief). Financial and residual measures are out until there are declared economic assumptions.\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q2: managed PostgreSQL behind the repository port.\n- Q6: results record the policy version they used.\n## Out of scope\n\nThe process-only runner and common measures/result repository remain FUCQ-136. Browser jobs/control UI are separate remainders from FUCQ-137/138; no financial/residual model or live-policy publication.\n\n## Validate\n\n- Extend `server/test/gcsp-comparison-measures.test.js` for explicit order-mix/points overlays and hold sweeps, all manifest values, canonical units/ranges, consistent multi-seed measures, honest differences and immutable per-experiment reads.\n- `npm test` passes.\n- Publish the added result shapes for the later worker/panel while preserving the real route and storage boundaries.\nAdded by: Russell Gowers (authorised split from FUCQ-136, 7 November 2026).\n\n",
+        "issuelinks": [
+          {
+            "id": "340027",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-136"
+            },
+            "type": {
+              "id": "10179",
+              "inward": "split from",
+              "name": "Issue Split",
+              "outward": "split to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "moscow-could",
+          "scope-split-2026-11-07",
+          "size:M",
+          "split-from-FUCQ-136"
+        ],
+        "parent": {
+          "key": "FUCQ-132"
+        },
+        "priority": {
+          "id": "3",
+          "name": "Medium"
+        },
+        "reporter": {
+          "displayName": "Russell Gowers"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Compare alternative order mixes, points and buddy hold durations",
+        "updated": "2026-11-07T07:58:27.948-0600"
+      },
+      "id": "1501444",
+      "key": "FUCQ-174"
+    },
+    {
+      "descriptionHash": "416a2a7a888981d99a4caa14833729971854b6e61c4705ed0b7e593a0b0d296a",
+      "expectedDescriptionHash": "416a2a7a888981d99a4caa14833729971854b6e61c4705ed0b7e593a0b0d296a",
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-04T15:11:42.092-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Jira supplies story ID/title/parent/priority; kind/size/design impact are labels. Story points are assigned by the implementing agent.\n\nkind: code\ndesign_impact: yes\nrequested: 2026-11-04, by Gary via Claude Code (backlog FUCQ-132, 1,000-employee comparison from HLD readiness item C8)\nepic: FUCQ-132\npriority: P2\npriority_reason: due 2026-11-12: GCSP demo\nsize: M\ndepends_on: FUCQ-136, FUCQ-84\n\n## Goal\n\nAs the presenter, I want to prepare the real process comparison offline and let Greg read its saved result, so that the demonstration can show actual evidence without waiting for a new run.\n\n## Acceptance criteria\n\n- [ ] **Command-line execution:** `node scripts/gcsp-comparison.mjs --experiment process [--seeds ...]` calls FUCQ-136's same runner, prints the measures table and writes the immutable result through the same repository port, in memory or the configured `GCSP_DATABASE_URL`.\n- [ ] **Stored-result read route:** retain `/api/gcsp` access to the latest actual process-comparison result, with provenance/policy freshness. Greg and presenter may read; other roles are refused using FUCQ-84's server-owned context.\n- [ ] **Clear offline outcomes:** invalid inputs or execution failure report a useful reason and store no partial result. Use the same canonical experiment/seed validation and repository boundary rather than a separate canned result.\n- [ ] **No unattended work:** nothing runs at startup or on a timer. Preparation is explicitly invoked; browser job-start/progress/worker mechanics move to FUCQ-175.\n## Files or areas\n\n- `server/gcsp/comparison/job.js (proposed)`\n- `server/gcsp/comparison/worker.js (proposed)`\n- `server/index.js (routes under /api/gcsp)`\n- `scripts/gcsp-comparison.mjs (proposed)`\n- `server/test/gcsp-comparison-job.test.js (proposed)`\n## Decided\n\nScope revision authorised by Russell on 7 November 2026: keep the necessary demo scope under this existing Story number and move the remainder into a new To Do Story, following docs/gcsp/backlog-moscow-review-2026-11-07.md. This explicit human revision supersedes earlier instructions to keep the previous combined acceptance unchanged. Preserve implemented work, claims, original evidence and recorded failures. Existing estimates are historical and need re-estimation; this split does not establish completion.\n\nThe remaining scope is tracked in FUCQ-175. That Story is not a prerequisite for accepting this retained scope.\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026, with the design agreed the same day (`docs/design/hld-story-readiness-2026-11-04.md`, item C8; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md` (\"Compare 1,000 fictional employees\"), `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`, \"The 1,000-employee comparison\" and \"Technical deployment and recovery\", plus diagram pages 05 and 09. Carry these decisions and acceptance criteria into every child-agent brief.\n\nThe comparison is a module in the GCSP backend, not a separate service. `worker_threads` is part of Node, so no runtime dependency is added (Q4).\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q1: GCSP runs in its own Render environment.\n- Q3: presenter-started work only, with no unattended runner.\n- Q4: no runtime dependency beyond `pg`.\n## Out of scope\n\nBrowser-triggered worker jobs, start/progress/outcome routes, job concurrency/responsiveness, worker timeout/restart semantics and additional experiment request controls (FUCQ-175); panel UI (FUCQ-138); scheduling or a separate service/queue.\n\n## Validate\n\n- `node --test server/test/gcsp-comparison-job.test.js`: scoped CLI-to-shared-runner/repository parity, valid process inputs, failure/no partial result, actual latest-result read and Greg/presenter/other-role access. Worker-specific cases move with the worker implementation.\n- `node scripts/gcsp-comparison.mjs --experiment process` completes against the configured in-memory repository and prints/stores the actual measures; exercise PostgreSQL where available and record unavailable native evidence honestly.\n- `npm test` passes.\n- Backend-only: record stored-result/read shapes for FUCQ-138. Offline generation alone does not satisfy the browser read route.\n",
+        "issuelinks": [
+          {
+            "id": "62660",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-136"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62661",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "Done",
+                  "statusCategory": {
+                    "colorName": "green",
+                    "id": 3,
+                    "key": "done",
+                    "name": "Done",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/3"
+                  }
+                }
+              },
+              "key": "FUCQ-84"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62662",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-138"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "340028",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-175"
+            },
+            "type": {
+              "id": "10179",
+              "inward": "split from",
+              "name": "Issue Split",
+              "outward": "split to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "size:M"
+        ],
+        "parent": {
+          "key": "FUCQ-132"
+        },
+        "priority": {
+          "id": "2",
+          "name": "High"
+        },
+        "reporter": {
+          "displayName": "Gary Carter"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Run the process comparison offline and read its stored result",
+        "updated": "2026-11-07T07:58:31.788-0600"
+      },
+      "id": "125284",
+      "key": "FUCQ-137"
+    },
+    {
+      "descriptionHash": "13c2731433bb1632fc77f76ab6248020cd82ef330873b0126deab8c535cea120",
+      "expectedDescriptionHash": null,
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-07T07:58:29.421-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Native Story split authorised by Russell on 7 November 2026.\n\nkind: code\ndesign_impact: yes\nrequested: 2026-11-07, by Russell Gowers, split from FUCQ-137\nepic: FUCQ-132\nsize: M\n\nDemo priority: Could. This remainder stays To Do for later prioritisation. Estimate at pickup from actual remaining work.\n\n## Goal\n\nAs Greg or the presenter, I want to start and monitor a comparison without freezing the application, so that I can run experiments during an interactive demonstration.\n\n## Acceptance criteria\n\n- [ ] **Responsive worker:** execute the existing `runComparison` in a Node `worker_threads` worker inside the GCSP backend. Prove an API request is served mid-run; permit one job at a time and refuse another start with the running job ID.\n- [ ] **Start/progress/outcome routes:** add the original `/api/gcsp` start, seeds-done/total progress and outcome routes for process and supported overlay/sweep experiments. Only Greg/presenter may start/read; keep server-owned context.\n- [ ] **Input validation:** validate overlays and hold lists against canonical units/ranges; name invalid keys, start nothing and never change live policy.\n- [ ] **Clear failure/recovery:** worker error or canonical timeout marks failed with a reason and stores no partial result. Backend restart marks a running job interrupted.\n- [ ] **Shared CLI and explicit invocation:** use the same FUCQ-137 runner/repository result shape from CLI and worker; no timer/startup work, separate service, queue or new runtime dependency beyond the agreed boundary.\n## Files or areas\n\n- `server/gcsp/comparison/job.js (proposed)`\n- `server/gcsp/comparison/worker.js (proposed)`\n- `server/index.js (routes under /api/gcsp)`\n- `scripts/gcsp-comparison.mjs (proposed)`\n- `server/test/gcsp-comparison-job.test.js (proposed)`\n## Decided\n\nScope revision authorised by Russell on 7 November 2026: keep the necessary demo scope under this existing Story number and move the remainder into a new To Do Story, following docs/gcsp/backlog-moscow-review-2026-11-07.md. This explicit human revision supersedes earlier instructions to keep the previous combined acceptance unchanged. Preserve implemented work, claims, original evidence and recorded failures. Existing estimates are historical and need re-estimation; this split does not establish completion.\n\nSplit from FUCQ-137. The necessary scope stays in FUCQ-137. This remainder stays To Do, unassigned, for later prioritisation; reuse existing code and evidence rather than rebuilding it.\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026, with the design agreed the same day (`docs/design/hld-story-readiness-2026-11-04.md`, item C8; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md` (\"Compare 1,000 fictional employees\"), `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md`, `docs/gcsp/shared-contracts.md` (FUCQ-80) and `docs/design/gcsp-high-level-design.md`, \"The 1,000-employee comparison\" and \"Technical deployment and recovery\", plus diagram pages 05 and 09. Carry these decisions and acceptance criteria into every child-agent brief.\n\nThe comparison is a module in the GCSP backend, not a separate service. `worker_threads` is part of Node, so no runtime dependency is added (Q4).\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q1: GCSP runs in its own Render environment.\n- Q3: presenter-started work only, with no unattended runner.\n- Q4: no runtime dependency beyond `pg`.\n## Out of scope\n\nOffline process preparation and stored-result read stay FUCQ-137. Extra experiment algorithms are the FUCQ-136 remainder; interactive panel controls are the FUCQ-138 remainder.\n\n## Validate\n\n- Extend `server/test/gcsp-comparison-job.test.js` for actual worker/API responsiveness, one-job refusal, role checks, invalid overlay/sweep requests, error/timeout/no partial result, restart interruption and worker/CLI result parity.\n- `npm test` passes.\n- Record actual worker job/progress response shapes for the later interactive panel; reuse the same repository and provenance checks.\nAdded by: Russell Gowers (authorised split from FUCQ-137, 7 November 2026).\n\n",
+        "issuelinks": [
+          {
+            "id": "340028",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-137"
+            },
+            "type": {
+              "id": "10179",
+              "inward": "split from",
+              "name": "Issue Split",
+              "outward": "split to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:code",
+          "moscow-could",
+          "scope-split-2026-11-07",
+          "size:M",
+          "split-from-FUCQ-137"
+        ],
+        "parent": {
+          "key": "FUCQ-132"
+        },
+        "priority": {
+          "id": "3",
+          "name": "Medium"
+        },
+        "reporter": {
+          "displayName": "Russell Gowers"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Start and monitor responsive comparison worker jobs from the browser",
+        "updated": "2026-11-07T07:58:31.823-0600"
+      },
+      "id": "1501445",
+      "key": "FUCQ-175"
+    },
+    {
+      "descriptionHash": "0e90d9d24159a4cfe895a216a7def2771f30b36610a69e3141ae480d9775a55a",
+      "expectedDescriptionHash": "0e90d9d24159a4cfe895a216a7def2771f30b36610a69e3141ae480d9775a55a",
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-04T15:12:25.768-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Jira supplies story ID/title/parent/priority; kind/size/design impact are labels. Story points are assigned by the implementing agent.\n\nkind: ui\ndesign_impact: yes\nui: el, cardinal; screenIntro and statusScreen (both listed under \"Not yet in the kit\"; reuse them if already added); FUCQ-101's metricTile and dataTable; FUCQ-31's shared fact and decision components; new: rangeBar, because the kit has no way to show a mean with its range across seeds\nrequested: 2026-11-04, by Gary via Claude Code (backlog FUCQ-132, 1,000-employee comparison from HLD readiness item C8)\nepic: FUCQ-132\npriority: P2\npriority_reason: due 2026-11-12: GCSP demo\nsize: L\ndepends_on: FUCQ-137, FUCQ-101\n\n## Goal\n\nAs Greg and the presenter, I want the real saved process comparison side by side with its assumptions and provenance, so that the audience can inspect an honest result immediately.\n\n## Acceptance criteria\n\n- [ ] **Panel in its own region:** a route comparison panel in FUCQ-101's defined dashboard region and FUCQ-64's shell immediately loads the latest actual stored process-only result through FUCQ-137, so the walkthrough need not wait for execution.\n- [ ] **Side by side:** for each measure (coverage before renewal, unused stock, declines, expiries, retries, fit of accepted cars, and coverage by access group), today's route and the buddy route with mean and range across seeds, and the difference. \"No clear difference\" and a result where today's route does better are shown as plainly as a buddy win.\n- [ ] **Assumptions:** an expandable list of the assumptions used (key, value, unit, assumed or verified, basis), the seeds, the policy version and when the result was made. The caveat that calculated fit is not observed satisfaction is always visible.\n- [ ] **States:** no stored result yet, with truthful preparation guidance; older policy version clearly labelled; source unavailable; and refused for any role other than Greg/presenter. Loading/reloading reads actual stored data. Browser-start/running/failed/new-result presentation moves to FUCQ-176.\n- [ ] **Respectful copy:** the baseline is called \"today's release route\". Copy explains behaviours and does not disparage the delivered GCSP interface (demo-brief positioning). No em dashes.\n- [ ] **Kit and embeddable (Q18):** new components go into the kit, `COMPONENTS.md` and the gallery in the same commit, and the ratchet baseline only falls. The panel mounts as part of the dashboard custom element, with no inline scripts, inline handlers or `eval`. Keyboard operable, with readable contrast.\n## Files or areas\n\n- `blocks/gcsp/ (Greg dashboard block: comparison panel)`\n- `COMPONENTS.md`, kit gallery, `server/test/ui-ratchet.json`\n- `server/test/ (render test for the comparison panel)`\n## Decided\n\nScope revision authorised by Russell on 7 November 2026: keep the necessary demo scope under this existing Story number and move the remainder into a new To Do Story, following docs/gcsp/backlog-moscow-review-2026-11-07.md. This explicit human revision supersedes earlier instructions to keep the previous combined acceptance unchanged. Preserve implemented work, claims, original evidence and recorded failures. Existing estimates are historical and need re-estimation; this split does not establish completion.\n\nThe remaining scope is tracked in FUCQ-176. That Story is not a prerequisite for accepting this retained scope.\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026, with the design agreed the same day (`docs/design/hld-story-readiness-2026-11-04.md`, item C8; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md` (\"Compare 1,000 fictional employees\" and the positioning section), `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md` (\"Establish Greg's denser operational treatment\"), `docs/gcsp/shared-contracts.md` (FUCQ-80), `docs/gcsp/screens/README.md`, `COMPONENTS.md`, `docs/gcsp/personas/scheme-ordering-lead.md` and `docs/design/gcsp-high-level-design.md`, \"The 1,000-employee comparison\", plus diagram page 09. Carry the experience contract, the visual reference and these criteria into every child-agent brief.\n\nThe demo interaction the brief suggests is changing the reservation duration: a longer hold may relieve time pressure while keeping scarce stock unavailable for longer. The panel lets the simulation show that balance rather than asserting it.\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q8: separate GCSP blocks.\n- Q9: Greg's dashboard is on the critical path; this panel adds to it.\n- Q18: custom element and CSP.\n## Out of scope\n\nExperiment picker, hold-duration control, browser-start/progress/failure/rerun/new-result states (FUCQ-176); live-policy publication (FUCQ-103), prediction panel (FUCQ-123) and comparison computation.\n\n## Validate\n\n- `npm test` passes, including the UI ratchet, em-dash test and panel render checks against the retained result-read contract.\n- Desktop and 375px browser/keyboard evidence of the actual stored result: buddy-better, no-clear-difference and baseline-better cases, expanded assumptions/provenance, no result, old policy, unavailable and refused role. Preserve shared kit/CSP, respectful copy and visible fit-not-observed-satisfaction caveat. Rerun progress/new-result checks move to FUCQ-176.\n",
+        "issuelinks": [
+          {
+            "id": "62662",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-137"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "62663",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "Done",
+                  "statusCategory": {
+                    "colorName": "green",
+                    "id": 3,
+                    "key": "done",
+                    "name": "Done",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/3"
+                  }
+                }
+              },
+              "key": "FUCQ-101"
+            },
+            "type": {
+              "id": "10000",
+              "inward": "is blocked by",
+              "name": "Blocks",
+              "outward": "blocks"
+            }
+          },
+          {
+            "id": "340029",
+            "outwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-176"
+            },
+            "type": {
+              "id": "10179",
+              "inward": "split from",
+              "name": "Issue Split",
+              "outward": "split to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:ui",
+          "size:L"
+        ],
+        "parent": {
+          "key": "FUCQ-132"
+        },
+        "priority": {
+          "id": "2",
+          "name": "High"
+        },
+        "reporter": {
+          "displayName": "Gary Carter"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Show the stored process comparison and assumptions on Greg's dashboard",
+        "updated": "2026-11-07T07:58:35.995-0600"
+      },
+      "id": "125285",
+      "key": "FUCQ-138"
+    },
+    {
+      "descriptionHash": "fc55c7f362952771b35d672f09dd8b9c89282a41d3d300ecfbee05ee5e425b73",
+      "expectedDescriptionHash": null,
+      "fields": {
+        "assignee": null,
+        "created": "2026-11-07T07:58:33.606-0600",
+        "customfield_10016": null,
+        "description": "Scaffolding template: `_dev/story-template.md`. Native Story split authorised by Russell on 7 November 2026.\n\nkind: ui\ndesign_impact: yes\nui: el, cardinal; screenIntro and statusScreen (both listed under \"Not yet in the kit\"; reuse them if already added); FUCQ-101's metricTile and dataTable; FUCQ-31's shared fact and decision components; new: rangeBar, because the kit has no way to show a mean with its range across seeds\nrequested: 2026-11-07, by Russell Gowers, split from FUCQ-138\nepic: FUCQ-132\nsize: M\n\nDemo priority: Could. This remainder stays To Do for later prioritisation. Estimate at pickup from actual remaining work.\n\n## Goal\n\nAs Greg or the presenter, I want to select an experiment and rerun chosen hold durations while retaining the previous result, so that I can inspect interactive what-if outcomes during a discussion.\n\n## Acceptance criteria\n\n- [ ] **Experiment picker:** extend the existing FUCQ-138 stored-result panel with process-only, alternative order mix/points and hold-duration-sweep choices backed by the FUCQ-136 remainder's real results.\n- [ ] **Hold-duration rerun:** send validated chosen values through the FUCQ-137 remainder's authorised worker-start route; show actual seeds-done progress and the new persisted result. Keep the previous result visible and labelled while running.\n- [ ] **Interactive states:** no result with an authorised start action, running, failed with its reason, refused role, unavailable source, older policy and successful new-result read-back. Never show a result for a job that failed or remains pending.\n- [ ] **Assumptions and quality:** retain actual assumptions/units/basis, seeds/policy/generator/code provenance, all measures/ranges and honest differences, fit caveat, respectful wording, shared kit/ratchet, custom-element/CSP and keyboard/contrast/focus requirements.\n## Files or areas\n\n- `blocks/gcsp/ (Greg dashboard block: comparison panel)`\n- `COMPONENTS.md`, kit gallery, `server/test/ui-ratchet.json`\n- `server/test/ (render test for the comparison panel)`\n## Decided\n\nScope revision authorised by Russell on 7 November 2026: keep the necessary demo scope under this existing Story number and move the remainder into a new To Do Story, following docs/gcsp/backlog-moscow-review-2026-11-07.md. This explicit human revision supersedes earlier instructions to keep the previous combined acceptance unchanged. Preserve implemented work, claims, original evidence and recorded failures. Existing estimates are historical and need re-estimation; this split does not establish completion.\n\nSplit from FUCQ-138. The necessary scope stays in FUCQ-138. This remainder stays To Do, unassigned, for later prioritisation; reuse existing code and evidence rather than rebuilding it.\n\nGary approved this Epic, its Story titles and the dependency order on 4 November 2026, with the design agreed the same day (`docs/design/hld-story-readiness-2026-11-04.md`, item C8; equal-authority rule, `AGENTS.md`). Read `docs/gcsp/README.md`, `docs/gcsp/demo-brief.md` (\"Compare 1,000 fictional employees\" and the positioning section), `docs/gcsp/build-rules.md`, `docs/gcsp/experience-quality.md` (\"Establish Greg's denser operational treatment\"), `docs/gcsp/shared-contracts.md` (FUCQ-80), `docs/gcsp/screens/README.md`, `COMPONENTS.md`, `docs/gcsp/personas/scheme-ordering-lead.md` and `docs/design/gcsp-high-level-design.md`, \"The 1,000-employee comparison\", plus diagram page 09. Carry the experience contract, the visual reference and these criteria into every child-agent brief.\n\nThe demo interaction the brief suggests is changing the reservation duration: a longer hold may relieve time pressure while keeping scarce stock unavailable for longer. The panel lets the simulation show that balance rather than asserting it.\n\nFoundation (FUCQ-79):\n\n- Store state through FUCQ-81's repository, with additive migrations recorded in `shared-contracts.md`.\n- Read every rule, duration and assumption through FUCQ-82's PolicyService by key, never as local literals.\n- Take the principal, role and run from FUCQ-84's server-owned context.\n- Read time from FUCQ-85's demo clock.\nHLD review (`docs/design/hld-review-gc.md`), as it applies here:\n\n- Q8: separate GCSP blocks.\n- Q9: Greg's dashboard is on the critical path; this panel adds to it.\n- Q18: custom element and CSP.\n## Out of scope\n\nThe necessary stored process-result panel remains FUCQ-138. Algorithms and worker job mechanics belong to their FUCQ-136/137 remainders; no live-policy publication or learned-model panel.\n\n## Validate\n\n- Extend panel render/integration checks for actual experiment selection, validated start requests, progress/previous-result labelling, failure/no fabricated result, role refusal and persisted new-result read-back.\n- `npm test` passes, including the UI ratchet and em-dash test.\n- Desktop and 375px browser/keyboard evidence of an actual hold-duration worker rerun, prior result/progress, new stored result, failed/no-result/start, unavailable and refused states, with assumptions inspectable.\nAdded by: Russell Gowers (authorised split from FUCQ-138, 7 November 2026).\n\n",
+        "issuelinks": [
+          {
+            "id": "340029",
+            "inwardIssue": {
+              "fields": {
+                "issuetype": {
+                  "name": "Story"
+                },
+                "status": {
+                  "name": "To Do",
+                  "statusCategory": {
+                    "colorName": "blue-gray",
+                    "id": 2,
+                    "key": "new",
+                    "name": "To Do",
+                    "self": "https://ibm-consulting.atlassian.net/rest/api/3/statuscategory/2"
+                  }
+                }
+              },
+              "key": "FUCQ-138"
+            },
+            "type": {
+              "id": "10179",
+              "inward": "split from",
+              "name": "Issue Split",
+              "outward": "split to"
+            }
+          }
+        ],
+        "issuetype": {
+          "id": "11089",
+          "name": "Story"
+        },
+        "labels": [
+          "backlog",
+          "design-impact",
+          "kind:ui",
+          "moscow-could",
+          "scope-split-2026-11-07",
+          "size:M",
+          "split-from-FUCQ-138"
+        ],
+        "parent": {
+          "key": "FUCQ-132"
+        },
+        "priority": {
+          "id": "3",
+          "name": "Medium"
+        },
+        "reporter": {
+          "displayName": "Russell Gowers"
+        },
+        "status": {
+          "name": "To Do"
+        },
+        "summary": "Choose comparison experiments and rerun hold-duration scenarios on the dashboard",
+        "updated": "2026-11-07T07:58:36.028-0600"
+      },
+      "id": "1501446",
+      "key": "FUCQ-176"
+    }
+  ]
+}

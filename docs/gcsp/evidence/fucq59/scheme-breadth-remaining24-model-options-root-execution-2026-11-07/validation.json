@@ -1,0 +1,40 @@
+{
+  "scope": "root-checkout isolated remaining24options preparation, zeroHTTP",
+  "executionPlanSha256": "1445b639ef3b7cb19ec1e09b389e98be8a5f511b80024aa17b0931194f39b02d",
+  "sourceBasisSha256": "af7a38937af89388c2920bf614eef8fe7a3893a8e4c020e209abf6de36212c2a",
+  "checks": {
+    "fail": 0,
+    "pass": 28,
+    "skipped": 0,
+    "tests": 28
+  },
+  "seconds": 8.917541250000001,
+  "peakRss": 188694528,
+  "cleanup": {
+    "compatibility_exception": null,
+    "groups_absent": true,
+    "leftovers": [],
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth-remaining24-model-options-root/preparation/ownership/2352af137dc44e7b862d27f3945f0c47.json",
+    "removed_allocation_bytes": 601013,
+    "reservation_absent": true,
+    "scratchRoot": "/private/tmp/test-stamp-shard-2352af137dc44e7b862d27f3945f0c47",
+    "scratch_absent": true
+  },
+  "independentRootGroupReservationAbsence": true,
+  "rootDependencyLinkAbsent": true,
+  "allPinsUnchanged": true,
+  "executionIsolation": {
+    "workingDirectory": "/Users/usget/Claude/vehicle-matcher",
+    "sourceAllocationId": "scheme-breadth-remaining24-model-options-root-20261107-once",
+    "supervisorRoot": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth-remaining24-model-options-root/live",
+    "shared035ActivePinsMutated": false,
+    "first6RootPinsMutated": false
+  },
+  "sourceGrant": false,
+  "sourceTraffic": 0,
+  "admissions": 0,
+  "capacityCredit": 0,
+  "acceptance": false,
+  "leftovers": [],
+  "compatibilityException": null
+}

@@ -1,0 +1,228 @@
+{
+  "scope": "supplementary exact actual event union plus independent final cleanup; zeroHTTP; original4/5 result preserved",
+  "time": "2026-11-07T05:00:57.484764+00:00",
+  "session": 118,
+  "originalProof": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-unspent2248/session118/retained-result.json",
+  "originalProofSha256": "83d5e0920f378337b1d0238f19cd2ee7dfb4a4df692f1eb67ccaa98691ea72e9",
+  "originalCheckCounts": {
+    "cancelled": 0,
+    "fail": 1,
+    "pass": 4,
+    "skipped": 0,
+    "tests": 5,
+    "todo": 0
+  },
+  "originalInputs": [
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-2248-20261107-once/sessions/session118/source-events.jsonl",
+      "sha256": "7a1a6ccfd9a356dc9eb236729abca6326ccd9b40eb0d934099bd4aaa368b8558",
+      "rows": 23
+    },
+    {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-2248-20261107-once/sessions/session118/source-events.jsonl 2.jsonl",
+      "sha256": "5dd52bae14b67e14cf9d635031d431f01352030088b05db9a9238cbeeb67e0e1",
+      "rows": 11
+    }
+  ],
+  "unionRows": [
+    {
+      "attempt": 1,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:42.833Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 1,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:42.833Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:57:42.962Z"
+    },
+    {
+      "attempt": 2,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:42.999Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 2,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:42.999Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:57:43.063Z"
+    },
+    {
+      "attempt": 3,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:43.506Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 3,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:43.506Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:57:43.571Z"
+    },
+    {
+      "attempt": 4,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:43.666Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 4,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:43.666Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:57:43.687Z"
+    },
+    {
+      "attempt": 5,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:43.747Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 5,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:43.747Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:57:43.884Z"
+    },
+    {
+      "attempt": 6,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:43.971Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 6,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:43.971Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:57:44.092Z"
+    },
+    {
+      "attempt": 7,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:44.155Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 7,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:44.155Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:57:44.268Z"
+    },
+    {
+      "attempt": 8,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:44.390Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 8,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:44.390Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:57:44.518Z"
+    },
+    {
+      "attempt": 9,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:44.685Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 9,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:44.685Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:57:44.811Z"
+    },
+    {
+      "attempt": 10,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:45.034Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 10,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:45.034Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:57:45.161Z"
+    },
+    {
+      "attempt": 11,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:45.482Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 11,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:45.482Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:57:45.609Z"
+    },
+    {
+      "attempt": 12,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:45.866Z",
+      "phase": "started"
+    },
+    {
+      "attempt": 12,
+      "method": "GET",
+      "startedAt": "2026-11-07T04:57:45.866Z",
+      "phase": "headers-received",
+      "status": 200,
+      "at": "2026-11-07T04:57:46.038Z"
+    }
+  ],
+  "exactDuplicateRows": 10,
+  "synthesizedRows": 0,
+  "supplementaryEventCheck": "passed",
+  "initialDiagnosticAssertion": "obsolete at key expectation refused before mutation; actual startedAt grammar then checked",
+  "rawInputsUnchanged": true,
+  "actual": {
+    "gets": 12,
+    "solver": 8,
+    "accepted": 6,
+    "rejected": 2,
+    "duplicates": 0
+  },
+  "independentCleanup": {
+    "ownedManifests": 236,
+    "groups": 236,
+    "groupsAbsent": true,
+    "scratchRootsAbsent": true,
+    "tokensAbsent": true,
+    "dependencyLinkAbsent": true,
+    "removedAllocationBytes": 61885504,
+    "retainedLogicalBytes": 801522490,
+    "compatibilityException": null,
+    "leftovers": []
+  },
+  "notClaimed": [
+    "original proof repaired",
+    "root cause established",
+    "all281sessionscomplete",
+    "fullacceptance"
+  ],
+  "acceptance": false
+}

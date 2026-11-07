@@ -1,0 +1,10 @@
+--- /opt/homebrew/bin/brew
++++ owned-scratch/brew-startup-projection.sh
+@@ -302,6 +302,7 @@
+ 
+ FILTERED_ENV=()
+ ENV_VAR_NAMES=(
++  TMPDIR TMP TEMP
+   BAT_CONFIG_PATH BAT_THEME
+   HOME SHELL PATH TERM TERMINFO TERMINFO_DIRS COLUMNS DISPLAY LOGNAME USER CI SSH_AUTH_SOCK SUDO_ASKPASS
+   http_proxy https_proxy ftp_proxy no_proxy all_proxy HTTPS_PROXY FTP_PROXY ALL_PROXY

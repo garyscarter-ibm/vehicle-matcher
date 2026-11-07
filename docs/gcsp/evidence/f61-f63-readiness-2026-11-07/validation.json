@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "f61-f63-readiness-static-validation.v1",
+  "date": "2026-11-07",
+  "scope": "New concise assessment documents only; no runtime or data proof replay.",
+  "sourcePinsRecomputed": 29,
+  "localMarkdownLinksResolved": 19,
+  "jsonParsed": [
+    "pins.json",
+    "validation.json"
+  ],
+  "whitespace": "passed for all four documents",
+  "staticRunnerCorrection": "First attempt misclassified the normal git diff --no-index exit 1 for differing files as a failure; output was empty. Corrected check accepts a normal diff exit only with empty --check output.",
+  "runtimeTests": 0,
+  "sourceNetworkNativeUICalls": 0,
+  "scratchAllocatedBytes": 0,
+  "removedAllocationBytes": 0,
+  "ownedProcesses": 0,
+  "descendants": 0,
+  "compatibilityException": null,
+  "disposableLeftovers": [],
+  "preservedParentFiles": 4,
+  "unchangedFrozenBase": "83f6173cd0b09e3d7d7c2839ff384bf1c2e3d43a",
+  "assessment": "Original acceptance remains unchanged. Numerical F61 target supported; accounting and named evidence boundaries remain explicit. Native stock integration and configuration BUILD remain distinct."
+}

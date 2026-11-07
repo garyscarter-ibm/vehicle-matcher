@@ -1,0 +1,40 @@
+{
+  "scope": "static-only proposed existing-cache restore preparation",
+  "planSha256": "2ea8139da9c52a93c65a422d3bd39bc6b782e25415c41f229f3b5d8837d12df6",
+  "runnerSha256": "3bb887055f8337538cea9c271573b6079b88e8c646ecea5d81927f823023958b",
+  "nodeSyntaxRc": 0,
+  "runtimePinCount": 102,
+  "runtimePinsChecked": true,
+  "retainedInputPins": 31,
+  "retainedInputPathsExist": true,
+  "previousValidatorAndRegistryEvidenceUnchanged": true,
+  "sourceInstrumentation": false,
+  "copySizing": {
+    "workers": 1,
+    "seconds": 180,
+    "nodeHeapMiB": 512,
+    "maximumGroupRssMiB": 896,
+    "supervisorHeadroomMiB": 128,
+    "hostReservationMiB": 1024,
+    "cloudScratchMiB": 512,
+    "diskReservationMiB": 512,
+    "expectedScratchMiB": 384,
+    "expectedOutputMiB": 1,
+    "immutableInputBytes": 574382841,
+    "packageDataCopies": 11,
+    "copiedCorpusLogicalBytes": 350691430,
+    "boundedRuntimeCopyBytes": 5381665,
+    "expectedLogicalPeakBeforeFilesystemOverhead": 356073095,
+    "maximumScratchBytes": 536870912,
+    "networkRequests": 0
+  },
+  "runnerCalls": {
+    "restoreFleetRelease": 1,
+    "separateValidateCorpusDirectory": 0,
+    "separateRegistryLoad": 0
+  },
+  "runtimeExecuted": false,
+  "scratchAllocated": false,
+  "networkRequests": 0,
+  "acceptance": false
+}

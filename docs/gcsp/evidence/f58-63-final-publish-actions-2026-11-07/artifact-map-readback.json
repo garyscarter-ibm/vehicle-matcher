@@ -1,0 +1,204 @@
+{
+  "schemaVersion": "pages-artifact-readback.v1",
+  "observedAt": "2026-11-07T12:56:03.097295+00:00",
+  "run": 42374327870,
+  "artifact": 13574902456,
+  "archiveBytes": 2429921,
+  "archiveSha256": "5adfc251a81d2fcf4f460ac8d73c361f7ace7a90239dd846041e863f8b874d0d",
+  "processing": "zip and tar streamed in memory; no local archive or scratch",
+  "member": "./product-map/data.json",
+  "mapBytes": 549278,
+  "mapSha256": "7ed0cc0aef39204e2cdda4e42f18f6e3330f8d7bf909667558532dcf098ecc5a",
+  "generatedAt": "2026-11-07T12:51:51Z",
+  "baselineHead": "693844ae9ffbb00763c2a1e50fe35f866176e164",
+  "stories": [
+    {
+      "id": "FUCQ-58",
+      "status": "In Progress",
+      "state": "unknown",
+      "status_label": "Incomplete progress data",
+      "progress": null,
+      "progress_label": "Unknown",
+      "slice_counts": {
+        "complete": 0,
+        "in_progress": 0,
+        "blocked": 0,
+        "not_started": 0,
+        "unknown": 0,
+        "total": 0
+      },
+      "conflict": true,
+      "sources": [
+        {
+          "branch": "origin/gcsp-poc",
+          "sha": "693844ae9ffbb00763c2a1e50fe35f866176e164",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:44:22.530Z"
+        },
+        {
+          "branch": "origin/dev/DEV-2026-11-04-069",
+          "sha": "4336075942b4fc13dfdca76fea167b002ba77831",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-05T23:00:25Z"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-59",
+      "status": "To Do",
+      "state": "unknown",
+      "status_label": "Incomplete progress data",
+      "progress": null,
+      "progress_label": "Unknown",
+      "slice_counts": {
+        "complete": 0,
+        "in_progress": 0,
+        "blocked": 0,
+        "not_started": 0,
+        "unknown": 0,
+        "total": 0
+      },
+      "conflict": true,
+      "sources": [
+        {
+          "branch": "origin/gcsp-poc",
+          "sha": "693844ae9ffbb00763c2a1e50fe35f866176e164",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:44:22.530Z"
+        },
+        {
+          "branch": "origin/dev/DEV-2026-11-04-069",
+          "sha": "4336075942b4fc13dfdca76fea167b002ba77831",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-05T23:00:25Z"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-60",
+      "status": "To Do",
+      "state": "unknown",
+      "status_label": "Incomplete progress data",
+      "progress": null,
+      "progress_label": "Unknown",
+      "slice_counts": {
+        "complete": 0,
+        "in_progress": 0,
+        "blocked": 0,
+        "not_started": 0,
+        "unknown": 0,
+        "total": 0
+      },
+      "conflict": true,
+      "sources": [
+        {
+          "branch": "origin/gcsp-poc",
+          "sha": "693844ae9ffbb00763c2a1e50fe35f866176e164",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:44:22.530Z"
+        },
+        {
+          "branch": "origin/dev/DEV-2026-11-04-069",
+          "sha": "4336075942b4fc13dfdca76fea167b002ba77831",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-05T23:00:25Z"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-61",
+      "status": "To Do",
+      "state": "unknown",
+      "status_label": "Incomplete progress data",
+      "progress": null,
+      "progress_label": "Unknown",
+      "slice_counts": {
+        "complete": 0,
+        "in_progress": 0,
+        "blocked": 0,
+        "not_started": 0,
+        "unknown": 0,
+        "total": 0
+      },
+      "conflict": true,
+      "sources": [
+        {
+          "branch": "origin/gcsp-poc",
+          "sha": "693844ae9ffbb00763c2a1e50fe35f866176e164",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:44:22.530Z"
+        },
+        {
+          "branch": "origin/dev/DEV-2026-11-04-069",
+          "sha": "4336075942b4fc13dfdca76fea167b002ba77831",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-05T23:00:25Z"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-62",
+      "status": "To Do",
+      "state": "unknown",
+      "status_label": "Incomplete progress data",
+      "progress": null,
+      "progress_label": "Unknown",
+      "slice_counts": {
+        "complete": 0,
+        "in_progress": 0,
+        "blocked": 0,
+        "not_started": 0,
+        "unknown": 0,
+        "total": 0
+      },
+      "conflict": true,
+      "sources": [
+        {
+          "branch": "origin/gcsp-poc",
+          "sha": "693844ae9ffbb00763c2a1e50fe35f866176e164",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:44:22.530Z"
+        },
+        {
+          "branch": "origin/dev/DEV-2026-11-04-069",
+          "sha": "4336075942b4fc13dfdca76fea167b002ba77831",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-05T23:00:25Z"
+        }
+      ]
+    },
+    {
+      "id": "FUCQ-63",
+      "status": "To Do",
+      "state": "unknown",
+      "status_label": "Incomplete progress data",
+      "progress": null,
+      "progress_label": "Unknown",
+      "slice_counts": {
+        "complete": 0,
+        "in_progress": 0,
+        "blocked": 0,
+        "not_started": 0,
+        "unknown": 0,
+        "total": 0
+      },
+      "conflict": true,
+      "sources": [
+        {
+          "branch": "origin/gcsp-poc",
+          "sha": "693844ae9ffbb00763c2a1e50fe35f866176e164",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-07T12:44:22.530Z"
+        },
+        {
+          "branch": "origin/dev/DEV-2026-11-04-069",
+          "sha": "4336075942b4fc13dfdca76fea167b002ba77831",
+          "path": ".product-map/work.json",
+          "observed_at": "2026-11-05T23:00:25Z"
+        }
+      ]
+    }
+  ],
+  "conclusion": "Newer uploaded source version but six projected rows conflicted with old imported dev069 facts; independently reconciled in map-data-sync-result.json. Original public serving read was also older than this artifact.",
+  "targetStoriesSynced": false
+}

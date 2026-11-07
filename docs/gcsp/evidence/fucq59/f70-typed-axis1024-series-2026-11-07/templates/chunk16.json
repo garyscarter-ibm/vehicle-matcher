@@ -1,0 +1,556 @@
+{
+  "schemaVersion": "1",
+  "planId": "f70-typed-axis1024-chunk16-20261107",
+  "version": "1",
+  "seed": "actual-source-typed-axis1024-chunk16",
+  "policyRead": {
+    "asOf": "2026-11-06T00:00:00.000Z",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "source": {
+    "id": "bmw-uk-public",
+    "version": "f59-batch-20261107.v1",
+    "kind": "public-bmw-uk"
+  },
+  "context": {
+    "catalogueDate": "2026-11-01",
+    "market": "GB",
+    "locale": "en-GB",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05"
+  },
+  "models": [
+    "1F7E"
+  ],
+  "target": 32,
+  "candidateCount": 32,
+  "captureVersion": "bmw-complete-selection.v1",
+  "qualificationDate": "2026-11-07",
+  "modelRegistration": {
+    "schemaVersion": "bmw-public-model-registration.v1",
+    "modelCode": "1F7E",
+    "agModelCode": "82GE",
+    "catalogueRangeKey": "F70",
+    "rawModelRange": "F70",
+    "aliases": [
+      "1"
+    ],
+    "market": "GB",
+    "locale": "en-GB",
+    "steering": "RL",
+    "catalogueDate": "2026-11-01",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05",
+    "optionsTrim": "S033B"
+  },
+  "candidateBaseElements": [],
+  "candidateDefinitionBasis": {
+    "path": "docs/gcsp/evidence/fucq59/f70-1f7e-core04-solver-2026-11-07/options.json",
+    "artifactSha256": "f3da89e3ebd679923f39a6b5c535e50036e36367fa831fe7e24fba54cc962b24",
+    "role": "Actual directly typed optional definitions and130 actual admitted working core selections; every request requires fresh complete model/options and actual solver proof."
+  },
+  "limits": {
+    "maxCandidates": 32,
+    "requestBudgets": {
+      "page": 1,
+      "settings": 1,
+      "discover": 1,
+      "options": 1,
+      "solve": 32
+    },
+    "maxAttempts": 1,
+    "operationTimeoutMs": 10000,
+    "deadlineMs": 120000,
+    "retryDelayMs": 0,
+    "concurrency": 1,
+    "cacheEntries": 40,
+    "cacheRetentionMs": 86400000,
+    "checkpointBytes": 8388608,
+    "imageRequests": 0,
+    "sourceAttempts": 36,
+    "sourceBytes": 8388608,
+    "responseBytes": 1048576
+  },
+  "candidates": [
+    {
+      "candidateId": "candidate-b90b22412c7303bea61c104a",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C4W",
+          "S033B",
+          "S03NA",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-20afd36be67c7e014fd2af83",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C5Y",
+          "S033B",
+          "S03NA",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-85e619592600b37eca6af9c9",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C6R",
+          "S01H8",
+          "S033B",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-eb02f77c19ad6c88b6d0c6e9",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0C3N",
+          "S033B",
+          "S03NA",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-39deb6c1f532b5e328df90f3",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C56",
+          "S01H8",
+          "S033B",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-f054807c28ecfc501ce12dfb",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0300",
+          "S033B",
+          "S03NA",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-8049c2313b74a566febf4592",
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C5A",
+          "S01H8",
+          "S033B",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-2104b9801627bbe65d73a1ae",
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C4P",
+          "S01H8",
+          "S033B",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-3e9d8bf6b78bee9b780e7d90",
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C31",
+          "S01H8",
+          "S033B",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-29715cf0705d59b393fae8e2",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C56",
+          "S033B",
+          "S03NA",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-e5ba2760304bdcbb3249c7b5",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C56",
+          "S033B",
+          "S03NA",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-327349550893f9fd902b0a7e",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0475",
+          "S01H8",
+          "S033B",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-5c1a9f7af4f52e683e33222c",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0C68",
+          "S01H8",
+          "S033B",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-ba0da6236a6695ed3acf0d60",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C4P",
+          "S01H8",
+          "S033B",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-682f62d03d01933837fb39b0",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0C68",
+          "S01H8",
+          "S033B",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-2df7481a3987cf4b992f7466",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0C6R",
+          "S01H8",
+          "S033B",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-ba7d628fbf962d0bfd878b38",
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0490",
+          "S033B",
+          "S03NA",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-ca0d354f4124869edf3afa77",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0475",
+          "S033B",
+          "S03NA",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-dd7c09fabc944a273fcd819b",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0C56",
+          "S033B",
+          "S03NA",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-315052b4bb03c42195507513",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C31",
+          "S033B",
+          "S03NA",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-7dbb18a21dd3c6040155b5da",
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C68",
+          "S01H8",
+          "S033B",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-c8b1b852deb3f5c12294113f",
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C4P",
+          "S033B",
+          "S03NA",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-e29c2399d2a8804916aee3e8",
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C5Y",
+          "S01H8",
+          "S033B",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-73e3150a137ddcdcec7d50bb",
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0300",
+          "S01H8",
+          "S033B",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-d606847de30151601367acf1",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0C3Z",
+          "S01H8",
+          "S033B",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-95db3b8214b35fe52eea05fb",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0C56",
+          "S01H8",
+          "S033B",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-cb8be0c41aaeae982ca8a93d",
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C6R",
+          "S01H8",
+          "S033B",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-89e5a6f675833b487450eeb0",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0C6R",
+          "S01H8",
+          "S033B",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-69c9c6b39993cefc7249ec09",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0C4W",
+          "S033B",
+          "S03NA",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-6d0ab68aeabfbbde808dd7ca",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C5Y",
+          "S01H8",
+          "S033B",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-5ba7a76ee7cbec1725e8df54",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0C5A",
+          "S01H8",
+          "S033B",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-31fb1ba0dadc8d2b2b2926c8",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0C6R",
+          "S033B",
+          "S03NA",
+          "S043U"
+        ],
+        "mandatoryElements": [
+          "S033B"
+        ]
+      }
+    }
+  ]
+}

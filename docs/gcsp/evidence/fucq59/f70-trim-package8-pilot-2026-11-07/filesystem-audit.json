@@ -1,0 +1,27 @@
+{
+  "sourceRootAbsent": true,
+  "markerAbsent": true,
+  "clockStarted": false,
+  "dependencyLinkAbsent": true,
+  "ownedRuns": [
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package8-pilot-20261107/check-1794021242731123000/ownership/d3da8768fb4847539cdd0052ec67803f.json",
+      "root": "/private/tmp/test-stamp-shard-d3da8768fb4847539cdd0052ec67803f",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "removedAllocationBytes": 221280
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package8-pilot-20261107/check-1794021273160055000/ownership/25b7c03b344046b9bd0a72742ad460a2.json",
+      "root": "/private/tmp/test-stamp-shard-25b7c03b344046b9bd0a72742ad460a2",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "removedAllocationBytes": 221280
+    }
+  ],
+  "leftovers": [],
+  "unownedPreserved": "_tools/__pycache__/test_resources.cpython-314.pyc",
+  "compatibilityException": null
+}

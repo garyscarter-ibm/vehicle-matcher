@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "f60-offline-proof-dependency-diagnosis.v1",
+  "story": "FUCQ-60",
+  "type": "validation-harness preparation omission",
+  "reproduction": "Exact root-released original collector-bridge phase; retained log/result/cleanup copied byte for byte under prior-failure. No second reproduction run.",
+  "expected": "Current collector bridge evaluates using the existing approved installed pg dependency while FilePolicyProvider remains the selected offline policy source.",
+  "actual": "ERR_MODULE_NOT_FOUND pg from032/server/gcsp/policy/postgres-provider.js before collector-bridge module evaluation; rc1/stateincomplete/completedempty, retainedOutput0B.",
+  "causeEvidence": [
+    "collector-bridge.mjs imports PolicyService from policy/index.js; index.js statically imports PostgresPolicyProvider; postgres-provider.js statically imports pg.",
+    "032/server/node_modules is absent. Shared root node_modules lacks pg, and root server/node_modules is absent.",
+    "Existing proof12 supervisor explicitly links its worktree server/node_modules to069/server/node_modules, where pg8.23.1/ESMexports and all139 installed dependency files are present.",
+    "The original F60 supervisor omitted that owned dependency link."
+  ],
+  "affectedBoundary": "Only offline proof supervisor/module resolution; no production module, provider behavior, source admission, SQL execution, selection or enrichFleet assertion changes.",
+  "correction": "New supervisor owns one exact server/node_modules symlink to the fully pinned existing vendor, records owner/device/inode/target, stops/joins children before exact ownership removal, verifies dependency membership/bytes and records link/scratch/group/reservation absence. Refuse occupied/replaced links and preserve unowned entries. No npm install.",
+  "validationSelection": [
+    "Python AST parsing only; no module evaluation or runtime proof.",
+    "Plan/code/selection/source/dependency/failure-copy hash and membership checks; four proof .mjs scripts byte-identical to original.",
+    "Parent may release exact new collector-bridge phase; until then all proof phases remain unrun."
+  ],
+  "excluded": [
+    "Proof execution/source replay/network/SQL/consumer/full suite",
+    "Production code changes",
+    "Native diagnostic3 review, dropped by root after its separate failure"
+  ],
+  "remainingUnknown": "Whether the released retry passes is unproved; original failure retains zero pass credit.",
+  "resources": {
+    "scratchCreated": false,
+    "dependencyLinkCreated": false,
+    "testsRun": 0,
+    "proofRuns": 0,
+    "sourceCalls": 0,
+    "installs": 0,
+    "largeOutputs": false,
+    "removedAllocationBytes": 0,
+    "compatibilityException": null,
+    "leftovers": []
+  }
+}

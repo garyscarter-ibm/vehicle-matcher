@@ -330,7 +330,7 @@ test('dataTable: caption, scopes, numeric columns, scroll region, band cells and
 const walk = (dir) => readdirSync(dir).sort().map((n) => join(dir, n)).filter((p) => statSync(p).isFile());
 const sources = () => [...walk(join(ROOT, 'blocks/gcsp/greg')), ...walk(join(ROOT, 'blocks/gcsp/kit')), join(ROOT, 'gcsp-greg.html')];
 const selectorsOf = (rel) => {
-  const css = read(rel).replace(/\/\*[\s\S]*?\*\//g, '').replace(/@media[^{]*\{/g, '');
+  const css = read(rel).replace(/\/\*[\s\S]*?\*\//g, '').replace(/@import\s+[^;]+;/g, '').replace(/@media[^{]*\{/g, '');
   return [...css.matchAll(/(?:^|[}\s])([^{}@]+)\{/g)].flatMap((m) => m[1].split(',')).map((s) => s.trim()).filter(Boolean);
 };
 

@@ -1,0 +1,2 @@
+/opt/homebrew/bin/brew: line 46: /dev/null: Operation not permitted
+/bin/bash: //Library/Homebrew/brew.sh: No such file or directory

@@ -1,0 +1,106 @@
+{
+  "status": "failed; stopped at first failure per root grant",
+  "run": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/producer-1793924418981713000",
+  "counts": {
+    "fail": 1,
+    "pass": 0,
+    "skipped": 0,
+    "tests": 1
+  },
+  "product_modules_observed": 0,
+  "overlays_observed": 0,
+  "strict_receipt": null,
+  "diagnosis": {
+    "reproduction": "One strict targeted supervised command; Node failed during ESM loader registration before the test entry or any of45 product modules were journalled.",
+    "observed": "Undeclared project module at producer-loader.mjs resolve line24; stack ends in AsyncLoaderHooksOnLoaderHookWorker.register/initialize. Tests1 pass0 fail1 skip0; source journal0; no scenario phases or strict receipt.",
+    "cause": "Harness allowlist includes45 canonical product modules and the test entry but omits the loader module itself. Its own registration URL is inside projectRoot and reaches the deny guard. The bootstrap stack and empty journal support this diagnosis; the rejected specifier was deliberately not logged.",
+    "next_check": "On renewed execution authority, explicitly map/hash the already-owned loader harness entry during registration without admitting extra product modules; record changed harness/map hashes before a fresh bounded run. Keep45 product source/8overlay plan unchanged. No fix or retry was performed after the first failure.",
+    "unchanged": "Published105 executable b7061e9 and73/73 consumer scope;32/32 published102 access evidence retained. No product integration acceptance achieved."
+  },
+  "summary": {
+    "cleanup": {
+      "dependency_links": [],
+      "groups_absent": true,
+      "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/producer-1793924418981713000/ownership/2b958ec947f040b389fb7ce06cd19e22.json",
+      "ports": [],
+      "profiles": [],
+      "reservation_released": true,
+      "root": "/private/tmp/test-stamp-shard-2b958ec947f040b389fb7ce06cd19e22",
+      "scratch_absent": true
+    },
+    "dependencies_verified_after": true,
+    "exclusions": "No central/bootstrap/106 command/browser/nativeDB/listener/network/mail/full/foreign writes",
+    "failure": "SelectedChecksFailed",
+    "harness": {
+      "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+      "_tools/test_stamp.py": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
+      "docs/gcsp/evidence/fucq105/producer-loader.mjs": "0a9668c16dc0c4d544747a70c8d502f7891b30c40a74537b256c7554aa50b689",
+      "docs/gcsp/evidence/fucq105/producer-supervisor.py": "0f1129398f8e6f005b6509b47a587535a79668a47c67cdf8374e09699b5665a9",
+      "server/test/gcsp-offer-view-producer.test.js": "47fb714470258239360e245caf5999f7f1de00fa37daa84d685820c7bc778d91"
+    },
+    "observed_modules": 0,
+    "observed_overlays": 0,
+    "peak_combined_bytes": 201600,
+    "result": {
+      "counts": {
+        "fail": 1,
+        "pass": 0,
+        "skipped": 0,
+        "tests": 1
+      },
+      "issue": null,
+      "issue_kind": null,
+      "log": "/private/tmp/test-stamp-shard-2b958ec947f040b389fb7ce06cd19e22/proof.log",
+      "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/producer-1793924418981713000/ownership/2b958ec947f040b389fb7ce06cd19e22.json",
+      "peak_rss": 51724288,
+      "peak_scratch": 176928,
+      "rc": 1,
+      "wall": 0.396132959
+    },
+    "source_plan_sha256": "a18f823423405897b558eadb363f749f89410a791c3bf7542685cbe021dcf9f8",
+    "status": "failed",
+    "strict_receipt": null
+  },
+  "parent_audit": {
+    "at": 1793924478.499913,
+    "auditor": {
+      "pid": 91583,
+      "start": "Fri Nov  6 00:21:17 2026"
+    },
+    "launch_supervisor_owner": {
+      "pid": 90519,
+      "start": "Fri Nov  6 00:20:18 2026"
+    },
+    "status": "PASS",
+    "checks": {
+      "scratch_absent": true,
+      "groups_absent": true,
+      "reservation_released": true,
+      "manifest_removed": true,
+      "no_ports_profiles_dependency_links": true,
+      "pg_package_hash": true,
+      "pg_entry_hash": true,
+      "pg_installation_identity": true,
+      "jsdom_package_hash": true,
+      "jsdom_entry_hash": true,
+      "jsdom_installation_identity": true,
+      "canonical37_unchanged": true,
+      "file_inputs5_unchanged": true,
+      "harness_hashes_match": true
+    },
+    "read_only": "Independent process rechecked owned filesystem/groups/host registry and retained source/dependency identities; no imports or allocations.",
+    "diagnosis": {
+      "reproduction": "One strict targeted supervised command; Node failed during ESM loader registration before the test entry or any of45 product modules were journalled.",
+      "observed": "Undeclared project module at producer-loader.mjs resolve line24; stack ends in AsyncLoaderHooksOnLoaderHookWorker.register/initialize. Tests1 pass0 fail1 skip0; source journal0; no scenario phases or strict receipt.",
+      "cause": "Harness allowlist includes45 canonical product modules and the test entry but omits the loader module itself. Its own registration URL is inside projectRoot and reaches the deny guard. The bootstrap stack and empty journal support this diagnosis; the rejected specifier was deliberately not logged.",
+      "next_check": "On renewed execution authority, explicitly map/hash the already-owned loader harness entry during registration without admitting extra product modules; record changed harness/map hashes before a fresh bounded run. Keep45 product source/8overlay plan unchanged. No fix or retry was performed after the first failure.",
+      "unchanged": "Published105 executable b7061e9 and73/73 consumer scope;32/32 published102 access evidence retained. No product integration acceptance achieved."
+    }
+  },
+  "root_review": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq105-producer-review-20261106.json",
+    "approved_plan_sha256": "a18f823423405897b558eadb363f749f89410a791c3bf7542685cbe021dcf9f8"
+  },
+  "scope": "Harness bootstrap failure only; actual producer/access/105 journey not executed. No credential/outbox allocation or browser/native/listener/network/full.",
+  "original_plan_sha256": "a18f823423405897b558eadb363f749f89410a791c3bf7542685cbe021dcf9f8"
+}

@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "f63-linux-postgres-orders-result.v1",
+  "status": "passed",
+  "scope": "three exact current-run stock references over actual retained .12 corpus; SQL close/reopen and direct/consumer/loopback HTTP",
+  "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "postgresVersion": "16.15 (Debian 16.15-1.pgdg13+2)",
+  "migrationLedger": [
+    {
+      "version": "0001",
+      "filename": "0001_transaction_foundation.sql",
+      "checksum": "3bde8db01f103141ca9bbe7398a6e1172df9b9789df745244a0071a00b9629d1"
+    },
+    {
+      "version": "0002",
+      "filename": "0002_policy_tables.sql",
+      "checksum": "65346093f811df63b225436a0ca35cd4061990a78caacb44ffde7b1effd1edd0"
+    },
+    {
+      "version": "0003",
+      "filename": "0003_renewal_cases.sql",
+      "checksum": "e76750fddd75b9d363fd209c243169ce1f9b06c78f96b7dbb74fe3c296f08c98"
+    }
+  ],
+  "runId": "f63-ci-42372886620_1",
+  "schema": "f63_ci_42372886620_1",
+  "stockImported": 3,
+  "nativeCounts": {
+    "runs": 1,
+    "stock": 3
+  },
+  "seedRepositoryClosed": true,
+  "freshRepositoryOpened": true,
+  "allocationRevision": 1,
+  "allocationContentDigest": "778dabfaffe68705b273ec1e82422eaee3ae2af0d345701240784508916ec897",
+  "inventorySnapshotRetained": true,
+  "inventoryPublishedRunVersion": 3,
+  "rows": [
+    {
+      "orderUuid": "98059eec-227a-4cb5-a22f-1a1874e7da36",
+      "orderNumber": "7967105",
+      "configurationId": "MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIQyxTMDIzMCxTMDJQQSxTMDJUNCxTMDJUQixTMDJWQixTMDJWRCxTMDJWTCxTMDMwMixTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzMSxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRHUSxTMDRNQyxTMDRVUixTMDUzNCxTMDU0NCxTMDU1MixTMDVBQyxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDY3NixTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxNSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNVSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNQ==",
+      "configurationHash": "cabf4e0effb1b316b8c5e39c46a9b83774de8f80ac7f67cea6a70ef66a01caf4",
+      "snapshotVersion": "bmw-gb-g42-typed-pilot48-2026-11-07.v2"
+    },
+    {
+      "orderUuid": "a1908795-3de0-460d-b15b-a4720d8a02ba",
+      "orderNumber": "8805938",
+      "configurationId": "MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIRCxTMDIzMCxTMDJQQSxTMDJUNCxTMDJUQixTMDJWQixTMDJWRCxTMDJWTCxTMDMwMixTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzMSxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRHUSxTMDRNQyxTMDRVUixTMDUzNCxTMDU0NCxTMDU1MixTMDVBQyxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDY3NixTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxNSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNVSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNQ==",
+      "configurationHash": "cabf4e0effb1b316b8c5e39c46a9b83774de8f80ac7f67cea6a70ef66a01caf4",
+      "snapshotVersion": "bmw-gb-g42-typed-pilot48-2026-11-07.v2"
+    },
+    {
+      "orderUuid": "f89fec98-2155-4b88-baf6-549932364154",
+      "orderNumber": "1581640",
+      "configurationId": "MlBCQzpGRVBNSSxQMDQ3NSxTMDFDQixTMDFDRSxTMDFERixTMDFIQyxTMDIzMCxTMDJQQSxTMDJUNCxTMDJUQixTMDJWQixTMDJWRCxTMDJWTCxTMDMwMixTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzMSxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRHUSxTMDRNQyxTMDRVUixTMDUzNCxTMDU0NCxTMDU1MixTMDVBQyxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDY3NixTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxNSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNVSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNQ==",
+      "configurationHash": "cabf4e0effb1b316b8c5e39c46a9b83774de8f80ac7f67cea6a70ef66a01caf4",
+      "snapshotVersion": "bmw-gb-g42-typed-pilot48-2026-11-07.v2"
+    }
+  ],
+  "seedExternalCalls": 0,
+  "proof": {
+    "schemaVersion": "current-order-reference-proof.v1",
+    "status": "passed",
+    "repositoryProvider": "postgresql",
+    "nativeAttempted": true,
+    "nativeProof": true,
+    "metrics": {
+      "scope": "sequential exact-order sample; direct plus consumer plus loopback HTTP per observation",
+      "count": 3,
+      "elapsedMs": 713.8292510000028,
+      "ordersPerSecond": 4.202685720425862,
+      "p50Ms": 221.7805040000021,
+      "p95Ms": 232.25989399999526,
+      "p99Ms": 232.25989399999526,
+      "node": "v20.20.2",
+      "platform": "linux",
+      "architecture": "x64",
+      "noSlaClaim": true
+    },
+    "runId": "f63-ci-42372886620_1",
+    "environmentId": "f63-ci-environment-42372886620_1",
+    "currentRunUnchanged": true,
+    "scope": "explicit exact current-run orderUUID sample",
+    "checked": 3,
+    "directErrors": 0,
+    "httpErrors": 0,
+    "consumerErrors": 0,
+    "observations": [
+      {
+        "orderUuid": "98059eec-227a-4cb5-a22f-1a1874e7da36",
+        "orderNumber": "7967105",
+        "configurationIdSha256": "3c8ef0f80272d06bd5ad8feb9b78a32a3477c7a4455e01c7c748a3b129d4396b",
+        "directStatus": "partial",
+        "directPassed": true,
+        "httpPassed": true,
+        "consumerStatus": "partial",
+        "consumerPassed": true,
+        "dtoSha256": "273079542153fa77c1c40a6592d400affd444a52b782459dcb3bfedf6b817dc4",
+        "elapsedMs": 232.25989399999526
+      },
+      {
+        "orderUuid": "a1908795-3de0-460d-b15b-a4720d8a02ba",
+        "orderNumber": "8805938",
+        "configurationIdSha256": "c4903cd98e98ca52561beff6f7adf04772efe4856d643aaf1f9f97ae67b3d752",
+        "directStatus": "partial",
+        "directPassed": true,
+        "httpPassed": true,
+        "consumerStatus": "partial",
+        "consumerPassed": true,
+        "dtoSha256": "ee74aac22c2d5e1740efee09b739c042940eb271ab9695d1b70b5e2f6232a3ff",
+        "elapsedMs": 221.7805040000021
+      },
+      {
+        "orderUuid": "f89fec98-2155-4b88-baf6-549932364154",
+        "orderNumber": "1581640",
+        "configurationIdSha256": "4b835d8777c03b2633728c0878d7d211f23220d94e7a82fa2a863817fbfaa783",
+        "directStatus": "partial",
+        "directPassed": true,
+        "httpPassed": true,
+        "consumerStatus": "partial",
+        "consumerPassed": true,
+        "dtoSha256": "7ea30c4e5adffbc04783710effbf667e1d38eb3f5fa15973abd850af2af50df1",
+        "elapsedMs": 218.58918999999878
+      }
+    ],
+    "sourceCalls": 0,
+    "externalConnectAttempts": 0,
+    "databaseTraffic": "Existing injected repository reads; native execution requires separately approved runtime plan. No fixture fallback.",
+    "acceptance": false
+  },
+  "fullCorpusConsumerReplay": false,
+  "deferredConsumerFailures": 2707,
+  "acceptance": false,
+  "proofReturned": true,
+  "proofRetention": {
+    "status": "retained",
+    "bytes": 2099
+  },
+  "ownedSchemaAbsent": true
+}

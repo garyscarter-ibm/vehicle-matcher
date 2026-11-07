@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "f70-optional-axis-offline-validation.v1",
+  "scope": "scoped independent offline reconstruction; network disabled; no source grant or live runner",
+  "command": [
+    "node",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-pool-2026-11-07/check-prepared.mjs"
+  ],
+  "codeCommit": "faae01395415121d4a7659b778f4722f0d1578ae",
+  "seriesPlanSha256": "49dc5d0fa91dca87df94a8b01ea998089198c884d8d0ef5a4950b4f6f6e49b2e",
+  "candidateManifestSha256": "e6711d1863472aedadf0f64a6b15c8b8e9b48ed51c09c7341e38eaca478e8319",
+  "codePins": {
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-pool-2026-11-07/README.md": "eec07e18c6e8aba8b1abfcda28f79dabf81528794752ac3f65766880841335d7",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-pool-2026-11-07/check-prepared.mjs": "05ddc01c60330637ed33ec2ef0585a0f4203251559b1e40a458409f93f541cae",
+    "docs/gcsp/evidence/fucq59/f70-optional-axis-pool-2026-11-07/prepare.py": "1b7d2de3b53e0617b28fca6dba80ea0bd07ed0d671c2487cebc3d26a1ca85fec",
+    "scripts/gcsp/bmw-public-registration.mjs": "1ad1acc2a8589afb083241cf1b544364b441c6c26d77d5dc284da793c37638ce",
+    "scripts/gcsp/bmw-selection-binding.mjs": "480f1e3d1496bcb8d808ec75839634808a2923cdbf8411df61b0f819bdec3f38",
+    "scripts/gcsp/capture-bmw-selection.mjs": "14c255be3696d8d0512d9d4ddc03f24bae138d83f4d548bd813b07d1a5eb9892",
+    "scripts/gcsp/collect-fleet.mjs": "ba3864cee32f480facde57a2d2c9dbf944d571878bb2a9cece220955357ab1de",
+    "scripts/gcsp/collection-session.mjs": "e4ba55ee7fcc540df735903348ea4cf08df14645cc0344754b930a9e5c58e6a1",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/public-bmw-source.mjs": "76716b642c0056eb45200995e64089a47723b3c026de4b5e8fdf645a269ade84",
+    "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+    "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+    "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/test/gcsp-bmw-model-batch.test.js": "818bb46fc261093d1e5dd70c2c5c5e27f172e654f67fa80db9d3e4c2b6cdfa1a",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+  },
+  "baseline": {
+    "canonical": 1974,
+    "admittedSource": 1971,
+    "spent": 2684
+  },
+  "result": {
+    "status": "prepared-only",
+    "actualCores": 790,
+    "unspentPool": 5567,
+    "perModel": {
+      "1F7A": 715,
+      "1F7C": 2268,
+      "1F7D": 1552,
+      "1F7F": 1032
+    },
+    "sessions": 697,
+    "cohorts": 175,
+    "pilot": {
+      "solver": 32,
+      "gets": 48
+    },
+    "suffix": {
+      "solver": 5535,
+      "gets": 8307
+    },
+    "wholeGetCeiling": 8355,
+    "sourceTraffic": 0,
+    "baseline": {
+      "canonical": 1974,
+      "admittedSource": 1971,
+      "spent": 2684
+    },
+    "sourceOutputAbsent": true,
+    "sourceTrafficGranted": false,
+    "capacityCredit": 0
+  },
+  "wallSeconds": 1.7280886250082403,
+  "peakScratchBytes": 221280,
+  "peakRamBytes": 303104000,
+  "inputSourceEvidence": "101 pre-existing strict retained proofs reused for their original unchanged source data, accepted records and exact contexts; actual790 core selections rechecked against their typed facts and pins",
+  "boundary": "Every5567 candidate structurally validates under new route and directly typed optional input checker, every697 template has exact finite URL membership and mandatory semantics; no constructibility/novelty/admission claimed",
+  "selection": "No repeated boundary suite: source code unchanged from141/141 scoped implementation evidence. No full suite. Only generated preparation and pinned data reconstructed.",
+  "cleanup": {
+    "scratchRoot": "/private/tmp/test-stamp-shard-f08b67456a3b4a7d8ae5c6c7b9cd397c",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f58/f70-optional-axis/prepared/ownership/f08b67456a3b4a7d8ae5c6c7b9cd397c.json",
+    "groupsAbsent": true,
+    "openFilesAbsent": true,
+    "scratchAbsent": true,
+    "dependencyLinkAbsent": true,
+    "reservationAbsent": true,
+    "removedBytes": 221280,
+    "compatibilityException": null,
+    "cleanupErrors": []
+  },
+  "persistentOutput": {
+    "root": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-optional-axis-pool-2026-11-07",
+    "logicalBytes": 8246729,
+    "files": 702
+  },
+  "sourceOutputRootAbsent": true,
+  "acceptance": false,
+  "sourceTraffic": 0,
+  "capacityCredit": 0
+}

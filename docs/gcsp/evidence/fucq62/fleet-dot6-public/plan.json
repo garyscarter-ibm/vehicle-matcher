@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "fleet-dot6-public-plan.v1",
+  "runId": "f62-dot6-public-20261107",
+  "repository": "garyscarter-ibm/vehicle-matcher",
+  "tag": "fleet-2026-11-07-6",
+  "previousTag": "fleet-2026-11-07-5",
+  "target": "6f3c4578f1d5f3fb0a53ad0262ef66284618f071",
+  "releaseId": "421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d",
+  "previousManifestDigest": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+  "descriptorSha256": "40300d27cd612e709887c0cf6f5c4cdb0c3c68133fa0b5ea428a37296cd01a4c",
+  "packageRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107",
+  "outputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-public-20261107",
+  "checkPhase": "check-2",
+  "expected": { "files": 21, "bytes": 44787324, "sourceShards": 10, "configurations": 870, "sourceConfigurations": 869, "vinMappings": 1, "images": 1, "direct": 871, "http": 871 },
+  "resources": { "workers": 1, "hostRamMiB": 512, "childRamMiB": 448, "scratchMiB": 192, "scratchLocation": "owned OneDrive", "secondsPerChunk": 120, "expectedPeakScratchMiB": 90, "expectedPeakChildRamMiB": 340, "expectedDownloadAuditSeconds": 80 },
+  "selected": [
+    "--check exact 21 local asset pins, descriptor in immutable pushed target, existing .5 release/tag readback, and .6 release/tag absence before mutation",
+    "Create or resume only exact immutable .6 prerelease/tag; never overwrite assets or move tags; checkpoint each exact upload and preserve .5 readback",
+    "Real anonymous production CLI download/cold restore of 21 public assets with credential-denial instrumentation and exact file/history pins",
+    "Fresh process offline CLI restart followed by all 871 direct and 871 production HTTP parity checks with zero source/provider egress",
+    "Changed .6-only source corruption recovers .5 (479 source configurations and one image) while current pointer and complete history bytes remain unchanged; restore exact owned bytes afterwards"
+  ],
+  "excluded": [ "BMW/source traffic", "ordinary activation", "YAML/Render/live changes", "10,000/source/model/profile/year/plant/five-WMI acceptance", "unchanged .5 all-record proof and recovery matrix", "full suite and PostgreSQL" ]
+}

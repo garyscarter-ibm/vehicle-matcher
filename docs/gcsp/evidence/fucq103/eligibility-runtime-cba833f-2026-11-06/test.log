@@ -1,0 +1,12 @@
+✔ combined runtime serves authenticated scenarios, canonical presenter step and real mechanics reset using original policy identity (2160.99825ms)
+✔ explicit file policy stays read-only under a memory runtime and caller policy is not closed (60.712959ms)
+✔ runtime closes default policy exactly once and retains the existing injected-repository lifecycle (68.914583ms)
+✔ explicit postgres policy failure never falls back to memory or file (0.744125ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2503.582458

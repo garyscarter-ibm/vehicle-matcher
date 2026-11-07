@@ -1,0 +1,169 @@
+linux-live-three-get	Set up job	﻿2026-11-07T12:30:04.7247432Z Current runner version: '2.338.2'
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7271373Z ##[group]Runner Image Provisioner
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7272163Z Hosted Compute Agent
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7272629Z Version: 20261028.624
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7273155Z Commit: 54898b74c23fde5556c9b3c3a2290865feef0dfe
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7273945Z Build Date: 2026-10-28T21:51:42Z
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7274547Z Worker ID: {62ae13af-4ee1-44e5-adf1-0c14e98a7a20}
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7275140Z Region: centralus
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7275590Z Cloud: Azure
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7276049Z ##[endgroup]
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7277054Z ##[group]Operating System
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7277571Z Ubuntu
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7278020Z 24.04.5
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7278434Z LTS
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7278877Z ##[endgroup]
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7279343Z ##[group]Runner Image
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7279792Z Image: ubuntu-24.04
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7280216Z Version: 20261101.360.1
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7281148Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261101.360/images/ubuntu/Ubuntu2404-Readme.md
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7283000Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261101.360
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7283877Z ##[endgroup]
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7284793Z ##[group]GITHUB_TOKEN Permissions
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7286259Z Contents: read
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7286685Z Metadata: read
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7287193Z ##[endgroup]
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7289106Z Secret source: Actions
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7289891Z Cache mode: write
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7290595Z Prepare workflow directory
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7561691Z Prepare all required actions
+linux-live-three-get	Set up job	2026-11-07T12:30:04.7601599Z Getting action download info
+linux-live-three-get	Set up job	2026-11-07T12:30:04.9668178Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+linux-live-three-get	Set up job	2026-11-07T12:30:05.0700540Z Download action repository 'actions/setup-node@v4' (SHA:49933ea5288caeca8642d1e84afbd3f7d6820020)
+linux-live-three-get	Set up job	2026-11-07T12:30:05.2547196Z Complete job name: linux-live-three-get
+linux-live-three-get	Run actions/checkout@v4	﻿2026-11-07T12:30:05.3038386Z ##[group]Run actions/checkout@v4
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.3038821Z with:
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.3039059Z   persist-credentials: false
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.3039358Z   repository: garyscarter-ibm/vehicle-matcher
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.3041429Z   token: ***
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.3041656Z   ssh-strict: true
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.3041891Z   ssh-user: git
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.3042117Z   clean: true
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.3042354Z   sparse-checkout-cone-mode: true
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.3042627Z   fetch-depth: 1
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.3042859Z   fetch-tags: false
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.3043095Z   show-progress: true
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.3043333Z   lfs: false
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.3043552Z   submodules: false
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.3043916Z   set-safe-directory: true
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.3044185Z   allow-unsafe-pr-checkout: false
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.3044535Z ##[endgroup]
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5257104Z Syncing repository: garyscarter-ibm/vehicle-matcher
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5258238Z ##[group]Getting Git version info
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5258660Z Working directory is '/home/runner/work/vehicle-matcher/vehicle-matcher'
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5259340Z [command]/usr/bin/git version
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5344255Z git version 2.56.0
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5364155Z ##[endgroup]
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5372076Z Temporarily overriding HOME='/home/runner/work/_temp/e1b300c1-ced5-4881-8e5f-bee2f7cb7591' before making global git config changes
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5373229Z Adding repository directory to the temporary git global config as a safe directory
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5376204Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/vehicle-matcher/vehicle-matcher
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5428601Z Deleting the contents of '/home/runner/work/vehicle-matcher/vehicle-matcher'
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5436297Z ##[group]Initializing the repository
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5444232Z [command]/usr/bin/git init /home/runner/work/vehicle-matcher/vehicle-matcher
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5536848Z hint: Using 'master' as the name for the initial branch. This default branch name
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5537618Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5538640Z hint: to use in all of your new repositories, which will suppress this warning,
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5539050Z hint: call:
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5539274Z hint:
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5539561Z hint: 	git config --global init.defaultBranch <name>
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5539895Z hint:
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5540214Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5540719Z hint: 'development'. The just-created branch can be renamed via this command:
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5541117Z hint:
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5541349Z hint: 	git branch -m <name>
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5541662Z hint:
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5542104Z hint: Disable this message with "git config set advice.defaultBranchName false"
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5548200Z Initialized empty Git repository in /home/runner/work/vehicle-matcher/vehicle-matcher/.git/
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5557508Z [command]/usr/bin/git remote add origin https://github.com/garyscarter-ibm/vehicle-matcher
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5599875Z ##[endgroup]
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5600341Z ##[group]Disabling automatic garbage collection
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5602772Z [command]/usr/bin/git config --local gc.auto 0
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5630440Z ##[endgroup]
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5630862Z ##[group]Setting up auth
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5636237Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.5673403Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.6005773Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.6044321Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.6234235Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.6270086Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.6454979Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.6525050Z ##[endgroup]
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.6525684Z ##[group]Fetching the repository
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:05.6534198Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +13144e31f1b0b5db47e0b189e6d14784abdaa055:refs/remotes/origin/gcsp-poc
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:10.5258776Z From https://github.com/garyscarter-ibm/vehicle-matcher
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:10.5260222Z  * [new ref]         13144e31f1b0b5db47e0b189e6d14784abdaa055 -> origin/gcsp-poc
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:10.5274351Z ##[endgroup]
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:10.5275290Z ##[group]Determining the checkout info
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:10.5276316Z ##[endgroup]
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:10.5276850Z [command]/usr/bin/git sparse-checkout disable
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:10.5328240Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:10.5362941Z ##[group]Checking out the ref
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:10.5372050Z [command]/usr/bin/git checkout --progress --force -B gcsp-poc refs/remotes/origin/gcsp-poc
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:11.5680542Z Updating files:  95% (9548/10007)
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:11.8669544Z Updating files:  96% (9607/10007)
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:11.8722974Z Updating files:  97% (9707/10007)
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:11.8815396Z Updating files:  98% (9807/10007)
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:11.8877871Z Updating files:  99% (9907/10007)
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:11.8878309Z Updating files: 100% (10007/10007)
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:11.8878535Z Updating files: 100% (10007/10007), done.
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:12.0219693Z Switched to a new branch 'gcsp-poc'
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:12.0225261Z branch 'gcsp-poc' set up to track 'origin/gcsp-poc'.
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:12.0380401Z ##[endgroup]
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:12.0431419Z [command]/usr/bin/git log -1 --format=%H
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:12.0462435Z 13144e31f1b0b5db47e0b189e6d14784abdaa055
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:12.0471577Z ##[group]Removing auth
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:12.0474687Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:12.0516664Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:12.0730027Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:12.0764086Z http.https://github.com/.extraheader
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:12.0770008Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:12.0818708Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:12.1007523Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:12.1039763Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+linux-live-three-get	Run actions/checkout@v4	2026-11-07T12:30:12.1289048Z ##[endgroup]
+linux-live-three-get	Run actions/setup-node@v4	﻿2026-11-07T12:30:12.1534280Z ##[group]Run actions/setup-node@v4
+linux-live-three-get	Run actions/setup-node@v4	2026-11-07T12:30:12.1534478Z with:
+linux-live-three-get	Run actions/setup-node@v4	2026-11-07T12:30:12.1534590Z   node-version: 20
+linux-live-three-get	Run actions/setup-node@v4	2026-11-07T12:30:12.1534715Z   always-auth: false
+linux-live-three-get	Run actions/setup-node@v4	2026-11-07T12:30:12.1534835Z   check-latest: false
+linux-live-three-get	Run actions/setup-node@v4	2026-11-07T12:30:12.1536110Z   token: ***
+linux-live-three-get	Run actions/setup-node@v4	2026-11-07T12:30:12.1536227Z ##[endgroup]
+linux-live-three-get	Run actions/setup-node@v4	2026-11-07T12:30:12.2555014Z Attempting to download 20...
+linux-live-three-get	Run actions/setup-node@v4	2026-11-07T12:30:12.2668119Z (node:2196) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+linux-live-three-get	Run actions/setup-node@v4	2026-11-07T12:30:12.2668810Z (Use `node --trace-deprecation ...` to show where the warning was created)
+linux-live-three-get	Run actions/setup-node@v4	2026-11-07T12:30:13.0530042Z Acquiring 20.20.2 - x64 from https://github.com/actions/node-versions/releases/download/20.20.2-23521894959/node-20.20.2-linux-x64.tar.gz
+linux-live-three-get	Run actions/setup-node@v4	2026-11-07T12:30:13.4617288Z Extracting ...
+linux-live-three-get	Run actions/setup-node@v4	2026-11-07T12:30:13.4719857Z [command]/usr/bin/tar xz --strip 1 --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/c19a976d-952a-4f31-9035-c47c81f71fab -f /home/runner/work/_temp/62ff7b3d-56e4-42d4-a5ec-0d42c5a6f5cb
+linux-live-three-get	Run actions/setup-node@v4	2026-11-07T12:30:14.1927165Z Adding to the cache ...
+linux-live-three-get	Run actions/setup-node@v4	2026-11-07T12:30:15.7363334Z ##[group]Environment details
+linux-live-three-get	Run actions/setup-node@v4	2026-11-07T12:30:15.9012979Z node: v20.20.2
+linux-live-three-get	Run actions/setup-node@v4	2026-11-07T12:30:15.9013302Z npm: 10.8.2
+linux-live-three-get	Run actions/setup-node@v4	2026-11-07T12:30:15.9013496Z yarn: 1.22.22
+linux-live-three-get	Run actions/setup-node@v4	2026-11-07T12:30:15.9014102Z ##[endgroup]
+linux-live-three-get	One bounded Linux health readiness and exact first DTO observation	﻿2026-11-07T12:30:15.9203521Z ##[group]Run set -euo pipefail
+linux-live-three-get	One bounded Linux health readiness and exact first DTO observation	2026-11-07T12:30:15.9203948Z ^[[36;1mset -euo pipefail^[[0m
+linux-live-three-get	One bounded Linux health readiness and exact first DTO observation	2026-11-07T12:30:15.9204237Z ^[[36;1mpython3 -B -I docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic2-20261107/supervise.py^[[0m
+linux-live-three-get	One bounded Linux health readiness and exact first DTO observation	2026-11-07T12:30:15.9225133Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+linux-live-three-get	One bounded Linux health readiness and exact first DTO observation	2026-11-07T12:30:15.9225350Z env:
+linux-live-three-get	One bounded Linux health readiness and exact first DTO observation	2026-11-07T12:30:15.9225565Z   REVIEWED_PLAN_SHA256: 627a4704d1a03f2eb944ab99f01993a11883fbb7175f50f590470a63d3f8e043
+linux-live-three-get	One bounded Linux health readiness and exact first DTO observation	2026-11-07T12:30:15.9225798Z   REQUESTED_PLAN_SHA256: 
+linux-live-three-get	One bounded Linux health readiness and exact first DTO observation	2026-11-07T12:30:15.9225928Z ##[endgroup]
+linux-live-three-get	One bounded Linux health readiness and exact first DTO observation	2026-11-07T12:30:16.7970369Z {"phaseEvidence":{"receipt.json":{"schemaVersion":"linux-live-three-get-receipt.v1","diagnosticId":"fleet-dot12-linux-live-20261107-2","githubRunId":"42372746118","attempt":1,"environment":"Linux-GitHubActions","status":"passed","code":"c87b6f075c4e79bee93b71e1965ad23310ab8473","actualDeploymentId":"dep-dbnhane8bjmc73a7v5qg","manifestDigest":"3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30","requests":3,"newGetCeiling":3,"sourceCalls":0,"startedAt":"2026-11-07T12:30:15.977Z","finishedAt":"2026-11-07T12:30:16.708Z","pending":null,"observations":[{"label":"health","status":200,"bodySha256":"4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93","bodyBytes":11,"headersSha256":"14fa1d65dbde8e995b21864d8a6078e85fe53d9d324ac4fdb53d0985f92f685a","elapsedMs":271.579978},{"label":"readiness","status":200,"bodySha256":"57c493087f05ed96cd3646918c2dfac8c37695163dc35d1cbefb3200b1a2682b","bodyBytes":169,"headersSha256":"02e52d29c0a6d496f5c5a7c93c98cb998fa088549f9e19e4a5e32e2fa9cb5c4a","elapsedMs":137.573603,"sanitizedReadiness":{"ok":true,"status":"ready","manifestDigest":"3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30","recovered":false}},{"label":"configuration","status":200,"bodySha256":"82712c8d703e6546d6c4298fa3a168b2ea48f09c73931ee9eb061ee36f98e2e4","bodyBytes":11532,"headersSha256":"59e9cca6f56afd65b96321b190c6a6b5db42a492cd4860c22b3170aea4cd2d82","elapsedMs":314.137715,"dtoSha256":"82712c8d703e6546d6c4298fa3a168b2ea48f09c73931ee9eb061ee36f98e2e4","match":true}],"failure":null,"expectedDtoSha256":"82712c8d703e6546d6c4298fa3a168b2ea48f09c73931ee9eb061ee36f98e2e4","acceptance":false,"originalLocalTimeoutCauseProved":false},"progress.json":{"schemaVersion":"linux-live-three-get-receipt.v1","diagnosticId":"fleet-dot12-linux-live-20261107-2","githubRunId":"42372746118","attempt":1,"environment":"Linux-GitHubActions","status":"in-progress","code":"c87b6f075c4e79bee93b71e1965ad23310ab8473","actualDeploymentId":"dep-dbnhane8bjmc73a7v5qg","manifestDigest":"3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30","requests":3,"newGetCeiling":3,"sourceCalls":0,"startedAt":"2026-11-07T12:30:15.977Z","finishedAt":"2026-11-07T12:30:16.708Z","pending":null,"observations":[{"label":"health","status":200,"bodySha256":"4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93","bodyBytes":11,"headersSha256":"14fa1d65dbde8e995b21864d8a6078e85fe53d9d324ac4fdb53d0985f92f685a","elapsedMs":271.579978},{"label":"readiness","status":200,"bodySha256":"57c493087f05ed96cd3646918c2dfac8c37695163dc35d1cbefb3200b1a2682b","bodyBytes":169,"headersSha256":"02e52d29c0a6d496f5c5a7c93c98cb998fa088549f9e19e4a5e32e2fa9cb5c4a","elapsedMs":137.573603,"sanitizedReadiness":{"ok":true,"status":"ready","manifestDigest":"3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30","recovered":false}},{"label":"configuration","status":200,"bodySha256":"82712c8d703e6546d6c4298fa3a168b2ea48f09c73931ee9eb061ee36f98e2e4","bodyBytes":11532,"headersSha256":"59e9cca6f56afd65b96321b190c6a6b5db42a492cd4860c22b3170aea4cd2d82","elapsedMs":314.137715,"dtoSha256":"82712c8d703e6546d6c4298fa3a168b2ea48f09c73931ee9eb061ee36f98e2e4","match":true}],"failure":null,"expectedDtoSha256":"82712c8d703e6546d6c4298fa3a168b2ea48f09c73931ee9eb061ee36f98e2e4","acceptance":false,"originalLocalTimeoutCauseProved":false},"commandLogPrefixBase64":"eyJzdGF0dXMiOiJwYXNzZWQiLCJyZXF1ZXN0cyI6MywiZXhwZWN0ZWREdG9TaGEyNTYiOiI4MjcxMmM4ZDcwM2U2NTQ2ZDZjNDI5OGZhM2ExNjhiMmVhNDhmMDljNzM5MzFlZTllYjA2MWVlMzZmOThlMmU0IiwiYWNjZXB0YW5jZSI6ZmFsc2V9Cg==","responseExcerpts":{"configuration-body.bin":{"bytes":11532,"sha256":"82712c8d703e6546d6c4298fa3a168b2ea48f09c73931ee9eb061ee36f98e2e4","prefixBase64":"eyJjb250cmFjdFZlcnNpb24iOiIxLjAuMCIsInNjaGVtYVZlcnNpb24iOiIxIiwicHJvdmlkZXIiOiJsb2NhbC12ZWhpY2xlLWV2aWRlbmNlIiwicHJvdmlkZXJWZXJzaW9uIjoiMSIsInN0YXR1cyI6InBhcnRpYWwiLCJyZXF1ZXN0ZWQiOnsia2luZCI6ImNvbmZpZ3VyYXRpb24iLCJpZCI6Ik1sQkNRenBHUlZCTlNTeFFNRE13TUN4VE1ERkRRaXhUTURGRFJTeFRNREZFUml4VE1ERklReXhUTURJek1DeFRNREpRUVN4VE1ESlVOQ3hUTURKVVFpeFRNREpXUWl4VE1ESldSQ3hUTURKV1RDeFRNRE13TWl4VE1ETXpRaXhUTUROTk1peFRNRE5OUml4VE1EUXlNQ3hUTURReU9DeFRNRFF6TVN4VE1EUTVNU3hUTURRNU15eFRNRFE1TkN4VE1EUkhVU3hUTURSTlF5eFRNRFJWVWl4VE1EVXpOQ3hUTURVME5DeFRNRFUxTWl4VE1EVkJReXhUTURWQlVTeFRNRFZFUVN4VE1EVkVReXhUTURWRVRTeFRNRFkxTkN4VE1EWTNOaXhUTURaQlJTeFRNRFpCUml4VE1EWkJTeXhUTURaRE5DeFRNRFpEVUN4VE1EWlFRU3hUTURaVk1peFRNRFpXUWl4VE1EWlhReXhUTURjd05DeFRNRGN4TlN4VE1EYzFOQ3hUTURjMk1DeFRNRGMzTlN4VE1EZE5WU3hUTURneE1peFRNRGcxTUN4VE1EZzFNeXhUTURnNE1DeFRNRGhMUVN4VE1EaFNNeXhUTURoU09TeFRNRGhUVFN4VE1EaFVSaXhUTURoVVJ5eFRNRGhYUkN4VE1EaFhUU3hUTURreU5RPT0ifSwicmVzb2x2ZWQiOnsia2luZCI6ImNvbmZpZ3VyYXRpb24iLCJpZCI6Ik1sQkNRenBHUlZCTlNTeFFNRE13TUN4VE1ERkRRaXhUTURGRFJTeFRNREZFUml4VE1ERklReXhUTURJek1DeFRNREpRUVN4VE1ESlVOQ3hUTURKVVFpeFRNREpXUWl4VE1ESldSQ3hUTURKV1RDeFRNRE13TWl4VE1ETXpRaXhUTUROTk1peFRNRE5OUml4VE1EUXlNQ3hUTURReU9DeFRNRFF6TVN4VE1EUTVNU3hUTURRNU15eFRNRFE1TkN4VE1EUkhVU3hUTURSTlF5eFRNRFJWVWl4VE1EVXpOQ3hUTURVME5DeFRNRFUxTWl4VE1EVkJReXhUTURWQlVTeFRNRFZFUVN4VE1EVkVReXhUTURWRVRTeFRNRFkxTkN4VE1EWTNOaXhUTURaQlJTeFRNRFpCUml4VE1EWkJTeXhUTURaRE5DeFRNRFpEVUN4VE1EWlFRU3hUTURaVk1peFRNRFpXUWl4VE1EWlhReXhUTURjd05DeFRNRGN4TlN4VE1EYzFOQ3hUTURjMk1DeFRNRGMzTlN4VE1EZE5WU3hUTURneE1peFRNRGcxTUN4VE1EZzFNeXhUTURnNE1DeFRNRGhMUVN4VE1EaFNNeXhUTURoU09TeFRNRGhUVFN4VE1EaFVSaXhUTURoVVJ5eFRNRGhYUkN4VE1EaFhUU3hUTURreU5RPT0iLCJjb25maWd1cmF0aW9uSWQiOiJNbEJDUXpwR1JWQk5TU3hRTURNd01DeFRNREZEUWl4VE1ERkRSU3hUTURGRVJpeFRNREZJUXl4VE1ESXpNQ3hUTURKUVFTeFRNREpVTkN4VE1ESlVRaXhUTURKV1FpeFRNREpXUkN4VE1ESldUQ3hUTURNd01peFRNRE16UWl4VE1ETk5NaXhUTUROTlJpeFRNRFF5TUN4VE1EUXlPQ3hUTURRek1TeFRNRFE1TVN4VE1EUTVNeXhUTURRNU5DeFRNRFJIVVN4VE1EUk5ReXhUTURSVlVpeFRNRFV6TkN4VE1EVTBOQ3hUTURVMU1peFRNRFZCUXl4VE1EVkJVU3hUTURWRVFTeFRNRFZFUXl4VE1EVkVUU3hUTURZMU5DeFRNRFkzTml4VE1EWkJSU3hUTURaQlJpeFRNRFpCU3l4VE1EWkROQ3hUTURaRFVDeFRNRFpRUVN4VE1EWlZNaXhUTURaV1FpeFRNRFpYUXl4VE1EY3dOQ3hUTURjeE5TeFRNRGMxTkN4VE1EYzJNQ3hUTURjM05TeFRNRGROVlN4VE1EZ3hNaXhUTURnMU1DeFRNRGcxTXl4VE1EZzRNQ3hUTURoTFFTeFRNRGhTTXl4VE1EaFNPU3hUTURoVFRTeFRNRGhVUml4VE1EaFVSeXhUTURoWFJDeFRNRGhYVFN4VE1Ea3lOUT09In0sImlkZW50aXR5Ijp7ImtpbmQiOiJjb25maWd1cmF0aW9uIiwiaWRlbnRpdHlLaW5kIjoic3ludGhldGljIiwiY29uZmlndXJhdGlvbklkIjoiTWxCQ1F6cEdSVkJOU1N4UU1ETXdNQ3hUTURGRFFpeFRNREZEUlN4VE1ERkVSaXhUTURGSVF5eFRNREl6TUN4VE1ESlFRU3hUTURKVU5DeFRNREpVUWl4VE1ESldRaXhUTURKV1JDeFRNREpXVEN4VE1ETXdNaXhUTURNelFpeFRNRE5OTWl4VE1ETk5SaXhUTURReU1DeFRNRFF5T0N4VE1EUXpNU3hUTURRNU0=","prefixBytes":2048},"configuration-headers.json":{"bytes":621,"sha256":"c9a60ae10fca30d841a10d7bd837eacd3818891f04530261483801444bb62d44","prefixBase64":"W1siYWNjZXNzLWNvbnRyb2wtYWxsb3ctaGVhZGVycyIsIkNvbnRlbnQtVHlwZSwgWC1BY2Nlc3MtS2V5Il0sWyJhY2Nlc3MtY29udHJvbC1hbGxvdy1tZXRob2RzIiwiR0VULCBQT1NULCBPUFRJT05TIl0sWyJhY2Nlc3MtY29udHJvbC1hbGxvdy1vcmlnaW4iLCJudWxsIl0sWyJhY2Nlc3MtY29udHJvbC1tYXgtYWdlIiwiODY0MDAiXSxbImFsdC1zdmMiLCJoMz1cIjo0NDNcIjsgbWE9ODY0MDAiXSxbImNhY2hlLWNvbnRyb2wiLCJuby1zdG9yZSJdLFsiY2YtY2FjaGUtc3RhdHVzIiwiRFlOQU1JQyJdLFsiY2YtcmF5IiwiYTU2YzU5Mjg3YzEzMjljNi1NU1AiXSxbImNvbm5lY3Rpb24iLCJrZWVwLWFsaXZlIl0sWyJjb250ZW50LWVuY29kaW5nIiwiYnIiXSxbImNvbnRlbnQtbGVuZ3RoIiwiMjI5MCJdLFsiY29udGVudC10eXBlIiwiYXBwbGljYXRpb24vanNvbjsgY2hhcnNldD11dGYtOCJdLFsiZGF0ZSIsIlNhdCwgMDcgTm92IDIwMjYgMTI6MzA6MTYgR01UIl0sWyJybmRyLWlkIiwiZDdjZjlmODktOGEyNC00OGQyIl0sWyJzZXJ2ZXIiLCJjbG91ZGZsYXJlIl0sWyJ2YXJ5IiwiT3JpZ2luLCBBY2NlcHQtRW5jb2RpbmciXSxbIngtcmVuZGVyLW9yaWdpbi1zZXJ2ZXIiLCJSZW5kZXIiXV0K","prefixBytes":621},"health-body.bin":{"bytes":11,"sha256":"4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93","prefixBase64":"eyJvayI6dHJ1ZX0=","prefixBytes":11},"health-headers.json":{"bytes":579,"sha256":"ad95f7b65edf11542abaa844c11032184aec8c1ba91e0ddfcc2da0b75af32f72","prefixBase64":"W1siYWNjZXNzLWNvbnRyb2wtYWxsb3ctaGVhZGVycyIsIkNvbnRlbnQtVHlwZSwgWC1BY2Nlc3MtS2V5Il0sWyJhY2Nlc3MtY29udHJvbC1hbGxvdy1tZXRob2RzIiwiR0VULCBQT1NULCBPUFRJT05TIl0sWyJhY2Nlc3MtY29udHJvbC1hbGxvdy1vcmlnaW4iLCIqIl0sWyJhY2Nlc3MtY29udHJvbC1tYXgtYWdlIiwiODY0MDAiXSxbImFsdC1zdmMiLCJoMz1cIjo0NDNcIjsgbWE9ODY0MDAiXSxbImNmLWNhY2hlLXN0YXR1cyIsIkRZTkFNSUMiXSxbImNmLXJheSIsImE1NmM1OTI2OWUwYjI5YzYtTVNQIl0sWyJjb25uZWN0aW9uIiwia2VlcC1hbGl2ZSJdLFsiY29udGVudC1lbmNvZGluZyIsImJyIl0sWyJjb250ZW50LWxlbmd0aCIsIjE1Il0sWyJjb250ZW50LXR5cGUiLCJhcHBsaWNhdGlvbi9qc29uOyBjaGFyc2V0PXV0Zi04Il0sWyJkYXRlIiwiU2F0LCAwNyBOb3YgMjAyNiAxMjozMDoxNiBHTVQiXSxbInJuZHItaWQiLCIxYjA0M2I4Mi04ZGFlLTQ0ODgiXSxbInNlcnZlciIsImNsb3VkZmxhcmUiXSxbInZhcnkiLCJBY2NlcHQtRW5jb2RpbmciXSxbIngtcmVuZGVyLW9yaWdpbi1zZXJ2ZXIiLCJSZW5kZXIiXV0K","prefixBytes":579},"readiness-body.bin":{"bytes":169,"sha256":"57c493087f05ed96cd3646918c2dfac8c37695163dc35d1cbefb3200b1a2682b","prefixBase64":"eyJvayI6dHJ1ZSwidmVoaWNsZUV2aWRlbmNlIjp7InN0YXR1cyI6InJlYWR5IiwiZWxhcHNlZE1zIjo2NzYwOTUsIm1hbmlmZXN0RGlnZXN0IjoiM2IyYTg4M2NkODVhMmQwYzNmODllMzZlMTQ1NjFkMTU5OTZhZmZlYzk3MmUxOWJiYmEwZDk2MmNmNzljY2UzMCIsInJlY292ZXJlZCI6ZmFsc2V9fQ==","prefixBytes":169},"readiness-headers.json":{"bytes":580,"sha256":"4756b39426c8ec0f7c124a95474ad209b14115610aa6a6ee1c966f7e18ea3093","prefixBase64":"W1siYWNjZXNzLWNvbnRyb2wtYWxsb3ctaGVhZGVycyIsIkNvbnRlbnQtVHlwZSwgWC1BY2Nlc3MtS2V5Il0sWyJhY2Nlc3MtY29udHJvbC1hbGxvdy1tZXRob2RzIiwiR0VULCBQT1NULCBPUFRJT05TIl0sWyJhY2Nlc3MtY29udHJvbC1hbGxvdy1vcmlnaW4iLCIqIl0sWyJhY2Nlc3MtY29udHJvbC1tYXgtYWdlIiwiODY0MDAiXSxbImFsdC1zdmMiLCJoMz1cIjo0NDNcIjsgbWE9ODY0MDAiXSxbImNmLWNhY2hlLXN0YXR1cyIsIkRZTkFNSUMiXSxbImNmLXJheSIsImE1NmM1OTI3OTk1MzI5YzYtTVNQIl0sWyJjb25uZWN0aW9uIiwia2VlcC1hbGl2ZSJdLFsiY29udGVudC1lbmNvZGluZyIsImJyIl0sWyJjb250ZW50LWxlbmd0aCIsIjEzNiJdLFsiY29udGVudC10eXBlIiwiYXBwbGljYXRpb24vanNvbjsgY2hhcnNldD11dGYtOCJdLFsiZGF0ZSIsIlNhdCwgMDcgTm92IDIwMjYgMTI6MzA6MTYgR01UIl0sWyJybmRyLWlkIiwiNTdlMzcwMjgtZTUzZi00YjcwIl0sWyJzZXJ2ZXIiLCJjbG91ZGZsYXJlIl0sWyJ2YXJ5IiwiQWNjZXB0LUVuY29kaW5nIl0sWyJ4LXJlbmRlci1vcmlnaW4tc2VydmVyIiwiUmVuZGVyIl1dCg==","prefixBytes":580}}}}
+linux-live-three-get	One bounded Linux health readiness and exact first DTO observation	2026-11-07T12:30:16.8035853Z {"cleanup":{"rc":0,"elapsedSeconds":0.8342272380000004,"scratchAbsent":true,"groupsAbsent":true,"removedScratchPeakBytes":16946,"peakGroupRssBytes":72339456,"peakSupervisorRssBytes":18059264,"aggregateRssUpperBoundBytes":90398720,"retainedArchive":false,"retainedLogBytesBeforeCleanupLine":9852,"leftovers":[]}}
+linux-live-three-get	Post Run actions/setup-node@v4	﻿2026-11-07T12:30:16.8106628Z Post job cleanup.
+linux-live-three-get	Post Run actions/setup-node@v4	2026-11-07T12:30:16.8924182Z (node:2245) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+linux-live-three-get	Post Run actions/setup-node@v4	2026-11-07T12:30:16.8924668Z (Use `node --trace-deprecation ...` to show where the warning was created)
+linux-live-three-get	Post Run actions/checkout@v4	﻿2026-11-07T12:30:16.9080007Z Post job cleanup.
+linux-live-three-get	Post Run actions/checkout@v4	2026-11-07T12:30:16.9660604Z [command]/usr/bin/git version
+linux-live-three-get	Post Run actions/checkout@v4	2026-11-07T12:30:16.9677970Z git version 2.56.0
+linux-live-three-get	Post Run actions/checkout@v4	2026-11-07T12:30:16.9702522Z Temporarily overriding HOME='/home/runner/work/_temp/9324104d-919f-40a7-b3c9-c09fc940eb59' before making global git config changes
+linux-live-three-get	Post Run actions/checkout@v4	2026-11-07T12:30:16.9703166Z Adding repository directory to the temporary git global config as a safe directory
+linux-live-three-get	Post Run actions/checkout@v4	2026-11-07T12:30:16.9706189Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/vehicle-matcher/vehicle-matcher
+linux-live-three-get	Post Run actions/checkout@v4	2026-11-07T12:30:16.9745267Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+linux-live-three-get	Post Run actions/checkout@v4	2026-11-07T12:30:16.9774282Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+linux-live-three-get	Post Run actions/checkout@v4	2026-11-07T12:30:16.9983022Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+linux-live-three-get	Post Run actions/checkout@v4	2026-11-07T12:30:17.0012279Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+linux-live-three-get	Post Run actions/checkout@v4	2026-11-07T12:30:17.0227721Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+linux-live-three-get	Post Run actions/checkout@v4	2026-11-07T12:30:17.0268382Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+linux-live-three-get	Complete job	﻿2026-11-07T12:30:17.0577947Z Cleaning up orphan processes
+linux-live-three-get	Complete job	2026-11-07T12:30:17.0819486Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

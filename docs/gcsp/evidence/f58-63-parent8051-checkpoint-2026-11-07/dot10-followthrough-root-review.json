@@ -1,0 +1,10 @@
+{
+  "reviewedAt": "2026-11-07T06:20:20.573408+00:00",
+  "planSha256": "165e521911790be12e8f435ea9363958bc2cf76dcf84fc6260a1a1ec00f1a913",
+  "checks": 379,
+  "codeReview": "pass; exact26assets, localfull4668evidence reuse only after byte/code/runtime equality; fiveactual boundarycases; fournewintegrityedges; additiveordinarytransaction preserves oldversions/inventory/identities",
+  "securityReview": "pass; anonymous exactGitHubassetallowlist/redirectbound/zeroauth, sourceegressblocked locally, rootordinarymutation separatelygranted; no native/live/sourcecalls",
+  "resourceOwnership": "parent manifest covers full outputroot, retainedstore/cache from firstwrite; cleanup copiedinputs afterordinarycompletion and retain receipts",
+  "originalConsumerFailures": 1313,
+  "acceptance": false
+}

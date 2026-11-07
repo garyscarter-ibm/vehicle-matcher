@@ -1,0 +1,26 @@
+{
+  "version": "fleet-known-seed-execution.v1",
+  "run": "fucq58-20261105-known-seed-refresh",
+  "startedAt": "2026-11-05T16:29:12.117Z",
+  "planSha256": "2b40bfaa113e7930165bbd18c3d940a19f46f31ac117668250cdc215ea4688ed",
+  "fileSha256": {
+    "qualification-client.mjs": "d99f511679c747cd4635a2df36402ad95df11d32d37c56fded4b6875cc4eaea8",
+    "qualification.mjs": "c5fd355259c610435055a2934dd2357502c442768c5f6bcc13b0ffdc1101d41c",
+    "qualification.test.mjs": "27f79407113cbdecc8bf3be95381c8ded5c945970901cf76bb1622895583efaa"
+  },
+  "inputs": {
+    "docs/gcsp/evidence/fucq-58/full-model-selector-2026-11-05/evidence/full-model-selector.mjs": "f3accdd334a64d9c0eabcfde35a4b26d81dba64fbe6a48558f2daab8f3032b13",
+    "docs/gcsp/evidence/fucq-58/full-model-selector-2026-11-05/evidence/full-model-selector.test.mjs": "e7bb479dcc76f122207359e7ac7d43b0e2245852fb3f125d89985d0c86b6cb16",
+    "docs/gcsp/evidence/fucq-58/full-model-selector-2026-11-05/evidence/selection.json": "ae259c7a58bfc62576a3c68c5d154584673a22f2b39ab76e2b512a45fa6ae386",
+    "docs/gcsp/evidence/fucq-58/full-model-selector-2026-11-05/proposed-next-live-plan.json": "9788a53fc825464ca407b01e9731fd248fa16a24e734f3d87138dc6309e982d3",
+    "docs/gcsp/evidence/fucq-58/steering-diagnostic-2026-11-05/evidence/model-context-projection.mjs": "5b473d524015b4f148b1125ceeb68f3543fdc88efbc29b359a91f7e9a0d769e4",
+    "docs/gcsp/evidence/fucq-58/steering-diagnostic-2026-11-05/evidence/model-context-projection.test.mjs": "f68af5d37763b5651a159c78e5a520147e0d48df4111284a93494bae7fae70e6",
+    "scripts/gcsp/fleet-plan.mjs": "9fd2dbd4bcae887c5e9d9e6b419519b68dada14cc98c9b1aa2b2e1e36b80afe2",
+    "server/data/gcsp/vehicle-evidence/fleet-plan.json": "7eee9fbc7636d61e83fd93192f1003fac0f711233f0d459b372fabdec3547b0e"
+  },
+  "authority": "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md",
+  "requestsAdmitted": 4,
+  "concurrency": 1,
+  "retries": 0,
+  "readOnly": true
+}

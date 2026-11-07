@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "f62-linux-live-diagnostic-result.v1",
+  "status": "passed-scoped",
+  "runId": 42372746118,
+  "attempt": 1,
+  "event": "push",
+  "integrationHead": "13144e31f1b0b5db47e0b189e6d14784abdaa055",
+  "diagnosticId": "fleet-dot12-linux-live-20261107-2",
+  "planSha256": "627a4704d1a03f2eb944ab99f01993a11883fbb7175f50f590470a63d3f8e043",
+  "completedAt": "2026-11-07T12:30:19Z",
+  "targetDeployment": {
+    "code": "c87b6f075c4e79bee93b71e1965ad23310ab8473",
+    "githubDeploymentId": 7620961777,
+    "actualDeploymentId": "dep-dbnhane8bjmc73a7v5qg",
+    "state": "success",
+    "createdAt": "2026-11-07T12:11:09Z",
+    "stateCreatedAt": "2026-11-07T12:11:10Z",
+    "completedAt": "2026-11-07T12:28:04Z",
+    "evidenceFile": "deployment-success.json",
+    "evidenceSha256": "bcef1530370d5a4316392f7b856e731d2cc8b848d772a9d65de70a898a2d4c17",
+    "targetEvidenceFile": "deployment-target.json",
+    "targetEvidenceSha256": "c4856c264b45f046663ea031cae89a85e81993981a85f14b8fb5a4d69af74a43",
+    "githubDeploymentStatusId": 21650333270,
+    "observedAt": "2026-11-07T12:28:20Z"
+  },
+  "actualManifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "configurationDtoSha256": "82712c8d703e6546d6c4298fa3a168b2ea48f09c73931ee9eb061ee36f98e2e4",
+  "configurationMatchesPriorOfflineDto": true,
+  "newGETs": 3,
+  "localApplicationGETs": 0,
+  "remoteCleanup": {
+    "rc": 0,
+    "elapsedSeconds": 0.8342272380000004,
+    "scratchAbsent": true,
+    "groupsAbsent": true,
+    "removedScratchPeakBytes": 16946,
+    "peakGroupRssBytes": 72339456,
+    "peakSupervisorRssBytes": 18059264,
+    "aggregateRssUpperBoundBytes": 90398720,
+    "retainedArchive": false,
+    "retainedLogBytesBeforeCleanupLine": 9852,
+    "leftovers": []
+  },
+  "retainedLog": {
+    "path": "job.log",
+    "bytes": 31757,
+    "sha256": "af10f56107f0ec494349b3dd1f7693e5aee2822d37f824c920570ee5816760fe"
+  },
+  "responseRetention": "Full health/readiness bodies and sanitized headers; first 2048 bytes of 11532-byte configuration body plus full original body SHA; no reconstruction of omitted bytes.",
+  "acceptance": false,
+  "done": false,
+  "fullCorpusConsumerReplay": false,
+  "priorKnownConsumerFailures": 2707,
+  "originalLocalTimeoutCauseProved": false,
+  "localResourceReceipt": {
+    "scratchCreated": false,
+    "removedScratchBytes": 0,
+    "ownedChildren": 0,
+    "archives": 0,
+    "compatibilityExceptions": [],
+    "leftovers": []
+  },
+  "limitations": [
+    "One exact first configuration from .12; this does not prove all 10002 references or full current acceptance.",
+    "Historical timeout and .10 mismatch receipts remain preserved."
+  ]
+}

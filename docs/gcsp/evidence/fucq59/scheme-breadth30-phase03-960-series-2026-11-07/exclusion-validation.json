@@ -1,0 +1,177 @@
+{
+  "schemaVersion": "breadth30-phase03-exclusions.v1",
+  "time": "2026-11-07T06:39:11.619502+00:00",
+  "scope": "read-only exact failed-whole-template and fullF70 metadata proof; zero source/test replay",
+  "sourceTraffic": 0,
+  "scratchCreated": false,
+  "sourceGrant": false,
+  "preparedSelectionPin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth30-phase03-candidates960-2026-11-07/candidate-selection.json",
+    "sha256": "c23d9c84875f6631aad0fbff8304ada2faa99359ce6b528f147fafcd577bcafe"
+  },
+  "priorExclusionsPin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth30-phase02-960-series-2026-11-07/exclusion-validation.json",
+    "sha256": "c77901874c7d8a73e419c941953ae05f2cc1b9e4f85ce39f822f940583e60466"
+  },
+  "fullF70Pin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-optional-axis-suffix3623-2026-11-07/series-plan.json",
+    "sha256": "148547bc31b0b139db77c3be9fc159b0d7e2e4e12ea2f0239d57f72afb79dce7",
+    "requests": 3623
+  },
+  "fullF70RequestCount": 3623,
+  "fullF70Overlap": 0,
+  "excludedWholeTemplates": 5,
+  "excludedRequestCount": 40,
+  "exclusions": [
+    {
+      "label": "breadth01-session080",
+      "directory": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase01-960-20261107-once/sessions/session080",
+      "planPin": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase01-960-20261107-once/sessions/session080/collection-plan.json",
+        "sha256": "daebb091134f3e2dd8139c3c6fed725003906b2afca07614ba0f16114e6c1adf"
+      },
+      "executionPin": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase01-960-20261107-once/sessions/session080/execution-plan.json",
+        "sha256": "9887247afaa35dfe0cf8e1f3748b3ed0bd1b1948f25e8c0de3a275702121c33c"
+      },
+      "receiptPin": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase01-960-20261107-once/sessions/session080/receipt.json",
+        "sha256": "7cf584c12a0dcf9731c949e8abc3d67b24e04d752b5756683c166607a9ac0c2e"
+      },
+      "reason": "source-failure",
+      "status": "incomplete",
+      "newlyAccepted": 0,
+      "actualAttempts": 2,
+      "solverRequests": 0,
+      "conservativelyExcludedRequestDigests": [
+        "97e592e36054a0759f153be4b8509cf43aecfb48315b2119ef8af877a4ca0888",
+        "2f011273651fd2a81f7c82aef4785b933844bdd045ece38d3e5534dee99637dd",
+        "c3779cf613969c695d9d3e64dcb70f106384e9cb85acd0f6d5d298c36fc5671a",
+        "bb33ca16c4d58ea7b7addc1b69ef994f08e886863b01cbb45962cab4945290f2",
+        "5442fd5843136f7bcc96a2a97220428072f5644ce5f3a4f425a5b9b6b763ad42",
+        "91c86cc7caa6c31007b6946e55dcc7a7e99a1fa90a59f5cbf4238375e403c673",
+        "b690a5b2d0e92078721c164fb2db126c14bfc99072ae01e47821ce95367ab962",
+        "908aceaccd0edb03013861e986721a7fd4ff2b220856295d11634616de947683"
+      ],
+      "overlapWithNext960": 0
+    },
+    {
+      "label": "F70-suffix2815-session020",
+      "directory": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session020",
+      "planPin": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session020/collection-plan.json",
+        "sha256": "47e51ff01d873837562cc31fc12e37f2dcd373e7e9e22927214ff84b45f3a2b8"
+      },
+      "executionPin": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session020/execution-plan.json",
+        "sha256": "a326dd6f878224bdf2d0a46b0766327f24fb3a6e6cd204e83953ba5641caa742"
+      },
+      "receiptPin": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session020/receipt.json",
+        "sha256": "89721e62c9953b243e0b0a46877159649f6e3d6555af0c8cb4ce7141526c5854"
+      },
+      "reason": "source-failure",
+      "status": "incomplete",
+      "newlyAccepted": 2,
+      "actualAttempts": 8,
+      "solverRequests": 4,
+      "conservativelyExcludedRequestDigests": [
+        "51a0d91ec22b91ae82450cb0918efcd7e64e85f7fc0ae539d9d985599a24dec6",
+        "51e79130d40ba736a91512cee596b328239aa1036dff71a8743cbb5d9e6c5aaa",
+        "51f3c6751d739ac91a51cfad83b34080bff2146de41f37491765e3499a4658af",
+        "51fd6885561aaf0dd2c5454195b9fe6098282e26a30a41b8515ef2834c29aca0",
+        "52033d6a3b71531a559d36a9e7b955574822b5694ad4eee76854031ed8c322a2",
+        "520f2fd082f4f0724e6354b8d3251b0f7dd6980e1268d966afdacaed740f488b",
+        "52798ac13aaed47f545b95104b06643e538195749f1c4c4da1949dff4e6d4fc8",
+        "528417c433d007e612be9624e8a8118fb62591e92c1b2f87105b3189af1933a3"
+      ],
+      "overlapWithNext960": 0
+    },
+    {
+      "label": "F70-suffix3623-session101",
+      "directory": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session101",
+      "planPin": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session101/collection-plan.json",
+        "sha256": "3b1e08e762c6481cf8f095b01cc96a8f6d64b67f9fc875131fa10b5fed446355"
+      },
+      "executionPin": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session101/execution-plan.json",
+        "sha256": "0798446888cd64727888eff38cc1ec05f588538995f07f045dafa1a7c3f26a06"
+      },
+      "receiptPin": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session101/receipt.json",
+        "sha256": "280be712b9efa6ace678c02f9aa485a7b36557e7b9286aa949d1823916036fa0"
+      },
+      "reason": "source-failure",
+      "status": "incomplete",
+      "newlyAccepted": 1,
+      "actualAttempts": 6,
+      "solverRequests": 2,
+      "conservativelyExcludedRequestDigests": [
+        "a3cdc6c8e85dd018ed0854e9ac35c2b75530e2be051174dbca4cb1e7065b314f",
+        "a3ecc6b4ba56f1a93f85fc4d9044efd8c11f1956f678225bebc1dd74aa0a3f50",
+        "a41fed5f5d41a2875b6ecf44616006dcd9e0c2fbfdd43c77cd6937a93214e918",
+        "a46c0dceac9e7e88ed2f6ecee245012b80e2d27012f559a8fee80b98e6fa8670",
+        "a47d69085353ac038d5519b2905de242fbf556c7a6865d364d2833bef6b19c0f",
+        "a4869d35ded4e925532976376caa059d9293c68622ffcc6661d79d9fd984b28a",
+        "a4c015fc91dbf4d41feedc394d8f7c618612f416ba11448f2e0d6d9d71f27a86",
+        "a51e61200dc69de517560f4087f222417c39f5e412d81cb9c6f075ad2543d587"
+      ],
+      "overlapWithNext960": 0
+    },
+    {
+      "label": "breadth02-session012",
+      "auditPin": {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth30-phase02-960-series-2026-11-07/actual-interruption-audit.json",
+        "sha256": "5f7a5614f53828bd3b94a5ef5eafe52d4f6cc43306610dfe2fba43917d2139ad"
+      },
+      "receiptPin": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02-960-20261107-once/sessions/session012/receipt.json",
+        "sha256": "0ae3046af1377e92f986d76002a064270377f3a9b6c828396208c5ef46a14a1f"
+      },
+      "reason": "operation-timeout",
+      "actualAttempts": 11,
+      "solverRequests": 7,
+      "rawAdmissionsWithheld": 5,
+      "sourceCapacityCredit": 0,
+      "conservativelyExcludedRequestDigests": [
+        "efe66d3b589b5fccc1d295be2931bd289ef59dfef26f462f46f5a145559efaf4",
+        "d093a9edd9f608506240f84814ee12c85e38c39e7f2cde242bef2acdac595986",
+        "04791edb908ee49dcf1cdfcc6ea7decc8a20ee9e32acbd2522f5fc01c4b3aed1",
+        "766543acda716e276195eb8ee1790717cdd03e63408dd0cbc1bf3fd6959f1edf",
+        "d9c6be34c6431e42553e51610cb21744c91a83eebe03c80aa78908caf79a590e",
+        "cff4f6ec6c65f43ffd012572b312ca91512c6b1e8e88df29a7a5d79c6dd00715",
+        "ff93e5a6ed2d3de62b5d495c1b4b07b2579e1f5e4bd1a9fa97d7678863e6d184",
+        "fb474b264fe01297b55080071414f2eb1e6f7d024a4a17edd49b00b00a52673c"
+      ],
+      "overlapWithNext960": 0
+    },
+    {
+      "label": "breadth02c-session086-original218",
+      "auditPin": {
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth30-phase02c-864-series-2026-11-07/actual-interruption-audit.json",
+        "sha256": "6af7d6cffcac3b81c00b5958c5e105f84e0fe4c07a892bc82255bd8cae53eb2b"
+      },
+      "receiptPin": {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02c-864-20261107-once/sessions/session086/receipt.json",
+        "sha256": "4efb3ca40b7dbcb0ff7a03549341d47874895c7dfcc474e90edbc5e4ecb5cdfa"
+      },
+      "reason": "source-failure",
+      "actualAttempts": 11,
+      "solverRequests": 7,
+      "rawAdmissionsWithheld": 4,
+      "sourceCapacityCredit": 0,
+      "conservativelyExcludedRequestDigests": [
+        "45a53c02fa2e94c2b2d51cba5112790db87c152ec26bdbe60d323e69887798d6",
+        "0a5df7869b3bdf9a6248176e4d67c1bf944cf422e5f0a229fd8967f97d1aa6eb",
+        "02db4311fb3c60d652cfa2408cb618c01e605fe8266859c60c3456d3dae4bb8e",
+        "631b57fdf5d1320e405998fbbf5914213c9eadfe2022999cd32f8f992f69b5b8",
+        "ad6e8c001609125eea804034403810bc289693c950c3354d9580207a1b7cc4ef",
+        "b8789f0bcfed7463e283d4c8cf0269a1eba34b0e0471ed8aed6a5355af3e2972",
+        "78611beaa88aa949b1039b1a485f22e9b9edf3dc774f0c57b6a4a8fcdfcdf5eb",
+        "3e0a1cd7a133f4d76cf7c006ca48f791fb339799260342d8364e542a23f88ca9"
+      ],
+      "overlapWithNext960": 0
+    }
+  ]
+}

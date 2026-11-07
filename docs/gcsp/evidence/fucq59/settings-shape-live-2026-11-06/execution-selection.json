@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "f59-settings-execution-selection.v1",
+  "executable": true,
+  "selectedAt": "2026-11-06T14:48:23.585140+00:00",
+  "qualificationDate": "2026-11-06",
+  "producerRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+  "producerCommit": "5d2d3a2a12171314f636e07341060d682ac29bf4",
+  "remoteVerifiedCommit": "5d2d3a2a12171314f636e07341060d682ac29bf4",
+  "supervisorSha256": "b54db5af92313ee7b190dd8ef9bc0d96e9470b8ac6c9af4e1791f4352c7c775e",
+  "fileHashes": {
+    "diagnostic-plan.json": "951458bc15139afeaaa836a8c58e11bb0f0113a87ee73898147945d81c3b107c",
+    "run-settings.mjs": "0a83a709c886fa1297d412f23488c8fce7f8722df0c77e1d7f3259c0f237e9f8",
+    "execution-handoff.json": "11076d9b30b7e2f981049bcd5e87323f4e427ca80d3ffc0d64b7ecdcc5526900"
+  },
+  "reviews": {
+    "code": {
+      "verdict": "passed",
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/settings-shape-live-preparation-2026-11-06/fix1/reviews/code-round1.md",
+      "sha256": "96de2230577d2394f68cd9e2007ecb1e6f08e0cf5c9a52f594b0d16b4018de56",
+      "reviewedCommit": "521acf3335c4fc57abb6458d91a3944990eee3db",
+      "evidenceCommit": "5d2d3a2a12171314f636e07341060d682ac29bf4",
+      "reviewer": "Sam Sheepdog"
+    },
+    "security": {
+      "verdict": "passed",
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/settings-shape-live-preparation-2026-11-06/fix1/reviews/security-round1.md",
+      "sha256": "a1e4d481169d769cf48a082feb1b7e485cd2229ec6bd0f4471afd0fa3e9a2947",
+      "reviewedCommit": "521acf3335c4fc57abb6458d91a3944990eee3db",
+      "evidenceCommit": "5d2d3a2a12171314f636e07341060d682ac29bf4",
+      "reviewer": "launcher independent; Pugh no verdict"
+    }
+  },
+  "resourceToolSha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+  "gitToolSha256": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a",
+  "nodeRuntime": "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+  "runtimeSha256": "1ef99ea25fe70c9b67e7efe768ef8ee22148d3cabc703db6131b57aeb617d040",
+  "engineeringAllocation": {
+    "id": "f59-settings-shape-observation-20261106.v1",
+    "maxGetAttempts": 2,
+    "sequence": [
+      "page",
+      "settings"
+    ],
+    "concurrency": 1,
+    "retries": 0,
+    "requestCompleteTimeoutMs": 10000,
+    "persistedDeadlineMs": 30000,
+    "responseStopThresholdBytes": 1048576,
+    "aggregateStopThresholdBytes": 2097152,
+    "truthfulChunkOverrunAccounting": true,
+    "discovery": 0,
+    "options": 0,
+    "solver": 0,
+    "images": 0,
+    "browser": 0,
+    "writes": 0,
+    "sql": 0,
+    "credentialLookups": 0,
+    "rawRetention": 0,
+    "allAllocatedAttemptsConsumedOnEveryExit": true,
+    "historicalAllocationsRemainConsumed": true
+  },
+  "resourceSelection": {
+    "preflight": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/pass-1423/settings-source-execution-preflight.json",
+    "expectedScratchBytes": 2097152,
+    "expectedRssBytes": 201326592,
+    "expectedSeconds": 30,
+    "scratchLimitBytes": 67108864,
+    "rssLimitBytes": 402653184,
+    "supervisorSeconds": 120,
+    "workers": 1,
+    "finalizer": "pinned supervisor supervise_once establishes registration,owned absolute scratch and outside manifest before allocating scratch/process;short host reservation;handled termination;stop/join;remove scratch;verify owned token absence",
+    "retainedOutputRoot": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/observation",
+    "supervisionRoot": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/supervision",
+    "largeOutputExpected": false,
+    "compatibilityException": null
+  },
+  "scope": "Unqualified structural observation only; accepted 0/admission false/all74 pending. Strict success remains inconclusive and stops before discover transport. No permission request required under existing human source authority."
+}

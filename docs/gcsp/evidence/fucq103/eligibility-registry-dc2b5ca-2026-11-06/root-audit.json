@@ -1,0 +1,123 @@
+{
+  "at": "2026-11-06T07:06:01.206770+00:00",
+  "verdict": "PASS",
+  "checks": 2533,
+  "failures": [],
+  "run": "fucq103-backend-5e9d2fa62f674dca8ee608f71873038f",
+  "grant": "fucq103-eligibility-registry-dc2b5ca-0655",
+  "revision": "dc2b5ca06eb6fd7fc9f9d5996f4af47d70fab963",
+  "mode": "eligibility-registry",
+  "acceptedScope": "16 original positive source-derived registry adoption cases only",
+  "counts": {
+    "tests": 16,
+    "suites": 0,
+    "pass": 16,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "sourcePins": 219,
+  "dependencyPins": 251,
+  "executablePins": 8,
+  "physicalMembership": 307,
+  "resolverAbsences": 163,
+  "processRows": 754,
+  "groups": [
+    12723
+  ],
+  "ports": [
+    60791,
+    60794,
+    60796,
+    60798,
+    60803,
+    60807,
+    60809,
+    60813,
+    60817,
+    60821,
+    60823,
+    60825,
+    60828
+  ],
+  "scratchAbsent": "/private/tmp/test-stamp-shard-fedeb6edf2fa4762860a6ea70791fdd7",
+  "reservationAbsent": "fedeb6edf2fa4762860a6ea70791fdd7",
+  "ledgerRows": 0,
+  "ledgerSHA256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+  "probes": [
+    {
+      "command": [
+        "/bin/ps",
+        "-axo",
+        "pid=,ppid=,pgid=,lstart="
+      ],
+      "exit": 0,
+      "stdoutBytes": 35438,
+      "stderrBytes": 0,
+      "sha256": "763a7ddffbede9295462a95a0010f6646bffcc5bb08db26a8fc70ac2a9aae015"
+    },
+    {
+      "command": [
+        "/usr/sbin/lsof",
+        "-nP",
+        "-iTCP:60791",
+        "-iTCP:60794",
+        "-iTCP:60796",
+        "-iTCP:60798",
+        "-iTCP:60803",
+        "-iTCP:60807",
+        "-iTCP:60809",
+        "-iTCP:60813",
+        "-iTCP:60817",
+        "-iTCP:60821",
+        "-iTCP:60823",
+        "-iTCP:60825",
+        "-iTCP:60828",
+        "-sTCP:LISTEN",
+        "-Fpn"
+      ],
+      "exit": 1,
+      "stdoutBytes": 0,
+      "stderrBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "retainedIncludingFinalReceiptUpperBound": 147456,
+  "removedBytes": 4338401,
+  "leadReceipt": ".claude/test-runs/ownership/fucq103-registry-dc2b5ca-lead-2026-11-06.json",
+  "leadSHA256": "6fbb2aed1a71a4ffcb56afd9b0391fa899e59b5fbdfdd3c409d928b1cf1bf12d",
+  "originals": {
+    "summary": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-5e9d2fa62f674dca8ee608f71873038f-summary.json",
+      "bytes": 3340,
+      "sha256": "cec0dad931e480dbe57f64ba56c700f65ca7a2f6268b366b5e0b87147b66c40f"
+    },
+    "manifest": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-5e9d2fa62f674dca8ee608f71873038f-manifest.json",
+      "bytes": 2600,
+      "sha256": "5545464dc8f8f7f5d67a653c412ca4c7bee44e08e5f1dcb75fa121fa74f6b5e6"
+    },
+    "originalMergedLog": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-5e9d2fa62f674dca8ee608f71873038f/test.log",
+      "bytes": 2063,
+      "sha256": "32906aeba370862b074dfc00629b824163070ba1e4dd063782891b487e8c4936"
+    },
+    "checkpoint": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-5e9d2fa62f674dca8ee608f71873038f/checkpoint.json",
+      "bytes": 319,
+      "sha256": "07924af1ea68b51ac7295bdd76e8570431e5a99a25f0b2aa3384bf3692fcc7f1"
+    },
+    "impact": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/impact/edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9-eligibility-registry.json",
+      "bytes": 1305,
+      "sha256": "5715ddfd519e1d9f92fc2f13eae5e3a7f947d669fd21a270dec3a0958d4281f7"
+    }
+  },
+  "cleanupMutations": 0,
+  "ledgerWrites": 0,
+  "next": "Evidence-only publication permitted after PASS; no nextmode/grant/full-story acceptance.38 authored parser fixtures remain unexecuted.",
+  "priorReceipt": ".claude/test-runs/ownership/fucq103-registry16-root-0655.json",
+  "priorSHA256": "7dd0514adc2f887a3c0192b52026011962d174d1ae03786667ea24599abcdee7",
+  "correctedCheck": "Original root checker expected mode string inside minimal checkpoint. Exact immutable checkpoint is complete and binds original manifest+summary paths; actual mode remains bound by summary/chunk/grant. No source/harness/original evidence changed. Existing independently verified process/ledger/input observations retained."
+}

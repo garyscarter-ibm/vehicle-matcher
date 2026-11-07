@@ -1,0 +1,194 @@
+{
+  "schemaVersion": "f58-configuration-plan-qualification.v1",
+  "status": "scoped-contract-checks-passed",
+  "acceptanceClaim": false,
+  "baseCommit": "37ce3f6dcf3e2c5135620882a65876529ecd97e7",
+  "agents": [
+    {
+      "name": "Charlie Dog",
+      "requestedModel": "gpt-6.1-sol",
+      "requestedEffort": "high",
+      "selectedModel": "gpt-6.1-sol",
+      "selectedEffort": "high",
+      "runtimeVerified": false,
+      "fallback": null,
+      "descendants": 0
+    }
+  ],
+  "qualification": "reviewed-retained-configuration-plan",
+  "scope": "Explicit configuration-only retained metadata branch; legacy profile/pilot preserved",
+  "identity": {
+    "scripts/gcsp/fleet-plan.mjs": "9e7b204479bf8ab610215b05568815f74c504766df31ab5d0151fff8c0e38e47",
+    "server/test/gcsp-fleet-plan.test.js": "f5ad0d3eff6c025e8985fd05525ccb0a7793993136da8fb3694f6050f164df6d",
+    "server/data/gcsp/vehicle-evidence/fleet-configurations.v1.json": "e233930055d90a38043f80a0ddc8fd44898bf9c678411546e2bf8a81c317273b",
+    "server/data/gcsp/vehicle-evidence/fleet-configuration-evidence.v1.json": "055af52d56d47477239174e6b99ea2ef97dff3c450e36685eb39f03cbe22a8b7",
+    "server/data/gcsp/vehicle-evidence/fleet-plan.json": "2b9d9799722f9f012dcac75d0a08003bb382acf7d077f871546eeb8f85bb1f9b"
+  },
+  "selectedCommand": "node --max-old-space-size=256 --test --test-concurrency=1 server/test/gcsp-fleet-plan.test.js",
+  "selectorPlan": "test_stamp.py --affected HEAD --dry-run proposed npm test because no JavaScript plugin; reviewed and replaced with direct qualifier/CLI boundary checks. No full suite run.",
+  "phases": [
+    {
+      "phase": "red",
+      "counts": {
+        "tests": 16,
+        "pass": 14,
+        "fail": 2,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "exitCode": 1,
+      "seconds": 0.9751690410048468,
+      "peakRamBytes": 202784768,
+      "removedAllocationBytes": 3154208,
+      "scratchRoot": "/private/tmp/test-stamp-shard-ece1cc0f0fd24d89997944d86d1141b0",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "ownershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/configuration-only-qualification/red/ownership/ece1cc0f0fd24d89997944d86d1141b0.json"
+    },
+    {
+      "phase": "green",
+      "counts": {
+        "tests": 16,
+        "pass": 16,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "exitCode": 0,
+      "seconds": 1.005753999997978,
+      "peakRamBytes": 217923584,
+      "removedAllocationBytes": 3285280,
+      "scratchRoot": "/private/tmp/test-stamp-shard-e2f6adfe170c4a7bbcc4430c14c8fabc",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "ownershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/configuration-only-qualification/green/ownership/e2f6adfe170c4a7bbcc4430c14c8fabc.json"
+    },
+    {
+      "phase": "green2",
+      "counts": {
+        "tests": 17,
+        "pass": 16,
+        "fail": 1,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "exitCode": 1,
+      "seconds": 0.9644442919961875,
+      "peakRamBytes": 176521216,
+      "removedAllocationBytes": 3293472,
+      "scratchRoot": "/private/tmp/test-stamp-shard-93c5d1a33f494d23b7f25a2e1eb8b244",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "ownershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/configuration-only-qualification/green2/ownership/93c5d1a33f494d23b7f25a2e1eb8b244.json"
+    },
+    {
+      "phase": "green3",
+      "counts": {
+        "tests": 17,
+        "pass": 17,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "exitCode": 0,
+      "seconds": 1.2518504170002416,
+      "peakRamBytes": 212566016,
+      "removedAllocationBytes": 4333920,
+      "scratchRoot": "/private/tmp/test-stamp-shard-a8b075a99d324916bc773964a412cfda",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "ownershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/configuration-only-qualification/green3/ownership/a8b075a99d324916bc773964a412cfda.json"
+    },
+    {
+      "phase": "green4",
+      "counts": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 17,
+        "skipped": 0,
+        "tests": 17,
+        "todo": 0
+      },
+      "exitCode": 0,
+      "seconds": 0.9536877909995383,
+      "peakRamBytes": 197804032,
+      "removedAllocationBytes": 4333920,
+      "scratchRoot": "/private/tmp/test-stamp-shard-b7539d621b6e449ba5cc62f235a951d6",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "ownershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/configuration-only-qualification/green4/ownership/b7539d621b6e449ba5cc62f235a951d6.json"
+    }
+  ],
+  "redReason": "New schema refused by unchanged legacy retained schema; 14 legacy tests passed and two new assertions failed. No syntax/import failure.",
+  "intermediateFailure": "green2: shipped fixture confidence text differed; fixed fixture text, then full selected file passed in green3.",
+  "coverage": {
+    "functions": [
+      "accessories",
+      "add",
+      "configurationKey",
+      "date",
+      "destinationPath",
+      "equal",
+      "evidence",
+      "fields",
+      "integer",
+      "loadConfig",
+      "object",
+      "pilotDestination",
+      "privateRetention",
+      "qualifyConfigurationPlan",
+      "qualifyFleetPlan",
+      "qualifyPilotPlan",
+      "repositoryEvidence",
+      "retainedSchema",
+      "runCli",
+      "selection",
+      "strings",
+      "text",
+      "validateRun",
+      "write"
+    ],
+    "meaning": "Process-level V8 function execution observed during required validation; no per-test coverage attribution is available from this runner. Reviewed fixture/caller ownership supplements observation; this is not full branch coverage."
+  },
+  "sourceCalls": 0,
+  "rawSourceRevalidated": false,
+  "newCollectionAuthorised": false,
+  "dependenciesInstalledOrBorrowed": false,
+  "compatibilityException": null,
+  "leftovers": [],
+  "removedAllocationBytes": 18400800,
+  "impactMap": ".claude/test-runs/impact/f58-configuration-only-qualification.json",
+  "externalSupervisor": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/configuration-only-qualification/supervise.py",
+  "limits": [
+    "Exactly 10000 configurations from reviewed retained metadata, not 10000 VINs or orders.",
+    "No story acceptance, source re-admission, all-row revalidation, runtime activation or publication claimed.",
+    "Body and physical steering remain unknown; RL is a source literal. All five new source technical facts unknown; historical/exact supplements retain separate scope.",
+    "Two existing HEROFRONT associations only; no general exact-vehicle image fidelity."
+  ],
+  "reusedEvidenceReferences": [
+    "docs/gcsp/evidence/fucq60/exact10000-retained-coverage-2026-11-07/receipt.json",
+    "docs/gcsp/evidence/fucq60/exact10000-common-session-results-2026-11-07/final-receipt.json",
+    "docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/final-receipt.json"
+  ],
+  "finalValidation": {
+    "phase": "green4",
+    "reason": "Explicit resolver call-count assertion added; final selected test file rerun",
+    "counts": {
+      "cancelled": 0,
+      "fail": 0,
+      "pass": 17,
+      "skipped": 0,
+      "tests": 17,
+      "todo": 0
+    }
+  }
+}

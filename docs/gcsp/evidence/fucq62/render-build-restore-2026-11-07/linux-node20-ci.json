@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "gcsp-linux-build-proof.v1",
+  "observedAt": "2026-11-07T02:52:35.768137+00:00",
+  "repository": "garyscarter-ibm/vehicle-matcher",
+  "runId": 42331038232,
+  "jobId": 128277364732,
+  "commit": "9e60990cc25fd5c02b66ab01db93c15dad5cf65d",
+  "status": "success",
+  "environment": {
+    "os": "Ubuntu24.04.5",
+    "node": "v20.20.2",
+    "npm": "10.8.2"
+  },
+  "release": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+  "actual": {
+    "sourceConfigurations": 479,
+    "totalConfigurations": 480,
+    "vins": 1,
+    "images": 1,
+    "directChecks": 481,
+    "httpChecks": 481,
+    "errors": 0,
+    "offlineEgress": 0,
+    "buildHttpsCalls": 38
+  },
+  "execution": {
+    "start": "2026-11-07T02:48:47.9787108Z",
+    "summary": "2026-11-07T02:49:13.3128313Z",
+    "scratchKiB": 40916,
+    "scratchAbsentVerified": "2026-11-07T02:49:13.3259795Z",
+    "scratchRoot": "/home/runner/work/_temp/gcsp-fleet-42331038232-1",
+    "archiveRetained": false
+  },
+  "scope": "Scoped exact public-release restore, offline new-process restore and operator CLI audit on LinuxNode20. Original10k,modelbreadth and actual .5Render acceptance remain open. No repeat of identical local checks."
+}

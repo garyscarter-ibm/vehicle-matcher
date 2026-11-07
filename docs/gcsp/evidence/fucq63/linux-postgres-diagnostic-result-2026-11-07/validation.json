@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "f63-native-diagnostic-observation-validation.v1",
+  "status": "passed-scoped-static-observation-and-code-trace",
+  "runId": 42371231686,
+  "attempt": 1,
+  "runtimeHead": "b0e0ee6e71a1dd7f24c680d34d64967df7109646",
+  "topicBase": "58c14328936f53e1e8c5780975b62be78dbe228c",
+  "selectedChecks": [
+    "Exact terminal run/head/push/attempt/job identity",
+    "Complete returned proof matches exact emitted structured receipt",
+    "All three direct/HTTP/consumer observations and current-run/egress counts reconciled",
+    "Cleanup original/confirmation values matched exact log",
+    "Code-only producer/authority/adapter/scenario trace at exact runtime head",
+    "Q13/original five AC and existing F63 plan reviewed",
+    "JSON/file-size/whitespace/newline checks"
+  ],
+  "files": {
+    "README.md": {
+      "bytes": 7070,
+      "sha256": "0d530c1623249ecfa1fb35c0f3546f53779cf27d6002fe85b7e422a5d3a4c39d"
+    },
+    "events.json": {
+      "bytes": 10565,
+      "sha256": "569108e518fa5b628a194d7ee95f08cc4fd10d0f1a7089720e7a0ce4bf31a5ba"
+    },
+    "orders.json": {
+      "bytes": 3286,
+      "sha256": "a80d9aa7ddbdb1f5915ca9145c8c25f188e6973d3f6ccd6066736bb8d683feb0"
+    },
+    "proof-and-cleanup.log": {
+      "bytes": 10977,
+      "sha256": "b598eb9d14daaf00c395821e3d456199c117928baa2ad2c00b462169e25462d5"
+    },
+    "run.json": {
+      "bytes": 3418,
+      "sha256": "c4ad21d275ffd47795e8c79f7728326ad3b208c509507df59eecd3c3854338ce"
+    }
+  },
+  "diagnosisSourcePins": {
+    "server/gcsp/vehicle-evidence/identity-routing.js": "89d805c94c5f7a9dd026daae40e42167355822961d07597bf0cf69c45b649088",
+    "server/gcsp/vehicle-evidence/vin-allocation.js": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e",
+    "server/gcsp/vehicle-evidence/lookup-adapter.js": "3060d1707c254ff28ee45c7eedf16802aa57aed9b7d9a52a96206bf0cef395e3",
+    "server/gcsp/vehicle-evidence/provider-read.js": "e194fdeb9ff55faafaadd916b2e0ce34c9d8dce252dc37c3ce04aa8de77bb87b",
+    "server/gcsp/vehicle-evidence/application-vehicle-details.js": "64bb6073a90f8aca27766c314a08073ee9df320e2683122cd05b3c6fe49d808f",
+    "server/gcsp/vehicle-evidence/vehicle-lookup.js": "1184b7cc50565b180284e342183cca02e031a718a55f909b7980c34378a630e9",
+    "server/gcsp/fixtures/scenario-v1.js": "408f135c04ae909e717c30763073a3ea24a82c1e8643fabdea2888e22f1681f4",
+    "server/gcsp/clock/index.js": "98d9e3ad778ad9a38aa3fb5f96f5a68040544ba328b79e263e661ec42c442c45",
+    "docs/gcsp/evidence/fucq63/linux-postgres-proof-2026-11-07/orders.mjs": "f2b2b4b2b0c40c6c53ae9226c2657a672cd0261bacace31659573a3a09b0c0ea"
+  },
+  "diagnosis": {
+    "classification": "Medium proof-harness inventory-publication omission; ordinary scenario-reset production bug not demonstrated",
+    "cause": "Harness run versions lack full allocation snapshot required by stock identity routing; standalone publishStockOrders intentionally publishes only revision/digest metadata",
+    "distinctionFrom2707": "Stock classification fails before DTO/source citation validation; known empty mandatory-elements issue is configuration-success DTO validation",
+    "buildBlocker": false,
+    "nativeProof": false,
+    "rootDisposition": "Preserve immutable failure, then correct setup separately with existing repository transaction/CAS; no production or criteria change",
+    "jiraBugCreatedByObserver": false,
+    "jiraOwner": "root",
+    "inReviewReadiness": "Development review may proceed with actual failed consumer proof and existing deferred defects explicit; not acceptance or Done"
+  },
+  "localRuntimeTests": 0,
+  "localProofs": 0,
+  "localSql": 0,
+  "localInstalls": 0,
+  "localRestores": 0,
+  "workflowDispatches": 0,
+  "agentMerges": 0,
+  "scratchAllocatedBytes": 0,
+  "removedLocalAllocationBytes": 0,
+  "disposableLeftovers": [],
+  "remoteCleanupOutput": [
+    {
+      "cleanup": "passed",
+      "scratchAbsent": true,
+      "serviceAbsent": true,
+      "removedWorkingBytes": 925220226,
+      "issues": []
+    },
+    {
+      "cleanup": "passed",
+      "scratchAbsent": true,
+      "serviceAbsent": true,
+      "removedWorkingBytes": 0,
+      "issues": []
+    }
+  ],
+  "remoteCompatibilityException": "Bounded ephemeral CI PostgreSQL tmpfs and public restore/cache working data; full peak metrics not emitted",
+  "productionOrPacketChanges": [],
+  "knownDeferredConfiguredConsumerFailures": 2707,
+  "acceptance": false,
+  "agent": {
+    "name": "Charlie Dog",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "selectedModel": "gpt-6.1-sol",
+    "selectedEffort": "high",
+    "runtimeVerified": false,
+    "fallback": null,
+    "descendants": 0
+  }
+}

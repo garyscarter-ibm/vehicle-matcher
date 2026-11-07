@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "exact-source-parent-release.v1",
+  "time": "2026-11-07T04:55:47.850468+00:00",
+  "allocation": "scheme-breadth-six-model-options-root-20261107-once",
+  "planSha256": "f3c7736115e5dbce06f47e5afe51faf9a0bc40f0d916766d0412ebf3d4e3ba98",
+  "validationSha256": "83465eaf437f1d6ee7e9e179ca4485af4d7c43b21231c02d36d38aa5e25f03cb",
+  "sourceBasisSha256": "f3a1b2f3469453e1ee552a551d009d9748a62c66a9db87065c682ccac2ead64d",
+  "status": "released-once",
+  "sourceGET": 24,
+  "solver": 0,
+  "images": 0,
+  "contexts": [
+    "g21-t3mk",
+    "u11-x1m0",
+    "u11-ix1i",
+    "u10-x2ms",
+    "u10-ix24",
+    "g26e-i4mf"
+  ],
+  "limits": {
+    "workers": 1,
+    "scratchBytes": 67108864,
+    "hostRamBytes": 536870912,
+    "childRamBytes": 469762048
+  },
+  "seriesSeconds": 600,
+  "retainedExpectedBytes": 83886080,
+  "proof": "81code/input +2runtimepins independently reconciled; original dated model observations and exact URL plans retained",
+  "acceptance": false,
+  "capacityCredit": 0,
+  "cleanup": "each stage owns scratch+external manifest+group+host token; no dependency link; supervisor finalizer verifies absence; retained privacy-safe source summaries only",
+  "noReplay": "each context may execute once; actual failure remains spent"
+}

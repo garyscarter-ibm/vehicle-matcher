@@ -1,0 +1,24 @@
+✔ reviewed registry is immutable, digest checked and matches the exact canonical presenter definition (4.319625ms)
+✔ stored policy without step can reopen core clock; intentional adoption enables same-cookie presenter HTTP controls (1896.152625ms)
+✔ adoption rejects arbitrary input, stale versions, no-op and untrusted roles without changing policy (859.2505ms)
+✔ existing key values and provenance are preserved; shared-source publication binding leaves read view unauthorized (682.464791ms)
+✔ schema failure is atomic and accepted publication survives activation failure for original-command retry (762.691042ms)
+✔ consumer registry loads exact reviewed bytes, validates and deeply freezes all six bundles (3.693875ms)
+✔ offer-decline-reasons-v1: canonical same-provider adoption, ordinary activation and original retry preserve history and prices (925.001791ms)
+✔ offer-decline-reasons-v1: an existing tuned key retains its value and provenance (579.0155ms)
+✔ offer-followup-questions-v1: canonical same-provider adoption, ordinary activation and original retry preserve history and prices (904.757667ms)
+✔ offer-followup-questions-v1: an existing tuned key retains its value and provenance (706.857791ms)
+✔ fucq115-choice-model-v1: canonical same-provider adoption, ordinary activation and original retry preserve history and prices (870.0335ms)
+✔ fucq115-choice-model-v1: an existing tuned key retains its value and provenance (667.688792ms)
+✔ isolated 80x4 setup uses dated canonical publication and coherent readback without generating records (1549.3135ms)
+✔ registry retains all reviewed bundles and the exact immutable approved learning artifact (2.469708ms)
+✔ intentional learning adoption adds canonical missing keys through the same provider and ordinary context (924.987875ms)
+✔ learning adoption preserves an existing tuned key and provenance while adding only missing definitions (728.021208ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 12758.400084
