@@ -115,6 +115,12 @@ database's external address. Render filled in the internal one for `gcsp-api`.
 4. Then tell me "Render is set up". I'll check that the database connects without printing the URL, and tell Russell's
    poller that FUCQ-83 and FUCQ-66 can resume.
 
+## Fleet artifact restore (7 November 2026)
+
+The GCSP API build now restores the checksum-pinned fleet release after `npm install`. The build downloads public immutable artifacts into its local cache; runtime lookup and restart use local files offline. The `.4` release contains349 admitted source configurations,350 total records and1 preserved VIN, with no images. See [actual CLI proof](evidence/fucq62/render-build-restore-2026-11-07/README.md). The original public tag predates the empty-asset transport repair, so use the current application checkout with the immutable descriptor. A newer release must update the descriptor and Blueprint digest together.
+
+The command has passed with actual public assets and an offline restart locally. Confirm the deployed build separately; a Blueprint commit does not itself prove Render executed it. Native PostgreSQL setup remains a separate credential-dependent step.
+
 ## Keeping it up to date
 
 - Every push to `gcsp-poc`, which is every merge the pollers make, redeploys `gcsp-api` and `gcsp-site`. To control
