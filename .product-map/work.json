@@ -2111,7 +2111,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-58",
-      "observed_at": "2026-11-07T05:17:07Z",
+      "observed_at": "2026-11-07T05:22:15Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -2136,9 +2136,9 @@
           "title": "Corroborate selected GB/RHD descriptor, year, plant and era"
         },
         {
-          "evidence": "4,430 parent-proved source configurations; six new context pilot32admissions now independently audited. Actual30model/line option contexts retained. G421304continues; F70original240+3623unspent suffix preparing. Original31scheme joins remain open.",
+          "evidence": "4666 parent-proved source; actual30model/line option contexts retained. G421304 active; F70next3623preparing; original31scheme/profile/fiveWMIcoverageopen.",
           "id": "scheme-catalogue",
-          "observed_at": "2026-11-07T05:17:07.348628+00:00",
+          "observed_at": "2026-11-07T05:22:15Z",
           "status": "in-progress",
           "title": "Join every scheme line to exact dated constructible catalogue contexts"
         },
@@ -2277,7 +2277,7 @@
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-04-032",
       "id": "FUCQ-59",
-      "observed_at": "2026-11-07T05:17:07Z",
+      "observed_at": "2026-11-07T05:22:15Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -2309,9 +2309,9 @@
           "title": "Finite source budgets, deadlines and default no-traffic safety (2 points)"
         },
         {
-          "evidence": "Parent-proved4430source/4433canonical/5828spent. Added exact544F70sessions110–200 and strictbreadth32; parent18368+5999checks,zero source/test replay. F70actual239finalizer failure preserved; strict5/5pass and separate continuation preparing.",
+          "evidence": "Parent-proved4666source/4669canonical/6140spent. ExactF70201–239236admissions audited13193read-onlychecks;195strictchecks reused; no replay. Original239finalizer failure preserved; cause unestablished.",
           "id": "source-qualification",
-          "observed_at": "2026-11-07T05:17:07.348628+00:00",
+          "observed_at": "2026-11-07T05:22:15Z",
           "status": "in-progress",
           "title": "Selected real-source model mapping and solver integration (1 point)"
         },
@@ -2496,15 +2496,15 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T05:17:07Z",
+      "observed_at": "2026-11-07T05:22:15Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-61",
       "slices": [
         {
           "id": "source-run",
           "status": "in-progress",
           "title": "Execute qualified real collection",
-          "observed_at": "2026-11-07T05:17:07.348628+00:00",
-          "evidence": "4430parent-proved admissions,5570short of10000;4433canonical/5828spent. OriginalG421304continues. F70next3623unspent requests preparing after239finalizer interruption; no planned credit."
+          "observed_at": "2026-11-07T05:22:15Z",
+          "evidence": "4666parent-proved admissions,5334short of10000;4669canonical/6140spent. G421304continues; F70exact3623unspent continuation preparing. Plannedpoolcredit0."
         },
         {
           "id": "semantic-audit",
@@ -2655,7 +2655,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T05:17:07Z",
+      "observed_at": "2026-11-07T05:22:16Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62",
       "claim_evidence": "Claimed owning035 at34a793e3; root checkpoint authorisation, Jira OAuth unavailable. Full acceptance remains open.",
       "slices": [
@@ -2698,8 +2698,8 @@
           "id": "source-targets",
           "status": "in-progress",
           "title": "Actual 200 target and scheme model coverage",
-          "observed_at": "2026-11-07T05:17:07.348628+00:00",
-          "evidence": "Numeric200target exceeded with4430parent-proved source; everymodel/breadth acceptance remains open.2424source .9candidate/offlineproof merged1d8634e3; public/ordinary packaging next."
+          "observed_at": "2026-11-07T05:22:16Z",
+          "evidence": "Numeric200target exceeded with4666parent-proved source; everymodel/breadth acceptance remains open.2424source .9descriptor registeredee2cc7a3; actualpackage/localchecks pass; immutablepublicuploadactive."
         },
         {
           "id": "scale",
