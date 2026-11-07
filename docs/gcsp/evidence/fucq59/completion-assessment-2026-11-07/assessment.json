@@ -3,12 +3,12 @@
   "observedAt": "2026-11-07T08:35:48.832819+00:00",
   "story": "FUCQ-59",
   "assessmentScope": "read-only code/evidence assessment, followed by compact documentation publication; no tests/source calls/Jira mutation",
-  "implementationStatus": "developed",
+  "implementationStatus": "developed with independently deferred Medium AC4 cache-refetch defect",
   "recommendedJiraStatus": "In Review",
   "acceptanceStatus": "pending",
   "done": false,
   "jiraMutated": false,
-  "conclusion": "No concrete remaining F59 implementation blocker identified. Original acceptance obligations remain, particularly AC4 capability-refresh interpretation and honest current validation disposition.",
+  "conclusion": "Ready for development review with explicit AC4 gap, not Done; no build or merge dependency from the deferred Medium defect.",
   "baselineCommit": "e287fa05d9842fd8ff7bf7f794f23f673d99b78b",
   "agent": {
     "name": "Minnie Mouse",
@@ -57,7 +57,7 @@
     }
   ],
   "ongoingScopeRules": [
-    "Retain the six original AC and authored Validate; no claimed scope expansion.",
+    "Retain six historical AC/Validate subject to explicit superseding4NovQ13 approved HLD scope; no new claimed scope expansion.",
     "Use the current exact adapter/policy/session boundaries and explicit unknown/partial outcomes.",
     "Backlog defects below Critical/High independently; preserve authorised deferrals and genuine original acceptance gaps.",
     "Root owns source allocations, integration, Jira, publication and acceptance. No descendants, tests, source/browser/SQL calls or scratch allocation in this assessment.",
@@ -202,7 +202,7 @@
       "original": "Discover the plan's real model/AG mapping and selectable code definitions through the selected source boundary. Generate seeded option candidates and sort/deduplicate request element codes before rule solving; separate options from accessories while preserving the complete successful element request semantics.",
       "status": "developed; actual bounded source evidence retained",
       "evidence": "Exact registered model/AG/tree context, typed selectable definitions, seeded/sorted/deduplicated candidates and separate accessories exist in the current collector/source/binder.",
-      "limit": "Broader model-family, scheme/profile/year/plant/five-WMI coverage is separate source work; it is not an automatic F59 BUILD gate."
+      "limit": "Exact selected catalogue context and declared coverage retain their evidence. Approved4NovQ13 removes per-configuration VIN and fleet-wide fiveWMI/profile qualification as collector/corpus gates."
     },
     {
       "number": 2,
@@ -221,9 +221,9 @@
     {
       "number": 4,
       "original": "Persist accepted/rejected/duplicate records and deterministic queue/checkpoints atomically. Resume after interruption without re-fetching valid cache entries, corrupting checkpoints or changing published identities; reject incompatible plan/source/tool versions rather than mix them silently.",
-      "status": "developed; acceptance interpretation unresolved",
+      "status": "partial; concrete Medium defect independently deferred",
       "evidence": "Atomic session persistence and strict identity/cache checks exist. Actual two-process proof preserves predecessor bytes/outcomes/IDs, executes both candidate solvers exactly once, and completed restart makes zero calls.",
-      "limit": "Cross-allocation bootstrap-cache reuse is unproved. Continuation intentionally budgets four fresh page/settings/tree/options reads for ephemeral capabilities and compares the fresh retained context before solving. Whether that fulfils the original no-refetch-valid-cache clause requires explicit review; this assessment does not silently waive it. Medium FUCQ-152 remains deferred/unfixed; one successor chain was selected."
+      "limit": "Public continuation refetches still-valid safe page/discover/options cache because only predecessor lineage retains it and the active cache starts empty. Settings cache:false must refresh. Cache hits must restore/revalidate descriptor and capture guards without storing headers. Actual historical proof remains10GET/zero cachehits. No repair or AC waiver claimed; distinct fromFUCQ-152. Jira payload pending OAuth."
     },
     {
       "number": 5,
@@ -265,7 +265,7 @@
       "pass": 1848,
       "fail": 19,
       "skipped": 5,
-      "disposition": "Owning fixture repair passed12 scoped tests;16 independent failures deferred under FUCQ-144\u2013146. Original failures/skips remain historical; scoped repairs do not produce a passing full run."
+      "disposition": "Owning fixture repair passed12 scoped tests;16 independent failures deferred under FUCQ-144–146. Original failures/skips remain historical; scoped repairs do not produce a passing full run."
     },
     "authoredRetailerApi": "Historical132 passing brand/API checks are retained in implementation-plan.md; no current rerun or current full-suite applicability claimed.",
     "currentAuthoredNpmPassEstablished": false,
@@ -288,9 +288,9 @@
     "sourceAdmissionEstablishesStoryAcceptance": false
   },
   "smallestClosureActions": [
-    "Publish this exact six-AC evidence mapping for independent review; no implementation change is identified by the assessment.",
-    "Review and explicitly resolve the AC4 fresh capability-bootstrap interpretation against the original valid-cache clause; preserve the unproved cross-allocation reuse limit.",
-    "Record the current scoped pass evidence, historical failed/skipped full results and unrun authored checks. Any acceptance/validation exception requires an explicit collaborator decision; do not invent a current npm pass."
+    "Preserve independent six-AC review and actual scoped/historical evidence.",
+    "Complete remote dedup/create/link for the Medium AC4 defect when Jira authentication works; no current build/merge gate.",
+    "Original AC4 remains partial until repaired or explicitly disposed by a collaborator; no acceptance/validation waiver inferred. Current authored npm success remains unestablished."
   ],
   "notAutomaticBuildDependencies": [
     "F58 broader family/profile/year/plant/five-WMI qualification",
@@ -315,5 +315,33 @@
     "compatibilityException": null,
     "ownedDisposableLeftovers": [],
     "unownedFilePreserved": "_tools/__pycache__/test_resources.cpython-314.pyc"
+  },
+  "independentReview": {
+    "reviewer": "Charlie Dog",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "runtimeEffectiveVerified": false,
+    "result": "AC1/2/3/5/6 implemented; AC4 partial",
+    "scope": "read-only exact code and retained receipt review",
+    "defectSeverity": "Medium",
+    "defectDisposition": "Independent later pickup; no build/merge dependency",
+    "jiraCreated": false,
+    "pendingPayload": ".claude/f58-63-overnight-20261106/f59-cache-refetch-pending-jira.json"
+  },
+  "approvedScopeCorrection": {
+    "authority": "4November2026 explicit agreement Q13 supersedes earlier storyauthoring",
+    "effect": "Stock order reference plus configuration; VINonlydelivered/current. No10000VIN or automaticfiveWMI corpus requirement. No renewed permission required.",
+    "authorityPins": [
+      {
+        "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/hld-agreement-2026-11-04.md",
+        "sha256": "b95c2fc548310edb90e1f7b746933418c7b0e98da9b45ac0ec3447940d8bca67"
+      },
+      {
+        "path": "/Users/usget/Claude/vehicle-matcher/docs/design/gcsp-high-level-design.md",
+        "sha256": "93eb6023b3c2c4c7ce95efab0200402f38c72571e300f5000dd76fd52882bd7f"
+      }
+    ],
+    "originalReceiptDataChanged": false,
+    "jiraAmendment": "pending OAuth; no remote mutation claimed"
   }
 }

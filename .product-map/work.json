@@ -1848,7 +1848,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T08:52:02Z",
+      "observed_at": "2026-11-07T09:11:18Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60",
       "workers": [
         {
@@ -1959,17 +1959,17 @@
         },
         {
           "id": "shared-accounting",
-          "status": "in-progress",
+          "status": "complete",
           "title": "Canonical collector session cache budget recovery integration",
-          "observed_at": "2026-11-07T08:52:02Z",
-          "evidence": "Actual corrected offline bridge same currentcollector session passed1partial,cache/cursor/deadline/idempotence. First41chunks2624partial/0reject/0outbound,cleanupverified. Remainder41..156 running; current sourcequalification/original-live-session acceptance notproved."
+          "observed_at": "2026-11-07T09:11:18Z",
+          "evidence": "Current-code exact10000 retained replay10kpartial/0reject/0outbound; same-currentcollector-session bridge1partial and finalsummary passed. Finalreceipt cc8604d085b76a37d45d2c095074f17087d0a6e6cf861c846140b670b3b4783e. Phase156 supervisorrc1 preserved, postexitcleanup reconciled; no claim original live session enriched. exact10000-common-session-results-2026-11-07/"
         },
         {
           "id": "real-source",
           "status": "in-progress",
           "title": "Real catalogue source coverage evidence",
-          "observed_at": "2026-11-07T08:23:09.000197+00:00",
-          "evidence": "10,351 admitted source independently reconciled; exact10,000 sealed. Production candidate10,001configs/10,000source/10,002refs passed. Original scheme/GB-RHD/five-WMI acceptance remains open; source quantity is achieved."
+          "observed_at": "2026-11-07T09:11:18Z",
+          "evidence": "10351admitted/10000selected; all10000 replayedcurrentcode. Exactcontext and unknowntechnical/imagefacts preserved. Q13 removes per-configVIN/fiveWMI gate; final applicable source/image coverage review remains. No original-live-session enrichment claim."
         },
         {
           "id": "real-assets",
@@ -2006,7 +2006,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-58",
-      "observed_at": "2026-11-07T08:52:02Z",
+      "observed_at": "2026-11-07T09:11:18Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -2024,32 +2024,18 @@
           "title": "Authorised finite source budget, dry run and privacy refusal"
         },
         {
-          "evidence": "Official BMW CoC research produced no qualifying GB/RHD descriptor/year/plant/era evidence. Compatible enabled profile still absent; original acceptance gap, not a configuration BUILD dependency.",
-          "id": "uk-profile",
-          "observed_at": "2026-11-07T04:53:39.807899+00:00",
-          "status": "blocked",
-          "title": "Corroborate selected GB/RHD descriptor, year, plant and era"
-        },
-        {
-          "evidence": "Three independently releasedcontexts9GET consumedonce. G20treeempty/aliaslimit; G22/G23 diagnosticfacts7checks each,4models/46relationships each.0constructiblebuilds/joins/profiles. No retries. Exactoutcomes035d41aef26; actualsourcecount10351/selection10000 is separate.",
+          "evidence": "Q13 approved4Nov supersedes historical fleet VIN/five-WMI gates; delivered/current profile research independent. Exact catalogue/market/date provenance and declared configuration/model/option coverage still require consolidated selected-plan evidence. Count10351/selection10000 achieved; F77 every-scheme-line route separate. docs/gcsp/f58-63-morning-status-2026-11-07.md",
           "id": "scheme-catalogue",
-          "observed_at": "2026-11-07T08:52:02Z",
+          "observed_at": "2026-11-07T09:11:18Z",
           "status": "in-progress",
-          "title": "Join every scheme line to exact dated constructible catalogue contexts"
+          "title": "Reconcile declared configuration model and option coverage"
         },
         {
-          "evidence": "No qualified actual five-WMI distribution; preserve context/exclusion evidence and deferred10000 run.",
-          "id": "wmi-diversity",
-          "observed_at": "2026-11-05T23:33:04.204649Z",
-          "status": "blocked",
-          "title": "Prove distinct configurations for every required WMI"
-        },
-        {
-          "evidence": "Configuration-only collection/publication proceeds on existing interfaces. Original GB/RHD and fiveWMI acceptance remains open.",
+          "evidence": "Offline plan/budgets/refusal controls built. Reconcile configuration-only selected source/contexts/coverage/unknowns with Q13 approved scope; no VIN per configuration or automatic fiveWMI corpus requirement. No new source run or profile research is a BUILD dependency.",
           "id": "qualification-integration",
-          "observed_at": "2026-11-07T04:53:39.807899+00:00",
-          "status": "blocked",
-          "title": "Final machine-plan qualification and real-run gate integration"
+          "observed_at": "2026-11-07T09:11:18Z",
+          "status": "in-progress",
+          "title": "Reconcile selected configuration-only plan and qualification"
         }
       ],
       "status": "In Progress",
@@ -2211,15 +2197,15 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T08:23:09Z",
+      "observed_at": "2026-11-07T09:11:18Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-61",
       "slices": [
         {
           "id": "source-run",
           "status": "in-progress",
           "title": "Execute qualified real collection",
-          "observed_at": "2026-11-07T08:23:09.000197+00:00",
-          "evidence": "10,351 admitted source independently reconciled; exact10,000 sealed. Production candidate10,001configs/10,000source/10,002refs passed. Original scheme/GB-RHD/five-WMI acceptance remains open; source quantity is achieved."
+          "observed_at": "2026-11-07T09:11:18Z",
+          "evidence": "Quantity achieved10351admitted/10000selected; currentF60 replay10kpartial/0reject and same-current-session bridge passed. Final consolidated selected-plan/operations/declaredcoverage/completeness/hash/reference/replay evidence pending. Q13 no10000VIN or fleetfiveWMI obligation."
         },
         {
           "id": "semantic-audit",
@@ -2403,7 +2389,7 @@
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-04-032",
       "id": "FUCQ-59",
-      "observed_at": "2026-11-07T08:37:36Z",
+      "observed_at": "2026-11-07T09:05:30Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -2421,10 +2407,10 @@
           "title": "Deterministic candidates and complete solver response validation (3 points)"
         },
         {
-          "evidence": "Lead reviewed version2 common session;31collector/session +29F39/F54 scoped tests pass60/60, including generic-stage persisted HTTP stops, deadline-byte accounting, cache/resume, SIGKILL and active writer boundaries. source-executor-2026-11-06/validation-and-cleanup.json.",
+          "evidence": "Independent sixAC review found Medium public-continuation safe-bootstrap cache refetch:10actualGET/0hits;settings fresh justified,3validsafeprojectionsrefetched. Deferred independentBugpayload pendingJiraOAuth; no build/merge dependency,AC4notpassed/waived. Reviewrecommendation remains,notDone.",
           "id": "atomic-resume",
-          "observed_at": "2026-11-06T10:56:10Z",
-          "status": "complete",
+          "observed_at": "2026-11-07T09:05:30Z",
+          "status": "in-progress",
           "title": "Versioned bounded cache and atomic checkpoint/resume (3 points)"
         },
         {
@@ -2658,7 +2644,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T08:59:33Z",
+      "observed_at": "2026-11-07T09:11:18Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62",
       "claim_evidence": "Claimed owning035 at34a793e3; root checkpoint authorisation, Jira OAuth unavailable. Full acceptance remains open.",
       "slices": [
@@ -2701,8 +2687,8 @@
           "id": "source-targets",
           "status": "in-progress",
           "title": "Actual 10000 source target and scheme model coverage",
-          "observed_at": "2026-11-07T08:23:09.000197+00:00",
-          "evidence": "10,351 admitted source independently reconciled; exact10,000 sealed. Production candidate10,001configs/10,000source/10,002refs passed. Original scheme/GB-RHD/five-WMI acceptance remains open; source quantity is achieved."
+          "observed_at": "2026-11-07T09:11:18Z",
+          "evidence": "Numerical10000source target achieved from10351admitted. Q13 supersedes historical10000VIN/fiveWMI corpus gates. Final selected-plan/source/completeness coverage evidence remains; stock generation F78 separate. One retained current-carVIN is consistent scope."
         },
         {
           "id": "scale",
@@ -2715,8 +2701,8 @@
           "id": "integration",
           "status": "in-progress",
           "title": "Application and deployed integration acceptance",
-          "observed_at": "2026-11-07T08:59:33Z",
-          "evidence": "Public .12 exact31assets/574382841B published; cold failed at30s. Exact fifthasset diagnostic reproduced AbortError at30002ms after190003815/190860237B. Default120s repair passed scoped17artifact/build/blueprint checks,0skip. Fresh restore/recovery/deployment pending;1VIN/10000gap unchanged."
+          "observed_at": "2026-11-07T09:11:18Z",
+          "evidence": "Public.12 contains31assets/574382841B/10000source+1reference config/1current-car VIN, consistent4NovQ13. Restore2 fetched31CDN200/62requests then failed179.571s; CLI masks cause. Offline/recovery unrun; cleanup removed592098972B, allroots/groups/tokens absent. Local-input diagnosis next; no blindredownload. Deployment unverified."
         },
         {
           "id": "large-artifact-restore",
@@ -2724,13 +2710,6 @@
           "title": "Checksum-pinned external artifacts and offline restore",
           "observed_at": "2026-11-07T06:28:35Z",
           "evidence": ".10 actual26assets/239679009bytes anonymous coldrestore; genuine offlinerepeat+5boundaryrefs+4newintegrityedges passed. Original4668proof reused at exact code/input/runtime. Removed375956924logicalBcopies; allgroups/link/token/scratch absent."
-        },
-        {
-          "id": "fleet-vin-allocation",
-          "status": "blocked",
-          "title": "Allocate and reconcile at least10000 compatible stable VIN mappings",
-          "observed_at": "2026-11-07T08:52:02Z",
-          "evidence": "Original F62 AC requires >=10000 stableVIN mappings. Actual .12 inventory has10001configurations but1retainedVIN identity, not10000. Compatible profile evidence unresolved in F58; configuration-only public release proceeds. New slice corrects omitted original acceptance scope, not new scope."
         }
       ],
       "unsliced": false,
@@ -2843,7 +2822,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T08:52:02Z",
+      "observed_at": "2026-11-07T09:11:18Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-63",
       "slices": [
         {
@@ -2871,15 +2850,15 @@
           "id": "scale-evidence",
           "status": "in-progress",
           "title": "Measure bounded correctness throughput and latency on actual corpus",
-          "observed_at": "2026-11-07T08:23:09.000197+00:00",
-          "evidence": "10,351 admitted source independently reconciled; exact10,000 sealed. Production candidate10,001configs/10,000source/10,002refs passed. Original scheme/GB-RHD/five-WMI acceptance remains open; source quantity is achieved."
+          "observed_at": "2026-11-07T09:11:18Z",
+          "evidence": "All10002direct/retained/localHTTPrefs matched0lookuperrors. Scope10001configuration+1currentVIN, consistentQ13; consumer2707failures retained/deferred. Current-release restore/recovery/deployment evidence pending; no automatic fleetfiveWMI or10000stock/VIN requirement."
         },
         {
           "id": "integration",
           "status": "in-progress",
           "title": "Integrate actual published corpus and authored regression evidence",
-          "observed_at": "2026-11-07T08:52:02Z",
-          "evidence": "Public.12 published; coldrestoreattemptfailed33.013s beforepayloadretention. RuntimeCLI maskscause; diagnosticactive, mandatorycleanupallabsent. Native-local/orderproof independent of config build; managedRenderpolicyDB remains actualdeploymentboundary."
+          "observed_at": "2026-11-07T09:11:18Z",
+          "evidence": "Public.12 contains31assets/574382841B/10000source+1reference config/1current-car VIN, consistent4NovQ13. Restore2 fetched31CDN200/62requests then failed179.571s; CLI masks cause. Offline/recovery unrun; cleanup removed592098972B, allroots/groups/tokens absent. Local-input diagnosis next; no blindredownload. Deployment unverified."
         }
       ],
       "unsliced": false,
