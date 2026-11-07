@@ -1,0 +1,16 @@
+{
+  "authorized": true,
+  "phase": "phase02",
+  "reviewedAt": "2026-11-07T06:17:36.851560+00:00",
+  "seriesSha256": "ef251096585a9da6ebaf9c66d379bbabc4e28cde43056290e58c6d35535d596e",
+  "candidateManifestSha256": "4e0495d90f9ef5da85b1d79eb9d4d847bcd6b29b78cb1510ffc6dc1074ce3740",
+  "codeReview": "pass; actual runner diff reviewed against completed phase01c: new exact120-template phase and fresh1800s clock; current cohort monotonic clock retained; strict stop/no replay/retention/finalizer unchanged",
+  "securityReview": "pass; same public boundedGET boundary, no source writes/credentials/browser/images; exact960unique unspent, failedwholetemplates and fullF70 disjoint",
+  "pinsChecked": 375,
+  "maximumGET": 1440,
+  "maximumSolver": 960,
+  "grantEnvironment": {
+    "BREADTH30_PHASE02_PHASE_GRANT": "scheme-breadth30-phase02-960-20261107-once-phase02"
+  },
+  "acceptance": false
+}
