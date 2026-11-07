@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import pg from 'pg';
 import { createPolicyService, PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest, ok } from '../gcsp/repository/index.js';
@@ -8,6 +9,8 @@ import { createStockReleaseService, createSyntheticStockProvider, createStockPul
   STOCK_RELEASE_CONSUMER } from '../gcsp/stock/index.js';
 import { STOCK_FIELDS, validatePull } from '../gcsp/stock/port.js';
 import { createRepositoryManualPorts } from '../gcsp/manual-context/ports.js';
+import { createPostgresRepository } from '../gcsp/repository/postgres.js';
+import { createDemoStockProvider } from '../gcsp/stock/demo-provider.js';
 
 const readFixture = async (name) => JSON.parse(await readFile(new URL(`../gcsp/stock/fixtures/${name}`, import.meta.url), 'utf8'));
 const plan = await readFixture('tranche-plan.json');
@@ -20,16 +23,16 @@ async function alternativePolicy(values) {
   for (const [key, value] of Object.entries(values)) seed.assumptions.find((entry) => entry.key === key).value = value;
   return new PolicyService({ provider: { async loadVersions() { return [seed]; } } });
 }
-async function setup({ policy = createPolicyService(), providerFactory, windows = plan.windows } = {}) {
-  const repository = createMemoryRepository({ store: createMemoryStore() });
+async function setup({ policy = createPolicyService(), providerFactory, windows = plan.windows,
+  repository = createMemoryRepository({ store: createMemoryStore() }), suffix = '' } = {}) {
   await repository.open();
   const runtime = await createDemoRuntime({ repository, policy, environmentId: 'release-test', environmentKind: 'synthetic',
     policyAsOf: '2026-11-05T00:00:00.000Z', commandId: 'bootstrap', sessionNow: () => '2026-11-05T00:00:00.000Z' });
   assert.equal(runtime.status, 'ok', JSON.stringify(runtime));
   const { clock, identity } = runtime.value;
-  const presenter = (await identity.createPresenterSession('presenter')).value.context;
-  const greg = (await identity.switchPrincipal(presenter, 'demo-greg', 'greg')).value.context;
-  const employee = (await identity.switchPrincipal(presenter, 'demo-paula', 'employee')).value.context;
+  const presenter = (await identity.createPresenterSession(`presenter${suffix}`)).value.context;
+  const greg = (await identity.switchPrincipal(presenter, 'demo-greg', `greg${suffix}`)).value.context;
+  const employee = (await identity.switchPrincipal(presenter, 'demo-paula', `employee${suffix}`)).value.context;
   const provider = providerFactory ? await providerFactory({ repository, presenter, clock }) : createSyntheticStockProvider({ runId: presenter.runId,
     version: plan.version, label: plan.label, windows });
   const service = createStockReleaseService({ repository, policy, clock, identity, provider });
@@ -353,4 +356,50 @@ test('immutable identity conflicts and failed batch writes preserve the entire p
   assert.equal((await tick(collision)).status, 'unavailable');
   assert.deepEqual((await collision.repository.query(collision.presenter, 'stock')).value, beforeCollision);
   assert.equal((await receipts(collision)).length, 0);
+});
+
+test('native PostgreSQL: a presenter tick releases exact demo stock once, replays after restart and feeds the manual reader', {
+  skip: process.env.GCSP_DATABASE_URL === undefined ? 'GCSP_DATABASE_URL is unset; native tick release was not run' : false,
+}, async () => {
+  const schema = `gcsp_release_${process.pid}_1`;
+  const pool = new pg.Pool({ connectionString: process.env.GCSP_DATABASE_URL, connectionTimeoutMillis: 5000, statement_timeout: 10000 });
+  pool.on('error', () => {});
+  const repositories = [];
+  const open = () => { const repository = createPostgresRepository({ connectionString: process.env.GCSP_DATABASE_URL, schema }); repositories.push(repository); return repository; };
+  try {
+    try { await pool.query(`CREATE SCHEMA "${schema}"`); } catch { throw new Error('PostgreSQL release schema setup unavailable'); }
+    const policy = createPolicyService();
+    const f = await setup({ policy, repository: open(), providerFactory: () => createDemoStockProvider({ policy }) });
+    const step = { commandId: 'native-release', expectedClockVersion: '1', mode: 'next-release' };
+    const first = await f.clock.advanceAndTick(f.presenter, step);
+    assert.equal(first.status, 'ok', JSON.stringify(first));
+    const value = first.value.tick.outcomes.find((row) => row.handlerId === 'stock-release').outcome.value;
+    assert.equal(value.kind, 'stock-released');
+    const check = async (repository, context) => {
+      const rows = (await repository.query(context, 'stock', { state: 'released' })).value;
+      assert.deepEqual(rows.map((row) => row.orderUuid).sort(), [...value.orderUuids].sort());
+      for (const row of rows) { assert.match(row.orderNumber, /^\d{7}$/); assert.ok(row.configurationId); assert.equal(row.runId, context.runId); }
+      const done = (await repository.query(context, 'event_receipts', { consumerId: STOCK_RELEASE_CONSUMER, state: 'completed' })).value;
+      assert.equal(done.length, 1); assert.equal(done[0].eventId, value.trancheId);
+    };
+    await check(f.repository, f.presenter);
+    // A new repository and runtime on the same schema resume the run; the same command inserts nothing new.
+    await f.repository.close();
+    const g = await setup({ policy, repository: open(), suffix: '-restart', providerFactory: () => createDemoStockProvider({ policy }) });
+    assert.equal(g.presenter.runId, f.presenter.runId);
+    assert.deepEqual(await g.clock.advanceAndTick(g.presenter, step), first);
+    await check(g.repository, g.presenter);
+    // One shared pool: the actual manual reader sees the same released cars.
+    const stock = await createRepositoryManualPorts({ repository: g.repository, policy: g.policy }).releasedStock.read(g.employee);
+    assert.equal(stock.status, 'ok', JSON.stringify(stock));
+    assert.deepEqual(stock.value.stock.map((row) => row.orderUuid).sort(), [...value.orderUuids].sort());
+  } finally {
+    await Promise.allSettled(repositories.map((repository) => repository.close()));
+    try {
+      await pool.query(`DROP SCHEMA IF EXISTS "${schema}" CASCADE`);
+      const absent = await pool.query('SELECT count(*)::integer AS count FROM pg_namespace WHERE nspname = $1', [schema]);
+      assert.equal(absent.rows[0].count, 0, 'The exact owned native release schema must be absent.');
+    } catch { throw new Error('PostgreSQL release fixture cleanup incomplete'); }
+    finally { await pool.end(); }
+  }
 });
