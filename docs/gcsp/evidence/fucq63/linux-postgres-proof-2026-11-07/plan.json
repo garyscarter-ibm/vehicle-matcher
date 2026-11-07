@@ -1,6 +1,6 @@
 {
   "schemaVersion": "f63-linux-postgres-orders-plan.v1",
-  "status": "prepared-unexecuted-reviewed-integration-push-required",
+  "status": "diagnostic-revision-prepared-unexecuted-root-integration-push-required",
   "releaseId": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
   "corpusVersion": "2026-11-07.12",
   "datasetId": "gcsp-source-fleet",
@@ -76,11 +76,11 @@
   },
   "acceptance": false,
   "testImpact": {
-    "selectionReason": "No application behavior changed. The new workflow directly exercises the existing real stock producer/repository/lookup boundary; the first meaningful native check runs once in reviewed CI. No broad suite selection is justified.",
+    "selectionReason": "No application behavior changes. The original remote proof failed after restore; this diagnostic-only revision retains the returned exact-order proof before unchanged acceptance assertions. Static syntax, budget and unchanged-boundary checks are proportionate; root owns the next runtime integration run.",
     "unknownUntilCI": [
-      "Linux helper execution",
-      "native PostgreSQL allocator/publisher/close-reopen/order-port parity",
-      "actual resource measurements and teardown"
+      "Revised diagnostic retention when an order-reference assertion fails",
+      "Actual returned direct/HTTP/consumer/current-run details from the next native sample",
+      "Passing native proof and complete actual resource/teardown evidence for the revised run"
     ],
     "boundaries": {
       "orders.mjs": [
@@ -105,7 +105,15 @@
         "offline egress guard"
       ]
     },
-    "fixtureEdges": "Exact public .12 corpus, three retained passing source IDs, one isolated run/schema and ephemeral PostgreSQL16 service. No managed database, external source or full consumer coverage inference."
+    "fixtureEdges": "Exact public .12 corpus, three retained passing source IDs, one isolated run/schema and ephemeral PostgreSQL16 service. No managed database, external source or full consumer coverage inference.",
+    "diagnosticAuthoringValidation": [
+      "node --check orders.mjs (no imports)",
+      "Python in-memory compilation (no execution)",
+      "JSON parse and diagnostic/report/resource budget arithmetic",
+      "Workflow/service/cleanup unchanged against 9d9f3e68; exported prover unchanged against original run pin",
+      "Proof acceptance expressions unchanged; expected/actual summaries accept primitive type/enum/count fields only",
+      "No local proof, test suite, source request, download, install, database or scratch"
+    ]
   },
   "executionTrigger": {
     "push": {
@@ -120,5 +128,35 @@
     "workflowDispatchPreserved": true,
     "operation": "Root merges once and observes the resulting integration-push run; topic branch pushes do not match. No agent manual dispatch or merge.",
     "repeatBehavior": "Future gcsp-poc pushes changing these exact paths also trigger this workflow; concurrency remains one job."
+  },
+  "diagnostics": {
+    "originalRunId": 42370440771,
+    "originalAttempt": 1,
+    "originalRuntimeHead": "51c691bd5437efe47d43225edfb609d0b4dbe176",
+    "originalResult": "failed at unchanged-order-reference-proof assertion; actual returned proof discarded by original catch; printed checked0 is a fallback",
+    "causeStatus": "Original assertion cause remains unresolved; only lost diagnostic evidence is established by static trace",
+    "selection": "Retain complete returned prover result before unchanged pass assertions, including direct/HTTP/consumer/current-run/egress metrics and UUID/hash observations; sanitize assertion expected/actual to primitive type/allowlisted enum/count fields; absent prover result remains null",
+    "maximumReturnedProofBytes": 16384,
+    "maximumOrderReceiptBytes": 65536,
+    "assertionEnumAllowlist": [
+      "ok",
+      "not-found",
+      "passed",
+      "failed",
+      "blocked",
+      "complete",
+      "partial",
+      "unavailable",
+      "postgresql"
+    ],
+    "noArbitraryErrorMessageOrStack": true,
+    "proofCriteriaChanged": false,
+    "productionChanged": false,
+    "nextExecution": "Root-reviewed integration merge only; agent dispatch/rerun prohibited"
+  },
+  "harnessIdentities": {
+    "orders.mjs": "f2b2b4b2b0c40c6c53ae9226c2657a672cd0261bacace31659573a3a09b0c0ea",
+    "run.py": "a6f779afe04f142552b302d2e19048c355ebd1c0633ad66a2c3f678f6c59ffce",
+    "selection.json": "dbb5be7d9f776bd97361d34d52a69490fd81d3e614f15cf52d63597179c354b5"
   }
 }
