@@ -1,0 +1,29 @@
+{
+  "scope": "scoped preparation syntax and read-only identity checks only",
+  "planSha256": "05fdd50183ffa801bc05c2708bc7831ca6c55f4d95ed93b644858c00bd2bff67",
+  "checks": [
+    {
+      "file": "probe.mjs",
+      "syntax": "passed"
+    },
+    {
+      "file": "group-proof.py",
+      "syntax": "in-memory passed"
+    },
+    {
+      "file": "supervise.py",
+      "syntax": "in-memory passed"
+    }
+  ],
+  "rootCodePinsVerified": 48,
+  "ordinaryPinsVerified": 52,
+  "codeCommitBlobsVerifiedDuringPreparation": true,
+  "firstRowKeyAndPathMatchOldFailure": true,
+  "expectedFirstDtoPinnedToPriorOfflineReceipt": true,
+  "newOutputAndMetadataAbsent": true,
+  "execution": false,
+  "sourceCalls": 0,
+  "publicGETs": 0,
+  "scratchCreated": false,
+  "acceptance": false
+}
