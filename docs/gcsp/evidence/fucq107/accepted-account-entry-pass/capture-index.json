@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-107",
+  "status": "accepted-external-scoped-memory-entry11-evidence-reused",
+  "sourcePublication": "aac8a00b121cc10a23dce1a53e7f59b2a4ca6d07",
+  "sourceImplementation": "848a16f8ceda2053e5441ded4ce0c5378df5b30f",
+  "servicePin": {
+    "path": "server/gcsp/offers/followup.js",
+    "sourceCommit": "17e7fe19029c2cb1c41711f48bf6fd4413ee96d6",
+    "sha256": "29a439ef9b14b84b43dbb3a5ac91e4e4421866d94ab03bf03c5e463fc8a72028",
+    "bytes": 18500
+  },
+  "originalRun": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/followup-aeaff9d663d44e669821185ecfc96497",
+  "grant": "fucq102-followup-aac8a00-0231",
+  "admissionSHA256": "418f8f5361a1717f38fb84e62b4f875466e4255109f1f0668a1971a9565c5344",
+  "sourcePlanSHA256": "983a85e1e4630065d2fc1af428697d04b38a6277a52240a703746316244e1ebe",
+  "rootAudit": {
+    "checks": 360,
+    "at": "2026-11-06T02:31:28.977793+00:00",
+    "sha256": "c344026fc88aea61aafe39d0d16dcf0dbf8da234b9ad2cd22ce756826b49eaa2"
+  },
+  "counts": {
+    "tests": 11,
+    "pass": 11,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "exactNames": [
+    "actual 100/106 decline survives a lost response and cookie/account reload into employee-only 107",
+    "follow-up entry keeps the existing private instance, owner, selector and run authority",
+    "active, accepted, expired, superseded and pending releases never query a follow-up selector",
+    "confirmed historical decline brief can differ from the immutable quoted brief",
+    "terminal outcome versions survive quote expiry and later car reuse without extending the hold",
+    "missing, duplicate or malformed decision sources preserve declined status with no handle",
+    "only one complete native decline receipt with valid digest and pins supplies a handle",
+    "valid digests cannot substitute a different employee, run, slot, renewal, car or brief",
+    "pre-write revisions, inconsistent outcome pins and future source times cannot supply a handle",
+    "repository query failures and unavailable history return typed unavailable without writes",
+    "decision membership, receipt membership, history and clock races refuse a mixed follow-up read"
+  ],
+  "observedModules": 44,
+  "files": [
+    {
+      "path": "dispatcher-final-audit.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq102-combined-result-root-0233.json",
+      "bytes": 46604,
+      "sha256": "c344026fc88aea61aafe39d0d16dcf0dbf8da234b9ad2cd22ce756826b49eaa2"
+    },
+    {
+      "path": "test.log",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/followup-aeaff9d663d44e669821185ecfc96497/test.log",
+      "bytes": 2487,
+      "sha256": "841833b3659afa0c7dc18a143c20ea174e96050b8eced288e4cc726dd239af54"
+    },
+    {
+      "path": "modules.jsonl",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/followup-aeaff9d663d44e669821185ecfc96497/modules.jsonl",
+      "bytes": 5363,
+      "sha256": "6ca8d043e9e0f794935aec1d3d8d07bad2b26c523747965e32f4e2b12efe1551"
+    },
+    {
+      "path": "summary.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/followup-aeaff9d663d44e669821185ecfc96497/summary.json",
+      "bytes": 9333,
+      "sha256": "f77eb848a44375b36561faac854cebf6a6d8ee9f5af5c7ca2cbf96c213ae2409"
+    },
+    {
+      "path": "plan.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/followup-aeaff9d663d44e669821185ecfc96497/plan.json",
+      "bytes": 7306,
+      "sha256": "d6ef79c0eb2fac8d99c5f4e5541706b170563fabe1578220a8d684c1d5249661"
+    },
+    {
+      "path": "checkpoint.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/followup-aeaff9d663d44e669821185ecfc96497/checkpoint.json",
+      "bytes": 335,
+      "sha256": "c16cf727c6abe8e9a8c9387c1adf290026ba8543ba397a0698796fd6230f97de"
+    },
+    {
+      "path": "ownership/93c5a173242b4f1abcdcf3da99181a2f.json",
+      "originalPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/followup-aeaff9d663d44e669821185ecfc96497/ownership/93c5a173242b4f1abcdcf3da99181a2f.json",
+      "bytes": 1799,
+      "sha256": "934493866039ec7449793a92755283d879eee040c609dfc981dc2eabe58e1df6"
+    },
+    {
+      "path": "executed-source-plan.json",
+      "originalImmutableRef": "aac8a00b121cc10a23dce1a53e7f59b2a4ca6d07",
+      "originalPath": "docs/gcsp/evidence/fucq102/followup-entry-execution-source-plan.json",
+      "bytes": 33418,
+      "sha256": "983a85e1e4630065d2fc1af428697d04b38a6277a52240a703746316244e1ebe"
+    }
+  ],
+  "impact": {
+    "basis": "Original executed source manifest/journal and immutable first-case source inspection; no new per-function instrumentation or rerun.",
+    "functions": [
+      "OfferFollowupService.#prepare",
+      "OfferFollowupService.#sameSlot",
+      "OfferFollowupService.#question",
+      "OfferFollowupService.read",
+      "OfferFollowupService.confirm"
+    ],
+    "cases": [
+      "actual 100/106 decline survives a lost response and cookie/account reload into employee-only 107",
+      "follow-up entry keeps the existing private instance, owner, selector and run authority",
+      "confirmed historical decline brief can differ from the immutable quoted brief"
+    ],
+    "observedSeam": "Actual100 hold/offer and106 terminal decline; actual102 private-instance account/session lookup supplies authoritative decisionId; ordinary DemoIdentity lacks renewal while stored slot/event have it; exact107 question and real BriefService save; capability-context read refused; unavailable reload preserves saved receipt.",
+    "fixtureBoundary": "Explicit107-owned bundle input; default canonical registration/runtime adoption NOT proved.",
+    "stillUnproved": [
+      "own16-case backend selection",
+      "107 post-save next-offer comparison with actual105",
+      "confirmed-save replay and full first-case effect/preservation assertions from the broader proposed plan",
+      "107 client route/controller/renderer composition",
+      "default canonical question registration/runtime adoption",
+      "actual tick/allocation/wait/no-match",
+      "browser/visual/deployed/native DB/full suite"
+    ]
+  },
+  "captureVerification": "Read/hash/JSON/TAP/source identity checks only. Reused dispatcher process/cleanup audit; no fresh tests/imports/probes/reservation/scratch or cleanup performed."
+}

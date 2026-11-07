@@ -1,0 +1,47 @@
+{
+  "scope": "Independent lead post-stop immutable source/dependency/Node/process/owner/scratch/strict reservation/log audit",
+  "allPassed": true,
+  "checksPassed": 208,
+  "frozenCommit": "c536ab490fbed3d1bb96a0b6fa007cdc85d139a8",
+  "testCounts": {
+    "cancelled": 0,
+    "fail": 2,
+    "pass": 10,
+    "skipped": 0,
+    "suites": 0,
+    "tests": 12,
+    "todo": 0
+  },
+  "names": [
+    "ok 1 - reading a policy question writes nothing and projects only the one existing target",
+    "ok 2 - confirmation uses real BriefService, preserves other inputs, replays and retains save on reload",
+    "ok 3 - a second command cannot consume the decline and stale concurrent confirmations cannot overwrite",
+    "ok 4 - unchanged, invalid, forged and stale question inputs never write",
+    "not ok 5 - question versions cannot cross a different completed decline",
+    "ok 6 - missing, pending, mismatched, future and bad-digest completed decline inputs fail closed",
+    "ok 7 - missing canonical policy and absent target fields never create a question or change",
+    "ok 8 - fuel, size and equipment questions use the same canonical change reducer",
+    "ok 9 - forged, other employee and stale run sessions cannot follow or change the brief",
+    "ok 10 - BriefService failures remain safe and never become a saved response",
+    "not ok 11 - two persisted quotes and the safe account port produce a comparison with explicit current inputs",
+    "ok 12 - HTTP descriptors require employee context, exact selector and delegated strict confirmation"
+  ],
+  "originalLog": {
+    "bytes": 4940,
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/20261106T011354918483Z/output.log",
+    "reporter": "tap",
+    "retained": true,
+    "sha256": "48a00d25e61049f1a7a99041de46d74b049274aae28e12ac309b21ec69404115"
+  },
+  "moduleJournalSHA256": "f45d5bece466555fb99f190cf7fc9dbc27d3a7af4f1ff55298dca79452e16f83",
+  "observedApplicationModules": 34,
+  "cleanup": {
+    "scratchRemoved": true,
+    "supervisorOwnerDead": true,
+    "childProcessesMatch": true,
+    "childrenDead": true,
+    "registryValid": true,
+    "reservationAbsent": true
+  },
+  "limitations": "Scoped test inputs, not actual103/106/102/105/100/96 producer integration, browser/native/full-suite proof."
+}

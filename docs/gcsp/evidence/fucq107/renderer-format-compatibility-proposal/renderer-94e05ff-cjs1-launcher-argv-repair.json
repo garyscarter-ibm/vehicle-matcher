@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-107",
+  "status": "minimal-launcher-argv-repair-author-only-no-grant",
+  "at": "2026-11-06T06:42:54.454659+00:00",
+  "priorPublication": "c1eb26537c96c6fbd14aad290f614960c55dce63",
+  "diagnosis": {
+    "observed": "The cjs1 frozen child used cjs1-loader.mjs while the copied launcher EXPECTED still selected the ed9 loader path. Static AST extraction proved the argument arrays differ. No launch or Node command ran.",
+    "cause": "Mechanical prefix relocation omitted the copied launch.py EXPECTED constant. The prior static review checked byte preservation but omitted end-to-end argv consistency.",
+    "affected": "Only the owned cjs1 launcher literal and its admission node hash/size; product/source/dependency inputs and lifecycle logic unchanged.",
+    "next": "Complete static supervisor/launcher/Node argv consistency, metadata recheck and targeted independent delta review before root may grant one attempt."
+  },
+  "delta": {
+    "oldImportPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-loader.mjs",
+    "newImportPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-loader.mjs",
+    "changedLauncherLiterals": 1,
+    "oldLauncherBytes": 820,
+    "newLauncherBytes": 825,
+    "oldLauncherSHA256": "3f20c1e2b1915efebf76ef6e16f90ad344d72232c74a7c9ca3e6071ae32a89f3",
+    "newLauncherSHA256": "9e80006cf1969dec2dd7d34396536e36e28b62250f967c787b8392710a345eb0",
+    "oldAdmissionSHA256": "91141d2838b6808304caed74eb1b602ffe598e6fc2055b18904d463737fa874e",
+    "newAdmissionSHA256": "a9ce7ec7f13b94f677ab74c3a61fa945be2ab6dec18930cb6ba133b1de569524",
+    "admissionNodeDelta": [
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-launch.py: bytes, sha256"
+    ],
+    "commandsUnchanged": true,
+    "sourceEdgesUnchanged": 33
+  },
+  "preserved": {
+    "ed9LauncherSHA256": "3f20c1e2b1915efebf76ef6e16f90ad344d72232c74a7c9ca3e6071ae32a89f3",
+    "ed9AdmissionSHA256": "f547b6a33e40424af037694ef7d1aaf3b970c91e92d2e208214435b42a78293b",
+    "loaderSHA256": "42d43f59e9dfee71a2176c58988dfeeeda679fc68cdc27cedcd12da934042376",
+    "resourcesGuardSHA256": "1c19f35495cd5a186dfcb75490a314814a9b37be594acaa51dcfbdcfae445790",
+    "supervisorSHA256": "80ed784913b831069593c7725805f5909c2a3b71596c24f43c964d36ee0c3be7",
+    "independentAuditorSHA256": "72bdb97e370ba70ebb47f47c14c907f2d7b39421339e46e7c2b022696c8e836e"
+  },
+  "authority": "Dispatcher explicitly authorised minimal cjs1 EXPECTED --import path repair/refreeze after the real mismatch report; no execution grant.",
+  "allocation": "none; stdlib text/JSON/AST authoring only; no imported execution helpers, process/ledger probes, tests, Node, browser, native calls or descendants.",
+  "staticReview": {
+    "checksPassed": 2306,
+    "argvCatalogue": "renderer-94e05ff-cjs1-author-static-review.json",
+    "delta": "renderer-94e05ff-cjs1-vs-c1-argv.diff",
+    "sameSupervisorLauncherNodeArgv": true
+  }
+}
