@@ -1,3 +1,6 @@
+import { lstat } from 'node:fs/promises';
+import { join } from 'node:path';
+import { DEFAULT_ARTIFACT_ROOT, releaseForManifest } from './fleet-release.js';
 import { indexJsonl } from './indexed-jsonl.js';
 import { inputDigest } from '../repository/core.js';
 import { validateBmwCatalogueV2Envelope } from '../../vehicle-evidence/bmw-catalogue-v2.js';
@@ -16,10 +19,20 @@ const ADMITTED_SOURCES = [
 ];
 
 /** Restore trusted source registrations on every process start, entirely offline. */
-export async function registeredCatalogueSources(configurationKey) {
-  const registrations = [];
-  for (const source of ADMITTED_SOURCES) {
-    const indexed = await indexJsonl(source.url, { key: (row) => row.configurationId });
+export async function registeredCatalogueSources(configurationKey, { manifestDigest, artifactDirectory, artifactRoot = DEFAULT_ARTIFACT_ROOT } = {}) {
+  const registrations = []; let sources = ADMITTED_SOURCES;
+  const release = releaseForManifest(manifestDigest);
+  if (release) {
+    const root = artifactDirectory ?? join(artifactRoot, release.releaseId);
+    let available = false;
+    try { const st = await lstat(root); if (!st.isDirectory() || st.isSymbolicLink()) throw new TypeError('Invalid source artifact root'); available = true; }
+    catch (e) { if (e.code !== 'ENOENT') throw e; }
+    // A missing new bundle leaves existing Git-qualified selections usable.
+    // A present bundle must match every code-owned source anchor exactly.
+    if (available) sources = release.sources.filter((s) => s.manifestDigests.includes(manifestDigest)).map((s) => ({ url: join(root, s.path), sha256: s.sha256, bytes: s.bytes }));
+  }
+  for (const source of sources) {
+    const indexed = await indexJsonl(source.url, { key: (row) => row.configurationId, ...(source.bytes === undefined ? {} : { maxBytes: 33554432 }) });
     if (indexed.checksum !== source.sha256 || !indexed.length) throw new TypeError('Admitted source artifact changed');
     for (const entry of indexed.metadataEntries()) {
       const record = indexed.get(entry.key); const expected = record.catalogue; const binding = expected?.sourceBinding;
