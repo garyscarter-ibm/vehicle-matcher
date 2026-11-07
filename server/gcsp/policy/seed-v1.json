@@ -12727,7 +12727,7 @@
           },
           "scheduled": {
             "owner": "retailer",
-            "nextStep": "Attend the handover at the agreed time."
+            "nextStep": "The retailer prepares your car for the handover."
           }
         },
         "ineligible": {
