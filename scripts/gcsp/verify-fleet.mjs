@@ -15,6 +15,9 @@ import { validateCorpusDirectory, readCorpusFile, contentChecksum } from '../../
 import { createPolicyService } from '../../server/gcsp/policy/index.js';
 import { APPROVED_CORPUS_IMAGES } from '../../server/gcsp/vehicle-evidence/registered-corpus-images.js';
 import { createConfigurationKey } from './configuration-key.mjs';
+import { demoVerifierCli } from './demo-verifier.mjs';
+
+export { UNVERIFIED_DEMO_GATES, verifyFleetIdentity, verifyFleetCoverage, configurationDeepLink, verifyStagedDemoFleet } from './demo-verifier.mjs';
 
 const limitations = Object.freeze([
   'Compatible profile-family coverage is not inferred from configuration IDs or VIN spelling.',
@@ -256,6 +259,18 @@ export async function verifyActiveFleet({ root, requiredDistinct = 10000, http =
 
 /** Staged validation and explicit offline active audits share the same corpus port and canonical policy. */
 export async function verifyFleetCli(argv = process.argv.slice(2), write = (value) => process.stdout.write(value)) {
+  const configAt = argv.indexOf('--config');
+  if (configAt >= 0 && argv[configAt + 1]) {
+    // FUCQ-77 demo plans carry modelLines; route them to the demo verifier, which keeps its own exit contract.
+    let candidate = null;
+    try { candidate = JSON.parse(await readFile(resolve(argv[configAt + 1]), 'utf8')); } catch { /* Fall through to the corpus CLI error. */ }
+    if (Array.isArray(candidate?.modelLines)) {
+      try { return await demoVerifierCli(argv, write); } catch {
+        process.stderr.write('Fleet verification unavailable. Use --config <plan.json> --staged --require-distinct 200; values are not echoed.\n');
+        return 1;
+      }
+    }
+  }
   const fail = (code, message) => { write(JSON.stringify(invalid({ code, message })) + '\n'); return 2; };
   const values = new Map(); const valued = new Set(['--config', '--artifacts', '--store', '--endpoint', '--require-distinct', '--run-id', '--as-of', '--concurrency', '--sample-size']);
   const flags = new Set(['--staged', '--active', '--http', '--offline']);

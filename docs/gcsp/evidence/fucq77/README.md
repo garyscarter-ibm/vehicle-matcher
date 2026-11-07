@@ -1,0 +1,155 @@
+# FUCQ-77 offline plan checkpoint
+
+6 November 2026. This checkpoint adds an executable **offline plan contract**, not collected demo data.
+The [proposed plan](../../../../server/data/gcsp/vehicle-evidence/demo-plan.json) remains pending.
+All 74 model-and-engine entries need exact current UK source qualification; none is an exclusion.
+
+The archived October 2024 transcription contains 66 rows per scheme, 132 total. The plan retains
+every original row, line number, grade label/value and towbar marker. It splits only explicit commas
+and slashes in the engine column, yielding 74 distinct model-and-engine entries with their original
+row memberships. It does not infer engine prefixes, successor generations or M-car body variants.
+The FS&UK X6 M60i row permits a towbar and the RR&Production row has no marker: both are preserved.
+This is archived evidence for collection coverage; the runtime eligibility source remains PolicyService.
+
+The two minima apply together: at least eight distinct configurations per mapped entry, and at
+least 200 overall. If all 74 entries are mapped, the minimum is **592**, before any larger target.
+An engine list such as `218i, 220i` cannot be covered with eight configurations of only one engine.
+
+## Readiness and source evidence
+
+`scripts/gcsp/demo-plan.mjs` exports `parseEligibilityMatrices`, `createDemoPlan`,
+`validateDemoPlan` and `assertDemoPlanReady`. The validator compares retained rows and atomic
+coverage against the complete archive and its SHA-256. Pending mappings are valid draft states
+but block readiness and `assertDemoPlanReady`. Declaring `status: ready` cannot override blockers.
+
+A mapping requires exact matrix model/engine, current UK configurator range, VG code, AG code
+and a retained source locator/hash. Its observation date must match the explicit qualification
+date; historical observations never become fresh checks. A supplied `verifyEvidence` adapter
+must check the actual retained artifact bytes, locator and extracted claims. There is no permissive
+default adapter. Merely entering evidence metadata in JSON cannot produce readiness.
+
+An exclusion requires a reason and a verified exhaustive current UK range observation for that
+exact model/engine. An empty or partial F44 response, absence from a selected projection, a changed
+model generation, or a similarly named engine is insufficient. In particular, 330e cannot map
+to evidence for 320i. Model year remains a separate source fact and cannot be inferred from an
+effect date, order date or observed year.
+
+The read-only FUCQ-58 sibling worktree retains a 5 November model tree for F70 and an empty F44
+response; its selected F70 fields explicitly have unknown derivative, body, model year and
+constructibility. The known-seed G61 refresh retains T5MJ/72HH, catalogue key G61E and payload
+range G61 with the original source dates. These are candidates for a later exact qualification,
+not current mappings or exclusions. The dispatcher's two current selected records and the three
+1 November constructible observations are distinct measurements; this checkpoint accepts zero
+demo configurations. Source/retention/display authorisation remains in force.
+
+## Contracts and remaining delivery gates
+
+The existing F39 dated catalogue adapter and F54 publisher/registry permit independent validation.
+The corpus continues to use `server/gcsp/vehicle-evidence/corpus-publisher.js` and
+`synthetic-registry.js`; this checkpoint introduces no alternative corpus format, collector,
+cache, budget engine, policy registry or source client. F59/F60 plan-selection hooks belong to
+their producers and require parent-coordinated pinned checkpoints before integration.
+
+The full product-map plan retains these unfinished gates:
+
+- Current exact mappings/exclusions and the accepted complete plan.
+- F59 canonical collector and F60 real facts/COSY enrichment integration, preserving requested and
+  resolved identities, all complete factory codes, accessory separation and changed-model rejection.
+- At least eight real distinct builds per mapped entry and at least 200 overall, varying paint,
+  upholstery, wheels and a pack. Dates/cache metadata cannot create distinct configurations.
+- Every ID recomputed as padded standard Base64 of uppercase VG + `:` + sorted uppercase complete
+  factory codes, including paint/upholstery and excluding dealer accessories; no duplicates.
+- At least 20 real headless deep-link checks with exact resolved selection equality. Retained
+  historical browser examples do not satisfy this sample. Page loads create anonymous garage
+  records according to the retained research: the actual browser plan must address that boundary.
+- F54 versioned `manifest.json`/`configurations.jsonl`, checksum/count consistency and lookup proof.
+- The authored collector/verifier focused integration suite and parent-coordinated final `npm test`.
+
+Every future live chunk needs an actual finite engineering plan within the 3,000-request ceiling
+and concurrency at most two: include request/image/download byte limits, timeouts, retries/backoff,
+elapsed time, checkpoint/resume and 401/403/429 handling. No renewed source permission is required.
+There are zero source, credential, browser or image requests in this checkpoint. CI, demo startup
+and runtime BMW calls remain prohibited. No consuming screen changes; presentation truth is
+checked through facts' source/date/unit/unknown fields and representative-image fidelity.
+
+## Scoped validation
+
+```sh
+node --test server/test/gcsp-demo-plan.test.js
+node scripts/gcsp/demo-plan.mjs --config server/data/gcsp/vehicle-evidence/demo-plan.json
+```
+
+The second command performs an offline draft check and returns `valid: true`, `ready: false`.
+It has no execution, key or transport capability. A future `collect-fleet --execute` must call
+the readiness guard before creating a source session; that producer integration remains open.
+
+The scoped verifier is `scripts/gcsp/verify-fleet.mjs`. `verifyFleetIdentity` consumes the existing
+F54 configuration records and audits VG-based padded Base64, sorted complete factory selection,
+paint/upholstery/accessory separation, duplicate signatures, explicit model-year unknowns and dates.
+`verifyFleetCoverage` counts exact range/VG/AG tuples per qualified matrix entry and applies both
+minima. Source/cache metadata does not enter its distinctness key. `configurationDeepLink` forms
+the exact factory-option route without making a browser request.
+
+`verifyStagedFleet` first checks plan readiness and then delegates compatible directory/schema/hash
+validation to F54's `validateCorpusDirectory`. It does not publish/select a version. Errors contain
+codes and row indexes; unrecognised input identifiers are never echoed. Even an identity/count pass
+reports `acceptanceComplete: false`, zero accepted demo configurations, and the unverified gates.
+It cannot stand in for the still unavailable canonical producer/live proof.
+
+```sh
+node --test server/test/gcsp-demo-plan.test.js server/test/gcsp-demo-verifier.test.js
+node scripts/gcsp/verify-fleet.mjs --config server/data/gcsp/vehicle-evidence/demo-plan.json --staged --require-distinct 200
+```
+
+The staged command returns exit **2** (`incomplete`) with all 74 mappings pending, before reading
+any staged directory or creating a session. Exit 1 means invalid/unavailable input. There is no
+full-acceptance exit 0 in this checkpoint. Tests use the actual F54 candidate writer/validator with
+zero VIN mappings and reject a checksum mutation; successful fixture counts do not become real data.
+The [producer contract gaps](producer-contract-gaps.md) record pinned F59/F60 shapes and the exact
+remaining source, enrichment, browser and publication integration requirements.
+
+The test selection excludes collector/enrichment/runtime/native SQL and full-suite acceptance.
+The JavaScript affected selector is unavailable, so the explicit narrow regression is selected.
+Persistent selection/ownership/checkpoint/cleanup receipts are in
+`/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead77/`;
+shared impact evidence is under `.claude/test-runs/impact/`. One worker is limited to 128 MiB
+scratch, 384 MiB sampled RAM and 300 seconds, with HostBudget reservation and finalizer cleanup.
+The vendored resource API exposes `Scratch`/`run_process` rather than `RunResources`; it provides
+the same owned root, external manifest, process-group join and verified-deletion lifecycle.
+
+
+The final scoped command added `--experimental-test-coverage`: **32/32 passed**, zero skipped,
+170.307 ms reported test duration. Aggregate file coverage was 91.95% lines/85% branches for the
+plan and 82.46% lines/80% branches for the verifier. Node supplied file aggregates rather than
+per-test coverage contexts; the shared impact map records reviewed function/assertion and
+fixture/configuration/subprocess edges. Imported VIN-generation functions had zero function coverage.
+
+The verifier receipt is
+`/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead77/verifier-checkpoint.json`.
+It records six tested source SHA-256 values, the exact command and expected incomplete CLI result.
+All 14 owned scratch roots and process groups were absent after teardown. Sampled peak RSS across
+all plan/verifier chunks was 134,529,024 bytes; sampled scratch was zero. The 200 ms sampler can
+miss brief process/temporary-candidate peaks, so these are sampled measurements. Successful logs
+removed total 28,041 bytes across both checkpoints; bounded expected-red evidence remains. No
+overlay, browser exception, large output or leftover exists. The receipt also discloses the initial
+selection-path metadata omission and its correction; unchanged checks were not rerun for paperwork.
+
+
+## Review fix 1 — invalid input classification
+
+Independent review of `3f5a48158fdb3a2d94cd0249341b30ce62dace12` found that the readiness
+early return also classified invalid plans as incomplete. The verifier now rejects `valid: false`
+before checking readiness. API and actual CLI regressions cover a wrong schema and a weakened
+minimum (invalid/exit 1), alongside the valid 74-pending draft (incomplete/exit 2). Every case
+retains zero accepted configurations and incomplete acceptance; no staged directory is accessed.
+
+Both new assertions failed before the one-line repair. The scoped plan/verifier command then
+passed **34/34**, zero skipped, with 478.955 ms test duration; no full suite was run. The receipt is
+`/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead77/review-fix1-checkpoint.json` and the refreshed shared impact map is
+`.claude/test-runs/impact/fucq77-verifier-d302d06ba27dfa56fdce4daf9aa86dbe8e36c44b68daf6a7c011d928d67385bd.json`.
+The two new owned scratch roots and process groups were verified absent, and all previous 14
+roots remained absent. Sampled peaks were 235,880,448 bytes RSS and 1,270,240 bytes scratch,
+within the same one-worker 128 MiB scratch/384 MiB sampled RAM/300-second limits. The successful
+log (5,684 bytes) was removed after retaining the summary; the bounded red log remains.
+No overlay, browser exception, leftover or source/browser/key/image/SQL call occurred. All
+current mapping, real producer, collection, browser, publication and full-validation gates remain open.
