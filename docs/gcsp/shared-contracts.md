@@ -344,13 +344,111 @@ Unpinned reads choose the latest version effective at supplied `read.asOf`; they
 
 #### Dated policy provider and trusted publishing · FUCQ-83
 
-The additive [dated-policy implementation contract](policy-versions.md) preserves every existing typed read and activation-time pin. `createPolicyService()` selects `PostgresPolicyProvider` when `GCSP_DATABASE_URL` is configured; a source failure stays unavailable. Explicit `provider` or file/retained-file inputs remain deliberate test/what-if sources. `close()` releases only a provider-owned pool. `MemoryPolicyProvider` is an explicitly selected mutable test provider, not a database fallback.
+The additive [dated-policy implementation contract](policy-versions.md) preserves every existing typed read and activation-time pin. `createPolicyService()` selects `PostgresPolicyProvider` when `GCSP_DATABASE_URL` is configured; a source failure stays unavailable. Explicit `provider` or file/retained-file inputs remain deliberate test/what-if sources. `close()` releases only a provider-owned pool. `MemoryPolicyProvider` is explicitly selected for memory demo/test runs, not a database fallback.
 
 The existing migration runner discovers additive `0002_policy_tables.sql` alongside unchanged 0001/0003. Six run/version-scoped tables retain dated complete typed seed rows, stable row order, publisher/clock time, command/input digest and seed digest. Version 1 is seeded idempotently from the reviewed repo file. Native constraints and append-only triggers protect historical versions; policy rows can precede run bootstrap and do not mutate offers, quotes or the generic transaction repository.
 
 Inject existing `{ identity, clock }` into the writable PolicyService. `publishPolicyVersion(context, { commandId, expectedActiveVersion, policyVersion, effectiveFrom, changes: [{ table, key, patch }] })` requires the adapter-owned Greg context and current DemoClock run/time. Patches name existing seed collections/entries, preserve identifiers, include basis/source/sourceDate/status provenance and pass full seed validation before writing. Effective dates append after every retained version and cannot precede the current injected instant. Each successor copies the latest retained snapshot, preserving changes already scheduled before its new effective date; its audit sourceVersion names that predecessor. Same actor/command/input replays its original result; changed input conflicts; stale expected active version asks for refresh. Accepted values additionally retain publisher and publishedAt. Previous rows and pinned offer terms remain unchanged. No publish route/screen is introduced.
 
 Response fixtures for later C6 are `server/test/fixtures/gcsp-policy-version-outcomes.json`. This is backend-only, with no component/screenshot requirement. Configured managed PostgreSQL proof now passes policy 21/21, explicit-schema factory 1/1 and repository 61/61 with no skips; isolated schema inventory was restored exactly. The combined authored offline full passes1,235/1,230/5 native skips with matching strict stamp `07aea3ec1a62`. [Current evidence](evidence/fucq83/README.md) separates actual native proof from credential-unset consumer/full validation. The existing diagram topology already includes this source; status recolouring/rendering remains unverified while the background bridge is unavailable.
+
+#### Greg's bounded editable projection · FUCQ-103
+
+The preview/publish panel owns this additive catalogue. Its implementation and acceptance evidence are recorded in
+`greg-publish.md` and DEV-2026-11-04-066; this contract entry alone does not establish completion.
+
+| Editable field ID | Canonical entry and field | Unit and validation |
+|---|---|---|
+| `price:<key>` | An existing `pricePlans` row's `monthlyPoints`, with its matching `value` updated together | Nonnegative safe integer points/month; preserve scheme, match and identity fields. |
+| `weight:<preferenceKey>` | `employee.recommendation.v1.value.preferenceWeights.<preferenceKey>`, for the registered body, fuel, sportiness, comfort, economy and size preferences | Nonnegative safe integer relative weight; canonical neutral value is 1 for every registered preference. |
+
+The price keys come from the resolved PolicyService snapshot, rather than a browser-maintained list. No control or
+command can edit eligibility, essentials, allowances, employee importance, hard filters or another calibration path.
+Independent preference scores still use their dimension-specific calculation. The aggregate uses employee importance
+multiplied by the configured preference weight. Retained calibration without `preferenceWeights` keeps its original
+employee-importance calculation. The server projects an explicitly labelled neutral adoption proposal, one multiplier
+of 1 for every existing preference; the browser owns no fallback values. An intentional weight publication adds the
+complete map only in a new dated successor, leaving all other legacy calibration fields identical. A supplied map must
+cover exactly the registered preference keys; missing/extra keys fail explicitly. Legacy `tuning.weights` remain dimension machinery,
+not a second editable policy map. Zero weight contributes no aggregate importance. No contributing importance produces an
+unknown fit score, never an invented perfect fit. Gate decisions precede weighting and cannot be overridden by it.
+
+Optional reviewed `greg.publish.editor.v1` supplies assumed per-kind slider presentation ranges, adopted through
+server-only `greg-publish-editor-v1`. `readPolicy` projects each range with its assumption key and provenance.
+These ranges never narrow the legal safe-integer validation above. Missing/invalid ranges keep exact numeric
+editing available; exact values outside a range remain unchanged and explicitly explained. The shared single
+slider is callback-owned, and the browser supplies no policy ranges/defaults. See `greg-publish.md`.
+
+The server-only snapshot read supports a disposable what-if PolicyService over the same validated source. A preview
+returns active and draft aggregates, their differences and explicit preview status without writing a policy, run,
+brief, offer or quote. Publication sends the permitted patches and provenance through `publishPolicyVersion` and
+retains the publisher, effective time and original command identity. This panel publishes at the current DemoClock
+instant; stable `effectiveFrom` input permits an identical command replay, while an unseen past/future command is
+rejected. General scheduled publication remains the existing PolicyService boundary.
+
+New work must resolve the effective policy at the run's demo instant and refresh both `runs.policyVersion` and
+`runs.versions.policy` coherently. Publication alone is insufficient evidence of activation. Held quote/offer pins and
+historical explanation versions remain unchanged. Ordinary employee reload/preview and Greg reload after a publish
+are required integration evidence, separately from isolated service tests.
+
+`activateRunPolicy({ repository, policy }, context)` resolves at persisted `run.clockInstant` and CAS-updates
+both references, preserving all other versions and pinned rows. Ordinary authenticated session/context
+resolution invokes it before minting new contexts; repeated role guards remain read-only. Session expiry
+uses wall time. Accepted publication reports `activation.status: active` or truthful `pending` with
+`activationRequired`; retry uses the unchanged original command to reconcile. Registered Greg policy
+routes and ordinary employee HTTP reload are verified with explicit composition and the delivered
+`createGcspRuntime.dependencies` through buildServer. Screen/browser and full/native acceptance remain open.
+
+#### Reviewed missing-assumption adoption · FUCQ-103, 5 November 2026
+
+`PolicyService.adoptReviewedAssumptions(context, { commandId, expectedActiveVersion,
+policyVersion, effectiveFrom, definitionSetId })` is an intentional server-only operation.
+It uses the actual Greg identity guard and the same provider publication lock/transaction,
+dated successor validation and immutable command receipts as `publishPolicyVersion`.
+It has no HTTP route and accepts no arbitrary keys, rows, values, provenance or browser defaults.
+`definitionSetId` selects a checked-in immutable reviewed bundle: schema version, stable ID,
+revision, complete canonical definitions and a SHA-256 digest over the canonical bundle data.
+The digest excludes only its own field; bundles retain key/value/unit/basis/source/sourceDate/status.
+
+The first registered bundle, `presenter-controls-v1`, is
+`server/gcsp/policy/reviewed/presenter-controls-v1.json`. Its `clock.presenter.stepSeconds`
+definition exactly preserves FUCQ-126's canonical definition. A successor adds only absent
+keys, without replacing existing keyed values, provenance or tuning. It reuses full
+`snapshotVersions` validation and the current provider storage schema. Audit/accepted receipts
+include `adoption = { definitionSetId, revision, digest, addedKeys }`, Greg's publisher identity,
+and publication/effective instants. Provider audit also retains the source policy version.
+Old snapshots are never changed.
+A new no-op command is invalid; identical original-command replay returns the original
+acceptance even after time advances; changed input conflicts; stale active versions fail.
+The ordinary public publisher continues to reject arbitrary unknown-key patches. The separate
+recommendation preference-map migration remains bounded to its existing exact assumption.
+
+`withPublicationPorts({ identity, clock, repository? })` returns a fresh PolicyService view
+over the same private provider. It does not mutate authorization on the original read service
+or make another source/store. The optional repository supplies trusted postadoption activation.
+Successful adoption uses the existing `activateRunPolicy` helper, CAS-updating both run policy
+references at persisted DemoClock time and preserving historical quotes/holds/offers.
+Acceptance remains `ok` with `activationRequired: true` and a retryable `activation.status:
+'pending'` if activation cannot complete. Original-command retry reconciles activation without
+another append. Ordinary session/context resolution returns the successor through the same
+cookie; guards and what-if preview remain pure. No second context resolver is introduced.
+
+`createGcspRuntime` bootstraps identity/clock from its read policy, binds the writable view to
+those ports, and composes Greg demand/publish over that same provider. Its returned dependencies
+include `gcspRepository`, `gcspPolicy`, `gcspGreg` and `gcspGregPublish` for `buildServer`, while
+retaining account, brief/editor, activity, recommendation and presenter controls behavior.
+Explicit memory mode defaults to MemoryPolicyProvider; default PostgreSQL mode uses
+PostgresPolicyProvider without a file/memory fallback on failure. An explicitly supplied file
+policy remains read-only. Runtime closes its owned default policy once, including failure paths,
+and preserves caller-owned policy lifetime. Existing injected-repository close behavior is
+retained. No seed, launcher or storage schema changes are required.
+
+FUCQ-113 learning bundles are not registered by this presenter checkpoint; they require the
+exact reviewed canonical artifact through this registry. No proposed learning values become
+active defaults or policy definitions merely by appearing in discussion. Core clock/reopen
+works with retained policies missing the presenter step; controls remain unavailable until
+intentional adoption. Scoped memory/HTTP evidence is recorded in
+`docs/gcsp/evidence/fucq103/README.md`; full/native/browser acceptance remains separate.
 
 ### EmployeeRecommendationService · FUCQ-29
 
@@ -452,6 +550,69 @@ FUCQ-57 adds `lookup.classifyRequest(request, { context })` and independent regi
 FUCQ-93 adds the [captured outbox contract](captured-outbox.md): `NotificationDispatcher` consumes committed jobs through the default `CapturedTransport`, storing the fictional rendered message under the existing `notification_outbox.outcome.message`. Trusted `buildServer` composition starts `gcspNotify` before clock startup; its `captured-outbox` handler uses the existing `outbox-dispatch` tick stage. Repository `afterCommit(observer)` runs outside the committed provider transaction, isolates observer failures and excludes notification bookkeeping from recursive drains. Reset atomically marks prior-run unsent jobs `stale`; sent captured history remains readable. The single policy key `notify.delivery.v1` controls attempt budget and exponential demo-clock backoff. No stock, hold, offer or allocation/priority state is changed by delivery, and no real mail, token producer or presenter viewer is supplied here.
 
 FUCQ-97 adds the presenter-only route `GET /api/gcsp/presenter/outbox` (`createOutboxRoutes`, composed as `gcspOutbox: { repository }`) and the `<gcsp-outbox>` viewer; see [presenter-outbox-contract.md](presenter-outbox-contract.md).
+
+## Atomic buddy hold producer · FUCQ-100 checkpoint
+
+The immutable quote additively pins `eligibility.currentCarComparison` from the unique current contract
+already linked to the authenticated employee/slot/scheme. It contains INTERNAL contract/source/revision
+binding and a separately allowlisted display model, dated provenance and explicit unknown comparisons.
+No current VIN/configuration/specification or points are inferred from the model. Public access projects
+the display only; `comparisonAvailable:false` preserves the actual source gap and FUCQ-105's unfinished
+comparison acceptance. Both local and remote producers reuse this quote. [Shape and proof](buddy-current-car-comparison.md):
+19projector/security +193fresh affected boundaries, no skips;35clean resource manifests.
+
+Remote mode requires `execute(operation)` and `reconcile(operation)`. A genuinely authenticated
+allocation first persists the quote, shared claim-pending hold/claim and a `buddy-claim` operation;
+its original command result stays `pending`. Only a matching confirmed claim with freshly valid
+authority, consent, brief, visibility, facts, policy, terms and original deadline creates the active
+offer and one outbox job. Unknown outcomes retain exclusion. Later drives reconcile before retry;
+only a matching authoritative not-found permits another execute. Invalid/expired confirmation and
+active remote expiry create a bound `buddy-release`; exclusion stays until matching confirmed release.
+`BuddyHoldService.start()` registers private expiry and `buddy-pending-operations` at the canonical
+`pending-reconciliation` stage. Startup reads original durable intent without creating an employee
+session. `readOperation(context, { operationId })` is a same-employee/entitlement/run authenticated
+read with safe operation/hold/offer/server-time projections and snapshot checks. The paused allocator
+still needs to adopt that read; original command replay never changes from pending to offered.
+Owned module proof:49remote protocol +142affected boundaries, no skips; central composition remains
+separate. [Implementation and evidence](buddy-remote-plan.md) retain the source boundaries and gates.
+
+Offer links add the public `runId` query coordinate beside `offerId`, so FUCQ-102 can look up one
+run-scoped hash and distinguish authentic historical links after verifying the full environment/run/offer
+binding. The opaque token remains only in the URL fragment. Query coordinates grant no authority;
+the server supplies the trusted environment. Links remain relative to the separately configured landing
+origin. No hash scheme or token lifetime changes. Dedicated coordinate/custody/binding checks:4/4.
+
+The additive [buddy producer contract](buddy-holds.md) records the exact allocation-candidate revisions,
+transaction-bound BriefService revalidation, shared conditional claim, pinned quote/offer/outbox shape and
+hashed environment/run/offer token binding. The current independent slice accepts a real trusted employee
+context and explicit local-synthetic authority. `tryClaim` accepts FUCQ-96's published candidate and seven
+revision pins, then re-evaluates its quote against stored authority. Renewal derives from brief, slot,
+then employee and remains on both hold and claim. Automatic outbox insert receipts omit only the link;
+same-digest replay reconstructs the exact original result from original insert input, including after CAS.
+Generic receipts retain their contract. Downstream notification attempt/failure receipts now retain only
+safe descriptors/state. Dispatch re-reads the durable job and checks its exact attempt and snapshot
+before transport and acknowledgement/failure bookkeeping; obsolete work preserves newer state.
+Captured token-bearing rendering remains in the outbox row. Exact published FUCQ-96 source invocation
+now passes isolated real-service allocation/replay and genuine stale-stock fallback checks. Backend
+worker/startup composition, remote reconciliation and completed FUCQ-66 service integration
+remain outstanding. No migration, central server
+registration or screen is added.
+
+`BuddyHoldService.start()` independently registers private `buddy-expiry` work for real ticks and
+backend startup. At the policy's inclusive deadline, aligned active local buddy hold/claim/offer rows
+expire together with restored released-stock flags and a durable per-hold expiry receipt. Pending,
+selected, remote-shaped, manual and inconsistent authority stays excluded. Original allocation and
+expiry replay outcomes remain historical; expiry creates no decline or priority. Central registration
+and remote release/reconciliation are not supplied by this local checkpoint.
+
+FUCQ-100's separately granted internal calculation seam exports
+`createStoredSubjectRecommendationEvaluator({ provider, policy, time })` from the recommendation module.
+Its `evaluate(subject, confirmedBrief)` accepts exactly the seven server-owned run/environment/employee/
+company/scheme/grade/policy fields, with no roles/session/write authority. It shares the public consumer's
+calculation kernel, freezes the subject passed to provider/time and preserves source/run/policy binding.
+The public recommendation/preview service object and employee guards are unchanged. Only a private
+previously authorised-intent worker may supply fresh repository-derived inputs; this read-only factory
+does not replace current authority, consent, pause, visibility, brief or source validation before writes.
 
 ## Owned renewal-risk cases · FUCQ-112
 
@@ -590,6 +751,10 @@ A prepared selection is an optional trusted third argument to existing `DemoCloc
 
 The checked response projection is `server/gcsp/fixtures/scenarios/presentation-v1.json`, asserted against actual computed responses by `server/test/gcsp-scenarios.test.js`. This backend-only story adds no screen or UI component, so new screenshots are unnecessary. Later presenter controls follow [the experience contract](experience-quality.md), [GCSP shell/Used Cars reference](screens/README.md) and `COMPONENTS.md`. [Per-scenario planned click-throughs and dated observations](manual-acceptance-scenarios.md#named-scenario-preparation--fucq-125) clearly separate automated preparation/refusal from unimplemented manual replay. PostgreSQL/provider/live-mail execution remains separately gated.
 
+## Presenter controls projection and composition · FUCQ-126
+
+The additive [presenter controls contract](presenter-controls-contract.md) exposes the existing run/clock/scenario readback, the canonical `clock.presenter.stepSeconds` assumption, named cues and authorised safe principal selectors at `GET /api/gcsp/presenter/controls`. `POST /api/gcsp/presenter/controls/tick` persists the original policy-resolved command plan before composing existing advance/tick receipts. Stable command IDs preserve the target and ordered handler outcomes across retries and reopening. Presenter control authority remains separate from the acting cookie. Interrupted handler outcomes retain their actual reason while preserving the clock's top-level unavailable/retry semantics. Missing release stages produce no invented car count; unavailable business scenarios and unrecoverable raw-cookie issuance replay remain explicit. This adds no migration, business producer or dependency, and does not establish real release/reset acceptance.
+
 ## Greg saved-demand projection · FUCQ-99
 
 `createGregDemandService({ repository, policy, clock, identity }).readDemand(context)` and `buildServer({ gcspIdentity, gcspClock, gcspGreg, gcspAllowedOrigins })` expose the trusted Greg-only `GET /api/gcsp/greg/demand`. No query selectors are supported; shared gate/origin/session/no-store and current-run guards remain authoritative. Reads derive the latest confirmed saved briefs, full-candidate FUCQ-29 unmet gates (including unknowns), actual holds/offers/typed decisions and released/held/allocated stock, with brief/policy/clock versions and an opaque projection version. A second complete repository read and clock/identity recheck refuse a mixed concurrent view without adding a snapshot API, tables or migrations. No write, forecast, retail display sample, individual identity/history or score-as-satisfaction enters this projection.
@@ -597,6 +762,69 @@ The checked response projection is `server/gcsp/fixtures/scenarios/presentation-
 Each aggregate returns `{ count, versions: { brief: [], policy: [] } }`. The assumed canonical `greg.demand.smallCountThreshold = 5` (unit count, 5 November 2026, basis in `greg-demand.md`) is read through PolicyService; smaller counts, including zero, return only `{ kind: band, fewerThan: N, label: fewer than N }`, while counts at/above it return `{ kind: exact, value, label }`. Missing/invalid policy is unavailable. Dashboard consumers render bands without deriving a hidden number and distinguish expressed demand, overlapping gates/outcomes, actual supply and future predictions. This demo suppression rule is not verified BMW policy or formal disclosure protection.
 
 The existing `employee.recommendation.v1` registry additively permits optional `essentials.modelLine = { operator: equals, type: string, unit: null }`. Existing generic BriefService persistence/validation and FUCQ-29 essential gates apply unchanged; no older brief requires this field. Unspecified model choices are explicit, never inferred from current cars or rankings. The existing declined-car exclusion key remains authority; pause/resume and provenance-only or equipment-order changes do not reopen an unchanged declined exact car. Typed decline grouping excludes reason free text. The [full dashboard response contract and repeatable scenarios](greg-demand.md) record input shapes, privacy/version/empty/unavailable/refresh states and upstream producer boundaries. Backend-only: no new screen/component or rendered screenshot claim; experience-quality and agreed shell/Used Cars body references continue to govern its future consumer.
+
+## Ownership and extensions
+
+FUCQ-53's [synthetic identity allocation contract](synthetic-identity-allocation.md) adds offline `allocateSyntheticIdentities` / `allocateInventoryFile` ports, immutable whole-inventory replay, delivered/current-only VIN generation and `publishStockOrders` through the existing repository transaction port. Stock imports start unreleased, carry no VIN and preserve current operational state; `runs.versions.syntheticIdentityInventory` records the artifact revision/digest. Only the seven-digit order reference is exposed by the employee projection. File publication and PostgreSQL import are separate stages with independently atomic failure; this adds no repository table, public write endpoint or scheme-policy source.
+
+| Owner | Implements / consumes |
+|---|---|
+| FUCQ-80 (FUCQ-79) | This versioned contract, links, assumption keys and extension/change-log rules; no runtime implementation. |
+| FUCQ-81 (FUCQ-79) | Repository port, SQL/memory adapters, migrations, initial transaction tables and contract tests. |
+| FUCQ-82 (FUCQ-79) | Canonical seed, file-backed PolicyService reads/provenance, source-location entry in build-rules.md. |
+| FUCQ-83 (FUCQ-79) | Additive dated policy tables, idempotent seed, PostgreSQL provider, immutable publishing/pinned reads. |
+| FUCQ-84 (FUCQ-79) | DemoIdentityAdapter, fictional principals, middleware, acting sessions, role/resource/run boundary. |
+| FUCQ-85 (FUCQ-79) | DemoClock, registry/order/replay, startup recovery entry point and synthetic reset. Handler rules belong to the registering stories. |
+| FUCQ-54/55 | Existing immutable configuration/VIN/image publication/registry and one read-only in-process/HTTP lookup; current-run stock reads reuse the TransactionRepository. No duplicate identity inventory or runtime publisher. |
+| FUCQ-66 | Manual claim/release/expiry rules, timing phases, quotes and expiry handler over FUCQ-81/82/84/85; no second repository. |
+| FUCQ-29 | Employee eligibility/affordability/essential gates and ranking, reading FUCQ-82/83; no local rule/default table. |
+| FUCQ-30 | Canonical serialisable local feedback actions and confirmed changes; questionnaire and read-only full-candidate employee draft consumers. FUCQ-91 persists through the same confirmed-change helper; FUCQ-107 adds its later offer flow. |
+| FUCQ-65 | Manual employee/driver/contract/entitlement context using FUCQ-84 and the shared repository/policy; no separate identity resolver. |
+| FUCQ-91/94/95 | BriefService/versioned permission and single-change operation, employee controls and activity projection. |
+| FUCQ-92/96/100 | Release pull/replay, shared allocation/tie-break, buddy hold/offer and expiry handlers. |
+| FUCQ-93/97/98 | Outbox dispatch/capture, presenter viewer and configured real transport; mail cannot decide allocation. |
+| FUCQ-112 (FUCQ-110) | Owned renewal cases, keyed risk-trigger consumer, scheme-team updates/remedies and atomic case notifications over existing foundation ports. Help/case screens and lifecycle producers remain separately owned. |
+| FUCQ-116 (FUCQ-110) | Policy-defined document/readiness items, synthetic status capability and live stub, the sole readiness gate and keyed document exceptions over existing foundation ports and FUCQ-111's stage port. |
+| FUCQ-102/105/106/107/108 | Run-bound offer access, truthful offer read/display, decisions, one confirmed change and shared ordering handoff. |
+| FUCQ-71/72; FUCQ-110 stories | Shared manual/buddy ordering adapter and post-selection target lifecycle/appointment/document states. |
+| FUCQ-99/101/103/104; FUCQ-74/75 | Greg aggregates/publish/supply consumers, forecast/plan extensions, scenarios/presenter controls over the same run/policy/time. |
+
+An implementing story adds its schema/key/method and provenance here in the same commit as the additive implementation, plus a change-log entry identifying the owner, contract version and consumer compatibility. Add fields without changing existing meaning, retain old enum readers during rollout, supply provider parity/affected-consumer evidence and update the seed once. If a reversible assumption needs refinement, record its changed key and basis; do not spread a second active default. Human questions about unverified BMW facts can be queued while a labelled synthetic assumption permits progress under the build rules.
+
+## Retail exact-listing decisions · FUCQ-23
+
+Retail `publicMatch.listings[]` additively retains the evaluator's exact `decision = { score, fit, taste, stretch, reasons, tradeOffs }`, plus the member's `name`, `line`, `plate`, `retailerName` and `distance` when known. Existing representative fields, aggregate counts/ranges/feature availability, endpoint caps, `/health` and the columnar pool contract retain their meanings. Ungrouped preview/game results attach their existing match decision to their sole member. The shared card and local refinement consume that exact decision; an older backend's unsupported sibling score/reasons are unavailable rather than reconstructed. The [focused contract, corrected R1 and repeatable trial](exact-listing-decisions.md) distinguish this correction from later evaluator extraction/parity. No GCSP lifecycle or policy keys change.
+
+## Change log and reviewable assumptions
+
+| Version / date / owner | Change and keyed assumptions |
+|---|---|
+| 1.0.0 / 2026-11-06 / FUCQ-116 | Adds LifecycleDocumentService, `lifecycle-documents` handler, document routes, `ordering.documentStatus.v1` capability and live stub, versioned receipt projection (no table) and keyed exception receipts with order-specific renewal identity; assumed `lifecycle.documents.{v1,scenario.v1,exceptions.v1}`. Consumes `lifecycle.stages.v1` rev 2. No existing meaning changes. |
+| 1.0.0 / 2026-11-06 / FUCQ-111 | Adds LifecycleApprovalService, `lifecycle.stages.v1` rev 2 read/listOrders and internal stagePort, synthetic ordering status capability and live stub, versioned receipt transitions (no table), `lifecycle-approvals` handler and assumed `lifecycle.approval.{ticks,declineScenario,ownership}.v1`. |
+| 1.0.0 / 2026-11-05 / FUCQ-71 | Adds the isolated shared selection-ordering port, durable scoped synthetic provider and DemoClock reconciliation; canonical assumed `ordering.terms.v1` / `ordering.approvalStages.v1` and a trusted source transaction callback. Uses existing repository tables, preserves exact stock order identity and target approval names. F71 callback commit/rollback/pending and policy boundaries are scoped evidence; Gary's actual transactional producer, configured SQL/reopen, account/runtime and final whole-suite gates remain incomplete. |
+| 1.0.0 / 2026-11-05 / FUCQ-103 | Adds trusted snapshot reads, the bounded monthly-points/preference-weight projection, no-write demand/fit preview and intentional dated publishing. A narrowly validated successor may adopt `employee.recommendation.v1.preferenceWeights` over an unchanged legacy calibration; historical rows/quotes and legacy employee-importance output remain intact. Activation and rendered integration evidence are tracked separately until verified. |
+| 1.0.0 / 2026-11-05 / FUCQ-83 | Source checkpoint: additive dated policy tables/migration 0002, idempotent seed, PostgreSQL and explicit memory providers, trusted Greg immutable publishing/replay and unchanged pinned reads. Existing assumptions/0003/consumers remain unchanged. Configured native policy/factory/repository proof passes with exact schema cleanup; combined offline full 1,235 total/1,230 passed/5 native skips has matching strict stamp 07aea3ec1a62. No screen or fresh diagram-render claim. |
+| 1.0.0 / 2026-11-05 / FUCQ-94 | Adds canonical editor context and server-only real unsaved preview through strict employee HTTP routes, explicit draft/base provenance, independent consent and truthful empty-equipment no. No approved recommendation downgrade, writes, holds or new screen. |
+| 1.0.0 / 2026-11-05 / FUCQ-57 | Adds mandatory configured-provider identity classification and successful-result binding checks through the existing retained registry/current-run inventory, preserving the FUCQ-55 envelope and FUCQ-43 real guard. Actual five-WMI generated-store HTTP/in-process/start/reset proofs retain honest US/LHD, unknown and representative-image-contract states. No live authorisation, mutable stock/policy/retail change or new screen. |
+| 1.0.0 / 2026-11-05 / FUCQ-112 | Adds RenewalCaseService/routes, `renewal_cases` and migration `0003`, eight dated `renewalCase.*` assumptions, keyed completed-receipt trigger consumer and same-transaction captured case-update jobs. Employee-confirmed preference remedies verify FUCQ-91 history; no allocation/priority mutation, existing port meaning change or screen. |
+| 1.0.0 / 2026-11-05 / FUCQ-55 | Additive three-identity lookup/HTTP envelope and same-entry offline profile, with exact tiny selected-store packaging only. Preserves exact run/configuration/source identity, typed outcomes and presentation provenance; reuses existing registry, repository and shared gate. No new policy or storage meaning; scoped lookup/HTTP/offline checks and final23/99/125/133integrated whole suite passed (820pass,2configuredSQLskips; stampc06d774bea5a). |
+| 1.0.0 / 2026-11-05 / FUCQ-133 | Adds immutable pinned comparison-policy preparation, pure seeded fictional cohort/stock/releases, the comparison.* assumptions above, explicit what-if overlays and reproducible input manifests. Limited structural fixtures are labelled synthetic; corpus reads require exact retained identity. No runtime route, live-state write, policy publication, migration or existing contract meaning change. |
+| 1.0.0 / 2026-11-05 / FUCQ-125 | Adds finite named input catalogue/preparation, explicit unavailable business capabilities, presenter read/reset routes, trusted optional85 fixture selection and existing cookie helper reuse. No new reset/repository schema/policy defaults/dependencies. |
+| 1.0.0 / 2026-11-05 / FUCQ-99 | Adds Greg-only current-run saved-demand/actual-outcome/stock projection with per-aggregate brief/policy versions, canonical small-count banding (`greg.demand.smallCountThreshold`), optional registered model-line essential and truthful backend presentation/scenario contract. Reuses repository/identity/clock/shared gates without migrations or existing method/retail changes. |
+| 1.0.0 / 2026-11-05 / FUCQ-23 | Additive retail member decision and exact display facts; representative v1 fields and caps remain compatible. The card/refinement consume exact decisions, with truthful mixed-version fallback. No scoring retune, policy key or GCSP transaction change. |
+| 1.0.0 / 2026-11-05 / FUCQ-30 | Adds local exact/group exclusion, retail predicate, confirmed preference/essential change and reversible undo/reset actions. The shared canonical helper replaces duplicate FUCQ-91 field-change/no-op logic while retaining its public command, transaction, versioning, audit and consent semantics. Complete read-only employee decisions recompute through existing policy/ranker gates. No new policy key, durable lifecycle operation or existing contract meaning change. |
+| 1.0.0 / 2026-11-05 / FUCQ-65 | Adds ManualContextService, five read ports, guarded account/draft/stock routes and assumed `manual.context.v1`. Existing identity/time/policy/repository and typed FUCQ-29 gates remain authority. Additive JSON/receipt conventions preserve consumers. Backend presentation fixtures cover synthetic/mapped employee reads; claims/quotes/expiry, screens, live integration and diagram rendering remain separate. |
+| 1.0.0 / 2026-11-05 / FUCQ-85 | Adds repository currentRun/resetRun, persisted DemoClock/registry/startup/reset and presenter HTTP binding. Adds canonical `clock.commands.v1`, `clock.handler.order.v1`, `clock.scenario.v1`; additive inventory snapshot retains allocator provenance. Same identity authority and employee time port; no existing consumer meaning changes. Backend response fixtures and memory/SQL-driver parity; managed PostgreSQL and draw.io rendering remain unverified. |
+| 1.0.0 / 2026-11-05 / FUCQ-29 | Adds the stateless employee recommendation consumer and `employee.recommendation.v1` calibration through the existing PolicyService. Reuses exact snapshots/typed terms, context and clock ports; no existing method meanings change. The authorised trusted cash-filter opt-out preserves retail defaults and avoids invented employee prices. |
+| 1.0.0 / 2026-11-05 / FUCQ-53 | Implements seeded target-format stock references and enabled-profile delivered/current VIN association, immutable source/version replay and whole-owned-inventory collision bounds. Adds `runs.versions.syntheticIdentityInventory` metadata through the existing repository port, plain visibility/provenance/failure projection and the independent offline checksum checker. Allocation algorithm/bounds are versioned artifact data; no active scheme assumption or existing consumer meaning changes. |
+| 1.0.0 / 2026-11-05 / FUCQ-84 | Implements the agreed identity component and shared HTTP context boundary, run-scoped fictional principal/slot/session seeding, presenter-controlled acting cookies, role and persisted resource ownership guards. Adds `identity.demo.principals`, `identity.session.durationSeconds` `identity.session.clock` and `identity.session.sameSite` to the canonical policy seed without changing existing policy values or contract meanings. Backend context/refusal fixtures and deterministic adapter/HTTP tests protect downstream consumers and retail/gate continuity; managed PostgreSQL execution remains unverified. |
+| 1.0.0 / 2026-11-04 / FUCQ-81 | Implements the existing TransactionRepository through `createMemoryRepository({ store })` / `createPostgresRepository({ schema?, migrate? })`; `0001_transaction_foundation.sql` creates 17 foundation tables with additive JSONB payloads, generated scoped keys/foreign keys and partial occupying-car uniqueness. Six policy tables remain FUCQ-83 migration `0002`; no interface meaning changes. Backend outcomes: `server/test/fixtures/gcsp-repository-outcomes.json`. Local scoped evidence is 37 passes across the memory contract and SQL-driver doubles, with two explicit unset-URL skips for the live PostgreSQL contract and native constraints; real SQL execution remains unverified. |
+| 1.0.0 / 2026-11-04 / FUCQ-82 | Additive clarification: common discriminant is `status`; preserve actual FS&UK and RR&Production source names without asserting a UKNSC mapping. File provider/seed implementation, exact pin semantics, explicit provider injection, the `eligibility.context.mapping` key and presentation evidence are recorded above; no contract meaning or version change. |
+| 1.0.0 / 2026-11-04 / FUCQ-80 | Initial foundation contract; all table/method names are draft `contract.storageVocabulary.v1` / `contract.portVocabulary.v1`; brief numeric scale `brief.slider.scale`; transaction key encoding `transaction.idempotency.keys.v1`; deployment migration ledger `repository.migrationLedger.scope`; presenter commands/order `clock.commands.v1` / `clock.handler.order.v1`. Behavioural/identifier assumptions and source dates are catalogued above. |
+
+Morning review should focus on the assumed manual order-review phase and the explicit tie-break/seed choices. They are revisable synthetic defaults, not additional approved BMW behaviour. Numeric monthly prices/allowances require labelled source rows from FUCQ-82; this document does not invent BMW prices from eligibility matrices.
+
+The FUCQ-80 contract baseline was documentation only. The FUCQ-81/82 backend implementations add no screen or UI component; their presentation fixtures and checks are recorded above. The [experience contract](experience-quality.md) and [shell/palette and Used Cars body reference](screens/README.md) remain binding for implementing stories; screenshots are not applicable to this document change.
 
 ## Selection ordering checkpoint · FUCQ-71
 
@@ -703,65 +931,3 @@ readiness. A producer `forbidden` read and another employee's order at any stage
 shapes for the later order progress screen are `server/test/fixtures/gcsp-lifecycle-documents-outcomes.json`; this
 backend-only story adds no screen. Remaining: runtime and route composition (FUCQ-100's lane), FUCQ-114's readiness
 consumer, actual producer integration evidence, native PostgreSQL and the full suite.
-
-## Ownership and extensions
-
-FUCQ-53's [synthetic identity allocation contract](synthetic-identity-allocation.md) adds offline `allocateSyntheticIdentities` / `allocateInventoryFile` ports, immutable whole-inventory replay, delivered/current-only VIN generation and `publishStockOrders` through the existing repository transaction port. Stock imports start unreleased, carry no VIN and preserve current operational state; `runs.versions.syntheticIdentityInventory` records the artifact revision/digest. Only the seven-digit order reference is exposed by the employee projection. File publication and PostgreSQL import are separate stages with independently atomic failure; this adds no repository table, public write endpoint or scheme-policy source.
-
-| Owner | Implements / consumes |
-|---|---|
-| FUCQ-80 (FUCQ-79) | This versioned contract, links, assumption keys and extension/change-log rules; no runtime implementation. |
-| FUCQ-81 (FUCQ-79) | Repository port, SQL/memory adapters, migrations, initial transaction tables and contract tests. |
-| FUCQ-82 (FUCQ-79) | Canonical seed, file-backed PolicyService reads/provenance, source-location entry in build-rules.md. |
-| FUCQ-83 (FUCQ-79) | Additive dated policy tables, idempotent seed, PostgreSQL provider, immutable publishing/pinned reads. |
-| FUCQ-84 (FUCQ-79) | DemoIdentityAdapter, fictional principals, middleware, acting sessions, role/resource/run boundary. |
-| FUCQ-85 (FUCQ-79) | DemoClock, registry/order/replay, startup recovery entry point and synthetic reset. Handler rules belong to the registering stories. |
-| FUCQ-54/55 | Existing immutable configuration/VIN/image publication/registry and one read-only in-process/HTTP lookup; current-run stock reads reuse the TransactionRepository. No duplicate identity inventory or runtime publisher. |
-| FUCQ-66 | Manual claim/release/expiry rules, timing phases, quotes and expiry handler over FUCQ-81/82/84/85; no second repository. |
-| FUCQ-29 | Employee eligibility/affordability/essential gates and ranking, reading FUCQ-82/83; no local rule/default table. |
-| FUCQ-30 | Canonical serialisable local feedback actions and confirmed changes; questionnaire and read-only full-candidate employee draft consumers. FUCQ-91 persists through the same confirmed-change helper; FUCQ-107 adds its later offer flow. |
-| FUCQ-65 | Manual employee/driver/contract/entitlement context using FUCQ-84 and the shared repository/policy; no separate identity resolver. |
-| FUCQ-91/94/95 | BriefService/versioned permission and single-change operation, employee controls and activity projection. |
-| FUCQ-92/96/100 | Release pull/replay, shared allocation/tie-break, buddy hold/offer and expiry handlers. |
-| FUCQ-93/97/98 | Outbox dispatch/capture, presenter viewer and configured real transport; mail cannot decide allocation. |
-| FUCQ-112 (FUCQ-110) | Owned renewal cases, keyed risk-trigger consumer, scheme-team updates/remedies and atomic case notifications over existing foundation ports. Help/case screens and lifecycle producers remain separately owned. |
-| FUCQ-116 (FUCQ-110) | Policy-defined document/readiness items, synthetic status capability and live stub, the sole readiness gate and keyed document exceptions over existing foundation ports and FUCQ-111's stage port. |
-| FUCQ-102/105/106/107/108 | Run-bound offer access, truthful offer read/display, decisions, one confirmed change and shared ordering handoff. |
-| FUCQ-71/72; FUCQ-110 stories | Shared manual/buddy ordering adapter and post-selection target lifecycle/appointment/document states. |
-| FUCQ-99/101/103/104; FUCQ-74/75 | Greg aggregates/publish/supply consumers, forecast/plan extensions, scenarios/presenter controls over the same run/policy/time. |
-
-An implementing story adds its schema/key/method and provenance here in the same commit as the additive implementation, plus a change-log entry identifying the owner, contract version and consumer compatibility. Add fields without changing existing meaning, retain old enum readers during rollout, supply provider parity/affected-consumer evidence and update the seed once. If a reversible assumption needs refinement, record its changed key and basis; do not spread a second active default. Human questions about unverified BMW facts can be queued while a labelled synthetic assumption permits progress under the build rules.
-
-## Retail exact-listing decisions · FUCQ-23
-
-Retail `publicMatch.listings[]` additively retains the evaluator's exact `decision = { score, fit, taste, stretch, reasons, tradeOffs }`, plus the member's `name`, `line`, `plate`, `retailerName` and `distance` when known. Existing representative fields, aggregate counts/ranges/feature availability, endpoint caps, `/health` and the columnar pool contract retain their meanings. Ungrouped preview/game results attach their existing match decision to their sole member. The shared card and local refinement consume that exact decision; an older backend's unsupported sibling score/reasons are unavailable rather than reconstructed. The [focused contract, corrected R1 and repeatable trial](exact-listing-decisions.md) distinguish this correction from later evaluator extraction/parity. No GCSP lifecycle or policy keys change.
-
-## Change log and reviewable assumptions
-
-| Version / date / owner | Change and keyed assumptions |
-|---|---|
-| 1.0.0 / 2026-11-06 / FUCQ-116 | Adds LifecycleDocumentService, `lifecycle-documents` handler, document routes, `ordering.documentStatus.v1` capability and live stub, versioned receipt projection (no table) and keyed exception receipts with order-specific renewal identity; assumed `lifecycle.documents.{v1,scenario.v1,exceptions.v1}`. Consumes `lifecycle.stages.v1` rev 2. No existing meaning changes. |
-| 1.0.0 / 2026-11-06 / FUCQ-111 | Adds LifecycleApprovalService, `lifecycle.stages.v1` rev 2 read/listOrders and internal stagePort, synthetic ordering status capability and live stub, versioned receipt transitions (no table), `lifecycle-approvals` handler and assumed `lifecycle.approval.{ticks,declineScenario,ownership}.v1`. |
-| 1.0.0 / 2026-11-05 / FUCQ-71 | Adds the isolated shared selection-ordering port, durable scoped synthetic provider and DemoClock reconciliation; canonical assumed `ordering.terms.v1` / `ordering.approvalStages.v1` and a trusted source transaction callback. Uses existing repository tables, preserves exact stock order identity and target approval names. F71 callback commit/rollback/pending and policy boundaries are scoped evidence; Gary's actual transactional producer, configured SQL/reopen, account/runtime and final whole-suite gates remain incomplete. |
-| 1.0.0 / 2026-11-05 / FUCQ-83 | Source checkpoint: additive dated policy tables/migration 0002, idempotent seed, PostgreSQL and explicit memory providers, trusted Greg immutable publishing/replay and unchanged pinned reads. Existing assumptions/0003/consumers remain unchanged. Configured native policy/factory/repository proof passes with exact schema cleanup; combined offline full 1,235 total/1,230 passed/5 native skips has matching strict stamp 07aea3ec1a62. No screen or fresh diagram-render claim. |
-| 1.0.0 / 2026-11-05 / FUCQ-94 | Adds canonical editor context and server-only real unsaved preview through strict employee HTTP routes, explicit draft/base provenance, independent consent and truthful empty-equipment no. No approved recommendation downgrade, writes, holds or new screen. |
-| 1.0.0 / 2026-11-05 / FUCQ-57 | Adds mandatory configured-provider identity classification and successful-result binding checks through the existing retained registry/current-run inventory, preserving the FUCQ-55 envelope and FUCQ-43 real guard. Actual five-WMI generated-store HTTP/in-process/start/reset proofs retain honest US/LHD, unknown and representative-image-contract states. No live authorisation, mutable stock/policy/retail change or new screen. |
-| 1.0.0 / 2026-11-05 / FUCQ-112 | Adds RenewalCaseService/routes, `renewal_cases` and migration `0003`, eight dated `renewalCase.*` assumptions, keyed completed-receipt trigger consumer and same-transaction captured case-update jobs. Employee-confirmed preference remedies verify FUCQ-91 history; no allocation/priority mutation, existing port meaning change or screen. |
-| 1.0.0 / 2026-11-05 / FUCQ-55 | Additive three-identity lookup/HTTP envelope and same-entry offline profile, with exact tiny selected-store packaging only. Preserves exact run/configuration/source identity, typed outcomes and presentation provenance; reuses existing registry, repository and shared gate. No new policy or storage meaning; scoped lookup/HTTP/offline checks and final23/99/125/133integrated whole suite passed (820pass,2configuredSQLskips; stampc06d774bea5a). |
-| 1.0.0 / 2026-11-05 / FUCQ-133 | Adds immutable pinned comparison-policy preparation, pure seeded fictional cohort/stock/releases, the comparison.* assumptions above, explicit what-if overlays and reproducible input manifests. Limited structural fixtures are labelled synthetic; corpus reads require exact retained identity. No runtime route, live-state write, policy publication, migration or existing contract meaning change. |
-| 1.0.0 / 2026-11-05 / FUCQ-125 | Adds finite named input catalogue/preparation, explicit unavailable business capabilities, presenter read/reset routes, trusted optional85 fixture selection and existing cookie helper reuse. No new reset/repository schema/policy defaults/dependencies. |
-| 1.0.0 / 2026-11-05 / FUCQ-99 | Adds Greg-only current-run saved-demand/actual-outcome/stock projection with per-aggregate brief/policy versions, canonical small-count banding (`greg.demand.smallCountThreshold`), optional registered model-line essential and truthful backend presentation/scenario contract. Reuses repository/identity/clock/shared gates without migrations or existing method/retail changes. |
-| 1.0.0 / 2026-11-05 / FUCQ-23 | Additive retail member decision and exact display facts; representative v1 fields and caps remain compatible. The card/refinement consume exact decisions, with truthful mixed-version fallback. No scoring retune, policy key or GCSP transaction change. |
-| 1.0.0 / 2026-11-05 / FUCQ-30 | Adds local exact/group exclusion, retail predicate, confirmed preference/essential change and reversible undo/reset actions. The shared canonical helper replaces duplicate FUCQ-91 field-change/no-op logic while retaining its public command, transaction, versioning, audit and consent semantics. Complete read-only employee decisions recompute through existing policy/ranker gates. No new policy key, durable lifecycle operation or existing contract meaning change. |
-| 1.0.0 / 2026-11-05 / FUCQ-65 | Adds ManualContextService, five read ports, guarded account/draft/stock routes and assumed `manual.context.v1`. Existing identity/time/policy/repository and typed FUCQ-29 gates remain authority. Additive JSON/receipt conventions preserve consumers. Backend presentation fixtures cover synthetic/mapped employee reads; claims/quotes/expiry, screens, live integration and diagram rendering remain separate. |
-| 1.0.0 / 2026-11-05 / FUCQ-85 | Adds repository currentRun/resetRun, persisted DemoClock/registry/startup/reset and presenter HTTP binding. Adds canonical `clock.commands.v1`, `clock.handler.order.v1`, `clock.scenario.v1`; additive inventory snapshot retains allocator provenance. Same identity authority and employee time port; no existing consumer meaning changes. Backend response fixtures and memory/SQL-driver parity; managed PostgreSQL and draw.io rendering remain unverified. |
-| 1.0.0 / 2026-11-05 / FUCQ-29 | Adds the stateless employee recommendation consumer and `employee.recommendation.v1` calibration through the existing PolicyService. Reuses exact snapshots/typed terms, context and clock ports; no existing method meanings change. The authorised trusted cash-filter opt-out preserves retail defaults and avoids invented employee prices. |
-| 1.0.0 / 2026-11-05 / FUCQ-53 | Implements seeded target-format stock references and enabled-profile delivered/current VIN association, immutable source/version replay and whole-owned-inventory collision bounds. Adds `runs.versions.syntheticIdentityInventory` metadata through the existing repository port, plain visibility/provenance/failure projection and the independent offline checksum checker. Allocation algorithm/bounds are versioned artifact data; no active scheme assumption or existing consumer meaning changes. |
-| 1.0.0 / 2026-11-05 / FUCQ-84 | Implements the agreed identity component and shared HTTP context boundary, run-scoped fictional principal/slot/session seeding, presenter-controlled acting cookies, role and persisted resource ownership guards. Adds `identity.demo.principals`, `identity.session.durationSeconds` `identity.session.clock` and `identity.session.sameSite` to the canonical policy seed without changing existing policy values or contract meanings. Backend context/refusal fixtures and deterministic adapter/HTTP tests protect downstream consumers and retail/gate continuity; managed PostgreSQL execution remains unverified. |
-| 1.0.0 / 2026-11-04 / FUCQ-81 | Implements the existing TransactionRepository through `createMemoryRepository({ store })` / `createPostgresRepository({ schema?, migrate? })`; `0001_transaction_foundation.sql` creates 17 foundation tables with additive JSONB payloads, generated scoped keys/foreign keys and partial occupying-car uniqueness. Six policy tables remain FUCQ-83 migration `0002`; no interface meaning changes. Backend outcomes: `server/test/fixtures/gcsp-repository-outcomes.json`. Local scoped evidence is 37 passes across the memory contract and SQL-driver doubles, with two explicit unset-URL skips for the live PostgreSQL contract and native constraints; real SQL execution remains unverified. |
-| 1.0.0 / 2026-11-04 / FUCQ-82 | Additive clarification: common discriminant is `status`; preserve actual FS&UK and RR&Production source names without asserting a UKNSC mapping. File provider/seed implementation, exact pin semantics, explicit provider injection, the `eligibility.context.mapping` key and presentation evidence are recorded above; no contract meaning or version change. |
-| 1.0.0 / 2026-11-04 / FUCQ-80 | Initial foundation contract; all table/method names are draft `contract.storageVocabulary.v1` / `contract.portVocabulary.v1`; brief numeric scale `brief.slider.scale`; transaction key encoding `transaction.idempotency.keys.v1`; deployment migration ledger `repository.migrationLedger.scope`; presenter commands/order `clock.commands.v1` / `clock.handler.order.v1`. Behavioural/identifier assumptions and source dates are catalogued above. |
-
-Morning review should focus on the assumed manual order-review phase and the explicit tie-break/seed choices. They are revisable synthetic defaults, not additional approved BMW behaviour. Numeric monthly prices/allowances require labelled source rows from FUCQ-82; this document does not invent BMW prices from eligibility matrices.
-
-The FUCQ-80 contract baseline was documentation only. The FUCQ-81/82 backend implementations add no screen or UI component; their presentation fixtures and checks are recorded above. The [experience contract](experience-quality.md) and [shell/palette and Used Cars body reference](screens/README.md) remain binding for implementing stories; screenshots are not applicable to this document change.

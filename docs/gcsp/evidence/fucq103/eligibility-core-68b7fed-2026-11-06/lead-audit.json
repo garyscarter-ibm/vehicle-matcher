@@ -1,0 +1,2280 @@
+{
+  "receipt": {
+    "schemaVersion": 1,
+    "date": "2026-11-06",
+    "scope": "once-granted-core25-only-original-result-and-independent-lead-cleanup-input-audit",
+    "publicationStatus": "UNPUBLISHED; root final audit required before publication or scope expansion",
+    "run": "fucq103-backend-4c44677bd6724608a994b0086021d29b",
+    "revision": "68b7fed87888a9b806087bab0ba4df5f4716cfd6",
+    "sourcePlanSHA256": "edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9",
+    "grant": "fucq103-eligibility-core-68b7fed-0639",
+    "grantStatus": "consumed-once-no-retry-no-nextmode",
+    "outcome": "SCOPED_CORE25_PASS",
+    "supervisorExitCode": 0,
+    "command": [
+      "/Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "--test",
+      "--test-concurrency=1",
+      "server/test/gcsp-greg-driver-eligibility.test.js",
+      "server/test/gcsp-greg-demand.test.js"
+    ],
+    "tests": [
+      "server/test/gcsp-greg-driver-eligibility.test.js",
+      "server/test/gcsp-greg-demand.test.js"
+    ],
+    "sourceCaseCounts": {
+      "server/test/gcsp-greg-driver-eligibility.test.js": 8,
+      "server/test/gcsp-greg-demand.test.js": 17
+    },
+    "observedSuccessfulCaseNames": [
+      "saved current brief, not draft/history/current-car/retail sample, drives model/body/fuel/essentials",
+      "unspecified model and indifferent/unconfirmed preferences remain explicit instead of inferred demand",
+      "unmet demand distinguishes no released stock, shared essential gate, and sufficient actual release",
+      "unknown employee authority stays needs-confirmation and stock visibility cannot widen eligibility",
+      "real offer/decision/hold/allocation records drive outcomes with typed declines and versions",
+      "all counts below canonical threshold are bands without a raw count or personal fields",
+      "threshold policy alternatives change every projection consistently; absent or invalid threshold fails closed",
+      "Greg service refuses employees, presenters and forged server context; old run after reset is stale",
+      "registered HTTP route enforces role and rejects browser run selectors under server identity",
+      "successive brief/release/decline/selection inputs change actual projection identity and figures",
+      "canonical optional model-line essential persists through BriefService and gates an actual wrong model",
+      "same declined exact car remains blocked until a relevant confirmed brief change, including pause/resume",
+      "a concurrent repository revision causes refresh conflict instead of a mixed projection",
+      "unmet evaluation reads all repository candidates beyond a retail-sized display limit",
+      "unregistered decline types and free text are replaced with a counted unclassified reason",
+      "buildServer exposes a no-store trusted Greg GET, origin/session/gate refusal and stale-run protection",
+      "equipment set order and duplicate keys cannot reopen an unchanged declined car",
+      "default manual preparation supplies the same actual driver fact to employee and Greg without a persisted flattened field",
+      "bound false, absent, unknown, nonboolean and uncertain provenance retain their shared recommendation refusal",
+      "explicit current driver binding selects the owned nominated driver and never chooses an eligible fallback",
+      "absent driver choice stays unconfirmed only when no explicit contract reference requires it",
+      "foreign, duplicate, dangling and malformed source bindings return only generic unavailable",
+      "invalid subject bindings are refused before demand can take the no-stock or hidden-stock shortcut",
+      "coherent synthetic cohort preserves canonical suppression and never persists the derived driver fact",
+      "employee and slot revisions participate in both Greg read fences"
+    ],
+    "originalFinalTestTotals": {
+      "tests": 25,
+      "suites": 0,
+      "pass": 25,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "duration_ms": 14602.364292
+    },
+    "matchedCount": 25,
+    "expectedCount": 25,
+    "skippedCount": 0,
+    "failure": null,
+    "wallSeconds": 18.042076708,
+    "peakAggregateRSSBytes": 1036320768,
+    "peakAggregateRSSMiB": 988.3125,
+    "aggregateRSSCapBytes": 1073741824,
+    "peakCombinedBytes": 4348560,
+    "environmentSHA256": "75f674ca94ecfb5cbe2dd88f40f1f03bdd587311114e2211397094051352f361",
+    "admissionHeadroom": {
+      "availableRamBytes": 2768748544,
+      "freeBytes": 212462489600,
+      "lowDiskHeadroom": false,
+      "outsideDiskPending": 0,
+      "outsideRamPending": 0
+    },
+    "runtimeCleanup": {
+      "groupsAbsent": true,
+      "joined": true,
+      "observedPids": 4,
+      "passed": true,
+      "pidsAbsent": true,
+      "ports": [
+        59866
+      ],
+      "portsClosed": true,
+      "removedBytes": 4338401,
+      "reservationAbsent": true,
+      "sampledAt": 1793947219.2495072,
+      "scratchAbsent": true
+    },
+    "independentCleanup": {
+      "passed": true,
+      "sampledAt": 1793947308.633483,
+      "ownedPidStarts": [
+        {
+          "pid": 99468,
+          "start": "Fri Nov 6 06:40:02 2026",
+          "absent": true,
+          "currentPidReused": false,
+          "killZeroESRCH": true
+        },
+        {
+          "pid": 99478,
+          "start": "Fri Nov 6 06:40:02 2026",
+          "absent": true,
+          "currentPidReused": false,
+          "killZeroESRCH": true
+        },
+        {
+          "pid": 99479,
+          "start": "Fri Nov 6 06:40:02 2026",
+          "absent": true,
+          "currentPidReused": false,
+          "killZeroESRCH": true
+        },
+        {
+          "pid": 99583,
+          "start": "Fri Nov 6 06:40:08 2026",
+          "absent": true,
+          "currentPidReused": false,
+          "killZeroESRCH": true
+        },
+        {
+          "pid": 99444,
+          "start": "Fri Nov 6 06:40:00 2026",
+          "absent": true,
+          "currentPidReused": false,
+          "killZeroESRCH": true
+        }
+      ],
+      "groups": [
+        {
+          "pgid": 99468,
+          "snapshotAbsent": true,
+          "killZeroESRCH": true
+        }
+      ],
+      "ports": [
+        {
+          "port": 59866,
+          "returncode": 1,
+          "stdoutBytes": 0,
+          "stderrBytes": 0,
+          "noListener": true
+        }
+      ],
+      "processSnapshot": {
+        "returncode": 0,
+        "bytes": 268555,
+        "sha256": "f83d37867cb478877e075751ed8d927453cf063da3597976815af26abab7bdc4",
+        "rows": 720
+      },
+      "ownedProcessOpenFilesQuery": {
+        "returncode": 1,
+        "stdoutBytes": 0,
+        "stderrBytes": 0
+      },
+      "scratchAbsent": "/private/tmp/test-stamp-shard-6c8f7ce11ef14dd8bf7e49611a465f1b",
+      "worktreeDependencyLinksAbsent": true,
+      "reservationTokenAbsent": "6c8f7ce11ef14dd8bf7e49611a465f1b",
+      "ledgerRead": "Strict read-only complete JSON under admitted physical O_NOFOLLOW lock; no foreign reservation mutation",
+      "ledgerSHA256AtAudit": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+      "remainingReservationCount": 0,
+      "predeleteOpenFilesGate": "Exact admitted finalizer requires successful lsof +D absence before deletion; runtime cleanup passed. No separate raw predelete lsof output is retained."
+    },
+    "retainedOriginals": {
+      "summary": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-4c44677bd6724608a994b0086021d29b-summary.json",
+        "bytes": 3068,
+        "sha256": "27e5525e42f9190cefcf6d367de65eb9ab5d11ce5dc1793fd1cad8cf0303b76a"
+      },
+      "manifest": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-4c44677bd6724608a994b0086021d29b-manifest.json",
+        "bytes": 2239,
+        "sha256": "2a836e1049932607cf6fba99bca3be51b3010acd98da88a45ebdf21cb5f71119"
+      },
+      "originalMergedLog": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-4c44677bd6724608a994b0086021d29b/test.log",
+        "bytes": 2991,
+        "sha256": "3586833fc51ba2a1a7e11f7e352a97986735f30acf4c89dc82e7a18d3e7deb79"
+      },
+      "checkpoint": {
+        "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-4c44677bd6724608a994b0086021d29b/checkpoint.json",
+        "bytes": 319,
+        "sha256": "dc7e75e3067c71a7e18491e36ee80d2f83abdca2ce82a0ca9c2b532fc18cc5cc"
+      }
+    },
+    "sourceIdentityBeforeAfter": {
+      "sameExactHeadUpstreamRemote": true,
+      "cleanTestedTree": true,
+      "runtimeSourcesPreserved": true,
+      "leadVerifiedSourcePins": 219,
+      "installedBytePins": 251,
+      "executablePins": 8,
+      "physicalDependencyEntries": 307,
+      "resolverAbsences": 163,
+      "sourceDirectoryInventories": 3,
+      "productTestFrozenRevision": "f80fc61ca151cb46ad21cb2b19e704f4012d53de",
+      "historicalAttemptReceiptsUnchanged": true
+    },
+    "checksPassed": 516,
+    "authoredParserFixtures": 38,
+    "executedParserFixtures": 0,
+    "agents": "requested/selected gpt-6.1-sol/high, existing assignment; no new spawn or fallback",
+    "limitations": "This normal scoped core25 result does not establish registry16, remaining integration modes, native/live/database/browser/full-suite or full-story acceptance. Original listener failure field remains unknown. Historical failed attempts remain immutable. No further execution or publication grant inferred."
+  },
+  "checks": [
+    {
+      "name": "exact source plan",
+      "passed": true
+    },
+    {
+      "name": "exact run grant and revision",
+      "passed": true
+    },
+    {
+      "name": "runtime and cleanup passed",
+      "passed": true
+    },
+    {
+      "name": "full original log preserved",
+      "passed": true
+    },
+    {
+      "name": "25 exact observed successful cases",
+      "passed": true
+    },
+    {
+      "name": "original final totals25pass no failures/skips/cancellation/todo",
+      "passed": true
+    },
+    {
+      "name": "observed case names equal both published test inventories",
+      "passed": true
+    },
+    {
+      "name": "matched count and single worker mode",
+      "passed": true
+    },
+    {
+      "name": "measured runtime limits within grant",
+      "passed": true
+    },
+    {
+      "name": "complete bounded ps query",
+      "passed": true
+    },
+    {
+      "name": "auditor identified in snapshot",
+      "passed": true
+    },
+    {
+      "name": "exact PID/start absent 99468",
+      "passed": true
+    },
+    {
+      "name": "exact PID/start absent 99478",
+      "passed": true
+    },
+    {
+      "name": "exact PID/start absent 99479",
+      "passed": true
+    },
+    {
+      "name": "exact PID/start absent 99583",
+      "passed": true
+    },
+    {
+      "name": "exact PID/start absent 99444",
+      "passed": true
+    },
+    {
+      "name": "group snapshot and ESRCH absence 99468",
+      "passed": true
+    },
+    {
+      "name": "known owned PID open-file query empty",
+      "passed": true
+    },
+    {
+      "name": "exact owned TCP port has no listener 59866",
+      "passed": true
+    },
+    {
+      "name": "scratch including symlink absent",
+      "passed": true
+    },
+    {
+      "name": "worktree dependency links absent",
+      "passed": true
+    },
+    {
+      "name": "owned reservation absent under strict physical lock",
+      "passed": true
+    },
+    {
+      "name": "source .claude/scaffolding.json",
+      "passed": true
+    },
+    {
+      "name": "source _tools/scaffold_git.py",
+      "passed": true
+    },
+    {
+      "name": "source _tools/test_resources.py",
+      "passed": true
+    },
+    {
+      "name": "source assets/brand-hero/bmw.jpg",
+      "passed": true
+    },
+    {
+      "name": "source assets/brand-logos/bmwgroup-bmw-mini.svg",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/account/account-view.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/account/gcsp-account.css",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/account/gcsp-account.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/account/http-adapter.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/brief/brief-controller.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/brief/brief-transport.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/brief/brief-view-model.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/brief/brief-view.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/brief/gcsp-brief.css",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/brief/gcsp-brief.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/brief/runtime.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/employee/fixtures.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/employee/gcsp-employee.css",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/employee/gcsp-employee.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/employee/representative-body.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/greg/demand-copy.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/greg/demand-view.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/greg/fixtures.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/greg/gcsp-greg.css",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/greg/gcsp-greg.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/greg/harness.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/greg/http-adapter.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/greg/publish/element.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/greg/publish/gallery.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/greg/publish/http-adapter.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/greg/publish/panel.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/greg/publish/publish.css",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/greg/publish/register.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/greg/register.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/kit/data-table.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/kit/form-controls.css",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/kit/form-controls.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/kit/gcsp-kit.css",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/kit/metric-tile.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/presenter-controls/controls.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/presenter-controls/harness.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/presenter-controls/http-adapter.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/presenter-controls/presenter-controls.css",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/presenter-controls/workspace.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/shell/account-runtime.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/shell/density-theme.css",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/shell/density-typography.css",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/shell/fonts/BMWGroupTNCondensedPro-Medium.woff",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/shell/fonts/BMWGroupTNCondensedPro-Medium.woff2",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/shell/fonts/density-fonts.css",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/shell/gcsp-shell.css",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/shell/gcsp-tokens.css",
+      "passed": true
+    },
+    {
+      "name": "source blocks/gcsp/shell/portal-shell.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/decision-card.css",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/engine.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/feedback-actions.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/fonts/BMWTypeNextLatin-Bold.woff2",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/fonts/BMWTypeNextLatin-Light.woff2",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/fonts/BMWTypeNextLatin-Regular.woff2",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/fonts/BMWTypeNextLatin-Thin.woff2",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/fonts/Ferrari-SansMedium.woff",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/fonts/Ferrari-SansRegular.woff",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/fonts/FordAntenna-Bold.woff",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/fonts/FordAntenna-Regular.woff",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/fonts/FordF1-Bold.woff2",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/fonts/FordF1-Medium.woff2",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/fonts/FordF1-Regular.woff2",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/fonts/ProximaNova-Regular.woff",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/fonts/ProximaNovaExCn-Light.woff",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/fonts/ProximaNovaExCn-Regular.woff",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/fonts/ProximaNovaExCn-Semibold.woff",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/fonts/mini_sans_serif-bold-web.woff",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/fonts/mini_sans_serif-regular-web.woff",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/fonts/mini_serif-bold-web.woff",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/fonts/mini_serif-regular-web.woff",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/gcsp-kit.css",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/modes/brand-copy.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/modes/preview-feed.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/modes/question-ui.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/modes/result-card.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/question-controls.css",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/quiz-meta.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/tokens.css",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/ui.js",
+      "passed": true
+    },
+    {
+      "name": "source blocks/vehicle-matcher/vehicle-matcher.css",
+      "passed": true
+    },
+    {
+      "name": "source docs/gcsp/evidence/fucq103/browser-embed.html",
+      "passed": true
+    },
+    {
+      "name": "source docs/gcsp/evidence/fucq103/browser-embed.mjs",
+      "passed": true
+    },
+    {
+      "name": "source docs/gcsp/evidence/fucq103/browser-runner.mjs",
+      "passed": true
+    },
+    {
+      "name": "source docs/gcsp/evidence/fucq103/browser-supervisor.py",
+      "passed": true
+    },
+    {
+      "name": "source docs/gcsp/evidence/fucq103/eligibility-source-catalogue.py",
+      "passed": true
+    },
+    {
+      "name": "source docs/gcsp/evidence/fucq103/fucq115-dated-policy-command.json",
+      "passed": true
+    },
+    {
+      "name": "source docs/gcsp/evidence/fucq103/scoped-resources.py",
+      "passed": true
+    },
+    {
+      "name": "source docs/gcsp/evidence/fucq103/scoped-supervisor.py",
+      "passed": true
+    },
+    {
+      "name": "source docs/gcsp/evidence/fucq103/scoped-test-launch.mjs",
+      "passed": true
+    },
+    {
+      "name": "source docs/gcsp/evidence/fucq103/source-catalogue.py",
+      "passed": true
+    },
+    {
+      "name": "source gcsp-presenter.html",
+      "passed": true
+    },
+    {
+      "name": "source package-lock.json",
+      "passed": true
+    },
+    {
+      "name": "source package.json",
+      "passed": true
+    },
+    {
+      "name": "source server/brands.js",
+      "passed": true
+    },
+    {
+      "name": "source server/data/gcsp/vehicle-evidence/lookup-reference.v1/active.json",
+      "passed": true
+    },
+    {
+      "name": "source server/data/gcsp/vehicle-evidence/lookup-reference.v1/identity-inventory.json",
+      "passed": true
+    },
+    {
+      "name": "source server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/configurations.jsonl",
+      "passed": true
+    },
+    {
+      "name": "source server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/images.jsonl",
+      "passed": true
+    },
+    {
+      "name": "source server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/manifest.json",
+      "passed": true
+    },
+    {
+      "name": "source server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/vins.jsonl",
+      "passed": true
+    },
+    {
+      "name": "source server/data/gcsp/vehicle-evidence/vin-profiles.v1.json",
+      "passed": true
+    },
+    {
+      "name": "source server/dealers.js",
+      "passed": true
+    },
+    {
+      "name": "source server/engine.js",
+      "passed": true
+    },
+    {
+      "name": "source server/ferrari-listing.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/adapters/manual-stock.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/brief/activity-http.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/brief/activity.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/brief/editor.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/brief/http.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/brief/index.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/cases/http.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/cases/notification.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/clock/http.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/clock/index.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/fixtures/principals.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/fixtures/scenario-v1.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/fixtures/scenarios/catalogue-v1.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/fixtures/scenarios/index.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/greg/http.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/greg/index.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/greg/publish/fit.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/greg/publish/http.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/greg/publish/index.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/identity/http.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/identity/index.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/manual-claims/http.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/manual-claims/index.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/manual-context/fixtures.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/manual-context/http.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/manual-context/index.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/manual-context/ports.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/manual-context/recommendation-facts.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/migrations/0001_transaction_foundation.sql",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/migrations/0002_policy_tables.sql",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/migrations/0003_renewal_cases.sql",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/migrations/index.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/notify/captured.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/notify/http.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/notify/index.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/notify/port.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/notify/templates.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/offers/access-http.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/offers/access.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/offers/buddy-hold.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/offers/buddy-remote.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/offers/current-car-comparison.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/offers/offer-token.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/policy/activation.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/policy/adoption.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/policy/file-provider.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/policy/index.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/policy/memory-provider.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/policy/postgres-provider.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/policy/publish.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/policy/reviewed-definitions.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/policy/reviewed/fucq115-choice-model-v1.json",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/policy/reviewed/greg-publish-editor-v1.json",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/policy/reviewed/offer-decline-reasons-v1.json",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/policy/reviewed/offer-followup-questions-v1.json",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/policy/reviewed/presenter-controls-v1.json",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/policy/seed-v1.json",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/predict/records/policy-definitions.json",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/presenter-controls/commands.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/presenter-controls/http.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/presenter-controls/index.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/recommendation/http.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/recommendation/index.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/repository/core.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/repository/index.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/repository/memory.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/repository/postgres.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/repository/schema.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/runtime.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/scenarios/http.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/scenarios/index.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/vehicle-evidence/corpus-publisher.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/vehicle-evidence/identity-routing.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/vehicle-evidence/local-vehicle-lookup.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/vehicle-evidence/synthetic-registry.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/vehicle-evidence/vehicle-details-contract.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/vehicle-evidence/vehicle-evidence-handler.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/vehicle-evidence/vehicle-lookup.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/vehicle-evidence/vin-allocation.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/vehicle-evidence/vin-generator.js",
+      "passed": true
+    },
+    {
+      "name": "source server/gcsp/vehicle-evidence/vin-profiles.js",
+      "passed": true
+    },
+    {
+      "name": "source server/geocode.js",
+      "passed": true
+    },
+    {
+      "name": "source server/honda-listing.js",
+      "passed": true
+    },
+    {
+      "name": "source server/index.js",
+      "passed": true
+    },
+    {
+      "name": "source server/mapping.js",
+      "passed": true
+    },
+    {
+      "name": "source server/motorrad-listing.js",
+      "passed": true
+    },
+    {
+      "name": "source server/package-lock.json",
+      "passed": true
+    },
+    {
+      "name": "source server/package.json",
+      "passed": true
+    },
+    {
+      "name": "source server/questions.js",
+      "passed": true
+    },
+    {
+      "name": "source server/scenarios/employee/index.js",
+      "passed": true
+    },
+    {
+      "name": "source server/stock.js",
+      "passed": true
+    },
+    {
+      "name": "source server/test/gcsp-greg-dashboard-data.test.js",
+      "passed": true
+    },
+    {
+      "name": "source server/test/gcsp-greg-demand.test.js",
+      "passed": true
+    },
+    {
+      "name": "source server/test/gcsp-greg-driver-eligibility.test.js",
+      "passed": true
+    },
+    {
+      "name": "source server/test/gcsp-greg-publish-editor.test.js",
+      "passed": true
+    },
+    {
+      "name": "source server/test/gcsp-greg-publish-http.test.js",
+      "passed": true
+    },
+    {
+      "name": "source server/test/gcsp-greg-publish.test.js",
+      "passed": true
+    },
+    {
+      "name": "source server/test/gcsp-policy-activation.test.js",
+      "passed": true
+    },
+    {
+      "name": "source server/test/gcsp-policy-adoption.test.js",
+      "passed": true
+    },
+    {
+      "name": "source server/test/gcsp-policy-consumer-adoption.test.js",
+      "passed": true
+    },
+    {
+      "name": "source server/test/gcsp-policy-learning-adoption.test.js",
+      "passed": true
+    },
+    {
+      "name": "source server/test/gcsp-runtime-publication.test.js",
+      "passed": true
+    },
+    {
+      "name": "source server/test/helpers/employee-recommendation-http.js",
+      "passed": true
+    },
+    {
+      "name": "source server/test/helpers/employee-recommendation.js",
+      "passed": true
+    },
+    {
+      "name": "source server/test/helpers/gcsp-reviewed-runtime.js",
+      "passed": true
+    },
+    {
+      "name": "source server/test/helpers/greg-demand-run.js",
+      "passed": true
+    },
+    {
+      "name": "source server/test/helpers/greg-publish-run.js",
+      "passed": true
+    },
+    {
+      "name": "source server/vehicle-evidence/bmw-catalogue-adapter.js",
+      "passed": true
+    },
+    {
+      "name": "source server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json",
+      "passed": true
+    },
+    {
+      "name": "source server/vehicles/index.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Applications/Google Chrome.app/Contents/Frameworks/Google Chrome Framework.framework/Versions/156.0.8078.80/Google Chrome Framework",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/LICENSE",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/NOTICE",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/README.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/ThirdPartyNotices.txt",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/bin/install_media_pack.ps1",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/bin/install_webkit_wsl.ps1",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/bin/reinstall_chrome_beta_linux.sh",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/bin/reinstall_chrome_beta_mac.sh",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/bin/reinstall_chrome_beta_win.ps1",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/bin/reinstall_chrome_stable_linux.sh",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/bin/reinstall_chrome_stable_mac.sh",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/bin/reinstall_chrome_stable_win.ps1",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/bin/reinstall_msedge_beta_linux.sh",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/bin/reinstall_msedge_beta_mac.sh",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/bin/reinstall_msedge_beta_win.ps1",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/bin/reinstall_msedge_dev_linux.sh",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/bin/reinstall_msedge_dev_mac.sh",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/bin/reinstall_msedge_dev_win.ps1",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/bin/reinstall_msedge_stable_linux.sh",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/bin/reinstall_msedge_stable_mac.sh",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/bin/reinstall_msedge_stable_win.ps1",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/browsers.json",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/cli.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/index.d.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/index.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/index.mjs",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/bootstrap.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/coreBundle.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/entry/cliDaemon.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/entry/dashboardApp.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/entry/mcp.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/entry/oopBrowserDownload.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/package.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/server/chromium/appIcon.png",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/server/electron/loader.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/serverRegistry.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/serverRegistry.js.LICENSE",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/cli-client/channelSessions.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/cli-client/cli.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/cli-client/help.json",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/cli-client/minimist.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/cli-client/output.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/cli-client/program.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/cli-client/registry.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/cli-client/session.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/dashboard/appIcon.png",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/skills/playwright-cli/SKILL.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/skills/playwright-cli/references/element-attributes.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/skills/playwright-cli/references/playwright-tests.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/skills/playwright-cli/references/request-mocking.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/skills/playwright-cli/references/running-code.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/skills/playwright-cli/references/session-management.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/skills/playwright-cli/references/storage-state.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/skills/playwright-cli/references/test-generation.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/skills/playwright-cli/references/tracing.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/skills/playwright-cli/references/video-recording.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/skills/playwright-component-testing/SKILL.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/skills/playwright-component-testing/references/gallery-spec.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/skills/playwright-component-testing/references/migration.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/skills/playwright-component-testing/references/react.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/skills/playwright-component-testing/references/vue.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/skills/playwright-trace/SKILL.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/utils/extension.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/tools/utils/socketConnection.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/utilsBundle.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/utilsBundle.js.LICENSE",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/dashboard/assets/codicon-DCmgc-ay.ttf",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/dashboard/assets/firefox-1bWoP6pv.svg",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/dashboard/assets/firefox-beta-k3eOH_eK.svg",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/dashboard/assets/firefox-nightly-Cp5nfeDT.svg",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/dashboard/assets/index-CyWAfh-p.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/dashboard/assets/index-DhC616m4.css",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/dashboard/assets/safari-na3_-uQk.svg",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/dashboard/index.html",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/dashboard/playwright-logo.svg",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/htmlReport/index.html",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/htmlReport/report.css",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/htmlReport/report.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/recorder/assets/codeMirrorModule--QdMvsKi.css",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/recorder/assets/codeMirrorModule-CwYYHbcZ.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/recorder/assets/codicon-DCmgc-ay.ttf",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/recorder/assets/index-DYjdXIbE.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/recorder/assets/index-l_lX622x.css",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/recorder/index.html",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/recorder/playwright-logo.svg",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/traceViewer/assets/codeMirrorModule-rXmQmLUY.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/traceViewer/assets/defaultSettingsView-B-dXF5JN.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/traceViewer/assets/urlMatch-L3liM589.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/traceViewer/assets/xtermModule-BuZfJS5v.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/traceViewer/codeMirrorModule.-QdMvsKi.css",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/traceViewer/codicon.DCmgc-ay.ttf",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/traceViewer/defaultSettingsView.BLFoOugd.css",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/traceViewer/index.B_TqY17P.css",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/traceViewer/index.KZ4wOW1K.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/traceViewer/index.html",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/traceViewer/manifest.webmanifest",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/traceViewer/playwright-logo.svg",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/traceViewer/snapshot.B_Jk1wbt.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/traceViewer/snapshot.html",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/traceViewer/sw.bundle.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/traceViewer/uiMode.C7UW1sC9.css",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/traceViewer/uiMode.Dzuouizj.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/traceViewer/uiMode.html",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/vite/traceViewer/xtermModule.kHJ-D0s7.css",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/webp_codec.LICENSE",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/webp_codec.wasm",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/lib/xdg-open",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/package.json",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/types/protocol.d.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/types/structs.d.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/types/types.d.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/.package-lock.json",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/LICENSE",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/README.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/empty.d.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/empty.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/empty.js.map",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/index.d.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/index.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/index.js.map",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/esm/index.mjs",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/package.json",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/src/empty.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/src/index.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/src/types.d.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/LICENSE",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/README.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/esm/index.mjs",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/index.d.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/index.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/package.json",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/LICENSE",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/README.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/index.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/package.json",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/LICENSE",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/README.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/esm/index.mjs",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/index.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/package.json",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/LICENSE",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/README.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/b.d.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/b.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/b.js.map",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-reader.d.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-reader.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-reader.js.map",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-writer.d.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-writer.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-writer.js.map",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/inbound-parser.test.d.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/inbound-parser.test.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/inbound-parser.test.js.map",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/index.d.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/index.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/index.js.map",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/messages.d.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/messages.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/messages.js.map",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/outbound-serializer.test.d.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/outbound-serializer.test.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/outbound-serializer.test.js.map",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/parser.d.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/parser.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/parser.js.map",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/serializer.d.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/serializer.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/serializer.js.map",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/esm/index.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/package.json",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/b.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/buffer-reader.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/buffer-writer.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/inbound-parser.test.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/index.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/messages.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/outbound-serializer.test.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/parser.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/serializer.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/testing/buffer-list.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/testing/test-buffers.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/.travis.yml",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/Makefile",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/README.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/index.d.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/index.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/index.test-d.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/arrayParser.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/binaryParsers.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/builtins.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/textParsers.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/package.json",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/test/index.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/test/types.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/LICENSE",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/README.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/esm/index.mjs",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/client.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/connection-parameters.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/connection.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/cert-signatures.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/sasl.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/utils.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/defaults.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/index.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/client.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/index.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/query.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/query.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/result.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/stream.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/type-overrides.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/utils.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/package.json",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/README.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/lib/helper.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/lib/index.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/package.json",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/index.d.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/index.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/license",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/package.json",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/readme.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/index.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/license",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/package.json",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/readme.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/index.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/license",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/package.json",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/readme.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/index.d.ts",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/index.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/license",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/package.json",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/readme.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/LICENSE",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/README.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/bench.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/index.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/package.json",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/test.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/.jshintrc",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/LICENSE",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/README.md",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/immutable.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/mutable.js",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/package.json",
+      "passed": true
+    },
+    {
+      "name": "dependency /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/test.js",
+      "passed": true
+    },
+    {
+      "name": "executable chrome",
+      "passed": true
+    },
+    {
+      "name": "executable node",
+      "passed": true
+    },
+    {
+      "name": "executable openssl",
+      "passed": true
+    },
+    {
+      "name": "executable python",
+      "passed": true
+    },
+    {
+      "name": "executable git",
+      "passed": true
+    },
+    {
+      "name": "executable ps",
+      "passed": true
+    },
+    {
+      "name": "executable lsof",
+      "passed": true
+    },
+    {
+      "name": "executable vm_stat",
+      "passed": true
+    },
+    {
+      "name": "exact307physical dependency entries",
+      "passed": true
+    },
+    {
+      "name": "all163resolver absences",
+      "passed": true
+    },
+    {
+      "name": "resolver identity /Users/garycarter/Code/GitHub/vehicle-matcher/node_modules",
+      "passed": true
+    },
+    {
+      "name": "source inventory blocks/gcsp/greg",
+      "passed": true
+    },
+    {
+      "name": "source inventory server/data/gcsp/vehicle-evidence/lookup-reference.v1",
+      "passed": true
+    },
+    {
+      "name": "source inventory server/gcsp/migrations",
+      "passed": true
+    },
+    {
+      "name": "git headUpstream",
+      "passed": true
+    },
+    {
+      "name": "git status",
+      "passed": true
+    },
+    {
+      "name": "git remote",
+      "passed": true
+    },
+    {
+      "name": "git freeze",
+      "passed": true
+    },
+    {
+      "name": "git historicalReceipts",
+      "passed": true
+    },
+    {
+      "name": "clean exact published tested revision",
+      "passed": true
+    },
+    {
+      "name": "f80fc61 product test freeze",
+      "passed": true
+    },
+    {
+      "name": "historical attempt receipts unchanged",
+      "passed": true
+    },
+    {
+      "name": "complete checkpoint",
+      "passed": true
+    },
+    {
+      "name": "38parser design fixtures remain unexecuted",
+      "passed": true
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{"attempt":1,"method":"GET","at":"2026-11-07T05:00:04.449Z","phase":"started"}
+{"attempt":1,"method":"GET","at":"2026-11-07T05:00:04.449Z","phase":"headers-received","status":200}
+{"attempt":2,"method":"GET","at":"2026-11-07T05:00:04.634Z","phase":"started"}
+{"attempt":2,"method":"GET","at":"2026-11-07T05:00:04.634Z","phase":"headers-received","status":200}
+{"attempt":3,"method":"GET","at":"2026-11-07T05:00:05.366Z","phase":"started"}
+{"attempt":3,"method":"GET","at":"2026-11-07T05:00:05.366Z","phase":"headers-received","status":200}
+{"attempt":4,"method":"GET","at":"2026-11-07T05:00:05.778Z","phase":"started"}
+{"attempt":4,"method":"GET","at":"2026-11-07T05:00:05.778Z","phase":"headers-received","status":200}

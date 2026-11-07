@@ -6,6 +6,7 @@ import { metricTile } from '../kit/metric-tile.js';
 import { dataTable } from '../kit/data-table.js';
 import { toDashboardView } from './demand-view.js';
 import { fixtureAdapter } from './fixtures.js';
+import { mountGregPublish } from './publish/panel.js';
 
 const NOT_BUILT = 'Not available in this demo';
 const item = (key, label, icon, available = false) => Object.freeze({
@@ -251,6 +252,14 @@ export function mountGregDashboard(root, ctx = {}) {
     if (focusWasInBody) refresh.focus();
   }
 
+  const publishAdapter = ctx.publishAdapter || ctx.publish;
+  const publishTeardown = publishAdapter ? mountGregPublish(reserved.regions.publish, { adapter: publishAdapter, signal: abort.signal }) : null;
+  if (publishTeardown) {
+    reserved.regions.publish.removeAttribute('aria-labelledby');
+    reserved.regions.publish.setAttribute('aria-label', 'Preview and publish policy');
+  }
+  const published = () => load();
+  root.addEventListener('gcsp:policy-published', published);
   load();
 
   function teardown() {
@@ -258,6 +267,8 @@ export function mountGregDashboard(root, ctx = {}) {
     done = true;
     abort.abort();
     ctx.signal?.removeEventListener('abort', onExternalAbort);
+    publishTeardown?.();
+    root.removeEventListener('gcsp:policy-published', published);
     shell.destroy();
     root.replaceChildren();
   }
@@ -305,6 +316,7 @@ export class GcspGregDashboardElement extends HTMLElement {
     const fixtureName = this.getAttribute('fixture');
     const adapter = this._adapter || (fixtureName ? fixtureAdapter(fixtureName) : null);
     this._teardown = mountGregDashboard(this, {
+      publishAdapter: this._adapter?.publish,
       loadDemand: adapter ? (options) => adapter.loadDemand(options) : undefined,
       onUnavailable: (reason) => {
         this._emit('gcsp:unavailable', { reason: reason === 'no-adapter' && fixtureName ? 'unknown-fixture' : reason });

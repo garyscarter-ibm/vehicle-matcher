@@ -1,0 +1,918 @@
+{
+  "schemaVersion": 1,
+  "validatedAt": "2026-11-07T14:15:01.171680+00:00",
+  "scope": "Story contracts, authorised Jira splits, local records, MoSCoW report and product-map registry; no application implementation",
+  "result": "scoped checks passed",
+  "nativeFinalObservation": "2026-11-07T14:11:57.138Z",
+  "splitPairs": [
+    {
+      "retained": "FUCQ-114",
+      "remainder": "FUCQ-167",
+      "originalMetadataAndLinksPreserved": true,
+      "onlyNewLinkIsIssueSplit": true,
+      "remainderToDoUnassignedUnestimated": true,
+      "sameParentEpic": true
+    },
+    {
+      "retained": "FUCQ-118",
+      "remainder": "FUCQ-168",
+      "originalMetadataAndLinksPreserved": true,
+      "onlyNewLinkIsIssueSplit": true,
+      "remainderToDoUnassignedUnestimated": true,
+      "sameParentEpic": true
+    },
+    {
+      "retained": "FUCQ-120",
+      "remainder": "FUCQ-169",
+      "originalMetadataAndLinksPreserved": true,
+      "onlyNewLinkIsIssueSplit": true,
+      "remainderToDoUnassignedUnestimated": true,
+      "sameParentEpic": true
+    },
+    {
+      "retained": "FUCQ-122",
+      "remainder": "FUCQ-170",
+      "originalMetadataAndLinksPreserved": true,
+      "onlyNewLinkIsIssueSplit": true,
+      "remainderToDoUnassignedUnestimated": true,
+      "sameParentEpic": true
+    },
+    {
+      "retained": "FUCQ-124",
+      "remainder": "FUCQ-171",
+      "originalMetadataAndLinksPreserved": true,
+      "onlyNewLinkIsIssueSplit": true,
+      "remainderToDoUnassignedUnestimated": true,
+      "sameParentEpic": true
+    },
+    {
+      "retained": "FUCQ-126",
+      "remainder": "FUCQ-172",
+      "originalMetadataAndLinksPreserved": true,
+      "onlyNewLinkIsIssueSplit": true,
+      "remainderToDoUnassignedUnestimated": true,
+      "sameParentEpic": true
+    },
+    {
+      "retained": "FUCQ-128",
+      "remainder": "FUCQ-173",
+      "originalMetadataAndLinksPreserved": true,
+      "onlyNewLinkIsIssueSplit": true,
+      "remainderToDoUnassignedUnestimated": true,
+      "sameParentEpic": true
+    },
+    {
+      "retained": "FUCQ-136",
+      "remainder": "FUCQ-174",
+      "originalMetadataAndLinksPreserved": true,
+      "onlyNewLinkIsIssueSplit": true,
+      "remainderToDoUnassignedUnestimated": true,
+      "sameParentEpic": true
+    },
+    {
+      "retained": "FUCQ-137",
+      "remainder": "FUCQ-175",
+      "originalMetadataAndLinksPreserved": true,
+      "onlyNewLinkIsIssueSplit": true,
+      "remainderToDoUnassignedUnestimated": true,
+      "sameParentEpic": true
+    },
+    {
+      "retained": "FUCQ-138",
+      "remainder": "FUCQ-176",
+      "originalMetadataAndLinksPreserved": true,
+      "onlyNewLinkIsIssueSplit": true,
+      "remainderToDoUnassignedUnestimated": true,
+      "sameParentEpic": true
+    }
+  ],
+  "localContractAgreement": [
+    {
+      "key": "FUCQ-114",
+      "path": "_dev/code-inbox/DEV-2026-11-04-077.md",
+      "parser": "dev_mail.story_fields / jira_sync.issue_blocks",
+      "checkedFields": [
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate",
+        "title",
+        "work_item_type",
+        "kind",
+        "design_impact",
+        "epic",
+        "priority",
+        "priority_reason",
+        "size"
+      ],
+      "agrees": true
+    },
+    {
+      "key": "FUCQ-167",
+      "path": "_dev/code-inbox/DEV-2026-11-07-001.md",
+      "parser": "dev_mail.story_fields / jira_sync.issue_blocks",
+      "checkedFields": [
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate",
+        "title",
+        "work_item_type",
+        "kind",
+        "design_impact",
+        "epic",
+        "priority",
+        "priority_reason",
+        "size"
+      ],
+      "agrees": true
+    },
+    {
+      "key": "FUCQ-118",
+      "path": "_dev/code-inbox/DEV-2026-11-04-079.md",
+      "parser": "dev_mail.story_fields / jira_sync.issue_blocks",
+      "checkedFields": [
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate",
+        "title",
+        "work_item_type",
+        "kind",
+        "design_impact",
+        "epic",
+        "priority",
+        "priority_reason",
+        "size"
+      ],
+      "agrees": true
+    },
+    {
+      "key": "FUCQ-168",
+      "path": "_dev/code-inbox/DEV-2026-11-07-002.md",
+      "parser": "dev_mail.story_fields / jira_sync.issue_blocks",
+      "checkedFields": [
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate",
+        "title",
+        "work_item_type",
+        "kind",
+        "design_impact",
+        "epic",
+        "priority",
+        "priority_reason",
+        "size"
+      ],
+      "agrees": true
+    },
+    {
+      "key": "FUCQ-120",
+      "path": "_dev/code-inbox/DEV-2026-11-04-082.md",
+      "parser": "dev_mail.story_fields / jira_sync.issue_blocks",
+      "checkedFields": [
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate",
+        "title",
+        "work_item_type",
+        "kind",
+        "design_impact",
+        "epic",
+        "priority",
+        "priority_reason",
+        "size",
+        "ui"
+      ],
+      "agrees": true
+    },
+    {
+      "key": "FUCQ-169",
+      "path": "_dev/code-inbox/DEV-2026-11-07-003.md",
+      "parser": "dev_mail.story_fields / jira_sync.issue_blocks",
+      "checkedFields": [
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate",
+        "title",
+        "work_item_type",
+        "kind",
+        "design_impact",
+        "epic",
+        "priority",
+        "priority_reason",
+        "size",
+        "ui"
+      ],
+      "agrees": true
+    },
+    {
+      "key": "FUCQ-122",
+      "path": "_dev/in-progress/DEV-2026-11-04-084.md",
+      "parser": "dev_mail.story_fields / jira_sync.issue_blocks",
+      "checkedFields": [
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate",
+        "title",
+        "work_item_type",
+        "kind",
+        "design_impact",
+        "epic",
+        "priority",
+        "priority_reason",
+        "size",
+        "ui"
+      ],
+      "agrees": true
+    },
+    {
+      "key": "FUCQ-170",
+      "path": "_dev/code-inbox/DEV-2026-11-07-004.md",
+      "parser": "dev_mail.story_fields / jira_sync.issue_blocks",
+      "checkedFields": [
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate",
+        "title",
+        "work_item_type",
+        "kind",
+        "design_impact",
+        "epic",
+        "priority",
+        "priority_reason",
+        "size",
+        "ui"
+      ],
+      "agrees": true
+    },
+    {
+      "key": "FUCQ-124",
+      "path": "_dev/code-inbox/DEV-2026-11-04-087.md",
+      "parser": "dev_mail.story_fields / jira_sync.issue_blocks",
+      "checkedFields": [
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate",
+        "title",
+        "work_item_type",
+        "kind",
+        "design_impact",
+        "epic",
+        "priority",
+        "priority_reason",
+        "size"
+      ],
+      "agrees": true
+    },
+    {
+      "key": "FUCQ-171",
+      "path": "_dev/code-inbox/DEV-2026-11-07-005.md",
+      "parser": "dev_mail.story_fields / jira_sync.issue_blocks",
+      "checkedFields": [
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate",
+        "title",
+        "work_item_type",
+        "kind",
+        "design_impact",
+        "epic",
+        "priority",
+        "priority_reason",
+        "size"
+      ],
+      "agrees": true
+    },
+    {
+      "key": "FUCQ-126",
+      "path": "_dev/in-progress/DEV-2026-11-04-096.md",
+      "parser": "dev_mail.story_fields / jira_sync.issue_blocks",
+      "checkedFields": [
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate",
+        "title",
+        "work_item_type",
+        "kind",
+        "design_impact",
+        "epic",
+        "priority",
+        "priority_reason",
+        "size",
+        "ui"
+      ],
+      "agrees": true
+    },
+    {
+      "key": "FUCQ-172",
+      "path": "_dev/code-inbox/DEV-2026-11-07-006.md",
+      "parser": "dev_mail.story_fields / jira_sync.issue_blocks",
+      "checkedFields": [
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate",
+        "title",
+        "work_item_type",
+        "kind",
+        "design_impact",
+        "epic",
+        "priority",
+        "priority_reason",
+        "size",
+        "ui"
+      ],
+      "agrees": true
+    },
+    {
+      "key": "FUCQ-128",
+      "path": "_dev/code-inbox/DEV-2026-11-04-098.md",
+      "parser": "dev_mail.story_fields / jira_sync.issue_blocks",
+      "checkedFields": [
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate",
+        "title",
+        "work_item_type",
+        "kind",
+        "design_impact",
+        "epic",
+        "priority",
+        "priority_reason",
+        "size"
+      ],
+      "agrees": true
+    },
+    {
+      "key": "FUCQ-173",
+      "path": "_dev/code-inbox/DEV-2026-11-07-007.md",
+      "parser": "dev_mail.story_fields / jira_sync.issue_blocks",
+      "checkedFields": [
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate",
+        "title",
+        "work_item_type",
+        "kind",
+        "design_impact",
+        "epic",
+        "priority",
+        "priority_reason",
+        "size"
+      ],
+      "agrees": true
+    },
+    {
+      "key": "FUCQ-136",
+      "path": "_dev/code-inbox/DEV-2026-11-04-105.md",
+      "parser": "dev_mail.story_fields / jira_sync.issue_blocks",
+      "checkedFields": [
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate",
+        "title",
+        "work_item_type",
+        "kind",
+        "design_impact",
+        "epic",
+        "priority",
+        "priority_reason",
+        "size"
+      ],
+      "agrees": true
+    },
+    {
+      "key": "FUCQ-174",
+      "path": "_dev/code-inbox/DEV-2026-11-07-008.md",
+      "parser": "dev_mail.story_fields / jira_sync.issue_blocks",
+      "checkedFields": [
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate",
+        "title",
+        "work_item_type",
+        "kind",
+        "design_impact",
+        "epic",
+        "priority",
+        "priority_reason",
+        "size"
+      ],
+      "agrees": true
+    },
+    {
+      "key": "FUCQ-137",
+      "path": "_dev/code-inbox/DEV-2026-11-04-106.md",
+      "parser": "dev_mail.story_fields / jira_sync.issue_blocks",
+      "checkedFields": [
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate",
+        "title",
+        "work_item_type",
+        "kind",
+        "design_impact",
+        "epic",
+        "priority",
+        "priority_reason",
+        "size"
+      ],
+      "agrees": true
+    },
+    {
+      "key": "FUCQ-175",
+      "path": "_dev/code-inbox/DEV-2026-11-07-009.md",
+      "parser": "dev_mail.story_fields / jira_sync.issue_blocks",
+      "checkedFields": [
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate",
+        "title",
+        "work_item_type",
+        "kind",
+        "design_impact",
+        "epic",
+        "priority",
+        "priority_reason",
+        "size"
+      ],
+      "agrees": true
+    },
+    {
+      "key": "FUCQ-138",
+      "path": "_dev/code-inbox/DEV-2026-11-04-107.md",
+      "parser": "dev_mail.story_fields / jira_sync.issue_blocks",
+      "checkedFields": [
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate",
+        "title",
+        "work_item_type",
+        "kind",
+        "design_impact",
+        "epic",
+        "priority",
+        "priority_reason",
+        "size",
+        "ui"
+      ],
+      "agrees": true
+    },
+    {
+      "key": "FUCQ-176",
+      "path": "_dev/code-inbox/DEV-2026-11-07-010.md",
+      "parser": "dev_mail.story_fields / jira_sync.issue_blocks",
+      "checkedFields": [
+        "goal",
+        "acceptance",
+        "files_or_areas",
+        "decided",
+        "out_of_scope",
+        "validate",
+        "title",
+        "work_item_type",
+        "kind",
+        "design_impact",
+        "epic",
+        "priority",
+        "priority_reason",
+        "size",
+        "ui"
+      ],
+      "agrees": true
+    }
+  ],
+  "acceptance": {
+    "originalClauses": 67,
+    "allMapped": true,
+    "dispositions": {
+      "shared": 26,
+      "split": 24,
+      "retained": 10,
+      "moved": 7
+    },
+    "checksStayWithTheirCapability": true
+  },
+  "claimedStories": [
+    {
+      "key": "FUCQ-122",
+      "claimAndPointsPreserved": true,
+      "historicalResultPreserved": true,
+      "historicalResultSha256": "7900d45859f2104bdb4f509c90ffc61b8afcbc3c82ed7e9f98e361dd1a7cc17c"
+    },
+    {
+      "key": "FUCQ-126",
+      "claimAndPointsPreserved": true,
+      "historicalResultPreserved": true,
+      "historicalResultSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "mustTable": {
+    "exactCount": 35,
+    "order": [
+      "FUCQ-58",
+      "FUCQ-59",
+      "FUCQ-60",
+      "FUCQ-61",
+      "FUCQ-62",
+      "FUCQ-63",
+      "FUCQ-77",
+      "FUCQ-78",
+      "FUCQ-92",
+      "FUCQ-126",
+      "FUCQ-66",
+      "FUCQ-71",
+      "FUCQ-69",
+      "FUCQ-95",
+      "FUCQ-96",
+      "FUCQ-100",
+      "FUCQ-98",
+      "FUCQ-102",
+      "FUCQ-105",
+      "FUCQ-106",
+      "FUCQ-107",
+      "FUCQ-108",
+      "FUCQ-128",
+      "FUCQ-109",
+      "FUCQ-111",
+      "FUCQ-114",
+      "FUCQ-116",
+      "FUCQ-118",
+      "FUCQ-120",
+      "FUCQ-122",
+      "FUCQ-124",
+      "FUCQ-104",
+      "FUCQ-117",
+      "FUCQ-119",
+      "FUCQ-121"
+    ],
+    "equalsInventoryMustSet": true,
+    "localMustPrerequisiteEdges": [
+      [
+        "FUCQ-58",
+        "FUCQ-59"
+      ],
+      [
+        "FUCQ-59",
+        "FUCQ-60"
+      ],
+      [
+        "FUCQ-60",
+        "FUCQ-61"
+      ],
+      [
+        "FUCQ-61",
+        "FUCQ-62"
+      ],
+      [
+        "FUCQ-62",
+        "FUCQ-63"
+      ],
+      [
+        "FUCQ-92",
+        "FUCQ-69"
+      ],
+      [
+        "FUCQ-66",
+        "FUCQ-71"
+      ],
+      [
+        "FUCQ-59",
+        "FUCQ-77"
+      ],
+      [
+        "FUCQ-60",
+        "FUCQ-77"
+      ],
+      [
+        "FUCQ-78",
+        "FUCQ-92"
+      ],
+      [
+        "FUCQ-92",
+        "FUCQ-96"
+      ],
+      [
+        "FUCQ-96",
+        "FUCQ-100"
+      ],
+      [
+        "FUCQ-100",
+        "FUCQ-102"
+      ],
+      [
+        "FUCQ-92",
+        "FUCQ-104"
+      ],
+      [
+        "FUCQ-96",
+        "FUCQ-104"
+      ],
+      [
+        "FUCQ-102",
+        "FUCQ-105"
+      ],
+      [
+        "FUCQ-102",
+        "FUCQ-106"
+      ],
+      [
+        "FUCQ-96",
+        "FUCQ-107"
+      ],
+      [
+        "FUCQ-106",
+        "FUCQ-107"
+      ],
+      [
+        "FUCQ-71",
+        "FUCQ-108"
+      ],
+      [
+        "FUCQ-106",
+        "FUCQ-108"
+      ],
+      [
+        "FUCQ-108",
+        "FUCQ-109"
+      ],
+      [
+        "FUCQ-105",
+        "FUCQ-109"
+      ],
+      [
+        "FUCQ-107",
+        "FUCQ-109"
+      ],
+      [
+        "FUCQ-108",
+        "FUCQ-111"
+      ],
+      [
+        "FUCQ-111",
+        "FUCQ-114"
+      ],
+      [
+        "FUCQ-111",
+        "FUCQ-116"
+      ],
+      [
+        "FUCQ-104",
+        "FUCQ-117"
+      ],
+      [
+        "FUCQ-114",
+        "FUCQ-118"
+      ],
+      [
+        "FUCQ-117",
+        "FUCQ-119"
+      ],
+      [
+        "FUCQ-114",
+        "FUCQ-120"
+      ],
+      [
+        "FUCQ-116",
+        "FUCQ-120"
+      ],
+      [
+        "FUCQ-118",
+        "FUCQ-120"
+      ],
+      [
+        "FUCQ-105",
+        "FUCQ-120"
+      ],
+      [
+        "FUCQ-119",
+        "FUCQ-121"
+      ],
+      [
+        "FUCQ-95",
+        "FUCQ-122"
+      ],
+      [
+        "FUCQ-120",
+        "FUCQ-124"
+      ],
+      [
+        "FUCQ-122",
+        "FUCQ-124"
+      ],
+      [
+        "FUCQ-109",
+        "FUCQ-124"
+      ],
+      [
+        "FUCQ-92",
+        "FUCQ-126"
+      ],
+      [
+        "FUCQ-107",
+        "FUCQ-128"
+      ],
+      [
+        "FUCQ-126",
+        "FUCQ-128"
+      ]
+    ],
+    "functionalOrderIsNotAnAdmissionGate": true,
+    "fucq78DoesNotWaitFor77": true
+  },
+  "productMap": {
+    "nativeObservation": "2026-11-07T14:07:07.097Z",
+    "newStoryCount": 10,
+    "addedAssociations": [
+      {
+        "component": "demo-control",
+        "story": "FUCQ-172"
+      },
+      {
+        "component": "demo-control",
+        "story": "FUCQ-173"
+      },
+      {
+        "component": "post-selection",
+        "story": "FUCQ-167"
+      },
+      {
+        "component": "post-selection",
+        "story": "FUCQ-168"
+      },
+      {
+        "component": "post-selection",
+        "story": "FUCQ-169"
+      },
+      {
+        "component": "post-selection",
+        "story": "FUCQ-171"
+      },
+      {
+        "component": "renewal-help",
+        "story": "FUCQ-170"
+      },
+      {
+        "component": "renewal-help",
+        "story": "FUCQ-171"
+      },
+      {
+        "component": "route-comparison",
+        "story": "FUCQ-174"
+      },
+      {
+        "component": "route-comparison",
+        "story": "FUCQ-175"
+      },
+      {
+        "component": "route-comparison",
+        "story": "FUCQ-176"
+      }
+    ],
+    "existingSlicesWorkersClaimsPreserved": true,
+    "branchProjectionDiagnostics": 0,
+    "aggregateSnapshotDiagnostics": 54,
+    "headSnapshotDiagnostics": 35,
+    "aggregateLimit": "19 additional conflicts exposed by updated branch facts. Aggregate component selections omit new associations while conflicts remain; all ten new story rows are present. Preserve other branches for normal integration.",
+    "publicationMode": "actions",
+    "servedRefreshVerified": false,
+    "inputSha256": {
+      ".product-map/work.json": "94ac0b1d4a29d13b69cd5ac907ad8d6097e2eee030ba481404381ac936b744df",
+      ".product-map/components.json": "69f3c2a891b982de775098b6fa4f144fe0d0d821c6588837c3feea13bfe7446c"
+    }
+  },
+  "excludedChecks": {
+    "applicationDatabaseSourceProductBrowserSuites": "Unrun: no application implementation changed; historical checks remain scoped to their original revisions.",
+    "agentsAndApplicationProcesses": "None started."
+  },
+  "checkCorrections": [
+    {
+      "check": "Original acceptance-clause comparison",
+      "initialResult": "Exact string comparison rejected FUCQ-120 Every state rendered due to nested-bullet formatting.",
+      "correction": "Compare clause text with bullet markers and whitespace normalised; all 67 match. No Story contract change needed."
+    },
+    {
+      "check": "Historical Result hash",
+      "initialResult": "The first check excluded the Result heading, while the recorded hash included it.",
+      "correction": "Use the same heading-inclusive boundary. Both historical Results are byte-identical and their recorded hashes match."
+    }
+  ],
+  "cleanup": {
+    "state": "complete",
+    "verifiedAt": "2026-11-07T14:15:21.719702+00:00",
+    "taskChromeTab": {
+      "id": 205760113,
+      "closed": true,
+      "absenceVerified": true
+    },
+    "taskHeadlessTab": {
+      "index": 0,
+      "closed": true,
+      "noOpenTabsVerified": true
+    },
+    "ownedArtifacts": [
+      {
+        "path": "/Users/usget/Claude/vehicle-matcher/.playwright-mcp/page-2026-11-07T13-41-25-974Z.yml",
+        "bytesRemoved": 0,
+        "absenceVerified": true
+      },
+      {
+        "path": "/Users/usget/Claude/vehicle-matcher/.playwright-mcp/console-2026-11-07T13-41-25-215Z.log",
+        "bytesRemoved": 6738,
+        "absenceVerified": true
+      },
+      {
+        "path": "/Users/usget/Claude/vehicle-matcher/.playwright-mcp/page-2026-11-07T13-48-34-865Z.yml",
+        "bytesRemoved": 0,
+        "absenceVerified": true
+      },
+      {
+        "path": "/Users/usget/Claude/vehicle-matcher/.playwright-mcp/console-2026-11-07T13-48-34-154Z.log",
+        "bytesRemoved": 6751,
+        "absenceVerified": true
+      }
+    ],
+    "removedBytes": 13489,
+    "scratchRoots": "No test/proof scratch or application processes created. Browser artifacts removed.",
+    "retainedSummary": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/backlog-splits-2026-11-07/validation.json",
+    "compatibilityException": null,
+    "leftovers": [],
+    "unrelatedFilesPreserved": [
+      "_tools/__pycache__/scaffold_git.cpython-314.pyc",
+      "docs/gcsp/evidence/f58-63-aggregate1923-runtime-2026-11-07/live-probe-next-deployment.mjs"
+    ]
+  },
+  "documentation": {
+    "checkedAt": "2026-11-07T14:15:49.228987+00:00",
+    "markdownFiles": [
+      "docs/gcsp/backlog-moscow-review-2026-11-07.md",
+      "docs/gcsp/README.md",
+      "docs/gcsp/build-rules.md",
+      "docs/gcsp/demo-brief.md",
+      "docs/design/gcsp-high-level-design.md",
+      "docs/gcsp/fucq-110-stories.md",
+      "docs/gcsp/fucq-74-75-stories.md",
+      "docs/gcsp/fucq-132-stories.md"
+    ],
+    "linkAndAnchorCount": 25,
+    "linksAndAnchorsPass": true,
+    "jsonFileCount": 14,
+    "jsonSyntaxPass": true,
+    "unresolvedPlaceholders": 0,
+    "whitespace": "git diff --check passed"
+  }
+}

@@ -11601,6 +11601,17 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "clock.presenter.stepSeconds",
+      "value": 60,
+      "unit": "seconds",
+      "status": "assumed",
+      "basis": "A one-minute presenter step makes small time changes visible; named cues cover longer walkthrough jumps. Revisable demo assumption, not BMW policy.",
+      "source": "docs/gcsp/presenter-controls-contract.md",
+      "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "clock.commands.v1",
       "value": {
         "advanceAndTickSeparate": true,
@@ -12553,34 +12564,6 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
-      "key": "lifecycle.documents.exceptions.v1",
-      "value": {
-        "overdue": "document-overdue",
-        "failed": "document-failed"
-      },
-      "unit": "lifecycle-exception event type keys",
-      "status": "assumed",
-      "basis": "Keyed exception types recorded with the renewal-case receipt shape. The renewal-risk trigger uses them only when renewalCase.lifecycle.eventTypes selects them.",
-      "source": "docs/gcsp/shared-contracts.md#lifecycle-documents-and-readiness--fucq-116",
-      "sourceDate": "2026-11-06",
-      "policyVersion": "gcsp-policy-v1",
-      "effectiveFrom": "2026-11-04T00:00:00.000Z"
-    },
-    {
-      "key": "lifecycle.documents.scenario.v1",
-      "value": {
-        "failItemIds": [],
-        "failureReason": "The synthetic provider reported this step as failed."
-      },
-      "unit": "item IDs selected to fail; reason text",
-      "status": "assumed",
-      "basis": "Difficult-case switch for the synthetic provider. Empty by default; a scenario version lists the scheme-team or retailer items that fail.",
-      "source": "docs/gcsp/shared-contracts.md#lifecycle-documents-and-readiness--fucq-116",
-      "sourceDate": "2026-11-06",
-      "policyVersion": "gcsp-policy-v1",
-      "effectiveFrom": "2026-11-04T00:00:00.000Z"
-    },
-    {
       "key": "lifecycle.documents.v1",
       "value": {
         "openingStage": "sent to ordering",
@@ -12643,6 +12626,34 @@
       "unit": "document and readiness item registry; seconds of demo-clock time",
       "status": "assumed",
       "basis": "Plausible synthetic document and vehicle-readiness steps after an order is sent to ordering (HLD columns 12 and 13). Not BMW policy; owners, delays and the opening stage are revisable here.",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-documents-and-readiness--fucq-116",
+      "sourceDate": "2026-11-06",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "lifecycle.documents.scenario.v1",
+      "value": {
+        "failItemIds": [],
+        "failureReason": "The synthetic provider reported this step as failed."
+      },
+      "unit": "item IDs selected to fail; reason text",
+      "status": "assumed",
+      "basis": "Difficult-case switch for the synthetic provider. Empty by default; a scenario version lists the scheme-team or retailer items that fail.",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-documents-and-readiness--fucq-116",
+      "sourceDate": "2026-11-06",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "lifecycle.documents.exceptions.v1",
+      "value": {
+        "overdue": "document-overdue",
+        "failed": "document-failed"
+      },
+      "unit": "lifecycle-exception event type keys",
+      "status": "assumed",
+      "basis": "Keyed exception types recorded with the renewal-case receipt shape. The renewal-risk trigger uses them only when renewalCase.lifecycle.eventTypes selects them.",
       "source": "docs/gcsp/shared-contracts.md#lifecycle-documents-and-readiness--fucq-116",
       "sourceDate": "2026-11-06",
       "policyVersion": "gcsp-policy-v1",

@@ -1,0 +1,200 @@
+{
+  "ownedScratch": [
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package8-pilot-20261107/check-1794021242731123000/ownership/d3da8768fb4847539cdd0052ec67803f.json",
+      "root": "/private/tmp/test-stamp-shard-d3da8768fb4847539cdd0052ec67803f",
+      "removedAllocationBytes": 221280,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package8-pilot-20261107/check-1794021273160055000/ownership/25b7c03b344046b9bd0a72742ad460a2.json",
+      "root": "/private/tmp/test-stamp-shard-25b7c03b344046b9bd0a72742ad460a2",
+      "removedAllocationBytes": 221280,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package8-pilot-20261107/retained-1794021406328005000/ownership/63686ce57e064e03a8ea0e32dd8de3cc.json",
+      "root": "/private/tmp/test-stamp-shard-63686ce57e064e03a8ea0e32dd8de3cc",
+      "removedAllocationBytes": 524384,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package8-pilot-20261107/source-1794021368837273000/ownership/a1522e52775d4e9d8513cc0d629daae1.json",
+      "root": "/private/tmp/test-stamp-shard-a1522e52775d4e9d8513cc0d629daae1",
+      "removedAllocationBytes": 0,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package-suffix-20261107/check-1794021488510421000/ownership/31f7701f2fe344659ccf93141202440e.json",
+      "root": "/private/tmp/test-stamp-shard-31f7701f2fe344659ccf93141202440e",
+      "removedAllocationBytes": 213088,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package-suffix-20261107/check-1794021506553839000/ownership/ed01ed6d579949a397cb0259971398c6.json",
+      "root": "/private/tmp/test-stamp-shard-ed01ed6d579949a397cb0259971398c6",
+      "removedAllocationBytes": 213088,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package-suffix-20261107/check-1794021582278156000/ownership/3da8080468994a7a8b73bfd42126e080.json",
+      "root": "/private/tmp/test-stamp-shard-3da8080468994a7a8b73bfd42126e080",
+      "removedAllocationBytes": 4096,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package-suffix-20261107/check-1794021582889217000/ownership/52b064dfcaeb4f64b714d05a9bbe566f.json",
+      "root": "/private/tmp/test-stamp-shard-52b064dfcaeb4f64b714d05a9bbe566f",
+      "removedAllocationBytes": 213088,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package-suffix-20261107/chunk02/ownership/62090e1139214bbf9f02e859c15dbc4c.json",
+      "root": "/private/tmp/test-stamp-shard-62090e1139214bbf9f02e859c15dbc4c",
+      "removedAllocationBytes": 524384,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package-suffix-20261107/chunk02/ownership/71bbaffd14da4ac5843adf0f19c39bab.json",
+      "root": "/private/tmp/test-stamp-shard-71bbaffd14da4ac5843adf0f19c39bab",
+      "removedAllocationBytes": 0,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package-suffix-20261107/chunk03/ownership/283dae1c76364640bd5380395e7ac57c.json",
+      "root": "/private/tmp/test-stamp-shard-283dae1c76364640bd5380395e7ac57c",
+      "removedAllocationBytes": 0,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package-suffix-20261107/chunk03/ownership/6cfe8810202e424daeed812513796979.json",
+      "root": "/private/tmp/test-stamp-shard-6cfe8810202e424daeed812513796979",
+      "removedAllocationBytes": 524384,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package-suffix-20261107/chunk04/ownership/67e76cca292d4662b592b4d7be787321.json",
+      "root": "/private/tmp/test-stamp-shard-67e76cca292d4662b592b4d7be787321",
+      "removedAllocationBytes": 524384,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package-suffix-20261107/chunk04/ownership/8e5d7f46729b4033b9584832792895ca.json",
+      "root": "/private/tmp/test-stamp-shard-8e5d7f46729b4033b9584832792895ca",
+      "removedAllocationBytes": 0,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package-suffix-20261107/chunk05/ownership/0cea5ad9624947c59766c61f272020f5.json",
+      "root": "/private/tmp/test-stamp-shard-0cea5ad9624947c59766c61f272020f5",
+      "removedAllocationBytes": 524384,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package-suffix-20261107/chunk05/ownership/d0aa9b148e4748df9ab59334b96ad062.json",
+      "root": "/private/tmp/test-stamp-shard-d0aa9b148e4748df9ab59334b96ad062",
+      "removedAllocationBytes": 0,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package-suffix-20261107/chunk06/ownership/98305a22c8d64c239638eaf54484a57d.json",
+      "root": "/private/tmp/test-stamp-shard-98305a22c8d64c239638eaf54484a57d",
+      "removedAllocationBytes": 0,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package-suffix-20261107/chunk06/ownership/d044a8f342f24d0892da62d0ee586947.json",
+      "root": "/private/tmp/test-stamp-shard-d044a8f342f24d0892da62d0ee586947",
+      "removedAllocationBytes": 524384,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package-suffix-20261107/chunk07/ownership/2d71d0d2f28f4d5d83d15668da22bb0d.json",
+      "root": "/private/tmp/test-stamp-shard-2d71d0d2f28f4d5d83d15668da22bb0d",
+      "removedAllocationBytes": 524384,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package-suffix-20261107/chunk07/ownership/57b9faa169b742568d1cf5e2fe8625d0.json",
+      "root": "/private/tmp/test-stamp-shard-57b9faa169b742568d1cf5e2fe8625d0",
+      "removedAllocationBytes": 0,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package-suffix-20261107/chunk08/ownership/6e1dcfe3c6ea4183a545982ca481765d.json",
+      "root": "/private/tmp/test-stamp-shard-6e1dcfe3c6ea4183a545982ca481765d",
+      "removedAllocationBytes": 524384,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package-suffix-20261107/chunk08/ownership/94a830783d6d4459afa3d6ed6fa213c6.json",
+      "root": "/private/tmp/test-stamp-shard-94a830783d6d4459afa3d6ed6fa213c6",
+      "removedAllocationBytes": 0,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package-suffix-20261107/chunk09/ownership/00517ca083874b5682302afe859026d9.json",
+      "root": "/private/tmp/test-stamp-shard-00517ca083874b5682302afe859026d9",
+      "removedAllocationBytes": 0,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package-suffix-20261107/chunk09/ownership/d467f41213044f8886c80f671d182904.json",
+      "root": "/private/tmp/test-stamp-shard-d467f41213044f8886c80f671d182904",
+      "removedAllocationBytes": 524384,
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true
+    }
+  ],
+  "outerCleanupSha256": "eae0ab11bf6eb362deb22c7d1a3ce23826b1c4ef5dea3be9e9e4446b65a25bc8",
+  "sourcePrimariesPreserved": true,
+  "unownedPycPreserved": true,
+  "leftovers": []
+}

@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "f63-linux-three-retained-configurations.v1",
+  "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "sourceReceipt": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/http-chunk0-receipt.json",
+    "bytes": 632368,
+    "sha256": "d5518728f7c6d84f331c242d4b5ed5499998ae6f5ec3e43d8e3ef14bcd1a4929"
+  },
+  "meaning": "Three real source configuration IDs from the earlier native plan, independently matched to passing exact .12 retained HTTP observations. Receipt projections only; no source payload copied or local runtime replay.",
+  "selection": [
+    {
+      "configurationId": "MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIQyxTMDIzMCxTMDJQQSxTMDJUNCxTMDJUQixTMDJWQixTMDJWRCxTMDJWTCxTMDMwMixTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzMSxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRHUSxTMDRNQyxTMDRVUixTMDUzNCxTMDU0NCxTMDU1MixTMDVBQyxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDY3NixTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxNSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNVSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNQ==",
+      "actualDot12Observation": {
+        "requestKey": "d72c05557861bb646f57484e60d26c3f1f35df5c20b0dd18e01256188c7d0ca2",
+        "kind": "configuration",
+        "configurationIdSha256": "ef437a9e4bfc46da39c6488b5c18e5edec63b99211f7f386b49dc86684de358f",
+        "model": "2PBC",
+        "directStatus": "partial",
+        "retainedPassed": true,
+        "directPassed": true,
+        "httpStatus": 200,
+        "httpPassed": true,
+        "consumerStatus": "partial",
+        "consumerPassed": true,
+        "consumerFailure": null,
+        "dtoSha256": "82712c8d703e6546d6c4298fa3a168b2ea48f09c73931ee9eb061ee36f98e2e4",
+        "elapsedMs": 45.25537500000064
+      }
+    },
+    {
+      "configurationId": "MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIRCxTMDIzMCxTMDJQQSxTMDJUNCxTMDJUQixTMDJWQixTMDJWRCxTMDJWTCxTMDMwMixTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzMSxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRHUSxTMDRNQyxTMDRVUixTMDUzNCxTMDU0NCxTMDU1MixTMDVBQyxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDY3NixTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxNSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNVSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNQ==",
+      "actualDot12Observation": {
+        "requestKey": "34a0a9065d28c883faaa883a2a454254f35a38e0620ca6a0fc57418560d1e8ef",
+        "kind": "configuration",
+        "configurationIdSha256": "78978d319e493388e2a86a3649349c05b6730e0b962da55da9d1b425f6b86fef",
+        "model": "2PBC",
+        "directStatus": "partial",
+        "retainedPassed": true,
+        "directPassed": true,
+        "httpStatus": 200,
+        "httpPassed": true,
+        "consumerStatus": "partial",
+        "consumerPassed": true,
+        "consumerFailure": null,
+        "dtoSha256": "38914a950698c2a9b5c2735ea0abb768c211fd2b77fcdc454692943295525781",
+        "elapsedMs": 33.84375
+      }
+    },
+    {
+      "configurationId": "MlBCQzpGRVBNSSxQMDQ3NSxTMDFDQixTMDFDRSxTMDFERixTMDFIQyxTMDIzMCxTMDJQQSxTMDJUNCxTMDJUQixTMDJWQixTMDJWRCxTMDJWTCxTMDMwMixTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzMSxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRHUSxTMDRNQyxTMDRVUixTMDUzNCxTMDU0NCxTMDU1MixTMDVBQyxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDY3NixTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxNSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNVSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNQ==",
+      "actualDot12Observation": {
+        "requestKey": "128455eee545c74481978ea16c7ef5c9c846efa1f8f14accb9430185e2a56737",
+        "kind": "configuration",
+        "configurationIdSha256": "b39740d635d069f22e4d70b0fdb8eee66e2be53fc1639cde37e947e856bbed9a",
+        "model": "2PBC",
+        "directStatus": "partial",
+        "retainedPassed": true,
+        "directPassed": true,
+        "httpStatus": 200,
+        "httpPassed": true,
+        "consumerStatus": "partial",
+        "consumerPassed": true,
+        "consumerFailure": null,
+        "dtoSha256": "d8212929ccd3770193bea4f1b457b2a2179c02283802b8066d7aee7c3e10303f",
+        "elapsedMs": 33.61266700000124
+      }
+    }
+  ],
+  "acceptance": false
+}

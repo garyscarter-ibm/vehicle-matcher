@@ -1,0 +1,47 @@
+{
+  "review": "security",
+  "round": 1,
+  "verdict": "passed",
+  "reviewedHashes": {
+    "run-live.mjs": "5cb5adafd7d1826fc5a953984863c21aca499a402b8f7e5b61521905018e87f7",
+    "supervise-live.py": "2a109f4c9fa453a675458c45563a8f384dc387c5e120cd1dc0aa2f19b43b8cce",
+    "diagnostic-plan.json": "b7b37c394a06e7e9d42cd13aca2cc852c095e11802c8fb7d55ba599925142631",
+    "execution-handoff.json": "cd404f42058d3e40158c1657b6060356836d47ea0ad287ff8fdb2c40b0e54889"
+  },
+  "poll": {
+    "schemaVersion": 1,
+    "cursor": "c83df779-53f7-4b13-a6ea-41fd49ea38ba:29",
+    "revision": 29,
+    "changed": true,
+    "thread": {
+      "id": "01a1b084-1d5e-71d2-90d8-0e183d9482bc",
+      "hostId": "local",
+      "status": {
+        "type": "idle"
+      }
+    },
+    "latestTurn": {
+      "id": "01a1b0fc-3131-7eb1-b4eb-250b905ed42b",
+      "status": "completed",
+      "error": null,
+      "startedAt": 1793970680,
+      "completedAt": 1793970753,
+      "durationMs": 73007
+    },
+    "latestAssistantMessageId": "msg_0ccf762281c211d2016aedd23c4c7c87d1a9ed4395474beb5f",
+    "latestAssistantMessage": {
+      "id": "msg_0ccf762281c211d2016aedd23c4c7c87d1a9ed4395474beb5f",
+      "turnId": "01a1b0fc-3131-7eb1-b4eb-250b905ed42b",
+      "phase": "final_answer",
+      "text": "Final scoped SECURITY review passed. No blocking findings. Verified exact SHA256 values: File SHA256 supervise-live.py 2a109f4c9fa453a675458c45563a8f384dc387c5e120cd1dc0aa2f19b43b8cce run-live.mjs 5cb5adafd7d1826fc5a953984863c21aca499a402b8f7e5b61521905018e87f7 diagnostic-plan.json b7b37c394a06e7e9d42cd13aca2cc852c095e11802c8fb7d55ba599925142631 execution-handoff.json cd404f42058d3e40158c1657b6060356836d47ea0ad287ff8fdb2c40b0e54889 The marker file and parent directory are synced before transport. Fallback uses the pinned producer to validate envelope, identity, counters, cache digests and diagnostic stage; invalid checkpoints contribute no artifacts or accounting. Receipts project numeric counters and fixed error codes. Supervisor receipt/type/I/O failures preserve finalization, and process-group ownership bounds cleanup. All seven module pins, eight reviewed paths and twelve frozen contracts match. Reused matching 18/18 runner-helper and 6/6 supervisor-fallback evidence. Independently confirmed three proof scratch roots/groups absent, with no leftovers. Live selection, marker, observation and supervision outputs remain absent. NOTE: Live main/transport and actual raw-schema compatibility remain unverified. Separate allocation remains required; qualification, admission and F39/F54 publication remain closed. No tests, imports, execution, Git, source/network, credentials, mutations or review scratch. Pugh requested/selected gpt-6.1-sol / high; no fallback or descendants. VERDICT: passed"
+    },
+    "latestToolMarkerId": "exec-a83f918c-074f-4b0d-b19c-392390b6dd7b",
+    "latestToolMarker": {
+      "id": "exec-a83f918c-074f-4b0d-b19c-392390b6dd7b",
+      "turnId": "01a1b0fc-3131-7eb1-b4eb-250b905ed42b",
+      "type": "commandExecution",
+      "name": "commandExecution",
+      "status": "failed"
+    }
+  }
+}

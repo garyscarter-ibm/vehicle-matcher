@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "g42-unspent-first5-parent-audit.v1",
+  "time": "2026-11-07T04:43:12.933807+00:00",
+  "scope": "read-onlyactualprimaries/5strictproofs/prefix/events/cleanup; no sourcereplay",
+  "passed": true,
+  "checks": [
+    "1:primary",
+    "1:strict",
+    "1:counts",
+    "1:prefix",
+    "1:new",
+    "1:cleanup:5",
+    "1:cleanup:6",
+    "2:primary",
+    "2:strict",
+    "2:counts",
+    "2:prefix",
+    "2:new",
+    "2:cleanup:12",
+    "2:cleanup:13",
+    "3:primary",
+    "3:strict",
+    "3:counts",
+    "3:prefix",
+    "3:new",
+    "3:cleanup:19",
+    "3:cleanup:20",
+    "4:primary",
+    "4:strict",
+    "4:counts",
+    "4:prefix",
+    "4:new",
+    "4:cleanup:26",
+    "4:cleanup:27",
+    "5:primary",
+    "5:strict",
+    "5:counts",
+    "5:prefix",
+    "5:new",
+    "5:cleanup:33",
+    "5:cleanup:34",
+    "2392admitted"
+  ],
+  "GET": 60,
+  "solver": 40,
+  "new": 34,
+  "rejected": 6,
+  "admittedSource": 2392,
+  "canonical": 2395,
+  "spent": 3204,
+  "canonicalSha256": "43c94058450e3535a46201ed264a98c949305159f96cef23df49824926b79937",
+  "spentSha256": "1747cc87440a99233ef340127c92c455274bc4902e70e76a95cf957225bf5475",
+  "sessions": [
+    {
+      "session": 1,
+      "new": 6,
+      "rejected": 2,
+      "primarySha256": "f95e63ab3c52fa99ac2360fd0aa2331d5972b436c67217a791e8baa3f6ff8e0a",
+      "proofSha256": "3c2977faecb859f3d309107b8901c04246d46d18288fa477b8af0908f7755871"
+    },
+    {
+      "session": 2,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "b17ff8693efe9a520d9d05f17f8a89ad3436a911722cd974b556dfaa67fc0661",
+      "proofSha256": "b9f67823235564711b30c4a23715f1ab9481ebb20a12393b339b88f9e532c64e"
+    },
+    {
+      "session": 3,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "59a923592394911399def89f6a87e119e2df7edbefbc0481447ff6522e76b6c9",
+      "proofSha256": "75b480c9df1a0151433e8ee89efcc12e2de67c5e6ea563a6e862e7f7ad173869"
+    },
+    {
+      "session": 4,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "47db55768cc100feb642491eec8b59f3755cea7571a42d431a21ce02316b8205",
+      "proofSha256": "740f82206eae7b1fe172063a543ffb0d7e034966ce239cb1ad34d6833d327ebb"
+    },
+    {
+      "session": 5,
+      "new": 7,
+      "rejected": 1,
+      "primarySha256": "8861b986d8bb8a64143a7048899315b8d7fcea856a405289acc013d13df98047",
+      "proofSha256": "179253bf727ed49ed0029739eca67f7633032031dd89d785a2ca9c175b54d655"
+    }
+  ],
+  "originalSession5SupervisorFailure": "preserved; source rc0/retained5pass/finalatexitcleanuptrue; originalgroupquerycauseunknown",
+  "acceptance": false,
+  "scratchCreated": false
+}

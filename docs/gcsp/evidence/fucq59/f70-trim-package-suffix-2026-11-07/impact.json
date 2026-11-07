@@ -1,0 +1,183 @@
+{
+  "scope": "scoped exact suffix preparation",
+  "identity": {
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq59/f70-trim-package-plan-2026-11-07/templates/chunk02.json": "019b7c6f9b29f125b409aa206103f072a3f36d35348c47e85d69565dd8e5ccf3",
+    "docs/gcsp/evidence/fucq59/f70-trim-package-plan-2026-11-07/templates/chunk03.json": "9b151447924675073a834b0daee4d805570f7bfd7122e373693a30fddddc2ac3",
+    "docs/gcsp/evidence/fucq59/f70-trim-package-plan-2026-11-07/templates/chunk04.json": "4753ad29d76e10279ee555e296e872231daf370203f78b56005f179cb5660c7c",
+    "docs/gcsp/evidence/fucq59/f70-trim-package-plan-2026-11-07/templates/chunk05.json": "81981e81b276f004a66f8be03aeb4fedd98597e0f31629eb8af6b06233f78936",
+    "docs/gcsp/evidence/fucq59/f70-trim-package-plan-2026-11-07/templates/chunk06.json": "742106a28f1e23078ac058eeb64510bb9ff39a35aabdd3bc8f101fe345e76b17",
+    "docs/gcsp/evidence/fucq59/f70-trim-package-plan-2026-11-07/templates/chunk07.json": "b7d60bcd6fcb2b74716911277d98dd3978b57e7cf2266dade1e4ae512b3b1f69",
+    "docs/gcsp/evidence/fucq59/f70-trim-package-plan-2026-11-07/templates/chunk08.json": "6e7ae063239ce3e9f4c121e638fd0999303a233df3fd9539e0f6976ee572ade8",
+    "docs/gcsp/evidence/fucq59/f70-trim-package-plan-2026-11-07/templates/chunk09.json": "2ce90cc5e8ed4e5f82afaf9c7c57163e4b034c47c71ef73350eaa15e1abd8ccf",
+    "docs/gcsp/evidence/fucq59/f70-trim-package-suffix-2026-11-07/actual-event-history.mjs": "097a2fb56eeca20ef431ed1e9299c049bd4d36b66a5a933276aabb352e888cd4",
+    "docs/gcsp/evidence/fucq59/f70-trim-package-suffix-2026-11-07/candidate-manifest.json": "5823962aff3e1620ce44178cb6caa57ae39063af966baebef7d459c60010cc87",
+    "docs/gcsp/evidence/fucq59/f70-trim-package-suffix-2026-11-07/check-offline.py": "132d6e071d7d070fa2ca5ec8d7a610f2881a57ac9efbe0157408fd024a425390",
+    "docs/gcsp/evidence/fucq59/f70-trim-package-suffix-2026-11-07/check-prepared.mjs": "907e6916dbc99d3ca05b0dd42147f1e9fde24ee346933cf7f5cb6a757b9e3a6f",
+    "docs/gcsp/evidence/fucq59/f70-trim-package-suffix-2026-11-07/live-check.test.mjs": "5c458448c3cc16570063e389a9c5c63d8fcc61640ff9b8f8032668f12e1016dd",
+    "docs/gcsp/evidence/fucq59/f70-trim-package-suffix-2026-11-07/prepare-chunk.py": "3faf348a471f7d1a908fa2d4dcb4c4ce669a56b3343f58beccf495abc9c72090",
+    "docs/gcsp/evidence/fucq59/f70-trim-package-suffix-2026-11-07/reconcile-retained.py": "e20f918023bd7887d5d7c070195879be43457f6fb7910246206d655619a4fa62",
+    "docs/gcsp/evidence/fucq59/f70-trim-package-suffix-2026-11-07/run-live.mjs": "a16658fd6a95bb887b9ce96309201cb22a28916db27ce1d671ada92e881f8a82",
+    "docs/gcsp/evidence/fucq59/f70-trim-package-suffix-2026-11-07/run-series.py": "b10f4badfe40a0fcbaebc28b1c7dae0ad7a638e961583359c00bbbd060a82967",
+    "docs/gcsp/evidence/fucq59/f70-trim-package-suffix-2026-11-07/supervise.py": "edffd0c096a496e403baaa9ac5fc5540d1489fcdece8a885ec471434a5ec2bd1",
+    "docs/gcsp/evidence/fucq59/f70-trim-package-suffix-2026-11-07/verify-retained.py": "fc0dbe032c49f1d0cd58b4fcb47de4e6fa67fa20f5a8881e1fd179e6b8ecfff2",
+    "docs/gcsp/evidence/fucq59/f70-trim-package8-pilot-2026-11-07/actual-event-history.mjs": "097a2fb56eeca20ef431ed1e9299c049bd4d36b66a5a933276aabb352e888cd4",
+    "docs/gcsp/evidence/fucq59/f70-trim-package8-pilot-2026-11-07/prepare.py": "6ce304a602d1b3035fe7e110e1a4fc809a0181f38011d20cc2ee245e5981fa57",
+    "docs/gcsp/evidence/fucq59/f70-trim-package8-pilot-2026-11-07/reconcile-retained.py": "d1587c5ed04a8fd7b516788103dc6c277e76de1933da5886773e105c185cdc00",
+    "docs/gcsp/evidence/fucq59/f70-trim-package8-pilot-2026-11-07/retained-check.test.mjs": "569f45fccf5bc5427d4fe78cacab0f47106f762c55a57581b9587061ff8d8e3a",
+    "docs/gcsp/evidence/fucq59/f70-trim-package8-pilot-2026-11-07/run-live.mjs": "bd48b598b49e0c7952c2fc5e70c3fb80480486f9efdd88a63d588b29c49a9bf9",
+    "docs/gcsp/evidence/fucq59/f70-trim-package8-pilot-2026-11-07/supervise.py": "60c6c857fa6537e7d682cb99f6589cbde9862fa934283259506c3bc134b27a11",
+    "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+    "scripts/gcsp/bmw-public-registration.mjs": "3a9a1afcc128f8356bb296b063d118bc9b7c59531ef75823bb99f8e01f209291",
+    "scripts/gcsp/bmw-selection-binding.mjs": "88820920f57f4509741d6ad291e2fcd36c5b47a65d42acd35e890e3a6f84004e",
+    "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+    "scripts/gcsp/capture-bmw-selection.mjs": "b3cea57603e403f41bb326bcdfc955b7f061a7cfc1b071d1ef609de3efc99bc1",
+    "scripts/gcsp/collect-fleet.mjs": "ba3864cee32f480facde57a2d2c9dbf944d571878bb2a9cece220955357ab1de",
+    "scripts/gcsp/collection-session.mjs": "db5a1a1ca6037132eced521f1a9b19d73a4282a113da66480ebec70c0beac7ff",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/public-bmw-source.mjs": "4561e844cfe85383ad8ed27521bab157a10dae57f8d82ab29b8f41842bfc8336",
+    "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+    "server/gcsp/migrations/index.js": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f",
+    "server/gcsp/policy/activation.js": "4e79235b761e8daf94f3cf2744c4bc585146181b410b64497669bd353ee7c4d6",
+    "server/gcsp/policy/adoption.js": "a2cb9a74946cd9eda413d896a0abc2f4299b3b75880a77ddd510667a5187c870",
+    "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+    "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+    "server/gcsp/policy/memory-provider.js": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+    "server/gcsp/policy/postgres-provider.js": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+    "server/gcsp/policy/publish.js": "c521e15966be7762a3348ad860403ef555dd8cbd48405e7d23d9a7c6d262a826",
+    "server/gcsp/policy/reviewed-definitions.js": "75518df649ba542ad32b876f8ee1b680e29b417c3b1f8dc90fcf1d4713a42cbb",
+    "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/repository/index.js": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16",
+    "server/gcsp/repository/memory.js": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866",
+    "server/gcsp/repository/postgres.js": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+    "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139",
+    "server/test/gcsp-bmw-options-qualification.test.js": "f2788898e10027366df4fbd4dd1682385dc549c5867b32b2a1210c1aa493146e",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56"
+  },
+  "selector": "repository affected dry-run unspecified language falls back to npm test; full fallback excluded after review",
+  "selectedCommand": [
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-trim-package-suffix-2026-11-07/check-offline.py"
+  ],
+  "affectedBoundaries": [
+    "same frozen model/date registration",
+    "common collector and strict binder",
+    "actual prior cumulative indexes",
+    "owned source processes and safe exports"
+  ],
+  "measured": [
+    {
+      "file": "docs/gcsp/evidence/fucq59/f70-trim-package-suffix-2026-11-07/check-prepared.mjs",
+      "functions": [
+        "<module>",
+        "read",
+        "sha",
+        "<module>",
+        "<module>",
+        "<module>",
+        "<module>",
+        "<module>",
+        "<module>"
+      ]
+    },
+    {
+      "file": "server/gcsp/repository/core.js",
+      "functions": [
+        "<module>",
+        "plain",
+        "jsonValue",
+        "<module>",
+        "canonical",
+        "<module>",
+        "inputDigest"
+      ]
+    },
+    {
+      "file": "server/gcsp/repository/schema.js",
+      "functions": [
+        "<module>",
+        "definition",
+        "<module>"
+      ]
+    },
+    {
+      "file": "scripts/gcsp/public-bmw-source.mjs",
+      "functions": [
+        "<module>",
+        "validatePublicBmwPlan"
+      ]
+    },
+    {
+      "file": "scripts/gcsp/configuration-key.mjs",
+      "functions": [
+        "<module>",
+        "requireValue"
+      ]
+    },
+    {
+      "file": "scripts/gcsp/collection-session.mjs",
+      "functions": [
+        "<module>"
+      ]
+    },
+    {
+      "file": "scripts/gcsp/bmw-public-registration.mjs",
+      "functions": [
+        "<module>",
+        "isBmwBatchPlan",
+        "object",
+        "same",
+        "bounded",
+        "token",
+        "code",
+        "date",
+        "validateBmwModelRegistration",
+        "<module>",
+        "<module>",
+        "candidateRequest",
+        "<module>",
+        "<module>",
+        "<module>",
+        "validateBmwCandidateRequest",
+        "bmwBatchPlanRequestUrls",
+        "bmwPublicRequestUrls",
+        "validateBmwBatchPlan",
+        "<module>",
+        "<module>",
+        "<module>",
+        "<module>",
+        "<module>"
+      ]
+    },
+    {
+      "file": "scripts/gcsp/settings-shape-report.mjs",
+      "functions": [
+        "<module>"
+      ]
+    },
+    {
+      "file": "scripts/gcsp/bmw-source-qualification.mjs",
+      "functions": [
+        "<module>"
+      ]
+    }
+  ],
+  "seconds": 0.250831708,
+  "unknown": [
+    "unexecuted suffix-source branches",
+    "future actual retained output bindings"
+  ],
+  "exclusions": [
+    "full suite",
+    "synthetic rerun",
+    "browser/application validation",
+    "publication"
+  ],
+  "lifecycleProbeSeconds": 0.23743687500000002
+}

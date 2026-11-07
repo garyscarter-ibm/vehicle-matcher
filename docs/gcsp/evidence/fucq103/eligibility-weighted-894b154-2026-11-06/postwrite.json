@@ -1,0 +1,23 @@
+{
+  "at": "2026-11-06T08:38:21.312472+00:00",
+  "verdict": "PASS",
+  "run": "fucq103-backend-dfc2b42a450b4565be68a74424bb0832",
+  "grant": "fucq103-eligibility-weighted-894b154-0813",
+  "revision": "894b154da8ff681e8202cc458e2bfea747ce1fb9",
+  "leadAudit": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-weighted-894b154-lead-2026-11-06.json",
+  "leadBytes": 71749,
+  "leadSHA256": "0016348fdc978aab5947f0cb0c898a22e156965ae3c2caa59c437c80e39ece7b",
+  "leadAllocatedOrLogicalBytes": 73728,
+  "runtimeOriginalAllocatedOrLogicalBytes": 20608,
+  "originalLogAllocatedOrLogicalBytes": 4096,
+  "originalsUnchanged": true,
+  "runtimePlusLeadAllocatedOrLogicalBytes": 94336,
+  "postwriteReceiptAllocationCapBytes": 4096,
+  "directoryEntryAllowanceBytes": 4096,
+  "conservativeFinalRetainedAllocationCapBytes": 102528,
+  "conservativeFinalReceiptAllocationCapBytes": 98432,
+  "receiptHeadroomCapBytes": 262144,
+  "combinedCapBytes": 134217728,
+  "publicationStatus": "UNPUBLISHED; root final audit required",
+  "noFurtherRuntimeExecution": true
+}

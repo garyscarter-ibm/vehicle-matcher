@@ -1,0 +1,2069 @@
+{
+  "accountingLimits": [
+    "Receipt aggregate GET/solver/bytes/accepted/rejected/duplicates/elapsed fields are actual observations in their named scope, not a newly validated global total.",
+    "No whole-run failure, timeout, substitution, backoff or source-operation-by-kind total is established here; omitted means unaggregated, not zero.",
+    "Incomplete/failed sessions receive zero capacity unless the named independent audit separately proves retained admissions.",
+    "Historical remaining/post-demo/profile/WMI wording is interpreted under the approved Q13 scope and explicit overnight authorisation; it is not reintroduced as a corpus VIN gate.",
+    "No source traffic, collector/enrichment/verification replay, or budget increase was performed by this report."
+  ],
+  "finitePlanObservations": [
+    {
+      "filename": "pilot-released-plan.json",
+      "reference": "E046",
+      "root": "f70-model-axis790-20261107-once",
+      "values": {
+        "attemptAllowance": 1194,
+        "baseline": {
+          "admittedSource": 1133,
+          "canonical": 1136,
+          "spent": 1846
+        },
+        "browser": 0,
+        "candidateAllowance": 790,
+        "decodedBytes": 423624704,
+        "id": "f70-model-axis790-20261107-once",
+        "images": 0,
+        "resources": {
+          "childRamBytes": 469762048,
+          "expectedRetainedBytes": 335544320,
+          "hostRamBytes": 536870912,
+          "peakIncludingRetainedBudgetBytes": 1140850688,
+          "perCohortSeconds": 600,
+          "perSessionRetainedShardBytes": 16777216,
+          "perSessionSeconds": 120,
+          "retainedBudgetBytes": 1073741824,
+          "retainedCheckSeconds": 30,
+          "scratchBytes": 67108864,
+          "scratchRootPolicy": "resource-helper-owned-default",
+          "workers": 1
+        },
+        "retries": 0,
+        "schemaVersion": "f70-model-axis790-series-plan.v1",
+        "sourceWrites": 0,
+        "stop": "First failed, incomplete, duplicate-only or resource-incomplete session stops; preserve spent prefix, never retry or substitute."
+      }
+    },
+    {
+      "filename": "suffix-released-plan.json",
+      "reference": "E047",
+      "root": "f70-model-axis790-20261107-once",
+      "values": {
+        "attemptAllowance": 1194,
+        "baseline": {
+          "admittedSource": 1133,
+          "canonical": 1136,
+          "spent": 1846
+        },
+        "browser": 0,
+        "candidateAllowance": 790,
+        "decodedBytes": 423624704,
+        "id": "f70-model-axis790-20261107-once",
+        "images": 0,
+        "resources": {
+          "childRamBytes": 469762048,
+          "expectedRetainedBytes": 335544320,
+          "hostRamBytes": 536870912,
+          "peakIncludingRetainedBudgetBytes": 1140850688,
+          "perCohortSeconds": 600,
+          "perSessionRetainedShardBytes": 16777216,
+          "perSessionSeconds": 120,
+          "retainedBudgetBytes": 1073741824,
+          "retainedCheckSeconds": 30,
+          "scratchBytes": 67108864,
+          "scratchRootPolicy": "resource-helper-owned-default",
+          "workers": 1
+        },
+        "retries": 0,
+        "schemaVersion": "f70-model-axis790-series-plan.v1",
+        "sourceWrites": 0,
+        "stop": "First failed, incomplete, duplicate-only or resource-incomplete session stops; preserve spent prefix, never retry or substitute."
+      }
+    },
+    {
+      "filename": "pilot-released-plan.json",
+      "reference": "E048",
+      "root": "f70-optional-axis-pilot32-20261107-once",
+      "values": {
+        "attemptAllowance": 48,
+        "browser": 0,
+        "candidateAllowance": 32,
+        "id": "f70-optional-axis-pilot32-20261107-once",
+        "images": 0,
+        "resources": {
+          "childRamBytes": 469762048,
+          "expectedRetainedBytes": 33554432,
+          "hostRamBytes": 536870912,
+          "peakIncludingRetainedBudgetBytes": 201326592,
+          "perCohortSeconds": 300,
+          "perSessionRetainedShardBytes": 16777216,
+          "perSessionSeconds": 120,
+          "retainedBudgetBytes": 134217728,
+          "retainedCheckSeconds": 30,
+          "scratchBytes": 67108864,
+          "scratchRootPolicy": "resource-helper-owned-default",
+          "workers": 1
+        },
+        "retries": 0,
+        "schemaVersion": "f70-optional-axis-pilot32-series-plan.v1",
+        "sourceWrites": 0
+      }
+    },
+    {
+      "filename": "suffix-released-plan.json",
+      "reference": "E049",
+      "root": "f70-optional-axis-suffix1156-20261107-once",
+      "values": {
+        "attemptAllowance": 1736,
+        "browser": 0,
+        "candidateAllowance": 1156,
+        "id": "f70-optional-axis-suffix1156-20261107-once",
+        "images": 0,
+        "resources": {
+          "childRamBytes": 469762048,
+          "combinedOriginalAndContinuationRetainedCeilingBytes": 12884901888,
+          "expectedRetainedBytes": 5368709120,
+          "hostRamBytes": 536870912,
+          "peakIncludingRetainedBudgetBytes": 7931644681,
+          "perCohortSeconds": 600,
+          "perSessionRetainedShardBytes": 33554432,
+          "perSessionSeconds": 120,
+          "priorStoppedRetainedBytes": 5020366071,
+          "retainedBudgetBytes": 7864535817,
+          "retainedCheckSeconds": 30,
+          "scratchBytes": 67108864,
+          "scratchRootPolicy": "resource-helper-owned-default",
+          "workers": 1
+        },
+        "retries": 0,
+        "schemaVersion": "f70-optional-axis-suffix1156-series-plan.v1",
+        "sourceWrites": 0
+      }
+    },
+    {
+      "filename": "suffix-released-plan.json",
+      "reference": "E050",
+      "root": "f70-optional-axis-suffix1556-20261107-once",
+      "values": {
+        "attemptAllowance": 2336,
+        "browser": 0,
+        "candidateAllowance": 1556,
+        "id": "f70-optional-axis-suffix1556-20261107-once",
+        "images": 0,
+        "resources": {
+          "childRamBytes": 469762048,
+          "combinedOriginalAndContinuationRetainedCeilingBytes": 12884901888,
+          "expectedRetainedBytes": 5368709120,
+          "hostRamBytes": 536870912,
+          "peakIncludingRetainedBudgetBytes": 8519362629,
+          "perCohortSeconds": 600,
+          "perSessionRetainedShardBytes": 33554432,
+          "perSessionSeconds": 120,
+          "priorStoppedRetainedBytes": 4432648123,
+          "retainedBudgetBytes": 8452253765,
+          "retainedCheckSeconds": 30,
+          "scratchBytes": 67108864,
+          "scratchRootPolicy": "resource-helper-owned-default",
+          "workers": 1
+        },
+        "retries": 0,
+        "schemaVersion": "f70-optional-axis-suffix1556-series-plan.v1",
+        "sourceWrites": 0
+      }
+    },
+    {
+      "filename": "suffix-released-plan.json",
+      "reference": "E051",
+      "root": "f70-optional-axis-suffix2660-20261107-once",
+      "values": {
+        "attemptAllowance": 3992,
+        "browser": 0,
+        "candidateAllowance": 2660,
+        "id": "f70-optional-axis-suffix2660-20261107-once",
+        "images": 0,
+        "resources": {
+          "childRamBytes": 469762048,
+          "combinedOriginalAndContinuationRetainedCeilingBytes": 12884901888,
+          "expectedRetainedBytes": 5368709120,
+          "hostRamBytes": 536870912,
+          "peakIncludingRetainedBudgetBytes": 10024953194,
+          "perCohortSeconds": 600,
+          "perSessionRetainedShardBytes": 33554432,
+          "perSessionSeconds": 120,
+          "priorStoppedRetainedBytes": 2927057558,
+          "retainedBudgetBytes": 9957844330,
+          "retainedCheckSeconds": 30,
+          "scratchBytes": 67108864,
+          "scratchRootPolicy": "resource-helper-owned-default",
+          "workers": 1
+        },
+        "retries": 0,
+        "schemaVersion": "f70-optional-axis-suffix2660-series-plan.v1",
+        "sourceWrites": 0
+      }
+    },
+    {
+      "filename": "suffix-released-plan.json",
+      "reference": "E052",
+      "root": "f70-optional-axis-suffix2815-20261107-once",
+      "values": {
+        "attemptAllowance": 4227,
+        "browser": 0,
+        "candidateAllowance": 2815,
+        "id": "f70-optional-axis-suffix2815-20261107-once",
+        "images": 0,
+        "resources": {
+          "childRamBytes": 469762048,
+          "combinedOriginalAndContinuationRetainedCeilingBytes": 12884901888,
+          "expectedRetainedBytes": 5368709120,
+          "hostRamBytes": 536870912,
+          "peakIncludingRetainedBudgetBytes": 10225167602,
+          "perCohortSeconds": 600,
+          "perSessionRetainedShardBytes": 33554432,
+          "perSessionSeconds": 120,
+          "priorStoppedRetainedBytes": 2726843150,
+          "retainedBudgetBytes": 10158058738,
+          "retainedCheckSeconds": 30,
+          "scratchBytes": 67108864,
+          "scratchRootPolicy": "resource-helper-owned-default",
+          "workers": 1
+        },
+        "retries": 0,
+        "schemaVersion": "f70-optional-axis-suffix2815-series-plan.v1",
+        "sourceWrites": 0
+      }
+    },
+    {
+      "filename": "suffix-released-plan.json",
+      "reference": "E053",
+      "root": "f70-optional-axis-suffix3623-20261107-once",
+      "values": {
+        "attemptAllowance": 5439,
+        "browser": 0,
+        "candidateAllowance": 3623,
+        "id": "f70-optional-axis-suffix3623-20261107-once",
+        "images": 0,
+        "resources": {
+          "childRamBytes": 469762048,
+          "combinedOriginalAndContinuationRetainedCeilingBytes": 12884901888,
+          "expectedRetainedBytes": 6442450944,
+          "hostRamBytes": 536870912,
+          "peakIncludingRetainedBudgetBytes": 11170245503,
+          "perCohortSeconds": 600,
+          "perSessionRetainedShardBytes": 33554432,
+          "perSessionSeconds": 120,
+          "priorStoppedRetainedBytes": 1781765249,
+          "retainedBudgetBytes": 11103136639,
+          "retainedCheckSeconds": 30,
+          "scratchBytes": 67108864,
+          "scratchRootPolicy": "resource-helper-owned-default",
+          "workers": 1
+        },
+        "retries": 0,
+        "schemaVersion": "f70-optional-axis-suffix3623-series-plan.v1",
+        "sourceWrites": 0
+      }
+    },
+    {
+      "filename": "suffix-released-plan.json",
+      "reference": "E054",
+      "root": "f70-optional-axis-suffix5535-20261107-once",
+      "values": {
+        "attemptAllowance": 8307,
+        "browser": 0,
+        "candidateAllowance": 5535,
+        "id": "f70-optional-axis-suffix5535-20261107-once",
+        "images": 0,
+        "resources": {
+          "childRamBytes": 469762048,
+          "expectedRetainedBytes": 9663676416,
+          "hostRamBytes": 536870912,
+          "peakIncludingRetainedBudgetBytes": 12952010752,
+          "perCohortSeconds": 600,
+          "perSessionRetainedShardBytes": 33554432,
+          "perSessionSeconds": 120,
+          "retainedBudgetBytes": 12884901888,
+          "retainedCheckSeconds": 30,
+          "scratchBytes": 67108864,
+          "scratchRootPolicy": "resource-helper-owned-default",
+          "workers": 1
+        },
+        "retries": 0,
+        "schemaVersion": "f70-optional-axis-suffix5535-series-plan.v1",
+        "sourceWrites": 0
+      }
+    },
+    {
+      "filename": "released-suffix-plan.json",
+      "reference": "E055",
+      "root": "f70-trim-package260-20261107-once",
+      "values": {
+        "attemptAllowance": 284,
+        "candidateAllowance": 252,
+        "decodedBytes": 75497472,
+        "id": "f70-trim-package260-20261107-once",
+        "maximumWallSeconds": 900,
+        "resources": {
+          "peakIncludingRetainedBudgetBytes": 402653184,
+          "perChunkRetainedShardBytes": 33554432,
+          "retainedBudgetBytes": 335544320
+        }
+      }
+    },
+    {
+      "filename": "released-resume-plan.json",
+      "reference": "E056",
+      "root": "f70-typed-axis1024-20261107-once",
+      "values": {
+        "bounds": {
+          "childRamBytes": 469762048,
+          "hostRamBytes": 536870912,
+          "original1800SecondsSinceMarkerRemainBinding": true,
+          "responseBytes": 1048576,
+          "retainedBudgetBytes": 1073741824,
+          "retainedShardBytes": 33554432,
+          "retries": 0,
+          "scratchBytes": 67108864,
+          "totalDecodedBytes": 268435456,
+          "totalGets": 1152,
+          "worker": 1
+        },
+        "schemaVersion": "typed-axis1024-retained-recovery-resume.v1",
+        "scope": "Retained-only diagnostic and continuation of exact original chunks04..32; no source replay or added requests"
+      }
+    },
+    {
+      "filename": "released-resume08-plan.json",
+      "reference": "E057",
+      "root": "f70-typed-axis1024-20261107-once",
+      "values": {
+        "bounds": {
+          "childRamBytes": 469762048,
+          "hostRamBytes": 536870912,
+          "originalDeadlineSinceFirstMarkerSeconds": 1800,
+          "retainedBudgetBytes": 1073741824,
+          "retainedShardBytes": 33554432,
+          "retries": 0,
+          "scratchBytes": 67108864,
+          "singleResponseBytes": 1048576,
+          "totalDecodedBytes": 268435456,
+          "totalMaximumGets": 1152,
+          "workers": 1
+        },
+        "schemaVersion": "typed-axis1024-actual-event-conflict-continuation.v1",
+        "scope": "Original chunks08..32 only after224 spent; no source replay or new scope"
+      }
+    },
+    {
+      "filename": "released-resume10-plan.json",
+      "reference": "E058",
+      "root": "f70-typed-axis1024-20261107-once",
+      "values": {
+        "bounds": {
+          "childRamBytes": 469762048,
+          "hostRamBytes": 536870912,
+          "originalDeadlineSinceFirstMarkerSeconds": 1800,
+          "retainedBudgetBytes": 1073741824,
+          "retainedShardBytes": 33554432,
+          "retries": 0,
+          "scratchBytes": 67108864,
+          "singleResponseBytes": 1048576,
+          "totalDecodedBytes": 268435456,
+          "totalMaximumGets": 1152,
+          "workers": 1
+        },
+        "schemaVersion": "typed-axis1024-all-event-readers-conflict-aware.v1",
+        "scope": "Original chunks10..32 only after288 spent; no replay or new source scope"
+      }
+    },
+    {
+      "filename": "released-resume15-plan.json",
+      "reference": "E059",
+      "root": "f70-typed-axis1024-20261107-once",
+      "values": {
+        "bounds": {
+          "childRamBytes": 469762048,
+          "hostRamBytes": 536870912,
+          "originalDeadlineSinceFirstMarkerSeconds": 1800,
+          "retainedBudgetBytes": 1073741824,
+          "retainedShardBytes": 33554432,
+          "retries": 0,
+          "scratchBytes": 67108864,
+          "singleResponseBytes": 1048576,
+          "totalDecodedBytes": 268435456,
+          "totalMaximumGets": 1152,
+          "workers": 1
+        },
+        "schemaVersion": "typed-axis1024-cleanup-reinspection-continuation.v1",
+        "scope": "Original chunks15..32 only after448spent; no replay/newsource"
+      }
+    },
+    {
+      "filename": "released-series-plan.json",
+      "reference": "E060",
+      "root": "f70-typed-axis1024-20261107-once",
+      "values": {
+        "attemptAllowance": 1152,
+        "boundary": "1024 exact unspent requests from actual typed codes and observed working core selections, with no assertion of constructibility, distinctness or accepted capacity. Strict solver binding and cumulative canonical dedup decide outcomes.",
+        "candidateAllowance": 1024,
+        "decodedBytes": 268435456,
+        "id": "f70-typed-axis1024-20261107-once",
+        "maximumWallSeconds": 1800,
+        "resources": {
+          "expectedRetainedBytes": 402653184,
+          "forecastCheckSecondsPer32": 1.25,
+          "forecastSeriesSeconds": 1100,
+          "forecastSourceSecondsPer32": 31.5,
+          "parallelChunks": false,
+          "peakHostRamBytes": 536870912,
+          "peakIncludingRetainedBudgetBytes": 1140850688,
+          "peakScratchBytes": 67108864,
+          "perChunkChildRamBytes": 469762048,
+          "perChunkChildSeconds": 165,
+          "perChunkHostRamBytes": 536870912,
+          "perChunkRetainedChecksSeconds": 30,
+          "perChunkRetainedShardBytes": 33554432,
+          "perChunkScratchBytes": 67108864,
+          "perChunkSeconds": 180,
+          "perChunkSourceSeconds": 120,
+          "retainedBudgetBytes": 1073741824,
+          "workers": 1
+        },
+        "responseBytes": 1048576,
+        "schemaVersion": "f70-typed-axis-series-execution-plan.v1",
+        "stop": [
+          "source/access/HTTP/shape/substitution/date/definition failure",
+          "wall/source/response/RAM/disk or shard ceiling",
+          "hash/binding/index mismatch",
+          "primary export or cleanup failure"
+        ]
+      }
+    },
+    {
+      "filename": "continuation-released-plan.json",
+      "reference": "E061",
+      "root": "g42-remaining-typed-pool-20261107-once",
+      "values": {
+        "attemptAllowance": 4152,
+        "baseline": {
+          "admittedSource": 1971,
+          "canonical": 1974,
+          "spent": 2684
+        },
+        "browser": 0,
+        "candidateAllowance": 2768,
+        "decodedBytes": 1451229184,
+        "id": "g42-remaining-typed-pool-20261107-once",
+        "images": 0,
+        "resources": {
+          "childRamBytes": 469762048,
+          "childSeconds": 105,
+          "expectedRetainedBytes": 2684354560,
+          "hostRamBytes": 536870912,
+          "peakIncludingRetainedBudgetBytes": 4362076160,
+          "perCohortSeconds": 600,
+          "perSessionRetainedShardBytes": 16777216,
+          "perSessionSeconds": 120,
+          "retainedBudgetBytes": 4294967296,
+          "retainedCheckSeconds": 30,
+          "scratchBytes": 67108864,
+          "scratchRootPolicy": "resource-helper-owned-default",
+          "sourceSeconds": 90,
+          "workers": 1
+        },
+        "retries": 0,
+        "schemaVersion": "g42-remaining2768-series-plan.v1",
+        "sourceWrites": 0,
+        "stop": "First failed/incomplete source, strict proof, pin, access, budget, retention or cleanup stops; preserve actual primary/spent prefix, no replay or substitutions. Completed rejected/duplicate requests remain spent and add no admission count."
+      }
+    },
+    {
+      "filename": "continuation-released-plan.json",
+      "reference": "E062",
+      "root": "g42-unspent-typed-pool-1304-20261107-once",
+      "values": {
+        "attemptAllowance": 1956,
+        "baseline": {
+          "admittedSource": 3168,
+          "canonical": 3171,
+          "spent": 4148
+        },
+        "browser": 0,
+        "candidateAllowance": 1304,
+        "decodedBytes": 683671552,
+        "id": "g42-unspent-typed-pool-1304-20261107-once",
+        "images": 0,
+        "resources": {
+          "childRamBytes": 469762048,
+          "childSeconds": 105,
+          "expectedRetainedBytes": 1500000000,
+          "hostRamBytes": 536870912,
+          "peakIncludingRetainedBudgetBytes": 4362076160,
+          "perCohortSeconds": 600,
+          "perSessionRetainedShardBytes": 16777216,
+          "perSessionSeconds": 120,
+          "retainedBudgetBytes": 4294967296,
+          "retainedCheckSeconds": 30,
+          "scratchBytes": 67108864,
+          "scratchRootPolicy": "resource-helper-owned-default",
+          "sourceSeconds": 90,
+          "workers": 1
+        },
+        "retries": 0,
+        "schemaVersion": "g42-unspent1304-series-plan.v1",
+        "sourceWrites": 0,
+        "stop": "First failed/incomplete source, strict proof, pin, access, budget, retention or cleanup stops; preserve actual primary/spent prefix, no replay or substitutions. Completed rejected/duplicate requests remain spent and add no admission count."
+      }
+    },
+    {
+      "filename": "continuation-released-plan.json",
+      "reference": "E063",
+      "root": "g42-unspent-typed-pool-20261107-once",
+      "values": {
+        "attemptAllowance": 3432,
+        "baseline": {
+          "admittedSource": 2358,
+          "canonical": 2361,
+          "spent": 3164
+        },
+        "browser": 0,
+        "candidateAllowance": 2288,
+        "decodedBytes": 1199570944,
+        "id": "g42-unspent-typed-pool-20261107-once",
+        "images": 0,
+        "resources": {
+          "childRamBytes": 469762048,
+          "childSeconds": 105,
+          "expectedRetainedBytes": 2300000000,
+          "hostRamBytes": 536870912,
+          "peakIncludingRetainedBudgetBytes": 4362076160,
+          "perCohortSeconds": 600,
+          "perSessionRetainedShardBytes": 16777216,
+          "perSessionSeconds": 120,
+          "retainedBudgetBytes": 4294967296,
+          "retainedCheckSeconds": 30,
+          "scratchBytes": 67108864,
+          "scratchRootPolicy": "resource-helper-owned-default",
+          "sourceSeconds": 90,
+          "workers": 1
+        },
+        "retries": 0,
+        "schemaVersion": "g42-unspent2288-series-plan.v1",
+        "sourceWrites": 0,
+        "stop": "First failed/incomplete source, strict proof, pin, access, budget, retention or cleanup stops; preserve actual primary/spent prefix, no replay or substitutions. Completed rejected/duplicate requests remain spent and add no admission count."
+      }
+    },
+    {
+      "filename": "continuation-released-plan.json",
+      "reference": "E064",
+      "root": "g42-unspent-typed-pool-2248-20261107-once",
+      "values": {
+        "attemptAllowance": 3372,
+        "baseline": {
+          "admittedSource": 2392,
+          "canonical": 2395,
+          "spent": 3204
+        },
+        "browser": 0,
+        "candidateAllowance": 2248,
+        "decodedBytes": 1178599424,
+        "id": "g42-unspent-typed-pool-2248-20261107-once",
+        "images": 0,
+        "resources": {
+          "childRamBytes": 469762048,
+          "childSeconds": 105,
+          "expectedRetainedBytes": 2300000000,
+          "hostRamBytes": 536870912,
+          "peakIncludingRetainedBudgetBytes": 4362076160,
+          "perCohortSeconds": 600,
+          "perSessionRetainedShardBytes": 16777216,
+          "perSessionSeconds": 120,
+          "retainedBudgetBytes": 4294967296,
+          "retainedCheckSeconds": 30,
+          "scratchBytes": 67108864,
+          "scratchRootPolicy": "resource-helper-owned-default",
+          "sourceSeconds": 90,
+          "workers": 1
+        },
+        "retries": 0,
+        "schemaVersion": "g42-unspent2248-series-plan.v1",
+        "sourceWrites": 0,
+        "stop": "First failed/incomplete source, strict proof, pin, access, budget, retention or cleanup stops; preserve actual primary/spent prefix, no replay or substitutions. Completed rejected/duplicate requests remain spent and add no admission count."
+      }
+    },
+    {
+      "filename": "phase01-released-plan.json",
+      "reference": "E065",
+      "root": "scheme-breadth30-phase01-960-20261107-once",
+      "values": {
+        "attemptAllowance": 1440,
+        "baseline": {
+          "admittedSource": 5829,
+          "canonical": 5832,
+          "spent": 7444
+        },
+        "browser": 0,
+        "candidateAllowance": 960,
+        "decodedBytes": 503316480,
+        "id": "scheme-breadth30-phase01-960-20261107-once",
+        "images": 0,
+        "resources": {
+          "childRamBytes": 469762048,
+          "childSeconds": 105,
+          "expectedRetainedBytes": 1800000000,
+          "hostRamBytes": 536870912,
+          "peakIncludingRetainedBudgetBytes": 4362076160,
+          "perCohortSeconds": 600,
+          "perSessionRetainedShardBytes": 33554432,
+          "perSessionSeconds": 120,
+          "retainedBudgetBytes": 4294967296,
+          "retainedCheckSeconds": 30,
+          "scratchBytes": 67108864,
+          "scratchRootPolicy": "resource-helper-owned-default",
+          "sourceSeconds": 90,
+          "workers": 1
+        },
+        "retries": 0,
+        "schemaVersion": "breadth30-phase01-series-plan.v1",
+        "sourceWrites": 0,
+        "stop": "First failed/incomplete source, strict proof, pin, access, budget, retention or cleanup stops; preserve actual primary/spent prefix, no replay or substitutions. Completed rejected/duplicate requests remain spent and add no admission count."
+      }
+    },
+    {
+      "filename": "phase01c-released-plan.json",
+      "reference": "E066",
+      "root": "scheme-breadth30-phase01c-320-20261107-once",
+      "values": {
+        "attemptAllowance": 480,
+        "baseline": {
+          "admittedSource": 6306,
+          "canonical": 6309,
+          "spent": 8076
+        },
+        "browser": 0,
+        "candidateAllowance": 320,
+        "decodedBytes": 167772160,
+        "id": "scheme-breadth30-phase01c-320-20261107-once",
+        "images": 0,
+        "resources": {
+          "childRamBytes": 469762048,
+          "childSeconds": 105,
+          "expectedRetainedBytes": 650000000,
+          "hostRamBytes": 536870912,
+          "peakIncludingRetainedBudgetBytes": 1677721600,
+          "perCohortSeconds": 600,
+          "perSessionRetainedShardBytes": 33554432,
+          "perSessionSeconds": 120,
+          "retainedBudgetBytes": 1610612736,
+          "retainedCheckSeconds": 30,
+          "scratchBytes": 67108864,
+          "scratchRootPolicy": "resource-helper-owned-default",
+          "sourceSeconds": 90,
+          "workers": 1
+        },
+        "retries": 0,
+        "schemaVersion": "breadth30-phase01c-series-plan.v1",
+        "sourceWrites": 0,
+        "stop": "First failed/incomplete source, strict proof, pin, access, budget, retention or cleanup stops; preserve actual primary/spent prefix, no replay or substitutions. Completed rejected/duplicate requests remain spent and add no admission count."
+      }
+    },
+    {
+      "filename": "phase02-released-plan.json",
+      "reference": "E067",
+      "root": "scheme-breadth30-phase02-960-20261107-once",
+      "values": {
+        "attemptAllowance": 1440,
+        "baseline": {
+          "admittedSource": 7517,
+          "canonical": 7520,
+          "spent": 9759
+        },
+        "browser": 0,
+        "candidateAllowance": 960,
+        "decodedBytes": 503316480,
+        "id": "scheme-breadth30-phase02-960-20261107-once",
+        "images": 0,
+        "resources": {
+          "childRamBytes": 469762048,
+          "childSeconds": 105,
+          "expectedRetainedBytes": 1800000000,
+          "hostRamBytes": 536870912,
+          "peakIncludingRetainedBudgetBytes": 4362076160,
+          "perCohortSeconds": 600,
+          "perSessionRetainedShardBytes": 33554432,
+          "perSessionSeconds": 120,
+          "retainedBudgetBytes": 4294967296,
+          "retainedCheckSeconds": 30,
+          "scratchBytes": 67108864,
+          "scratchRootPolicy": "resource-helper-owned-default",
+          "sourceSeconds": 90,
+          "workers": 1
+        },
+        "retries": 0,
+        "schemaVersion": "breadth30-phase02-series-plan.v1",
+        "sourceWrites": 0,
+        "stop": "First failed/incomplete source, strict proof, pin, access, budget, retention or cleanup stops; preserve actual primary/spent prefix, no replay or substitutions. Completed rejected/duplicate requests remain spent and add no admission count."
+      }
+    },
+    {
+      "filename": "phase02c-released-plan.json",
+      "reference": "E068",
+      "root": "scheme-breadth30-phase02c-864-20261107-once",
+      "values": {
+        "attemptAllowance": 1296,
+        "baseline": {
+          "admittedSource": 7583,
+          "canonical": 7586,
+          "spent": 9847
+        },
+        "browser": 0,
+        "candidateAllowance": 864,
+        "decodedBytes": 452984832,
+        "id": "scheme-breadth30-phase02c-864-20261107-once",
+        "images": 0,
+        "resources": {
+          "childRamBytes": 469762048,
+          "childSeconds": 105,
+          "expectedRetainedBytes": 1800000000,
+          "hostRamBytes": 536870912,
+          "peakIncludingRetainedBudgetBytes": 3288334336,
+          "perCohortSeconds": 600,
+          "perSessionRetainedShardBytes": 33554432,
+          "perSessionSeconds": 120,
+          "retainedBudgetBytes": 3221225472,
+          "retainedCheckSeconds": 30,
+          "scratchBytes": 67108864,
+          "scratchRootPolicy": "resource-helper-owned-default",
+          "sourceSeconds": 90,
+          "workers": 1
+        },
+        "retries": 0,
+        "schemaVersion": "breadth30-phase02c-series-plan.v1",
+        "sourceWrites": 0,
+        "stop": "First failed/incomplete source, strict proof, pin, access, budget, retention or cleanup stops; preserve actual primary/spent prefix, no replay or substitutions. Completed rejected/duplicate requests remain spent and add no admission count."
+      }
+    },
+    {
+      "filename": "phase03-released-plan.json",
+      "reference": "E069",
+      "root": "scheme-breadth30-phase03-960-20261107-once",
+      "values": {
+        "attemptAllowance": 1440,
+        "baseline": {
+          "admittedSource": 8096,
+          "canonical": 8099,
+          "spent": 10527
+        },
+        "browser": 0,
+        "candidateAllowance": 960,
+        "decodedBytes": 503316480,
+        "id": "scheme-breadth30-phase03-960-20261107-once",
+        "images": 0,
+        "resources": {
+          "childRamBytes": 469762048,
+          "childSeconds": 105,
+          "expectedRetainedBytes": 2000000000,
+          "hostRamBytes": 536870912,
+          "peakIncludingRetainedBudgetBytes": 4362076160,
+          "perCohortSeconds": 600,
+          "perSessionRetainedShardBytes": 33554432,
+          "perSessionSeconds": 120,
+          "retainedBudgetBytes": 4294967296,
+          "retainedCheckSeconds": 30,
+          "scratchBytes": 67108864,
+          "scratchRootPolicy": "resource-helper-owned-default",
+          "sourceSeconds": 90,
+          "workers": 1
+        },
+        "retries": 0,
+        "schemaVersion": "breadth30-phase03-series-plan.v1",
+        "sourceWrites": 0,
+        "stop": "First failed/incomplete source, strict proof, pin, access, budget, retention or cleanup stops; preserve actual primary/spent prefix, no replay or substitutions. Completed rejected/duplicate requests remain spent and add no admission count."
+      }
+    }
+  ],
+  "interruptionAndCompletionObservations": [
+    {
+      "reference": "E017",
+      "values": {
+        "fullPhaseComplete": false,
+        "interruption": {
+          "admissions": 0,
+          "conservativelyExcludedUnsolvedRequestDigests": [
+            "97e592e36054a0759f153be4b8509cf43aecfb48315b2119ef8af877a4ca0888",
+            "2f011273651fd2a81f7c82aef4785b933844bdd045ece38d3e5534dee99637dd",
+            "c3779cf613969c695d9d3e64dcb70f106384e9cb85acd0f6d5d298c36fc5671a",
+            "bb33ca16c4d58ea7b7addc1b69ef994f08e886863b01cbb45962cab4945290f2",
+            "5442fd5843136f7bcc96a2a97220428072f5644ce5f3a4f425a5b9b6b763ad42",
+            "91c86cc7caa6c31007b6946e55dcc7a7e99a1fa90a59f5cbf4238375e403c673",
+            "b690a5b2d0e92078721c164fb2db126c14bfc99072ae01e47821ce95367ab962",
+            "908aceaccd0edb03013861e986721a7fd4ff2b220856295d11634616de947683"
+          ],
+          "eventsPin": {
+            "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase01-960-20261107-once/sessions/session080/source-events.jsonl",
+            "sha256": "1ac30b0ee84c02bc409ebb80f5c5fbf567e40539a7cb326cb389ad88dd3ee6f9"
+          },
+          "model": "X1XL",
+          "originalAbsoluteDeadline": "2026-11-07T06:16:57.228279+00:00",
+          "primaryPin": {
+            "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase01-960-20261107-once/sessions/session080/collector-checkpoint.json",
+            "sha256": "bc0b3a6bb8111de663d856614a7d4044415accb6effa693fc1368bd7b5376646"
+          },
+          "receiptPin": {
+            "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase01-960-20261107-once/sessions/session080/receipt.json",
+            "sha256": "7cf584c12a0dcf9731c949e8abc3d67b24e04d752b5756683c166607a9ac0c2e"
+          },
+          "session": 80,
+          "solver": 0,
+          "startedGET": 2,
+          "strictChecksRun": 0,
+          "transportEvent": {
+            "at": "2026-11-07T05:55:45.231Z",
+            "attempt": 2,
+            "code": "ETIMEDOUT",
+            "method": "GET",
+            "phase": "transport-refused",
+            "startedAt": "2026-11-07T05:55:45.119Z"
+          }
+        },
+        "scope": "read-only exact tested-input, primary, event, chain and cleanup audit of 79 strict-complete breadth sessions plus actual failed bootstrap session080; zero source or test replay",
+        "status": "standalone breadth chain proved; independent parent audit and fresh F70 global union required",
+        "time": "2026-11-07T05:58:50.589262+00:00",
+        "totals": {
+          "GET": 950,
+          "admitted": 477,
+          "decodedBytes": 88745127,
+          "duplicates": 0,
+          "failedBootstrapSessions": 1,
+          "incompleteSourceTargets": 1,
+          "rejected": 155,
+          "removedScratchBytes": 41401760,
+          "solver": 632,
+          "strictPass": 395
+        }
+      }
+    },
+    {
+      "reference": "E018",
+      "values": {
+        "continuationElapsedSeconds": 294.66667558400013,
+        "originalAbsoluteDeadline": "2026-11-07T06:16:57.228279+00:00",
+        "originalAggregateActual": {
+          "GET": 1430,
+          "solver": 952
+        },
+        "originalExcludedSession80Solver": 8,
+        "originalGlobalPhaseElapsedSeconds": 1586.7015685840001,
+        "scope": "read-only exact tested-input, primary, event, chain and cleanup audit of40 actual remaining original81\u2013120 breadth sessions; zero source or test replay",
+        "status": "standalone breadth chain proved; independent parent audit and fresh F70 global union required",
+        "time": "2026-11-07T06:13:30.803765+00:00",
+        "totals": {
+          "GET": 480,
+          "admitted": 238,
+          "decodedBytes": 43701911,
+          "duplicates": 0,
+          "incompleteSourceTargets": 1,
+          "rejected": 82,
+          "removedScratchBytes": 20950784,
+          "solver": 320,
+          "strictPass": 200
+        }
+      }
+    },
+    {
+      "reference": "E019",
+      "values": {
+        "absoluteDeadline": "2026-11-07T06:48:01.823979+00:00",
+        "actualSolverRequests": 95,
+        "failedWholeTemplateExclusions": 8,
+        "fullPhaseComplete": false,
+        "interruption": {
+          "actualAttemptedSolverRequestDigests": [
+            "efe66d3b589b5fccc1d295be2931bd289ef59dfef26f462f46f5a145559efaf4",
+            "d093a9edd9f608506240f84814ee12c85e38c39e7f2cde242bef2acdac595986",
+            "04791edb908ee49dcf1cdfcc6ea7decc8a20ee9e32acbd2522f5fc01c4b3aed1",
+            "766543acda716e276195eb8ee1790717cdd03e63408dd0cbc1bf3fd6959f1edf",
+            "d9c6be34c6431e42553e51610cb21744c91a83eebe03c80aa78908caf79a590e",
+            "cff4f6ec6c65f43ffd012572b312ca91512c6b1e8e88df29a7a5d79c6dd00715",
+            "ff93e5a6ed2d3de62b5d495c1b4b07b2579e1f5e4bd1a9fa97d7678863e6d184"
+          ],
+          "conservativelyExcludedWholeTemplateRequestDigests": [
+            "efe66d3b589b5fccc1d295be2931bd289ef59dfef26f462f46f5a145559efaf4",
+            "d093a9edd9f608506240f84814ee12c85e38c39e7f2cde242bef2acdac595986",
+            "04791edb908ee49dcf1cdfcc6ea7decc8a20ee9e32acbd2522f5fc01c4b3aed1",
+            "766543acda716e276195eb8ee1790717cdd03e63408dd0cbc1bf3fd6959f1edf",
+            "d9c6be34c6431e42553e51610cb21744c91a83eebe03c80aa78908caf79a590e",
+            "cff4f6ec6c65f43ffd012572b312ca91512c6b1e8e88df29a7a5d79c6dd00715",
+            "ff93e5a6ed2d3de62b5d495c1b4b07b2579e1f5e4bd1a9fa97d7678863e6d184",
+            "fb474b264fe01297b55080071414f2eb1e6f7d024a4a17edd49b00b00a52673c"
+          ],
+          "eventsPin": {
+            "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02-960-20261107-once/sessions/session012/source-events.jsonl",
+            "sha256": "0acfa089ff427c504bd18db50dc31759508caf295cd05126983683db247a3e56"
+          },
+          "model": "X1M3",
+          "originalAbsoluteDeadline": "2026-11-07T06:48:01.823979+00:00",
+          "primaryPin": {
+            "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02-960-20261107-once/sessions/session012/collector-checkpoint.json",
+            "sha256": "723e24f22a9ae1159fdaa2c274c701efa5a1bffc0215c214d71042fd11b701e6"
+          },
+          "rawAdmissionsWithheld": 5,
+          "receiptPin": {
+            "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02-960-20261107-once/sessions/session012/receipt.json",
+            "sha256": "0ae3046af1377e92f986d76002a064270377f3a9b6c828396208c5ef46a14a1f"
+          },
+          "session": 12,
+          "solver": 7,
+          "sourceCapacityCredit": 0,
+          "startedGET": 11,
+          "strictChecksRun": 0,
+          "transportEvent": {
+            "at": "2026-11-07T06:19:50.179Z",
+            "attempt": 11,
+            "code": 20,
+            "method": "GET",
+            "phase": "transport-refused",
+            "startedAt": "2026-11-07T06:19:40.178Z"
+          }
+        },
+        "phaseElapsedSeconds": 110.270482125,
+        "scope": "read-only exact tested-input, primary, event, chain and cleanup audit of 11 strict-complete breadth sessions plus actual failed source session012; zero source or test replay",
+        "status": "standalone strict breadth prefix proved; independent parent audit and actual global union required",
+        "strictSpentSolverRequests": 88,
+        "time": "2026-11-07T06:21:10.280556+00:00",
+        "totals": {
+          "GET": 143,
+          "admitted": 66,
+          "decodedBytes": 13461449,
+          "duplicates": 0,
+          "failedRawAdmissionsWithheld": 5,
+          "failedSourceSessions": 1,
+          "incompleteSourceTargets": 0,
+          "rejected": 22,
+          "removedScratchBytes": 5768224,
+          "solver": 95,
+          "strictPass": 55
+        }
+      }
+    },
+    {
+      "reference": "E020",
+      "values": {
+        "actualSolverRequests": 687,
+        "continuationElapsedSeconds": 629.599782083,
+        "failedWholeTemplateExclusions": 8,
+        "fullPhaseComplete": false,
+        "interruption": {
+          "actualAttemptedSolverRequestDigests": [
+            "45a53c02fa2e94c2b2d51cba5112790db87c152ec26bdbe60d323e69887798d6",
+            "0a5df7869b3bdf9a6248176e4d67c1bf944cf422e5f0a229fd8967f97d1aa6eb",
+            "02db4311fb3c60d652cfa2408cb618c01e605fe8266859c60c3456d3dae4bb8e",
+            "631b57fdf5d1320e405998fbbf5914213c9eadfe2022999cd32f8f992f69b5b8",
+            "ad6e8c001609125eea804034403810bc289693c950c3354d9580207a1b7cc4ef",
+            "b8789f0bcfed7463e283d4c8cf0269a1eba34b0e0471ed8aed6a5355af3e2972",
+            "78611beaa88aa949b1039b1a485f22e9b9edf3dc774f0c57b6a4a8fcdfcdf5eb"
+          ],
+          "conservativelyExcludedWholeTemplateRequestDigests": [
+            "45a53c02fa2e94c2b2d51cba5112790db87c152ec26bdbe60d323e69887798d6",
+            "0a5df7869b3bdf9a6248176e4d67c1bf944cf422e5f0a229fd8967f97d1aa6eb",
+            "02db4311fb3c60d652cfa2408cb618c01e605fe8266859c60c3456d3dae4bb8e",
+            "631b57fdf5d1320e405998fbbf5914213c9eadfe2022999cd32f8f992f69b5b8",
+            "ad6e8c001609125eea804034403810bc289693c950c3354d9580207a1b7cc4ef",
+            "b8789f0bcfed7463e283d4c8cf0269a1eba34b0e0471ed8aed6a5355af3e2972",
+            "78611beaa88aa949b1039b1a485f22e9b9edf3dc774f0c57b6a4a8fcdfcdf5eb",
+            "3e0a1cd7a133f4d76cf7c006ca48f791fb339799260342d8364e542a23f88ca9"
+          ],
+          "eventsPin": {
+            "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02c-864-20261107-once/sessions/session086/source-events.jsonl",
+            "sha256": "6b288b8ad2c063677e9f22bf2964c9466ec3fa39a8b20e0e4bc6a1ecc4e6a755"
+          },
+          "model": "IX1L",
+          "originalAbsoluteDeadline": "2026-11-07T06:48:01.823979+00:00",
+          "originalPoolNumber": 218,
+          "primaryPin": {
+            "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02c-864-20261107-once/sessions/session086/collector-checkpoint.json",
+            "sha256": "77175943e97fe0a5ba88d42c5b64e24a861f5694cb4a01ea12643e1ddf084d25"
+          },
+          "rawAdmissionsWithheld": 4,
+          "receiptPin": {
+            "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02c-864-20261107-once/sessions/session086/receipt.json",
+            "sha256": "4efb3ca40b7dbcb0ff7a03549341d47874895c7dfcc474e90edbc5e4ecb5cdfa"
+          },
+          "session": 86,
+          "solver": 7,
+          "sourceCapacityCredit": 0,
+          "startedGET": 11,
+          "strictChecksRun": 0,
+          "transportEvent": {
+            "at": "2026-11-07T06:35:46.414Z",
+            "attempt": 11,
+            "code": "EPERM",
+            "method": "GET",
+            "phase": "transport-refused",
+            "startedAt": "2026-11-07T06:35:46.263Z"
+          }
+        },
+        "originalAbsoluteDeadline": "2026-11-07T06:48:01.823979+00:00",
+        "originalAggregateActual": {
+          "GET": 1174,
+          "solver": 782
+        },
+        "originalExcludedSession12WholeTemplate": 8,
+        "originalFailedRawAdmissionsWithheld": 5,
+        "originalGlobalPhaseElapsedSeconds": 1074.821964083,
+        "scope": "read-only exact tested-input, primary, event, chain and cleanup audit of85 strict-complete sessions plus actual failed086(original218) source; zero source or test replay",
+        "status": "standalone strict breadth prefix proved; independent parent audit and actual global union required",
+        "strictSpentSolverRequests": 680,
+        "time": "2026-11-07T06:36:44.890310+00:00",
+        "totals": {
+          "GET": 1031,
+          "admitted": 513,
+          "decodedBytes": 95347775,
+          "duplicates": 0,
+          "failedRawAdmissionsWithheld": 4,
+          "failedSourceSessions": 1,
+          "incompleteSourceTargets": 1,
+          "rejected": 167,
+          "removedScratchBytes": 44548064,
+          "solver": 687,
+          "strictPass": 425
+        }
+      }
+    },
+    {
+      "reference": "E021",
+      "values": {
+        "absoluteDeadline": "2026-11-07T07:10:43.651928+00:00",
+        "phaseElapsedSeconds": 964.023106375,
+        "scope": "read-only exact tested-input, primary, event, chain and cleanup audit of120 actual original241\u2013360 breadth sessions; zero source or test replay",
+        "status": "standalone breadth chain proved; independent parent audit and fresh global union required",
+        "time": "2026-11-07T06:57:27.766652+00:00",
+        "totals": {
+          "GET": 1440,
+          "admitted": 716,
+          "decodedBytes": 133631076,
+          "duplicates": 0,
+          "incompleteSourceTargets": 2,
+          "rejected": 244,
+          "removedScratchBytes": 62876928,
+          "solver": 960,
+          "strictPass": 600
+        }
+      }
+    }
+  ],
+  "pilot": {
+    "allCleanupVerified": true,
+    "context": "T5MJ/72HH/G61E GB/RL; dated catalogue context, no physical or WMI inference",
+    "f61Acceptance": false,
+    "priorInterrupted200CapacityCredit": 0,
+    "reference": "E070",
+    "totals": {
+      "accepted": 311,
+      "actualGets": 360,
+      "cumulativeAdmittedSourceConfigurations": 340,
+      "decodedBytes": 10528822,
+      "duplicates": 0,
+      "peakRssBytes": 362807296,
+      "pilotObservedYield": 0.971875,
+      "rejected": 9,
+      "removedScratchBytes": 0,
+      "solverRequests": 320,
+      "sourceSeconds": 278.404,
+      "trackedSpentSolverRequests": 405
+    }
+  },
+  "schemaVersion": "f61-exact10000-closeout-operations.v1",
+  "sourceSeriesReceiptObservations": [
+    {
+      "filename": "pilot-receipt.json",
+      "reference": "E022",
+      "root": "f70-model-axis790-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeSession": null,
+        "aggregateDecodedBytes": 3642984,
+        "aggregateGets": 48,
+        "aggregateSolverRequests": 32,
+        "allocationId": "f70-model-axis790-20261107-once",
+        "completedSessionsCount": 4,
+        "duplicates": 0,
+        "elapsedSeconds": 35.699694083,
+        "newlyAccepted": 32,
+        "phase": "pilot",
+        "reason": "finite-pilot-exhausted",
+        "rejected": 0,
+        "stoppedErrorType": null
+      }
+    },
+    {
+      "filename": "suffix-receipt.json",
+      "reference": "E023",
+      "root": "f70-model-axis790-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeSession": null,
+        "aggregateDecodedBytes": 88302293,
+        "aggregateGets": 1146,
+        "aggregateSolverRequests": 758,
+        "allocationId": "f70-model-axis790-20261107-once",
+        "completedSessionsCount": 97,
+        "duplicates": 0,
+        "elapsedSeconds": 1130.89812775,
+        "newlyAccepted": 758,
+        "phase": "suffix",
+        "reason": "finite-suffix-exhausted",
+        "rejected": 0,
+        "stoppedErrorType": null
+      }
+    },
+    {
+      "filename": "pilot-receipt.json",
+      "reference": "E024",
+      "root": "f70-optional-axis-pilot32-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeSession": null,
+        "aggregateDecodedBytes": 3656678,
+        "aggregateGets": 48,
+        "aggregateSolverRequests": 32,
+        "allocationId": "f70-optional-axis-pilot32-20261107-once",
+        "completedSessionsCount": 4,
+        "duplicates": 0,
+        "elapsedSeconds": 81.83154816599999,
+        "newlyAccepted": 32,
+        "phase": "pilot",
+        "reason": "finite-pilot-exhausted",
+        "rejected": 0,
+        "stoppedErrorType": null
+      }
+    },
+    {
+      "filename": "suffix-receipt.json",
+      "reference": "E025",
+      "root": "f70-optional-axis-suffix1156-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeSession": null,
+        "aggregateDecodedBytes": 132918128,
+        "aggregateGets": 1736,
+        "aggregateSolverRequests": 1156,
+        "allocationId": "f70-optional-axis-suffix1156-20261107-once",
+        "completedSessionsCount": 145,
+        "duplicates": 0,
+        "elapsedSeconds": 1078.7245378750001,
+        "newlyAccepted": 822,
+        "phase": "suffix",
+        "reason": "finite-suffix-exhausted",
+        "rejected": 334,
+        "stoppedErrorType": null
+      }
+    },
+    {
+      "filename": "suffix-receipt.json",
+      "reference": "E026",
+      "root": "f70-optional-axis-suffix1556-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeSession": 50,
+        "aggregateDecodedBytes": 45787692,
+        "aggregateGets": 600,
+        "aggregateSolverRequests": 400,
+        "allocationId": "f70-optional-axis-suffix1556-20261107-once",
+        "completedSessionsCount": 49,
+        "duplicates": 0,
+        "elapsedSeconds": 336.198200667,
+        "newlyAccepted": 249,
+        "phase": "suffix",
+        "reason": "phase-incomplete",
+        "rejected": 143,
+        "stoppedErrorType": "AssertionError"
+      }
+    },
+    {
+      "filename": "suffix-receipt.json",
+      "reference": "E027",
+      "root": "f70-optional-axis-suffix2660-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeSession": 138,
+        "aggregateDecodedBytes": 126731554,
+        "aggregateGets": 1649,
+        "aggregateSolverRequests": 1097,
+        "allocationId": "f70-optional-axis-suffix2660-20261107-once",
+        "completedSessionsCount": 137,
+        "duplicates": 0,
+        "elapsedSeconds": 957.628254916,
+        "newlyAccepted": 749,
+        "phase": "suffix",
+        "reason": "phase-incomplete",
+        "rejected": 347,
+        "stoppedErrorType": "AssertionError"
+      }
+    },
+    {
+      "filename": "suffix-receipt.json",
+      "reference": "E028",
+      "root": "f70-optional-axis-suffix2815-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeSession": 20,
+        "aggregateDecodedBytes": 18257422,
+        "aggregateGets": 231,
+        "aggregateSolverRequests": 151,
+        "allocationId": "f70-optional-axis-suffix2815-20261107-once",
+        "completedSessionsCount": 19,
+        "duplicates": 0,
+        "elapsedSeconds": 123.97292445800001,
+        "newlyAccepted": 100,
+        "phase": "suffix",
+        "reason": "phase-incomplete",
+        "rejected": 47,
+        "stoppedErrorType": "AssertionError"
+      }
+    },
+    {
+      "filename": "suffix-receipt.json",
+      "reference": "E029",
+      "root": "f70-optional-axis-suffix3623-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeSession": 101,
+        "aggregateDecodedBytes": 92333394,
+        "aggregateGets": 1206,
+        "aggregateSolverRequests": 802,
+        "allocationId": "f70-optional-axis-suffix3623-20261107-once",
+        "completedSessionsCount": 100,
+        "duplicates": 0,
+        "elapsedSeconds": 701.107029916,
+        "newlyAccepted": 592,
+        "phase": "suffix",
+        "reason": "phase-incomplete",
+        "rejected": 208,
+        "stoppedErrorType": "AssertionError"
+      }
+    },
+    {
+      "filename": "suffix-receipt.json",
+      "reference": "E030",
+      "root": "f70-optional-axis-suffix5535-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeSession": 239,
+        "aggregateDecodedBytes": 218554602,
+        "aggregateGets": 2868,
+        "aggregateSolverRequests": 1912,
+        "allocationId": "f70-optional-axis-suffix5535-20261107-once",
+        "completedSessionsCount": 238,
+        "duplicates": 0,
+        "elapsedSeconds": 1558.768572041,
+        "newlyAccepted": 1428,
+        "phase": "suffix",
+        "reason": "phase-incomplete",
+        "rejected": 476,
+        "stoppedErrorType": "AssertionError"
+      }
+    },
+    {
+      "filename": "suffix-receipt.json",
+      "reference": "E031",
+      "root": "f70-trim-package260-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeChunk": null,
+        "aggregateDecodedBytes": 9214530,
+        "aggregateGets": 296,
+        "allocationId": "f70-trim-package260-20261107-once",
+        "completedChunksCount": 8,
+        "duplicates": 0,
+        "elapsedSeconds": 622.4834815834577,
+        "includesPilotGetsAndBytes": true,
+        "newlyAccepted": 252,
+        "reason": "finite-trim-package252-suffix-exhausted",
+        "rejected": 0,
+        "stoppedErrorType": null
+      }
+    },
+    {
+      "filename": "resume-receipt.json",
+      "reference": "E032",
+      "root": "f70-typed-axis1024-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeChunk": 7,
+        "aggregateDecodedBytes": 7278210,
+        "aggregateGets": 252,
+        "allocationId": "f70-typed-axis1024-20261107-once",
+        "completedChunksCount": 6,
+        "duplicates": 0,
+        "elapsedSinceOriginalReservationSeconds": 447.7035617828369,
+        "newlyAccepted": 192,
+        "reason": "resumed-series-incomplete",
+        "rejected": 0,
+        "resumeElapsedSeconds": 142.423105625,
+        "stoppedErrorType": "AssertionError"
+      }
+    },
+    {
+      "filename": "resume08-receipt.json",
+      "reference": "E033",
+      "root": "f70-typed-axis1024-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeChunk": 9,
+        "aggregateDecodedBytes": 9350602,
+        "aggregateGets": 324,
+        "allocationId": "f70-typed-axis1024-20261107-once",
+        "completedChunksCount": 8,
+        "duplicates": 0,
+        "elapsedSinceOriginalReservationSeconds": 672.3090877532959,
+        "newlyAccepted": 256,
+        "reason": "resumed-series-incomplete",
+        "rejected": 0,
+        "resumeElapsedSeconds": 47.529694708,
+        "stoppedErrorType": "AssertionError"
+      }
+    },
+    {
+      "filename": "resume10-receipt.json",
+      "reference": "E034",
+      "root": "f70-typed-axis1024-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeChunk": 14,
+        "aggregateDecodedBytes": 14483218,
+        "aggregateGets": 504,
+        "allocationId": "f70-typed-axis1024-20261107-once",
+        "completedChunksCount": 13,
+        "duplicates": 0,
+        "elapsedSinceOriginalReservationSeconds": 846.9352920055389,
+        "newlyAccepted": 286,
+        "reason": "resumed-series-incomplete",
+        "rejected": 130,
+        "resumeElapsedSeconds": 91.557936125,
+        "stoppedErrorType": "AssertionError"
+      }
+    },
+    {
+      "filename": "resume15-receipt.json",
+      "reference": "E035",
+      "root": "f70-typed-axis1024-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeChunk": null,
+        "aggregateDecodedBytes": 32992292,
+        "aggregateGets": 1152,
+        "allocationId": "f70-typed-axis1024-20261107-once",
+        "completedChunksCount": 32,
+        "duplicates": 374,
+        "elapsedSinceOriginalReservationSeconds": 1225.7653777599335,
+        "newlyAccepted": 390,
+        "reason": "finite-typed-axis1024-series-exhausted",
+        "rejected": 260,
+        "resumeElapsedSeconds": 269.624591042,
+        "stoppedErrorType": null
+      }
+    },
+    {
+      "filename": "series-receipt.json",
+      "reference": "E036",
+      "root": "f70-typed-axis1024-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeChunk": 3,
+        "aggregateDecodedBytes": 3112626,
+        "aggregateGets": 108,
+        "allocationId": "f70-typed-axis1024-20261107-once",
+        "completedChunksCount": 2,
+        "duplicates": 0,
+        "elapsedSeconds": 104.23676179200001,
+        "newlyAccepted": 64,
+        "reason": "series-incomplete",
+        "rejected": 0,
+        "stoppedErrorType": "AssertionError"
+      }
+    },
+    {
+      "filename": "continuation-receipt.json",
+      "reference": "E037",
+      "root": "g42-remaining-typed-pool-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeSession": 60,
+        "aggregateDecodedBytes": 50982294,
+        "aggregateGets": 720,
+        "aggregateSolverRequests": 480,
+        "allocationId": "g42-remaining-typed-pool-20261107-once",
+        "completedSessionsCount": 59,
+        "duplicates": 0,
+        "elapsedSeconds": 334.201660625,
+        "newlyAccepted": 380,
+        "phase": "continuation",
+        "reason": "phase-incomplete",
+        "rejected": 92,
+        "stoppedErrorType": "AssertionError"
+      }
+    },
+    {
+      "filename": "continuation-receipt.json",
+      "reference": "E038",
+      "root": "g42-unspent-typed-pool-1304-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeSession": null,
+        "aggregateDecodedBytes": 139808430,
+        "aggregateGets": 1956,
+        "aggregateSolverRequests": 1304,
+        "allocationId": "g42-unspent-typed-pool-1304-20261107-once",
+        "completedSessionsCount": 163,
+        "duplicates": 0,
+        "elapsedSeconds": 1074.4082363750001,
+        "newlyAccepted": 1163,
+        "phase": "continuation",
+        "reason": "finite-continuation-exhausted",
+        "rejected": 141,
+        "stoppedErrorType": null
+      }
+    },
+    {
+      "filename": "continuation-receipt.json",
+      "reference": "E039",
+      "root": "g42-unspent-typed-pool-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeSession": 5,
+        "aggregateDecodedBytes": 4257244,
+        "aggregateGets": 60,
+        "aggregateSolverRequests": 40,
+        "allocationId": "g42-unspent-typed-pool-20261107-once",
+        "completedSessionsCount": 4,
+        "duplicates": 0,
+        "elapsedSeconds": 31.886194541,
+        "newlyAccepted": 27,
+        "phase": "continuation",
+        "reason": "phase-incomplete",
+        "rejected": 5,
+        "stoppedErrorType": "AssertionError"
+      }
+    },
+    {
+      "filename": "continuation-receipt.json",
+      "reference": "E040",
+      "root": "g42-unspent-typed-pool-2248-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeSession": 118,
+        "aggregateDecodedBytes": 101113201,
+        "aggregateGets": 1416,
+        "aggregateSolverRequests": 944,
+        "allocationId": "g42-unspent-typed-pool-2248-20261107-once",
+        "completedSessionsCount": 117,
+        "duplicates": 0,
+        "elapsedSeconds": 734.046743417,
+        "newlyAccepted": 770,
+        "phase": "continuation",
+        "reason": "phase-incomplete",
+        "rejected": 166,
+        "stoppedErrorType": "AssertionError"
+      }
+    },
+    {
+      "filename": "phase01-receipt.json",
+      "reference": "E041",
+      "root": "scheme-breadth30-phase01-960-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeSession": 80,
+        "aggregateDecodedBytes": 88745127,
+        "aggregateGets": 950,
+        "aggregateSolverRequests": 632,
+        "allocationId": "scheme-breadth30-phase01-960-20261107-once",
+        "completedSessionsCount": 79,
+        "duplicates": 0,
+        "elapsedSeconds": 537.649572833,
+        "newlyAccepted": 477,
+        "phase": "phase01",
+        "reason": "phase-incomplete",
+        "rejected": 155,
+        "stoppedErrorType": "AssertionError"
+      }
+    },
+    {
+      "filename": "phase01c-receipt.json",
+      "reference": "E042",
+      "root": "scheme-breadth30-phase01c-320-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeSession": null,
+        "aggregateDecodedBytes": 43701911,
+        "aggregateGets": 480,
+        "aggregateSolverRequests": 320,
+        "allocationId": "scheme-breadth30-phase01c-320-20261107-once",
+        "completedSessionsCount": 40,
+        "duplicates": 0,
+        "elapsedSeconds": 1586.7015685840001,
+        "newlyAccepted": 238,
+        "phase": "phase01c",
+        "reason": "finite-phase01c-exhausted",
+        "rejected": 82,
+        "stoppedErrorType": null
+      }
+    },
+    {
+      "filename": "phase02-receipt.json",
+      "reference": "E043",
+      "root": "scheme-breadth30-phase02-960-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeSession": 12,
+        "aggregateDecodedBytes": 13461449,
+        "aggregateGets": 143,
+        "aggregateSolverRequests": 95,
+        "allocationId": "scheme-breadth30-phase02-960-20261107-once",
+        "completedSessionsCount": 11,
+        "duplicates": 0,
+        "elapsedSeconds": 110.270482125,
+        "newlyAccepted": 66,
+        "phase": "phase02",
+        "reason": "phase-incomplete",
+        "rejected": 22,
+        "stoppedErrorType": "AssertionError"
+      }
+    },
+    {
+      "filename": "phase02c-receipt.json",
+      "reference": "E044",
+      "root": "scheme-breadth30-phase02c-864-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeSession": 86,
+        "aggregateDecodedBytes": 95347775,
+        "aggregateGets": 1031,
+        "aggregateSolverRequests": 687,
+        "allocationId": "scheme-breadth30-phase02c-864-20261107-once",
+        "completedSessionsCount": 85,
+        "duplicates": 0,
+        "elapsedSeconds": 1074.821964083,
+        "newlyAccepted": 513,
+        "phase": "phase02c",
+        "reason": "phase-incomplete",
+        "rejected": 167,
+        "stoppedErrorType": "AssertionError"
+      }
+    },
+    {
+      "filename": "phase03-receipt.json",
+      "reference": "E045",
+      "root": "scheme-breadth30-phase03-960-20261107-once",
+      "values": {
+        "acceptance": false,
+        "activeSession": null,
+        "aggregateDecodedBytes": 133631076,
+        "aggregateGets": 1440,
+        "aggregateSolverRequests": 960,
+        "allocationId": "scheme-breadth30-phase03-960-20261107-once",
+        "completedSessionsCount": 120,
+        "duplicates": 0,
+        "elapsedSeconds": 964.023106375,
+        "newlyAccepted": 716,
+        "phase": "phase03",
+        "reason": "finite-phase03-exhausted",
+        "rejected": 244,
+        "stoppedErrorType": null
+      }
+    }
+  ],
+  "unionAuditObservations": [
+    {
+      "laneTotals": [
+        {
+          "counts": {
+            "GET": 1736,
+            "admitted": 822,
+            "rejected": 334,
+            "removedScratchBytes": 76629600,
+            "solver": 1156,
+            "strictChecks": 725
+          },
+          "label": "F70-1156-145",
+          "strictProofPins": 145
+        },
+        {
+          "counts": {
+            "GET": 1440,
+            "admitted": 716,
+            "rejected": 244,
+            "removedScratchBytes": 62876928,
+            "solver": 960,
+            "strictChecks": 600
+          },
+          "label": "breadth03-120",
+          "strictProofPins": 120
+        }
+      ],
+      "reference": "E005",
+      "values": {
+        "admittedSource": 10351,
+        "canonical": 10354,
+        "failedSourceSessionsCapacityCredit": 0,
+        "independentCleanup": {
+          "allGroupsAbsent": true,
+          "allReservationsAbsent": true,
+          "compatibilityException": null,
+          "groupsChecked": 530,
+          "leftovers": [],
+          "scratchRootsAbsent": 530
+        },
+        "newSourceCapacity": 1538,
+        "overshoot10000": 351,
+        "remaining10000": 0,
+        "schemaVersion": "actual-global-union-candidate.v1",
+        "scope": "count10351proof; profiles/modelbreadth/enrichmentandfullacceptanceopen",
+        "sourceAcceptance": false,
+        "sourceRequestsDuringAudit": 0,
+        "spent": 13747,
+        "status": "parent-proved",
+        "testsReplayed": 0,
+        "time": "2026-11-07T06:57:21.636233+00:00",
+        "totals": {
+          "GET": 3176,
+          "admitted": 1538,
+          "rejected": 578,
+          "removedScratchBytes": 139506528,
+          "solver": 2116,
+          "strictChecks": 1325
+        }
+      }
+    },
+    {
+      "laneTotals": [],
+      "reference": "E006",
+      "values": {
+        "admittedSource": 2424,
+        "canonical": 2427,
+        "initialParentAuditAttempt": "strict orderedcanonicalprefix comparison failed becauseoptionalindexes sortedIDs; corrected toidentity/originpreservation; nosource/proofrerun",
+        "remaining10000": 7576,
+        "schemaVersion": "actual-global-union.v1",
+        "scope": "G42actual60+unspent5+F70optionalpilot32; no source/test replay",
+        "sourceAcceptance": false,
+        "spent": 3236,
+        "status": "proved",
+        "time": "2026-11-07T04:43:36.541986+00:00"
+      }
+    },
+    {
+      "laneTotals": [],
+      "reference": "E007",
+      "values": {
+        "admittedSource": 3848,
+        "canonical": 3851,
+        "remaining10000": 6152,
+        "schemaVersion": "actual-global-union.v1",
+        "scope": "scoped read-only exact testedinput/primary/event/chain/cleanup audit; G42through117 and F70through109; zero source/test replay",
+        "sourceAcceptance": false,
+        "spent": 5044,
+        "status": "proved",
+        "time": "2026-11-07T05:05:35.340561+00:00",
+        "totals": {
+          "GET": 2712,
+          "admitted": 1424,
+          "incompleteSourceTargets": 77,
+          "rejected": 384,
+          "removedScratchBytes": 118957248,
+          "solver": 1808,
+          "strictPass": 1130
+        }
+      }
+    },
+    {
+      "laneTotals": [],
+      "reference": "E008",
+      "values": {
+        "actualEventRows": 24,
+        "admittedSource": 3854,
+        "canonical": 3857,
+        "cleanup": {
+          "compatibilityException": null,
+          "dependencyLinkAbsent": true,
+          "groups": 236,
+          "groupsAbsent": true,
+          "leftovers": [],
+          "ownedManifests": 236,
+          "removedAllocationBytes": 61885504,
+          "retainedLogicalBytes": 801522490,
+          "scratchRootsAbsent": true,
+          "tokensAbsent": true
+        },
+        "newFrom118": 6,
+        "originalFailureCause": "unestablished; missingstarted6 retained in adjacent actualeventfile",
+        "originalFailureFixed": false,
+        "originalProofRewritten": false,
+        "remaining10000": 6146,
+        "schemaVersion": "actual-global-union.v1",
+        "scope": "strict3848milestone plus sixactual118admissions supported by four unchanged strictchecks and independently checked24row actualeventunion; no source/test replay",
+        "sourceAcceptance": false,
+        "spent": 5052,
+        "status": "proved-combined-retained-evidence",
+        "synthesizedEvents": 0,
+        "time": "2026-11-07T05:07:09.001063+00:00"
+      }
+    },
+    {
+      "laneTotals": [],
+      "reference": "E009",
+      "values": {
+        "admittedSource": 4398,
+        "canonical": 4401,
+        "remaining10000": 5602,
+        "schemaVersion": "actual-global-union.v1",
+        "scope": "scoped read-only exact testedinput/primary/event/chain/cleanup audit; audited3854 baseline plus exact F70sessions110through200; zero source/test replay",
+        "sourceAcceptance": false,
+        "spent": 5780,
+        "status": "proved",
+        "time": "2026-11-07T05:13:42.150227+00:00",
+        "totals": {
+          "GET": 1092,
+          "admitted": 544,
+          "incompleteSourceTargets": 66,
+          "rejected": 184,
+          "removedScratchBytes": 48091680,
+          "solver": 728,
+          "strictPass": 455
+        }
+      }
+    },
+    {
+      "laneTotals": [],
+      "reference": "E010",
+      "values": {
+        "admittedSource": 4430,
+        "canonical": 4433,
+        "cleanup": {
+          "allScratchGroupsTokensLinkAbsent": true,
+          "compatibilityException": null,
+          "leftovers": [],
+          "ownedRoots": 7,
+          "removedAllocationBytes": 3084544,
+          "retainedLogicalBytes": 11870025
+        },
+        "newSince4398": 32,
+        "remaining10000": 5570,
+        "schemaVersion": "actual-global-union.v1",
+        "scope": "parent-proved4398 plus independent exactinput/primary/event/cleanup audit of42strict breadthchecks; no source/test replay",
+        "sourceAcceptance": false,
+        "sourceRequestsDuringAudit": 0,
+        "spent": 5828,
+        "status": "proved",
+        "testsReplayed": 0,
+        "time": "2026-11-07T05:15:36.518052+00:00"
+      }
+    },
+    {
+      "laneTotals": [],
+      "reference": "E011",
+      "values": {
+        "admittedSource": 4666,
+        "canonical": 4669,
+        "remaining10000": 5334,
+        "schemaVersion": "actual-global-union.v1",
+        "scope": "scoped read-only exact testedinput/primary/event/chain/cleanup audit; audited4430 baseline plus exact F70sessions201through238 and separate239actualevidence; originalverifierexit1/missingproof retained; zero source/test replay",
+        "sourceAcceptance": false,
+        "spent": 6140,
+        "status": "proved",
+        "time": "2026-11-07T05:19:12.767510+00:00",
+        "totals": {
+          "GET": 468,
+          "admitted": 236,
+          "incompleteSourceTargets": 28,
+          "rejected": 76,
+          "removedScratchBytes": 20610720,
+          "solver": 312,
+          "strictPass": 195
+        }
+      }
+    },
+    {
+      "laneTotals": [],
+      "reference": "E012",
+      "values": {
+        "admittedSource": 5829,
+        "canonical": 5832,
+        "independentCleanup": {
+          "allGroupsAbsent": true,
+          "allReservationsAbsent": true,
+          "compatibilityException": null,
+          "dependencyLinkAbsent": true,
+          "groupsChecked": 978,
+          "leftovers": [],
+          "reservationTokensChecked": 327,
+          "scratchRootsAbsent": 326
+        },
+        "remaining10000": 4171,
+        "schemaVersion": "actual-global-union-candidate.v1",
+        "scope": "read-only exact testedinput/primary/event/chain/cleanup audit of163actualG42sessions; parentproved4666 includes actualbreadth32 already; zero source/test replay",
+        "sourceAcceptance": false,
+        "sourceRequestsDuringAudit": 0,
+        "spent": 7444,
+        "status": "parent-proved",
+        "testsReplayed": 0,
+        "time": "2026-11-07T05:32:22.472092+00:00",
+        "totals": {
+          "GET": 1956,
+          "admitted": 1163,
+          "decodedBytes": 139808430,
+          "incompleteSourceTargets": 0,
+          "rejected": 141,
+          "removedScratchBytes": 85474592,
+          "solver": 1304,
+          "strictPass": 815
+        }
+      }
+    },
+    {
+      "laneTotals": [
+        {
+          "counts": {
+            "GET": 1200,
+            "admitted": 592,
+            "rejected": 208,
+            "removedScratchBytes": 52848000,
+            "solver": 800,
+            "strictChecks": 500
+          },
+          "label": "F70-100",
+          "strictProofPins": 100
+        },
+        {
+          "counts": {
+            "GET": 223,
+            "admitted": 100,
+            "rejected": 47,
+            "removedScratchBytes": 10041120,
+            "solver": 147,
+            "strictChecks": 95
+          },
+          "label": "F70-19",
+          "strictProofPins": 19
+        }
+      ],
+      "reference": "E013",
+      "values": {
+        "admittedSource": 6998,
+        "canonical": 7001,
+        "failedSourceSessionsCapacityCredit": 0,
+        "independentCleanup": {
+          "allGroupsAbsent": true,
+          "allReservationsAbsent": true,
+          "compatibilityException": null,
+          "groupsChecked": 238,
+          "leftovers": [],
+          "scratchRootsAbsent": 238
+        },
+        "newSourceCapacity": 1169,
+        "remaining10000": 3002,
+        "schemaVersion": "actual-global-union-candidate.v1",
+        "sourceAcceptance": false,
+        "sourceRequestsDuringAudit": 0,
+        "spent": 9031,
+        "status": "parent-proved",
+        "testsReplayed": 0,
+        "time": "2026-11-07T06:02:44.005765+00:00",
+        "totals": {
+          "GET": 1423,
+          "admitted": 692,
+          "rejected": 255,
+          "removedScratchBytes": 62889120,
+          "solver": 947,
+          "strictChecks": 595
+        }
+      }
+    },
+    {
+      "laneTotals": [
+        {
+          "counts": {
+            "GET": 600,
+            "admitted": 281,
+            "rejected": 119,
+            "removedScratchBytes": 26424000,
+            "solver": 400,
+            "strictChecks": 250
+          },
+          "label": "F70-50",
+          "strictProofPins": 50
+        },
+        {
+          "counts": {
+            "GET": 480,
+            "admitted": 238,
+            "rejected": 82,
+            "removedScratchBytes": 20950784,
+            "solver": 320,
+            "strictChecks": 200
+          },
+          "label": "breadth01c-40",
+          "strictProofPins": 40
+        }
+      ],
+      "reference": "E014",
+      "values": {
+        "admittedSource": 7517,
+        "canonical": 7520,
+        "failedSourceSessionsCapacityCredit": 0,
+        "independentCleanup": {
+          "allGroupsAbsent": true,
+          "allReservationsAbsent": true,
+          "compatibilityException": null,
+          "groupsChecked": 180,
+          "leftovers": [],
+          "scratchRootsAbsent": 180
+        },
+        "newSourceCapacity": 519,
+        "remaining10000": 2483,
+        "schemaVersion": "actual-global-union-candidate.v1",
+        "sourceAcceptance": false,
+        "sourceRequestsDuringAudit": 0,
+        "spent": 9759,
+        "status": "parent-proved",
+        "testsReplayed": 0,
+        "time": "2026-11-07T06:14:51.746338+00:00",
+        "totals": {
+          "GET": 1080,
+          "admitted": 519,
+          "rejected": 201,
+          "removedScratchBytes": 47374784,
+          "solver": 720,
+          "strictChecks": 450
+        }
+      }
+    },
+    {
+      "laneTotals": [
+        {
+          "counts": {
+            "GET": 1644,
+            "admitted": 749,
+            "rejected": 347,
+            "removedScratchBytes": 72401760,
+            "solver": 1096,
+            "strictChecks": 685
+          },
+          "label": "F70-137",
+          "strictProofPins": 137
+        },
+        {
+          "counts": {
+            "GET": 132,
+            "admitted": 66,
+            "rejected": 22,
+            "removedScratchBytes": 5768224,
+            "solver": 88,
+            "strictChecks": 55
+          },
+          "label": "breadth02-11",
+          "strictProofPins": 11
+        }
+      ],
+      "reference": "E015",
+      "values": {
+        "admittedSource": 8051,
+        "canonical": 8054,
+        "failedSourceSessionsCapacityCredit": 0,
+        "independentCleanup": {
+          "allGroupsAbsent": true,
+          "allReservationsAbsent": true,
+          "compatibilityException": null,
+          "groupsChecked": 296,
+          "leftovers": [],
+          "scratchRootsAbsent": 296
+        },
+        "newSourceCapacity": 534,
+        "remaining10000": 1949,
+        "schemaVersion": "actual-global-union-candidate.v1",
+        "sourceAcceptance": false,
+        "sourceRequestsDuringAudit": 0,
+        "spent": 10543,
+        "status": "parent-proved",
+        "testsReplayed": 0,
+        "time": "2026-11-07T06:26:15.294777+00:00",
+        "totals": {
+          "GET": 1776,
+          "admitted": 815,
+          "rejected": 369,
+          "removedScratchBytes": 78169984,
+          "solver": 1184,
+          "strictChecks": 740
+        }
+      }
+    },
+    {
+      "laneTotals": [
+        {
+          "counts": {
+            "GET": 588,
+            "admitted": 249,
+            "rejected": 143,
+            "removedScratchBytes": 25895520,
+            "solver": 392,
+            "strictChecks": 245
+          },
+          "label": "F70-1556-49",
+          "strictProofPins": 49
+        },
+        {
+          "counts": {
+            "GET": 1020,
+            "admitted": 513,
+            "rejected": 167,
+            "removedScratchBytes": 44548064,
+            "solver": 680,
+            "strictChecks": 425
+          },
+          "label": "breadth02c-85",
+          "strictProofPins": 85
+        }
+      ],
+      "reference": "E016",
+      "values": {
+        "admittedSource": 8813,
+        "canonical": 8816,
+        "failedSourceSessionsCapacityCredit": 0,
+        "independentCleanup": {
+          "allGroupsAbsent": true,
+          "allReservationsAbsent": true,
+          "compatibilityException": null,
+          "groupsChecked": 268,
+          "leftovers": [],
+          "scratchRootsAbsent": 268
+        },
+        "newSourceCapacity": 762,
+        "remaining10000": 1187,
+        "schemaVersion": "actual-global-union-candidate.v1",
+        "sourceAcceptance": false,
+        "sourceRequestsDuringAudit": 0,
+        "spent": 11623,
+        "status": "parent-proved",
+        "testsReplayed": 0,
+        "time": "2026-11-07T06:39:04.183404+00:00",
+        "totals": {
+          "GET": 1608,
+          "admitted": 762,
+          "rejected": 310,
+          "removedScratchBytes": 70443584,
+          "solver": 1072,
+          "strictChecks": 670
+        }
+      }
+    }
+  ],
+  "wholeRunRollup": {
+    "examples": [
+      "global-union8051 totals.admitted=815 but newSourceCapacity=534",
+      "global-union6998 totals.admitted=692 but newSourceCapacity=1169",
+      "phase01c receipt elapsedSeconds=1586.7015685840001 is original global phase time; audit continuationElapsedSeconds=294.66667558400013",
+      "typed-axis resume receipts overlap and must not be added"
+    ],
+    "reason": "Parent audit totals use lane or prefix scopes; series receipts can be cumulative, resumed or overlapping and include failed prefixes excluded from admitted union. No sum or elapsed wall rollup is inferred.",
+    "status": "not-reconciled",
+    "totals": null
+  }
+}

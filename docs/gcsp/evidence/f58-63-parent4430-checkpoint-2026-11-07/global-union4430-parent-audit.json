@@ -1,0 +1,44 @@
+{
+  "actualBreadthSource": {
+    "GET": 72,
+    "admitted": 32,
+    "decodedBytes": 6326538,
+    "duplicates": 0,
+    "rejected": 16,
+    "solver": 48
+  },
+  "admittedSource": 4430,
+  "basisAuditSha256": "6ee85fa125976972166378186faff65ef6a0e192ad28108edaf19eac5c92b54c",
+  "breadthProofSha256": "8bda2daf68d246f1d45b9869bdfd5359cd61fd8590ad74e000c37d252e6f85ef",
+  "canonical": 4433,
+  "canonicalPin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union4430-20261107/final-canonical-index.json",
+    "sha256": "bb6ea6c3599f946c8c1b86cf93f57fb1b10930ec703e51ab7335fc3cb82230e2"
+  },
+  "checks": 5999,
+  "cleanup": {
+    "allScratchGroupsTokensLinkAbsent": true,
+    "compatibilityException": null,
+    "leftovers": [],
+    "ownedRoots": 7,
+    "removedAllocationBytes": 3084544,
+    "retainedLogicalBytes": 11870025
+  },
+  "newSince4398": 32,
+  "remaining10000": 5570,
+  "retainedLogicalBytes": 4300292,
+  "schemaVersion": "actual-global-union.v1",
+  "scope": "parent-proved4398 plus independent exactinput/primary/event/cleanup audit of42strict breadthchecks; no source/test replay",
+  "scratchCreated": false,
+  "sourceAcceptance": false,
+  "sourceRequestsDuringAudit": 0,
+  "spent": 5828,
+  "spentPin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union4430-20261107/final-spent-request-index.json",
+    "sha256": "be9890b3a102b13d851f310903a48739cdfaafbcef603f16243096d411df125e"
+  },
+  "status": "proved",
+  "strictChecksReused": 42,
+  "testsReplayed": 0,
+  "time": "2026-11-07T05:15:36.518052+00:00"
+}

@@ -1,0 +1,323 @@
+{
+  "schemaVersion": "final-publish-actions-result.v1",
+  "observedAt": "2026-11-07T12:57:00.548417+00:00",
+  "run": {
+    "conclusion": "success",
+    "createdAt": "2026-11-07T12:47:39Z",
+    "databaseId": 42374040814,
+    "headSha": "9b13ba2be2ed7feea767ab20e08dc6c048aef30f",
+    "jobs": [
+      {
+        "completedAt": "2026-11-07T12:53:58Z",
+        "conclusion": "success",
+        "databaseId": 128407873432,
+        "name": "fleet-node20",
+        "startedAt": "2026-11-07T12:47:42Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-11-07T12:47:44Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-11-07T12:47:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-07T12:47:52Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-11-07T12:47:44Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-07T12:47:57Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-node@v4",
+            "number": 3,
+            "startedAt": "2026-11-07T12:47:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-07T12:53:55Z",
+            "conclusion": "success",
+            "name": "Restore exact31 assets and scoped5 runtime boundaries; prior10002 evidence retained",
+            "number": 4,
+            "startedAt": "2026-11-07T12:47:57Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-07T12:53:55Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-node@v4",
+            "number": 7,
+            "startedAt": "2026-11-07T12:53:55Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-07T12:53:55Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 8,
+            "startedAt": "2026-11-07T12:53:55Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-11-07T12:53:55Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 9,
+            "startedAt": "2026-11-07T12:53:55Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/garyscarter-ibm/vehicle-matcher/actions/runs/42374040814/job/128407873432"
+      }
+    ],
+    "updatedAt": "2026-11-07T12:53:58Z",
+    "url": "https://github.com/garyscarter-ibm/vehicle-matcher/actions/runs/42374040814"
+  },
+  "scope": "scoped Linux Node20 exact31asset cold/offline restore and five runtime references; no full suite or full10002 repeat",
+  "logSha256": "c2d5b8967e462b06be24ad62c07960fbb1ab3f4d067c27b6edda8db85cb86549",
+  "logBytes": 40640,
+  "phaseAndCleanupEvidence": [
+    {
+      "at": "2026-11-07T12:47:57.1045249Z",
+      "message": "phase=npm-ci state=start elapsed_s=0"
+    },
+    {
+      "at": "2026-11-07T12:47:57.6029302Z",
+      "message": "phase=npm-ci state=passed seconds=0 elapsed_s=0"
+    },
+    {
+      "at": "2026-11-07T12:47:57.6030436Z",
+      "message": "phase=download state=start elapsed_s=0"
+    },
+    {
+      "at": "2026-11-07T12:49:48.9879459Z",
+      "message": "phase=download state=passed seconds=111 elapsed_s=111"
+    },
+    {
+      "at": "2026-11-07T12:49:48.9880480Z",
+      "message": "phase=offline state=start elapsed_s=111"
+    },
+    {
+      "at": "2026-11-07T12:52:16.0068379Z",
+      "message": "phase=offline state=passed seconds=148 elapsed_s=259"
+    },
+    {
+      "at": "2026-11-07T12:52:16.9202205Z",
+      "message": "phase=verify-assets state=start elapsed_s=259"
+    },
+    {
+      "at": "2026-11-07T12:52:16.9272745Z",
+      "message": "phase=verify-assets state=passed seconds=0 elapsed_s=259"
+    },
+    {
+      "at": "2026-11-07T12:52:16.9273451Z",
+      "message": "phase=boundary state=start elapsed_s=259"
+    },
+    {
+      "at": "2026-11-07T12:53:55.3953789Z",
+      "message": "phase=boundary state=passed seconds=99 elapsed_s=358"
+    },
+    {
+      "at": "2026-11-07T12:53:55.4231215Z",
+      "message": "phase=boundary state=exit exit=0 phase_seconds=99 elapsed_s=358"
+    },
+    {
+      "at": "2026-11-07T12:53:55.4250975Z",
+      "message": "phase_evidence=download bytes=1416"
+    },
+    {
+      "at": "2026-11-07T12:53:55.4274031Z",
+      "message": "phase_evidence=offline bytes=1437"
+    },
+    {
+      "at": "2026-11-07T12:53:55.4297566Z",
+      "message": "903568\t/home/runner/work/_temp/gcsp-fleet-42374040814-1"
+    },
+    {
+      "at": "2026-11-07T12:53:55.4846696Z",
+      "message": "Owned scratch absent; no retained archive; exit=0"
+    }
+  ],
+  "jsonEvidence": [
+    {
+      "at": "2026-11-07T12:52:16.9203779Z",
+      "value": {
+        "status": "exact31assetcache-and-restored-store-passed",
+        "releaseId": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+        "files": 31,
+        "bytes": 574382841,
+        "sourceCalls": 0,
+        "externalCalls": 0,
+        "fullReferenceProofReexecuted": false,
+        "acceptance": false
+      }
+    },
+    {
+      "at": "2026-11-07T12:53:55.3813453Z",
+      "value": {
+        "count": 5,
+        "consumerErrors": 2,
+        "externalCalls": 0,
+        "sourceCalls": 0,
+        "acceptance": false
+      }
+    },
+    {
+      "at": "2026-11-07T12:53:55.4211165Z",
+      "value": {
+        "scope": "Linux scoped5boundary+exact31assets",
+        "runtime": "v20.20.2",
+        "platform": "linux",
+        "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+        "scopedReferences": 5,
+        "scopedConsumerFailures": 2,
+        "historical10002ProofReplayed": false,
+        "originalConsumerFailures": 2707,
+        "buildHTTPSCalls": 62,
+        "fullSuiteRun": false,
+        "acceptance": false
+      }
+    },
+    {
+      "at": "2026-11-07T12:53:55.4264264Z",
+      "value": {
+        "status": "ok",
+        "mode": "cold-restore",
+        "active": {
+          "datasetId": "gcsp-source-fleet",
+          "version": "2026-11-07.12",
+          "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+          "counts": {
+            "configurations": 10001,
+            "distinctConfigurations": 10001,
+            "images": 2,
+            "qualifyingCompleteDistinctSourceConfigurations": 10000,
+            "sourceConfigurations": 10000,
+            "vinMappings": 1
+          },
+          "sourceContexts": [
+            {
+              "catalogueDate": null,
+              "market": "US",
+              "note": "Small structural reference fixture; no UK/RHD, full equipment or 200/10000 corpus claim",
+              "observedDate": "2026-11-01",
+              "sourceKind": "north-american-reference",
+              "steering": "LHD"
+            },
+            {
+              "catalogueDate": "2026-11-01",
+              "market": "GB",
+              "note": "Exact retained FUCQ-39 GB catalogue; physical year, build, steering and plant remain unknown",
+              "observedDate": "2026-11-01",
+              "sourceKind": "dated-snapshot",
+              "steering": null
+            },
+            {
+              "catalogueDate": "2026-11-07",
+              "market": "GB",
+              "note": "9999 actual admitted v2 factory selections and one retained historical source configuration; two representative images retain exact dated associations; four qualified measurements apply only to one exact configuration; physical build, visual fidelity and scheme breadth remain unverified",
+              "observedDate": "2026-11-07",
+              "sourceKind": "dated-snapshot",
+              "steering": null
+            }
+          ],
+          "completeness": {
+            "imagesMissing": 9999,
+            "selectedOptions": {
+              "complete": 10000,
+              "unknown": 1
+            },
+            "sourceKinds": {
+              "dated-snapshot": 10000,
+              "north-american-reference": 1
+            }
+          }
+        },
+        "externalCalls": 62
+      }
+    },
+    {
+      "at": "2026-11-07T12:53:55.4287439Z",
+      "value": {
+        "status": "ok",
+        "idempotent": true,
+        "active": {
+          "datasetId": "gcsp-source-fleet",
+          "version": "2026-11-07.12",
+          "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+          "counts": {
+            "configurations": 10001,
+            "distinctConfigurations": 10001,
+            "images": 2,
+            "qualifyingCompleteDistinctSourceConfigurations": 10000,
+            "sourceConfigurations": 10000,
+            "vinMappings": 1
+          },
+          "sourceContexts": [
+            {
+              "catalogueDate": null,
+              "market": "US",
+              "note": "Small structural reference fixture; no UK/RHD, full equipment or 200/10000 corpus claim",
+              "observedDate": "2026-11-01",
+              "sourceKind": "north-american-reference",
+              "steering": "LHD"
+            },
+            {
+              "catalogueDate": "2026-11-01",
+              "market": "GB",
+              "note": "Exact retained FUCQ-39 GB catalogue; physical year, build, steering and plant remain unknown",
+              "observedDate": "2026-11-01",
+              "sourceKind": "dated-snapshot",
+              "steering": null
+            },
+            {
+              "catalogueDate": "2026-11-07",
+              "market": "GB",
+              "note": "9999 actual admitted v2 factory selections and one retained historical source configuration; two representative images retain exact dated associations; four qualified measurements apply only to one exact configuration; physical build, visual fidelity and scheme breadth remain unverified",
+              "observedDate": "2026-11-07",
+              "sourceKind": "dated-snapshot",
+              "steering": null
+            }
+          ],
+          "completeness": {
+            "imagesMissing": 9999,
+            "selectedOptions": {
+              "complete": 10000,
+              "unknown": 1
+            },
+            "sourceKinds": {
+              "dated-snapshot": 10000,
+              "north-american-reference": 1
+            }
+          }
+        },
+        "mode": "publish-existing",
+        "externalCalls": 0
+      }
+    }
+  ],
+  "testedHead": "9b13ba2be2ed7feea767ab20e08dc6c048aef30f",
+  "documentationHead": "693844ae9ffbb00763c2a1e50fe35f866176e164",
+  "changedSinceTestedHead": [
+    "docs/gcsp/evidence/f58-63-jira-reconciliation-2026-11-07/cleanup.json",
+    "docs/gcsp/evidence/f58-63-jira-reconciliation-2026-11-07/defects.json",
+    "docs/gcsp/evidence/f58-63-jira-reconciliation-2026-11-07/git-push-ack.json",
+    "docs/gcsp/evidence/f58-63-jira-reconciliation-2026-11-07/stories.json",
+    "docs/gcsp/f58-63-morning-status-2026-11-07.md"
+  ],
+  "runtimeIdentityUnchanged": true,
+  "cleanup": {
+    "measuredAllocatedKiB": 903568,
+    "measuredAllocatedBytes": 925253632,
+    "absenceVerified": true,
+    "compatibilityException": "bounded CI build/cache working set; no retained archive",
+    "sampledPeakRAM": "not emitted; not inferred"
+  },
+  "localScratchBytes": 0,
+  "acceptance": false
+}

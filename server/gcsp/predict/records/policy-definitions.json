@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "definitionSetId": "fucq113-learning-v1",
+  "revision": "learning-definitions.v1",
+  "definitions": [
+    {
+      "key": "learning.cohortSize",
+      "value": 12,
+      "unit": "employees",
+      "status": "assumed",
+      "basis": "Small fictional cohort permits bounded repeatable trials.",
+      "source": "docs/gcsp/shared-contracts.md#synthetic-learning-datasets--fucq-113",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "learning.cycles",
+      "value": 3,
+      "unit": "cycles",
+      "status": "assumed",
+      "basis": "Three fictional renewal cycles demonstrate repeated choices.",
+      "source": "docs/gcsp/shared-contracts.md#synthetic-learning-datasets--fucq-113",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "learning.cycleSpacingDays",
+      "value": 180,
+      "unit": "days",
+      "status": "assumed",
+      "basis": "Plausible twice-yearly scenario spacing, not BMW contract dates.",
+      "source": "docs/gcsp/shared-contracts.md#synthetic-learning-datasets--fucq-113",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "learning.maximumGeneratedRecords",
+      "value": 240,
+      "unit": "records",
+      "status": "assumed",
+      "basis": "Finite engineering guard before record materialisation.",
+      "source": "docs/gcsp/shared-contracts.md#synthetic-learning-datasets--fucq-113",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "learning.maximumChoiceEntries",
+      "value": 4096,
+      "unit": "alternative entries",
+      "status": "assumed",
+      "basis": "Finite engineering guard before choice-set materialisation.",
+      "source": "docs/gcsp/shared-contracts.md#synthetic-learning-datasets--fucq-113",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "learning.noChoiceRate",
+      "value": 0.12,
+      "unit": "probability",
+      "status": "assumed",
+      "basis": "Illustrative independent propensity to wait despite feasible alternatives.",
+      "source": "docs/gcsp/shared-contracts.md#synthetic-learning-datasets--fucq-113",
+      "sourceDate": "2026-11-05"
+    },
+    {
+      "key": "learning.response.v1",
+      "value": {
+        "declineRate": 0.12,
+        "expiryRate": 0.08,
+        "selectionAfterAcceptRate": 0.95,
+        "utilityNoise": 0.15
+      },
+      "unit": "probabilities and utility amplitude",
+      "status": "assumed",
+      "basis": "Illustrative noisy responses, expiry and independent allocation after acceptance; not measured employee behaviour.",
+      "source": "docs/gcsp/shared-contracts.md#synthetic-learning-datasets--fucq-113",
+      "sourceDate": "2026-11-05"
+    }
+  ],
+  "digest": "a49f54884322f5993faf510aa8f5cea6e4a9c02e9fae2d2ddfefd350a69d7782"
+}

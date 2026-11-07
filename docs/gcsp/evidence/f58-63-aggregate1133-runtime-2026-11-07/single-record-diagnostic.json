@@ -1,0 +1,29 @@
+{
+  "time": "2026-11-07T04:12:48.386Z",
+  "status": 200,
+  "bytes": 10105,
+  "elapsedMs": 172,
+  "id": "MUY3QjpGS1ROTCxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFINSxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDMzNyxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMg==",
+  "manifestDigest": "86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f",
+  "bodyShape": [
+    "contractVersion",
+    "schemaVersion",
+    "provider",
+    "providerVersion",
+    "status",
+    "requested",
+    "resolved",
+    "identity",
+    "failure",
+    "completeness",
+    "routing",
+    "versions",
+    "description",
+    "technical",
+    "equipment",
+    "images",
+    "source",
+    "presentation"
+  ],
+  "scope": "one diagnostic configuration GET; no fullDTO comparison or remote egress assertion"
+}

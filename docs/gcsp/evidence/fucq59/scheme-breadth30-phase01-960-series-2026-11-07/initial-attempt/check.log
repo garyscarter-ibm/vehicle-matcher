@@ -1,0 +1,39 @@
+✔ exact120templateprefix has960unspent typed requests and1440GET against6140spent auditedbase (213.564167ms)
+✔ allcode/source/runtime/base/audit pins and the31target gap boundary are exact (44.602875ms)
+✔ series/session preparation/source supervisor/runner refuse absent grants before output or marker creation (555.251375ms)
+✔ actual safe event history accepts exact ordered real rows and refuses URL leakage (19.512917ms)
+✔ first exact session freeze uses audited base and refuses already spent input without creating target (429.394583ms)
+✔ adopted reconciliation and five strict checks validate a copied actual pilot shard without network or source mutation (642.991208ms)
+✔ group proof retains unknown rechecks and never accepts live or persistent unknown (141.351125ms)
+✖ phase refuses even a matching grant while its cumulative base requires final active-source refresh (158.381583ms)
+✔ base refresh preserves an exact audited union, refuses missing spent source history and never grants source (764.255917ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 8
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3065.803209
+
+✖ failing tests:
+
+test at docs/gcsp/evidence/fucq59/scheme-breadth30-phase01-960-series-2026-11-07/prepared-check.test.mjs:36:1
+✖ phase refuses even a matching grant while its cumulative base requires final active-source refresh (158.381583ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /fresh-parent-pilot-audit-required/. Input:
+  
+  'Traceback (most recent call last):\n' +
+    '  File "/private/tmp/test-stamp-shard-3e17dea4d0124d8a8bdd22c2ee067f5c/g42-continuation-protocol-YAlPeS/docs/gcsp/evidence/fucq59/scheme-breadth30-phase01-960-series-2026-11-07/run-series.py", line 26, in <module>\n' +
+    '    assert cloud.is_dir() and cloud in output.resolve().parents\n' +
+    'AssertionError\n'
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth30-phase01-960-series-2026-11-07/prepared-check.test.mjs:41:38)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Traceback (most recent call last):\n  File "/private/tmp/test-stamp-shard-3e17dea4d0124d8a8bdd22c2ee067f5c/g42-continuation-protocol-YAlPeS/docs/gcsp/evidence/fucq59/scheme-breadth30-phase01-960-series-2026-11-07/run-series.py", line 26, in <module>\n    assert cloud.is_dir() and cloud in output.resolve().parents\nAssertionError\n',
+    expected: /fresh-parent-pilot-audit-required/,
+    operator: 'match',
+    diff: 'simple'
+  }

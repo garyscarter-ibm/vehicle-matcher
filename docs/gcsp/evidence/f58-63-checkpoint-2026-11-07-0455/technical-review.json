@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "independent-code-security-review.v1",
+  "time": "2026-11-07T04:53:10.663151+00:00",
+  "reviewer": "Codex launcher independently of author Mike Wazowski",
+  "range": "00e26a7a..ad737a01415614f2cae2f2d534c7d9801788d6dd",
+  "codeVerdict": "passed",
+  "securityVerdict": "passed",
+  "findings": [],
+  "boundary": "One independently registered technical supplement for exact1F7Eselection; opt-in schema2manifest; schema1 unchanged",
+  "controls": [
+    "fixed registration URL and SHA256; exact canonical inputDigest match",
+    "exact configurationId/catalogueDigest/sourceBinding; only previously unknown facts admitted",
+    "bounded distinct <=32manifest supplement list; immutable configuration/VIN/image/history bytes retained",
+    "existing lookup and HTTP access controls unchanged; DTO projects only known measurement fields",
+    "no new network/SQL/OS/secret entrypoint"
+  ],
+  "validationReuse": {
+    "selectedChecks": 55,
+    "failed": 0,
+    "skipped": 0,
+    "receipt": "docs/gcsp/evidence/fucq60/technical-supplement-2026-11-07/summary.json",
+    "reason": "All changed production/test files and reviewed affected lookup, consumer, registration, adapter, repository, restore caller blobs proved identical between author tested commit and root merged tree. No second unchanged full suite.",
+    "acceptance": false
+  },
+  "notes": [
+    "Manifest size and source admission boundaries remain enforced by existing corpus validator. Technical values are not broadcast to other selections.",
+    "Original consumer469failure limitation and broader enrichment/profile/coverage remain open."
+  ]
+}

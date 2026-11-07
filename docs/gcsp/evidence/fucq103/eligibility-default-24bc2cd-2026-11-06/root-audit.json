@@ -1,0 +1,80 @@
+{
+  "at": "2026-11-06T07:54:35.874457+00:00",
+  "verdict": "PASS",
+  "checks": 993,
+  "failures": [],
+  "run": "fucq103-backend-8a8f5645166649c283c471324798398b",
+  "revision": "24bc2cd670be71268c0a9b5e036b526ed0bfdf55",
+  "grant": "fucq103-eligibility-default-24bc2cd-0708",
+  "acceptedScope": "One original default Paula HTTP case only; five filtered source cases unexercised",
+  "counts": {
+    "tests": 1,
+    "suites": 0,
+    "pass": 1,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "originals": {
+    "summary": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-8a8f5645166649c283c471324798398b-summary.json",
+      "bytes": 3040,
+      "sha256": "a023ef246c8f53dd558bff018c4a73118d2596ad3fb7bddc86f312a2bdb82bb4"
+    },
+    "manifest": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-8a8f5645166649c283c471324798398b-manifest.json",
+      "bytes": 2151,
+      "sha256": "1aeeac14929991e79b7f386594654302bc9f1e2ccf1a4292bb001b964059e565"
+    },
+    "log": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-8a8f5645166649c283c471324798398b/test.log",
+      "bytes": 240,
+      "sha256": "4b4c8ffa428785e1a639ba5ec1b63d31af6498eabb25116eff779fe17e15b5bd"
+    },
+    "checkpoint": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-8a8f5645166649c283c471324798398b/checkpoint.json",
+      "bytes": 319,
+      "sha256": "d0ec43f5d1b197b57473e4f500493cf3ddf6f39a4dfcd1bb07ad9236d2e9a3cc"
+    }
+  },
+  "sourcePins": 219,
+  "dependencyPins": 251,
+  "physicalMembership": 307,
+  "processRows": 720,
+  "probes": [
+    {
+      "command": [
+        "/bin/ps",
+        "-axo",
+        "pid=,ppid=,pgid=,lstart="
+      ],
+      "exit": 0,
+      "stdoutBytes": 33840,
+      "stderrBytes": 0,
+      "sha256": "fa30122e48f6174e33a0b0ab4869e850338a8f5fac6e9869cf299e6ae16a6d9b"
+    },
+    {
+      "command": [
+        "/usr/sbin/lsof",
+        "-nP",
+        "-iTCP:61607",
+        "-sTCP:LISTEN",
+        "-Fpn"
+      ],
+      "exit": 1,
+      "stdoutBytes": 0,
+      "stderrBytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "ledgerRows": 0,
+  "ledgerSHA256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+  "cleanupMutations": 0,
+  "ledgerWrites": 0,
+  "peakAggregateRSS": 1050279936,
+  "peakCombinedBytes": 4348476,
+  "removedBytes": 4338401,
+  "exclusions": "Browser, full suite, native database/PostgreSQL connection, deployed/live systems, producer92/69/122/126 journeys,105\u2192107 decision lookup/reload,113corpus/115training acceptance.",
+  "next": "Collect lead audit before evidence publication. No next-mode or full-story grant."
+}

@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "gb-profile-primary-followup.v1",
+  "observedAt": "2026-11-07T04:29:31.639383+00:00",
+  "scope": "bounded public primary-source followup; no vehiclelookup/sourcecollection/profilemutation",
+  "nativeSearch": {
+    "queries": 4,
+    "result": "no hostedresults returned; used configuredParallelfallback"
+  },
+  "parallel": {
+    "searchId": "search_e06518a21efa6650853d4d6b5ab02c9b",
+    "sessionId": "01a1b344-6e9e-7bd1-96e5-5458ba3bf7af",
+    "queries": 3,
+    "warnings": null
+  },
+  "primarySources": [
+    {
+      "url": "https://www.bmw.co.uk/en/more-bmw/exporting-or-importing-a-bmw-or-mini.html",
+      "title": "Exporting or Importing a BMW or MINI",
+      "facts": [
+        "BMW states qualifyingEU/UKvehicleshavea CertificateofConformity thatisindividualto aVIN.",
+        "BMW states Europeanfactorymanufacture alone doesnotestablishthat aCoCexists."
+      ],
+      "doesNotEstablish": [
+        "exactGB/RHDdescriptor",
+        "position9/10conventions",
+        "applicableplantcharacter/era",
+        "secondmatchedderivativeobservation"
+      ]
+    },
+    {
+      "url": "https://www.bmw.co.uk/uk/s/article/How-do-I-find-my-VIN-cHj85?language=en_GB",
+      "facts": [
+        "BMW UKFAQstates17-characteridentification andUKRHDwindscreenlocation."
+      ],
+      "doesNotEstablish": [
+        "model/descriptor/year/plantbinding"
+      ]
+    }
+  ],
+  "excluded": "Genericdecoder/descriptions andidentifier-bearingresults notretained; oldlegalexcerptalreadyknown andnotusedforcurrentapplicability; noidentifier/identifierhash/url sampling retained.",
+  "registrySha256BeforeAndAfter": "9a107b2b90c21a116e2fb93ca88211b95250c4404f6468924e5e7f53d092a1fa",
+  "profileChanges": 0,
+  "qualifiedNewProfiles": 0,
+  "configurationCapacityCredit": 0,
+  "acceptance": false,
+  "next": "Actualsame-derivativeGB/RHDcorroboration or anexplicitlyseparatequalifiedmarket/era contextstillrequired; configurationcollectionandpublicationcontinue.",
+  "resourceReceipt": {
+    "scratchCreated": false,
+    "archivesCreated": false,
+    "disposableAllocations": 0,
+    "leftovers": []
+  }
+}

@@ -1,0 +1,108 @@
+{
+  "attempt": 1,
+  "conclusion": "failure",
+  "createdAt": "2026-11-07T11:58:52Z",
+  "databaseId": 42370440771,
+  "event": "push",
+  "headBranch": "gcsp-poc",
+  "headSha": "51c691bd5437efe47d43225edfb609d0b4dbe176",
+  "jobs": [
+    {
+      "completedAt": "2026-11-07T12:02:40Z",
+      "conclusion": "failure",
+      "databaseId": 128397282057,
+      "name": "postgres-orders",
+      "startedAt": "2026-11-07T11:58:55Z",
+      "status": "completed",
+      "steps": [
+        {
+          "completedAt": "2026-11-07T11:58:57Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-11-07T11:58:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-07T11:59:12Z",
+          "conclusion": "success",
+          "name": "Initialize containers",
+          "number": 2,
+          "startedAt": "2026-11-07T11:58:57Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-07T11:59:21Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 3,
+          "startedAt": "2026-11-07T11:59:12Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-07T11:59:26Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@v4",
+          "number": 4,
+          "startedAt": "2026-11-07T11:59:21Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-07T12:02:36Z",
+          "conclusion": "failure",
+          "name": "Restore exact .12 and prove three native order references",
+          "number": 5,
+          "startedAt": "2026-11-07T11:59:26Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-07T12:02:36Z",
+          "conclusion": "success",
+          "name": "Verify owned scratch and service absent",
+          "number": 6,
+          "startedAt": "2026-11-07T12:02:36Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-07T12:02:36Z",
+          "conclusion": "skipped",
+          "name": "Post Run actions/setup-node@v4",
+          "number": 10,
+          "startedAt": "2026-11-07T12:02:36Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-07T12:02:37Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 11,
+          "startedAt": "2026-11-07T12:02:36Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-07T12:02:37Z",
+          "conclusion": "success",
+          "name": "Stop containers",
+          "number": 12,
+          "startedAt": "2026-11-07T12:02:37Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-11-07T12:02:37Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 13,
+          "startedAt": "2026-11-07T12:02:37Z",
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/actions/runs/42370440771/job/128397282057"
+    }
+  ],
+  "name": "GCSP native three-order proof",
+  "startedAt": "2026-11-07T11:58:52Z",
+  "status": "completed",
+  "updatedAt": "2026-11-07T12:02:41Z",
+  "url": "https://github.com/garyscarter-ibm/vehicle-matcher/actions/runs/42370440771",
+  "workflowDatabaseId": 410299082
+}

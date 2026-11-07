@@ -1,0 +1,36 @@
+{
+  "scope": "scoped preparation syntax, read-only identity and actual nonnetwork allocation lifecycle regression",
+  "planSha256": "61beb7b879fd45d7bd61ee847dfb92684984007853b0ca6f9b117100ebb5dc01",
+  "checks": [
+    {
+      "file": "probe.mjs",
+      "syntax": "passed"
+    },
+    {
+      "file": "group-proof.py",
+      "syntax": "in-memory passed"
+    },
+    {
+      "file": "supervise.py",
+      "syntax": "in-memory passed"
+    },
+    {
+      "file": "check-lifecycle.py",
+      "syntax": "in-memory passed",
+      "regression": "actual legacy prefix reproduces FileExistsError; fixed supervisor prefix passes; both cleaned"
+    }
+  ],
+  "rootCodePinsVerified": 48,
+  "ordinaryPinsVerified": 52,
+  "codeCommitBlobsVerifiedDuringPreparation": true,
+  "firstRowKeyAndPathMatchOldFailure": true,
+  "expectedFirstDtoPinnedToPriorOfflineReceipt": true,
+  "newOutputAndMetadataAbsent": true,
+  "execution": false,
+  "sourceCalls": 0,
+  "publicGETs": 0,
+  "scratchCreated": true,
+  "acceptance": false,
+  "lifecycleChecksSha256": "b6a4eae3e502c59afdc241697a47da5ab74d73631e1f03c772e8e64ae4d24021",
+  "liveExecution": false
+}

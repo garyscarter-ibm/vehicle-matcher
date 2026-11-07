@@ -1,0 +1,181 @@
+{
+  "acceptedIdentityScope": {
+    "bindingAgreement": "docs/gcsp/hld-agreement-2026-11-04.md, Q13",
+    "canonicalHld": "docs/design/gcsp-high-level-design.md, synthetic identity/corpus sections",
+    "fiveWmiProfileScope": "delivered/current VIN generator only",
+    "noInferred10000VinOrGbRhdFleetVinQualificationGate": true,
+    "precedence": "4 November agreement supersedes conflicting earlier HLD/blueprint/story-authoring wording",
+    "stockIdentity": "order reference plus configuration",
+    "vinScope": "delivered/current cars only"
+  },
+  "agents": {
+    "descendants": 0,
+    "effectiveRuntimeVerified": false,
+    "name": "Minnie Mouse",
+    "requestedEffort": "medium",
+    "requestedModel": "gpt-6.1-sol"
+  },
+  "controlCaveats": {
+    "phase121": "Independent wrapper incorrectly added blanket complete accessory quantities; pinned proof/source-preserved states passed. Root reviewed and released remaining phases; no replay121.",
+    "phase136": "Retained-byte snapshots differed by55349B; both observations and unknown cause preserved. Root accepted measured-snapshot accounting within24MiB; no replay136.",
+    "phase156": {
+      "originalChildRc": 0,
+      "originalCleanupPassed": false,
+      "originalCleanupReceiptUnchanged": true,
+      "originalCleanupSha256": "649b665a7843c26c1cb5be858fd9757e3df325be5487d8832a2ea889ecf6e1ee",
+      "originalExitIsNotReclassified": true,
+      "originalSupervisorRc": 1,
+      "postExitCleanupReconciled": true,
+      "rootParentAuditPinsCurrentReconciliation": true
+    }
+  },
+  "evidencePins": [
+    {
+      "bytes": 1483,
+      "file": "final-receipt.json",
+      "retainedSource": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f60-exact10000-common-session-20261107-dependencyretry1/final-receipt.json",
+      "sha256": "cc8604d085b76a37d45d2c095074f17087d0a6e6cf861c846140b670b3b4783e"
+    },
+    {
+      "bytes": 46035,
+      "file": "summary-release.json",
+      "retainedSource": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/dependency-retry-grants/summarize.json",
+      "sha256": "d0419bc8f604cfd574713b2ff33065cd8cf323b809fa8ac0354a3de3d2880476"
+    },
+    {
+      "bytes": 577,
+      "file": "parent-audit.json",
+      "retainedSource": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/exact10000-parent-audit.json",
+      "sha256": "42d7411cf8b60026894be21677aaa809472d5fed2358efdce8d5d2c6b3ab5427"
+    },
+    {
+      "bytes": 1846,
+      "file": "phase121-independent-verifier-stop-diagnosis.json",
+      "retainedSource": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/f60-exact10000-common-session-20261107-dependencyretry1/phase121-independent-verifier-stop-diagnosis.json",
+      "sha256": "1f97c0c3c51a8f4a24669895c5b4ea9d8f94424df1f22fafe8f73c086d22cecf"
+    },
+    {
+      "bytes": 1476,
+      "file": "phase136-retained-byte-snapshot-mismatch.json",
+      "retainedSource": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/f60-exact10000-common-session-20261107-dependencyretry1/phase136-retained-byte-snapshot-mismatch.json",
+      "sha256": "21b49dcc21cbfd44b2d5f413a206742b7ea197ada91799226df0fdc4cfcc8dc6"
+    },
+    {
+      "bytes": 1017,
+      "file": "phase156-original-cleanup.json",
+      "retainedSource": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/f60-exact10000-common-session-20261107-dependencyretry1/156/cleanup.json",
+      "sha256": "649b665a7843c26c1cb5be858fd9757e3df325be5487d8832a2ea889ecf6e1ee"
+    },
+    {
+      "bytes": 4032,
+      "file": "phase156-supervisor-post-exit-cleanup-reconciliation.json",
+      "retainedSource": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/f60-exact10000-common-session-20261107-dependencyretry1/phase156-supervisor-post-exit-cleanup-reconciliation.json",
+      "sha256": "caa823f34cbfb51bc9deca7814af2dee83c5a3fddc524a0f426cb9389ab81c49"
+    },
+    {
+      "bytes": 1844,
+      "file": "summary-execution-result.json",
+      "retainedSource": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/f60-exact10000-common-session-20261107-dependencyretry1/summarize/execution-result.json",
+      "sha256": "a20c799e4adf2426d00c789eaa71670d4aea7844645e250f096ad6212b8a08a5"
+    },
+    {
+      "bytes": 826,
+      "file": "summary-cleanup.json",
+      "retainedSource": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/f60-exact10000-common-session-20261107-dependencyretry1/summarize/cleanup.json",
+      "sha256": "d9e2601d29a84442c4c554d5214e0807cae79da75eaf5dcff42b8a43f783806d"
+    }
+  ],
+  "identity": {
+    "codeIdentity": "60d013bdd9242e00f33be7a3db33a4b1e57c7273dcd9a2842e0c0ec4ac2fcc51",
+    "dependencyIdentity": "7e32452e4095321cddea576b363be01340b30e88a45c1d9cf00c06f0d06072b8",
+    "environment": {
+      "arch": "arm64",
+      "node": "v26.7.0",
+      "offline": true,
+      "platform": "darwin"
+    },
+    "planSha256": "0eb2698603bcec192202bd0b743cd0278e807b688537951bd26f10179a17a518",
+    "selectionManifest": {
+      "bytes": 15991212,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f60-exact10000-retained-coverage-20261107/selection-manifest.json",
+      "sha256": "216359c111a5169d15a98de1c476a5c62714a3b3a7ee71431c325a45c90f096f"
+    },
+    "signedSummaryReleaseSha256": "d0419bc8f604cfd574713b2ff33065cd8cf323b809fa8ac0354a3de3d2880476"
+  },
+  "observedAt": "2026-11-07T09:08:11.537858+00:00",
+  "outcome": {
+    "accessoryQuantities": {
+      "complete": 8703,
+      "unknown": 1297
+    },
+    "actualRetainedSelections": 10000,
+    "coverageGroups": 1562,
+    "dataChunks": 157,
+    "dataRuntimeReplays": 0,
+    "exactOrderedUnion": true,
+    "outboundCalls": 0,
+    "partial": 10000,
+    "rejected": 0,
+    "summaryChildRc": 0,
+    "summaryExecutions": 1,
+    "summaryState": "complete",
+    "summarySupervisorRc": 0,
+    "uniqueConfigurationIds": 10000,
+    "unknownImageRows": 10000,
+    "unknownTechnicalRows": 10000
+  },
+  "resources": {
+    "allPhasesIncludingBridgeAndSummaryChildSecondsTotal": 532.331139,
+    "allPhasesObservedMaxGroupRSSBytes": 216858624,
+    "allPhasesObservedMaxSupervisorRSSBytes": 40878080,
+    "allPhasesRemovedScratchPeakSumBytes": 18945536,
+    "cleanupVerification": "Fresh complete successful OS pid/pgid/stat snapshot; all159owned groups absent, matching removed ownership manifests and absent roots/tokens/link. A preceding report assembly audit stopped at its ownership assertion; the read-only follow-up found zero unproved cleanup. No runtime replay. Initial exact query/cause was not retained.",
+    "codePinsPreserved": true,
+    "compatibilityException": null,
+    "currentGroupsAbsent": 159,
+    "currentReservationsAbsent": 159,
+    "currentScratchRootsAbsent": 159,
+    "dataChildSecondsMedian": 3.4904555,
+    "dataChildSecondsTotal": 531.587249,
+    "dataRemovedScratchPeakSumBytes": 18834944,
+    "leftoversNow": [],
+    "maxScratchPeakBytes": 159904,
+    "measurementNote": "RSS values are observations reported by the existing supervisor, rather than continuous OS maxima. Removed-byte sums are per-phase peak scratch allocations.",
+    "nodeHeapMiB": 256,
+    "ownedDependencyLinkAbsent": true,
+    "perPhaseGroupRamLimitBytes": 402653184,
+    "perPhaseHostReservationBytes": 536870912,
+    "phaseSecondsHard": 180,
+    "retainedForecastMiB": 20,
+    "retainedMetadataLogicalBytes": 2428557,
+    "retainedMetadataRoot": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/f60-exact10000-common-session-20261107-dependencyretry1",
+    "retainedOutputLogicalBytes": 17353983,
+    "retainedOutputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f60-exact10000-common-session-20261107-dependencyretry1",
+    "retainedReviewTriggerMiB": 24,
+    "scratchMiBCap": 16,
+    "vendorFilesPreserved": 139,
+    "vendorLogicalBytesPreserved": 475201,
+    "workers": 1
+  },
+  "runId": "f60-exact10000-common-session-20261107-dependencyretry1",
+  "schemaVersion": "f60-exact10000-common-session-delivery-results.v1",
+  "scope": {
+    "acceptance": false,
+    "acceptanceInterpretation": "Protocol exclusions and unknown fields do not add acceptance criteria or imply automatic FUCQ-58/61/configuration-publication deficits. Assess acceptance against the authorised amended scope; this report leaves status unchanged.",
+    "bridge": "One actual current collector/same-session offline bridge passed; its separate row adds zero cohort rows. Bulk proof uses the explicit retained-admission handoff.",
+    "bulkCollectorAdmissionReplayed": false,
+    "corpusPublicationExecuted": false,
+    "fullSuiteRun": false,
+    "networkCalls": 0,
+    "notClaimedByThisProof": [
+      "Original live-session/source qualification",
+      "Technical/image expansion",
+      "Corpus publication",
+      "Story acceptance or Done transition"
+    ],
+    "originalLiveSessionEnriched": false,
+    "sourceCalls": 0,
+    "sourceQualification": "offline-session-not-source-qualified"
+  },
+  "status": "scoped-data-proof-complete-with-preserved-supervisor-control-failure"
+}

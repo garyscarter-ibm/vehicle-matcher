@@ -1,0 +1,75 @@
+{
+  "GET": 1440,
+  "baseline": {
+    "admittedSource": 7517,
+    "canonical": 7520,
+    "spent": 9759
+  },
+  "codePinCount": 46,
+  "command": [
+    "/opt/homebrew/bin/node",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth30-phase02-960-series-2026-11-07/check-release.mjs"
+  ],
+  "currentManifestPin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth30-phase02-960-series-2026-11-07/candidate-manifest.json",
+    "sha256": "4e0495d90f9ef5da85b1d79eb9d4d847bcd6b29b78cb1510ffc6dc1074ce3740"
+  },
+  "currentSeriesPin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth30-phase02-960-series-2026-11-07/series-plan.json",
+    "sha256": "ef251096585a9da6ebaf9c66d379bbabc4e28cde43056290e58c6d35535d596e"
+  },
+  "dependencyLinkAbsent": true,
+  "exclusionValidation": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth30-phase02-960-series-2026-11-07/exclusion-validation.json",
+    "sha256": "c77901874c7d8a73e419c941953ae05f2cc1b9e4f85ce39f822f940583e60466"
+  },
+  "indexPins": {
+    "canonical": {
+      "digest": "675db856c8e985127680fffd88e3aedcf782e46b2d64074a3fa892250bda4878",
+      "entries": 7520,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union7517-20261107/final-canonical-index.json",
+      "sha256": "336b5cf6ef3f07b1bddcf76ec9f1d4addad5615998d1d934a6025ba837be7dc6"
+    },
+    "spent": {
+      "digest": "55bcac348aa410424dc50a3ff480e1e4aef4558d95b36ca19be9372f0bfb9de4",
+      "entries": 9759,
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union7517-20261107/final-spent-request-index.json",
+      "sha256": "bdbb553f992a1a3562185634a239d8c379c7dacf43c42e5397535bc28810512d"
+    }
+  },
+  "notRun": [
+    "public source requests",
+    "production full suite",
+    "application integration",
+    "F61 acceptance"
+  ],
+  "parentAudit": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/global-union7517-parent-audit.json",
+    "scope": "exact independent final-active-source global union before separate phase release",
+    "sha256": "73c501d4776fb293477f5e6c4c897b601ae5b021b44752864fd480ec2f1757e8"
+  },
+  "preRefreshScopedPreparation": {
+    "fail": 0,
+    "pass": 9,
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth30-phase02-960-series-2026-11-07/preparation-result.json",
+    "sha256": "0c0b71d6ccd1f7e3894f3859e28a3835ece852f652f5d92d92272d9adc81e1bd",
+    "skipped": 0,
+    "tests": 9
+  },
+  "productionCodeChanged": false,
+  "rc": 0,
+  "refreshChangesOnlyExpectedMetadata": true,
+  "requests": 960,
+  "requestsStillUnspent": 960,
+  "requiresSeparateExactParentRelease": true,
+  "runtimePinCount": 2,
+  "schemaVersion": "breadth30-phase02-release-metadata.v1",
+  "scope": "metadata-only revalidation after a single exact parent-audited base refresh; no test/source replay",
+  "scratchCreated": false,
+  "sourceGrant": false,
+  "sourceOutputAbsent": true,
+  "sourcePinCount": 318,
+  "sourceTraffic": 0,
+  "time": "2026-11-07T06:16:29.955090+00:00",
+  "wallSeconds": 0.157704125
+}

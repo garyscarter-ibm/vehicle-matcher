@@ -1,0 +1,456 @@
+✖ failing tests:
+
+test at server/test/gcsp-account-render.test.js:196:1
+✖ account composition preserves complete supplied facts, labelled details and dated vehicle hierarchy (58.372417ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/server/test/gcsp-account-render.test.js:231:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at server/test/gcsp-buddy-runtime-integration.test.js:119:1
+✖ normal runtime shares services, registers before startup, and serves real presenter scenario controls (840.563583ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      'manual-claim-expiry',
+      'buddy-expiry',
+  +   'selection-order-reconciliation',
+  +   'lifecycle-approvals',
+  +   'lifecycle-documents',
+  +   'renewal-risk-cases',
+      'captured-outbox'
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/server/test/gcsp-buddy-runtime-integration.test.js:123:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'manual-claim-expiry', 'buddy-expiry', 'selection-order-reconciliation', 'lifecycle-approvals', 'lifecycle-documents', 'renewal-risk-cases', 'captured-outbox' ],
+    expected: [ 'manual-claim-expiry', 'buddy-expiry', 'captured-outbox' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at server/test/gcsp-buddy-runtime-integration.test.js:159:1
+✖ fresh composed backend reconciles overdue memory authority before dispatch (2051.940083ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      'manual-claim-expiry',
+      'buddy-expiry',
+  +   'selection-order-reconciliation',
+  +   'lifecycle-approvals',
+  +   'lifecycle-documents',
+  +   'renewal-risk-cases',
+      'captured-outbox'
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/server/test/gcsp-buddy-runtime-integration.test.js:166:10)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'manual-claim-expiry', 'buddy-expiry', 'selection-order-reconciliation', 'lifecycle-approvals', 'lifecycle-documents', 'renewal-risk-cases', 'captured-outbox' ],
+    expected: [ 'manual-claim-expiry', 'buddy-expiry', 'captured-outbox' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at server/test/gcsp-buddy-runtime-integration.test.js:187:1
+✖ reviewed publication activates the shared provider while preserving pinned buddy quote and access (1272.303375ms)
+  AssertionError [ERR_ASSERTION]: {"status":"invalid","code":"invalid-policy-change","accepted":false,"reasons":[{"field":"definitionSetId","reason":"All reviewed assumption keys already exist. No successor was created."}],"contractVersion":"1.0.0","policyVersion":null}
+  
+  'invalid' !== 'ok'
+  
+      at good (file:///Users/usget/Claude/vehicle-matcher/server/test/gcsp-buddy-runtime-integration.test.js:15:35)
+      at adoptPresenter (file:///Users/usget/Claude/vehicle-matcher/server/test/gcsp-buddy-runtime-integration.test.js:84:3)
+      at async TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/server/test/gcsp-buddy-runtime-integration.test.js:189:49)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'invalid',
+    expected: 'ok',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at server/test/gcsp-buddy-runtime-integration.test.js:200:1
+✖ normal named mechanics reset retains handlers and invalidates old employee and offer authority (1974.472958ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      'manual-claim-expiry',
+      'buddy-expiry',
+  +   'lifecycle-approvals',
+  +   'lifecycle-documents',
+  +   'renewal-risk-cases',
+  +   'selection-order-reconciliation',
+      'captured-outbox'
+    ]
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/server/test/gcsp-buddy-runtime-integration.test.js:213:55)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'manual-claim-expiry', 'buddy-expiry', 'lifecycle-approvals', 'lifecycle-documents', 'renewal-risk-cases', 'selection-order-reconciliation', 'captured-outbox' ],
+    expected: [ 'manual-claim-expiry', 'buddy-expiry', 'captured-outbox' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at server/test/gcsp-greg-dashboard-data.test.js:15:1
+✖ real service: each step of the demo changes the view figures and versions (207.732292ms)
+  AssertionError [ERR_ASSERTION]: {"status":"unavailable","code":"source-invalid","reason":"The saved-demand projection is unavailable.","retryable":true,"contractVersion":"1.0.0"}
+  + actual - expected
+  
+  + 'unavailable'
+  - 'ok'
+  
+      at readDemand (file:///Users/usget/Claude/vehicle-matcher/server/test/helpers/greg-demand-run.js:100:10)
+      at async TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/server/test/gcsp-greg-dashboard-data.test.js:23:33)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'unavailable',
+    expected: 'ok',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at server/test/gcsp-greg-dashboard-data.test.js:59:1
+✖ real service: canonical threshold shows only "fewer than 5" bands and no other number (175.5575ms)
+  AssertionError [ERR_ASSERTION]: {"status":"unavailable","code":"source-invalid","reason":"The saved-demand projection is unavailable.","retryable":true,"contractVersion":"1.0.0"}
+  + actual - expected
+  
+  + 'unavailable'
+  - 'ok'
+  
+      at readDemand (file:///Users/usget/Claude/vehicle-matcher/server/test/helpers/greg-demand-run.js:100:10)
+      at async TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/server/test/gcsp-greg-dashboard-data.test.js:63:32)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'unavailable',
+    expected: 'ok',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at server/test/gcsp-greg-dashboard-data.test.js:104:1
+✖ every fixture projection has the shape of a real readDemand value and the view accepts it (177.141042ms)
+  AssertionError [ERR_ASSERTION]: {"status":"unavailable","code":"source-invalid","reason":"The saved-demand projection is unavailable.","retryable":true,"contractVersion":"1.0.0"}
+  + actual - expected
+  
+  + 'unavailable'
+  - 'ok'
+  
+      at readDemand (file:///Users/usget/Claude/vehicle-matcher/server/test/helpers/greg-demand-run.js:100:10)
+      at async TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/server/test/gcsp-greg-dashboard-data.test.js:109:16)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'unavailable',
+    expected: 'ok',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at server/test/gcsp-greg-dashboard.test.js:179:1
+✖ refused shows no figures, no Retry and hides the reserved regions (6.144167ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/server/test/gcsp-greg-dashboard.test.js:185:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at server/test/gcsp-greg-dashboard.test.js:377:1
+✖ stylesheets: every selector starts with .gcsp, tokens only, no side stripe, reduced motion honoured (1.051958ms)
+  AssertionError [ERR_ASSERTION]: blocks/gcsp/greg/gcsp-greg.css
+  + actual - expected
+  
+  + [
+  +   "'./publish/publish.css';\n\n.gcsp .gcsp-greg"
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/server/test/gcsp-greg-dashboard.test.js:381:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: [ "'./publish/publish.css';\n\n.gcsp .gcsp-greg" ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at server/test/gcsp-greg-publish-render.test.js:90:1
+✖ an invalid hidden price row is selected and focused from the error summary (3.424042ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'price:gallery-cost'
+  - 'price:second'
+           ^
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/server/test/gcsp-greg-publish-render.test.js:95:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'price:gallery-cost',
+    expected: 'price:second',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at server/test/gcsp-greg-publish-render.test.js:98:1
+✖ each invalid price summary link selects its own row while retaining the real native focus target (3.310417ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'price:gallery-cost'
+  - 'price:second'
+           ^
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/server/test/gcsp-greg-publish-render.test.js:106:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'price:gallery-cost',
+    expected: 'price:second',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at server/test/gcsp-manual-journey-resume.test.js:150:1
+✖ real account Resume recovers the same quoted claim through default HTTP without another write (3231.848833ms)
+  AssertionError [ERR_ASSERTION]: Expected "actual" to be reference-equal to "expected":
+  + actual - expected
+  
+  + HTMLBodyElement {}
+  - HTMLHeadingElement {
+  -   Symbol(SameObject caches): [Object: null prototype] {
+  -     attributes: Proxy(NamedNodeMap {}),
+  -     classList: Proxy(DOMTokenList {})
+  -   }
+  - }
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/server/test/gcsp-manual-journey-resume.test.js:156:12)
+      at runNextTicks (node:internal/process/task_queues:65:5)
+      at listOnTimeout (node:internal/timers:644:9)
+      at process.processTimers (node:internal/timers:618:7)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: {},
+    expected: {},
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at server/test/gcsp-renewal-case.test.js:19:34
+✖ alternative car uses current eligibility, points, essentials and availability; unresolved charging stays unknown (28.612083ms)
+  AssertionError [ERR_ASSERTION]: {"status":"invalid","code":"invalid-case-command","reasons":[{"field":"remedy.orderUuid","reason":"This car is unavailable. Review current stock."}],"action":"review-and-retry","contractVersion":"1.0.0"}
+  
+  'invalid' !== 'ok'
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/server/test/gcsp-renewal-case.test.js:204:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'invalid',
+    expected: 'ok',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at server/test/gcsp-shell.test.js:729:1
+✖ harness page loads the harness module and the body stylesheet; the element never reads location (8.543167ms)
+  AssertionError [ERR_ASSERTION]: blocks/gcsp/offer/entry.js
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/server/test/gcsp-shell.test.js:736:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: "import { createAccountHttpAdapter } from '../shell/account-runtime.js';\nimport { mountOffer } from './gcsp-offer.js';\nimport { createOfferHttpAdapter } from './http-adapter.js';\nimport { toOfferPresentation } from './offer-projection.js';\nimport { mountFollowupBody } from '../offer-followup/gcsp-offer-followup.js';\n\n\nexport function mountOfferEntry(root, { fetch: request = globalThis.fetch, location = globalThis.location,\n  history = globalThis.history } = {}) {\n  const abort = new AbortController(); let disposed = false; let cleanup;\n  \n  const offer = createOfferHttpAdapter({ fetch: request, location, history, enableDecisions: true });\n  const account = createAccountHttpAdapter({ fetch: request });\n  root.textContent = 'Loading your offer.';\n  root.setAttribute('aria-busy', 'true');\n  void (async () => {\n    const current = await account.loadAccount({ signal: abort.signal });\n    if (disposed) return;\n    root.removeAttribute('aria-busy');\n    cleanup = mountOffer(root, { ...offer, account: current,\n      followup: { loadAccount: account.loadAccount,\n        mount: (host, { decisionId, signal }) => mountFollowupBody(host, { decisionId, signal,\n          fetchImpl: request, projectOffer: toOfferPresentation,\n          openOffer: ({ offerId, runId }) => location.assign(`/gcsp/offer?offerId=${encodeURIComponent(offerId)}&runId=${encodeURIComponent(runId)}`) }) } });\n  })();\n  return () => {\n    if (disposed) return;\n    disposed = true; abort.abort(); cleanup?.(); root.removeAttribute('aria-busy'); root.replaceChildren();\n  };\n}\n",
+    expected: /\b(?:window|globalThis)\s*\.\s*(?:location|history)\b|\b(?:location|history)\.(?:href|search|pathname|hash|pushState|replaceState|back|forward|go)\b/,
+    operator: 'doesNotMatch',
+    diff: 'simple'
+  }
+
+test at server/test/gcsp-vehicle-details-contract.test.js:45:1
+✖ both providers give the same complete/partial vehicle, provenance and failure interface for all three identities (150.515667ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      completeness: {
+        availableOptions: 'unknown',
+        images: 'unknown',
+        measurements: 'unknown',
+  ...
+        configurationId: 'UkVGMTpSRUZFUkVOQ0U=',
+  +     datasetId: 'publication-reference',
+  -     datasetId: 'gcsp-source-fleet',
+        identityKind: 'synthetic',
+        kind: 'configuration',
+        orderNumber: null,
+        orderUuid: null,
+  +     originatingDatasetId: 'publication-reference',
+  -     originatingDatasetId: 'gcsp-source-fleet',
+        usage: 'configuration',
+        vehicleId: null,
+        vin: null
+      },
+      images: {
+  ...
+      versions: {
+  +     corpus: '1',
+  -     corpus: '2026-11-07.1',
+        generator: null,
+  +     manifestDigest: 'c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709',
+  -     manifestDigest: 'eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3',
+        profileRegistry: null,
+        snapshot: 'reference-fixtures.v1'
+      }
+    }
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/server/test/gcsp-vehicle-details-contract.test.js:50:46)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { requested: { kind: 'configuration', id: 'UkVGMTpSRUZFUkVOQ0U=' }, resolved: { kind: 'configuration', id: 'UkVGMTpSRUZFUkVOQ0U=', configurationId: 'UkVGMTpSRUZFUkVOQ0U=' }, identity: { kind: 'configuration', identityKind: 'synthetic', configurationId: 'UkVGMTpSRUZFUkVOQ0U=', vehicleId: null, datasetId: 'publication-reference', originatingDatasetId: 'publication-reference', orderUuid: null, orderNumber: null, vin: null, usage: 'configuration' }, versions: { corpus: '1', manifestDigest: 'c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709', snapshot: 'reference-fixtures.v1', profileRegistry: null, generator: null }, description: { model: [Object], derivative: [Object], generation: [Object], bodyType: [Object], powertrain: [Object], paint: [Object], upholstery: [Object] }, technical: { seats: [Object], luggageNormal: [Object], luggageExpanded: [Object], acceleration: [Object], bodyLength: [Object] }, equipment: { definitions: [], available: [Object], selected: [Object], verifiedFitted: [Object] }, images: { state: 'unknown', label: 'Images unavailable', items: [] }, source: { kind: 'north-american-reference', references: [Array], confidence: 'Small matched structural reference, not a complete catalogue configuration or UK factory build', observedDate: '2026-11-01', retrievedDate: null, catalogueDate: null, catalogueValidity: null, requestedIdentity: null, resolvedIdentity: null, configurationIdentity: [Object], market: 'US', region: 'North America', steering: 'LHD', agModelCode: null, vgModelCode: null, modelYear: 2026, productionEra: 'MY2026 North American reference', productionDate: null, registrationDate: null, profile: null, profileSources: null, profileConfidence: null, completeVinDecoded: false, unresolvedFacts: [Array], identityProvenance: [Object] }, completeness: { record: 'partial', selectedOptions: 'unknown', measurements: 'unknown', optionDefinitions: 'unknown', availableOptions: 'unknown', verifiedFitted: 'unknown', images: 'unknown' }, presentation: { syntheticLabel: 'Synthetic identity', associationLabel: 'Fictional identity association to retained configuration evidence; not a factory build or authentication.', sourceLabel: 'North American structural reference', verifiedFittedLabel: 'VIN-fitted equipment unknown', unknownLabel: 'Unknown', imageLabel: 'Images unavailable' } },
+    expected: { requested: { kind: 'configuration', id: 'UkVGMTpSRUZFUkVOQ0U=' }, resolved: { kind: 'configuration', id: 'UkVGMTpSRUZFUkVOQ0U=', configurationId: 'UkVGMTpSRUZFUkVOQ0U=' }, identity: { kind: 'configuration', identityKind: 'synthetic', configurationId: 'UkVGMTpSRUZFUkVOQ0U=', vehicleId: null, datasetId: 'gcsp-source-fleet', originatingDatasetId: 'gcsp-source-fleet', orderUuid: null, orderNumber: null, vin: null, usage: 'configuration' }, versions: { corpus: '2026-11-07.1', manifestDigest: 'eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3', snapshot: 'reference-fixtures.v1', profileRegistry: null, generator: null }, description: { model: [Object], derivative: [Object], generation: [Object], bodyType: [Object], powertrain: [Object], paint: [Object], upholstery: [Object] }, technical: { seats: [Object], luggageNormal: [Object], luggageExpanded: [Object], acceleration: [Object], bodyLength: [Object] }, equipment: { definitions: [], available: [Object], selected: [Object], verifiedFitted: [Object] }, images: { state: 'unknown', label: 'Images unavailable', items: [] }, source: { kind: 'north-american-reference', references: [Array], confidence: 'Small matched structural reference, not a complete catalogue configuration or UK factory build', observedDate: '2026-11-01', retrievedDate: null, catalogueDate: null, catalogueValidity: null, requestedIdentity: null, resolvedIdentity: null, configurationIdentity: [Object], market: 'US', region: 'North America', steering: 'LHD', agModelCode: null, vgModelCode: null, modelYear: 2026, productionEra: 'MY2026 North American reference', productionDate: null, registrationDate: null, profile: null, profileSources: null, profileConfidence: null, completeVinDecoded: false, unresolvedFacts: [Array], identityProvenance: [Object] }, completeness: { record: 'partial', selectedOptions: 'unknown', measurements: 'unknown', optionDefinitions: 'unknown', availableOptions: 'unknown', verifiedFitted: 'unknown', images: 'unknown' }, presentation: { syntheticLabel: 'Synthetic identity', associationLabel: 'Fictional identity association to retained configuration evidence; not a factory build or authentication.', sourceLabel: 'North American structural reference', verifiedFittedLabel: 'VIN-fitted equipment unknown', unknownLabel: 'Unknown', imageLabel: 'Images unavailable' } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at server/test/gcsp-vehicle-details-contract.test.js:97:1
+✖ trusted expected identity and model/market/date context pins refuse substitutions with either provider (5.11225ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'identity-mismatch'
+  - 'partial'
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/server/test/gcsp-vehicle-details-contract.test.js:104:12)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'identity-mismatch',
+    expected: 'partial',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at server/test/gcsp-vehicle-details-contract.test.js:226:1
+✖ representative image roles/fidelity survive either mapping without a claimed real asset or fitted build (1.702084ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  ... Skipped lines
+  
+    {
+      completeness: {
+        availableOptions: 'partial',
+        images: 'representative',
+        measurements: 'complete',
+  ...
+        configurationId: 'VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==',
+  +     datasetId: 'gcsp-source-fleet',
+  -     datasetId: 'publication-reference',
+        identityKind: 'synthetic',
+        kind: 'configuration',
+        orderNumber: null,
+        orderUuid: null,
+  +     originatingDatasetId: 'gcsp-source-fleet',
+  -     originatingDatasetId: 'publication-reference',
+        usage: 'configuration',
+        vehicleId: null,
+        vin: null
+      },
+      images: {
+  ...
+      versions: {
+  +     corpus: '2026-11-07.1',
+  -     corpus: '1',
+        generator: null,
+  +     manifestDigest: 'eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3',
+  -     manifestDigest: 'c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709',
+        profileRegistry: null,
+        snapshot: 'bmw-gb-i5-2026-11-01.v1'
+      }
+    }
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/server/test/gcsp-vehicle-details-contract.test.js:238:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { requested: { kind: 'configuration', id: 'VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==' }, resolved: { kind: 'configuration', id: 'VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==', configurationId: 'VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==' }, identity: { kind: 'configuration', identityKind: 'synthetic', configurationId: 'VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==', vehicleId: null, datasetId: 'gcsp-source-fleet', originatingDatasetId: 'gcsp-source-fleet', orderUuid: null, orderNumber: null, vin: null, usage: 'configuration' }, versions: { corpus: '2026-11-07.1', manifestDigest: 'eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3', snapshot: 'bmw-gb-i5-2026-11-01.v1', profileRegistry: null, generator: null }, description: { model: [Object], derivative: [Object], generation: [Object], bodyType: [Object], powertrain: [Object], paint: [Object], upholstery: [Object] }, technical: { seats: [Object], luggageNormal: [Object], luggageExpanded: [Object], acceleration: [Object], bodyLength: [Object] }, equipment: { definitions: [Array], available: [Object], selected: [Object], verifiedFitted: [Object] }, images: { state: 'representative', label: 'Representative imagery', items: [Array] }, source: { kind: 'dated-snapshot', references: [Array], confidence: 'Exact dated catalogue observation; not a physical build', observedDate: '2026-11-01', retrievedDate: '2026-11-01', catalogueDate: '2026-11-01', catalogueValidity: [Object], requestedIdentity: [Object], resolvedIdentity: [Object], configurationIdentity: [Object], market: 'GB', region: null, steering: null, agModelCode: '72HH', vgModelCode: 'T5MJ', modelYear: null, productionEra: null, productionDate: null, registrationDate: null, profile: null, profileSources: null, profileConfidence: null, completeVinDecoded: false, unresolvedFacts: [Array], identityProvenance: [Object] }, completeness: { record: 'complete', selectedOptions: 'complete', measurements: 'complete', optionDefinitions: 'partial', availableOptions: 'partial', verifiedFitted: 'unknown', images: 'representative' }, presentation: { syntheticLabel: 'Synthetic identity', associationLabel: 'Fictional identity association to retained configuration evidence; not a factory build or authentication.', sourceLabel: 'Dated catalogue snapshot', verifiedFittedLabel: 'VIN-fitted equipment unknown', unknownLabel: 'Unknown', imageLabel: 'Representative imagery' } },
+    expected: { requested: { kind: 'configuration', id: 'VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==' }, resolved: { kind: 'configuration', id: 'VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==', configurationId: 'VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==' }, identity: { kind: 'configuration', identityKind: 'synthetic', configurationId: 'VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==', vehicleId: null, datasetId: 'publication-reference', originatingDatasetId: 'publication-reference', orderUuid: null, orderNumber: null, vin: null, usage: 'configuration' }, versions: { corpus: '1', manifestDigest: 'c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709', snapshot: 'bmw-gb-i5-2026-11-01.v1', profileRegistry: null, generator: null }, description: { model: [Object], derivative: [Object], generation: [Object], bodyType: [Object], powertrain: [Object], paint: [Object], upholstery: [Object] }, technical: { seats: [Object], luggageNormal: [Object], luggageExpanded: [Object], acceleration: [Object], bodyLength: [Object] }, equipment: { available: [Object], definitions: [Array], selected: [Object], verifiedFitted: [Object] }, images: { state: 'representative', label: 'Representative imagery', items: [Array] }, source: { kind: 'dated-snapshot', references: [Array], confidence: 'Exact dated catalogue observation; not a physical build', observedDate: '2026-11-01', retrievedDate: '2026-11-01', catalogueDate: '2026-11-01', catalogueValidity: [Object], requestedIdentity: [Object], resolvedIdentity: [Object], configurationIdentity: [Object], market: 'GB', region: null, steering: null, agModelCode: '72HH', vgModelCode: 'T5MJ', modelYear: null, productionEra: null, productionDate: null, registrationDate: null, profile: null, profileSources: null, profileConfidence: null, completeVinDecoded: false, unresolvedFacts: [Array], identityProvenance: [Object] }, completeness: { record: 'complete', selectedOptions: 'complete', measurements: 'complete', optionDefinitions: 'partial', availableOptions: 'partial', verifiedFitted: 'unknown', images: 'representative' }, presentation: { syntheticLabel: 'Synthetic identity', associationLabel: 'Fictional identity association to retained configuration evidence; not a factory build or authentication.', sourceLabel: 'Dated catalogue snapshot', verifiedFittedLabel: 'VIN-fitted equipment unknown', unknownLabel: 'Unknown', imageLabel: 'Representative imagery' } },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at server/test/launcher-package.test.js:48:1
+✖ a future offer block and its own nested direct page are discovered without assembler edits (176.333917ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    {
+      available: true,
+      block: 'offer',
+  +   file: 'gcsp-offer.html',
+  -   file: 'blocks/gcsp/offer/preview.html',
+      name: 'offer'
+    }
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/server/test/launcher-package.test.js:57:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: { name: 'offer', block: 'offer', file: 'gcsp-offer.html', available: true },
+    expected: { name: 'offer', block: 'offer', file: 'blocks/gcsp/offer/preview.html', available: true },
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,49 @@
+{
+  "status": "changed-edge-recovery-passed",
+  "releaseId": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+  "cases": {
+    "corruptNewOnlySource": {
+      "cliRejected": true,
+      "selectionAndHistoryPreserved": true,
+      "previousRecovered": true,
+      "previousManifestDigest": "8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9",
+      "images": 0,
+      "sourceConfigurations": 349
+    },
+    "missingOfflineCache": {
+      "rejected": true,
+      "storePreserved": true,
+      "networkCalls": 0
+    },
+    "staleCacheSelection": {
+      "rejected": true,
+      "storePreserved": true
+    },
+    "changedImageAssociation": {
+      "rejected": true,
+      "storePreserved": true
+    },
+    "partialTransfer": {
+      "rejected": true,
+      "temporaryCacheEmpty": true,
+      "storePreserved": true,
+      "injectedRequests": 1,
+      "actualNetworkRequests": 0
+    },
+    "interruptedActivation": {
+      "phase": "staged",
+      "status": "source-unavailable",
+      "previousSelectionAndHistoryPreserved": true
+    },
+    "actualExistingStoreCli": {
+      "status": "ok",
+      "mode": "publish-existing",
+      "repeatIdempotent": true,
+      "coldManifestDigest": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+      "imageState": "representative"
+    }
+  },
+  "providerEgress": 0,
+  "ordinaryStoreUnchanged": true,
+  "scope": "owned downloaded cache and isolated restored store only; existing unchanged transport/image unit evidence reused"
+}

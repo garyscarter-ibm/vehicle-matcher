@@ -1,0 +1,32 @@
+{
+  "at": "2026-11-07T03:45:50.946239+00:00",
+  "scope": "root read-only code/pin/privacy/resource review",
+  "commit": "b52ba733fe8e7967117636d22c72a35eb86cc5b2",
+  "executionPlanSha256": "bab4501c1e12382c01518d432f728e6c4637fe5b97811875f00a9b635841792c",
+  "allCodeAndRuntimePinsMatch": true,
+  "markerAndPrimaryAbsent": true,
+  "reviewed": [
+    "diagnostic.mjs",
+    "run-live.mjs",
+    "supervise.py",
+    "export-retained.py",
+    "existing sorted line/variant production gates"
+  ],
+  "grant": {
+    "BMW_G42_DIAGNOSTIC_SOURCE_GRANT": "g42-safe-contract-diagnostic-20261107-once"
+  },
+  "attempts": 3,
+  "solver": 0,
+  "options": 0,
+  "images": 0,
+  "admissions": 0,
+  "limits": {
+    "workers": 1,
+    "scratchBytes": 67108864,
+    "hostRamBytes": 536870912,
+    "childRamBytes": 469762048
+  },
+  "deadline": 90,
+  "noProductionGrammarChange": true,
+  "acceptance": false
+}

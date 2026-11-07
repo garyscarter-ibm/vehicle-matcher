@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "single-prior-http-observation.v1",
+  "sourceReceipt": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/http-chunk0-receipt.json",
+    "bytes": 632368,
+    "sha256": "d5518728f7c6d84f331c242d4b5ed5499998ae6f5ec3e43d8e3ef14bcd1a4929"
+  },
+  "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "observation": {
+    "requestKey": "d72c05557861bb646f57484e60d26c3f1f35df5c20b0dd18e01256188c7d0ca2",
+    "httpStatus": 200,
+    "directPassed": true,
+    "httpPassed": true,
+    "consumerPassed": true,
+    "dtoSha256": "82712c8d703e6546d6c4298fa3a168b2ea48f09c73931ee9eb061ee36f98e2e4",
+    "configurationIdSha256": "ef437a9e4bfc46da39c6488b5c18e5edec63b99211f7f386b49dc86684de358f"
+  },
+  "projectionMethod": "Read one observation from exact hash-verified632368B receipt; no lookup, source call or replay. Full receipt stays local for root review; it is not copied to CI."
+}

@@ -1,0 +1,59 @@
+{
+  "authorized": true,
+  "reviewedAt": "2026-11-07T05:36:29.630521+00:00",
+  "status": "CODE+SECURITY pass; exact finite source release",
+  "seriesPlanSha256": "d7be10eebb0141166d3ff34d4fabbb3e79b4947a0e25d2952daf1a560a020607",
+  "manifestSha256": "a5f4fee0cafe64eb06bcfdff2d42a434cf898be5ebb080cc9b083e80c7db00df",
+  "phase": "phase01",
+  "scope": "120 serial sessions, 960 solver / 1440 GET; all30 actualcontexts 32 each; baseline5829; zero overlap all3623F70 requests",
+  "baseline": {
+    "canonical": 5832,
+    "admittedSource": 5829,
+    "spent": 7444
+  },
+  "resources": {
+    "workers": 1,
+    "hostRamBytes": 536870912,
+    "childRamBytes": 469762048,
+    "scratchBytes": 67108864,
+    "perSessionSeconds": 120,
+    "sourceSeconds": 90,
+    "childSeconds": 105,
+    "retainedCheckSeconds": 30,
+    "perCohortSeconds": 600,
+    "expectedRetainedBytes": 1800000000,
+    "retainedBudgetBytes": 4294967296,
+    "perSessionRetainedShardBytes": 33554432,
+    "peakIncludingRetainedBudgetBytes": 4362076160,
+    "largeOutputThresholdBytes": 268435456,
+    "directOneDrive": true,
+    "scratchRootPolicy": "resource-helper-owned-default"
+  },
+  "inputPins": {
+    "canonical": {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union5829-20261107/final-canonical-index.json",
+      "sha256": "8ea9c993747ce449cc4cd5d28ae75dc022382206aeb34ed31019393ee4a84307",
+      "digest": "970295dac0dff5c59ce1b678b7e8bb1a97a86b74ab4da9f770fcfccc5d064b46",
+      "entries": 5832
+    },
+    "spent": {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union5829-20261107/final-spent-request-index.json",
+      "sha256": "bed07078131b3f82579244d2f19c36fd88bd8f29f700ba1c0c5d165754cc6d33",
+      "digest": "e097969cfeee0d61a9fb3518db288cbeb1d49e5f0ce0d2bb2be9d9663040b8d0",
+      "entries": 7444
+    }
+  },
+  "originalClock": "1800s from consumed marker; no retries or reset",
+  "review": "Full run-series, run-live, prepare-session, source/retained supervisors, reconcile, event history, group helper reviewed; independent template request reconstruction and F70 full pool disjointness; child offline9/9 evidence reused; root check-release passed",
+  "acceptance": false,
+  "sourceGrantEnvironment": {
+    "BREADTH30_PHASE01_PHASE_GRANT": "scheme-breadth30-phase01-960-20261107-once-phase01"
+  },
+  "command": [
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth30-phase01-960-series-2026-11-07/run-series.py",
+    "phase01"
+  ]
+}

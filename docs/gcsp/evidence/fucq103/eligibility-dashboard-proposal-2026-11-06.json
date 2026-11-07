@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-06",
+  "state": "AUTHOR-ONLY-NO-EXECUTION-GRANT",
+  "mode": "eligibility-dashboard",
+  "sourcePlanSHA256": "edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9",
+  "productTestFrozenRevision": "f80fc61ca151cb46ad21cb2b19e704f4012d53de",
+  "evidenceOnlyParentRevision": "a0fc0260ef09a785fd1511bec5d10e3f494259f1",
+  "executionRevisionRequirement": "Exact reviewed clean published HEAD/upstream after this evidence checkpoint, supplied in dispatcher handoff. No completed grant is reusable.",
+  "tests": [
+    "server/test/gcsp-greg-dashboard-data.test.js"
+  ],
+  "testSourceSHA256": "049d6c79145e12cf46464e4265e5035fcea4c522e43ad770afbf055ddce1d786",
+  "namePattern": "^(real service:|every fixture projection)",
+  "sourceCaseCount": 9,
+  "expectedMatchedCount": 3,
+  "expectedMatchedNames": [
+    "real service: each step of the demo changes the view figures and versions",
+    "real service: canonical threshold shows only \"fewer than 5\" bands and no other number",
+    "every fixture projection has the shape of a real readDemand value and the view accepts it"
+  ],
+  "filteredSourceCount": 6,
+  "filteredSourceNames": [
+    "fixtures: states, copies, refresh sequence and abort",
+    "toDashboardView: bands keep their label, nothing is summed, malformed input throws DemandViewError",
+    "gate and key labels cover known codes and keep unknown codes visible",
+    "outcomeToState maps every HTTP outcome to one view state",
+    "http adapter: URL, method, credentials, headers, errors and abort",
+    "no em dash in any projected string, and no inline-script patterns in blocks/gcsp/greg"
+  ],
+  "completedModesExcluded": [
+    "eligibility-core25",
+    "eligibility-registry16",
+    "eligibility-default1",
+    "eligibility-weighted1",
+    "eligibility-runtime4",
+    "eligibility-editor3"
+  ],
+  "completedCasesRerun": false,
+  "childCommand": [
+    "/Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "--test",
+    "--test-concurrency=1",
+    "--test-name-pattern=^(real service:|every fixture projection)",
+    "server/test/gcsp-greg-dashboard-data.test.js"
+  ],
+  "supervisorCommandTemplate": [
+    "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "-I",
+    "-B",
+    "docs/gcsp/evidence/fucq103/scoped-supervisor.py",
+    "eligibility-dashboard",
+    "--execute",
+    "--source-plan-sha",
+    "edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9",
+    "--revision",
+    "<reviewed-published-evidence-HEAD>",
+    "--dispatcher-grant",
+    "<new-fucq103-eligibility-dashboard-grant>"
+  ],
+  "whyThisChunk": "The remaining frozen three-case real-service dashboard selection is smaller than publish15 or activation9 and independent against existing agreed service/view interfaces. It excludes all completed selections. Jira journey dependencies remain context, not automatic admission gates.",
+  "technicalReadiness": {
+    "sourceInterfaceEvidence": [
+      {
+        "path": "server/test/gcsp-greg-dashboard-data.test.js",
+        "bytes": 16504,
+        "sha256": "049d6c79145e12cf46464e4265e5035fcea4c522e43ad770afbf055ddce1d786"
+      },
+      {
+        "path": "server/test/helpers/greg-demand-run.js",
+        "bytes": 6746,
+        "sha256": "c75364774bc388f43c5bc96c596e85fac47dfa419f40e8d05be71949dead6bbe"
+      },
+      {
+        "path": "server/test/helpers/employee-recommendation.js",
+        "bytes": 2798,
+        "sha256": "39b7e47f9298d155759fa440bd412ebb86bfc009b7ec9d9d1167bdb88970ce9a"
+      },
+      {
+        "path": "server/gcsp/greg/index.js",
+        "bytes": 14961,
+        "sha256": "62452edd55d8834f029b1a4ab3dee2d252f3a4bc04c76431ad999909839f974c"
+      },
+      {
+        "path": "blocks/gcsp/greg/demand-view.js",
+        "bytes": 7051,
+        "sha256": "e1ec735bcf7c5435400c335835ace4fa1195552ce3682993eb7cedb6d3b22725"
+      },
+      {
+        "path": "blocks/gcsp/greg/fixtures.js",
+        "bytes": 8116,
+        "sha256": "6469fe209b50779115b3603c82cd38c5a9bf27a0e7090cb21e3179eeff8fe59f"
+      },
+      {
+        "path": "server/gcsp/policy/seed-v1.json",
+        "bytes": 493879,
+        "sha256": "c58fcd9054fa32cded07c4ee742b39d196f94aa15c8d0fbf7752874954df8a31"
+      }
+    ],
+    "availableInterfaces": [
+      "setup composes real memory repository, PolicyService, DemoClock, identity, BriefService and createGregDemandService; readDemand returns the real service projection.",
+      "toDashboardView consumes readDemand values through an existing pure projection; fixtureAdapter supplies five existing ready projection variants. No missing interface blocks this bounded selection."
+    ],
+    "independentScope": "Source/service-to-view projection checks using synthetic memory state, one canonical threshold 5 check and five fixture shape comparisons. Selected callbacks use no HTTP/network/listener/DOM.",
+    "outstandingIntegration": "Actual producer journeys, dashboard HTTP/DOM/rendering and consumer uptake remain acceptance work. Six excluded cases in this file remain unexercised by this prospective chunk; publish15 and activation9 remain open."
+  },
+  "fixtureBoundary": "Cases 1/3 call setup() with explicit alternative privacy threshold 1. Case 2 calls setup({canonical:true}), retaining the seed canonical threshold 5. Each setup seeds one synthetic manual employee. confirm saves/confirms a synthetic brief through BriefService; release/offer directly write synthetic stock, quote, hold, offer and decision rows. These helpers do not establish actual producer journeys or a broader authenticated/default population.",
+  "caseBoundaries": [
+    {
+      "name": "real service: each step of the demo changes the view figures and versions",
+      "assertions": [
+        "Sequential empty, confirmed-brief, released-stock, declined-offer and selected-offer projections change the asserted figures/flags/labels and produce five distinct projection versions.",
+        "The pure view exposes the expected unmet-essential and decline-reason labels and selected stock allocation."
+      ],
+      "limits": "Explicit threshold 1 enables single-subject exact figures. Synthetic direct release/offer writers do not exercise real release/allocation/decision producer journeys. Distinct versions are not producer integration, numerical parity across every field, HTTP or rendered-dashboard acceptance."
+    },
+    {
+      "name": "real service: canonical threshold shows only \"fewer than 5\" bands and no other number",
+      "assertions": [
+        "Canonical threshold 5 remains in the projection/view privacy note.",
+        "For this one-employee synthetic cohort, the collected demand/offer/stock counts are bands labelled fewer than 5, containing only the digit 5; hasBands is true."
+      ],
+      "limits": "One-subject small-count suppression only; no populated five-subject cohort, broad privacy guarantee or rendered text evidence."
+    },
+    {
+      "name": "every fixture projection has the shape of a real readDemand value and the view accepts it",
+      "assertions": [
+        "Five ready fixtures (populated, after-release-decline, empty, no-stock, banded) match the comparator shape of a real readDemand projection and are accepted by toDashboardView.",
+        "The comparator catches an extra top-level key and missing nested keys; each fixture load returns a fresh projection object and the view has the expected basis label."
+      ],
+      "limits": "Real comparison setup uses threshold 1 while fixture projections use their authored thresholds. shapeIssues compares keys/types and exact-or-band count variants, compares array items to the first expected representative, permits empty arrays/nulls and polymorphic essential values. Shape compatibility is not numerical or semantic parity."
+    }
+  ],
+  "measuredResourceRationale": {
+    "sameReviewedFiniteClosure": true,
+    "newEntryTestFile": true,
+    "editor3Baseline": {
+      "run": "fucq103-backend-b831e52166b5485ea28e5b57a78b2e8d",
+      "testedRevision": "a0fc0260ef09a785fd1511bec5d10e3f494259f1",
+      "originalIndex": "eligibility-editor-a0fc026-2026-11-06/index.json",
+      "wallSeconds": 4.914049875,
+      "peakAggregateRSSBytes": 1000603648,
+      "peakAggregateRSSMiB": 954.25,
+      "peakCombinedBytes": 4348423
+    },
+    "dashboardThreeCasePeakKnown": false,
+    "existingRamCapBytes": 1073741824,
+    "assessment": "Editor3 and earlier peaks are historical context, not dashboard admission. This entry file, fixture projections and service instances may have different resource lifetime. Retain the existing one-worker 1024MiB envelope; require fresh strict all-reservation/current-pressure admission and a new exact once grant. Stop at first limit/unknown with no retry, cap increase, source/filter change or substitution."
+  },
+  "limits": {
+    "workers": 1,
+    "seconds": 120,
+    "aggregateRSSBytes": 1073741824,
+    "combinedScratchRetainedBytes": 134217728,
+    "originalMergedLogBytes": 2097152,
+    "separateReceiptHeadroomBytes": 262144,
+    "emergencyDiskReserveBytes": 5368709120,
+    "hostRamReserveBytes": 536870912
+  },
+  "admission": "New exact eligibility-dashboard once grant, unchanged source/dependency/executable/resolver/membership/anchor pins and exact clean published HEAD/upstream. Fresh strict no-follow locked HostBudget validates every reservation/full ancestry, preserves foreign rows, and charges reserved/observed usage plus current pressure. Independent bounded chunks may coexist. Only actual overlap or insufficient remaining capacity blocks admission; no empty-global-ledger requirement. Unknown/mismatch stops. Historical peaks/headroom never substitute for current admission.",
+  "environment": "Existing closed literal allowlist strips database/debug/loader/preload/configuration credentials. Never read the approved database file. No installs or dependency changes.",
+  "originalContract": "Preserve the full bounded original merged log/checkpoint/summary/manifest/impact, launcher receipt and actual supervisor tool exit on every outcome. Independently require all three exact positive names and actual final totals; record six filtered source cases as unexercised regardless of reporter skipped totals. Verify no completed-case rerun, full byte counts/SHA/current pins and postwrite allocation. Authoring counts are not execution evidence.",
+  "cleanupContract": "Use unchanged manifest/process gate/finalizer: stop/join owned direct/recursive PID/start/group; owned ports absent; exact scratch identity/no open files before deletion; scratch and worktree dependency paths absent; strict full-bound locked exact-token release/readback preserves foreign rows. Unknowns remain named incomplete. Independent lead/root audits precede publication or wider admission.",
+  "experienceContract": [
+    "docs/gcsp/experience-quality.md",
+    "COMPONENTS.md",
+    "docs/gcsp/screens/README.md"
+  ],
+  "remainingAcceptanceGates": [
+    "Current-source publish15 and activation9; dashboard3 is only this unexecuted proposal, with six excluded dashboard-data cases unexercised by it.",
+    "Separately admitted repaired browser preparation and rendered desktop/narrow320 keyboard journeys on canonical prepared composition, with actual employee outcomes, visual reference and COMPONENTS.md gates.",
+    "Actual 92/69/122/126 producer journeys, 105-to-107 lookup/reload and required native/deployed/live/corpus/model/training evidence remain unproven.",
+    "Dispatcher-admitted authored full validation, final independent review and whole-story acceptance; FUCQ-103 stays In Progress."
+  ],
+  "gateway422Rule": "Shared AGENTS.md Russell 6 November rule persists: preserve exact child HTTP422 diagnostics and continue authorised work while launcher can work. Keep IBM gateway and credentials. Grant/resource/scope limits remain binding.",
+  "exclusions": [
+    "Completed core25/registry16/default1/weighted1/runtime4/editor3 must not rerun. No browser/native/DB/full/live/corpus/model/train or next-mode allocation is authorised.",
+    "All 38 listener-parser design fixtures remain unexecuted. Authoring performs static byte/JSON/source/Git review only; no product/runtime import, service/listener/probe/test/scratch/reservation/child agent."
+  ],
+  "grantIssued": false,
+  "executions": 0,
+  "agents": "requested/selected gpt-6.1-sol/high; no fallback or descendants"
+}

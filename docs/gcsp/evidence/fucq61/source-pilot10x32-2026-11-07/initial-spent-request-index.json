@@ -1,0 +1,432 @@
+{
+  "schemaVersion": "f61-spent-source-requests.v1",
+  "basis": "All85actual solver requests from first32and interrupted53; all statuses excluded from later exact-request replay.",
+  "sourcePlanDigest": "09b4716d00edf18d02373f9f2307bf5b0973bc5345da99a13f8c3dbb506302e0",
+  "entries": [
+    {
+      "candidateId": "candidate-be6ff5e25a5c0ba20c53e0cd",
+      "requestDigest": "333516b7344f7d0f055dcbd8f0ec032d44d2d1d5d3aa6a79b30de1895439bf4c",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-d0db51a314bdcaf1d0d7ddf0",
+      "requestDigest": "80c28de7a0818d6705c9dfaa8c14eb0bf3329313725e4f8b143927ce1e959af1",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-47b9d81e544d6ba6b2b0e8b2",
+      "requestDigest": "4b1549eb4f9252f1850acc7c710a2d04fd427f6a161747bd9651720cc67b6c00",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-a2fca1bd8de4f65379286337",
+      "requestDigest": "779c2384c2f5d9cbeab9b798e469cf85e622ebdf2c4c5b91fec0671355d0761d",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-feaf6686f1f2b67930da2acd",
+      "requestDigest": "efa061a6291b6fb249b4dc1317dc43b81dd3482d971fe3ac907d7611856a834b",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-0176246547761ee6c6507eaf",
+      "requestDigest": "e08e0d9804db9db19a8e14f61c7b48f1a79dc82035a55d2bced80688babf8a94",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-b661af9223bc3a104d59e267",
+      "requestDigest": "dbcf71c3da0a109ef19631741cfc68c15850e7ebc8377e94ff8d567b8fb0974a",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-3e6b70b52fd132b0859e4f0d",
+      "requestDigest": "60d7ac12f800c98b15b14422b0a123a9717cece3190537816da002f73b592710",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-35869332e369c023dd23c273",
+      "requestDigest": "4990b6733a10e252034e81bd586d9e542f874189590eb54be2391967769bed5b",
+      "outcome": "rejected"
+    },
+    {
+      "candidateId": "candidate-efd8e3e5eda00bfcf3439d6d",
+      "requestDigest": "e8849385120c282ad3c2b0559a3a756e6c19ae6bb152cd68fbf8a545e586bee7",
+      "outcome": "rejected"
+    },
+    {
+      "candidateId": "candidate-f6337128ada4cce3e8c078bd",
+      "requestDigest": "bfeecba2454e7c94a4e3b42941af45d53205a6c464fb4f24f424c85d76843a55",
+      "outcome": "rejected"
+    },
+    {
+      "candidateId": "candidate-75f7f5c7d8e612187e5ed265",
+      "requestDigest": "d53588423a2fd9d7016ef718d235ef16e91407a95aad6d8ffd13a78271265aae",
+      "outcome": "rejected"
+    },
+    {
+      "candidateId": "candidate-91033a57b90005904c1817a6",
+      "requestDigest": "5febbf8d158b17386c6c03ee6c3c820e05bb40b3102330a7c154ff9b3871cae0",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-384676c68a3d817ee693ebe8",
+      "requestDigest": "22d8d9cd57b980476eaf160d4f504bed9fe221d1e6d3bd199715cd03eb1a97de",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-073b8ab3b92ea5f5f7347e6f",
+      "requestDigest": "57e9a582b29f1d8fd26d9582710f14cb2c499ac45091b0f8732afba46e414835",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-e0c5cb80402245b375630148",
+      "requestDigest": "73769f8ba83f8f84c10318601341ec91276d8b23aaa6fead4c0658dfb20792ea",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-3e767c24026d18f71cdfb13e",
+      "requestDigest": "dde4f3b3748308fee8dee64c8478b501d35d984ba188f1f9caa955f77c9024aa",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-e7a685024e0ed702bc68bb64",
+      "requestDigest": "c4083b8beaa166b85d892b5425d1f56055975b30b90ce1322a104afb911f9ccc",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-ffa226ff02bed705aad748b1",
+      "requestDigest": "7a831f8a79e663ebf1669cef98252a1938594eb52c07bcfde4ba2330bf9bfa4c",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-e2d250789d4caba7a5b4a541",
+      "requestDigest": "2566b44867775462f82df3bd4416efaa4cbae1e0bf1339e08223c83867f53bbb",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-9603d49c035ef0b2c46d1d2d",
+      "requestDigest": "c29e29bc9c123dde228a6e879efe433126e2a7425637769a1d964efdb399c712",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-dd28a91b8b372c9f8610339d",
+      "requestDigest": "f4eb214ffd1cdb9116d11134d6a440ad1a7e058d66313f6b344d1644461bba7e",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-881f5701c0dd0bf9e723efa9",
+      "requestDigest": "2f5717577fe932c42ae625b166c4a31b0409f493381df1c4c584f3110c839a15",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-51c5a7a080ef74898ce64086",
+      "requestDigest": "49942dcb86288d99a3c8fab3dc80007f93b4036ff25a90b1964ea81600cc2a3e",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-b3f15c2e5511ae87a8b4818f",
+      "requestDigest": "4d6f8b0c4e1cb319e0697ffc36dc649a9aa919c484ba75aa44591b204ee285c9",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-47220eaa827aa3bfa967e075",
+      "requestDigest": "209775dd7fae07b9b0b118e2ce0d56e182cac45395314ed941db44b62810df9a",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-86b620fbbef98dcbf86323f2",
+      "requestDigest": "897faf5f612321b3374f6d69f30a3e38cfdfbb3b8773ec31f7bd765e5318fa18",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-a0e6bdb26887870895b1ca8f",
+      "requestDigest": "6565c5aeb1a403b0c27afbee24df9f8c514cd3e7a92746f397a82185692050cf",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-5ce124e68595edca10442e13",
+      "requestDigest": "8ab914715ca6f3d779fb6fa86b2b6e26f4dae6216de04be8da13448984c8e7a7",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-a029c14e6fbca3c9bbaa30b5",
+      "requestDigest": "446897d94e228b5044e0e53304f5081255a199bf6284ddb578763334180c5d9a",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-780ed0ff2e3b3035a42dd2d1",
+      "requestDigest": "b67e50093bd9bf0d3ef10c6d5bca030ba5bf5e6dd98f9ce53c47fa629b10ec8a",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-0e7d819fb8e60c751b3a0f4a",
+      "requestDigest": "21fd283a8e6db5bb18d3bc73561c326a298147999de59d05fe309dd604eb4ce2",
+      "outcome": "accepted"
+    },
+    {
+      "candidateId": "candidate-8db978489fe6e5b6cedcdb23",
+      "requestDigest": "231df7c5729a69a948d259a38ff3fc982f5bb70fd51c2179d4cf8fa46e588dc2",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-d73514196ffef5c5a8c27cfc",
+      "requestDigest": "914d9d80b2b1fa7231e875ecd83414654147eb6ccb3cde019b7da785c5d050bc",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-54c8eb029be11698337ec6d5",
+      "requestDigest": "376206da9cc033447f60ecdef28e0861e6f8cf80826a1739ea8f8fd3c0675b91",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-5bc4c0fe3d622d698c6edc1b",
+      "requestDigest": "d7d6cda44b3de63a9f2212b187aaac08473c41d37f65d24ebf705647ec812804",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-7066e8b58ac7018ff414ed91",
+      "requestDigest": "cf5b7f9730c741807f7b0ba9263da05ab52a3ba66a129c48b017cbd62806e7a2",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-bdf660ed1b7e6c79e69ce056",
+      "requestDigest": "339a1039c88645f8e6ac6b0cc5687ef0a73831e6de4b1fb589c34cece5bc2d96",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-812ba195745541f4cfbcdb72",
+      "requestDigest": "aee7a489d8a112175371fdafed5a983f20c98961e7850efd571e1521f654d58d",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-e77534ab84bd0a61f906f0a2",
+      "requestDigest": "0c3953e9ca53ab6111c9ff9d4a8e30eb36a16db3bdfa00de45caf870cab9e0b3",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-d38c3897fefc93fef68a5c43",
+      "requestDigest": "32a8c0d16b2ea40dbfec8fdd1e813dce91bfedac5105e1c6fc7ddbff0fbfff6a",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-a74d997446bbba195b3eec9a",
+      "requestDigest": "2e9539f970b95b14b818df5206fae07dc97ace140553fad7f3e5f3aa631f3743",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-62f663685f87d1065d83e1f6",
+      "requestDigest": "2f58641a9bb259ea8fcea295e2d5d5072079340a1289f3293078c3a92ff441c5",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-0b18fdbd0d2843826da4107e",
+      "requestDigest": "c2958fe4c09eeff2634d351afb30657c0bffa5f66615dae90b613b2b26a6f633",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-3c3ce95262267c9cba393075",
+      "requestDigest": "525768e354ffe67fca6c90d8763eb140db815caf4970590395bf7d6896d661b2",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-72042f4b1078e0d5e80ea784",
+      "requestDigest": "088ddd0f0b80378885f5ae2ac6a6f8b034344fdd6fe85c0fcc2b9ee8e32178c4",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-bb37d51ae5b0bff14128aea7",
+      "requestDigest": "43953cc24bebda0126daef49c4a1a29bac7d0ba61fe98527f90e70877b4ef3b9",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-cd6c894d25a35cd1c8cef8d7",
+      "requestDigest": "97f02dc4479a789c35647590dab165338210f221549acb4d9edc2be5052363f5",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-693dc4c94276c2b0c3c342d5",
+      "requestDigest": "01a16f29a9c9362b6b62309eb7eb1228afdc2f5829ee3ea4baee98afa57736a9",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-d755a5b9e5f9494e7546dad9",
+      "requestDigest": "18db28c5366147197d13a90633245cc14d854a46c40504dccf8c1446850af95f",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-544b38ba29ad5d3cdc24e67e",
+      "requestDigest": "e8204c75b4c5a0634ff705eb6235f1eda82f34499fce60acc659cc13e4945a02",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-5d16c319038cd655c8084b33",
+      "requestDigest": "b202ab6874fae36ab0961e3b38cc70504d26967999292c84fbf34767f8909650",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-ec66c7491c6a6954dbabaff1",
+      "requestDigest": "1cc118bb601b6406eb0ba880228235ef9e3aaa0e52ddc927d6873b4b3104f735",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-05226303d588e3c1ed87de98",
+      "requestDigest": "115500c0ba1efd3a9698cb69a583fb6fc0de62c704a43ab296975034cc03486a",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-a7c12861433338e44d9c28c8",
+      "requestDigest": "d95fa25ca06b890f2bbc6693615a58da3b89b703129d02b1d4c99d2a41dfb9eb",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-0fdf30b3dd50ddcdaa87c133",
+      "requestDigest": "817d72ff793fbe18702a086b4e80208128838d0277fe3a14012073c0dc211c38",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-44b9f005ab06df87e70c6e7c",
+      "requestDigest": "ac95270ad50bdc507149791b41dd38d34f85180b64213d094603c92f4b38ceb5",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-ad271d87c89c420e13b9bd67",
+      "requestDigest": "f889cbe77525f65d35d62210096a70f3b583a0c6436d4b0c310f8866a986ddfc",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-833098c3f75eaa999f03cf04",
+      "requestDigest": "fa79df9bfc8ca70723c931fa161433654d3cb1a9bdc85b1e3db6477bd3100e8b",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-1719c39d11e0f0bfe38606af",
+      "requestDigest": "1241595896bc49d1ade5883ea92c7722d2c9de5a10a0a6facd1b32f95d5a04bb",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-b08aa06665c6cadcf4592205",
+      "requestDigest": "0ce2010c31482e41a68c230c6cc389d832dc78da5b627948c96fe8ed033b1d8c",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-d547d5a50e0b075bbbadc004",
+      "requestDigest": "b8f9d878140cb8a128deaea4667fa23e031f7d2778df1a7eaf476a512c2810b0",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-de2647404fcaf8abed6063d7",
+      "requestDigest": "71c8579dfd4c5c128666413997c07b69ee2bb72245ae2602030232553ab2d2ca",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-90cc84441caccf9889115c5d",
+      "requestDigest": "a4d87ec0f04d321e6830bbf9d54142f246f1066fe7aebb34cc54bef6167223ed",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-2a5f322935eed162469c824c",
+      "requestDigest": "59313b83dd76fd0e5519eae11a770dcb05c645e70842c0da4f0cf9d1f5caa049",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-b9a23420ec08a31c81e1a90a",
+      "requestDigest": "f5e8732660a6a1eb1adc87ec6b0bb5453bf3de679f4e7ee628e53af3c7f06b21",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-502a07e0aeb0dbcc82fadce6",
+      "requestDigest": "de6fb739001b002c0ec93f3d39beb6b42c19513bcd6b78bb11a4af0fdd93fc86",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-480b70eb03b38886def70753",
+      "requestDigest": "9ac3e510461c751f7a3b7ea96e9657777a06bc313442fcc934770c129bbaa2bc",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-6eccb181abdaa75a2cb75352",
+      "requestDigest": "a38ba7f69f22b7ee8952bef0c3bdb39df25fe157eb1d082ec2634ccabf44c787",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-3c43b2e008bb1aca7b8a3d70",
+      "requestDigest": "7edad6e247b545d972df6e672867cb0087eae11e4c9d9154285c517c612eecc0",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-881e817445fbae74855fd128",
+      "requestDigest": "8e860cb3501a1b876f352a33b36f16c35d53abf9e21ca06d1d8b901c23607e2c",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-c2105044dbc3c5597681f98d",
+      "requestDigest": "a36d021ac47705ccfbf8ca2419d9f2f923bb7fa4fab3a5cdf55760fe60a821ea",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-22d77654079b4738d9027bfb",
+      "requestDigest": "3de38c5e70e40a39501860045ed178f09c8eb698270c7ebd39906ea6fd5e3fce",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-adb38edeed31b162b1584ea8",
+      "requestDigest": "7b1898d2223459282989b108630bb6ade3735d43f945af6d58e91da446eeebab",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-9ea2bd45ceb2f730dad881bd",
+      "requestDigest": "7090cdbd7212bcbcad172faccdf3b8a04a9a19ae3c4370240736cd8658a2dcd4",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-5ac4eb40f6165f46cac320e5",
+      "requestDigest": "abb207b3a76a9dfb445154d39e2d937f646fa906262b695a85ec6609b2eb205e",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-b650a34927d3af9e76d6eefb",
+      "requestDigest": "30946411cb85cfbcc951dccb3829bf77b1505e229603caa426efb00d0cc46de5",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-dacc23aa5d372f21de07ee11",
+      "requestDigest": "5c0ff9bd368792840b083f762a1b2ad32df721fc0f3741a9574a8bb8779c8835",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-f04eb69c9eedf36f589dcaef",
+      "requestDigest": "625942ca2b7157fb5f9bd44d8a2f60534036b17921eebec6e3a4b343879c54ac",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-6725c48e194e28f625b4f6c2",
+      "requestDigest": "48110ec2f053291bd66d18e52eb57995fc9e89b27a8412d6caff94b0ee280801",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-5991eb167b1de37f6c0cd50b",
+      "requestDigest": "685fc56091fa1de8a89b243f195456342a6a8681066162ceea33dae2f9dd59a5",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-d30992d9ee4305449ca7af89",
+      "requestDigest": "3f3436a9f88382b529c8c0ac65c7ab2914cfecee3c233009f4846af1f4c02c32",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-be1c2e19c1f371decdebb048",
+      "requestDigest": "a6cde5ce48cedb63bef87605fcb6b78c0ba2431cd24f4f45d5ae7f39b3b75e78",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-856505c6acffeb8b7af7fb2b",
+      "requestDigest": "efcf41be9898a6223502b2749a8bf08c09e9804f9dec5e5ba72d4b822e323f67",
+      "outcome": "unretained-unverified"
+    },
+    {
+      "candidateId": "candidate-d968cbf32811a314602ec8b0",
+      "requestDigest": "97d5a04570174683b7cb4b5fe4ce433047ea31ed9645fa294af8f96c58e5a3a7",
+      "outcome": "unretained-unverified"
+    }
+  ]
+}

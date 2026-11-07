@@ -1,0 +1,264 @@
+{
+  "scope": "scoped retained four-key OTD qualification through existing enrichFleet; no runtime publication",
+  "identity": {
+    "scripts/gcsp/bmw-technical-qualification.mjs": "0d5f90b927c4aef72ac620664549fa61f09e556e12378e1f8ffd2c3dc201dbcc",
+    "scripts/gcsp/enrich-fleet.mjs": "f9c82b248dabc0bb4c0cd55899e54697b1d86171671a811c138d2fc1ea60e458",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "90cf9187cb44dc6d17e6984a0fdc25dc13fc9078c23d3652d779a565cedc29a7",
+    "server/test/gcsp-otd-qualified-enrichment.test.js": "ee76413bd36295eb52bde8fe89aad0137b71ea5681957ecd353a218b8ec0e9d0",
+    "docs/gcsp/evidence/fucq60/qualified-image-boundary-2026-11-07/run-retained.mjs": "b31bf975a330b315ea7b752a8c168093b6e1d1f9b11d9545ce9dade9e45991eb"
+  },
+  "checks": {
+    "newQualifier": {
+      "pass": 4,
+      "fail": 0
+    },
+    "qualifierAndSourceV2AndFleetBoundary": {
+      "pass": 18,
+      "fail": 0,
+      "skipped": 0
+    },
+    "actualRetainedRun": "finished; 4 known facts, bodyLength unknown, zero source calls"
+  },
+  "counts": {
+    "sourceCalls": 0,
+    "operations": {
+      "catalogue": 1,
+      "technical": 1
+    },
+    "cacheHits": {
+      "catalogue": 0,
+      "technical": 0
+    },
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "cacheEvictions": 0,
+    "httpAttempts": 0,
+    "decodedBytes": 0,
+    "operationBytes": {
+      "catalogue": 0,
+      "technical": 0
+    }
+  },
+  "facts": {
+    "seats": {
+      "state": "known",
+      "value": 5,
+      "definition": "SEATS",
+      "unit": "COUNT",
+      "reason": null,
+      "completeness": "complete",
+      "provenance": {
+        "kind": "observed",
+        "source": "BMW UK OTD",
+        "observedDate": "2026-11-07"
+      }
+    },
+    "luggageNormal": {
+      "state": "known",
+      "value": 300,
+      "definition": "NORMAL",
+      "unit": "LITRES",
+      "reason": null,
+      "completeness": "complete",
+      "provenance": {
+        "kind": "observed",
+        "source": "BMW UK OTD",
+        "observedDate": "2026-11-07"
+      }
+    },
+    "luggageExpanded": {
+      "state": "known",
+      "value": 1135,
+      "definition": "EXPANDED",
+      "unit": "LITRES",
+      "reason": null,
+      "completeness": "complete",
+      "provenance": {
+        "kind": "observed",
+        "source": "BMW UK OTD",
+        "observedDate": "2026-11-07"
+      }
+    },
+    "acceleration": {
+      "state": "known",
+      "value": 7.8,
+      "definition": "0\u2013100 KM/H",
+      "unit": "SECONDS",
+      "reason": null,
+      "completeness": "complete",
+      "provenance": {
+        "kind": "observed",
+        "source": "BMW UK OTD",
+        "observedDate": "2026-11-07"
+      }
+    },
+    "bodyLength": {
+      "state": "unknown",
+      "value": null,
+      "definition": "BODY LENGTH",
+      "unit": "MILLIMETRES",
+      "reason": "no-resolved-evidence",
+      "completeness": "unknown",
+      "provenance": {
+        "kind": "unknown",
+        "source": null,
+        "observedDate": null
+      }
+    }
+  },
+  "measurementEvidence": {
+    "seats": {
+      "sourceCode": "N_SITZE",
+      "sourcePointer": "/values/N_SITZE",
+      "sourceUnit": null,
+      "unitAuthority": "approved-reference-code-mapping",
+      "meaningAuthority": "approved-reference-code-mapping",
+      "mappingVersion": "bmw-otd-reference-code-mapping.v1",
+      "mappingDigest": "df2b37a06501d5c0fe03c29193b99d0755cb9c0254f22936e934c7e77705b5ac",
+      "retainedSha256": "b9faeb98e45ee770d24db8f85881f6c9145f9abfb2939c71ab24c738de9e4735",
+      "responseSha256": "a11eaf979cbfeedbcc639b9367937fd08ddfbfb866855fdddd4cca5c4634ca68"
+    },
+    "luggageNormal": {
+      "sourceCode": "A_GEPR_V211",
+      "sourcePointer": "/values/A_GEPR_V211",
+      "sourceUnit": null,
+      "unitAuthority": "approved-reference-code-mapping",
+      "meaningAuthority": "approved-reference-code-mapping",
+      "mappingVersion": "bmw-otd-reference-code-mapping.v1",
+      "mappingDigest": "df2b37a06501d5c0fe03c29193b99d0755cb9c0254f22936e934c7e77705b5ac",
+      "retainedSha256": "b9faeb98e45ee770d24db8f85881f6c9145f9abfb2939c71ab24c738de9e4735",
+      "responseSha256": "a11eaf979cbfeedbcc639b9367937fd08ddfbfb866855fdddd4cca5c4634ca68"
+    },
+    "luggageExpanded": {
+      "sourceCode": "A_GEPR_V214",
+      "sourcePointer": "/values/A_GEPR_V214",
+      "sourceUnit": null,
+      "unitAuthority": "approved-reference-code-mapping",
+      "meaningAuthority": "approved-reference-code-mapping",
+      "mappingVersion": "bmw-otd-reference-code-mapping.v1",
+      "mappingDigest": "df2b37a06501d5c0fe03c29193b99d0755cb9c0254f22936e934c7e77705b5ac",
+      "retainedSha256": "b9faeb98e45ee770d24db8f85881f6c9145f9abfb2939c71ab24c738de9e4735",
+      "responseSha256": "a11eaf979cbfeedbcc639b9367937fd08ddfbfb866855fdddd4cca5c4634ca68"
+    },
+    "acceleration": {
+      "sourceCode": "E_0_100KMH",
+      "sourcePointer": "/values/E_0_100KMH",
+      "sourceUnit": null,
+      "unitAuthority": "approved-reference-code-mapping",
+      "meaningAuthority": "approved-reference-code-mapping",
+      "mappingVersion": "bmw-otd-reference-code-mapping.v1",
+      "mappingDigest": "df2b37a06501d5c0fe03c29193b99d0755cb9c0254f22936e934c7e77705b5ac",
+      "retainedSha256": "b9faeb98e45ee770d24db8f85881f6c9145f9abfb2939c71ab24c738de9e4735",
+      "responseSha256": "a11eaf979cbfeedbcc639b9367937fd08ddfbfb866855fdddd4cca5c4634ca68"
+    }
+  },
+  "phases": [
+    {
+      "phase": "qualification-red",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/qualification-red/command-0.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/qualification-red/ownership/36a4be9cf0ad4df6907a0585eae815b6.json",
+        "peak_rss": 2211840,
+        "peak_scratch": 0,
+        "rc": 1,
+        "wall": 0.24780333300000001
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/qualification-red/ownership/36a4be9cf0ad4df6907a0585eae815b6.json",
+        "removedScratchBytes": 0,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/qualification-red/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-36a4be9cf0ad4df6907a0585eae815b6",
+        "scratchAbsent": true
+      }
+    },
+    {
+      "phase": "qualification-green",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/qualification-green/command-0.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/qualification-green/ownership/c1afd1e0ee1f4a4bb183dbce486715be.json",
+        "peak_rss": 2211840,
+        "peak_scratch": 0,
+        "rc": 0,
+        "wall": 0.246762792
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/qualification-green/ownership/c1afd1e0ee1f4a4bb183dbce486715be.json",
+        "removedScratchBytes": 0,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/qualification-green/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-c1afd1e0ee1f4a4bb183dbce486715be",
+        "scratchAbsent": true
+      }
+    },
+    {
+      "phase": "qualification-boundary",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/qualification-boundary/command-0.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/qualification-boundary/ownership/adc10a4698e6497ebfa15fd8dda48ceb.json",
+        "peak_rss": 192790528,
+        "peak_scratch": 114848,
+        "rc": 0,
+        "wall": 1.213105166
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/qualification-boundary/ownership/adc10a4698e6497ebfa15fd8dda48ceb.json",
+        "removedScratchBytes": 114848,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/qualification-boundary/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-adc10a4698e6497ebfa15fd8dda48ceb",
+        "scratchAbsent": true
+      }
+    },
+    {
+      "phase": "qualification-retained",
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/qualification-retained/command-0.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/qualification-retained/ownership/a614c3d69f6842ee8a5a0908ecd06586.json",
+        "peak_rss": 2277376,
+        "peak_scratch": 0,
+        "rc": 0,
+        "wall": 0.24752599999999997
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/qualification-retained/ownership/a614c3d69f6842ee8a5a0908ecd06586.json",
+        "removedScratchBytes": 0,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/qualified-image-boundary/qualification-retained/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-a614c3d69f6842ee8a5a0908ecd06586",
+        "scratchAbsent": true
+      }
+    }
+  ],
+  "primary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq60/qualified-image-boundary-2026-11-07/qualified-checkpoint.json",
+  "output": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq60/qualified-image-boundary-2026-11-07/qualified-enrichment.json",
+  "primarySha256": "193edac8118f2004c4373fe809d147998c733dcbdb35e478f1cb0561b615bb24",
+  "outputSha256": "0d41ae157a325a00851af87b6314fb06f4d707aee1d726e1500243cb54d8ff79",
+  "removedScratchBytes": 114848,
+  "coverageContexts": "not measured; explicit ownership/fixture boundary selection",
+  "runtimePublication": false,
+  "sourceCalls": 0,
+  "leftovers": [],
+  "compatibilityException": null
+}

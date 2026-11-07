@@ -1,0 +1,10 @@
+{"phase":"started","attempt":1,"method":"GET","url":"https://configure.bmw.co.uk/en_GB/configure/G61E/T5MJ"}
+{"phase":"headers","attempt":1,"status":200}
+{"phase":"started","attempt":2,"method":"GET","url":"https://configure.bmw.co.uk/en_GB/settings.f8e66668.json"}
+{"phase":"headers","attempt":2,"status":200}
+{"phase":"started","attempt":3,"method":"GET","url":"https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=G61E&future-models=true&closest-fallback=true"}
+{"phase":"headers","attempt":3,"status":200}
+{"phase":"started","attempt":4,"method":"GET","url":"https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/T5MJ/options/languages/en?trim=S0337"}
+{"phase":"headers","attempt":4,"status":200}
+{"phase":"started","attempt":5,"method":"GET","url":"https://prod.ucp.bmw.cloud/rulesolver/constructibility-check/rule-sets/pcaso,con/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/models/T5MJ?add-rules-for-mandatory-element-classes=fabric%2Cpaint%2Crim&application=connext&included-elements=FKSFU%2CP0300%2CS0337%2CS03G9%2CS043L&mandatory-elements=S0337"}
+{"phase":"headers","attempt":5,"status":200}

@@ -1,0 +1,49 @@
+{
+  "canonicalExpectedFailureRequestKeysSha256": "eddd7b0020e53f028039de74494c3f4b495f0fa5486837fafb5578da02eca78c",
+  "expected": {
+    "bytes": 99480791,
+    "configurations": 1924,
+    "configuredConsumerFailed": 469,
+    "configuredConsumerPassed": 1456,
+    "datasets": 9,
+    "direct": 1925,
+    "files": 23,
+    "httpComplement": 901,
+    "httpSample": 1024,
+    "httpUnique": 1925,
+    "images": 2,
+    "sourceConfigurations": 1923,
+    "sourceShards": 12,
+    "vinMappings": 1
+  },
+  "networkOperations": 0,
+  "ordinaryActivationExecuted": false,
+  "originalPlanSha256": "1ff235ad7ee2ea333d7a85aca0aad235b373629201af679f0d2ab803df04533e",
+  "originalProofHelperSha256": "4ebf509f9f3e175a6d5da22cb20dae58cd5c9fe38d518180de6100ad0499ecba",
+  "originalPublicProofStatus": "failed at expected key serialization; HTTP901 and public changed-edge recovery unrun",
+  "originalRunnerSha256": "14e9bff9c81d4c01851727111b4441709f2309e929eda5311055a2ebdc3288e0",
+  "publicProofCompletionClaimed": false,
+  "publicReceipt": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot8-1923-public-20261107/download/download-receipt.json",
+  "publicReceiptSha256": "ce9e4100aecc4cdba613e612f2e3a0f24881dd3d4a683164c77e1aa0050a71da",
+  "resources": {
+    "childRamMiB": 576,
+    "expectedDownloadAuditSeconds": 150,
+    "expectedPeakAggregateRamMiB": 420,
+    "expectedPeakScratchMiB": 160,
+    "expectedRetainedMiB": 8,
+    "hostRamMiB": 640,
+    "scratchLocation": "owned OneDrive",
+    "scratchMiB": 192,
+    "secondsPerChunk": 600,
+    "workers": 1
+  },
+  "runId": "f62-dot8-canonical-offline-followup-20261107",
+  "schemaVersion": "fleet-dot8-zero-network-followup-plan.v1",
+  "selected": [
+    "minimal request property-order reproduction",
+    "all23 retained pack file hashes match independently retained actual public download receipt",
+    "production offline CLI cold restore and idempotent restart; zero external operations",
+    "new canonical helper all1925DTO/consumer in <=1024 chunks plus exact1024+901HTTP; actual469 signature/hash/model grouping",
+    "reuse unchanged exact-byte .8source/image recovery, no rerun"
+  ]
+}

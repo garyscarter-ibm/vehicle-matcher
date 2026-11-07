@@ -1,0 +1,16 @@
+{
+  "scope": "preparation-only",
+  "pythonCompile": "passed-without-bytecode",
+  "codePins": 4,
+  "inputPins": 5,
+  "originalNativeCodePinsUnchanged": 167,
+  "originalCandidateCodePinsUnchanged": 144,
+  "actualFirstBottleFailureSha256": "9fd1962f2e6ef01ca42dbbe6064832437e89bc3f571d3f9a7abe484e43635f25",
+  "planSha256": "c91b399568af0274af9f8ccd503a05ae200c8a91c644dd4f615cae65de010ee5",
+  "elapsedSeconds": 0.13868116699450184,
+  "network": false,
+  "installation": false,
+  "rubyExecution": false,
+  "scratchAllocation": false,
+  "acceptance": false
+}

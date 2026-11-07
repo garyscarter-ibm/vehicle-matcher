@@ -1,0 +1,7 @@
+{
+  "phase": "resume",
+  "name": "Error",
+  "message": "Command failed: /Users/usget/.claude-tools/bin/gh api --method POST [URL omitted] -H Content-Type: application/octet-stream -H Content-Length: 0 --jq {id,name,size,state,digest,browser_download_url}\ngh: Validation Failed (HTTP 422)\n",
+  "code": 1,
+  "stderr": "gh: Validation Failed (HTTP 422)\n"
+}

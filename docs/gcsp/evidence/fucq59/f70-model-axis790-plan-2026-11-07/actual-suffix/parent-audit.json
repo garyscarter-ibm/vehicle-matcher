@@ -1,0 +1,2277 @@
+{
+  "schemaVersion": "f70-model-axis758-independent-parent-audit.v1",
+  "reviewer": "Lego Batman",
+  "reviewedAtUtc": "2026-11-07T04:10:32.221230+00:00",
+  "model": {
+    "requested": "gpt-6.1-sol",
+    "selected": "gpt-6.1-sol",
+    "reasoningEffort": "high",
+    "fallback": null,
+    "effectiveRuntimeIndependentlyVerified": false
+  },
+  "sourceRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once",
+  "scope": "Read-only cross-session retained-source hash, count, baseline-preservation and cleanup-evidence audit. No source replay, network, tests, signals, browser, new scratch or tracked edits.",
+  "verdict": "passed",
+  "checks": 3656,
+  "failures": [],
+  "sessionRange": [
+    5,
+    101
+  ],
+  "completedSessions": 97,
+  "totals": {
+    "accepted": 758,
+    "gets": 1146,
+    "decodedBytes": 88302293,
+    "solverRequests": 758,
+    "duplicates": 0,
+    "rejected": 0,
+    "retainedPass": 485,
+    "retainedFail": 0,
+    "retainedSkipped": 0
+  },
+  "cumulativeFinal": {
+    "admittedSourceConfigurations": 1923,
+    "canonicalEntries": 1926,
+    "spentSolverRequests": 2636
+  },
+  "baseline": {
+    "session": 4,
+    "canonicalEntries": 1168,
+    "spentEntries": 1878,
+    "canonicalSha256": "45939c372e6676f58390dd78dd7e2a2fb7110c3489b3d2610d9da807ec296fd3",
+    "spentSha256": "9b2586fb301ec7a5982a33c08baa1ef33ca9966f8a4560f456a17b21710885a8",
+    "allEntriesExactlyPreserved": true,
+    "canonicalOrdering": "configurationId sorted; baseline filtered relative order unchanged",
+    "spentOrdering": "complete baseline exact prefix; subsequent session additions append"
+  },
+  "newAdmissions": {
+    "count": 758,
+    "distinctConfigurationIds": 758,
+    "distinctCanonicalSignatures": 758,
+    "distinctNewSpentRequests": 758
+  },
+  "actualEventEvidence": {
+    "pinnedSourceFiles": 101,
+    "uniqueEventRows": 2292,
+    "rawRows": 2330,
+    "sessionsWithAdditionalPinnedEventFiles": [
+      {
+        "session": 33,
+        "sourceFiles": 2,
+        "rawRows": 38,
+        "uniqueRows": 24,
+        "overlappingByteIdenticalRows": 14
+      },
+      {
+        "session": 54,
+        "sourceFiles": 2,
+        "rawRows": 32,
+        "uniqueRows": 24,
+        "overlappingByteIdenticalRows": 8
+      },
+      {
+        "session": 89,
+        "sourceFiles": 2,
+        "rawRows": 32,
+        "uniqueRows": 24,
+        "overlappingByteIdenticalRows": 8
+      },
+      {
+        "session": 98,
+        "sourceFiles": 2,
+        "rawRows": 32,
+        "uniqueRows": 24,
+        "overlappingByteIdenticalRows": 8
+      }
+    ],
+    "mergeRule": "Exact pinned source membership; merge by (attempt, phase) only when overlapping raw rows are byte-identical. No synthesized events or source requests."
+  },
+  "finalPins": {
+    "canonicalSha256": "f79d51fdc0461b28cc9e3d4385f6b5ed8e8e12c82de594b6106be0476705cf35",
+    "spentSha256": "697aa9e7f3864dee829dd8cfd5c033b75e6f2734b28ab0fd88e4a32684a41d1f",
+    "suffixReceiptSha256": "e9c42a5848b115efc8746bdc542a6054d1a0b6de25df5af3be7aaba05044378d",
+    "suffixCleanupSha256": "913fddfe33e0ad806cbfa6a48fe270e783487ee2e13e57ca8593b9a5fcd3825a",
+    "suffixProcessOwnershipSha256": "6f6d27a837f65e2a5961e8bb48a65b8f82c868eb303ac6b3a2f551110eef6ecd",
+    "cleanupFollowupSha256": "d1aef7490f43453c91887b7983d265041e6155064e876416152f30374e7a7c8c"
+  },
+  "cleanup": {
+    "manifestCount": 194,
+    "currentOwnedScratchRootsAbsent": 194,
+    "outerJoinedChildren": 388,
+    "nestedOwnedGroups": 194,
+    "distinctOwnedPidAndPgidIds": 582,
+    "snapshots": [
+      {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/suffix-process-followup-snapshot1.txt",
+        "sha256": "fc80bf855fa9eecde84f847f79402526ba3b6d288fe8ca2a462a59899fe61a0f",
+        "capturedAt": "2026-11-07T04:06:05.074426+00:00",
+        "parsedRows": 723,
+        "invalidRows": 0,
+        "ownedPidOrPgidMatches": 0
+      },
+      {
+        "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/suffix-process-followup-snapshot2.txt",
+        "sha256": "0fcc34ccdffb895d9806ccaaf03daa6ba9b18ac285efae8582af0e890cc8aa80",
+        "capturedAt": "2026-11-07T04:06:05.103732+00:00",
+        "parsedRows": 723,
+        "invalidRows": 0,
+        "ownedPidOrPgidMatches": 0
+      }
+    ],
+    "currentDependencyLinkAbsent": true,
+    "currentReservationRegistry": "/Users/usget/.cache/agent-scaffolding/test-resources/reservations.json",
+    "currentOwnedReservationMatches": 0,
+    "originalAllStageGroupsAbsent": false,
+    "originalFinalizerExitCode": 1,
+    "originalFailureCause": "unresolved: original finalizer did not retain the failing ps snapshot or distinguish live membership from an uncertain snapshot",
+    "diagnosticDefectSeverity": "Medium",
+    "diagnosticDefectStatus": "open; parent owns linked backlog Bug capture; no runtime repair made",
+    "scopeLimit": "The two later snapshots establish absence at their capture times. They cannot establish the historical cause of the original false/uncertain group-absence result."
+  },
+  "unknowns": [
+    "Historical cause of original finalizer group-absence failure remains unresolved; Medium diagnostic gap stays open for parent-linked Bug capture.",
+    "Retained-source audit does not establish enrichment, corpus publication/application integration, whole scheme-model-line breadth or full story acceptance.",
+    "No production-probe results are assessed here; parent owns the active probe."
+  ],
+  "acceptanceEstablished": false,
+  "retainedSourceBytesDeleted": 0,
+  "auditScratchCreated": false,
+  "auditLeftovers": [],
+  "sessions": [
+    {
+      "session": 5,
+      "pins": {
+        "collector-checkpoint.json": "b7924b91f127fa36814905a6b55705d53716705ecaf164cadd06e369b7339851",
+        "receipt.json": "30f5e0fe305e1a30679750b74d2e92723e71514fce6ae18a21e1b2efaabfec9b",
+        "live-validation.json": "5a895390056a5bb2cd3511973d1139f10f9ea2a8b2b78d628d9bad714a20a5bf",
+        "final-canonical-index.json": "cb18af911daf39f1e9fdc5f652a45dd6878af370c50f79a5bd5a43c921cdbfa4",
+        "final-spent-request-index.json": "6e7fa701d2de08d281c8968c861bfcc6c93ec4c311328f9a16a4e9655ce4e0a0"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 896812,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 6,
+      "pins": {
+        "collector-checkpoint.json": "8b0d3a2a0598052d40316cdbf2b212fd45f5892c363403aa6723e0d272d4a6a4",
+        "receipt.json": "52b0f9cf6e6c4d247410dfd29523adfce7e1633dd60520ff7f470170cb9a8ec0",
+        "live-validation.json": "b37788e2efc70c594eb72d0429f5918afcfc19a918a7699fa697fe534b391e74",
+        "final-canonical-index.json": "612fb08353a378856ecd6503a868c1ef2d6023f75f77f9300ac787fc5118aab8",
+        "final-spent-request-index.json": "660577bac25abfd2821190ef48449bc69a23353b9cb6da0797f95dc2f4552d3a"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 7,
+      "pins": {
+        "collector-checkpoint.json": "1f24166269a5c79d89a4765e7935a88bdc2fed0836a7ee41ba2411de81a1e489",
+        "receipt.json": "71ce2be35d98beefd136c69921bb650ea507adad1d2d6228f77991d158347547",
+        "live-validation.json": "3ebc3346f677b308ea1088b586ac559d9475e373c4d4b71270092db18f47395e",
+        "final-canonical-index.json": "d53f11e236fd1296ee92ed16ee2f8c5fe8965980dfb2ce89aea158e46bce19d7",
+        "final-spent-request-index.json": "d8aa77c20524325fcda8bac289f94c973664c4e83f7635bbb9fcdd2f2ae7bc06"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 8,
+      "pins": {
+        "collector-checkpoint.json": "9062f780605fdd67c4c51ee3bd023f4852609235a0cbadad788529b47b2d3ce7",
+        "receipt.json": "8bbf917db65608aecccab035496e31c7cc380a1f77da8a114b517fff0968e2a5",
+        "live-validation.json": "2ab6e68e2a90bc3325676aea0c53cc5a86fab8dad265f42c4f0ad6ff9459146f",
+        "final-canonical-index.json": "6ba9aad21c898fedeac6e81dbc9ead1f989c89b0201e939024ed58f830600469",
+        "final-spent-request-index.json": "a43cea7bf5ea2d47ec5b1f99bf24bbb2d7f3b7a138c1b21ca0fbb0178f8d29d2"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 922741,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 9,
+      "pins": {
+        "collector-checkpoint.json": "b409322a77a30d6e3c8177514ea0acf48fd915111a0eaf8f4434bb2a29263de9",
+        "receipt.json": "cddcf947594b92686b1928b09e3872d1f174d68a993b9687b7ba5107774f1549",
+        "live-validation.json": "9ace50d53d8814db95472e2b01297f67c8f7af8ab8e008a404295f8e8369633b",
+        "final-canonical-index.json": "412243cc1f4bc962a0fa01c3256cf6af473f338e70460260123dbae550d24f22",
+        "final-spent-request-index.json": "c9c76fc21ecf6636ad2fbd00e802f28bfa8e9ef620a7f4d4220e064894af3b00"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 896894,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 10,
+      "pins": {
+        "collector-checkpoint.json": "50f6bc60d43497ef2792f86e4e724c41ba9555e476ff92f7a0c5295b2edef876",
+        "receipt.json": "732058c9bfed034f6eab66bdf36239ffda6f1cddff23314805c70becc8a3a4c4",
+        "live-validation.json": "f58cadbab66e58746c627431400bbbf623d5437eb71b7dd9517ebd01fb412d0a",
+        "final-canonical-index.json": "013606354f43842ae6468eec5c77fc85dc11d91d3330be1946ab34adced5b3b4",
+        "final-spent-request-index.json": "1fd7cdfe1fe20e9ff07ca3158e0ea2b08c9edd01399945820c89723117129ae0"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 11,
+      "pins": {
+        "collector-checkpoint.json": "cd8f9455415090eadebb0ea9b1f96a2a0db131cf527f64d64cd1700866bbe38e",
+        "receipt.json": "9083bdf30095e5d893468c756abda8b168b9ad0fd7ebe7bf41c6ce5dc0aa6f25",
+        "live-validation.json": "562540ae6cfb3c158a438660661cb81d4cce174dbff5e2523e1681a5165a78bf",
+        "final-canonical-index.json": "7abd813a0d5865881dc9818ad4934958a793141c804e9bd0bf6beac815d61925",
+        "final-spent-request-index.json": "d6bb33456b8e648d135e2a96ed4b58ca8a11d28312056c0dbc7c89aa19ab51d6"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 12,
+      "pins": {
+        "collector-checkpoint.json": "80b7d60dbe615de29d683b2f957210cbd1d9050ab7a552159bcbabc17a82dfa6",
+        "receipt.json": "a3b8ef9c95b57a521e4859f7e9e786ef62b627e9a307c271d90e61db4486b535",
+        "live-validation.json": "313de8f54c2e42cb3eed7487d67f22e04ee63d569ca480c751b36d7eead9f086",
+        "final-canonical-index.json": "1ba235fc1ec6f0b66d81ce90ed63e38be1e42dadfe5dabbac00f77d1989f5a96",
+        "final-spent-request-index.json": "1db6bd7d0e1c01c21c8b4f5bbb0c04838a2828ccb52589261e492fdfd3cfe3c8"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 922741,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 13,
+      "pins": {
+        "collector-checkpoint.json": "aee774d5377f6220786780d2391241e9fa46c7a92d2ca178e09c40c4bede0e1a",
+        "receipt.json": "f8b8f24ec2d94880e891ad2f15893861a3c44a42923a669a3177f64cc9b9ca01",
+        "live-validation.json": "9e141cb45003558a542dfdf8701558b08769af3beaed0eed29266d319ce37bba",
+        "final-canonical-index.json": "bddfde84819a1ff152eaae5169789e804aeeca4f504b497e9b8bc210ecd6c257",
+        "final-spent-request-index.json": "84abe767bc67ab2ec4e20d532b6062a69cc8c8871b65f8d9ada5df0f847af52c"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 896894,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 14,
+      "pins": {
+        "collector-checkpoint.json": "8da2a393c2351a4085d6d5f90fcbf27bbefd65bc0e5146737f40834c1481b108",
+        "receipt.json": "869b2b62ab50c5ce6d30b15eaf309b93e94a7b1568874e795d6bdb6b15afc7be",
+        "live-validation.json": "1951fa347203ceb3eead85f948420482af56fa9d02854227bec132f5a45f48c8",
+        "final-canonical-index.json": "3fa7545abc9eca0f4f355ea6a3e1072b9506ab9ab1839ea30ce36181360170a0",
+        "final-spent-request-index.json": "2f1f2acc33c641302527b3f234866717e15c9fb44752fb48ea091667b6b800a2"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 15,
+      "pins": {
+        "collector-checkpoint.json": "b799ade6e61dad6bb77aca1fd64cbb8ffddb80336faf1f0bd6944365f29bf506",
+        "receipt.json": "dfbab7b11e82a2b4fb8cbd33719f230e29d85577a56b7312e8be0498affb827b",
+        "live-validation.json": "3ffb6cd94d4502897f026124c615e0ad777b0536ab9dffb9740323c8e4453518",
+        "final-canonical-index.json": "3e332114c12c5b593c21a779141b6180c9131d9d4bf31118d66079c771c59f2f",
+        "final-spent-request-index.json": "2cf16ff2621f82966c87868517adba88c1387b742d5ac58d8329110620c8cda9"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 16,
+      "pins": {
+        "collector-checkpoint.json": "08793d2960f4c68ad69b6e57e0c90015f0458c9fab36a94b26a6d15e465527c6",
+        "receipt.json": "966b5ece852ff1bb1709b661c1f0a6eb6f9e82c245d5fa26b509e732e23a99d4",
+        "live-validation.json": "7598f160a419e4e55a873734abf39789ed2424a14a0f54f451c6015353d86317",
+        "final-canonical-index.json": "b0e6b781da0212af1168d38366a1605e3b8e39e4bbf0f3a1b298ccfeb709031a",
+        "final-spent-request-index.json": "57b36c829270d8f8c29e6a4a0d401af89d27a7eb246afb58d6c00f1ecc9585ac"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 922741,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 17,
+      "pins": {
+        "collector-checkpoint.json": "8d353aa1775f7699dc559487b8c23e87f47871ec8190bf2eb21d1066d46e4b4b",
+        "receipt.json": "8230d25f06878f5451a5a1a7fcaac9ba204b244f9f5b179d3486444e6c99e26d",
+        "live-validation.json": "ea0948d08797305cf585187988f2b447bfbcdb7313baf8ca29e36cce39804100",
+        "final-canonical-index.json": "dceedbd7a944a77547750bc116ae05b7350954a7620525619a8bc42bba33f1d1",
+        "final-spent-request-index.json": "f7fec059a8f1c0b4b2253ba1dca691ff56f299b62708cfe1982300e714204d47"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 896894,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 18,
+      "pins": {
+        "collector-checkpoint.json": "b19051219f174b9f72e607e9229d54a913a6d1c6b648d035794f9bb9efa66f2e",
+        "receipt.json": "a1940a4b5970c532f67fd7744c100e43cc2262b0230b76c8f10817e466e18542",
+        "live-validation.json": "eecdc6be457fbf7577d6a463fe95242dadb369884c8223ac922f73c64d964e58",
+        "final-canonical-index.json": "20951004a49e2c9a5e8a46c116c3422d5093548a704bc234e7fcce1978f5467c",
+        "final-spent-request-index.json": "fe9f91c9f0001701870be0883683175931782c9ab7b50653ce19103ff3df66be"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 19,
+      "pins": {
+        "collector-checkpoint.json": "1abf41c53ee40e8233b4a7e1188878a616eb1fd409f96a41ae17ac4885d64204",
+        "receipt.json": "2b4d7c8190945dbdb8767e66d3f859b7cdb5e4f1cafda09aeb32b831b7c84313",
+        "live-validation.json": "c4569eec56587cf3695296c1e7feb938a0ec99e2a1dab52177b93f4585267055",
+        "final-canonical-index.json": "d94f0a54719d2a4ecf5102d5fbd9352474a794a1cc1e2659d36efe4a11ce73d3",
+        "final-spent-request-index.json": "fdded11824385975fa94a1b5bf72164db18ed8643f21f1166a20a691813130a1"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 20,
+      "pins": {
+        "collector-checkpoint.json": "a20ff8f8fa4be0a634a089dde26e391447ec2aad11ae7357ccfaae74c50cdcd7",
+        "receipt.json": "1ab460849b072a7ce430b85d4ebacde829d4376fdb3b57fb1b6d7c4662c45360",
+        "live-validation.json": "e805077d8a836db3edbbd3cd8b40f2b3fb5beab6d279ea5cea62a2240e97d389",
+        "final-canonical-index.json": "4f68ad4549ac41f08b84ba45c15a13a3457d1d7bd935cced2dd89128ef320e77",
+        "final-spent-request-index.json": "dffc77c4944c22e83637bce50b62b439b34a978851f0f9f8929d97885a41d6fd"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 922741,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 21,
+      "pins": {
+        "collector-checkpoint.json": "02f1bbec10c3da1f9e259bcaee5200724a81ea2a647ae0d6397e495e25e4ad53",
+        "receipt.json": "ced94860d3d32b83d922d2caf29848fd23f01d5d56b32d0e5a1177affc12457f",
+        "live-validation.json": "da29a48660e6076ead13c57db4170f285108eb3e036da7c9bbbc8a8ee057a51f",
+        "final-canonical-index.json": "8e484c544dddeb43264744b8eb16ab57f239ea7d137583936f3434a832c76a33",
+        "final-spent-request-index.json": "29335cf74d8e163db409dc2a067f99b817cc21b68e35d93d4cde7bfaf91dea87"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 896894,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 22,
+      "pins": {
+        "collector-checkpoint.json": "eee273e510cf4a24dc61da2350bd571f3a64eef8506fd1daf5b18c1208bd0061",
+        "receipt.json": "bbf1a43948d7668d495bed47727c397d7e31f34ec6be3456b5f3d497a0194bf4",
+        "live-validation.json": "e250ef9b07221fed0373ddd7d2d41b86e5d0ab036e3adc65ad3c2432ed2b09c8",
+        "final-canonical-index.json": "076a32cd469a2884c1bb54a2b3d30f21877db09cf1b3588477c7d4529f0aedec",
+        "final-spent-request-index.json": "4487f816b68aeda7140ef82280144c49ec5798a8931138e4de2b1d7d9723acd9"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 23,
+      "pins": {
+        "collector-checkpoint.json": "2032f169bbb9f95c138be09b1770976f812e75e1e16dfd826109190c5bbbd16c",
+        "receipt.json": "5c20c4732e6e826381e79d4ca3fdeaab0ef71e45c57e44ef83e3d7f2472a908d",
+        "live-validation.json": "73661f6e96f99ab78c30f700f89f64b5aa7669c562f17bce6d20aeb0999ccb58",
+        "final-canonical-index.json": "b867683715d5ac81a7bdf9175fd7f8f9c0f33d33fac3bdab7ff248c54276ae78",
+        "final-spent-request-index.json": "eb2161fdbf864f43bfd408af5ca4d1a3595f9ce0a94f9699bb51b21244bc76a1"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 24,
+      "pins": {
+        "collector-checkpoint.json": "8f26abacec1e08e80a90acce3e39fa1823e4f891d2a669551288397267c71b44",
+        "receipt.json": "27982ad82249b235cc582ddf280396722a5a7fbc1b539795ce86af28fbe74eca",
+        "live-validation.json": "ce82d3a5a1bc3d41dca69a678d6eade27cb10bea294b9772bf7b712179b8df9c",
+        "final-canonical-index.json": "46d5eff661d80f74ba1b1f62645b0cbda01e846f14832ee07e9f75c4e06ce128",
+        "final-spent-request-index.json": "02cb84e131feee920f98f4acb4a094e2c4f09af9ebf130249ecb0b6cdddc9a02"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 922741,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 25,
+      "pins": {
+        "collector-checkpoint.json": "b7253136170a5b27239db0c1ee8c9641f38d387be0aea999eb2482a3695a9cd8",
+        "receipt.json": "ec88f608b339709ceb6a9d546dbd68c6fb9169771082fc403a084dd893e08c9f",
+        "live-validation.json": "1bb705d726592921569646418cb13929e9a4a3e98166d246fb1c7008580b5569",
+        "final-canonical-index.json": "8fd0e3b9497ed58582c1b470ece396d93324d14b063212a0ce3680dd06e5abab",
+        "final-spent-request-index.json": "e975d11d625f80b773e6aae88a4e545644818fecf52a8c8b59f21a04cdeb4620"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 896648,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 26,
+      "pins": {
+        "collector-checkpoint.json": "219ce287c1c995393400edee903b4dbe505d3a9984c665b311f50df129937c9e",
+        "receipt.json": "9a8df4e44f90872ebd54d044a42b798eda821b22bfd5fc1983a86b8a02c4add3",
+        "live-validation.json": "c908d0ff1cd53b382d5a6afbda96ca26f364f45a768eb3cf4979b30581d9812d",
+        "final-canonical-index.json": "1eeaaa2df0cb90a276e34493cdaa48dc6882573acbb8e76db37160a6919d5adb",
+        "final-spent-request-index.json": "c6b0a20be93acfd15402d1cb33db7da590acd77195fd02f69909b135ec394d26"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 27,
+      "pins": {
+        "collector-checkpoint.json": "4e541c6c291a9ee0cfeb746f1589e3c3fca8956cc112d386a26c0c77db8119cb",
+        "receipt.json": "3559c43ff80ac1e7c4f1d7f2a66d191ad1aad3c62907cd54fd544895382ff8b3",
+        "live-validation.json": "7d5ca3226cb3b86bed0e2e5d07e544ce44fb99d23d54e77a7402b94cf16e9100",
+        "final-canonical-index.json": "a325959cff5c7242b7a62316fe3ddc68f723fb3ac4f33cfec5dbf02bf931295c",
+        "final-spent-request-index.json": "5020b868bcc53d37378a53fc4248eef611aa8e7130b480f523a88a31c5c1e65a"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 28,
+      "pins": {
+        "collector-checkpoint.json": "1d7173bf9073adfd47e37d139883b687b94d28992ee821ec119ebbd24119b1a8",
+        "receipt.json": "0fcba999062e20baa90ac78bc8723005a51898b8bc9185430884247df66eb186",
+        "live-validation.json": "61a99d4f606bf1ddeb41c4a215d6cc7d57cf4ef59a88fa974c6c2c18ca953bcf",
+        "final-canonical-index.json": "29b91d74bc6437b456a4c629ce8fca8418a44414b25e047735446bcd1925198d",
+        "final-spent-request-index.json": "c9f4f0f09606a2b5935460944b7bb98bd3d6746425ae29b1d22396c69e13973f"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 922741,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 29,
+      "pins": {
+        "collector-checkpoint.json": "40c8c8c1116e0a49dfa23ba09dafe7f946a5fac1440027c2e669fa50a65a8c64",
+        "receipt.json": "8a971d610a919e15e55cab2828b03e38dd9323d1ba20c58e2491cd08562f46b1",
+        "live-validation.json": "b2b9560564f77c82ed9650f6cba9c712788c92a4585985b7b56af8480c52a3cb",
+        "final-canonical-index.json": "1790090b9aff07f268a01c396c5ccaa334b875b2547e09b3b24a52c1ff695785",
+        "final-spent-request-index.json": "b78fa0a159cd1e8f3d01d2bd64ca84b276b0dfd834af46f6d3d49ad90a557bb6"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 896812,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 30,
+      "pins": {
+        "collector-checkpoint.json": "9628e5737ed49af11d84ebf1c32ab3b5d4b7fa0bd31a97be80e7321c74d9a5bd",
+        "receipt.json": "daf29ab77c38fad89dacc92cbd11976acb2f3cb50899eaab911ed3aab63b9bb3",
+        "live-validation.json": "3a2024fc5134040cd6a89b54f569819b872f0280e9ad5a97aadc5c070d2a6df0",
+        "final-canonical-index.json": "775dfde6e918268e32469fa415566ba1e25f80eef7a1bc7c7d01024784f90faa",
+        "final-spent-request-index.json": "1e27a9119111a0e0edeb47cea6f1b4917a7971fb1421e8ad24d3a13634fa3897"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 31,
+      "pins": {
+        "collector-checkpoint.json": "e2ce45390771e473c9023748ee3952692f7f4bb41c03d6b99976bf0addfdac23",
+        "receipt.json": "4f51ba60abba8ab47db892b14105c97cc439b88a1185a0e58cc59b963beb372e",
+        "live-validation.json": "5cde4c1bcde6f111e1c2c4d14a681443089797553fe7670d87ff003961eca297",
+        "final-canonical-index.json": "66aabc8a541767e9d168a05871aa086b0368b9aeadc59c464340a7825cadbc4c",
+        "final-spent-request-index.json": "dfa4715ae3c03f62b721ad4e35ee32deed5d5880df1181bd4b9363b12fe9bab6"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 32,
+      "pins": {
+        "collector-checkpoint.json": "dee32374aa1a1d57a2eb779332b45338be20af6e539b1c6b65eb30d5a07d4136",
+        "receipt.json": "c98be8788bd92fc2c3f371f35ed04c0047cb90b0c560077c9ed920a19a35d355",
+        "live-validation.json": "6be5bf33ae5a6f453826333086b17a861547e253d6b836527616a7788d31c4ee",
+        "final-canonical-index.json": "8b03f6b2922a0d61e468607ddc4189f2358b888302e22223ddeca8942991a760",
+        "final-spent-request-index.json": "d28c0cd90a8ac4d93b25588d8decc1d9ed934841e4f9c41b0c7d062b59241ebf"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 922741,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 33,
+      "pins": {
+        "collector-checkpoint.json": "bd7d2aa5ceb0297d006475b55a934c459022edfb5e8f0670dac8aa4d23c10193",
+        "receipt.json": "0c512ef6ac267ff38cd59632c1223d5caa97b5be13eafb334a5f1e8a53d555a9",
+        "live-validation.json": "9ad575fb4c00308c53d71a9c07328db7a97b46ee2062c451b697b00f69efcc60",
+        "final-canonical-index.json": "6eed0c0b5c36d6d9ee5d386ff603ec0f95de7fc5e7ead135b929ba814920723c",
+        "final-spent-request-index.json": "b55f605cae98c672cc6467cf701020dbed8c622a1901fedc9ba447c7dc87c9dc"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 896812,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 34,
+      "pins": {
+        "collector-checkpoint.json": "6564d18b8a28e1e3dc0f756d9c318fd2ef80bbe9704806590e70f954043dd484",
+        "receipt.json": "3f8839543c25c64464be5418ad35215092c6c722350d5eaa8f8b8714a0873a26",
+        "live-validation.json": "8be5ccbca269263722745e3e743337663ad5399a66af7c0678479a2aaf5342a2",
+        "final-canonical-index.json": "43f59e23a4018e264391626002b4af46f43f8c864481c98899bbeb70ddc5e8c8",
+        "final-spent-request-index.json": "d6d975c252548b9c50e0d2607491358bd8c9aca55e5117390c123b737eee6e02"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 35,
+      "pins": {
+        "collector-checkpoint.json": "fcda901f66f4c579cc10e99dad1be1b74b8377a2aba902a34d8956f9058e2999",
+        "receipt.json": "4c5370368c452486e0b272138d2430108c06e6964ddf8e8a7c3c0ae7f9d1b003",
+        "live-validation.json": "a01878eaee801f7b5af33a69da967b6134115274f5d655ff1ad152a2cd2e0c75",
+        "final-canonical-index.json": "6dd14f608311d44153d04abd92214e8dec49d78516a563bd28674b831784e09f",
+        "final-spent-request-index.json": "9b338394df06ab516116e799d27b08a01a6c924815ebb15b00453f95fb32d2d8"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 36,
+      "pins": {
+        "collector-checkpoint.json": "b367543e6b325cec3e11f0f94148230e9d21333762be81ccf17a2da3f4d3018c",
+        "receipt.json": "027ed38ed1ed3a6b80dff6e4aa5805763f6cc136af1d49f7fcb59f192278d644",
+        "live-validation.json": "ff044c8b7d79e55e000b03da5a759fa0d8cd429e505953c605bdb914b0bf0173",
+        "final-canonical-index.json": "9ad5ff9e045d56fe1307e601e9c16de646e3a11973dfd083e3faf63abdda934e",
+        "final-spent-request-index.json": "2a134bd3a62f6860d041ddbc383372a22465f3b96b1bcf25feadd44268454091"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 922741,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 37,
+      "pins": {
+        "collector-checkpoint.json": "0d06448cd0753ace9e98e8611645b2676774462afc88b597a3d98670d42690aa",
+        "receipt.json": "df15c336e6c32ffc09fb9dc310cfa0449af87e1eec81504495e170365df3428a",
+        "live-validation.json": "f70ffdfed345d212fe5d5eea1c26a79e347673a16a27e0b8cb195b88f47324ac",
+        "final-canonical-index.json": "817d22391919c8df77088db9f8439368139b9b9d32c00ec3a85ae1f8fa4babb9",
+        "final-spent-request-index.json": "64f6675afc023ddac62c19f345071ceebd66e9628a0287888244464dc41f3ab9"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 896812,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 38,
+      "pins": {
+        "collector-checkpoint.json": "2ba4765fd439f7239e8d63bb8dc7c5f6802e709189dc97c8c9221e60938a19aa",
+        "receipt.json": "e8fb479271cbbd1d5f4321e382a768bfbe2264593dc656ded6bf3419e2950197",
+        "live-validation.json": "13580ba963f35497a19ec65979b38be5947d0ba7c12f9a3d33ec859ad7f66e83",
+        "final-canonical-index.json": "1b7b26ac533b0093cb050c7daf0aff9b31d71949336830792a2ba7307cdd9c20",
+        "final-spent-request-index.json": "66d1cecb4266bdadb5b6d37f7b7b27dbeafa7244a4335746ae79abbc19283c94"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 39,
+      "pins": {
+        "collector-checkpoint.json": "76cbea989556f7ae46613a81bc39688c202036e0676d6fb9ea2a6658cfe6268f",
+        "receipt.json": "29321963d4ecb38e789fb328c075ed4cf40d604e0094f54d3715ae1c918a2b48",
+        "live-validation.json": "d32f29aad313fce9c3674194c31b54cdc114ce99dedf4f0691ddb0c544a33468",
+        "final-canonical-index.json": "551a381370d88182b6c4202a9878b59947bb54c0e2cea911a121a8b60b1ece29",
+        "final-spent-request-index.json": "727eb099181979eee41840a099791311aaa882627635cbd27c8070e47165228b"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 40,
+      "pins": {
+        "collector-checkpoint.json": "5bdc8d2cd4fc65df57562cb07f2f10b996ddde9d8abaf35a51b8f48355c2fd1c",
+        "receipt.json": "6793d97aabba4a19ac172d0185c61ae1ad482d29dbcfccc30c99ed4663925212",
+        "live-validation.json": "e5b991ebfaef091175eaf90e7392eeead87bb587f67451e1f3f6d55a6cc2accf",
+        "final-canonical-index.json": "f0eca21ee6fb51f5fe0b2c3385aba773161c03bc979824602880d5e4014f99a7",
+        "final-spent-request-index.json": "56d267cd18efc4d8ba4a5538ec5cb0a16f62cd7596cd12a8e9e2a46bbb604c1b"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 922741,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 41,
+      "pins": {
+        "collector-checkpoint.json": "fd0b893cf596c0eae838f8514db7c6d6e8c131d2c5b09dcf219b43f41c0d8f84",
+        "receipt.json": "65f0193612c1b81d4970f7053b493e788f7c57e72124e773e955ed3ab13565d0",
+        "live-validation.json": "ed61149fb72e24f6ced0d012c7130c010343c9e1867278be7763d9e7173483eb",
+        "final-canonical-index.json": "8095c1bbee5c12af0a694ca6f730527d83b65f746ef04e94af71d31fe176e1a9",
+        "final-spent-request-index.json": "bf49b7b90d7ac22c2fe9fa77efe7a927fe163ec7165b817d116ab95bd8d732a8"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 896894,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 42,
+      "pins": {
+        "collector-checkpoint.json": "a0596f9b210c653bb8603994e963643599d63b93d069dea7b9ffcb765ebcfe89",
+        "receipt.json": "6a0036441456a0e11e3e36952e37aabc17cdba4315e12e5e0222880cb4eca1a5",
+        "live-validation.json": "83e51b6f42188658f570d2baf4996a92fec9681742e4f7807f0fc351e066f241",
+        "final-canonical-index.json": "9ecd97ffb9e5c78c34344bb21dd864f32627bf200798b3231a4ff27e867dcdf2",
+        "final-spent-request-index.json": "a8e0d9a8ea07c3a4e8088df828e74f25fb228490cb81e59ef2d553304eb9ef61"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 43,
+      "pins": {
+        "collector-checkpoint.json": "ae9b4f7a9ba7e149ebd7385a55c68b035ddb687e6ed9871581582f6a70417ce4",
+        "receipt.json": "de299c541c8ed5db4f2c649793ae6c54aa06db4d0ca8f42c225ed6c3d0a8036d",
+        "live-validation.json": "dd94e2efeb519a087ebcf891353bc5ae58634c7727b6e81ba930f7fe62ed65a8",
+        "final-canonical-index.json": "77e3a13a1c75d9a13b55e8b1d13fb0d1e555f305b5560e3278418406e8549640",
+        "final-spent-request-index.json": "d3ad9b85c2be8b82287fe480152ae709d23eea63c42d6fb763981445788a2a32"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 44,
+      "pins": {
+        "collector-checkpoint.json": "2b7a0da13db617292a5cf44eb676582b99b1cf7868a4dab8064ca4366e2b34f9",
+        "receipt.json": "a0f440380999ba253d2284db4ce620a7940e597c7750a15605cf0ab79075fb36",
+        "live-validation.json": "8549093cf3102af47b0b52dc8d17672551ee70ab300775cb29c5516897218be5",
+        "final-canonical-index.json": "d195c16f4566333cc5549235f12b340052d9b884e242888fc2ae3de80c1b7207",
+        "final-spent-request-index.json": "35ef3247841aa6d2fc8b4b3fe9d536358f9d3f1e49b4db166ecf85aaaf00bc96"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 922741,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 45,
+      "pins": {
+        "collector-checkpoint.json": "687e287b8bf48313ed167ff93b485706004d81b0026d86aafd9577014a9c437b",
+        "receipt.json": "15380b0ff035741ba4e0801d4acc081716c110e585d4e7734506696dd75554fa",
+        "live-validation.json": "62eabe115ebe2e509aaf1c0e8b28209fde7c51c069526f0fb686383b3e5ac925",
+        "final-canonical-index.json": "baf90d1085fb5c987bbb75fca06d4281f062cd7861dbd68c1120457a480f308e",
+        "final-spent-request-index.json": "2207fdee2fe987440e95dd0d4f26f5e18d0974f4e4f75507ba55be0a04ac145d"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 896812,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 46,
+      "pins": {
+        "collector-checkpoint.json": "b66501654af20b850cfe2427c16be3ca37af9ddf18cf8d2b0d682e09e27a4470",
+        "receipt.json": "edbd82901ad27d8cf650d299ec15f75f29fcdb8376b6a2e2695b933296cefef5",
+        "live-validation.json": "5bb4c27af6b541fb182cdb50aeb436388d200c510a7ffdd30c1e497422f54b6c",
+        "final-canonical-index.json": "30227bcca80b5c91ad56fb9c99ea71814a1c94d4dfc894645c39dfc52e95cbd7",
+        "final-spent-request-index.json": "d4d35b28b6905b22e465a0399e4dd94f5461f0fb5adb2d5c7e7ab6186bbd7848"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 47,
+      "pins": {
+        "collector-checkpoint.json": "dd3b4531004a23fb58df0320ad3b5ac51d77a8ee09d1c13ba101e2d210c06e21",
+        "receipt.json": "2d9e9b9bdfa1fd87584a2d1b76f82af1e4df02f7641b527c4d30ec51ed4bfb78",
+        "live-validation.json": "05d9f74c446d76da39b25a6b88b7f8f1ccf430dd055b8ab9fdebd4b62f7a0af9",
+        "final-canonical-index.json": "3cb88ba9716db280de6a04f23ae1f1025fd26c70dbd49834fad7c950f5be9b6e",
+        "final-spent-request-index.json": "f7a1b988175ef47e3dc115b1be5221e6db45ee51eeeb81992649fe05bb5ee41c"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 48,
+      "pins": {
+        "collector-checkpoint.json": "836bcd510aa86de14308a508e21b839f8cb8e7dd658e23c6ce3b5701bb2ba819",
+        "receipt.json": "2c528c70420a7c79189b3014eb678cf5ac94b69b6f503c883e2b507a60f7360c",
+        "live-validation.json": "6e0497134c7c2f7a1f247f94e7b24175cd86aa7abc3c3b2c65e72a4caa02e5ab",
+        "final-canonical-index.json": "a2abb6f8bf93b3eb2c34a437871227a767ea0ed71178647ed7b4112767b87a42",
+        "final-spent-request-index.json": "f49234d400e856c7ee31cb15b69d594567204ec0f901bd282c8f16d2f3b30df8"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 922741,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 49,
+      "pins": {
+        "collector-checkpoint.json": "d0a74a5607a9a6f5548901119edc8281d8ee2d048d02e14b8ed95b92d00b01ec",
+        "receipt.json": "0625a7980342455811fe50dbd2f75ec4576e4f4f0abb14a120904540eabaaf60",
+        "live-validation.json": "803b03b360140d75e65c31eaed7c426c1c9a3d8315bd33169eccf3ceb994602c",
+        "final-canonical-index.json": "af0c08440c324953af24fc120dd14f60d7505d4a5e27a935752ad2ae6e384eb3",
+        "final-spent-request-index.json": "81e95656d4f8ee54c298677d8303dee6f42dbbed2736e22c4d4099eb920bc4ca"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 896648,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 50,
+      "pins": {
+        "collector-checkpoint.json": "4c6e7d3dbff8a0017f245bf4842131df6a5f5a30919157e2d9501b00892570e2",
+        "receipt.json": "f5725bb1301e2e4024571244944371af4cbb7b634c5da02e5fa2052b5bf0855a",
+        "live-validation.json": "f7361aa79d61b30d1b88759397e999f1985c830a59c1f7ab49952efc856e00fb",
+        "final-canonical-index.json": "a3aa0c1cfd5072c3daf44cbbd5bf34ad73ffef400ee39785737a7081b2e66b5f",
+        "final-spent-request-index.json": "eb890c1ff00a99a46e3b0d0dfeb3e472a5016561b36d1e3435d9227fbf9e1796"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 51,
+      "pins": {
+        "collector-checkpoint.json": "b9157d1ede2d339000ff8674214330278bcaf54de9b784c069dd64b7acf3536f",
+        "receipt.json": "1223f861d8fab13e681374b07dc8ff56c7faf9abab63cea10080e3e3e82d91bd",
+        "live-validation.json": "5e397e28565642000119feea8a580b3788643f84e98eb709cd3c63d4e0b06a90",
+        "final-canonical-index.json": "2fb710e043a9093779258d383808efdaf9ea367d2ee7ea9563016d5d4163bca3",
+        "final-spent-request-index.json": "459ed2ae3306bf65f748df02c6e96216974c454c6440c06f969139ff7b020a73"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 52,
+      "pins": {
+        "collector-checkpoint.json": "dde20dc5dcce776d764f37bdf02007da9ef66923c858cbf8ce25a8fcd21cec2a",
+        "receipt.json": "40ef8b61373620ccf81c0f4c2899add2ad44cdb0a1e19823eff9336a00c2c93c",
+        "live-validation.json": "3d784636dd76f19a38de75efc3961634688dde7358af702d1e5c80da670f4258",
+        "final-canonical-index.json": "3a94ae27d845ad5c677a8ba864230bc5300982ef78f063066bacbf095e4ddd9f",
+        "final-spent-request-index.json": "f7176dc7dcc536618dd310aa53ef40dc501426c3f619f4bbf58074cce8e3e4b0"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 922741,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 53,
+      "pins": {
+        "collector-checkpoint.json": "bae3619569cc21746605045aef7e77ce46e630b1ce046d0e9d37281abe5b77e7",
+        "receipt.json": "7339ef43f10c0a86f2e8568fd1c5cc620d4d09a9448034d66f6f3b91263c96d8",
+        "live-validation.json": "c74bd6a2414d49223f37eb41084cc4587b38105791732a89be2a4d4ab72b1b19",
+        "final-canonical-index.json": "cab8dd20ecf57233f728081094c3a11502c0dda84923a14273555c79a363e47d",
+        "final-spent-request-index.json": "9c0e6d6d11285a557baa2dd3c47b32d948aedbde8d8e6339549a4f49dd73631e"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 896976,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 54,
+      "pins": {
+        "collector-checkpoint.json": "8b17ca935e265f644028406211c5a0356bd69827a5bc773d726986ce511d1e15",
+        "receipt.json": "9fe1b6e62167c7df8a8105c31c0d7b84406b258866e2994f96c9ec98d197e8c3",
+        "live-validation.json": "4036c1c06ddee47ee859c600bb58ef0894c74662e7df17bcd07262644d5f832e",
+        "final-canonical-index.json": "af5bf5938e084e42eb314ff674140ec2212bd4ed64c69e7087ce3943d3a6996f",
+        "final-spent-request-index.json": "24eab60477395fd37491788ef9c0c51c9dc673c15f093655f8f541453e7c340d"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 55,
+      "pins": {
+        "collector-checkpoint.json": "a4da666394fa57f58300e5181278fd09eadd71797233bb4d24ba08c6bc2a45c4",
+        "receipt.json": "fb7c633deac636fd69115c196e923d49526a0431ce7b088170c92aaac8161a47",
+        "live-validation.json": "bc80d69b9b3e0c01c0ef1b4c339a9a26b537e4fdc0e85a70ee1f04729ac4faa3",
+        "final-canonical-index.json": "4cda12032889b08e0762807517897dbbf65732e2a063237dfb0054270898551d",
+        "final-spent-request-index.json": "342113c4bb75fdbe275f43790e5eea78a9a09ee6dfbaa61c47bf4b9561df0f46"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 56,
+      "pins": {
+        "collector-checkpoint.json": "ad7176d935420b32a4a4bae37709d1bb7d241769501985be1a284db0b8734be1",
+        "receipt.json": "62775b073a20e29aa13295fff3d87c2d8fb7e3c36f3422cbc9e6fbe5b5c1485e",
+        "live-validation.json": "cc7425563dad0770d32fe73a4fe2422560a23a2ba7d6359c5f66077657cf81ec",
+        "final-canonical-index.json": "f313a8e6c0c79caac8f2dd0ebd38a256747d6645cf266a110e65807cb8e94d36",
+        "final-spent-request-index.json": "f2059b4a1247051cd25c666aeda65f466056a26e57c3389e60cbf1ea14cce3fe"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 922741,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 57,
+      "pins": {
+        "collector-checkpoint.json": "c9ff8c6194903bd78160b43f737d17ccd510a5d5ca27ebd8f0b52f9f37d3fede",
+        "receipt.json": "e6d4d20340a9ab4c942d333a77495db62670aed1009590c40719a554e2add0eb",
+        "live-validation.json": "afec76139f4592c36a7aed8efe006f639c952965cbd2fce39ee571df2c48cf5f",
+        "final-canonical-index.json": "400aa7496d65f26c15e6a69cfa89acd03e88b5d6526a74da880498d2b006a249",
+        "final-spent-request-index.json": "9438def357d9f833ed1122b4c762c8384757a70557799aedf6a5d7efa5e55d46"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 896894,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 58,
+      "pins": {
+        "collector-checkpoint.json": "5d9c058f7f58852f6cacd599455ccfab26dac7b18af5ee1effc45724bda77615",
+        "receipt.json": "1a08f13cfc806ab03ea781e951b56cb7a76a4bf758c9cf1951a3a9cea927d079",
+        "live-validation.json": "4e7698ce4493a933b886a2c2f402883c36a115344049329ab2b93d7a73ce22e1",
+        "final-canonical-index.json": "c699d145ce3b1250a9dcfca8e2e12a09aea8a6f1ec0d3b168a0e56e752851f22",
+        "final-spent-request-index.json": "038006fbf2635b54c45ca454cd60c1618199e751c32f868c4a469f46ef3d2dcb"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 59,
+      "pins": {
+        "collector-checkpoint.json": "b1f2f81a4ac092c0e152155b15e7dd35e6c431278f4c4b299c95761889a48e94",
+        "receipt.json": "7278e8e6877327da1ced04fa8374e2577aa9860887e85edc345463f1d3d86d2a",
+        "live-validation.json": "3208de602bfbcc704245f8d618629286c33f84bc2b61776912209ae0a33c2839",
+        "final-canonical-index.json": "7102ba618c7a9298602e5ebc14aec9154b47439cd22083d4c80648ab5a8b0d4c",
+        "final-spent-request-index.json": "4d8796ab9acc31dee14ecaec9ec789a74c05efaecc7e3e0068fa021f2637eb18"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 60,
+      "pins": {
+        "collector-checkpoint.json": "252b98723f04565ff0fcb2e99bbe2d610ff065bb7159d37a9f22c1457e978ea3",
+        "receipt.json": "0a7fc9f02f945d37da40b676b7707a706da9edb7ef7a62517b86a6744d5c5717",
+        "live-validation.json": "497e0e8cb8a9154bc99b428dbecb6f3148ff80962c779c882bde5db34e9c461a",
+        "final-canonical-index.json": "5f29587d02649a0a608cb6da73344f1f7092899292ea193ba24cc9f89f9da2c5",
+        "final-spent-request-index.json": "10db933ccef8e529054da105b2f54d18baeeafca28de3b73cef49b8fe02e940a"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 922741,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 61,
+      "pins": {
+        "collector-checkpoint.json": "1efaa3791267ff681f6a1e8ab5c944e1fb37406978fe86d92ec73ce5e4ce49f6",
+        "receipt.json": "6555e0de123747061f65d3784ace5cc2613a960f7cbdbf6ad9b9e861d5c6b0c6",
+        "live-validation.json": "d2f7d8bb88ce0609d5c4dc5f50bc461f7c0f9adda7fc3683969fa5a87b231021",
+        "final-canonical-index.json": "c0065386691ebedd2e1d2f6f172e7ae3e5586f21ca77e2f0e43d566f448fe9a8",
+        "final-spent-request-index.json": "b7a3e2bea6338917518fa111fc1f7819ce32921c8c7f755035992956377561a6"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 896730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 62,
+      "pins": {
+        "collector-checkpoint.json": "fb33b3ef12420b7fbd06807487aca0d69d32ebc62c5f811bafdc3f5bf71c22b8",
+        "receipt.json": "1e9a0169f77a87f96a46b2f1cb4d74eb8d2b93d3820f3b10a7ae2d001eb9838e",
+        "live-validation.json": "55dbe6572962ba3555ed83d11bda821a2807494fb226a4c850cbdd8a604d2df9",
+        "final-canonical-index.json": "90339e74ce1fea868d8ae1f0b5e81a53f1fd67b57b978febb15e745b152a528d",
+        "final-spent-request-index.json": "9705ddd604dde608a6b9667bdbe7de66a37dca3af000eda68891c6c45961bcbe"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 63,
+      "pins": {
+        "collector-checkpoint.json": "1f66bacef9cad2124e8eba9842b426e51fd8c48e16c998a3079e6a67f70ba2b2",
+        "receipt.json": "8c8a0509d00fa598b40476b573f111774138e90fda81f6957bfe096c053a1a50",
+        "live-validation.json": "12f39b7d971cdbdac16d2b4824cda8697b39ea06578db3d74ddc33ac62361021",
+        "final-canonical-index.json": "e56185359b8e895760cbcb0c3d3b80e94b3c88eddc95a2cbe6a7a2ff319e50e8",
+        "final-spent-request-index.json": "f4a2b3e1291c1ea88c6b964bc3b3e79ea96574d6d63f04b8a98c5b0b926afb30"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 64,
+      "pins": {
+        "collector-checkpoint.json": "661bbe37998e863230173fdbcf1e21523ddd08944c6e2f9682433fdc471253b4",
+        "receipt.json": "55bffe6773c07693dc251c62d9e216bd4deaef8e6a7de0ebb11d63c5b296bde2",
+        "live-validation.json": "f91d80cb293af24d6fe1f8ca875f9eeac12533c3d11321c84e2ac643a89123d6",
+        "final-canonical-index.json": "6110dc1dacdb80576550f35887c869aadc1420fe958c66c1ee4b797975dc6a72",
+        "final-spent-request-index.json": "5613936124fc0105bb397b335cef8c6d5876945203fc92bf5cc493fd0b209a63"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 922741,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 65,
+      "pins": {
+        "collector-checkpoint.json": "25f445814b3bf3d1957078ed1e7f6095a1827b54c43067fd7d8751f5e4a10ab0",
+        "receipt.json": "f12c3a7924c9a2cd00430b435a883ab667ee32285633eaa3f040c1dc972d1d3f",
+        "live-validation.json": "56d0994fe2c30faeb37669cee89840f23ff4bf8b6bba9978068d06ce07e1d67d",
+        "final-canonical-index.json": "749b1f0e2fd2db22328789a3f39ba4353cf6b3a025440b860946cbfd446c2a0b",
+        "final-spent-request-index.json": "6e6098cc97dfa1d93d33b21f6a36d25f58cc577bd59258f52ecdb3bccba56c7c"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 896976,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 66,
+      "pins": {
+        "collector-checkpoint.json": "5ea4f951db2575d1dfaf58faf4bb2029db7504048269a71c9e52366491920c5f",
+        "receipt.json": "34e45d98ecfa8cac637964f749be150ddf5565f3cbd7db03c4ce57f95f5ac63a",
+        "live-validation.json": "b29343b8a71382966ccf58669045271f1fc0053fe141d54d99a2195a32860515",
+        "final-canonical-index.json": "6c40bb218df119dd22c33fc25b3dd935d6c6d69e74d444baadee0bb9f80c3932",
+        "final-spent-request-index.json": "517d7a0c5354453e21af239bf37785241bd28511adfe10f7e87f09e170a3572e"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 67,
+      "pins": {
+        "collector-checkpoint.json": "f37f768fb2814a415326a8d1b0715405354392d4e9a079e2acfd3aef173154b1",
+        "receipt.json": "0bf206cc915071bec654a9be41b0f219b9fbaf5a059c33d2e5b48bf5c5faf406",
+        "live-validation.json": "d40eefd23f449dbfd9131e25da5dd148b74fee834673dc745c797a41e83d668e",
+        "final-canonical-index.json": "6f19e93d3ef0a3d1a7181341b76d2d0bd0fce993981719304c7c6d8e15664f61",
+        "final-spent-request-index.json": "1d79a344cf7cef1ad6929b41e105cf7e7d671570c2b63ac05fca297f1c31fe46"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 68,
+      "pins": {
+        "collector-checkpoint.json": "1bcde7a3cf30043c03eb92a803ec4bb845233cc30c39a61b1cf606359f6e205c",
+        "receipt.json": "88fdd044e42515498796ee71876bd7db17323643844225aeeb38c438cc77c0c7",
+        "live-validation.json": "5e2dc758c6286d1fa52896862eb2935b023f94a6ff5c4d38fb07619424f0415a",
+        "final-canonical-index.json": "229c8384acc33b4ebc4e351d10cd1faf4df90c0236bf6b1dc324e250809ad825",
+        "final-spent-request-index.json": "b147ee93c0c6035f424166a282a6f0aa78a977bffa5b2d9db94a110e38ae6729"
+      },
+      "accepted": 1,
+      "gets": 5,
+      "decodedBytes": 890674,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 69,
+      "pins": {
+        "collector-checkpoint.json": "fce6e613e501b38069b722995e0d9fd41de50c5373ee861a5dc6080233bae1c8",
+        "receipt.json": "d985457d0dfdb642843b41ed24f73915d7120d823b58f08c038be15918442d87",
+        "live-validation.json": "dc7517d65af625e703ca0edfc00b45bb58cd73f500c6d97b1233d69592319baf",
+        "final-canonical-index.json": "fb32fa88fe04765561a6305ceda05d07851007c011d09b4bc5c7f54fd07e3585",
+        "final-spent-request-index.json": "b20cfdef6459b13e208843044d06eb060918b7e14dad448678258f43f9613294"
+      },
+      "accepted": 7,
+      "gets": 11,
+      "decodedBytes": 893748,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 70,
+      "pins": {
+        "collector-checkpoint.json": "09e6753de2bbd9cc2946479c803a4fe2d15f1f8893f2ca93a2c23746068e4952",
+        "receipt.json": "4e93f99fca84f22dded368a71e73ef00d859cbde88191603b0ee7bad8a6ec911",
+        "live-validation.json": "c372f938fca24d10fa3a1660c7309c2ea25023ea6c8a7b5b1488922d9398b72f",
+        "final-canonical-index.json": "aaff8eb55f3a5e336d38298c73c049ccfffedba6c3da1cefea3703e99e6a3ed1",
+        "final-spent-request-index.json": "d7b92f5406f09167136aaaea9897f3f733089e29d5196827acf39a3838a54d30"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 71,
+      "pins": {
+        "collector-checkpoint.json": "a810942834af11abba1a79a933ae35e3011d51b8e23b212146451f64f8459ee3",
+        "receipt.json": "85f1033814a0f2bd656145f0c6bdbc20e4b255da0eadcbe4d045eac49ab57aac",
+        "live-validation.json": "b5789437d3bc7c4e71b3f784fb59b1d4dc756d346f7d82fb32b4df19694da12a",
+        "final-canonical-index.json": "d33c8a2925bea5db89afd90dd6e6368fa9315e8d46b228148a674f5f31a28e80",
+        "final-spent-request-index.json": "db6bb60d80f08f93c14f8523144526f395b3433ddb7ee6ae12f03b6cfb9aa633"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 72,
+      "pins": {
+        "collector-checkpoint.json": "4d2a203ae51c6d8eebfe72ae1056bdb990e7eebc0964036a9bcc34dfad0e8118",
+        "receipt.json": "6fff1b0ca4d49c36673536c4c4317ef47c470edd0d68746d5c0a36135ba453ea",
+        "live-validation.json": "28d78d9e67007ddb3b353c1e8b8a1a67dbb5840e85598db365432a007ac1d801",
+        "final-canonical-index.json": "f3dd833e8206127e64f82dfabe427dd5b9e606d5673143fab36c65fc3d4d9a24",
+        "final-spent-request-index.json": "6064369c1e000435fe5d34571c80e22ff616e5266b67c7fa0027f40195307bf9"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 73,
+      "pins": {
+        "collector-checkpoint.json": "9a2a66f88a81251c662f3b1d65606fa327acd78678f3d29d98931d5a5a422e27",
+        "receipt.json": "2a1c9909e685527aac33cc7e3275ffb85ef0d1996f822a8b2accd9b4b2816302",
+        "live-validation.json": "ecc05226aa348510155af7235276c827440065f8f2e262e44f3a9fd7919ba541",
+        "final-canonical-index.json": "90278943bd35ba6682607434122d4e6fbfaae2912c318dfee2edc050ea0c3ac5",
+        "final-spent-request-index.json": "8366e098c46d5e2c2518e652793cbbd2335ee45a478476b0928872711507c97e"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 74,
+      "pins": {
+        "collector-checkpoint.json": "3c1e469b1f60ec349e53c97c8f5552b18d66df93e7f45642e8a160aedb315558",
+        "receipt.json": "fe735cf3f9ac419aea6c5abc45ab84023767f97e1dba3222fff3c2ff63ad95a3",
+        "live-validation.json": "f82183c9f6fafd4c8d8c061b6c6fa0d9e96575b4f785122556b9307cb4256fd5",
+        "final-canonical-index.json": "d61d2e6b1e45c1e40137207ecca20b4ff47fc489c226c896ca3af51b8b45342b",
+        "final-spent-request-index.json": "87bdac624d16b1272fadcb51f043aaa992b2d56e4f9b6ce2bcae49654c4a2f1d"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 75,
+      "pins": {
+        "collector-checkpoint.json": "c491df69e7d2cd82310c413b10cd5478dfb47a111c998374e65be2d3e93579b7",
+        "receipt.json": "ea3e36ae2cc585936988cd8209a83d6d4c8bb5f17a90aa67084dcae792e53ef4",
+        "live-validation.json": "6ddb1cd9b12b5abdcc26f3c1d171c5c9d25101300abb7e803755637b11d3ec71",
+        "final-canonical-index.json": "a7de5a8863687f4cd45f57c72ba53a6dfa8c72a43022e43673b485dc8f0c6ce3",
+        "final-spent-request-index.json": "fa78dc053f5b7ef7caff8d77a4c6bee465db02d94af04a4ad6765420a3557c3a"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 76,
+      "pins": {
+        "collector-checkpoint.json": "69893b5ff20247ca24460fce3712455c0f6a1eb313dba0426fb77dfe0a43d738",
+        "receipt.json": "bc937f168c6397689b8d9176a9b9f511a053d3b51972352e6211a59184d1061e",
+        "live-validation.json": "632142752fdd61a29d1d2906eab94b3c880834969c51a2ecaa1013791d3aa951",
+        "final-canonical-index.json": "c96172be3a7858c189da3ca8aca5fad38c65dc65eeb5c419f838fae2fd9d60fe",
+        "final-spent-request-index.json": "8c4fdbc2e1306d0ea5be0798488243316076409742d714136317d8fb183ef89d"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 77,
+      "pins": {
+        "collector-checkpoint.json": "a53714d67a799e6acfd33fac432f7a252b99b58ed71c52031b635634cfb5b56c",
+        "receipt.json": "39c1f77f054e9fcf99e1d6c64c04dfdc4be579a1f4e865befcc11f75c034a488",
+        "live-validation.json": "485ddf4d9e8210152bbbfbcdd7df67da7873db3593a96c866c920f74bb058c7b",
+        "final-canonical-index.json": "06781744b7364f50afe72ed73ef32ef34daec2c32aa9f5e2a383bfa6a0436bfa",
+        "final-spent-request-index.json": "a3ac9384531822a1fae85f6bc7ee6b2da0ff9ce2be7ba923dc3407697d0f3421"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 78,
+      "pins": {
+        "collector-checkpoint.json": "281d78964d4ce5355974ef5704753c29860bb71c10e6b4110cb75c647cdbfb99",
+        "receipt.json": "6fa2c28c5e29217dc70481efe4202968a60d83b7c8378dd40479e2bbecbb6fe8",
+        "live-validation.json": "f26e9dc132fccdbb87223b87f36963dfbdc59f644d52a8464618bb88326dba3c",
+        "final-canonical-index.json": "5620ff49524e8934f1431ea1a70175aae167c74b42270a4b3570e02c0f86624d",
+        "final-spent-request-index.json": "896e768604c8d47179d4e081d2dbf793cdc087bbcf685d8bd1897b8dde5e19c5"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 79,
+      "pins": {
+        "collector-checkpoint.json": "c3b68028187e759c062af55819f44e655943b54b08ce89eabc3f1b6e065ae593",
+        "receipt.json": "630a50390660483ef6a0896a7bbadcb2dac06cfdee6276dfe5a2524bc146e1de",
+        "live-validation.json": "f5319470cf9189e8ef24aaf16e648314c5caf84b7958c3b7d08a09b438d167fe",
+        "final-canonical-index.json": "789fd7d40e2646df964b42d215a3480f79ee50133d7cbc8a6b8ec6e18ab6efeb",
+        "final-spent-request-index.json": "a8e343b767f733898308b6ce649a1bd1efa10d603a47dd5c5634c2d5d990c370"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 80,
+      "pins": {
+        "collector-checkpoint.json": "085a6b960afae76283f6adaf010c4807d8d847fe43f3842ef30a2ad98e29a9f8",
+        "receipt.json": "e7956deecfb67018bd25da136000973df769f1b10939a6e1947c664df5128d8d",
+        "live-validation.json": "1c0525be3dece916f82eb750df2311145d31bcdfdae4d70ad57b9dd42e5b621a",
+        "final-canonical-index.json": "8989dddc0750a0896ae0f8b1eafea86db89fc9cbce6422e43301c1cc50b9e09d",
+        "final-spent-request-index.json": "4c9da295f5e4adf5ac3e7d3b54eda2a91edaab85115fcfda6b373740fb915478"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 81,
+      "pins": {
+        "collector-checkpoint.json": "bf3a484a191364aed5c67112b9c46e199fcab4f2bc44768890bf4fe801d0c73e",
+        "receipt.json": "d8f55c975e2ff350b29a41f16ab9c63c9f5edd3ae393810233199af15fd8a40a",
+        "live-validation.json": "4621453af4359410c7961318d00c89ffccc4564ffc61d62921e36382ba15a6ec",
+        "final-canonical-index.json": "4e43763e5ce15a13aa76d2bcbf8a0afaadfd248d312112be7c0266c2e5e22032",
+        "final-spent-request-index.json": "a97d29820bd0b9a5ba6dc07dc7761c38da60509d81cd792d914eb1839fc39fcf"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 82,
+      "pins": {
+        "collector-checkpoint.json": "71fca02d054f46277b8f7c14f243e24e65a525f822580cbf3b873746d45d5a71",
+        "receipt.json": "33aa9d9b6a87d10a635730163ed58ad589c815e6bb8db1350a3c62f667fd0908",
+        "live-validation.json": "d66e559f67a28664c65885e335c31fb39dbc167e28b93ca833316a71a6a5f19e",
+        "final-canonical-index.json": "08bf1e3d1a364fc3b908b00618591bc6f825bb1e43b84983e5481cd7bcbb01dc",
+        "final-spent-request-index.json": "29dd3d1d3cc761ac915554b218030033de916f4d7539be7864fff3e779ccfcc5"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 83,
+      "pins": {
+        "collector-checkpoint.json": "bf0943ad78a642ec8c3828b3ed88a0bcc2edac8a99ddcdb9fb6262abc2d92718",
+        "receipt.json": "8ebd7a6f7fbcd6fd6cdb19c19d2d866c5fe1fa09d733fee9235cb51a3eb41d74",
+        "live-validation.json": "59eeadafc64dd6c68e26331c1a6ff2ee97a632ff3f7e8a8b559c566fe2d52538",
+        "final-canonical-index.json": "fef60f6273adf2ee9894b42fcfad70009992e0dca8d4ccaef1c98b35000da1b2",
+        "final-spent-request-index.json": "67017f937dcfd48d12e289427793b85e0c19bed59eecb60ed6c9811c100a9894"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 910730,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 84,
+      "pins": {
+        "collector-checkpoint.json": "933553c2bed0b0c4d1770587a62c98160bc4578a021cd89a5097eed13225753e",
+        "receipt.json": "77ede418690dd9dabff1c243d91ed1828db9f6dbb34c168f3fd399526bdc82c2",
+        "live-validation.json": "8e9b5f5e941871109375d83d032df25085c1ca04fc9842a03a9d8646f72c896c",
+        "final-canonical-index.json": "e3a5fde74d981153cbea17f552c3083baead58e7c2a260485424ea22903ad22a",
+        "final-spent-request-index.json": "0d4125cf085ed65ef66b1a9acc5753b5a6d6fcfa77fa221effe660452bdb31f6"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 85,
+      "pins": {
+        "collector-checkpoint.json": "9b4cd69d397c28349b539c367f7b6425146f77542b05932c50ac9bf7f710e1e8",
+        "receipt.json": "fa5b48417942e019990fb2cb599648fa206501eaae471aacd3591cb739b31509",
+        "live-validation.json": "1a31825b4ba6e734726d2e322f4ea23ecb6318c792fdb13d1d48ba0d4839d36d",
+        "final-canonical-index.json": "3f36bf32aa5c1ca7cba27b1a2e4531e062d80ac1af3f042dd754d3ee79492b6d",
+        "final-spent-request-index.json": "43cf4892c8ea65f815b881f8538b6452f3e7f174747a6c000c38b9cac9792c92"
+      },
+      "accepted": 2,
+      "gets": 6,
+      "decodedBytes": 888164,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 86,
+      "pins": {
+        "collector-checkpoint.json": "1ba5f6242e17aaa8c3b9aeef326c28a4713ebfe9cbbf9da8116c6528748b050b",
+        "receipt.json": "0cbdaa27c79168110eb4eed5c1ce11ce4926d194d3616bdfc9024101ea138acb",
+        "live-validation.json": "daecb5fd1eb0540f4a5c01b5d2081bf0d9d066f6847741c282ac94d964fc10a0",
+        "final-canonical-index.json": "9b7c8e0e25f630bafa08de0b1882062174dd8c69eb2ecbcb5cadb2d80bd5b05d",
+        "final-spent-request-index.json": "d1e3239716cdb91633d53c992798646ae3cd81ecfb166307d5e0d476fe9614d7"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 87,
+      "pins": {
+        "collector-checkpoint.json": "4b6497343f962d3cdf2c2a59b9a4b397e03ab4be33fe5d0a844d0422c1e25f2b",
+        "receipt.json": "2f701b172556eac5440c8e573449c2e0ef2d502397764841d9168777cb7607e9",
+        "live-validation.json": "6094e1b82af2ad574096a3c5d0c7c1a79f15f28365f60551660f212c5edb1686",
+        "final-canonical-index.json": "dae44fa62e8e0ace6baf8b74accdbcf01ea1f363201ffa8da0a9f57aeed83cfe",
+        "final-spent-request-index.json": "57603610a39f5c92e9a6d3080c1a3cfe1510eeedd8b62cbaa1a0c67d0d1da43e"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 88,
+      "pins": {
+        "collector-checkpoint.json": "749747bdabe591dc4905b92c37f1b00be7dde886d981e0e70ae1e4f678fb6791",
+        "receipt.json": "63ecf4c3b3995f38ff4246413333805aafa34c577b3fd65a7d6e96d8fb3839d6",
+        "live-validation.json": "4f505fac7aca7c35c714e1bfce86bfba66a124ceb7d834c0d26b652841f53541",
+        "final-canonical-index.json": "80306234e0efef66f2132a62e65793ec15bf33d19c9f4862be00f7af7dddbae0",
+        "final-spent-request-index.json": "be4d671dec29294f5002c580de85d61dcebfdc03cfe155515da8bcf61abb2eda"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 89,
+      "pins": {
+        "collector-checkpoint.json": "617e6dbd4ed5d50262b64ada1135f15c97e21d26b1cc5ca414a29d29d2cff4db",
+        "receipt.json": "466759c27674471fa2afbd3dc81a596ddbf89df3a0d2ed9f12346a603e61c6f9",
+        "live-validation.json": "cc0be0e577be1e61cc4eeaa0f6d5d1418fce4080a47c8c6cd3688e92194c0ab2",
+        "final-canonical-index.json": "0ebb2b0559fbf79c580009ae658bc92e874290e10cef2c6bfa56ec1620ceb6c0",
+        "final-spent-request-index.json": "63f4aadee31b694fb1ede96af9c321c23bb62017ed98588d9a3f983c51c6c7f9"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 90,
+      "pins": {
+        "collector-checkpoint.json": "e3e50d8570eeb667baab3a7c8c8b1a3c751475b64bba1fec8036c13e88af1131",
+        "receipt.json": "fb29286847952ed80a3ef586d2f02511f27e12921a147746348514358fe83e78",
+        "live-validation.json": "7805808fbe87b17f076340f138c0dd83599c226cb93ffd911bab17b590cf6a3d",
+        "final-canonical-index.json": "abf476d2570bc33307a39f986881efb4e991a95bcfb16d5ce5740fdf6cd49161",
+        "final-spent-request-index.json": "b59d79e45c71a2fca6fdd06b588ad25b1fee52dfc01ef8acaa6a21f93d9ca0c9"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 91,
+      "pins": {
+        "collector-checkpoint.json": "cdeb43731ab63f0f993c3d7db07dafc7aba0a75a0ddb43aa5964ed0fa5a68763",
+        "receipt.json": "5d4dd30728ad91866105312ae02a19f1498a3822acf633ec1b3861ed49112520",
+        "live-validation.json": "fda2bb0cc0097539349ea898063fc4279d9d9fb78668fae08ef90630e7813dba",
+        "final-canonical-index.json": "17a0006c94349c79e08234828525fe6187e63240d4dd6feb0150ea5fc75f2a39",
+        "final-spent-request-index.json": "6acbc1363475a161fb4c9bdbd26ec4a55cecfd115cd22d7d41b88dc762638271"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 92,
+      "pins": {
+        "collector-checkpoint.json": "f2cb01bbb840a0afc6064602c1661c5a4aa167770eeb2bbaff7c3645bb4aef09",
+        "receipt.json": "ea6d360c02d24fd06694a0baf689ccf7655a3378539d973a760d5a25aed58da5",
+        "live-validation.json": "37efd6f4067036e5fd49d26ab4d889700c5d9a2a91f7f8223c6b04a353c69564",
+        "final-canonical-index.json": "42765996b3dfb0a0a3d7d0031aeb5841682d4fdb24e0a6778ef07206522037c5",
+        "final-spent-request-index.json": "e79f469bdac6902544f46ffd97fd3315e09a4e0b849fef0fda7e2b5a123c17fa"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 93,
+      "pins": {
+        "collector-checkpoint.json": "50882809944af34622284a108b8751c4a20d4b83f711c559dcc22a38496efcd3",
+        "receipt.json": "37e7867973bf417d23c96f201c06147e3764c4e2188ebe1a99305f52b3803475",
+        "live-validation.json": "8ee4225e43675f928f3c1aa34427831585f9c1cce2f2dd7d37c2496cc5026aaf",
+        "final-canonical-index.json": "b772bacfbd040d2603d8a2233ff752c082185685324b03f226188194102f02fc",
+        "final-spent-request-index.json": "dc40697a978f534ba867d10777e8ff0d1b168d6569230a32174ca1182f745a34"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 94,
+      "pins": {
+        "collector-checkpoint.json": "ee987b7b48a67cca72b5b76a98acc84b3ef7c8177b6497352bb9809659a31b57",
+        "receipt.json": "47252a85225a00a51f84bd3ab5a0c5f9d054063db51b7d5c03fece7ad0e78617",
+        "live-validation.json": "6dab051b5c5d5ce444952a697ddf3ed904a8ea3aa543163eb7eafa0907ddd1f4",
+        "final-canonical-index.json": "5cd6d80cb768dbcc1528157441922c5df2d39d7e798cb6f10f2bdf01d18ca1ec",
+        "final-spent-request-index.json": "016ff98b41b261ac53273f99c9c1b757944396bb930a74dfe6163d503ca78ef7"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 95,
+      "pins": {
+        "collector-checkpoint.json": "35fa45ccbcc3960115b4048b4e3e79772ea1108f18de9c81ccec50bb9607ec64",
+        "receipt.json": "1b68e31bb98d2d99874b6ad60df8eafc0fd3b738a8e8b062c0910a922037d381",
+        "live-validation.json": "2f9d14d1b2e36de8716e96b11813c45cb9b4f6f60596c73bdbd554e3a79ffb63",
+        "final-canonical-index.json": "8b47c88eede9ae3ff45c0f90cf49d9be7dd8c46eacd9ce76a6636e48602c5eca",
+        "final-spent-request-index.json": "429791baaad5e50c3927ddce3a9d900f74467ee95a861633a52dbacaa73c2ef2"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 96,
+      "pins": {
+        "collector-checkpoint.json": "9abf9da4395010b3947020dcde631a74cce35607c1ced6446982cd023a3debdd",
+        "receipt.json": "b01cfb54b8074a7bf480ef023bae02f6c38c97bd2011d8519bd77a610bc6f42d",
+        "live-validation.json": "ca889aa02419b995236728393f3af54ec546bab3cfeefacd9e96075a6e21fc04",
+        "final-canonical-index.json": "b9e05c59eb951458c0df87af9acc1245c5a37e001f42ea58e1f116b192d8fdf1",
+        "final-spent-request-index.json": "a63853f59e07318ea155e137facf63c5da6c999146b0de25456f6def306a602a"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 97,
+      "pins": {
+        "collector-checkpoint.json": "265d996c728b7b4ee181ff713c49da348fa380e457654586818bc25ef8fd8df5",
+        "receipt.json": "dffe17a3c2dec5861b9bac18e78bc4cd19885dbb6b68df96a993f8459f5a2f9b",
+        "live-validation.json": "d3ebf2d16c04a36a0ee74f346b9153be394aad11520a2da1caf962cdaac0d3aa",
+        "final-canonical-index.json": "2b7ba6612f177b26d2ad8ec7f9a850120a0764574e6a262ff60adfa6772d168f",
+        "final-spent-request-index.json": "875cca46cf953c7ce41e2d99f749867909893657942341592929f760b85c7d85"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 98,
+      "pins": {
+        "collector-checkpoint.json": "f7100baae18ff76e04a3024edd369a24e0686f902bddadf65e82b361dac139c0",
+        "receipt.json": "ba4593feb75657725f29f086a8b73f6ea790398a4cb3d418fa88f2ab038726be",
+        "live-validation.json": "94e552c196c694aff220c3b2c88db21cd704cd082e67e96fe50b6b8e0bc616f9",
+        "final-canonical-index.json": "f599b4c5d66ec65c5ab739d0732030d4208bd534d347df96abca57f4e9922885",
+        "final-spent-request-index.json": "02aa15757f3192741c7aa6a08f47d57d508a17bb1d7ab60690046a12fab07ee9"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 99,
+      "pins": {
+        "collector-checkpoint.json": "283429f46fcf701e2c1642a8f57140a110ecb0db8e0a64a54e30767c2f2eebe8",
+        "receipt.json": "18078122ff5ffd803d278888400f55d90b2b0bad2db3aeec9044eb2a1878bd66",
+        "live-validation.json": "826ecc5758e4ebcbeea73ab27df18cc26621feb399bbcb9b7e366f23f62a6145",
+        "final-canonical-index.json": "83d5b45d336dfbdc4f0ea2d68566002ea58a81484916a5e3cef743251219a7fa",
+        "final-spent-request-index.json": "122d5589fc0279ff568a65e42e0ab32576509f8fd5ef962242ea443b43da19ca"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 100,
+      "pins": {
+        "collector-checkpoint.json": "f52c10eec6b343656373c4f701890c65ed000b2fdc7ae7959620c995aac0d3d2",
+        "receipt.json": "7e0baf8f4ebf5d7331372a7ac6de6a8bafbd4f690dded6b91390f77287f3f37e",
+        "live-validation.json": "e35f922f9da474c6fc5dd2fef5e9f6a65859943253c5dde064af316cca05b19d",
+        "final-canonical-index.json": "4f5152df5b50c22a3d9e28507c95959b09cb1ab81f8485b76d4a44ff14838aae",
+        "final-spent-request-index.json": "7ca6123ac874230466bff58e0e5b851a433240a07ec1b910f3f7247c90239f55"
+      },
+      "accepted": 8,
+      "gets": 12,
+      "decodedBytes": 912701,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    },
+    {
+      "session": 101,
+      "pins": {
+        "collector-checkpoint.json": "7750ffe0c6a0ff2abe20c442164ab0c0818fe14c7d84464cc0f6dbc76024072d",
+        "receipt.json": "5724d818c8f9ff4e38706ce265fe9065d85ab252f20930f7512cd87370b500c0",
+        "live-validation.json": "be0097664349e7fa328fc94afa1a141cfba547d888c5d3bf263715738fa78c16",
+        "final-canonical-index.json": "f79d51fdc0461b28cc9e3d4385f6b5ed8e8e12c82de594b6106be0476705cf35",
+        "final-spent-request-index.json": "697aa9e7f3864dee829dd8cfd5c033b75e6f2734b28ab0fd88e4a32684a41d1f"
+      },
+      "accepted": 4,
+      "gets": 8,
+      "decodedBytes": 897061,
+      "proofSummary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "checksPassed": true
+    }
+  ]
+}

@@ -1,0 +1,373 @@
+{
+  "allMatch": true,
+  "at": "2026-11-06T14:10:11.592764+00:00",
+  "base": "0f0696861dbffd3f75ee21e2396341c701689a4d",
+  "canonicalIdentity": "9d63aa36a7bbbb29432d4a8b03f2cd585abfdd4e53d671919a8798f28f674a1b",
+  "checks": [
+    {
+      "actual": "8bc059fcec47c46c6e209b8e64fc11c519083fd62fde1652d7229d7c5adc689b",
+      "expected": "8bc059fcec47c46c6e209b8e64fc11c519083fd62fde1652d7229d7c5adc689b",
+      "group": "canonicalProducer",
+      "matches": true,
+      "path": "scripts/gcsp/collect-fleet.mjs"
+    },
+    {
+      "actual": "b2cd36ec77c2f63fd58795e83125ef135732e6b768a9e1492caf194c94b9248c",
+      "expected": "b2cd36ec77c2f63fd58795e83125ef135732e6b768a9e1492caf194c94b9248c",
+      "group": "canonicalProducer",
+      "matches": true,
+      "path": "scripts/gcsp/collection-session.mjs"
+    },
+    {
+      "actual": "68f5104c3c9f303af89a91e2e3c8c2474b66956e03271bf61bf42e703155d30f",
+      "expected": "68f5104c3c9f303af89a91e2e3c8c2474b66956e03271bf61bf42e703155d30f",
+      "group": "canonicalProducer",
+      "matches": true,
+      "path": "scripts/gcsp/public-bmw-source.mjs"
+    },
+    {
+      "actual": "e6f4bade6186fc4b122052749fb2a0e518f889f68d771b17524a4e63cc2f0113",
+      "expected": "e6f4bade6186fc4b122052749fb2a0e518f889f68d771b17524a4e63cc2f0113",
+      "group": "canonicalProducer",
+      "matches": true,
+      "path": "scripts/gcsp/settings-shape-report.mjs"
+    },
+    {
+      "actual": "d8c7c7315faa05c6bd328a9b7f8ada58fe31bf5c229a51c0e63106d920057ff9",
+      "expected": "d8c7c7315faa05c6bd328a9b7f8ada58fe31bf5c229a51c0e63106d920057ff9",
+      "group": "canonicalProducer",
+      "matches": true,
+      "path": "server/test/gcsp-fleet-collector.test.js"
+    },
+    {
+      "actual": "f1ca4f0b7cccb7a657a987dc6d882f6a8eaec1458ab62b83e88669ae34be4115",
+      "expected": "f1ca4f0b7cccb7a657a987dc6d882f6a8eaec1458ab62b83e88669ae34be4115",
+      "group": "canonicalProducer",
+      "matches": true,
+      "path": "server/test/gcsp-settings-shape-report.test.js"
+    },
+    {
+      "actual": "65d78142d43fcf5167e9d4c4e3710f07de97082a7418efad7b05bfa9cbc7c3c4",
+      "expected": "65d78142d43fcf5167e9d4c4e3710f07de97082a7418efad7b05bfa9cbc7c3c4",
+      "group": "original12FrozenContracts",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-qualification-plan-2026-11-06/plan.json"
+    },
+    {
+      "actual": "d6f6dd16dcd2cf63c1e67b5cccb11ba2e9eeee2ce138b9c2afd44603d7475385",
+      "expected": "d6f6dd16dcd2cf63c1e67b5cccb11ba2e9eeee2ce138b9c2afd44603d7475385",
+      "group": "original12FrozenContracts",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-qualification-plan-2026-11-06/projection-contract.json"
+    },
+    {
+      "actual": "d6c06138c02bf616b40f69ef783e53e00ff3faf5b8dab8c574534c2147abbc25",
+      "expected": "d6c06138c02bf616b40f69ef783e53e00ff3faf5b8dab8c574534c2147abbc25",
+      "group": "original12FrozenContracts",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-qualification-plan-2026-11-06/projection-contract.md"
+    },
+    {
+      "actual": "b8ce1a7760ada2c7742f7869d1b1d6045af1777a2c3cc67be1ff1bc165345216",
+      "expected": "b8ce1a7760ada2c7742f7869d1b1d6045af1777a2c3cc67be1ff1bc165345216",
+      "group": "original12FrozenContracts",
+      "matches": true,
+      "path": "scripts/gcsp-demo.mjs"
+    },
+    {
+      "actual": "eda2660125ff589a968d861d02f86122ef71df30354351cfe4eee76f43d355e8",
+      "expected": "eda2660125ff589a968d861d02f86122ef71df30354351cfe4eee76f43d355e8",
+      "group": "original12FrozenContracts",
+      "matches": true,
+      "path": "scripts/gcsp/bmw-source-qualification.mjs"
+    },
+    {
+      "actual": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+      "expected": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+      "group": "original12FrozenContracts",
+      "matches": true,
+      "path": "scripts/gcsp/configuration-key.mjs"
+    },
+    {
+      "actual": "f4654b8053d3927a3564a3701784367e976b04549ee66fb1a9a754032f88cb16",
+      "expected": "f4654b8053d3927a3564a3701784367e976b04549ee66fb1a9a754032f88cb16",
+      "group": "original12FrozenContracts",
+      "matches": true,
+      "path": "server/gcsp/runtime.js"
+    },
+    {
+      "actual": "db7e3fd9ff5ff4342872a54c6ca40dd3dda35fc31c51e3dbdb2910b067cd5e49",
+      "expected": "db7e3fd9ff5ff4342872a54c6ca40dd3dda35fc31c51e3dbdb2910b067cd5e49",
+      "group": "original12FrozenContracts",
+      "matches": true,
+      "path": "server/gcsp/vehicle-evidence/corpus-publisher.js"
+    },
+    {
+      "actual": "1560e4a99077e4ea648f66b87566b908404312787e5fdfcc59a5ba10debf1741",
+      "expected": "1560e4a99077e4ea648f66b87566b908404312787e5fdfcc59a5ba10debf1741",
+      "group": "original12FrozenContracts",
+      "matches": true,
+      "path": "server/index.js"
+    },
+    {
+      "actual": "532ff51f8c37a2a743553715a14b2ce06db7e6b5c1962bcfaf8eb7b7096543f8",
+      "expected": "532ff51f8c37a2a743553715a14b2ce06db7e6b5c1962bcfaf8eb7b7096543f8",
+      "group": "original12FrozenContracts",
+      "matches": true,
+      "path": "server/test/gcsp-bmw-source-qualification.test.js"
+    },
+    {
+      "actual": "06c0910c131fdb0e2e4ef254dc5591f13c90ecb3f36f655aef3cb651aa0052a1",
+      "expected": "06c0910c131fdb0e2e4ef254dc5591f13c90ecb3f36f655aef3cb651aa0052a1",
+      "group": "original12FrozenContracts",
+      "matches": true,
+      "path": "server/vehicle-evidence/bmw-catalogue-adapter.js"
+    },
+    {
+      "actual": "ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3",
+      "expected": "ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3",
+      "group": "original12FrozenContracts",
+      "matches": true,
+      "path": "server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json"
+    },
+    {
+      "actual": "a5b8decc35abd92f9974bc9c849a8ca11102f3b383a3b5b240375c6e094bc564",
+      "expected": "a5b8decc35abd92f9974bc9c849a8ca11102f3b383a3b5b240375c6e094bc564",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/README.md"
+    },
+    {
+      "actual": "3c17819b760585638ac7cae9e743445a72af9797cb381b95f6f363b4dde670bf",
+      "expected": "3c17819b760585638ac7cae9e743445a72af9797cb381b95f6f363b4dde670bf",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/allocation.json"
+    },
+    {
+      "actual": "12dbc49e939b6f79afb19ba4bfb7135c70a8828f1ff63973fa343795555d836d",
+      "expected": "12dbc49e939b6f79afb19ba4bfb7135c70a8828f1ff63973fa343795555d836d",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/code-review.json"
+    },
+    {
+      "actual": "591a9f4cbc2bbaf9ce6333f255650148b7d1a71eea6a7ff8e69407860a2306cf",
+      "expected": "591a9f4cbc2bbaf9ce6333f255650148b7d1a71eea6a7ff8e69407860a2306cf",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/consumed-marker.json"
+    },
+    {
+      "actual": "b7b37c394a06e7e9d42cd13aca2cc852c095e11802c8fb7d55ba599925142631",
+      "expected": "b7b37c394a06e7e9d42cd13aca2cc852c095e11802c8fb7d55ba599925142631",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/diagnostic-plan.json"
+    },
+    {
+      "actual": "cd404f42058d3e40158c1657b6060356836d47ea0ad287ff8fdb2c40b0e54889",
+      "expected": "cd404f42058d3e40158c1657b6060356836d47ea0ad287ff8fdb2c40b0e54889",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/execution-handoff.json"
+    },
+    {
+      "actual": "1f9bdef8151e392fad6ae5a195bc61b11978d6b75c8d21fb80fdc9ec2353aeac",
+      "expected": "1f9bdef8151e392fad6ae5a195bc61b11978d6b75c8d21fb80fdc9ec2353aeac",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/execution-selection.json"
+    },
+    {
+      "actual": "d62b21bfc3008ba0afc6c31a6677cf9bb907f8adf0e01a99d93a1f15a2d91e01",
+      "expected": "d62b21bfc3008ba0afc6c31a6677cf9bb907f8adf0e01a99d93a1f15a2d91e01",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/live-parent-audit.json"
+    },
+    {
+      "actual": "585ff1e282542638887aed30fd195f993e302a847ef6bed17be701af90ba1afe",
+      "expected": "585ff1e282542638887aed30fd195f993e302a847ef6bed17be701af90ba1afe",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/live-receipt.json"
+    },
+    {
+      "actual": "8d77c4258897bd88980a706d7fd9f09760226086abf61a4d9f49ac9d81fc62e7",
+      "expected": "8d77c4258897bd88980a706d7fd9f09760226086abf61a4d9f49ac9d81fc62e7",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/live-result.md"
+    },
+    {
+      "actual": "000bc27a7067a5ef0e0447c44f76c971daa831a9e6b9b6a995697fe3bfab5fa2",
+      "expected": "000bc27a7067a5ef0e0447c44f76c971daa831a9e6b9b6a995697fe3bfab5fa2",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/offline-parent-audit.json"
+    },
+    {
+      "actual": "f1d7f0458efdb654f160aa0c22ffa70f5fc38ed93a5933c6622d4d30abd445d3",
+      "expected": "f1d7f0458efdb654f160aa0c22ffa70f5fc38ed93a5933c6622d4d30abd445d3",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/ownership.json"
+    },
+    {
+      "actual": "a4229a0fa1e2357afe3fc32f47c269df5484e58c82fda320b9a540e62d681d72",
+      "expected": "a4229a0fa1e2357afe3fc32f47c269df5484e58c82fda320b9a540e62d681d72",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/resource-receipt.json"
+    },
+    {
+      "actual": "5cb5adafd7d1826fc5a953984863c21aca499a402b8f7e5b61521905018e87f7",
+      "expected": "5cb5adafd7d1826fc5a953984863c21aca499a402b8f7e5b61521905018e87f7",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/run-live.mjs"
+    },
+    {
+      "actual": "4e39bac5530ece0b6056c88cbb642777ccfa1143bf5a792ec6e1ca0850f549d2",
+      "expected": "4e39bac5530ece0b6056c88cbb642777ccfa1143bf5a792ec6e1ca0850f549d2",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/runner-impact.json"
+    },
+    {
+      "actual": "84f6d69f54f503178c6f65b6a2f9a190ac86267c280c7e8b7cfe7deb0daf635b",
+      "expected": "84f6d69f54f503178c6f65b6a2f9a190ac86267c280c7e8b7cfe7deb0daf635b",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/runner-tests.mjs"
+    },
+    {
+      "actual": "34600eff99e546ebc559555059d003e0705135f715195df769daf16f2407f7c6",
+      "expected": "34600eff99e546ebc559555059d003e0705135f715195df769daf16f2407f7c6",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/runner-validation.json"
+    },
+    {
+      "actual": "fb283380d46579c64e7c21e6a1879a464316ed606d1ea2818cd040bc7311f72b",
+      "expected": "fb283380d46579c64e7c21e6a1879a464316ed606d1ea2818cd040bc7311f72b",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/security-review.json"
+    },
+    {
+      "actual": "2a109f4c9fa453a675458c45563a8f384dc387c5e120cd1dc0aa2f19b43b8cce",
+      "expected": "2a109f4c9fa453a675458c45563a8f384dc387c5e120cd1dc0aa2f19b43b8cce",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/supervise-live.py"
+    },
+    {
+      "actual": "c5d721ee89e0e8466b5fb6266f5f8f546fe58cfdb71a0638c4dbe7c7db21ba5c",
+      "expected": "c5d721ee89e0e8466b5fb6266f5f8f546fe58cfdb71a0638c4dbe7c7db21ba5c",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/supervisor-test-result.json"
+    },
+    {
+      "actual": "3474c7daf6860ab5d94470dc01439b8badc9341e0f7491578c893e68a245518c",
+      "expected": "3474c7daf6860ab5d94470dc01439b8badc9341e0f7491578c893e68a245518c",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/supervisor-test-selection.json"
+    },
+    {
+      "actual": "2364daa47658af5445318c32b68974688c98d5e6a30ef10ff8284cecb187c479",
+      "expected": "2364daa47658af5445318c32b68974688c98d5e6a30ef10ff8284cecb187c479",
+      "group": "historical22LiveEvidence",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/source-diagnostic-live-2026-11-06/supervisor-tests.py"
+    },
+    {
+      "actual": "ad88ed505fedf62b4dd35f4a1e24a4db3146317b2e5cecd7a76c5dd32ff6c177",
+      "expected": "ad88ed505fedf62b4dd35f4a1e24a4db3146317b2e5cecd7a76c5dd32ff6c177",
+      "group": "allPriorSettingsEvidenceAtBase",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/settings-shape-report-2026-11-06/README.md"
+    },
+    {
+      "actual": "eb7454eb8e2d4a21a25287fdf6e5a2b12cae83a491214943fa22f4c8be23c9fc",
+      "expected": "eb7454eb8e2d4a21a25287fdf6e5a2b12cae83a491214943fa22f4c8be23c9fc",
+      "group": "allPriorSettingsEvidenceAtBase",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/settings-shape-report-2026-11-06/design-selection.json"
+    },
+    {
+      "actual": "e1bcb5535b7c49d969f62a69e2328ccae20c3d903fab45fbcfcc14317b26df6c",
+      "expected": "e1bcb5535b7c49d969f62a69e2328ccae20c3d903fab45fbcfcc14317b26df6c",
+      "group": "allPriorSettingsEvidenceAtBase",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/settings-shape-report-2026-11-06/result.json"
+    },
+    {
+      "actual": "dc94635fa47f45fd574ffe00bfdcc5dd1c5c60ee37d7d52c5f420a999967fb81",
+      "expected": "dc94635fa47f45fd574ffe00bfdcc5dd1c5c60ee37d7d52c5f420a999967fb81",
+      "group": "allPriorSettingsEvidenceAtBase",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/settings-shape-report-2026-11-06/reviews.json"
+    },
+    {
+      "actual": "86bbe3236388c26febfb7e9d9be28f917b2e7746abd50e2c9d47964ae6d1e34a",
+      "expected": "86bbe3236388c26febfb7e9d9be28f917b2e7746abd50e2c9d47964ae6d1e34a",
+      "group": "allPriorSettingsEvidenceAtBase",
+      "matches": true,
+      "path": "docs/gcsp/evidence/fucq59/settings-shape-report-2026-11-06/round1.json"
+    }
+  ],
+  "external": [
+    {
+      "actual": "b7b37c394a06e7e9d42cd13aca2cc852c095e11802c8fb7d55ba599925142631",
+      "expected": "b7b37c394a06e7e9d42cd13aca2cc852c095e11802c8fb7d55ba599925142631",
+      "matches": true,
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/live-diagnostic/diagnostic-plan.json"
+    },
+    {
+      "actual": "cd404f42058d3e40158c1657b6060356836d47ea0ad287ff8fdb2c40b0e54889",
+      "expected": "cd404f42058d3e40158c1657b6060356836d47ea0ad287ff8fdb2c40b0e54889",
+      "matches": true,
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/live-diagnostic/execution-handoff.json"
+    },
+    {
+      "actual": "591a9f4cbc2bbaf9ce6333f255650148b7d1a71eea6a7ff8e69407860a2306cf",
+      "expected": "591a9f4cbc2bbaf9ce6333f255650148b7d1a71eea6a7ff8e69407860a2306cf",
+      "matches": true,
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/live-diagnostic/execution-once.json"
+    },
+    {
+      "actual": "5cb5adafd7d1826fc5a953984863c21aca499a402b8f7e5b61521905018e87f7",
+      "expected": "5cb5adafd7d1826fc5a953984863c21aca499a402b8f7e5b61521905018e87f7",
+      "matches": true,
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/live-diagnostic/run-live.mjs"
+    },
+    {
+      "actual": "2a109f4c9fa453a675458c45563a8f384dc387c5e120cd1dc0aa2f19b43b8cce",
+      "expected": "2a109f4c9fa453a675458c45563a8f384dc387c5e120cd1dc0aa2f19b43b8cce",
+      "matches": true,
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/live-diagnostic/supervise-live.py"
+    },
+    {
+      "actual": "585ff1e282542638887aed30fd195f993e302a847ef6bed17be701af90ba1afe",
+      "expected": "585ff1e282542638887aed30fd195f993e302a847ef6bed17be701af90ba1afe",
+      "matches": true,
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/live-diagnostic/observation/receipt.json"
+    }
+  ],
+  "historicalAllocations": "Both consumed, no reset/reuse",
+  "newAbsent": {
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/execution-selection.json": true,
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/observation": true,
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/settings-execution-once.json": true,
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/supervision": true
+  },
+  "schemaVersion": "f59-settings-preparation-immutable-audit.v1",
+  "unownedBytecode": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/_tools/__pycache__/test_resources.cpython-314.pyc",
+    "preserved": true
+  }
+}

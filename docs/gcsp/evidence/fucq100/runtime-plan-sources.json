@@ -1,0 +1,129 @@
+{
+  "client_date": "2026-11-06",
+  "constraints": "Central/runtime/paused96/sharedauth/core edits require exact plan review; existing claim retained. Root sole integration/merge/final lanes.",
+  "identities": {
+    "access": {
+      "ref": "4a56d386f031e7cf5a1fdeaefdcc612fb35cbd7b",
+      "sha256": {
+        "server/gcsp/offers/access-http.js": "f37533eeb5309cb4eff6c6dcf0af5ab8a8819afdaa4d08b4baee0147d360e868",
+        "server/gcsp/offers/access.js": "134e9d39253e934618f6cf38b334bb7cf0f8912443ee159e6167b949d4fdb34a",
+        "server/index.js": "2878cdd4c69790572b2458dc1436ae293a14db4dc42ed929da71e803c9ab513b"
+      }
+    },
+    "allocator": {
+      "ref": "6f15d4d524e7a207ce705befe1d52d8c54ce1cfa",
+      "sha256": {
+        "docs/gcsp/allocation-contract.md": "a2a11d6786e136afe120c157cf20bd84e3e2398df9f94e90d5aa1e55c5dfaa1b",
+        "server/gcsp/allocation/index.js": "41a2408c17574102891344fcc57f3df56a046199c896037b58b28d00fbab2dc5",
+        "server/gcsp/identity/index.js": "6997dcdb24f4bb4bc7388394229d6a4e219e4aa46f4662b64aca4c6ecb447732"
+      }
+    },
+    "buddy": {
+      "ref": "95a475acceff50cdfcabfccc3101a08808264767",
+      "sha256": {
+        "server/gcsp/notify/index.js": "f7f132bd7fac580cec1ce0e619d613a9a5de77fcefb92ccf27383348aac50fb7",
+        "server/gcsp/offers/buddy-hold.js": "b9f1a9be9cf42552a56313492bf0703b49ed715ffe2059f477ee11637c44b3d6",
+        "server/gcsp/offers/buddy-remote.js": "0284045ab38c22c305019ad4a560724aa233e830c6c37186d5661da430c59e01",
+        "server/gcsp/offers/current-car-comparison.js": "c5aaf8b2e3123301d50f3dade21e89e4f88abf12ede4e2c7ed801adbc56099cd",
+        "server/gcsp/offers/offer-token.js": "325b699d7dfdb435cd8713015017aa68bf735582f127d7d64a0e0fc819f7b915",
+        "server/gcsp/recommendation/index.js": "08acfe895804cf60dcc178591ecbdd1816f12ce70944f832f1ae394902c7e172",
+        "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0"
+      }
+    },
+    "manual": {
+      "ref": "4336075942b4fc13dfdca76fea167b002ba77831",
+      "sha256": {
+        "server/gcsp/identity/http.js": "86d3aa6bfc13ae6773c3861b7ef6c72fecfd31270b7c4f0609e240bd017b713e",
+        "server/gcsp/manual-claims/index.js": "32c80ef72d8329fcdbc4a208d9ab911f68156e6234d3917975754415d04ef059",
+        "server/gcsp/manual-context/index.js": "3e694f3a68b9d3c9f40b44ddb785bec2edce3b3ada43d491995be77a2930fd43",
+        "server/index.js": "6758ce90a5ddbba8ef9fc279cecf25b15af7923fd83dc8a278fb860620bb7243"
+      }
+    },
+    "policy": {
+      "ref": "3f1cc3414d700b1028ff1fec640a40591324b728",
+      "sha256": {
+        "server/gcsp/clock/index.js": "98d9e3ad778ad9a38aa3fb5f96f5a68040544ba328b79e263e661ec42c442c45",
+        "server/gcsp/identity/index.js": "4c60cd226ecceefcedd86c7da73a410bfabbeddbb05aab1aa997c98639f7612c",
+        "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+        "server/gcsp/runtime.js": "25e7c02cda0c3f09f0daec33d191514f88a9ccd2074d90ef6adb687ef1c34aa8",
+        "server/index.js": "91370902af5b578fd72f8791a8f029b08dcb2079dae157d94a9ecd3c99a1824d"
+      }
+    },
+    "presenter": {
+      "ref": "828c9b71e4fb0dbd2e959e8ddb96a53ccd017cfd",
+      "sha256": {
+        "server/gcsp/clock/index.js": "98d9e3ad778ad9a38aa3fb5f96f5a68040544ba328b79e263e661ec42c442c45",
+        "server/gcsp/identity/index.js": "49beb6c708068599f22fe3a5f338bffb59cf6d557c034aed395b485fc9ac87f7",
+        "server/gcsp/policy/seed-v1.json": "c58fcd9054fa32cded07c4ee742b39d196f94aa15c8d0fbf7752874954df8a31",
+        "server/index.js": "5e9a211b0f7252c5949016b3d52694cefd09381c576783c8df7aa5f6a03a14f2"
+      }
+    },
+    "shared": {
+      "ref": "329c522f52de5fd7c02497d3a14e96bb9275a6ad",
+      "sha256": {
+        "scripts/gcsp-demo.mjs": "b8ce1a7760ada2c7742f7869d1b1d6045af1777a2c3cc67be1ff1bc165345216",
+        "server/gcsp/clock/index.js": "a1726ddc4ad11deb0b7044480d745180d4c7dff42b34e77305a090b35d38e40a",
+        "server/gcsp/policy/seed-v1.json": "c585213b98631d6e82acc1b3720d47efae49fdb502f5fc86fb440703ef6e41a6",
+        "server/gcsp/runtime.js": "f4654b8053d3927a3564a3701784367e976b04549ee66fb1a9a754032f88cb16",
+        "server/index.js": "1560e4a99077e4ea648f66b87566b908404312787e5fdfcc59a5ba10debf1741"
+      }
+    }
+  },
+  "kind": "read-only preparation, no executable validation",
+  "method": "scaffold_git.git show/ref/diff under short checkout_mutex; no source copied or edited, no merge/fetch/test/runtime/DB/port/browser/full allocation",
+  "observed_at": 1793923604.9245,
+  "scoped_deltas_from_shared": {
+    "access": [
+      "A\tserver/gcsp/offers/access-http.js",
+      "A\tserver/gcsp/offers/access.js",
+      "M\tserver/index.js"
+    ],
+    "buddy": [
+      "M\tserver/gcsp/notify/index.js",
+      "A\tserver/gcsp/offers/buddy-hold.js",
+      "A\tserver/gcsp/offers/buddy-remote.js",
+      "A\tserver/gcsp/offers/current-car-comparison.js",
+      "A\tserver/gcsp/offers/offer-token.js",
+      "M\tserver/gcsp/recommendation/index.js",
+      "M\tserver/gcsp/repository/core.js"
+    ],
+    "manual": [
+      "A\tserver/gcsp/adapters/manual-stock.js",
+      "M\tserver/gcsp/identity/http.js",
+      "A\tserver/gcsp/manual-claims/http.js",
+      "A\tserver/gcsp/manual-claims/index.js",
+      "M\tserver/gcsp/manual-context/index.js",
+      "M\tserver/index.js"
+    ],
+    "policy": [
+      "M\tserver/gcsp/clock/index.js",
+      "A\tserver/gcsp/greg/publish/fit.js",
+      "A\tserver/gcsp/greg/publish/http.js",
+      "A\tserver/gcsp/greg/publish/index.js",
+      "M\tserver/gcsp/identity/index.js",
+      "A\tserver/gcsp/policy/activation.js",
+      "A\tserver/gcsp/policy/adoption.js",
+      "M\tserver/gcsp/policy/index.js",
+      "M\tserver/gcsp/policy/publish.js",
+      "A\tserver/gcsp/policy/reviewed-definitions.js",
+      "A\tserver/gcsp/policy/reviewed/greg-publish-editor-v1.json",
+      "A\tserver/gcsp/policy/reviewed/presenter-controls-v1.json",
+      "M\tserver/gcsp/policy/seed-v1.json",
+      "A\tserver/gcsp/predict/records/policy-definitions.json",
+      "A\tserver/gcsp/presenter-controls/commands.js",
+      "A\tserver/gcsp/presenter-controls/http.js",
+      "A\tserver/gcsp/presenter-controls/index.js",
+      "M\tserver/gcsp/runtime.js",
+      "M\tserver/index.js"
+    ],
+    "presenter": [
+      "M\tserver/gcsp/clock/index.js",
+      "M\tserver/gcsp/identity/index.js",
+      "M\tserver/gcsp/policy/seed-v1.json",
+      "A\tserver/gcsp/presenter-controls/commands.js",
+      "A\tserver/gcsp/presenter-controls/http.js",
+      "A\tserver/gcsp/presenter-controls/index.js",
+      "M\tserver/index.js"
+    ]
+  }
+}

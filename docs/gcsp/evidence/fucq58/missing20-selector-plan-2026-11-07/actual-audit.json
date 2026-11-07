@@ -1,0 +1,226 @@
+{
+  "schemaVersion": "missing20-selector-actual-audit.v1",
+  "auditedAt": "2026-11-07T07:05:05.781306+00:00",
+  "scope": "read-only metadata, frozen hashes, source events and independent current cleanup checks; no source or test replay",
+  "auditorSha256": "010e5bbc663fdad5fa0aa81222c8df4aa725d5eb864459c3ad145d5187fcea8b",
+  "planSha256": "32356455215c150123ca624caec42c1eed437c7fe5434c0dcbad380739a2ace3",
+  "parentReleaseSha256": "a1bfee02e06af31c8510645c7febc15ad51de4fbb06c74a175d850acb2d675dc",
+  "allocationId": "missing20-selector-20261107-once",
+  "status": "failed-source-observation-audited",
+  "checks": [
+    {
+      "name": "exact-frozen-plan",
+      "pass": true
+    },
+    {
+      "name": "exact-parent-release",
+      "pass": true
+    },
+    {
+      "name": "consumed-once-marker",
+      "pass": true
+    },
+    {
+      "name": "unchanged-pin:_tools/test_resources.py",
+      "pass": true
+    },
+    {
+      "name": "unchanged-pin:docs/gcsp/evidence/fucq58/missing20-selector-plan-2026-11-07/prepare-plan.py",
+      "pass": true
+    },
+    {
+      "name": "unchanged-pin:docs/gcsp/evidence/fucq58/missing20-selector-plan-2026-11-07/run-live.mjs",
+      "pass": true
+    },
+    {
+      "name": "unchanged-pin:docs/gcsp/evidence/fucq58/missing20-selector-plan-2026-11-07/selector.mjs",
+      "pass": true
+    },
+    {
+      "name": "unchanged-pin:docs/gcsp/evidence/fucq58/missing20-selector-plan-2026-11-07/selector.test.mjs",
+      "pass": true
+    },
+    {
+      "name": "unchanged-pin:docs/gcsp/evidence/fucq58/missing20-selector-plan-2026-11-07/supervise.py",
+      "pass": true
+    },
+    {
+      "name": "unchanged-pin:docs/gcsp/evidence/fucq58/missing20-selector-plan-2026-11-07/validate-prepared.py",
+      "pass": true
+    },
+    {
+      "name": "unchanged-pin:docs/gcsp/bmw-interface-research.md",
+      "pass": true
+    },
+    {
+      "name": "unchanged-pin:docs/gcsp/evidence/fucq-58/full-model-selector-2026-11-05/evidence/selection.json",
+      "pass": true
+    },
+    {
+      "name": "unchanged-pin:docs/gcsp/evidence/fucq-58/steering-diagnostic-2026-11-05/evidence/projection.json",
+      "pass": true
+    },
+    {
+      "name": "unchanged-pin:docs/gcsp/evidence/fucq58/missing20-selector-plan-2026-11-07/target-rows.json",
+      "pass": true
+    },
+    {
+      "name": "unchanged-pin:docs/gcsp/evidence/fucq59/scheme-line-breadth-preparation-2026-11-07/target-ledger.json",
+      "pass": true
+    },
+    {
+      "name": "unchanged-pin:docs/gcsp/evidence/fucq59/scheme31-coverage-status-2026-11-07/mapping.json",
+      "pass": true
+    },
+    {
+      "name": "unchanged-node-runtime",
+      "pass": true
+    },
+    {
+      "name": "one-start-one-stop-no-headers",
+      "pass": true
+    },
+    {
+      "name": "actual-receipt-no-credit",
+      "pass": true
+    },
+    {
+      "name": "actual-child-failed-within-bound",
+      "pass": true
+    },
+    {
+      "name": "control-result-and-cleanup-match",
+      "pass": true
+    },
+    {
+      "name": "ownership-removed",
+      "pass": true
+    },
+    {
+      "name": "durable-ownership-matches",
+      "pass": true
+    },
+    {
+      "name": "scratch-independently-absent",
+      "pass": true
+    },
+    {
+      "name": "groups-independently-absent",
+      "pass": true
+    },
+    {
+      "name": "reservation-independently-absent",
+      "pass": true
+    },
+    {
+      "name": "dependency-link-independently-absent",
+      "pass": true
+    },
+    {
+      "name": "cleanup-no-leftovers-or-exception",
+      "pass": true
+    },
+    {
+      "name": "exact-retained-file-set",
+      "pass": true
+    }
+  ],
+  "passed": 29,
+  "failed": 0,
+  "sourceRequests": 1,
+  "solverRequests": 0,
+  "headersReceived": 0,
+  "literalLeads": 0,
+  "newAdmissions": 0,
+  "capacityCredit": 0,
+  "acceptance": false,
+  "noReplay": true,
+  "receipt": {
+    "allocationId": "missing20-selector-20261107-once",
+    "method": "GET",
+    "url": "https://www.bmw.co.uk/en/configurator.html",
+    "sourceRequests": 1,
+    "solverRequests": 0,
+    "newAdmissions": 0,
+    "capacityCredit": 0,
+    "acceptance": false,
+    "status": "stopped",
+    "errorType": "Error",
+    "errorCode": null,
+    "reason": "selector-request-timeout"
+  },
+  "processResult": {
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/missing20-selector/live.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/missing20-selector/ownership/ab7e89fc9db64b0a84c02cabf8e65c8a.json",
+    "peak_rss": 61718528,
+    "peak_scratch": 0,
+    "rc": 1,
+    "wall": 10.239961334
+  },
+  "sourceEvents": [
+    {
+      "attempt": 1,
+      "method": "GET",
+      "phase": "started",
+      "startedAt": "2026-11-07T07:01:09.039Z"
+    },
+    {
+      "attempt": 1,
+      "method": "GET",
+      "phase": "stopped",
+      "at": "2026-11-07T07:01:19.059Z",
+      "reason": "selector-request-timeout",
+      "errorCode": null
+    }
+  ],
+  "sourceFiles": {
+    "cleanup.json": {
+      "bytes": 672,
+      "sha256": "b18c6b8df9e3149d03df184dcc8fcca39a77918ef8c012ef1c3c585c22ed6771"
+    },
+    "execution-once.json": {
+      "bytes": 208,
+      "sha256": "c57059d75478d82e3546a38b365b9d38c4746446bdf129c9b952b58f1e22278a"
+    },
+    "output-ownership.json": {
+      "bytes": 202,
+      "sha256": "d6571d6c4bf4d65cd1a4f008c00e471f96cc022abedd1927107883d67c02f96c"
+    },
+    "receipt.json": {
+      "bytes": 353,
+      "sha256": "88631649d9eb53f68e8ad5d3a530a211e78ad2b3c9881cce42a16a3042022104"
+    },
+    "result.json": {
+      "bytes": 361,
+      "sha256": "8ac38f150a8e60eb3e5473be39faed1f0e293f942897a24f2c82dd3e1a0599c2"
+    },
+    "source-events.jsonl": {
+      "bytes": 218,
+      "sha256": "a190a60c57af19a1ebcaba5f18db8caf4bd2cffa4ddf42291257e4cd349228e5"
+    }
+  },
+  "actualRetainedFileBytes": 2014,
+  "cleanupReportedRetainedBytes": 1342,
+  "cleanupReportedRetainedBytesNote": "Supervisor measured before writing final result/cleanup files; actualRetainedFileBytes sums the final six retained files.",
+  "cleanup": {
+    "compatibilityException": null,
+    "dependencyPathTouched": false,
+    "groups": [
+      14527
+    ],
+    "groupsAbsent": true,
+    "identityUnchanged": true,
+    "leftovers": [],
+    "ownershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/missing20-selector/ownership/ab7e89fc9db64b0a84c02cabf8e65c8a.json",
+    "removedAllocationBytes": 0,
+    "reservationAbsent": true,
+    "reservationToken": "ab7e89fc9db64b0a84c02cabf8e65c8a",
+    "retainedLogicalBytes": 1342,
+    "retainedOutput": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/missing20-selector-20261107-once",
+    "scratchAbsent": true,
+    "scratchRoot": "/private/tmp/test-stamp-shard-ab7e89fc9db64b0a84c02cabf8e65c8a"
+  },
+  "leftovers": []
+}

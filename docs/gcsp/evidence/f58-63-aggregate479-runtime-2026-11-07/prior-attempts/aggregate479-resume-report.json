@@ -1,0 +1,31 @@
+{
+  "status": "incomplete",
+  "startedAt": "2026-11-07T02:57:13.173Z",
+  "finishedAt": "2026-11-07T02:57:44.818Z",
+  "code": "8a1e1331b06da6d074374e7699d3afd8ce721e39",
+  "deployment": 7615619795,
+  "manifestDigest": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+  "requests": 2,
+  "decodedBytes": 11,
+  "limits": {
+    "GET": 512,
+    "decodedBytes": 16777216,
+    "responseBytes": 1048576,
+    "requestMs": 30000,
+    "wallMs": 120000,
+    "workers": 1,
+    "retries": 0
+  },
+  "compared": 0,
+  "expected": 481,
+  "errors": 0,
+  "failure": "live-probe-failed",
+  "failureDetail": {
+    "name": "TimeoutError",
+    "code": "23"
+  },
+  "results": [],
+  "sourceQualifiedDistinct": 479,
+  "target10000Met": false,
+  "scope": "Every active configuration and retained VIN; exact JSON parity with the local loader. Read-only production GETs."
+}

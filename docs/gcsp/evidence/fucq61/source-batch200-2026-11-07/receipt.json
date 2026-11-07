@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "f61-source-batch200-interrupted-receipt.v1",
+  "allocationId": "f61-source-batch200-20261107-once",
+  "planDigest": "09b4716d00edf18d02373f9f2307bf5b0973bc5345da99a13f8c3dbb506302e0",
+  "status": "incomplete",
+  "reason": "supervisor-memory-bound; checkpoint-export-loss",
+  "startedAt": "2026-11-07T00:44:05.003Z",
+  "elapsedSeconds": 119.241270666,
+  "actualGETs": 57,
+  "attemptedSolverRequests": 53,
+  "processedCandidateCursorTrace": 53,
+  "callbackRows": 52,
+  "callbackOutcomeCounts": {
+    "accepted": 52
+  },
+  "inferredMissingCallbackOutcomes": 1,
+  "lastPersistedCountersTrace": {
+    "sourceCalls": 57,
+    "operations": {
+      "discover": 1,
+      "options": 1,
+      "page": 1,
+      "settings": 1,
+      "solve": 53
+    },
+    "cacheHits": {
+      "discover": 0,
+      "options": 0,
+      "page": 0,
+      "settings": 0,
+      "solve": 0
+    },
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "cacheEvictions": 0,
+    "httpAttempts": 57,
+    "decodedBytes": 1141127,
+    "operationBytes": {
+      "discover": 139586,
+      "options": 138863,
+      "page": 17763,
+      "settings": 620646,
+      "solve": 224269
+    }
+  },
+  "peakChildRSSBytes": 492797952,
+  "childMemoryCeilingBytes": 469762048,
+  "hostReservationBytes": 536870912,
+  "exitCode": -15,
+  "sourceCheckpointRetained": false,
+  "retainedAdmittedNewConfigurations": 0,
+  "totalRetainedAdmittedSourceConfigurations": 29,
+  "fullSourceBindingsFromCallbacks": "unretained; not reconstructed or admitted",
+  "retries": 0,
+  "cacheEvictionsTrace": 0,
+  "httpFailureTrace": 0,
+  "sourceSubstitutionTrace": 0,
+  "unspentCandidates": 147,
+  "oneShotMarker": "permanently-spent; never reset/replay",
+  "f61Acceptance": false,
+  "traceHashes": {
+    "source-events.jsonl": "54006e081df4055a362c3bcafa64b41654d2b29be28e14d872d5091597a95fe5",
+    "outcomes.jsonl": "bceb3a6812dda8d857e047c5b6b8dd5b1cfa33fbffd57baa4c5708b9b7192221"
+  }
+}

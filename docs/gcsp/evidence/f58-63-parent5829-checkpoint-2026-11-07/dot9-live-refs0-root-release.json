@@ -1,0 +1,23 @@
+{
+  "authorized": true,
+  "phase": "refs0",
+  "planSha256": "9aca94d1d0a54d1e0dc089da514eee89803421f2bef92a9fe8ad6bdd727c5718",
+  "code": "12657190b786d47b344bcb5e131901652df9c5e8",
+  "actualDeploymentId": "7617112384",
+  "deploymentSucceeded": true,
+  "manifestDigest": "28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884",
+  "sourceCalls": 0,
+  "priorDiagnosticHealthGets": 5,
+  "newGetCeiling": 2427,
+  "deploymentEvidence": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/dot9-actual-deployment-7617112384.json",
+    "sha256": "cf6218754e37d61b5927cb6ab8033537719214a5bc29e21fd69f5ffa62ef5d5c"
+  },
+  "priorReceipts": [
+    {
+      "phase": "health",
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot9-2424-20261107/live-parity/health/receipt.json",
+      "sha256": "0053ef20ee515fc45c9ba7ff3864cf184cdd5aa1f0d9cd807c66d54bb0f9931b"
+    }
+  ]
+}

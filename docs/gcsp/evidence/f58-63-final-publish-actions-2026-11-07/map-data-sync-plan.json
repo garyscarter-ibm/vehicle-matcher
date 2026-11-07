@@ -1,0 +1,28 @@
+{
+  "changedPaths": [
+    "/Users/usget/.codex/worktrees/f58-63-map-sync/vehicle-matcher/.product-map/work.json"
+  ],
+  "regression": "six verified current Jira records must project as In Review despite older imported active-branch facts",
+  "affectedCallers": [
+    "trusted main product_map collector/merge_records",
+    "public Pages map"
+  ],
+  "selected": [
+    "compare exact changed row identities and non-target preservation",
+    "trusted projector in-memory readback after normal push",
+    "exact uploaded artifact and actual served JSON readback"
+  ],
+  "excluded": "no application source/runtime change; existing passed fleet/native/live evidence reused; no fullsuite, browser or new source collection",
+  "sourceOwnership": "isolated detached source worktree at exact remote433607; preserve active GaryF66 checkout, claim and every other map row",
+  "scratch": "no test/proof scratch; source checkout temporary managed worktree archived after publication",
+  "worktree": "/Users/usget/.codex/worktrees/f58-63-map-sync/vehicle-matcher",
+  "expectedDurationSeconds": 120,
+  "expectedMemoryMiB": 64,
+  "testWorkers": 0,
+  "mainMirror": {
+    "reason": "Main has no six target rows; record current verified tracker facts in the trusted publication checkout as well. A new main commit also supplies a unique Pages build version; source/code remains unchanged. Repeated-version serving cause remains an evidence-backed hypothesis.",
+    "priorHead": "ce9706edb01a3d130b993bca8232bb81d4d6b70a",
+    "changedPath": ".product-map/work.json",
+    "checks": "six canonical exact rows; preserve non-target rows; normal guarded push; actual public readback required"
+  }
+}

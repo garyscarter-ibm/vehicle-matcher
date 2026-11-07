@@ -1,0 +1,86 @@
+{
+  "absoluteDeadline": "2026-11-07T07:10:43.651928+00:00",
+  "acceptance": false,
+  "actual": {
+    "GET": 1440,
+    "admitted": 716,
+    "decodedBytes": 133631076,
+    "duplicates": 0,
+    "incompleteSourceTargets": 2,
+    "rejected": 244,
+    "removedScratchBytes": 62876928,
+    "solver": 960,
+    "strictPass": 600
+  },
+  "auditPin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth30-phase03-960-series-2026-11-07/actual-completion-audit.json",
+    "sha256": "c8a002ba7f78790c2ccf919c04ba355c753fe25ab05c8f7202fb41c228714b27"
+  },
+  "auditorSha256": "12393b1b5bc50e1c2d6ebe102e2f99c506e299afc9e108d914abfce436b383a2",
+  "canonicalPin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session120/final-canonical-index.json",
+    "sha256": "851c876cae2c9e21b282d2ce0976ae386a4291cbc8274a276b3559d6fd4eb215"
+  },
+  "checks": 35955,
+  "cleanup": {
+    "allGroupsAbsent": true,
+    "allReservationsAbsent": true,
+    "compatibilityException": null,
+    "dependencyLinkAbsent": true,
+    "groupsChecked": 720,
+    "leftovers": [],
+    "reservationTokensChecked": 241,
+    "scratchRootsAbsent": 240
+  },
+  "consumedAt": "2026-11-07T06:40:43.651928+00:00",
+  "consumedMarkerPin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/phase03-once.json",
+    "sha256": "2786fb82dca6d3c433ee702e4a0a813a8d0f05c0fa049483f1458e3390f91213"
+  },
+  "coverageQualified": 0,
+  "elapsedSeconds": 964.023106375,
+  "errors": [],
+  "globalPopulation": "fresh independent parent union required before adding these716 across lanes",
+  "launcherProcess": {
+    "exitCode": 0,
+    "joined": true,
+    "sessionId": 42721
+  },
+  "localPopulation": {
+    "admittedSource": 8812,
+    "canonical": 8815,
+    "strictSpent": 11487
+  },
+  "originalTemplates": {
+    "first": 241,
+    "last": 360
+  },
+  "remaining": [
+    "dated original31 scheme joins",
+    "model/profile/year/plant/five-WMI evidence",
+    "fresh global10000 distinct union",
+    "F60/F54 integration",
+    "originalF61 acceptance"
+  ],
+  "removedScratchBytes": 62876928,
+  "retainedLogicalBytes": 2193338041,
+  "retainedOutput": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once",
+  "schemaVersion": "actual-breadth-phase03-result.v1",
+  "schemeJoinsQualified": 0,
+  "sourceReceiptPin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/phase03-receipt.json",
+    "sha256": "baf6bc57a241c981961957a9db46f3a1bc184b7233bf7d09ffa6efb36b0bb6a5"
+  },
+  "sourceStatusIncompleteSessions": 2,
+  "sourceStatusMeaning": "Two source receipts remain status incomplete despite queue exhaustion and successful strict proof; no every-model or scheme coverage claim.",
+  "spentPin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session120/final-spent-request-index.json",
+    "sha256": "97e8c43513933bc39acd8da59e2649e296aea6ea1db3b11f454b5924da091c80"
+  },
+  "status": "actual finite phase complete; standalone strict chain audited; parent union and original acceptance remain open",
+  "strictSessions": 120,
+  "validationReplay": {
+    "sourceRequests": 0,
+    "strictTests": 0
+  }
+}
