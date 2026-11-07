@@ -1,0 +1,179 @@
+{
+ "schemaVersion": 1,
+ "date": "2026-11-06",
+ "story": "FUCQ-103",
+ "state": "LEAD-AUDITED-SCOPED-DASHBOARD3-EVIDENCE; root final collection pending",
+ "run": "fucq103-backend-76cf819433e740dda7fc3a29911420e6",
+ "testedRevision": "4c0cbcfcab52da9f6cf54a5cba743390dc1f7c7e",
+ "productTestFrozenRevision": "f80fc61ca151cb46ad21cb2b19e704f4012d53de",
+ "sourcePlanSHA256": "edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9",
+ "grant": "fucq103-eligibility-dashboard-4c0cbcf-1230",
+ "grantSource": "assignment claude-assist-fucq103-2026-11-06-01 CONDITIONAL-ONCE, satisfied by independent pre-run PASS",
+ "grantStatus": "consumed-once; no retry or further execution grant",
+ "mode": "eligibility-dashboard",
+ "childCommand": [
+  "/Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+  "--test",
+  "--test-concurrency=1",
+  "--test-name-pattern=^(real service:|every fixture projection)",
+  "server/test/gcsp-greg-dashboard-data.test.js"
+ ],
+ "supervisorCommand": [
+  "/Library/Developer/CommandLineTools/usr/bin/python3",
+  "-I",
+  "-B",
+  "docs/gcsp/evidence/fucq103/scoped-supervisor.py",
+  "eligibility-dashboard",
+  "--execute",
+  "--source-plan-sha",
+  "edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9",
+  "--revision",
+  "4c0cbcfcab52da9f6cf54a5cba743390dc1f7c7e",
+  "--dispatcher-grant",
+  "fucq103-eligibility-dashboard-4c0cbcf-1230"
+ ],
+ "actualSupervisorToolCompletion": {
+  "exitCode": 0,
+  "wrapper": "perl alarm 280s, exec redirection to exclusive stdout/stderr files"
+ },
+ "childExitCode": 0,
+ "reporter": "SPEC; original full bounded log, not TAP",
+ "selectedCaseNames": [
+  "real service: each step of the demo changes the view figures and versions",
+  "real service: canonical threshold shows only \"fewer than 5\" bands and no other number",
+  "every fixture projection has the shape of a real readDemand value and the view accepts it"
+ ],
+ "sourceCaseCount": 9,
+ "filteredSourceCaseCount": 6,
+ "filteredSourceNamesUnexercised": [
+  "fixtures: states, copies, refresh sequence and abort",
+  "toDashboardView: bands keep their label, nothing is summed, malformed input throws DemandViewError",
+  "gate and key labels cover known codes and keep unknown codes visible",
+  "outcomeToState maps every HTTP outcome to one view state",
+  "http adapter: URL, method, credentials, headers, errors and abort",
+  "no em dash in any projected string, and no inline-script patterns in blocks/gcsp/greg"
+ ],
+ "totals": {
+  "tests": 3,
+  "suites": 0,
+  "pass": 3,
+  "fail": 0,
+  "cancelled": 0,
+  "skipped": 0,
+  "todo": 0,
+  "duration_ms": 1032.647625
+ },
+ "completedModesExcluded": [
+  "eligibility-core25",
+  "eligibility-registry16",
+  "eligibility-default1",
+  "eligibility-weighted1",
+  "eligibility-runtime4",
+  "eligibility-editor3"
+ ],
+ "completedCasesRerun": false,
+ "independentPreRunReview": {
+  "verdict": "PASS",
+  "reviewer": "Doug the Dog",
+  "role": "managed reviewer",
+  "model": "opus (agent file)",
+  "effort": "high (agent file)",
+  "scope": "read-only: pins/identity, name-pattern closure (3 match, 6 excluded), static import closure in sources (53 files), fixture-boundary claims, strict raw all-row ledger invariants, environment allowlist"
+ },
+ "admission": {
+  "preflight": {
+   "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-dashboard-preflight-1230.json",
+   "bytes": 361,
+   "sha256": "ebfe231b5f9388b82545bfa4ad8f94f407c6526911632fa5b9da1002a5a06538"
+  },
+  "ledgerRowsBefore": 0,
+  "capacityLine": "can_start=0 on swap 9.6GB only; advisory under commonContract actual-resource override; measured RAM/disk admitted and the supervisor re-admitted under lock"
+ },
+ "originals": {
+  "summary": {
+   "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-76cf819433e740dda7fc3a29911420e6-summary.json",
+   "bytes": 3080,
+   "sha256": "d51fafececfd690422e8d808260b719461c99fe141420085f1f198cc7d32b017"
+  },
+  "manifest": {
+   "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-76cf819433e740dda7fc3a29911420e6-manifest.json",
+   "bytes": 2162,
+   "sha256": "90e8b85103f98bc6d7676aa84409443d88c46e178b936adeb09199769d157fe3"
+  },
+  "log": {
+   "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-76cf819433e740dda7fc3a29911420e6/test.log",
+   "bytes": 420,
+   "sha256": "e1e4fbe78d3c53cca5b8599858b1b7b5843f16a3a75c46347fa2ad5695aa873e",
+   "publishedCopy": "test.log"
+  },
+  "checkpoint": {
+   "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-76cf819433e740dda7fc3a29911420e6/checkpoint.json",
+   "bytes": 319,
+   "sha256": "ed28f0fc376934aead6970a2d35ef6a257699c008db1d60fd3e2a545e7d6afd0"
+  },
+  "impact": {
+   "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/impact/edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9-eligibility-dashboard.json",
+   "bytes": 1306,
+   "sha256": "e4a63da4b612583f583b427b6245abf796e428e81ccd4e2de50f168767cad32e"
+  },
+  "supervisorStdout": {
+   "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-dashboard-supervisor-1230.stdout",
+   "bytes": 566,
+   "sha256": "b36b26492923ea0f6cc67fc8919d6a79ac40d3a8dc111da35a0811d9d4dbf56f"
+  },
+  "supervisorStderr": {
+   "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-dashboard-supervisor-1230.stderr",
+   "bytes": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "launcherManifest": {
+   "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-dashboard-launcher-manifest-1230.json",
+   "bytes": 1836,
+   "sha256": "7f6eecd55c5a5e8bbf439e9b2071ca2a36175f1db762e038ec911458a451aff8"
+  },
+  "launcherResult": {
+   "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-dashboard-launcher-result-1230.json",
+   "bytes": 3056,
+   "sha256": "48d72ddb38cd24e9678558e2cb6d6e014f31de29585d53746b611ab91b39d8e4"
+  }
+ },
+ "metrics": {
+  "wallSeconds": 4.021360875,
+  "peakAggregateRSSBytes": 1037565952,
+  "peakAggregateRSSMiB": 989.5,
+  "aggregateRSSCapBytes": 1073741824,
+  "peakCombinedBytes": 4348490,
+  "scratchRemovedBytes": 4338401,
+  "receiptHeadroomCapBytes": 262144
+ },
+ "cleanupEvidence": {
+  "ownedPidsAbsent": [
+   85924,
+   85931,
+   85932
+  ],
+  "ownedGroupAbsent": [
+   85924
+  ],
+  "ownedListenerInventory": [],
+  "uncertainGroups": [],
+  "scratchRootAbsent": "/private/tmp/test-stamp-shard-99563fd3b9704782820fdced36953dc5",
+  "worktreeDependencyPathsAbsent": true,
+  "exactReservationTokenAbsent": "99563fd3b9704782820fdced36953dc5",
+  "ledgerAfter": "{} (0 rows)",
+  "source": "supervisor finalizer proof plus lead ps/pgid/path/ledger readback after exit"
+ },
+ "limits": [
+  "Cases 1 and 3 use explicit alternative privacy threshold 1; case 2 alone uses canonical threshold 5 with one synthetic subject.",
+  "Brief confirmed through BriefService; stock, quote, hold, offer and decision rows written directly by helpers: not actual producer journeys.",
+  "Fixture comparison is shape only (keys/types, first array item as representative, empty/null allowed); real side uses threshold 1, fixtures their authored thresholds. No numerical or semantic parity.",
+  "No HTTP, listener, DOM or rendered dashboard was exercised; no actual producer journey or consumer uptake is claimed."
+ ],
+ "publicationBoundary": "Only this index, README and the exact original test.log are published. Full originals and receipts stay under ignored .claude.",
+ "remainingAcceptanceGates": [
+  "Separately admitted repaired browser preparation and rendered desktop/narrow320 keyboard journeys on canonical prepared composition, with actual employee outcomes, visual reference and COMPONENTS.md gates.",
+  "Actual 92/69/122/126 producer journeys, 105-to-107 lookup/reload and required native/deployed/live/corpus/model/training evidence remain unproven.",
+  "Dispatcher-admitted authored full validation, final independent review and whole-story acceptance; FUCQ-103 stays In Progress.",
+  "Current-source publish15 and activation9; six dashboard-data cases remain unexercised."
+ ]
+}

@@ -147,7 +147,7 @@
     },
     {
       "path": "blocks/gcsp/presenter-controls/presenter-controls.css",
-      "max_lines": 17
+      "max_lines": 11
     },
     {
       "path": "blocks/gcsp/brief/gcsp-brief.css",
@@ -164,10 +164,6 @@
     {
       "path": "blocks/gcsp/shell/density-typography.css",
       "max_lines": 50
-    },
-    {
-      "path": "blocks/gcsp/presenter-controls/presenter-controls.css",
-      "max_lines": 11
     },
     {
       "path": "blocks/gcsp/kit/presenter-bar.css",

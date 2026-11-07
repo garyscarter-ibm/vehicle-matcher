@@ -1,0 +1,33 @@
+✔ saved current brief, not draft/history/current-car/retail sample, drives model/body/fuel/essentials (311.222916ms)
+✔ unspecified model and indifferent/unconfirmed preferences remain explicit instead of inferred demand (209.030375ms)
+✔ unmet demand distinguishes no released stock, shared essential gate, and sufficient actual release (342.170791ms)
+✔ unknown employee authority stays needs-confirmation and stock visibility cannot widen eligibility (272.814375ms)
+✔ real offer/decision/hold/allocation records drive outcomes with typed declines and versions (294.733375ms)
+✔ all counts below canonical threshold are bands without a raw count or personal fields (232.09775ms)
+✔ threshold policy alternatives change every projection consistently; absent or invalid threshold fails closed (935.585625ms)
+✔ Greg service refuses employees, presenters and forged server context; old run after reset is stale (305.784084ms)
+✔ registered HTTP route enforces role and rejects browser run selectors under server identity (264.595083ms)
+✔ successive brief/release/decline/selection inputs change actual projection identity and figures (394.630708ms)
+✔ canonical optional model-line essential persists through BriefService and gates an actual wrong model (308.596291ms)
+✔ same declined exact car remains blocked until a relevant confirmed brief change, including pause/resume (488.734416ms)
+✔ a concurrent repository revision causes refresh conflict instead of a mixed projection (197.900458ms)
+✔ unmet evaluation reads all repository candidates beyond a retail-sized display limit (257.194125ms)
+✔ unregistered decline types and free text are replaced with a counted unclassified reason (225.497ms)
+✔ buildServer exposes a no-store trusted Greg GET, origin/session/gate refusal and stale-run protection (433.887ms)
+✔ equipment set order and duplicate keys cannot reopen an unchanged declined car (276.203459ms)
+✔ default manual preparation supplies the same actual driver fact to employee and Greg without a persisted flattened field (1061.492625ms)
+✔ bound false, absent, unknown, nonboolean and uncertain provenance retain their shared recommendation refusal (1422.326208ms)
+✔ explicit current driver binding selects the owned nominated driver and never chooses an eligible fallback (616.567208ms)
+✔ absent driver choice stays unconfirmed only when no explicit contract reference requires it (643.829333ms)
+✔ foreign, duplicate, dangling and malformed source bindings return only generic unavailable (474.239875ms)
+✔ invalid subject bindings are refused before demand can take the no-stock or hidden-stock shortcut (588.019ms)
+✔ coherent synthetic cohort preserves canonical suppression and never persists the derived driver fact (2420.517042ms)
+✔ employee and slot revisions participate in both Greg read fences (1288.094083ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 14602.364292
