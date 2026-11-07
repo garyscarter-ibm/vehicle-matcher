@@ -653,12 +653,97 @@
     {
       "id": "FUCQ-60",
       "title": "Enrich resolved fleet configurations with matching facts and images",
-      "status": "To Do",
-      "original_status": "To Do",
-      "assignee": "",
+      "status": "In Progress",
+      "original_status": "In Progress",
+      "assignee": "usget",
       "type": "Story",
-      "observed_at": "2026-11-05T22:40:24Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60"
+      "observed_at": "2026-11-07T00:43:37Z",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-60",
+      "workers": [
+        {
+          "name": "Scooby Doo",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-06T12:31:19.407940+00:00",
+          "expires_at": "2026-11-06T12:31:19.407940+00:00",
+          "source": "thread 01a1b05f-dcbc-7e50-a2f9-0332b39f082a",
+          "status": "Canonical local prepublication checkpoint: scoped 9+6 passed with zero skips; requested/selected/verified Sol/high, no fallback or descendants. Worker expires at handoff; parent exact review/publication and wider runtime/native/source/asset/full gates remain."
+        },
+        {
+          "name": "Charlie Dog",
+          "role": "story-lead",
+          "harness": "codex",
+          "observed_at": "2026-11-07T00:33:52.071696+00:00",
+          "expires_at": "2026-11-07T00:33:52.071696+00:00",
+          "source": "thread 01a1b35b-4260-7572-91b6-536cd7b48d9a",
+          "status": "Requested/selected gpt-6.1-sol/high; no fallback; effective unverified. Reviewed source 29301f1b, scoped 82/82 pass; topic handoff, full story incomplete."
+        },
+        {
+          "name": "Rocky",
+          "role": "mechanic",
+          "harness": "codex",
+          "observed_at": "2026-11-07T00:33:52.071696+00:00",
+          "expires_at": "2026-11-07T00:33:52.071696+00:00",
+          "source": "task /root/charlie_dog/rocky",
+          "status": "Requested/selected gpt-6-luna/high; no fallback; effective unverified. Source-only mechanic complete, pure 11/source 3 pass, no descendants; handoff expired."
+        }
+      ],
+      "slices": [
+        {
+          "id": "exact-identity",
+          "status": "complete",
+          "title": "Exact configuration identity and fact projection",
+          "observed_at": "2026-11-07T00:33:52Z",
+          "evidence": "Scoped pure 11/source 3 plus contracts 53 pass at source 29301f1b. Strict explicit v2 tuple, binding/selection refusal, safe resolved context/evidence and v1 substitution preserved; docs/gcsp/evidence/fucq60/source-v2-enrichment-2026-11-07.md. Wider source/corpus gates separate."
+        },
+        {
+          "id": "image-projection",
+          "status": "complete",
+          "title": "Honest representative image and partial projection",
+          "observed_at": "2026-11-07T00:33:52Z",
+          "evidence": "Focused image contracts remain passing in 53 owning cases; v2 retains image null/unknown without downconversion. Existing registered v1 fidelity/retention/hash handling unchanged. Real retained representative asset coverage remains separate."
+        },
+        {
+          "id": "shared-accounting",
+          "status": "in-progress",
+          "title": "Canonical collector session cache budget recovery integration",
+          "observed_at": "2026-11-07T00:43:37Z",
+          "evidence": "Current F59 batch producer/session follow-up passes 18/18: source3, fresh cached historical9, portable session6. Session1f22fe1c; enrichment29301f1b unchanged. Two current pins updated; original source/history immutable. Shared runtime/native integration remains; current-f59-batch/summary.json."
+        },
+        {
+          "id": "real-source",
+          "status": "in-progress",
+          "title": "Real catalogue source coverage evidence",
+          "observed_at": "2026-11-07T00:33:52Z",
+          "evidence": "Actual retained 7 November GB source admitted through F59 and registered adapter into F60: 47 factory codes, 1 accessory unknown quantity, source-bound paint/upholstery codes, unknown technical/physical facts. One sample; broader source/scheme coverage and F77 breadth remain."
+        },
+        {
+          "id": "real-assets",
+          "status": "not-started",
+          "title": "Representative retained asset fidelity evidence"
+        },
+        {
+          "id": "focused-contracts",
+          "status": "complete",
+          "title": "Authored enrichment and F39 F42 focused contracts",
+          "observed_at": "2026-11-07T00:43:37Z",
+          "evidence": "Earlier82/82 scoped evidence retained at earlier producer identities. Current F59 batch/source/session follow-up18/18 passes, zero skips; pure/catalogue/image source unchanged. No full npm claim. docs/gcsp/evidence/fucq60/source-v2-enrichment-2026-11-07.md."
+        },
+        {
+          "id": "corpus-integration",
+          "status": "in-progress",
+          "title": "F54 corpus and presentation integration",
+          "observed_at": "2026-11-07T00:33:53Z",
+          "evidence": "Fresh current-session cached historical 9/9 validates existing isolated F54 registry/lookup path. Source v2 enrichment remains partial; F62 owns publisher/loader v2 support. Shared corpus/presentation activation, native integration, breadth/assets and full npm validation remain."
+        },
+        {
+          "id": "final-suite",
+          "status": "not-started",
+          "title": "Authored final npm test integration gate"
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-04-033"
     },
     {
       "id": "FUCQ-61",
