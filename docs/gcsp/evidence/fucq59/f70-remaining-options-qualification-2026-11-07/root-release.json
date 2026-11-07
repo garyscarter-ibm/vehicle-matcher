@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "f70-remaining-options-root-release.v1",
+  "releasedBy": "root",
+  "recordedAt": "2026-11-07T02:52:13Z",
+  "authority": "Direct root chat message authorizing exact allocation once; no AFK user question required",
+  "allocationId": "f70-model-options-20261107-2c4d05cb669da823",
+  "planDigest": "2c4d05cb669da8238a23c5ace1e0298aa80b4b365b05ea0cab50f8daf8a0616e",
+  "preparedCommit": "ffb6adfa07fecd08efdbc8aa2a69d9a857976280",
+  "command": "F70_REMAINING_OPTIONS_SOURCE_GRANT=<allocationId> /usr/bin/python3 -I -B docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/supervise.py live",
+  "attemptCeiling": 16,
+  "contexts": [
+    "1f7a",
+    "1f7c",
+    "1f7d",
+    "1f7f"
+  ],
+  "once": true,
+  "stopOnFirstFailedOrIncompleteContext": true,
+  "retries": 0,
+  "rootOwnsScopeAndFinalResourceReceipt": true
+}

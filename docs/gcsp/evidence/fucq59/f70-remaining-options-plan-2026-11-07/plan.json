@@ -1,7 +1,7 @@
 {
   "schemaVersion": "f58-f70-remaining-model-options-plan.v1",
   "planId": "f58-f70-remaining-options-20261107",
-  "status": "capability implemented, source-lead reviewed, scoped tests123/123 pass; prepared executable awaits separate root release",
+  "status": "exact root release consumed once;16GETs/all200/four model-options contexts observed;6retained-only semantic checks pass;no construction/admission/capacity",
   "runId": "f58-63-overnight-20261106",
   "sourceCapabilityBaseCommit": "ddd1d846319d14acb39f25f6521259dd4402dea9",
   "planWorktreeHead": "3dd1bbecdc8dd0f5d17ef503ca7009f466eddddf",
@@ -455,7 +455,7 @@
     "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/supervise.py",
     "live"
   ],
-  "commandStatus": "Implemented exact entry point; root release required via F70_REMAINING_OPTIONS_SOURCE_GRANT matching execution-plan.id. No source traffic executed.",
+  "commandStatus": "SPENT: source allocation consumed once. Do not rerun. Original frozen execution-plan.json remains the preparation snapshot.",
   "retention": [
     "sealed safe context projection and actual line/default/included pointers",
     "sealed directly keyed typed definitions with option/optionType and optional safe description",
@@ -483,7 +483,7 @@
     "UI/stock/SQL/Jira changes",
     "whole-story acceptance or configuration/model-line capacity claims"
   ],
-  "trafficExecuted": false,
+  "trafficExecuted": true,
   "testsExecutedForThisPlan": true,
   "scratchAllocatedForThisPlan": true,
   "acceptance": false,
@@ -506,5 +506,6 @@
   },
   "preparedExecutionPlan": "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/execution-plan.json",
   "preparedPlanDigest": "2c4d05cb669da8238a23c5ace1e0298aa80b4b365b05ea0cab50f8daf8a0616e",
-  "trafficGrantEnvironment": "F70_REMAINING_OPTIONS_SOURCE_GRANT"
+  "trafficGrantEnvironment": "F70_REMAINING_OPTIONS_SOURCE_GRANT",
+  "liveResults": "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/live-results.json"
 }

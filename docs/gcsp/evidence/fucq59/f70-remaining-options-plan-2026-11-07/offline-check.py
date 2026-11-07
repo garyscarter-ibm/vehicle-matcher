@@ -12,8 +12,10 @@ ROOT = Path(__file__).resolve().parents[5]
 spec = importlib.util.spec_from_file_location('owned_resources', ROOT / '_tools/test_resources.py')
 r = importlib.util.module_from_spec(spec); spec.loader.exec_module(r)
 phase = sys.argv[1]
-assert phase in ('red', 'green', 'green2', 'green3', 'prepared', 'prepared-red', 'prepared-red2', 'prepared-red3', 'prepared-green', 'prepared-green2')
+assert phase in ('red', 'green', 'green2', 'green3', 'prepared', 'prepared-red', 'prepared-red2', 'prepared-red3', 'prepared-green', 'prepared-green2', 'retained')
 files = ['server/test/gcsp-bmw-model-options-qualification.test.js']
+if phase == 'retained':
+    files = ['docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/retained-check.test.mjs']
 if phase.startswith('prepared'):
     files = ['docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/prepared-check.test.mjs']
 if phase.startswith('green'):
