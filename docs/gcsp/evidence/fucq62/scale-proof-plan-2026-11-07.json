@@ -1,9 +1,9 @@
 {
   "status": "prepared-not-executed",
-  "variant": "minimum-whole-row-beyond64-v2-metadata-confirmed",
+  "variant": "minimum-whole-row-beyond64-v3-latest-stat-traced",
   "baseCommit": "f4481b711cfcc4a6f04d71486b64b2e2e9a1ee5e",
   "pinsPath": "docs/gcsp/evidence/fucq62/scale-proof-pins-2026-11-07.json",
-  "scope": "Existing JSONL/static corpus path with the narrow FUCQ-153 ctime-only checksum confirmation repair; resource-only synthetic fixture, no provider/schema/dependency/refactor or source/VIN/stock capacity credit",
+  "scope": "Existing JSONL/static corpus path after scoped FUCQ-153 latest-stat precheck-race correction; resource-only synthetic byte volume, no source/VIN/stock capacity credit",
   "fixture": {
     "expectedConfigurationBytes": 67118856,
     "firstIndex": 1,
@@ -46,16 +46,8 @@
     "workingDirectory": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035"
   },
   "approvalCommand": "/usr/bin/python3 -I -B docs/gcsp/evidence/fucq62/scale-resource-supervisor.py --parent-approved",
-  "childCommand": "/opt/homebrew/bin/node --max-old-space-size=256 docs/gcsp/evidence/fucq62/scale-resource-proof.mjs --receipt <controlBase>/<pins-sha256-prefix>/receipt.json",
-  "selectionReason": "Narrow JSONL prepare/validate/publish/load/recovery boundary after the scoped FUCQ-153 metadata-identity repair. The synthetic references make rows close to the actual341-row package mean of18604 bytes but do not reproduce v2 source-admission cost. The four selected boundary test files already passed27tests; the guarded large proof remains held for renewed parent review.",
-  "previousAttempt": {
-    "codeCommit": "cc3a9127f480cb6cb20d77e3aa64a123f9c3e635",
-    "followup": "FUCQ-153: ctime-only drift with unchanged whole-file bytes; bounded full-checksum confirmation retains data identity, row digest and race guards",
-    "pinsSha256": "017a66e259a57e0ce517f0a2821a0e25bf1e705eadee670a9a1e2ccdb1dd7463",
-    "receipt": "docs/gcsp/evidence/fucq62/scale-proof-failed-2026-11-07.json",
-    "repairEvidence": "docs/gcsp/evidence/fucq62/scale-identity-repair-2026-11-07.json",
-    "status": "failed-incomplete; no passing greater-than64MiB claim"
-  },
+  "childCommand": "/opt/homebrew/bin/node --max-old-space-size=256 --import /Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq62/scale-identity-trace.mjs docs/gcsp/evidence/fucq62/scale-resource-proof.mjs --receipt <controlBase>/<pins-sha256-prefix>/receipt.json",
+  "selectionReason": "Helper-only precheck race correction has28scoped repository tests plus one standalone42B red-to-green case. Actual large-run cause remains unproven. Prepared main-process tracing retains exact path/identity if the boundary fails again. No further allocation is released by this plan.",
   "phases": [
     "Validate pins/containment/budget; publish one-row owned baseline",
     "Generate first complete row beyond64MiB directly to OneDrive and checkpoint bytes/hash",
@@ -74,5 +66,30 @@
     "No production cap change",
     "No permanent large artifact or archive"
   ],
-  "checkpointPolicy": "Completed phase evidence and identities persist outside scratch. Any handled failure/cancellation removes all owned generated payloads. If replay is required, rebuild deterministic materialisations only as needed and reuse matching completed check evidence; no resumable payload is claimed after deletion."
+  "checkpointPolicy": "Completed phase evidence and identities persist outside scratch. Any handled failure/cancellation removes all owned generated payloads. If replay is required, rebuild deterministic materialisations only as needed and reuse matching completed check evidence; no resumable payload is claimed after deletion.",
+  "previousAttempts": [
+    {
+      "codeCommit": "cc3a9127f480cb6cb20d77e3aa64a123f9c3e635",
+      "followup": "FUCQ-153: ctime-only drift with unchanged whole-file bytes; bounded full-checksum confirmation retains data identity, row digest and race guards",
+      "pinsSha256": "017a66e259a57e0ce517f0a2821a0e25bf1e705eadee670a9a1e2ccdb1dd7463",
+      "receipt": "docs/gcsp/evidence/fucq62/scale-proof-failed-2026-11-07.json",
+      "repairEvidence": "docs/gcsp/evidence/fucq62/scale-identity-repair-2026-11-07.json",
+      "status": "failed-incomplete; no passing greater-than64MiB claim"
+    },
+    {
+      "codeCommit": "2c9ca8baa9923638187649001c2f87450af27ff7",
+      "pinsSha256": "0eeb6d536dae58bec3b37cbcd6c3bcca419d0608688b22adb93d333a73c8c94c",
+      "status": "failed-incomplete; exact large-run cause remains unproven",
+      "receipt": "docs/gcsp/evidence/fucq62/scale-proof-renewed-failed-2026-11-07.json",
+      "diagnostic": "docs/gcsp/evidence/fucq62/scale-identity-sequence-diagnostic-2026-11-07.json",
+      "scopedRepairEvidence": "docs/gcsp/evidence/fucq62/scale-precheck-repair-2026-11-07.json"
+    }
+  ],
+  "identityTracing": {
+    "path": "docs/gcsp/evidence/fucq62/scale-identity-trace.mjs",
+    "state": "prepared-only; no allocation/execution",
+    "scope": "runtime-only main-process source instrumentation,128event ring,8failures/8successfulconfirmations; path/expected/current/latest/posthash identities and before-return state, unchanged production guard",
+    "coldSubprocesses": "Uninstrumented original commands",
+    "limitation": "Syntax/source-transform checks only before independent review; actual large boundary remains unrun after this correction."
+  }
 }

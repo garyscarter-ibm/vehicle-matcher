@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
+import fs from 'node:fs';
 import { chmod, mkdtemp, writeFile, rm, rename, stat, utimes } from 'node:fs/promises';
+import { syncBuiltinESMExports } from 'node:module';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { indexJsonl } from '../gcsp/vehicle-evidence/indexed-jsonl.js';
@@ -74,6 +76,23 @@ test('metadata-only movement during indexing preserves one coherent byte snapsho
     if (!changed) { changed = true; await chmod(path, 0o640); }
   } });
   assert.deepEqual([...indexed], [{ id: 'a' }, { id: 'b' }]);
+});
+test('ctime-only movement before confirmation hashes one stable current byte snapshot', async (t) => {
+  const path = await fixture(t, '{"id":"a","value":1}\n{"id":"b","value":2}\n'); await chmod(path, 0o600);
+  const indexed = await indexJsonl(path, { key: (row) => row.id }); const target = await stat(path, { bigint: true });
+  await chmod(path, 0o640);
+  const original = fs.fstatSync; let calls = 0; let injected = false;
+  fs.fstatSync = function (fd, ...args) {
+    let info = original.call(this, fd, ...args);
+    if (String(info.dev) === String(target.dev) && String(info.ino) === String(target.ino) && ++calls === 2) {
+      fs.fchmodSync(fd, 0o600); injected = true; info = original.call(this, fd, ...args);
+    }
+    return info;
+  };
+  syncBuiltinESMExports();
+  try { assert.deepEqual(indexed.get('a'), { id: 'a', value: 1 }); assert.ok(injected); }
+  finally { fs.fstatSync = original; syncBuiltinESMExports(); }
+  assert.deepEqual(indexed.get('b'), { id: 'b', value: 2 });
 });
 test('a changed unrequested row cannot hide behind restored modification time', async (t) => {
   const path = await fixture(t, '{"id":"a","value":1}\n{"id":"b","value":2}\n');

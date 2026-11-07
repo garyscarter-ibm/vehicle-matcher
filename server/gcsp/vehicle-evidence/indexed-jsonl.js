@@ -14,20 +14,21 @@ const sameIdentity = (left, right) => Object.keys(left).every((key) => left[key]
 function confirmMetadataChange(fd, expected, current, checksum) {
   // File providers can update metadata without touching bytes. Keep every data identity
   // guard, and confirm the entire indexed byte snapshot before accepting only a new ctime.
-  if (!checksum || Object.keys(expected).some((key) => key !== 'ctimeNs' && expected[key] !== current[key])
-    || !sameIdentity(current, identity(fstatSync(fd, { bigint: true })))) {
+  const latest = identity(fstatSync(fd, { bigint: true }));
+  if (!checksum || [current, latest].some((value) => Object.keys(expected).some(
+    (key) => key !== 'ctimeNs' && expected[key] !== value[key]))) {
     fail('artifact-changed', 'Indexed artifact identity changed.');
   }
   const hash = createHash('sha256'); const buffer = Buffer.alloc(64 * 1024); let position = 0;
-  while (position < Number(current.size)) {
-    const count = readSync(fd, buffer, 0, Math.min(buffer.length, Number(current.size) - position), position);
+  while (position < Number(latest.size)) {
+    const count = readSync(fd, buffer, 0, Math.min(buffer.length, Number(latest.size) - position), position);
     if (!count) fail('artifact-changed', 'Indexed artifact became incomplete.');
     hash.update(buffer.subarray(0, count)); position += count;
   }
-  if (hash.digest('hex') !== checksum || !sameIdentity(current, identity(fstatSync(fd, { bigint: true })))) {
+  if (hash.digest('hex') !== checksum || !sameIdentity(latest, identity(fstatSync(fd, { bigint: true })))) {
     fail('artifact-changed', 'Indexed artifact bytes or identity changed.');
   }
-  return current;
+  return latest;
 }
 function parse(bytes, label) {
   let row;
