@@ -40,5 +40,7 @@
   "runtimeExecuted": false,
   "networkExecuted": false,
   "scratchAllocated": false,
-  "acceptance": false
+  "acceptance": false,
+  "originalEnvironmentReceiptPinned": true,
+  "originalNodePlatformArch": "v26.7.0/darwin/arm64"
 }

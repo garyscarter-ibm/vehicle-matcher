@@ -32,7 +32,7 @@ class ControlTee:
  def flush(self):self.original.flush();controlLog.flush()
 sys.stdout=ControlTee(sys.stdout);sys.stderr=ControlTee(sys.stderr)
 inputs={str(grantPath):sha(grantPath)}
-for pin in [plan['offlineSummary'],plan['candidateReceipt'],plan['descriptorReceipt'],*plan['originalProofReceipts'],*plan['executionProofPins']]:inputs[pin['path']]=pin['sha256']
+for pin in [plan['offlineSummary'],plan['candidateReceipt'],plan['descriptorReceipt'],plan['originalEnvironmentReceipt'],*plan['originalProofReceipts'],*plan['executionProofPins']]:inputs[pin['path']]=pin['sha256']
 if phase!='ordinary':inputs.update({p['path']:p['sha256'] for p in plan['ordinaryPins']})
 if phase in ['offline','recovery']:
  for folder in [pathlib.Path(plan['retainedStore']),pathlib.Path(plan['retainedCache'])]:

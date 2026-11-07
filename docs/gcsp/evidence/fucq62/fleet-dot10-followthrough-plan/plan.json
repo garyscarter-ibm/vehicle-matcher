@@ -1513,14 +1513,24 @@
     "docs/gcsp/evidence/fucq62/fleet-dot10-followthrough-plan/common.mjs": "9a3cccc0858430e5117dfb9cf641515df9e9b8467603db92d8fe0388d86b2a73",
     "docs/gcsp/evidence/fucq62/fleet-dot10-followthrough-plan/descriptor-proposal.json": "f74ddd34fd853868f3f43a9528ffe74d4fe187a2b7a0d5fbd7b4c796ef7ae05a",
     "docs/gcsp/evidence/fucq62/fleet-dot10-followthrough-plan/boundary-observations.json": "e9846fe5475bba2c2804cd3c55299088925220d038c24e7613d715f23d28430a",
-    "docs/gcsp/evidence/fucq62/fleet-dot10-followthrough-plan/followthrough.mjs": "22c6e6c2526a15fa9daeccf8446ce0df29ae5bb981a0fe074c20f66d2abe7844",
+    "docs/gcsp/evidence/fucq62/fleet-dot10-followthrough-plan/followthrough.mjs": "09cef690a2770c9531b64f1cd2da3fa9f71faab836d65ec8c028a6702b56c476",
     "docs/gcsp/evidence/fucq62/fleet-dot10-followthrough-plan/recovery.mjs": "8d019e1a1e49c352124e6803e78416a3baf97fc0a3fe79b40bb4ae4aa26fb795",
     "docs/gcsp/evidence/fucq62/fleet-dot10-followthrough-plan/group-proof.py": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c",
     "docs/gcsp/evidence/fucq62/fleet-dot10-followthrough-plan/boundary.mjs": "59c4025003470c13387193e53de71d1b398e684881cc583218543bbb83936696",
     "docs/gcsp/evidence/fucq62/fleet-dot10-followthrough-plan/deployment-plan.json": "f4276538fbe6783dd2e17c9763c0da12331f67d0f4647a9f31eb97e5fb338976",
     "docs/gcsp/evidence/fucq62/fleet-dot10-followthrough-plan/ci.patch": "d099f2b080edbcd7b303a5fd4bff0a36b93968bb5444820a34bbd46145e273be",
-    "docs/gcsp/evidence/fucq62/fleet-dot10-followthrough-plan/supervise.py": "abdcc386de4f97fca6cdef2582d74c32e0aaf160c22b466e52984ccb69344f37",
+    "docs/gcsp/evidence/fucq62/fleet-dot10-followthrough-plan/supervise.py": "c3ceac877b33b1feddc9991d4eba2ed815af65b6a31c62a2a17fd78be1980dcd",
     "docs/gcsp/evidence/fucq62/fleet-dot10-followthrough-plan/render.patch": "a26bf452ac66d72ec06432e5a3131ab4a5a2157e45dca9b537736cc1c013b5bc"
   },
-  "phaseAuthority": "Separate parent grant per download/offline/recovery/ordinary; no direct helper invocation. Ordinary may execute reviewed child scripts against exact named root ordinary store only with explicit ordinaryStore and operationalDisposition grant."
+  "phaseAuthority": "Separate parent grant per download/offline/recovery/ordinary; no direct helper invocation. Ordinary may execute reviewed child scripts against exact named root ordinary store only with explicit ordinaryStore and operationalDisposition grant.",
+  "originalEnvironmentReceipt": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot10-4666-20261107/strict-direct-audit-receipt.json",
+    "bytes": 6636,
+    "sha256": "57e25ce6dfa572066e369a88e70e29d66ed0c827047a23543c6fd63110c87dcb"
+  },
+  "originalEnvironment": {
+    "node": "v26.7.0",
+    "platform": "darwin",
+    "arch": "arm64"
+  }
 }
