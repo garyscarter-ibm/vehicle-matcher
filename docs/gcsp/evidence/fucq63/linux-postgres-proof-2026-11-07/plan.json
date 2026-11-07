@@ -1,6 +1,6 @@
 {
   "schemaVersion": "f63-linux-postgres-orders-plan.v1",
-  "status": "diagnostic-revision-prepared-unexecuted-root-integration-push-required",
+  "status": "fixture-publication-correction-prepared-unexecuted-root-integration-push-required",
   "releaseId": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
   "corpusVersion": "2026-11-07.12",
   "datasetId": "gcsp-source-fleet",
@@ -42,8 +42,8 @@
     "Production public cold restore of exact .12 with code-owned approved URLs and byte/hash validation",
     "Actual production three-migration ledger on isolated PostgreSQL16 service",
     "Three retained source configurations matched to frozen .12 observations",
-    "Production allocator plus publishStockOrders into one exact current run",
-    "Close production seed repository and reopen production PostgreSQL repository with migrate:false",
+    "Production allocator plus publishStockOrders into one exact current run, followed by separate authoritative full-inventory transaction/CAS publication against imported.value.runVersion",
+    "Close production seed repository and reopen production PostgreSQL repository with migrate:false; confirm persisted exact inventory snapshot and run version",
     "Unchanged proveCurrentOrderReferences for three exact UUIDs: native rows, direct DTO, configured consumer, actual loopback HTTP, zero external source attempts and current-run stability",
     "Owned process/container/data cleanup and verified absence"
   ],
@@ -76,11 +76,11 @@
   },
   "acceptance": false,
   "testImpact": {
-    "selectionReason": "No application behavior changes. The original remote proof failed after restore; this diagnostic-only revision retains the returned exact-order proof before unchanged acceptance assertions. Static syntax, budget and unchanged-boundary checks are proportionate; root owns the next runtime integration run.",
+    "selectionReason": "No application behavior changes. Diagnostic run42371231686 proved three direct/HTTP passes and three consumer source-unavailable failures. Static tracing establishes the fixture omitted the separate authoritative inventory snapshot publication. This correction adds only that existing transaction/CAS setup after stock import, then checks persistence on reopen; static validation is proportionate and root owns the one next runtime integration run.",
     "unknownUntilCI": [
-      "Revised diagnostic retention when an order-reference assertion fails",
-      "Actual returned direct/HTTP/consumer/current-run details from the next native sample",
-      "Passing native proof and complete actual resource/teardown evidence for the revised run"
+      "Actual separate snapshot publication and fresh-repository persistence on PostgreSQL",
+      "Passing direct/HTTP/configured-consumer proof for the same three retained configurations",
+      "Complete actual resource/teardown evidence for the corrected run"
     ],
     "boundaries": {
       "orders.mjs": [
@@ -89,6 +89,7 @@
         "current-run creation",
         "allocateSyntheticIdentities",
         "publishStockOrders",
+        "separate authoritative inventory transaction/compareAndSwap using stock publisher runVersion",
         "PostgreSQL close/reopen",
         "proveCurrentOrderReferences"
       ],
@@ -109,10 +110,11 @@
     "diagnosticAuthoringValidation": [
       "node --check orders.mjs (no imports)",
       "Python in-memory compilation (no execution)",
-      "JSON parse and diagnostic/report/resource budget arithmetic",
-      "Workflow/service/cleanup unchanged against 9d9f3e68; exported prover unchanged against original run pin",
-      "Proof acceptance expressions unchanged; expected/actual summaries accept primitive type/enum/count fields only",
-      "No local proof, test suite, source request, download, install, database or scratch"
+      "JSON parse and unchanged diagnostic/report/resource budget arithmetic",
+      "Workflow/run.py/selection/resource/codePins unchanged against222c738f; reuse existing15pins",
+      "Static transaction/CAS sequence against existing production port and scenario snapshot shape; persisted snapshot check follows close/reopen",
+      "All five proof acceptance expressions unchanged; diagnostic retention/sanitization unchanged",
+      "No local proof, test suite, source request, download, install, database, browser or scratch"
     ]
   },
   "executionTrigger": {
@@ -134,7 +136,7 @@
     "originalAttempt": 1,
     "originalRuntimeHead": "51c691bd5437efe47d43225edfb609d0b4dbe176",
     "originalResult": "failed at unchanged-order-reference-proof assertion; actual returned proof discarded by original catch; printed checked0 is a fallback",
-    "causeStatus": "Original assertion cause remains unresolved; only lost diagnostic evidence is established by static trace",
+    "causeStatus": "Diagnostic run42371231686 retained three direct/HTTP passes and three consumer source-unavailable failures; exact code trace establishes omitted full authoritative inventory snapshot in fixture setup before consumer classification. Ordinary scenario seed already retains the snapshot.",
     "selection": "Retain complete returned prover result before unchanged pass assertions, including direct/HTTP/consumer/current-run/egress metrics and UUID/hash observations; sanitize assertion expected/actual to primitive type/allowlisted enum/count fields; absent prover result remains null",
     "maximumReturnedProofBytes": 16384,
     "maximumOrderReceiptBytes": 65536,
@@ -152,11 +154,43 @@
     "noArbitraryErrorMessageOrStack": true,
     "proofCriteriaChanged": false,
     "productionChanged": false,
-    "nextExecution": "Root-reviewed integration merge only; agent dispatch/rerun prohibited"
+    "nextExecution": "Root-reviewed integration merge only; agent dispatch/rerun prohibited",
+    "diagnosticRun": {
+      "runId": 42371231686,
+      "attempt": 1,
+      "runtimeHead": "b0e0ee6e71a1dd7f24c680d34d64967df7109646",
+      "conclusion": "failure",
+      "checked": 3,
+      "directErrors": 0,
+      "httpErrors": 0,
+      "consumerErrors": 3,
+      "sourceCalls": 0,
+      "externalConnectAttempts": 0,
+      "nativeProof": false,
+      "retainedAt": "../linux-postgres-diagnostic-result-2026-11-07/"
+    }
   },
   "harnessIdentities": {
-    "orders.mjs": "f2b2b4b2b0c40c6c53ae9226c2657a672cd0261bacace31659573a3a09b0c0ea",
+    "orders.mjs": "2adc9b1f84c7f5e8854aa9dacf5e2ecfced03c0ba058ed1f4fabc1d78d9fa880",
     "run.py": "a6f779afe04f142552b302d2e19048c355ebd1c0633ad66a2c3f678f6c59ffce",
     "selection.json": "dbb5be7d9f776bd97361d34d52a69490fd81d3e614f15cf52d63597179c354b5"
+  },
+  "fixturePublicationCorrection": {
+    "scope": "Proof fixture setup only; unchanged production and exported prover",
+    "sequence": "After publishStockOrders, before repository close and unchanged proof",
+    "port": "repository.transaction with tx.get and tx.compareAndSwap",
+    "expectedRunVersion": "imported.value.runVersion",
+    "retainedValue": "syntheticIdentityInventory {revision: allocated.inventory.revision, contentDigest: allocated.inventory.contentDigest, snapshot: allocated.inventory}",
+    "reopenCheck": "Exact current run, publication version and full retained inventory snapshot",
+    "existingContractEvidence": [
+      "server/gcsp/vehicle-evidence/vin-allocation.js: publishStockOrders separate offline publication comment and returned runVersion",
+      "server/gcsp/fixtures/scenario-v1.js: buildScenarioSeed full retained inventory",
+      "server/test/helpers/offline-vehicle-fixture.js: original memory proof uses scenario/runtime fixture",
+      "server/gcsp/vehicle-evidence/identity-routing.js: stock classification requires consistent retained snapshot"
+    ],
+    "productionPinsReused": 15,
+    "criteriaChanged": false,
+    "productionChanged": false,
+    "executed": false
   }
 }

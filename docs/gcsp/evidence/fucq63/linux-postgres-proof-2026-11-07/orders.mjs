@@ -98,6 +98,17 @@ try {
  assert.equal(allocated.status,'ok');assert.equal(allocated.inventory.records.length,3);
  const imported=await publishStockOrders({repository,context,inventory:allocated.inventory,expectedRunVersion:created.value.version,commandId:'f63-linux-publish-orders'});
  assert.equal(imported.status,'ok');assert.equal(imported.value.imported,3);
+ stage='publish-authoritative-inventory-snapshot';
+ // Stock import publishes projection metadata; the separate offline publication retains routing authority.
+ const retainedInventory={revision:allocated.inventory.revision,contentDigest:allocated.inventory.contentDigest,snapshot:allocated.inventory};
+ const inventoryPublished=await repository.transaction(context,{commandId:'f63-linux-publish-inventory',
+  inputDigest:inputDigest({inventory:allocated.inventory,expectedRunVersion:imported.value.runVersion})},async tx=>{
+  const runKey={table:'runs',key:{runId:context.runId}};const current=await tx.get(runKey);
+  if(current.status!=='ok')return current;
+  return tx.compareAndSwap(runKey,imported.value.runVersion,{versions:{...current.value.versions,syntheticIdentityInventory:retainedInventory}});
+ });
+ assert.equal(inventoryPublished.status,'ok');
+ assert.deepEqual(inventoryPublished.value.versions.syntheticIdentityInventory,retainedInventory);
  const rows=[];
  for(const allocation of allocated.inventory.records) {
   const found=await repository.read(context,{table:'stock',key:{runId:context.runId,orderUuid:allocation.orderUuid}});assert.equal(found.status,'ok');
@@ -109,6 +120,8 @@ try {
  stage='close-seed-repository';assert.equal((await repository.close()).status,'ok');repository=null;
  const seedExternalCalls=seedGuard.calls.length;assert.equal(seedExternalCalls,0);seedGuard.restore();seedGuard=null;
  stage='reopen-production-postgresql';repository=createPostgresRepository({schema,migrate:false});assert.equal((await repository.open()).status,'ok');
+ const reopenedRun=await repository.currentRun(context.environmentId);assert.equal(reopenedRun.status,'ok');assert.equal(reopenedRun.value.runId,context.runId);
+ assert.equal(reopenedRun.value.version,inventoryPublished.value.version);assert.deepEqual(reopenedRun.value.versions.syntheticIdentityInventory,retainedInventory);
  const nativeCounts=await pool.query(`SELECT (SELECT count(*)::int FROM "${schema}".runs) AS runs, (SELECT count(*)::int FROM "${schema}".stock) AS stock`);assert.deepEqual(nativeCounts.rows,[{runs:1,stock:3}]);
  stage='unchanged-order-reference-proof';
  assertionCheck='proof-call';
@@ -120,7 +133,8 @@ try {
  result={schemaVersion:'f63-linux-postgres-orders-result.v1',status:'passed',scope:'three exact current-run stock references over actual retained .12 corpus; SQL close/reopen and direct/consumer/loopback HTTP',
   manifestDigest:plan.releaseId,postgresVersion:identity.rows[0].version,migrationLedger:ledger.rows,runId:context.runId,schema,
   stockImported:3,nativeCounts:nativeCounts.rows[0],seedRepositoryClosed:true,freshRepositoryOpened:true,allocationRevision:allocated.inventory.revision,
-  allocationContentDigest:allocated.inventory.contentDigest,rows,seedExternalCalls,proof,fullCorpusConsumerReplay:false,deferredConsumerFailures:2707,acceptance:false};
+  allocationContentDigest:allocated.inventory.contentDigest,inventorySnapshotRetained:true,inventoryPublishedRunVersion:inventoryPublished.value.version,
+  rows,seedExternalCalls,proof,fullCorpusConsumerReplay:false,deferredConsumerFailures:2707,acceptance:false};
 } catch(error) {
  failure={status:'failed',stage,errorType:error?.name||'Error',errorCode:/^[A-Z0-9_]{1,40}$/.test(error?.code||'')?error.code:null,
   assertionSummary:summarizeAssertion(error,stage,assertionCheck),acceptance:false};

@@ -1,29 +1,30 @@
 {
   "schemaVersion": "f63-linux-postgres-static-validation.v1",
   "status": "passed-scoped-static",
-  "scope": "Diagnostic revision authoring only. Original remote run failed; revised runtime execution remains unrun pending root-reviewed integration push.",
-  "validatedAgainstTopicBase": "9d9f3e68f252196eb4b3a1d0c54f930f9246aff3",
-  "previousPacketStaticReceiptAt": "bb04965ba6db6e69d564fe60a2321871423bfb55",
+  "scope": "Fixture publication correction authoring only. Both failed remote runs remain immutable; corrected runtime execution is unrun pending root-reviewed integration push.",
+  "validatedAgainstTopicBase": "222c738f44168ce80ac1adcbb1c6019f732a9ef8",
+  "previousPacketStaticReceiptAt": "58c14328936f53e1e8c5780975b62be78dbe228c",
   "originalActualRun": {
     "runId": 42370440771,
     "attempt": 1,
     "runtimeHead": "51c691bd5437efe47d43225edfb609d0b4dbe176",
     "conclusion": "failure",
     "retainedAt": "../linux-postgres-result-2026-11-07/",
-    "cause": "Unresolved order-reference assertion; original catch discarded returned proof. Printed checked0/nativeProoffalse were fallback values."
+    "cause": "Original catch discarded returned proof; diagnostic run establishes the fixture lacked the full authoritative inventory snapshot. Original printed checked0/nativeProoffalse were fallback values."
   },
   "selectedChecks": {
     "node": "node --check orders.mjs passed; imports not executed",
     "python": "In-memory run.py compilation passed; supervisor not executed",
-    "json": "plan/static JSON parsed; harness identities matched",
-    "criteria": "All five original proof assert.equal argument expressions match the five labelled proofEqual assertions; wrapper calls the same assert.equal",
+    "json": "Plan/static JSON parsed; revised orders hash and unchanged run.py/selection hashes matched",
+    "criteria": "All five labelled proofEqual argument expressions are byte-identical to diagnostic baseline; wrapper still calls assert.equal",
     "sanitization": "Static review: assertion expected/actual contain primitive type, enum/count fields only. String values require explicit enum membership; objects expose type only and arrays expose length. No error message, stack or object serialization.",
     "retention": "Full returned proof captured before acceptance assertions; compact proof <=16384 bytes; complete order receipt <=65536 bytes; absent proof yields null checked/nativeProof",
-    "boundaries": "Workflow, run.py, selection.json, all resource values and production codePins are byte/value-identical to topic baseline. Exact original-run exported prover SHA256 matches retained pin.",
-    "whitespace": "Direct whitespace/newline checks and git diff --check passed"
+    "boundaries": "Workflow, run.py, selection.json, .12 identity, all resource/trigger values and existing15 production/prover pins unchanged from222c738f. Exact integration-target prover matches original d768ba pin. Both prior failed evidence directories unchanged.",
+    "whitespace": "Direct whitespace/newline checks and git diff --check passed",
+    "setup": "Static port/sequence review: separate repository.transaction and tx.compareAndSwap after publishStockOrders uses imported.value.runVersion, preserves other run versions, retains exact allocated snapshot/revision/digest; same snapshot and publication version checked after close/reopen"
   },
   "harnessIdentities": {
-    "orders.mjs": "f2b2b4b2b0c40c6c53ae9226c2657a672cd0261bacace31659573a3a09b0c0ea",
+    "orders.mjs": "2adc9b1f84c7f5e8854aa9dacf5e2ecfced03c0ba058ed1f4fabc1d78d9fa880",
     "run.py": "a6f779afe04f142552b302d2e19048c355ebd1c0633ad66a2c3f678f6c59ffce",
     "selection.json": "dbb5be7d9f776bd97361d34d52a69490fd81d3e614f15cf52d63597179c354b5"
   },
@@ -61,7 +62,7 @@
   "removedAllocationBytes": 0,
   "disposableLeftovers": [],
   "unrun": [
-    "Revised diagnostic harness in CI",
+    "Corrected publication setup and proof in CI",
     "Any local proof/database/download/install",
     "Full suite",
     "Full corpus configured-consumer replay",
@@ -78,5 +79,38 @@
     "effectiveRuntimeVerified": false,
     "fallback": null,
     "descendants": 0
+  },
+  "diagnosticActualRun": {
+    "runId": 42371231686,
+    "attempt": 1,
+    "runtimeHead": "b0e0ee6e71a1dd7f24c680d34d64967df7109646",
+    "conclusion": "failure",
+    "checked": 3,
+    "directErrors": 0,
+    "httpErrors": 0,
+    "consumerErrors": 3,
+    "sourceCalls": 0,
+    "externalConnectAttempts": 0,
+    "nativeProof": false,
+    "retainedAt": "../linux-postgres-diagnostic-result-2026-11-07/"
+  },
+  "workflowSha256": "db49d6a27a5328cc61d41986b80ae0cf624562eead17d0d5c74890fe6075dff0",
+  "fixturePublicationCorrection": {
+    "scope": "Proof fixture setup only; unchanged production and exported prover",
+    "sequence": "After publishStockOrders, before repository close and unchanged proof",
+    "port": "repository.transaction with tx.get and tx.compareAndSwap",
+    "expectedRunVersion": "imported.value.runVersion",
+    "retainedValue": "syntheticIdentityInventory {revision: allocated.inventory.revision, contentDigest: allocated.inventory.contentDigest, snapshot: allocated.inventory}",
+    "reopenCheck": "Exact current run, publication version and full retained inventory snapshot",
+    "existingContractEvidence": [
+      "server/gcsp/vehicle-evidence/vin-allocation.js: publishStockOrders separate offline publication comment and returned runVersion",
+      "server/gcsp/fixtures/scenario-v1.js: buildScenarioSeed full retained inventory",
+      "server/test/helpers/offline-vehicle-fixture.js: original memory proof uses scenario/runtime fixture",
+      "server/gcsp/vehicle-evidence/identity-routing.js: stock classification requires consistent retained snapshot"
+    ],
+    "productionPinsReused": 15,
+    "criteriaChanged": false,
+    "productionChanged": false,
+    "executed": false
   }
 }
