@@ -13,6 +13,7 @@ import { createScenarioService } from './scenarios/index.js';
 import { createSyntheticManualStockAdapter } from './adapters/manual-stock.js';
 import { createManualClaimsService } from './manual-claims/index.js';
 import { createBuddyHoldService } from './offers/buddy-hold.js';
+import { createAllocationService } from './allocation/index.js';
 import { createOfferAccessService, OFFER_ACCESS_COOKIE } from './offers/access.js';
 import { createOfferDecisionService } from './offers/decision.js';
 import { createOfferFollowupService } from './offers/followup.js';
@@ -114,6 +115,8 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const appointments = createLifecycleAppointmentService({ repository, policy, clock, identity,
       lifecycleStages: lifecycle.stagePort(), provider: orderingAdapter.appointments });
     const buddy = createBuddyHoldService({ repository, policy, clock, identity, adapter, offerLandingUrl });
+    // FUCQ-96 proposes claims on the clock's buddy-allocation stage; only the buddy port writes holds.
+    const allocation = createAllocationService({ repository, policy, clock, identity, claim: buddy });
     const offerAccess = createOfferAccessService({ repository, policy, clock, identity, environmentId, sessionNow, verifyOfferToken });
     const offerDecisions = createOfferDecisionService({ repository, policy, clock, access: offerAccess,
       createStoredSubjectEvaluator: createStoredSubjectRecommendationEvaluator, mode: adapter.mode });
@@ -131,7 +134,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       gcspScenarios: scenarios, gcspManualClaims: manualClaims, gcspManualRead: manualRead, gcspManualReview: manualReview,
       gcspStockRelease: stockRelease, gcspCases: cases, gcspManualOrder: manualOrder,
       gcspLifecycle: lifecycle, gcspDocuments: documents, gcspAppointments: appointments,
-      gcspBuddy: buddy, gcspOfferAccess: offerAccess,
+      gcspBuddy: buddy, gcspAllocation: allocation, gcspOfferAccess: offerAccess,
       gcspOfferDecisions: offerDecisions, gcspResolveOfferAccess: resolveOfferAccess, gcspOfferFollowup: offerFollowup,
       gcspNotify: notify, gcspOutbox: { repository },
       // Backend-only; the switch route calls it with the server-issued employee context, replay-safe per run.
@@ -154,6 +157,6 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       if (seeded.status !== 'ok') return seeded;
       return ok({ context: acting.value.context, setCookie: [presenter.value.setCookie[1], acting.value.setCookie] });
     }
-    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, manualRead, manualReview, manualOrder, stockRelease, releaseHistory, cases, orderingAdapter, lifecycle, documents, appointments, buddy, offerAccess, offerDecisions, offerFollowup, resolveOfferAccess, notify, dependencies, createLocalSession, close });
+    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, manualRead, manualReview, manualOrder, stockRelease, releaseHistory, cases, orderingAdapter, lifecycle, documents, appointments, buddy, allocation, offerAccess, offerDecisions, offerFollowup, resolveOfferAccess, notify, dependencies, createLocalSession, close });
   } catch { await close(); return unavailable(); }
 }
