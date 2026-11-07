@@ -1,0 +1,36 @@
+{
+  "run": "f62-render-fullcheckout-layout-20261107",
+  "changedPaths": [
+    "render.gcsp.yaml"
+  ],
+  "regression": "Render rootDir server excludes required root assets; use repository checkout and cd server for build/start while keeping GCSP filters bounded",
+  "affectedCallers": [
+    "Render GCSP API build",
+    "explicit fleet-artifacts CLI"
+  ],
+  "boundaries": [
+    "code-owned release descriptor",
+    "existing local corpus store",
+    "bounded build-time HTTPS restore",
+    "runtime remainsnpmstart/offline"
+  ],
+  "selected": [
+    "Ruby YAMLparse/fullcheckout layout+shell syntax",
+    "existing site build-filter regression",
+    "one exact HTTPSGET pinned deployed staticWebP \u22641MiB/10s/no credentials"
+  ],
+  "excluded": "No new tests for reversible config; no npm install, provider calls, nativePostgreSQL, browser or fullsuite. Existing packagepublicproof covers restore semantics; Renderactualbuild proof separate.",
+  "limits": {
+    "workers": 1,
+    "scratchMiB": 16,
+    "hostRamMiB": 256,
+    "childRamMiB": 192,
+    "seconds": 30
+  },
+  "forecast": {
+    "scratchMiB": 2,
+    "ramMiB": 128,
+    "seconds": 3
+  },
+  "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62-render-layout/result.json"
+}
