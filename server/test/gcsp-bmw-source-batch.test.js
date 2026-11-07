@@ -1,7 +1,7 @@
 /** Scripted protocol fixtures only: no public source requests or capacity claims. */
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile, writeFile, mkdtemp, rm } from 'node:fs/promises';
+import { readFile, writeFile, mkdtemp, rm, readdir } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -243,17 +243,35 @@ test('continuation cannot replay its allowance after destination checkpoint loss
 });
 
 test('continuation records a spent solver without retained response as rejected and never reissues it', async (context) => {
-  const f = await setup(context); const fetch = f.input.http.fetch; let spent;
+  const f = await setup(context); const fetch = f.input.http.fetch; let spent; let instant = f.input.now();
+  f.input.now = () => instant;
   f.input.http.fetch = async (url, options) => {
-    if (!spent && url.includes('/rulesolver/')) { spent = url; throw new Error('scripted response loss'); }
-    return fetch(url, options);
+    const response = await fetch(url, options);
+    if (!spent && url.includes('/rulesolver/')) { spent = url; instant += f.input.plan.limits.deadlineMs + 1; }
+    return response;
   };
-  const first = await (await createFleetCollector(f.input)).run(); assert.equal(first.reason, 'source-failure');
+  const first = await (await createFleetCollector(f.input)).run(); assert.equal(first.reason, 'deadline');
   f.originalBytes = await readFile(f.input.statePath); f.input.http.fetch = fetch;
   const result = await (await createFleetCollector(continuationInput(f))).run();
   assert.equal(result.accepted.length, 1); assert.equal(result.coverage.processedCandidates, 2);
   assert.deepEqual(result.rejected, [{ candidateId: 'candidate-0', code: 'source-request-spent' }]);
-  assert.equal(f.calls.includes(spent), false); assert.equal(result.counts.httpAttempts, 10);
+  assert.equal(f.calls.filter((url) => url === spent).length, 1); assert.equal(result.counts.httpAttempts, 10);
+});
+
+test('continuation refuses durable access rate source refusal substitution and shape stops before marker or traffic', async (context) => {
+  const f = await interrupted(context); const calls = f.calls.length;
+  for (const halted of ['source-http-401', 'source-http-403', 'source-http-429', 'source-redirect-refused',
+    'source-endpoint-refused', 'source-model-substitution', 'source-solver-shape', 'source-json-shape',
+    'source-sensitive-projection', 'source-failure', 'unknown-source-stop']) {
+    const envelope = JSON.parse(f.originalBytes); envelope.content.halted = halted;
+    envelope.contentDigest = inputDigest(envelope.content);
+    const bytes = Buffer.from(JSON.stringify(envelope) + '\n'); await writeFile(f.input.statePath, bytes);
+    const next = continuationInput({ ...f, originalBytes: bytes });
+    const directory = join(f.input.statePath, '..'); const before = (await readdir(directory)).sort();
+    await assert.rejects(async () => (await createFleetCollector(next)).run(), { code: 'continuation-stop-refused' });
+    assert.deepEqual(await readFile(f.input.statePath), bytes); assert.equal(f.calls.length, calls);
+    assert.deepEqual((await readdir(directory)).sort(), before);
+  }
 });
 
 test('continuation source change fails closed before pending solver and finite attempt budget remains effective', async (context) => {

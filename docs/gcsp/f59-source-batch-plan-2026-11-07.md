@@ -153,6 +153,14 @@ configuration IDs remain intact; the predecessor file and original once marker
 are never rewritten. Completed original checkpoints retain their zero-request
 restart path.
 
+Continuation permits only an unhalted interrupted process (`halted:null`),
+`source-batch-interrupted`, `request-budget`, `source-attempt-budget`,
+`source-byte-budget`, `response-byte-budget`, `deadline` or `operation-timeout`.
+Every other durable halt is refused before creating a continuation allocation
+marker or issuing HTTP. In particular, HTTP 401/403/429, redirect/endpoint refusal,
+substitution, malformed source shape, sensitive projection and generic source
+failure remain stopped. A fresh allowance is not authority to bypass these stops.
+
 The caller explicitly budgets four fresh page/settings/tree/options GETs plus the
 remaining unspent solver requests, finite combined attempts/bytes, response size,
 timeout and new lifetime deadline, all within the original plan's ceilings. Live
@@ -169,6 +177,12 @@ allocation IDs, or a consumed allocation whose destination was lost. Preserve
 these markers with the checkpoints. Another interruption requires another
 explicit allocation and checkpoint; the chain supports at most 32 continuations.
 The original checkpoint must remain frozen while its continuation is in use.
+Known Medium defect FUCQ-152: different fresh allocation IDs can currently fork
+from the same predecessor and repeat its pending work. The marker prevents reuse
+of one allocation ID; it does not reserve a single successor per predecessor.
+Root owns this separately linked FUCQ-59 backlog Bug; it is not repaired or made a
+merge dependency here. Operationally keep one chosen successor chain and do not
+start parallel continuations from the same predecessor.
 
 Retained valid solver responses are strictly requalified and reused, including
 expired transport-cache entries used as immutable evidence. A solver request

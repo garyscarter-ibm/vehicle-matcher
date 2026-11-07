@@ -375,6 +375,9 @@ async function createPublicBatchCollector({ plan, source, policyService, policyR
         batchEvidence: state.activeBatchEvidence || state.batchEvidence });
       return structuredClone(state);
     });
+    requireValue([null, 'source-batch-interrupted', 'request-budget', 'source-attempt-budget', 'source-byte-budget',
+      'response-byte-budget', 'deadline', 'operation-timeout'].includes(retained.halted),
+    'continuation-stop-refused', 'Continue only a process, finite budget or deadline interruption; preserve source access, refusal, substitution and shape stops.');
     requireValue(retained.batchEvidence && retained.cursor < plan.candidateCount && retained.counts.httpAttempts > 0,
       'continuation-bootstrap-required', 'Continue an interrupted batch only after complete retained tree and option evidence.');
     const allocationIds = [...(previousLineage?.allocationIds || []), retained.identity.transport.allocation.id];
