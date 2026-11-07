@@ -1,0 +1,483 @@
+{
+ "_note": "Response shapes for the order progress screen (FUCQ-111 lifecycle.stages.v1 revision 2). Injected-producer examples; not FUCQ-71 integration evidence.",
+ "pending": {
+  "status": "ok",
+  "value": {
+   "contractVersion": "lifecycle.stages.v1",
+   "schemaVersion": 1,
+   "runId": "demo-run-example",
+   "orderUuid": "00000000-0000-4000-8000-000000000001",
+   "employeeId": "employee-paula",
+   "entitlementSlotId": "slot-paula",
+   "renewalId": null,
+   "renewalAuthority": "missing",
+   "route": "manual",
+   "source": {
+    "operationId": "selection:example",
+    "operationType": "selection-order",
+    "sourceType": "cart",
+    "holdId": "hold-1",
+    "orderNumber": "1000001",
+    "configurationId": "config-1",
+    "receivedAt": "2026-11-05T09:00:00.000Z",
+    "quoteId": "quote-1",
+    "termsVersion": "fictional-order-terms-v1",
+    "termsDigest": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "approvalStages": [
+     "HR approval",
+     "sales-manager approval",
+     "sent to ordering"
+    ],
+    "policyVersion": "gcsp-policy-v1",
+    "operationVersion": 2,
+    "providerReference": "synthetic-ordering:v1:selection:example"
+   },
+   "policyVersion": "gcsp-policy-v1",
+   "policy": {
+    "policyVersion": "gcsp-policy-v1",
+    "provenance": [
+     {
+      "key": "ordering.approvalStages.v1",
+      "status": "assumed",
+      "source": "docs/gcsp/manual-order-contract.md",
+      "sourceDate": "2026-11-05"
+     },
+     {
+      "key": "lifecycle.approval.ticks.v1",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
+      "sourceDate": "2026-11-06"
+     },
+     {
+      "key": "lifecycle.approval.declineScenario.v1",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
+      "sourceDate": "2026-11-06"
+     },
+     {
+      "key": "lifecycle.approval.ownership.v1",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
+      "sourceDate": "2026-11-06"
+     }
+    ]
+   },
+   "lifecycleRevision": 2,
+   "asOf": "2026-11-05T12:00:00.000Z",
+   "stageList": [
+    "selection received",
+    "HR approval",
+    "sales-manager approval",
+    "sent to ordering"
+   ],
+   "currentStage": "sales-manager approval",
+   "stages": [
+    {
+     "stage": "selection received",
+     "state": "approved",
+     "at": "2026-11-05T09:00:00.000Z",
+     "providerReference": "synthetic-ordering:v1:selection:example",
+     "operationId": "selection:example"
+    },
+    {
+     "stage": "HR approval",
+     "state": "approved",
+     "at": "2026-11-05T11:00:00.000Z",
+     "providerReference": "synthetic-ordering-status:v1:lifecycle-approval:hr",
+     "operationId": "lifecycle-approval:hr"
+    },
+    {
+     "stage": "sales-manager approval",
+     "state": "pending",
+     "at": "2026-11-05T11:00:00.000Z",
+     "providerReference": null,
+     "operationId": "lifecycle-approval:sm"
+    },
+    {
+     "stage": "sent to ordering",
+     "state": "not-started",
+     "at": null,
+     "providerReference": null,
+     "operationId": null
+    }
+   ],
+   "owner": "sales manager",
+   "nextStep": "Sales-manager decision",
+   "outcome": "in-progress",
+   "blocked": null,
+   "provider": {
+    "mode": "synthetic",
+    "provider": "synthetic-ordering-status:v1",
+    "synthetic": true
+   }
+  },
+  "contractVersion": "1.0.0"
+ },
+ "declined": {
+  "status": "ok",
+  "value": {
+   "contractVersion": "lifecycle.stages.v1",
+   "schemaVersion": 1,
+   "runId": "demo-run-example",
+   "orderUuid": "00000000-0000-4000-8000-000000000001",
+   "employeeId": "employee-paula",
+   "entitlementSlotId": "slot-paula",
+   "renewalId": "renewal:employee-paula",
+   "renewalAuthority": "validated",
+   "route": "manual",
+   "source": {
+    "operationId": "selection:example",
+    "operationType": "selection-order",
+    "sourceType": "cart",
+    "holdId": "hold-1",
+    "orderNumber": "1000001",
+    "configurationId": "config-1",
+    "receivedAt": "2026-11-05T09:00:00.000Z",
+    "quoteId": "quote-1",
+    "termsVersion": "fictional-order-terms-v1",
+    "termsDigest": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "approvalStages": [
+     "HR approval",
+     "sales-manager approval",
+     "sent to ordering"
+    ],
+    "policyVersion": "gcsp-policy-v1",
+    "operationVersion": 2,
+    "providerReference": "synthetic-ordering:v1:selection:example"
+   },
+   "policyVersion": "gcsp-policy-v1",
+   "policy": {
+    "policyVersion": "gcsp-policy-v1",
+    "provenance": [
+     {
+      "key": "ordering.approvalStages.v1",
+      "status": "assumed",
+      "source": "docs/gcsp/manual-order-contract.md",
+      "sourceDate": "2026-11-05"
+     },
+     {
+      "key": "lifecycle.approval.ticks.v1",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
+      "sourceDate": "2026-11-06"
+     },
+     {
+      "key": "lifecycle.approval.declineScenario.v1",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
+      "sourceDate": "2026-11-06"
+     },
+     {
+      "key": "lifecycle.approval.ownership.v1",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
+      "sourceDate": "2026-11-06"
+     }
+    ]
+   },
+   "lifecycleRevision": 3,
+   "asOf": "2026-11-05T14:00:00.000Z",
+   "stageList": [
+    "selection received",
+    "HR approval",
+    "sales-manager approval",
+    "sent to ordering"
+   ],
+   "currentStage": "sales-manager approval",
+   "stages": [
+    {
+     "stage": "selection received",
+     "state": "approved",
+     "at": "2026-11-05T09:00:00.000Z",
+     "providerReference": "synthetic-ordering:v1:selection:example",
+     "operationId": "selection:example"
+    },
+    {
+     "stage": "HR approval",
+     "state": "approved",
+     "at": "2026-11-05T11:00:00.000Z",
+     "providerReference": "synthetic-ordering-status:v1:lifecycle-approval:hr",
+     "operationId": "lifecycle-approval:hr"
+    },
+    {
+     "stage": "sales-manager approval",
+     "state": "declined",
+     "at": "2026-11-05T13:00:00.000Z",
+     "providerReference": "synthetic-ordering-status:v1:lifecycle-approval:sm",
+     "operationId": "lifecycle-approval:sm"
+    },
+    {
+     "stage": "sent to ordering",
+     "state": "not-started",
+     "at": null,
+     "providerReference": null,
+     "operationId": null
+    }
+   ],
+   "owner": "scheme team",
+   "nextStep": "Scheme team reviews the decline",
+   "outcome": "declined",
+   "blocked": null,
+   "provider": {
+    "mode": "synthetic",
+    "provider": "synthetic-ordering-status:v1",
+    "synthetic": true
+   }
+  },
+  "contractVersion": "1.0.0"
+ },
+ "sent-to-ordering": {
+  "status": "ok",
+  "value": {
+   "contractVersion": "lifecycle.stages.v1",
+   "schemaVersion": 1,
+   "runId": "demo-run-example",
+   "orderUuid": "00000000-0000-4000-8000-000000000001",
+   "employeeId": "employee-paula",
+   "entitlementSlotId": "slot-paula",
+   "renewalId": null,
+   "renewalAuthority": "missing",
+   "route": "manual",
+   "source": {
+    "operationId": "selection:example",
+    "operationType": "selection-order",
+    "sourceType": "cart",
+    "holdId": "hold-1",
+    "orderNumber": "1000001",
+    "configurationId": "config-1",
+    "receivedAt": "2026-11-05T09:00:00.000Z",
+    "quoteId": "quote-1",
+    "termsVersion": "fictional-order-terms-v1",
+    "termsDigest": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "approvalStages": [
+     "HR approval",
+     "sales-manager approval",
+     "sent to ordering"
+    ],
+    "policyVersion": "gcsp-policy-v1",
+    "operationVersion": 2,
+    "providerReference": "synthetic-ordering:v1:selection:example"
+   },
+   "policyVersion": "gcsp-policy-v1",
+   "policy": {
+    "policyVersion": "gcsp-policy-v1",
+    "provenance": [
+     {
+      "key": "ordering.approvalStages.v1",
+      "status": "assumed",
+      "source": "docs/gcsp/manual-order-contract.md",
+      "sourceDate": "2026-11-05"
+     },
+     {
+      "key": "lifecycle.approval.ticks.v1",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
+      "sourceDate": "2026-11-06"
+     },
+     {
+      "key": "lifecycle.approval.declineScenario.v1",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
+      "sourceDate": "2026-11-06"
+     },
+     {
+      "key": "lifecycle.approval.ownership.v1",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
+      "sourceDate": "2026-11-06"
+     }
+    ]
+   },
+   "lifecycleRevision": 4,
+   "asOf": "2026-11-05T15:00:00.000Z",
+   "stageList": [
+    "selection received",
+    "HR approval",
+    "sales-manager approval",
+    "sent to ordering"
+   ],
+   "currentStage": "sent to ordering",
+   "stages": [
+    {
+     "stage": "selection received",
+     "state": "approved",
+     "at": "2026-11-05T09:00:00.000Z",
+     "providerReference": "synthetic-ordering:v1:selection:example",
+     "operationId": "selection:example"
+    },
+    {
+     "stage": "HR approval",
+     "state": "approved",
+     "at": "2026-11-05T11:00:00.000Z",
+     "providerReference": "synthetic-ordering-status:v1:lifecycle-approval:hr",
+     "operationId": "lifecycle-approval:hr"
+    },
+    {
+     "stage": "sales-manager approval",
+     "state": "approved",
+     "at": "2026-11-05T13:00:00.000Z",
+     "providerReference": "synthetic-ordering-status:v1:lifecycle-approval:sm",
+     "operationId": "lifecycle-approval:sm"
+    },
+    {
+     "stage": "sent to ordering",
+     "state": "approved",
+     "at": "2026-11-05T14:00:00.000Z",
+     "providerReference": "synthetic-ordering-status:v1:lifecycle-approval:sto",
+     "operationId": "lifecycle-approval:sto"
+    }
+   ],
+   "owner": "ordering",
+   "nextStep": "Appointment to be arranged",
+   "outcome": "sent-to-ordering",
+   "blocked": null,
+   "provider": {
+    "mode": "synthetic",
+    "provider": "synthetic-ordering-status:v1",
+    "synthetic": true
+   }
+  },
+  "contractVersion": "1.0.0"
+ },
+ "unsupported": {
+  "status": "ok",
+  "value": {
+   "contractVersion": "lifecycle.stages.v1",
+   "schemaVersion": 1,
+   "runId": "demo-run-example",
+   "orderUuid": "00000000-0000-4000-8000-000000000001",
+   "employeeId": "employee-paula",
+   "entitlementSlotId": "slot-paula",
+   "renewalId": null,
+   "renewalAuthority": "missing",
+   "route": "manual",
+   "source": {
+    "operationId": "selection:example",
+    "operationType": "selection-order",
+    "sourceType": "cart",
+    "holdId": "hold-1",
+    "orderNumber": "1000001",
+    "configurationId": "config-1",
+    "receivedAt": "2026-11-05T09:00:00.000Z",
+    "quoteId": "quote-1",
+    "termsVersion": "fictional-order-terms-v1",
+    "termsDigest": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "approvalStages": [
+     "HR approval",
+     "sales-manager approval",
+     "sent to ordering"
+    ],
+    "policyVersion": "gcsp-policy-v1",
+    "operationVersion": 2,
+    "providerReference": "synthetic-ordering:v1:selection:example"
+   },
+   "policyVersion": "gcsp-policy-v1",
+   "policy": {
+    "policyVersion": "gcsp-policy-v1",
+    "provenance": [
+     {
+      "key": "ordering.approvalStages.v1",
+      "status": "assumed",
+      "source": "docs/gcsp/manual-order-contract.md",
+      "sourceDate": "2026-11-05"
+     },
+     {
+      "key": "lifecycle.approval.ticks.v1",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
+      "sourceDate": "2026-11-06"
+     },
+     {
+      "key": "lifecycle.approval.declineScenario.v1",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
+      "sourceDate": "2026-11-06"
+     },
+     {
+      "key": "lifecycle.approval.ownership.v1",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#lifecycle-approval-stages--fucq-111",
+      "sourceDate": "2026-11-06"
+     }
+    ]
+   },
+   "lifecycleRevision": 1,
+   "asOf": "2026-11-05T12:00:00.000Z",
+   "stageList": [
+    "selection received",
+    "HR approval",
+    "sales-manager approval",
+    "sent to ordering"
+   ],
+   "currentStage": "HR approval",
+   "stages": [
+    {
+     "stage": "selection received",
+     "state": "approved",
+     "at": "2026-11-05T09:00:00.000Z",
+     "providerReference": "synthetic-ordering:v1:selection:example",
+     "operationId": "selection:example"
+    },
+    {
+     "stage": "HR approval",
+     "state": "pending",
+     "at": "2026-11-05T11:00:00.000Z",
+     "providerReference": null,
+     "operationId": "lifecycle-approval:hr"
+    },
+    {
+     "stage": "sales-manager approval",
+     "state": "not-started",
+     "at": null,
+     "providerReference": null,
+     "operationId": null
+    },
+    {
+     "stage": "sent to ordering",
+     "state": "not-started",
+     "at": null,
+     "providerReference": null,
+     "operationId": null
+    }
+   ],
+   "owner": "HR",
+   "nextStep": "HR decision",
+   "outcome": "in-progress",
+   "blocked": {
+    "code": "live-ordering-unsupported",
+    "reason": "Live approval updates are not connected in this demonstration. The order stays at its current step."
+   },
+   "provider": {
+    "mode": "live",
+    "provider": "live-ordering-status:stub",
+    "synthetic": false
+   }
+  },
+  "contractVersion": "1.0.0"
+ },
+ "not-found": {
+  "status": "not-found",
+  "resourceType": "order",
+  "reason": "No selection has been sent on for this order.",
+  "contractVersion": "1.0.0"
+ },
+ "not-ready": {
+  "status": "unavailable",
+  "code": "selection-pending",
+  "reason": "The selection is still being sent on.",
+  "retryable": true,
+  "state": "not-ready",
+  "contractVersion": "1.0.0"
+ },
+ "forbidden": {
+  "status": "forbidden",
+  "reason": "This order belongs to another employee.",
+  "contractVersion": "1.0.0"
+ },
+ "unavailable": {
+  "status": "unavailable",
+  "retryable": true,
+  "reason": "Order progress is unavailable. Try again shortly.",
+  "contractVersion": "1.0.0"
+ }
+}
