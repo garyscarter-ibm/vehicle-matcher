@@ -2001,7 +2001,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T06:40:51Z",
+      "observed_at": "2026-11-07T07:02:21Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-63",
       "slices": [
         {
@@ -2029,8 +2029,8 @@
           "id": "scale-evidence",
           "status": "in-progress",
           "title": "Measure bounded correctness throughput and latency on actual corpus",
-          "observed_at": "2026-11-07T06:40:51Z",
-          "evidence": "8,813 parent-proved source /8,816canonical /11,623spent-index entries, including labelled conservative failed-template exclusions;1,187short10k.45,777read-onlychecks/zeroerrors;762new over8051;670strictchecks reused, no source/proofreplay. docs/gcsp/evidence/f58-63-parent8813-checkpoint-2026-11-07; originalacceptanceopen."
+          "observed_at": "2026-11-07T07:02:21Z",
+          "evidence": "10,351 parent-proved source/10,354 canonical/13,747 spent; numerical10k target exceeded351.62,809 read-onlychecks/0errors;1,538new,1,325strictchecks reused,no source/proofreplay. Exact10k selection preserving8051 pending; original profiles/modelbreadth/enrichment acceptance open. docs/gcsp/evidence/f58-63-parent10351-checkpoint-2026-11-07."
         },
         {
           "id": "integration",
@@ -2120,7 +2120,7 @@
     {
       "assignee": "Russell Gowers",
       "id": "FUCQ-58",
-      "observed_at": "2026-11-07T06:40:50Z",
+      "observed_at": "2026-11-07T07:02:20Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -2145,9 +2145,9 @@
           "title": "Corroborate selected GB/RHD descriptor, year, plant and era"
         },
         {
-          "evidence": "8,813 parent-proved source /8,816canonical /11,623spent-index entries, including labelled conservative failed-template exclusions;1,187short10k.45,777read-onlychecks/zeroerrors;762new over8051;670strictchecks reused, no source/proofreplay. docs/gcsp/evidence/f58-63-parent8813-checkpoint-2026-11-07; originalacceptanceopen.",
+          "evidence": "10,351 parent-proved source/10,354 canonical/13,747 spent; numerical10k target exceeded351.62,809 read-onlychecks/0errors;1,538new,1,325strictchecks reused,no source/proofreplay. Exact10k selection preserving8051 pending; original profiles/modelbreadth/enrichment acceptance open. docs/gcsp/evidence/f58-63-parent10351-checkpoint-2026-11-07.",
           "id": "scheme-catalogue",
-          "observed_at": "2026-11-07T06:40:50Z",
+          "observed_at": "2026-11-07T07:02:20Z",
           "status": "in-progress",
           "title": "Join every scheme line to exact dated constructible catalogue contexts"
         },
@@ -2313,7 +2313,7 @@
       "assignee": "Russell Gowers",
       "branch": "dev/DEV-2026-11-04-032",
       "id": "FUCQ-59",
-      "observed_at": "2026-11-07T06:40:50Z",
+      "observed_at": "2026-11-07T07:02:20Z",
       "original_status": "In Progress",
       "slices": [
         {
@@ -2345,9 +2345,9 @@
           "title": "Finite source budgets, deadlines and default no-traffic safety (2 points)"
         },
         {
-          "evidence": "8,813 parent-proved source /8,816canonical /11,623spent-index entries, including labelled conservative failed-template exclusions;1,187short10k.45,777read-onlychecks/zeroerrors;762new over8051;670strictchecks reused, no source/proofreplay. docs/gcsp/evidence/f58-63-parent8813-checkpoint-2026-11-07; originalacceptanceopen.",
+          "evidence": "10,351 parent-proved source/10,354 canonical/13,747 spent; numerical10k target exceeded351.62,809 read-onlychecks/0errors;1,538new,1,325strictchecks reused,no source/proofreplay. Exact10k selection preserving8051 pending; original profiles/modelbreadth/enrichment acceptance open. docs/gcsp/evidence/f58-63-parent10351-checkpoint-2026-11-07.",
           "id": "source-qualification",
-          "observed_at": "2026-11-07T06:40:50Z",
+          "observed_at": "2026-11-07T07:02:20Z",
           "status": "in-progress",
           "title": "Selected real-source model mapping and solver integration (1 point)"
         },
@@ -2559,15 +2559,15 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T06:40:50Z",
+      "observed_at": "2026-11-07T07:02:21Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-61",
       "slices": [
         {
           "id": "source-run",
           "status": "in-progress",
           "title": "Execute qualified real collection",
-          "observed_at": "2026-11-07T06:40:50Z",
-          "evidence": "8,813 parent-proved source /8,816canonical /11,623spent-index entries, including labelled conservative failed-template exclusions;1,187short10k.45,777read-onlychecks/zeroerrors;762new over8051;670strictchecks reused, no source/proofreplay. docs/gcsp/evidence/f58-63-parent8813-checkpoint-2026-11-07; originalacceptanceopen."
+          "observed_at": "2026-11-07T07:02:21Z",
+          "evidence": "10,351 parent-proved source/10,354 canonical/13,747 spent; numerical10k target exceeded351.62,809 read-onlychecks/0errors;1,538new,1,325strictchecks reused,no source/proofreplay. Exact10k selection preserving8051 pending; original profiles/modelbreadth/enrichment acceptance open. docs/gcsp/evidence/f58-63-parent10351-checkpoint-2026-11-07."
         },
         {
           "id": "semantic-audit",
@@ -2745,7 +2745,7 @@
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Story",
-      "observed_at": "2026-11-07T06:40:51Z",
+      "observed_at": "2026-11-07T07:02:21Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-62",
       "claim_evidence": "Claimed owning035 at34a793e3; root checkpoint authorisation, Jira OAuth unavailable. Full acceptance remains open.",
       "slices": [
@@ -2788,8 +2788,8 @@
           "id": "source-targets",
           "status": "in-progress",
           "title": "Actual 200 target and scheme model coverage",
-          "observed_at": "2026-11-07T06:40:51Z",
-          "evidence": "8,813 parent-proved source /8,816canonical /11,623spent-index entries, including labelled conservative failed-template exclusions;1,187short10k.45,777read-onlychecks/zeroerrors;762new over8051;670strictchecks reused, no source/proofreplay. docs/gcsp/evidence/f58-63-parent8813-checkpoint-2026-11-07; originalacceptanceopen."
+          "observed_at": "2026-11-07T07:02:21Z",
+          "evidence": "10,351 parent-proved source/10,354 canonical/13,747 spent; numerical10k target exceeded351.62,809 read-onlychecks/0errors;1,538new,1,325strictchecks reused,no source/proofreplay. Exact10k selection preserving8051 pending; original profiles/modelbreadth/enrichment acceptance open. docs/gcsp/evidence/f58-63-parent10351-checkpoint-2026-11-07."
         },
         {
           "id": "scale",

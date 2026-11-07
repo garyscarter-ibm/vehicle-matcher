@@ -1,0 +1,13 @@
+# Parent checkpoint — 10,351 admitted source configurations
+
+Independent retained-record reconciliation completed at 06:57:21 UTC on 7 November 2026: **10,351 admitted source configurations /10,354 canonical /13,747 spent-index entries**. All62,809 read-only checks passed; no source calls or completed tests were replayed. The finite final lanes added1,538 admissions, with578 rejects,3,176GETs and2,116solver requests;1,325 strict checks were reused. All530 nested scratch roots, groups and reservation tokens were independently absent.139,506,528B of nested scratch was removed, with10,173,746B of union indexes retained directly in OneDrive.
+
+The canonical index SHA256 is `09ca95146b2ae87bb494d9f5bf3fccc12af69ba4cc68ed3d83b79965cd2df4bc`; spent-index SHA256 is `86530b5857a460b1e8de6669c4c69e6a8054fcaaea3903c4e08b60c259f85b59`. Both live under `vehicle-matcher/.agent-output/global-union10351-20261107` in the IBM OneDrive Claude directory. The retained audit records every input/output identity. A finite exactly10,000-source selection will preserve all8,051 already packaged source records; source registration limits remain unchanged.
+
+This proves the numerical source target. Original five-WMI, GB/RHD physical-profile, model/era and applicable enrichment acceptance remains open. All six stories remain In Progress. Lower-severity consumer defects stay deferred, with no acceptance waiver. The frozen .11(8,051-source) offline proof proceeds independently while the final selection is prepared.
+
+The exact missing20 selector GET stopped at its10s request deadline, without headers or leads; the allocation was consumed once. Scratch/process-group/reservation absence is proved;1,342B retained, no leftovers. The dated timeout establishes no model/profile facts.
+
+The retained-bottle native install3 failed on its first package after6.706s: the actual Homebrew loader attempted an API refresh, which the network-denying sandbox blocked. No new kegs or aliases changed, no database proof ran, and no downloads succeeded. The original log and failure are retained. The supervisor encountered a temporary fileproviderd open handle during cleanup; after the exact root had no open files, the parent reconciled its manifest, removed23,128,608B, and proved owner/group/scratch/reservation absence. Installed environments were preserved. A corrected finite installation plan is separate follow-up work.
+
+Gateway recheck passed IBM Global. Requested/selected agents: Charlie Dog Sol/high; Minnie Mouse and Mike Wazowski Sol/medium; runtime selections unverified, no fallback. This checkpoint records scoped evidence only, with no Done/live/acceptance claim.
