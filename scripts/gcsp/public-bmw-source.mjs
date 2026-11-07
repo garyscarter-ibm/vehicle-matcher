@@ -4,7 +4,8 @@ import { normaliseCodes, requireValue } from './configuration-key.mjs';
 import { assertCollectionHttpObservation } from './collection-session.mjs';
 import { createSettingsShapeRefusal } from './settings-shape-report.mjs';
 import { qualifyBmwSourceFields } from './bmw-source-qualification.mjs';
-import { BMW_BATCH_SOURCE_VERSION, BMW_CONTEXT_SOURCE_VERSION, BMW_OPTIONS_SOURCE_VERSION, validateBmwBatchPlan, validateBmwModelRegistration,
+import { BMW_BATCH_SOURCE_VERSION, BMW_CONTEXT_SOURCE_VERSION, BMW_OPTIONS_SOURCE_VERSION, BMW_INVENTORY_SOURCE_VERSION,
+  validateBmwInventoryRequestRegistration, bmwInventoryRequestUrls, validateBmwBatchPlan, validateBmwModelRegistration,
   validateBmwContextRequestRegistration, validateBmwOptionsRequestRegistration, bmwBatchRequestRegistration, bmwPublicRequestUrls } from './bmw-public-registration.mjs';
 
 const object = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
@@ -97,6 +98,182 @@ export function publicBmwContextOperations(input) {
       return { document, bytes: Buffer.byteLength(bytes), sha256: createHash('sha256').update(bytes).digest('hex') };
     }, { prepare: async () => {
       requireValue(treeHeader, 'source-bootstrap-required', 'The memory-only public tree header is unavailable.');
+      return { method: 'GET', url: urls.discover, headers: treeHeader };
+    } }),
+  };
+}
+
+/** Inventory is a separate request-only scope; it never relaxes full model qualification. */
+export function validatePublicBmwInventoryPlan(plan) {
+  const l = plan?.limits;
+  requireValue(object(plan) && same(Object.keys(plan).sort(), ['inventoryRegistration', 'limits', 'planId', 'qualificationDate', 'schemaVersion', 'source'])
+    && plan.schemaVersion === 'bmw-source-range-inventory-plan.v1' && typeof plan.planId === 'string' && /^[A-Za-z0-9][A-Za-z0-9.-]{0,95}$/.test(plan.planId)
+    && calendarDate(plan.qualificationDate) && same(plan.source, { id: 'bmw-uk-public', version: BMW_INVENTORY_SOURCE_VERSION, kind: 'public-bmw-uk' })
+    && object(l) && l.maxAttempts === 1 && l.retryDelayMs === 0 && l.concurrency === 1 && l.imageRequests === 0
+    && l.sourceAttempts === 3 && bounded(l.sourceBytes, 1, 4194304) && bounded(l.responseBytes, 1, 1048576)
+    && bounded(l.operationTimeoutMs, 1, 10000) && bounded(l.deadlineMs, 1, 90000) && bounded(l.checkpointBytes, 1024, 4194304)
+    && bounded(l.cacheEntries, 1, 16) && bounded(l.cacheRetentionMs, 1, 86400000)
+    && same(l.requestBudgets, { page: 1, settings: 1, discover: 1 }),
+  'source-inventory-plan', 'Allocate only three exact inventory GETs with explicit request scope and no presumed vehicle facts.');
+  validateBmwInventoryRequestRegistration(plan.inventoryRegistration);
+  return structuredClone(plan);
+}
+
+const inventoryRequiredFields = ['modelCode', 'agModelCode', 'modelRange', 'steering', 'orderDate', 'effectDate'];
+const inventoryLabels = ['modelName', 'modelNameRaw', 'derivative'];
+const inventoryToken = (value) => typeof value === 'string' && /^[A-Z0-9]{1,16}$/.test(value);
+const inventoryCode = (value) => typeof value === 'string' && /^[A-Z0-9]{4,12}$/.test(value);
+const inventoryType = (value) => value === null ? 'null' : Array.isArray(value) ? 'array' : typeof value;
+const inventoryPointer = (alias, range) => `/${alias}/modelRanges/${range}`;
+function inventoryModelNode(modelKey, record, pointer) {
+  const facts = {}; const missingFields = []; const invalidFields = [];
+  for (const field of [...inventoryRequiredFields, ...inventoryLabels]) {
+    if (!Object.hasOwn(record, field)) { if (inventoryRequiredFields.includes(field)) missingFields.push(field); continue; }
+    const value = record[field];
+    const valid = ['modelCode', 'agModelCode'].includes(field) ? inventoryCode(value)
+      : ['orderDate', 'effectDate'].includes(field) ? calendarDate(value)
+        : field === 'steering' ? typeof value === 'string' && /^[A-Z]{2}$/.test(value)
+          : field === 'modelRange' ? inventoryToken(value)
+            : safeLabel(value) && !/[A-HJ-NPR-Z0-9]{17}/.test(value);
+    if (valid) facts[field] = value; else invalidFields.push({ field, type: inventoryType(value) });
+  }
+  return { pointer, modelKey, facts, fieldPointers: Object.fromEntries(Object.keys(facts).map(field => [field, `${pointer}/${field}`])),
+    missingFields, invalidFields, issues: Object.hasOwn(facts, 'modelCode') && facts.modelCode !== modelKey ? ['model-key-mismatch'] : [] };
+}
+function inventoryAliases(nodes) {
+  return [...new Set(nodes.map(node => node.modelKey))].sort().map(modelKey => {
+    const rows = nodes.filter(node => node.modelKey === modelKey);
+    const signature = node => ({ facts: node.facts, missingFields: node.missingFields, invalidFields: node.invalidFields, issues: node.issues });
+    return { modelKey, aliases: rows.map(node => node.pointer.split('/')[1]), pointers: rows.map(node => node.pointer),
+      consistent: rows.every(node => same(signature(rows[0]), signature(node))) };
+  });
+}
+
+/** Direct bounded full records and line pointers only; unknown response fields are never copied. */
+export function projectBmwRangeInventory(value, input) {
+  const r = validateBmwInventoryRequestRegistration(input);
+  requireValue(object(value) && bounded(Object.keys(value).length, 1, 100), 'source-inventory-tree', 'Use a bounded object of source alias groups.');
+  const observedAliases = Object.keys(value).filter(alias => object(value[alias]?.modelRanges)
+    && Object.hasOwn(value[alias].modelRanges, r.catalogueRangeKey)).sort();
+  requireValue(bounded(observedAliases.length, 1, 8) && observedAliases.every(inventoryToken),
+    'source-inventory-alias-limit', 'Inspect every direct range alias within the finite inventory limit.');
+  const modelNodes = []; const lineRows = [];
+  const containers = new Set(['lines', 'defaultModel', 'includedTransmissionVariants', 'configuration', 'elements', 'model', 'models', 'transmissionVariants', 'variants']);
+  const values = new Set(['modelCode', 'agModelCode', 'option', 'optionCode', 'code', 'trim', 'line', 'lineCode']);
+  const visit = (container, path, depth, dynamic = false) => {
+    requireValue(depth <= 10 && (object(container) || Array.isArray(container)) && Object.keys(container).length <= 128,
+      'source-inventory-line-limit', 'Stop rather than widening line traversal.');
+    for (const [key, entry] of Object.entries(container)) {
+      requireValue(/^[A-Za-z0-9_.+-]{1,64}$/.test(key) && !/[A-HJ-NPR-Z0-9]{17}/.test(key),
+        'source-inventory-line-key', 'Unsafe dynamic line keys cannot be retained.');
+      requireValue(lineRows.length < 768, 'source-inventory-line-limit', 'Stop rather than truncating line pointers.');
+      const row = { pointer: `${path}/${key}`, type: inventoryType(entry) };
+      if (object(entry) || Array.isArray(entry)) row.entries = Object.keys(entry).length;
+      if (values.has(key) && inventoryToken(entry)) row.value = entry;
+      lineRows.push(row);
+      if ((dynamic || Array.isArray(container) || containers.has(key)) && (object(entry) || Array.isArray(entry)))
+        visit(entry, row.pointer, depth + 1, key === 'lines' || key === 'elements' || Array.isArray(entry));
+    }
+  };
+  for (const alias of observedAliases) {
+    const range = value[alias].modelRanges[r.catalogueRangeKey]; const models = range?.models;
+    requireValue(object(range) && object(models) && bounded(Object.keys(models).length, 1, 128),
+      'source-inventory-model-limit', 'Full direct model records are required; compact defaults cannot replace them.');
+    const prefix = inventoryPointer(alias, r.catalogueRangeKey);
+    for (const modelKey of Object.keys(models).sort()) {
+      requireValue(inventoryCode(modelKey) && object(models[modelKey]) && modelNodes.length < 512,
+        'source-inventory-model-limit', 'Stop rather than dropping malformed or excess full models.');
+      modelNodes.push(inventoryModelNode(modelKey, models[modelKey], `${prefix}/models/${modelKey}`));
+    }
+    if (!Object.hasOwn(range, 'lines')) lineRows.push({ pointer: `${prefix}/lines`, type: 'missing' });
+    else { requireValue(object(range.lines), 'source-inventory-line-shape', 'A present lines field must be a bounded object.'); visit(range.lines, `${prefix}/lines`, 0, true); }
+  }
+  const report = { schemaVersion: 'bmw-source-range-inventory-report.v1', requestScope: { role: 'request-input-only', ...r },
+    observedAliases, modelNodes, modelAliases: inventoryAliases(modelNodes), seedPresent: modelNodes.some(node => node.modelKey === r.pageModelCode),
+    lineRows, additionalConfigurations: 0 };
+  requireValue(Buffer.byteLength(JSON.stringify(report)) <= 112 * 1024, 'source-inventory-output-limit', 'Stop rather than truncating a complete range inventory.');
+  return report;
+}
+
+export function validatePublicBmwInventoryObservation(input, retained, mode) {
+  const plan = validatePublicBmwInventoryPlan(input); const r = plan.inventoryRegistration;
+  const document = retained?.document; const report = document?.report; const metadata = document?.observation;
+  const bytes = JSON.stringify(document) + '\n'; const urls = bmwInventoryRequestUrls(r);
+  requireValue(object(retained) && same(Object.keys(retained).sort(), ['bytes', 'document', 'sha256'])
+    && retained.bytes === Buffer.byteLength(bytes) && retained.bytes <= 128 * 1024 && retained.sha256 === createHash('sha256').update(bytes).digest('hex')
+    && object(document) && same(Object.keys(document).sort(), ['observation', 'report', 'schemaVersion'])
+    && document.schemaVersion === 'bmw-source-range-inventory-observation.v1'
+    && metadata?.schemaVersion === 'collection-http-observation.v1' && metadata.operation === 'discover' && metadata.capability === 'bmw-model-tree'
+    && metadata.sourceId === plan.source.id && metadata.sourceVersion === plan.source.version
+    && metadata.transportKind === (mode === 'live' ? 'live' : 'fixture') && metadata.observedAt?.slice(0, 10) === plan.qualificationDate
+    && same(metadata.request, { method: 'GET', url: urls.discover }) && bounded(metadata.responseBytes, 1, plan.limits.responseBytes)
+    && typeof metadata.responseSha256 === 'string' && /^[a-f0-9]{64}$/.test(metadata.responseSha256)
+    && report?.schemaVersion === 'bmw-source-range-inventory-report.v1' && same(report.requestScope, { role: 'request-input-only', ...r })
+    && Array.isArray(report.modelNodes) && bounded(report.modelNodes.length, 1, 512)
+    && Array.isArray(report.observedAliases) && bounded(report.observedAliases.length, 1, 8)
+    && report.observedAliases.every(inventoryToken) && same([...new Set(report.observedAliases)].sort(), report.observedAliases)
+    && Array.isArray(report.lineRows) && report.lineRows.length <= 768 && report.additionalConfigurations === 0,
+  'source-inventory-binding', 'Retain sealed bounded inventory bytes, exact request provenance and observation-only scope.');
+  const placeholders = { string: '!', number: 0, boolean: false, object: {}, array: [], null: null };
+  for (const node of report.modelNodes) {
+    const alias = node?.pointer?.split('/')[1]; const record = { ...node?.facts };
+    requireValue(inventoryCode(node?.modelKey) && report.observedAliases.includes(alias) && Array.isArray(node.invalidFields),
+      'source-inventory-binding', 'Preserve every bounded direct model pointer and field status.');
+    for (const invalid of node.invalidFields) {
+      requireValue(Object.hasOwn(placeholders, invalid.type), 'source-inventory-binding', 'Preserve safe invalid-field types only.');
+      record[invalid.field] = placeholders[invalid.type];
+    }
+    requireValue(node.pointer === `${inventoryPointer(alias, r.catalogueRangeKey)}/models/${node.modelKey}`
+      && same(inventoryModelNode(node.modelKey, record, node.pointer), node), 'source-inventory-binding', 'Retained direct model facts or field status changed.');
+  }
+  requireValue(new Set(report.modelNodes.map(node => node.pointer)).size === report.modelNodes.length
+    && same([...new Set(report.modelNodes.map(node => node.pointer.split('/')[1]))].sort(), report.observedAliases)
+    && same(report.modelAliases, inventoryAliases(report.modelNodes))
+    && report.seedPresent === report.modelNodes.some(node => node.modelKey === r.pageModelCode)
+    && new Set(report.lineRows.map(row => row.pointer)).size === report.lineRows.length
+    && report.lineRows.every(row => object(row) && Object.keys(row).every(key => ['pointer', 'type', 'entries', 'value'].includes(key))
+      && typeof row.pointer === 'string' && row.pointer.length <= 1024 && report.observedAliases.some(alias => row.pointer.startsWith(`${inventoryPointer(alias, r.catalogueRangeKey)}/lines`))
+      && ['object', 'array', 'string', 'number', 'boolean', 'null', 'missing'].includes(row.type)
+      && (row.entries === undefined || bounded(row.entries, 0, 30000)) && (row.value === undefined || inventoryToken(row.value))),
+  'source-inventory-binding', 'Preserve the complete observed aliases, conflicts and bounded direct line pointers.');
+  return structuredClone(retained);
+}
+
+/** Exactly page/settings/tree using the common executor; only the closure holds bootstrap values. */
+export function publicBmwInventoryOperations(input) {
+  const plan = validatePublicBmwInventoryPlan(input); const requestRegistration = plan.inventoryRegistration;
+  const urls = bmwInventoryRequestUrls(requestRegistration); let treeHeader;
+  const descriptor = (capability, url, project, extra = {}) => ({ sourceId: plan.source.id, sourceVersion: plan.source.version,
+    kind: 'read-only-http', capability, strictJson: true, requestRegistration, prepare: async () => ({ method: 'GET', url, headers: {} }),
+    project: (value, request, metadata) => {
+      assertCollectionHttpObservation(metadata);
+      requireValue(metadata.sourceVersion === plan.source.version && metadata.observedAt.slice(0, 10) === plan.qualificationDate,
+        'source-observation-date', 'Use the pinned actual observation day and executor-owned inventory source.');
+      const result = project(value, request, metadata);
+      JSON.stringify(result, (key, entry) => {
+        requireValue(!treeHeader || Object.values(treeHeader).every(secret => !key.includes(secret) && (typeof entry !== 'string' || !entry.includes(secret))),
+          'source-sensitive-projection', 'No bootstrap value may enter retained inventory facts.'); return entry;
+      });
+      return result;
+    }, ...extra });
+  return {
+    page: descriptor('bmw-page', urls.page, (html) => {
+      const paths = [...new Set([...html.matchAll(/(?:\/en_GB\/)?settings\.[a-zA-Z0-9]+\.json/g)]
+        .map(match => match[0].startsWith('/en_GB/') ? match[0] : '/en_GB/' + match[0]))];
+      requireValue(paths.length === 1 && settingsPattern.test(paths[0]), 'settings-discovery-shape', 'The literal seed page must identify one settings path.');
+      return { settingsPath: paths[0] };
+    }),
+    settings: descriptor('bmw-settings', null, value => { treeHeader = headerFor(value, 'settingsVehicleTree', true); return { treeProfileQualified: true }; },
+      { cache: false, prepare: async ({ path }) => {
+        requireValue(typeof path === 'string' && settingsPattern.test(path), 'settings-discovery-shape', 'Use the single freshly discovered settings path.');
+        return { method: 'GET', url: 'https://configure.bmw.co.uk' + path, headers: {} };
+      } }),
+    discover: descriptor('bmw-model-tree', urls.discover, (value, _request, metadata) => {
+      const retained = sealedObservation({ schemaVersion: 'bmw-source-range-inventory-observation.v1', observation: metadata,
+        report: projectBmwRangeInventory(value, requestRegistration) });
+      validatePublicBmwInventoryObservation(plan, retained, metadata.transportKind === 'live' ? 'live' : 'source-fixture'); return retained;
+    }, { prepare: async () => {
+      requireValue(treeHeader, 'source-bootstrap-required', 'The fresh memory-only tree header is unavailable.');
       return { method: 'GET', url: urls.discover, headers: treeHeader };
     } }),
   };

@@ -1,0 +1,11 @@
+# G42 observation-only range inventory — 7 November 2026
+
+Capability implemented; the exact three-GET source allocation is not yet prepared or released. No BMW traffic occurred here.
+
+The separate `f59-range-inventory-20261107.v1` version registers only one GB/en-GB range, the literal historical official-page seed and explicit tree query dates. The first proposed request scope is G42 / 2PMC, query effect/order dates 2026-11-01 / 2026-11-01. These remain request inputs. Returned AG, raw range, steering, model dates, complete observed aliases and bounded direct line/default/included pointers come only from the actual response; future returned dates are retained as facts. Missing fields, conflicting aliases, a missing seed and a model-key mismatch remain gaps.
+
+The existing common executor owns page/settings/tree, budgets, strict JSON, HTTP observations, checkpoint identity and closure-only bootstrap headers. Existing strict context/options/batch qualification is unchanged. The evidence-local caller keeps all admission arrays empty, stops durably after interruption and cannot replay bootstrap. There is no options, solver, image, browser, source-write or admission capability.
+
+The initial seven tests failed for the expected absent capability before implementation. Ten focused tests then passed. After two additional bound/provenance checks, all 121 selected inventory, context, options, batch and shared collector boundary tests passed with zero skips in 16.674 seconds. Peak sampled RSS was 266,584,064 bytes and scratch peaked at 5,796,224 bytes. All owned groups, scratch, dependency links and host reservations are absent; no compatibility exception remains. The red, focused and boundary receipts/identities are retained in `capability-validation.json`. A full suite, runtime integration, live inventory or acceptance is not implied.
+
+The historical seed provenance and exact executable/input hashes will be frozen in a separately prepared allocation. The parent independently reviews and releases every source allocation. FUCQ-151/FUCQ-154 remain separately prioritised Medium defects. Retain the primary from its first write and export the primary and safe inventory artifact before scratch cleanup.
