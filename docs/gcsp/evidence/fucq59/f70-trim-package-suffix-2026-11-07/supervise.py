@@ -31,8 +31,6 @@ plan = {'phase': 'live', 'identity': identity, 'changed_paths': list(identity), 
 R.atomic_json(OUT / 'live-plan.json', plan)
 policy = R.Policy({'chunk_scratch_mib': 64, 'chunk_ram_mib': 512, 'chunk_seconds': 120, 'log_mib': 1})
 scratch = R.Scratch(OUT, ROOT, policy, expected=64 * R.MIB, checkpoint=PRIMARY)
-scratch.root = pathlib.Path(entry['scratchRoot'])
-scratch.record['root'] = str(scratch.root)
 host = R.HostBudget(policy); host._dead_owners = lambda: {}
 link = ROOT / 'server/node_modules'
 vendor = pathlib.Path('/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules')
@@ -57,7 +55,7 @@ def finalize():
     if entered: scratch.__exit__(None, None, None); entered = False
     if reserved: host.release(scratch.token); reserved = False
     rows = R.read_json(host.path, {}) or {}
-    R.atomic_json(OUT / 'live-cleanup.json', {'scratch_absent': not os.path.lexists(scratch.root), 'dependency_link_absent': not os.path.lexists(link),
+    R.atomic_json(OUT / 'live-cleanup.json', {'scratch_root':str(scratch.root), 'ownership_manifest':str(scratch.manifest), 'scratch_absent': not os.path.lexists(scratch.root), 'dependency_link_absent': not os.path.lexists(link),
        'groups_absent': groups_absent, 'reservation_absent': scratch.token not in rows, 'removed_allocation_bytes': scratch.record['peak'],
        'code_identity_unchanged': identity == hashes(), 'retainedPrimary': str(PRIMARY), 'primaryExists': PRIMARY.exists(), 'checkpointExport': export_status,
        'retainedWriterMetadata': [p.name for pattern in ['collector-checkpoint.json.writer-*.json', 'collector-checkpoint.json.writing-*'] for p in DIRECTORY.glob(pattern)], 'compatibility_exception': None,

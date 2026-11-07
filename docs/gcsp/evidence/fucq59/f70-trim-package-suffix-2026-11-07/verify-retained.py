@@ -32,8 +32,6 @@ R.atomic_json(OUT / 'retained-plan.json', {'scope': 'five pure strict retained c
     'limits': {'workers': 1, 'scratchBytes': 16777216, 'hostRamBytes': 536870912, 'childRamBytes': 469762048, 'seconds': 30}})
 policy = R.Policy({'chunk_scratch_mib': 16, 'chunk_ram_mib': 512, 'chunk_seconds': 30, 'log_mib': 1})
 scratch = R.Scratch(OUT, ROOT, policy, expected=16 * R.MIB, checkpoint=DIRECTORY / 'collector-checkpoint.json')
-scratch.root = pathlib.Path(entry['scratchRoot'] + '-retained')
-scratch.record['root'] = str(scratch.root)
 host = R.HostBudget(policy)
 host._dead_owners = lambda: {}
 link = ROOT / 'server/node_modules'
@@ -65,7 +63,7 @@ def finalize():
         host.release(scratch.token)
         reserved = False
     rows = R.read_json(host.path, {}) or {}
-    R.atomic_json(OUT / 'retained-cleanup.json', {'scratch_absent': not os.path.lexists(scratch.root),
+    R.atomic_json(OUT / 'retained-cleanup.json', {'scratch_root':str(scratch.root), 'ownership_manifest':str(scratch.manifest), 'scratch_absent': not os.path.lexists(scratch.root),
         'dependency_link_absent': not os.path.lexists(link), 'groups_absent': groups_absent,
         'reservation_absent': scratch.token not in rows, 'removed_allocation_bytes': scratch.record['peak'],
         'code_identity_unchanged': hashes() == identity, 'compatibility_exception': None,

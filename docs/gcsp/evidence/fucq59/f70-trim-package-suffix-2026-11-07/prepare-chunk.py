@@ -68,7 +68,7 @@ allocation.update(id=series['id'] + '-chunk%02d' % number, status='prepared-unsp
     preparerSha256=sha(BASE / 'prepare-chunk.py'), snapshotVersion='bmw-gb-trim-package-%02d-2026-11-07.v2' % number,
     attempts=entry['maximumGets'], candidateAllowance=entry['candidates'], solverAllowance=entry['candidates'],
     requestSequence=['page', 'settings', 'discover', 'options', 'solve x%d' % entry['candidates']],
-    scratchRoot=entry['scratchRoot'], supervisorOutput=entry['supervisorOutput'], artifactDestination=str(target),
+    scratchRootPolicy='resource-helper-owned-default', supervisorOutput=entry['supervisorOutput'], artifactDestination=str(target),
     retainedPrimary=retention['primary'], retainedDeliverables=retention, oneShotMarker=str(target / 'execution-once.json'),
     sourceGrantEnvironment={'F70_TRIM_PACKAGE_SUFFIX_SOURCE_GRANT': series['id'] + '-chunk%02d' % number},
     commandAfterSeparateRelease=['/usr/bin/python3', '-I', '-B', str(BASE / 'supervise.py'), str(number)],

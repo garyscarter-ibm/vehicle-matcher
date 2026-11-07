@@ -36,7 +36,7 @@ marker = output / 'suffix-once.json'
 assert not marker.exists(), 'never replay suffix release'
 ownership = {'schemaVersion': 'typed-axis-durable-output-ownership.v1', 'allocationId': series['id'], 'owner': R.owner(),
     'outputRoot': str(output), 'disposable': False, 'retainOnInterruption': True, 'state': 'planned', 'reservationToken': token,
-    'scratchRoots': [suffix for e in series['chunks'] for suffix in [e['scratchRoot'], e['scratchRoot'] + '-retained']]}
+    'scratchRoots': [], 'scratchManifestDirectories':[str(pathlib.Path(e['supervisorOutput'])/'ownership') for e in series['chunks']]}
 R.atomic_json(owner_manifest, ownership)
 def logical_bytes(path):
     return sum(p.stat().st_size for p in path.rglob('*') if p.is_file()) if path.exists() else 0
@@ -54,6 +54,14 @@ def finalize():
             os.killpg(current.pid, signal.SIGKILL); current.wait(timeout=5)
         children[-1]['joined'] = True
     groups_absent = all(R.group_has_live_members(row['pid']) is False for row in children)
+    actual_manifests=[]
+    for directory in ownership['scratchManifestDirectories']:
+        for path in pathlib.Path(directory).glob('*.json'):
+            record=read(path)
+            if record.get('version')==1 and record.get('token'):
+                assert pathlib.Path(record['root']).name=='test-stamp-shard-'+record['token']
+                actual_manifests.append({'manifest':str(path),'root':record['root'],'state':record['state'],'groups':record['groups']})
+    ownership['scratchRoots']=sorted({r['root'] for r in actual_manifests})
     scratch_leftovers = [p for p in ownership['scratchRoots'] if os.path.lexists(p)]
     link_absent = not os.path.lexists(ROOT / 'server/node_modules')
     if reserved:
@@ -61,7 +69,7 @@ def finalize():
     host_rows = R.read_json(host.path, {}) or {}
     owned_children = {'allocationId': series['id'], 'ownerPid': os.getpid(), 'children': children,
         'allChildrenJoined': all(r['joined'] for r in children), 'allStageGroupsAbsent': groups_absent, 'finished': True}
-    cleanup = {'sourceAndRetainedScratchAbsent': not scratch_leftovers, 'scratchLeftovers': scratch_leftovers,
+    cleanup = {'actualScratchManifests':actual_manifests, 'sourceAndRetainedScratchAbsent': not scratch_leftovers, 'scratchLeftovers': scratch_leftovers,
         'dependencyLinkAbsent': link_absent, 'allStageGroupsAbsent': groups_absent,
         'seriesReservationAbsent': token not in host_rows, 'durableOutputPreserved': str(output),
         'retainedLogicalBytes': logical_bytes(output), 'compatibilityException': None}

@@ -21,11 +21,16 @@ def finalize():
   s=link.lstat();assert (s.st_dev,s.st_ino)==link_identity and link.is_symlink() and link.readlink()==vendor;link.unlink();link_identity=None
  if entered:scratch.__exit__(None,None,None);entered=False
  if reserved:host.release(scratch.token);reserved=False
- cleanup={'scratch_absent':not os.path.lexists(scratch.root),'groups_absent':groups,'dependency_link_absent':not os.path.lexists(link),'reservation_absent':scratch.token not in (R.read_json(host.path,{}) or {}),
+ cleanup={'scratch_root':str(scratch.root),'ownership_manifest':str(scratch.manifest),'scratch_absent':not os.path.lexists(scratch.root),'groups_absent':groups,'dependency_link_absent':not os.path.lexists(link),'reservation_absent':scratch.token not in (R.read_json(host.path,{}) or {}),
   'removed_allocation_bytes':scratch.record['peak'],'code_identity_unchanged':identity=={p:sha(ROOT/p) for p in identity},'suffix_marker_absent':not (pathlib.Path(series['outputRoot'])/'suffix-once.json').exists(),'compatibility_exception':None}
  R.atomic_json(OUT/'cleanup.json',cleanup);finished=True
 atexit.register(finalize)
-command=['/opt/homebrew/bin/node',str(BASE/'check-prepared.mjs')]
+probe=len(sys.argv)==2 and sys.argv[1]=='--lifecycle-probe'
+assert len(sys.argv)==1 or probe
+for filename in ['supervise.py','verify-retained.py']:
+ assert 'scratch.root =' not in (BASE/filename).read_text()
+command=['/usr/bin/python3','-I','-B','-c',"import os,pathlib,json;p=pathlib.Path(os.environ['TMPDIR'])/'probe';p.write_bytes(b'owned-default-scratch');print(json.dumps({'status':'owned-scratch-lifecycle-probe','sourceTraffic':0}))"] if probe else ['/opt/homebrew/bin/node',str(BASE/'check-prepared.mjs')]
+assert scratch.root.name=='test-stamp-shard-'+scratch.token
 R.atomic_json(OUT/'plan.json',{'scope':'scoped exact252suffix preflight','changed_paths':list(identity),'regression':'unspent original suffix and actual pilot novelty','callers':['legacy batch validator','exact URL builder','current cumulative indexes'],
  'selected':command,'exclusions':['source traffic','full suite','publication','application acceptance'],'resources':{'workers':1,'hostMiB':512,'childMiB':448,'scratchMiB':64,'seconds':120}})
 with R.handled_termination():
