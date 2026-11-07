@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { mkdtemp, writeFile, rm, rename } from 'node:fs/promises';
+import { chmod, mkdtemp, writeFile, rm, rename, stat, utimes } from 'node:fs/promises';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { indexJsonl } from '../gcsp/vehicle-evidence/indexed-jsonl.js';
@@ -55,5 +55,41 @@ test('a file modified during its scan is never returned as a complete index', as
   const path = await fixture(t, '{"id":"a"}\n{"id":"b"}\n'); let changed = false;
   await assert.rejects(indexJsonl(path, { chunkBytes: 11, onRow: async () => {
     if (!changed) { changed = true; await writeFile(path, '{"id":"z"}\n{"id":"b"}\n'); }
+  } }), { code: 'artifact-changed' });
+});
+test('metadata-only changes preserve indexed rows after complete byte verification', async (t) => {
+  const path = await fixture(t, '{"id":"a","value":1}\n{"id":"b","value":2}\n');
+  await chmod(path, 0o600);
+  const indexed = await indexJsonl(path, { key: (row) => row.id });
+  const before = await stat(path, { bigint: true }); await chmod(path, 0o640);
+  const after = await stat(path, { bigint: true });
+  assert.equal(after.mtimeNs, before.mtimeNs); assert.notEqual(after.ctimeNs, before.ctimeNs);
+  assert.deepEqual(indexed.get('a'), { id: 'a', value: 1 });
+  assert.deepEqual([...indexed], [{ id: 'a', value: 1 }, { id: 'b', value: 2 }]);
+});
+test('metadata-only movement during indexing preserves one coherent byte snapshot', async (t) => {
+  const path = await fixture(t, '{"id":"a"}\n{"id":"b"}\n'); await chmod(path, 0o600);
+  let changed = false;
+  const indexed = await indexJsonl(path, { key: (row) => row.id, chunkBytes: 11, onRow: async () => {
+    if (!changed) { changed = true; await chmod(path, 0o640); }
+  } });
+  assert.deepEqual([...indexed], [{ id: 'a' }, { id: 'b' }]);
+});
+test('a changed unrequested row cannot hide behind restored modification time', async (t) => {
+  const path = await fixture(t, '{"id":"a","value":1}\n{"id":"b","value":2}\n');
+  await utimes(path, 1700000000, 1700000000);
+  const indexed = await indexJsonl(path, { key: (row) => row.id });
+  await writeFile(path, '{"id":"a","value":1}\n{"id":"b","value":3}\n');
+  await utimes(path, 1700000000, 1700000000);
+  assert.throws(() => indexed.get('a'), { code: 'artifact-changed' });
+});
+test('bytes changed during a scan still fail when their modification time is restored', async (t) => {
+  const path = await fixture(t, '{"id":"a"}\n{"id":"b"}\n');
+  await utimes(path, 1700000000, 1700000000);
+  await assert.rejects(indexJsonl(path, { chunkBytes: 11, onRow: async (_row, entry) => {
+    if (entry.key === 1) {
+      await writeFile(path, '{"id":"z"}\n{"id":"b"}\n');
+      await utimes(path, 1700000000, 1700000000);
+    }
   } }), { code: 'artifact-changed' });
 });

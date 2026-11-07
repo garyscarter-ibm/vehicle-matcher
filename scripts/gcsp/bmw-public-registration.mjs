@@ -3,6 +3,7 @@ import { requireValue } from './configuration-key.mjs';
 
 export const BMW_BATCH_SOURCE_VERSION = 'f59-batch-20261107.v1';
 export const BMW_CONTEXT_SOURCE_VERSION = 'f59-context-qualification-20261107.v1';
+export const BMW_OPTIONS_SOURCE_VERSION = 'f59-options-qualification-20261107.v1';
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const same = (a, b) => inputDigest(a) === inputDigest(b);
 const bounded = (v, min, max) => Number.isSafeInteger(v) && v >= min && v <= max;
@@ -30,6 +31,15 @@ export function validateBmwContextRequestRegistration(value) {
   requireValue(object(value) && same(Object.keys(value), ['model']) && object(value.model)
     && !Object.hasOwn(value.model, 'optionsTrim'), 'source-context-plan', 'Inspect direct model facts before allocating trim or candidate requests.');
   validateBmwModelRegistration(value.model);
+  return structuredClone(value);
+}
+
+/** Options inspection pins an explicit source trim and grants no candidate/solver capability. */
+export function validateBmwOptionsRequestRegistration(value) {
+  requireValue(object(value) && same(Object.keys(value), ['model']) && object(value.model)
+    && code(value.model.optionsTrim), 'source-options-plan', 'Pin an explicit observed trim before allocating options inspection.');
+  try { validateBmwModelRegistration(value.model); }
+  catch { requireValue(false, 'source-options-plan', 'Use the complete registered model context and explicit trim.'); }
   return structuredClone(value);
 }
 
