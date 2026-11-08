@@ -87,10 +87,13 @@ async function tick(f, id = 'expire') {
 async function adoptPresenter(f) {
   const time = good(await f.clock.now(f.presenter));
   const run = good(await f.repository.currentRun('buddy-runtime-test'));
-  // The presenter-controls definitions are in the base seed now; adopt only when they are not yet active.
+  // The presenter-controls definitions are in the base seed now, so publish a real successor instead: pinning stays provable.
   const active = await f.policy.getAssumption('clock.presenter.stepSeconds', { runId: run.runId, asOf: time.now, policyVersion: run.policyVersion });
-  if (active.status !== 'ok') good(await f.policy.adoptReviewedAssumptions(f.contexts.greg, { commandId: 'reviewed-presenter', expectedActiveVersion: run.policyVersion,
-    policyVersion: 'runtime-reviewed-v2', effectiveFrom: time.now, definitionSetId: 'presenter-controls-v1' }));
+  const next = { commandId: 'reviewed-presenter', expectedActiveVersion: run.policyVersion, policyVersion: 'runtime-reviewed-v2', effectiveFrom: time.now };
+  if (active.status !== 'ok') good(await f.policy.adoptReviewedAssumptions(f.contexts.greg, { ...next, definitionSetId: 'presenter-controls-v1' }));
+  else good(await f.policy.publishPolicyVersion(f.contexts.greg, { ...next, changes: [{ table: 'assumptions', key: 'clock.presenter.stepSeconds',
+    patch: { value: 60, basis: 'Reviewed presenter step re-published as a successor version for the pinned-quote regression.',
+      source: 'server/test/gcsp-buddy-runtime-integration.test.js', sourceDate: '2026-11-08', status: 'assumed' } }] }));
   f.presenter = good(await f.identity.resolveSession({ authorized: true, cookie: f.presenterCookie, purpose: 'presenter-control' }));
   for (const name of ['paula', 'alex', 'greg']) f.contexts[name] = good(await f.identity.resolveSession({ authorized: true, cookie: f.sessions[name] }));
 }
@@ -199,7 +202,7 @@ for (const first of ['manual', 'buddy']) test(`normal composed ${first} claim ex
 test('reviewed publication activates the shared provider while preserving pinned buddy quote and access', async (t) => {
   const f = await setup(t); const allocated = await allocate(f); const before = structuredClone(allocated.quote);
   const input = offerInput(f, allocated.offer); await adoptPresenter(f);
-  assert.equal(good(await f.repository.currentRun('buddy-runtime-test')).versions.policy, before.policyVersion);
+  assert.equal(good(await f.repository.currentRun('buddy-runtime-test')).versions.policy, 'runtime-reviewed-v2');
   const time = good(await f.clock.now(f.presenter));
   assert.equal((await f.policy.getAssumption('clock.presenter.stepSeconds', { runId: f.presenter.runId, asOf: time.now,
     policyVersion: f.presenter.policyVersion })).value.value, 60);
