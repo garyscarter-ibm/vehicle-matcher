@@ -15,6 +15,9 @@ function underlyingBrief(employee) {
 }
 const summary = (decision) => Object.freeze({ gateStatus: decision.gateStatus, score: decision.score,
   blockers: Object.freeze(decision.blockers.map((entry) => entry.code)), unknowns: Object.freeze(decision.unknowns.map((entry) => entry.code)) });
+// The buddy route names a decline reason from the underlying components, so they are kept without re-evaluating.
+const withComponents = (decision) => Object.freeze({ ...summary(decision), components: Object.freeze(decision.components.map((c) => Object.freeze({
+  field: c.field, score: c.score, importance: c.effectiveImportance ?? c.importance, facts: Object.freeze(Object.keys(c.facts ?? {}).sort()) }))) });
 
 /**
  * Evaluates every employee against every car once per seed through FUCQ-29's evaluator.
@@ -59,7 +62,7 @@ export async function evaluateComparisonSeed({ inputs, policy } = {}) {
       evaluatorCalls += 1;
       const outcome = await evaluator.evaluate(subject, brief);
       if (outcome.status !== 'ok') fail(`evaluation:${route}:${outcome.code ?? outcome.status}`, outcome.status);
-      for (const decision of outcome.value.decisions) (fits[groupOf.get(decision.orderUuid)] ??= {})[route] = summary(decision);
+      for (const decision of outcome.value.decisions) (fits[groupOf.get(decision.orderUuid)] ??= {})[route] = route === 'underlying' ? withComponents(decision) : summary(decision);
     }
     employees[employee.employeeId] = Object.freeze(fits);
   }
