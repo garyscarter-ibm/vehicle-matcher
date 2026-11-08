@@ -1,5 +1,5 @@
 // FUCQ-172 presenter strip walkthrough: scenario catalogue, reset, start-state refusal and synthetic faults.
-// One viewport per run (FUCQ172_CHUNK=desktop|narrow). Spawns `node index.js` in server/ as Render does (GCSP_RUNTIME=1, memory) on 127.0.0.1, port 8950-8969. Nothing is stubbed.
+// One viewport per run (FUCQ172_CHUNK=desktop|narrow). Spawns `node index.js` in server/ as Render does (GCSP_RUNTIME=1, memory) on 127.0.0.1, port 8950-8959. Nothing is stubbed.
 import { spawn, spawnSync } from 'node:child_process';
 import { once } from 'node:events';
 import { randomBytes } from 'node:crypto';
@@ -88,18 +88,18 @@ async function focusCheck(locator, label) {
   kb(label, 'Tab reaches the control with a visible focus indicator', visible.outline || visible.shadow, visible);
 }
 
-// ---- Hosted entry on 127.0.0.1, ports 8950-8969 only ----
+// ---- Hosted entry on 127.0.0.1, ports 8950-8959 only ----
 async function freePort() {
-  for (let port = 8950; port <= 8969; port += 1) {
+  for (let port = 8950; port <= 8959; port += 1) {
     const probe = createServer();
     const ok = await new Promise((done) => { probe.once('error', () => done(false)); probe.listen(port, '127.0.0.1', () => done(true)); });
     if (ok) { await new Promise((done) => probe.close(done)); return port; }
   }
-  throw new Error('No free port in 8950-8969');
+  throw new Error('No free port in 8950-8959');
 }
 async function startHost() {
   const port = Number(process.env.FUCQ172_PORT) || await freePort();
-  if (port < 8950 || port > 8969) throw new Error('Port must be in 8950-8969');
+  if (port < 8950 || port > 8959) throw new Error('Port must be in 8950-8959');
   const origin = `http://127.0.0.1:${port}`;
   // The server's own listen() has no host option, so a preload pins it to loopback.
   await writeFile(preload, "const net = require('node:net'); const listen = net.Server.prototype.listen;\n"
@@ -208,7 +208,7 @@ async function run() {
     kb('presenter', 'Reset scenario is disabled for the unavailable "Offer expires"', disabled);
     row.detail = { chosen, availability, resetDisabled: disabled, radioStillEnabled: radioEnabled };
     report.readbacks.offerExpires = availability;
-    return { pass: /^Not available yet/.test(availability) && disabled && radioEnabled, state: `${availability} | Reset disabled: ${disabled}`, shotName: 'offer-expires' };
+    return { pass: /Not available yet/.test(availability) && disabled && radioEnabled, state: `${availability} | Reset disabled: ${disabled}`, shotName: 'offer-expires' };
   }, { critical: true });
 
   await step('reset-other', `Choose "${other}", Reset scenario, Cancel reset, then Reset and Confirm reset; readback after the reload`, async (row) => {
@@ -264,7 +264,8 @@ async function run() {
     const usable = async () => ({ setStockDisabled: await button('Set stock feed fault').isDisabled(), faultRadiosDisabled: await page.locator('[role=radiogroup][aria-label="Stock feed fault"] [role=radio]').first().isDisabled(),
       retryVisible: await button('Retry original action').isVisible(), resetDisabled: await button('Reset scenario').isDisabled() });
     const afterRefusal = await usable();
-    await tabTo(button('Refresh readback')); await page.keyboard.press('Enter'); await wait(2500);
+    await tabTo(button('Refresh readback')); await page.keyboard.press('Enter'); await wait(1200);
+    await until(async () => !(await statuses()).some((m) => /Loading readback|Action in progress/.test(m)), { timeout: 60000, what: 'refresh to settle' }).catch(() => {});
     const afterRefresh = await usable();
     kb('presenter', 'After the refused tick, Refresh readback returns the fault controls to use', !afterRefresh.setStockDisabled && !afterRefresh.faultRadiosDisabled, { afterRefusal, afterRefresh });
     report.readbacks.releaseRefused = { cue, messages: msgs, lastTick: last, afterRefusal, afterRefresh }; row.detail = report.readbacks.releaseRefused;
@@ -274,6 +275,7 @@ async function run() {
 
   await step('fault-cleared', 'Synthetic faults: stock fault reads "Stock feed unavailable"; choose No fault and Set stock feed fault', async (row) => {
     let reloaded = false;
+    await until(async () => !(await button('Set stock feed fault').isDisabled()), { timeout: 30000, what: 'Set stock feed fault enabled' }).catch(() => {});
     if (await button('Set stock feed fault').isDisabled()) { await page.reload({ waitUntil: 'load' }); await wait(1500); await openStrip(); reloaded = true; }
     const mode = await checkedText('Stock feed fault'); const orderingMode = await checkedText('Ordering fault');
     await chooseRadio('Stock feed fault', 'No fault');
@@ -284,11 +286,13 @@ async function run() {
     return { pass: /Stock feed unavailable/.test(mode || '') && msgs.some((m) => /Stock feed fault cleared/.test(m)) && /^No fault/.test(now || ''), state: JSON.stringify(report.readbacks.faultCleared), shotName: 'fault-cleared' };
   }, { critical: true });
 
-  await step('after-clear-tick', 'Tick (one step) after clearing the fault: record the last tick and cars released', async (row) => {
-    await press(/^Tick \(/, { exact: false });
-    const msgs = await statuses(); const last = await resultsText();
-    report.readbacks.afterClearTick = { messages: msgs, lastTick: last, clock: clockOf(await stripText()) }; row.detail = report.readbacks.afterClearTick;
-    return { state: `${msgs.join(' || ')} | ${last}`, shotName: 'after-clear-tick' };
+  await step('after-clear-tick', 'After clearing the fault, Retry original action (the refused Next release); record the last tick and cars released', async (row) => {
+    // The refused release keeps its retry, and Tick stays disabled until it resolves.
+    const tickDisabledBefore = await page.getByRole('button', { name: /^Tick \(/ }).isDisabled();
+    await press('Retry original action');
+    const msgs = await statuses(); const last = await resultsText(); const retryHidden = !(await button('Retry original action').isVisible());
+    report.readbacks.afterClearTick = { tickDisabledBefore, retryHidden, messages: msgs, lastTick: last, clock: clockOf(await stripText()) }; row.detail = report.readbacks.afterClearTick;
+    return { pass: tickDisabledBefore && retryHidden && /Tick completed/.test(last), state: `${msgs.join(' || ')} | ${last}`, shotName: 'after-clear-tick' };
   }, { critical: true });
 
   await step('ordering-fault', 'Set the ordering fault to "Next handoff times out, provider accepted" and back to No fault', async (row) => {

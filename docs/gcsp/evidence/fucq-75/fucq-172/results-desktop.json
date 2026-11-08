@@ -7,11 +7,11 @@
   },
   "stockMode": "default",
   "state": "passed",
-  "startedAt": "2026-11-08T19:47:34.964Z",
+  "startedAt": "2026-11-08T20:30:30.724Z",
   "runIds": {
     "first": "demo-ea3b050919d5058adfbcb7852fc98722",
-    "afterOther": "demo-7e5eff60d675ab1db19b7b2a40708532",
-    "dataUnavailable": "demo-6b84a0a328978e238481745e0927b7c9"
+    "afterOther": "demo-849405c720090cb3da0ffb430f86003a",
+    "dataUnavailable": "demo-d29e18688813d13dd8ec43bc8019ef8e"
   },
   "steps": [
     {
@@ -84,12 +84,12 @@
       ],
       "detail": {
         "chosen": "Offer expires Not available yet: brief-confirmation, stock-release, buddy-allocation, buddy-offers, captured-notifications, offer-expiry",
-        "availability": "Not available yet: brief-confirmation, stock-release, buddy-allocation, buddy-offers, captured-notifications, offer-expiry",
+        "availability": "Selected: Offer expires. Not available yet: brief-confirmation, stock-release, buddy-allocation, buddy-offers, captured-notifications, offer-expiry",
         "resetDisabled": true,
         "radioStillEnabled": true
       },
       "overflowPx": 0,
-      "state": "Not available yet: brief-confirmation, stock-release, buddy-allocation, buddy-offers, captured-notifications, offer-expiry | Reset disabled: true"
+      "state": "Selected: Offer expires. Not available yet: brief-confirmation, stock-release, buddy-allocation, buddy-offers, captured-notifications, offer-expiry | Reset disabled: true"
     },
     {
       "id": "reset-other",
@@ -100,7 +100,7 @@
       ],
       "detail": {
         "scenario": "Decline then change, no second car yet",
-        "run": "demo-7e5eff60d675ab1db19b7b2a40708532",
+        "run": "demo-849405c720090cb3da0ffb430f86003a",
         "clock": "2026-11-05T09:30:00.000Z",
         "acting": "Presenter (fictional) (presenter)",
         "lastTick": "Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | Stock release: Done. | Manual claim expiry: Done. | Buddy expiry: Done. | Appointments: Done. | Approvals: Done. | Documents: Done. | Return appointments: Done. | Renewal risk cases: Done. | Selection order reconciliation: Done. | Buddy allocation: Done. | Outbox dispatch: Done. | 5 cars released",
@@ -121,7 +121,7 @@
         "unchangedRunAfterCancel": true
       },
       "overflowPx": 0,
-      "state": "{\"scenario\":\"Decline then change, no second car yet\",\"run\":\"demo-7e5eff60d675ab1db19b7b2a40708532\",\"clock\":\"2026-11-05T09:30:00.000Z\",\"acting\":\"Presenter (fictional) (presenter)\"} | Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | Stock release: Done. | Manual claim expiry: Done. | Buddy expiry: Done. | Appointments: Done. | Approvals: Done. | Documents: Done. | Return appointments: Done. | Renewal risk cases: Done. | Selection order reconciliation: Done. | Buddy allocation: Done. | Outbox dispatch: Done. | 5 cars released"
+      "state": "{\"scenario\":\"Decline then change, no second car yet\",\"run\":\"demo-849405c720090cb3da0ffb430f86003a\",\"clock\":\"2026-11-05T09:30:00.000Z\",\"acting\":\"Presenter (fictional) (presenter)\"} | Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | Stock release: Done. | Manual claim expiry: Done. | Buddy expiry: Done. | Appointments: Done. | Approvals: Done. | Documents: Done. | Return appointments: Done. | Renewal risk cases: Done. | Selection order reconciliation: Done. | Buddy allocation: Done. | Outbox dispatch: Done. | 5 cars released"
     },
     {
       "id": "reset-data-unavailable",
@@ -132,13 +132,13 @@
       ],
       "detail": {
         "scenario": "Data unavailable",
-        "run": "demo-6b84a0a328978e238481745e0927b7c9",
+        "run": "demo-d29e18688813d13dd8ec43bc8019ef8e",
         "clock": "2026-11-05T09:00:00.000Z",
         "acting": "Presenter (fictional) (presenter)",
         "lastTick": "Last tick | No tick reported"
       },
       "overflowPx": 0,
-      "state": "{\"scenario\":\"Data unavailable\",\"run\":\"demo-6b84a0a328978e238481745e0927b7c9\",\"clock\":\"2026-11-05T09:00:00.000Z\",\"acting\":\"Presenter (fictional) (presenter)\",\"lastTick\":\"Last tick | No tick reported\"}"
+      "state": "{\"scenario\":\"Data unavailable\",\"run\":\"demo-d29e18688813d13dd8ec43bc8019ef8e\",\"clock\":\"2026-11-05T09:00:00.000Z\",\"acting\":\"Presenter (fictional) (presenter)\",\"lastTick\":\"Last tick | No tick reported\"}"
     },
     {
       "id": "release-refused",
@@ -154,14 +154,14 @@
         ],
         "lastTick": "Last tick | Tick result not confirmed. 11 steps: 1 unavailable, 10 waiting for a result. | Step results (11) | Release unavailable: no verified release result reported",
         "afterRefusal": {
-          "setStockDisabled": true,
-          "faultRadiosDisabled": true,
+          "setStockDisabled": false,
+          "faultRadiosDisabled": false,
           "retryVisible": true,
           "resetDisabled": true
         },
         "afterRefresh": {
-          "setStockDisabled": true,
-          "faultRadiosDisabled": true,
+          "setStockDisabled": false,
+          "faultRadiosDisabled": false,
           "retryVisible": true,
           "resetDisabled": true
         }
@@ -177,7 +177,7 @@
         "fault-cleared-1280.png"
       ],
       "detail": {
-        "workaroundPageReload": true,
+        "workaroundPageReload": false,
         "stockModeBefore": "Stock feed unavailable",
         "orderingModeBefore": "No fault",
         "messages": [
@@ -186,21 +186,23 @@
         "stockModeAfter": "No fault"
       },
       "overflowPx": 0,
-      "state": "{\"workaroundPageReload\":true,\"stockModeBefore\":\"Stock feed unavailable\",\"orderingModeBefore\":\"No fault\",\"messages\":[\"Stock feed fault cleared\"],\"stockModeAfter\":\"No fault\"}"
+      "state": "{\"workaroundPageReload\":false,\"stockModeBefore\":\"Stock feed unavailable\",\"orderingModeBefore\":\"No fault\",\"messages\":[\"Stock feed fault cleared\"],\"stockModeAfter\":\"No fault\"}"
     },
     {
       "id": "after-clear-tick",
-      "name": "Tick (one step) after clearing the fault: record the last tick and cars released",
+      "name": "After clearing the fault, Retry original action (the refused Next release); record the last tick and cars released",
       "pass": true,
       "screenshots": [
         "after-clear-tick-1280.png"
       ],
       "detail": {
+        "tickDisabledBefore": true,
+        "retryHidden": true,
         "messages": [
           "Action recorded"
         ],
         "lastTick": "Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | 5 cars released",
-        "clock": "2026-11-05T09:31:00.000Z"
+        "clock": "2026-11-05T09:30:00.000Z"
       },
       "overflowPx": 0,
       "state": "Action recorded | Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | 5 cars released"
@@ -305,26 +307,21 @@
     {
       "page": "presenter",
       "check": "After the refused tick, Refresh readback returns the fault controls to use",
-      "pass": false,
+      "pass": true,
       "detail": {
         "afterRefusal": {
-          "setStockDisabled": true,
-          "faultRadiosDisabled": true,
+          "setStockDisabled": false,
+          "faultRadiosDisabled": false,
           "retryVisible": true,
           "resetDisabled": true
         },
         "afterRefresh": {
-          "setStockDisabled": true,
-          "faultRadiosDisabled": true,
+          "setStockDisabled": false,
+          "faultRadiosDisabled": false,
           "retryVisible": true,
           "resetDisabled": true
         }
       }
-    },
-    {
-      "page": "presenter",
-      "check": "Enter on \"Presenter controls\" opens the strip",
-      "pass": true
     },
     {
       "page": "presenter",
@@ -339,7 +336,7 @@
     },
     {
       "page": "presenter",
-      "check": "Enter on \"/^Tick \\(/\"",
+      "check": "Enter on \"Retry original action\"",
       "pass": true
     },
     {
@@ -413,10 +410,10 @@
         "disabled": false
       }
     ],
-    "offerExpires": "Not available yet: brief-confirmation, stock-release, buddy-allocation, buddy-offers, captured-notifications, offer-expiry",
+    "offerExpires": "Selected: Offer expires. Not available yet: brief-confirmation, stock-release, buddy-allocation, buddy-offers, captured-notifications, offer-expiry",
     "resetOther": {
       "scenario": "Decline then change, no second car yet",
-      "run": "demo-7e5eff60d675ab1db19b7b2a40708532",
+      "run": "demo-849405c720090cb3da0ffb430f86003a",
       "clock": "2026-11-05T09:30:00.000Z",
       "acting": "Presenter (fictional) (presenter)",
       "lastTick": "Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | Stock release: Done. | Manual claim expiry: Done. | Buddy expiry: Done. | Appointments: Done. | Approvals: Done. | Documents: Done. | Return appointments: Done. | Renewal risk cases: Done. | Selection order reconciliation: Done. | Buddy allocation: Done. | Outbox dispatch: Done. | 5 cars released",
@@ -438,7 +435,7 @@
     },
     "resetDataUnavailable": {
       "scenario": "Data unavailable",
-      "run": "demo-6b84a0a328978e238481745e0927b7c9",
+      "run": "demo-d29e18688813d13dd8ec43bc8019ef8e",
       "clock": "2026-11-05T09:00:00.000Z",
       "acting": "Presenter (fictional) (presenter)",
       "lastTick": "Last tick | No tick reported"
@@ -450,20 +447,20 @@
       ],
       "lastTick": "Last tick | Tick result not confirmed. 11 steps: 1 unavailable, 10 waiting for a result. | Step results (11) | Release unavailable: no verified release result reported",
       "afterRefusal": {
-        "setStockDisabled": true,
-        "faultRadiosDisabled": true,
+        "setStockDisabled": false,
+        "faultRadiosDisabled": false,
         "retryVisible": true,
         "resetDisabled": true
       },
       "afterRefresh": {
-        "setStockDisabled": true,
-        "faultRadiosDisabled": true,
+        "setStockDisabled": false,
+        "faultRadiosDisabled": false,
         "retryVisible": true,
         "resetDisabled": true
       }
     },
     "faultCleared": {
-      "workaroundPageReload": true,
+      "workaroundPageReload": false,
       "stockModeBefore": "Stock feed unavailable",
       "orderingModeBefore": "No fault",
       "messages": [
@@ -472,11 +469,13 @@
       "stockModeAfter": "No fault"
     },
     "afterClearTick": {
+      "tickDisabledBefore": true,
+      "retryHidden": true,
       "messages": [
         "Action recorded"
       ],
       "lastTick": "Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | 5 cars released",
-      "clock": "2026-11-05T09:31:00.000Z"
+      "clock": "2026-11-05T09:30:00.000Z"
     },
     "orderingFault": {
       "setMessages": [
@@ -531,21 +530,19 @@
       "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls/tick",
       "method": "POST",
       "step": "release-refused",
-      "body": "{\"status\":\"unavailable\",\"tickId\":\"presenter-02269798912896782dee3d72ca6fe48bcdd1f7bba0f1646ee248f751818e47ba\",\"handlerId\":\"stock-release\",\"reason\":\"A registered clock handler did not complete. Retry this event ID.\",\"retryable\":true,\"handlerOutcome\":{\"status\":\"unavailable\",\"reason\":\"Stock source is u",
+      "body": "{\"status\":\"unavailable\",\"tickId\":\"presenter-3e985ad2bdb287d7c63c2f1833e88ee2115304fbc737f8200ea7e19e007dd9a4\",\"handlerId\":\"stock-release\",\"reason\":\"A registered clock handler did not complete. Retry this event ID.\",\"retryable\":true,\"handlerOutcome\":{\"status\":\"unavailable\",\"reason\":\"Stock source is u",
       "known": false,
       "expectedRefusal": true
     }
   ],
-  "notes": [
-    "DEFECT: after the refused (retryable) Next release the strip stays in its uncertain state; Stock feed fault picker and Set stock feed fault stay disabled after Refresh readback, only Retry original action (same refusal) or a page reload frees them."
-  ],
+  "notes": [],
   "origin": "http://127.0.0.1:8950",
-  "finishedAt": "2026-11-08T19:51:31.843Z",
+  "finishedAt": "2026-11-08T20:34:27.498Z",
   "counts": {
     "steps": 8,
     "passed": 8,
     "screenshots": 9,
-    "keyboardChecks": 23,
+    "keyboardChecks": 22,
     "keyboardPassed": 22
   },
   "errors": {

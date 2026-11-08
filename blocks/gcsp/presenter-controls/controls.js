@@ -189,7 +189,9 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     nextReason.textContent = state.controls?.nextRelease?.status === 'available'
       ? `Release cue: ${state.controls.nextRelease.at}` : `Next release unavailable: ${state.controls?.nextRelease?.reason || 'No future cue'}`;
     const chosen = catalogue?.scenarios?.find((row) => row.scenarioId === scenario.value);
-    availability.textContent = chosen?.availability?.available ? 'Available' : `Not available yet: ${chosen?.availability?.missingCapabilities?.join(', ') || reason(catalogue) || 'Scenario catalogue unavailable'}`;
+    // Names the choice rather than repeating its option sub-line.
+    availability.textContent = chosen?.availability?.available ? `Selected: ${chosen.name}. Ready to reset.`
+      : `${chosen ? `Selected: ${chosen.name}. ` : ''}Not available yet: ${chosen?.availability?.missingCapabilities?.join(', ') || reason(catalogue) || 'Scenario catalogue unavailable'}`;
     reset.disabled ||= !chosen?.availability?.available; confirm.disabled ||= !chosen?.availability?.available;
     switchButton.disabled ||= !principal.value;
     confirmText.textContent = `Reset into ${chosen?.name || 'selected scenario'}? This starts a new run.`;

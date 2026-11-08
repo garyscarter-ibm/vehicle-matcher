@@ -186,9 +186,10 @@ for (const [name, mutate] of Object.entries(invalidReleaseResults)) test(`releas
   await settle(); assert.match(f.host.textContent, /Release unavailable/); assert.doesNotMatch(f.host.textContent, /\d+ cars released/); f.control.destroy();
 });
 test('reset current/chosen availability is explained and explicit confirmation captures canonical versions', async () => {
-  const f = setup(); await settle(); const unavailable = choice(f, 'Scenario', 'business'); assert.equal(unavailable.disabled, false); unavailable.click(); assert.match(f.host.textContent, /actual-release-service/);
+  const f = setup(); await settle(); const unavailable = choice(f, 'Scenario', 'business'); assert.equal(unavailable.disabled, false); unavailable.click(); assert.match(f.host.textContent, /Selected: Business journey\. Not available yet: actual-release-service/);
   assert.equal(f.click('Reset scenario').disabled, true); assert.equal(f.calls.length, 0);
-  choice(f, 'Scenario', 'mechanics').click(); f.click('Reset scenario'); assert.equal(f.calls.length, 0);
+  choice(f, 'Scenario', 'mechanics').click(); assert.match(f.host.textContent, /Selected: Clock mechanics\. Ready to reset\./);
+  f.click('Reset scenario'); assert.equal(f.calls.length, 0);
   f.click('Cancel reset'); assert.equal(f.calls.length, 0); f.click('Reset scenario'); f.click('Confirm reset'); await settle();
   assert.deepEqual(f.calls[0], { commandId: 'command-1', expectedRunId: 'run-a', expectedRunVersion: 1,
     scenarioId: 'mechanics', scenarioVersion: 'v1', fixtureVersion: 'f1', policyVersion: 'policy-test' });
