@@ -1,0 +1,737 @@
+{
+  "build": "984d02c7",
+  "chunk": "desktop",
+  "entry": "hosted",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "stockMode": "default",
+  "state": "passed",
+  "startedAt": "2026-11-08T21:48:17.708Z",
+  "runIds": {
+    "first": "demo-7174e5d307eed3fc1692c8542f55b858",
+    "second": "demo-7b62994a79922fc9148056caf40591be"
+  },
+  "steps": [
+    {
+      "id": "reset",
+      "name": "Open the presenter page with the key, open Presenter controls, choose Offer expires, Reset scenario and Confirm reset; read back scenario, run and clock",
+      "pass": true,
+      "screenshots": [
+        "reset-1280.png"
+      ],
+      "detail": {
+        "chosen": "Offer expires Available",
+        "previous": "demo-ea3b050919d5058adfbcb7852fc98722",
+        "scenario": "Offer expires",
+        "run": "demo-7174e5d307eed3fc1692c8542f55b858",
+        "clock": "2026-11-05T09:30:00.000Z",
+        "acting": "Presenter (fictional) (presenter)",
+        "lastTick": "Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | 5 cars released"
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "state": "{\"chosen\":\"Offer expires Available\",\"previous\":\"demo-ea3b050919d5058adfbcb7852fc98722\",\"scenario\":\"Offer expires\",\"run\":\"demo-7174e5d307eed3fc1692c8542f55b858\",\"clock\":\"2026-11-05T09:30:00.000Z\",\"acting\":\"Presenter (fictional) (presenter)\",\"lastTick\":\"Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | 5 cars released\"}",
+      "seconds": 40
+    },
+    {
+      "id": "paula-activity",
+      "name": "Paula, Buddy activity: the offer and the time it is available until",
+      "pass": true,
+      "screenshots": [
+        "paula-activity-1280.png"
+      ],
+      "detail": {
+        "before": "Presenter (fictional) (presenter)",
+        "after": "Paula (fictional) (employee)",
+        "availableUntil": "5 Nov 2026, 11:30"
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Your car brief Buddy activity Show labels Presenter controls BUDDY ACTIVITY Your buddy Active Your offer Image unavailable Waiting for you Respond by 5 Nov 2026, 11:30 View offer Activity All dates are demo time (UTC). Last check 5 Nov 2026, 09:30: 5 cars checked, 4 suitable. Found a car for you. 5 Nov 2026, 09:00 Search confirmed Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Help is available if you need the scheme team to rev",
+      "seconds": 21
+    },
+    {
+      "id": "outbox",
+      "name": "Presenter outbox viewer: Paula's captured email and its offer link",
+      "pass": true,
+      "screenshots": [
+        "outbox-1280.png"
+      ],
+      "detail": {
+        "rows": [
+          "Paula (fictional) Your vehicle offer is ready to review 5 Nov 2026, 09:30 GMT Sent"
+        ],
+        "href": "/gcsp/offer?offerId=buddy-offer%3A42740b19c089b3b22b693c4267cde241317d74700b243737ad3cb6a02e3b6113&runId=demo-7174e5d307eed3fc1692c8542f55b858#token=BSwXa-QvSfXWWK9Go4lgqwjCAtA9hzESuLy3Oft_GpQ",
+        "detail": "Paula (fictional) Your vehicle offer is ready to review 5 Nov 2026, 09:30 GMT Sent Your vehicle offer is ready to review To Paula (fictional) Status Sent Demo clock 5 Nov 2026, 09:30 GMT Attempts 1 Open the offer (opens in a new tab) Email as received Plain-text version Hello Paula (fictional), Your vehicle offer is ready to review Your scheme vehicle Your offer is available until 2026-11-05T11:30:00.000Z. Open the offer to review the vehicle and make your decision. Review your offer: /gcsp/offe",
+        "text": "Hello Paula (fictional), Your vehicle offer is ready to review Your scheme vehicle Your offer is available until 2026-11-05T11:30:00.000Z. Open the offer to review the vehicle and make your decision. Review your offer: /gcsp/offer?offerId=buddy-offer%3A42740b19c089b3b22b693c4267cde241317d74700b243737ad3cb6a02e3b6113&runId=demo-7174e5d307eed3fc1692c8542f55b858#token=BSwXa-QvSfXWWK9Go4lgqwjCAtA9hzESuLy3Oft_GpQ This is a captured demonstration message for a fictional employee. No email has been sent.",
+        "runId": "demo-7174e5d307eed3fc1692c8542f55b858",
+        "offerId": "buddy-offer:42740b19c089b3b22b693c4267cde241317d74700b243737ad3cb6a02e3b6113",
+        "expiresAt": "2026-11-05T11:30:00.000Z",
+        "offerReadStatus": 200
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "state": "Paula (fictional) Your vehicle offer is ready to review 5 Nov 2026, 09:30 GMT Sent | link /gcsp/offer?offerId=buddy-offer%3A42740b19c089b3b22b693c4267cde241317d74700b243737ad3cb6a02e3b6113&runId=demo-7174e5d307eed3fc1692c8542f55b858#token=BSwXa-QvSfXWWK9Go4lgqwjCAtA9hzESuLy3Oft_GpQ | expiresAt 2026-11-05T11:30:00.000Z",
+      "seconds": 5
+    },
+    {
+      "id": "tick-to-target",
+      "name": "Presenter: type the expiresAt into Named time or UTC target and press Tick to target; read the buddy-expiry step",
+      "pass": true,
+      "screenshots": [
+        "tick-to-target-1280.png"
+      ],
+      "detail": {
+        "clock": "2026-11-05T11:30:00.000Z",
+        "lastTick": "Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | Stock release: Done. | Manual claim expiry: Done. | Buddy expiry: Done. | Appointments: Done. | Approvals: Done. | Documents: Done. | Return appointments: Done. | Renewal risk cases: Done. | Selection order reconciliation: Done. | Buddy allocation: Done. | Outbox dispatch: Done. | 0 cars released",
+        "handlers": [
+          "Stock release: Done.",
+          "Manual claim expiry: Done.",
+          "Buddy expiry: Done.",
+          "Appointments: Done.",
+          "Approvals: Done.",
+          "Documents: Done.",
+          "Return appointments: Done.",
+          "Renewal risk cases: Done.",
+          "Selection order reconciliation: Done.",
+          "Buddy allocation: Done.",
+          "Outbox dispatch: Done."
+        ],
+        "expiry": "Buddy expiry: Done.",
+        "statuses": [
+          "Action recorded"
+        ]
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "state": "2026-11-05T11:30:00.000Z | Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | Stock release: Done. | Manual claim expiry: Done. | Buddy expiry: Done. | Appointments: Done. | Approvals: Done. | Documents: Done. | Return appointments: Done. | Renewal risk cases: Done. | Selection order reconciliation: Done. | Buddy allocation: Done. | Outbox dispatch: Done. | 0 cars released | Stock release: Done. ;; Manual claim expiry: Done. ;; Buddy expiry: Done. ;; Appointments: Done. ;; Approvals: Done. ;; Documents: Done. ;; Return appointments: Done. ;; Renewal risk cases: Done. ;; Selec",
+      "seconds": 14
+    },
+    {
+      "id": "expired-page",
+      "name": "Paula opens the captured-email link: the page reads expired from the backend, no usable accept or decline",
+      "pass": true,
+      "screenshots": [
+        "expired-page-1280.png"
+      ],
+      "detail": {
+        "controls": [],
+        "url": "http://127.0.0.1:8950/gcsp/offer"
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer expired This offer is no longer available to accept. No image for this car yet ORDER NO. 7203018 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 Boot 500 litres 0 to 62 mph 7.4 s Fuel economy 44 mpg Interior Not supplied Gearbox Not supplied Eligible WHY IT SUITS YOU Available by 1 December 2026. Body style: 100% fit.",
+      "seconds": 20
+    },
+    {
+      "id": "no-revival",
+      "name": "Reload, presenter Tick once, reload again: still expired",
+      "pass": true,
+      "screenshots": [
+        "no-revival-1280.png"
+      ],
+      "detail": {
+        "reloadText": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer expired This offer is no longer available to accept. No image for this car yet ORDER NO. 7203018 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model No",
+        "clockBefore": "2026-11-05T11:30:00.000Z",
+        "clockAfter": "2026-11-05T11:31:00.000Z",
+        "lastTick": "Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | 0 cars released"
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer expired This offer is no longer available to accept. No image for this car yet ORDER NO. 7203018 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 Boot 500 litres 0 to 62 mph 7.4 s Fuel economy 44 mpg Interior Not supplied Gearbox Not supplied Eligible WHY IT SUITS YOU Available by 1 December 2026. Body style: 100% fit.",
+      "seconds": 22
+    },
+    {
+      "id": "alex-activity",
+      "name": "Alex, Buddy activity: record what it shows (the known reallocation gap)",
+      "pass": true,
+      "screenshots": [
+        "alex-activity-1280.png"
+      ],
+      "detail": {
+        "before": "Paula (fictional) (employee)",
+        "after": "Alex (fictional) (employee)",
+        "offeredCar": false
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "state": "Skip to content Group Car Schemes Portal A Alex (fictional) Your car brief Buddy activity Show labels Presenter controls BUDDY ACTIVITY Your buddy Active Your offer No current offer Activity All dates are demo time (UTC). Still searching. No match yet. Last check 5 Nov 2026, 09:30: 4 cars checked, 0 suitable. 5 Nov 2026, 09:00 Search confirmed Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Help is available if you need the scheme team to review your renewal.",
+      "seconds": 24
+    },
+    {
+      "id": "stale-link",
+      "name": "Reset into Offer expires again and open the first run's email link: stale-run refusal",
+      "pass": true,
+      "screenshots": [
+        "stale-link-1280.png"
+      ],
+      "detail": {
+        "reset": {
+          "chosen": "Offer expires Available",
+          "previous": "demo-7174e5d307eed3fc1692c8542f55b858",
+          "scenario": "Offer expires",
+          "run": "demo-7b62994a79922fc9148056caf40591be",
+          "clock": "2026-11-05T09:30:00.000Z",
+          "acting": "Presenter (fictional) (presenter)",
+          "lastTick": "Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | 5 cars released"
+        },
+        "staleUrl": "/gcsp/offer"
+      },
+      "overflowPx": 0,
+      "emDash": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer from an earlier demo run Open the original email link or open this offer from your account. Check current state Offer from an earlier demo run",
+      "seconds": 54
+    }
+  ],
+  "keyboard": [
+    {
+      "page": "access",
+      "check": "Tab reaches the demo key field; typing the key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Offer expires\" in \"Scenario\"",
+      "pass": true,
+      "detail": "Offer expires Available"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Reset scenario\"",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Reset scenario opens the confirmation with focus on Confirm reset",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Confirm reset\" resets into Offer expires",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Paula\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Paula (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Switch principal\" switches to Paula",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "outbox",
+      "check": "Enter on the Paula row opens her captured email",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Typing the expiresAt in \"Named time or UTC target\"",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Tick to target\"",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Paula\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Paula (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Switch principal\" switches to Paula",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"/^Tick \\(/\"",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Alex\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Alex (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Switch principal\" switches to Alex",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Offer expires\" in \"Scenario\"",
+      "pass": true,
+      "detail": "Offer expires Available"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Reset scenario\"",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Reset scenario opens the confirmation with focus on Confirm reset",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Confirm reset\" resets into Offer expires",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Paula\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Paula (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Switch principal\" switches to Paula",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    }
+  ],
+  "readbacks": {
+    "reset": {
+      "chosen": "Offer expires Available",
+      "previous": "demo-ea3b050919d5058adfbcb7852fc98722",
+      "scenario": "Offer expires",
+      "run": "demo-7174e5d307eed3fc1692c8542f55b858",
+      "clock": "2026-11-05T09:30:00.000Z",
+      "acting": "Presenter (fictional) (presenter)",
+      "lastTick": "Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | 5 cars released"
+    },
+    "availableUntil": "5 Nov 2026, 11:30",
+    "outbox": {
+      "rows": [
+        "Paula (fictional) Your vehicle offer is ready to review 5 Nov 2026, 09:30 GMT Sent"
+      ],
+      "href": "/gcsp/offer?offerId=buddy-offer%3A42740b19c089b3b22b693c4267cde241317d74700b243737ad3cb6a02e3b6113&runId=demo-7174e5d307eed3fc1692c8542f55b858#token=BSwXa-QvSfXWWK9Go4lgqwjCAtA9hzESuLy3Oft_GpQ",
+      "detail": "Paula (fictional) Your vehicle offer is ready to review 5 Nov 2026, 09:30 GMT Sent Your vehicle offer is ready to review To Paula (fictional) Status Sent Demo clock 5 Nov 2026, 09:30 GMT Attempts 1 Open the offer (opens in a new tab) Email as received Plain-text version Hello Paula (fictional), Your vehicle offer is ready to review Your scheme vehicle Your offer is available until 2026-11-05T11:30:00.000Z. Open the offer to review the vehicle and make your decision. Review your offer: /gcsp/offe",
+      "text": "Hello Paula (fictional), Your vehicle offer is ready to review Your scheme vehicle Your offer is available until 2026-11-05T11:30:00.000Z. Open the offer to review the vehicle and make your decision. Review your offer: /gcsp/offer?offerId=buddy-offer%3A42740b19c089b3b22b693c4267cde241317d74700b243737ad3cb6a02e3b6113&runId=demo-7174e5d307eed3fc1692c8542f55b858#token=BSwXa-QvSfXWWK9Go4lgqwjCAtA9hzESuLy3Oft_GpQ This is a captured demonstration message for a fictional employee. No email has been sent.",
+      "runId": "demo-7174e5d307eed3fc1692c8542f55b858",
+      "offerId": "buddy-offer:42740b19c089b3b22b693c4267cde241317d74700b243737ad3cb6a02e3b6113",
+      "expiresAt": "2026-11-05T11:30:00.000Z",
+      "offerReadStatus": 200
+    },
+    "expiresAt": "2026-11-05T11:30:00.000Z",
+    "tick": {
+      "clock": "2026-11-05T11:30:00.000Z",
+      "lastTick": "Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | Stock release: Done. | Manual claim expiry: Done. | Buddy expiry: Done. | Appointments: Done. | Approvals: Done. | Documents: Done. | Return appointments: Done. | Renewal risk cases: Done. | Selection order reconciliation: Done. | Buddy allocation: Done. | Outbox dispatch: Done. | 0 cars released",
+      "handlers": [
+        "Stock release: Done.",
+        "Manual claim expiry: Done.",
+        "Buddy expiry: Done.",
+        "Appointments: Done.",
+        "Approvals: Done.",
+        "Documents: Done.",
+        "Return appointments: Done.",
+        "Renewal risk cases: Done.",
+        "Selection order reconciliation: Done.",
+        "Buddy allocation: Done.",
+        "Outbox dispatch: Done."
+      ],
+      "expiry": "Buddy expiry: Done.",
+      "statuses": [
+        "Action recorded"
+      ]
+    },
+    "alexActivity": "Skip to content Group Car Schemes Portal A Alex (fictional) Your car brief Buddy activity Show labels Presenter controls BUDDY ACTIVITY Your buddy Active Your offer No current offer Activity All dates are demo time (UTC). Still searching. No match yet. Last check 5 Nov 2026, 09:30: 4 cars checked, 0 suitable. 5 Nov 2026, 09:00 Search confirmed Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Help is available if you need the scheme team to review your renewal."
+  },
+  "paula": {
+    "activityBefore": "Skip to content Group Car Schemes Portal P Paula (fictional) Your car brief Buddy activity Show labels Presenter controls BUDDY ACTIVITY Your buddy Active Your offer Image unavailable Waiting for you Respond by 5 Nov 2026, 11:30 View offer Activity All dates are demo time (UTC). Last check 5 Nov 2026, 09:30: 5 cars checked, 4 suitable. Found a car for you. 5 Nov 2026, 09:00 Search confirmed Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Help is available if you need the scheme team to review your renewal.",
+    "expired": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer expired This offer is no longer available to accept. No image for this car yet ORDER NO. 7203018 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 Boot 500 litres 0 to 62 mph 7.4 s Fuel economy 44 mpg Interior Not supplied Gearbox Not supplied Eligible WHY IT SUITS YOU Available by 1 December 2026. Body style: 100% fit. Your current car Fictional BMW 320i Touring No image for this car yet Configuration G21 320i M Sport Touring Body Estate Fuel Petrol Seats 5 Boot 500 litres MPG 42.8 mpg 0–62 mph 7.6 s Points a month 1,100 points Synthetic source: manual-records-v1. Observed 2026-11-05T09:00:00.000Z. Check current state Offer expired",
+    "afterReload": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer expired This offer is no longer available to accept. No image for this car yet ORDER NO. 7203018 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 Boot 500 litres 0 to 62 mph 7.4 s Fuel economy 44 mpg Interior Not supplied Gearbox Not supplied Eligible WHY IT SUITS YOU Available by 1 December 2026. Body style: 100% fit. Your current car Fictional BMW 320i Touring No image for this car yet Configuration G21 320i M Sport Touring Body Estate Fuel Petrol Seats 5 Boot 500 litres MPG 42.8 mpg 0–62 mph 7.6 s Points a month 1,100 points Synthetic source: manual-records-v1. Observed 2026-11-05T09:00:00.000Z. Check current state Offer expired",
+    "afterTick": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer expired This offer is no longer available to accept. No image for this car yet ORDER NO. 7203018 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 Boot 500 litres 0 to 62 mph 7.4 s Fuel economy 44 mpg Interior Not supplied Gearbox Not supplied Eligible WHY IT SUITS YOU Available by 1 December 2026. Body style: 100% fit. Your current car Fictional BMW 320i Touring No image for this car yet Configuration G21 320i M Sport Touring Body Estate Fuel Petrol Seats 5 Boot 500 litres MPG 42.8 mpg 0–62 mph 7.6 s Points a month 1,100 points Synthetic source: manual-records-v1. Observed 2026-11-05T09:00:00.000Z. Check current state Offer expired",
+    "staleLink": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer from an earlier demo run Open the original email link or open this offer from your account. Check current state Offer from an earlier demo run"
+  },
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/favicon.ico",
+      "page": "http://127.0.0.1:8950/gcsp/access",
+      "step": "reset",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html",
+      "step": "reset",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html",
+      "step": "reset",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 409 (Conflict)",
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html",
+      "step": "reset",
+      "known": false,
+      "expectedRefusal": true
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html",
+      "step": "paula-activity",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html",
+      "step": "tick-to-target",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html",
+      "step": "expired-page",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html",
+      "step": "expired-page",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html",
+      "step": "no-revival",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html",
+      "step": "alex-activity",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html",
+      "step": "alex-activity",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html",
+      "step": "stale-link",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 409 (Conflict)",
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html",
+      "step": "stale-link",
+      "known": false,
+      "expectedRefusal": true
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html",
+      "step": "stale-link",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 409 (Conflict)",
+      "url": "http://127.0.0.1:8950/api/gcsp/offers/access",
+      "page": "http://127.0.0.1:8950/gcsp/offer",
+      "step": "stale-link",
+      "known": false,
+      "expectedRefusal": true
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "step": "paula-activity"
+    },
+    {
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "step": "paula-activity"
+    },
+    {
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "step": "paula-activity"
+    },
+    {
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "step": "outbox"
+    },
+    {
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "step": "alex-activity"
+    },
+    {
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "step": "alex-activity"
+    },
+    {
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "step": "alex-activity"
+    }
+  ],
+  "badResponses": [
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "reset",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "reset",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "status": 409,
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "method": "GET",
+      "step": "reset",
+      "known": false,
+      "expectedRefusal": true
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "paula-activity",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "tick-to-target",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "expired-page",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "expired-page",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "no-revival",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "alex-activity",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "alex-activity",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "stale-link",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "status": 409,
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "method": "GET",
+      "step": "stale-link",
+      "known": false,
+      "expectedRefusal": true
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "stale-link",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "status": 409,
+      "url": "http://127.0.0.1:8950/api/gcsp/offers/access",
+      "method": "POST",
+      "step": "stale-link",
+      "body": "{\"status\":\"stale-run\",\"reason\":\"This offer belongs to an earlier demo run.\",\"contractVersion\":\"1.0.0\"}",
+      "known": false,
+      "expectedRefusal": true
+    }
+  ],
+  "notes": [
+    "DEFECT (Low): the expired offer page still shows the car with \"Eligible\" and \"Why it suits you\", as if the car were still on offer.",
+    "Known gap (not a defect of this run): Alex sees no offer for the expired car; allocation has no expiry trigger.",
+    "DEFECT (Low): the stale-run page tells the reader to \"Open the original email link\" when that is the link just opened."
+  ],
+  "origin": "http://127.0.0.1:8950",
+  "finishedAt": "2026-11-08T21:51:52.414Z",
+  "counts": {
+    "steps": 8,
+    "passed": 8,
+    "screenshots": 8,
+    "keyboardChecks": 36,
+    "keyboardPassed": 36
+  },
+  "errors": {
+    "consoleUnknown": 0,
+    "badResponsesUnknown": 0,
+    "pageErrors": 0,
+    "failedRequests": 7,
+    "abortedByNavigation": 7
+  },
+  "overflow": {
+    "horizontal": false,
+    "maxPx": 0
+  }
+}
