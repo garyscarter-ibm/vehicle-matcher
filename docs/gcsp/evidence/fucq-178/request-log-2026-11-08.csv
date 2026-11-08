@@ -1,0 +1,41 @@
+ts,host,route,status_and_bytes,purpose
+2026-11-08T21:43:17Z,stock.bmw.co.uk,/,200 114526,discovery
+2026-11-08T21:43:28Z,stock.bmw.co.uk,/assets/app.js,200 785630,discovery
+2026-11-08T21:45:08Z,stock.bmw.co.uk,/results(53),302 0 text/html; charset=utf-8,discovery-shape
+2026-11-08T21:45:39Z,stock.bmw.co.uk,/ (cookie),200 114526,discovery-session
+2026-11-08T21:45:40Z,stock.bmw.co.uk,/results(53 cookie),302 0 text/html; charset=utf-8,discovery-shape
+2026-11-08T21:46:23Z,stock.bmw.co.uk,/results(53 latlong nocookie),200 181979 application/json; charset=utf-8,discovery-shape
+2026-11-08T21:47:09Z,stock.bmw.co.uk,/results(53 jar),200 181979,discovery-paging
+2026-11-08T21:47:11Z,stock.bmw.co.uk,/results/more(53 jar),200 189638 application/json; charset=utf-8,discovery-paging
+2026-11-08T22:17:44Z,api.github.com,/repos/.../releases,200,fucq77-restore-probe
+2026-11-08T22:18:07Z,github.com,release-asset sources--00a7db972439971fe87060c4e58e3228875ce7f1ea8e204b715521808d530064.jsonl,200 11435963,fucq77-restore
+2026-11-08T22:18:09Z,github.com,release-asset sources--00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a.jsonl,200 6832119,fucq77-restore
+2026-11-08T22:18:10Z,github.com,release-asset sources--14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6.jsonl,200 689844,fucq77-restore
+2026-11-08T22:18:14Z,github.com,release-asset sources--19f597db5359212cf0615bbf2ef3518fca4f014c591ee962ccd07db513966874.jsonl,200 10262576,fucq77-restore
+2026-11-08T22:18:16Z,github.com,release-asset sources--1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802.jsonl,200 21408,fucq77-restore
+2026-11-08T22:18:33Z,github.com,release-asset sources--34b8befe36cee454171e72dbcea4b67a947a69990098a190d327c033dccbd8b3.jsonl,200 33542272,fucq77-restore
+2026-11-08T22:18:41Z,github.com,release-asset sources--4d5d0766342d817d06f3e60aed1ae87ba4446c4510cf00c18cb32798f56aeeda.jsonl,200 16411688,fucq77-restore
+2026-11-08T22:18:46Z,github.com,release-asset sources--5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7.jsonl,200 689849,fucq77-restore
+2026-11-08T22:19:04Z,github.com,release-asset sources--65d24a89759a34c4ebc6827c6c8960f5c7093891b15cd0ff1edc4343402b08a3.jsonl,200 33554086,fucq77-restore
+2026-11-08T22:19:16Z,github.com,release-asset sources--6d1df1e9dde9d019e9f3a7dc3e22727d9df11b655ef0128e81c5ed75551a5b11.jsonl,200 8697624,fucq77-restore
+2026-11-08T22:19:21Z,github.com,release-asset sources--845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080.jsonl,200 409709,fucq77-restore
+2026-11-08T22:19:26Z,github.com,release-asset sources--a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265.jsonl,200 603088,fucq77-restore
+2026-11-08T22:19:29Z,github.com,release-asset sources--acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d.jsonl,200 323364,fucq77-restore
+2026-11-08T22:19:43Z,github.com,release-asset sources--b795672aa8c4acefa8aee923743deb9a88c5f768cae66227569e94eac543f21c.jsonl,200 9386931,fucq77-restore
+2026-11-08T22:19:47Z,github.com,release-asset sources--c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06.jsonl,200 689836,fucq77-restore
+2026-11-08T22:20:07Z,github.com,release-asset sources--d46fc498d664a64196f3f5499dba22bc0bee48eefa12452ea23c5d6104133012.jsonl,200 33551571,fucq77-restore
+2026-11-08T22:20:13Z,github.com,release-asset sources--da1eb59e4e5f8dee9dd06e8877da275c2eb79e541dea90c793559fac6cd188ff.jsonl,200 16909795,fucq77-restore
+2026-11-08T22:20:24Z,github.com,release-asset sources--eb348cecdaa2638b2e42c2b9442b038ebf93b46a4d4594878fdc3e7f697921ed.jsonl,200 33535153,fucq77-restore
+2026-11-08T22:20:27Z,github.com,release-asset sources--f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8.jsonl,200 159220,fucq77-restore
+2026-11-08T22:20:39Z,github.com,release-asset sources--fd8d384e60b2058e27ee0b95c089cb7f7183bfd2d511761e39e566a6fc8cde9c.jsonl,200 5985315,fucq77-restore
+2026-11-08T22:20:42Z,github.com,release-asset store--active.json,200 374,fucq77-restore
+2026-11-08T22:20:50Z,github.com,release-asset store--identity-inventory.json,200 5759517,fucq77-restore
+2026-11-08T22:20:52Z,github.com,release-asset store--last-good.json,200 198,fucq77-restore
+2026-11-08T22:21:47Z,github.com,release-asset store--versions--3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30--configurations.jsonl,200 190860237,fucq77-restore
+2026-11-08T22:21:47Z,github.com,release-asset store--versions--3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30--images.jsonl,200 1410,fucq77-restore
+2026-11-08T22:21:48Z,github.com,release-asset store--versions--3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30--manifest.json,200 8264,fucq77-restore
+2026-11-08T22:21:49Z,github.com,release-asset store--versions--3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30--vins.jsonl,200 2565,fucq77-restore
+2026-11-08T22:22:25Z,github.com,release-asset store--versions--77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab--configurations.jsonl,200 154046635,fucq77-restore
+2026-11-08T22:22:27Z,github.com,release-asset store--versions--77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab--images.jsonl,200 1410,fucq77-restore
+2026-11-08T22:22:29Z,github.com,release-asset store--versions--77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab--manifest.json,200 8255,fucq77-restore
+2026-11-08T22:22:31Z,github.com,release-asset store--versions--77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab--vins.jsonl,200 2565,fucq77-restore
