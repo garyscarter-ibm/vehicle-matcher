@@ -1,15 +1,16 @@
-// FUCQ-109 browser walkthrough of Paula's path on the real launcher, one viewport per run (FUCQ89_CHUNK=desktop|narrow).
-// Nothing is stubbed: startGcspDemo over HTTPS, the default generated stock, real routes. FUCQ89_STOCK=demo forces demo stock.
-import { execFileSync, spawnSync } from 'node:child_process';
+// FUCQ-109 browser walkthrough of Paula's main journey against the hosted entry, one viewport per run (FUCQ89_CHUNK=desktop|narrow).
+// Spawns `node index.js` in server/ as Render does (GCSP_RUNTIME=1, memory, one HTTP origin behind the demo key). Nothing is stubbed.
+import { spawn, spawnSync } from 'node:child_process';
+import { once } from 'node:events';
+import { randomBytes } from 'node:crypto';
+import { createServer } from 'node:net';
 import { mkdir, writeFile, rm } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from '/Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/index.mjs';
-import { startGcspDemo } from '../../../../scripts/gcsp-demo.mjs';
-import { createRunStockProviderFactory } from '../../../../server/gcsp/stock/index.js';
-import { createDemoUpstream, withConfirmedSupply } from '../../../../server/gcsp/stock/demo-provider.js';
 
 const HERE = fileURLToPath(new URL('.', import.meta.url));
+const SERVER_DIR = resolve(HERE, '../../../../server');
 const chunk = process.env.FUCQ89_CHUNK;
 if (!['desktop', 'narrow'].includes(chunk)) throw new Error('Set FUCQ89_CHUNK=desktop|narrow');
 const scratch = resolve(process.env.FUCQ89_SCRATCH || process.env.TMPDIR || '');
@@ -19,20 +20,23 @@ const vp = String(viewport.width);
 const shotDir = join(HERE, 'browser');
 const resultsFile = join(HERE, `results-${chunk}.json`);
 const profile = join(scratch, `chrome-${chunk}`);
-const stockMode = process.env.FUCQ89_STOCK === 'demo' ? 'demo' : 'default';
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-const report = { chunk, viewport, stockMode, state: 'incomplete', startedAt: new Date().toISOString(), steps: [], keyboard: [], firstRelease: null,
-  consoleErrors: [], pageErrors: [], failedRequests: [], badResponses: [], notes: [] };
-let previewRendered = null; let shots = 0; let context; let page; let app; let halted = null;
+const ACCESS_KEY = `walk-${randomBytes(9).toString('hex')}`;
+// Default is the generated run stock as Render runs it; FUCQ89_STOCK=demo forces demo stock.
+let stockMode = process.env.FUCQ89_STOCK === 'demo' ? 'demo' : 'default';
+const report = { chunk, entry: 'hosted', viewport, stockMode, state: 'incomplete', startedAt: new Date().toISOString(), runIds: {}, steps: [], keyboard: [],
+  firstRelease: null, consoleErrors: [], pageErrors: [], failedRequests: [], badResponses: [], notes: [] };
+let shots = 0; let context; let page; let app; let child; let halted = null; let previewRendered = null;
 const wait = (ms) => new Promise((done) => setTimeout(done, ms));
 const save = () => writeFile(resultsFile, `${JSON.stringify(report, null, 2)}\n`);
 const killChrome = () => { try { spawnSync('/usr/bin/pkill', ['-f', `user-data-dir=${profile}`]); } catch { /* already gone */ } };
-process.on('SIGALRM', () => { killChrome(); report.state = 'timeout'; process.exit(124); });
-process.on('exit', killChrome);
+const killServer = () => { try { if (child && child.exitCode === null) child.kill('SIGKILL'); } catch { /* already gone */ } };
+process.on('SIGALRM', () => { killChrome(); killServer(); report.state = 'timeout'; process.exit(124); });
+process.on('exit', () => { killChrome(); killServer(); });
 
 async function until(fn, { timeout = 120000, every = 500, what = 'condition' } = {}) {
-  const end = Date.now() + timeout; let last;
-  while (Date.now() < end) { try { last = await fn(); if (last) return last; } catch { /* retry */ } await wait(every); }
+  const end = Date.now() + timeout;
+  while (Date.now() < end) { try { const last = await fn(); if (last) return last; } catch { /* retry */ } await wait(every); }
   throw new Error(`Timed out waiting for ${what}`);
 }
 const clip = (text, n = 420) => String(text ?? '').replace(/\s+/g, ' ').trim().slice(0, n);
@@ -49,7 +53,7 @@ async function shot(name, full = true) {
 async function step(id, name, run, { critical = false } = {}) {
   const row = { id, name, pass: false, screenshots: [] };
   report.steps.push(row);
-  if (halted) { row.pass = false; row.blocked = `Blocked by failed step ${halted}`; await save(); return; }
+  if (halted) { row.blocked = `Blocked by failed step ${halted}`; await save(); return; }
   try {
     const out = await run(row) || {};
     // Horizontal overflow of the page itself fails the step (tables and code may scroll inside their own box).
@@ -66,7 +70,7 @@ async function step(id, name, run, { critical = false } = {}) {
 
 // Keyboard helpers: Tab from the current focus until the target holds it.
 const isFocused = (locator) => locator.evaluate((el) => el === document.activeElement).catch(() => false);
-async function tabTo(locator, { max = 140 } = {}) {
+async function tabTo(locator, { max = 160 } = {}) {
   await locator.first().waitFor({ state: 'attached', timeout: 30000 });
   for (let count = 0; count <= max; count += 1) {
     if (await isFocused(locator.first())) return count;
@@ -93,14 +97,65 @@ async function focusShot(row, locator, label) {
 }
 const kb = (pageName, action, pass, detail) => report.keyboard.push({ page: pageName, check: action, pass: Boolean(pass), ...(detail === undefined ? {} : { detail }) });
 
+// ---- Hosted entry ----
+async function freePort() {
+  const probe = createServer();
+  await new Promise((done) => probe.listen(0, '127.0.0.1', done));
+  const { port } = probe.address();
+  await new Promise((done) => probe.close(done));
+  return port;
+}
+// The Render command and env, plus a throwaway demo key. GCSP_STOCK_SOURCE is set only to force demo stock.
+async function startHost() {
+  // Leads share this Mac, so a lead may pin FUCQ89_PORT; 127.0.0.1 keeps cookies apart from other localhost hosts.
+  const port = Number(process.env.FUCQ89_PORT) || await freePort();
+  const origin = `http://127.0.0.1:${port}`;
+  const env = { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: scratch, GCSP_RUNTIME: '1', GCSP_REPOSITORY_MODE: 'memory',
+    GCSP_PUBLIC_ORIGIN: origin, DEMO_ACCESS_KEY: ACCESS_KEY, PORT: String(port), ...(stockMode === 'demo' ? { GCSP_STOCK_SOURCE: 'demo' } : {}) };
+  child = spawn(process.execPath, ['index.js'], { cwd: SERVER_DIR, env, stdio: ['ignore', 'pipe', 'pipe'] });
+  let output = '';
+  const ready = new Promise((done, fail) => {
+    const timer = setTimeout(() => fail(new Error(`Host not ready in time: ${clip(output.slice(-300))}`)), 90000);
+    for (const stream of [child.stdout, child.stderr]) stream.on('data', (data) => { output += data; if (output.includes('GCSP hosted demo')) { clearTimeout(timer); done(); } });
+    child.once('exit', (code) => { clearTimeout(timer); fail(new Error(`Host exited (${code}): ${clip(output.slice(-300))}`)); });
+  });
+  await ready;
+  report.origin = origin;
+  return { origin, output: () => output, stop: async () => { if (child.exitCode === null) { const gone = once(child, 'exit'); child.kill('SIGTERM'); setTimeout(killServer, 5000).unref(); await gone; } } };
+}
+
 // ---- Presenter strip helpers ----
 const strip = () => page.locator('.gcsp-presenter-controls');
 const stripText = () => strip().evaluate((el) => el.innerText).catch(() => '');
 const clockOf = (text) => /DemoClock \(UTC\)\s+(\S+)/.exec(text)?.[1] ?? null;
+const runOf = (text) => /\bRun\s+(\S+)/.exec(text)?.[1] ?? null;
+const actingOf = (text) => /Acting principal\s+(.+)/.exec(text)?.[1]?.trim() ?? null;
 async function openStrip() {
   const root = strip(); await root.waitFor({ state: 'attached', timeout: 60000 });
   if (!(await root.evaluate((el) => el.open))) await root.locator('summary').click();
   await until(async () => clockOf(await stripText()), { what: 'presenter clock readout', timeout: 60000 });
+}
+// Open the strip with Tab and Enter, as a keyboard user would.
+async function openStripByKeyboard() {
+  const root = strip(); await root.waitFor({ state: 'attached', timeout: 60000 });
+  if (!(await root.evaluate((el) => el.open))) { await tabTo(root.locator('summary')); await page.keyboard.press('Enter'); }
+  const ok = await root.evaluate((el) => el.open);
+  kb('presenter', 'Enter on "Presenter controls" opens the strip', ok);
+  await until(async () => clockOf(await stripText()), { what: 'presenter clock readout', timeout: 60000 });
+  return ok;
+}
+// Arrow keys move a radio group's selection; stops when the checked option's text starts with the target.
+async function chooseRadio(groupLabel, target, pageName, scope = `[role=radiogroup][aria-label="${groupLabel}"]`) {
+  const radios = page.locator(`${scope} [role=radio]`);
+  await radios.first().waitFor({ timeout: 30000 });
+  const checked = page.locator(`${scope} [role=radio][aria-checked=true]`);
+  const current = async () => (await checked.first().innerText().catch(() => '')).trim();
+  if (!(await checked.count())) { await tabTo(radios.first()); } else { await tabTo(checked); }
+  const total = await radios.count();
+  for (let i = 0; i <= total && !(await current()).startsWith(target); i += 1) await page.keyboard.press('ArrowDown');
+  const now = await current(); const ok = now.startsWith(target);
+  kb(pageName, `arrow keys choose "${target}" in "${groupLabel}"`, ok, clip(now, 80));
+  if (!ok) throw new Error(`Arrow keys did not reach ${target}`);
 }
 async function nextRelease(row) {
   await openStrip();
@@ -117,58 +172,52 @@ async function nextRelease(row) {
 }
 
 async function goto(path, ready) {
-  await page.goto(`${app.value.origin}${path}`, { waitUntil: 'load', timeout: 120000 });
+  await page.goto(`${app.origin}${path}`, { waitUntil: 'load', timeout: 120000 });
   if (ready) await ready();
 }
 const visibleText = (selector) => page.locator(selector).first().evaluate((el) => el.innerText);
 
 // ---- Brief ----
-const group = (question) => page.locator(`[role=radiogroup][aria-label^="${question}"]`);
-async function answerByKeyboard(question, target) {
-  const checked = group(question).locator('[role=radio][aria-checked=true]');
-  await tabTo(checked);
-  const labels = await group(question).locator('[role=radio]').evaluateAll((nodes) => nodes.map((n) => n.innerText.trim()));
-  const from = labels.indexOf((await checked.innerText()).trim()); const to = labels.indexOf(target);
-  const key = to < from ? 'ArrowLeft' : 'ArrowRight';
-  for (let i = 0; i < Math.abs(to - from); i += 1) await page.keyboard.press(key);
-  const ok = (await group(question).locator('[role=radio][aria-checked=true]').innerText()).trim() === target;
-  kb('brief', `arrow keys choose "${target}" for "${question}"`, ok);
-  if (!ok) throw new Error(`Arrow keys did not select ${target}`);
-}
-async function toggleByKeyboard(name) {
-  const box = page.getByRole('checkbox', { name, exact: true });
-  await tabTo(box); await page.keyboard.press('Space');
-  const ok = (await box.getAttribute('aria-checked')) === 'true';
-  kb('brief', `Space switches on "${name}"`, ok);
-  if (!ok) throw new Error(`Space did not switch on ${name}`);
-}
 const previewState = () => visibleText('gcsp-brief').then((t) => {
   const after = t.split('Cars for your brief').pop();
   return { updating: /Updating cars/.test(after), text: after };
 });
 async function settledPreview() {
-  return until(async () => { const p = await previewState(); return p.updating || !/eligible car/.test(p.text) ? null : p; }, { timeout: 150000, what: 'brief preview to settle' });
+  return until(async () => { const p = await previewState(); return p.updating || !/eligible car|No cars/.test(p.text) ? null : p; }, { timeout: 150000, what: 'brief preview to settle' });
 }
 async function previewFacts() {
   const preview = await settledPreview();
-  const count = Number(/(\d+) eligible car/.exec(preview.text)?.[1] ?? NaN);
+  const count = Number(/(\d+) eligible car/.exec(preview.text)?.[1] ?? 0);
   const needs = Number(/(\d+) cars? need/.exec(preview.text)?.[1] ?? 0);
   const cards = await page.locator('gcsp-brief .gcsp-brief-cards article.vm-card').evaluateAll((nodes) => nodes.map((n) => ({
     title: n.querySelector('h2,h3,h4,.vm-card-title')?.innerText.trim() || '', compact: n.classList.contains('vm-card-compact') })));
   const eligible = cards.filter((c) => !c.compact).map((c) => c.title.split(' in ')[0]);
+  const fits = await page.locator('gcsp-brief .gcsp-brief-cards article.vm-card:not(.vm-card-compact)').evaluateAll((nodes) => nodes.map((n) => /(\d+)%/.exec(n.innerText)?.[1] ?? null));
   const lines = {}; for (const line of eligible) lines[line] = (lines[line] || 0) + 1;
-  return { eligibleCount: count, needConfirmation: needs, eligibleCardsShown: eligible.length, modelLines: lines, summary: clip(preview.text, 120) };
+  return { eligibleCount: count, needConfirmation: needs, eligibleCardsShown: eligible.length, modelLines: lines, cardOrder: eligible.map((t, i) => `${t} (${fits[i] ?? '?'}%)`), summary: clip(preview.text, 120) };
 }
 
 // ---- Outbox and offer ----
-async function openMessage(index) {
-  await goto('/gcsp-outbox-live.html', () => until(() => page.locator('gcsp-outbox').evaluate((el) => /captured email/.test(el.innerText) && !/Loading captured/.test(el.innerText)), { timeout: 90000, what: 'outbox to load' }));
+async function openMessage(index, row, focus = true) {
+  await goto('/gcsp-outbox.html', () => until(() => page.locator('gcsp-outbox').evaluate((el) => /captured email/.test(el.innerText) && !/Loading captured/.test(el.innerText)), { timeout: 90000, what: 'outbox to load' }));
   const rows = page.locator('gcsp-outbox button').filter({ hasText: 'Your vehicle offer' });
   const count = await rows.count();
-  await rows.nth(index).click();
+  // Tab to the row and press Enter, so focus then moves on to the detail heading and the offer link.
+  const target = rows.nth(index);
+  if (row && focus) await focusShot(row, target, 'outbox'); else await tabTo(target);
+  await page.keyboard.press('Enter');
+  kb('outbox', 'Enter on a captured email row opens the message', true);
   await page.getByRole('link', { name: /Open the offer/ }).waitFor({ timeout: 30000 });
   // The sandboxed HTML preview must actually paint the email heading, not an empty frame.
-  previewRendered = await page.frameLocator('gcsp-outbox iframe').locator('h1').first().waitFor({ timeout: 20000 }).then(() => true, () => false);
+  const heading = page.frameLocator('gcsp-outbox iframe').locator('h1').first();
+  previewRendered = await heading.waitFor({ timeout: 20000 }).then(() => true, () => false);
+  const box = previewRendered ? await heading.boundingBox().catch(() => null) : null;
+  report.notes.push(`Email preview heading box at ${vp}px: ${box ? `${Math.round(box.x)},${Math.round(box.y)} ${Math.round(box.width)}x${Math.round(box.height)}` : 'none'}`);
+  await wait(600);
+  // A viewport capture of the frame itself: tall full-page captures can miss sandboxed iframe paint.
+  await page.locator('gcsp-outbox iframe').scrollIntoViewIfNeeded().catch(() => {});
+  if (row) row.screenshots.push(await shot('outbox-email-preview', false));
+  await page.evaluate(() => window.scrollTo(0, 0));
   return count;
 }
 // Open the message's own offer link with the keyboard; the link opens a new tab, which becomes the working page.
@@ -180,93 +229,125 @@ async function openOfferLink(label) {
   await page.waitForLoadState('load');
   await page.getByRole('button', { name: /Accept this offer/ }).waitFor({ timeout: 180000 });
 }
+// The follow-up's own option list; the presenter strip on the same page has radio groups too.
+const FOLLOWUP_GROUP = 'gcsp-offer [role=radiogroup]:not(.gcsp-presenter-controls *)';
 const offerText = () => visibleText('gcsp-offer');
+
+// The first visit shows the demo key form; the key goes in by keyboard, once. Cookies then carry the access.
+async function enterAccessKey(row) {
+  await page.goto(`${app.origin}/gcsp-presenter.html`, { waitUntil: 'load', timeout: 120000 });
+  const input = page.locator('#key');
+  await input.waitFor({ timeout: 30000 });
+  row.screenshots.push(await shot('access-form'));
+  await tabTo(input); await page.keyboard.type(ACCESS_KEY);
+  const typed = (await input.inputValue()).length === ACCESS_KEY.length;
+  await page.keyboard.press('Enter');
+  await page.waitForURL(/gcsp-presenter\.html/, { timeout: 30000 });
+  kb('access', 'Tab reaches the demo key field; typing the key and Enter opens the demo', typed);
+  return typed;
+}
 
 async function run() {
   await mkdir(shotDir, { recursive: true }); await mkdir(scratch, { recursive: true });
-  const conf = join(scratch, 'openssl.cnf'); const keyFile = join(scratch, 'localhost.key'); const certFile = join(scratch, 'localhost.crt');
-  await writeFile(conf, '[req]\nprompt=no\ndistinguished_name=subject\nx509_extensions=server\n[subject]\nCN=localhost\n[server]\nsubjectAltName=DNS:localhost\nextendedKeyUsage=serverAuth\n');
-  execFileSync('/usr/bin/openssl', ['req', '-x509', '-newkey', 'rsa:2048', '-nodes', '-keyout', keyFile, '-out', certFile, '-days', '1', '-config', conf], { stdio: 'ignore', timeout: 20000 });
-  // Same composition as the scripts/gcsp-demo.mjs CLI: default stock factory, one confirming upstream, offer journey adopted.
-  const stock = createRunStockProviderFactory(stockMode === 'demo' ? { env: { ...process.env, GCSP_STOCK_SOURCE: 'demo' } } : {});
-  const upstream = createDemoUpstream();
-  const environmentId = `fucq89-${chunk}`;
-  app = await startGcspDemo({ port: 0, tls: { keyFile, certFile }, runtime: { mode: 'memory', stockProvider: (deps) => withConfirmedSupply(stock(deps), upstream),
-    production: upstream.production, environmentId, policyAsOf: new Date().toISOString(), commandId: `${environmentId}-bootstrap`, adoptOfferJourney: true } });
-  if (app.status !== 'ok') throw new Error(`Launcher did not start: ${app.status} ${app.code || ''}`);
-  report.origin = app.value.origin;
-
-  context = await chromium.launchPersistentContext(profile, { executablePath: CHROME, headless: true, ignoreHTTPSErrors: true, viewport });
+  app = await startHost();
+  context = await chromium.launchPersistentContext(profile, { executablePath: CHROME, headless: true, viewport });
   const watch = (p) => {
-    p.on('console', (m) => { if (m.type() === 'error') report.consoleErrors.push({ text: clip(m.text(), 200), url: bare(m.location().url || p.url()) }); });
+    p.on('console', (m) => { if (m.type() === 'error') report.consoleErrors.push({ text: clip(m.text(), 200), url: bare(m.location().url || p.url()), page: bare(p.url()) }); });
     p.on('pageerror', (e) => report.pageErrors.push(clip(e.message, 200)));
-    p.on('requestfailed', (r) => report.failedRequests.push({ url: bare(r.url()), error: r.failure()?.errorText, method: r.method() }));
-    p.on('response', (r) => { if (r.status() >= 400) report.badResponses.push({ status: r.status(), url: bare(r.url()), method: r.request().method() }); });
+    p.on('requestfailed', (r) => report.failedRequests.push({ url: bare(r.url()), error: r.failure()?.errorText, method: r.method(), page: bare(r.frame()?.url?.() || '') }));
+    p.on('response', async (r) => {
+      if (r.status() < 400) return;
+      const body = r.status() === 404 ? undefined : clip(await r.text().catch(() => ''), 300);
+      report.badResponses.push({ status: r.status(), url: bare(r.url()), method: r.request().method(), page: bare(r.frame()?.url?.() || ''), ...(body ? { body } : {}) });
+    });
   };
   context.on('page', watch);
   page = await context.newPage();
 
-  // 1 Presenter workspace and strip
-  await step('presenter-workspace', 'Presenter workspace opens on Paula with the strip collapsed', async () => {
-    await goto('/gcsp-presenter.html');
+  // 1 Access, presenter workspace, scenario reset
+  await step('access-key', 'The demo key form opens the hosted demo, key typed by keyboard once', async (row) => {
+    const typed = await enterAccessKey(row);
+    await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 90000 }).catch(() => {});
+    return { pass: typed, state: clip(await page.locator('body').innerText()), shot: false };
+  }, { critical: true });
+  await step('presenter-workspace', 'Presenter workspace opens with the strip collapsed', async (row) => {
     await strip().waitFor({ state: 'attached', timeout: 90000 });
-    await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 90000 });
     return { state: await visibleText('[data-presenter-workspace]') };
   }, { critical: true });
-  await step('presenter-strip-open', 'Presenter strip opens with the keyboard and shows run, clock and release cue', async (row) => {
-    const summary = strip().locator('summary'); await tabTo(summary); await page.keyboard.press('Enter');
-    const ok = await strip().evaluate((el) => el.open); kb('presenter', 'Enter on "Presenter controls" opens the strip', ok);
-    const text = await until(async () => (clockOf(await stripText()) ? stripText() : null), { what: 'strip readout' });
-    row.detail = { clock: clockOf(text), releaseCue: /Release cue: (\S+)/.exec(text)?.[1] ?? null, actingPrincipal: /Acting principal\s+(.+)/.exec(text)?.[1] ?? null };
-    const radio = page.getByRole('radio', { name: /Paula \(fictional\)/ }).first();
-    if (await radio.count()) await focusShot(row, radio, 'presenter');
-    return { state: `${clip(text, 200)}`, pass: ok };
+  let previousRun = null;
+  await step('presenter-strip-open', 'Presenter controls open with the keyboard and show run, clock and release cue', async (row) => {
+    const ok = await openStripByKeyboard();
+    const text = await stripText(); previousRun = runOf(text); report.runIds.previous = previousRun;
+    row.detail = { run: previousRun, clock: clockOf(text), releaseCue: /Release cue: (\S+)/.exec(text)?.[1] ?? null, actingPrincipal: actingOf(text) };
+    return { state: clip(text, 260), pass: ok && Boolean(previousRun) };
+  }, { critical: true });
+  await step('scenario-main-reset', 'Scenario "Main successful journey" chosen with arrow keys and reset confirmed by keyboard', async (row) => {
+    await chooseRadio('Scenario', 'Main successful journey', 'presenter');
+    await tabTo(page.getByRole('button', { name: 'Reset scenario' })); await page.keyboard.press('Enter');
+    await page.getByRole('button', { name: 'Confirm reset' }).waitFor({ timeout: 10000 });
+    row.screenshots.push(await shot('reset-confirm', false));
+    await page.keyboard.press('Enter');
+    kb('presenter', 'Enter on "Reset scenario" then "Confirm reset" resets the run', true);
+    const text = await until(async () => { await strip().waitFor({ state: 'attached', timeout: 1000 }); const t = await stripText().catch(() => ''); return !/Action in progress/.test(t) && runOf(t) && runOf(t) !== previousRun ? t : null; }, { timeout: 240000, what: 'new run after reset' }).catch(async () => {
+      await openStrip(); return stripText();
+    });
+    report.runIds.new = runOf(text);
+    row.detail = { previousRun, newRun: runOf(text), scenario: /Scenario\s+(.+)/.exec(text)?.[1] ?? null, clock: clockOf(text) };
+    return { state: clip(text, 260), pass: Boolean(runOf(text)) && runOf(text) !== previousRun };
+  }, { critical: true });
+  await step('presenter-after-reset', 'Presenter workspace after the reset shows the new run in the strip', async (row) => {
+    await page.waitForLoadState('load');
+    await strip().waitFor({ state: 'attached', timeout: 90000 });
+    await openStrip();
+    const text = await stripText(); report.runIds.new = runOf(text) || report.runIds.new;
+    row.detail = { newRun: runOf(text), previousRun, actingPrincipal: actingOf(text), scenario: /Scenario\s+(.+)/.exec(text)?.[1] ?? null };
+    return { state: clip(text, 260), pass: runOf(text) !== previousRun && /Main successful journey/.test(text) };
   }, { critical: true });
 
-  // 2 Brief
-  await step('brief-initial', 'Brief page loads with Paula\'s starting answers', async () => {
+  // 2 Switch to Paula
+  await step('switch-to-paula', 'Acting principal switched to Paula with the keyboard', async (row) => {
+    await openStrip();
+    const before = actingOf(await stripText());
+    await chooseRadio('Acting principal', 'Paula', 'presenter');
+    await tabTo(page.getByRole('button', { name: 'Switch principal' })); await page.keyboard.press('Enter');
+    kb('presenter', 'Enter on "Switch principal" switches the acting principal', true);
+    // A confirmed switch reloads the workspace, so the strip comes back closed; read it again once reopened.
+    await until(async () => strip().evaluate((el) => !el.open), { timeout: 90000, what: 'workspace to reload as Paula' });
+    await openStrip();
+    const text = await until(async () => { const t = await stripText(); return /Paula/.test(actingOf(t) || '') && !/Action in progress/.test(t) ? t : null; }, { timeout: 30000, what: 'Paula acting' });
+    row.detail = { actingBefore: before, actingAfter: actingOf(text) };
+    return { state: clip(text, 260) };
+  }, { critical: true });
+
+  // 3 Brief and activity before release
+  await step('brief-confirmed', 'Brief page shows Paula\'s confirmed brief and no cars before release', async (row) => {
     await goto('/gcsp-brief-live.html', () => page.getByRole('button', { name: 'Save this brief' }).waitFor({ timeout: 90000 }));
-    return { state: await visibleText('gcsp-brief') };
-  }, { critical: true });
-  await step('brief-answers-keyboard', 'Paula confirms her essentials and buddy permissions with the keyboard', async (row) => {
-    await answerByKeyboard('Do you need to carry five', 'Yes');
-    await answerByKeyboard('Do you need at least 430', 'No');
-    await answerByKeyboard('Do you need a towbar', 'No');
-    await answerByKeyboard('Can you charge', 'No');
-    await toggleByKeyboard('Search for cars for me');
-    await toggleByKeyboard('Hold a suitable car for me');
+    const checked = await page.locator('gcsp-brief [role=radio][aria-checked=true], gcsp-brief [role=checkbox][aria-checked=true]').evaluateAll((n) => n.map((x) => x.getAttribute('aria-label') || x.innerText.trim()).filter(Boolean));
+    const preview = await previewFacts();
+    row.detail = { checkedOptions: checked.map((c) => clip(c, 60)), previewBeforeAnyRelease: preview };
     await focusShot(row, page.getByRole('button', { name: 'Save this brief' }), 'brief');
-    const preview = await previewFacts(); row.detail = { previewBeforeAnyRelease: preview };
-    await page.getByRole('button', { name: 'Save this brief' }).evaluate((el) => el.scrollIntoView({ block: 'center' }));
-    return { state: `Preview before any release: ${preview.summary}`, pass: preview.eligibleCount === 0, shotName: 'brief-answered-preview' };
+    await page.getByRole('heading', { name: 'Cars for your brief' }).evaluate((el) => { el.scrollIntoView({ block: 'start' }); window.scrollBy(0, -80); });
+    return { state: `Confirmed: ${checked.map((c) => clip(c, 40)).join(' | ')}. Preview: ${preview.summary}`, pass: preview.eligibleCount === 0 && checked.length > 0, shotName: 'brief-confirmed' };
   }, { critical: true });
-  await step('brief-saved', 'Brief saved with Enter on Save this brief', async () => {
-    const save_ = page.getByRole('button', { name: 'Save this brief' });
-    await tabTo(save_); await page.keyboard.press('Enter');
-    const status = await until(() => page.locator('gcsp-brief [role=status]').evaluateAll((n) => n.map((x) => x.innerText).find((t) => /saved/i.test(t))), { timeout: 60000, what: 'save confirmation' });
-    kb('brief', 'Enter on "Save this brief" saves the brief', true, status);
-    await page.evaluate(() => window.scrollTo(0, 0));
-    return { state: status };
-  }, { critical: true });
-
-  // 3 Activity before release
-  await step('activity-before-release', 'Activity before any release shows an active buddy and no offer', async (row) => {
+  await step('activity-before-release', 'Activity before any release shows an active buddy and no offer', async () => {
     await goto('/gcsp-activity-live.html', () => until(() => page.locator('gcsp-activity').evaluate((el) => /Your offer/.test(el.innerText)), { timeout: 90000, what: 'activity' }));
     return { state: await visibleText('gcsp-activity') };
   });
 
-  // 4 First release from the presenter workspace
+  // 4 First release and eligibility
   await step('presenter-first-release', 'Presenter Next release publishes the first stock release', async (row) => {
     await goto('/gcsp-presenter.html', () => strip().waitFor({ state: 'attached', timeout: 90000 }));
     return nextRelease(row);
   }, { critical: true });
-  await step('brief-first-release-eligibility', 'Brief preview after the first release counts Paula\'s eligible cars', async (row) => {
+  await step('brief-first-release-eligibility', 'Brief preview after the first release counts the cars Paula sees', async (row) => {
     await goto('/gcsp-brief-live.html', () => page.getByRole('button', { name: 'Save this brief' }).waitFor({ timeout: 90000 }));
-    const facts = await previewFacts(); report.firstRelease = { ...facts, stockSource: stockMode === 'demo' ? 'demo (forced)' : 'default factory (generated stock expected)' };
+    const facts = await previewFacts();
+    report.firstRelease = { ...facts, stockSource: stockMode === 'demo' ? 'demo (GCSP_STOCK_SOURCE=demo)' : 'default generated run stock', screenshot: null };
     row.detail = facts;
     await page.getByRole('heading', { name: 'Cars for your brief' }).evaluate((el) => { el.scrollIntoView({ block: 'start' }); window.scrollBy(0, -80); });
     return { state: `${facts.eligibleCount} eligible; lines ${JSON.stringify(facts.modelLines)}`, pass: facts.eligibleCount > 0, full: false };
   });
+  if (report.firstRelease) report.firstRelease.screenshot = report.steps.at(-1).screenshots.at(-1) ?? null;
 
   // 5 Activity shows the offer
   await step('activity-offer', 'Paula\'s activity shows the first offer and the search result', async (row) => {
@@ -278,10 +359,7 @@ async function run() {
 
   // 6 Outbox and first offer
   await step('outbox-first-message', 'Outbox viewer shows the captured offer email', async (row) => {
-    const count = await openMessage(0); row.detail = { capturedEmails: count, emailPreviewRendered: previewRendered };
-    const rowBtn = page.locator('gcsp-outbox button').filter({ hasText: 'Your vehicle offer' }).first();
-    await page.locator('gcsp-outbox .gcsp-presenter-body, gcsp-outbox').first().evaluate(() => window.scrollTo(0, 0));
-    await focusShot(row, rowBtn, 'outbox');
+    const count = await openMessage(0, row); row.detail = { capturedEmails: count, emailPreviewRendered: previewRendered };
     return { state: `${count} email. ${clip(await visibleText('gcsp-outbox'), 300)}`, pass: count === 1 && previewRendered };
   }, { critical: true });
   await step('offer-first', 'First offer opens from the captured message link', async () => {
@@ -293,33 +371,32 @@ async function run() {
     await tabTo(decline); await page.keyboard.press('Enter');
     const select = page.locator('select');
     await until(async () => (await select.locator('option').count()) > 1, { timeout: 90000, what: 'decline reasons' });
-    row.detail = { reasons: await select.locator('option').evaluateAll((o) => o.map((x) => x.textContent.trim()).filter((t) => !/^Choose/.test(t))) };
+    row.detail = { reasons: await select.locator('option').evaluateAll((o) => o.map((x) => x.textContent.trim()).filter((t) => !/^Choose/.test(t))), freeTextFields: await page.locator('gcsp-offer textarea, gcsp-offer input[type=text]').count() };
     await tabTo(select); await focusShot(row, select, 'offer-decline');
-    await page.keyboard.type('Size');
+    // Body style is the one reason whose follow-up has a confirmed target in this brief (see the defects list).
+    await page.keyboard.type('Body');
     const chosen = await select.evaluate((el) => el.selectedOptions[0]?.textContent.trim());
-    kb('offer', 'typing "Size" in the reason list chooses it (no free-text field exists)', chosen === 'Size', chosen);
-    return { state: `Reason chosen: ${chosen}`, pass: chosen === 'Size', shotName: 'offer-decline-reason' };
+    kb('offer', 'typing "Body" in the reason list chooses "Body style"', chosen === 'Body style', chosen);
+    return { state: `Reason chosen: ${chosen}`, pass: chosen === 'Body style', shotName: 'offer-decline-reason' };
   }, { critical: true });
   await step('offer-declined-followup', 'Confirm decline shows the recorded decline and one follow-up question', async (row) => {
     const confirm = page.getByRole('button', { name: 'Confirm decline' });
     await tabTo(confirm); await page.keyboard.press('Enter');
     kb('offer', 'Enter on "Confirm decline" records the decline', true);
-    const slider = page.getByRole('slider');
-    await slider.waitFor({ timeout: 180000 });
+    const options = page.locator(`${FOLLOWUP_GROUP} [role=radio]`);
+    await options.first().waitFor({ timeout: 180000 });
     const text = await offerText();
-    row.detail = { question: /What [^?]+\?/.exec(text)?.[0] ?? null, declined: /Offer declined/.test(text) };
+    row.detail = { question: /(Which|What) [^?]+\?/.exec(text)?.[0] ?? null, declined: /Offer declined/.test(text),
+      options: await options.evaluateAll((n) => n.map((x) => x.innerText.trim())) };
     await page.evaluate(() => window.scrollTo(0, 0));
-    return { state: clip(text.split('Your next offer')[0], 120) + ' | ' + clip(text.split('Your next offer')[1], 200), pass: /Offer declined/.test(text) };
+    return { state: `${clip(text.split('Your next offer')[0], 120)} | ${clip(text.split('Your next offer')[1], 200)}`, pass: /Offer declined/.test(text) };
   }, { critical: true });
   await step('offer-change-confirmed', 'Paula changes the follow-up answer with the keyboard and confirms one change', async (row) => {
-    const slider = page.getByRole('slider');
-    await tabTo(slider); await page.keyboard.press('End');
-    kb('offer', 'End key moves the follow-up slider to its top value', Number(await slider.inputValue()) > 50, await slider.inputValue());
-    const confirmNow = page.getByRole('button', { name: 'Confirm this change' });
-    row.detail = { confirmDisabledAfterEnd: await confirmNow.isDisabled() };
-    await focusShot(row, slider, 'offer-followup');
+    await chooseRadio('Follow-up question', 'Saloon', 'offer', FOLLOWUP_GROUP);
+    row.detail = { confirmDisabledAfterChoice: await page.getByRole('button', { name: 'Confirm this change' }).isDisabled() };
     const confirm = page.getByRole('button', { name: 'Confirm this change' });
-    await tabTo(confirm); await page.keyboard.press('Enter');
+    await focusShot(row, confirm, 'offer-followup');
+    await page.keyboard.press('Enter');
     const text = await until(async () => { const t = await offerText(); return /Change saved|saved in brief version/.test(t) ? t : null; }, { timeout: 90000, what: 'change saved' });
     kb('offer', 'Enter on "Confirm this change" saves the change', true);
     await page.evaluate(() => document.querySelector('gcsp-offer')?.scrollIntoView());
@@ -327,9 +404,21 @@ async function run() {
   }, { critical: true });
 
   // 7 Second release
-  await step('presenter-second-release', 'Presenter Next release publishes the next stock release', async (row) => {
+  await step('presenter-second-release', 'Presenter advances the clock (Next release when a cue remains, else one Tick) for the second offer', async (row) => {
     await goto('/gcsp-presenter.html', () => strip().waitFor({ state: 'attached', timeout: 90000 }));
-    return nextRelease(row);
+    await openStrip();
+    await until(async () => /Presenter controls ready/.test(await stripText()) && !(await page.getByRole('button', { name: /^Tick \(/ }).isDisabled()), { what: 'strip to finish loading' });
+    const text = await stripText(); const cue = /Next release unavailable: ([^\n]+)/.exec(text)?.[1] ?? null;
+    if (!cue) return nextRelease(row);
+    // The generated run has one release window, so the decline-then-change route advances with a single Tick.
+    report.notes.push(`Next release unavailable after the first release (${cue}); one Tick (60 seconds) used instead.`);
+    const before = clockOf(text);
+    await tabTo(page.getByRole('button', { name: /^Tick \(/ })); await page.keyboard.press('Enter');
+    kb('presenter', 'Enter on "Tick" advances the clock', true);
+    const after = await until(async () => { const t = await stripText(); return clockOf(t) !== before && !/Action in progress/.test(t) ? t : null; }, { timeout: 240000, what: 'tick to finish' });
+    row.detail = { nextReleaseUnavailable: cue, clockBefore: before, clockAfter: clockOf(after) };
+    await page.evaluate(() => document.querySelector('.gcsp-presenter-controls')?.scrollIntoView({ block: 'start' }));
+    return { state: `Next release unavailable (${cue}). Tick: clock ${before} to ${clockOf(after)}`, shotName: row.id };
   }, { critical: true });
   await step('activity-second-offer', 'Activity shows the second offer after the decline update', async (row) => {
     await goto('/gcsp-activity-live.html');
@@ -338,7 +427,7 @@ async function run() {
     return { state: await visibleText('gcsp-activity') };
   }, { critical: true });
   await step('outbox-second-message', 'Outbox viewer now lists both captured emails, newest first', async (row) => {
-    const count = await openMessage(0); row.detail = { capturedEmails: count, emailPreviewRendered: previewRendered };
+    const count = await openMessage(0, row, false); row.detail = { capturedEmails: count, emailPreviewRendered: previewRendered };
     return { state: `${count} emails. ${clip(await visibleText('gcsp-outbox'), 300)}`, pass: count === 2 && previewRendered };
   }, { critical: true });
   await step('offer-second', 'Second offer opens from the newest message and excludes the declined car', async (row) => {
@@ -357,31 +446,17 @@ async function run() {
     await tabTo(accept); await focusShot(row, accept, 'offer-accept'); await page.keyboard.press('Enter');
     kb('offer', 'Enter on "Accept this offer" sends the decision', true);
     const text = await until(async () => { const t = await offerText(); return /accepted|Selected|selected|order|requested/i.test(t.split('Before you accept')[0] + (t.split('Synthetic source')[1] || '')) && !/Checking your decision/.test(t) ? t : null; }, { timeout: 150000, what: 'decision outcome' }).catch(() => offerText());
+    // The embedded order progress loads after the decision; record what it settles on.
+    const settled = await until(async () => { const t = await offerText(); return /Order progress/.test(t) && !/Loading your order/.test(t) ? t : null; }, { timeout: 60000, what: 'embedded order progress' }).catch(() => null);
+    row.detail = { embeddedOrderProgressSettled: Boolean(settled) };
     await page.evaluate(() => window.scrollTo(0, 0));
-    return { state: clip(text.split('Your current car')[0], 160) + ' | ' + clip(text.split('Synthetic source')[1], 300) };
+    return { state: `${clip(text.split('Your current car')[0], 160)} | ${clip(text.split('Synthetic source')[1], 300)}` };
   }, { critical: true });
   await step('order-progress', 'Order progress shows the selection outcome and handoff', async (row) => {
     await goto('/gcsp-order-progress-live.html');
-    const text = await until(async () => { const t = await visibleText('gcsp-order-progress'); return !/Loading your order/.test(t) ? t : null; }, { timeout: 150000, what: 'order progress' });
+    const text = await until(async () => { const t = await visibleText('gcsp-order-progress'); return /Steps|Order not found|unavailable/i.test(t) && !/Loading your/.test(t) ? t : null; }, { timeout: 150000, what: 'order progress' });
     const probe = page.getByRole('button').filter({ hasText: /Refresh|Check/ }).first();
     if (await probe.count()) await focusShot(row, probe, 'order-progress');
-    return { state: text };
-  });
-  // Optional: advance the demo clock so approvals can progress, then read the order again (not an acceptance criterion).
-  await step('presenter-tick-to-target', 'Presenter Tick to target moves the clock three days on', async (row) => {
-    await goto('/gcsp-presenter.html', () => strip().waitFor({ state: 'attached', timeout: 90000 }));
-    await openStrip();
-    const before = clockOf(await stripText());
-    const target = new Date(Date.parse(before) + 72 * 3600 * 1000).toISOString();
-    await page.getByLabel('Named time or UTC target').fill(target);
-    await page.getByRole('button', { name: 'Tick to target' }).click({ timeout: 240000, noWaitAfter: true });
-    const text = await until(async () => { const now = await stripText(); return clockOf(now) !== before && !/Action in progress/.test(now) ? now : null; }, { timeout: 240000, what: 'tick to finish' });
-    row.detail = { clockBefore: before, clockAfter: clockOf(text) };
-    return { state: `Clock ${before} to ${clockOf(text)}`, pass: clockOf(text) === target };
-  });
-  await step('order-progress-after-tick', 'Order progress after the clock moved on', async () => {
-    await goto('/gcsp-order-progress-live.html');
-    const text = await until(async () => { const t = await visibleText('gcsp-order-progress'); return !/Loading your order/.test(t) ? t : null; }, { timeout: 150000, what: 'order progress' });
     return { state: text };
   });
 }
@@ -389,13 +464,14 @@ async function run() {
 try { await run(); report.state = report.steps.every((s) => s.pass) ? 'passed' : 'completed-with-failures'; }
 catch (error) { report.state = 'error'; report.error = clip(error.message, 400); }
 finally {
+  report.stockMode = stockMode;
   report.finishedAt = new Date().toISOString();
   report.counts = { steps: report.steps.length, passed: report.steps.filter((s) => s.pass).length, screenshots: shots,
     keyboardChecks: report.keyboard.length, keyboardPassed: report.keyboard.filter((k) => k.pass).length };
   await save().catch(() => {});
   await context?.close().catch(() => {}); killChrome();
-  await app?.value?.close?.().catch(() => {});
+  await app?.stop?.().catch(() => {}); killServer();
   await rm(profile, { recursive: true, force: true }).catch(() => {});
-  console.log(JSON.stringify({ state: report.state, counts: report.counts, firstRelease: report.firstRelease, error: report.error }, null, 1));
+  console.log(JSON.stringify({ state: report.state, counts: report.counts, runIds: report.runIds, firstRelease: report.firstRelease, error: report.error }, null, 1));
   process.exit(report.state === 'error' ? 1 : 0);
 }
