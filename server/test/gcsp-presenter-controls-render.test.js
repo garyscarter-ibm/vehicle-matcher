@@ -283,6 +283,20 @@ test('workspace chooses only actual context role and real adapter, never a query
     await done.ready; assert.equal(calls[0][0], role); if (role === 'employee') assert.equal(calls[0][1], account); done();
   }
 });
+test('employee workspace subscribes the journey clock to presenter actions once and releases it on unsubscribe and destroy', async () => {
+  const host = document.createElement('div'); document.body.append(host); const child = document.createElement('button');
+  let options; let fired = 0; let live;
+  const done = workspace(host, { adapter: { readContext: async () => ok({ roles: ['employee'], principalId: 'e' }) },
+    mountEmployee: (_root, opts) => { options = opts; live = opts.subscribeClock(() => { fired++; }); return () => live(); } });
+  await done.ready; host.append(child); assert.equal(typeof options.subscribeClock, 'function');
+  const tick = () => child.dispatchEvent(new window.CustomEvent('gcsp:presenter-action', { bubbles: true, detail: { kind: 'tick', principalId: 'x' } }));
+  tick(); assert.equal(fired, 1);
+  live(); live(); tick(); assert.equal(fired, 1);
+  const args = []; const extra = options.subscribeClock((...rest) => args.push(rest)); tick(); assert.deepEqual(args, [[]]);
+  extra(); extra(); tick(); assert.equal(args.length, 1);
+  live = options.subscribeClock(() => { fired++; }); tick(); assert.equal(fired, 2);
+  done(); tick(); assert.equal(fired, 2);
+});
 function gregFixture(extra = {}) {
   const host = document.createElement('div'); document.body.append(host);
   const counts = { dashboard: 0, tracking: 0, destroyed: 0 }; let region; let controlsHost;
