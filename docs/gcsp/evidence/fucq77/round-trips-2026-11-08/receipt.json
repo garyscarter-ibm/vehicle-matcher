@@ -1,0 +1,113 @@
+{
+  "startedAt": "2026-11-08T22:44:00.000Z",
+  "completedAt": "2026-11-08T22:50:52.913Z",
+  "elapsedMs": 93445,
+  "pageLoads": 22,
+  "bmwRequests": {
+    "total": 599,
+    "cap": 600,
+    "byHost": {
+      "configure.bmw.co.uk": 160,
+      "prod.ucp.bmw.cloud": 295,
+      "sf-mco.aws.bmw.cloud": 12,
+      "api.prod.pge.bmw.cloud": 4,
+      "prod.cosy.bmw.cloud": 122,
+      "api.ems-prod.bmw.cloud": 4,
+      "wcp-otelcol-public.envprd.conx.aws.bmw.cloud": 2
+    }
+  },
+  "blockedByHost": {
+    "www.bmw.co.uk": 40,
+    "www.bmw.com": 20,
+    "configure.bmw.co.uk": 98,
+    "tron.bmwgroup.com": 20,
+    "prod.cosy.bmw.cloud": 58,
+    "sf-mco.aws.bmw.cloud": 1
+  },
+  "skippedAllowedHostByRule": {
+    "host:sf-mco.aws.bmw.cloud": 18,
+    "host:api.prod.pge.bmw.cloud": 17,
+    "path:marketing-texts": 17,
+    "path:garage": 17,
+    "host:prod.cosy.bmw.cloud": 126,
+    "path:what-if": 133,
+    "path:classifiers": 17,
+    "host:api.ems-prod.bmw.cloud": 17,
+    "path:otd": 17,
+    "path:pricing": 17,
+    "path:accessories": 17,
+    "host:wcp-otelcol-public.envprd.conx.aws.bmw.cloud": 16
+  },
+  "stops": [
+    {
+      "url": "https://configure.bmw.co.uk/en_GB/configure/U11/IX1I/FKUSW,P0490,S01EU,S0230,S02PA,S02VB,S02VD,S02VF,S0302,S0337,S03MC,S0428,S0478,S0481,S0494,S04H2,S04NW,S04T2,S04U9,S05AV,S05DM,S0654,S06AE,S06AF,S06PA,S0710,S0760,S0775,S0812,S0853,S088K,S08R3,S08R9,S08SM,S08TF,S08TG,S08WH,S08WQ,S09T1,S09T2,S0ZS9",
+      "why": "request cap reached"
+    }
+  ],
+  "chromeProcessGroupsKilled": [
+    43674,
+    43981
+  ],
+  "secondRun": {
+    "startedAt": "2026-11-08T22:55:37.184Z",
+    "completedAt": "2026-11-08T22:56:02.197Z",
+    "elapsedMs": 25011,
+    "pageLoads": 3,
+    "bmwRequests": {
+      "total": 288,
+      "cap": 330,
+      "byHost": {
+        "configure.bmw.co.uk": 244,
+        "prod.ucp.bmw.cloud": 44
+      }
+    },
+    "blockedByHost": {
+      "www.bmw.co.uk": 6,
+      "www.bmw.com": 3,
+      "configure.bmw.co.uk": 15,
+      "tron.bmwgroup.com": 3
+    },
+    "skippedAllowedHostByRule": {
+      "host:sf-mco.aws.bmw.cloud": 3,
+      "host:api.prod.pge.bmw.cloud": 3,
+      "path:marketing-texts": 3,
+      "path:garage": 3,
+      "host:prod.cosy.bmw.cloud": 23,
+      "path:pricing": 3,
+      "path:accessories": 3,
+      "path:what-if": 24,
+      "path:classifiers": 3,
+      "host:api.ems-prod.bmw.cloud": 3,
+      "path:otd": 3,
+      "host:wcp-otelcol-public.envprd.conx.aws.bmw.cloud": 3
+    },
+    "stops": [],
+    "chromeProcessGroupsKilled": [
+      46894
+    ]
+  },
+  "combined": {
+    "pageLoads": 25,
+    "bmwRequests": {
+      "total": 887,
+      "byHost": {
+        "configure.bmw.co.uk": 404,
+        "prod.ucp.bmw.cloud": 339,
+        "sf-mco.aws.bmw.cloud": 12,
+        "api.prod.pge.bmw.cloud": 4,
+        "prod.cosy.bmw.cloud": 122,
+        "api.ems-prod.bmw.cloud": 4,
+        "wcp-otelcol-public.envprd.conx.aws.bmw.cloud": 2
+      }
+    },
+    "blockedByHost": {
+      "www.bmw.co.uk": 46,
+      "www.bmw.com": 23,
+      "configure.bmw.co.uk": 113,
+      "tron.bmwgroup.com": 23,
+      "prod.cosy.bmw.cloud": 58,
+      "sf-mco.aws.bmw.cloud": 1
+    },
+    "elapsedMs": 118456
+  }
+}
