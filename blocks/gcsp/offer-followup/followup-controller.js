@@ -116,10 +116,10 @@ export function createFollowupController({ decisionId, transport, createCommandI
       state = { state: v.state, savedChange: copy(v.savedChange), question: null, busy: false, error: '', canConfirm: false,
         ...(v.evaluation ? { evaluation: copy(v.evaluation) } : {}) };
     } else {
-      const stateName = outcome?.status === 'stale-run' ? 'stale-run'
+      const stateName = outcome?.status === 'access-required' ? 'access-lapsed' : outcome?.status === 'stale-run' ? 'stale-run'
         : ['forbidden', 'missing-session', 'unknown-session', 'unknown-principal', 'expired-session'].includes(outcome?.status) ? 'forbidden'
           : ['stale-version', 'conflict'].includes(outcome?.status) ? 'refresh-required' : 'unavailable';
-      const savedChange = ['stale-run', 'forbidden'].includes(stateName) ? null
+      const savedChange = ['stale-run', 'forbidden', 'access-lapsed'].includes(stateName) ? null
         : saved(outcome?.savedChange, decisionId) ? copy(outcome.savedChange) : state.savedChange;
       if (stateName !== 'unavailable' || savedChange) pending = null;
       if (pending) { uncertain(); return; }

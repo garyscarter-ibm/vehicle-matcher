@@ -288,9 +288,11 @@ Looked at `statusScreen` (title, message and actions, but no copy for a restarte
 
 | Call | Use for |
 |---|---|
-| `isRunRestarted(reply)` | True when a server reply has status `stale-run`. Use instead of showing the raw status. |
+| `isRunRestarted(reply)` | True when a server reply has status `stale-run`, `unknown-session` or `access-required`. Use instead of showing the raw status. |
+| `isAccessLapsed(httpStatus, body)` | True for the access gate's bare 401 (no string `status`). Every page adapter maps it to `{ status: 'access-required' }`. |
 | `runRestartedScreen({ reload })` | Page-level alert (`statusScreen`): "Demo restarted", the reload message and one primary Reload button. `reload` defaults to following an empty-href link (a full reload; the kit never reads the URL). |
-| `runRestartedNotice({ reload })` | Compact inline alert for panels. Returns `{ root, reload }`; `reload` is the Reload button, so callers can move focus to it. Used by presenter controls, which also disable every control and never resend the old command. The gallery's **GCSP demo restarted** section shows both. |
+| `runRestartedNotice({ reload })` | Compact inline alert for panels. Returns `{ root, reload }`; `reload` is the Reload button, so callers can move focus to it. Used by presenter controls, which also disable every control and never resend the old command. The gallery's **GCSP demo restarted** section shows all three. |
+| `accessLapsedScreen({ next })` | Page-level alert for the offer link, which the access gate leaves open, so a reload cannot reach the access form: "Demo access needed" and one link to `/gcsp/access`, returning to `next` (default the account page). Used by the offer and offer follow-up views for `access-required`. |
 
 ### Manual released-car browser (`blocks/gcsp/manual-gallery/`)
 

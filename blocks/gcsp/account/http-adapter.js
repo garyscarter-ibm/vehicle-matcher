@@ -1,4 +1,5 @@
 import { journeyIntent, toAccountView } from './account-view.js';
+import { isAccessLapsed } from '../kit/run-restarted.js';
 
 const unavailable = (code, httpStatus = null) => ({ status: 'unavailable', code, httpStatus, retryable: true,
   view: { state: 'unavailable', editable: false, supportOwner: 'scheme-support', action: 'retry' } });
@@ -16,7 +17,7 @@ export function createAccountHttpAdapter({ base = '', fetchImpl = globalThis.fet
     }
     let envelope;
     try { envelope = await response.json(); } catch { return unavailable('account-response-invalid', response.status); }
-    if (response.status === 401 && typeof envelope?.status !== 'string') return { status: 'access-required' };
+    if (isAccessLapsed(response.status, envelope)) return { status: 'access-required' };
     const value = envelope?.value;
     if (!envelope || typeof envelope !== 'object' || typeof envelope.status !== 'string'
       || envelope.status === 'ok' && (!response.ok || !value || typeof value !== 'object'

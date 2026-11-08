@@ -1,7 +1,7 @@
 import { el, button } from '../../vehicle-matcher/ui.js';
 import { labelledField, errorSummary, checkboxField } from './form-controls.js';
 import { stageList } from './stage-list.js';
-import { runRestartedScreen, runRestartedNotice } from './run-restarted.js';
+import { runRestartedScreen, runRestartedNotice, accessLapsedScreen } from './run-restarted.js';
 
 export function formControlsExample() {
   const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-form-controls';
@@ -35,6 +35,6 @@ export function runRestartedExample() {
   const section = el('section', 'vm-gallery-section'); section.id = 'gcsp-run-restarted';
   section.append(el('h2', 'vm-gallery-title', 'GCSP demo restarted'));
   const scope = el('div', 'gcsp'); const body = el('div', 'vm');
-  body.append(runRestartedScreen({ reload: () => {} }), runRestartedNotice({ reload: () => {} }).root);
+  body.append(runRestartedScreen({ reload: () => {} }), runRestartedNotice({ reload: () => {} }).root, accessLapsedScreen());
   scope.append(body); section.append(scope); return section;
 }

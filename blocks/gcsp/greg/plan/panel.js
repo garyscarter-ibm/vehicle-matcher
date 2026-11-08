@@ -2,6 +2,7 @@ import { el, screenIntro, button, statusScreen, factList } from '../../../vehicl
 import { renderRangeSlider } from '../../../vehicle-matcher/modes/question-ui.js';
 import { labelledField, errorSummary } from '../../kit/form-controls.js';
 import { dataTable } from '../../kit/data-table.js';
+import { isRunRestarted, runRestartedNotice } from '../../kit/run-restarted.js';
 import { metricTile } from '../../kit/metric-tile.js';
 import { toPlanView, toChanges, staleView } from './plan-view.js';
 import { quantityLabel } from './plan-copy.js';
@@ -222,13 +223,13 @@ export function mountGregOrderPlan(root, { adapter, signal, onSubmitted, command
 
   // Loading, previewing and submitting. A generation counter drops answers that a newer request has replaced.
   function failure(reply) {
-    const refused = reply?.status === 'refused';
-    if (!refused && current) { setState(page.dataset.state, reply?.message || UNAVAILABLE); return; }
+    const refused = reply?.status === 'refused'; const restarted = isRunRestarted(reply);
+    if (!refused && !restarted && current) { setState(page.dataset.state, reply?.message || UNAVAILABLE); return; }
     current = shown = null; stale = null; lockable = []; submitHost.replaceChildren(); content.replaceChildren(); editor.replaceChildren(); fields = []; sliders = [];
-    const retry = refused ? [] : [locked(button({ label: 'Retry', variant: 'primary', onClick: () => load() }))];
-    top.replaceChildren(statusScreen({ kicker: 'Next order', title: refused ? 'You cannot open this plan' : 'The order plan is unavailable',
+    const retry = refused || restarted ? [] : [locked(button({ label: 'Retry', variant: 'primary', onClick: () => load() }))];
+    top.replaceChildren(restarted ? runRestartedNotice().root : statusScreen({ kicker: 'Next order', title: refused ? 'You cannot open this plan' : 'The order plan is unavailable',
       message: reply?.message || UNAVAILABLE, actions: retry, role: 'alert' }));
-    setState(refused ? 'refused' : 'unavailable', refused ? 'Access refused.' : 'Order plan unavailable.');
+    if (restarted) setState('restarted', 'Demo restarted.'); else setState(refused ? 'refused' : 'unavailable', refused ? 'Access refused.' : 'Order plan unavailable.');
   }
   async function load(announce) {
     const mine = begin('Loading the order plan.');
@@ -282,7 +283,7 @@ export function mountGregOrderPlan(root, { adapter, signal, onSubmitted, command
     }
     if (mine !== gen) return;
     busy = false;
-    if (reply.status === 'replan-needed') { stale = staleView(reply); draw(true); setState('stale', stale.summary); } else if (reply.status === 'invalid') { showReasons(reply); } else if (reply.status === 'refused') { failure(reply); } else {
+    if (reply.status === 'replan-needed') { stale = staleView(reply); draw(true); setState('stale', stale.summary); } else if (reply.status === 'invalid') { showReasons(reply); } else if (reply.status === 'refused' || isRunRestarted(reply)) { failure(reply); } else {
       setState(page.dataset.state, `${reply.message || UNAVAILABLE} Your request is kept. Press the button again to retry safely.`);
     }
   }

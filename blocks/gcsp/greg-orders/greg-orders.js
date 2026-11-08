@@ -3,6 +3,7 @@
 import { el, button, statusScreen } from '../../vehicle-matcher/ui.js';
 import { labelledField } from '../kit/form-controls.js';
 import { dataTable } from '../kit/data-table.js';
+import { RUN_RESTARTED_MESSAGE, runRestartedScreen } from '../kit/run-restarted.js';
 
 let instance = 0;
 const stages = Object.freeze({ requested: 'Requested', 'partly-confirmed': 'Partly confirmed', confirmed: 'Confirmed',
@@ -26,6 +27,7 @@ function setOptions(control, values) {
 }
 function numberInput() { const node = el('input'); node.type = 'number'; node.min = '1'; node.step = '1'; node.value = '1'; node.required = true; return node; }
 function message(out) {
+  if (out.status === 'access-required') return RUN_RESTARTED_MESSAGE;
   if (refused.has(out.status)) return out.status === 'stale-run' ? 'The demo was reset. Reopen the scheme ordering lead session.'
     : 'This action needs the scheme ordering lead and, for production controls, a presenter session.';
   if (['conflict', 'stale-version'].includes(out.status)) return 'The request or its inputs changed. Refresh before trying again.';
@@ -117,8 +119,9 @@ export function mountGregOrders(root, { adapter, productionControls = false, onC
       if (!keepNotice) notice.textContent = out.value.adapter.status === 'ready' ? 'Orders up to date.' : 'Production is unavailable. Saved requests remain visible; use Refresh to retry.';
     } else {
       projection = null; source.textContent = ''; queues.replaceChildren();
-      body.replaceChildren(statusScreen({ title: refused.has(out?.status) ? 'Open the scheme ordering lead session' : 'Orders could not be loaded',
-        message: message(out ?? unavailable), role: 'alert' }));
+      body.replaceChildren(out?.status === 'access-required' ? runRestartedScreen()
+        : statusScreen({ title: refused.has(out?.status) ? 'Open the scheme ordering lead session' : 'Orders could not be loaded',
+          message: message(out ?? unavailable), role: 'alert' }));
       if (!keepNotice) notice.textContent = 'Orders unavailable.';
       availability();
     }

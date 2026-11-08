@@ -1,3 +1,5 @@
+import { isAccessLapsed } from '../kit/run-restarted.js';
+
 // Presenter authority and acting context are separate server-owned cookies.
 export function createPresenterHttpAdapter({ base = '', fetchImpl = globalThis.fetch, headers = {} } = {}) {
   async function request(path, body, { signal } = {}) {
@@ -6,7 +8,7 @@ export function createPresenterHttpAdapter({ base = '', fetchImpl = globalThis.f
         credentials: 'include', signal, headers: { Accept: 'application/json', ...headers,
           ...(body ? { 'Content-Type': 'application/json' } : {}) }, ...(body ? { body: JSON.stringify(body) } : {}) });
       const result = await response.json();
-      if (response.status === 401 && typeof result?.status !== 'string') return { status: 'access-required' };
+      if (isAccessLapsed(response.status, result)) return { status: 'access-required' };
       if (!result || typeof result.status !== 'string' || result.status === 'ok' && !response.ok) throw new Error('Invalid response');
       return result;
     } catch (error) {

@@ -9,6 +9,7 @@ export function createManualGalleryHttpAdapter({ base = '', fetchImpl = globalTh
         credentials: 'include', signal, headers: { Accept: 'application/json', ...(body ? { 'Content-Type': 'application/json' } : {}) },
         ...(body ? { body: JSON.stringify(body) } : {}) });
       const envelope = await response.json();
+      if (response.status === 401 && typeof envelope?.status !== 'string') return { status: 'access-required' };
       if (!envelope || typeof envelope.status !== 'string' || envelope.status === 'ok' && (!response.ok || !envelope.value)) throw new TypeError('Invalid claim response');
       return envelope;
     } catch (error) {

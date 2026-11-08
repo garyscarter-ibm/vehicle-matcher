@@ -1,3 +1,4 @@
+import { isAccessLapsed } from '../kit/run-restarted.js';
 const fields = ['commandId', 'decisionId', 'expectedBriefVersion', 'questionVersion', 'value'];
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v)
   && [Object.prototype, null].includes(Object.getPrototypeOf(v));
@@ -13,7 +14,8 @@ export function createFollowupHttpAdapter({ fetchImpl = globalThis.fetch, base =
       const response = await fetchImpl(url, { method: body ? 'POST' : 'GET', credentials: 'include', cache: 'no-store', signal,
         headers: { Accept: 'application/json', ...(body ? { 'Content-Type': 'application/json' } : {}) },
         ...(body ? { body: JSON.stringify(body) } : {}) });
-      const outcome = await response.json();
+      const outcome = await response.json().catch(() => null);
+      if (isAccessLapsed(response.status, outcome)) return { status: 'access-required' };
       return object(outcome) && typeof outcome.status === 'string' && !(response.ok === false && outcome.status === 'ok') ? outcome : unavailable();
     } catch { return unavailable(); }
   }

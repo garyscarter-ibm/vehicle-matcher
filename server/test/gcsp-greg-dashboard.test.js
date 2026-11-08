@@ -424,3 +424,11 @@ test('the gallery shows both kit components; the catalogue and ratchet record th
     assert.equal(entry.max_lines, read(path).split('\n').length, path);
   }
 });
+
+test('a lapsed access key shows the restart screen with Reload and hides the reserved regions', async () => {
+  const root = host(); const teardown = dash.mountGregDashboard(root, { loadDemand: async () => ({ status: 'access-required' }) }); await tick();
+  const status = root.querySelector('.gcsp-greg-body .vm-status');
+  assert.equal(status.getAttribute('role'), 'alert'); assert.match(status.textContent, /Demo restarted/);
+  assert.deepEqual([...status.querySelectorAll('.vm-btn')].map((b) => b.textContent), ['Reload']);
+  assert.equal(root.querySelector('.gcsp-greg-regions').hidden, true); assert.doesNotMatch(root.textContent, /demand figures are unavailable/); teardown();
+});

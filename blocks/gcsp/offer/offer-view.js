@@ -2,11 +2,12 @@ import { el, screenIntro, button, factList } from '../../vehicle-matcher/ui.js';
 import { matchCard, mediaWell } from '../../vehicle-matcher/modes/result-card.js';
 import { labelledField, errorSummary, checkboxField } from '../kit/form-controls.js';
 import { stageList } from '../kit/stage-list.js';
+import { ACCESS_LAPSED_TITLE, RUN_RESTARTED_TITLE, accessLapsedScreen, runRestartedScreen } from '../kit/run-restarted.js';
 import { followupHandle } from './followup-entry.js';
 
 const titles = { pending: 'Your car offer', accepted: 'Offer accepted', declined: 'Offer declined', expired: 'Offer expired',
   superseded: 'Offer superseded', 'earlier-run': 'Offer from an earlier demo run', 'not-found': 'Offer not found', refused: 'Offer unavailable',
-  loading: 'Loading your offer', error: 'Your offer could not be loaded', uncertain: 'Checking your decision' };
+  restarted: RUN_RESTARTED_TITLE, 'access-lapsed': ACCESS_LAPSED_TITLE, loading: 'Loading your offer', error: 'Your offer could not be loaded', uncertain: 'Checking your decision' };
 const messages = { accepted: 'Your selection is recorded. Ordering and approval are separate steps.',
   declined: 'Your decline is recorded.', expired: 'This offer is no longer available to accept.',
   superseded: 'This offer has been replaced and cannot be changed.',
@@ -120,6 +121,12 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     content.replaceChildren();
     optionsKey = undefined; wasOpen = false; lastError = '';
     const state = model.state;
+    if (state === 'restarted' || state === 'access-lapsed') {
+      // The offer page sits outside the access gate, so a lapsed key needs the access form, not a reload.
+      const screen = state === 'restarted' ? runRestartedScreen() : accessLapsedScreen();
+      messageNode = el('p'); messageNode.hidden = true; content.append(screen);
+      if (focused || followupFocused) screen.querySelector('.vm-btn')?.focus(); return;
+    }
     content.append(screenIntro({ title: titles[state] || titles.error, level: 1 }));
     messageNode = el('p', 'gcsp-note', messageFor(model));
     messageNode.hidden = !messageFor(model); content.append(messageNode);
