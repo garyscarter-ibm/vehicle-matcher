@@ -122,7 +122,8 @@ function returnSection(c) {
   const node = c.section(copy.returnCar, 'return');
   if (!usable(returnPlan)) { node.append(failure('return plan', returnPlan)); return node; }
   const now = r.currentCar ?? {};
-  node.append(factList([{ label: 'Current car', value: now.model }, { label: 'Configuration', value: typeof now.vehicle === 'object' ? now.vehicle?.configuration : now.vehicle }]),
+  const place = { label: r.location?.kind === 'home-address' ? copy.homeAddress : copy.returnPlace, value: r.location?.label };
+  node.append(factList([{ label: 'Current car', value: now.model }, { label: 'Configuration', value: typeof now.vehicle === 'object' ? now.vehicle?.configuration : now.vehicle }, place]),
     el('p', 'gcsp-order-note', copy.carStays));
   const proposed = r.state === 'return-requested' && r.appointment?.state === 'change-proposed';
   if (r.pending) node.append(statement(copy.waiting), factList(ownerRows(r)));

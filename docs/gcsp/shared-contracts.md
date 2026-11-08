@@ -1099,8 +1099,11 @@ IDs (`return-appointment:`) and provider references, so it can never be mistaken
 Request rule: Paula chooses `same-visit` (the return books the handover's own scheduled slot) or `separate` (a slot the adapter
 offers from the keyed days, filtered to start after the handover ends and within the keyed days after it). Both need the
 handover `scheduled`. A new order, or a handover not yet in a required state, is a `conflict`; an unknown choice or an unoffered
-slot is `invalid`. Repeating the same request returns the same plan; a different choice or slot is a `conflict`. The return
-location is the new car's collection location from the selection (`handover-retailer`). The tick handler
+slot is `invalid`. Repeating the same request returns the same plan; a different choice or slot is a `conflict`. On the manual
+route the return location is the new car's collection location from the selection (`kind: 'collection-location'`, rule
+`handover-retailer` once a choice is made). On the buddy route (Gary, 8 November 2026, FUCQ-194) the old car is collected from
+the home address on her account (`kind: 'home-address'`, `locationId: null`, `rule: 'home-address'`, `label` the address joined
+with commas, or `null` when the account has none; the screen then shows "Not supplied"). The tick handler
 `lifecycle-return-appointments` (`pending-reconciliation`) confirms, or proposes, after the keyed delay as the handover does;
 a proposal becomes `return-scheduled` only when Paula accepts it.
 

@@ -31,7 +31,7 @@ const buttons = (node) => [...node.querySelectorAll('button')].map((b) => b.text
 const sorted = (o) => Object.keys(o).sort();
 
 test('every fixture state renders with one h1, labelled sections, no em dash and no markup injection', () => {
-  assert.equal(names.length, 24);
+  assert.equal(names.length, 26);
   for (const name of names) {
     const node = view(name, callbacks(log()));
     assert.equal(node.querySelectorAll('h1').length, 1, name);
@@ -223,6 +223,17 @@ test('return plan is its own section, shows the current car unchanged in every s
   }
   assert.equal(section(view('new-order'), 'return'), null);
   assert.doesNotMatch(view('new-order').textContent, /Returning your current car/);
+});
+
+test('FUCQ-194: the return place is her home address on the buddy route, "Not supplied" without one, and the chosen place on the manual route', () => {
+  const fact = (name, label) => [...section(view(name), 'return').querySelectorAll('.vm-fact')].find((row) => row.querySelector('dt').textContent === label);
+  const home = fact('return-buddy-home', 'Collection from your home address');
+  assert.ok(home); assert.equal(home.querySelector('dd').textContent, '1 Fictional Way, Example Town, ZZ1 1ZZ'); document.body.replaceChildren();
+  const none = fact('return-buddy-no-address', 'Collection from your home address');
+  assert.equal(none.querySelector('dd').textContent, 'Not supplied'); assert.ok(none.querySelector('dd').classList.contains('is-missing')); document.body.replaceChildren();
+  assert.equal(fact('return-not-planned', 'Return place').querySelector('dd').textContent, 'Fictional BMW retailer'); document.body.replaceChildren();
+  assert.equal(fact('return-not-planned', 'Collection from your home address'), undefined, 'the manual route never claims a home collection');
+  document.body.replaceChildren();
 });
 
 test('return plan: choices call back with the exact choice and slot; unavailable choices show why', () => {

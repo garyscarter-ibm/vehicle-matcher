@@ -7,6 +7,7 @@ export const RETURN_PLAN_CONTRACT = 'lifecycle.return-plan.v1';
 // Plan states over the return appointment's own states; a proposed change is still a request, never a schedule.
 const PLAN_STATE = { 'not-requested': 'not-planned', requested: 'return-requested', 'change-proposed': 'return-requested', scheduled: 'return-scheduled' };
 const DAY = 86400000;
+const ADDRESS_LINES = ['line1', 'line2', 'line3', 'town', 'county', 'postcode'];
 const text = (v, max = 512) => typeof v === 'string' && v.length > 0 && v.length <= max;
 const object = (v) => v && typeof v === 'object' && !Array.isArray(v);
 const invalid = (field, reason) => result('invalid', { code: 'invalid-return-command', reasons: [{ field, reason }], action: 'review-and-retry' });
@@ -59,21 +60,29 @@ export class LifecycleReturnPlanService {
     if (choices?.mode !== 'replacement' || !object(contract) || !text(contract.contractId) || !object(slot) || !text(slot.entitlementSlotId)
       || (buddy ? !object(odometer) || !text(unit, 16) : contract.contractId !== choices.oldContractId || !text(choices.collectionLocationId))
       || !Number.isSafeInteger(mileage) || mileage < 0) return badSource();
-    return ok({ ...base, applicable: true, oldContract: contract, vehicleSlotId: slot.entitlementSlotId, locationId: buddy ? null : choices.collectionLocationId,
+    return ok({ ...base, applicable: true, buddy, oldContract: contract, vehicleSlotId: slot.entitlementSlotId, locationId: buddy ? null : choices.collectionLocationId,
       mileage, unit });
   }
 
-  // Paula's current car as the account shows it now; the recorded contract only fills a gap, and nothing here writes either.
-  async #currentCar(context, source) {
+  // Paula's account as it is now: her current car (the recorded contract only fills a gap) and home address. Nothing here writes either.
+  async #account(context, source) {
     const employee = await this.#repository.read(context, { table: 'employees', key: { runId: context.runId, employeeId: source.employeeId } });
     if (employee.status !== 'ok' && employee.status !== 'not-found') return employee;
-    const live = employee.status === 'ok' ? employee.value.contract?.manualContext?.contracts?.find((c) => c.contractId === source.oldContract.contractId) : null;
+    const manual = employee.status === 'ok' ? employee.value.contract?.manualContext : null;
+    const live = manual?.contracts?.find((c) => c.contractId === source.oldContract.contractId);
     const car = live ?? source.oldContract;
-    return ok({ contractId: car.contractId, slotId: car.slotId ?? source.vehicleSlotId, status: car.status ?? null, model: car.model ?? null,
-      vehicle: car.vehicle ?? null, source: live ? 'account' : 'selection' });
+    const address = object(manual?.account?.address) ? ADDRESS_LINES.map((k) => manual.account.address[k]).filter((v) => typeof v === 'string' && v.trim()).map((v) => v.trim()) : [];
+    return ok({ currentCar: { contractId: car.contractId, slotId: car.slotId ?? source.vehicleSlotId, status: car.status ?? null, model: car.model ?? null,
+      vehicle: car.vehicle ?? null, source: live ? 'account' : 'selection' }, homeAddress: address.length ? address.join(', ') : null });
   }
 
-  async #locationLabel(context, source, read) {
+  // Gary, 8 Nov 2026 (FUCQ-194): the buddy route collects the old car from her home address; missing stays null, never invented.
+  async #location(source, account, rule, read) {
+    if (source.buddy) return { locationId: null, kind: 'home-address', label: account.homeAddress, rule: 'home-address' };
+    return { locationId: source.locationId, kind: 'collection-location', label: await this.#locationLabel(source, read), rule };
+  }
+
+  async #locationLabel(source, read) {
     try {
       const row = await this.#policy.getAssumption('manual.context.v1', read);
       return row?.value?.value?.locations?.find((l) => l.locationId === source.locationId)?.label ?? null;
@@ -117,7 +126,7 @@ export class LifecycleReturnPlanService {
     const a = appointment.value; const read = { runId: context.runId, asOf: now, policyVersion: a.policyVersion };
     const config = await loadReturnPolicy(this.#policy, read); if (config.status !== 'ok') return config;
     const handover = await this.#handover.read(context, { orderUuid }); if (handover.status !== 'ok') return handover;
-    const car = await this.#currentCar(context, s); if (car.status !== 'ok') return car;
+    const account = await this.#account(context, s); if (account.status !== 'ok') return account;
     const state = PLAN_STATE[a.state]; const planning = state === 'not-planned';
     const choices = []; const offeredSlots = {};
     for (const { id, label } of config.value.choices) {
@@ -129,9 +138,9 @@ export class LifecycleReturnPlanService {
     const step = idle ? config.value.ownership.ineligible : { owner: a.owner, nextStep: a.nextStep };
     const { assumptions: _assumptions, offeredSlots: _offered, policyVersion: _policy, ...nested } = a;
     return ok({ contractVersion: RETURN_PLAN_CONTRACT, runId: context.runId, orderUuid, employeeId: s.employeeId, applicable: true, state, scheduled: state === 'return-scheduled',
-      oldContractId: s.oldContract.contractId, vehicleSlotId: s.vehicleSlotId, currentCar: car.value,
+      oldContractId: s.oldContract.contractId, vehicleSlotId: s.vehicleSlotId, currentCar: account.value.currentCar,
       returnMileage: { value: s.mileage, unit: s.unit, recordedAt: s.receivedAt, source: 'selection' },
-      choice: a.plan?.choice ?? null, location: { locationId: s.locationId, label: await this.#locationLabel(context, s, read), rule: a.plan?.choice ? config.value.rules[a.plan.choice].location : null },
+      choice: a.plan?.choice ?? null, location: await this.#location(s, account.value, a.plan?.choice ? config.value.rules[a.plan.choice].location : null, read),
       appointment: nested, handover: { state: handover.value.state, booked: handover.value.booked, slot: handover.value.slot,
         providerReference: handover.value.history.at(-1)?.providerReference ?? null },
       slot: a.slot, requestedSlot: a.requestedSlot, proposedSlot: a.proposedSlot, proposalId: a.proposalId, providerReference: a.history.at(-1)?.providerReference ?? null,

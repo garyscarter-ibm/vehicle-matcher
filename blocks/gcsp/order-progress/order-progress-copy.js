@@ -30,6 +30,8 @@ export const orderCopy = Object.freeze({
   cantMakeIt: "Can't make it? Get help",
   updating: 'Updating your order.',
   carStays: 'Your current car stays yours until it is returned.',
+  homeAddress: 'Collection from your home address',
+  returnPlace: 'Return place',
   chooseReturn: 'Choose when to return your current car.',
 });
 
