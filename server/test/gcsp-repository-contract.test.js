@@ -424,10 +424,11 @@ repositoryContract('memory', async () => {
 
 test('memory: explicit store and complete foundation vocabulary', async () => {
   assert.equal((await createMemoryRepository().open()).code, 'missing-store');
-  assert.equal(FOUNDATION_TABLES.length, 20);
+  assert.equal(FOUNDATION_TABLES.length, 21);
   assert.ok(FOUNDATION_TABLES.includes('future_order_requests'));
   assert.ok(FOUNDATION_TABLES.includes('confirmed_supply'));
-  assert.equal(Object.keys(TABLES).length, 26);
+  assert.ok(FOUNDATION_TABLES.includes('comparison_results') && TABLES.comparison_results.immutable);
+  assert.equal(Object.keys(TABLES).length, 27);
   assert.equal(inputDigest({ b: 2, a: 1 }), inputDigest({ a: 1, b: 2 }));
 });
 

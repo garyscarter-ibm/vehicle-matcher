@@ -12675,6 +12675,33 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "comparison.noClearDifferenceRule",
+      "value": {
+        "schemaVersion": 1,
+        "rule": "route-seed-ranges-overlap",
+        "overlapInclusive": true,
+        "minimumSeeds": 3,
+        "betterWhen": {
+          "acceptableCoverage": "higher",
+          "carsNeverAllocated": "lower",
+          "heldNotTakenCarDays": "lower",
+          "declinedOffers": "lower",
+          "expiredOffers": "lower",
+          "failedClaims": "lower",
+          "retries": "lower",
+          "meanAcceptedFit": "higher",
+          "accessGroupCoverage": "higher"
+        }
+      },
+      "unit": "versioned rule for labelling a route difference",
+      "basis": "Two routes show no clear difference for a measure when their lowest-to-highest seed ranges overlap, with at least three seeds; fewer seeds are labelled insufficient. A rule of thumb for a small seed set, revisable; not a statistical test.",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#comparison-measures--fucq-136",
+      "sourceDate": "2026-11-08",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "renewalCase.deadline.enabled",
       "value": true,
       "unit": "boolean",

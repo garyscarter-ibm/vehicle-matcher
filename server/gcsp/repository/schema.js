@@ -32,6 +32,7 @@ export const TABLES = Object.freeze({
   identity_sessions: definition('runId sessionIdHash', 'principalId employeeId roles environmentId expiresAt actingPrincipalId'),
   renewal_cases: definition('runId caseId', 'employeeId renewalId owner status reason trigger nextAction dueAt openedAt lastUpdatedAt renewalDeadline renewalDeadlineState policyVersion history remedy fictional', [], [['employees', 'employeeId']]),
   tick_runs: definition('runId tickId', 'commandId eventId targetClock handlerOrder outcomes state inputDigest'),
+  comparison_results: definition('runId resultId', 'experimentId kind completedAt policyVersion manifest result', [], [], true),
 });
 export const createState = () => ({ tables: Object.fromEntries(Object.keys(TABLES).map((table) => [table, []])) });
 export const FOUNDATION_TABLES = Object.freeze(Object.keys(TABLES).filter((table) => !['policy_versions', 'scheme_rule_links', 'eligibility_rules', 'price_plans', 'grade_allowances', 'policy_assumptions'].includes(table)));
