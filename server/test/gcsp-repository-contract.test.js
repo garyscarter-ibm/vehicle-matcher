@@ -449,6 +449,12 @@ test('memory: explicit store and complete foundation vocabulary', async () => {
   assert.equal(Object.keys(TABLES).length, 27);
   assert.equal(inputDigest({ b: 2, a: 1 }), inputDigest({ a: 1, b: 2 }));
 });
+test('FUCQ-220: order reference is a unique pending_operations key backed by an additive partial index', async () => {
+  assert.deepEqual(TABLES.pending_operations.unique.at(-1), ['orderReference']);
+  const migration = (await loadMigrations()).find((row) => row.version === '0006');
+  assert.match(migration.sql, /CREATE UNIQUE INDEX "pending_operations_order_reference_unique" ON "pending_operations" \("run_id", \(data->>'orderReference'\)\) WHERE data->>'orderReference' IS NOT NULL/);
+  assert.doesNotMatch(migration.sql, /CREATE TABLE|DROP|ALTER/i);
+});
 
 if (process.env.GCSP_DATABASE_URL === undefined) {
   test('postgresql: shared TransactionRepository contract', { skip: 'GCSP_DATABASE_URL is unset; PostgreSQL integration was not run' }, () => {});

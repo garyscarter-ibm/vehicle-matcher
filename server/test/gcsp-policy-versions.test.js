@@ -173,8 +173,8 @@ else test('PostgreSQL native parity: NOT RUN; GCSP_DATABASE_URL unset, Render in
 
 test('additive migration discovery retains existing 0001 and 0003 and includes dated policy tables', async () => {
   const migrations = await loadMigrations();
-  // 0004 is FUCQ-104's supply records, 0005 FUCQ-136's comparison results; earlier versions stay in place.
-  assert.deepEqual(migrations.map(({ version }) => version), ['0001', '0002', '0003', '0004', '0005']);
+  // 0004 is FUCQ-104's supply records, 0005 FUCQ-136's comparison results, 0006 FUCQ-220's order reference index.
+  assert.deepEqual(migrations.map(({ version }) => version), ['0001', '0002', '0003', '0004', '0005', '0006']);
   const sql = migrations.find(({ version }) => version === '0002').sql;
   for (const table of ['policy_versions', ...Object.values(POLICY_TABLES)]) assert.ok(sql.includes(`CREATE TABLE ${table} (`));
 });
