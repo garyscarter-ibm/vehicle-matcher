@@ -11589,12 +11589,12 @@
             "highMiles": 20000
           }
         },
-        "termValiditySeconds": 3600,
+        "termValiditySeconds": 7200,
         "driverEligibilityRequired": true
       },
       "unit": "employee recommendation calibration and registry",
       "status": "assumed",
-      "basis": "Read-only employee composition of existing rankCars curves; explicit dimensions, separate importance/indifference, confirmed exact evidence and no retail cash budget. Demo calibration is revisable, not BMW policy.",
+      "basis": "Read-only employee composition of existing rankCars curves; explicit dimensions, separate importance/indifference, confirmed exact evidence and no retail cash budget. Quote terms are pinned for at least the buddy hold (7,200 s) so a held offer can be accepted for its whole countdown. Demo calibration is revisable, not BMW policy.",
       "source": "docs/gcsp/shared-recommendation-design.md",
       "sourceDate": "2026-11-05",
       "policyVersion": "gcsp-policy-v1",

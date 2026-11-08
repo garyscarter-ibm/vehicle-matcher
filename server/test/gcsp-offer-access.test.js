@@ -11,16 +11,17 @@ import { createOfferAccessService, OFFER_ACCESS_COOKIE, OFFER_ACCESS_CONSUMER } 
 import { createOfferAccessHandler } from '../gcsp/offers/access-http.js';
 import { buildServer } from '../index.js';
 import { stock as candidateStock, brief, fact } from './helpers/employee-recommendation.js';
+import { shortQuotePolicy } from './helpers/short-quote-policy.js';
 
 import { mintOfferToken, verifyOfferToken } from '../gcsp/offers/offer-token.js';
 const cmd = (commandId, data = commandId) => ({ commandId, inputDigest: inputDigest(data) });
 const cookieOf = (value) => [value].flat().map((cookie) => cookie.split(';')[0]).join('; ');
 const reference = (table, scope, key) => ({ table, key: { runId: scope.runId, ...key } });
 
-async function fixture({ mutateDecision, currentCarComparison } = {}) {
+async function fixture({ mutateDecision, currentCarComparison, quoteSeconds } = {}) {
   const store = createMemoryStore(); const repository = createMemoryRepository({ store });
   assert.equal((await repository.open()).status, 'ok');
-  const policy = createPolicyService(); let wall = '2026-11-05T12:00:00.000Z';
+  const policy = quoteSeconds ? await shortQuotePolicy(quoteSeconds) : createPolicyService(); let wall = '2026-11-05T12:00:00.000Z';
   const runtime = await createDemoRuntime({ repository, policy, environmentId: 'offer-access-test', environmentKind: 'synthetic',
     policyAsOf: wall, commandId: 'bootstrap', sessionNow: () => wall });
   assert.equal(runtime.status, 'ok'); const { clock, identity } = runtime.value;
@@ -124,7 +125,7 @@ test('exact persisted deadline is expired while reads and repeated exchange neve
 });
 
 test('quote deadline removes acceptance but preserves decline until the exact active hold deadline', async () => {
-  const f = await fixture(); const first = await f.exchange(); assert.equal(first.status, 'ok');
+  const f = await fixture({ quoteSeconds: 3600 }); const first = await f.exchange(); assert.equal(first.status, 'ok');
   const before = structuredClone(f.store.state.tables);
   const quoteDeadline = first.value.offer.quote.validUntil;
   assert.ok(Date.parse(quoteDeadline) < Date.parse(f.expiresAt));
