@@ -7,7 +7,7 @@ import { ORDER_PROGRESS_DESTINATION, defineGcspOrderProgress } from './gcsp-orde
 
 const host = globalThis.document?.querySelector('gcsp-order-progress[data-live]');
 if (host) {
-  const orders = createOrderProgressHttpAdapter({ fetch: globalThis.fetch, loadAccount: createAccountHttpAdapter({ states: ['ready', 'no-entitlement'] }).loadAccount });
+  const orders = createOrderProgressHttpAdapter({ fetch: globalThis.fetch, loadAccount: createAccountHttpAdapter().loadAccount });
   const navigation = [
     { key: 'brief', label: 'Your car brief', available: true, icon: ['M6 3h12v18H6z', 'M9 8h6', 'M9 12h6', 'M9 16h4'] },
     { key: 'activity', label: 'Buddy activity', available: true, icon: ['M4 5h16', 'M4 12h16', 'M4 19h16', 'M8 3v4', 'M8 10v4', 'M8 17v4'] },

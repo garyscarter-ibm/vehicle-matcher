@@ -23,7 +23,7 @@ export function searchLines(value, paused) {
   if (!paused && value.sourceStatus === 'unavailable') lines.push(activityCopy.sourceUnavailable);
   else if (!paused && value.sourceStatus === 'delayed') lines.push(activityCopy.sourceDelayed);
   else if (!paused && value.sourceStatus === 'ok' && value.searchEvidence?.status === 'recorded'
-    && ['searching', 'offer-closed'].includes(value.state)) lines.push(activityCopy.searching);
+    && ['searching', 'offer-closed'].includes(value.state) && value.currentOffer?.state !== 'accepted') lines.push(activityCopy.searching);
   else if (!check && !value.currentOffer) lines.push(activityCopy.notSearched);
   if (check && Number.isFinite(Date.parse(check.checkedAt))) {
     const found = check.outcome === 'offer-held' ? ' Found a car for you.' : '';

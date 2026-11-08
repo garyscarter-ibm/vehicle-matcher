@@ -547,6 +547,19 @@ test('failure messages lead with plain wording, never a raw status or code', asy
   await settle(); await f.control.refresh(); await settle(); assert.match(f.host.textContent, /Readback unavailable: Backend unavailable/); f.control.destroy();
 });
 
+test('FUCQ-213: a refused tick shows a short sentence, never raw JSON or internal ids', async () => {
+  const replies = [{ status: 'unavailable', reason: { code: 'handler-failed', detail: { tickId: 'tick-1' } }, handlerOutcome: { status: 'conflict', reason: 'idempotency-input-changed', current: {} } },
+    { status: 'conflict', reason: 'idempotency-input-changed', current: {} }, { status: 'stale-version', reasons: [{ field: 'clock', reason: { raw: true } }] }];
+  for (const reply of replies) {
+    const f = setup({ tick: async () => reply }); await settle(); f.click('Tick'); await settle();
+    assert.match(f.host.textContent, /Action not completed: (Changed elsewhere|Backend unavailable)/);
+    assert.doesNotMatch(f.host.textContent, /[{}"]|idempotency|handler-failed|tick-1|raw/); f.control.destroy();
+  }
+  const mixed = setup({ tick: async () => ({ status: 'conflict', reason: 'clock-moved', reasons: [{ reason: 'The clock moved on.' }] }) });
+  await settle(); mixed.click('Tick'); await settle();
+  assert.match(mixed.host.textContent, /Action not completed: The clock moved on\./); mixed.control.destroy();
+});
+
 test('FUCQ-203: tick step results sit in a closed disclosure that keeps its open state and focus across readbacks', async () => {
   const handlerOrder = Array.from({ length: 11 }, (_, i) => ({ handlerId: `step-${i}`, stage: 'pending-reconciliation' }));
   const lastTick = { runId: 'run-a', tickId: 'tick-many', eventId: 'tick-many', state: 'completed', handlerOrder, missingStages: [],

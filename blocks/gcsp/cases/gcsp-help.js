@@ -9,6 +9,7 @@ let serial = 0;
 const unavailable = { status: 'unavailable', reason: 'Renewal help could not be loaded. Try again.' };
 export function caseFailure(envelope) {
   const status = envelope?.status;
+  if (status === 'access-required') return { title: 'Demo access needed', text: 'Your demo access has lapsed. Enter the access key again.' };
   const titles = { forbidden: 'You cannot open these cases', 'stale-run': 'Your demo run has changed',
     'stale-version': 'The case or brief has changed', conflict: 'The case or brief has changed', invalid: 'Review your request' };
   const detail = envelope?.reason ?? envelope?.reasons?.map((r) => r.reason).join(' ');

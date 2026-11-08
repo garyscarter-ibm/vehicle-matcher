@@ -8,15 +8,15 @@ import { adapterLabel, modeLabel, faultChange } from './fault-copy.js';
 import { tickSummary, stepLine, missingStagesLine, findOutcome } from './tick-copy.js';
 
 let sequence = 0;
-// Handler results can be huge (buddy allocation returns about 200 KB), so the readout is capped.
-const explain = (value) => { const text = typeof value === 'string' ? value : JSON.stringify(value); return text.length > 240 ? `${text.slice(0, 240)} ... (truncated)` : text; };
+// Only sentences are shown: objects and internal codes (kebab-case ids) never reach the screen.
+const explain = (value) => { const text = typeof value === 'string' ? value.trim() : ''; return /^[a-z0-9]+(-[a-z0-9]+)+$/.test(text) ? '' : text.length > 240 ? `${text.slice(0, 240)} ... (truncated)` : text; };
 // Plain wording per status, used only when the server gave no reason; raw codes are never shown.
 const PLAIN = { forbidden: 'Not permitted', invalid: 'Request not accepted', conflict: 'Changed elsewhere. Refresh readback.',
   'stale-version': 'Changed elsewhere. Refresh readback.', 'not-found': 'Not found', unavailable: 'Backend unavailable' };
 const reason = (reply) => [reply?.reason,
   ...(Array.isArray(reply?.reasons) ? reply.reasons.filter((row) => typeof row?.reason === 'string')
     .map((row) => `${typeof row.field === 'string' ? `${row.field}: ` : ''}${row.reason}`) : []),
-].filter(Boolean).map(explain).join(': ') || (reply?.status ? PLAIN[reply.status] || 'Not completed' : '');
+].filter(Boolean).map(explain).filter(Boolean).join(': ') || (reply?.status ? PLAIN[reply.status] || 'Not completed' : '');
 const why = (reply) => reason(reply) || 'Not completed';
 const workspace = () => new URL('../../../gcsp-presenter.html', import.meta.url).href;
 const text = (value) => typeof value === 'string' && value.length > 0;

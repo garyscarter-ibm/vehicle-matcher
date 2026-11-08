@@ -246,9 +246,9 @@ for (const [name, headline, stages] of [
     ['sales-manager approval', 'Not started'], ['sent to ordering', 'Not started']]],
   ['selection-no-hr', 'Selection received. Waiting for sales-manager approval.', [['selection received', 'Done'],
     ['sales-manager approval', 'Waiting'], ['sent to ordering', 'Not started']]],
-  ['selection-pending', 'Sending your selection. Check again shortly.', [['selection received', 'Sending'], ['HR approval', 'Not started'],
+  ['selection-pending', 'Sending your selection to ordering. Ordering owns the next step. You do not need to do anything.', [['selection received', 'Sending'], ['HR approval', 'Not started'],
     ['sales-manager approval', 'Not started'], ['sent to ordering', 'Not started']]],
-  ['selection-failed', 'Your selection was not accepted for ordering. Contact scheme support.', [['selection received', 'Not accepted'],
+  ['selection-failed', 'Your selection was not accepted for ordering. The car stays reserved. Contact scheme support.', [['selection received', 'Not accepted'],
     ['HR approval', 'Not started'], ['sales-manager approval', 'Not started'], ['sent to ordering', 'Not started']]],
 ]) test(`accepted offer shows the server's stage names and states: ${name}`, async () => {
   const { root, stop } = await mountFixture(name);
