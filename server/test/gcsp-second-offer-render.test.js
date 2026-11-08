@@ -46,6 +46,21 @@ test('shared slider and labelled equipment textarea retain focused controls acro
   }
 });
 
+test('FUCQ-183: a question with no current value says the answer adds it and keeps the copy free of em dashes', (t) => {
+  for (const kind of ['options', 'slider', 'equipment']) {
+    const { root, view } = host(t); const model = question(kind);
+    model.question.currentValue = null; model.value = kind === 'slider' ? 50 : kind === 'equipment' ? [] : null;
+    view.update(model);
+    assert.match(root.querySelector('fieldset').textContent, /Not in your brief yet\. Your answer adds it\./);
+    assert.equal(root.querySelector('[data-followup-action=confirm]').disabled, true);
+    assert.doesNotMatch(root.textContent, /\u2014/);
+    if (kind === 'equipment') assert.doesNotMatch(root.textContent, /Leave empty/);
+    if (kind === 'options') assert.equal(root.querySelectorAll('[role=radio][aria-checked=true]').length, 0);
+  }
+  const { root, view } = host(t); view.update(question());
+  assert.doesNotMatch(root.textContent, /Not in your brief yet/);
+});
+
 test('invalid, busy and saved states disable confirmation and move completed focus to the heading', (t) => {
   const { root, view } = host(t); const model = question(); view.update({ ...model, error: 'Choose a different value.' });
   assert.equal(root.querySelector('[role=alert]').textContent, 'Choose a different value.');

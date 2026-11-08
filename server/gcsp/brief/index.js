@@ -73,6 +73,26 @@ export class BriefService {
     return null;
   }
 
+  // A decline follow-up may add a registered target the brief lacks; null means the key exists (use the shared change).
+  async #addTarget(brief, input, prepared, version) {
+    const [section, key] = input.change.path.split('.');
+    const registered = prepared.config[section];
+    if (!object(brief[section]) || Object.hasOwn(brief[section], key) || !object(registered) || !Object.hasOwn(registered, key)) return null;
+    const next = structuredClone(brief); const value = structuredClone(input.change.value);
+    if (section === 'preferences') {
+      const editor = await this.#policy.getAssumption('brief.editor.v1', prepared.read);
+      const importance = editor?.value?.value?.preferences?.[key]?.importance;
+      if (editor?.status !== 'ok' || editor.policyVersion !== prepared.read.policyVersion || !Number.isSafeInteger(importance)
+        || importance < prepared.slider.minimum || importance > prepared.slider.maximum) return unavailable();
+      next.preferences[key] = { value, importance, valueState: 'confirmed', importanceState: 'confirmed', source: 'employee', confirmedAt: prepared.now };
+      return { status: 'ok', brief: { ...next, briefVersion: version + 1 }, before: null, after: value };
+    }
+    if (!object(value) || value.state !== 'confirmed' || value.value === null || value.value === undefined) return { status: 'invalid', code: 'confirmed-essential-required' };
+    const after = { ...value, source: 'employee', confirmedAt: prepared.now };
+    next.essentials[key] = after;
+    return { status: 'ok', brief: { ...next, briefVersion: version + 1 }, before: null, after };
+  }
+
   async #state(reader, context) {
     const versions = await reader('briefs', { employeeId: context.employeeId });
     if (versions.status !== 'ok') return { error: versions };
@@ -177,7 +197,9 @@ export class BriefService {
         if (decision.value.decision !== 'decline' || !text(decision.value.offerId)) return invalid('decisionId', 'A recorded decline is required.');
         if (state.history.some((b) => b.postDeclineChange?.decisionId === input.decisionId)) return result('conflict', { reason: 'decline-change-already-recorded', current: { briefVersion: version } });
         if (!state.history.some((b) => b.briefVersion === decision.value.versions?.brief)) return invalid('decisionId', 'The decline must reference an approved brief version.');
-        const applied = applyConfirmedFeedbackChange(brief, { schemaVersion: 1, id: input.commandId, type: 'confirm-change',
+        const added = await this.#addTarget(brief, input, prepared, version);
+        if (added?.status === 'unavailable') return added;
+        const applied = added ?? applyConfirmedFeedbackChange(brief, { schemaVersion: 1, id: input.commandId, type: 'confirm-change',
           target: input.change, reason: 'employee-confirmed-after-decline', scope: { kind: 'employee-draft', id: context.employeeId },
           expectedVersion: version, confirmation: { actor: 'employee', confirmed: true, at: prepared.now } });
         if (applied.status !== 'ok') return invalid(applied.code === 'unknown-field' ? 'change.path' : 'change.value',

@@ -71,7 +71,9 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
     content.append(screenIntro({ title: 'One change to your brief', level: 1 }));
     const form = el('form', 'gcsp-followup-question'); form.addEventListener('submit', (event) => { event.preventDefault(); confirm?.(); });
     const question = model.question;
+    const adding = question.currentValue === null;
     field = el('fieldset', 'gcsp-followup-field'); field.append(el('legend', null, question.prompt));
+    if (adding) field.append(el('p', 'gcsp-note', 'Not in your brief yet. Your answer adds it.'));
     const host = el('div', 'gcsp-followup-control'); field.append(host);
     if (question.control.kind === 'options') {
       control = renderOptionList({ id: prefix, options: question.control.options }, null,
@@ -82,7 +84,7 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
     } else {
       const input = el('textarea'); input.rows = 4; input.value = model.value.join('\n');
       const wrapped = labelledField({ id: `${prefix}-equipment`, label: 'Required equipment', control: input,
-        hint: `One name per line, up to ${question.control.maximumItems} names and ${question.control.maximumItemLength} characters per name. Leave empty if none is required.` });
+        hint: `One name per line, up to ${question.control.maximumItems} names and ${question.control.maximumItemLength} characters per name.${adding ? '' : ' Leave empty if none is required.'}` });
       input.addEventListener('input', () => choose?.(input.value.split('\n').map((v) => v.trim()).filter(Boolean)));
       host.append(wrapped.root);
       control = { update({ value, disabled }) {
@@ -158,7 +160,8 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
     if (model.state === 'question' && control) {
       field.disabled = Boolean(model.busy); control.update({ value: model.value, disabled: Boolean(model.busy) });
       error.textContent = model.error || ''; error.hidden = !model.error; control.setError?.(model.error || '');
-      reason.textContent = model.busy ? 'Saving your change.' : model.canConfirm ? 'Only this answer will change.' : 'Choose a different answer, then confirm.';
+      reason.textContent = model.busy ? 'Saving your change.' : model.canConfirm ? 'Only this answer will change.'
+        : model.question.currentValue === null ? 'Choose an answer, then confirm.' : 'Choose a different answer, then confirm.';
       confirmButton.disabled = model.busy || !model.canConfirm; confirmButton.textContent = model.busy ? 'Saving your change...' : 'Confirm this change';
     }
     content.querySelectorAll('[data-followup-action]').forEach((node) => { if (node !== confirmButton) node.disabled = Boolean(model.busy); });

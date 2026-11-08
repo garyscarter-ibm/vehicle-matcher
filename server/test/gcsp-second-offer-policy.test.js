@@ -125,18 +125,68 @@ test('missing, malformed and mixed-version canonical policy reads fail closed', 
   assert.equal(mixed.status, 'unavailable'); assert.equal(mixed.code, 'followup-policy-unavailable');
 });
 
-test('unregistered reasons are invalid and absent or unconfirmed targets are unavailable', async () => {
+test('unregistered reasons are invalid; absent targets add, unconfirmed or malformed ones are unavailable', async () => {
   const f = await fixture();
   const unknown = await readFollowupQuestion({ policy: f.policy, read, reasonCode: 'other', brief: f.brief });
   assert.equal(unknown.status, 'invalid'); assert.equal(unknown.code, 'invalid-followup-reason');
 
   const missing = structuredClone(f.brief); delete missing.preferences.body;
-  const unavailable = await readFollowupQuestion({ policy: f.policy, read, reasonCode: 'body-style', brief: missing });
-  assert.equal(unavailable.status, 'unavailable'); assert.equal(unavailable.code, 'followup-target-unavailable');
+  const absent = await readFollowupQuestion({ policy: f.policy, read, reasonCode: 'body-style', brief: missing });
+  assert.equal(absent.status, 'ok'); assert.equal(absent.value.currentValue, null);
+
+  const unconfirmedPreference = structuredClone(f.brief); unconfirmedPreference.preferences.body.valueState = 'draft';
+  const preference = await readFollowupQuestion({ policy: f.policy, read, reasonCode: 'body-style', brief: unconfirmedPreference });
+  assert.equal(preference.status, 'unavailable'); assert.equal(preference.code, 'followup-target-unavailable');
+
+  const malformed = structuredClone(f.brief); malformed.essentials.equipment.value = 'towbar';
+  const equipment = await readFollowupQuestion({ policy: f.policy, read, reasonCode: 'equipment', brief: malformed });
+  assert.equal(equipment.status, 'unavailable'); assert.equal(equipment.code, 'followup-target-unavailable');
 
   const unconfirmed = structuredClone(f.brief); unconfirmed.essentials.equipment.state = 'needs-confirmation';
-  const equipment = await readFollowupQuestion({ policy: f.policy, read, reasonCode: 'equipment', brief: unconfirmed });
-  assert.equal(equipment.status, 'unavailable'); assert.equal(equipment.code, 'followup-target-unavailable');
+  const stillValued = await readFollowupQuestion({ policy: f.policy, read, reasonCode: 'equipment', brief: unconfirmed });
+  assert.equal(stillValued.status, 'unavailable'); assert.equal(stillValued.code, 'followup-target-unavailable');
+});
+
+test('FUCQ-183: a brief without the target serves the question with no current value and accepts a first answer', async () => {
+  const f = await fixture();
+  const sparse = { schemaVersion: 1, briefVersion: 4, preferences: { body: f.brief.preferences.body }, essentials: {} };
+  const before = structuredClone(sparse);
+  const options = await readFollowupQuestion({ policy: f.policy, read, reasonCode: 'fuel', brief: sparse });
+  assert.equal(options.status, 'ok'); assert.equal(options.value.currentValue, null);
+  const fuel = options.value.control.options[0].value;
+  assert.deepEqual(followupChange(options.value, fuel, sparse).value, { path: options.value.path, value: fuel });
+  assert.equal(followupChange(options.value, 'unregistered', sparse).status, 'invalid');
+  assert.equal(followupChange(options.value, null, sparse).status, 'invalid');
+
+  const slider = await readFollowupQuestion({ policy: f.policy, read, reasonCode: 'size', brief: sparse });
+  assert.equal(slider.status, 'ok'); assert.equal(slider.value.currentValue, null);
+  assert.deepEqual(followupChange(slider.value, 50, sparse).value, { path: slider.value.path, value: 50 });
+  assert.equal(followupChange(slider.value, 101, sparse).status, 'invalid');
+  assert.equal(followupChange(slider.value, 50.5, sparse).status, 'invalid');
+
+  const equipment = await readFollowupQuestion({ policy: f.policy, read, reasonCode: 'equipment', brief: sparse });
+  assert.equal(equipment.status, 'ok'); assert.equal(equipment.value.currentValue, null);
+  assert.deepEqual(followupChange(equipment.value, ['towbar'], sparse).value, { path: equipment.value.path, value: {
+    operator: 'includes', unit: 'equipment-key', state: 'confirmed', source: 'employee', value: ['towbar'] } });
+  assert.equal(followupChange(equipment.value, [], sparse).status, 'invalid');
+  assert.equal(followupChange(equipment.value, ['same', 'same'], sparse).status, 'invalid');
+  assert.deepEqual(sparse, before);
+
+  const added = structuredClone(sparse); added.preferences.size = structuredClone(f.brief.preferences.size);
+  assert.equal(followupChange(slider.value, 50, added).status, 'invalid');
+  const bumped = { ...sparse, briefVersion: 5 };
+  assert.equal(followupChange(slider.value, 50, bumped).status, 'invalid');
+});
+
+test('FUCQ-183: an equipment essential still needing confirmation counts as no current value', async () => {
+  const f = await fixture();
+  const brief = structuredClone(f.brief);
+  brief.essentials.equipment = { operator: 'includes', unit: 'equipment-key', value: null, state: 'needs-confirmation', source: 'employee' };
+  const question = await readFollowupQuestion({ policy: f.policy, read, reasonCode: 'equipment', brief });
+  assert.equal(question.status, 'ok'); assert.equal(question.value.currentValue, null);
+  assert.equal(followupChange(question.value, ['towbar'], brief).status, 'ok');
+  const confirmed = structuredClone(f.brief);
+  assert.equal(followupChange(question.value, ['towbar'], confirmed).status, 'invalid');
 });
 
 test('option and slider changes accept only projected values and leave input brief unchanged', async () => {

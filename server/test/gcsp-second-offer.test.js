@@ -198,13 +198,41 @@ test('missing, pending, mismatched, future and bad-digest completed decline inpu
   }
 });
 
-test('missing canonical policy and absent target fields never create a question or change', async (t) => {
+test('missing canonical policy never creates a question or change', async (t) => {
   const f = await setup(t, { missingPolicy: true });
   assert.equal((await f.service.read(f.context, { decisionId: 'decline' })).status, 'unavailable');
-  const partial = data(); delete partial.preferences.body;
-  const g = await setup(t, { inputData: partial }); const before = await snapshot(g);
-  assert.equal((await g.service.read(g.context, { decisionId: 'decline' })).status, 'unavailable');
-  assert.deepEqual(await snapshot(g), before);
+});
+
+test('FUCQ-183: a decline reason whose target is not in the brief asks the question and the answer adds it', async (t) => {
+  const editor = (await createPolicyService().getAssumption('brief.editor.v1',
+    { runId: 'x', asOf: '2026-11-05T00:00:00.000Z', policyVersion: 'gcsp-policy-v1' })).value.value.preferences;
+  for (const [code, value, path, drop] of [['body-style', 'suv', 'preferences.body.value', (d) => delete d.preferences.body],
+    ['fuel', 'ev', 'preferences.fuel.value', (d) => delete d.preferences.fuel],
+    ['size', 75, 'preferences.size.value', (d) => delete d.preferences.size],
+    ['equipment', ['towbar'], 'essentials.equipment', (d) => delete d.essentials.equipment]]) {
+    const sparse = data(); drop(sparse);
+    const f = await setup(t, { inputData: sparse, alter: (r) => { r.decision.reason = { ...reasonRows.find((row) => row.code === code),
+      policyVersion: r.decision.reason.policyVersion }; r.event.reasonCode = code; } });
+    const question = await f.service.read(f.context, { decisionId: 'decline' });
+    assert.equal(question.status, 'ok', JSON.stringify(question)); assert.equal(question.value.state, 'question');
+    assert.equal(question.value.question.path, path); assert.equal(question.value.question.currentValue, null);
+    const changed = await f.service.confirm(f.context, await answer(f, { value }));
+    assert.equal(changed.status, 'ok', JSON.stringify(changed)); assert.equal(changed.value.state, 'change-saved');
+    assert.deepEqual(changed.value.change, { path, before: null, after: path.startsWith('essentials') ? changed.value.change.after : value });
+    const current = (await f.brief.readCurrent(f.context)).value.brief;
+    assert.equal(current.postDeclineChange.before, null);
+    if (path.startsWith('essentials')) {
+      assert.deepEqual(current.essentials.equipment.value, value); assert.equal(current.essentials.equipment.state, 'confirmed');
+      assert.equal(current.essentials.equipment.source, 'employee');
+    } else {
+      const key = path.split('.')[1];
+      assert.equal(current.preferences[key].value, value); assert.equal(current.preferences[key].importance, editor[key].importance);
+      assert.equal(current.preferences[key].valueState, 'confirmed'); assert.equal(current.preferences[key].importanceState, 'confirmed');
+    }
+    assert.deepEqual(current.preferences.comfort, f.initial.preferences.comfort);
+    const reload = await f.service.read(f.context, { decisionId: 'decline' });
+    assert.notEqual(reload.value?.state, 'question');
+  }
 });
 
 test('fuel, size and equipment questions use the same canonical change reducer', async (t) => {
