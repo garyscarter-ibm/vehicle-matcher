@@ -18,16 +18,16 @@ function validQuestion(v, decisionId) {
   if (q.control.kind === 'options') return Array.isArray(q.control.options) && q.control.options.length > 0
     && q.control.options.every((o) => text(o.value) && typeof o.label === 'string' && o.label.trim() && o.label.length <= 120)
     && new Set(q.control.options.map((o) => o.value)).size === q.control.options.length
-    && q.control.options.some((o) => o.value === q.currentValue);
+    && (q.currentValue === null || q.control.options.some((o) => o.value === q.currentValue));
   if (q.control.kind === 'slider') return q.control.minimum === 0 && q.control.maximum === 100
-    && q.control.unit === 'percent' && Number.isSafeInteger(q.currentValue)
-    && q.currentValue >= q.control.minimum && q.currentValue <= q.control.maximum;
+    && q.control.unit === 'percent' && (q.currentValue === null || Number.isSafeInteger(q.currentValue)
+    && q.currentValue >= q.control.minimum && q.currentValue <= q.control.maximum);
   if (q.control.kind === 'equipment') return Number.isSafeInteger(q.control.maximumItems) && q.control.maximumItems > 0
     && q.control.maximumItems <= 100 && Number.isSafeInteger(q.control.maximumItemLength)
     && q.control.maximumItemLength > 0 && q.control.maximumItemLength <= 256
-    && Array.isArray(q.currentValue) && q.currentValue.length <= q.control.maximumItems
+    && (q.currentValue === null || Array.isArray(q.currentValue) && q.currentValue.length <= q.control.maximumItems
     && q.currentValue.every((v) => typeof v === 'string' && v.trim() && v === v.trim() && v.length <= q.control.maximumItemLength)
-    && new Set(q.currentValue).size === q.currentValue.length;
+    && new Set(q.currentValue).size === q.currentValue.length);
   return false;
 }
 
@@ -66,10 +66,20 @@ function valueError(question, value) {
   if (control.kind === 'slider' && (!Number.isSafeInteger(value) || value < control.minimum || value > control.maximum)) {
     return `Choose a whole number from ${control.minimum} to ${control.maximum}.`;
   }
+  if (control.kind === 'equipment' && question.currentValue === null && Array.isArray(value) && value.length === 0) {
+    return 'Add at least one equipment name.';
+  }
   if (control.kind === 'equipment' && (!Array.isArray(value) || value.length > control.maximumItems
     || value.some((v) => typeof v !== 'string' || !v.trim() || v !== v.trim() || v.length > control.maximumItemLength)
     || new Set(value).size !== value.length)) return 'Use unique equipment names within the displayed limits.';
-  return equal(value, question.currentValue) ? 'Choose a different value before confirming.' : '';
+  return question.currentValue !== null && equal(value, question.currentValue) ? 'Choose a different value before confirming.' : '';
+}
+
+// A question with no current value starts empty, or at the slider midpoint of the server range.
+function startValue(question) {
+  if (question.currentValue !== null) return copy(question.currentValue);
+  const { kind, minimum, maximum } = question.control;
+  return kind === 'slider' ? Math.round((minimum + maximum) / 2) : kind === 'equipment' ? [] : null;
 }
 
 /** Selection stays local. An uncertain command keeps its exact ID/body, including across status reads. */
@@ -91,8 +101,9 @@ export function createFollowupController({ decisionId, transport, createCommandI
     const v = outcome?.value;
     if (outcome?.status === 'ok' && validQuestion(v, decisionId)) {
       if (pending) { uncertain(); return; }
+      const start = startValue(v.question);
       state = { state: 'question', savedChange: null, error: '', busy: false, question: copy(v.question),
-        briefVersion: v.briefVersion, value: copy(v.question.currentValue), canConfirm: false };
+        briefVersion: v.briefVersion, value: start, canConfirm: v.question.currentValue === null && !valueError(v.question, start) };
     } else if (outcome?.status === 'ok' && saved(v, decisionId)) {
       pending = null;
       state = { state: 'change-saved', savedChange: copy(v), question: null, busy: false, error: '', canConfirm: false };
@@ -105,10 +116,10 @@ export function createFollowupController({ decisionId, transport, createCommandI
       state = { state: v.state, savedChange: copy(v.savedChange), question: null, busy: false, error: '', canConfirm: false,
         ...(v.evaluation ? { evaluation: copy(v.evaluation) } : {}) };
     } else {
-      const stateName = outcome?.status === 'stale-run' ? 'stale-run'
+      const stateName = outcome?.status === 'access-required' ? 'access-lapsed' : outcome?.status === 'stale-run' ? 'stale-run'
         : ['forbidden', 'missing-session', 'unknown-session', 'unknown-principal', 'expired-session'].includes(outcome?.status) ? 'forbidden'
           : ['stale-version', 'conflict'].includes(outcome?.status) ? 'refresh-required' : 'unavailable';
-      const savedChange = ['stale-run', 'forbidden'].includes(stateName) ? null
+      const savedChange = ['stale-run', 'forbidden', 'access-lapsed'].includes(stateName) ? null
         : saved(outcome?.savedChange, decisionId) ? copy(outcome.savedChange) : state.savedChange;
       if (stateName !== 'unavailable' || savedChange) pending = null;
       if (pending) { uncertain(); return; }

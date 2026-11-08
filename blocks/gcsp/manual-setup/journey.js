@@ -2,26 +2,33 @@ import { mountAccount } from '../account/gcsp-account.js';
 import { mountManualSetup } from './gcsp-manual-setup.js';
 import { mountManualGallery } from '../manual-gallery/gcsp-manual-gallery.js';
 import { mountManualReview } from '../manual-review/gcsp-manual-review.js';
+import { mountManualSummary } from '../manual-summary/gcsp-manual-summary.js';
+import { createManualSummaryHttpAdapter } from '../manual-summary/http-adapter.js';
+import { createOrderProgressHttpAdapter } from '../order-progress/order-progress-http.js';
 import { createManualClaimController } from '../manual-gallery/claim-controller.js';
 import { createManualGalleryHttpAdapter } from '../manual-gallery/http-adapter.js';
 import { mountEmployee } from '../employee/gcsp-employee.js';
 import { statusScreen } from '../../vehicle-matcher/ui.js';
 
 export function mountManualJourney(root, options = {}) {
-  const { galleryAdapter, reviewAdapter, subscribeClock, onReviewContinue, ...shared } = options;
+  const { galleryAdapter, reviewAdapter, summaryAdapter, subscribeClock, onReviewContinue, ...shared } = options;
   const claimAdapter = galleryAdapter ?? createManualGalleryHttpAdapter();
+  const summaryPort = summaryAdapter ?? createManualSummaryHttpAdapter();
   let teardown; let disconnectFocus; let disposed = false; let generation = 0; let view; let hint;
   function mount(next, render) {
     if (disposed) return;
     generation += 1; view = next;
     disconnectFocus?.();
     teardown?.();
-    const ticket = generation;
+    const ticket = generation; let focused = null;
+    // Refocus when a transient loading heading is replaced and focus falls to the body.
     const focus = () => {
-      if (disposed || ticket !== generation) return;
+      if (disposed || ticket !== generation || focused?.isConnected) return;
+      const active = root.ownerDocument.activeElement;
+      if (focused && active && active !== root.ownerDocument.body) return;
       const heading = root.querySelector('main h1, main h2');
       if (!heading) return;
-      heading.tabIndex = -1; heading.focus(); observer.disconnect();
+      heading.tabIndex = -1; heading.focus(); focused = heading;
     };
     const observer = new root.ownerDocument.defaultView.MutationObserver(focus);
     observer.observe(root, { childList: true, subtree: true });
@@ -33,7 +40,8 @@ export function mountManualJourney(root, options = {}) {
   function later(ticket, work) {
     queueMicrotask(() => { if (!disposed && ticket === generation) work(); });
   }
-  function account() { mount('account', () => mountAccount(root, shared)); }
+  // Every host lists placed orders on the account, so Finish and reload lead back to the order.
+  function account() { mount('account', () => mountAccount(root, { orderAdapter: createOrderProgressHttpAdapter(), ...shared })); }
   function enter(nextHint) {
     hint = nextHint;
     mount('checking', (ticket) => {
@@ -42,7 +50,7 @@ export function mountManualJourney(root, options = {}) {
         async loadAccount({ signal }) {
           const result = await (shared.adapter ?? claimAdapter).readAccount({ signal });
           return result?.status === 'ok' ? { status: 'ready', name: result.value.account?.name,
-            context: [result.value.account?.companyId, result.value.account?.gradeId].filter(Boolean).join(', ') }
+            context: [result.value.account?.company, result.value.account?.gradeId && `Grade ${result.value.account.gradeId}`].filter(Boolean).join(', ') }
             : { status: 'unavailable' };
         },
         renderBody(main) {
@@ -57,7 +65,12 @@ export function mountManualJourney(root, options = {}) {
         if (state?.blocked === false && ['ready', 'released'].includes(state.state)) setup();
         else gallery();
       });
-      reader.load().then(recover, () => recover(null));
+      // A placed order is the source of truth on reload: it opens its outcome, not setup or review.
+      const placed = Promise.resolve().then(() => summaryPort.readOrder()).catch(() => null);
+      placed.then((found) => {
+        if (['ok', 'pending'].includes(found?.status) && found.value?.operationId) later(ticket, () => summary());
+        else return reader.load().then(recover, () => recover(null));
+      });
       return () => { reader.destroy(); shell(); };
     });
   }
@@ -77,7 +90,7 @@ export function mountManualJourney(root, options = {}) {
         // Reloaded claims have no new selection descriptor; review rereads authority.
         if (state.state === 'existing-claim' && state.claim?.status === 'ok'
           && state.claim.value?.state === 'quoted' && state.claim.value.pendingOperation === null
-          && state.claim.value.hold?.state === 'active') later(ticket, () => review());
+          && state.claim.value.hold?.state === 'active') later(ticket, () => state.claim.value.hold.phase === 'order-review' ? summary() : review());
       },
       onClaimConfirmed(detail) { later(ticket, () => review(detail)); },
     }));
@@ -85,9 +98,23 @@ export function mountManualJourney(root, options = {}) {
   function review(handoff) {
     mount('review', (ticket) => mountManualReview(root, { brand: shared.brand, adapter: reviewAdapter,
       commandId: shared.commandId, handoff,
-      onContinue(detail) { if (!disposed && ticket === generation) onReviewContinue?.(detail); },
+      onContinue(detail) {
+        if (disposed || ticket !== generation) return;
+        onReviewContinue?.(detail); later(ticket, () => summary());
+      },
       onReleased() { later(ticket, gallery); },
       onBrowse() { later(ticket, gallery); },
+    }));
+  }
+  function summary() {
+    mount('summary', (ticket) => mountManualSummary(root, { brand: shared.brand, adapter: summaryPort,
+      commandId: shared.commandId,
+      onEditDetails() { later(ticket, () => review()); },
+      onChangeCar() { later(ticket, gallery); },
+      onChangeChoices() { later(ticket, () => setup()); },
+      onReleased() { later(ticket, gallery); },
+      onBrowse() { later(ticket, gallery); },
+      onFinish() { later(ticket, account); },
     }));
   }
   const start = (event) => {
@@ -103,7 +130,7 @@ export function mountManualJourney(root, options = {}) {
   const unsubscribe = subscribeClock?.(() => {
     if (disposed) return;
     if (view === 'gallery') { teardown?.gallery.refresh(); teardown?.claim.checkStatus(); }
-    else if (view === 'review' || view === 'setup') teardown?.refresh();
+    else if (['review', 'setup', 'summary'].includes(view)) teardown?.refresh();
   });
   account();
   return () => {

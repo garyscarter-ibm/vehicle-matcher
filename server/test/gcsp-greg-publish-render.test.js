@@ -108,6 +108,18 @@ test('each invalid price summary link selects its own row while retaining the re
   }
 });
 
+test('shared error summary passes field and row identity while one-argument and default consumers still work', async () => {
+  const { errorSummary } = await import('../../blocks/gcsp/kit/form-controls.js');
+  const input = document.createElement('input'); input.id = 'kit-field'; document.body.append(input); const seen = [];
+  const rows = errorSummary({ id: 'kit-rows', errors: [{ id: input.id, selectionId: 'price:second', message: 'Bad' }], onSelect: (...args) => seen.push(args) });
+  const single = errorSummary({ id: 'kit-single', errors: [{ id: input.id, message: 'Bad' }], onSelect: (id) => seen.push([id]) });
+  const fallback = errorSummary({ id: 'kit-default', errors: [{ id: input.id, message: 'Bad' }] });
+  document.body.append(rows.root, single.root, fallback.root);
+  rows.root.querySelector('a').click(); single.root.querySelector('a').click();
+  assert.deepEqual(seen, [[input.id, 'price:second'], [input.id]]);
+  fallback.root.querySelector('a').click(); assert.equal(document.activeElement, input);
+});
+
 test('price switching updates visible and accessible slider row, units, bounds and provenance without replacing inputs', async () => {
   const policy = gallery.galleryPolicy({ ranges: true });
   policy.fields.unshift({ ...structuredClone(policy.fields[0]), id: 'price:second', key: 'second', configurationId: 'Second car',
@@ -325,4 +337,33 @@ test('new scoped CSS keeps shared tokens and scoped selectors with no raw palett
   const selectors = [...stripped.matchAll(/(?:^|[}\s])([^{}@]+)\{/g)].flatMap((m) => m[1].split(',')).map((s) => s.trim()).filter(Boolean);
   assert.ok(selectors.every((s) => s.startsWith('.gcsp')));
   assert.doesNotMatch(css, /#[0-9a-f]{3,8}\b|\b(?:rgb|hsl)a?\(|animation:|transition:/i);
+});
+
+test('a 401 with no status (lapsed access key) reads access-required; a status keeps its refusal', async () => {
+  const respond = (status, body) => async () => ({ status, async json() { if (body === undefined) throw new SyntaxError('bad'); return body; } });
+  for (const action of ['readPolicy', 'preview', 'publish']) for (const body of [{ error: 'Unauthorized' }, undefined, null]) assert.deepEqual(transport.policyOutcome(401, body, action), { status: 'access-required' });
+  for (const body of [{ error: 'Unauthorized' }, undefined]) {
+    const adapter = transport.createGregPublishHttpAdapter({ fetchImpl: respond(401, body) });
+    assert.deepEqual(await adapter.readPolicy(), { status: 'access-required' }); assert.deepEqual(await adapter.publish({}), { status: 'access-required' });
+  }
+  assert.equal(transport.policyOutcome(403, { error: 'Forbidden' }, 'publish').status, 'refused');
+  assert.equal(transport.policyOutcome(401, { status: 'missing-session' }, 'publish').status, 'refused');
+  assert.equal((await transport.createGregPublishHttpAdapter({ fetchImpl: respond(403, undefined) }).readPolicy()).status, 'unavailable');
+});
+
+test('a lapsed access key shows the compact restart notice with Reload instead of the policy form', async () => {
+  const first = await setup({ readPolicy: async () => ({ status: 'access-required' }) });
+  assert.equal(state(first.root), 'restarted'); assert.match(first.root.querySelector('[role="alert"]').textContent, /Reload the page to continue/);
+  assert.equal(first.root.querySelectorAll('input').length, 0); assert.doesNotMatch(first.root.textContent, /Policy unavailable/); first.teardown();
+  const later = await setup({ preview: async () => ({ status: 'access-required' }) }); await preview(later.root);
+  assert.equal(state(later.root), 'restarted'); assert.equal(later.root.querySelector('.gcsp-publish-form').hidden, true);
+  const reload = action(later.root, 'Reload'); assert.ok(reload); assert.equal(action(later.root, 'Retry'), undefined); later.teardown();
+});
+
+test('policy and published facts show readable dates, never raw ISO timestamps', async () => {
+  const { root, calls } = await setup();
+  assert.match(root.textContent, /Effective from.*5 Nov 2026, 09:00 GMT/); assert.match(root.textContent, /Demo time.*5 Nov 2026, 10:00 GMT/);
+  await preview(root); action(root, 'Publish this preview').click(); await tick();
+  assert.equal(calls.publish.length, 1); assert.match(root.textContent, /Effective from.*5 Nov 2026, 10:00 GMT/);
+  assert.doesNotMatch(root.textContent, /\d{4}-\d{2}-\d{2}T\d{2}:/);
 });

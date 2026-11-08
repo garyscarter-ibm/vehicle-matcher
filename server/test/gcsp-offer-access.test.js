@@ -5,27 +5,30 @@ import { writeFile } from 'node:fs/promises';
 import { createMemoryRepository, createMemoryStore, inputDigest } from '../gcsp/repository/index.js';
 import { createPolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
+import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { createEmployeeRecommendationService } from '../gcsp/recommendation/index.js';
 import { createOfferAccessService, OFFER_ACCESS_COOKIE, OFFER_ACCESS_CONSUMER } from '../gcsp/offers/access.js';
 import { createOfferAccessHandler } from '../gcsp/offers/access-http.js';
 import { buildServer } from '../index.js';
 import { stock as candidateStock, brief, fact } from './helpers/employee-recommendation.js';
+import { shortQuotePolicy } from './helpers/short-quote-policy.js';
 
 import { mintOfferToken, verifyOfferToken } from '../gcsp/offers/offer-token.js';
 const cmd = (commandId, data = commandId) => ({ commandId, inputDigest: inputDigest(data) });
 const cookieOf = (value) => [value].flat().map((cookie) => cookie.split(';')[0]).join('; ');
 const reference = (table, scope, key) => ({ table, key: { runId: scope.runId, ...key } });
 
-async function fixture({ mutateDecision, currentCarComparison } = {}) {
+async function fixture({ mutateDecision, currentCarComparison, quoteSeconds } = {}) {
   const store = createMemoryStore(); const repository = createMemoryRepository({ store });
   assert.equal((await repository.open()).status, 'ok');
-  const policy = createPolicyService(); let wall = '2026-11-05T12:00:00.000Z';
+  const policy = quoteSeconds ? await shortQuotePolicy(quoteSeconds) : createPolicyService(); let wall = '2026-11-05T12:00:00.000Z';
   const runtime = await createDemoRuntime({ repository, policy, environmentId: 'offer-access-test', environmentKind: 'synthetic',
     policyAsOf: wall, commandId: 'bootstrap', sessionNow: () => wall });
   assert.equal(runtime.status, 'ok'); const { clock, identity } = runtime.value;
   const presenter = await identity.createPresenterSession('presenter'); assert.equal(presenter.status, 'ok');
   const employee = await identity.switchPrincipal(presenter.value.context, 'demo-paula', 'paula'); assert.equal(employee.status, 'ok');
   const employeeContext = employee.value.context;
+  assert.equal((await seedManualDemoContext({ repository, identity, clock, context: employeeContext })).status, 'ok');
   const initial = await clock.now(employeeContext);
   const advanceSeconds = (Date.parse(wall) - Date.parse(initial.value.now)) / 1000;
   assert.equal((await clock.advance(presenter.value.context, { commandId: 'midday', expectedClockVersion: initial.value.clockVersion, bySeconds: advanceSeconds })).status, 'ok');
@@ -122,7 +125,7 @@ test('exact persisted deadline is expired while reads and repeated exchange neve
 });
 
 test('quote deadline removes acceptance but preserves decline until the exact active hold deadline', async () => {
-  const f = await fixture(); const first = await f.exchange(); assert.equal(first.status, 'ok');
+  const f = await fixture({ quoteSeconds: 3600 }); const first = await f.exchange(); assert.equal(first.status, 'ok');
   const before = structuredClone(f.store.state.tables);
   const quoteDeadline = first.value.offer.quote.validUntil;
   assert.ok(Date.parse(quoteDeadline) < Date.parse(f.expiresAt));
@@ -432,4 +435,30 @@ test('actual buildServer request listener registers exchange, reload, account an
   } finally {
     if (previous===undefined) delete process.env.DEMO_ACCESS_KEY; else process.env.DEMO_ACCESS_KEY=previous;
   }
+});
+
+test('a pending read carries the ordering handoff, and a blocker removes accept while decline stays', async () => {
+  const f = await fixture(); const first = await f.exchange(); assert.equal(first.status, 'ok');
+  const { handoff, selection } = first.value.offer;
+  assert.equal(selection, null); assert.equal(handoff.blocker, null); assert.equal(handoff.fictional, true);
+  assert.equal(handoff.termsVersion, 'fictional-order-terms-v1'); assert.match(handoff.termsDigest, /^[0-9a-f]{64}$/);
+  assert.ok(['new', 'replacement'].includes(handoff.mode)); assert.ok(handoff.wording.length > 0);
+  assert.deepEqual(handoff.declarations.map((d) => d.id).slice(0, 2), ['terms', 'driver']);
+  assert.equal(handoff.declarations.some((d) => d.id === 'return'), handoff.mode === 'replacement');
+  assert.deepEqual(Object.keys(handoff.contact), ['phone', 'email']);
+  const found = await f.repository.read(f.employeeContext, reference('employees', f.binding, { employeeId: f.employeeContext.employeeId }));
+  const manual = structuredClone(found.value.contract.manualContext); manual.account.contact = { phone: 'x', email: 'bad' };
+  await f.patch('employees', { employeeId: f.employeeContext.employeeId }, { contract: { ...found.value.contract, manualContext: manual } });
+  const blocked = await f.service.read(first.value.context); assert.equal(blocked.status, 'ok');
+  assert.equal(blocked.value.handoff.blocker, 'contact-required'); assert.equal(blocked.value.handoff.contact, null);
+  assert.deepEqual(blocked.value.availableActions, ['decline']);
+});
+
+test('unavailable ordering terms block accept with a named reason and no terms', async () => {
+  const f = await fixture(); const first = await f.exchange(); assert.equal(first.status, 'ok');
+  const original = f.policy.getAssumption.bind(f.policy);
+  f.policy.getAssumption = async (key, read) => key.startsWith('ordering.') ? { status: 'unavailable' } : original(key, read);
+  const read = await f.service.read(first.value.context); assert.equal(read.status, 'ok');
+  assert.equal(read.value.handoff.blocker, 'ordering-terms-unavailable'); assert.equal(read.value.handoff.termsDigest, null);
+  assert.deepEqual(read.value.handoff.declarations, []); assert.deepEqual(read.value.availableActions, ['decline']);
 });

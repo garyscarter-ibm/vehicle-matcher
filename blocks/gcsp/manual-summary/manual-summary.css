@@ -1,0 +1,18 @@
+@import "../manual-review/manual-review.css"; @import "../kit/stage-list.css";
+
+gcsp-manual-summary { display: block; }
+.gcsp .gcsp-summary-body { display: grid; gap: 24px; min-width: 0; overflow-wrap: anywhere; }
+.gcsp .gcsp-summary-section { min-width: 0; }
+.gcsp .gcsp-summary-section .gcsp-card-body { gap: 16px; }
+.gcsp .gcsp-summary-edit { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; }
+.gcsp .gcsp-summary-checks, .gcsp .gcsp-summary-declarations { display: grid; gap: 8px; min-width: 0; }
+.gcsp .gcsp-summary-steps { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+.gcsp .gcsp-summary-outcome-body { display: grid; gap: 24px; min-width: 0; }
+@media (max-width: 760px) {
+  .gcsp .gcsp-summary-edit > .vm-btn, .gcsp .gcsp-summary-body .gcsp-review-actions > .vm-btn { width: 100%; white-space: normal; }
+}
+@media print {
+  .gcsp .gcsp-header, .gcsp .gcsp-nav, .gcsp .gcsp-presenter-region, .gcsp .gcsp-crumbs-host, .gcsp .gcsp-skip, .gcsp .gcsp-print-hidden { display: none !important; }
+  .gcsp .gcsp-body, .gcsp .gcsp-content, .gcsp .gcsp-review-layout { display: block; }
+  .gcsp .gcsp-summary-section, .gcsp .gcsp-review-column > * { break-inside: avoid; margin-bottom: 16px; }
+}

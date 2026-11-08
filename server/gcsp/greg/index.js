@@ -2,6 +2,7 @@ import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.j
 import { validInstant } from '../policy/file-provider.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
 import { projectRecommendationFacts } from '../manual-context/recommendation-facts.js';
+import { readStockSourceStatus } from '../stock/source-status.js';
 
 const THRESHOLD_KEY = 'greg.demand.smallCountThreshold';
 const tables = ['briefs', 'employees', 'entitlement_slots', 'stock', 'holds', 'offers', 'decisions', 'quotes'];
@@ -155,7 +156,7 @@ export function createGregDemandService({ repository, policy, clock, identity } 
           offers: { made: aggregate(rows.offers, rows.offers.flatMap(offerVersions)), accepted: aggregate(accepted, accepted.flatMap(offerVersions)),
             declined: aggregate(declined, declined.flatMap(offerVersions)), expired: aggregate(expired, expired.flatMap(offerVersions)),
             selected: aggregate(selected, selected.flatMap(offerVersions)), declinedByReason: group(declined, reason, offerVersions) },
-          stock: { byModelLine: stocks } });
+          stock: { byModelLine: stocks, source: await readStockSourceStatus(repository, context) } });
       } catch { return unavailable('source-invalid'); }
     },
   };

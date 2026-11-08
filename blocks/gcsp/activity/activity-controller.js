@@ -1,3 +1,5 @@
+import { isRunRestarted } from '../kit/run-restarted.js';
+
 // Client sequencing only. Server outcomes remain the permission and activity authority.
 const unavailable = () => ({ status: 'unavailable' });
 const positive = (value) => Number.isSafeInteger(value) && value > 0;
@@ -17,6 +19,7 @@ export function createActivityController({ adapter = {}, onChange, createCommand
     let out;
     try { out = await adapter.readActivity?.({ signal: abort.signal }); } catch { out = unavailable(); }
     if (disposed || abort.signal.aborted || current !== generation) return getState();
+    if (isRunRestarted(out)) { publish({ phase: 'restarted', result: null, pending: false, message: '' }); return getState(); }
     let snapshot;
     try { if (projection(out)) snapshot = structuredClone(out); } catch { snapshot = null; }
     if (snapshot) publish({ phase: 'ready', result: snapshot, pending: false, message });
@@ -41,6 +44,7 @@ export function createActivityController({ adapter = {}, onChange, createCommand
     let out;
     try { out = await adapter[operation]({ commandId, expectedBriefVersion, signal: abort.signal }); } catch { out = unavailable(); }
     if (disposed || abort.signal.aborted || current !== generation) return getState();
+    if (isRunRestarted(out)) { publish({ phase: 'restarted', result: null, pending: false, message: '' }); commandAbort = null; return getState(); }
     const message = out?.status === 'ok' ? operation === 'pause' ? 'Search paused.' : 'Search resumed.'
       : ['stale-version', 'conflict'].includes(out?.status) ? 'Search changed. Showing current status.' : 'Search could not be updated. Try again.';
     await load({ pending: true, message }); commandAbort = null;

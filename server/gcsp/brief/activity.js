@@ -1,5 +1,6 @@
 import { inputDigest, ok, result } from '../repository/index.js';
 import { validInstant } from '../policy/file-provider.js';
+import { readAllocationEvaluation } from '../allocation/evaluation-rows.js';
 
 const text = (value) => typeof value === 'string' && value.length > 0 && value.length <= 512;
 const positive = (value) => Number.isSafeInteger(value) && value > 0;
@@ -62,17 +63,34 @@ function sourceStatusOf(tick) {
   return !outcomes.length ? 'not-checked' : outcomes.every(Boolean) ? 'ok' : 'unavailable';
 }
 
+const checkable = (receipt, context) => receipt.runId === context.runId && receipt.consumerId === 'buddy-allocation'
+  && receipt.state === 'completed' && receipt.outcome?.status === 'ok' && text(receipt.eventId) && validInstant(receipt.outcome.value?.evaluatedAt);
+
+const scalar = (v) => typeof v === 'number' && Number.isFinite(v) || typeof v === 'boolean' || text(v);
+const required = (r) => Object.fromEntries(['operator', 'unit', 'value'].filter((k) => r?.[k] !== undefined
+  && (scalar(r[k]) || k === 'value' && Array.isArray(r[k]) && r[k].length <= 20 && r[k].every(text))).map((k) => [k, r[k]]));
+
+// With no suitable car, the top two essentials this employee's own decisions failed on (most cars first).
+function exclusionsOf(decisions) {
+  const found = new Map();
+  for (const row of decisions) {
+    const unmet = (row?.blockers ?? []).filter((x) => x?.code === 'essential-unmet' && text(x.field));
+    for (const b of new Map(unmet.map((x) => [x.field, x])).values()) {
+      const entry = found.get(b.field) ?? { essential: b.field, requirement: required(b.requirement), cars: 0 };
+      entry.cars += 1; found.set(b.field, entry);
+    }
+  }
+  return [...found.values()].sort((a, b) => b.cars - a.cars || a.essential.localeCompare(b.essential)).slice(0, 2);
+}
+
 // Only this employee's slice of a completed allocation receipt; nothing about other employees leaves here.
-function projectCheck(receipt, context) {
-  const value = receipt.outcome?.value;
-  if (receipt.runId !== context.runId || receipt.consumerId !== 'buddy-allocation' || receipt.state !== 'completed'
-    || receipt.outcome?.status !== 'ok' || !text(receipt.eventId) || !validInstant(value?.evaluatedAt)
-    || !Array.isArray(value.evaluations)) return null;
-  const mine = value.evaluations.find((row) => row?.employeeId === context.employeeId);
+function projectCheck(receipt, context, mine) {
+  const value = receipt.outcome.value;
   if (!Array.isArray(mine?.decisions)) return null;
+  const suitableCars = mine.decisions.filter((row) => row?.gateStatus === 'eligible').length;
   return { eventId: receipt.eventId, checkedAt: value.evaluatedAt,
     ...(text(value.inputVersions?.clock) ? { clockVersion: value.inputVersions.clock } : {}),
-    carsChecked: mine.decisions.length, suitableCars: mine.decisions.filter((row) => row?.gateStatus === 'eligible').length,
+    carsChecked: mine.decisions.length, suitableCars, exclusions: suitableCars ? [] : exclusionsOf(mine.decisions),
     outcome: Array.isArray(value.assignments) && value.assignments.some((row) => row?.employeeId === context.employeeId) ? 'offer-held' : 'no-match' };
 }
 
@@ -98,8 +116,14 @@ export function createActivityService({ repository, identity, clock } = {}) {
           if (values.some((value) => !Array.isArray(value.value))) return { error: unavailable('source-invalid') };
           const [briefs, offers, receipts, searches] = values.map((value) => value.value);
           if ([...briefs, ...offers].some((row) => !owned(row, context))) return { error: unavailable('scope-invalid') };
+          const checks = [];
+          for (const row of searches.filter((receipt) => checkable(receipt, context))) {
+            const mine = await readAllocationEvaluation(repository, context, row);
+            if (mine.status === 'unavailable') return { error: unavailable('source-invalid') };
+            const check = mine.status === 'ok' ? projectCheck(row, context, mine.value) : null; if (check) checks.push(check);
+          }
           return { briefs, offers, receipts: receipts.filter((row) => row.outcome?.value?.employeeId === context.employeeId),
-            checks: searches.map((row) => projectCheck(row, context)).filter(Boolean), tick: await readTick(repository, context) };
+            checks, tick: await readTick(repository, context) };
         };
         const rows = await load(); if (rows.error) return rows.error;
         const history = rows.briefs.filter((row) => row.status === 'confirmed').sort((a, b) => a.briefVersion - b.briefVersion);

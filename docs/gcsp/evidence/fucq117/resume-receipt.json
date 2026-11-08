@@ -1,0 +1,128 @@
+{
+  "story": "FUCQ-117",
+  "observed_at": "2026-11-06T09:42:53.384193+00:00",
+  "scope": "scoped",
+  "tests": {
+    "total": 31,
+    "passed": 31,
+    "failed": 0,
+    "skipped": 0,
+    "command": "node --test server/test/gcsp-order-plan.test.js",
+    "wall_seconds": 1.3
+  },
+  "identity": {
+    "code": "85d424dec19781b5bd11bc7d8536c32b8f53f7b1f00cdd0d012857cd24dab75f",
+    "environment": "d06f01876743b83dae52157864cec0f13d2e2841d1420a6f79a3c3863ed70aef",
+    "inputs": {},
+    "interpreter": [
+      "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+      "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+    ],
+    "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+    "scope": "targeted",
+    "selected": [
+      "node --test server/test/gcsp-order-plan.test.js"
+    ],
+    "settings": "fc29444bd24afd5912c10561f7fbfdd8ca3e6f34b91ff5080a5cbf1ead2ede21",
+    "variant": "default",
+    "version": 1
+  },
+  "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/checkpoints/cbfd94234215c3802059ca57a56777b49326c94bca5ed4e7c4c099d73da0b76f.json",
+  "owned": [
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/0f13ee6e393e4da5962e58c5c5349b18.json",
+      "root": "/private/tmp/test-stamp-shard-0f13ee6e393e4da5962e58c5c5349b18",
+      "absent": true,
+      "token": "0f13ee6e393e4da5962e58c5c5349b18"
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/13421b98aeac46a3bafc54e8495443c1.json",
+      "root": "/private/tmp/test-stamp-shard-13421b98aeac46a3bafc54e8495443c1",
+      "absent": true,
+      "token": "13421b98aeac46a3bafc54e8495443c1"
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/1c878008fd3a4784aa39f1382def9ad0.json",
+      "root": "/private/tmp/test-stamp-shard-1c878008fd3a4784aa39f1382def9ad0",
+      "absent": true,
+      "token": "1c878008fd3a4784aa39f1382def9ad0"
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/28b8da3ef56548938230c318f2d1157e.json",
+      "root": "/private/tmp/test-stamp-shard-28b8da3ef56548938230c318f2d1157e",
+      "absent": true,
+      "token": "28b8da3ef56548938230c318f2d1157e"
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/2a65d2375156432598329a83a017d6db.json",
+      "root": "/private/tmp/test-stamp-shard-2a65d2375156432598329a83a017d6db",
+      "absent": true,
+      "token": "2a65d2375156432598329a83a017d6db"
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/5de1dbadeefc4a428217f468050eac1b.json",
+      "root": "/private/tmp/test-stamp-shard-5de1dbadeefc4a428217f468050eac1b",
+      "absent": true,
+      "token": "5de1dbadeefc4a428217f468050eac1b"
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/7479fd0f4899458cb99a2e5ad4b8a288.json",
+      "root": "/private/tmp/test-stamp-shard-7479fd0f4899458cb99a2e5ad4b8a288",
+      "absent": true,
+      "token": "7479fd0f4899458cb99a2e5ad4b8a288"
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/772a3d6238e8434480ed4c9cd70a8be4.json",
+      "root": "/private/tmp/test-stamp-shard-772a3d6238e8434480ed4c9cd70a8be4",
+      "absent": true,
+      "token": "772a3d6238e8434480ed4c9cd70a8be4"
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/a3f6ff3c62df4e458ce789613c4e05dd.json",
+      "root": "/private/tmp/test-stamp-shard-a3f6ff3c62df4e458ce789613c4e05dd",
+      "absent": true,
+      "token": "a3f6ff3c62df4e458ce789613c4e05dd"
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/e41251f6318b483eb7493ce3997ee673.json",
+      "root": "/private/tmp/test-stamp-shard-e41251f6318b483eb7493ce3997ee673",
+      "absent": true,
+      "token": "e41251f6318b483eb7493ce3997ee673"
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/e70bad3cbb6b40a489715b4e0a05a517.json",
+      "root": "/private/tmp/test-stamp-shard-e70bad3cbb6b40a489715b4e0a05a517",
+      "absent": true,
+      "token": "e70bad3cbb6b40a489715b4e0a05a517"
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/e870e12e4a9f42ca844ef236b65f89b4.json",
+      "root": "/private/tmp/test-stamp-shard-e870e12e4a9f42ca844ef236b65f89b4",
+      "absent": true,
+      "token": "e870e12e4a9f42ca844ef236b65f89b4"
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/runs/ownership/eb8e0a34781f40eabd45972813b0e0ed.json",
+      "root": "/private/tmp/test-stamp-shard-eb8e0a34781f40eabd45972813b0e0ed",
+      "absent": true,
+      "token": "eb8e0a34781f40eabd45972813b0e0ed"
+    }
+  ],
+  "all_scratch_absent": true,
+  "groups_stopped": true,
+  "reservations_released": true,
+  "dependency_overlay_absent": true,
+  "peak_rss_bytes": 203800576,
+  "peak_scratch_bytes": 0,
+  "successful_verbose_log_bytes_removed": 3084,
+  "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead117/resume-20261106-result.txt",
+  "compatibility_exception": "Owned temporary read-only symlink to existing DEV069/server/node_modules for pg resolution; link removed; no dependency copy/install.",
+  "large_outputs": [],
+  "leftovers": [],
+  "remaining_acceptance": [
+    "actual future configuration/catalog/cost/evaluator composition",
+    "canonical planning policy activation and actual one-key change",
+    "actual F104/F92 runtime composition",
+    "authored final npm test"
+  ]
+}

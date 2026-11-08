@@ -9,6 +9,7 @@ let serial = 0;
 const unavailable = { status: 'unavailable', reason: 'Renewal help could not be loaded. Try again.' };
 export function caseFailure(envelope) {
   const status = envelope?.status;
+  if (status === 'access-required') return { title: 'Demo access needed', text: 'Your demo access has lapsed. Enter the access key again.' };
   const titles = { forbidden: 'You cannot open these cases', 'stale-run': 'Your demo run has changed',
     'stale-version': 'The case or brief has changed', conflict: 'The case or brief has changed', invalid: 'Review your request' };
   const detail = envelope?.reason ?? envelope?.reasons?.map((r) => r.reason).join(' ');
@@ -106,7 +107,7 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
       const confirm = button({ label: 'Confirm preference change', disabled: saving, onClick: submitRelaxation });
       confirm.dataset.confirmRelaxation = '';
       const actions = el('div', 'gcsp-case-actions'); actions.append(confirm,
-        button({ label: 'Cancel preference change', variant: 'ghost', disabled: saving, onClick: () => { relaxation = null; draw(); } }));
+        button({ label: 'Cancel preference change', variant: 'ghost', disabled: saving, onClick: () => { relaxation = null; draw('.gcsp-case-remedy .vm-btn'); } }));
       confirmation.append(actions); content.append(confirmation);
     }
     if (focusTo) focus(focusTo);

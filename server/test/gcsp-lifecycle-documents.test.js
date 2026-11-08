@@ -4,7 +4,7 @@ import { readFile, mkdtemp, writeFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { Readable } from 'node:stream';
-import { createMemoryRepository, createMemoryStore, inputDigest, ok, result } from '../gcsp/repository/index.js';
+import { createMemoryRepository, createMemoryStore, inputDigest, ok, result, TABLES } from '../gcsp/repository/index.js';
 import { PolicyService, FilePolicyProvider } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
@@ -236,7 +236,7 @@ test('real stagePort: a healthy order opens, a corrupted order is diagnosed, not
   assert.equal(outcome.value.producerFailedCount, 1); assert.equal(outcome.value.producer, 'ok');
   assert.deepEqual((await items(f, f.alex)), [], 'the corrupted order opens nothing');
   assert.equal((await f.service.readReadiness(f.alex, { orderUuid: healthy.orderUuid })).status, 'forbidden', 'foreign ownership refused');
-  assert.equal((await f.service.readReadiness(f.paula, { orderUuid: bad.orderUuid })).status, 'ok');
+  assert.equal((await f.service.readReadiness(f.paula, { orderUuid: bad.orderUuid })).status, 'forbidden', 'a foreign corrupted unopened order is refused');
   const ready = (await f.service.readReadiness(f.greg, { orderUuid: healthy.orderUuid })).value;
   assert.deepEqual([ready.opened, ready.ready], [true, false]);
 
@@ -252,6 +252,66 @@ test('real stagePort: a healthy order opens, a corrupted order is diagnosed, not
   assert.deepEqual([refused.value.opened, refused.value.producerFailed], [0, []]);
   const read = (await broken.service.readReadiness(broken.greg, { orderUuid: order.orderUuid })).value;
   assert.deepEqual([read.state, read.reason, read.producerCode], ['not-open', 'stage-read-unavailable', 'source-invalid']);
+});
+
+test('real producer: foreign orders are refused before any stage read or diagnostic, own and server-role reads stay actionable', async (t) => {
+  const f = await realChain(t);
+  const healthy = await f.producer.submit(f.paula, { id: 821, type: 'cart' });
+  const bad = await f.producer.submit(f.alex, { id: 822, type: 'cart' });
+  for (const s of [healthy.submitted, bad.submitted]) assert.equal(s.status, 'ok', JSON.stringify(s));
+  const corrupt = await f.repository.transaction(f.alex, { commandId: 'corrupt-own', inputDigest: inputDigest('corrupt-own') }, async (tx) => {
+    const ref = { table: 'pending_operations', key: { runId: f.alex.runId, operationId: bad.submitted.value.operationId } };
+    const row = await tx.get(ref); return tx.compareAndSwap(ref, row.value.version, { outcome: { status: 'unknown' } });
+  });
+  assert.equal(corrupt.status, 'ok');
+  let stageReads = 0; const port = f.approvals.stagePort();
+  const spied = createLifecycleDocumentService({ repository: f.repository, policy: await policyWith(), clock: f.clock, identity: f.identity,
+    lifecycleStages: { ...port, read: (...args) => { stageReads += 1; return port.read(...args); } }, provider: f.adapter });
+  const snapshot = async () => Object.fromEntries(await Promise.all(Object.keys(TABLES).map(async (table) => [table, (await f.repository.query(f.greg, table, {})).value])));
+  const before = await snapshot();
+  const refusal = { status: 'forbidden', reason: 'These documents belong to another employee.' };
+  const alexRefused = result('forbidden', { reason: 'These documents belong to another employee.' });
+  assert.deepEqual(await spied.readReadiness(f.alex, { orderUuid: healthy.orderUuid }), alexRefused);
+  for (const [who, order] of [[f.paula, bad.orderUuid], [f.alex, healthy.orderUuid]]) {
+    const refused = await spied.readReadiness(who, { orderUuid: order });
+    assert.deepEqual({ status: refused.status, reason: refused.reason }, refusal);
+    assert.deepEqual(refused, alexRefused, 'every foreign unopened refusal has the identical shape');
+    for (const leak of ['orderUuid', 'producerStatus', 'producerCode', 'opened', 'state', 'value']) assert.equal(leak in refused, false, leak);
+    assert.equal(JSON.stringify(refused).includes(order), false);
+  }
+  assert.equal(stageReads, 0, 'ownership is decided before the stage producer is read');
+  assert.deepEqual(await snapshot(), before, 'refused reads mutate nothing');
+
+  // Own corrupted order and server roles keep the actionable diagnostics.
+  stageReads = 0;
+  for (const who of [f.alex, f.greg, f.presenter.value.context]) {
+    const read = await spied.readReadiness(who, { orderUuid: bad.orderUuid });
+    assert.equal(read.status, 'ok', JSON.stringify(read));
+    assert.deepEqual([read.value.opened, read.value.state, read.value.reason, read.value.producerCode], [false, 'not-open', 'stage-read-unavailable', 'selection-source-invalid']);
+  }
+  assert.equal(stageReads, 3);
+  assert.equal((await spied.readReadiness(f.paula, { orderUuid: healthy.orderUuid })).value.opened, false, 'own healthy unopened order still reads');
+  assert.equal((await spied.readReadiness(f.paula, { orderUuid: 'no-such-order' })).value.reason, 'no-lifecycle-for-order', 'an order with no selection continues to the stage read');
+
+  // A foreign opened order and a foreign pending order refuse the same way.
+  let opened = [];
+  for (let i = 0; i < 16 && opened.length === 0; i += 1) { await f.advance(HOUR); await f.tick(); opened = await items(f); }
+  assert.equal(opened.length, 1);
+  const foreignOpened = await spied.readReadiness(f.alex, { orderUuid: healthy.orderUuid });
+  assert.deepEqual(foreignOpened, alexRefused);
+  // Put Paula's order back to a pending handoff: a foreign pending selection refuses like any other.
+  const pend = await f.repository.transaction(f.paula, { commandId: 'make-pending', inputDigest: inputDigest('make-pending') }, async (tx) => {
+    const ref = { table: 'pending_operations', key: { runId: f.paula.runId, operationId: healthy.submitted.value.operationId } };
+    const row = await tx.get(ref); return tx.compareAndSwap(ref, row.value.version, { state: 'pending' });
+  });
+  assert.equal(pend.status, 'ok', JSON.stringify(pend));
+  assert.deepEqual(await spied.readReadiness(f.alex, { orderUuid: healthy.orderUuid }), alexRefused, 'a foreign pending selection refuses too');
+  assert.equal((await spied.readReadiness(f.paula, { orderUuid: healthy.orderUuid })).status, 'ok', 'her own pending selection keeps its diagnostics path');
+
+  // Separate store (no cheap second run): the order is unknown there and no diagnostic about it appears.
+  const other = await setup(t, { stages: null, register: false });
+  const cross = await other.service.readReadiness(other.alex, { orderUuid: bad.orderUuid });
+  assert.equal(JSON.stringify(cross).includes('selection-source-invalid'), false, 'no cross-store disclosure');
 });
 
 test('the employee completes her task with a labelled synthetic acknowledgement; others are refused', async (t) => {

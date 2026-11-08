@@ -130,16 +130,18 @@ test('preview computes all candidate decisions, keeps original draft and never f
 
 test('independent comfort, sportiness, importance and indifference change real preference components', async (t) => {
   const f = await setup(t); const a = await preview(f);
+  // Previews list best fit first, so compare one car by stock id rather than by position.
+  const id = a.value.decisions[0].orderUuid; const car = (r) => r.value.decisions.find((d) => d.orderUuid === id);
   const b = draft(); b.preferences.comfort.value = 10;
   const changed = await preview(f, b);
-  assert.notEqual(a.value.decisions[0].score, changed.value.decisions[0].score);
-  assert.equal(a.value.decisions[0].components.find((p) => p.field === 'sportiness').score,
-    changed.value.decisions[0].components.find((p) => p.field === 'sportiness').score);
+  assert.notEqual(car(a).score, car(changed).score);
+  assert.equal(car(a).components.find((p) => p.field === 'sportiness').score,
+    car(changed).components.find((p) => p.field === 'sportiness').score);
   const weighted = draft(); weighted.preferences.comfort.importance = 0; weighted.preferences.sportiness.value = 95;
   const w = await preview(f, weighted);
-  assert.equal(w.value.decisions[0].components.some((p) => p.field === 'comfort'), false);
-  assert.notEqual(a.value.decisions[0].score, w.value.decisions[0].score);
-  assert.equal(w.value.decisions[0].score, w.value.decisions[0].components[0].score);
+  assert.equal(car(w).components.some((p) => p.field === 'comfort'), false);
+  assert.notEqual(car(a).score, car(w).score);
+  assert.equal(car(w).score, car(w).components[0].score);
 });
 
 test('canonical practical mappings preserve carrying/equipment/charging yes, no and unknown', async (t) => {
@@ -214,6 +216,23 @@ test('current base and draft versions reject stale requests and stale unmatched 
   await f.brief.pause(f.context, { commandId: 'pause', expectedBriefVersion: 1 });
   const stale = await f.editor.readEditor(f.context);
   assert.equal(stale.status, 'stale-version'); assert.equal(stale.action, 'refresh');
+});
+
+test('a draft already confirmed into an earlier version is consumed, not stale, after a later change', async (t) => {
+  const f = await setup(t); await draftSave(f);
+  await f.brief.confirm(f.context, { commandId: 'confirm', expectedBriefVersion: 0, expectedDraftVersion: 1 });
+  await f.repository.transaction(f.context, { commandId: 'decline', inputDigest: 'decline' }, (tx) => tx.insert('decisions', { runId: f.context.runId,
+    decisionId: 'decline', offerId: 'offer-old', employeeId: f.context.employeeId, decision: 'decline', versions: { brief: 1 } }));
+  const changed = await f.brief.changeAfterDecline(f.context, { commandId: 'change', decisionId: 'decline', expectedBriefVersion: 1,
+    change: { path: 'preferences.comfort.value', value: 55 } });
+  assert.equal(changed.status, 'ok', JSON.stringify(changed));
+  const read = await f.editor.readEditor(f.context);
+  assert.equal(read.status, 'ok', JSON.stringify(read));
+  assert.equal(read.value.provenance.initial, 'approved-brief'); assert.equal(read.value.initial.briefVersion, 2);
+  assert.equal(read.value.initial.brief.preferences.comfort.value, 55); assert.equal(read.value.selection, null);
+  const failing = createBriefEditorService({ ...f, brief: { readCurrent: (c) => f.brief.readCurrent(c), readDraft: (c) => f.brief.readDraft(c),
+    readHistory: async () => ({ status: 'unavailable' }) } });
+  assert.equal((await failing.readEditor(f.context)).status, 'unavailable');
 });
 
 test('forged authority, malformed typed inputs and accessors fail closed without repository effects', async (t) => {

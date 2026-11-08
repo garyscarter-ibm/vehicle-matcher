@@ -1,0 +1,64 @@
+{
+  "startedAt": "2026-11-08T14:26:07.380Z",
+  "port": 8862,
+  "results": [
+    {
+      "width": 1280,
+      "fixture": "return-buddy-home",
+      "pass": true,
+      "overflow": 0,
+      "screenshot": "browser/1280-return-buddy-home.png",
+      "returnSection": "Returning your current car Current car Fictional BMW 320i Touring Configuration G21 320i M Sport Touring Collection from your home address 1 Fictional Way, Example Town, ZZ1 1ZZ Your current car stays yours until it is returned. Choose when to return your current car. Return it when the new car is handed over Request return at handover, 8 Nov 2026, 09:00 Return it on a separate day Request return 12 Nov 2026, 09:00 Request return 12 Nov 2026, 13:00 Request return 13 Nov 2026, 09:00"
+    },
+    {
+      "width": 1280,
+      "fixture": "return-buddy-no-address",
+      "pass": true,
+      "overflow": 0,
+      "screenshot": "browser/1280-return-buddy-no-address.png",
+      "returnSection": "Returning your current car Current car Fictional BMW 320i Touring Configuration G21 320i M Sport Touring Collection from your home address Not supplied Your current car stays yours until it is returned. Choose when to return your current car. Return it when the new car is handed over Request return at handover, 8 Nov 2026, 09:00 Return it on a separate day Request return 12 Nov 2026, 09:00 Request return 12 Nov 2026, 13:00 Request return 13 Nov 2026, 09:00"
+    },
+    {
+      "width": 1280,
+      "fixture": "return-not-planned",
+      "pass": true,
+      "overflow": 0,
+      "screenshot": "browser/1280-return-not-planned.png",
+      "returnSection": "Returning your current car Current car Fictional BMW 320i Touring Configuration G21 320i M Sport Touring Return place Fictional BMW retailer Your current car stays yours until it is returned. Choose when to return your current car. Return it when the new car is handed over Request return at handover, 8 Nov 2026, 09:00 Return it on a separate day Request return 12 Nov 2026, 09:00 Request return 12 Nov 2026, 13:00 Request return 13 Nov 2026, 09:00"
+    },
+    {
+      "width": 375,
+      "fixture": "return-buddy-home",
+      "pass": true,
+      "overflow": 0,
+      "screenshot": "browser/375-return-buddy-home.png",
+      "returnSection": "Returning your current car Current car Fictional BMW 320i Touring Configuration G21 320i M Sport Touring Collection from your home address 1 Fictional Way, Example Town, ZZ1 1ZZ Your current car stays yours until it is returned. Choose when to return your current car. Return it when the new car is handed over Request return at handover, 8 Nov 2026, 09:00 Return it on a separate day Request return 12 Nov 2026, 09:00 Request return 12 Nov 2026, 13:00 Request return 13 Nov 2026, 09:00"
+    },
+    {
+      "width": 375,
+      "fixture": "return-buddy-no-address",
+      "pass": true,
+      "overflow": 0,
+      "screenshot": "browser/375-return-buddy-no-address.png",
+      "returnSection": "Returning your current car Current car Fictional BMW 320i Touring Configuration G21 320i M Sport Touring Collection from your home address Not supplied Your current car stays yours until it is returned. Choose when to return your current car. Return it when the new car is handed over Request return at handover, 8 Nov 2026, 09:00 Return it on a separate day Request return 12 Nov 2026, 09:00 Request return 12 Nov 2026, 13:00 Request return 13 Nov 2026, 09:00"
+    },
+    {
+      "width": 375,
+      "fixture": "return-not-planned",
+      "pass": true,
+      "overflow": 0,
+      "screenshot": "browser/375-return-not-planned.png",
+      "returnSection": "Returning your current car Current car Fictional BMW 320i Touring Configuration G21 320i M Sport Touring Return place Fictional BMW retailer Your current car stays yours until it is returned. Choose when to return your current car. Return it when the new car is handed over Request return at handover, 8 Nov 2026, 09:00 Return it on a separate day Request return 12 Nov 2026, 09:00 Request return 12 Nov 2026, 13:00 Request return 13 Nov 2026, 09:00"
+    }
+  ],
+  "consoleErrors": [
+    "1280 Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "1280 Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "1280 Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "1280 Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "375 Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "375 Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "375 Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "passed": true
+}

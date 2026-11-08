@@ -6,6 +6,7 @@ import { createGcspRuntime } from '../gcsp/runtime.js';
 import { buildServer } from '../index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest, OCCUPYING_STATES } from '../gcsp/repository/index.js';
 import { PolicyService, MemoryPolicyProvider } from '../gcsp/policy/index.js';
+import { shortQuotePolicy } from './helpers/short-quote-policy.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { stock, essential, preference, fact } from './helpers/employee-recommendation.js';
 
@@ -87,10 +88,13 @@ async function tick(f, id = 'expire') {
 async function adoptPresenter(f) {
   const time = good(await f.clock.now(f.presenter));
   const run = good(await f.repository.currentRun('buddy-runtime-test'));
-  // The presenter-controls definitions are in the base seed now; adopt only when they are not yet active.
+  // The presenter-controls definitions are in the base seed now, so publish a real successor instead: pinning stays provable.
   const active = await f.policy.getAssumption('clock.presenter.stepSeconds', { runId: run.runId, asOf: time.now, policyVersion: run.policyVersion });
-  if (active.status !== 'ok') good(await f.policy.adoptReviewedAssumptions(f.contexts.greg, { commandId: 'reviewed-presenter', expectedActiveVersion: run.policyVersion,
-    policyVersion: 'runtime-reviewed-v2', effectiveFrom: time.now, definitionSetId: 'presenter-controls-v1' }));
+  const next = { commandId: 'reviewed-presenter', expectedActiveVersion: run.policyVersion, policyVersion: 'runtime-reviewed-v2', effectiveFrom: time.now };
+  if (active.status !== 'ok') good(await f.policy.adoptReviewedAssumptions(f.contexts.greg, { ...next, definitionSetId: 'presenter-controls-v1' }));
+  else good(await f.policy.publishPolicyVersion(f.contexts.greg, { ...next, changes: [{ table: 'assumptions', key: 'clock.presenter.stepSeconds',
+    patch: { value: 60, basis: 'Reviewed presenter step re-published as a successor version for the pinned-quote regression.',
+      source: 'server/test/gcsp-buddy-runtime-integration.test.js', sourceDate: '2026-11-08', status: 'assumed' } }] }));
   f.presenter = good(await f.identity.resolveSession({ authorized: true, cookie: f.presenterCookie, purpose: 'presenter-control' }));
   for (const name of ['paula', 'alex', 'greg']) f.contexts[name] = good(await f.identity.resolveSession({ authorized: true, cookie: f.sessions[name] }));
 }
@@ -133,7 +137,7 @@ test('normal runtime shares services, registers before startup, and serves real 
   assert.equal(f.registrations.length, HANDLERS.length);
   const catalogue = await request(f.server, '/api/gcsp/presenter/scenarios', { session: f.presenterCookie });
   assert.equal(catalogue.status, 200); assert.ok(catalogue.json.value.scenarios.length);
-  assert.ok(catalogue.json.value.scenarios.filter((s) => s.kind === 'journey').every((s) => s.availability.missingCapabilities.length));
+  assert.ok(catalogue.json.value.scenarios.filter((s) => s.kind === 'journey' && !['main-successful-journey', 'no-suitable-match', 'decline-then-change', 'data-unavailable', 'uncertain-handoff', 'uncertain-handoff-rejected', 'decline-then-change-waiting'].includes(s.scenarioId)).every((s) => s.availability.missingCapabilities.length));
   await adoptPresenter(f);
   const controls = await request(f.server, '/api/gcsp/presenter/controls', { session: f.presenterCookie }); assert.equal(controls.status, 200);
   const state = good(await f.clock.now(f.presenter));
@@ -144,7 +148,7 @@ test('normal runtime shares services, registers before startup, and serves real 
 });
 
 test('actual buddy capture and token access preserve timing, guards and exact-deadline expiry', async (t) => {
-  const f = await setup(t); const allocated = await allocate(f); const input = offerInput(f, allocated.offer);
+  const f = await setup(t, { policy: await shortQuotePolicy(3600) }); const allocated = await allocate(f); const input = offerInput(f, allocated.offer);
   const exchange = await request(f.server, '/api/gcsp/offers/access', { body: input });
   assert.equal(exchange.status, 200); assert.deepEqual(exchange.json.value.availableActions, ['accept', 'decline']);
   assert.match(exchange.headers['set-cookie'], /HttpOnly/); assert.match(exchange.headers['set-cookie'], /Secure/);
@@ -199,7 +203,7 @@ for (const first of ['manual', 'buddy']) test(`normal composed ${first} claim ex
 test('reviewed publication activates the shared provider while preserving pinned buddy quote and access', async (t) => {
   const f = await setup(t); const allocated = await allocate(f); const before = structuredClone(allocated.quote);
   const input = offerInput(f, allocated.offer); await adoptPresenter(f);
-  assert.equal(good(await f.repository.currentRun('buddy-runtime-test')).versions.policy, before.policyVersion);
+  assert.equal(good(await f.repository.currentRun('buddy-runtime-test')).versions.policy, 'runtime-reviewed-v2');
   const time = good(await f.clock.now(f.presenter));
   assert.equal((await f.policy.getAssumption('clock.presenter.stepSeconds', { runId: f.presenter.runId, asOf: time.now,
     policyVersion: f.presenter.policyVersion })).value.value, 60);

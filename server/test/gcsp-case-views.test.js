@@ -48,7 +48,9 @@ test('each employee state renders owner, reasons, dates, next action, remedy and
     assert.match(root.textContent, /Review the renewal options with Paula/);
     assert.match(root.textContent, /Due, demo clock \(UTC\)/); assert.match(root.textContent, /2026-11-06 12:00:00 UTC/);
     assert.match(root.textContent, /Renewal deadline \(calendar date\)/); assert.match(root.textContent, /2026-11-20/);
-    assert.match(root.textContent, /Dated case history/); assert.match(root.textContent, /synthetic-paula/);
+    assert.match(root.textContent, /Dated case history/); assert.match(root.textContent, /Actor(You|Automatic check)/);
+    assert.match(root.textContent, name === 'trigger' ? /Opened fromRenewal deadline approaching/ : /Opened fromHelp request/);
+    assert.match(root.textContent, /OwnerScheme team/); assert.doesNotMatch(root.textContent, /Owner role/);
     assert.ok(root.querySelector('.vm-facts')); assert.equal(root.querySelectorAll('h1').length, 1);
     if (name === 'waiting') { assert.match(root.textContent, /estate/); assert.match(root.textContent, /suv/); assert.match(root.textContent, /Waiting for your confirmation/); }
     assert.equal(root.textContent.includes('—'), false);
@@ -193,12 +195,59 @@ test('queue renders all statuses and canonical facts with deadline/status sortin
   assert.match(root.textContent, /Synthetic employee 1/); assert.match(root.textContent, /Help request/);
   assert.match(root.textContent, /My replacement may miss my contract end/); assert.match(root.textContent, /Scheme team/);
   assert.match(root.textContent, /2026-11-06 12:00:00 UTC/);
-  assert.equal(table.querySelector('tbody th').textContent, 'Synthetic employee 5');
+  assert.equal(table.querySelector('tbody th').textContent, 'Synthetic employee 3');
   queueField(root, 'sort', 'status', 'change');
-  assert.deepEqual([...root.querySelectorAll('tbody tr')].map((r) => r.children[4].textContent), ['Closed', 'In progress', 'Open', 'Remedy proposed', 'Resolved']);
+  assert.deepEqual([...root.querySelectorAll('tbody tr')].map((r) => r.children[4].textContent), ['Open', 'In progress', 'Remedy proposed', 'Resolved', 'Closed']);
   const tie = queueCaseFixtures().slice(0, 2).map((c) => ({ ...c, renewalDeadline: null }));
   assert.equal(queue.sortCases([tie[0], { ...tie[1], renewalDeadline: '2026-11-06' }])[0].caseId, tie[1].caseId);
   assert.equal(root.querySelectorAll('h1').length, 1); destroy();
+});
+const sortRow = (id, status, renewalDeadline) => ({ ...queueCaseFixtures()[0], caseId: id, status, renewalDeadline });
+test('sortCases ranks active cases first by deadline, missing deadlines last, and status order follows the workflow', () => {
+  const mixed = [sortRow('closed-early', 'closed', '2026-11-01'), sortRow('resolved-early', 'resolved', '2026-11-02'), sortRow('open-late', 'open', '2026-12-01'),
+    sortRow('proposed-mid', 'remedy-proposed', '2026-11-10'), sortRow('open-none', 'open', null), sortRow('progress-mid', 'in-progress', '2026-11-10'),
+    sortRow('odd-status', 'mystery', '2026-11-10')];
+  const ids = (order) => queue.sortCases(mixed, order).map((c) => c.caseId);
+  assert.deepEqual(ids('deadline'), ['progress-mid', 'proposed-mid', 'odd-status', 'open-late', 'open-none', 'closed-early', 'resolved-early']);
+  assert.deepEqual(ids('status'), ['open-late', 'open-none', 'progress-mid', 'proposed-mid', 'odd-status', 'resolved-early', 'closed-early']);
+});
+test('queue renders mixed statuses in workflow order for both sort choices with accurate labels', async () => {
+  const rows = [sortRow('c-closed', 'closed', '2026-11-01'), sortRow('c-open-none', 'open', null), sortRow('c-resolved', 'resolved', '2026-11-02'),
+    sortRow('c-proposed', 'remedy-proposed', '2026-11-12'), sortRow('c-open', 'open', '2026-11-09'), sortRow('c-progress', 'in-progress', '2026-11-12')]
+    .map((c, i) => ({ ...c, employeeName: `Row ${c.caseId}`, employeeId: `e${i}` }));
+  const f = await mountQueue({ ...queueFixtureAdapter(), async listCases() { return { status: 'ok', value: { cases: structuredClone(rows) } }; } });
+  const shown = () => [...f.root.querySelectorAll('tbody tr')].map((r) => r.children[0].textContent.replace('Row ', ''));
+  assert.deepEqual(shown(), ['c-open', 'c-progress', 'c-proposed', 'c-open-none', 'c-closed', 'c-resolved']);
+  assert.deepEqual([...f.root.querySelector('[id$="-sort"]').options].map((o) => o.textContent), ['Deadline, active cases first', 'Status, then deadline']);
+  queueField(f.root, 'sort', 'status', 'change');
+  assert.deepEqual(shown(), ['c-open', 'c-open-none', 'c-progress', 'c-proposed', 'c-resolved', 'c-closed']);
+  assert.match([...f.root.querySelectorAll('tbody tr')][1].textContent, /Needs confirmation/); f.destroy();
+});
+test('embedded queue spans the Greg dashboard grid like the publish panel', () => {
+  const css = readFileSync(new URL('../../blocks/gcsp/cases/gcsp-case-queue.css', import.meta.url), 'utf8');
+  assert.match(css, /\.gcsp-greg-region:has\(\.gcsp-case-queue\.is-embedded\) \{[^}]*grid-column: 1 \/ -1/);
+});
+test('alternative-car remedies show the car name, never a raw id, to the employee and a secondary reference to the scheme team', async () => {
+  const named = { ...caseFixture('waiting'), remedy: { type: 'alternative-car', orderUuid: 'raw-order-uuid-123', carName: 'Synthetic BMW iX1' } };
+  const unnamed = { ...named, remedy: { type: 'alternative-car', orderUuid: 'raw-order-uuid-123' } };
+  for (const [c, name] of [[named, 'Synthetic BMW iX1'], [unnamed, 'Car details not supplied']]) {
+    const f = await mount('waiting', { ...fixtureAdapter('waiting'), async readCases() { return { status: 'ok', value: { cases: [c] } }; } });
+    assert.match(f.root.textContent, new RegExp(`Proposed car${name}`)); assert.doesNotMatch(f.root.textContent, /raw-order-uuid-123/);
+    assert.match(f.root.textContent, /No specific next car or greater priority is guaranteed/); f.destroy();
+  }
+  const done = { ...named, status: 'resolved' };
+  const g = await mount('waiting', { ...fixtureAdapter('waiting'), async readCases() { return { status: 'ok', value: { cases: [done] } }; } });
+  assert.match(g.root.textContent, /Recorded carSynthetic BMW iX1/); g.destroy();
+  const q = await mountQueue({ ...queueFixtureAdapter(), async readOptions({ caseId }) {
+    const value = queueOptionsFixture({ ...queueCaseFixtures()[0], caseId }); value.case.remedy = named.remedy; return { status: 'ok', value }; } });
+  await openQueue(q.root);
+  assert.match(q.root.textContent, /Proposed carSynthetic BMW iX1/); assert.match(q.root.textContent, /Exact car referenceraw-order-uuid-123/); q.destroy();
+});
+test('queue editor and review show the selected car name before the reference', async () => {
+  const f = await mountQueue(); await openQueue(f.root); reviewQueue(f.root, 'alternativeCars:0');
+  assert.match(f.root.textContent, /Proposed carSynthetic BMW iX1/); assert.match(f.root.textContent, /Exact car referencesynthetic-exact-car/);
+  findButton(f.root, 'Review case update').click();
+  assert.match(f.root.querySelector('.gcsp-case-confirmation').textContent, /Proposed carSynthetic BMW iX1/); f.destroy();
 });
 test('queue opens read-only options, uses exactly server statuses and availability, and never promises priority', async () => {
   let writes = 0; const value = queueOptionsFixture(); value.nextStatuses = ['resolved'];
@@ -217,11 +266,37 @@ test('queue opens read-only options, uses exactly server statuses and availabili
 });
 test('queue handles empty/loading/source/access/stale-run distinctly and terminal cases have no editor', async () => {
   for (const [name, title] of [['empty', 'No renewal cases'], ['loading', 'Loading renewal cases'], ['unavailable', 'Renewal cases are unavailable'],
-    ['forbidden', 'You cannot open these cases'], ['stale-run', 'Your demo run has changed']]) {
+    ['forbidden', 'You cannot open these cases'], ['stale-run', 'The demo was restarted']]) {
     const f = await mountQueue(queueFixtureAdapter(name)); assert.match(f.root.textContent, new RegExp(title)); f.destroy();
   }
   const f = await mountQueue(); await openQueue(f.root, 'synthetic-case-4');
   assert.equal(findButton(f.root, 'Review case update'), undefined); assert.match(f.root.textContent, /no further permitted status changes/); f.destroy();
+});
+test('case adapter reads a bare 401 (lapsed access key) as access-required through the kit helper; a status keeps its refusal', async () => {
+  const reply = (status, body, type = 'application/json') => async () => new Response(body, { status, headers: { 'Content-Type': type } });
+  for (const [status, body, expected] of [[401, '{"error":"Unauthorized"}', 'access-required'], [401, 'Unauthorized', 'access-required'],
+    [401, '{"status":"forbidden","reason":"Not the scheme team."}', 'forbidden'], [200, 'not json', 'unavailable']]) {
+    const out = await createCaseHttpAdapter({ fetchImpl: reply(status, body) }).listCases();
+    assert.equal(out.status, expected, `${status} ${body}`);
+  }
+});
+test('queue shows the shared restart notice, not renewal-help copy, when access lapses or the run restarts', async () => {
+  for (const status of ['access-required', 'stale-run', 'unknown-session']) for (const embedded of [true, false]) {
+    const f = await mountQueue({ ...queueFixtureAdapter(), async listCases() { return { status }; } }, { embedded });
+    assert.match(f.root.textContent, /The demo was restarted\. Reload the page to continue\./, `${status} ${embedded}`);
+    assert.equal(f.root.querySelector('.gcsp-case-status').textContent, 'Demo restarted.');
+    assert.doesNotMatch(f.root.textContent, /Renewal help is unavailable|Your demo run has changed|Reopen the current employee session/);
+    assert.ok(findButton(f.root, 'Reload')); assert.equal(findButton(f.root, 'Retry queue'), undefined); assert.equal(findButton(f.root, 'Refresh queue'), undefined);
+    f.destroy();
+  }
+  const adapter = queueFixtureAdapter();
+  const detail = await mountQueue({ ...adapter, async readOptions() { return { status: 'access-required' }; } }, { embedded: true });
+  await openQueue(detail.root); assert.ok(findButton(detail.root, 'Reload')); assert.equal(findButton(detail.root, 'Refresh case options'), undefined);
+  assert.doesNotMatch(detail.root.textContent, /Renewal help is unavailable/); detail.destroy();
+  const saving = await mountQueue({ ...adapter, async updateCase() { return { status: 'access-required' }; } }, { embedded: true });
+  await openQueue(saving.root); reviewQueue(saving.root); findButton(saving.root, 'Review case update').click(); findButton(saving.root, 'Confirm case update').click(); await tick();
+  assert.ok(findButton(saving.root, 'Reload')); assert.equal(findButton(saving.root, 'Confirm case update'), undefined);
+  assert.doesNotMatch(saving.root.textContent, /Renewal help is unavailable|update was recorded/); saving.destroy();
 });
 test('queue update is explicitly reviewed/confirmed with version and reloaded from authoritative state', async () => {
   const calls = []; let c = queueCaseFixtures()[0]; let lists = 0; let reads = 0;
@@ -268,7 +343,7 @@ test('queue uncertain retry retains command id; conflict/access/stale outcomes r
   await openQueue(f.root); reviewQueue(f.root); findButton(f.root, 'Review case update').click(); findButton(f.root, 'Confirm case update').click(); await tick();
   assert.doesNotMatch(f.root.textContent, /update was recorded/); assert.ok(findButton(f.root, 'Confirm case update'));
   findButton(f.root, 'Confirm case update').click(); await tick(); assert.equal(calls.length, 2); assert.deepEqual(calls[0], calls[1]); f.destroy();
-  for (const status of ['conflict', 'stale-version', 'forbidden', 'stale-run']) {
+  for (const status of ['conflict', 'stale-version', 'forbidden']) {
     let reads = 0; const adapter = queueFixtureAdapter();
     const other = await mountQueue({ ...adapter, async readOptions(input) { reads += 1; return adapter.readOptions(input); },
       async updateCase() { return { status, reason: 'Refresh the current scheme-team session.' }; } });
@@ -327,4 +402,56 @@ test('malformed successful queue projections show source failure instead of expo
   assert.equal((await adapter.readOptions({ caseId: value.case.caseId })).status, 'unavailable');
   const f = await mountQueue({ ...queueFixtureAdapter(), async readOptions() { return { status: 'ok', value }; } });
   await openQueue(f.root); assert.match(f.root.textContent, /Case options are unavailable/); assert.equal(findButton(f.root, 'Review case update'), undefined); f.destroy();
+});
+
+test('FUCQ-170: cancelling a preference change returns focus; history and owner show readable names, not principal ids', async () => {
+  const { root, destroy } = await mount('waiting');
+  findButton(root, 'Review body change').click(); findButton(root, 'Cancel preference change').click();
+  assert.equal(document.activeElement, findButton(root, 'Review body change'));
+  const c = { ...caseFixture('resolved'), employeeId: 'employee-1', owner: { name: 'Greg', role: 'scheme-team' },
+    history: [{ at: '2026-11-05T12:00:00.000Z', actorId: 'demo-paula', actorRole: 'employee', status: 'open', reason: 'Help' },
+      { at: '2026-11-05T13:00:00.000Z', actorId: 'demo-greg', actorRole: 'scheme-team', status: 'resolved', reason: 'Done' }] };
+  const { renderCaseContent } = await import('../../blocks/gcsp/cases/case-content.js');
+  const text = renderCaseContent(c).textContent;
+  assert.doesNotMatch(text, /demo-paula|demo-greg/); assert.match(text, /You/); assert.match(text, /Greg/);
+  destroy();
+  const q = host(); const stop = queue.mountCaseQueue(q, { adapter: queueFixtureAdapter('populated') }); await tick(); await tick();
+  assert.doesNotMatch(q.querySelector('table').textContent, /scheme-team/); stop();
+});
+
+test('FUCQ-213: a lapsed access key reads as access needed, not unavailable', async () => {
+  const { caseFailure } = await import('../../blocks/gcsp/cases/gcsp-help.js');
+  const adapter = createCaseHttpAdapter({ fetchImpl: async () => ({ ok: false, status: 401, json: async () => ({ error: 'Unauthorized' }) }) });
+  const lapsed = await adapter.readHelp();
+  assert.equal(lapsed.status, 'access-required');
+  const shown = caseFailure(lapsed);
+  assert.equal(shown.title, 'Demo access needed'); assert.doesNotMatch(`${shown.title} ${shown.text}`, /unavailable/i);
+});
+test('FUCQ-208: owner role is shown only when it adds to the owner name', async () => {
+  const { renderCaseContent } = await import('../../blocks/gcsp/cases/case-content.js');
+  const owned = (owner) => renderCaseContent({ ...caseFixture('request'), owner }).querySelector('.gcsp-case-facts').textContent;
+  const same = owned({ name: 'Scheme team', role: 'scheme-team' });
+  assert.equal(same.match(/Scheme team/g).length, 1);
+  const named = owned({ name: 'Greg', role: 'scheme-team' });
+  assert.match(named, /OwnerGreg/); assert.match(named, /Owner roleScheme team/);
+  assert.match(owned({ role: 'scheme-team' }), /OwnerScheme team/); assert.doesNotMatch(owned({ role: 'scheme-team' }), /Owner role/);
+});
+test('FUCQ-208: same-name alternative cars are told apart by supplied facts, never invented ones', async () => {
+  const known = (value) => ({ status: 'known', value });
+  const car = (orderUuid, name, facts = {}) => ({ type: 'alternative-car', orderUuid, configurationId: 'synthetic-configuration',
+    snapshot: { display: { name }, facts } });
+  const value = queueOptionsFixture();
+  value.options.alternativeCars.items = [car('car-a', 'BMW i4 in Black', { confirmedDeliveryWeek: known('2026-11-23') }),
+    car('car-b', 'BMW i4 in Black', { confirmedDeliveryWeek: known('2026-12-07') }), car('car-c', 'BMW iX1', { confirmedDeliveryWeek: known('2026-11-23') }),
+    car('car-d', 'BMW iX3'), car('car-e', 'BMW iX3'), car('car-f', '')];
+  const f = await mountQueue({ ...queueFixtureAdapter(), async readOptions() { return { status: 'ok', value }; } });
+  await openQueue(f.root);
+  const labels = [...f.root.querySelectorAll('[id$="-remedyKey"] option')].map((o) => o.textContent).filter((t) => t.startsWith('Alternative car'));
+  assert.deepEqual(labels, ['Alternative car: BMW i4 in Black, delivery week of 2026-11-23', 'Alternative car: BMW i4 in Black, delivery week of 2026-12-07',
+    'Alternative car: BMW iX1', 'Alternative car: BMW iX3, reference car-d', 'Alternative car: BMW iX3, reference car-e',
+    'Alternative car: Car details not supplied, reference car-f']);
+  reviewQueue(f.root, 'alternativeCars:1');
+  assert.match(f.root.textContent, /Proposed carBMW i4 in Black, delivery week of 2026-12-07/);
+  findButton(f.root, 'Review case update').click();
+  assert.match(f.root.querySelector('.gcsp-case-confirmation').textContent, /Proposed carBMW i4 in Black, delivery week of 2026-12-07/); f.destroy();
 });

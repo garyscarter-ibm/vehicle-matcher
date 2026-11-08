@@ -39,6 +39,28 @@ test('unchanged and invalid choices cannot confirm for options, slider or equipm
   }
 });
 
+// FUCQ-183: the brief has no entry yet, so the server sends currentValue null and the answer adds it.
+const unset = (kind) => { const q = question(kind); q.value.question.currentValue = null; return q; };
+
+test('FUCQ-183: a question with no current value starts empty or at the range midpoint and confirms only with an answer', async () => {
+  for (const [kind, start, canConfirm, answer] of [['options', null, false, 'estate'], ['slider', 50, true, 70], ['equipment', [], false, ['towbar']]]) {
+    const { controller, confirms } = setup({ read: async () => unset(kind) }); await controller.refresh();
+    const first = controller.snapshot();
+    assert.equal(first.state, 'question'); assert.deepEqual(first.value, start); assert.equal(first.canConfirm, canConfirm);
+    assert.equal(first.error, '');
+    if (!canConfirm) { await controller.confirm(); assert.equal(confirms.length, 0); }
+    assert.equal(controller.choose(answer).status, 'ok'); assert.equal(controller.snapshot().canConfirm, true);
+  }
+  const { controller } = setup({ read: async () => unset('slider') }); await controller.refresh();
+  assert.equal(controller.choose(50).status, 'ok');
+  const { controller: equipment } = setup({ read: async () => unset('equipment') }); await equipment.refresh();
+  assert.equal(equipment.choose([]).status, 'invalid'); assert.match(equipment.snapshot().error, /at least one equipment/i);
+  const { controller: sent, confirms: calls } = setup({ read: async () => unset('slider') }); await sent.refresh(); await sent.confirm();
+  assert.equal(calls[0].value, 50); assert.equal(sent.snapshot().state, 'change-saved');
+  const { controller: bad } = setup({ read: async () => { const q = unset('options'); q.value.question.control.options = []; return q; } });
+  await bad.refresh(); assert.equal(bad.snapshot().state, 'unavailable');
+});
+
 test('uncertain retries retain the identical command even when a status read still returns the question', async () => {
   const commands = []; let reads = 0;
   const { controller } = setup({ read: async () => { reads += 1; return question(); }, confirm: async (input) => {
@@ -157,4 +179,21 @@ test('HTTP abort, malformed JSON and unsuccessful HTTP success envelopes remain 
     async () => ({ ok: false, json: async () => ({ status: 'ok', value: saved() }) })]) {
     assert.equal((await createFollowupHttpAdapter({ fetchImpl }).read({ decisionId })).status, 'unavailable');
   }
+});
+
+const lapsed = (status = 401, body = { error: 'Unauthorized' }) => async () => ({ ok: false, status, json: async () => { if (body === undefined) throw new SyntaxError('not json'); return body; } });
+test('a 401 with no status (lapsed access key) reads access-required; a status keeps its own result', async () => {
+  for (const body of [{ error: 'Unauthorized' }, undefined]) {
+    const adapter = createFollowupHttpAdapter({ fetchImpl: lapsed(401, body) });
+    assert.deepEqual(await adapter.read({ decisionId }), { status: 'access-required' });
+  }
+  for (const status of [401, 403]) assert.deepEqual(await createFollowupHttpAdapter({ fetchImpl: lapsed(status, { status: 'forbidden' }) }).read({ decisionId }), { status: 'forbidden' });
+  assert.deepEqual(await createFollowupHttpAdapter({ fetchImpl: lapsed(500, undefined) }).read({ decisionId }), { status: 'unavailable', retryable: true });
+});
+
+test('a lapsed access key reads access-lapsed for a read or a confirm and clears the saved receipt', async () => {
+  const { controller } = setup({ read: async () => ({ status: 'access-required' }) }); await controller.refresh();
+  assert.equal(controller.snapshot().state, 'access-lapsed'); assert.equal(controller.snapshot().savedChange, null);
+  const confirming = setup({ confirm: async () => ({ status: 'access-required' }) }); await confirming.controller.refresh(); confirming.controller.choose('estate');
+  await confirming.controller.confirm(); assert.equal(confirming.controller.snapshot().state, 'access-lapsed'); assert.equal(confirming.controller.snapshot().canConfirm, false);
 });

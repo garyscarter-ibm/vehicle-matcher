@@ -1,4 +1,5 @@
 import { gregPublishExample } from '../gcsp/greg/publish/gallery.js';
+import { gregOrderPlanExample } from '../gcsp/greg/plan/gallery.js';
 import { experienceChoice, brandSelector } from '../demo-launcher/components.js';
 import { renderOptionList, renderRangeSlider } from './modes/question-ui.js';
 import { createPreviewFeed } from './modes/preview-feed.js';
@@ -19,7 +20,11 @@ import { activityBody } from '../gcsp/activity/activity-body.js';
 import { activityOffer } from '../gcsp/activity/activity-offer.js';
 import { activityFixtures } from '../gcsp/activity/activity-fixtures.js';
 import { activityEvents } from '../gcsp/activity/activity-copy.js';
-import { formControlsExample } from '../gcsp/kit/form-controls-gallery.js';
+import { formControlsExample, stageListExample, runRestartedExample } from '../gcsp/kit/form-controls-gallery.js';
+import { stageTracker } from '../gcsp/kit/stage-tracker.js';
+import { taskList } from '../gcsp/kit/task-list.js';
+import { orderProgressBody } from '../gcsp/order-progress/order-progress-body.js';
+import { orderProgressFixtures } from '../gcsp/order-progress/fixtures.js';
 import { toManualGallery } from '../gcsp/manual-gallery/gallery-model.js';
 import { createManualGalleryFixture } from '../gcsp/manual-gallery/fixtures.js';
 
@@ -212,7 +217,8 @@ export function activityExamples() {
   const timeline = el('div', 'vm');
   timeline.append(activityTimeline({ events: activityEvents(activityFixtures.snapshots.paused.value.stateChanges), level: 3 }));
   section.append(timeline);
-  const states = [['never-checked', 'Not searched yet'], ['searching', 'Searching, no match yet'], ['offer', 'Offer waiting, with representative imagery'],
+  const states = [['never-checked', 'Not searched yet'], ['searching', 'Searching, no match yet'],
+    ['no-match-one', 'No match, one excluding essential'], ['no-match-two', 'No match, two excluding essentials'], ['offer', 'Offer waiting, with representative imagery'],
     ['offer-declined', 'Offer declined'], ['offer-expired', 'Offer expired'], ['paused-offer', 'Paused with an open offer'], ['paused', 'Paused'],
     ['source-delayed', 'Source delayed'], ['source-unavailable', 'Source unavailable'], ['pending', 'Updating search'], ['unavailable', 'Activity unavailable']];
   for (const [name, label] of states) {
@@ -221,6 +227,7 @@ export function activityExamples() {
     example.append(el('h3', 'vm-gallery-gcsp-title', label),
       activityBody({ result: structuredClone(activityFixtures.snapshots[name === 'pending' ? 'never-checked' : name]), level: 4,
         pending: name === 'pending', onPause: name === 'pending' ? () => {} : undefined,
+        onReviewBrief: name.startsWith('no-match') ? () => { status.textContent = 'Opens the brief editor on a live page.'; } : undefined,
         offerDisplay: activityFixtures.offerExample,
         onRetry: () => { status.textContent = 'Still unavailable.'; } }), status);
     section.append(example);
@@ -233,6 +240,48 @@ export function activityExamples() {
     const offer = activityOffer({ offer: activityFixtures.snapshots.offer.value.currentOffer, display, level: 4 });
     if (name === 'broken') offer.querySelector('img')?.dispatchEvent(new document.defaultView.Event('error'));
     example.append(el('h3', 'vm-gallery-gcsp-title', label), offer); section.append(example);
+  }
+  return section;
+}
+
+export function orderProgressExamples() {
+  const section = el('section', 'vm-gallery-section gcsp');
+  section.setAttribute('aria-label', 'Order progress');
+  section.append(el('h2', 'vm-gallery-title', 'Order progress'),
+    el('p', 'vm-gallery-copy', 'Fictional producer-shaped snapshots. Buttons only report here; nothing is saved or requested.'));
+  const kit = el('div', 'vm vm-gallery-gcsp-group');
+  kit.append(el('h3', 'vm-gallery-gcsp-title', 'stageTracker and taskList'),
+    stageTracker({ heading: 'Order steps', level: 4, stages: [
+      { id: 'a', label: 'Selection received', state: 'done', at: '2026-11-05T09:00:00.000Z' },
+      { id: 'b', label: 'HR approval', state: 'declined', at: '2026-11-05T11:00:00.000Z', owner: 'With the scheme team', next: 'Scheme team reviews the decline' },
+      { id: 'c', label: 'Sales-manager approval', state: 'blocked', owner: 'With the sales manager', next: 'Sales-manager decision', note: 'Updates are not connected in this demonstration.' },
+      { id: 'd', label: 'Sent to ordering', state: 'current', owner: 'With ordering' }, { id: 'e', label: 'Handover', state: 'upcoming' }] }),
+    taskList({ heading: 'Tasks', level: 4, groups: [{ heading: 'Your tasks', items: [
+      { id: 't1', label: 'Vehicle agreement', owner: 'You', status: 'Waiting for you', tone: 'overdue', due: '2026-11-07T15:00:00.000Z', detail: 'Synthetic acknowledgement, not a signature',
+        action: { label: 'Acknowledge the agreement', onSelect: () => {} } },
+      { id: 't2', label: 'Licence check', owner: 'Scheme team', status: 'Failed', tone: 'failed', reason: 'The check could not be completed.' },
+      { id: 't3', label: 'Preparation', owner: 'Retailer', status: 'In progress', tone: 'in-progress', due: '2026-11-08T15:00:00.000Z' },
+      { id: 't4', label: 'Delivery', owner: 'Retailer', status: 'Complete', tone: 'done', action: { label: 'Locked', disabled: true, reason: 'Done by the retailer.' } }] }] }),
+    taskList({ heading: 'Tasks (empty)', level: 4, groups: [], emptyText: 'No tasks.' }));
+  section.append(kit);
+  const fixtures = orderProgressFixtures();
+  const labels = { 'waiting-hr': 'Waiting for HR', 'waiting-sales-manager': 'Waiting for the sales manager', 'no-hr': 'No HR approval stage', declined: 'Declined',
+    'provider-unsupported': 'Updates not connected', 'sent-to-ordering-no-slot': 'Sent to ordering, no handover time yet', 'appointment-requested': 'Handover requested',
+    'appointment-change-proposed': 'New handover time proposed', 'appointment-pending': 'Handover update pending', 'appointment-scheduled': 'Handover booked',
+    'documents-waiting-for-you': 'Documents: waiting for you', 'documents-in-progress': 'Documents: in progress', 'documents-overdue': 'Documents: overdue',
+    'documents-failed': 'Documents: a check failed', 'ready-for-handover': 'Ready for handover', 'return-unavailable': 'Return: handover not booked',
+    'return-not-planned': 'Return: not planned', 'return-requested': 'Return requested', 'return-change-proposed': 'Return: new time proposed',
+    'return-scheduled': 'Return booked', 'new-order': 'New order, no return', loading: 'Loading', unavailable: 'Unavailable', 'partial-failure': 'One section unavailable' };
+  for (const [name, progress] of Object.entries(fixtures.states)) {
+    const example = el('div', 'vm-gallery-gcsp-group'); example.dataset.orderProgressExample = name;
+    const status = el('p', 'gcsp-order-preview-status'); status.setAttribute('role', 'status');
+    const say = (text) => () => { status.textContent = text; };
+    example.append(el('h3', 'vm-gallery-gcsp-title', labels[name] || name),
+      orderProgressBody({ progress: structuredClone(progress), car: fixtures.car, level: 4, onRetry: say('Still unavailable.'),
+        onCompleteTask: (id) => { status.textContent = `Acknowledge ${id}: nothing saved.`; }, onRequestAppointment: (id) => { status.textContent = `Request ${id}: nothing saved.`; },
+        onAcceptAppointment: say('Accept: nothing saved.'), onRequestReturn: ({ choice }) => { status.textContent = `Return ${choice}: nothing saved.`; },
+        onAcceptReturn: say('Accept return: nothing saved.'), onHelp: say('Help is not connected here.') }), status);
+    section.append(example);
   }
   return section;
 }
@@ -435,7 +484,7 @@ export function mountComponentGallery(root) {
   exactControls.append(legacyButton, refineButton, exactReset);
   exact.append(exactControls, exactCards);
   sections.append(exact);
-  root.append(heading, sections, employeeDecisionExample(), manualGalleryExample(), employeeControlsExample(), gcspExamples(), gregKitExamples(), gregPublishExample(), launcherExamples(), activityExamples(), formControlsExample());
+  root.append(heading, sections, employeeDecisionExample(), manualGalleryExample(), employeeControlsExample(), gcspExamples(), gregKitExamples(), gregPublishExample(), gregOrderPlanExample(), launcherExamples(), activityExamples(), orderProgressExamples(), formControlsExample(), stageListExample(), runRestartedExample());
 
   function dispatchBrowse(type, target, reason) {
     const result = reduceFeedback(browseFeedback, {

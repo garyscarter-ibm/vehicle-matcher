@@ -46,6 +46,21 @@ test('shared slider and labelled equipment textarea retain focused controls acro
   }
 });
 
+test('FUCQ-183: a question with no current value says the answer adds it and keeps the copy free of em dashes', (t) => {
+  for (const kind of ['options', 'slider', 'equipment']) {
+    const { root, view } = host(t); const model = question(kind);
+    model.question.currentValue = null; model.value = kind === 'slider' ? 50 : kind === 'equipment' ? [] : null;
+    view.update(model);
+    assert.match(root.querySelector('fieldset').textContent, /Not in your brief yet\. Your answer adds it\./);
+    assert.equal(root.querySelector('[data-followup-action=confirm]').disabled, true);
+    assert.doesNotMatch(root.textContent, /\u2014/);
+    if (kind === 'equipment') assert.doesNotMatch(root.textContent, /Leave empty/);
+    if (kind === 'options') assert.equal(root.querySelectorAll('[role=radio][aria-checked=true]').length, 0);
+  }
+  const { root, view } = host(t); view.update(question());
+  assert.doesNotMatch(root.textContent, /Not in your brief yet/);
+});
+
 test('invalid, busy and saved states disable confirmation and move completed focus to the heading', (t) => {
   const { root, view } = host(t); const model = question(); view.update({ ...model, error: 'Choose a different value.' });
   assert.equal(root.querySelector('[role=alert]').textContent, 'Choose a different value.');
@@ -85,6 +100,21 @@ test('waiting and no-match are calculated states with a focusable refresh and th
     assert.equal(refresh.tagName, 'BUTTON'); refresh.focus(); assert.equal(document.activeElement, refresh);
   }
   root.querySelector('[data-followup-action=refresh]').click(); assert.equal(reads, 1);
+});
+
+test('FUCQ-188: an embedding page that shows its own refresh gets no second Check current state', (t) => {
+  const offer = (id) => ({ offerId: id, quote: { quoteId: `quote-${id}`, briefVersion: 1, policyVersion: 'p', quotedAt: '2026-11-06T00:00:00Z' } });
+  const projector = ({ value }) => ({ status: 'ok', value: { reference: { offerId: value.offerId }, card: { schemaVersion: 1,
+    selectedId: value.offerId, members: [{ id: value.offerId, display: { name: value.offerId }, media: {}, facts: [], terms: [],
+      decision: { gateStatus: 'eligible', score: 90, reasons: [], blockers: [], unknowns: [], tradeOffs: [] }, actions: [] }] } } });
+  const models = [question(), { state: 'waiting', savedChange: saved }, { state: 'no-match', evaluation: { carsChecked: 2 } },
+    { state: 'unavailable' }, { state: 'refresh-required' }, { state: 'confirmation-uncertain' },
+    { state: 'ready', comparison: { currentBriefVersion: 2, previous: { offer: offer('a') }, next: { offer: offer('b') }, requirements: [] } }];
+  const count = (root) => [...root.querySelectorAll('button')].filter((node) => node.textContent === 'Check current state').length;
+  for (const [hostRefresh, expected] of [[false, 1], [true, 0]]) {
+    const { root, view } = host(t, { hostRefresh, projectOffer: projector });
+    for (const model of models) { view.update({ busy: false, ...model }); assert.equal(count(root), expected, `${model.state} hostRefresh=${hostRefresh}`); }
+  }
 });
 
 test('comparison uses the supplied offer projector, shared cards/table and exact units/unknown/source evidence', (t) => {
@@ -144,4 +174,13 @@ test('owned block sources have no inline handlers, unsafe execution or styleshee
   }
   const css = await readFile(new URL('gcsp-offer-followup.css', base), 'utf8');
   assert.doesNotMatch(css, /\.vm-(?:option|card|slider|btn|facts)/); assert.match(css, /max-width: 800px/);
+  // FUCQ-189: the question title sits inside the card padding rather than across its top border.
+  assert.match(css, /\.gcsp-followup-field > legend \{[^}]*float: left; width: 100%/);
+});
+
+test('a lapsed access key links to the access form with no refresh', (t) => {
+  const { root, view } = host(t); view.update({ state: 'access-lapsed', busy: false });
+  assert.match(root.textContent, /Demo access needed/); assert.equal(root.querySelectorAll('button').length, 0);
+  assert.equal(root.querySelector('a.vm-btn').getAttribute('href'), '/gcsp/access?next=%2Fgcsp-account.html');
+  assert.equal(root.querySelector('[data-followup-action=refresh]'), null); assert.doesNotMatch(root.textContent, /unavailable/i);
 });

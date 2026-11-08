@@ -6,6 +6,9 @@ import { confirmedFact } from '../../scenarios/employee/index.js';
 const object = (v) => v && typeof v === 'object' && !Array.isArray(v);
 const only = (v, keys) => object(v) && Object.keys(v).every((key) => keys.includes(key));
 const text = (v) => typeof v === 'string' && v.trim().length > 0;
+// One contact rule for the manual draft and the buddy handoff.
+export const validContact = (c) => only(c, ['phone', 'email']) && /^\+?[0-9 ()-]{7,30}$/.test(c.phone ?? '')
+  && typeof c.email === 'string' && c.email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.email);
 const revision = (v) => Number.isSafeInteger(v) && v >= 0;
 const calendarDate = (v) => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)
   && validInstant(`${v}T00:00:00.000Z`) && new Date(`${v}T00:00:00.000Z`).toISOString().slice(0, 10) === v;
@@ -82,7 +85,7 @@ export class ManualContextService {
       if (['earliestCollectionDate', 'latestCollectionDate'].some((key) => window?.[key] != null
         && !calendarDate(window[key]))) return { error: unavailable('renewal-window-invalid') };
       if (p.state === 'ready' && (window?.earliestCollectionDate || window?.latestCollectionDate)
-        && !this.#collectionDates(p).length) p.state = 'not-yet-eligible';
+        && !this.#collectionDates(p).length) p.state = this.#orderingClosed(p, window) ? 'ordering-closed' : 'not-yet-eligible';
       p.contextVersion = inputDigest({ runId: context.runId, employeeId: context.employeeId, schemeId: context.schemeId,
         companyId: context.companyId, gradeId: context.gradeId,
         // A claim bumps the slot CAS revision without changing its entitlement facts.
@@ -104,12 +107,18 @@ export class ManualContextService {
       && Number.isSafeInteger(r.maximumSpecialRequirements) && r.maximumSpecialRequirements > 0
       && Number.isSafeInteger(r.maximumReturnMileage) && r.maximumReturnMileage > 0 && object(r.insuranceMaximumByGrade);
   }
-  #collectionDates(p) {
+  // Closed, not early: no date up to the window's end can ever meet the minimum lead (FUCQ-200).
+  #orderingClosed(p, window) {
+    if (!window?.latestCollectionDate) return false;
+    const days = Math.floor((Date.parse(`${window.latestCollectionDate}T00:00:00.000Z`) - Date.parse(`${p.now.slice(0, 10)}T00:00:00.000Z`)) / 86400000);
+    return !this.#collectionDates(p, days).length;
+  }
+  #collectionDates(p, maximumLeadDays = p.rules.maximumLeadDays) {
     const today = Date.parse(`${p.now.slice(0, 10)}T00:00:00.000Z`); const day = 86400000;
     const window = p.contract ?? p.slot;
     const earliest = window?.earliestCollectionDate; const latest = window?.latestCollectionDate;
     const dates = [];
-    for (let lead = p.rules.minimumLeadDays; lead <= p.rules.maximumLeadDays; lead += 1) {
+    for (let lead = p.rules.minimumLeadDays; lead <= maximumLeadDays; lead += 1) {
       const date = new Date(today + lead * day).toISOString().slice(0, 10);
       if ((!earliest || date >= earliest) && (!latest || date <= latest)
         && p.rules.locations.some((location) => !location.closedDates?.includes(date)
@@ -197,8 +206,7 @@ export class ManualContextService {
       || p.allowance.companyId !== context.companyId || p.allowance.gradeId !== context.gradeId) {
       return invalid('allowance', 'Monthly points allowance needs confirmation. Contact scheme support.', 'allowance-unconfirmed');
     }
-    if (!only(choices.contact, ['phone', 'email']) || !/^\+?[0-9 ()-]{7,30}$/.test(choices.contact.phone ?? '')
-      || typeof choices.contact.email !== 'string' || choices.contact.email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(choices.contact.email)) return invalid('contact', 'Supply a contact telephone and email address.');
+    if (!validContact(choices.contact)) return invalid('contact', 'Supply a contact telephone and email address.');
     if (choices.mode === 'replacement' && (!Number.isSafeInteger(choices.expectedReturnMileage) || choices.expectedReturnMileage < 0
       || choices.expectedReturnMileage > p.rules.maximumReturnMileage)
       || choices.mode === 'new' && choices.expectedReturnMileage != null) return invalid('expectedReturnMileage', 'Supply returning-car mileage only for a replacement, in miles.');

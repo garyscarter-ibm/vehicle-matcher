@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { writeFile } from 'node:fs/promises';
 import { createMemoryRepository, createMemoryStore, inputDigest } from '../gcsp/repository/index.js';
 import { createPolicyService } from '../gcsp/policy/index.js';
+import { shortQuotePolicy } from './helpers/short-quote-policy.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { createGcspRuntime } from '../gcsp/runtime.js';
 import { BriefService } from '../gcsp/brief/index.js';
@@ -16,10 +17,10 @@ const ref = (f, table, key = {}) => ({ table, key: { runId: f.context.runId, ...
 const cookieOf = (value) => value.split(';')[0];
 const passed = (outcome) => { assert.equal(outcome.status, 'ok'); return outcome.value; };
 
-async function setup(t, { offerLandingUrl, composed = false } = {}) {
+async function setup(t, { offerLandingUrl, composed = false, policy = createPolicyService() } = {}) {
   const store = createMemoryStore(); const repository = createMemoryRepository({ store });
   passed(await repository.open()); t.after(() => repository.close());
-  const policy = createPolicyService(); const wall = '2026-11-05T12:00:00.000Z';
+  const wall = '2026-11-05T12:00:00.000Z';
   const options = { repository, policy, environmentId: 'actual-producer-access-proof',
     policyAsOf: wall, commandId: 'producer-bootstrap', sessionNow: () => wall };
   const runtime = passed(await (composed ? createGcspRuntime({ ...options, mode: 'memory', offerLandingUrl })
@@ -195,8 +196,21 @@ test('actual buddy expiry and real reset make old links current or stale without
   assertCustody(f,stale);
 });
 
+test('active policy keeps accept offered for the whole hold, past the first hour', async (t) => {
+  const f = await setup(t); const read = { runId: f.context.runId, asOf: passed(await f.clock.now(f.context)).now };
+  const quoteSeconds = (await f.policy.getAssumption('employee.recommendation.v1', read)).value.value.termValiditySeconds;
+  const holdSeconds = (await f.policy.getAssumption('hold.buddy.durationSeconds', read)).value.value;
+  assert.equal(quoteSeconds >= holdSeconds, true);
+  const initial = passed(await f.exchange()).offer;
+  assert.equal(Date.parse(initial.quote.validUntil) >= Date.parse(initial.expiresAt), true);
+  passed(await f.producer.start()); passed(await f.advanceTo(new Date(Date.parse(read.asOf) + 3660000).toISOString(), 'producer-past-hour'));
+  passed(await f.tick('producer-past-hour-tick'));
+  const later = passed(await f.exchange()).offer;
+  assert.equal(later.state, 'pending'); assert.equal(later.expiresAt, initial.expiresAt); assert.deepEqual(later.availableActions, ['accept', 'decline']);
+});
+
 test('actual pinned quote expiry preserves decline before the unchanged active hold deadline', async (t) => {
-  const f = await setup(t); const initial = passed(await f.exchange()).offer;
+  const f = await setup(t, { policy: await shortQuotePolicy(3600) }); const initial = passed(await f.exchange()).offer;
   assert.equal(Date.parse(initial.quote.validUntil) < Date.parse(initial.expiresAt),true);
   passed(await f.producer.start()); passed(await f.advanceTo(initial.quote.validUntil,'producer-quote-expiry'));
   passed(await f.tick('producer-quote-expiry-tick'));

@@ -23,8 +23,10 @@ const ref = (f, table, key = {}) => ({ table, key: { runId: f.context.runId, ...
 const command = (commandId, input = {}) => ({ commandId, inputDigest: inputDigest(input) });
 const yes = (outcome) => { assert.equal(outcome.status, 'ok', JSON.stringify(outcome)); return outcome.value; };
 
-async function setup({ reasons = reasonInput, evaluator = true } = {}) {
+async function setup({ reasons = reasonInput, evaluator = true, quoteSeconds } = {}) {
   const alternative = structuredClone(seed);
+  // Explicit alternative input: a quote that lapses before the hold, which the active seed no longer does.
+  if (quoteSeconds !== undefined) alternative.assumptions.find((row) => row.key === 'employee.recommendation.v1').value.termValiditySeconds = quoteSeconds;
   if (reasons !== null) alternative.assumptions.push({ key: DECLINE_REASONS_KEY,
     value: { schemaVersion: 1, reasons }, unit: 'reason-registry', status: 'assumed',
     basis: 'Explicit FUCQ-106 contract-test input; not activated policy.',
@@ -294,15 +296,23 @@ test('accepting after clock advance preserves the original still-valid quote', a
   assert.deepEqual(await read(f, 'quotes', { quoteId: 'quote-fixture' }), quote);
 });
 
-test('acceptance rejects an expired quote before the longer hold expires', async () => {
+test('active policy lets a held offer be accepted after the first hour of its hold', async () => {
   const f = await setup(); const time = yes(await f.clock.now(f.context));
+  const quote = await read(f, 'quotes', { quoteId: 'quote-fixture' }); const hold = await read(f, 'offers', { offerId: 'offer-fixture' });
+  assert.equal(Date.parse(quote.validUntil) >= Date.parse(hold.expiresAt), true);
+  yes(await f.clock.advance(f.presenter.context, { commandId: 'past-hour', expectedClockVersion: time.clockVersion, bySeconds: 3660 }));
+  assert.equal(yes(await f.service.decide(f.capability, f.input('accept'))).state, 'accepted');
+});
+
+test('acceptance rejects an expired quote before the longer hold expires', async () => {
+  const f = await setup({ quoteSeconds: 3600 }); const time = yes(await f.clock.now(f.context));
   yes(await f.clock.advance(f.presenter.context, { commandId: 'quote-expired', expectedClockVersion: time.clockVersion, bySeconds: 3600 }));
   const before = state(f); const out = await f.service.decide(f.capability, f.input('accept'));
   assert.equal(out.reason, 'quote-no-longer-valid'); assert.deepEqual(state(f), before);
 });
 
 test('decline can release the still-current hold after its quote validity ends', async () => {
-  const f = await setup(); const time = yes(await f.clock.now(f.context));
+  const f = await setup({ quoteSeconds: 3600 }); const time = yes(await f.clock.now(f.context));
   yes(await f.clock.advance(f.presenter.context, { commandId: 'quote-ended', expectedClockVersion: time.clockVersion, bySeconds: 3600 }));
   const out = yes(await f.service.decide(f.capability, f.input('decline')));
   assert.equal(out.state, 'declined'); assert.equal((await read(f, 'stock', { orderUuid: f.car.orderUuid })).available, true);

@@ -1,0 +1,368 @@
+{
+  "chunk": "desktop",
+  "entry": "hosted",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "stockMode": "demo",
+  "state": "passed",
+  "startedAt": "2026-11-08T16:04:37.631Z",
+  "runIds": {
+    "previous": "demo-ea3b050919d5058adfbcb7852fc98722",
+    "new": "demo-dd9ed50bddebb3cbd2c0991ea81f3432"
+  },
+  "steps": [
+    {
+      "id": "access-key",
+      "name": "The demo key form opens the hosted demo, key typed by keyboard once",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Presenter page opened"
+    },
+    {
+      "id": "scenario-reset",
+      "name": "Scenario \"No suitable match\" chosen with arrow keys and reset confirmed by keyboard",
+      "pass": true,
+      "screenshots": [
+        "reset-done-1280-demo.png"
+      ],
+      "detail": {
+        "previousRun": "demo-ea3b050919d5058adfbcb7852fc98722",
+        "newRun": "demo-dd9ed50bddebb3cbd2c0991ea81f3432",
+        "scenario": "No suitable match",
+        "clock": "2026-11-05T09:00:00.000Z",
+        "releaseCue": "2026-11-05T09:30:00.000Z"
+      },
+      "overflowPx": 0,
+      "state": "Presenter controls Scenario No suitable match Run demo-dd9ed50bddebb3cbd2c0991ea81f3432 DemoClock (UTC) 2026-11-05T09:00:00.000Z Acting principal Presenter (fictional) (presenter) Tick (60 seconds) Named time or UTC target Tick to target Next release Release cue: 2026-11-05T09:30:00.000Z Scenario Main successful journey Available No suitable match Available Decline then change Available Offer expi"
+    },
+    {
+      "id": "next-release",
+      "name": "Next release runs the release and allocation",
+      "pass": true,
+      "screenshots": [
+        "next-release-1280-demo.png"
+      ],
+      "detail": {
+        "clockBefore": "2026-11-05T09:00:00.000Z",
+        "clockAfter": "2026-11-05T09:30:00.000Z",
+        "carsReleased": 5
+      },
+      "overflowPx": 0,
+      "state": "Clock 2026-11-05T09:00:00.000Z to 2026-11-05T09:30:00.000Z; Event presenter-57b04ca7cf07aec2320ae52b14f420ab156a6e024b744fe44c5549d30c9bf312 State completed release-pull / stock-release: {\"status\":\"ok\",\"value\":{\"kind\":\"stock-released\",\"runId\":\"demo-dd9ed50bdde"
+    },
+    {
+      "id": "activity-paula",
+      "name": "Paula's activity view after the release",
+      "pass": true,
+      "screenshots": [
+        "activity-paula-1280-demo.png"
+      ],
+      "detail": {
+        "before": "Context unavailable",
+        "after": "Paula (fictional) (employee)",
+        "findings": {
+          "a_searchedNoSuitableMatchYet": true,
+          "b_gateOrEssentialNamed": false,
+          "c_nextStepInActivityRegion": false,
+          "d_noEmptyError": true
+        },
+        "controls": [
+          {
+            "tag": "button",
+            "text": "Search actions",
+            "href": null
+          }
+        ]
+      },
+      "overflowPx": 0,
+      "state": "Your buddy Active Your offer No current offer Activity All dates are demo time (UTC). Still searching. No match yet. Last check 5 Nov 2026, 09:30: 5 cars checked, 0 suitable. 5 Nov 2026, 09:00 Search confirmed"
+    },
+    {
+      "id": "activity-paula-next-action",
+      "name": "Paula's next actions by keyboard: Search actions menu and the Your car brief navigation",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "searchActionsMenu": [
+          {
+            "text": "Pause Search",
+            "disabled": false
+          }
+        ],
+        "navigationLabel": "Your car brief",
+        "landed": "http://127.0.0.1:8950/gcsp-brief-live.html"
+      },
+      "overflowPx": 0,
+      "state": "Menu: [{\"text\":\"Pause Search\",\"disabled\":false}]. Navigation went to http://127.0.0.1:8950/gcsp-brief-live.html"
+    },
+    {
+      "id": "activity-alex",
+      "name": "Alex's activity view after the same release",
+      "pass": true,
+      "screenshots": [
+        "activity-alex-1280-demo.png"
+      ],
+      "detail": {
+        "before": "Context unavailable",
+        "after": "Alex (fictional) (employee)",
+        "hasOffer": false
+      },
+      "overflowPx": 0,
+      "state": "Your buddy Active Your offer No current offer Activity All dates are demo time (UTC). Still searching. No match yet. Last check 5 Nov 2026, 09:30: 5 cars checked, 0 suitable. 5 Nov 2026, 09:00 Search confirmed"
+    },
+    {
+      "id": "greg-demand",
+      "name": "Greg's demand figures show the blocking gate",
+      "pass": true,
+      "screenshots": [
+        "greg-demand-1280-demo.png"
+      ],
+      "detail": {
+        "seatsRow": [
+          "Seats at least 5\tConfirmed\tfewer than 5",
+          "Seats at least 9\tConfirmed\tfewer than 5",
+          "Essential not met: Seats\tBlocks the offer\tfewer than 5"
+        ]
+      },
+      "overflowPx": 0,
+      "state": "Seats row: [\"Seats at least 5\\tConfirmed\\tfewer than 5\",\"Seats at least 9\\tConfirmed\\tfewer than 5\",\"Essential not met: Seats\\tBlocks the offer\\tfewer than 5\"]"
+    }
+  ],
+  "keyboard": [
+    {
+      "page": "access",
+      "check": "Tab reaches the demo key field; typing the key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"No suitable match\" in \"Scenario\"",
+      "pass": true,
+      "detail": "No suitable match Available"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Reset scenario\" then \"Confirm reset\" resets the run",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Next release\" runs the release",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Paula\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Paula (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Switch principal\" switches to Paula",
+      "pass": true
+    },
+    {
+      "page": "activity \"Search actions\"",
+      "check": "Tab reaches the control with a visible focus indicator",
+      "pass": true,
+      "detail": {
+        "outline": true,
+        "shadow": false,
+        "label": "Search actions"
+      }
+    },
+    {
+      "page": "activity",
+      "check": "Enter on \"Search actions\" opens its menu",
+      "pass": true,
+      "detail": [
+        {
+          "text": "Pause Search",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "page": "activity",
+      "check": "Enter on the \"Your car brief\" navigation item opens the brief",
+      "pass": true,
+      "detail": {
+        "url": "http://127.0.0.1:8950/gcsp-brief-live.html"
+      }
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Alex\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Alex (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Switch principal\" switches to Alex",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Greg\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Greg (fictional) (greg)"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Switch principal\" switches to Greg",
+      "pass": true
+    }
+  ],
+  "paula": {
+    "activityRegionText": "Your buddy\n\nActive\n\nYour offer\nNo current offer\nActivity\n\nAll dates are demo time (UTC).\n\nStill searching. No match yet.\n\nLast check 5 Nov 2026, 09:30: 5 cars checked, 0 suitable.\n\n5 Nov 2026, 09:00\n\nSearch confirmed",
+    "pageText": "Skip to content\nGroup Car Schemes Portal\nP\nPaula (fictional)\nYour car brief\nBuddy activity\nShow labels\nPresenter controls\nBUDDY ACTIVITY\nYour buddy\n\nActive\n\nYour offer\nNo current offer\nActivity\n\nAll dates are demo time (UTC).\n\nStill searching. No match yet.\n\nLast check 5 Nov 2026, 09:30: 5 cars checked, 0 suitable.\n\n5 Nov 2026, 09:00\n\nSearch confirmed\n\nRenewal help\n\nRemedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.\n\nGet help with your renewal\nNo renewal case\n\nHelp is available if you need the scheme team to review your renewal.",
+    "controls": [
+      {
+        "tag": "button",
+        "text": "Search actions",
+        "href": null
+      }
+    ],
+    "findings": {
+      "a_searchedNoSuitableMatchYet": true,
+      "b_gateOrEssentialNamed": false,
+      "c_nextStepInActivityRegion": false,
+      "d_noEmptyError": true
+    }
+  },
+  "alex": {
+    "activityRegionText": "Your buddy\n\nActive\n\nYour offer\nNo current offer\nActivity\n\nAll dates are demo time (UTC).\n\nStill searching. No match yet.\n\nLast check 5 Nov 2026, 09:30: 5 cars checked, 0 suitable.\n\n5 Nov 2026, 09:00\n\nSearch confirmed",
+    "pageText": "Skip to content\nGroup Car Schemes Portal\nA\nAlex (fictional)\nYour car brief\nBuddy activity\nShow labels\nPresenter controls\nBUDDY ACTIVITY\nYour buddy\n\nActive\n\nYour offer\nNo current offer\nActivity\n\nAll dates are demo time (UTC).\n\nStill searching. No match yet.\n\nLast check 5 Nov 2026, 09:30: 5 cars checked, 0 suitable.\n\n5 Nov 2026, 09:00\n\nSearch confirmed\n\nRenewal help\n\nRemedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.\n\nGet help with your renewal\nNo renewal case\n\nHelp is available if you need the scheme team to review your renewal.",
+    "hasOffer": false
+  },
+  "greg": {
+    "seatsRow": [
+      "Seats at least 5\tConfirmed\tfewer than 5",
+      "Seats at least 9\tConfirmed\tfewer than 5",
+      "Essential not met: Seats\tBlocks the offer\tfewer than 5"
+    ],
+    "unmetBlock": "vacy band: the exact count is hidden\n\nBriefs with no suitable car\n\nfewer than 5\n, a privacy band: the exact count is hidden\n\nOffers made\n\nfewer than 5\n, a privacy band: the exact count is hidden\n\nSelected\n\nfewer than 5\n, a privacy band: the exact count is hidden\n\nDemand\n\nWhat employees have saved and confirmed they need, one latest brief each. Each table groups the same briefs a different way.\n\nBy model line\nModel line\tBriefs\nNo preference stated\tfewer than 5\n, a privacy band: the exact count is hidden\nBy body style\nBody style\tBriefs\nEstate\tfewer than 5\n, a privacy band: the exact count is hidden\nBy fuel type\nFuel type\tBriefs\nNo preference stated\tfewer than 5\n, a privacy band: the exact count is hidden\nBy essential requirement\nRequirement\tState\tBriefs\nCharging access is Not ready\tConfirmed\tfewer than 5\n, a privacy band: the exact count is hidden\n\nSeats at least 5\tConfirmed\tfewer than 5\n, a privacy band: the exact count is hidden\n\nSeats ",
+    "text": "Skip to content\nGroup Car Schemes Portal\nGR\nGreg\nDemand and supply\nPublish stock\nOrder tracking\nNext order\nShow labels\nPresenter controls\nScenario\nNo suitable match\nRun\ndemo-dd9ed50bddebb3cbd2c0991ea81f3432\nDemoClock (UTC)\n2026-11-05T09:30:00.000Z\nActing principal\nGreg (fictional) (greg)\nTick (60 seconds)\nNamed time or UTC target\nTick to target\nNext release\n\nNext release unavailable: No future release cue is configured.\n\nScenario\nMain successful journey\nAvailable\nNo suitable match\nAvailable\nDecline then change\nAvailable\nOffer expires\nNot available yet: brief-confirmation, stock-release, buddy-allocation, buddy-offers, captured-notifications, offer-expiry\nData unavailable\nNot available yet: brief-confirmation, stock-release, buddy-activity, greg-demand, synthetic-stock-fault\nUncertain handoff\nNot available yet: brief-confirmation, stock-release, buddy-allocation, buddy-offers, offer-decisions, order-handoff, ordering-reconciliation, synthetic-order-fault\nClock/reset mechanics (fictional support fixture)\nAvailable\n\nAvailable\n\nReset scenario\nActing principal\nPaula (fictional) (employee)\nAlex (fictional) (employee)\nSam (fictional) (employee)\nGreg (fictional) (greg)\nPresenter (fictional) (presenter)\nSwitch principal\nRefresh readback\n\nPresenter controls ready\n\nLast tick\nEvent\npresenter-57b04ca7cf07aec2320ae52b14f420ab156a6e024b744fe44c5549d30c9bf312\nState\ncompleted\nrelease-pull / stock-release: {\"status\":\"ok\",\"value\":{\"kind\":\"stock-released\",\"runId\":\"demo-dd9ed50bddebb3cbd2c0991ea81f3432\",\"trancheId\":\"demo-synthetic-stock-v1:demo-release-1:0\",\"windowId\":\"demo-release-1\",\"supplyId\":null,\"tickId\":\"presenter-57b04ca7cf07aec2320ae52b1 ... (truncated)\nmanual-expiry / manual-claim-expiry: {\"status\":\"ok\",\"value\":{\"reconciled\":true,\"now\":\"2026-11-05T09:30:00.000Z\"},\"contractVersion\":\"1.0.0\"}\nbuddy-expiry / buddy-expiry: {\"status\":\"ok\",\"value\":{\"expired\":[],\"retained\":[]},\"contractVersion\":\"1.0.0\"}\npending-reconciliation / lifecycle-appointments: {\"status\":\"ok\",\"value\":{\"handlerId\":\"lifecycle-appointments\",\"orders\":0,\"applied\":0,\"waiting\":0,\"blocked\":0,\"uncertain\":0,\"idle\":0,\"failed\":[]},\"contractVersion\":\"1.0.0\"}\npending-reconciliation / lifecycle-approvals: {\"status\":\"ok\",\"value\":{\"handlerId\":\"lifecycle-approvals\",\"orders\":0,\"advanced\":0,\"waiting\":0,\"blocked\":0,\"uncertain\":0,\"finished\":0,\"failed\":[]},\"contractVersion\":\"1.0.0\"}\npending-reconciliation / lifecycle-documents: {\"status\":\"ok\",\"value\":{\"producer\":\"ok\",\"opened\":0,\"notOpen\":[],\"orders\":[],\"blocked\":[],\"producerFailed\":[],\"producerFailedCount\":0},\"contractVersion\":\"1.0.0\"}\npending-reconciliation / lifecycle-return-appointments: {\"status\":\"ok\",\"value\":{\"handlerId\":\"lifecycle-return-appointments\",\"orders\":0,\"applied\":0,\"waiting\":0,\"blocked\":0,\"uncertain\":0,\"idle\":0,\"failed\":[]},\"contractVersion\":\"1.0.0\"}\npending-reconciliation / renewal-risk-cases: {\"status\":\"ok\",\"value\":{\"opened\":0},\"contractVersion\":\"1.0.0\"}\npending-reconciliation / selection-order-reconciliation: {\"status\":\"ok\",\"value\":{\"reconciled\":0},\"contractVersion\":\"1.0.0\"}\nbuddy-allocation / buddy-allocation: {\"status\":\"ok\",\"value\":{\"runId\":\"demo-dd9ed50bddebb3cbd2c0991ea81f3432\",\"allocations\":[{\"state\":\"no-assignment\",\"runId\":\"demo-dd9ed50bddebb3cbd2c0991ea81f3432\",\"event\":{\"eventId\":\"allocation:0fb91e6b99f8345e009aeba03738aa4aaaf28b62e10f1e93d ... (truncated)\noutbox-dispatch / captured-outbox: {\"status\":\"ok\",\"value\":{\"sent\":0,\"retrying\":0,\"failed\":0},\"contractVersion\":\"1.0.0\"}\n\n5 cars released\n\nDEMAND AND SUPPLY\n\nSCHEME ORDERING\n\nDemand and supply\n\nWhat employees have saved and confirmed they need, set against released stock and the outcomes of offers.\n\nFigures for\n5 Nov 2026, 09:30 GMT (demo clock)\nPolicy version\ngcsp-policy-v1+offer-journey-v1\nBrief version\n1\nBasis\nExpressed saved demand\nFigures version\n23c28306\n\nWhat employees have saved and confirmed they need. It is not satisfaction and not a prediction.\n\nCounts below 5 show as fewer than 5, so small groups cannot be picked out.\n\nRefresh\n\nFigures updated for 5 Nov 2026, 09:30 GMT.\n\nAt a glance\n\nActive briefs\n\nfewer than 5\n, a privacy band: the exact count is hidden\n\nBriefs with no suitable car\n\nfewer than 5\n, a privacy band: the exact count is hidden\n\nOffers made\n\nfewer than 5\n, a privacy band: the exact count is hidden\n\nSelected\n\nfewer than 5\n, a privacy band: the exact count is hidden\n\nDemand\n\nWhat employees have saved and confirmed they need, one latest brief each. Each table groups the same briefs a different way.\n\nBy model line\nModel line\tBriefs\nNo preference stated\tfewer than 5\n, a privacy band: the exact count is hidden\nBy body style\nBody style\tBriefs\nEstate\tfewer than 5\n, a privacy band: the exact count is hidden\nBy fuel type\nFuel type\tBriefs\nNo preference stated\tfewer than 5\n, a privacy band: the exact count is hidden\nBy essential requirement\nRequirement\tState\tBriefs\nCharging access is Not ready\tConfirmed\tfewer than 5\n, a privacy band: the exact count is hidden\n\nSeats at least 5\tConfirmed\tfewer than 5\n, a privacy band: the exact count is hidden\n\nSeats at least 9\tConfirmed\tfewer than 5\n, a privacy band: the exact count is hidden\nUnmet needs\n\nRows can overlap, so do not add them together. An accepted offer can later be selected, and one employee can be blocked by more than one reason.\n\nBriefs with no suitable car, by gate\nGate\tEffect\tBriefs\nOver the points allowance\tBlocks the offer\tfewer than 5\n, a privacy band: the exact count is hidden\n\nCharging access does not suit the car\tBlocks the offer\tfewer than 5\n, a privacy band: the exact count is hidden\n\nEssential not met: Seats\tBlocks the offer\tfewer than 5\n, a privacy band: the exact count is hidden\n\nScheme rules exclude the car\tBlocks the offer\tfewer than 5\n, a privacy band: the exact count is hidden\nStock\n\nReleased stock is open to employees. Held stock is reserved for an offer. Allocated stock is taken by a selection.\n\nStock by model line\nModel line\tReleased\tHeld\tAllocated\nG20 Saloon\tfewer than 5\n, a privacy band: the exact count is hidden\n\tfewer than 5\n, a privacy band: the exact count is hidden\n\tfewer than 5\n, a privacy band: the exact count is hidden\n\nG21 Touring\tfewer than 5\n, a privacy band: the exact count is hidden\n\tfewer than 5\n, a privacy band: the exact count is hidden\n\tfewer than 5\n, a privacy band: the exact count is hidden\n\nG61 i5\tfewer than 5\n, a privacy band: the exact count is hidden\n\tfewer than 5\n, a privacy band: the exact count is hidden\n\tfewer than 5\n, a privacy band: the exact count is hidden\nOffers\n\nRecorded outcomes of offers made. They are not predictions and not a measure of satisfaction.\n\nOffers made\n\nfewer than 5\n, a privacy band: the exact count is hidden\n\nAccepted\n\nfewer than 5\n, a privacy band: the exact count is hidden\n\nDeclined\n\nfewer than 5\n, a privacy band: the exact count is hidden\n\nExpired\n\nfewer than 5\n, a privacy band: the exact count is hidden\n\nSelected\n\nfewer than 5\n, a privacy band: the exact count is hidden\n\nDeclined offers, by reason\nReason\tDeclined\nNo declines with a recorded reason yet\n\nPOLICY\n\nPreview and publish\n\nTry points costs or recommendation weights, compare the preview, then publish on purpose.\n\nActive version\ngcsp-policy-v1+offer-journey-v1\nEffective from\n2026-11-05T09:00:00.000Z\nDemo time\n2026-11-05T09:30:00.000Z\n\n0 held offers keep their earlier terms.\n\nPublished points row\nchoices-fs-uk · eligibilityModelKey: F70 Sports Hatch|120\nchoices-fs-uk · eligibilityModelKey: F70 Sports Hatch|M135\nchoices-fs-uk · eligibilityModelKey: F44 Gran Coupe|218i\nchoices-fs-uk · eligibilityModelKey: F44 Gran Coupe|220i\nchoices-fs-uk · eligibilityModelKey: F44 Gran Coupe|M235i\nchoices-fs-uk · eligibilityModelKey: G42 Coupe|220i\nchoices-fs-uk · eligibilityModelKey: G42 Coupe|230i\nchoices-fs-uk · eligibilityModelKey: G42 Coupe|M240i\nchoices-fs-uk · eligibilityModelKey: U06 Active Tourer|220i\nchoices-fs-uk · eligibilityModelKey: U06 Active Tourer|225xe\nchoices-fs-uk · eligibilityModelKey: U06 Active Tourer|230e\nchoices-fs-uk · eligibilityModelKey: G20 Saloon|320i\nchoices-fs-uk · eligibilityModelKey: G20 Saloon|330e\nchoices-fs-uk · eligibilityModelKey: G20 Saloon|M340i\nchoices-fs-uk · eligibilityModelKey: G21 Touring|320i\nchoices-fs-uk · eligibilityModelKey: G21 Touring|330e\nchoices-fs-uk · eligibilityModelKey: G21 Touring|M340i\nchoices-fs-uk · eligibilityModelKey: G22 Coupe|420i\nchoices-fs-uk · eligibilityModelKey: G22 Coupe|M440i\nchoices-fs-uk · eligibilityModelKey: G23 Convertible|420i\nchoices-fs-uk · eligibilityModelKey: G23 Convertible|M440i\nchoices-fs-uk · eligibilityModelKey: G26 Gran Coupe|420i\nchoices-fs-uk · eligibilityModelKey: G26 Gran Coupe|M440i\nchoices-fs-uk · eligibilityModelKey: G60 Saloon|520i\nchoices-fs-uk · eligibilityModelKey: G60 Saloon|530e\nchoices-fs-uk · eligibilityModelKey: G60 Saloon|550e\nchoices-fs-uk · eligibilityModelKey: G61 Touring|530e\nchoices-fs-uk · eligibilityModelKey: G29 Z4|20i\nchoices-fs-uk · eligibilityModelKey: G29 Z4|M40i\nchoices-fs-uk · eligibilityModelKey: U11 X1|18d\nchoices-fs-uk · eligibilityModelKey: U11 X1|20i\nchoices-fs-uk · eligibilityModelKey: U11 X1|23d\nchoices-fs-uk · eligibilityModelKey: U11 X1|23i\nchoices-fs-uk · eligibilityModelKey: U11 X1|25e\nchoices-fs-uk · eligibilityModelKey: U11 X1|30e\nchoices-fs-uk · eligibilityModelKey: U11 X1|M35i\nchoices-fs-uk · eligibilityModelKey: U10 X2|20i\nchoices-fs-uk · eligibilityModelKey: U10 X2|M35i\nchoices-fs-uk · eligibilityModelKey: G01 X3|xDrive20d\nchoices-fs-uk · eligibilityModelKey: G01 X3|20i\nchoices-fs-uk · eligibilityModelKey: G01 X3|30e\nchoices-fs-uk · eligibilityModelKey: G01 X3|M40i\nchoices-fs-uk · eligibilityModelKey: G02 X4|xDrive20d\nchoices-fs-uk · eligibilityModelKey: G02 X4|M40i\nchoices-fs-uk · eligibilityModelKey: G05 X5|xDrive30d\nchoices-fs-uk · eligibilityModelKey: G05 X5|40d\nchoices-fs-uk · eligibilityModelKey: G05 X5|50e\nchoices-fs-uk · eligibilityModelKey: G05 X5|xDrive M60i\nchoices-fs-uk · eligibilityModelKey: G06 X6|xDrive30d\nchoices-fs-uk · eligibilityModelKey: G06 X6|xDrive40i\nchoices-fs-uk · eligibilityModelKey: G06 X6|40d\nchoices-fs-uk · eligibilityModelKey: G06 X6|xDrive M60i\nchoices-fs-uk · eligibilityModelKey: U11 iX1|iX1 20\nchoices-fs-uk · eligibilityModelKey: U11 iX1|iX1 30\nchoices-fs-uk · eligibilityModelKey: U10 iX2|iX2 20\nchoices-fs-uk · eligibilityModelKey: U10 iX2|iX2 30\nchoices-fs-uk · eligibilityModelKey: G26 i4|i4 35\nchoices-fs-uk · eligibilityModelKey: G26 i4|i4 40\nchoices-fs-uk · eligibilityModelKey: G26 i4|i4 M50\nchoices-fs-uk · eligibilityModelKey: G60 i5|i5 40\nchoices-fs-uk · eligibilityModelKey: G60 i5|i5 M60\nchoices-fs-uk · eligibilityModelKey: G61 i5|i5 40\nchoices-fs-uk · eligibilityModelKey: G61 i5|i5 M60\nchoices-fs-uk · eligibilityModelKey: i20 iX|iX 40\nchoices-fs-uk · eligibilityModelKey: i20 iX|iX 50\nchoices-fs-uk · eligibilityModelKey: i20 iX|iX M60\nchoices-fs-uk · eligibilityModelKey: M Power|M2\nchoices-fs-uk · eligibilityModelKey: M Power|M3\nchoices-fs-uk · eligibilityModelKey: M Power|M4\nchoices-fs-uk · eligibilityModelKey: M Power|X3M\nchoices-fs-uk · eligibilityModelKey: M Power|X4M\nchoices-fs-uk · eligibilityModelKey: M Power|X5M\nchoices-fs-uk · eligibilityModelKey: M Power|X6M\nchoices-rr-production · eligibilityModelKey: F70 Sports Hatch|120\nchoices-rr-production · eligibilityModelKey: F70 Sports Hatch|M135\nchoices-rr-production · eligibilityModelKey: F44 Gran Coupe|218i\nchoices-rr-production · eligibilityModelKey: F44 Gran Coupe|220i\nchoices-rr-production · eligibilityModelKey: F44 Gran Coupe|M235i\nchoices-rr-production · eligibilityModelKey: G42 Coupe|220i\nchoices-rr-production · eligibilityModelKey: G42 Coupe|230i\nchoices-rr-production · eligibilityModelKey: G42 Coupe|M240i\nchoices-rr-production · eligibilityModelKey: U06 Active Tourer|220i\nchoices-rr-production · eligibilityModelKey: U06 Active Tourer|225xe\nchoices-rr-production · eligibilityModelKey: U06 Active Tourer|230e\nchoices-rr-production · eligibilityModelKey: G20 Saloon|320i\nchoices-rr-production · eligibilityModelKey: G20 Saloon|330e\nchoices-rr-production · eligibilityModelKey: G20 Saloon|M340i\nchoices-rr-production · eligibilityModelKey: G21 Touring|320i\nchoices-rr-production · eligibilityModelKey: G21 Touring|330e\nchoices-rr-production · eligibilityModelKey: G21 Touring|M340i\nchoices-rr-production · eligibilityModelKey: G22 Coupe|420i\nchoices-rr-production · eligibilityModelKey: G22 Coupe|M440i\nchoices-rr-production · eligibilityModelKey: G23 Convertible|420i\nchoices-rr-production · eligibilityModelKey: G23 Convertible|M440i\nchoices-rr-production · eligibilityModelKey: G26 Gran Coupe|420i\nchoices-rr-production · eligibilityModelKey: G26 Gran Coupe|M440i\nchoices-rr-production · eligibilityModelKey: G60 Saloon|520i\nchoices-rr-production · eligibilityModelKey: G60 Saloon|530e\nchoices-rr-production · eligibilityModelKey: G60 Saloon|550e\nchoices-rr-production · eligibilityModelKey: G61 Touring|530e\nchoices-rr-production · eligibilityModelKey: G29 Z4|20i\nchoices-rr-production · eligibilityModelKey: G29 Z4|M40i\nchoices-rr-production · eligibilityModelKey: U11 X1|18d\nchoices-rr-production · eligibilityModelKey: U11 X1|20d\nchoices-rr-production · eligibilityModelKey: U11 X1|20i\nchoices-rr-production · eligibilityModelKey: U11 X1|23d\nchoices-rr-production · eligibilityModelKey: U11 X1|23i\nchoices-rr-production · eligibilityModelKey: U11 X1|25e\nchoices-rr-production · eligibilityModelKey: U11 X1|30e\nchoices-rr-production · eligibilityModelKey: U11 X1|M35i\nchoices-rr-production · eligibilityModelKey: U10 X2|20i\nchoices-rr-production · eligibilityModelKey: U10 X2|M35i\nchoices-rr-production · eligibilityModelKey: G01 X3|xDrive20d\nchoices-rr-production · eligibilityModelKey: G01 X3|20i\nchoices-rr-production · eligibilityModelKey: G01 X3|30e\nchoices-rr-production · eligibilityModelKey: G01 X3|M40i\nchoices-rr-production · eligibilityModelKey: G02 X4|xDrive20d\nchoices-rr-production · eligibilityModelKey: G02 X4|M40i\nchoices-rr-production · eligibilityModelKey: G05 X5|xDrive30d\nchoices-rr-production · eligibilityModelKey: G05 X5|40d\nchoices-rr-production · eligibilityModelKey: G05 X5|50e\nchoices-rr-production · eligibilityModelKey: G05 X5|xDrive M60i\nchoices-rr-production · eligibilityModelKey: G06 X6|xDrive30d\nchoices-rr-production · eligibilityModelKey: G06 X6|xDrive40i\nchoices-rr-production · eligibilityModelKey: G06 X6|40d\nchoices-rr-production · eligibilityModelKey: G06 X6|xDrive M60i\nchoices-rr-production · eligibilityModelKey: U11 iX1|iX1 20\nchoices-rr-production · eligibilityModelKey: U11 iX1|iX1 30\nchoices-rr-production · eligibilityModelKey: U10 iX2|iX2 20\nchoices-rr-production · eligibilityModelKey: U10 iX2|iX2 30\nchoices-rr-production · eligibilityModelKey: G26 i4|i4 35\nchoices-rr-production · eligibilityModelKey: G26 i4|i4 40\nchoices-rr-production · eligibilityModelKey: G26 i4|i4 M50\nchoices-rr-production · eligibilityModelKey: G60 i5|i5 40\nchoices-rr-production · eligibilityModelKey: G60 i5|i5 M60\nchoices-rr-production · eligibilityModelKey: G61 i5|i5 40\nchoices-rr-production · eligibilityModelKey: G61 i5|i5 M60\nchoices-rr-production · eligibilityModelKey: i20 iX|iX 40\nchoices-rr-production · eligibilityModelKey: i20 iX|iX 50\nchoices-rr-production · eligibilityModelKey: i20 iX|iX M60\nchoices-rr-production · eligibilityModelKey: M Power|M2\nchoices-rr-production · eligibilityModelKey: M Power|M3\nchoices-rr-production · eligibilityModelKey: M Power|M4\nchoices-rr-production · eligibilityModelKey: M Power|X3M\nchoices-rr-production · eligibilityModelKey: M Power|X4M\nchoices-rr-production · eligibilityModelKey: M Power|X5M\nchoices-rr-production · eligibilityModelKey: M Power|X6M\n\nSwitch rows to edit another cost. Your pending edits are retained.\n\nMonthly points cost\n\npoints/month. Active: 800. assumed; docs/gcsp/shared-contracts.md, 2026-11-04. Synthetic monthly demo cost for source class UKL; matrices contain no prices. Not a verified BMW amount.\n\nThe server proposes neutral weights for this retained policy. Publishing a weight change adopts the complete proposed map.\n\nUse exact values. Slider ranges are not supplied by this policy.\n\nBody weight\n\nrelative-weight. Active: 1. assumed; docs/gcsp/shared-recommendation-design.md, 2026-11-05. Read-only employee composition of existing rankCars curves; explicit dimensions, separate importance/indifference, confirmed exact evidence and no retail cash budget. Demo calibration is revisable, not BMW policy.\n\nFuel weight\n\nrelative-weight. Active: 1. assumed; docs/gcsp/shared-recommendation-design.md, 2026-11-05. Read-only employee composition of existing rankCars curves; explicit dimensions, separate importance/indifference, confirmed exact evidence and no retail cash budget. Demo calibration is revisable, not BMW policy.\n\nSportiness weight\n\nrelative-weight. Active: 1. assumed; docs/gcsp/shared-recommendation-design.md, 2026-11-05. Read-only employee composition of existing rankCars curves; explicit dimensions, separate importance/indifference, confirmed exact evidence and no retail cash budget. Demo calibration is revisable, not BMW policy.\n\nComfort weight\n\nrelative-weight. Active: 1. assumed; docs/gcsp/shared-recommendation-design.md, 2026-11-05. Read-only employee composition of existing rankCars curves; explicit dimensions, separate importance/indifference, confirmed exact evidence and no retail cash budget. Demo calibration is revisable, not BMW policy.\n\nEconomy weight\n\nrelative-weight. Active: 1. assumed; docs/gcsp/shared-recommendation-design.md, 2026-11-05. Read-only employee composition of existing rankCars curves; explicit dimensions, separate importance/indifference, confirmed exact evidence and no retail cash budget. Demo calibration is revisable, not BMW policy.\n\nSize weight\n\nrelative-weight. Active: 1. assumed; docs/gcsp/shared-recommendation-design.md, 2026-11-05. Read-only employee composition of existing rankCars curves; explicit dimensions, separate importance/indifference, confirmed exact evidence and no retail cash budget. Demo calibration is revisable, not BMW policy.\n\nDraft. Change values, then preview their effect.\n\nPreview changes\nPublish this preview\nRefresh policy\nOrder requests\nRefresh orders\n\nOrders up to date.\n\nSynthetic production · as of 5 Nov 2026. Only released cars enter supply.\n\nRequested, confirmed and released cars\nCar\tStage\tRequested\tConfirmed\tReleased\tExpected / delayed\nNo requests yet. Choose a model, derivative and quantity to request cars.\nRequest cars\nModel\n3 Series Saloon\n3 Series Touring\ni5 Touring\nDerivative\n320i\nQuantity\nSubmit request\nSynthetic production controls\n\nNEXT ORDER\n\nNo new order recommended\n\nOrder plan updated for 5 Nov 2026, 09:30 GMT.\n\nRequest from Production\n\nThe plan recommends no new order, so there is nothing to request.\n\nForecast source\nExpressed demand (deterministic baseline)\nPolicy version\ngcsp-policy-v1+offer-journey-v1\nPlan for\n5 Nov 2026, 09:30 GMT\n\nBuilt from what employees have saved and confirmed they need. It is not a prediction.\n\nProposed order\nModel\tDerivative\tQuantity\n3 Series Saloon\t320i\t0\n3 Series Saloon\t330e\t0\n3 Series Touring\t320i\t0\ni5 Touring\teDrive40\t0\nOrder totals by model\nModel\tQuantity\n3 Series Saloon\t0\n3 Series Touring\t0\ni5 Touring\t0\n\nAcceptable coverage before renewal\n\n0 of 2\n\n0 of 2 renewals covered before renewal\n\nUnallocated-stock risk\n\n5 vehicles\n\n5 of 5 vehicles in supply not matched to a renewal\n\nSpend\n\n£0\n\n0 vehicles in this order\n\nUnmatched supply by source\nSource\tVehicles\nVehicle already in stock\t5\nUnmet needs\n\nRenewal on 1 Dec 2026\n\nOver the points allowance\nCharging access does not suit the car\nNot every version of 3 Series Saloon 320i is eligible\nNot every version of 3 Series Saloon 330e is eligible\nNot every version of 3 Series Touring 320i is eligible\nNot every version of i5 Touring eDrive40 is eligible\nDriver eligibility not confirmed\nNo permitted car suits this employee\nScheme rules exclude the car\n\nRenewal on 1 Dec 2026\n\nOver the points allowance\nCharging access does not suit the car\nNot every version of 3 Series Saloon 320i is eligible\nNot every version of 3 Series Saloon 330e is eligible\nNot every version of 3 Series Touring 320i is eligible\nNot every version of i5 Touring eDrive40 is eligible\nDriver eligibility not confirmed\nEssential not met\nNo permitted car suits this employee\nScheme rules exclude the car\nBinding constraints\nConstraint\tDetail\n3 Series Saloon 320i minimum\tQuantity meets minimum 0.\n3 Series Saloon 330e minimum\tQuantity meets minimum 0.\n3 Series Touring 320i minimum\tQuantity meets minimum 0.\ni5 Touring eDrive40 minimum\tQuantity meets minimum 0.\n3 Series Saloon minimum\tQuantity meets minimum 0.\n3 Series Touring minimum\tQuantity meets minimum 0.\ni5 Touring minimum\tQuantity meets minimum 0.\nAlternative plans\nPlan\tCompared\tWhat it does\nNo new orders\tSame as the recommendation\tNo new vehicles. Covers 0 of 2 renewals. Spend £0. 5 vehicles unmatched.\nNext best plan\tDifferent\tOrder 1 vehicle: 3 Series Saloon 320i. Covers 0 of 2 renewals. Spend £39,000. 6 vehicles unmatched.\nChange limits\n\nChange a limit, then preview the effect. Previewing saves and orders nothing.\n\nModel limits\n\n3 Series Saloon\n\nMin\nMax\n\n3 Series Touring\n\nMin\nMax\n\ni5 Touring\n\nMin\nMax\nDerivative limits\n\n3 Series Saloon 320i\n\nMin\nMax\n3 vehicles\n0 vehicles\n10 vehicles\n\n3 Series Saloon 330e\n\nMin\nMax\n2 vehicles\n0 vehicles\n10 vehicles\n\n3 Series Touring 320i\n\nMin\nMax\n3 vehicles\n0 vehicles\n10 vehicles\n\ni5 Touring eDrive40\n\nMin\nMax\n2 vehicles\n0 vehicles\n10 vehicles\nOrder budget (pounds)\nPreview with these limits\nReset limits\nRoute comparison\n\nRoute comparison is not built in this demo yet.\n\nRenewal cases\n\nRemedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.\n\n0 renewal cases loaded.\n\nRefresh queue\nNo renewal cases\n\nThere are no renewal-risk cases in this demonstration run."
+  },
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/favicon.ico",
+      "page": "http://127.0.0.1:8950/gcsp/access"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-activity-live.html"
+    }
+  ],
+  "badResponses": [
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html"
+    }
+  ],
+  "notes": [],
+  "origin": "http://127.0.0.1:8950",
+  "finishedAt": "2026-11-08T16:10:45.014Z",
+  "counts": {
+    "steps": 7,
+    "passed": 7,
+    "screenshots": 5,
+    "keyboardChecks": 14,
+    "keyboardPassed": 14
+  }
+}

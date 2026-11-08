@@ -67,8 +67,10 @@ import { createReturnPlanRoutes } from './gcsp/lifecycle/return-plan/http.js';
 import { createVehicleEvidenceHandler, isVehicleEvidencePath } from './gcsp/vehicle-evidence/vehicle-evidence-handler.js';
 import { createLocalVehicleEvidenceLookup } from './gcsp/vehicle-evidence/local-vehicle-lookup.js';
 import { createGregRoutes } from './gcsp/greg/http.js';
+import { createSupplyRoutes } from './gcsp/supply/http.js';
 import { createGregPublishService } from './gcsp/greg/publish/index.js';
 import { createGregPublishRoutes } from './gcsp/greg/publish/http.js';
+import { createOrderPlanRoutes } from './gcsp/predict/plan/http.js';
 
 const PORT = process.env.PORT === '0' ? 0 : Number(process.env.PORT) || 8787;
 const MAX_BODY_BYTES = 16 * 1024; // quiz answers are tiny; reject anything bigger
@@ -879,14 +881,14 @@ export function buildServer(deps = {}) {
     identity: deps.gcspIdentity, prepareEmployee: deps.gcspPrepareEmployee,
     routes: [...createEmployeeRecommendationRoutes(deps.gcspClock && deps.gcspRecommendations
       ? { ...deps.gcspRecommendations, time: deps.gcspClock } : deps.gcspRecommendations),
-    ...createClockRoutes(deps.gcspClock), ...createOutboxRoutes(deps.gcspOutbox), ...createScenarioRoutes(deps.gcspScenarios, deps.gcspClock),
+    ...createClockRoutes(deps.gcspClock, { afterReset: deps.gcspAfterReset }), ...createOutboxRoutes(deps.gcspOutbox), ...createScenarioRoutes(deps.gcspScenarios, deps.gcspClock),
     ...createPresenterControlsRoutes({ clock: deps.gcspClock, identity: deps.gcspIdentity, scenarios: deps.gcspScenarios }),
     ...createBriefRoutes(deps.gcspBrief, deps.gcspBriefEditor), ...createActivityRoutes(deps.gcspActivity), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManualRead || deps.gcspManualClaims || deps.gcspManual), ...createManualClaimsRoutes(deps.gcspManualClaims), ...createManualOrderRoutes(deps.gcspManualOrder),
     ...createManualReviewDetailsRoutes(deps.gcspManualReview),
     ...createOfferFollowupRoutes(deps.gcspOfferFollowup),
     ...createLifecycleApprovalRoutes(deps.gcspLifecycle), ...createDocumentRoutes(deps.gcspDocuments),
     ...createAppointmentRoutes(deps.gcspAppointments), ...createReturnPlanRoutes(deps.gcspReturnPlan),
-    ...createGregRoutes(deps.gcspGreg), ...createGregPublishRoutes(gregPublish), ...(deps.gcspRoutes || [])],
+    ...createGregRoutes(deps.gcspGreg), ...createSupplyRoutes(deps.gcspSupply), ...createGregPublishRoutes(gregPublish), ...createOrderPlanRoutes(deps.gcspOrderPlan), ...(deps.gcspRoutes || [])],
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
   const handleOfferAccess = createOfferAccessHandler({ service: deps.gcspOfferAccess, identity: deps.gcspIdentity, allowedOrigins });
@@ -1113,8 +1115,7 @@ export { PREVIEW_COUNT, FIELD_MAX, clampFieldSize };
 // / `npm start`). Importing the module in a test gets buildServer with none of
 // these side effects — no socket, no live feed.
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
-  const server = buildServer();
-  server.listen(PORT, () => {
+  const onListening = (server) => {
     console.log(`Matcher API listening on http://localhost:${server.address().port}`);
     if (process.env.GCSP_OFFLINE === '1') {
       console.log('[gcsp] offline vehicle evidence; live startup warmers disabled');
@@ -1182,5 +1183,15 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
         startColourWarmer();
       }
     });
-  });
+  };
+  if (process.env.GCSP_RUNTIME === '1') {
+    // Hosted demo: one origin serves the GCSP pages, /api/gcsp and this API (see gcsp/host.js).
+    const { startHostedGcsp } = await import('./gcsp/host.js');
+    const hosted = await startHostedGcsp({ buildServer, env: process.env, port: PORT });
+    if (hosted.status !== 'ok') { console.error(`GCSP hosted startup: ${hosted.status}${hosted.code ? ` (${hosted.code})` : ''}`); process.exit(1); }
+    onListening(hosted.value.server);
+  } else {
+    const server = buildServer();
+    server.listen(PORT, () => onListening(server));
+  }
 }

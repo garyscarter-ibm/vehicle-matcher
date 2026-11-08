@@ -1,0 +1,389 @@
+{
+  "chunk": "desktop",
+  "entry": "hosted-offline",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "state": "passed",
+  "startedAt": "2026-11-08T15:36:39.060Z",
+  "steps": [
+    {
+      "id": "access-key",
+      "name": "Demo key form opens the offline hosted demo",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Your cars New order Order history Drivers and licences Scheme guidelines Show labels Presenter controls YOUR CARS Your cars Refresh account No image for this car yet YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 26 days, on 1 December 2026 Status Current car Driver Paula (fictional) Contract end 1 December 2026 Term 6 months Annual mileage 12,000 mi/year Registration Not supplied 1,100 points a month · 1,300 points a month allowance Exact specification is not supplied unless confirmed by delivered-car evidence. Choose "
+    },
+    {
+      "id": "setup-saved",
+      "name": "Choose a replacement; setup choices saved for Paula",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-01-setup-saved.png"
+      ],
+      "overflowPx": 0,
+      "state": "Your order choices | {\"driver\":\"You: Paula (fictional)\",\"contract\":\"six-month-8000\",\"date\":\"2026-11-12\",\"location\":\"demo-collection-centre\"}",
+      "detail": {
+        "driver": "You: Paula (fictional)",
+        "contract": "six-month-8000",
+        "date": "2026-11-12",
+        "location": "demo-collection-centre"
+      }
+    },
+    {
+      "id": "release-and-gallery",
+      "name": "Next release, Continue, Released cars gallery",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-02-release-and-gallery.png"
+      ],
+      "overflowPx": 0,
+      "state": "Released cars; 20 review buttons; Presenter controls Scenario Clock/reset mechanics (fictional support fixture) Run demo-ea3b050919d5058adfbcb7852fc98722 DemoClock (UTC) 2026-11-06T11:30:00.000Z",
+      "detail": {
+        "cards": 20
+      }
+    },
+    {
+      "id": "a-review-loaded",
+      "name": "Review loaded with vehicle, facts, countdown and prefilled fields",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-03-a-review-loaded.png"
+      ],
+      "detail": {
+        "vehicleName": "F70 Sports Hatch in Alpine White",
+        "vehicleCard": "Vehicle details, eligibility and points are pinned to your claim. No image for this car yet ORDER 1326185 F70 Sports Hatch in Alpine White 800 points a month · 1,300 points a month allowance Model Not supplied Body style hatchback Engine Not supplied Exterior Alpine White Interior Not supplied Transmission Not supplied Insurance group 22 insurance-group Order number 1326185 Eligible Pinned vehicle details",
+        "orderNumber": "1326185",
+        "hasPoints": true,
+        "hasRepresentativeCaption": false,
+        "noImagePlaceholder": true,
+        "context": "Collection and current contract Journey Replacement Vehicle slot slot-paula Requested collection date 2026-11-13 Collection location demo-collection-centre Contract term 6 months Annual mileage 8000 mi/year Returning car Fictional BMW 320i Touring Current contract current:employee-paula Registration Not supplied Collection is requested, not a confirmed appointment.",
+        "countdown": "Car reservation: 2:00 remaining",
+        "consequence": "This car is reserved until the deadline. Continuing does not place an order. Time follows the presenter clock.",
+        "phone": "01632 960000",
+        "email": "employee-paula@example.invalid",
+        "mileage": "24000",
+        "special": "",
+        "counter": "0 / 500 characters",
+        "notice": "Your current claim has been checked."
+      },
+      "overflowPx": 0,
+      "state": "F70 Sports Hatch in Alpine White | Car reservation: 2:00 remaining | phone set, email set, mileage 24000 | 0 / 500 characters"
+    },
+    {
+      "id": "b-keyboard-validation",
+      "name": "Empty phone then Enter on Continue shows the error summary with focus on it",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-04-b-keyboard-validation-error.png"
+      ],
+      "detail": {
+        "tabHops": 8,
+        "focus": {
+          "tag": "H2",
+          "id": "gcsp-review-1-errors-title",
+          "text": "Check your review details",
+          "insideSummary": true
+        },
+        "phoneError": {
+          "invalid": "true",
+          "error": "Supply a contact telephone."
+        },
+        "summaryLinks": "Supply a contact telephone."
+      },
+      "overflowPx": 0,
+      "state": "focus H2#gcsp-review-1-errors-title \"Check your review details\"; phone error \"Supply a contact telephone.\"; summary \"Supply a contact telephone.\""
+    },
+    {
+      "id": "c-500-cap",
+      "name": "520 characters typed into Special requirements are capped at 500",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-05-c-500-cap.png"
+      ],
+      "detail": {
+        "length": 500,
+        "counter": "500 / 500 characters",
+        "maxLength": "500"
+      },
+      "overflowPx": 0,
+      "state": "value length 500; maxlength 500; counter \"500 / 500 characters\""
+    },
+    {
+      "id": "d-long-text",
+      "name": "Long names and the full-length field wrap without horizontal page overflow",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-06-d-long-text.png"
+      ],
+      "detail": {
+        "docOverflow": 0,
+        "wideElements": [],
+        "vehicleNameHeightPx": 32,
+        "vehicleName": "F70 Sports Hatch in Alpine White"
+      },
+      "overflowPx": 0,
+      "state": "document overflow 0px; vehicle name \"F70 Sports Hatch in Alpine White\" height 32px; wide elements none"
+    },
+    {
+      "id": "e-expiry",
+      "name": "Presenter ticks run the reservation out; expired message, Continue disabled, Refresh stock shown",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-07-e-expired.png"
+      ],
+      "detail": {
+        "holdBefore": {
+          "state": "active",
+          "phase": "preview",
+          "expiresAt": "2026-11-06T11:32:00.000Z"
+        },
+        "ticks": 2,
+        "clockAt": "2026-11-06T11:32:00.000Z",
+        "countdowns": [
+          "Car reservation: 2:00 remaining",
+          "Car reservation: 1:00 remaining",
+          "Car reservation: 0:00 remaining"
+        ],
+        "liveRegion": {
+          "changes": 2,
+          "texts": [
+            "",
+            "Your hold has expired. Refresh stock to choose a car.",
+            "Your hold has expired. Refresh stock to choose a car."
+          ]
+        },
+        "notice": "Your reservation has expired. Your entries are retained. Refresh stock to choose again.",
+        "entries": {
+          "phone": "01632 960000",
+          "special": 500
+        },
+        "expiredHold": {
+          "state": "expired"
+        }
+      },
+      "overflowPx": 0,
+      "state": "ticks 2; Continue disabled true; Refresh stock buttons 1; live-region changes 2; texts [\"\",\"Your hold has expired. Refresh stock to choose a car.\",\"Your hold has expired. Refresh stock to choose a car.\"]; entries {\"phone\":\"01632 960000\",\"special\":500}"
+    },
+    {
+      "id": "f-reload-after-expiry",
+      "name": "Reload after expiry does not show the claim as active again",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-08-f-reload-after-expiry.png"
+      ],
+      "detail": {
+        "afterReloadHeading": "Your cars",
+        "resumeOffered": 1,
+        "afterResumeHeading": "Your order choices",
+        "claimHold": {
+          "state": "expired",
+          "phase": "preview"
+        },
+        "countdownShown": false,
+        "expiredTextShown": false,
+        "buttons": [
+          "Your cars",
+          "New order",
+          "Order history",
+          "Drivers and licences",
+          "Scheme guidelines",
+          "Show labels",
+          "Get help with drivers and licences",
+          "Back to account",
+          "Save choices",
+          "Continue"
+        ]
+      },
+      "overflowPx": 0,
+      "state": "heading \"Your order choices\"; countdown shown false; claim hold {\"state\":\"expired\",\"phase\":\"preview\"}; buttons Your cars | New order | Order history | Drivers and licences | Scheme guidelines | Show labels | Get help with drivers and licences | Back to account | Save choices | Continue"
+    },
+    {
+      "id": "g-claim-unavailable",
+      "name": "Aborted claim read: status not confirmed, no confirmed countdown; recovers on Check current claim",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-09-g-claim-unavailable.png",
+        "browser/1280-10-g-claim-recovered.png"
+      ],
+      "detail": {
+        "before": {
+          "countdown": "Car reservation: 2:00 remaining",
+          "claim": "active"
+        },
+        "during": {
+          "blocked": 1,
+          "notice": "",
+          "statusLine": "The current claim could not be confirmed.",
+          "countdown": "Reservation not confirmed",
+          "consequence": "This car is not shown as reserved until the claim is confirmed. Check current claim.",
+          "reviewVisible": true,
+          "continueEnabled": false
+        },
+        "after": {
+          "notice": "Your current claim has been checked.",
+          "countdown": "Car reservation: 2:00 remaining",
+          "reviewVisible": true
+        },
+        "checks": {
+          "unconfirmedTextShown": true,
+          "continueDisabled": true,
+          "staleHeldCountdownShown": false,
+          "recoveredOnCheck": true
+        }
+      },
+      "overflowPx": 0,
+      "state": "unconfirmed text \"The current claim could not be confirmed.\"; countdown during outage \"Reservation not confirmed\"; Continue enabled false; stale held copy shown false; recovered \"Your current claim has been checked.\" Car reservation: 2:00 remaining"
+    },
+    {
+      "id": "h-back-releases",
+      "name": "Back on an active review returns to the gallery and the car is available again",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-11-h-back-gallery.png"
+      ],
+      "detail": {
+        "order": "1326185",
+        "reviewButtonsEnabled": 41,
+        "claimHold": {
+          "state": "released"
+        },
+        "galleryText": "Skip to content Group Car Schemes Portal P Paula (fictional) Your cars New order Order history Drivers and licences Scheme guidelines Show labels Presenter controls YOUR CARS CHOOSE YOUR CAR Released cars Browse the available cars. Review one to reserve it while you check the details. Your allowance"
+      },
+      "overflowPx": 0,
+      "state": "heading \"Released cars\"; enabled Review buttons 41; claim hold {\"state\":\"released\"}"
+    }
+  ],
+  "keyboard": [
+    {
+      "page": "access",
+      "check": "Typing the demo key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "review",
+      "check": "Tab reaches Continue to order review; Enter shows the error summary and focuses it",
+      "pass": true,
+      "detail": {
+        "tag": "H2",
+        "id": "gcsp-review-1-errors-title",
+        "text": "Check your review details",
+        "insideSummary": true
+      }
+    }
+  ],
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/favicon.ico",
+      "page": "http://127.0.0.1:8932/gcsp/access"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: net::ERR_FAILED",
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8932/gcsp-presenter.html"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "url": "http://127.0.0.1:8932/api/gcsp/context",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:8932/api/gcsp/presenter/scenarios",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/stock",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:8932/api/gcsp/context",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:8932/api/gcsp/presenter/scenarios",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/stock",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/claim",
+      "error": "net::ERR_FAILED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/stock",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    }
+  ],
+  "badResponses": [
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8932/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    }
+  ],
+  "notes": [
+    "Collection window after release: {\"min\":\"2026-11-13\",\"max\":\"2026-12-01\",\"was\":\"2026-11-12\"}"
+  ],
+  "origin": "http://127.0.0.1:8932",
+  "finishedAt": "2026-11-08T15:40:00.771Z",
+  "counts": {
+    "steps": 11,
+    "passed": 11,
+    "screenshots": 11,
+    "keyboardChecks": 2
+  }
+}

@@ -1,4 +1,5 @@
 import { inputDigest, ok, result } from '../../repository/index.js';
+import { findSelectionOrder } from '../approvals/source.js';
 import { validInstant } from '../../policy/file-provider.js';
 import { applicableItems, loadDocumentPolicy, policyUnavailable } from './policy.js';
 
@@ -14,6 +15,8 @@ const stateRef = (context, orderUuid) => ({ table: 'event_receipts', key: { runI
 const at = (instant, seconds) => new Date(Date.parse(instant) + seconds * 1000).toISOString();
 const invalid = (field, reason) => result('invalid', { code: 'invalid-document-command', reasons: [{ field, reason }], action: 'review-and-retry' });
 const unavailable = () => result('unavailable', { reason: 'Document tracking is unavailable. Ask the scheme team to check the service.', retryable: true });
+// Own-order decode outcomes that still fall through to the stage read and its actionable diagnostics.
+const OWN_ORDER_DECODE_CODES = new Set(['selection-source-invalid', 'selection-pending', 'selection-handoff-failed']);
 const notOpen = (reason, extra = {}) => ({ status: 'not-open', reason, ...extra });
 
 // Classifies one synchronous FUCQ-111 stage read; never fabricates an approved stage.
@@ -247,6 +250,12 @@ export class LifecycleDocumentService {
     const role = await this.#employeeOrOperator(context); if (role.status !== 'ok') return role;
     if (!object(input) || !text(input.orderUuid, 128) || Object.keys(input).some((key) => key !== 'orderUuid')) return invalid('orderUuid', 'Supply the order to check.');
     const prepared = await this.#now(context); if (prepared.error) return prepared.error;
+    // Owner comes from the trusted selection-order authority, so no per-order producer detail reaches another employee.
+    if (role.value === 'employee') {
+      const owner = await findSelectionOrder((table, filter) => this.#repository.query(context, table, filter), input.orderUuid, context.employeeId);
+      if (owner.status === 'forbidden') return result('forbidden', { reason: 'These documents belong to another employee.' });
+      if (!['ok', 'not-found', 'conflict'].includes(owner.status) && !OWN_ORDER_DECODE_CODES.has(owner.code)) return owner; // repository failures surface
+    }
     const row = await this.#repository.read(context, stateRef(context, input.orderUuid));
     if (row.status === 'ok') {
       const projection = row.value.outcome.value;

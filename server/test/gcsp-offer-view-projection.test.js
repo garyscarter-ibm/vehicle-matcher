@@ -11,7 +11,13 @@ const producerBytes = await readFile(new URL('../../docs/gcsp/evidence/fucq105/p
 const declineBytes = await readFile(new URL('../../docs/gcsp/evidence/fucq105/producer-decline-access.json', import.meta.url), 'utf8');
 const sample = () => JSON.parse(bytes);
 const partial = () => JSON.parse(comparisonBytes);
-const envelope = (v = sample()) => ({ status: 'ok', value: v, contractVersion: '1.0.0' });
+// The published samples predate the handoff record, so an acceptable offer gains one unless a test sets its own.
+export const handoffDto = (over = {}) => ({ termsVersion: 'fictional-order-terms-v1', termsDigest: 'terms-digest-1', wording: 'Fictional terms.', fictional: true,
+  mode: 'replacement', blocker: null, contact: { phone: '07700 900123', email: 'paula@example.invalid' },
+  returnCar: { model: 'G20 320d', contractEndDate: '2026-12-31', currentOdometer: { value: 41250, unit: 'miles' } },
+  declarations: [{ id: 'terms', label: 'I accept the terms.' }, { id: 'return', label: 'The return details are correct.' }], ...over });
+const withHandoff = (v) => v.handoff === undefined && v.availableActions?.includes('accept') ? { ...v, handoff: handoffDto() } : v;
+const envelope = (v = sample()) => ({ status: 'ok', value: withHandoff(v), contractVersion: '1.0.0' });
 const known = (value, unit = null) => ({ ...structuredClone(sample().quote.facts.facts.seats), value, unit });
 
 test('schema sample is exactly the reviewed102 evaluator/access evidence, not a100 producer fixture', () => {
@@ -279,4 +285,66 @@ test('decision reference forwards the validated immutable quote revision without
   assert.equal(outcome.status, 'ok');
   assert.deepEqual(outcome.value.reference, { offerId: dto.offerId, runId: dto.runId,
     offerVersion: dto.offerVersion, holdVersion: dto.holdVersion, quoteVersion: 7 });
+});
+
+const acceptedDto = (selection) => ({ ...sample(), state: 'accepted', reason: 'accepted', offerState: 'accepted', holdState: 'allocated', availableActions: [], selection });
+const selectionDto = (over = {}) => ({ schemaVersion: 1, selectionState: 'acknowledged', approved: false, current: 'HR approval', orderReference: 'GCSP-000123', orderNumber: '0999987',
+  stages: [{ name: 'selection received', state: 'complete' }, { name: 'HR approval', state: 'waiting' }, { name: 'sent to ordering', state: 'not-started' }], ...over });
+
+test('the handoff record crosses with the server digest, declarations and return car, and gates the accept action', () => {
+  const value = toOfferPresentation(envelope()).value;
+  assert.deepEqual(value.handoff, handoffDto()); assert.deepEqual(value.actions, { accept: true, decline: true }); assert.equal(value.selection, null);
+  const blocked = toOfferPresentation(envelope({ ...sample(), availableActions: ['decline'], handoff: handoffDto({ blocker: 'return-data-required' }) })).value;
+  assert.equal(blocked.handoff.blocker, 'return-data-required'); assert.deepEqual(blocked.actions, { accept: false, decline: true });
+  const missing = toOfferPresentation(envelope({ ...sample(), handoff: null })).value;
+  assert.equal(missing.handoff, null); assert.deepEqual(missing.actions, { accept: false, decline: true });
+  const unavailable = handoffDto({ blocker: 'ordering-terms-unavailable', termsVersion: null, termsDigest: null, wording: null, declarations: [] });
+  assert.equal(toOfferPresentation(envelope({ ...sample(), availableActions: ['decline'], handoff: unavailable })).status, 'ok');
+});
+
+for (const [name, mutate] of [
+  ['not an object', () => 'terms'], ['unknown blocker', (h) => ({ ...h, blocker: 'maybe' })], ['not fictional', (h) => ({ ...h, fictional: false })],
+  ['bad mode', (h) => ({ ...h, mode: 'swap' })], ['missing digest with no blocker', (h) => ({ ...h, termsDigest: null })],
+  ['no declarations with no blocker', (h) => ({ ...h, declarations: [] })], ['no contact with no blocker', (h) => ({ ...h, contact: null })],
+  ['duplicate declaration ids', (h) => ({ ...h, declarations: [h.declarations[0], h.declarations[0]] })],
+  ['blank declaration label', (h) => ({ ...h, declarations: [{ id: 'terms', label: ' ' }] })],
+  ['negative odometer', (h) => ({ ...h, returnCar: { ...h.returnCar, currentOdometer: { value: -1, unit: 'miles' } } })],
+  ['odometer without unit', (h) => ({ ...h, returnCar: { ...h.returnCar, currentOdometer: { value: 10 } } })],
+  ['contact without email', (h) => ({ ...h, contact: { phone: '07700 900123' } })],
+]) test(`malformed handoff fails closed: ${name}`, () => {
+  const dto = { ...sample(), handoff: mutate(handoffDto()) };
+  assert.equal(toOfferPresentation(envelope(dto)).status, 'unavailable');
+});
+
+test('a handoff is refused outside a pending offer', () => {
+  assert.equal(toOfferPresentation(envelope({ ...acceptedDto(null), handoff: handoffDto() })).status, 'unavailable');
+});
+
+test('the selection record keeps the server stage names, order and states', () => {
+  const value = toOfferPresentation(envelope(acceptedDto(selectionDto()))).value;
+  assert.equal(value.state, 'accepted'); assert.equal(value.handoff, null);
+  assert.deepEqual(value.selection, { selectionState: 'acknowledged', current: 'HR approval', orderReference: 'GCSP-000123', orderNumber: '0999987',
+    stages: selectionDto().stages });
+  const legacy = ({ orderReference, ...rest }) => rest;
+  for (const dto of [legacy(selectionDto()), selectionDto({ orderReference: null })]) {
+    assert.equal(toOfferPresentation(envelope(acceptedDto(dto))).value.selection.orderReference, null);
+  }
+  assert.equal(toOfferPresentation(envelope(acceptedDto(null))).value.selection, null);
+  const pending = toOfferPresentation(envelope(acceptedDto(selectionDto({ selectionState: 'handoff-pending', orderNumber: null })))).value;
+  assert.equal(pending.selection.selectionState, 'handoff-pending'); assert.equal(pending.selection.orderNumber, null);
+});
+
+for (const [name, mutate] of [
+  ['claims approval', (s) => ({ ...s, approved: true })], ['missing approved flag', ({ approved, ...s }) => s], ['unknown selection state', (s) => ({ ...s, selectionState: 'approved' })],
+  ['unknown stage state', (s) => ({ ...s, stages: [{ name: 'selection received', state: 'approved' }] })], ['no stages', (s) => ({ ...s, stages: [] })],
+  ['blank stage name', (s) => ({ ...s, stages: [{ name: '', state: 'complete' }] })], ['bad order number', (s) => ({ ...s, orderNumber: '12' })],
+  ['bad order reference', (s) => ({ ...s, orderReference: 'GCSP 1' })], ['numeric order reference', (s) => ({ ...s, orderReference: 123 })],
+  ['overlong order reference', (s) => ({ ...s, orderReference: `GCSP-${'1'.repeat(40)}` })],
+  ['missing current', (s) => ({ ...s, current: '' })], ['wrong schema', (s) => ({ ...s, schemaVersion: 2 })], ['not an object', () => 'sent'],
+]) test(`malformed selection fails closed: ${name}`, () => {
+  assert.equal(toOfferPresentation(envelope(acceptedDto(mutate(selectionDto())))).status, 'unavailable');
+});
+
+test('a selection is refused on an offer that is not accepted', () => {
+  assert.equal(toOfferPresentation(envelope({ ...sample(), selection: selectionDto() })).status, 'unavailable');
 });

@@ -2,7 +2,9 @@
 .gcsp-followup-content { display: grid; gap: 24px; min-width: 0; }
 .gcsp-followup-question { display: grid; gap: 16px; max-width: 720px; }
 .gcsp-followup-field { min-width: 0; margin: 0; padding: 24px; border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); background: var(--gcsp-surface); }
-.gcsp-followup-field > legend { padding: 0 8px; font-size: 1.125rem; font-weight: var(--gcsp-font-strong-weight); }
+/* A floated legend sits inside the card padding, so a wrapped title never meets the top border (FUCQ-189). */
+.gcsp-followup-field > legend { float: left; width: 100%; margin: 0 0 12px; padding: 0; font-size: 1.125rem; font-weight: var(--gcsp-font-strong-weight); }
+.gcsp-followup-field > legend + * { clear: both; }
 .gcsp-followup-control { min-width: 0; }
 .gcsp-followup-cars { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; align-items: start; }
 .gcsp-followup-car { min-width: 0; }

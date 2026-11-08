@@ -2,11 +2,13 @@
 // adapter or a named fixture; location is never read. See docs/gcsp/greg-dashboard-contract.md.
 import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-matcher/ui.js';
 import { portalShell } from '../shell/portal-shell.js';
+import { isRunRestarted, runRestartedScreen } from '../kit/run-restarted.js';
 import { metricTile } from '../kit/metric-tile.js';
 import { dataTable } from '../kit/data-table.js';
 import { toDashboardView } from './demand-view.js';
 import { fixtureAdapter } from './fixtures.js';
 import { mountGregPublish } from './publish/panel.js';
+import { mountGregOrderPlan } from './plan/panel.js';
 
 const NOT_BUILT = 'Not available in this demo';
 const item = (key, label, icon, available = false) => Object.freeze({
@@ -80,12 +82,15 @@ function demandSection(view) {
   return node;
 }
 
+// During a stock-source outage "no stock released" would be untrue, so the gate says the source is down.
+const gateLabel = (view, row) => row.code !== 'no-released-stock' || !view.stock.sourceUnavailable ? row.label
+  : view.stock.sourceStale ? 'Stock data too old to use' : 'Stock source unavailable';
 function unmetSection(view) {
   const node = section('unmet', 'Unmet needs');
   node.append(note(view.meta.overlapNote), dataTable({
     caption: 'Briefs with no suitable car, by gate', emptyText: 'No unmet needs at this time',
     columns: [{ key: 'name', label: 'Gate' }, { key: 'effect', label: 'Effect' }, { key: 'count', label: 'Briefs', numeric: true }],
-    rows: view.demand.unmetByGate.map((row) => ({ name: row.label, effect: row.severityLabel, count: row.count })),
+    rows: view.demand.unmetByGate.map((row) => ({ name: gateLabel(view, row), effect: row.severityLabel, count: row.count })),
   }));
   return node;
 }
@@ -101,10 +106,13 @@ function offersSection(view) {
   return node;
 }
 
+const stockCopy = Object.freeze({ sourceUnavailable: 'Stock source unavailable. Figures may be out of date.',
+  sourceStale: 'Stock data too old to use. Figures may be out of date.', notChecked: "Couldn't check for new stock" });
 function stockSection(view) {
   const node = section('stock', 'Stock');
+  if (view.stock.sourceUnavailable) node.append(note(view.stock.sourceStale ? stockCopy.sourceStale : stockCopy.sourceUnavailable, 'status'));
   node.append(note('Released stock is open to employees. Held stock is reserved for an offer. Allocated stock is taken by a selection.'), dataTable({
-    caption: 'Stock by model line', emptyText: 'No stock has been released yet',
+    caption: 'Stock by model line', emptyText: view.stock.sourceUnavailable ? stockCopy.notChecked : 'No stock has been released yet',
     columns: [{ key: 'name', label: 'Model line' }, { key: 'released', label: 'Released', numeric: true },
       { key: 'held', label: 'Held', numeric: true }, { key: 'allocated', label: 'Allocated', numeric: true }],
     rows: view.stock.rows.map((row) => ({ name: row.label, released: row.released, held: row.held, allocated: row.allocated })),
@@ -142,7 +150,7 @@ function reservedRegions() {
 /**
  * Mount the dashboard in root. ctx: { loadDemand({ signal }) -> state, signal, onUnavailable(reason) }.
  * State: { status: 'ready', projection } | { status: 'conflict' | 'unavailable' | 'refused', message }.
- * Returns a teardown function with refresh() and regions { publish, orderTracking, prediction, routeComparison, caseQueue }.
+ * Optional: orderPlanAdapter mounts the order plan panel (teardown.orderPlan.refresh()). Returns a teardown function with refresh() and regions { publish, orderTracking, prediction, routeComparison, caseQueue }.
  */
 export function mountGregDashboard(root, ctx = {}) {
   const abort = new AbortController();
@@ -190,12 +198,15 @@ export function mountGregDashboard(root, ctx = {}) {
 
   function draw(state, view) {
     showing = state.status === 'ready';
-    reserved.host.hidden = state.status === 'refused';
+    reserved.host.hidden = state.status === 'refused' || isRunRestarted(state);
     body.removeAttribute('aria-busy');
     drawMeta(view?.meta);
     if (view) {
       status.textContent = `Figures updated for ${view.meta.asOfText}.`;
       body.replaceChildren(...(view.flags.noBriefs ? noBriefsBody(view) : figuresBody(view)));
+    } else if (isRunRestarted(state)) {
+      status.textContent = 'Demo restarted.';
+      body.replaceChildren(runRestartedScreen());
     } else if (state.status === 'refused') {
       status.textContent = 'Access refused.';
       body.replaceChildren(statusScreen({ kicker: 'Demand and supply', title: 'You cannot open this dashboard',
@@ -258,7 +269,13 @@ export function mountGregDashboard(root, ctx = {}) {
     reserved.regions.publish.removeAttribute('aria-labelledby');
     reserved.regions.publish.setAttribute('aria-label', 'Preview and publish policy');
   }
-  const published = () => load();
+  const planAdapter = ctx.orderPlanAdapter || ctx.orderPlan;
+  const planTeardown = planAdapter ? mountGregOrderPlan(reserved.regions.prediction, { adapter: planAdapter, signal: abort.signal, onSubmitted: ctx.onOrderPlanSubmitted }) : null;
+  if (planTeardown) {
+    reserved.regions.prediction.removeAttribute('aria-labelledby');
+    reserved.regions.prediction.setAttribute('aria-label', 'Next order plan');
+  }
+  const published = () => { load(); planTeardown?.refresh(); };
   root.addEventListener('gcsp:policy-published', published);
   load();
 
@@ -268,12 +285,14 @@ export function mountGregDashboard(root, ctx = {}) {
     abort.abort();
     ctx.signal?.removeEventListener('abort', onExternalAbort);
     publishTeardown?.();
+    planTeardown?.();
     root.removeEventListener('gcsp:policy-published', published);
     shell.destroy();
     root.replaceChildren();
   }
   teardown.refresh = load;
   teardown.regions = reserved.regions;
+  teardown.orderPlan = planTeardown;
   return teardown;
 }
 
@@ -317,6 +336,7 @@ export class GcspGregDashboardElement extends HTMLElement {
     const adapter = this._adapter || (fixtureName ? fixtureAdapter(fixtureName) : null);
     this._teardown = mountGregDashboard(this, {
       publishAdapter: this._adapter?.publish,
+      orderPlanAdapter: this._adapter?.orderPlan,
       loadDemand: adapter ? (options) => adapter.loadDemand(options) : undefined,
       onUnavailable: (reason) => {
         this._emit('gcsp:unavailable', { reason: reason === 'no-adapter' && fixtureName ? 'unknown-fixture' : reason });

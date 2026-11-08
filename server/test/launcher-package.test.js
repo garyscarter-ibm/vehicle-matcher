@@ -47,6 +47,8 @@ test('assembly is deterministic and discovers every GCSP directory, including a 
 
 test('a future offer block and its own nested direct page are discovered without assembler edits', async (t) => {
   const root = await owned(t), sourceRoot = await sourceCopy(root);
+  // The real root offer page (bc8a941a) wins demo selection; remove it to model a block with only a nested page.
+  await rm(path.join(sourceRoot, 'gcsp-offer.html'));
   const dir = path.join(sourceRoot, 'blocks/gcsp/offer'); await mkdir(dir, { recursive: true });
   await writeFile(path.join(dir, 'preview.html'), '<!doctype html><html><head></head><body><script type="module" src="./harness.js"></script></body></html>');
   await writeFile(path.join(dir, 'harness.js'), "import './gcsp-offer.js';\n");

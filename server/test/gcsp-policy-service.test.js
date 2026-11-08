@@ -335,3 +335,9 @@ test('backend presentation projection matches the retained fixture', async () =>
   const expected = JSON.parse(await readFile(new URL('./fixtures/gcsp-policy-projection.json', import.meta.url), 'utf8'));
   assert.deepEqual(await projection(service), expected);
 });
+
+test('quote terms stay valid at least as long as the buddy hold they pin', async () => {
+  const quote = (await service.getAssumption('employee.recommendation.v1', read)).value.value.termValiditySeconds;
+  const hold = (await service.getAssumption('hold.buddy.durationSeconds', read)).value.value;
+  assert.equal(quote >= hold, true);
+});

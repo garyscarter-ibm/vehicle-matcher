@@ -22,12 +22,12 @@ const catalogue = { policyVersion: 'policy-test', scenarios: [
   { scenarioId: 'mechanics', name: 'Clock mechanics', scenarioVersion: 'v1', fixtureVersion: 'f1', availability: { available: true } },
   { scenarioId: 'business', name: 'Business journey', scenarioVersion: 'v2', fixtureVersion: 'f2', availability: { available: false, missingCapabilities: ['actual-release-service'] } },
 ] };
-function setup(overrides = {}) {
+function setup(overrides = {}, options = {}) {
   const host = document.createElement('div'); document.body.append(host); let ids = 0; const calls = [];
   const adapter = { readControls: async () => ok(state()), readContext: async () => ok({ principalId: 'employee-test', name: 'Employee test', roles: ['employee'] }),
     readScenarios: async () => ok(catalogue), tick: async (payload) => { calls.push(payload); return ok({}); },
     reset: async (payload) => { calls.push(payload); return ok({ runId: 'run-new' }); }, switchPrincipal: async () => ok({}), ...overrides };
-  const navigation = []; const control = mount(host, { adapter, commandId: () => `command-${++ids}`, navigate: (url) => navigation.push(url) });
+  const navigation = []; const control = mount(host, { adapter, commandId: () => `command-${++ids}`, navigate: (url) => navigation.push(url), ...options });
   const click = (label) => { const node = [...host.querySelectorAll('button')].find((row) => row.textContent === label || row.textContent.startsWith(label + ' (')); assert.ok(node, label); node.click(); return node; };
   return { host, adapter, control, click, calls, navigation };
 }
@@ -110,8 +110,9 @@ test('tick preserves committed time and ordered pending/refused outcomes, never 
   const f = setup({ tick: async () => ({ status: 'unavailable', reason: 'Tick interrupted', advance: { now }, tick }),
     readControls: async () => ++reads === 1 ? ok(state()) : { status: 'unavailable', reason: 'Readback failed' } }); await settle(); f.click('Next release'); await settle();
   assert.match(f.host.textContent, /10:00:00/); assert.match(f.host.textContent, /Release refused/);
-  const rows = [...f.host.querySelectorAll('ol li')].map((row) => row.textContent); assert.match(rows[0], /first/); assert.match(rows[1], /second.*Pending/);
-  assert.match(f.host.textContent, /Missing stages: manual-expiry/); assert.match(f.host.textContent, /Release unavailable/); assert.doesNotMatch(f.host.textContent, /0 cars/);
+  const rows = [...f.host.querySelectorAll('ol li')].map((row) => row.textContent); assert.match(rows[0], /^Another step: Refused\. Release refused/); assert.match(rows[1], /^Another step: Waiting for a result/);
+  assert.match(f.host.textContent, /Tick still running\. 2 steps: 1 refused, 1 waiting for a result\./); assert.doesNotMatch(f.host.textContent, /tick-test/);
+  assert.match(f.host.textContent, /Not run this tick: Manual claim expiry\./); assert.match(f.host.textContent, /Release unavailable/); assert.doesNotMatch(f.host.textContent, /0 cars/);
   f.control.destroy();
 });
 // Contract-shaped unit inputs from FUCQ-92 15a79957; no producer/runtime source is imported.
@@ -146,7 +147,7 @@ test('a committed release remains visible while a later handler is pending or re
     lastTick.handlerOrder.push({ handlerId: 'reconcile', stage: 'pending-reconciliation' });
     lastTick.outcomes.push({ handlerId: 'reconcile', stage: 'pending-reconciliation', outcome: { status } });
     const f = setup({ readControls: async () => ok({ ...state(), lastTick }) });
-    await settle(); assert.match(f.host.textContent, /2 cars released/); assert.match(f.host.textContent, new RegExp(status)); f.control.destroy();
+    await settle(); assert.match(f.host.textContent, /2 cars released/); assert.match(f.host.textContent, status === 'pending' ? /Reconciliation|Another step: Waiting for a result/ : /Another step: Refused/); f.control.destroy();
   }
 });
 const invalidReleaseResults = {
@@ -239,7 +240,7 @@ test('definitive stale-run reset retry navigates only to a freshly agreed differ
   f.click('Retry original action'); await settle();
   assert.strictEqual(calls[0], calls[1]); assert.equal(calls[0].expectedRunId, 'run-a');
   assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /gcsp-presenter.html$/);
-  assert.match(f.host.textContent, /Action stale-run/); assert.doesNotMatch(f.host.textContent, /Reset done/);
+  assert.match(f.host.textContent, /Action not completed/); assert.doesNotMatch(f.host.textContent, /Reset done|stale-run/);
   f.control.destroy();
 });
 test('stale-run reset retry cannot navigate from matching old reads, mismatched runs or failed fresh controls/context', async () => {
@@ -283,6 +284,71 @@ test('workspace chooses only actual context role and real adapter, never a query
     await done.ready; assert.equal(calls[0][0], role); if (role === 'employee') assert.equal(calls[0][1], account); done();
   }
 });
+test('employee workspace subscribes the journey clock to presenter actions once and releases it on unsubscribe and destroy', async () => {
+  const host = document.createElement('div'); document.body.append(host); const child = document.createElement('button');
+  let options; let fired = 0; let live;
+  const done = workspace(host, { adapter: { readContext: async () => ok({ roles: ['employee'], principalId: 'e' }) },
+    mountEmployee: (_root, opts) => { options = opts; live = opts.subscribeClock(() => { fired++; }); return () => live(); } });
+  await done.ready; host.append(child); assert.equal(typeof options.subscribeClock, 'function');
+  const tick = () => child.dispatchEvent(new window.CustomEvent('gcsp:presenter-action', { bubbles: true, detail: { kind: 'tick', principalId: 'x' } }));
+  tick(); assert.equal(fired, 1);
+  live(); live(); tick(); assert.equal(fired, 1);
+  const args = []; const extra = options.subscribeClock((...rest) => args.push(rest)); tick(); assert.deepEqual(args, [[]]);
+  extra(); extra(); tick(); assert.equal(args.length, 1);
+  live = options.subscribeClock(() => { fired++; }); tick(); assert.equal(fired, 2);
+  done(); tick(); assert.equal(fired, 2);
+});
+function gregFixture(extra = {}) {
+  const host = document.createElement('div'); document.body.append(host);
+  const counts = { dashboard: 0, tracking: 0, destroyed: 0 }; let region; let controlsHost;
+  const mountGreg = () => {
+    region = document.createElement('section'); region.setAttribute('aria-labelledby', 'old'); region.append(document.createElement('h2'));
+    controlsHost = document.createElement('div'); host.append(region, controlsHost);
+    const teardown = () => { counts.destroyed++; }; teardown.refresh = () => { counts.dashboard++; };
+    teardown.regions = { orderTracking: region }; return teardown;
+  };
+  const ordersAdapter = { loadTracking: async () => { counts.tracking++; return { status: 'unavailable', reason: 'none' }; } };
+  const done = workspace(host, { adapter: { readContext: async () => ok({ roles: ['greg'], principalId: 'g' }) }, gregAdapter: {},
+    mountGreg, ordersAdapter, ...extra });
+  return { host, counts, done, region: () => region, controlsHost: () => controlsHost };
+}
+test('Greg workspace mounts one order panel with production controls in the order tracking region and removes it on destroy', async () => {
+  const f = gregFixture(); await f.done.ready; await settle();
+  const region = f.region(); assert.equal(region.querySelectorAll('.gcsp-orders-tracking').length, 1);
+  assert.equal(f.host.querySelectorAll('.gcsp-orders').length, 1); assert.equal(region.querySelector('h2').textContent, 'Order requests');
+  assert.equal(region.getAttribute('aria-labelledby'), region.querySelector('h2').id); assert.equal(region.querySelector('details.gcsp-orders-production').hidden, false);
+  assert.equal(f.counts.tracking, 1); f.done(); assert.equal(f.counts.destroyed, 1); assert.equal(f.host.querySelectorAll('.gcsp-orders').length, 0);
+});
+test('presenter-action event from inside the workspace refreshes dashboard and orders, and stops after destroy', async () => {
+  const f = gregFixture(); await f.done.ready; await settle();
+  f.controlsHost().dispatchEvent(new window.CustomEvent('gcsp:presenter-action', { bubbles: true, detail: { kind: 'tick' } })); await settle();
+  assert.equal(f.counts.dashboard, 1); assert.equal(f.counts.tracking, 2);
+  f.done(); f.host.dispatchEvent(new window.CustomEvent('gcsp:presenter-action')); await settle();
+  assert.equal(f.counts.dashboard, 1); assert.equal(f.counts.tracking, 2);
+});
+test('order changes refresh the dashboard demand figures', async () => {
+  let changed; const f = gregFixture({ mountOrders: (_root, options) => { changed = options.onChanged; assert.equal(options.productionControls, true); return () => {}; } });
+  await f.done.ready; changed(); assert.equal(f.counts.dashboard, 1); f.done();
+});
+test('the order plan and order tracking refresh each other, and the plan arrives through the Greg adapter', async () => {
+  let ctx; let changed; const counts = { plan: 0, orders: 0 };
+  const f = gregFixture({ gregAdapter: { orderPlan: { marker: 1 } },
+    mountGreg: (_host, options) => { ctx = options; const t = () => {}; t.refresh = () => {}; t.orderPlan = { refresh: () => { counts.plan++; } }; t.regions = { orderTracking: document.createElement('section') }; return t; },
+    mountOrders: (_root, options) => { changed = options.onChanged; const t = () => {}; t.refresh = () => { counts.orders++; }; return t; } });
+  await f.done.ready; assert.deepEqual(ctx.orderPlan, { marker: 1 });
+  ctx.onOrderPlanSubmitted(); assert.deepEqual(counts, { plan: 0, orders: 1 });
+  changed(); assert.equal(counts.plan, 1);
+  f.host.dispatchEvent(new window.CustomEvent('gcsp:presenter-action', { bubbles: true, detail: { kind: 'tick' } })); assert.deepEqual(counts, { plan: 2, orders: 2 });
+  f.done();
+});
+test('a successful clock action announces gcsp:presenter-action; reset and failures do not', async () => {
+  const seen = []; let fail = false;
+  const f = setup({ tick: async () => (fail ? { status: 'forbidden' } : ok({})) }); await settle();
+  f.host.addEventListener('gcsp:presenter-action', (event) => seen.push(event.detail.kind));
+  f.click('Tick'); await settle(); assert.deepEqual(seen, ['tick']);
+  fail = true; f.click('Tick'); await settle(); assert.deepEqual(seen, ['tick']);
+  fail = false; f.click('Reset scenario'); f.click('Confirm reset'); await settle(); assert.deepEqual(seen, ['tick']); f.control.destroy();
+});
 test('HTTP transport sends credentialled exact JSON and keeps typed refusal distinct from lost response', async () => {
   const calls = []; const payload = { commandId: 'same', mode: 'step', expectedClockVersion: '1' };
   const adapter = http({ fetchImpl: async (...args) => { calls.push(args); return { ok: false, json: async () => ({ status: 'forbidden', reason: 'Denied' }) }; } });
@@ -308,8 +374,26 @@ test('fresh workspace with unrecovered reset session explains trusted backend bo
     readControls: async () => ({ status: 'stale-run' }) } });
   await done.ready; await settle();
   assert.doesNotMatch(host.textContent, /Previous employee account/);
-  assert.match(host.textContent, /Workspace unavailable/);
-  assert.match(host.textContent, /trusted backend presenter-session bootstrap/);
+  assert.match(host.textContent, /Demo restarted/); assert.doesNotMatch(host.textContent, /stale-run/);
+  done();
+});
+test('workspace stale-run context shows the restarted screen with a Reload that calls the injected reload', async () => {
+  const host = document.createElement('div'); document.body.append(host); let reloads = 0;
+  const done = workspace(host, { reload: () => reloads++, adapter: { readContext: async () => ({ status: 'stale-run' }),
+    readControls: async () => ({ status: 'unavailable' }) } });
+  await done.ready; await settle();
+  const screen = host.querySelector('.vm-status[role="alert"]'); assert.ok(screen);
+  assert.match(screen.textContent, /Demo restarted/); assert.match(screen.textContent, /The demo was restarted\. Reload the page to continue\./);
+  assert.doesNotMatch(host.textContent, /stale-run|\u2014/);
+  const reload = screen.querySelector('button[type="button"]'); assert.equal(reload.textContent, 'Reload'); reload.click(); assert.equal(reloads, 1);
+  done();
+});
+test('workspace context failure other than stale-run explains bootstrap without a raw status', async () => {
+  const host = document.createElement('div'); document.body.append(host);
+  const done = workspace(host, { adapter: { readContext: async () => ({ status: 'unavailable' }), readControls: async () => ({ status: 'unavailable' }) } });
+  await done.ready; await settle();
+  assert.match(host.textContent, /Workspace unavailable/); assert.match(host.textContent, /Presenter context could not be read/);
+  assert.match(host.textContent, /trusted backend presenter-session bootstrap/); assert.doesNotMatch(host.textContent, /Context unavailable/);
   done();
 });
 
@@ -344,7 +428,7 @@ test('successful readback supersedes an older command tick when another tick is 
   let reads = 0;
   const f = setup({ tick: async () => ok({ tick: { tickId: 'older-action', state: 'completed', handlerOrder: [], outcomes: [] } }),
     readControls: async () => ok({ ...state(), lastTick: ++reads === 1 ? null : { tickId: 'latest-server-tick', state: 'pending', handlerOrder: [], outcomes: [] } }) });
-  await settle(); f.click('Tick'); await settle(); assert.match(f.host.textContent, /latest-server-tick/); assert.doesNotMatch(f.host.textContent, /older-action/); f.control.destroy();
+  await settle(); f.click('Tick'); await settle(); assert.match(f.host.textContent, /Tick still running/); assert.doesNotMatch(f.host.textContent, /Tick completed|older-action/); f.control.destroy();
 });
 
 
@@ -355,7 +439,7 @@ test('invalid target presents backend field explanations without unrelated diagn
   ] }) });
   await settle(); const input = f.host.querySelector('input'); input.value = 'yesterday'; input.dispatchEvent(new window.Event('input'));
   f.click('Tick to target'); await settle();
-  assert.match(f.host.textContent, /invalid-clock-command/);
+  assert.doesNotMatch(f.host.textContent, /invalid-clock-command/); assert.match(f.host.textContent, /Action not completed/);
   assert.match(f.host.textContent, /to: Choose a configured named time or a future UTC ISO instant/);
   assert.match(f.host.textContent, /The target must be later than the current DemoClock/);
   assert.doesNotMatch(f.host.textContent, /unrelated-internal-marker/); f.control.destroy();
@@ -370,15 +454,155 @@ test('known pending receipt keeps pending details visible while allowing deliber
     tick: async (payload) => { ticks.push(payload); currentTick = pending; return ok({ tick: pending }); },
     reset: async (payload) => { resets.push(payload); currentTick = null; return ok({ runId: 'run-after-pending' }); } });
   await settle(); f.click('Tick'); await settle();
-  assert.match(f.host.textContent, /known-pending-tick/); assert.match(f.host.textContent, /awaiting-confirmation/);
-  assert.match(f.host.textContent, /Missing stages: release-pull/);
+  assert.doesNotMatch(f.host.textContent, /known-pending-tick|awaiting-confirmation/); assert.match(f.host.textContent, /Another step: Waiting for a result/);
+  assert.match(f.host.textContent, /Not run this tick: Stock release\./);
   const originalRetry = [...f.host.querySelectorAll('button')].find((row) => row.textContent === 'Retry original action');
   assert.equal(originalRetry.hidden, true);
   const nextTick = [...f.host.querySelectorAll('button')].find((row) => row.textContent.startsWith('Tick ('));
   assert.equal(nextTick.disabled, false); nextTick.click(); await settle();
   assert.equal(ticks.length, 2); assert.notEqual(ticks[0].commandId, ticks[1].commandId);
-  assert.match(f.host.textContent, /awaiting-confirmation/);
+  assert.match(f.host.textContent, /Tick still running\. 1 step: 1 waiting for a result\./);
   assert.equal(f.click('Reset scenario').disabled, false); f.click('Confirm reset'); await settle();
   assert.equal(resets.length, 1); assert.notEqual(resets[0].commandId, ticks[1].commandId);
   assert.match(f.host.textContent, /Reset done. New run: run-after-pending/); f.control.destroy();
 });
+
+const restartedPanel = (f) => f.host.querySelector('.gcsp-run-restarted');
+function assertRestarted(f, reloads) {
+  const notice = restartedPanel(f); assert.ok(notice); assert.equal(notice.hidden, false); assert.equal(notice.getAttribute('role'), 'alert');
+  assert.match(notice.textContent, /The demo was restarted\. Reload the page to continue\./);
+  assert.doesNotMatch(f.host.textContent, /stale-run|\u2014|Action not completed|Readback/);
+  const reload = notice.querySelector('button'); assert.equal(reload.tagName, 'BUTTON'); assert.equal(reload.type, 'button');
+  assert.equal(reload.disabled, false); assert.equal(reload.textContent, 'Reload');
+  const others = [...f.host.querySelectorAll('button, input')].filter((node) => node !== reload);
+  assert.ok(others.length > 0); for (const node of others) assert.ok(node.disabled || node.hidden || node.closest('[hidden]'), node.textContent);
+  assert.equal(f.host.querySelectorAll('[role="radio"][aria-disabled="false"], [role="radio"]:not([disabled]):not([aria-disabled])').length, 0);
+  reload.focus(); assert.equal(document.activeElement, reload);
+  reload.click(); assert.equal(reloads(), 1); return reload;
+}
+test('a stale-run action reply shows the restarted notice, disables controls, never resends and reloads on request', async () => {
+  let reloads = 0; const f = setup({ tick: async (payload) => { f.calls.push(payload); return { status: 'stale-run', reason: 'This request belongs to an earlier demonstration run.' }; } },
+    { reload: () => reloads++ });
+  await settle(); f.click('Tick'); await settle();
+  assert.equal(f.calls.length, 1); const reload = assertRestarted(f, () => reloads);
+  assert.equal(document.activeElement, reload);
+  for (const label of ['Tick', 'Refresh readback']) { const node = [...f.host.querySelectorAll('button')].find((row) => row.textContent.startsWith(label)); node.click(); }
+  await f.control.refresh(); await settle(); assert.equal(f.calls.length, 1);
+  assert.equal([...f.host.querySelectorAll('button')].filter((row) => !row.disabled && !row.hidden && !row.closest('[hidden]')).length, 1);
+  f.control.destroy();
+});
+test('restarted notice takes focus from the control that was used', async () => {
+  let reloads = 0; const f = setup({ tick: async () => ({ status: 'stale-run' }) }, { reload: () => reloads++ });
+  await settle(); f.host.querySelector('details, .gcsp-presenter-controls').open = true;
+  const tick = [...f.host.querySelectorAll('button')].find((row) => row.textContent.startsWith('Tick'));
+  tick.focus(); tick.click(); await settle();
+  assert.equal(document.activeElement, restartedPanel(f).querySelector('button'));
+  f.control.destroy();
+});
+test('a stale-run readback after an authorized read gives the same restarted notice', async () => {
+  let reads = 0; let reloads = 0;
+  const f = setup({ readControls: async () => ++reads === 1 ? ok(state()) : { status: 'stale-run', reason: 'This request belongs to an earlier demonstration run.' } },
+    { reload: () => reloads++ });
+  await settle(); await f.control.refresh(); await settle();
+  assertRestarted(f, () => reloads); assert.equal(f.calls.length, 0); f.control.destroy();
+});
+test('a stale-run acting context gives the restarted notice', async () => {
+  let reads = 0; let reloads = 0;
+  const f = setup({ readContext: async () => ++reads === 1 ? ok({ principalId: 'employee-test', roles: ['employee'] }) : { status: 'stale-run' } },
+    { reload: () => reloads++ });
+  await settle(); await f.control.refresh(); await settle(); assertRestarted(f, () => reloads); f.control.destroy();
+});
+test('an unknown-session readback after an authorized read shows the notice, keeps the controls visible and disabled', async () => {
+  let reads = 0; let reloads = 0;
+  const f = setup({ readControls: async () => ++reads === 1 ? ok(state()) : { status: 'unknown-session', reason: 'This session is not recognised.' } },
+    { reload: () => reloads++ });
+  await settle(); await f.control.refresh(); await settle();
+  assert.equal(f.control.root.hidden, false); assertRestarted(f, () => reloads);
+  assert.doesNotMatch(f.host.textContent, /unknown-session|not recognised/); f.control.destroy();
+});
+test('an unknown-session action reply shows the notice, never resends and reloads on request', async () => {
+  let reloads = 0; const f = setup({ tick: async (payload) => { f.calls.push(payload); return { status: 'unknown-session', reason: 'This session is not recognised.' }; } },
+    { reload: () => reloads++ });
+  await settle(); f.click('Tick'); await settle();
+  assert.equal(f.calls.length, 1); assertRestarted(f, () => reloads); await f.control.refresh(); await settle();
+  assert.equal(f.calls.length, 1); f.control.destroy();
+});
+test('FUCQ-198: the presenter adapter maps a status-less 401 to access-required and a later readback shows the notice', async () => {
+  const lapsed = http({ fetchImpl: async () => ({ ok: false, status: 401, json: async () => ({ error: 'Unauthorized' }) }) });
+  assert.deepEqual(await lapsed.readControls(), { status: 'access-required' });
+  assert.deepEqual(await lapsed.tick({ commandId: 'c' }), { status: 'access-required' });
+  const failed = http({ fetchImpl: async () => ({ ok: false, status: 500, json: async () => ({ error: 'x' }) }) });
+  assert.equal((await failed.readControls()).status, 'unavailable');
+  let reads = 0; let reloads = 0;
+  const f = setup({ readControls: async () => ++reads === 1 ? ok(state()) : lapsed.readControls() }, { reload: () => reloads++ });
+  await settle(); await f.control.refresh(); await settle(); assertRestarted(f, () => reloads); f.control.destroy();
+});
+test('failure messages lead with plain wording, never a raw status or code', async () => {
+  for (const [reply, expected] of [[{ status: 'forbidden', code: 'raw-code' }, /Action not completed: Not permitted/],
+    [{ status: 'conflict' }, /Changed elsewhere\. Refresh readback\./], [{ status: 'weird' }, /Action not completed: Not completed/]]) {
+    const f = setup({ tick: async () => reply }); await settle(); f.click('Tick'); await settle();
+    assert.match(f.host.textContent, expected); assert.doesNotMatch(f.host.textContent, /raw-code|forbidden:|weird/); f.control.destroy();
+  }
+  const f = setup({ readControls: (() => { let n = 0; return async () => ++n === 1 ? ok(state()) : { status: 'unavailable' }; })() });
+  await settle(); await f.control.refresh(); await settle(); assert.match(f.host.textContent, /Readback unavailable: Backend unavailable/); f.control.destroy();
+});
+
+test('FUCQ-213: a refused tick shows a short sentence, never raw JSON or internal ids', async () => {
+  const replies = [{ status: 'unavailable', reason: { code: 'handler-failed', detail: { tickId: 'tick-1' } }, handlerOutcome: { status: 'conflict', reason: 'idempotency-input-changed', current: {} } },
+    { status: 'conflict', reason: 'idempotency-input-changed', current: {} }, { status: 'stale-version', reasons: [{ field: 'clock', reason: { raw: true } }] }];
+  for (const reply of replies) {
+    const f = setup({ tick: async () => reply }); await settle(); f.click('Tick'); await settle();
+    assert.match(f.host.textContent, /Action not completed: (Changed elsewhere|Backend unavailable)/);
+    assert.doesNotMatch(f.host.textContent, /[{}"]|idempotency|handler-failed|tick-1|raw/); f.control.destroy();
+  }
+  const mixed = setup({ tick: async () => ({ status: 'conflict', reason: 'clock-moved', reasons: [{ reason: 'The clock moved on.' }] }) });
+  await settle(); mixed.click('Tick'); await settle();
+  assert.match(mixed.host.textContent, /Action not completed: The clock moved on\./); mixed.control.destroy();
+});
+
+test('FUCQ-203: tick step results sit in a closed disclosure that keeps its open state and focus across readbacks', async () => {
+  const handlerOrder = Array.from({ length: 11 }, (_, i) => ({ handlerId: `step-${i}`, stage: 'pending-reconciliation' }));
+  const lastTick = { runId: 'run-a', tickId: 'tick-many', eventId: 'tick-many', state: 'completed', handlerOrder, missingStages: [],
+    outcomes: handlerOrder.map((row) => ({ ...row, outcome: { status: 'ok', value: { orders: 0 } } })) };
+  const f = setup({ readControls: async () => ok({ ...state(), lastTick }) }); await settle();
+  const receipts = () => f.host.querySelector('details.gcsp-presenter-receipts');
+  assert.ok(receipts(), 'step results are collapsible'); assert.equal(receipts().open, false);
+  assert.equal(receipts().querySelectorAll('li').length, 11); assert.match(receipts().querySelector('summary').textContent, /11/);
+  assert.equal(f.host.querySelector('.gcsp-presenter-results > ol'), null, 'no uncollapsed list');
+  receipts().open = true; receipts().querySelector('summary').focus(); await settle();
+  await f.control.refresh(); await settle();
+  assert.equal(receipts().open, true, 'open state survives a readback'); assert.equal(document.activeElement, receipts().querySelector('summary'));
+  f.control.destroy();
+});
+test('FUCQ-204: last tick shows a plain summary and labelled steps, never JSON or the tick id', async () => {
+  const ids = ['stock-release', 'manual-claim-expiry', 'buddy-expiry', 'buddy-pending-operations', 'lifecycle-appointments', 'lifecycle-approvals',
+    'lifecycle-documents', 'lifecycle-return-appointments', 'renewal-risk-cases', 'selection-order-reconciliation', 'captured-outbox', 'brand-new-handler'];
+  const handlerOrder = ids.map((handlerId) => ({ handlerId, stage: 'pending-reconciliation' }));
+  const lastTick = { runId: 'run-a', tickId: 'presenter-04d33b80aa', eventId: 'presenter-04d33b80aa', state: 'completed', handlerOrder, missingStages: [],
+    outcomes: handlerOrder.map((row) => ({ ...row, outcome: { status: 'ok', value: { orders: 0, kind: 'x' } } })) };
+  const f = setup({ readControls: async () => ok({ ...state(), lastTick }) }); await settle();
+  const text = f.host.querySelector('.gcsp-presenter-results').textContent;
+  assert.doesNotMatch(text, /[{}]|"status"|presenter-04d33b80|brand-new-handler|stock-release/);
+  assert.match(text, /Tick completed\. 12 steps: 12 done\./);
+  const rows = [...f.host.querySelectorAll('ol li')].map((row) => row.textContent);
+  assert.equal(rows[0], 'Stock release: Done.'); assert.equal(rows[10], 'Outbox dispatch: Done.'); assert.equal(rows[11], 'Another step: Done.');
+  assert.ok(!/\u2014/.test(text)); f.control.destroy();
+});
+test('FUCQ-204: unknown tick states and unmapped stages stay plain', async () => {
+  const lastTick = { runId: 'run-a', tickId: 't', state: 'weird-internal', handlerOrder: [{ handlerId: 'stock-release', stage: 'release-pull' }],
+    outcomes: [{ handlerId: 'stock-release', outcome: { status: 'odd-code' } }], missingStages: ['secret-stage', 'other-stage'] };
+  const f = setup({ readControls: async () => ok({ ...state(), lastTick }) }); await settle();
+  const text = f.host.querySelector('.gcsp-presenter-results').textContent;
+  assert.match(text, /Tick result not confirmed\. 1 step: 1 not confirmed\./); assert.match(text, /Stock release: Not confirmed\./);
+  assert.match(text, /Not run this tick: 2 other stages\./); assert.doesNotMatch(text, /weird-internal|odd-code|secret-stage/); f.control.destroy();
+});
+
+test('FUCQ-204: every step the hosted runtime registers has a label, so none reads Another step', async () => {
+  const { stepLine } = await import('../../blocks/gcsp/presenter-controls/tick-copy.js');
+  // Ids from the hosted memory runtime's lastTick readback (docs/gcsp/evidence/fucq-204/results.json).
+  for (const handlerId of ['stock-release', 'manual-claim-expiry', 'buddy-expiry', 'lifecycle-appointments', 'lifecycle-approvals', 'lifecycle-documents',
+    'lifecycle-return-appointments', 'renewal-risk-cases', 'selection-order-reconciliation', 'buddy-allocation', 'captured-outbox']) {
+    assert.doesNotMatch(stepLine({ handlerId }, { handlerId, outcome: { status: 'ok' } }), /Another step/, handlerId);
+  }
+});
+

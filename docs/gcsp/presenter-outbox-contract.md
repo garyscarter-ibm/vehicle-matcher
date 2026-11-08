@@ -36,4 +36,4 @@ FUCQ-98 keeps the existing layout and uses “Captured messages and delivery sta
 
 ## Embedding rules
 
-Same as the [employee entry](employee-entry-contract.md): no inline script bodies, `on*=` attributes, `eval`, `new Function`, string timers or HTML string injection; the element never reads location. Harness: `npm run serve`, then `/gcsp-outbox.html?fixture=<name>`.
+Same as the [employee entry](employee-entry-contract.md): no inline script bodies, `on*=` attributes, `eval`, `new Function`, string timers or HTML string injection; the element never reads location. Harness: `npm run serve`, then `/gcsp-outbox.html?fixture=<name>`; without `?fixture=` the page reads the live `/api/gcsp/presenter/outbox` route.

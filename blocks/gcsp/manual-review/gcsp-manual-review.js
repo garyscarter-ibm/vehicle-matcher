@@ -8,6 +8,8 @@ import { createManualReviewHttpAdapter } from './http-adapter.js';
 
 let serial = 0;
 const label = (key) => key.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (c) => c.toUpperCase());
+// Data codes that are not words: the label already names them (FUCQ-197).
+const HIDDEN_UNITS = new Set(['insurance-group']);
 function shown(value) {
   if (value == null || value === '' || value?.status === 'unknown') return null;
   if (typeof value === 'boolean') return value ? 'Yes' : 'No';
@@ -15,7 +17,7 @@ function shown(value) {
   if (typeof value === 'object') {
     if ('value' in value) {
       const amount = shown(value.value);
-      return amount == null ? null : [amount, value.unit, value.basis].filter(Boolean).join(' ');
+      return amount == null ? null : [amount, HIDDEN_UNITS.has(value.unit) ? null : value.unit, value.basis].filter(Boolean).join(' ');
     }
     return Object.entries(value).filter(([key]) => !['provenance', 'source'].includes(key))
       .map(([key, item]) => `${label(key)}: ${shown(item) ?? 'Not supplied'}`).join('; ') || null;
@@ -32,13 +34,13 @@ export function reviewVehicleView(model) {
   const terms = quote.terms?.kind === 'employee-scheme' ? quote.terms : null;
   const points = (value) => value?.unit === 'points' && Number.isFinite(value.value) ? value.value : null;
   const member = { id: quote.orderUuid, identity: { orderUuid: quote.orderUuid, configurationId: quote.configurationId },
-    display: { name: display.name || 'Car name not supplied', line: `Order ${model.orderNumber}` },
+    display: { name: display.name || 'Car name not supplied', line: `Car order ${model.orderNumber}` },
     media: { src: display.photo || '', alt: image?.alt || `${display.name || 'Car'}: representative image`,
       caption: image?.caption || 'Representative image, not your exact car' },
     facts: [['Model', facts.model ?? facts.marketingModelRange ?? facts.modelRange], ['Body style', facts.body ?? facts.bodyType],
       ['Engine', facts.engine], ['Exterior', facts.exterior ?? facts.colour], ['Interior', facts.interior ?? facts.upholsteryCode],
       ['Transmission', facts.transmission], ['Insurance group', facts.insuranceGroup]]
-      .map(([name, value]) => ({ label: name, value: known(value) })).concat([{ label: 'Order number', value: model.orderNumber }]),
+      .map(([name, value]) => ({ label: name, value: known(value) })).concat([{ label: 'Car order number', value: model.orderNumber }]),
     terms: [{ kind: 'points-monthly', value: points(terms?.points), allowance: points(terms?.allowanceInputs?.allowance) }],
     decision: { gateStatus: ['eligible', 'ineligible', 'needs-confirmation'].includes(quote.eligibility?.state) ? quote.eligibility.state : null, reasons: [], blockers: [], unknowns: [], tradeOffs: [] }, actions: [] };
   return { schemaVersion: 1, selectedId: member.id, members: [member] };
@@ -121,17 +123,14 @@ export function mountManualReviewBody(root, { adapter = createManualReviewHttpAd
       lastVehicle = signature;
       const technical = el('details', 'gcsp-details'); technical.append(el('summary', '', 'Pinned vehicle details'),
         rows(Object.entries(model.quote.facts?.facts ?? {}).map(([key, value]) => [label(key), value])),
-        rows([['Quote reference', model.quote.quoteId], ['Quote valid until', model.quote.validUntil],
-          ['Scheme contribution', model.quote.terms?.contribution], ['Terms source', model.quote.terms?.provenance?.sourceRef]]));
+        rows([['Quote valid until', model.quote.validUntil], ['Scheme contribution', model.quote.terms?.contribution]]));
       nodes.vehicle.replaceChildren(el('p', 'gcsp-field-hint', 'Vehicle details, eligibility and points are pinned to your claim.'),
         matchCard(null, { view: reviewVehicleView(model), showScore: false }), technical);
     }
     nodes.context.replaceChildren(el('h2', 'gcsp-h2', 'Collection and current contract'), rows([
-      ['Journey', model.mode === 'replacement' ? 'Replacement' : 'New order'], ['Vehicle slot', model.binding.entitlementSlotId],
-      ['Requested collection date', model.requestedCollection?.date], ['Collection location', model.requestedCollection?.locationId],
+      ['Journey', model.mode === 'replacement' ? 'Replacement' : 'New order'], ['Requested collection date', model.requestedCollection?.date],
       ['Contract term', model.contract?.months, 'months'], ['Annual mileage', model.contract?.annualMileage, model.contract?.mileageUnit],
-      ...(model.mode === 'replacement' ? [['Returning car', model.currentContract?.model], ['Current contract', model.oldContractId],
-        ['Registration', model.currentContract?.registration]] : [])]),
+      ...(model.mode === 'replacement' ? [['Returning car', model.currentContract?.model], ['Registration', model.currentContract?.registration]] : [])]),
     el('p', 'gcsp-field-hint', 'Collection is requested, not a confirmed appointment.'));
     const errors = new Map((state.errors ?? []).map((entry) => [entry.field, entry.reason]));
     for (const [key, control] of Object.entries(controls)) {
@@ -144,9 +143,11 @@ export function mountManualReviewBody(root, { adapter = createManualReviewHttpAd
     fields.expectedReturnMileage.root.hidden = model.mode !== 'replacement'; controls.specialRequirements.maxLength = model.constraints.maximumSpecialRequirements;
     nodes.counter.textContent = `${details.specialRequirements?.length ?? 0} / ${model.constraints.maximumSpecialRequirements} characters`;
     summary.update((state.errors ?? []).map((entry) => ({ id: controls[entry.field]?.id ?? nodes.notice.id, message: entry.reason })));
-    const c = state.countdown; const seconds = c?.secondsRemaining;
-    nodes.timer.textContent = Number.isFinite(seconds) ? `${c.phase === 'order-review' ? 'Order review' : 'Car reservation'}: ${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')} remaining` : 'Reservation time unavailable';
-    nodes.consequence.textContent = state.status === 'pending' || model.hold.state.endsWith('-pending')
+    // An unconfirmed read keeps the last model, so never show its countdown as a live hold.
+    const unconfirmed = state.status === 'unavailable'; const c = unconfirmed ? null : state.countdown; const seconds = c?.secondsRemaining;
+    nodes.timer.textContent = unconfirmed ? 'Reservation not confirmed' : Number.isFinite(seconds) ? `${c.phase === 'order-review' ? 'Order review' : 'Car reservation'}: ${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')} remaining` : 'Reservation time unavailable';
+    nodes.consequence.textContent = unconfirmed ? 'This car is not shown as reserved until the claim is confirmed. Check current claim.'
+      : state.status === 'pending' || model.hold.state.endsWith('-pending')
       ? 'This action is still being checked. This car stays unavailable until its status is confirmed.' : c?.expired ? 'This deadline has passed. You cannot continue with this reservation.'
       : 'This car is reserved until the deadline. Continuing does not place an order. Time follows the presenter clock.';
     if (state.announcement?.id !== announcementId) { announcementId = state.announcement?.id; nodes.live.textContent = state.announcement?.text ?? ''; }

@@ -8,6 +8,8 @@ export { createDemoStockProvider } from './demo-provider.js';
 export { createRunStockProvider, createRunStockProviderFactory } from './run-stock.js';
 export { createDemoStockGeneration } from './run-stock-generation.js';
 export { STOCK_PULL_VERSION } from './port.js';
+export { createSyntheticStockFaults, STOCK_FAULT_MODES, STOCK_SOURCE_MAX_AGE_KEY } from './synthetic-fault.js';
+import { readStockSourceMaxAge } from './synthetic-fault.js';
 export const STOCK_RELEASE_HANDLER = 'stock-release';
 export const STOCK_RELEASE_CONSUMER = 'stock-release';
 const QUEUE = 'stock-supply-queue';
@@ -33,6 +35,15 @@ export function createStockReleaseService({ repository, policy, clock, identity,
       || !Number.isFinite(new Date(Date.parse(now) + lead.value.value * 86400000).getTime())) return unavailable();
     return ok({ releaseSize: size.value.value, leadTimeDays: lead.value.value, policyVersion: active.policyVersion });
   }
+  // A list observed before the pull is checked against the policy age; stale is a failed check, never an empty pool.
+  async function staleness(response, request) {
+    const observedAt = response?.status === 'ok' ? response.value?.observedAt : undefined;
+    if (!validInstant(observedAt) || Date.parse(observedAt) >= Date.parse(request.asOf)) return null;
+    const minutes = await readStockSourceMaxAge(policy, { runId: request.runId, asOf: request.asOf, policyVersion: request.policyVersion });
+    if (minutes === null) return unavailable();
+    return Date.parse(request.asOf) - Date.parse(observedAt) > minutes * 60000 ? result('unavailable', { code: 'stock-source-stale',
+      reason: 'Stock source data is older than the policy age.', retryable: true, observedAt, maxAgeMinutes: minutes }) : null;
+  }
   async function current(context) {
     const time = await clock.now(context);
     if (time.status !== 'ok') return time;
@@ -56,6 +67,8 @@ export function createStockReleaseService({ repository, policy, clock, identity,
       queuedSupply: queued.value.map((row) => row.outcome.value) };
     let response;
     try { response = await provider.pull(structuredClone(request)); } catch { return unavailable(); }
+    const stale = await staleness(response, request);
+    if (stale) return stale;
     const pulled = validatePull(response, request);
     if (pulled.status !== 'ok') return pulled;
     const snapshot = pulled.value;

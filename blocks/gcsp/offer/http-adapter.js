@@ -1,7 +1,8 @@
 // FUCQ-102 HTTP and safe display contract reviewed at ec70522.
 import { toOfferPresentation } from './offer-projection.js';
+import { isAccessLapsed } from '../kit/run-restarted.js';
 const unavailable = () => ({ status: 'unavailable', retryable: true });
-const statuses = new Set(['ok', 'not-found', 'stale-run', 'forbidden', 'unavailable', 'invalid', 'conflict', 'pending', 'stale-version']);
+const statuses = new Set(['access-required', 'ok', 'not-found', 'stale-run', 'forbidden', 'unavailable', 'invalid', 'conflict', 'pending', 'stale-version']);
 const locator = (value) => typeof value === 'string' && value.length > 0 && value.length <= 512 && !/[\s\u0000-\u001f\u007f]/u.test(value);
 const text = (value) => typeof value === 'string' && value.trim().length > 0 && value.length <= 128;
 const positive = (value) => Number.isSafeInteger(value) && value > 0;
@@ -46,10 +47,10 @@ export function createOfferHttpTransport({ fetch: request = globalThis.fetch, lo
   async function call(path, init) {
     try {
       const response = await request(new URL(path, entry.origin).href, { ...options, ...init });
-      const contentType = response.headers?.get('content-type') || '';
-      if (!contentType.toLowerCase().includes('application/json')) return unavailable();
-      const result = await response.json();
-      if (!result || !statuses.has(result.status) || result.status === 'ok' && (!response.ok || !result.value)) return unavailable();
+      const json = (response.headers?.get('content-type') || '').toLowerCase().includes('application/json');
+      const result = json || response.status === 401 ? await response.json().catch(() => null) : null;
+      if (isAccessLapsed(response.status, result)) return { status: 'access-required' };
+      if (!json || !result || !statuses.has(result.status) || result.status === 'ok' && (!response.ok || !result.value)) return unavailable();
       return result;
     } catch { return unavailable(); }
   }
@@ -65,14 +66,16 @@ export function createOfferHttpTransport({ fetch: request = globalThis.fetch, lo
     },
     async decide(input, { signal } = {}) {
       const offer = input?.offer;
-      if (!hasOnlyKeys(input, ['kind', 'offer', 'commandId', 'reasonCode']) || !bound(offer)
+      const ids = input?.kind === 'accept' && object(input.declarations) ? Object.keys(input.declarations) : [];
+      if (!hasOnlyKeys(input, ['kind', 'offer', 'commandId', 'reasonCode', 'termsDigest', 'declarations']) || !bound(offer)
         || !hasOnlyKeys(offer, ['offerId', 'runId', 'offerVersion', 'holdVersion', 'quoteVersion'])
         || !['accept', 'decline'].includes(input.kind) || !text(input.commandId)
         || !['offerVersion', 'holdVersion', 'quoteVersion'].every((key) => positive(offer[key]))
-        || (input.kind === 'decline' ? !text(input.reasonCode) : Object.hasOwn(input, 'reasonCode'))) return { status: 'invalid' };
+        || (input.kind === 'decline' ? !text(input.reasonCode) || Object.hasOwn(input, 'termsDigest') || Object.hasOwn(input, 'declarations')
+          : Object.hasOwn(input, 'reasonCode') || !text(input.termsDigest) || !ids.length || !ids.every((id) => text(id) && input.declarations[id] === true))) return { status: 'invalid' };
       const body = { commandId: input.commandId, runId: offer.runId, decision: input.kind,
         expectedOfferVersion: offer.offerVersion, expectedHoldVersion: offer.holdVersion, expectedQuoteVersion: offer.quoteVersion,
-        ...(input.kind === 'decline' ? { reasonCode: input.reasonCode } : {}) };
+        ...(input.kind === 'decline' ? { reasonCode: input.reasonCode } : { termsDigest: input.termsDigest, declarations: { ...input.declarations } }) };
       return call(`/api/gcsp/offers/${encodeURIComponent(offer.offerId)}/decision`, { method: 'POST',
         headers: { Accept: 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal });
     },

@@ -42,7 +42,8 @@ function build(spec) {
       selected: aggregate(o.selected), declinedByReason: group(o.reasons),
     },
     stock: { byModelLine: [...spec.stock].sort((a, b) => a[0].localeCompare(b[0])).map(([key, released, held, allocated]) => ({
-      key, released: aggregate(released, []), held: aggregate(held, []), allocated: aggregate(allocated, []) })) },
+      key, released: aggregate(released, []), held: aggregate(held, []), allocated: aggregate(allocated, []) })),
+      source: spec.source ?? { status: 'ok' } },
   };
 }
 

@@ -1,0 +1,327 @@
+{
+  "schemaVersion": 1,
+  "evidenceStatus": "mechanics expectations are authored; outcomeRecord is computed by replayCurrentRoute and asserted equal by gcsp-comparison-current.test.js",
+  "purpose": "tiny fictional synthetic inputs for the real FUCQ-66 mechanics and the current-route outcome record shape; no BMW constructibility claim",
+  "seed": "fucq134-mechanics-1",
+  "overlay": {
+    "comparison.cohortSize": 2,
+    "comparison.carsPerEmployee": 1,
+    "comparison.renewalDays": {
+      "min": 30,
+      "max": 30
+    },
+    "comparison.modelLineMix": [
+      {
+        "modelLine": "G21 Touring|320i",
+        "weight": 1
+      }
+    ],
+    "comparison.releaseCadence": {
+      "firstReleaseDay": 0,
+      "intervalDays": 1,
+      "batchSize": 2
+    },
+    "comparison.accessGroups": [
+      {
+        "id": "mechanics-access",
+        "weight": 1,
+        "accessSeconds": {
+          "min": 0,
+          "max": 0
+        },
+        "responseSeconds": {
+          "min": 0,
+          "max": 0
+        }
+      }
+    ],
+    "comparison.needs.v1": {
+      "essentials": [
+        {
+          "weight": 1,
+          "value": {
+            "seats": {
+              "operator": "gte",
+              "value": 4,
+              "unit": "count"
+            }
+          }
+        }
+      ],
+      "preferences": {
+        "body": [
+          {
+            "value": "estate",
+            "weight": 1
+          }
+        ],
+        "fuel": [
+          {
+            "value": "petrol",
+            "weight": 1
+          }
+        ]
+      }
+    },
+    "comparison.importanceDistribution": [
+      {
+        "value": 100,
+        "weight": 1
+      }
+    ],
+    "comparison.briefNoise.v1": {
+      "accuratePreferenceProbability": 1,
+      "preserveEssentials": true
+    }
+  },
+  "expected": {
+    "afterClaim": "quoted",
+    "reviewPhase": "order-review",
+    "afterAllocation": "allocated",
+    "afterUntakenDeadline": "expired",
+    "returnedStock": "released",
+    "outboxJobs": 0,
+    "sentinelChanges": 0
+  },
+  "outcomeScenario": {
+    "seed": "fucq134-pair-151",
+    "overlay": {
+      "comparison.cohortSize": 2,
+      "comparison.carsPerEmployee": 1,
+      "comparison.renewalDays": {
+        "min": 30,
+        "max": 30
+      },
+      "comparison.modelLineMix": [
+        {
+          "modelLine": "G21 Touring|320i",
+          "weight": 1
+        }
+      ],
+      "comparison.releaseCadence": {
+        "firstReleaseDay": 0,
+        "intervalDays": 1,
+        "batchSize": 1
+      },
+      "comparison.accessGroups": [
+        {
+          "id": "mechanics-access",
+          "weight": 1,
+          "accessSeconds": {
+            "min": 0,
+            "max": 0
+          },
+          "responseSeconds": {
+            "min": 0,
+            "max": 0
+          }
+        }
+      ],
+      "comparison.needs.v1": {
+        "essentials": [
+          {
+            "weight": 1,
+            "value": {
+              "seats": {
+                "operator": "gte",
+                "value": 4,
+                "unit": "count"
+              }
+            }
+          }
+        ],
+        "preferences": {
+          "body": [
+            {
+              "value": "estate",
+              "weight": 1
+            },
+            {
+              "value": "saloon",
+              "weight": 1
+            }
+          ],
+          "fuel": [
+            {
+              "value": "petrol",
+              "weight": 1
+            }
+          ]
+        }
+      },
+      "comparison.importanceDistribution": [
+        {
+          "value": 100,
+          "weight": 1
+        }
+      ],
+      "comparison.briefNoise.v1": {
+        "accuratePreferenceProbability": 0.5,
+        "preserveEssentials": true
+      }
+    },
+    "note": "two employees, one car per release: the first holds a car whose underlying fit fails, the second takes it after it expires"
+  },
+  "outcomeRecord": {
+    "schemaVersion": 1,
+    "route": "current",
+    "seed": "fucq134-pair-151",
+    "policyVersion": "gcsp-policy-v1",
+    "inputHash": "7a5b56f9db0864bf5fb7b4fb90ca114c9428b77fd6bfbdf9b19700b779a37c85",
+    "generatorVersion": "comparison-inputs.sha256.v1",
+    "policyHash": "90da819d8ae50fb0a09073e34403abc6c2f411198e8eaaf514302afd014e96b4",
+    "codeRevision": "fucq134-test",
+    "threshold": 70,
+    "thresholdKey": "comparison.acceptableFitThreshold",
+    "assumptions": [
+      {
+        "key": "comparison.acceptableFitThreshold",
+        "value": 70,
+        "unit": "calculated fit, 0-100",
+        "status": "assumed",
+        "basis": "Plausible demonstration boundary for an acceptable car, revisable. A missing fit never passes. Calculated fit is not observed satisfaction.",
+        "source": "docs/gcsp/shared-contracts.md#comparison-route-replay--fucq-134",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "comparison.manualRoute.v1",
+        "value": {
+          "schemaVersion": 1,
+          "participation": "every-employee-in-the-current-route; buddy non-participants reuse it",
+          "accessEvent": "once-per-release-at-generated-accessSeconds-until-taken-or-renewal",
+          "accessTies": "employeeId-ascending",
+          "eventOrder": [
+            "release",
+            "expiry",
+            "access",
+            "claim",
+            "decision"
+          ],
+          "candidateGate": "stated-brief-eligible-and-fit-at-or-above-threshold",
+          "candidateOrder": "stated-fit-descending-then-orderUuid",
+          "listingToClaimSeconds": 30,
+          "decisionSeconds": 60,
+          "conflict": "refresh-listing-and-claim-next-candidate",
+          "acceptance": "underlying-gates-and-fit-at-or-above-threshold",
+          "acceptedHold": "order-review-then-allocate",
+          "unacceptableHold": "expire-without-taking",
+          "abandonedCar": "not-claimed-again-by-that-employee",
+          "expiryReentry": "next-modelled-access-event",
+          "renewalDeadline": "inclusive",
+          "responseSeconds": "not-used; the manual decision happens in the portal session"
+        },
+        "unit": "versioned synthetic manual behaviour",
+        "status": "assumed",
+        "basis": "Plausible model of today's first-come-first-served release: employees check the portal after each release at their modelled access time, take 30 s to claim from the listing and decide within the 120 s cart hold. Revisable; not observed BMW behaviour.",
+        "source": "docs/gcsp/shared-contracts.md#comparison-route-replay--fucq-134",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "hold.cart.durationSeconds",
+        "value": 120,
+        "unit": "seconds",
+        "status": "assumed",
+        "basis": "Assumed exact value; target has about 2 minutes (Q15, round-1 findings).",
+        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "hold.cart.orderReview.durationSeconds",
+        "value": 600,
+        "unit": "seconds",
+        "status": "assumed",
+        "basis": "Assumed separate form-review phase, FUCQ-66/SAN-017; test in manual trials.",
+        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+        "policyVersion": "gcsp-policy-v1"
+      }
+    ],
+    "limitations": [
+      "Calculated fit is not observed satisfaction.",
+      "People, cars and behaviour are fictional and assumed; not BMW employee data or observed BMW operations.",
+      "Fictional facts for mechanics; not observed BMW configurations, insurance, licence or employee behaviour.",
+      "Underlying needs are synthetic latent inputs, not a real employee confirmation.",
+      "Equipment and ISOFIX facts are unknown; no factory-option or constructibility inference.",
+      "Live corpus realism/integration is separate acceptance evidence."
+    ],
+    "employees": [
+      {
+        "seed": "fucq134-pair-151",
+        "policyVersion": "gcsp-policy-v1",
+        "route": "current",
+        "employeeId": "fictional-employee-3e81195d17bbdf78f2817eca",
+        "accessGroup": "mechanics-access",
+        "outcome": "none-by-renewal",
+        "orderUuid": null,
+        "takenAt": null,
+        "takenDate": null,
+        "renewalAt": "2026-12-05T09:00:00.000Z",
+        "fit": null,
+        "orderingClosedAt": null,
+        "claims": 2,
+        "retries": 0,
+        "expiries": 2,
+        "sessions": 2
+      },
+      {
+        "seed": "fucq134-pair-151",
+        "policyVersion": "gcsp-policy-v1",
+        "route": "current",
+        "employeeId": "fictional-employee-87fca1eb8c37a27088a32cf1",
+        "accessGroup": "mechanics-access",
+        "outcome": "taken",
+        "orderUuid": "19da810c-e312-408c-aa30-6330023e0e18",
+        "takenAt": "2026-11-06T09:01:30.000Z",
+        "takenDate": "2026-11-06",
+        "renewalAt": "2026-12-05T09:00:00.000Z",
+        "fit": {
+          "stated": 100,
+          "underlying": 100
+        },
+        "orderingClosedAt": null,
+        "claims": 1,
+        "retries": 1,
+        "expiries": 0,
+        "sessions": 2
+      }
+    ],
+    "cars": [
+      {
+        "seed": "fucq134-pair-151",
+        "policyVersion": "gcsp-policy-v1",
+        "route": "current",
+        "orderUuid": "19da810c-e312-408c-aa30-6330023e0e18",
+        "releaseId": "fictional-release-3e81195d17bbdf78f2817eca",
+        "outcome": "allocated",
+        "allocatedTo": "fictional-employee-87fca1eb8c37a27088a32cf1",
+        "allocatedAt": "2026-11-06T09:01:30.000Z",
+        "holdsNotTaken": 1,
+        "heldNotTakenSeconds": 120,
+        "heldNotTakenDays": 0.001389
+      },
+      {
+        "seed": "fucq134-pair-151",
+        "policyVersion": "gcsp-policy-v1",
+        "route": "current",
+        "orderUuid": "fdce83a4-e481-4e46-9b44-2c78590bc1ee",
+        "releaseId": "fictional-release-87fca1eb8c37a27088a32cf1",
+        "outcome": "held-not-taken",
+        "allocatedTo": null,
+        "allocatedAt": null,
+        "holdsNotTaken": 1,
+        "heldNotTakenSeconds": 120,
+        "heldNotTakenDays": 0.001389
+      }
+    ],
+    "totals": {
+      "employees": 2,
+      "taken": 1,
+      "noneByRenewal": 1,
+      "claims": 3,
+      "retries": 1,
+      "expiries": 2,
+      "carsAllocated": 1,
+      "carsHeldNotTaken": 1,
+      "carsUnused": 0
+    }
+  }
+}

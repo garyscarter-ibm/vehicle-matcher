@@ -1,0 +1,187 @@
+TAP version 13
+# (node:24083) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+# --import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-loader.mjs", pathToFileURL("./")); register("/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-loader.mjs", pathToFileURL("./"));'
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: actual66 issued claim → actual69 confirmed readback callback → review without another claim
+not ok 1 - actual66 issued claim → actual69 confirmed readback callback → review without another claim
+  ---
+  duration_ms: 161.34775
+  type: 'test'
+  location: '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:181:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    occupancy (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:47:10)
+    TestContext.<anonymous> (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:189:40)
+    process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3)
+  ...
+# Subtest: actual66 confirmed release remains available with invalid local contacts for cancel/back/change
+not ok 2 - actual66 confirmed release remains available with invalid local contacts for cancel/back/change
+  ---
+  duration_ms: 116.865916
+  type: 'test'
+  location: '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:218:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    occupancy (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:47:10)
+    claimFromGallery (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:167:86)
+    process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    async TestContext.<anonymous> (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:220:31)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: actual66 historical success replay cannot authorise continuation after exact clock expiry
+not ok 3 - actual66 historical success replay cannot authorise continuation after exact clock expiry
+  ---
+  duration_ms: 89.849208
+  type: 'test'
+  location: '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:231:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    occupancy (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:47:10)
+    claimFromGallery (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:167:86)
+    process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    async TestContext.<anonymous> (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:232:29)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: actual66 HTTP202 pending claim/replay reconciles before same-operation resend and actual GET confirmation
+not ok 4 - actual66 HTTP202 pending claim/replay reconciles before same-operation resend and actual GET confirmation
+  ---
+  duration_ms: 64.322291
+  type: 'test'
+  location: '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:254:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    occupancy (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:47:10)
+    TestContext.<anonymous> (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:256:77)
+    process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: actual66 HTTP202 release stays occupied past deadline until matching terminal GET, retaining invalid edits
+not ok 5 - actual66 HTTP202 release stays occupied past deadline until matching terminal GET, retaining invalid edits
+  ---
+  duration_ms: 97.993208
+  type: 'test'
+  location: '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:280:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    occupancy (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:47:10)
+    claimFromGallery (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:167:86)
+    process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    async TestContext.<anonymous> (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:282:37)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: actual identity/session isolation and competing review metadata readback fail closed without a new claim
+not ok 6 - actual identity/session isolation and competing review metadata readback fail closed without a new claim
+  ---
+  duration_ms: 90.360542
+  type: 'test'
+  location: '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:300:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    occupancy (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:47:10)
+    claimFromGallery (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:167:86)
+    process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    async TestContext.<anonymous> (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:301:29)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+not ok 7 - /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs
+  ---
+  duration_ms: 1.255375
+  location: '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:31:6'
+  failureType: 'hookFailed'
+  error: |-
+    The admitted proof contains exactly eight runtime setups
+    
+    6 !== 8
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 8
+  actual: 6
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:31:27)
+    TestHook.runInAsyncScope (node:async_hooks:226:14)
+    TestHook.run (node:internal/test_runner/test:1382:25)
+    TestHook.run (node:internal/test_runner/test:1726:18)
+    TestHook.run (node:internal/util:581:20)
+    Test.runHook (node:internal/test_runner/test:1269:20)
+    after (node:internal/test_runner/test:1322:20)
+    Test.run (node:internal/test_runner/test:1408:13)
+    process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 0
+# fail 7
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 818.713792

@@ -93,18 +93,20 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
     }
     if (!panel || !panel.isConnected) build();
     const { choices: c, options: o, account: a } = state;
-    nodes.context.replaceChildren(facts([['Journey', c.mode === 'replacement' ? 'Replacement' : 'New order'], ['Scheme', c.schemeId],
-      ['Vehicle slot', c.slotId], ...(c.mode === 'replacement' ? [['Current car', a.currentContract?.model], ['Current contract', c.oldContractId]] : [])]));
+    // Raw ids are not copy (FUCQ-197): a slot shows only with a supplied label; scheme and contract ids are omitted.
+    const slot = (a.slots ?? []).find((s) => s.entitlementSlotId === c.slotId)?.label;
+    nodes.context.replaceChildren(facts([['Journey', c.mode === 'replacement' ? 'Replacement' : 'New order'],
+      ...(slot ? [['Vehicle slot', slot]] : []), ...(c.mode === 'replacement' ? [['Current car', a.currentContract?.model]] : [])]));
     nodes.allowance.replaceChildren(el('h2', 'gcsp-h2', 'Your monthly allowance'),
       facts([['Monthly allowance', o.allowanceReady ? o.allowance.monthlyPoints : null, 'points a month']]),
       el('p', 'gcsp-note', 'Cars must fit your monthly points allowance. Monthly points are checked before selection.'),
       el('p', 'gcsp-field-hint', o.allowance?.basis ?? 'Allowance needs confirmation.'));
     nodes.employeeFacts.replaceChildren(el('p', 'gcsp-field-hint', 'Employee facts are read-only. Contact details below are editable.'),
-      facts([['Name', a.account?.name], ['Company', a.account?.companyId], ['Grade', a.account?.gradeId],
+      facts([['Name', a.account?.name], ...(a.account?.company ? [['Company', a.account.company]] : []), ['Grade', a.account?.gradeId],
       ['Employee number', a.account?.employeeNumber]]));
     select('driverId', o.drivers, 'driverId', (d) => `${d.kind === 'employee' ? 'You' : 'Nominated'}: ${text(d.name)}`);
     select('contractOptionId', o.contractOptions, 'contractOptionId', (d) => `${d.months} months, ${d.annualMileage} ${d.mileageUnit}`);
-    select('collectionLocationId', o.collectionLocations, 'locationId', (d) => text(d.label ?? d.locationId));
+    select('collectionLocationId', o.collectionLocations, 'locationId', (d) => text(d.label)); // never the raw location id
     select('brand', o.brands.map((value) => ({ value })), 'value', (d) => d.value.toUpperCase());
     for (const [key, control] of Object.entries(controls)) {
       const value = ['phone', 'email'].includes(key) ? c.contact?.[key] : c[key];
@@ -121,7 +123,9 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
     nodes.driverFacts.replaceChildren(facts([['Relationship', driver?.relationship ?? (driver?.kind === 'employee' ? 'Self' : null)],
       ['Licence number', licence?.displayNumber], ['Categories', licence?.categories?.join(', ')], ['Valid from', licence?.validFrom], ['Valid until', licence?.validUntil]]));
     const reasons = [...o.drivers, ...o.contractOptions, ...o.collectionLocations].filter((row) => row.disabled && row.reason);
-    nodes.reasons.replaceChildren(...reasons.map((row) => el('li', '', `${text(row.name ?? row.label ?? row.contractOptionId)}: ${row.reason}`)));
+    // Name each unavailable choice as its select does, never by its raw id (FUCQ-197).
+    const caption = (row) => row.contractOptionId ? `${row.months} months, ${row.annualMileage} ${row.mileageUnit}` : text(row.name ?? row.label);
+    nodes.reasons.replaceChildren(...reasons.map((row) => el('li', '', `${caption(row)}: ${row.reason}`)));
     nodes.reasons.hidden = !reasons.length;
     const errors = Object.entries(state.errors).map(([key, message]) => ({
       id: controls[key === 'contact' ? 'phone' : key]?.id ?? nodes.notice.id, message })); summary.update(errors);
@@ -166,7 +170,7 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
   const teardown = mountEmployee(root, { brand, loadAccount: async () => {
     state = await controller.load({ hint }); const account = state.account?.account;
     return { status: account ? 'ready' : 'unavailable', name: account?.name ?? 'Account unavailable',
-      context: [account?.companyId, account?.gradeId].filter(Boolean).join(', ') };
+      context: [account?.company, account?.gradeId && `Grade ${account.gradeId}`].filter(Boolean).join(', ') };
   }, renderBody(target) { main = target; draw(); } });
   const destroy = () => { disposed = true; controller.destroy(); teardown(); };
   destroy.controller = controller; destroy.refresh = (options) => controller.refresh(options);

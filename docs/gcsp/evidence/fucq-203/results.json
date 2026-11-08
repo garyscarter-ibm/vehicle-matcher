@@ -1,0 +1,51 @@
+{
+  "passed": true,
+  "origin": "http://127.0.0.1:8986",
+  "runtime": "memory (GCSP_RUNTIME=1)",
+  "runs": [
+    {
+      "viewport": 320,
+      "collapsed": {
+        "resultsHeight": 278,
+        "receiptsOpen": false,
+        "steps": 11,
+        "summary": "Step results (11)",
+        "summaryHeight": 44,
+        "overflow": 0,
+        "screenshot": "docs/gcsp/evidence/fucq-203/320-collapsed.png"
+      },
+      "openedThenTicked": {
+        "resultsHeight": 2370,
+        "receiptsOpen": true,
+        "steps": 11,
+        "summary": "Step results (11)",
+        "summaryHeight": 44,
+        "overflow": 0
+      },
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "viewport": 1280,
+      "collapsed": {
+        "resultsHeight": 199,
+        "receiptsOpen": false,
+        "steps": 11,
+        "summary": "Step results (11)",
+        "summaryHeight": 44,
+        "overflow": 0,
+        "screenshot": "docs/gcsp/evidence/fucq-203/1280-collapsed.png"
+      },
+      "openedThenTicked": {
+        "resultsHeight": 634,
+        "receiptsOpen": true,
+        "steps": 11,
+        "summary": "Step results (11)",
+        "summaryHeight": 44,
+        "overflow": 0
+      },
+      "pageErrors": [],
+      "passed": true
+    }
+  ]
+}

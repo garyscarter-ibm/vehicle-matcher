@@ -22,9 +22,9 @@ export async function loadLifecyclePolicy(policy, read, snapshot) {
   let rows;
   try { rows = await Promise.all(keys.map((key) => policy.getAssumption(key, read))); } catch { return policyWide(policyUnavailable('policy-source-unavailable')); }
   // Only a missing pinned row or version is specific to the orders pinned to it; any other refusal (source-invalid,
-  // unavailable, unknown) is policy-wide and keeps its own status and cause.
-  const wide = rows.find((r) => r?.status !== 'ok' && !ORDER_SCOPED.some(([status, code]) => r?.status === status && r?.code === code));
-  if (wide) return policyWide(wide?.status ? structuredClone(wide) : policyUnavailable('policy-source-unavailable'));
+  // unavailable, unknown) is policy-wide and keeps its own status and cause. findIndex, so a null/false reply still counts.
+  const at = rows.findIndex((r) => r?.status !== 'ok' && !ORDER_SCOPED.some(([status, code]) => r?.status === status && r?.code === code));
+  if (at >= 0) return policyWide(rows[at]?.status ? structuredClone(rows[at]) : policyUnavailable('policy-source-unavailable'));
   if (rows.some((r) => r?.status !== 'ok' || r.policyVersion !== read.policyVersion || !text(r.value?.basis, 2000) || !text(r.value?.unit)
     || !['assumed', 'verified'].includes(r.value.status))) return policyUnavailable();
   const [stages, ticks, decline, ownership] = rows.map((r) => r.value.value);

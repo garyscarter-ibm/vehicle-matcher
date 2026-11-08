@@ -283,7 +283,10 @@ export class RenewalCaseService {
       const decision = evaluated.value?.decisions?.[0];
       if (evaluated.status !== 'ok') return projection && evaluated.status === 'invalid' ? unavailable() : evaluated;
       if (!decision || decision.unknowns.length) return unavailable();
-      return decision?.suitable ? ok(projection ? { ...remedy, configurationId: car.value.configurationId, snapshot: decision.snapshot } : remedy) : invalid('remedy.orderUuid', 'This car does not satisfy the current eligibility, essential, points and timing constraints.');
+      const name = decision.snapshot?.display?.name;
+      // carName is server-derived from the checked snapshot, never accepted from the client.
+      const stored = typeof name === 'string' && name.trim() ? { ...remedy, carName: name.trim().slice(0, 200) } : remedy;
+      return decision?.suitable ? ok(projection ? { ...remedy, configurationId: car.value.configurationId, snapshot: decision.snapshot } : stored) : invalid('remedy.orderUuid', 'This car does not satisfy the current eligibility, essential, points and timing constraints.');
     }
     return invalid('remedy.type', 'Choose a supported scheme-team remedy.');
   }
@@ -304,7 +307,8 @@ export class RenewalCaseService {
       if (renewal.value.renewalId !== c.renewalId) return result('conflict', { reason: 'The current renewal differs from this case. Review the employee contract.' });
       let remedy = input.remedy ?? c.remedy;
       if (input.remedy !== undefined || ['remedy-proposed','resolved'].includes(input.status)) {
-        const checked = await this.#remedy(tx, context, renewal.value, p, remedy, input.status === 'resolved'); if (checked.status !== 'ok') return checked;
+        const submitted = input.remedy === undefined && remedy?.type === 'alternative-car' ? { type: remedy.type, orderUuid: remedy.orderUuid } : remedy;
+        const checked = await this.#remedy(tx, context, renewal.value, p, submitted, input.status === 'resolved'); if (checked.status !== 'ok') return checked;
         remedy = checked.value;
       }
       const changed = await tx.compareAndSwap(ref(context,c.caseId), c.version, { status: input.status, nextAction: input.nextAction, dueAt: input.dueAt,
@@ -325,14 +329,14 @@ export class RenewalCaseService {
       const fresh = await this.#fresh(tx, context, p); if (fresh.status !== 'ok') return fresh;
       const employees = await tx.list('employees'); if (employees.status !== 'ok') return employees;
       const events = await tx.list('event_receipts'); if (events.status !== 'ok') return events;
-      let opened = 0;
+      let opened = 0; let unsupported = 0;
       for (const employee of employees.value.filter((e) => e.roles?.includes('employee'))) {
         const renewal = await this.#renewal(tx,context,employee.employeeId);
         if (renewal.status === 'invalid' && renewal.code === 'renewal-context-required') continue;
         if (renewal.status !== 'ok') return renewal;
-        const belongs = (r) => r.state === 'completed' && r.outcome?.status === 'ok' && r.outcome.value?.employeeId === employee.employeeId
-          && r.outcome.value.renewalId === renewal.value.renewalId && text(r.outcome.value.orderUuid,128) && validInstant(r.outcome.value.occurredAt)
-          && Date.parse(r.outcome.value.occurredAt) <= Date.parse(now);
+        const valid = (r) => r.state === 'completed' && r.outcome?.status === 'ok' && r.outcome.value?.employeeId === employee.employeeId
+          && text(r.outcome.value.orderUuid,128) && validInstant(r.outcome.value.occurredAt) && Date.parse(r.outcome.value.occurredAt) <= Date.parse(now);
+        const belongs = (r) => valid(r) && r.outcome.value.renewalId === renewal.value.renewalId;
         const triggers = [];
         const actual = deadline(employee);
         if (p.config.deadlineEnabled && actual && Date.parse(actual.instant)-Date.parse(now) <= p.config.withinDays*86400000
@@ -351,8 +355,27 @@ export class RenewalCaseService {
           if (recorded.status !== 'ok') return recorded;
           opened += 1;
         }
+        if (p.config.lifecycleEnabled) {
+          const slots = await tx.list('entitlement_slots', { employeeId: employee.employeeId }); if (slots.status !== 'ok') return slots;
+          // Another owned renewal has no agreed case semantics: keep a durable refusal rather than dropping the event.
+          const other = (r) => { const v = r.outcome?.value; return valid(r) && text(v.renewalId,128) && v.renewalId !== renewal.value.renewalId
+            && slots.value.some((s) => s.renewalId === v.renewalId && (v.entitlementSlotId == null || v.entitlementSlotId === s.entitlementSlotId)); };
+          for (const event of events.value.filter((e) => p.config.eventTypes.includes(e.eventType) && other(e))) {
+            const v = event.outcome.value; const sourceId = `${event.consumerId}:${event.eventId}`;
+            const eventId = inputDigest([employee.employeeId,v.renewalId,sourceId]);
+            const receipt = await tx.getReceipt('renewal-case-trigger',eventId);
+            if (receipt.status === 'ok') continue;
+            if (receipt.status !== 'not-found') return receipt;
+            const recorded = await tx.recordReceipt({ consumerId: 'renewal-case-trigger',eventId,inputDigest: inputDigest({ unsupported: sourceId,renewalId: v.renewalId }),
+              eventType: 'renewal-case-unsupported-renewal',state: 'completed',inputVersions: { policy: p.read.policyVersion },createdAt: now,updatedAt: now,
+              outcome: result('invalid',{ code: 'renewal-not-supported',reason: 'This lifecycle exception is for another renewal of this employee. Renewal cases cover only the current renewal, so the scheme team must review it.',
+                employeeId: employee.employeeId,renewalId: v.renewalId,orderUuid: v.orderUuid,eventType: event.eventType }) });
+            if (recorded.status !== 'ok') return recorded;
+            unsupported += 1;
+          }
+        }
       }
-      return ok({ opened });
+      return ok(unsupported ? { opened, unsupported } : { opened });
     });
   }
 }

@@ -9,6 +9,7 @@ import { PolicyService, FilePolicyProvider } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { RenewalCaseService } from '../gcsp/cases/index.js';
 import { createLifecycleApprovalService, HANDLER_ID, EXCEPTION_CONSUMER } from '../gcsp/lifecycle/approvals/index.js';
+import { loadLifecyclePolicy, STAGE_LIST_KEY, LIFECYCLE_KEYS } from '../gcsp/lifecycle/approvals/policy.js';
 import { createSyntheticOrderingStatus, createLiveOrderingStatusStub } from '../gcsp/adapters/synthetic-ordering-status.js';
 import { acknowledgedSelection, pendingSelection, createRealProducer } from './helpers/gcsp-lifecycle-approval.js';
 
@@ -219,12 +220,22 @@ test('real FUCQ-71 producer: ManualOrderService manual and buddy selections prog
   assert.equal(start.source.operationType, 'selection-order'); assert.equal(start.source.operationId, manual.submitted.value.operationId);
   assert.equal(start.policyVersion, 'gcsp-policy-v1'); assert.equal(start.entitlementSlotId, 'slot-paula');
   assert.deepEqual([start.renewalAuthority, start.renewalId], ['missing', null], 'no renewal authority was supplied'); assert.deepEqual(start.source.approvalStages, ['HR approval', 'sales-manager approval', 'sent to ordering']);
+  // FUCQ-220: each order carries its own sequential reference through the lifecycle source.
+  assert.equal(start.source.orderReference, 'GCSP-000001');
+  assert.equal((await f.service.read(f.greg, { orderUuid: buddy.orderUuid })).value.source.orderReference, 'GCSP-000002');
   const a = await until(f, manual.orderUuid, (v) => v.outcome !== 'in-progress', 16);
   const b = await until(f, buddy.orderUuid, (v) => v.outcome !== 'in-progress', 16);
   assert.deepEqual([a.route, a.outcome, b.route, b.outcome], ['manual', 'sent-to-ordering', 'buddy', 'sent-to-ordering']);
+  assert.deepEqual([a.source.orderReference, b.source.orderReference], ['GCSP-000001', 'GCSP-000002']);
   assert.ok(a.stages.every((s) => s.state === 'approved' && s.providerReference));
   const acknowledged = await f.repository.query(f.greg, 'event_receipts', { consumerId: 'synthetic-ordering:v1' });
   assert.equal(acknowledged.value.length, 2, 'FUCQ-71 acknowledgement receipts stay untouched');
+});
+
+test('FUCQ-220: an order from before the reference existed reports a null reference and none is invented', async (t) => {
+  const f = await setup(t); const legacy = await f.seed(f.paula, { sourceType: 'cart' });
+  assert.equal((await f.service.read(f.greg, { orderUuid: legacy.orderUuid })).value.source.orderReference, null);
+  assert.equal((await until(f, legacy.orderUuid, (v) => v.outcome !== 'in-progress')).source.orderReference, null);
 });
 
 test('one failing order is recorded and skipped while another order advances, and the tick replays identically', async (t) => {
@@ -348,4 +359,46 @@ test('a shared policy source that fails validation refuses the whole list, read 
   assert.equal(ticked.outcome.handlerId, HANDLER_ID);
   const revisions = await f.repository.query(f.greg, 'event_receipts', { consumerId: `lifecycle:approval:${healthy.orderUuid}` });
   assert.equal(revisions.value.length, 0, 'no order advanced under a broken shared policy');
+});
+
+test('a matched falsey policy reply is a policy-wide source failure; a missing pinned version stays per-order', async () => {
+  const read = { runId: 'r', asOf: AT, policyVersion: 'v-missing' };
+  const pinnedMissing = { status: 'not-found', code: 'policy-version-not-found' };
+  for (const bad of [null, undefined, false]) {
+    for (const key of [STAGE_LIST_KEY, LIFECYCLE_KEYS.ownership]) {
+      const out = await loadLifecyclePolicy({ async getAssumption(k) { return k === key ? bad : pinnedMissing; } }, read);
+      assert.deepEqual([out.status, out.code, out.scope], ['unavailable', 'policy-source-unavailable', 'policy-wide'], `${bad} at ${key}`);
+    }
+  }
+  const scoped = await loadLifecyclePolicy({ async getAssumption() { return pinnedMissing; } }, read);
+  assert.deepEqual([scoped.status, scoped.code, scoped.scope], ['unavailable', 'lifecycle-policy-unavailable', undefined]);
+});
+
+test('a falsey provider reply refuses list, read and tick as a whole; pinned-version misses are skipped per order', async (t) => {
+  const real = await policyWith(); const fault = { key: null, reply: null };
+  const flaky = { getAssumption: async (key, read) => (key === fault.key ? fault.reply : real.getAssumption(key, read)) };
+  const f = await setup(t, { servicePolicy: flaky });
+  const a = await f.seed(f.paula); const b = await f.seed(f.alex);
+  const system = { environmentId: f.paula.environmentId, runId: f.paula.runId, principalId: 'clock-startup', roles: [] };
+  fault.key = LIFECYCLE_KEYS.ticks; fault.reply = { status: 'not-found', code: 'policy-version-not-found' };
+  const skipped = await f.service.stagePort().listOrders(system);
+  assert.equal(skipped.status, 'ok', JSON.stringify(skipped));
+  assert.deepEqual(skipped.value.failed.map((x) => x.code), ['lifecycle-policy-unavailable', 'lifecycle-policy-unavailable']);
+  for (const reply of [null, undefined, false]) {
+    fault.reply = reply;
+    const listed = await f.service.stagePort().listOrders(system);
+    assert.deepEqual([listed.status, listed.code, listed.scope, listed.value], ['unavailable', 'policy-source-unavailable', 'policy-wide', undefined], String(reply));
+    const pub = await f.service.listOrders(f.greg); assert.deepEqual([pub.status, pub.code], ['unavailable', 'policy-source-unavailable']);
+    const one = await f.service.read(f.greg, { orderUuid: a.orderUuid });
+    assert.deepEqual([one.status, one.code, one.scope], ['unavailable', 'policy-source-unavailable', 'policy-wide']);
+  }
+  fault.key = null;
+  assert.equal((await f.service.stagePort().listOrders(system)).value.orders.length, 2, 'the typed provider path still reads both orders');
+  fault.key = STAGE_LIST_KEY; fault.reply = null;
+  const ticked = await f.tick();
+  assert.equal(ticked.outcome.status, 'unavailable', 'the tick refuses as a whole instead of recording per-order skips');
+  for (const { orderUuid } of [a, b]) {
+    const receipts = await f.repository.query(f.greg, 'event_receipts', { consumerId: `lifecycle:approval:${orderUuid}` });
+    assert.equal(receipts.value.length, 0);
+  }
 });

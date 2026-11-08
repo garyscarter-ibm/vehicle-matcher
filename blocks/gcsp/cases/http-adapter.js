@@ -1,4 +1,6 @@
 // Transport shape checks only. The server owns feasibility and status transitions.
+import { isAccessLapsed } from '../kit/run-restarted.js';
+
 export const isCaseRecord = (value) => value && typeof value.caseId === 'string' && value.caseId.length > 0
   && Number.isSafeInteger(value.version) && value.version > 0 && typeof value.status === 'string';
 export function isCaseOptionsProjection(value) {
@@ -33,8 +35,10 @@ export function createCaseHttpAdapter({ base = '', fetchImpl = globalThis.fetch 
       if (options.signal?.aborted) throw error;
       return failure('case-transport-unavailable');
     }
-    let envelope;
-    try { envelope = await response.json(); } catch { return failure('case-response-invalid'); }
+    let envelope; let parsed = true;
+    try { envelope = await response.json(); } catch { parsed = false; }
+    if (isAccessLapsed(response.status, envelope)) return { status: 'access-required' };
+    if (!parsed) return failure('case-response-invalid');
     if (!envelope || typeof envelope.status !== 'string' || envelope.status === 'ok' && (!response.ok || !envelope.value
       || path === 'help' && envelope.value.opensCase !== false
       || path === 'cases' && (input ? !envelope.value.case?.caseId : !Array.isArray(envelope.value.cases))

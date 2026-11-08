@@ -25,7 +25,9 @@ async function expectReview(f) {
     node.textContent === 'Continue to order review' && !node.disabled));
   assert.equal(f.root.querySelector('main h1')?.textContent, 'Review your car');
   const vehicle = f.root.querySelector('.gcsp-review-vehicle'); assert.ok(vehicle);
-  for (const value of [f.car.facts.display.name, f.car.orderNumber, f.claim.quote.quoteId, f.claim.quote.validUntil]) {
+  // The quote id is a raw reference, so it stays off screen (FUCQ-197).
+  assert.ok(f.claim.quote.quoteId); assert.equal(vehicle.textContent.includes(f.claim.quote.quoteId), false);
+  for (const value of [f.car.facts.display.name, f.car.orderNumber, f.claim.quote.validUntil]) {
     assert.ok(value); assert.ok(vehicle.textContent.includes(value), 'Expected pinned claim detail.');
   }
   const contact = f.root.querySelector('[name="contact.phone"]'); assert.ok(contact);
@@ -56,7 +58,7 @@ async function setup(t, { claim = true, defaults = false } = {}) {
   const session = cookies(local.setCookie);
   const presenter = good(await runtime.identity.resolveSession({ authorized: true, cookie: session, purpose: 'presenter-control' }));
   const server = buildServer({ ...runtime.dependencies, gcspAllowedOrigins: [origin] }); good(await server.gcspStartup);
-  const f = { runtime, profile, employee: local.context, requests: [], claimTransportUnavailable: false, claimDelay: null, aborted: 0 };
+  const f = { runtime, profile, presenter, employee: local.context, requests: [], claimTransportUnavailable: false, claimDelay: null, aborted: 0 };
   async function request(path, { body, cookie = session } = {}) {
     f.requests.push({ path, method: body === undefined ? 'GET' : 'POST' });
     const req = Readable.from(body === undefined ? [] : [Buffer.from(JSON.stringify(body))]);
@@ -215,4 +217,24 @@ test('disposing a checking generation aborts its real read and fences late respo
   release(); clock(); await new Promise((done) => setImmediate(done)); await new Promise((done) => setImmediate(done));
   assert.equal(f.root.childElementCount, 0); assert.deepEqual(f.postsSince(offset), []);
   await f.mount(); click(f.root, 'Resume saved journey'); await expectReview(f);
+});
+
+test('a presenter Tick past the hold expiry refreshes the mounted review without writing or losing the draft', async (t) => {
+  const f = await setup(t); const { subscribePresenterActions } = await import('../../blocks/gcsp/presenter-controls/controls.js');
+  await f.mount({ subscribeClock: subscribePresenterActions(f.root) });
+  click(f.root, 'Resume saved journey'); await expectReview(f);
+  const hold = good(await f.request('/api/gcsp/manual/claim')).hold; const offset = f.requests.length;
+  const phone = f.root.querySelector('[name="contact.phone"]'); phone.value = '07700 900123'; phone.dispatchEvent(new f.root.ownerDocument.defaultView.Event('input', { bubbles: true }));
+  const tick = () => { const node = [...f.root.querySelectorAll('button')].find((row) => row.textContent.startsWith('Tick (')); assert.ok(node, 'Expected presenter Tick.'); node.click(); };
+  const cont = () => [...f.root.querySelectorAll('button')].find((row) => row.textContent === 'Continue to order review');
+  const posts = () => f.postsSince(offset).length;
+  tick(); await waitFor(() => posts() === 1 && !f.root.querySelector('[aria-busy="true"]'));
+  await new Promise((done) => setTimeout(done, 100)); assert.equal(cont().disabled, false);
+  tick(); await waitFor(() => posts() === 2); await waitFor(() => cont().disabled);
+  const notices = [...f.root.querySelectorAll('[role="status"], [role="alert"]')].map((node) => node.textContent);
+  assert.ok(notices.some((text) => /hold has expired/i.test(text)), 'Expected an accessible expiry notice.');
+  assert.match(f.root.textContent, /reservation has expired/i); assert.equal(phone.isConnected, true); assert.equal(phone.value, '07700 900123');
+  assert.deepEqual(f.postsSince(offset).map((row) => row.path), Array(2).fill('/api/gcsp/presenter/controls/tick'));
+  const after = good(await f.request('/api/gcsp/manual/claim'));
+  assert.equal(after.hold.expiresAt, hold.expiresAt); assert.notEqual(after.hold.state, 'active');
 });

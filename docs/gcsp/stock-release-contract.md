@@ -147,3 +147,9 @@ Remaining final gates are real FUCQ-77/FUCQ-78 provider/data integration, FUCQ-1
 4. If generation is not configured or returns a non-ok status, that run falls back to the demo provider, one line naming the run and the reason is logged, and `describe(runId)` returns `{ source, reason }`. A repository read failure is `unavailable` and cached nothing, so it never triggers the fallback.
 
 Generated cars carry `eligibilityModelKey` and the model-line browse facts only where `stock.eligibilityModelKeys.v1` maps their AG code (today `72HH` only); other cars release but are not eligible. `GCSP_STOCK_SOURCE=demo` forces the demo provider; it is meant for a fresh run, because forcing it mid-run mixes sources. `GCSP_STOCK_INVENTORY_PATH` sets the allocation inventory file, default `<tmpdir>/gcsp-stock-inventory/<environment>.json`.
+
+## Failed and stale pulls
+
+FUCQ-130. A pull that is unavailable, or whose list was observed more than `supply.stockSource.maxAgeMinutes` (PolicyService, assumed 60 minutes) before the pull, is a failed check. The release handler returns `unavailable` (code `stock-source-stale` for the age refusal), the tick is interrupted at `release-pull`, and no stock, release receipt, allocation, offer, hold or brief changes. Paula's activity reads `sourceStatus: unavailable`; Greg's demand projection carries `stock.source` (`{ status: 'unavailable' }`, with `reason: 'stale'` for the age refusal) instead of an empty pool. The next tick after the cause clears pulls the same tranche.
+
+The synthetic fault (`server/gcsp/stock/synthetic-fault.js`) wraps the composed pull provider. It is keyed by run, so a reset clears it, and it alters only pulls whose source mode is `synthetic`. The data-unavailable start loader sets it from the fixture; the presenter reads and sets it through `GET`/`POST /api/gcsp/presenter/scenarios/faults` (`{ commandId, adapter: 'stock', mode: 'none' | 'unavailable' | 'stale' }`).

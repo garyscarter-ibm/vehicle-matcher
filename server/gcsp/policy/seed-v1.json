@@ -11201,6 +11201,17 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "supply.stockSource.maxAgeMinutes",
+      "value": 60,
+      "unit": "minutes",
+      "status": "assumed",
+      "basis": "Assumed plausible tolerance for a stock list refreshed on each release pull: data observed more than an hour before the pull is stale, so the pull is a failed check, never an empty pool (FUCQ-130).",
+      "source": "docs/gcsp/stock-release-contract.md#failed-and-stale-pulls",
+      "sourceDate": "2026-11-08",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "brief.slider.minimum",
       "value": 0,
       "unit": "integer slider units",
@@ -11589,12 +11600,12 @@
             "highMiles": 20000
           }
         },
-        "termValiditySeconds": 3600,
+        "termValiditySeconds": 7200,
         "driverEligibilityRequired": true
       },
       "unit": "employee recommendation calibration and registry",
       "status": "assumed",
-      "basis": "Read-only employee composition of existing rankCars curves; explicit dimensions, separate importance/indifference, confirmed exact evidence and no retail cash budget. Demo calibration is revisable, not BMW policy.",
+      "basis": "Read-only employee composition of existing rankCars curves; explicit dimensions, separate importance/indifference, confirmed exact evidence and no retail cash budget. Quote terms are pinned for at least the buddy hold (7,200 s) so a held offer can be accepted for its whole countdown. Demo calibration is revisable, not BMW policy.",
       "source": "docs/gcsp/shared-recommendation-design.md",
       "sourceDate": "2026-11-05",
       "policyVersion": "gcsp-policy-v1",
@@ -12171,13 +12182,17 @@
         {
           "modelLine": "G61 i5|i5 40",
           "weight": 20
+        },
+        {
+          "modelLine": "F70 Sports Hatch|120",
+          "weight": 40
         }
       ],
       "unit": "weighted model-line mix",
       "status": "assumed",
-      "basis": "Limited illustrative order mix over three reviewed structural fixtures. Not coverage of every scheme model line and not real stock-locator proportions.",
+      "basis": "Limited illustrative order mix over four reviewed structural fixtures. Not coverage of every scheme model line and not real stock-locator proportions. The F70 Sports Hatch|120 weight (FUCQ-199) matches the G1-6 weight in comparison.gradeDistribution, the only line that grade can have.",
       "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
-      "sourceDate": "2026-11-05",
+      "sourceDate": "2026-11-08",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
@@ -12201,8 +12216,8 @@
       "value": {
         "kind": "reviewed-fixtures",
         "version": "comparison-structural-fixtures.v1",
-        "reviewedOn": "2026-11-05",
-        "basis": "FUCQ-133 source review checks target Q13 identity structure and explicit fictional provenance. Three limited model labels are scenario references, not a published BMW corpus or verified constructible builds. Replace this key with corpus references when published.",
+        "reviewedOn": "2026-11-08",
+        "basis": "FUCQ-133 source review checks target Q13 identity structure and explicit fictional provenance. Four limited model labels are scenario references, not a published BMW corpus or verified constructible builds. FUCQ-199 (2026-11-08) adds F70 Sports Hatch|120 so grade G1-6 has an eligible line. Replace this key with corpus references when published.",
         "configurations": [
           {
             "modelLine": "G20 Saloon|320i",
@@ -12326,6 +12341,47 @@
                 "fullSchemeModelCoverage"
               ]
             }
+          },
+          {
+            "modelLine": "F70 Sports Hatch|120",
+            "configurationId": "Q01QRjcwOlJFRlBBSU5ULFJFRlRSSU0=",
+            "snapshotVersion": "comparison-structural-fixtures.v1",
+            "canonicalIdentity": {
+              "vgModelCode": "CMPF70",
+              "agModelCode": null,
+              "factoryOptionCodes": [
+                "REFPAINT",
+                "REFTRIM"
+              ],
+              "provenance": {
+                "kind": "synthetic",
+                "source": "FUCQ-133 reviewed structural fixture; CMP/REF codes are fictional, not observed BMW option/model codes",
+                "observedDate": null
+              }
+            },
+            "configuration": {
+              "model": "120",
+              "generation": "F70",
+              "body": "hatchback",
+              "powertrain": "petrol",
+              "vgModelCode": "CMPF70",
+              "market": "GB"
+            },
+            "sourceContext": {
+              "sourceRefs": [
+                "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133"
+              ],
+              "observedDate": "2026-11-08",
+              "sourceKind": "synthetic-structural-fixture",
+              "confidence": "Synthetic structural comparison fixture; descriptive labels only, no observed factory configuration, complete specifications or constructibility claim",
+              "unresolvedFacts": [
+                "exactFactoryOptions",
+                "exactEquipment",
+                "constructibility",
+                "fullSchemeModelCoverage"
+              ]
+            }
           }
         ],
         "datasetId": "comparison-structural-fixtures"
@@ -12334,7 +12390,7 @@
       "status": "assumed",
       "basis": "Explicit temporary reviewed fixture set permitted by FUCQ-133; identity format follows existing Q13 policy, with fictional CMP/REF codes. No full scheme coverage or FUCQ-77 publication claim.",
       "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
-      "sourceDate": "2026-11-05",
+      "sourceDate": "2026-11-08",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
@@ -12346,6 +12402,358 @@
       "basis": "Bounded synthetic materialisation limit rejects accidental excessive cohort/density requests before allocation; revisable application resource guard, not BMW policy.",
       "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
       "sourceDate": "2026-11-05",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.acceptableFitThreshold",
+      "value": 70,
+      "unit": "calculated fit, 0-100",
+      "basis": "Plausible demonstration boundary for an acceptable car, revisable. A missing fit never passes. Calculated fit is not observed satisfaction.",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#comparison-route-replay--fucq-134",
+      "sourceDate": "2026-11-08",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.manualRoute.v1",
+      "value": {
+        "schemaVersion": 1,
+        "participation": "every-employee-in-the-current-route; buddy non-participants reuse it",
+        "accessEvent": "once-per-release-at-generated-accessSeconds-until-taken-or-renewal",
+        "accessTies": "employeeId-ascending",
+        "eventOrder": [
+          "release",
+          "expiry",
+          "access",
+          "claim",
+          "decision"
+        ],
+        "candidateGate": "stated-brief-eligible-and-fit-at-or-above-threshold",
+        "candidateOrder": "stated-fit-descending-then-orderUuid",
+        "listingToClaimSeconds": 30,
+        "decisionSeconds": 60,
+        "conflict": "refresh-listing-and-claim-next-candidate",
+        "acceptance": "underlying-gates-and-fit-at-or-above-threshold",
+        "acceptedHold": "order-review-then-allocate",
+        "unacceptableHold": "expire-without-taking",
+        "abandonedCar": "not-claimed-again-by-that-employee",
+        "expiryReentry": "next-modelled-access-event",
+        "renewalDeadline": "inclusive",
+        "responseSeconds": "not-used; the manual decision happens in the portal session"
+      },
+      "unit": "versioned synthetic manual behaviour",
+      "basis": "Plausible model of today's first-come-first-served release: employees check the portal after each release at their modelled access time, take 30 s to claim from the listing and decide within the 120 s cart hold. Revisable; not observed BMW behaviour.",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#comparison-route-replay--fucq-134",
+      "sourceDate": "2026-11-08",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.recordAdapter.v1",
+      "value": {
+        "schemaVersion": 1,
+        "fixtureVersion": "comparison-records.synthetic.v1",
+        "kind": "synthetic-mechanics-only",
+        "stockAvailabilityDaysAfterHorizon": 1,
+        "orderReferences": "sequential-run-local-seven-digits",
+        "principalIds": "derived-from-generated-employeeId",
+        "collectionChoice": "first-permitted-driver-contract-location; renewal-date",
+        "expectedReturnMileage": 0,
+        "specialRequirements": "",
+        "driver": {
+          "eligible": {
+            "status": "known",
+            "value": true,
+            "unit": null
+          },
+          "kind": "employee",
+          "licence": {
+            "displayNumber": "FICTIONAL-COMPARISON-LICENCE",
+            "categories": [
+              "car"
+            ],
+            "validFrom": "2020-01-01",
+            "validUntil": "2030-12-31"
+          }
+        },
+        "employeeFacts": {
+          "charging": {
+            "status": "known",
+            "value": "home",
+            "unit": null
+          },
+          "annualMileage": {
+            "status": "known",
+            "value": 12000,
+            "unit": "mi/year"
+          }
+        },
+        "contact": {
+          "phone": "01632 960000",
+          "emailTemplate": "{employeeId}@example.invalid"
+        },
+        "stockFactsByModelLine": {
+          "G20 Saloon|320i": {
+            "body": {
+              "status": "known",
+              "value": "saloon",
+              "unit": null
+            },
+            "fuel": {
+              "status": "known",
+              "value": "petrol",
+              "unit": null
+            },
+            "seats": {
+              "status": "known",
+              "value": 5,
+              "unit": "count"
+            },
+            "boot": {
+              "status": "known",
+              "value": 480,
+              "unit": "L"
+            },
+            "zeroTo62": {
+              "status": "known",
+              "value": 7.4,
+              "unit": "s"
+            },
+            "mpg": {
+              "status": "known",
+              "value": 45,
+              "unit": "mpg-imperial"
+            },
+            "sizeClass": {
+              "status": "known",
+              "value": 3,
+              "unit": "ordinal-1-5"
+            },
+            "tags": {
+              "status": "known",
+              "value": [
+                "cruiser"
+              ],
+              "unit": null
+            },
+            "insuranceGroup": {
+              "status": "known",
+              "value": 25,
+              "unit": "insurance-group"
+            },
+            "equipment": {
+              "status": "unknown",
+              "value": null,
+              "unit": "equipment-key"
+            },
+            "frontIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            },
+            "rearIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            }
+          },
+          "G21 Touring|320i": {
+            "body": {
+              "status": "known",
+              "value": "estate",
+              "unit": null
+            },
+            "fuel": {
+              "status": "known",
+              "value": "petrol",
+              "unit": null
+            },
+            "seats": {
+              "status": "known",
+              "value": 5,
+              "unit": "count"
+            },
+            "boot": {
+              "status": "known",
+              "value": 500,
+              "unit": "L"
+            },
+            "zeroTo62": {
+              "status": "known",
+              "value": 7.5,
+              "unit": "s"
+            },
+            "mpg": {
+              "status": "known",
+              "value": 44,
+              "unit": "mpg-imperial"
+            },
+            "sizeClass": {
+              "status": "known",
+              "value": 3,
+              "unit": "ordinal-1-5"
+            },
+            "tags": {
+              "status": "known",
+              "value": [
+                "cruiser"
+              ],
+              "unit": null
+            },
+            "insuranceGroup": {
+              "status": "known",
+              "value": 25,
+              "unit": "insurance-group"
+            },
+            "equipment": {
+              "status": "unknown",
+              "value": null,
+              "unit": "equipment-key"
+            },
+            "frontIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            },
+            "rearIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            }
+          },
+          "G61 i5|i5 40": {
+            "body": {
+              "status": "known",
+              "value": "estate",
+              "unit": null
+            },
+            "fuel": {
+              "status": "known",
+              "value": "ev",
+              "unit": null
+            },
+            "seats": {
+              "status": "known",
+              "value": 5,
+              "unit": "count"
+            },
+            "boot": {
+              "status": "known",
+              "value": 570,
+              "unit": "L"
+            },
+            "zeroTo62": {
+              "status": "known",
+              "value": 7.7,
+              "unit": "s"
+            },
+            "mpg": {
+              "status": "unknown",
+              "value": null,
+              "unit": "mpg-imperial"
+            },
+            "sizeClass": {
+              "status": "known",
+              "value": 4,
+              "unit": "ordinal-1-5"
+            },
+            "tags": {
+              "status": "known",
+              "value": [
+                "cruiser"
+              ],
+              "unit": null
+            },
+            "insuranceGroup": {
+              "status": "known",
+              "value": 25,
+              "unit": "insurance-group"
+            },
+            "equipment": {
+              "status": "unknown",
+              "value": null,
+              "unit": "equipment-key"
+            },
+            "frontIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            },
+            "rearIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            }
+          }
+        },
+        "unknownFieldRule": "retain-unknown-no-inference",
+        "suitabilityAvailability": "static-suitability-at-origin; release time, visibility and claims are rechecked by FUCQ-66 in the run",
+        "limitations": [
+          "Fictional facts for mechanics; not observed BMW configurations, insurance, licence or employee behaviour.",
+          "Underlying needs are synthetic latent inputs, not a real employee confirmation.",
+          "Equipment and ISOFIX facts are unknown; no factory-option or constructibility inference.",
+          "Live corpus realism/integration is separate acceptance evidence."
+        ]
+      },
+      "unit": "versioned fictional input mapping and provenance",
+      "basis": "Fictional driver, contact and model-line facts so generated employees and cars pass through the real manual claim code. None is a measured BMW specification, driver record or constructible configuration; unlisted facts stay unknown.",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#comparison-route-replay--fucq-134",
+      "sourceDate": "2026-11-08",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.buddyRoute.v1",
+      "value": {
+        "schemaVersion": 1,
+        "participation": "generated-buddyParticipation",
+        "consent": "search-and-hold-given-through-brief-service-with-stated-brief",
+        "allocation": "at-each-release-through-allocation-service",
+        "orderingWindow": "participant-pauses-when-manual-ordering-closes",
+        "response": "offer-creation-plus-generated-responseSeconds",
+        "offerExpiry": "buddy-hold-deadline",
+        "acceptance": "underlying-gates-and-fit-at-or-above-threshold",
+        "declineReason": "registered-reason-for-largest-importance-weighted-shortfall",
+        "declineReasonFallback": "size",
+        "afterDeclineOrExpiry": "no-trigger-until-next-release-or-brief-change",
+        "nonParticipants": "comparison.manualRoute.v1"
+      },
+      "unit": "versioned synthetic buddy behaviour",
+      "basis": "Plausible model of preference-led buddy offers: consenting participants get offers at each release, answer at their generated response time or let the offer lapse at the hold deadline, accept only a car that passes their underlying needs, and decline naming the attribute where it falls shortest. The fallback reason applies when that attribute has no registered reason; size is the most general of the four. Revisable; not observed BMW behaviour.",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#comparison-buddy-route--fucq-135",
+      "sourceDate": "2026-11-08",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.noClearDifferenceRule",
+      "value": {
+        "schemaVersion": 1,
+        "rule": "route-seed-ranges-overlap",
+        "overlapInclusive": true,
+        "minimumSeeds": 3,
+        "betterWhen": {
+          "acceptableCoverage": "higher",
+          "carsNeverAllocated": "lower",
+          "heldNotTakenCarDays": "lower",
+          "declinedOffers": "lower",
+          "expiredOffers": "lower",
+          "failedClaims": "lower",
+          "retries": "lower",
+          "meanAcceptedFit": "higher",
+          "accessGroupCoverage": "higher"
+        }
+      },
+      "unit": "versioned rule for labelling a route difference",
+      "basis": "Two routes show no clear difference for a measure when their lowest-to-highest seed ranges overlap, with at least three seeds; fewer seeds are labelled insufficient. A rule of thumb for a small seed set, revisable; not a statistical test.",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#comparison-measures--fucq-136",
+      "sourceDate": "2026-11-08",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
@@ -12490,6 +12898,22 @@
         "sales-manager approval",
         "sent to ordering"
       ]
+    },
+    {
+      "unit": "order reference format",
+      "status": "assumed",
+      "basis": "A short prefixed sequence reads clearly on screen and in Print; the real order identifier format is unconfirmed and is revised through trials.",
+      "source": "docs/gcsp/shared-contracts.md#order-reference--fucq-220",
+      "sourceDate": "2026-11-08",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z",
+      "key": "ordering.reference.v1",
+      "value": {
+        "schemaVersion": 1,
+        "prefix": "GCSP-",
+        "digits": 6,
+        "first": 1
+      }
     },
     {
       "key": "lifecycle.approval.ticks.v1",
@@ -13138,7 +13562,8 @@
               "touring",
               "touring",
               "i5",
-              "saloon"
+              "saloon",
+              "hatch"
             ]
           },
           {
@@ -13163,21 +13588,415 @@
       },
       "unit": "release windows as minutes after the named scenario cue, with car kinds",
       "status": "assumed",
-      "basis": "Assumed demo release windows for the synthetic stock provider, timed from the scenario release cue so one cue change moves them all.",
+      "basis": "Assumed demo release windows for the synthetic stock provider, timed from the scenario release cue so one cue change moves them all. The first window includes a 1 Series hatch so a G1-6 employee (Alex) has an eligible car (FUCQ-199).",
       "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
-      "sourceDate": "2026-11-07",
+      "sourceDate": "2026-11-08",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
       "key": "stock.eligibilityModelKeys.v1",
       "value": {
-        "72HH": "G61 i5|i5 40"
+        "72HH": "G61 i5|i5 40",
+        "82GE": "F70 Sports Hatch|120",
+        "22GE": "F70 Sports Hatch|M135",
+        "12CM": "G42 Coupe|220i",
+        "22CM": "G42 Coupe|230i",
+        "52FA": "G42 Coupe|M240i"
       },
       "unit": "eligibility model key by corpus agModelCode",
       "status": "assumed",
-      "basis": "Generated stock cars carry the corpus agModelCode but no model name. fleet-plan.json maps AG 72HH (G61, VG T5MJ) to the G61 i5 eDrive40 line, so only that code is mapped. F70 and G42 codes are unmapped (FUCQ-77 gap): those cars release but are not eligible.",
+      "basis": "Generated stock cars carry the corpus agModelCode but no model name. fleet-plan.json maps AG 72HH (G61, VG T5MJ) to the G61 i5 eDrive40 line. FUCQ-77's corpus qualification maps each of 82GE, 22GE, 12CM, 22CM and 52FA to exactly one scheme line in the in-repo .9 corpus (demo-plan.json); 62GE (F70 123) has no scheme line and stays unmapped.",
       "source": "server/data/gcsp/vehicle-evidence/fleet-plan.json",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "orderPlan.horizonDays",
+      "value": 120,
+      "unit": "days",
+      "status": "assumed",
+      "basis": "Plausible four-month synthetic planning horizon that covers the demo renewals; revisable through trials. Not a BMW procurement rule.",
+      "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "orderPlan.budgetMinor",
+      "value": 20000000,
+      "unit": "GBP minor units",
+      "status": "assumed",
+      "basis": "Synthetic 200,000 GBP hard procurement envelope for the demo catalogue; no BMW budget or cost claim.",
+      "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "orderPlan.currency",
+      "value": "GBP",
+      "unit": "ISO currency",
+      "status": "assumed",
+      "basis": "Synthetic UK planning currency. Every catalogue unit cost must use this currency.",
+      "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "orderPlan.modelBounds",
+      "value": [
+        {
+          "modelId": "g20-saloon",
+          "min": 0,
+          "max": 4
+        },
+        {
+          "modelId": "g21-touring",
+          "min": 0,
+          "max": 3
+        },
+        {
+          "modelId": "g61-i5",
+          "min": 0,
+          "max": 2
+        }
+      ],
+      "unit": "new vehicles per model",
+      "status": "assumed",
+      "basis": "Synthetic per-model order limits over the orderPlan.catalog.v1 model ids; a model bound sums its sibling derivatives. Revisable through trials.",
+      "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "orderPlan.derivativeBounds",
+      "value": [
+        {
+          "derivativeId": "g20-saloon-320i",
+          "min": 0,
+          "max": 3
+        },
+        {
+          "derivativeId": "g20-saloon-330e",
+          "min": 0,
+          "max": 2
+        },
+        {
+          "derivativeId": "g21-touring-320i",
+          "min": 0,
+          "max": 3
+        },
+        {
+          "derivativeId": "g61-i5-40",
+          "min": 0,
+          "max": 2
+        }
+      ],
+      "unit": "new vehicles per derivative",
+      "status": "assumed",
+      "basis": "Synthetic per-derivative order limits over the orderPlan.catalog.v1 derivative ids; small enough for the exhaustive demo search. Revisable through trials.",
+      "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "orderPlan.objectiveWeights",
+      "value": {
+        "coverage": 100,
+        "unallocatedStock": 10,
+        "costMinor": 0
+      },
+      "unit": "objective utility per covered entitlement / unmatched vehicle / currency minor unit",
+      "status": "assumed",
+      "basis": "Prefer acceptable renewal coverage, then reduce unmatched stock; budget stays a hard limit. Not measured employee utility weights.",
+      "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "orderPlan.gregEditableKeys",
+      "value": [
+        "orderPlan.modelBounds",
+        "orderPlan.derivativeBounds",
+        "orderPlan.budgetMinor"
+      ],
+      "unit": "policy keys",
+      "status": "assumed",
+      "basis": "Greg may edit order quantity bounds and the budget envelope; eligibility, essentials, catalogue and objective weights are not editable.",
+      "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "orderPlan.catalog.v1",
+      "value": {
+        "version": "order-plan-catalog.v1",
+        "currency": "GBP",
+        "assurance": "synthetic-scenario",
+        "derivatives": [
+          {
+            "derivativeId": "g20-saloon-320i",
+            "modelId": "g20-saloon",
+            "production": {
+              "model": "3 Series Saloon",
+              "derivative": "320i"
+            },
+            "unitCostMinor": 3900000,
+            "configurationIds": [
+              "Q01QRzIwOlJFRlBBSU5ULFJFRlRSSU0="
+            ]
+          },
+          {
+            "derivativeId": "g20-saloon-330e",
+            "modelId": "g20-saloon",
+            "production": {
+              "model": "3 Series Saloon",
+              "derivative": "330e"
+            },
+            "unitCostMinor": 4600000,
+            "configurationIds": [
+              "Q01QRzIwRTpSRUZQQUlOVCxSRUZUUklN"
+            ]
+          },
+          {
+            "derivativeId": "g21-touring-320i",
+            "modelId": "g21-touring",
+            "production": {
+              "model": "3 Series Touring",
+              "derivative": "320i"
+            },
+            "unitCostMinor": 4200000,
+            "configurationIds": [
+              "Q01QRzIxOlJFRlBBSU5ULFJFRlRSSU0="
+            ]
+          },
+          {
+            "derivativeId": "g61-i5-40",
+            "modelId": "g61-i5",
+            "production": {
+              "model": "i5 Touring",
+              "derivative": "eDrive40"
+            },
+            "unitCostMinor": 6200000,
+            "configurationIds": [
+              "Q01QRzYxOlJFRlBBSU5ULFJFRlRSSU0="
+            ]
+          }
+        ],
+        "configurations": [
+          {
+            "configurationId": "Q01QRzIwOlJFRlBBSU5ULFJFRlRSSU0=",
+            "derivativeId": "g20-saloon-320i",
+            "version": "order-plan-catalog.v1",
+            "display": {
+              "name": "Synthetic 3 Series Saloon 320i"
+            },
+            "facts": {
+              "eligibilityModelKey": {
+                "value": "G20 Saloon|320i",
+                "unit": null
+              },
+              "modelLine": {
+                "value": "G20 Saloon",
+                "unit": null
+              },
+              "body": {
+                "value": "saloon",
+                "unit": null
+              },
+              "fuel": {
+                "value": "petrol",
+                "unit": null
+              },
+              "seats": {
+                "value": 5,
+                "unit": "count"
+              },
+              "boot": {
+                "value": 480,
+                "unit": "L"
+              },
+              "zeroTo62": {
+                "value": 7.4,
+                "unit": "s"
+              },
+              "sizeClass": {
+                "value": 2,
+                "unit": "ordinal-1-5"
+              },
+              "tags": {
+                "value": [
+                  "cruiser"
+                ],
+                "unit": null
+              },
+              "mpg": {
+                "value": 45,
+                "unit": "mpg-imperial"
+              }
+            }
+          },
+          {
+            "configurationId": "Q01QRzIwRTpSRUZQQUlOVCxSRUZUUklN",
+            "derivativeId": "g20-saloon-330e",
+            "version": "order-plan-catalog.v1",
+            "display": {
+              "name": "Synthetic 3 Series Saloon 330e"
+            },
+            "facts": {
+              "eligibilityModelKey": {
+                "value": "G20 Saloon|330e",
+                "unit": null
+              },
+              "modelLine": {
+                "value": "G20 Saloon",
+                "unit": null
+              },
+              "body": {
+                "value": "saloon",
+                "unit": null
+              },
+              "fuel": {
+                "value": "phev",
+                "unit": null
+              },
+              "seats": {
+                "value": 5,
+                "unit": "count"
+              },
+              "boot": {
+                "value": 375,
+                "unit": "L"
+              },
+              "zeroTo62": {
+                "value": 6.1,
+                "unit": "s"
+              },
+              "sizeClass": {
+                "value": 2,
+                "unit": "ordinal-1-5"
+              },
+              "tags": {
+                "value": [
+                  "cruiser"
+                ],
+                "unit": null
+              }
+            }
+          },
+          {
+            "configurationId": "Q01QRzIxOlJFRlBBSU5ULFJFRlRSSU0=",
+            "derivativeId": "g21-touring-320i",
+            "version": "order-plan-catalog.v1",
+            "display": {
+              "name": "Synthetic 3 Series Touring 320i"
+            },
+            "facts": {
+              "eligibilityModelKey": {
+                "value": "G21 Touring|320i",
+                "unit": null
+              },
+              "modelLine": {
+                "value": "G21 Touring",
+                "unit": null
+              },
+              "body": {
+                "value": "estate",
+                "unit": null
+              },
+              "fuel": {
+                "value": "petrol",
+                "unit": null
+              },
+              "seats": {
+                "value": 5,
+                "unit": "count"
+              },
+              "boot": {
+                "value": 500,
+                "unit": "L"
+              },
+              "zeroTo62": {
+                "value": 7.4,
+                "unit": "s"
+              },
+              "sizeClass": {
+                "value": 2,
+                "unit": "ordinal-1-5"
+              },
+              "tags": {
+                "value": [
+                  "family"
+                ],
+                "unit": null
+              },
+              "mpg": {
+                "value": 44,
+                "unit": "mpg-imperial"
+              }
+            }
+          },
+          {
+            "configurationId": "Q01QRzYxOlJFRlBBSU5ULFJFRlRSSU0=",
+            "derivativeId": "g61-i5-40",
+            "version": "order-plan-catalog.v1",
+            "display": {
+              "name": "Synthetic i5 eDrive40 Touring"
+            },
+            "facts": {
+              "eligibilityModelKey": {
+                "value": "G61 i5|i5 40",
+                "unit": null
+              },
+              "modelLine": {
+                "value": "G61 i5",
+                "unit": null
+              },
+              "body": {
+                "value": "estate",
+                "unit": null
+              },
+              "fuel": {
+                "value": "ev",
+                "unit": null
+              },
+              "seats": {
+                "value": 5,
+                "unit": "count"
+              },
+              "boot": {
+                "value": 490,
+                "unit": "L"
+              },
+              "zeroTo62": {
+                "value": 6.1,
+                "unit": "s"
+              },
+              "sizeClass": {
+                "value": 3,
+                "unit": "ordinal-1-5"
+              },
+              "tags": {
+                "value": [
+                  "electric"
+                ],
+                "unit": null
+              }
+            }
+          }
+        ]
+      },
+      "unit": "synthetic order-planning catalogue (derivatives, unit costs, configurations)",
+      "status": "assumed",
+      "basis": "Synthetic catalogue of four derivatives over three models, bound to the reviewed structural configuration ids (the 330e id is minted in the same Base64 format). Unit costs are synthetic GBP minor units, not BMW prices or procurement data; facts are compact assumed values, not a published corpus.",
+      "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
       "sourceDate": "2026-11-07",
       "policyVersion": "gcsp-policy-v1",
       "effectiveFrom": "2026-11-04T00:00:00.000Z"

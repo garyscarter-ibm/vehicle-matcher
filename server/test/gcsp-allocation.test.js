@@ -72,7 +72,10 @@ test('recorded run preserves stock, brief, policy, quote, reason and clock versi
   const a = out.value.assignments[0]; assert.equal(a.expectedVersions.brief, 1); assert.equal(a.quote.versions.policy, f.context.policyVersion);
   assert.ok(a.reasons.some((r) => r.code === 'allocation-policy'));
   const row = (await f.repository.query(f.context, 'event_receipts', { consumerId: 'buddy-allocation' })).value[0];
-  assert.equal(row.state, 'completed'); assert.deepEqual(row.outcome, out);
+  assert.equal(row.state, 'completed'); const { evaluations, ...rest } = out.value;
+  // FUCQ-209: the stored receipt references each employee's evaluation row instead of copying it.
+  assert.deepEqual(row.outcome, { ...out, value: { ...rest, evaluationRefs: { consumerId: 'buddy-allocation-evaluation',
+    employeeIds: evaluations.map((e) => e.employeeId) } } });
 });
 
 test('uncertain claim retains pending plan and retries the same operation and quote', async () => {
@@ -166,4 +169,36 @@ test('missing exact availability evidence stays unsuitable and empty stock is a 
   const out = await unknown.service.allocate(unknown.context, unknown.event); assert.equal(out.status, 'ok', JSON.stringify(out));
   assert.equal(out.value.state, 'no-assignment'); assert.ok(out.value.evaluations.every((e) => e.decisions[0].gateStatus === 'needs-confirmation'));
   assert.equal(unknown.calls.length, 0);
+});
+
+test('FUCQ-205: the plan is written once and progress only per claim attempt, not per contender', async () => {
+  const f = await allocationFixture({ cars: 12 });
+  const ids = [];
+  const repository = { ...f.repository, transaction: (context, command, work) => { ids.push(command.commandId); return f.repository.transaction(context, command, work); } };
+  const out = await f.create({ repository }).allocate(f.context, f.event); assert.equal(out.status, 'ok', JSON.stringify(out));
+  const contenders = out.value.evaluations.reduce((n, e) => n + e.decisions.filter((d) => d.gateStatus === 'eligible').length, 0);
+  assert.ok(contenders >= 30, `contenders ${contenders}`);
+  assert.equal(out.value.attempts.length, 3);
+  const plan = (await f.repository.read(f.context, { table: 'event_receipts', key: { runId: f.context.runId, consumerId: 'buddy-allocation', eventId: f.event.eventId } })).value;
+  assert.equal(plan.version, 2, 'plan receipt: one pending write and one completion');
+  assert.ok(ids.filter((id) => id.startsWith('allocation:')).length <= 4 + out.value.attempts.length, ids.join(','));
+});
+
+test('FUCQ-209: no single receipt holds every participant\'s evaluation or quote; each slice is its own row', async () => {
+  const f = await allocationFixture({ cars: 12 });
+  const size = (value) => JSON.stringify(value).length; let pending = 0;
+  const read = () => f.repository.read(f.context, { table: 'event_receipts', key: { runId: f.context.runId, consumerId: 'buddy-allocation', eventId: f.event.eventId } });
+  // The claim port runs mid-allocation, so it sees the pending plan as persisted.
+  const claim = { async tryClaim(employee, input) { pending = Math.max(pending, size((await read()).value)); return ok({ claimId: input.operationId }); } };
+  const out = await f.create({ claim }).allocate(f.context, f.event); assert.equal(out.status, 'ok', JSON.stringify(out));
+  const all = size(out.value.evaluations); assert.ok(out.value.evaluations.length >= 3);
+  assert.ok(pending > 0 && pending < all, `pending plan ${pending} vs evaluations ${all}`);
+  assert.ok(size((await read()).value) < all, 'completed receipt carries references, not every slice');
+  for (const evaluation of out.value.evaluations) {
+    const slice = (await f.repository.read(f.context, { table: 'event_receipts', key: { runId: f.context.runId,
+      consumerId: 'buddy-allocation-evaluation', eventId: `${f.event.eventId}:${evaluation.employeeId}` } })).value;
+    assert.deepEqual(slice.outcome.value.evaluation, evaluation);
+  }
+  assert.ok(out.value.assignments.every((a) => a.quote?.orderUuid === a.orderUuid), 'assignments keep their quote');
+  assert.deepEqual(await f.create({ claim }).allocate(f.context, f.event), out, 'replay returns the same outcome');
 });

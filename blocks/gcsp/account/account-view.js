@@ -1,12 +1,15 @@
 // Pure account projection. Authority, policy and the display clock come from the server.
+import { isRunRestarted } from '../kit/run-restarted.js';
 const copy = (value) => value == null ? null : structuredClone(value);
 const list = (value) => Array.isArray(value) ? value : [];
 const fact = (label, value, unit = null) => ({ label, value: copy(value), unit, missingLabel: 'Not supplied' });
-const failureStates = { unavailable: 'source-failure', forbidden: 'refused', 'stale-run': 'refused',
+const failureStates = { unavailable: 'source-failure', forbidden: 'refused',
   conflict: 'conflict', 'stale-version': 'conflict', invalid: 'validation', 'not-found': 'not-found' };
 
+const failState = (envelope) => isRunRestarted(envelope) ? 'restarted' : failureStates[envelope?.status] ?? 'source-failure';
+
 export function toDraftView(envelope) {
-  if (envelope?.status !== 'ok') return { state: failureStates[envelope?.status] ?? 'source-failure',
+  if (envelope?.status !== 'ok') return { state: failState(envelope),
     draft: null, failure: copy(envelope), view: copy(envelope?.view) };
   const draft = copy(envelope.value);
   return { state: draft.requiresRefresh ? 'context-changed' : draft.draftStage === 'intent' ? 'intent' : 'complete',
@@ -28,14 +31,14 @@ function contractView(contract, asOf, drivers, actions) {
     fact('Term', contract.months, 'months'), fact('Annual mileage', contract.annualMileage, contract.mileageUnit),
     fact('Current mileage', contract.currentOdometer?.value, contract.currentOdometer?.unit),
     fact('Earliest collection', contract.earliestCollectionDate), fact('Latest collection', contract.latestCollectionDate),
-    fact('Order reference', contract.orderNumber), fact('Registration', contract.registration), fact('Delivered VIN', contract.vin),
+    fact('Car order number', contract.orderNumber), fact('Registration', contract.registration), fact('Delivered VIN', contract.vin),
     fact('Returned', contract.returnedDate), fact('Returned mileage', contract.returnedMileage, 'mi')],
   };
 }
 
 export function toAccountView(envelope, { draft = null } = {}) {
   if (envelope?.status !== 'ok' || !envelope.value || typeof envelope.value !== 'object') return {
-    state: failureStates[envelope?.status] ?? 'source-failure', backendState: null,
+    state: failState(envelope), backendState: null,
     account: null, currentContracts: [], slots: [], histories: [], actions: [],
     failure: copy(envelope), view: copy(envelope?.view), supportOwner: envelope?.view?.supportOwner ?? 'scheme-support',
   };
@@ -54,7 +57,8 @@ export function toAccountView(envelope, { draft = null } = {}) {
   backendState: value.state, asOf: value.asOf ?? null, account, drivers,
   additionalDrivers: drivers.filter((driver) => driver.kind !== 'employee'),
   identityFacts: [fact('Name', account?.name), fact('Date of birth', account?.dateOfBirth), fact('Address', account?.address),
-    fact('Company', account?.company ?? account?.companyId), fact('Employee number', account?.employeeNumber),
+    ...(typeof account?.company === 'string' && account.company.trim() ? [fact('Company', account.company)] : []),
+    fact('Employee number', account?.employeeNumber),
     fact('Band or grade', account?.grade ?? account?.gradeId), fact('Phone', account?.contact?.phone),
     fact('Email', account?.contact?.email), fact('Allowance override', account?.allowanceOverride),
     fact('Override end', account?.allowanceOverrideEndDate)],
