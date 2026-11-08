@@ -78,3 +78,17 @@ Entries are added as work merges.
   - Enrichment facts are in an additive sidecar composition, `demo-enrichment.v1`. That's my recommendation, built; F54 caps technical supplements at 32 per manifest, and the sidecar leaves F54 unchanged.
   - 99 rows are rejected with `technical-evidence-mismatch`, which is being diagnosed offline.
   - **Question for Gary:** range/economy and CO2 stay unknown for every car, because no approved meaning mapping exists for those OTD codes. The raw codes are kept, so if the demo needs these figures, approve the mappings and they can be added offline with no new requests.
+- **About 23:50, full npm test on gcsp-poc** (the merges of FUCQ-145, 217, 172, 78 and 129): 3,531 tests, 3,497 pass, 8 fail, 25 skipped. Seven of the failures were already failing before tonight:
+  - the supervisor-only offer-decisions integration test, which can't run without its supervisor;
+  - the retail podium runner-up test;
+  - five fleet-tooling tests from 7 Nov, now **FUCQ-230 (bug, not in MoSCoW, Low)**: two date-pinned evidence scripts, a frozen producer hash, and image fixtures already tracked as FUCQ-159.
+- **One new failure, FUCQ-229 (bug, not in MoSCoW, High):** with generated stock, the second Next release fails. It was introduced by FUCQ-78's live aggregates: delivery dates are anchored to the real sample date, so one car's availability ends and that voids the whole pull.
+  - The default demo stock, the critical path and every scenario replay still pass.
+  - The merges were already pushed by the claim step, so the hosted demo has this change. It's being fixed forward now. It affects only presenter runs that pick generated stock.
+- **Closed and In Review:** FUCQ-145, FUCQ-217 (partly met; its follow-ups are FUCQ-225 and FUCQ-226), FUCQ-172, FUCQ-78 and FUCQ-129 (partly met; its follow-up is FUCQ-227).
+- **FUCQ-77 merged locally** at 2acafd24, partly met. Its scoped tests are running.
+  - **Met:** coverage (240 real builds), identity, all 20 configurator round trips, budget, publication.
+  - **Open:** facts for the 99 rows with dealer accessories, and the 46 pending model lines.
+  - **Questions for Gary:**
+    1. Should facts for rows carrying a dealer accessory be qualified from an accessory-free OTD request? My recommendation: no, leave them honestly rejected. That's what's built.
+    2. Will you approve OTD meaning mappings for CO2 and range/economy?
