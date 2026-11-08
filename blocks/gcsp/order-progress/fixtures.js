@@ -121,7 +121,8 @@ const RETURN_SLOTS = [slot(12, 9), slot(12, 13), slot(13, 9)];
 const returnRow = (state, appointmentState, at) => ({ state, appointmentState, at, providerReference: `synthetic-appointments:v1:return:${appointmentState}` });
 const RETURN_PLAN_STATE = { 'not-requested': 'not-planned', requested: 'return-requested', 'change-proposed': 'return-requested', scheduled: 'return-scheduled' };
 
-function returnValue({ appt, handoverReady = true, slot: confirmed = null, requestedSlot = null, proposedSlot = null, proposalId = null, history = [], choice = null }) {
+const HOME = (label) => ({ locationId: null, kind: 'home-address', label, rule: 'home-address' });
+function returnValue({ appt, handoverReady = true, slot: confirmed = null, requestedSlot = null, proposedSlot = null, proposalId = null, history = [], choice = null, location }) {
   const planned = appt !== 'not-requested'; const [owner, nextStep] = RETURN_OWNERS[appt === 'not-requested' ? 'not-planned' : appt];
   const idle = !planned && !handoverReady;
   const choices = CHOICES.map(({ id, label }) => ({ id, label, available: !planned && handoverReady,
@@ -130,7 +131,7 @@ function returnValue({ appt, handoverReady = true, slot: confirmed = null, reque
   return { contractVersion: 'lifecycle.return-plan.v1', runId: RUN, orderUuid: ORDER, employeeId: EMPLOYEE, applicable: true, state: RETURN_PLAN_STATE[appt],
     scheduled: appt === 'scheduled', oldContractId: CURRENT_CAR.contractId, vehicleSlotId: 'slot-paula', currentCar: CURRENT_CAR,
     returnMileage: { value: 5200, unit: 'mi', recordedAt: t(9), source: 'selection' }, choice,
-    location: { locationId: 'handover-retailer', label: 'Fictional BMW retailer', rule: choice ? 'handover-retailer' : null },
+    location: location ?? { locationId: 'handover-retailer', kind: 'collection-location', label: 'Fictional BMW retailer', rule: choice ? 'handover-retailer' : null },
     appointment: { contractVersion: 'lifecycle.appointments.v1', purpose: 'return', runId: RUN, orderUuid: ORDER, employeeId: EMPLOYEE, state: appt, booked: appt === 'scheduled',
       slot: confirmed, requestedSlot, proposedSlot, proposalId, history: history.map((h) => ({ state: h.appointmentState, at: h.at, providerReference: h.providerReference })),
       owner, nextStep, pending: null, blocked: null, eligibility: { eligible: true, code: null, reason: null }, plan: choice ? { choice } : null,
@@ -177,6 +178,9 @@ export function orderProgressFixtures() {
       'return-unavailable': afterSent(docsProgress(), apptRequested(), retWaiting()), 'return-not-planned': afterSent(docsProgress(), apptScheduled(), retOpen()),
       'return-requested': afterSent(docsProgress(), apptScheduled(), retRequested()), 'return-change-proposed': afterSent(docsProgress(), apptScheduled(), retProposed()),
       'return-scheduled': afterSent(docsReady(), apptScheduled(), retScheduled()),
+      // FUCQ-194: the buddy route collects the old car from her home address, or says it is not supplied.
+      'return-buddy-home': afterSent(docsProgress(), apptScheduled(), env(returnValue({ appt: 'not-requested', location: HOME('1 Fictional Way, Example Town, ZZ1 1ZZ') }))),
+      'return-buddy-no-address': afterSent(docsProgress(), apptScheduled(), env(returnValue({ appt: 'not-requested', location: HOME(null) }))),
       'new-order': afterSent(docsProgress(), apptScheduled(), newOrder()),
       loading: { phase: 'loading' }, unavailable: { phase: 'unavailable' },
       'partial-failure': ready(pendingSm(), unavailable('Document tracking is unavailable. Ask the scheme team to check the service.'), apptClosed(), newOrder()),

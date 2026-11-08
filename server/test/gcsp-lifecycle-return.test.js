@@ -104,10 +104,20 @@ async function setup(t, { policy, order = 'replacement' } = {}) {
     await f.sameCar('handover scheduled');
     return done;
   };
+  f.setAddress = async (address) => {
+    const key = { table: 'employees', key: { runId: ctx.runId, employeeId: ctx.employeeId } };
+    const done = await repository.transaction(ctx, { commandId: `address-${++n}`, inputDigest: inputDigest(address) }, async (tx) => {
+      const row = await tx.get(key); const m = row.value.contract.manualContext;
+      return tx.compareAndSwap(key, row.value.version, { contract: { ...row.value.contract, manualContext: { ...m, account: { ...m.account, address } } } });
+    });
+    assert.equal(done.status, 'ok', JSON.stringify(done));
+  };
   f.ask = (choice, slotId, context = ctx) => returns.request(context, { orderUuid: f.orderUuid, choice, slotId });
   return f;
 }
 const keys = (v) => Object.keys(v).sort();
+// Paula's home address as seedManualDemoContext holds it on her account.
+const HOME = { locationId: null, kind: 'home-address', label: '1 Fictional Way, Example Town, ZZ1 1ZZ', rule: 'home-address' };
 const sorted = (list) => [...list].sort();
 
 test('a replacement order has a return plan linked to the old contract and slot; a new order has none', async (t) => {
@@ -116,7 +126,7 @@ test('a replacement order has a return plan linked to the old contract and slot;
   assert.deepEqual([plan.applicable, plan.state, plan.scheduled, plan.choice, plan.appointment.state, plan.appointment.purpose], [true, 'not-planned', false, null, 'not-requested', 'return']);
   assert.deepEqual([plan.oldContractId, plan.vehicleSlotId, plan.employeeId, plan.runId], [f.contract.contractId, f.paula.entitlementSlotId, 'employee-paula', f.paula.runId]);
   assert.deepEqual([plan.currentCar.contractId, plan.currentCar.slotId, plan.currentCar.status, plan.currentCar.source], [f.contract.contractId, f.contract.slotId, 'current', 'account']);
-  assert.deepEqual([plan.location.locationId, plan.location.label], ['demo-collection-centre', 'Fictional collection centre']);
+  assert.deepEqual([plan.location.locationId, plan.location.kind, plan.location.label], ['demo-collection-centre', 'collection-location', 'Fictional collection centre']);
   assert.deepEqual([plan.fictional, plan.handover.state, plan.handover.booked], [true, 'not-requested', false]);
   assert.deepEqual([plan.owner, plan.nextStep], [OWNERSHIP.ineligible.owner, OWNERSHIP.ineligible.nextStep]);
   assert.ok(plan.choices.every((c) => c.available === false && typeof c.reason === 'string'), 'no choice is open before the handover is scheduled');
@@ -140,7 +150,7 @@ test('a replacement order has a return plan linked to the old contract and slot;
   assert.deepEqual([bad.status, bad.code], ['unavailable', 'return-plan-source-invalid']);
 });
 
-test('FUCQ-184: a buddy replacement reads its old car and odometer, has no collection place, and plans a separate return', async (t) => {
+test('FUCQ-184/194: a buddy replacement reads its old car and odometer, is collected from her home address, and plans a separate return', async (t) => {
   const f = await setup(t, { order: 'buddy' }); await f.approve();
   const selection = (await f.repository.query(f.paula, 'pending_operations', { operationType: 'selection-order' })).value[0].payload.selection;
   assert.equal(selection.source.type, 'buddy-offer'); assert.equal(selection.draft.choices.expectedReturnMileage, undefined, 'the buddy draft has no manual fields');
@@ -149,15 +159,21 @@ test('FUCQ-184: a buddy replacement reads its old car and odometer, has no colle
   assert.deepEqual([plan.applicable, plan.state, plan.oldContractId, plan.vehicleSlotId], [true, 'not-planned', f.contract.contractId, f.paula.entitlementSlotId]);
   assert.deepEqual([plan.currentCar.contractId, plan.currentCar.status, plan.currentCar.source], [f.contract.contractId, 'current', 'account']);
   assert.deepEqual(plan.returnMileage, { value: odometer.value, unit: odometer.unit, recordedAt: selection.receivedAt, source: 'selection' });
-  assert.deepEqual(plan.location, { locationId: null, label: null, rule: null });
+  assert.deepEqual(plan.location, HOME);
   await f.scheduleHandover();
   const open = await f.plan();
   const asked = await f.ask('separate', open.offeredSlots.separate[0].slotId);
   assert.equal(asked.status, 'ok', JSON.stringify(asked));
-  assert.equal(asked.value.location.label, null); assert.equal(asked.value.location.rule, 'handover-retailer');
+  assert.deepEqual(asked.value.location, HOME, 'choosing a return option never moves a buddy collection off her home address');
   await f.advance(DELAY); await f.tick();
   assert.deepEqual([(await f.plan()).state, (await f.plan()).scheduled], ['return-scheduled', true]);
   await f.sameCar('buddy return scheduled');
+
+  // FUCQ-194: with no usable address on her account the place is unknown, never invented.
+  for (const [name, address] of [['no address', null], ['blank address', { line1: ' ', town: '', postcode: '' }]]) {
+    await f.setAddress(address);
+    assert.deepEqual((await f.plan()).location, { ...HOME, label: null }, name);
+  }
 
   // A malformed buddy record is still an explicit source error, never a guess.
   const h = await setup(t, { order: 'new' });
@@ -190,7 +206,7 @@ test('return states: requested is never scheduled, then a separate appointment i
   assert.deepEqual([requested.owner, requested.nextStep], [OWNERSHIP.states.requested.owner, OWNERSHIP.states.requested.nextStep]);
   assert.deepEqual(requested.history.map((h) => [h.state, h.at]), [['return-requested', askedAt]]);
   assert.match(requested.history[0].providerReference, /^SYN-APT-/);
-  assert.deepEqual(requested.location, { locationId: 'demo-collection-centre', label: 'Fictional collection centre', rule: 'handover-retailer' });
+  assert.deepEqual(requested.location, { locationId: 'demo-collection-centre', kind: 'collection-location', label: 'Fictional collection centre', rule: 'handover-retailer' });
   await f.sameCar('return requested');
 
   await f.advance(60); await f.tick();

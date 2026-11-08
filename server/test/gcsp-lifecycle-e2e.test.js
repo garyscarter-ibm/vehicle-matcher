@@ -190,7 +190,8 @@ test('FUCQ-124 happy path, buddy route: approvals, handover, documents and a sep
     assert.deepEqual([plan.owner, plan.nextStep], [ownership.scheduled.owner, ownership.scheduled.nextStep]);
     assert.deepEqual(plan.history.map((row) => row.state), ['return-requested', 'return-scheduled']);
     assert.deepEqual([plan.handover.state, plan.handover.slot], ['scheduled', state.handover.slot], 'the handover is untouched by the return');
-    assert.deepEqual(plan.location, { locationId: null, label: null, rule: rule.location }, 'the buddy route names no collection place');
+    assert.deepEqual(plan.location, { locationId: null, kind: 'home-address', label: '1 Fictional Way, Example Town, ZZ1 1ZZ', rule: 'home-address' },
+      'FUCQ-194: the buddy route collects the old car from the home address on her account');
     assert.deepEqual([plan.returnMileage.unit, plan.returnMileage.source, plan.currentCar.contractId, plan.currentCar.status, plan.currentCar.source], ['mi', 'selection', state.contractId, 'current', 'account']);
     assert.ok(Number.isSafeInteger(plan.returnMileage.value));
     const refs = [...plan.history, ...state.handover.history].map((row) => row.providerReference);

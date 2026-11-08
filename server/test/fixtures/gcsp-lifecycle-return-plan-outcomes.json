@@ -3,7 +3,7 @@
   "historyKeys": ["state", "appointmentState", "at", "providerReference"],
   "currentCarKeys": ["contractId", "slotId", "status", "model", "vehicle", "source"],
   "returnMileageKeys": ["value", "unit", "recordedAt", "source"],
-  "locationKeys": ["locationId", "label", "rule"],
+  "locationKeys": ["locationId", "kind", "label", "rule"],
   "handoverKeys": ["state", "booked", "slot", "providerReference"],
   "appointmentKeys": ["contractVersion", "purpose", "runId", "orderUuid", "employeeId", "state", "booked", "slot", "requestedSlot", "proposedSlot", "proposalId", "history", "owner", "nextStep", "pending", "blocked", "eligibility", "plan", "provider", "fictional"],
   "choiceKeys": ["id", "label", "available", "reason", "selected"],

@@ -13,7 +13,7 @@ const labels = { 'waiting-hr': 'Waiting for HR', 'waiting-sales-manager': 'Waiti
   'documents-waiting-for-you': 'Task waiting for you', 'documents-in-progress': 'Documents in progress', 'documents-overdue': 'Task overdue',
   'documents-failed': 'Check failed', 'ready-for-handover': 'Ready for handover', 'return-unavailable': 'Return not open yet',
   'return-not-planned': 'Choose return', 'return-requested': 'Return requested', 'return-change-proposed': 'New return time',
-  'return-scheduled': 'Return booked', 'new-order': 'New order, no return', loading: 'Loading', unavailable: 'Unavailable', 'partial-failure': 'Partly unavailable' };
+  'return-scheduled': 'Return booked', 'return-buddy-home': 'Buddy return from home', 'return-buddy-no-address': 'Buddy return, no address', 'new-order': 'New order, no return', loading: 'Loading', unavailable: 'Unavailable', 'partial-failure': 'Partly unavailable' };
 const text = (name) => labels[name] ?? name.replace(/-/g, ' ');
 const requested = new URLSearchParams(globalThis.location?.search || '').get('fixture');
 const initial = orderProgressFixtureNames.includes(requested) ? requested : 'appointment-requested';

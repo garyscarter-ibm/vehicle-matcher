@@ -19,8 +19,10 @@ const vp = String(viewport.width);
 // FUCQ110_VARIANT=overdue stops after the documents task is left undone and the keyed due time passes (separate results and screenshots).
 const variant = process.env.FUCQ110_VARIANT === 'overdue' ? 'overdue' : '';
 const tag = variant ? `${variant}-` : '';
-const shotDir = join(HERE, 'browser');
-const resultsFile = join(HERE, `results-${tag}${chunk}.json`);
+// FUCQ110_OUT lets a later story keep its own evidence (FUCQ-194: ../fucq-194) without overwriting this story's.
+const OUT = process.env.FUCQ110_OUT ? resolve(process.env.FUCQ110_OUT) : HERE;
+const shotDir = join(OUT, 'browser');
+const resultsFile = join(OUT, `results-${tag}${chunk}.json`);
 const profile = join(scratch, `chrome-${chunk}`);
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const ACCESS_KEY = `walk-${randomBytes(9).toString('hex')}`;
@@ -109,7 +111,7 @@ const kb = (pageName, action, pass, detail) => report.keyboard.push({ page: page
 async function startHost() {
   // Leads share this Mac, so a lead may pin FUCQ110_PORT; 127.0.0.1 keeps cookies apart from other localhost hosts.
   const port = Number(process.env.FUCQ110_PORT) || (chunk === 'narrow' ? 8841 : 8840);
-  if (!(port >= 8840 && port <= 8849)) throw new Error('FUCQ110_PORT must be 8840-8849 (127.0.0.1 only)');
+  if (!((port >= 8840 && port <= 8849) || (port >= 8860 && port <= 8869))) throw new Error('FUCQ110_PORT must be 8840-8849 or 8860-8869 (127.0.0.1 only)');
   const origin = `http://127.0.0.1:${port}`;
   const env = { PATH: process.env.PATH, HOME: process.env.HOME, TMPDIR: scratch, GCSP_RUNTIME: '1', GCSP_REPOSITORY_MODE: 'memory',
     GCSP_PUBLIC_ORIGIN: origin, DEMO_ACCESS_KEY: ACCESS_KEY, PORT: String(port), ...(stockMode === 'demo' ? { GCSP_STOCK_SOURCE: 'demo' } : {}) };
@@ -598,15 +600,16 @@ async function run() {
     return { state: text, pass: /Ready for handover/.test(text) && !/Not ready/.test(text) };
   }, { critical: true });
 
-  // Separate return plan (FUCQ-184): request, Tick past the delay, read it scheduled.
+  // Separate return plan (FUCQ-184): request, Tick past the delay, read it scheduled. FUCQ-194: collected from her home address.
+  const HOME = /Collection from your home address\s*1 Fictional Way, Example Town, ZZ1 1ZZ/;
   let returnAskedAt = null; let returnSlot = null;
-  await step('return-offered', 'Return section offers both choices and says the current car stays yours', async (row) => {
+  await step('return-offered', 'Return section offers both choices, says the current car stays yours and names her home address as the collection place', async (row) => {
     const separate = inProgress('.gcsp-order-return button').filter({ hasText: /^Request return (?!at handover)/ });
     const count = await separate.count(); row.detail = { separateSlotButtons: await separate.evaluateAll((n) => n.map((x) => x.innerText.trim())) };
     returnSlot = row.detail.separateSlotButtons[0]?.replace(/^Request return /, '') ?? null;
     if (count) await focusCheck(row, separate.first(), 'return-slot');
     const text = await section('return');
-    return { state: text, pass: count > 0 && !/Return plan unavailable/.test(text) && /stays yours until it is returned/.test(text) };
+    return { state: text, pass: count > 0 && !/Return plan unavailable/.test(text) && /stays yours until it is returned/.test(text) && HOME.test(text) };
   }, { critical: true });
   await step('return-requested', 'Enter on the first separate-return slot requests it; the page says not booked yet', async (row) => {
     returnAskedAt = await clockNow();
@@ -621,7 +624,7 @@ async function run() {
     row.detail = { stillRequestedBeforeDelay: /Not booked yet/.test(await section('return')) };
     const at = await tickOnce(); await openProgress(); row.detail.clockAtConfirmation = at;
     const text = await section('return');
-    return { state: text, pass: row.detail.stillRequestedBeforeDelay && /Return booked:/.test(text) && text.includes(returnSlot ?? '?') && !/unavailable/i.test(text) };
+    return { state: text, pass: row.detail.stillRequestedBeforeDelay && /Return booked:/.test(text) && text.includes(returnSlot ?? '?') && !/unavailable/i.test(text) && HOME.test(text) };
   }, { critical: true });
   await step('order-progress-final', 'Whole page after the plan: stages done, handover booked, documents ready, return booked', async (row) => {
     const text = await openProgress(); const stages = await stageRows();
