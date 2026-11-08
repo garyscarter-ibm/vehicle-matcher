@@ -17,6 +17,7 @@ const failure = { status: 'unavailable', code: 'account-transport-unavailable' }
 const states = {
   'absent-hr-account': ['Your HR account is missing', 'Contact HR support to check your employee account.'],
   'not-yet-eligible': ['Replacement is not available yet', 'Your supplied collection window does not permit a replacement now.'],
+  'ordering-closed': ['Too late to order before renewal', 'No collection date fits before your contract ends. Scheme support can help with your renewal.'],
   'no-entitlement': ['No ordering entitlement', 'Scheme support can check your entitlement.'],
   'unsupported-scheme': ['Ordering is not supported for this scheme', 'Your supplied contracts and history remain available below.'],
   'no-contract': ['Your current contract is missing', 'Scheme support must check the contract linked to your vehicle slot.'],

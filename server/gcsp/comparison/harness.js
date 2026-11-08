@@ -189,7 +189,7 @@ export async function openComparisonRun(options = {}) {
       const context = contexts.get(employee.employeeId);
       const account = value(await claims.readAccount(context), 'manual-account');
       // An account with no collection date inside FUCQ-66's lead time cannot order; the route records that.
-      if (account.state === 'not-yet-eligible') continue;
+      if (['ordering-closed', 'not-yet-eligible'].includes(account.state)) continue;
       check(account.state === 'ready', 'manual-account-ready');
       const driver = account.drivers.find((entry) => entry.driverId === driverId(employee.employeeId));
       const option = account.choices.contractOptions.find((entry) => entry.schemeIds.includes(context.schemeId) && entry.driverKinds.includes(driver.kind));

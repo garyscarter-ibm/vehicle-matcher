@@ -85,7 +85,7 @@ export class ManualContextService {
       if (['earliestCollectionDate', 'latestCollectionDate'].some((key) => window?.[key] != null
         && !calendarDate(window[key]))) return { error: unavailable('renewal-window-invalid') };
       if (p.state === 'ready' && (window?.earliestCollectionDate || window?.latestCollectionDate)
-        && !this.#collectionDates(p).length) p.state = 'not-yet-eligible';
+        && !this.#collectionDates(p).length) p.state = this.#orderingClosed(p, window) ? 'ordering-closed' : 'not-yet-eligible';
       p.contextVersion = inputDigest({ runId: context.runId, employeeId: context.employeeId, schemeId: context.schemeId,
         companyId: context.companyId, gradeId: context.gradeId,
         // A claim bumps the slot CAS revision without changing its entitlement facts.
@@ -107,12 +107,18 @@ export class ManualContextService {
       && Number.isSafeInteger(r.maximumSpecialRequirements) && r.maximumSpecialRequirements > 0
       && Number.isSafeInteger(r.maximumReturnMileage) && r.maximumReturnMileage > 0 && object(r.insuranceMaximumByGrade);
   }
-  #collectionDates(p) {
+  // Closed, not early: no date up to the window's end can ever meet the minimum lead (FUCQ-200).
+  #orderingClosed(p, window) {
+    if (!window?.latestCollectionDate) return false;
+    const days = Math.floor((Date.parse(`${window.latestCollectionDate}T00:00:00.000Z`) - Date.parse(`${p.now.slice(0, 10)}T00:00:00.000Z`)) / 86400000);
+    return !this.#collectionDates(p, days).length;
+  }
+  #collectionDates(p, maximumLeadDays = p.rules.maximumLeadDays) {
     const today = Date.parse(`${p.now.slice(0, 10)}T00:00:00.000Z`); const day = 86400000;
     const window = p.contract ?? p.slot;
     const earliest = window?.earliestCollectionDate; const latest = window?.latestCollectionDate;
     const dates = [];
-    for (let lead = p.rules.minimumLeadDays; lead <= p.rules.maximumLeadDays; lead += 1) {
+    for (let lead = p.rules.minimumLeadDays; lead <= maximumLeadDays; lead += 1) {
       const date = new Date(today + lead * day).toISOString().slice(0, 10);
       if ((!earliest || date >= earliest) && (!latest || date <= latest)
         && p.rules.locations.some((location) => !location.closedDates?.includes(date)
