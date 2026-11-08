@@ -8,6 +8,7 @@ import { createGregHttpAdapter } from '../greg/http-adapter.js';
 import { mountGregOrders } from '../greg-orders/greg-orders.js';
 import { createGregOrdersHttpAdapter } from '../greg-orders/http-adapter.js';
 import { createPresenterHttpAdapter } from './http-adapter.js';
+import { subscribePresenterActions } from './controls.js';
 
 // Context is read again after cookie issuance; neither query parameters nor fixtures select a person.
 export function mountPresenterWorkspace(host, { adapter = createPresenterHttpAdapter(), accountAdapter = createAccountHttpAdapter(),
@@ -21,6 +22,7 @@ export function mountPresenterWorkspace(host, { adapter = createPresenterHttpAda
     if (disposed) return;
     const context = reply.status === 'ok' ? reply.value : null;
     if (context?.roles?.includes('employee')) teardown = mountEmployee(host, { adapter: accountAdapter,
+      subscribeClock: subscribePresenterActions(host),
       onSupport: () => globalThis.location.assign(new URL('../../../gcsp-help.html', import.meta.url).href) });
     else if (context?.roles?.includes('greg')) {
       const dashboard = mountGreg(host, { ...gregAdapter, signal: abort.signal });
