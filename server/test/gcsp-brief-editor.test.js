@@ -130,16 +130,18 @@ test('preview computes all candidate decisions, keeps original draft and never f
 
 test('independent comfort, sportiness, importance and indifference change real preference components', async (t) => {
   const f = await setup(t); const a = await preview(f);
+  // Previews list best fit first, so compare one car by stock id rather than by position.
+  const id = a.value.decisions[0].orderUuid; const car = (r) => r.value.decisions.find((d) => d.orderUuid === id);
   const b = draft(); b.preferences.comfort.value = 10;
   const changed = await preview(f, b);
-  assert.notEqual(a.value.decisions[0].score, changed.value.decisions[0].score);
-  assert.equal(a.value.decisions[0].components.find((p) => p.field === 'sportiness').score,
-    changed.value.decisions[0].components.find((p) => p.field === 'sportiness').score);
+  assert.notEqual(car(a).score, car(changed).score);
+  assert.equal(car(a).components.find((p) => p.field === 'sportiness').score,
+    car(changed).components.find((p) => p.field === 'sportiness').score);
   const weighted = draft(); weighted.preferences.comfort.importance = 0; weighted.preferences.sportiness.value = 95;
   const w = await preview(f, weighted);
-  assert.equal(w.value.decisions[0].components.some((p) => p.field === 'comfort'), false);
-  assert.notEqual(a.value.decisions[0].score, w.value.decisions[0].score);
-  assert.equal(w.value.decisions[0].score, w.value.decisions[0].components[0].score);
+  assert.equal(car(w).components.some((p) => p.field === 'comfort'), false);
+  assert.notEqual(car(a).score, car(w).score);
+  assert.equal(car(w).score, car(w).components[0].score);
 });
 
 test('canonical practical mappings preserve carrying/equipment/charging yes, no and unknown', async (t) => {
