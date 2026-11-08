@@ -101,7 +101,7 @@ export async function replayBuddyRoute(run) {
       if (person.taken || person.active || person.closed) continue;
       const account = must(await run.claims.readAccount(person.context), 'account');
       if (account.state === 'ready') continue;
-      if (account.state !== 'not-yet-eligible') refuse('account-state', account.state);
+      if (!['ordering-closed', 'not-yet-eligible'].includes(account.state)) refuse('account-state', account.state);
       must(await services.brief.pause(person.context, { commandId: `buddy:${person.employee.employeeId}:pause`,
         expectedBriefVersion: person.briefVersion }), 'brief-pause');
       person.briefVersion += 1; person.closed = true; person.orderingClosedAt = iso(at);
