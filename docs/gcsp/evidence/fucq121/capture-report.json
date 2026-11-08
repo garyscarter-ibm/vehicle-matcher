@@ -1,0 +1,2174 @@
+{
+  "story": "FUCQ-121",
+  "startedAt": "2026-11-08T08:04:36.397Z",
+  "commit": "9066cb5f",
+  "base": "http://localhost:<port>",
+  "widths": [
+    1280,
+    375
+  ],
+  "captures": [
+    {
+      "state": "ready",
+      "width": 1280,
+      "png": "docs/gcsp/evidence/fucq121/ready-1280.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "body: ",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "data-state is ready",
+          "ok": true,
+          "detail": "state=ready"
+        },
+        {
+          "check": "text /Next order/i",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Forecast source/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Expressed demand/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Policy version/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Plan for/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Proposed order/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Unmet needs/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Binding constraints/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Alternative plans/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": "Live plan after reset to Decline then change."
+    },
+    {
+      "state": "ready",
+      "width": 375,
+      "png": "docs/gcsp/evidence/fucq121/ready-375.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "body: ",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "data-state is ready",
+          "ok": true,
+          "detail": "state=ready"
+        },
+        {
+          "check": "text /Next order/i",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Forecast source/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Expressed demand/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Policy version/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Plan for/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Proposed order/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Unmet needs/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Binding constraints/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Alternative plans/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": "Live plan after reset to Decline then change."
+    },
+    {
+      "state": "limits editor after a typed minimum and a slider move",
+      "width": 1280,
+      "png": "docs/gcsp/evidence/fucq121/limits-editor-1280.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "input: 3 Series Touring 320i maximum slider",
+      "focusVisible": true,
+      "outline": "none 3px rgb(16, 16, 16)",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Change limits/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "keyboard focus is visible",
+          "ok": true,
+          "detail": "range thumb ring (pseudo-element), see PNG"
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": "Focus is on the slider; the typed minimum 2 is in the field above it."
+    },
+    {
+      "state": "limits editor after a typed minimum and a slider move",
+      "width": 375,
+      "png": "docs/gcsp/evidence/fucq121/limits-editor-375.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "input: 3 Series Touring 320i maximum slider",
+      "focusVisible": true,
+      "outline": "none 3px rgb(16, 16, 16)",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Change limits/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "keyboard focus is visible",
+          "ok": true,
+          "detail": "range thumb ring (pseudo-element), see PNG"
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": "Focus is on the slider; the typed minimum 2 is in the field above it."
+    },
+    {
+      "state": "preview",
+      "width": 1280,
+      "png": "docs/gcsp/evidence/fucq121/preview-1280.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "h2: Order 2 vehicles: 3 Series Touring 320i",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Preview/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Back to current plan/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Differences from the current plan/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Previewing saves and orders nothing|Nothing is saved or ordered/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "keyboard focus is visible",
+          "ok": true,
+          "detail": "solid 2px rgb(2, 145, 183) "
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": "Minimum raised to 2 and maximum slider moved on 3 Series Touring 320i."
+    },
+    {
+      "state": "preview",
+      "width": 375,
+      "png": "docs/gcsp/evidence/fucq121/preview-375.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "h2: Order 2 vehicles: 3 Series Touring 320i",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Preview/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Back to current plan/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Differences from the current plan/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Previewing saves and orders nothing|Nothing is saved or ordered/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "keyboard focus is visible",
+          "ok": true,
+          "detail": "solid 2px rgb(2, 145, 183) "
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": "Minimum raised to 2 and maximum slider moved on 3 Series Touring 320i."
+    },
+    {
+      "state": "infeasible",
+      "width": 1280,
+      "png": "docs/gcsp/evidence/fucq121/infeasible-1280.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "h2: No plan meets these limits",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Limits that conflict/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Back to current plan/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "keyboard focus is visible",
+          "ok": true,
+          "detail": "solid 2px rgb(2, 145, 183) "
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": "Derivative minimum 2 under a model maximum of 0."
+    },
+    {
+      "state": "infeasible",
+      "width": 375,
+      "png": "docs/gcsp/evidence/fucq121/infeasible-375.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "h2: No plan meets these limits",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Limits that conflict/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Back to current plan/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "keyboard focus is visible",
+          "ok": true,
+          "detail": "solid 2px rgb(2, 145, 183) "
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": "Derivative minimum 2 under a model maximum of 0."
+    },
+    {
+      "state": "stale",
+      "width": 1280,
+      "png": "docs/gcsp/evidence/fucq121/stale-1280.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "h3: Replan needed",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Replan needed/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Replan with the latest inputs/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "keyboard focus is visible",
+          "ok": true,
+          "detail": "solid 2px rgb(2, 145, 183) "
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": "Clock moved from a second window; Request pressed from the older plan."
+    },
+    {
+      "state": "stale",
+      "width": 375,
+      "png": "docs/gcsp/evidence/fucq121/stale-375.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "h3: Replan needed",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Replan needed/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Replan with the latest inputs/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "keyboard focus is visible",
+          "ok": true,
+          "detail": "solid 2px rgb(2, 145, 183) "
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": "Clock moved from a second window; Request pressed from the older plan."
+    },
+    {
+      "state": "submitted",
+      "width": 1280,
+      "png": "docs/gcsp/evidence/fucq121/submitted-1280.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "h2: No new order needed",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Requested from Production/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Production has not confirmed anything yet/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "keyboard focus is visible",
+          "ok": true,
+          "detail": "solid 2px rgb(2, 145, 183) "
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": "Submitted from the previewed plan."
+    },
+    {
+      "state": "submitted",
+      "width": 375,
+      "png": "docs/gcsp/evidence/fucq121/submitted-375.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "h2: No new order needed",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Requested from Production/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Production has not confirmed anything yet/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "keyboard focus is visible",
+          "ok": true,
+          "detail": "solid 2px rgb(2, 145, 183) "
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": "Submitted from the previewed plan."
+    },
+    {
+      "state": "order tracking after submit",
+      "width": 1280,
+      "png": "docs/gcsp/evidence/fucq121/order-tracking-after-submit-1280.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "h2: No new order needed",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "keyboard focus is visible",
+          "ok": true,
+          "detail": "solid 2px rgb(2, 145, 183) "
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": "The request row appears without pressing Refresh orders."
+    },
+    {
+      "state": "replanned",
+      "width": 1280,
+      "png": "docs/gcsp/evidence/fucq121/replanned-1280.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "body: ",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Replanned after a Production response/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": "Plan refreshed by itself after the Production confirmation."
+    },
+    {
+      "state": "replanned",
+      "width": 375,
+      "png": "docs/gcsp/evidence/fucq121/replanned-375.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "body: ",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Replanned after a Production response/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": "Plan refreshed by itself after the Production confirmation."
+    },
+    {
+      "state": "loading",
+      "width": 1280,
+      "png": "docs/gcsp/evidence/fucq121/fixture-loading-1280.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "body: ",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "data-state is loading",
+          "ok": true,
+          "detail": "state=loading"
+        },
+        {
+          "check": "text /Loading the next order/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "state": "loading",
+      "width": 375,
+      "png": "docs/gcsp/evidence/fucq121/fixture-loading-375.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "body: ",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "data-state is loading",
+          "ok": true,
+          "detail": "state=loading"
+        },
+        {
+          "check": "text /Loading the next order/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "state": "empty (no demand)",
+      "width": 1280,
+      "png": "docs/gcsp/evidence/fucq121/fixture-no-demand-1280.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "body: ",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "data-state is no-demand",
+          "ok": true,
+          "detail": "state=no-demand"
+        },
+        {
+          "check": "text /No saved demand to plan for yet/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "state": "empty (no demand)",
+      "width": 375,
+      "png": "docs/gcsp/evidence/fucq121/fixture-no-demand-375.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "body: ",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "data-state is no-demand",
+          "ok": true,
+          "detail": "state=no-demand"
+        },
+        {
+          "check": "text /No saved demand to plan for yet/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "state": "unavailable",
+      "width": 1280,
+      "png": "docs/gcsp/evidence/fucq121/fixture-unavailable-1280.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "button: Retry",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "data-state is unavailable",
+          "ok": true,
+          "detail": "state=unavailable"
+        },
+        {
+          "check": "text /The order plan is unavailable/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Retry/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "keyboard focus is visible",
+          "ok": true,
+          "detail": "solid 2px rgb(2, 145, 183) "
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "state": "unavailable",
+      "width": 375,
+      "png": "docs/gcsp/evidence/fucq121/fixture-unavailable-375.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "button: Retry",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "data-state is unavailable",
+          "ok": true,
+          "detail": "state=unavailable"
+        },
+        {
+          "check": "text /The order plan is unavailable/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "text /Retry/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "keyboard focus is visible",
+          "ok": true,
+          "detail": "solid 2px rgb(2, 145, 183) "
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "state": "refused (non-Greg)",
+      "width": 1280,
+      "png": "docs/gcsp/evidence/fucq121/fixture-refused-1280.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "body: ",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "data-state is refused",
+          "ok": true,
+          "detail": "state=refused"
+        },
+        {
+          "check": "text /You cannot open this plan/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "state": "refused (non-Greg)",
+      "width": 375,
+      "png": "docs/gcsp/evidence/fucq121/fixture-refused-375.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "body: ",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "data-state is refused",
+          "ok": true,
+          "detail": "state=refused"
+        },
+        {
+          "check": "text /You cannot open this plan/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "state": "plan ready with long derivative names",
+      "width": 1280,
+      "png": "docs/gcsp/evidence/fucq121/fixture-long-names-1280.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "body: ",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "data-state is ready",
+          "ok": true,
+          "detail": "state=ready"
+        },
+        {
+          "check": "text /eDrive40 M Sport Pro with Technology Plus and Comfort Packs/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": ""
+    },
+    {
+      "state": "plan ready with long derivative names",
+      "width": 375,
+      "png": "docs/gcsp/evidence/fucq121/fixture-long-names-375.png",
+      "pass": true,
+      "pageOverflowPx": 0,
+      "panelOverflowPx": 0,
+      "focusedElement": "body: ",
+      "consoleErrors": 0,
+      "failedRequests": 0,
+      "checks": [
+        {
+          "check": "panel in view",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "data-state is ready",
+          "ok": true,
+          "detail": "state=ready"
+        },
+        {
+          "check": "text /eDrive40 M Sport Pro with Technology Plus and Comfort Packs/",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no horizontal page overflow",
+          "ok": true,
+          "detail": "0px"
+        },
+        {
+          "check": "no overflow inside the panel",
+          "ok": true,
+          "detail": "0px "
+        },
+        {
+          "check": "no clipped text",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no em dash on screen",
+          "ok": true,
+          "detail": ""
+        },
+        {
+          "check": "no console errors",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "no failed requests",
+          "ok": true,
+          "detail": "0"
+        }
+      ],
+      "note": ""
+    }
+  ],
+  "steps": {
+    "open-with-demo-key": {
+      "ok": true,
+      "ms": 4280
+    },
+    "reset-to-decline-then-change": {
+      "ok": true,
+      "ms": 21463,
+      "clock": "2026-11-05T09:30:00.000Z"
+    },
+    "switch-to-greg": {
+      "ok": true,
+      "ms": 9682,
+      "planState": "ready",
+      "clock": "2026-11-05T09:30:00.000Z",
+      "runId": "demo-7d3d82a9790841e9a555caa78310a257"
+    },
+    "capture-ready": {
+      "ok": true,
+      "ms": 4282
+    },
+    "peek-ready": {
+      "ok": true,
+      "ms": 9296
+    },
+    "edit-and-preview": {
+      "ok": true,
+      "ms": 13121,
+      "slider": "3 to 4",
+      "heading": "Order 2 vehicles: 3 Series Touring 320i"
+    },
+    "capture-preview": {
+      "ok": true,
+      "ms": 2717
+    },
+    "infeasible": {
+      "ok": true,
+      "ms": 15614
+    },
+    "capture-infeasible": {
+      "ok": true,
+      "ms": 2712
+    },
+    "prepare-stale-preview": {
+      "ok": true,
+      "ms": 12160
+    },
+    "move-clock-in-second-window": {
+      "ok": true,
+      "ms": 16873,
+      "clockBefore": "2026-11-05T09:30:00.000Z",
+      "clockAfter": "2026-11-05T09:31:00.000Z"
+    },
+    "request-from-stale-plan": {
+      "ok": true,
+      "ms": 10008,
+      "requestButton": "Request 2 vehicles from Production",
+      "focus": "Replan needed"
+    },
+    "capture-stale": {
+      "ok": true,
+      "ms": 2706
+    },
+    "replan": {
+      "ok": true,
+      "ms": 6680,
+      "stateAfterReplan": "preview"
+    },
+    "submit-plan": {
+      "ok": true,
+      "ms": 8551,
+      "requestButton": "Request 2 vehicles from Production",
+      "orders": [
+        "3 Series Touring 320i | Requested | 2 | 0 | 0 | Awaiting production response"
+      ]
+    },
+    "capture-submitted": {
+      "ok": true,
+      "ms": 4628
+    },
+    "confirm-through-production-adapter": {
+      "ok": true,
+      "ms": 12363,
+      "confirmedQuantity": 2,
+      "planRefreshedWithoutPress": true,
+      "planRefreshMs": 5882,
+      "orders": [
+        "3 Series Touring 320i | Confirmed | 2 | 2 | 0 | Confirmed: 2 due 31 Dec 2026"
+      ]
+    },
+    "capture-replanned": {
+      "ok": true,
+      "ms": 2861
+    },
+    "tick-in-same-window-reloads-plan": {
+      "ok": true,
+      "ms": 21497,
+      "planForBefore": "5 Nov 2026, 09:31 GMT",
+      "planForAfter": "5 Nov 2026, 09:32 GMT",
+      "stale": false
+    },
+    "employee-refused-live": {
+      "ok": true,
+      "ms": 7127,
+      "panelMountedForEmployee": false,
+      "status": 403,
+      "body": "{\"status\":\"forbidden\",\"reason\":\"This person cannot perform that action.\",\"contractVersion\":\"1.0.0\"}"
+    },
+    "fixture-loading": {
+      "ok": true,
+      "ms": 4146
+    },
+    "fixture-no-demand": {
+      "ok": true,
+      "ms": 3469
+    },
+    "fixture-unavailable": {
+      "ok": true,
+      "ms": 4648
+    },
+    "fixture-refused": {
+      "ok": true,
+      "ms": 3483
+    },
+    "fixture-long-names": {
+      "ok": true,
+      "ms": 3973
+    }
+  },
+  "focusTrail": [
+    {
+      "stage": "open-with-demo-key",
+      "action": "Enter on the demo key form",
+      "focus": "body: "
+    },
+    {
+      "stage": "reset-to-decline-then-change",
+      "action": "arrow keys chose Decline then changeAvailable",
+      "focus": "button[radio]: Decline then changeAvailable",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)"
+    },
+    {
+      "stage": "reset-to-decline-then-change",
+      "action": "Enter on Reset scenario",
+      "focus": "button: Confirm reset",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)"
+    },
+    {
+      "stage": "reset-to-decline-then-change",
+      "action": "Enter on Confirm reset",
+      "focus": "body: "
+    },
+    {
+      "stage": "switch-to-greg",
+      "action": "arrow keys chose Greg (fictional) (greg)",
+      "focus": "button[radio]: Greg (fictional) (greg)",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)"
+    },
+    {
+      "stage": "switch-to-greg",
+      "action": "Enter on Switch principal",
+      "focus": "body: "
+    },
+    {
+      "stage": "edit-and-preview",
+      "action": "typed 2 into 3 Series Touring 320i min",
+      "focus": "input: Min",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)"
+    },
+    {
+      "stage": "edit-and-preview",
+      "action": "ArrowRight on 3 Series Touring 320i maximum slider (3 to 4)",
+      "focus": "input: 3 Series Touring 320i maximum slider",
+      "focusVisible": true,
+      "outline": "none 3px rgb(16, 16, 16)"
+    },
+    {
+      "stage": "edit-and-preview",
+      "action": "Enter on Preview with these limits",
+      "focus": "body: "
+    },
+    {
+      "stage": "infeasible",
+      "action": "Enter on Back to current plan",
+      "focus": "h2: No new order needed",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)"
+    },
+    {
+      "stage": "infeasible",
+      "action": "Enter on Reset limits",
+      "focus": "button: Reset limits",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)"
+    },
+    {
+      "stage": "infeasible",
+      "action": "typed 2 into 3 Series Touring 320i min",
+      "focus": "input: Min",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)"
+    },
+    {
+      "stage": "infeasible",
+      "action": "typed 0 into 3 Series Touring max",
+      "focus": "input: Max",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)"
+    },
+    {
+      "stage": "infeasible",
+      "action": "Enter on Preview with these limits",
+      "focus": "body: "
+    },
+    {
+      "stage": "prepare-stale-preview",
+      "action": "Enter on Back to current plan",
+      "focus": "h2: No new order needed",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)"
+    },
+    {
+      "stage": "prepare-stale-preview",
+      "action": "Enter on Reset limits",
+      "focus": "button: Reset limits",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)"
+    },
+    {
+      "stage": "prepare-stale-preview",
+      "action": "typed 2 into 3 Series Touring 320i min",
+      "focus": "input: Min",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)"
+    },
+    {
+      "stage": "prepare-stale-preview",
+      "action": "Enter on Preview with these limits",
+      "focus": "body: "
+    },
+    {
+      "stage": "request-from-stale-plan",
+      "action": "Enter on Request 2 vehicles from Production",
+      "focus": "body: "
+    },
+    {
+      "stage": "replan",
+      "action": "Enter on Replan with the latest inputs",
+      "focus": "body: "
+    },
+    {
+      "stage": "submit-plan",
+      "action": "Enter on Request 2 vehicles from Production",
+      "focus": "body: "
+    },
+    {
+      "stage": "confirm-through-production-adapter",
+      "action": "opened Synthetic production controls",
+      "focus": "summary: Synthetic production controls",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)"
+    },
+    {
+      "stage": "confirm-through-production-adapter",
+      "action": "chose request 3 Series Touring 320i: 2 outstanding",
+      "focus": "select: Request",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)"
+    },
+    {
+      "stage": "confirm-through-production-adapter",
+      "action": "Enter on Save production response",
+      "focus": "body: "
+    },
+    {
+      "stage": "tick-in-same-window-reloads-plan",
+      "action": "Enter on Refresh readback",
+      "focus": "body: "
+    },
+    {
+      "stage": "tick-in-same-window-reloads-plan",
+      "action": "Enter on Tick",
+      "focus": "body: "
+    },
+    {
+      "stage": "employee-refused-live",
+      "action": "arrow keys chose Paula (fictional) (employee)",
+      "focus": "button[radio]: Paula (fictional) (employee)",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)"
+    },
+    {
+      "stage": "employee-refused-live",
+      "action": "Enter on Switch principal",
+      "focus": "body: "
+    },
+    {
+      "stage": "fixture-unavailable",
+      "action": "Tab reached Retry",
+      "focus": "button: Retry",
+      "focusVisible": true,
+      "outline": "solid 2px rgb(2, 145, 183)"
+    },
+    {
+      "stage": "fixture-long-names",
+      "action": "long-names fixture captured",
+      "focus": "body: "
+    }
+  ],
+  "console": [],
+  "pageErrors": [],
+  "logErrors": [
+    {
+      "stage": "open-with-demo-key",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://localhost:60520/favicon.ico"
+    },
+    {
+      "stage": "reset-to-decline-then-change",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://localhost:60520/api/gcsp/manual/draft"
+    },
+    {
+      "stage": "request-from-stale-plan",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 409 (Conflict)",
+      "url": "http://localhost:60520/api/gcsp/greg/order-plan/submit"
+    },
+    {
+      "stage": "employee-api-probe",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://localhost:60520/api/gcsp/manual/draft"
+    },
+    {
+      "stage": "employee-api-probe",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)",
+      "url": "http://localhost:60520/api/gcsp/greg/order-plan"
+    },
+    {
+      "stage": "fixture-loading",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)",
+      "url": "http://localhost:60520/api/gcsp/scheme-team/cases"
+    },
+    {
+      "stage": "fixture-no-demand",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)",
+      "url": "http://localhost:60520/api/gcsp/scheme-team/cases"
+    },
+    {
+      "stage": "fixture-unavailable",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)",
+      "url": "http://localhost:60520/api/gcsp/scheme-team/cases"
+    },
+    {
+      "stage": "fixture-refused",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)",
+      "url": "http://localhost:60520/api/gcsp/scheme-team/cases"
+    },
+    {
+      "stage": "fixture-long-names",
+      "level": "error",
+      "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)",
+      "url": "http://localhost:60520/api/gcsp/scheme-team/cases"
+    }
+  ],
+  "failedRequests": [],
+  "badResponses": [
+    {
+      "stage": "open-with-demo-key",
+      "url": "/favicon.ico",
+      "status": 404
+    },
+    {
+      "stage": "reset-to-decline-then-change",
+      "url": "/api/gcsp/manual/draft",
+      "status": 404
+    },
+    {
+      "stage": "request-from-stale-plan",
+      "url": "/api/gcsp/greg/order-plan/submit",
+      "status": 409
+    },
+    {
+      "stage": "fixture-loading",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 403
+    },
+    {
+      "stage": "fixture-no-demand",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 403
+    },
+    {
+      "stage": "fixture-unavailable",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 403
+    },
+    {
+      "stage": "fixture-refused",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 403
+    },
+    {
+      "stage": "fixture-long-names",
+      "url": "/api/gcsp/scheme-team/cases",
+      "status": 403
+    }
+  ],
+  "planApi": [
+    {
+      "stage": "switch-to-greg",
+      "method": "GET",
+      "path": "/api/gcsp/greg/order-plan",
+      "status": 200
+    },
+    {
+      "stage": "edit-and-preview",
+      "method": "POST",
+      "path": "/api/gcsp/greg/order-plan/preview",
+      "status": 200
+    },
+    {
+      "stage": "infeasible",
+      "method": "POST",
+      "path": "/api/gcsp/greg/order-plan/preview",
+      "status": 200
+    },
+    {
+      "stage": "prepare-stale-preview",
+      "method": "POST",
+      "path": "/api/gcsp/greg/order-plan/preview",
+      "status": 200
+    },
+    {
+      "stage": "request-from-stale-plan",
+      "method": "POST",
+      "path": "/api/gcsp/greg/order-plan/submit",
+      "status": 409
+    },
+    {
+      "stage": "replan",
+      "method": "POST",
+      "path": "/api/gcsp/greg/order-plan/preview",
+      "status": 200
+    },
+    {
+      "stage": "submit-plan",
+      "method": "POST",
+      "path": "/api/gcsp/greg/order-plan/submit",
+      "status": 200
+    },
+    {
+      "stage": "submit-plan",
+      "method": "GET",
+      "path": "/api/gcsp/greg/order-plan",
+      "status": 200
+    },
+    {
+      "stage": "confirm-through-production-adapter",
+      "method": "GET",
+      "path": "/api/gcsp/greg/order-plan",
+      "status": 200
+    },
+    {
+      "stage": "tick-in-same-window-reloads-plan",
+      "method": "GET",
+      "path": "/api/gcsp/greg/order-plan",
+      "status": 200
+    },
+    {
+      "stage": "employee-api-probe",
+      "method": "GET",
+      "path": "/api/gcsp/greg/order-plan",
+      "status": 403
+    }
+  ],
+  "notes": [],
+  "cleanup": {
+    "chrome": "stopped (process group), profile removed",
+    "serverPortListeners": "none"
+  },
+  "dirtyFiles": [
+    "M blocks/gcsp/greg/plan/panel.js",
+    " M blocks/gcsp/greg/plan/plan-view.js",
+    " M blocks/gcsp/greg/plan/plan.css",
+    "?? server/node_modules"
+  ],
+  "employeeApiProbe": {
+    "panelMountedForEmployee": false,
+    "status": 403,
+    "body": "{\"status\":\"forbidden\",\"reason\":\"This person cannot perform that action.\",\"contractVersion\":\"1.0.0\"}"
+  },
+  "expected403": {
+    "panelMountedForEmployee": false,
+    "status": 403,
+    "body": "{\"status\":\"forbidden\",\"reason\":\"This person cannot perform that action.\",\"contractVersion\":\"1.0.0\"}"
+  },
+  "finishedAt": "2026-11-08T08:08:20.126Z",
+  "serverLogTail": [
+    "GCSP hosted demo (memory): http://localhost:60520/gcsp-presenter.html",
+    "Matcher API listening on http://localhost:60520",
+    "[gcsp] offline vehicle evidence; live startup warmers disabled"
+  ],
+  "pass": true
+}

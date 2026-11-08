@@ -66,7 +66,11 @@ function riskOf(r, names) {
   return { quantity: r.quantity, totalSupply: r.totalSupply, short: plural(r.quantity, 'vehicle'),
     label: r.totalSupply === 0 ? 'No vehicles in supply, so none can be left unmatched'
       : `${r.quantity} of ${plural(r.totalSupply, 'vehicle')} in supply not matched to a renewal`,
-    sources: list(r.bySource).map((s) => ({ sourceId: s.sourceId, quantity: s.quantity, label: sourceLabel(s.sourceId, names) })) };
+    sources: [...list(r.bySource).reduce((byLabel, s) => {
+      const label = sourceLabel(s.sourceId, names); const seen = byLabel.get(label);
+      if (seen) seen.quantity += s.quantity; else byLabel.set(label, { sourceId: s.sourceId, quantity: s.quantity, label });
+      return byLabel;
+    }, new Map()).values()] };
 }
 
 function alternativeOf(alt, names, currency) {

@@ -11,6 +11,8 @@ const UNAVAILABLE = 'The order plan could not be loaded. Try again in a moment.'
 const note = (text, extra = '') => el('p', `gcsp-note${extra ? ` ${extra}` : ''}`, text);
 const whole = (v) => /^\d+$/.test(String(v).trim()) && Number.isSafeInteger(Number(v));
 const bullets = (items) => { const ul = el('ul', 'gcsp-plan-list'); for (const text of items) ul.append(el('li', '', text)); return ul; };
+// Long-text tables scroll sideways inside their own region at narrow widths instead of squeezing words.
+const wideTable = (region) => { region.classList.add('gcsp-plan-wide'); return region; };
 const readView = (value) => { try { return toPlanView(value); } catch { return null; } };
 
 /** Greg's order plan panel. mountGregOrderPlan(root, { adapter, signal, onSubmitted, commandId }) -> teardown with refresh(). */
@@ -206,8 +208,8 @@ export function mountGregOrderPlan(root, { adapter, signal, onSubmitted, command
     out.push(unmet,
       dataTable({ caption: 'Binding constraints', emptyText: 'No limit is holding this plan back', columns: [{ key: 'label', label: 'Constraint' }, { key: 'detail', label: 'Detail' }],
         rows: view.binding.map((c) => ({ label: c.label, detail: c.detail })) }),
-      dataTable({ caption: 'Alternative plans', emptyText: 'No alternative plan is available', columns: [{ key: 'label', label: 'Plan' }, { key: 'summary', label: 'What it does' }, { key: 'same', label: 'Compared' }],
-        rows: view.alternatives.map((a) => ({ label: a.label, summary: a.summary, same: a.status !== 'feasible' ? 'Not possible' : a.sameAsRecommended ? 'Same as the recommendation' : 'Different' })) }));
+      wideTable(dataTable({ caption: 'Alternative plans', emptyText: 'No alternative plan is available', columns: [{ key: 'label', label: 'Plan' }, { key: 'same', label: 'Compared' }, { key: 'summary', label: 'What it does' }],
+        rows: view.alternatives.map((a) => ({ label: a.label, summary: a.summary, same: a.status !== 'feasible' ? 'Not possible' : a.sameAsRecommended ? 'Same as the recommendation' : 'Different' })) })));
     return out;
   }
   function draw(focus) {

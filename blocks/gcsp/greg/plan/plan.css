@@ -15,13 +15,13 @@
 .gcsp .gcsp-plan-list { display: grid; gap: 4px; margin: 0; padding-left: 20px; overflow-wrap: anywhere; }
 .gcsp .gcsp-plan-need { display: flex; flex-direction: column; gap: 4px; padding: 8px 12px; background: var(--gcsp-surface-raised); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); }
 .gcsp .gcsp-plan-need-name { margin: 0; font-weight: 600; }
-.gcsp .gcsp-plan .gcsp-table-td, .gcsp .gcsp-plan .gcsp-table-rowhead { overflow-wrap: anywhere; }
+.gcsp .gcsp-plan .gcsp-plan-wide .gcsp-table { min-width: 520px; }
 .gcsp .gcsp-plan-submit-row, .gcsp .gcsp-plan-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
 .gcsp .gcsp-plan-consequence { flex: 1 1 240px; font-size: 14px; }
-.gcsp .gcsp-plan-editor { padding-top: 14px; border-top: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-plan-editor { padding-top: 14px; border-top: 1px solid var(--gcsp-divider); } .gcsp .gcsp-plan-editor:empty { display: none; }
 .gcsp .gcsp-plan-limit { display: grid; grid-template-columns: minmax(0, 1.6fr) 96px 96px minmax(0, 2fr); gap: 8px 12px; align-items: end; padding-top: 10px; border-top: 1px solid var(--gcsp-divider); }
 .gcsp .gcsp-plan-limit-name { align-self: center; margin: 0; font-weight: 600; overflow-wrap: anywhere; }
-.gcsp .gcsp-plan-slider { min-width: 0; }
+.gcsp .gcsp-plan-slider { min-width: 0; } gcsp-greg-order-plan.gcsp { display: block; min-height: 0; background: transparent; }
 .gcsp .gcsp-greg-region:has(> .gcsp-plan, > gcsp-greg-order-plan) { grid-column: 1 / -1; border-style: solid; padding: 20px; background: var(--gcsp-surface); }
 @media (max-width: 640px) {
   .gcsp .gcsp-plan-submit-row .vm-btn, .gcsp .gcsp-plan-actions .vm-btn, .gcsp .gcsp-plan-banner .vm-btn { width: 100%; }

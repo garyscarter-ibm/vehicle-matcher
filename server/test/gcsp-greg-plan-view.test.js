@@ -244,3 +244,11 @@ test('the view reads the values recorded from the live server, including an infe
   assert.deepEqual([bad.kind, bad.action], ['infeasible', 'No plan meets these limits']); assert.ok(bad.conflicts.length && bad.conflicts.every((c) => c.label && c.detail));
   assert.ok(!bad.conflicts.some((c) => /minor units/.test(c.detail)));
 });
+
+test('unmatched supply from several lots with the same source label shows as one row', () => {
+  const v = value('ready'); const sources = v.plan.unallocatedStockRisk.bySource;
+  v.plan.unallocatedStockRisk.bySource = [{ sourceId: 'stock:a', quantity: 1 }, { sourceId: 'stock:b', quantity: 1 }, ...sources];
+  const rows = toPlanView(v).unallocatedRisk.sources;
+  assert.deepEqual(rows.filter((s) => s.label === 'Vehicle already in stock').map((s) => s.quantity), [2]);
+  assert.equal(rows.length, sources.length + 1);
+});
