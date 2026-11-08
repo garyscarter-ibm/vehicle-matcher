@@ -732,7 +732,9 @@ test('harness page loads the harness module and the body stylesheet; the element
   assert.match(html, /blocks\/gcsp\/employee\/gcsp-employee\.css/);
   const harness = read('blocks/gcsp/employee/harness.js');
   assert.match(harness, /FIXTURE_NAMES\.includes/);
-  const liveHosts = ['activity/live.js', 'order-progress/live.js'].map((file) => join(GCSP_DIR, file));
+  // Page hosts only: the offer entry captures and scrubs the email-link fragment (bc8a941a); the presenter page opens Help (112fdfe2).
+  const liveHosts = ['activity/live.js', 'order-progress/live.js', 'offer/entry.js', 'offer/http-adapter.js',
+    'presenter-controls/workspace.js'].map((file) => join(GCSP_DIR, file));
   for (const f of walk(GCSP_DIR).filter((p) => p.endsWith('.js') && !p.endsWith('harness.js') && !liveHosts.includes(p))) {
     assert.doesNotMatch(readFileSync(f, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^:\\])\/\/.*$/gm, '$1'), /\b(?:window|globalThis)\s*\.\s*(?:location|history)\b|\b(?:location|history)\.(?:href|search|pathname|hash|pushState|replaceState|back|forward|go)\b/, rel(f));
   }
