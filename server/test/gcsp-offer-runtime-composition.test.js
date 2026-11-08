@@ -131,10 +131,13 @@ test('composed offer entry reloads the real declined offer and saves the employe
   const root = dom.window.document.querySelector('gcsp-offer');
   dispose = mountOfferEntry(root, { fetch: transport, location, history: { replaceState() {} } });
   await waitFor(() => root.querySelector('.gcsp-followup-question'));
+  // FUCQ-188: the real entry composition shows exactly one Check current state.
+  const refreshes = () => [...root.querySelectorAll('button')].filter((node) => node.textContent === 'Check current state').length;
+  assert.equal(refreshes(), 1);
   const option = [...root.querySelectorAll('button, input')].find((node) => node.value === 'saloon' || node.textContent === 'Saloon');
   assert.ok(option); option.click();
   const confirm = root.querySelector('[data-followup-action="confirm"]'); assert.ok(confirm); assert.equal(confirm.disabled, false); confirm.click();
-  await waitFor(() => root.querySelector('[data-followup-saved]'));
+  await waitFor(() => root.querySelector('[data-followup-saved]')); assert.equal(refreshes(), 1);
   const afterSave = (await f.request('/api/gcsp/offer-followup' + selector)).json;
   // No allocation run has evaluated the new brief yet, so the server reports waiting.
   assert.equal(afterSave.status, 'ok'); assert.equal(afterSave.value.state, 'waiting');
