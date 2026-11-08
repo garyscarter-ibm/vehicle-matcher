@@ -218,6 +218,7 @@ Observations from a hand trial go in a new row below, in the same format.
 
 | Date UTC | Variant/fixture | Run ID | Build | Result | Feedback / next revision |
 |---|---|---|---|---|---|
+| 2026-11-08 | waiting-for-suitable-stock / v1; hosted entry, memory, generated run stock and demo stock; headless Chrome, keyboard operation, 1280 and 375 | generated: `demo-4b437c19…` (1280), `demo-7f0afca2…` (375); demo stock: `demo-84457d1a…` (1280), `demo-7a60d294…` (375), each from its own reset | `60a5dd37` | Reset read back 09:30 UTC; Paula's first offer Touring 320i; declined by keyboard with reason Equipment, added Tow bar and confirmed: *Change saved* in brief version 2. One Tick (09:31), then **Check current state**: *Nothing suitable yet. None of the 5 cars checked fit your updated brief. We will check again at the next release.* No second offer. Activity: *Still searching. No match yet. Last check 5 Nov 2026, 09:31: 5 cars checked, 0 suitable.* 9/9 steps and 16/16 keyboard checks in all four runs; no horizontal overflow, no page errors. Script, results and PNGs: `evidence/fucq-75/fucq-173/`. | Low (offer view): before the tick the page reads *Change saved* and *Check whether your next offer is ready*, not yet *waiting for the next release*; the waiting wording appears only after the tick. Low: a stray *Offer declined* line under **Check current state** at 375; 404 on `/api/gcsp/manual/draft`. Hand trial for Russell still to record. |
 
 ### Offer expires · `offer-expires` · FUCQ-129
 
