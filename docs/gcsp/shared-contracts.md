@@ -808,6 +808,55 @@ the small cohort/density overlay explicitly retained. Its regression reproduces 
 pinned policy and recorded seed/overlay. Later harness/panel consumers preserve these labels and follow the
 experience contract, shell/palette reference and COMPONENTS.md. No screen is introduced by this module.
 
+## Comparison route replay · FUCQ-134
+
+Today's first-come-first-served release route, replayed for one generated seed in an isolated run. It is a stated
+model of the dated research, not a reproduction of BMW operations. Calculated fit is not observed satisfaction.
+
+**Isolated run.** `openComparisonRun({ inputs, policy, route, codeRevision, evaluation })` in
+`server/gcsp/comparison/harness.js` opens one FUCQ-81 memory repository per (seed, route), with its own FUCQ-85 clock
+and FUCQ-93 `CapturedTransport`. It never reads or writes the live demo run and sends no mail. Comparison runs use the
+memory repository's opt-in `snapshot: 'shallow'` mode, which copies table arrays rather than every row; core rows are
+replaced, never mutated in place, so transaction isolation is unchanged. The live demo keeps the default deep copy.
+
+**Shared evaluation.** `evaluateComparisonSeed({ inputs, policy })` in `evaluation.js` runs FUCQ-29's stored-subject
+evaluator once per employee for the stated brief and once for the underlying needs, gates first and then explained
+ranking. Cars with the same configuration and facts are evaluated once and projected to each exact car. The frozen
+result carries `inputHash`, `policyVersion`, `threshold` and `evaluatorCalls`; a run refuses an evaluation for other
+inputs, so both routes for a seed use exactly the same candidates. Availability is static here; release time,
+visibility and every claim are rechecked by FUCQ-66 inside the run.
+
+**Today's route.** `replayCurrentRoute(run)` in `routes/current.js` follows `comparison.manualRoute.v1`. After each
+release, each employee without a car looks at the real FUCQ-66 listing at their generated access time, until taken or
+renewal (inclusive). They claim their best listed car that passes the stated brief's gates with stated fit at or above
+`comparison.acceptableFitThreshold`, `listingToClaimSeconds` after looking. A claim conflict refreshes the listing and
+claims the next candidate, counted as a retry. After `decisionSeconds`, inside the `hold.cart.durationSeconds` cart
+hold, the employee takes the car only if it passes their **underlying** essentials and gates with calculated fit at or
+above the threshold. Otherwise the hold expires through FUCQ-66's expiry handler, the car returns to the pool and that
+employee does not claim it again. Events order by instant, then release, access, claim and decision, then employeeId.
+FUCQ-66's own ordering window still applies: once no collection date fits `manual.context.v1`'s minimum lead time
+before the contract end, the listing refuses ordering, the employee stops acting and `orderingClosedAt` records when.
+
+| Policy key | Unit / purpose |
+|---|---|
+| `comparison.acceptableFitThreshold` | Calculated fit 0-100 an acceptable car must reach; a missing fit never passes. |
+| `comparison.manualRoute.v1` | Versioned manual behaviour: access, candidate order, timings, conflict, expiry and renewal rules. |
+| `comparison.recordAdapter.v1` | Fictional driver, contact and model-line facts so generated people and cars pass the real claim code. |
+
+All three are `assumed`, sourced here, dated 8 November 2026, and read through PolicyService.
+
+**Outcome record.** Deeply immutable. Top level: `schemaVersion`, `route`, `seed`, `policyVersion`, `inputHash`,
+`generatorVersion`, `policyHash`, `codeRevision`, `threshold`, `thresholdKey`, consumed `assumptions` with provenance,
+`limitations` and `totals`. Each `employees[]` row: `seed`, `policyVersion`, `route`, `employeeId`, `accessGroup`,
+`outcome` (`taken` or `none-by-renewal`), `orderUuid`, `takenAt`, `takenDate`, `renewalAt`, `fit` of the taken car,
+`orderingClosedAt`, `claims`, `retries`, `expiries`, `sessions`. Each `cars[]` row: `seed`, `policyVersion`, `route`, `orderUuid`,
+`releaseId`, `outcome` (`allocated`, `held-not-taken` or `unused`), `allocatedTo`, `allocatedAt`, `holdsNotTaken`,
+`heldNotTakenSeconds`, `heldNotTakenDays`. The same seed, policy and code give an identical record. The computed representative record is
+`outcomeRecord` in `server/test/fixtures/gcsp-comparison-current-outcomes.json`, for the measures Story.
+
+Known input limitation: with the three structural fixture configurations, grade `G1-6` is eligible for none, so
+those generated employees cannot take a car in either route. Backend only; no screen.
+
 ## Named scenario catalogue and preparation · FUCQ-125
 
 `createScenarioService({ repository, policy, clock, identity })` uses the opened application repository and the actual `PolicyService`, `DemoClock` and `DemoIdentityAdapter` instances. `readCatalogue(context)`, `readState(context)` and `reset(context, command)` are presenter-only. No schema, policy seed or runtime dependency is added. The catalogue is `gcsp-scenario-catalogue-v1`; its first six stable IDs are `main-successful-journey`, `no-suitable-match`, `decline-then-change`, `offer-expires`, `data-unavailable`, and `uncertain-handoff`. FUCQ-109 and FUCQ-127–131 own their business replays. A seventh `gcsp-clock-scenario-v1` entry is explicitly fictional clock/reset mechanics support, never evidence of those six journeys or the real corpus.

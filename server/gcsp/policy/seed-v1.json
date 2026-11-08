@@ -12350,6 +12350,307 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "comparison.acceptableFitThreshold",
+      "value": 70,
+      "unit": "calculated fit, 0-100",
+      "basis": "Plausible demonstration boundary for an acceptable car, revisable. A missing fit never passes. Calculated fit is not observed satisfaction.",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#comparison-route-replay--fucq-134",
+      "sourceDate": "2026-11-08",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.manualRoute.v1",
+      "value": {
+        "schemaVersion": 1,
+        "participation": "every-employee-in-the-current-route; buddy non-participants reuse it",
+        "accessEvent": "once-per-release-at-generated-accessSeconds-until-taken-or-renewal",
+        "accessTies": "employeeId-ascending",
+        "eventOrder": [
+          "release",
+          "expiry",
+          "access",
+          "claim",
+          "decision"
+        ],
+        "candidateGate": "stated-brief-eligible-and-fit-at-or-above-threshold",
+        "candidateOrder": "stated-fit-descending-then-orderUuid",
+        "listingToClaimSeconds": 30,
+        "decisionSeconds": 60,
+        "conflict": "refresh-listing-and-claim-next-candidate",
+        "acceptance": "underlying-gates-and-fit-at-or-above-threshold",
+        "acceptedHold": "order-review-then-allocate",
+        "unacceptableHold": "expire-without-taking",
+        "abandonedCar": "not-claimed-again-by-that-employee",
+        "expiryReentry": "next-modelled-access-event",
+        "renewalDeadline": "inclusive",
+        "responseSeconds": "not-used; the manual decision happens in the portal session"
+      },
+      "unit": "versioned synthetic manual behaviour",
+      "basis": "Plausible model of today's first-come-first-served release: employees check the portal after each release at their modelled access time, take 30 s to claim from the listing and decide within the 120 s cart hold. Revisable; not observed BMW behaviour.",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#comparison-route-replay--fucq-134",
+      "sourceDate": "2026-11-08",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "comparison.recordAdapter.v1",
+      "value": {
+        "schemaVersion": 1,
+        "fixtureVersion": "comparison-records.synthetic.v1",
+        "kind": "synthetic-mechanics-only",
+        "stockAvailabilityDaysAfterHorizon": 1,
+        "orderReferences": "sequential-run-local-seven-digits",
+        "principalIds": "derived-from-generated-employeeId",
+        "collectionChoice": "first-permitted-driver-contract-location; renewal-date",
+        "expectedReturnMileage": 0,
+        "specialRequirements": "",
+        "driver": {
+          "eligible": {
+            "status": "known",
+            "value": true,
+            "unit": null
+          },
+          "kind": "employee",
+          "licence": {
+            "displayNumber": "FICTIONAL-COMPARISON-LICENCE",
+            "categories": [
+              "car"
+            ],
+            "validFrom": "2020-01-01",
+            "validUntil": "2030-12-31"
+          }
+        },
+        "employeeFacts": {
+          "charging": {
+            "status": "known",
+            "value": "home",
+            "unit": null
+          },
+          "annualMileage": {
+            "status": "known",
+            "value": 12000,
+            "unit": "mi/year"
+          }
+        },
+        "contact": {
+          "phone": "01632 960000",
+          "emailTemplate": "{employeeId}@example.invalid"
+        },
+        "stockFactsByModelLine": {
+          "G20 Saloon|320i": {
+            "body": {
+              "status": "known",
+              "value": "saloon",
+              "unit": null
+            },
+            "fuel": {
+              "status": "known",
+              "value": "petrol",
+              "unit": null
+            },
+            "seats": {
+              "status": "known",
+              "value": 5,
+              "unit": "count"
+            },
+            "boot": {
+              "status": "known",
+              "value": 480,
+              "unit": "L"
+            },
+            "zeroTo62": {
+              "status": "known",
+              "value": 7.4,
+              "unit": "s"
+            },
+            "mpg": {
+              "status": "known",
+              "value": 45,
+              "unit": "mpg-imperial"
+            },
+            "sizeClass": {
+              "status": "known",
+              "value": 3,
+              "unit": "ordinal-1-5"
+            },
+            "tags": {
+              "status": "known",
+              "value": [
+                "cruiser"
+              ],
+              "unit": null
+            },
+            "insuranceGroup": {
+              "status": "known",
+              "value": 25,
+              "unit": "insurance-group"
+            },
+            "equipment": {
+              "status": "unknown",
+              "value": null,
+              "unit": "equipment-key"
+            },
+            "frontIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            },
+            "rearIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            }
+          },
+          "G21 Touring|320i": {
+            "body": {
+              "status": "known",
+              "value": "estate",
+              "unit": null
+            },
+            "fuel": {
+              "status": "known",
+              "value": "petrol",
+              "unit": null
+            },
+            "seats": {
+              "status": "known",
+              "value": 5,
+              "unit": "count"
+            },
+            "boot": {
+              "status": "known",
+              "value": 500,
+              "unit": "L"
+            },
+            "zeroTo62": {
+              "status": "known",
+              "value": 7.5,
+              "unit": "s"
+            },
+            "mpg": {
+              "status": "known",
+              "value": 44,
+              "unit": "mpg-imperial"
+            },
+            "sizeClass": {
+              "status": "known",
+              "value": 3,
+              "unit": "ordinal-1-5"
+            },
+            "tags": {
+              "status": "known",
+              "value": [
+                "cruiser"
+              ],
+              "unit": null
+            },
+            "insuranceGroup": {
+              "status": "known",
+              "value": 25,
+              "unit": "insurance-group"
+            },
+            "equipment": {
+              "status": "unknown",
+              "value": null,
+              "unit": "equipment-key"
+            },
+            "frontIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            },
+            "rearIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            }
+          },
+          "G61 i5|i5 40": {
+            "body": {
+              "status": "known",
+              "value": "estate",
+              "unit": null
+            },
+            "fuel": {
+              "status": "known",
+              "value": "ev",
+              "unit": null
+            },
+            "seats": {
+              "status": "known",
+              "value": 5,
+              "unit": "count"
+            },
+            "boot": {
+              "status": "known",
+              "value": 570,
+              "unit": "L"
+            },
+            "zeroTo62": {
+              "status": "known",
+              "value": 7.7,
+              "unit": "s"
+            },
+            "mpg": {
+              "status": "unknown",
+              "value": null,
+              "unit": "mpg-imperial"
+            },
+            "sizeClass": {
+              "status": "known",
+              "value": 4,
+              "unit": "ordinal-1-5"
+            },
+            "tags": {
+              "status": "known",
+              "value": [
+                "cruiser"
+              ],
+              "unit": null
+            },
+            "insuranceGroup": {
+              "status": "known",
+              "value": 25,
+              "unit": "insurance-group"
+            },
+            "equipment": {
+              "status": "unknown",
+              "value": null,
+              "unit": "equipment-key"
+            },
+            "frontIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            },
+            "rearIsofix": {
+              "status": "unknown",
+              "value": null,
+              "unit": null
+            }
+          }
+        },
+        "unknownFieldRule": "retain-unknown-no-inference",
+        "suitabilityAvailability": "static-suitability-at-origin; release time, visibility and claims are rechecked by FUCQ-66 in the run",
+        "limitations": [
+          "Fictional facts for mechanics; not observed BMW configurations, insurance, licence or employee behaviour.",
+          "Underlying needs are synthetic latent inputs, not a real employee confirmation.",
+          "Equipment and ISOFIX facts are unknown; no factory-option or constructibility inference.",
+          "Live corpus realism/integration is separate acceptance evidence."
+        ]
+      },
+      "unit": "versioned fictional input mapping and provenance",
+      "basis": "Fictional driver, contact and model-line facts so generated employees and cars pass through the real manual claim code. None is a measured BMW specification, driver record or constructible configuration; unlisted facts stay unknown.",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#comparison-route-replay--fucq-134",
+      "sourceDate": "2026-11-08",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "renewalCase.deadline.enabled",
       "value": true,
       "unit": "boolean",
