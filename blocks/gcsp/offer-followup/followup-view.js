@@ -3,6 +3,7 @@ import { renderOptionList, renderRangeSlider } from '../../vehicle-matcher/modes
 import { matchCard } from '../../vehicle-matcher/modes/result-card.js';
 import { labelledField } from '../kit/form-controls.js';
 import { dataTable } from '../kit/data-table.js';
+import { ACCESS_LAPSED_TITLE, ACCESS_LAPSED_MESSAGE, accessLapsedScreen } from '../kit/run-restarted.js';
 
 let sequence = 0;
 const label = (v) => String(v).replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[-_]/g, ' ').replace(/^./, (c) => c.toUpperCase());
@@ -20,6 +21,7 @@ const messages = {
   'refresh-required': ['Your brief has changed', 'Check the current state before choosing again.'],
   'stale-run': ['Follow-up from an earlier demo run', 'Open your current account to continue.'],
   forbidden: ['Follow-up unavailable', 'Open the offer from your account to continue.'],
+  'access-lapsed': [ACCESS_LAPSED_TITLE, ACCESS_LAPSED_MESSAGE],
 };
 
 function requirementRows(comparison) {
@@ -135,6 +137,7 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
     }
     if (model.state === 'question') drawQuestion(model);
     else if (ready) { /* Exact public projection supplied. */ }
+    else if (model.state === 'access-lapsed') content.append(accessLapsedScreen());
     else {
       const key = model.state === 'ready' ? 'unavailable' : model.state;
       const [title, message] = messages[key] || messages.unavailable;

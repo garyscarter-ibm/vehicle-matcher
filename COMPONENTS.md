@@ -276,7 +276,7 @@ Component plan: reuse `button`, `factList`, `statusScreen`, `labelledField` and 
 | Component | Use instead |
 |---|---|
 | `presenterBar({ label = 'Presenter controls', readback = [] })` (`blocks/gcsp/kit/presenter-bar.js`) | Native disclosure plus supplied `factList` rows. Returns `{ root, summary, panel, readback, setReadback(rows) }`. Append consumer actions to `panel`; readback updates preserve disclosure and action identity. Use instead of hand-building a presenter disclosure/readback. |
-| `mountPresenterControls(host, { adapter, commandId, navigate })` | Shared presenter strip with a native target field and controlled Scenario/Acting principal radio lists, server-projected policy step/cues/principals, confirmed reset, ordered tick receipts, exact original-command retry and actual-context switch reconciliation. Returns `{ root, refresh, destroy }`. Use instead of per-page presenter actions. |
+| `mountPresenterControls(host, { adapter, commandId, navigate })` | Shared presenter strip with a native target field and controlled Scenario/Acting principal radio lists, server-projected policy step/cues/principals, confirmed reset, ordered tick receipts in a closed native "Step results" disclosure that keeps its open state across readbacks, exact original-command retry and actual-context switch reconciliation. Returns `{ root, refresh, destroy }`. Use instead of per-page presenter actions. |
 | `<gcsp-presenter-controls>` / `defineGcspPresenterControls(registry)` | Standard custom element, adapter property, disconnect teardown. Load `presenter-controls/register.js` and the shared shell styles. The parent `.gcsp` supplies Density tokens. |
 | `mountPresenterWorkspace(host, options)` | Reads actual server context and mounts the account or Greg HTTP surface. Harness `gcsp-presenter.html`; never selects a principal from URL/fixtures. |
 
@@ -288,9 +288,11 @@ Looked at `statusScreen` (title, message and actions, but no copy for a restarte
 
 | Call | Use for |
 |---|---|
-| `isRunRestarted(reply)` | True when a server reply has status `stale-run`. Use instead of showing the raw status. |
+| `isRunRestarted(reply)` | True when a server reply has status `stale-run`, `unknown-session` or `access-required`. Use instead of showing the raw status. |
+| `isAccessLapsed(httpStatus, body)` | True for the access gate's bare 401 (no string `status`). Every page adapter maps it to `{ status: 'access-required' }`. |
 | `runRestartedScreen({ reload })` | Page-level alert (`statusScreen`): "Demo restarted", the reload message and one primary Reload button. `reload` defaults to following an empty-href link (a full reload; the kit never reads the URL). |
-| `runRestartedNotice({ reload })` | Compact inline alert for panels. Returns `{ root, reload }`; `reload` is the Reload button, so callers can move focus to it. Used by presenter controls, which also disable every control and never resend the old command. The gallery's **GCSP demo restarted** section shows both. |
+| `runRestartedNotice({ reload })` | Compact inline alert for panels. Returns `{ root, reload }`; `reload` is the Reload button, so callers can move focus to it. Used by presenter controls, which also disable every control and never resend the old command. The gallery's **GCSP demo restarted** section shows all three. |
+| `accessLapsedScreen({ next })` | Page-level alert for the offer link, which the access gate leaves open, so a reload cannot reach the access form: "Demo access needed" and one link to `/gcsp/access`, returning to `next` (default the account page). Used by the offer and offer follow-up views for `access-required`. |
 
 ### Manual released-car browser (`blocks/gcsp/manual-gallery/`)
 

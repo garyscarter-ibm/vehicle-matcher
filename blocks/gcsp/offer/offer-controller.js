@@ -1,5 +1,6 @@
 // Presentation port only. HTTP access and decision authority are injected by the host.
 import { followupHandle } from './followup-entry.js';
+import { isRunRestarted } from '../kit/run-restarted.js';
 const copy = (value) => structuredClone(value);
 const states = new Set(['pending', 'accepted', 'declined', 'expired', 'superseded', 'earlier-run', 'not-found', 'uncertain', 'refused']);
 const instant = (value) => typeof value === 'string' && Number.isFinite(Date.parse(value));
@@ -112,7 +113,8 @@ export function createOfferController({ read, decide, readReasons, createCommand
       if (!alive || turn !== sequence) return snapshot();
       if (outcome?.status !== 'ok') {
         const failureState = outcome?.status === 'not-found' ? 'not-found'
-          : outcome?.status === 'stale-run' ? 'earlier-run' : outcome?.status === 'forbidden' ? 'refused' : 'error';
+          : outcome?.status === 'stale-run' ? 'earlier-run' : outcome?.status === 'access-required' ? 'access-lapsed'
+          : isRunRestarted(outcome) ? 'restarted' : outcome?.status === 'forbidden' ? 'refused' : 'error';
         // A failed read cannot turn an uncertain command into confirmed absence/failure.
         state = blocked({ state: afterDecision ? 'uncertain' : failureState,
           message: afterDecision ? 'Your decision could not be confirmed. Check the offer again.'

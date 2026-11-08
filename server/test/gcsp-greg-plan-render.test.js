@@ -300,3 +300,14 @@ test('the Greg HTTP adapter exposes the order plan adapter the dashboard element
   document.body.append(node); await settle();
   assert.ok(node.regions.prediction.querySelector('.gcsp-plan')); node.remove();
 });
+
+test('a lapsed access key shows the compact restart notice with Reload and no Retry, on first load and over a loaded plan', async () => {
+  const first = await mount('ready', {}, { readPlan: async () => ({ status: 'access-required' }) });
+  assert.equal(state(first.root), 'restarted'); const alert = first.root.querySelector('[role="alert"]');
+  assert.match(alert.textContent, /Reload the page to continue/); assert.deepEqual([...first.root.querySelectorAll('button')].map((b) => b.textContent), ['Reload']);
+  assert.doesNotMatch(first.root.textContent, /unavailable|Retry/); first.teardown();
+  let reads = 0; const later = await mount('ready', {}, { readPlan: async () => (++reads === 1 ? adapterMod.planOutcome(200, { status: 'ok', value: valueOf('ready') }) : { status: 'access-required' }) });
+  assert.equal(state(later.root), 'ready'); await later.teardown.refresh(); await settle();
+  assert.equal(state(later.root), 'restarted'); assert.equal(later.root.querySelector('table, input'), null);
+  assert.deepEqual([...later.root.querySelectorAll('button')].map((b) => b.textContent), ['Reload']); later.teardown();
+});

@@ -545,3 +545,18 @@ test('failure messages lead with plain wording, never a raw status or code', asy
   const f = setup({ readControls: (() => { let n = 0; return async () => ++n === 1 ? ok(state()) : { status: 'unavailable' }; })() });
   await settle(); await f.control.refresh(); await settle(); assert.match(f.host.textContent, /Readback unavailable: Backend unavailable/); f.control.destroy();
 });
+
+test('FUCQ-203: tick step results sit in a closed disclosure that keeps its open state and focus across readbacks', async () => {
+  const handlerOrder = Array.from({ length: 11 }, (_, i) => ({ handlerId: `step-${i}`, stage: 'pending-reconciliation' }));
+  const lastTick = { runId: 'run-a', tickId: 'tick-many', eventId: 'tick-many', state: 'completed', handlerOrder, missingStages: [],
+    outcomes: handlerOrder.map((row) => ({ ...row, outcome: { status: 'ok', value: { orders: 0 } } })) };
+  const f = setup({ readControls: async () => ok({ ...state(), lastTick }) }); await settle();
+  const receipts = () => f.host.querySelector('details.gcsp-presenter-receipts');
+  assert.ok(receipts(), 'step results are collapsible'); assert.equal(receipts().open, false);
+  assert.equal(receipts().querySelectorAll('li').length, 11); assert.match(receipts().querySelector('summary').textContent, /11/);
+  assert.equal(f.host.querySelector('.gcsp-presenter-results > ol'), null, 'no uncollapsed list');
+  receipts().open = true; receipts().querySelector('summary').focus(); await settle();
+  await f.control.refresh(); await settle();
+  assert.equal(receipts().open, true, 'open state survives a readback'); assert.equal(document.activeElement, receipts().querySelector('summary'));
+  f.control.destroy();
+});

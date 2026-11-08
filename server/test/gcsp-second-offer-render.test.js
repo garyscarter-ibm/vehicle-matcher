@@ -177,3 +177,10 @@ test('owned block sources have no inline handlers, unsafe execution or styleshee
   // FUCQ-189: the question title sits inside the card padding rather than across its top border.
   assert.match(css, /\.gcsp-followup-field > legend \{[^}]*float: left; width: 100%/);
 });
+
+test('a lapsed access key links to the access form with no refresh', (t) => {
+  const { root, view } = host(t); view.update({ state: 'access-lapsed', busy: false });
+  assert.match(root.textContent, /Demo access needed/); assert.equal(root.querySelectorAll('button').length, 0);
+  assert.equal(root.querySelector('a.vm-btn').getAttribute('href'), '/gcsp/access?next=%2Fgcsp-account.html');
+  assert.equal(root.querySelector('[data-followup-action=refresh]'), null); assert.doesNotMatch(root.textContent, /unavailable/i);
+});

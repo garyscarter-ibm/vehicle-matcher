@@ -1,3 +1,4 @@
+import { isAccessLapsed } from '../kit/run-restarted.js';
 const unavailable = () => ({ status: 'unavailable', reason: 'Order requests are unavailable. Retry the same action.' });
 
 export function createGregOrdersHttpAdapter({ base = '', fetchImpl = globalThis.fetch } = {}) {
@@ -6,7 +7,9 @@ export function createGregOrdersHttpAdapter({ base = '', fetchImpl = globalThis.
       const response = await fetchImpl(`${base}${path}`, { method, credentials: 'include', signal,
         headers: { Accept: 'application/json', ...(method === 'POST' ? { 'Content-Type': 'application/json' } : {}) },
         ...(method === 'POST' ? { body: JSON.stringify(body) } : {}) });
-      const out = await response.json();
+      let out = null;
+      try { out = await response.json(); } catch (error) { if (response.status !== 401) throw error; }
+      if (isAccessLapsed(response.status, out)) return { status: 'access-required' };
       return ['ok', 'invalid', 'unavailable', 'conflict', 'stale-version', 'stale-run', 'forbidden',
         'missing-session', 'unknown-session', 'expired-session', 'not-found'].includes(out?.status) ? out : unavailable();
     } catch (error) { if (signal?.aborted) throw error; return unavailable(); }

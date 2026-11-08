@@ -1,3 +1,4 @@
+import { isAccessLapsed } from '../kit/run-restarted.js';
 import { createGregPublishHttpAdapter } from './publish/http-adapter.js';
 import { createOrderPlanHttpAdapter } from './plan/http-adapter.js';
 // HTTP adapter for the Greg dashboard. The server owns role and run checks; this only maps replies to view states.
@@ -14,6 +15,7 @@ export function outcomeToState(httpStatus, body) {
   const value = body?.value;
   if (httpStatus === 200 && body?.status === 'ok' && value && typeof value === 'object'
     && ['demand', 'offers', 'stock'].every((key) => value[key] && typeof value[key] === 'object')) return { status: 'ready', projection: value };
+  if (isAccessLapsed(httpStatus, body)) return { status: 'access-required' };
   if (httpStatus === 401 || httpStatus === 403) return { status: 'refused', message: MESSAGES.refused };
   if (httpStatus === 409 && body?.status === 'stale-run') return { status: 'refused', message: MESSAGES.reset };
   if (httpStatus === 409 && body?.status === 'conflict') return { status: 'conflict', message: MESSAGES.conflict };
