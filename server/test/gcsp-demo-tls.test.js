@@ -105,7 +105,7 @@ test('browser cookie paths preserve a deliberate Greg switch across real local p
   assert.equal(switched.status, 200);
   assert.equal((await switched.json()).value.principalId, 'demo-greg');
   for (const path of ['/gcsp-presenter.html', '/gcsp-greg.html', '/gcsp-case-queue.html', '/gcsp-help.html', '/gcsp-account.html']) {
-    assert.equal(jar.getCookieStringSync(new URL(path, app.origin).href), 'GCSP_LOCAL_BOOTSTRAP=1');
+    assert.match(jar.getCookieStringSync(new URL(path, app.origin).href), /^GCSP_LOCAL_BOOTSTRAP=[0-9a-f]{24}$/);
     const page = await browse(path); assert.equal(page.status, 200);
     assert.equal(page.headers.getSetCookie().length, 0, 'HTML navigation must not replace the deliberately selected acting session');
     assert.equal((await (await browse('/api/gcsp/context')).json()).value.principalId, 'demo-greg');
@@ -113,8 +113,15 @@ test('browser cookie paths preserve a deliberate Greg switch across real local p
   const queue = await browse('/api/gcsp/scheme-team/cases'); assert.equal(queue.status, 200);
   assert.equal((await queue.json()).status, 'ok');
   const markerOnly = new CookieJar();
-  markerOnly.setCookieSync('GCSP_LOCAL_BOOTSTRAP=1; Path=/; Secure; HttpOnly; SameSite=Strict', app.origin);
+  const marker = jar.getCookieStringSync(`${app.origin}/gcsp-presenter.html`);
+  markerOnly.setCookieSync(`${marker}; Path=/; Secure; HttpOnly; SameSite=Strict`, app.origin);
   assert.equal((await browse('/gcsp-presenter.html', {}, markerOnly)).status, 200);
   const denied = await browse('/api/gcsp/context', {}, markerOnly);
   assert.equal(denied.status, 401, 'The marker cannot authenticate an actor or presenter');
+  // A marker from an earlier process (a restart) bootstraps a fresh session instead of reusing stale cookies.
+  const restarted = new CookieJar();
+  restarted.setCookieSync('GCSP_LOCAL_BOOTSTRAP=1; Path=/; Secure; HttpOnly; SameSite=Strict', app.origin);
+  const fresh = await browse('/gcsp-presenter.html', {}, restarted);
+  assert.equal(fresh.status, 200); assert.ok(fresh.headers.getSetCookie().length >= 2);
+  assert.equal((await (await browse('/api/gcsp/context', {}, restarted)).json()).value.principalId, 'demo-paula');
 });

@@ -71,7 +71,8 @@ export class DemoIdentityAdapter {
   }
 
   async seedPrincipals() {
-    const state = await this.#run();
+    // Activate first: a reset can carry a run-published policy version the new run does not hold.
+    const state = await this.#adoptPolicy(await this.#run());
     if (state.error) return state.error;
     const config = await this.#configuration(state);
     if (config.error) return config.error;

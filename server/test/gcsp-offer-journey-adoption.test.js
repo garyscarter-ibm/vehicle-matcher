@@ -38,3 +38,19 @@ test('runtimes that do not opt in keep the seed policy unchanged', async (t) => 
   assert.equal(employee.policyVersion, 'gcsp-policy-v1');
   assert.ok(reads.every((read) => read.status !== 'ok'));
 });
+
+test('after a scenario reset the presenter session renews and the new run has the offer sets active', async (t) => {
+  const { runtime, employee } = await open(t, { adoptOfferJourney: true });
+  const presenter = good(await runtime.identity.createPresenterSession('adoption-presenter')).context;
+  const scenario = good(await runtime.scenarios.readCatalogue(presenter)).scenarios.find((row) => row.kind === 'mechanics');
+  const state = good(await runtime.scenarios.readState(presenter));
+  const reset = good(await runtime.scenarios.reset(presenter, { commandId: 'adoption-reset', expectedRunId: state.runId,
+    expectedRunVersion: state.runVersion, scenarioId: scenario.scenarioId, scenarioVersion: scenario.scenarioVersion,
+    fixtureVersion: scenario.fixtureVersion, policyVersion: scenario.policyVersion }));
+  assert.notEqual(reset.runId, employee.runId);
+  const renewed = good(await runtime.identity.createPresenterSession('adoption-presenter-after-reset')).context;
+  assert.equal(renewed.runId, reset.runId); assert.equal(renewed.policyVersion, 'gcsp-policy-v1+offer-journey-v1');
+  const now = good(await runtime.clock.now(renewed)).now;
+  const read = await runtime.policy.getAssumption('offer.declineReasons.v1', { runId: renewed.runId, asOf: now, policyVersion: renewed.policyVersion });
+  assert.equal(read.status, 'ok');
+});
