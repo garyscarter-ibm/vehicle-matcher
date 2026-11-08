@@ -104,7 +104,8 @@ export function toDashboardView(projection) {
       made, accepted, declined, expired, selected,
       declinedByReason: rows(offers.declinedByReason, 'offers.declinedByReason', (row, where) => keyed(row, where, reasonLabel)),
     },
-    stock: { rows: stockRows },
+    // FUCQ-130: a failed or stale release pull is shown as unavailable, never as zero stock.
+    stock: { rows: stockRows, sourceUnavailable: stock.source?.status === 'unavailable', sourceStale: stock.source?.reason === 'stale' },
     // A banded released count cannot show zero, so only an empty stock list means nothing is released, held or allocated.
     flags: { noBriefs: demand.byModelLine.length === 0, noStockReleased: stockRows.length === 0, hasBands: false },
   };

@@ -102,10 +102,13 @@ function offersSection(view) {
   return node;
 }
 
+const stockCopy = Object.freeze({ sourceUnavailable: 'Stock source unavailable. Figures may be out of date.',
+  sourceStale: 'Stock data too old to use. Figures may be out of date.', notChecked: "Couldn't check for new stock" });
 function stockSection(view) {
   const node = section('stock', 'Stock');
+  if (view.stock.sourceUnavailable) node.append(note(view.stock.sourceStale ? stockCopy.sourceStale : stockCopy.sourceUnavailable, 'status'));
   node.append(note('Released stock is open to employees. Held stock is reserved for an offer. Allocated stock is taken by a selection.'), dataTable({
-    caption: 'Stock by model line', emptyText: 'No stock has been released yet',
+    caption: 'Stock by model line', emptyText: view.stock.sourceUnavailable ? stockCopy.notChecked : 'No stock has been released yet',
     columns: [{ key: 'name', label: 'Model line' }, { key: 'released', label: 'Released', numeric: true },
       { key: 'held', label: 'Held', numeric: true }, { key: 'allocated', label: 'Allocated', numeric: true }],
     rows: view.stock.rows.map((row) => ({ name: row.label, released: row.released, held: row.held, allocated: row.allocated })),

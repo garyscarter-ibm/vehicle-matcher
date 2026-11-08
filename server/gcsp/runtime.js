@@ -22,7 +22,7 @@ import { createOfferFollowupService } from './offers/followup.js';
 import { createStoredSubjectRecommendationEvaluator } from './recommendation/index.js';
 import { verifyOfferToken, resolveOfferLandingUrl } from './offers/offer-token.js';
 import { createNotificationDispatcher } from './notify/index.js';
-import { createStockReleaseService } from './stock/index.js';
+import { createStockReleaseService, createSyntheticStockFaults } from './stock/index.js';
 import { createSupplyService } from './supply/index.js';
 import { createStockReleaseHistoryPort } from './stock/history-port.js';
 import { createManualGalleryStockRead } from './manual-gallery/stock-read.js';
@@ -95,7 +95,10 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     // A factory gets the same policy the release service reads, so provider windows follow policy.
     // It also gets the repository and a trusted run context, so a source can read and generate a run's stock.
     const contextForRun = (runId) => ({ runId, environmentId, principalId: 'gcsp-stock-source', roles: ['presenter'] });
-    const pullProvider = typeof stockProvider === 'function' ? stockProvider({ policy, repository, contextForRun, environmentId }) : stockProvider;
+    const sourceProvider = typeof stockProvider === 'function' ? stockProvider({ policy, repository, contextForRun, environmentId }) : stockProvider;
+    // FUCQ-130: presenter-set, run-scoped synthetic fault; it never alters an operational provider's pull.
+    const stockFaults = createSyntheticStockFaults({ policy });
+    const pullProvider = sourceProvider === undefined ? undefined : stockFaults.wrap(sourceProvider);
     // Prepared scenario fixtures are branded by the exact policy instance used by the clock.
     // After a reset: choose the new run's stock source (a failure defers it to the first pull), then
     // re-adopt the reviewed offer-journey sets, because policy publications are per run.
@@ -103,7 +106,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       if (typeof pullProvider?.prepareRun === 'function') { try { await pullProvider.prepareRun(runId); } catch { /* deferred */ } }
       return adoptOfferJourney ? adoptOfferJourneyPolicy({ policy, identity, clock }) : ok({});
     };
-    const scenarios = createScenarioService({ repository, policy: readPolicy, clock, identity, brief, afterReset,
+    const scenarios = createScenarioService({ repository, policy: readPolicy, clock, identity, brief, afterReset, faults: { stock: stockFaults },
       prepareEmployee: (context) => seedManualDemoContext({ repository, identity, clock, context }) });
     const stockRelease = pullProvider === undefined ? undefined
       : createStockReleaseService({ repository, policy, clock, identity, provider: pullProvider });
