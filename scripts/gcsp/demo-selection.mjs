@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import { basename, dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { MATRIX_PATH, validateDemoPlan } from './demo-plan.mjs';
-import { assignRowsToLines, configurationDeepLink, countOtdFacts, lineModels, verifyStagedDemoFleet } from './demo-verifier.mjs';
+import { ENRICHMENT_DIR, assignRowsToLines, configurationDeepLink, countOtdFacts, lineModels, readEnrichmentEvidence, verifyStagedDemoFleet } from './demo-verifier.mjs';
 import { validateCorpusDirectory, writeCorpusCandidate } from '../../server/gcsp/vehicle-evidence/corpus-publisher.js';
 import { createSyntheticRegistry } from '../../server/gcsp/vehicle-evidence/synthetic-registry.js';
 import { createVehicleEvidenceLookup } from '../../server/gcsp/vehicle-evidence/vehicle-lookup.js';
@@ -78,6 +78,12 @@ export function variationCounts(selected) {
   return { vgModelCodes: new Set(selected.map((item) => item.audited.vgModelCode)).size,
     paint: distinct('paint'), upholstery: distinct('upholstery'), wheels: distinct('wheels'), packs: distinct('pack'),
     distinctOptionCodes: new Set(selected.flatMap((item) => item.audited.options)).size };
+}
+
+/** The enrichment sidecar files (if any) as privacy-scan inputs. */
+export async function enrichmentPrivacyFiles(root = REPO_ROOT) {
+  const sidecar = await readEnrichmentEvidence(root);
+  return sidecar ? [[`${ENRICHMENT_DIR}/manifest.json`, JSON.stringify(sidecar.manifest)], [`${ENRICHMENT_DIR}/enrichment.jsonl`, sidecar.jsonl]] : [];
 }
 
 /** Pattern scan only; a clean result never replaces reading the artifact. */
@@ -213,7 +219,7 @@ const roundTripSummary = (counts = { required: 20, passed: 0, failed: 0, notRun:
   status: counts.notRun === counts.required ? 'not-run' : counts.notRun > 0 ? 'partial' : counts.failed > 0 ? 'failed' : 'passed' });
 
 /** Build the report object; pure given its inputs so the CLI and tests share it. */
-export function buildReport({ plan, source, selection, retained, registered, published, lookup, verifier, sample, imageRows }) {
+export function buildReport({ plan, source, selection, retained, registered, published, lookup, verifier, sample, imageRows, facts: stagedFacts, enrichment }) {
   const mapped = plan.modelLines.filter((line) => line.mapping.status === 'mapped');
   const chosenRows = selection.lines.flatMap((line) => line.selected.map((item) => source.records[item.index]));
   const lines = selection.lines.map(({ line, candidates, byModel, selected, belowMinimum }) => ({
@@ -229,7 +235,7 @@ export function buildReport({ plan, source, selection, retained, registered, pub
     modelRange: line.modelRange, vgModelCodes: line.models.map((model) => model.vgModelCode),
     fucq61Rows: line.models.reduce((sum, model) => sum + model.fucq61Rows, 0),
     registeredSourceRowsNotPublishedLocally: line.models.reduce((sum, model) => sum + model.registeredSourceRows, 0) }));
-  const facts = countOtdFacts(chosenRows, published.manifest);
+  const facts = stagedFacts ?? countOtdFacts(chosenRows, published.manifest);
   const exclusions = plan.modelLines.filter((line) => line.mapping.status === 'excluded')
     .map((line) => ({ lineId: line.id, model: line.model, engine: line.engine, reason: line.mapping.reason }));
   const pending = plan.modelLines.filter((line) => line.mapping.status === 'pending').map((line) => line.id);
@@ -258,9 +264,10 @@ export function buildReport({ plan, source, selection, retained, registered, pub
         note: 'Historical FUCQ-61 traffic is referenced, not charged to this story or claimed to fit its budget.' } },
     deepLinks: { template: 'https://configure.bmw.co.uk/en_GB/configure/{modelRange}/{vgModelCode}/{sorted options}', built: published.manifest.counts.configurations,
       roundTrip: roundTripSummary(verifier.roundTrips), sample },
-    facts: { basis: 'Counts over the published demo rows; 0-62 reads the record acceleration field, which the source labels 0-100 km/h.', counts: facts },
-    images: { cosyExteriorRenderReferences: imageRows.cosy, rows: imageRows.rows, configurationsWithoutImage: imageRows.without,
-      origin: 'BMW COSY catalogue render', fidelity: 'representative-configuration' },
+    facts: { basis: 'Counts over the published demo rows plus a valid demo-enrichment.v1 sidecar; 0-62 is the source 0-100 km/h field.', counts: facts },
+    images: { cosyExteriorRenderReferences: imageRows.cosy, rows: imageRows.rows, sidecarReferenceRows: imageRows.sidecar ?? 0,
+      configurationsWithoutImage: imageRows.without, origin: 'BMW COSY catalogue render', fidelity: 'representative-configuration' },
+    enrichment: enrichment ?? { path: ENRICHMENT_DIR, present: false },
     verifier: verifier,
   };
 }
@@ -300,10 +307,13 @@ export async function runDemoSelection({ root = REPO_ROOT, write = false, log = 
   const chosen = new Set(ids); const imaged = source.images.filter((item) => chosen.has(item.configurationId));
   const sample = deepLinkSample(selection, JSON.parse(updated), source.records, 20, staged.roundTripResults);
   const report = buildReport({ plan: JSON.parse(updated), source, selection, retained, registered, published, lookup, verifier, sample,
-    imageRows: { cosy: imaged.length, rows: imaged.length, without: ids.length - imaged.length } });
+    facts: staged.facts, enrichment: staged.enrichment,
+    imageRows: { cosy: staged.images.configurationsWithImage, rows: imaged.length, sidecar: staged.images.sidecarReferenceRows,
+      without: staged.images.configurationsWithoutImage } });
   const files = [[REPORT_PATH, JSON.stringify(report, null, 2)]];
   for (const path of await listFiles(resolve(root, directory))) files.push([relative(root, path), await readFile(path, 'utf8')]);
-  report.privacy = { ...privacyScan(files), scope: 'report body and every file of the published demo version' };
+  files.push(...await enrichmentPrivacyFiles(root));
+  report.privacy = { ...privacyScan(files), scope: 'report body, every file of the published demo version and the enrichment sidecar' };
   await writeFile(resolve(root, REPORT_PATH), `${JSON.stringify(report, null, 2)}\n`);
   return { report, published, staged };
 }

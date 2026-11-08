@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { isAbsolute, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -6,6 +7,10 @@ import { MATRIX_PATH, validateDemoPlan } from './demo-plan.mjs';
 const REPO_ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const FUCQ61_COVERAGE = 'docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/coverage.json';
 export const ROUND_TRIPS_PATH = 'docs/gcsp/evidence/fucq77/round-trips-2026-11-08/round-trips.json';
+export const ENRICHMENT_DIR = 'server/data/gcsp/vehicle-evidence/demo-enrichment.v1';
+export const ENRICHMENT_SCHEMA = 'demo-enrichment.v1';
+// Sidecar fact keys: the five OTD facts the story names, then the expanded luggage volume.
+export const ENRICHMENT_FACTS = Object.freeze(['acceleration', 'seats', 'luggageNormal', 'rangeOrEconomy', 'co2', 'luggageExpanded']);
 
 const object = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 const code = (value) => typeof value === 'string' && /^[A-Z0-9]{2,16}$/.test(value);
@@ -235,21 +240,107 @@ export function configurationDeepLink(row, { modelRange } = {}) {
   return `https://configure.bmw.co.uk/en_GB/configure/${range}/${audited.vgModelCode}/${audited.options.join(',')}`;
 }
 
-// The five OTD facts and the record field that carries each; absent fields stay unknown, never inferred.
+// The five OTD facts, the record field that carries each and its sidecar key; absent fields stay unknown, never inferred.
 const OTD_FACTS = Object.freeze({ acceleration: ['acceleration'], seats: ['seats'], boot: ['luggageNormal'], rangeOrEconomy: [], co2: [] });
+const SIDECAR_KEY = Object.freeze({ acceleration: 'acceleration', seats: 'seats', boot: 'luggageNormal', rangeOrEconomy: 'rangeOrEconomy', co2: 'co2' });
 
-/** Count known versus unknown OTD facts, using the record's own states and any registered technical supplement. */
-export function countOtdFacts(records, manifest = {}) {
+/** Count known versus unknown OTD facts from the record, a registered technical supplement or a validated sidecar entry. */
+export function countOtdFacts(records, manifest = {}, sidecar = new Map()) {
   const supplements = new Map((manifest.technicalSupplements || []).map((item) => [item.configurationId, item]));
   const result = Object.fromEntries(Object.keys(OTD_FACTS).map((name) => [name, { known: 0, unknown: 0 }]));
   for (const row of records) {
     for (const [name, fields] of Object.entries(OTD_FACTS)) {
       const isKnown = fields.some((field) => row.catalogue?.facts?.[field]?.state === 'known'
-        || supplements.get(row.configurationId)?.facts?.[field]?.state === 'known');
+        || supplements.get(row.configurationId)?.facts?.[field]?.state === 'known')
+        || sidecar.get(row.configurationId)?.facts?.[SIDECAR_KEY[name]]?.state === 'known';
       result[name][isKnown ? 'known' : 'unknown']++;
     }
   }
   return result;
+}
+
+const FACT_REASON = /^[a-z][a-z0-9-]{1,63}$/;
+const ASSET_URL = /https?:|\/\/|\.(?:webp|png|jpe?g|avif)\b/i;
+const sha256 = (text) => createHash('sha256').update(text).digest('hex');
+
+function validEnrichmentFact(fact) {
+  if (!object(fact)) return false;
+  if (fact.state === 'known') {
+    return typeof fact.value === 'number' && Number.isFinite(fact.value) && typeof fact.unit === 'string' && fact.unit.length > 0
+      && object(fact.provenance) && fact.provenance.source === 'BMW UK OTD' && date(fact.provenance.observedDate);
+  }
+  return fact.state === 'unknown' && fact.value === null && typeof fact.reason === 'string' && FACT_REASON.test(fact.reason);
+}
+
+function validExteriorReference(ref) {
+  return object(ref) && ref.kind === 'cosy-exterior-render' && ref.source === 'BMW COSY' && date(ref.observedDate)
+    && typeof ref.viewpoint === 'string' && /^[A-Z0-9]{1,32}$/.test(ref.viewpoint) && typeof ref.pointer === 'string' && ref.pointer.startsWith('/')
+    && ref.fidelity === 'representative-configuration' && object(ref.fidelityDetail) && object(ref.manifestRequest)
+    && !ASSET_URL.test(JSON.stringify(ref));
+}
+
+function validEnrichmentEntry(entry, errors) {
+  const bad = (code) => { if (!errors.includes(code)) errors.push(code); };
+  const observed = entry.observation === 'observed';
+  if (!['observed', 'not-observed', 'rejected'].includes(entry.observation)) bad('entry-observation');
+  if (!object(entry.facts) || !ENRICHMENT_FACTS.every((name) => validEnrichmentFact(entry.facts[name]))) bad('malformed-fact');
+  else if (!observed && ENRICHMENT_FACTS.some((name) => entry.facts[name].state !== 'unknown')) bad('unobserved-entry-with-fact');
+  // A rejected technical observation may still carry its own validated exterior render reference; a not-observed row may not.
+  if (!Array.isArray(entry.imageReferences) || entry.imageReferences.length > 8 || !entry.imageReferences.every(validExteriorReference)) bad('malformed-image-reference');
+  else if (entry.observation === 'not-observed' && entry.imageReferences.length > 0) bad('unobserved-entry-with-image');
+  if (!Array.isArray(entry.unmappedOtdCodes) || !entry.unmappedOtdCodes.every((value) => /^[A-Z0-9_]{1,96}$/.test(value))) bad('malformed-unmapped-codes');
+}
+
+/** Counts a set of sidecar entries; the composer and the verifier share it so the manifest can be recomputed. */
+export function countEnrichmentEntries(entries) {
+  const facts = Object.fromEntries(ENRICHMENT_FACTS.map((name) => [name, { known: 0, unknown: 0 }]));
+  const counts = { rows: 0, observed: 0, notObserved: 0, rejected: 0, rowsWithExteriorReference: 0, facts };
+  for (const entry of entries) {
+    counts.rows++;
+    if (entry.observation === 'observed') counts.observed++;
+    else if (entry.observation === 'rejected') counts.rejected++;
+    else counts.notObserved++;
+    if (entry.imageReferences?.length > 0) counts.rowsWithExteriorReference++;
+    for (const name of ENRICHMENT_FACTS) facts[name][entry.facts?.[name]?.state === 'known' ? 'known' : 'unknown']++;
+  }
+  return counts;
+}
+
+/** Read the sidecar from the repo path; absent or unreadable files mean no sidecar, never an error. */
+export async function readEnrichmentEvidence(root = REPO_ROOT) {
+  const read = (name) => readFile(resolve(root, ENRICHMENT_DIR, name), 'utf8');
+  try { return { manifest: JSON.parse(await read('manifest.json')), jsonl: await read('enrichment.jsonl') }; } catch { return null; }
+}
+
+/** Validate a sidecar against the staged rows; any defect rejects the whole sidecar so no partial value is ever applied. */
+export function scoreEnrichment(evidence, records, stagedDigest) {
+  const base = { path: ENRICHMENT_DIR, present: false, valid: null, errors: [] };
+  if (evidence === null || evidence === undefined) return { summary: base, entries: new Map() };
+  const errors = []; const fail = (code) => { if (!errors.includes(code)) errors.push(code); };
+  const manifest = evidence.manifest; const text = evidence.jsonl; const entries = new Map(); const list = [];
+  if (!object(manifest) || manifest.schemaVersion !== ENRICHMENT_SCHEMA) fail('schema-version');
+  if (manifest?.demoManifestDigest !== stagedDigest) fail('manifest-digest-mismatch');
+  if (typeof text !== 'string' || sha256(text) !== manifest?.checksums?.['enrichment.jsonl']) fail('checksum-mismatch');
+  const ids = new Set(records.map((row) => row.configurationId));
+  if (typeof text === 'string') {
+    for (const line of text.split('\n').filter(Boolean)) {
+      let entry; try { entry = JSON.parse(line); } catch { fail('jsonl-malformed'); continue; }
+      if (!object(entry) || typeof entry.configurationId !== 'string') { fail('entry-malformed'); continue; }
+      if (!ids.has(entry.configurationId)) fail('foreign-configuration');
+      if (entries.has(entry.configurationId)) fail('duplicate-entry');
+      if (entry.demoManifestDigest !== stagedDigest) fail('entry-digest-mismatch');
+      validEnrichmentEntry(entry, errors);
+      entries.set(entry.configurationId, entry); list.push(entry);
+    }
+  }
+  const counts = countEnrichmentEntries(list);
+  if (!errors.length && JSON.stringify(manifest.counts) !== JSON.stringify(counts)) fail('count-mismatch');
+  const perHost = manifest?.requests?.perHost;
+  if (!errors.length && !(object(perHost) && Object.values(perHost).every((n) => Number.isSafeInteger(n) && n >= 0))) fail('requests-malformed');
+  const valid = errors.length === 0;
+  return { entries: valid ? entries : new Map(), summary: { path: ENRICHMENT_DIR, present: true, valid, errors,
+    demoManifestDigest: manifest?.demoManifestDigest ?? null, checksum: manifest?.checksums?.['enrichment.jsonl'] ?? null,
+    counts: valid ? counts : null, requests: valid ? structuredClone(manifest.requests) : null } };
 }
 
 /** Score retained headless results: an entry counts only for a staged record whose deep link equals its url; pass is recomputed. */
@@ -274,7 +365,7 @@ const repoPath = (value, root = REPO_ROOT) => {
 
 /** Reuse F54's bounded schema/hash validator, never select or mutate a runtime corpus. */
 export async function verifyStagedDemoFleet({ plan, matrixText, directory, minimumDistinct = 200, verifyEvidence,
-  policyService, policyRead, approvedImages, retainedCounts = {}, root = REPO_ROOT, roundTripEvidence } = {}) {
+  policyService, policyRead, approvedImages, retainedCounts = {}, root = REPO_ROOT, roundTripEvidence, enrichmentEvidence } = {}) {
   const planReport = validateDemoPlan(plan, { matrixText, verifyEvidence });
   const pending = { status: 'incomplete', plan: planReport, acceptanceComplete: false,
     acceptedDemoConfigurations: 0, unverifiedGates: [...UNVERIFIED_DEMO_GATES] };
@@ -297,11 +388,34 @@ export async function verifyStagedDemoFleet({ plan, matrixText, directory, minim
       linksBuilt++; links.set(row.configurationId, url); if (sample.length < 3) sample.push(url);
     } catch { linksInvalid++; }
   }
-  const facts = countOtdFacts(records, loaded.manifest);
+  const sidecarEvidence = enrichmentEvidence !== undefined ? enrichmentEvidence : await readEnrichmentEvidence(root);
+  const enrichment = scoreEnrichment(sidecarEvidence, records, loaded.manifestDigest);
+  const facts = countOtdFacts(records, loaded.manifest, enrichment.entries);
   const imaged = new Set(loaded.corpus.images.map((item) => item.configurationId));
-  const images = { rows: loaded.corpus.images.length,
-    configurationsWithImage: records.filter((row) => imaged.has(row.configurationId) || row.imageIds.length > 0).length };
+  const sidecarRendered = new Set([...enrichment.entries].filter(([, entry]) => entry.imageReferences.length > 0).map(([id]) => id));
+  const hasRender = (row) => imaged.has(row.configurationId) || row.imageIds.length > 0 || sidecarRendered.has(row.configurationId);
+  const images = { rows: loaded.corpus.images.length, sidecarReferenceRows: sidecarRendered.size,
+    configurationsWithImage: records.filter(hasRender).length };
   images.configurationsWithoutImage = records.length - images.configurationsWithImage;
+  const supplements = new Map((loaded.manifest.technicalSupplements || []).map((item) => [item.configurationId, item]));
+  const recordObserved = (row) => ['acceleration', 'seats', 'luggageNormal'].every((name) => {
+    const fact = row.catalogue?.facts?.[name]?.state === 'known' ? row.catalogue.facts[name] : supplements.get(row.configurationId)?.facts?.[name];
+    return fact?.state === 'known' && fact.provenance?.kind === 'observed' && typeof fact.provenance.source === 'string' && date(fact.provenance.observedDate);
+  });
+  const entryOf = (row) => enrichment.entries.get(row.configurationId);
+  const observedRows = records.filter((row) => entryOf(row)?.observation === 'observed').length;
+  const rejectedRows = records.filter((row) => entryOf(row)?.observation === 'rejected').length;
+  // A row the sidecar marks not registrable is covered only when the published record itself carries observed OTD facts.
+  const recordCovered = records.filter((row) => entryOf(row)?.observation === 'not-observed' && entryOf(row).reason?.startsWith('not-registrable:')
+    && recordObserved(row)).length;
+  const factsSatisfied = records.filter((row) => entryOf(row)?.observation === 'observed'
+    || entryOf(row)?.observation === 'not-observed' && entryOf(row).reason?.startsWith('not-registrable:') && recordObserved(row)).length;
+  const factTotals = Object.values(facts).reduce((sum, item) => ({ known: sum.known + item.known, unknown: sum.unknown + item.unknown }),
+    { known: 0, unknown: 0 });
+  const factsAndImagesClosed = enrichment.summary.valid === true && records.length > 0
+    && factsSatisfied === records.length && images.configurationsWithImage === records.length;
+  enrichment.summary.gate = { closed: factsAndImagesClosed, stagedRows: records.length, observedRows, rejectedRows, recordCoveredRows: recordCovered,
+    factsSatisfiedRows: factsSatisfied, factsKnown: factTotals.known, factsUnknown: factTotals.unknown, rowsWithExteriorRender: images.configurationsWithImage };
   const required = plan.requirements.minimumDeepLinkChecks;
   const evidence = roundTripEvidence !== undefined ? roundTripEvidence
     : await readFile(resolve(root, ROUND_TRIPS_PATH), 'utf8').then(JSON.parse, () => null);
@@ -309,16 +423,21 @@ export async function verifyStagedDemoFleet({ plan, matrixText, directory, minim
   const openGates = [
     ...(roundTrips.notRun > 0 ? [{ gate: 'headless-round-trips',
       detail: `${roundTrips.notRun} of ${required} not run; pass ${roundTrips.passed}, fail ${roundTrips.failed}` }] : []),
-    { gate: 'facts-and-images', detail: 'facts unknown counts and image coverage are listed; enrichment not run' },
+    ...(factsAndImagesClosed ? [] : [{ gate: 'facts-and-images',
+      detail: `${enrichment.summary.present ? 'sidecar' : 'no sidecar'}: facts satisfied ${factsSatisfied} of ${records.length} rows `
+        + `(observed ${observedRows}, record-covered ${recordCovered}, rejected ${rejectedRows}); `
+        + `five OTD facts known ${factTotals.known}, unknown ${factTotals.unknown}; exterior renders ${images.configurationsWithImage} of ${records.length}` }]),
+    ...(enrichment.summary.valid === false ? [{ gate: 'enrichment-sidecar-invalid', detail: enrichment.summary.errors.join(', ') }] : []),
     ...(planReport.gaps.length ? [{ gate: 'pending-model-lines', detail: `${planReport.gaps.length} lines have no mapping` }] : []),
     ...(coverage.coverageGaps?.length ? [{ gate: 'coverage-gaps', detail: `${coverage.coverageGaps.length} mapped lines have no local rows` }] : []),
   ];
   const offlineProven = identity.identityValid && identity.manifestValid === true && identity.countsValid
     && coverage.localPerLineValid === true && coverage.unassignedConfigurations === 0 && coverage.invalidConfigurations === 0
     && linksInvalid === 0 && linksBuilt === records.length;
-  const status = !(identity.identityValid && identity.manifestValid) ? 'invalid' : offlineProven ? 'verified-offline' : 'incomplete';
+  const status = !(identity.identityValid && identity.manifestValid) || enrichment.summary.valid === false ? 'invalid'
+    : offlineProven ? 'verified-offline' : 'incomplete';
   return { ...pending, status, identity, coverage, deepLinks: { built: linksBuilt, invalid: linksInvalid, sample }, roundTrips, roundTripResults,
-    facts, images, openGates, stagedManifestDigest: loaded.manifestDigest };
+    facts, images, enrichment: enrichment.summary, openGates, stagedManifestDigest: loaded.manifestDigest };
 }
 
 /** Demo-plan CLI path of verify-fleet.mjs; returns 1 for invalid, 2 while gates stay open, 0 when the offline proof holds. */

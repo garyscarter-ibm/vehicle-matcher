@@ -1792,19 +1792,19 @@
     ]
   },
   "facts": {
-    "basis": "Counts over the published demo rows; 0-62 reads the record acceleration field, which the source labels 0-100 km/h.",
+    "basis": "Counts over the published demo rows plus a valid demo-enrichment.v1 sidecar; 0-62 is the source 0-100 km/h field.",
     "counts": {
       "acceleration": {
-        "known": 2,
-        "unknown": 238
+        "known": 141,
+        "unknown": 99
       },
       "seats": {
-        "known": 2,
-        "unknown": 238
+        "known": 141,
+        "unknown": 99
       },
       "boot": {
-        "known": 2,
-        "unknown": 238
+        "known": 111,
+        "unknown": 129
       },
       "rangeOrEconomy": {
         "known": 0,
@@ -1817,11 +1817,79 @@
     }
   },
   "images": {
-    "cosyExteriorRenderReferences": 2,
+    "cosyExteriorRenderReferences": 240,
     "rows": 2,
-    "configurationsWithoutImage": 238,
+    "sidecarReferenceRows": 239,
+    "configurationsWithoutImage": 0,
     "origin": "BMW COSY catalogue render",
     "fidelity": "representative-configuration"
+  },
+  "enrichment": {
+    "path": "server/data/gcsp/vehicle-evidence/demo-enrichment.v1",
+    "present": true,
+    "valid": true,
+    "errors": [],
+    "demoManifestDigest": "7c9cc707ab44b36f9cb5eb64b54170b25d914d5ee7e31722384c737612c45a9c",
+    "checksum": "31cd5347adf6d7489d2d3c4327056ca5cbb22fc00a4350c98de25cbea6d4ff7c",
+    "counts": {
+      "rows": 240,
+      "observed": 140,
+      "notObserved": 1,
+      "rejected": 99,
+      "rowsWithExteriorReference": 239,
+      "facts": {
+        "acceleration": {
+          "known": 140,
+          "unknown": 100
+        },
+        "seats": {
+          "known": 140,
+          "unknown": 100
+        },
+        "luggageNormal": {
+          "known": 110,
+          "unknown": 130
+        },
+        "rangeOrEconomy": {
+          "known": 0,
+          "unknown": 240
+        },
+        "co2": {
+          "known": 0,
+          "unknown": 240
+        },
+        "luggageExpanded": {
+          "known": 110,
+          "unknown": 130
+        }
+      }
+    },
+    "requests": {
+      "total": 956,
+      "perHost": {
+        "configure.bmw.co.uk": 478,
+        "prod.ucp.bmw.cloud": 239,
+        "prod.cosy.bmw.cloud": 239
+      },
+      "perOperation": {
+        "page": 239,
+        "settings": 239,
+        "technical": 239,
+        "image-manifest": 239
+      },
+      "stop": null
+    },
+    "gate": {
+      "closed": false,
+      "stagedRows": 240,
+      "observedRows": 140,
+      "rejectedRows": 99,
+      "recordCoveredRows": 1,
+      "factsSatisfiedRows": 141,
+      "factsKnown": 393,
+      "factsUnknown": 807,
+      "rowsWithExteriorRender": 240
+    }
   },
   "verifier": {
     "status": "verified-offline",
@@ -1873,7 +1941,7 @@
     "openGates": [
       {
         "gate": "facts-and-images",
-        "detail": "facts unknown counts and image coverage are listed; enrichment not run"
+        "detail": "sidecar: facts satisfied 141 of 240 rows (observed 140, record-covered 1, rejected 99); five OTD facts known 393, unknown 807; exterior renders 240 of 240"
       },
       {
         "gate": "pending-model-lines",
@@ -1882,7 +1950,7 @@
     ]
   },
   "privacy": {
-    "filesScanned": 6,
+    "filesScanned": 8,
     "matches": {
       "accessKey": 0,
       "vin17": 0,
@@ -1891,6 +1959,6 @@
     },
     "hits": [],
     "clean": true,
-    "scope": "report body and every file of the published demo version"
+    "scope": "report body, every file of the published demo version and the enrichment sidecar"
   }
 }

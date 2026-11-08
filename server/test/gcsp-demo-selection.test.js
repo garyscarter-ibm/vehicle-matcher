@@ -144,6 +144,10 @@ test('the committed demo store validates, loads through the lookup port and its 
   assert.equal(staged.identity.recordCount, loaded.manifest.counts.configurations);
   assert.equal(staged.identity.distinctCount, loaded.manifest.counts.distinctConfigurations);
   assert.ok(staged.identity.distinctCount >= 200);
+  // Without a committed sidecar the facts-and-images gate stays open; a committed one must validate.
+  assert.notEqual(staged.enrichment.valid, false);
+  assert.equal(staged.openGates.some((gate) => gate.gate === 'facts-and-images'), !staged.enrichment.gate.closed);
+  assert.equal(staged.enrichment.gate.stagedRows, staged.identity.recordCount);
   assert.equal(staged.coverage.localPerLineValid, true);
   assert.equal(staged.coverage.unassignedConfigurations, 0);
   assert.equal(staged.deepLinks.built, staged.identity.recordCount);

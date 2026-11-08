@@ -18,7 +18,7 @@ const available = typeof api.verifyFleetIdentity === 'function';
 const check = (name, run) => test(name, { skip: !available }, run);
 const matrixText = await readFile(new URL('../../docs/gcsp/sources/choices-eligibility-matrices-2024-10.md', import.meta.url), 'utf8');
 const { createDemoPlan } = await import('../../scripts/gcsp/demo-plan.mjs');
-const { auditIdentity, countOtdFacts, scoreRoundTrips } = await import('../../scripts/gcsp/demo-verifier.mjs');
+const { auditIdentity, countOtdFacts, scoreEnrichment, scoreRoundTrips } = await import('../../scripts/gcsp/demo-verifier.mjs');
 const record = () => structuredClone(fixture);
 function rekey(row) {
   const signature = `${row.canonicalIdentity.vgModelCode}:${row.canonicalIdentity.factoryOptionCodes.join(',')}`;
@@ -285,7 +285,8 @@ check('staged checks use the real F54 schema/hash validator without publishing o
   assert.equal(written.status, 'ok', JSON.stringify(written.failure));
   assert.equal(written.manifest.counts.vinMappings, 0);
   const { plan } = coverageFixture();
-  const request = { plan, matrixText, directory, policyService, policyRead, verifyEvidence: () => true };
+  // The repo's committed sidecar belongs to the demo store, not to this temporary corpus.
+  const request = { plan, matrixText, directory, policyService, policyRead, verifyEvidence: () => true, enrichmentEvidence: null };
   const report = await api.verifyStagedDemoFleet(request);
   assert.equal(report.status, 'incomplete');
   assert.equal(report.identity.identityValid, true);
@@ -463,6 +464,22 @@ check('OTD facts stay unknown unless the record or a registered supplement knows
   row.catalogue.facts.seats = { ...row.catalogue.facts.seats, state: 'known', value: 4 };
   const counts = countOtdFacts([row]);
   assert.deepEqual([counts.seats.known, counts.seats.unknown, counts.co2.unknown], [1, 0, 1]);
+});
+
+check('a validated sidecar entry makes an OTD fact known, while record values and unknowns are unchanged', () => {
+  const row = real(); const known = { state: 'known', value: 4, unit: 'COUNT' }; const unknown = { state: 'unknown', value: null, reason: 'unmapped-meaning' };
+  const sidecar = new Map([[row.configurationId, { facts: { seats: known, co2: unknown, luggageNormal: unknown } }]]);
+  const counts = countOtdFacts([row], {}, sidecar);
+  assert.deepEqual([counts.seats.known, counts.co2.known, counts.boot.known, counts.rangeOrEconomy.known, counts.acceleration.known], [1, 0, 0, 0, 0]);
+  assert.deepEqual(countOtdFacts([row], {}, new Map()), countOtdFacts([row]), 'no sidecar changes nothing');
+});
+
+check('sidecar scoring treats missing evidence as absent and a wrong schema or digest as invalid', () => {
+  const digest = 'a'.repeat(64);
+  assert.deepEqual(scoreEnrichment(null, [real()], digest).summary, { path: 'server/data/gcsp/vehicle-evidence/demo-enrichment.v1', present: false, valid: null, errors: [] });
+  const wrong = scoreEnrichment({ manifest: { schemaVersion: 'other', demoManifestDigest: 'b'.repeat(64), checksums: {} }, jsonl: '' }, [real()], digest);
+  assert.equal(wrong.summary.valid, false);
+  assert.deepEqual(wrong.summary.errors.slice(0, 3), ['schema-version', 'manifest-digest-mismatch', 'checksum-mismatch']);
 });
 
 const trip = (id, url, patch = {}) => ({ configurationId: id, url, constructible: true, missing: [], extra: [], ...patch });
