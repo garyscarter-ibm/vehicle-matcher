@@ -252,3 +252,14 @@ test('unmatched supply from several lots with the same source label shows as one
   assert.deepEqual(rows.filter((s) => s.label === 'Vehicle already in stock').map((s) => s.quantity), [2]);
   assert.equal(rows.length, sources.length + 1);
 });
+
+test('a 401 with no status (lapsed access key) reads access-required; a status keeps its refusal', async () => {
+  const respond = (status, body) => async () => ({ status, json: async () => { if (body === undefined) throw new SyntaxError('bad'); return body; } });
+  for (const body of [{ error: 'Unauthorized' }, undefined, null]) assert.deepEqual(planOutcome(401, body), { status: 'access-required' });
+  for (const body of [{ error: 'Unauthorized' }, undefined]) {
+    const adapter = createOrderPlanHttpAdapter({ fetchImpl: respond(401, body) });
+    assert.deepEqual(await adapter.readPlan(), { status: 'access-required' }); assert.deepEqual(await adapter.previewPlan({ changes: [] }), { status: 'access-required' });
+  }
+  assert.deepEqual(planOutcome(403, { error: 'Forbidden' }), { status: 'refused', message: PLAN_MESSAGES.refused });
+  assert.deepEqual(planOutcome(401, { status: 'missing-session' }), { status: 'refused', message: PLAN_MESSAGES.refused });
+});

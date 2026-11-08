@@ -2,6 +2,7 @@
 // adapter or a named fixture; location is never read. See docs/gcsp/greg-dashboard-contract.md.
 import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-matcher/ui.js';
 import { portalShell } from '../shell/portal-shell.js';
+import { isRunRestarted, runRestartedScreen } from '../kit/run-restarted.js';
 import { metricTile } from '../kit/metric-tile.js';
 import { dataTable } from '../kit/data-table.js';
 import { toDashboardView } from './demand-view.js';
@@ -191,12 +192,15 @@ export function mountGregDashboard(root, ctx = {}) {
 
   function draw(state, view) {
     showing = state.status === 'ready';
-    reserved.host.hidden = state.status === 'refused';
+    reserved.host.hidden = state.status === 'refused' || isRunRestarted(state);
     body.removeAttribute('aria-busy');
     drawMeta(view?.meta);
     if (view) {
       status.textContent = `Figures updated for ${view.meta.asOfText}.`;
       body.replaceChildren(...(view.flags.noBriefs ? noBriefsBody(view) : figuresBody(view)));
+    } else if (isRunRestarted(state)) {
+      status.textContent = 'Demo restarted.';
+      body.replaceChildren(runRestartedScreen());
     } else if (state.status === 'refused') {
       status.textContent = 'Access refused.';
       body.replaceChildren(statusScreen({ kicker: 'Demand and supply', title: 'You cannot open this dashboard',

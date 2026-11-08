@@ -13,6 +13,11 @@ test('isRunRestarted is true for stale-run, unknown-session and access-required 
   for (const reply of [{ status: 'missing-session' }, { status: 'expired-session' }, { status: 'forbidden' }, { status: 'ok' },
     { status: 'unavailable' }, null, undefined]) assert.equal(kit.isRunRestarted(reply), false);
 });
+test('isAccessLapsed is true only for a 401 whose body has no string status', () => {
+  for (const body of [null, undefined, {}, { error: 'Unauthorized' }, { status: 7 }, 'text', []]) assert.equal(kit.isAccessLapsed(401, body), true, JSON.stringify(body));
+  for (const body of [{ status: 'forbidden' }, { status: 'stale-run' }, { status: 'ok' }]) assert.equal(kit.isAccessLapsed(401, body), false);
+  for (const httpStatus of [200, 403, 409, 500, undefined]) assert.equal(kit.isAccessLapsed(httpStatus, { error: 'x' }), false);
+});
 test('screen is a page-level alert with the copy and one Reload button that calls reload', () => {
   let calls = 0; const screen = kit.runRestartedScreen({ reload: () => calls++ });
   assert.equal(screen.getAttribute('role'), 'alert'); assert.equal(screen.querySelector('h2').textContent, 'Demo restarted');
@@ -30,4 +35,11 @@ test('default reload follows an empty-href link, so the kit never reads the URL'
   dom.window.HTMLAnchorElement.prototype.click = function click() { clicked.push(this.getAttribute('href')); };
   try { kit.runRestartedNotice().reload.click(); assert.deepEqual(clicked, ['']); }
   finally { dom.window.HTMLAnchorElement.prototype.click = original; }
+});
+
+test('accessLapsedScreen is an alert whose one action links to the access form, returning to the account by default', () => {
+  const screen = kit.accessLapsedScreen(); assert.equal(screen.getAttribute('role'), 'alert');
+  assert.match(screen.textContent, new RegExp(kit.ACCESS_LAPSED_TITLE)); assert.equal(screen.querySelectorAll('button').length, 0);
+  assert.equal(screen.querySelector('a').getAttribute('href'), '/gcsp/access?next=%2Fgcsp-account.html');
+  assert.equal(kit.accessLapsedScreen({ next: '/gcsp-presenter.html' }).querySelector('a').getAttribute('href'), '/gcsp/access?next=%2Fgcsp-presenter.html');
 });

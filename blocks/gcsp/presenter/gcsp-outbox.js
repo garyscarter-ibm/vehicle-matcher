@@ -2,6 +2,7 @@
 // named fixture; location is never read. See docs/gcsp/presenter-outbox-contract.md.
 import { el, screenIntro, button, statusScreen } from '../../vehicle-matcher/ui.js';
 import { portalShell } from '../shell/portal-shell.js';
+import { isRunRestarted, runRestartedScreen } from '../kit/run-restarted.js';
 import { messageList } from './message-list.js';
 import { fixtureAdapter } from './fixtures.js';
 import { plural } from './outbox-copy.js';
@@ -71,6 +72,9 @@ export function mountOutbox(root, ctx = {}) {
       status.textContent = 'No captured emails in this run.';
       body.replaceChildren(statusScreen({ kicker: 'Outbox', title: 'No emails yet',
         message: 'When an offer is made, the email Paula would have received appears here. Nothing has been offered in this run.' }));
+    } else if (isRunRestarted(state)) {
+      status.textContent = 'Demo restarted.';
+      body.replaceChildren(runRestartedScreen());
     } else if (state.status === 'refused') {
       status.textContent = 'Access refused.';
       body.replaceChildren(statusScreen({ kicker: 'Outbox', title: 'You cannot open the outbox',

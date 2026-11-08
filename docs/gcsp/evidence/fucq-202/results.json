@@ -1,0 +1,77 @@
+{
+  "passed": true,
+  "origin": "http://127.0.0.1:8983",
+  "runtime": "memory (GCSP_RUNTIME=1)",
+  "lapse": "server restarted with a new access key",
+  "note": "greg runs observe the case queue only (FUCQ-170 owns it); passed means no page errors",
+  "runs": [
+    {
+      "viewport": 1280,
+      "page": "offer",
+      "steps": [
+        "opened",
+        "access key lapsed"
+      ],
+      "lapsed": {
+        "notice": true,
+        "actionVisible": true,
+        "unavailableCopy": false,
+        "overflow": 0,
+        "screenshot": "docs/gcsp/evidence/fucq-202/1280-offer-lapsed.png"
+      },
+      "recover": {
+        "accessForm": true,
+        "landed": "/gcsp-account.html",
+        "noLapsedCopy": true,
+        "screenshot": "docs/gcsp/evidence/fucq-202/1280-offer-recovered.png"
+      },
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "viewport": 1280,
+      "page": "greg",
+      "steps": [
+        "opened",
+        "access key lapsed"
+      ],
+      "observed": "Renewal cases Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Renewal help is unavailable Refresh queue Renewal help is unavailable Refresh to review the current server state before trying again. Retry queue",
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "viewport": 375,
+      "page": "offer",
+      "steps": [
+        "opened",
+        "access key lapsed"
+      ],
+      "lapsed": {
+        "notice": true,
+        "actionVisible": true,
+        "unavailableCopy": false,
+        "overflow": 0,
+        "screenshot": "docs/gcsp/evidence/fucq-202/375-offer-lapsed.png"
+      },
+      "recover": {
+        "accessForm": true,
+        "landed": "/gcsp-account.html",
+        "noLapsedCopy": true,
+        "screenshot": "docs/gcsp/evidence/fucq-202/375-offer-recovered.png"
+      },
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "viewport": 375,
+      "page": "greg",
+      "steps": [
+        "opened",
+        "access key lapsed"
+      ],
+      "observed": "Renewal cases Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Renewal help is unavailable Refresh queue Renewal help is unavailable Refresh to review the current server state before trying again. Retry queue",
+      "pageErrors": [],
+      "passed": true
+    }
+  ]
+}

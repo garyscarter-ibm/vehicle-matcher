@@ -180,3 +180,20 @@ test('HTTP abort, malformed JSON and unsuccessful HTTP success envelopes remain 
     assert.equal((await createFollowupHttpAdapter({ fetchImpl }).read({ decisionId })).status, 'unavailable');
   }
 });
+
+const lapsed = (status = 401, body = { error: 'Unauthorized' }) => async () => ({ ok: false, status, json: async () => { if (body === undefined) throw new SyntaxError('not json'); return body; } });
+test('a 401 with no status (lapsed access key) reads access-required; a status keeps its own result', async () => {
+  for (const body of [{ error: 'Unauthorized' }, undefined]) {
+    const adapter = createFollowupHttpAdapter({ fetchImpl: lapsed(401, body) });
+    assert.deepEqual(await adapter.read({ decisionId }), { status: 'access-required' });
+  }
+  for (const status of [401, 403]) assert.deepEqual(await createFollowupHttpAdapter({ fetchImpl: lapsed(status, { status: 'forbidden' }) }).read({ decisionId }), { status: 'forbidden' });
+  assert.deepEqual(await createFollowupHttpAdapter({ fetchImpl: lapsed(500, undefined) }).read({ decisionId }), { status: 'unavailable', retryable: true });
+});
+
+test('a lapsed access key reads access-lapsed for a read or a confirm and clears the saved receipt', async () => {
+  const { controller } = setup({ read: async () => ({ status: 'access-required' }) }); await controller.refresh();
+  assert.equal(controller.snapshot().state, 'access-lapsed'); assert.equal(controller.snapshot().savedChange, null);
+  const confirming = setup({ confirm: async () => ({ status: 'access-required' }) }); await confirming.controller.refresh(); confirming.controller.choose('estate');
+  await confirming.controller.confirm(); assert.equal(confirming.controller.snapshot().state, 'access-lapsed'); assert.equal(confirming.controller.snapshot().canConfirm, false);
+});

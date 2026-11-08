@@ -106,3 +106,25 @@ test('new block source uses shared kit and has no inline code or CSP-forbidden e
   assert.doesNotMatch(source, /\beval\s*\(|new\s+Function\s*\(|<[^>]+\son\w+\s*=|\.on\w+\s*=|setAttribute\s*\(\s*['"]on|<script\b[^>]*>\s*[^<\s]|set(?:Timeout|Interval)\s*\(\s*['"`]/i);
   assert.match(source, /kit\/data-table/); assert.match(source, /kit\/form-controls/); assert.match(source, /vehicle-matcher\/ui/);
 });
+
+const lapsed = (status = 401, body = { error: 'Unauthorized' }) => async () => ({ ok: false, status, json: async () => { if (body === undefined) throw new SyntaxError('not json'); return body; } });
+test('a 401 with no status (lapsed access key) reads access-required; a status keeps its own result', async () => {
+  for (const body of [{ error: 'Unauthorized' }, undefined]) {
+    const adapter = createGregOrdersHttpAdapter({ fetchImpl: lapsed(401, body) });
+    assert.deepEqual(await adapter.loadTracking(), { status: 'access-required' });
+    assert.deepEqual(await adapter.submit({ commandId: 'c' }), { status: 'access-required' });
+  }
+  for (const status of [401, 403]) assert.deepEqual(await createGregOrdersHttpAdapter({ fetchImpl: lapsed(status, { status: 'forbidden' }) }).loadTracking(), { status: 'forbidden' });
+  assert.equal((await createGregOrdersHttpAdapter({ fetchImpl: lapsed(500, undefined) }).loadTracking()).status, 'unavailable');
+});
+
+test('a lapsed access key shows the restart screen on load and after a failed command', async () => {
+  const lapsed = async () => ({ status: 'access-required' });
+  const { root, teardown } = await setup(view(), { loadTracking: lapsed });
+  const alert = root.querySelector('[role="alert"]'); assert.match(alert.textContent, /Demo restarted/);
+  assert.deepEqual([...alert.querySelectorAll('button')].map((b) => b.textContent), ['Reload']); assert.doesNotMatch(root.textContent, /could not be loaded/); teardown();
+  let reads = 0; const next = await setup(view(), { loadTracking: async () => (++reads === 1 ? ok(view()) : { status: 'access-required' }), submit: lapsed });
+  const form = next.root.querySelector('input[type="number"]').closest('form');
+  form.dispatchEvent(new window.Event('submit', { bubbles: true, cancelable: true })); await tick(); await tick();
+  assert.match(next.root.textContent, /Demo restarted/); assert.doesNotMatch(next.root.textContent, /are unavailable/); next.teardown();
+});

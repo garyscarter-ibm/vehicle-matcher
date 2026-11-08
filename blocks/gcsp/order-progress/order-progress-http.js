@@ -1,3 +1,4 @@
+import { isAccessLapsed } from '../kit/run-restarted.js';
 // Fixed same-origin endpoints. Identity, run and access stay with the server; producer refusals keep their own envelope.
 const unavailable = () => ({ status: 'unavailable' });
 const invalid = () => ({ status: 'invalid' });
@@ -10,7 +11,8 @@ export function createOrderProgressHttpAdapter({ fetch: request = globalThis.fet
       const response = await request(path, { method, credentials: 'same-origin', cache: 'no-store', redirect: 'error', signal,
         headers: { Accept: 'application/json', ...(body ? { 'Content-Type': 'application/json' } : {}) },
         ...(body ? { body: JSON.stringify(body) } : {}) });
-      const out = await response.json();
+      const out = await response.json().catch(() => null);
+      if (isAccessLapsed(response.status, out)) return { status: 'access-required' };
       return typeof out?.status === 'string' && (out.status !== 'ok' || response.ok) ? out : unavailable();
     } catch { return unavailable(); }
   }

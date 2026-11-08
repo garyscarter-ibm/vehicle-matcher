@@ -35,6 +35,7 @@ export function createCaseHttpAdapter({ base = '', fetchImpl = globalThis.fetch 
     }
     let envelope;
     try { envelope = await response.json(); } catch { return failure('case-response-invalid'); }
+    if (response.status === 401 && typeof envelope?.status !== 'string') return { status: 'access-required' };
     if (!envelope || typeof envelope.status !== 'string' || envelope.status === 'ok' && (!response.ok || !envelope.value
       || path === 'help' && envelope.value.opensCase !== false
       || path === 'cases' && (input ? !envelope.value.case?.caseId : !Array.isArray(envelope.value.cases))

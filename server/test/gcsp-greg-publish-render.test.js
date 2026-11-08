@@ -326,3 +326,24 @@ test('new scoped CSS keeps shared tokens and scoped selectors with no raw palett
   assert.ok(selectors.every((s) => s.startsWith('.gcsp')));
   assert.doesNotMatch(css, /#[0-9a-f]{3,8}\b|\b(?:rgb|hsl)a?\(|animation:|transition:/i);
 });
+
+test('a 401 with no status (lapsed access key) reads access-required; a status keeps its refusal', async () => {
+  const respond = (status, body) => async () => ({ status, async json() { if (body === undefined) throw new SyntaxError('bad'); return body; } });
+  for (const action of ['readPolicy', 'preview', 'publish']) for (const body of [{ error: 'Unauthorized' }, undefined, null]) assert.deepEqual(transport.policyOutcome(401, body, action), { status: 'access-required' });
+  for (const body of [{ error: 'Unauthorized' }, undefined]) {
+    const adapter = transport.createGregPublishHttpAdapter({ fetchImpl: respond(401, body) });
+    assert.deepEqual(await adapter.readPolicy(), { status: 'access-required' }); assert.deepEqual(await adapter.publish({}), { status: 'access-required' });
+  }
+  assert.equal(transport.policyOutcome(403, { error: 'Forbidden' }, 'publish').status, 'refused');
+  assert.equal(transport.policyOutcome(401, { status: 'missing-session' }, 'publish').status, 'refused');
+  assert.equal((await transport.createGregPublishHttpAdapter({ fetchImpl: respond(403, undefined) }).readPolicy()).status, 'unavailable');
+});
+
+test('a lapsed access key shows the compact restart notice with Reload instead of the policy form', async () => {
+  const first = await setup({ readPolicy: async () => ({ status: 'access-required' }) });
+  assert.equal(state(first.root), 'restarted'); assert.match(first.root.querySelector('[role="alert"]').textContent, /Reload the page to continue/);
+  assert.equal(first.root.querySelectorAll('input').length, 0); assert.doesNotMatch(first.root.textContent, /Policy unavailable/); first.teardown();
+  const later = await setup({ preview: async () => ({ status: 'access-required' }) }); await preview(later.root);
+  assert.equal(state(later.root), 'restarted'); assert.equal(later.root.querySelector('.gcsp-publish-form').hidden, true);
+  const reload = action(later.root, 'Reload'); assert.ok(reload); assert.equal(action(later.root, 'Retry'), undefined); later.teardown();
+});

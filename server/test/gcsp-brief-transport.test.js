@@ -26,3 +26,14 @@ test('body lifecycle signal overrides transport signal and abort prevents furthe
   assert.equal(calls[0].signal, body.signal); body.abort();
   assert.equal((await transport.preview({}, { signal: body.signal })).status, 'unavailable'); assert.equal(calls.length, 1);
 });
+
+const lapsed = (status = 401, body = { error: 'Unauthorized' }) => async () => ({ ok: false, status, json: async () => { if (body === undefined) throw new SyntaxError('not json'); return body; } });
+test('a 401 with no status (lapsed access key) reads access-required; a status keeps its own result', async () => {
+  for (const body of [{ error: 'Unauthorized' }, undefined]) {
+    const transport = createBriefTransport({ fetch: lapsed(401, body) });
+    assert.deepEqual(await transport.loadEditor(), { status: 'access-required' });
+    assert.deepEqual(await transport.confirm({ commandId: 'c', expectedBriefVersion: 1, expectedDraftVersion: 1, consent: {} }), { status: 'access-required' });
+  }
+  for (const status of [401, 403]) assert.deepEqual(await createBriefTransport({ fetch: lapsed(status, { status: 'forbidden' }) }).loadEditor(), { status: 'forbidden' });
+  assert.deepEqual(await createBriefTransport({ fetch: lapsed(500, undefined) }).loadEditor(), { status: 'unavailable', retryable: true });
+});
