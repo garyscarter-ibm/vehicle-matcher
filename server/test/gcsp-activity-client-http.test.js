@@ -23,7 +23,7 @@ test('real client transport/controller follow BriefService pause/resume, stale v
     const state=(await runtime.clock.readState(runtime.presenter.context)).value;
     const reset=await runtime.clock.reset(runtime.presenter.context,{commandId:'reset-client-proof',expectedRunId:state.runId,
       expectedRunVersion:state.runVersion,scenarioVersion:state.versions.scenario,fixtureVersion:state.versions.fixture});assert.equal(reset.status,'ok');
-    await controller.refresh();assert.equal(controller.getState().phase,'unavailable');assert.equal(controller.getState().result,null);
+    await controller.refresh();assert.equal(controller.getState().phase,'restarted');assert.equal(controller.getState().result,null);
     assert.equal(calls.some((c) => c.path.includes('?')),false);
   } finally {controller?.destroy();server.closeAllConnections();await new Promise((done) => server.close(done));await runtime.close();if(prior===undefined)delete process.env.DEMO_ACCESS_KEY;else process.env.DEMO_ACCESS_KEY=prior;}
 });

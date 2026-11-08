@@ -282,6 +282,16 @@ Component plan: reuse `button`, `factList`, `statusScreen`, `labelledField` and 
 
 Shared disclosure/readback/compact option styling lives in `kit/presenter-bar.css`, imported by the capped `presenter-controls/presenter-controls.css` through the shell. The kit stylesheet is separately capped, and the presenter-bar pattern rejects new hand-built copies outside its factory. Picker rows rebuild only when the supplied options change; ordinary readbacks use the existing `update({ value, disabled })` handle. Unavailable scenarios stay selectable with missing-capability copy while Reset stays disabled. Groups have explicit accessible labels and retain the shared arrow/Home/End semantics. The GCSP gallery includes a standalone presenterBar and an explicitly isolated pending/missing-release example with both option lists; it makes no release or scenario capability claim. Functional tests: `server/test/gcsp-presenter-controls-render.test.js`, shell/CSP checks and UI ratchet. Browser evidence remains a separate gate.
 
+### GCSP demo restarted (`blocks/gcsp/kit/run-restarted.js`)
+
+Looked at `statusScreen` (title, message and actions, but no copy for a restarted demo or a Reload action) and `button`. Nothing existing says the demo was restarted and offers a reload, so the helper composes both and adds no stylesheet.
+
+| Call | Use for |
+|---|---|
+| `isRunRestarted(reply)` | True when a server reply has status `stale-run`. Use instead of showing the raw status. |
+| `runRestartedScreen({ reload })` | Page-level alert (`statusScreen`): "Demo restarted", the reload message and one primary Reload button. `reload` defaults to following an empty-href link (a full reload; the kit never reads the URL). |
+| `runRestartedNotice({ reload })` | Compact inline alert for panels. Returns `{ root, reload }`; `reload` is the Reload button, so callers can move focus to it. Used by presenter controls, which also disable every control and never resend the old command. The gallery's **GCSP demo restarted** section shows both. |
+
 ### Manual released-car browser (`blocks/gcsp/manual-gallery/`)
 
 The manual browser composes the employee shell, `screenIntro`, native `labelledField` controls, `matchCard`/`listingsOf`, `mediaWell`, `factList`, typed terms, `statusScreen` and `button`. Series and body filters reuse the shared `renderOptionList` radiogroup as visual chips with car counts and arrow-key roving focus; cards reuse the employee `gcsp-card`, `gcsp-points` and `gcsp-status` classes for the FUCQ-64 cost hierarchy. Each shared card has one exact `orderUuid` member; search, series/body filters, sorting and details read the complete unranked decision set. Fitted, reference and unclassified specification facts remain distinct. This is page composition using the existing decision-card contract.

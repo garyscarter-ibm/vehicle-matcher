@@ -1,5 +1,6 @@
 // Client sequencing only. Each section keeps its producer envelope; every command ends in a fresh server read.
 import { notDone } from './order-progress-copy.js';
+import { isRunRestarted } from '../kit/run-restarted.js';
 
 const unavailable = () => ({ status: 'unavailable' });
 const clone = (out) => { try { return typeof out?.status === 'string' ? structuredClone(out) : unavailable(); } catch { return unavailable(); } };
@@ -19,7 +20,7 @@ export function latestOrderId(orders) {
 function message(operation, out) {
   if (out?.status === 'ok') return { text: outcomes[operation], error: false };
   if (out?.status === 'unsupported' && text(out.reason)) return { text: notDone(out.reason), error: true };
-  if (['conflict', 'stale-version', 'stale-run'].includes(out?.status)) return { text: 'Your order changed. Showing the latest.', error: true };
+  if (['conflict', 'stale-version'].includes(out?.status)) return { text: 'Your order changed. Showing the latest.', error: true };
   return { text: 'Not saved. Try again.', error: true };
 }
 
@@ -37,10 +38,12 @@ export function createOrderProgressController({ adapter = {}, orderUuid, onChang
     const { signal } = abort; const stale = () => disposed || signal.aborted || current !== generation;
     let uuid = fixed ?? (keep ? state.orderUuid : null);
     if (!keep) publish({ phase: 'loading', orderUuid: uuid, progress: { phase: 'loading' }, pending: false, message: null });
+    const restarted = () => publish({ phase: 'restarted', orderUuid: uuid, progress: { phase: 'restarted' }, pending: false, message: null });
     const fail = () => publish({ phase: 'unavailable', orderUuid: uuid, progress: { phase: 'unavailable' }, pending: false, message: shown });
     if (!uuid) {
       const listed = clone(await call('listOrders', { signal }));
       if (stale()) return getState();
+      if (isRunRestarted(listed)) { restarted(); return getState(); }
       if (!usable(listed) || !Array.isArray(listed.value.orders)) { fail(); return getState(); }
       uuid = latestOrderId(listed.value.orders);
       if (!uuid) { publish({ phase: 'none', orderUuid: null, progress: { phase: 'none' }, pending: false, message: shown }); return getState(); }
@@ -48,6 +51,7 @@ export function createOrderProgressController({ adapter = {}, orderUuid, onChang
     const [stages, documents, appointment, returnPlan] = (await Promise.all([call('readStages', { orderUuid: uuid, signal }),
       call('readDocuments', { signal }), call('readAppointment', { orderUuid: uuid, signal }), call('readReturnPlan', { orderUuid: uuid, signal })])).map(clone);
     if (stale()) return getState();
+    if ([stages, documents, appointment, returnPlan].some(isRunRestarted)) { restarted(); return getState(); }
     if (!usable(stages) || stages.value.orderUuid !== uuid) { fail(); return getState(); }
     publish({ phase: 'ready', orderUuid: uuid, progress: { phase: 'ready', stages, documents, appointment, returnPlan }, pending: false, message: shown });
     return getState();
@@ -65,6 +69,7 @@ export function createOrderProgressController({ adapter = {}, orderUuid, onChang
     publish({ ...state, pending: true, message: null });
     const out = await call(operation, { ...input, signal: abort.signal });
     if (disposed || abort.signal.aborted || current !== generation) return getState();
+    if (isRunRestarted(out)) { publish({ phase: 'restarted', orderUuid: state.orderUuid, progress: { phase: 'restarted' }, pending: false, message: null }); commandAbort = null; return getState(); }
     await load({ keep: true, message: message(operation, out) }); commandAbort = null;
     return getState();
   }

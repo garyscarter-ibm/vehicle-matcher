@@ -1,4 +1,5 @@
 import { createPreviewFeed } from '../../vehicle-matcher/modes/preview-feed.js';
+import { isRunRestarted } from '../kit/run-restarted.js';
 
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v)
   && [Object.prototype, null].includes(Object.getPrototypeOf(v));
@@ -91,7 +92,7 @@ export function createBriefController({ context, initial = {}, transport, create
   if (initial.consent !== undefined && !validConsent(initial.consent)) throw new TypeError('Invalid consent.');
   let state = { brief, briefVersion: initial.briefVersion ?? 0, draftVersion: initial.draftVersion ?? 0,
     knownFacts: context.knownFacts ?? {}, permissions: context.permissions ?? {}, consent: initial.consent ?? { search: false, hold: false },
-    dirty: false, preview: { state: 'idle' }, save: { state: 'idle' } };
+    dirty: false, restarted: false, preview: { state: 'idle' }, save: { state: 'idle' } };
   let destroyed = false;
   let editVersion = 0;
   let busy = false;
@@ -105,12 +106,14 @@ export function createBriefController({ context, initial = {}, transport, create
   };
   const feed = createPreviewFeed({ load: (input) => transport.preview(input) });
   const receivePreview = (outcome) => {
-    if (destroyed) return;
+    if (destroyed || state.restarted) return;
+    if (isRunRestarted(outcome)) { state.restarted = true; feed.cancel(); emit(); return; }
     try { state.preview = previewState(clone(outcome)); } catch { state.preview = { state: 'unavailable', outcome: unavailable() }; }
     emit();
   };
   function requestPreview() {
     if (destroyed) return { status: 'destroyed' };
+    if (state.restarted) return { status: 'restarted' };
     state.preview = { state: 'loading' };
     feed.schedule(clone({ kind: 'unsaved-draft', baseBriefVersion: state.briefVersion,
       draftVersion: state.draftVersion, brief: state.brief }), receivePreview, () => receivePreview(unavailable()));
@@ -166,6 +169,7 @@ export function createBriefController({ context, initial = {}, transport, create
   async function save() {
     if (destroyed) return { status: 'destroyed' };
     if (busy) return { status: 'busy' };
+    if (state.restarted) return { status: 'restarted' };
     busy = true;
     const captured = snapshot();
     const version = editVersion;
@@ -204,6 +208,7 @@ export function createBriefController({ context, initial = {}, transport, create
     finally { busy = false; }
     if (destroyed) return { status: 'destroyed' };
     if (!text(outcome?.status)) outcome = unavailable();
+    if (isRunRestarted(outcome)) state.restarted = true;
     state.save = { state: ['conflict', 'stale-version'].includes(outcome.status) ? 'refresh-required' : outcome.status === 'ok' ? 'saved' : 'failed', outcome };
     emit();
     return clone(outcome);

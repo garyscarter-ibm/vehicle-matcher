@@ -7,6 +7,7 @@ import { orderProgressBody } from './order-progress-body.js';
 import { createOrderProgressController } from './order-progress-controller.js';
 import { createOrderProgressHttpAdapter } from './order-progress-http.js';
 import { orderCopy } from './order-progress-copy.js';
+import { runRestartedScreen } from '../kit/run-restarted.js';
 
 export const ORDER_PROGRESS_DESTINATION = Object.freeze({ key: 'order-progress', label: 'Order progress', available: true,
   icon: Object.freeze(['M4 6l2 2 3-3', 'M4 14l2 2 3-3', 'M12 7h8', 'M12 15h8']) });
@@ -15,7 +16,7 @@ const keyOf = (control) => ({ section: control.closest('.gcsp-order-section')?.c
 const sameKey = (control, key) => !control.disabled && control.textContent === key.label && (control.closest('.gcsp-order-section')?.className ?? '') === key.section;
 
 // Paints the controller's state into `host`; returns its teardown. Focus stays on a surviving control, else moves to the message.
-function mountBody(host, { adapter, orderUuid, car, helpAdapter, level, ready = true }) {
+function mountBody(host, { adapter, orderUuid, car, helpAdapter, level, ready = true, reload }) {
   let body; let controller; let stopped = false; let focusKey = null; let helps = [];
   const content = el('div'); host.replaceChildren(content);
   const stopHelps = () => { helps.splice(0).forEach((stop) => { try { stop?.(); } catch { /* help already gone */ } }); };
@@ -29,6 +30,9 @@ function mountBody(host, { adapter, orderUuid, car, helpAdapter, level, ready = 
     if (state.phase === 'none') {
       body = el('div', 'vm gcsp-order-progress');
       body.append(screenIntro({ title: orderCopy.title, level }), statusScreen({ title: 'No order yet' }));
+    } else if (state.phase === 'restarted') {
+      body = el('div', 'vm gcsp-order-progress');
+      body.append(screenIntro({ title: orderCopy.title, level }), runRestartedScreen({ reload }));
     } else {
       body = orderProgressBody({ progress: state.progress, car, pending: state.pending, message: state.message || undefined, level,
         onRetry: ready ? () => controller?.refresh() : undefined, onCompleteTask: has('completeTask'), onRequestAppointment: has('requestAppointment'),
@@ -37,7 +41,8 @@ function mountBody(host, { adapter, orderUuid, car, helpAdapter, level, ready = 
     }
     content.replaceChildren(body);
     if (!owned) { focusKey = null; return; }
-    const control = !state.pending && focusKey ? [...body.querySelectorAll('button')].find((node) => sameKey(node, focusKey)) : null;
+    const control = state.phase === 'restarted' ? body.querySelector('button')
+      : !state.pending && focusKey ? [...body.querySelectorAll('button')].find((node) => sameKey(node, focusKey)) : null;
     const target = control || body.querySelector('.gcsp-order-message') || body.querySelector('h1,h2,h3,h4');
     if (!control && !state.pending) focusKey = null;
     if (target) { if (!control) target.tabIndex = -1; target.focus(); }
@@ -50,7 +55,7 @@ function mountBody(host, { adapter, orderUuid, car, helpAdapter, level, ready = 
   return stop;
 }
 
-export function mountOrderProgress(root, { adapter = {}, orderUuid, car, brand = 'bmw', navigation, onNavigate, helpAdapter, embedded = false, headingLevel, signal } = {}) {
+export function mountOrderProgress(root, { adapter = {}, orderUuid, car, brand = 'bmw', navigation, onNavigate, helpAdapter, embedded = false, headingLevel, signal, reload } = {}) {
   let done = false; let stopBody; let stopShell;
   const abort = new AbortController();
   const teardown = () => {
@@ -63,7 +68,7 @@ export function mountOrderProgress(root, { adapter = {}, orderUuid, car, brand =
   signal?.addEventListener('abort', teardown, { once: true });
   if (embedded) {
     const wrap = el('div', 'gcsp'); root.replaceChildren(wrap);
-    stopBody = mountBody(wrap, { adapter, orderUuid, car, helpAdapter, level: headingLevel ?? 2 });
+    stopBody = mountBody(wrap, { adapter, orderUuid, car, helpAdapter, level: headingLevel ?? 2, reload });
     return teardown;
   }
   stopShell = mountEmployee(root, { brand, view: ORDER_PROGRESS_DESTINATION.key, signal: abort.signal,
@@ -71,7 +76,7 @@ export function mountOrderProgress(root, { adapter = {}, orderUuid, car, brand =
     onNavigate: (to) => onNavigate?.(to),
     loadAccount: typeof adapter.loadAccount === 'function' ? (input) => adapter.loadAccount(input) : undefined,
     renderBody(main, { account }) {
-      stopBody = mountBody(main, { adapter, orderUuid, car, helpAdapter, level: headingLevel ?? 1, ready: account.status === 'ready' });
+      stopBody = mountBody(main, { adapter, orderUuid, car, helpAdapter, level: headingLevel ?? 1, ready: account.status === 'ready', reload });
       const own = stopBody; return () => { own(); if (stopBody === own) stopBody = null; };
     } });
   if (done) stopShell();

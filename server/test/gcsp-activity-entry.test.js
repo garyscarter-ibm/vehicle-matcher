@@ -96,3 +96,34 @@ test('the custom element passes an early help adapter through and tears it down 
   mod.defineGcspActivity(dom.window.customElements);
   await settle(node,(r) => r.querySelector('.gcsp-activity-help .gcsp-cases-body'));node.remove();assert.equal(node.childElementCount,0);
 });
+
+const assertRestarted=(node,reloads) => {
+  const screen=node.querySelector('.gcsp-activity');assert.ok(screen.querySelector('[role="alert"]'));assert.match(screen.textContent,/Demo restarted/);assert.match(screen.textContent,/Reload the page to continue/);
+  assert.doesNotMatch(node.textContent,/stale-run|—|unavailable|could not be updated/i);
+  const buttons=screen.querySelectorAll('button');assert.equal(buttons.length,1);const [reload]=buttons;
+  assert.equal(reload.type,'button');assert.equal(reload.disabled,false);assert.equal(document.activeElement===reload||reload.tabIndex>=0,true);
+  const before=reloads.length;reload.click();assert.equal(reloads.length,before+1);
+};
+
+test('a stale-run read shows the restarted screen with a working Reload, not the generic failure',async () => {
+  const node=root(),reloads=[];let reads=0;
+  mount(node,{reload:() => reloads.push(1),adapter:{loadAccount:async () => account,readActivity:async () => {reads++;return {status:'stale-run',reason:'This request belongs to an earlier demonstration run.'};}}});
+  await settle(node,(r) => r.textContent.includes('Demo restarted'));assertRestarted(node,reloads);assert.equal(reads,1);
+});
+
+test('a stale-run pause shows the restarted screen and neither resends nor rereads',async () => {
+  const node=root(),reloads=[];let reads=0,pauses=0;
+  mount(node,{reload:() => reloads.push(1),adapter:{loadAccount:async () => account,readActivity:async () => {reads++;return snapshot();},pause:async () => {pauses++;return {status:'stale-run'};}}});
+  await settle(node,(r) => r.querySelector('.gcsp-action-trigger'));
+  node.querySelector('.gcsp-action-trigger').click();node.querySelector('[role="menuitem"]').click();
+  await settle(node,(r) => r.textContent.includes('Demo restarted'));assertRestarted(node,reloads);
+  await new Promise((r) => setTimeout(r,20));assert.equal(pauses,1);assert.equal(reads,1);assert.equal(node.querySelector('.gcsp-action-trigger'),null);
+});
+
+test('a stale-run resume shows the restarted screen',async () => {
+  const node=root(),reloads=[];let resumes=0;
+  mount(node,{reload:() => reloads.push(1),adapter:{loadAccount:async () => account,readActivity:async () => snapshot('paused'),resume:async () => {resumes++;return {status:'stale-run'};}}});
+  await settle(node,(r) => r.querySelector('.gcsp-action-trigger'));
+  node.querySelector('.gcsp-action-trigger').click();node.querySelector('[role="menuitem"]').click();
+  await settle(node,(r) => r.textContent.includes('Demo restarted'));assertRestarted(node,reloads);assert.equal(resumes,1);
+});

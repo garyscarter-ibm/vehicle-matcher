@@ -22,12 +22,12 @@ const catalogue = { policyVersion: 'policy-test', scenarios: [
   { scenarioId: 'mechanics', name: 'Clock mechanics', scenarioVersion: 'v1', fixtureVersion: 'f1', availability: { available: true } },
   { scenarioId: 'business', name: 'Business journey', scenarioVersion: 'v2', fixtureVersion: 'f2', availability: { available: false, missingCapabilities: ['actual-release-service'] } },
 ] };
-function setup(overrides = {}) {
+function setup(overrides = {}, options = {}) {
   const host = document.createElement('div'); document.body.append(host); let ids = 0; const calls = [];
   const adapter = { readControls: async () => ok(state()), readContext: async () => ok({ principalId: 'employee-test', name: 'Employee test', roles: ['employee'] }),
     readScenarios: async () => ok(catalogue), tick: async (payload) => { calls.push(payload); return ok({}); },
     reset: async (payload) => { calls.push(payload); return ok({ runId: 'run-new' }); }, switchPrincipal: async () => ok({}), ...overrides };
-  const navigation = []; const control = mount(host, { adapter, commandId: () => `command-${++ids}`, navigate: (url) => navigation.push(url) });
+  const navigation = []; const control = mount(host, { adapter, commandId: () => `command-${++ids}`, navigate: (url) => navigation.push(url), ...options });
   const click = (label) => { const node = [...host.querySelectorAll('button')].find((row) => row.textContent === label || row.textContent.startsWith(label + ' (')); assert.ok(node, label); node.click(); return node; };
   return { host, adapter, control, click, calls, navigation };
 }
@@ -239,7 +239,7 @@ test('definitive stale-run reset retry navigates only to a freshly agreed differ
   f.click('Retry original action'); await settle();
   assert.strictEqual(calls[0], calls[1]); assert.equal(calls[0].expectedRunId, 'run-a');
   assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /gcsp-presenter.html$/);
-  assert.match(f.host.textContent, /Action stale-run/); assert.doesNotMatch(f.host.textContent, /Reset done/);
+  assert.match(f.host.textContent, /Action not completed/); assert.doesNotMatch(f.host.textContent, /Reset done|stale-run/);
   f.control.destroy();
 });
 test('stale-run reset retry cannot navigate from matching old reads, mismatched runs or failed fresh controls/context', async () => {
@@ -373,8 +373,26 @@ test('fresh workspace with unrecovered reset session explains trusted backend bo
     readControls: async () => ({ status: 'stale-run' }) } });
   await done.ready; await settle();
   assert.doesNotMatch(host.textContent, /Previous employee account/);
-  assert.match(host.textContent, /Workspace unavailable/);
-  assert.match(host.textContent, /trusted backend presenter-session bootstrap/);
+  assert.match(host.textContent, /Demo restarted/); assert.doesNotMatch(host.textContent, /stale-run/);
+  done();
+});
+test('workspace stale-run context shows the restarted screen with a Reload that calls the injected reload', async () => {
+  const host = document.createElement('div'); document.body.append(host); let reloads = 0;
+  const done = workspace(host, { reload: () => reloads++, adapter: { readContext: async () => ({ status: 'stale-run' }),
+    readControls: async () => ({ status: 'unavailable' }) } });
+  await done.ready; await settle();
+  const screen = host.querySelector('.vm-status[role="alert"]'); assert.ok(screen);
+  assert.match(screen.textContent, /Demo restarted/); assert.match(screen.textContent, /The demo was restarted\. Reload the page to continue\./);
+  assert.doesNotMatch(host.textContent, /stale-run|\u2014/);
+  const reload = screen.querySelector('button[type="button"]'); assert.equal(reload.textContent, 'Reload'); reload.click(); assert.equal(reloads, 1);
+  done();
+});
+test('workspace context failure other than stale-run explains bootstrap without a raw status', async () => {
+  const host = document.createElement('div'); document.body.append(host);
+  const done = workspace(host, { adapter: { readContext: async () => ({ status: 'unavailable' }), readControls: async () => ({ status: 'unavailable' }) } });
+  await done.ready; await settle();
+  assert.match(host.textContent, /Workspace unavailable/); assert.match(host.textContent, /Presenter context could not be read/);
+  assert.match(host.textContent, /trusted backend presenter-session bootstrap/); assert.doesNotMatch(host.textContent, /Context unavailable/);
   done();
 });
 
@@ -420,7 +438,7 @@ test('invalid target presents backend field explanations without unrelated diagn
   ] }) });
   await settle(); const input = f.host.querySelector('input'); input.value = 'yesterday'; input.dispatchEvent(new window.Event('input'));
   f.click('Tick to target'); await settle();
-  assert.match(f.host.textContent, /invalid-clock-command/);
+  assert.doesNotMatch(f.host.textContent, /invalid-clock-command/); assert.match(f.host.textContent, /Action not completed/);
   assert.match(f.host.textContent, /to: Choose a configured named time or a future UTC ISO instant/);
   assert.match(f.host.textContent, /The target must be later than the current DemoClock/);
   assert.doesNotMatch(f.host.textContent, /unrelated-internal-marker/); f.control.destroy();
@@ -446,4 +464,59 @@ test('known pending receipt keeps pending details visible while allowing deliber
   assert.equal(f.click('Reset scenario').disabled, false); f.click('Confirm reset'); await settle();
   assert.equal(resets.length, 1); assert.notEqual(resets[0].commandId, ticks[1].commandId);
   assert.match(f.host.textContent, /Reset done. New run: run-after-pending/); f.control.destroy();
+});
+
+const restartedPanel = (f) => f.host.querySelector('.gcsp-run-restarted');
+function assertRestarted(f, reloads) {
+  const notice = restartedPanel(f); assert.ok(notice); assert.equal(notice.hidden, false); assert.equal(notice.getAttribute('role'), 'alert');
+  assert.match(notice.textContent, /The demo was restarted\. Reload the page to continue\./);
+  assert.doesNotMatch(f.host.textContent, /stale-run|\u2014|Action not completed|Readback/);
+  const reload = notice.querySelector('button'); assert.equal(reload.tagName, 'BUTTON'); assert.equal(reload.type, 'button');
+  assert.equal(reload.disabled, false); assert.equal(reload.textContent, 'Reload');
+  const others = [...f.host.querySelectorAll('button, input')].filter((node) => node !== reload);
+  assert.ok(others.length > 0); for (const node of others) assert.ok(node.disabled || node.hidden || node.closest('[hidden]'), node.textContent);
+  assert.equal(f.host.querySelectorAll('[role="radio"][aria-disabled="false"], [role="radio"]:not([disabled]):not([aria-disabled])').length, 0);
+  reload.focus(); assert.equal(document.activeElement, reload);
+  reload.click(); assert.equal(reloads(), 1); return reload;
+}
+test('a stale-run action reply shows the restarted notice, disables controls, never resends and reloads on request', async () => {
+  let reloads = 0; const f = setup({ tick: async (payload) => { f.calls.push(payload); return { status: 'stale-run', reason: 'This request belongs to an earlier demonstration run.' }; } },
+    { reload: () => reloads++ });
+  await settle(); f.click('Tick'); await settle();
+  assert.equal(f.calls.length, 1); const reload = assertRestarted(f, () => reloads);
+  assert.equal(document.activeElement, reload);
+  for (const label of ['Tick', 'Refresh readback']) { const node = [...f.host.querySelectorAll('button')].find((row) => row.textContent.startsWith(label)); node.click(); }
+  await f.control.refresh(); await settle(); assert.equal(f.calls.length, 1);
+  assert.equal([...f.host.querySelectorAll('button')].filter((row) => !row.disabled && !row.hidden && !row.closest('[hidden]')).length, 1);
+  f.control.destroy();
+});
+test('restarted notice takes focus from the control that was used', async () => {
+  let reloads = 0; const f = setup({ tick: async () => ({ status: 'stale-run' }) }, { reload: () => reloads++ });
+  await settle(); f.host.querySelector('details, .gcsp-presenter-controls').open = true;
+  const tick = [...f.host.querySelectorAll('button')].find((row) => row.textContent.startsWith('Tick'));
+  tick.focus(); tick.click(); await settle();
+  assert.equal(document.activeElement, restartedPanel(f).querySelector('button'));
+  f.control.destroy();
+});
+test('a stale-run readback after an authorized read gives the same restarted notice', async () => {
+  let reads = 0; let reloads = 0;
+  const f = setup({ readControls: async () => ++reads === 1 ? ok(state()) : { status: 'stale-run', reason: 'This request belongs to an earlier demonstration run.' } },
+    { reload: () => reloads++ });
+  await settle(); await f.control.refresh(); await settle();
+  assertRestarted(f, () => reloads); assert.equal(f.calls.length, 0); f.control.destroy();
+});
+test('a stale-run acting context gives the restarted notice', async () => {
+  let reads = 0; let reloads = 0;
+  const f = setup({ readContext: async () => ++reads === 1 ? ok({ principalId: 'employee-test', roles: ['employee'] }) : { status: 'stale-run' } },
+    { reload: () => reloads++ });
+  await settle(); await f.control.refresh(); await settle(); assertRestarted(f, () => reloads); f.control.destroy();
+});
+test('failure messages lead with plain wording, never a raw status or code', async () => {
+  for (const [reply, expected] of [[{ status: 'forbidden', code: 'raw-code' }, /Action not completed: Not permitted/],
+    [{ status: 'conflict' }, /Changed elsewhere\. Refresh readback\./], [{ status: 'weird' }, /Action not completed: Not completed/]]) {
+    const f = setup({ tick: async () => reply }); await settle(); f.click('Tick'); await settle();
+    assert.match(f.host.textContent, expected); assert.doesNotMatch(f.host.textContent, /raw-code|forbidden:|weird/); f.control.destroy();
+  }
+  const f = setup({ readControls: (() => { let n = 0; return async () => ++n === 1 ? ok(state()) : { status: 'unavailable' }; })() });
+  await settle(); await f.control.refresh(); await settle(); assert.match(f.host.textContent, /Readback unavailable: Backend unavailable/); f.control.destroy();
 });
