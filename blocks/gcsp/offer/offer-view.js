@@ -20,8 +20,8 @@ const blockerText = { 'contact-required': 'A valid contact phone and email are n
   'ordering-terms-unavailable': 'The ordering terms are unavailable right now.' };
 const selectionHeadline = (selection) => selection.selectionState === 'acknowledged'
   ? `Selection received. Waiting for ${selection.stages.find((stage) => stage.state === 'waiting')?.name ?? selection.current}.`
-  : selection.selectionState === 'handoff-pending' ? 'Sending your selection. Check again shortly.'
-    : 'Your selection was not accepted for ordering. Contact scheme support.';
+  : selection.selectionState === 'handoff-pending' ? 'Sending your selection to ordering. Ordering owns the next step. You do not need to do anything.'
+    : 'Your selection was not accepted for ordering. The car stays reserved. Contact scheme support.';
 const messageFor = (model) => model.message || (model.state === 'accepted' && model.selection ? selectionHeadline(model.selection) : messages[model.state]);
 const longDate = (value) => /^\d{4}-\d\d-\d\d$/.test(value ?? '') && Number.isFinite(Date.parse(value))
   ? new Date(`${value}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : value;

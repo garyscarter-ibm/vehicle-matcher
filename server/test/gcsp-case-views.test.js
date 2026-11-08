@@ -418,3 +418,12 @@ test('FUCQ-170: cancelling a preference change returns focus; history and owner 
   const q = host(); const stop = queue.mountCaseQueue(q, { adapter: queueFixtureAdapter('populated') }); await tick(); await tick();
   assert.doesNotMatch(q.querySelector('table').textContent, /scheme-team/); stop();
 });
+
+test('FUCQ-213: a lapsed access key reads as access needed, not unavailable', async () => {
+  const { caseFailure } = await import('../../blocks/gcsp/cases/gcsp-help.js');
+  const adapter = createCaseHttpAdapter({ fetchImpl: async () => ({ ok: false, status: 401, json: async () => ({ error: 'Unauthorized' }) }) });
+  const lapsed = await adapter.readHelp();
+  assert.equal(lapsed.status, 'access-required');
+  const shown = caseFailure(lapsed);
+  assert.equal(shown.title, 'Demo access needed'); assert.doesNotMatch(`${shown.title} ${shown.text}`, /unavailable/i);
+});
