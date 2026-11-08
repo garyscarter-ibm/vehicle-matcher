@@ -1,0 +1,273 @@
+{
+  "chunk": "desktop",
+  "reason": "Size",
+  "scenario": "Decline then change",
+  "entry": "https 127.0.0.1 memory runtime",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "state": "passed",
+  "startedAt": "2026-11-08T11:57:34.449Z",
+  "runIds": {
+    "previous": "demo-ea3b050919d5058adfbcb7852fc98722",
+    "new": "demo-ac10ad758709876f39dc4d30acbcf5e9"
+  },
+  "steps": [
+    {
+      "id": "access-key",
+      "name": "The demo key form opens the demo, key typed by keyboard",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Demo key accepted"
+    },
+    {
+      "id": "scenario-reset",
+      "name": "Presenter reset to \"Decline then change\" by keyboard",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Presenter controls Scenario Decline then change Run demo-ac10ad758709876f39dc4d30acbcf5e9 DemoClock (UTC) 2026-11-05T09:30:00.000Z Acting principal Presenter (fictional) (presenter) Tick (60 seconds)"
+    },
+    {
+      "id": "switch-to-paula",
+      "name": "Acting principal switched to Paula by keyboard",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Acting principal Paula (fictional) (employee)"
+    },
+    {
+      "id": "presenter-first-release",
+      "name": "Presenter Next release publishes the first stock release",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "No release to publish: No future release cue is configured."
+    },
+    {
+      "id": "activity-offer",
+      "name": "Paula's activity shows the first offer",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Your car brief Buddy activity Show labels Presenter controls BUDDY ACTIVITY Your buddy Active Your offer Image unavailable Waiting for you Respond by 5 Nov 2026, 11:30 View offer Activity All dates are demo time (UTC). Last check 5 Nov 2026, 09:30: 5 cars checked, 4 suitable. Found a car for you. 5 Nov 2026, 09:00 Search confirmed Renewal help Remedies need"
+    },
+    {
+      "id": "offer-first",
+      "name": "First offer opens from the outbox link",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "capturedEmails": 1
+      },
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Your car offer No image for this car yet ORDER NO. 4549045 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 Boot 500 litres 0 to 62 mph 7.4 s Fuel"
+    },
+    {
+      "id": "offer-decline-reason",
+      "name": "Decline form opens and \"Size\" is chosen by keyboard",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-size-01-decline-reason.png"
+      ],
+      "detail": {
+        "reasons": [
+          "Body style",
+          "Size",
+          "Fuel type",
+          "Equipment"
+        ]
+      },
+      "overflowPx": 0,
+      "state": "Reason chosen: Size"
+    },
+    {
+      "id": "followup-question",
+      "name": "Confirm decline shows the follow-up question, not an unavailable message",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-size-02-followup-question.png"
+      ],
+      "detail": {
+        "question": "What size would you prefer?",
+        "control": "slider",
+        "sliderStart": "50",
+        "notes": [
+          "Not in your brief yet. Your answer adds it.",
+          "",
+          "Only this answer will change."
+        ],
+        "confirmDisabledAtStart": false,
+        "optionsChecked": 0,
+        "answered": "slider 70",
+        "saved": "saved in brief version 2",
+        "nextStateOnOffer": "Your change is saved in brief version 2. Change saved Check whether your next offer is ready. Check current state Change saved Check current state Offer declined",
+        "activityNextState": "Skip to content Group Car Schemes Portal P Paula (fictional) Your car brief Buddy activity Show labels Presenter controls BUDDY ACTIVITY Your buddy Active Your offer Image unavailable Waiting for you Respond by 5 Nov 2026, 11:31 View offer Activity All dates are demo time (UTC). Last check 5 Nov 2026, 09:31: 5 cars checked, 4 suitable. Found a car for you. 5 Nov 2026, 09:00 Search confirmed 5 Nov 2026, 09:30 Search updated after a decline Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Hel"
+      },
+      "overflowPx": 0,
+      "state": "Question: What size would you prefer?. Note: Not in your brief yet. Your answer adds it. | | Only this answer will change.. Control slider at 50"
+    },
+    {
+      "id": "followup-answered-confirmed",
+      "name": "Answer by keyboard and confirm; the change is saved in a brief version",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-size-03-answered.png",
+        "browser/1280-size-04-after-confirm.png"
+      ],
+      "overflowPx": 0,
+      "state": "slider 70. saved in brief version 2. Next: Your change is saved in brief version 2. Change saved Check whether your next offer is ready. Check current state Change saved Check current state Offer declined"
+    },
+    {
+      "id": "presenter-advance",
+      "name": "Presenter advances the clock (Next release, else one Tick)",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "nextReleaseUnavailable": "No future release cue is configured.",
+        "clockBefore": "2026-11-05T09:30:00.000Z",
+        "clockAfter": "2026-11-05T09:31:00.000Z"
+      },
+      "overflowPx": 0,
+      "state": "Tick: clock 2026-11-05T09:30:00.000Z to 2026-11-05T09:31:00.000Z"
+    },
+    {
+      "id": "activity-next-state",
+      "name": "Paula's activity shows a clear next state (offer, waiting or no match)",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-size-05-activity-next-state.png"
+      ],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Your car brief Buddy activity Show labels Presenter controls BUDDY ACTIVITY Your buddy Active Your offer Image unavailable Waiting for you Respond by 5 Nov 2026, 11:31 View offer Activity All dates are demo time (UTC). Last check 5 Nov 2026, 09:31: 5 cars checked, 4 suitable. Found a car for you. 5 Nov 2026, 09:00 Search confirmed 5 Nov 2026, 09:30 Search updated after a decline Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Help is available if you need the scheme team to review your renewal."
+    }
+  ],
+  "followup": {
+    "question": "What size would you prefer?",
+    "control": "slider",
+    "sliderStart": "50",
+    "notes": [
+      "Not in your brief yet. Your answer adds it.",
+      "",
+      "Only this answer will change."
+    ],
+    "confirmDisabledAtStart": false,
+    "optionsChecked": 0,
+    "answered": "slider 70",
+    "saved": "saved in brief version 2",
+    "nextStateOnOffer": "Your change is saved in brief version 2. Change saved Check whether your next offer is ready. Check current state Change saved Check current state Offer declined",
+    "activityNextState": "Skip to content Group Car Schemes Portal P Paula (fictional) Your car brief Buddy activity Show labels Presenter controls BUDDY ACTIVITY Your buddy Active Your offer Image unavailable Waiting for you Respond by 5 Nov 2026, 11:31 View offer Activity All dates are demo time (UTC). Last check 5 Nov 2026, 09:31: 5 cars checked, 4 suitable. Found a car for you. 5 Nov 2026, 09:00 Search confirmed 5 Nov 2026, 09:30 Search updated after a decline Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Hel"
+  },
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "https://127.0.0.1:8830/favicon.ico",
+      "page": "https://127.0.0.1:8830/gcsp/access"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "https://127.0.0.1:8830/api/gcsp/manual/draft",
+      "page": "https://127.0.0.1:8830/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "https://127.0.0.1:8830/api/gcsp/manual/draft",
+      "page": "https://127.0.0.1:8830/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "https://127.0.0.1:8830/api/gcsp/manual/draft",
+      "page": "https://127.0.0.1:8830/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "https://127.0.0.1:8830/api/gcsp/manual/draft",
+      "page": "https://127.0.0.1:8830/gcsp-presenter.html"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "url": "https://127.0.0.1:8830/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "https://127.0.0.1:8830/gcsp-activity-live.html"
+    },
+    {
+      "url": "https://127.0.0.1:8830/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "https://127.0.0.1:8830/gcsp-activity-live.html"
+    },
+    {
+      "url": "https://127.0.0.1:8830/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "https://127.0.0.1:8830/gcsp-activity-live.html"
+    },
+    {
+      "url": "https://127.0.0.1:8830/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "https://127.0.0.1:8830/gcsp-outbox.html"
+    },
+    {
+      "url": "https://127.0.0.1:8830/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "https://127.0.0.1:8830/gcsp-activity-live.html"
+    },
+    {
+      "url": "https://127.0.0.1:8830/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "https://127.0.0.1:8830/gcsp-activity-live.html"
+    },
+    {
+      "url": "https://127.0.0.1:8830/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "https://127.0.0.1:8830/gcsp-activity-live.html"
+    }
+  ],
+  "badResponses": [
+    {
+      "status": 404,
+      "url": "https://127.0.0.1:8830/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "https://127.0.0.1:8830/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "https://127.0.0.1:8830/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "https://127.0.0.1:8830/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "https://127.0.0.1:8830/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "https://127.0.0.1:8830/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "https://127.0.0.1:8830/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "https://127.0.0.1:8830/gcsp-presenter.html"
+    }
+  ],
+  "notes": [],
+  "origin": "https://127.0.0.1:8830",
+  "finishedAt": "2026-11-08T12:02:59.370Z",
+  "counts": {
+    "steps": 11,
+    "passed": 11,
+    "screenshots": 5,
+    "consoleErrors": 5,
+    "pageErrors": 0,
+    "badResponses": 4,
+    "serverErrors503": 0
+  }
+}
