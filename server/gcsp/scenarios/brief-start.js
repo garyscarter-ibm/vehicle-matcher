@@ -56,3 +56,18 @@ export async function confirmScenarioBrief({ identity, clock, brief, policy, pre
 }
 
 export const confirmPaulaBrief = (services) => confirmScenarioBrief(services, 'demo-paula');
+
+// Advances to the release cue and ticks once through the real release and allocation handlers, then reads Paula's first offer.
+export async function releaseToFirstOffer({ clock, repository }, { controller, context, key }) {
+  const time = await clock.now(controller); if (time.status !== 'ok') return failed('clock', time);
+  const advanced = await clock.advance(controller, { commandId: `scenario-start:${key}:advance`,
+    expectedClockVersion: time.value.clockVersion, to: 'release' });
+  if (advanced.status !== 'ok') return failed('release-cue', advanced);
+  const eventId = `scenario-start:${key}:release`;
+  const ticked = await clock.tick(controller, { eventId, inputDigest: inputDigest(eventId), expectedClockVersion: advanced.value.clockVersion });
+  if (ticked.status !== 'ok') return failed('release-tick', ticked);
+  const offers = await repository.query(context, 'offers', { employeeId: context.employeeId });
+  const first = offers.status === 'ok' ? offers.value.find((row) => row.state === 'active') : null;
+  if (!first) return fail('first-offer', 'No buddy offer was produced for Paula on the release tick.');
+  return { ok: true, offer: first, now: advanced.value.now };
+}

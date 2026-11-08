@@ -39,12 +39,15 @@ export const SCENARIO_INPUTS_V1 = [
     ['brief-confirmation', 'stock-release', 'buddy-activity', 'greg-demand', 'synthetic-stock-fault'],
     { briefs: [brief('demo-paula')], stockTranches: [{ source: 'published-demo-stock', cue: 'release' }], pendingOperations: [], syntheticStockFault: 'unavailable' },
     [{ operation: 'advance', to: 'release' }, { operation: 'tick', purpose: 'observe-failed-pull-without-stock-change' }, { operation: 'presenter', purpose: 'clear-synthetic-stock-fault' }, { operation: 'tick', purpose: 'retry-release-through-service' }], ['unavailable', 'stale']),
-  journey('uncertain-handoff', 'Uncertain handoff', 'FUCQ-131', ['FUCQ-89', 'FUCQ-110', 'FUCQ-75'],
+  // v2 (FUCQ-131): Alex competes for stock, and each resolution is its own entry so the presenter can choose it.
+  ...['acknowledged', 'rejected'].map((resolution) => journey(resolution === 'acknowledged' ? 'uncertain-handoff' : 'uncertain-handoff-rejected',
+    `Uncertain handoff, ${resolution}`, 'FUCQ-131', ['FUCQ-89', 'FUCQ-110', 'FUCQ-75'],
     ['FUCQ-100', 'FUCQ-106', 'FUCQ-108', 'FUCQ-131'],
     ['brief-confirmation', 'stock-release', 'buddy-allocation', 'buddy-offers', 'offer-decisions', 'order-handoff', 'ordering-reconciliation', 'synthetic-order-fault'],
-    { briefs: [brief('demo-paula')], stockTranches: [{ source: 'published-demo-stock', cue: 'release' }], pendingOperations: [],
-      prepare: ['release-through-service', 'allocate-through-service'], syntheticOrderingFault: 'uncertain-once' },
-    [{ operation: 'employee', purpose: 'accept-offer' }, { operation: 'tick', purpose: 'reconcile-existing-operation-before-retry' }], ['acknowledged', 'rejected']),
+    { briefs: [brief('demo-paula'), brief('demo-alex')], stockTranches: [{ source: 'published-demo-stock', cue: 'release' }], pendingOperations: [],
+      prepare: ['release-through-service', 'allocate-through-service'], syntheticOrderingFault: `timeout-${resolution}` },
+    [{ operation: 'employee', purpose: 'accept-offer' }, { operation: 'tick', purpose: 'reconcile-existing-operation-before-retry' }], [resolution],
+    resolution === 'acknowledged' ? 'uncertain-handoff-inputs-v2' : 'uncertain-handoff-rejected-inputs-v1')),
 ];
 
 export const MECHANICS_SCENARIO = {

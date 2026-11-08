@@ -29,6 +29,7 @@ import { createManualGalleryStockRead } from './manual-gallery/stock-read.js';
 import { createRenewalCaseService } from './cases/index.js';
 import { ManualReviewDetailsService } from './manual-review/index.js';
 import { createSyntheticOrderingAdapter } from './adapters/synthetic-ordering.js';
+import { createSyntheticOrderingFaults } from './adapters/synthetic-ordering-fault.js';
 import { createSyntheticOrderingStatus } from './adapters/synthetic-ordering-status.js';
 import { createSyntheticDocumentStatus } from './adapters/synthetic-ordering-documents.js';
 import { createLifecycleApprovalService } from './lifecycle/approvals/index.js';
@@ -98,6 +99,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const sourceProvider = typeof stockProvider === 'function' ? stockProvider({ policy, repository, contextForRun, environmentId }) : stockProvider;
     // FUCQ-130: presenter-set, run-scoped synthetic fault; it never alters an operational provider's pull.
     const stockFaults = createSyntheticStockFaults({ policy });
+    const orderingFaults = createSyntheticOrderingFaults(); // FUCQ-131: one uncertain handoff, run-scoped
     const pullProvider = sourceProvider === undefined ? undefined : stockFaults.wrap(sourceProvider);
     // Prepared scenario fixtures are branded by the exact policy instance used by the clock.
     // After a reset: choose the new run's stock source (a failure defers it to the first pull), then
@@ -106,7 +108,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       if (typeof pullProvider?.prepareRun === 'function') { try { await pullProvider.prepareRun(runId); } catch { /* deferred */ } }
       return adoptOfferJourney ? adoptOfferJourneyPolicy({ policy, identity, clock }) : ok({});
     };
-    const scenarios = createScenarioService({ repository, policy: readPolicy, clock, identity, brief, afterReset, faults: { stock: stockFaults },
+    const scenarios = createScenarioService({ repository, policy: readPolicy, clock, identity, brief, afterReset, faults: { stock: stockFaults, ordering: orderingFaults },
       prepareEmployee: (context) => seedManualDemoContext({ repository, identity, clock, context }) });
     const stockRelease = pullProvider === undefined ? undefined
       : createStockReleaseService({ repository, policy, clock, identity, provider: pullProvider });
@@ -126,7 +128,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     });
     const manualReview = new ManualReviewDetailsService({ repository, policy, identity, manualClaims });
     const cases = createRenewalCaseService({ repository, policy, clock, identity });
-    const orderingAdapter = createSyntheticOrderingAdapter({ repository });
+    const orderingAdapter = createSyntheticOrderingAdapter({ repository, faults: orderingFaults });
     orderingAdapter.status = createSyntheticOrderingStatus({ repository });
     orderingAdapter.documentStatus = createSyntheticDocumentStatus({ repository });
     const manualOrder = createManualOrderService({ repository, policy, clock, identity, adapter: orderingAdapter,
