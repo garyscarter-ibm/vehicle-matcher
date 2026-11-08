@@ -118,3 +118,12 @@ test('a pending claim past its original deadline cannot offer browse navigation 
   assert.equal(f.root.querySelector('.gcsp-review-announcement').textContent, '');
   assert.equal(f.released, 0); assert.equal(f.ready, 0);
 });
+
+test('an unavailable claim reread never shows the last countdown or reserved wording', async (t) => {
+  const f = setup(t); await settle(() => f.root.textContent.includes('Car reservation:'));
+  f.setClaim({ status: 'unavailable', code: 'manual-claim-unavailable', retryable: true }); f.tick();
+  await settle(() => f.root.textContent.includes('Reservation not confirmed'));
+  assert.doesNotMatch(f.root.textContent, /remaining|reserved until the deadline/);
+  assert.equal([...f.root.querySelectorAll('button')].find((node) => node.textContent === 'Continue to order review').disabled, true);
+  f.setClaim(null); f.tick(); await settle(() => f.root.textContent.includes('Car reservation:'));
+});

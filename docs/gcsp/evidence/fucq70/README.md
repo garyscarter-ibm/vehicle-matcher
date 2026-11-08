@@ -1,5 +1,10 @@
 # FUCQ-70 review-details delivery evidence
 
+**Status, 8 November 2026.** The review source was adopted into `gcsp-poc` (f179ae60) and is mounted by
+`blocks/gcsp/manual-setup/journey.js`; this branch merged `gcsp-poc` at 083b4b5c. Browser evidence is
+`browser-walkthrough.mjs` (hosted entry, memory, offline, keyboard) with `results-desktop.json`,
+`results-narrow.json` and `browser/` at 1280 and 320 px. The 6 November notes below are the history.
+
 Worktree `DEV-2026-11-04-070`, branch `dev/DEV-2026-11-04-070`, starting shared
 revision `727082730edd56ed2d6c9a28eaf905db05cd1866`. Development is incomplete.
 Gary's 5 November technical-readiness direction permits the independent work below;
