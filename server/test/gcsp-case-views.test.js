@@ -266,11 +266,37 @@ test('queue opens read-only options, uses exactly server statuses and availabili
 });
 test('queue handles empty/loading/source/access/stale-run distinctly and terminal cases have no editor', async () => {
   for (const [name, title] of [['empty', 'No renewal cases'], ['loading', 'Loading renewal cases'], ['unavailable', 'Renewal cases are unavailable'],
-    ['forbidden', 'You cannot open these cases'], ['stale-run', 'Your demo run has changed']]) {
+    ['forbidden', 'You cannot open these cases'], ['stale-run', 'The demo was restarted']]) {
     const f = await mountQueue(queueFixtureAdapter(name)); assert.match(f.root.textContent, new RegExp(title)); f.destroy();
   }
   const f = await mountQueue(); await openQueue(f.root, 'synthetic-case-4');
   assert.equal(findButton(f.root, 'Review case update'), undefined); assert.match(f.root.textContent, /no further permitted status changes/); f.destroy();
+});
+test('case adapter reads a bare 401 (lapsed access key) as access-required through the kit helper; a status keeps its refusal', async () => {
+  const reply = (status, body, type = 'application/json') => async () => new Response(body, { status, headers: { 'Content-Type': type } });
+  for (const [status, body, expected] of [[401, '{"error":"Unauthorized"}', 'access-required'], [401, 'Unauthorized', 'access-required'],
+    [401, '{"status":"forbidden","reason":"Not the scheme team."}', 'forbidden'], [200, 'not json', 'unavailable']]) {
+    const out = await createCaseHttpAdapter({ fetchImpl: reply(status, body) }).listCases();
+    assert.equal(out.status, expected, `${status} ${body}`);
+  }
+});
+test('queue shows the shared restart notice, not renewal-help copy, when access lapses or the run restarts', async () => {
+  for (const status of ['access-required', 'stale-run', 'unknown-session']) for (const embedded of [true, false]) {
+    const f = await mountQueue({ ...queueFixtureAdapter(), async listCases() { return { status }; } }, { embedded });
+    assert.match(f.root.textContent, /The demo was restarted\. Reload the page to continue\./, `${status} ${embedded}`);
+    assert.equal(f.root.querySelector('.gcsp-case-status').textContent, 'Demo restarted.');
+    assert.doesNotMatch(f.root.textContent, /Renewal help is unavailable|Your demo run has changed|Reopen the current employee session/);
+    assert.ok(findButton(f.root, 'Reload')); assert.equal(findButton(f.root, 'Retry queue'), undefined); assert.equal(findButton(f.root, 'Refresh queue'), undefined);
+    f.destroy();
+  }
+  const adapter = queueFixtureAdapter();
+  const detail = await mountQueue({ ...adapter, async readOptions() { return { status: 'access-required' }; } }, { embedded: true });
+  await openQueue(detail.root); assert.ok(findButton(detail.root, 'Reload')); assert.equal(findButton(detail.root, 'Refresh case options'), undefined);
+  assert.doesNotMatch(detail.root.textContent, /Renewal help is unavailable/); detail.destroy();
+  const saving = await mountQueue({ ...adapter, async updateCase() { return { status: 'access-required' }; } }, { embedded: true });
+  await openQueue(saving.root); reviewQueue(saving.root); findButton(saving.root, 'Review case update').click(); findButton(saving.root, 'Confirm case update').click(); await tick();
+  assert.ok(findButton(saving.root, 'Reload')); assert.equal(findButton(saving.root, 'Confirm case update'), undefined);
+  assert.doesNotMatch(saving.root.textContent, /Renewal help is unavailable|update was recorded/); saving.destroy();
 });
 test('queue update is explicitly reviewed/confirmed with version and reloaded from authoritative state', async () => {
   const calls = []; let c = queueCaseFixtures()[0]; let lists = 0; let reads = 0;
@@ -317,7 +343,7 @@ test('queue uncertain retry retains command id; conflict/access/stale outcomes r
   await openQueue(f.root); reviewQueue(f.root); findButton(f.root, 'Review case update').click(); findButton(f.root, 'Confirm case update').click(); await tick();
   assert.doesNotMatch(f.root.textContent, /update was recorded/); assert.ok(findButton(f.root, 'Confirm case update'));
   findButton(f.root, 'Confirm case update').click(); await tick(); assert.equal(calls.length, 2); assert.deepEqual(calls[0], calls[1]); f.destroy();
-  for (const status of ['conflict', 'stale-version', 'forbidden', 'stale-run']) {
+  for (const status of ['conflict', 'stale-version', 'forbidden']) {
     let reads = 0; const adapter = queueFixtureAdapter();
     const other = await mountQueue({ ...adapter, async readOptions(input) { reads += 1; return adapter.readOptions(input); },
       async updateCase() { return { status, reason: 'Refresh the current scheme-team session.' }; } });
