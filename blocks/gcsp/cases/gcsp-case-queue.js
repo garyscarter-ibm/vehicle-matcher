@@ -1,7 +1,7 @@
 import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-matcher/ui.js';
 import { labelledField, errorSummary } from '../kit/form-controls.js';
 import { dataTable } from '../kit/data-table.js';
-import { caseStatus, clockTime, preferenceLabel, renderCaseContent, caseNotice, shown, carNameText } from './case-content.js';
+import { caseStatus, clockTime, preferenceLabel, renderCaseContent, caseNotice, shown, carNameText, roleLabel } from './case-content.js';
 import { caseFailure } from './gcsp-help.js';
 import { createCaseHttpAdapter, isCaseRecord, isCaseOptionsProjection } from './http-adapter.js';
 
@@ -150,7 +150,7 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
       { key: 'employee', label: 'Employee' }, { key: 'deadline', label: 'Renewal deadline (calendar date)' }, { key: 'trigger', label: 'Trigger or request' },
       { key: 'reason', label: 'Reason' }, { key: 'status', label: 'Status' }, { key: 'owner', label: 'Owner' }, { key: 'due', label: 'Next action due, demo clock (UTC)' },
     ], rows: sorted.map((c) => ({ employee: c.employeeName ?? c.employeeId, deadline: c.renewalDeadline ?? 'Needs confirmation', trigger: triggerLabel(c),
-      reason: c.reason, status: caseStatus(c.status), owner: [c.owner?.name, c.owner?.role].filter(Boolean).join(' · '), due: clockTime(c.dueAt) })) }));
+      reason: c.reason, status: caseStatus(c.status), owner: [...new Set([c.owner?.name, c.owner?.role && roleLabel(c.owner.role)].filter(Boolean))].join(' · '), due: clockTime(c.dueAt) })) }));
     const picker = nativeSelect(sorted.map((c) => [c.caseId, `${c.employeeName ?? c.employeeId} · ${caseStatus(c.status)} · ${c.renewalDeadline ?? 'Deadline needs confirmation'}`]), selection, 'Choose a case');
     picker.disabled = saving;
     const open = button({ label: 'Open selected case', disabled: saving || !selection, onClick: () => openCase(selection) });

@@ -19,6 +19,9 @@ export function clockTime(value) {
 }
 const facts = (rows) => factList(rows.map(([label, value]) => ({ label, value: shown(value) })), { className: 'gcsp-case-facts' });
 export const carNameText = (name) => typeof name === 'string' && name.trim() ? name : 'Car details not supplied';
+// Employees see 'You' and the named owner, not principal ids.
+const actorLabel = (h, c, audience) => h.actorRole === 'system' ? 'Automatic check' : audience !== 'employee' ? h.actorId
+  : h.actorId === c.employeeId || h.actorRole === 'employee' ? 'You' : h.actorRole === 'scheme-team' ? c.owner?.name ?? roleLabel(h.actorRole) : roleLabel(h.actorRole);
 export const caseNotice = 'Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.';
 
 export function renderCaseContent(c, { onReviewRelaxation, pending = false, headingLevel = 2, audience = 'employee' } = {}) {
@@ -63,7 +66,7 @@ export function renderCaseContent(c, { onReviewRelaxation, pending = false, head
   const list = el('ol', 'gcsp-case-events');
   for (const h of c.history ?? []) {
     const row = el('li', 'gcsp-case-event');
-    row.append(facts([['Demo clock (UTC)', clockTime(h.at)], ['Actor', audience === 'employee' && h.actorId === c.employeeId ? 'You' : h.actorRole === 'system' ? 'Automatic check' : h.actorId], ['Role', roleLabel(h.actorRole)],
+    row.append(facts([['Demo clock (UTC)', clockTime(h.at)], ['Actor', actorLabel(h, c, audience)], ['Role', roleLabel(h.actorRole)],
       ['Status', caseStatus(h.status)], ['Reason', h.reason], ['Next action', h.nextAction], ['Due, demo clock (UTC)', clockTime(h.dueAt)]]));
     list.append(row);
   }

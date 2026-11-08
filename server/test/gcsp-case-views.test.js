@@ -377,3 +377,18 @@ test('malformed successful queue projections show source failure instead of expo
   const f = await mountQueue({ ...queueFixtureAdapter(), async readOptions() { return { status: 'ok', value }; } });
   await openQueue(f.root); assert.match(f.root.textContent, /Case options are unavailable/); assert.equal(findButton(f.root, 'Review case update'), undefined); f.destroy();
 });
+
+test('FUCQ-170: cancelling a preference change returns focus; history and owner show readable names, not principal ids', async () => {
+  const { root, destroy } = await mount('waiting');
+  findButton(root, 'Review body change').click(); findButton(root, 'Cancel preference change').click();
+  assert.equal(document.activeElement, findButton(root, 'Review body change'));
+  const c = { ...caseFixture('resolved'), employeeId: 'employee-1', owner: { name: 'Greg', role: 'scheme-team' },
+    history: [{ at: '2026-11-05T12:00:00.000Z', actorId: 'demo-paula', actorRole: 'employee', status: 'open', reason: 'Help' },
+      { at: '2026-11-05T13:00:00.000Z', actorId: 'demo-greg', actorRole: 'scheme-team', status: 'resolved', reason: 'Done' }] };
+  const { renderCaseContent } = await import('../../blocks/gcsp/cases/case-content.js');
+  const text = renderCaseContent(c).textContent;
+  assert.doesNotMatch(text, /demo-paula|demo-greg/); assert.match(text, /You/); assert.match(text, /Greg/);
+  destroy();
+  const q = host(); const stop = queue.mountCaseQueue(q, { adapter: queueFixtureAdapter('populated') }); await tick(); await tick();
+  assert.doesNotMatch(q.querySelector('table').textContent, /scheme-team/); stop();
+});
