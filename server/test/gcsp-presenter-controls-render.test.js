@@ -110,8 +110,9 @@ test('tick preserves committed time and ordered pending/refused outcomes, never 
   const f = setup({ tick: async () => ({ status: 'unavailable', reason: 'Tick interrupted', advance: { now }, tick }),
     readControls: async () => ++reads === 1 ? ok(state()) : { status: 'unavailable', reason: 'Readback failed' } }); await settle(); f.click('Next release'); await settle();
   assert.match(f.host.textContent, /10:00:00/); assert.match(f.host.textContent, /Release refused/);
-  const rows = [...f.host.querySelectorAll('ol li')].map((row) => row.textContent); assert.match(rows[0], /first/); assert.match(rows[1], /second.*Pending/);
-  assert.match(f.host.textContent, /Missing stages: manual-expiry/); assert.match(f.host.textContent, /Release unavailable/); assert.doesNotMatch(f.host.textContent, /0 cars/);
+  const rows = [...f.host.querySelectorAll('ol li')].map((row) => row.textContent); assert.match(rows[0], /^Another step: Refused\. Release refused/); assert.match(rows[1], /^Another step: Waiting for a result/);
+  assert.match(f.host.textContent, /Tick still running\. 2 steps: 1 refused, 1 waiting for a result\./); assert.doesNotMatch(f.host.textContent, /tick-test/);
+  assert.match(f.host.textContent, /Not run this tick: Manual claim expiry\./); assert.match(f.host.textContent, /Release unavailable/); assert.doesNotMatch(f.host.textContent, /0 cars/);
   f.control.destroy();
 });
 // Contract-shaped unit inputs from FUCQ-92 15a79957; no producer/runtime source is imported.
@@ -146,7 +147,7 @@ test('a committed release remains visible while a later handler is pending or re
     lastTick.handlerOrder.push({ handlerId: 'reconcile', stage: 'pending-reconciliation' });
     lastTick.outcomes.push({ handlerId: 'reconcile', stage: 'pending-reconciliation', outcome: { status } });
     const f = setup({ readControls: async () => ok({ ...state(), lastTick }) });
-    await settle(); assert.match(f.host.textContent, /2 cars released/); assert.match(f.host.textContent, new RegExp(status)); f.control.destroy();
+    await settle(); assert.match(f.host.textContent, /2 cars released/); assert.match(f.host.textContent, status === 'pending' ? /Reconciliation|Another step: Waiting for a result/ : /Another step: Refused/); f.control.destroy();
   }
 });
 const invalidReleaseResults = {
@@ -427,7 +428,7 @@ test('successful readback supersedes an older command tick when another tick is 
   let reads = 0;
   const f = setup({ tick: async () => ok({ tick: { tickId: 'older-action', state: 'completed', handlerOrder: [], outcomes: [] } }),
     readControls: async () => ok({ ...state(), lastTick: ++reads === 1 ? null : { tickId: 'latest-server-tick', state: 'pending', handlerOrder: [], outcomes: [] } }) });
-  await settle(); f.click('Tick'); await settle(); assert.match(f.host.textContent, /latest-server-tick/); assert.doesNotMatch(f.host.textContent, /older-action/); f.control.destroy();
+  await settle(); f.click('Tick'); await settle(); assert.match(f.host.textContent, /Tick still running/); assert.doesNotMatch(f.host.textContent, /Tick completed|older-action/); f.control.destroy();
 });
 
 
@@ -453,14 +454,14 @@ test('known pending receipt keeps pending details visible while allowing deliber
     tick: async (payload) => { ticks.push(payload); currentTick = pending; return ok({ tick: pending }); },
     reset: async (payload) => { resets.push(payload); currentTick = null; return ok({ runId: 'run-after-pending' }); } });
   await settle(); f.click('Tick'); await settle();
-  assert.match(f.host.textContent, /known-pending-tick/); assert.match(f.host.textContent, /awaiting-confirmation/);
-  assert.match(f.host.textContent, /Missing stages: release-pull/);
+  assert.doesNotMatch(f.host.textContent, /known-pending-tick|awaiting-confirmation/); assert.match(f.host.textContent, /Another step: Waiting for a result/);
+  assert.match(f.host.textContent, /Not run this tick: Stock release\./);
   const originalRetry = [...f.host.querySelectorAll('button')].find((row) => row.textContent === 'Retry original action');
   assert.equal(originalRetry.hidden, true);
   const nextTick = [...f.host.querySelectorAll('button')].find((row) => row.textContent.startsWith('Tick ('));
   assert.equal(nextTick.disabled, false); nextTick.click(); await settle();
   assert.equal(ticks.length, 2); assert.notEqual(ticks[0].commandId, ticks[1].commandId);
-  assert.match(f.host.textContent, /awaiting-confirmation/);
+  assert.match(f.host.textContent, /Tick still running\. 1 step: 1 waiting for a result\./);
   assert.equal(f.click('Reset scenario').disabled, false); f.click('Confirm reset'); await settle();
   assert.equal(resets.length, 1); assert.notEqual(resets[0].commandId, ticks[1].commandId);
   assert.match(f.host.textContent, /Reset done. New run: run-after-pending/); f.control.destroy();
@@ -560,3 +561,35 @@ test('FUCQ-203: tick step results sit in a closed disclosure that keeps its open
   assert.equal(receipts().open, true, 'open state survives a readback'); assert.equal(document.activeElement, receipts().querySelector('summary'));
   f.control.destroy();
 });
+test('FUCQ-204: last tick shows a plain summary and labelled steps, never JSON or the tick id', async () => {
+  const ids = ['stock-release', 'manual-claim-expiry', 'buddy-expiry', 'buddy-pending-operations', 'lifecycle-appointments', 'lifecycle-approvals',
+    'lifecycle-documents', 'lifecycle-return-appointments', 'renewal-risk-cases', 'selection-order-reconciliation', 'captured-outbox', 'brand-new-handler'];
+  const handlerOrder = ids.map((handlerId) => ({ handlerId, stage: 'pending-reconciliation' }));
+  const lastTick = { runId: 'run-a', tickId: 'presenter-04d33b80aa', eventId: 'presenter-04d33b80aa', state: 'completed', handlerOrder, missingStages: [],
+    outcomes: handlerOrder.map((row) => ({ ...row, outcome: { status: 'ok', value: { orders: 0, kind: 'x' } } })) };
+  const f = setup({ readControls: async () => ok({ ...state(), lastTick }) }); await settle();
+  const text = f.host.querySelector('.gcsp-presenter-results').textContent;
+  assert.doesNotMatch(text, /[{}]|"status"|presenter-04d33b80|brand-new-handler|stock-release/);
+  assert.match(text, /Tick completed\. 12 steps: 12 done\./);
+  const rows = [...f.host.querySelectorAll('ol li')].map((row) => row.textContent);
+  assert.equal(rows[0], 'Stock release: Done.'); assert.equal(rows[10], 'Outbox dispatch: Done.'); assert.equal(rows[11], 'Another step: Done.');
+  assert.ok(!/\u2014/.test(text)); f.control.destroy();
+});
+test('FUCQ-204: unknown tick states and unmapped stages stay plain', async () => {
+  const lastTick = { runId: 'run-a', tickId: 't', state: 'weird-internal', handlerOrder: [{ handlerId: 'stock-release', stage: 'release-pull' }],
+    outcomes: [{ handlerId: 'stock-release', outcome: { status: 'odd-code' } }], missingStages: ['secret-stage', 'other-stage'] };
+  const f = setup({ readControls: async () => ok({ ...state(), lastTick }) }); await settle();
+  const text = f.host.querySelector('.gcsp-presenter-results').textContent;
+  assert.match(text, /Tick result not confirmed\. 1 step: 1 not confirmed\./); assert.match(text, /Stock release: Not confirmed\./);
+  assert.match(text, /Not run this tick: 2 other stages\./); assert.doesNotMatch(text, /weird-internal|odd-code|secret-stage/); f.control.destroy();
+});
+
+test('FUCQ-204: every step the hosted runtime registers has a label, so none reads Another step', async () => {
+  const { stepLine } = await import('../../blocks/gcsp/presenter-controls/tick-copy.js');
+  // Ids from the hosted memory runtime's lastTick readback (docs/gcsp/evidence/fucq-204/results.json).
+  for (const handlerId of ['stock-release', 'manual-claim-expiry', 'buddy-expiry', 'lifecycle-appointments', 'lifecycle-approvals', 'lifecycle-documents',
+    'lifecycle-return-appointments', 'renewal-risk-cases', 'selection-order-reconciliation', 'buddy-allocation', 'captured-outbox']) {
+    assert.doesNotMatch(stepLine({ handlerId }, { handlerId, outcome: { status: 'ok' } }), /Another step/, handlerId);
+  }
+});
+

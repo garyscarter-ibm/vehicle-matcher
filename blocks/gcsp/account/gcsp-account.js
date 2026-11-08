@@ -324,7 +324,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     const model = toAccountView(envelope);
     if (isRunRestarted(envelope)) return { status: envelope.status };
     return { status: envelope.status === 'ok' ? 'ready' : 'unavailable', name: model.account?.name ?? 'Account unavailable',
-      context: [model.account?.company ?? model.account?.companyId, model.account?.gradeId].filter(Boolean).join(', ') };
+      context: [model.account?.company, model.account?.gradeId && `Grade ${model.account.gradeId}`].filter(Boolean).join(', ') };
   }
   async function refresh() {
     if (pending || disposed) return;

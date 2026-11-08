@@ -673,3 +673,19 @@ test('FUCQ-197: order history, saved journey and footer show words, not raw iden
     assert.match(labelled.root.querySelector('.gcsp-summary').textContent, /Vehicle slotCompany car 1/);
   } finally { labelled.destroy(); labelled.root.remove(); }
 });
+
+test('FUCQ-204: neither the shell context nor the identity facts show the raw company id; a supplied label does show', async () => {
+  const fixture = (company) => { const input = accountFixture('ready'); delete input.value.account.company;
+    Object.assign(input.value.account, { companyId: 'demo-bmw-fs-uk', gradeId: 'G7', ...(company && { company }) }); return input; };
+  const facts = (input) => toAccountView(input).identityFacts.map((row) => row.label);
+  assert.ok(!facts(fixture()).includes('Company')); assert.ok(facts(fixture('BMW Financial Services')).includes('Company'));
+  const load = (input) => createAccountHttpAdapter({ fetchImpl: async () => response(input) }).loadAccount();
+  assert.doesNotMatch((await load(fixture())).context, /demo-bmw-fs-uk/); assert.equal((await load(fixture())).context, 'Grade G7');
+  assert.equal((await load(fixture('BMW Financial Services'))).context, 'BMW Financial Services, Grade G7');
+  for (const [company, shown] of [[null, false], ['BMW Financial Services', true]]) {
+    const input = fixture(company);
+    const { root, destroy } = await domMount({ readAccount: async () => input, readDraft: async () => ({ status: 'not-found' }), startJourney: async () => ({ status: 'unavailable' }) });
+    assert.doesNotMatch(root.textContent, /demo-bmw-fs-uk/); assert.equal(root.textContent.includes('BMW Financial Services'), shown);
+    assert.match(root.textContent, /Grade G7/); destroy();
+  }
+});

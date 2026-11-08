@@ -1,9 +1,10 @@
-import { el, button, factList } from '../../vehicle-matcher/ui.js';
+import { el, button } from '../../vehicle-matcher/ui.js';
 import { renderOptionList } from '../../vehicle-matcher/modes/question-ui.js';
 import { presenterBar } from '../kit/presenter-bar.js';
 import { labelledField } from '../kit/form-controls.js';
 import { isRunRestarted, runRestartedNotice } from '../kit/run-restarted.js';
 import { createPresenterHttpAdapter } from './http-adapter.js';
+import { tickSummary, stepLine, missingStagesLine, findOutcome } from './tick-copy.js';
 
 let sequence = 0;
 // Handler results can be huge (buddy allocation returns about 200 KB), so the readout is capped.
@@ -164,19 +165,18 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     results.replaceChildren(el('h3', '', 'Last tick'));
     if (!last) results.append(el('p', 'gcsp-note', 'No tick reported'));
     else {
-      results.append(factList([{ label: 'Event', value: last.eventId || last.tickId }, { label: 'State', value: last.state }]));
+      results.append(el('p', 'gcsp-note', tickSummary(last)));
       const order = el('ol', 'gcsp-presenter-handlers');
-      const handlers = Array.isArray(last.outcomes) ? last.outcomes : [];
       for (const descriptor of Array.isArray(last.handlerOrder) ? last.handlerOrder : []) {
         if (!descriptor || typeof descriptor !== 'object') continue;
-        const outcome = handlers.find((row) => row?.handlerId === descriptor.handlerId);
-        order.append(el('li', '', `${descriptor.stage} / ${descriptor.handlerId}: ${outcome ? explain(outcome.outcome) : 'Pending, no result reported'}`));
+        order.append(el('li', '', stepLine(descriptor, findOutcome(last, descriptor))));
       }
       const receipts = el('details', 'gcsp-presenter-receipts'); receipts.open = receiptsOpen;
       const receiptsSummary = el('summary', '', `Step results (${order.children.length})`);
       receipts.append(receiptsSummary, order); results.append(receipts);
       if (receiptsFocused) receiptsSummary.focus();
-      if (Array.isArray(last.missingStages) && last.missingStages.length) results.append(el('p', 'gcsp-note', `Missing stages: ${last.missingStages.join(', ')}`));
+      const missing = missingStagesLine(last.missingStages);
+      if (missing) results.append(el('p', 'gcsp-note', missing));
       const count = releasedCarCount(state);
       results.append(el('p', 'gcsp-note', count === null ? 'Release unavailable: no verified release result reported' : `${count} cars released`));
     }
