@@ -96,3 +96,27 @@ Scoped validation is `node --test server/test/gcsp-stock-sampler.test.js`, run t
 All cars are tiny inline synthetic objects. No car-level fixture file, dependency installation, live request,
 browser action, canonical seed edit or full suite is needed to exercise this boundary. Live source completeness,
 accepted-plan identity and later central-policy publication remain separate acceptance evidence.
+
+## Live-site adaptations, 8 November 2026
+
+Additive changes for the live BMW UK stock locator; `fixture` and `accepted-f77` behaviour is unchanged.
+
+- **A. `authorised-run` plan kind** (`fixture: false`). `authority: { reference, sha256 }` follows the `f77`
+  path rules and must match the file's exact bytes. The file has `kind: "fucq-live-run-authority"`, `issue`
+  (`FUCQ-<n>`), `approvedBy`, `approvedDate` and `modelLines` equal to the plan's models. Any failure is
+  `plan-invalid`. The report gains `authority` (null for other kinds); `f77` is null for this kind.
+  The run is authorised by Gary Carter's 8 November approval of FUCQ-178, since the FUCQ-77 plan is not accepted.
+- **B. Session cookie.** Only `_new_car_stock_tool_session` with a safe value is kept from `set-cookie`. It is
+  sent on later requests of the same model and cleared before the next model. It never enters reports or errors.
+- **C. HTTP 204** on a `/results/more` request counts as an empty, finished page. A 204 on the first request is
+  `request-failed`.
+- **D. `stopAtRequestCap`** (optional plan flag). A model whose request list ends without `finished` is recorded
+  with `complete: false` instead of failing. Without the flag it is still `sampling-incomplete`. Every model has `complete`.
+- **E. Label normalisation.** `&nbsp;`, `&#160;`, `&#xA0;` and U+00A0 become a space, `&amp;` becomes `&`, and
+  whitespace is collapsed and trimmed before matching. `labelPolicy` is `reviewed` (default allowlist) or
+  `safe-pattern`, where arrays may be empty and any label passing `safeSourceLabel` (1 to 80 characters, letters,
+  digits, space and `' - / ( ) & .`, starting with a letter, no word over 24 characters, no run of 4 digits) is
+  counted. Other labels go to `unknownCounts` and the new per-model `unsafeLabelCounts`.
+- **F. Pacing.** `minIntervalMs` (0 to 5000, default 0) is waited between consecutive requests, not before the first.
+- **G. Byte cap** raised to 96 MiB (about 185 KB a page). Page cap 1 MiB, 400 requests, concurrency 1 and no
+  retries are unchanged; 401, 403 and 429 still stop at once without reading a body.
