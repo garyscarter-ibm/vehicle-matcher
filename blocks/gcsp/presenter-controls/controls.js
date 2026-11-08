@@ -257,6 +257,16 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     target.input.removeEventListener('input', onChange); root.remove(); } };
 }
 
+// Presenter commands announce success on the DOM; consumers get a bare, idempotent subscription.
+export function subscribePresenterActions(target) {
+  return (listener) => {
+    const handler = () => listener();
+    target.addEventListener('gcsp:presenter-action', handler);
+    let active = true;
+    return () => { if (active) { active = false; target.removeEventListener('gcsp:presenter-action', handler); } };
+  };
+}
+
 export class GcspPresenterControlsElement extends HTMLElement {
   set adapter(value) { this._adapter = value; if (this.isConnected) this.connectedCallback(); }
   get adapter() { return this._adapter; }

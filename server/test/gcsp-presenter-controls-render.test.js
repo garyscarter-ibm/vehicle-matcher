@@ -283,6 +283,20 @@ test('workspace chooses only actual context role and real adapter, never a query
     await done.ready; assert.equal(calls[0][0], role); if (role === 'employee') assert.equal(calls[0][1], account); done();
   }
 });
+test('employee workspace subscribes the journey clock to presenter actions once and releases it on unsubscribe and destroy', async () => {
+  const host = document.createElement('div'); document.body.append(host); const child = document.createElement('button');
+  let options; let fired = 0; let live;
+  const done = workspace(host, { adapter: { readContext: async () => ok({ roles: ['employee'], principalId: 'e' }) },
+    mountEmployee: (_root, opts) => { options = opts; live = opts.subscribeClock(() => { fired++; }); return () => live(); } });
+  await done.ready; host.append(child); assert.equal(typeof options.subscribeClock, 'function');
+  const tick = () => child.dispatchEvent(new window.CustomEvent('gcsp:presenter-action', { bubbles: true, detail: { kind: 'tick', principalId: 'x' } }));
+  tick(); assert.equal(fired, 1);
+  live(); live(); tick(); assert.equal(fired, 1);
+  const args = []; const extra = options.subscribeClock((...rest) => args.push(rest)); tick(); assert.deepEqual(args, [[]]);
+  extra(); extra(); tick(); assert.equal(args.length, 1);
+  live = options.subscribeClock(() => { fired++; }); tick(); assert.equal(fired, 2);
+  done(); tick(); assert.equal(fired, 2);
+});
 function gregFixture(extra = {}) {
   const host = document.createElement('div'); document.body.append(host);
   const counts = { dashboard: 0, tracking: 0, destroyed: 0 }; let region; let controlsHost;
@@ -314,6 +328,17 @@ test('presenter-action event from inside the workspace refreshes dashboard and o
 test('order changes refresh the dashboard demand figures', async () => {
   let changed; const f = gregFixture({ mountOrders: (_root, options) => { changed = options.onChanged; assert.equal(options.productionControls, true); return () => {}; } });
   await f.done.ready; changed(); assert.equal(f.counts.dashboard, 1); f.done();
+});
+test('the order plan and order tracking refresh each other, and the plan arrives through the Greg adapter', async () => {
+  let ctx; let changed; const counts = { plan: 0, orders: 0 };
+  const f = gregFixture({ gregAdapter: { orderPlan: { marker: 1 } },
+    mountGreg: (_host, options) => { ctx = options; const t = () => {}; t.refresh = () => {}; t.orderPlan = { refresh: () => { counts.plan++; } }; t.regions = { orderTracking: document.createElement('section') }; return t; },
+    mountOrders: (_root, options) => { changed = options.onChanged; const t = () => {}; t.refresh = () => { counts.orders++; }; return t; } });
+  await f.done.ready; assert.deepEqual(ctx.orderPlan, { marker: 1 });
+  ctx.onOrderPlanSubmitted(); assert.deepEqual(counts, { plan: 0, orders: 1 });
+  changed(); assert.equal(counts.plan, 1);
+  f.host.dispatchEvent(new window.CustomEvent('gcsp:presenter-action', { bubbles: true, detail: { kind: 'tick' } })); assert.deepEqual(counts, { plan: 2, orders: 2 });
+  f.done();
 });
 test('a successful clock action announces gcsp:presenter-action; reset and failures do not', async () => {
   const seen = []; let fail = false;

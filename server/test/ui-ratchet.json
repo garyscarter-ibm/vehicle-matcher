@@ -180,6 +180,10 @@
       "max_lines": 13
     },
     {
+      "path": "blocks/gcsp/greg/plan/plan.css",
+      "max_lines": 32
+    },
+    {
       "path": "blocks/gcsp/presenter-controls/presenter-controls.css",
       "max_lines": 11
     },

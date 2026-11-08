@@ -30,8 +30,9 @@ async function httpFixture(t) {
 test('Greg reads the plan, previews without writing, keeps a draft and submits the previewed plan', async (t) => {
   const f = await httpFixture(t);
   const before = await f.state();
-  const plan = f.okJson(await f.call('', f.greg)).plan;
+  const read = f.okJson(await f.call('', f.greg)); const plan = read.plan;
   assert.equal(quantity(plan, TOURING), 1);
+  assert.equal(read.presentation.forecastBasis, 'expressed-saved-demand'); assert.ok(read.presentation.derivatives.some((d) => d.derivativeId === TOURING && d.model && d.derivative));
   const changes = [{ key: DERIVATIVES, value: cap(await f.active(DERIVATIVES), TOURING, { min: 2 }) }];
   const preview = f.okJson(await f.call('/preview', f.greg, { changes }));
   assert.deepEqual([preview.mode, preview.preview, preview.writes], ['preview', true, 'none']);

@@ -8,6 +8,7 @@ import { createGregHttpAdapter } from '../greg/http-adapter.js';
 import { mountGregOrders } from '../greg-orders/greg-orders.js';
 import { createGregOrdersHttpAdapter } from '../greg-orders/http-adapter.js';
 import { createPresenterHttpAdapter } from './http-adapter.js';
+import { subscribePresenterActions } from './controls.js';
 
 // Context is read again after cookie issuance; neither query parameters nor fixtures select a person.
 export function mountPresenterWorkspace(host, { adapter = createPresenterHttpAdapter(), accountAdapter = createAccountHttpAdapter(),
@@ -21,9 +22,11 @@ export function mountPresenterWorkspace(host, { adapter = createPresenterHttpAda
     if (disposed) return;
     const context = reply.status === 'ok' ? reply.value : null;
     if (context?.roles?.includes('employee')) teardown = mountEmployee(host, { adapter: accountAdapter,
+      subscribeClock: subscribePresenterActions(host),
       onSupport: () => globalThis.location.assign(new URL('../../../gcsp-help.html', import.meta.url).href) });
     else if (context?.roles?.includes('greg')) {
-      const dashboard = mountGreg(host, { ...gregAdapter, signal: abort.signal });
+      let orders;
+      const dashboard = mountGreg(host, { ...gregAdapter, signal: abort.signal, onOrderPlanSubmitted: () => orders?.refresh?.() });
       const region = dashboard.regions?.caseQueue;
       let queue;
       if (region) {
@@ -31,16 +34,15 @@ export function mountPresenterWorkspace(host, { adapter = createPresenterHttpAda
         region.replaceChildren(); queue = mountCaseQueue(region, { embedded: true, signal: abort.signal });
       }
       const ordersRegion = dashboard.regions?.orderTracking;
-      let orders;
       if (ordersRegion) {
         // Full-width host, as attachGregOrders does; the dashed placeholder style is for empty regions.
         ordersRegion.classList.remove('gcsp-greg-region'); ordersRegion.classList.add('gcsp-orders-host');
         ordersRegion.replaceChildren();
         orders = mountOrders(ordersRegion, { adapter: ordersAdapter, productionControls: true, signal: abort.signal,
-          onChanged: () => dashboard.refresh?.() });
+          onChanged: () => { dashboard.refresh?.(); dashboard.orderPlan?.refresh?.(); } });
       }
       // Presenter clock actions change supply, so both figures reload without a manual Refresh.
-      const onAction = () => { dashboard.refresh?.(); orders?.refresh?.(); };
+      const onAction = () => { dashboard.refresh?.(); orders?.refresh?.(); dashboard.orderPlan?.refresh?.(); };
       host.addEventListener('gcsp:presenter-action', onAction);
       teardown = () => { host.removeEventListener('gcsp:presenter-action', onAction); orders?.(); queue?.(); dashboard(); };
     }

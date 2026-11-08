@@ -27,8 +27,9 @@ const MODELS = {
     body: 'estate', fuel: 'ev', boot: 490, zeroTo62: 6.1, sizeClass: 3, insuranceGroup: 35, tags: ['electric'] },
 };
 // Generated-stock lines with no demo car (FUCQ-77 mappings): line specs from MODEL_SPECS, insurance group and tags synthetic.
-const f70 = { body: 'hatchback', fuel: 'petrol', boot: 380, zeroTo62: 8.4, sizeClass: 1 };
-const g42 = { body: 'coupe', fuel: 'petrol', boot: 390, zeroTo62: 6.5, sizeClass: 1, seats: 4, tags: ['sporty'] };
+// 0-62 varies by derivative (M135, M240i), so it stays unknown until FUCQ-77 supplies per-derivative facts.
+const f70 = { body: 'hatchback', fuel: 'petrol', boot: 380, sizeClass: 1 };
+const g42 = { body: 'coupe', fuel: 'petrol', boot: 390, sizeClass: 1, seats: 4, tags: ['sporty'] };
 const BROWSE_LINES = [
   { ...f70, key: 'F70 Sports Hatch|120', insuranceGroup: 22, tags: ['city'] },
   { ...f70, key: 'F70 Sports Hatch|M135', insuranceGroup: 36, tags: ['sporty'] },
@@ -51,7 +52,8 @@ function orderUuid(runId, index) {
 
 function browseFacts(model) {
   return { body: { value: model.body, unit: null }, fuel: { value: model.fuel, unit: null }, seats: { value: model.seats ?? 5, unit: 'count' },
-    boot: { value: model.boot, unit: 'L' }, sizeClass: { value: model.sizeClass, unit: 'ordinal-1-5' }, zeroTo62: { value: model.zeroTo62, unit: 's' },
+    boot: { value: model.boot, unit: 'L' }, sizeClass: { value: model.sizeClass, unit: 'ordinal-1-5' },
+    ...(typeof model.zeroTo62 === 'number' ? { zeroTo62: { value: model.zeroTo62, unit: 's' } } : {}),
     insuranceGroup: { value: model.insuranceGroup, unit: 'insurance-group' }, tags: { value: model.tags, unit: null },
     ...(model.mpg ? { mpg: { value: model.mpg, unit: 'mpg-imperial' } } : {}) };
 }

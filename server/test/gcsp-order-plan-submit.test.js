@@ -21,6 +21,13 @@ test('a preview writes nothing, says it is a preview and shows the effect of tig
   assert.deepEqual([quantity(preview.activePlan, TOURING), quantity(preview.plan, TOURING)], [1, 0]);
   assert.equal(preview.plan.versions.policy, preview.draftPolicyVersion); assert.notEqual(preview.plan.planId, preview.activePlan.planId);
   assert.deepEqual(await f.state(), before); assert.equal(f.fake.requestCount, 0);
+  // FUCQ-121: names and editor keys for the panel come from the catalogue and the policy, on reads and previews alike.
+  const names = (p) => p.derivatives.map((d) => `${d.derivativeId}|${d.model} ${d.derivative}`);
+  assert.deepEqual(preview.presentation, good(await f.ops.readPlan(f.context)).presentation);
+  assert.deepEqual([preview.presentation.forecastBasis, preview.presentation.currency, preview.presentation.editableKeys],
+    ['expressed-saved-demand', 'GBP', await f.active('orderPlan.gregEditableKeys')]);
+  assert.ok(names(preview.presentation).includes(`${TOURING}|3 Series Touring 320i`));
+  assert.deepEqual(preview.presentation.models.find((m) => m.modelId === 'g21-touring'), { modelId: 'g21-touring', model: '3 Series Touring' });
   // The live plan is untouched by the preview.
   assert.equal(quantity(good(await f.ops.readPlan(f.context)).plan, TOURING), 1);
   assert.deepEqual(await f.state(), before);
@@ -266,8 +273,12 @@ test('preview, stale and replanned responses match the shapes recorded for the p
   await f.advance(); await f.fake.confirm(f.context, sent.requests[0].request.requestId, 1);
   const replanned = await f.ops.readPlan(f.context);
   assert.deepEqual([preview.status, stale.code, replanned.value.replan.status], ['ok', 'replan-needed', 'replanned']);
-  const live = { note: 'Recorded by server/test/gcsp-order-plan-submit.test.js (GCSP_UPDATE_FIXTURES=1 rewrites it). Compare keys, not values.', preview, stale, replanned };
+  // An infeasible preview (a model minimum the budget cannot pay for) has its own plan shape, with conflicts and no quantities.
+  const infeasible = await f.ops.previewPlan(f.context, { changes: [{ key: 'orderPlan.budgetMinor', value: 5000000 },
+    { key: 'orderPlan.modelBounds', value: (await f.active('orderPlan.modelBounds')).map((b) => (b.modelId === 'g61-i5' ? { ...b, min: 1 } : b)) }] });
+  assert.deepEqual([infeasible.status, infeasible.value.plan.status], ['ok', 'infeasible']);
+  const live = { note: 'Recorded by server/test/gcsp-order-plan-submit.test.js (GCSP_UPDATE_FIXTURES=1 rewrites it). Compare keys, not values.', preview, stale, replanned, infeasible };
   if (process.env.GCSP_UPDATE_FIXTURES === '1') await writeFile(FIXTURE, `${JSON.stringify(live, null, 2)}\n`);
   const saved = JSON.parse(await readFile(FIXTURE, 'utf8'));
-  for (const name of ['preview', 'stale', 'replanned']) sameShape(live[name], saved[name], name);
+  for (const name of ['preview', 'stale', 'replanned', 'infeasible']) sameShape(live[name], saved[name], name);
 });

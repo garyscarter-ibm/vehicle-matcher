@@ -1,0 +1,60 @@
+{
+  "story": "FUCQ-122",
+  "preparedAt": "2026-11-06T18:21:41.398666+00:00",
+  "state": "PINNED; WAIT for explicit F103 browser-lane release; no allocations",
+  "selectionBasis": "Root pass1819 selected the exact decac4c candidate and 375x812 resolved -> closed continuation. Execution remains conditional on explicit lane release.",
+  "sourceProposalCommit": "decac4cd1cd3bb46f4d69cef3a991864878be438",
+  "candidate": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/scenario-resolved-closed-proposed.mjs",
+    "sha256": "32825b37f6dd3ed69d4b79856cbd662a9bceb49cc938b2e6379ae223a5d1027d"
+  },
+  "binding": {
+    "browser-runner.mjs": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/resolved-closed-selected-1819/browser-runner.mjs",
+      "sha256": "36ee4f152878e74b39976f2ca595a68f3f420f1c9b68494e7f4197a306ca84fc"
+    },
+    "browser-supervisor.py": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/resolved-closed-selected-1819/browser-supervisor.py",
+      "sha256": "b8a8d71f3c37abea0fce8bfc3c943821235011c406e9125f7126b7e923c7157b"
+    },
+    "source-plan.json": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/resolved-closed-selected-1819/source-plan.json",
+      "sha256": "d7a532714144af66cda6490a9f66173bc7a224fed25ea383afa6fb8bfe0e0bd5"
+    }
+  },
+  "sourcePinCount": 698,
+  "all695OriginalPinsRetainedAndUnchanged": true,
+  "originalCatalogueSha256": "0b6c8c636764ec21fee54fcb630b2567e5fa25f36b750f724386ebd21a6b433f",
+  "changes": "Separate runner changes only its scenario import. Separate copy of existing F122 wrapper changes only receipt scope text; the inherited F103 supervisor, strict HostBudget, manifest, monitoring and finalizer bytes are unchanged. Catalogue retains all 695 original pins and adds this candidate, runner and wrapper.",
+  "selectedCommandAfterExplicitRelease": "FUCQ122_BROWSER_LANE_GRANTED=explicit-root-release /usr/bin/python3 -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq122/current-browser-1718/resolved-closed-selected-1819/browser-supervisor.py journey-narrow375",
+  "selectedMode": "journey-narrow375",
+  "viewport": {
+    "width": 375,
+    "height": 812
+  },
+  "captures": [
+    "01-greg-resolved-review.png",
+    "02-paula-resolved-reload-history.png",
+    "03-greg-closed-review.png",
+    "04-paula-closed-reload-history.png"
+  ],
+  "expectedPosts": {
+    "help": 1,
+    "updateIncludingInitialManualSetup": 3
+  },
+  "limits": {
+    "seconds": 120,
+    "maxRecursiveRssMiB": 2560,
+    "minAdmittedRssMiB": 2048,
+    "combinedScratchOutputMiB": 128,
+    "logMiB": 2,
+    "workers": 1,
+    "chromeInstances": 1
+  },
+  "executionContract": "One run after explicit release and fresh strict all-raw registry/HostBudget admission. Existing owned manifest/finalizer before scratch; TMPDIR/profile/ports/groups/token and union PID ledger; stop/join/removal and independent-root-readable cleanup receipt. Preserve all actual errors and raw incomplete outcome; no clean-log rerun.",
+  "preservation": "Original scenario/runner/wrapper/catalogue/receipts immutable. Product source and original ACs unchanged. Waiting setup, repairs, new claims/agents, full/native suites and installs remain unselected.",
+  "runtimeSyntaxOrTestsExecuted": false,
+  "scratchReservationServicesOrBrowserAllocated": false,
+  "laneReleaseReceived": false,
+  "publicationAfterRun": "Inspect each actual capture against experience-quality/screens/COMPONENTS and current Greg/employee references; record reached assertions, raw result/errors and cleanup; commit/push only named outcome/evidence paths without another coordinator approval."
+}
