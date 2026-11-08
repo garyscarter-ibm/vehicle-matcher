@@ -73,6 +73,8 @@ test('grouped setup preserves native controls and focus through edits and displa
   input(f, 'driverId', `nominated:${f.context.employeeId}`);
   assert.match(f.root.textContent, /spouse/); assert.match(f.root.textContent, /FICTIONAL-NOMINEE/);
   assert.ok(control(f, 'contractOptionId').querySelector('[value="twelve-month-12000"]').disabled);
+  const reasons = f.root.querySelector('.gcsp-setup-reasons').textContent; // FUCQ-197: a choice is named, not its id
+  assert.match(reasons, /12 months, 12000 mi\/year: /); assert.equal(reasons.includes('twelve-month-12000'), false);
   click(f, 'Get help with drivers and licences'); assert.match(f.root.textContent, /Contact driver support.*No request has been sent/);
 });
 test('invalid Continue focuses error summary and links a field without discarding edits', async (t) => {

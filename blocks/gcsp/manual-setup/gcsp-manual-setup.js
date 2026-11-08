@@ -123,7 +123,9 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
     nodes.driverFacts.replaceChildren(facts([['Relationship', driver?.relationship ?? (driver?.kind === 'employee' ? 'Self' : null)],
       ['Licence number', licence?.displayNumber], ['Categories', licence?.categories?.join(', ')], ['Valid from', licence?.validFrom], ['Valid until', licence?.validUntil]]));
     const reasons = [...o.drivers, ...o.contractOptions, ...o.collectionLocations].filter((row) => row.disabled && row.reason);
-    nodes.reasons.replaceChildren(...reasons.map((row) => el('li', '', `${text(row.name ?? row.label ?? row.contractOptionId)}: ${row.reason}`)));
+    // Name each unavailable choice as its select does, never by its raw id (FUCQ-197).
+    const caption = (row) => row.contractOptionId ? `${row.months} months, ${row.annualMileage} ${row.mileageUnit}` : text(row.name ?? row.label);
+    nodes.reasons.replaceChildren(...reasons.map((row) => el('li', '', `${caption(row)}: ${row.reason}`)));
     nodes.reasons.hidden = !reasons.length;
     const errors = Object.entries(state.errors).map(([key, message]) => ({
       id: controls[key === 'contact' ? 'phone' : key]?.id ?? nodes.notice.id, message })); summary.update(errors);

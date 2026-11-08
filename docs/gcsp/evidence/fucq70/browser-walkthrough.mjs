@@ -1,10 +1,11 @@
-// Browser walkthrough of the manual journey, one viewport per run (WALK_CHUNK=desktop|narrow), story by WALK_STORY=fucq70|fucq72.
+// Browser walkthrough of the manual journey, one viewport per run (WALK_CHUNK=desktop|narrow), story by WALK_STORY=fucq70|fucq72|fucq73.
 // Spawns `node index.js` in server/ offline (GCSP_OFFLINE=1, memory repository). FUCQ70_* names still work as fallbacks for WALK_*.
 import { spawn, spawnSync } from 'node:child_process';
+import { createServer } from 'node:http';
 import { once } from 'node:events';
 import { randomBytes } from 'node:crypto';
-import { mkdir, writeFile, rm, readdir } from 'node:fs/promises';
-import { join, resolve } from 'node:path';
+import { mkdir, writeFile, rm, readdir, readFile } from 'node:fs/promises';
+import { extname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from '/Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright-core/index.mjs';
 
@@ -12,16 +13,16 @@ const HERE = fileURLToPath(new URL('.', import.meta.url));
 const SERVER_DIR = resolve(HERE, '../../../../server');
 const env = (name) => process.env[`WALK_${name}`] ?? process.env[`FUCQ70_${name}`];
 const story = process.env.WALK_STORY || 'fucq70';
-if (!['fucq70', 'fucq72'].includes(story)) throw new Error('Set WALK_STORY=fucq70|fucq72');
+if (!['fucq70', 'fucq72', 'fucq73'].includes(story)) throw new Error('Set WALK_STORY=fucq70|fucq72|fucq73');
 const chunk = env('CHUNK');
 if (!['desktop', 'narrow'].includes(chunk)) throw new Error('Set WALK_CHUNK=desktop|narrow');
 const scratch = resolve(env('SCRATCH') || process.env.TMPDIR || '');
 if (!scratch || scratch === '/') throw new Error('Set WALK_SCRATCH (or TMPDIR) to an owned scratch directory');
 const viewport = chunk === 'narrow' ? { width: 320, height: 720 } : { width: 1280, height: 900 };
 const vp = String(viewport.width);
-const port = Number(env('PORT')) || (chunk === 'narrow' ? 8933 : 8932);
+const port = Number(env('PORT')) || (story === 'fucq73' ? (chunk === 'narrow' ? 8937 : 8936) : chunk === 'narrow' ? 8933 : 8932);
 if (port < 8930 || port > 8949) throw new Error('WALK_PORT must be within 8930-8949');
-const outDir = story === 'fucq70' ? HERE : resolve(HERE, '..', story);
+const outDir = story === 'fucq70' ? HERE : story === 'fucq73' ? resolve(HERE, '..', 'fucq-6', story) : resolve(HERE, '..', story);
 const only = env('ONLY') ? `-${env('ONLY')}` : ''; // a partial run never overwrites the full run's files
 const shotDir = join(outDir, `browser${only}`);
 const resultsFile = join(outDir, `results-${chunk}${only}.json`);
@@ -29,10 +30,10 @@ const profile = join(scratch, `chrome-${chunk}`);
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const ACCESS_KEY = `walk-${randomBytes(9).toString('hex')}`;
 const report = { ...(story === 'fucq70' ? {} : { story }), chunk, entry: 'hosted-offline', viewport, state: 'incomplete', startedAt: new Date().toISOString(), steps: [], keyboard: [],
-  consoleErrors: [], pageErrors: [], failedRequests: [], badResponses: [], notes: [] };
-let shots = 0; let reviewedOrder = null; const orderPosts = []; let context; let page; let app; let child; let halted = null; let origin;
+  consoleErrors: [], pageErrors: [], failedRequests: [], badResponses: [], notes: [], ...(story === 'fucq73' ? { screens: [], rawIdFailures: [], defects: [], motion: [], focus: [], contrast: [] } : {}) };
+let lastStock = null; let shots = 0; let reviewedOrder = null; const orderPosts = []; let context; let page; let app; let child; let halted = null; let origin;
 const wait = (ms) => new Promise((done) => setTimeout(done, ms));
-const save = () => { if (story === 'fucq72') report.orderPosts = orderPosts; if (env('TRACE')) report.trace = trace; return writeFile(resultsFile, `${JSON.stringify(report, null, 2)}\n`); };
+const save = () => { if (story !== 'fucq70') report.orderPosts = orderPosts; if (env('TRACE')) report.trace = trace; return writeFile(resultsFile, `${JSON.stringify(report, null, 2)}\n`); };
 const killChrome = () => { try { spawnSync('/usr/bin/pkill', ['-f', `user-data-dir=${profile}`]); } catch { /* already gone */ } };
 const killServer = () => { try { if (child && child.exitCode === null) child.kill('SIGKILL'); } catch { /* already gone */ } };
 process.on('SIGALRM', () => { killChrome(); killServer(); report.state = 'timeout'; process.exit(124); });
@@ -50,7 +51,17 @@ async function shot(name, full = true) {
   shots += 1;
   const file = `${vp}-${String(shots).padStart(2, '0')}-${name}.png`;
   await page.screenshot({ path: join(shotDir, file), fullPage: full });
+  if (story === 'fucq73') await rawIdCheck(file);
   return `browser/${file}`;
+}
+// FUCQ-73: every captured screen's visible text and aria/title/alt values are checked for raw internal ids.
+const RAW73 = ['slot-paula', 'choices-fs-uk', 'current:employee', 'demo-collection-centre', 'insurance-group', 'demo-bmw'];
+async function rawIdCheck(file) {
+  const t = await page.evaluate(() => [document.body.innerText, ...[...document.querySelectorAll('[aria-label],[title],img[alt]')].map((n) => n.getAttribute('aria-label') || n.getAttribute('title') || n.getAttribute('alt'))].join('\n')).catch(() => '');
+  const ids = RAW73.filter((id) => t.includes(id)); const kebab = [...new Set((t.match(/\b(?:[a-z0-9]+-){2,}[a-z0-9]+\b/g) ?? []).filter((x) => !/^\d/.test(x)))].slice(0, 8);
+  report.screens.push({ screen: file, h1: clip(await page.locator('h1').first().innerText().catch(() => ''), 60), rawIds: ids, ...(kebab.length ? { kebabCaseText: kebab } : {}) });
+  if (ids.length) report.rawIdFailures.push({ screen: file, ids });
+  if (kebab.includes('twelve-month-12000')) defect({ id: 'rawIdCheck', screenshots: [`browser/${file}`] }, 'D3', 'Medium', 'blocks/gcsp/manual-setup/gcsp-manual-setup.js:126 (reason list falls back to contractOptionId)', 'Setup lists "twelve-month-12000: Not available for this driver and scheme." Expected the contract option name (for example "12 months, 12000 mi/year") instead of the raw option id, as the dropdown already shows.');
 }
 const overflow = () => page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth).catch(() => null);
 
@@ -66,6 +77,7 @@ async function step(id, name, run, { critical = false } = {}) {
     row.pass = out.pass !== false && row.overflowPx === 0; row.state = clip(out.state, 600);
     if (out.detail !== undefined) row.detail = out.detail;
     if (out.shot !== false) row.screenshots.push(await shot(out.shotName || id, out.full !== false));
+    if (story === 'fucq73') { const bad = report.rawIdFailures.filter((f) => row.screenshots.some((s) => s.endsWith(f.screen))); if (bad.length) { row.pass = false; row.rawIds = bad; } }
   } catch (error) {
     row.error = clip(error.message, 300); row.overflowPx = await overflow();
     try { row.screenshots.push(await shot(`${id}-failed`, false)); } catch { /* page gone */ }
@@ -74,7 +86,7 @@ async function step(id, name, run, { critical = false } = {}) {
   await save();
 }
 
-const isFocused = (locator) => locator.evaluate((el) => el === document.activeElement).catch(() => false);
+const isFocused = (locator) => locator.evaluate((el) => el === document.activeElement, undefined, { timeout: 2000 }).catch(() => false);
 async function tabTo(locator, { max = 120 } = {}) {
   await locator.first().waitFor({ state: 'attached', timeout: 30000 });
   for (let count = 0; count <= max; count += 1) {
@@ -109,7 +121,7 @@ const stripText = () => strip().evaluate((el) => el.innerText).catch(() => '');
 const clockOf = (text) => /DemoClock \(UTC\)\s+(\S+)/.exec(text)?.[1] ?? null;
 async function openStrip() {
   const root = strip(); await root.waitFor({ state: 'attached', timeout: 60000 });
-  if (!(await root.evaluate((el) => el.open))) await root.locator('summary').click();
+  if (!(await root.evaluate((el) => el.open))) await root.locator('summary').first().click();
   await until(async () => clockOf(await stripText()), { what: 'presenter clock readout' });
 }
 // Presses a presenter button and waits for the clock to move (or the action to finish when it does not).
@@ -173,7 +185,7 @@ async function enterAccessKey(row) {
   kb('access', 'Typing the demo key and Enter opens the demo', typed);
   return typed;
 }
-async function fillSetup(driverLabel = 'You: Paula (fictional)') {
+async function fillSetup(driverLabel = 'You: Paula (fictional)', { keyboard = false } = {}) {
   await page.getByRole('heading', { name: 'Your order choices', exact: true }).waitFor({ timeout: 60000 });
   const pick = async (name) => {
     const select = page.locator(`select[name="${name}"]`);
@@ -196,7 +208,7 @@ async function fillSetup(driverLabel = 'You: Paula (fictional)') {
   await fillIfEmpty('input[name="phone"]', '07700900123');
   await fillIfEmpty('input[name="email"]', 'paula.test@example.test');
   await fillIfEmpty('input[name="expectedReturnMileage"]', '24000');
-  await page.getByRole('button', { name: 'Save choices' }).click();
+  if (keyboard) { await tabTo(page.getByRole('button', { name: 'Save choices' })); await page.keyboard.press('Enter'); } else await page.getByRole('button', { name: 'Save choices' }).click();
   await page.getByText('Your choices are saved.').first().waitFor({ timeout: 60000 });
   return chosen;
 }
@@ -475,6 +487,457 @@ async function walk72() {
   report.orderPosts = orderPosts;
 }
 
+// ---- FUCQ-73: full manual journey (replacement and new order), states, keyboard, contrast, motion, print ----
+const kbPress = async (locator) => { await tabTo(locator); await page.keyboard.press('Enter'); };
+const enabledButton = (name) => page.locator('button:not([disabled])').filter({ hasText: name });
+const EMPTY_TITLES = /No cars have been released yet|No cars are available|No released cars are visible to you yet/;
+async function waitGalleryReady() {
+  await page.getByRole('heading', { name: 'Released cars', exact: true }).waitFor({ timeout: 60000 });
+  await until(async () => (await enabledButton('Review this car').count()) > 0 || EMPTY_TITLES.test(await bodyText()), { what: 'gallery cards or empty state' });
+}
+const galleryFacts = async () => ({ cards: await page.getByRole('button', { name: 'Review this car' }).count(), enabled: await enabledButton('Review this car').count(), status: clip(await text(page.locator('.vm-status')), 240) });
+async function keyboardSubmitToOutcome(row, tag) {
+  await toSummary();
+  row.screenshots.push(await shot(`${tag}-summary-unticked`));
+  const total = await boxes().count();
+  for (let i = 0; i < total; i += 1) { await tabTo(boxes().nth(i)); await page.keyboard.press('Space'); }
+  const ticked = await checkedCount(); const enabled = await until(async () => submitButton().isEnabled(), { timeout: 5000, what: 'Submit enabled' }).catch(() => false);
+  row.screenshots.push(await shot(`${tag}-summary-ticked`));
+  const posts0 = orderPosts.length;
+  await kbPress(submitButton()); await waitOutcome();
+  const o = await outcomeFacts(); reviewedOrder = o.orderNumber;
+  return { total, ticked, enabled, posts: orderPosts.length - posts0, o };
+}
+async function printOutcome(row, tag) {
+  await page.emulateMedia({ media: 'print' });
+  try {
+    const gone = await page.evaluate(() => { const vis = (el) => el.getClientRects().length > 0 && getComputedStyle(el.closest('.gcsp-print-hidden') ?? el).display !== 'none';
+      return { buttonsVisible: [...document.querySelectorAll('.gcsp-summary-outcome button')].filter(vis).length, presenterVisible: [...document.querySelectorAll('.gcsp-presenter-controls')].filter(vis).length }; });
+    row.screenshots.push(await shot(`${tag}-outcome-print`));
+    return gone;
+  } finally { await page.emulateMedia({ media: 'screen' }); }
+}
+const defect = (row, id, severity, fileGuess, text) => { const d = { id, severity, fileGuess, observedVsExpected: text, step: row.id, screenshot: row.screenshots.at(-1) ?? 'taken after the step' }; if (!report.defects.some((x) => x.id === id)) report.defects.push(d); };
+const closeStrip = () => page.evaluate(() => { const d = document.querySelector('.gcsp-presenter-controls'); if (d) d.open = false; }).catch(() => {});
+async function finishToAccount() {
+  await kbPress(page.getByRole('button', { name: 'Finish', exact: true }));
+  await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 60000 });
+  await wait(1200);
+}
+
+async function walkReplacement() {
+  await step('rep-account', 'Demo key opens the account for Paula (Tab+Enter, keyboard only)', async () => {
+    const typed = await enterAccessKey();
+    await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 90000 });
+    await wait(800);
+    const hasReplace = await page.getByRole('button', { name: 'Choose a replacement' }).count();
+    return { pass: typed && hasReplace > 0, state: await bodyText(), shotName: 'rep-account' };
+  }, { critical: true });
+  await step('rep-setup', 'Choose a replacement (Tab+Enter); setup saved with the nominated driver Casey', async () => {
+    await kbPress(page.getByRole('button', { name: 'Choose a replacement' }));
+    const chosen = await fillSetup('Nominated: Casey (fictional)', { keyboard: true });
+    return { pass: /Casey/.test(chosen.driver), state: `${await heading()} | ${JSON.stringify(chosen)}`, detail: chosen, shotName: 'rep-setup-saved' };
+  }, { critical: true });
+  await step('rep-empty-gallery', 'Continue before any release: empty gallery states the next action', async (row) => {
+    await until(async () => page.getByRole('button', { name: 'Continue', exact: true }).isEnabled(), { what: 'Continue enabled after availability refresh' });
+    await kbPress(page.getByRole('button', { name: 'Continue', exact: true }));
+    await until(async () => EMPTY_TITLES.test(await bodyText()) || (await page.getByRole('button', { name: 'Review this car' }).count()) > 0, { what: 'empty gallery state' });
+    const g = await galleryFacts(); row.detail = g;
+    return { pass: EMPTY_TITLES.test(g.status) && g.cards === 0, state: `status "${g.status}"; cards ${g.cards}`, shotName: 'rep-gallery-empty' };
+  }, { critical: true });
+  await step('rep-release-gallery', 'Presenter Next release; Refresh availability (keyboard) shows released cars', async (row) => {
+    const { after } = await presenterPress('Next release'); await closeStrip();
+    const refresh = page.getByRole('button', { name: 'Refresh availability' });
+    if (await refresh.count()) await kbPress(refresh);
+    await until(async () => (await enabledButton('Review this car').count()) > 0, { what: 'released cards', timeout: 15000 }).catch(() => {});
+    const g = await galleryFacts(); row.detail = { ...g, stockStatus: lastStock?.status };
+    if (!g.enabled) defect(row, 'D1', 'Medium', 'blocks/gcsp/manual-gallery/gallery-controller.js (stock 400 mapping)', `After Next release the saved collection date left the window: GET stock answered ${lastStock?.status} invalid-manual-draft, and the gallery said "${g.status}". Expected a message that the collection date needs changing with a way to fix it; Refresh availability can never succeed.`);
+    return { pass: g.enabled > 0, state: `${g.cards} cards, ${g.enabled} enabled; stock ${lastStock?.status}; status "${g.status}"; ${clip(after, 100)}`, shotName: 'rep-gallery-after-release' };
+  });
+  await step('rep-date-recovery', 'Back to your choices, pick a date in the new window, Save, Continue: released cars', async (row) => {
+    if (!(await enabledButton('Review this car').count())) {
+      await kbPress(page.getByRole('button', { name: 'Back to your choices' }));
+      await page.getByRole('heading', { name: 'Your order choices', exact: true }).waitFor({ timeout: 60000 });
+      const date = page.locator('input[name="requestedCollectionDate"]');
+      await until(async () => (await date.getAttribute('min')) && !(await date.isDisabled()), { what: 'refreshed collection window' });
+      const w = { min: await date.getAttribute('min'), max: await date.getAttribute('max'), was: await date.inputValue() }; row.detail = w;
+      await date.fill(w.min);
+      await kbPress(page.getByRole('button', { name: 'Save choices' }));
+      await until(async () => /Your choices are saved/.test(await bodyText()), { what: 'choices re-saved' });
+      await until(async () => page.getByRole('button', { name: 'Continue', exact: true }).isEnabled(), { what: 'Continue enabled' });
+      await kbPress(page.getByRole('button', { name: 'Continue', exact: true }));
+    }
+    await until(async () => (await enabledButton('Review this car').count()) > 0, { what: 'released cards', timeout: 30000 });
+    const g = await galleryFacts(); row.detail = { ...row.detail, ...g };
+    return { pass: g.enabled > 0, state: `${g.cards} cards, ${g.enabled} enabled`, shotName: 'rep-gallery-released' };
+  }, { critical: true });
+  await step('rep-review', 'Review this car (Tab+Enter) opens the review with an active countdown', async (row) => {
+    await kbPress(enabledButton('Review this car'));
+    await page.getByRole('heading', { name: 'Review your car', exact: true }).waitFor({ timeout: 60000 });
+    await until(async () => /remaining/.test(await countdownOf()), { what: 'active countdown' });
+    const f = await reviewFacts(); row.detail = f;
+    return { pass: Boolean(f.vehicleName) && Boolean(f.phone), state: `${f.vehicleName} | ${f.countdown} | image caption ${f.hasRepresentativeCaption} placeholder ${f.noImagePlaceholder}`, shotName: 'rep-review' };
+  }, { critical: true });
+  await step('rep-final-review', 'Continue to order review, tick declarations (Space), Submit (Enter): outcome', async (row) => {
+    const r = await keyboardSubmitToOutcome(row, 'rep');
+    row.detail = { total: r.total, ticked: r.ticked, submitEnabled: r.enabled, posts: r.posts, outcome: { heading: r.o.heading, orderNumber: r.o.orderNumber, status: r.o.status, stages: r.o.stages, rawIds: r.o.rawIds } };
+    return { pass: r.total > 0 && r.ticked === r.total && r.enabled === true && r.posts === 1 && /^\d{7}$/.test(r.o.orderNumber ?? '') && !r.o.forbiddenWording.length, state: `${r.o.heading} | order ${r.o.orderNumber} | status ${r.o.status}; POSTs ${r.posts}`, shotName: 'rep-outcome' };
+  }, { critical: true });
+  await step('rep-print', 'Print media: outcome keeps the order, hides buttons and presenter controls', async (row) => {
+    const g = await printOutcome(row, 'rep'); row.detail = g;
+    return { pass: g.buttonsVisible === 0 && g.presenterVisible === 0, state: JSON.stringify(g), shot: false };
+  });
+  await step('rep-finish', 'Finish (Tab+Enter) returns to the account, which shows the order', async (row) => {
+    await finishToAccount(); const t0 = Date.now();
+    await until(async () => (await bodyText()).includes(reviewedOrder ?? '#none'), { timeout: 30000, what: 'order number on the account' }).catch(() => {});
+    const t = await bodyText(); const shown = reviewedOrder ? t.includes(reviewedOrder) : false;
+    const stale = /Replacement journey saved|New order journey saved/.test(t) && /This is not an order confirmation/.test(t);
+    row.detail = { orderShown: shown, shownAfterMs: Date.now() - t0, staleSavedJourneyCard: stale, text: clip(t, 700) };
+    if (stale) defect(row, 'D2', 'Low', 'blocks/gcsp/account/gcsp-account.js (saved journey card)', 'After the order was received the account still showed the "Replacement journey saved ... This is not an order confirmation. Your saved context has changed ... start the permitted journey again" card beside "Your order is in progress". Expected the saved-journey card to be cleared or reworded once the order exists.');
+    return { pass: shown, state: `order ${reviewedOrder} shown ${shown}; ${clip(t, 300)}`, shotName: 'rep-account-after-order' };
+  });
+}
+
+// Switches the acting principal with the presenter strip, then reloads so the account shows that person's actions.
+async function switchTo(principalId) {
+  await openStrip();
+  await page.locator(`.gcsp-presenter-controls [data-value="${principalId}"]`).first().click();
+  await page.getByRole('button', { name: 'Switch principal' }).click();
+  await wait(4000); await page.waitForLoadState('load').catch(() => {}); // the switch navigates to the new principal's account
+  await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 90000 });
+  await until(async () => (await page.getByRole('button', { name: /Refresh account/ }).count()) > 0, { what: 'account buttons' }); await wait(1500);
+  return { buttons: await page.getByRole('button').evaluateAll((b) => b.map((x) => x.textContent.trim()).filter(Boolean)), who: clip(await text(page.locator('.gcsp-shell-account, header').first()), 80) };
+}
+async function walkNewOrder() {
+  await freshHost();
+  let chosen = null; const tried = [{ principal: 'Paula', note: 'replacement journey (rep segment): Choose a replacement, no Start a new order' }];
+  await step('new-principal', 'Find a fictional principal whose account offers Start a new order (Alex, Sam tried after Paula)', async (row) => {
+    await enterAccessKey(); await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 90000 });
+    for (const [id, label] of [['demo-alex', 'Alex'], ['demo-sam', 'Sam']]) {
+      const r = await switchTo(id); const has = r.buttons.some((b) => /Start a new order/.test(b));
+      const nav = await page.getByRole('button', { name: /New order/ }).first().evaluate((n) => ({ disabled: n.disabled, ariaDisabled: n.getAttribute('aria-disabled'), text: n.innerText.trim(), title: n.title })).catch(() => null);
+      tried.push({ principal: label, actions: r.buttons.filter((b) => /Choose a replacement|Start a new order|Contact support/.test(b)), startNewOrder: has, sidebarNewOrder: nav, notice: clip((await bodyText()).match(/Ordering is not supported[^.]*\.|Replacement is unavailable[^.]*\./)?.[0], 120) });
+      if (has && !chosen) { chosen = { id, label }; break; }
+    }
+    row.detail = { tried, chosen };
+    if (!chosen) report.notes.push(`New-order journey not run: no fictional principal in the default scenario offers Start a new order. Tried ${JSON.stringify(tried.map((t) => [t.principal, t.actions ?? t.note]))}. Sam: Ordering is not supported for this scheme.`);
+    return { pass: true, state: chosen ? `chosen ${chosen.label}` : `none offers Start a new order: ${JSON.stringify(tried)}`, shotName: 'new-account-sam' };
+  }, { critical: true });
+}
+
+// ---- FUCQ-73 states: loading, outage, images, long data, motion, focus, contrast, pending, expired ----
+const STOCK_ROUTE = /\/api\/gcsp\/manual\/stock(\?.*)?$/;
+const CLAIM_READ_ROUTE = /\/api\/gcsp\/manual\/(claim|review-details)(\?.*)?$/;
+const IMAGE_ROUTE = (url) => /\.(png|jpe?g|webp|avif)(\?.*)?$/i.test(url.pathname) || /\/images\//.test(url.pathname);
+const continueButton = () => page.getByRole('button', { name: 'Continue', exact: true });
+// Walks the saved journey back to a screen: reload, Resume saved journey, Continue on setup, Review this car on the gallery.
+async function landOn(target, { reload = true } = {}) {
+  if (reload) await page.reload({ waitUntil: 'load' });
+  for (let i = 0; i < 8; i += 1) {
+    const h = (await heading()).trim(); if (env('LOG')) console.error(`  landOn ${target}: h="${h}"`);
+    if (h === target) return;
+    if (h === 'Your cars') { const b = page.getByRole('button', { name: /Resume saved journey|Choose a replacement/ }); await until(async () => (await b.count()) > 0, { what: 'journey button', timeout: 20000 }); await kbPress(b.first()).catch(() => {}); }
+    else if (h === 'Your order choices') { await until(async () => (await heading()).trim() !== 'Your order choices' || continueButton().isEnabled().catch(() => false), { what: 'Continue enabled or auto-advance' }); if ((await heading()).trim() === 'Your order choices') await kbPress(continueButton()); }
+    else if (h === 'Released cars' && target === 'Review your car' && (await enabledButton('Review this car').count()) > 0) await kbPress(enabledButton('Review this car')); // an active claim moves on to its review by itself
+    await wait(1500);
+  }
+  throw new Error(`Did not reach ${target}`);
+}
+// Longest computed transition or animation time (seconds) among rendered elements.
+const motionMax = () => page.evaluate(() => {
+  const secs = (v) => v.split(',').map((x) => { const n = parseFloat(x); return /ms$/.test(x.trim()) ? n / 1000 : n; });
+  let max = 0; let who = null;
+  for (const n of document.querySelectorAll('body *')) {
+    if (!n.getClientRects().length) continue;
+    const c = getComputedStyle(n);
+    const animated = c.animationName !== 'none' ? secs(c.animationDuration) : [0];
+    const t = Math.max(...secs(c.transitionDuration), ...animated);
+    if (t > max) { max = t; who = `${n.tagName.toLowerCase()}.${String(n.className).slice(0, 40)}`; }
+  }
+  return { maxSeconds: max, element: who };
+});
+async function motionCheck(stage) {
+  const normal = await motionMax();
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  try { const reduced = await motionMax(); const row = { stage, normal, reduced, pass: reduced.maxSeconds <= 0.01 }; report.motion.push(row); return row; }
+  finally { await page.emulateMedia({ reducedMotion: 'no-preference' }); }
+}
+// WCAG contrast of every visible text element and the primary button; the lowest few are recorded.
+const contrastIn = () => page.evaluate(() => {
+  const ctx = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
+  const rgba = (css) => { ctx.clearRect(0, 0, 1, 1); ctx.fillStyle = '#000'; ctx.fillStyle = css; ctx.fillRect(0, 0, 1, 1); const d = ctx.getImageData(0, 0, 1, 1).data; return [d[0], d[1], d[2], d[3] / 255]; };
+  const lum = ([r, g, b]) => { const f = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4; }; return 0.2126 * f(r) + 0.7152 * f(g) + 0.0722 * f(b); };
+  const bgOf = (el) => { const layers = []; for (let n = el; n; n = n.parentElement) { const c = rgba(getComputedStyle(n).backgroundColor); if (c[3] > 0) { layers.push(c); if (c[3] >= 1) break; } } let base = [255, 255, 255]; for (const c of layers.reverse()) base = base.map((v, i) => c[i] * c[3] + v * (1 - c[3])); return base; };
+  const ratio = (el) => { const bg = bgOf(el); const fg = rgba(getComputedStyle(el).color); const f = fg.slice(0, 3).map((v, i) => v * fg[3] + bg[i] * (1 - fg[3])); const [a, b] = [lum(f), lum(bg)]; return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05); };
+  const rows = [];
+  for (const el of document.querySelectorAll('body *')) {
+    if (!el.getClientRects().length || ![...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) continue;
+    if (el.closest('[disabled],[aria-disabled="true"]') || el.disabled) continue;
+    const c = getComputedStyle(el); if (c.visibility === 'hidden' || c.opacity === '0') continue;
+    const size = parseFloat(c.fontSize); const large = size >= 24 || size >= 18.66 && Number(c.fontWeight) >= 700;
+    rows.push({ el: `${el.tagName.toLowerCase()}.${String(el.className).slice(0, 30)}`, text: el.textContent.trim().slice(0, 30), ratio: Math.round(ratio(el) * 100) / 100, large });
+  }
+  const primary = document.querySelector('.gcsp-review-body .vm-btn-primary:not([disabled])') ?? document.querySelector('.gcsp-summary-body .vm-btn-primary:not([disabled])') ?? document.querySelector('.vm-btn-primary:not([disabled])'); const ghost = document.querySelector('.vm-btn-ghost:not([disabled])');
+  const bodyRatio = Math.round(ratio(document.querySelector('.gcsp-review-body, .gcsp-summary-body, main') ?? document.body) * 100) / 100;
+  rows.sort((a, b) => a.ratio - b.ratio);
+  const failing = rows.filter((r) => r.ratio < (r.large ? 3 : 4.5));
+  return { bodyText: bodyRatio, primaryButton: primary ? { text: primary.textContent.trim(), ratio: Math.round(ratio(primary) * 100) / 100 } : null,
+    ghostButton: ghost ? { text: ghost.textContent.trim(), ratio: Math.round(ratio(ghost) * 100) / 100 } : null, checked: rows.length, lowest: rows.slice(0, 4), belowThreshold: failing.slice(0, 6), failingCount: failing.length };
+});
+// Tabs through every control once; each stop must show an outline or box-shadow.
+async function focusWalk(stage, { max = 70 } = {}) {
+  await page.evaluate(() => { document.activeElement?.blur?.(); window.scrollTo(0, 0); });
+  const stops = []; let first = null;
+  for (let i = 0; i < max; i += 1) {
+    await page.keyboard.press('Tab');
+    const info = await page.evaluate(() => { const a = document.activeElement; if (!a || a === document.body) return null; const c = getComputedStyle(a);
+      return { id: `${a.tagName.toLowerCase()}${a.id ? `#${a.id}` : ''}`, name: (a.getAttribute('aria-label') || a.textContent || a.value || a.name || '').trim().replace(/\s+/g, ' ').slice(0, 40),
+        outline: `${c.outlineStyle} ${c.outlineWidth} ${c.outlineColor}`, outlineVisible: c.outlineStyle !== 'none' && parseFloat(c.outlineWidth) > 0, boxShadow: c.boxShadow === 'none' ? null : c.boxShadow.slice(0, 60) }; });
+    if (!info) break;
+    const key = `${info.id}|${info.name}`; if (first === key) break; if (!first) first = key;
+    stops.push({ ...info, visibleIndicator: info.outlineVisible || Boolean(info.boxShadow) });
+  }
+  const missing = stops.filter((x) => !x.visibleIndicator);
+  const row = { stage, stops: stops.length, missingIndicator: missing.map((m) => `${m.id} "${m.name}"`), sample: stops.slice(0, 3).map((x) => `${x.id} "${x.name}" ${x.outline}`), pass: stops.length > 0 && !missing.length };
+  report.focus.push(row); return row;
+}
+const imageHits = []; const imageRoute = async (route) => { imageHits.push(bare(route.request().url()).replace(/^https?:\/\/[^/]+/, '')); await route.fulfill({ status: 404, body: '' }); };
+const IMAGE_GLOB = (url) => IMAGE_ROUTE(url);
+// Offline stock carries no photo, so responses are patched to point every car at a missing /images/ file that the 404 route then refuses.
+const PHOTO = '/images/gcsp-missing-car.jpg';
+const withPhotos = (node) => { if (Array.isArray(node)) node.forEach(withPhotos); else if (node && typeof node === 'object') { if (node.display && typeof node.display === 'object' && typeof node.display.name === 'string') { node.display.photo = PHOTO; node.display.images = [{ src: PHOTO, alt: node.display.name, caption: 'Representative image. See image provenance in vehicle details.' }]; patched.count += 1; } Object.values(node).forEach(withPhotos); } return node; };
+const patched = { count: 0 };
+const photoRoute = async (route) => { if (route.request().method() !== 'GET') return route.continue(); const r = await route.fetch(); const json = await r.json().catch(() => null); if (!json) return route.fulfill({ response: r }); return route.fulfill({ response: r, json: withPhotos(json) }); };
+async function layoutFacts(selector) {
+  return page.evaluate((sel) => { const root = document.querySelector(sel) ?? document.body; const wide = [...root.querySelectorAll('*')].filter((n) => n.scrollWidth > n.clientWidth + 1 && getComputedStyle(n).overflowX === 'visible').slice(0, 4).map((n) => `${n.tagName.toLowerCase()}.${String(n.className).slice(0, 40)}`);
+    return { docOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth, wideElements: wide, images: root.querySelectorAll('img').length, brokenImages: [...root.querySelectorAll('img')].filter((i) => i.complete && i.naturalWidth === 0).length,
+      fallbackText: [...root.querySelectorAll('*')].filter((n) => /No image for this car yet|Image unavailable|could not be loaded/i.test(n.textContent) && n.children.length === 0).length }; }, selector);
+}
+
+async function walkStates() {
+  await freshHost();
+  await reachGallery({ tag: 'st-' });
+  await closeStrip();
+  // Loading and outage: the saved journey is reopened with the stock read delayed, then refused.
+  await step('st-gallery-loading', 'GET stock delayed 3 s: gallery shows a loading status, then the cars', async (row) => {
+    await page.route(STOCK_ROUTE, async (route) => { if (route.request().method() !== 'GET') return route.continue(); await wait(3000); return route.continue(); });
+    try {
+      await page.reload({ waitUntil: 'load' });
+      await until(async () => (await heading()).trim() === 'Your cars', { what: 'account' });
+      const b = page.getByRole('button', { name: /Resume saved journey/ }); await until(async () => (await b.count()) > 0, { what: 'resume button' }); await kbPress(b.first());
+      let seenLoading = false;
+      const clicker = (async () => { for (let i = 0; i < 80 && !seenLoading; i += 1) { if ((await heading()).trim() === 'Your order choices' && await continueButton().isEnabled().catch(() => false)) { await continueButton().click().catch(() => {}); return; } await wait(300); } })();
+      await page.getByText('Loading released cars').first().waitFor({ state: 'visible', timeout: 40000 }); seenLoading = true; await clicker;
+      row.screenshots.push(await shot('st-gallery-loading')); const shotName = true;
+      row.detail = { loadingText: clip(await text(page.locator('.vm-status')), 160), heading: (await heading()).trim() };
+      await until(async () => (await enabledButton('Review this car').count()) > 0, { what: 'cards after delay', timeout: 60000 });
+      return { pass: Boolean(shotName), state: `loading text seen ${Boolean(shotName)}; ${clip(row.detail?.loadingText, 100)}; cards loaded after the delay`, shot: false };
+    } finally { await page.unroute(STOCK_ROUTE).catch(() => {}); }
+  }, { critical: true });
+
+  await step('st-setup-outage', 'GET stock answers 503 on the way to the gallery: outage state with a recovery button; unroute and recover', async (row) => {
+    await page.reload({ waitUntil: 'load' });
+    await until(async () => (await heading()).trim() === 'Your cars', { what: 'account' });
+    const b = page.getByRole('button', { name: /Resume saved journey/ }); await until(async () => (await b.count()) > 0, { what: 'resume button' }); await kbPress(b.first());
+    await until(async () => (await heading()).trim() === 'Your order choices' || /Released cars/.test(await heading()), { what: 'setup or gallery' });
+    if ((await heading()).trim() === 'Your order choices') await until(async () => continueButton().isEnabled(), { what: 'Continue enabled' });
+    let routed = 0;
+    await page.route(STOCK_ROUTE, (route) => { if (route.request().method() !== 'GET') return route.continue(); routed += 1; return route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ status: 'unavailable', retryable: true }) }); });
+    try {
+      let where = 'gallery';
+      if ((await heading()).trim() === 'Your order choices') {
+        await kbPress(continueButton()); await wait(3000);
+        where = /Availability cannot be checked right now/.test(await bodyText()) ? 'gallery' : 'setup';
+      } else { const r = page.getByRole('button', { name: 'Refresh availability' }); if (await r.count()) await kbPress(r); await wait(2000); }
+      const body = await bodyText();
+      const outage = { where, heading: (await heading()).trim(), galleryStatus: clip(await text(page.locator('.vm-status')), 200), setupNotice: clip((body.match(/Availability could not be refreshed[^]*?Retry availability/) ?? [''])[0], 200), routed,
+        recoveryButtons: await page.getByRole('button', { name: /Refresh availability|Retry availability/ }).allInnerTexts() };
+      row.screenshots.push(await shot(`st-outage-${where}`));
+      await page.unroute(STOCK_ROUTE);
+      await kbPress(page.getByRole('button', { name: /Refresh availability|Retry availability/ }));
+      await until(async () => (await heading()).trim() === 'Released cars' || (await enabledButton('Review this car').count()) > 0 || continueButton().isEnabled().catch(() => false), { timeout: 30000, what: 'recovery' });
+      if ((await heading()).trim() === 'Your order choices') { await until(async () => continueButton().isEnabled(), { what: 'Continue enabled' }); await kbPress(continueButton()); }
+      await until(async () => (await enabledButton('Review this car').count()) > 0, { timeout: 30000, what: 'recovered cards' });
+      row.detail = { outage, recoveredCards: await enabledButton('Review this car').count() };
+      return { pass: outage.recoveryButtons.length >= 1 && (/Retry/.test(outage.galleryStatus) || Boolean(outage.setupNotice)), state: `${where}: "${outage.galleryStatus || outage.setupNotice}"; recovery buttons ${outage.recoveryButtons.join(' | ')}; recovered ${row.detail.recoveredCards} cards`, shot: false };
+    } finally { await page.unroute(STOCK_ROUTE).catch(() => {}); }
+  });
+
+  await step('st-gallery-outage', 'GET stock answers 503 on the gallery (presenter tick re-reads): outage status with Refresh availability; recovers', async (row) => {
+    await until(async () => (await enabledButton('Review this car').count()) > 0, { what: 'gallery cards' });
+    await page.route(STOCK_ROUTE, (route) => { if (route.request().method() !== 'GET') return route.continue(); return route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ status: 'unavailable', retryable: true }) }); });
+    try {
+      await tick(); await closeStrip();
+      await until(async () => /Availability cannot be checked right now/.test(await bodyText()), { timeout: 30000, what: 'gallery outage' });
+      const status = clip(await text(page.locator('.vm-status')), 200); const buttons = await page.getByRole('button', { name: 'Refresh availability' }).count();
+      row.screenshots.push(await shot('st-gallery-outage'));
+      await page.unroute(STOCK_ROUTE);
+      await kbPress(page.getByRole('button', { name: 'Refresh availability' }));
+      await until(async () => (await enabledButton('Review this car').count()) > 0, { timeout: 30000, what: 'recovered cards' });
+      row.detail = { status, refreshButtons: buttons, recoveredCards: await enabledButton('Review this car').count() };
+      return { pass: buttons === 1 && /Retry/.test(status), state: `"${status}"; Refresh availability buttons ${buttons}; recovered ${row.detail.recoveredCards} cards`, shot: false };
+    } finally { await page.unroute(STOCK_ROUTE).catch(() => {}); }
+  });
+
+  await step('st-gallery-images', 'Every image request 404s on the gallery: fallback text, layout intact, no overflow', async (row) => {
+    imageHits.length = 0; patched.count = 0; await page.route(IMAGE_GLOB, imageRoute); await page.route(STOCK_ROUTE, photoRoute);
+    try {
+      await landOn('Released cars'); await until(async () => (await enabledButton('Review this car').count()) > 0, { what: 'cards' });
+      // Lazy images load (and fail) as they scroll in, so sweep the page until no card still holds a photo.
+      for (let pass = 0; pass < 3 && (await page.locator('.vm-card-media.has-photo').count()); pass += 1) {
+        const height = await page.evaluate(() => document.documentElement.scrollHeight);
+        for (let y = 0; y < height; y += 400) { await page.evaluate((v) => window.scrollTo(0, v), y); await wait(150); }
+        await wait(1500);
+      }
+      await page.evaluate(() => window.scrollTo(0, 0)); await wait(800);
+      const l = await layoutFacts('main, body'); const wells = await page.evaluate(() => ({ cards: document.querySelectorAll('.vm-card-media').length, withPhotoClass: document.querySelectorAll('.vm-card-media.has-photo').length, photoImgs: document.querySelectorAll('img.vm-card-photo').length }));
+      row.detail = { ...l, ...wells, stockResponsesPatched: patched.count, imageRequestsRouted404: imageHits.length, sampleRequests: imageHits.slice(0, 2), placeholders: await page.getByText('No image for this car yet').count() };
+      return { pass: l.docOverflow === 0 && imageHits.length > 0 && wells.withPhotoClass === 0 && wells.photoImgs === 0, state: `photo URLs injected ${patched.count}; image requests 404ed ${imageHits.length}; cards ${wells.cards}, still showing a photo ${wells.withPhotoClass}; fallback texts ${row.detail.placeholders}; overflow ${l.docOverflow}`, shotName: 'st-gallery-images-404' };
+    } finally { await page.unroute(IMAGE_GLOB).catch(() => {}); await page.unroute(STOCK_ROUTE).catch(() => {}); }
+  });
+
+  await step('st-gallery-motion', 'Gallery under prefers-reduced-motion', async (row) => {
+    const m = await motionCheck('gallery'); row.detail = m; return { pass: m.pass, state: JSON.stringify(m), shot: false };
+  });
+
+}
+
+async function walkStatesB() {
+  await freshHost();
+  await reachGallery({ tag: 'stb-' });
+  await closeStrip();
+  await step('st-review-loading', 'GET claim/review-details delayed 3 s: review shows a loading state, then the car', async (row) => {
+    let delayed = 0; const matcher = CLAIM_READ_ROUTE;
+    await page.route(matcher, async (route) => { if (route.request().method() !== 'GET') return route.continue(); delayed += 1; await wait(3000); return route.continue(); });
+    try {
+      await kbPress(enabledButton('Review this car'));
+      const seen = []; let shotTaken = false;
+      for (let i = 0; i < 24 && !shotTaken; i += 1) { const t = await bodyText(); seen.push(clip(await heading(), 40)); if (/Review your car/.test(await heading()) || /Reserving|Checking|Loading/i.test(t) && delayed > 0) { row.screenshots.push(await shot('st-review-loading')); shotTaken = true; row.detail = { heading: await heading(), status: clip(await text(page.locator('.gcsp-review-body, .vm-status, [role=status]').first()), 200), countdown: await countdownOf() }; } await wait(200); }
+      await page.getByRole('heading', { name: 'Review your car', exact: true }).waitFor({ timeout: 60000 });
+      if (!/remaining/.test(await countdownOf())) row.screenshots.push(await shot('st-review-loading-review-page'));
+      await until(async () => /remaining/.test(await countdownOf()), { timeout: 60000, what: 'active countdown after delay' });
+      row.detail = { ...row.detail, delayedReads: delayed, headingsSeen: [...new Set(seen)] };
+      return { pass: shotTaken && delayed > 0, state: `delayed claim reads ${delayed}; loading state ${JSON.stringify(row.detail)}`, shot: false };
+    } finally { await page.unroute(matcher).catch(() => {}); }
+  }, { critical: true });
+
+  await step('st-review-images', 'Every image request 404s on the review: fallback text, layout intact', async (row) => {
+    imageHits.length = 0; patched.count = 0; await page.route(IMAGE_GLOB, imageRoute); await page.route(CLAIM_READ_ROUTE, photoRoute);
+    try {
+      await landOn('Review your car'); await until(async () => /remaining/.test(await countdownOf()), { what: 'active countdown' }); await wait(1500);
+      const l = await layoutFacts('.gcsp-review-body'); const f = await reviewFacts();
+      const wells = await page.evaluate(() => ({ withPhotoClass: document.querySelectorAll('.vm-card-media.has-photo').length, photoImgs: document.querySelectorAll('img.vm-card-photo').length }));
+      row.detail = { ...l, ...wells, responsesPatched: patched.count, imageRequestsRouted404: imageHits.length, noImagePlaceholder: f.noImagePlaceholder, caption: f.hasRepresentativeCaption };
+      return { pass: l.docOverflow === 0 && wells.withPhotoClass === 0 && wells.photoImgs === 0 && f.noImagePlaceholder, state: `photo URLs injected ${patched.count}; image requests 404ed ${imageHits.length}; still showing a photo ${wells.withPhotoClass}; placeholder ${f.noImagePlaceholder}; overflow ${l.docOverflow}`, shotName: 'st-review-images-404' };
+    } finally { await page.unroute(IMAGE_GLOB).catch(() => {}); await page.unroute(CLAIM_READ_ROUTE).catch(() => {}); }
+  }, { critical: true });
+
+  await step('st-review-a11y', 'Review: reduced motion, Tab focus indicators, contrast', async (row) => {
+    const m = await motionCheck('review'); const f = await focusWalk('review'); const c = await contrastIn(); report.contrast.push({ stage: 'review', ...c });
+    row.detail = { motion: m, focus: f, contrast: c };
+    return { pass: m.pass && f.pass && c.bodyText >= 4.5 && (c.primaryButton?.ratio ?? 0) >= 4.5 && !c.failingCount, state: `motion max ${m.reduced.maxSeconds}s reduced; focus stops ${f.stops}, missing ${f.missingIndicator.length}; body ${c.bodyText}; primary ${c.primaryButton?.ratio}; below threshold ${c.failingCount}`, shot: false };
+  });
+
+  await step('st-review-long-data', '500 characters of unbroken words in Special requirements: no overflow on review and final review', async (row) => {
+    const area = page.locator('textarea[name="specialRequirements"]'); const word = 'Unbroken'.repeat(12);
+    await area.click(); await area.fill(''); await area.fill(Array(6).fill(word).join(' ').slice(0, 500));
+    await page.keyboard.press('Tab'); const len = await area.evaluate((e) => e.value.length);
+    const onReview = await layoutFacts('.gcsp-review-body'); row.screenshots.push(await shot('st-review-long-data'));
+    await toSummary(); await wait(500);
+    const onSummary = await layoutFacts('.gcsp-summary-body');
+    row.detail = { length: len, onReview, onSummary, shownOnSummary: (await sectionText('Contact and requirements')).includes(word.slice(0, 40)) };
+    return { pass: len === 500 && onReview.docOverflow === 0 && onSummary.docOverflow === 0 && !onSummary.wideElements.length && !onReview.wideElements.length, state: `typed ${len}; review overflow ${onReview.docOverflow}, wide ${onReview.wideElements.join(',') || 'none'}; final review overflow ${onSummary.docOverflow}, wide ${onSummary.wideElements.join(',') || 'none'}`, shotName: 'st-final-review-long-data' };
+  }, { critical: true });
+
+  await step('st-summary-a11y', 'Final review: reduced motion, Tab focus indicators, contrast', async (row) => {
+    const m = await motionCheck('final review'); const f = await focusWalk('final review'); const c = await contrastIn(); report.contrast.push({ stage: 'final review', ...c });
+    row.detail = { motion: m, focus: f, contrast: c };
+    return { pass: m.pass && f.pass && c.bodyText >= 4.5 && (c.primaryButton?.ratio ?? 0) >= 4.5 && !c.failingCount, state: `motion max ${m.reduced.maxSeconds}s reduced; focus stops ${f.stops}, missing ${f.missingIndicator.length}; body ${c.bodyText}; primary ${c.primaryButton?.ratio}; below threshold ${c.failingCount}`, shot: false };
+  });
+
+  await step('st-pending', 'Lost response: one POST, could-not-confirm notice, Check order status recovers the order', async (row) => {
+    await tickAll(); const posts0 = orderPosts.length; let reached = null;
+    await page.route(ORDER_ROUTE, async (route) => {
+      if (route.request().method() !== 'POST') return route.continue();
+      try { const r = await route.fetch(); reached = { status: r.status(), body: clip(await r.text(), 120) }; } catch (e) { reached = { error: clip(e.message, 100) }; }
+      return route.abort('failed');
+    });
+    try {
+      await kbPress(submitButton());
+      await until(async () => /could not confirm whether your order was placed/.test(await summaryText()), { timeout: 30000, what: 'could-not-confirm notice' });
+      const notice = clip(await text(page.locator('.gcsp-summary-body .gcsp-note').first()), 240); const statusButton = await page.getByRole('button', { name: 'Check order status' }).count();
+      row.screenshots.push(await shot('st-pending-could-not-confirm'));
+      await page.unroute(ORDER_ROUTE);
+      await kbPress(page.getByRole('button', { name: 'Check order status' })); await waitOutcome();
+      const o = await outcomeFacts(); const posts = orderPosts.length - posts0; reviewedOrder = o.orderNumber;
+      row.detail = { postsFromPage: posts, serverReceived: reached, notice, outcome: { heading: o.heading, orderNumber: o.orderNumber, status: o.status } };
+      return { pass: posts === 1 && Boolean(reached?.status) && statusButton > 0 && /^\d{7}$/.test(o.orderNumber ?? ''), state: `POSTs ${posts}; server answered ${JSON.stringify(reached)}; notice "${notice}"; outcome "${o.heading}" ${o.orderNumber}`, shotName: 'st-pending-outcome' };
+    } finally { await page.unroute(ORDER_ROUTE).catch(() => {}); }
+  });
+}
+
+async function walkExpired() {
+  await freshHost();
+  await reachGallery({ tag: 'exp-' }); await closeStrip();
+  await step('exp-review-loaded', 'Expiry run: review loaded', async () => { await reviewFirstCar(); return { state: `${await heading()} | ${await countdownOf()}`, shot: false }; }, { critical: true });
+  await step('exp-expired', 'Presenter ticks expire the hold at the final review: expiry message, Submit disabled, Refresh stock', async (row) => {
+    await toSummary(); await tickAll();
+    let ticks = 0; const expiredShown = async () => /Your reservation has expired|This deadline has passed/.test(await bodyText());
+    while (ticks < 60 && !(await expiredShown())) { await tick(); ticks += 1; await until(expiredShown, { timeout: 6000, what: 'expiry' }).catch(() => {}); }
+    await until(expiredShown, { timeout: 30000, what: 'expired message' });
+    await until(async () => page.getByRole('button', { name: 'Refresh stock' }).count(), { timeout: 12000, what: 'Refresh stock' }).catch(() => {});
+    if (!(await page.getByRole('button', { name: 'Refresh stock' }).count())) { await tick(); await until(async () => page.getByRole('button', { name: 'Refresh stock' }).count(), { timeout: 8000, what: 'Refresh stock' }).catch(() => {}); }
+    await closeStrip();
+    const f = { ticks, submitPresent: await submitButton().count(), submitDisabled: (await submitButton().count()) ? await submitButton().isDisabled() : null, refreshStock: await page.getByRole('button', { name: 'Refresh stock' }).count(),
+      notice: clip(await text(page.locator('.gcsp-summary-body .gcsp-note').first()), 240), hint: clip(await text(page.locator('.gcsp-summary-body .gcsp-field-hint').last()), 120) };
+    row.detail = f;
+    return { pass: (!f.submitPresent || f.submitDisabled) && f.refreshStock >= 1, state: `ticks ${ticks}; notice "${f.notice}"; hint "${f.hint}"; Submit present ${Boolean(f.submitPresent)} disabled ${f.submitDisabled}; Refresh stock ${f.refreshStock}`, shotName: 'exp-expired' };
+  });
+}
+
+// The retail demo pages and the GCSP component gallery are static files: served here by a throwaway server on the chunk's sibling port.
+async function startStatic(staticPort) {
+  const root = resolve(HERE, '../../../..'); const types = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp' };
+  const server = createServer(async (req, res) => {
+    const path = decodeURIComponent(new URL(req.url, 'http://x').pathname); const file = resolve(root, `.${path === '/' ? '/index.html' : path}`);
+    if (!file.startsWith(root) || /\/(\.git|node_modules|server)\//.test(file)) { res.writeHead(404); return res.end(); }
+    try { const data = await readFile(file); res.writeHead(200, { 'Content-Type': types[extname(file)] ?? 'application/octet-stream' }); res.end(data); } catch { res.writeHead(404); res.end(); }
+  });
+  await new Promise((done) => server.listen(staticPort, '127.0.0.1', done));
+  return { origin: `http://127.0.0.1:${staticPort}`, stop: () => new Promise((done) => server.close(done)) };
+}
+async function walkAdjacent() {
+  const paths = ['/', '/block.html?brand=bmw', '/components.html'];
+  await step('adj-hosted-entry', 'Same origin as the GCSP host: which retail and gallery pages it serves', async (row) => {
+    const out = []; for (const path of paths) { const r = await page.request.get(`${origin}${path}`, { failOnStatusCode: false }).catch(() => null); out.push({ path, status: r?.status() ?? null }); }
+    row.detail = out; return { pass: true, state: `${JSON.stringify(out)} (401 or 404: not served by the hosted GCSP entry)`, shot: false };
+  });
+  const staticPort = port === 8936 ? 8937 : 8936; const stat = await startStatic(staticPort);
+  try {
+    await page.route((url) => url.origin !== stat.origin && url.origin !== origin, (route) => route.abort('blockedbyclient')); // no live retail feeds
+    for (const path of paths) {
+      await step(`adj-${path === '/' ? 'home' : path.replace(/[^a-z]+/gi, '-').replace(/^-|-$/g, '')}`, `Static ${path} (retail demo picker, block harness, GCSP component gallery)`, async (row) => {
+        const errs0 = report.consoleErrors.length; const fails0 = report.failedRequests.length;
+        const resp = await page.goto(`${stat.origin}${path}`, { waitUntil: 'load', timeout: 60000 }); await wait(2000);
+        const info = { path, status: resp?.status(), title: await page.title(), h1: clip(await heading(), 80), consoleErrors: report.consoleErrors.slice(errs0).map((e) => clip(`${e.text} @ ${e.url.replace(stat.origin, '')}`, 140)),
+          blockedExternal: report.failedRequests.slice(fails0).filter((f) => /BLOCKED_BY_CLIENT/i.test(f.error ?? '')).length };
+        row.detail = info;
+        return { pass: info.status === 200 && Boolean(info.title), state: JSON.stringify(info), shotName: `adj-static-${path === '/' ? 'home' : path.replace(/[^a-z]+/gi, '-').replace(/^-|-$/g, '')}` };
+      });
+    }
+  } finally { await stat.stop(); }
+}
+
+async function walk73() {
+  const want = (id) => !env('ONLY') || env('ONLY').split(',').includes(id);
+  if (want('rep')) await walkReplacement();
+  if (want('new')) await walkNewOrder();
+  if (want('st')) await walkStates();
+  if (want('stb')) await walkStatesB();
+  if (want('exp')) await walkExpired();
+  if (want('adj')) await walkAdjacent();
+}
+
 async function run() {
   await mkdir(shotDir, { recursive: true }); await mkdir(scratch, { recursive: true });
   await rm(join(scratch, 'gcsp-stock-inventory'), { recursive: true, force: true }); // a killed earlier run can leave a torn inventory file
@@ -487,6 +950,7 @@ async function run() {
     p.on('pageerror', (e) => report.pageErrors.push(clip(e.message, 200)));
     p.on('requestfailed', (r) => report.failedRequests.push({ url: bare(r.url()), error: r.failure()?.errorText, method: r.method() }));
     p.on('response', async (r) => {
+      if (/\/api\/gcsp\/manual\/stock$/.test(bare(r.url()))) lastStock = { status: r.status(), url: bare(r.url()) };
       if (r.status() < 400) return;
       report.badResponses.push({ status: r.status(), url: bare(r.url()), method: r.request().method(), body: clip(await r.text().catch(() => ''), 200) });
     });
@@ -495,6 +959,7 @@ async function run() {
   if (env('TRACE')) context.on('page', traceRequests);
   page = await context.newPage();
   if (story === 'fucq72') { await walk72(); return; }
+  if (story === 'fucq73') { await walk73(); return; }
 
   await reachGallery();
 
