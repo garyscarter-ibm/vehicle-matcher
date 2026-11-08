@@ -135,8 +135,8 @@ export function mountManualSummaryBody(root, { adapter = createManualSummaryHttp
       }
       const stages = terms?.approvalStages?.length ? `After you submit: ${terms.approvalStages.map(stageLabel).join(', ')}.` : '';
       nodes.declarations.replaceChildren(...(terms ? [el('p', 'gcsp-note', terms.wording),
-        el('p', 'gcsp-field-hint', `${terms.fictional ? 'Synthetic demonstration wording, not BMW terms. ' : ''}Terms version: ${terms.termsVersion}.`),
-        group, ...(stages ? [el('p', 'gcsp-field-hint', stages)] : [])] : [el('p', 'gcsp-note', 'The terms could not be loaded.')]));
+        // The terms version is sent with the submission, never shown: it is a code, not copy (FUCQ-197).
+        ...(terms.fictional ? [el('p', 'gcsp-field-hint', 'Synthetic demonstration wording, not BMW terms.')] : []), group, ...(stages ? [el('p', 'gcsp-field-hint', stages)] : [])] : [el('p', 'gcsp-note', 'The terms could not be loaded.')]));
     }
     for (const box of boxes) { box.checked = state.ticks[box.dataset.declaration] === true; box.disabled = state.busy || state.unresolved; }
   }
