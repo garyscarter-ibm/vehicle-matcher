@@ -4,9 +4,11 @@ import { PolicyService } from '../policy/index.js';
 import { loadScenarioCatalogue, prepareScenarioFixture, hasScenarioStartLoader } from '../fixtures/scenarios/index.js';
 import { startDeclineThenChange } from './decline-then-change.js';
 import { startMainSuccessfulJourney } from './main-successful-journey.js';
+import { startNoSuitableMatch } from './no-suitable-match.js';
 import { inputDigest, ok, result } from '../repository/core.js';
 
-const START_BY_SCENARIO = { 'main-successful-journey': startMainSuccessfulJourney, 'decline-then-change': startDeclineThenChange };
+const START_BY_SCENARIO = { 'main-successful-journey': startMainSuccessfulJourney, 'decline-then-change': startDeclineThenChange,
+  'no-suitable-match': startNoSuitableMatch };
 
 const text = (v) => typeof v === 'string' && v.length > 0 && v.length <= 128;
 const invalid = () => result('invalid', { code: 'invalid-scenario-command', reasons: [{ field: 'reset', reason: 'Supply scenario, fixture and policy versions with the current run/version and commandId.' }] });

@@ -23,9 +23,10 @@ export function createRouteClient({ fetch, origin }) {
   return { request, seed: absorb, cookie: () => [...jar].map(([k, v]) => `${k}=${v}`).join('; ') };
 }
 
-export async function resetIntoDecline(client, commandId) {
+/** Resets into a named journey through the presenter routes; later replay stories reuse it. */
+export async function resetIntoScenario(client, scenarioId, commandId) {
   const catalogue = good(await client.request('/api/gcsp/presenter/scenarios'));
-  const entry = catalogue.scenarios.find((row) => row.scenarioId === 'decline-then-change');
+  const entry = catalogue.scenarios.find((row) => row.scenarioId === scenarioId);
   assert.equal(entry.availability.available, true);
   const current = good(await client.request('/api/gcsp/presenter/scenarios/current'));
   const reset = good(await client.request('/api/gcsp/presenter/scenarios/reset', { commandId, expectedRunId: current.runId,
@@ -33,6 +34,7 @@ export async function resetIntoDecline(client, commandId) {
     fixtureVersion: entry.fixtureVersion, policyVersion: entry.policyVersion }));
   return { entry, reset };
 }
+export const resetIntoDecline = (client, commandId) => resetIntoScenario(client, 'decline-then-change', commandId);
 
 // Presenter tick through the presenter controls route (advance then tick, one command).
 export async function presenterTick(client, commandId, mode = { mode: 'step' }) {
