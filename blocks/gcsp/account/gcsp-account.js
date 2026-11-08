@@ -322,6 +322,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
     }
     envelope = accountResult; draft = draftResult; offers = offerResult?.status === 'ok' ? offerResult.value.offers : [];
     const model = toAccountView(envelope);
+    if (isRunRestarted(envelope)) return { status: envelope.status };
     return { status: envelope.status === 'ok' ? 'ready' : 'unavailable', name: model.account?.name ?? 'Account unavailable',
       context: [model.account?.company ?? model.account?.companyId, model.account?.gradeId].filter(Boolean).join(', ') };
   }

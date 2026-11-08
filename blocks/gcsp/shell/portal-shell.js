@@ -2,6 +2,7 @@
 // Built with el() and createElementNS, never innerHTML.
 import { el } from '../../vehicle-matcher/ui.js';
 import { mountPresenterControls } from '../presenter-controls/controls.js';
+import { isRunRestarted } from '../kit/run-restarted.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const DEFAULT_REASON = 'Not available in this demo';
@@ -138,6 +139,8 @@ function accountContent(state, retryButton) {
       nodes: [details],
     };
   }
+  // After a restart there is no account to show, and the page's own Reload is the one action that works.
+  if (isRunRestarted(state)) return { label: null, busy: false, restarted: true, nodes: [] };
   if (status === 'unavailable' || status === 'ready') {
     const message = (status === 'unavailable' && state.message) || 'Your account could not be loaded.';
     const unavailable = el('span', 'gcsp-account-unavailable');
@@ -246,9 +249,10 @@ export function portalShell({
     const retry = el('button', 'gcsp-account-retry', 'Retry');
     retry.type = 'button';
     const view = accountContent(state, retry);
-    accountBox.setAttribute('aria-label', view.label);
+    if (view.label) accountBox.setAttribute('aria-label', view.label); else accountBox.removeAttribute('aria-label');
     accountBox.setAttribute('aria-busy', String(view.busy));
-    accountBox.dataset.status = view.busy ? 'loading' : (view.label.startsWith('Account:') ? 'ready' : 'unavailable');
+    accountBox.dataset.status = view.restarted ? 'restarted'
+      : view.busy ? 'loading' : (view.label.startsWith('Account:') ? 'ready' : 'unavailable');
     accountBox.replaceChildren(...view.nodes);
   }
 
