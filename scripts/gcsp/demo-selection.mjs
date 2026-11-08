@@ -3,7 +3,7 @@
 import { createHash } from 'node:crypto';
 import { mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join, relative, resolve } from 'node:path';
+import { basename, dirname, isAbsolute, join, relative, resolve } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { MATRIX_PATH, validateDemoPlan } from './demo-plan.mjs';
 import { assignRowsToLines, configurationDeepLink, countOtdFacts, lineModels, verifyStagedDemoFleet } from './demo-verifier.mjs';
@@ -12,6 +12,7 @@ import { createSyntheticRegistry } from '../../server/gcsp/vehicle-evidence/synt
 import { createVehicleEvidenceLookup } from '../../server/gcsp/vehicle-evidence/vehicle-lookup.js';
 import { APPROVED_CORPUS_IMAGES } from '../../server/gcsp/vehicle-evidence/registered-corpus-images.js';
 import { createPolicyService } from '../../server/gcsp/policy/index.js';
+import { releaseLimits } from '../../server/gcsp/vehicle-evidence/fleet-release.js';
 
 const REPO_ROOT = fileURLToPath(new URL('../../', import.meta.url));
 export const SOURCE_STORE = 'server/data/gcsp/vehicle-evidence/fleet-source.v1';
@@ -102,20 +103,24 @@ export function privacyScan(files) {
 async function readJson(path) { return JSON.parse(await readFile(path, 'utf8')); }
 
 /** Load and fully validate the active published source store through the existing F54 validator. */
-export async function loadSourceStore({ root = REPO_ROOT, policyService, policyRead } = {}) {
-  const store = resolve(root, SOURCE_STORE); const active = await readJson(join(store, 'active.json'));
+export async function loadSourceStore({ root = REPO_ROOT, store: external, policyService, policyRead } = {}) {
+  const store = external ?? resolve(root, SOURCE_STORE); const active = await readJson(join(store, 'active.json'));
   const digest = active.selected?.manifestDigest;
   if (!/^[a-f0-9]{64}$/.test(digest || '') || active.selected.directory !== digest) throw new Error('The source store has no valid active selection.');
   const directory = join(store, 'versions', digest);
-  const loaded = await validateCorpusDirectory(directory, { policyService, policyRead, approvedImages: APPROVED_CORPUS_IMAGES });
+  // A release-sized external store is validated in bounded indexed mode under the code-owned release limits.
+  const loaded = await validateCorpusDirectory(directory, { policyService, policyRead, approvedImages: APPROVED_CORPUS_IMAGES,
+    ...(external ? { indexed: true, jsonlLimitsForManifest: releaseLimits, sourceArtifactDirectory: dirname(store) } : {}) });
   if (loaded.status !== 'ok') throw new Error(`The source store failed validation (${loaded.failure?.code}).`);
+  // An external store (a restored release) is labelled by its folder name, never by a local absolute path.
   return { directory, manifestDigest: loaded.manifestDigest, manifest: loaded.manifest,
-    records: loaded.corpus.configurations, images: loaded.corpus.images };
+    label: external ? `restored release ${basename(dirname(store))}/${basename(store)} (outside the repository)` : SOURCE_STORE,
+    records: Array.from(loaded.corpus.configurations), images: Array.from(loaded.corpus.images) };
 }
 
 /** Distinct source rows per VG code in the registered source files (not necessarily published locally). */
-export async function registeredSourceCounts(root = REPO_ROOT) {
-  const dir = resolve(root, SOURCES_DIR); const ids = new Map();
+export async function registeredSourceCounts(root = REPO_ROOT, sourcesDir = null) {
+  const dir = sourcesDir ?? resolve(root, SOURCES_DIR); const ids = new Map();
   for (const name of (await readdir(dir)).filter((file) => file.endsWith('.jsonl')).sort()) {
     for (const line of (await readFile(join(dir, name), 'utf8')).split('\n')) {
       if (!line) continue;
@@ -152,7 +157,7 @@ export async function publishDemoStore({ root = REPO_ROOT, source, selection, po
   const work = await mkdtemp(join(scratch, 'demo-selection-'));
   try {
     const { manifest: base } = source;
-    const metadata = { datasetId: 'gcsp-demo-fleet', version: '2026-11-07.1', profileRegistryVersion: base.profileRegistryVersion,
+    const metadata = { datasetId: 'gcsp-demo-fleet', version: '2026-11-08.1', profileRegistryVersion: base.profileRegistryVersion,
       generatorVersion: base.generatorVersion, seed: structuredClone(base.seed), sourceContexts: sourceContexts(chosen, source.records) };
     const candidate = join(work, 'candidate');
     const written = await writeCorpusCandidate(candidate, { configurations, images, metadata, technicalSupplements: supplements },
@@ -229,10 +234,12 @@ export function buildReport({ plan, source, selection, retained, registered, pub
     schemaVersion: 'gcsp-demo-collection-report.v1', story: 'FUCQ-77', epic: 'FUCQ-20', qualificationDate: plan.qualificationDate,
     mode: 'offline-reuse-of-retained-fucq61-records',
     source: { datasetId: source.manifest.datasetId, version: source.manifest.version, manifestDigest: source.manifestDigest,
-      store: SOURCE_STORE, configurations: source.records.length, qualifyingSourceRows: source.manifest.counts.qualifyingCompleteDistinctSourceConfigurations,
+      store: source.label ?? SOURCE_STORE, configurations: source.records.length, qualifyingSourceRows: source.manifest.counts.qualifyingCompleteDistinctSourceConfigurations,
       retainedBasis: { readme: `${FUCQ61_DIR}/README.md`, coverage: `${FUCQ61_DIR}/coverage.json`, stagedManifestSha256: FUCQ61_STAGED_MANIFEST,
-        stagedConfigurations: 10000, availableLocally: false,
-        note: 'The staged .12 corpus is on a release asset and is not restored here; its per-VG counts come from the retained coverage audit.' } },
+        stagedConfigurations: 10000, availableLocally: source.manifestDigest === FUCQ61_STAGED_MANIFEST,
+        note: source.manifestDigest === FUCQ61_STAGED_MANIFEST
+          ? 'The staged .12 corpus was restored from its release asset (digests verified) and read through the F54 validator.'
+          : 'The staged .12 corpus is on a release asset and is not restored here; its per-VG counts come from the retained coverage audit.' } },
     plan: { path: PLAN_PATH, lines: plan.modelLines.length, mapped: mapped.length, excluded: exclusions.length, pending: pending.length },
     publication: { boundary: 'FUCQ-54', store: DEMO_STORE, versionDirectory: `${DEMO_STORE}/versions/${published.manifestDigest}`,
       manifestDigest: published.manifestDigest, datasetId: published.manifest.datasetId, version: published.manifest.version, counts: published.manifest.counts,
@@ -260,18 +267,19 @@ function textPlanUpdate(text, directory) {
   return text.replace('"boundary": "FUCQ-54",', `"boundary": "FUCQ-54",\n    "stagedDirectory": "${directory}",`);
 }
 
-export async function runDemoSelection({ root = REPO_ROOT, write = false, log = () => {} } = {}) {
+export async function runDemoSelection({ root = REPO_ROOT, write = false, log = () => {}, sourceStore, sourcesDir,
+  maximum = MAXIMUM_PER_LINE } = {}) {
   const policyService = createPolicyService();
   const planText = await readFile(resolve(root, PLAN_PATH), 'utf8'); const plan = JSON.parse(planText);
   const matrixText = await readFile(resolve(root, MATRIX_PATH), 'utf8');
   const policyRead = { runId: 'demo-selection', asOf: `${plan.qualificationDate}T12:00:00.000Z` };
   const planReport = validateDemoPlan(plan, { matrixText });
   if (!planReport.mappedReady) throw new Error('The demo plan has no verified mapped lines.');
-  const source = await loadSourceStore({ root, policyService, policyRead });
+  const source = await loadSourceStore({ root, store: sourceStore, policyService, policyRead });
   const keep = new Set([...source.images.map((item) => item.configurationId),
     ...(source.manifest.technicalSupplements || []).map((item) => item.configurationId)]);
-  const selection = selectDemoRows({ plan, records: source.records, keep });
-  const retained = await retainedFucq61Counts(root); const registered = await registeredSourceCounts(root);
+  const selection = selectDemoRows({ plan, records: source.records, keep, maximum });
+  const retained = await retainedFucq61Counts(root); const registered = await registeredSourceCounts(root, sourcesDir);
   log(`selected ${selection.total} rows across ${selection.lines.length} mapped lines`);
   if (!write) return { selection, source, retained, registered };
   const published = await publishDemoStore({ root, source, selection, policyService, policyRead });
@@ -297,11 +305,24 @@ export async function runDemoSelection({ root = REPO_ROOT, write = false, log = 
   return { report, published, staged };
 }
 
+const USAGE = 'Usage: node scripts/gcsp/demo-selection.mjs [--write] [--source-store <absolute dir>] [--sources-dir <absolute dir>] [--max-per-line <n>]\n';
+export function parseSelectionArgs(args) {
+  const options = { write: false }; const names = { '--source-store': 'sourceStore', '--sources-dir': 'sourcesDir', '--max-per-line': 'maximum' };
+  for (let i = 0; i < args.length; i += 1) {
+    if (args[i] === '--write') { options.write = true; continue; }
+    const name = names[args[i]]; const value = args[i + 1]; i += 1;
+    if (!name || value === undefined || options[name] !== undefined) return null;
+    if (name === 'maximum') { const n = Number(value); if (!Number.isSafeInteger(n) || n < MINIMUM_PER_LINE || n > MAXIMUM_PER_LINE) return null; options.maximum = n; }
+    else if (!isAbsolute(value)) return null; else options[name] = resolve(value);
+  }
+  return options;
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
-  const args = process.argv.slice(2);
-  if (args.some((arg) => arg !== '--write')) { process.stderr.write('Usage: node scripts/gcsp/demo-selection.mjs [--write]\n'); process.exitCode = 1; }
+  const options = parseSelectionArgs(process.argv.slice(2));
+  if (!options) { process.stderr.write(USAGE); process.exitCode = 1; }
   else {
-    runDemoSelection({ write: args.includes('--write'), log: (line) => process.stdout.write(`${line}\n`) }).then((result) => {
+    runDemoSelection({ ...options, log: (line) => process.stdout.write(`${line}\n`) }).then((result) => {
       if (result.report) process.stdout.write(`wrote ${REPORT_PATH}; manifest ${result.published.manifestDigest}; verifier ${result.staged.status}\n`);
     }).catch((error) => { process.stderr.write(`${error.message}\n`); process.exitCode = 1; });
   }

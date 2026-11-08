@@ -5701,7 +5701,7 @@
   },
   "publication": {
     "boundary": "FUCQ-54",
-    "stagedDirectory": "server/data/gcsp/vehicle-evidence/demo-fleet.v1/versions/d7b58a54a530d51bdf324c19327e575b29f82eb95f8c6a3dfc778d4a4ea4147d",
+    "stagedDirectory": "server/data/gcsp/vehicle-evidence/demo-fleet.v1/versions/7c9cc707ab44b36f9cb5eb64b54170b25d914d5ee7e31722384c737612c45a9c",
     "files": [
       "manifest.json",
       "configurations.jsonl"
