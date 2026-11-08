@@ -194,7 +194,7 @@ async function listFiles(dir) {
   return out.sort();
 }
 
-function deepLinkSample(selection, plan, records, count) {
+function deepLinkSample(selection, plan, records, count, results = {}) {
   const mappings = new Map(plan.modelLines.filter((line) => line.mapping.status === 'mapped')
     .flatMap((line) => lineModels(line).map((model) => [model.vgModelCode, model.modelRange])));
   const queues = selection.lines.map((line) => [...line.selected].sort((a, b) => sorted(sha(a.id), sha(b.id))));
@@ -202,12 +202,15 @@ function deepLinkSample(selection, plan, records, count) {
   for (let round = 0; sample.length < count && queues.some((queue) => queue[round]); round++) {
     for (const [index, queue] of queues.entries()) {
       const item = queue[round]; if (!item || sample.length >= count) continue;
-      sample.push({ lineId: selection.lines[index].line.id, configurationId: item.id, roundTrip: 'not-run',
+      sample.push({ lineId: selection.lines[index].line.id, configurationId: item.id, roundTrip: results[item.id] ?? 'not-run',
         url: configurationDeepLink(records[item.index], { modelRange: mappings.get(item.audited.vgModelCode) }) });
     }
   }
   return sample;
 }
+
+const roundTripSummary = (counts = { required: 20, passed: 0, failed: 0, notRun: 20 }) => ({ ...counts,
+  status: counts.notRun === counts.required ? 'not-run' : counts.notRun > 0 ? 'partial' : counts.failed > 0 ? 'failed' : 'passed' });
 
 /** Build the report object; pure given its inputs so the CLI and tests share it. */
 export function buildReport({ plan, source, selection, retained, registered, published, lookup, verifier, sample, imageRows }) {
@@ -254,7 +257,7 @@ export function buildReport({ plan, source, selection, retained, registered, pub
       historicalFucq61Receipts: { reference: `${FUCQ61_DIR}/operations.json`, charged: false,
         note: 'Historical FUCQ-61 traffic is referenced, not charged to this story or claimed to fit its budget.' } },
     deepLinks: { template: 'https://configure.bmw.co.uk/en_GB/configure/{modelRange}/{vgModelCode}/{sorted options}', built: published.manifest.counts.configurations,
-      roundTrip: { required: 20, passed: 0, failed: 0, notRun: 20, status: 'not-run' }, sample },
+      roundTrip: roundTripSummary(verifier.roundTrips), sample },
     facts: { basis: 'Counts over the published demo rows; 0-62 reads the record acceleration field, which the source labels 0-100 km/h.', counts: facts },
     images: { cosyExteriorRenderReferences: imageRows.cosy, rows: imageRows.rows, configurationsWithoutImage: imageRows.without,
       origin: 'BMW COSY catalogue render', fidelity: 'representative-configuration' },
@@ -293,9 +296,9 @@ export async function runDemoSelection({ root = REPO_ROOT, write = false, log = 
   const verifier = { status: staged.status, acceptanceComplete: staged.acceptanceComplete, recordCount: staged.identity?.recordCount,
     distinctCount: staged.identity?.distinctCount, manifestCountMatchesVerifier: staged.identity?.manifestValid === true,
     perLineCounts: staged.coverage?.perLineCounts,
-    deepLinks: staged.deepLinks, openGates: staged.openGates };
+    deepLinks: staged.deepLinks, roundTrips: staged.roundTrips, openGates: staged.openGates };
   const chosen = new Set(ids); const imaged = source.images.filter((item) => chosen.has(item.configurationId));
-  const sample = deepLinkSample(selection, JSON.parse(updated), source.records, 20);
+  const sample = deepLinkSample(selection, JSON.parse(updated), source.records, 20, staged.roundTripResults);
   const report = buildReport({ plan: JSON.parse(updated), source, selection, retained, registered, published, lookup, verifier, sample,
     imageRows: { cosy: imaged.length, rows: imaged.length, without: ids.length - imaged.length } });
   const files = [[REPORT_PATH, JSON.stringify(report, null, 2)]];

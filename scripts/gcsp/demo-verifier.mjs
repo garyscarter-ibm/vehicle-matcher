@@ -5,6 +5,7 @@ import { MATRIX_PATH, validateDemoPlan } from './demo-plan.mjs';
 
 const REPO_ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const FUCQ61_COVERAGE = 'docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/coverage.json';
+export const ROUND_TRIPS_PATH = 'docs/gcsp/evidence/fucq77/round-trips-2026-11-08/round-trips.json';
 
 const object = (value) => value !== null && typeof value === 'object' && !Array.isArray(value);
 const code = (value) => typeof value === 'string' && /^[A-Z0-9]{2,16}$/.test(value);
@@ -251,6 +252,19 @@ export function countOtdFacts(records, manifest = {}) {
   return result;
 }
 
+/** Score retained headless results: an entry counts only for a staged record whose deep link equals its url; pass is recomputed. */
+export function scoreRoundTrips(evidence, links, required) {
+  const outcomes = new Map();
+  for (const entry of Array.isArray(evidence?.results) ? evidence.results : []) {
+    if (!object(entry) || links.get(entry.configurationId) !== entry.url || outcomes.has(entry.configurationId)) continue;
+    outcomes.set(entry.configurationId, entry.constructible === true && Array.isArray(entry.missing) && Array.isArray(entry.extra)
+      && entry.missing.length === 0 && entry.extra.length === 0);
+  }
+  const passed = [...outcomes.values()].filter(Boolean).length;
+  return { counts: { required, passed, failed: outcomes.size - passed, notRun: Math.max(0, required - outcomes.size) },
+    outcomes: Object.fromEntries([...outcomes].map(([id, ok]) => [id, ok ? 'pass' : 'fail'])) };
+}
+
 const repoPath = (value, root = REPO_ROOT) => {
   if (typeof value !== 'string' || !value) return null;
   if (isAbsolute(value)) return value;
@@ -260,7 +274,7 @@ const repoPath = (value, root = REPO_ROOT) => {
 
 /** Reuse F54's bounded schema/hash validator, never select or mutate a runtime corpus. */
 export async function verifyStagedDemoFleet({ plan, matrixText, directory, minimumDistinct = 200, verifyEvidence,
-  policyService, policyRead, approvedImages, retainedCounts = {}, root = REPO_ROOT } = {}) {
+  policyService, policyRead, approvedImages, retainedCounts = {}, root = REPO_ROOT, roundTripEvidence } = {}) {
   const planReport = validateDemoPlan(plan, { matrixText, verifyEvidence });
   const pending = { status: 'incomplete', plan: planReport, acceptanceComplete: false,
     acceptedDemoConfigurations: 0, unverifiedGates: [...UNVERIFIED_DEMO_GATES] };
@@ -276,11 +290,11 @@ export async function verifyStagedDemoFleet({ plan, matrixText, directory, minim
   const coverage = verifyFleetCoverage({ records, plan, planReport, retainedCounts });
   const mappings = new Map(plan.modelLines.filter((line) => line.mapping.status === 'mapped')
     .flatMap((line) => lineModels(line).map((model) => [model.vgModelCode, model.modelRange])));
-  let linksBuilt = 0; let linksInvalid = 0; const sample = [];
+  let linksBuilt = 0; let linksInvalid = 0; const sample = []; const links = new Map();
   for (const row of records) {
     try {
       const url = configurationDeepLink(row, { modelRange: mappings.get(row.canonicalIdentity?.vgModelCode) });
-      linksBuilt++; if (sample.length < 3) sample.push(url);
+      linksBuilt++; links.set(row.configurationId, url); if (sample.length < 3) sample.push(url);
     } catch { linksInvalid++; }
   }
   const facts = countOtdFacts(records, loaded.manifest);
@@ -289,9 +303,12 @@ export async function verifyStagedDemoFleet({ plan, matrixText, directory, minim
     configurationsWithImage: records.filter((row) => imaged.has(row.configurationId) || row.imageIds.length > 0).length };
   images.configurationsWithoutImage = records.length - images.configurationsWithImage;
   const required = plan.requirements.minimumDeepLinkChecks;
-  const roundTrips = { required, passed: 0, failed: 0, notRun: required };
+  const evidence = roundTripEvidence !== undefined ? roundTripEvidence
+    : await readFile(resolve(root, ROUND_TRIPS_PATH), 'utf8').then(JSON.parse, () => null);
+  const { counts: roundTrips, outcomes: roundTripResults } = scoreRoundTrips(evidence, links, required);
   const openGates = [
-    { gate: 'headless-round-trips', detail: `${roundTrips.notRun} of ${required} not run; pass 0, fail 0` },
+    ...(roundTrips.notRun > 0 ? [{ gate: 'headless-round-trips',
+      detail: `${roundTrips.notRun} of ${required} not run; pass ${roundTrips.passed}, fail ${roundTrips.failed}` }] : []),
     { gate: 'facts-and-images', detail: 'facts unknown counts and image coverage are listed; enrichment not run' },
     ...(planReport.gaps.length ? [{ gate: 'pending-model-lines', detail: `${planReport.gaps.length} lines have no mapping` }] : []),
     ...(coverage.coverageGaps?.length ? [{ gate: 'coverage-gaps', detail: `${coverage.coverageGaps.length} mapped lines have no local rows` }] : []),
@@ -300,7 +317,7 @@ export async function verifyStagedDemoFleet({ plan, matrixText, directory, minim
     && coverage.localPerLineValid === true && coverage.unassignedConfigurations === 0 && coverage.invalidConfigurations === 0
     && linksInvalid === 0 && linksBuilt === records.length;
   const status = !(identity.identityValid && identity.manifestValid) ? 'invalid' : offlineProven ? 'verified-offline' : 'incomplete';
-  return { ...pending, status, identity, coverage, deepLinks: { built: linksBuilt, invalid: linksInvalid, sample }, roundTrips,
+  return { ...pending, status, identity, coverage, deepLinks: { built: linksBuilt, invalid: linksInvalid, sample }, roundTrips, roundTripResults,
     facts, images, openGates, stagedManifestDigest: loaded.manifestDigest };
 }
 

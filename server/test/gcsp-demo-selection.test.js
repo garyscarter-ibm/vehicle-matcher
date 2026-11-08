@@ -147,7 +147,9 @@ test('the committed demo store validates, loads through the lookup port and its 
   assert.equal(staged.coverage.localPerLineValid, true);
   assert.equal(staged.coverage.unassignedConfigurations, 0);
   assert.equal(staged.deepLinks.built, staged.identity.recordCount);
-  assert.deepEqual(staged.roundTrips, { required: 20, passed: 0, failed: 0, notRun: 20 });
+  const retainedTrips = JSON.parse(await readFile(new URL('../../docs/gcsp/evidence/fucq77/round-trips-2026-11-08/round-trips.json', import.meta.url), 'utf8'));
+  assert.deepEqual(staged.roundTrips, retainedTrips.summary);
+  assert.equal(staged.openGates.some((gate) => gate.gate === 'headless-round-trips'), retainedTrips.summary.notRun > 0);
   assert.equal(staged.coverage.coverageGaps.length + Object.values(staged.coverage.perLineCounts).filter(Boolean).length, 24);
   assert.equal(report.selection.total, staged.identity.recordCount);
   assert.equal(report.collection.newSourceRequests, 0);

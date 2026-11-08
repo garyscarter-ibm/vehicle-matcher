@@ -18,7 +18,7 @@ const available = typeof api.verifyFleetIdentity === 'function';
 const check = (name, run) => test(name, { skip: !available }, run);
 const matrixText = await readFile(new URL('../../docs/gcsp/sources/choices-eligibility-matrices-2024-10.md', import.meta.url), 'utf8');
 const { createDemoPlan } = await import('../../scripts/gcsp/demo-plan.mjs');
-const { auditIdentity, countOtdFacts } = await import('../../scripts/gcsp/demo-verifier.mjs');
+const { auditIdentity, countOtdFacts, scoreRoundTrips } = await import('../../scripts/gcsp/demo-verifier.mjs');
 const record = () => structuredClone(fixture);
 function rekey(row) {
   const signature = `${row.canonicalIdentity.vgModelCode}:${row.canonicalIdentity.factoryOptionCodes.join(',')}`;
@@ -293,6 +293,12 @@ check('staged checks use the real F54 schema/hash validator without publishing o
   assert.equal(report.identity.countsValid, false);
   assert.match(report.stagedManifestDigest, /^[a-f0-9]{64}$/);
   assert.equal(report.acceptedDemoConfigurations, 0);
+  const required = plan.requirements.minimumDeepLinkChecks;
+  // The retained repo results name other records, and a root without the file has none: both leave every check not run.
+  assert.deepEqual(report.roundTrips, { required, passed: 0, failed: 0, notRun: required });
+  const noFile = await api.verifyStagedDemoFleet({ ...request, root: root });
+  assert.deepEqual(noFile.roundTrips, report.roundTrips);
+  assert.ok(report.openGates.some((gate) => gate.gate === 'headless-round-trips'));
   await appendFile(join(directory, 'configurations.jsonl'), '{}\n');
   const tampered = await api.verifyStagedDemoFleet(request);
   assert.equal(tampered.status, 'invalid');
@@ -457,4 +463,24 @@ check('OTD facts stay unknown unless the record or a registered supplement knows
   row.catalogue.facts.seats = { ...row.catalogue.facts.seats, state: 'known', value: 4 };
   const counts = countOtdFacts([row]);
   assert.deepEqual([counts.seats.known, counts.seats.unknown, counts.co2.unknown], [1, 0, 1]);
+});
+
+const trip = (id, url, patch = {}) => ({ configurationId: id, url, constructible: true, missing: [], extra: [], ...patch });
+const tripLinks = new Map([['a', 'https://x/a'], ['b', 'https://x/b'], ['c', 'https://x/c']]);
+
+check('round-trip scoring recomputes pass from missing, extra and constructible', () => {
+  const evidence = { results: [trip('a', 'https://x/a', { pass: false }), trip('b', 'https://x/b', { missing: ['S0001'], pass: true }),
+    trip('c', 'https://x/c', { extra: ['S0002'] })] };
+  const { counts, outcomes } = scoreRoundTrips(evidence, tripLinks, 3);
+  assert.deepEqual(counts, { required: 3, passed: 1, failed: 2, notRun: 0 });
+  assert.deepEqual(outcomes, { a: 'pass', b: 'fail', c: 'fail' });
+  assert.equal(scoreRoundTrips({ results: [trip('a', 'https://x/a', { constructible: null })] }, tripLinks, 3).counts.failed, 1);
+});
+
+check('round-trip scoring rejects foreign ids, wrong urls and duplicates, and counts absent evidence as not run', () => {
+  const evidence = { results: [trip('zz', 'https://x/a'), trip('a', 'https://x/other'), trip('b', 'https://x/b'), trip('b', 'https://x/b')] };
+  assert.deepEqual(scoreRoundTrips(evidence, tripLinks, 20).counts, { required: 20, passed: 1, failed: 0, notRun: 19 });
+  for (const missing of [null, undefined, {}, { results: 'x' }]) {
+    assert.deepEqual(scoreRoundTrips(missing, tripLinks, 20).counts, { required: 20, passed: 0, failed: 0, notRun: 20 });
+  }
 });
