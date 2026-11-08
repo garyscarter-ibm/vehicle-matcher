@@ -250,6 +250,10 @@
     {
       "path": "blocks/gcsp/manual-review/manual-review.css",
       "max_lines": 20
+    },
+    {
+      "path": "blocks/gcsp/manual-summary/manual-summary.css",
+      "max_lines": 19
     }
   ],
   "baseline": {
