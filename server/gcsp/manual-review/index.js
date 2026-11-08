@@ -102,7 +102,7 @@ export class ManualReviewDetailsService {
       constraints, mode: s.draft.choices.mode, currentContract: s.draft.currentContract ?? null,
       requestedCollection: { date: s.draft.choices.requestedCollectionDate, locationId: s.draft.choices.collectionLocationId },
       oldContractId: s.draft.choices.oldContractId ?? null, contract: s.draft.contract ?? null,
-      hold: s.hold, quote: s.quote, orderNumber: s.stock.orderNumber, now: s.now, clockVersion: s.clockVersion,
+      hold: s.hold, quote: s.quote, orderNumber: s.stock.orderNumber, stockVersion: s.stock.version, now: s.now, clockVersion: s.clockVersion,
       frozen: Boolean(s.frozen), editable: canEdit, canContinue: canEdit,
       view: { state: s.frozen ? 'locked' : s.pending || s.hold.state.endsWith('-pending') ? 'pending'
         : canEdit ? 'review' : s.hold.state === 'active' ? 'expired' : s.hold.state,

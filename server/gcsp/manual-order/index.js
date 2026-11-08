@@ -6,6 +6,7 @@ export { createManualOrderConversion } from './manual-conversion.js';
 const object = (v) => v && typeof v === 'object' && !Array.isArray(v);
 const text = (v) => typeof v === 'string' && v.trim().length > 0 && v.length <= 128;
 const positive = (v) => Number.isSafeInteger(v) && v > 0;
+const revision = (v) => Number.isSafeInteger(v) && v >= 0;
 const only = (v, keys) => object(v) && Object.keys(v).every((k) => keys.includes(k));
 const ref = (context, table, key) => ({ table, key: { runId: context.runId, ...key } });
 const conflict = (reason) => result('conflict', { reason, view: { state: 'review-required', action: 'review-selection' } });
@@ -36,10 +37,10 @@ const projection = (o) => {
 };
 
 export class ManualOrderService {
-  #repository; #identity; #clock; #terms; #converters; #adapter; #registration;
-  constructor({ repository, identity, clock, policy, terms = new SchemeOrderTerms({ policy }), converters, adapter } = {}) {
+  #repository; #identity; #clock; #terms; #converters; #adapter; #registration; #reviewDetails;
+  constructor({ repository, identity, clock, policy, terms = new SchemeOrderTerms({ policy }), converters, adapter, reviewDetails } = {}) {
     this.#repository = repository; this.#identity = identity; this.#clock = clock;
-    this.#terms = terms; this.#converters = converters; this.#adapter = adapter;
+    this.#terms = terms; this.#converters = converters; this.#adapter = adapter; this.#reviewDetails = reviewDetails;
   }
   async #safe(work) { try { return await work(); } catch { return unavailable(); } }
   async #guard(context, { trusted = false } = {}) {
@@ -87,11 +88,13 @@ export class ManualOrderService {
   }); }
   async #submit(context, input, { converter: trusted } = {}) {
     const time = await this.#guard(context, { trusted: Boolean(trusted) }); if (time.status !== 'ok') return time;
-    if (!only(input, ['commandId', 'source', 'expectedQuoteId', 'expectedStockVersion', 'termsDigest', 'declarations'])
+    if (!only(input, ['commandId', 'source', 'expectedQuoteId', 'expectedStockVersion', 'termsDigest', 'declarations', 'expectedReviewDetailsVersion'])
       || !text(input.commandId) || !text(input.expectedQuoteId) || !text(input.termsDigest) || !positive(input.expectedStockVersion)
       || !only(input.source, ['type', 'holdId', 'expectedHoldVersion', 'expectedDraftVersion'])
       || !['cart', 'buddy-offer'].includes(input.source.type) || !text(input.source.holdId)
       || !positive(input.source.expectedHoldVersion) || !positive(input.source.expectedDraftVersion) || !object(input.declarations)) return invalid('selection');
+    const freezing = input.expectedReviewDetailsVersion !== undefined;
+    if (freezing && (!revision(input.expectedReviewDetailsVersion) || input.source.type !== 'cart')) return invalid('expectedReviewDetailsVersion');
     const { commandId, ...intent } = input;
     const digest = inputDigest(intent); const id = operationId(context);
     const prior = await this.#read(context);
@@ -139,12 +142,23 @@ export class ManualOrderService {
       const renewalIds = [slot.value.renewalId, employee.value.renewalId, h.renewalId].filter((value) => value != null);
       const renewalId = (slot.value.renewalId != null || employee.value.renewalId != null)
         && renewalIds.every((value) => text(value) && value === renewalIds[0]) ? renewalIds[0] : null;
+      // Freeze the saved review details in this transaction; a refusal aborts it with nothing stored.
+      let reviewDetails = null;
+      if (freezing) {
+        if (typeof this.#reviewDetails?.freezeReviewDetails !== 'function') return unavailable('review-details-unavailable');
+        const frozen = await this.#reviewDetails.freezeReviewDetails(tx, { runId: context.runId, employeeId: context.employeeId,
+          entitlementSlotId: context.entitlementSlotId, holdId: h.holdId, quoteId: h.quoteId,
+          expectedHoldVersion: input.source.expectedHoldVersion, expectedDraftVersion: input.source.expectedDraftVersion },
+        input.expectedReviewDetailsVersion);
+        if (frozen.status !== 'ok') return frozen;
+        reviewDetails = frozen.value;
+      }
       const selection = { schemaVersion: 1, receivedAt: time.value.now, renewalId, source: input.source, quote: q,
         stock: { orderUuid: stock.value.orderUuid, orderNumber: stock.value.orderNumber, configurationId: stock.value.configurationId, facts: stock.value.facts },
         terms: terms.value, declarations: input.declarations, draft: prepared.value.draft, employee: prepared.value.employee,
         driver: prepared.value.driver, oldContract: prepared.value.oldContract ?? null, sourceVersions: prepared.value.versions ?? null,
         employeeAuthority: { employeeId: employee.value.employeeId, principalId: employee.value.principalId, companyId: employee.value.companyId,
-          gradeId: employee.value.gradeId, schemeId: employee.value.schemeId, version: employee.value.version }, vehicleSlot: slot.value };
+          gradeId: employee.value.gradeId, schemeId: employee.value.schemeId, version: employee.value.version }, vehicleSlot: slot.value, reviewDetails };
       const operation = { runId: context.runId, operationId: id, operationType: 'selection-order', idempotencyKey: id, inputDigest: digest,
         state: 'pending', lastKnownState: 'allocation-pending', attempts: 0,
         payload: { context, orderUuid: h.orderUuid, atomicConversion, selection, allocationInput: { commandId: id, holdId: h.holdId,
