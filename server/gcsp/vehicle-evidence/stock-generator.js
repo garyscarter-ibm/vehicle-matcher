@@ -179,7 +179,12 @@ export function createStockGenerator({ repository, registry, policyService, cont
         const vehicles = []; const models = [];
         for (const model of aggregates) {
           const count = modelCounts.find((row) => row.key === model.modelLineId).count;
-          const colours = apportion(count, Object.entries(model.observed.colourShares).sort(([a], [b]) => a.localeCompare(b)), [...entropy, model.modelLineId]);
+          // Observed colours with no configuration for this line are dropped; the covered shares are renormalised.
+          const offered = Object.entries(model.observed.colourShares).sort(([a], [b]) => a.localeCompare(b));
+          const covered = offered.filter(([colour]) => [...configurations.values()].some((row) => row.modelLineId === model.modelLineId && row.colour === colour));
+          const coveredShare = covered.reduce((sum, [, share]) => sum + share, 0);
+          if (count && !covered.length) return invalid('unsupported-configuration-coverage');
+          const colours = apportion(count, covered, [...entropy, model.modelLineId]);
           const modelCars = [];
           for (const colour of colours) {
             const candidates = [...configurations.values()].filter((row) => row.modelLineId === model.modelLineId && row.colour === colour.key);
@@ -195,6 +200,8 @@ export function createStockGenerator({ repository, registry, policyService, cont
           models.push({ modelLineId: model.modelLineId, sourceKind: model.observed.sourceKind, cars: count,
             observedShare: model.observed.carCount / aggregates.reduce((sum, row) => sum + row.observed.carCount, 0), actualShare: count / total,
             colourShares: Object.fromEntries(colours.map((row) => [row.key, count ? row.count / count : 0])),
+            plannedColourShares: Object.fromEntries(covered.map(([colour, share]) => [colour, share / coveredShare])),
+            coveredColourShare: Math.round(coveredShare * 10000) / 10000, uncoveredColourCount: offered.length - covered.length,
             leadTimeWeeks: count ? { min: Math.min(...modelCars.map((row) => row.leadTimeWeeks)), max: Math.max(...modelCars.map((row) => row.leadTimeWeeks)) } : null,
             observed: structuredClone(model.observed), aggregateKey: model.key });
         }

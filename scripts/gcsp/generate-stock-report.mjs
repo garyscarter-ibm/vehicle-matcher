@@ -2,7 +2,7 @@
 // Offline FUCQ-78 generator report: real seed, real retained corpus, in-memory repository. No network.
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createMemoryRepository, createMemoryStore } from '../../server/gcsp/repository/memory.js';
 import { inputDigest } from '../../server/gcsp/repository/core.js';
@@ -17,8 +17,10 @@ import { canonicalAllocationContent, emptyAllocationInventory } from '../../serv
 
 export const RUN_ID = 'fucq78-report-run';
 export const SEED = 'fucq78-report-seed';
-const AS_OF = '2026-11-07T09:00:00.000Z';
-const OUT = fileURLToPath(new URL('../../docs/gcsp/evidence/fucq-20/generator-report-2026-11-07.json', import.meta.url));
+// Defaults keep the 7 Nov report; --as-of and --out select another dated report (the 8 Nov one covers the observed aggregates).
+const option = (name, fallback) => (process.argv.includes(name) ? process.argv[process.argv.indexOf(name) + 1] : fallback);
+const AS_OF = option('--as-of', '2026-11-07T09:00:00.000Z');
+const OUT = resolve(option('--out', fileURLToPath(new URL('../../docs/gcsp/evidence/fucq-20/generator-report-2026-11-07.json', import.meta.url))));
 const share = (n, total) => Math.round(n / total * 10000) / 10000;
 const fact = (row, name) => row.facts.facts[name].value;
 
@@ -50,16 +52,16 @@ export async function buildGeneratorReport() {
     const { report } = outcome.value;
     const lines = report.models.map((model) => {
       const own = rows.filter((row) => fact(row, 'modelLine') === built.value.plan.titles[model.modelLineId]);
-      const colours = Object.entries(model.observed.colourShares).map(([colour, planned]) => {
+      const colours = Object.entries(model.plannedColourShares).map(([colour, planned]) => {
         const count = own.filter((row) => fact(row, 'colour') === colour).length;
-        return { colour, planned, cars: count, actual: share(count, own.length) };
+        return { colour, planned: share(planned, 1), cars: count, actual: share(count, own.length) };
       });
       const histogram = {};
       for (const row of own) histogram[fact(row, 'leadTimeWeeks')] = (histogram[fact(row, 'leadTimeWeeks')] || 0) + 1;
       const leads = own.map((row) => fact(row, 'leadTimeWeeks'));
       const modelShare = { planned: share(model.observed.carCount, report.models.reduce((sum, row) => sum + row.observed.carCount, 0)), actual: share(model.cars, report.totalCars) };
       return { modelLineId: model.modelLineId, title: built.value.plan.titles[model.modelLineId], aggregateKey: model.aggregateKey, sourceKind: model.sourceKind,
-        cars: model.cars, modelShare, colourShares: colours,
+        cars: model.cars, modelShare, coveredColourShare: model.coveredColourShare, uncoveredColourCount: model.uncoveredColourCount, colourShares: colours,
         leadTimeWeeks: { aggregate: model.observed.leadTimeWeeks, min: Math.min(...leads), max: Math.max(...leads),
           histogram: Object.fromEntries(Object.entries(histogram).sort(([a], [b]) => a - b)) },
         ...(model.cars >= 20 ? { withinFivePoints: Math.abs(modelShare.planned - modelShare.actual) <= 0.05
@@ -72,7 +74,7 @@ export async function buildGeneratorReport() {
       windows[planned.windowStart].cars += 1;
     }
     return { schemaVersion: 1, kind: 'synthetic-stock-generator-report', runId: RUN_ID, seed: SEED, clockInstant: AS_OF,
-      note: 'Synthetic scheme stock on assumed aggregates; not BMW stock. withinFivePoints compares model and colour shares with the plan, for lines with 20 or more cars.',
+      note: `Synthetic scheme stock on ${report.models.every((row) => row.sourceKind === 'observed-aggregate') ? 'observed aggregates (BMW UK stock locator, aggregates only)' : 'assumed aggregates'}; not BMW stock. withinFivePoints compares model and colour shares with the plan (colours renormalised over those with a corpus configuration), for lines with 20 or more cars.`,
       generatorVersion: report.generatorVersion, policyVersion, totalCars: report.totalCars, configurationSource: report.configurationSource,
       release: { trancheSize: report.release.trancheSize, weeklyVolume: report.release.weeklyVolume,
         windows: Object.values(windows).sort((a, b) => Date.parse(a.windowStart) - Date.parse(b.windowStart)) },

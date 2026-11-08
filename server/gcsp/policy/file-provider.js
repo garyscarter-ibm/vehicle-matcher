@@ -74,7 +74,7 @@ export function snapshotVersions(input) {
       requireSource(unique(seed[table].map((row) => row?.key)));
       for (const row of seed[table]) {
         requireSource(object(row) && text(row.key) && Object.hasOwn(row, 'value') && row.value !== undefined
-          && text(row.unit) && ['assumed', 'verified'].includes(row.status) && text(row.basis)
+          && text(row.unit) && ['assumed', 'verified', 'observed aggregate'].includes(row.status) && text(row.basis)
           && text(row.source) && validDay(row.sourceDate) && row.policyVersion === seed.policyVersion);
         dates(row);
       }

@@ -243,6 +243,16 @@ test('malformed rows, duplicate IDs, invalid dates and inconsistent provenance f
   assert.equal(versioned(await withSeeds(seed, equivalent).getActiveVersion(read), null).code, 'source-invalid');
 });
 
+test('observed aggregate is an accepted entry status and an unknown status is still rejected', async () => {
+  const seed = await alternateSeed();
+  const entry = seed.assumptions.find((row) => row.key.startsWith('stock.aggregate.'));
+  const resolved = await withSeeds(seed).getAssumption(entry.key, read);
+  assert.equal(resolved.status, 'ok'); assert.equal(resolved.value.status, 'observed aggregate');
+  entry.status = 'estimated';
+  const rejected = versioned(await withSeeds(seed).getActiveVersion(read), null);
+  assert.equal(rejected.status, 'invalid'); assert.equal(rejected.code, 'source-invalid');
+});
+
 test('unsupported rule selections fail on the resolved version', async () => {
   for (const [key, value] of [['eligibility.rule.precedence', 'includeFirst'], ['eligibility.rule.matchField', 'unknownField']]) {
     const seed = await alternateSeed();

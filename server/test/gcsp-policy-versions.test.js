@@ -173,10 +173,12 @@ else test('PostgreSQL native parity: NOT RUN; GCSP_DATABASE_URL unset, Render in
 
 test('additive migration discovery retains existing 0001 and 0003 and includes dated policy tables', async () => {
   const migrations = await loadMigrations();
-  // 0004 is FUCQ-104's supply records, 0005 FUCQ-136's comparison results, 0006 FUCQ-220's order reference index.
-  assert.deepEqual(migrations.map(({ version }) => version), ['0001', '0002', '0003', '0004', '0005', '0006']);
+  // 0004 is FUCQ-104's supply records, 0005 FUCQ-136's comparison results, 0006 FUCQ-220's order reference index, 0007 FUCQ-78's observed aggregate status.
+  assert.deepEqual(migrations.map(({ version }) => version), ['0001', '0002', '0003', '0004', '0005', '0006', '0007']);
   const sql = migrations.find(({ version }) => version === '0002').sql;
   for (const table of ['policy_versions', ...Object.values(POLICY_TABLES)]) assert.ok(sql.includes(`CREATE TABLE ${table} (`));
+  // Unexercised natively here; this pins the text only.
+  assert.match(migrations.find(({ version }) => version === '0007').sql, /^-- FUCQ-78.*\n[\s\S]*ADD CONSTRAINT policy_assumptions_status_check\s+CHECK \(data->>'status' IN \('assumed', 'verified', 'observed aggregate'\)\)/);
 });
 
 test('configured database errors never fall back to file values or expose driver diagnostics', async () => {
