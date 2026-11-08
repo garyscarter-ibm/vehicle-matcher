@@ -109,14 +109,17 @@ test('a single handoff through FUCQ-71 adapter', async (t) => {
   assert.equal(value.state, 'accepted'); assert.equal(value.selection.progress.selectionState, 'acknowledged');
   assert.equal(operations(f).length, 1); assert.equal(operations(f)[0].payload.selection.source.type, 'buddy-offer');
   assert.equal(operations(f)[0].payload.selection.stock.orderUuid, f.car.orderUuid);
+  // FUCQ-220: the order has its own reference, on the selection and the row, unchanged by a retried accept.
+  assert.equal(operations(f)[0].orderReference, 'GCSP-000001'); assert.equal(operations(f)[0].payload.selection.orderReference, 'GCSP-000001');
   assert.equal(receipts(f, 'synthetic-ordering:v1').length, 1);
   const replay = good(await f.offerDecisions.decide(f.offerContext, structuredClone(input))); assert.equal(replay.decisionId, value.decisionId);
   assert.equal(replay.selection.operationId, value.selection.operationId);
   assert.equal(operations(f).length, 1); assert.equal(receipts(f, 'synthetic-ordering:v1').length, 1);
+  assert.equal(operations(f)[0].orderReference, 'GCSP-000001');
   const other = await accept(f, 'accept-2'); assert.equal(other.status, 'conflict'); assert.equal(other.reason, 'offer-no-longer-pending');
   assert.equal(operations(f).length, 1);
   const order = good(await f.manualOrder.readOrder(f.contexts.paula)); assert.equal(order.operationId, value.selection.operationId);
-  assert.equal(order.view.state, 'awaiting-approval');
+  assert.equal(order.view.state, 'awaiting-approval'); assert.equal(order.orderReference, 'GCSP-000001');
   for (const name of ['missing', 'extra']) {
     const g = await offered(t); const declarations = { ...g.declarations };
     if (name === 'missing') delete declarations[Object.keys(declarations)[0]]; else declarations.unrelated = true;
@@ -248,7 +251,7 @@ test('the offer read shows the handoff before accept and the selection progress 
   const after = await read();
   assert.equal(after.state, 'accepted'); assert.equal(after.handoff, null); assert.deepEqual(after.availableActions, []);
   assert.equal(after.selection.selectionState, 'acknowledged'); assert.equal(after.selection.approved, false);
-  assert.equal(after.selection.orderNumber, '9123456'); assert.equal(after.selection.current, 'HR approval');
+  assert.equal(after.selection.orderNumber, '9123456'); assert.equal(after.selection.orderReference, 'GCSP-000001'); assert.equal(after.selection.current, 'HR approval');
   assert.deepEqual(after.selection.stages, [{ name: 'selection received', state: 'complete' }, { name: 'HR approval', state: 'waiting' },
     { name: 'sales-manager approval', state: 'not-started' }, { name: 'sent to ordering', state: 'not-started' }]);
   assert.deepEqual(after.selection.stages.map((s) => s.name), STAGES);

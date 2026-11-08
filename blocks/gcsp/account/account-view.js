@@ -31,7 +31,7 @@ function contractView(contract, asOf, drivers, actions) {
     fact('Term', contract.months, 'months'), fact('Annual mileage', contract.annualMileage, contract.mileageUnit),
     fact('Current mileage', contract.currentOdometer?.value, contract.currentOdometer?.unit),
     fact('Earliest collection', contract.earliestCollectionDate), fact('Latest collection', contract.latestCollectionDate),
-    fact('Order reference', contract.orderNumber), fact('Registration', contract.registration), fact('Delivered VIN', contract.vin),
+    fact('Car order number', contract.orderNumber), fact('Registration', contract.registration), fact('Delivered VIN', contract.vin),
     fact('Returned', contract.returnedDate), fact('Returned mileage', contract.returnedMileage, 'mi')],
   };
 }

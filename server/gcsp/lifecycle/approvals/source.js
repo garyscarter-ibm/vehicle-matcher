@@ -23,7 +23,7 @@ export function decodeSelectionOrder(row) {
   if (!valid) return result('unavailable', { code: 'selection-source-invalid', retryable: false, reason: 'The selection record could not be read.' });
   return ok({ runId: row.runId, orderUuid: p.orderUuid, employeeId: p.context.employeeId, entitlementSlotId: p.context.entitlementSlotId ?? null,
     route, source: { operationId: row.operationId, operationType: SELECTION_OPERATION, sourceType: s.source.type, holdId: s.source.holdId ?? null,
-      orderNumber: o.orderNumber ?? s.stock.orderNumber ?? null, configurationId: o.configurationId ?? s.stock.configurationId ?? null,
+      orderNumber: o.orderNumber ?? s.stock.orderNumber ?? null, orderReference: s.orderReference ?? null, configurationId: o.configurationId ?? s.stock.configurationId ?? null,
       receivedAt: s.receivedAt, quoteId: s.quote?.quoteId ?? null, termsVersion: s.terms.termsVersion ?? null, termsDigest: s.terms.termsDigest ?? null,
       approvalStages: s.terms.approvalStages, policyVersion: s.terms.policyVersion, operationVersion: row.version ?? null,
       providerReference: `synthetic-ordering:v1:${row.operationId}` } });

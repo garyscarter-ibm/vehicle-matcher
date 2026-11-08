@@ -92,7 +92,7 @@
           "comparison-c"
         ],
         "policyVersion": "gcsp-policy-v1",
-        "policyHash": "2d872c5abc25fe5b5d51431b39fb30e6be6d11b997eea39135994cbfb1f46e27",
+        "policyHash": "90da819d8ae50fb0a09073e34403abc6c2f411198e8eaaf514302afd014e96b4",
         "generatorVersion": "comparison-inputs.sha256.v1",
         "overlays": {
           "comparison.cohortSize": 4,
@@ -207,7 +207,7 @@
                 "carsHeldNotTaken": 3,
                 "carsUnused": 1
               },
-              "recordDigest": "f5884cd913c5c49ec1d26cf60dd5451f08f6642545d4733b680fbd8addb30034"
+              "recordDigest": "cc29f36c4b51c08d9b8adabba7f09feafe477f697a87a1a6deb60e69c2326ba0"
             },
             "buddy": {
               "measures": {
@@ -231,8 +231,8 @@
                 "retries": 0,
                 "expiries": 2,
                 "carsAllocated": 0,
-                "carsHeldNotTaken": 3,
-                "carsUnused": 1,
+                "carsHeldNotTaken": 4,
+                "carsUnused": 0,
                 "participants": 3,
                 "offersMade": 2,
                 "offersAccepted": 0,
@@ -249,7 +249,7 @@
                 "buddyHeldNotTakenHours": 0.333333,
                 "heldNotTakenHours": 0.4
               },
-              "recordDigest": "4613bb8cd6b9eab0faa5ecb8b164c857ae91a5fc63acbdd16d838164902bd83f"
+              "recordDigest": "12b11aa781759be4ba172926c6c2264e3d3a4d061d2e5fb0b7dc1433e2b4a79c"
             }
           }
         },
@@ -282,7 +282,7 @@
                 "carsHeldNotTaken": 2,
                 "carsUnused": 2
               },
-              "recordDigest": "f0f6eee26ee92c72d46d3174b7c7ad234fef544a21a4afe228960d91a85dfcbd"
+              "recordDigest": "df9f97b2553fd25ae4ebc55f46c12c6ff6d687c1a043fef7db0bffbcb7997ef8"
             },
             "buddy": {
               "measures": {
@@ -324,7 +324,7 @@
                 "buddyHeldNotTakenHours": 0,
                 "heldNotTakenHours": 0.066667
               },
-              "recordDigest": "d52c7e3991c8bb8fa2e35d662feb5e8022c497d94736278fdee20d49dbe1c1ce"
+              "recordDigest": "e580c1f26770ec768943fff8054d580d010db0e4d5f9c877de650c22e4c929ed"
             }
           }
         },
@@ -357,7 +357,7 @@
                 "carsHeldNotTaken": 2,
                 "carsUnused": 2
               },
-              "recordDigest": "493e7a10ca30ff518904a6c01f458f2aadb060af7564bdb57964210b429bb842"
+              "recordDigest": "6b2f5a26e2abd904fef04a97bf0a8b3e67b3ae1344b2bf00c5275419d476c8ce"
             },
             "buddy": {
               "measures": {
@@ -399,7 +399,7 @@
                 "buddyHeldNotTakenHours": 0.333333,
                 "heldNotTakenHours": 0.333333
               },
-              "recordDigest": "73e6fcb859f74eb30c05504d4ac8a8f4056b30d6427c00d3d0a98e8a54064626"
+              "recordDigest": "19dbcc0519df4df1d75eaa867d1a0b397ffce61bed9c0036b156f2175ef24601"
             }
           }
         }
@@ -935,7 +935,7 @@
         "Acceptance is recorded as a local offer decision; the ordering handoff is not replayed."
       ]
     },
-    "resultId": "process-comparison-5e86ff45f7e35e06f10f4170cda85fe4",
+    "resultId": "process-comparison-d1677c0a2e63bb0a89ed36608d82e7c3",
     "storedAt": "2026-11-08T12:00:00.000Z",
     "policyVersion": "gcsp-policy-v1",
     "activePolicyVersion": "gcsp-policy-v1",

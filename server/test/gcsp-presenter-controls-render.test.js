@@ -285,6 +285,17 @@ test('workspace chooses only actual context role and real adapter, never a query
     await done.ready; assert.equal(calls[0][0], role); if (role === 'employee') assert.equal(calls[0][1], account); done();
   }
 });
+test('employee workspace passes the order-progress and help adapters to the manual journey', async () => {
+  const host = document.createElement('div'); document.body.append(host); let options;
+  const orderAdapter = { listOrders: async () => ok([]) }; const helpAdapter = { createCase: async () => ok({}) };
+  const done = workspace(host, { adapter: { readContext: async () => ok({ roles: ['employee'], principalId: 'e' }) }, orderAdapter, helpAdapter,
+    mountEmployee: (_root, opts) => { options = opts; return () => {}; } });
+  await done.ready; assert.equal(options.orderAdapter, orderAdapter); assert.equal(options.helpAdapter, helpAdapter); done();
+  const host2 = document.createElement('div'); document.body.append(host2); let defaults;
+  const done2 = workspace(host2, { adapter: { readContext: async () => ok({ roles: ['employee'], principalId: 'e' }) },
+    mountEmployee: (_root, opts) => { defaults = opts; return () => {}; } });
+  await done2.ready; assert.equal(typeof defaults.orderAdapter?.listOrders, 'function'); assert.equal(typeof defaults.helpAdapter, 'object'); done2();
+});
 test('employee workspace subscribes the journey clock to presenter actions once and releases it on unsubscribe and destroy', async () => {
   const host = document.createElement('div'); document.body.append(host); const child = document.createElement('button');
   let options; let fired = 0; let live;

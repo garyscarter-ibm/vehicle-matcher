@@ -75,7 +75,7 @@ export class LifecycleApprovalService {
         ? { code: 'provider-uncertain', reason: 'Waiting for the approval system to confirm the last update.' } : null;
     return { contractVersion: CONTRACT, schemaVersion: 1, runId: record.runId, orderUuid: record.orderUuid, employeeId: record.employeeId,
       entitlementSlotId: record.entitlementSlotId, ...authority(record.entitlementSlotId, renewalId), route: record.route,
-      source: record.source, policyVersion: policy.policyVersion, policy: { policyVersion: policy.policyVersion, provenance: policy.provenance },
+      source: { orderReference: null, ...record.source }, policyVersion: policy.policyVersion, policy: { policyVersion: policy.policyVersion, provenance: policy.provenance },
       lifecycleRevision: record.lifecycleRevision, asOf, stageList: record.stageList, currentStage: record.currentStage,
       stages: record.stages, owner: step.owner, nextStep: step.nextStep, outcome: record.outcome, blocked,
       provider: { mode: this.#status?.mode ?? null, provider: this.#status?.provider ?? null, synthetic: this.#status?.mode === 'synthetic' } };

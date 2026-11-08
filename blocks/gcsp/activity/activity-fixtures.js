@@ -105,6 +105,126 @@ export const activityFixtures = {
           "clockVersion": "3",
           "carsChecked": 12,
           "suitableCars": 0,
+          "exclusions": [],
+          "outcome": "no-match"
+        },
+        "searchEvidence": {
+          "status": "recorded",
+          "checks": 1
+        },
+        "sourceStatus": "ok",
+        "currentOffer": null,
+        "offers": [],
+        "stateChanges": [
+          {
+            "eventId": "brief:employee-paula:1",
+            "eventType": "brief-changed",
+            "operation": "confirmed",
+            "briefVersion": 1,
+            "previousBriefVersion": null,
+            "occurredAt": "2026-11-05T09:00:00.000Z"
+          }
+        ],
+        "stateChangesEvidence": {
+          "status": "recorded",
+          "rejectedReceipts": 0
+        }
+      }
+    },
+    "no-match-one": {
+      "status": "ok",
+      "value": {
+        "asOf": "2026-11-05T09:00:00.000Z",
+        "briefVersion": 1,
+        "permission": {
+          "searchConsent": true,
+          "holdConsent": false,
+          "paused": false,
+          "permissionVersion": 1,
+          "canSearch": true,
+          "canHold": false
+        },
+        "state": "searching",
+        "lastSuccessfulCheck": {
+          "checkedAt": "2026-11-04T23:30:00.000Z",
+          "clockVersion": "3",
+          "carsChecked": 12,
+          "suitableCars": 0,
+          "exclusions": [
+            {
+              "essential": "seats",
+              "requirement": {
+                "operator": "gte",
+                "unit": "count",
+                "value": 5
+              },
+              "cars": 12
+            }
+          ],
+          "outcome": "no-match"
+        },
+        "searchEvidence": {
+          "status": "recorded",
+          "checks": 1
+        },
+        "sourceStatus": "ok",
+        "currentOffer": null,
+        "offers": [],
+        "stateChanges": [
+          {
+            "eventId": "brief:employee-paula:1",
+            "eventType": "brief-changed",
+            "operation": "confirmed",
+            "briefVersion": 1,
+            "previousBriefVersion": null,
+            "occurredAt": "2026-11-05T09:00:00.000Z"
+          }
+        ],
+        "stateChangesEvidence": {
+          "status": "recorded",
+          "rejectedReceipts": 0
+        }
+      }
+    },
+    "no-match-two": {
+      "status": "ok",
+      "value": {
+        "asOf": "2026-11-05T09:00:00.000Z",
+        "briefVersion": 1,
+        "permission": {
+          "searchConsent": true,
+          "holdConsent": false,
+          "paused": false,
+          "permissionVersion": 1,
+          "canSearch": true,
+          "canHold": false
+        },
+        "state": "searching",
+        "lastSuccessfulCheck": {
+          "checkedAt": "2026-11-04T23:30:00.000Z",
+          "clockVersion": "3",
+          "carsChecked": 12,
+          "suitableCars": 0,
+          "exclusions": [
+            {
+              "essential": "seats",
+              "requirement": {
+                "operator": "gte",
+                "unit": "count",
+                "value": 5
+              },
+              "cars": 9
+            },
+            {
+              "essential": "boot",
+              "requirement": {
+                "operator": "gte",
+                "unit": "L",
+                "value": 430
+              },
+              "cars": 6
+            }
+          ],
           "outcome": "no-match"
         },
         "searchEvidence": {
@@ -149,6 +269,7 @@ export const activityFixtures = {
           "clockVersion": "3",
           "carsChecked": 12,
           "suitableCars": 3,
+          "exclusions": [],
           "outcome": "offer-held"
         },
         "searchEvidence": {
@@ -218,6 +339,7 @@ export const activityFixtures = {
           "clockVersion": "3",
           "carsChecked": 12,
           "suitableCars": 0,
+          "exclusions": [],
           "outcome": "no-match"
         },
         "searchEvidence": {
@@ -287,6 +409,7 @@ export const activityFixtures = {
           "clockVersion": "3",
           "carsChecked": 12,
           "suitableCars": 0,
+          "exclusions": [],
           "outcome": "no-match"
         },
         "searchEvidence": {
@@ -356,6 +479,7 @@ export const activityFixtures = {
           "clockVersion": "3",
           "carsChecked": 12,
           "suitableCars": 3,
+          "exclusions": [],
           "outcome": "offer-held"
         },
         "searchEvidence": {
@@ -433,6 +557,7 @@ export const activityFixtures = {
           "clockVersion": "3",
           "carsChecked": 12,
           "suitableCars": 0,
+          "exclusions": [],
           "outcome": "no-match"
         },
         "searchEvidence": {
@@ -477,6 +602,7 @@ export const activityFixtures = {
           "clockVersion": "3",
           "carsChecked": 12,
           "suitableCars": 0,
+          "exclusions": [],
           "outcome": "no-match"
         },
         "searchEvidence": {

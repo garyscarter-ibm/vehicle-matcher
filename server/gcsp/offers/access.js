@@ -374,7 +374,7 @@ export class OfferAccessService {
         employeeId: hold.employeeId, entitlementSlotId: hold.entitlementSlotId }) }));
       if (found.status === 'unavailable') return { error: unavailable() };
       if (found.status === 'ok' && found.value.operationType === 'selection-order') {
-        extra.selection = { ...selectionProgress(found.value), orderNumber: /^\d{7}$/.test(stock.orderNumber ?? '') ? stock.orderNumber : null };
+        extra.selection = { ...selectionProgress(found.value), orderReference: found.value.payload.selection.orderReference ?? null, orderNumber: /^\d{7}$/.test(stock.orderNumber ?? '') ? stock.orderNumber : null };
       }
     } else if (base.availableActions.includes('accept')) {
       const found = await read(ref('employees', binding.runId, { employeeId: hold.employeeId }));
