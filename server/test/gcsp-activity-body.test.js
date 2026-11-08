@@ -95,6 +95,14 @@ const view = (name, extra = {}) => { const node = activityBody({ result: structu
 const lines = (node) => [...node.querySelectorAll('.gcsp-activity-check-status p')].map((p) => p.textContent);
 const clean = (node) => assert.doesNotMatch(node.textContent, /\u2014|\u2013|overnight|unattended/i);
 
+test('FUCQ-212: an accepted offer never reads still searching, while a declined one still does', () => {
+  const accepted = structuredClone(fixtures['offer-declined']); accepted.value.currentOffer.state = 'accepted';
+  const node = activityBody({ result: accepted }); document.body.append(node);
+  assert.doesNotMatch(node.textContent, /Still searching/); assert.match(node.textContent, /Accepted/); assert.match(lines(node)[0], /^Last check /);
+  node.destroy?.(); node.remove();
+  const declined = view('offer-declined'); assert.equal(lines(declined)[0], 'Still searching. No match yet.'); declined.destroy?.(); declined.remove();
+});
+
 test('searching with no offer and a healthy source says still searching, with the last check counts', () => {
   const node = view('searching');
   assert.deepEqual(lines(node), ['Still searching. No match yet.', 'Last check 4 Nov 2026, 23:30: 12 cars checked, 0 suitable.']);

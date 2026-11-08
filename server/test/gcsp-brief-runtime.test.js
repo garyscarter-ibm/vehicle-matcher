@@ -110,7 +110,7 @@ test('browser runtime adapter uses supplied same-origin fetch and projects the e
   assert.equal(typeof adapter.transport.preview, 'function');
   const unavailable = createBriefRuntimeAdapter({ fetch: async () => { throw Error('offline'); } });
   assert.deepEqual(await unavailable.loadAccount(), { status: 'unavailable' });
-  const denied = createBriefRuntimeAdapter({ fetch: async () => ({ ok: true, json: async () => ({ status: 'ok', value: { state: 'no-entitlement', account: { name: 'Paula' } } }) }) });
+  const denied = createBriefRuntimeAdapter({ fetch: async () => ({ ok: true, json: async () => ({ status: 'ok', value: { state: 'absent-hr-account', account: null } }) }) });
   assert.deepEqual(await denied.loadAccount(), { status: 'unavailable' });
   dom.window.close();
 });
