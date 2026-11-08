@@ -4,6 +4,8 @@ import { createEmployeeRecommendationService } from '../recommendation/index.js'
 import { validInstant } from '../policy/file-provider.js';
 
 export const ALLOCATION_CONSUMER = 'buddy-allocation';
+// FUCQ-205: claim progress lives in its own small receipt so the plan is written once.
+export const ALLOCATION_CURSOR_CONSUMER = 'buddy-allocation-cursor';
 const keys = ['allocation.tieBreak.rule', 'allocation.tieBreak.seed', 'offer.declinedCar.exclusion'];
 const tables = ['briefs', 'employees', 'entitlement_slots', 'stock', 'holds', 'claims', 'offers', 'decisions'];
 const unavailable = (code) => result('unavailable', { code, reason: 'Allocation is unavailable.', retryable: true });
@@ -37,7 +39,7 @@ function compare(rule) {
 // Allocation proposes claims; the injected FUCQ-100 port alone owns stock/hold transactions.
 export function createAllocationService({ repository, policy, clock, identity, claim } = {}) {
   let registration;
-  const ref = (context, eventId) => ({ table: 'event_receipts', key: { runId: context.runId, consumerId: ALLOCATION_CONSUMER, eventId } });
+  const ref = (context, eventId, consumerId = ALLOCATION_CONSUMER) => ({ table: 'event_receipts', key: { runId: context.runId, consumerId, eventId } });
   const command = (id, payload) => ({ commandId: id, inputDigest: inputDigest(payload) });
   async function prepare(context, event, instant, assumptions) {
     // A rejected pre-plan attempt must read repaired source rows on its next try.
@@ -191,14 +193,28 @@ export function createAllocationService({ repository, policy, clock, identity, c
           if (!compare(assumptions[0].value) || !text(assumptions[1].value)
             || assumptions[2].value !== 'untilRelevantConfirmedBriefChange') return unavailable('policy-invalid');
           const planned = await prepare(context, event, time.value, assumptions); if (planned.status !== 'ok') return planned;
-          receipt = await repository.transaction(context, command(`allocation:prepare:${event.eventId}`, event), (tx) => tx.recordReceipt({
-            consumerId: ALLOCATION_CONSUMER, eventId: event.eventId, eventType: event.eventType, inputDigest: digest,
-            inputVersions: planned.value.inputVersions, state: 'pending', outcome: ok({ plan: planned.value, next: 0, assignments: [], attempts: [] }) }));
+          receipt = await repository.transaction(context, command(`allocation:prepare:${event.eventId}`, event), async (tx) => {
+            const cursor = await tx.recordReceipt({ consumerId: ALLOCATION_CURSOR_CONSUMER, eventId: event.eventId, eventType: event.eventType,
+              inputDigest: digest, inputVersions: planned.value.inputVersions, state: 'pending', outcome: ok({ next: 0, assignments: [], attempts: [] }) });
+            if (cursor.status !== 'ok') return cursor;
+            return tx.recordReceipt({ consumerId: ALLOCATION_CONSUMER, eventId: event.eventId, eventType: event.eventType, inputDigest: digest,
+              inputVersions: planned.value.inputVersions, state: 'pending', outcome: ok({ plan: planned.value, next: 0, assignments: [], attempts: [] }) });
+          });
           if (receipt.status !== 'ok') return receipt;
         }
-        let row = receipt.value;
-        while (row.outcome.value.next < row.outcome.value.plan.contenders.length) {
-          const progress = structuredClone(row.outcome.value); const candidate = progress.plan.contenders[progress.next];
+        const row = receipt.value; const { plan } = row.outcome.value;
+        const cursorRef = ref(context, event.eventId, ALLOCATION_CURSOR_CONSUMER);
+        let cursor = await repository.read(context, cursorRef);
+        // A plan prepared before FUCQ-205 carries its own progress; move it to a cursor once.
+        if (cursor.status === 'not-found') cursor = await repository.transaction(context, command(`allocation:cursor:${event.eventId}`, event),
+          (tx) => tx.recordReceipt({ consumerId: ALLOCATION_CURSOR_CONSUMER, eventId: event.eventId, eventType: event.eventType, inputDigest: digest,
+            inputVersions: row.inputVersions, state: 'pending', outcome: ok({ next: row.outcome.value.next,
+              assignments: row.outcome.value.assignments, attempts: row.outcome.value.attempts }) }));
+        if (cursor.status !== 'ok') return cursor;
+        let progress = cursor.value.outcome.value; let version = cursor.value.version; let next = progress.next;
+        // Skipped contenders need no write: on retry they are skipped again from the same assignments.
+        while (next < plan.contenders.length) {
+          const candidate = plan.contenders[next]; next += 1;
           const assigned = progress.assignments.some((a) => a.employeeId === candidate.employeeId || a.entitlementSlotId === candidate.entitlementSlotId
             || candidate.renewalId && a.renewalId === candidate.renewalId || a.orderUuid === candidate.orderUuid);
           if (!assigned) {
@@ -206,21 +222,22 @@ export function createAllocationService({ repository, policy, clock, identity, c
             const operationId = `allocation:${inputDigest([context.runId, event.eventId, candidate.employeeId, candidate.orderUuid])}`;
             const outcome = await claim.tryClaim(resolved.value, { ...candidate, operationId, eventId: event.eventId, runId: context.runId });
             if (!['ok', 'conflict', 'stale-version'].includes(outcome?.status)) return unavailable('claim-pending');
-            progress.attempts.push({ employeeId: candidate.employeeId, orderUuid: candidate.orderUuid, operationId, outcome });
-            if (outcome.status === 'ok') progress.assignments.push({ ...candidate, operationId, claim: outcome.value });
+            progress = { next, attempts: [...progress.attempts, { employeeId: candidate.employeeId, orderUuid: candidate.orderUuid, operationId, outcome }],
+              assignments: outcome.status === 'ok' ? [...progress.assignments, { ...candidate, operationId, claim: outcome.value }] : progress.assignments };
+            const advanced = await repository.transaction(context, command(`allocation:advance:${event.eventId}:${version}`, progress),
+              (tx) => tx.compareAndSwap(cursorRef, version, { outcome: ok(progress) }));
+            if (advanced.status !== 'ok') return advanced;
+            version = advanced.value.version;
           }
-          progress.next += 1;
-          const advanced = await repository.transaction(context, command(`allocation:advance:${event.eventId}:${row.version}`, progress),
-            (tx) => tx.compareAndSwap(ref(context, event.eventId), row.version, { outcome: ok(progress) }));
-          if (advanced.status !== 'ok') return advanced;
-          row = advanced.value;
         }
-        const { plan, assignments, attempts } = row.outcome.value;
+        const { assignments, attempts } = progress;
         const outcome = ok({ state: assignments.length ? 'allocated' : 'no-assignment', runId: context.runId, event: plan.trigger,
           evaluatedAt: plan.evaluatedAt, policyVersion: plan.policyVersion, assumptions: plan.assumptions,
           inputVersions: plan.inputVersions, assignments, attempts, evaluations: plan.evaluations });
-        const finished = await repository.transaction(context, command(`allocation:complete:${event.eventId}`, outcome),
-          (tx) => tx.compareAndSwap(ref(context, event.eventId), row.version, { state: 'completed', outcome }));
+        const finished = await repository.transaction(context, command(`allocation:complete:${event.eventId}`, outcome), async (tx) => {
+          const closed = await tx.compareAndSwap(cursorRef, version, { state: 'completed' }); if (closed.status !== 'ok') return closed;
+          return tx.compareAndSwap(ref(context, event.eventId), row.version, { state: 'completed', outcome });
+        });
         return finished.status === 'ok' ? finished.value.outcome : finished;
       } catch { return unavailable('allocation-source-invalid'); }
     },

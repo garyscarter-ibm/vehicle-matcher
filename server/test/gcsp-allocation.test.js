@@ -167,3 +167,16 @@ test('missing exact availability evidence stays unsuitable and empty stock is a 
   assert.equal(out.value.state, 'no-assignment'); assert.ok(out.value.evaluations.every((e) => e.decisions[0].gateStatus === 'needs-confirmation'));
   assert.equal(unknown.calls.length, 0);
 });
+
+test('FUCQ-205: the plan is written once and progress only per claim attempt, not per contender', async () => {
+  const f = await allocationFixture({ cars: 12 });
+  const ids = [];
+  const repository = { ...f.repository, transaction: (context, command, work) => { ids.push(command.commandId); return f.repository.transaction(context, command, work); } };
+  const out = await f.create({ repository }).allocate(f.context, f.event); assert.equal(out.status, 'ok', JSON.stringify(out));
+  const contenders = out.value.evaluations.reduce((n, e) => n + e.decisions.filter((d) => d.gateStatus === 'eligible').length, 0);
+  assert.ok(contenders >= 30, `contenders ${contenders}`);
+  assert.equal(out.value.attempts.length, 3);
+  const plan = (await f.repository.read(f.context, { table: 'event_receipts', key: { runId: f.context.runId, consumerId: 'buddy-allocation', eventId: f.event.eventId } })).value;
+  assert.equal(plan.version, 2, 'plan receipt: one pending write and one completion');
+  assert.ok(ids.filter((id) => id.startsWith('allocation:')).length <= 4 + out.value.attempts.length, ids.join(','));
+});
