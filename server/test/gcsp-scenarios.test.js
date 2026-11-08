@@ -47,7 +47,7 @@ test('only journeys with a reviewed start loader are available; the rest refuse 
   const catalogue = (await f.scenarios.readCatalogue(f.presenter)).value;
   const before = snapshot(f);
   const journeys = catalogue.scenarios.filter((s) => s.kind === 'journey');
-  assert.deepEqual(journeys.filter((s) => s.availability.available).map((s) => s.scenarioId), ['main-successful-journey', 'decline-then-change']);
+  assert.deepEqual(journeys.filter((s) => s.availability.available).map((s) => s.scenarioId), ['main-successful-journey', 'no-suitable-match', 'decline-then-change']);
   const decline = journeys.find((s) => s.scenarioId === 'decline-then-change');
   assert.equal(decline.fixtureVersion, 'decline-then-change-inputs-v2'); assert.deepEqual(decline.variants, ['later-suitable-stock']);
   assert.equal(decline.inputs.change.value, 'saloon');
@@ -172,7 +172,7 @@ test('presentation fixture agrees with computed catalogue/refusal/reset/current 
   assert.deepEqual(Object.fromEntries(Object.keys(fixture.mechanics).map((key) => [key, mechanics[key]])), fixture.mechanics);
   const state = (await f.scenarios.readState(f.presenter)).value;
   assert.deepEqual(Object.keys(state), fixture.currentFields);
-  assert.deepEqual(await f.scenarios.reset(f.presenter, command(state, catalogue.scenarios[1])), fixture.unavailable);
+  assert.deepEqual(await f.scenarios.reset(f.presenter, command(state, catalogue.scenarios.find((s) => s.kind === 'journey' && !s.availability.available))), fixture.unavailable);
   const reset = await f.scenarios.reset(f.presenter, command(state, mechanics)); assert.equal(reset.status, 'ok');
   assert.deepEqual(Object.keys(reset.value), fixture.resetFields);
   assert.equal(JSON.stringify(reset).includes('snapshot'), false);
