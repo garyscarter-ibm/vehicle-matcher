@@ -1,0 +1,561 @@
+{
+  "chunk": "desktop",
+  "entry": "hosted",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "stockMode": "default",
+  "state": "passed",
+  "startedAt": "2026-11-08T19:47:34.964Z",
+  "runIds": {
+    "first": "demo-ea3b050919d5058adfbcb7852fc98722",
+    "afterOther": "demo-7e5eff60d675ab1db19b7b2a40708532",
+    "dataUnavailable": "demo-6b84a0a328978e238481745e0927b7c9"
+  },
+  "steps": [
+    {
+      "id": "catalogue",
+      "name": "Open the presenter page and Presenter controls; the Scenario picker lists the whole catalogue",
+      "pass": true,
+      "screenshots": [
+        "catalogue-1280.png"
+      ],
+      "detail": {
+        "run": "demo-ea3b050919d5058adfbcb7852fc98722",
+        "options": [
+          {
+            "text": "Main successful journey | Available",
+            "checked": false,
+            "disabled": false
+          },
+          {
+            "text": "No suitable match | Available",
+            "checked": false,
+            "disabled": false
+          },
+          {
+            "text": "Decline then change | Available",
+            "checked": false,
+            "disabled": false
+          },
+          {
+            "text": "Offer expires | Not available yet: brief-confirmation, stock-release, buddy-allocation, buddy-offers, captured-notifications, offer-expiry",
+            "checked": false,
+            "disabled": false
+          },
+          {
+            "text": "Data unavailable | Available",
+            "checked": false,
+            "disabled": false
+          },
+          {
+            "text": "Uncertain handoff, acknowledged | Available",
+            "checked": false,
+            "disabled": false
+          },
+          {
+            "text": "Uncertain handoff, rejected | Available",
+            "checked": false,
+            "disabled": false
+          },
+          {
+            "text": "Decline then change, no second car yet | Available",
+            "checked": false,
+            "disabled": false
+          },
+          {
+            "text": "Clock/reset mechanics (fictional support fixture) | Available",
+            "checked": true,
+            "disabled": false
+          }
+        ],
+        "readback": "Presenter controls Scenario Clock/reset mechanics (fictional support fixture) Run demo-ea3b050919d5058adfbcb7852fc98722 DemoClock (UTC) 2026-11-05T09:00:00.000Z Acting principal Paula (fictional) (employee)"
+      },
+      "overflowPx": 0,
+      "state": "Main successful journey | Available ;; No suitable match | Available ;; Decline then change | Available ;; Offer expires | Not available yet: brief-confirmation, stock-release, buddy-allocation, buddy-offers, captured-notifications, offer-expiry ;; Data unavailable | Available ;; Uncertain handoff, acknowledged | Available ;; Uncertain handoff, rejected | Available ;; Decline then change, no second car yet | Available ;; Clock/reset mechanics (fictional support fixture) | Available"
+    },
+    {
+      "id": "offer-expires",
+      "name": "Arrow to \"Offer expires\": availability reads Not available yet and Reset scenario is disabled",
+      "pass": true,
+      "screenshots": [
+        "offer-expires-1280.png"
+      ],
+      "detail": {
+        "chosen": "Offer expires Not available yet: brief-confirmation, stock-release, buddy-allocation, buddy-offers, captured-notifications, offer-expiry",
+        "availability": "Not available yet: brief-confirmation, stock-release, buddy-allocation, buddy-offers, captured-notifications, offer-expiry",
+        "resetDisabled": true,
+        "radioStillEnabled": true
+      },
+      "overflowPx": 0,
+      "state": "Not available yet: brief-confirmation, stock-release, buddy-allocation, buddy-offers, captured-notifications, offer-expiry | Reset disabled: true"
+    },
+    {
+      "id": "reset-other",
+      "name": "Choose \"Decline then change, no second car yet\", Reset scenario, Cancel reset, then Reset and Confirm reset; readback after the reload",
+      "pass": true,
+      "screenshots": [
+        "reset-other-1280.png"
+      ],
+      "detail": {
+        "scenario": "Decline then change, no second car yet",
+        "run": "demo-7e5eff60d675ab1db19b7b2a40708532",
+        "clock": "2026-11-05T09:30:00.000Z",
+        "acting": "Presenter (fictional) (presenter)",
+        "lastTick": "Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | Stock release: Done. | Manual claim expiry: Done. | Buddy expiry: Done. | Appointments: Done. | Approvals: Done. | Documents: Done. | Return appointments: Done. | Renewal risk cases: Done. | Selection order reconciliation: Done. | Buddy allocation: Done. | Outbox dispatch: Done. | 5 cars released",
+        "steps": [
+          "Stock release: Done.",
+          "Manual claim expiry: Done.",
+          "Buddy expiry: Done.",
+          "Appointments: Done.",
+          "Approvals: Done.",
+          "Documents: Done.",
+          "Return appointments: Done.",
+          "Renewal risk cases: Done.",
+          "Selection order reconciliation: Done.",
+          "Buddy allocation: Done.",
+          "Outbox dispatch: Done."
+        ],
+        "cancelFocusReturned": true,
+        "unchangedRunAfterCancel": true
+      },
+      "overflowPx": 0,
+      "state": "{\"scenario\":\"Decline then change, no second car yet\",\"run\":\"demo-7e5eff60d675ab1db19b7b2a40708532\",\"clock\":\"2026-11-05T09:30:00.000Z\",\"acting\":\"Presenter (fictional) (presenter)\"} | Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | Stock release: Done. | Manual claim expiry: Done. | Buddy expiry: Done. | Appointments: Done. | Approvals: Done. | Documents: Done. | Return appointments: Done. | Renewal risk cases: Done. | Selection order reconciliation: Done. | Buddy allocation: Done. | Outbox dispatch: Done. | 5 cars released"
+    },
+    {
+      "id": "reset-data-unavailable",
+      "name": "Choose \"Data unavailable\", Reset scenario and Confirm reset",
+      "pass": true,
+      "screenshots": [
+        "reset-data-unavailable-1280.png"
+      ],
+      "detail": {
+        "scenario": "Data unavailable",
+        "run": "demo-6b84a0a328978e238481745e0927b7c9",
+        "clock": "2026-11-05T09:00:00.000Z",
+        "acting": "Presenter (fictional) (presenter)",
+        "lastTick": "Last tick | No tick reported"
+      },
+      "overflowPx": 0,
+      "state": "{\"scenario\":\"Data unavailable\",\"run\":\"demo-6b84a0a328978e238481745e0927b7c9\",\"clock\":\"2026-11-05T09:00:00.000Z\",\"acting\":\"Presenter (fictional) (presenter)\",\"lastTick\":\"Last tick | No tick reported\"}"
+    },
+    {
+      "id": "release-refused",
+      "name": "Next release with the stock feed unavailable: record the refused/interrupted message and whether the strip stays usable",
+      "pass": true,
+      "screenshots": [
+        "release-refused-1280.png"
+      ],
+      "detail": {
+        "cue": "Release cue: 2026-11-05T09:30:00.000Z",
+        "messages": [
+          "Action not completed: A registered clock handler did not complete. Retry this event ID. Handler: Stock source is unavailable."
+        ],
+        "lastTick": "Last tick | Tick result not confirmed. 11 steps: 1 unavailable, 10 waiting for a result. | Step results (11) | Release unavailable: no verified release result reported",
+        "afterRefusal": {
+          "setStockDisabled": true,
+          "faultRadiosDisabled": true,
+          "retryVisible": true,
+          "resetDisabled": true
+        },
+        "afterRefresh": {
+          "setStockDisabled": true,
+          "faultRadiosDisabled": true,
+          "retryVisible": true,
+          "resetDisabled": true
+        }
+      },
+      "overflowPx": 0,
+      "state": "Action not completed: A registered clock handler did not complete. Retry this event ID. Handler: Stock source is unavailable. | Last tick | Tick result not confirmed. 11 steps: 1 unavailable, 10 waiting for a result. | Step results (11) | Release unavailable: no verified release result reported"
+    },
+    {
+      "id": "fault-cleared",
+      "name": "Synthetic faults: stock fault reads \"Stock feed unavailable\"; choose No fault and Set stock feed fault",
+      "pass": true,
+      "screenshots": [
+        "fault-cleared-1280.png"
+      ],
+      "detail": {
+        "workaroundPageReload": true,
+        "stockModeBefore": "Stock feed unavailable",
+        "orderingModeBefore": "No fault",
+        "messages": [
+          "Stock feed fault cleared"
+        ],
+        "stockModeAfter": "No fault"
+      },
+      "overflowPx": 0,
+      "state": "{\"workaroundPageReload\":true,\"stockModeBefore\":\"Stock feed unavailable\",\"orderingModeBefore\":\"No fault\",\"messages\":[\"Stock feed fault cleared\"],\"stockModeAfter\":\"No fault\"}"
+    },
+    {
+      "id": "after-clear-tick",
+      "name": "Tick (one step) after clearing the fault: record the last tick and cars released",
+      "pass": true,
+      "screenshots": [
+        "after-clear-tick-1280.png"
+      ],
+      "detail": {
+        "messages": [
+          "Action recorded"
+        ],
+        "lastTick": "Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | 5 cars released",
+        "clock": "2026-11-05T09:31:00.000Z"
+      },
+      "overflowPx": 0,
+      "state": "Action recorded | Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | 5 cars released"
+    },
+    {
+      "id": "ordering-fault",
+      "name": "Set the ordering fault to \"Next handoff times out, provider accepted\" and back to No fault",
+      "pass": true,
+      "screenshots": [
+        "ordering-fault-set-1280.png",
+        "ordering-fault-1280.png"
+      ],
+      "detail": {
+        "setMessages": [
+          "Ordering fault set: Next handoff times out, provider accepted"
+        ],
+        "setMode": "Next handoff times out, provider accepted",
+        "clearMessages": [
+          "Ordering fault cleared"
+        ],
+        "clearMode": "No fault"
+      },
+      "overflowPx": 0,
+      "state": "{\"setMessages\":[\"Ordering fault set: Next handoff times out, provider accepted\"],\"setMode\":\"Next handoff times out, provider accepted\",\"clearMessages\":[\"Ordering fault cleared\"],\"clearMode\":\"No fault\"}"
+    }
+  ],
+  "keyboard": [
+    {
+      "page": "access",
+      "check": "Tab reaches the demo key field; typing the key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Offer expires\" in \"Scenario\"",
+      "pass": true,
+      "detail": "Offer expires Not available yet: brief-confirmation, stock-release, buddy-alloca"
+    },
+    {
+      "page": "presenter",
+      "check": "Reset scenario is disabled for the unavailable \"Offer expires\"",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Decline then change, no second car yet\" in \"Scenario\"",
+      "pass": true,
+      "detail": "Decline then change, no second car yet Available"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Reset scenario\" opens the confirmation with focus on Confirm reset",
+      "pass": true,
+      "detail": "Reset into Decline then change, no second car yet? This starts a new run.\n\nConfirm resetCancel reset"
+    },
+    {
+      "page": "presenter",
+      "check": "Cancel reset closes the confirmation and focus returns to Reset scenario",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Reset scenario\" then \"Confirm reset\" resets the run",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Data unavailable\" in \"Scenario\"",
+      "pass": true,
+      "detail": "Data unavailable Available"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Reset scenario\"",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Confirm reset\" resets into Data unavailable",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Next release\"",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "After the refused tick, Refresh readback returns the fault controls to use",
+      "pass": false,
+      "detail": {
+        "afterRefusal": {
+          "setStockDisabled": true,
+          "faultRadiosDisabled": true,
+          "retryVisible": true,
+          "resetDisabled": true
+        },
+        "afterRefresh": {
+          "setStockDisabled": true,
+          "faultRadiosDisabled": true,
+          "retryVisible": true,
+          "resetDisabled": true
+        }
+      }
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"No fault\" in \"Stock feed fault\"",
+      "pass": true,
+      "detail": "No fault"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Set stock feed fault\"",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"/^Tick \\(/\"",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Next handoff times out, provider accepted\" in \"Ordering fault\"",
+      "pass": true,
+      "detail": "Next handoff times out, provider accepted"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Set ordering fault\"",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"No fault\" in \"Ordering fault\"",
+      "pass": true,
+      "detail": "No fault"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Set ordering fault\"",
+      "pass": true
+    }
+  ],
+  "readbacks": {
+    "catalogue": [
+      {
+        "text": "Main successful journey | Available",
+        "checked": false,
+        "disabled": false
+      },
+      {
+        "text": "No suitable match | Available",
+        "checked": false,
+        "disabled": false
+      },
+      {
+        "text": "Decline then change | Available",
+        "checked": false,
+        "disabled": false
+      },
+      {
+        "text": "Offer expires | Not available yet: brief-confirmation, stock-release, buddy-allocation, buddy-offers, captured-notifications, offer-expiry",
+        "checked": false,
+        "disabled": false
+      },
+      {
+        "text": "Data unavailable | Available",
+        "checked": false,
+        "disabled": false
+      },
+      {
+        "text": "Uncertain handoff, acknowledged | Available",
+        "checked": false,
+        "disabled": false
+      },
+      {
+        "text": "Uncertain handoff, rejected | Available",
+        "checked": false,
+        "disabled": false
+      },
+      {
+        "text": "Decline then change, no second car yet | Available",
+        "checked": false,
+        "disabled": false
+      },
+      {
+        "text": "Clock/reset mechanics (fictional support fixture) | Available",
+        "checked": true,
+        "disabled": false
+      }
+    ],
+    "offerExpires": "Not available yet: brief-confirmation, stock-release, buddy-allocation, buddy-offers, captured-notifications, offer-expiry",
+    "resetOther": {
+      "scenario": "Decline then change, no second car yet",
+      "run": "demo-7e5eff60d675ab1db19b7b2a40708532",
+      "clock": "2026-11-05T09:30:00.000Z",
+      "acting": "Presenter (fictional) (presenter)",
+      "lastTick": "Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | Stock release: Done. | Manual claim expiry: Done. | Buddy expiry: Done. | Appointments: Done. | Approvals: Done. | Documents: Done. | Return appointments: Done. | Renewal risk cases: Done. | Selection order reconciliation: Done. | Buddy allocation: Done. | Outbox dispatch: Done. | 5 cars released",
+      "steps": [
+        "Stock release: Done.",
+        "Manual claim expiry: Done.",
+        "Buddy expiry: Done.",
+        "Appointments: Done.",
+        "Approvals: Done.",
+        "Documents: Done.",
+        "Return appointments: Done.",
+        "Renewal risk cases: Done.",
+        "Selection order reconciliation: Done.",
+        "Buddy allocation: Done.",
+        "Outbox dispatch: Done."
+      ],
+      "cancelFocusReturned": true,
+      "unchangedRunAfterCancel": true
+    },
+    "resetDataUnavailable": {
+      "scenario": "Data unavailable",
+      "run": "demo-6b84a0a328978e238481745e0927b7c9",
+      "clock": "2026-11-05T09:00:00.000Z",
+      "acting": "Presenter (fictional) (presenter)",
+      "lastTick": "Last tick | No tick reported"
+    },
+    "releaseRefused": {
+      "cue": "Release cue: 2026-11-05T09:30:00.000Z",
+      "messages": [
+        "Action not completed: A registered clock handler did not complete. Retry this event ID. Handler: Stock source is unavailable."
+      ],
+      "lastTick": "Last tick | Tick result not confirmed. 11 steps: 1 unavailable, 10 waiting for a result. | Step results (11) | Release unavailable: no verified release result reported",
+      "afterRefusal": {
+        "setStockDisabled": true,
+        "faultRadiosDisabled": true,
+        "retryVisible": true,
+        "resetDisabled": true
+      },
+      "afterRefresh": {
+        "setStockDisabled": true,
+        "faultRadiosDisabled": true,
+        "retryVisible": true,
+        "resetDisabled": true
+      }
+    },
+    "faultCleared": {
+      "workaroundPageReload": true,
+      "stockModeBefore": "Stock feed unavailable",
+      "orderingModeBefore": "No fault",
+      "messages": [
+        "Stock feed fault cleared"
+      ],
+      "stockModeAfter": "No fault"
+    },
+    "afterClearTick": {
+      "messages": [
+        "Action recorded"
+      ],
+      "lastTick": "Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | 5 cars released",
+      "clock": "2026-11-05T09:31:00.000Z"
+    },
+    "orderingFault": {
+      "setMessages": [
+        "Ordering fault set: Next handoff times out, provider accepted"
+      ],
+      "setMode": "Next handoff times out, provider accepted",
+      "clearMessages": [
+        "Ordering fault cleared"
+      ],
+      "clearMode": "No fault"
+    }
+  },
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/favicon.ico",
+      "page": "http://127.0.0.1:8950/gcsp/access",
+      "step": "catalogue",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html",
+      "step": "catalogue",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls/tick",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html",
+      "step": "release-refused",
+      "known": false,
+      "expectedRefusal": true
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [],
+  "badResponses": [
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "step": "catalogue",
+      "known": true,
+      "expectedRefusal": false
+    },
+    {
+      "status": 503,
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls/tick",
+      "method": "POST",
+      "step": "release-refused",
+      "body": "{\"status\":\"unavailable\",\"tickId\":\"presenter-02269798912896782dee3d72ca6fe48bcdd1f7bba0f1646ee248f751818e47ba\",\"handlerId\":\"stock-release\",\"reason\":\"A registered clock handler did not complete. Retry this event ID.\",\"retryable\":true,\"handlerOutcome\":{\"status\":\"unavailable\",\"reason\":\"Stock source is u",
+      "known": false,
+      "expectedRefusal": true
+    }
+  ],
+  "notes": [
+    "DEFECT: after the refused (retryable) Next release the strip stays in its uncertain state; Stock feed fault picker and Set stock feed fault stay disabled after Refresh readback, only Retry original action (same refusal) or a page reload frees them."
+  ],
+  "origin": "http://127.0.0.1:8950",
+  "finishedAt": "2026-11-08T19:51:31.843Z",
+  "counts": {
+    "steps": 8,
+    "passed": 8,
+    "screenshots": 9,
+    "keyboardChecks": 23,
+    "keyboardPassed": 22
+  },
+  "errors": {
+    "consoleUnknown": 0,
+    "badResponsesUnknown": 0,
+    "pageErrors": 0,
+    "failedRequests": 0
+  },
+  "overflow": {
+    "horizontal": false,
+    "maxPx": 0
+  }
+}
