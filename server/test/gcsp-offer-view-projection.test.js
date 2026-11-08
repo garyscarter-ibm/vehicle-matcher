@@ -288,7 +288,7 @@ test('decision reference forwards the validated immutable quote revision without
 });
 
 const acceptedDto = (selection) => ({ ...sample(), state: 'accepted', reason: 'accepted', offerState: 'accepted', holdState: 'allocated', availableActions: [], selection });
-const selectionDto = (over = {}) => ({ schemaVersion: 1, selectionState: 'acknowledged', approved: false, current: 'HR approval', orderNumber: '0999987',
+const selectionDto = (over = {}) => ({ schemaVersion: 1, selectionState: 'acknowledged', approved: false, current: 'HR approval', orderReference: 'GCSP-000123', orderNumber: '0999987',
   stages: [{ name: 'selection received', state: 'complete' }, { name: 'HR approval', state: 'waiting' }, { name: 'sent to ordering', state: 'not-started' }], ...over });
 
 test('the handoff record crosses with the server digest, declarations and return car, and gates the accept action', () => {
@@ -323,8 +323,12 @@ test('a handoff is refused outside a pending offer', () => {
 test('the selection record keeps the server stage names, order and states', () => {
   const value = toOfferPresentation(envelope(acceptedDto(selectionDto()))).value;
   assert.equal(value.state, 'accepted'); assert.equal(value.handoff, null);
-  assert.deepEqual(value.selection, { selectionState: 'acknowledged', current: 'HR approval', orderNumber: '0999987',
+  assert.deepEqual(value.selection, { selectionState: 'acknowledged', current: 'HR approval', orderReference: 'GCSP-000123', orderNumber: '0999987',
     stages: selectionDto().stages });
+  const legacy = ({ orderReference, ...rest }) => rest;
+  for (const dto of [legacy(selectionDto()), selectionDto({ orderReference: null })]) {
+    assert.equal(toOfferPresentation(envelope(acceptedDto(dto))).value.selection.orderReference, null);
+  }
   assert.equal(toOfferPresentation(envelope(acceptedDto(null))).value.selection, null);
   const pending = toOfferPresentation(envelope(acceptedDto(selectionDto({ selectionState: 'handoff-pending', orderNumber: null })))).value;
   assert.equal(pending.selection.selectionState, 'handoff-pending'); assert.equal(pending.selection.orderNumber, null);
@@ -334,6 +338,8 @@ for (const [name, mutate] of [
   ['claims approval', (s) => ({ ...s, approved: true })], ['missing approved flag', ({ approved, ...s }) => s], ['unknown selection state', (s) => ({ ...s, selectionState: 'approved' })],
   ['unknown stage state', (s) => ({ ...s, stages: [{ name: 'selection received', state: 'approved' }] })], ['no stages', (s) => ({ ...s, stages: [] })],
   ['blank stage name', (s) => ({ ...s, stages: [{ name: '', state: 'complete' }] })], ['bad order number', (s) => ({ ...s, orderNumber: '12' })],
+  ['bad order reference', (s) => ({ ...s, orderReference: 'GCSP 1' })], ['numeric order reference', (s) => ({ ...s, orderReference: 123 })],
+  ['overlong order reference', (s) => ({ ...s, orderReference: `GCSP-${'1'.repeat(40)}` })],
   ['missing current', (s) => ({ ...s, current: '' })], ['wrong schema', (s) => ({ ...s, schemaVersion: 2 })], ['not an object', () => 'sent'],
 ]) test(`malformed selection fails closed: ${name}`, () => {
   assert.equal(toOfferPresentation(envelope(acceptedDto(mutate(selectionDto())))).status, 'unavailable');

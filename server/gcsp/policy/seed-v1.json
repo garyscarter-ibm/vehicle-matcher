@@ -12900,6 +12900,22 @@
       ]
     },
     {
+      "unit": "order reference format",
+      "status": "assumed",
+      "basis": "A short prefixed sequence reads clearly on screen and in Print; the real order identifier format is unconfirmed and is revised through trials.",
+      "source": "docs/gcsp/shared-contracts.md#order-reference--fucq-220",
+      "sourceDate": "2026-11-08",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z",
+      "key": "ordering.reference.v1",
+      "value": {
+        "schemaVersion": 1,
+        "prefix": "GCSP-",
+        "digits": 6,
+        "first": 1
+      }
+    },
+    {
       "key": "lifecycle.approval.ticks.v1",
       "value": {
         "HR approval": 2,

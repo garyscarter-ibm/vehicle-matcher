@@ -26,12 +26,13 @@ function callbacks(spy) {
     onRequestReturn: spy.fn('request-return'), onAcceptReturn: spy.fn('accept-return'), onHelp: spy.fn('help') };
 }
 const view = (name, extra = {}) => { const node = orderProgressBody({ progress: structuredClone(fixtures.states[name]), car: fixtures.car, ...extra }); document.body.append(node); return node; };
+const ids = (node) => [...node.querySelectorAll('.gcsp-order-number > div')].map((d) => [d.querySelector('dt').textContent, d.querySelector('dd').textContent]);
 const section = (node, name) => node.querySelector(`.gcsp-order-${name}`);
 const buttons = (node) => [...node.querySelectorAll('button')].map((b) => b.textContent);
 const sorted = (o) => Object.keys(o).sort();
 
 test('every fixture state renders with one h1, labelled sections, no em dash and no markup injection', () => {
-  assert.equal(names.length, 26);
+  assert.equal(names.length, 27);
   for (const name of names) {
     const node = view(name, callbacks(log()));
     assert.equal(node.querySelectorAll('h1').length, 1, name);
@@ -98,14 +99,23 @@ test('current stage carries aria-current, its owner and its next step; the order
   const node = view('waiting-sales-manager');
   const current = node.querySelectorAll('[aria-current="step"]'); assert.equal(current.length, 1);
   assert.match(current[0].textContent, /Sales-manager approval/); assert.match(current[0].textContent, /With the sales manager/); assert.match(current[0].textContent, /Next: Sales-manager decision/);
-  assert.match(node.textContent, /Fictional BMW i4 eDrive40 M Sport/); assert.match(node.textContent, /Order no\. 1000001/);
+  assert.match(node.textContent, /Fictional BMW i4 eDrive40 M Sport/); assert.deepEqual(ids(node), [['Order reference', 'GCSP-000123'], ['Car order number', '1000001']]);
   assert.match(node.textContent, /No image for this car yet/);
   assert.match(view('waiting-hr').querySelector('[aria-current="step"]').textContent, /With HR/);
 });
 
 test('missing car details are named, not invented', () => {
   const node = orderProgressBody({ progress: structuredClone(fixtures.states['waiting-hr']) });
-  assert.match(node.textContent, /Car details not supplied/); assert.match(node.textContent, /Order no\. 1000001/);
+  assert.match(node.textContent, /Car details not supplied/); assert.deepEqual(ids(node), [['Order reference', 'GCSP-000123'], ['Car order number', '1000001']]);
+});
+
+test('an order from before references shows only the car order number, and a malformed reference is dropped', () => {
+  assert.deepEqual(ids(view('earlier-order')), [['Car order number', '1000001']]);
+  assert.doesNotMatch(document.body.textContent, /GCSP-|Order reference/);
+  document.body.replaceChildren();
+  const progress = structuredClone(fixtures.states['waiting-hr']); progress.stages.value.source.orderReference = 'GCSP 1<b>';
+  const node = orderProgressBody({ progress, car: fixtures.car }); document.body.append(node);
+  assert.deepEqual(ids(node), [['Car order number', '1000001']]);
 });
 
 test('declined shows the declined stage, the next step and a help entry', () => {

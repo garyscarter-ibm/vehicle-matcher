@@ -1,6 +1,7 @@
 // Safe display binding for FUCQ-102 schemaVersion 1, reviewed at 4a56d38.
 import { decisionView } from '../brief/brief-view-model.js';
 import { followupHandle } from './followup-entry.js';
+import { orderReferenceOf } from '../kit/order-identity.js';
 
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const text = (v) => typeof v === 'string' && v.length > 0;
@@ -128,8 +129,9 @@ function selectionView(v) {
   need(object(v) && v.schemaVersion === 1 && selectionStates.has(v.selectionState) && v.approved === false && filled(v.current)
     && Array.isArray(v.stages) && v.stages.length > 0 && v.stages.length <= 8
     && v.stages.every((stage) => object(stage) && filled(stage.name) && stageStates.has(stage.state))
-    && (v.orderNumber === null || typeof v.orderNumber === 'string' && /^\d{7}$/.test(v.orderNumber)));
-  return { selectionState: v.selectionState, current: v.current, orderNumber: v.orderNumber,
+    && (v.orderNumber === null || typeof v.orderNumber === 'string' && /^\d{7}$/.test(v.orderNumber))
+    && (v.orderReference == null || orderReferenceOf(v.orderReference) !== null));
+  return { selectionState: v.selectionState, current: v.current, orderReference: v.orderReference ?? null, orderNumber: v.orderNumber,
     stages: v.stages.map(({ name, state }) => ({ name, state })) };
 }
 

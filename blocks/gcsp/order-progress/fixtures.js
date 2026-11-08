@@ -21,7 +21,7 @@ function approval({ revision, asOf, hr = true, steps, currentStage, owner, nextS
     })];
   return env({ contractVersion: 'lifecycle.stages.v1', schemaVersion: 1, runId: RUN, orderUuid: ORDER, employeeId: EMPLOYEE, entitlementSlotId: 'slot-paula',
     renewalId: validated ? 'renewal:employee-paula' : null, renewalAuthority: validated ? 'validated' : 'missing', route: 'manual',
-    source: { operationId: 'selection:example', operationType: 'selection-order', sourceType: 'cart', holdId: 'hold-1', orderNumber: '1000001',
+    source: { operationId: 'selection:example', operationType: 'selection-order', sourceType: 'cart', holdId: 'hold-1', orderReference: 'GCSP-000123', orderNumber: '1000001',
       configurationId: 'config-1', receivedAt: t(9), quoteId: 'quote-1', termsVersion: 'fictional-order-terms-v1', termsDigest: 'f'.repeat(64),
       approvalStages, policyVersion: 'gcsp-policy-v1', operationVersion: 2, providerReference: 'synthetic-ordering:v1:selection:example' },
     policyVersion: 'gcsp-policy-v1',
@@ -35,6 +35,8 @@ function approval({ revision, asOf, hr = true, steps, currentStage, owner, nextS
 const pendingHr = () => approval({ revision: 1, asOf: t(10), steps: [['pending', t(10)], ['not-started'], ['not-started']], currentStage: 'HR approval', owner: 'HR', nextStep: 'HR decision', outcome: 'in-progress' });
 const pendingSm = () => approval({ revision: 2, asOf: t(12), steps: [['approved', t(11)], ['pending', t(11)], ['not-started']], currentStage: 'sales-manager approval',
   owner: 'sales manager', nextStep: 'Sales-manager decision', outcome: 'in-progress' });
+// An order from before references: the server projects `orderReference: null`.
+const earlierOrder = () => { const stages = pendingSm(); stages.value.source.orderReference = null; return stages; };
 const noHr = () => approval({ revision: 2, asOf: t(12), hr: false, steps: [['pending', t(11)], ['not-started']], currentStage: 'sales-manager approval',
   owner: 'sales manager', nextStep: 'Sales-manager decision', outcome: 'in-progress' });
 const declined = () => approval({ revision: 3, asOf: t(14), steps: [['approved', t(11)], ['declined', t(13)], ['not-started']], currentStage: 'sales-manager approval',
@@ -166,7 +168,7 @@ export function orderProgressFixtures() {
     source: 'Synthetic, fictional examples in the shapes of the FUCQ-111, 114, 116 and 118 producers. Not integration evidence.',
     car: { name: 'Fictional BMW i4 eDrive40 M Sport', photo: undefined, line: 'Fictional example' },
     states: {
-      'waiting-hr': early(pendingHr()), 'waiting-sales-manager': early(pendingSm()), 'no-hr': early(noHr()), declined: early(declined()), 'provider-unsupported': early(unsupported()),
+      'waiting-hr': early(pendingHr()), 'waiting-sales-manager': early(pendingSm()), 'no-hr': early(noHr()), 'earlier-order': early(earlierOrder()), declined: early(declined()), 'provider-unsupported': early(unsupported()),
       'sent-to-ordering-no-slot': afterSent(docsWaiting(), apptOpen()),
       'appointment-requested': afterSent(docsWaiting(), apptRequested()), 'appointment-change-proposed': afterSent(docsWaiting(), apptProposed()),
       'appointment-pending': afterSent(docsWaiting(), apptPending()), 'appointment-scheduled': afterSent(docsProgress(), apptScheduled()),

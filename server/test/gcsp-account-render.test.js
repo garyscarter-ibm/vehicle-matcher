@@ -497,6 +497,7 @@ function orderAdapter(name = 'appointment-requested', orders) {
   return { uuid, calls: [], listOrders: async function list() { return { status: 'ok', value: { orders: orders ?? [{ orderUuid: uuid, source: { receivedAt: instant } }] } }; },
     readStages: read('stages'), readDocuments: read('documents'), readAppointment: read('appointment'), readReturnPlan: read('returnPlan') };
 }
+const factPairs = (node) => [...node.querySelectorAll('dl > div')].map((d) => [d.querySelector('dt').textContent, d.querySelector('dd').textContent]);
 const settleOrder = async (root, ready) => { for (let n = 0; n < 40 && !ready(root); n += 1) await new Promise((done) => setTimeout(done, 15)); };
 const selection = (orderUuid, display) => async () => ({ status: 'ok', value: { selection: { stock: { orderUuid, orderNumber: '1000001', facts: { display } } } } });
 
@@ -509,7 +510,7 @@ test('account with an order embeds its progress with the order number, stage nam
     const area = root.querySelector('.gcsp-account-order'); assert.ok(area, 'order area');
     assert.equal(area.getAttribute('aria-label'), 'Your order'); assert.equal(root.querySelectorAll('main h1').length, 1);
     assert.equal(area.querySelector('h2').textContent, 'Order progress');
-    assert.match(area.textContent, /Order no\. 1000001/); assert.match(area.textContent, /Synthetic i5 eDrive40 Touring/);
+    assert.match(area.textContent, /Order referenceGCSP-000123Car order number1000001/); assert.match(area.textContent, /Synthetic i5 eDrive40 Touring/);
     assert.equal(area.querySelector('img.vm-card-photo').getAttribute('src'), '/img/i5.jpg');
     assert.ok(area.querySelectorAll('.gcsp-stage-tracker li').length >= 3, names.join());
     const first = area.querySelector('.gcsp-order-progress'); (findButton(root, 'Refresh account') ?? {}).disabled; // a redraw keeps the same mounted body
@@ -571,6 +572,7 @@ test('FUCQ-192: an in-progress order on the slot replaces "No ordering entitleme
     const status = root.querySelector('.gcsp-account-order-status'); assert.ok(status, 'order status');
     assert.equal(status.querySelector('h2').textContent, 'Your order is in progress');
     assert.match(status.textContent, /Current step: Sent to ordering\./);
+    assert.deepEqual(factPairs(status), [['Order reference', 'GCSP-000123'], ['Car order number', '1000001']]);
     const link = [...status.querySelectorAll('a')].find((node) => node.textContent === 'View order progress'); assert.ok(link, 'progress link');
     const area = root.querySelector('.gcsp-account-order'); assert.ok(area.id); assert.equal(link.getAttribute('href'), `#${area.id}`);
     assert.equal(findButton(status, 'Contact support'), undefined);
@@ -688,4 +690,32 @@ test('FUCQ-204: neither the shell context nor the identity facts show the raw co
     assert.doesNotMatch(root.textContent, /demo-bmw-fs-uk/); assert.equal(root.textContent.includes('BMW Financial Services'), shown);
     assert.match(root.textContent, /Grade G7/); destroy();
   }
+});
+
+test('FUCQ-220: the order card of an earlier order shows only the car order number', async () => {
+  const row = structuredClone(orderProgressFixtures().states['earlier-order'].stages.value); row.entitlementSlotId = 'slot-paula';
+  const envelope = accountFixture('no-entitlement'); for (const slot of envelope.value.slots) slot.state = 'allocated';
+  const orders = orderAdapter('earlier-order', [row]);
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => envelope, readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) },
+    { orderAdapter: orders });
+  try {
+    await settleOrder(root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-number'));
+    assert.deepEqual(factPairs(root.querySelector('.gcsp-account-order-status')), [['Car order number', '1000001']]);
+    assert.doesNotMatch(root.textContent, /Order reference|GCSP-/);
+  } finally { destroy(); }
+});
+
+test('FUCQ-220: order history names the car order number, and shows a reference and print label from it only when supplied', async () => {
+  const input = accountFixture('unsupported-scheme'); const [entry] = input.value.histories[0].entries;
+  Object.assign(entry, { orderNumber: '7654321', orderReference: 'GCSP-000042' });
+  const legacy = structuredClone(entry); delete legacy.orderReference; legacy.contractId = 'synthetic:legacy'; input.value.histories[0].entries.push(legacy);
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
+  try {
+    const [withReference, without] = [...root.querySelectorAll('.gcsp-account-history')];
+    assert.deepEqual(factPairs(withReference).filter(([name]) => /order/i.test(name) && !/date|status/i.test(name)), [['Order reference', 'GCSP-000042'], ['Car order number', '7654321']]);
+    assert.deepEqual(factPairs(without).filter(([name]) => /order/i.test(name) && !/date|status/i.test(name)), [['Car order number', '7654321']]);
+    assert.equal(withReference.querySelector('button').textContent, 'Print record GCSP-000042');
+    assert.equal(without.querySelector('button').textContent, 'Print record 7654321');
+    assert.doesNotMatch(without.textContent, /Order reference/);
+  } finally { destroy(); }
 });

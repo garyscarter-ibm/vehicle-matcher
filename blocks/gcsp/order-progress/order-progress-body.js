@@ -4,6 +4,7 @@ import { mediaWell } from '../../vehicle-matcher/modes/result-card.js';
 import { stageTracker } from '../kit/stage-tracker.js';
 import { taskList } from '../kit/task-list.js';
 import { activityTimeline } from '../kit/activity-timeline.js';
+import { orderIdentityRows } from '../kit/order-identity.js';
 import { orderCopy as copy, sentence, slotText, withOwner, failureLine, itemStatus, itemOwner, itemTone, historyEvents } from './order-progress-copy.js';
 
 let sequence = 0;
@@ -54,8 +55,8 @@ function orderSection(c) {
   const media = mediaWell({ name: car?.name || copy.noCar, photo: car?.photo, line: car?.line || '' }, 'gcsp-order-media', { placeholder: copy.noImage });
   const details = el('div', 'gcsp-order-car-details');
   details.append(el(`h${c.sub}`, 'gcsp-order-car-name', car?.name || copy.noCar));
-  const orderNumber = usable(stages) ? stages.value.source?.orderNumber : null;
-  if (orderNumber) details.append(el('p', 'gcsp-order-number', `Order no. ${orderNumber}`));
+  const source = usable(stages) ? stages.value.source : null;
+  if (source?.orderNumber) details.append(factList(orderIdentityRows(source.orderReference, source.orderNumber), { className: 'gcsp-order-number' }));
   head.append(media.media, details); node.append(head);
   if (!usable(stages)) { node.append(failure('order progress', stages)); return node; }
   node.append(stageTracker({ heading: copy.steps, stages: trackerStages(stages.value), level: c.sub }));

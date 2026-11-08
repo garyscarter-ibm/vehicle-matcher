@@ -1057,6 +1057,7 @@ Retail `publicMatch.listings[]` additively retains the evaluator's exact `decisi
 | 1.0.0 / 2026-11-06 / FUCQ-111 | Adds LifecycleApprovalService, `lifecycle.stages.v1` rev 2 read/listOrders and internal stagePort, synthetic ordering status capability and live stub, versioned receipt transitions (no table), `lifecycle-approvals` handler and assumed `lifecycle.approval.{ticks,declineScenario,ownership}.v1`. |
 | 1.0.0 / 2026-11-05 / FUCQ-71 | Adds the isolated shared selection-ordering port, durable scoped synthetic provider and DemoClock reconciliation; canonical assumed `ordering.terms.v1` / `ordering.approvalStages.v1` and a trusted source transaction callback. Uses existing repository tables, preserves exact stock order identity and target approval names. F71 callback commit/rollback/pending and policy boundaries are scoped evidence; Gary's actual transactional producer, configured SQL/reopen, account/runtime and final whole-suite gates remain incomplete. |
 | 1.0.0 / 2026-11-07 / FUCQ-108 | Hands an accepted buddy offer off through FUCQ-71's single ordering adapter via trusted `submitSource`; the offer decision, allocation and selection intent commit in one transaction. Adds `termsDigest`/`declarations` to accept, an allowance recheck against the pinned quote, `progress` on order reads and a `brief-selection:v1` receipt. The offer read additively carries `handoff` and `selection`. No new tables or migrations. |
+| 1.0.0 / 2026-11-08 / FUCQ-220 | Adds a generated per-order `orderReference` (assumed `ordering.reference.v1`) on the `selection-order` snapshot and row, with a unique key and additive migration `0006`. Additively projected by the manual order read, the offer read `selection` and lifecycle `source`; `null` for earlier orders. The car's `orderNumber` and the ordering adapter contract are unchanged. |
 | 1.0.0 / 2026-11-05 / FUCQ-66 | Adds the manual claim binding, exact versioned claim/review/release/current reads, immutable quote/receipt conventions, pending 202 mapping and expiry handler on existing foundation ports. Existing keyed manual timings are pinned without another default source. No schema/migration or existing contract meaning changes. Deterministic backend fixtures/trials are recorded; required configured PostgreSQL proof remains blocked and no built/deployed or diagram-render claim is made. |
 | 1.0.0 / 2026-11-05 / FUCQ-103 | Adds trusted snapshot reads, the bounded monthly-points/preference-weight projection, no-write demand/fit preview and intentional dated publishing. A narrowly validated successor may adopt `employee.recommendation.v1.preferenceWeights` over an unchanged legacy calibration; historical rows/quotes and legacy employee-importance output remain intact. Activation and rendered integration evidence are tracked separately until verified. |
 | 1.0.0 / 2026-11-07 / FUCQ-95 | Extends the activity read model additively with `lastSuccessfulCheck`, `searchEvidence`, `sourceStatus`, `currentOffer` (with `href`), `offer-closed`/`searching` states and offer `createdAt`, read from stored allocation receipts and `tick_runs`. No new producer, schema, policy key or command. |
@@ -1090,8 +1091,9 @@ The FUCQ-80 contract baseline was documentation only. The FUCQ-81/82 backend imp
 
 `ManualOrderService` exposes trusted employee `readTerms(context)`, `submit(context,input)` and `readOrder(context)`
 ports; the exact input/projection and remaining integration gates are in [the ordering contract](manual-order-contract.md).
-The existing stock `orderUuid`, seven-digit `orderNumber` and `configurationId` are authoritative; no replacement
-order number or approval is generated. Internal handoff/reconciliation phases remain separate from the configured
+The existing stock `orderUuid`, seven-digit `orderNumber` and `configurationId` stay authoritative for the car; the
+order's own id is the generated `orderReference` (see [Order reference](#order-reference--fucq-220)), and no approval
+is generated. Internal handoff/reconciliation phases remain separate from the configured
 employee-facing target approval stage.
 
 The additive assumed canonical keys `ordering.terms.v1` and `ordering.approvalStages.v1` supply fictional versioned
@@ -1114,6 +1116,25 @@ before resend; only matching authoritative absence permits execute. Unknown or m
 ownership, and unsupported/rejected outcomes never fabricate a confirmation. Reconciliation registers on DemoClock's
 existing `pending-reconciliation` stage. Backend presentation fixtures cover validation, pending, failure and actual
 approval status; rendered consumer evidence belongs to FUCQ-72.
+
+## Order reference · FUCQ-220
+
+Each order created through `ManualOrderService` (manual cart `submit` and buddy `submitSource`) gets its own server-generated
+reference such as `GCSP-000123`. The car's seven-digit `orderNumber` is unchanged and stays the car's own fact.
+
+- **Format:** assumed canonical key `ordering.reference.v1`, `{ schemaVersion: 1, prefix, digits, first }`, read through
+  PolicyService at the run's policy version. A missing or invalid entry fails closed: no order is created.
+- **Generated once:** inside the transaction that inserts the `selection-order` row, as the highest number already used in the
+  run plus one (starting at `first`). It never derives from personal data or an internal id.
+- **Stored:** `payload.selection.orderReference` (the immutable snapshot, also in the `selection-received` receipt) and a
+  top-level `orderReference` on the `pending_operations` row. The repository key `['orderReference']` is unique per run
+  and ignores rows without one.
+- **Idempotent:** a repeated command, reload, restart or lost-response retry takes the existing `selection-order` row and
+  returns its stored reference; no second row or number is made.
+- **Read-only projections (additive):** `ManualOrderService` `orderReference`, the offer read `selection.orderReference`
+  and lifecycle `source.orderReference` (order progress). Orders created before this change read `null`; none is invented.
+- **Migration:** additive `0006_order_reference.sql` adds a PostgreSQL partial unique index on `(run_id, data->>'orderReference')`
+  where present. No table is added and the ordering adapter's external contract is unchanged.
 
 ## Lifecycle approval stages · FUCQ-111
 

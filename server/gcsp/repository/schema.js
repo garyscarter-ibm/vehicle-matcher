@@ -18,7 +18,7 @@ export const TABLES = Object.freeze({
   quotes: definition('runId quoteId', 'orderUuid employeeId entitlementSlotId configurationId facts eligibility terms briefVersion draftVersion policyVersion quotedAt validUntil expiresAt provenance monthlyPoints allowance', [], [], true),
   offers: definition('runId offerId', 'holdId employeeId orderUuid state briefVersion policyVersion quoteId expiresAt tokenHash environmentId tokenMetadata operationId', [['holdId']], [['holds', 'holdId'], ['quotes', 'quoteId']]),
   decisions: definition('runId decisionId', 'commandId offerId holdId employeeId decision reason actorId versions outcome originalResponse', [['commandId']]),
-  pending_operations: definition('runId operationId', 'operationType idempotencyKey inputDigest payload providerReference lastKnownState state attempts outcome intendedDecision holdId offerId', [['operationType', 'idempotencyKey']]),
+  pending_operations: definition('runId operationId', 'operationType idempotencyKey inputDigest payload providerReference lastKnownState state attempts outcome intendedDecision holdId offerId orderReference', [['operationType', 'idempotencyKey'], ['orderReference']]),
   event_receipts: definition('runId consumerId eventId', 'inputDigest eventType handlerId inputVersions state outcome'),
   notification_outbox: definition('runId jobId', 'idempotencyKey inputDigest offerId messageKind messageVersion recipientId recipientReference transport state outcome attempts payload', [['idempotencyKey']]),
   forecast_snapshots: definition('runId forecastId', 'inputVersion policyVersion modelVersion asOf output provenance', [], [], true),

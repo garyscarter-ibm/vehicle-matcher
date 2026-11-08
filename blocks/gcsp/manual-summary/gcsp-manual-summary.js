@@ -4,6 +4,7 @@ import { mountEmployee } from '../employee/gcsp-employee.js';
 import { createAccountHttpAdapter } from '../account/http-adapter.js';
 import { checkboxField, errorSummary } from '../kit/form-controls.js';
 import { stageList } from '../kit/stage-list.js';
+import { orderIdentityRows } from '../kit/order-identity.js';
 import { reviewVehicleView } from '../manual-review/gcsp-manual-review.js';
 import { createManualSummaryController } from './summary-controller.js';
 import { createManualSummaryHttpAdapter } from './http-adapter.js';
@@ -188,19 +189,19 @@ export function mountManualSummaryBody(root, { adapter = createManualSummaryHttp
       outcome.live.setAttribute('role', 'status'); outcome.live.setAttribute('aria-atomic', 'true'); outcomePanel.append(outcome.live, outcome.body);
       panel = null; outcomeKey = null; root.replaceChildren(outcomePanel);
     }
-    const announcement = `${v.title}. ${v.status}. Order number ${rb.orderNumber}.`;
+    const announcement = `${v.title}. ${v.status}. ${rb.orderReference ? `Order reference ${rb.orderReference}. ` : ''}Car order number ${rb.orderNumber}.`;
     if (outcome.live.textContent !== announcement) outcome.live.textContent = announcement;
     if (outcomeKey === key) return; outcomeKey = key;
     const focused = root.ownerDocument.activeElement?.textContent; const first = !outcome.body.childNodes.length;
     const data = sectionRows(rb); const mode = rb.mode === 'replacement';
     const next = el('section', 'gcsp-card gcsp-summary-section gcsp-summary-next'); const inner = el('div', 'gcsp-card-body');
     const steps = v.key === 'awaiting-approval' ? [`Next step: ${stageLabel(order.progress.current)}.`, 'Your requested collection date is not an appointment.', 'Your account shows progress as it changes.']
-      : v.key === 'handoff-failed' ? ['Contact scheme support and quote your order number.']
+      : v.key === 'handoff-failed' ? [`Contact scheme support and quote your ${rb.orderReference ? 'order reference' : 'car order number'}.`]
         : ['Check again to see whether ordering has received it.', 'Do not submit again. Checking never creates another order.'];
     const list = el('ul', 'gcsp-summary-steps'); for (const text of steps) list.append(el('li', '', text));
     inner.append(heading('Next steps'), list); next.append(inner);
     const stages = stageList({ heading: 'Order progress', stages: order.progress.stages.map((s) => ({ ...s, name: stageLabel(s.name) })) });
-    const facts = rows([row('Order number', rb.orderNumber), row('Status', v.status), row('Journey', mode ? 'Replacement' : 'New order')]);
+    const facts = rows([...orderIdentityRows(rb.orderReference, rb.orderNumber), row('Status', v.status), row('Journey', mode ? 'Replacement' : 'New order')]);
     const actions = el('div', `gcsp-review-actions ${HIDE}`);
     actions.append(button({ label: 'Finish', onClick: finish }), button({ label: 'Print order', variant: 'ghost', onClick: () => { try { win().print(); } catch { /* No printer is not an order failure. */ } } }));
     if (!v.final) actions.append(button({ label: 'Check order status', variant: 'ghost', disabled: state.busy, onClick: () => controller.checkOrder() }));
