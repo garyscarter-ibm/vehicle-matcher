@@ -42,6 +42,18 @@ test('representative keeps independent axes, typed practical answers, unknown ch
   assert.equal(saves[0].brief.essentials.charging.value, null);
   assert.match(main.textContent, /Technology Plus and Comfort Pack/); assert.match(main.textContent, /Needs confirmation/);
 });
+test('an accepted selection shows the saved brief read-only with labelled values and an order progress link', async (t) => {
+  const main = document.createElement('main'); document.body.append(main);
+  const editor = { ...structuredClone(fixture.edited.value), selection: { state: 'accepted', briefVersion: 1 } };
+  const teardown = mountBriefBody(main, { editor, transport: {} }); t.after(() => { teardown(); main.remove(); });
+  assert.equal(main.querySelector('h1').textContent, 'Your buddy found your car');
+  assert.equal(main.querySelectorAll('input, button, form, select, textarea').length, 0);
+  const text = main.textContent;
+  assert.match(text, /Comfort/); assert.match(text, /Do you need a towbar\?/); assert.match(text, /Not confirmed|Needs confirmation|Yes|No/);
+  assert.doesNotMatch(text, /\bseats\b|\bboot\b|could not be loaded|\u2014/);
+  assert.equal(main.querySelector('a').getAttribute('href'), '/gcsp-order-progress-live.html');
+  assert.ok(main.querySelector('[role=status]'));
+});
 test('teardown cancels late load and missing adapter gives unavailable body', async () => {
   const main = document.createElement('main'); let resolve;
   const teardown = mountBriefBody(main, { loadEditor: () => new Promise((r) => { resolve = r; }) }); await Promise.resolve(); teardown();

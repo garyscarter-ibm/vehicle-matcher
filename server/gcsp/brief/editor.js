@@ -47,10 +47,11 @@ export function createBriefEditorService({ brief, account, provider, policy, clo
     const [approved, draft] = await Promise.all([brief.readCurrent(context), brief.readDraft(context)]);
     for (const found of [approved, draft]) if (!['ok', 'not-found'].includes(found?.status)) return { error: found ?? unavailable() };
     const current = approved.status === 'ok' ? approved.value.brief : null;
+    const accepted = approved.status === 'ok' ? approved.value.activity?.existingOffers?.find((o) => o.state === 'accepted') : null;
     const input = draft.status === 'ok' ? draft.value : null;
     if (current && (!revision(current.briefVersion) || current.briefVersion === 0 || current.status !== 'confirmed')
       || input && (!revision(input.draftVersion) || input.draftVersion === 0 || !revision(input.baseBriefVersion))) return { error: unavailable() };
-    return { current, input, briefVersion: current?.briefVersion ?? 0, draftVersion: input?.draftVersion ?? 0 };
+    return { current, input, accepted, briefVersion: current?.briefVersion ?? 0, draftVersion: input?.draftVersion ?? 0 };
   }
   async function prepare(context) {
     if (!brief?.readCurrent || !brief?.readDraft || !account?.readAccount || !provider?.resolve
@@ -102,14 +103,26 @@ export function createBriefEditorService({ brief, account, provider, policy, clo
     if (!validateEditable(initial, p.config, p.slider, p.lifecycle)) throw Error('Invalid defaults');
     return initial;
   }
+  async function consumedDraft(context, input) {
+    if (typeof brief.readHistory !== 'function') return unavailable();
+    const history = await brief.readHistory(context);
+    if (history?.status !== 'ok' || !Array.isArray(history.value?.versions)) return unavailable();
+    const digest = inputDigest(semantic(input.brief));
+    return history.value.versions.some((v) => v.briefVersion > input.baseBriefVersion && inputDigest(semantic(v)) === digest);
+  }
   return {
     async readEditor(context) {
       try {
         const p = await prepare(context); if (p.error) return p.error;
         const fallback = defaults(p); const { current, input, briefVersion, draftVersion } = p.state;
-        const matching = input?.baseBriefVersion === briefVersion;
-        if (input && !matching && (!current || inputDigest(semantic(input.brief)) !== inputDigest(semantic(current))))
-          return stale('brief', input.baseBriefVersion, briefVersion);
+        // After an accept the page is read-only from the approved brief, so a pending draft cannot block it.
+        const accepted = Boolean(p.state.accepted && current); const matching = !accepted && input?.baseBriefVersion === briefVersion;
+        if (input && !matching && !accepted && (!current || inputDigest(semantic(input.brief)) !== inputDigest(semantic(current)))) {
+          // A draft already confirmed into a later brief version is consumed, not pending.
+          const consumed = current && await consumedDraft(context, input);
+          if (consumed?.status) return consumed;
+          if (!consumed) return stale('brief', input.baseBriefVersion, briefVersion);
+        }
         const initial = matching ? editable(input.brief) : current ? editable(current) : fallback;
         if (!validateEditable(initial, p.config, p.slider, p.lifecycle)) return unavailable();
         const preferences = Object.fromEntries(Object.entries(p.config.preferences).map(([key, d]) => [key, {
@@ -134,6 +147,7 @@ export function createBriefEditorService({ brief, account, provider, policy, clo
         initial: { brief: initial, briefVersion, draftVersion, consent: {
           search: current?.buddy?.searchConsent === true, hold: current?.buddy?.holdConsent === true,
         } }, versions: { policy: context.policyVersion, context: contextVersion, facts: p.source.factsVersion, clock: p.time.clockVersion },
+        selection: p.state.accepted ? { state: 'accepted', briefVersion: p.state.accepted.briefVersion } : null,
         provenance: { initial: matching ? 'saved-draft' : current ? 'approved-brief' : 'unconfirmed-policy-defaults', approvedBriefVersion: briefVersion || null } }));
       } catch { return unavailable(); }
     },
