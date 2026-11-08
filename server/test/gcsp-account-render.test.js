@@ -527,3 +527,27 @@ test('FUCQ-193: the HTTP adapter reads the newest listed offer state, and a fail
   const failed = adapterFor({ status: 'unavailable' });
   assert.deepEqual(await failed.adapter.readOffers(), { status: 'ok', value: { offers: [{ offerId: 'offer-2', runId: 'run-1' }, { offerId: 'offer-1', runId: 'run-1' }] } });
 });
+
+test('FUCQ-192: an in-progress order on the slot replaces "No ordering entitlement" with its state and a progress link', async () => {
+  const listed = (slot) => { const row = structuredClone(orderProgressFixtures().states['appointment-requested'].stages.value); row.entitlementSlotId = slot; return [row]; };
+  const allocated = () => { const envelope = accountFixture('no-entitlement'); for (const slot of envelope.value.slots) slot.state = 'allocated'; return envelope; };
+  const mount = (orders) => domMount({ ...readOnlyAdapter(), readAccount: async () => allocated(), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders });
+  const ordered = orderAdapter('appointment-requested', listed('slot-paula')); const { root, destroy } = await mount(ordered);
+  try {
+    await settleOrder(root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-number'));
+    assert.doesNotMatch(root.textContent, /No ordering entitlement/);
+    const status = root.querySelector('.gcsp-account-order-status'); assert.ok(status, 'order status');
+    assert.equal(status.querySelector('h2').textContent, 'Your order is in progress');
+    assert.match(status.textContent, /Current step: Sent to ordering\./);
+    const link = [...status.querySelectorAll('a')].find((node) => node.textContent === 'View order progress'); assert.ok(link, 'progress link');
+    const area = root.querySelector('.gcsp-account-order'); assert.ok(area.id); assert.equal(link.getAttribute('href'), `#${area.id}`);
+    assert.equal(findButton(status, 'Contact support'), undefined);
+  } finally { destroy(); }
+  const other = await mount(orderAdapter('appointment-requested', listed('slot-other')));
+  try {
+    await settleOrder(other.root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-number'));
+    assert.match(other.root.textContent, /No ordering entitlement/); assert.equal(other.root.querySelector('.gcsp-account-order-status'), null);
+  } finally { other.destroy(); }
+  const none = await domMount(readOnlyAdapter('no-entitlement'), { orderAdapter: orderAdapter('appointment-requested', []) }); await tick();
+  assert.match(none.root.textContent, /No ordering entitlement/); none.destroy();
+});
