@@ -13,7 +13,7 @@ const definitions = freeze(structuredClone([...SCENARIO_INPUTS_V1, MECHANICS_SCE
 export const scenarioDefinitions = () => structuredClone(definitions);
 export const isPreparedScenarioFixture = (value, policy) => prepared.has(value) && prepared.get(value) === policy;
 // A journey is available only when scenarios/ holds a reviewed start loader that applies its inputs through actual services.
-const START_LOADERS = new Set(['decline-then-change']);
+const START_LOADERS = new Set(['main-successful-journey', 'decline-then-change']);
 export const hasScenarioStartLoader = (scenarioId) => START_LOADERS.has(scenarioId);
 export const missingScenarioCapabilities = (definition) => definition.kind === 'mechanics' || START_LOADERS.has(definition.scenarioId)
   ? [] : [...definition.requiredCapabilities];

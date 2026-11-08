@@ -3,7 +3,10 @@ import { DemoIdentityAdapter } from '../identity/index.js';
 import { PolicyService } from '../policy/index.js';
 import { loadScenarioCatalogue, prepareScenarioFixture, hasScenarioStartLoader } from '../fixtures/scenarios/index.js';
 import { startDeclineThenChange } from './decline-then-change.js';
+import { startMainSuccessfulJourney } from './main-successful-journey.js';
 import { inputDigest, ok, result } from '../repository/core.js';
+
+const START_BY_SCENARIO = { 'main-successful-journey': startMainSuccessfulJourney, 'decline-then-change': startDeclineThenChange };
 
 const text = (v) => typeof v === 'string' && v.length > 0 && v.length <= 128;
 const invalid = () => result('invalid', { code: 'invalid-scenario-command', reasons: [{ field: 'reset', reason: 'Supply scenario, fixture and policy versions with the current run/version and commandId.' }] });
@@ -79,7 +82,7 @@ export class ScenarioService {
     }
     if (!journey) return reset;
     if (adopted.status !== 'ok') return ok({ ...reset.value, startState: { status: 'unavailable', step: 'policy', reason: 'The reviewed policy sets could not be adopted.' } });
-    const startState = await startDeclineThenChange({ identity: this.#identity, clock: this.#clock, brief: this.#brief,
+    const startState = await START_BY_SCENARIO[scenario.scenarioId]({ identity: this.#identity, clock: this.#clock, brief: this.#brief,
       policy: this.#policy, repository: this.#repository, prepareEmployee: this.#prepareEmployee, scenario, runId: reset.value.runId });
     return ok({ ...reset.value, startState });
   }

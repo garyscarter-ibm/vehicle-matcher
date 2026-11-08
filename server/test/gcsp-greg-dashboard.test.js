@@ -182,7 +182,9 @@ test('refused shows no figures, no Retry and hides the reserved regions', async 
   assert.equal(status.getAttribute('role'), 'alert');
   assert.match(status.textContent, /Only the scheme ordering lead/);
   assert.equal(status.querySelector('.vm-btn'), null);
-  assert.equal(root.querySelectorAll('table, .gcsp-tile, dl').length, 0);
+  // The shell's presenter bar (112fdfe2) holds an empty, hidden dl until a presenter session authorises it.
+  assert.equal([...root.querySelectorAll('table, .gcsp-tile, dl')].filter((n) => !n.closest('.gcsp-presenter-region')).length, 0);
+  assert.equal(root.querySelector('.gcsp-presenter-controls').hidden, true);
   assert.equal(root.querySelector('.gcsp-greg-regions').hidden, true);
 });
 

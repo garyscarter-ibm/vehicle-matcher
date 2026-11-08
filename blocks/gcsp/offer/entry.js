@@ -12,7 +12,8 @@ export function mountOfferEntry(root, { fetch: request = globalThis.fetch, locat
   history = globalThis.history } = {}) {
   const abort = new AbortController(); let disposed = false; let cleanup;
   // Capture and remove any email fragment synchronously, before the first account request.
-  const offer = createOfferHttpAdapter({ fetch: request, location, history, enableDecisions: true });
+  // Loopback http is allowed so the hosted entry works on http://localhost; any other host needs https.
+  const offer = createOfferHttpAdapter({ fetch: request, location, history, enableDecisions: true, allowInsecureLocalhost: true });
   const account = createAccountHttpAdapter({ fetch: request });
   const progress = createOrderProgressHttpAdapter({ fetch: request });
   const helpAdapter = createCaseHttpAdapter({ fetchImpl: request });
