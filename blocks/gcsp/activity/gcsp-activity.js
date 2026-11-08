@@ -49,7 +49,8 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', navigation, o
           body = activityBody({ result: state.result, pending: state.pending, offerDisplay,
             onRetry: account.status === 'ready' ? () => controller?.refresh() : undefined,
             onPause: typeof adapter.pause === 'function' ? () => controller?.pause() : undefined,
-            onResume: typeof adapter.resume === 'function' ? () => controller?.resume() : undefined });
+            onResume: typeof adapter.resume === 'function' ? () => controller?.resume() : undefined,
+            onReviewBrief: typeof onNavigate === 'function' ? () => onNavigate('brief') : undefined });
         }
         content.replaceChildren(body); announcement.textContent = state.message;
         if (ownedFocus) {

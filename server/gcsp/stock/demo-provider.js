@@ -4,7 +4,7 @@ import { createVehicleSnapshot } from '../../vehicles/index.js';
 import { createSyntheticStockProvider } from './synthetic-provider.js';
 import { createSyntheticProductionAdapter } from '../supply/synthetic-production.js';
 
-// Demo stock on the existing pull port. Cars use the three reviewed structural configurations
+// Demo stock on the existing pull port. Cars use the four reviewed structural configurations
 // (policy comparison.configurationSet.v1); the stock rows on top are synthetic and run-bound.
 const OBSERVED_AT = '2026-11-05T00:00:00.000Z';
 const VERSION = 'demo-synthetic-stock-v1';
@@ -18,6 +18,7 @@ export const DEMO_STOCK_NAMESPACE = `synthetic:${VERSION}`;
 export const VISIBILITY = { companyIds: ['demo-bmw-fs-uk', 'demo-bmw-rr-production'],
   schemeIds: ['choices-fs-uk', 'choices-rr-production'], employeeIds: null };
 // Model-line specs follow server/mapping.js MODEL_SPECS; insurance group and tags are synthetic.
+const f70 = { body: 'hatchback', fuel: 'petrol', boot: 380, sizeClass: 1 };
 const MODELS = {
   saloon: { model: '3 Series Saloon', derivative: '320i', configurationId: 'Q01QRzIwOlJFRlBBSU5ULFJFRlRSSU0=', key: 'G20 Saloon|320i', name: 'Synthetic 3 Series Saloon 320i',
     body: 'saloon', fuel: 'petrol', boot: 480, zeroTo62: 7.4, sizeClass: 2, insuranceGroup: 30, mpg: 45, tags: ['cruiser'] },
@@ -25,13 +26,14 @@ const MODELS = {
     body: 'estate', fuel: 'petrol', boot: 500, zeroTo62: 7.4, sizeClass: 2, insuranceGroup: 30, mpg: 44, tags: ['family'] },
   i5: { model: 'i5 Touring', derivative: 'eDrive40', configurationId: 'Q01QRzYxOlJFRlBBSU5ULFJFRlRSSU0=', key: 'G61 i5|i5 40', name: 'Synthetic i5 eDrive40 Touring',
     body: 'estate', fuel: 'ev', boot: 490, zeroTo62: 6.1, sizeClass: 3, insuranceGroup: 35, tags: ['electric'] },
+  // FUCQ-199: the G1-6-eligible line, so a G1-6 employee (Alex) has a car.
+  hatch: { ...f70, model: '1 Series Sports Hatch', derivative: '120', configurationId: 'Q01QRjcwOlJFRlBBSU5ULFJFRlRSSU0=', key: 'F70 Sports Hatch|120',
+    name: 'Synthetic 1 Series Sports Hatch 120', insuranceGroup: 22, tags: ['city'] },
 };
 // Generated-stock lines with no demo car (FUCQ-77 mappings): line specs from MODEL_SPECS, insurance group and tags synthetic.
 // 0-62 varies by derivative (M135, M240i), so it stays unknown until FUCQ-77 supplies per-derivative facts.
-const f70 = { body: 'hatchback', fuel: 'petrol', boot: 380, sizeClass: 1 };
 const g42 = { body: 'coupe', fuel: 'petrol', boot: 390, sizeClass: 1, seats: 4, tags: ['sporty'] };
 const BROWSE_LINES = [
-  { ...f70, key: 'F70 Sports Hatch|120', insuranceGroup: 22, tags: ['city'] },
   { ...f70, key: 'F70 Sports Hatch|M135', insuranceGroup: 36, tags: ['sporty'] },
   { ...g42, key: 'G42 Coupe|220i', insuranceGroup: 29 },
   { ...g42, key: 'G42 Coupe|230i', insuranceGroup: 33 },

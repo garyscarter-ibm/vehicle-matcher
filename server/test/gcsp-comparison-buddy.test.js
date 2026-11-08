@@ -173,8 +173,10 @@ test('an offer unanswered by its deadline expires through the clock, or lapses w
   assert.equal(edge.record.totals.offerExpiries, 3);
   // Answered inside the hold but after the quote's terms lapsed: only decline is left, so a keen employee lets it lapse.
   const lapsed = await replay(t, withOverlay(shortPair, { 'comparison.accessGroups': accessing(4000) }));
-  assert.deepEqual([lapsed.record.totals.termsLapsed, lapsed.record.totals.offerExpiries, lapsed.record.totals.offersAccepted,
-    lapsed.record.totals.declines], [1, 1, 0, 2]);
+  const totals = lapsed.record.totals;
+  assert.deepEqual([totals.termsLapsed, totals.offerExpiries, totals.offersAccepted], [1, 1, 0]);
+  // How many re-offers precede the lapse follows the policy-hash tie-break, so pin the shape, not the count (FUCQ-199).
+  assert.ok(totals.declines >= 1 && totals.offersMade === totals.declines + totals.offerExpiries);
 });
 
 test('declines name the attribute that falls shortest, with a keyed fallback reason', async (t) => {
@@ -184,7 +186,7 @@ test('declines name the attribute that falls shortest, with a keyed fallback rea
   for (const [label, preferences, seed, expected] of cases) {
     const { setup, record } = await replay(t, solo(preferences, seed));
     const [person] = setup.inputs.employees;
-    assert.notEqual(person.gradeId, 'G1-6', `${label}: this grade is eligible for no fixture car`);
+    assert.notEqual(person.gradeId, 'G1-6', `${label}: this grade cannot have the G21 cars this case releases`);
     assert.deepEqual([record.totals.offersMade, record.totals.declines], [1, 1], label);
     assert.deepEqual(Object.entries(record.totals.declinesByReason).filter(([, n]) => n).map(([code]) => code), [expected], label);
     const components = carFit(setup.evaluation, person.employeeId, setup.inputs.stock[0].orderUuid).underlying.components;

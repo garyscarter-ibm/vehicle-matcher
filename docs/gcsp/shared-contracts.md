@@ -126,9 +126,10 @@ The reader projects confirmed brief permission, valid existing change receipts a
 No activity command, check producer, storage schema or screen is introduced by this HTTP binding.
 
 Search and source evidence (FUCQ-95, 7 November 2026): the reader also projects completed `buddy-allocation` receipts, the latest `tick_runs`
-row and the newest offer. `lastSuccessfulCheck` is null or `{ checkedAt, clockVersion?, carsChecked, suitableCars, outcome }` (`offer-held`
+row and the newest offer. `lastSuccessfulCheck` is null or `{ checkedAt, clockVersion?, carsChecked, suitableCars, exclusions, outcome }` (`offer-held`
 or `no-match`) from the latest receipt, not after the demo clock, whose evaluations include the employee; it carries no scores or other
-employee data. `searchEvidence` is `{ status: 'recorded', checks }` or `{ status: 'not-recorded', reason: 'no-search-check-yet' }`.
+employee data. `exclusions` (FUCQ-219) is `[]` unless `suitableCars` is 0, then the top two `[{ essential, requirement: { operator?, value?, unit? }, cars }]`
+counted from this employee's own `essential-unmet` blockers (most cars first, then field name). `searchEvidence` is `{ status: 'recorded', checks }` or `{ status: 'not-recorded', reason: 'no-search-check-yet' }`.
 `sourceStatus` is `not-checked`, `ok`, `delayed` (a pending or running tick), `unavailable` (an interrupted tick or a failed
 `release-pull`/`buddy-allocation` outcome) or `evidence-unavailable` (the tick cannot be read). `currentOffer` is null or the offer with
 the latest `createdAt`, plus `href` `/gcsp/offer?offerId=<id>&runId=<id>`; offers also carry `createdAt`. `state` is `no-brief`, `paused`,
@@ -770,8 +771,9 @@ shared contracts, not duplicate comparison defaults. A missing key/allowance, un
 unavailable provider throws a safe `ComparisonInputError` with `code` and `key`; there is no fallback to local values.
 
 A fixture configuration has a target Base64 `configurationId` matching its explicit VG model code, colon and sorted
-factory-code list under Q13. The initial three **structural synthetic fixtures** use clearly fictional CMP/REF codes
-and limited source model labels (`G20 Saloon|320i`, `G21 Touring|320i`, `G61 i5|i5 40`). They have no observed factory
+factory-code list under Q13. The four **structural synthetic fixtures** use clearly fictional CMP/REF codes
+and limited source model labels (`G20 Saloon|320i`, `G21 Touring|320i`, `G61 i5|i5 40` and, from FUCQ-199,
+`F70 Sports Hatch|120`, the line grade `G1-6` can have). They have no observed factory
 options, complete specification or constructibility/full-scheme-coverage claim. This is the permitted temporary
 reviewed fixture route, not FUCQ-77 corpus publication or FUCQ-78 live stock. Their source review checks the retained
 Q13 rules and the existing allocator's UUID-v4 shape; executable signature/reader evidence remains a required check.
@@ -854,8 +856,10 @@ All three are `assumed`, sourced here, dated 8 November 2026, and read through P
 `heldNotTakenSeconds`, `heldNotTakenDays`. The same seed, policy and code give an identical record. The computed representative record is
 `outcomeRecord` in `server/test/fixtures/gcsp-comparison-current-outcomes.json`, for the measures Story.
 
-Known input limitation: with the three structural fixture configurations, grade `G1-6` is eligible for none, so
-those generated employees cannot take a car in either route. Backend only; no screen.
+FUCQ-199 (8 November 2026) closed the earlier input gap where grade `G1-6` was eligible for none of the three
+fixture configurations: `F70 Sports Hatch|120` is now in the set, in `comparison.modelLineMix` (weight 40, matching
+the `G1-6` grade weight) and in the first `supply.release.windows` window of demo stock, so every generated grade can
+reach at least one eligible configuration.
 
 ## Comparison buddy route · FUCQ-135
 

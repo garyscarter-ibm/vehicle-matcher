@@ -217,7 +217,8 @@ export function activityExamples() {
   const timeline = el('div', 'vm');
   timeline.append(activityTimeline({ events: activityEvents(activityFixtures.snapshots.paused.value.stateChanges), level: 3 }));
   section.append(timeline);
-  const states = [['never-checked', 'Not searched yet'], ['searching', 'Searching, no match yet'], ['offer', 'Offer waiting, with representative imagery'],
+  const states = [['never-checked', 'Not searched yet'], ['searching', 'Searching, no match yet'],
+    ['no-match-one', 'No match, one excluding essential'], ['no-match-two', 'No match, two excluding essentials'], ['offer', 'Offer waiting, with representative imagery'],
     ['offer-declined', 'Offer declined'], ['offer-expired', 'Offer expired'], ['paused-offer', 'Paused with an open offer'], ['paused', 'Paused'],
     ['source-delayed', 'Source delayed'], ['source-unavailable', 'Source unavailable'], ['pending', 'Updating search'], ['unavailable', 'Activity unavailable']];
   for (const [name, label] of states) {
@@ -226,6 +227,7 @@ export function activityExamples() {
     example.append(el('h3', 'vm-gallery-gcsp-title', label),
       activityBody({ result: structuredClone(activityFixtures.snapshots[name === 'pending' ? 'never-checked' : name]), level: 4,
         pending: name === 'pending', onPause: name === 'pending' ? () => {} : undefined,
+        onReviewBrief: name.startsWith('no-match') ? () => { status.textContent = 'Opens the brief editor on a live page.'; } : undefined,
         offerDisplay: activityFixtures.offerExample,
         onRetry: () => { status.textContent = 'Still unavailable.'; } }), status);
     section.append(example);
