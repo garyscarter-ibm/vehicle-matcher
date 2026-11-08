@@ -12,7 +12,7 @@ const previousRelease = '0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf
 const gcspRender = { RENDER: 'true', RENDER_SERVICE_ID: 'srv-dbm9cim1egvs73bo6g5g' };
 
 // Exercise the real CLI and selector; replace only the artifact transfer boundary.
-async function runArtifactCommand(t, { env = {}, config = yaml, command = 'restore', network = 'download' } = {}) {
+async function runArtifactCommand(t, { env = {}, config = yaml, command = 'restore', network = 'download', stub } = {}) {
   const root = await mkdtemp(join(tmpdir(), 'fleet-build-entry-'));
   t.after(() => rm(root, { recursive: true, force: true }));
   for (const directory of ['server/scripts', 'server/gcsp/vehicle-evidence']) await mkdir(join(root, directory), { recursive: true });
@@ -24,7 +24,7 @@ async function runArtifactCommand(t, { env = {}, config = yaml, command = 'resto
   for (const path of paths) {
     await writeFile(join(root, 'server', path), await readFile(new URL('../' + path, import.meta.url)));
   }
-  await writeFile(join(root, 'server/gcsp/vehicle-evidence/fleet-artifacts.js'), `
+  await writeFile(join(root, 'server/gcsp/vehicle-evidence/fleet-artifacts.js'), stub ?? `
     export async function restoreFleetRelease(options) { return { status: 'ok', active: { manifestDigest: options.releaseId }, options }; }
     export async function packFleetRelease(options) { return { status: 'packed', options }; }
   `);
@@ -33,7 +33,7 @@ async function runArtifactCommand(t, { env = {}, config = yaml, command = 'resto
   const child = spawnSync(process.execPath, args, { cwd: root, env: { ...process.env, ...env }, encoding: 'utf8', timeout: 5000 });
   assert.equal(child.error, undefined);
   assert.equal(child.stderr, '');
-  return { code: child.status, value: JSON.parse(child.stdout) };
+  return { code: child.status, value: JSON.parse(child.stdout), stdout: child.stdout };
 }
 
 test('a stale explicit GCSP Render download command restores the current Blueprint release', async (t) => {
@@ -62,7 +62,21 @@ test('GCSP Render download rejects absent, unapproved or ambiguous Blueprint sel
     assert.equal(result.code, 1);
     assert.equal(result.value.status, 'artifact-release-failed');
     assert.equal(result.value.active, undefined);
+    assert.equal(result.value.step, 'resolve-release');
   }
+});
+
+test('a failed restore reports its step, cause, status and file name on one URL-free line', async (t) => {
+  const stub = `
+    export async function restoreFleetRelease() { throw Object.assign(new TypeError('Artifact response rejected'),
+      { artifactCode: 'download-failed', httpStatus: 503, attempts: 4, asset: 'configurations.jsonl', step: 'download' }); }
+    export async function packFleetRelease() { return {}; }
+  `;
+  const child = await runArtifactCommand(t, { env: gcspRender, stub });
+  assert.equal(child.code, 1);
+  assert.deepEqual(child.value, { status: 'artifact-release-failed', step: 'download', code: 'download-failed', httpStatus: 503, attempts: 4,
+    asset: 'configurations.jsonl', failure: 'Check approved release, explicit absolute paths, pinned bytes and offline cache. Existing selection is preserved on rejected candidates.' });
+  assert.doesNotMatch(child.stdout, /:\/\//);
 });
 
 test('npm install prepares the GCSP fleet even when the remote build command only installs dependencies', async () => {
