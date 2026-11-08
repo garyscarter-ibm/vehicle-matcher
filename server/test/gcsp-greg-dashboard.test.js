@@ -129,6 +129,16 @@ test('no stock released shows an explicit stock message and still shows the unme
   assert.ok(tileByLabel(root, 'Active briefs'));
 });
 
+test('FUCQ-213: unmet table says the stock source is unavailable, not that no stock was released', async () => {
+  for (const [source, wording] of [[{ status: 'unavailable' }, 'Stock source unavailable'], [{ status: 'unavailable', reason: 'stale' }, 'Stock data too old to use']]) {
+    document.body.replaceChildren();
+    const projection = fixtures.fixtureProjection('no-stock'); projection.stock.source = source;
+    const { root } = await mountFixture('no-stock', { loadDemand: async () => ({ status: 'ready', projection }) });
+    const gates = cellsOf(root, 'Briefs with no suitable car, by gate').map((r) => r[0]);
+    assert.ok(gates.includes(wording), gates.join('|')); assert.ok(!gates.includes('No stock has been released yet'));
+  }
+});
+
 test('conflict shows its message and Refresh reloads', async () => {
   const { root } = await mountFixture('conflict');
   assert.match(root.querySelector('.vm-status').textContent, /figures changed while they were loading/);

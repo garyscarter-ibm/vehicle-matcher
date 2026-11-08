@@ -246,9 +246,9 @@ for (const [name, headline, stages] of [
     ['sales-manager approval', 'Not started'], ['sent to ordering', 'Not started']]],
   ['selection-no-hr', 'Selection received. Waiting for sales-manager approval.', [['selection received', 'Done'],
     ['sales-manager approval', 'Waiting'], ['sent to ordering', 'Not started']]],
-  ['selection-pending', 'Sending your selection. Check again shortly.', [['selection received', 'Sending'], ['HR approval', 'Not started'],
+  ['selection-pending', 'Sending your selection to ordering. Ordering owns the next step. You do not need to do anything.', [['selection received', 'Sending'], ['HR approval', 'Not started'],
     ['sales-manager approval', 'Not started'], ['sent to ordering', 'Not started']]],
-  ['selection-failed', 'Your selection was not accepted for ordering. Contact scheme support.', [['selection received', 'Not accepted'],
+  ['selection-failed', 'Your selection was not accepted for ordering. The car stays reserved. Contact scheme support.', [['selection received', 'Not accepted'],
     ['HR approval', 'Not started'], ['sales-manager approval', 'Not started'], ['sent to ordering', 'Not started']]],
 ]) test(`accepted offer shows the server's stage names and states: ${name}`, async () => {
   const { root, stop } = await mountFixture(name);
@@ -257,7 +257,9 @@ for (const [name, headline, stages] of [
     assert.equal(root.querySelector('p.gcsp-note').textContent, headline);
     assert.deepEqual(stageText(root), stages);
     assert.equal(root.querySelector('.gcsp-stage-heading').textContent, 'Your selection');
-    assert.match(root.textContent, /Order number0123456/); assert.equal(root.querySelector('[aria-label="Before you accept"]'), null);
+    const ids = [...root.querySelector('.gcsp-stage-heading').closest('.gcsp-offer-current').querySelectorAll('dl > div')].map((d) => [d.querySelector('dt').textContent, d.querySelector('dd').textContent]);
+    assert.deepEqual(ids, name === 'selection-no-hr' ? [['Car order number', '0123456']] : [['Order reference', 'GCSP-000123'], ['Car order number', '0123456']]);
+    assert.doesNotMatch(root.textContent, /Order number/); assert.equal(root.querySelector('[aria-label="Before you accept"]'), null);
     assert.doesNotMatch(root.textContent, /\bapproved\b/i); assert.equal(root.querySelector('[data-offer-action="accept"]'), null);
   } finally { stop(); }
 });
@@ -305,7 +307,7 @@ test('the DTO projection carries the quote order uuid and the real embedded prog
   view.update({ ...projected.value, orderUuid: ORDER, canAccept: false, canDecline: false });
   for (let n = 0; n < 60 && !root.querySelector('.gcsp-offer-order .gcsp-order-number'); n += 1) await new Promise((done) => setTimeout(done, 15));
   const area = root.querySelector('.gcsp-offer-order');
-  assert.match(area.textContent, /Order no\. 1000001/); assert.match(area.textContent, new RegExp(projected.value.card.members[0].display.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+  assert.match(area.textContent, /Order referenceGCSP-000123Car order number1000001/); assert.match(area.textContent, new RegExp(projected.value.card.members[0].display.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   assert.equal(area.querySelector('h2').textContent, 'Order progress'); assert.ok(area.querySelectorAll('.gcsp-stage-tracker li').length >= 3);
   view.destroy(); assert.equal(root.querySelector('.gcsp-offer-order'), null);
 });

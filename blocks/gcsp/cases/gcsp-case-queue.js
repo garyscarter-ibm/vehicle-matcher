@@ -1,7 +1,7 @@
 import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-matcher/ui.js';
 import { labelledField, errorSummary } from '../kit/form-controls.js';
 import { dataTable } from '../kit/data-table.js';
-import { caseStatus, clockTime, preferenceLabel, renderCaseContent, caseNotice, shown, carNameText, roleLabel } from './case-content.js';
+import { caseStatus, clockTime, preferenceLabel, renderCaseContent, caseNotice, shown, carNameText, carOptionNames, roleLabel } from './case-content.js';
 import { caseFailure } from './gcsp-help.js';
 import { createCaseHttpAdapter, isCaseRecord, isCaseOptionsProjection } from './http-adapter.js';
 import { isRunRestarted, runRestartedNotice, runRestartedScreen } from '../kit/run-restarted.js';
@@ -30,11 +30,14 @@ function nativeSelect(items, value, placeholder) {
 const facts = (rows) => factList(rows.map(([label, value]) => ({ label, value: shown(value) })), { className: 'gcsp-case-facts' });
 const remedyLabels = { alternativeCars: 'Suitable available cars', preferenceRelaxations: 'One preference change', laterRelease: 'Reviewed later release',
   manualDecision: 'Manual decision', contractExtension: 'Contract extension' };
+function carName(options, orderUuid) {
+  const items = options?.alternativeCars?.items ?? []; const index = items.findIndex((car) => car.orderUuid === orderUuid);
+  return index < 0 ? carNameText(null) : carOptionNames(items)[index];
+}
 function remedyReview(remedy, options) {
   if (!remedy) return [['Remedy', 'Current remedy retained']];
   if (remedy.type === 'alternative-car') {
-    const item = options?.alternativeCars?.items?.find((car) => car.orderUuid === remedy.orderUuid);
-    return [['Remedy', 'Alternative car'], ['Proposed car', carNameText(item?.snapshot?.display?.name)], ['Exact car reference', remedy.orderUuid]];
+    return [['Remedy', 'Alternative car'], ['Proposed car', carName(options, remedy.orderUuid)], ['Exact car reference', remedy.orderUuid]];
   }
   if (remedy.type === 'preference-relaxation') return [['Remedy', 'One preference change'], ['Preference', preferenceLabel(remedy.path)],
     ['Proposed value', remedy.value], ['Employee confirmation', 'Required through the employee brief']];
@@ -47,8 +50,9 @@ function remedyChoices(options) {
   for (const key of ['alternativeCars', 'preferenceRelaxations', 'laterRelease']) {
     const group = options[key];
     if (!group?.available) continue;
+    const names = key === 'alternativeCars' ? carOptionNames(group.items ?? []) : [];
     for (const [index, item] of (group.items ?? []).entries()) choices.push({ key: `${key}:${index}`, item,
-      label: key === 'alternativeCars' ? `Alternative car: ${item.snapshot?.display?.name ?? item.orderUuid}`
+      label: key === 'alternativeCars' ? `Alternative car: ${names[index]}`
         : key === 'preferenceRelaxations' ? `Change ${preferenceLabel(item.path).toLowerCase()}` : `Later release: ${clockTime(item.releaseAt)}` });
   }
   if (options.manualDecision?.available) choices.push({ key: 'manualDecision', label: 'Manual decision', item: options.manualDecision });
@@ -126,7 +130,7 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
     else if (choice?.type === 'contract-extension') form.append(inputField('until', 'Proposed contract end (calendar date)', 'date',
       `Actual contract end: ${shown(projection.options.contractExtension.contractEndDate)}. The server checks the permitted extension date.`));
     else if (choice?.type === 'later-release') form.append(facts([['Reviewed release, demo clock (UTC)', clockTime(choice.releaseAt)], ['Source', choice.source]]));
-    else if (choice?.type === 'alternative-car') form.append(facts([['Proposed car', carNameText(choice.snapshot?.display?.name)],
+    else if (choice?.type === 'alternative-car') form.append(facts([['Proposed car', carName(projection.options, choice.orderUuid)],
       ['Exact car reference', choice.orderUuid], ['Configuration', choice.configurationId]]));
     for (const [key, label] of Object.entries(remedyLabels)) if (projection.options[key]?.available === false)
       form.append(el('p', 'gcsp-note', `${label}: ${projection.options[key].reason ?? 'Unavailable.'}`));

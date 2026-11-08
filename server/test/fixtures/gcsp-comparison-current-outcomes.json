@@ -169,7 +169,7 @@
     "policyVersion": "gcsp-policy-v1",
     "inputHash": "7a5b56f9db0864bf5fb7b4fb90ca114c9428b77fd6bfbdf9b19700b779a37c85",
     "generatorVersion": "comparison-inputs.sha256.v1",
-    "policyHash": "2d872c5abc25fe5b5d51431b39fb30e6be6d11b997eea39135994cbfb1f46e27",
+    "policyHash": "90da819d8ae50fb0a09073e34403abc6c2f411198e8eaaf514302afd014e96b4",
     "codeRevision": "fucq134-test",
     "threshold": 70,
     "thresholdKey": "comparison.acceptableFitThreshold",
@@ -256,11 +256,11 @@
         "takenDate": null,
         "renewalAt": "2026-12-05T09:00:00.000Z",
         "fit": null,
+        "orderingClosedAt": null,
         "claims": 2,
         "retries": 0,
         "expiries": 2,
-        "sessions": 2,
-        "orderingClosedAt": null
+        "sessions": 2
       },
       {
         "seed": "fucq134-pair-151",
@@ -277,11 +277,11 @@
           "stated": 100,
           "underlying": 100
         },
+        "orderingClosedAt": null,
         "claims": 1,
         "retries": 1,
         "expiries": 0,
-        "sessions": 2,
-        "orderingClosedAt": null
+        "sessions": 2
       }
     ],
     "cars": [

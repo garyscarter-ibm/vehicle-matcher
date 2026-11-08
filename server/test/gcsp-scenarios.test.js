@@ -47,7 +47,7 @@ test('only journeys with a reviewed start loader are available; the rest refuse 
   const catalogue = (await f.scenarios.readCatalogue(f.presenter)).value;
   const before = snapshot(f);
   const journeys = catalogue.scenarios.filter((s) => s.kind === 'journey');
-  assert.deepEqual(journeys.filter((s) => s.availability.available).map((s) => s.scenarioId), ['main-successful-journey', 'no-suitable-match', 'decline-then-change', 'data-unavailable', 'uncertain-handoff', 'uncertain-handoff-rejected']);
+  assert.deepEqual(journeys.filter((s) => s.availability.available).map((s) => s.scenarioId), ['main-successful-journey', 'no-suitable-match', 'decline-then-change', 'data-unavailable', 'uncertain-handoff', 'uncertain-handoff-rejected', 'decline-then-change-waiting']);
   const decline = journeys.find((s) => s.scenarioId === 'decline-then-change');
   assert.equal(decline.fixtureVersion, 'decline-then-change-inputs-v2'); assert.deepEqual(decline.variants, ['later-suitable-stock']);
   assert.equal(decline.inputs.change.value, 'saloon');

@@ -4,10 +4,12 @@ import { labelledField, errorSummary } from '../../kit/form-controls.js';
 import { dataTable } from '../../kit/data-table.js';
 import { metricTile } from '../../kit/metric-tile.js';
 import { isRunRestarted, runRestartedNotice } from '../../kit/run-restarted.js';
+import { formatDemoTime } from '../demand-copy.js';
 import { validPolicy, validPreview, validPublished } from './http-adapter.js';
 
 let sequence = 0;
 const note = (text) => el('p', 'gcsp-note', text);
+const when = (iso) => formatDemoTime(iso) ?? 'Time not available';
 const fieldName = (f) => f.kind === 'weight' ? `${f.key[0].toUpperCase()}${f.key.slice(1)} weight`
   : `${f.schemeId} · ${f.configurationId || `${f.matchField}: ${f.matchValue}`}`;
 const safeNumber = (v) => /^\d+$/.test(v) && Number.isSafeInteger(Number(v)) && Number(v) >= 0;
@@ -115,8 +117,8 @@ export function mountGregPublish(root, { adapter, commandId = () => globalThis.c
   }
   function build() {
     values = new Map(policy.fields.map((f) => [f.id, String(f.value)])); controls = new Map();
-    facts.replaceChildren(factList([{ label: 'Active version', value: policy.activeVersion }, { label: 'Effective from', value: policy.effectiveFrom },
-      { label: 'Demo time', value: policy.asOf }]), note(policy.heldOffers.message));
+    facts.replaceChildren(factList([{ label: 'Active version', value: policy.activeVersion }, { label: 'Effective from', value: when(policy.effectiveFrom) },
+      { label: 'Demo time', value: when(policy.asOf) }]), note(policy.heldOffers.message));
     const prices = policy.fields.filter((f) => f.kind === 'price'); const rows = [];
     if (prices.length) {
       selector = el('select', '');
@@ -227,7 +229,7 @@ export function mountGregPublish(root, { adapter, commandId = () => globalThis.c
       results.replaceChildren(statusScreen({ kicker: 'Published', title: pending ? 'Saved, waiting for activation' : 'Policy published',
         message: pending ? 'The version is saved. Retry the original publication to activate it without publishing twice.'
           : value.activation.publishedVersionActive === false ? 'The saved version was published. A later policy is now active.' : 'New previews and allocations use the active policy.' }),
-      factList([{ label: 'Published version', value: value.policyVersion }, { label: 'Effective from', value: value.effectiveFrom },
+      factList([{ label: 'Published version', value: value.policyVersion }, { label: 'Effective from', value: when(value.effectiveFrom) },
         { label: 'Publisher', value: value.publisher }, { label: 'Active version', value: value.activation.policyVersion }]), note(value.heldOffers.message));
       preview = null;
       if (!pending) { original = null; policy = null; }

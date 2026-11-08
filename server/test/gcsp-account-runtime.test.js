@@ -19,7 +19,8 @@ test('pure shared account adapter uses only the existing endpoint and presentati
 });
 
 test('shared account adapter keeps missing, refused, malformed and failed account data unavailable', async () => {
-  for (const value of [{ status: 'ok', value: { state: 'no-entitlement', account: { name: 'Paula' } } },
+  for (const value of [{ status: 'ok', value: { state: 'absent-hr-account', account: null } },
+    { status: 'ok', value: { state: 'unknown-grade', account: { name: 'Paula' } } }, { status: 'ok', value: { state: 'later', account: { name: 'Paula' } } },
     { status: 'ok', value: { state: 'ready', account: { gradeId: 'G7' } } }, { status: 'unavailable' }]) {
     const adapter = createAccountHttpAdapter({ fetch: async () => ({ ok: true, json: async () => value }) });
     assert.deepEqual(await adapter.loadAccount(), { status: 'unavailable' });
@@ -30,11 +31,12 @@ test('shared account adapter keeps missing, refused, malformed and failed accoun
   assert.deepEqual(await denied.loadAccount(), { status: 'unavailable' });
 });
 
-test('shared account adapter accepts a widened state list only when the caller asks', async () => {
-  const value = { status: 'ok', value: { state: 'no-entitlement', account: { name: 'Paula' } } };
-  const fetch = async () => ({ ok: true, json: async () => value });
-  assert.deepEqual(await createAccountHttpAdapter({ fetch }).loadAccount(), { status: 'unavailable' });
-  assert.deepEqual(await createAccountHttpAdapter({ fetch, states: ['ready', 'no-entitlement'] }).loadAccount(), { status: 'ready', name: 'Paula', context: '' });
+test('FUCQ-212: every valid account state after an accept keeps the normal header', async () => {
+  // Accepting an offer allocates the slot, so the account reads no-entitlement; closed and early windows are valid too.
+  for (const state of ['ready', 'no-entitlement', 'ordering-closed', 'not-yet-eligible']) {
+    const fetch = async () => ({ ok: true, json: async () => ({ status: 'ok', value: { state, account: { name: 'Paula', gradeId: 'G7' } } }) });
+    assert.deepEqual(await createAccountHttpAdapter({ fetch }).loadAccount(), { status: 'ready', name: 'Paula', context: 'Grade G7' }, state);
+  }
 });
 
 test('FUCQ-201: shared account adapter passes a restart through and reads a bare 401 as access-required', async () => {

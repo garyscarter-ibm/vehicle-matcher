@@ -1,4 +1,5 @@
 // Pure helpers: submit body, refusal copy and one readback shared by the live review and the placed order.
+import { orderReferenceOf } from '../kit/order-identity.js';
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const present = (v) => v != null && v !== '';
 const points = (v) => v?.unit === 'points' && Number.isFinite(v.value) ? v.value : null;
@@ -74,7 +75,7 @@ export function readbackFor({ model, selection, account, draft }) {
   const old = live ? model.currentContract : selection?.oldContract;
   const slot = (a?.slots ?? []).find((entry) => entry.entitlementSlotId === (live ? model.binding.entitlementSlotId : selection?.vehicleSlot?.entitlementSlotId));
   const quote = live ? model.quote : selection?.quote; const terms = quote?.terms?.kind === 'employee-scheme' ? quote.terms : null;
-  return { mode, orderNumber: live ? model.orderNumber : selection?.stock?.orderNumber, quote,
+  return { mode, orderNumber: live ? model.orderNumber : selection?.stock?.orderNumber, orderReference: orderReferenceOf(selection?.orderReference), quote,
     employee: live ? a?.account : selection?.employee, driver,
     contract: live ? model.contract : selection?.draft?.contract,
     requested: live ? model.requestedCollection?.date : choices?.requestedCollectionDate,

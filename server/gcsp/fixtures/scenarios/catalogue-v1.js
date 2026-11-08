@@ -48,6 +48,15 @@ export const SCENARIO_INPUTS_V1 = [
       prepare: ['release-through-service', 'allocate-through-service'], syntheticOrderingFault: `timeout-${resolution}` },
     [{ operation: 'employee', purpose: 'accept-offer' }, { operation: 'tick', purpose: 'reconcile-existing-operation-before-retry' }], [resolution],
     resolution === 'acknowledged' ? 'uncertain-handoff-inputs-v2' : 'uncertain-handoff-rejected-inputs-v1')),
+  // FUCQ-173: preferences only rank cars, so the one change is an essential no released car has; Paula waits.
+  journey('decline-then-change-waiting', 'Decline then change, no second car yet', 'FUCQ-173', ['FUCQ-86', 'FUCQ-87', 'FUCQ-89', 'FUCQ-75'],
+    ['FUCQ-96', 'FUCQ-100', 'FUCQ-106', 'FUCQ-107', 'FUCQ-128', 'FUCQ-173'],
+    ['brief-confirmation', 'stock-release', 'buddy-allocation', 'buddy-offers', 'offer-decisions', 'brief-change'],
+    { briefs: [brief('demo-paula')], stockTranches: [{ source: 'published-demo-stock', cue: 'release' }], pendingOperations: [],
+      prepare: ['release-through-service', 'allocate-through-service'],
+      change: { reasonCode: 'equipment', path: 'essentials.equipment', value: ['Tow bar'] } },
+    [{ operation: 'employee', purpose: 'decline-and-confirm-one-change' }, { operation: 'tick', purpose: 'recompute-from-changed-brief' }],
+    ['waiting-for-suitable-stock']),
 ];
 
 export const MECHANICS_SCENARIO = {

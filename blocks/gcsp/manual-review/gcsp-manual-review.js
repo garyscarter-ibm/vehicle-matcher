@@ -34,13 +34,13 @@ export function reviewVehicleView(model) {
   const terms = quote.terms?.kind === 'employee-scheme' ? quote.terms : null;
   const points = (value) => value?.unit === 'points' && Number.isFinite(value.value) ? value.value : null;
   const member = { id: quote.orderUuid, identity: { orderUuid: quote.orderUuid, configurationId: quote.configurationId },
-    display: { name: display.name || 'Car name not supplied', line: `Order ${model.orderNumber}` },
+    display: { name: display.name || 'Car name not supplied', line: `Car order ${model.orderNumber}` },
     media: { src: display.photo || '', alt: image?.alt || `${display.name || 'Car'}: representative image`,
       caption: image?.caption || 'Representative image, not your exact car' },
     facts: [['Model', facts.model ?? facts.marketingModelRange ?? facts.modelRange], ['Body style', facts.body ?? facts.bodyType],
       ['Engine', facts.engine], ['Exterior', facts.exterior ?? facts.colour], ['Interior', facts.interior ?? facts.upholsteryCode],
       ['Transmission', facts.transmission], ['Insurance group', facts.insuranceGroup]]
-      .map(([name, value]) => ({ label: name, value: known(value) })).concat([{ label: 'Order number', value: model.orderNumber }]),
+      .map(([name, value]) => ({ label: name, value: known(value) })).concat([{ label: 'Car order number', value: model.orderNumber }]),
     terms: [{ kind: 'points-monthly', value: points(terms?.points), allowance: points(terms?.allowanceInputs?.allowance) }],
     decision: { gateStatus: ['eligible', 'ineligible', 'needs-confirmation'].includes(quote.eligibility?.state) ? quote.eligibility.state : null, reasons: [], blockers: [], unknowns: [], tradeOffs: [] }, actions: [] };
   return { schemaVersion: 1, selectedId: member.id, members: [member] };

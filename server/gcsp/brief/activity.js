@@ -66,13 +66,31 @@ function sourceStatusOf(tick) {
 const checkable = (receipt, context) => receipt.runId === context.runId && receipt.consumerId === 'buddy-allocation'
   && receipt.state === 'completed' && receipt.outcome?.status === 'ok' && text(receipt.eventId) && validInstant(receipt.outcome.value?.evaluatedAt);
 
+const scalar = (v) => typeof v === 'number' && Number.isFinite(v) || typeof v === 'boolean' || text(v);
+const required = (r) => Object.fromEntries(['operator', 'unit', 'value'].filter((k) => r?.[k] !== undefined
+  && (scalar(r[k]) || k === 'value' && Array.isArray(r[k]) && r[k].length <= 20 && r[k].every(text))).map((k) => [k, r[k]]));
+
+// With no suitable car, the top two essentials this employee's own decisions failed on (most cars first).
+function exclusionsOf(decisions) {
+  const found = new Map();
+  for (const row of decisions) {
+    const unmet = (row?.blockers ?? []).filter((x) => x?.code === 'essential-unmet' && text(x.field));
+    for (const b of new Map(unmet.map((x) => [x.field, x])).values()) {
+      const entry = found.get(b.field) ?? { essential: b.field, requirement: required(b.requirement), cars: 0 };
+      entry.cars += 1; found.set(b.field, entry);
+    }
+  }
+  return [...found.values()].sort((a, b) => b.cars - a.cars || a.essential.localeCompare(b.essential)).slice(0, 2);
+}
+
 // Only this employee's slice of a completed allocation receipt; nothing about other employees leaves here.
 function projectCheck(receipt, context, mine) {
   const value = receipt.outcome.value;
   if (!Array.isArray(mine?.decisions)) return null;
+  const suitableCars = mine.decisions.filter((row) => row?.gateStatus === 'eligible').length;
   return { eventId: receipt.eventId, checkedAt: value.evaluatedAt,
     ...(text(value.inputVersions?.clock) ? { clockVersion: value.inputVersions.clock } : {}),
-    carsChecked: mine.decisions.length, suitableCars: mine.decisions.filter((row) => row?.gateStatus === 'eligible').length,
+    carsChecked: mine.decisions.length, suitableCars, exclusions: suitableCars ? [] : exclusionsOf(mine.decisions),
     outcome: Array.isArray(value.assignments) && value.assignments.some((row) => row?.employeeId === context.employeeId) ? 'offer-held' : 'no-match' };
 }
 

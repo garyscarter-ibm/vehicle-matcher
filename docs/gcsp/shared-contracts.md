@@ -126,9 +126,10 @@ The reader projects confirmed brief permission, valid existing change receipts a
 No activity command, check producer, storage schema or screen is introduced by this HTTP binding.
 
 Search and source evidence (FUCQ-95, 7 November 2026): the reader also projects completed `buddy-allocation` receipts, the latest `tick_runs`
-row and the newest offer. `lastSuccessfulCheck` is null or `{ checkedAt, clockVersion?, carsChecked, suitableCars, outcome }` (`offer-held`
+row and the newest offer. `lastSuccessfulCheck` is null or `{ checkedAt, clockVersion?, carsChecked, suitableCars, exclusions, outcome }` (`offer-held`
 or `no-match`) from the latest receipt, not after the demo clock, whose evaluations include the employee; it carries no scores or other
-employee data. `searchEvidence` is `{ status: 'recorded', checks }` or `{ status: 'not-recorded', reason: 'no-search-check-yet' }`.
+employee data. `exclusions` (FUCQ-219) is `[]` unless `suitableCars` is 0, then the top two `[{ essential, requirement: { operator?, value?, unit? }, cars }]`
+counted from this employee's own `essential-unmet` blockers (most cars first, then field name). `searchEvidence` is `{ status: 'recorded', checks }` or `{ status: 'not-recorded', reason: 'no-search-check-yet' }`.
 `sourceStatus` is `not-checked`, `ok`, `delayed` (a pending or running tick), `unavailable` (an interrupted tick or a failed
 `release-pull`/`buddy-allocation` outcome) or `evidence-unavailable` (the tick cannot be read). `currentOffer` is null or the offer with
 the latest `createdAt`, plus `href` `/gcsp/offer?offerId=<id>&runId=<id>`; offers also carry `createdAt`. `state` is `no-brief`, `paused`,
@@ -770,8 +771,9 @@ shared contracts, not duplicate comparison defaults. A missing key/allowance, un
 unavailable provider throws a safe `ComparisonInputError` with `code` and `key`; there is no fallback to local values.
 
 A fixture configuration has a target Base64 `configurationId` matching its explicit VG model code, colon and sorted
-factory-code list under Q13. The initial three **structural synthetic fixtures** use clearly fictional CMP/REF codes
-and limited source model labels (`G20 Saloon|320i`, `G21 Touring|320i`, `G61 i5|i5 40`). They have no observed factory
+factory-code list under Q13. The four **structural synthetic fixtures** use clearly fictional CMP/REF codes
+and limited source model labels (`G20 Saloon|320i`, `G21 Touring|320i`, `G61 i5|i5 40` and, from FUCQ-199,
+`F70 Sports Hatch|120`, the line grade `G1-6` can have). They have no observed factory
 options, complete specification or constructibility/full-scheme-coverage claim. This is the permitted temporary
 reviewed fixture route, not FUCQ-77 corpus publication or FUCQ-78 live stock. Their source review checks the retained
 Q13 rules and the existing allocator's UUID-v4 shape; executable signature/reader evidence remains a required check.
@@ -854,8 +856,10 @@ All three are `assumed`, sourced here, dated 8 November 2026, and read through P
 `heldNotTakenSeconds`, `heldNotTakenDays`. The same seed, policy and code give an identical record. The computed representative record is
 `outcomeRecord` in `server/test/fixtures/gcsp-comparison-current-outcomes.json`, for the measures Story.
 
-Known input limitation: with the three structural fixture configurations, grade `G1-6` is eligible for none, so
-those generated employees cannot take a car in either route. Backend only; no screen.
+FUCQ-199 (8 November 2026) closed the earlier input gap where grade `G1-6` was eligible for none of the three
+fixture configurations: `F70 Sports Hatch|120` is now in the set, in `comparison.modelLineMix` (weight 40, matching
+the `G1-6` grade weight) and in the first `supply.release.windows` window of demo stock, so every generated grade can
+reach at least one eligible configuration.
 
 ## Comparison buddy route · FUCQ-135
 
@@ -1053,6 +1057,7 @@ Retail `publicMatch.listings[]` additively retains the evaluator's exact `decisi
 | 1.0.0 / 2026-11-06 / FUCQ-111 | Adds LifecycleApprovalService, `lifecycle.stages.v1` rev 2 read/listOrders and internal stagePort, synthetic ordering status capability and live stub, versioned receipt transitions (no table), `lifecycle-approvals` handler and assumed `lifecycle.approval.{ticks,declineScenario,ownership}.v1`. |
 | 1.0.0 / 2026-11-05 / FUCQ-71 | Adds the isolated shared selection-ordering port, durable scoped synthetic provider and DemoClock reconciliation; canonical assumed `ordering.terms.v1` / `ordering.approvalStages.v1` and a trusted source transaction callback. Uses existing repository tables, preserves exact stock order identity and target approval names. F71 callback commit/rollback/pending and policy boundaries are scoped evidence; Gary's actual transactional producer, configured SQL/reopen, account/runtime and final whole-suite gates remain incomplete. |
 | 1.0.0 / 2026-11-07 / FUCQ-108 | Hands an accepted buddy offer off through FUCQ-71's single ordering adapter via trusted `submitSource`; the offer decision, allocation and selection intent commit in one transaction. Adds `termsDigest`/`declarations` to accept, an allowance recheck against the pinned quote, `progress` on order reads and a `brief-selection:v1` receipt. The offer read additively carries `handoff` and `selection`. No new tables or migrations. |
+| 1.0.0 / 2026-11-08 / FUCQ-220 | Adds a generated per-order `orderReference` (assumed `ordering.reference.v1`) on the `selection-order` snapshot and row, with a unique key and additive migration `0006`. Additively projected by the manual order read, the offer read `selection` and lifecycle `source`; `null` for earlier orders. The car's `orderNumber` and the ordering adapter contract are unchanged. |
 | 1.0.0 / 2026-11-05 / FUCQ-66 | Adds the manual claim binding, exact versioned claim/review/release/current reads, immutable quote/receipt conventions, pending 202 mapping and expiry handler on existing foundation ports. Existing keyed manual timings are pinned without another default source. No schema/migration or existing contract meaning changes. Deterministic backend fixtures/trials are recorded; required configured PostgreSQL proof remains blocked and no built/deployed or diagram-render claim is made. |
 | 1.0.0 / 2026-11-05 / FUCQ-103 | Adds trusted snapshot reads, the bounded monthly-points/preference-weight projection, no-write demand/fit preview and intentional dated publishing. A narrowly validated successor may adopt `employee.recommendation.v1.preferenceWeights` over an unchanged legacy calibration; historical rows/quotes and legacy employee-importance output remain intact. Activation and rendered integration evidence are tracked separately until verified. |
 | 1.0.0 / 2026-11-07 / FUCQ-95 | Extends the activity read model additively with `lastSuccessfulCheck`, `searchEvidence`, `sourceStatus`, `currentOffer` (with `href`), `offer-closed`/`searching` states and offer `createdAt`, read from stored allocation receipts and `tick_runs`. No new producer, schema, policy key or command. |
@@ -1086,8 +1091,9 @@ The FUCQ-80 contract baseline was documentation only. The FUCQ-81/82 backend imp
 
 `ManualOrderService` exposes trusted employee `readTerms(context)`, `submit(context,input)` and `readOrder(context)`
 ports; the exact input/projection and remaining integration gates are in [the ordering contract](manual-order-contract.md).
-The existing stock `orderUuid`, seven-digit `orderNumber` and `configurationId` are authoritative; no replacement
-order number or approval is generated. Internal handoff/reconciliation phases remain separate from the configured
+The existing stock `orderUuid`, seven-digit `orderNumber` and `configurationId` stay authoritative for the car; the
+order's own id is the generated `orderReference` (see [Order reference](#order-reference--fucq-220)), and no approval
+is generated. Internal handoff/reconciliation phases remain separate from the configured
 employee-facing target approval stage.
 
 The additive assumed canonical keys `ordering.terms.v1` and `ordering.approvalStages.v1` supply fictional versioned
@@ -1110,6 +1116,25 @@ before resend; only matching authoritative absence permits execute. Unknown or m
 ownership, and unsupported/rejected outcomes never fabricate a confirmation. Reconciliation registers on DemoClock's
 existing `pending-reconciliation` stage. Backend presentation fixtures cover validation, pending, failure and actual
 approval status; rendered consumer evidence belongs to FUCQ-72.
+
+## Order reference · FUCQ-220
+
+Each order created through `ManualOrderService` (manual cart `submit` and buddy `submitSource`) gets its own server-generated
+reference such as `GCSP-000123`. The car's seven-digit `orderNumber` is unchanged and stays the car's own fact.
+
+- **Format:** assumed canonical key `ordering.reference.v1`, `{ schemaVersion: 1, prefix, digits, first }`, read through
+  PolicyService at the run's policy version. A missing or invalid entry fails closed: no order is created.
+- **Generated once:** inside the transaction that inserts the `selection-order` row, as the highest number already used in the
+  run plus one (starting at `first`). It never derives from personal data or an internal id.
+- **Stored:** `payload.selection.orderReference` (the immutable snapshot, also in the `selection-received` receipt) and a
+  top-level `orderReference` on the `pending_operations` row. The repository key `['orderReference']` is unique per run
+  and ignores rows without one.
+- **Idempotent:** a repeated command, reload, restart or lost-response retry takes the existing `selection-order` row and
+  returns its stored reference; no second row or number is made.
+- **Read-only projections (additive):** `ManualOrderService` `orderReference`, the offer read `selection.orderReference`
+  and lifecycle `source.orderReference` (order progress). Orders created before this change read `null`; none is invented.
+- **Migration:** additive `0006_order_reference.sql` adds a PostgreSQL partial unique index on `(run_id, data->>'orderReference')`
+  where present. No table is added and the ordering adapter's external contract is unchanged.
 
 ## Lifecycle approval stages · FUCQ-111
 

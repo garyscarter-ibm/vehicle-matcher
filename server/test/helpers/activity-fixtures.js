@@ -39,7 +39,8 @@ async function scenario({ check, tick, offer, pause } = {}) {
       consent: { search: true, hold: false } }));
     if (check) {
       // A stored allocation receipt of the real shape: this employee's slice only.
-      const decisions = Array.from({ length: 12 }, (_, i) => ({ orderUuid: `car-${i}`, gateStatus: i < check.suitable ? 'eligible' : 'ineligible' }));
+      const decisions = Array.from({ length: 12 }, (_, i) => ({ orderUuid: `car-${i}`, gateStatus: i < check.suitable ? 'eligible' : 'ineligible',
+        blockers: (check.unmet ?? []).filter((u) => i >= u.from && i < u.to).map((u) => ({ code: 'essential-unmet', field: u.field, requirement: u.requirement })) }));
       const assignments = check.held ? [{ employeeId: context.employeeId, orderUuid: 'car-0' }] : [];
       checked(await repository.transaction(context, command('check'), (tx) => tx.recordReceipt({ consumerId: 'buddy-allocation',
         eventId: 'check-1', eventType: 'stock-released', inputDigest: inputDigest({ eventId: 'check-1' }), inputVersions: {}, state: 'completed',
@@ -69,6 +70,8 @@ async function scenario({ check, tick, offer, pause } = {}) {
   } finally { await repository.close(); }
 }
 const healthy = { 'release-pull': ok({ pulled: 0 }), 'buddy-allocation': ok({}) };
+const seats = { field: 'seats', requirement: { operator: 'gte', value: 5, unit: 'count' } };
+const boot = { field: 'boot', requirement: { operator: 'gte', value: 430, unit: 'L' } };
 const noMatch = { suitable: 0 }; const held = { suitable: 3, held: true };
 const soon = '2026-11-06T09:00:00.000Z'; const earlier = '2026-11-04T22:00:00.000Z';
 
@@ -77,6 +80,8 @@ export async function createActivityFixtures() {
   const build = async (name, options) => { snapshots[name] = (await scenario(options)).snapshot; };
   await build('never-checked'); await build('paused', { pause: true });
   await build('searching', { check: noMatch, tick: healthy });
+  await build('no-match-one', { check: { suitable: 0, unmet: [{ ...seats, from: 0, to: 12 }] }, tick: healthy });
+  await build('no-match-two', { check: { suitable: 0, unmet: [{ ...seats, from: 0, to: 9 }, { ...boot, from: 6, to: 12 }] }, tick: healthy });
   await build('offer', { check: held, tick: healthy, offer: { state: 'active', expiresAt: soon } });
   await build('offer-declined', { check: noMatch, tick: healthy, offer: { state: 'rejected', expiresAt: soon } });
   await build('offer-expired', { check: noMatch, tick: healthy, offer: { state: 'expired', expiresAt: earlier } });

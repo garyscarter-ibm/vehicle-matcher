@@ -74,6 +74,8 @@ async function replay(services, client, label) {
   assert.equal(activity.currentOffer, null);
   const check = activity.lastSuccessfulCheck;
   assert.deepEqual([check.outcome, check.suitableCars, check.carsChecked], ['no-match', 0, evaluation.decisions.length]);
+  // FUCQ-219: the check names the essential that ruled every car out, from her own decisions only.
+  assert.deepEqual(check.exclusions.map((row) => [row.essential, row.cars, row.requirement.value]), [['seats', evaluation.decisions.length, 9]]);
   const hers = route(await client.request('/api/gcsp/offers/current'));
   assert.equal(hers.offers.filter((row) => row.runId === runId).length, 0);
 

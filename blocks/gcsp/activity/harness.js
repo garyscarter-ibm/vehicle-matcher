@@ -6,7 +6,7 @@ import { fixtureAdapter } from '../cases/fixtures.js';
 import { activityBody } from './activity-body.js';
 import { activityFixtures } from './activity-fixtures.js';
 
-const names = { 'never-checked': 'Not searched', searching: 'Searching', offer: 'Offer waiting', 'offer-declined': 'Offer declined',
+const names = { 'never-checked': 'Not searched', searching: 'Searching', 'no-match-one': 'No match, one reason', 'no-match-two': 'No match, two reasons', offer: 'Offer waiting', 'offer-declined': 'Offer declined', 'offer-accepted': 'Offer accepted',
   'offer-expired': 'Offer expired', 'paused-offer': 'Paused with offer', paused: 'Paused', 'source-delayed': 'Source delayed',
   'source-unavailable': 'Source unavailable', unavailable: 'Unavailable' };
 const requested = new URLSearchParams(globalThis.location?.search || '').get('fixture');
@@ -30,7 +30,10 @@ if (root) mountEmployee(root, {
     function show(name, retry = false) {
       selected = name;
       body.firstElementChild?.destroy?.();
-      body.replaceChildren(activityBody({ result: structuredClone(activityFixtures.snapshots[name]),
+      // No generated accepted run exists, so the accepted preview relabels the declined snapshot's offer.
+      const result = structuredClone(activityFixtures.snapshots[name === 'offer-accepted' ? 'offer-declined' : name]);
+      if (name === 'offer-accepted') result.value.currentOffer.state = 'accepted';
+      body.replaceChildren(activityBody({ result,
         offerDisplay: activityFixtures.offerExample, onRetry: () => show(selected, true) }));
       if (retry) body.querySelector('button')?.focus();
       buttons.forEach((control) => control.setAttribute('aria-pressed', String(control.dataset.fixture === selected)));

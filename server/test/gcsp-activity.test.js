@@ -287,13 +287,40 @@ activity('search checks drive last successful check, evidence and the searching 
   await receipt(f, 'ev-new', { at: '2026-11-04T23:30:00.000Z' });
   value = await read(f);
   assert.equal(value.state, 'searching'); assert.deepEqual(value.searchEvidence, { status: 'recorded', checks: 2 });
-  assert.deepEqual(value.lastSuccessfulCheck, { checkedAt: '2026-11-04T23:30:00.000Z', clockVersion: '3', carsChecked: 3, suitableCars: 2, outcome: 'no-match' });
+  assert.deepEqual(value.lastSuccessfulCheck, { checkedAt: '2026-11-04T23:30:00.000Z', clockVersion: '3', carsChecked: 3, suitableCars: 2, exclusions: [], outcome: 'no-match' });
   await receipt(f, 'ev-aaa', { at: '2026-11-04T23:30:00.000Z', assigned: true });
   assert.equal((await read(f)).lastSuccessfulCheck.outcome, 'no-match');
   await receipt(f, 'ev-zz', { at: '2026-11-04T23:30:00.000Z', assigned: true });
   value = await read(f); assert.equal(value.lastSuccessfulCheck.outcome, 'offer-held');
   const text = JSON.stringify(value);
   assert.ok(!text.includes(OTHER)); assert.ok(!text.includes('o-x')); assert.ok(!text.includes('"score"'));
+});
+
+const unmet = (field, value, extra = {}) => ({ code: 'essential-unmet', field, requirement: { operator: 'gte', value, unit: 'count' }, fact: { raw: 'private' }, ...extra });
+const car = (id, ...blockers) => ({ orderUuid: id, gateStatus: 'ineligible', blockers });
+
+activity('a no-match check names the top two excluding essentials from this employee\'s own decisions only', async () => {
+  const f = await setup(); await confirm(f);
+  const own = [car('o-1', unmet('seats', 9), unmet('boot', 430)), car('o-2', unmet('seats', 9)), car('o-3', unmet('seats', 9), unmet('seats', 9)),
+    car('o-4', unmet('boot', 430), unmet('body', 'estate')), car('o-5', { code: 'not-available' })];
+  const others = [car('o-x', unmet('fuel', 'diesel')), car('o-y', unmet('fuel', 'diesel'))];
+  await receipt(f, 'ev-why', { at: '2026-11-04T23:30:00.000Z', own, others });
+  const value = await read(f);
+  assert.deepEqual(value.lastSuccessfulCheck.exclusions, [
+    { essential: 'seats', requirement: { operator: 'gte', unit: 'count', value: 9 }, cars: 3 },
+    { essential: 'boot', requirement: { operator: 'gte', unit: 'count', value: 430 }, cars: 2 }]);
+  const text = JSON.stringify(value); assert.ok(!text.includes('fuel') && !text.includes('diesel') && !text.includes('private') && !text.includes('o-x'));
+});
+
+activity('exclusions tie-break by essential name, drop unusable requirements, and are empty when a car is suitable', async () => {
+  const f = await setup(); await confirm(f);
+  await receipt(f, 'ev-tie', { at: '2026-11-04T22:00:00.000Z', own: [car('o-1', unmet('seats', 9, { requirement: { value: { nested: 1 }, operator: 'gte' } }), unmet('boot', 430))] });
+  assert.deepEqual((await read(f)).lastSuccessfulCheck.exclusions.map((row) => [row.essential, row.cars]), [['boot', 1], ['seats', 1]]);
+  assert.deepEqual((await read(f)).lastSuccessfulCheck.exclusions[1].requirement, { operator: 'gte' });
+  await receipt(f, 'ev-suitable', { at: '2026-11-04T23:00:00.000Z', own: [car('o-1', unmet('seats', 9)), { orderUuid: 'o-2', gateStatus: 'eligible', blockers: [] }] });
+  assert.deepEqual((await read(f)).lastSuccessfulCheck.exclusions, []);
+  await receipt(f, 'ev-empty', { at: '2026-11-04T23:30:00.000Z', own: [] });
+  const check = (await read(f)).lastSuccessfulCheck; assert.deepEqual([check.carsChecked, check.exclusions], [0, []]);
 });
 
 activity('every state value is reported, with pause winning and the offer still shown', async () => {
