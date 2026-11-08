@@ -53,3 +53,20 @@ Entries are added as work merges.
   - **For Gary:** confirm the direction.
 - **FUCQ-226 (bug, not in MoSCoW, Medium), new:** even with charging aligned, 1,000 employees takes 15 min and 3.9 GB. It's parked until after FUCQ-137/138, because the demo uses a stored, offline result.
 - **Recommendation built: FUCQ-224.** A fictional new-order principal is being added to the default scenario, so presenters can walk the new-order route. It's a fixture addition that doesn't change any existing principal.
+- **22:35, FUCQ-73 closed and pushed.** Merged-base scoped tests: 644/656, 0 failures, 12 skipped.
+- **22:40, merged locally, waiting on the full npm test:**
+  - FUCQ-145
+  - FUCQ-217
+  - FUCQ-172 (C), which also covers FUCQ-215 item 3, the presenter workspace adapters
+  - FUCQ-78
+  - FUCQ-129
+- **FUCQ-78 is built from live data.** 173 BMW requests were used of the 3,000 budget, with no 401, 403, 429 or challenge. Aggregates for 9 ranges are in `docs/gcsp/evidence/fucq-20/stock-aggregates-2026-11-08.json`, and the privacy scan is clean. The policy validator now also accepts `observed aggregate`, through an additive migration, 0007, that hasn't been run on PostgreSQL yet.
+  - **Owner check for Gary or Russell:** is a nearest-first sample, capped at 40 pages per range, a fair basis for the model mix? Capped ranges give a lower-bound count, which biases the mix a little.
+- **FUCQ-77 is partly done.**
+  - The .12 corpus (574 MB) is restored to OneDrive at `Claude/_agent-output/vehicle-matcher/fucq178-20261108/`, with all 31 digests verified, using GitHub requests only.
+  - 18 eligibility keys were added.
+  - A fresh lead is now running the 20 configurator round trips and the F60 enrichment, inside the remaining 2,827 requests.
+- **Recommendation built: FUCQ-129 merged although partly met.** The offer-expiry replay works: the offer, claim and hold expire on a tick, the old link reads expired, there's no decline record, and stale links are refused. But the expired car isn't re-offered, because allocation never reacts to an expired hold.
+  - That's raised as **FUCQ-227 (bug, not in MoSCoW, High)**, queued for the comparison chain after FUCQ-225 and before FUCQ-137/138.
+  - The alternative was to hold FUCQ-129 until FUCQ-227 lands.
+  - Also raised: **FUCQ-228 (bug, not in MoSCoW, Low):** the expired offer page still shows "Eligible", and the stale-link copy needs work.
