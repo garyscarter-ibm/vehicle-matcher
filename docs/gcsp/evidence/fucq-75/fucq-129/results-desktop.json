@@ -1,5 +1,5 @@
 {
-  "build": "984d02c7",
+  "build": "d83a8670",
   "chunk": "desktop",
   "entry": "hosted",
   "viewport": {
@@ -8,10 +8,10 @@
   },
   "stockMode": "default",
   "state": "passed",
-  "startedAt": "2026-11-08T21:48:17.708Z",
+  "startedAt": "2026-11-08T22:14:57.657Z",
   "runIds": {
-    "first": "demo-7174e5d307eed3fc1692c8542f55b858",
-    "second": "demo-7b62994a79922fc9148056caf40591be"
+    "first": "demo-8362963de5a1f8549e5119e7c0d8096e",
+    "second": "demo-89762b1b907e4bf154085971484abddd"
   },
   "steps": [
     {
@@ -25,15 +25,15 @@
         "chosen": "Offer expires Available",
         "previous": "demo-ea3b050919d5058adfbcb7852fc98722",
         "scenario": "Offer expires",
-        "run": "demo-7174e5d307eed3fc1692c8542f55b858",
+        "run": "demo-8362963de5a1f8549e5119e7c0d8096e",
         "clock": "2026-11-05T09:30:00.000Z",
         "acting": "Presenter (fictional) (presenter)",
-        "lastTick": "Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | 5 cars released"
+        "lastTick": "Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | 6 cars released"
       },
       "overflowPx": 0,
       "emDash": 0,
-      "state": "{\"chosen\":\"Offer expires Available\",\"previous\":\"demo-ea3b050919d5058adfbcb7852fc98722\",\"scenario\":\"Offer expires\",\"run\":\"demo-7174e5d307eed3fc1692c8542f55b858\",\"clock\":\"2026-11-05T09:30:00.000Z\",\"acting\":\"Presenter (fictional) (presenter)\",\"lastTick\":\"Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | 5 cars released\"}",
-      "seconds": 40
+      "state": "{\"chosen\":\"Offer expires Available\",\"previous\":\"demo-ea3b050919d5058adfbcb7852fc98722\",\"scenario\":\"Offer expires\",\"run\":\"demo-8362963de5a1f8549e5119e7c0d8096e\",\"clock\":\"2026-11-05T09:30:00.000Z\",\"acting\":\"Presenter (fictional) (presenter)\",\"lastTick\":\"Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | 6 cars released\"}",
+      "seconds": 60
     },
     {
       "id": "paula-activity",
@@ -49,8 +49,8 @@
       },
       "overflowPx": 0,
       "emDash": 0,
-      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Your car brief Buddy activity Show labels Presenter controls BUDDY ACTIVITY Your buddy Active Your offer Image unavailable Waiting for you Respond by 5 Nov 2026, 11:30 View offer Activity All dates are demo time (UTC). Last check 5 Nov 2026, 09:30: 5 cars checked, 4 suitable. Found a car for you. 5 Nov 2026, 09:00 Search confirmed Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Help is available if you need the scheme team to rev",
-      "seconds": 21
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Your car brief Buddy activity Show labels Presenter controls BUDDY ACTIVITY Your buddy Active Your offer Image unavailable Waiting for you Respond by 5 Nov 2026, 11:30 View offer Activity All dates are demo time (UTC). Last check 5 Nov 2026, 09:30: 6 cars checked, 5 suitable. Found a car for you. 5 Nov 2026, 09:00 Search confirmed Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Help is available if you need the scheme team to rev",
+      "seconds": 29
     },
     {
       "id": "outbox",
@@ -61,20 +61,21 @@
       ],
       "detail": {
         "rows": [
+          "Alex (fictional) Your vehicle offer is ready to review 5 Nov 2026, 09:30 GMT Sent",
           "Paula (fictional) Your vehicle offer is ready to review 5 Nov 2026, 09:30 GMT Sent"
         ],
-        "href": "/gcsp/offer?offerId=buddy-offer%3A42740b19c089b3b22b693c4267cde241317d74700b243737ad3cb6a02e3b6113&runId=demo-7174e5d307eed3fc1692c8542f55b858#token=BSwXa-QvSfXWWK9Go4lgqwjCAtA9hzESuLy3Oft_GpQ",
-        "detail": "Paula (fictional) Your vehicle offer is ready to review 5 Nov 2026, 09:30 GMT Sent Your vehicle offer is ready to review To Paula (fictional) Status Sent Demo clock 5 Nov 2026, 09:30 GMT Attempts 1 Open the offer (opens in a new tab) Email as received Plain-text version Hello Paula (fictional), Your vehicle offer is ready to review Your scheme vehicle Your offer is available until 2026-11-05T11:30:00.000Z. Open the offer to review the vehicle and make your decision. Review your offer: /gcsp/offe",
-        "text": "Hello Paula (fictional), Your vehicle offer is ready to review Your scheme vehicle Your offer is available until 2026-11-05T11:30:00.000Z. Open the offer to review the vehicle and make your decision. Review your offer: /gcsp/offer?offerId=buddy-offer%3A42740b19c089b3b22b693c4267cde241317d74700b243737ad3cb6a02e3b6113&runId=demo-7174e5d307eed3fc1692c8542f55b858#token=BSwXa-QvSfXWWK9Go4lgqwjCAtA9hzESuLy3Oft_GpQ This is a captured demonstration message for a fictional employee. No email has been sent.",
-        "runId": "demo-7174e5d307eed3fc1692c8542f55b858",
-        "offerId": "buddy-offer:42740b19c089b3b22b693c4267cde241317d74700b243737ad3cb6a02e3b6113",
+        "href": "/gcsp/offer?offerId=buddy-offer%3A8ece3b0462f5a05d1e827621bb948114e95b7083a358e2dfe3a810cbdcfbdd2a&runId=demo-8362963de5a1f8549e5119e7c0d8096e#token=CpXfDM3BJ8peXo8b8jQmI5eSBRgqmFeMjqdZuGLfXT8",
+        "detail": "Alex (fictional) Your vehicle offer is ready to review 5 Nov 2026, 09:30 GMT Sent Paula (fictional) Your vehicle offer is ready to review 5 Nov 2026, 09:30 GMT Sent Your vehicle offer is ready to review To Paula (fictional) Status Sent Demo clock 5 Nov 2026, 09:30 GMT Attempts 1 Open the offer (opens in a new tab) Email as received Plain-text version Hello Paula (fictional), Your vehicle offer is ready to review Your scheme vehicle Your offer is available until 2026-11-05T11:30:00.000Z. Open the",
+        "text": "Hello Paula (fictional), Your vehicle offer is ready to review Your scheme vehicle Your offer is available until 2026-11-05T11:30:00.000Z. Open the offer to review the vehicle and make your decision. Review your offer: /gcsp/offer?offerId=buddy-offer%3A8ece3b0462f5a05d1e827621bb948114e95b7083a358e2dfe3a810cbdcfbdd2a&runId=demo-8362963de5a1f8549e5119e7c0d8096e#token=CpXfDM3BJ8peXo8b8jQmI5eSBRgqmFeMjqdZuGLfXT8 This is a captured demonstration message for a fictional employee. No email has been sent.",
+        "runId": "demo-8362963de5a1f8549e5119e7c0d8096e",
+        "offerId": "buddy-offer:8ece3b0462f5a05d1e827621bb948114e95b7083a358e2dfe3a810cbdcfbdd2a",
         "expiresAt": "2026-11-05T11:30:00.000Z",
         "offerReadStatus": 200
       },
       "overflowPx": 0,
       "emDash": 0,
-      "state": "Paula (fictional) Your vehicle offer is ready to review 5 Nov 2026, 09:30 GMT Sent | link /gcsp/offer?offerId=buddy-offer%3A42740b19c089b3b22b693c4267cde241317d74700b243737ad3cb6a02e3b6113&runId=demo-7174e5d307eed3fc1692c8542f55b858#token=BSwXa-QvSfXWWK9Go4lgqwjCAtA9hzESuLy3Oft_GpQ | expiresAt 2026-11-05T11:30:00.000Z",
-      "seconds": 5
+      "state": "Alex (fictional) Your vehicle offer is ready to review 5 Nov 2026, 09:30 GMT Sent ;; Paula (fictional) Your vehicle offer is ready to review 5 Nov 2026, 09:30 GMT Sent | link /gcsp/offer?offerId=buddy-offer%3A8ece3b0462f5a05d1e827621bb948114e95b7083a358e2dfe3a810cbdcfbdd2a&runId=demo-8362963de5a1f8549e5119e7c0d8096e#token=CpXfDM3BJ8peXo8b8jQmI5eSBRgqmFeMjqdZuGLfXT8 | expiresAt 2026-11-05T11:30:00.000Z",
+      "seconds": 7
     },
     {
       "id": "tick-to-target",
@@ -107,7 +108,7 @@
       "overflowPx": 0,
       "emDash": 0,
       "state": "2026-11-05T11:30:00.000Z | Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | Stock release: Done. | Manual claim expiry: Done. | Buddy expiry: Done. | Appointments: Done. | Approvals: Done. | Documents: Done. | Return appointments: Done. | Renewal risk cases: Done. | Selection order reconciliation: Done. | Buddy allocation: Done. | Outbox dispatch: Done. | 0 cars released | Stock release: Done. ;; Manual claim expiry: Done. ;; Buddy expiry: Done. ;; Appointments: Done. ;; Approvals: Done. ;; Documents: Done. ;; Return appointments: Done. ;; Renewal risk cases: Done. ;; Selec",
-      "seconds": 14
+      "seconds": 21
     },
     {
       "id": "expired-page",
@@ -122,8 +123,8 @@
       },
       "overflowPx": 0,
       "emDash": 0,
-      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer expired This offer is no longer available to accept. No image for this car yet ORDER NO. 7203018 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 Boot 500 litres 0 to 62 mph 7.4 s Fuel economy 44 mpg Interior Not supplied Gearbox Not supplied Eligible WHY IT SUITS YOU Available by 1 December 2026. Body style: 100% fit.",
-      "seconds": 20
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer expired This offer is no longer available to accept. No image for this car yet ORDER NO. 8003032 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 Boot 500 litres 0 to 62 mph 7.4 s Fuel economy 44 mpg Interior Not supplied Gearbox Not supplied Eligible WHY IT SUITS YOU Available by 1 December 2026. Body style: 100% fit.",
+      "seconds": 32
     },
     {
       "id": "no-revival",
@@ -133,15 +134,15 @@
         "no-revival-1280.png"
       ],
       "detail": {
-        "reloadText": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer expired This offer is no longer available to accept. No image for this car yet ORDER NO. 7203018 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model No",
+        "reloadText": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer expired This offer is no longer available to accept. No image for this car yet ORDER NO. 8003032 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model No",
         "clockBefore": "2026-11-05T11:30:00.000Z",
         "clockAfter": "2026-11-05T11:31:00.000Z",
         "lastTick": "Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | 0 cars released"
       },
       "overflowPx": 0,
       "emDash": 0,
-      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer expired This offer is no longer available to accept. No image for this car yet ORDER NO. 7203018 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 Boot 500 litres 0 to 62 mph 7.4 s Fuel economy 44 mpg Interior Not supplied Gearbox Not supplied Eligible WHY IT SUITS YOU Available by 1 December 2026. Body style: 100% fit.",
-      "seconds": 22
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer expired This offer is no longer available to accept. No image for this car yet ORDER NO. 8003032 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 Boot 500 litres 0 to 62 mph 7.4 s Fuel economy 44 mpg Interior Not supplied Gearbox Not supplied Eligible WHY IT SUITS YOU Available by 1 December 2026. Body style: 100% fit.",
+      "seconds": 35
     },
     {
       "id": "alex-activity",
@@ -153,12 +154,12 @@
       "detail": {
         "before": "Paula (fictional) (employee)",
         "after": "Alex (fictional) (employee)",
-        "offeredCar": false
+        "offeredCar": true
       },
       "overflowPx": 0,
       "emDash": 0,
-      "state": "Skip to content Group Car Schemes Portal A Alex (fictional) Your car brief Buddy activity Show labels Presenter controls BUDDY ACTIVITY Your buddy Active Your offer No current offer Activity All dates are demo time (UTC). Still searching. No match yet. Last check 5 Nov 2026, 09:30: 4 cars checked, 0 suitable. 5 Nov 2026, 09:00 Search confirmed Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Help is available if you need the scheme team to review your renewal.",
-      "seconds": 24
+      "state": "Skip to content Group Car Schemes Portal A Alex (fictional) Your car brief Buddy activity Show labels Presenter controls BUDDY ACTIVITY Your buddy Active Your offer Image unavailable Expired View offer Activity All dates are demo time (UTC). Still searching. No match yet. Last check 5 Nov 2026, 09:30: 6 cars checked, 1 suitable. Found a car for you. 5 Nov 2026, 09:00 Search confirmed Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Help is available if you need the scheme team to review you",
+      "seconds": 31
     },
     {
       "id": "stale-link",
@@ -170,19 +171,19 @@
       "detail": {
         "reset": {
           "chosen": "Offer expires Available",
-          "previous": "demo-7174e5d307eed3fc1692c8542f55b858",
+          "previous": "demo-8362963de5a1f8549e5119e7c0d8096e",
           "scenario": "Offer expires",
-          "run": "demo-7b62994a79922fc9148056caf40591be",
+          "run": "demo-89762b1b907e4bf154085971484abddd",
           "clock": "2026-11-05T09:30:00.000Z",
           "acting": "Presenter (fictional) (presenter)",
-          "lastTick": "Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | 5 cars released"
+          "lastTick": "Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | 6 cars released"
         },
         "staleUrl": "/gcsp/offer"
       },
       "overflowPx": 0,
       "emDash": 0,
       "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer from an earlier demo run Open the original email link or open this offer from your account. Check current state Offer from an earlier demo run",
-      "seconds": 54
+      "seconds": 59
     }
   ],
   "keyboard": [
@@ -378,21 +379,22 @@
       "chosen": "Offer expires Available",
       "previous": "demo-ea3b050919d5058adfbcb7852fc98722",
       "scenario": "Offer expires",
-      "run": "demo-7174e5d307eed3fc1692c8542f55b858",
+      "run": "demo-8362963de5a1f8549e5119e7c0d8096e",
       "clock": "2026-11-05T09:30:00.000Z",
       "acting": "Presenter (fictional) (presenter)",
-      "lastTick": "Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | 5 cars released"
+      "lastTick": "Last tick | Tick completed. 11 steps: 11 done. | Step results (11) | 6 cars released"
     },
     "availableUntil": "5 Nov 2026, 11:30",
     "outbox": {
       "rows": [
+        "Alex (fictional) Your vehicle offer is ready to review 5 Nov 2026, 09:30 GMT Sent",
         "Paula (fictional) Your vehicle offer is ready to review 5 Nov 2026, 09:30 GMT Sent"
       ],
-      "href": "/gcsp/offer?offerId=buddy-offer%3A42740b19c089b3b22b693c4267cde241317d74700b243737ad3cb6a02e3b6113&runId=demo-7174e5d307eed3fc1692c8542f55b858#token=BSwXa-QvSfXWWK9Go4lgqwjCAtA9hzESuLy3Oft_GpQ",
-      "detail": "Paula (fictional) Your vehicle offer is ready to review 5 Nov 2026, 09:30 GMT Sent Your vehicle offer is ready to review To Paula (fictional) Status Sent Demo clock 5 Nov 2026, 09:30 GMT Attempts 1 Open the offer (opens in a new tab) Email as received Plain-text version Hello Paula (fictional), Your vehicle offer is ready to review Your scheme vehicle Your offer is available until 2026-11-05T11:30:00.000Z. Open the offer to review the vehicle and make your decision. Review your offer: /gcsp/offe",
-      "text": "Hello Paula (fictional), Your vehicle offer is ready to review Your scheme vehicle Your offer is available until 2026-11-05T11:30:00.000Z. Open the offer to review the vehicle and make your decision. Review your offer: /gcsp/offer?offerId=buddy-offer%3A42740b19c089b3b22b693c4267cde241317d74700b243737ad3cb6a02e3b6113&runId=demo-7174e5d307eed3fc1692c8542f55b858#token=BSwXa-QvSfXWWK9Go4lgqwjCAtA9hzESuLy3Oft_GpQ This is a captured demonstration message for a fictional employee. No email has been sent.",
-      "runId": "demo-7174e5d307eed3fc1692c8542f55b858",
-      "offerId": "buddy-offer:42740b19c089b3b22b693c4267cde241317d74700b243737ad3cb6a02e3b6113",
+      "href": "/gcsp/offer?offerId=buddy-offer%3A8ece3b0462f5a05d1e827621bb948114e95b7083a358e2dfe3a810cbdcfbdd2a&runId=demo-8362963de5a1f8549e5119e7c0d8096e#token=CpXfDM3BJ8peXo8b8jQmI5eSBRgqmFeMjqdZuGLfXT8",
+      "detail": "Alex (fictional) Your vehicle offer is ready to review 5 Nov 2026, 09:30 GMT Sent Paula (fictional) Your vehicle offer is ready to review 5 Nov 2026, 09:30 GMT Sent Your vehicle offer is ready to review To Paula (fictional) Status Sent Demo clock 5 Nov 2026, 09:30 GMT Attempts 1 Open the offer (opens in a new tab) Email as received Plain-text version Hello Paula (fictional), Your vehicle offer is ready to review Your scheme vehicle Your offer is available until 2026-11-05T11:30:00.000Z. Open the",
+      "text": "Hello Paula (fictional), Your vehicle offer is ready to review Your scheme vehicle Your offer is available until 2026-11-05T11:30:00.000Z. Open the offer to review the vehicle and make your decision. Review your offer: /gcsp/offer?offerId=buddy-offer%3A8ece3b0462f5a05d1e827621bb948114e95b7083a358e2dfe3a810cbdcfbdd2a&runId=demo-8362963de5a1f8549e5119e7c0d8096e#token=CpXfDM3BJ8peXo8b8jQmI5eSBRgqmFeMjqdZuGLfXT8 This is a captured demonstration message for a fictional employee. No email has been sent.",
+      "runId": "demo-8362963de5a1f8549e5119e7c0d8096e",
+      "offerId": "buddy-offer:8ece3b0462f5a05d1e827621bb948114e95b7083a358e2dfe3a810cbdcfbdd2a",
       "expiresAt": "2026-11-05T11:30:00.000Z",
       "offerReadStatus": 200
     },
@@ -418,13 +420,13 @@
         "Action recorded"
       ]
     },
-    "alexActivity": "Skip to content Group Car Schemes Portal A Alex (fictional) Your car brief Buddy activity Show labels Presenter controls BUDDY ACTIVITY Your buddy Active Your offer No current offer Activity All dates are demo time (UTC). Still searching. No match yet. Last check 5 Nov 2026, 09:30: 4 cars checked, 0 suitable. 5 Nov 2026, 09:00 Search confirmed Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Help is available if you need the scheme team to review your renewal."
+    "alexActivity": "Skip to content Group Car Schemes Portal A Alex (fictional) Your car brief Buddy activity Show labels Presenter controls BUDDY ACTIVITY Your buddy Active Your offer Image unavailable Expired View offer Activity All dates are demo time (UTC). Still searching. No match yet. Last check 5 Nov 2026, 09:30: 6 cars checked, 1 suitable. Found a car for you. 5 Nov 2026, 09:00 Search confirmed Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Help is available if you need the scheme team to review your renewal."
   },
   "paula": {
-    "activityBefore": "Skip to content Group Car Schemes Portal P Paula (fictional) Your car brief Buddy activity Show labels Presenter controls BUDDY ACTIVITY Your buddy Active Your offer Image unavailable Waiting for you Respond by 5 Nov 2026, 11:30 View offer Activity All dates are demo time (UTC). Last check 5 Nov 2026, 09:30: 5 cars checked, 4 suitable. Found a car for you. 5 Nov 2026, 09:00 Search confirmed Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Help is available if you need the scheme team to review your renewal.",
-    "expired": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer expired This offer is no longer available to accept. No image for this car yet ORDER NO. 7203018 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 Boot 500 litres 0 to 62 mph 7.4 s Fuel economy 44 mpg Interior Not supplied Gearbox Not supplied Eligible WHY IT SUITS YOU Available by 1 December 2026. Body style: 100% fit. Your current car Fictional BMW 320i Touring No image for this car yet Configuration G21 320i M Sport Touring Body Estate Fuel Petrol Seats 5 Boot 500 litres MPG 42.8 mpg 0–62 mph 7.6 s Points a month 1,100 points Synthetic source: manual-records-v1. Observed 2026-11-05T09:00:00.000Z. Check current state Offer expired",
-    "afterReload": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer expired This offer is no longer available to accept. No image for this car yet ORDER NO. 7203018 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 Boot 500 litres 0 to 62 mph 7.4 s Fuel economy 44 mpg Interior Not supplied Gearbox Not supplied Eligible WHY IT SUITS YOU Available by 1 December 2026. Body style: 100% fit. Your current car Fictional BMW 320i Touring No image for this car yet Configuration G21 320i M Sport Touring Body Estate Fuel Petrol Seats 5 Boot 500 litres MPG 42.8 mpg 0–62 mph 7.6 s Points a month 1,100 points Synthetic source: manual-records-v1. Observed 2026-11-05T09:00:00.000Z. Check current state Offer expired",
-    "afterTick": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer expired This offer is no longer available to accept. No image for this car yet ORDER NO. 7203018 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 Boot 500 litres 0 to 62 mph 7.4 s Fuel economy 44 mpg Interior Not supplied Gearbox Not supplied Eligible WHY IT SUITS YOU Available by 1 December 2026. Body style: 100% fit. Your current car Fictional BMW 320i Touring No image for this car yet Configuration G21 320i M Sport Touring Body Estate Fuel Petrol Seats 5 Boot 500 litres MPG 42.8 mpg 0–62 mph 7.6 s Points a month 1,100 points Synthetic source: manual-records-v1. Observed 2026-11-05T09:00:00.000Z. Check current state Offer expired",
+    "activityBefore": "Skip to content Group Car Schemes Portal P Paula (fictional) Your car brief Buddy activity Show labels Presenter controls BUDDY ACTIVITY Your buddy Active Your offer Image unavailable Waiting for you Respond by 5 Nov 2026, 11:30 View offer Activity All dates are demo time (UTC). Last check 5 Nov 2026, 09:30: 6 cars checked, 5 suitable. Found a car for you. 5 Nov 2026, 09:00 Search confirmed Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Help is available if you need the scheme team to review your renewal.",
+    "expired": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer expired This offer is no longer available to accept. No image for this car yet ORDER NO. 8003032 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 Boot 500 litres 0 to 62 mph 7.4 s Fuel economy 44 mpg Interior Not supplied Gearbox Not supplied Eligible WHY IT SUITS YOU Available by 1 December 2026. Body style: 100% fit. Your current car Fictional BMW 320i Touring No image for this car yet Configuration G21 320i M Sport Touring Body Estate Fuel Petrol Seats 5 Boot 500 litres MPG 42.8 mpg 0–62 mph 7.6 s Points a month 1,100 points Synthetic source: manual-records-v1. Observed 2026-11-05T09:00:00.000Z. Check current state Offer expired",
+    "afterReload": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer expired This offer is no longer available to accept. No image for this car yet ORDER NO. 8003032 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 Boot 500 litres 0 to 62 mph 7.4 s Fuel economy 44 mpg Interior Not supplied Gearbox Not supplied Eligible WHY IT SUITS YOU Available by 1 December 2026. Body style: 100% fit. Your current car Fictional BMW 320i Touring No image for this car yet Configuration G21 320i M Sport Touring Body Estate Fuel Petrol Seats 5 Boot 500 litres MPG 42.8 mpg 0–62 mph 7.6 s Points a month 1,100 points Synthetic source: manual-records-v1. Observed 2026-11-05T09:00:00.000Z. Check current state Offer expired",
+    "afterTick": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer expired This offer is no longer available to accept. No image for this car yet ORDER NO. 8003032 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 Boot 500 litres 0 to 62 mph 7.4 s Fuel economy 44 mpg Interior Not supplied Gearbox Not supplied Eligible WHY IT SUITS YOU Available by 1 December 2026. Body style: 100% fit. Your current car Fictional BMW 320i Touring No image for this car yet Configuration G21 320i M Sport Touring Body Estate Fuel Petrol Seats 5 Boot 500 litres MPG 42.8 mpg 0–62 mph 7.6 s Points a month 1,100 points Synthetic source: manual-records-v1. Observed 2026-11-05T09:00:00.000Z. Check current state Offer expired",
     "staleLink": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer from an earlier demo run Open the original email link or open this offer from your account. Check current state Offer from an earlier demo run"
   },
   "consoleErrors": [
@@ -711,11 +713,11 @@
   ],
   "notes": [
     "DEFECT (Low): the expired offer page still shows the car with \"Eligible\" and \"Why it suits you\", as if the car were still on offer.",
-    "Known gap (not a defect of this run): Alex sees no offer for the expired car; allocation has no expiry trigger.",
+    "Alex's Buddy activity shows an offer: his own G1-6 hatch from the same release (FUCQ-199), expired on the same deadline. Known gap: he is not offered Paula's car.",
     "DEFECT (Low): the stale-run page tells the reader to \"Open the original email link\" when that is the link just opened."
   ],
   "origin": "http://127.0.0.1:8950",
-  "finishedAt": "2026-11-08T21:51:52.414Z",
+  "finishedAt": "2026-11-08T22:19:56.446Z",
   "counts": {
     "steps": 8,
     "passed": 8,

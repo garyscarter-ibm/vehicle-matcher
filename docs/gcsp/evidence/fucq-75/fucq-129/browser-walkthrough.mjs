@@ -349,7 +349,7 @@ async function run() {
     report.readbacks.alexActivity = text;
     const offered = /View offer|Waiting for you|Respond by/i.test(text);
     row.detail.offeredCar = offered;
-    report.notes.push(offered ? 'Alex is shown an offer after the expiry.' : 'Known gap (not a defect of this run): Alex sees no offer for the expired car; allocation has no expiry trigger.');
+    report.notes.push(offered ? "Alex's Buddy activity shows an offer: his own G1-6 hatch from the same release (FUCQ-199), expired on the same deadline. Known gap: he is not offered Paula's car." : 'Known gap (not a defect of this run): Alex sees no offer for the expired car; allocation has no expiry trigger.');
     return { state: text, shotName: 'alex-activity' };
   });
 
