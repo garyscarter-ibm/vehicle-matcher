@@ -44,7 +44,7 @@ function shown(value) {
 const label = (key) => key.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (letter) => letter.toUpperCase());
 const row = (name, value, unit) => ({ label: name, value: shown(value), ...(value != null && unit ? { unit } : {}) });
 const facts = (rows) => factList(rows, { className: 'gcsp-facts' });
-// Raw ids are not copy (FUCQ-195): statuses read as words, and a slot shows only with a supplied label.
+// Raw ids are not copy (FUCQ-195/197): statuses read as words; slots, schemes and sources show only a supplied label.
 const statusLabels = { current: 'Current car', returned: 'Returned' };
 const status = (value) => statusLabels[value] ?? (/^[a-z]+(-[a-z]+)*$/.test(value ?? '') ? sentence(value.replace(/-/g, ' ')) : value);
 const slotRows = (model, slotId) => {
@@ -59,6 +59,10 @@ const technicalLabels = { insuranceGroup: 'Insurance group', nedcCo2: 'NEDC CO2'
   fuelConsumptionCombinedWeighted: 'Fuel consumption, combined weighted', electricityConsumption: 'Electricity consumption',
   electricRange: 'Electric range', electricCityRange: 'Electric city range' };
 const technicalLabel = (key) => technicalLabels[key] ?? label(key);
+const asOf = (value) => Number.isNaN(Date.parse(value ?? '')) ? MISSING
+  : new Date(value).toLocaleString('en-GB', { dateStyle: 'long', timeStyle: 'short', timeZone: 'UTC' });
+const contractModel = (model, id) => [...model.currentContracts, ...model.histories.flatMap((history) => history.entries)]
+  .find((contract) => contract.contractId === id)?.model;
 const date = (value) => /^\d{4}-\d{2}-\d{2}$/.test(value ?? '')
   ? new Date(`${value}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : shown(value);
 
@@ -75,7 +79,7 @@ function contractDetails(contract, model) {
     'electricRange', 'electricCityRange', 'exterior', 'interior', 'price', 'options'];
   return details('Order, collection and vehicle details', facts([
     ...slotRows(model, contract.slotId), row('Order reference', contract.orderNumber ?? contract.orderReference), row('Order date', date(contract.orderDate)),
-    row('Order status', contract.orderStatus), row('Registration', contract.registration),
+    row('Order status', status(contract.orderStatus)), row('Registration', contract.registration),
     row('Delivered VIN', contract.vin), row('Chassis number', contract.chassisNumber), row('Registration date', date(contract.registrationDate)),
     row('Requested collection', date(contract.requestedCollectionDate)), row('Collection location', contract.collectionLocation),
     row('Actual collection', date(contract.actualCollectionDate)), row('Contract end', date(contract.contractEndDate)),
@@ -191,8 +195,7 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
     saved.append(el('h2', 'gcsp-h2', choices.mode === 'replacement' ? 'Replacement journey saved' : 'New order journey saved'),
       el('p', 'gcsp-note', value.draftStage === 'intent' ? 'Your starting context is saved. No car has been selected or ordered.'
         : 'Your order choices are saved. This is not an order confirmation.'),
-      facts([row('Mode', choices.mode), row('Current contract', choices.oldContractId), row('Vehicle slot', choices.slotId),
-        row('Scheme', choices.schemeId), row('Draft version', value.draftVersion)]));
+      facts([row('Current car', contractModel(model, choices.oldContractId)), ...slotRows(model, choices.slotId)]));
     if (value.requiresRefresh) saved.append(el('p', 'gcsp-note', 'Your saved context has changed. Refresh, review the account below, then start the permitted journey again.'));
     else saved.append(button({ label: 'Resume saved journey', disabled: pending, onClick: controls.resume }));
     if (journey) saved.append(button({ label: 'Back to account', variant: 'ghost', disabled: pending, onClick: controls.back }));
@@ -220,8 +223,8 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
     const histories = el('section', 'gcsp-account-histories');
     histories.append(el('h2', 'gcsp-h2', 'Order history'));
     if (model.historyState === 'no-history') histories.append(el('p', 'gcsp-note', 'No order history.'));
-    for (const history of model.histories) {
-      const group = details(`${history.schemeId} (${history.count} record${history.count === 1 ? '' : 's'})`);
+    for (const [index, history] of model.histories.entries()) {
+      const group = details(`${history.label ?? `Scheme ${index + 1}`} (${history.count} record${history.count === 1 ? '' : 's'})`);
       if (!history.orderingSupported) group.append(el('p', 'gcsp-note', 'History is available. Ordering is not supported for this scheme.'));
       if (!history.count) group.append(el('p', 'gcsp-note', 'No orders in this scheme.'));
       for (const contract of history.entries) {
@@ -230,7 +233,7 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
           facts([row('Status', status(contract.status)), row('Driver', contract.driver?.name), ...slotRows(model, contract.slotId),
             row('Registration', contract.registration), row('Actual collection', date(contract.actualCollectionDate)),
             row('Contract end', date(contract.contractEndDate)), row('Returned', date(contract.returnedDate))]), contractDetails(contract, model),
-          button({ label: `Print record ${contract.orderNumber ?? contract.contractId}`, variant: 'ghost',
+          button({ label: contract.orderNumber ? `Print record ${contract.orderNumber}` : 'Print record', variant: 'ghost',
             onClick: () => controls.print(entry) }));
         const action = model.actions.find((item) => item.oldContractId === contract.contractId && item.slotId === contract.slotId
           && item.schemeId === history.schemeId);
@@ -241,7 +244,7 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
     }
     wrap.append(histories);
     const provenance = model.versions?.employeeContract;
-    if (provenance) wrap.append(el('p', 'gcsp-synthetic', `${provenance.mode === 'synthetic' ? 'Synthetic example data. ' : ''}Source: ${provenance.sourceRef ?? MISSING}. Account as of ${model.asOf ?? MISSING}.`));
+    if (provenance) wrap.append(el('p', 'gcsp-synthetic', `${provenance.mode === 'synthetic' ? 'Synthetic example data. ' : ''}${provenance.label ? `Source: ${provenance.label}. ` : ''}Account as of ${asOf(model.asOf)}.`));
   }
   main.replaceChildren(wrap);
   return () => wrap.remove();

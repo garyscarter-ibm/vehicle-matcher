@@ -240,7 +240,7 @@ test('account composition preserves complete supplied facts, labelled details an
     for (const text of ['Approved', '2 February 1992', '2 Fictional Avenue', 'FAKE-CAR-BIKE', 'Car licence type', 'Bike licence type', '2032']) {
       assert.ok(drivers.textContent.includes(text), text);
     }
-    assert.ok(findDetail(root, 'pcs-ukfs-bmw (2 records)'));
+    assert.ok(findDetail(root, 'Scheme 2 (2 records)'));
     assert.match(root.textContent, /Not supplied/);
     assert.doesNotMatch(root.textContent, /\[object Object\]|undefined|NaN|Invalid Date/);
     // The shell's presenter bar (112fdfe2) stays hidden without a presenter session; the account itself has no controls.
@@ -297,8 +297,8 @@ test('distinct entitlement, HR, empty and failure states provide truthful action
       assert.equal(Boolean(findButton(root, 'Start a new order')), name === 'no-current-car');
       if (!['no-current-car', 'no-history'].includes(name)) assert.equal(findButton(root, 'Choose a replacement'), undefined);
       if (name === 'unsupported-scheme') {
-        const history = findDetail(root, 'choices-rr-production (1 record)');
-        assert.match(history.textContent, /current/);
+        const history = findDetail(root, 'Scheme 1 (1 record)');
+        assert.match(history.textContent, /StatusCurrent car/);
         assert.ok(history.querySelector('summary')); assert.equal(history.querySelectorAll('button').length, 1);
         assert.match(history.querySelector('button').textContent, /Print record/);
       }
@@ -345,7 +345,7 @@ test('guarded replacement reconciles draft, suppresses duplicate writes, emits e
     assert.equal((await f.service.readAccount(f.context)).value.currentContract.contractEndDate, '2026-12-01');
   } finally { destroy(); root.remove(); document.body.removeEventListener('gcsp:journey-start', listen); }
   const reloaded = await domMount(serviceAdapter(f));
-  try { assert.ok(findButton(reloaded.root, 'Resume saved journey')); assert.match(reloaded.root.textContent, /slot-paula/); }
+  try { assert.ok(findButton(reloaded.root, 'Resume saved journey')); assert.match(reloaded.root.querySelector('.gcsp-summary').textContent, /Current carFictional BMW 320i Touring/); }
   finally { reloaded.destroy(); reloaded.root.remove(); }
 });
 
@@ -377,7 +377,7 @@ test('pending reads cannot render or emit after teardown; native history details
   let printed;
   const active = await domMount(readOnlyAdapter(), { print: (entry) => { printed = entry; assert.ok(entry.querySelector('details').open); } });
   try {
-    const history = findDetail(active.root, 'choices-fs-uk (1 record)'); history.open = true;
+    const history = findDetail(active.root, 'Scheme 1 (1 record)'); history.open = true;
     const entry = history.querySelector('article'); const print = [...entry.querySelectorAll('button')].find((node) => /Print/.test(node.textContent));
     print.focus(); assert.equal(document.activeElement, print); print.click();
     assert.equal(printed, entry); assert.equal(entry.querySelector('details').open, false);
@@ -457,7 +457,7 @@ test('default print exposes only the chosen complete record and cleans its tempo
     assert.equal(record.querySelectorAll('button').length, 0);
   };
   try {
-    const history = findDetail(root, 'choices-fs-uk (1 record)'); history.open = true;
+    const history = findDetail(root, 'Scheme 1 (1 record)'); history.open = true;
     [...history.querySelectorAll('button')].find((item) => /Print/.test(item.textContent)).click();
     assert.equal(printCalls, 1); window.dispatchEvent(new window.Event('afterprint'));
     assert.equal(root.querySelector('.gcsp-account-print-record'), null);
@@ -616,4 +616,31 @@ test('FUCQ-198: a start journey reply of stale-run shows the restart screen, not
     findButton(root, 'Choose a replacement').click(); await tick(); await tick();
     assertRestartedPage(root, () => reloads);
   } finally { destroy(); root.remove(); }
+});
+
+test('FUCQ-197: order history, saved journey and footer show words, not raw identifiers', async () => {
+  const input = accountFixture('multi-slot'); const value = input.value;
+  const entries = value.histories.flatMap((history) => history.entries);
+  const raw = [...new Set([...value.histories.map((history) => history.schemeId), ...entries.flatMap((entry) => [entry.contractId, entry.slotId]),
+    value.versions.employeeContract.sourceRef, value.versions.employeeContract.sourceVersion, value.asOf])];
+  const draft = { status: 'ok', value: { draftStage: 'intent', draftVersion: 3, choices: { mode: 'replacement',
+    oldContractId: value.currentContract.contractId, slotId: value.currentContract.slotId, schemeId: value.currentContract.schemeId } } };
+  const mounted = await domMount({ ...readOnlyAdapter(), readAccount: async () => input, readDraft: async () => draft });
+  try {
+    const body = mounted.root.querySelector('.gcsp-account-body');
+    const parts = ['.gcsp-summary', '.gcsp-account-histories', ':scope > .gcsp-synthetic'].map((selector) => body.querySelector(selector));
+    const shownText = parts.flatMap((part) => [...part.querySelectorAll('dd, p, h2, h3, summary, button'), part]).map((node) => node.textContent);
+    for (const id of raw) assert.ok(!shownText.some((text) => text.includes(id)), id);
+    const saved = parts[0].textContent;
+    assert.match(saved, /Current car/); assert.match(saved, new RegExp(value.currentContract.model));
+    assert.doesNotMatch(saved, /Mode|Scheme|Draft version|replacement\b/);
+    assert.ok(findDetail(body, 'Scheme 1 (1 record)')); assert.ok(findDetail(body, 'Scheme 2 (2 records)'));
+    assert.equal(parts[2].textContent, 'Synthetic example data. Account as of 5 November 2026 at 09:00.');
+  } finally { mounted.destroy(); mounted.root.remove(); }
+  value.histories[0].label = 'Fictional car scheme'; value.slots[0].label = 'Company car 1';
+  const labelled = await domMount({ ...readOnlyAdapter(), readAccount: async () => input, readDraft: async () => draft });
+  try {
+    assert.ok(findDetail(labelled.root, 'Fictional car scheme (1 record)'));
+    assert.match(labelled.root.querySelector('.gcsp-summary').textContent, /Vehicle slotCompany car 1/);
+  } finally { labelled.destroy(); labelled.root.remove(); }
 });
