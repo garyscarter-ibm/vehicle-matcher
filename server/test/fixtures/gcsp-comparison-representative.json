@@ -332,16 +332,17 @@
       "comparison.carsPerEmployee": 1
     },
     "overlayHash": "11e7dfd4d7d8e574005ed2643c04cce219348cc6e190225ddb38c86aad79024a",
-    "policyHash": "2d872c5abc25fe5b5d51431b39fb30e6be6d11b997eea39135994cbfb1f46e27",
-    "configurationHash": "fb09836beef41f08fa8f11b71f576f256e47daca304242022b075b81bdc93341",
+    "policyHash": "90da819d8ae50fb0a09073e34403abc6c2f411198e8eaaf514302afd014e96b4",
+    "configurationHash": "0a6085bfae9b761f96553b8432a4118ee78be8fef865c15dabc94b43253cb788",
     "configurationSource": {
       "kind": "reviewed-fixtures",
       "datasetId": "comparison-structural-fixtures",
       "version": "comparison-structural-fixtures.v1",
-      "basis": "FUCQ-133 source review checks target Q13 identity structure and explicit fictional provenance. Three limited model labels are scenario references, not a published BMW corpus or verified constructible builds. Replace this key with corpus references when published.",
-      "reviewedOn": "2026-11-05",
-      "configurationCount": 3,
+      "basis": "FUCQ-133 source review checks target Q13 identity structure and explicit fictional provenance. Four limited model labels are scenario references, not a published BMW corpus or verified constructible builds. FUCQ-199 (2026-11-08) adds F70 Sports Hatch|120 so grade G1-6 has an eligible line. Replace this key with corpus references when published.",
+      "reviewedOn": "2026-11-08",
+      "configurationCount": 4,
       "modelLines": [
+        "F70 Sports Hatch|120",
         "G20 Saloon|320i",
         "G21 Touring|320i",
         "G61 i5|i5 40"
@@ -476,8 +477,8 @@
         "value": {
           "kind": "reviewed-fixtures",
           "version": "comparison-structural-fixtures.v1",
-          "reviewedOn": "2026-11-05",
-          "basis": "FUCQ-133 source review checks target Q13 identity structure and explicit fictional provenance. Three limited model labels are scenario references, not a published BMW corpus or verified constructible builds. Replace this key with corpus references when published.",
+          "reviewedOn": "2026-11-08",
+          "basis": "FUCQ-133 source review checks target Q13 identity structure and explicit fictional provenance. Four limited model labels are scenario references, not a published BMW corpus or verified constructible builds. FUCQ-199 (2026-11-08) adds F70 Sports Hatch|120 so grade G1-6 has an eligible line. Replace this key with corpus references when published.",
           "configurations": [
             {
               "modelLine": "G20 Saloon|320i",
@@ -601,6 +602,47 @@
                   "fullSchemeModelCoverage"
                 ]
               }
+            },
+            {
+              "modelLine": "F70 Sports Hatch|120",
+              "configurationId": "Q01QRjcwOlJFRlBBSU5ULFJFRlRSSU0=",
+              "snapshotVersion": "comparison-structural-fixtures.v1",
+              "canonicalIdentity": {
+                "vgModelCode": "CMPF70",
+                "agModelCode": null,
+                "factoryOptionCodes": [
+                  "REFPAINT",
+                  "REFTRIM"
+                ],
+                "provenance": {
+                  "kind": "synthetic",
+                  "source": "FUCQ-133 reviewed structural fixture; CMP/REF codes are fictional, not observed BMW option/model codes",
+                  "observedDate": null
+                }
+              },
+              "configuration": {
+                "model": "120",
+                "generation": "F70",
+                "body": "hatchback",
+                "powertrain": "petrol",
+                "vgModelCode": "CMPF70",
+                "market": "GB"
+              },
+              "sourceContext": {
+                "sourceRefs": [
+                  "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md",
+                  "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133"
+                ],
+                "observedDate": "2026-11-08",
+                "sourceKind": "synthetic-structural-fixture",
+                "confidence": "Synthetic structural comparison fixture; descriptive labels only, no observed factory configuration, complete specifications or constructibility claim",
+                "unresolvedFacts": [
+                  "exactFactoryOptions",
+                  "exactEquipment",
+                  "constructibility",
+                  "fullSchemeModelCoverage"
+                ]
+              }
             }
           ],
           "datasetId": "comparison-structural-fixtures"
@@ -609,7 +651,7 @@
         "status": "assumed",
         "basis": "Explicit temporary reviewed fixture set permitted by FUCQ-133; identity format follows existing Q13 policy, with fictional CMP/REF codes. No full scheme coverage or FUCQ-77 publication claim.",
         "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
-        "sourceDate": "2026-11-05",
+        "sourceDate": "2026-11-08",
         "policyVersion": "gcsp-policy-v1",
         "effectiveFrom": "2026-11-04T00:00:00.000Z"
       },
@@ -717,13 +759,17 @@
           {
             "modelLine": "G61 i5|i5 40",
             "weight": 20
+          },
+          {
+            "modelLine": "F70 Sports Hatch|120",
+            "weight": 40
           }
         ],
         "unit": "weighted model-line mix",
         "status": "assumed",
-        "basis": "Limited illustrative order mix over three reviewed structural fixtures. Not coverage of every scheme model line and not real stock-locator proportions.",
+        "basis": "Limited illustrative order mix over four reviewed structural fixtures. Not coverage of every scheme model line and not real stock-locator proportions. The F70 Sports Hatch|120 weight (FUCQ-199) matches the G1-6 weight in comparison.gradeDistribution, the only line that grade can have.",
         "source": "docs/gcsp/shared-contracts.md#comparison-inputs--fucq-133",
-        "sourceDate": "2026-11-05",
+        "sourceDate": "2026-11-08",
         "policyVersion": "gcsp-policy-v1",
         "effectiveFrom": "2026-11-04T00:00:00.000Z"
       },
