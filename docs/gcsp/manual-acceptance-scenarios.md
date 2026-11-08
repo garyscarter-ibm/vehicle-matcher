@@ -222,7 +222,7 @@ Observations from a hand trial go in a new row below, in the same format.
 
 ### Offer expires · `offer-expires` · FUCQ-129
 
-8 November 2026 (FUCQ-129): available. Paula's buddy offer runs out on a presenter tick, and her old email link tells the truth.
+8 November 2026 (FUCQ-129): available for the expiry and old-link checks. Paula's buddy offer runs out on a presenter tick, and her old email link tells the truth. The car is not yet offered on to another employee (known gap below).
 
 - **Start:** `offer-expires-inputs-v1`. The start loader (`server/gcsp/scenarios/offer-expires.js`) confirms Paula's and Alex's briefs through BriefService, advances to the release cue (09:30 UTC) and ticks once through the real release and allocation. Paula then holds an active buddy offer, and the notification service has captured its email (FUCQ-102). Nothing is expired, declined or accepted by the fixture. The offer's `expiresAt` is the release time plus `hold.buddy.durationSeconds` (11:30 UTC on this base).
 - **Reset:** launch the demo (`node scripts/gcsp-demo.mjs`), open `gcsp-presenter.html`, open **Presenter controls**, choose **Offer expires**, press **Reset scenario**, then **Confirm reset**. The reset takes a few seconds because it runs the real release and allocation. DemoClock reads 09:30 UTC.
