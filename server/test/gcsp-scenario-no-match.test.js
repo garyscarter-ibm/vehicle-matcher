@@ -28,9 +28,9 @@ async function records(services, presenterCookie, runId) {
   const presenter = good(await services.identity.resolveSession({ authorized: true, cookie: presenterCookie, purpose: 'presenter-control' }));
   assert.equal(presenter.runId, runId);
   const read = async (table, filter) => good(await services.repository.query(presenter, table, filter)).filter((row) => row.runId === runId);
-  const [offers, holds, stock, briefs, receipts] = await Promise.all([read('offers'), read('holds'), read('stock'), read('briefs'),
-    read('event_receipts', { consumerId: 'buddy-allocation' })]);
-  return { offers, holds, stock, briefs, receipts };
+  const [offers, holds, stock, briefs, receipts, slices] = await Promise.all([read('offers'), read('holds'), read('stock'), read('briefs'),
+    read('event_receipts', { consumerId: 'buddy-allocation' }), read('event_receipts', { consumerId: 'buddy-allocation-evaluation' })]);
+  return { offers, holds, stock, briefs, receipts, slices };
 }
 
 async function replay(services, client, label) {
@@ -45,7 +45,7 @@ async function replay(services, client, label) {
   const as = async (principalId, tag) => { client.seed(presenterCookie.split('; ')); route(await client.request('/api/gcsp/session/switch', { principalId, commandId: `${label}-${tag}` })); };
 
   const ticked = await presenterTick(client, `${label}-next-release`, { mode: 'next-release' });
-  const { offers, holds, stock, briefs, receipts } = await records(services, presenterCookie, runId);
+  const { offers, holds, stock, briefs, receipts, slices } = await records(services, presenterCookie, runId);
 
   const paula = briefs.find((row) => row.status === 'confirmed' && row.essentials.seats?.value === 9);
   const alex = briefs.find((row) => row.status === 'confirmed' && row !== paula);
@@ -58,7 +58,8 @@ async function replay(services, client, label) {
   // The calculation: in every allocation pass, every released car fails Paula's nine-seat essential.
   // Later passes see fewer cars (Alex's is held), and her activity reports the latest pass.
   const passes = receipts.sort((a, b) => a.updatedAt.localeCompare(b.updatedAt))
-    .map((row) => row.outcome?.value?.evaluations?.find((e) => e.employeeId === paula.employeeId)).filter(Boolean);
+    // FUCQ-209: each employee's evaluation is its own receipt row.
+    .map((row) => slices.find((slice) => slice.eventId === `${row.eventId}:${paula.employeeId}`)?.outcome.value.evaluation).filter(Boolean);
   assert.ok(passes.length > 0);
   for (const pass of passes) {
     assert.ok(pass.decisions.length > 0);

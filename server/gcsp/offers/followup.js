@@ -3,6 +3,7 @@ import { inputDigest, ok, result } from '../repository/core.js';
 import { validInstant } from '../policy/file-provider.js';
 import { readFollowupQuestion, followupChange } from './followup-policy.js';
 import { buildFollowupComparison } from './followup-comparison.js';
+import { readAllocationEvaluation } from '../allocation/evaluation-rows.js';
 
 const plain = (v) => v !== null && typeof v === 'object' && !Array.isArray(v)
   && [Object.prototype, null].includes(Object.getPrototypeOf(v));
@@ -148,13 +149,14 @@ export class OfferFollowupService {
       const run = row?.outcome?.value;
       if (row?.state !== 'completed' || row.outcome?.status !== 'ok' || run?.runId !== context.runId) continue;
       if (!validInstant(run.evaluatedAt) || Date.parse(run.evaluatedAt) > asOf) continue;
-      const briefs = run.inputVersions?.briefs; const evaluations = run.evaluations;
-      if (!Array.isArray(briefs) || !Array.isArray(evaluations)) return unavailable('followup-evaluation-unavailable', savedChange);
+      const briefs = run.inputVersions?.briefs;
+      if (!Array.isArray(briefs) || !Array.isArray(run.evaluations) && !run.evaluationRefs) return unavailable('followup-evaluation-unavailable', savedChange);
       if (!briefs.some((b) => b?.employeeId === context.employeeId && b.brief === current.briefVersion)) continue;
-      const mine = evaluations.filter((e) => e?.employeeId === context.employeeId);
-      if (mine.length === 0) continue;
-      if (mine.length !== 1 || !Array.isArray(mine[0].decisions)) return unavailable('followup-evaluation-unavailable', savedChange);
-      found.push({ evaluatedAt: run.evaluatedAt, decisions: mine[0].decisions });
+      const mine = await readAllocationEvaluation(this.#repository, context, row);
+      if (mine.status !== 'ok') return unavailable('followup-evaluation-unavailable', savedChange);
+      if (mine.value === null) continue;
+      if (!Array.isArray(mine.value.decisions)) return unavailable('followup-evaluation-unavailable', savedChange);
+      found.push({ evaluatedAt: run.evaluatedAt, decisions: mine.value.decisions });
     }
     const base = { schemaVersion: 1, decisionId: state.decision.decisionId, savedChange };
     if (found.length === 0) return ok({ ...base, state: 'waiting' });

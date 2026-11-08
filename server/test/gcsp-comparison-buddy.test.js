@@ -186,8 +186,12 @@ test('declines name the attribute that falls shortest, with a keyed fallback rea
   }
 });
 
+// FUCQ-209: each employee's evaluation is its own row; rejoin them for these assertions.
+const sliceOf = (persisted, row, id) => persisted.event_receipts.find((slice) => slice.consumerId === 'buddy-allocation-evaluation'
+  && slice.eventId === `${row.eventId}:${id}`).outcome.value.evaluation;
 const allocationsOf = (persisted) => persisted.event_receipts.filter((row) => row.consumerId === 'buddy-allocation')
-  .map((row) => row.outcome.value).sort((a, b) => byId(a.event.occurredAt, b.event.occurredAt));
+  .map((row) => ({ ...row.outcome.value, evaluations: row.outcome.value.evaluationRefs.employeeIds.map((id) => sliceOf(persisted, row, id)) }))
+  .sort((a, b) => byId(a.event.occurredAt, b.event.occurredAt));
 
 test('decline exclusion comes from FUCQ-96 and an expiry gives no priority', async (t) => {
   const declined = await replay(t, pair);
