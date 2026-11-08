@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { activityOf, add, assumption, controls, good, launch, offerPath, openLink, postReset, query, readOffer, resetRun, rows, tickTo,
   actAs, saveBrief, walkPaulasPath } from './helpers/gcsp-journey.js';
+import { createAccountHttpAdapter } from '../../blocks/gcsp/shell/account-runtime.js';
 
 test('a reset keeps the launcher usable: presenter session, adopted offer journey policy and pin', async (t) => {
   const f = await launch(t);
@@ -20,6 +21,11 @@ test('Paula critical path: reset, brief, release, offer, decline, one change, se
   const f = await launch(t);
   const run = await walkPaulasPath(t, f, 'path');
   assert.ok(run.runId);
+  // FUCQ-212: the accepted car allocates the slot, and the shell header must still name Paula.
+  const reply = await f.api('/api/gcsp/manual/account', { session: run.sessions.paula });
+  assert.deepEqual([reply.status, reply.json.value?.state], [200, 'no-entitlement']);
+  const account = await createAccountHttpAdapter({ fetch: async () => ({ ok: true, status: reply.status, json: async () => reply.json }) }).loadAccount();
+  assert.equal(account.status, 'ready'); assert.match(account.name, /Paula/);
 });
 
 /** Every identifier a walk saw, so a repeat can be shown to share none of them. */
