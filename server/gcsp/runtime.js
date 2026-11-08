@@ -158,7 +158,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       gcspLifecycle: lifecycle, gcspDocuments: documents, gcspAppointments: appointments, gcspReturnPlan: returnPlan,
       gcspBuddy: buddy, gcspAllocation: allocation, gcspOfferAccess: offerAccess,
       gcspOfferDecisions: offerDecisions, gcspResolveOfferAccess: resolveOfferAccess, gcspOfferFollowup: offerFollowup,
-      gcspNotify: notify, gcspOutbox: { repository },
+      gcspNotify: notify, gcspOutbox: { repository }, gcspAfterReset: afterReset,
       // Backend-only; the switch route calls it with the server-issued employee context, replay-safe per run.
       gcspPrepareEmployee: (context) => seedManualDemoContext({ repository, identity, clock, context }),
       gcspIdentity: identity, gcspClock: clock, gcspManual: account, gcspBrief: brief,
