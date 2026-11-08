@@ -52,11 +52,15 @@ export class LifecycleReturnPlanService {
     const base = { employeeId: found.value.employeeId, receivedAt: found.value.source.receivedAt };
     if (choices?.mode === 'new') return ok({ ...base, applicable: false });
     const contract = s?.oldContract; const slot = s?.vehicleSlot;
-    if (choices?.mode !== 'replacement' || !object(contract) || !text(contract.contractId) || contract.contractId !== choices.oldContractId
-      || !object(slot) || !text(slot.entitlementSlotId) || !text(choices.collectionLocationId)
-      || !Number.isSafeInteger(choices.expectedReturnMileage) || choices.expectedReturnMileage < 0) return badSource();
-    return ok({ ...base, applicable: true, oldContract: contract, vehicleSlotId: slot.entitlementSlotId, locationId: choices.collectionLocationId,
-      mileage: choices.expectedReturnMileage });
+    // The buddy route records the car's odometer and never asks for a collection place; the manual draft carries both.
+    const buddy = found.value.route === 'buddy'; const odometer = choices?.returnOdometer;
+    const mileage = buddy ? odometer?.value : choices?.expectedReturnMileage;
+    const unit = buddy ? odometer?.unit : 'mi';
+    if (choices?.mode !== 'replacement' || !object(contract) || !text(contract.contractId) || !object(slot) || !text(slot.entitlementSlotId)
+      || (buddy ? !object(odometer) || !text(unit, 16) : contract.contractId !== choices.oldContractId || !text(choices.collectionLocationId))
+      || !Number.isSafeInteger(mileage) || mileage < 0) return badSource();
+    return ok({ ...base, applicable: true, oldContract: contract, vehicleSlotId: slot.entitlementSlotId, locationId: buddy ? null : choices.collectionLocationId,
+      mileage, unit });
   }
 
   // Paula's current car as the account shows it now; the recorded contract only fills a gap, and nothing here writes either.
@@ -126,7 +130,7 @@ export class LifecycleReturnPlanService {
     const { assumptions: _assumptions, offeredSlots: _offered, policyVersion: _policy, ...nested } = a;
     return ok({ contractVersion: RETURN_PLAN_CONTRACT, runId: context.runId, orderUuid, employeeId: s.employeeId, applicable: true, state, scheduled: state === 'return-scheduled',
       oldContractId: s.oldContract.contractId, vehicleSlotId: s.vehicleSlotId, currentCar: car.value,
-      returnMileage: { value: s.mileage, unit: 'mi', recordedAt: s.receivedAt, source: 'selection' },
+      returnMileage: { value: s.mileage, unit: s.unit, recordedAt: s.receivedAt, source: 'selection' },
       choice: a.plan?.choice ?? null, location: { locationId: s.locationId, label: await this.#locationLabel(context, s, read), rule: a.plan?.choice ? config.value.rules[a.plan.choice].location : null },
       appointment: nested, handover: { state: handover.value.state, booked: handover.value.booked, slot: handover.value.slot,
         providerReference: handover.value.history.at(-1)?.providerReference ?? null },
