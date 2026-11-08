@@ -169,6 +169,18 @@ test('real account Resume recovers the same quoted claim through default HTTP wi
   assert.equal(f.requests.filter((row) => row.method === 'POST' && row.path === '/api/gcsp/manual/claim').length, 1);
 });
 
+test('Resume heading focus never steals from a field and stops at teardown (FUCQ-145)', async (t) => {
+  const f = await setup(t, { defaults: true }); click(f.root, 'Resume saved journey'); await expectReview(f);
+  assert.equal(document.activeElement, f.root.querySelector('main h1'));
+  // The user moves on, then the review replaces its heading: focus stays in the field.
+  const phone = f.root.querySelector('[name="contact.phone"]'); phone.focus();
+  const heading = f.root.querySelector('main h1'); heading.replaceWith(heading.cloneNode(true));
+  await new Promise((done) => setImmediate(done)); assert.equal(document.activeElement, phone);
+  f.dispose(); phone.blur();
+  const main = document.createElement('main'); main.append(document.createElement('h1')); f.root.append(main);
+  await new Promise((done) => setImmediate(done)); assert.equal(document.activeElement, document.body);
+});
+
 test('real no-claim entry retains setup Back save and Resume choices through supplied HTTP ports', async (t) => {
   const f = await setup(t, { claim: false }); const offset = f.requests.length;
   click(f.root, 'Resume saved journey'); await waitFor(() => f.root.querySelector('[name="requestedCollectionDate"]'));
