@@ -38,7 +38,7 @@ function caseAdapter(f, session) {
     return { ok: httpStatus >= 200 && httpStatus < 300, async json() { return json; } };
   } });
 }
-async function setup(t) {
+async function setup(t, { hold = false } = {}) {
   const store = createMemoryStore(); const repository = createMemoryRepository({ store });
   const profile = createCompositionTestProfile();
   const runtime = good(await createGcspRuntime({ mode: 'memory', repository, stockProvider: profile,
@@ -66,7 +66,7 @@ async function setup(t) {
       seats: { value: 5, operator: 'gte', unit: 'count', state: 'confirmed', source: 'employee' },
     } } } })).json);
   good((await http(f, '/api/gcsp/brief/confirm', { body: { commandId: 'case-brief-confirm',
-    expectedBriefVersion: 0, expectedDraftVersion: 1, consent: { search: true, hold: true } } })).json);
+    expectedBriefVersion: 0, expectedDraftVersion: 1, consent: { search: true, hold } } })).json);
   const opened = good(await f.employeeApi.requestHelp({ commandId: 'case-help', reason: 'Review my actual released alternative.' })).case;
   f.case = good(await f.gregApi.updateCase({ commandId: 'case-progress', caseId: opened.caseId,
     expectedVersion: opened.version, status: 'in-progress', reason: 'Review exact current evidence.',
@@ -74,7 +74,8 @@ async function setup(t) {
   return f;
 }
 const alternatives = async (f) => good(await f.gregApi.readOptions({ caseId: f.case.caseId })).options.alternativeCars;
-async function release(f) {
+// Allocation runs in the release tick (FUCQ-118): a hold-consenting brief gets the car held there.
+async function release(f, { held = false } = {}) {
   f.car = await f.profile.prepare(f.runtime, f.employee);
   assert.match(f.car.facts.sourceNamespace, /^TEST:/);
   assert.equal((await f.repository.read(f.employee, rowRef(f, 'stock', { orderUuid: f.car.orderUuid }))).status, 'not-found');
@@ -88,13 +89,22 @@ async function release(f) {
   const outcome = good(released).outcomes.find((entry) => entry.handlerId === 'stock-release');
   assert.deepEqual(good(outcome.outcome).orderUuids, [f.car.orderUuid]);
   assert.equal(f.profile.calls.length, 1);
+  const allocation = good(good(released).outcomes.find((entry) => entry.handlerId === 'buddy-allocation').outcome).allocations;
+  const triggered = allocation.filter((entry) => entry.event.sourceReceipt.consumerId === 'stock-release');
+  assert.equal(triggered.length, 1); // The release reached allocation; any trigger may make the one assignment.
+  assert.deepEqual(allocation.flatMap((entry) => entry.assignments).map((entry) => [entry.employeeId, entry.orderUuid]),
+    held ? [[f.employee.employeeId, f.car.orderUuid]] : []);
+  const holds = f.store.state.tables.holds.filter((entry) => entry.orderUuid === f.car.orderUuid);
+  assert.deepEqual(holds.map((entry) => [entry.type, entry.state, entry.employeeId]),
+    held ? [['buddy-offer', 'active', f.employee.employeeId]] : []);
   const committed = good(await f.repository.read(f.employee, rowRef(f, 'stock', { orderUuid: f.car.orderUuid })));
-  assert.equal(committed.state, 'released'); assert.equal(committed.configurationId, f.car.configurationId);
+  assert.equal(committed.state, held ? 'held' : 'released'); assert.equal(committed.configurationId, f.car.configurationId);
   assert.deepEqual(committed.facts, f.car.facts); assert.deepEqual(committed.visibility, f.car.visibility);
   const beforeReplay = structuredClone(f.store.state);
   assert.deepEqual(await f.runtime.clock.tick(f.presenter, input), released);
   assert.equal(inputDigest(f.store.state), inputDigest(beforeReplay)); assert.equal(f.profile.calls.length, 1);
   const options = await alternatives(f);
+  if (held) { assert.equal(options.available, false); return committed; }
   assert.equal(options.available, true); assert.deepEqual(options.items.map((item) => item.orderUuid), [f.car.orderUuid]);
   assert.deepEqual(options.items[0].snapshot, committed.facts);
   return committed;
@@ -130,9 +140,7 @@ async function saveManualChoices(f) {
     } } })).json);
 }
 
-// Skipped: release() expects 'released', but buddy-allocation now holds the car in the same tick (FUCQ-118).
-// Update the expected state, then unskip (FUCQ-182).
-test.skip('C4 actual92 snapshot and persisted driver reach case HTTP proposal with replay and no claim', { timeout: 15000 }, async (t) => {
+test('C4 actual92 snapshot and persisted driver reach case HTTP proposal with replay and no claim', { timeout: 15000 }, async (t) => {
   const f = await setup(t); const committed = await release(f);
   const employee = good(await f.repository.read(f.employee, rowRef(f, 'employees', { employeeId: f.employee.employeeId })));
   const manual = employee.contract.manualContext;
@@ -161,7 +169,7 @@ test.skip('C4 actual92 snapshot and persisted driver reach case HTTP proposal wi
   assert.equal(f.server.listening, false);
 });
 
-test.skip('C4 current persisted bound driver defeats contradictory flattened eligibility through actual HTTP', { timeout: 15000 }, async (t) => {
+test('C4 current persisted bound driver defeats contradictory flattened eligibility through actual HTTP', { timeout: 15000 }, async (t) => {
   const f = await setup(t); await release(f);
   // Disclosed controlled persisted-driver writer after option review. No stock repair.
   good(await f.repository.transaction(f.employee, { commandId: 'case-driver-race', inputDigest: inputDigest('case-driver-race') }, async (tx) => {
@@ -178,7 +186,7 @@ test.skip('C4 current persisted bound driver defeats contradictory flattened eli
   await refusal(f);
 });
 
-test.skip('C4 actual manual claim removes the exact92 option and refuses a stale HTTP proposal', { timeout: 15000 }, async (t) => {
+test('C4 actual manual claim removes the exact92 option and refuses a stale HTTP proposal', { timeout: 15000 }, async (t) => {
   const f = await setup(t); await saveManualChoices(f); await release(f);
   const browse = good((await http(f, '/api/gcsp/manual/stock')).json);
   const car = browse.decisions.find((entry) => entry.orderUuid === f.car.orderUuid);
@@ -190,16 +198,9 @@ test.skip('C4 actual manual claim removes the exact92 option and refuses a stale
   await refusal(f);
 });
 
-test.skip('C4 actual buddy service occupation removes the exact92 option and refuses a stale HTTP proposal', { timeout: 15000 }, async (t) => {
-  const f = await setup(t); const stock = await release(f);
-  const employee = good(await f.repository.read(f.employee, rowRef(f, 'employees', { employeeId: f.employee.employeeId })));
-  const slot = good(await f.repository.read(f.employee, rowRef(f, 'entitlement_slots', { entitlementSlotId: f.employee.entitlementSlotId })));
-  // Actual service, deliberately invoked as a controlled backend writer. The
-  // paused FUCQ96 allocation producer and its candidate invocation are unproved.
-  const occupied = good(await f.runtime.buddy.allocate(f.employee, { commandId: 'case-actual-buddy',
-    orderUuid: f.car.orderUuid, expectedBriefVersion: 1, expectedStockVersion: stock.version,
-    expectedEmployeeVersion: employee.version, expectedSlotVersion: slot.version }));
-  assert.equal(occupied.hold.type, 'buddy-offer'); assert.equal(occupied.hold.state, 'active');
+test('C4 actual buddy service occupation removes the exact92 option and refuses a stale HTTP proposal', { timeout: 15000 }, async (t) => {
+  // Hold consent: the release tick's own allocation producer occupies the car through the buddy port.
+  const f = await setup(t, { hold: true }); await release(f, { held: true });
   assert.deepEqual(good(await f.repository.read(f.employee, rowRef(f, 'stock', { orderUuid: f.car.orderUuid }))).facts, f.car.facts);
   await refusal(f);
 });
