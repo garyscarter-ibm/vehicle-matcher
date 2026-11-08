@@ -4,11 +4,12 @@ import { mountEmployee, EMPLOYEE_NAVIGATION } from '../employee/gcsp-employee.js
 import { mountHelp } from '../cases/gcsp-help.js';
 import { activityBody } from './activity-body.js';
 import { createActivityController } from './activity-controller.js';
+import { runRestartedScreen } from '../kit/run-restarted.js';
 
 export const ACTIVITY_DESTINATION = Object.freeze({ key: 'activity', label: 'Buddy activity', available: true,
   icon: Object.freeze(['M4 5h16', 'M4 12h16', 'M4 19h16', 'M8 3v4', 'M8 10v4', 'M8 17v4']) });
 
-export function mountActivity(root, { adapter = {}, brand = 'bmw', navigation, onNavigate, signal, offerDisplay, helpAdapter } = {}) {
+export function mountActivity(root, { adapter = {}, brand = 'bmw', navigation, onNavigate, signal, offerDisplay, helpAdapter, reload } = {}) {
   let done = false; let controller; let stopShell; let stopHelp;
   const abort = new AbortController();
   const teardown = () => {
@@ -41,6 +42,9 @@ export function mountActivity(root, { adapter = {}, brand = 'bmw', navigation, o
         if (state.phase === 'loading') {
           body = el('div', 'vm gcsp-activity');
           body.append(screenIntro({ title: 'Buddy activity' }), statusScreen({ title: 'Loading activity' }));
+        } else if (state.phase === 'restarted') {
+          body = el('div', 'vm gcsp-activity');
+          body.append(screenIntro({ title: 'Buddy activity' }), runRestartedScreen({ reload }));
         } else {
           body = activityBody({ result: state.result, pending: state.pending, offerDisplay,
             onRetry: account.status === 'ready' ? () => controller?.refresh() : undefined,

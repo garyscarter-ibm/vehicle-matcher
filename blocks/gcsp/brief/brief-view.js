@@ -2,6 +2,7 @@ import { el, screenIntro, button, factList, statusScreen } from '../../vehicle-m
 import { renderRangeSlider, renderOptionList } from '../../vehicle-matcher/modes/question-ui.js';
 import { matchCard, previewTile, SPEC_LABELS, FUEL_SPEC } from '../../vehicle-matcher/modes/result-card.js';
 import { createBriefController } from './brief-controller.js';
+import { isRunRestarted, runRestartedScreen } from '../kit/run-restarted.js';
 import { decisionView, previewSummary } from './brief-view-model.js';
 
 let sequence = 0;
@@ -24,6 +25,12 @@ export function mountBriefBody(main, adapters = {}) {
   function unavailable() {
     main.replaceChildren(statusScreen({ title: 'Your brief could not be loaded', message: 'Your account and brief are unavailable. Try loading them again.',
       actions: [button({ label: 'Try again', onClick: () => load() })] }));
+  }
+  function restarted() {
+    const hadFocus = main.contains(main.ownerDocument.activeElement);
+    unsubscribe?.(); unsubscribe = undefined; controller?.destroy(); controller = undefined;
+    const screen = runRestartedScreen({ reload: adapters.reload }); main.replaceChildren(screen);
+    if (hadFocus) screen.querySelector('button')?.focus();
   }
   function draw(editor) {
     if (!alive) return;
@@ -150,6 +157,7 @@ export function mountBriefBody(main, adapters = {}) {
     preview.append(status, retry, cards); layout.append(form, preview); page.append(layout, live); main.replaceChildren(page);
     let lastPreview;
     const patch = (state) => {
+      if (state.restarted) { restarted(); return; }
       for (const [key, h] of handles) {
         const p = state.brief.preferences[key]; if (!p) continue;
         h.value.update({ value: p.value, valueState: Number.isFinite(p.value) || typeof p.value === 'string' ? 'confirmed' : 'unknown' });
@@ -200,7 +208,7 @@ export function mountBriefBody(main, adapters = {}) {
     if (useInitial && adapters.editor) { draw(adapters.editor); return; }
     if (typeof adapters.loadEditor !== 'function') { unavailable(); return; }
     Promise.resolve().then(() => alive && current === generation ? adapters.loadEditor({ signal: abort.signal }) : null).then((outcome) => {
-      if (alive && current === generation) { if (outcome?.status === 'ok') draw(outcome.value); else unavailable(); }
+      if (alive && current === generation) { if (outcome?.status === 'ok') draw(outcome.value); else if (isRunRestarted(outcome)) restarted(); else unavailable(); }
     }).catch(() => { if (alive && current === generation) unavailable(); });
   }
   if (adapters.signal?.aborted) { finish(); return finish; }

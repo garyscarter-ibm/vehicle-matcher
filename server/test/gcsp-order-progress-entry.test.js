@@ -146,3 +146,29 @@ test('the custom element survives an early adapter, remounts on change, reads at
   order.adapter = fixed; document.body.append(order); await settle(order, () => seen.length > 0); assert.deepEqual(seen, ['fixed-order']);
   early.remove(); order.remove(); assert.equal(early.childElementCount, 0); assert.equal(order.childElementCount, 0);
 });
+
+const stale = { status: 'stale-run', reason: 'This request belongs to an earlier demonstration run.' };
+function assertRestarted(node, reloads) {
+  assert.match(text(node), /Demo restarted/); assert.match(text(node), /Reload the page to continue/);
+  assert.doesNotMatch(text(node), /stale-run|\u2014|Your order changed|Order progress unavailable/);
+  const buttons = node.querySelectorAll('.gcsp-order-progress button'); assert.equal(buttons.length, 1);
+  const [reload] = buttons; assert.equal(reload.type, 'button'); assert.equal(reload.disabled, false); assert.equal(document.activeElement === reload || reload.tabIndex >= 0, true);
+  const before = reloads.length; reload.click(); assert.equal(reloads.length, before + 1);
+}
+
+test('a stale-run progress read shows the restarted screen with a working Reload', async () => {
+  const reloads = []; const a = adapter({ name: 'appointment-requested' }); a.readStages = async () => stale;
+  const node = root(); mount(node, { adapter: a, reload: () => reloads.push(1) });
+  await settle(node, (r) => r.textContent.includes('Demo restarted')); assertRestarted(node, reloads);
+  assert.equal(node.querySelector('h1').textContent, 'Order progress');
+});
+
+test('a stale-run order command shows the restarted screen and is neither resent nor reread', async () => {
+  const reloads = []; const server = { name: 'sent-to-ordering-no-slot', outcome: () => stale }; const a = adapter(server);
+  const node = root(); mount(node, { adapter: a, reload: () => reloads.push(1) });
+  await settle(node, (r) => r.querySelector('.gcsp-order-slots button'));
+  const request = node.querySelector('.gcsp-order-slots button'); request.focus(); const reads = a.calls.filter((c) => c === 'readStages').length; request.click();
+  await settle(node, (r) => r.textContent.includes('Demo restarted')); assert.equal(document.activeElement, node.querySelector('.gcsp-order-progress button')); assertRestarted(node, reloads);
+  await new Promise((r) => setTimeout(r, 20));
+  assert.equal(a.calls.filter((c) => /^(request|accept|complete)/.test(c)).length, 1); assert.equal(a.calls.filter((c) => c === 'readStages').length, reads);
+});

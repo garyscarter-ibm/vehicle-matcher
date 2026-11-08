@@ -109,7 +109,7 @@ test('refusals map to concise messages: unsupported reason, changed order, and a
   const f = fake(); const { controller } = make(f); await controller.refresh();
   f.server.outcome = () => ({ status: 'unsupported', code: 'live-appointments-unsupported', reason: 'Live handover times are not connected in this demonstration.' });
   assert.deepEqual((await controller.requestAppointment('s')).message, { text: 'Not done. Live handover times are not connected in this demonstration.', error: true });
-  for (const status of ['conflict', 'stale-version', 'stale-run']) {
+  for (const status of ['conflict', 'stale-version']) {
     f.server.outcome = () => ({ status });
     assert.deepEqual((await controller.requestAppointment('s')).message, { text: 'Your order changed. Showing the latest.', error: true }, status);
   }
@@ -167,4 +167,18 @@ test('destroy aborts every owned request and nothing paints afterwards', async (
   const second = make(loading); const pending = second.controller.refresh(); await new Promise((r) => setTimeout(r, 5));
   second.controller.destroy(); assert.ok(loading.signals.filter(Boolean).every((s) => s.aborted));
   slow.resolve(); await pending; assert.equal(second.changes.at(-1).phase, 'loading');
+});
+
+test('stale-run on a read or a command is a restarted state: no changed-order message, no resend, no reread', async () => {
+  const stale = { status: 'stale-run' };
+  for (const key of ['listOrders', 'readStages', 'readDocuments', 'readAppointment', 'readReturnPlan']) {
+    const f = fake(); if (key === 'listOrders') f.server.listed = stale; else { const inner = f.adapter[key]; f.adapter[key] = async (i) => (key === 'readStages' ? stale : (await inner(i), stale)); }
+    const { controller } = make(f, key === 'listOrders' ? {} : { orderUuid: f.server.progress.stages.value.orderUuid });
+    const state = await controller.refresh(); assert.equal(state.phase, 'restarted', key); assert.equal(state.progress.phase, 'restarted'); assert.equal(state.message, null);
+  }
+  const f = fake(); const { controller } = make(f); await controller.refresh();
+  f.server.outcome = () => stale; const reads = f.reads(); const state = await controller.requestAppointment('s');
+  assert.equal(state.phase, 'restarted'); assert.equal(state.message, null); assert.equal(f.reads(), reads);
+  assert.equal(f.calls.filter(([key]) => key === 'requestAppointment').length, 1);
+  await controller.requestAppointment('s'); assert.equal(f.calls.filter(([key]) => key === 'requestAppointment').length, 1);
 });
