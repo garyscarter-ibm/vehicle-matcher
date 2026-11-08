@@ -11201,6 +11201,17 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "supply.stockSource.maxAgeMinutes",
+      "value": 60,
+      "unit": "minutes",
+      "status": "assumed",
+      "basis": "Assumed plausible tolerance for a stock list refreshed on each release pull: data observed more than an hour before the pull is stale, so the pull is a failed check, never an empty pool (FUCQ-130).",
+      "source": "docs/gcsp/stock-release-contract.md#failed-and-stale-pulls",
+      "sourceDate": "2026-11-08",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "brief.slider.minimum",
       "value": 0,
       "unit": "integer slider units",

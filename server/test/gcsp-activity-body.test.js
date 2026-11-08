@@ -99,12 +99,12 @@ test('searching with no offer and a healthy source says still searching, with th
   const node = view('searching');
   assert.deepEqual(lines(node), ['Still searching. No match yet.', 'Last check 4 Nov 2026, 23:30: 12 cars checked, 0 suitable.']);
   assert.match(node.textContent, /No current offer/); assert.equal(node.querySelector('a[href]'), null);
-  assert.doesNotMatch(node.textContent, /Source delayed|Stock source unavailable|Not searched yet/); clean(node); node.destroy();
+  assert.doesNotMatch(node.textContent, /Source delayed|Couldn't check|Not searched yet/); clean(node); node.destroy();
 });
 
 test('source delayed and source unavailable are distinct from searching and from each other', () => {
   const delayed = view('source-delayed'); const down = view('source-unavailable');
-  assert.equal(lines(delayed)[0], 'Source delayed. Waiting for stock data.'); assert.equal(lines(down)[0], 'Stock source unavailable.');
+  assert.equal(lines(delayed)[0], 'Source delayed. Waiting for stock data.'); assert.equal(lines(down)[0], "Couldn't check for new cars. Stock source unavailable.");
   for (const node of [delayed, down]) { assert.doesNotMatch(node.textContent, /Still searching/); assert.match(lines(node)[1], /^Last check /); clean(node); }
   assert.notEqual(lines(delayed)[0], 'Still searching. No match yet.'); delayed.destroy(); down.destroy();
 });

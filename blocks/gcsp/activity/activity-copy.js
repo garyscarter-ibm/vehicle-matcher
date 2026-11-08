@@ -6,7 +6,7 @@ export const activityCopy = Object.freeze({
   notSearched: 'Not searched yet',
   searching: 'Still searching. No match yet.',
   sourceDelayed: 'Source delayed. Waiting for stock data.',
-  sourceUnavailable: 'Stock source unavailable.',
+  sourceUnavailable: "Couldn't check for new cars. Stock source unavailable.",
   pausedDetail: 'New searches and holds have stopped.',
   pausedOffer: 'Your offer is still open. View it to accept or decline.',
 });
