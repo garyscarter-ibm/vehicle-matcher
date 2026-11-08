@@ -266,3 +266,16 @@ test('cards lead with points and allowance fit, keep key facts concise, and chip
   for (const label of ['Insurance group', 'NEDC / correlated CO2', 'Body style', 'Available allowance', 'Scheme contribution']) assert.match(detail.textContent, new RegExp(label));
   assert.match(detail.textContent, /Within your allowance, 200 points left/);
 });
+
+test('a saved date the server now refuses offers Back to your choices, never a dead Refresh (FUCQ-222)', async (t) => {
+  const root = document.createElement('div'); document.body.append(root); let back = 0; let reads = 0;
+  const invalid = { status: 'invalid', code: 'invalid-manual-draft', reasons: [{ field: 'requestedCollectionDate', reason: 'Choose a date inside the supplied collection and renewal window.' }] };
+  const teardown = mountManualGallery(root, { adapter: { ...createManualGalleryFixtureAdapter(), browseStock: async () => { reads += 1; return structuredClone(invalid); } }, onBack: () => { back += 1; } });
+  t.after(() => { teardown(); root.remove(); });
+  await waitFor(() => teardown.gallery.getState().state === 'choices-invalid');
+  const status = root.querySelector('.gcsp-gallery-results');
+  assert.match(status.textContent, /Your saved choices need updating/); assert.match(status.textContent, /pick a new date/);
+  const buttons = [...status.querySelectorAll('button')].map((node) => node.textContent);
+  assert.deepEqual(buttons, ['Back to your choices']); assert.equal(reads, 1);
+  status.querySelector('button').click(); assert.equal(back, 1);
+});

@@ -33,7 +33,9 @@ const states = {
   'source-unavailable': ['Availability cannot be checked right now', 'Retry to check current released cars.'],
   'context-refresh': ['Your choices need refreshing', 'Return to your choices or refresh availability.'],
   'car-taken': ['This car is no longer available', 'Refresh to see the current released cars.'],
+  'choices-invalid': ['Your saved choices need updating', 'One of your saved choices is no longer available. Go back to your choices to update it.'],
 };
+const invalidMessages = { requestedCollectionDate: 'Your requested collection date is no longer available. Go back to your choices and pick a new date.' };
 const claimMessages = { checking: 'Checking your current reservation.', claiming: 'Reserving this exact car for review.',
   pending: 'Your reservation is still being checked. Check its status before choosing another car.',
   uncertain: 'The reservation status is unavailable. Check its status before choosing another car.',
@@ -144,10 +146,12 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     const message = states[galleryState.state];
     nodes.status.replaceChildren();
     if (message && galleryState.state !== 'idle') {
+      const invalid = galleryState.state === 'choices-invalid';
       const actions = galleryState.state === 'loading' ? [] : galleryState.state === 'empty-search'
         ? [button({ label: 'Clear filters', variant: 'ghost', onClick() { controls.query.value = ''; gallery.setControls({ query: '', series: '', body: '' }); } })]
-        : [button({ label: 'Refresh availability', variant: 'ghost', onClick: () => gallery.refresh() })];
-      nodes.status.append(statusScreen({ title: message[0], message: message[1], actions }));
+        : invalid ? [button({ label: 'Back to your choices', variant: 'primary', onClick: () => nodes.back.click() })]
+          : [button({ label: 'Refresh availability', variant: 'ghost', onClick: () => gallery.refresh() })];
+      nodes.status.append(statusScreen({ title: message[0], message: (invalid && invalidMessages[galleryState.invalidField]) || message[1], actions }));
     }
     const desired = [];
     for (const car of galleryState.cars) {
