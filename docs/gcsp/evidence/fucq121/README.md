@@ -29,9 +29,9 @@ Overflow is page / panel horizontal px (0 / 0 means none). Focus is the element 
 | infeasible | 375 | `infeasible-375.png` | PASS | 0 / 0 | h2: No plan meets these limits |
 | stale | 1280 | `stale-1280.png` | PASS | 0 / 0 | h3: Replan needed |
 | stale | 375 | `stale-375.png` | PASS | 0 / 0 | h3: Replan needed |
-| submitted | 1280 | `submitted-1280.png` | PASS | 0 / 0 | h2: No new order needed |
-| submitted | 375 | `submitted-375.png` | PASS | 0 / 0 | h2: No new order needed |
-| order tracking after submit | 1280 | `order-tracking-after-submit-1280.png` | PASS | 0 / 0 | h2: No new order needed |
+| submitted | 1280 | `submitted-1280.png` | PASS | 0 / 0 | h2: No new order recommended |
+| submitted | 375 | `submitted-375.png` | PASS | 0 / 0 | h2: No new order recommended |
+| order tracking after submit | 1280 | `order-tracking-after-submit-1280.png` | PASS | 0 / 0 | h2: No new order recommended |
 | replanned | 1280 | `replanned-1280.png` | PASS | 0 / 0 | body:  |
 | replanned | 375 | `replanned-375.png` | PASS | 0 / 0 | body:  |
 | loading | 1280 | `fixture-loading-1280.png` | PASS | 0 / 0 | body:  |
@@ -68,7 +68,7 @@ Expected non-2xx responses in the run: favicon 404, employee `manual/draft` 404,
 ## Limitations
 
 - The stale state needs a second window; a Tick in the same window reloads the plan, so it never goes stale there. This is recorded in the manual scenario.
-- The live ready plan proposes no new order ("No new order needed"); an order exists only after a minimum is raised in the editor, as the story anticipated.
+- The live ready plan proposes no new order ("No new order recommended"); an order exists only after a minimum is raised in the editor, as the story anticipated.
 - The employee refusal is shown live as the API 403 plus the absence of the panel; the refused panel itself is the fixture capture. JSON error pages were not screenshotted.
 - Range slider focus is a thumb ring (no CSS outline), confirmed in `limits-editor-*.png`.
 - Contrast and layout were judged by reading each PNG; no automated contrast check was run.

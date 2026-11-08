@@ -1,7 +1,7 @@
 {
   "story": "FUCQ-121",
-  "startedAt": "2026-11-08T08:04:36.397Z",
-  "commit": "9066cb5f",
+  "startedAt": "2026-11-08T08:10:45.124Z",
+  "commit": "e1b0bfb5",
   "base": "http://localhost:<port>",
   "widths": [
     1280,
@@ -751,7 +751,7 @@
       "pass": true,
       "pageOverflowPx": 0,
       "panelOverflowPx": 0,
-      "focusedElement": "h2: No new order needed",
+      "focusedElement": "h2: No new order recommended",
       "focusVisible": true,
       "outline": "solid 2px rgb(2, 145, 183)",
       "consoleErrors": 0,
@@ -817,7 +817,7 @@
       "pass": true,
       "pageOverflowPx": 0,
       "panelOverflowPx": 0,
-      "focusedElement": "h2: No new order needed",
+      "focusedElement": "h2: No new order recommended",
       "focusVisible": true,
       "outline": "solid 2px rgb(2, 145, 183)",
       "consoleErrors": 0,
@@ -883,7 +883,7 @@
       "pass": true,
       "pageOverflowPx": 0,
       "panelOverflowPx": 0,
-      "focusedElement": "h2: No new order needed",
+      "focusedElement": "h2: No new order recommended",
       "focusVisible": true,
       "outline": "solid 2px rgb(2, 145, 183)",
       "consoleErrors": 0,
@@ -1658,74 +1658,74 @@
   "steps": {
     "open-with-demo-key": {
       "ok": true,
-      "ms": 4280
+      "ms": 4630
     },
     "reset-to-decline-then-change": {
       "ok": true,
-      "ms": 21463,
+      "ms": 21530,
       "clock": "2026-11-05T09:30:00.000Z"
     },
     "switch-to-greg": {
       "ok": true,
-      "ms": 9682,
+      "ms": 9700,
       "planState": "ready",
       "clock": "2026-11-05T09:30:00.000Z",
-      "runId": "demo-7d3d82a9790841e9a555caa78310a257"
+      "runId": "demo-fd295b1c1eb678a39eeb4dd43c4d644e"
     },
     "capture-ready": {
       "ok": true,
-      "ms": 4282
+      "ms": 4306
     },
     "peek-ready": {
       "ok": true,
-      "ms": 9296
+      "ms": 9326
     },
     "edit-and-preview": {
       "ok": true,
-      "ms": 13121,
+      "ms": 12898,
       "slider": "3 to 4",
       "heading": "Order 2 vehicles: 3 Series Touring 320i"
     },
     "capture-preview": {
       "ok": true,
-      "ms": 2717
+      "ms": 2707
     },
     "infeasible": {
       "ok": true,
-      "ms": 15614
+      "ms": 15417
     },
     "capture-infeasible": {
       "ok": true,
-      "ms": 2712
+      "ms": 2714
     },
     "prepare-stale-preview": {
       "ok": true,
-      "ms": 12160
+      "ms": 11952
     },
     "move-clock-in-second-window": {
       "ok": true,
-      "ms": 16873,
+      "ms": 14572,
       "clockBefore": "2026-11-05T09:30:00.000Z",
       "clockAfter": "2026-11-05T09:31:00.000Z"
     },
     "request-from-stale-plan": {
       "ok": true,
-      "ms": 10008,
+      "ms": 8752,
       "requestButton": "Request 2 vehicles from Production",
       "focus": "Replan needed"
     },
     "capture-stale": {
       "ok": true,
-      "ms": 2706
+      "ms": 2722
     },
     "replan": {
       "ok": true,
-      "ms": 6680,
+      "ms": 6480,
       "stateAfterReplan": "preview"
     },
     "submit-plan": {
       "ok": true,
-      "ms": 8551,
+      "ms": 8557,
       "requestButton": "Request 2 vehicles from Production",
       "orders": [
         "3 Series Touring 320i | Requested | 2 | 0 | 0 | Awaiting production response"
@@ -1733,55 +1733,55 @@
     },
     "capture-submitted": {
       "ok": true,
-      "ms": 4628
+      "ms": 4639
     },
     "confirm-through-production-adapter": {
       "ok": true,
-      "ms": 12363,
+      "ms": 12370,
       "confirmedQuantity": 2,
       "planRefreshedWithoutPress": true,
-      "planRefreshMs": 5882,
+      "planRefreshMs": 5886,
       "orders": [
         "3 Series Touring 320i | Confirmed | 2 | 2 | 0 | Confirmed: 2 due 31 Dec 2026"
       ]
     },
     "capture-replanned": {
       "ok": true,
-      "ms": 2861
+      "ms": 2870
     },
     "tick-in-same-window-reloads-plan": {
       "ok": true,
-      "ms": 21497,
+      "ms": 21724,
       "planForBefore": "5 Nov 2026, 09:31 GMT",
       "planForAfter": "5 Nov 2026, 09:32 GMT",
       "stale": false
     },
     "employee-refused-live": {
       "ok": true,
-      "ms": 7127,
+      "ms": 7263,
       "panelMountedForEmployee": false,
       "status": 403,
       "body": "{\"status\":\"forbidden\",\"reason\":\"This person cannot perform that action.\",\"contractVersion\":\"1.0.0\"}"
     },
     "fixture-loading": {
       "ok": true,
-      "ms": 4146
+      "ms": 4167
     },
     "fixture-no-demand": {
       "ok": true,
-      "ms": 3469
+      "ms": 3471
     },
     "fixture-unavailable": {
       "ok": true,
-      "ms": 4648
+      "ms": 4630
     },
     "fixture-refused": {
       "ok": true,
-      "ms": 3483
+      "ms": 3481
     },
     "fixture-long-names": {
       "ok": true,
-      "ms": 3973
+      "ms": 3992
     }
   },
   "focusTrail": [
@@ -1843,7 +1843,7 @@
     {
       "stage": "infeasible",
       "action": "Enter on Back to current plan",
-      "focus": "h2: No new order needed",
+      "focus": "h2: No new order recommended",
       "focusVisible": true,
       "outline": "solid 2px rgb(2, 145, 183)"
     },
@@ -1876,7 +1876,7 @@
     {
       "stage": "prepare-stale-preview",
       "action": "Enter on Back to current plan",
-      "focus": "h2: No new order needed",
+      "focus": "h2: No new order recommended",
       "focusVisible": true,
       "outline": "solid 2px rgb(2, 145, 183)"
     },
@@ -1975,61 +1975,61 @@
       "stage": "open-with-demo-key",
       "level": "error",
       "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
-      "url": "http://localhost:60520/favicon.ico"
+      "url": "http://localhost:60754/favicon.ico"
     },
     {
       "stage": "reset-to-decline-then-change",
       "level": "error",
       "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
-      "url": "http://localhost:60520/api/gcsp/manual/draft"
+      "url": "http://localhost:60754/api/gcsp/manual/draft"
     },
     {
       "stage": "request-from-stale-plan",
       "level": "error",
       "text": "Failed to load resource: the server responded with a status of 409 (Conflict)",
-      "url": "http://localhost:60520/api/gcsp/greg/order-plan/submit"
+      "url": "http://localhost:60754/api/gcsp/greg/order-plan/submit"
     },
     {
       "stage": "employee-api-probe",
       "level": "error",
       "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
-      "url": "http://localhost:60520/api/gcsp/manual/draft"
+      "url": "http://localhost:60754/api/gcsp/manual/draft"
     },
     {
       "stage": "employee-api-probe",
       "level": "error",
       "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)",
-      "url": "http://localhost:60520/api/gcsp/greg/order-plan"
+      "url": "http://localhost:60754/api/gcsp/greg/order-plan"
     },
     {
       "stage": "fixture-loading",
       "level": "error",
       "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)",
-      "url": "http://localhost:60520/api/gcsp/scheme-team/cases"
+      "url": "http://localhost:60754/api/gcsp/scheme-team/cases"
     },
     {
       "stage": "fixture-no-demand",
       "level": "error",
       "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)",
-      "url": "http://localhost:60520/api/gcsp/scheme-team/cases"
+      "url": "http://localhost:60754/api/gcsp/scheme-team/cases"
     },
     {
       "stage": "fixture-unavailable",
       "level": "error",
       "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)",
-      "url": "http://localhost:60520/api/gcsp/scheme-team/cases"
+      "url": "http://localhost:60754/api/gcsp/scheme-team/cases"
     },
     {
       "stage": "fixture-refused",
       "level": "error",
       "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)",
-      "url": "http://localhost:60520/api/gcsp/scheme-team/cases"
+      "url": "http://localhost:60754/api/gcsp/scheme-team/cases"
     },
     {
       "stage": "fixture-long-names",
       "level": "error",
       "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)",
-      "url": "http://localhost:60520/api/gcsp/scheme-team/cases"
+      "url": "http://localhost:60754/api/gcsp/scheme-team/cases"
     }
   ],
   "failedRequests": [],
@@ -2149,9 +2149,6 @@
     "serverPortListeners": "none"
   },
   "dirtyFiles": [
-    "M blocks/gcsp/greg/plan/panel.js",
-    " M blocks/gcsp/greg/plan/plan-view.js",
-    " M blocks/gcsp/greg/plan/plan.css",
     "?? server/node_modules"
   ],
   "employeeApiProbe": {
@@ -2164,10 +2161,10 @@
     "status": 403,
     "body": "{\"status\":\"forbidden\",\"reason\":\"This person cannot perform that action.\",\"contractVersion\":\"1.0.0\"}"
   },
-  "finishedAt": "2026-11-08T08:08:20.126Z",
+  "finishedAt": "2026-11-08T08:14:25.707Z",
   "serverLogTail": [
-    "GCSP hosted demo (memory): http://localhost:60520/gcsp-presenter.html",
-    "Matcher API listening on http://localhost:60520",
+    "GCSP hosted demo (memory): http://localhost:60754/gcsp-presenter.html",
+    "Matcher API listening on http://localhost:60754",
     "[gcsp] offline vehicle evidence; live startup warmers disabled"
   ],
   "pass": true
