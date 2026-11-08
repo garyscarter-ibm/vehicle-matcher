@@ -141,7 +141,8 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
       ? 'hr-support' : model.supportOwner, 'Contact support')] }));
   }
   if (!journey && orderHost) wrap.append(orderHost);
-  if (!journey && offers.length && controls.openOffer) {
+  // An accepted newest offer has become an order, so its progress replaces the offer link.
+  if (!journey && offers.length && offers[0].state !== 'accepted' && controls.openOffer) {
     const offer = el('section', 'gcsp-summary'); offer.setAttribute('aria-label', 'Your car offer');
     offer.append(el('h2', 'gcsp-h2', 'Your car offer'), el('p', 'gcsp-note', 'Your buddy found a car for you. Check its details and deadline.'),
       button({ label: 'View your offer', disabled: pending, onClick: () => controls.openOffer(offers[0]) }));

@@ -1,0 +1,85 @@
+{
+  "tag": "gc004",
+  "origin": "https://localhost:8870",
+  "runs": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "screenshot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-08-GC-004/docs/gcsp/evidence/fucq-193/1280-your-cars-after-acceptance.png",
+      "viewYourOffer": false,
+      "noEntitlement": true,
+      "orderBanner": null,
+      "progressLink": null,
+      "overflow": 0,
+      "tabs": [
+        "BUTTON:Refresh account",
+        "BUTTON:Contact support",
+        "SUMMARY:Order, collection and vehicle details",
+        "SUMMARY:Employee and contact details",
+        "SUMMARY:Drivers and licences (2)",
+        "SUMMARY:choices-fs-uk (1 record)",
+        "SUMMARY:pcs-ukfs-bmw (1 record)",
+        "SUMMARY:motorcycle-choices (0 records)"
+      ],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 403 (Forbidden)",
+        "Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "calls": [
+        "403 /api/gcsp/presenter/controls",
+        "200 /api/gcsp/manual/account",
+        "404 /api/gcsp/manual/draft",
+        "200 /api/gcsp/offers/current",
+        "200 /api/gcsp/orders/progress/all",
+        "200 /api/gcsp/offers/buddy-offer%3A97fc85a6978d89d6d8c8032d3f3a4e41ae7e3674b3cd66e532f5b38c2d2e3c77?runId=demo-24508a0e654108f308f0e29848e61c85",
+        "200 /api/gcsp/manual/order",
+        "200 /api/gcsp/orders/progress?orderUuid=942d7687-7a6a-4c57-bb12-8c4d9bf963c3",
+        "200 /api/gcsp/documents",
+        "200 /api/gcsp/appointments?orderUuid=942d7687-7a6a-4c57-bb12-8c4d9bf963c3",
+        "200 /api/gcsp/return-plan?orderUuid=942d7687-7a6a-4c57-bb12-8c4d9bf963c3"
+      ]
+    },
+    {
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "screenshot": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-08-GC-004/docs/gcsp/evidence/fucq-193/375-your-cars-after-acceptance.png",
+      "viewYourOffer": false,
+      "noEntitlement": true,
+      "orderBanner": null,
+      "progressLink": null,
+      "overflow": 0,
+      "tabs": [
+        "BUTTON:Refresh account",
+        "BUTTON:Contact support",
+        "SUMMARY:Order, collection and vehicle details",
+        "SUMMARY:Employee and contact details",
+        "SUMMARY:Drivers and licences (2)",
+        "SUMMARY:choices-fs-uk (1 record)",
+        "SUMMARY:pcs-ukfs-bmw (1 record)",
+        "SUMMARY:motorcycle-choices (0 records)"
+      ],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 403 (Forbidden)",
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "calls": [
+        "403 /api/gcsp/presenter/controls",
+        "200 /api/gcsp/manual/account",
+        "404 /api/gcsp/manual/draft",
+        "200 /api/gcsp/offers/current",
+        "200 /api/gcsp/orders/progress/all",
+        "200 /api/gcsp/offers/buddy-offer%3A97fc85a6978d89d6d8c8032d3f3a4e41ae7e3674b3cd66e532f5b38c2d2e3c77?runId=demo-24508a0e654108f308f0e29848e61c85",
+        "200 /api/gcsp/manual/order",
+        "200 /api/gcsp/orders/progress?orderUuid=942d7687-7a6a-4c57-bb12-8c4d9bf963c3",
+        "200 /api/gcsp/documents",
+        "200 /api/gcsp/appointments?orderUuid=942d7687-7a6a-4c57-bb12-8c4d9bf963c3",
+        "200 /api/gcsp/return-plan?orderUuid=942d7687-7a6a-4c57-bb12-8c4d9bf963c3"
+      ]
+    }
+  ]
+}
