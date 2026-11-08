@@ -153,6 +153,13 @@ async function readAssumptions(policy, read) {
   }
 }
 
+// One equipment-list rule for the follow-up and for BriefService adding a missing essential.
+export function equipmentListValid(value, control, { allowEmpty = false } = {}) {
+  return Array.isArray(value) && (allowEmpty || value.length > 0) && value.length <= control.maximumItems
+    && value.every((item) => text(item) && item === item.trim() && item.length <= control.maximumItemLength)
+    && new Set(value).size === value.length;
+}
+
 function sameEquipment(left, right) {
   if (!Array.isArray(left) || !Array.isArray(right) || left.length !== right.length) return false;
   const sortedLeft = [...left].sort(); const sortedRight = [...right].sort();
@@ -270,9 +277,7 @@ export function followupChange(question, value, brief) {
       || !Number.isSafeInteger(question.control.maximumItems) || question.control.maximumItems <= 0
       || question.control.maximumItems > MAX_EQUIPMENT_ITEMS || !Number.isSafeInteger(question.control.maximumItemLength)
       || question.control.maximumItemLength <= 0 || question.control.maximumItemLength > MAX_EQUIPMENT_ITEM_LENGTH
-      || !Array.isArray(value) || value.length > question.control.maximumItems || adding && value.length === 0
-      || !value.every((item) => text(item) && item === item.trim() && item.length <= question.control.maximumItemLength)
-      || new Set(value).size !== value.length) {
+      || !equipmentListValid(value, question.control, { allowEmpty: !adding })) {
       return invalid('invalid-followup-change', 'value', 'Use unique equipment values within the registered limits.');
     }
     if (sameEquipment(value, question.currentValue)) return invalid('invalid-followup-change', 'value', 'Choose a different equipment set.');

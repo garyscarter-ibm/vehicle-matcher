@@ -3,6 +3,7 @@ import { validInstant } from '../policy/file-provider.js';
 import { validateBrief } from '../../scenarios/employee/index.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
 import { applyConfirmedFeedbackChange } from '../../../blocks/vehicle-matcher/feedback-actions.js';
+import { FOLLOWUP_QUESTIONS_KEY, equipmentListValid } from '../offers/followup-policy.js';
 
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v)
   && [Object.prototype, null].includes(Object.getPrototypeOf(v));
@@ -78,8 +79,18 @@ export class BriefService {
     const [section, key] = input.change.path.split('.');
     const registered = prepared.config[section];
     if (!object(brief[section]) || Object.hasOwn(brief[section], key) || !object(registered) || !Object.hasOwn(registered, key)) return null;
+    // Only an adopted follow-up target can be added (else refused as before), within that question's control.
+    const questions = await this.#policy.getAssumption(FOLLOWUP_QUESTIONS_KEY, prepared.read);
+    if (questions?.status !== 'ok' || questions.policyVersion !== prepared.read.policyVersion
+      || !Array.isArray(questions.value?.value?.questions)) return null;
+    const question = questions.value.value.questions.find((q) => q?.path === input.change.path);
+    if (!object(question?.control)) return null;
     const next = structuredClone(brief); const value = structuredClone(input.change.value);
     if (section === 'preferences') {
+      if (question.control.kind === 'options' ? !Array.isArray(question.control.options) || !question.control.options.some((o) => o?.value === value)
+        : question.control.kind !== 'slider' || !Number.isSafeInteger(value) || value < prepared.slider.minimum || value > prepared.slider.maximum) {
+        return { status: 'invalid', code: 'invalid-value' };
+      }
       const editor = await this.#policy.getAssumption('brief.editor.v1', prepared.read);
       const importance = editor?.value?.value?.preferences?.[key]?.importance;
       if (editor?.status !== 'ok' || editor.policyVersion !== prepared.read.policyVersion || !Number.isSafeInteger(importance)
@@ -88,6 +99,8 @@ export class BriefService {
       return { status: 'ok', brief: { ...next, briefVersion: version + 1 }, before: null, after: value };
     }
     if (!object(value) || value.state !== 'confirmed' || value.value === null || value.value === undefined) return { status: 'invalid', code: 'confirmed-essential-required' };
+    if (question.control.kind !== 'equipment' || value.operator !== 'includes' || value.unit !== 'equipment-key'
+      || !equipmentListValid(value.value, question.control)) return { status: 'invalid', code: 'invalid-value' };
     const after = { ...value, source: 'employee', confirmedAt: prepared.now };
     next.essentials[key] = after;
     return { status: 'ok', brief: { ...next, briefVersion: version + 1 }, before: null, after };
