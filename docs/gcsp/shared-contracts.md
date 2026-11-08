@@ -909,6 +909,62 @@ plus buddy declines). Cart-route `claims`, `retries` and `expiries` count non-pa
 `holdsNotTaken`/`heldNotTakenSeconds` include buddy expiries. The computed small record is `outcomeRecord` in
 `server/test/fixtures/gcsp-comparison-buddy-outcomes.json`, for the measures Story.
 
+## Comparison measures · FUCQ-136
+
+The two routes' outcome records summarised across seeds and kept as an immutable, explainable result. Fictional cohort
+and assumed behaviour. Calculated fit is not observed satisfaction. Backend only; the panel is FUCQ-138.
+
+**Measures.** `routeMeasures(record)` in `server/gcsp/comparison/measures.js`, per route and seed (all frozen):
+
+| Measure | Definition |
+|---|---|
+| `acceptableCoverage` | Share 0-1 of employees with `outcome` `taken`, `takenAt` at or before `renewalAt` and underlying `fit` at or above the record's `threshold`. |
+| `carsNeverAllocated` | Count of cars whose outcome is not `allocated`. |
+| `heldNotTakenCarDays` | Buddy: `totals.heldNotTakenHours / 24`. Today's route: sum of `cars[].heldNotTakenSeconds / 86400`. |
+| `declinedOffers`, `expiredOffers` | `totals.declines` and `totals.offerExpiries`; 0 for today's route, which makes no offers. |
+| `failedClaims`, `retries` | `totals.expiries` (cart holds claimed then expired untaken) and `totals.retries` (claim conflicts back to the listing). |
+| `meanAcceptedFit` | Mean underlying fit of the covered employees, 2 dp; `null` when none. |
+| `accessGroupCoverage` | `acceptableCoverage` within each access group, keyed by group, keys sorted. |
+
+Shares and car-days round to 6 dp. `summariseSeeds(values)` returns `{ mean, min, max, observedSeeds }` over the seeds
+that observed a measure (nulls skipped).
+
+**Differences and the rule.** `compareRoutes(perSeed, ruleRow)` returns one entry for every measure and every access
+group (`accessGroupCoverage:<group>`), never only the ones the buddy wins: `{ measure, betterWhen, current, buddy,
+difference: { mean, min, max }, verdict }`. `difference` is buddy minus today's route (mean of the summaries; min and max over
+per-seed differences). Verdict: `insufficient-seeds` when fewer than `minimumSeeds` seeds have both values;
+`no-clear-difference` when the routes' min-max ranges overlap (inclusive); otherwise `buddy-better` or `current-better`
+by `betterWhen`. A rule value, schema version or `betterWhen` it does not understand is refused.
+
+| Policy key | Unit / purpose |
+|---|---|
+| `comparison.noClearDifferenceRule` | `{ schemaVersion: 1, rule: 'route-seed-ranges-overlap', overlapInclusive, minimumSeeds, betterWhen }`. |
+
+`assumed`, sourced here, dated 8 November 2026, read through PolicyService. It is not a generator input, so the
+FUCQ-133 policy hash is unchanged.
+
+**Runner and result.** `runComparison({ experimentId: 'process-only', seeds?, overlay? }, { policy, codeRevision, now,
+onRecord? })` in `experiments.js` generates each seed's inputs and evaluation once, replays `current` then `buddy` on the
+identical inputs, one run at a time, and keeps measures, totals and a `recordDigest` per route rather than the records.
+Any other experiment (order mix, points, hold sweeps) is refused; those are FUCQ-174. The frozen result has
+`schemaVersion`, `kind: 'process-comparison'`, `experimentId`, `completedAt`, `manifest` (`experimentId`, `seeds`,
+`policyVersion`, `policyHash`, `generatorVersion`, `overlays`, `codeRevision`, `inputHashes`), `perSeed`, `measures` (per
+route, per measure and access group), `differences`, `rule`, `assumptions` (every consumed row with `status` and `basis`,
+plus the rule), the fixed `caveat` "Calculated fit is not observed satisfaction." and `limitations`. The computed small
+record, in its stored read shape, is `storedResult` in `server/test/fixtures/gcsp-comparison-process-result.json`.
+
+**Storage.** Migration `0005_comparison_results.sql` adds the append-only `comparison_results` table (key `runId`,
+`resultId`; immutable in the repository, `version = 1`). `results.js` keeps rows in their own environment
+(`comparison-results`, run `comparison-results-v1`), created once on the first store. FUCQ-85's `resetRun` retires only
+the current run of the environment it is given, so a live demo reset cannot reach them. `resultId` is
+`process-comparison-` plus a digest of `completedAt`, manifest and per-seed results: a new run is a new row, storing the same
+result again changes nothing and editing is refused (`immutable-row`).
+
+**Read model.** `readLatestComparisonResult(repository, context, policy, { asOf })` returns the latest result by
+`completedAt` then `resultId` as `{ result, resultId, storedAt, policyVersion, activePolicyVersion, policyCurrent }`;
+`policyCurrent` is false once PolicyService's active version at `asOf` differs from the recorded one. No result is
+`not-found`.
+
 ## Named scenario catalogue and preparation · FUCQ-125
 
 `createScenarioService({ repository, policy, clock, identity })` uses the opened application repository and the actual `PolicyService`, `DemoClock` and `DemoIdentityAdapter` instances. `readCatalogue(context)`, `readState(context)` and `reset(context, command)` are presenter-only. No schema, policy seed or runtime dependency is added. The catalogue is `gcsp-scenario-catalogue-v1`; its first six stable IDs are `main-successful-journey`, `no-suitable-match`, `decline-then-change`, `offer-expires`, `data-unavailable`, and `uncertain-handoff`. FUCQ-109 and FUCQ-127–131 own their business replays. A seventh `gcsp-clock-scenario-v1` entry is explicitly fictional clock/reset mechanics support, never evidence of those six journeys or the real corpus.
