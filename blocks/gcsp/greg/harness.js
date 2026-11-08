@@ -1,3 +1,4 @@
+import './publish/register.js';
 // Harness only: ?fixture= picks a dashboard fixture and ?plan= an order plan state. The elements never read location.
 import { el } from '../../vehicle-matcher/ui.js';
 import { defineGcspGregDashboard } from './gcsp-greg.js';
