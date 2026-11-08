@@ -12,7 +12,8 @@ const handoffFixture = (blocked) => ({ termsVersion: 'fictional-order-terms-v1',
 const selectionFixture = (name) => {
   const hr = name !== 'selection-no-hr'; const approval = [...hr ? ['HR approval'] : [], 'sales-manager approval', 'sent to ordering'];
   const state = { 'selection-pending': 'handoff-pending', 'selection-failed': 'handoff-failed' }[name] ?? 'acknowledged';
-  return { selectionState: state, current: state === 'acknowledged' ? approval[0] : 'selection received', orderNumber: '0123456',
+  return { selectionState: state, current: state === 'acknowledged' ? approval[0] : 'selection received',
+    orderReference: name === 'selection-no-hr' ? null : 'GCSP-000123', orderNumber: '0123456',
     stages: [{ name: 'selection received', state: { 'handoff-pending': 'pending', 'handoff-failed': 'failed' }[state] ?? 'complete' },
       ...approval.map((stage, i) => ({ name: stage, state: i === 0 && state === 'acknowledged' ? 'waiting' : 'not-started' }))] };
 };

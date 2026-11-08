@@ -35,11 +35,11 @@ const quote = { runId: 'run', employeeId: 'employee-paula', entitlementSlotId: '
   terms: { kind: 'employee-scheme', points: { value: 1100, unit: 'points' }, allowanceInputs: { allowance: { value: 1300, unit: 'points' } } } };
 const oldContract = { model: 'Returning BMW Touring', registration: 'SYNTHETIC', contractEndDate: '2026-12-01', currentOdometer: { value: 5200, unit: 'mi' } };
 
-function projection(selectionState = 'acknowledged', mode = 'replacement', operationState = 'acknowledged') {
+function projection(selectionState = 'acknowledged', mode = 'replacement', operationState = 'acknowledged', reference = 'GCSP-000001') {
   const names = terms.approvalStages;
   const stage = { acknowledged: 'complete', 'handoff-pending': 'pending', 'handoff-failed': 'failed' }[selectionState];
-  const value = { operationId: 'selection:abc', operationState, selectionReceived: true,
-    selection: { stock: { orderNumber: '9000001' }, quote, terms, employee: account.account, driver: account.drivers[1],
+  const value = { operationId: 'selection:abc', operationState, selectionReceived: true, orderReference: reference,
+    selection: { orderReference: reference, stock: { orderNumber: '9000001' }, quote, terms, employee: account.account, driver: account.drivers[1],
       draft: { choices: { mode, requestedCollectionDate: '2026-11-20', collectionLocationId: 'demo-collection-centre' }, contract: { months: 6, annualMileage: 8000, mileageUnit: 'mi/year' } },
       oldContract: mode === 'replacement' ? oldContract : null, vehicleSlot: { entitlementSlotId: 'slot-paula' },
       reviewDetails: { details: { contact: { phone: '01632 960001', email: 'chooser@example.invalid' }, expectedReturnMileage: mode === 'replacement' ? 6700 : null, specialRequirements: 'Child seat' } } },
@@ -139,6 +139,36 @@ test('Submit sends the exact body once on a double click and shows the confirmat
   assert.match(text, /not an appointment/); assert.match(text, /Casey Fictional/); assert.match(text, /Returning BMW Touring/);
   assert.doesNotMatch(text, /\bapproved\b|collected|booked/i); assert.doesNotMatch(text, RAW); assert.doesNotMatch(text, /—/);
   assert.equal(document.activeElement, f.root.querySelector('h1'));
+});
+
+const facts = (f) => Object.fromEntries([...f.root.querySelectorAll('dl > div')].map((d) => [d.querySelector('dt')?.textContent, d.querySelector('dd')?.textContent]));
+
+test('the confirmation shows the order reference and the car order number, and Print keeps both rows', async (t) => {
+  const f = setup(t, { order: { value: projection('acknowledged') } });
+  await settle(() => named(f, 'Print order'));
+  const shown = facts(f);
+  assert.equal(shown['Order reference'], 'GCSP-000001'); assert.equal(shown['Car order number'], '9000001');
+  assert.doesNotMatch(f.root.textContent, /Order number/);
+  assert.match(f.root.querySelector('[role="status"]').textContent, /Order reference GCSP-000001\. Car order number 9000001\./);
+  for (const label of ['Order reference', 'Car order number']) {
+    const row = [...f.root.querySelectorAll('dt')].find((dt) => dt.textContent === label);
+    assert.ok(row && !row.closest('.gcsp-print-hidden'), `${label} must print`);
+  }
+});
+
+test('an order from before references shows only the car order number, with nothing invented', async (t) => {
+  const f = setup(t, { order: { value: projection('acknowledged', 'new', 'acknowledged', null) } });
+  await settle(() => named(f, 'Print order'));
+  const shown = facts(f);
+  assert.equal(shown['Car order number'], '9000001'); assert.equal('Order reference' in shown, false);
+  assert.doesNotMatch(f.root.textContent, /GCSP-|Order reference/);
+  assert.match(f.root.querySelector('[role="status"]').textContent, /^[^]*Awaiting approval\. Car order number 9000001\.$/);
+});
+
+test('a malformed reference is dropped rather than shown', async (t) => {
+  const f = setup(t, { order: { value: projection('acknowledged', 'new', 'acknowledged', '<b>GCSP 1</b>') } });
+  await settle(() => named(f, 'Print order'));
+  assert.equal('Order reference' in facts(f), false); assert.equal(facts(f)['Car order number'], '9000001');
 });
 
 test('an unavailable submit keeps one command and retries the same body without a second order', async (t) => {

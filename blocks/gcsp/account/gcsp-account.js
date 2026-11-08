@@ -10,6 +10,7 @@ import { mountOrderProgress } from '../order-progress/gcsp-order-progress.js';
 import { latestOrderId } from '../order-progress/order-progress-controller.js';
 import { orderCar } from '../order-progress/order-car.js';
 import { sentence } from '../order-progress/order-progress-copy.js';
+import { orderIdentityRows, orderReferenceOf } from '../kit/order-identity.js';
 
 let serial = 0;
 const MISSING = 'Not supplied';
@@ -73,13 +74,21 @@ function details(title, ...content) {
   return node;
 }
 
+// Earlier contracts name the car's own number; a reference shows only when the record supplies one.
+const orderRows = (contract) => orderIdentityRows(contract.orderReference, contract.orderNumber).map(({ label, value }) => row(label, value));
+
+const printLabel = (contract) => {
+  const id = orderReferenceOf(contract.orderReference) ?? contract.orderNumber;
+  return id ? `Print record ${id}` : 'Print record';
+};
+
 function contractDetails(contract, model) {
   const technical = contract.technical ?? {};
   const standard = ['insuranceGroup', 'transmission', 'nedcCo2', 'wltpCo2', 'fuelConsumptionLow', 'fuelConsumptionMedium',
     'fuelConsumptionHigh', 'fuelConsumptionExtraHigh', 'fuelConsumptionCombinedWeighted', 'electricityConsumption',
     'electricRange', 'electricCityRange', 'exterior', 'interior', 'price', 'options'];
   return details('Order, collection and vehicle details', facts([
-    ...slotRows(model, contract.slotId), row('Order reference', contract.orderNumber ?? contract.orderReference), row('Order date', date(contract.orderDate)),
+    ...slotRows(model, contract.slotId), ...orderRows(contract), row('Order date', date(contract.orderDate)),
     row('Order status', status(contract.orderStatus)), row('Registration', contract.registration),
     row('Delivered VIN', contract.vin), row('Chassis number', contract.chassisNumber), row('Registration date', date(contract.registrationDate)),
     row('Requested collection', date(contract.requestedCollectionDate)), row('Collection location', contract.collectionLocation),
@@ -157,6 +166,8 @@ function orderStatus(order, host) {
   const node = statusScreen({ title: order.outcome === 'declined' ? 'Your order was declined' : 'Your order is in progress',
     message: order.currentStage ? `Current step: ${sentence(order.currentStage)}.` : null, actions: [link] });
   node.classList.add('gcsp-account-order-status');
+  const { orderReference, orderNumber } = order.source ?? {};
+  if (orderNumber || orderReferenceOf(orderReference)) link.before(facts(orderIdentityRows(orderReference, orderNumber)));
   return node;
 }
 
@@ -234,7 +245,7 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
           facts([row('Status', status(contract.status)), row('Driver', contract.driver?.name), ...slotRows(model, contract.slotId),
             row('Registration', contract.registration), row('Actual collection', date(contract.actualCollectionDate)),
             row('Contract end', date(contract.contractEndDate)), row('Returned', date(contract.returnedDate))]), contractDetails(contract, model),
-          button({ label: contract.orderNumber ? `Print record ${contract.orderNumber}` : 'Print record', variant: 'ghost',
+          button({ label: printLabel(contract), variant: 'ghost',
             onClick: () => controls.print(entry) }));
         const action = model.actions.find((item) => item.oldContractId === contract.contractId && item.slotId === contract.slotId
           && item.schemeId === history.schemeId);

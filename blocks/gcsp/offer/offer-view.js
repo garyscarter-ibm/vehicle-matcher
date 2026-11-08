@@ -2,6 +2,7 @@ import { el, screenIntro, button, factList } from '../../vehicle-matcher/ui.js';
 import { matchCard, mediaWell } from '../../vehicle-matcher/modes/result-card.js';
 import { labelledField, errorSummary, checkboxField } from '../kit/form-controls.js';
 import { stageList } from '../kit/stage-list.js';
+import { orderIdentityRows } from '../kit/order-identity.js';
 import { ACCESS_LAPSED_TITLE, RUN_RESTARTED_TITLE, accessLapsedScreen, runRestartedScreen } from '../kit/run-restarted.js';
 import { followupHandle } from './followup-entry.js';
 
@@ -82,7 +83,7 @@ function handoffGroup(model, id, tick) {
 function selectionGroup(selection) {
   const section = el('div', 'gcsp-offer-current');
   section.append(stageList({ heading: 'Your selection', stages: selection.stages }));
-  if (selection.orderNumber) section.append(factList([{ label: 'Order number', value: selection.orderNumber }]));
+  if (selection.orderNumber || selection.orderReference) section.append(factList(orderIdentityRows(selection.orderReference, selection.orderNumber)));
   return section;
 }
 

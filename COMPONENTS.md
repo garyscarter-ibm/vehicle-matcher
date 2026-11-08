@@ -239,6 +239,10 @@ The existing single `components.html` gallery includes a local brand callback, l
 
 The shared GCSP adaptation of `screenIntro`, `button`, `factList`, `statusScreen` and `mediaWell` lives in this explicitly capped kit stylesheet. It imports `blocks/gcsp/shell/gcsp-tokens.css` and scopes every rule under `.gcsp`, with no employee-shell dependency. Both `gcsp-employee.css` and `demo-launcher/launcher.css` import it; the employee's existing primitive rules were moved unchanged. Keep new common primitive treatment here rather than duplicating it in page CSS. Retail surfaces stay outside `.gcsp` and retain their brand themes.
 
+### GCSP order identity (`blocks/gcsp/kit/order-identity.js`, FUCQ-220)
+
+A data helper, not a component. `orderIdentityRows(orderReference, carOrderNumber)` returns `factList` rows labelled "Order reference" (only when the server sent a well-formed `^[A-Za-z0-9-]{1,32}$` reference) and "Car order number"; `orderReferenceOf` is the same check. The manual confirmation, buddy handoff, account order card and history, and order progress all use it, so an earlier order shows only the car's number and nothing is derived on the client.
+
 ### GCSP account consumer (`blocks/gcsp/account/`)
 
 `mountAccount(root, { adapter, brand, onSupport, print })` and `<gcsp-account>` compose `mountEmployee`, `screenIntro`, `button`, `statusScreen`, `factList`, `formatTerm`, `mediaWell`, the existing countdown and native labelled details for delivered cars, read-only account/licence facts and grouped histories. A current car has no stock decision, so this is page composition rather than a new decision-card primitive. `gcsp-account.css` imports the employee composition and has its own ratchet cap; harness `gcsp-account.html` uses the HTTP adapter by default and explicit read-only snapshots with `?fixture=`.
