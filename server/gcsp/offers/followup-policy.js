@@ -101,10 +101,16 @@ function questionRows(value, config, minimum, maximum, reasons) {
   return questions;
 }
 
+// An equipment essential still waiting for confirmation has no value to replace.
+const unsetEquipment = (target) => plain(target) && target.state === 'needs-confirmation' && target.value === null
+  && target.operator === 'includes' && target.unit === 'equipment-key';
+
+// Returns null when the brief has no entry yet, so the answer adds it; undefined when the target is invalid.
 function targetValue(question, brief, config, minimum, maximum) {
   const path = keyPath(question.path);
   if (!path || !safeKey(path.key)) return undefined;
   if (path.kind === 'preference') {
+    if (!Object.hasOwn(brief.preferences, path.key)) return plain(config.preferences[path.key]) ? null : undefined;
     const definition = config.preferences[path.key]; const target = brief.preferences[path.key];
     if (!plain(target) || !plain(definition) || target.valueState !== 'confirmed'
       || target.importanceState !== 'confirmed' || !text(target.source)
@@ -115,6 +121,8 @@ function targetValue(question, brief, config, minimum, maximum) {
     return target.value;
   }
   const definition = config.essentials[path.key]; const target = brief.essentials[path.key];
+  if (question.control.kind === 'equipment' && plain(definition)
+    && (!Object.hasOwn(brief.essentials, path.key) || unsetEquipment(target))) return null;
   if (question.control.kind !== 'equipment' || !plain(definition) || !plain(target)
     || definition.operator !== 'includes' || definition.unit !== 'equipment-key'
     || target.operator !== definition.operator || target.unit !== definition.unit || target.state !== 'confirmed'
@@ -143,6 +151,13 @@ async function readAssumptions(policy, read) {
   } catch {
     return null;
   }
+}
+
+// One equipment-list rule for the follow-up and for BriefService adding a missing essential.
+export function equipmentListValid(value, control, { allowEmpty = false } = {}) {
+  return Array.isArray(value) && (allowEmpty || value.length > 0) && value.length <= control.maximumItems
+    && value.every((item) => text(item) && item === item.trim() && item.length <= control.maximumItemLength)
+    && new Set(value).size === value.length;
 }
 
 function sameEquipment(left, right) {
@@ -220,11 +235,17 @@ export function followupChange(question, value, brief) {
     return invalid('invalid-followup-change', 'questionVersion', 'Use the current policy question.');
   }
   if (question.questionVersion !== expectedVersion) return invalid('invalid-followup-change', 'questionVersion', 'Use the current policy question.');
-  const current = path.kind === 'preference' ? brief.preferences[path.key] : brief.essentials[path.key];
-  if (!plain(current)) return invalid('invalid-followup-change', 'brief', 'The question target is no longer available.');
-  const currentValue = path.kind === 'preference' ? current.value : current.value;
+  const section = path.kind === 'preference' ? brief.preferences : brief.essentials;
+  const current = section[path.key];
+  const adding = question.currentValue === null;
+  if (adding) {
+    if (Object.hasOwn(section, path.key) && !(path.kind === 'essential' && unsetEquipment(current))) {
+      return invalid('invalid-followup-change', 'brief', 'The question target changed or is no longer confirmed.');
+    }
+  } else if (!plain(current)) return invalid('invalid-followup-change', 'brief', 'The question target is no longer available.');
+  const currentValue = adding ? null : current.value;
   const isEquipment = question.control?.kind === 'equipment';
-  if (isEquipment
+  if (adding) { /* Nothing to compare: the answer adds the target. */ } else if (isEquipment
     ? current.state !== 'confirmed' || current.operator !== 'includes' || current.unit !== 'equipment-key'
       || !sameEquipment(currentValue, question.currentValue)
     : path.kind === 'preference' ? current.valueState !== 'confirmed' || current.importanceState !== 'confirmed'
@@ -256,13 +277,12 @@ export function followupChange(question, value, brief) {
       || !Number.isSafeInteger(question.control.maximumItems) || question.control.maximumItems <= 0
       || question.control.maximumItems > MAX_EQUIPMENT_ITEMS || !Number.isSafeInteger(question.control.maximumItemLength)
       || question.control.maximumItemLength <= 0 || question.control.maximumItemLength > MAX_EQUIPMENT_ITEM_LENGTH
-      || !Array.isArray(value) || value.length > question.control.maximumItems
-      || !value.every((item) => text(item) && item === item.trim() && item.length <= question.control.maximumItemLength)
-      || new Set(value).size !== value.length) {
+      || !equipmentListValid(value, question.control, { allowEmpty: !adding })) {
       return invalid('invalid-followup-change', 'value', 'Use unique equipment values within the registered limits.');
     }
     if (sameEquipment(value, question.currentValue)) return invalid('invalid-followup-change', 'value', 'Choose a different equipment set.');
-    return ok({ path: question.path, value: { operator: current.operator, unit: current.unit, state: 'confirmed',
+    return ok({ path: question.path, value: { operator: adding ? 'includes' : current.operator,
+      unit: adding ? 'equipment-key' : current.unit, state: 'confirmed',
       source: 'employee', value: structuredClone(value) } });
   }
   return invalid('invalid-followup-change', 'control', 'Use a supported follow-up control.');

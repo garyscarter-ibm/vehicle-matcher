@@ -39,6 +39,28 @@ test('unchanged and invalid choices cannot confirm for options, slider or equipm
   }
 });
 
+// FUCQ-183: the brief has no entry yet, so the server sends currentValue null and the answer adds it.
+const unset = (kind) => { const q = question(kind); q.value.question.currentValue = null; return q; };
+
+test('FUCQ-183: a question with no current value starts empty or at the range midpoint and confirms only with an answer', async () => {
+  for (const [kind, start, canConfirm, answer] of [['options', null, false, 'estate'], ['slider', 50, true, 70], ['equipment', [], false, ['towbar']]]) {
+    const { controller, confirms } = setup({ read: async () => unset(kind) }); await controller.refresh();
+    const first = controller.snapshot();
+    assert.equal(first.state, 'question'); assert.deepEqual(first.value, start); assert.equal(first.canConfirm, canConfirm);
+    assert.equal(first.error, '');
+    if (!canConfirm) { await controller.confirm(); assert.equal(confirms.length, 0); }
+    assert.equal(controller.choose(answer).status, 'ok'); assert.equal(controller.snapshot().canConfirm, true);
+  }
+  const { controller } = setup({ read: async () => unset('slider') }); await controller.refresh();
+  assert.equal(controller.choose(50).status, 'ok');
+  const { controller: equipment } = setup({ read: async () => unset('equipment') }); await equipment.refresh();
+  assert.equal(equipment.choose([]).status, 'invalid'); assert.match(equipment.snapshot().error, /at least one equipment/i);
+  const { controller: sent, confirms: calls } = setup({ read: async () => unset('slider') }); await sent.refresh(); await sent.confirm();
+  assert.equal(calls[0].value, 50); assert.equal(sent.snapshot().state, 'change-saved');
+  const { controller: bad } = setup({ read: async () => { const q = unset('options'); q.value.question.control.options = []; return q; } });
+  await bad.refresh(); assert.equal(bad.snapshot().state, 'unavailable');
+});
+
 test('uncertain retries retain the identical command even when a status read still returns the question', async () => {
   const commands = []; let reads = 0;
   const { controller } = setup({ read: async () => { reads += 1; return question(); }, confirm: async (input) => {
