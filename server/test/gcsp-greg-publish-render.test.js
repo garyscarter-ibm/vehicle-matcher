@@ -108,6 +108,18 @@ test('each invalid price summary link selects its own row while retaining the re
   }
 });
 
+test('shared error summary passes field and row identity while one-argument and default consumers still work', async () => {
+  const { errorSummary } = await import('../../blocks/gcsp/kit/form-controls.js');
+  const input = document.createElement('input'); input.id = 'kit-field'; document.body.append(input); const seen = [];
+  const rows = errorSummary({ id: 'kit-rows', errors: [{ id: input.id, selectionId: 'price:second', message: 'Bad' }], onSelect: (...args) => seen.push(args) });
+  const single = errorSummary({ id: 'kit-single', errors: [{ id: input.id, message: 'Bad' }], onSelect: (id) => seen.push([id]) });
+  const fallback = errorSummary({ id: 'kit-default', errors: [{ id: input.id, message: 'Bad' }] });
+  document.body.append(rows.root, single.root, fallback.root);
+  rows.root.querySelector('a').click(); single.root.querySelector('a').click();
+  assert.deepEqual(seen, [[input.id, 'price:second'], [input.id]]);
+  fallback.root.querySelector('a').click(); assert.equal(document.activeElement, input);
+});
+
 test('price switching updates visible and accessible slider row, units, bounds and provenance without replacing inputs', async () => {
   const policy = gallery.galleryPolicy({ ranges: true });
   policy.fields.unshift({ ...structuredClone(policy.fields[0]), id: 'price:second', key: 'second', configurationId: 'Second car',
