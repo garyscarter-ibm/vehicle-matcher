@@ -5,7 +5,8 @@ import { labelledField } from '../kit/form-controls.js';
 import { createPresenterHttpAdapter } from './http-adapter.js';
 
 let sequence = 0;
-const explain = (value) => typeof value === 'string' ? value : JSON.stringify(value);
+// Handler results can be huge (buddy allocation returns about 200 KB), so the readout is capped.
+const explain = (value) => { const text = typeof value === 'string' ? value : JSON.stringify(value); return text.length > 240 ? `${text.slice(0, 240)} ... (truncated)` : text; };
 const reason = (reply) => [reply?.status, reply?.code, reply?.reason,
   ...(Array.isArray(reply?.reasons) ? reply.reasons.filter((row) => typeof row?.reason === 'string')
     .map((row) => `${typeof row.field === 'string' ? `${row.field}: ` : ''}${row.reason}`) : []),

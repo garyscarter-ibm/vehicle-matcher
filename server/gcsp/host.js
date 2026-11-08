@@ -51,6 +51,14 @@ function accessPage(next, message) {
   <title>Open the demo</title>
   <link rel="stylesheet" href="/blocks/gcsp/shell/gcsp-shell.css">
   <link rel="stylesheet" href="/gcsp-employee.css">
+  <style>
+    body { background: #f4f6f6; font: 16px/1.5 system-ui, sans-serif; color: #1f2226; }
+    main { max-width: 26rem; margin: 4rem auto; padding: 2rem 1.5rem; background: #fff; border: 1px solid #d5dadd; }
+    label { display: block; margin: 1rem 0 .25rem; font-weight: 600; }
+    input[type=password] { box-sizing: border-box; width: 100%; padding: .6rem; font: inherit; border: 1px solid #5d666d; }
+    button { margin-top: 1.25rem; padding: .7rem 1.4rem; font: inherit; font-weight: 600; color: #fff; background: #00779b; border: 0; cursor: pointer; }
+    :focus-visible { outline: 3px solid #1f2226; outline-offset: 2px; }
+  </style>
 </head>
 <body>
   <main>

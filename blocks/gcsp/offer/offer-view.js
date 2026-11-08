@@ -24,6 +24,8 @@ const selectionHeadline = (selection) => selection.selectionState === 'acknowled
 const messageFor = (model) => model.message || (model.state === 'accepted' && model.selection ? selectionHeadline(model.selection) : messages[model.state]);
 const longDate = (value) => /^\d{4}-\d\d-\d\d$/.test(value ?? '') && Number.isFinite(Date.parse(value))
   ? new Date(`${value}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : value;
+// Readable demo time such as "6 Nov 2026, 11:30 UTC"; anything unparsable shows as given.
+const demoTime = (value) => Number.isFinite(Date.parse(value ?? '')) ? `${new Date(value).toLocaleString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })} UTC` : value;
 let sequence = 0;
 
 const decisionReason = (model) => model.decisionUnavailable ? 'Decisions are unavailable on this page.'
@@ -240,7 +242,7 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     updateFollowup(model);
     if (model.state === 'pending') {
       clockNode.textContent = model.countdown || 'Time remaining unavailable';
-      asOfNode.textContent = model.now ? `Demo time at last check: ${model.now}` : 'Demo time unavailable';
+      asOfNode.textContent = model.now ? `Demo time at last check: ${demoTime(model.now)}` : 'Demo time unavailable';
       reasonNode.textContent = decisionReason(model);
       content.querySelector('[data-offer-action="accept"]').disabled = !model.canAccept;
       for (const box of content.querySelectorAll('[data-offer-declaration]')) box.checked = model.ticked?.[box.dataset.offerDeclaration] === true;
