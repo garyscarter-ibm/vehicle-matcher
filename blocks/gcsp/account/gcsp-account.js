@@ -7,6 +7,7 @@ import { toAccountView, journeyIntent } from './account-view.js';
 import { createAccountHttpAdapter } from './http-adapter.js';
 import { mountOrderProgress } from '../order-progress/gcsp-order-progress.js';
 import { latestOrderId } from '../order-progress/order-progress-controller.js';
+import { orderCar } from '../order-progress/order-car.js';
 
 let serial = 0;
 const MISSING = 'Not supplied';
@@ -123,14 +124,7 @@ function currentCar(contract, model, controls) {
   return feature;
 }
 
-const safeSrc = (value) => typeof value === 'string' && /^(https:\/\/|\/(?!\/))/.test(value) ? value : undefined;
-// The car is the selection snapshot for this same order; anything else leaves the body's "not supplied" line.
-export function orderCar(order, orderUuid) {
-  const stock = order?.status === 'ok' ? order.value?.selection?.stock : null;
-  const display = stock?.orderUuid === orderUuid ? stock.facts?.display : null;
-  const name = typeof display?.name === 'string' ? display.name.trim() : '';
-  return name ? { name, photo: safeSrc(display.photo) ?? safeSrc(display.images?.[0]?.src) } : undefined;
-}
+export { orderCar };
 
 // This is page layout rather than a stock decision card: a delivered car has no stock eligibility decision.
 export function renderAccountBody(main, { model, draft, offers = [], pending = false, message, journey = false, controls, orderHost } = {}) {

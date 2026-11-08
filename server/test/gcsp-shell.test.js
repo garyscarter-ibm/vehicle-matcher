@@ -758,7 +758,7 @@ test('the order progress pages load the custom element through external modules 
   assert.match(harness, /id="gcsp-order-progress-preview"/);
   const host = read('blocks/gcsp/order-progress/live.js');
   assert.deepEqual([...host.matchAll(/^import .*? from '([^']+)';$/gm)].map((match) => match[1]), [
-    '../shell/account-runtime.js', './order-progress-http.js', '../cases/http-adapter.js', './gcsp-order-progress.js',
+    '../shell/account-runtime.js', './order-progress-http.js', '../cases/http-adapter.js', '../account/http-adapter.js', './order-car.js', './gcsp-order-progress.js',
   ]);
   assert.deepEqual([...host.matchAll(/location\.assign\(([^)]*)\)/g)].map((m) => m[1]), ['page']);
   assert.deepEqual([...host.matchAll(/'(\/gcsp-[a-z-]+\.html)'/g)].map((m) => m[1]), ['/gcsp-brief-live.html', '/gcsp-activity-live.html']);
