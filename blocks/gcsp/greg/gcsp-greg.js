@@ -82,12 +82,15 @@ function demandSection(view) {
   return node;
 }
 
+// During a stock-source outage "no stock released" would be untrue, so the gate says the source is down.
+const gateLabel = (view, row) => row.code !== 'no-released-stock' || !view.stock.sourceUnavailable ? row.label
+  : view.stock.sourceStale ? 'Stock data too old to use' : 'Stock source unavailable';
 function unmetSection(view) {
   const node = section('unmet', 'Unmet needs');
   node.append(note(view.meta.overlapNote), dataTable({
     caption: 'Briefs with no suitable car, by gate', emptyText: 'No unmet needs at this time',
     columns: [{ key: 'name', label: 'Gate' }, { key: 'effect', label: 'Effect' }, { key: 'count', label: 'Briefs', numeric: true }],
-    rows: view.demand.unmetByGate.map((row) => ({ name: row.label, effect: row.severityLabel, count: row.count })),
+    rows: view.demand.unmetByGate.map((row) => ({ name: gateLabel(view, row), effect: row.severityLabel, count: row.count })),
   }));
   return node;
 }
