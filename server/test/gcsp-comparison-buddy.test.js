@@ -10,6 +10,7 @@ import { replayCurrentRoute } from '../gcsp/comparison/routes/current.js';
 import { BuddyHoldService } from '../gcsp/offers/buddy-hold.js';
 import { OfferDecisionService } from '../gcsp/offers/decision.js';
 import { CapturedTransport } from '../gcsp/notify/index.js';
+import { shortQuotePolicy } from './helpers/short-quote-policy.js';
 
 const fixture = JSON.parse(await readFile(new URL('./fixtures/gcsp-comparison-buddy-outcomes.json', import.meta.url), 'utf8'));
 const policy = new PolicyService({ provider: new FilePolicyProvider() });
@@ -32,11 +33,16 @@ const pair = { seed: 'fucq134-pair-151', overlay: { 'comparison.cohortSize': 2, 
     body: [{ value: 'estate', weight: 1 }, { value: 'saloon', weight: 1 }], fuel: [{ value: 'petrol', weight: 1 }] } },
   'comparison.importanceDistribution': [{ value: 100, weight: 1 }],
   'comparison.briefNoise.v1': { accuratePreferenceProbability: 0.5, preserveEssentials: true }, 'comparison.buddyUptake': 1 } };
+const shortPair = { ...pair, short: true };
 const withOverlay = (setup, overlay) => ({ ...setup, overlay: { ...setup.overlay, ...overlay } });
 
-async function prepare({ seed, overlay }) {
-  const inputs = generateComparisonInputs(seed, snapshot, { overlay });
-  return { policy, inputs, evaluation: await evaluateComparisonSeed({ inputs, policy }), codeRevision: 'fucq135-test' };
+// Quote terms (3600 s) that lapse inside the 7200 s hold: an explicit alternative policy, not the seed default.
+const shortPolicy = await shortQuotePolicy(3600);
+const shortSnapshot = await loadComparisonPolicy({ policyService: shortPolicy, policyRead: { runId: 'comparison-buddy-preparation', asOf: origin } });
+
+async function prepare({ seed, overlay, short }) {
+  const inputs = generateComparisonInputs(seed, short ? shortSnapshot : snapshot, { overlay });
+  return { policy: short ? shortPolicy : policy, inputs, evaluation: await evaluateComparisonSeed({ inputs, policy: short ? shortPolicy : policy }), codeRevision: 'fucq135-test' };
 }
 async function open(t, setup, route = 'buddy') {
   const run = await openComparisonRun({ ...setup, route });
@@ -123,7 +129,7 @@ test('notifications are captured and none is sent', async (t) => {
 });
 
 test('employees accept or decline with a typed reason, one response time after the offer', async (t) => {
-  const { run, setup, record } = await replay(t, pair);
+  const { run, setup, record } = await replay(t, shortPair);
   const { totals } = record;
   assert.deepEqual([totals.offersMade, totals.offersAccepted, totals.declines, totals.offerExpiries], [3, 1, 2, 0]);
   assert.deepEqual(totals.declinesByReason, { 'body-style': 2, size: 0, fuel: 0, equipment: 0 });
@@ -149,7 +155,7 @@ test('employees accept or decline with a typed reason, one response time after t
 });
 
 test('an offer unanswered by its deadline expires through the clock, or lapses when its terms have', async (t) => {
-  const base = withOverlay(pair, { 'comparison.accessGroups': accessing(8000) });
+  const base = withOverlay(shortPair, { 'comparison.accessGroups': accessing(8000) });
   const { run, record } = await replay(t, base);
   assert.deepEqual([record.totals.offersMade, record.totals.offerExpiries, record.totals.declines, record.totals.taken], [3, 3, 0, 0]);
   const persisted = await run.snapshot();
@@ -162,12 +168,12 @@ test('an offer unanswered by its deadline expires through the clock, or lapses w
   assert.equal(record.totals.buddyHeldNotTakenHours, 6);
   assert.deepEqual(record.cars.map((car) => [car.outcome, car.holdsNotTaken, car.heldNotTakenSeconds]).sort(), [['held-not-taken', 2, 14400], ['held-not-taken', 1, 7200]].sort());
   // A response exactly at the deadline is too late (the deadline is inclusive).
-  const edge = await replay(t, withOverlay(pair, { 'comparison.accessGroups': accessing(7200) }));
+  const edge = await replay(t, withOverlay(shortPair, { 'comparison.accessGroups': accessing(7200) }));
   assert.equal(edge.record.totals.offerExpiries, 3);
   // Answered inside the hold but after the quote's terms lapsed: only decline is left, so a keen employee lets it lapse.
-  const lapsed = await replay(t, withOverlay(pair, { 'comparison.accessGroups': accessing(4000) }));
+  const lapsed = await replay(t, withOverlay(shortPair, { 'comparison.accessGroups': accessing(4000) }));
   assert.deepEqual([lapsed.record.totals.termsLapsed, lapsed.record.totals.offerExpiries, lapsed.record.totals.offersAccepted,
-    lapsed.record.totals.declines], [1, 1, 0, 1]);
+    lapsed.record.totals.declines], [1, 1, 0, 2]);
 });
 
 test('declines name the attribute that falls shortest, with a keyed fallback reason', async (t) => {
@@ -190,7 +196,7 @@ const allocationsOf = (persisted) => persisted.event_receipts.filter((row) => ro
   .map((row) => row.outcome.value).sort((a, b) => byId(a.event.occurredAt, b.event.occurredAt));
 
 test('decline exclusion comes from FUCQ-96 and an expiry gives no priority', async (t) => {
-  const declined = await replay(t, pair);
+  const declined = await replay(t, shortPair);
   const persisted = await declined.run.snapshot();
   const [first, second] = allocationsOf(persisted);
   const { employeeId: decliner, orderUuid: freed } = first.assignments[0];
@@ -202,7 +208,7 @@ test('decline exclusion comes from FUCQ-96 and an expiry gives no priority', asy
   'the declined car is never offered to the same employee again');
   assert.ok(second.assignments.some((a) => a.orderUuid === freed && a.employeeId !== decliner), 'the freed car goes to the next contender');
 
-  const expired = await replay(t, withOverlay(pair, { 'comparison.accessGroups': accessing(8000) }));
+  const expired = await replay(t, withOverlay(shortPair, { 'comparison.accessGroups': accessing(8000) }));
   const [early, later] = allocationsOf(await expired.run.snapshot());
   assert.equal(later.assumptions[0].value, 'renewalDueThenFitThenSeededLottery');
   // Winners follow the policy's tie-break alone: renewal due, then fit, then the seeded lottery.
