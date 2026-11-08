@@ -4,6 +4,7 @@ import { presenterBar } from '../kit/presenter-bar.js';
 import { labelledField } from '../kit/form-controls.js';
 import { isRunRestarted, runRestartedNotice } from '../kit/run-restarted.js';
 import { createPresenterHttpAdapter } from './http-adapter.js';
+import { adapterLabel, modeLabel, faultChange } from './fault-copy.js';
 import { tickSummary, stepLine, missingStagesLine, findOutcome } from './tick-copy.js';
 
 let sequence = 0;
@@ -48,7 +49,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
   commandId = () => globalThis.crypto.randomUUID(), navigate = (url) => { const link = el('a'); link.href = url; link.click(); }, reload } = {}) {
   const abort = new AbortController();
   const options = { signal: abort.signal };
-  let disposed = false; let busy = false; let authorized = false; let state; let context; let catalogue;
+  let disposed = false; let busy = false; let authorized = false; let state; let context; let catalogue; let faults = null; let startStopped = false;
   let focusAfterBusy = null;
   let original = null; let uncertain = false; let confirming = false; let restarted = false; let focusRestart = false;
   let receiptsOpen = false; // Step results stay collapsed (FUCQ-203) unless the presenter opens them.
@@ -115,20 +116,50 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
   });
   const cancel = action('Cancel reset', () => { confirming = false; confirmation.hidden = true; update(); reset.focus(); });
   confirmation.append(confirmText, confirm, cancel);
+  const proceed = action('Continue to workspace', () => navigate(workspace())); proceed.hidden = true;
+  // One picker and one button per adapter the server reports; nothing is invented client-side.
+  const faultGroup = el('div'); faultGroup.hidden = true;
+  const faultRows = new Map(); let faultSignature;
+  function faultRow(row) {
+    if (!faultRows.has(row.adapter)) {
+      const pick = picker(adapterLabel(row.adapter));
+      const set = action(`Set ${adapterLabel(row.adapter).toLowerCase()}`, () => {
+        if (pick.value) start('setFault', { adapter: row.adapter, mode: pick.value });
+      });
+      faultRows.set(row.adapter, { pick, set, mode: undefined });
+    }
+    return faultRows.get(row.adapter);
+  }
+  function projectFaults(disabled) {
+    faultGroup.hidden = !faults?.length;
+    if (!faults?.length) return;
+    const entries = faults.map((row) => ({ row, ...faultRow(row) }));
+    const signature = faults.map((row) => row.adapter).join('|');
+    if (signature !== faultSignature) {
+      faultSignature = signature;
+      faultGroup.replaceChildren(el('h3', '', 'Synthetic faults'), ...entries.flatMap((entry) => [entry.pick.root, entry.set]));
+    }
+    for (const entry of entries) {
+      const slot = faultRows.get(entry.row.adapter);
+      if (slot.mode !== entry.row.mode) { slot.mode = entry.row.mode; entry.pick.value = entry.row.mode; entry.pick.initial = true; }
+      entry.pick.project(entry.row.modes.map((mode) => ({ value: mode, label: modeLabel(entry.row.adapter, mode) })), entry.row.mode, disabled);
+      entry.set.disabled ||= !entry.pick.value;
+    }
+  }
   const switchButton = action('Switch principal', () => start('switchPrincipal', { principalId: principal.value }));
   const retry = action('Retry original action', () => execute()); retry.hidden = true;
   const fresh = action('Issue selected principal again', () => {
     original = null; uncertain = false; start('switchPrincipal', { principalId: principal.value });
   }); fresh.hidden = true;
   const refresh = action('Refresh readback', () => refreshState());
-  actions.append(tick, target.root, named, to, next, nextReason, scenario.root, availability, reset, confirmation,
+  actions.append(tick, target.root, named, to, next, nextReason, scenario.root, availability, reset, confirmation, proceed, faultGroup,
     principal.root, switchButton, retry, fresh, refresh);
   panel.append(actions, message, notice.root, readMessage, results); host.append(root);
   // The old session is refused for good, so the only way on is a reload; nothing is resent.
   function enterRestarted() {
     const active = root.ownerDocument.activeElement;
     focusRestart = !active || active === root.ownerDocument.body || panel.contains(active);
-    restarted = true; original = null; uncertain = false; confirming = false; confirmation.hidden = true;
+    restarted = true; original = null; uncertain = false; startStopped = false; confirming = false; confirmation.hidden = true;
     message.textContent = ''; message.hidden = true; readMessage.textContent = ''; readMessage.hidden = true;
     notice.root.hidden = false; root.open = true;
   }
@@ -148,6 +179,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     scenario.project((catalogue?.scenarios || []).map((row) => ({ value: row.scenarioId, label: row.name,
       sub: row.availability?.available ? 'Available' : `Not available yet: ${row.availability?.missingCapabilities?.join(', ') || 'Capabilities not supplied'}`,
     })), state.currentScenario?.scenarioId, busy || restarted || uncertain);
+    projectFaults(busy || restarted || uncertain);
     named.replaceChildren(...Object.keys(state.controls?.namedTimes || {}).map((name) => { const option = el('option'); option.value = name; return option; }));
     tick.textContent = `Tick (${state.controls?.step?.value ?? 'unavailable'} ${state.controls?.step?.unit ?? ''})`;
     tick.disabled ||= !state.controls?.step; to.disabled ||= !target.input.value.trim();
@@ -180,6 +212,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
       const count = releasedCarCount(state);
       results.append(el('p', 'gcsp-note', count === null ? 'Release unavailable: no verified release result reported' : `${count} cars released`));
     }
+    proceed.hidden = restarted || !startStopped;
     retry.hidden = restarted || !original || !uncertain; fresh.hidden = restarted || !(uncertain && original?.kind === 'switchPrincipal');
     if (restarted && !busy && focusRestart) { focusRestart = false; focusAfterBusy = null; notice.reload.focus(); }
     if (!busy && focusAfterBusy) {
@@ -201,9 +234,12 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
         readMessage.textContent = read.code === 'presenter-transport-unavailable' ? 'Backend unavailable. Refresh readback.' : `Readback unavailable: ${why(read)}`; return;
       }
       authorized = true; state = read.value; update();
-      const [acting, scenarios] = await Promise.all([adapter.readContext(options), adapter.readScenarios(options)]);
+      const [acting, scenarios, faultRead] = await Promise.all([adapter.readContext(options), adapter.readScenarios(options),
+        Promise.resolve(adapter.readFaults?.(options)).catch(() => null)]);
       if (disposed) return;
-      if (isRunRestarted(acting) || isRunRestarted(scenarios)) { enterRestarted(); return; }
+      if (isRunRestarted(acting) || isRunRestarted(scenarios) || isRunRestarted(faultRead)) { enterRestarted(); return; }
+      faults = faultRead?.status === 'ok' && Array.isArray(faultRead.value?.faults) ? faultRead.value.faults.filter((row) => text(row?.adapter)
+        && text(row.mode) && Array.isArray(row.modes) && row.modes.length > 0 && row.modes.every(text)) : null;
       context = acting.status === 'ok' ? acting.value : null; catalogue = scenarios.status === 'ok' ? scenarios.value : scenarios;
       readMessage.textContent = acting.status === 'ok' ? '' : `Acting context unavailable: ${why(acting)}`;
       if (!original) message.textContent = 'Presenter controls ready';
@@ -213,6 +249,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
   }
   function start(kind, payload) {
     if (busy || disposed || uncertain || restarted || !authorized) return;
+    startStopped = false;
     original = Object.freeze({ kind, payload: Object.freeze({ commandId: commandId(), ...payload }) });
     execute();
   }
@@ -233,13 +270,21 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
       }
       if (value.tick) state = { ...state, lastTick: value.tick };
       uncertain = Boolean(reply.lostResponse || reply.status !== 'ok' && reply.retryable);
-      message.textContent = reply.status === 'ok' ? command.kind === 'reset' ? `Reset done. New run: ${value.runId}` : 'Action recorded' : `Action not completed: ${why(reply)}`;
+      const stopped = command.kind === 'reset' && reply.status === 'ok' && Boolean(value.startState) && value.startState.status !== 'ok';
+      startStopped = stopped;
+      const stoppedAt = stopped ? `. The scenario start stopped at ${value.startState.step || 'an unreported step'}: ${value.startState.reason || 'reason not supplied'}` : '';
+      message.textContent = reply.status === 'ok' ? command.kind === 'reset' ? `Reset done. New run: ${value.runId}${stoppedAt}` : 'Action recorded' : `Action not completed: ${why(reply)}`;
       if (reply.lostResponse) message.textContent = 'Backend unavailable or response lost. Retry the original action.';
       if (command.kind === 'reset' && value.presenterSession?.status === 'unavailable') {
         message.textContent += ` Presenter session unavailable. ${value.presenterSession.action || 'Use trusted backend bootstrap.'}`;
       }
+      if (command.kind === 'setFault' && reply.status === 'ok') {
+        const adapterId = command.payload.adapter;
+        const mode = value.faults?.find((row) => row?.adapter === adapterId)?.mode || command.payload.mode;
+        message.textContent = faultChange(adapterId, mode);
+      }
       if (reply.handlerOutcome) message.textContent += ` Handler: ${why(reply.handlerOutcome)}`;
-      if (command.kind === 'reset' && reply.status === 'ok') {
+      if (command.kind === 'reset' && reply.status === 'ok' && !stopped) {
         original = null;
         navigate(workspace());
         return;
