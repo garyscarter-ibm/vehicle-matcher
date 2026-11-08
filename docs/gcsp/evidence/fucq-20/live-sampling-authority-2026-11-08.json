@@ -1,0 +1,89 @@
+{
+  "kind": "fucq-live-run-authority",
+  "issue": "FUCQ-178",
+  "approvedBy": "Gary Carter",
+  "approvedDate": "2026-11-08",
+  "approval": "Yes, run live collection (chat, 8 November 2026, about 21:40 UK, relayed by the dev-inbox dispatcher)",
+  "scope": "FUCQ-78 remainder: one bounded live stock-locator sampling run, at most 400 requests, concurrency 1, no retries, stop on 401, 403, 429 or any bot challenge; aggregates only.",
+  "modelLineSource": {
+    "story": "FUCQ-77",
+    "file": "server/data/gcsp/vehicle-evidence/demo-plan.json",
+    "branch": "dev/DEV-2026-11-04-056",
+    "commit": "235d00b5",
+    "sha256": "bafd72271f00986d8bbb05966c2081e18050ac57cd20fbace0e8b92fb35cb313",
+    "status": "proposal, not accepted (24 lines mapped, 4 excluded, 46 pending)",
+    "selection": "every configurator range with at least one mapped FUCQ-77 line; pending and excluded lines are not sampled, so no range is substituted for an unmapped scheme line"
+  },
+  "notAcceptance": "This records run authority only. It is not an acceptance of the FUCQ-77 demo plan.",
+  "modelLines": [
+    {
+      "modelLineId": "f70-sports-hatch",
+      "title": "F70 Sports Hatch",
+      "stockLocatorVehicleIds": [
+        333
+      ]
+    },
+    {
+      "modelLineId": "g21-touring",
+      "title": "G21 Touring",
+      "stockLocatorVehicleIds": [
+        59,
+        349
+      ]
+    },
+    {
+      "modelLineId": "g26-i4",
+      "title": "G26 i4",
+      "stockLocatorVehicleIds": [
+        179,
+        232
+      ]
+    },
+    {
+      "modelLineId": "g42-coupe",
+      "title": "G42 Coupe",
+      "stockLocatorVehicleIds": [
+        53
+      ]
+    },
+    {
+      "modelLineId": "g61-i5",
+      "title": "G61 i5",
+      "stockLocatorVehicleIds": [
+        330,
+        329
+      ]
+    },
+    {
+      "modelLineId": "u10-x2",
+      "title": "U10 X2",
+      "stockLocatorVehicleIds": [
+        338
+      ]
+    },
+    {
+      "modelLineId": "u10-ix2",
+      "title": "U10 iX2",
+      "stockLocatorVehicleIds": [
+        325,
+        326
+      ]
+    },
+    {
+      "modelLineId": "u11-x1",
+      "title": "U11 X1",
+      "stockLocatorVehicleIds": [
+        72,
+        321
+      ]
+    },
+    {
+      "modelLineId": "u11-ix1",
+      "title": "U11 iX1",
+      "stockLocatorVehicleIds": [
+        178,
+        237
+      ]
+    }
+  ]
+}

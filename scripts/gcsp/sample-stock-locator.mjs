@@ -27,7 +27,7 @@ const dateOnly = (value) => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.t
   && new Date(`${value}T00:00:00Z`).toISOString().slice(0, 10) === value ? value : null;
 
 function validateModel(model) {
-  if (!plain(model) || !safeId(model.modelLineId) || !safeLabel(model.title)) fail('plan-invalid');
+  if (!plain(model) || !safeId(model.modelLineId) || !safeSourceLabel(model.title)) fail('plan-invalid');
   if (model.labelPolicy !== undefined && !['reviewed', 'safe-pattern'].includes(model.labelPolicy)) fail('plan-invalid');
   for (const key of ['colours', 'upholsteries']) {
     const labels = model[key];
