@@ -1,4 +1,4 @@
-@import "../manual-review/manual-review.css";
+@import "../manual-review/manual-review.css"; @import "../kit/stage-list.css";
 
 gcsp-manual-summary { display: block; }
 .gcsp .gcsp-summary-body { display: grid; gap: 24px; min-width: 0; overflow-wrap: anywhere; }

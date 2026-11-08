@@ -268,3 +268,12 @@ test('the HTTP adapter posts the body unchanged and treats transport loss as an 
   const missing = createManualSummaryHttpAdapter({ fetchImpl: reply(404, { status: 'not-found' }) });
   assert.equal((await missing.readOrder()).status, 'not-found');
 });
+
+test('a slow recheck after expiry keeps the expiry message and Refresh stock', async (t) => {
+  const f = setup(t); await ready(f); tickAll(f);
+  f.model.now = f.hold.expiresAt; f.model.clockVersion = '2'; f.tick();
+  await settle(() => named(f, 'Refresh stock'));
+  f.adapter.readClaim = () => new Promise(() => {}); f.tick();
+  await settle(() => /reservation has expired/i.test(f.root.querySelector('[id$="-notice"]')?.textContent ?? f.root.textContent));
+  assert.doesNotMatch(f.root.textContent, /Checking your current claim/); assert.ok(named(f, 'Refresh stock'));
+});

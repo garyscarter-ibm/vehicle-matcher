@@ -161,8 +161,11 @@ export function mountManualSummaryBody(root, { adapter = createManualSummaryHttp
       : t?.expired ? 'This deadline has passed. You cannot submit with this reservation.'
         : 'This car is reserved until the deadline. Submitting places your order. Time follows the presenter clock.';
     if (c.announcement?.id !== announcedId) { announcedId = c.announcement?.id; nodes.live.textContent = c.announcement?.text ?? ''; }
+    // A lapsed server deadline stays visible with its recovery while a slow recheck runs.
+    const lapsed = !unconfirmed && Boolean(t?.expired);
     nodes.notice.textContent = state.status === 'submitting' ? 'Submitting your order.' : state.notice?.message
-      ?? claimMessages[c.status] ?? (state.missing.length ? `Add the required details: ${state.missing.join(', ')}.` : '');
+      ?? (lapsed && c.status === 'loading' ? claimMessages.expired : claimMessages[c.status])
+      ?? (state.missing.length ? `Add the required details: ${state.missing.join(', ')}.` : '');
     const why = state.canSubmit ? '' : state.missing.length ? `Add ${state.missing.join(', ').toLowerCase()} before you submit.`
       : !state.termsOk ? 'Submit is unavailable until the terms load.' : t?.expired ? 'Your reservation has expired.'
         : state.required.some((e) => state.ticks[e.id] !== true) ? 'Tick every declaration to submit.' : '';
@@ -172,7 +175,7 @@ export function mountManualSummaryBody(root, { adapter = createManualSummaryHttp
     const extra = [button({ label: 'Check current claim', variant: 'ghost', disabled: state.busy, onClick: () => controller.reconcile() })];
     if (state.actions.includes('status')) extra.push(button({ label: 'Check order status', variant: 'ghost', disabled: state.status === 'submitting', onClick: () => controller.checkOrder() }));
     if (state.actions.includes('terms')) extra.push(button({ label: 'Reload terms', variant: 'ghost', disabled: state.busy, onClick: () => controller.reloadTerms({ clearTicks: false }) }));
-    if (state.actions.includes('browse') || ['expired', 'released'].includes(c.status)) extra.push(button({ label: 'Refresh stock', variant: 'ghost', onClick: browse }));
+    if (state.actions.includes('browse') || lapsed || ['expired', 'released'].includes(c.status)) extra.push(button({ label: 'Refresh stock', variant: 'ghost', onClick: browse }));
     if (c.retryAction === 'release') extra.push(button({ label: 'Retry the same action', disabled: c.busy, onClick: () => controller.retryRelease() }));
     nodes.recovery.replaceChildren(...extra);
   }

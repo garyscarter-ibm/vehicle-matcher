@@ -4,6 +4,7 @@ import { mountManualGallery } from '../manual-gallery/gcsp-manual-gallery.js';
 import { mountManualReview } from '../manual-review/gcsp-manual-review.js';
 import { mountManualSummary } from '../manual-summary/gcsp-manual-summary.js';
 import { createManualSummaryHttpAdapter } from '../manual-summary/http-adapter.js';
+import { createOrderProgressHttpAdapter } from '../order-progress/order-progress-http.js';
 import { createManualClaimController } from '../manual-gallery/claim-controller.js';
 import { createManualGalleryHttpAdapter } from '../manual-gallery/http-adapter.js';
 import { mountEmployee } from '../employee/gcsp-employee.js';
@@ -12,7 +13,7 @@ import { statusScreen } from '../../vehicle-matcher/ui.js';
 export function mountManualJourney(root, options = {}) {
   const { galleryAdapter, reviewAdapter, summaryAdapter, subscribeClock, onReviewContinue, ...shared } = options;
   const claimAdapter = galleryAdapter ?? createManualGalleryHttpAdapter();
-  const orderAdapter = summaryAdapter ?? createManualSummaryHttpAdapter();
+  const summaryPort = summaryAdapter ?? createManualSummaryHttpAdapter();
   let teardown; let disconnectFocus; let disposed = false; let generation = 0; let view; let hint;
   function mount(next, render) {
     if (disposed) return;
@@ -39,7 +40,8 @@ export function mountManualJourney(root, options = {}) {
   function later(ticket, work) {
     queueMicrotask(() => { if (!disposed && ticket === generation) work(); });
   }
-  function account() { mount('account', () => mountAccount(root, shared)); }
+  // Every host lists placed orders on the account, so Finish and reload lead back to the order.
+  function account() { mount('account', () => mountAccount(root, { orderAdapter: createOrderProgressHttpAdapter(), ...shared })); }
   function enter(nextHint) {
     hint = nextHint;
     mount('checking', (ticket) => {
@@ -64,7 +66,7 @@ export function mountManualJourney(root, options = {}) {
         else gallery();
       });
       // A placed order is the source of truth on reload: it opens its outcome, not setup or review.
-      const placed = Promise.resolve().then(() => orderAdapter.readOrder()).catch(() => null);
+      const placed = Promise.resolve().then(() => summaryPort.readOrder()).catch(() => null);
       placed.then((found) => {
         if (['ok', 'pending'].includes(found?.status) && found.value?.operationId) later(ticket, () => summary());
         else return reader.load().then(recover, () => recover(null));
@@ -105,7 +107,7 @@ export function mountManualJourney(root, options = {}) {
     }));
   }
   function summary() {
-    mount('summary', (ticket) => mountManualSummary(root, { brand: shared.brand, adapter: orderAdapter,
+    mount('summary', (ticket) => mountManualSummary(root, { brand: shared.brand, adapter: summaryPort,
       commandId: shared.commandId,
       onEditDetails() { later(ticket, () => review()); },
       onChangeCar() { later(ticket, gallery); },
