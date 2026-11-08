@@ -186,9 +186,10 @@ for (const [name, mutate] of Object.entries(invalidReleaseResults)) test(`releas
   await settle(); assert.match(f.host.textContent, /Release unavailable/); assert.doesNotMatch(f.host.textContent, /\d+ cars released/); f.control.destroy();
 });
 test('reset current/chosen availability is explained and explicit confirmation captures canonical versions', async () => {
-  const f = setup(); await settle(); const unavailable = choice(f, 'Scenario', 'business'); assert.equal(unavailable.disabled, false); unavailable.click(); assert.match(f.host.textContent, /actual-release-service/);
+  const f = setup(); await settle(); const unavailable = choice(f, 'Scenario', 'business'); assert.equal(unavailable.disabled, false); unavailable.click(); assert.match(f.host.textContent, /Selected: Business journey\. Not available yet: actual-release-service/);
   assert.equal(f.click('Reset scenario').disabled, true); assert.equal(f.calls.length, 0);
-  choice(f, 'Scenario', 'mechanics').click(); f.click('Reset scenario'); assert.equal(f.calls.length, 0);
+  choice(f, 'Scenario', 'mechanics').click(); assert.match(f.host.textContent, /Selected: Clock mechanics\. Ready to reset\./);
+  f.click('Reset scenario'); assert.equal(f.calls.length, 0);
   f.click('Cancel reset'); assert.equal(f.calls.length, 0); f.click('Reset scenario'); f.click('Confirm reset'); await settle();
   assert.deepEqual(f.calls[0], { commandId: 'command-1', expectedRunId: 'run-a', expectedRunVersion: 1,
     scenarioId: 'mechanics', scenarioVersion: 'v1', fixtureVersion: 'f1', policyVersion: 'policy-test' });
@@ -283,6 +284,17 @@ test('workspace chooses only actual context role and real adapter, never a query
       mountGreg: () => { calls.push(['greg']); return () => {}; } });
     await done.ready; assert.equal(calls[0][0], role); if (role === 'employee') assert.equal(calls[0][1], account); done();
   }
+});
+test('employee workspace passes the order-progress and help adapters to the manual journey', async () => {
+  const host = document.createElement('div'); document.body.append(host); let options;
+  const orderAdapter = { listOrders: async () => ok([]) }; const helpAdapter = { createCase: async () => ok({}) };
+  const done = workspace(host, { adapter: { readContext: async () => ok({ roles: ['employee'], principalId: 'e' }) }, orderAdapter, helpAdapter,
+    mountEmployee: (_root, opts) => { options = opts; return () => {}; } });
+  await done.ready; assert.equal(options.orderAdapter, orderAdapter); assert.equal(options.helpAdapter, helpAdapter); done();
+  const host2 = document.createElement('div'); document.body.append(host2); let defaults;
+  const done2 = workspace(host2, { adapter: { readContext: async () => ok({ roles: ['employee'], principalId: 'e' }) },
+    mountEmployee: (_root, opts) => { defaults = opts; return () => {}; } });
+  await done2.ready; assert.equal(typeof defaults.orderAdapter?.listOrders, 'function'); assert.equal(typeof defaults.helpAdapter, 'object'); done2();
 });
 test('employee workspace subscribes the journey clock to presenter actions once and releases it on unsubscribe and destroy', async () => {
   const host = document.createElement('div'); document.body.append(host); const child = document.createElement('button');
@@ -606,3 +618,111 @@ test('FUCQ-204: every step the hosted runtime registers has a label, so none rea
   }
 });
 
+
+// FUCQ-172: synthetic fault control, truthful journey start, wider catalogue rows.
+const faultRows = (stock = 'none', ordering = 'none') => [
+  { adapter: 'stock', runId: 'run-a', mode: stock, modes: ['none', 'unavailable', 'stale'] },
+  { adapter: 'ordering', runId: 'run-a', mode: ordering, modes: ['none', 'timeout-acknowledged', 'timeout-rejected', 'uncertain-acknowledged', 'uncertain-rejected'] }];
+test('fault group shows only supplied adapters, preselects the current mode and sends one exact command', async () => {
+  const calls = []; let finish;
+  const f = setup({ readFaults: async () => ok({ runId: 'run-a', faults: faultRows('stale').slice(0, 1) }),
+    setFault: (payload) => { calls.push(payload); return new Promise((resolve) => { finish = resolve; }); } }); await settle();
+  assert.ok(group(f, 'Stock feed fault')); assert.equal(group(f, 'Ordering fault'), null);
+  assert.equal(selected(f, 'Stock feed fault'), 'stale'); assert.match(f.host.textContent, /Synthetic faults/);
+  assert.match(choice(f, 'Stock feed fault', 'unavailable').textContent, /Stock feed unavailable/);
+  assert.match(choice(f, 'Stock feed fault', 'none').textContent, /No fault/);
+  choice(f, 'Stock feed fault', 'unavailable').click(); f.click('Set stock feed fault'); f.click('Set stock feed fault');
+  assert.deepEqual(calls, [{ commandId: 'command-1', adapter: 'stock', mode: 'unavailable' }]);
+  finish(ok({ runId: 'run-a', faults: faultRows('unavailable').slice(0, 1) })); await settle(); f.control.destroy();
+});
+test('fault success projects the returned mode, dispatches gcsp:presenter-action and clears with plain wording', async () => {
+  let rows = faultRows(); const seen = [];
+  const f = setup({ readFaults: async () => ok({ runId: 'run-a', faults: rows }),
+    setFault: async (payload) => { rows = payload.adapter === 'stock' ? faultRows(payload.mode) : faultRows('none', payload.mode); return ok({ runId: 'run-a', faults: rows }); } });
+  await settle(); f.host.addEventListener('gcsp:presenter-action', (event) => seen.push(event.detail.kind));
+  choice(f, 'Stock feed fault', 'unavailable').click(); f.click('Set stock feed fault'); await settle();
+  assert.match(f.host.textContent, /Stock feed fault set: Stock feed unavailable/); assert.equal(selected(f, 'Stock feed fault'), 'unavailable');
+  choice(f, 'Ordering fault', 'timeout-rejected').click(); f.click('Set ordering fault'); await settle();
+  assert.match(f.host.textContent, /Ordering fault set: Next handoff times out, provider refused/);
+  choice(f, 'Stock feed fault', 'none').click(); f.click('Set stock feed fault'); await settle();
+  assert.match(f.host.textContent, /Stock feed fault cleared/); assert.equal(selected(f, 'Stock feed fault'), 'none');
+  assert.deepEqual(seen, ['setFault', 'setFault', 'setFault']); f.control.destroy();
+});
+test('a lost fault response is not uncertain: Set stays usable, a fresh commandId is sent and refusals use plain wording', async () => {
+  const calls = []; let reply = { status: 'unavailable', lostResponse: true, retryable: true };
+  const f = setup({ readFaults: async () => ok({ runId: 'run-a', faults: faultRows() }), setFault: async (payload) => { calls.push(payload); return reply; } }); await settle();
+  choice(f, 'Stock feed fault', 'stale').click(); f.click('Set stock feed fault'); await settle();
+  assert.match(f.host.textContent, /Fault change not confirmed\. Press Set again\./);
+  assert.equal([...f.host.querySelectorAll('button')].some((b) => b.textContent === 'Retry original action' && !b.hidden), false);
+  assert.equal(choice(f, 'Stock feed fault', 'stale').disabled, false);
+  f.click('Set stock feed fault'); await settle(); assert.equal(calls.length, 2); assert.notEqual(calls[0].commandId, calls[1].commandId);
+  assert.equal(calls[1].mode, 'stale');
+  reply = { status: 'forbidden', code: 'raw-code' }; f.click('Set stock feed fault'); await settle();
+  assert.match(f.host.textContent, /Action not completed: Not permitted/); assert.doesNotMatch(f.host.textContent, /raw-code|forbidden:/);
+  f.control.destroy();
+});
+const refusedTick = { status: 'unavailable', retryable: true, reason: 'A registered clock handler did not complete. Retry this event ID.' };
+test('after a retryable refused tick the fault control stays enabled and clearing it keeps the original retry', async () => {
+  const ticks = []; const faultCalls = []; let rows = faultRows('unavailable'); let tickReply = refusedTick;
+  const f = setup({ tick: async (payload) => { ticks.push(payload); return tickReply; }, readFaults: async () => ok({ runId: 'run-a', faults: rows }),
+    setFault: async (payload) => { faultCalls.push(payload); rows = faultRows(payload.mode); return ok({ runId: 'run-a', faults: rows }); } }); await settle();
+  f.click('Next release'); await settle();
+  const retry = [...f.host.querySelectorAll('button')].find((b) => b.textContent === 'Retry original action'); assert.equal(retry.hidden, false);
+  assert.equal(choice(f, 'Stock feed fault', 'none').disabled, false);
+  assert.equal([...f.host.querySelectorAll('button')].find((b) => b.textContent === 'Set stock feed fault').disabled, false);
+  assert.equal(f.click('Tick').disabled, true);
+  choice(f, 'Stock feed fault', 'none').click(); f.click('Set stock feed fault'); await settle();
+  assert.deepEqual(faultCalls, [{ commandId: 'command-2', adapter: 'stock', mode: 'none' }]);
+  assert.match(f.host.textContent, /Stock feed fault cleared/); assert.equal(retry.hidden, false); assert.equal(selected(f, 'Stock feed fault'), 'none');
+  tickReply = ok({}); retry.click(); await settle();
+  assert.equal(ticks.length, 2); assert.strictEqual(ticks[0], ticks[1]); assert.equal(ticks[1].commandId, 'command-1');
+  assert.equal(retry.hidden, true); f.control.destroy();
+});
+test('fault group is hidden when the read fails or reports no faults, and unknown modes fall back to the id', async () => {
+  for (const readFaults of [async () => ({ status: 'unavailable' }), async () => ok({ runId: 'run-a', faults: [] }), undefined]) {
+    const f = setup(readFaults ? { readFaults } : {}); await settle();
+    assert.doesNotMatch(f.host.textContent, /Synthetic faults/); assert.equal(group(f, 'Stock feed fault'), null);
+    assert.equal([...f.host.querySelectorAll('button')].some((b) => /^Set .* fault$/.test(b.textContent) && !b.closest('[hidden]')), false);
+    f.control.destroy();
+  }
+  const f = setup({ readFaults: async () => ok({ runId: 'run-a', faults: [{ adapter: 'stock', mode: 'none', modes: ['none', 'half-open'] }] }) }); await settle();
+  assert.match(choice(f, 'Stock feed fault', 'half-open').textContent, /half open/); f.control.destroy();
+});
+test('HTTP adapter reads faults with GET and sets them with a credentialled JSON POST', async () => {
+  const calls = []; const adapter = http({ fetchImpl: async (...args) => { calls.push(args); return { ok: true, json: async () => ({ status: 'ok', value: { faults: [] } }) }; } });
+  const body = { commandId: 'c', adapter: 'stock', mode: 'stale' };
+  await adapter.readFaults(); await adapter.setFault(body);
+  assert.match(calls[0][0], /\/api\/gcsp\/presenter\/scenarios\/faults$/); assert.equal(calls[0][1].method, 'GET');
+  assert.match(calls[1][0], /\/api\/gcsp\/presenter\/scenarios\/faults$/); assert.equal(calls[1][1].method, 'POST');
+  assert.equal(calls[1][1].credentials, 'include'); assert.deepEqual(JSON.parse(calls[1][1].body), body);
+});
+test('reset with a failed journey start state stays on the strip, names the step and reason, and continues on request', async () => {
+  const f = setup({ reset: async () => ok({ runId: 'run-new', startState: { status: 'unavailable', step: 'offer-seed', reason: 'Offer service not composed' } }) }); await settle();
+  f.click('Reset scenario'); f.click('Confirm reset'); await settle();
+  assert.equal(f.navigation.length, 0);
+  assert.match(f.host.textContent, /Reset done\. New run: run-new\. The scenario start stopped at offer-seed: Offer service not composed/);
+  f.click('Continue to workspace'); assert.equal(f.navigation.length, 1); assert.match(f.navigation[0], /gcsp-presenter\.html$/);
+  f.control.destroy();
+  const bare = setup({ reset: async () => ok({ runId: 'run-x', startState: { status: 'failed' } }) }); await settle();
+  bare.click('Reset scenario'); bare.click('Confirm reset'); await settle();
+  assert.match(bare.host.textContent, /stopped at an unreported step: reason not supplied/); bare.control.destroy();
+});
+test('reset with an ok or absent start state still navigates and offers no continue button', async () => {
+  for (const startState of [{ status: 'ok' }, undefined]) {
+    const f = setup({ reset: async () => ok({ runId: 'run-new', ...(startState ? { startState } : {}) }) }); await settle();
+    f.click('Reset scenario'); f.click('Confirm reset'); await settle();
+    assert.equal(f.navigation.length, 1); assert.doesNotMatch(f.host.textContent, /stopped at/);
+    assert.equal([...f.host.querySelectorAll('button')].find((b) => b.textContent === 'Continue to workspace').hidden, true); f.control.destroy();
+  }
+});
+test('wider catalogue rows: available decline-then-change-waiting resets, unavailable offer-expires explains and blocks reset', async () => {
+  const wide = { policyVersion: 'policy-test', scenarios: [...catalogue.scenarios,
+    { scenarioId: 'decline-then-change-waiting', name: 'Decline then change waiting', scenarioVersion: 'v1', fixtureVersion: 'f1', availability: { available: true } },
+    { scenarioId: 'offer-expires', name: 'Offer expires', scenarioVersion: 'v1', fixtureVersion: 'f1', availability: { available: false, missingCapabilities: ['offer-expiry-handler'] } }] };
+  const f = setup({ readScenarios: async () => ok(wide) }); await settle();
+  assert.match(choice(f, 'Scenario', 'decline-then-change-waiting').textContent, /Decline then change waiting.*Available/);
+  assert.match(choice(f, 'Scenario', 'offer-expires').textContent, /Not available yet: offer-expiry-handler/);
+  choice(f, 'Scenario', 'offer-expires').click(); assert.equal(f.click('Reset scenario').disabled, true); assert.equal(f.calls.length, 0);
+  choice(f, 'Scenario', 'decline-then-change-waiting').click(); assert.equal(f.click('Reset scenario').disabled, false);
+  f.click('Confirm reset'); await settle(); assert.equal(f.calls[0].scenarioId, 'decline-then-change-waiting'); f.control.destroy();
+});
