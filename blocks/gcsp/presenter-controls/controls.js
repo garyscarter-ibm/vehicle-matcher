@@ -50,6 +50,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
   let disposed = false; let busy = false; let authorized = false; let state; let context; let catalogue;
   let focusAfterBusy = null;
   let original = null; let uncertain = false; let confirming = false; let restarted = false; let focusRestart = false;
+  let receiptsOpen = false; // Step results stay collapsed (FUCQ-203) unless the presenter opens them.
   const bar = presenterBar();
   const { root, summary, panel } = bar; root.classList.add('gcsp-presenter-controls'); root.hidden = true;
   const results = el('div', 'gcsp-presenter-results');
@@ -158,6 +159,8 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     switchButton.disabled ||= !principal.value;
     confirmText.textContent = `Reset into ${chosen?.name || 'selected scenario'}? This starts a new run.`;
     const last = state.lastTick;
+    receiptsOpen = results.querySelector('.gcsp-presenter-receipts')?.open ?? receiptsOpen;
+    const receiptsFocused = results.contains(root.ownerDocument.activeElement) && root.ownerDocument.activeElement.matches('.gcsp-presenter-receipts > summary');
     results.replaceChildren(el('h3', '', 'Last tick'));
     if (!last) results.append(el('p', 'gcsp-note', 'No tick reported'));
     else {
@@ -169,7 +172,10 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
         const outcome = handlers.find((row) => row?.handlerId === descriptor.handlerId);
         order.append(el('li', '', `${descriptor.stage} / ${descriptor.handlerId}: ${outcome ? explain(outcome.outcome) : 'Pending, no result reported'}`));
       }
-      results.append(order);
+      const receipts = el('details', 'gcsp-presenter-receipts'); receipts.open = receiptsOpen;
+      const receiptsSummary = el('summary', '', `Step results (${order.children.length})`);
+      receipts.append(receiptsSummary, order); results.append(receipts);
+      if (receiptsFocused) receiptsSummary.focus();
       if (Array.isArray(last.missingStages) && last.missingStages.length) results.append(el('p', 'gcsp-note', `Missing stages: ${last.missingStages.join(', ')}`));
       const count = releasedCarCount(state);
       results.append(el('p', 'gcsp-note', count === null ? 'Release unavailable: no verified release result reported' : `${count} cars released`));
