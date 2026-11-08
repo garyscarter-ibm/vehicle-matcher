@@ -144,9 +144,11 @@ export function mountManualReviewBody(root, { adapter = createManualReviewHttpAd
     fields.expectedReturnMileage.root.hidden = model.mode !== 'replacement'; controls.specialRequirements.maxLength = model.constraints.maximumSpecialRequirements;
     nodes.counter.textContent = `${details.specialRequirements?.length ?? 0} / ${model.constraints.maximumSpecialRequirements} characters`;
     summary.update((state.errors ?? []).map((entry) => ({ id: controls[entry.field]?.id ?? nodes.notice.id, message: entry.reason })));
-    const c = state.countdown; const seconds = c?.secondsRemaining;
-    nodes.timer.textContent = Number.isFinite(seconds) ? `${c.phase === 'order-review' ? 'Order review' : 'Car reservation'}: ${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')} remaining` : 'Reservation time unavailable';
-    nodes.consequence.textContent = state.status === 'pending' || model.hold.state.endsWith('-pending')
+    // An unconfirmed read keeps the last model, so never show its countdown as a live hold.
+    const unconfirmed = state.status === 'unavailable'; const c = unconfirmed ? null : state.countdown; const seconds = c?.secondsRemaining;
+    nodes.timer.textContent = unconfirmed ? 'Reservation not confirmed' : Number.isFinite(seconds) ? `${c.phase === 'order-review' ? 'Order review' : 'Car reservation'}: ${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')} remaining` : 'Reservation time unavailable';
+    nodes.consequence.textContent = unconfirmed ? 'This car is not shown as reserved until the claim is confirmed. Check current claim.'
+      : state.status === 'pending' || model.hold.state.endsWith('-pending')
       ? 'This action is still being checked. This car stays unavailable until its status is confirmed.' : c?.expired ? 'This deadline has passed. You cannot continue with this reservation.'
       : 'This car is reserved until the deadline. Continuing does not place an order. Time follows the presenter clock.';
     if (state.announcement?.id !== announcementId) { announcementId = state.announcement?.id; nodes.live.textContent = state.announcement?.text ?? ''; }

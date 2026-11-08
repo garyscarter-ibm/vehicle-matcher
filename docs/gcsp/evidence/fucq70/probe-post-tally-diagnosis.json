@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-70",
+  "date": "2026-11-06",
+  "status": "single assertion repair authored, not executed",
+  "authorization": "Dispatcher0033 explicitly authorised replacing only the sixth-case total POST count with exact response statuses[403], preserving earlier403 and every other assertion; publish new hashes/fresh identity before exact execution review.",
+  "diagnosis": {
+    "reproduction": "Exact b9ff9f0 run retained at b64eeab: five of six named cases passed, eight setups completed; sixth failed total claim/review POST count1vs0 after deliberate403 origin request.",
+    "verifiedCause": "posts() counts every matching request, including the earlier asserted403 request. The intended no-additional-transition requirement must preserve that deliberate rejected attempt.",
+    "affectedWritersReaders": "Only one probe assertion and its declared identity/planned run metadata. No production or helper writer changes.",
+    "nextCheck": "Dispatcher reviews the exact one-assertion diff and new manifests; execution still needs a fresh exact grant.",
+    "basis": "Preserved original reached failure plus entire sixth-case read-only review; no new run."
+  },
+  "delta": {
+    "path": "server/test/gcsp-manual-review-actual66.proof.mjs",
+    "oldAssertion": "assert.equal(posts(f, 'claim/review').length, 0)",
+    "newAssertion": "assert.deepEqual(posts(f, 'claim/review').map((r) => r.status), [403])",
+    "meaning": "The sole recorded claim/review request must be the deliberately forbidden403; any extra transition attempt or changed status fails.",
+    "preserved": "Every other probe byte: all six business cases, all eight setups, preceding403 assertion, genuine identity/privacy checks, competing-save conflict, retained input, disabled continuation, no-callback/domain equality, one claim and occupancy."
+  },
+  "reusedReachedEvidence": {
+    "testedCommit": "b9ff9f009ccb2d7469cfb87f5f543366c34d369f",
+    "publication": "b64eeab25aa3b6e5a855830d52ed650d554775b3",
+    "result": "docs/gcsp/evidence/fucq70/service-proof-occupancy-result.json",
+    "counts": {
+      "tests": 6,
+      "pass": 5,
+      "fail": 1,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0
+    },
+    "setups": 8,
+    "newProofResult": "none; previous5/6 is not evidence that the revised probe passes"
+  },
+  "unchanged": {
+    "applicationModules": 46,
+    "fileInputs": 6,
+    "producerCopies": 8,
+    "loaderSha256": "96933bd1378aa6b243865bb81b9dd8ce9aec2823e42cadfec5610dd81a530052",
+    "supervisorSha256": "4a1766de4b8e11f59749877241913eb2e032d59abb5c44b8c250c560216944b3",
+    "dependencyManifestSha256": "6812e8aa4d1ac0f92d31c9bd7fbde994dbf1fb9f5a0c3703566f8072ccd1a812",
+    "allOriginalFailures": "Preserved without edits."
+  },
+  "newHashes": {
+    "probe": "d5a629d1b34d2b8ed384e837b9c39822ad2c939b95f169fe28549949bb10e658",
+    "sourceManifest": "421e04eeadb8ec3f1b7da55405f2488172670be3933a9f695c32185f326b17db",
+    "harnessManifest": "7a10812da0248ebedb1bd7f79e4a7e8970ee7ecb92feb46c6b07e1ea32eff4c2"
+  },
+  "plannedScratch": "/private/tmp/test-stamp-shard-9ec433dfe1b45edaad89566fa9931d66",
+  "plannedRecords": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/9ec433dfe1b45edaad89566fa9931d66",
+  "validation": "Static one-replacement equality and identity checks only. No Node syntax, probe, loader or diagnostic execution or resource allocation.",
+  "storyBuilt": false
+}

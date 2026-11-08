@@ -1,0 +1,67 @@
+TAP version 13
+# (node:33134) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+# --import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-loader.mjs", pathToFileURL("./")); register("/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-loader.mjs", pathToFileURL("./"));'
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: actual66 issued claim → actual69 confirmed readback callback → review without another claim
+ok 1 - actual66 issued claim → actual69 confirmed readback callback → review without another claim
+  ---
+  duration_ms: 388.191209
+  type: 'test'
+  ...
+# Subtest: actual66 confirmed release remains available with invalid local contacts for cancel/back/change
+ok 2 - actual66 confirmed release remains available with invalid local contacts for cancel/back/change
+  ---
+  duration_ms: 444.643875
+  type: 'test'
+  ...
+# Subtest: actual66 historical success replay cannot authorise continuation after exact clock expiry
+ok 3 - actual66 historical success replay cannot authorise continuation after exact clock expiry
+  ---
+  duration_ms: 244.733667
+  type: 'test'
+  ...
+# Subtest: actual66 HTTP202 pending claim/replay reconciles before same-operation resend and actual GET confirmation
+ok 4 - actual66 HTTP202 pending claim/replay reconciles before same-operation resend and actual GET confirmation
+  ---
+  duration_ms: 184.677916
+  type: 'test'
+  ...
+# Subtest: actual66 HTTP202 release stays occupied past deadline until matching terminal GET, retaining invalid edits
+ok 5 - actual66 HTTP202 release stays occupied past deadline until matching terminal GET, retaining invalid edits
+  ---
+  duration_ms: 234.282333
+  type: 'test'
+  ...
+# FUCQ70_SETUPS=8
+# Subtest: actual identity/session isolation and competing review metadata readback fail closed without a new claim
+not ok 6 - actual identity/session isolation and competing review metadata readback fail closed without a new claim
+  ---
+  duration_ms: 163.64825
+  type: 'test'
+  location: '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:312:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    1 !== 0
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 0
+  actual: 1
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs:340:10)
+    process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+1..6
+# tests 6
+# suites 0
+# pass 5
+# fail 1
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1836.055334

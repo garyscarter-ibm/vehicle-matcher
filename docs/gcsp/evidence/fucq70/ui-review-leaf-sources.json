@@ -1,0 +1,765 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-70",
+  "observedAt": "2026-11-06T01:37:30.214210+00:00",
+  "status": "FROZEN CURRENT REVIEW LEAF AND EXISTING TEST SOURCE PROPOSAL; awaiting exact central host and69 new test/helper pins",
+  "leafPin": "0d7fe9bf72d0ef15ba3aa9da5aee7589116438c9",
+  "sharedCandidatePin": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+  "rootOwnershipInstruction": {
+    "source": "dispatcher chat01a1ab10-6556-7211-92a0-0dd0345e3f0d, follow-up after publication0d7fe9bf",
+    "centralOwner": "FUCQ-100",
+    "allocatedPaths": [
+      "blocks/gcsp/manual-setup/journey.js",
+      "server/gcsp/runtime.js",
+      "server/index.js"
+    ],
+    "scope": "minimal setup-ready\u2192actual69 gallery\u2192actual70 review, release/history/clock/reset composition; no71 submission adapter or synthetic saved-event receipt",
+    "consumerConclusion": "No owned consumer/controller change needed against the agreed existing mount/HTTP/callback ports. No code/test/helper bytes changed."
+  },
+  "roots": [
+    "blocks/gcsp/manual-review/gcsp-manual-review.js",
+    "blocks/gcsp/manual-review/manual-review.css",
+    "server/gcsp/manual-review/index.js",
+    "server/gcsp/manual-review/http.js",
+    "server/test/gcsp-manual-review-controller.test.js",
+    "server/test/gcsp-manual-review-render.test.js"
+  ],
+  "nodes": [
+    {
+      "path": "assets/brand-hero/bmw.jpg",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "03db2450d932f55611ee3e1344b41c5606a15647",
+      "kind": "binary-asset"
+    },
+    {
+      "path": "blocks/gcsp/account/account-view.js",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "db8367d91d040870f44ef374cda52c0b9ac068aa",
+      "sha256": "c2e71ea6e5b15a1d905e33ab72d78eb0f45039fe2508cad89b11654801749dee",
+      "bytes": 5634,
+      "kind": "source"
+    },
+    {
+      "path": "blocks/gcsp/account/http-adapter.js",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "478ebd0333413b03e24a6d0aa2ae3145d0fd23cf",
+      "sha256": "eb89226f9ab8ff04b5c43dfc3c91b6e57c233ef88e273eaf8985895e79106453",
+      "bytes": 3674,
+      "kind": "source"
+    },
+    {
+      "path": "blocks/gcsp/employee/fixtures.js",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "37929d289e15312d5edee9117eeffe00369da0c8",
+      "sha256": "e63cf63076f7bfa718b23b3e2a0d39ef6e57c58c4003f238b0059ce560ba0881",
+      "bytes": 4700,
+      "kind": "source"
+    },
+    {
+      "path": "blocks/gcsp/employee/gcsp-employee.css",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "5385405efd8bf31996ea4f4a5913b6170dd0d03a",
+      "sha256": "3cab6080aa52605d92b5f616151087fe289e72c43045a7f396a8bffca7112b6f",
+      "bytes": 6602,
+      "kind": "resource"
+    },
+    {
+      "path": "blocks/gcsp/employee/gcsp-employee.js",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "49fe6a93ef56cfa0d6856c71dfee2736eeb41d95",
+      "sha256": "2f35c7983aafef2c8f1eb72f6c78341cbf1c76269110f6a25dca1b775f11df2b",
+      "bytes": 8131,
+      "kind": "source"
+    },
+    {
+      "path": "blocks/gcsp/employee/representative-body.js",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "41ff23cd3772dde08fd8e24190c1e3919f7e8081",
+      "sha256": "a9146fc18cac0346a20b12c603df65a84dffc7bd46d267f2706f4e2c63b76af4",
+      "bytes": 10013,
+      "kind": "source"
+    },
+    {
+      "path": "blocks/gcsp/kit/form-controls.css",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "8b04875c19212dc12fe93afa56e58d213c0787cf",
+      "sha256": "0dec8818344defbe8b5718cdeef131d71faae782515f8ea3dce56b9e43002057",
+      "bytes": 1680,
+      "kind": "resource"
+    },
+    {
+      "path": "blocks/gcsp/kit/form-controls.js",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "2793b7cadddb064f734b49449a13e40e7134e343",
+      "sha256": "4df9e86f3d51f33397bd524b95f35a40240c931b441f91a7b8b05ef89fe508b4",
+      "bytes": 2179,
+      "kind": "source"
+    },
+    {
+      "path": "blocks/gcsp/manual-review/gcsp-manual-review.js",
+      "ref": "0d7fe9bf72d0ef15ba3aa9da5aee7589116438c9",
+      "gitBlob": "87c18b705a93abab5447edf4abb9365570e8cf3d",
+      "sha256": "4ef9173ff73be99c755dc357f0fc53c69b89086f5b9bfa1373bdb2a4a129822e",
+      "bytes": 16555,
+      "kind": "source"
+    },
+    {
+      "path": "blocks/gcsp/manual-review/http-adapter.js",
+      "ref": "0d7fe9bf72d0ef15ba3aa9da5aee7589116438c9",
+      "gitBlob": "ab282366f9c66e5ae85b33437d10ec8100dcbffc",
+      "sha256": "5b8dd0157f3f61f57bca77a702fa944fd23a63f953a87118bdcc73ad3e98e847",
+      "bytes": 2078,
+      "kind": "source"
+    },
+    {
+      "path": "blocks/gcsp/manual-review/manual-review.css",
+      "ref": "0d7fe9bf72d0ef15ba3aa9da5aee7589116438c9",
+      "gitBlob": "daa20c0ef84141db306b00de3846ca9bf36af100",
+      "sha256": "15401a82eafdced5b06b17974c7a3bc263b8415bf673a43f0dd67f86333bab1c",
+      "bytes": 1444,
+      "kind": "resource"
+    },
+    {
+      "path": "blocks/gcsp/manual-review/review-controller.js",
+      "ref": "0d7fe9bf72d0ef15ba3aa9da5aee7589116438c9",
+      "gitBlob": "49917658a3b6c2b3836738caccc91ee5660d22b5",
+      "sha256": "b77c9f936cfae036d6cce50917bdd5d022fdfba2a14f4cb6b189a1b966347355",
+      "bytes": 12220,
+      "kind": "source"
+    },
+    {
+      "path": "blocks/gcsp/manual-review/review-model.js",
+      "ref": "0d7fe9bf72d0ef15ba3aa9da5aee7589116438c9",
+      "gitBlob": "aa6910e99f88826188f693e6d887e3610be99526",
+      "sha256": "6c6eb31b97ea679d57953392e77342234952f5a4b8250a92074c978aaf9ef281",
+      "bytes": 7575,
+      "kind": "source"
+    },
+    {
+      "path": "blocks/gcsp/shell/density-theme.css",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "b0077085791c3b33df5965a3889487d2783d9f00",
+      "sha256": "c2a680854e05bf88edc335308797b636038ff5bdd980f101e8f32edd451f3593",
+      "bytes": 3260,
+      "kind": "resource"
+    },
+    {
+      "path": "blocks/gcsp/shell/density-typography.css",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "5028effece32a6a83a2ea7d107ad2cb59eb2eead",
+      "sha256": "6d238b5c4dee9058e9fd32e0e5704e95a94eb7e5cdc82c9fb051534d6ea44641",
+      "bytes": 2918,
+      "kind": "resource"
+    },
+    {
+      "path": "blocks/gcsp/shell/fonts/BMWGroupTNCondensedPro-Medium.woff",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "12d31b7cb2093b9f2c7b5c6aa4a276a1aacab017",
+      "kind": "binary-asset"
+    },
+    {
+      "path": "blocks/gcsp/shell/fonts/BMWGroupTNCondensedPro-Medium.woff2",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "c321c6c1f8046c50978ffe17549f23342ffe8778",
+      "kind": "binary-asset"
+    },
+    {
+      "path": "blocks/gcsp/shell/fonts/density-fonts.css",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "f83302d561d42c943d216f390335576c7773e170",
+      "sha256": "bf13d49ea7fc1d75888a06881e2ce1a0151875a69177c937045ea86ce4ac1e7c",
+      "bytes": 416,
+      "kind": "resource"
+    },
+    {
+      "path": "blocks/gcsp/shell/gcsp-tokens.css",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "04546f5805079582fbac8d191827d04e94174be9",
+      "sha256": "3a4b773eb4e67734cead53956e39323d3050af6e35465b6c275084096ed93cde",
+      "bytes": 933,
+      "kind": "resource"
+    },
+    {
+      "path": "blocks/gcsp/shell/portal-shell.js",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "017a531043126ff11370ab677c9f8392d31e8309",
+      "sha256": "7e62088d69bfa43ff0ccff2678931fe1e48c7a0b3814184f449f308cf4ebaa01",
+      "bytes": 10428,
+      "kind": "source"
+    },
+    {
+      "path": "blocks/vehicle-matcher/gcsp-kit.css",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "b59665123628ac9d2bb123414f0c9291d106415b",
+      "sha256": "ac08fa1725a878af7a6c4c3f1659b934274b4a6ad181aaa66452db4da845c210",
+      "bytes": 2086,
+      "kind": "resource"
+    },
+    {
+      "path": "blocks/vehicle-matcher/modes/brand-copy.js",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "7c7a52d7b7f1c4051fafe6ce53d089f8e79d6951",
+      "sha256": "485098aea61944c5fd62047164b4aabfdd1c95c2ff2be9aacf5dae211d195ec9",
+      "bytes": 36275,
+      "kind": "source"
+    },
+    {
+      "path": "blocks/vehicle-matcher/modes/result-card.js",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "90ee7a502ed43807d72f9eed689278b0cf3bffb4",
+      "sha256": "cc5d50468f45f1c751c597ece89ca5d7dfe88f70d98dd606104ad3504007f948",
+      "bytes": 32636,
+      "kind": "source"
+    },
+    {
+      "path": "blocks/vehicle-matcher/ui.js",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "7709d3007d2d849c29e799c013ee895e75354620",
+      "sha256": "49107097a7927e388ff78949045827f3a8903fea0bd758dbe1aa597bec82d8b2",
+      "bytes": 4277,
+      "kind": "source"
+    },
+    {
+      "path": "package.json",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "e69355381e41735f3cf4fbe3c44a7d18fee9d010",
+      "sha256": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
+      "bytes": 662,
+      "kind": "resource"
+    },
+    {
+      "path": "server/gcsp/manual-review/http.js",
+      "ref": "0d7fe9bf72d0ef15ba3aa9da5aee7589116438c9",
+      "gitBlob": "e4639964e5ee8c6a55a0670404248d0d2e378618",
+      "sha256": "e37dbc4dd6764f533be77341d07d1c4a4e4fe18fadcf0bc15ead4bb34186b22e",
+      "bytes": 841,
+      "kind": "source"
+    },
+    {
+      "path": "server/gcsp/manual-review/index.js",
+      "ref": "0d7fe9bf72d0ef15ba3aa9da5aee7589116438c9",
+      "gitBlob": "eb49b116dec9f21c7b316c8b01aec4b464699b76",
+      "sha256": "86b850450957e27bbc12dceffe49aa27b27efe8a458abe4ba533ebf65fa6f323",
+      "bytes": 16850,
+      "kind": "source"
+    },
+    {
+      "path": "server/gcsp/manual-review/validation.js",
+      "ref": "0d7fe9bf72d0ef15ba3aa9da5aee7589116438c9",
+      "gitBlob": "3d5b82af9feb95febe29d6a6e3db99b278018f7b",
+      "sha256": "d70a4c1d51afd8acb180f6cc748de80a0bea37f157912db92a8e8ad1a4626d05",
+      "bytes": 3202,
+      "kind": "source"
+    },
+    {
+      "path": "server/gcsp/policy/file-provider.js",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "5924d7a1f982edcdcbef2b6352f318d631332dea",
+      "sha256": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+      "bytes": 7809,
+      "kind": "source"
+    },
+    {
+      "path": "server/gcsp/policy/seed-v1.json",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "466ae9b44991097b028cece2bfbf2d0c5305bc32",
+      "sha256": "c585213b98631d6e82acc1b3720d47efae49fdb502f5fc86fb440703ef6e41a6",
+      "bytes": 493400,
+      "kind": "resource"
+    },
+    {
+      "path": "server/gcsp/repository/core.js",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "66a3ecf454ed9bb3c0cbaa4cb6290e87f84524c7",
+      "sha256": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+      "bytes": 30666,
+      "kind": "source"
+    },
+    {
+      "path": "server/gcsp/repository/schema.js",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "cf2dd782c5c837435639619c3d0c375c4227d6dc",
+      "sha256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+      "bytes": 5562,
+      "kind": "source"
+    },
+    {
+      "path": "server/package.json",
+      "ref": "38be4f5d95823b5f010a56c3d4b6cbda4eca55e8",
+      "gitBlob": "74e7fbb6986c2e27d3d5f5ba4a2d33a7630f2563",
+      "sha256": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139",
+      "bytes": 373,
+      "kind": "resource"
+    },
+    {
+      "path": "server/test/gcsp-manual-review-controller.test.js",
+      "ref": "0d7fe9bf72d0ef15ba3aa9da5aee7589116438c9",
+      "gitBlob": "28ed3a9af374c2e8eeb0bf51c812b8d63a090909",
+      "sha256": "d0a873208dad36eb3bbefd4adb3402a714b0e6d9d25f3d4cad035a8bc9dafa81",
+      "bytes": 18270,
+      "kind": "source"
+    },
+    {
+      "path": "server/test/gcsp-manual-review-render.test.js",
+      "ref": "0d7fe9bf72d0ef15ba3aa9da5aee7589116438c9",
+      "gitBlob": "f176fe5cd140f10655f5c15aa1fe36b14f3004a7",
+      "sha256": "ad164b11dcb8d2dc513bc61fd20bedb645bf8c1f81be677eaaf04982805ad653",
+      "bytes": 11579,
+      "kind": "source"
+    }
+  ],
+  "literalEdges": [
+    {
+      "from": "blocks/gcsp/account/http-adapter.js",
+      "specifier": "./account-view.js",
+      "to": "blocks/gcsp/account/account-view.js",
+      "kind": "module"
+    },
+    {
+      "from": "blocks/gcsp/employee/fixtures.js",
+      "specifier": "../../../assets/brand-hero/bmw.jpg",
+      "to": "assets/brand-hero/bmw.jpg",
+      "kind": "literal-url"
+    },
+    {
+      "from": "blocks/gcsp/employee/fixtures.js",
+      "specifier": "./representative-body.js",
+      "to": "blocks/gcsp/employee/representative-body.js",
+      "kind": "module"
+    },
+    {
+      "from": "blocks/gcsp/employee/gcsp-employee.css",
+      "specifier": "../../vehicle-matcher/gcsp-kit.css",
+      "to": "blocks/vehicle-matcher/gcsp-kit.css",
+      "kind": "css-import"
+    },
+    {
+      "from": "blocks/gcsp/employee/gcsp-employee.js",
+      "specifier": "./fixtures.js",
+      "to": "blocks/gcsp/employee/fixtures.js",
+      "kind": "module"
+    },
+    {
+      "from": "blocks/gcsp/employee/gcsp-employee.js",
+      "specifier": "../shell/portal-shell.js",
+      "to": "blocks/gcsp/shell/portal-shell.js",
+      "kind": "module"
+    },
+    {
+      "from": "blocks/gcsp/employee/gcsp-employee.js",
+      "specifier": "../../vehicle-matcher/ui.js",
+      "to": "blocks/vehicle-matcher/ui.js",
+      "kind": "module"
+    },
+    {
+      "from": "blocks/gcsp/employee/representative-body.js",
+      "specifier": "../shell/portal-shell.js",
+      "to": "blocks/gcsp/shell/portal-shell.js",
+      "kind": "module"
+    },
+    {
+      "from": "blocks/gcsp/employee/representative-body.js",
+      "specifier": "../../vehicle-matcher/modes/result-card.js",
+      "to": "blocks/vehicle-matcher/modes/result-card.js",
+      "kind": "module"
+    },
+    {
+      "from": "blocks/gcsp/employee/representative-body.js",
+      "specifier": "../../vehicle-matcher/ui.js",
+      "to": "blocks/vehicle-matcher/ui.js",
+      "kind": "module"
+    },
+    {
+      "from": "blocks/gcsp/kit/form-controls.js",
+      "specifier": "../../vehicle-matcher/ui.js",
+      "to": "blocks/vehicle-matcher/ui.js",
+      "kind": "module"
+    },
+    {
+      "from": "blocks/gcsp/manual-review/gcsp-manual-review.js",
+      "specifier": "../account/http-adapter.js",
+      "to": "blocks/gcsp/account/http-adapter.js",
+      "kind": "module"
+    },
+    {
+      "from": "blocks/gcsp/manual-review/gcsp-manual-review.js",
+      "specifier": "../employee/gcsp-employee.js",
+      "to": "blocks/gcsp/employee/gcsp-employee.js",
+      "kind": "module"
+    },
+    {
+      "from": "blocks/gcsp/manual-review/gcsp-manual-review.js",
+      "specifier": "../kit/form-controls.js",
+      "to": "blocks/gcsp/kit/form-controls.js",
+      "kind": "module"
+    },
+    {
+      "from": "blocks/gcsp/manual-review/gcsp-manual-review.js",
+      "specifier": "./http-adapter.js",
+      "to": "blocks/gcsp/manual-review/http-adapter.js",
+      "kind": "module"
+    },
+    {
+      "from": "blocks/gcsp/manual-review/gcsp-manual-review.js",
+      "specifier": "./review-controller.js",
+      "to": "blocks/gcsp/manual-review/review-controller.js",
+      "kind": "module"
+    },
+    {
+      "from": "blocks/gcsp/manual-review/gcsp-manual-review.js",
+      "specifier": "../../vehicle-matcher/modes/result-card.js",
+      "to": "blocks/vehicle-matcher/modes/result-card.js",
+      "kind": "module"
+    },
+    {
+      "from": "blocks/gcsp/manual-review/gcsp-manual-review.js",
+      "specifier": "../../vehicle-matcher/ui.js",
+      "to": "blocks/vehicle-matcher/ui.js",
+      "kind": "module"
+    },
+    {
+      "from": "blocks/gcsp/manual-review/manual-review.css",
+      "specifier": "../employee/gcsp-employee.css",
+      "to": "blocks/gcsp/employee/gcsp-employee.css",
+      "kind": "css-import"
+    },
+    {
+      "from": "blocks/gcsp/manual-review/manual-review.css",
+      "specifier": "../kit/form-controls.css",
+      "to": "blocks/gcsp/kit/form-controls.css",
+      "kind": "css-import"
+    },
+    {
+      "from": "blocks/gcsp/manual-review/review-controller.js",
+      "specifier": "./review-model.js",
+      "to": "blocks/gcsp/manual-review/review-model.js",
+      "kind": "module"
+    },
+    {
+      "from": "blocks/gcsp/shell/density-theme.css",
+      "specifier": "./density-typography.css",
+      "to": "blocks/gcsp/shell/density-typography.css",
+      "kind": "css-import"
+    },
+    {
+      "from": "blocks/gcsp/shell/density-typography.css",
+      "specifier": "./fonts/density-fonts.css",
+      "to": "blocks/gcsp/shell/fonts/density-fonts.css",
+      "kind": "css-import"
+    },
+    {
+      "from": "blocks/gcsp/shell/fonts/density-fonts.css",
+      "specifier": "./BMWGroupTNCondensedPro-Medium.woff",
+      "to": "blocks/gcsp/shell/fonts/BMWGroupTNCondensedPro-Medium.woff",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/gcsp/shell/fonts/density-fonts.css",
+      "specifier": "./BMWGroupTNCondensedPro-Medium.woff2",
+      "to": "blocks/gcsp/shell/fonts/BMWGroupTNCondensedPro-Medium.woff2",
+      "kind": "css-url"
+    },
+    {
+      "from": "blocks/gcsp/shell/gcsp-tokens.css",
+      "specifier": "./density-theme.css",
+      "to": "blocks/gcsp/shell/density-theme.css",
+      "kind": "css-import"
+    },
+    {
+      "from": "blocks/gcsp/shell/portal-shell.js",
+      "specifier": "../../vehicle-matcher/ui.js",
+      "to": "blocks/vehicle-matcher/ui.js",
+      "kind": "module"
+    },
+    {
+      "from": "blocks/vehicle-matcher/gcsp-kit.css",
+      "specifier": "../gcsp/shell/gcsp-tokens.css",
+      "to": "blocks/gcsp/shell/gcsp-tokens.css",
+      "kind": "css-import"
+    },
+    {
+      "from": "blocks/vehicle-matcher/modes/brand-copy.js",
+      "specifier": "../ui.js",
+      "to": "blocks/vehicle-matcher/ui.js",
+      "kind": "module"
+    },
+    {
+      "from": "blocks/vehicle-matcher/modes/result-card.js",
+      "specifier": "./brand-copy.js",
+      "to": "blocks/vehicle-matcher/modes/brand-copy.js",
+      "kind": "module"
+    },
+    {
+      "from": "blocks/vehicle-matcher/modes/result-card.js",
+      "specifier": "../ui.js",
+      "to": "blocks/vehicle-matcher/ui.js",
+      "kind": "module"
+    },
+    {
+      "from": "server/gcsp/manual-review/http.js",
+      "specifier": "../repository/core.js",
+      "to": "server/gcsp/repository/core.js",
+      "kind": "module"
+    },
+    {
+      "from": "server/gcsp/manual-review/index.js",
+      "specifier": "./validation.js",
+      "to": "server/gcsp/manual-review/validation.js",
+      "kind": "module"
+    },
+    {
+      "from": "server/gcsp/manual-review/index.js",
+      "specifier": "../policy/file-provider.js",
+      "to": "server/gcsp/policy/file-provider.js",
+      "kind": "module"
+    },
+    {
+      "from": "server/gcsp/manual-review/index.js",
+      "specifier": "../repository/core.js",
+      "to": "server/gcsp/repository/core.js",
+      "kind": "module"
+    },
+    {
+      "from": "server/gcsp/manual-review/validation.js",
+      "specifier": "../repository/core.js",
+      "to": "server/gcsp/repository/core.js",
+      "kind": "module"
+    },
+    {
+      "from": "server/gcsp/policy/file-provider.js",
+      "specifier": "./seed-v1.json",
+      "to": "server/gcsp/policy/seed-v1.json",
+      "kind": "literal-url"
+    },
+    {
+      "from": "server/gcsp/repository/core.js",
+      "specifier": "./schema.js",
+      "to": "server/gcsp/repository/schema.js",
+      "kind": "module"
+    },
+    {
+      "from": "server/test/gcsp-manual-review-controller.test.js",
+      "specifier": "../../blocks/gcsp/manual-review/http-adapter.js",
+      "to": "blocks/gcsp/manual-review/http-adapter.js",
+      "kind": "module"
+    },
+    {
+      "from": "server/test/gcsp-manual-review-controller.test.js",
+      "specifier": "../../blocks/gcsp/manual-review/review-controller.js",
+      "to": "blocks/gcsp/manual-review/review-controller.js",
+      "kind": "module"
+    },
+    {
+      "from": "server/test/gcsp-manual-review-controller.test.js",
+      "specifier": "../../blocks/gcsp/manual-review/review-model.js",
+      "to": "blocks/gcsp/manual-review/review-model.js",
+      "kind": "module"
+    },
+    {
+      "from": "server/test/gcsp-manual-review-controller.test.js",
+      "specifier": "../gcsp/manual-review/validation.js",
+      "to": "server/gcsp/manual-review/validation.js",
+      "kind": "module"
+    },
+    {
+      "from": "server/test/gcsp-manual-review-render.test.js",
+      "specifier": "../../blocks/gcsp/manual-review/gcsp-manual-review.js",
+      "to": "blocks/gcsp/manual-review/gcsp-manual-review.js",
+      "kind": "literal-dynamic-import"
+    },
+    {
+      "from": "server/test/gcsp-manual-review-render.test.js",
+      "specifier": "../gcsp/policy/seed-v1.json",
+      "to": "server/gcsp/policy/seed-v1.json",
+      "kind": "literal-url"
+    }
+  ],
+  "externalEdges": [
+    {
+      "from": "server/gcsp/policy/file-provider.js",
+      "specifier": "node:fs/promises",
+      "kind": "builtin"
+    },
+    {
+      "from": "server/gcsp/repository/core.js",
+      "specifier": "node:crypto",
+      "kind": "builtin"
+    },
+    {
+      "from": "server/test/gcsp-manual-review-controller.test.js",
+      "specifier": "node:assert/strict",
+      "kind": "builtin"
+    },
+    {
+      "from": "server/test/gcsp-manual-review-controller.test.js",
+      "specifier": "node:test",
+      "kind": "builtin"
+    },
+    {
+      "from": "server/test/gcsp-manual-review-render.test.js",
+      "specifier": "jsdom",
+      "kind": "bare-package"
+    },
+    {
+      "from": "server/test/gcsp-manual-review-render.test.js",
+      "specifier": "node:assert/strict",
+      "kind": "builtin"
+    },
+    {
+      "from": "server/test/gcsp-manual-review-render.test.js",
+      "specifier": "node:fs",
+      "kind": "builtin"
+    },
+    {
+      "from": "server/test/gcsp-manual-review-render.test.js",
+      "specifier": "node:test",
+      "kind": "builtin"
+    }
+  ],
+  "ownedLeafComparison": [
+    {
+      "path": "blocks/gcsp/manual-review/gcsp-manual-review.js",
+      "leafSha256": "4ef9173ff73be99c755dc357f0fc53c69b89086f5b9bfa1373bdb2a4a129822e",
+      "prior76a4bf4Sha256": "4ef9173ff73be99c755dc357f0fc53c69b89086f5b9bfa1373bdb2a4a129822e",
+      "unchanged": true
+    },
+    {
+      "path": "blocks/gcsp/manual-review/manual-review.css",
+      "leafSha256": "15401a82eafdced5b06b17974c7a3bc263b8415bf673a43f0dd67f86333bab1c",
+      "prior76a4bf4Sha256": "15401a82eafdced5b06b17974c7a3bc263b8415bf673a43f0dd67f86333bab1c",
+      "unchanged": true
+    },
+    {
+      "path": "server/gcsp/manual-review/index.js",
+      "leafSha256": "86b850450957e27bbc12dceffe49aa27b27efe8a458abe4ba533ebf65fa6f323",
+      "prior76a4bf4Sha256": "86b850450957e27bbc12dceffe49aa27b27efe8a458abe4ba533ebf65fa6f323",
+      "unchanged": true
+    },
+    {
+      "path": "server/gcsp/manual-review/http.js",
+      "leafSha256": "e37dbc4dd6764f533be77341d07d1c4a4e4fe18fadcf0bc15ead4bb34186b22e",
+      "prior76a4bf4Sha256": "e37dbc4dd6764f533be77341d07d1c4a4e4fe18fadcf0bc15ead4bb34186b22e",
+      "unchanged": true
+    },
+    {
+      "path": "server/test/gcsp-manual-review-controller.test.js",
+      "leafSha256": "d0a873208dad36eb3bbefd4adb3402a714b0e6d9d25f3d4cad035a8bc9dafa81",
+      "prior76a4bf4Sha256": "d0a873208dad36eb3bbefd4adb3402a714b0e6d9d25f3d4cad035a8bc9dafa81",
+      "unchanged": true
+    },
+    {
+      "path": "server/test/gcsp-manual-review-render.test.js",
+      "leafSha256": "ad164b11dcb8d2dc513bc61fd20bedb645bf8c1f81be677eaaf04982805ad653",
+      "prior76a4bf4Sha256": "ad164b11dcb8d2dc513bc61fd20bedb645bf8c1f81be677eaaf04982805ad653",
+      "unchanged": true
+    },
+    {
+      "path": "blocks/gcsp/manual-review/http-adapter.js",
+      "leafSha256": "5b8dd0157f3f61f57bca77a702fa944fd23a63f953a87118bdcc73ad3e98e847",
+      "prior76a4bf4Sha256": "5b8dd0157f3f61f57bca77a702fa944fd23a63f953a87118bdcc73ad3e98e847",
+      "unchanged": true
+    },
+    {
+      "path": "blocks/gcsp/manual-review/review-controller.js",
+      "leafSha256": "b77c9f936cfae036d6cce50917bdd5d022fdfba2a14f4cb6b189a1b966347355",
+      "prior76a4bf4Sha256": "b77c9f936cfae036d6cce50917bdd5d022fdfba2a14f4cb6b189a1b966347355",
+      "unchanged": true
+    },
+    {
+      "path": "server/gcsp/manual-review/validation.js",
+      "leafSha256": "d70a4c1d51afd8acb180f6cc748de80a0bea37f157912db92a8e8ad1a4626d05",
+      "prior76a4bf4Sha256": "d70a4c1d51afd8acb180f6cc748de80a0bea37f157912db92a8e8ad1a4626d05",
+      "unchanged": true
+    },
+    {
+      "path": "blocks/gcsp/manual-review/review-model.js",
+      "leafSha256": "6c6eb31b97ea679d57953392e77342234952f5a4b8250a92074c978aaf9ef281",
+      "prior76a4bf4Sha256": "6c6eb31b97ea679d57953392e77342234952f5a4b8250a92074c978aaf9ef281",
+      "unchanged": true
+    }
+  ],
+  "existingTestSelection": {
+    "cases": {
+      "server/test/gcsp-manual-review-controller.test.js": [
+        "adapter has canonical read/save/review/release routes and never offers or sends claim POST",
+        "transport failure/invalid success are uncertain for commands; 202 pending is preserved",
+        "reload trusts only matching current reads, keeps exact quote and rejects mismatched handoff",
+        "authority binding/version/run/owner/order mismatches and missing timing fail closed",
+        "client validation mirrors server field and policy bounds, conditional mileage and UTF-16 controls",
+        "uncertain save coalesces duplicate clicks and retries the same immutable command before fresh authority",
+        "revision conflict retains local fields and requires explicit discard for newer metadata",
+        "continue saves, reads, begins preview once, then verifies order-review; repeated reload never renews deadline",
+        "uncertain begin-review retry keeps exact payload; current expiry suppresses continuation after historical success",
+        "invalid contact does not prevent cancel; pending release never navigates and same retry remains stable",
+        "pending claim/reopen and transport failure retain safe inputs and disable authority",
+        "countdown follows persisted domain time only, with low/expiry announcements once per phase",
+        "newer release wins over older refresh; late save/review and destroyed callbacks cannot restore authority",
+        "other-tab metadata during uncertain begin-review retains original reviewed inputs and blocks callback"
+      ],
+      "server/test/gcsp-manual-review-render.test.js": [
+        "pinned card, typed points, current contract and requested collection use native stable fields",
+        "invalid Continue focuses linked summary, retains fields, and Cancel releases without validation",
+        "Continue saves, transitions once and emits only current order review authority",
+        "presenter clock refresh expires safely, with numeric time outside the live region",
+        "pending authority disables continuation and new orders omit return mileage",
+        "shell mount and repeatable custom element registration tear down owned content",
+        "a pending claim past its original deadline cannot offer browse navigation or announce expiry"
+      ]
+    },
+    "counts": {
+      "controller": 14,
+      "render": 7
+    },
+    "fixtureBoundary": "Existing14/7 are independent HTTP/controller/DOM doubles; selected by source inspection only, not newly executed and not actual released journey proof. Inline fixtures and policy seed are pinned. No repository test-helper module is imported by these two files.",
+    "reuseLimit": "Historical counts remain historical. The proposed default100 shared graph and future central/69 composition have not been executed; retained own hashes do not prove unchanged transitive runtime/environment."
+  },
+  "installedBoundary": {
+    "packages": [
+      "jsdom"
+    ],
+    "state": "bare dependency only; installed package/executable/physical identity closure not admitted. No new helper or dependency installed or imported."
+  },
+  "pendingPins": [
+    {
+      "owner": "FUCQ-100",
+      "paths": [
+        "blocks/gcsp/manual-setup/journey.js",
+        "server/gcsp/runtime.js",
+        "server/index.js"
+      ],
+      "reason": "Allocated but concrete integrated host/startup/route/reset publication not supplied yet."
+    },
+    {
+      "owner": "FUCQ-69",
+      "paths": [
+        "server/test/gcsp-manual-gallery-review-journey.test.js"
+      ],
+      "reason": "Two-case rendered journey proposal, not yet a published test/helper graph. Do not invent its hash or duplicate the harness."
+    },
+    {
+      "owner": "future harness launcher",
+      "paths": [],
+      "reason": "Any bridge fixture/helper, executable/package closure, actual saved-draft/release/reset input and finite command must be published and reviewed before allocation."
+    },
+    {
+      "owner": "existing FUCQ-71 collaborator",
+      "paths": [],
+      "reason": "Foreign actual submission interface remains unknown; no adapter, fake event_receipt, fake submitted state or acceptance substitution."
+    }
+  ],
+  "noExecution": true,
+  "allocation": "none",
+  "storyBuilt": false,
+  "galleryCoordinationPlan": {
+    "pin": "bdae9bf720a484fbb5284f398f6bd7b110770630",
+    "sourcePlan": "docs/gcsp/evidence/fucq69/journey-source-plan.json",
+    "sourcePlanSha256": "8694f8e904018437cb16c9c0059c35135cca644674d1b1047574240f5f22f24b",
+    "plan": "docs/gcsp/evidence/fucq69/journey-plan.md",
+    "planSha256": "3b39178fd8ac6995d96f91c9661bec951ac253ea94cad2d4f3eea9ec97ec8524",
+    "reviewProductPin": "73c645719f0536ff82e8004ade9b8844846ccef9",
+    "reviewProductFiles": 8,
+    "sameReviewBytesAsThisLeaf": true,
+    "scope": "Published author-only176file/119module/355literal-edge proposal; no new journey test/helper/execution. F69 owns proposed two DOM cases. Central host/bootstrap/provider-reset/installedJSdom/helper exact pins remain pending.",
+    "inspection": "Immutable plan bytes/hash and all eight cited review-product bytes checked through scaffold_git without import or allocation."
+  }
+}

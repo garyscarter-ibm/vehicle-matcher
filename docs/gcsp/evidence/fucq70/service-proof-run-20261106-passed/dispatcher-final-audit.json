@@ -1,0 +1,543 @@
+{
+  "at": "2026-11-06T01:24:18.903706+00:00",
+  "result": "PASS",
+  "checks": [
+    {
+      "check": "six exactcases nofail/skips",
+      "ok": true
+    },
+    {
+      "check": "source snapshots match",
+      "ok": true
+    },
+    {
+      "check": "runtime config match",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/scaffolding.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/.claude/scaffolding.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/blocks/gcsp/account/account-view.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/blocks/gcsp/account/http-adapter.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/blocks/gcsp/manual-review/http-adapter.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/blocks/gcsp/manual-review/review-controller.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/blocks/gcsp/manual-review/review-model.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-loader.mjs",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-supervisor.py",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/service-proof-harness.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/package-lock.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/package.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/brands.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/data/gcsp/vehicle-evidence/vin-profiles.v1.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/engine.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/clock/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/fixtures/principals.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/fixtures/scenario-v1.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/fixtures/scenarios/catalogue-v1.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/fixtures/scenarios/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/identity/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/manual-context/fixtures.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/manual-context/http.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/manual-context/ports.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/manual-review/http.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/manual-review/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/manual-review/validation.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/migrations/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/policy/file-provider.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/policy/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/policy/memory-provider.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/policy/postgres-provider.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/policy/publish.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/policy/seed-v1.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/recommendation/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/repository/core.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/repository/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/repository/memory.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/repository/postgres.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/repository/schema.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/vehicle-evidence/vin-allocation.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/vehicle-evidence/vin-generator.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/gcsp/vehicle-evidence/vin-profiles.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/package-lock.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/package.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/questions.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/scenarios/employee/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/gcsp-manual-review-actual66.proof.mjs",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/test/helpers/employee-recommendation.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/server/vehicles/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/_tools/scaffold_git.py",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/_tools/test_resources.py",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/empty.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/esm/index.mjs",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/package.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/esm/index.mjs",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/package.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/package.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/esm/index.mjs",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/package.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/b.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-reader.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-writer.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/inbound-parser.test.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/messages.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/outbound-serializer.test.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/parser.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/serializer.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/esm/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/package.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/arrayParser.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/binaryParsers.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/builtins.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/textParsers.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/package.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/test/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/test/types.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/esm/index.mjs",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/client.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/connection-parameters.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/connection.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/cert-signatures.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/sasl.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/utils.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/defaults.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/client.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/query.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/query.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/result.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/stream.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/type-overrides.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/utils.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/package.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/lib/helper.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/lib/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/package.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/package.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/package.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/package.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/package.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/bench.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/index.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/package.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/test.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/immutable.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/mutable.js",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/package.json",
+      "ok": true
+    },
+    {
+      "check": "file /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/test.js",
+      "ok": true
+    },
+    {
+      "check": "file /opt/homebrew/bin/node",
+      "ok": true
+    },
+    {
+      "check": "removed scratch 9ec433dfe1b45edaad89566fa9931d66",
+      "ok": true
+    },
+    {
+      "check": "PID 40499",
+      "ok": true
+    },
+    {
+      "check": "PID 40469",
+      "ok": true
+    },
+    {
+      "check": "PID 40495",
+      "ok": true
+    },
+    {
+      "check": "group 40495",
+      "ok": true
+    },
+    {
+      "check": "strict locked registry",
+      "ok": true
+    },
+    {
+      "check": "46 appmodules",
+      "ok": true
+    }
+  ],
+  "failures": [],
+  "raw_success_TAP_retained": false,
+  "evidence_limit": "Exact six selected case names/counts and all8setups enforced by unchanged admitted supervisor; original success raw log not retained, cannot independently reparse it.",
+  "journal_sha256": "fd850ad969e46a2c961d1c0677d94fec3a6da62a2db82552cb5770cc760d10c5",
+  "selection": [
+    "actual66 issued claim \u2192 actual69 confirmed readback callback \u2192 review without another claim",
+    "actual66 confirmed release remains available with invalid local contacts for cancel/back/change",
+    "actual66 historical success replay cannot authorise continuation after exact clock expiry",
+    "actual66 HTTP202 pending claim/replay reconciles before same-operation resend and actual GET confirmation",
+    "actual66 HTTP202 release stays occupied past deadline until matching terminal GET, retaining invalid edits",
+    "actual identity/session isolation and competing review metadata readback fail closed without a new claim"
+  ],
+  "proof_boundary": "memory actual66+69 service/HTTP/controller only; no actual92/UI/native/full"
+}

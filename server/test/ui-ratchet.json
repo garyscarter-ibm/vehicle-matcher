@@ -246,6 +246,10 @@
     {
       "path": "blocks/gcsp/order-progress/gcsp-order-progress.css",
       "max_lines": 31
+    },
+    {
+      "path": "blocks/gcsp/manual-review/manual-review.css",
+      "max_lines": 20
     }
   ],
   "baseline": {
