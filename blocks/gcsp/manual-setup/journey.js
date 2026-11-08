@@ -16,12 +16,15 @@ export function mountManualJourney(root, options = {}) {
     generation += 1; view = next;
     disconnectFocus?.();
     teardown?.();
-    const ticket = generation;
+    const ticket = generation; let focused = null;
+    // Refocus when a transient loading heading is replaced and focus falls to the body.
     const focus = () => {
-      if (disposed || ticket !== generation) return;
+      if (disposed || ticket !== generation || focused?.isConnected) return;
+      const active = root.ownerDocument.activeElement;
+      if (focused && active && active !== root.ownerDocument.body) return;
       const heading = root.querySelector('main h1, main h2');
       if (!heading) return;
-      heading.tabIndex = -1; heading.focus(); observer.disconnect();
+      heading.tabIndex = -1; heading.focus(); focused = heading;
     };
     const observer = new root.ownerDocument.defaultView.MutationObserver(focus);
     observer.observe(root, { childList: true, subtree: true });
