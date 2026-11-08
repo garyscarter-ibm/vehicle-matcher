@@ -11,6 +11,7 @@ import { BuddyHoldService } from '../gcsp/offers/buddy-hold.js';
 import { OfferDecisionService } from '../gcsp/offers/decision.js';
 import { CapturedTransport } from '../gcsp/notify/index.js';
 import { shortQuotePolicy } from './helpers/short-quote-policy.js';
+import { expandEvaluation } from '../gcsp/allocation/evaluation-rows.js';
 
 const fixture = JSON.parse(await readFile(new URL('./fixtures/gcsp-comparison-buddy-outcomes.json', import.meta.url), 'utf8'));
 const policy = new PolicyService({ provider: new FilePolicyProvider() });
@@ -195,8 +196,8 @@ test('declines name the attribute that falls shortest, with a keyed fallback rea
 });
 
 // FUCQ-209: each employee's evaluation is its own row; rejoin them for these assertions.
-const sliceOf = (persisted, row, id) => persisted.event_receipts.find((slice) => slice.consumerId === 'buddy-allocation-evaluation'
-  && slice.eventId === `${row.eventId}:${id}`).outcome.value.evaluation;
+const sliceOf = (persisted, row, id) => expandEvaluation(persisted.event_receipts.find((slice) => slice.consumerId === 'buddy-allocation-evaluation'
+  && slice.eventId === `${row.eventId}:${id}`).outcome.value.evaluation);
 const allocationsOf = (persisted) => persisted.event_receipts.filter((row) => row.consumerId === 'buddy-allocation')
   .map((row) => ({ ...row.outcome.value, evaluations: row.outcome.value.evaluationRefs.employeeIds.map((id) => sliceOf(persisted, row, id)) }))
   .sort((a, b) => byId(a.event.occurredAt, b.event.occurredAt));
