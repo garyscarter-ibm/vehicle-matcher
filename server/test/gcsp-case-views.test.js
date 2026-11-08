@@ -50,7 +50,7 @@ test('each employee state renders owner, reasons, dates, next action, remedy and
     assert.match(root.textContent, /Renewal deadline \(calendar date\)/); assert.match(root.textContent, /2026-11-20/);
     assert.match(root.textContent, /Dated case history/); assert.match(root.textContent, /Actor(You|Automatic check)/);
     assert.match(root.textContent, name === 'trigger' ? /Opened fromRenewal deadline approaching/ : /Opened fromHelp request/);
-    assert.match(root.textContent, /Owner roleScheme team/);
+    assert.match(root.textContent, /OwnerScheme team/); assert.doesNotMatch(root.textContent, /Owner role/);
     assert.ok(root.querySelector('.vm-facts')); assert.equal(root.querySelectorAll('h1').length, 1);
     if (name === 'waiting') { assert.match(root.textContent, /estate/); assert.match(root.textContent, /suv/); assert.match(root.textContent, /Waiting for your confirmation/); }
     assert.equal(root.textContent.includes('—'), false);
@@ -426,4 +426,32 @@ test('FUCQ-213: a lapsed access key reads as access needed, not unavailable', as
   assert.equal(lapsed.status, 'access-required');
   const shown = caseFailure(lapsed);
   assert.equal(shown.title, 'Demo access needed'); assert.doesNotMatch(`${shown.title} ${shown.text}`, /unavailable/i);
+});
+test('FUCQ-208: owner role is shown only when it adds to the owner name', async () => {
+  const { renderCaseContent } = await import('../../blocks/gcsp/cases/case-content.js');
+  const owned = (owner) => renderCaseContent({ ...caseFixture('request'), owner }).querySelector('.gcsp-case-facts').textContent;
+  const same = owned({ name: 'Scheme team', role: 'scheme-team' });
+  assert.equal(same.match(/Scheme team/g).length, 1);
+  const named = owned({ name: 'Greg', role: 'scheme-team' });
+  assert.match(named, /OwnerGreg/); assert.match(named, /Owner roleScheme team/);
+  assert.match(owned({ role: 'scheme-team' }), /OwnerScheme team/); assert.doesNotMatch(owned({ role: 'scheme-team' }), /Owner role/);
+});
+test('FUCQ-208: same-name alternative cars are told apart by supplied facts, never invented ones', async () => {
+  const known = (value) => ({ status: 'known', value });
+  const car = (orderUuid, name, facts = {}) => ({ type: 'alternative-car', orderUuid, configurationId: 'synthetic-configuration',
+    snapshot: { display: { name }, facts } });
+  const value = queueOptionsFixture();
+  value.options.alternativeCars.items = [car('car-a', 'BMW i4 in Black', { confirmedDeliveryWeek: known('2026-11-23') }),
+    car('car-b', 'BMW i4 in Black', { confirmedDeliveryWeek: known('2026-12-07') }), car('car-c', 'BMW iX1', { confirmedDeliveryWeek: known('2026-11-23') }),
+    car('car-d', 'BMW iX3'), car('car-e', 'BMW iX3'), car('car-f', '')];
+  const f = await mountQueue({ ...queueFixtureAdapter(), async readOptions() { return { status: 'ok', value }; } });
+  await openQueue(f.root);
+  const labels = [...f.root.querySelectorAll('[id$="-remedyKey"] option')].map((o) => o.textContent).filter((t) => t.startsWith('Alternative car'));
+  assert.deepEqual(labels, ['Alternative car: BMW i4 in Black, delivery week of 2026-11-23', 'Alternative car: BMW i4 in Black, delivery week of 2026-12-07',
+    'Alternative car: BMW iX1', 'Alternative car: BMW iX3, reference car-d', 'Alternative car: BMW iX3, reference car-e',
+    'Alternative car: Car details not supplied, reference car-f']);
+  reviewQueue(f.root, 'alternativeCars:1');
+  assert.match(f.root.textContent, /Proposed carBMW i4 in Black, delivery week of 2026-12-07/);
+  findButton(f.root, 'Review case update').click();
+  assert.match(f.root.querySelector('.gcsp-case-confirmation').textContent, /Proposed carBMW i4 in Black, delivery week of 2026-12-07/); f.destroy();
 });
