@@ -312,6 +312,24 @@ test('distinct entitlement, HR, empty and failure states provide truthful action
   }
 });
 
+test('a closed renewal window says it is too late to order, not to wait (FUCQ-200)', async () => {
+  const f = await setup();
+  const ref = { table: 'employees', key: { runId: f.context.runId, employeeId: f.context.employeeId } };
+  // Clock 2026-11-05 plus the 7-day minimum lead is past this window's last date.
+  assert.equal((await f.repository.transaction(f.context, { commandId: 'closed-window', inputDigest: inputDigest('closed-window') }, async (tx) => {
+    const found = await tx.get(ref); const manual = structuredClone(found.value.contract.manualContext);
+    Object.assign(manual.contracts[0], { earliestCollectionDate: '2026-11-01', latestCollectionDate: '2026-11-11' });
+    return tx.compareAndSwap(ref, found.value.version, { contract: { manualContext: manual } });
+  })).status, 'ok');
+  const { root, destroy } = await domMount(serviceAdapter(f));
+  try {
+    assert.match(root.textContent, /Too late to order before renewal/);
+    assert.match(root.textContent, /No collection date fits before your contract ends\./);
+    assert.doesNotMatch(root.textContent, /Replacement is not available yet/);
+    assert.equal(findButton(root, 'Choose a replacement'), undefined); assert.ok(findButton(root, 'Contact support'));
+  } finally { destroy(); root.remove(); }
+});
+
 test('guarded replacement reconciles draft, suppresses duplicate writes, emits exact saved context, and survives Back and reload', async () => {
   const f = await setup(); const calls = []; const adapter = serviceAdapter(f, calls);
   const readDraft = adapter.readDraft; let release; let blocked = false;
