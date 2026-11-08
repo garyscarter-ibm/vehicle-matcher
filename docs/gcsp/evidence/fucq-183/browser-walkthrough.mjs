@@ -14,11 +14,11 @@ const ROOT = resolve(HERE, '../../../..');
 const chunk = process.env.FUCQ183_CHUNK;
 if (!['desktop', 'narrow'].includes(chunk)) throw new Error('Set FUCQ183_CHUNK=desktop|narrow');
 const REASON = process.env.FUCQ183_REASON;
-// Only "Decline then change" is available as a reset target on this base ("Main successful journey" is not yet).
+// Default "Decline then change"; FUCQ183_SCENARIO="Main successful journey" runs the main journey (after FUCQ-109).
 const SCENARIO = process.env.FUCQ183_SCENARIO || 'Decline then change';
 const ANSWERS = { Size: 'slider to 70', 'Fuel type': 'Electric', Equipment: 'towbar', 'Body style': 'Saloon' };
 if (!ANSWERS[REASON]) throw new Error('Set FUCQ183_REASON to Size, Fuel type, Equipment or Body style');
-const slug = REASON.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+const slug = `${SCENARIO === 'Decline then change' ? '' : `${SCENARIO.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-`}${REASON.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 const scratch = resolve(process.env.FUCQ183_SCRATCH || process.env.TMPDIR || '');
 if (!scratch || scratch === '/') throw new Error('Set FUCQ183_SCRATCH (or TMPDIR) to an owned scratch directory');
 const viewport = chunk === 'narrow' ? { width: 375, height: 812 } : { width: 1280, height: 900 };
