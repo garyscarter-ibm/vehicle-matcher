@@ -1,4 +1,4 @@
-// Browser walkthrough of the manual journey, one viewport per run (WALK_CHUNK=desktop|narrow), story by WALK_STORY=fucq70|fucq72|fucq73.
+// Browser walkthrough of the manual journey, one viewport per run (WALK_CHUNK=desktop|narrow), story by WALK_STORY=fucq70|fucq72|fucq73|fucq145 (fucq145 also has chunk phone, 375x812).
 // Spawns `node index.js` in server/ offline (GCSP_OFFLINE=1, memory repository). FUCQ70_* names still work as fallbacks for WALK_*.
 import { spawn, spawnSync } from 'node:child_process';
 import { createServer } from 'node:http';
@@ -13,16 +13,16 @@ const HERE = fileURLToPath(new URL('.', import.meta.url));
 const SERVER_DIR = resolve(HERE, '../../../../server');
 const env = (name) => process.env[`WALK_${name}`] ?? process.env[`FUCQ70_${name}`];
 const story = process.env.WALK_STORY || 'fucq70';
-if (!['fucq70', 'fucq72', 'fucq73'].includes(story)) throw new Error('Set WALK_STORY=fucq70|fucq72|fucq73');
+if (!['fucq70', 'fucq72', 'fucq73', 'fucq145'].includes(story)) throw new Error('Set WALK_STORY=fucq70|fucq72|fucq73|fucq145');
 const chunk = env('CHUNK');
-if (!['desktop', 'narrow'].includes(chunk)) throw new Error('Set WALK_CHUNK=desktop|narrow');
+if (!['desktop', story === 'fucq145' ? 'phone' : 'narrow'].includes(chunk)) throw new Error(`Set WALK_CHUNK=desktop|${story === 'fucq145' ? 'phone' : 'narrow'}`);
 const scratch = resolve(env('SCRATCH') || process.env.TMPDIR || '');
 if (!scratch || scratch === '/') throw new Error('Set WALK_SCRATCH (or TMPDIR) to an owned scratch directory');
-const viewport = chunk === 'narrow' ? { width: 320, height: 720 } : { width: 1280, height: 900 };
+const viewport = chunk === 'narrow' ? { width: 320, height: 720 } : chunk === 'phone' ? { width: 375, height: 812 } : { width: 1280, height: 900 };
 const vp = String(viewport.width);
-const port = Number(env('PORT')) || (story === 'fucq73' ? (chunk === 'narrow' ? 8937 : 8936) : chunk === 'narrow' ? 8933 : 8932);
+const port = Number(env('PORT')) || (story === 'fucq145' ? (chunk === 'phone' ? 8939 : 8938) : story === 'fucq73' ? (chunk === 'narrow' ? 8937 : 8936) : chunk === 'narrow' ? 8933 : 8932);
 if (port < 8930 || port > 8949) throw new Error('WALK_PORT must be within 8930-8949');
-const outDir = story === 'fucq70' ? HERE : story === 'fucq73' ? resolve(HERE, '..', 'fucq-6', story) : resolve(HERE, '..', story);
+const outDir = story === 'fucq70' ? HERE : story === 'fucq73' ? resolve(HERE, '..', 'fucq-6', story) : resolve(HERE, '..', story); // fucq145 -> ../fucq145
 const only = env('ONLY') ? `-${env('ONLY')}` : ''; // a partial run never overwrites the full run's files
 const shotDir = join(outDir, `browser${only}`);
 const resultsFile = join(outDir, `results-${chunk}${only}.json`);
@@ -34,7 +34,11 @@ const report = { ...(story === 'fucq70' ? {} : { story }), chunk, entry: 'hosted
 let lastStock = null; let shots = 0; let reviewedOrder = null; const orderPosts = []; let context; let page; let app; let child; let halted = null; let origin;
 const wait = (ms) => new Promise((done) => setTimeout(done, ms));
 const save = () => { if (story !== 'fucq70') report.orderPosts = orderPosts; if (env('TRACE')) report.trace = trace; return writeFile(resultsFile, `${JSON.stringify(report, null, 2)}\n`); };
-const killChrome = () => { try { spawnSync('/usr/bin/pkill', ['-f', `user-data-dir=${profile}`]); } catch { /* already gone */ } };
+// Kill only this run's Chrome, by PID: other sessions run walkthroughs too.
+const killChrome = () => { try {
+  const ps = spawnSync('/bin/ps', ['-axo', 'pid=,command='], { encoding: 'utf8' }).stdout ?? '';
+  for (const line of ps.split('\n')) if (line.includes(`--user-data-dir=${profile}`)) { try { process.kill(Number(line.trim().split(/\s+/)[0])); } catch { /* gone */ } }
+} catch { /* already gone */ } };
 const killServer = () => { try { if (child && child.exitCode === null) child.kill('SIGKILL'); } catch { /* already gone */ } };
 process.on('SIGALRM', () => { killChrome(); killServer(); report.state = 'timeout'; process.exit(124); });
 process.on('exit', () => { killChrome(); killServer(); });
@@ -938,6 +942,87 @@ async function walk73() {
   if (want('adj')) await walkAdjacent();
 }
 
+// FUCQ-145: after an account Resume, keyboard focus must land on the final review heading, never rest on BODY.
+const FOCUS_POLL = () => {
+  const fp = window.__fp = { samples: [], enterAt: null };
+  const read = () => {
+    const a = document.activeElement; const h = document.querySelector('main h1'); const c = [...document.querySelectorAll('button')].find((b) => b.textContent.trim() === 'Continue to order review');
+    return { t: Math.round(performance.now() * 10) / 10, tag: a ? a.tagName : 'NONE', text: a && a.tagName !== 'BODY' ? (a.innerText || a.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60) : '', main1: Boolean(a && a.matches('main h1')),
+      h1: h ? h.textContent.trim() : null, ready: Boolean(h && h.textContent.trim() === 'Review your car' && c && !c.disabled && c.getAttribute('aria-disabled') !== 'true') };
+  };
+  fp.id = setInterval(() => fp.samples.push(read()), 25);
+};
+const activeFacts = () => page.evaluate(() => {
+  const a = document.activeElement; const cs = getComputedStyle(a);
+  return { tag: a.tagName, text: (a.innerText || a.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60), insideMain: Boolean(a.closest('main')), isMainH1: a.matches('main h1'), tabindex: a.getAttribute('tabindex'),
+    outline: `${cs.outlineStyle} ${cs.outlineWidth} ${cs.outlineColor}`, boxShadow: cs.boxShadow, focusVisible: a.matches(':focus-visible') };
+});
+function analyse(samples, enterAt) {
+  const seq = []; for (const s of samples) { const key = `${s.tag}|${s.text}`; if (seq.at(-1)?.key !== key) seq.push({ key, tag: s.tag, text: s.text, atMs: Math.round(s.t - enterAt) }); }
+  const after = samples.filter((s) => s.t >= enterAt);
+  const firstAt = (fn) => samples.find(fn)?.t ?? null;
+  const renderedAt = firstAt((s) => s.h1 === 'Review your car'); const readyAt = firstAt((s) => s.ready);
+  const bodyAfter = (from) => (from === null ? null : samples.filter((s) => s.t >= from && s.tag === 'BODY').length);
+  let maxBodyMs = 0; let run = null;
+  for (const s of after) { if (s.tag === 'BODY') run ??= s.t; else if (run !== null) { maxBodyMs = Math.max(maxBodyMs, s.t - run); run = null; } }
+  if (run !== null) maxBodyMs = Math.max(maxBodyMs, after.at(-1).t - run + 25);
+  return { sampleCount: samples.length, transitionSequence: seq.filter((x) => x.atMs >= 0).map(({ tag, text, atMs }) => ({ tag, text, atMs })), tabPathSequence: seq.filter((x) => x.atMs < 0).map(({ tag, text }) => ({ tag, text })),
+    renderedAtMs: renderedAt === null ? null : Math.round(renderedAt - enterAt), readyAtMs: readyAt === null ? null : Math.round(readyAt - enterAt),
+    focusOnHeadingAtMs: (() => { const h = samples.find((s) => s.t >= enterAt && s.main1 && s.text === 'Review your car'); return h ? Math.round(h.t - enterAt) : null; })(),
+    bodySamplesAfterRender: bodyAfter(renderedAt), bodySamplesAfterReady: bodyAfter(readyAt), maxBodyMsDuringTransition: Math.round(maxBodyMs) };
+}
+const accountResume = () => page.getByRole('button', { name: /Resume saved journey/ });
+async function reloadToAccount(n) {
+  await page.reload({ waitUntil: 'load' });
+  await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 60000 });
+  await until(async () => (await accountResume().count()) > 0, { what: 'Resume saved journey button' });
+  return { state: `reload ${n}: heading "${await heading()}"; Resume saved journey offered`, shotName: `reload-${n}-account-resume`, full: false };
+}
+async function resumeAndWatch(n, row) {
+  await page.evaluate(FOCUS_POLL);
+  const before = await activeFacts(); const hops = await tabTo(accountResume());
+  await page.evaluate(() => { window.__fp.enterAt = performance.now(); });
+  await page.keyboard.press('Enter');
+  await until(async () => (await page.locator('main h1').first().innerText().catch(() => '')).trim() === 'Review your car' && await page.getByRole('button', { name: 'Continue to order review' }).isEnabled().catch(() => false), { timeout: 60000, what: 'final review rendered, Continue enabled' });
+  await wait(600);
+  const { samples, enterAt } = await page.evaluate(() => { clearInterval(window.__fp.id); return window.__fp; });
+  const final = await activeFacts(); const a = analyse(samples, enterAt);
+  const ok = final.isMainH1 && final.text === 'Review your car' && a.bodySamplesAfterRender === 0;
+  row.detail = { focusBeforeTab: `${before.tag} "${before.text}"`, tabPresses: hops, final, ...a };
+  kb('review', `Resume ${n}: Enter on Resume saved journey leaves focus on the main h1 "Review your car"`, ok, { final: `${final.tag} "${final.text}"`, bodyAfterRender: a.bodySamplesAfterRender, maxBodyMs: a.maxBodyMsDuringTransition });
+  return { pass: ok, state: `resume ${n}: focus before Tab ${before.tag}, ${hops} Tab presses; final ${final.tag} "${final.text}" (main h1 ${final.isMainH1}); BODY samples after render ${a.bodySamplesAfterRender}, after ready ${a.bodySamplesAfterReady}; max BODY ${a.maxBodyMsDuringTransition} ms; sequence ${a.transitionSequence.map((x) => `${x.tag}${x.text ? ` "${x.text}"` : ''}`).join(' > ')}`, shotName: `resume-${n}-review-focus`, full: false };
+}
+async function walk145() {
+  await reachGallery();
+  await step('claim-review', 'Review this car: a claim exists and the review is shown', async () => {
+    await reviewFirstCar(); const hold = (await claimNow()).hold;
+    return { pass: hold?.state === 'active', state: `${await heading()} | ${await countdownOf()} | claim ${hold?.state}`, shotName: 'review-claimed', full: false };
+  }, { critical: true });
+  await step('reload-1-account', 'Reload: Your cars shows Resume saved journey', () => reloadToAccount(1), { critical: true });
+  await step('resume-1-focus', 'Keyboard Resume: focus ends on the review heading, never BODY after render', (row) => resumeAndWatch(1, row), { critical: true });
+  await step('tab-after-heading', 'Tab then Shift+Tab from the heading', async (row) => {
+    await page.keyboard.press('Tab'); await wait(200);
+    const next = await activeFacts();
+    const expected = await page.evaluate(() => { const h = document.querySelector('main h1'); const sel = 'a[href],button:not([disabled]),input:not([disabled]):not([type=hidden]),select:not([disabled]),textarea:not([disabled]),summary,[tabindex]:not([tabindex="-1"])';
+      const f = [...document.querySelectorAll(sel)].find((el) => h.compareDocumentPosition(el) & Node.DOCUMENT_POSITION_FOLLOWING && el.getClientRects().length); return f ? (f.innerText || f.getAttribute('aria-label') || f.name || f.tagName).replace(/\s+/g, ' ').trim().slice(0, 60) : null; });
+    row.screenshots.push(await shot('tab-1-first-control', false));
+    await page.keyboard.press('Shift+Tab'); await wait(200);
+    const back = await activeFacts();
+    row.screenshots.push(await shot('shift-tab-back', false));
+    row.detail = { tab: next, firstFocusableAfterHeading: expected, shiftTab: back };
+    const visible = next.focusVisible && (/^(solid|auto)/.test(next.outline) && !/ 0px /.test(next.outline) || next.boxShadow !== 'none');
+    kb('review', 'Tab moves from the heading to the first control after it, with a visible focus ring', visible && next.text === expected, { tab: `${next.tag} "${next.text}"`, expected, shiftTab: `${back.tag} "${back.text}"` });
+    return { pass: visible && next.text === expected, state: `Tab: ${next.tag} "${next.text}" outline [${next.outline}] shadow [${next.boxShadow}] (first after heading "${expected}"); Shift+Tab: ${back.tag} "${back.text}" main h1 ${back.isMainH1}`, shot: false };
+  });
+  await step('reload-2-account', 'Second reload: Your cars shows Resume saved journey', () => reloadToAccount(2), { critical: true });
+  await step('resume-2-focus', 'Second keyboard Resume: same focus result (stable)', (row) => resumeAndWatch(2, row));
+  await step('errors', 'No page errors; only expected 404s in console and responses', async (row) => {
+    const bad = report.badResponses.filter((r) => r.status !== 404); const con = report.consoleErrors.filter((c) => !/404|favicon/i.test(`${c.text} ${c.url}`)); const failed = report.failedRequests.filter((f) => f.error !== 'net::ERR_ABORTED'); // reload aborts in-flight reads
+    row.detail = { pageErrors: report.pageErrors, consoleErrors: report.consoleErrors, badResponses: report.badResponses.map((r) => `${r.status} ${r.url}`), failedRequests: report.failedRequests };
+    return { pass: !report.pageErrors.length && !bad.length && !con.length && !failed.length, state: `page errors ${report.pageErrors.length}; console errors ${report.consoleErrors.length} (unexpected ${con.length}); HTTP >=400: ${report.badResponses.map((r) => `${r.status} ${r.url}`).join(', ') || 'none'}; failed requests ${report.failedRequests.length} (${failed.length} other than aborted)`, shot: false };
+  });
+}
+
 async function run() {
   await mkdir(shotDir, { recursive: true }); await mkdir(scratch, { recursive: true });
   await rm(join(scratch, 'gcsp-stock-inventory'), { recursive: true, force: true }); // a killed earlier run can leave a torn inventory file
@@ -960,6 +1045,7 @@ async function run() {
   page = await context.newPage();
   if (story === 'fucq72') { await walk72(); return; }
   if (story === 'fucq73') { await walk73(); return; }
+  if (story === 'fucq145') { await walk145(); return; }
 
   await reachGallery();
 
