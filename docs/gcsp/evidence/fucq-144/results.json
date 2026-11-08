@@ -1,0 +1,71 @@
+{
+  "passed": true,
+  "origin": "http://127.0.0.1:8984",
+  "page": "components.html with panel.js remounted on a two-price-row synthetic policy",
+  "runs": [
+    {
+      "viewport": 1280,
+      "steps": [
+        "two invalid rows, preview requested"
+      ],
+      "links": 2,
+      "summaryFocused": true,
+      "first": {
+        "selected": "price:second",
+        "activeId": "greg-publish-2-field-0",
+        "activeValue": "-1",
+        "invalid": "true",
+        "calls": {
+          "preview": 0,
+          "publish": 0
+        },
+        "overflow": 0
+      },
+      "second": {
+        "selected": "price:gallery-cost",
+        "activeId": "greg-publish-2-field-0",
+        "activeValue": "1.5",
+        "invalid": "true",
+        "calls": {
+          "preview": 0,
+          "publish": 0
+        },
+        "overflow": 0
+      },
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "viewport": 375,
+      "steps": [
+        "two invalid rows, preview requested"
+      ],
+      "links": 2,
+      "summaryFocused": true,
+      "first": {
+        "selected": "price:second",
+        "activeId": "greg-publish-2-field-0",
+        "activeValue": "-1",
+        "invalid": "true",
+        "calls": {
+          "preview": 0,
+          "publish": 0
+        },
+        "overflow": 0
+      },
+      "second": {
+        "selected": "price:gallery-cost",
+        "activeId": "greg-publish-2-field-0",
+        "activeValue": "1.5",
+        "invalid": "true",
+        "calls": {
+          "preview": 0,
+          "publish": 0
+        },
+        "overflow": 0
+      },
+      "pageErrors": [],
+      "passed": true
+    }
+  ]
+}
