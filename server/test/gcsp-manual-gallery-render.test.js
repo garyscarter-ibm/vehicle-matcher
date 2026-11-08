@@ -277,5 +277,7 @@ test('a saved date the server now refuses offers Back to your choices, never a d
   assert.match(status.textContent, /Your saved choices need updating/); assert.match(status.textContent, /pick a new date/);
   const buttons = [...status.querySelectorAll('button')].map((node) => node.textContent);
   assert.deepEqual(buttons, ['Back to your choices']); assert.equal(reads, 1);
-  status.querySelector('button').click(); assert.equal(back, 1);
+  const recover = status.querySelector('button'); recover.focus(); teardown.gallery.setControls({ query: 'x' });
+  assert.equal(recover.isConnected, true); assert.equal(document.activeElement, recover); // a re-render keeps focus
+  recover.click(); assert.equal(back, 1);
 });

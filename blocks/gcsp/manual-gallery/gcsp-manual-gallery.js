@@ -48,7 +48,7 @@ claimMessages.released = 'Your previous reservation has ended. Availability has 
 export function mountManualGallery(root, { adapter = createManualGalleryHttpAdapter(), brand = 'bmw', onBack,
   onClaimConfirmed, onClaimState, commandId } = {}) {
   const prefix = `gcsp-gallery-${++sequence}`; const controls = {}; const cards = new Map();
-  let nodes; let panel; let disposed = false; let started = false; let galleryState; let claimState; let detailId; let detailOrigin;
+  let nodes; let statusKey = null; let panel; let disposed = false; let started = false; let galleryState; let claimState; let detailId; let detailOrigin;
   const notify = (name, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(name, { detail, bubbles: true, composed: true }));
   const canGoBack = () => !disposed && (adapter.readOnly === true || claimState?.blocked === false);
   const claim = createManualClaimController({ adapter, onChange(next) { claimState = next; onClaimState?.(next); draw(); },
@@ -144,8 +144,10 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     const allowances = [...new Set(galleryState.allCars.map((car) => car.cost.allowance).filter((value) => value != null))];
     nodes.allowance.textContent = allowances.length === 1 ? `Your allowance: ${allowances[0].toLocaleString('en-GB')} points a month` : 'Your allowance: see the terms for each car';
     const message = states[galleryState.state];
-    nodes.status.replaceChildren();
-    if (message && galleryState.state !== 'idle') {
+    // Rebuild the status only when it changes, so a re-render never drops focus from its button (FUCQ-222).
+    const key = `${galleryState.state}|${galleryState.invalidField ?? ''}`;
+    if (key !== statusKey) { statusKey = key; nodes.status.replaceChildren(); }
+    if (message && galleryState.state !== 'idle' && !nodes.status.childElementCount) {
       const invalid = galleryState.state === 'choices-invalid';
       const actions = galleryState.state === 'loading' ? [] : galleryState.state === 'empty-search'
         ? [button({ label: 'Clear filters', variant: 'ghost', onClick() { controls.query.value = ''; gallery.setControls({ query: '', series: '', body: '' }); } })]

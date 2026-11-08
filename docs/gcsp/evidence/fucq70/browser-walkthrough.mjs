@@ -1,4 +1,4 @@
-// Browser walkthrough of the manual journey, one viewport per run (WALK_CHUNK=desktop|narrow), story by WALK_STORY=fucq70|fucq72|fucq73|fucq145 (fucq145 also has chunk phone, 375x812).
+// Browser walkthrough of the manual journey, one viewport per run (WALK_CHUNK=desktop|narrow), story by WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222 (fucq145 and fucq222 also have chunk phone, 375x812).
 // Spawns `node index.js` in server/ offline (GCSP_OFFLINE=1, memory repository). FUCQ70_* names still work as fallbacks for WALK_*.
 import { spawn, spawnSync } from 'node:child_process';
 import { createServer } from 'node:http';
@@ -13,16 +13,17 @@ const HERE = fileURLToPath(new URL('.', import.meta.url));
 const SERVER_DIR = resolve(HERE, '../../../../server');
 const env = (name) => process.env[`WALK_${name}`] ?? process.env[`FUCQ70_${name}`];
 const story = process.env.WALK_STORY || 'fucq70';
-if (!['fucq70', 'fucq72', 'fucq73', 'fucq145'].includes(story)) throw new Error('Set WALK_STORY=fucq70|fucq72|fucq73|fucq145');
+if (!['fucq70', 'fucq72', 'fucq73', 'fucq145', 'fucq222'].includes(story)) throw new Error('Set WALK_STORY=fucq70|fucq72|fucq73|fucq145|fucq222');
 const chunk = env('CHUNK');
-if (!['desktop', story === 'fucq145' ? 'phone' : 'narrow'].includes(chunk)) throw new Error(`Set WALK_CHUNK=desktop|${story === 'fucq145' ? 'phone' : 'narrow'}`);
+const second = ['fucq145', 'fucq222'].includes(story) ? 'phone' : 'narrow';
+if (!['desktop', second].includes(chunk)) throw new Error(`Set WALK_CHUNK=desktop|${second}`);
 const scratch = resolve(env('SCRATCH') || process.env.TMPDIR || '');
 if (!scratch || scratch === '/') throw new Error('Set WALK_SCRATCH (or TMPDIR) to an owned scratch directory');
 const viewport = chunk === 'narrow' ? { width: 320, height: 720 } : chunk === 'phone' ? { width: 375, height: 812 } : { width: 1280, height: 900 };
 const vp = String(viewport.width);
-const port = Number(env('PORT')) || (story === 'fucq145' ? (chunk === 'phone' ? 8939 : 8938) : story === 'fucq73' ? (chunk === 'narrow' ? 8937 : 8936) : chunk === 'narrow' ? 8933 : 8932);
+const port = Number(env('PORT')) || (story === 'fucq222' ? (chunk === 'phone' ? 8941 : 8940) : story === 'fucq145' ? (chunk === 'phone' ? 8939 : 8938) : story === 'fucq73' ? (chunk === 'narrow' ? 8937 : 8936) : chunk === 'narrow' ? 8933 : 8932);
 if (port < 8930 || port > 8949) throw new Error('WALK_PORT must be within 8930-8949');
-const outDir = story === 'fucq70' ? HERE : story === 'fucq73' ? resolve(HERE, '..', 'fucq-6', story) : resolve(HERE, '..', story); // fucq145 -> ../fucq145
+const outDir = story === 'fucq70' ? HERE : story === 'fucq73' ? resolve(HERE, '..', 'fucq-6', story) : resolve(HERE, '..', story); // fucq145 -> ../fucq145, fucq222 -> ../fucq222
 const only = env('ONLY') ? `-${env('ONLY')}` : ''; // a partial run never overwrites the full run's files
 const shotDir = join(outDir, `browser${only}`);
 const resultsFile = join(outDir, `results-${chunk}${only}.json`);
@@ -1023,6 +1024,72 @@ async function walk145() {
   });
 }
 
+// FUCQ-222: after Next release passes the saved date, the gallery offers one Back to your choices; keyboard recovery to released cars.
+const statusButtons = () => page.locator('.vm-status button').evaluateAll((list) => list.map((b) => b.innerText.replace(/\s+/g, ' ').trim()));
+async function walk222() {
+  await step('access-key', 'Demo key form opens the offline hosted demo', async () => {
+    const typed = await enterAccessKey();
+    await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 90000 });
+    return { pass: typed, state: await bodyText(), shot: false };
+  }, { critical: true });
+  await step('setup-saved', 'Choose a replacement; Paula saves the earliest permitted date', async () => {
+    await page.getByRole('button', { name: 'Choose a replacement' }).click();
+    const chosen = await fillSetup(DEFAULT_DRIVER);
+    return { state: `${await heading()} | ${JSON.stringify(chosen)}`, detail: chosen, shotName: 'setup-saved' };
+  }, { critical: true });
+  await step('gallery-before-release', 'Continue (keyboard) opens the gallery before any release', async (row) => {
+    await until(async () => page.getByRole('button', { name: 'Continue', exact: true }).isEnabled(), { what: 'Continue enabled' });
+    await kbPress(page.getByRole('button', { name: 'Continue', exact: true }));
+    await waitGalleryReady(); row.detail = await galleryFacts();
+    return { state: `status "${row.detail.status}"; cards ${row.detail.cards}`, shotName: 'gallery-before-release' };
+  }, { critical: true });
+  await step('stale-date-gallery', 'Next release passes the saved date: one Back to your choices, no Refresh availability', async (row) => {
+    const { after } = await presenterPress('Next release'); await closeStrip();
+    const stale = async () => /Your saved choices need updating/.test(await text(page.locator('.vm-status')));
+    const settled = await until(stale, { timeout: 8000, what: 'stale-date status' }).catch(() => false);
+    if (!settled) { const refresh = page.getByRole('button', { name: 'Refresh availability' }); if (await refresh.count()) await kbPress(refresh); await until(stale, { timeout: 20000, what: 'stale-date status after refresh' }).catch(() => {}); }
+    const status = clip(await text(page.locator('.vm-status')), 300); const buttons = await statusButtons();
+    row.detail = { status, statusButtons: buttons, pageRefreshButtons: await page.getByRole('button', { name: 'Refresh availability' }).count(), stockStatus: lastStock?.status, clock: clockOf(after) };
+    const ok = /Your saved choices need updating/.test(status) && /pick a new date/.test(status) && buttons.length === 1 && buttons[0] === 'Back to your choices' && !buttons.includes('Refresh availability');
+    return { pass: ok, state: `status "${status}"; status buttons [${buttons.join(' | ')}]; stock ${lastStock?.status}`, shotName: 'stale-date-gallery' };
+  }, { critical: true });
+  await step('back-keyboard', 'Tab to the status Back to your choices, Enter: setup screen; focus recorded', async (row) => {
+    const back = page.locator('.vm-status').getByRole('button', { name: 'Back to your choices' });
+    const hops = await tabTo(back);
+    row.detail = { tabHops: hops, backButtons: await page.evaluate(() => [...document.querySelectorAll('button')].filter((b) => b.textContent.trim() === 'Back to your choices').map((b) => ({ disabled: b.disabled, inStatus: Boolean(b.closest('.vm-status')) }))), notes: await page.locator('.gcsp-note').allInnerTexts() };
+    const t0 = Date.now(); // the page-level Back stays disabled while the reservation check runs; record whether it ever frees up
+    row.detail.pageBackEnabledAfterMs = await until(async () => (await page.evaluate(() => [...document.querySelectorAll('button')].some((x) => x.textContent.trim() === 'Back to your choices' && !x.closest('.vm-status') && !x.disabled))), { timeout: 10000, what: 'page Back enabled' }).then(() => Date.now() - t0).catch(() => null);
+    row.detail.focusBeforeEnter = await page.evaluate(() => { const a = document.activeElement; return `${a.tagName} "${(a.innerText || '').trim().slice(0, 40)}" inStatus ${Boolean(a.closest('.vm-status'))}`; });
+    const lost = !/inStatus true/.test(row.detail.focusBeforeEnter); // a redraw after the reservation check drops focus from the status button
+    if (lost) { report.notes.push(`FUCQ-222 defect: focus left the status Back button before Enter (${row.detail.focusBeforeEnter}); Enter did nothing. Retabbed once settled.`); await tabTo(back); }
+    row.detail.focusLostEarly = lost;
+    await page.keyboard.press('Enter');
+    await page.getByRole('heading', { name: 'Your order choices', exact: true }).waitFor({ timeout: 20000 }); await wait(400);
+    const focus = await page.evaluate(() => { const a = document.activeElement; return { tag: a.tagName, id: a.id, text: (a.innerText || a.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 60) }; });
+    row.detail = { ...row.detail, focus }; kb('gallery', 'Tab reaches the status Back to your choices; Enter opens the setup screen', true, { hops, focus });
+    return { pass: !lost, state: `${lost ? 'FOCUS LOST EARLY (Enter did nothing until retab); ' : ''}setup "${await heading()}"; focus ${focus.tag}#${focus.id} "${focus.text}"`, shotName: 'setup-after-back' };
+  }, { critical: true });
+  await step('date-recovery', 'Pick a later valid date, Save and Continue (keyboard): released cars', async (row) => {
+    const date = page.locator('input[name="requestedCollectionDate"]');
+    await until(async () => (await date.getAttribute('min')) && !(await date.isDisabled()), { what: 'refreshed collection window' });
+    const w = { min: await date.getAttribute('min'), max: await date.getAttribute('max'), was: await date.inputValue() };
+    await tabTo(date); await date.fill(w.min); w.now = await date.inputValue();
+    await kbPress(page.getByRole('button', { name: 'Save choices' }));
+    await until(async () => /Your choices are saved/.test(await bodyText()), { what: 'choices re-saved' });
+    await until(async () => page.getByRole('button', { name: 'Continue', exact: true }).isEnabled(), { what: 'Continue enabled' });
+    await kbPress(page.getByRole('button', { name: 'Continue', exact: true }));
+    await until(async () => (await enabledButton('Review this car').count()) > 0, { what: 'released cards', timeout: 30000 });
+    const g = await galleryFacts(); row.detail = { window: w, ...g }; kb('setup', 'Save choices and Continue by keyboard reach the released cars', g.enabled > 0, g);
+    return { pass: g.enabled > 0 && w.now !== w.was, state: `window ${JSON.stringify(w)}; ${g.cards} cards, ${g.enabled} enabled`, shotName: 'gallery-released' };
+  }, { critical: true });
+  await step('errors', 'No page errors; only the one expected stock 400 and 404s', async (row) => {
+    const stock400 = report.badResponses.filter((r) => r.status === 400 && /\/api\/gcsp\/manual\/stock$/.test(r.url));
+    const bad = report.badResponses.filter((r) => r.status !== 404 && !stock400.includes(r)); const con = report.consoleErrors.filter((c) => !/404|400|favicon/i.test(`${c.text} ${c.url}`));
+    row.detail = { pageErrors: report.pageErrors, consoleErrors: report.consoleErrors, badResponses: report.badResponses.map((r) => `${r.status} ${r.method} ${r.url} ${r.body}`), stock400s: stock400.length, failedRequests: report.failedRequests };
+    return { pass: !report.pageErrors.length && !bad.length && !con.length && !report.failedRequests.some((f) => f.error !== 'net::ERR_ABORTED') && stock400.length >= 1, state: `page errors ${report.pageErrors.length}; unexpected console ${con.length}; stock 400s ${stock400.length}; HTTP >=400: ${report.badResponses.map((r) => `${r.status} ${r.url}`).join(', ') || 'none'}; failed requests ${report.failedRequests.length}`, shot: false };
+  });
+}
+
 async function run() {
   await mkdir(shotDir, { recursive: true }); await mkdir(scratch, { recursive: true });
   await rm(join(scratch, 'gcsp-stock-inventory'), { recursive: true, force: true }); // a killed earlier run can leave a torn inventory file
@@ -1046,6 +1113,7 @@ async function run() {
   if (story === 'fucq72') { await walk72(); return; }
   if (story === 'fucq73') { await walk73(); return; }
   if (story === 'fucq145') { await walk145(); return; }
+  if (story === 'fucq222') { await walk222(); return; }
 
   await reachGallery();
 
