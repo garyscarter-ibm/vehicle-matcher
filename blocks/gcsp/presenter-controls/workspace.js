@@ -7,6 +7,8 @@ import { mountGregDashboard } from '../greg/gcsp-greg.js';
 import { createGregHttpAdapter } from '../greg/http-adapter.js';
 import { mountGregOrders } from '../greg-orders/greg-orders.js';
 import { createGregOrdersHttpAdapter } from '../greg-orders/http-adapter.js';
+import { createOrderProgressHttpAdapter } from '../order-progress/order-progress-http.js';
+import { createCaseHttpAdapter } from '../cases/http-adapter.js';
 import { createPresenterHttpAdapter } from './http-adapter.js';
 import { subscribePresenterActions } from './controls.js';
 import { isRunRestarted, runRestartedScreen } from '../kit/run-restarted.js';
@@ -14,7 +16,8 @@ import { isRunRestarted, runRestartedScreen } from '../kit/run-restarted.js';
 // Context is read again after cookie issuance; neither query parameters nor fixtures select a person.
 export function mountPresenterWorkspace(host, { adapter = createPresenterHttpAdapter(), accountAdapter = createAccountHttpAdapter(),
   gregAdapter = createGregHttpAdapter(), mountEmployee = mountManualJourney, mountGreg = mountGregDashboard,
-  mountOrders = mountGregOrders, ordersAdapter = createGregOrdersHttpAdapter(), reload } = {}) {
+  mountOrders = mountGregOrders, ordersAdapter = createGregOrdersHttpAdapter(), orderAdapter = createOrderProgressHttpAdapter(),
+  helpAdapter = createCaseHttpAdapter(), reload } = {}) {
   const abort = new AbortController(); let disposed = false; let teardown;
   host.replaceChildren(statusScreen({ title: 'Loading workspace', message: 'Reading the acting session.' }));
   const ready = (async () => {
@@ -22,7 +25,8 @@ export function mountPresenterWorkspace(host, { adapter = createPresenterHttpAda
     try { reply = await adapter.readContext({ signal: abort.signal }); } catch { reply = { status: 'unavailable' }; }
     if (disposed) return;
     const context = reply.status === 'ok' ? reply.value : null;
-    if (context?.roles?.includes('employee')) teardown = mountEmployee(host, { adapter: accountAdapter,
+    // Order progress and help are wired explicitly, as the account harness does (FUCQ-215).
+    if (context?.roles?.includes('employee')) teardown = mountEmployee(host, { adapter: accountAdapter, orderAdapter, helpAdapter,
       subscribeClock: subscribePresenterActions(host),
       onSupport: () => globalThis.location.assign(new URL('../../../gcsp-help.html', import.meta.url).href) });
     else if (context?.roles?.includes('greg')) {
