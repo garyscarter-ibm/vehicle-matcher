@@ -1,0 +1,24 @@
+{
+  "at": "2026-11-06T01:02:38.396337+00:00",
+  "status": "PASS",
+  "source": "90cb70ce951a4c9de934e792b8b7fbee0665d934",
+  "checks": {
+    "modulesUnchanged": true,
+    "filesUnchanged": true,
+    "importEdgesUnchanged": true,
+    "dependencyUnchanged": true,
+    "approvalEvidenceUnchanged": true,
+    "singletonLayoutUnchanged": true,
+    "limitsUnchanged": true,
+    "proposedCommandUnchanged": true,
+    "manifest": true,
+    "test": true,
+    "helper:docs/gcsp/evidence/fucq106/canonical-adoption-loader.proposal.mjs": true,
+    "helper:docs/gcsp/evidence/fucq106/canonical-adoption-supervisor.proposal.py": true,
+    "helper:docs/gcsp/evidence/fucq106/canonical-adoption-test.proposal.mjs": true,
+    "helper:_tools/test_resources.py": true,
+    "helper:_tools/scaffold_git.py": true
+  },
+  "review": "Root inspected fulltest/manifestdiff; oneassertion nowexacttypedquote {value:price.monthlyPoints,unit:points}. Actualprices/publication/oldquote/newquote/acceptanceassertionsretained; no productchange. Original2/3partialseparatelyretained.",
+  "prior": "fucq106-canonical-result-audit-0033.json"
+}

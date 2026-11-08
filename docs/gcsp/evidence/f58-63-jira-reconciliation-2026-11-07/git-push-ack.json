@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "f58-63-git-jira-push-ack.v1",
+  "observedAt": "2026-11-07T12:51:04.165088+00:00",
+  "operations": [
+    {
+      "op": "transition",
+      "key": "FUCQ-58",
+      "to": "In Review",
+      "board_status": "In Review"
+    },
+    {
+      "op": "transition",
+      "key": "FUCQ-59",
+      "to": "In Review",
+      "board_status": "In Review"
+    },
+    {
+      "op": "transition",
+      "key": "FUCQ-60",
+      "to": "In Review",
+      "board_status": "In Review"
+    },
+    {
+      "op": "transition",
+      "key": "FUCQ-61",
+      "to": "In Review",
+      "board_status": "In Review"
+    },
+    {
+      "op": "link",
+      "key": "FUCQ-61",
+      "branch": "dev/DEV-2026-11-04-034",
+      "pr": null
+    },
+    {
+      "op": "transition",
+      "key": "FUCQ-62",
+      "to": "In Review",
+      "board_status": "In Review"
+    },
+    {
+      "op": "link",
+      "key": "FUCQ-62",
+      "branch": "dev/DEV-2026-11-04-035",
+      "pr": null
+    },
+    {
+      "op": "transition",
+      "key": "FUCQ-63",
+      "to": "In Review",
+      "board_status": "In Review"
+    },
+    {
+      "op": "link",
+      "key": "FUCQ-63",
+      "branch": "dev/DEV-2026-11-04-036",
+      "pr": null
+    }
+  ],
+  "statusReadback": "stories.json",
+  "branchCommentIds": {
+    "FUCQ-61": "3627789",
+    "FUCQ-62": "3627790",
+    "FUCQ-63": "3627791"
+  },
+  "marked": [
+    {
+      "key": "FUCQ-58",
+      "op": "transition"
+    },
+    {
+      "key": "FUCQ-59",
+      "op": "transition"
+    },
+    {
+      "key": "FUCQ-60",
+      "op": "transition"
+    },
+    {
+      "key": "FUCQ-61",
+      "op": "transition"
+    },
+    {
+      "key": "FUCQ-61",
+      "op": "link"
+    },
+    {
+      "key": "FUCQ-62",
+      "op": "transition"
+    },
+    {
+      "key": "FUCQ-62",
+      "op": "link"
+    },
+    {
+      "key": "FUCQ-63",
+      "op": "transition"
+    },
+    {
+      "key": "FUCQ-63",
+      "op": "link"
+    }
+  ]
+}

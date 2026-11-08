@@ -1,0 +1,389 @@
+diff --git a/docs/gcsp/evidence/fucq-126/http-release-supervisor.py b/docs/gcsp/evidence/fucq-126/http-release-supervisor.py
+index 2ec6427..c6ff9f9 100644
+--- a/docs/gcsp/evidence/fucq-126/http-release-supervisor.py
++++ b/docs/gcsp/evidence/fucq-126/http-release-supervisor.py
+@@ -142,6 +142,8 @@ def run(manifest_path, expected_manifest_sha256, started, work_deadline, deadlin
+         raise RuntimeError('Require the unchanged pinned shared helper and the isolated strict wrapper.')
+     if sha(frozen('strictResourceWrapper'), work_deadline) != required['wrapperSha256']:
+         raise RuntimeError('Story-owned resource wrapper identity differs.')
++    if plan.get('resourceQueryBudget') != {'work': 768, 'cleanupReserved': 256, 'total': 1024, 'sampleSeconds': 0.5}:
++        raise RuntimeError('Require the fixed separate work/cleanup query allowance and sampling interval.')
+     policy = R.Policy({'chunk_scratch_mib': 128, 'chunk_ram_mib': 768, 'chunk_seconds': 120, 'log_mib': 2,
+                        'local_scratch_reason': 'Bounded macOS Node IPC and V8 module observations.'})
+     host_root = Path(plan['hostRegistryRoot'])
+@@ -163,11 +165,23 @@ def run(manifest_path, expected_manifest_sha256, started, work_deadline, deadlin
+     output_owner = output.parent / 'ownership' / (output.name + '.json')
+     if not S.definitely_absent(output_owner):
+         raise RuntimeError('Preserve existing ownership evidence.')
+-    binding = {'manifest': str(manifest_path), 'manifestSha256': expected_manifest_sha256,
+-               'hostRegistry': str(host_root / 'reservations.json'), 'workSeconds': 90, 'finalizationSeconds': 30, 'chunkSeconds': 120}
++    locale = {key: {'value': value if re.fullmatch(r'[A-Za-z0-9_.@-]{0,128}', value) else '<redacted-invalid-locale>',
++                    'sha256': hashlib.sha256(value.encode()).hexdigest()}
++              for key, value in os.environ.items() if key == 'LANG' or re.fullmatch(r'LC_[A-Z_]+', key)}
++    binding = {'locale': locale, 'manifest': str(manifest_path), 'manifestSha256': expected_manifest_sha256,
++               'queryBudget': plan['resourceQueryBudget'], 'hostRegistry': str(host_root / 'reservations.json'), 'workSeconds': 90, 'finalizationSeconds': 30, 'chunkSeconds': 120}
+     receipt = output / 'receipt.json'
+     ownership = {'phase': 'not-launched'}; entered = reserved = attempted = created = False
+     scratch = None; observer = None; tree = None; host = None; process = None; outcome = {}; failures = []; source_same = None
++    primary_failure = None; secondary_failures = []
++
++    def remember_failure(error):
++        nonlocal primary_failure
++        message = type(error).__name__ + ': ' + str(error)
++        if primary_failure is None:
++            primary_failure = message
++        return message
++
+     # This finalizer and the outer signal scope exist before the first allocation.
+     try:
+         R.atomic_json(output_owner, {'version': 1, 'owner': {'pid': os.getpid(), 'start': None}, 'root': str(output),
+@@ -194,53 +208,87 @@ def run(manifest_path, expected_manifest_sha256, started, work_deadline, deadlin
+         command = [plan['node']['path'], '--test', '--test-concurrency=1', '--test-reporter=tap', str(test_path)]
+         log = scratch.root / 'original.tap'; peak_rss = 0; log_bytes = 0
+ 
++        def identify(pid):
++            try:
++                return tree.identify(pid)
++            except BaseException as error:
++                remember_failure(error)
++                raise
++
+         def register(child, record):
+             # Child state belongs only to this external ownership journal, never the shared row.
+-            tree.register(child)
+-            scratch.record.update(child=record, launchPending=False)
+-            scratch.save()
+-            R.atomic_json(receipt, {'state': 'running', 'command': command, 'child': dict(record), **binding})
++            try:
++                tree.register(child)
++                scratch.record.update(child=record, launchPending=False)
++                scratch.save()
++                R.atomic_json(receipt, {'state': 'running', 'command': command, 'child': dict(record), **binding})
++            except BaseException as error:
++                remember_failure(error)
++                raise
++
++        def stop_join(child):
++            try:
++                return tree.stop_join(child)
++            except BaseException as error:
++                remember_failure(error)
++                raise
+ 
+         def absent(child, record):
+-            proof = tree.proof(deadline)
+-            return all(proof[key] is True for key in ('joined', 'pidsAbsent', 'groupsAbsent', 'portsClosed'))
++            try:
++                proof = tree.proof(deadline)
++                return all(proof[key] is True for key in ('joined', 'pidsAbsent', 'groupsAbsent', 'portsClosed'))
++            except BaseException as error:
++                remember_failure(error)
++                raise
+ 
+         scratch.record.update(child=ownership, launchPending=True)
+         scratch.save()
+         attempted = True
++        next_sample = time.monotonic()
+         with log.open('wb') as stream, selectors.DefaultSelector() as selector:
+             try:
+-                with guard.cancellation_safe_child(command, ownership=ownership, identify=tree.identify,
++                with guard.cancellation_safe_child(command, ownership=ownership, identify=identify,
+                         register=register,
+-                        stop_join=tree.stop_join,
++                        stop_join=stop_join,
+                         verify_absent=absent, cwd=root, env=env, stdout=subprocess.PIPE,
+                         stderr=subprocess.STDOUT) as process:
+-                    selector.register(process.stdout, selectors.EVENT_READ)
+-                    while process.poll() is None or selector.get_map():
+-                        remaining(work_deadline)
+-                        for key, _ in selector.select(timeout=min(0.1, remaining(work_deadline))):
+-                            data = os.read(key.fd, 65536)
+-                            if not data:
+-                                selector.unregister(key.fileobj)
++                    try:
++                        selector.register(process.stdout, selectors.EVENT_READ)
++                        while process.poll() is None or selector.get_map():
++                            remaining(work_deadline)
++                            for key, _ in selector.select(timeout=min(0.1, remaining(work_deadline))):
++                                data = os.read(key.fd, 65536)
++                                if not data:
++                                    selector.unregister(key.fileobj)
++                                    continue
++                                available = 2 * R.MIB - log_bytes
++                                stream.write(data[:available]); stream.flush(); log_bytes += min(len(data), available)
++                                if len(data) > available:
++                                    raise RuntimeError('Capped TAP pipe exceeded its 2 MiB allowance; child stopped.')
++                            if time.monotonic() < next_sample:
+                                 continue
+-                            available = 2 * R.MIB - log_bytes
+-                            stream.write(data[:available]); stream.flush(); log_bytes += min(len(data), available)
+-                            if len(data) > available:
+-                                raise RuntimeError('Capped TAP pipe exceeded its 2 MiB allowance; child stopped.')
+-                        used = scratch.sample() + S.allocated_bytes(output)
+-                        try:
+-                            rss = tree.rss(work_deadline)
+-                        except BaseException:
+-                            # A failed/incomplete recursive snapshot cannot lower the charge.
+-                            host.update(scratch.token, used, 768 * R.MIB)
+-                            raise
+-                        peak_rss = max(peak_rss, rss)
+-                        if host.update(scratch.token, used, rss) is not True:
+-                            raise RuntimeError('Resource accounting could not be updated safely.')
+-                        if scratch.sample() > 124 * R.MIB or used > 128 * R.MIB or rss > 768 * R.MIB:
+-                            raise RuntimeError('Owned combined disk/RAM limit exceeded.')
+-                        if shutil.disk_usage(scratch.root).free < policy.reserve:
+-                            raise RuntimeError('Emergency free-space reserve reached.')
++                            next_sample = time.monotonic() + 0.5
++                            used = scratch.sample() + S.allocated_bytes(output)
++                            try:
++                                rss = tree.rss(work_deadline)
++                            except BaseException as error:
++                                # Keep the primary observation failure even if full-charge telemetry also fails.
++                                remember_failure(error)
++                                try:
++                                    host.update(scratch.token, used, 768 * R.MIB)
++                                except BaseException as update_error:
++                                    secondary_failures.append('Full-charge telemetry: ' + type(update_error).__name__ + ': ' + str(update_error))
++                                raise
++                            peak_rss = max(peak_rss, rss)
++                            if host.update(scratch.token, used, rss) is not True:
++                                raise RuntimeError('Resource accounting could not be updated safely.')
++                            if scratch.sample() > 124 * R.MIB or used > 128 * R.MIB or rss > 768 * R.MIB:
++                                raise RuntimeError('Owned combined disk/RAM limit exceeded.')
++                            if shutil.disk_usage(scratch.root).free < policy.reserve:
++                                raise RuntimeError('Emergency free-space reserve reached.')
++                    except BaseException as error:
++                        remember_failure(error)
++                        raise
+             finally:
+                 if process is not None and process.stdout is not None:
+                     process.stdout.close()
+@@ -277,7 +325,10 @@ def run(manifest_path, expected_manifest_sha256, started, work_deadline, deadlin
+         if process.returncode != 0 or S.allocated_bytes(output) > 4 * R.MIB:
+             raise RuntimeError('Command failed or retained-output allowance exceeded.')
+     except BaseException as error:
+-        failures.append(type(error).__name__ + ': ' + str(error))
++        current = remember_failure(error)
++        failures.append(primary_failure)
++        if current != primary_failure:
++            secondary_failures.append('Guard/outer failure: ' + current)
+         if entered and (scratch.root / 'original.tap').is_file() and created and not (output / 'original.tap').exists():
+             try:
+                 with (scratch.root / 'original.tap').open('rb') as stream:
+@@ -292,6 +343,8 @@ def run(manifest_path, expected_manifest_sha256, started, work_deadline, deadlin
+         reserved = host is not None and host.expected is not None
+         try:
+             remaining(final_deadline)
++            if observer is not None:
++                observer.begin_cleanup()
+             if scratch is not None:
+                 if tree is None or observer is None:
+                     raise RuntimeError('Partial lifecycle setup; retain external ownership evidence.')
+@@ -326,6 +379,7 @@ def run(manifest_path, expected_manifest_sha256, started, work_deadline, deadlin
+         try:
+             remaining(final_deadline)
+             result = {'state': 'passed' if not failures and outcome.get('rc') == 0 else 'failed', 'failures': failures,
++                      'primaryFailure': primary_failure, 'secondaryFailures': secondary_failures,
+                       'child': ownership, 'result': outcome,
+                       'scratchManifest': str(scratch.manifest) if scratch is not None else None,
+                       'scratchAbsent': scratch is None or S.definitely_absent(scratch.root), 'reservationReleased': not reserved,
+diff --git a/docs/gcsp/evidence/fucq-126/prepare-reviewed-http-candidate.py b/docs/gcsp/evidence/fucq-126/prepare-reviewed-http-candidate.py
+index 1d72c5f..10d2aaf 100644
+--- a/docs/gcsp/evidence/fucq-126/prepare-reviewed-http-candidate.py
++++ b/docs/gcsp/evidence/fucq-126/prepare-reviewed-http-candidate.py
+@@ -1,5 +1,8 @@
+ #!/usr/bin/env python3
+-"""Hash and classify an existing physical candidate; never load product code or allocate test resources."""
++"""REFERENCE ONLY: full physical recollection plan; not the generator of source-pin revision candidates.
++
++Never load product code or allocate test resources. Not executed in the source-only cleanup repair.
++"""
+ import hashlib
+ import json
+ import posixpath
+@@ -9,7 +12,7 @@ from pathlib import Path
+ ROOT = Path(__file__).resolve().parents[4]
+ HERE = Path(__file__).resolve().parent
+ PREFIX = str(HERE.relative_to(ROOT)) + '/'
+-DESTINATION = HERE / 'http-physical-candidate-isolated-2026-11-06.json'
++DESTINATION = HERE / 'http-physical-candidate-reference-recollection-2026-11-06.json'
+ HELPER_SHA256 = '3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d'
+ PRIOR = HERE / 'http-release-source-plan-38be4f5-2026-11-06.json'
+ VIRTUAL = HERE / 'http-release-source-plan-f179ae6-2026-11-06.json'
+diff --git a/docs/gcsp/evidence/fucq-126/strict-http-resources.py b/docs/gcsp/evidence/fucq-126/strict-http-resources.py
+index aefdcd7..eba00a9 100644
+--- a/docs/gcsp/evidence/fucq-126/strict-http-resources.py
++++ b/docs/gcsp/evidence/fucq-126/strict-http-resources.py
+@@ -17,6 +17,7 @@ import signal
+ import stat
+ import subprocess
+ import time
++import threading
+ import sys
+ import uuid
+ 
+@@ -122,7 +123,16 @@ class Observer:
+     """
+     def __init__(self, scratch, deadline):
+         self.scratch, self.deadline, self.handles = scratch, deadline, {}
++        self.phase = 'work'
++        self.work_limit, self.total_limit = 768, 1024
+         scratch.record['probes'] = []
++        scratch.record['queryBudget'] = {'work': self.work_limit, 'cleanupReserved': 256,
++                                        'total': self.total_limit, 'phase': self.phase}
++
++    def begin_cleanup(self):
++        # Monotone transition, armed before stop/proof even if work consumed its entire allowance.
++        self.phase = 'cleanup'
++        self.scratch.record['queryBudget']['phase'] = self.phase
+ 
+     def clean(self, process, record):
+         # This path never persists or probes before retaining and joining the handle.
+@@ -134,7 +144,7 @@ class Observer:
+                 except OSError:
+                     pass
+             try:
+-                process.wait(timeout=min(0.75, remaining(until)))
++                process.wait(timeout=min(0.75, max(0, until - time.monotonic())))
+                 break
+             except subprocess.TimeoutExpired:
+                 continue
+@@ -160,9 +170,11 @@ class Observer:
+         if command[0] not in ('/bin/ps', '/usr/bin/vm_stat', '/usr/sbin/lsof'):
+             raise RuntimeError('Unadmitted lifecycle query')
+         records = self.scratch.record['probes']
+-        if len(records) >= 1024:
+-            raise RuntimeError('Lifecycle query count exceeded its finite cap')
+-        record = {'tool': Path(command[0]).name, 'phase': 'before-create', 'cleanupVerified': False}
++        limit = self.work_limit if self.phase == 'work' else self.total_limit
++        if len(records) >= limit:
++            raise RuntimeError('Lifecycle ' + self.phase + ' query allowance exhausted; cleanup reserve is separate')
++        query_started = time.monotonic()
++        record = {'budgetPhase': self.phase, 'tool': Path(command[0]).name, 'phase': 'before-create', 'cleanupVerified': False}
+         records.append(record)
+         process = None
+         output = [bytearray(), bytearray()]
+@@ -188,6 +200,8 @@ class Observer:
+                                 raise RuntimeError('Lifecycle query output exceeded its cap')
+                             output[key.data].extend(data)
+                 process.wait(timeout=remaining(query_until))
++                record.update(stdoutBytes=len(output[0]), stderrBytes=len(output[1]),
++                              wallSeconds=time.monotonic() - query_started)
+                 return subprocess.CompletedProcess(command, process.returncode,
+                     output[0].decode('utf-8', errors='strict'), output[1].decode('utf-8', errors='strict'))
+             finally:
+@@ -202,11 +216,12 @@ class Observer:
+                         self.scratch.save()
+ 
+     def finish(self, until):
+-        remaining(until)
++        self.begin_cleanup()
+         with deferred_signals(self.scratch.record):
+             for process, record in list(self.handles.values()):
+                 if not self.clean(process, record):
+                     raise RuntimeError('Retained lifecycle query handle remains unproven')
++            remaining(until)
+             self.scratch.save()
+         return not self.handles and all(row.get('cleanupVerified') is True for row in self.scratch.record['probes'])
+ 
+@@ -659,33 +674,80 @@ class Tree:
+         process = self.process
+         if process is None:
+             return
+-        # Direct joining never queries or persists a manifest before wait.
+-        for action in (process.terminate, process.kill):
+-            try:
+-                if process.poll() is None:
+-                    action()
+-            except OSError:
+-                pass
++        # Emergency path: no query or persistence, and no time check may bypass the kill attempt.
++        # The only caller of this Popen's wait methods is this main thread. Default SIGCHLD
++        # leaves exited children waitable; handled cancellation stays deferred through proof/signal/join.
++        issue = None
++        with deferred_signals(self.scratch.record):
++            if process.returncode is None:
++                if threading.current_thread() is not threading.main_thread() or signal.getsignal(signal.SIGCHLD) != signal.SIG_DFL:
++                    issue = 'Unreaped-child ownership cannot be established with this thread/SIGCHLD handler'
++                else:
++                    try:
++                        waited, status = os.waitpid(process.pid, os.WNOHANG)
++                    except ChildProcessError:
++                        issue = 'Direct child was reaped outside its owning Popen handle'
++                    else:
++                        if waited == process.pid:
++                            # Do not signal this numeric group after reaping its leader. PID reuse is now possible.
++                            process.returncode = os.waitstatus_to_exitcode(status)
++                            self.joined = True
++                        elif waited == 0:
++                            # waitpid(0) proves it is still our unreaped child. With no intervening wait/reaper,
++                            # its PID cannot be reused, even if it exits before these fresh kernel identity reads.
++                            try:
++                                group, session = os.getpgid(process.pid), os.getsid(process.pid)
++                                if group != process.pid or session != process.pid or group == os.getpgrp():
++                                    raise RuntimeError('Direct child no longer owns its admitted session/group')
++                                self.scratch.record['emergencyGroupSignal'] = {'pid': process.pid, 'pgid': group,
++                                    'sid': session, 'basis': 'own-unreaped-child-WNOHANG-zero-and-fresh-getpgid-getsid',
++                                    'signal': 'SIGKILL', 'at': time.time()}
++                                os.killpg(group, signal.SIGKILL)
++                            except (OSError, RuntimeError) as error:
++                                issue = type(error).__name__ + ': ' + str(error)
++                        else:
++                            issue = 'Unexpected waitpid result for the owned direct child'
++                # Popen's own direct kill remains the fallback; never invent group authority from a stored PGID.
++                # This also runs after the deadline: the bounded wait below may be zero, but kill is still attempted.
++                if process.returncode is None:
++                    try:
++                        process.kill()
++                    except OSError as error:
++                        issue = issue or type(error).__name__ + ': ' + str(error)
+             try:
+-                process.wait(timeout=min(3, remaining(self.deadline)))
++                process.wait(timeout=min(3, max(0, self.deadline - time.monotonic())))
+                 self.joined = True
+-                return
+             except subprocess.TimeoutExpired:
+-                continue
+-        raise RuntimeError('Direct child stop/join remains unproven')
++                issue = issue or 'Direct child join was not proved before the absolute deadline'
++            if issue is not None:
++                self.scratch.record.update(ownershipUncertain=True, directJoinIssue=issue)
++                raise RuntimeError(issue)
+ 
+     def stop_join(self, process):
+         # Retain the actual Popen handle before a query or journal can fail.
+         if self.process is not None and self.process is not process:
+             raise RuntimeError('Direct child handle ownership differs')
+         self.process = process
++        self.observer.begin_cleanup()
+         self.until = min(self.deadline, time.monotonic() + 6)
++        first = None
+         try:
++            # Emergency group kill precedes every observation/wait that could reap the ownership anchor.
++            self.join_direct()
+             self.retain_direct(process)
+             return self._stop_observed()
++        except BaseException as error:
++            first = error
++            self.scratch.record['stopFailure'] = type(error).__name__ + ': ' + str(error)
++            raise
+         finally:
+             if self.process is not None and not self.joined:
+-                self.join_direct()
++                try:
++                    self.join_direct()
++                except BaseException as error:
++                    self.scratch.record['directJoinFailure'] = type(error).__name__ + ': ' + str(error)
++                    if first is None:
++                        raise
+ 
+     def _stop_observed(self):
+         process = self.process
+@@ -796,6 +858,7 @@ class Scratch:
+ 
+ def cleanup_scratch(scratch, tree, observer, until, attempted, ownership):
+     # The caller retains the reservation on every uncertainty or persistence failure.
++    observer.begin_cleanup()
+     with deferred_signals(scratch.record):
+         if attempted and ownership.get('cleanupVerified') is not True and ownership.get('phase') not in ('not-launched', 'no-child-created'):
+             raise RuntimeError('Actual handle cleanup is unverified; retain scratch and charge')

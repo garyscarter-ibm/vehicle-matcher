@@ -1,0 +1,27 @@
+{
+  "status": "operational-proof-completed-consumer-acceptance-failed",
+  "manifestDigest": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+  "expectedReferences": 4668,
+  "configurationReferences": 4667,
+  "vinReferences": 1,
+  "exactRequestUnion": true,
+  "duplicateCount": 0,
+  "allRequestSetSha256": "c884f1fb65545b75d344f1676e7054ebdb2049662110df979b152b8bc8299ca7",
+  "directErrors": 0,
+  "httpErrors": 0,
+  "consumerErrors": 1313,
+  "consumerFailuresByModel": {
+    "1F7A": 632,
+    "1F7C": 681
+  },
+  "strictReconciled": true,
+  "strictStatus": "invalid-active",
+  "strictErrors": 1313,
+  "manifestExact": true,
+  "nativeStockProof": "unrun; no repository/context/orderUUIDs supplied",
+  "ordinaryPublicationExecuted": false,
+  "publicUploadExecuted": false,
+  "deploymentExecuted": false,
+  "fullSuiteRun": false,
+  "acceptance": false
+}

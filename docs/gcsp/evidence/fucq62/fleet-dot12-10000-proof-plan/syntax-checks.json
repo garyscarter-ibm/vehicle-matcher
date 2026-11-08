@@ -1,0 +1,93 @@
+{
+  "scope": "static preparation only",
+  "planSha256": "8c3aff331af61ec40fc5aaae0b216e7cc90feb77719e693106dbeb6af72f343d",
+  "checks": [
+    {
+      "check": "ast.parse prepare-grant.py",
+      "status": "passed"
+    },
+    {
+      "check": "ast.parse supervise-package.py",
+      "status": "passed"
+    },
+    {
+      "check": "ast.parse group-proof.py",
+      "status": "passed"
+    },
+    {
+      "check": "ast.parse prepare-plan.py",
+      "status": "passed"
+    },
+    {
+      "check": "ast.parse supervise.py",
+      "status": "passed"
+    },
+    {
+      "check": "node --check descriptor.mjs",
+      "status": "passed"
+    },
+    {
+      "check": "node --check summarize.mjs",
+      "status": "passed"
+    },
+    {
+      "check": "node --check common.mjs",
+      "status": "passed"
+    },
+    {
+      "check": "node --check helper-regression.mjs",
+      "status": "passed"
+    },
+    {
+      "check": "node --check publish-restart.mjs",
+      "status": "passed"
+    },
+    {
+      "check": "node --check http-chunk.mjs",
+      "status": "passed"
+    },
+    {
+      "check": "node --check matches-retained.mjs",
+      "status": "passed"
+    },
+    {
+      "check": "node --check package.mjs",
+      "status": "passed"
+    },
+    {
+      "check": "node --check staged-semantic.mjs",
+      "status": "passed"
+    },
+    {
+      "check": "node --check rollback.mjs",
+      "status": "passed"
+    },
+    {
+      "check": "node --check prepare-followthrough.mjs",
+      "status": "passed"
+    },
+    {
+      "check": "actualcandidate/source/history/code pins and unchanged comparator extraction",
+      "status": "passed"
+    }
+  ],
+  "codePins": 170,
+  "proofRun": false,
+  "scratchAllocated": false,
+  "sourceCalls": 0,
+  "acceptance": false,
+  "frozenPackets": [
+    {
+      "plan": "docs/gcsp/evidence/fucq62/fleet-dot11-8051-proof-plan/plan.json",
+      "planSha256": "53f75243e8be8c52be25e262aab3f896d1348773b1b9ea548ae545645afc8133",
+      "codePins": 160,
+      "status": "unchanged"
+    },
+    {
+      "plan": "docs/gcsp/evidence/fucq63/native-install-4-signed-cache-2026-11-07/plan.json",
+      "planSha256": "d00ca447b2c246a2805719a7f65c27e12810aedb0cc4fc9cbb56d8afb572bcef",
+      "codePins": 173,
+      "status": "unchanged"
+    }
+  ]
+}

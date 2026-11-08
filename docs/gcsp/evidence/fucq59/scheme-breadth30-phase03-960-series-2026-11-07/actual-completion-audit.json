@@ -1,0 +1,715 @@
+{
+  "absoluteDeadline": "2026-11-07T07:10:43.651928+00:00",
+  "admittedSource": 8812,
+  "canonical": 8815,
+  "canonicalPin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session120/final-canonical-index.json",
+    "sha256": "851c876cae2c9e21b282d2ce0976ae386a4291cbc8274a276b3559d6fd4eb215"
+  },
+  "checks": 35955,
+  "consumedAt": "2026-11-07T06:40:43.651928+00:00",
+  "consumedMarkerPin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/phase03-once.json",
+    "sha256": "2786fb82dca6d3c433ee702e4a0a813a8d0f05c0fa049483f1458e3390f91213"
+  },
+  "contextDistribution": {
+    "I4MF": 4,
+    "I4MG": 4,
+    "I4PC": 4,
+    "IX1H": 4,
+    "IX1I": 4,
+    "IX1K": 4,
+    "IX1L": 4,
+    "IX24": 4,
+    "IX25": 4,
+    "T3BE": 4,
+    "T3MK": 4,
+    "T3MR": 4,
+    "T3PF": 4,
+    "T3PK": 4,
+    "T3PR": 4,
+    "X135": 4,
+    "X1M0": 4,
+    "X1M1": 4,
+    "X1M2": 4,
+    "X1M3": 4,
+    "X1M6": 4,
+    "X1M7": 4,
+    "X1X0": 4,
+    "X1X2": 4,
+    "X1X3": 4,
+    "X1X6": 4,
+    "X1X7": 4,
+    "X1XL": 4,
+    "X235": 4,
+    "X2MS": 4
+  },
+  "errors": [],
+  "freshGlobalUnionRequiredBeforeCrossLaneAdmissionsAreCounted": true,
+  "independentCleanup": {
+    "allGroupsAbsent": true,
+    "allReservationsAbsent": true,
+    "compatibilityException": null,
+    "dependencyLinkAbsent": true,
+    "groupsChecked": 720,
+    "leftovers": [],
+    "reservationTokensChecked": 241,
+    "scratchRootsAbsent": 240
+  },
+  "laneEvidence": [
+    {
+      "boundary": 120,
+      "canonicalSha256": "851c876cae2c9e21b282d2ce0976ae386a4291cbc8274a276b3559d6fd4eb215",
+      "directory": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions",
+      "label": "Breadth30",
+      "proofPins": [
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session001/live-validation.json",
+          "session": 1,
+          "sha256": "53ba1e372f2b3d2895ba6b95aa5444323d09646f092b47a9469cf3d78bf3058c"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session002/live-validation.json",
+          "session": 2,
+          "sha256": "39f66a162384152b801800e9ea2b166ad1b90f351332069f8ce2904fd41d825b"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session003/live-validation.json",
+          "session": 3,
+          "sha256": "4700eed9e75695d9d019bf87f2df26944be9e992b5b0b94ee634226062a66e41"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session004/live-validation.json",
+          "session": 4,
+          "sha256": "4c0ec910738327b89fde566e59e2efa1b0dd550450a15488817c81eeaa942973"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session005/live-validation.json",
+          "session": 5,
+          "sha256": "1d0d616f7b5d711b67c172e81597188739ae1af80daf1349772de0ea3476ceb5"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session006/live-validation.json",
+          "session": 6,
+          "sha256": "2d6f07ff7e83e31e231901b45bd709b35d214b6f89440efb72fd16191c0b8c47"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session007/live-validation.json",
+          "session": 7,
+          "sha256": "b569b775ff62ef30a6b106bad0895b8477600efc3365060e914dccbf336538be"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session008/live-validation.json",
+          "session": 8,
+          "sha256": "20dc93ad71429445055fced6fc5f2944ad1f118e20f7449b0ae50898f9a5c31f"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session009/live-validation.json",
+          "session": 9,
+          "sha256": "4fb9846fe4676125bd50552d1d0f35dcdb25bf1684495fd0739d8fd2cf7c4c86"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session010/live-validation.json",
+          "session": 10,
+          "sha256": "f3033a65479c6fdebda1da6b1e08b59c880e1416a6919c510792cde587850ad1"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session011/live-validation.json",
+          "session": 11,
+          "sha256": "17b767f1e0dc0069d3ac4de6c31549babcb6bbe4179db9b351032da309e59c15"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session012/live-validation.json",
+          "session": 12,
+          "sha256": "d34f618b637b5d538ac8fb9831379214f85cad40578ae6efcec36f1928b5e6ba"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session013/live-validation.json",
+          "session": 13,
+          "sha256": "963ee1f2d3ee07eca7e25ee8b912c278768a1627a795ec73784c2f5dff3a5dee"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session014/live-validation.json",
+          "session": 14,
+          "sha256": "297f7789eeb88ebb8dbcd736fb63dc9ce1e4390ed20d171198f5d1cee9702fca"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session015/live-validation.json",
+          "session": 15,
+          "sha256": "fd3900915a1ac8969b703b34431e73752a982c13cef61410e9690f9b9f14d8e2"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session016/live-validation.json",
+          "session": 16,
+          "sha256": "fc7995d0d694554de41d37a6b9fcaa7586c8acbe689716f0335b1a754f0e8d2b"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session017/live-validation.json",
+          "session": 17,
+          "sha256": "2176a7564d0f4a72b6d7194222d5a1239eaf7313930918e5ee929cb5da64b9a4"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session018/live-validation.json",
+          "session": 18,
+          "sha256": "141abb6e8fe516ee70dc5ed259dab665c6d0794a37aa23e312ae3e1cc6afcbb0"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session019/live-validation.json",
+          "session": 19,
+          "sha256": "f3c9f2ce74513fc0bc9291957ce2308518242a051d8cc591930b1614a63afa5c"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session020/live-validation.json",
+          "session": 20,
+          "sha256": "6a2fb41b78cc7734a678549c88a43972923ff136b446c149d28116a2611d538b"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session021/live-validation.json",
+          "session": 21,
+          "sha256": "57e8072ee42c308fe395b7ea45ea4e496fd3ea2abe2973c107b7cb2b8e6fbd97"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session022/live-validation.json",
+          "session": 22,
+          "sha256": "144731c2c887b185e9cdb4b9a5dc42c5ac30b8368e7ba7f0830dbf70172b2ad0"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session023/live-validation.json",
+          "session": 23,
+          "sha256": "1c693813e04df89c97c4fc02631340506e8e153cc34c97bdd8bd78f35c2e44c5"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session024/live-validation.json",
+          "session": 24,
+          "sha256": "0e477fa9e709dbef4460de026bf82769d280924e8d7dfd1ec31fdc3fde44267a"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session025/live-validation.json",
+          "session": 25,
+          "sha256": "49ccbf5bc4631110ce6bc6c0732324e5ff659f2eb586e44db45e1a11de402312"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session026/live-validation.json",
+          "session": 26,
+          "sha256": "77c18cbd9b29cead25fc9e9ffd0c84957d755624d95da8d351235786c09479ee"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session027/live-validation.json",
+          "session": 27,
+          "sha256": "9fdd857938cb327c1723e4f9bf25130cc2bcd9e25dd3fce0f0ed84388c5b0e39"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session028/live-validation.json",
+          "session": 28,
+          "sha256": "6cc8e0dcc283240e3114e6e00b967fbbc36bd068cbcfc1f5d1bdbb65bce1ff66"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session029/live-validation.json",
+          "session": 29,
+          "sha256": "782aca86fba651734f578294d43d787a176513824e30ed4f6ccba62a3a1aa5e9"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session030/live-validation.json",
+          "session": 30,
+          "sha256": "c9f52c809aadbd79dff7fae07673fa6e647246e5e806df310157c57288c77fbc"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session031/live-validation.json",
+          "session": 31,
+          "sha256": "0075211f5859d9ac97476c0517a68470f574fe05cd022d8c265e66ffcddffe4e"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session032/live-validation.json",
+          "session": 32,
+          "sha256": "0f08fb096dc335d23691b37929c0dd102844d8ddbfc2cc2ce4869194daee5d94"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session033/live-validation.json",
+          "session": 33,
+          "sha256": "f8a2d613a3d6b7b264f4155a8775bd3dfc0d89cafcf7da65295cefd0b958ba29"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session034/live-validation.json",
+          "session": 34,
+          "sha256": "09ac6f1db6b658abf589b4b5b98fe6bc2ac8ba46ad9c7354f844a5cf810f69b1"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session035/live-validation.json",
+          "session": 35,
+          "sha256": "29f32ba9504732170c3fc9c46264e1615a535a942c04502d7f967224e30206ae"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session036/live-validation.json",
+          "session": 36,
+          "sha256": "709fcfee31ca0caa369208f9e25b053e824c3ed840023b33ff3a79192f37fc54"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session037/live-validation.json",
+          "session": 37,
+          "sha256": "e5745815a194b3cea3d9b5879297556bdc3f0d6df41056a1cb00bfca375a3c73"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session038/live-validation.json",
+          "session": 38,
+          "sha256": "416b8051e8772d9ec99f10c25e32bdac91accc2b008c5b79976658462823f07d"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session039/live-validation.json",
+          "session": 39,
+          "sha256": "c1fbacff458804f5a2bdf854eb85512a711667c89b34b9e1f53711b489f01a9c"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session040/live-validation.json",
+          "session": 40,
+          "sha256": "65eea905bf2c3cc634126c777bfabab28e6651390cc39be188973a38f1aa1378"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session041/live-validation.json",
+          "session": 41,
+          "sha256": "47d79e48c5011e7790566601ca4e7bcf9f93d2abab9ca781c9fc03d044c23285"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session042/live-validation.json",
+          "session": 42,
+          "sha256": "2e7b53db1a95f0edf81dd29a514c468654e43b1e62e6838ba14194fa83b543fa"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session043/live-validation.json",
+          "session": 43,
+          "sha256": "692aab19e0f2efb0a16998c2687ba60e0ade7067ad5bb4a9257f7c4110bb29a7"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session044/live-validation.json",
+          "session": 44,
+          "sha256": "2321682f350eed6389aff3f1a56fe20968cfe56e3adb8aa9900f950d5223ed66"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session045/live-validation.json",
+          "session": 45,
+          "sha256": "ca2736006dea8605a0841f8761f6e60ca8f14913726c986fbd3e9510a763853a"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session046/live-validation.json",
+          "session": 46,
+          "sha256": "54580ead62c1c398f4109c7a548da008455f91f961e8b51a4f0892d5654415e7"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session047/live-validation.json",
+          "session": 47,
+          "sha256": "6d9060e98ce229a6a38efaac1ebaf850ae4910682c78c17d894ffcd737a79363"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session048/live-validation.json",
+          "session": 48,
+          "sha256": "2d55b9d18fd0ea48c408b2d1fa2968364014f8a241de5283393083644e9697f7"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session049/live-validation.json",
+          "session": 49,
+          "sha256": "7d2daa11d5ea39a6bd2530352b13baa8f42ca05f05d0c5b4e7f552e32e638c40"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session050/live-validation.json",
+          "session": 50,
+          "sha256": "0a66cce3c65d4aa1d4aa8b8ff4de196e03392b91c94b653b4a0439cd834600d3"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session051/live-validation.json",
+          "session": 51,
+          "sha256": "26c0984e768a133a1a4e3a8d0f42f4a1e9a99102e34c9b2a3e4fdb9df2e9eea0"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session052/live-validation.json",
+          "session": 52,
+          "sha256": "61620adf8ae9c4e886f0ff5c3256f60edc53ce11edf27a30214d7302c8a18e6c"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session053/live-validation.json",
+          "session": 53,
+          "sha256": "f4e55e4291af8e696a563463df6c8d10f4016782ee3cc7e0e902f6c2b7c4963c"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session054/live-validation.json",
+          "session": 54,
+          "sha256": "5b4d1823ede2d9b9a7ee882ff43e3d63ca7c8976dde7dbe9ee60d28477b811fa"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session055/live-validation.json",
+          "session": 55,
+          "sha256": "5f3177cb0448354736fb5e59acac3ffdfac48660a6c5dc12ffe75cef2a151465"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session056/live-validation.json",
+          "session": 56,
+          "sha256": "7d3c4411505184e47e87bcee3ae556d6e1942fcc9db01b0c5da4d4486607de33"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session057/live-validation.json",
+          "session": 57,
+          "sha256": "2bf34df5a213e865fe992b34c6a912f989979466b684d78e8d027d9269e8395e"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session058/live-validation.json",
+          "session": 58,
+          "sha256": "67e8f565dc18a0d1c5729d879b7a69adbf1b77dab6952cab5c71e964520c27ad"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session059/live-validation.json",
+          "session": 59,
+          "sha256": "90e07a5dbc25231b3fd9d261352eda9c3c7fb092281cb09e31c3b5606943baa4"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session060/live-validation.json",
+          "session": 60,
+          "sha256": "aba02e091c65691446c99a62bd99feb9268afba850fce39c625c0592a498454e"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session061/live-validation.json",
+          "session": 61,
+          "sha256": "0e303aa4f3a3f01b5579ec0b1ec046d467812423ff9e61dc7bbffe90142c6d78"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session062/live-validation.json",
+          "session": 62,
+          "sha256": "3d0e449caffd834df56362eb5fb0d1327f047d991a6bbd8030d32e0f964a2dba"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session063/live-validation.json",
+          "session": 63,
+          "sha256": "e52e350a7741167d60b21e1cf9aecd6e3e48274ffda3e2ac1d0adfb3a83344ae"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session064/live-validation.json",
+          "session": 64,
+          "sha256": "d70ba48ef78e81a4a2266931f132833203ad3ef391a6f2ce6bda03687f2135f3"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session065/live-validation.json",
+          "session": 65,
+          "sha256": "2cbcf856a7c8314db59c69dffea2108f5d7cf2dddd4862fb4857f94b6083ad15"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session066/live-validation.json",
+          "session": 66,
+          "sha256": "71f2b4be8d96658b6f40f299263c1068c3aa81c646b4e4b80f5b5fea4860fb3c"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session067/live-validation.json",
+          "session": 67,
+          "sha256": "f778cae48d9160dca76ccc63f95d951a0abc070dbd304ee05b1c2cb1b0393a78"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session068/live-validation.json",
+          "session": 68,
+          "sha256": "79c70036f9c64bb5bcba8f2b4c4f9888b0761311d7e81cd54362f0544b942373"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session069/live-validation.json",
+          "session": 69,
+          "sha256": "63b7fd040ff93871998dedb6cf3920b391f0beffcb08291bc466ea19163e49b2"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session070/live-validation.json",
+          "session": 70,
+          "sha256": "8a848c627f73e38c723c34e365a85abdea59c260dbcdd9a9d619b036f742206d"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session071/live-validation.json",
+          "session": 71,
+          "sha256": "0c8023dffaadd6f1b7613e5ef159653745f0f4a206d212a742c00dbe2e88b44d"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session072/live-validation.json",
+          "session": 72,
+          "sha256": "587c71ab44b795f70f1a49303cf76e46b8070d241affe56620d96d2589689cd3"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session073/live-validation.json",
+          "session": 73,
+          "sha256": "76ef32bf73cf9a382b7ff014a18861b029b81f9aa9333eeded801f39cc1c5e6a"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session074/live-validation.json",
+          "session": 74,
+          "sha256": "4908e94bcb152863cc0c45e50c9b54152e087c26d490a9001a3ab10c7de0a9c2"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session075/live-validation.json",
+          "session": 75,
+          "sha256": "6dc6cf587c60324f69b5b0df8b552fc3898ab42e5c2f8480298c37cca6eb24a7"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session076/live-validation.json",
+          "session": 76,
+          "sha256": "40b0d89893c180e26a81ca38ae0de5f28f21e3abcd20ad34de237443b46965f0"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session077/live-validation.json",
+          "session": 77,
+          "sha256": "8f96b73870b977b0346c90938a0405bab087c794f0aeb460cf7f1dee24659d0e"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session078/live-validation.json",
+          "session": 78,
+          "sha256": "3fa4cb0d3d36f9a1eba08334de4b0de771e282fea3ed2c0409c8e20b3c4068ea"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session079/live-validation.json",
+          "session": 79,
+          "sha256": "7f21f8b5538a2a1c11f7d0d345e902cbe32c02267c3e38b5d9c1bf57a061a620"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session080/live-validation.json",
+          "session": 80,
+          "sha256": "ccbc4b2e41686b4901daaa5c1bec2ee02ed6891e339cb5fb726a6a4eec72937b"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session081/live-validation.json",
+          "session": 81,
+          "sha256": "2ebf773ffd951e88fdfecbd619963db98e19b0b24c16ec8901739d69daafd2c1"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session082/live-validation.json",
+          "session": 82,
+          "sha256": "ad23010fbf6f9126706ed0e4d0cde4f93763b8e25e4c94a6c0fdf2ba13ba8631"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session083/live-validation.json",
+          "session": 83,
+          "sha256": "72b163ef6342f574af02bb223ceacf51142913aeb96c726cd8bee6e0f1ee5a74"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session084/live-validation.json",
+          "session": 84,
+          "sha256": "0da60ed1b6e0e320ddf07ed13d79b18064d4a4cd886ea1545dc520811de42e66"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session085/live-validation.json",
+          "session": 85,
+          "sha256": "67250cb3954a23a256efb5322275ea6ecc1732d65b983ec9d4faf1b03a444c3d"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session086/live-validation.json",
+          "session": 86,
+          "sha256": "5dbd3bb0c931f9870c768251edfc5348aceae41c59447ff7e8e2c2655bd38d68"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session087/live-validation.json",
+          "session": 87,
+          "sha256": "4734bbe558e357d0a395d41233455be37bb74e6518987e8e100290f7cad59f01"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session088/live-validation.json",
+          "session": 88,
+          "sha256": "3c40d2df25cd0084fce62b58430c1c6908fd294ff0e4aec1e0686ad152606c33"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session089/live-validation.json",
+          "session": 89,
+          "sha256": "9ddae9a52cb3ebe4773fac1fe87b2402c9122700fade191cd07f6bba681c192b"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session090/live-validation.json",
+          "session": 90,
+          "sha256": "faf4bf7a1d8c7b21fdfa38010f23ecce8537869d1addc98d6f34062ed00a6e07"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session091/live-validation.json",
+          "session": 91,
+          "sha256": "cd603f8fab9e379a7bf38a1393bb39384631d466e8e01f34148619cea824bcc3"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session092/live-validation.json",
+          "session": 92,
+          "sha256": "02ac5e09c81a8246fa078c09c31b0409211046dde2747d93f2247cc38cac02c7"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session093/live-validation.json",
+          "session": 93,
+          "sha256": "7a52d1dcf809d22aadcfa1462cd0c5170898ee704eb330f9d8ea5f513a75c244"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session094/live-validation.json",
+          "session": 94,
+          "sha256": "6187e773d20cde5c27ece7233cb4a0b0da9194ceaeea08ded0b3f59858ea5fe3"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session095/live-validation.json",
+          "session": 95,
+          "sha256": "2549ce929061ffcd7132d40a1592168feb59dac19a11121f2e69400ab26436bd"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session096/live-validation.json",
+          "session": 96,
+          "sha256": "5d40b524ce6b8b30fd9b14cdd2e5ec2d3b72f1bc34a7452d735ff9fef79d2975"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session097/live-validation.json",
+          "session": 97,
+          "sha256": "b30a6c86898601ec895cf060e63377a3e1b6e922ab4ae0e1f8b1f6b976dca194"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session098/live-validation.json",
+          "session": 98,
+          "sha256": "50540377a83eb5df511c14ad4c3325ae1cf0636822568c853bcc972abab26cce"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session099/live-validation.json",
+          "session": 99,
+          "sha256": "f12cadd2fdcf438f5e8ba67d6c793d5ccc4c65308caa40e9189d629c549d4cac"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session100/live-validation.json",
+          "session": 100,
+          "sha256": "aa86e12f7482fe860db23ce40335ba948c6824e80854fb0646c9cdc7595ede14"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session101/live-validation.json",
+          "session": 101,
+          "sha256": "cf6ef840ea137e042511ca43f2d4709ba69b75ee9e2477002ce659475beaa479"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session102/live-validation.json",
+          "session": 102,
+          "sha256": "b565df3751e5962c0e23421b202a678a9cf357ae254705c64c3154e04825f033"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session103/live-validation.json",
+          "session": 103,
+          "sha256": "2495bc5b81e40425a16c9e5a52894737cc82cda4c9d766ff3fc83a2b19f59c4c"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session104/live-validation.json",
+          "session": 104,
+          "sha256": "2d46c824ea2d0608ce423aade7d54bdce2c007a6c62596805b4cf3cebbddba4b"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session105/live-validation.json",
+          "session": 105,
+          "sha256": "0303ca5c5e532c60478633e3515b9aa4532682fdbb06cb469fcfd01c14395c76"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session106/live-validation.json",
+          "session": 106,
+          "sha256": "a78addc234ed2c4fce328f505b21cba04f15a8778be33ad82bd96189feec4407"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session107/live-validation.json",
+          "session": 107,
+          "sha256": "7a7e920a9899f8e8744e643e98f1735ec0dc65a75eee0439fe63eb5b7352698d"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session108/live-validation.json",
+          "session": 108,
+          "sha256": "cb8616eb2f793cc01baf271f74720eb149a663276e7ef00d6c098fc6ad0383ff"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session109/live-validation.json",
+          "session": 109,
+          "sha256": "b1399a296282409c69c588f8bc02dd31f7ff81c2f3ddd51d769519206e78b42b"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session110/live-validation.json",
+          "session": 110,
+          "sha256": "4a7e5ef5540016434af0117dca5c77d9e540422242b62c5e72ad1c4e250d47d6"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session111/live-validation.json",
+          "session": 111,
+          "sha256": "409b1b42f96804c7587958d492fb7d61127325085bddae52f0485c098b0a6176"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session112/live-validation.json",
+          "session": 112,
+          "sha256": "cab0b0037e90064bc7bde25c8784b8027f3448445169c02c05b37ea76ab88efb"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session113/live-validation.json",
+          "session": 113,
+          "sha256": "a476450ffb9bb61c688b9d9c12b811d29fe34e5e30cee97b22b81268a1f723b1"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session114/live-validation.json",
+          "session": 114,
+          "sha256": "eb3ee868fe89a0fec1a325e04783a8f96808c1b86746f605e57e77a03d6301d8"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session115/live-validation.json",
+          "session": 115,
+          "sha256": "80629f2b51382730c5fdef6e77fe46b0dbc0670695e57b6d86b12effb2516cd4"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session116/live-validation.json",
+          "session": 116,
+          "sha256": "00d5435637c1df0f722a6139505ebd014e030381860236e6f0a1a26573d71397"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session117/live-validation.json",
+          "session": 117,
+          "sha256": "d74268aa2a207a015bf02986ca73f99bb3b6d8634702369d7368e0ebe9d5431c"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session118/live-validation.json",
+          "session": 118,
+          "sha256": "6441c80ff0417447a3de254e5ef229c9e212758305cd74b4e45d6dd7de94f320"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session119/live-validation.json",
+          "session": 119,
+          "sha256": "00b97eed8d20877070b960495972c47999bd7e5f58b98f2f9cda0f08b2e99c38"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session120/live-validation.json",
+          "session": 120,
+          "sha256": "e0c1a5963960f236b5506cd17c0d24562a75e426d7b5316058c34972e77ebc23"
+        }
+      ],
+      "spentSha256": "97e8c43513933bc39acd8da59e2649e296aea6ea1db3b11f454b5924da091c80",
+      "totals": {
+        "GET": 1440,
+        "admitted": 716,
+        "decodedBytes": 133631076,
+        "duplicates": 0,
+        "incompleteSourceTargets": 2,
+        "rejected": 244,
+        "removedScratchBytes": 62876928,
+        "solver": 960,
+        "strictPass": 600
+      }
+    }
+  ],
+  "newSince8096": 716,
+  "phaseElapsedSeconds": 964.023106375,
+  "priorParentAuditSha256": "6af7d6cffcac3b81c00b5958c5e105f84e0fe4c07a892bc82255bd8cae53eb2b",
+  "remaining10000": 1188,
+  "retainedLogicalBytes": 2193338041,
+  "schemaVersion": "actual-breadth-phase03-completion-audit.v1",
+  "scope": "read-only exact tested-input, primary, event, chain and cleanup audit of120 actual original241\u2013360 breadth sessions; zero source or test replay",
+  "scratchCreated": false,
+  "sourceAcceptance": false,
+  "sourceReceiptPin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/phase03-receipt.json",
+    "sha256": "baf6bc57a241c981961957a9db46f3a1bc184b7233bf7d09ffa6efb36b0bb6a5"
+  },
+  "sourceRequestsDuringAudit": 0,
+  "sourceRetainedLogicalBytes": 2193338041,
+  "spent": 11487,
+  "spentPin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/sessions/session120/final-spent-request-index.json",
+    "sha256": "97e8c43513933bc39acd8da59e2649e296aea6ea1db3b11f454b5924da091c80"
+  },
+  "status": "standalone breadth chain proved; independent parent audit and fresh global union required",
+  "testsReplayed": 0,
+  "time": "2026-11-07T06:57:27.766652+00:00",
+  "totals": {
+    "GET": 1440,
+    "admitted": 716,
+    "decodedBytes": 133631076,
+    "duplicates": 0,
+    "incompleteSourceTargets": 2,
+    "rejected": 244,
+    "removedScratchBytes": 62876928,
+    "solver": 960,
+    "strictPass": 600
+  }
+}

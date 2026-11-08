@@ -1,0 +1,76 @@
+{
+  "version": "historical-g26e-observation.v1",
+  "run": "historical-g26e-20241001-20261107-once",
+  "observedAt": "2026-11-07T05:59:08.366Z",
+  "source": "public-bmw-uk-configurator",
+  "providerStatus": "unsupported-public-website",
+  "requestedContext": {
+    "country": "gb",
+    "locale": "en_GB",
+    "requestOrderDate": "2024-10-01",
+    "requestEffectDate": "2024-10-01",
+    "futureModels": false,
+    "closestFallback": false
+  },
+  "readOnly": true,
+  "writes": 0,
+  "attempts": 3,
+  "decodedBytes": 638409,
+  "requests": [
+    {
+      "category": "page",
+      "attempt": 1,
+      "status": 200,
+      "decodedBytes": 17763,
+      "elapsedMs": 138,
+      "contentType": "text/html"
+    },
+    {
+      "category": "settings",
+      "attempt": 2,
+      "status": 200,
+      "decodedBytes": 620646,
+      "elapsedMs": 81,
+      "contentType": "application/json"
+    },
+    {
+      "category": "tree:G26E",
+      "attempt": 3,
+      "status": 400,
+      "decodedBytes": 0,
+      "elapsedMs": 113,
+      "failure": "source-http-failure"
+    }
+  ],
+  "observations": [],
+  "status": "stopped",
+  "stop": "source-http-failure",
+  "newConfigurations": 0,
+  "profileActivations": 0,
+  "elapsedMs": 344,
+  "planSha256": "1348ab7a25d94a4a73858fd08003853327729d03043cb284c94acf759aaaeab5",
+  "codePins": {
+    "docs/gcsp/evidence/fucq59/historical-g26e-3get-probe-2026-11-07/driver.test.mjs": "f6aadcb74b68f9a360f48da68be64cc64d1f1c9d25ce88e07714663b75afc1c0",
+    "docs/gcsp/evidence/fucq59/historical-g26e-3get-probe-2026-11-07/run-live.mjs": "498f9cc34533ef133ad277b3935a63b484db1eec15ae2ac98c93aea40f8baebd",
+    "docs/gcsp/evidence/fucq59/historical-g26e-3get-probe-2026-11-07/catalogue.test.mjs": "165714d7a2751e8151e233e45fa71a1365154a4806ee1bf8ccc0385f64c697f0",
+    "docs/gcsp/evidence/fucq59/historical-g26e-3get-probe-2026-11-07/catalogue.mjs": "7028556d200e57337a5ba6f9bde440eaced9ff7710e4a999791c63f047c85551",
+    "docs/gcsp/evidence/fucq59/historical-g26e-3get-probe-2026-11-07/validate.py": "30ee039df28c8d613046adea9e70b652db20fa62538d8af27159ea6fe430151e",
+    "docs/gcsp/evidence/fucq59/historical-g26e-3get-probe-2026-11-07/source.py": "b2d6dcdf41e916b3abe10eb724c65d05a5fadecb56a438a2d569ecc95e47834c",
+    "docs/gcsp/evidence/fucq59/historical-g26e-3get-probe-2026-11-07/prepare.py": "c90ed9d15a2891e3fadea0f031b3d8f0754e65c8a6774967ecf86cbb573cc451",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d"
+  },
+  "inputPins": {
+    "docs/gcsp/sources/choices-eligibility-matrices-2024-10.md": "26f73b087591914ac8720cd0a81c71054753356794dc4837ae5fdaa0ececbb93",
+    "docs/gcsp/bmw-interface-research.md": "82d4edba56abf474e693d45d1b2f79c4b8918e868fb2ff56d6d6ba96db00d00a",
+    "docs/gcsp/evidence/fucq-58/historical-f44-2026-11-05/observation.json": "38162762b2b17100d7b7555e9071b11d3ead3f91b157bac990f2c07d9feceb28",
+    "docs/gcsp/evidence/fucq-58/historical-f44-2026-11-05/plan.json": "59792f1296ea0dfd1f6813b847ab37e856fc143f3f0d82662ee503d395fd5677",
+    "docs/gcsp/evidence/fucq-58/historical-f44-2026-11-05/catalogue.mjs": "17c4e71c7a57bc58917e28c107dedcc9406dd0fb389336eddb3ed0ea47c2866f",
+    "docs/gcsp/evidence/fucq-58/historical-f44-2026-11-05/validation.json": "9f521626216c98cf98d2a800ea9647802c5d35a19af046b861044085a6beb652",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g26e/diagnostic.json": "ba82cee74dcca5fc713cdd23264017ee561c15a0c42c4dbad0dea2e0fdf88cd5",
+    "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g26e/live-validation.json": "6d84b2a4253eb3f83594c20dcaeb176125214767de7059f43e6cc88161d2d307",
+    "scripts/gcsp/bmw-public-registration.mjs": "3a9a1afcc128f8356bb296b063d118bc9b7c59531ef75823bb99f8e01f209291",
+    "scripts/gcsp/public-bmw-source.mjs": "4561e844cfe85383ad8ed27521bab157a10dae57f8d82ab29b8f41842bfc8336"
+  },
+  "parentReleaseSha256": "1536eec1df3b10470daffef7d1e58ff550f8483079964dbb1a8cd69428b282e7",
+  "interpretation": "Selected2024requestdates remain probes. Retain returned full model/AG/range/steering/order/effect/direct derivative separately. M60never substitutesM50. Catalogue evidence grants no constructibility, scheme join, production/year/plant/profile/WMI/integration acceptance."
+}

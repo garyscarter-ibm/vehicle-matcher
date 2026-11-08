@@ -13,3 +13,5 @@
 .gcsp .gcsp-error-links { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
 .gcsp .gcsp-error-links a { color: var(--gcsp-accent-strong); text-decoration: underline; }
 .gcsp [hidden] { display: none !important; }
+.gcsp .gcsp-check { display: flex; align-items: flex-start; gap: 12px; } .gcsp .gcsp-check label { padding: 10px 0; overflow-wrap: anywhere; }
+.gcsp .gcsp-check input { flex: none; width: 24px; height: 24px; margin: 10px 0 0; accent-color: var(--gcsp-accent-strong); } .gcsp .gcsp-check input:focus-visible { outline: 2px solid var(--gcsp-focus); outline-offset: 3px; }

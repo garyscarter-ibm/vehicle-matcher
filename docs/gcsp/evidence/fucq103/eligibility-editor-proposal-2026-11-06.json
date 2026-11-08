@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-06",
+  "state": "AUTHOR-ONLY-NO-EXECUTION-GRANT",
+  "mode": "eligibility-editor",
+  "sourcePlanSHA256": "edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9",
+  "productTestFrozenRevision": "f80fc61ca151cb46ad21cb2b19e704f4012d53de",
+  "evidenceOnlyParentRevision": "cba833fa0de733c51ff5fffcf02519d7f18da63c",
+  "executionRevisionRequirement": "Exact reviewed clean published HEAD/upstream after this evidence checkpoint, supplied in dispatcher handoff. No completed grant is reusable.",
+  "tests": [
+    "server/test/gcsp-greg-publish-editor.test.js"
+  ],
+  "testSourceSHA256": "04108fdb767947538646121a33b0f8d2cbdc3ae859f89c4105092201d6144408",
+  "namePattern": null,
+  "sourceCaseCount": 3,
+  "expectedMatchedCount": 3,
+  "expectedMatchedNames": [
+    "reviewed editor bundle is immutable, digest checked, explicitly assumed and absent from unchanged seed",
+    "missing key keeps exact editing; intentional reviewed adoption projects ranges and preserves pinned rows and old snapshots",
+    "one canonical range change updates every projected control while legal exact values remain unbounded by presentation"
+  ],
+  "filteredSourceCount": 0,
+  "filteredSourceNames": [],
+  "completedModesExcluded": [
+    "eligibility-core25",
+    "eligibility-registry16",
+    "eligibility-default1",
+    "eligibility-weighted1",
+    "eligibility-runtime4"
+  ],
+  "completedCasesRerun": false,
+  "childCommand": [
+    "/Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "--test",
+    "--test-concurrency=1",
+    "server/test/gcsp-greg-publish-editor.test.js"
+  ],
+  "supervisorCommandTemplate": [
+    "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "-I",
+    "-B",
+    "docs/gcsp/evidence/fucq103/scoped-supervisor.py",
+    "eligibility-editor",
+    "--execute",
+    "--source-plan-sha",
+    "edb1d09f9ab89ee23529cd60e67b3c30e51d15414ac001a3d857c18cb4e8acc9",
+    "--revision",
+    "<reviewed-published-evidence-HEAD>",
+    "--dispatcher-grant",
+    "<new-fucq103-eligibility-editor-grant>"
+  ],
+  "whyThisChunk": "An existing three-case independent service boundary for reviewed editor ranges is smaller than the remaining publish15/activation9 groups. It uses existing agreed exports/ports and excludes all completed test files/cases. Dashboard3 remains separately open. No Jira journey dependency is used as a technical admission gate.",
+  "technicalReadiness": {
+    "sourceInterfaceEvidence": [
+      {
+        "path": "server/test/gcsp-greg-publish-editor.test.js",
+        "sha256": "04108fdb767947538646121a33b0f8d2cbdc3ae859f89c4105092201d6144408"
+      },
+      {
+        "path": "server/test/helpers/greg-publish-run.js",
+        "sha256": "e84f92f24d179ff6dfd035fc85f32e06f04d77847bc03f8fb225cfd88fe2f5db"
+      },
+      {
+        "path": "server/test/helpers/greg-demand-run.js",
+        "sha256": "c75364774bc388f43c5bc96c596e85fac47dfa419f40e8d05be71949dead6bbe"
+      },
+      {
+        "path": "server/gcsp/greg/publish/index.js",
+        "sha256": "63621b317268cfc9e9d6b99b71306eb5327a102ab4e4a1b1f98542dfd6edd1ae"
+      },
+      {
+        "path": "server/gcsp/policy/reviewed-definitions.js",
+        "sha256": "75518df649ba542ad32b876f8ee1b680e29b417c3b1f8dc90fcf1d4713a42cbb"
+      },
+      {
+        "path": "server/gcsp/policy/reviewed/greg-publish-editor-v1.json",
+        "sha256": "7c7680227cdcd6e5f5afbb9fedb06b73c4768b2a3c7526cbf9cb9c03ccdfd8c3"
+      },
+      {
+        "path": "server/gcsp/policy/seed-v1.json",
+        "sha256": "c58fcd9054fa32cded07c4ee742b39d196f94aa15c8d0fbf7752874954df8a31"
+      }
+    ],
+    "availableInterfaces": [
+      "getReviewedDefinitionSet/validateReviewedDefinitionSet expose the existing immutable greg-publish-editor-v1 bundle. PolicyService.withPublicationPorts and adoptReviewedAssumptions exist at the frozen source.",
+      "publishFixture -> real createGregPublishService(readPolicy,preview,publish) -> memory PolicyService/repository/DemoClock/identity; no missing runtime interface is needed for these service assertions.",
+      "Existing range projection validates presentation minimum/maximum/step and preserves exact safe-integer editing; required keys are already present in the reviewed definitions registry."
+    ],
+    "independentScope": "Source/service validation of immutable editor assumptions, missing-key behavior, intentional canonical-range adoption and legal exact values. No frontend control rendering or producer integration is claimed.",
+    "outstandingIntegration": "Current-source publish15, activation9, dashboard3, rendered desktop/narrow keyboard and actual producer/consumer acceptance remain independent open gates; fixtures cannot close them."
+  },
+  "fixtureBoundary": "publishFixture calls setup with canonical=false and the default explicit alternative privacy threshold1. It seeds one synthetic manual employee through seedManualDemoContext; confirm/offer helpers directly write synthetic stock/quote/hold/offer rows. This is not the canonical five-subject privacy policy, an additional authenticated default population, or an allocator/producer journey.",
+  "caseBoundaries": [
+    {
+      "name": "reviewed editor bundle is immutable, digest checked, explicitly assumed and absent from unchanged seed",
+      "assertions": [
+        "The editor definition bundle validates, is deeply immutable, has the expected key and explicit assumed presentation-only basis, and is absent from the unchanged policy seed.",
+        "Changing its price maximum invalidates the digest-checked bundle."
+      ],
+      "limits": "Reviewed synthetic presentation assumptions; not verified BMW policy or rendered controls."
+    },
+    {
+      "name": "missing key keeps exact editing; intentional reviewed adoption projects ranges and preserves pinned rows and old snapshots",
+      "assertions": [
+        "With the key absent, projected editable fields have no presentationRange. Intentional same-provider adoption adds exactly the editor key and requires no later activation.",
+        "Every projected field carries the bundle maximum/key/source/assumed status. Prior policy snapshot and observed non-run domain rows remain equal; run references intentionally change."
+      ],
+      "limits": "Observed allRows set is briefs/employees/stock/holds/offers/quotes/decisions/runs. Entitlement slots are not part of this equality observation. Direct synthetic offer writers do not establish real producer outcomes."
+    },
+    {
+      "name": "one canonical range change updates every projected control while legal exact values remain unbounded by presentation",
+      "assertions": [
+        "A single canonical assumed range change updates all projected price maxima to 4500 and weight maxima to 12.",
+        "Number.MAX_SAFE_INTEGER remains a legal exact weight despite the presentation range, can be previewed/published/read back, and fractional 1.5 is invalid."
+      ],
+      "limits": "Service-level projection/value validation, not browser keyboard/range behavior or proof that all values are desirable real-world business policy."
+    }
+  ],
+  "measuredResourceRationale": {
+    "sameReviewedFiniteClosure": true,
+    "newEntryTestFile": true,
+    "runtime4Baseline": {
+      "run": "fucq103-backend-6112414b50b948c9896c93d3727d0838",
+      "testedRevision": "cba833fa0de733c51ff5fffcf02519d7f18da63c",
+      "originalIndex": "eligibility-runtime-cba833f-2026-11-06/index.json",
+      "wallSeconds": 5.954400458,
+      "peakAggregateRSSBytes": 827654144,
+      "peakAggregateRSSMiB": 789.3125,
+      "peakCombinedBytes": 4348531
+    },
+    "priorDefaultPeakMiB": 1001.625,
+    "priorWeightedPeakMiB": 715.203125,
+    "editorThreeCasePeakKnown": false,
+    "existingRamCapBytes": 1073741824,
+    "assessment": "Measured peaks for other selections are not editor admission. This entry file/helper composition and three cases may have different resource lifetime. Root reviews the unchanged one-worker 1024MiB envelope; a fresh strict all-reservation/current-pressure admission and new once grant are required. Stop at the first limit/unknown with no retry, cap increase, source/filter change or substitution."
+  },
+  "limits": {
+    "workers": 1,
+    "seconds": 120,
+    "aggregateRSSBytes": 1073741824,
+    "combinedScratchRetainedBytes": 134217728,
+    "originalMergedLogBytes": 2097152,
+    "separateReceiptHeadroomBytes": 262144,
+    "emergencyDiskReserveBytes": 5368709120,
+    "hostRamReserveBytes": 536870912
+  },
+  "admission": "New exact eligibility-editor once grant; unchanged source/dependency/executable/resolver/membership/anchor pins and exact clean published HEAD/upstream. Fresh strict no-follow locked HostBudget counts all reservations/current pressure. Historical peaks/capacity/headroom never substitute for admission. Unknown/mismatch/insufficient headroom stops.",
+  "environment": "Existing closed literal allowlist strips database/debug/loader/preload/configuration credentials. Never read the approved database file. No installs or dependency changes.",
+  "originalContract": "Preserve full bounded original merged log/checkpoint/summary/manifest/impact and actual supervisor tool exit on every outcome. Independently require all three exact positive names, actual final totals, no completed-case rerun, full byte counts/SHA/current pins and final postwrite allocation. No authoring count is execution evidence.",
+  "cleanupContract": "Use unchanged manifest/process gate/finalizer: stop/join owned direct/recursive PID/start/group; owned ports absent; exact scratch identity/no open files before deletion; scratch and worktree dependency paths absent; strict full-bound locked exact-token release/readback preserves foreign rows. Unknowns remain named incomplete. Independent lead/root audits precede publication or wider admission.",
+  "experienceContract": [
+    "docs/gcsp/experience-quality.md",
+    "COMPONENTS.md",
+    "docs/gcsp/screens/README.md"
+  ],
+  "remainingAcceptanceGates": [
+    "Other backend selections: publish15, activation9, dashboard3; editor3 is only this unexecuted proposal.",
+    "Separately admitted repaired browser preparation, rendered desktop and narrow320 keyboard journeys on canonical prepared composition, with actual employee outcome and visual reference checks.",
+    "Actual92/69/122/126 producer journeys,105-to-107 lookup/reload and any required native/deployed/live/corpus/model/training evidence remain unproven.",
+    "Dispatcher-admitted authored full validation, final independent review and whole-story acceptance. Story stays In Progress."
+  ],
+  "gateway422Rule": "Shared AGENTS.md Russell6November rule persists: preserve exact child HTTP422 diagnostics and continue authorised work while launcher can work. Keep IBM gateway and credentials. Grant/resource/scope limits remain binding.",
+  "exclusions": [
+    "Completed core25/registry16/default1/weighted1/runtime4 must not rerun. No browser/native/DB/full/live/corpus/model/train or next-mode allocation is authorised.",
+    "38 listener-parser design fixtures remain unexecuted. Authoring performs static byte/JSON/source/Git review and configured map fact updates only; no product/runtime import, service/listener/probe/test/scratch/reservation/child agent."
+  ],
+  "grantIssued": false,
+  "executions": 0,
+  "agents": "requested/selected gpt-6.1-sol/high; no fallback or descendants"
+}

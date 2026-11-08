@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "fleet-dot7-public-plan.v1",
+  "runId": "f62-dot7-public-20261107",
+  "repository": "garyscarter-ibm/vehicle-matcher",
+  "tag": "fleet-2026-11-07-7",
+  "previousTag": "fleet-2026-11-07-6",
+  "target": "883b6a4393cabe001be346768b662c02ac21b3d4",
+  "releaseId": "86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f",
+  "previousManifestDigest": "421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d",
+  "descriptorSha256": "0ae8f96be792f83c7b43a6f8408e62f12ba39cf1039a0c0ab885f3a3cfbcacf2",
+  "packageRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot7-offline-20261107",
+  "outputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot7-public-20261107",
+  "checkPhase": "check",
+  "expected": {
+    "files": 22,
+    "bytes": 63361942,
+    "sourceShards": 11,
+    "configurations": 1134,
+    "sourceConfigurations": 1133,
+    "vinMappings": 1,
+    "images": 2,
+    "datasets": 8,
+    "direct": 1135,
+    "httpSample": 1024,
+    "httpComplement": 111,
+    "httpUnique": 1135,
+    "configuredConsumerPassed": 1133,
+    "configuredConsumerFailed": 2
+  },
+  "resources": {
+    "workers": 1,
+    "hostRamMiB": 512,
+    "childRamMiB": 448,
+    "scratchMiB": 192,
+    "scratchLocation": "owned OneDrive",
+    "secondsPerChunk": 120,
+    "expectedPeakScratchMiB": 120,
+    "expectedPeakChildRamMiB": 360,
+    "expectedDownloadAuditSeconds": 90
+  },
+  "selected": [
+    "Offline --check-local validates exact22 local asset pins and .7 descriptor in immutable pushed target; no network",
+    "Future --check reads .6 release/tag identity and .7 absence; requires root authorization to run public metadata operations",
+    "After exact root grant, create/resume only immutable .7 prerelease/tag; checkpoint exact uploads, preserve .6 release/tag",
+    "Real anonymous production CLI downloads22 public assets and cold restores exact store and full history, denies credentials",
+    "Fresh offline CLI restart plus all1135 direct lookup parity, configured consumer1133/1135 named limitation, existing1024 HTTP+exact111 complement unique union1135",
+    "Changed264-source and both-image edges recover .6 while current pointer/full inventory remain byte unchanged; restore exact owned bytes"
+  ],
+  "excluded": [
+    "BMW/source traffic",
+    "ordinary activation",
+    "YAML/Render/live changes",
+    "10000/source/model/profile/year/plant/five-WMI acceptance",
+    "consumer repair or AC waiver; known Medium1F7A/1F7C failure retained",
+    "production1024 verifier cap repair; complement operational only",
+    "unchanged .6/.5 recovery matrix",
+    "full suite and PostgreSQL"
+  ],
+  "ordinaryStore": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1",
+  "knownConsumerFailures": [
+    {
+      "request": {
+        "kind": "configuration",
+        "id": "MUY3QTpGS1VTVyxQMEM2UixTMDFDQixTMDFDRSxTMDFERixTMDFIMixTMDIzMCxTMDJQQSxTMDJURixTMDJWQixTMDJWRCxTMDMwMixTMDQyOCxTMDQzVCxTMDQ3OCxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDc2MCxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURw=="
+      },
+      "vgModelCode": "1F7A"
+    },
+    {
+      "request": {
+        "kind": "configuration",
+        "id": "MUY3QzpGS1VNWSxQMEM1NixTMDFDQixTMDFERixTMDFINSxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDNNMSxTMDQyMCxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZQQSxTMDc1NCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMixTMDlUQSxTMDlUQg=="
+      },
+      "vgModelCode": "1F7C"
+    }
+  ],
+  "staticImages": [
+    {
+      "imageId": "bmw-i5-white-20261101-v1",
+      "asset": "assets/gcsp-vehicle-evidence/fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe.webp",
+      "bytes": 82798,
+      "sha256": "fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe"
+    },
+    {
+      "imageId": "bmw-1f7e-20261107-v2",
+      "asset": "assets/gcsp-vehicle-evidence/9704a8616835a1c1ce3b6d65f80e91cabb9edbfc0f83eca06b467bb3b1d236e3.webp",
+      "bytes": 77936,
+      "sha256": "9704a8616835a1c1ce3b6d65f80e91cabb9edbfc0f83eca06b467bb3b1d236e3"
+    }
+  ]
+}

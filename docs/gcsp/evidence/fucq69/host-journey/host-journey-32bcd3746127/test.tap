@@ -1,0 +1,17 @@
+TAP version 13
+# Subtest: actual released TEST stock reaches the delivered host gallery and one quoted review without reclaim
+ok 1 - actual released TEST stock reaches the delivered host gallery and one quoted review without reclaim
+  ---
+  duration_ms: 5965.511666
+  type: 'test'
+  ...
+# {"scope":"actual-TEST-producer-HTTP-host","releaseReceipts":1,"producerPulls":1,"claimPosts":1,"reviewSaves":2,"reviewBegins":1,"confirmations":1,"continuations":1,"readyEvents":1}
+1..1
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6585.022291

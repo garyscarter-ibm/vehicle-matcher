@@ -1,0 +1,284 @@
+{
+  "status": "anonymous-dot10-cold-restore-exact-assets",
+  "releaseId": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+  "target": "d45da2c1ee14aad9e61138faa7dfc0f12f172d5c",
+  "publishReceiptSha256": "21290493df1d6b396588aacdd61cc5ea3b76064f4f7a929c9c9154c7ade259ce",
+  "restore": {
+    "status": "ok",
+    "mode": "cold-restore",
+    "active": {
+      "datasetId": "gcsp-source-fleet",
+      "version": "2026-11-07.10",
+      "manifestDigest": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+      "counts": {
+        "configurations": 4667,
+        "distinctConfigurations": 4667,
+        "images": 2,
+        "qualifyingCompleteDistinctSourceConfigurations": 4666,
+        "sourceConfigurations": 4666,
+        "vinMappings": 1
+      },
+      "sourceContexts": [
+        {
+          "catalogueDate": null,
+          "market": "US",
+          "note": "Small structural reference fixture; no UK/RHD, full equipment or 200/10000 corpus claim",
+          "observedDate": "2026-11-01",
+          "sourceKind": "north-american-reference",
+          "steering": "LHD"
+        },
+        {
+          "catalogueDate": "2026-11-01",
+          "market": "GB",
+          "note": "Exact retained FUCQ-39 GB catalogue; physical year, build, steering and plant remain unknown",
+          "observedDate": "2026-11-01",
+          "sourceKind": "dated-snapshot",
+          "steering": null
+        },
+        {
+          "catalogueDate": "2026-11-07",
+          "market": "GB",
+          "note": "4665 actual admitted v2 factory selections and one retained historical source configuration; two representative images retain exact dated associations; four qualified measurements apply only to one exact configuration; physical build, visual fidelity and scheme breadth remain unverified",
+          "observedDate": "2026-11-07",
+          "sourceKind": "dated-snapshot",
+          "steering": null
+        }
+      ],
+      "completeness": {
+        "imagesMissing": 4665,
+        "selectedOptions": {
+          "complete": 4666,
+          "unknown": 1
+        },
+        "sourceKinds": {
+          "dated-snapshot": 4666,
+          "north-american-reference": 1
+        }
+      }
+    },
+    "externalCalls": 52
+  },
+  "files": 26,
+  "bytes": 239679009,
+  "inventorySha256": "f5d33165ec35d27e9140e465139940b25f1b9a5c124ca067ba2433599db9e20f",
+  "network": {
+    "attempts": 52,
+    "denied": 0,
+    "requests": [
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      },
+      {
+        "host": "github.com",
+        "status": 302
+      },
+      {
+        "host": "release-assets.githubusercontent.com",
+        "status": 200
+      }
+    ],
+    "authorization": false,
+    "cookie": false
+  },
+  "anonymousDownloadChildren": 1,
+  "sourceCalls": 0,
+  "fullReferenceProofReexecuted": false,
+  "acceptance": false
+}

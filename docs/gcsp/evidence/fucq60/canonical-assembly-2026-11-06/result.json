@@ -1,0 +1,281 @@
+{
+  "schema_version": 1,
+  "story": "FUCQ-60",
+  "at": "2026-11-06T12:31:19.407940+00:00",
+  "scope": "scoped canonical local F59/F60 assembly; prepublication",
+  "state": "9 historical and 6 generic cases passed; parent review/publication pending; story remains incomplete",
+  "assembly": {
+    "consumer_head": "692792c87834f807da6f59cbaea92a9f1f127c4e",
+    "producer_merge_head": "4ea9077376c789f6fa6fca73e567c7a0a9b1efc2",
+    "parent_assembly_tree": "194919d590645331ca0f67dabaf62d457459819e",
+    "head_and_merge_head_unchanged": true,
+    "index_owned_by_parent_unchanged": true,
+    "local_producer_root_override": "F60_PRODUCER_ROOT unset for both checks",
+    "new_wrapper_or_runtime_behaviour": false
+  },
+  "producer_sha256": {
+    "scripts/gcsp/collection-session.mjs": "67eff0ad3311d0bfbc13bfe03816fd4e55c1f4fc9af1ae5c2814bf87941ccbe4",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/collect-fleet.mjs": "d039d3c8a8acf216204bd83831c70d6001d0e277aec94bd51397a9738341449c",
+    "scripts/gcsp/public-bmw-source.mjs": "4a4137830ba863f1a373d6a01b6b5a7fb3705f465cbec21a7c8933eed55f7703"
+  },
+  "consumer_sha256": {
+    "scripts/gcsp/historical-enrichment.mjs": "103eeb0c51a225440f54355acfe1b344321c96b688d3855a795db70e34826a8c",
+    "server/test/gcsp-historical-enrichment.test.js": "01427a27071d91e258c1baeb92f9e8253ff423a36d658958cb5239e73cbb25fc",
+    "scripts/gcsp/enrich-fleet.mjs": "f6bc477435cb3caada23ddc3113b59e35a39ad7593a1dfd648d491125ea7a900",
+    "docs/gcsp/evidence/fucq60/session-reuse-proof.mjs": "4dd2973aa24ff243db14e36e1ab305444ba2e4f59ebbcc67a546308d02185fbf"
+  },
+  "change": "Only the session SHA256 in historical-enrichment.mjs PRODUCER_PINS and historical test producerIdentity changed. The detached caller-pin snapshot fix and regression are unchanged.",
+  "producer_diff_review": {
+    "immutable_range": "78bc652019cb114825baeb863aee7cf855a7983d..4ea9077376c789f6fa6fca73e567c7a0a9b1efc2",
+    "compatibility": "Optional HTTP observation metadata uses frozen validated request/source snapshots, exact consumed decoded-body digest and session observation time. Offline execution receives undefined metadata; cache returns original projection. No F60 port or accepted-input change.",
+    "independent_code_security_reviews": "Parent exact-range receipts both passed; unchanged 35-case producer validation reused at its exact recorded identity."
+  },
+  "validation_identity": {
+    "key": "0c9f868eb0b01f6e15bdc05a5eab52531b096cdc8bc90fccc9420135646f641a",
+    "local_production_and_test_graph_sha256": {
+      "docs/gcsp/evidence/fucq60/session-reuse-proof.mjs": "4dd2973aa24ff243db14e36e1ab305444ba2e4f59ebbcc67a546308d02185fbf",
+      "scripts/gcsp/collect-fleet.mjs": "d039d3c8a8acf216204bd83831c70d6001d0e277aec94bd51397a9738341449c",
+      "scripts/gcsp/collection-session.mjs": "67eff0ad3311d0bfbc13bfe03816fd4e55c1f4fc9af1ae5c2814bf87941ccbe4",
+      "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+      "scripts/gcsp/enrich-fleet.mjs": "f6bc477435cb3caada23ddc3113b59e35a39ad7593a1dfd648d491125ea7a900",
+      "scripts/gcsp/historical-enrichment.mjs": "103eeb0c51a225440f54355acfe1b344321c96b688d3855a795db70e34826a8c",
+      "scripts/gcsp/public-bmw-source.mjs": "4a4137830ba863f1a373d6a01b6b5a7fb3705f465cbec21a7c8933eed55f7703",
+      "server/gcsp/migrations/index.js": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f",
+      "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+      "server/gcsp/policy/index.js": "087267e81d4a780ef300dba144d9de5c4978ca530fe8ea5b2f53e2ec41395a2c",
+      "server/gcsp/policy/memory-provider.js": "ea9309ec9b2ed158343ca65006932a6db6fe286c5a107b319d2bfaff859bbc53",
+      "server/gcsp/policy/postgres-provider.js": "4916e656685c038a64e1fb4ba0d7566faebab5d8588ffc0673f1f30c8b426c12",
+      "server/gcsp/policy/publish.js": "5731771b1b7607028cd923c33038a0a0da113d463b8042fdd0b60d9f0a63d023",
+      "server/gcsp/repository/core.js": "c55c93c543886108f67aa12bc5c7519d50063e90ba4ec78df37aa0df56d6f311",
+      "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+      "server/gcsp/vehicle-evidence/corpus-publisher.js": "db7e3fd9ff5ff4342872a54c6ca40dd3dda35fc31c51e3dbdb2910b067cd5e49",
+      "server/gcsp/vehicle-evidence/identity-routing.js": "89d805c94c5f7a9dd026daae40e42167355822961d07597bf0cf69c45b649088",
+      "server/gcsp/vehicle-evidence/synthetic-registry.js": "758f3a20ec9d0bbb6fd4853df16e0e3c8e891f732165a5584d7de5698aa7221f",
+      "server/gcsp/vehicle-evidence/vehicle-details-contract.js": "3886ac9377f3688d2bfe2c2af5a6fe330bb4b49d2f18bb049c8cc7f71d485cc8",
+      "server/gcsp/vehicle-evidence/vehicle-lookup.js": "1184b7cc50565b180284e342183cca02e031a718a55f909b7980c34378a630e9",
+      "server/gcsp/vehicle-evidence/vin-allocation.js": "336d73b30e78ee4a6a1484598000497513a160a857d7b9533bd5ff3e55ff051e",
+      "server/gcsp/vehicle-evidence/vin-generator.js": "56072df720ff4b32d26fcd099852f397f140ae44b4658532fa952d11c717260f",
+      "server/gcsp/vehicle-evidence/vin-profiles.js": "d3f6ea071027d787b2eeb6ebb8d70992845711c63ad084e0819403d6e13a90bd",
+      "server/test/gcsp-historical-enrichment.test.js": "01427a27071d91e258c1baeb92f9e8253ff423a36d658958cb5239e73cbb25fc",
+      "server/vehicle-evidence/bmw-catalogue-adapter.js": "06c0910c131fdb0e2e4ef254dc5591f13c90ecb3f36f655aef3cb651aa0052a1",
+      "server/vehicle-evidence/bmw-image-adapter.js": "56753ac7e47e4790159e7d50fb4deafe1658730e803912f064e6ed09326774ef"
+    },
+    "dynamic_input_sha256": {
+      "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/configurations.jsonl": "9c1fb6a34e324e6e4937baa1e80eabafa44fae394dd138f2f77be9f6867e9855",
+      "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/images.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/manifest.json": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709",
+      "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/vins.jsonl": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
+      "server/data/gcsp/vehicle-evidence/vin-profiles.v1.json": "9a107b2b90c21a116e2fb93ca88211b95250c4404f6468924e5e7f53d092a1fa",
+      "server/gcsp/policy/seed-v1.json": "c585213b98631d6e82acc1b3720d47efae49fdb502f5fc86fb440703ef6e41a6",
+      "server/vehicle-evidence/assets/bmw-gb-i5-images-2026-11-01.v1/alpine-white.webp": "fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe",
+      "server/vehicle-evidence/assets/bmw-gb-i5-images-2026-11-01.v1/black-sapphire.webp": "4c38cdb43b6438b7ae54fd1c882280bf744e88a17f2ce43597c5dd2c4890b5de",
+      "server/vehicle-evidence/snapshots/bmw-gb-i5-2026-11-01.v1.json": "ee1ae6c5cb6ab742f9a2959825ca722007409fa019d15acd44bb4b79984556a3",
+      "server/vehicle-evidence/snapshots/bmw-gb-i5-images-2026-11-01.v1.json": "b6bbe8e39b018b1a38551d818e1dfe9b6504283c95dedd033d59d4df8395d393"
+    },
+    "configuration_sha256": {
+      ".claude/scaffolding.json": "c3645062f8dd8ff6aa9f81a794dddc10fe8b9172475fa2d2174e7e6559672160",
+      "package.json": "829c4ae8eb2ffd72cb9ca99904425335a3ae781aa6ae4aa25e840ab45d6ae0a1",
+      "server/package-lock.json": "6adf33f5d00f92bb4ae33c6d10b1ebafdeeb00b359c969010865e27fc490d12e",
+      "server/package.json": "e4c2e3508e3374736da5e2c770e2d6065d5726dd5c5363e1644df4d8fb384139"
+    },
+    "node": {
+      "path": "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+      "sha256": "1ef99ea25fe70c9b67e7efe768ef8ee22148d3cabc703db6131b57aeb617d040",
+      "version": "v26.7.0"
+    },
+    "python": "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]",
+    "installed_dependency_tree_sha256": "b8c0d07dc1e15162f68ded257c439341c3dcb4094ba3c5b3fa5e1b528da1dd77",
+    "installed_dependency_files": 139,
+    "stable_environment_sha256": "4542397d6466bee50fd8ed57e719f86ff67c5f2b6529559a6df6b121a077e813",
+    "volatile_metadata": "CODEX_TOOL_CALL_ID excluded from stable comparison after preallocation guard; full per-chunk inherited environment hashes retained externally. No tests/scratch/overlays occurred before correction."
+  },
+  "checks": [
+    {
+      "id": "historical",
+      "argv": [
+        "env",
+        "-u",
+        "F60_PRODUCER_ROOT",
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "--experimental-test-coverage",
+        "server/test/gcsp-historical-enrichment.test.js"
+      ],
+      "cwd": "canonical assembled candidate root; explicit local absolute collector in generic command",
+      "passed": 9,
+      "tests": 9,
+      "failures": 0,
+      "skips": 0,
+      "wall_seconds": 2.986235166012193,
+      "node_duration_ms": 2823.841167,
+      "case_lines": [
+        "\u2714 historical source uses the actual common session through F54 publication and read-only lookup (475.141542ms)",
+        "\u2714 changed source pins and mutable caller inputs cannot become admitted historical evidence (154.82525ms)",
+        "\u2714 historical input snapshots caller pins before asynchronous reads (154.89625ms)",
+        "\u2714 cache commit before admission keeps accepted empty and reopens without another source operation (165.681125ms)",
+        "\u2714 committed admission reopens once and cannot admit changed dates, quantities or a missing receipt (537.051834ms)",
+        "\u2714 corpus packaging rejects altered reports and immutable sidecar conflicts (275.268125ms)",
+        "\u2714 actual F54 interrupted selection reopens the same immutable historical candidate (368.674667ms)",
+        "\u2714 interrupted sidecar staging leaves no final partial file and resumes the same candidate (242.399542ms)",
+        "\u2714 an admitted session cannot revert to unqualified state or replace the enrichment-stage records (362.202209ms)"
+      ],
+      "aggregate_v8_coverage": [
+        "\u2139   collection-session.mjs       |  71.25 |    64.00 |   78.26 | 23-42 91-93 120 134-139 190-237 251-255 271-281",
+        "\u2139   configuration-key.mjs        |  88.33 |    75.00 |   91.67 | 22-25 29-31",
+        "\u2139   enrich-fleet.mjs             |  88.85 |    73.78 |   92.11 | 26-27 134-135 137-138 140-142 144-148 164-166 168-171 240-242 244 255-258",
+        "\u2139   historical-enrichment.mjs    | 100.00 |    92.50 |   95.24 | ",
+        "\u2139    index.js                    |  18.18 |   100.00 |    0.00 | 13-24 26-30 32-38 41-57 60-99",
+        "\u2139    file-provider.js            |  98.19 |    86.11 |   94.12 | 10-12",
+        "\u2139    index.js                    |  46.41 |    63.64 |   52.17 | 29-30 40-47 59-69 72-76 87-95 98-110 113-139 142-143 149-153",
+        "\u2139    memory-provider.js          |  40.48 |    50.00 |    0.00 | 9-10 13-20 25-39",
+        "\u2139    postgres-provider.js        |  21.19 |    50.00 |    0.00 | 10-11 15-34 37-49 52-65 68-91 94-99 102-109 112-117",
+        "\u2139    publish.js                  |  19.13 |   100.00 |    0.00 | 9-16 20 23 26-27 31-49 52-92 95-115",
+        "\u2139    core.js                     |  10.68 |    85.19 |   24.00 | 36-76 79-230 233-365",
+        "\u2139    schema.js                   | 100.00 |   100.00 |   66.67 | ",
+        "\u2139    corpus-publisher.js         |  84.93 |    82.47 |   81.43 | 32-33 101-103 149-156 175-183 185-187 191-209",
+        "\u2139    identity-routing.js         |  26.39 |   100.00 |    0.00 | 12-37 42-58 63-72",
+        "\u2139    synthetic-registry.js       |  79.78 |    62.42 |   75.00 | 32-35 52-55 114-116 139-140 166-167 173-175 220-231 242-248 250-255 257-262 267-272",
+        "\u2139    vehicle-details-contract.js |  95.42 |    37.04 |   77.78 | 25-28 74 129",
+        "\u2139    vehicle-lookup.js           |  67.71 |    40.54 |   70.59 | 18 20 51-72 79 87-88 91-94",
+        "\u2139    vin-allocation.js           |  20.00 |    85.71 |   21.74 | 32-47 49-71 79-91 94-99 103-179 182-191 195-216 220-254 257-270",
+        "\u2139    vin-generator.js            |  28.57 |   100.00 |    0.00 | 10-16 20-42",
+        "\u2139    vin-profiles.js             |  22.73 |   100.00 |    0.00 | 17 20 23-65 67-72 74-77 81-117 123-132",
+        "\u2139   bmw-catalogue-adapter.js     |  81.20 |    60.33 |   88.24 | 30-31 33-35 261-262 264-265 270-272 274-275 287-290 330-383",
+        "\u2139   bmw-image-adapter.js         |  40.09 |    20.00 |   42.11 | 44-45 49-53 55-60 62-64 66-68 77-104 106-114 116-122 126-197 209",
+        "\u2139 all files                      |  59.13 |    67.36 |   65.56 | "
+      ],
+      "per_test_contexts": "not available",
+      "log_sha256": "19eac79315a08549161d8390263415be8fe8205be811a6d24f6a6e7e0b42f310",
+      "success_verbose_log_removed": true
+    },
+    {
+      "id": "generic",
+      "argv": [
+        "node",
+        "docs/gcsp/evidence/fucq60/session-reuse-proof.mjs",
+        "--producer",
+        "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-033/scripts/gcsp/collect-fleet.mjs",
+        "--producer-sha256",
+        "d039d3c8a8acf216204bd83831c70d6001d0e277aec94bd51397a9738341449c",
+        "--session-sha256",
+        "67eff0ad3311d0bfbc13bfe03816fd4e55c1f4fc9af1ae5c2814bf87941ccbe4"
+      ],
+      "cwd": "canonical assembled candidate root; explicit local absolute collector in generic command",
+      "passed": 6,
+      "tests": 6,
+      "failures": 0,
+      "skips": 0,
+      "wall_seconds": 1.5069064580020495,
+      "node_duration_ms": 1355.213708,
+      "case_lines": [
+        "\u2714 real collection, F60 enrichment and reopened resume share cached responses and outcome cursor (225.19675ms)",
+        "\u2714 F60 stage changes cannot refresh the original persisted absolute deadline (155.936792ms)",
+        "\u2714 lifetime operation and retry accounting survives F60 interruption and cannot be reset by a new stage (371.934958ms)",
+        "\u2714 accepted source records and F60 stage policy are immutable across resume (236.861584ms)",
+        "\u2714 a stopped image operation retains valid facts as a durable explicit partial outcome (180.378333ms)",
+        "\u2714 an interruption after committed F60 outcome never repeats accepted work (182.460542ms)"
+      ],
+      "aggregate_v8_coverage": [],
+      "per_test_contexts": "not available",
+      "log_sha256": "a70158aa01b64c4bee29e08bbfa06431e7d4d729476d1545fd3b34fd506a9ef3",
+      "success_verbose_log_removed": true
+    }
+  ],
+  "selection": {
+    "automatic_selector": "Strict --targeted --dry-run exited 2: targeted selection unsupported for language unspecified/configured runner.",
+    "reviewed_choice": "Exactly two serial explicit commands; legacy npm fallback excluded. No full suite or unchanged producer/qualifier/pure/adapter reruns.",
+    "function_to_tests": {
+      "readRetainedHistoricalInput": "Historical pipeline, changed source pins and immediate caller-pin race cases",
+      "createHistoricalEnrichmentRun": "Historical admission, mutable producer identity, cache/resume, candidate/sidecar and cross-stage integrity cases",
+      "createFleetCollector/createCollectionSession/enrichFleet": "Six generic actual local-collector cases plus historical session cases",
+      "F54 registry and lookup": "Historical candidate publication/read-only lookup and interrupted selection cases"
+    },
+    "unknown_or_unexercised_boundaries": [
+      "Canonical shared-runtime registry/lookup injection and selected immutable corpus activation",
+      "Gary-owned actual PostgreSQL reopen/run-isolation/reset and adopted identity/stock configuration binding",
+      "Current-source qualification/admission, scheme coverage and F77 minimum 200 genuinely distinct real configurations",
+      "Representative retained image assets and fidelity coverage",
+      "Authored final integration/full-suite gate under separate serial coordination",
+      "Whole FUCQ-60 acceptance; Jira status and slice statuses remain unchanged"
+    ],
+    "per_test_coverage_contexts": "Unsupported by allocated Node aggregate V8 report; reviewed function/fixture/config/subprocess boundary mapping supplements observed coverage. No extra coverage run."
+  },
+  "resources": {
+    "chunks": 2,
+    "workers": 1,
+    "scratch_limit_bytes_per_chunk": 134217728,
+    "ram_limit_bytes_per_chunk": 402653184,
+    "seconds_limit_per_chunk": 300,
+    "log_limit_bytes_per_chunk": 1048576,
+    "sampled_scratch_peaks_removed_bytes": 324864,
+    "max_sampled_test_group_rss_bytes": 254951424,
+    "outer_wall_seconds": 4.4931416240142426,
+    "roots_removed": 2,
+    "process_groups_joined_and_absent": 2,
+    "temporary_pg_import_symlinks_removed_and_absent": 2,
+    "success_verbose_logs_removed": true,
+    "host_accounting": "Machine-wide short-held reservation locks plus actual-job snapshots before/after each chunk; no continuous ledger charging claim.",
+    "output_location": "Small manifests/results retained outside scratch; no file expected or measured at 256 MiB.",
+    "compatibility_exception": null,
+    "leftovers": []
+  },
+  "provenance": {
+    "source_kind": "retained-historical-source; dated-snapshot only",
+    "observed_catalogue_retrieved_date": "2026-11-01",
+    "catalogue_production_identity_date": "2027-01-05",
+    "physical_production_date": null,
+    "factory_codes": 47,
+    "SE000001_quantity": 1,
+    "f60_report": "incomplete; offline-session-not-source-qualified",
+    "f54_manifest": "bounded-fixture-or-partial-corpus",
+    "f54_lookup_complete": "Supported catalogue subset; does not establish physical/source breadth completeness.",
+    "unknown_or_absent": [
+      "steering",
+      "body length",
+      "fitting",
+      "images",
+      "VIN",
+      "order",
+      "eligibility"
+    ],
+    "separate_current_observation": "6 November four GET/200, 782059 decoded bytes, accepted 0, zero new configurations; this validation made zero requests and did not join missing current fields from historical evidence."
+  },
+  "remaining_gates": [
+    "Parent exact review and attributed merge publication of this pin/evidence checkpoint",
+    "Canonical shared-runtime registry/lookup injection and selected immutable corpus activation",
+    "Gary-owned actual PostgreSQL reopen/run-isolation/reset and adopted identity/stock configuration binding",
+    "Current-source qualification/admission, scheme coverage and F77 minimum 200 genuinely distinct real configurations",
+    "Representative retained image assets and fidelity coverage",
+    "Authored final integration/full-suite gate under separate serial coordination",
+    "Whole FUCQ-60 acceptance; Jira status and slice statuses remain unchanged"
+  ],
+  "operations": {
+    "source_requests": 0,
+    "network": 0,
+    "browser": 0,
+    "sql": 0,
+    "credentials": 0,
+    "installs": 0,
+    "producer_edits": 0,
+    "git_index_writes": 0,
+    "commits": 0,
+    "pushes": 0,
+    "descendants": 0
+  },
+  "agents": {
+    "lead": "Scooby Doo",
+    "requested_model": "gpt-6.1-sol",
+    "selected_model": "gpt-6.1-sol",
+    "verified_model": "gpt-6.1-sol",
+    "requested_effort": "high",
+    "selected_effort": "high",
+    "verified_effort": "high",
+    "fallback": null,
+    "descendants": 0
+  },
+  "external_receipts": "Shared root .claude/dev-poller-resume-20261106/lead60/canonical-assembly/{selected-plan,selector-plan,historical-receipt,generic-receipt,producer-diff-review,preallocation-environment-drift}.json; exact ownership manifests and host snapshots remain there.",
+  "impact_map": ".claude/test-runs/impact/fucq60-canonical-0c9f868eb0b01f6e.json",
+  "experience": "HLD06 and experience-quality.md; no screen, user flow, component or topology change. Existing unknown/fidelity/provenance presentation contracts preserved; no screenshots needed."
+}

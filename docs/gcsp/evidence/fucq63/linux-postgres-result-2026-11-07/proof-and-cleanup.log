@@ -1,0 +1,41 @@
+postgres-orders	Restore exact .12 and prove three native order references	﻿2026-11-07T11:59:26.3601564Z ##[group]Run python3 -I -B docs/gcsp/evidence/fucq63/linux-postgres-proof-2026-11-07/run.py
+postgres-orders	Restore exact .12 and prove three native order references	2026-11-07T11:59:26.3602808Z ^[[36;1mpython3 -I -B docs/gcsp/evidence/fucq63/linux-postgres-proof-2026-11-07/run.py^[[0m
+postgres-orders	Restore exact .12 and prove three native order references	2026-11-07T11:59:26.3623520Z shell: /usr/bin/bash -e {0}
+postgres-orders	Restore exact .12 and prove three native order references	2026-11-07T11:59:26.3623924Z env:
+postgres-orders	Restore exact .12 and prove three native order references	2026-11-07T11:59:26.3624351Z   PG_SERVICE_ID: b9070b9cd4a0548e8c333cd0058a44e8e7919811ff8b6635d7b5fa3f65aa00e6
+postgres-orders	Restore exact .12 and prove three native order references	2026-11-07T11:59:26.3624885Z ##[endgroup]
+postgres-orders	Restore exact .12 and prove three native order references	2026-11-07T11:59:26.4358276Z {"phase": "npm-ci", "state": "start"}
+postgres-orders	Restore exact .12 and prove three native order references	2026-11-07T11:59:27.4537765Z {"phase": "npm-ci", "exitCode": 0, "seconds": 1.018, "state": "passed"}
+postgres-orders	Restore exact .12 and prove three native order references	2026-11-07T11:59:27.4538606Z {"phase": "restore", "state": "start"}
+postgres-orders	Restore exact .12 and prove three native order references	2026-11-07T12:01:39.5320200Z {"phase": "restore", "exitCode": 0, "seconds": 132.077, "state": "passed"}
+postgres-orders	Restore exact .12 and prove three native order references	2026-11-07T12:01:39.5320958Z {"phase": "orders", "state": "start"}
+postgres-orders	Restore exact .12 and prove three native order references	2026-11-07T12:02:36.4239487Z {"phaseFailure": {"stage": "orders", "boundedLog": "{\"status\":\"failed\",\"stage\":\"unchanged-order-reference-proof\",\"checked\":0,\"nativeProof\":false,\"acceptance\":false}\n"}}
+postgres-orders	Restore exact .12 and prove three native order references	2026-11-07T12:02:36.4432854Z {"receipt": "download.json", "value": {"status": "ok", "mode": "cold-restore", "active": {"datasetId": "gcsp-source-fleet", "version": "2026-11-07.12", "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30", "counts": {"configurations": 10001, "distinctConfigurations": 10001, "images": 2, "qualifyingCompleteDistinctSourceConfigurations": 10000, "sourceConfigurations": 10000, "vinMappings": 1}, "sourceContexts": [{"catalogueDate": null, "market": "US", "note": "Small structural reference fixture; no UK/RHD, full equipment or 200/10000 corpus claim", "observedDate": "2026-11-01", "sourceKind": "north-american-reference", "steering": "LHD"}, {"catalogueDate": "2026-11-01", "market": "GB", "note": "Exact retained FUCQ-39 GB catalogue; physical year, build, steering and plant remain unknown", "observedDate": "2026-11-01", "sourceKind": "dated-snapshot", "steering": null}, {"catalogueDate": "2026-11-07", "market": "GB", "note": "9999 actual admitted v2 factory selections and one retained historical source configuration; two representative images retain exact dated associations; four qualified measurements apply only to one exact configuration; physical build, visual fidelity and scheme breadth remain unverified", "observedDate": "2026-11-07", "sourceKind": "dated-snapshot", "steering": null}], "completeness": {"imagesMissing": 9999, "selectedOptions": {"complete": 10000, "unknown": 1}, "sourceKinds": {"dated-snapshot": 10000, "north-american-reference": 1}}}, "externalCalls": 62}}
+postgres-orders	Restore exact .12 and prove three native order references	2026-11-07T12:02:36.4443939Z {"receipt": "orders.json", "value": {"status": "failed", "stage": "unchanged-order-reference-proof", "errorType": "AssertionError", "errorCode": "ERR_ASSERTION", "acceptance": false, "ownedSchemaAbsent": true}}
+postgres-orders	Restore exact .12 and prove three native order references	2026-11-07T12:02:36.7414736Z {"cleanup": "passed", "scratchAbsent": true, "serviceAbsent": true, "removedWorkingBytes": 925216870, "issues": []}
+postgres-orders	Restore exact .12 and prove three native order references	2026-11-07T12:02:36.7418057Z {"status": "failed", "stage": "orders", "acceptance": false, "errorType": "AssertionError", "reason": "orders failed", "phases": [{"phase": "npm-ci", "exitCode": 0, "seconds": 1.018}, {"phase": "restore", "exitCode": 0, "seconds": 132.077}, {"phase": "orders", "exitCode": 1, "seconds": 56.891}], "cleanupPassed": true}
+postgres-orders	Restore exact .12 and prove three native order references	2026-11-07T12:02:36.7497354Z ##[error]Process completed with exit code 1.
+postgres-orders	Verify owned scratch and service absent	﻿2026-11-07T12:02:36.7571792Z ##[group]Run set -euo pipefail
+postgres-orders	Verify owned scratch and service absent	2026-11-07T12:02:36.7572263Z ^[[36;1mset -euo pipefail^[[0m
+postgres-orders	Verify owned scratch and service absent	2026-11-07T12:02:36.7572741Z ^[[36;1mproof=docs/gcsp/evidence/fucq63/linux-postgres-proof-2026-11-07/run.py^[[0m
+postgres-orders	Verify owned scratch and service absent	2026-11-07T12:02:36.7573384Z ^[[36;1mif test -f "$proof"; then^[[0m
+postgres-orders	Verify owned scratch and service absent	2026-11-07T12:02:36.7573837Z ^[[36;1m  python3 -I -B "$proof" --cleanup-only^[[0m
+postgres-orders	Verify owned scratch and service absent	2026-11-07T12:02:36.7574316Z ^[[36;1melse^[[0m
+postgres-orders	Verify owned scratch and service absent	2026-11-07T12:02:36.7574644Z ^[[36;1m  docker rm --force --volumes "$PG_SERVICE_ID"^[[0m
+postgres-orders	Verify owned scratch and service absent	2026-11-07T12:02:36.7575385Z ^[[36;1m  test -z "$(docker ps -a --no-trunc --filter "id=$PG_SERVICE_ID" --format '{{.ID}}')"^[[0m
+postgres-orders	Verify owned scratch and service absent	2026-11-07T12:02:36.7575856Z ^[[36;1mfi^[[0m
+postgres-orders	Verify owned scratch and service absent	2026-11-07T12:02:36.7592553Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+postgres-orders	Verify owned scratch and service absent	2026-11-07T12:02:36.7593101Z env:
+postgres-orders	Verify owned scratch and service absent	2026-11-07T12:02:36.7593581Z   PG_SERVICE_ID: b9070b9cd4a0548e8c333cd0058a44e8e7919811ff8b6635d7b5fa3f65aa00e6
+postgres-orders	Verify owned scratch and service absent	2026-11-07T12:02:36.7594046Z ##[endgroup]
+postgres-orders	Verify owned scratch and service absent	2026-11-07T12:02:36.8619158Z {"cleanup": "passed", "scratchAbsent": true, "serviceAbsent": true, "removedWorkingBytes": 0, "issues": []}
+postgres-orders	Stop containers	﻿2026-11-07T12:02:37.0795787Z Print service container logs: a7392cff61d64981a087ce25d594f0ca_postgres16_c89a58
+postgres-orders	Stop containers	2026-11-07T12:02:37.0800160Z ##[command]/usr/bin/docker logs --details b9070b9cd4a0548e8c333cd0058a44e8e7919811ff8b6635d7b5fa3f65aa00e6
+postgres-orders	Stop containers	2026-11-07T12:02:37.0950668Z Error response from daemon: No such container: b9070b9cd4a0548e8c333cd0058a44e8e7919811ff8b6635d7b5fa3f65aa00e6
+postgres-orders	Stop containers	2026-11-07T12:02:37.0959895Z ##[warning]Docker logs fail with exit code 1
+postgres-orders	Stop containers	2026-11-07T12:02:37.0961275Z Stop and remove container: a7392cff61d64981a087ce25d594f0ca_postgres16_c89a58
+postgres-orders	Stop containers	2026-11-07T12:02:37.0966675Z ##[command]/usr/bin/docker rm --force b9070b9cd4a0548e8c333cd0058a44e8e7919811ff8b6635d7b5fa3f65aa00e6
+postgres-orders	Stop containers	2026-11-07T12:02:37.1100596Z Error response from daemon: No such container: b9070b9cd4a0548e8c333cd0058a44e8e7919811ff8b6635d7b5fa3f65aa00e6
+postgres-orders	Stop containers	2026-11-07T12:02:37.1122182Z Remove container network: github_network_a65147a0aa0c400995782d670ab8ee00
+postgres-orders	Stop containers	2026-11-07T12:02:37.1126318Z ##[command]/usr/bin/docker network rm github_network_a65147a0aa0c400995782d670ab8ee00
+postgres-orders	Stop containers	2026-11-07T12:02:37.2046459Z github_network_a65147a0aa0c400995782d670ab8ee00

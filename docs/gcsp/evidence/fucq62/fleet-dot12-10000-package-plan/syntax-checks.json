@@ -1,0 +1,39 @@
+{
+  "scope": "static preparation only",
+  "planSha256": "c20c4c585f9e2e1005004e0aa14f0ca936d972b63e7af2797918664baccbcd4c",
+  "checks": [
+    {
+      "path": "supervise.py",
+      "check": "Python AST parse",
+      "passed": true,
+      "sha256": "1674c5a4ef5cbdb3e1f248d7416579d05ceb111c8f923f6ba8d14df8eca2c29a"
+    },
+    {
+      "path": "group-proof.py",
+      "check": "Python AST parse",
+      "passed": true,
+      "sha256": "24944720349cfa3961d18e349ddceb5b6f040d3ba030ebab380f9f9c1131a00c"
+    },
+    {
+      "path": "common.mjs",
+      "check": "Node syntax only; no imports/runtime",
+      "passed": true,
+      "sha256": "5b9f7fb1a6bc41b706537df7f318f7dcf9638e702f2bcd19a5682371c452a01a"
+    },
+    {
+      "path": "package.mjs",
+      "check": "Node syntax only; no imports/runtime",
+      "passed": true,
+      "sha256": "350410235c8457ca3ea11180f9fbee7e8590e8e6d218a6f665706ea17f17e501"
+    },
+    {
+      "check": "all code/input/runtime/source/store/baseline and frozen original167native/proof12 170 pins",
+      "passed": true,
+      "codePins": 177,
+      "runtimePins": 38
+    }
+  ],
+  "runtimeExecuted": false,
+  "scratchAllocated": false,
+  "acceptance": false
+}

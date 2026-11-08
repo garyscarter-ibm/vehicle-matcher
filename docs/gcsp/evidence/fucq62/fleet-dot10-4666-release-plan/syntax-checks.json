@@ -1,0 +1,22 @@
+{
+  "scope": "scoped static preparation; no package/network/production mutation",
+  "planSha256": "9dd197b7069d3f0e1d3b7087f8ec4cb65390440919aafd12b0fd67ed2cee32c6",
+  "descriptorSha256": "f74ddd34fd853868f3f43a9528ffe74d4fe187a2b7a0d5fbd7b4c796ef7ae05a",
+  "checks": [
+    "three Node helper syntax checks passed",
+    "two Python helpers compiled in memory",
+    "git apply --check exact append-only registration patch passed",
+    "163 reviewed-code/prepared pins match current bytes except explicit unapplied release-anchor after-hash",
+    "52 prior ordinary pins reused from completed immutable proof",
+    "completed offline summary retains4668unique/zero directHTTP/1313consumer errors",
+    "existing validateRelease accepts exact descriptor26assets/15sources/128MiB JSONL limit"
+  ],
+  "packageExecuted": false,
+  "externalCalls": 0,
+  "sourceCalls": 0,
+  "registrationApplied": false,
+  "ordinaryPublicationExecuted": false,
+  "publicUploadExecuted": false,
+  "scratchCreated": false,
+  "acceptance": false
+}

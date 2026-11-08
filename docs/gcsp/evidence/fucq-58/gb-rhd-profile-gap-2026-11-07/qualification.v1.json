@@ -1,0 +1,185 @@
+{
+  "schemaVersion": "f58-gb-rhd-profile-gap-evidence.v1",
+  "observedDate": "2026-11-07",
+  "story": "FUCQ-58",
+  "status": "context-corroborated-profile-unqualified",
+  "reviewer": {
+    "name": "Charlie Dog",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "selectedModel": "gpt-6.1-sol",
+    "selectedEffort": "high",
+    "effectiveRuntimeIndependentlyVerified": false,
+    "fallback": null,
+    "descendants": 0
+  },
+  "scope": "Retained evidence first; bounded public primary-source research for GB/RHD descriptor, format, year, plant and era qualification. No vehicle-identity sampling, source solver traffic or profile activation.",
+  "inputHashMeaning": "SHA-256 values identify complete named local artifacts, or the exact UTF-8 FUCQ-58 description, not vehicle identities or sampled identifier fragments.",
+  "retainedInputs": [
+    { "path": "docs/gcsp/synthetic-vin-rules.md", "sha256": "d693b957f1004f57e58bfd77104ff097b5e46ee5653b3ea7a03e3b7bd66ba543" },
+    { "path": "docs/gcsp/evidence/fucq-4/bmw-vin-rules-2026-11-01.json", "sha256": "8f60d2ce36d076039623f8abbdacde358990d03a554d3044d9609ebac08fd6e6", "selector": "/ukDescriptorObservations" },
+    { "path": "docs/gcsp/evidence/fucq-58/g61-field-ledger-2026-11-05/ledger.json", "sha256": "05ebdf57f35862cd9d3a0c9e1533fb281999274c3a3810519c5c00d6ffe1490d" },
+    { "path": "docs/gcsp/evidence/fucq-58/known-seed-refresh-2026-11-05/evidence/observation.json", "sha256": "1fa5a52de21d27cc45555b69a29d97c90d5ad800001e880405bb35093ff66ca7" },
+    { "path": "server/data/gcsp/vehicle-evidence/vin-profiles.v1.json", "sha256": "9a107b2b90c21a116e2fb93ca88211b95250c4404f6468924e5e7f53d092a1fa" }
+  ],
+  "acceptanceSource": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/jira-current.json",
+    "artifactSha256": "c44f0e938d5fba2dad429fb950365b41f124b5fc29265fa6f39319137113fb20",
+    "selector": "FUCQ-58 fields.description",
+    "descriptionUtf8Sha256": "6a6802ef36644a1f14d7f2f5bf5cb69b930174be954213a517401499815c7249",
+    "criteriaChanged": false,
+    "statusChanged": false,
+    "remaining": "Enabled compatible profiles, multiple genuine configurations for each of WBA/WBS/WBY/5UX/5YM and the original 10,000 distinct-configuration obligation remain open. Configuration-only collection does not require attaching a VIN."
+  },
+  "retainedEvidenceAssessment": {
+    "ukSingleObservations": 12,
+    "secondDistinctSameDerivativeCorroborations": 0,
+    "independentAdvertToLookupRoutes": 1,
+    "advertToLookupObservationId": "UK-OBS-002",
+    "enabledProfiles": 5,
+    "enabledProfileContext": "US / North America / LHD structural references",
+    "gbRhdProfilesEnabled": 0,
+    "registryCandidateIds": ["UK-OBS-001", "UK-OBS-002"],
+    "g61CandidateId": "UK-OBS-004",
+    "g61CandidateInRegistry": false,
+    "g61ConfiguratorVehicleOrProfileMatchEstablished": false,
+    "position10": "All twelve observations retain literal zero; no BMW GB year rule or model/build year follows.",
+    "wmiBoundary": "Reported GB X5 and X5 M observations use WBA and WBS respectively. US 5UX/5YM references cannot substitute for them."
+  },
+  "primaryContextClaims": [
+    {
+      "id": "gb-g61-family-offering",
+      "scope": "BMW UK G61 product family at the stated 2024 launch",
+      "claim": "BMW UK identifies the sixth-generation 5 Series Touring as G61 and offers an all-electric i5 eDrive40 Touring, whose motor is on the rear axle.",
+      "sourceRefs": ["BMW-UK-G61-LAUNCH"],
+      "confidence": "manufacturer-published product context",
+      "qualifiesObservationOrVinProfile": false
+    },
+    {
+      "id": "gb-g61-delivery-era-anchor",
+      "scope": "UK family customer launch only",
+      "claim": "The BMW UK release states that UK customer deliveries commence on 25 May 2024.",
+      "sourceRefs": ["BMW-UK-G61-LAUNCH"],
+      "confidence": "explicit manufacturer launch date",
+      "qualifiesObservationOrVinProfile": false,
+      "doesNotEstablish": ["modelYear", "individualProductionDate", "productionEndDate", "2026or2027VinEncoding"]
+    },
+    {
+      "id": "gb-g61-plant-context",
+      "scope": "UK-offered G61 family production context at launch",
+      "claim": "The UK release places its flexible drivetrain production line at Dingolfing. The separate global production release corroborates G61/i5 Touring production there, irrespective of drive.",
+      "sourceRefs": ["BMW-UK-G61-LAUNCH", "BMW-G61-PRODUCTION"],
+      "confidence": "two manufacturer releases with matching product-family context",
+      "qualifiesObservationOrVinProfile": false,
+      "doesNotEstablish": ["position11CodeForGbRhdProfile", "exactDerivativeEraAllocation", "UK-OBS-004AssemblyPlant", "universalPlantRule"]
+    }
+  ],
+  "publicSources": [
+    {
+      "id": "BMW-UK-G61-LAUNCH",
+      "url": "https://www.press.bmwgroup.com/united-kingdom/article/detail/T0439590EN_GB/the-new-bmw-5-series-touring",
+      "title": "The new BMW 5 Series Touring.",
+      "publisher": "BMW Group PressClub United Kingdom",
+      "publicationDate": null,
+      "dateBasis": "Extractor metadata reports 2024-05-24; not independently accepted as the original publication date. The body explicitly states the 2024-05-25 UK delivery launch.",
+      "acquiredAtReportedByTool": "2026-10-28T00:00:00Z",
+      "reviewedDate": "2026-11-07",
+      "finding": "Qualifies the narrow UK product, launch and plant context above. Retrieved passages provide no explicit RHD/type-code semantics, whole VIN descriptor, zero-year convention or GB plant-character mapping."
+    },
+    {
+      "id": "BMW-G61-PRODUCTION",
+      "url": "https://www.press.bmwgroup.com/global/article/detail/T0439990EN/four-drive-concepts-%E2%80%93-one-promise:-sportiness-in-series?language=en",
+      "title": "Four drive concepts – one promise: Sportiness in series.",
+      "publisher": "BMW Group PressClub Global",
+      "publicationDate": null,
+      "dateBasis": "Official topic search excerpt labels the release 1 March 2024; the fetched article metadata supplies no publication date. No individual build date is inferred.",
+      "acquiredAtReportedByTool": "2026-10-25T00:00:00Z",
+      "reviewedDate": "2026-11-07",
+      "finding": "Corroborates G61/i5 Touring Dingolfing production context. The earlier VIN rules already cite this release; it supplies no new BMW GB/RHD VIN encoding rule."
+    },
+    {
+      "id": "BMW-BATTERY-MODEL-TABLE",
+      "url": "https://www.bmw.com/content/dam/bmw/marketBMWCOM/bmw_com/footer/battery-regulation/english/july_25/Performance%20and%20durability%20parameters%20of%20high-voltage%20batteries.pdf",
+      "publisher": "BMW",
+      "publicationDate": "2025-07-01",
+      "dateBasis": "Document date in search excerpt; retained VIN rules already cite the primary model table.",
+      "reviewedDate": "2026-11-07",
+      "finding": "Lists 72HH among i5 eDrive40 model codes. It does not join UK-OBS-004 to that derivative or establish WMI/VIN composition, steering or a model-year rule.",
+      "fetchedInThisPass": false
+    },
+    {
+      "id": "HISTORICAL-VIN-REGULATORY-TEXT",
+      "url": "https://www.legislation.gov.uk/eur/2011/19/annex/I/part/B/division/2/2020-01-31/data.xht?view=snippet&wrap=true",
+      "publisher": "legislation.gov.uk",
+      "publicationDate": null,
+      "reviewedDate": "2026-11-07",
+      "finding": "Search excerpts of Regulation 19/2011 describe three WMI characters, six VDS characters and eight VIS characters. The fetch excerpt is incomplete, and the date selector is not an actual amendment date. No current-2026 approval applicability or BMW-specific position-nine/ten convention is qualified.",
+      "qualifiesObservationOrVinProfile": false
+    }
+  ],
+  "minimalRemainingEvidence": [
+    {
+      "fields": ["exactDerivative", "generation", "body", "powertrain", "drive", "transmission", "agModelAssociation"],
+      "requiredProof": "Independently match the same candidate/type to the selected catalogue family. Public model facts may describe a family but cannot identify the retained single observation."
+    },
+    {
+      "fields": ["market", "steering", "importContext"],
+      "requiredProof": "Explicit GB specification and RHD evidence bound to that type and era, with import/mismatch context. UK registration, UK launch, locale or the unexplained RL literal alone are insufficient."
+    },
+    {
+      "fields": ["wmi", "wholeDescriptor", "descriptorBoundaries", "position9Convention", "position10Meaning", "serialShape"],
+      "requiredProof": "BMW or applicable type-approval format evidence for the bounded GB/RHD type, supported by a second distinct consistent sample under an authorised privacy-preserving method. Never derive descriptor = AG code + zero or copy a sampled checksum/serial."
+    },
+    {
+      "fields": ["modelYear", "productionEra", "applicablePlantCharacter"],
+      "requiredProof": "Separately labelled manufacturer/type-era evidence and a matched plant-code allocation. Keep UK delivery launch, catalogue order/effect date, advertised year, registration year and actual production date separate."
+    }
+  ],
+  "exclusions": [
+    "No US/LHD profile validates a GB/RHD configuration.",
+    "No WMI follows from badge, drivetrain, assembly country or plant code.",
+    "The US G60 Sedan reference does not establish G61 Touring encoding.",
+    "The twelve single observations do not corroborate each other as the same derivative.",
+    "The two manufacturer plant releases corroborate context, not a second observed vehicle or BMW VIN format.",
+    "No current production or VIN era is inferred solely from a historical launch; no 2027 model year follows from a 2027 catalogue effect date.",
+    "Broader requested WMI coverage may require separately evidenced market/era contexts. No new context is silently selected here."
+  ],
+  "researchBudget": {
+    "maximumSearchOrOpenOperations": 12,
+    "usedSearchOrOpenOperations": 12,
+    "nativeQueries": 3,
+    "nativeOutcome": "No results returned; no repeated native retry.",
+    "parallelQueries": 6,
+    "parallelFetchedUrls": 3,
+    "parallelSearchIds": ["search_55f8ee2cda83dcc664dcbc4261423c28", "search_dc7d2124d99722c979dce3effa6c5ed4", "search_1b7eae1eef609eef430dc12883e88d7e"],
+    "parallelExtractId": "extract_9b3a9a98384fce3fbdb23fd05b4fdc37",
+    "queries": [
+      { "engine": "native", "query": "site:press.bmwgroup.com \"72HH\"" },
+      { "engine": "native", "query": "site:bmw.co.uk \"VIN\" \"model year\"" },
+      { "engine": "native", "query": "site:vehicle-certification-agency.gov.uk \"BMW\" \"72HH\"" },
+      { "engine": "parallel", "query": "site:bmw.com 72HH model code" },
+      { "engine": "parallel", "query": "site:press.bmwgroup.com G61 UK production Dingolfing" },
+      { "engine": "parallel", "query": "site:legislation.gov.uk vehicle identification year code" },
+      { "engine": "parallel", "query": "site:press.bmwgroup.com i5 Touring right-hand-drive UK" },
+      { "engine": "parallel", "query": "site:legislation.gov.uk 19/2011 vehicle identification year" },
+      { "engine": "parallel", "query": "site:press.bmwgroup.com G61 i5 Touring UK launch" }
+    ],
+    "limitations": "A finite search pass does not prove no qualifying primary document exists. Conflicting photo-page date metadata was excluded; the incomplete regulatory excerpt was not promoted to a profile rule. No further source request is authorised by this receipt."
+  },
+  "outcome": {
+    "newVehicleObservations": 0,
+    "profilesActivated": 0,
+    "registryEdited": false,
+    "codeChanged": false,
+    "applicationTestsRun": false,
+    "configurationOnlyPipelineMayContinue": true,
+    "originalAcceptanceOpen": true,
+    "realVinPlateSerialOrIdentifierUrlRetained": false,
+    "sourceSolverCalls": 0,
+    "authenticatedBrowserCalls": 0,
+    "foregroundInteractions": 0,
+    "scratchCreated": false,
+    "largeOutputsCreated": false,
+    "leftovers": []
+  }
+}

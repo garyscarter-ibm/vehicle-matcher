@@ -1,0 +1,165 @@
+{
+  "story": "FUCQ-122",
+  "preparedAt": "2026-11-06T18:18:04.815921+00:00",
+  "state": "UNEXECUTED SOURCE PROPOSAL; activation and execution held for root selection",
+  "purpose": "Smallest continuation of the existing manual help journey for original resolved and closed employee states; waiting is explicitly unselected.",
+  "candidate": {
+    "path": "docs/gcsp/evidence/fucq122/current-host-browser-2026-11-06/scenario-resolved-closed-proposed.mjs",
+    "sha256": "32825b37f6dd3ed69d4b79856cbd662a9bceb49cc938b2e6379ae223a5d1027d",
+    "baseLocalName": "scenario.mjs",
+    "baseSha256": "f109c63e26f4477267372f2f89c0b032fab1ecdea07827b98ddd48f8404a0a76",
+    "entryPoint": "runCaseJourney({ page, origin, output, viewport })",
+    "syntaxChecked": false,
+    "executed": false
+  },
+  "priorEvidence": {
+    "commit": "d60d45807015272414e03fa55cf917f8b1a7b1d2",
+    "preparationCommit": "9779a89e1fb71b7fdf13dc498d3fa46741823bae",
+    "matrix": "docs/gcsp/evidence/fucq122/current-host-browser-2026-11-06/original-ac-evidence-matrix.md",
+    "narrowReceiptSha256": "7e3910b1e9e683d694aaeaf26dda24e7fde25bc3818b2001d5dbccda2d8d85ff",
+    "outcome": "Actual desktop and 375px manual route reached Paula reload/history; both runners incomplete/exit1. Retain absent-draft 404/console and all six failed reads, including four unclassified aborts. No clean-log rerun or new clean-console AC."
+  },
+  "selectedInput": {
+    "viewport": {
+      "width": 375,
+      "height": 812
+    },
+    "startingRoute": "Existing fresh memory-mode HTTPS launcher; ordinary first HTML adopts bootstrap cookies; Paula help request -> presenter Greg manual decision/in-progress -> presenter Paula ordinary help reload/history.",
+    "caseReason": "Please review my replacement before my current contract ends.",
+    "manualDecision": "Scheme team will discuss the renewal plan with Paula.",
+    "dueInput": "Reuse the initial server projection asOf + 1 hour, truncated to UTC minutes; no clock tick or policy override.",
+    "continuation": [
+      {
+        "from": "in-progress",
+        "to": "resolved",
+        "reason": "The scheme team recorded the manual decision and resolved the case.",
+        "nextAction": "Scheme team to record the completed renewal review.",
+        "remedySelection": "empty; keep current manual-decision",
+        "captures": [
+          "01-greg-resolved-review.png",
+          "02-paula-resolved-reload-history.png"
+        ]
+      },
+      {
+        "from": "resolved",
+        "to": "closed",
+        "reason": "The scheme team closed the case after recording the outcome.",
+        "nextAction": "No further case action is planned.",
+        "remedySelection": "empty; keep current manual-decision",
+        "captures": [
+          "03-greg-closed-review.png",
+          "04-paula-closed-reload-history.png"
+        ]
+      }
+    ],
+    "expectedTotals": {
+      "helpPost": 1,
+      "updatePosts": 3,
+      "newContinuationUpdates": 2,
+      "captures": 4
+    },
+    "assertions": [
+      "Use actual server nextStatuses; Greg Review leaves every stored field and POST count unchanged.",
+      "Each explicit Confirm adds exactly one case version and history event, preserving case ID, original reason, owner, manual remedy and all prior history.",
+      "Resolved offers only closed; closed offers no further status transitions and remains readable.",
+      "Return through presenter UI, ordinary help navigation and actual reload for each state; Paula complete record equals persisted record.",
+      "Show state heading, latest update, original facts, recorded remedy and dated history; capture focus and document overflow at 375px."
+    ],
+    "keyboardBoundary": "Existing Tab reachability, native select typeahead and radio arrows; text/date fills remain automated after Tab. No complete keyboard-only or announcement proof claimed."
+  },
+  "waitingForPaula": {
+    "selected": false,
+    "reason": "The unchanged starting journey creates a manual decision, no confirmed brief or real recorded decline. A manual remedy-proposed state has no Paula preference confirmation action and cannot prove waiting.",
+    "requiredExistingInput": "readOptions must supply a preference-relaxation from a current confirmed brief and an unused recorded decline; Greg records one selected preference change against the expected brief version.",
+    "existingEmployeePort": "gcsp-help.submitRelaxation -> adapter.changeAfterDecline -> POST /api/gcsp/brief/change-after-decline -> BriefService.changeAfterDecline (FUCQ-91).",
+    "routing": "FUCQ-91 brief, FUCQ-106 decline/FUCQ-107 follow-up and FUCQ-122 confirmation consumer. Existing interfaces are present; no missing-service or FUCQ-96 admission gate inferred.",
+    "remainingEvidence": "A separately selected genuine input and original waiting/confirmation browser evidence remain outstanding; no producer setup or allocation authorised here."
+  },
+  "sourceEvidence": [
+    {
+      "path": "server/gcsp/cases/index.js",
+      "sha256": "a080a47479444a94f041de1b0c094974c3eea655a8076f771ec33f82ecb43379",
+      "lines": {
+        "transitions": "23-24",
+        "closedReadable": "77-91,105-112",
+        "waitingInputs": "124-154,168",
+        "manualDecisionValid": "212-214",
+        "employeeConfirmation": "224-236",
+        "retainRemedyAndHistory": "290-319"
+      },
+      "sharedOwnedAndPinnedHostMatch": true
+    },
+    {
+      "path": "blocks/gcsp/cases/gcsp-case-queue.js",
+      "sha256": "34b271b06a423b5a23da3954d365a825a362188fd0f667b3fc0aeafd355ff39e",
+      "lines": {
+        "existingEditor": "90-123,161-172",
+        "emptyRemedyDefault": "199-209",
+        "reviewOmitsUnselectedRemedy": "214-241"
+      },
+      "sharedOwnedAndPinnedHostMatch": true
+    },
+    {
+      "path": "blocks/gcsp/cases/case-content.js",
+      "sha256": "09862d2b5d16c4c2980d6e2c96f97633c7c72ce77b9d9a8efb903c91bf6fb0eb",
+      "lines": {
+        "currentFields": "16-24",
+        "recordedRemedy": "27-49",
+        "waitingOnlyForRelaxation": "30-46",
+        "datedHistory": "52-61"
+      },
+      "sharedOwnedAndPinnedHostMatch": true
+    },
+    {
+      "path": "blocks/gcsp/cases/gcsp-help.js",
+      "sha256": "b4eb4bc9b5c895240916efea140607b300656f700e22ad7a6e72c6ff3b05ae8a",
+      "lines": {
+        "existingEmployeeConfirmation": "156-163"
+      },
+      "sharedOwnedAndPinnedHostMatch": true
+    },
+    {
+      "path": "blocks/gcsp/cases/http-adapter.js",
+      "sha256": "fafc58e81354d211f4ea837ac6f14faf59cd96ebae6a51d98654e9a0576ab5fe",
+      "lines": {
+        "existingPorts": "48-56"
+      },
+      "sharedOwnedAndPinnedHostMatch": true
+    }
+  ],
+  "preservation": {
+    "sourcePinCount": 695,
+    "sourceCatalogueSha256": "0b6c8c636764ec21fee54fcb630b2567e5fa25f36b750f724386ebd21a6b433f",
+    "all695PinsUnchanged": true,
+    "runnerSha256": "2d29ff6b4bae33584f7b543a39a6f8cf4ea34dfd0baa9f43d8c28fb4330eea37",
+    "supervisorSha256": "e7f05ca475dc915dc0b6d24b3c7a52430d99f01c27d7bb1c1deb1c43f35b521a",
+    "inheritedSupervisorSha256": "b17e1232addc1dbdcb51f2f0a5831155d4885a3b5b3813f909fcdd2ea1a73617",
+    "originalScenarioRunnerSupervisorCatalogueUnchanged": true,
+    "changeShape": "Separate candidate; remove five previously captured setup images, retain setup assertions/helpers/audit, add two selected transitions/four captures, report final persisted case."
+  },
+  "activationHold": {
+    "grantNow": false,
+    "activeRunnerStillImports": "./scenario.mjs",
+    "candidateImportedByActiveDriver": false,
+    "rootNextDecision": "Select this exact candidate and viewport, then collect a separate runner import/source-catalogue binding through the existing supervisor before considering a new execution grant/admission. No activation changes or runnable command supplied here.",
+    "resourceContract": "Reuse existing owned bounded browser lane, manifest/finalizer, recursive PID/group/profile/port tracking, strict admission and independent cleanup receipt if separately authorised. This source proposal allocates nothing."
+  },
+  "scope": {
+    "publishedPaths": [
+      "docs/gcsp/evidence/fucq122/current-host-browser-2026-11-06/scenario-resolved-closed-proposed.mjs",
+      "docs/gcsp/evidence/fucq122/current-host-browser-2026-11-06/resolved-closed-source-proposal.json"
+    ],
+    "runtimeOrSyntaxOrTestsExecuted": false,
+    "servicesBrowsersScratchReservationsAllocated": false,
+    "newClaimsOrAgents": false,
+    "productRepairsOrSourceChanges": false,
+    "acceptanceOrJiraChanges": false,
+    "storyDoneClaim": false,
+    "remainingAcceptance": "Original ACs and matrix unchanged. These states are unrun; waiting and other original gaps remain. Recorded whole npm result remains FAIL:1590 total,1569 passed,16 failed,5 skipped. No full-suite/native/producer run authorised."
+  },
+  "experienceReference": [
+    "docs/gcsp/experience-quality.md",
+    "docs/gcsp/screens/README.md",
+    "COMPONENTS.md"
+  ]
+}

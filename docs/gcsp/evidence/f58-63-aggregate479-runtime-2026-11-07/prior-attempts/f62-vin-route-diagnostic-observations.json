@@ -1,0 +1,44 @@
+{
+  "scope": "two diagnostic GETs only; no sourcecalls or secrets",
+  "GET": 2,
+  "rows": [
+    {
+      "pathSha256": "0587c50e302cd55b995100e6e49c0789939b48cd57b63503b22b8ce34544370f",
+      "at": "2026-11-07T03:08:05.450747+00:00",
+      "status": 200,
+      "bytes": 11,
+      "bodySha256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "server": "cloudflare",
+        "x-render-routing": null,
+        "x-render-origin-server": "Render",
+        "content-length": null
+      },
+      "dtoStatus": null,
+      "manifestDigest": null,
+      "error": null,
+      "reason": null,
+      "seconds": 0.162
+    },
+    {
+      "pathSha256": "7f7b6a65300a52766bd2d841ba045981cd3d24b7d2e0089dd55d7e43bed03171",
+      "at": "2026-11-07T03:08:05.612779+00:00",
+      "status": 200,
+      "bytes": 7517,
+      "bodySha256": "24f563728a89f8788549945cce24308322e601a291af9a776a65bd5151e97aab",
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "server": "cloudflare",
+        "x-render-routing": null,
+        "x-render-origin-server": "Render",
+        "content-length": null
+      },
+      "dtoStatus": "partial",
+      "manifestDigest": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+      "error": null,
+      "reason": null,
+      "seconds": 0.135
+    }
+  ]
+}

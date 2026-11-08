@@ -1,0 +1,121 @@
+{
+  "status": "published-actual-partial",
+  "output": "server/data/gcsp/vehicle-evidence/fleet-source.v1",
+  "version": "2026-11-07.3",
+  "manifestDigest": "ba9442f93ae8ac2c77d47631061827a16be42f9d3a4a5e64f9b32866928b6d5a",
+  "counts": {
+    "configurations": 342,
+    "distinctConfigurations": 342,
+    "images": 0,
+    "qualifyingCompleteDistinctSourceConfigurations": 341,
+    "sourceConfigurations": 341,
+    "vinMappings": 1
+  },
+  "acceptedSourceConfigurations": 341,
+  "continuationRowsAdded": 1,
+  "retainedConfigurationRowsUnchanged": 341,
+  "source1V1CollisionPreserved": true,
+  "previousVersion": {
+    "directory": "6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6",
+    "manifestDigest": "6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6"
+  },
+  "oldVersionFilesRehashedUnchanged": 14,
+  "previousVinBytesIdentical": true,
+  "newVinAllocations": 0,
+  "sourceRequests": 0,
+  "f60EnrichmentExecuted": false,
+  "registeredNovel": {
+    "path": "server/data/gcsp/vehicle-evidence/registered-sources/continuation1-2026-11-07.jsonl",
+    "sha256": "1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802",
+    "bytes": 21408,
+    "records": 1
+  },
+  "sourceInputFilesRehashedUnchanged": 1,
+  "sourceInputBytes": 21408,
+  "steps": [
+    {
+      "name": "prepare",
+      "status": "ok",
+      "idempotent": null,
+      "wallMs": 1889.392958,
+      "egress": {
+        "externalCalls": 0,
+        "control": "blocked"
+      }
+    },
+    {
+      "name": "publish",
+      "status": "ok",
+      "idempotent": false,
+      "wallMs": 2965.9052500000003,
+      "egress": {
+        "externalCalls": 0,
+        "control": "blocked"
+      }
+    },
+    {
+      "name": "validate",
+      "status": "ok",
+      "idempotent": null,
+      "wallMs": 911.8845000000001,
+      "egress": {
+        "externalCalls": 0,
+        "control": "blocked"
+      }
+    },
+    {
+      "name": "fresh-process-load",
+      "status": "ok",
+      "idempotent": null,
+      "wallMs": 886.4158750000006,
+      "egress": {
+        "externalCalls": 0,
+        "control": "blocked"
+      }
+    },
+    {
+      "name": "idempotent-publish",
+      "status": "ok",
+      "idempotent": true,
+      "wallMs": 1463.70575,
+      "egress": {
+        "externalCalls": 0,
+        "control": "blocked"
+      }
+    }
+  ],
+  "measured": {
+    "node": "v26.7.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "configurationBytes": 6362364,
+    "coldLoadMs": 660.0992079999996,
+    "lookupRuns": [
+      {
+        "name": "first-pass",
+        "configurations": 342,
+        "vinMappings": 1,
+        "totalMs": 26.11291700000038
+      },
+      {
+        "name": "repeated-pass",
+        "configurations": 342,
+        "vinMappings": 1,
+        "totalMs": 25.520708000000013
+      }
+    ]
+  },
+  "egress": {
+    "externalCalls": 0,
+    "control": "blocked"
+  },
+  "streamingLimitBytes": 67108864,
+  "acceptance": "not-established",
+  "limitations": [
+    "Configuration-only one actual novel S03GD record; previous341 rows/VIN/versions unchanged",
+    "No new VIN/stock, images, physical inference or broader model/profile/WMI claim",
+    "Direct admitted-envelope projection; F60 enrichment not executed for this row",
+    "FullF59/F61/F62 acceptance remains open; greater-than64MiB proof and full10k excluded",
+    "Charlie owns indexed-jsonl.js repair; this increment does not modify it"
+  ]
+}

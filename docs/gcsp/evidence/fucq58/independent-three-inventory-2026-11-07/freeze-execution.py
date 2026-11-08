@@ -1,0 +1,29 @@
+"""Prepare independent unspent contexts; never mutate or replay the consumed U06 prefix."""
+import sys
+sys.dont_write_bytecode=True
+import datetime,hashlib,json,os,pathlib
+BASE=pathlib.Path(__file__).resolve().parent;ROOT=BASE.parents[4];OLD=BASE.parent/'alternate-official-four-leads-2026-11-07'
+read=lambda p:json.loads(p.read_text());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+old=read(OLD/'series-plan.json');assert sha(OLD/'series-plan.json')=='d12dd2ed61dc5fd9bc07f7596f0a5f44813150009bded92d1309ff0c61c00d43'
+assert all(sha(ROOT/p)==h for p,h in {**old['codePins'],**old['sourcePins']}.items()),'preserved-original-input-code-required'
+spent=read(BASE/'spent-u06.json');assert all(sha(pathlib.Path(p))==h for p,h in spent['externalPins'].items()),'preserved-spent-u06-required'
+code=dict(old['codePins'])
+for n in ['freeze-execution.py','release.py','run-live.mjs','audit-live.mjs','run-series.py','supervise.py','prepared-check.test.mjs']:code[str((BASE/n).relative_to(ROOT))]=sha(BASE/n)
+source=dict(old['sourcePins']);source[str((BASE/'spent-u06.json').relative_to(ROOT))]=sha(BASE/'spent-u06.json')
+run='f58-independent-three-inventory-20261107-once'
+contexts=[{**e,'phase':e['id'],'allocationId':run+'-'+e['id']} for e in old['contexts'] if e['id'] in ['g20','g22','g23']]
+assert [e['id'] for e in contexts]==['g20','g22','g23']
+spent_requests={r['url'] for r in spent['requestIdentities'] if r['operation']!='settings'}
+assert not any(url in spent_requests for e in contexts for url in e['requests'].values()),'spent-page-tree-excluded'
+output=pathlib.Path('/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output')/run
+control=pathlib.Path('/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/independent-three-inventory')
+cloud=pathlib.Path('/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude');assert cloud.is_dir() and output.is_relative_to(cloud) and not os.path.lexists(output)
+assert not any((control/'ownership'/('durable-'+e['id']+'.json')).exists() for e in contexts),'preserve-prior-independent-phase'
+phases={e['id']:{'contexts':[e['id']],'getCeiling':3,'settingsBootstrapGET':1,'grantId':run+'-phase-'+e['id'],'releaseFile':'parent-release-'+e['id']+'.json','maximumWallSeconds':150,'independent':True,'requiresSuccessfulOtherContext':False} for e in contexts}
+resources={**old['resources'],'GET':9,'settingsSharedBootstrapGET':3,'decodedBytesAggregate':12*1048576,'seriesSeconds':450,'retainedBudgetBytes':6*1048576,'expectedRetainedBytes':int(1.5*1048576)}
+plan={**old,'schemaVersion':'f58-independent-three-inventory-executable.v1','id':run,'preparedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'status':'prepared-unspent; independent exact three-GET releases required','baseInputCommit':'74217f39','codePins':code,'sourcePins':source,'externalPins':spent['externalPins'],'spentU06ProofSha256':sha(BASE/'spent-u06.json'),'outputRoot':str(output),'supervisorRoot':str(control),'contexts':contexts,'phases':phases,'resources':resources,'commands':{n:f"BMW_F58_INDEPENDENT_PHASE_GRANT={p['grantId']} /usr/bin/python3 -I -B {BASE/'run-series.py'} {n}" for n,p in phases.items()},'releaseTemplates':{n:{'status':'released-once','phase':n,'allocationId':run,'planSha256':'REPLACE_WITH_EXACT_SERIES_PLAN_SHA256','GET':3,'contexts':[n],'settingsBootstrapGET':1,'spentU06ProofSha256':sha(BASE/'spent-u06.json')} for n in phases},'continuationBoundary':{'actualFailedU06':str(BASE/'spent-u06.json'),'preserveActualPrefix':True,'noU06Replay':True,'noOldRemainingRelease':True,'independentContexts':True,'otherContextFailureNotBuildDependency':True,'unrelatedOutcomeGate':False,'technicalBasis':'Distinct exact preserved G20/G22/G23 dated literal leads and canonical page/tree routes; same reviewed adapter/transport/diagnostic contract. U06 empty model tree neither qualifies nor technically blocks these distinct requests. Each exact allocation is spent once, irrespective of outcome.','priorSnapshot':'The original named 3479-file exclusion snapshot remains contextual; root reconciles all outside/parallel allocations before releasing any new phase. Settings URL is discovered anew and each shared bootstrap read remains counted.'},'releasePreconditions':['Review current scoped independence lifecycle proof and exact series-plan/spent-U06 hashes','Reconcile exact page/tree request identities against outside/parallel allocations and consumed U06; explicitly count shared settings bootstrap GET','Release one exact independent three-GET phase at a time using its named JSON and environment grant; never replay a spent context','Do not release the old four-model remaining phase or U06; preserve original failed artifacts and all frozen pins'],'sourceGrant':False,'additionalSourceRequests':0,'qualifiedModelFacts':0,'qualifiedSchemeJoins':0,'qualifiedPhysicalFacts':0,'admitted':0,'acceptance':False}
+plan['resourceLifecycle']={**old['resourceLifecycle'],'outputRoot':str(output),'supervisorRoot':str(control),'chunks':['g20','g22','g23'],'checkpoint':'Independent consumed phase/context markers and exact plan/release/external spent-proof pins; preserve each actual failed prefix and continue another context only under its separate exact root release. No success dependency between outcomes.','expectedRetainedBytes':resources['expectedRetainedBytes'],'retainedBudgetBytes':resources['retainedBudgetBytes']}
+plan['settingsRules']={**old['settingsRules'],'countedBootstrapGET':3}
+for p,h in plan['runtimePins'].items():assert sha(pathlib.Path(p))==h
+(BASE/'series-plan.json').write_text(json.dumps(plan,indent=2)+'\n')
+print(json.dumps({'seriesPlanSha256':sha(BASE/'series-plan.json'),'spentU06ProofSha256':plan['spentU06ProofSha256'],'codePins':len(code),'sourcePins':len(source),'externalPins':len(plan['externalPins']),'GET':9,'phases':list(phases),'sourceGrant':False}))

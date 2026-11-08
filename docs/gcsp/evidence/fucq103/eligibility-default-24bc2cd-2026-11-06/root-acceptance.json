@@ -1,0 +1,15 @@
+{
+  "at": "2026-11-06T07:55:06.798180+00:00",
+  "verdict": "PASS",
+  "run": "fucq103-backend-8a8f5645166649c283c471324798398b",
+  "grant": "fucq103-eligibility-default-24bc2cd-0708",
+  "revision": "24bc2cd670be71268c0a9b5e036b526ed0bfdf55",
+  "scope": "One original default Paula HTTP case only; five filtered source cases unexercised",
+  "rootAudit": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-default1-root-0708.json",
+  "rootChecks": 993,
+  "leadAudit": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-default-24bc2cd-lead-2026-11-06.json",
+  "leadSHA256": "50a3abeba43723ed8cfd08380005ed7fb01d04fb5df3e456ab352b86dae5307c",
+  "leadChecks": 521,
+  "publication": "Authorised immutable evidence-only copies; original hashes preserved; no next-mode or whole-story acceptance",
+  "parserFixtures": "38 authored; zero executed"
+}

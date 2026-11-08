@@ -41,12 +41,23 @@ test('catalogue lists the six authored journeys first with canonical principals,
   assert.notEqual((await f.scenarios.readCatalogue(f.presenter)).value.scenarios[0].name, entries[0].name);
 });
 
-test('every listed journey refuses its missing actual capabilities before any reset mutation', async () => {
+test('only journeys with a reviewed start loader are available; the rest refuse before any reset mutation', async () => {
   const f = await setup();
   const state = (await f.scenarios.readState(f.presenter)).value;
   const catalogue = (await f.scenarios.readCatalogue(f.presenter)).value;
   const before = snapshot(f);
-  for (const s of catalogue.scenarios.filter((s) => s.kind === 'journey')) {
+  const journeys = catalogue.scenarios.filter((s) => s.kind === 'journey');
+  assert.deepEqual(journeys.filter((s) => s.availability.available).map((s) => s.scenarioId), ['main-successful-journey', 'decline-then-change']);
+  const decline = journeys.find((s) => s.scenarioId === 'decline-then-change');
+  assert.equal(decline.fixtureVersion, 'decline-then-change-inputs-v2'); assert.deepEqual(decline.variants, ['later-suitable-stock']);
+  assert.equal(decline.inputs.change.value, 'saloon');
+  // Without the brief and employee-preparation services the start state cannot be built, so nothing is reset.
+  const unstarted = await f.scenarios.reset(f.presenter, command(state, decline, 'no-start-services'));
+  const mainEntry = journeys.find((s) => s.scenarioId === 'main-successful-journey');
+  const mainUnstarted = await f.scenarios.reset(f.presenter, command(state, mainEntry, 'main-no-start-services'));
+  assert.equal(mainUnstarted.code, 'scenario-start-services-unavailable');
+  assert.equal(unstarted.status, 'unavailable'); assert.equal(unstarted.code, 'scenario-start-services-unavailable'); assert.equal(snapshot(f), before);
+  for (const s of journeys.filter((s) => !s.availability.available)) {
     const outcome = await f.scenarios.reset(f.presenter, command(state, s, s.scenarioId));
     assert.equal(outcome.status, 'unavailable'); assert.equal(outcome.reason, 'not available yet');
     assert.deepEqual(outcome.missingCapabilities, s.availability.missingCapabilities);

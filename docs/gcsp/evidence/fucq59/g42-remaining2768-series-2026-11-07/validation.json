@@ -1,0 +1,116 @@
+{
+  "scope": "scoped exact finite2768continuation preparation; zero source traffic",
+  "seriesPlanSha256": "2d434573479c3e208109667dbc6dd8dfe5d6520ed3f1fa7082a4f6ee3b9a306e",
+  "candidateManifestSha256": "82d7e99a5bc4c36717de5d752f38d1fac13a86f8a03c9796cf191a5301d55e78",
+  "codePins": 43,
+  "sourcePins": 27,
+  "runtimePins": 2,
+  "templatePinsVerified": 346,
+  "indexPinsVerified": 2,
+  "parentAuditPinVerified": true,
+  "base": {
+    "canonical": 1974,
+    "admittedSource": 1971,
+    "spent": 2684
+  },
+  "tests": {
+    "fail": 0,
+    "pass": 6,
+    "skipped": 0,
+    "tests": 6
+  },
+  "embeddedCopiedActualStrictChecks": {
+    "tests": 5,
+    "pass": 5,
+    "fail": 0,
+    "skipped": 0
+  },
+  "wallSeconds": 1.702477166,
+  "sampledPeakRssBytes": 297844736,
+  "removedScratchBytes": 6231903,
+  "identityUnchanged": true,
+  "resultPath": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-remaining2768/preparation/result.json",
+  "cleanupPath": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-remaining2768/preparation/cleanup.json",
+  "initialProofs": [
+    {
+      "result": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-remaining2768/preparation/initial-fixture-proof-result.json",
+      "tests": {
+        "fail": 2,
+        "pass": 4,
+        "skipped": 0,
+        "tests": 6
+      },
+      "boundedLog": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-remaining2768/preparation/initial-fixture-proof-check.log",
+      "removedScratchBytes": 4392767
+    },
+    {
+      "result": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-remaining2768/preparation/second-fixture-proof-result.json",
+      "tests": {
+        "fail": 1,
+        "pass": 5,
+        "skipped": 0,
+        "tests": 6
+      },
+      "boundedLog": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-remaining2768/preparation/second-fixture-proof-check.log",
+      "removedScratchBytes": 6231903
+    }
+  ],
+  "initialProofDiagnosis": "Fixture copies first changed pretty JSON bytes despite frozen pin; nested Node tests inherited NODE_TEST_CONTEXT and hid reporter output; then copied pilot receipt used acceptance instead of continuation f61Acceptance. Fixed fixture setup, preserved actual originals, and reran selected scope.",
+  "allFrozenPinsVerified": true,
+  "allOwnedPreparationResourcesVerifiedAbsent": [
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-remaining2768/preparation/ownership/59560f1db2b14ee082e3ecdb13930663.json",
+      "scratchRoot": "/private/tmp/test-stamp-shard-59560f1db2b14ee082e3ecdb13930663",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 6231903
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-remaining2768/preparation/ownership/0e7df1ea61574e92aa5d6b87b95e7750.json",
+      "scratchRoot": "/private/tmp/test-stamp-shard-0e7df1ea61574e92aa5d6b87b95e7750",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 6231903
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-remaining2768/preparation/ownership/7fd94499f5494c76ad1d38d28b4157f8.json",
+      "scratchRoot": "/private/tmp/test-stamp-shard-7fd94499f5494c76ad1d38d28b4157f8",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 4392767
+    }
+  ],
+  "dependencyLinkAbsent": true,
+  "liveOutputAndSpentMarkerAbsent": true,
+  "availableVolumeBytesBeforeRelease": 55836983296,
+  "compatibilityException": null,
+  "leftovers": [],
+  "sourceGrant": false,
+  "newAdmissions": 0,
+  "acceptance": false,
+  "reusedEvidence": [
+    "unchanged production model-batch16checks from pilot preparation",
+    "pilot48actual58strictchecks + parent independent140check audit",
+    "proven model-axis790 serial source/export/retained protocol; adapted finite/template/event boundaries selected here"
+  ],
+  "exclusions": [
+    "full suite: unchanged production path and evidence-local finite protocol",
+    "public source traffic: separate exact release required",
+    "UI/browser/publication/physical distribution acceptance"
+  ],
+  "agents": [
+    {
+      "name": "Charlie Dog",
+      "requestedModel": "gpt-6.1-sol",
+      "requestedEffort": "high",
+      "selectedModel": "gpt-6.1-sol",
+      "selectedEffort": "high",
+      "effectiveRuntimeVerified": false,
+      "fallback": null,
+      "descendants": 0
+    }
+  ]
+}

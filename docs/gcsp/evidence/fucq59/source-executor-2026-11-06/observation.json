@@ -1,0 +1,449 @@
+{
+  "schemaVersion": "f59-source-executor-observation.v1",
+  "allocation": "f59-known-seed-20261106-four-get",
+  "startedAt": "2026-11-06T10:53:36.173Z",
+  "completedAt": "2026-11-06T10:53:37.388Z",
+  "planDigest": "1dfe31b45fc735dd5268397b3b8d7e2aca84b6b283bbadc52c591374fa4c7761",
+  "requests": [
+    {
+      "category": "page",
+      "startedAt": "2026-11-06T10:53:36.251Z",
+      "status": 200,
+      "contentType": "text/html"
+    },
+    {
+      "category": "settings",
+      "startedAt": "2026-11-06T10:53:36.497Z",
+      "status": 200,
+      "contentType": "application/json"
+    },
+    {
+      "category": "discover",
+      "startedAt": "2026-11-06T10:53:36.950Z",
+      "status": 200,
+      "contentType": "application/json"
+    },
+    {
+      "category": "solve",
+      "startedAt": "2026-11-06T10:53:37.248Z",
+      "status": 200,
+      "contentType": "application/json"
+    }
+  ],
+  "checkpointSha256": "db1831b78ec7cc8c500b1e6409246dd8f8a6c4072f31ac708b3e8828caf63641",
+  "checkpointBytes": 9376,
+  "result": {
+    "status": "incomplete",
+    "reason": "source-observed-context-unqualified",
+    "qualification": "canonical-adapter-context-unqualified",
+    "accepted": [],
+    "rejected": [],
+    "duplicates": [],
+    "sourceObservations": [
+      {
+        "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+        "decodedIdentity": "T5MJ:FKSFU,P0300,S0230,S02PA,S02VB,S02VD,S0302,S0337,S03DK,S03G9,S03M1,S0428,S043L,S0488,S0494,S04T2,S04U9,S04UR,S04V1,S0552,S05AS,S05AV,S05DM,S0654,S0674,S06AE,S06AF,S06AK,S06C4,S06NX,S06PA,S0704,S0710,S0760,S0775,S0812,S0853,S0880,S08R3,S08R9,S08SM,S08TF,S08TG,S08WM,S09QV,S09T1,S09T2",
+        "canonicalIdentity": {
+          "vgModelCode": "T5MJ",
+          "factoryOptionCodes": [
+            "FKSFU",
+            "P0300",
+            "S0230",
+            "S02PA",
+            "S02VB",
+            "S02VD",
+            "S0302",
+            "S0337",
+            "S03DK",
+            "S03G9",
+            "S03M1",
+            "S0428",
+            "S043L",
+            "S0488",
+            "S0494",
+            "S04T2",
+            "S04U9",
+            "S04UR",
+            "S04V1",
+            "S0552",
+            "S05AS",
+            "S05AV",
+            "S05DM",
+            "S0654",
+            "S0674",
+            "S06AE",
+            "S06AF",
+            "S06AK",
+            "S06C4",
+            "S06NX",
+            "S06PA",
+            "S0704",
+            "S0710",
+            "S0760",
+            "S0775",
+            "S0812",
+            "S0853",
+            "S0880",
+            "S08R3",
+            "S08R9",
+            "S08SM",
+            "S08TF",
+            "S08TG",
+            "S08WM",
+            "S09QV",
+            "S09T1",
+            "S09T2"
+          ],
+          "agModelCode": "72HH"
+        },
+        "signaturePolicyVersion": "gcsp-policy-v1",
+        "source": {
+          "id": "bmw-uk-public",
+          "version": "f58-20261105.v1",
+          "kind": "public-bmw-uk"
+        },
+        "constructible": true,
+        "selectionComplete": true,
+        "provenance": {
+          "kind": "public-source-observation",
+          "observedAt": "2026-11-06T10:53:37.381Z",
+          "providerStatus": "unsupported-public-website",
+          "sourceVersion": "f58-20261105.v1"
+        },
+        "sourceContext": {
+          "market": "GB",
+          "locale": "en-GB",
+          "catalogueDate": "2026-11-01",
+          "orderDate": "2026-11-01",
+          "effectDate": "2027-01-05",
+          "treeRequestEffectDate": "2026-11-01",
+          "catalogueRangeKey": "G61E",
+          "modelRangeField": "G61",
+          "steeringLiteral": "RL",
+          "fullRecordGroups": [
+            "5",
+            "I"
+          ]
+        },
+        "originalRequest": {
+          "modelCode": "T5MJ",
+          "elements": [
+            "FKSFU",
+            "P0300",
+            "S0337",
+            "S043L"
+          ],
+          "mandatoryElements": [
+            "S0337"
+          ],
+          "effectDate": "2027-01-05",
+          "orderDate": "2026-11-01"
+        },
+        "resolvedSelection": {
+          "constructible": true,
+          "selectedOptions": [
+            "FKSFU",
+            "P0300",
+            "S0230",
+            "S02PA",
+            "S02VB",
+            "S02VD",
+            "S0302",
+            "S0337",
+            "S03DK",
+            "S03G9",
+            "S03M1",
+            "S0428",
+            "S043L",
+            "S0488",
+            "S0494",
+            "S04T2",
+            "S04U9",
+            "S04UR",
+            "S04V1",
+            "S0552",
+            "S05AS",
+            "S05AV",
+            "S05DM",
+            "S0654",
+            "S0674",
+            "S06AE",
+            "S06AF",
+            "S06AK",
+            "S06C4",
+            "S06NX",
+            "S06PA",
+            "S0704",
+            "S0710",
+            "S0760",
+            "S0775",
+            "S0812",
+            "S0853",
+            "S0880",
+            "S08R3",
+            "S08R9",
+            "S08SM",
+            "S08TF",
+            "S08TG",
+            "S08WM",
+            "S09QV",
+            "S09T1",
+            "S09T2"
+          ],
+          "selectedAccessories": [
+            {
+              "code": "SE000001",
+              "type": "accessory",
+              "quantity": null
+            }
+          ],
+          "selectedElements": [
+            {
+              "code": "FKSFU",
+              "type": "option"
+            },
+            {
+              "code": "P0300",
+              "type": "option"
+            },
+            {
+              "code": "S0230",
+              "type": "option"
+            },
+            {
+              "code": "S02PA",
+              "type": "option"
+            },
+            {
+              "code": "S02VB",
+              "type": "option"
+            },
+            {
+              "code": "S02VD",
+              "type": "option"
+            },
+            {
+              "code": "S0302",
+              "type": "option"
+            },
+            {
+              "code": "S0337",
+              "type": "option"
+            },
+            {
+              "code": "S03DK",
+              "type": "option"
+            },
+            {
+              "code": "S03G9",
+              "type": "option"
+            },
+            {
+              "code": "S03M1",
+              "type": "option"
+            },
+            {
+              "code": "S0428",
+              "type": "option"
+            },
+            {
+              "code": "S043L",
+              "type": "option"
+            },
+            {
+              "code": "S0488",
+              "type": "option"
+            },
+            {
+              "code": "S0494",
+              "type": "option"
+            },
+            {
+              "code": "S04T2",
+              "type": "option"
+            },
+            {
+              "code": "S04U9",
+              "type": "option"
+            },
+            {
+              "code": "S04UR",
+              "type": "option"
+            },
+            {
+              "code": "S04V1",
+              "type": "option"
+            },
+            {
+              "code": "S0552",
+              "type": "option"
+            },
+            {
+              "code": "S05AS",
+              "type": "option"
+            },
+            {
+              "code": "S05AV",
+              "type": "option"
+            },
+            {
+              "code": "S05DM",
+              "type": "option"
+            },
+            {
+              "code": "S0654",
+              "type": "option"
+            },
+            {
+              "code": "S0674",
+              "type": "option"
+            },
+            {
+              "code": "S06AE",
+              "type": "option"
+            },
+            {
+              "code": "S06AF",
+              "type": "option"
+            },
+            {
+              "code": "S06AK",
+              "type": "option"
+            },
+            {
+              "code": "S06C4",
+              "type": "option"
+            },
+            {
+              "code": "S06NX",
+              "type": "option"
+            },
+            {
+              "code": "S06PA",
+              "type": "option"
+            },
+            {
+              "code": "S0704",
+              "type": "option"
+            },
+            {
+              "code": "S0710",
+              "type": "option"
+            },
+            {
+              "code": "S0760",
+              "type": "option"
+            },
+            {
+              "code": "S0775",
+              "type": "option"
+            },
+            {
+              "code": "S0812",
+              "type": "option"
+            },
+            {
+              "code": "S0853",
+              "type": "option"
+            },
+            {
+              "code": "S0880",
+              "type": "option"
+            },
+            {
+              "code": "S08R3",
+              "type": "option"
+            },
+            {
+              "code": "S08R9",
+              "type": "option"
+            },
+            {
+              "code": "S08SM",
+              "type": "option"
+            },
+            {
+              "code": "S08TF",
+              "type": "option"
+            },
+            {
+              "code": "S08TG",
+              "type": "option"
+            },
+            {
+              "code": "S08WM",
+              "type": "option"
+            },
+            {
+              "code": "S09QV",
+              "type": "option"
+            },
+            {
+              "code": "S09T1",
+              "type": "option"
+            },
+            {
+              "code": "S09T2",
+              "type": "option"
+            },
+            {
+              "code": "SE000001",
+              "type": "accessory"
+            }
+          ]
+        },
+        "modelYear": {
+          "state": "unknown"
+        },
+        "canonicalAdapterContext": {
+          "status": "unqualified",
+          "missing": [
+            "productionDate",
+            "taxDate",
+            "trim",
+            "paint-and-upholstery-classification",
+            "accessory-quantity"
+          ]
+        }
+      }
+    ],
+    "counts": {
+      "sourceCalls": 4,
+      "operations": {
+        "discover": 1,
+        "page": 1,
+        "settings": 1,
+        "solve": 1
+      },
+      "cacheHits": {
+        "discover": 0,
+        "page": 0,
+        "settings": 0,
+        "solve": 0
+      },
+      "failures": 0,
+      "timeouts": 0,
+      "substitutions": 0,
+      "cacheEvictions": 0,
+      "httpAttempts": 4,
+      "decodedBytes": 782059,
+      "operationBytes": {
+        "discover": 139586,
+        "page": 17763,
+        "settings": 620646,
+        "solve": 4064
+      }
+    },
+    "coverage": {
+      "distinctConfigurations": 0,
+      "sourceObservations": 1,
+      "target": 1
+    },
+    "checkpoint": "removed with supervisor-owned scratch after retaining this safe observation"
+  },
+  "writesToSource": 0,
+  "imageRequests": 0,
+  "browserOperations": 0,
+  "retries": 0,
+  "additionalConfigurations": 0
+}

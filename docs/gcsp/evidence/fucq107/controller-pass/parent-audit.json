@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "checks": 1349,
+  "admissionSHA256": "6dfe2623e3ac0ece6b352abdb336cab59a29a7d535c270a4c68973bf321d6a27",
+  "sourceCommit": "94e05ff9070aa19f5deb3e9997dfed96cc268473",
+  "originalCounts": {
+    "tests": 14,
+    "suites": 0,
+    "pass": 14,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "originalNames": [
+    "question load and local choice write nothing; only explicit confirmation sends the five fields",
+    "unchanged and invalid choices cannot confirm for options, slider or equipment",
+    "uncertain retries retain the identical command even when a status read still returns the question",
+    "reload preserves a committed saved receipt when evaluation is unavailable",
+    "missing evaluation and invented waiting or no-match envelopes fail closed",
+    "ready requires a distinct offer and the current quote brief; malformed requirement rows fail closed",
+    "stale version requires a refresh; forbidden and earlier-run responses do not retain account data",
+    "authentication loss clears a saved receipt while non-auth source failure preserves it",
+    "duplicate confirmation is suppressed and teardown ignores late server replies",
+    "snapshots and observers cannot mutate the server question or retained command",
+    "malformed questions and malformed success receipts cannot produce a confirmed save",
+    "HTTP adapter sends strict selectors and confirmation with session cookies and no-store",
+    "HTTP adapter rejects extra authority and incomplete bodies without fetching",
+    "HTTP abort, malformed JSON and unsuccessful HTTP success envelopes remain unavailable"
+  ],
+  "originalTAPSHA256": "c1afb64e3721a906362c3d7ba61ed7db0bff6cc33a6111b35be7eac0c8d1fbdd",
+  "originalJournalSHA256": "5c30afb8276fdef33aa8f240e53897608c8aa28304a61e2c90dc9afccf9a50a2",
+  "observedPids": [
+    {
+      "direct": true,
+      "owned": true,
+      "pgid": 79064,
+      "pid": 79064,
+      "ppid": 78998,
+      "start": "Fri Nov  6 02:02:35 2026"
+    },
+    {
+      "owned": true,
+      "pgid": 79064,
+      "pid": 79076,
+      "ppid": 79064,
+      "start": "Fri Nov  6 02:02:35 2026"
+    }
+  ],
+  "groups": [
+    79064
+  ],
+  "ownedRootAbsent": "/private/tmp/test-stamp-shard-a549946fa3d6419b934450b44a079e3b",
+  "supervisorAbsent": {
+    "pid": 78998,
+    "start": "Fri Nov  6 02:02:33 2026"
+  },
+  "reservationAbsent": "a549946fa3d6419b934450b44a079e3b",
+  "retainedBeforeAuditBytes": 1320544
+}

@@ -1,0 +1,84 @@
+{
+  "schemaVersion": "typed-axis1024-all-event-readers-conflict-aware.v1",
+  "originalSeriesPlanSha256": "96ec8dc874241bfe9b2a2928d226d88a4b9cbb073a8ebddb05ac12c5efa694c2",
+  "scope": "Original chunks10..32 only after288 spent; no replay or new source scope",
+  "codePins": {
+    "resume10-series.py": "3f4027bc8f3147d545b46f4ca796a3ef46b15cb3c410973a971261e70ea598a7",
+    "reconcile-retained-sync.py": "690c8149c0bfe46fe89e3ca0be116c57ce4d3e2aee3034082faf927b69629061",
+    "verify-retained-sync.py": "a8f2aba9a08c0d4b3a60a4e27b223af3c0c24020948bee79dcaad53f704e4062",
+    "live-check-sync.test.mjs": "23bd3851a4cbf5662b7d3b51697aecadf007b55c2164e737d86117fbbf76577c",
+    "actual-event-history.mjs": "097a2fb56eeca20ef431ed1e9299c049bd4d36b66a5a933276aabb352e888cd4"
+  },
+  "accountedChunk09Pins": {
+    "live-validation.json": "3ce4ec979a2e192978af1b99048aee5c96c538cb1363c2a7156a566a23f0e4d2",
+    "collector-checkpoint.json": "cba554344a3d641f4956112ee8bc99ccee81d423fa827fdea271dabea36a16c8",
+    "final-canonical-index.json": "d3678307a7121a77af2e0b88ce87d883cea9d8ebe21d3671a6440e0bbf005bb8",
+    "final-spent-request-index.json": "dc2fffe3cfd2e55bdb1de272ec7cdb54d48a8b898f55befa5696f5d0f40d0bb4",
+    "source-events.jsonl": "23acd62f32c294e50343161a384ae21c67497c8a0b7d6326dfd804296e1a50d9",
+    "source-events.jsonl 2.jsonl": "d46d39e920b3c67a0619a7fc1ccb23da8da620eb93761d73e70fd3d82b3ce95d",
+    "reconciliation-event-evidence.json": "e280ba3ada83d413624639e5e8f4003d3bf242ed283ec9dbb11067c8c85ffc66"
+  },
+  "recovery": {
+    "failedStage": "Original canonical-only reconciliation09 required32solverstarts but canonicalfile retained31; actualconflictcopy retainedmissingstart",
+    "originalEventsPreserved": true,
+    "actualUnionProof": "five strict retained checks passed09; zero HTTP",
+    "sourceReplay": 0,
+    "admitted": 4,
+    "rejected": 28,
+    "duplicates": 0
+  },
+  "remaining": {
+    "chunks": [
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32
+    ],
+    "candidates": 736,
+    "maximumGets": 828,
+    "expectedCurrentSpent": 846,
+    "alreadySpentFromThisSeries": 288,
+    "cumulativeAdmitted": 739,
+    "canonicalEntries": 742
+  },
+  "bounds": {
+    "originalDeadlineSinceFirstMarkerSeconds": 1800,
+    "totalMaximumGets": 1152,
+    "totalDecodedBytes": 268435456,
+    "singleResponseBytes": 1048576,
+    "hostRamBytes": 536870912,
+    "childRamBytes": 469762048,
+    "scratchBytes": 67108864,
+    "retainedShardBytes": 33554432,
+    "retainedBudgetBytes": 1073741824,
+    "workers": 1,
+    "retries": 0
+  },
+  "futureVerification": "Both cumulative-index reconciliation and strict eventcheck read only actual canonical/conflict rows. Require byteidentical duplicate rows/no contradictions/exactpairs/status200/orderedURLs/solverobservations/counters/budgets. Other four semanticchecks remain unchanged.",
+  "knownDefect": {
+    "severity": "Medium",
+    "symptom": "OneDrive live write conflict splits actual event history",
+    "originalFailurePreserved": true,
+    "backlogOwner": "parent"
+  },
+  "acceptance": false
+}

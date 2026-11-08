@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "linux-live-three-get-receipt.v1",
+  "diagnosticId": "fleet-dot12-linux-live-20261107-1",
+  "githubRunId": "42370480081",
+  "attempt": 1,
+  "environment": "Linux-GitHubActions",
+  "status": "failed",
+  "code": "e7cf50acd58bda6b0f2b3738c4408f1f374682f8",
+  "actualDeploymentId": "dep-dbnf8g3hf81s73b22ee0",
+  "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "requests": 2,
+  "newGetCeiling": 3,
+  "sourceCalls": 0,
+  "startedAt": "2026-11-07T11:59:45.249Z",
+  "finishedAt": "2026-11-07T11:59:45.775Z",
+  "pending": null,
+  "observations": [
+    {
+      "label": "health",
+      "status": 200,
+      "bodySha256": "4062edaf750fb8074e7e83e0c9028c94e32468a8b6f1614774328ef045150f93",
+      "bodyBytes": 11,
+      "headersSha256": "6504c9103619535ff913836c0b784b8fed636023b752e8549f3424440bb1e0fb",
+      "elapsedMs": 355.015132
+    },
+    {
+      "label": "readiness",
+      "status": 200,
+      "bodySha256": "817ab012458b6b50802a7dfcc4b1f97663a288c28d96cc7dec018c8931f792e3",
+      "bodyBytes": 169,
+      "headersSha256": "28aa452523e636ac43f8a615cd1732873c0993a1290d179cc934221b72ab3b40",
+      "elapsedMs": 163.88485699999995,
+      "sanitizedReadiness": {
+        "ok": true,
+        "status": "ready",
+        "manifestDigest": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+        "recovered": false
+      }
+    }
+  ],
+  "failure": {
+    "reason": "readiness-not-exact-ready",
+    "status": 200,
+    "readiness": {
+      "ok": true,
+      "status": "ready",
+      "manifestDigest": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+      "recovered": false
+    }
+  },
+  "expectedDtoSha256": "82712c8d703e6546d6c4298fa3a168b2ea48f09c73931ee9eb061ee36f98e2e4",
+  "acceptance": false,
+  "originalLocalTimeoutCauseProved": false
+}

@@ -1,6 +1,6 @@
 const protectedFields = new Set(['principalId', 'employeeId', 'roles', 'role', 'grade', 'gradeId', 'scheme', 'schemeId', 'companyId', 'runId', 'context', 'entitlementSlotId', 'token', 'session', 'sessionId']);
 const statusCode = (status) => ({
-  ok: 200, invalid: 400, 'missing-session': 401, 'unknown-session': 401,
+  ok: 200, pending: 202, invalid: 400, 'missing-session': 401, 'unknown-session': 401,
   'expired-session': 401, 'unknown-principal': 404, forbidden: 403,
   'stale-run': 409, 'stale-version': 409, conflict: 409, 'not-found': 404, unavailable: 503,
 })[status] || 500;
@@ -19,7 +19,7 @@ async function readBody(req) {
 }
 
 // All registered GCSP consumers enter through this context boundary, behind the shared gate.
-export function createGcspHandler({ identity, routes = [], allowedOrigins = [] } = {}) {
+export function createGcspHandler({ identity, routes = [], allowedOrigins = [], prepareEmployee } = {}) {
   const configured = new Set(allowedOrigins.filter((origin) => {
     try { return /^https?:$/.test(new URL(origin).protocol) && new URL(origin).origin === origin; } catch { return false; }
   }));
@@ -81,6 +81,11 @@ export function createGcspHandler({ identity, routes = [], allowedOrigins = [] }
           ? { status: 'forbidden', reason: 'A presenter control session is required.', contractVersion: '1.0.0' } : presenter);
         const switched = await identity.switchPrincipal(presenter.value, body.principalId, body.commandId);
         if (switched.status !== 'ok') return send(switched);
+        // Only an employee context the server just issued is prepared; Greg and presenter switches seed nothing.
+        if (prepareEmployee && switched.value.context.roles.includes('employee')) {
+          const prepared = await prepareEmployee(switched.value.context);
+          if (prepared.status !== 'ok') return send(prepared);
+        }
         res.setHeader('Set-Cookie', switched.value.setCookie);
         return send({ status: 'ok', value: switched.value.context, contractVersion: switched.contractVersion });
       }

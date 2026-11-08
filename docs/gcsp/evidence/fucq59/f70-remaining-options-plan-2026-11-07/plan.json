@@ -1,0 +1,511 @@
+{
+  "schemaVersion": "f58-f70-remaining-model-options-plan.v1",
+  "planId": "f58-f70-remaining-options-20261107",
+  "status": "exact root release consumed once;16GETs/all200/four model-options contexts observed;6retained-only semantic checks pass;no construction/admission/capacity",
+  "runId": "f58-63-overnight-20261106",
+  "sourceCapabilityBaseCommit": "ddd1d846319d14acb39f25f6521259dd4402dea9",
+  "planWorktreeHead": "3dd1bbecdc8dd0f5d17ef503ca7009f466eddddf",
+  "sourceIdentity": {
+    "id": "bmw-uk-public",
+    "kind": "public-bmw-uk",
+    "existingOptionsVersion": "f59-options-qualification-20261107.v1",
+    "proposedQualificationVersion": "f59-model-options-qualification-20261107.v1"
+  },
+  "contexts": [
+    {
+      "id": "1f7a",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7A",
+        "agModelCode": "82GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "qualificationDate": "2026-11-07",
+      "requestOnlyOptionsRoute": {
+        "lineKey": "BASIC_LINE",
+        "mode": "observed-no-option-line-without-trim-query",
+        "trimQuery": null,
+        "status": "request identity only; fresh model/line and response shape must qualify it"
+      },
+      "sameResponseBinding": {
+        "fullModelPointer": "/1/modelRanges/F70/models/1F7A",
+        "fullModelAg": "82GE",
+        "linePointer": "/1/modelRanges/F70/lines/BASIC_LINE",
+        "defaultModel": {
+          "modelCode": "1F7A",
+          "agModelCode": "82GE"
+        },
+        "includedModelPointer": "/1/modelRanges/F70/lines/BASIC_LINE/includedTransmissionVariants/0/configuration/modelCode",
+        "includedModelValue": "1F7A",
+        "lineOption": null,
+        "includedElementPointer": null,
+        "lineOptionAbsent": true
+      },
+      "requests": [
+        {
+          "operation": "page",
+          "method": "GET",
+          "url": "https://configure.bmw.co.uk/en_GB/configure/F70/1F7A"
+        },
+        {
+          "operation": "settings",
+          "method": "GET",
+          "origin": "https://configure.bmw.co.uk",
+          "freshPagePathPattern": "^/en_GB/settings\\.[a-zA-Z0-9]+\\.json$",
+          "selection": "exactly one path discovered by that context page; no saved settings replay"
+        },
+        {
+          "operation": "discover",
+          "method": "GET",
+          "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=F70&future-models=true&closest-fallback=true"
+        },
+        {
+          "operation": "options",
+          "method": "GET",
+          "url": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/1F7A/options/languages/en",
+          "requires": "fresh complete model/AG/date/alias and exact same-response line/included binding validated before request"
+        }
+      ],
+      "allocation": {
+        "maxGetAttempts": 4,
+        "requestBudgets": {
+          "page": 1,
+          "settings": 1,
+          "discover": 1,
+          "options": 1
+        },
+        "maxDecodedBytes": 4194304,
+        "maxResponseBytes": 1048576,
+        "maxOperationMs": 10000,
+        "sourceDeadlineMs": 40000,
+        "childDeadlineMs": 45000,
+        "supervisorChunkMs": 60000,
+        "retries": 0,
+        "redirects": 0,
+        "solver": 0,
+        "images": 0,
+        "sourceWrites": 0,
+        "newConfigurations": 0,
+        "sourceCapacityCredit": 0
+      },
+      "retainedDirectory": "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7a",
+      "existingSeamBlocker": "No line.option and no-option line name is not an option code"
+    },
+    {
+      "id": "1f7c",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7C",
+        "agModelCode": "22GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "qualificationDate": "2026-11-07",
+      "requestOnlyOptionsRoute": {
+        "lineKey": "M_PERFORMANCE_LINE",
+        "mode": "observed-no-option-line-without-trim-query",
+        "trimQuery": null,
+        "status": "request identity only; fresh model/line and response shape must qualify it"
+      },
+      "sameResponseBinding": {
+        "fullModelPointer": "/1/modelRanges/F70/models/1F7C",
+        "fullModelAg": "22GE",
+        "linePointer": "/1/modelRanges/F70/lines/M_PERFORMANCE_LINE",
+        "defaultModel": {
+          "modelCode": "1F7C",
+          "agModelCode": "22GE"
+        },
+        "includedModelPointer": "/1/modelRanges/F70/lines/M_PERFORMANCE_LINE/includedTransmissionVariants/0/configuration/modelCode",
+        "includedModelValue": "1F7C",
+        "lineOption": null,
+        "includedElementPointer": null,
+        "lineOptionAbsent": true
+      },
+      "requests": [
+        {
+          "operation": "page",
+          "method": "GET",
+          "url": "https://configure.bmw.co.uk/en_GB/configure/F70/1F7C"
+        },
+        {
+          "operation": "settings",
+          "method": "GET",
+          "origin": "https://configure.bmw.co.uk",
+          "freshPagePathPattern": "^/en_GB/settings\\.[a-zA-Z0-9]+\\.json$",
+          "selection": "exactly one path discovered by that context page; no saved settings replay"
+        },
+        {
+          "operation": "discover",
+          "method": "GET",
+          "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=F70&future-models=true&closest-fallback=true"
+        },
+        {
+          "operation": "options",
+          "method": "GET",
+          "url": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/1F7C/options/languages/en",
+          "requires": "fresh complete model/AG/date/alias and exact same-response line/included binding validated before request"
+        }
+      ],
+      "allocation": {
+        "maxGetAttempts": 4,
+        "requestBudgets": {
+          "page": 1,
+          "settings": 1,
+          "discover": 1,
+          "options": 1
+        },
+        "maxDecodedBytes": 4194304,
+        "maxResponseBytes": 1048576,
+        "maxOperationMs": 10000,
+        "sourceDeadlineMs": 40000,
+        "childDeadlineMs": 45000,
+        "supervisorChunkMs": 60000,
+        "retries": 0,
+        "redirects": 0,
+        "solver": 0,
+        "images": 0,
+        "sourceWrites": 0,
+        "newConfigurations": 0,
+        "sourceCapacityCredit": 0
+      },
+      "retainedDirectory": "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7c",
+      "existingSeamBlocker": "No line.option and no-option line name is not an option code"
+    },
+    {
+      "id": "1f7d",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7D",
+        "agModelCode": "62GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "qualificationDate": "2026-11-07",
+      "requestOnlyOptionsRoute": {
+        "lineKey": "S0337",
+        "mode": "explicit-line-option",
+        "trimQuery": "S0337",
+        "status": "request identity only; fresh model/line and response shape must qualify it"
+      },
+      "sameResponseBinding": {
+        "fullModelPointer": "/1/modelRanges/F70/models/1F7D",
+        "fullModelAg": "62GE",
+        "linePointer": "/1/modelRanges/F70/lines/S0337",
+        "defaultModel": {
+          "modelCode": "1F7B",
+          "agModelCode": "82GE"
+        },
+        "includedModelPointer": "/1/modelRanges/F70/lines/S0337/includedTransmissionVariants/2/configuration/modelCode",
+        "includedModelValue": "1F7D",
+        "lineOption": "S0337",
+        "includedElementPointer": "/1/modelRanges/F70/lines/S0337/includedTransmissionVariants/2/configuration/elements/S0337",
+        "lineOptionAbsent": false
+      },
+      "requests": [
+        {
+          "operation": "page",
+          "method": "GET",
+          "url": "https://configure.bmw.co.uk/en_GB/configure/F70/1F7D"
+        },
+        {
+          "operation": "settings",
+          "method": "GET",
+          "origin": "https://configure.bmw.co.uk",
+          "freshPagePathPattern": "^/en_GB/settings\\.[a-zA-Z0-9]+\\.json$",
+          "selection": "exactly one path discovered by that context page; no saved settings replay"
+        },
+        {
+          "operation": "discover",
+          "method": "GET",
+          "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=F70&future-models=true&closest-fallback=true"
+        },
+        {
+          "operation": "options",
+          "method": "GET",
+          "url": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/1F7D/options/languages/en?trim=S0337",
+          "requires": "fresh complete model/AG/date/alias and exact same-response line/included binding validated before request"
+        }
+      ],
+      "allocation": {
+        "maxGetAttempts": 4,
+        "requestBudgets": {
+          "page": 1,
+          "settings": 1,
+          "discover": 1,
+          "options": 1
+        },
+        "maxDecodedBytes": 4194304,
+        "maxResponseBytes": 1048576,
+        "maxOperationMs": 10000,
+        "sourceDeadlineMs": 40000,
+        "childDeadlineMs": 45000,
+        "supervisorChunkMs": 60000,
+        "retries": 0,
+        "redirects": 0,
+        "solver": 0,
+        "images": 0,
+        "sourceWrites": 0,
+        "newConfigurations": 0,
+        "sourceCapacityCredit": 0
+      },
+      "retainedDirectory": "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7d",
+      "existingSeamBlocker": "Requested full/included model differs from compact line default; current strictTrimRelationships rejects the legitimate distinction"
+    },
+    {
+      "id": "1f7f",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "1F7F",
+        "agModelCode": "62GE",
+        "catalogueRangeKey": "F70",
+        "rawModelRange": "F70",
+        "aliases": [
+          "1"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "qualificationDate": "2026-11-07",
+      "requestOnlyOptionsRoute": {
+        "lineKey": "S033B",
+        "mode": "explicit-line-option",
+        "trimQuery": "S033B",
+        "status": "request identity only; fresh model/line and response shape must qualify it"
+      },
+      "sameResponseBinding": {
+        "fullModelPointer": "/1/modelRanges/F70/models/1F7F",
+        "fullModelAg": "62GE",
+        "linePointer": "/1/modelRanges/F70/lines/S033B",
+        "defaultModel": {
+          "modelCode": "1F7E",
+          "agModelCode": "82GE"
+        },
+        "includedModelPointer": "/1/modelRanges/F70/lines/S033B/includedTransmissionVariants/0/configuration/modelCode",
+        "includedModelValue": "1F7F",
+        "lineOption": "S033B",
+        "includedElementPointer": "/1/modelRanges/F70/lines/S033B/includedTransmissionVariants/0/configuration/elements/S033B",
+        "lineOptionAbsent": false
+      },
+      "requests": [
+        {
+          "operation": "page",
+          "method": "GET",
+          "url": "https://configure.bmw.co.uk/en_GB/configure/F70/1F7F"
+        },
+        {
+          "operation": "settings",
+          "method": "GET",
+          "origin": "https://configure.bmw.co.uk",
+          "freshPagePathPattern": "^/en_GB/settings\\.[a-zA-Z0-9]+\\.json$",
+          "selection": "exactly one path discovered by that context page; no saved settings replay"
+        },
+        {
+          "operation": "discover",
+          "method": "GET",
+          "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-01/order-dates/2026-11-01?gfs-policy=none&cluster=default&model-ranges=F70&future-models=true&closest-fallback=true"
+        },
+        {
+          "operation": "options",
+          "method": "GET",
+          "url": "https://prod.ucp.bmw.cloud/localisations/overridden-vehicle-data/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2027-01-05/order-dates/2026-11-01/applications/connext/models/1F7F/options/languages/en?trim=S033B",
+          "requires": "fresh complete model/AG/date/alias and exact same-response line/included binding validated before request"
+        }
+      ],
+      "allocation": {
+        "maxGetAttempts": 4,
+        "requestBudgets": {
+          "page": 1,
+          "settings": 1,
+          "discover": 1,
+          "options": 1
+        },
+        "maxDecodedBytes": 4194304,
+        "maxResponseBytes": 1048576,
+        "maxOperationMs": 10000,
+        "sourceDeadlineMs": 40000,
+        "childDeadlineMs": 45000,
+        "supervisorChunkMs": 60000,
+        "retries": 0,
+        "redirects": 0,
+        "solver": 0,
+        "images": 0,
+        "sourceWrites": 0,
+        "newConfigurations": 0,
+        "sourceCapacityCredit": 0
+      },
+      "retainedDirectory": "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/1f7f",
+      "existingSeamBlocker": "Requested full/included model differs from compact line default; current strictTrimRelationships rejects the legitimate distinction"
+    }
+  ],
+  "totalCeilings": {
+    "publicGetAttempts": 16,
+    "decodedBytes": 16777216,
+    "sourceOperationTimeoutMs": 10000,
+    "seriesDeadlineMs": 180000,
+    "workers": 1,
+    "retries": 0,
+    "automaticRedirects": 0,
+    "solverRequests": 0,
+    "imageRequests": 0,
+    "sourceWrites": 0,
+    "browser": 0,
+    "newConfigurations": 0,
+    "sourceCapacityCredit": 0
+  },
+  "resources": {
+    "hostRamMiB": 512,
+    "childRamMiB": 448,
+    "scratchMiB": 64,
+    "chunkSeconds": 60,
+    "seriesSeconds": 180,
+    "expectedChildRamMiB": 128,
+    "expectedScratchMiB": 8,
+    "expectedRetainedMiB": 8,
+    "supervisorOutput": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/f70-remaining-options",
+    "retainedPrefix": "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07",
+    "largeOutputRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/_agent-output/vehicle-matcher/f58-63-overnight-20261106/f58-f70-remaining-options",
+    "largeOutputThresholdBytes": 268435456,
+    "archives": "OneDrive directly regardless of size",
+    "scratchRootPattern": "/private/tmp/test-stamp-shard-<manifest-token>"
+  },
+  "reviewedExistingCodePins": {
+    "scripts/gcsp/bmw-public-registration.mjs": "61d9d5283c6995a55556e767f9a722954becd8899c73c5bd784bb796d728c206",
+    "scripts/gcsp/public-bmw-source.mjs": "3a3172eb5b854784c44b08bcad28ead4f45393d362c026eb802fb643ce04276e",
+    "scripts/gcsp/collect-fleet.mjs": "76107aea09f14f6baaf32417f00f7acbc86d77413e18b8a01f289195d0d443bf",
+    "scripts/gcsp/collection-session.mjs": "ba4e5b1bf632cb05993fa0b0b4d24de7559f80baed1111999911a3e713ec6a8c",
+    "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+    "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+    "server/test/gcsp-bmw-options-qualification.test.js": "f2788898e10027366df4fbd4dd1682385dc549c5867b32b2a1210c1aa493146e"
+  },
+  "safeEvidencePins": {
+    "docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/final-stage1-receipt.json": "27df24f3b2bfa924e6fc88a95b5f31c4c73e1cf811dcf90ec1fd84d4c623dcb7",
+    "docs/gcsp/evidence/fucq59/f70-range-shape-diagnostic-2026-11-07/range-shape.json": "857859212ed61c5e2c06b9d233bf53de29354a9caf932b4fcae8cd98c6d3a21f",
+    "docs/gcsp/evidence/fucq59/f70-range-shape-diagnostic-2026-11-07/tree.json": "eb3e3a1c5e10cc0aa573d0a7b399f85c08c2d12e8ec805f9a95780eb682c9eff",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/qualification-plan.json": "eac40811115cef1d25e9911ae252d11fcb7c1c791452cdeee86ed13b50836105",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/prepare.py": "2cdfb5c4cff7b45160a20537516d6d9e272f6b9f99fb50b156f19d76bafac61d",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/run-live.mjs": "d02365476860af1bce53a86d9a7b72611cc6b12265e67f88bbf92df94c9db386",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/supervise.py": "b029ac7227894e872776ac0266f3d9f6cbde50f4976a5beeb810171341cf44c9",
+    "docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context01/tree.json": "33ef1c5dae8514df06292ad22d1cbbcb4e36fec3a29e42e0e60406fc692d35aa",
+    "docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context01/qualification-plan.json": "41f8494c558f67a8aa2df3d8f96bfbc7416a5213a544db8d32c27854d64aa3b4",
+    "docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context03/tree.json": "5596ab84aa7d81db67f136d78d960a3e681cdae707a748a6a1228a4e68672891",
+    "docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context03/qualification-plan.json": "35e9884db73002673672e959fb7037b70c4902fbdcc3dc110897b8cd9f5cd0c3",
+    "docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context04/tree.json": "bb9f4ca5611c85901c2ce575cbcdef4d3ebd8b54588336e8c836ae1f1a5181c5",
+    "docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context04/qualification-plan.json": "fa2f59faf6bf507343b018ed7b396d299109dca99d437eb597971ad6fc1d5620",
+    "docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context06/tree.json": "f336f47d7641ca8520f41e5c226d6cacb24dc576fc850d8b6cd463861be074f1",
+    "docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context06/qualification-plan.json": "99af876774b58b42d9c2d99c3a1afd30ec41991830ebe8a49ac3debafaa3b3b2"
+  },
+  "sourceCapabilityGate": {
+    "required": false,
+    "existingSeamExecutableUnchanged": false,
+    "sourceLeadFilesModifiedByThisTask": false,
+    "neededSemantics": [
+      "Preserve exact fresh full-model/AG/date/raw-range and complete-alias checks.",
+      "Bind exact source line key and included target variant separately from source compact default; never substitute default AG.",
+      "For observed no-option lines with no option, permit only the pinned no-trim-query route; never manufacture S0337 or classify line key as an option.",
+      "For explicit code lines, retain exact source option and target included trim element; require returned definition map contains it.",
+      "Use the existing bounded collection-session HTTP seam, checkpointing and safe typed parser; expose no solve capability.",
+      "Retained per-context model/line and typed-definition semantic revalidation must reject cross-model/date/alias/substitution and mutated definitions."
+    ],
+    "requiredReview": "Source lead approved design; actual code review requested. Freeze tested code/runner/plan pins before root traffic release.",
+    "actualCodeSourceLeadReview": {
+      "reviewer": "Minnie Mouse",
+      "commit": "de1e420458f7ef6485f7f091f403e4369ce55616",
+      "result": "no blocking binding finding; read-only actual diff review; no tests/source traffic or source-lead032 edits"
+    }
+  },
+  "commandAfterCapabilityAndRootTrafficRelease": [
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/supervise.py",
+    "live"
+  ],
+  "commandStatus": "SPENT: source allocation consumed once. Do not rerun. Original frozen execution-plan.json remains the preparation snapshot.",
+  "retention": [
+    "sealed safe context projection and actual line/default/included pointers",
+    "sealed directly keyed typed definitions with option/optionType and optional safe description",
+    "executor-owned method/public URL/date/response SHA/byte metadata",
+    "durable primary checkpoint from its first write, safe export, spent/once marker, operation counts and concise result/cleanup receipt"
+  ],
+  "forbiddenRetention": [
+    "raw page/settings/tree/options bodies",
+    "settings profile/header values or secrets",
+    "authorization/cookie/request headers",
+    "solver response or inferred complete selections"
+  ],
+  "stop": [
+    "any HTTP/access/rate/shape/identity/date/AG/alias/line-binding failure",
+    "response/aggregate byte, operation/chunk/series time or RAM/scratch ceiling",
+    "source code/plan pin drift",
+    "checkpoint integrity/export or cleanup failure"
+  ],
+  "excluded": [
+    "1F7B qualification replay",
+    "1F7E active collection or its files",
+    "all G42 traffic and replay",
+    "solves/candidate generation/imagery",
+    "ordinary corpus publication",
+    "UI/stock/SQL/Jira changes",
+    "whole-story acceptance or configuration/model-line capacity claims"
+  ],
+  "trafficExecuted": true,
+  "testsExecutedForThisPlan": true,
+  "scratchAllocatedForThisPlan": true,
+  "acceptance": false,
+  "capabilityCommit": "de1e420458f7ef6485f7f091f403e4369ce55616",
+  "testedCodePins": {
+    "scripts/gcsp/bmw-public-registration.mjs": "0ab37aec216703da68f09ffd7006a2f40b4d3e8eca113c4f59e8e0c54e489a74",
+    "scripts/gcsp/public-bmw-source.mjs": "cd318ff5918fa52dd56848b4664d9b68b5096083bc401bbc2cec4fec5c9c7ea6",
+    "scripts/gcsp/collection-session.mjs": "75c116e6119b256a5b576107f2838e2bb5941841ce5f5ffda812a9f2f38ec37b",
+    "scripts/gcsp/collect-fleet.mjs": "a89868ec97add3365bae6ab539e6c88206818cdbe16ac34b1142461382446a1d",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+    "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/test/gcsp-bmw-model-options-qualification.test.js": "b91d6b547690f3370ee9324091c9f565c6f7ef6e0920bfab5fda076adb8590af",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+    "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/run-live.mjs": "8769d6bdbb520f58f8c1c744ca1475d47122b48b15d1d8d7e39ea881fd1863d2",
+    "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/supervise.py": "91026ab0905ae0e64f0998f1fea15af8517c9d4c16b9d9db4bc7753c356d3716",
+    "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/prepared-check.test.mjs": "c995ffb8cfd917eb2a6a234df213cb1b49c0e95a04c4c6c745f3a3ba6eb5ed31"
+  },
+  "preparedExecutionPlan": "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/execution-plan.json",
+  "preparedPlanDigest": "2c4d05cb669da8238a23c5ace1e0298aa80b4b365b05ea0cab50f8daf8a0616e",
+  "trafficGrantEnvironment": "F70_REMAINING_OPTIONS_SOURCE_GRANT",
+  "liveResults": "docs/gcsp/evidence/fucq59/f70-remaining-options-qualification-2026-11-07/live-results.json"
+}

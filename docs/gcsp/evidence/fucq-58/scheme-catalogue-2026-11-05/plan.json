@@ -1,0 +1,86 @@
+{
+  "version": "scheme-catalogue-discovery-plan.v1",
+  "run": "dev-poller-restart-20261105-fucq58",
+  "chunk": "scheme-catalogue-f70-f44",
+  "authority": "Gary 2026-11-05 public UK read-only/pilot/retention/display; dispatcher continuation 2026-11-05",
+  "executable": true,
+  "readOnly": true,
+  "targets": [
+    {
+      "schemeModelLine": "F70 Sports Hatch",
+      "range": "F70"
+    },
+    {
+      "schemeModelLine": "F44 Gran Coupe",
+      "range": "F44"
+    }
+  ],
+  "context": {
+    "country": "gb",
+    "locale": "en_GB",
+    "requestOrderDate": "2026-11-01",
+    "requestEffectDate": "2026-11-01",
+    "futureModels": true,
+    "closestFallback": true
+  },
+  "limits": {
+    "httpAttempts": 4,
+    "pageGets": 1,
+    "settingsGets": 1,
+    "treeGets": 2,
+    "solverGets": 0,
+    "otdGets": 0,
+    "manifestGets": 0,
+    "imageGets": 0,
+    "concurrency": 1,
+    "retries": 0,
+    "backoffMs": 0,
+    "requestTimeoutMs": 10000,
+    "wallMs": 45000,
+    "responseDecodedBytes": 1048576,
+    "aggregateDecodedBytes": 3145728,
+    "outputBytes": 262144,
+    "modelsPerResponse": 256,
+    "ramBytes": 268435456,
+    "scratchBytes": 33554432,
+    "cacheEntries": 0
+  },
+  "pathsChanged": [
+    "docs/gcsp/evidence/fucq-58/scheme-catalogue-2026-11-05/",
+    "docs/gcsp/fleet-collection-runbook.md",
+    "_dev/in-progress/DEV-2026-11-04-031.md (Result only)"
+  ],
+  "regression": "Compact reference selection, range fallback substitution, conflicting duplicates, incomplete dates/context, unbounded requests/body and accidental sensitive retention",
+  "affectedCallers": "Evidence consumers only; new helper has no runtime callers",
+  "integrationBoundaries": [
+    "Existing public model-tree route, same dates/header profile, modified range query only",
+    "Exact two eligibility targets; current catalogue candidacy separate from eligibility, construction and profile proof",
+    "Existing fleet plan/source/registry and prior observations unchanged",
+    "Shared product-map stable slices retained by dispatcher; historical worktree has no map/helper"
+  ],
+  "selectedChecks": [
+    "node --test docs/gcsp/evidence/fucq-58/scheme-catalogue-2026-11-05/catalogue.test.mjs",
+    "node --check docs/gcsp/evidence/fucq-58/scheme-catalogue-2026-11-05/discover.mjs",
+    "offline retained-observation hash/path/context review"
+  ],
+  "excludedChecks": {
+    "fullSuite": "No runtime changes; Ralph owns sole full suite, no full grant",
+    "priorMatching": "Identical source/input evidence reused; no repeated known-seed solver",
+    "uiAndDatabase": "No screens, components, repository/schema/database or deployment changes",
+    "privateSource": "No VIN/plate/advert/login/credential retrieval beyond public memory-only application header"
+  },
+  "inputs": {
+    "server/data/gcsp/vehicle-evidence/fleet-plan.json": "7eee9fbc7636d61e83fd93192f1003fac0f711233f0d459b372fabdec3547b0e",
+    "docs/gcsp/bmw-interface-research.md": "82d4edba56abf474e693d45d1b2f79c4b8918e868fb2ff56d6d6ba96db00d00a",
+    "docs/gcsp/evidence/fucq-58/known-seed-refresh-2026-11-05/evidence/qualification.mjs": "c5fd355259c610435055a2934dd2357502c442768c5f6bcc13b0ffdc1101d41c",
+    "docs/gcsp/fucq-58-source-authorisation-2026-11-05.md": "9bc5c9d915373bc812d375823a65fa9a658f285223c45a622877eee2b66bf6d1"
+  },
+  "nonActions": {
+    "newConfigurations": 0,
+    "profileActivations": 0,
+    "vinGeneration": 0,
+    "writes": 0,
+    "rawBodyRetention": 0
+  },
+  "interpretation": "Catalogue candidates only. An unmatched/fallback range establishes this bounded response, not global unavailability or discontinued production; model/date/steering literals never prove VIN semantics."
+}

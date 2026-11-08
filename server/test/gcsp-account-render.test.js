@@ -10,6 +10,7 @@ import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { toAccountView, toDraftView } from '../../blocks/gcsp/account/account-view.js';
 import { createAccountHttpAdapter } from '../../blocks/gcsp/account/http-adapter.js';
 import { ACCOUNT_SNAPSHOT, FIXTURE_NAMES, accountFixture } from '../../blocks/gcsp/account/fixtures.js';
+import { orderProgressFixtures } from '../../blocks/gcsp/order-progress/fixtures.js';
 
 const instant = '2026-11-05T09:00:00.000Z';
 async function setup({ seed = true, principal = 'demo-paula' } = {}) {
@@ -215,8 +216,7 @@ test('account composition preserves complete supplied facts, labelled details an
     const otherScheme = root.querySelectorAll('.gcsp-feature')[1];
     assert.doesNotMatch(otherScheme.querySelector('.gcsp-account-terms').textContent, /1,300/);
     assert.match(otherScheme.querySelector('.gcsp-account-terms').textContent, /allowance not supplied/i);
-    assert.match(current.textContent, /Current contractcurrent:employee-paula/);
-    assert.match(current.textContent, /Vehicle slotslot-paula/);
+    assert.doesNotMatch(current.textContent, /current:employee-paula|slot-paula|choices-fs-uk/);
     for (const text of ['7654321', '1 May 2026', '30 May 2026', '1 June 2026', '6,500', '6,420',
       'ZZSYNTHETIC000001', '156 g/km (WLTP combined)', '£55,295 (List price)', 'SYN01', 'Fictional option']) assert.ok(current.textContent.includes(text), text);
     assert.equal(root.querySelectorAll('.gcsp-feature > .gcsp-feature-copy > button').length, 1);
@@ -228,7 +228,9 @@ test('account composition preserves complete supplied facts, labelled details an
     assert.ok(findDetail(root, 'pcs-ukfs-bmw (2 records)'));
     assert.match(root.textContent, /Not supplied/);
     assert.doesNotMatch(root.textContent, /\[object Object\]|undefined|NaN|Invalid Date/);
-    assert.equal(root.querySelectorAll('input, select, textarea').length, 0);
+    // The shell's presenter bar (112fdfe2) stays hidden without a presenter session; the account itself has no controls.
+    assert.equal([...root.querySelectorAll('input, select, textarea')].filter((n) => !n.closest('.gcsp-presenter-region')).length, 0);
+    assert.equal(root.querySelector('.gcsp-presenter-controls').hidden, true);
     assert.equal(root.querySelectorAll('.vm-decision, .vm-card-score').length, 0);
     assert.match(root.textContent, /Synthetic example data/);
   } finally { destroy(); root.remove(); }
@@ -303,7 +305,7 @@ test('guarded replacement reconciles draft, suppresses duplicate writes, emits e
   const listen = (event) => events.push(event);
   document.body.addEventListener('gcsp:journey-start', listen);
   try {
-    assert.deepEqual(calls.map((call) => call.url), ['/api/gcsp/manual/account', '/api/gcsp/manual/draft']);
+    assert.deepEqual(calls.map((call) => call.url), ['/api/gcsp/manual/account', '/api/gcsp/manual/draft', '/api/gcsp/offers/current']);
     blocked = true;
     const choose = findButton(root, 'Choose a replacement'); choose.click(); choose.click();
     assert.equal(root.querySelector('[aria-busy="true"]') != null, true);
@@ -446,4 +448,127 @@ test('default print exposes only the chosen complete record and cleans its tempo
     assert.equal(root.querySelector('.gcsp-account-print-record'), null);
     assert.equal(root.classList.contains('gcsp-account-printing'), false);
   } finally { window.print = original; destroy(); root.remove(); }
+});
+
+test('account shows a keyboard-operable link to the employee offer only when one is listed', async () => {
+  const withOffer = await domMount({ ...readOnlyAdapter(), readOffers: async () => ({ status: 'ok', value: { offers: [{ offerId: 'offer-1', runId: 'run-1' }] } }) });
+  const view = findButton(withOffer.root, 'View your offer'); assert.ok(view); assert.equal(view.tagName, 'BUTTON'); withOffer.destroy();
+  const without = await domMount({ ...readOnlyAdapter(), readOffers: async () => ({ status: 'unavailable' }) });
+  assert.equal(findButton(without.root, 'View your offer'), undefined); without.destroy();
+});
+
+// A fake order adapter over one fixture state; `orders` is what the employee's list returns.
+function orderAdapter(name = 'appointment-requested', orders) {
+  const states = orderProgressFixtures().states[name]; const uuid = states.stages.value.orderUuid;
+  const read = (field) => async () => structuredClone(states[field]);
+  return { uuid, calls: [], listOrders: async function list() { return { status: 'ok', value: { orders: orders ?? [{ orderUuid: uuid, source: { receivedAt: instant } }] } }; },
+    readStages: read('stages'), readDocuments: read('documents'), readAppointment: read('appointment'), readReturnPlan: read('returnPlan') };
+}
+const settleOrder = async (root, ready) => { for (let n = 0; n < 40 && !ready(root); n += 1) await new Promise((done) => setTimeout(done, 15)); };
+const selection = (orderUuid, display) => async () => ({ status: 'ok', value: { selection: { stock: { orderUuid, orderNumber: '1000001', facts: { display } } } } });
+
+test('account with an order embeds its progress with the order number, stage names and the selected car', async () => {
+  const orders = orderAdapter(); const names = orderProgressFixtures().states['appointment-requested'].stages.value.stages.map((row) => row.label ?? row.name);
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readOrder: selection(orders.uuid, { name: 'Synthetic i5 eDrive40 Touring', photo: '/img/i5.jpg' }) },
+    { orderAdapter: orders });
+  try {
+    await settleOrder(root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-number'));
+    const area = root.querySelector('.gcsp-account-order'); assert.ok(area, 'order area');
+    assert.equal(area.getAttribute('aria-label'), 'Your order'); assert.equal(root.querySelectorAll('main h1').length, 1);
+    assert.equal(area.querySelector('h2').textContent, 'Order progress');
+    assert.match(area.textContent, /Order no\. 1000001/); assert.match(area.textContent, /Synthetic i5 eDrive40 Touring/);
+    assert.equal(area.querySelector('img.vm-card-photo').getAttribute('src'), '/img/i5.jpg');
+    assert.ok(area.querySelectorAll('.gcsp-stage-tracker li').length >= 3, names.join());
+    const first = area.querySelector('.gcsp-order-progress'); (findButton(root, 'Refresh account') ?? {}).disabled; // a redraw keeps the same mounted body
+    assert.equal(root.querySelector('.gcsp-account-order .gcsp-order-progress'), first);
+  } finally { destroy(); }
+  assert.equal(root.querySelector('.gcsp-account-order'), null);
+});
+
+test('account shows no order area without an order, on a failed list, or for another order car', async () => {
+  const none = await domMount(readOnlyAdapter(), { orderAdapter: orderAdapter('appointment-requested', []) });
+  await tick(); assert.equal(none.root.querySelector('.gcsp-account-order'), null); assert.doesNotMatch(none.root.textContent, /No order yet/); none.destroy();
+  const failed = orderAdapter(); failed.listOrders = async () => ({ status: 'unavailable' });
+  const down = await domMount(readOnlyAdapter(), { orderAdapter: failed }); await tick();
+  assert.equal(down.root.querySelector('.gcsp-account-order'), null); down.destroy();
+  const plain = await domMount(readOnlyAdapter()); assert.equal(plain.root.querySelector('.gcsp-account-order'), null); plain.destroy();
+  const orders = orderAdapter();
+  const other = await domMount({ ...readOnlyAdapter(), readOrder: selection('another-order', { name: 'Not this car' }) }, { orderAdapter: orders });
+  try {
+    await settleOrder(other.root, (node) => node.querySelector('.gcsp-order-number'));
+    assert.match(other.root.querySelector('.gcsp-account-order').textContent, /Car details not supplied/);
+    assert.doesNotMatch(other.root.textContent, /Not this car/);
+  } finally { other.destroy(); }
+});
+
+test('FUCQ-193: an accepted offer with its order in progress no longer offers "View your offer"', async () => {
+  const offers = (state) => async () => ({ status: 'ok', value: { offers: [{ offerId: 'offer-2', runId: 'run-1', state }, { offerId: 'offer-1', runId: 'run-1', state: 'declined' }] } });
+  const orders = orderAdapter();
+  const accepted = await domMount({ ...readOnlyAdapter('no-entitlement'), readOffers: offers('accepted'), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders });
+  try {
+    await settleOrder(accepted.root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-number'));
+    assert.ok(accepted.root.querySelector('.gcsp-account-order'), 'order progress is shown');
+    assert.equal(findButton(accepted.root, 'View your offer'), undefined);
+    assert.equal(accepted.root.querySelector('[aria-label="Your car offer"]'), null);
+  } finally { accepted.destroy(); }
+  const pending = await domMount({ ...readOnlyAdapter(), readOffers: offers('pending') });
+  assert.ok(findButton(pending.root, 'View your offer'), 'a pending newest offer keeps its link'); pending.destroy();
+});
+
+test('FUCQ-193: the HTTP adapter reads the newest listed offer state, and a failed read keeps the link', async () => {
+  const listed = { status: 'ok', value: { offers: [{ offerId: 'offer-2', runId: 'run-1', createdAt: null }, { offerId: 'offer-1', runId: 'run-1', createdAt: null }] } };
+  const adapterFor = (offer) => { const urls = [];
+    return { urls, adapter: createAccountHttpAdapter({ fetchImpl: async (url) => { urls.push(url);
+      const body = url === '/api/gcsp/offers/current' ? listed : offer; return { ok: body.status === 'ok', status: 200, json: async () => body }; } }) }; };
+  const read = adapterFor({ status: 'ok', value: { offerId: 'offer-2', state: 'accepted' } });
+  assert.deepEqual(await read.adapter.readOffers(), { status: 'ok', value: { offers: [{ offerId: 'offer-2', runId: 'run-1', state: 'accepted' }, { offerId: 'offer-1', runId: 'run-1' }] } });
+  assert.deepEqual(read.urls, ['/api/gcsp/offers/current', '/api/gcsp/offers/offer-2?runId=run-1']);
+  const failed = adapterFor({ status: 'unavailable' });
+  assert.deepEqual(await failed.adapter.readOffers(), { status: 'ok', value: { offers: [{ offerId: 'offer-2', runId: 'run-1' }, { offerId: 'offer-1', runId: 'run-1' }] } });
+});
+
+test('FUCQ-192: an in-progress order on the slot replaces "No ordering entitlement" with its state and a progress link', async () => {
+  const listed = (slot) => { const row = structuredClone(orderProgressFixtures().states['appointment-requested'].stages.value); row.entitlementSlotId = slot; return [row]; };
+  const allocated = () => { const envelope = accountFixture('no-entitlement'); for (const slot of envelope.value.slots) slot.state = 'allocated'; return envelope; };
+  const mount = (orders) => domMount({ ...readOnlyAdapter(), readAccount: async () => allocated(), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders });
+  const ordered = orderAdapter('appointment-requested', listed('slot-paula')); const { root, destroy } = await mount(ordered);
+  try {
+    await settleOrder(root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-number'));
+    assert.doesNotMatch(root.textContent, /No ordering entitlement/);
+    const status = root.querySelector('.gcsp-account-order-status'); assert.ok(status, 'order status');
+    assert.equal(status.querySelector('h2').textContent, 'Your order is in progress');
+    assert.match(status.textContent, /Current step: Sent to ordering\./);
+    const link = [...status.querySelectorAll('a')].find((node) => node.textContent === 'View order progress'); assert.ok(link, 'progress link');
+    const area = root.querySelector('.gcsp-account-order'); assert.ok(area.id); assert.equal(link.getAttribute('href'), `#${area.id}`);
+    assert.equal(findButton(status, 'Contact support'), undefined);
+  } finally { destroy(); }
+  const other = await mount(orderAdapter('appointment-requested', listed('slot-other')));
+  try {
+    await settleOrder(other.root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-number'));
+    assert.match(other.root.textContent, /No ordering entitlement/); assert.equal(other.root.querySelector('.gcsp-account-order-status'), null);
+  } finally { other.destroy(); }
+  const none = await domMount(readOnlyAdapter('no-entitlement'), { orderAdapter: orderAdapter('appointment-requested', []) }); await tick();
+  assert.match(none.root.textContent, /No ordering entitlement/); none.destroy();
+});
+
+test('FUCQ-195: the current-car card shows readable labels and no raw identifiers', async () => {
+  const input = accountFixture('ready'); const value = input.value;
+  const raw = [value.currentContract.contractId, value.currentContract.slotId, value.currentContract.schemeId,
+    value.currentContract.source.sourceRef, value.currentContract.source.sourceVersion];
+  const first = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
+  try {
+    const card = first.root.querySelector('.gcsp-feature');
+    const shownText = [...card.querySelectorAll('dd, p, h2, summary, button')].map((node) => node.textContent);
+    for (const id of raw) assert.ok(!shownText.some((text) => text.includes(id)), id);
+    assert.ok(![...card.querySelectorAll('dd')].some((node) => node.textContent === value.currentContract.status));
+    assert.match(card.textContent, /StatusCurrent car/);
+    assert.match(card.querySelector('.gcsp-account-terms').textContent, /^1,100 points a month · 1,300 points a month allowance$/);
+    assert.match(card.textContent, /Specification provenanceSynthetic example data/);
+    assert.match(card.textContent, /WLTP CO2/);
+    assert.doesNotMatch(card.textContent, /Vehicle slot|Scheme|Current contract|points cost not supplied|Wltp/);
+  } finally { first.destroy(); first.root.remove(); }
+  value.slots[0].label = 'Company car 1';
+  const second = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
+  try { assert.match(second.root.querySelector('.gcsp-feature').textContent, /Vehicle slotCompany car 1/); }
+  finally { second.destroy(); second.root.remove(); }
 });

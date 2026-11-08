@@ -1,0 +1,37 @@
+{
+  "at": "2026-11-06T15:17:31.847778+00:00",
+  "source": "one fresh observation;all prior allocations left untouched",
+  "result": "raw-schema-review-required",
+  "startedAt": "2026-11-06T15:16:25.042Z",
+  "completedAt": "2026-11-06T15:16:26.701Z",
+  "sourceCalls": 4,
+  "decodedBytes": 916858,
+  "countsBasis": "executor final result",
+  "artifacts": [
+    {
+      "file": "tree.json",
+      "sha256": "06d13000d124fed336d39379cc6984ede0d6a0eced57cde955389c186932a228",
+      "bytes": 3439,
+      "operation": "discover"
+    },
+    {
+      "file": "options.json",
+      "sha256": "6883be7544a6c03ef523aa6287a74c03fddd9b0e09b80127c25b72c1bec0061b",
+      "bytes": 93956,
+      "operation": "options"
+    }
+  ],
+  "admission": false,
+  "accepted": 0,
+  "rootAbsent": true,
+  "ownerAbsent": true,
+  "groupsAbsent": true,
+  "reservationAbsentUnderLock": true,
+  "onceMarkerRetainedConsumed": true,
+  "removedScratchBytes": 204800,
+  "removedLogBytes": 448,
+  "sampledPeakRssBytes": 84262912,
+  "compatibilityException": null,
+  "leftovers": [],
+  "schemaQualification": "actual pointer/definition semantics under independent review;no classifier/admission/publication claim"
+}

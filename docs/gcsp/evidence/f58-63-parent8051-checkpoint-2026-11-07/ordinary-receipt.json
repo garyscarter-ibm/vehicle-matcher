@@ -1,0 +1,31 @@
+{
+  "status": "ordinary-dot10-published-operationally-consumer-acceptance-failed",
+  "releaseId": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+  "previousManifestDigest": "28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884",
+  "counts": {
+    "configurations": 4667,
+    "distinctConfigurations": 4667,
+    "images": 2,
+    "qualifyingCompleteDistinctSourceConfigurations": 4666,
+    "sourceConfigurations": 4666,
+    "vinMappings": 1
+  },
+  "priorConfigurationHistoryRetained": 2425,
+  "priorVersionFilesByteIdentical": true,
+  "identitiesAndPriorDatasetsRetained": true,
+  "addedDatasetVersions": 1,
+  "idempotentRepeat": true,
+  "coldRestart": true,
+  "supplementExact": true,
+  "bodyLengthUnknown": true,
+  "publicReceiptSha256": "7dc0f232a4c9927adda6959b743537e70e2e93c493fc510429eb728a1cc2f3ac",
+  "consumerPassed": 3355,
+  "consumerFailed": 1313,
+  "consumerAcceptanceWaived": false,
+  "operationalDisposition": "Publish the proved immutable partial fleet operationally; defer the recorded Medium consumer mandatory-elements defect independently while all unmet original acceptance remains explicit.",
+  "sourceCalls": 0,
+  "externalCalls": 0,
+  "nativeStockProof": "unrun",
+  "deploymentExecuted": false,
+  "acceptance": false
+}

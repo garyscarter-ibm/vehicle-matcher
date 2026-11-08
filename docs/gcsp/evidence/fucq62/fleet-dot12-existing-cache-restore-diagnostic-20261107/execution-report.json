@@ -1,0 +1,115 @@
+{
+  "scope": "actual single root-executed offline existing-cache/fresh-store restore",
+  "planSha256": "2ea8139da9c52a93c65a422d3bd39bc6b782e25415c41f229f3b5d8837d12df6",
+  "resultFileSha256": "4555bdf4fe0c3db11fb8c2f3024596330df48adabfbd71ba29e14e23533b7da3",
+  "receiptPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/existing-cache-restore-diagnostic/receipt.json",
+  "receiptSha256": "3c0e8ced7572d327a30b8c03f942baecb3c1757d515c54ab75b2b08e2f1b16b2",
+  "actual": {
+    "result": {
+      "issue": null,
+      "issue_kind": null,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/dot12-existing-cache-restore-diagnostic/command.log",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/dot12-existing-cache-restore-diagnostic/ownership/e0846ed50983472dbcaf5d1f17d57507.json",
+      "peak_rss": 361660416,
+      "peak_scratch": 356388956,
+      "rc": 0,
+      "wall": 40.495981417
+    },
+    "publicResult": {
+      "active": {
+        "completeness": {
+          "imagesMissing": 9999,
+          "selectedOptions": {
+            "complete": 10000,
+            "unknown": 1
+          },
+          "sourceKinds": {
+            "dated-snapshot": 10000,
+            "north-american-reference": 1
+          }
+        },
+        "counts": {
+          "configurations": 10001,
+          "distinctConfigurations": 10001,
+          "images": 2,
+          "qualifyingCompleteDistinctSourceConfigurations": 10000,
+          "sourceConfigurations": 10000,
+          "vinMappings": 1
+        },
+        "datasetId": "gcsp-source-fleet",
+        "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+        "sourceContexts": [
+          {
+            "catalogueDate": null,
+            "market": "US",
+            "note": "Small structural reference fixture; no UK/RHD, full equipment or 200/10000 corpus claim",
+            "observedDate": "2026-11-01",
+            "sourceKind": "north-american-reference",
+            "steering": "LHD"
+          },
+          {
+            "catalogueDate": "2026-11-01",
+            "market": "GB",
+            "note": "Exact retained FUCQ-39 GB catalogue; physical year, build, steering and plant remain unknown",
+            "observedDate": "2026-11-01",
+            "sourceKind": "dated-snapshot",
+            "steering": null
+          },
+          {
+            "catalogueDate": "2026-11-07",
+            "market": "GB",
+            "note": "9999 actual admitted v2 factory selections and one retained historical source configuration; two representative images retain exact dated associations; four qualified measurements apply only to one exact configuration; physical build, visual fidelity and scheme breadth remain unverified",
+            "observedDate": "2026-11-07",
+            "sourceKind": "dated-snapshot",
+            "steering": null
+          }
+        ],
+        "version": "2026-11-07.12"
+      },
+      "externalCalls": 0,
+      "mode": "cold-restore",
+      "status": "ok"
+    },
+    "restoreCalls": 1,
+    "copiedFiles": 11,
+    "copiedLogicalBytes": 350691430,
+    "networkRequests": 0,
+    "rawError": null
+  },
+  "conclusion": "Actual offline restore from exact existing immutable .12cache into fresh owned store passed, including production copy and staged current-registry validation. No original public cold failure was reproduced or attributed.",
+  "originalAttempt2CauseProved": false,
+  "publicAnonymousColdAttemptSucceeded": false,
+  "earlierValidatorAndRegistryEvidenceUnchanged": true,
+  "rootOrderingRevision": {
+    "source": "Explicit root instruction after this actual pass",
+    "decision": "Existing-cache restore validates actual build step. Root will apply .12anchor+reviewedLinuxCI; Linux performs fresh publiccold/offline/boundary verification without another localredownload. Renderselector remains.10 until Linux passes.",
+    "fullAcceptanceOrDoneEstablished": false
+  },
+  "scopeAssessment": {
+    "approvedQ13Scope": "Stock uses stockorderRef+configuration; VIN applies to delivered/current.10000VIN mappings are not a F62 acceptance criterion.",
+    "F58Gaps": "F58/sourcecoverage/native/order gaps remain separately assessed and do not gate configuration-only deployment.",
+    "historicalConsumerFailures": 2707,
+    "historicalStrictCliCompleted": false,
+    "lowerSeverityPolicy": "Do not expand claimedStory. BelowCritical/High findings become linked backlog Bugs and do not block currentStory merge; root owns triage and any BUILD blocker repair.",
+    "acceptance": false
+  },
+  "cleanup": {
+    "aggregatePeakRSSUpperBoundBytes": 384892928,
+    "compatibilityException": null,
+    "groupsAbsent": true,
+    "immutablePinsUnchanged": true,
+    "leftovers": [],
+    "removedScratchPeakBytes": 356388956,
+    "reservationAbsent": true,
+    "retainedLogicalBytes": 4096,
+    "retainedOutput": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/existing-cache-restore-diagnostic",
+    "runtimeDependencyLinkAbsent": true,
+    "scratchAbsent": true,
+    "scratchRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/existing-cache-restore-diagnostic/.scratch/test-stamp-shard-e0846ed50983472dbcaf5d1f17d57507",
+    "supervisorPeakRSSBytes": 23232512,
+    "vendorDirectoryIdentityUnchanged": true,
+    "vendorWritesAuthorizedOrPerformed": false
+  },
+  "independentPhysicalScratchAndScratchParentAbsenceChecked": true,
+  "acceptance": false
+}

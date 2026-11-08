@@ -1,0 +1,874 @@
+{
+  "state": "passed",
+  "chunk": "desktop",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "checks": [
+    {
+      "name": "Native disclosure opens with Enter; Tab reaches tick; Escape closes and returns focus"
+    },
+    {
+      "name": "Initial selected scenario matches actual current scenario after catalogue load"
+    },
+    {
+      "name": "Both shared radio pickers wrap arrows, support Home/End and preserve focused node/value and visible keyboard outline through ordinary readback"
+    },
+    {
+      "name": "Actual policy step and handler receipt",
+      "before": "2026-11-05T09:00:00.000Z",
+      "after": "2026-11-05T09:01:00.000Z",
+      "step": {
+        "key": "clock.presenter.stepSeconds",
+        "value": 60,
+        "unit": "seconds",
+        "status": "assumed",
+        "basis": "A one-minute presenter step makes small time changes visible; named cues cover longer walkthrough jumps. Revisable demo assumption, not BMW policy.",
+        "source": "docs/gcsp/presenter-controls-contract.md",
+        "sourceDate": "2026-11-05",
+        "policyVersion": "gcsp-policy-v1",
+        "effectiveFrom": "2026-11-04T00:00:00.000Z"
+      },
+      "missingStages": [
+        "release-pull",
+        "manual-expiry",
+        "buddy-expiry",
+        "pending-reconciliation",
+        "buddy-allocation",
+        "outbox-dispatch"
+      ]
+    },
+    {
+      "name": "Busy prevents duplicate command",
+      "requests": 1
+    },
+    {
+      "name": "Actual next-release cue, no producer/count; future cue then unavailable",
+      "at": "2026-11-05T09:30:00.000Z"
+    },
+    {
+      "name": "Named target uses actual policy cue"
+    },
+    {
+      "name": "Actual typed validation explains the past target field"
+    },
+    {
+      "name": "Actual UI principal issuance employee to Greg to employee; actual context readbacks",
+      "employee": "Paula (fictional)",
+      "greg": "Greg (fictional)"
+    },
+    {
+      "name": "Actual acting cookie alone hides presenter controls"
+    },
+    {
+      "name": "Actual reset discards employee shell; new context, header, workspace and run agree",
+      "before": "demo-e8d93ea85fe92c0bd208acb8896067c8",
+      "after": "demo-db9a044138ce130d14291dfad834f54b",
+      "roles": [
+        "presenter"
+      ]
+    },
+    {
+      "name": "Lost response retries byte-identical original command once",
+      "sameBody": true,
+      "before": "2026-11-05T09:00:00.000Z",
+      "after": "2026-11-05T09:01:00.000Z"
+    },
+    {
+      "name": "Reset cookie delivered/body lost: exact retry returns stale-run; fresh agreed run/context navigates without success claim",
+      "sameBody": true,
+      "retryStatus": "stale-run",
+      "before": "demo-db9a044138ce130d14291dfad834f54b",
+      "current": "demo-e1b8ba66e8b5d7c366cd47a3489b5c9e"
+    },
+    {
+      "name": "Controlled actual transport outage is distinct from business refusal"
+    },
+    {
+      "name": "Actual delayed read after document teardown cannot replace fresh DOM or navigate"
+    },
+    {
+      "name": "Synthetic pending rendering only; advance retained and next action enabled"
+    },
+    {
+      "name": "Synthetic refused rendering only; advance retained and next action enabled"
+    }
+  ],
+  "captures": [
+    {
+      "name": "01-idle-collapsed",
+      "file": "01-idle-collapsed.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "BODY",
+      "activeText": "\n  Skip to contentGroup Car Schemes PortalPPresenter (fictional)Presenter (ficti",
+      "outline": "none"
+    },
+    {
+      "name": "02-idle-open-keyboard",
+      "file": "02-idle-open-keyboard.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "BUTTON",
+      "activeText": "Tick (60 seconds)",
+      "outline": "solid"
+    },
+    {
+      "name": "02a-scenario-keyboard-focus",
+      "file": "02a-scenario-keyboard-focus.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "BUTTON",
+      "activeText": "Clock/reset mechanics (fictional support fixture)Available",
+      "outline": "solid"
+    },
+    {
+      "name": "02a-principal-keyboard-focus",
+      "file": "02a-principal-keyboard-focus.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "BUTTON",
+      "activeText": "Presenter (fictional) (presenter)",
+      "outline": "solid"
+    },
+    {
+      "name": "02b-shared-options-keyboard-focus",
+      "file": "02b-shared-options-keyboard-focus.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "BUTTON",
+      "activeText": "Presenter (fictional) (presenter)",
+      "outline": "solid"
+    },
+    {
+      "name": "03-actual-tick-missing-release",
+      "file": "03-actual-tick-missing-release.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "BUTTON",
+      "activeText": "Tick (60 seconds)",
+      "outline": "none"
+    },
+    {
+      "name": "04-busy-real-response-delayed",
+      "file": "04-busy-real-response-delayed.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "BODY",
+      "activeText": "\n  Skip to contentGroup Car Schemes PortalPPresenter (fictional)Presenter (ficti",
+      "outline": "none"
+    },
+    {
+      "name": "05-next-release-no-producer",
+      "file": "05-next-release-no-producer.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "SUMMARY",
+      "activeText": "Presenter controls",
+      "outline": "none"
+    },
+    {
+      "name": "05b-typed-invalid-past-target",
+      "file": "05b-typed-invalid-past-target.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "BUTTON",
+      "activeText": "Tick to target",
+      "outline": "none"
+    },
+    {
+      "name": "06-paula-account-collapsed",
+      "file": "06-paula-account-collapsed.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "BODY",
+      "activeText": "\n  Skip to contentGroup Car Schemes PortalPPaula (fictional)Paula (fictional)dem",
+      "outline": "none"
+    },
+    {
+      "name": "07-paula-account-controls",
+      "file": "07-paula-account-controls.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "SUMMARY",
+      "activeText": "Presenter controls",
+      "outline": "solid"
+    },
+    {
+      "name": "08-greg-dashboard-controls",
+      "file": "08-greg-dashboard-controls.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "SUMMARY",
+      "activeText": "Presenter controls",
+      "outline": "solid"
+    },
+    {
+      "name": "09-paula-return",
+      "file": "09-paula-return.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "SUMMARY",
+      "activeText": "Presenter controls",
+      "outline": "solid"
+    },
+    {
+      "name": "10-nonpresenter-hidden",
+      "file": "10-nonpresenter-hidden.png"
+    },
+    {
+      "name": "11-scenario-unavailable",
+      "file": "11-scenario-unavailable.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "BUTTON",
+      "activeText": "Main successful journeyNot available yet: brief-confirmation, stock-release, bud",
+      "outline": "none"
+    },
+    {
+      "name": "12-reset-confirmation",
+      "file": "12-reset-confirmation.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "BUTTON",
+      "activeText": "Confirm reset",
+      "outline": "none"
+    },
+    {
+      "name": "13-clock-mechanics-reset",
+      "file": "13-clock-mechanics-reset.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "SUMMARY",
+      "activeText": "Presenter controls",
+      "outline": "solid"
+    },
+    {
+      "name": "14-lost-response",
+      "file": "14-lost-response.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "SUMMARY",
+      "activeText": "Presenter controls",
+      "outline": "none"
+    },
+    {
+      "name": "15-original-retry-recovered",
+      "file": "15-original-retry-recovered.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "SUMMARY",
+      "activeText": "Presenter controls",
+      "outline": "none"
+    },
+    {
+      "name": "13b-lost-reset-body-cookie-delivered",
+      "file": "13b-lost-reset-body-cookie-delivered.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "SUMMARY",
+      "activeText": "Presenter controls",
+      "outline": "none"
+    },
+    {
+      "name": "13c-reset-stale-retry-reconciled",
+      "file": "13c-reset-stale-retry-reconciled.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "SUMMARY",
+      "activeText": "Presenter controls",
+      "outline": "solid"
+    },
+    {
+      "name": "16-backend-read-outage",
+      "file": "16-backend-read-outage.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "BUTTON",
+      "activeText": "Refresh readback",
+      "outline": "none"
+    },
+    {
+      "name": "16b-delayed-read-after-navigation",
+      "file": "16b-delayed-read-after-navigation.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "SUMMARY",
+      "activeText": "Presenter controls",
+      "outline": "solid"
+    },
+    {
+      "name": "17-synthetic-pending",
+      "file": "17-synthetic-pending.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "BUTTON",
+      "activeText": "Tick (60 seconds)",
+      "outline": "none"
+    },
+    {
+      "name": "17-synthetic-refused",
+      "file": "17-synthetic-refused.png",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "activeTag": "BUTTON",
+      "activeText": "Tick (60 seconds)",
+      "outline": "none"
+    }
+  ],
+  "errors": [],
+  "boundary": "Actual buildServer routes, memory repository, canonical services. No stock/release producer composed.",
+  "syntheticInputs": [
+    "seedManualDemoContext manual-records-v1 through actual issued employee session; no stock producer"
+  ],
+  "expectedTransportFailures": [
+    {
+      "path": "/api/gcsp/presenter/controls/tick",
+      "error": "net::ERR_FAILED"
+    },
+    {
+      "path": "/api/gcsp/presenter/controls",
+      "error": "net::ERR_FAILED"
+    }
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "POST",
+      "path": "/api/gcsp/presenter/controls/tick",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "POST",
+      "path": "/api/gcsp/presenter/controls/tick",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "POST",
+      "path": "/api/gcsp/presenter/controls/tick",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "POST",
+      "path": "/api/gcsp/presenter/controls/tick",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "POST",
+      "path": "/api/gcsp/presenter/controls/tick",
+      "httpStatus": 400,
+      "status": "invalid"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "POST",
+      "path": "/api/gcsp/session/switch",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "POST",
+      "path": "/api/gcsp/session/switch",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/greg/demand",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "POST",
+      "path": "/api/gcsp/session/switch",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "POST",
+      "path": "/api/gcsp/presenter/controls/tick",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "POST",
+      "path": "/api/gcsp/session/switch",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "httpStatus": 404,
+      "status": "not-found"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "POST",
+      "path": "/api/gcsp/presenter/scenarios/reset",
+      "httpStatus": 409,
+      "status": "stale-run"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "httpStatus": 200,
+      "status": "ok"
+    },
+    {
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "httpStatus": 200,
+      "status": "ok"
+    }
+  ],
+  "port": 61874,
+  "chromeDebugPort": 61875,
+  "listenerClosed": true
+}

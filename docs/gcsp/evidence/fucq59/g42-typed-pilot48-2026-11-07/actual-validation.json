@@ -1,0 +1,150 @@
+{
+  "scope": "scoped actual released pilot48 source and strict retained proof",
+  "executionPlanSha256": "7ed4d8e5724ba184261139d3ce0187f2129835ef5e92acff5ce7f9d2a67d1d49",
+  "parentReleaseSha256": "66b6d6cf7ff041aaca73b66f8c28cae034deb8b1c4d642ec86e90d27f2c8d816",
+  "source": {
+    "contexts": 6,
+    "publicGetAttempts": 72,
+    "solverAttempts": 48,
+    "freshBootstrapGets": 24,
+    "http200": 72,
+    "decodedBytes": 5135881,
+    "elapsedSeconds": 27.809,
+    "actualDistinctNewAdmissions": 48,
+    "duplicates": 0,
+    "rejected": 0,
+    "maxSampledChildRssBytes": 212418560,
+    "removedScratchBytes": 0,
+    "allFrozenPinsUnchanged": true,
+    "primariesRetainedBeforeCleanup": true,
+    "newAcceptance": false
+  },
+  "retainedProof": {
+    "tests": {
+      "fail": 0,
+      "pass": 58,
+      "skipped": 0,
+      "tests": 58
+    },
+    "wallSeconds": 1.9866470420000002,
+    "sampledPeakRssBytes": 287080448,
+    "removedScratchBytes": 3932416,
+    "identityUnchanged": true,
+    "resultPath": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-typed-pilot48/retained/result.json",
+    "cleanupPath": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-typed-pilot48/retained/cleanup.json",
+    "checks": [
+      "all48 admissions strict source binder with actual tree/solver/typed-options artifacts",
+      "all6 source seals/exports/events/release/once markers/resource bounds",
+      "cumulative prior-prefix preservation and actual canonical uniqueness",
+      "resealed canonical mutation refusal",
+      "all6 copied-primary no-fetch resumes; originals unchanged"
+    ]
+  },
+  "initialRetainedProof": {
+    "tests": {
+      "fail": 48,
+      "pass": 10,
+      "skipped": 0,
+      "tests": 58
+    },
+    "diagnosis": "Evidence-only audit joined canonical records by absent candidateId. Fixed audit to use exact sourceEvidence.solver hash and configurationId; actual source primaries/code remained unchanged.",
+    "boundedFailureLog": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-typed-pilot48/retained/initial-record-join-check.log",
+    "resultPath": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-typed-pilot48/retained/initial-record-join-result.json",
+    "removedScratchBytes": 3936544
+  },
+  "cumulative": {
+    "canonicalEntries": 1974,
+    "admittedSourceConfigurations": 1971,
+    "spentSolverRequests": 2684,
+    "allPriorEntriesPreserved": true,
+    "canonicalPath": "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/final-canonical-index.json",
+    "canonicalSha256": "5812a9802afce48c77fead80fef9394de479fd44b34ea5ffa1ecd6f2ae26c1d7",
+    "spentPath": "docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/final-spent-request-index.json",
+    "spentSha256": "507e73d4014348adb4ff1cf4e0728851fd90ef3e6aadaa56f03fac485ab4c373"
+  },
+  "independentFilesystemChecks": [
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-typed-pilot48/live/2pma/ownership/87a38c9ea8644042b5bae953c5dfffbf.json",
+      "scratchRoot": "/private/tmp/test-stamp-shard-87a38c9ea8644042b5bae953c5dfffbf",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-typed-pilot48/live/2pmb/ownership/387286e5d7004f3d8a45ef3820b60054.json",
+      "scratchRoot": "/private/tmp/test-stamp-shard-387286e5d7004f3d8a45ef3820b60054",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-typed-pilot48/live/2ppa/ownership/067d4521eddb445296ea25d4cabaef81.json",
+      "scratchRoot": "/private/tmp/test-stamp-shard-067d4521eddb445296ea25d4cabaef81",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-typed-pilot48/live/2ppb/ownership/082e15ab744741c9a3180ac90899d28b.json",
+      "scratchRoot": "/private/tmp/test-stamp-shard-082e15ab744741c9a3180ac90899d28b",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-typed-pilot48/live/2pbc/ownership/78faedfda9374f49b6a7f6e2fd36171a.json",
+      "scratchRoot": "/private/tmp/test-stamp-shard-78faedfda9374f49b6a7f6e2fd36171a",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-typed-pilot48/live/2pmc/ownership/fd85f9662f684c8d8bc9bbc1e22744b5.json",
+      "scratchRoot": "/private/tmp/test-stamp-shard-fd85f9662f684c8d8bc9bbc1e22744b5",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 0
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-typed-pilot48/retained/ownership/cc7e3bd19e964dcf9bbe2911cebe2242.json",
+      "scratchRoot": "/private/tmp/test-stamp-shard-cc7e3bd19e964dcf9bbe2911cebe2242",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 3932416
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-typed-pilot48/retained/ownership/be148f5c98254af19ed73f96272b0cf6.json",
+      "scratchRoot": "/private/tmp/test-stamp-shard-be148f5c98254af19ed73f96272b0cf6",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 3936544
+    }
+  ],
+  "ownedDependencyLinkAbsent": true,
+  "compatibilityException": null,
+  "leftovers": [],
+  "deferredMediumInventoryBug": "open-unfixed",
+  "continuationGrant": false,
+  "sourceCapacityCredit": 0,
+  "acceptance": false,
+  "agents": [
+    {
+      "name": "Charlie Dog",
+      "requestedModel": "gpt-6.1-sol",
+      "requestedEffort": "high",
+      "selectedModel": "gpt-6.1-sol",
+      "selectedEffort": "high",
+      "effectiveRuntimeVerified": false,
+      "fallback": null,
+      "descendants": 0
+    }
+  ]
+}

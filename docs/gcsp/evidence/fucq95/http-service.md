@@ -1,0 +1,31 @@
+# FUCQ-95 activity HTTP checkpoint
+
+Adds employee-only `GET /api/gcsp/activity` through `createActivityRoutes(service)` and the existing `createGcspHandler` route list. `buildServer` receives the existing service instance as `gcspActivity`; no provider/runtime/repository is reconstructed. Strict browser-context and query rejection, shared access, configured origins, server session/role/current run, no-store responses and status mapping remain the shared boundary's responsibility. Missing or nonfunctional service injection is unavailable/503. Existing BriefService pause/resume routes remain the command authority, and fresh activity GETs reflect their persisted versions.
+
+Files changed in this slice: new `server/gcsp/brief/activity-http.js`, import/registration only in `server/index.js`, new `server/test/gcsp-activity-http.test.js`, the short activity binding/change-log additions in `shared-contracts.md`, and this evidence. Existing reader/tests and all other backend/UI files remain unchanged. Source reader checkpoint is `2ceba84`; prior boundary evidence remains recorded separately.
+
+## Scoped validation and resources
+
+The explicit focused HTTP regression is selected because the new route and shared server registration affect trusted context dispatch, response mapping and current state visibility. Parent final validation adds activity, BriefService, identity and retail/shared-access API boundaries. No full suite or browser work runs in this checkpoint; whole-story npm and screen acceptance remain outstanding.
+
+```text
+python3 -B /Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/fucq95-20261105-activity-supervisor.py implementer-http -- node --test --test-concurrency=1 server/test/gcsp-activity-http.test.js
+```
+
+Before implementation, eight tests failed on the expected unregistered route (404); the reset/session guard test already passed. After registration, all **9 tests passed**, zero failures/skips, Node duration **723 ms**. Tests use actual memory repository, PolicyService, DemoRuntime, BriefService, activity reader and a real local HTTP server closed in `finally`. They cover no-brief and confirmed current state; no-store/no writes; pause/resume/reload and stale versions; another employee's empty scoped projection; wrong role/missing session; reset stale-run; unsupported selectors/browser authority; missing/nonfunctional injection; repository failure propagation/private exceptions; shared key gate, exact origins and preflight. They assert no successful search, source delay or generated offer link.
+
+Final supervisor receipt: `rc: 0`, `issue: null`, wall **1.005 s**, peak recursive RSS **242,089,984 bytes**, peak scratch **0 bytes**, `removed: true`, `reservationReleased: true`. Shared receipt/log: `.claude/test-runs/fucq95-20261105-activity/implementer-http.{json,log}`. The external supervisor manifest verifies the entire owned scratch root absent. No archive, large output or compatibility exception. Parent retains the owned dependency link for final boundary validation, then removes it and verifies the existing target installation unchanged. Parent owns final impact/source/runtime receipts and successful-log cleanup.
+
+The route exposes the reader's existing honest limitation: no actual release/search/allocation/offer-check producer is present, so `lastSuccessfulCheck` remains null and source/check evidence explicitly unavailable. Real producer integration (FUCQ-92/96/100), offer access, every search/source state, activity screen/shared-kit work and browser/full-story acceptance remain unfinished. No frontend/foreground work occurred; the experience contract and Gary-approved body reference `a7fc178` remain binding for later UI work.
+
+Requested/selected implementer pair `gpt-6.1-sol/medium`, runtime confirmed by dispatcher; no fallback or descendants.
+
+## Final scoped boundary checkpoint
+
+The planned HTTP/activity/BriefService/identity/shared API command passed **117 tests, zero failures and zero skips**. Test duration was 7.635s, supervisor wall 8.0s. HTTP binding coverage is 100% lines/branches/functions; reader coverage is 100% lines, 93.33% branches and 96.43% functions. The existing repository/clock boundary proof is reused because those sources and their contracts did not change. Native PostgreSQL, full `npm test`, UI ratchet and browser acceptance were excluded from this backend checkpoint.
+
+`http-validation.json` records the exact command, six source digests, code identity `bd577688f7c80fe492a7fbb29f47419c3b4a708484e9cc037e3280027a0f4bde`, source HEAD `a769053991341965cbb60c09233130d01a599118`, tree `6a550967f50ce51a005fd06b82a04ed048843c5e`, source merge base and comparison commit `95f7648`. This is scoped evidence for the recorded branch sources; the later merged shared kit has not been integrated into this branch. The identity-keyed shared impact map records reviewed boundary ownership and the built-in coverage limitation (file aggregate, without per-test contexts).
+
+Peak allocation was **3,551,424 scratch bytes / 289,832,960 recursive RSS bytes**. The parent independently checked all ten run-owned allocation manifests: scratch absent, process groups absent and reservations released. The HTTP dependency symlink was removed; the retained 069 installation remains present with the identical 139-file / 475,201-byte digest. Successful HTTP verbose logs were summarized and removed (16,384 allocated bytes); compact receipts, checkpoints, impact map and `.claude/test-runs/fucq95-20261105-activity/http-boundary-summary.json` remain. The earlier reader logs were also summarized and removed as its receipt records. No large output, compatibility exception or leftovers.
+
+Final boundary runner requested/selected/effective `gpt-6-luna/high`, no fallback. Runtime evidence: `/Users/usget/.codex/sessions/2026/11/05/rollout-2026-11-05T12-52-48-01a1abc4-de93-7733-8180-8a6e845a48f3.jsonl` (`session_meta` task identity, first `turn_context` model/effort); independently checked by dispatcher and lead. All backend paths are ready to freeze at this checkpoint. Genuine search/source-check producers, offer access and default runtime composition, the activity screen and whole-story validation remain incomplete.

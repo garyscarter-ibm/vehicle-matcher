@@ -1,0 +1,31 @@
+✔ actual F92 release commits before allocation stage and actual F91 pause is consumed (998.207542ms)
+✔ actual F92 unknown availability stays unsuitable through the allocation handler (477.879375ms)
+{"diagnosis":{"stockState":"available","manualVisible":0,"allocationState":"no-assignment","attempts":[{"employeeId":"employee-paula","status":"conflict","reason":"stock-unavailable"},{"employeeId":"employee-alex","status":"conflict","reason":"stock-unavailable"},{"employeeId":"employee-sam","status":"conflict","reason":"stock-unavailable"}],"holds":0,"offers":0,"outbox":0}}
+✖ actual F92 to F96 to F100 secures one atomic hold offer and outbox (597.624417ms)
+ℹ tests 3
+ℹ suites 0
+ℹ pass 2
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2316.103292
+
+✖ failing tests:
+
+test at ../../dev-poller-restart-20261105/lead96/producer-proof.mjs:61:1
+✖ actual F92 to F96 to F100 secures one atomic hold offer and outbox (597.624417ms)
+  AssertionError [ERR_ASSERTION]: actual produced stock must secure a claim through the real hold port
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/.claude/dev-poller-restart-20261105/lead96/producer-proof.mjs:69:10)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -1,0 +1,19 @@
+{
+  "scope": "scoped documentation/product-map + exact already-validated .9 ordinary eightpath publication; no implementation change",
+  "changedPaths": [
+    "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/f58-63-parent5829-checkpoint-2026-11-07",
+    ".product-map/work.json",
+    "server/data/gcsp/vehicle-evidence/fleet-source.v1/active.json",
+    "server/data/gcsp/vehicle-evidence/fleet-source.v1/last-good.json",
+    "server/data/gcsp/vehicle-evidence/fleet-source.v1/identity-inventory.json",
+    "server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884"
+  ],
+  "selected": [
+    "reuse exactordinary activation receipt567fbc0f",
+    "parent audit29740read-onlychecks",
+    "actualLinux42343046040all2426refs",
+    "productmap snapshot/build"
+  ],
+  "excluded": "No fullsuite; no code changed. Original full-suite failures and acceptance gaps remain open. No source/testreplay.",
+  "acceptance": false
+}

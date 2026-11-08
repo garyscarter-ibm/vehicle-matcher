@@ -1,0 +1,41 @@
+{
+  "GETCeiling": 72,
+  "acceptance": false,
+  "allocationId": "scheme-breadth-typed-pilot48-20261107-once",
+  "contexts": [
+    "t3mk",
+    "x1m0",
+    "ix1i",
+    "x2ms",
+    "ix24",
+    "i4mf"
+  ],
+  "decision": "released-once",
+  "executionPlanSha256": "dd5326376bbda350f88e7982de41adf8966fb51fa734f7341922b0c8a79fbfa9",
+  "globalUnionRequired": true,
+  "images": 0,
+  "limits": {
+    "childRamBytes": 469762048,
+    "hostRamBytes": 536870912,
+    "scratchBytes": 67108864,
+    "workers": 1
+  },
+  "originalReleaseSha256": "211d25cf1c56495f8778c387d3d4386a728425a436dc550989164c5d66f65d35",
+  "parentBaseReviewSha256": "ca6384931b9fe1433177f93f2630394257c6c2f686c4aa9b84c427ed89c5a942",
+  "planDigest": "8016537063f01d493aa4ac05b84c2fb0f099f7e0da959f13fd1a8a6dce51375d",
+  "planSha256": "dd5326376bbda350f88e7982de41adf8966fb51fa734f7341922b0c8a79fbfa9",
+  "preparationChecks": 28,
+  "replay": false,
+  "requiredBeforeExecution": "Charlie1304offlinevalidation finished and its dependencylink/scratch/groups/reservation independentlyabsent; no concurrent035source run",
+  "review": "root read complete runner/supervisor/reconciler; generic actualoutcome accounting and strictretained binder; independently reconciled48code+48actualsource+2runtimepins and all48requestdigests against newglobal3854spent ledger; allunspent anddistinct",
+  "schemaVersion": "bounded-source-parent-release.v1",
+  "solverCeiling": 48,
+  "sourceCapacityCreditBeforeActualEvidence": 0,
+  "sourceGrantEnvironment": {
+    "BMW_SCHEME_BREADTH_TYPED_PILOT_SOURCE_GRANT": "scheme-breadth-typed-pilot48-20261107-once"
+  },
+  "sourceWrites": 0,
+  "stop": "first source/access/resource/integrity/lifecycle failure; preserve each actualoutcome, no arbitrary48admission expectation",
+  "time": "2026-11-07T05:07:51.501925+00:00",
+  "validationSha256": "9eff8174920e33811a2f2a95e27c836dc4d22344f14bbf960e941e87c00e424f"
+}

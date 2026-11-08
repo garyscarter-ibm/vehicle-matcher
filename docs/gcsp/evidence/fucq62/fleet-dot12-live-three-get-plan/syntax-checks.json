@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "static-packet-checks.v1",
+  "scope": "static preparation only",
+  "status": "passed",
+  "syntax": {
+    "supervise.py": "AST syntax passed; no execution or bytecode",
+    "group-proof.py": "AST syntax passed; no execution or bytecode",
+    "probe.mjs": "node --check passed; no script execution"
+  },
+  "unsealedPlanSha256": "7c2ff29f07feee409de8dc4c99663ce09db960ad94f260c2da3aa8e41ec388cf",
+  "preparedScriptPinsPassed": true,
+  "priorReceiptAndDtoProvenancePassed": true,
+  "helperPinPassed": true,
+  "failClosedGuardReview": "Both entrypoints require sealed plan, reviewed dependency closure, exact 40hex code, actual deployment ID/completion and complete required dependency pin keys before allocation/network; unauthorized example also rejected. Runtime not executed.",
+  "expectedDeploymentPinPaths": 48,
+  "deploymentCodePinsFinalized": false,
+  "networkCalls": 0,
+  "runtimeExecutions": 0,
+  "testsRun": 0,
+  "scratchAllocatedBytes": 0,
+  "outputAndMetadataAbsent": true,
+  "acceptance": false,
+  "originalPublicColdCauseProved": false,
+  "excluded": [
+    "public GETs",
+    "deployment execution",
+    "Linux fresh public restore acceptance",
+    "source or SQL/native requests",
+    "full reference replay",
+    "full Story acceptance and Done"
+  ],
+  "deploymentDependencyReviewComplete": false
+}

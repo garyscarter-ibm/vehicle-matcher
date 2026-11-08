@@ -1,0 +1,22 @@
+{
+  "historicalCandidateSource": "docs/gcsp/evidence/fucq-58/scheme-catalogue-2026-11-05/observation.json",
+  "sourceSha256": "25636b87dfe942d385da5cee721fee8e59d53b216411277031d60626de36c4ec",
+  "sourceObservedAt": "2026-11-05T23:31:22.131Z",
+  "actualModelPaths": [
+    [
+      "1",
+      "modelRanges",
+      "F70",
+      "models",
+      "1F7C"
+    ]
+  ],
+  "interpretation": "Historical request/context pins only; every direct full fact and alias must be corroborated fresh before use; no trim/options/derivative/WMI/profile claim",
+  "freshQualificationDate": "2026-11-07",
+  "optionsTrim": {
+    "state": "unknown",
+    "value": null
+  },
+  "optionsRequests": 0,
+  "solverRequests": 0
+}

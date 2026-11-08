@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "typed-axis1024-actual-event-conflict-continuation.v1",
+  "originalSeriesPlanSha256": "96ec8dc874241bfe9b2a2928d226d88a4b9cbb073a8ebddb05ac12c5efa694c2",
+  "scope": "Original chunks08..32 only after224 spent; no source replay or new scope",
+  "codePins": {
+    "resume08-series.py": "4282170c815de3d9cd45ce48bef0ea284279ed2fa67adb12f0ce9dc6232d911b",
+    "verify-retained-sync.py": "a8f2aba9a08c0d4b3a60a4e27b223af3c0c24020948bee79dcaad53f704e4062",
+    "live-check-sync.test.mjs": "23bd3851a4cbf5662b7d3b51697aecadf007b55c2164e737d86117fbbf76577c",
+    "actual-event-history.mjs": "097a2fb56eeca20ef431ed1e9299c049bd4d36b66a5a933276aabb352e888cd4",
+    "recover07.py": "549bb797c0317cbf4bd78342114434fe766e6069433d0efa0797d2cf8364ec6f",
+    "event-recovery.test.mjs": "2c6fbc3ace078db7adec8a9653f76ff4b43435a093b39cbe82198cf646c548c0"
+  },
+  "accountedChunk07Pins": {
+    "live-validation.json": "23c0dd9dd29006b3fced26caa86e05777f4f292d569ce1144ab224f83a8960fb",
+    "collector-checkpoint.json": "07d1c203fb62cc4ad7fe5155958d6a8fb50d549bc2473626a701db8e3efac2ea",
+    "final-canonical-index.json": "6aebe2773a8de80e78bab42926545095d7efdee16d8de081b2140ac993228142",
+    "final-spent-request-index.json": "56cc665667004e739efd259c249a4fe25798be4ce854d1d29671ffea63c9e43c",
+    "source-events.jsonl": "ed13f5a77b97336997dfe8217077ca48bf2bd5c00a520880df4a5f9a75086ec8",
+    "source-events.jsonl 2.jsonl": "cff6011b1e65448a5992a8d3b6cd7787c1349cae3c024476056497e978cb4427"
+  },
+  "retainedRecovery": {
+    "originalCheckResult": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-typed-axis1024-20261107-once/supervisor/chunk07/retained-direct/retained-result.json",
+    "originalSummary": {
+      "tests": 5,
+      "pass": 4,
+      "fail": 1,
+      "skipped": 0
+    },
+    "replacement": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-typed-axis1024-20261107-once/supervisor/chunk07/retained-recovery07/retained-result.json",
+    "newSummary": {
+      "tests": 1,
+      "pass": 1,
+      "fail": 0,
+      "skipped": 0
+    },
+    "reuse": [
+      1,
+      2,
+      4,
+      5
+    ],
+    "missingActualHeaderAttempt": 29,
+    "missingHeaderFoundInUnmodifiedConflictFile": true,
+    "mergedEventFilesWritten": false,
+    "synthesizedEvents": 0,
+    "sourceReplay": 0
+  },
+  "remaining": {
+    "chunks": [
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32
+    ],
+    "candidates": 800,
+    "maximumGets": 900,
+    "expectedCurrentSpent": 782,
+    "alreadySpentFromThisSeries": 224,
+    "cumulativeAdmitted": 703,
+    "canonicalEntries": 706
+  },
+  "bounds": {
+    "originalDeadlineSinceFirstMarkerSeconds": 1800,
+    "totalMaximumGets": 1152,
+    "totalDecodedBytes": 268435456,
+    "singleResponseBytes": 1048576,
+    "hostRamBytes": 536870912,
+    "childRamBytes": 469762048,
+    "scratchBytes": 67108864,
+    "retainedShardBytes": 33554432,
+    "retainedBudgetBytes": 1073741824,
+    "workers": 1,
+    "retries": 0
+  },
+  "futureVerification": "All four original semantic checks unchanged; event check reads actual canonical/conflict rows, requires identical duplicate bytes/exact36pairs/200status/orderedURLs and all primary solver observations/counters/budgets. No generated events or overwritten history.",
+  "knownDefect": {
+    "severity": "Medium",
+    "symptom": "OneDrive live write conflict split actual event history; canonical file lacks attempt29header present in conflict copy",
+    "originalFailurePreserved": true,
+    "backlogOwner": "parent"
+  },
+  "acceptance": false
+}

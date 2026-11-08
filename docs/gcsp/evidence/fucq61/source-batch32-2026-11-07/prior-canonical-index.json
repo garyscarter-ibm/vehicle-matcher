@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "f61-prior-canonical-index.v1",
+  "basis": "Conservative exact-ID overlap only; admission/source capacity labels remain distinct",
+  "inputs": {
+    "docs/gcsp/evidence/fucq59/source-admission-2026-11-07/accepted-record.json": "9ed6c672a3e4162dba99b7d559e1e4114a236d9e6d01c47c6ed860d0bb982239",
+    "server/data/gcsp/vehicle-evidence/fleet-plan.json": "2b9d9799722f9f012dcac75d0a08003bb382acf7d077f871546eeb8f85bb1f9b",
+    "server/data/gcsp/vehicle-evidence/publication-reference.v1/configurations.jsonl": "9c1fb6a34e324e6e4937baa1e80eabafa44fae394dd138f2f77be9f6867e9855",
+    "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/configurations.jsonl": "9c1fb6a34e324e6e4937baa1e80eabafa44fae394dd138f2f77be9f6867e9855"
+  },
+  "entries": [
+    {
+      "configurationId": "UkVGMTpSRUZFUkVOQ0U=",
+      "origins": [
+        {
+          "path": "server/data/gcsp/vehicle-evidence/publication-reference.v1/configurations.jsonl",
+          "kind": "existing-reference-not-new-source-capacity"
+        },
+        {
+          "path": "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/configurations.jsonl",
+          "kind": "existing-reference-not-new-source-capacity"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "docs/gcsp/evidence/fucq59/source-admission-2026-11-07/accepted-record.json",
+          "kind": "admitted-source"
+        },
+        {
+          "path": "server/data/gcsp/vehicle-evidence/fleet-plan.json",
+          "kind": "retained-prior-observation"
+        },
+        {
+          "path": "server/data/gcsp/vehicle-evidence/publication-reference.v1/configurations.jsonl",
+          "kind": "existing-reference-not-new-source-capacity"
+        },
+        {
+          "path": "server/data/gcsp/vehicle-evidence/lookup-reference.v1/versions/c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709/configurations.jsonl",
+          "kind": "existing-reference-not-new-source-capacity"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMDQ3NSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNBQyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "server/data/gcsp/vehicle-evidence/fleet-plan.json",
+          "kind": "retained-prior-observation"
+        }
+      ]
+    },
+    {
+      "configurationId": "VDVNSjpGS1NGVSxQMDQ3NSxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "origins": [
+        {
+          "path": "server/data/gcsp/vehicle-evidence/fleet-plan.json",
+          "kind": "retained-prior-observation"
+        }
+      ]
+    }
+  ]
+}

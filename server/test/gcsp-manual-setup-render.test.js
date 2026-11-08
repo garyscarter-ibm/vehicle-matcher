@@ -29,7 +29,8 @@ async function setup(t, { beforeMount, journey = false } = {}) {
   const f = { runtime, context, adapter }; await beforeMount?.(f);
   const root = document.createElement('div'); document.body.append(root); f.root = root;
   const options = { adapter, commandId: () => `render-${++count}`, onBack: () => { f.back = true; } };
-  f.destroy = journey ? mountManualJourney(root, options) : mountManualSetup(root, options);
+  f.destroy = journey ? mountManualJourney(root, { ...options,
+    galleryAdapter: { ...adapter, readClaim: () => runtime.manualClaims.readClaim(context) } }) : mountManualSetup(root, options);
   t.after(async () => { f.destroy(); root.remove(); await runtime.close(); });
   await waitFor(() => root.querySelector('h1'));
   return f;

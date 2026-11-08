@@ -1,0 +1,48 @@
+{
+  "status": "prepared-only-active-unchanged",
+  "version": "2026-11-07.3",
+  "counts": {
+    "configurations": 342,
+    "distinctConfigurations": 342,
+    "vinMappings": 1,
+    "images": 0,
+    "sourceConfigurations": 341,
+    "qualifyingCompleteDistinctSourceConfigurations": 341
+  },
+  "newSourceRows": 1,
+  "sourceInputFilesUnchanged": true,
+  "oldVersionFilesRehashedUnchanged": 14,
+  "previousActive": {
+    "directory": "6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6",
+    "manifestDigest": "6ca40ad7620b8e7122bbc3cca31c6ef01401e1996540314c51a142e4f73072a6"
+  },
+  "candidateManifestDigest": "364977ec9c1e924421f0b1b4e1acbb3d342050d0faf396aca2f324f0431d527a",
+  "steps": [
+    {
+      "name": "prepare",
+      "status": "ok",
+      "idempotent": null,
+      "wallMs": 1688.3063750000001,
+      "egress": {
+        "externalCalls": 0,
+        "control": "blocked"
+      }
+    },
+    {
+      "name": "preparation-validate",
+      "status": "ok",
+      "idempotent": null,
+      "wallMs": 810.8606669999999,
+      "egress": {
+        "externalCalls": 0,
+        "control": "blocked"
+      }
+    }
+  ],
+  "egress": {
+    "externalCalls": 0,
+    "control": "blocked"
+  },
+  "publicationExecuted": false,
+  "acceptance": false
+}

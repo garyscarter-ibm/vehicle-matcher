@@ -1,0 +1,249 @@
+{
+  "status": "scoped acknowledgement correction passed; F71 remains In Progress",
+  "base": "ed20ca2a774d9368b4fce87a7e69b5e2ae30a7e8",
+  "variant": "actual F71 service/repository/PolicyService/DemoClock/identity, small synthetic authority, stub ordering provider and immutable pinned F112 consumer imported in memory",
+  "sourceHashes": {
+    "server/gcsp/manual-order/index.js": "a12f7c2abfb4e487355cee999359859b0936b9a22075755884087566c7a42c8c",
+    "server/test/gcsp-manual-order.test.js": "c16e2046535b7dd8389c2a903fb3f7c8d98c90a5da33633fea0b659b28d641e8"
+  },
+  "preFixSourceHash": "b4b7798268cd51929b756ffb4c48e6f56579821094a0fa064f604d5886fcc352",
+  "consumer": {
+    "pin": "4037b762086113e4970f651161471b603d39b4d5",
+    "path": "server/gcsp/cases/index.js",
+    "sha256": "a080a47479444a94f041de1b0c094974c3eea655a8076f771ec33f82ecb43379",
+    "admission": "digest first; only five import specifiers relocated to local dependencies; no predicate extraction or production copy",
+    "scope": "pinned consumer tick; actual local dependencies; not full GC source-union/native/live proof"
+  },
+  "red": "Actual pinned F112 consumer opened one unwanted deadline case after real F71 acknowledgement: 1 expected assertion failure, 0 skip; original useful log/receipt retained, no rerun.",
+  "chunks": [
+    {
+      "phase": "red",
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f71-repair/red-5dafc2705a894c5b8e0dbc9510c9f1ad.json",
+      "receiptSha256": "8a07514fb73ee0c573628633a12d94ea39277e91490b81604d21981ff4066730",
+      "status": "expected-regression-failure",
+      "counts": {
+        "cancelled": 0,
+        "fail": 1,
+        "pass": 0,
+        "skipped": 0,
+        "tests": 1,
+        "todo": 0
+      },
+      "wallSeconds": 0.5203411249967758,
+      "sampledChargedPeakRssBytes": 146931712,
+      "scratchBytesRemoved": 594016,
+      "coverageContexts": [
+        {
+          "coveredRanges": 39,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-071/server/gcsp/clock/index.js",
+          "observedRanges": 111
+        },
+        {
+          "coveredRanges": 46,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-071/server/gcsp/manual-order/index.js",
+          "observedRanges": 133
+        },
+        {
+          "coveredRanges": 8,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-071/server/gcsp/manual-order/terms.js",
+          "observedRanges": 12
+        },
+        {
+          "coveredRanges": 1,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-071/server/gcsp/manual-order/manual-conversion.js",
+          "observedRanges": 2
+        },
+        {
+          "coveredRanges": 9,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-071/server/gcsp/cases/policy.js",
+          "observedRanges": 12
+        }
+      ],
+      "targetedEvidence": null,
+      "redLogSha256": "bf5292210c7268c7edaa10e2435b58888828876fa239b82c5fefda766ca631ee"
+    },
+    {
+      "phase": "owning",
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f71-repair/owning-90882d61e3af4529930ece8d7f3e03ea.json",
+      "receiptSha256": "1f26670a8ab69ec2b5ee0f129d31fae6f1141884988c8b52e998cb2b617a8b4e",
+      "status": "passed",
+      "counts": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 26,
+        "skipped": 1,
+        "tests": 27,
+        "todo": 0
+      },
+      "wallSeconds": 4.732886500001769,
+      "sampledChargedPeakRssBytes": 248250368,
+      "scratchBytesRemoved": 610400,
+      "coverageContexts": [
+        {
+          "coveredRanges": 52,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-071/server/gcsp/clock/index.js",
+          "observedRanges": 123
+        },
+        {
+          "coveredRanges": 191,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-071/server/gcsp/manual-order/index.js",
+          "observedRanges": 249
+        },
+        {
+          "coveredRanges": 24,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-071/server/gcsp/manual-order/terms.js",
+          "observedRanges": 26
+        },
+        {
+          "coveredRanges": 1,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-071/server/gcsp/manual-order/manual-conversion.js",
+          "observedRanges": 2
+        },
+        {
+          "coveredRanges": 9,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-071/server/gcsp/cases/policy.js",
+          "observedRanges": 12
+        }
+      ],
+      "targetedEvidence": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f71-repair/owning-90882d61e3af4529930ece8d7f3e03ea-targeted/targeted-8b0745d5c6d0e5ee93a587996ce5c328bae89a1ca94bf37102699f49f6e0253d-default-1793978950685369000.json",
+      "redLogSha256": null
+    },
+    {
+      "phase": "boundary",
+      "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f71-repair/boundary-efd06981dfe143188393ba6fa2c1e4b9.json",
+      "receiptSha256": "cf8a285efa5c2ac1d0b679bd711ca97b9b60364237ff18dd2062e8cefa18e8f1",
+      "status": "passed",
+      "counts": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 3,
+        "skipped": 0,
+        "tests": 3,
+        "todo": 0
+      },
+      "wallSeconds": 0.7534796669933712,
+      "sampledChargedPeakRssBytes": 187531264,
+      "scratchBytesRemoved": 544864,
+      "coverageContexts": [
+        {
+          "coveredRanges": 35,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-071/server/gcsp/clock/index.js",
+          "observedRanges": 95
+        },
+        {
+          "coveredRanges": 71,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-071/server/gcsp/cases/index.js",
+          "observedRanges": 118
+        },
+        {
+          "coveredRanges": 9,
+          "module": "file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-071/server/gcsp/cases/policy.js",
+          "observedRanges": 12
+        }
+      ],
+      "targetedEvidence": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f71-repair/boundary-efd06981dfe143188393ba6fa2c1e4b9-targeted/targeted-8b0745d5c6d0e5ee93a587996ce5c328bae89a1ca94bf37102699f49f6e0253d-default-1793978957707508000.json",
+      "redLogSha256": null
+    }
+  ],
+  "greenTotals": {
+    "tests": 30,
+    "pass": 29,
+    "fail": 0,
+    "skipped": 1,
+    "cancelled": 0
+  },
+  "skip": "Pre-existing optional verified held F66 producer test deliberately receives no mutable foreign worktree source. Actual atomic claims/buddy integration remains open. All new tests, including actual pinned F112 consumer, executed.",
+  "targetedCodeKey": "8b0745d5c6d0e5ee93a587996ce5c328bae89a1ca94bf37102699f49f6e0253d",
+  "cleanup": {
+    "status": "verified",
+    "checks": [
+      {
+        "phase": "red",
+        "scratchRoot": "/private/tmp/test-stamp-shard-b5d0eaeb947c401ab5347ca7dc4bc78f",
+        "scratchAbsent": true,
+        "ownerIdentitiesAbsent": true,
+        "groupsAbsent": true,
+        "groups": [
+          {
+            "pid": 96636,
+            "start": "Fri Nov  6 15:28:32 2026"
+          }
+        ],
+        "reservationToken": "b5d0eaeb947c401ab5347ca7dc4bc78f",
+        "reservationAbsent": true,
+        "dependencyFiles": 139,
+        "dependencyContentAndInodesPreserved": true,
+        "manifestSha256": "627673ad6c1b58973f5f0d732ea8a011fd2235456867a9e5b18743b21dcdb437"
+      },
+      {
+        "phase": "owning",
+        "scratchRoot": "/private/tmp/test-stamp-shard-070f51fbf2bc4608a030901286bfd29c",
+        "scratchAbsent": true,
+        "ownerIdentitiesAbsent": true,
+        "groupsAbsent": true,
+        "groups": [
+          {
+            "pid": 97054,
+            "start": "Fri Nov  6 15:29:05 2026"
+          }
+        ],
+        "reservationToken": "070f51fbf2bc4608a030901286bfd29c",
+        "reservationAbsent": true,
+        "dependencyFiles": 139,
+        "dependencyContentAndInodesPreserved": true,
+        "manifestSha256": "3fb1f5691349de2b426dd741ea8733309a9a4f42213c69cb58f51f634da07847"
+      },
+      {
+        "phase": "boundary",
+        "scratchRoot": "/private/tmp/test-stamp-shard-4258e7c3b2264cdba1758fefb65d12cd",
+        "scratchAbsent": true,
+        "ownerIdentitiesAbsent": true,
+        "groupsAbsent": true,
+        "groups": [
+          {
+            "pid": 97192,
+            "start": "Fri Nov  6 15:29:16 2026"
+          }
+        ],
+        "reservationToken": "4258e7c3b2264cdba1758fefb65d12cd",
+        "reservationAbsent": true,
+        "dependencyFiles": 139,
+        "dependencyContentAndInodesPreserved": true,
+        "manifestSha256": "cab5ce5d7e91688d3dcd759984321081e1a7c8cf6f4397c5cc5c9991a9f62e24"
+      }
+    ],
+    "dependencyLinkAbsent": true,
+    "ownedEmptyDirectoryAbsent": true,
+    "scratchPeakBytesRemovedTotal": 1749280,
+    "maximumScratchBytes": 610400,
+    "maximumSampledChargedRssBytes": 248250368,
+    "successfulWorkerLogsAbsent": true,
+    "originalUsefulRedLogRetained": true,
+    "compatibilityException": null,
+    "leftovers": [],
+    "noArchivesOrLargeOutput": true,
+    "retained": "concise receipts, targeted proofs, coverage summaries, external ownership manifests and original useful red log; raw coverage and successful logs removed"
+  },
+  "plan": "plan.json",
+  "planSha256": "dfd7a2fb0cdb5bba62c89e188ea9ced387469e9bc67ae52d2f411a57cab31c13",
+  "runnerSha256": "d19edc580a11d40662f85010332ddd500a3074980217dbbe943502ac57e95d5e",
+  "resourceHelperSha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+  "stampHelperSha256": "88a16018b5b8fa225463b590f2283b4baa6be4951f258bba4846eacc3795a49e",
+  "authority": {
+    "tables": "run-scoped employees and entitlement_slots already read in commitSelection transaction; optional source hold renewalId is additional consistency evidence",
+    "existingBinding": "Employee authority keys (including entitlementSlotId) equal trusted context; slot is fetched by that same entitlementSlotId and must belong to that employee; hold belongs to the same employee/slot.",
+    "knownRelation": "At least one actual slot or same-default-slot employee renewal identifier must be supplied. Every supplied non-null employee/slot/optional-hold identifier must be valid non-empty <=128-character text and equal; optional hold authority can corroborate but cannot establish the relation alone.",
+    "unknownOrConflict": "Pin explicit null if no relation is supplied, any supplied identifier is malformed, or supplied authorities disagree; never infer from IDs, context, contract labels or current data at acknowledgement. This preserves unknown as unknown and cannot suppress the F112 gate.",
+    "reference": "F111 lifecycle/approvals/source.js:70-81 at 2b3fee00853cd4fd5bd201f2f12d7777dd493c7c already treats missing/disagreeing renewal as null. F112 uses employee default/slot relation and exact receipt equality.",
+    "pinTiming": "Inside source-owned commitSelection transaction before allocation, using existing authoritative employee/slot/hold rows; delayed provider acknowledgement consumes pinned snapshot only.",
+    "historical": "Completed operations are not backfilled; old pending snapshots lacking the field acknowledge with renewalId null."
+  },
+  "remaining": [
+    "Parent independent review/publication and exact GC adoption",
+    "GC-owned manual-claims convertSelection atomic callback and F106/F108 buddy ordering join",
+    "Public submit/frontend join and account-history integration",
+    "Gary-owned configured native acceptance/reopen/new-process proof; no full-suite claim"
+  ],
+  "agents": "Sam Sheepdog existing requested/selected/runtime-confirmed gpt-6.1-sol/high; no fallback or descendants",
+  "scopeGuard": "No shared claims/runtime/policy/API/frontend/product-map/Jira/Git mutations; no network/browser/SQL/credentials/install/live operations; test lane released immediately after final green chunk cleanup"
+}

@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "f70-trim-package8-prepared-validation.v1",
+  "scope": "scoped preparation only",
+  "exactCommand": [
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-trim-package8-pilot-2026-11-07/supervise.py",
+    "--check"
+  ],
+  "runnerCommand": [
+    "/opt/homebrew/bin/node",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-trim-package8-pilot-2026-11-07/run-live.mjs",
+    "--check"
+  ],
+  "allocationId": "f70-trim-package260-20261107-once-chunk01",
+  "executionPlanSha256": "6a1c3683566318d65847e69235e7aecf4e6ee058de71242a1c29d70b78da1167",
+  "executionReservationSha256": "12b447d43fe3b72310aaf2fc2d66ec45412001e1d2162f4f5ea3bc17a0d58164",
+  "runnerSha256": "bd48b598b49e0c7952c2fc5e70c3fb80480486f9efdd88a63d588b29c49a9bf9",
+  "supervisorSha256": "60c6c857fa6537e7d682cb99f6589cbde9862fa934283259506c3bc134b27a11",
+  "collectionPlanSha256": "85a9acb36a714c426c3101884c5aec2692cfbce6454f927ff34cdb89b847e6f9",
+  "checkResult": {
+    "allocationId": "f70-trim-package260-20261107-once-chunk01",
+    "baseline": {
+      "admittedSource": 873,
+      "canonical": 876,
+      "spent": 1586
+    },
+    "candidateCount": 8,
+    "capacityCredit": 0,
+    "clockStarted": false,
+    "continuationReleased": false,
+    "forbiddenFetchAttempts": 0,
+    "planDigest": "cf3f1a079be229504e8418b5376e71a5c7d285e43c1288718f97dbb74e037c3c",
+    "publicGetCeiling": 12,
+    "runtimePins": 37,
+    "sourceRootAbsent": true,
+    "sourceTraffic": 0,
+    "status": "prepared-only"
+  },
+  "result": {
+    "check": {
+      "allocationId": "f70-trim-package260-20261107-once-chunk01",
+      "baseline": {
+        "admittedSource": 873,
+        "canonical": 876,
+        "spent": 1586
+      },
+      "candidateCount": 8,
+      "capacityCredit": 0,
+      "clockStarted": false,
+      "continuationReleased": false,
+      "forbiddenFetchAttempts": 0,
+      "planDigest": "cf3f1a079be229504e8418b5376e71a5c7d285e43c1288718f97dbb74e037c3c",
+      "publicGetCeiling": 12,
+      "runtimePins": 37,
+      "sourceRootAbsent": true,
+      "sourceTraffic": 0,
+      "status": "prepared-only"
+    },
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package8-pilot-20261107/check-1794021273160055000/check.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package8-pilot-20261107/check-1794021273160055000/ownership/25b7c03b344046b9bd0a72742ad460a2.json",
+    "peak_rss": 2244608,
+    "peak_scratch": 221280,
+    "rc": 0,
+    "stage": "check",
+    "successfulLogRemoved": true,
+    "summary": {},
+    "wall": 0.248969083
+  },
+  "cleanup": {
+    "checkpointExport": null,
+    "clockStarted": false,
+    "code_identity_unchanged": true,
+    "compatibility_exception": null,
+    "dependency_link_absent": true,
+    "groups_absent": true,
+    "primaryExists": false,
+    "removed_allocation_bytes": 221280,
+    "reservation_absent": true,
+    "retainedOutputAllocatedBytes": 0,
+    "retainedPrimary": null,
+    "retainedWriterMetadata": [],
+    "retained_summary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/f70-trim-package8-pilot-20261107/check-1794021273160055000/result.json",
+    "scratch_absent": true,
+    "source_root_absent": true
+  },
+  "filesystemAuditSha256": "d4cf134a510af4476396cc271ef1901f67cbf18c294b405653a0fb1a41ada606",
+  "measuredCoverageSummary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-trim-package8-pilot-2026-11-07/impact.json",
+  "unrun": [
+    "actual12GET source stage",
+    "five actual retained semantic checks",
+    "252request continuation",
+    "full suite"
+  ],
+  "preparationCorrection": "First prepare.py attempt used a nonexistent proposal id field and stopped before writing allocation; corrected to original output-root name. No traffic/output/source clock or marker resulted.",
+  "sourceTraffic": 0,
+  "sourceGrant": false,
+  "acceptance": false,
+  "capacityCredit": 0,
+  "leftovers": []
+}

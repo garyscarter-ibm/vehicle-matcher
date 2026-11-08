@@ -1,0 +1,108 @@
+{
+  "status": "planned before test/production edits; tests await separate parent serial-lane grant",
+  "run": "fucq71-acknowledgement-20261106",
+  "base": "ed20ca2a774d9368b4fce87a7e69b5e2ae30a7e8",
+  "agent": "Sam Sheepdog; existing requested/selected/runtime-confirmed gpt-6.1-sol/high; no descendants",
+  "scope": [
+    "server/gcsp/manual-order/index.js",
+    "server/test/gcsp-manual-order.test.js",
+    "own F71 evidence and story"
+  ],
+  "diagnosis": {
+    "story_link_basis": "Existing FUCQ-71 owns durable selection acknowledgement and account-history handoff; parent explicitly authorised this narrow repair after static source audit. No new story/claim.",
+    "symptom": "F71 emits selection-acknowledged without the top-level renewal/order/time fields required by the actual F112 renewal-deadline consumer.",
+    "producer": "server/gcsp/manual-order/index.js:223-226 at base",
+    "consumerPin": "4037b762086113e4970f651161471b603d39b4d5",
+    "consumer": "server/gcsp/cases/index.js:333-339",
+    "consumerSha256": "a080a47479444a94f041de1b0c094974c3eea655a8076f771ec33f82ecb43379",
+    "expected": "A genuine matching acknowledged selection prevents a deadline-risk case; another renewal, unknown/conflicting authority, pending/failure do not suppress it.",
+    "actual": "Acknowledgement has at and nested order but no renewalId, orderUuid or occurredAt; belongs predicate cannot match."
+  },
+  "authority": {
+    "tables": "run-scoped employees and entitlement_slots already read in commitSelection transaction; optional source hold renewalId is additional consistency evidence",
+    "existingBinding": "Employee authority keys (including entitlementSlotId) equal trusted context; slot is fetched by that same entitlementSlotId and must belong to that employee; hold belongs to the same employee/slot.",
+    "knownRelation": "At least one actual slot or same-default-slot employee renewal identifier must be supplied. Every supplied non-null employee/slot/optional-hold identifier must be valid non-empty <=128-character text and equal; optional hold authority can corroborate but cannot establish the relation alone.",
+    "unknownOrConflict": "Pin explicit null if no relation is supplied, any supplied identifier is malformed, or supplied authorities disagree; never infer from IDs, context, contract labels or current data at acknowledgement. This preserves unknown as unknown and cannot suppress the F112 gate.",
+    "reference": "F111 lifecycle/approvals/source.js:70-81 at 2b3fee00853cd4fd5bd201f2f12d7777dd493c7c already treats missing/disagreeing renewal as null. F112 uses employee default/slot relation and exact receipt equality.",
+    "pinTiming": "Inside source-owned commitSelection transaction before allocation, using existing authoritative employee/slot/hold rows; delayed provider acknowledgement consumes pinned snapshot only.",
+    "historical": "Completed operations are not backfilled; old pending snapshots lacking the field acknowledge with renewalId null."
+  },
+  "change": "Add immutable selection.renewalId and acknowledged receipt renewalId/orderUuid/occurredAt; retain existing at/order fields, operation IDs, command digests, transaction boundaries and all guards. No failure/pending success receipt.",
+  "sourceImport": {
+    "method": "Pinned raw F112 consumer Git blob admitted by digest and supplied in memory via GCSP_F71_CASE_SOURCE_BASE64; test changes only its five relative import specifiers to own F71 file URLs. No production copy or predicate extraction.",
+    "dependencies": "Actual local repository/policy/clock/identity. cases/policy.js, policy/file-provider.js and manual-context/ports.js are byte-identical to consumer pin. Local recommendation/core differ from GC; tick path does not invoke recommendation/remedies. This is a pinned consumer contract check, not full GC source-union proof.",
+    "sourceContainsNoSecrets": true,
+    "environment": "GCSP_F71_CASE_SOURCE_BASE64 contains exactly the digest-admitted raw consumer source; no private records or tokens."
+  },
+  "selectedCommands": {
+    "red": [
+      "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+      "--max-old-space-size=128",
+      "--test",
+      "--test-reporter=tap",
+      "--test-isolation=none",
+      "--test-concurrency=1",
+      "--test-name-pattern=^acknowledged selection satisfies pinned F112 renewal deadline consumer$",
+      "server/test/gcsp-manual-order.test.js"
+    ],
+    "owning": [
+      "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+      "--max-old-space-size=128",
+      "--test",
+      "--test-reporter=tap",
+      "--test-isolation=none",
+      "--test-concurrency=1",
+      "server/test/gcsp-manual-order.test.js"
+    ],
+    "boundary": [
+      "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+      "--max-old-space-size=128",
+      "--test",
+      "--test-reporter=tap",
+      "--test-isolation=none",
+      "--test-concurrency=1",
+      "--test-name-pattern=^(deadline trigger is policy keyed, acknowledged selection suppresses it, and tick replay is idempotent|keyed lifecycle event types open once, reject foreign renewal/employee events, and ignore invented producers|unknown actual contract dates stay unknown and no deadline case is invented)$",
+      "server/test/gcsp-renewal-case.test.js"
+    ]
+  },
+  "regressions": [
+    "Actual pinned F112 tick after real F71 acknowledgement: no case; original source must fail with one unexpected case.",
+    "Consistent slot/employee/hold identifiers pin exactly; slot-only and same-default employee-only identifiers work; absent/malformed/conflicting identifiers stay null.",
+    "A delayed acknowledgement after real current renewal changes keeps original pinned renewal and cannot suppress the new renewal case; retries produce one receipt/order.",
+    "Pending and failed provider outcomes never emit selection-acknowledged or suppress the deadline case."
+  ],
+  "affectedCallers": [
+    "F112 renewal risk tick reads acknowledged event_receipts",
+    "F111 lifecycle reader consumes completed selection-order; additive snapshot field preserves its existing shape",
+    "F71 readOrder/retry/reopen/clock reconciliation and actual F66 compatibility producer (existing owning tests)"
+  ],
+  "excluded": {
+    "fullSuite": "No broad behavior, schema, runtime, route, policy or source writer changed; scoped caller/consumer checks plus owning rollback/replay/reopen tests selected. Parent owns final integration checkpoint.",
+    "nativeSQL": "Gary owns configured native acceptance; no credentials/SQL/install.",
+    "browserUI": "Backend receipt/snapshot only; no screen or styling changes; user effect checked through actual consumer tick.",
+    "GCClaimsBuddyRuntime": "GC-owned source writers remain untouched; atomic claims callback, buddy join and public submit composition remain open.",
+    "F111Execution": "Acknowledged selection operation and fields consumed by exact F111 decoder are unchanged; source-reviewed boundary, no new full lifecycle run.",
+    "optionalF66Regression": "Existing optional held F66 test has no injected mutable worktree source in this repair and remains an explicit skip; actual claims allocation callback remains GC-owned/open. Owning existing synthetic transactional, idempotent, rollback, pending and reopen checks still run."
+  },
+  "limitsPerChunk": {
+    "workers": 1,
+    "scratchMiB": 64,
+    "chargedRssMiB": 384,
+    "childRssMiB": 320,
+    "supervisorRssMiB": 64,
+    "seconds": 120,
+    "logMiB": 1
+  },
+  "resourcePlan": "Trusted MAIN test_resources/test_stamp; fresh external manifest and registered finalizer before scratch; exact reservation ownership; clean env; V8 coverage during required checks; success logs/raw coverage removed; concise failure/proof/cleanup/impact summaries retained. Existing audited pg overlay only if needed, all target139 content hashes/inodes/root identity preserved; owned link/empty parent removed. No tests until parent grant.",
+  "output": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/completion-focus/f71-repair",
+  "preEditHashes": {
+    "server/gcsp/manual-order/index.js": "b4b7798268cd51929b756ffb4c48e6f56579821094a0fa064f604d5886fcc352",
+    "server/test/gcsp-manual-order.test.js": "7635c68da0453021203d8aeafc55b4c44c79cbacda5bbb1c17b48f9a093197bf",
+    "server/gcsp/cases/index.js": "7ea3de632c5845eafc3b0a429b847b640bf3dc9b4ad1ab43cd3e19871f47d1f7",
+    "server/gcsp/cases/policy.js": "c6ee2d24b019695a8bf3663fe2dd22fee5705aac65a7fff834f21b5c219209e7",
+    "server/gcsp/repository/core.js": "c55c93c543886108f67aa12bc5c7519d50063e90ba4ec78df37aa0df56d6f311",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "server/gcsp/policy/seed-v1.json": "ed55e9d4a7041738c988067c276bc4b60a46ee446e905ac8d431f6ff5ca2cd68",
+    "server/gcsp/manual-context/fixtures.js": "e63bee220e6e563f96ee94a94f37500c67d0c2944b3909a0a8c7d3f1f89b01a6"
+  }
+}

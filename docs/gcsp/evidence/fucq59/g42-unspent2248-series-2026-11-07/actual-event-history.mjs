@@ -1,0 +1,3 @@
+/** Retained real event rows only; never synthesizes or repairs source history. */
+import{readFileSync}from'node:fs';import{join}from'node:path';import assert from'node:assert/strict';
+export function actualEventHistory(base,allocation,state){const rows=readFileSync(join(base,'source-events.jsonl'),'utf8').trim().split('\n').map(JSON.parse);const starts=rows.filter(r=>r.phase==='started');assert.deepEqual(starts.map(r=>r.attempt),Array.from({length:allocation.attempts},(_,i)=>i+1));assert.equal(starts.length,state.counts.httpAttempts);assert.equal(rows.every(r=>!Object.hasOwn(r,'url')&&!Object.hasOwn(r,'headers')),true);return{events:rows};}

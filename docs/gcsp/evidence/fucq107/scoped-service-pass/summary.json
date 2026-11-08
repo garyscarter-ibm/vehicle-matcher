@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-107",
+  "status": "scoped-service-pass; story incomplete",
+  "grant": "fucq107-main12-1683932-0033",
+  "testedSourceCommit": "16839323f070f7c0ab81eb1ebf728627d283c71d",
+  "command": "/usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/run-frozen-1683932.proposal.py d50ec25fc41d539febb612996df6bdaf91e73f37e1a1c881a3adf901b956924e server/test/gcsp-second-offer.test.js",
+  "externalRun": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/20261106T012340744061Z",
+  "testCounts": {
+    "cancelled": 0,
+    "fail": 0,
+    "pass": 12,
+    "skipped": 0,
+    "suites": 0,
+    "tests": 12,
+    "todo": 0
+  },
+  "frozenReview": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/review-frozen-1683932.json",
+    "sha256": "d50ec25fc41d539febb612996df6bdaf91e73f37e1a1c881a3adf901b956924e"
+  },
+  "sourceCatalogue": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/source-closure-1683932.json",
+    "sha256": "ad33000d3c0092a7efc4b292368b484d31f3863d09d8114b28ab5ee5e52402dd"
+  },
+  "loader": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/pg-loader-1683932.proposal.mjs",
+    "sha256": "a2069b9aefe4ce4c696d1fb5a5136d8f2091b805e325513191dd983e3787b165"
+  },
+  "supervisor": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/run-frozen-1683932.proposal.py",
+    "sha256": "0df1933f610521eb704f1c1acc0ff448b1ca469ede722a4cc6be36314ac88a03"
+  },
+  "dependencies": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/pg-dependency-manifest.json",
+    "sha256": "10e06e4224b9bf2f8ed7fbefdbc2b4237ce8631e1d9720f8038bf199793064e8"
+  },
+  "resources": {
+    "workers": 1,
+    "limits": {
+      "workers": 1,
+      "seconds": 120,
+      "ramMiB": 768,
+      "scratchAndRetainedMiB": 128,
+      "logMiB": 2
+    },
+    "wallSeconds": 1.0892982500000001,
+    "peakRssBytes": 252985344,
+    "peakScratchBytes": 0,
+    "peakCombinedExternalBytes": 533696,
+    "scratchRemoved": true,
+    "processCleanupVerified": true,
+    "strictReservationRegistryValid": true,
+    "reservationAbsent": true,
+    "compatibilityException": "none",
+    "largeOutputDestination": "not applicable; all generated output remained below256MiB"
+  },
+  "independentAudit": {
+    "allPassed": true,
+    "checksPassed": 208,
+    "cleanup": {
+      "scratchRemoved": true,
+      "supervisorOwnerDead": true,
+      "childProcessesMatch": true,
+      "childrenDead": true,
+      "registryValid": true,
+      "reservationAbsent": true
+    }
+  },
+  "observedApplicationModules": 34,
+  "originalLog": {
+    "bytes": 3508,
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/20261106T012340744061Z/output.log",
+    "reporter": "tap",
+    "retained": true,
+    "sha256": "42b05295b4aa810b661981b70827b54015fc2bbc1b8ea5d511685c0b17c5e2f2"
+  },
+  "retainedCopies": {
+    "receipt.json": {
+      "sha256": "fd891d2c289cba3ac4925401d7c11286821e470308741200c5021be51669b2af",
+      "bytes": 3377
+    },
+    "output.log": {
+      "sha256": "42b05295b4aa810b661981b70827b54015fc2bbc1b8ea5d511685c0b17c5e2f2",
+      "bytes": 3508
+    },
+    "modules.jsonl": {
+      "sha256": "0912454dc40830e642c9b61e04ed1e933d3044c68d74a8b70cc9f231d9e43860",
+      "bytes": 17161
+    },
+    "parent-audit.json": {
+      "sha256": "bcd9ce7431748ab4f16127fc84c0538ccb519d23bc062e1e216b2549344d0b8c",
+      "bytes": 2290
+    },
+    "ownership.json": {
+      "sha256": "8a6203472a7bd1a0a652bcdf1d8e7aaf29b0dd4bd247ed2864840d0246e19957",
+      "bytes": 463
+    }
+  },
+  "separatePolicyEvidence": {
+    "sourceCommit": "c536ab490fbed3d1bb96a0b6fa007cdc85d139a8",
+    "path": "../scoped-policy-pass/",
+    "tests": 7,
+    "passed": 7,
+    "reuseBasis": {
+      "evidence": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/20261106T011314999686Z",
+      "tests": 7,
+      "passed": 7,
+      "observedApplicationRowsUnchanged": 10,
+      "additionalUnchangedInputs": [
+        "server/gcsp/policy/seed-v1.json",
+        "server/gcsp/offers/followup-policy-definitions.json",
+        "package.json",
+        "package-lock.json",
+        "server/package.json",
+        "server/package-lock.json"
+      ],
+      "helpers": "Same resources/scaffold_git SHA pins, same dependency manifest138files5locks and exact Node; loader changes only source manifest pin.",
+      "journalSHA256": "8a97084c4d6046ccfd381678e2b6f78dbc88a52cd746cb9eb5b0c1d37ccf7781",
+      "affectedPathsReachableFromPolicy": false
+    },
+    "combinedRun": false
+  },
+  "retainedPriorFailures": [
+    "../scoped-policy-attempt-1/",
+    "../scoped-service-attempt-1/"
+  ],
+  "limitations": [
+    "Scoped completed-decline and account/evaluation doubles; actual106/102/105/100 producer integration not proven.",
+    "Canonical followup policy registration and runtime adoption remain open.",
+    "Client controller/view, browser keyboard/narrow visual evidence, native database and authored full validation remain open.",
+    "No allocator96 source was read, edited or executed; explicit pause retained."
+  ],
+  "agents": {
+    "lead": {
+      "name": "Lego Batman",
+      "requested": "gpt-6.1-sol/high",
+      "selected": "gpt-6.1-sol/high",
+      "effective": "gpt-6.1-sol/high",
+      "fallback": "none"
+    },
+    "completedChild": {
+      "name": "Baymax",
+      "requested": "gpt-6-luna/high",
+      "selected": "gpt-6-luna/high",
+      "effective": "gpt-6-luna/high",
+      "fallback": "none"
+    },
+    "newChildren": 0
+  }
+}

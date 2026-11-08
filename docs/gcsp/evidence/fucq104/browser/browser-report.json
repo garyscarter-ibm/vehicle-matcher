@@ -1,0 +1,125 @@
+{
+  "story": "FUCQ-104",
+  "scope": "real supply/demand/routes, actual pinned release/allocation/hold, published F96 identity; controlled synthetic memory inputs, dedicated HTTPS harness; shared runtime/native SQL separate",
+  "checks": [
+    "Keyboard-only request: Tab, quantity input, Tab, Enter; real authenticated HTTP and persisted request",
+    "Keyboard-only disclosure and partial confirmation, presenter cookie followed by acting Greg queue",
+    "Actual pinned release/allocation/hold: released3, one real offer; separate held/released stock and changed demand",
+    "Saved release tracking remains visible when production is unavailable",
+    "Visible keyboard focus and horizontal table scrolling at390px; page has no horizontal overflow",
+    "Strict self-only CSP, no inline execution, browser errors or external requests"
+  ],
+  "screenshots": [
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/browser/empty-1440.png",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/browser/empty-390.png",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/browser/requested-1440.png",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/browser/requested-390.png",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/browser/partly-confirmed-1440.png",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/browser/partly-confirmed-390.png",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/browser/delayed-1440.png",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/browser/delayed-390.png",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/browser/confirmed-1440.png",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/browser/confirmed-390.png",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/browser/released-1440.png",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/browser/released-390.png",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/browser/adapter-unavailable-1440.png",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/browser/adapter-unavailable-390.png",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/browser/keyboard-focus-narrow.png"
+  ],
+  "pageErrors": [],
+  "consoleErrors": [],
+  "external": [],
+  "api": [
+    {
+      "path": "/api/gcsp/greg/demand",
+      "status": 200
+    },
+    {
+      "path": "/api/gcsp/greg/orders",
+      "status": 200
+    },
+    {
+      "path": "/api/gcsp/greg/orders",
+      "status": 200
+    },
+    {
+      "path": "/api/gcsp/greg/orders",
+      "status": 200
+    },
+    {
+      "path": "/api/gcsp/greg/demand",
+      "status": 200
+    },
+    {
+      "path": "/api/gcsp/presenter/production",
+      "status": 200
+    },
+    {
+      "path": "/api/gcsp/greg/orders/queue",
+      "status": 200
+    },
+    {
+      "path": "/api/gcsp/greg/orders",
+      "status": 200
+    },
+    {
+      "path": "/api/gcsp/greg/demand",
+      "status": 200
+    },
+    {
+      "path": "/api/gcsp/presenter/production",
+      "status": 200
+    },
+    {
+      "path": "/api/gcsp/greg/orders",
+      "status": 200
+    },
+    {
+      "path": "/api/gcsp/greg/demand",
+      "status": 200
+    },
+    {
+      "path": "/api/gcsp/presenter/production",
+      "status": 200
+    },
+    {
+      "path": "/api/gcsp/greg/orders/queue",
+      "status": 200
+    },
+    {
+      "path": "/api/gcsp/greg/orders",
+      "status": 200
+    },
+    {
+      "path": "/api/gcsp/greg/demand",
+      "status": 200
+    },
+    {
+      "path": "/api/gcsp/greg/orders",
+      "status": 200
+    },
+    {
+      "path": "/api/gcsp/greg/orders",
+      "status": 200
+    }
+  ],
+  "cleanup": {
+    "browserClosed": true,
+    "serverClosed": true,
+    "repositoryClosed": true
+  },
+  "focus": {
+    "outline": "solid",
+    "width": "2px",
+    "color": "rgb(2, 145, 183)"
+  },
+  "typography": {
+    "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\"",
+    "size": "16px",
+    "background": "rgb(245, 246, 246)",
+    "color": "rgb(31, 35, 40)"
+  },
+  "state": "passed",
+  "shellEvidence": "../browser-shell/shell-report.json",
+  "captureQualification": "Original fullPage embedded-shell artifacts were invalid and retained in launching red-shell-capture; focused live DOM and normal viewport follow-up supersede them."
+}

@@ -1,0 +1,793 @@
+{
+  "state": "incomplete",
+  "chunk": "journey-desktop",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "source": "95b731353b422a34b45fda02d837a45818dc70d5",
+  "checks": [
+    {
+      "name": "Opening, review and keyboard cancel are read-only"
+    }
+  ],
+  "captures": [
+    {
+      "name": "01-paula-no-case",
+      "file": "01-paula-no-case.png",
+      "boundary": "actual API and renderer",
+      "source": "95b731353b422a34b45fda02d837a45818dc70d5",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "status": [
+        "",
+        "No renewal caseHelp is available if you need the scheme team to review your renewal."
+      ],
+      "text": "Skip to content\nGroup Car Schemes Portal\nP\nPaula (fictional)\nYour cars\nNew order\nOrder history\nDrivers and licences\nRenewal help\nShow labels\nRENEWAL HELP\nRenewal help\n\nRemedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.\n\nGet help with your renewal\nNo renewal case\n\nHelp is available if you need the scheme team to review your renewal.",
+      "focus": {
+        "tag": "BODY",
+        "id": "",
+        "text": "Skip to contentGroup Car Schemes PortalPPaula (fictional)Paula (fictional)demo-bmw-fs-uk, G7Your car",
+        "outlineStyle": "none",
+        "outlineWidth": "3px",
+        "outlineColor": "rgb(0, 0, 0)",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 1036.796875
+        },
+        "inViewport": true
+      },
+      "keyboardTraceThrough": 0
+    },
+    {
+      "name": "02-help-review",
+      "file": "02-help-review.png",
+      "boundary": "actual API and renderer",
+      "source": "95b731353b422a34b45fda02d837a45818dc70d5",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "status": [
+        "",
+        "No renewal caseHelp is available if you need the scheme team to review your renewal."
+      ],
+      "text": "Skip to content\nGroup Car Schemes Portal\nP\nPaula (fictional)\nYour cars\nNew order\nOrder history\nDrivers and licences\nRenewal help\nShow labels\nRENEWAL HELP\nRenewal help\n\nRemedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.\n\nGet help with your renewal\n\nThe scheme team can review a delayed or uncertain renewal and explain the next action. Opening help changes nothing.\n\nConfirm your help request\n\nThis opens a scheme-team case or adds to your existing case and shares the reason below.\n\nPlease review my replacement before the contract ends.\n\nConfirm help request\nCancel\nNo renewal case\n\nHelp is available if you need the scheme team to review your renewal.",
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Confirm help request",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 198,
+          "y": 417.796875,
+          "width": 210.015625,
+          "height": 48
+        },
+        "inViewport": true
+      },
+      "keyboardTraceThrough": 8
+    },
+    {
+      "name": "03-help-confirmed-status",
+      "file": "03-help-confirmed-status.png",
+      "boundary": "actual API and renderer",
+      "source": "95b731353b422a34b45fda02d837a45818dc70d5",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "status": [
+        "Your help request was recorded."
+      ],
+      "text": "Skip to content\nGroup Car Schemes Portal\nP\nPaula (fictional)\nYour cars\nNew order\nOrder history\nDrivers and licences\nRenewal help\nShow labels\nRENEWAL HELP\nRenewal help\n\nRemedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.\n\nYour help request was recorded.\n\nGet help with your renewal\n\nThe scheme team can review a delayed or uncertain renewal and explain the next action. Opening help changes nothing.\n\nAsk for help\n\nRENEWAL CASE\n\nOpen\nCase reference\nrenewal-8eec635c2436c7e525b36b61c2d15e29f81808b6\nOwner\nScheme team\nOwner role\nscheme-team\nReason\nPlease review my replacement before the contract ends.\nLatest update\nPlease review my replacement before the contract ends.\nOpened from\nemployee-request\nNext action\nScheme team to review your renewal and contact you.\nDue, demo clock (UTC)\n2026-11-06 09:00:00 UTC\nRenewal deadline (calendar date)\n2026-12-01\n\nSynthetic demonstration case.\n\nDated case history",
+      "focus": {
+        "tag": "P",
+        "id": "",
+        "text": "Your help request was recorded.",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 148,
+          "y": 232.796875,
+          "width": 1032,
+          "height": 24
+        },
+        "inViewport": true
+      },
+      "keyboardTraceThrough": 18
+    }
+  ],
+  "keyboard": [
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 9,
+      "focus": {
+        "tag": "SUMMARY",
+        "id": "",
+        "text": "Get help with your renewal",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 160.796875,
+          "width": 982,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Open help disclosure",
+      "key": "Space",
+      "focus": {
+        "tag": "SUMMARY",
+        "id": "",
+        "text": "Get help with your renewal",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 160.796875,
+          "width": 982,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 1,
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Ask for help",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 248.796875,
+          "width": 140.484375,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Ask for help",
+      "key": "Enter",
+      "before": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Ask for help",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 248.796875,
+          "width": 140.484375,
+          "height": 48
+        },
+        "inViewport": true
+      },
+      "after": {
+        "tag": "TEXTAREA",
+        "id": "gcsp-help-1-reason",
+        "text": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 300.796875,
+          "width": 982,
+          "height": 100
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "TEXTAREA",
+        "id": "gcsp-help-1-reason",
+        "text": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 300.796875,
+          "width": 982,
+          "height": 100
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "What do you need help with?",
+      "method": "automated native text/date entry through fill",
+      "after": {
+        "tag": "TEXTAREA",
+        "id": "gcsp-help-1-reason",
+        "text": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 300.796875,
+          "width": 982,
+          "height": 100
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 1,
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Review help request",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 461.796875,
+          "width": 202.890625,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Review help request",
+      "key": "Enter",
+      "before": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Review help request",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 461.796875,
+          "width": 202.890625,
+          "height": 48
+        },
+        "inViewport": true
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Confirm help request",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 198,
+          "y": 417.796875,
+          "width": 210.015625,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Shift+Tab",
+      "presses": 11,
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Cancel",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 420.015625,
+          "y": 554.796875,
+          "width": 102.09375,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Cancel",
+      "key": "Enter",
+      "before": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Cancel",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 420.015625,
+          "y": 554.796875,
+          "width": 102.09375,
+          "height": 48
+        },
+        "inViewport": true
+      },
+      "after": {
+        "tag": "SUMMARY",
+        "id": "",
+        "text": "Get help with your renewal",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 297.796875,
+          "width": 982,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 1,
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Ask for help",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 385.796875,
+          "width": 140.484375,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Ask for help",
+      "key": "Enter",
+      "before": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Ask for help",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 385.796875,
+          "width": 140.484375,
+          "height": 48
+        },
+        "inViewport": true
+      },
+      "after": {
+        "tag": "TEXTAREA",
+        "id": "gcsp-help-1-reason",
+        "text": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 437.796875,
+          "width": 982,
+          "height": 100
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "TEXTAREA",
+        "id": "gcsp-help-1-reason",
+        "text": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 437.796875,
+          "width": 982,
+          "height": 100
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "What do you need help with?",
+      "method": "automated native text/date entry through fill",
+      "after": {
+        "tag": "TEXTAREA",
+        "id": "gcsp-help-1-reason",
+        "text": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 437.796875,
+          "width": 982,
+          "height": 100
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 1,
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Review help request",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 598.796875,
+          "width": 202.890625,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Review help request",
+      "key": "Enter",
+      "before": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Review help request",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 598.796875,
+          "width": 202.890625,
+          "height": 48
+        },
+        "inViewport": true
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Confirm help request",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 198,
+          "y": 554.796875,
+          "width": 210.015625,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Confirm help request",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 198,
+          "y": 554.796875,
+          "width": 210.015625,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Confirm help request",
+      "key": "Enter",
+      "before": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Confirm help request",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 198,
+          "y": 554.796875,
+          "width": 210.015625,
+          "height": 48
+        },
+        "inViewport": true
+      },
+      "after": {
+        "tag": "P",
+        "id": "",
+        "text": "Saving your confirmed request.",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 148,
+          "y": 232.796875,
+          "width": 1032,
+          "height": 24
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 4,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-selection",
+        "text": "Choose a casePaula (fictional) · Open · 2026-12-01",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 543.5,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-selection",
+        "text": "Choose a casePaula (fictional) · Open · 2026-12-01",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 543.5,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-selection",
+        "text": "Choose a casePaula (fictional) · Open · 2026-12-01",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 543.5,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-selection",
+        "text": "Choose a casePaula (fictional) · Open · 2026-12-01",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 543.5,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-selection",
+        "text": "Choose a casePaula (fictional) · Open · 2026-12-01",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 543.5,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-selection",
+        "text": "Choose a casePaula (fictional) · Open · 2026-12-01",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 543.5,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-selection",
+        "text": "Choose a casePaula (fictional) · Open · 2026-12-01",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 543.5,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    }
+  ],
+  "errors": [
+    {
+      "type": "assertion-or-runner",
+      "message": "Error: Case to work: keyboard selection did not reach the projected value\n    at select (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/browser-runner.mjs:103:51)\n    at async openCase (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/browser-runner.mjs:143:3)\n    at async journey (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/browser-runner.mjs:187:3)\n    at async file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/browser-runner.mjs:471:44"
+    }
+  ],
+  "network": [
+    {
+      "type": "browser",
+      "actor": "Paula",
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "request": null,
+      "status": "ok"
+    },
+    {
+      "type": "browser",
+      "actor": "Paula",
+      "method": "GET",
+      "path": "/api/gcsp/help",
+      "httpStatus": 200,
+      "request": null,
+      "status": "ok"
+    },
+    {
+      "type": "browser",
+      "actor": "Paula",
+      "method": "GET",
+      "path": "/api/gcsp/cases",
+      "httpStatus": 200,
+      "request": null,
+      "status": "ok",
+      "caseCount": 0
+    },
+    {
+      "type": "browser",
+      "actor": "Paula",
+      "method": "POST",
+      "path": "/api/gcsp/cases",
+      "httpStatus": 200,
+      "request": {
+        "commandId": "case-5dc7e6f4-8833-41ec-beb5-be45f4e44ca6",
+        "reason": "Please review my replacement before the contract ends."
+      },
+      "status": "ok",
+      "case": {
+        "caseId": "renewal-8eec635c2436c7e525b36b61c2d15e29f81808b6",
+        "version": 1,
+        "status": "open"
+      }
+    },
+    {
+      "type": "browser",
+      "actor": "Paula",
+      "method": "GET",
+      "path": "/api/gcsp/help",
+      "httpStatus": 200,
+      "request": null,
+      "status": "ok"
+    },
+    {
+      "type": "browser",
+      "actor": "Paula",
+      "method": "GET",
+      "path": "/api/gcsp/cases",
+      "httpStatus": 200,
+      "request": null,
+      "status": "ok",
+      "caseCount": 1
+    },
+    {
+      "type": "setup-or-assertion-api",
+      "actor": "Greg",
+      "method": "GET",
+      "path": "/scheme-team/cases",
+      "status": "ok",
+      "caseCount": 1
+    },
+    {
+      "type": "browser",
+      "actor": "Greg",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases",
+      "httpStatus": 200,
+      "request": null,
+      "status": "ok",
+      "caseCount": 1
+    }
+  ],
+  "expectedTransportFailures": [
+    {
+      "actor": "Paula",
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "error": "net::ERR_ABORTED",
+      "boundary": "navigation or element cancellation"
+    }
+  ],
+  "setup": [
+    "Trusted backend bootstrap issues separate actual presenter, Paula and Greg sessions; synthetic manual-records-v1 supplies account/contract facts. Cookies are never retained in evidence."
+  ],
+  "boundary": "Actual isolated memory-services HTTP and repository assets. Delivered runtime/Greg host and offer/lifecycle producers remain separate acceptance.",
+  "cookieOverride": "localhost only: identity.session.sameSite=Lax, secureCookies=false",
+  "apiPort": 58571,
+  "chromeDebugPort": 58573,
+  "listenerClosed": true,
+  "chromeJoined": true
+}
