@@ -156,6 +156,12 @@ Gallery: the **GCSP Greg kit** section of [`components.html`](components.html) s
 
 `attachGregOrders(dashboard, {adapter, productionControls, onChanged, signal})` in `blocks/gcsp/greg-orders/runtime.js` owns that existing region across dashboard remounts. It replaces prior listeners, refreshes the same demand dashboard after an order change, and restores the original reserved region on teardown or abort. Production controls default to hidden; the host selects disclosure. [Canonical host/source handoff](docs/gcsp/fucq104-source-runtime-handoff-2026-11-06.md).
 
+## GCSP Greg order plan (`blocks/gcsp/greg/plan/`)
+
+`mountGregOrderPlan(root, { adapter, signal, onSubmitted, commandId })` and `<gcsp-greg-order-plan>` (`fixture` attribute or `adapter` property) show Greg's next order: the action first, versions, proposed quantities, coverage and risk tiles, unmet needs, binding constraints, alternatives, a limits editor, a labelled preview, and a separate "Request N vehicles from Production" button. Looked at: nothing existing draws a plan, so it composes `el`, `screenIntro`, `button`, `statusScreen`, `factList`, `metricTile`, `dataTable`, `labelledField`, `errorSummary` and `renderRangeSlider` (single). It adds no new kit primitive. `mountGregDashboard` mounts it into the `prediction` region when given `orderPlanAdapter` (the Greg HTTP adapter's `orderPlan`), refreshes it on `gcsp:policy-published` and exposes `teardown.orderPlan`; the presenter workspace refreshes it with order tracking.
+
+`plan.css` is `.gcsp` scoped, uses tokens only and has its own cap in `server/test/ui-ratchet.json` (32 lines); `gcsp-greg.css` keeps its cap by importing it. No JavaScript pattern debt was added. Gallery: the **Greg order plan** section of [`components.html`](components.html) shows ready, preview, infeasible and stale. Every state loads in the dashboard harness as `gcsp-greg.html?fixture=populated&plan=<state>`.
+
 ## GCSP renewal cases and presenter workspace
 
 The adopted case and publication views compose `screenIntro`, `button`, `statusScreen`, `factList`, `dataTable` and the shared labelled fields/error summary. They introduce no new shared primitive. Their styles use the existing GCSP tokens and have explicit ratchet caps.

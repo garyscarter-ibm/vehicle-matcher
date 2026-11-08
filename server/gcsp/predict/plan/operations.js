@@ -92,6 +92,19 @@ export function createOrderPlanOperations({ repository, policy, identity, clock,
       .readPlan({ ...context, policyVersion: draft.policyVersion });
   }
 
+  // Display names and editor keys for the panel, from the policy catalogue (FUCQ-121).
+  async function presentationFor(context, base) {
+    const catalog = await createPolicyOrderPlanCatalog({ policy }).readCatalog(context, base.read);
+    if (catalog.status !== 'ok') return unavailable();
+    const models = new Map();
+    const derivatives = catalog.value.derivatives.map((d) => {
+      if (!models.has(d.modelId)) models.set(d.modelId, d.production.model);
+      return { derivativeId: d.derivativeId, modelId: d.modelId, model: d.production.model, derivative: d.production.derivative };
+    });
+    return ok({ forecastBasis: 'expressed-saved-demand', editableKeys: [...base.editable], currency: catalog.value.currency, derivatives,
+      models: [...models].map(([modelId, model]) => ({ modelId, model })) });
+  }
+
   async function snapshots(context, kind) {
     const rows = await repository.query(context, 'plan_snapshots'); if (rows.status !== 'ok') return rows;
     return ok(rows.value.filter((r) => r.provenance?.kind === kind));
@@ -117,7 +130,8 @@ export function createOrderPlanOperations({ repository, policy, identity, clock,
         const base = await start(context); if (base.status !== 'ok') return base;
         const plan = await planFor(context, base.value); if (!isPlan(plan)) return plan;
         const replan = await replanFor(context, plan); if (replan.status !== 'ok') return replan;
-        return finish(context, { mode: 'current', preview: false, plan, replan: replan.value });
+        const presentation = await presentationFor(context, base.value); if (presentation.status !== 'ok') return presentation;
+        return finish(context, { mode: 'current', preview: false, plan, replan: replan.value, presentation: presentation.value });
       } catch { return unavailable(); }
     },
 
@@ -128,8 +142,10 @@ export function createOrderPlanOperations({ repository, policy, identity, clock,
         const changes = checkChanges(base.value, input.changes); if (changes.status !== 'ok') return changes;
         const activePlan = await planFor(context, base.value); if (!isPlan(activePlan)) return activePlan;
         const plan = await planFor(context, base.value, changes.value); if (!isPlan(plan)) return plan;
+        const presentation = await presentationFor(context, base.value); if (presentation.status !== 'ok') return presentation;
         return finish(context, { mode: 'preview', preview: true, writes: 'none', message: PREVIEW_MESSAGE,
-          activePolicyVersion: base.value.read.policyVersion, draftPolicyVersion: plan.versions.policy, changes: changes.value, plan, activePlan });
+          activePolicyVersion: base.value.read.policyVersion, draftPolicyVersion: plan.versions.policy, changes: changes.value, plan, activePlan,
+          presentation: presentation.value });
       } catch { return unavailable(); }
     },
 
