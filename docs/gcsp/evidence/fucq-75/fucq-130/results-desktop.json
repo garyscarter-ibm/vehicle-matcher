@@ -1,0 +1,425 @@
+{
+  "chunk": "desktop",
+  "entry": "hosted",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "stockMode": "default",
+  "state": "passed",
+  "startedAt": "2026-11-08T17:05:19.448Z",
+  "runIds": {
+    "previous": "demo-ea3b050919d5058adfbcb7852fc98722",
+    "new": "demo-5c5ceeee4c80f92f2e321b4f8d8aa8ba"
+  },
+  "steps": [
+    {
+      "id": "access-key",
+      "name": "The demo key form opens the hosted demo, key typed by keyboard once",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Presenter page opened"
+    },
+    {
+      "id": "scenario-reset",
+      "name": "Scenario \"Data unavailable\" chosen with arrow keys and reset confirmed by keyboard",
+      "pass": true,
+      "screenshots": [
+        "reset-done-1280.png"
+      ],
+      "detail": {
+        "previousRun": "demo-ea3b050919d5058adfbcb7852fc98722",
+        "newRun": "demo-5c5ceeee4c80f92f2e321b4f8d8aa8ba",
+        "clock": "2026-11-05T09:00:00.000Z",
+        "faults": [
+          {
+            "adapter": "stock",
+            "runId": "demo-5c5ceeee4c80f92f2e321b4f8d8aa8ba",
+            "mode": "unavailable",
+            "modes": [
+              "none",
+              "unavailable",
+              "stale"
+            ]
+          }
+        ]
+      },
+      "overflowPx": 0,
+      "state": "Presenter controls Scenario Data unavailable Run demo-5c5ceeee4c80f92f2e321b4f8d8aa8ba DemoClock (UTC) 2026-11-05T09:00:00.000Z Acting principal Presenter (fictional) (presenter) Tick (60 seconds) Named time or UTC target Tick to target Next release Release cue: 2026-11-05T09:30:00.000Z Scenario Main successful journey Available No suitable match Available Decline then change Available Offer expir"
+    },
+    {
+      "id": "next-release",
+      "name": "Next release: the stock pull fails and nothing is released",
+      "pass": true,
+      "screenshots": [
+        "next-release-refused-1280.png"
+      ],
+      "detail": {
+        "strip": "Event presenter-9bdb3e29f78d495ce24a43f5447e4e431ad1fc5d9fa36ff5ed7ca7e04d3e3eb8 State interrupted release-pull / stock-release: {\"status\":\"unavailable\",\"reason\":\"Stock source is unavailable.\",\"retryable\":true,\"contractVersion\":\"1.0.0\"} manual-expiry / manual-claim-expiry: Pending, no result reporte"
+      },
+      "overflowPx": 0,
+      "state": "Presenter controls Scenario Data unavailable Run demo-5c5ceeee4c80f92f2e321b4f8d8aa8ba DemoClock (UTC) 2026-11-05T09:30:00.000Z Acting principal Presenter (fictional) (presenter) Tick (60 seconds) Named time or UTC target Tick to target Next release Release cue: 2026-11-05T09:30:00.000Z Scenario Main successful journey Available No suitable match Available Decline then change Available Offer expir"
+    },
+    {
+      "id": "activity-paula-unavailable",
+      "name": "Paula's activity reads couldn't check, with no last check",
+      "pass": true,
+      "screenshots": [
+        "activity-paula-unavailable-1280.png"
+      ],
+      "detail": {
+        "before": "Context unavailable",
+        "after": "Paula (fictional) (employee)",
+        "findings": {
+          "couldntCheck": true,
+          "notNoMatch": true,
+          "noLastCheck": true
+        }
+      },
+      "overflowPx": 0,
+      "state": "Your buddy Active Your offer No current offer Activity All dates are demo time (UTC). Couldn't check for new cars. Stock source unavailable. 5 Nov 2026, 09:00 Search confirmed"
+    },
+    {
+      "id": "greg-unavailable",
+      "name": "Greg's stock section reads source unavailable rather than zero",
+      "pass": true,
+      "screenshots": [
+        "greg-stock-unavailable-1280.png"
+      ],
+      "detail": {
+        "before": "Context unavailable",
+        "after": "Greg (fictional) (greg)"
+      },
+      "overflowPx": 0,
+      "state": "Stock Stock source unavailable. Figures may be out of date. Released stock is open to employees. Held stock is reserved for an offer. Allocated stock is taken by a selection. Stock by model line Model line Released Held Allocated Couldn't check for new stock"
+    },
+    {
+      "id": "greg-stale",
+      "name": "Stale fault and one Tick: Greg reads the data as too old",
+      "pass": true,
+      "screenshots": [
+        "greg-stock-stale-1280.png"
+      ],
+      "detail": {
+        "set": [
+          {
+            "adapter": "stock",
+            "runId": "demo-5c5ceeee4c80f92f2e321b4f8d8aa8ba",
+            "mode": "stale",
+            "modes": [
+              "none",
+              "unavailable",
+              "stale"
+            ]
+          }
+        ]
+      },
+      "overflowPx": 0,
+      "state": "Event presenter-34211f6b1239a79dd30352e74510a4a5b1e28cdad14a4522c56a05064dcc4aed State interrupted release-pull / stock-release: {\"status\":\"unavailable\",\"code\": | Stock Stock data too old to use. Figures may be out of date. Released stock is open to employees. Held stock is reserved for an offer. Allocated stock is taken by a selection. Stock by model line Model line Released Held Allocated Couldn't check for new stock"
+    },
+    {
+      "id": "recover",
+      "name": "Fault cleared and one Tick: the release runs and Paula has an offer",
+      "pass": true,
+      "screenshots": [
+        "activity-paula-recovered-1280.png"
+      ],
+      "detail": {
+        "set": [
+          {
+            "adapter": "stock",
+            "runId": "demo-5c5ceeee4c80f92f2e321b4f8d8aa8ba",
+            "mode": "none",
+            "modes": [
+              "none",
+              "unavailable",
+              "stale"
+            ]
+          }
+        ],
+        "strip": "Event presenter-cef5a9d61fc246d7b9efc58d8383fd7f65e8d5004f797dc54d828c95a787138d State completed release-pull / stock-release: {\"status\":\"ok\",\"value\":{\"kind\":\"stock-released\",\"runId\":\"demo-5c5ceeee4c8"
+      },
+      "overflowPx": 0,
+      "state": "Your buddy Active Your offer Image unavailable Waiting for you Respond by 5 Nov 2026, 11:32 View offer Activity All dates are demo time (UTC). Last check 5 Nov 2026, 09:32: 5 cars checked, 4 suitable. Found a car for you. 5 Nov 2026, 09:00 Search confirmed"
+    }
+  ],
+  "keyboard": [
+    {
+      "page": "access",
+      "check": "Tab reaches the demo key field; typing the key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Data unavailable\" in \"Scenario\"",
+      "pass": true,
+      "detail": "Data unavailable Available"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Reset scenario\" then \"Confirm reset\" resets the run",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Next release\" runs the tick",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Paula\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Paula (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Switch principal\" switches to Paula",
+      "pass": true
+    },
+    {
+      "page": "activity \"Search actions\"",
+      "check": "Tab reaches the control with a visible focus indicator",
+      "pass": true,
+      "detail": {
+        "outline": true,
+        "shadow": false,
+        "label": "Search actions"
+      }
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Greg\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Greg (fictional) (greg)"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Switch principal\" switches to Greg",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Tick\" runs the tick",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Tick\" runs the tick",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Paula\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Paula (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Switch principal\" switches to Paula",
+      "pass": true
+    }
+  ],
+  "paula": {
+    "unavailable": {
+      "text": "Your buddy\n\nActive\n\nYour offer\nNo current offer\nActivity\n\nAll dates are demo time (UTC).\n\nCouldn't check for new cars. Stock source unavailable.\n\n5 Nov 2026, 09:00\n\nSearch confirmed",
+      "controls": [
+        {
+          "tag": "button",
+          "text": "Search actions",
+          "href": null
+        }
+      ],
+      "findings": {
+        "couldntCheck": true,
+        "notNoMatch": true,
+        "noLastCheck": true
+      }
+    },
+    "recovered": "Your buddy\n\nActive\n\nYour offer\nImage unavailable\n\nWaiting for you\n\nRespond by 5 Nov 2026, 11:32\n\nView offer\nActivity\n\nAll dates are demo time (UTC).\n\nLast check 5 Nov 2026, 09:32: 5 cars checked, 4 suitable. Found a car for you.\n\n5 Nov 2026, 09:00\n\nSearch confirmed"
+  },
+  "greg": {
+    "unavailable": "Stock Stock source unavailable. Figures may be out of date. Released stock is open to employees. Held stock is reserved for an offer. Allocated stock is taken by a selection. Stock by model line Model line Released Held Allocated Couldn't check for new stock",
+    "stale": "Stock Stock data too old to use. Figures may be out of date. Released stock is open to employees. Held stock is reserved for an offer. Allocated stock is taken by a selection. Stock by model line Model line Released Held Allocated Couldn't check for new stock"
+  },
+  "faults": [
+    {
+      "at": "after-reset",
+      "faults": [
+        {
+          "adapter": "stock",
+          "runId": "demo-5c5ceeee4c80f92f2e321b4f8d8aa8ba",
+          "mode": "unavailable",
+          "modes": [
+            "none",
+            "unavailable",
+            "stale"
+          ]
+        }
+      ]
+    },
+    {
+      "at": "set-stale",
+      "status": 200,
+      "faults": [
+        {
+          "adapter": "stock",
+          "runId": "demo-5c5ceeee4c80f92f2e321b4f8d8aa8ba",
+          "mode": "stale",
+          "modes": [
+            "none",
+            "unavailable",
+            "stale"
+          ]
+        }
+      ]
+    },
+    {
+      "at": "set-none",
+      "status": 200,
+      "faults": [
+        {
+          "adapter": "stock",
+          "runId": "demo-5c5ceeee4c80f92f2e321b4f8d8aa8ba",
+          "mode": "none",
+          "modes": [
+            "none",
+            "unavailable",
+            "stale"
+          ]
+        }
+      ]
+    }
+  ],
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8962/favicon.ico",
+      "page": "http://127.0.0.1:8962/gcsp/access"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+      "url": "http://127.0.0.1:8962/api/gcsp/presenter/controls/tick",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+      "url": "http://127.0.0.1:8962/api/gcsp/presenter/controls/tick",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "url": "http://127.0.0.1:8962/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8962/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8962/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8962/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8962/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8962/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-activity-live.html"
+    }
+  ],
+  "badResponses": [
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    },
+    {
+      "status": 503,
+      "url": "http://127.0.0.1:8962/api/gcsp/presenter/controls/tick",
+      "method": "POST",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html",
+      "body": "{\"status\":\"unavailable\",\"tickId\":\"presenter-9bdb3e29f78d495ce24a43f5447e4e431ad1fc5d9fa36ff5ed7ca7e04d3e3eb8\",\"handlerId\":\"stock-release\",\"reason\":\"A registered clock handler did not complete. Retry this event ID.\",\"retryable\":true,\"handlerOutcome\":{\"status\":\"unavailable\",\"reason\":\"Stock source is u"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    },
+    {
+      "status": 503,
+      "url": "http://127.0.0.1:8962/api/gcsp/presenter/controls/tick",
+      "method": "POST",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html",
+      "body": "{\"status\":\"unavailable\",\"tickId\":\"presenter-34211f6b1239a79dd30352e74510a4a5b1e28cdad14a4522c56a05064dcc4aed\",\"handlerId\":\"stock-release\",\"reason\":\"A registered clock handler did not complete. Retry this event ID.\",\"retryable\":true,\"handlerOutcome\":{\"status\":\"unavailable\",\"code\":\"stock-source-stale\""
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    }
+  ],
+  "notes": [],
+  "origin": "http://127.0.0.1:8962",
+  "finishedAt": "2026-11-08T17:08:30.330Z",
+  "counts": {
+    "steps": 7,
+    "passed": 7,
+    "screenshots": 6,
+    "keyboardChecks": 14,
+    "keyboardPassed": 14
+  }
+}
