@@ -6,6 +6,7 @@ import { createGcspRuntime } from '../gcsp/runtime.js';
 import { buildServer } from '../index.js';
 import { createMemoryRepository, createMemoryStore, inputDigest, OCCUPYING_STATES } from '../gcsp/repository/index.js';
 import { PolicyService, MemoryPolicyProvider } from '../gcsp/policy/index.js';
+import { shortQuotePolicy } from './helpers/short-quote-policy.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { stock, essential, preference, fact } from './helpers/employee-recommendation.js';
 
@@ -144,7 +145,7 @@ test('normal runtime shares services, registers before startup, and serves real 
 });
 
 test('actual buddy capture and token access preserve timing, guards and exact-deadline expiry', async (t) => {
-  const f = await setup(t); const allocated = await allocate(f); const input = offerInput(f, allocated.offer);
+  const f = await setup(t, { policy: await shortQuotePolicy(3600) }); const allocated = await allocate(f); const input = offerInput(f, allocated.offer);
   const exchange = await request(f.server, '/api/gcsp/offers/access', { body: input });
   assert.equal(exchange.status, 200); assert.deepEqual(exchange.json.value.availableActions, ['accept', 'decline']);
   assert.match(exchange.headers['set-cookie'], /HttpOnly/); assert.match(exchange.headers['set-cookie'], /Secure/);

@@ -8,6 +8,7 @@ import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
 import { BuddyHoldService } from '../gcsp/offers/buddy-hold.js';
 import { verifyOfferToken } from '../gcsp/offers/offer-token.js';
 import { stock, essential, preference } from './helpers/employee-recommendation.js';
+import { shortQuotePolicy } from './helpers/short-quote-policy.js';
 
 const command = (commandId) => ({ commandId, inputDigest: inputDigest(commandId) });
 const ref = (f, table, key = {}) => ({ table, key: { runId: f.context.runId, ...key } });
@@ -18,7 +19,7 @@ const car = (f) => f.store.state.tables.stock.find((row) => row.orderUuid === f.
 const keys = { stock: 'orderUuid', holds: 'holdId', claims: 'claimId', offers: 'offerId', employees: 'employeeId',
   entitlement_slots: 'entitlementSlotId', pending_operations: 'operationId' };
 
-async function setup(t, { offerLandingUrl } = {}) {
+async function setup(t, { offerLandingUrl, policy = createPolicyService() } = {}) {
   const store = createMemoryStore(); const base = createMemoryRepository({ store });
   assert.equal((await base.open()).status, 'ok'); t.after(() => base.close());
   const control = { fail: null, failIntent: null, calls: [], onExecute: null, onReconcile: null };
@@ -41,7 +42,6 @@ async function setup(t, { offerLandingUrl } = {}) {
       return tx.recordReceipt(row);
     },
   })) };
-  const policy = createPolicyService();
   const runtime = await createDemoRuntime({ repository, policy, environmentId: 'buddy-remote-test', environmentKind: 'synthetic',
     policyAsOf: '2026-11-05T00:00:00.000Z', commandId: 'bootstrap', sessionNow: () => '2026-11-05T00:00:00.000Z' });
   assert.equal(runtime.status, 'ok'); const { clock, identity } = runtime.value;
@@ -248,7 +248,8 @@ const invalidations = {
 };
 for (const [name, invalidate] of Object.entries(invalidations)) {
   test(`confirmed claim after ${name} change requires a durable confirmed release before stock can return`, async (t) => {
-    const f = await setup(t);
+    // The terms case needs a quote that lapses before the hold: explicit alternative input.
+    const f = await setup(t, name === 'terms' ? { policy: await shortQuotePolicy(3600) } : {});
     f.control.onExecute = async (op) => { await invalidate(f); return acknowledgement(op); };
     await f.allocate(); excluded(f, 'release-pending'); noOffer(f);
     assert.equal(operation(f).state, 'confirmed'); const release = operation(f, 'buddy-release'); assert.ok(release);
