@@ -1,0 +1,88 @@
+{
+  "passed": true,
+  "origin": "http://127.0.0.1:8890",
+  "runs": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "summaryFacts": [
+        [
+          "Status",
+          "Current car"
+        ],
+        [
+          "Driver",
+          "Paula (fictional)"
+        ],
+        [
+          "Contract end",
+          "1 December 2026"
+        ],
+        [
+          "Term",
+          "6 months"
+        ],
+        [
+          "Annual mileage",
+          "12,000 mi/year"
+        ],
+        [
+          "Registration",
+          "Not supplied"
+        ]
+      ],
+      "terms": "1,100 points a month · 1,300 points a month allowance",
+      "rawFound": [],
+      "statusRaw": false,
+      "overflow": 0,
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "screenshot": "docs/gcsp/evidence/fucq-195/1280-current-car.png"
+    },
+    {
+      "viewport": {
+        "width": 375,
+        "height": 812
+      },
+      "summaryFacts": [
+        [
+          "Status",
+          "Current car"
+        ],
+        [
+          "Driver",
+          "Paula (fictional)"
+        ],
+        [
+          "Contract end",
+          "1 December 2026"
+        ],
+        [
+          "Term",
+          "6 months"
+        ],
+        [
+          "Annual mileage",
+          "12,000 mi/year"
+        ],
+        [
+          "Registration",
+          "Not supplied"
+        ]
+      ],
+      "terms": "1,100 points a month · 1,300 points a month allowance",
+      "rawFound": [],
+      "statusRaw": false,
+      "overflow": 0,
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 (Not Found)",
+        "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ],
+      "screenshot": "docs/gcsp/evidence/fucq-195/375-current-car.png"
+    }
+  ]
+}
