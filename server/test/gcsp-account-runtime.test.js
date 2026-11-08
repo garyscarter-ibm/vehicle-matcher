@@ -45,3 +45,9 @@ test('FUCQ-201: shared account adapter passes a restart through and reads a bare
   const lapsed = createAccountHttpAdapter({ fetch: async () => ({ ok: false, status: 401, json: async () => ({ error: 'Unauthorized' }) }) });
   assert.deepEqual(await lapsed.loadAccount(), { status: 'access-required' });
 });
+
+test('FUCQ-204: the shared shell adapter never shows the raw company id', async () => {
+  const adapter = createAccountHttpAdapter({ baseURL: 'https://local.invalid/', fetch: async () => ({ ok: true,
+    json: async () => ({ status: 'ok', value: { state: 'ready', account: { name: 'Paula', companyId: 'demo-bmw-fs-uk', gradeId: 'G7' } } }) }) });
+  assert.deepEqual(await adapter.loadAccount(), { status: 'ready', name: 'Paula', context: 'Grade G7' });
+});
