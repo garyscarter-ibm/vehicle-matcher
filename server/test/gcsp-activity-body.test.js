@@ -181,3 +181,73 @@ test('design display data applies only to the offer it references; the link and 
   assert.match(foreign.textContent, /Waiting for you/); assert.equal(foreign.querySelector('a[href]').textContent, 'View offer');
   node.destroy(); foreign.destroy();
 });
+
+const why = (node) => [...node.querySelectorAll('.gcsp-activity-why > p')].map((p) => p.textContent);
+const withExclusions = (exclusions, change = {}) => {
+  const result = structuredClone(fixtures['no-match-one']); Object.assign(result.value.lastSuccessfulCheck, { exclusions }); Object.assign(result.value, change); return result;
+};
+const need = (essential, value, cars = 12, operator = 'equals') => ({ essential, requirement: { operator, value }, cars });
+const step = (node, label) => [...node.querySelectorAll('button')].find((b) => b.textContent === label);
+
+test('FUCQ-219: every car excluded by one essential reads "No released car has ..."', () => {
+  const node = view('no-match-one'); assert.deepEqual(why(node), ['No released car has 5 seats.']);
+  assert.equal(node.querySelector('.gcsp-activity-why').getAttribute('aria-live'), 'polite'); clean(node);
+  assert.equal(lines(node)[0], 'Still searching. No match yet.'); node.destroy();
+});
+
+test('FUCQ-219: two essentials with partial counts read as counts of the cars checked', () => {
+  const node = view('no-match-two');
+  assert.deepEqual(why(node), ['9 of 12 cars do not have 5 seats.', '6 of 12 cars do not have 430 litres of boot space.']); clean(node); node.destroy();
+});
+
+test('FUCQ-219: each essential has plain wording, and unknown fields never show a raw key or value', () => {
+  const cases = [[need('equipment', ['towbar']), 'a towbar'], [need('equipment', ['sunroof']), 'the equipment you need'],
+    [need('body', 'estate'), 'an estate body'], [need('body', 'suv'), 'an SUV body'], [need('fuel', 'phev'), 'plug-in hybrid power'],
+    [need('fuel', 'diesel'), 'a diesel engine'], [need('fuel', 'ev'), 'electric power'], [need('frontIsofix', true), 'front ISOFIX points'],
+    [need('rearIsofix', true), 'rear ISOFIX points'], [need('modelLine', 'X5'), 'the model you asked for'], [need('seats', 1), '1 seat']];
+  for (const [row, phrase] of cases) {
+    const node = activityBody({ result: withExclusions([row]) }); assert.deepEqual(why(node), [`No released car has ${phrase}.`]); node.destroy();
+  }
+  for (const row of [need('rearCamera', 'zzz-secret'), need('body', 'zzz-secret'), need('seats', 'many'), need('frontIsofix', false)]) {
+    const node = activityBody({ result: withExclusions([row]) });
+    assert.deepEqual(why(node), ['No released car meets one of your essentials.']); assert.doesNotMatch(node.textContent, /zzz|rearCamera|frontIsofix|seats/);
+    node.destroy();
+  }
+  const partial = activityBody({ result: withExclusions([need('rearCamera', 'x', 3)]) });
+  assert.deepEqual(why(partial), ['3 of 12 cars do not meet one of your essentials.']); partial.destroy();
+});
+
+test('FUCQ-219: Review your brief calls the host and Keep searching only acknowledges, as keyboard buttons', () => {
+  let reviews = 0;
+  const node = view('no-match-one', { onReviewBrief: () => { reviews += 1; } });
+  const keep = step(node, 'Keep searching'); const review = step(node, 'Review your brief');
+  assert.ok(keep && review); assert.deepEqual([keep.type, review.type, review.disabled], ['button', 'button', false]);
+  review.focus(); review.click(); assert.equal(reviews, 1); assert.ok(step(node, 'Keep searching'));
+  keep.focus(); keep.click();
+  const note = node.querySelector('.gcsp-activity-next [role="status"]');
+  assert.equal(note.textContent, 'Buddy will keep searching with your brief as it is.');
+  assert.equal(step(node, 'Keep searching'), undefined); assert.equal(reviews, 1);
+  assert.equal(document.activeElement, step(node, 'Review your brief')); assert.deepEqual(why(node), ['No released car has 5 seats.']);
+  clean(node); node.destroy();
+});
+
+test('FUCQ-219: without a host callback Review your brief is disabled with a Preview only reason', () => {
+  const node = view('no-match-one');
+  const review = step(node, 'Review your brief'); assert.equal(review.disabled, true);
+  assert.equal(document.getElementById(review.getAttribute('aria-describedby')).textContent, 'Preview only');
+  step(node, 'Keep searching').click(); const note = node.querySelector('.gcsp-activity-next [role="status"]');
+  assert.equal(document.activeElement, note); node.destroy();
+});
+
+test('FUCQ-219: no explanation while paused, finished, holding an offer, with a suitable car or without reasons', () => {
+  const none = (result) => { const node = activityBody({ result, onReviewBrief: () => {} }); const found = [why(node).length, !!step(node, 'Keep searching')]; node.destroy(); return found; };
+  assert.deepEqual(none(withExclusions([need('seats', 5, 12, 'gte')], { permission: { ...fixtures['no-match-one'].value.permission, paused: true, canSearch: false } })), [0, false]);
+  const accepted = withExclusions([need('seats', 5, 12, 'gte')]);
+  accepted.value.currentOffer = { ...fixtures['offer-declined'].value.currentOffer, state: 'accepted' }; assert.deepEqual(none(accepted), [0, false]);
+  const open = withExclusions([need('seats', 5, 12, 'gte')]); open.value.currentOffer = structuredClone(fixtures.offer.value.currentOffer);
+  assert.deepEqual(none(open), [0, false]);
+  const suitable = withExclusions([need('seats', 5, 12, 'gte')]); suitable.value.lastSuccessfulCheck.suitableCars = 2; assert.deepEqual(none(suitable), [0, false]);
+  assert.deepEqual(none(withExclusions([])), [0, false]); assert.deepEqual(none(fixtures.searching), [0, false]);
+  const declined = withExclusions([need('seats', 5, 12, 'gte')]); declined.value.currentOffer = structuredClone(fixtures['offer-declined'].value.currentOffer);
+  assert.deepEqual(none(declined), [1, true]);
+});

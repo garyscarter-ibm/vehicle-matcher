@@ -126,9 +126,10 @@ The reader projects confirmed brief permission, valid existing change receipts a
 No activity command, check producer, storage schema or screen is introduced by this HTTP binding.
 
 Search and source evidence (FUCQ-95, 7 November 2026): the reader also projects completed `buddy-allocation` receipts, the latest `tick_runs`
-row and the newest offer. `lastSuccessfulCheck` is null or `{ checkedAt, clockVersion?, carsChecked, suitableCars, outcome }` (`offer-held`
+row and the newest offer. `lastSuccessfulCheck` is null or `{ checkedAt, clockVersion?, carsChecked, suitableCars, exclusions, outcome }` (`offer-held`
 or `no-match`) from the latest receipt, not after the demo clock, whose evaluations include the employee; it carries no scores or other
-employee data. `searchEvidence` is `{ status: 'recorded', checks }` or `{ status: 'not-recorded', reason: 'no-search-check-yet' }`.
+employee data. `exclusions` (FUCQ-219) is `[]` unless `suitableCars` is 0, then the top two `[{ essential, requirement: { operator?, value?, unit? }, cars }]`
+counted from this employee's own `essential-unmet` blockers (most cars first, then field name). `searchEvidence` is `{ status: 'recorded', checks }` or `{ status: 'not-recorded', reason: 'no-search-check-yet' }`.
 `sourceStatus` is `not-checked`, `ok`, `delayed` (a pending or running tick), `unavailable` (an interrupted tick or a failed
 `release-pull`/`buddy-allocation` outcome) or `evidence-unavailable` (the tick cannot be read). `currentOffer` is null or the offer with
 the latest `createdAt`, plus `href` `/gcsp/offer?offerId=<id>&runId=<id>`; offers also carry `createdAt`. `state` is `no-brief`, `paused`,
