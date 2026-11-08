@@ -18,7 +18,26 @@ export function clockTime(value) {
     ? new Date(value).toISOString().replace('T', ' ').replace(/\.000Z$/, ' UTC').replace(/Z$/, ' UTC') : 'Not supplied';
 }
 const facts = (rows) => factList(rows.map(([label, value]) => ({ label, value: shown(value) })), { className: 'gcsp-case-facts' });
-export const carNameText = (name) => typeof name === 'string' && name.trim() ? name : 'Car details not supplied';
+const text = (value) => typeof value === 'string' && value.trim() !== '';
+export const carNameText = (name) => text(name) ? name : 'Car details not supplied';
+const knownFact = (car, key) => { const f = car?.snapshot?.facts?.[key];
+  return f?.status === 'known' && ['string', 'number'].includes(typeof f.value) && String(f.value).trim() ? String(f.value) : null; };
+const DISTINGUISHERS = [['derivative', (v) => v], ['trim', (v) => v], ['colour', (v) => v], ['confirmedDeliveryWeek', (v) => `delivery week of ${v}`]];
+// Same-name cars gain supplied snapshot facts until unique; the exact reference is the last resort, never an invented detail.
+export function carOptionNames(cars = []) {
+  const parts = cars.map((car) => [carNameText(car?.snapshot?.display?.name)]);
+  const label = (i) => parts[i].join(', ');
+  const clashes = () => parts.map((_, i) => parts.some((__, j) => j !== i && label(j) === label(i)));
+  for (const [key, format] of DISTINGUISHERS) {
+    const clash = clashes(); if (!clash.includes(true)) break;
+    const before = parts.map((_, i) => label(i)); const values = cars.map((car) => knownFact(car, key));
+    cars.forEach((_, i) => { if (clash[i] && values[i] && !before[i].toLowerCase().includes(values[i].toLowerCase())
+      && cars.some((__, j) => j !== i && before[j] === before[i] && values[j] !== values[i])) parts[i].push(format(values[i])); });
+  }
+  const clash = clashes();
+  cars.forEach((car, i) => { if ((clash[i] || !text(car?.snapshot?.display?.name)) && typeof car?.orderUuid === 'string') parts[i].push(`reference ${car.orderUuid}`); });
+  return parts.map((_, i) => label(i));
+}
 // Employees see 'You' and the named owner, not principal ids.
 const actorLabel = (h, c, audience) => h.actorRole === 'system' ? 'Automatic check' : audience !== 'employee' ? h.actorId
   : h.actorId === c.employeeId || h.actorRole === 'employee' ? 'You' : h.actorRole === 'scheme-team' ? c.owner?.name ?? roleLabel(h.actorRole) : roleLabel(h.actorRole);
@@ -27,8 +46,9 @@ export const caseNotice = 'Remedies need the scheme team’s decision. No specif
 export function renderCaseContent(c, { onReviewRelaxation, pending = false, headingLevel = 2, audience = 'employee' } = {}) {
   const root = el('article', 'gcsp-case-detail');
   root.dataset.caseId = c.caseId;
+  const owner = c.owner?.name ?? (c.owner?.role == null ? null : roleLabel(c.owner.role)); const ownerRole = roleLabel(c.owner?.role);
   root.append(screenIntro({ kicker: 'Renewal case', title: caseStatus(c.status), level: headingLevel }), facts([
-    ['Case reference', c.caseId], ['Owner', c.owner?.name ?? c.owner?.role], ['Owner role', roleLabel(c.owner?.role)],
+    ['Case reference', c.caseId], ['Owner', owner], ...(ownerRole.toLowerCase() === String(owner ?? '').toLowerCase() ? [] : [['Owner role', ownerRole]]),
     ['Reason', c.reason], ['Latest update', c.history?.at(-1)?.reason ?? c.reason],
     ['Opened from', triggerLabel(c.trigger)], ['Next action', c.nextAction], ['Due, demo clock (UTC)', clockTime(c.dueAt)],
     ['Renewal deadline (calendar date)', c.renewalDeadline ?? 'Needs confirmation'],
