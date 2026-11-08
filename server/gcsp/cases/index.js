@@ -283,7 +283,10 @@ export class RenewalCaseService {
       const decision = evaluated.value?.decisions?.[0];
       if (evaluated.status !== 'ok') return projection && evaluated.status === 'invalid' ? unavailable() : evaluated;
       if (!decision || decision.unknowns.length) return unavailable();
-      return decision?.suitable ? ok(projection ? { ...remedy, configurationId: car.value.configurationId, snapshot: decision.snapshot } : remedy) : invalid('remedy.orderUuid', 'This car does not satisfy the current eligibility, essential, points and timing constraints.');
+      const name = decision.snapshot?.display?.name;
+      // carName is server-derived from the checked snapshot, never accepted from the client.
+      const stored = typeof name === 'string' && name.trim() ? { ...remedy, carName: name.trim().slice(0, 200) } : remedy;
+      return decision?.suitable ? ok(projection ? { ...remedy, configurationId: car.value.configurationId, snapshot: decision.snapshot } : stored) : invalid('remedy.orderUuid', 'This car does not satisfy the current eligibility, essential, points and timing constraints.');
     }
     return invalid('remedy.type', 'Choose a supported scheme-team remedy.');
   }
@@ -304,7 +307,8 @@ export class RenewalCaseService {
       if (renewal.value.renewalId !== c.renewalId) return result('conflict', { reason: 'The current renewal differs from this case. Review the employee contract.' });
       let remedy = input.remedy ?? c.remedy;
       if (input.remedy !== undefined || ['remedy-proposed','resolved'].includes(input.status)) {
-        const checked = await this.#remedy(tx, context, renewal.value, p, remedy, input.status === 'resolved'); if (checked.status !== 'ok') return checked;
+        const submitted = input.remedy === undefined && remedy?.type === 'alternative-car' ? { type: remedy.type, orderUuid: remedy.orderUuid } : remedy;
+        const checked = await this.#remedy(tx, context, renewal.value, p, submitted, input.status === 'resolved'); if (checked.status !== 'ok') return checked;
         remedy = checked.value;
       }
       const changed = await tx.compareAndSwap(ref(context,c.caseId), c.version, { status: input.status, nextAction: input.nextAction, dueAt: input.dueAt,

@@ -106,7 +106,7 @@ export function mountHelpBody(root, { adapter = createCaseHttpAdapter(), signal,
       const confirm = button({ label: 'Confirm preference change', disabled: saving, onClick: submitRelaxation });
       confirm.dataset.confirmRelaxation = '';
       const actions = el('div', 'gcsp-case-actions'); actions.append(confirm,
-        button({ label: 'Cancel preference change', variant: 'ghost', disabled: saving, onClick: () => { relaxation = null; draw(); } }));
+        button({ label: 'Cancel preference change', variant: 'ghost', disabled: saving, onClick: () => { relaxation = null; draw('.gcsp-case-remedy .vm-btn'); } }));
       confirmation.append(actions); content.append(confirmation);
     }
     if (focusTo) focus(focusTo);

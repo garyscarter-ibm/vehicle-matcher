@@ -253,7 +253,7 @@ test('canonical released stock projects and proposes through the command transac
   };
   const changed = await propose(f, c, candidate, new RenewalCaseService({ ...f.configuration, repository: guarded }));
   assert.equal(changed.status, 'ok', JSON.stringify(changed));
-  assert.deepEqual(changed.value.case.remedy, { type: 'alternative-car', orderUuid: candidate.orderUuid });
+  assert.deepEqual(changed.value.case.remedy, { type: 'alternative-car', orderUuid: candidate.orderUuid, carName: candidate.snapshot.display.name });
   assert.deepEqual(globalDuringTransaction, []);
   assert.equal(trace.filter(([kind, table]) => kind === 'get' && table === 'employees').length, 2);
   assert.ok(trace.some(([kind, table]) => kind === 'list' && table === 'stock'));
@@ -264,6 +264,27 @@ test('canonical released stock projects and proposes through the command transac
   assert.equal(f.store.state.tables.notification_outbox.length, before.notification_outbox.length + 1);
   assert.equal(f.store.state.tables.stock.find((row) => row.orderUuid === candidate.orderUuid).state, 'released');
   assert.equal(f.store.state.tables.holds.length, 0); assert.equal(f.store.state.tables.claims.length, 0);
+});
+
+test('recorded alternative car keeps a server-derived name; client names are refused and later updates retain it', async (t) => {
+  const f = await setup(t); const candidate = await car(f, 901, {}, { visibility: {
+    companyIds: [f.context.companyId], schemeIds: [f.context.schemeId], employeeIds: [f.context.employeeId] } });
+  const c = await progress(f);
+  const forged = await f.service.update(f.greg, { commandId: 'forged', caseId: c.caseId, expectedVersion: c.version, status: 'remedy-proposed',
+    reason: 'Forged name.', nextAction: 'Check.', dueAt: '2026-11-06T12:00:00.000Z',
+    remedy: { type: 'alternative-car', orderUuid: candidate.orderUuid, carName: 'Forged name' } });
+  assert.equal(forged.status, 'invalid');
+  const proposed = await propose(f, c, candidate); assert.equal(proposed.status, 'ok', JSON.stringify(proposed));
+  const expected = { type: 'alternative-car', orderUuid: candidate.orderUuid, carName: candidate.snapshot.display.name };
+  assert.deepEqual(proposed.value.case.remedy, expected);
+  assert.deepEqual(proposed.value.case.history.at(-1).remedy, expected);
+  const replay = await propose(f, c, candidate); assert.equal(replay.status, 'ok'); assert.equal(replay.value.case.version, proposed.value.case.version);
+  const next = await f.service.update(f.greg, { commandId: 'retain', caseId: c.caseId, expectedVersion: proposed.value.case.version, status: 'in-progress',
+    reason: 'Back to review.', nextAction: 'Check again.', dueAt: '2026-11-06T12:00:00.000Z' });
+  assert.equal(next.status, 'ok', JSON.stringify(next)); assert.deepEqual(next.value.case.remedy, expected);
+  const again = await f.service.update(f.greg, { commandId: 'repropose', caseId: c.caseId, expectedVersion: next.value.case.version, status: 'remedy-proposed',
+    reason: 'Propose again.', nextAction: 'Discuss.', dueAt: '2026-11-06T12:00:00.000Z' });
+  assert.equal(again.status, 'ok', JSON.stringify(again)); assert.deepEqual(again.value.case.remedy, expected);
 });
 
 test('options exclude noncanonical lifecycle, unavailable flags and each employee visibility exclusion', async (t) => {
