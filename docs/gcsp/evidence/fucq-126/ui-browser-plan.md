@@ -1,6 +1,7 @@
 # FUCQ-126 UI browser runner handoff
 
-Authored 5 November 2026. This is a reproduction plan, not executed browser evidence.
+Authored 5 November 2026. This is a reproduction plan; executed scope is recorded in
+`browser-after-results.json` and the lead reviews, rather than inferred from this table.
 Use shell references `screens/00-employee-account.webp`, `screens/01-replace-vehicle.webp`,
 body reference `evidence/fucq-6/README.md` at a7fc178, current shared Density tokens,
 and Greg's denser operations treatment. No human layout pause is required.
@@ -29,7 +30,7 @@ context containing only the acting cookie for the nonpresenter-hidden check.
 
 | State | Reproduction and expected evidence | Boundary |
 |---|---|---|
-| Idle/open/collapsed | Trusted presenter session; inspect real controls/context/scenario GETs. Verify actual run/time/person. Open with Enter, Tab through fields, Escape to summary. | Actual backend |
+| Idle/open/collapsed | Trusted presenter session; inspect real controls/context/scenario GETs. Verify actual run/time/person. Open with Enter, Tab through fields and one radio per named group, use arrows/Home/End in both groups, Escape to summary. Refresh while a radio has focus and verify the same DOM node, selection and focus survive; verify busy/uncertain disables both lists. | Actual backend |
 | Loading/busy | Slow the actual read or tick response in the runner; while pending verify visible status, disabled actions and one request under rapid clicks. | Actual route with controlled transport delay |
 | Tick and UTC/named target | Tick policy step then named/future UTC cue. Match actual advancement and ordered handler receipts. | Actual clock/identity |
 | Next release missing | Use actual unregistered-business-handler runtime; future release cue advances and tick reports missing release-pull. No zero-car claim. Repeat after cue is no longer future. | Actual backend; real release/count still outstanding |

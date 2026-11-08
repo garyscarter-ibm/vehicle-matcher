@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-107",
+  "status": "static-launcher-delta-only-awaiting-independent-review-no-grant",
+  "at": "2026-11-06T06:43:46.920206+00:00",
+  "priorPublication": "c1eb26537c96c6fbd14aad290f614960c55dce63",
+  "priorAdmissionSHA256": "91141d2838b6808304caed74eb1b602ffe598e6fc2055b18904d463737fa874e",
+  "admissionSHA256": "a9ce7ec7f13b94f677ab74c3a61fa945be2ab6dec18930cb6ba133b1de569524",
+  "checksPassed": 2306,
+  "categories": {
+    "allPhysicalPins": 2112,
+    "absentCandidates": 129,
+    "preservedEd9Files": 13,
+    "preservedFailureAndRootCaptures": 8,
+    "unchangedReviewedRuntimeFiles": 10,
+    "pythonASTOnly": 5
+  },
+  "argvCatalogue": {
+    "supervisorCommandTemplate": [
+      "/usr/bin/python3",
+      "-I",
+      "-B",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-supervisor.py",
+      "--execute",
+      "--admission-sha",
+      "<exact-reviewed-SHA>",
+      "--dispatcher-grant",
+      "<new-exact-renderer9-grant>"
+    ],
+    "supervisorLaunchExpression": "frozen['commands']['child']",
+    "pythonChild": [
+      "/usr/bin/python3",
+      "-I",
+      "-B",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-launch.py",
+      "/opt/homebrew/Cellar/node/26.5.0/bin/node",
+      "--import",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-loader.mjs",
+      "--test",
+      "--test-reporter=tap",
+      "--test-concurrency=1",
+      "server/test/gcsp-second-offer-render.test.js"
+    ],
+    "launcherEXPECTED": [
+      "/opt/homebrew/Cellar/node/26.5.0/bin/node",
+      "--import",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-loader.mjs",
+      "--test",
+      "--test-reporter=tap",
+      "--test-concurrency=1",
+      "server/test/gcsp-second-offer-render.test.js"
+    ],
+    "nodeExecveArguments": [
+      "EXPECTED[0]",
+      "EXPECTED",
+      "dict(os.environ)"
+    ],
+    "sameArgv": true,
+    "loaderPinSHA256": "42d43f59e9dfee71a2176c58988dfeeeda679fc68cdc27cedcd12da934042376",
+    "testNames": [
+      "shared options preserve keyboard focus and do not confirm on selection",
+      "shared slider and labelled equipment textarea retain focused controls across edits",
+      "invalid, busy and saved states disable confirmation and move completed focus to the heading",
+      "uncertain state offers the same-command retry; unavailable keeps saved receipt without a no-match claim",
+      "comparison uses the supplied offer projector, shared cards/table and exact units/unknown/source evidence",
+      "absent or failed canonical offer projection never paints an unverified ready page",
+      "body teardown suppresses a late read; aborted mount performs no work",
+      "standard element retains a pre-upgrade adapter and disconnect cleans its pending body",
+      "owned block sources have no inline handlers, unsafe execution or stylesheet changes inside kit controls"
+    ],
+    "sourceEdges": 33
+  },
+  "delta": "Only new cjs1 launch EXPECTED --import literal changed from old loader to cjs1-loader; admission changes exactly that node bytes and SHA256. No commands, loader, guard, validator, formats or source/dependency edge changes.",
+  "priorStaticReview": "Initial c1 author-static-review preserved byte-identically as author-static-review-c1eb265.json; it omitted argv consistency and is superseded for admission readiness.",
+  "notRun": "No custom execution/helper imports, Node, process or ledger-content probes, reservations, scratch, tests, browser, native calls or descendants. Only required scaffold_git CLI immutable reads; metadata/AST checks do not execute reviewed code.",
+  "remaining": "Root targeted independent delta review and fresh explicit grant. Renderer9 still has no verdict."
+}

@@ -5,11 +5,14 @@ import { mountCaseQueue } from '../cases/gcsp-case-queue.js';
 import { createAccountHttpAdapter } from '../account/http-adapter.js';
 import { mountGregDashboard } from '../greg/gcsp-greg.js';
 import { createGregHttpAdapter } from '../greg/http-adapter.js';
+import { mountGregOrders } from '../greg-orders/greg-orders.js';
+import { createGregOrdersHttpAdapter } from '../greg-orders/http-adapter.js';
 import { createPresenterHttpAdapter } from './http-adapter.js';
 
 // Context is read again after cookie issuance; neither query parameters nor fixtures select a person.
 export function mountPresenterWorkspace(host, { adapter = createPresenterHttpAdapter(), accountAdapter = createAccountHttpAdapter(),
-  gregAdapter = createGregHttpAdapter(), mountEmployee = mountManualJourney, mountGreg = mountGregDashboard } = {}) {
+  gregAdapter = createGregHttpAdapter(), mountEmployee = mountManualJourney, mountGreg = mountGregDashboard,
+  mountOrders = mountGregOrders, ordersAdapter = createGregOrdersHttpAdapter() } = {}) {
   const abort = new AbortController(); let disposed = false; let teardown;
   host.replaceChildren(statusScreen({ title: 'Loading workspace', message: 'Reading the acting session.' }));
   const ready = (async () => {
@@ -27,13 +30,25 @@ export function mountPresenterWorkspace(host, { adapter = createPresenterHttpAda
         region.removeAttribute('aria-labelledby'); region.setAttribute('aria-label', 'Renewal cases');
         region.replaceChildren(); queue = mountCaseQueue(region, { embedded: true, signal: abort.signal });
       }
-      teardown = () => { queue?.(); dashboard(); };
+      const ordersRegion = dashboard.regions?.orderTracking;
+      let orders;
+      if (ordersRegion) {
+        // Full-width host, as attachGregOrders does; the dashed placeholder style is for empty regions.
+        ordersRegion.classList.remove('gcsp-greg-region'); ordersRegion.classList.add('gcsp-orders-host');
+        ordersRegion.replaceChildren();
+        orders = mountOrders(ordersRegion, { adapter: ordersAdapter, productionControls: true, signal: abort.signal,
+          onChanged: () => dashboard.refresh?.() });
+      }
+      // Presenter clock actions change supply, so both figures reload without a manual Refresh.
+      const onAction = () => { dashboard.refresh?.(); orders?.refresh?.(); };
+      host.addEventListener('gcsp:presenter-action', onAction);
+      teardown = () => { host.removeEventListener('gcsp:presenter-action', onAction); orders?.(); queue?.(); dashboard(); };
     }
     else {
       const shell = portalShell({ account: context?.name ? { status: 'ready', name: context.name } : { status: 'unavailable' },
         presenterControls: { adapter } });
       shell.main.append(statusScreen({ title: context ? 'Presenter workspace' : 'Workspace unavailable',
-        message: context ? 'Choose an acting principal in Presenter controls.' : `Context ${reply.status}. Reopen your session or try again.` }));
+        message: context ? 'Choose an acting principal in Presenter controls.' : `Context ${reply.status}. Try again. If the session cannot be recovered, use trusted backend presenter-session bootstrap and reopen this workspace.` }));
       host.replaceChildren(shell.root); teardown = () => shell.destroy();
     }
   })();

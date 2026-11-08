@@ -121,6 +121,36 @@ No site is provisioned or deployed by this command. Follow the
 [GCSP revision, configuration and deployed-smoke checklist](docs/gcsp/evidence/fucq-12/fucq36-release.md)
 before a separately authorised release.
 
+## GCSP backend email
+
+GCSP notifications default to the captured outbox. Real sending uses one optional
+Brevo HTTP adapter with built-in `fetch`; it adds no runtime dependency. Configure
+these settings privately on the GCSP backend, never in frontend assets or source:
+
+| Setting | Meaning |
+|---|---|
+| `GCSP_MAIL_TRANSPORT` | Set exactly `brevo` to opt in. Absent keeps capture only. |
+| `GCSP_BREVO_API_KEY` | Existing suitable Brevo API key, supplied as a backend secret. |
+| `GCSP_MAIL_FROM` | Sender address already verified in that account. |
+| `GCSP_MAIL_FROM_NAME` | Configured sender display name. |
+| `GCSP_MAIL_RECIPIENTS` | JSON object mapping fictional employee IDs to explicitly approved demo inboxes. Its values form the allow-list. |
+| `GCSP_PUBLIC_BASE_URL` | Absolute HTTPS frontend base, including the deployed project path. Existing offer links retain their token, query and run binding. |
+
+Partial or invalid real-send configuration records a safe failure; it does not
+fall back to a claim of real delivery. Every rendered message is captured,
+including refused and failed provider attempts. A Brevo HTTP 201 with a message
+ID records provider acceptance, which does not prove inbox delivery. The UUID
+provider key and confirmed acknowledgement persist in the existing outbox row;
+uncertain attempts are refused once the provider's 30-minute wall-time window
+expires. DemoClock still controls retry scheduling through `notify.delivery.v1`.
+
+The trusted GCSP runtime supplies notification and presenter-outbox dependencies
+to `buildServer`; selecting a transport does not create an offer or a public
+landing page. Before one deliberate real send, verify the existing backend key
+and sender, the approved recipient mapping and an actual reachable offer route.
+See [the transport and live-setup contract](docs/gcsp/email-transport.md). Automated
+tests use provider stubs and send no real mail.
+
 ## Project layout
 
 ```

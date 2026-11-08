@@ -6,6 +6,9 @@ import { confirmedFact } from '../../scenarios/employee/index.js';
 const object = (v) => v && typeof v === 'object' && !Array.isArray(v);
 const only = (v, keys) => object(v) && Object.keys(v).every((key) => keys.includes(key));
 const text = (v) => typeof v === 'string' && v.trim().length > 0;
+// One contact rule for the manual draft and the buddy handoff.
+export const validContact = (c) => only(c, ['phone', 'email']) && /^\+?[0-9 ()-]{7,30}$/.test(c.phone ?? '')
+  && typeof c.email === 'string' && c.email.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.email);
 const revision = (v) => Number.isSafeInteger(v) && v >= 0;
 const calendarDate = (v) => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v)
   && validInstant(`${v}T00:00:00.000Z`) && new Date(`${v}T00:00:00.000Z`).toISOString().slice(0, 10) === v;
@@ -197,8 +200,7 @@ export class ManualContextService {
       || p.allowance.companyId !== context.companyId || p.allowance.gradeId !== context.gradeId) {
       return invalid('allowance', 'Monthly points allowance needs confirmation. Contact scheme support.', 'allowance-unconfirmed');
     }
-    if (!only(choices.contact, ['phone', 'email']) || !/^\+?[0-9 ()-]{7,30}$/.test(choices.contact.phone ?? '')
-      || typeof choices.contact.email !== 'string' || choices.contact.email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(choices.contact.email)) return invalid('contact', 'Supply a contact telephone and email address.');
+    if (!validContact(choices.contact)) return invalid('contact', 'Supply a contact telephone and email address.');
     if (choices.mode === 'replacement' && (!Number.isSafeInteger(choices.expectedReturnMileage) || choices.expectedReturnMileage < 0
       || choices.expectedReturnMileage > p.rules.maximumReturnMileage)
       || choices.mode === 'new' && choices.expectedReturnMileage != null) return invalid('expectedReturnMileage', 'Supply returning-car mileage only for a replacement, in miles.');

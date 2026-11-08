@@ -1,0 +1,548 @@
+{
+  "scope": "scoped bounded layout checkpoint; whole story incomplete",
+  "sourceTestIdentity": "7221c600950f91a49cabfc30cfed61c44320061671fdcd3a794a15e8d971379c",
+  "digests": {
+    "blocks/gcsp/activity/activity-body.js": "a124a6a478dd261574a70607ae73c05d11bd066047551aa17385acfa453b40dd",
+    "blocks/gcsp/activity/activity-copy.js": "18d1aae30f2d7de1a01ab712f30da4d3b51b60051827f985b53d554ba23b4204",
+    "blocks/gcsp/activity/activity-fixtures.js": "dddbde4d9c7288bc66d35408e2a88836a7ce86ab6f33c24ea17b9b09ade10a93",
+    "blocks/gcsp/activity/activity-offer.css": "aba71ba6304567b705a248d4ab5430f907c3a8b6b43f6c89ebc2248fe7665b13",
+    "blocks/gcsp/activity/activity-offer.js": "d224542cfba0468f998ef12485bfffc95cfc8db0c734bd2d575b07ddcb7fa018",
+    "blocks/gcsp/activity/gcsp-activity.css": "d7bb392aec8f9be4e898d8f46decd5ca90a608f2e7686b9c7ba70c99d0332cc0",
+    "blocks/gcsp/activity/harness.js": "4a065a9f536e9bd6a5618731a45f40f93a9d0925c23bf5aa77fffaa83dcc830f",
+    "blocks/gcsp/employee/gcsp-employee.js": "2f35c7983aafef2c8f1eb72f6c78341cbf1c76269110f6a25dca1b775f11df2b",
+    "blocks/gcsp/kit/action-menu.css": "1dd2d6ddb5b470a5f79b2bd56be303163c6f756d49f7cec18a392cecabc6412c",
+    "blocks/gcsp/kit/action-menu.js": "b860abfe6045a1833270ac83d7f6ded2c1af268f54f65107c180e83411a1ae81",
+    "blocks/gcsp/kit/activity-timeline.css": "1e597c43ed0cd2c7c40e69a9005adf741730736b261bc7e4566475ccb369a1fd",
+    "blocks/gcsp/kit/activity-timeline.js": "848c8fc2f6201b4eb5f24ea9d27b3b004148e58b1c05d06ebd4064c76ba2b46f",
+    "blocks/gcsp/shell/gcsp-shell.css": "d6f35911624c03ee82c22eb349d51228ba849eaf354976f19df905887e9f92a3",
+    "blocks/vehicle-matcher/component-gallery.js": "146565e1105c415ff039d0ec635c1429e62a5d2ddf3b1d280a287e6fc231ec7b",
+    "blocks/vehicle-matcher/gcsp-kit.css": "64abde7dfc99e40c68270a9ea5850c9a713623014f3beca1f4d5c96263763b86",
+    "blocks/vehicle-matcher/vehicle-matcher.css": "11d7af7f3f05766c9c32c107f75f31d269d5531de4040938b34cea8b3854ea94",
+    "components.html": "2e5abe1ac1bb7e97f1039f06d0462299cb0b2acfadfe00cf72819d2e7ecf97b8",
+    "gcsp-activity.html": "29d39890c527e0d8f224bd902e838eea6c2772c766ad5072b5251084fd2044eb",
+    "server/test/gcsp-action-menu.test.js": "f3cc8ab22e6efc2e5e0f0c602cc8d77df8e6a7c8839af13208af39c33ed87b86",
+    "server/test/gcsp-activity-body.test.js": "099040d36d36f4c8eb9e3c5b9cffba3b1cbc6b3482df8822eb74990447b03b95",
+    "server/test/gcsp-activity-offer.test.js": "3f2a1f3d842c7e067583052dbea7cc13787c2fff6673e75c738581c5f7af2e8f",
+    "server/test/gcsp-activity-timeline.test.js": "0c97378d49895e5fdffe20765bbf79cd5cfa7e4554091aa50bd744487250ebb7",
+    "server/test/gcsp-shell.test.js": "289ea8f15a1c003a14fa9c1d6dfad420f5f95eac0837e17cb7cf60c720bba60b",
+    "server/test/helpers/activity-fixtures.js": "e133816155fee33a03c9eefcc21beac7fcd04491f04832e73236a620f7f10410",
+    "server/test/launcher-render.test.js": "e9272282c67c38d152af03e45f694151d9839de267bc1fbd73227a0c07d7f321",
+    "server/test/render.test.js": "98a40f4961e423f8bbd906dacb82b03717f6d6c70b4f26cc89eaeee175f4d5e3",
+    "server/test/shared-kit-contracts.test.js": "5d501022df833d2487ff37cb343741ab7890d8928167fe475a6a09e6a61f57e8",
+    "server/test/ui-ratchet.json": "f0b48f3789b485cfddbde2038ca501e8e08e2ed7f01437a40fd48d9f803bbee6",
+    "server/test/ui-ratchet.test.js": "64b1103a846180442466834a766d9da4dab49547cd509f3421ae1a4d946915b7"
+  },
+  "targetedProof": {
+    "base": "gcsp-poc",
+    "base_commit": "c239acc84cd61b87130797e1dbf62593b76a492f",
+    "changed_paths": [
+      "COMPONENTS.md",
+      "_dev/in-progress/DEV-2026-11-04-083.md",
+      "blocks/gcsp/activity/activity-body.js",
+      "blocks/gcsp/activity/activity-copy.js",
+      "blocks/gcsp/activity/activity-fixtures.js",
+      "blocks/gcsp/activity/activity-offer.css",
+      "blocks/gcsp/activity/activity-offer.js",
+      "blocks/gcsp/activity/gcsp-activity.css",
+      "blocks/gcsp/activity/harness.js",
+      "blocks/gcsp/kit/action-menu.css",
+      "blocks/gcsp/kit/action-menu.js",
+      "blocks/gcsp/kit/activity-timeline.css",
+      "blocks/gcsp/kit/activity-timeline.js",
+      "blocks/vehicle-matcher/component-gallery.js",
+      "components.html",
+      "docs/gcsp/evidence/fucq95/activity-service.md",
+      "docs/gcsp/evidence/fucq95/backend-plan.md",
+      "docs/gcsp/evidence/fucq95/backend-validation.json",
+      "docs/gcsp/evidence/fucq95/capture-layout-revision.mjs",
+      "docs/gcsp/evidence/fucq95/capture-ui-preview.mjs",
+      "docs/gcsp/evidence/fucq95/confirmed-gallery-activity-desktop.png",
+      "docs/gcsp/evidence/fucq95/confirmed-gallery-activity-narrow-375.png",
+      "docs/gcsp/evidence/fucq95/confirmed-gallery-reference-desktop.png",
+      "docs/gcsp/evidence/fucq95/confirmed-gallery-reference-narrow-375.png",
+      "docs/gcsp/evidence/fucq95/confirmed-never-checked-desktop.png",
+      "docs/gcsp/evidence/fucq95/confirmed-never-checked-narrow-375.png",
+      "docs/gcsp/evidence/fucq95/confirmed-paused-desktop.png",
+      "docs/gcsp/evidence/fucq95/confirmed-paused-narrow-375.png",
+      "docs/gcsp/evidence/fucq95/confirmed-render-matrix.json",
+      "docs/gcsp/evidence/fucq95/confirmed-unavailable-desktop.png",
+      "docs/gcsp/evidence/fucq95/confirmed-unavailable-narrow-375.png",
+      "docs/gcsp/evidence/fucq95/http-plan.md",
+      "docs/gcsp/evidence/fucq95/http-service.md",
+      "docs/gcsp/evidence/fucq95/http-validation.json",
+      "docs/gcsp/evidence/fucq95/initial-render-matrix.json",
+      "docs/gcsp/evidence/fucq95/layout-confirmed-gallery-offer-desktop.png",
+      "docs/gcsp/evidence/fucq95/layout-confirmed-gallery-offer-narrow-375.png",
+      "docs/gcsp/evidence/fucq95/layout-confirmed-menu-desktop.png",
+      "docs/gcsp/evidence/fucq95/layout-confirmed-menu-narrow-375.png",
+      "docs/gcsp/evidence/fucq95/layout-confirmed-never-checked-desktop.png",
+      "docs/gcsp/evidence/fucq95/layout-confirmed-never-checked-narrow-375.png",
+      "docs/gcsp/evidence/fucq95/layout-confirmed-offer-desktop.png",
+      "docs/gcsp/evidence/fucq95/layout-confirmed-offer-narrow-375.png",
+      "docs/gcsp/evidence/fucq95/layout-confirmed-paused-desktop.png",
+      "docs/gcsp/evidence/fucq95/layout-confirmed-paused-narrow-375.png",
+      "docs/gcsp/evidence/fucq95/layout-confirmed-render-matrix.json",
+      "docs/gcsp/evidence/fucq95/layout-confirmed-unavailable-desktop.png",
+      "docs/gcsp/evidence/fucq95/layout-confirmed-unavailable-narrow-375.png",
+      "docs/gcsp/evidence/fucq95/layout-initial-gallery-offer-desktop.png",
+      "docs/gcsp/evidence/fucq95/layout-initial-gallery-offer-narrow-375.png",
+      "docs/gcsp/evidence/fucq95/layout-initial-never-checked-desktop.png",
+      "docs/gcsp/evidence/fucq95/layout-initial-never-checked-narrow-375.png",
+      "docs/gcsp/evidence/fucq95/layout-initial-offer-desktop.png",
+      "docs/gcsp/evidence/fucq95/layout-initial-offer-narrow-375.png",
+      "docs/gcsp/evidence/fucq95/layout-initial-paused-desktop.png",
+      "docs/gcsp/evidence/fucq95/layout-initial-paused-narrow-375.png",
+      "docs/gcsp/evidence/fucq95/layout-initial-render-matrix.json",
+      "docs/gcsp/evidence/fucq95/layout-initial-unavailable-desktop.png",
+      "docs/gcsp/evidence/fucq95/layout-initial-unavailable-narrow-375.png",
+      "docs/gcsp/evidence/fucq95/layout-revision-plan.md",
+      "docs/gcsp/evidence/fucq95/ui-checkpoint-plan.md",
+      "docs/gcsp/evidence/fucq95/ui-plan.md",
+      "docs/gcsp/evidence/fucq95/ui-review.md",
+      "docs/gcsp/evidence/fucq95/ui-validation.json",
+      "docs/gcsp/shared-contracts.md",
+      "gcsp-activity.html",
+      "node_modules",
+      "server/gcsp/brief/activity-http.js",
+      "server/gcsp/brief/activity.js",
+      "server/index.js",
+      "server/node_modules",
+      "server/test/gcsp-action-menu.test.js",
+      "server/test/gcsp-activity-body.test.js",
+      "server/test/gcsp-activity-http.test.js",
+      "server/test/gcsp-activity-offer.test.js",
+      "server/test/gcsp-activity-timeline.test.js",
+      "server/test/gcsp-activity.test.js",
+      "server/test/gcsp-shell.test.js",
+      "server/test/helpers/activity-fixtures.js",
+      "server/test/ui-ratchet.json"
+    ],
+    "code_key": "8d48880e328170ab428205fe0dc6df0136130231ad66b2eb280d9a63a88d0c20",
+    "commands": [
+      "node --test --test-concurrency=1 --experimental-test-coverage --test-coverage-include=blocks/gcsp/kit/action-menu.js --test-coverage-include=blocks/gcsp/activity/activity-body.js --test-coverage-include=blocks/gcsp/activity/activity-copy.js --test-coverage-include=blocks/gcsp/activity/activity-offer.js --test-coverage-include=blocks/gcsp/kit/activity-timeline.js server/test/gcsp-action-menu.test.js server/test/gcsp-activity-offer.test.js server/test/gcsp-activity-body.test.js server/test/gcsp-activity-timeline.test.js server/test/shared-kit-contracts.test.js server/test/gcsp-shell.test.js server/test/ui-ratchet.test.js server/test/render.test.js server/test/launcher-render.test.js"
+    ],
+    "cwd": ".",
+    "dirty": true,
+    "execution_identity": {
+      "code": "8d48880e328170ab428205fe0dc6df0136130231ad66b2eb280d9a63a88d0c20",
+      "environment": "a5ae6431dcc08f6071844c0598c47b95ede6deb22f53957db84192e7783d275e",
+      "inputs": {},
+      "interpreter": [
+        "/opt/homebrew/Cellar/python@3.14/3.14.7/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+        "3.14.7 (main, Aug  5 2026, 10:29:49) [Clang 21.0.0 (clang-2100.1.1.101)]"
+      ],
+      "platform": "macOS-27.2-arm64-arm-64bit-Mach-O",
+      "scope": "targeted",
+      "selected": [
+        "node --test --test-concurrency=1 --experimental-test-coverage --test-coverage-include=blocks/gcsp/kit/action-menu.js --test-coverage-include=blocks/gcsp/activity/activity-body.js --test-coverage-include=blocks/gcsp/activity/activity-copy.js --test-coverage-include=blocks/gcsp/activity/activity-offer.js --test-coverage-include=blocks/gcsp/kit/activity-timeline.js server/test/gcsp-action-menu.test.js server/test/gcsp-activity-offer.test.js server/test/gcsp-activity-body.test.js server/test/gcsp-activity-timeline.test.js server/test/shared-kit-contracts.test.js server/test/gcsp-shell.test.js server/test/ui-ratchet.test.js server/test/render.test.js server/test/launcher-render.test.js"
+      ],
+      "settings": "d40c17a7be11188b94cac2632e1703e91c3b89562de8e74cd49824a4edf7b6dc",
+      "variant": "default",
+      "version": 1
+    },
+    "head": "ffc87ea560a164fbad8176c44519b5493a83c66f",
+    "modules": [],
+    "python": "3.14.7",
+    "ran": null,
+    "reason": "Revised status/menu/offer/feed and synthetic fixture regression; functional correction of mobile menu bounds from open-menu capture. Shared gallery/kit/shell/ratchet/retail/launcher callers are explicit boundaries. Strict selector unsupported. Backend unchanged, prior scoped proof reused; full suite held for dispatcher.",
+    "result": "passed",
+    "scope": "targeted",
+    "selection_notes": [],
+    "skipped": 0,
+    "time": "2026-11-05T13:57:46+0000",
+    "tree": "5e21310d230054055f7baf37092aba423f95fb55",
+    "variant": "default",
+    "wall": 16.0
+  },
+  "counts": {
+    "pass": 151,
+    "fail": 0,
+    "skip": 0
+  },
+  "coverage": {
+    "blocks/gcsp/activity/activity-body.js": {
+      "line": 100,
+      "branch": 93.33,
+      "functions": 66.67
+    },
+    "blocks/gcsp/activity/activity-copy.js": {
+      "line": 100,
+      "branch": 85.71,
+      "functions": 100
+    },
+    "blocks/gcsp/activity/activity-offer.js": {
+      "line": 100,
+      "branch": 90,
+      "functions": 100
+    },
+    "blocks/gcsp/kit/action-menu.js": {
+      "line": 100,
+      "branch": 74.19,
+      "functions": 100
+    },
+    "blocks/gcsp/kit/activity-timeline.js": {
+      "line": 100,
+      "branch": 100,
+      "functions": 100
+    }
+  },
+  "timingSeconds": 16,
+  "peakScratch": 26149184,
+  "peakRecursiveRss": 349470720,
+  "browser": {
+    "matrix": "layout-confirmed-render-matrix.json",
+    "entries": 11,
+    "issues": [],
+    "captures": [
+      "layout-confirmed-offer-desktop.png",
+      "layout-confirmed-never-checked-desktop.png",
+      "layout-confirmed-paused-desktop.png",
+      "layout-confirmed-unavailable-desktop.png",
+      "layout-confirmed-gallery-offer-desktop.png",
+      "layout-confirmed-offer-narrow-375.png",
+      "layout-confirmed-never-checked-narrow-375.png",
+      "layout-confirmed-paused-narrow-375.png",
+      "layout-confirmed-unavailable-narrow-375.png",
+      "layout-confirmed-gallery-offer-narrow-375.png"
+    ],
+    "contrastMinimum": 5.87,
+    "boundsCorrection": "Open-menu375px capture exposed negative-left popup after planned confirmation. A functional correction aligns start when necessary; direct popup-bounds assertions now cover every open menu. No visual-polish loop followed."
+  },
+  "fixtureProvenance": "Synthetic stored quote/hold/offer via real repository then createActivityService. Explicit layout-offer reference; approved representative BMW brand photo. No exact vehicle match, allocation producer, access route or integrated live-offer claim.",
+  "impactMap": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/impact/fucq95-layout-7221c600950f91a49cabfc30cfed61c44320061671fdcd3a794a15e8d971379c.json",
+  "environment": {
+    "node": "v26.7.0",
+    "chrome": "Google Chrome 157.0.8103.39",
+    "dependencyTargets": "Read-only069 installations rehashed identical before unlink; digests in cleanup"
+  },
+  "cleanup": {
+    "allocations": [
+      {
+        "absent": true,
+        "groups": [
+          {
+            "absent": true,
+            "id": 86036
+          }
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/506ffd7f34fa4ed394605a7ca0ad8e65.json",
+        "peakScratch": 0,
+        "reservationReleased": true,
+        "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq95-20261105-layout/test-stamp-shard-506ffd7f34fa4ed394605a7ca0ad8e65"
+      },
+      {
+        "absent": true,
+        "groups": [
+          {
+            "absent": true,
+            "id": 12276
+          }
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/e3d50055ee4c450896c2083a754aa602.json",
+        "peakScratch": 26452320,
+        "reservationReleased": true,
+        "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq95-20261105-layout/test-stamp-shard-e3d50055ee4c450896c2083a754aa602"
+      },
+      {
+        "absent": true,
+        "groups": [
+          {
+            "absent": true,
+            "id": 17871
+          }
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/2cc1550e679441649641dd860e744391.json",
+        "peakScratch": 26149184,
+        "reservationReleased": true,
+        "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq95-20261105-layout/test-stamp-shard-2cc1550e679441649641dd860e744391"
+      },
+      {
+        "absent": true,
+        "groups": [
+          {
+            "absent": true,
+            "id": 78324
+          }
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/a6ef19a90f6a4bf7ae78fa425c8205f8.json",
+        "peakScratch": 0,
+        "reservationReleased": true,
+        "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq95-20261105-layout/test-stamp-shard-a6ef19a90f6a4bf7ae78fa425c8205f8"
+      },
+      {
+        "absent": true,
+        "groups": [
+          {
+            "absent": true,
+            "id": 14787
+          }
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/67f2878a6ce545d19f7134ff93fd6024.json",
+        "peakScratch": 0,
+        "reservationReleased": true,
+        "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq95-20261105-layout/test-stamp-shard-67f2878a6ce545d19f7134ff93fd6024"
+      },
+      {
+        "absent": true,
+        "groups": [
+          {
+            "absent": true,
+            "id": 14556
+          }
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/02396e7deb4642b587ca0eb0382c6b33.json",
+        "peakScratch": 26452320,
+        "reservationReleased": true,
+        "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq95-20261105-layout/test-stamp-shard-02396e7deb4642b587ca0eb0382c6b33"
+      },
+      {
+        "absent": true,
+        "groups": [
+          {
+            "absent": true,
+            "id": 20500
+          }
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/c210f5a2ef0649d4858cd76117509364.json",
+        "peakScratch": 0,
+        "reservationReleased": true,
+        "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq95-20261105-layout/test-stamp-shard-c210f5a2ef0649d4858cd76117509364"
+      },
+      {
+        "absent": true,
+        "groups": [
+          {
+            "absent": true,
+            "id": 8174
+          }
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/88b48bf55aff43af808ca037af388968.json",
+        "peakScratch": 26456416,
+        "reservationReleased": true,
+        "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq95-20261105-layout/test-stamp-shard-88b48bf55aff43af808ca037af388968"
+      },
+      {
+        "absent": true,
+        "groups": [
+          {
+            "absent": true,
+            "id": 10186
+          }
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/e456484870554fe595f7eb0af89bc8da.json",
+        "peakScratch": 7004508,
+        "reservationReleased": true,
+        "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq95-20261105-layout/test-stamp-shard-e456484870554fe595f7eb0af89bc8da"
+      },
+      {
+        "absent": true,
+        "groups": [
+          {
+            "absent": true,
+            "id": 96461
+          }
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/e5506657ba1d40749afbc3cf9b8d7d80.json",
+        "peakScratch": 0,
+        "reservationReleased": true,
+        "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq95-20261105-layout/test-stamp-shard-e5506657ba1d40749afbc3cf9b8d7d80"
+      },
+      {
+        "absent": true,
+        "groups": [
+          {
+            "absent": true,
+            "id": 19013
+          }
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/891c681ffbc94f5e88301e66fc7f2eb9.json",
+        "peakScratch": 7004508,
+        "reservationReleased": true,
+        "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq95-20261105-layout/test-stamp-shard-891c681ffbc94f5e88301e66fc7f2eb9"
+      },
+      {
+        "absent": true,
+        "groups": [
+          {
+            "absent": true,
+            "id": 3281
+          }
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/ab3ea92e3fea42cd974cb7a04bc7c6cc.json",
+        "peakScratch": 0,
+        "reservationReleased": true,
+        "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq95-20261105-layout/test-stamp-shard-ab3ea92e3fea42cd974cb7a04bc7c6cc"
+      },
+      {
+        "absent": true,
+        "groups": [
+          {
+            "absent": true,
+            "id": 14817
+          }
+        ],
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/61e4cd6f2aa54cd6a33a874f4d3c5457.json",
+        "peakScratch": 7004507,
+        "reservationReleased": true,
+        "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq95-20261105-layout/test-stamp-shard-61e4cd6f2aa54cd6a33a874f4d3c5457"
+      }
+    ],
+    "browserPeakScratch": 7004508,
+    "compatibilityException": "Bounded headless Chrome working profile in owned local TMPDIR; every matching scratch/group/reservation absent.",
+    "dependencyLinks": [
+      {
+        "cleanup": "unlink exact owned symlink only, preserve target",
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-083/node_modules",
+        "run": "fucq95-20261105-layout",
+        "state": "removed",
+        "target": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/node_modules",
+        "targetIdentityAfter": {
+          "bytes": 22381308,
+          "files": 1836,
+          "sha256": "f570a473b0637f762b7d1cea480b702ee4fa401ca45989276627478f7f4dbbc9"
+        },
+        "targetIdentityBefore": {
+          "bytes": 22381308,
+          "files": 1836,
+          "sha256": "f570a473b0637f762b7d1cea480b702ee4fa401ca45989276627478f7f4dbbc9"
+        },
+        "targetPreserved": true,
+        "verifiedAbsent": true
+      },
+      {
+        "cleanup": "unlink exact owned symlink only, preserve target",
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-083/server/node_modules",
+        "run": "fucq95-20261105-layout",
+        "state": "removed",
+        "target": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules",
+        "targetIdentityAfter": {
+          "bytes": 475201,
+          "files": 139,
+          "sha256": "a3dc2123f15b22efb75053a5c7249e742df6518bb0913d8693d5ab98d6871969"
+        },
+        "targetIdentityBefore": {
+          "bytes": 475201,
+          "files": 139,
+          "sha256": "a3dc2123f15b22efb75053a5c7249e742df6518bb0913d8693d5ab98d6871969"
+        },
+        "targetPreserved": true,
+        "verifiedAbsent": true
+      }
+    ],
+    "largeOutput": null,
+    "leftovers": [],
+    "ownedRoot": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq95-20261105-layout",
+    "removedAllocatedBytes": 1265664,
+    "removedDisposable": [
+      {
+        "allocatedBytes": 303104,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-083/docs/gcsp/evidence/fucq95/layout-initial-gallery-offer-desktop.png",
+        "verifiedAbsent": true
+      },
+      {
+        "allocatedBytes": 106496,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-083/docs/gcsp/evidence/fucq95/layout-initial-gallery-offer-narrow-375.png",
+        "verifiedAbsent": true
+      },
+      {
+        "allocatedBytes": 126976,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-083/docs/gcsp/evidence/fucq95/layout-initial-offer-narrow-375.png",
+        "verifiedAbsent": true
+      },
+      {
+        "allocatedBytes": 53248,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-083/docs/gcsp/evidence/fucq95/layout-initial-paused-narrow-375.png",
+        "verifiedAbsent": true
+      },
+      {
+        "allocatedBytes": 32768,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-083/docs/gcsp/evidence/fucq95/layout-initial-unavailable-narrow-375.png",
+        "verifiedAbsent": true
+      },
+      {
+        "allocatedBytes": 327680,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-083/docs/gcsp/evidence/fucq95/layout-initial-offer-desktop.png",
+        "verifiedAbsent": true
+      },
+      {
+        "allocatedBytes": 45056,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-083/docs/gcsp/evidence/fucq95/layout-initial-unavailable-desktop.png",
+        "verifiedAbsent": true
+      },
+      {
+        "allocatedBytes": 57344,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-083/docs/gcsp/evidence/fucq95/layout-initial-never-checked-desktop.png",
+        "verifiedAbsent": true
+      },
+      {
+        "allocatedBytes": 69632,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-083/docs/gcsp/evidence/fucq95/layout-initial-paused-desktop.png",
+        "verifiedAbsent": true
+      },
+      {
+        "allocatedBytes": 40960,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-083/docs/gcsp/evidence/fucq95/layout-initial-never-checked-narrow-375.png",
+        "verifiedAbsent": true
+      },
+      {
+        "allocatedBytes": 4096,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq95-20261105-layout/layout-green.log",
+        "verifiedAbsent": true
+      },
+      {
+        "allocatedBytes": 0,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq95-20261105-layout/fixture-generation.log",
+        "verifiedAbsent": true
+      },
+      {
+        "allocatedBytes": 4096,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq95-20261105-layout/browser-initial.log",
+        "verifiedAbsent": true
+      },
+      {
+        "allocatedBytes": 4096,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq95-20261105-layout/browser-confirmed.log",
+        "verifiedAbsent": true
+      },
+      {
+        "allocatedBytes": 4096,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq95-20261105-layout/browser-bounds-confirmed.log",
+        "verifiedAbsent": true
+      },
+      {
+        "allocatedBytes": 20480,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-135534-z_08hd9u",
+        "verifiedAbsent": true
+      },
+      {
+        "allocatedBytes": 20480,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-135623-hem_kumt",
+        "verifiedAbsent": true
+      },
+      {
+        "allocatedBytes": 20480,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-135730-8bcj77_8",
+        "verifiedAbsent": true
+      },
+      {
+        "allocatedBytes": 24576,
+        "path": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/logs/20261105-135359-7bzp_o34",
+        "verifiedAbsent": true
+      }
+    ],
+    "retainedSummary": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/fucq95-20261105-layout/final-scoped-summary.txt",
+    "run": "fucq95-20261105-layout",
+    "time": "2026-11-05T13:59:23+0000",
+    "verifiedAbsent": true
+  },
+  "limitations": [
+    "connected controller/transport/custom element not delivered by this checkpoint",
+    "genuine check/no-match/source-delay producers",
+    "canonical current offer/display/access/lifecycle",
+    "default live runtime/account/session composition"
+  ],
+  "agents": {
+    "lead": "requested/selected/runtime-confirmed gpt-6.1-sol/high; no descendants/fallback"
+  },
+  "note": "Product source/test/config identities match final browser and scoped evidence. Subsequent writes describe results and remove owned disposable evidence/dependency links. Base moved independently to c239acc; no merge of incomplete94/UI or GC launcher/navigation."
+}

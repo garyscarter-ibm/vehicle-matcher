@@ -65,14 +65,16 @@ export function createOfferHttpTransport({ fetch: request = globalThis.fetch, lo
     },
     async decide(input, { signal } = {}) {
       const offer = input?.offer;
-      if (!hasOnlyKeys(input, ['kind', 'offer', 'commandId', 'reasonCode']) || !bound(offer)
+      const ids = input?.kind === 'accept' && object(input.declarations) ? Object.keys(input.declarations) : [];
+      if (!hasOnlyKeys(input, ['kind', 'offer', 'commandId', 'reasonCode', 'termsDigest', 'declarations']) || !bound(offer)
         || !hasOnlyKeys(offer, ['offerId', 'runId', 'offerVersion', 'holdVersion', 'quoteVersion'])
         || !['accept', 'decline'].includes(input.kind) || !text(input.commandId)
         || !['offerVersion', 'holdVersion', 'quoteVersion'].every((key) => positive(offer[key]))
-        || (input.kind === 'decline' ? !text(input.reasonCode) : Object.hasOwn(input, 'reasonCode'))) return { status: 'invalid' };
+        || (input.kind === 'decline' ? !text(input.reasonCode) || Object.hasOwn(input, 'termsDigest') || Object.hasOwn(input, 'declarations')
+          : Object.hasOwn(input, 'reasonCode') || !text(input.termsDigest) || !ids.length || !ids.every((id) => text(id) && input.declarations[id] === true))) return { status: 'invalid' };
       const body = { commandId: input.commandId, runId: offer.runId, decision: input.kind,
         expectedOfferVersion: offer.offerVersion, expectedHoldVersion: offer.holdVersion, expectedQuoteVersion: offer.quoteVersion,
-        ...(input.kind === 'decline' ? { reasonCode: input.reasonCode } : {}) };
+        ...(input.kind === 'decline' ? { reasonCode: input.reasonCode } : { termsDigest: input.termsDigest, declarations: { ...input.declarations } }) };
       return call(`/api/gcsp/offers/${encodeURIComponent(offer.offerId)}/decision`, { method: 'POST',
         headers: { Accept: 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify(body), signal });
     },

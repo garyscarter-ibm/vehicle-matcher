@@ -570,7 +570,108 @@
       "assignee": "Gary Carter",
       "type": "Story",
       "observed_at": "2026-11-07T14:07:07Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-66"
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-66",
+      "slices": [
+        {
+          "id": "scoped-implementation",
+          "status": "complete",
+          "title": "Reviewed service and offline proof",
+          "observed_at": "2026-11-05T23:04:26Z",
+          "evidence": "Reviewed service/offline delivery boundary only: final code abed096, strict scoped claims/repository 67 pass/10 explicit native skips/0 fail; production inputs unchanged. docs/gcsp/evidence/fucq-6/fucq-66-native-validation-2026-11-05.json"
+        },
+        {
+          "id": "release-before-change",
+          "status": "complete",
+          "title": "Release before draft changes",
+          "observed_at": "2026-11-05T23:04:27Z",
+          "evidence": "Reviewed release-before-change regression 1/1 pass; existing saveDraft refuses occupying/allocated holds. Story Result and docs/gcsp/evidence/fucq-6/fucq-66-native-validation-2026-11-05.json"
+        },
+        {
+          "id": "native-01",
+          "status": "complete",
+          "title": "Native claim replay release and process persistence",
+          "observed_at": "2026-11-05T23:04:27Z",
+          "evidence": "Reviewed native case01 1/1 pass, 222.601s: claim/replay/confirmed release and repository/separate-process persistence; exact case01 inputs verified unchanged at abed096. docs/gcsp/evidence/fucq-6/fucq-66-native-validation-2026-11-05.json"
+        },
+        {
+          "id": "native-02",
+          "status": "blocked",
+          "title": "Native review timing and startup deadline",
+          "observed_at": "2026-11-05T23:04:27Z",
+          "evidence": "Incomplete startup/deadline case. v8 setup: new policy connection timeout at 5001ms/limit5000, queued/total/idle0; source-unavailable. Partial v5/v6 assertions do not pass case. Dispatcher stopped native retries. docs/gcsp/evidence/fucq-6/fucq-66-native-validation-2026-11-05.json"
+        },
+        {
+          "id": "native-03",
+          "status": "blocked",
+          "title": "Native explicit tick and expiry persistence",
+          "observed_at": "2026-11-05T23:04:27Z",
+          "evidence": "Independent explicit-tick/expiry case authored but unexecuted. Native environment connection diagnosis/changed evidence and explicit next native grant required. docs/gcsp/manual-review-readiness.md"
+        },
+        {
+          "id": "native-04",
+          "status": "blocked",
+          "title": "Native same-order allocation and replay",
+          "observed_at": "2026-11-05T23:04:28Z",
+          "evidence": "Independent same-order allocation/replay case authored but unexecuted; no next native grant. docs/gcsp/manual-review-readiness.md"
+        },
+        {
+          "id": "native-05",
+          "status": "blocked",
+          "title": "Native SQL rollback before external effects",
+          "observed_at": "2026-11-05T23:04:28Z",
+          "evidence": "Independent SQL rollback case authored but unexecuted; no next native grant. docs/gcsp/manual-review-readiness.md"
+        },
+        {
+          "id": "native-06",
+          "status": "blocked",
+          "title": "Native uncertain claim and reconciliation",
+          "observed_at": "2026-11-05T23:04:28Z",
+          "evidence": "Independent persisted uncertain-claim/reconciliation case authored but unexecuted; no next native grant. docs/gcsp/manual-review-readiness.md"
+        },
+        {
+          "id": "native-07",
+          "status": "blocked",
+          "title": "Native uncertain release and exclusion",
+          "observed_at": "2026-11-05T23:04:29Z",
+          "evidence": "Independent uncertain-release/exclusion case authored but unexecuted; no next native grant. docs/gcsp/manual-review-readiness.md"
+        },
+        {
+          "id": "native-08",
+          "status": "blocked",
+          "title": "Native uncertain selection and allocation",
+          "observed_at": "2026-11-05T23:04:29Z",
+          "evidence": "Independent uncertain-selection/allocation case authored but unexecuted; no next native grant. docs/gcsp/manual-review-readiness.md"
+        },
+        {
+          "id": "native-repository",
+          "status": "blocked",
+          "title": "Configured repository and native constraint contract",
+          "observed_at": "2026-11-05T23:04:29Z",
+          "evidence": "Configured repository/constraint contract remains outstanding. Offline contract/native skips do not prove this gate; no native grant. docs/gcsp/manual-review-readiness.md"
+        },
+        {
+          "id": "full-suite",
+          "status": "blocked",
+          "title": "Credential-unset full suite with matching strict status",
+          "observed_at": "2026-11-05T23:04:30Z",
+          "evidence": "Authored credential-unset npm test remains outstanding. Sole dispatcher full grant separately withheld; strict matching-environment status required immediately before/after. docs/gcsp/manual-review-readiness.md"
+        },
+        {
+          "id": "manual-integration",
+          "status": "blocked",
+          "title": "Manual consumer integration through review and selection",
+          "observed_at": "2026-11-05T23:04:30Z",
+          "evidence": "Published FUCQ-69 claim seam permits independent consumer work. Live FUCQ-69/70/71 review/selection integration remains; review-details producer and same-transaction freeze contract are proposed/unimplemented. docs/gcsp/manual-review-readiness.md"
+        },
+        {
+          "id": "buddy-integration",
+          "status": "blocked",
+          "title": "Completed manual and buddy service exclusivity both ways",
+          "observed_at": "2026-11-05T23:04:30Z",
+          "evidence": "Dispatcher later integrates completed manual/buddy services and proves exclusivity both ways with FUCQ-100. Raw repository contention is insufficient. docs/gcsp/manual-review-readiness.md"
+        }
+      ],
+      "unsliced": false
     },
     {
       "id": "FUCQ-67",
@@ -1127,7 +1228,60 @@
       "assignee": "Gary Carter",
       "type": "Story",
       "observed_at": "2026-11-07T14:07:07Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-106"
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-106",
+      "slices": [
+        {
+          "id": "decision-protocol",
+          "status": "complete",
+          "title": "Decision-command-result-event-and-exclusion-contract",
+          "observed_at": "2026-11-07T15:45:00Z",
+          "evidence": "Verified on merged gcsp-poc 446b7b2d: service/routes composed in runtime.js and index.js; scoped 152/154 pass. Claude story-lead 2026-11-07."
+        },
+        {
+          "id": "policy-reasons",
+          "status": "complete",
+          "title": "Canonical-decline-reasons-and-activation",
+          "evidence": "Verified on merged gcsp-poc 446b7b2d: service/routes composed in runtime.js and index.js; scoped 152/154 pass. Claude story-lead 2026-11-07.",
+          "observed_at": "2026-11-07T15:45:00Z"
+        },
+        {
+          "id": "decision-service",
+          "status": "complete",
+          "title": "Transactional-decision-service-and-HTTP-protocol",
+          "observed_at": "2026-11-07T15:45:00Z",
+          "evidence": "Verified on merged gcsp-poc 446b7b2d: service/routes composed in runtime.js and index.js; scoped 152/154 pass. Claude story-lead 2026-11-07."
+        },
+        {
+          "id": "producer-access-expiry",
+          "status": "complete",
+          "title": "Actual-producer-access-and-expiry-integration",
+          "evidence": "Verified on merged gcsp-poc 446b7b2d: service/routes composed in runtime.js and index.js; scoped 152/154 pass. Claude story-lead 2026-11-07.",
+          "observed_at": "2026-11-07T15:45:00Z"
+        },
+        {
+          "id": "remote-events",
+          "status": "complete",
+          "title": "Remote-uncertainty-and-downstream-events",
+          "evidence": "Local adapter releases in-transaction; remote adapter and 107/108 consumption are other stories (out_of_scope). Claude story-lead 2026-11-07.",
+          "observed_at": "2026-11-07T15:45:00Z"
+        },
+        {
+          "id": "runtime",
+          "status": "complete",
+          "title": "Coordinated-runtime-registration",
+          "evidence": "Verified on merged gcsp-poc 446b7b2d: service/routes composed in runtime.js and index.js; scoped 152/154 pass. Claude story-lead 2026-11-07.",
+          "observed_at": "2026-11-07T15:45:00Z"
+        },
+        {
+          "id": "final-validation",
+          "status": "in-progress",
+          "title": "Authored-acceptance-and-final-validation",
+          "evidence": "Scoped 152/154 pass, 2 supervisor-gated skips, on merged gcsp-poc 446b7b2d; npm test not yet run (lock held, base red).",
+          "observed_at": "2026-11-07T15:45:00Z"
+        }
+      ],
+      "unsliced": false,
+      "workers": []
     },
     {
       "id": "FUCQ-107",
@@ -1137,7 +1291,61 @@
       "assignee": "Gary Carter",
       "type": "Story",
       "observed_at": "2026-11-07T14:07:07Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-107"
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-107",
+      "slices": [
+        {
+          "id": "policy-question",
+          "status": "complete",
+          "title": "One canonical typed-reason question",
+          "observed_at": "2026-11-07T17:20:00Z",
+          "evidence": "Claude story-lead 2026-11-07: scoped 113/113; full suite 19 failures all pre-existing; browser 1280/375 PNGs in docs/gcsp/evidence/fucq107/browser/."
+        },
+        {
+          "id": "confirmation",
+          "status": "complete",
+          "title": "One explicit versioned BriefService change",
+          "observed_at": "2026-11-07T17:20:00Z",
+          "evidence": "Claude story-lead 2026-11-07: scoped 113/113; full suite 19 failures all pre-existing; browser 1280/375 PNGs in docs/gcsp/evidence/fucq107/browser/."
+        },
+        {
+          "id": "comparison",
+          "status": "complete",
+          "title": "Two stored quote comparison and current-brief evidence",
+          "observed_at": "2026-11-07T17:20:00Z",
+          "evidence": "Claude story-lead 2026-11-07: scoped 113/113; full suite 19 failures all pre-existing; browser 1280/375 PNGs in docs/gcsp/evidence/fucq107/browser/."
+        },
+        {
+          "id": "client-states",
+          "status": "complete",
+          "title": "Reloadable shared-kit follow-up states",
+          "observed_at": "2026-11-07T17:20:00Z",
+          "evidence": "Claude story-lead 2026-11-07: scoped 113/113; full suite 19 failures all pre-existing; browser 1280/375 PNGs in docs/gcsp/evidence/fucq107/browser/."
+        },
+        {
+          "id": "actual-integration",
+          "status": "in-progress",
+          "title": "Actual decline event, release, allocation and second hold integration",
+          "observed_at": "2026-11-07T17:20:00Z",
+          "evidence": "Second offer proved through real buddy hold port; live presenter tick awaits FUCQ-96 merge."
+        },
+        {
+          "id": "browser",
+          "status": "complete",
+          "title": "375px and desktop keyboard visual review",
+          "observed_at": "2026-11-07T17:20:00Z",
+          "evidence": "Claude story-lead 2026-11-07: scoped 113/113; full suite 19 failures all pre-existing; browser 1280/375 PNGs in docs/gcsp/evidence/fucq107/browser/."
+        },
+        {
+          "id": "full-validation",
+          "status": "complete",
+          "title": "Authored full validation and integration review",
+          "observed_at": "2026-11-07T17:20:00Z",
+          "evidence": "Claude story-lead 2026-11-07: scoped 113/113; full suite 19 failures all pre-existing; browser 1280/375 PNGs in docs/gcsp/evidence/fucq107/browser/."
+        }
+      ],
+      "unsliced": false,
+      "workers": [],
+      "branch": "dev/DEV-2026-11-04-085"
     },
     {
       "id": "FUCQ-108",
@@ -1390,16 +1598,6 @@
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-125"
     },
     {
-      "id": "FUCQ-126",
-      "title": "Operate the main demo with tick, release, reset and role controls",
-      "status": "In Progress",
-      "original_status": "In Progress",
-      "assignee": "Gary Carter",
-      "type": "Story",
-      "observed_at": "2026-11-07T14:07:07Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-126"
-    },
-    {
       "id": "FUCQ-127",
       "title": "Replay the no-suitable-match scenario",
       "status": "To Do",
@@ -1518,6 +1716,91 @@
       "type": "Story",
       "observed_at": "2026-11-07T14:07:07Z",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-138"
+    },
+    {
+      "assignee": "Gary Carter",
+      "branch": "dev/DEV-2026-11-04-096",
+      "id": "FUCQ-126",
+      "jira_observation_basis": "Authenticated getJiraIssue FUCQ-126: In Progress/Gary Carter; no Jira write",
+      "jira_observed_at": "2026-11-05T23:00:00Z",
+      "observed_at": "2026-11-06T14:07:33Z",
+      "original_status": "In Progress",
+      "slices": [
+        {
+          "evidence": "Lead reviewed/pushed26a1213+3443301;55backend checks,including parent compatibility rerun;docs/gcsp/evidence/fucq-126/backend-results.json",
+          "id": "backend-controls",
+          "observed_at": "2026-11-05T23:02:33Z",
+          "status": "complete",
+          "title": "Server controls and durable clock composition"
+        },
+        {
+          "evidence": "Owned release-result repair now validates orderUuids and run/tick/event/handler identity; selected controller/adapter module passed with frozen inputs. Earlier 17 desktop + 17 narrow checks/50 inspected captures retain original source identity. Actual composed release browser proof remains open. docs/gcsp/evidence/fucq-126/release-result-2026-11-06.md",
+          "id": "presenter-ui",
+          "observed_at": "2026-11-06T00:54:33.398321+00:00",
+          "status": "complete",
+          "title": "Drawer, workspace and safe action states"
+        },
+        {
+          "evidence": "Existing shared presenterBar/controlled picker evidence retained; selected component ratchet and controller focus/keyboard regressions passed for owned release-result repair. No component, token or layout edits. docs/gcsp/evidence/fucq-126/release-result-2026-11-06.md",
+          "id": "kit-alignment",
+          "observed_at": "2026-11-06T00:54:33.398321+00:00",
+          "status": "complete",
+          "title": "Shared option pickers and presenter bar"
+        },
+        {
+          "evidence": "Exact393dedc desktop+narrow17checks/25captures each passed,parent inspectedall50+cleanup. Actual business release/full scenario unavailable; broader plan issuance-replay/gallery browser variants unexecuted. No fullbrowser acceptance claim;browser-after-results.json.",
+          "id": "browser-proof",
+          "observed_at": "2026-11-05T23:49:37.876858Z",
+          "status": "in-progress",
+          "title": "Desktop and375px keyboard and actual HTTP proof"
+        },
+        {
+          "evidence": "Doc Hudson gpt-6.1-sol/high independent source PASS at9a9f66f; N1-N4 repaired in source only. Candidate79252c79 unchanged; N5 host ps measurement OPEN. HOLD, execution flags false, anchors/output null; private lifecycle,host admission,six HTTP and business/browser/native/full proof outstanding. docs/gcsp/evidence/fucq-126/http-cleanup-source-review-2026-11-06.json",
+          "id": "integrated-validation",
+          "observed_at": "2026-11-06T14:07:33Z",
+          "status": "in-progress",
+          "title": "Current-base integration and authored full validation"
+        },
+        {
+          "evidence": "Actual FUCQ-100 runtime 95d7741 supplies same-provider reviewed adoption; published 9/9 memory proof includes step readback and pinned quote preservation, independently accepted by root. Presenter branch/native/browser acceptance remains open. docs/gcsp/evidence/fucq-126/integration-assessment-95d7741-2026-11-06.md",
+          "id": "stored-policy-adoption",
+          "observed_at": "2026-11-06T00:33:27.683736+00:00",
+          "status": "blocked",
+          "title": "Existing stored policy successor-key adoption"
+        },
+        {
+          "evidence": "Canonical100 f179ae6/actual92 source preserved. Authored sixcase TESTwindow covers only offered bootstrapidentity stock and actual resetcookie renewal plus old run-bound TESTprovider refusal; no positive newrun/businessproof. C5proposal preserved separately; actualhostsubscription and six atomicbusinesspreparations open, paused96 retained. docs/gcsp/evidence/fucq-126/http-review-repair-2026-11-06.md",
+          "id": "business-integration",
+          "observed_at": "2026-11-06T02:14:13.172640+00:00",
+          "status": "blocked",
+          "title": "Actual release counts and business scenario reset"
+        }
+      ],
+      "status": "In Progress",
+      "title": "Operate the main demo with tick, release, reset and role controls",
+      "type": "Story",
+      "unsliced": false,
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-126",
+      "workers": [
+        {
+          "expires_at": "2026-11-06T00:09:37.880573Z",
+          "harness": "codex",
+          "name": "FUCQ-126 presenter controls",
+          "observed_at": "2026-11-05T23:49:37.876858Z",
+          "role": "story-lead",
+          "source": "Direct lead:34checks/50captures reviewed, cleanup independently verified; no active child/browser",
+          "status": "reviewed desktop+narrow; publishing evidence; waiting full/integration lanes"
+        },
+        {
+          "expires_at": "2026-11-05T23:17:10.412706Z",
+          "harness": "codex",
+          "name": "Mike Wazowski",
+          "observed_at": "2026-11-05T23:17:10.412706Z",
+          "role": "implementer",
+          "source": "collaboration.list_agents presenter_ui completed; no active child",
+          "status": "completed; component source frozen"
+        }
+      ]
     },
     {
       "assignee": "Russell Gowers",

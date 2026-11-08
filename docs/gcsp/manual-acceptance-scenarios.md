@@ -106,15 +106,19 @@ Feedback is recorded in this repository document and committed through the norma
 
 ### Decline then change · `decline-then-change` · FUCQ-128
 
-- **Start:** `decline-then-change-inputs-v1`; Paula's first offer must be produced by actual release/allocation services from her versioned brief, never inserted as a chosen winner. The declared one-change input changes `preferences.body.value` to `suv`. Variants are `later-suitable-stock` and `waiting-for-suitable-stock`; later owning fixtures supply their concrete service-backed stock difference.
-- **Reset/tick:** reset into the selected owning variant when integrated; confirm the real first offer exists. After decline/change advance and tick a later release using returned clock versions/cues.
-- **Planned click-through:** decline with a typed reason, review and confirm the one change, then inspect the changed brief, released car and either second suitable offer or waiting activity.
-- **Expected visible/state result:** decline, change and any satisfaction remain separate records; unchanged declined exact stock is excluded until a relevant confirmed change. The real matcher determines whether a later offer exists. Waiting remains a useful successful state, not a synthetic second offer.
-- **Provisional assumptions:** one-change limit and declined-car exclusion use `brief.lifecycle.v1` and `offer.declinedCar.exclusion`; durations and consent remain canonical. Fixture stock differences are inputs, not proof of policy outcomes.
+7 November 2026 (FUCQ-128): the retained successful variant is available. The no-second-match waiting variant moved to FUCQ-173 under the authorised 7 November split; its v1 row below is history.
+
+- **Start:** `decline-then-change-inputs-v2`, variant `later-suitable-stock`. Paula's versioned brief (estate preference at importance 80, five seats, charging not ready, search and hold consent) and the synthetic demo stock (`server/gcsp/stock/demo-provider.js`). v2 changes the declared one change to `preferences.body.value` = `saloon`, because the reviewed demo stock has no SUV and v1's `suv` could never yield a matching second offer. After the reset, the start loader (`server/gcsp/scenarios/decline-then-change.js`) applies these inputs through the actual services in the new run: BriefService draft and confirmation, the presenter release cue (09:30 UTC) and one tick, so stock release and the FUCQ-96 allocator give Paula her first offer. No brief, hold or offer is written by the fixture. The reset response's `startState` names the first offer, or the step that failed.
+- **Reset:** launch the demo (`node scripts/gcsp-demo.mjs`, see the presenter strip section below), open `gcsp-presenter.html`, open **Presenter controls**, choose **Decline then change** and press **Reset scenario**, then confirm. A journey reset takes a few seconds because it runs the real release and allocation. Read back the new run and DemoClock time (09:30 UTC).
+- **Click-through:** switch the acting principal to Paula. Open her offer (a 3 Series Touring estate). Decline it with the typed reason *body style*. The follow-up asks one question: choose **Saloon** and confirm. The page reads *waiting*. As presenter, press **Tick** (one step). Paula's page, after **Check current state**, shows the second offer: a 3 Series Saloon, compared with the declined estate.
+- **Expected visible/state result:** the decline is its own decision record (offer rejected, not expired); the confirmed change is brief version 2 with the other essentials kept; the second offer is a separate offer on brief version 2. The declined Touring is never offered to Paula again while her brief is unchanged and returns to the pool for others. Nothing is accepted or marked satisfied. Reset again and the same models appear in the new run (order identifiers differ).
+- **Provisional assumptions:** one-change limit and declined-car exclusion use `brief.lifecycle.v1` and `offer.declinedCar.exclusion`; decline reasons and the follow-up question come from the adopted `offer-journey-v1` set, re-adopted after each scenario reset. Fixture stock differences are inputs, not proof of policy outcomes.
+- **Automated replay:** `server/test/gcsp-scenario-decline-change.test.js` drives this route through the actual presenter and employee HTTP routes after reset, twice across two resets (`server/test/helpers/gcsp-decline-change-route.js` is the reusable route for FUCQ-109).
 
 | Date UTC | Variant/fixture | Run ID | Build | Result | Feedback / next revision |
 |---|---|---|---|---|---|
 | 2026-11-05 | later-suitable-stock / waiting-for-suitable-stock; v1 | No new run (refused) | `96bc997` | Catalogue declares both variants; actual service preparation/replays unavailable. | FUCQ-128 integrates both variants and records real waiting/offer behaviour. |
+| 2026-11-07 | later-suitable-stock; v2 | `demo-cfd9f03e…` (1280), `demo-d8f0868e…` (375), each from its own reset | `ff69c9f4` | Launched memory demo over a scratch loopback front, headless Chrome. Reset read back 09:30 UTC; Paula's first offer Touring 320i; declined by keyboard (reason select, Enter), chose Saloon, change saved in brief version 2 (waiting); one 60 s Tick (09:31); Check current state showed the Saloon 320i as the next offer beside the declined Touring. PNGs: `evidence/fucq-75/fucq-128/`. | Low: duplicate "Check current state", raw ISO times, slow first loads of presenter controls; an unstyled duplicate "Next offer" block seen once at 375. Waiting variant: FUCQ-173. |
 
 ### Offer expires · `offer-expires` · FUCQ-129
 
@@ -158,24 +162,34 @@ FUCQ-125's integrated source `87c0b4ec86312887c7f807746b143e7eb2074b98` passed t
 
 ## Presenter strip and live workspace · FUCQ-126
 
-Start from a trusted backend bootstrap with the separate presenter-control and acting cookies.
+Start the local host: `GCSP_REPOSITORY_MODE=memory GCSP_TLS_KEY_FILE=... GCSP_TLS_CERT_FILE=... node scripts/gcsp-demo.mjs`
+(see `local-https.md`; the certificate must be trusted by the browser). Opening `gcsp-presenter.html` issues the
+trusted backend bootstrap with the separate presenter-control and acting cookies.
 Open `gcsp-presenter.html` through the packaged same-origin static/API host. The runtime selects
 its employee, Greg or presenter surface from actual `/api/gcsp/context`; no person belongs in the URL.
 A shared-key gate, where configured, must already be satisfied by the host. A missing control
 cookie hides the strip entirely even when the acting person is an employee or Greg.
 
 1. Open **Presenter controls**. Check scenario, run, DemoClock UTC time, actual acting person and
-   last tick. Collapse/reopen with the keyboard; Escape closes the strip and focuses its summary.
+   last tick in the shared presenter bar. Collapse/reopen with the keyboard; Escape closes the
+   strip and focuses its summary. Scenario and Acting principal are named radio groups: Tab enters
+   each group once, arrows wrap, and Home/End choose its first/last option. Refresh readback while
+   a radio has focus; its mounted node, selected choice and focus must remain stable. During busy
+   or uncertain commands both groups are disabled.
 2. Choose **Tick**, a server-projected named cue or a future UTC ISO target, or **Next release**.
    Check actual new time and handler results in server order. Missing release handlers say release
    unavailable; they do not report zero cars. A future cue does not establish release capability.
-3. Choose an unavailable scenario. Its missing capabilities appear and Reset is disabled. Choose
+   The launcher composes synthetic demo stock (`server/gcsp/stock/demo-provider.js`): from 09:00, **Next release**
+   moves to the 09:30 cue and reports 5 cars released; a repeat shows "No future release cue is configured".
+3. Select an unavailable scenario radio; the choice remains enabled and inspectable. Its missing
+   capabilities appear and Reset is disabled. Ordinary readbacks preserve a deliberate choice. Choose
    the available clock-mechanics scenario, press **Reset scenario**, then cancel once. Confirm a
    second reset and check the returned new run plus fresh server/context readback. The mechanics
    scenario is not evidence of any full business journey.
 4. Select an employee or Greg from the server-projected choices and press **Switch principal**.
    A confirmed actual context navigates to `gcsp-presenter.html` and loads that person's HTTP surface.
    Switch back through the same controls. `gcsp-greg.html` is not live-principal proof.
+   Paula, Alex and, after a reset, the new run's employees open a prepared account (Sam's scheme is unsupported).
 5. For a deliberately dropped command response, choose **Retry original action**. Verify the request
    body and command ID match exactly; rapid duplicate clicks must produce only one request.
    If session issuance cannot replay its raw cookie, actual context decides whether installation
@@ -183,8 +197,12 @@ cookie hides the strip entirely even when the acting person is an employee or Gr
    is a deliberate fresh issuance with a new ID.
 
 Current authored scope, 5 November 2026: UI/DOM and HTTP-boundary checks cover these behaviors.
-Browser inspection is still required at desktop and 375px, including Tab, Enter, Escape and focus.
-The isolated gallery example demonstrates pending/missing-release presentation only. No actual
-business release producer or complete business-scenario reset has been demonstrated by this UI work.
+The corrected browser matrix at `393dedc` passed 17 checks at both desktop and 375px, including
+Tab, Enter, Escape, radio arrows/Home/End, visible focus and readback focus preservation. The lead
+personally inspected all 50 original captures and independently verified cleanup. This is the actual
+HTTP memory composition with explicitly synthetic account inputs, not a delivered business journey.
+The isolated gallery example demonstrates pending/missing-release presentation only. 7 November: live HTTPS smoke on the composed launcher read back a 5-car release, idempotent tick/release replays,
+employee/Greg switches with ready accounts and a mechanics reset into a new run. Journey scenarios, including the main
+walkthrough, remain "not available yet" in the FUCQ-125 catalogue.
 The browser runner matrix is `evidence/fucq-126/ui-browser-plan.md`; dated observations and captures
 must be added after execution, without relabelling mock failure states as real integration proof.

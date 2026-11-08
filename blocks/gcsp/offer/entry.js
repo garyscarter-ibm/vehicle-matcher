@@ -3,6 +3,9 @@ import { mountOffer } from './gcsp-offer.js';
 import { createOfferHttpAdapter } from './http-adapter.js';
 import { toOfferPresentation } from './offer-projection.js';
 import { mountFollowupBody } from '../offer-followup/gcsp-offer-followup.js';
+import { mountOrderProgress } from '../order-progress/gcsp-order-progress.js';
+import { createOrderProgressHttpAdapter } from '../order-progress/order-progress-http.js';
+import { createCaseHttpAdapter } from '../cases/http-adapter.js';
 
 // Both account reads use the ordinary employee session; offer access remains independently scoped.
 export function mountOfferEntry(root, { fetch: request = globalThis.fetch, location = globalThis.location,
@@ -11,6 +14,8 @@ export function mountOfferEntry(root, { fetch: request = globalThis.fetch, locat
   // Capture and remove any email fragment synchronously, before the first account request.
   const offer = createOfferHttpAdapter({ fetch: request, location, history, enableDecisions: true });
   const account = createAccountHttpAdapter({ fetch: request });
+  const progress = createOrderProgressHttpAdapter({ fetch: request });
+  const helpAdapter = createCaseHttpAdapter({ fetchImpl: request });
   root.textContent = 'Loading your offer.';
   root.setAttribute('aria-busy', 'true');
   void (async () => {
@@ -18,6 +23,8 @@ export function mountOfferEntry(root, { fetch: request = globalThis.fetch, locat
     if (disposed) return;
     root.removeAttribute('aria-busy');
     cleanup = mountOffer(root, { ...offer, account: current,
+      order: { mount: (host, { orderUuid, car }) => mountOrderProgress(host, { adapter: progress, helpAdapter, orderUuid, car,
+        embedded: true, headingLevel: 2, signal: abort.signal }) },
       followup: { loadAccount: account.loadAccount,
         mount: (host, { decisionId, signal }) => mountFollowupBody(host, { decisionId, signal,
           fetchImpl: request, projectOffer: toOfferPresentation,

@@ -1,0 +1,55 @@
+TAP version 13
+# (node:36151) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+# --import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/pg-loader-c536ab4.proposal.mjs", pathToFileURL("./")); register("/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/pg-loader-c536ab4.proposal.mjs", pathToFileURL("./"));'
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: reads all five canonical assumptions through PolicyService at the same pinned version
+ok 1 - reads all five canonical assumptions through PolicyService at the same pinned version
+  ---
+  duration_ms: 2.220666
+  type: 'test'
+  ...
+# Subtest: projects one question for every canonical typed reason and binds the current value and brief version
+ok 2 - projects one question for every canonical typed reason and binds the current value and brief version
+  ---
+  duration_ms: 1.516625
+  type: 'test'
+  ...
+# Subtest: missing, malformed and mixed-version canonical policy reads fail closed
+ok 3 - missing, malformed and mixed-version canonical policy reads fail closed
+  ---
+  duration_ms: 0.760375
+  type: 'test'
+  ...
+# Subtest: unregistered reasons are invalid and absent or unconfirmed targets are unavailable
+ok 4 - unregistered reasons are invalid and absent or unconfirmed targets are unavailable
+  ---
+  duration_ms: 0.6665
+  type: 'test'
+  ...
+# Subtest: option and slider changes accept only projected values and leave input brief unchanged
+ok 5 - option and slider changes accept only projected values and leave input brief unchanged
+  ---
+  duration_ms: 0.888792
+  type: 'test'
+  ...
+# Subtest: equipment changes preserve the registered essential shape and compare sets for no-op answers
+ok 6 - equipment changes preserve the registered essential shape and compare sets for no-op answers
+  ---
+  duration_ms: 0.872542
+  type: 'test'
+  ...
+# Subtest: provider exceptions are sanitized to a typed unavailable result
+ok 7 - provider exceptions are sanitized to a typed unavailable result
+  ---
+  duration_ms: 0.480792
+  type: 'test'
+  ...
+1..7
+# tests 7
+# suites 0
+# pass 7
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 178.278042

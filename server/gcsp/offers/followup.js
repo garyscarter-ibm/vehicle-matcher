@@ -138,15 +138,40 @@ export class OfferFollowupService {
         decisionVersion: state.decision.version, eventId: state.event.eventId }) } });
   }
 
+  // No second offer yet: the FUCQ-96 allocator's persisted run says waiting or no-match; no record means waiting.
+  async #awaiting(context, state, savedChange) {
+    const current = state.history.at(-1);
+    const rows = await this.#repository.query(context, 'event_receipts', { consumerId: 'buddy-allocation' });
+    if (rows.status !== 'ok' || !Array.isArray(rows.value)) return unavailable('followup-evaluation-unavailable', savedChange);
+    const asOf = Date.parse(state.read.asOf); const found = [];
+    for (const row of rows.value) {
+      const run = row?.outcome?.value;
+      if (row?.state !== 'completed' || row.outcome?.status !== 'ok' || run?.runId !== context.runId) continue;
+      if (!validInstant(run.evaluatedAt) || Date.parse(run.evaluatedAt) > asOf) continue;
+      const briefs = run.inputVersions?.briefs; const evaluations = run.evaluations;
+      if (!Array.isArray(briefs) || !Array.isArray(evaluations)) return unavailable('followup-evaluation-unavailable', savedChange);
+      if (!briefs.some((b) => b?.employeeId === context.employeeId && b.brief === current.briefVersion)) continue;
+      const mine = evaluations.filter((e) => e?.employeeId === context.employeeId);
+      if (mine.length === 0) continue;
+      if (mine.length !== 1 || !Array.isArray(mine[0].decisions)) return unavailable('followup-evaluation-unavailable', savedChange);
+      found.push({ evaluatedAt: run.evaluatedAt, decisions: mine[0].decisions });
+    }
+    const base = { schemaVersion: 1, decisionId: state.decision.decisionId, savedChange };
+    if (found.length === 0) return ok({ ...base, state: 'waiting' });
+    const latest = found.reduce((a, b) => Date.parse(b.evaluatedAt) > Date.parse(a.evaluatedAt) ? b : a);
+    if (latest.decisions.some((d) => d?.gateStatus === 'eligible')) return ok({ ...base, state: 'waiting' });
+    return ok({ ...base, state: 'no-match', evaluation: { evaluatedAt: latest.evaluatedAt,
+      carsChecked: latest.decisions.length, suitable: 0 } });
+  }
+
   async #afterSave(context, state, savedChange) {
-    if (typeof this.#offers?.fromAccount !== 'function') return unavailable('followup-evaluation-unavailable', savedChange);
     const current = state.history.at(-1);
     const found = await this.#repository.query(context, 'offers', { employeeId: context.employeeId });
     if (found.status !== 'ok') return unavailable('followup-evaluation-unavailable', savedChange);
     const candidates = found.value.filter((row) => row.offerId !== state.decision.offerId
       && row.briefVersion === current.briefVersion && row.briefVersion >= savedChange.briefVersion && row.state === 'active');
-    // Absence supplies no evidence of a successful search, waiting or a completed no-match evaluation.
-    if (candidates.length !== 1) return unavailable('followup-evaluation-unavailable', savedChange);
+    if (candidates.length === 0) return this.#awaiting(context, state, savedChange);
+    if (candidates.length !== 1 || typeof this.#offers?.fromAccount !== 'function') return unavailable('followup-evaluation-unavailable', savedChange);
     const offer = candidates[0];
     const hold = await this.#repository.read(context, ref(context, 'holds', { holdId: offer.holdId }));
     const quote = await this.#repository.read(context, ref(context, 'quotes', { quoteId: offer.quoteId }));

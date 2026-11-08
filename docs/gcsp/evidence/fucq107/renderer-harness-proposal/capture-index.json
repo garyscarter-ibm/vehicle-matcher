@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "status": "unreviewed-unexecuted-renderer9-proposal",
+  "externalPrefix": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-",
+  "files": [
+    {
+      "path": "renderer-94e05ff-source.json",
+      "bytes": 17693,
+      "sha256": "fb9cb018534ca934ebb74582a440f0fab3d2ab4b6ccfa05880d9f1f5f103cda8"
+    },
+    {
+      "path": "renderer-94e05ff-dependencies.json",
+      "bytes": 597255,
+      "sha256": "59838f3f60cc54ffffd4150aad7d9fbfdeef0bfc3408de3e7b1c76929a852597"
+    },
+    {
+      "path": "renderer-94e05ff-node.json",
+      "bytes": 486,
+      "sha256": "0e7261d7c74fb4048118f2c78403ab00bda93ef51ce7d3f51a5c30576460bd10"
+    },
+    {
+      "path": "renderer-94e05ff-impact.json",
+      "bytes": 4505,
+      "sha256": "b00cba9056131efc6189a1acc1273dc6e9ffb73f3572ed2d5090d7bd9c2f9af7"
+    },
+    {
+      "path": "renderer-94e05ff-loader.mjs",
+      "bytes": 6124,
+      "sha256": "9a47ec38e32f05eff04f910e61b184b4106bdbdcbe0ec746b65e0a706d964f56"
+    },
+    {
+      "path": "renderer-94e05ff-launch.py",
+      "bytes": 820,
+      "sha256": "3f20c1e2b1915efebf76ef6e16f90ad344d72232c74a7c9ca3e6071ae32a89f3"
+    },
+    {
+      "path": "renderer-94e05ff-resources.py",
+      "bytes": 30601,
+      "sha256": "1c19f35495cd5a186dfcb75490a314814a9b37be594acaa51dcfbdcfae445790"
+    },
+    {
+      "path": "renderer-94e05ff-supervisor.py",
+      "bytes": 17289,
+      "sha256": "d7b1a62ae6deb219ae941c6f2501c8006883877adb9b0f54114b70a300e22c2a"
+    },
+    {
+      "path": "renderer-94e05ff-audit.py",
+      "bytes": 16153,
+      "sha256": "906478907f5ba6446ec06b9652dd8b42340fcca2609215eaa948f37db2a7ed97"
+    },
+    {
+      "path": "renderer-94e05ff-freeze.py",
+      "bytes": 9102,
+      "sha256": "b728bceda39f4b76482d36bc21975f5742be088c67441d215fe64ac7f8588584"
+    },
+    {
+      "path": "renderer-94e05ff-admission.json",
+      "bytes": 1098744,
+      "sha256": "f547b6a33e40424af037694ef7d1aaf3b970c91e92d2e208214435b42a78293b"
+    },
+    {
+      "path": "renderer-94e05ff-author-static-review.json",
+      "bytes": 254878,
+      "sha256": "6cb5043cf26cc1755443e2025d7ca2c1091af5bc63a5420a69361b7bfa0a39b3"
+    },
+    {
+      "path": "renderer-94e05ff-vs-controller.diff",
+      "bytes": 29478,
+      "sha256": "d709bb4747e9f82eda6919ab076850a17a96a66a485de8a62570d8e25f5234f0"
+    }
+  ]
+}

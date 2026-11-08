@@ -5,6 +5,8 @@ import { mountEmployee } from '../employee/gcsp-employee.js';
 import { countdown } from '../employee/representative-body.js';
 import { toAccountView, journeyIntent } from './account-view.js';
 import { createAccountHttpAdapter } from './http-adapter.js';
+import { mountOrderProgress } from '../order-progress/gcsp-order-progress.js';
+import { latestOrderId } from '../order-progress/order-progress-controller.js';
 
 let serial = 0;
 const MISSING = 'Not supplied';
@@ -121,8 +123,17 @@ function currentCar(contract, model, controls) {
   return feature;
 }
 
+const safeSrc = (value) => typeof value === 'string' && /^(https:\/\/|\/(?!\/))/.test(value) ? value : undefined;
+// The car is the selection snapshot for this same order; anything else leaves the body's "not supplied" line.
+export function orderCar(order, orderUuid) {
+  const stock = order?.status === 'ok' ? order.value?.selection?.stock : null;
+  const display = stock?.orderUuid === orderUuid ? stock.facts?.display : null;
+  const name = typeof display?.name === 'string' ? display.name.trim() : '';
+  return name ? { name, photo: safeSrc(display.photo) ?? safeSrc(display.images?.[0]?.src) } : undefined;
+}
+
 // This is page layout rather than a stock decision card: a delivered car has no stock eligibility decision.
-export function renderAccountBody(main, { model, draft, offers = [], pending = false, message, journey = false, controls } = {}) {
+export function renderAccountBody(main, { model, draft, offers = [], pending = false, message, journey = false, controls, orderHost } = {}) {
   const wrap = el('div', 'vm gcsp-rep gcsp-account-body');
   wrap.setAttribute('aria-busy', String(pending));
   wrap.append(screenIntro({ title: journey ? 'Your saved journey' : 'Your cars', level: 1, className: 'gcsp-intro' }));
@@ -135,6 +146,7 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
     wrap.append(statusScreen({ title, message: text, actions: [controls.supportButton(model.state === 'absent-hr-account'
       ? 'hr-support' : model.supportOwner, 'Contact support')] }));
   }
+  if (!journey && orderHost) wrap.append(orderHost);
   if (!journey && offers.length && controls.openOffer) {
     const offer = el('section', 'gcsp-summary'); offer.setAttribute('aria-label', 'Your car offer');
     offer.append(el('h2', 'gcsp-h2', 'Your car offer'), el('p', 'gcsp-note', 'Your buddy found a car for you. Check its details and deadline.'),
@@ -204,10 +216,10 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
   return () => wrap.remove();
 }
 
-export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', onSupport, print } = {}) {
+export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', onSupport, print, orderAdapter, helpAdapter } = {}) {
   const abort = new AbortController();
   let envelope; let draft; let offers; let main; let pending = false; let message = null; let journey = false; let disposed = false;
-  let generation = 0; let teardown; let loading; let finishPrint;
+  let generation = 0; let teardown; let loading; let finishPrint; let orderHost; let stopOrder;
   const notify = (type, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(type,
     { detail, bubbles: true, composed: true }));
   const read = async (name) => {
@@ -248,14 +260,30 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   };
   function draw(focus = false) {
     if (!main || disposed) return;
-    renderAccountBody(main, { model: toAccountView(envelope), draft, offers, pending, message, journey, controls });
+    renderAccountBody(main, { model: toAccountView(envelope), draft, offers, pending, message, journey, controls, orderHost });
     if (focus) { const title = main.querySelector('h1'); title.tabIndex = -1; title.focus(); }
+  }
+  // Only a listed order shows the area; a failed list leaves the account as it was.
+  async function findOrder() {
+    if (typeof orderAdapter?.listOrders !== 'function') return null;
+    try {
+      const listed = await orderAdapter.listOrders({ signal: abort.signal });
+      const orderUuid = listed?.status === 'ok' ? latestOrderId(listed.value?.orders) : null;
+      if (!orderUuid) return null;
+      const order = typeof adapter.readOrder === 'function' ? await read('readOrder') : null;
+      return { orderUuid, car: orderCar(order, orderUuid) };
+    } catch { return null; }
   }
   async function loadAccount() {
     const version = ++generation;
-    const [accountResult, draftResult, offerResult] = await Promise.all([read('readAccount'), read('readDraft'),
-      typeof adapter.readOffers === 'function' ? read('readOffers') : null]);
+    const [accountResult, draftResult, offerResult, found] = await Promise.all([read('readAccount'), read('readDraft'),
+      typeof adapter.readOffers === 'function' ? read('readOffers') : null, findOrder()]);
     if (disposed || version !== generation) return { status: 'unavailable' };
+    stopOrder?.(); stopOrder = null; orderHost = null;
+    if (found) {
+      orderHost = el('section', 'gcsp-account-order'); orderHost.setAttribute('aria-label', 'Your order');
+      stopOrder = mountOrderProgress(orderHost, { ...found, adapter: orderAdapter, helpAdapter, embedded: true, headingLevel: 2, signal: abort.signal });
+    }
     envelope = accountResult; draft = draftResult; offers = offerResult?.status === 'ok' ? offerResult.value.offers : [];
     const model = toAccountView(envelope);
     return { status: envelope.status === 'ok' ? 'ready' : 'unavailable', name: model.account?.name ?? 'Account unavailable',
@@ -315,7 +343,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   const shellAdapter = { loadAccount: () => { loading = loadAccount(); return loading; },
     renderBody: (target) => { main = target; draw(); } };
   teardown = mountEmployee(root, { brand, ...shellAdapter });
-  const destroy = () => { disposed = true; generation += 1; abort.abort(); finishPrint?.(); teardown(); };
+  const destroy = () => { disposed = true; generation += 1; abort.abort(); finishPrint?.(); stopOrder?.(); teardown(); };
   destroy.refresh = refresh;
   return destroy;
 }

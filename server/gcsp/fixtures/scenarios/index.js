@@ -12,7 +12,11 @@ const freeze = (value) => {
 const definitions = freeze(structuredClone([...SCENARIO_INPUTS_V1, MECHANICS_SCENARIO]));
 export const scenarioDefinitions = () => structuredClone(definitions);
 export const isPreparedScenarioFixture = (value, policy) => prepared.has(value) && prepared.get(value) === policy;
-export const missingScenarioCapabilities = (definition) => definition.kind === 'mechanics' ? [] : [...definition.requiredCapabilities];
+// A journey is available only when scenarios/ holds a reviewed start loader that applies its inputs through actual services.
+const START_LOADERS = new Set(['decline-then-change']);
+export const hasScenarioStartLoader = (scenarioId) => START_LOADERS.has(scenarioId);
+export const missingScenarioCapabilities = (definition) => definition.kind === 'mechanics' || START_LOADERS.has(definition.scenarioId)
+  ? [] : [...definition.requiredCapabilities];
 const unavailable = () => result('unavailable', { reason: 'The scenario policy or canonical principals are unavailable.', retryable: false });
 
 export async function loadScenarioCatalogue({ policy, read }) {
@@ -33,7 +37,9 @@ export async function loadScenarioCatalogue({ policy, read }) {
       namedTimes: structuredClone(configuration.value.scenario.namedTimes),
       principals: principals.map(({ principalId, employeeId, roles, name }) => ({ principalId, employeeId, roles, name })),
       availability: { available: missingCapabilities.length === 0, outcome: missingCapabilities.length ? 'not available yet' : 'available', missingCapabilities },
-      inputProvenance: mechanics ? 'fictional-clock-mechanics-only' : 'versioned-fictional-journey-inputs; required domain services unavailable',
+      inputProvenance: mechanics ? 'fictional-clock-mechanics-only' : missingCapabilities.length
+        ? 'versioned-fictional-journey-inputs; required domain services unavailable'
+        : 'versioned-fictional-journey-inputs; applied through actual services after reset',
     });
   }
   return ok({ catalogueVersion: 'gcsp-scenario-catalogue-v1', policyVersion: read.policyVersion, scenarios: entries });

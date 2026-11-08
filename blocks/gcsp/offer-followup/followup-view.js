@@ -13,6 +13,8 @@ const factText = (v) => v?.status !== 'known' ? 'Not supplied'
 const messages = {
   idle: ['Your next offer', ''], loading: ['Checking your next offer', 'Please wait.'],
   'change-saved': ['Change saved', 'Check whether your next offer is ready.'],
+  waiting: ['Waiting for the next release', 'Your change is saved. Your next offer is checked when more cars are released.'],
+  'no-match': ['Nothing suitable yet', 'We will check again at the next release.'],
   unavailable: ['Next-offer status unavailable', 'Try checking again.'],
   'confirmation-uncertain': ['Check your change', 'The save could not be confirmed.'],
   'refresh-required': ['Your brief has changed', 'Check the current state before choosing again.'],
@@ -136,7 +138,12 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
       const actions = [];
       if (key === 'confirmation-uncertain') actions.push(action('retry', 'Retry the same change', () => confirm?.(), 'primary'));
       if (!['idle', 'loading', 'forbidden', 'stale-run'].includes(key)) actions.push(action('refresh', 'Check current state', () => refresh?.()));
-      content.append(statusScreen({ title, message: model.savedChange && key === 'unavailable' ? 'Your change is saved. The next-offer status could not be checked.' : message, actions }));
+      const checked = model.evaluation?.carsChecked;
+      const head = checked === 1 ? 'The 1 car checked does not fit your updated brief.'
+        : `None of the ${checked} cars checked fit your updated brief.`;
+      const shown = key === 'no-match' && checked > 0 ? `${head} ${message}`
+        : model.savedChange && key === 'unavailable' ? 'Your change is saved. The next-offer status could not be checked.' : message;
+      content.append(statusScreen({ title, message: shown, actions }));
     }
     if (model.savedChange) {
       const note = el('p', 'gcsp-note', `Your change is saved in brief version ${model.savedChange.briefVersion}.`);
@@ -145,7 +152,7 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
     if (hadFocus) { const heading = content.querySelector('h1, h2'); if (heading) { heading.tabIndex = -1; heading.focus(); } }
   }
   function update(model) {
-    const next = JSON.stringify([model.state, model.question?.questionVersion, model.comparison, model.savedChange]);
+    const next = JSON.stringify([model.state, model.question?.questionVersion, model.comparison, model.savedChange, model.evaluation]);
     if (next !== structure) { draw(model); structure = next; }
     page.setAttribute('aria-busy', String(model.busy));
     if (model.state === 'question' && control) {

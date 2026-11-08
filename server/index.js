@@ -58,14 +58,19 @@ import { createBriefRoutes } from './gcsp/brief/http.js';
 import { createActivityRoutes } from './gcsp/brief/activity-http.js';
 import { createManualContextRoutes } from './gcsp/manual-context/http.js';
 import { createManualClaimsRoutes } from './gcsp/manual-claims/http.js';
+import { createManualOrderRoutes } from './gcsp/manual-order/http.js';
 import { createManualReviewDetailsRoutes } from './gcsp/manual-review/http.js';
 import { createLifecycleApprovalRoutes } from './gcsp/lifecycle/approvals/http.js';
 import { createDocumentRoutes } from './gcsp/lifecycle/documents/http.js';
+import { createAppointmentRoutes } from './gcsp/lifecycle/appointments/http.js';
+import { createReturnPlanRoutes } from './gcsp/lifecycle/return-plan/http.js';
 import { createVehicleEvidenceHandler, isVehicleEvidencePath } from './gcsp/vehicle-evidence/vehicle-evidence-handler.js';
 import { createLocalVehicleEvidenceLookup } from './gcsp/vehicle-evidence/local-vehicle-lookup.js';
 import { createGregRoutes } from './gcsp/greg/http.js';
+import { createSupplyRoutes } from './gcsp/supply/http.js';
 import { createGregPublishService } from './gcsp/greg/publish/index.js';
 import { createGregPublishRoutes } from './gcsp/greg/publish/http.js';
+import { createOrderPlanRoutes } from './gcsp/predict/plan/http.js';
 
 const PORT = process.env.PORT === '0' ? 0 : Number(process.env.PORT) || 8787;
 const MAX_BODY_BYTES = 16 * 1024; // quiz answers are tiny; reject anything bigger
@@ -873,16 +878,17 @@ export function buildServer(deps = {}) {
   const gregPublish = deps.gcspGregPublish ?? createGregPublishService({ repository: deps.gcspRepository,
     policy: deps.gcspPolicy, clock: deps.gcspClock, identity: deps.gcspIdentity });
   const handleGcsp = createGcspHandler({
-    identity: deps.gcspIdentity,
+    identity: deps.gcspIdentity, prepareEmployee: deps.gcspPrepareEmployee,
     routes: [...createEmployeeRecommendationRoutes(deps.gcspClock && deps.gcspRecommendations
       ? { ...deps.gcspRecommendations, time: deps.gcspClock } : deps.gcspRecommendations),
     ...createClockRoutes(deps.gcspClock), ...createOutboxRoutes(deps.gcspOutbox), ...createScenarioRoutes(deps.gcspScenarios, deps.gcspClock),
     ...createPresenterControlsRoutes({ clock: deps.gcspClock, identity: deps.gcspIdentity, scenarios: deps.gcspScenarios }),
-    ...createBriefRoutes(deps.gcspBrief, deps.gcspBriefEditor), ...createActivityRoutes(deps.gcspActivity), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManualRead || deps.gcspManualClaims || deps.gcspManual), ...createManualClaimsRoutes(deps.gcspManualClaims),
+    ...createBriefRoutes(deps.gcspBrief, deps.gcspBriefEditor), ...createActivityRoutes(deps.gcspActivity), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManualRead || deps.gcspManualClaims || deps.gcspManual), ...createManualClaimsRoutes(deps.gcspManualClaims), ...createManualOrderRoutes(deps.gcspManualOrder),
     ...createManualReviewDetailsRoutes(deps.gcspManualReview),
     ...createOfferFollowupRoutes(deps.gcspOfferFollowup),
     ...createLifecycleApprovalRoutes(deps.gcspLifecycle), ...createDocumentRoutes(deps.gcspDocuments),
-    ...createGregRoutes(deps.gcspGreg), ...createGregPublishRoutes(gregPublish), ...(deps.gcspRoutes || [])],
+    ...createAppointmentRoutes(deps.gcspAppointments), ...createReturnPlanRoutes(deps.gcspReturnPlan),
+    ...createGregRoutes(deps.gcspGreg), ...createSupplyRoutes(deps.gcspSupply), ...createGregPublishRoutes(gregPublish), ...createOrderPlanRoutes(deps.gcspOrderPlan), ...(deps.gcspRoutes || [])],
     allowedOrigins: deps.gcspAllowedOrigins || (process.env.GCSP_ALLOWED_ORIGINS || '').split(',').map((origin) => origin.trim()).filter(Boolean),
   });
   const handleOfferAccess = createOfferAccessHandler({ service: deps.gcspOfferAccess, identity: deps.gcspIdentity, allowedOrigins });
@@ -916,6 +922,10 @@ export function buildServer(deps = {}) {
       const registered = await deps.gcspBuddy.start();
       if (registered.status !== 'ok') return registered;
     }
+    if (deps.gcspAllocation) {
+      const registered = await deps.gcspAllocation.register();
+      if (registered.status !== 'ok') return registered;
+    }
     if (deps.gcspManualOrder) {
       const ordering = await deps.gcspManualOrder.registerClockHandler();
       if (ordering.status !== 'ok') return ordering;
@@ -927,6 +937,14 @@ export function buildServer(deps = {}) {
     if (deps.gcspDocuments) {
       const documents = await deps.gcspDocuments.start();
       if (documents.status !== 'ok') return documents;
+    }
+    if (deps.gcspAppointments) {
+      const appointments = await deps.gcspAppointments.start();
+      if (appointments.status !== 'ok') return appointments;
+    }
+    if (deps.gcspReturnPlan) {
+      const returns = await deps.gcspReturnPlan.start();
+      if (returns.status !== 'ok') return returns;
     }
     // Notification registration precedes the clock sealing its registry. Startup
     // drains already committed jobs even though clock startup omits allocation.
@@ -1097,8 +1115,7 @@ export { PREVIEW_COUNT, FIELD_MAX, clampFieldSize };
 // / `npm start`). Importing the module in a test gets buildServer with none of
 // these side effects — no socket, no live feed.
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
-  const server = buildServer();
-  server.listen(PORT, () => {
+  const onListening = (server) => {
     console.log(`Matcher API listening on http://localhost:${server.address().port}`);
     if (process.env.GCSP_OFFLINE === '1') {
       console.log('[gcsp] offline vehicle evidence; live startup warmers disabled');
@@ -1166,5 +1183,15 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
         startColourWarmer();
       }
     });
-  });
+  };
+  if (process.env.GCSP_RUNTIME === '1') {
+    // Hosted demo: one origin serves the GCSP pages, /api/gcsp and this API (see gcsp/host.js).
+    const { startHostedGcsp } = await import('./gcsp/host.js');
+    const hosted = await startHostedGcsp({ buildServer, env: process.env, port: PORT });
+    if (hosted.status !== 'ok') { console.error(`GCSP hosted startup: ${hosted.status}${hosted.code ? ` (${hosted.code})` : ''}`); process.exit(1); }
+    onListening(hosted.value.server);
+  } else {
+    const server = buildServer();
+    server.listen(PORT, () => onListening(server));
+  }
 }

@@ -1,0 +1,99 @@
+{
+  "run": "fucq98-20261105-live-smoke-1",
+  "date": "2026-11-05",
+  "scope": "One explicitly authorised no-offer/no-link email transport smoke; stopped at noninteractive credential access before account/sender/adapter validation",
+  "status": "blocked-before-network",
+  "startedAt": "2026-11-05T16:02:26.037Z",
+  "finishedAt": "2026-11-05T16:02:26.159Z",
+  "recipientAuthorisation": "Russell explicitly approved exactly one message to his IBM inbox; address retained only in private approval",
+  "message": {
+    "subject": "GCSP email test",
+    "text": "Real email transport test. No vehicle offer is attached.",
+    "offerLinkIncluded": false
+  },
+  "observed": {
+    "credentialOsStatus": -25293,
+    "safeGap": "credential-noninteractive-unavailable",
+    "httpRequests": 0,
+    "postRequests": 0,
+    "automaticRetries": 0,
+    "accountVerified": false,
+    "senderVerified": false,
+    "adapterSendReached": false,
+    "providerAccepted": false,
+    "providerMessageId": null,
+    "inboxReceiptVerified": false,
+    "offerLinkVerified": false,
+    "credentialExtracted": false,
+    "foregroundInteraction": false
+  },
+  "limits": {
+    "ramMiB": 256,
+    "scratchMiB": 32,
+    "seconds": 45,
+    "workers": 1
+  },
+  "resourceObservation": {
+    "wallSeconds": 0.24814366599999998,
+    "sampledPeakGroupRssBytes": 2310144,
+    "samplingLimitation": "Very short run; sampled RSS is an observation, not a complete instantaneous peak measurement",
+    "scratchBytes": 0,
+    "removedSuccessfulLogBytes": 111
+  },
+  "cleanup": {
+    "root": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/scratch/fucq98-20261105-live-smoke-1",
+    "owner": {
+      "pid": 4146,
+      "start": "Thu Nov  5 16:02:25 2026"
+    },
+    "groups": [
+      4152
+    ],
+    "scratchAbsent": true,
+    "ownerStopped": true,
+    "groupsAbsent": {
+      "4152": true
+    },
+    "reservationAbsent": true,
+    "safeProcessLogAbsent": true,
+    "dependency139HashesUnchanged": true,
+    "dependencyTargetIdentityUnchanged": true,
+    "dependencyRootIdentityUnchanged": true,
+    "overlayCreated": false,
+    "largeOutputCreated": false,
+    "oneDriveOutputCreated": false,
+    "compatibilityException": null,
+    "leftovers": []
+  },
+  "durablePrivateEvidence": {
+    "directory": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/receipts/fucq98-20261105-live-smoke-1",
+    "outcome": "outcome.json",
+    "resource": "resource-receipt.json",
+    "cleanup": "cleanup-recheck.json",
+    "replayGuard": "attempt.lock",
+    "intent": "intent.json",
+    "intentState": "preflight-only",
+    "replayForbidden": true,
+    "manualScriptSha256": "2eee47560f0e7d834abc3c45131d9d78468e978f51fac54ea3b2763dcb100f06"
+  },
+  "unchangedApplicationSourceHashes": {
+    "server/gcsp/notify/brevo.js": "22f9b813a81e93f57c9e31f539ec1a6194ed7ce338b1303cc45e175a1cbb9382",
+    "server/gcsp/notify/config.js": "a815c66c230445384b4ad3e8d9806d31dc4b4b3ac852a92e9277de0f7907b055",
+    "server/gcsp/repository/core.js": "c55c93c543886108f67aa12bc5c7519d50063e90ba4ec78df37aa0df56d6f311",
+    "server/gcsp/repository/memory.js": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866"
+  },
+  "nextBoundary": "No credential fallback, automatic retry or send. Private noninteractive credential access must be resolved before separately directed further live verification; actual account/sender, real offer URL, provider acceptance and inbox/link proof remain unverified.",
+  "validationSelection": {
+    "selected": [
+      "Static Node syntax check of private manual harness",
+      "Exactly one supervised noninteractive smoke attempt",
+      "Independent filesystem/group/reservation/dependency cleanup audit",
+      "JSON/evidence consistency and git diff whitespace checks"
+    ],
+    "excluded": [
+      "No application change or test rerun: exact source unchanged",
+      "No second credential lookup or HTTP request",
+      "No full suite, browser action, dependency install, base integration, provisioning or Jira retry"
+    ]
+  }
+}

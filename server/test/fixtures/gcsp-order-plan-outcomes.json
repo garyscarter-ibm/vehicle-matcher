@@ -1,0 +1,867 @@
+{
+  "basis": "Explicit alternative resolved inputs; panel presentation contract, not default producer evidence.",
+  "cases": [
+    {
+      "name": "feasible-with-alternatives",
+      "input": {
+        "runId": "planning-test",
+        "asOf": "2026-11-06T00:00:00.000Z",
+        "versions": {
+          "forecast": "explicit-joint-v1",
+          "policy": "alternative-policy-v1",
+          "stock": "stock-v1",
+          "supply": "supply-v1",
+          "cohort": "cohort-v1",
+          "catalog": "catalog-v1"
+        },
+        "forecast": {
+          "basis": "explicit-alternative",
+          "horizonEnd": "2026-12-06T00:00:00.000Z",
+          "limitations": [
+            "Synthetic joint choices for kernel validation."
+          ],
+          "entitlements": [
+            {
+              "entitlementId": "flexible",
+              "employeeId": "employee-a",
+              "renewalId": "renewal-a",
+              "entitlementSlotId": "slot-a",
+              "renewalAt": "2026-11-26T00:00:00.000Z",
+              "acceptableDerivativeIds": [
+                "a",
+                "b"
+              ],
+              "gates": []
+            },
+            {
+              "entitlementId": "single",
+              "employeeId": "employee-b",
+              "renewalId": "renewal-b",
+              "entitlementSlotId": "slot-b",
+              "renewalAt": "2026-11-26T00:00:00.000Z",
+              "acceptableDerivativeIds": [
+                "a"
+              ],
+              "gates": []
+            }
+          ]
+        },
+        "catalog": [
+          {
+            "derivativeId": "a",
+            "modelId": "model-a",
+            "unitCostMinor": 10,
+            "leadTimeDays": 10
+          },
+          {
+            "derivativeId": "b",
+            "modelId": "model-b",
+            "unitCostMinor": 8,
+            "leadTimeDays": 10
+          }
+        ],
+        "stock": [],
+        "inbound": [],
+        "constraints": {
+          "horizonDays": 30,
+          "budgetMinor": 20,
+          "currency": "GBP",
+          "modelBounds": [
+            {
+              "modelId": "model-a",
+              "min": 0,
+              "max": 2
+            },
+            {
+              "modelId": "model-b",
+              "min": 0,
+              "max": 2
+            }
+          ],
+          "derivativeBounds": [
+            {
+              "derivativeId": "a",
+              "min": 0,
+              "max": 2
+            },
+            {
+              "derivativeId": "b",
+              "min": 0,
+              "max": 2
+            }
+          ],
+          "objectiveWeights": {
+            "coverage": 100,
+            "unallocatedStock": 10,
+            "costMinor": 0
+          }
+        }
+      },
+      "result": {
+        "contractVersion": "1.0.0",
+        "planId": "order-plan-8a4c62324d06a4684de776dec74978ed2251726a5e28f9dd94b24466f9f61c2e",
+        "runId": "planning-test",
+        "asOf": "2026-11-06T00:00:00.000Z",
+        "versions": {
+          "forecast": "explicit-joint-v1",
+          "policy": "alternative-policy-v1",
+          "stock": "stock-v1",
+          "supply": "supply-v1",
+          "cohort": "cohort-v1",
+          "catalog": "catalog-v1"
+        },
+        "limitations": [
+          "Synthetic joint choices for kernel validation.",
+          "Acceptable matching is deterministic feasibility, not calibrated acceptance or employee selection."
+        ],
+        "solver": {
+          "method": "bounded-exhaustive-integer-search-with-capacity-matching",
+          "limits": {
+            "derivatives": 12,
+            "entitlements": 128,
+            "supplyLots": 256,
+            "candidatePlans": 50000,
+            "matchingSteps": 2000000
+          },
+          "complete": true,
+          "optimalWithinDeclaredModel": true,
+          "visited": 9,
+          "feasibleCount": 6,
+          "matchingSteps": 11
+        },
+        "status": "feasible",
+        "quantities": [
+          {
+            "derivativeId": "a",
+            "modelId": "model-a",
+            "quantity": 1
+          },
+          {
+            "derivativeId": "b",
+            "modelId": "model-b",
+            "quantity": 1
+          }
+        ],
+        "modelQuantities": [
+          {
+            "modelId": "model-a",
+            "quantity": 1
+          },
+          {
+            "modelId": "model-b",
+            "quantity": 1
+          }
+        ],
+        "allocations": [
+          {
+            "entitlementId": "flexible",
+            "derivativeId": "b",
+            "sourceId": "order:b",
+            "source": "new-order",
+            "availableAt": "2026-11-16T00:00:00.000Z",
+            "renewalAt": "2026-11-26T00:00:00.000Z"
+          },
+          {
+            "entitlementId": "single",
+            "derivativeId": "a",
+            "sourceId": "order:a",
+            "source": "new-order",
+            "availableAt": "2026-11-16T00:00:00.000Z",
+            "renewalAt": "2026-11-26T00:00:00.000Z"
+          }
+        ],
+        "expectedAcceptableCoverage": {
+          "covered": 2,
+          "total": 2,
+          "fraction": 1,
+          "basis": "deterministic-acceptable-matching-before-renewal"
+        },
+        "unallocatedStockRisk": {
+          "quantity": 0,
+          "totalSupply": 2,
+          "basis": "unmatched-supply-within-horizon",
+          "bySource": []
+        },
+        "spendMinor": 18,
+        "currency": "GBP",
+        "orderQuantity": 2,
+        "objective": {
+          "value": 200,
+          "weights": {
+            "coverage": 100,
+            "unallocatedStock": 10,
+            "costMinor": 0
+          },
+          "terms": {
+            "coverage": 200,
+            "unallocatedStock": 0,
+            "cost": 0
+          },
+          "tradeOff": "Maximise weighted acceptable coverage, less unmatched supply and order cost; budget and quantity bounds remain hard."
+        },
+        "bindingConstraints": [],
+        "unmetNeeds": [],
+        "alternatives": [
+          {
+            "kind": "zero-new-orders-baseline",
+            "status": "feasible",
+            "quantities": [
+              {
+                "derivativeId": "a",
+                "modelId": "model-a",
+                "quantity": 0
+              },
+              {
+                "derivativeId": "b",
+                "modelId": "model-b",
+                "quantity": 0
+              }
+            ],
+            "modelQuantities": [
+              {
+                "modelId": "model-a",
+                "quantity": 0
+              },
+              {
+                "modelId": "model-b",
+                "quantity": 0
+              }
+            ],
+            "allocations": [],
+            "expectedAcceptableCoverage": {
+              "covered": 0,
+              "total": 2,
+              "fraction": 0,
+              "basis": "deterministic-acceptable-matching-before-renewal"
+            },
+            "unallocatedStockRisk": {
+              "quantity": 0,
+              "totalSupply": 0,
+              "basis": "unmatched-supply-within-horizon",
+              "bySource": []
+            },
+            "spendMinor": 0,
+            "currency": "GBP",
+            "orderQuantity": 0,
+            "objective": {
+              "value": 0,
+              "weights": {
+                "coverage": 100,
+                "unallocatedStock": 10,
+                "costMinor": 0
+              },
+              "terms": {
+                "coverage": 0,
+                "unallocatedStock": 0,
+                "cost": 0
+              },
+              "tradeOff": "Maximise weighted acceptable coverage, less unmatched supply and order cost; budget and quantity bounds remain hard."
+            },
+            "bindingConstraints": [
+              {
+                "id": "derivative:a:min",
+                "detail": "Quantity meets minimum 0."
+              },
+              {
+                "id": "derivative:b:min",
+                "detail": "Quantity meets minimum 0."
+              },
+              {
+                "id": "model:model-a:min",
+                "detail": "Quantity meets minimum 0."
+              },
+              {
+                "id": "model:model-b:min",
+                "detail": "Quantity meets minimum 0."
+              }
+            ],
+            "unmetNeeds": [
+              {
+                "entitlementId": "flexible",
+                "renewalAt": "2026-11-26T00:00:00.000Z",
+                "gates": [
+                  "objective-tradeoff"
+                ],
+                "constraintIds": []
+              },
+              {
+                "entitlementId": "single",
+                "renewalAt": "2026-11-26T00:00:00.000Z",
+                "gates": [
+                  "objective-tradeoff"
+                ],
+                "constraintIds": []
+              }
+            ],
+            "identicalToRecommendation": false
+          },
+          {
+            "kind": "next-best-distinct-feasible",
+            "status": "feasible",
+            "quantities": [
+              {
+                "derivativeId": "a",
+                "modelId": "model-a",
+                "quantity": 2
+              },
+              {
+                "derivativeId": "b",
+                "modelId": "model-b",
+                "quantity": 0
+              }
+            ],
+            "modelQuantities": [
+              {
+                "modelId": "model-a",
+                "quantity": 2
+              },
+              {
+                "modelId": "model-b",
+                "quantity": 0
+              }
+            ],
+            "allocations": [
+              {
+                "entitlementId": "flexible",
+                "derivativeId": "a",
+                "sourceId": "order:a",
+                "source": "new-order",
+                "availableAt": "2026-11-16T00:00:00.000Z",
+                "renewalAt": "2026-11-26T00:00:00.000Z"
+              },
+              {
+                "entitlementId": "single",
+                "derivativeId": "a",
+                "sourceId": "order:a",
+                "source": "new-order",
+                "availableAt": "2026-11-16T00:00:00.000Z",
+                "renewalAt": "2026-11-26T00:00:00.000Z"
+              }
+            ],
+            "expectedAcceptableCoverage": {
+              "covered": 2,
+              "total": 2,
+              "fraction": 1,
+              "basis": "deterministic-acceptable-matching-before-renewal"
+            },
+            "unallocatedStockRisk": {
+              "quantity": 0,
+              "totalSupply": 2,
+              "basis": "unmatched-supply-within-horizon",
+              "bySource": []
+            },
+            "spendMinor": 20,
+            "currency": "GBP",
+            "orderQuantity": 2,
+            "objective": {
+              "value": 200,
+              "weights": {
+                "coverage": 100,
+                "unallocatedStock": 10,
+                "costMinor": 0
+              },
+              "terms": {
+                "coverage": 200,
+                "unallocatedStock": 0,
+                "cost": 0
+              },
+              "tradeOff": "Maximise weighted acceptable coverage, less unmatched supply and order cost; budget and quantity bounds remain hard."
+            },
+            "bindingConstraints": [
+              {
+                "id": "budget",
+                "detail": "Order spend meets the budget."
+              },
+              {
+                "id": "derivative:a:max",
+                "detail": "Quantity meets maximum 2."
+              },
+              {
+                "id": "derivative:b:min",
+                "detail": "Quantity meets minimum 0."
+              },
+              {
+                "id": "model:model-a:max",
+                "detail": "Quantity meets maximum 2."
+              },
+              {
+                "id": "model:model-b:min",
+                "detail": "Quantity meets minimum 0."
+              }
+            ],
+            "unmetNeeds": []
+          }
+        ],
+        "currentDraftComparison": null
+      }
+    },
+    {
+      "name": "infeasible-budget-and-minimum",
+      "input": {
+        "runId": "planning-test",
+        "asOf": "2026-11-06T00:00:00.000Z",
+        "versions": {
+          "forecast": "explicit-joint-v1",
+          "policy": "alternative-policy-v1",
+          "stock": "stock-v1",
+          "supply": "supply-v1",
+          "cohort": "cohort-v1",
+          "catalog": "catalog-v1"
+        },
+        "forecast": {
+          "basis": "explicit-alternative",
+          "horizonEnd": "2026-12-06T00:00:00.000Z",
+          "limitations": [
+            "Synthetic joint choices for kernel validation."
+          ],
+          "entitlements": [
+            {
+              "entitlementId": "flexible",
+              "employeeId": "employee-a",
+              "renewalId": "renewal-a",
+              "entitlementSlotId": "slot-a",
+              "renewalAt": "2026-11-26T00:00:00.000Z",
+              "acceptableDerivativeIds": [
+                "a",
+                "b"
+              ],
+              "gates": []
+            },
+            {
+              "entitlementId": "single",
+              "employeeId": "employee-b",
+              "renewalId": "renewal-b",
+              "entitlementSlotId": "slot-b",
+              "renewalAt": "2026-11-26T00:00:00.000Z",
+              "acceptableDerivativeIds": [
+                "a"
+              ],
+              "gates": []
+            }
+          ]
+        },
+        "catalog": [
+          {
+            "derivativeId": "a",
+            "modelId": "model-a",
+            "unitCostMinor": 10,
+            "leadTimeDays": 10
+          },
+          {
+            "derivativeId": "b",
+            "modelId": "model-b",
+            "unitCostMinor": 8,
+            "leadTimeDays": 10
+          }
+        ],
+        "stock": [],
+        "inbound": [],
+        "constraints": {
+          "horizonDays": 30,
+          "budgetMinor": 9,
+          "currency": "GBP",
+          "modelBounds": [
+            {
+              "modelId": "model-a",
+              "min": 0,
+              "max": 2
+            },
+            {
+              "modelId": "model-b",
+              "min": 0,
+              "max": 2
+            }
+          ],
+          "derivativeBounds": [
+            {
+              "derivativeId": "a",
+              "min": 2,
+              "max": 2
+            },
+            {
+              "derivativeId": "b",
+              "min": 0,
+              "max": 2
+            }
+          ],
+          "objectiveWeights": {
+            "coverage": 100,
+            "unallocatedStock": 10,
+            "costMinor": 0
+          }
+        }
+      },
+      "result": {
+        "contractVersion": "1.0.0",
+        "planId": "order-plan-a5d1683307b3b585255a784cb5b93c4bf664fba91da2c94a43f3ee924e473d5f",
+        "runId": "planning-test",
+        "asOf": "2026-11-06T00:00:00.000Z",
+        "versions": {
+          "forecast": "explicit-joint-v1",
+          "policy": "alternative-policy-v1",
+          "stock": "stock-v1",
+          "supply": "supply-v1",
+          "cohort": "cohort-v1",
+          "catalog": "catalog-v1"
+        },
+        "limitations": [
+          "Synthetic joint choices for kernel validation.",
+          "Acceptable matching is deterministic feasibility, not calibrated acceptance or employee selection."
+        ],
+        "solver": {
+          "method": "bounded-exhaustive-integer-search-with-capacity-matching",
+          "limits": {
+            "derivatives": 12,
+            "entitlements": 128,
+            "supplyLots": 256,
+            "candidatePlans": 50000,
+            "matchingSteps": 2000000
+          },
+          "complete": true,
+          "visited": 3
+        },
+        "status": "infeasible",
+        "quantities": [],
+        "conflicts": [
+          {
+            "id": "budget",
+            "detail": "Spend 36 exceeds 9 GBP minor units."
+          }
+        ],
+        "conflictAnalysis": "explanatory-non-minimal-constraint-set",
+        "alternatives": []
+      }
+    },
+    {
+      "name": "feasible-unmet-and-binding",
+      "input": {
+        "runId": "planning-test",
+        "asOf": "2026-11-06T00:00:00.000Z",
+        "versions": {
+          "forecast": "explicit-joint-v1",
+          "policy": "alternative-policy-v1",
+          "stock": "stock-v1",
+          "supply": "supply-v1",
+          "cohort": "cohort-v1",
+          "catalog": "catalog-v1"
+        },
+        "forecast": {
+          "basis": "explicit-alternative",
+          "horizonEnd": "2026-12-06T00:00:00.000Z",
+          "limitations": [
+            "Synthetic joint choices for kernel validation."
+          ],
+          "entitlements": [
+            {
+              "entitlementId": "flexible",
+              "employeeId": "employee-a",
+              "renewalId": "renewal-a",
+              "entitlementSlotId": "slot-a",
+              "renewalAt": "2026-11-26T00:00:00.000Z",
+              "acceptableDerivativeIds": [
+                "a",
+                "b"
+              ],
+              "gates": []
+            },
+            {
+              "entitlementId": "single",
+              "employeeId": "employee-b",
+              "renewalId": "renewal-b",
+              "entitlementSlotId": "slot-b",
+              "renewalAt": "2026-11-26T00:00:00.000Z",
+              "acceptableDerivativeIds": [
+                "a"
+              ],
+              "gates": []
+            }
+          ]
+        },
+        "catalog": [
+          {
+            "derivativeId": "a",
+            "modelId": "model-a",
+            "unitCostMinor": 10,
+            "leadTimeDays": 10
+          },
+          {
+            "derivativeId": "b",
+            "modelId": "model-b",
+            "unitCostMinor": 8,
+            "leadTimeDays": 10
+          }
+        ],
+        "stock": [],
+        "inbound": [],
+        "constraints": {
+          "horizonDays": 30,
+          "budgetMinor": 0,
+          "currency": "GBP",
+          "modelBounds": [
+            {
+              "modelId": "model-a",
+              "min": 0,
+              "max": 2
+            },
+            {
+              "modelId": "model-b",
+              "min": 0,
+              "max": 2
+            }
+          ],
+          "derivativeBounds": [
+            {
+              "derivativeId": "a",
+              "min": 0,
+              "max": 2
+            },
+            {
+              "derivativeId": "b",
+              "min": 0,
+              "max": 2
+            }
+          ],
+          "objectiveWeights": {
+            "coverage": 100,
+            "unallocatedStock": 10,
+            "costMinor": 0
+          }
+        }
+      },
+      "result": {
+        "contractVersion": "1.0.0",
+        "planId": "order-plan-2b1566b741af4372d31b65e49a1a94ad5f795075f1962ce82dcf94622a943b87",
+        "runId": "planning-test",
+        "asOf": "2026-11-06T00:00:00.000Z",
+        "versions": {
+          "forecast": "explicit-joint-v1",
+          "policy": "alternative-policy-v1",
+          "stock": "stock-v1",
+          "supply": "supply-v1",
+          "cohort": "cohort-v1",
+          "catalog": "catalog-v1"
+        },
+        "limitations": [
+          "Synthetic joint choices for kernel validation.",
+          "Acceptable matching is deterministic feasibility, not calibrated acceptance or employee selection."
+        ],
+        "solver": {
+          "method": "bounded-exhaustive-integer-search-with-capacity-matching",
+          "limits": {
+            "derivatives": 12,
+            "entitlements": 128,
+            "supplyLots": 256,
+            "candidatePlans": 50000,
+            "matchingSteps": 2000000
+          },
+          "complete": true,
+          "optimalWithinDeclaredModel": true,
+          "visited": 9,
+          "feasibleCount": 1,
+          "matchingSteps": 0
+        },
+        "status": "feasible",
+        "quantities": [
+          {
+            "derivativeId": "a",
+            "modelId": "model-a",
+            "quantity": 0
+          },
+          {
+            "derivativeId": "b",
+            "modelId": "model-b",
+            "quantity": 0
+          }
+        ],
+        "modelQuantities": [
+          {
+            "modelId": "model-a",
+            "quantity": 0
+          },
+          {
+            "modelId": "model-b",
+            "quantity": 0
+          }
+        ],
+        "allocations": [],
+        "expectedAcceptableCoverage": {
+          "covered": 0,
+          "total": 2,
+          "fraction": 0,
+          "basis": "deterministic-acceptable-matching-before-renewal"
+        },
+        "unallocatedStockRisk": {
+          "quantity": 0,
+          "totalSupply": 0,
+          "basis": "unmatched-supply-within-horizon",
+          "bySource": []
+        },
+        "spendMinor": 0,
+        "currency": "GBP",
+        "orderQuantity": 0,
+        "objective": {
+          "value": 0,
+          "weights": {
+            "coverage": 100,
+            "unallocatedStock": 10,
+            "costMinor": 0
+          },
+          "terms": {
+            "coverage": 0,
+            "unallocatedStock": 0,
+            "cost": 0
+          },
+          "tradeOff": "Maximise weighted acceptable coverage, less unmatched supply and order cost; budget and quantity bounds remain hard."
+        },
+        "bindingConstraints": [
+          {
+            "id": "budget",
+            "detail": "Order spend meets the budget."
+          },
+          {
+            "id": "derivative:a:min",
+            "detail": "Quantity meets minimum 0."
+          },
+          {
+            "id": "derivative:b:min",
+            "detail": "Quantity meets minimum 0."
+          },
+          {
+            "id": "model:model-a:min",
+            "detail": "Quantity meets minimum 0."
+          },
+          {
+            "id": "model:model-b:min",
+            "detail": "Quantity meets minimum 0."
+          }
+        ],
+        "unmetNeeds": [
+          {
+            "entitlementId": "flexible",
+            "renewalAt": "2026-11-26T00:00:00.000Z",
+            "gates": [
+              "acceptable-supply-scarcity"
+            ],
+            "constraintIds": [
+              "budget"
+            ]
+          },
+          {
+            "entitlementId": "single",
+            "renewalAt": "2026-11-26T00:00:00.000Z",
+            "gates": [
+              "acceptable-supply-scarcity"
+            ],
+            "constraintIds": [
+              "budget"
+            ]
+          }
+        ],
+        "alternatives": [
+          {
+            "kind": "zero-new-orders-baseline",
+            "status": "feasible",
+            "quantities": [
+              {
+                "derivativeId": "a",
+                "modelId": "model-a",
+                "quantity": 0
+              },
+              {
+                "derivativeId": "b",
+                "modelId": "model-b",
+                "quantity": 0
+              }
+            ],
+            "modelQuantities": [
+              {
+                "modelId": "model-a",
+                "quantity": 0
+              },
+              {
+                "modelId": "model-b",
+                "quantity": 0
+              }
+            ],
+            "allocations": [],
+            "expectedAcceptableCoverage": {
+              "covered": 0,
+              "total": 2,
+              "fraction": 0,
+              "basis": "deterministic-acceptable-matching-before-renewal"
+            },
+            "unallocatedStockRisk": {
+              "quantity": 0,
+              "totalSupply": 0,
+              "basis": "unmatched-supply-within-horizon",
+              "bySource": []
+            },
+            "spendMinor": 0,
+            "currency": "GBP",
+            "orderQuantity": 0,
+            "objective": {
+              "value": 0,
+              "weights": {
+                "coverage": 100,
+                "unallocatedStock": 10,
+                "costMinor": 0
+              },
+              "terms": {
+                "coverage": 0,
+                "unallocatedStock": 0,
+                "cost": 0
+              },
+              "tradeOff": "Maximise weighted acceptable coverage, less unmatched supply and order cost; budget and quantity bounds remain hard."
+            },
+            "bindingConstraints": [
+              {
+                "id": "budget",
+                "detail": "Order spend meets the budget."
+              },
+              {
+                "id": "derivative:a:min",
+                "detail": "Quantity meets minimum 0."
+              },
+              {
+                "id": "derivative:b:min",
+                "detail": "Quantity meets minimum 0."
+              },
+              {
+                "id": "model:model-a:min",
+                "detail": "Quantity meets minimum 0."
+              },
+              {
+                "id": "model:model-b:min",
+                "detail": "Quantity meets minimum 0."
+              }
+            ],
+            "unmetNeeds": [
+              {
+                "entitlementId": "flexible",
+                "renewalAt": "2026-11-26T00:00:00.000Z",
+                "gates": [
+                  "acceptable-supply-scarcity"
+                ],
+                "constraintIds": [
+                  "budget"
+                ]
+              },
+              {
+                "entitlementId": "single",
+                "renewalAt": "2026-11-26T00:00:00.000Z",
+                "gates": [
+                  "acceptable-supply-scarcity"
+                ],
+                "constraintIds": [
+                  "budget"
+                ]
+              }
+            ],
+            "identicalToRecommendation": true
+          }
+        ],
+        "currentDraftComparison": null
+      }
+    }
+  ]
+}

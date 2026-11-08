@@ -166,7 +166,7 @@ test('combined runtime serves authenticated scenarios, canonical presenter step 
   assert.equal(f.dependencies.gcspOfferAccess, f.offerAccess);
   const oldEmployee = f.session.value.context;
   const catalogue = response(await f.http.request('/api/gcsp/presenter/scenarios', { session: f.session }));
-  assert.ok(catalogue.scenarios.filter((row) => row.kind === 'journey').every((row) => !row.availability.available));
+  assert.deepEqual(catalogue.scenarios.filter((row) => row.kind === 'journey' && row.availability.available).map((row) => row.scenarioId), ['decline-then-change']);
   const controls = response(await f.http.request('/api/gcsp/presenter/controls', { session: f.session }));
   assert.equal(controls.controls.step.value, 60);
   const configured = good(await readPolicy.getAssumption('clock.presenter.stepSeconds', {
@@ -175,8 +175,8 @@ test('combined runtime serves authenticated scenarios, canonical presenter step 
   const tick = response(await f.http.request('/api/gcsp/presenter/controls/tick', { session: f.session,
     body: { commandId: 'combined-step', expectedClockVersion: controls.clockVersion, mode: 'step' } }));
   assert.equal(Date.parse(tick.advance.now) - Date.parse(controls.now), configured.value * 1000);
-  const handlers = ['manual-claim-expiry', 'buddy-expiry', 'lifecycle-approvals', 'lifecycle-documents',
-    'renewal-risk-cases', 'selection-order-reconciliation', 'captured-outbox'];
+  const handlers = ['manual-claim-expiry', 'buddy-expiry', 'lifecycle-appointments', 'lifecycle-approvals', 'lifecycle-documents',
+    'lifecycle-return-appointments', 'renewal-risk-cases', 'selection-order-reconciliation', 'buddy-allocation', 'captured-outbox'];
   assert.deepEqual(tick.tick.handlerOrder.map((row) => row.handlerId), handlers);
   const state = response(await f.http.request('/api/gcsp/presenter/scenarios/current', { session: f.session }));
   const scenario = catalogue.scenarios.find((row) => row.kind === 'mechanics'); assert.ok(scenario);

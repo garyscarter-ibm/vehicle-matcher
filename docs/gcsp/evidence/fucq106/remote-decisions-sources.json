@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "kind": "read-only-source-plan",
+  "observedAt": "2026-11-06T00:22:18.886839+00:00",
+  "story": "FUCQ-106",
+  "worktree": "DEV-2026-11-04-074",
+  "status": "proposal-only; no remote implementation or execution grant",
+  "sources": [
+    {
+      "role": "decision",
+      "ref": "53cbb58d6b9eeb776dd6e70fb27c862972cfb150",
+      "path": "server/gcsp/offers/decision.js",
+      "sha256": "a934455a09beb13e3682c1f10ebea95f0549ff2fad8db03d54ff947e7ed7789a",
+      "bytes": 23307
+    },
+    {
+      "role": "decision",
+      "ref": "53cbb58d6b9eeb776dd6e70fb27c862972cfb150",
+      "path": "server/gcsp/offers/decision-http.js",
+      "sha256": "223e3358569602145ecb2a5f967abf5a9e3ca78d688667d0e6c8bbb0c1779b96",
+      "bytes": 4782
+    },
+    {
+      "role": "producer",
+      "ref": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "path": "server/gcsp/offers/buddy-hold.js",
+      "sha256": "b9f1a9be9cf42552a56313492bf0703b49ed715ffe2059f477ee11637c44b3d6",
+      "bytes": 28746
+    },
+    {
+      "role": "producer",
+      "ref": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "path": "server/gcsp/offers/buddy-remote.js",
+      "sha256": "0284045ab38c22c305019ad4a560724aa233e830c6c37186d5661da430c59e01",
+      "bytes": 24229
+    },
+    {
+      "role": "producer",
+      "ref": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "path": "server/gcsp/repository/core.js",
+      "sha256": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+      "bytes": 30666
+    },
+    {
+      "role": "producer",
+      "ref": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "path": "server/gcsp/repository/schema.js",
+      "sha256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+      "bytes": 5562
+    },
+    {
+      "role": "producer",
+      "ref": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "path": "server/gcsp/clock/index.js",
+      "sha256": "a1726ddc4ad11deb0b7044480d745180d4c7dff42b34e77305a090b35d38e40a",
+      "bytes": 23255
+    },
+    {
+      "role": "producer",
+      "ref": "a7fc8580efba36c329b2479711d6b66db53962bd",
+      "path": "server/gcsp/brief/index.js",
+      "sha256": "22500a517f8232947b33ac274e32bf60746ba9d8199851e750784f57737ee418",
+      "bytes": 19768
+    },
+    {
+      "role": "access",
+      "ref": "4a56d386f031e7cf5a1fdeaefdcc612fb35cbd7b",
+      "path": "server/gcsp/offers/access.js",
+      "sha256": "134e9d39253e934618f6cf38b334bb7cf0f8912443ee159e6167b949d4fdb34a",
+      "bytes": 20668
+    },
+    {
+      "role": "ordering",
+      "ref": "ed20ca2a774d9368b4fce87a7e69b5e2ae30a7e8",
+      "path": "server/gcsp/manual-order/index.js",
+      "sha256": "b4b7798268cd51929b756ffb4c48e6f56579821094a0fa064f604d5886fcc352",
+      "bytes": 19660
+    },
+    {
+      "role": "ordering",
+      "ref": "ed20ca2a774d9368b4fce87a7e69b5e2ae30a7e8",
+      "path": "server/gcsp/manual-order/manual-conversion.js",
+      "sha256": "330ff1613ad01a08578f32c8cfdeaa763e6a8aa7844b68e433abea4d0ab1cb1f",
+      "bytes": 2336
+    },
+    {
+      "role": "ordering",
+      "ref": "ed20ca2a774d9368b4fce87a7e69b5e2ae30a7e8",
+      "path": "server/gcsp/manual-order/terms.js",
+      "sha256": "239f72b3abfb45944298ac3f0d504a36f501ef88fb3853c6e099a80337969eb6",
+      "bytes": 2207
+    },
+    {
+      "role": "ordering",
+      "ref": "ed20ca2a774d9368b4fce87a7e69b5e2ae30a7e8",
+      "path": "server/gcsp/adapters/synthetic-ordering.js",
+      "sha256": "c2b83391dc0b32e811a407a546d600631254e73810fa90eecc4ad6f70c1392be",
+      "bytes": 2401
+    },
+    {
+      "role": "ordering",
+      "ref": "ed20ca2a774d9368b4fce87a7e69b5e2ae30a7e8",
+      "path": "docs/gcsp/manual-order-contract.md",
+      "sha256": "e585b84561fc72816cc3df8aead573112a1075de980ed27ba707f6837ddb4caa",
+      "bytes": 10288
+    },
+    {
+      "role": "ordering",
+      "ref": "ed20ca2a774d9368b4fce87a7e69b5e2ae30a7e8",
+      "path": "docs/gcsp/evidence/fucq71/order-core-plan.md",
+      "sha256": "60c3355d2e75fea581909d03d7f9410db6eee5de7ed1e55de67fd39e5b8ab935",
+      "bytes": 4922
+    },
+    {
+      "role": "consumer_contracts",
+      "ref": "329c522f52de5fd7c02497d3a14e96bb9275a6ad",
+      "path": "_dev/code-inbox/DEV-2026-11-04-075.md",
+      "sha256": "93ffe0b5d2249c1086c41b95bd704c01eb2d6af5c9bdc9f1e14baa2f2f4a9cf8",
+      "bytes": 3639
+    },
+    {
+      "role": "consumer_contracts",
+      "ref": "329c522f52de5fd7c02497d3a14e96bb9275a6ad",
+      "path": "_dev/code-inbox/DEV-2026-11-04-085.md",
+      "sha256": "9e8636d373792e0428e42951b87ca4c5bde6cfe82e4f186e5e72a40cec46d7f2",
+      "bytes": 4286
+    }
+  ],
+  "sourceBytes": 230722,
+  "remoteRefs": [
+    {
+      "ref": "refs/heads/dev/DEV-2026-11-04-071",
+      "commit": "ed20ca2a774d9368b4fce87a7e69b5e2ae30a7e8"
+    },
+    {
+      "ref": "refs/leases/story/DEV-2026-11-04-071",
+      "commit": "f125399eadb79c2dc03a821249d03c34302894af"
+    }
+  ],
+  "consumerObservation": {
+    "sharedRef": "329c522f52de5fd7c02497d3a14e96bb9275a6ad",
+    "orderingRef": "ed20ca2a774d9368b4fce87a7e69b5e2ae30a7e8",
+    "executableFucq107or108ConsumerObserved": false,
+    "missingBranchAndLeaseRefs": [
+      "refs/heads/dev/DEV-2026-11-04-075",
+      "refs/heads/dev/DEV-2026-11-04-085",
+      "refs/leases/story/DEV-2026-11-04-075",
+      "refs/leases/story/DEV-2026-11-04-085"
+    ],
+    "limit": "Absence applies only to the listed refs and inspected immutable trees at observedAt; it establishes no future worker status."
+  },
+  "jiraNotice": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/jira-context-notices-0018.json",
+    "issue": "FUCQ-106",
+    "nativeUpdated": "2026-11-05T18:09:45.770-0600",
+    "updatedUtc": "2026-11-06T00:09:45.770Z",
+    "descriptionSha256": "e9f532b85ed50542dfc59751e8282b1cb75d0506eafabee5beff25153349af1e",
+    "scope": "Existing decision scope retained; ordering handoff, brief change and UI remain consumer-owned."
+  },
+  "execution": {
+    "featureImports": 0,
+    "testRuns": 0,
+    "servicesStarted": 0,
+    "scratchRootsCreated": 0,
+    "reason": "Documentation planning only; reuse accepted 25/12 evidence, no duplicate proofs."
+  }
+}

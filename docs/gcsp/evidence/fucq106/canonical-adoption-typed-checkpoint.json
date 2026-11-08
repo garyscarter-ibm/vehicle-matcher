@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "grant": "fucq106-typed-90cb70c-0033",
+  "status": "3/3 scoped actual canonical consumer memory checks pass; story incomplete",
+  "supervisorRuns": 1,
+  "supervisorExit": 0,
+  "observerFailure": null,
+  "totals": {
+    "tests": 3,
+    "suites": 0,
+    "pass": 3,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0
+  },
+  "totalsExactlyThreePass": true,
+  "sourceBeforeAfterMatch": true,
+  "moduleJournalMatches43": true,
+  "moduleJournalUniquePerProcess": true,
+  "observedCanonicalPaths": 43,
+  "log": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq106/fucq106-typed-90cb70c-0033-audit/original-checks.log",
+    "bytes": 966,
+    "sha256": "ecb0b74ac212ea73ece17cf98b38ff324e11c8b48273f7f6629104bf3e3a375d",
+    "fullOriginalRetained": true
+  },
+  "timing": {
+    "totalWallIncludingIndependentSourcePreparationAndFinalAuditSeconds": 12.080518709,
+    "supervisorWallIncludingImmutablePreparationSeconds": 7.0334857909999995,
+    "childExecutionSeconds": 3.716018542
+  },
+  "measuredChild": {
+    "peakRssBytes": 261767168,
+    "peakScratchBytes": 1167200
+  },
+  "sourcePlanSha256": "db0dfa478ddef3594abe5c74c0aaeddeefc61e9bd8fcedee4c0ba832ec178746",
+  "resources": {
+    "scratchRoot": "/private/tmp/test-stamp-shard-46653d6063ad4099a399403dea212fe9",
+    "scratchAbsent": true,
+    "processIdentities": [
+      {
+        "pid": 29351,
+        "start": "Fri Nov  6 01:03:49 2026"
+      },
+      {
+        "pid": 29354,
+        "start": "Fri Nov  6 01:03:49 2026"
+      }
+    ],
+    "liveOwnedProcesses": [],
+    "groups": [
+      {
+        "group": 29351,
+        "hasLiveMembers": false
+      }
+    ],
+    "supervisorAbsentAndReaped": true,
+    "reservationReleased": true,
+    "existingDependencyPreserved": true,
+    "dependencyLinksCreated": 0,
+    "openFileAudit": {
+      "status": "not-established",
+      "limitation": "Reviewed supervisor invokes lsof only after scratch deletion and ignores its return status. Its empty output is not a successful independent open-file scan. Recorded processes/groups and scratch absence are independently checked here; observer log descriptor was closed before this audit."
+    }
+  },
+  "resultPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq106/fucq106-typed-90cb70c-0033/result.json",
+  "manifestPath": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq106/fucq106-typed-90cb70c-0033/ownership/46653d6063ad4099a399403dea212fe9.json",
+  "observerPid": 29156,
+  "observerStart": "Fri Nov  6 01:03:43 2026",
+  "limit": "No successful independent open-file scan is claimed. Child 120-second budget excludes immutable preparation. No retry is authorized or launched.",
+  "sourceCheckpoint": "90cb70ce951a4c9de934e792b8b7fbee0665d934",
+  "canonical103": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+  "approvedPlanSha256": "db0dfa478ddef3594abe5c74c0aaeddeefc61e9bd8fcedee4c0ba832ec178746",
+  "testSha256": "f31dcf480816fec2e9fc8040e87a15d1cbf02ef77222ca0ab1f7894329b4b63f",
+  "priorPartial": {
+    "path": "docs/gcsp/evidence/fucq106/canonical-adoption-checkpoint.json",
+    "sha256": "4b13343770e3a261ee08bb0749836ae151dfb865d1817f9d506efd17eb866e16",
+    "result": "Separate original granted run:2pass1fail0skip0cancel, retained unchanged; not represented as a single all-passing run."
+  },
+  "reusedEvidence": "25/25 independent and12/12 actual memory unchanged and not rerun",
+  "assertedBoundaries": [
+    "Real same MemoryPolicyProvider read/writable views, canonical reviewed-reason adoption, run activation and original adoption-command replay",
+    "Actual100 producer and102 privately branded token/account capabilities with106 local decision service and stored-subject evaluator",
+    "Canonical decline reasons/exclusion provenance distinct from retained quote policy; one decision/source event and cross-route original outcome",
+    "Actual dated price publication/activation changes current scalar price while106 acceptance retains exact typed quote value/unit and immutable quote",
+    "Actual dated reason-label publication/activation reaches in-process decision-reasons HTTP; original decision/event/quote/retained reason stay unchanged"
+  ],
+  "finalAudit": {
+    "at": "2026-11-06T01:05:30.178080+00:00",
+    "grant": "fucq106-typed-90cb70c-0033",
+    "observerAbsent": true,
+    "observerPid": 29156,
+    "observerOriginalStart": "Fri Nov  6 01:03:43 2026",
+    "supervisorPid": 29258,
+    "testProcesses": [
+      {
+        "pid": 29351,
+        "recordedStart": "Fri Nov  6 01:03:49 2026",
+        "currentStart": null
+      },
+      {
+        "pid": 29354,
+        "recordedStart": "Fri Nov  6 01:03:49 2026",
+        "currentStart": null
+      }
+    ],
+    "groups": [
+      {
+        "group": 29351,
+        "hasLiveMembers": false
+      }
+    ],
+    "scratchRoot": "/private/tmp/test-stamp-shard-46653d6063ad4099a399403dea212fe9",
+    "scratchAbsent": true,
+    "reservationReleased": true,
+    "existingDependencyPreserved": true,
+    "dependencyLinksCreated": 0,
+    "openFileAudit": {
+      "status": "not-established",
+      "limitation": "Reviewed supervisor calls lsof after deletion and ignores its error status; openFiles=[] is not a successful scan. Recorded process/group/PID, reservation, scratch and dependency facts were independently rechecked after the observer exited."
+    }
+  },
+  "retainedArtifacts": [
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-typed-original.log",
+      "sha256": "ecb0b74ac212ea73ece17cf98b38ff324e11c8b48273f7f6629104bf3e3a375d",
+      "bytes": 966
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-typed-run-plan.json",
+      "sha256": "0c1048c4ec3124f13b52e8bf844bd8bdfdbcc9226aa3734fa8027f6da0f186bd",
+      "bytes": 12595
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-typed-run-result.json",
+      "sha256": "4d7741a8e193f0cef10101974b68a1a13c2602b8b64c9393c71723c068d7505f",
+      "bytes": 817
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-typed-module-journal.json",
+      "sha256": "bd55775a5d64743a179b97104bca003213818a66b2fb491f8b0b894c0a152249",
+      "bytes": 14198
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-typed-final-audit.json",
+      "sha256": "975d1b496bf41506379db0c47278d0eeb7d5669d9c4382b05f335268f132c672",
+      "bytes": 1078
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-typed-observer.py",
+      "sha256": "05409adc54ec432e6c45c391ee326c057b7f211fa45eedfea43e06127bf4b23c",
+      "bytes": 12017
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-typed-review.json",
+      "sha256": "0407071becc8df7205d1b3642ce59db2c3a6f1197403df7b1c93212b711090e7",
+      "bytes": 1107
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-typed-grant.json",
+      "sha256": "43bed70f674ce1505cf56fcf10ddfbc4d9da489daefadb0e870e5ac1a0a52a0b",
+      "bytes": 1199
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq106/canonical-adoption-typed-source-audit.json",
+      "sha256": "279c33db40735e23fb00de90e25c4fd426c1042ef612eb41681bf67979271cb4",
+      "bytes": 29974
+    }
+  ],
+  "artifactAllocation": {
+    "paths": [
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq106/fucq106-typed-90cb70c-0033",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq106/fucq106-typed-90cb70c-0033-audit"
+    ],
+    "logicalBytes": 79455,
+    "allocatedBytes": 131072,
+    "scratchRemovedBytesAtSampledPeak": 1167200,
+    "largeOutputOrCompatibilityException": null
+  },
+  "grantConsumed": true,
+  "furtherExecutionAuthorized": false,
+  "storyStatus": "blocked",
+  "excluded": [
+    "accepted 25/12 reruns",
+    "central runtime/HTTP listener/browser",
+    "native PostgreSQL/secret/install",
+    "remote decisions/71/108 seam",
+    "actual 107/108 consumers",
+    "FUCQ115 adoption/generation/training",
+    "live activation/network/mail/full suite"
+  ]
+}

@@ -51,6 +51,15 @@ function validComparison(v, decisionId) {
     && c.next.offer.quote?.briefVersion === c.currentBriefVersion;
 }
 
+const instant = (v) => typeof v === 'string' && Number.isFinite(Date.parse(v)) && new Date(v).toISOString() === v;
+const exact = (v, keys) => object(v) && Object.keys(v).length === keys.length && keys.every((k) => Object.hasOwn(v, k));
+const waitingState = (v, decisionId) => exact(v, ['schemaVersion', 'state', 'decisionId', 'savedChange'])
+  && v.schemaVersion === 1 && v.state === 'waiting' && v.decisionId === decisionId && saved(v.savedChange, decisionId);
+const noMatchState = (v, decisionId) => exact(v, ['schemaVersion', 'state', 'decisionId', 'savedChange', 'evaluation'])
+  && v.schemaVersion === 1 && v.state === 'no-match' && v.decisionId === decisionId && saved(v.savedChange, decisionId)
+  && exact(v.evaluation, ['evaluatedAt', 'carsChecked', 'suitable']) && instant(v.evaluation.evaluatedAt)
+  && Number.isSafeInteger(v.evaluation.carsChecked) && v.evaluation.carsChecked >= 0 && v.evaluation.suitable === 0;
+
 function valueError(question, value) {
   const control = question.control;
   if (control.kind === 'options' && !control.options.some((o) => o.value === value)) return 'Choose one of the options.';
@@ -91,6 +100,10 @@ export function createFollowupController({ decisionId, transport, createCommandI
       pending = null;
       state = { state: 'ready', savedChange: copy(v.savedChange), comparison: copy(v.comparison),
         question: null, busy: false, error: '', canConfirm: false };
+    } else if (outcome?.status === 'ok' && (waitingState(v, decisionId) || noMatchState(v, decisionId))) {
+      pending = null;
+      state = { state: v.state, savedChange: copy(v.savedChange), question: null, busy: false, error: '', canConfirm: false,
+        ...(v.evaluation ? { evaluation: copy(v.evaluation) } : {}) };
     } else {
       const stateName = outcome?.status === 'stale-run' ? 'stale-run'
         : ['forbidden', 'missing-session', 'unknown-session', 'unknown-principal', 'expired-session'].includes(outcome?.status) ? 'forbidden'

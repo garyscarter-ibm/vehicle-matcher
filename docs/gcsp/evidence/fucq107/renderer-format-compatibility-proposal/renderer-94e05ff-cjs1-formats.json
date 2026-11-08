@@ -1,0 +1,3058 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-107",
+  "status": "author-only-unreviewed-unexecuted",
+  "dependencyPlanSHA256": "59838f3f60cc54ffffd4150aad7d9fbfdeef0bfc3408de3e7b1c76929a852597",
+  "purpose": "Finite nextLoad format hints for the already-pinned typeless CommonJS .js files only; no executable scope or package mutation.",
+  "observedFailure": "The first attempt refused pinned tldts/dist/cjs/index.js before all nine selected cases; the actual returned format was not journalled and is unknown.",
+  "sourceBasis": [
+    {
+      "url": "https://raw.githubusercontent.com/nodejs/node/v26.5.0/lib/internal/modules/cjs/loader.js",
+      "symbols": [
+        "getDefaultLoad",
+        "loadSource",
+        "Module._extensions['.js']"
+      ],
+      "finding": "The CJS default load returns the supplied context.format; typeless .js need not supply it before the full load chain completes."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/nodejs/node/v26.5.0/lib/internal/modules/customization_hooks.js",
+      "symbols": [
+        "buildHooks",
+        "ModuleLoadContext",
+        "loadWithHooks"
+      ],
+      "finding": "Synchronous nextLoad merges supplied context properties; capture input before that merge for the journal."
+    },
+    {
+      "url": "https://nodejs.org/download/release/v26.5.1/docs/api/module.html#synchronous-loadurl-context-nextload",
+      "finding": "The synchronous load contract accepts format context and says it is mandatory for default nextLoad without explicit module type."
+    }
+  ],
+  "rule": "Only an exact listed dependency URL with matching bytes and reviewed nearest typeless package metadata receives format=commonjs when incoming context.format is null or undefined. Explicit commonjs remains unchanged; contradictory explicit formats are refused. Every returned non-builtin format must still be module, commonjs or json.",
+  "basis": [
+    {
+      "id": 0,
+      "name": "whatwg-url",
+      "version": "16.0.1",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/data-urls/node_modules/whatwg-url",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/data-urls/node_modules/whatwg-url/package.json",
+      "packageJsonSHA256": "8faef05a20e34e19f755c0e685f02e5cf7945c34ad5f45ff2738338ab1fc89b2",
+      "packageJsonBytes": 1479,
+      "main": "index.js",
+      "module": null,
+      "exports": null,
+      "rationale": "Pinned CommonJS package entry and CommonJS source in each listed file; no explicit package type.",
+      "selectedFiles": 14
+    },
+    {
+      "id": 1,
+      "name": "is-potential-custom-element-name",
+      "version": "1.0.1",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/is-potential-custom-element-name",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/is-potential-custom-element-name/package.json",
+      "packageJsonSHA256": "9b41645708a8d3fdae25ceac23c0b8861be9010c6c9dbb9770d0018e803bd1d9",
+      "packageJsonBytes": 936,
+      "main": "index.js",
+      "module": null,
+      "exports": null,
+      "rationale": "Pinned CommonJS package entry and CommonJS source in each listed file; no explicit package type.",
+      "selectedFiles": 1
+    },
+    {
+      "id": 2,
+      "name": "html-encoding-sniffer",
+      "version": "6.0.0",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/html-encoding-sniffer",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/html-encoding-sniffer/package.json",
+      "packageJsonSHA256": "076b124776de77e05e0e883fcbb85dafbc0d91a3cb1a8b0ced901c75abbdca56",
+      "packageJsonBytes": 749,
+      "main": "lib/html-encoding-sniffer.js",
+      "module": null,
+      "exports": null,
+      "rationale": "Pinned CommonJS package entry and CommonJS source in each listed file; no explicit package type.",
+      "selectedFiles": 1
+    },
+    {
+      "id": 3,
+      "name": "require-from-string",
+      "version": "2.0.2",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/require-from-string",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/require-from-string/package.json",
+      "packageJsonSHA256": "c0002f7d4c7d7e2a885cf0f97226344902417c3a0980f2beca41962d2bc1f6d8",
+      "packageJsonBytes": 511,
+      "main": null,
+      "module": null,
+      "exports": null,
+      "rationale": "Pinned CommonJS package entry and CommonJS source in each listed file; no explicit package type.",
+      "selectedFiles": 1
+    },
+    {
+      "id": 4,
+      "name": "xml-name-validator",
+      "version": "5.0.0",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/xml-name-validator",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/xml-name-validator/package.json",
+      "packageJsonSHA256": "08d74267200473a56d572d7453324e896d98150077c9af7e9efb73faaf447de6",
+      "packageJsonBytes": 699,
+      "main": "lib/xml-name-validator.js",
+      "module": null,
+      "exports": null,
+      "rationale": "Pinned CommonJS package entry and CommonJS source in each listed file; no explicit package type.",
+      "selectedFiles": 1
+    },
+    {
+      "id": 5,
+      "name": "webidl-conversions",
+      "version": "8.0.1",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/webidl-conversions",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/webidl-conversions/package.json",
+      "packageJsonSHA256": "2c964d3940c039d74fb1ebb5158969cf737e3e5d548d6620e5fb5258e34cfab7",
+      "packageJsonBytes": 794,
+      "main": "lib/index.js",
+      "module": null,
+      "exports": null,
+      "rationale": "Pinned CommonJS package entry and CommonJS source in each listed file; no explicit package type.",
+      "selectedFiles": 1
+    },
+    {
+      "id": 6,
+      "name": "w3c-xmlserializer",
+      "version": "5.0.0",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/w3c-xmlserializer",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/w3c-xmlserializer/package.json",
+      "packageJsonSHA256": "56d3dbb5448f88c83cdc77fe3a5074dcb4936f140ed7e5f81a81ac910152acde",
+      "packageJsonBytes": 598,
+      "main": "lib/serialize.js",
+      "module": null,
+      "exports": null,
+      "rationale": "Pinned CommonJS package entry and CommonJS source in each listed file; no explicit package type.",
+      "selectedFiles": 3
+    },
+    {
+      "id": 7,
+      "name": "whatwg-mimetype",
+      "version": "5.0.0",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-mimetype",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-mimetype/package.json",
+      "packageJsonSHA256": "8f3f428034995a3424b3e6ebaf7a38899e556337bd1016734149cfb73035a7c6",
+      "packageJsonBytes": 971,
+      "main": "lib/index.js",
+      "module": null,
+      "exports": null,
+      "rationale": "Pinned CommonJS package entry and CommonJS source in each listed file; no explicit package type.",
+      "selectedFiles": 7
+    },
+    {
+      "id": 8,
+      "name": "source-map-js",
+      "version": "1.2.1",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/source-map-js",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/source-map-js/package.json",
+      "packageJsonSHA256": "58f8e94a461a5e461e0cb2bb2be681cbd89b9181989fd26fceb858e67711469a",
+      "packageJsonBytes": 2548,
+      "main": "./source-map.js",
+      "module": null,
+      "exports": null,
+      "rationale": "Pinned CommonJS package entry and CommonJS source in each listed file; no explicit package type.",
+      "selectedFiles": 11
+    },
+    {
+      "id": 9,
+      "name": "symbol-tree",
+      "version": "3.2.4",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/symbol-tree",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/symbol-tree/package.json",
+      "packageJsonSHA256": "962fd6c0ed18cdec3bdb7df4684da775e294078a8302504e8ce04c711e1c37d4",
+      "packageJsonBytes": 1296,
+      "main": "lib/SymbolTree.js",
+      "module": null,
+      "exports": null,
+      "rationale": "Pinned CommonJS package entry and CommonJS source in each listed file; no explicit package type.",
+      "selectedFiles": 4
+    },
+    {
+      "id": 10,
+      "name": "whatwg-url",
+      "version": "17.1.0",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-url",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-url/package.json",
+      "packageJsonSHA256": "f0d6bcb0bd256ff6c71987aa51fed66b1f907c506ade2e8953abf9f2642913fe",
+      "packageJsonBytes": 1467,
+      "main": "index.js",
+      "module": null,
+      "exports": null,
+      "rationale": "Pinned CommonJS package entry and CommonJS source in each listed file; no explicit package type.",
+      "selectedFiles": 16
+    },
+    {
+      "id": 11,
+      "name": "tldts-core",
+      "version": "7.4.10",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/package.json",
+      "packageJsonSHA256": "241fb1ee5ebcf7286d66f41a9e504179612de1991c4c78905eb9dc032e3e3ecd",
+      "packageJsonBytes": 2112,
+      "main": "dist/cjs/index.js",
+      "module": "dist/es6/index.js",
+      "exports": null,
+      "rationale": "Pinned main is dist/cjs/index.js; only its CommonJS distribution is selected. Separate ES6 and minified/CLI alternatives are excluded.",
+      "selectedFiles": 12
+    },
+    {
+      "id": 12,
+      "name": "decimal.js",
+      "version": "10.6.0",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/decimal.js",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/decimal.js/package.json",
+      "packageJsonSHA256": "d7e3794828ee8bc94818613c9d901a9e7c857e6ffcf027245e661ddfc63d9b72",
+      "packageJsonBytes": 1190,
+      "main": "decimal",
+      "module": "decimal.mjs",
+      "exports": {
+        ".": {
+          "types": "./decimal.d.ts",
+          "import": "./decimal.mjs",
+          "require": "./decimal.js"
+        },
+        "./decimal.mjs": "./decimal.mjs",
+        "./decimal.js": "./decimal.js",
+        "./package.json": "./package.json",
+        "./decimal": {
+          "types": "./decimal.d.ts",
+          "import": "./decimal.mjs",
+          "require": "./decimal.js"
+        }
+      },
+      "rationale": "Pinned require export selects decimal.js with its CommonJS UMD branch; the import export selects decimal.mjs and is excluded.",
+      "selectedFiles": 1
+    },
+    {
+      "id": 13,
+      "name": "data-urls",
+      "version": "7.0.0",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/data-urls",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/data-urls/package.json",
+      "packageJsonSHA256": "434b07314556233bfb57a58fb833b027d4665cfee2196b223f2d5c4d85c30460",
+      "packageJsonBytes": 1025,
+      "main": "lib/parser.js",
+      "module": null,
+      "exports": null,
+      "rationale": "Pinned CommonJS package entry and CommonJS source in each listed file; no explicit package type.",
+      "selectedFiles": 2
+    },
+    {
+      "id": 14,
+      "name": "punycode",
+      "version": "2.3.1",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/punycode",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/punycode/package.json",
+      "packageJsonSHA256": "e025033bd11110af671fb8eb62f0db8895073ccdca70b596aa94a27eb5bf9acb",
+      "packageJsonBytes": 1227,
+      "main": "punycode.js",
+      "module": "punycode.es6.js",
+      "exports": null,
+      "rationale": "Pinned main punycode.js has module.exports; the distinct module punycode.es6.js is excluded.",
+      "selectedFiles": 1
+    },
+    {
+      "id": 15,
+      "name": "xmlchars",
+      "version": "2.2.0",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/xmlchars",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/xmlchars/package.json",
+      "packageJsonSHA256": "a91c0b20003ff9399dde1de8c59681f1b6901c6fb1aac71780a3a876dc548583",
+      "packageJsonBytes": 2064,
+      "main": "xmlchars.js",
+      "module": null,
+      "exports": null,
+      "rationale": "Pinned CommonJS package entry and CommonJS source in each listed file; no explicit package type.",
+      "selectedFiles": 5
+    },
+    {
+      "id": 16,
+      "name": "mdn-data",
+      "version": "2.27.1",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/mdn-data",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/mdn-data/package.json",
+      "packageJsonSHA256": "4454243524dd13a032e0c70554ef1c51a92033559647edd8d12e6f0c0b992df3",
+      "packageJsonBytes": 763,
+      "main": "index.js",
+      "module": null,
+      "exports": null,
+      "rationale": "Pinned CommonJS package entry and CommonJS source in each listed file; no explicit package type.",
+      "selectedFiles": 4
+    },
+    {
+      "id": 17,
+      "name": "bidi-js",
+      "version": "1.0.3",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/bidi-js",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/bidi-js/package.json",
+      "packageJsonSHA256": "c2579f7705ab96dcc6192ab5a317d87760d2be7c67d72976d85edb4181bec5de",
+      "packageJsonBytes": 1068,
+      "main": "dist/bidi.js",
+      "module": "dist/bidi.mjs",
+      "exports": null,
+      "rationale": "Pinned main dist/bidi.js has a CommonJS UMD branch; source ES modules and alternative builds are excluded.",
+      "selectedFiles": 1
+    },
+    {
+      "id": 18,
+      "name": "undici",
+      "version": "8.10.0",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/package.json",
+      "packageJsonSHA256": "ee48089fa2a5a69c8b8b3383e9dc1157be295e9a3c28e8d1e837fc398ab5ef81",
+      "packageJsonBytes": 6325,
+      "main": "index.js",
+      "module": null,
+      "exports": null,
+      "rationale": "Pinned CommonJS package entry and CommonJS source in each listed file; no explicit package type.",
+      "selectedFiles": 112
+    },
+    {
+      "id": 19,
+      "name": "tldts",
+      "version": "7.4.10",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts/package.json",
+      "packageJsonSHA256": "8f1d718152af1009b0bdc3e04e02963c1d3d472f02c8aaf89946ec47cdb8df1c",
+      "packageJsonBytes": 2508,
+      "main": "dist/cjs/index.js",
+      "module": "dist/es6/index.js",
+      "exports": null,
+      "rationale": "Pinned main is dist/cjs/index.js; only its CommonJS distribution is selected. Separate ES6 and minified/CLI alternatives are excluded.",
+      "selectedFiles": 3
+    },
+    {
+      "id": 20,
+      "name": "saxes",
+      "version": "6.0.0",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/saxes",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/saxes/package.json",
+      "packageJsonSHA256": "32052572b41c2a890ed0854798c48454cc5991dcaafe5fb1718a4253046acfd3",
+      "packageJsonBytes": 2845,
+      "main": "saxes.js",
+      "module": null,
+      "exports": null,
+      "rationale": "Pinned CommonJS package entry and CommonJS source in each listed file; no explicit package type.",
+      "selectedFiles": 1
+    },
+    {
+      "id": 21,
+      "name": "tr46",
+      "version": "6.0.0",
+      "packageRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tr46",
+      "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tr46/package.json",
+      "packageJsonSHA256": "3cc81081409bea2f0fd4ec18d64c542a18e0ac6f7f970c7f7be4139aaa8d140f",
+      "packageJsonBytes": 1054,
+      "main": "index.js",
+      "module": null,
+      "exports": null,
+      "rationale": "Pinned CommonJS package entry and CommonJS source in each listed file; no explicit package type.",
+      "selectedFiles": 3
+    }
+  ],
+  "rows": [
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/bidi-js/dist/bidi.js",
+      "sha256": "5b58433ed951be70376bee55cb9a98cdce788e00cd2fa5f881cbcb1dcad03102",
+      "bytes": 45563,
+      "format": "commonjs",
+      "basis": 17,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/data-urls/lib/parser.js",
+      "sha256": "48c45157400dce68922f04991a5423007b5fa8942cf739bbc96a2d61e6520b1a",
+      "bytes": 1685,
+      "format": "commonjs",
+      "basis": 13,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "const { MIMEType } = require(\"whatwg-mimetype\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/data-urls/lib/utils.js",
+      "sha256": "deb5b27c271cb6c353032a5876c8875bc8f2adf3c8a6d5bba8f431b76ab9b4db",
+      "bytes": 461,
+      "format": "commonjs",
+      "basis": 13,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "exports.stripLeadingAndTrailingASCIIWhitespace = string => {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/data-urls/node_modules/whatwg-url/index.js",
+      "sha256": "b27c577dfd552c6f3d75bec52beefbd062b7bff56e9e1de415edf103c63de243",
+      "bytes": 1264,
+      "format": "commonjs",
+      "basis": 0,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { URL, URLSearchParams } = require(\"./webidl2js-wrapper\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/data-urls/node_modules/whatwg-url/lib/Function.js",
+      "sha256": "913cb6a510a344fd81bdfd45c5053bc63352d31331e4e97daf6bb9baf8317910",
+      "bytes": 1186,
+      "format": "commonjs",
+      "basis": 0,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const conversions = require(\"webidl-conversions\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/data-urls/node_modules/whatwg-url/lib/URL-impl.js",
+      "sha256": "91378285100dcd2491f950c9fc35c3785d8ccdb4d00d7cdc8d9056fde25039b3",
+      "bytes": 5116,
+      "format": "commonjs",
+      "basis": 0,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "const usm = require(\"./url-state-machine\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/data-urls/node_modules/whatwg-url/lib/URL.js",
+      "sha256": "67b35d289430feb76670e040c771429695846523349321fcdaae30a740f03687",
+      "bytes": 15383,
+      "format": "commonjs",
+      "basis": 0,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const conversions = require(\"webidl-conversions\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/data-urls/node_modules/whatwg-url/lib/URLSearchParams-impl.js",
+      "sha256": "27e7cc0a8142d148529b7865ec10db1ce5e0a39d42004fc080ff42245cd6799c",
+      "bytes": 2970,
+      "format": "commonjs",
+      "basis": 0,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "const urlencoded = require(\"./urlencoded\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/data-urls/node_modules/whatwg-url/lib/URLSearchParams.js",
+      "sha256": "1cc8ab89493211075742ecce549d0e92ca1965f3377543b9835502f1f1ce75f2",
+      "bytes": 17120,
+      "format": "commonjs",
+      "basis": 0,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const conversions = require(\"webidl-conversions\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/data-urls/node_modules/whatwg-url/lib/VoidFunction.js",
+      "sha256": "9b404e93615b95bd26051da63d631d134ae8c7ff057d2324d094abed18ff8dcc",
+      "bytes": 728,
+      "format": "commonjs",
+      "basis": 0,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const conversions = require(\"webidl-conversions\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/data-urls/node_modules/whatwg-url/lib/encoding.js",
+      "sha256": "a63171ed7efc4bf570f07d06aab52ffcda1f0ee965a0bb0fca35e8be5ec3624d",
+      "bytes": 328,
+      "format": "commonjs",
+      "basis": 0,
+      "sourceEvidence": [
+        {
+          "line": 13,
+          "text": "module.exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/data-urls/node_modules/whatwg-url/lib/infra.js",
+      "sha256": "91fbea02892661405243c59d70441718b92e405e3787ae3297e4ab36bc825bfa",
+      "bytes": 518,
+      "format": "commonjs",
+      "basis": 0,
+      "sourceEvidence": [
+        {
+          "line": 21,
+          "text": "module.exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/data-urls/node_modules/whatwg-url/lib/percent-encoding.js",
+      "sha256": "cd983d2133298de256b1b02b4d9c7acbb17319d7da4b31cedd139cc86569b1d0",
+      "bytes": 5300,
+      "format": "commonjs",
+      "basis": 0,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "const { isASCIIHex } = require(\"./infra\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/data-urls/node_modules/whatwg-url/lib/url-state-machine.js",
+      "sha256": "19222c77e1e28cbbbe5428c3d0a0c563e562909987c358b1c21d1b7f7e8d4318",
+      "bytes": 31989,
+      "format": "commonjs",
+      "basis": 0,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "require(\"@exodus/bytes/encoding.js\"); // for legacy multi-byte encodings"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/data-urls/node_modules/whatwg-url/lib/urlencoded.js",
+      "sha256": "6d050ce6399b0fef3771a1395efb3d3d7e6429e4c9ac36ef4e64ebf3e70238a4",
+      "bytes": 2280,
+      "format": "commonjs",
+      "basis": 0,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "const { utf8Encode, utf8DecodeWithoutBOM } = require(\"./encoding\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/data-urls/node_modules/whatwg-url/lib/utils.js",
+      "sha256": "4dd8809287e915c98252deff09b2cd0abc57c491e9af69b3d0a3d44885bc6b87",
+      "bytes": 7087,
+      "format": "commonjs",
+      "basis": 0,
+      "sourceEvidence": [
+        {
+          "line": 218,
+          "text": "module.exports = exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/data-urls/node_modules/whatwg-url/webidl2js-wrapper.js",
+      "sha256": "c139eba2be96bec43b3bb1ed5813e07fd9a25a1c5df8ebf37bda987e10445371",
+      "bytes": 170,
+      "format": "commonjs",
+      "basis": 0,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const URL = require(\"./lib/URL\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/decimal.js/decimal.js",
+      "sha256": "6e99821f8204c5f611b56077e3fce056a1562d22bc341a1f4af01afe7e527d83",
+      "bytes": 136673,
+      "format": "commonjs",
+      "basis": 12,
+      "sourceEvidence": [
+        {
+          "line": 4929,
+          "text": "} else if (typeof module != 'undefined' && module.exports) {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/html-encoding-sniffer/lib/html-encoding-sniffer.js",
+      "sha256": "0d614c9fdbe31a6b680a8e5e6cc5af5b294bdbd8065e2bbff7c8760e17c866f9",
+      "bytes": 7807,
+      "format": "commonjs",
+      "basis": 2,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "const { getBOMEncoding, labelToName } = require(\"@exodus/bytes/encoding-lite.js\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/is-potential-custom-element-name/index.js",
+      "sha256": "8718b971d49c04a5127aeaffee16cd9a920deb400d8c269c390d521800f1fbf5",
+      "bytes": 576,
+      "format": "commonjs",
+      "basis": 1,
+      "sourceEvidence": [
+        {
+          "line": 9,
+          "text": "module.exports = isPotentialCustomElementName;"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/mdn-data/api/index.js",
+      "sha256": "d64dc22bf59b522965975947a1195ea4ee3f80a9dbe77d3bea0392b9f331fc9b",
+      "bytes": 62,
+      "format": "commonjs",
+      "basis": 16,
+      "sourceEvidence": [
+        {
+          "line": 1,
+          "text": "module.exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/mdn-data/css/index.js",
+      "sha256": "3d884ef2d41bae9667c3f00b4928fa622287d963fbe55bfb3e649b5a45ebe99e",
+      "bytes": 278,
+      "format": "commonjs",
+      "basis": 16,
+      "sourceEvidence": [
+        {
+          "line": 1,
+          "text": "module.exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/mdn-data/index.js",
+      "sha256": "f477203c684448b958aac1206fe3e8d40115a00c00327b406b89510f54f9238d",
+      "bytes": 98,
+      "format": "commonjs",
+      "basis": 16,
+      "sourceEvidence": [
+        {
+          "line": 1,
+          "text": "module.exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/mdn-data/l10n/index.js",
+      "sha256": "c04e89544d584e231e4c4bef575326763c8e47eac37d8691dc31d0330e962780",
+      "bytes": 46,
+      "format": "commonjs",
+      "basis": 16,
+      "sourceEvidence": [
+        {
+          "line": 1,
+          "text": "module.exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/punycode/punycode.js",
+      "sha256": "6052a80eac47e46bd4de17ae0095e0192c336d3d7c387d292ad2176ebfc53d04",
+      "bytes": 12711,
+      "format": "commonjs",
+      "basis": 14,
+      "sourceEvidence": [
+        {
+          "line": 443,
+          "text": "module.exports = punycode;"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/require-from-string/index.js",
+      "sha256": "cb059342a762b955997bf780f3693add176922727f2fa9f11fcaf1b3fc323239",
+      "bytes": 866,
+      "format": "commonjs",
+      "basis": 3,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "var Module = require('module');"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/saxes/saxes.js",
+      "sha256": "d00e2ba27ed7d6ac961d03ff14d6b8c0eb5bf063ed2c996c22c6df06ac121423",
+      "bytes": 73792,
+      "format": "commonjs",
+      "basis": 20,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "Object.defineProperty(exports, \"__esModule\", { value: true });"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/source-map-js/lib/array-set.js",
+      "sha256": "163bb3055aaea7140167740036a83161fd912c344b14f992754b80f21477d754",
+      "bytes": 3197,
+      "format": "commonjs",
+      "basis": 8,
+      "sourceEvidence": [
+        {
+          "line": 8,
+          "text": "var util = require('./util');"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/source-map-js/lib/base64-vlq.js",
+      "sha256": "f3407e528f54ec0787bd0a71eeac0c99fffd98445916fcbe116dc69ca3be928b",
+      "bytes": 4714,
+      "format": "commonjs",
+      "basis": 8,
+      "sourceEvidence": [
+        {
+          "line": 38,
+          "text": "var base64 = require('./base64');"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/source-map-js/lib/base64.js",
+      "sha256": "651bf433cf05e9ec8cee0b94639483236a605d48279e83d3d5c5de81c21d6599",
+      "bytes": 1540,
+      "format": "commonjs",
+      "basis": 8,
+      "sourceEvidence": [
+        {
+          "line": 13,
+          "text": "exports.encode = function (number) {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/source-map-js/lib/binary-search.js",
+      "sha256": "c7f4a47a125af0bd860443dfd71d2f412d1a97dcb53ab7038189d63b91dc32bd",
+      "bytes": 4249,
+      "format": "commonjs",
+      "basis": 8,
+      "sourceEvidence": [
+        {
+          "line": 8,
+          "text": "exports.GREATEST_LOWER_BOUND = 1;"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/source-map-js/lib/mapping-list.js",
+      "sha256": "35ddb82861f11a70ab84cb47d620fcb28d7f884bb444644e06bde815b836ef9e",
+      "bytes": 2339,
+      "format": "commonjs",
+      "basis": 8,
+      "sourceEvidence": [
+        {
+          "line": 8,
+          "text": "var util = require('./util');"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/source-map-js/lib/quick-sort.js",
+      "sha256": "72ed4911cdc72232cac53cac995e28e865cd4302186173bba74ff6436c089915",
+      "bytes": 4068,
+      "format": "commonjs",
+      "basis": 8,
+      "sourceEvidence": [
+        {
+          "line": 125,
+          "text": "exports.quickSort = function (ary, comparator, start = 0) {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/source-map-js/lib/source-map-consumer.js",
+      "sha256": "78f7a8f6d20f51a99a9cbd8d552321b1a72de9b9fb9c39dbeb27dc84eb2eade5",
+      "bytes": 41580,
+      "format": "commonjs",
+      "basis": 8,
+      "sourceEvidence": [
+        {
+          "line": 8,
+          "text": "var util = require('./util');"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/source-map-js/lib/source-map-generator.js",
+      "sha256": "645482e8d23fd49cd025a0ad07c2e2beb173995138370d6a73e596e18e889bd8",
+      "bytes": 14933,
+      "format": "commonjs",
+      "basis": 8,
+      "sourceEvidence": [
+        {
+          "line": 8,
+          "text": "var base64VLQ = require('./base64-vlq');"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/source-map-js/lib/source-node.js",
+      "sha256": "b45db8183550ca1e6259976f6ceee89f6764360c56cf206701bd2f7471144e31",
+      "bytes": 13808,
+      "format": "commonjs",
+      "basis": 8,
+      "sourceEvidence": [
+        {
+          "line": 8,
+          "text": "var SourceMapGenerator = require('./source-map-generator').SourceMapGenerator;"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/source-map-js/lib/util.js",
+      "sha256": "0629f3ae2f3049cda3a2e87ea651dcf0cc71108f4681795ab989a8ac1573fc03",
+      "bytes": 15403,
+      "format": "commonjs",
+      "basis": 8,
+      "sourceEvidence": [
+        {
+          "line": 27,
+          "text": "exports.getArg = getArg;"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/source-map-js/source-map.js",
+      "sha256": "dc098456c2d9ab90a4c0a17cca9be16665b9813df20906553a98b0088a157be7",
+      "bytes": 405,
+      "format": "commonjs",
+      "basis": 8,
+      "sourceEvidence": [
+        {
+          "line": 6,
+          "text": "exports.SourceMapGenerator = require('./lib/source-map-generator').SourceMapGenerator;"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/symbol-tree/lib/SymbolTree.js",
+      "sha256": "0606da31b0d0f0c8af2265c02887ef8e0be5eb554ecbae4529a0331dcd448f43",
+      "bytes": 29510,
+      "format": "commonjs",
+      "basis": 9,
+      "sourceEvidence": [
+        {
+          "line": 8,
+          "text": "const SymbolTreeNode = require('./SymbolTreeNode');"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/symbol-tree/lib/SymbolTreeNode.js",
+      "sha256": "f25cf7198c5d6b5eac18e6cdceb68a64bcd7162cad33d79a1ec7872740df9528",
+      "bytes": 1935,
+      "format": "commonjs",
+      "basis": 9,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "module.exports = class SymbolTreeNode {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/symbol-tree/lib/TreeIterator.js",
+      "sha256": "16cbb4dcfc0021bc5d2dda0b038c32ea71dcd036650d6ec7ec551a370251e4df",
+      "bytes": 1975,
+      "format": "commonjs",
+      "basis": 9,
+      "sourceEvidence": [
+        {
+          "line": 69,
+          "text": "module.exports = TreeIterator;"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/symbol-tree/lib/TreePosition.js",
+      "sha256": "2577c643320c954d6d0c32ff8e50cbfac97df8142fc321fc7ce6341bb89304ed",
+      "bytes": 241,
+      "format": "commonjs",
+      "basis": 9,
+      "sourceEvidence": [
+        {
+          "line": 4,
+          "text": "module.exports = Object.freeze({"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/cjs/index.js",
+      "sha256": "f983252d121dbe25a30c52b6095bffdf2e551b38df4e98ab5d535bfb12d53f65",
+      "bytes": 41233,
+      "format": "commonjs",
+      "basis": 11,
+      "sourceEvidence": [
+        {
+          "line": 950,
+          "text": "exports.fastPathLookup = fastPath;"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/cjs/src/domain-without-suffix.js",
+      "sha256": "5538aa2bfaa0b2e78e58e255bd58aef6ee456e8eb1ca7902e992c5f396537582",
+      "bytes": 589,
+      "format": "commonjs",
+      "basis": 11,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "Object.defineProperty(exports, \"__esModule\", { value: true });"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/cjs/src/domain.js",
+      "sha256": "b4e6ebf8227825914f91239f991efa5cd5fb25e5926cbc798887f7faec57a8c6",
+      "bytes": 3318,
+      "format": "commonjs",
+      "basis": 11,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "Object.defineProperty(exports, \"__esModule\", { value: true });"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/cjs/src/extract-hostname.js",
+      "sha256": "2d8bc962968640e4339a0b9378c56d37db3c1ccc00fee784488d8184eb2d4ebc",
+      "bytes": 21480,
+      "format": "commonjs",
+      "basis": 11,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "Object.defineProperty(exports, \"__esModule\", { value: true });"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/cjs/src/factory.js",
+      "sha256": "bb20ed2f75d7b518408e507e03f87e1b02f4c716093dfab10ac9f7ce73b4d95a",
+      "bytes": 5596,
+      "format": "commonjs",
+      "basis": 11,
+      "sourceEvidence": [
+        {
+          "line": 7,
+          "text": "Object.defineProperty(exports, \"__esModule\", { value: true });"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/cjs/src/is-ip.js",
+      "sha256": "42e47edc1a7cdb206f7698cdf10dbb2d149e0259fb5ab9dd1e2495cc6216ab50",
+      "bytes": 2272,
+      "format": "commonjs",
+      "basis": 11,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "Object.defineProperty(exports, \"__esModule\", { value: true });"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/cjs/src/is-special-use.js",
+      "sha256": "386d275aec40ac3f328db875e55aa37a2452de63d9475d683d44f4511431a01b",
+      "bytes": 2886,
+      "format": "commonjs",
+      "basis": 11,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "Object.defineProperty(exports, \"__esModule\", { value: true });"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/cjs/src/is-valid.js",
+      "sha256": "cd92e959d02e10c50a48ba7d62c68c2f685ef353d4da1a3e8049807a6cc1a644",
+      "bytes": 3407,
+      "format": "commonjs",
+      "basis": 11,
+      "sourceEvidence": [
+        {
+          "line": 10,
+          "text": "Object.defineProperty(exports, \"__esModule\", { value: true });"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/cjs/src/lookup/fast-path.js",
+      "sha256": "f88f954cc52817c6a62564f161a40703a16d29268aff02bc9353cdb1421305f4",
+      "bytes": 2348,
+      "format": "commonjs",
+      "basis": 11,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "Object.defineProperty(exports, \"__esModule\", { value: true });"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/cjs/src/lookup/interface.js",
+      "sha256": "61a8caa1b4c642d3a24982eb9cd109da0806875184038b1ab7cd705dad63ca10",
+      "bytes": 114,
+      "format": "commonjs",
+      "basis": 11,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "Object.defineProperty(exports, \"__esModule\", { value: true });"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/cjs/src/options.js",
+      "sha256": "19d81af13f2d87ca08c9fe901dd7d76d46dc7b0074477bb9f66d2709de7be8d7",
+      "bytes": 798,
+      "format": "commonjs",
+      "basis": 11,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "Object.defineProperty(exports, \"__esModule\", { value: true });"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/cjs/src/subdomain.js",
+      "sha256": "0d0ab6b2eb24cca656d8314e912637a965b984a73489f08134f5ffb3a72e48c0",
+      "bytes": 440,
+      "format": "commonjs",
+      "basis": 11,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "Object.defineProperty(exports, \"__esModule\", { value: true });"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts/dist/cjs/index.js",
+      "sha256": "7af403476d2566665ea0f8ca7c3a338ad62e9b916251cc9b70375ccf46b23f55",
+      "bytes": 187637,
+      "format": "commonjs",
+      "basis": 19,
+      "sourceEvidence": [
+        {
+          "line": 1163,
+          "text": "exports.getDomain = getDomain;"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts/dist/cjs/src/data/trie.js",
+      "sha256": "c3293e05b52036ebb8311603a58f7955c999af52d0332b291f11eee89688e07c",
+      "bytes": 138288,
+      "format": "commonjs",
+      "basis": 19,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "Object.defineProperty(exports, \"__esModule\", { value: true });"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts/dist/cjs/src/suffix-trie.js",
+      "sha256": "8d3e071a56c5e0c044985a04f8905f75c748cab6dcb973d9a187746118a293d7",
+      "bytes": 6885,
+      "format": "commonjs",
+      "basis": 19,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "Object.defineProperty(exports, \"__esModule\", { value: true });"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tr46/index.js",
+      "sha256": "dd2eae4174a287b5a081feba8c41dd85d713d8b5185b5e98313c7ffe83834646",
+      "bytes": 8590,
+      "format": "commonjs",
+      "basis": 21,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const punycode = require(\"punycode/\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tr46/lib/regexes.js",
+      "sha256": "3f43551d5109e5a300b29d5a9c261adf2bfd1621ffc086909f8ebf40835fc70f",
+      "bytes": 72462,
+      "format": "commonjs",
+      "basis": 21,
+      "sourceEvidence": [
+        {
+          "line": 16,
+          "text": "module.exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tr46/lib/statusMapping.js",
+      "sha256": "ab7f706a1e3e74f4efd276560bb50e15f71dd0b20f85e87e21d1c18259420064",
+      "bytes": 123,
+      "format": "commonjs",
+      "basis": 21,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "module.exports.STATUS_MAPPING = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/index-fetch.js",
+      "sha256": "155df504376841f714239ffbb43c7fbbfe3532c44aafe19ca7fd1615a18d5f1d",
+      "bytes": 2480,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { getGlobalDispatcher, setGlobalDispatcher } = require('./lib/global')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/index.js",
+      "sha256": "93fc85c00a59b58f410c901e5477d56770de3816bfbe183e751624aeb4a5e6a5",
+      "bytes": 8594,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const Client = require('./lib/dispatcher/client')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/api/abort-signal.js",
+      "sha256": "46ac3527affb69036384c8baec5bf34ba567adb336921c7a62e8f471bb827f37",
+      "bytes": 1071,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { addAbortListener } = require('../core/util')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/api/api-connect.js",
+      "sha256": "4209dffaed12c9f000aa2bc554c70cc0cc5ea984869152422370a61bfbb1badc",
+      "bytes": 2780,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const assert = require('node:assert')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/api/api-pipeline.js",
+      "sha256": "5ad0c146a9d88c5087802df087901aa08a98e28d1ad600c33ee5601f699fbbcd",
+      "bytes": 5989,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 7,
+          "text": "} = require('node:stream')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/api/api-request.js",
+      "sha256": "f655a12aab11d2463cd947eff9b483fdaa22992a607b3c733479535c4ce6e662",
+      "bytes": 6656,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const assert = require('node:assert')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/api/api-stream.js",
+      "sha256": "1fe980698a643db9f228137c46fe07751bdd021bc5a1feafae88c51cc107d356",
+      "bytes": 6216,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const assert = require('node:assert')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/api/api-upgrade.js",
+      "sha256": "0c51297099a626e47163a7fbc56f01f1a895dc7914e8d91ea0885a9c7634a09a",
+      "bytes": 3090,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { InvalidArgumentError, SocketError } = require('../core/errors')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/api/index.js",
+      "sha256": "a7b4b74ea6b81b2401f8659c138df54fd3f2c45450741682c026abb4cf133096",
+      "bytes": 264,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "module.exports.request = require('./api-request')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/api/readable.js",
+      "sha256": "b67230a53b7abc37c6839243663712d180c74effa4ff57b5f4df92c59ab6aedb",
+      "bytes": 15535,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const assert = require('node:assert')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/cache/memory-cache-store.js",
+      "sha256": "621055622764d73e2bf7fe59204c5d53b9c3dbce5b1d8fa51acb3cb902a48317",
+      "bytes": 7488,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { Writable } = require('node:stream')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/cache/sqlite-cache-store.js",
+      "sha256": "389b37a214dce9353079be0e0d7c7925ce981888f3646b1dc48bfe0c31d7e64d",
+      "bytes": 11575,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { Writable } = require('node:stream')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/core/connect.js",
+      "sha256": "4bf7ce84d6d31ffacebb0130164d50e619645b79cf6c4221ac374ab5ada677e3",
+      "bytes": 6287,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const net = require('node:net')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/core/constants.js",
+      "sha256": "a9c9c59d69a6db90fd3fdf46ebce943cbdc5da6e2acd143a00ed3282a8c65ca0",
+      "bytes": 2710,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 117,
+          "text": "module.exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/core/diagnostics.js",
+      "sha256": "907ce2d66cede91b860a1c1318ebdf0d9577c0f747a3b35510162c63489f28bc",
+      "bytes": 6575,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const diagnosticsChannel = require('node:diagnostics_channel')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/core/errors.js",
+      "sha256": "47c1e438402a802f5132da4a2084e1294ad3fd1496f8f7b47117292165c17fd9",
+      "bytes": 13384,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 470,
+          "text": "module.exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/core/request.js",
+      "sha256": "a78e25125e88b5907e4e5b3ad8f219645d422e7031d5320174b1957a002a34a5",
+      "bytes": 14597,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 6,
+          "text": "} = require('./errors')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/core/socks5-client.js",
+      "sha256": "5ee3d782919a74b4c0fc0aac0da1d39abd759f7c017f7b3d4b932ccafddd1be7",
+      "bytes": 11830,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { EventEmitter } = require('node:events')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/core/socks5-utils.js",
+      "sha256": "830467b148e86786f41c356667625721dfd9bef27fd85ada0fb498bda9a19016",
+      "bytes": 6063,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { Buffer } = require('node:buffer')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/core/symbols.js",
+      "sha256": "ef2e12acf974537d0bc0ac1adf75869a782b4a570c34391a3e728e88eb604672",
+      "bytes": 3004,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "module.exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/core/tree.js",
+      "sha256": "c9fc9938718f33d77a6ed1abac5e564531ac9f9436cde2867243d50cd6c0b4e8",
+      "bytes": 3582,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 6,
+          "text": "} = require('./constants')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/core/util.js",
+      "sha256": "96318b1d253fc1627e3b60ce5fb2bdb6bd0101900da139e2d2b2ca460b95b77a",
+      "bytes": 27386,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const assert = require('node:assert')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/dispatcher/agent.js",
+      "sha256": "b3ea9ecefbef32101231dade7975a94f2b6f409794f15660a2dda9fcf611caba",
+      "bytes": 4944,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { InvalidArgumentError, MaxOriginsReachedError } = require('../core/errors')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/dispatcher/balanced-pool.js",
+      "sha256": "6f5996b1e45a0cebedd8580d26f219918e145185f49de76aeb969538f6bcb9a7",
+      "bytes": 5477,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 6,
+          "text": "} = require('../core/errors')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/dispatcher/client-h1.js",
+      "sha256": "fa746dbef865f06cbee7445e46683c3fcfa03560624191bd84a45c3039e9b20a",
+      "bytes": 46665,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 5,
+          "text": "const assert = require('node:assert')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/dispatcher/client-h2.js",
+      "sha256": "9ebcb9e7eec787fa3a028b981cb95c5f525a0abfc96028d5e617ca4ff90235e7",
+      "bytes": 48542,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const assert = require('node:assert')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/dispatcher/client.js",
+      "sha256": "29276b9c6a9ee7c615b849e6ade1df9545231b9bcbbcb961cad2df3e68989229",
+      "bytes": 22676,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const assert = require('node:assert')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/dispatcher/dispatcher-base.js",
+      "sha256": "88d306b49e472f4fac61b5fae1320ff8fb01a41ef211e7c2d9992782a297bb0e",
+      "bytes": 4379,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const Dispatcher = require('./dispatcher')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/dispatcher/dispatcher.js",
+      "sha256": "7c0a765549e826dbb732afb3e0519b817e333d1b801ffad8c83541b092f24ced",
+      "bytes": 1090,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "const EventEmitter = require('node:events')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/dispatcher/dispatcher1-wrapper.js",
+      "sha256": "072dd62c707b4644e2ca6dc491cb4d146c37bbed9c52959f979ff8dee7aee344",
+      "bytes": 2617,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const Dispatcher = require('./dispatcher')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/dispatcher/env-http-proxy-agent.js",
+      "sha256": "90efe99d90c9fb1ec4a0239b99397c5b3657fc2b1cbfafd8b6072488861c6c14",
+      "bytes": 5410,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const DispatcherBase = require('./dispatcher-base')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/dispatcher/fixed-queue.js",
+      "sha256": "5d72c9de20e74d2437afc97f9f9e8e202d79983a77d2a598ac9ab1e0a8d0052d",
+      "bytes": 4615,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 103,
+          "text": "module.exports = class FixedQueue {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/dispatcher/h2c-client.js",
+      "sha256": "898ffa9f31dc54f563192ef8f0d9dbdd28e8834034b5d034cafee3775af2b894",
+      "bytes": 1371,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { InvalidArgumentError } = require('../core/errors')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/dispatcher/pool-base.js",
+      "sha256": "3427064389d496baa456510af0646e8f041fb76c657a9e59813509d54003ec3b",
+      "bytes": 5393,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { PoolStats } = require('../util/stats.js')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/dispatcher/pool.js",
+      "sha256": "aca3b038d05144c9cd6680ba1b60ec273615d20eff2ffc75603aa9517b91a074",
+      "bytes": 4088,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 11,
+          "text": "} = require('./pool-base')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/dispatcher/proxy-agent.js",
+      "sha256": "6d23f1548451515d0ea20cec490a62f001b537409e94880d3a48a6c63f47cb29",
+      "bytes": 12275,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { kProxy, kClose, kDestroy, kDispatch } = require('../core/symbols')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/dispatcher/retry-agent.js",
+      "sha256": "465e9429750441852cb0ed19bd669dbe2eca2b531ce6966040551a9b6550ae30",
+      "bytes": 684,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const Dispatcher = require('./dispatcher')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/dispatcher/round-robin-pool.js",
+      "sha256": "cb0b961429a120df4c0e3171bcfb6d5eafff0276ecf6c956be7c2817a8e299c1",
+      "bytes": 4348,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 11,
+          "text": "} = require('./pool-base')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/dispatcher/socks5-proxy-agent.js",
+      "sha256": "bf86c53aaca4a2c8e765007b9001c9737f059d8658df447533b1e2bcf5f5f5a4",
+      "bytes": 8642,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { URL } = require('node:url')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/encoding/index.js",
+      "sha256": "7ea8fe81ff3c9d054f3ef8bb67bfe260b2e930c51d5d5563ca2ef19a218a5909",
+      "bytes": 793,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 31,
+          "text": "module.exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/global.js",
+      "sha256": "ad78c73866021cae34d47f7896561c56294e5c1f15915d6ef1780f763a816b9d",
+      "bytes": 2191,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 7,
+          "text": "const { InvalidArgumentError } = require('./core/errors')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/handler/cache-handler.js",
+      "sha256": "175740447a617529baea90945a0075cbeefc17a8a0d2c932bd49bb6296b9f02f",
+      "bytes": 24842,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const util = require('../core/util')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/handler/cache-revalidation-handler.js",
+      "sha256": "4610b09696d9a8b0927d7b98980cb64d7b2140095c115daeed51a57a92a5fea3",
+      "bytes": 3799,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const assert = require('node:assert')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/handler/decorator-handler.js",
+      "sha256": "2af4842534d47e9f4eab834733c8380893e9c518eb9247bdcc5d13904f91ec91",
+      "bytes": 1380,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const assert = require('node:assert')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/handler/deduplication-handler.js",
+      "sha256": "048ca694b451b4016ebe53739c1bf5dd342319d8912a9fd5abdc2f7c5385467e",
+      "bytes": 11502,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { RequestAbortedError } = require('../core/errors')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/handler/redirect-handler.js",
+      "sha256": "a2af9bbc22f34df7d5e18790f8e34fa3eb9263c97d21869f65ddedad5fcd70ca",
+      "bytes": 8645,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const util = require('../core/util')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/handler/retry-handler.js",
+      "sha256": "3a63d01ab3469060366ee9e4fb7fca4bcf8cccf7ca7b34eca585d9d5d2d09867",
+      "bytes": 14630,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "const assert = require('node:assert')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/interceptor/cache.js",
+      "sha256": "1c53550be471082cff9cc8477a0b7950bf222a4fad07a36c7442edfeb04fac51",
+      "bytes": 18808,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const assert = require('node:assert')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/interceptor/decompress.js",
+      "sha256": "e8e117738e90ba010f35c50707724396ed68e077373cd87c95da65eb530a560f",
+      "bytes": 9256,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { createInflate, createGunzip, createBrotliDecompress, createZstdDecompress } = require('node:zlib')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/interceptor/deduplicate.js",
+      "sha256": "adb62a39035f265d1c4f8da68eb9b7f9daaefedb503ec654c799f8de5e320534",
+      "bytes": 4086,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const diagnosticsChannel = require('node:diagnostics_channel')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/interceptor/dns.js",
+      "sha256": "8655bc10069f1de84390c34f7f06f2a220f040e3437436a75b180f64b9942e71",
+      "bytes": 14263,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "const { isIP } = require('node:net')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/interceptor/dump.js",
+      "sha256": "bf3e5e8ea954de99bf2431bc89327bb99bc4820ddcfd72b55482e3ddd2abf12e",
+      "bytes": 2609,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { InvalidArgumentError, RequestAbortedError } = require('../core/errors')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/interceptor/redirect.js",
+      "sha256": "b0d5f6f590ac86bf7d5b20a93af0303aab1680c1b7796ff9c487550dc542a3b4",
+      "bytes": 1157,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const RedirectHandler = require('../handler/redirect-handler')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/interceptor/response-error.js",
+      "sha256": "9cb06334d1c1f791784005789cc5afb9daea396c7f5e0c962af90538b4843e10",
+      "bytes": 2403,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 4,
+          "text": "const DecoratorHandler = require('../handler/decorator-handler')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/interceptor/retry.js",
+      "sha256": "488cf270ae143cc13a6ecf82ba523314fdbb17fd9ee08677c4488d4410f047c3",
+      "bytes": 419,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "const RetryHandler = require('../handler/retry-handler')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/llhttp/constants.js",
+      "sha256": "90c4858736745781548d464e51224ce9353162cd87bc8142be803bc2937184ba",
+      "bytes": 17069,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "Object.defineProperty(exports, \"__esModule\", { value: true });"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/llhttp/llhttp-wasm.js",
+      "sha256": "5d8313d6fe8145d832e6af9959b2810523c9a6993d5b93cee09bd7e5f1f2c085",
+      "bytes": 72279,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { Buffer } = require('node:buffer')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/llhttp/llhttp_simd-wasm.js",
+      "sha256": "a3f30f3307ab3c191720cb636d570febb3610c420bc7077f2e225dacfcad3295",
+      "bytes": 72531,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { Buffer } = require('node:buffer')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/llhttp/utils.js",
+      "sha256": "e21afcaf44b0fec37acfff86945e4526541e990ac0efd2f1efa2ea9f2b259b6b",
+      "bytes": 526,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "Object.defineProperty(exports, \"__esModule\", { value: true });"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/mock/mock-agent.js",
+      "sha256": "01b25aebbc057fa5f4c030a773815ac871dc7e18496b139c3185c50ca848e391",
+      "bytes": 7132,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { kClients } = require('../core/symbols')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/mock/mock-call-history.js",
+      "sha256": "6ad1c52ab1e5fd692a161d7f91bac080d24a0e05f34cd0460cb5a6668105fa6e",
+      "bytes": 8073,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { kMockCallHistoryAddLog } = require('./mock-symbols')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/mock/mock-client.js",
+      "sha256": "108d91ef5f916d094a78d92a4d81f2cd4bfe20708ae6307d8197de81d826ce5c",
+      "bytes": 1736,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { promisify } = require('node:util')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/mock/mock-errors.js",
+      "sha256": "b5bd959401de99d8129ba272dddfdb62708247f684a8186aa4d858e2780d64ee",
+      "bytes": 707,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { UndiciError } = require('../core/errors')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/mock/mock-interceptor.js",
+      "sha256": "59f75321c62504d83f84e2702b8dfcd7dfda3d994b62d9d62273653ab790bad2",
+      "bytes": 7710,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { getResponseData, buildKey, addMockDispatch } = require('./mock-utils')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/mock/mock-pool.js",
+      "sha256": "763d77ce68f6315f384b5e897b87ea2e2034b69d29e2d6d2da37ae8a0679197c",
+      "bytes": 1722,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { promisify } = require('node:util')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/mock/mock-symbols.js",
+      "sha256": "b90b7dc21d5a18c2e5255b0916bf75e880eef32ca45ab312a581547041638e20",
+      "bytes": 1421,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "module.exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/mock/mock-utils.js",
+      "sha256": "a7a7976343ae9a1fec964d55485519ff99832865017e4264f84681be53267bcf",
+      "bytes": 21012,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { MockNotMatchedError } = require('./mock-errors')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/mock/pending-interceptors-formatter.js",
+      "sha256": "9d3737f40ba601fd7a9c6dd28a328e6797686ff08da712dcd0a0f011d5639f8d",
+      "bytes": 1186,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { Transform } = require('node:stream')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/mock/snapshot-agent.js",
+      "sha256": "85acfaa63be0ebd8bf8c12b927ee1adffa585c5753a53cb6fa21f06413eb5cb0",
+      "bytes": 12027,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const Agent = require('../dispatcher/agent')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/mock/snapshot-recorder.js",
+      "sha256": "ec7ea35855aad0fd471fc7c7f03075bb7586613dd6b9ecd9de181882ccd33c54",
+      "bytes": 21524,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { writeFile, readFile, mkdir } = require('node:fs/promises')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/mock/snapshot-utils.js",
+      "sha256": "0971c847787d90abcb0bf4e1d76161a2f82651169cc8e637b26875fecab666f8",
+      "bytes": 4852,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { InvalidArgumentError } = require('../core/errors')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/util/cache.js",
+      "sha256": "d6cd1ef50acbec3c21b323dd0b933a945f2e9c1b2a3917efb8f411220352050f",
+      "bytes": 21378,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 8,
+          "text": "} = require('../core/util')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/util/date.js",
+      "sha256": "153ad641cbdb4cc5acacc8b50b79684166e29b838192bf98b2d32e2871ff7522",
+      "bytes": 20211,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 668,
+          "text": "module.exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/util/runtime-features.js",
+      "sha256": "d2161d6b59141370f3bb92bd9d950ef8caad083f6bfea4566c44a157996957de",
+      "bytes": 2111,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 8,
+          "text": "'node:crypto': () => require('node:crypto'),"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/util/stats.js",
+      "sha256": "d62ae00eaf72f33cc990a3a835d70b9c7d2f10d47acffa0e631ea82145b7c34e",
+      "bytes": 600,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 10,
+          "text": "} = require('../core/symbols')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/util/timers.js",
+      "sha256": "4e5ef13ce9e1ca6de8a656b95e2425602bacbd6010af1da3ce573f8d8f573119",
+      "bytes": 12027,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 326,
+          "text": "module.exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/cache/cache.js",
+      "sha256": "4f88a374e49bc8db9e0818bc7412e183e5e8076ca72ee5d08789b5977787f8b7",
+      "bytes": 21087,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const assert = require('node:assert')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/cache/cachestorage.js",
+      "sha256": "f9cccd19fbc185edac7624e542b0864412d71c2083177f3c6902b34d2b07d461",
+      "bytes": 3666,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { Cache } = require('./cache')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/cache/util.js",
+      "sha256": "638d5c2424a730e6d2400ac518765b3fc9b50e2b3816b65fb7b46f93c66a5930",
+      "bytes": 1020,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const assert = require('node:assert')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/cookies/constants.js",
+      "sha256": "85a24ae49eb5954e15363049bbc68967f01aae7260246daa3f49ad375429acb4",
+      "bytes": 306,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 9,
+          "text": "module.exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/cookies/index.js",
+      "sha256": "3f3dd4ffc1e3db9f51a4e82c3c49e7d59c7921899eb897d9cf5b2787fdafe83d",
+      "bytes": 4382,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { parseSetCookie } = require('./parse')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/cookies/parse.js",
+      "sha256": "58e5571a18b6de7adf51a30f66893b86e26c25d25e14e572afc570232b94c7f9",
+      "bytes": 12790,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { collectASequenceOfCodePointsFast } = require('../infra')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/cookies/util.js",
+      "sha256": "87d0ed0bc0c00a6446a25a439d0b79d9191a12c461185850bbbc054dcb268d32",
+      "bytes": 9261,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 345,
+          "text": "module.exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/eventsource/eventsource-stream.js",
+      "sha256": "fe7a94fe87999a6f1e489ca02d4069ae099800166954d32b080fe1282545e511",
+      "bytes": 12061,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "const { Transform } = require('node:stream')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/eventsource/eventsource.js",
+      "sha256": "6c7a94774222b7d6be8ff0af00a5362150e2f413e03aa15a012e2ae7abe1308b",
+      "bytes": 14402,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { pipeline } = require('node:stream')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/eventsource/util.js",
+      "sha256": "b1c5b993196a38edd99da36075db58a280486a77a3ce8dfd289358b3de85905c",
+      "bytes": 1698,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { makeRequest } = require('../fetch/request')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/fetch/body.js",
+      "sha256": "bb360326ba3713157f219647a36cbf39e3ae13f0f7f605b2420d8bf7c4ea9ed6",
+      "bytes": 18682,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const util = require('../../core/util')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/fetch/constants.js",
+      "sha256": "2e0f11d1ba87ce83219dff50325be48704931af5cd03a749fe710590bfd5bfb5",
+      "bytes": 3615,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 109,
+          "text": "module.exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/fetch/data-url.js",
+      "sha256": "acd2ae8c00e035a8b3c816c8a5f75eebfe12ab7db61158488cc350f92785fcd4",
+      "bytes": 17669,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const assert = require('node:assert')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/fetch/formdata-parser.js",
+      "sha256": "d5d048201a040865a4376e423fd78b102ad164cb51ad7b0ade56897c7318bd6b",
+      "bytes": 18344,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { bufferToLowerCasedHeaderName } = require('../../core/util')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/fetch/formdata.js",
+      "sha256": "7422b6299d290819aefe23a5df7f8b6ac4c513fc7cb84536e7a040517a798d09",
+      "bytes": 8083,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { iteratorMixin } = require('./util')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/fetch/global.js",
+      "sha256": "6b38813b82ec8d5002009640515d35f83ab96d4f8e0066d71fae89324079a289",
+      "bytes": 890,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 37,
+          "text": "module.exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/fetch/headers.js",
+      "sha256": "0ca9bcb1cb174a19311b27f55b954d53e5adc06d6aa935c42df96c9a4453d0a7",
+      "bytes": 20872,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 5,
+          "text": "const { kConstruct } = require('../../core/symbols')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/fetch/index.js",
+      "sha256": "55373246471efb77ed557472f3ddfe7262f6862816e629740233288822cfb1cd",
+      "bytes": 90920,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 12,
+          "text": "} = require('./response')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/fetch/request.js",
+      "sha256": "d3e4d74cba787b08ed62b62aa57b364b0bb2c31a52f965e89af7af6bbb669636",
+      "bytes": 37221,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 5,
+          "text": "const { extractBody, mixinBody, cloneBody, bodyUnusable } = require('./body')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/fetch/response.js",
+      "sha256": "7e4d92f54955a2ca305d2500a5323d520a7d5c0f63b4cd25b845788603806ab3",
+      "bytes": 19760,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { Headers, HeadersList, fill, getHeadersGuard, setHeadersGuard, setHeadersList } = require('./headers')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/fetch/util.js",
+      "sha256": "fdba60923ecf0b9eaf3202f2087c872bc141550b625adf2a26258ceae1bab42f",
+      "bytes": 48537,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { Transform } = require('node:stream')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/infra/index.js",
+      "sha256": "06cf4d0fe3220e2309f389d40d6e403e2c765ccb7552f68fce60cc2d25ee13bc",
+      "bytes": 6357,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const assert = require('node:assert')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/subresource-integrity/subresource-integrity.js",
+      "sha256": "65997037f348e22746f0852037998ba64fb83e6428485c6e200d42da8a154a75",
+      "bytes": 9569,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const assert = require('node:assert')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/webidl/index.js",
+      "sha256": "0f3a7e1f474b2a7e175dbffde206492866af4b47b9f237fafe2566bb89c787f4",
+      "bytes": 29557,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const assert = require('node:assert')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/websocket/connection.js",
+      "sha256": "02638ae58cbc702b6feed269d46976385de2ef8ae69da7d6289aaa8ae77e38dc",
+      "bytes": 14171,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { uid, states, sentCloseFrameState, emptyBuffer, opcodes } = require('./constants')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/websocket/constants.js",
+      "sha256": "e7b6d0550a367ba9edfb68b14bd3fbe44fd3042faf76901567b8c3ffc2ccfa84",
+      "bytes": 2103,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 116,
+          "text": "module.exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/websocket/events.js",
+      "sha256": "d88278a61f86bf66e3be1722d13a469e4af7bb8f767241f7f0aab104b92bc38b",
+      "bytes": 7313,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { webidl } = require('../webidl')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/websocket/frame.js",
+      "sha256": "883d40c52b86f43619074911d81830d80f29cb605a4e01a128b196e2ab666d63",
+      "bytes": 3210,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { runtimeFeatures } = require('../../util/runtime-features')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/websocket/permessage-deflate.js",
+      "sha256": "808e4fc2eb52ac7e0140cc37a0efe0ed2b13f4bd0119133c569030d3fab05f25",
+      "bytes": 2757,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { createInflateRaw, Z_DEFAULT_WINDOWBITS } = require('node:zlib')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/websocket/receiver.js",
+      "sha256": "78161a87beb7c052b91e79c9784a52939ac9e7beacb0cb6e4cc19513ddcd2931",
+      "bytes": 16363,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { Writable } = require('node:stream')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/websocket/sender.js",
+      "sha256": "5c5e162f1252d9c91d5cd30ae59c722f1e1cd7df86f03bf45fe085915c2d72e9",
+      "bytes": 2581,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { WebsocketFrameSend } = require('./frame')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/websocket/stream/websocketerror.js",
+      "sha256": "41fafec8f19753c6718b024c95afec6e6407197250ffbe56d81549d715bb0bcc",
+      "bytes": 2774,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { webidl } = require('../../webidl')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/websocket/stream/websocketstream.js",
+      "sha256": "a0c30d714e0cbcb4f5fc8e6d3267e5c6e66e75d46cd6c944db2ecd9bc39f5b44",
+      "bytes": 17961,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { addAbortListener } = require('node:events')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/websocket/util.js",
+      "sha256": "bb4a7bd7f2bf57e45245e41e05cc8d0bdb55feabfd16bbaff7a381863ba5907f",
+      "bytes": 9727,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { states, opcodes } = require('./constants')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/lib/web/websocket/websocket.js",
+      "sha256": "367cc7c20250bf5148714ccbb58ccdb787ccf076d3f031a3df2404ffd22358e3",
+      "bytes": 24787,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { isArrayBuffer } = require('node:util/types')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/undici/scripts/strip-comments.js",
+      "sha256": "72257817367403f268d17f35d61030ec57698063c14e15b7133ac28850d9c7b5",
+      "bytes": 312,
+      "format": "commonjs",
+      "basis": 18,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { readFileSync, writeFileSync } = require('node:fs')"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/w3c-xmlserializer/lib/attributes.js",
+      "sha256": "11e8a40319714706797a2e7274e7cf721b2b6b66c4830edec56e1c4cb0e41c89",
+      "bytes": 3691,
+      "format": "commonjs",
+      "basis": 6,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const xnv = require(\"xml-name-validator\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/w3c-xmlserializer/lib/constants.js",
+      "sha256": "cce22def9473f4a05c499fab7ddfb26364f9b42a2c68c50b3f328ff91273ba05",
+      "bytes": 790,
+      "format": "commonjs",
+      "basis": 6,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "module.exports.NAMESPACES = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/w3c-xmlserializer/lib/serialize.js",
+      "sha256": "4008e37e6b335690b3cd93db92e730bd822f42170b0e9eff5517b2e5384df3dc",
+      "bytes": 10100,
+      "format": "commonjs",
+      "basis": 6,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const xnv = require(\"xml-name-validator\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/webidl-conversions/lib/index.js",
+      "sha256": "f0a9d7c91298d8b0fa7d3dd24ac85e261689153d213b2eff37cba0bb5592a8cd",
+      "bytes": 12221,
+      "format": "commonjs",
+      "basis": 5,
+      "sourceEvidence": [
+        {
+          "line": 166,
+          "text": "exports.any = value => {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-mimetype/lib/index.js",
+      "sha256": "16c51412544f36307a9f8d260a30b7abf41da883fdadcd9d6d8aeded942012a8",
+      "bytes": 111,
+      "format": "commonjs",
+      "basis": 7,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "exports.MIMEType = require(\"./mime-type.js\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-mimetype/lib/mime-type-parameters.js",
+      "sha256": "2d0421fcc61c77cd91ff9544d731d0e5680e3d73f604e2fb0fa730303f55bcd2",
+      "bytes": 1435,
+      "format": "commonjs",
+      "basis": 7,
+      "sourceEvidence": [
+        {
+          "line": 6,
+          "text": "} = require(\"./utils.js\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-mimetype/lib/mime-type.js",
+      "sha256": "007dbdf6bca53ffca600e86a4ad62ca9b2be1f9fa3307ca16abffc93c2b84303",
+      "bytes": 3155,
+      "format": "commonjs",
+      "basis": 7,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "const MIMETypeParameters = require(\"./mime-type-parameters.js\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-mimetype/lib/parser.js",
+      "sha256": "5e95076d69b500b22dae67e46dfe6b52d81ecde6919a21396e6dd7fb089df187",
+      "bytes": 2516,
+      "format": "commonjs",
+      "basis": 7,
+      "sourceEvidence": [
+        {
+          "line": 10,
+          "text": "} = require(\"./utils.js\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-mimetype/lib/serializer.js",
+      "sha256": "3f563bd84c887d625bcf85c83d277e6a9e20cb48e5e1ea81ec472f993ef93a26",
+      "bytes": 600,
+      "format": "commonjs",
+      "basis": 7,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "const { solelyContainsHTTPTokenCodePoints } = require(\"./utils.js\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-mimetype/lib/sniff.js",
+      "sha256": "247a1481a0d0a066b9690162dada30427d6166b4d5d93eb381feea6d0cb7bd45",
+      "bytes": 23888,
+      "format": "commonjs",
+      "basis": 7,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "const MIMEType = require(\"./mime-type.js\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-mimetype/lib/utils.js",
+      "sha256": "f7be145a41872e78050aca9a2460da467209908e5f3008af1b75da25945808cb",
+      "bytes": 1406,
+      "format": "commonjs",
+      "basis": 7,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "exports.removeLeadingAndTrailingHTTPWhitespace = string => {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-url/index.js",
+      "sha256": "16ae0158b0d25ab27f15a2d715cb214eacc88e12e9d02d233b0ee75f115171cd",
+      "bytes": 1479,
+      "format": "commonjs",
+      "basis": 10,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const { URL, URLSearchParams } = require(\"./webidl2js-wrapper\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-url/lib/Function.js",
+      "sha256": "913cb6a510a344fd81bdfd45c5053bc63352d31331e4e97daf6bb9baf8317910",
+      "bytes": 1186,
+      "format": "commonjs",
+      "basis": 10,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const conversions = require(\"webidl-conversions\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-url/lib/URL-impl.js",
+      "sha256": "91378285100dcd2491f950c9fc35c3785d8ccdb4d00d7cdc8d9056fde25039b3",
+      "bytes": 5116,
+      "format": "commonjs",
+      "basis": 10,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "const usm = require(\"./url-state-machine\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-url/lib/URL.js",
+      "sha256": "67b35d289430feb76670e040c771429695846523349321fcdaae30a740f03687",
+      "bytes": 15383,
+      "format": "commonjs",
+      "basis": 10,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const conversions = require(\"webidl-conversions\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-url/lib/URLSearchParams-impl.js",
+      "sha256": "27e7cc0a8142d148529b7865ec10db1ce5e0a39d42004fc080ff42245cd6799c",
+      "bytes": 2970,
+      "format": "commonjs",
+      "basis": 10,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "const urlencoded = require(\"./urlencoded\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-url/lib/URLSearchParams.js",
+      "sha256": "b63cb52eb169194c08cb342e1cd349e446861a19add35769e75a6fe55dc768d5",
+      "bytes": 17233,
+      "format": "commonjs",
+      "basis": 10,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const conversions = require(\"webidl-conversions\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-url/lib/VoidFunction.js",
+      "sha256": "9b404e93615b95bd26051da63d631d134ae8c7ff057d2324d094abed18ff8dcc",
+      "bytes": 728,
+      "format": "commonjs",
+      "basis": 10,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const conversions = require(\"webidl-conversions\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-url/lib/encoding.js",
+      "sha256": "a63171ed7efc4bf570f07d06aab52ffcda1f0ee965a0bb0fca35e8be5ec3624d",
+      "bytes": 328,
+      "format": "commonjs",
+      "basis": 10,
+      "sourceEvidence": [
+        {
+          "line": 13,
+          "text": "module.exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-url/lib/infra.js",
+      "sha256": "67ce9bca9c0826b3c3c2096028e0197a21f5050db2e8c08cc41c36c5dac26b07",
+      "bytes": 731,
+      "format": "commonjs",
+      "basis": 10,
+      "sourceEvidence": [
+        {
+          "line": 29,
+          "text": "module.exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-url/lib/percent-encoding.js",
+      "sha256": "cd983d2133298de256b1b02b4d9c7acbb17319d7da4b31cedd139cc86569b1d0",
+      "bytes": 5300,
+      "format": "commonjs",
+      "basis": 10,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "const { isASCIIHex } = require(\"./infra\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-url/lib/url-miscellaneous.js",
+      "sha256": "42a1d8826fbb5dfd196dc042633c447e4a544f4e3226ba77c152133cdd6d82ba",
+      "bytes": 5610,
+      "format": "commonjs",
+      "basis": 10,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const tr46 = require(\"tr46\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-url/lib/url-state-machine.js",
+      "sha256": "0a85861cfe6024c80b9a1e33771dba0d1715fe4c59a8c286aac5f77ea0fe2961",
+      "bytes": 32592,
+      "format": "commonjs",
+      "basis": 10,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "require(\"@exodus/bytes/encoding.js\"); // for legacy multi-byte encodings"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-url/lib/url-string-validator.js",
+      "sha256": "f08a9f17e70c4dcacd819357ad8f08f55eede469c1427122e9ea917dc6937d77",
+      "bytes": 11490,
+      "format": "commonjs",
+      "basis": 10,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const infra = require(\"./infra\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-url/lib/urlencoded.js",
+      "sha256": "6d050ce6399b0fef3771a1395efb3d3d7e6429e4c9ac36ef4e64ebf3e70238a4",
+      "bytes": 2280,
+      "format": "commonjs",
+      "basis": 10,
+      "sourceEvidence": [
+        {
+          "line": 2,
+          "text": "const { utf8Encode, utf8DecodeWithoutBOM } = require(\"./encoding\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-url/lib/utils.js",
+      "sha256": "b25c2a38efa637364841a55f295cf6e0f8037fae0aadbd1467a76eaf7a4be682",
+      "bytes": 10502,
+      "format": "commonjs",
+      "basis": 10,
+      "sourceEvidence": [
+        {
+          "line": 315,
+          "text": "module.exports = exports = {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/whatwg-url/webidl2js-wrapper.js",
+      "sha256": "c139eba2be96bec43b3bb1ed5813e07fd9a25a1c5df8ebf37bda987e10445371",
+      "bytes": 170,
+      "format": "commonjs",
+      "basis": 10,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "const URL = require(\"./lib/URL\");"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/xml-name-validator/lib/xml-name-validator.js",
+      "sha256": "b6501f5d90794937f135fbb4ee270ebcb23326c5bc2e6d07f24c2df6d81987b5",
+      "bytes": 1703,
+      "format": "commonjs",
+      "basis": 4,
+      "sourceEvidence": [
+        {
+          "line": 3,
+          "text": "exports.name = potentialName => {"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/xmlchars/xml/1.0/ed4.js",
+      "sha256": "7ae981a2801658ff2eb92d418c000376381044a5caed40392fea9ad38c9d08c8",
+      "bytes": 5496,
+      "format": "commonjs",
+      "basis": 15,
+      "sourceEvidence": [
+        {
+          "line": 13,
+          "text": "Object.defineProperty(exports, \"__esModule\", { value: true });"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/xmlchars/xml/1.0/ed5.js",
+      "sha256": "ea350479ab6f6553c0c3395c30ec440fb39821f6902081939831ddf1b5e8fd0f",
+      "bytes": 3342,
+      "format": "commonjs",
+      "basis": 15,
+      "sourceEvidence": [
+        {
+          "line": 9,
+          "text": "Object.defineProperty(exports, \"__esModule\", { value: true });"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/xmlchars/xml/1.1/ed2.js",
+      "sha256": "461d5c71cc6076dc16aebbfd2d3c506481df5a74f43631d82372a6ffdc239d69",
+      "bytes": 4737,
+      "format": "commonjs",
+      "basis": 15,
+      "sourceEvidence": [
+        {
+          "line": 9,
+          "text": "Object.defineProperty(exports, \"__esModule\", { value: true });"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/xmlchars/xmlchars.js",
+      "sha256": "d5024cfd86dc4624feda301419bb56f5f3bd2b63963c2bdf88aff7c6afb6bdf2",
+      "bytes": 6911,
+      "format": "commonjs",
+      "basis": 15,
+      "sourceEvidence": [
+        {
+          "line": 12,
+          "text": "Object.defineProperty(exports, \"__esModule\", { value: true });"
+        }
+      ]
+    },
+    {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/xmlchars/xmlns/1.0/ed3.js",
+      "sha256": "ff14ffa3a2cdfdd1b6077c4a8443dc949f53d5bb56de5ed89d4dbc5d9fdf08f7",
+      "bytes": 2253,
+      "format": "commonjs",
+      "basis": 15,
+      "sourceEvidence": [
+        {
+          "line": 9,
+          "text": "Object.defineProperty(exports, \"__esModule\", { value: true });"
+        }
+      ]
+    }
+  ],
+  "excludedTypelessJS": [
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/bidi-js/dist/bidi.min.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/bidi-js/src/brackets.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/bidi-js/src/charTypes.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/bidi-js/src/data/bidiBrackets.data.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/bidi-js/src/data/bidiCharTypes.data.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/bidi-js/src/data/bidiMirroring.data.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/bidi-js/src/embeddingLevels.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/bidi-js/src/index.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/bidi-js/src/mirroring.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/bidi-js/src/reordering.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/bidi-js/src/util/parseCharacterMap.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/punycode/punycode.es6.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/es6/index.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/es6/src/domain-without-suffix.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/es6/src/domain.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/es6/src/extract-hostname.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/es6/src/factory.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/es6/src/is-ip.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/es6/src/is-special-use.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/es6/src/is-valid.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/es6/src/lookup/fast-path.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/es6/src/lookup/interface.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/es6/src/options.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts-core/dist/es6/src/subdomain.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts/bin/cli.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts/dist/es6/index.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts/dist/es6/src/data/trie.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts/dist/es6/src/suffix-trie.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts/dist/index.cjs.min.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts/dist/index.esm.min.js",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/tldts/dist/index.umd.min.js"
+  ],
+  "boundary": "No runtime globs or source-syntax guessing. The source markers are review evidence, not an executable parser or proof that every selected file loads. No nullish, native, TypeScript, CSS or unknown returned format is accepted. Mixed ESM distributions keep their existing Node path and cannot receive a CommonJS hint."
+}
