@@ -25,7 +25,8 @@ export const inputDigest = (value) => {
   if (!jsonValue(value)) throw new TypeError('Digest input must be JSON data');
   return createHash('sha256').update(JSON.stringify(canonical(value))).digest('hex');
 };
-const equal = (a, b) => JSON.stringify(canonical(a)) === JSON.stringify(canonical(b));
+// Two strings are canonically equal exactly when identical; this keeps key scans cheap.
+const equal = (a, b) => typeof a === 'string' && typeof b === 'string' ? a === b : JSON.stringify(canonical(a)) === JSON.stringify(canonical(b));
 const matches = (row, filter) => Object.entries(filter).every(([key, value]) => equal(row[key], value));
 const occupied = (row) => OCCUPYING_STATES.includes(row.state);
 const summary = (row) => Object.fromEntries(['state', 'version', 'orderUuid', 'entitlementSlotId', 'capacity'].filter((key) => row[key] !== undefined).map((key) => [key, row[key]]));

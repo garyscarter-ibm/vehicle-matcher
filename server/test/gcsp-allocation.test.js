@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { ok } from '../gcsp/repository/index.js';
 import { allocationFixture } from './helpers/gcsp-allocation.js';
+import { expandEvaluation } from '../gcsp/allocation/evaluation-rows.js';
 
 test('three employees compete deterministically for scarce exact cars, one each', async () => {
   const f = await allocationFixture(); const reversed = await allocationFixture({ reverse: true });
@@ -188,8 +189,9 @@ test('FUCQ-209: no single receipt holds every participant\'s evaluation or quote
   const f = await allocationFixture({ cars: 12 });
   const size = (value) => JSON.stringify(value).length; let pending = 0;
   const read = () => f.repository.read(f.context, { table: 'event_receipts', key: { runId: f.context.runId, consumerId: 'buddy-allocation', eventId: f.event.eventId } });
-  // The claim port runs mid-allocation, so it sees the pending plan as persisted.
-  const claim = { async tryClaim(employee, input) { pending = Math.max(pending, size((await read()).value)); return ok({ claimId: input.operationId }); } };
+  // The claim port sees the pending plan as persisted; its frozen car pool (FUCQ-217) grows with cars only.
+  const claim = { async tryClaim(employee, input) { const row = (await read()).value; assert.equal(row.outcome.value.plan.pool.length, 12);
+    delete row.outcome.value.plan.pool; pending = Math.max(pending, size(row)); return ok({ claimId: input.operationId }); } };
   const out = await f.create({ claim }).allocate(f.context, f.event); assert.equal(out.status, 'ok', JSON.stringify(out));
   const all = size(out.value.evaluations); assert.ok(out.value.evaluations.length >= 3);
   assert.ok(pending > 0 && pending < all, `pending plan ${pending} vs evaluations ${all}`);
@@ -197,8 +199,49 @@ test('FUCQ-209: no single receipt holds every participant\'s evaluation or quote
   for (const evaluation of out.value.evaluations) {
     const slice = (await f.repository.read(f.context, { table: 'event_receipts', key: { runId: f.context.runId,
       consumerId: 'buddy-allocation-evaluation', eventId: `${f.event.eventId}:${evaluation.employeeId}` } })).value;
-    assert.deepEqual(slice.outcome.value.evaluation, evaluation);
+    assert.deepEqual(expandEvaluation(slice.outcome.value.evaluation), evaluation);
   }
   assert.ok(out.value.assignments.every((a) => a.quote?.orderUuid === a.orderUuid), 'assignments keep their quote');
   assert.deepEqual(await f.create({ claim }).allocate(f.context, f.event), out, 'replay returns the same outcome');
+});
+
+test('FUCQ-217: quotes are rebuilt for attempts only and the cursor stays one small record', async () => {
+  const f = await allocationFixture({ cars: 12 });
+  const rows = async () => (await f.repository.query(f.context, 'event_receipts')).value;
+  const cursorSizes = [];
+  const claim = { async tryClaim(employee, input) {
+    cursorSizes.push(JSON.stringify((await rows()).find((r) => r.consumerId === 'buddy-allocation-cursor').outcome).length);
+    return ok({ claimId: input.operationId }); } };
+  const out = await f.create({ claim }).allocate(f.context, f.event); assert.equal(out.status, 'ok', JSON.stringify(out));
+  const all = await rows();
+  const slices = all.filter((r) => r.consumerId === 'buddy-allocation-evaluation');
+  assert.ok(slices.length >= 3 && slices.every((r) => !('quotes' in r.outcome.value)), 'no slice stores a quote per eligible car');
+  assert.ok(slices.every((r) => r.outcome.value.evaluation.variants.length < r.outcome.value.evaluation.cars.length), 'identical decision bodies are stored once');
+  assert.ok(cursorSizes.length >= 3 && Math.max(...cursorSizes) - Math.min(...cursorSizes) < 8, `cursor sizes ${cursorSizes}`);
+  assert.equal(all.filter((r) => r.consumerId === 'buddy-allocation-attempt').length, out.value.attempts.length);
+  assert.ok(!all.some((r) => r.consumerId === 'command:transaction' && JSON.stringify(r.outcome).includes('"contenders"')), 'no command receipt copies the plan');
+  assert.ok(out.value.assignments.every((a) => a.quote.orderUuid === a.orderUuid && a.quote.versions.stock), 'assignments keep their quote');
+});
+
+test('FUCQ-217: a pending run resumes from attempt rows, or from a cursor written before FUCQ-217, to the same outcome', async () => {
+  const straight = await allocationFixture({ cars: 12 });
+  const expected = await straight.service.allocate(straight.context, straight.event); assert.equal(expected.status, 'ok');
+  for (const legacy of [false, true]) {
+    let calls = 0;
+    const f = await allocationFixture({ cars: 12, claimResult: (_, input) => (calls += 1) === 3 ? { status: 'unavailable' } : ok({ claimId: input.operationId }) });
+    assert.equal((await f.service.allocate(f.context, f.event)).code, 'claim-pending');
+    if (legacy) {
+      const key = { runId: f.context.runId, consumerId: 'buddy-allocation-cursor', eventId: f.event.eventId };
+      const cursor = (await f.repository.read(f.context, { table: 'event_receipts', key })).value;
+      const attempts = f.calls.slice(0, 2).map(({ input }) => ({ employeeId: input.employeeId, orderUuid: input.orderUuid, operationId: input.operationId,
+        outcome: ok({ claimId: input.operationId }) }));
+      const assignments = f.calls.slice(0, 2).map(({ input }) => { const { eventId, runId, ...rest } = input; return { ...rest, claim: { claimId: input.operationId } }; });
+      const moved = await f.repository.transaction(f.context, { commandId: 'test:legacy-cursor', inputDigest: 'test-legacy-cursor' }, (tx) =>
+        tx.compareAndSwap({ table: 'event_receipts', key }, cursor.version, { outcome: ok({ next: cursor.outcome.value.next, attempts, assignments }) }));
+      assert.equal(moved.status, 'ok', JSON.stringify(moved));
+    }
+    const out = await f.create().allocate(f.context, f.event); assert.equal(out.status, 'ok', JSON.stringify(out));
+    assert.deepEqual(f.calls[2].input.quote, f.calls[3].input.quote, 'the retried operation receives the same quote');
+    assert.deepEqual(out.value.assignments.map((a) => [a.employeeId, a.orderUuid, a.quote]), expected.value.assignments.map((a) => [a.employeeId, a.orderUuid, a.quote]));
+  }
 });

@@ -6,6 +6,7 @@ import { createDemoStockProvider } from '../gcsp/stock/demo-provider.js';
 import { createLocalHttpsFixture } from './helpers/local-https.js';
 import { competingPolicy } from './helpers/gcsp-journey.js';
 import { createRouteClient, resetIntoScenario, presenterTick } from './helpers/gcsp-decline-change-route.js';
+import { expandEvaluation } from '../gcsp/allocation/evaluation-rows.js';
 
 const good = (outcome) => { assert.equal(outcome?.status, 'ok', JSON.stringify(outcome)); return outcome.value; };
 const route = (response) => { assert.equal(response.status, 200, JSON.stringify(response.json)); return good(response.json); };
@@ -59,7 +60,7 @@ async function replay(services, client, label) {
   // Later passes see fewer cars (Alex's is held), and her activity reports the latest pass.
   const passes = receipts.sort((a, b) => a.updatedAt.localeCompare(b.updatedAt))
     // FUCQ-209: each employee's evaluation is its own receipt row.
-    .map((row) => slices.find((slice) => slice.eventId === `${row.eventId}:${paula.employeeId}`)?.outcome.value.evaluation).filter(Boolean);
+    .map((row) => slices.find((slice) => slice.eventId === `${row.eventId}:${paula.employeeId}`)?.outcome.value.evaluation).filter(Boolean).map(expandEvaluation);
   assert.ok(passes.length > 0);
   for (const pass of passes) {
     assert.ok(pass.decisions.length > 0);
