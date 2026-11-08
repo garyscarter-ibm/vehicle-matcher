@@ -4,49 +4,16 @@ import { readFile } from 'node:fs/promises';
 import { PolicyService, FilePolicyProvider } from '../gcsp/policy/index.js';
 import { loadComparisonPolicy, generateComparisonInputs } from '../gcsp/comparison/generator.js';
 import { openComparisonRun } from '../gcsp/comparison/harness.js';
+import { evaluateComparisonSeed } from '../gcsp/comparison/evaluation.js';
 
 const fixture = JSON.parse(await readFile(new URL('./fixtures/gcsp-comparison-current-outcomes.json', import.meta.url), 'utf8'));
-const proposal = JSON.parse(await readFile(new URL('../../docs/gcsp/fucq134-outcome-policy-proposal.json', import.meta.url), 'utf8'));
+const policy = new PolicyService({ provider: new FilePolicyProvider() });
+const origin = '2026-11-05T09:00:00.000Z';
+const snapshot = await loadComparisonPolicy({ policyService: policy, policyRead: { runId: 'comparison-fixture-preparation', asOf: origin } });
 async function mechanics(seed = fixture.seed) {
-  const provider = new FilePolicyProvider();
-  const [canonical] = await provider.loadVersions({ runId: 'comparison-fixture-preparation', asOf: '2026-11-05T09:00:00.000Z' });
-  const input = structuredClone(canonical);
-  input.policyVersion += fixture.policyVariantSuffix;
-  for (const collection of ['schemeRuleLinks', 'eligibilityRules', 'pricePlans', 'allowances', 'assumptions']) {
-    for (const row of input[collection]) row.policyVersion = input.policyVersion;
-  }
-  // This is an explicitly selected test policy variant, never a runtime fallback registry.
-  for (const proposed of proposal.assumptions) {
-    assert.equal(proposed.status, 'assumed');
-    assert.equal(input.assumptions.some((row) => row.key === proposed.key), false);
-    input.assumptions.push({ key: proposed.key, value: structuredClone(proposed.proposedValue), unit: proposed.unit,
-      status: proposed.status, basis: proposed.basis, source: proposed.source, sourceDate: proposed.sourceDate,
-      policyVersion: input.policyVersion, effectiveFrom: input.effectiveFrom });
-  }
-  const stock = fixture.syntheticStock;
-  const configurations = input.assumptions.find((row) => row.key === 'comparison.configurationSet.v1');
-  const adapter = input.assumptions.find((row) => row.key === 'comparison.recordAdapter.v1');
-  assert.equal(configurations.value.kind, 'reviewed-fixtures');
-  assert.equal(configurations.value.configurations.some((row) => row.modelLine === stock.configuration.modelLine), false);
-  assert.equal(Object.hasOwn(adapter.value.stockFactsByModelLine, stock.configuration.modelLine), false);
-  configurations.value.configurations.push(structuredClone(stock.configuration));
-  configurations.value.version = stock.version;
-  configurations.value.reviewedOn = stock.sourceDate;
-  configurations.value.basis = stock.basis;
-  adapter.value.stockFactsByModelLine[stock.configuration.modelLine] = structuredClone(stock.facts);
-  adapter.value.fixtureVersion = stock.version;
-  adapter.value.limitations.push(...stock.limitations);
-  for (const row of [configurations, adapter]) {
-    row.source = 'server/test/fixtures/gcsp-comparison-current-outcomes.json';
-    row.sourceDate = stock.sourceDate;
-    row.basis = stock.basis;
-  }
-  const policy = new PolicyService({ provider: { async loadVersions() { return structuredClone([input]); } } });
-  const origin = input.assumptions.find((row) => row.key === 'comparison.startsAt').value;
-  const snapshot = await loadComparisonPolicy({ policyService: policy, policyRead: {
-    runId: 'comparison-fixture-preparation', asOf: origin, policyVersion: input.policyVersion } });
-  return { policy, inputs: generateComparisonInputs(seed, snapshot, { overlay: fixture.overlay }),
-    route: 'current', codeRevision: globalThis.comparisonCodeRevision ?? 'fucq134-unadmitted-direct-run' };
+  const inputs = generateComparisonInputs(seed, snapshot, { overlay: fixture.overlay });
+  return { policy, inputs, evaluation: await evaluateComparisonSeed({ inputs, policy }),
+    route: 'current', codeRevision: 'fucq134-test' };
 }
 const requireOk = (result) => { assert.equal(result.status, 'ok', JSON.stringify(result)); return result.value; };
 const browseDiagnostic = (employee, browsed) => JSON.stringify({

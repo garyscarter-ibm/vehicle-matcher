@@ -30,7 +30,7 @@ const renewalId = (id) => `comparison-renewal:${id}`;
 const contractId = (id) => `comparison-current:${id}`;
 const driverId = (id) => `comparison-driver:${id}`;
 
-async function assumption(policy, key, read) {
+export async function comparisonAssumption(policy, key, read) {
   const result = await policy.getAssumption(key, read);
   const row = value(result, key);
   check(result.policyVersion === read.policyVersion && row.policyVersion === read.policyVersion, key);
@@ -64,6 +64,12 @@ function isolatedIdentityPolicy(policy, template, employees) {
         ? { ...result, value: { ...result.value, value: structuredClone(principals) } } : result;
     } };
 }
+// Employee facts shared by the manual records and the per-seed evaluation.
+export function comparisonEmployeeFacts(employee, adapterRow, now) {
+  return { ...Object.fromEntries(Object.entries(adapterRow.value.employeeFacts).map(([key, raw]) => [key, typedFact(raw, adapterRow, now)])),
+    essentials: underlyingEssentials(employee), requiredBy: typedFact({ status: 'known', value: employee.renewalAt, unit: null }, adapterRow, now) };
+}
+export const comparisonDriverFact = (adapterRow, now) => typedFact(adapterRow.value.driver.eligible, adapterRow, now);
 function manualRecords(employee, adapterRow, now) {
   const adapter = adapterRow.value;
   const id = employee.employeeId;
@@ -79,11 +85,10 @@ function manualRecords(employee, adapterRow, now) {
       gradeId: employee.gradeId, schemeId: employee.schemeId, allowanceOverride: null },
     drivers: [{ driverId: driverId(id), employeeId: id, name: `${id} (fictional)`, kind: adapter.driver.kind,
       eligible: typedFact(adapter.driver.eligible, adapterRow, now), licence }],
-    employeeFacts: { ...Object.fromEntries(Object.entries(adapter.employeeFacts).map(([key, raw]) => [key, typedFact(raw, adapterRow, now)])),
-      essentials: underlyingEssentials(employee), requiredBy: typedFact({ status: 'known', value: employee.renewalAt, unit: null }, adapterRow, now) },
+    employeeFacts: comparisonEmployeeFacts(employee, adapterRow, now),
     contracts: [contract], histories: [{ schemeId: employee.schemeId, entries: [contract] }] };
 }
-function stockRecords(inputs, adapterRow) {
+export function comparisonStockRows(inputs, adapterRow) {
   const { manifest, stock, releaseSchedule, employees } = inputs;
   const adapter = adapterRow.value;
   check(stock.length < 10000000 && Number.isSafeInteger(adapter.stockAvailabilityDaysAfterHorizon)
@@ -110,8 +115,8 @@ function stockRecords(inputs, adapterRow) {
 }
 
 export async function openComparisonRun(options = {}) {
-  check(Object.keys(options).every((key) => ['inputs', 'policy', 'route', 'codeRevision'].includes(key)), 'options');
-  const { inputs, policy, route, codeRevision } = options;
+  check(Object.keys(options).every((key) => ['inputs', 'policy', 'route', 'codeRevision', 'evaluation'].includes(key)), 'options');
+  const { inputs, policy, route, codeRevision, evaluation } = options;
   check(inputs?.manifest && Array.isArray(inputs.employees) && Array.isArray(inputs.stock)
     && Array.isArray(inputs.releaseSchedule) && typeof route === 'string' && route.length > 0
     && typeof codeRevision === 'string' && codeRevision.length > 0, 'inputs');
@@ -119,12 +124,13 @@ export async function openComparisonRun(options = {}) {
   check(validInstant(manifest.startsAt) && typeof manifest.policyVersion === 'string'
     && manifest.inputHash === inputDigest({ employees, stock: inputs.stock, releaseSchedule: inputs.releaseSchedule })
     && new Set(employees.map((employee) => employee.employeeId)).size === employees.length, 'inputHash');
+  check(evaluation?.inputHash === manifest.inputHash && evaluation.policyVersion === manifest.policyVersion, 'evaluation');
   const identityDigest = inputDigest({ seed: manifest.seed, route, inputHash: manifest.inputHash,
     policyVersion: manifest.policyVersion, policyHash: manifest.policyHash, codeRevision });
   const environmentId = `comparison-${identityDigest.slice(0, 32)}`;
   const scope = { environmentId, runId: `comparison-run-${identityDigest.slice(0, 32)}`, principalId: 'comparison-bootstrap', roles: [] };
   const read = { runId: scope.runId, asOf: manifest.startsAt, policyVersion: manifest.policyVersion };
-  const adapterRow = await assumption(policy, 'comparison.recordAdapter.v1', read);
+  const adapterRow = await comparisonAssumption(policy, 'comparison.recordAdapter.v1', read);
   const adapter = adapterRow.value;
   check(adapter.schemaVersion === 1 && adapter.kind === 'synthetic-mechanics-only'
     && adapter.unknownFieldRule === 'retain-unknown-no-inference'
@@ -132,7 +138,7 @@ export async function openComparisonRun(options = {}) {
     && adapter.collectionChoice === 'first-permitted-driver-contract-location; renewal-date'
     && typeof adapter.fixtureVersion === 'string' && Array.isArray(adapter.limitations), 'comparison.recordAdapter.v1');
   const [principals, clockCommands] = await Promise.all([
-    assumption(policy, 'identity.demo.principals', read), assumption(policy, 'clock.commands.v1', read),
+    comparisonAssumption(policy, 'identity.demo.principals', read), comparisonAssumption(policy, 'clock.commands.v1', read),
   ]);
   for (const employee of employees) {
     const allowance = value(await policy.getAllowance(employee, read), 'allowance');
@@ -140,11 +146,11 @@ export async function openComparisonRun(options = {}) {
       && allowance.unit === employee.pointsUnit, 'coherent-allowance-variant');
   }
   const runPolicy = isolatedIdentityPolicy(policy, principals, employees);
-  const repository = createMemoryRepository({ store: createMemoryStore(), now: () => manifest.startsAt });
+  const repository = createMemoryRepository({ store: createMemoryStore(), now: () => manifest.startsAt, snapshot: 'shallow' });
   value(await repository.open(), 'repository.open');
   let closed = false;
   try {
-    const rows = stockRecords(inputs, adapterRow).map((row) => ['stock', row]);
+    const rows = comparisonStockRows(inputs, adapterRow).map((row) => ['stock', row]);
     const versions = { policy: manifest.policyVersion, scenario: adapter.fixtureVersion,
       fixture: adapter.fixtureVersion, corpus: manifest.configurationSource.version, comparison: { seed: manifest.seed, route, identityDigest } };
     value(await repository.resetRun(scope, command('comparison-bootstrap', { identityDigest }), {
@@ -196,7 +202,7 @@ export async function openComparisonRun(options = {}) {
       value(await claims.saveDraft(context, { commandId: 'comparison-initial-draft', expectedDraftVersion: 0,
         expectedContextVersion: account.contextVersion, choices }), 'manual-draft');
     }
-    return Object.freeze({ repository, clock, identity, claims, presenter,
+    return Object.freeze({ repository, clock, identity, claims, presenter, evaluation,
       transport: new CapturedTransport({ repository }), policy: runPolicy, inputs,
       metadata: freezeVehicleData({ seed: manifest.seed, policyVersion: manifest.policyVersion, route,
         runId: scope.runId, environmentId, identityDigest, inputHash: manifest.inputHash, codeRevision,
