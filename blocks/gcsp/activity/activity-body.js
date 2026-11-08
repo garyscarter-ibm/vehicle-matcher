@@ -18,17 +18,21 @@ export function activityBody({ result, onRetry, onPause, onResume, pending = fal
   const value = result.value;
   if (!value.permission) { root.append(statusScreen({ title: 'No confirmed search', message: 'Confirm a search brief to begin.' })); return root; }
   const paused = value.permission.paused === true;
-  const inactive = paused || value.permission.canSearch !== true;
+  // An accepted car ends the search, so it reads finished and offers no pause or resume.
+  const finished = value.currentOffer?.state === 'accepted';
+  const inactive = finished || paused || value.permission.canSearch !== true;
   const status = el('p', `gcsp-activity-status${inactive ? ' is-inactive' : ''}`); status.setAttribute('role', 'status');
-  status.append(svgIcon(inactive ? ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18', 'M9 8v8', 'M15 8v8']
-    : ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18', 'M8 12l3 3 5-6']), document.createTextNode(inactive ? 'Inactive' : 'Active'));
-  const command = paused ? onResume : onPause;
-  const allowed = paused || value.permission.canSearch === true;
-  const disabled = pending || !allowed || typeof command !== 'function';
-  const reason = pending ? 'Updating search' : !allowed ? 'Search unavailable' : typeof command !== 'function' ? 'Preview only' : undefined;
-  const actions = actionMenu({ label: 'Search actions', items: [{ label: paused ? 'Resume Search' : 'Pause Search', disabled, reason, onSelect: command }] });
-  const state = el('div', 'gcsp-activity-state'); state.append(status, actions.root); header.append(state);
-  root.destroy = actions.destroy;
+  status.append(svgIcon(inactive && !finished ? ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18', 'M9 8v8', 'M15 8v8']
+    : ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18', 'M8 12l3 3 5-6']), document.createTextNode(finished ? copy.finished : inactive ? 'Inactive' : 'Active'));
+  const state = el('div', 'gcsp-activity-state'); state.append(status); header.append(state);
+  if (!finished) {
+    const command = paused ? onResume : onPause;
+    const allowed = paused || value.permission.canSearch === true;
+    const disabled = pending || !allowed || typeof command !== 'function';
+    const reason = pending ? 'Updating search' : !allowed ? 'Search unavailable' : typeof command !== 'function' ? 'Preview only' : undefined;
+    const actions = actionMenu({ label: 'Search actions', items: [{ label: paused ? 'Resume Search' : 'Pause Search', disabled, reason, onSelect: command }] });
+    state.append(actions.root); root.destroy = actions.destroy;
+  }
   // The server names the current offer; display data (imagery, title) applies only when it references that offer.
   const offer = value.currentOffer || null;
   if (paused) root.append(el('p', 'gcsp-activity-consequence', offer?.state === 'active' ? `${copy.pausedDetail} ${copy.pausedOffer}` : copy.pausedDetail));

@@ -4,6 +4,7 @@ export const activityCopy = Object.freeze({
   title: 'Your buddy',
   unavailable: 'Search status and offers are unavailable. Try again.',
   notSearched: 'Not searched yet',
+  finished: 'Finished. You accepted a car.',
   searching: 'Still searching. No match yet.',
   sourceDelayed: 'Source delayed. Waiting for stock data.',
   sourceUnavailable: "Couldn't check for new cars. Stock source unavailable.",
