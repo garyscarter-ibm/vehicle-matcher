@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "f63-native-corrected-observation-validation.v1",
+  "status": "passed-scoped-native-sample-and-static-evidence-validation",
+  "runId": 42372886620,
+  "attempt": 1,
+  "runtimeHead": "8c76c96341701dd3fbfa1ddb6ead207cff323b4a",
+  "correctionTopicCommit": "f5670617ddfcf0e2ca1cc57096e3b8abaff9da26",
+  "ordersHarnessSha256": "2adc9b1f84c7f5e8854aa9dacf5e2ecfced03c0ba058ed1f4fabc1d78d9fa880",
+  "selectedChecks": [
+    "Exact terminal push/head/attempt/job and successful steps",
+    "Complete returned order/proof receipt reconciled to emitted structured event",
+    "Three exact order associations reconcile direct/consumer/HTTP/current-run/egress results",
+    "Snapshot persistence/run version and native row counts retained",
+    "Actual phase times,62 restore fetches,15 unchanged runtime pins and cleanup receipts reconciled",
+    "Both failed result directories unchanged; bounded JSON/file/whitespace checks"
+  ],
+  "files": {
+    "README.md": {
+      "bytes": 4788,
+      "sha256": "76e447e6f6e4eee8f0e0c303c4bb4c87047467a8995f7bd779daf90125dfe2d4"
+    },
+    "events.json": {
+      "bytes": 17054,
+      "sha256": "4c2d5d97294bb5e6f72eb1e864381bab9c6efc945a604ba1a26b633090f9ccf0"
+    },
+    "orders.json": {
+      "bytes": 6688,
+      "sha256": "4a26b9dccce0ccc41af65a21e9cdac727886d45494f784c9e23d33f558dba95e"
+    },
+    "proof-and-cleanup.log": {
+      "bytes": 16287,
+      "sha256": "86636d028d275df37c22b304c5a841df4a38cd542e640b5f18b74003281e78f3"
+    },
+    "run.json": {
+      "bytes": 3301,
+      "sha256": "8e41225bc516f2d5bc8383315586e63347ca5eb79c78a5865a73c6302a4bc3fc"
+    }
+  },
+  "actualPhases": [
+    {
+      "phase": "npm-ci",
+      "exitCode": 0,
+      "seconds": 1.038,
+      "state": "passed"
+    },
+    {
+      "phase": "restore",
+      "exitCode": 0,
+      "seconds": 136.898,
+      "state": "passed"
+    },
+    {
+      "phase": "orders",
+      "exitCode": 0,
+      "seconds": 57.986,
+      "state": "passed"
+    }
+  ],
+  "actualNativeProof": {
+    "status": "passed",
+    "nativeAttempted": true,
+    "nativeProof": true,
+    "checked": 3,
+    "currentRunUnchanged": true,
+    "directErrors": 0,
+    "httpErrors": 0,
+    "consumerErrors": 0,
+    "sourceCalls": 0,
+    "externalConnectAttempts": 0,
+    "elapsedMs": 713.8292510000028,
+    "noSlaClaim": true
+  },
+  "remoteCleanupOutput": [
+    {
+      "cleanup": "passed",
+      "scratchAbsent": true,
+      "serviceAbsent": true,
+      "removedWorkingBytes": 925223392,
+      "issues": []
+    },
+    {
+      "cleanup": "passed",
+      "scratchAbsent": true,
+      "serviceAbsent": true,
+      "removedWorkingBytes": 0,
+      "issues": []
+    }
+  ],
+  "remoteCompatibilityException": "Bounded ephemeral CI PostgreSQL tmpfs and public restore/cache working data; full sampled peak metrics not emitted",
+  "localRuntimeTests": 0,
+  "localProofs": 0,
+  "localSql": 0,
+  "localInstalls": 0,
+  "localRestores": 0,
+  "workflowDispatches": 0,
+  "agentMerges": 0,
+  "scratchAllocatedBytes": 0,
+  "removedLocalAllocationBytes": 0,
+  "disposableLeftovers": [],
+  "productionOrPacketChanges": [],
+  "knownDeferredConfiguredConsumerFailures": 2707,
+  "unrun": [
+    "Full10000 consumer replay",
+    "Full suite",
+    "Managed Render persistence",
+    "Ordinary deployed stock-port composition",
+    "All-stock enumeration",
+    "Story acceptance"
+  ],
+  "acceptance": false,
+  "agent": {
+    "name": "Charlie Dog",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "high",
+    "selectedModel": "gpt-6.1-sol",
+    "selectedEffort": "high",
+    "runtimeVerified": false,
+    "fallback": null,
+    "descendants": 0
+  }
+}

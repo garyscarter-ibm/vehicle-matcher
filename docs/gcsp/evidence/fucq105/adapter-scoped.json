@@ -1,0 +1,71 @@
+{
+  "code": {
+    "COMPONENTS.md": "efd12f582a943082c437c03593e584c4c5129c830ef4ecd858bfdf1bc5fb9c7b",
+    "blocks/gcsp/offer/fixtures.js": "771447b5d2c821e3d198a5209e0304ffd7f67111d1efe1120ef6e10da5beb1f0",
+    "blocks/gcsp/offer/gcsp-offer.css": "b155ddc1bb4dd5aa412f8993561c51377d7b6a16dff4ef4f52e2d62fa364024f",
+    "blocks/gcsp/offer/gcsp-offer.js": "7475bc77012f75374b0cceea1315a35d0d2b2257c9965ea72b3b6d5ad5d8ed96",
+    "blocks/gcsp/offer/harness.js": "ae8150a6f14498789d5403de9220e13e352cdabd1b490eb3285059a60821e288",
+    "blocks/gcsp/offer/http-adapter.js": "b9f37dc9d935900ab78abf3a0e9cc396b38565a52dc65e8ef4f15f1fa82c2f8d",
+    "blocks/gcsp/offer/offer-controller.js": "71f1c2ba3fc3e42cc3642f12971bf4bb3027fcb2dfddb99121ca50735b0f6561",
+    "blocks/gcsp/offer/offer-projection.js": "5ec06a5b62f54319c21d2f7404b14d618f332dac167a07d06512d98d45ef5126",
+    "blocks/gcsp/offer/offer-view.js": "dd02b6131aad2dad67cce26b6b4a90d833fa6a4d05106aebfd774e99bba36fef",
+    "blocks/gcsp/offer/preview.html": "ec555687573e54a005dfae3d05c1ca6af40a1457670363cd76ce7644569830e0",
+    "docs/gcsp/evidence/fucq105/representative-access.json": "04272860d8783820235cbc76b25ac1a96898350be2305e81bbbc56ca558f0f1f",
+    "server/test/gcsp-offer-view-controller.test.js": "ec652d2c8db7c1f4abf7f6ca4844e023e3f7c50e3d6b81170ba87cf1ec11d986",
+    "server/test/gcsp-offer-view-http.test.js": "0839a509f665472f69c6c83cb6ca06a7ebb9c8acbfc8272ad4f479d3ad0cf976",
+    "server/test/gcsp-offer-view-projection.test.js": "f2e539609befd93ce6e9e5be2802ef51b73d973d8d507c477b2808832bd3e284",
+    "server/test/gcsp-offer-view-render.test.js": "4f6b76059b42331b8bc778e4ff1f9a8eebdefa6a3003b2f98b516c52803e343e",
+    "server/test/ui-ratchet.json": "d74cf7a0e9c0949a43624b6f3ac63b0f8af2d63c8687f24a85964fd9a54914d7"
+  },
+  "groups_absent": true,
+  "issue": null,
+  "issue_kind": null,
+  "log": "/private/tmp/test-stamp-shard-39f4f42589094822b4dbb913228d100b/check.log",
+  "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/ownership/39f4f42589094822b4dbb913228d100b.json",
+  "peak_rss": 27459584,
+  "peak_scratch": 8192,
+  "rc": 0,
+  "reservation_released": true,
+  "scratch_absent": true,
+  "summary": [
+    "# tests 96",
+    "# pass 96",
+    "# fail 0",
+    "# skipped 0",
+    "# duration_ms 1923.347709"
+  ],
+  "summary_tail": [
+    "# tests 96",
+    "# suites 0",
+    "# pass 96",
+    "# fail 0",
+    "# cancelled 0",
+    "# skipped 0",
+    "# todo 0",
+    "# duration_ms 1923.347709",
+    "  completed 1 unit(s), exit 0; scratch removed",
+    "OK (exit 0), wall 2.3s",
+    "logs: /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/logs/20261105-234254-91s7zkcu",
+    "recorded targeted evidence: /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/targeted-4e25e9c9e10520b477b51f315b19e6519d0cf2897cb052c60945eb5b4f3e2b56-default-1793922177453797000.json"
+  ],
+  "wall": 3.6300714999999997,
+  "nested_resources": [
+    {
+      "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/ce336bb14f714be19ceb26da75bbb5be.json",
+      "root": "/private/tmp/test-stamp-shard-ce336bb14f714be19ceb26da75bbb5be",
+      "root_absent": true,
+      "groups_absent": true,
+      "peak_scratch": 0,
+      "peak_rss": 223608832,
+      "checkpoint": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/checkpoints/97e798ef9b44752e9d9c41fe1d546bced591dad1c542b2be30ec9a1889fd5bd7.json"
+    }
+  ],
+  "scope": "Approved102 immutable schema/sample projection, mocked HTTP transport/read scheduling, controller/DOM adapter pipeline, shared-kit and ratchet. No real100 producer/comparison,106 decisions, central host, browser/native/full or live request proof.",
+  "reference": {
+    "contractCommit": "ec70522c81e8b9f671a3c92cd46eea4cd0a13000",
+    "contractSha256": "bc1dcaff59fec98086041ccf9f6701d128a51407e90545eaf5d5d9b199b163f2",
+    "sampleSha256": "04272860d8783820235cbc76b25ac1a96898350be2305e81bbbc56ca558f0f1f",
+    "sampleProvenance": "Real evaluator/access over synthetic rows; not actual100 producer proof",
+    "currentCar": "unavailable; future100/102 comparison binding gated"
+  }
+}

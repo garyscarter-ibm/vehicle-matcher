@@ -1,0 +1,34 @@
+{
+  "schemaVersion": "root-output-ownership.v1",
+  "owner": "root overnight F58\u201363",
+  "createdAt": "2026-11-07T06:20:20.573803+00:00",
+  "ownedRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot10-4666-20261107/followthrough",
+  "ownedCopiedInputs": [
+    "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot10-4666-20261107/followthrough/download/restored",
+    "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot10-4666-20261107/followthrough/download/cache"
+  ],
+  "planSha256": "165e521911790be12e8f435ea9363958bc2cf76dcf84fc6260a1a1ec00f1a913",
+  "selectedPhases": [
+    "download",
+    "offline",
+    "recovery",
+    "ordinary"
+  ],
+  "supervisor": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot10-followthrough-plan/supervise.py",
+  "resourceBudget": {
+    "workers": 1,
+    "nodeHeapMiB": 384,
+    "hostRAMMiB": 768,
+    "groupRAMMiB": 672,
+    "cloudScratchMiB": 64,
+    "diskReservationMiB": 768,
+    "secondsPerChunk": 180,
+    "downloadSeconds": 240,
+    "maximumRetainedMiB": 512,
+    "maximumAggregateMiB": 1280
+  },
+  "forecast": "oneworker; <=768MiBnewdisk and768MiBgroup reservation per phase,240sdownload/180seachoffline/recovery/ordinary; newoutputdirectOneDrive",
+  "finalization": "supervisor joins children and removes phase scratch/link/reservation each phase; root verifies then removes only manifestowned successfulstore/cache afterordinaryproof, retain receipts",
+  "state": "planned",
+  "compatibilityException": null
+}

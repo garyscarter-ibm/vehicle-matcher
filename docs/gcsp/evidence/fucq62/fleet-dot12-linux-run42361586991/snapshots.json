@@ -1,0 +1,44 @@
+[
+  {
+    "observedAt": "2026-11-07T09:53:53.518574+00:00",
+    "status": "in_progress",
+    "conclusion": "",
+    "jobStatus": "in_progress"
+  },
+  {
+    "observedAt": "2026-11-07T09:55:12.293161+00:00",
+    "status": "in_progress",
+    "conclusion": "",
+    "jobStatus": "in_progress"
+  },
+  {
+    "observedAt": "2026-11-07T09:56:26.507163+00:00",
+    "status": "in_progress",
+    "conclusion": "",
+    "jobStatus": "in_progress"
+  },
+  {
+    "observedAt": "2026-11-07T09:57:40.980264+00:00",
+    "status": "in_progress",
+    "conclusion": "",
+    "jobStatus": "in_progress"
+  },
+  {
+    "observedAt": "2026-11-07T09:58:54.423558+00:00",
+    "status": "in_progress",
+    "conclusion": "",
+    "jobStatus": "in_progress"
+  },
+  {
+    "observedAt": "2026-11-07T10:00:07.619405+00:00",
+    "status": "in_progress",
+    "conclusion": "",
+    "jobStatus": "in_progress"
+  },
+  {
+    "observedAt": "2026-11-07T10:01:35.127005+00:00",
+    "status": "completed",
+    "conclusion": "success",
+    "jobStatus": "completed"
+  }
+]

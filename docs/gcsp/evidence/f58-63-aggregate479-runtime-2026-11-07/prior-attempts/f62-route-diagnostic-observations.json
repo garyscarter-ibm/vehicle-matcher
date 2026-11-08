@@ -1,0 +1,78 @@
+{
+  "scope": "three diagnostic GETs only; no sourcecalls or secrets",
+  "GET": 3,
+  "rows": [
+    {
+      "path": "/api/gcsp/vehicle-evidence/configurations/not-a-configuration",
+      "at": "2026-11-07T03:00:30.506033+00:00",
+      "status": 400,
+      "bytes": 482,
+      "body": {
+        "contractVersion": "1.0.0",
+        "schemaVersion": "1",
+        "provider": "local-vehicle-evidence",
+        "providerVersion": "1",
+        "status": "invalid-input",
+        "requested": {
+          "kind": "configuration",
+          "id": null
+        },
+        "resolved": null,
+        "identity": null,
+        "failure": {
+          "code": "invalid-vehicle-identifier",
+          "message": "Use a canonical configuration ID, stock order UUID or 17-character VIN for the selected route.",
+          "action": "correct-identifier",
+          "retryable": false
+        },
+        "completeness": null,
+        "routing": {
+          "mode": "offline",
+          "liveEligible": false
+        }
+      },
+      "seconds": 0.1774
+    },
+    {
+      "path": "/health",
+      "at": "2026-11-07T03:00:30.683400+00:00",
+      "status": 200,
+      "bytes": 11,
+      "body": {
+        "ok": true
+      },
+      "seconds": 0.1381
+    },
+    {
+      "path": "/api/gcsp/vehicle-evidence",
+      "at": "2026-11-07T03:00:30.821485+00:00",
+      "status": 404,
+      "bytes": 465,
+      "body": {
+        "contractVersion": "1.0.0",
+        "schemaVersion": "1",
+        "provider": "local-vehicle-evidence",
+        "providerVersion": "1",
+        "status": "not-found",
+        "requested": {
+          "kind": null,
+          "id": null
+        },
+        "resolved": null,
+        "identity": null,
+        "failure": {
+          "code": "vehicle-not-found",
+          "message": "This identifier is absent from the selected local data. Check the identifier and selected demo dataset.",
+          "action": "check-identifier",
+          "retryable": false
+        },
+        "completeness": null,
+        "routing": {
+          "mode": "offline",
+          "liveEligible": false
+        }
+      },
+      "seconds": 0.1532
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "schemaVersion": "f70-axis-f60-session-integration.v1",
+  "scope": "scoped merge integration; no live requests, publication or application acceptance",
+  "parents": [
+    "cfc5563609c13e8bd526b1073b25dc3e06e0f053",
+    "440a4eaae6ffc4434bbb43e7315fd236b8bd850a"
+  ],
+  "resolution": "Preserve both registered F60 observation imports and optional-axis isBmwModelBatchPlan/sourceVersion checks. Sole textual conflict was adjacent collection-session imports.",
+  "plan": {
+    "scope": "scoped actual merge integration at the shared collection session; preserve optional-axis and F60 observation registrations",
+    "baselineParents": [
+      "cfc5563609c13e8bd526b1073b25dc3e06e0f053",
+      "440a4eaae6ffc4434bbb43e7315fd236b8bd850a"
+    ],
+    "changedConflictPath": "scripts/gcsp/collection-session.mjs",
+    "conflict": "Adjacent imports: add registered F60 observation import and retain observed-line isBmwModelBatchPlan source-version path. No behavior invented.",
+    "affectedCallers": [
+      "registered F60 OTD/image-manifest observer",
+      "optional/model batch finite registration and exact HTTP route allowlist",
+      "batch collector checkpoint/resume and source errors"
+    ],
+    "selected": [
+      "server/test/gcsp-bmw-enrichment-observation.test.js",
+      "server/test/gcsp-bmw-model-batch.test.js",
+      "server/test/gcsp-bmw-source-batch.test.js",
+      "server/test/gcsp-fleet-collector.test.js"
+    ],
+    "reused": "Earlier141/141 scope remains historical evidence for original source identity. Unchanged retained-binding implementation uses prior direct binder checks; full new combined executor paths selected now. Root owns already-validated independent F60/catalogue/publication changes.",
+    "excluded": {
+      "fullSuite": "Onlyone import conflict; combined registration/executor callers covered directly. No unexplained broad effect.",
+      "liveTraffic": "No grant",
+      "F60unrelatedAndUI": "Merged coherent prior root work; not changed by conflict resolution and parent retains own evidence."
+    },
+    "resources": {
+      "workers": 1,
+      "scratchMiB": 64,
+      "hostRAMMiB": 512,
+      "childRAMMiB": 448,
+      "seconds": 100,
+      "logMiB": 1,
+      "TMP": "Scratch.env owned temp paths",
+      "finalizer": "registered before allocation; stop/join, ps/lsof, remove exact owned symlink and scratch, release reservation",
+      "compatibilityException": null
+    },
+    "followUp": {
+      "observed": "142/143 pass; remainingF60 historical source evidence exists but test demanded absence after a correctly refused missing grant",
+      "change": "test snapshot/preservation assertion only; existing marker, primary and event bytes preserved",
+      "selected": [
+        "server/test/gcsp-bmw-enrichment-observation.test.js"
+      ],
+      "reused": "All133 optional/model/source/collector checks already passed against unchanged combined production source; rerun only changed10-test F60 file."
+    }
+  },
+  "codeTestIdentity": {
+    "scripts/gcsp/bmw-public-registration.mjs": "b4eed688fff481af4d422f3612be71184df689ff943fef3d339dc9392a960460",
+    "scripts/gcsp/bmw-selection-binding.mjs": "480f1e3d1496bcb8d808ec75839634808a2923cdbf8411df61b0f819bdec3f38",
+    "scripts/gcsp/capture-bmw-selection.mjs": "14c255be3696d8d0512d9d4ddc03f24bae138d83f4d548bd813b07d1a5eb9892",
+    "scripts/gcsp/collection-session.mjs": "bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790",
+    "scripts/gcsp/public-bmw-source.mjs": "14600d91932c33b691801197ea28812c98bb08ea9603f293829ffeff09b48235",
+    "server/test/gcsp-bmw-enrichment-observation.test.js": "33a7f04ddc0e7e749a4bf0b55b4d9594ae39497c429f0ecd18a022818a56d89c",
+    "server/test/gcsp-bmw-model-batch.test.js": "818bb46fc261093d1e5dd70c2c5c5e27f172e654f67fa80db9d3e4c2b6cdfa1a",
+    "server/test/gcsp-bmw-source-batch.test.js": "2aeadfd650d8b8c79c7e559753d9530dcf885054d66c6e0fe9c8508ad2f6b252",
+    "server/test/gcsp-fleet-collector.test.js": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88"
+  },
+  "additionalBoundaryIdentity": {
+    "scripts/gcsp/enrichment-observation.mjs": "29d41aefcd2b3d74a876219ad960cc901f6677cc7e483710216eb710ab788a29"
+  },
+  "firstRun": {
+    "command": [
+      "node",
+      "--test",
+      "--test-isolation=none",
+      "--test-concurrency=1",
+      "--test-reporter=tap",
+      "server/test/gcsp-bmw-enrichment-observation.test.js",
+      "server/test/gcsp-bmw-model-batch.test.js",
+      "server/test/gcsp-bmw-source-batch.test.js",
+      "server/test/gcsp-fleet-collector.test.js"
+    ],
+    "tests": 143,
+    "pass": 142,
+    "fail": 1,
+    "skipped": 0,
+    "cancelled": 0,
+    "wallSeconds": 31.955268250007066,
+    "failure": "F60 missing-grant test assumed historical spent marker/primary/event files absent; guard itself correctly refused. Actual completed source evidence made absence expectation obsolete."
+  },
+  "followup": {
+    "command": [
+      "node",
+      "--test",
+      "--test-isolation=none",
+      "--test-concurrency=1",
+      "--test-reporter=tap",
+      "server/test/gcsp-bmw-enrichment-observation.test.js"
+    ],
+    "tests": 10,
+    "pass": 10,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "wallSeconds": 1.9679916669992963,
+    "repair": "Existing missing-grant test now snapshots before/after bytes, proving pre-existing evidence remains unchanged and absent files remain absent. No source runtime changes."
+  },
+  "reusedPassingEvidence": {
+    "tests": 133,
+    "sourceIdentityUnchangedAcrossRuns": true,
+    "boundaryFiles": [
+      "server/test/gcsp-bmw-model-batch.test.js",
+      "server/test/gcsp-bmw-source-batch.test.js",
+      "server/test/gcsp-fleet-collector.test.js"
+    ],
+    "reason": "OnlytheF60 test assertion changed after first run; production code and other selected test files unchanged."
+  },
+  "scopedConclusion": "133 unchanged boundary checks passed plus10/10 corrected F60 observer checks. This is composite scoped evidence, not one full-suite run.",
+  "cleanup": [
+    {
+      "label": "integration",
+      "scratchRoot": "/private/tmp/test-stamp-shard-ad9ccae749894d8495ef80f0f02d88aa",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f58/f70-optional-axis/integration/ownership/ad9ccae749894d8495ef80f0f02d88aa.json",
+      "groupsAbsent": true,
+      "openFilesAbsent": true,
+      "scratchAbsent": true,
+      "dependencyLinkAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 2896192,
+      "compatibilityException": null,
+      "cleanupErrors": []
+    },
+    {
+      "label": "integration-followup",
+      "scratchRoot": "/private/tmp/test-stamp-shard-bfa5bfba491e4ad390430d2572c4ae6d",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f58/f70-optional-axis/integration-followup/ownership/bfa5bfba491e4ad390430d2572c4ae6d.json",
+      "groupsAbsent": true,
+      "openFilesAbsent": true,
+      "scratchAbsent": true,
+      "dependencyLinkAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 1401024,
+      "compatibilityException": null,
+      "cleanupErrors": []
+    },
+    {
+      "label": "integration-final",
+      "scratchRoot": "/private/tmp/test-stamp-shard-0491b1e966994e67b32044852987d175",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f58/f70-optional-axis/integration-final/ownership/0491b1e966994e67b32044852987d175.json",
+      "groupsAbsent": true,
+      "openFilesAbsent": true,
+      "scratchAbsent": true,
+      "dependencyLinkAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 1401024,
+      "compatibilityException": null,
+      "cleanupErrors": []
+    }
+  ],
+  "peakScratchBytes": 2896192,
+  "peakRamBytes": 387743744,
+  "unrun": [
+    "full suite",
+    "live source",
+    "unrelated root F60/publication suites (parent retains their evidence)"
+  ],
+  "acceptance": false,
+  "finalExactBytes": {
+    "command": [
+      "node",
+      "--test",
+      "--test-isolation=none",
+      "--test-concurrency=1",
+      "--test-reporter=tap",
+      "server/test/gcsp-bmw-enrichment-observation.test.js"
+    ],
+    "tests": 10,
+    "pass": 10,
+    "fail": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "wallSeconds": 1.8751230839989148,
+    "reason": "Incoming test had trailing whitespace caught by commit diff check; removed it and reran the affected ten checks against exact final bytes."
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "classification": "scoped offline requalification of actual retained source observations",
+  "actualSourceRequests": 0,
+  "checks": [
+    {
+      "candidateId": "candidate-e384e23e4375b5f677c65619",
+      "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHOSxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "binder": "qualified",
+      "adapter": "partial",
+      "factoryComplete": true,
+      "accessoryCodesComplete": true,
+      "accessoryQuantities": "unknown",
+      "verifiedFitted": "unknown",
+      "selectedFactoryOptionCount": 47,
+      "selectedAccessoryCount": 1
+    },
+    {
+      "candidateId": "candidate-c9eeb5c73605462a742f76bf",
+      "configurationId": "VDVNSjpGS1NGVSxQMDMwMCxTMDIzMCxTMDJQQSxTMDJWQixTMDJWRCxTMDMwMixTMDMzNyxTMDNESyxTMDNHRCxTMDNNMSxTMDQyOCxTMDQzTCxTMDQ4OCxTMDQ5NCxTMDRUMixTMDRVOSxTMDRVUixTMDRWMSxTMDU1MixTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDY3NCxTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZOWCxTMDZQQSxTMDcwNCxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MyxTMDg4MCxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXTSxTMDlRVixTMDlUMSxTMDlUMg==",
+      "binder": "qualified",
+      "adapter": "partial",
+      "factoryComplete": true,
+      "accessoryCodesComplete": true,
+      "accessoryQuantities": "unknown",
+      "verifiedFitted": "unknown",
+      "selectedFactoryOptionCount": 47,
+      "selectedAccessoryCount": 1
+    }
+  ],
+  "acceptance": false
+}

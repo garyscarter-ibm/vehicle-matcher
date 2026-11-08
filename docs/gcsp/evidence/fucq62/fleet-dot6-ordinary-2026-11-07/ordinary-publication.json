@@ -1,0 +1,30 @@
+{
+  "status": "ordinary-dot6-published-coherent-anchor-staged",
+  "releaseId": "421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d",
+  "previousManifestDigest": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+  "counts": {
+    "configurations": 870,
+    "distinctConfigurations": 870,
+    "images": 1,
+    "qualifyingCompleteDistinctSourceConfigurations": 869,
+    "sourceConfigurations": 869,
+    "vinMappings": 1
+  },
+  "oldVersionFilesRehashed": 29,
+  "oldHistoryConfigurationsUnchanged": 480,
+  "oldHistoryIdentitiesUnchanged": 1,
+  "oldHistoryDatasetsUnchanged": 6,
+  "addedConfigurations": 390,
+  "addedDatasets": 1,
+  "allPublicCorpusAssetBytesIdentical": true,
+  "idempotentRepeat": true,
+  "coldImageState": "representative",
+  "egress": {
+    "control": "blocked",
+    "calls": 0
+  },
+  "public871DirectAnd871HttpProofReused": true,
+  "ordinaryStore": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1",
+  "pushOrDeployExecuted": false,
+  "acceptance": false
+}

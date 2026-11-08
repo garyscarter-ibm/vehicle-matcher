@@ -1,0 +1,199 @@
+{
+  "schemaVersion": "f58-u06-consumed-failure-proof.v1",
+  "observedAt": "2026-11-07T08:34:56.859905+00:00",
+  "allocationId": "f58-four-model-inventory-20261107-once-u06",
+  "phaseMarker": {
+    "id": "f58-four-model-inventory-20261107-once-first",
+    "state": "reserved-and-consumed",
+    "planSha256": "d12dd2ed61dc5fd9bc07f7596f0a5f44813150009bded92d1309ff0c61c00d43",
+    "releaseSha256": "784fc3068098889302f942feff3d9336724dcd8b1b43e09c114ff49f7ec9b724",
+    "reservedAt": "2026-11-07T08:28:31.344148+00:00"
+  },
+  "originalPlanSha256": "d12dd2ed61dc5fd9bc07f7596f0a5f44813150009bded92d1309ff0c61c00d43",
+  "externalPins": {
+    "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f58-four-model-inventory-20261107-once/first-cleanup.json": "43afcf9fb66d79d119f6e1c7da658e90b786c47a7ec6a658211b72ee165f904c",
+    "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f58-four-model-inventory-20261107-once/first-once.json": "d55f1d403aa9604939335c595dfb2ef5829b207e126a58fad8ce8324c4ee9c1c",
+    "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f58-four-model-inventory-20261107-once/first-receipt.json": "1993452fceb9b103b356e53ad93c7d6acb9882defa9fb1fab00bf7ed06d0dcaf",
+    "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f58-four-model-inventory-20261107-once/u06/accepted.jsonl": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f58-four-model-inventory-20261107-once/u06/checkpoint-export.json": "8537f56d1c98f511e4c79c52a8b646cc2a2b21ea5ea8db59533c1ae3f8b4f841",
+    "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f58-four-model-inventory-20261107-once/u06/collector-checkpoint.json": "04f982023eb4d2ec6f448e65348bb3e97f59fd4b672c0df4cb452c2a4afaa185",
+    "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f58-four-model-inventory-20261107-once/u06/collector-state.json": "04f982023eb4d2ec6f448e65348bb3e97f59fd4b672c0df4cb452c2a4afaa185",
+    "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f58-four-model-inventory-20261107-once/u06/execution-once.json": "511fb6883ebf1db757eca5ef68806b91cf36ea80f3df989c32844c3600f26654",
+    "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f58-four-model-inventory-20261107-once/u06/receipt.json": "36b5a666994826a055a7687a6e31b77db823248b858850471773c1cdb6e6f942",
+    "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f58-four-model-inventory-20261107-once/u06/request-identities.jsonl": "d844ad02cd1a4d8f69a71d7df2aebb4a0270e31b526c341640b5ee0eb298d583",
+    "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f58-four-model-inventory-20261107-once/u06/source-events.jsonl": "c5e4cecd3f12172e60b7ca0af7768751efbe7062c31bf51b92a88d1e1c469296",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/series-plan.json": "d12dd2ed61dc5fd9bc07f7596f0a5f44813150009bded92d1309ff0c61c00d43",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq58/alternate-official-four-leads-2026-11-07/parent-release-first.json": "784fc3068098889302f942feff3d9336724dcd8b1b43e09c114ff49f7ec9b724"
+  },
+  "sourceReceipt": {
+    "schemaVersion": "bmw-breadth-safe-diagnostic-receipt.v1",
+    "allocationId": "f58-four-model-inventory-20261107-once-u06",
+    "planDigest": "5ef1b504a9647d5fe911e7ba7d9c379e44b201b118ce429e91b2c63cd475b7ba",
+    "mode": "live",
+    "startedAt": "2026-11-07T08:28:31.637Z",
+    "completedAt": "2026-11-07T08:28:32.688Z",
+    "elapsedMs": 1050,
+    "status": "stopped",
+    "reason": "diagnostic-alias-limit",
+    "actualAttempts": 3,
+    "counts": {
+      "sourceCalls": 3,
+      "operations": {
+        "discover": 1,
+        "page": 1,
+        "settings": 1
+      },
+      "cacheHits": {
+        "discover": 0,
+        "page": 0,
+        "settings": 0
+      },
+      "failures": 0,
+      "timeouts": 0,
+      "substitutions": 0,
+      "cacheEvictions": 0,
+      "httpAttempts": 3,
+      "decodedBytes": 638411,
+      "operationBytes": {
+        "discover": 2,
+        "page": 17763,
+        "settings": 620646
+      }
+    },
+    "originalRefusal": null,
+    "rejectedContract": null,
+    "admitted": 0,
+    "newConfigurations": 0,
+    "sourceCapacityCredit": 0,
+    "options": 0,
+    "solver": 0,
+    "images": 0,
+    "browser": 0,
+    "retries": 0,
+    "sourceWrites": 0,
+    "rawBodiesRetained": false,
+    "settingsRetained": false,
+    "acceptance": false
+  },
+  "outerReceipt": {
+    "acceptance": false,
+    "activeContext": "u06",
+    "actualGets": 3,
+    "actualGetsKnownLowerBound": false,
+    "admitted": 0,
+    "attemptedContexts": [
+      {
+        "collectorStartedAttempts": 3,
+        "context": "u06",
+        "counts": {
+          "cacheEvictions": 0,
+          "cacheHits": {
+            "discover": 0,
+            "page": 0,
+            "settings": 0
+          },
+          "decodedBytes": 638411,
+          "failures": 0,
+          "httpAttempts": 3,
+          "operationBytes": {
+            "discover": 2,
+            "page": 17763,
+            "settings": 620646
+          },
+          "operations": {
+            "discover": 1,
+            "page": 1,
+            "settings": 1
+          },
+          "sourceCalls": 3,
+          "substitutions": 0,
+          "timeouts": 0
+        },
+        "primaryPreserved": true,
+        "receivedHeaders": 3,
+        "startedGets": 3,
+        "unparsedEventLines": 0,
+        "unparsedIdentityLines": 0
+      }
+    ],
+    "completedContexts": [],
+    "decodedBytes": 638411,
+    "elapsedSeconds": 1.808159042,
+    "errorType": "AssertionError",
+    "phase": "first",
+    "qualifiedPhysicalFacts": 0,
+    "qualifiedSchemeJoins": 0,
+    "reason": "incomplete",
+    "resourceAllocation": {
+      "disk": 83886080,
+      "ram": 603979776
+    },
+    "sourceCapacityCredit": 0
+  },
+  "cleanup": {
+    "allChildrenJoined": true,
+    "allStageGroupsAbsent": true,
+    "compatibilityException": null,
+    "dependencyLinkAbsent": true,
+    "dependencyPathTouched": false,
+    "groups": [
+      52446,
+      52453
+    ],
+    "identityUnchanged": true,
+    "leftovers": [],
+    "removedScratchBytes": 0,
+    "reservationAbsent": true,
+    "reservationTokens": [
+      "42cb85f93ed1446a891fbffb30c3b876",
+      "2ee208f87df2408bafeaf92bf929a8e5"
+    ],
+    "retainedBytes": 10508,
+    "retainedOutput": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f58-four-model-inventory-20261107-once",
+    "scratchAbsent": true,
+    "scratchRoots": [
+      "/private/tmp/test-stamp-shard-2ee208f87df2408bafeaf92bf929a8e5"
+    ]
+  },
+  "requestIdentities": [
+    {
+      "attempt": 1,
+      "operation": "page",
+      "method": "GET",
+      "url": "https://configure.bmw.co.uk/en_GB/configure/U06/2DSA",
+      "requestIdentitySha256": "1ead987c6e52624e393b031c8fa88149e309238a6104e0add16fef9a58f8f753"
+    },
+    {
+      "attempt": 2,
+      "operation": "settings",
+      "method": "GET",
+      "url": "https://configure.bmw.co.uk/en_GB/settings.f8e66668.json",
+      "requestIdentitySha256": "5db447eee6c8af42e6659355c21715f1cc80cb207d8a78915675986567199647"
+    },
+    {
+      "attempt": 3,
+      "operation": "discover",
+      "method": "GET",
+      "url": "https://prod.ucp.bmw.cloud/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/brands/bmwCar/countries/gb/effect-dates/2026-11-07/order-dates/2026-11-07?gfs-policy=none&cluster=default&model-ranges=U06&future-models=true&closest-fallback=true",
+      "requestIdentitySha256": "14d1691b25b3cd8fc0145ce5b209da1cdc1378dc0e32f7108485659f68181387"
+    }
+  ],
+  "headerStatuses": [
+    200,
+    200,
+    200
+  ],
+  "retainedLogicalBytes": 10508,
+  "rawDiscoverBodyRetained": false,
+  "actualDiscoverDecodedBytes": 2,
+  "qualifiedModelFacts": 0,
+  "qualifiedSchemeJoins": 0,
+  "qualifiedPhysicalFacts": 0,
+  "admitted": 0,
+  "acceptance": false,
+  "replayForbidden": true,
+  "missingSuccessfulDiagnosticProofExpected": true,
+  "remainingNineGrantExists": false,
+  "readOnlyInspection": true,
+  "continuationBasis": "U06 allocation consumed with no usable model tree; distinct G20/G22/G23 canonical page/tree requests remain independent. Preserve failed prefix and release neither old remaining phase nor U06 again."
+}

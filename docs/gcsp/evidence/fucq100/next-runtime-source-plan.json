@@ -1,0 +1,372 @@
+{
+  "observed_at": 1793925183.3566809,
+  "kind": "read-only next integration plan; no adoption, execution or allocation",
+  "canonical100": "95d77416361f54eb558bbcb40b382cbb45149c27",
+  "published122": "aedc5e63cd6cc7c5bb6c9ec424d5018d2f87b639",
+  "published103successor": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+  "roots": [
+    "server/gcsp/cases/index.js",
+    "server/gcsp/cases/http.js"
+  ],
+  "closure": [
+    {
+      "path": "server/brands.js",
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "sha256": "ea63741b2fcb01dbe35dcdffdd66f7021a3c0219517a8de1487fae65f65299e2",
+      "imports": []
+    },
+    {
+      "path": "server/engine.js",
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "sha256": "bbe8a865d280fb75075e93a139a3badbaa20972a18406baeeafb8ca2fc56a550",
+      "imports": [
+        {
+          "specifier": "./brands.js",
+          "path": "server/brands.js"
+        },
+        {
+          "specifier": "./questions.js",
+          "path": "server/questions.js"
+        }
+      ]
+    },
+    {
+      "path": "server/gcsp/cases/http.js",
+      "ref": "aedc5e63cd6cc7c5bb6c9ec424d5018d2f87b639",
+      "sha256": "d1b48cf2b47e2d19f80c61c90fdd234098d1ae480a591878ebb38f9fb51f0d65",
+      "imports": [
+        {
+          "specifier": "../repository/core.js",
+          "path": "server/gcsp/repository/core.js"
+        }
+      ]
+    },
+    {
+      "path": "server/gcsp/cases/index.js",
+      "ref": "aedc5e63cd6cc7c5bb6c9ec424d5018d2f87b639",
+      "sha256": "2c62c96bd07cc1dbf57b76dfb0fddc4dc9e77fe22ca689f89d471bd14842ffd3",
+      "imports": [
+        {
+          "specifier": "../policy/file-provider.js",
+          "path": "server/gcsp/policy/file-provider.js"
+        },
+        {
+          "specifier": "../recommendation/index.js",
+          "path": "server/gcsp/recommendation/index.js"
+        },
+        {
+          "specifier": "../repository/index.js",
+          "path": "server/gcsp/repository/index.js"
+        },
+        {
+          "specifier": "./policy.js",
+          "path": "server/gcsp/cases/policy.js"
+        }
+      ]
+    },
+    {
+      "path": "server/gcsp/cases/policy.js",
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "sha256": "c6ee2d24b019695a8bf3663fe2dd22fee5705aac65a7fff834f21b5c219209e7",
+      "imports": [
+        {
+          "specifier": "../repository/core.js",
+          "path": "server/gcsp/repository/core.js"
+        }
+      ]
+    },
+    {
+      "path": "server/gcsp/migrations",
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "kind": "directory-resource",
+      "imports": [
+        {
+          "path": "server/gcsp/migrations/0001_transaction_foundation.sql"
+        },
+        {
+          "path": "server/gcsp/migrations/0002_policy_tables.sql"
+        },
+        {
+          "path": "server/gcsp/migrations/0003_renewal_cases.sql"
+        },
+        {
+          "path": "server/gcsp/migrations/index.js"
+        }
+      ]
+    },
+    {
+      "path": "server/gcsp/migrations/0001_transaction_foundation.sql",
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "sha256": "3bde8db01f103141ca9bbe7398a6e1172df9b9789df745244a0071a00b9629d1",
+      "imports": []
+    },
+    {
+      "path": "server/gcsp/migrations/0002_policy_tables.sql",
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "sha256": "65346093f811df63b225436a0ca35cd4061990a78caacb44ffde7b1effd1edd0",
+      "imports": []
+    },
+    {
+      "path": "server/gcsp/migrations/0003_renewal_cases.sql",
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "sha256": "e76750fddd75b9d363fd209c243169ce1f9b06c78f96b7dbb74fe3c296f08c98",
+      "imports": []
+    },
+    {
+      "path": "server/gcsp/migrations/index.js",
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "sha256": "9a301088fbf46adca8582fa31cb27df62595e93f386ef3cab7b584c5dfe31a3f",
+      "imports": [
+        {
+          "specifier": "../repository/core.js",
+          "path": "server/gcsp/repository/core.js"
+        },
+        {
+          "specifier": "./",
+          "path": "server/gcsp/migrations"
+        },
+        {
+          "specifier": "node:crypto",
+          "builtin_or_package": true
+        },
+        {
+          "specifier": "node:fs/promises",
+          "builtin_or_package": true
+        },
+        {
+          "specifier": "node:path",
+          "builtin_or_package": true
+        },
+        {
+          "specifier": "node:url",
+          "builtin_or_package": true
+        }
+      ]
+    },
+    {
+      "path": "server/gcsp/policy/file-provider.js",
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "sha256": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+      "imports": [
+        {
+          "specifier": "./seed-v1.json",
+          "path": "server/gcsp/policy/seed-v1.json"
+        },
+        {
+          "specifier": "node:fs/promises",
+          "builtin_or_package": true
+        }
+      ]
+    },
+    {
+      "path": "server/gcsp/policy/seed-v1.json",
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "sha256": "c585213b98631d6e82acc1b3720d47efae49fdb502f5fc86fb440703ef6e41a6",
+      "imports": []
+    },
+    {
+      "path": "server/gcsp/recommendation/index.js",
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "sha256": "08acfe895804cf60dcc178591ecbdd1816f12ce70944f832f1ae394902c7e172",
+      "imports": [
+        {
+          "specifier": "../../scenarios/employee/index.js",
+          "path": "server/scenarios/employee/index.js"
+        },
+        {
+          "specifier": "../../vehicles/index.js",
+          "path": "server/vehicles/index.js"
+        },
+        {
+          "specifier": "../policy/file-provider.js",
+          "path": "server/gcsp/policy/file-provider.js"
+        }
+      ]
+    },
+    {
+      "path": "server/gcsp/repository/core.js",
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "sha256": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+      "imports": [
+        {
+          "specifier": "./schema.js",
+          "path": "server/gcsp/repository/schema.js"
+        },
+        {
+          "specifier": "node:crypto",
+          "builtin_or_package": true
+        }
+      ]
+    },
+    {
+      "path": "server/gcsp/repository/index.js",
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "sha256": "6fce024dfec302d360affe27d0c68b47a1a29670929ddedc16722ed02cae0e16",
+      "imports": [
+        {
+          "specifier": "./core.js",
+          "path": "server/gcsp/repository/core.js"
+        },
+        {
+          "specifier": "./memory.js",
+          "path": "server/gcsp/repository/memory.js"
+        },
+        {
+          "specifier": "./postgres.js",
+          "path": "server/gcsp/repository/postgres.js"
+        }
+      ]
+    },
+    {
+      "path": "server/gcsp/repository/memory.js",
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "sha256": "63ac0a8b5a7efaf543defcf3e2521805bc9c387527645969393782e647d93866",
+      "imports": [
+        {
+          "specifier": "./core.js",
+          "path": "server/gcsp/repository/core.js"
+        }
+      ]
+    },
+    {
+      "path": "server/gcsp/repository/postgres.js",
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "sha256": "9b3e8f92baa4a59d520144c07e838a50bd19625c981f0794fa588207a42505da",
+      "imports": [
+        {
+          "specifier": "../migrations/index.js",
+          "path": "server/gcsp/migrations/index.js"
+        },
+        {
+          "specifier": "./core.js",
+          "path": "server/gcsp/repository/core.js"
+        },
+        {
+          "specifier": "pg",
+          "builtin_or_package": true
+        }
+      ]
+    },
+    {
+      "path": "server/gcsp/repository/schema.js",
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "sha256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+      "imports": []
+    },
+    {
+      "path": "server/questions.js",
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "sha256": "898716dfaf8a184fef39a9ae12b9d59b01cce94c48356dab5e3b4e81de62c26d",
+      "imports": [
+        {
+          "specifier": "./brands.js",
+          "path": "server/brands.js"
+        }
+      ]
+    },
+    {
+      "path": "server/scenarios/employee/index.js",
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "sha256": "43f50c04794902dd1d10a008f7882d335c1b5179f1c57a3f4ab9ea1293f7d844",
+      "imports": [
+        {
+          "specifier": "../../engine.js",
+          "path": "server/engine.js"
+        },
+        {
+          "specifier": "../../gcsp/policy/file-provider.js",
+          "path": "server/gcsp/policy/file-provider.js"
+        }
+      ]
+    },
+    {
+      "path": "server/vehicles/index.js",
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "sha256": "cc02ff92ac13a25fdbe3a2325f60cafe2c16486e2f11d78a391f8664a217b5cc",
+      "imports": []
+    }
+  ],
+  "extra_pins": {
+    "95d77416361f54eb558bbcb40b382cbb45149c27:server/gcsp/runtime.js": {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/gcsp/runtime.js",
+      "sha256": "6ac589363f8a6c5abc67e7d63d861389265a942b8da8cfa721bb6942a1461fa7"
+    },
+    "95d77416361f54eb558bbcb40b382cbb45149c27:server/index.js": {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/index.js",
+      "sha256": "3d400ee9490130a8cf1e39cbf7df40101e60816b74eab72dd29afe00fec00182"
+    },
+    "95d77416361f54eb558bbcb40b382cbb45149c27:server/gcsp/manual-context/index.js": {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/gcsp/manual-context/index.js",
+      "sha256": "3e694f3a68b9d3c9f40b44ddb785bec2edce3b3ada43d491995be77a2930fd43"
+    },
+    "95d77416361f54eb558bbcb40b382cbb45149c27:server/gcsp/manual-context/ports.js": {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/gcsp/manual-context/ports.js",
+      "sha256": "c1e7db5012f6d3212b79ad989e6cde5a0e390e2f4bfe50f91ee4c79c8a7a1267"
+    },
+    "95d77416361f54eb558bbcb40b382cbb45149c27:server/gcsp/manual-context/http.js": {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/gcsp/manual-context/http.js",
+      "sha256": "d49bbb756447e8b91ee90dd54e2240914b45e554d79428e54345a59585d4dc37"
+    },
+    "95d77416361f54eb558bbcb40b382cbb45149c27:server/gcsp/manual-claims/index.js": {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/gcsp/manual-claims/index.js",
+      "sha256": "32c80ef72d8329fcdbc4a208d9ab911f68156e6234d3917975754415d04ef059"
+    },
+    "95d77416361f54eb558bbcb40b382cbb45149c27:server/gcsp/brief/index.js": {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/gcsp/brief/index.js",
+      "sha256": "22500a517f8232947b33ac274e32bf60746ba9d8199851e750784f57737ee418"
+    },
+    "95d77416361f54eb558bbcb40b382cbb45149c27:server/gcsp/brief/http.js": {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "server/gcsp/brief/http.js",
+      "sha256": "20a88f4cafa5c0009b54398682e1540cfabc2afea2b16935962b1406cbef8402"
+    },
+    "95d77416361f54eb558bbcb40b382cbb45149c27:scripts/gcsp-demo.mjs": {
+      "ref": "95d77416361f54eb558bbcb40b382cbb45149c27",
+      "path": "scripts/gcsp-demo.mjs",
+      "sha256": "b8ce1a7760ada2c7742f7869d1b1d6045af1777a2c3cc67be1ff1bc165345216"
+    },
+    "0d3a0aa2fcee5d26ad33e587578cff7cce169090:server/gcsp/policy/reviewed-definitions.js": {
+      "ref": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "path": "server/gcsp/policy/reviewed-definitions.js",
+      "sha256": "4bb860c1f3f06c897924a4f6a4f849e2c95c4dd12ccbb2ab136f14bbfb337507"
+    },
+    "0d3a0aa2fcee5d26ad33e587578cff7cce169090:server/gcsp/policy/seed-v1.json": {
+      "ref": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "path": "server/gcsp/policy/seed-v1.json",
+      "sha256": "c58fcd9054fa32cded07c4ee742b39d196f94aa15c8d0fbf7752874954df8a31"
+    },
+    "0d3a0aa2fcee5d26ad33e587578cff7cce169090:server/scenarios/employee/index.js": {
+      "ref": "0d3a0aa2fcee5d26ad33e587578cff7cce169090",
+      "path": "server/scenarios/employee/index.js",
+      "sha256": "50e3b25317158c29605420af080c1ec6bd76ded94d298d33badfc90a4dc0d91c"
+    }
+  },
+  "known_readiness": {
+    "cases_constructor": [
+      "repository",
+      "policy",
+      "clock",
+      "identity"
+    ],
+    "missing_runtime_dependency": "gcspCases",
+    "startup_seam": "existing optional case.start before notifications and clock startup",
+    "case_stock_contract": "available + facts.recommendationCandidate",
+    "canonical_stock_contract": "released + facts normalized snapshot + release.availability",
+    "manual_history_decoration": "after real ManualClaimsService.browseStock claimInput enrichment; lower port metadata is dropped by ManualContext DTO projection",
+    "weighted_scorer": "103 delta outside server/gcsp, not part of95d7741; root next adoption scope required",
+    "seed": "95d7741 preserves original baseline as explicitly granted; do not overwrite103 existing seed in a closure copy"
+  },
+  "excluded": [
+    "No new source/test/browser/native/full",
+    "No92/96 source adoption",
+    "No business scenario enablement",
+    "No fake release/decline/lifecycle success"
+  ]
+}

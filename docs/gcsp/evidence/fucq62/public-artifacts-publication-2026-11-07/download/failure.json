@@ -1,0 +1,7 @@
+{
+  "phase": "download",
+  "name": "TypeError",
+  "message": "Cached store failed full validation",
+  "code": null,
+  "stderr": null
+}

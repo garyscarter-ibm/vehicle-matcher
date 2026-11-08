@@ -1,0 +1,23 @@
+✔ trusted policy snapshot is a cloned immutable validated snapshot; projection exposes only editable rows (321.508542ms)
+✔ preview uses real demand/points evaluation and writes no repository or policy records (586.110166ms)
+✔ weight preview changes real aggregate fit without relaxing essentials (525.905875ms)
+✔ publish appends an immutable version and keeps pinned offers, holds and quotes unchanged (528.4825ms)
+✔ bounded edits reject gates, unknown shape, duplicates, invalid integers, no-op and stale preview (369.163459ms)
+✔ real identity refuses non-Greg and forged policy pin contexts (233.091792ms)
+✔ held count excludes elapsed offers/holds and nonoccupying holds (350.903042ms)
+✔ privacy bands suppress tiny fit cohorts, including zero (507.887208ms)
+✔ route definitions enforce Greg role, strict queries and body delegation without registration (291.045666ms)
+✔ real employee scorer weights reorder contradictory preferences; neutral legacy and zero weights remain valid (336.680166ms)
+✔ legacy policy adopts neutral weights in a new version through real projection, preview and publication (651.582458ms)
+✔ legacy migration cannot add other fields, alter protected calibration or omit registered weights (244.525459ms)
+✔ protected pending offers retain terms in held-offer count (375.499834ms)
+✔ publication replay preserves original effective instant after demo time advances (382.348375ms)
+✔ retained scheduled successor prevents an immediate publish without claiming preview as its baseline (357.981875ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6191.916708

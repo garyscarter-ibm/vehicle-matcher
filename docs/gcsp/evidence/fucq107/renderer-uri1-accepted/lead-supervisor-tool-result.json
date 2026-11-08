@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-107",
+  "grant": "fucq107-renderer9-uri1-a8b8eb1-0708",
+  "revision": "a8b8eb123e2ebd21093ddcb70257e500f6833b9c",
+  "admissionSHA256": "d5893900496e23cc5d38907af05bb92672b6b9125b11ca7f4b2dceeea66ad866",
+  "command": "/usr/bin/python3 -I -B /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-uri1-supervisor.py --execute --admission-sha d5893900496e23cc5d38907af05bb92672b6b9125b11ca7f4b2dceeea66ad866 --dispatcher-grant fucq107-renderer9-uri1-a8b8eb1-0708",
+  "cwd": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085",
+  "initialToolResult": {
+    "chunk_id": "8d7fa0",
+    "wall_time_seconds": 1.001538333,
+    "session_id": 57105,
+    "original_token_count": 0,
+    "output": ""
+  },
+  "finalToolResult": {
+    "chunk_id": "157060",
+    "wall_time_seconds": 0.364690208,
+    "exit_code": 0,
+    "original_token_count": 100,
+    "output": "{\"run\": \"/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer9-6b69f98c9b5643689d6c69c8762958a0\", \"passed\": true, \"failure\": null, \"cleanup\": {\"passed\": true, \"scratchAbsent\": true, \"reservationAbsent\": true, \"joined\": true, \"pidsAbsent\": true, \"registrationComplete\": true, \"groupsAbsent\": true, \"observedPids\": 2, \"groups\": [24356], \"sampledAt\": 1793951857.0765598}}\n"
+  },
+  "outputCapture": "Complete merged stdout/stderr as delivered by exec/write_stdin; initial and intermediate output empty; final output below 8192 bytes and tool limit8192 tokens; no truncation.",
+  "actualSupervisorExit": 0,
+  "helperAuditExecuted": false,
+  "rendererProofAccepted": false
+}

@@ -1,0 +1,12 @@
+{
+  "scope": "static proposal only",
+  "yaml": "unavailable; Bash/JS and exact textual patch checked",
+  "bashSyntax": true,
+  "inlineJavaScriptSyntax": true,
+  "exactRootPatchCheck": true,
+  "workflowExecuted": false,
+  "networkCallsDuringValidation": 0,
+  "nativeOriginalCodePinsUnchanged": 167,
+  "dot11OriginalCodePinsUnchanged": 144,
+  "acceptance": false
+}

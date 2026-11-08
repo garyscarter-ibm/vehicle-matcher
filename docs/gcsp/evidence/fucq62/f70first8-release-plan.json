@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "f62-f70first8-release-plan.v1",
+  "status": "prepared only; active corpus unchanged; parent release required",
+  "sourceCommit": "d550b802",
+  "sharedBaseline": "6a600292",
+  "runId": "f62-f70first8-20261107",
+  "version": "2026-11-07.4",
+  "files": [
+    {
+      "path": "docs/gcsp/evidence/fucq59/f70-first8-solver-2026-11-07/accepted.jsonl",
+      "sha256": "f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8",
+      "bytes": 159220,
+      "records": 8
+    }
+  ],
+  "registeredNovel": {
+    "path": "server/data/gcsp/vehicle-evidence/registered-sources/f70-first8-2026-11-07.jsonl",
+    "sha256": "f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8",
+    "bytes": 159220,
+    "records": 8
+  },
+  "previousActive": {
+    "directory": "ba9442f93ae8ac2c77d47631061827a16be42f9d3a4a5e64f9b32866928b6d5a",
+    "manifestDigest": "ba9442f93ae8ac2c77d47631061827a16be42f9d3a4a5e64f9b32866928b6d5a"
+  },
+  "expected": {
+    "configurations": 350,
+    "distinctConfigurations": 350,
+    "vinMappings": 1,
+    "images": 0,
+    "sourceConfigurations": 349,
+    "qualifyingCompleteDistinctSourceConfigurations": 349
+  },
+  "publicationStore": "server/data/gcsp/vehicle-evidence/fleet-source.v1",
+  "scratchRoot": "/tmp/vehicle-matcher-f58-63-20261106/f62/f70first8-publication",
+  "resources": {
+    "scratchMiB": 64,
+    "hostRamMiB": 512,
+    "childRamMiB": 448,
+    "seconds": 90,
+    "workers": 1,
+    "expectedRetainedOutputMiB": 15,
+    "expectedPeakAggregateMiB": 48
+  },
+  "sourceRequests": 0,
+  "limitations": [
+    "Configuration-only eight actual novel 1F7B records; previous342 rows/VIN/versions unchanged",
+    "No new VIN/stock, images, physical inference or broader model/profile/WMI claim",
+    "Direct admitted-envelope projection; F60 enrichment not executed in this publication",
+    "FullF59/F61/F62 acceptance remains open; full10k excluded",
+    "Existing reviewed indexed-jsonl loader unchanged"
+  ],
+  "visualContract": {
+    "references": [
+      "docs/gcsp/experience-quality.md",
+      "docs/gcsp/screens/README.md",
+      "COMPONENTS.md"
+    ],
+    "scope": "No screen/component/style change. Existing response/presentation contracts and all-record localHTTP parity checked."
+  },
+  "configurationIds": [
+    "MUY3QjpGS1ROTCxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFINSxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDMzNyxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMg==",
+    "MUY3QjpGS1ROTCxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIOCxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDMzNyxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMg==",
+    "MUY3QjpGS1VTVyxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFINSxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDMzNyxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMg==",
+    "MUY3QjpGS1VTVyxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIOCxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDMzNyxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMg==",
+    "MUY3QjpGS1ROTCxQMDQ3NSxTMDFDQixTMDFDRSxTMDFERixTMDFINSxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDMzNyxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMg==",
+    "MUY3QjpGS1ROTCxQMDQ3NSxTMDFDQixTMDFDRSxTMDFERixTMDFIOCxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDMzNyxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMg==",
+    "MUY3QjpGS1VTVyxQMDQ3NSxTMDFDQixTMDFDRSxTMDFERixTMDFINSxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDMzNyxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMg==",
+    "MUY3QjpGS1VTVyxQMDQ3NSxTMDFDQixTMDFDRSxTMDFERixTMDFIOCxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDMzNyxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDUzNCxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDcxMCxTMDc2MCxTMDc3NSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMg=="
+  ]
+}

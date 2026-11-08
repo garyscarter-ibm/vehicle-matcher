@@ -1,0 +1,11 @@
+--- a/server/gcsp/vehicle-evidence/registered-catalogue-sources.js
++++ b/server/gcsp/vehicle-evidence/registered-catalogue-sources.js
+@@ -8,6 +8,8 @@
+ // Admission anchors are code-owned. Neither candidate manifests nor API callers
+ // can supply a new registration or replace this retained source artifact.
+ const ADMITTED_SOURCES = [
++  { url: new URL('../../data/gcsp/vehicle-evidence/registered-sources/global-union501-2026-11-07-9.jsonl', import.meta.url),
++    sha256: '00a7db972439971fe87060c4e58e3228875ce7f1ea8e204b715521808d530064' },
+   { url: new URL('../../data/gcsp/vehicle-evidence/registered-sources/f70-model-axis790-2026-11-07.jsonl', import.meta.url),
+     sha256: '4d5d0766342d817d06f3e60aed1ae87ba4446c4510cf00c18cb32798f56aeeda' },
+   { url: new URL('../../data/gcsp/vehicle-evidence/registered-sources/f70-model-trim264-2026-11-07.jsonl', import.meta.url),

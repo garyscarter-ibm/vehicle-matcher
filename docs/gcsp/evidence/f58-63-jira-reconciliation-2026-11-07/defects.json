@@ -1,0 +1,907 @@
+{
+  "schemaVersion": "f58-63-jira-reconciliation.v1",
+  "preparedAt": "2026-11-07T12:46:45.106903+00:00",
+  "owner": "Minnie Mouse /root/minnie_mouse",
+  "requestedModel": "gpt-6.1-sol",
+  "requestedEffort": "medium",
+  "effectiveRuntimeVerified": false,
+  "scope": "FUCQ58\u201363 pending Bug reconciliation only; root performs current Jira reads/writes; no Story comments/status mutations by child",
+  "connection": {
+    "child": "No Atlassian tools exposed in ALL_TOOLS; no browser fallback attempted.",
+    "root": "Restored Atlassian MCP verified all six In Review statuses, delivery comments, all ten created Bugs and native Story links.",
+    "sourceLimit": "No child Jira read/write; all exact issue/link actions require parent readback before receipt completion."
+  },
+  "audit": {
+    "localRoots": [
+      ".claude/f58-63-overnight-20261106",
+      "docs/gcsp/evidence/fucq59",
+      "docs/gcsp/evidence/fucq60",
+      "docs/gcsp/evidence/fucq61",
+      "docs/gcsp/evidence/fucq62",
+      "docs/gcsp/evidence/fucq63",
+      "docs/gcsp/evidence/f58-63-parent4430-checkpoint-2026-11-07"
+    ],
+    "method": "Filename inventory and bounded <=100KiB Markdown/JSON pending-defect search, followed by targeted source/receipt reads. Large unrelated one-line proofs not recursively loaded.",
+    "candidateCount": 10,
+    "rootCurrentBugs": [
+      "FUCQ-76",
+      "FUCQ-139",
+      "FUCQ-140",
+      "FUCQ-141",
+      "FUCQ-142",
+      "FUCQ-143",
+      "FUCQ-144",
+      "FUCQ-145",
+      "FUCQ-146",
+      "FUCQ-147",
+      "FUCQ-148",
+      "FUCQ-150",
+      "FUCQ-151",
+      "FUCQ-152",
+      "FUCQ-153",
+      "FUCQ-154",
+      "FUCQ-155"
+    ],
+    "noMatchingCurrentNamesReportedByRoot": true,
+    "staticReceiptValidation": {
+      "jsonParsed": true,
+      "candidateCount": 10,
+      "allMarkersPresent": true,
+      "sourcePinsMatch": true,
+      "initialReceiptCheck": "KeyError issueTypeName on preserved authored payload; adjusted checker to accept its existing issueType field; no payload/product mutation."
+    },
+    "rootDedupObservedAt": "2026-11-07T12:49:31.209Z"
+  },
+  "pendingCandidates": [
+    {
+      "marker": "f59-continuation-safe-bootstrap-cache-refetch-2026-11-07",
+      "summary": "Reuse valid safe bootstrap cache during public batch continuation",
+      "severity": "Medium",
+      "classification": "open-independent-backlog",
+      "sourcePins": [
+        {
+          "path": ".claude/f58-63-overnight-20261106/f59-cache-refetch-pending-jira.json",
+          "sha256": "9b290aa70e53e6c3fecec0f1b906f151910e632034e8b614fe57b81d43560e2a",
+          "bytes": 22252
+        }
+      ],
+      "dedupSearchPhrases": [
+        "f59-continuation-safe-bootstrap-cache-refetch-2026-11-07",
+        "continuation safe bootstrap cache refetch",
+        "valid safe page model-tree option cache"
+      ],
+      "deduplication": {
+        "status": "complete",
+        "scope": "Complete pre-create search of17existingBug identities/summaries; complete post-create full27Bug description/marker/link readback. F146/151/152/153/155 are distinct bounded causes; no duplicate identified.",
+        "reused": false
+      },
+      "proposedCreate": {
+        "cloudId": "9024e134-9d2e-4f15-af8d-4df1fd4c2cb1",
+        "projectKey": "FUCQ",
+        "issueType": "Bug",
+        "summary": "Reuse valid safe bootstrap cache during public batch continuation",
+        "description": "## Goal\n\nAs a fleet curator, I want interrupted public collection to reuse valid safe page, model-tree and option-definition projections, so continuation does not spend source requests fetching still-valid cached data.\n\n## Acceptance criteria\n\n- [ ] An unexpired same-context recreated-descriptor continuation reuses page/discover/options and refreshes settings only before the pending solve; the two-candidate fixture makes seven total GETs, with two fresh GETs and three explicit cache hits.\n- [ ] Reused safe projections retain original observation/retrieval times, request/response/content hashes and expiry; predecessor bytes, inherited outcomes and configuration IDs remain unchanged.\n- [ ] Source and capture guards are restored only after strict validation of the exact safe retained context and candidate definitions; no bootstrap header or secret is retained in checkpoints, reports or caches.\n- [ ] Expired safe entries refresh only within the explicit finite allowance with honest per-operation counts; incompatible or corrupt plan/source/tool/request/context evidence is refused without silent mixing or unauthorized traffic.\n- [ ] A retained spent solver response remains recoverable without replay, an unspent pending solve executes once, and completed continuation restart adds no source calls.\n\n## Files or areas\n\n- scripts/gcsp/collect-fleet.mjs: createPublicBatchCollector\n- scripts/gcsp/collection-session.mjs: createCollectionSession / perform\n- scripts/gcsp/public-bmw-source.mjs: publicBmwBatchOperations\n- scripts/gcsp/capture-bmw-selection.mjs: publicBmwCompleteSelectionOperations\n- server/test/gcsp-bmw-source-batch.test.js: continuation regressions\n\n## Decided\n\nintake_marker: f59-continuation-safe-bootstrap-cache-refetch-2026-11-07\nwork_item_type: bug\nkind: code\nseverity: Medium\npriority: Medium\nrelated_story: FUCQ-59\nepic: FUCQ-20\nevidence: []\n\ndiagnosis: Confirmed by read-only current-code inspection and retained actual two-process evidence; no new execution. createPublicBatchCollector in scripts/gcsp/collect-fleet.mjs:286 copies predecessor cache into continuation.retainedAllocations at 399-406, but createCollectionSession in scripts/gcsp/collection-session.mjs:267 initializes active cache:[]; bootstrap at collect-fleet.mjs:450-452 therefore refetches valid safe entries. The inherited lookup at collect-fleet.mjs:463-474 covers solve only. The historical Phase A safe entries expire on 8 November 2026; Phase B refetched them on 7 November 2026 within seconds, under the same pinned context and matching tree/options hashes. Settings is explicitly cache:false at public-bmw-source.mjs:1077 and should refresh. Simply copying entries is insufficient: collection-session.mjs:335-336 returns cached projections without projectors, while publicBmwBatchOperations (public-bmw-source.mjs:1045-1119) depends on treeQualified, qualifiedDefinitions and definitionsQualified, and publicBmwCompleteSelectionOperations (capture-bmw-selection.mjs:60-82) depends on treeObserved. The future repair must validate retained safe context and restore these guards without persisting capability headers or inventing fresh provenance.\n\nDisposition: explicit root instruction on 7 November 2026 relays the user's defer-nonblocking/get-live direction. Defer this Medium finding for independent later prioritisation/pickup. It is not a build or merge dependency. Original F59 AC4 is neither passed nor waived; In Review is a development-review recommendation and Done is not claimed. No repair is authorized in this pass.\n\n## Out of scope\n\nF58 profile/source qualification; additional live requests; source budget expansion; FUCQ-152 predecessor-fork repair; Story acceptance or Jira transitions; publication or default application activation.\n\n## Validate\n\n- Planned, unrun: extend server/test/gcsp-bmw-source-batch.test.js:176-195 using injected transport and recreated descriptors for seven total/two fresh GETs, three safe cache hits, no secret persistence and immutable predecessor/outcome/ID assertions.\n- Planned, unrun: focused expiry, context/cache corruption, retained-solver and completed-restart cases in the same suite; run affected collection-session/collector callers only if the eventual repair changes their shared contract.\n- No live-source rerun or full suite is authorized by this payload. Existing authored F59 Validate obligations remain separately recorded; no current npm test success or Story acceptance is inferred.\n\n## Related story\n\nFUCQ-59 / DEV-2026-11-04-032; established Epic FUCQ-20.\n\n## Story link basis\n\nThe local in-progress DEV report is explicitly work_item_type: story, jira: FUCQ-59 and repeats the exact original AC4 no-refetch-valid-cache obligation. The reviewed failure is in that Story's collector continuation. Verify the server Story type/native Relates link before eventual write.\n\n## Steps to reproduce\n\n1. Use the existing injected-transport public BMW batch fixture with two candidate requests and the same pinned plan/source/tool/request identities.\n2. Run candidate one and interrupt after its outcome is committed. Retain the exact predecessor checkpoint, including unexpired page/discover/options entries; the first phase has made five GETs.\n3. Recreate createFleetCollector and its operation descriptors with a new explicit allocation and continuation checkpoint while those entries remain valid.\n4. Continue the pending candidate. Inspect per-operation calls, cache hits, original checkpoint bytes and published IDs.\n\n## Expected behaviour\n\nFor the unexpired same-context fixture, continuation reuses page/discover/options, refreshes settings because cache:false protects memory-only headers, and issues the pending solve once: two fresh GETs and seven across both phases, with one cache hit for each of page/discover/options. It preserves predecessor bytes, inherited outcome/ID, original observation metadata/hashes/expiry and completed-restart zero-traffic behavior.\n\n## Actual behaviour\n\nThe recreated public continuation has a fresh empty active cache and refetches page/settings/discover/options before its pending solve: five fresh GETs and ten total, with zero bootstrap cache hits. Safe predecessor entries remain retained under lineage but are only consulted for solve recovery. The historical live receipt records ten actual GETs (eight bootstrap plus two solve), not a passing seven-GET regression.\n\n## Environment\n\nRead-only review against the pinned current shared checkout on 7 November 2026. Review code pins below match the existing completion assessment. Actual live proof is historical and retains its own older code identity; do not relabel it as current-code-identical or as a seven-GET pass.",
+        "labels": [
+          "backlog",
+          "kind:code"
+        ],
+        "priority": "Medium",
+        "parent": "FUCQ-20"
+      },
+      "nativeLinks": [
+        {
+          "type": "Relates",
+          "story": "FUCQ-59",
+          "blocking": false,
+          "basis": "The local in-progress DEV report is explicitly work_item_type: story, jira: FUCQ-59 and repeats the exact original AC4 no-refetch-valid-cache obligation. The reviewed failure is in that Story's collector continuation. Verify the server Story type/native Relates link before eventual write."
+        }
+      ],
+      "originalAcceptanceGap": {
+        "AC4Passed": false,
+        "AC4Waived": false,
+        "historicalActualGets": 10,
+        "plannedRegressionGets": 7,
+        "plannedRegressionExecuted": false
+      },
+      "jira": {
+        "key": "FUCQ-156",
+        "id": "1501426",
+        "status": "To Do",
+        "issueType": "Bug",
+        "priority": "Medium",
+        "verifiedAt": "2026-11-07T12:49:31.209Z",
+        "nativeLinks": [
+          {
+            "id": "340009",
+            "type": "Relates",
+            "story": "FUCQ-59"
+          }
+        ],
+        "descriptionMarkerVerified": true,
+        "acceptedOrDone": false
+      }
+    },
+    {
+      "marker": "f59-retained-check-finalization-publication-20261107",
+      "summary": "Retain first finalizer error when successful retained checks cannot publish proof",
+      "severity": "Medium",
+      "classification": "open-independent-backlog",
+      "sourcePins": [
+        {
+          "path": "docs/gcsp/evidence/f58-63-parent4430-checkpoint-2026-11-07/finalizer-bug-draft.md",
+          "sha256": "932817698e131fab53d1b4168bf036b3c5919f5a5058ef6d82029ea6d4b99a3f",
+          "bytes": 2229
+        }
+      ],
+      "dedupSearchPhrases": [
+        "f59-retained-check-finalization-publication-20261107",
+        "Retain first finalizer error when successful retained checks cannot publish proof"
+      ],
+      "deduplication": {
+        "status": "complete",
+        "scope": "Complete pre-create search of17existingBug identities/summaries; complete post-create full27Bug description/marker/link readback. F146/151/152/153/155 are distinct bounded causes; no duplicate identified.",
+        "reused": false
+      },
+      "proposedCreate": {
+        "projectKey": "FUCQ",
+        "issueTypeName": "Bug",
+        "summary": "Retain first finalizer error when successful retained checks cannot publish proof",
+        "description": "## Goal\n\nPublish the proof after successful retained checks, or retain the first lifecycle error with the successful check result intact.\n\n## Acceptance criteria\n\n- [ ] Retain the first stage/finalizer diagnostic without replacing successful check results.\n- [ ] Identify the exact lifecycle path or reproduce with proportionate fixtures.\n- [ ] Verify bounded process-group absence, primary preservation and eventual proof publication.\n\n## Files or areas\n\nF70 optional-axis retained verifier/finalizer and proof assembly.\n\n## Decided\n\nintake_marker: f59-retained-check-finalization-publication-20261107\nwork_item_type: bug\nkind: code\nseverity: Medium\npriority: Medium\nrelated_story: FUCQ-59\nepic: FUCQ-20\nevidence: []\n\ndiagnosis: Original F70 optional5535 session239 source processed all eight candidates (six admitted, two source-not-constructible) and twelve GETs. Strict retained test child returned zero with five of five passing checks, but live-validation.json was not written. Outer AssertionError said owned stage failed; preserve primary and stop. The exact first verifier-finalizer exception was not retained; cause remains unestablished. FUCQ-155 is the separate None/process-sentinel bool correction in supervise-continuation341.py; there is no evidence of the same cause.\n\nDisposition: independently deferred below Critical/High under the collaborator delivery policy; no build/merge dependency, no Story scope expansion or acceptance waiver, and no repair claimed. Sessions1\u2013238 were proved. Reconciliation/continuation is mitigation and does not establish a repair.\n\n## Out of scope\n\nStory transitions/acceptance, new source allocations, additional proof runs, unrelated repairs and widened source/approval/trust boundaries.\n\n## Validate\n\nPlanned and unrun for this Bug: a bounded lifecycle fixture and explicit group/primary/publication checks. Original actual traffic is spent and must not be replayed.\n\n## Related story\n\nFUCQ-59; established Epic FUCQ-20.\n\n## Story link basis\n\nObserved during the existing FUCQ-58\u201363 delivery. The FUCQ-59 contract owns the affected boundary described above. Verify current server Story type before writing; native Relates is nonblocking. Candidate secondary context: none.\n\n## Steps to reproduce\n\n1. Use a proportionate owned fixture for the retained verifier/finalizer path.\n2. Observe successful strict test completion followed by finalization/proof assembly; capture the first lifecycle exception before cleanup.\n3. Do not replay actual spent session239 source traffic.\n\n## Expected behaviour\n\nSuccessful checks and proof publication complete, or the exact first finalizer error survives in a bounded receipt.\n\n## Actual behaviour\n\nThe original five checks passed, but proof assembly was interrupted and only the outer assertion survived. Cleanup preserved primary/indexes and 1,781,334,636 retained bytes; no source corruption or failed strict check is established.\n\n## Environment\n\nRetained evidence from 7 November 2026. This reconciliation performs no reproduction, tests, source traffic, downloads, browser interaction or production edits. Source files: docs/gcsp/evidence/f58-63-parent4430-checkpoint-2026-11-07/finalizer-bug-draft.md.",
+        "labels": [
+          "backlog",
+          "kind:code"
+        ],
+        "priority": "Medium",
+        "parent": "FUCQ-20"
+      },
+      "nativeLinks": [
+        {
+          "type": "Relates",
+          "story": "FUCQ-59",
+          "blocking": false,
+          "basis": "owning delivery boundary; verify current server issue type and link before writing"
+        }
+      ],
+      "secondaryContext": [],
+      "jira": {
+        "key": "FUCQ-157",
+        "id": "1501427",
+        "status": "To Do",
+        "issueType": "Bug",
+        "priority": "Medium",
+        "verifiedAt": "2026-11-07T12:49:31.209Z",
+        "nativeLinks": [
+          {
+            "id": "340010",
+            "type": "Relates",
+            "story": "FUCQ-59"
+          }
+        ],
+        "descriptionMarkerVerified": true,
+        "acceptedOrDone": false
+      }
+    },
+    {
+      "marker": "f63-configured-consumer-empty-mandatory-elements-20261107",
+      "summary": "Accept documented empty mandatory-elements source citations in configured consumer",
+      "severity": "Medium",
+      "classification": "open-independent-backlog",
+      "sourcePins": [
+        {
+          "path": "docs/gcsp/evidence/fucq62/fleet-dot7-offline/consumer-bug-draft.md",
+          "sha256": "fe2e608371f1398ae047ebee531f58c0a7e8fa302661f453e272740b2d85d4ca",
+          "bytes": 3747
+        },
+        {
+          "path": "docs/gcsp/evidence/f61-f63-readiness-2026-11-07/F63.md",
+          "sha256": "29b7e98d9afb6febc615f5a9e8b5c2295d08f9c9c3ed390ae9ce0a9e86d1ab07",
+          "bytes": 9272
+        }
+      ],
+      "dedupSearchPhrases": [
+        "f63-configured-consumer-empty-mandatory-elements-20261107",
+        "Accept documented empty mandatory-elements source citations in configured consumer"
+      ],
+      "deduplication": {
+        "status": "complete",
+        "scope": "Complete pre-create search of17existingBug identities/summaries; complete post-create full27Bug description/marker/link readback. F146/151/152/153/155 are distinct bounded causes; no duplicate identified.",
+        "reused": false
+      },
+      "proposedCreate": {
+        "projectKey": "FUCQ",
+        "issueTypeName": "Bug",
+        "summary": "Accept documented empty mandatory-elements source citations in configured consumer",
+        "description": "## Goal\n\nAllow the configured vehicle consumer to use admitted configurations whose documented source citation has a present-empty mandatory-elements value.\n\n## Acceptance criteria\n\n- [ ] Safely accept the documented present-empty form.\n- [ ] Preserve malformed-source-reference rejection.\n- [ ] Prove both retained actual model cases through the configured consumer.\n\n## Files or areas\n\nserver/gcsp/vehicle-evidence/application-vehicle-details.js: safeV2SourceReference; configured consumer.\n\n## Decided\n\nintake_marker: f63-configured-consumer-empty-mandatory-elements-20261107\nwork_item_type: bug\nkind: code\nseverity: Medium\npriority: Medium\nrelated_story: FUCQ-63\nepic: FUCQ-20\nevidence: []\n\ndiagnosis: safeV2SourceReference in server/gcsp/vehicle-evidence/application-vehicle-details.js rejects present-empty mandatory-elements=. Admission deliberately supports it. Direct/HTTP DTOs match retained rows; the configured consumer returns source-unavailable. This is distinct from the corrected F63 stock-inventory-snapshot harness setup.\n\nDisposition: independently deferred below Critical/High under the collaborator delivery policy; no build/merge dependency, no Story scope expansion or acceptance waiver, and no repair claimed. Specific Medium deferral is preserved; original consumer acceptance remains incomplete. Later three-order sample success does not repair or waive2707 failures.\n\n## Out of scope\n\nStory transitions/acceptance, new source allocations, additional proof runs, unrelated repairs and widened source/approval/trust boundaries.\n\n## Validate\n\nPlanned/unrun for this Bug: focused source-reference validation and retained actual consumer regressions. No new audit is performed here; historical2707 failures remain failed.\n\n## Related story\n\nFUCQ-63; established Epic FUCQ-20.\n\n## Story link basis\n\nObserved during the existing FUCQ-58\u201363 delivery. The FUCQ-63 contract owns the affected boundary described above. Verify current server Story type before writing; native Relates is nonblocking. Candidate secondary context: FUCQ-62.\n\n## Steps to reproduce\n\n1. Use the retained .12 corpus and recorded 1F7A/1F7C requests, with no live source traffic.\n2. Read each reference through the direct lookup/HTTP boundary and createConfiguredVehicleDetails.\n3. Compare the source citation, exact DTO and consumer outcome against retained rows.\n\n## Expected behaviour\n\nDocumented present-empty mandatory-elements is accepted safely; malformed references remain rejected.\n\n## Actual behaviour\n\nLatest retained .12 audit checked10,002 requests:7,295 consumer passes and2,707 failures (859 1F7A and1,848 1F7C), while direct/HTTP errors were zero. Earlier .7 had2/1,135 failures; .8 had469/1,925. These are evolving measurements of one defect.\n\n## Environment\n\nRetained evidence from 7 November 2026. This reconciliation performs no reproduction, tests, source traffic, downloads, browser interaction or production edits. Source files: docs/gcsp/evidence/fucq62/fleet-dot7-offline/consumer-bug-draft.md; docs/gcsp/evidence/f61-f63-readiness-2026-11-07/F63.md.",
+        "labels": [
+          "backlog",
+          "kind:code"
+        ],
+        "priority": "Medium",
+        "parent": "FUCQ-20"
+      },
+      "nativeLinks": [
+        {
+          "type": "Relates",
+          "story": "FUCQ-63",
+          "blocking": false,
+          "basis": "owning delivery boundary; verify current server issue type and link before writing"
+        }
+      ],
+      "secondaryContext": [
+        "FUCQ-62"
+      ],
+      "jira": {
+        "key": "FUCQ-158",
+        "id": "1501428",
+        "status": "To Do",
+        "issueType": "Bug",
+        "priority": "Medium",
+        "verifiedAt": "2026-11-07T12:49:31.209Z",
+        "nativeLinks": [
+          {
+            "id": "340011",
+            "type": "Relates",
+            "story": "FUCQ-63"
+          }
+        ],
+        "descriptionMarkerVerified": true,
+        "acceptedOrDone": false
+      }
+    },
+    {
+      "marker": "gcsp-image-cli-expanded-registry-fixture-20261107",
+      "summary": "Keep image CLI fixtures valid with expanded approved image registry",
+      "severity": "Medium",
+      "classification": "open-independent-backlog",
+      "sourcePins": [
+        {
+          "path": "docs/gcsp/evidence/fucq62/build-selector-stale-command-2026-11-07/image-registration-fixture-bug-draft.md",
+          "sha256": "b4584438c94d2e3b9efef6778d8065eb43b7a2ecd90369f5d95cd6269ab7a60f",
+          "bytes": 4181
+        }
+      ],
+      "dedupSearchPhrases": [
+        "gcsp-image-cli-expanded-registry-fixture-20261107",
+        "Keep image CLI fixtures valid with expanded approved image registry"
+      ],
+      "deduplication": {
+        "status": "complete",
+        "scope": "Complete pre-create search of17existingBug identities/summaries; complete post-create full27Bug description/marker/link readback. F146/151/152/153/155 are distinct bounded causes; no duplicate identified.",
+        "reused": false
+      },
+      "proposedCreate": {
+        "projectKey": "FUCQ",
+        "issueTypeName": "Bug",
+        "summary": "Keep image CLI fixtures valid with expanded approved image registry",
+        "description": "## Goal\n\nRestore meaningful offline image CLI coverage when the approved registry contains more than one source-backed image.\n\n## Acceptance criteria\n\n- [ ] Existing cold/repeated restore test reaches real CLI and assertions.\n- [ ] Existing operator verifier test reaches real CLI and assertions.\n- [ ] Fixture includes only source/configuration-matched images without widening production approval.\n\n## Files or areas\n\nserver/test/gcsp-fleet-image-cli.test.js; server/test/helpers/vin-corpus-fixture.js; registered-corpus-images.js.\n\n## Decided\n\nintake_marker: gcsp-image-cli-expanded-registry-fixture-20261107\nwork_item_type: bug\nkind: code\nseverity: Medium\npriority: Medium\nrelated_story: FUCQ-62\nepic: FUCQ-20\nevidence: []\n\ndiagnosis: Both owning tests fail at fixture line35 with invalid-corpus/unapproved-image before fixture.cli. The fixture passes all APPROVED_CORPUS_IMAGES (original i5 and F70 1F7E) to one-image sourceBackedInput. Four relevant files were unchanged from base df3f3f439ba0aa2c4f464beaded903709e970ea1; a separate base checkout was not run. No production image-admission defect is established. FUCQ-146 current description covers13 other fixture/scanner failures and does not include this imageCLI finding.\n\nDisposition: independently deferred below Critical/High under the collaborator delivery policy; no build/merge dependency, no Story scope expansion or acceptance waiver, and no repair claimed. Root explicitly deferred this fixture repair. F62 owns the observed real image-bearing CLI regression boundary; F60 image expansion is secondary context, not an inferred causal origin.\n\n## Out of scope\n\nStory transitions/acceptance, new source allocations, additional proof runs, unrelated repairs and widened source/approval/trust boundaries.\n\n## Validate\n\nAfter independent pickup, run the two owning image CLI tests under bounded supervision. Existing failures remain retained; no full-suite claim.\n\n## Related story\n\nFUCQ-62; established Epic FUCQ-20.\n\n## Story link basis\n\nObserved during the existing FUCQ-58\u201363 delivery. The FUCQ-62 contract owns the affected boundary described above. Verify current server Story type before writing; native Relates is nonblocking. Candidate secondary context: FUCQ-60.\n\n## Steps to reproduce\n\n1. Use the bounded Node green2 command retained in the adjacent build-selector receipt.\n2. Select existing cold/repeated offline restore and operator active verifier tests.\n3. Observe fixture creation before CLI invocation.\n\n## Expected behaviour\n\nThe fixture admits only source/configuration-matched images and both owning CLI assertions run.\n\n## Actual behaviour\n\nEleven-check run:9passed,2failed,0skipped. Both image tests fail before reaching CLI.\n\n## Environment\n\nRetained evidence from 7 November 2026. This reconciliation performs no reproduction, tests, source traffic, downloads, browser interaction or production edits. Source files: docs/gcsp/evidence/fucq62/build-selector-stale-command-2026-11-07/image-registration-fixture-bug-draft.md.",
+        "labels": [
+          "backlog",
+          "kind:code"
+        ],
+        "priority": "Medium",
+        "parent": "FUCQ-20"
+      },
+      "nativeLinks": [
+        {
+          "type": "Relates",
+          "story": "FUCQ-62",
+          "blocking": false,
+          "basis": "owning delivery boundary; verify current server issue type and link before writing"
+        }
+      ],
+      "secondaryContext": [
+        "FUCQ-60"
+      ],
+      "jira": {
+        "key": "FUCQ-159",
+        "id": "1501429",
+        "status": "To Do",
+        "issueType": "Bug",
+        "priority": "Medium",
+        "verifiedAt": "2026-11-07T12:49:31.209Z",
+        "nativeLinks": [
+          {
+            "id": "340012",
+            "type": "Relates",
+            "story": "FUCQ-62"
+          }
+        ],
+        "descriptionMarkerVerified": true,
+        "acceptedOrDone": false
+      }
+    },
+    {
+      "marker": "f62-proof-grant-template-receipt-filter-20261107",
+      "summary": "Match proof grant template receipt pins to supervisor filter",
+      "severity": "Low",
+      "classification": "open-independent-backlog",
+      "sourcePins": [
+        {
+          "path": "docs/gcsp/evidence/fucq62/dot11-proof-grant-template-defect-2026-11-07.md",
+          "sha256": "082c808dc6fe5691b957983fb9c35b16b22d548810524782db95eec65fbe28f4",
+          "bytes": 1328
+        }
+      ],
+      "dedupSearchPhrases": [
+        "f62-proof-grant-template-receipt-filter-20261107",
+        "Match proof grant template receipt pins to supervisor filter"
+      ],
+      "deduplication": {
+        "status": "complete",
+        "scope": "Complete pre-create search of17existingBug identities/summaries; complete post-create full27Bug description/marker/link readback. F146/151/152/153/155 are distinct bounded causes; no duplicate identified.",
+        "reused": false
+      },
+      "proposedCreate": {
+        "projectKey": "FUCQ",
+        "issueTypeName": "Bug",
+        "summary": "Match proof grant template receipt pins to supervisor filter",
+        "description": "## Goal\n\nGenerate a parent proof grant that passes the existing exact supervisor receipt-pin filter.\n\n## Acceptance criteria\n\n- [ ] Helper emits exactly the supervisor-filtered entries for publish and later phases.\n- [ ] Invalid extra entries remain refused before allocation.\n- [ ] Sealed proof/code pins and acceptance assertions remain unchanged.\n\n## Files or areas\n\nF62 .11 proof prepare-grant.py and supervised prior-receipt filter.\n\n## Decided\n\nintake_marker: f62-proof-grant-template-receipt-filter-20261107\nwork_item_type: bug\nkind: code\nseverity: Low\npriority: Low\nrelated_story: FUCQ-62\nepic: FUCQ-20\nevidence: []\n\ndiagnosis: prepare-grant.py includes frozen ordinary/receipt.json. Supervisor line49 includes only basenames ending -receipt.json or offline-proof-summary.json, so plain receipt.json is excluded and the first publish preflight raises AssertionError. Refusal precedes child/scratch/link/reservation allocation.\n\nDisposition: independently deferred below Critical/High under the collaborator delivery policy; no build/merge dependency, no Story scope expansion or acceptance waiver, and no repair claimed. Helper remains unfixed; manually computing [] is a workaround, not a repair.\n\n## Out of scope\n\nStory transitions/acceptance, new source allocations, additional proof runs, unrelated repairs and widened source/approval/trust boundaries.\n\n## Validate\n\nPlanned/unrun for this Bug: focused helper/filter fixture; preserve the actual failed preflight. No proof replay is required by intake.\n\n## Related story\n\nFUCQ-62; established Epic FUCQ-20.\n\n## Story link basis\n\nObserved during the existing FUCQ-58\u201363 delivery. The FUCQ-62 contract owns the affected boundary described above. Verify current server Story type before writing; native Relates is nonblocking. Candidate secondary context: none.\n\n## Steps to reproduce\n\n1. Run the existing .11 prepare-grant helper against frozen ordinary/receipt.json.\n2. Submit its emitted prior receipt pins to unchanged publish preflight.\n3. Compare helper list with the literal supervisor filter.\n\n## Expected behaviour\n\nHelper and supervisor produce the same exact approved prior-receipt list.\n\n## Actual behaviour\n\nFirst preflight refused the helper grant; only empty invocation log and parent grant metadata were created. Parent used the exact filtered publish list [] as a workaround.\n\n## Environment\n\nRetained evidence from 7 November 2026. This reconciliation performs no reproduction, tests, source traffic, downloads, browser interaction or production edits. Source files: docs/gcsp/evidence/fucq62/dot11-proof-grant-template-defect-2026-11-07.md.",
+        "labels": [
+          "backlog",
+          "kind:code"
+        ],
+        "priority": "Low",
+        "parent": "FUCQ-20"
+      },
+      "nativeLinks": [
+        {
+          "type": "Relates",
+          "story": "FUCQ-62",
+          "blocking": false,
+          "basis": "owning delivery boundary; verify current server issue type and link before writing"
+        }
+      ],
+      "secondaryContext": [],
+      "jira": {
+        "key": "FUCQ-160",
+        "id": "1501430",
+        "status": "To Do",
+        "issueType": "Bug",
+        "priority": "Low",
+        "verifiedAt": "2026-11-07T12:49:31.209Z",
+        "nativeLinks": [
+          {
+            "id": "340013",
+            "type": "Relates",
+            "story": "FUCQ-62"
+          }
+        ],
+        "descriptionMarkerVerified": true,
+        "acceptedOrDone": false
+      }
+    },
+    {
+      "marker": "f59-g42-inventory-line-key-grammar-20261107",
+      "summary": "Support observed G42 inventory line keys with bounded contract diagnostics",
+      "severity": "Medium",
+      "classification": "open-independent-backlog",
+      "sourcePins": [
+        {
+          "path": "docs/gcsp/evidence/fucq59/g42-range-inventory-contract-2026-11-07/bug-draft.md",
+          "sha256": "60be93af9823b10a5276066d8c59faf2324e67c5a4c86f71b0db5e61e518ac19",
+          "bytes": 2220
+        },
+        {
+          "path": "docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/README.md",
+          "sha256": "0b7f72d9ca753a86b61de0053f5a37ad2eec5cac65150612ff388685386e0951",
+          "bytes": 8258
+        }
+      ],
+      "dedupSearchPhrases": [
+        "f59-g42-inventory-line-key-grammar-20261107",
+        "Support observed G42 inventory line keys with bounded contract diagnostics"
+      ],
+      "deduplication": {
+        "status": "complete",
+        "scope": "Complete pre-create search of17existingBug identities/summaries; complete post-create full27Bug description/marker/link readback. F146/151/152/153/155 are distinct bounded causes; no duplicate identified.",
+        "reused": false
+      },
+      "proposedCreate": {
+        "projectKey": "FUCQ",
+        "issueTypeName": "Bug",
+        "summary": "Support observed G42 inventory line keys with bounded contract diagnostics",
+        "description": "## Goal\n\nAllow the observation-only G42 inventory path to handle the proven source contract shape without guessing trim semantics or traversing unrelated properties.\n\n## Acceptance criteria\n\n- [ ] Handle the proven key shape through explicit bounded contract relationships.\n- [ ] Preserve full model facts/aliases and literal option presence without trim inference.\n- [ ] Retain safe first-failure path/count/type diagnostics.\n\n## Files or areas\n\nG42 inventory source projector, line/variant key gates and safe failure diagnostics.\n\n## Decided\n\nintake_marker: f59-g42-inventory-line-key-grammar-20261107\nwork_item_type: bug\nkind: code\nseverity: Medium\npriority: Medium\nrelated_story: FUCQ-59\nepic: FUCQ-20\nevidence: []\n\ndiagnosis: Original threeHTTP200 GETs/757135decoded bytes stopped source-inventory-line-key without retaining the exact key. A separately released safe diagnostic reproduced it and retained M_PERFORMANCE_LINE at /2/modelRanges/G42/lines/M_PERFORMANCE_LINE, type object. It has compact default2PMC/52FA and included model2PMC, but no literal option relationship. This is a source line, not established factory trim code. Diagnostic/typed-options work does not repair production inventory grammar.\n\nDisposition: independently deferred below Critical/High under the collaborator delivery policy; no build/merge dependency, no Story scope expansion or acceptance waiver, and no repair claimed. Existing collection and typed model routes remain usable; independent nonblocking pickup.\n\n## Out of scope\n\nStory transitions/acceptance, new source allocations, additional proof runs, unrelated repairs and widened source/approval/trust boundaries.\n\n## Validate\n\nPlanned/unrun for repair: offline proven-shape regression and separately authorised fresh inventory allocation. Safe diagnostic preparation19/19 and retained actual checks are evidence, not grammar-fix acceptance.\n\n## Related story\n\nFUCQ-59; established Epic FUCQ-20.\n\n## Story link basis\n\nObserved during the existing FUCQ-58\u201363 delivery. The FUCQ-59 contract owns the affected boundary described above. Verify current server Story type before writing; native Relates is nonblocking. Candidate secondary context: FUCQ-61.\n\n## Steps to reproduce\n\n1. Use retained safe diagnostic.json and checkpoint offline; actual allocations are spent.\n2. Run unchanged inventory projection against a small synthetic contract fixture reproducing the proven line-key shape.\n3. Inspect bounded refusal/path/type output and explicit model/line relationships.\n\n## Expected behaviour\n\nProven source relationships are preserved with finite bounds and safe diagnostics; unknown grammar is refused without guessed facts.\n\n## Actual behaviour\n\nProduction G42 inventory still refuses source-inventory-line-key. Six typed model pilot sessions later admitted48 configurations through a separate route; that does not fix this inventory path.\n\n## Environment\n\nRetained evidence from 7 November 2026. This reconciliation performs no reproduction, tests, source traffic, downloads, browser interaction or production edits. Source files: docs/gcsp/evidence/fucq59/g42-range-inventory-contract-2026-11-07/bug-draft.md; docs/gcsp/evidence/fucq59/g42-safe-contract-diagnostic-2026-11-07/README.md.",
+        "labels": [
+          "backlog",
+          "kind:code"
+        ],
+        "priority": "Medium",
+        "parent": "FUCQ-20"
+      },
+      "nativeLinks": [
+        {
+          "type": "Relates",
+          "story": "FUCQ-59",
+          "blocking": false,
+          "basis": "owning delivery boundary; verify current server issue type and link before writing"
+        }
+      ],
+      "secondaryContext": [
+        "FUCQ-61"
+      ],
+      "jira": {
+        "key": "FUCQ-161",
+        "id": "1501431",
+        "status": "To Do",
+        "issueType": "Bug",
+        "priority": "Medium",
+        "verifiedAt": "2026-11-07T12:49:31.209Z",
+        "nativeLinks": [
+          {
+            "id": "340014",
+            "type": "Relates",
+            "story": "FUCQ-59"
+          }
+        ],
+        "descriptionMarkerVerified": true,
+        "acceptedOrDone": false
+      }
+    },
+    {
+      "marker": "f60-technical-options-session-owned-substitution-20261107",
+      "summary": "Prevent technical options replacing session-owned enrichment inputs",
+      "severity": "Medium",
+      "classification": "open-independent-backlog",
+      "sourcePins": [
+        {
+          "path": "docs/gcsp/evidence/fucq60/otd-qualification-review-2026-11-07.md",
+          "sha256": "cd624bf034e17a9637851ead0176e10067a446280acd80045a8bb91975da32c2",
+          "bytes": 3432
+        }
+      ],
+      "dedupSearchPhrases": [
+        "f60-technical-options-session-owned-substitution-20261107",
+        "Prevent technical options replacing session-owned enrichment inputs"
+      ],
+      "deduplication": {
+        "status": "complete",
+        "scope": "Complete pre-create search of17existingBug identities/summaries; complete post-create full27Bug description/marker/link readback. F146/151/152/153/155 are distinct bounded causes; no duplicate identified.",
+        "reused": false
+      },
+      "proposedCreate": {
+        "projectKey": "FUCQ",
+        "issueTypeName": "Bug",
+        "summary": "Prevent technical options replacing session-owned enrichment inputs",
+        "description": "## Goal\n\nKeep technical qualification bound to the actual accepted row and artifact supplied by the accounted enrichment operation.\n\n## Acceptance criteria\n\n- [ ] Allowlist the intended registration/pins options or ensure session-owned fields remain authoritative.\n- [ ] Reject substitution of both accepted row and operation artifact.\n- [ ] Preserve the controlled retained-run behavior.\n\n## Files or areas\n\nscripts/gcsp/enrich-fleet.mjs technicalOptions spread and qualifier integration.\n\n## Decided\n\nintake_marker: f60-technical-options-session-owned-substitution-20261107\nwork_item_type: bug\nkind: code\nseverity: Medium\npriority: Medium\nrelated_story: FUCQ-60\nepic: FUCQ-20\nevidence: []\n\ndiagnosis: At enrich-fleet.mjs:396 in e08d8b26, {artifact,accepted:record,...input.technicalOptions} permits technicalOptions.accepted/artifact to replace session-owned values. Options accept any object. Code reasoning shows valid rowB/artifactB/registration/pins can be qualified then assigned to rowA output. Overriding artifact alone also bypasses binding to the operation artifact. Only trusted local API exposure was found; controlled runner supplies registration/pins and is unaffected. No live substitution or public exploit was reproduced.\n\nDisposition: independently deferred below Critical/High under the collaborator delivery policy; no build/merge dependency, no Story scope expansion or acceptance waiver, and no repair claimed. No HTTP/public caller, observed live substitution or impact to the pinned controlled run was established.\n\n## Out of scope\n\nStory transitions/acceptance, new source allocations, additional proof runs, unrelated repairs and widened source/approval/trust boundaries.\n\n## Validate\n\nPlanned/unrun: focused accepted-row/artifact substitution regressions and relevant enrichment boundary tests. This was code/security review only; no new tests or source requests.\n\n## Related story\n\nFUCQ-60; established Epic FUCQ-20.\n\n## Story link basis\n\nObserved during the existing FUCQ-58\u201363 delivery. The FUCQ-60 contract owns the affected boundary described above. Verify current server Story type before writing; native Relates is nonblocking. Candidate secondary context: none.\n\n## Steps to reproduce\n\n1. In a synthetic local fixture, supply accepted rowA and its operation artifact.\n2. Provide separately valid rowB/artifactB and matching registration/pins through technicalOptions.\n3. Observe whether B qualification facts can be assigned to A output.\n\n## Expected behaviour\n\nOptions cannot substitute session-owned row or operation artifact.\n\n## Actual behaviour\n\nBy code inspection the spread overrides them; a current execution reproduction was not performed.\n\n## Environment\n\nRetained evidence from 7 November 2026. This reconciliation performs no reproduction, tests, source traffic, downloads, browser interaction or production edits. Source files: docs/gcsp/evidence/fucq60/otd-qualification-review-2026-11-07.md.",
+        "labels": [
+          "backlog",
+          "kind:code"
+        ],
+        "priority": "Medium",
+        "parent": "FUCQ-20"
+      },
+      "nativeLinks": [
+        {
+          "type": "Relates",
+          "story": "FUCQ-60",
+          "blocking": false,
+          "basis": "owning delivery boundary; verify current server issue type and link before writing"
+        }
+      ],
+      "secondaryContext": [],
+      "jira": {
+        "key": "FUCQ-162",
+        "id": "1501432",
+        "status": "To Do",
+        "issueType": "Bug",
+        "priority": "Medium",
+        "verifiedAt": "2026-11-07T12:49:31.209Z",
+        "nativeLinks": [
+          {
+            "id": "340015",
+            "type": "Relates",
+            "story": "FUCQ-60"
+          }
+        ],
+        "descriptionMarkerVerified": true,
+        "acceptedOrDone": false
+      }
+    },
+    {
+      "marker": "f60-all-unknown-technical-completeness-20261107",
+      "summary": "Preserve unknown completeness for all-unknown technical enrichment",
+      "severity": "Low",
+      "classification": "open-independent-backlog",
+      "sourcePins": [
+        {
+          "path": "docs/gcsp/evidence/fucq60/otd-qualification-review-2026-11-07.md",
+          "sha256": "cd624bf034e17a9637851ead0176e10067a446280acd80045a8bb91975da32c2",
+          "bytes": 3432
+        }
+      ],
+      "dedupSearchPhrases": [
+        "f60-all-unknown-technical-completeness-20261107",
+        "Preserve unknown completeness for all-unknown technical enrichment"
+      ],
+      "deduplication": {
+        "status": "complete",
+        "scope": "Complete pre-create search of17existingBug identities/summaries; complete post-create full27Bug description/marker/link readback. F146/151/152/153/155 are distinct bounded causes; no duplicate identified.",
+        "reused": false
+      },
+      "proposedCreate": {
+        "projectKey": "FUCQ",
+        "issueTypeName": "Bug",
+        "summary": "Preserve unknown completeness for all-unknown technical enrichment",
+        "description": "## Goal\n\nKeep an all-unknown technical result explicitly unknown.\n\n## Acceptance criteria\n\n- [ ] All-unknown result remains unknown.\n- [ ] Mixed known/unknown remains partial and complete known values remain complete.\n- [ ] Individual fact values and provenance remain unchanged.\n\n## Files or areas\n\nscripts/gcsp/enrich-fleet.mjs measurement completeness recalculation.\n\n## Decided\n\nintake_marker: f60-all-unknown-technical-completeness-20261107\nwork_item_type: bug\nkind: code\nseverity: Low\npriority: Low\nrelated_story: FUCQ-60\nepic: FUCQ-20\nevidence: []\n\ndiagnosis: At enrich-fleet.mjs:400\u2013401 in e08d8b26 recalculation selects complete or partial only. All four mapped technical values plus body length unknown changes previous measurement completeness unknown to partial. Individual values stay null/unknown, so no measurement is invented. Retained controlled run has four known values and is unaffected.\n\nDisposition: independently deferred below Critical/High under the collaborator delivery policy; no build/merge dependency, no Story scope expansion or acceptance waiver, and no repair claimed. P3 maps to Low; this does not establish fact fabrication or a failed controlled retained run.\n\n## Out of scope\n\nStory transitions/acceptance, new source allocations, additional proof runs, unrelated repairs and widened source/approval/trust boundaries.\n\n## Validate\n\nPlanned/unrun: focused unknown/partial/complete classification regression during independent pickup.\n\n## Related story\n\nFUCQ-60; established Epic FUCQ-20.\n\n## Story link basis\n\nObserved during the existing FUCQ-58\u201363 delivery. The FUCQ-60 contract owns the affected boundary described above. Verify current server Story type before writing; native Relates is nonblocking. Candidate secondary context: none.\n\n## Steps to reproduce\n\n1. Use an offline enrichment fixture with four unknown technical values and unknown body length.\n2. Apply technical completeness recalculation.\n3. Inspect completeness and each fact/null value.\n\n## Expected behaviour\n\nAll-unknown measurements retain completeness unknown.\n\n## Actual behaviour\n\nStatic review shows completeness becomes partial while individual facts remain unknown. No new execution reproduction was performed.\n\n## Environment\n\nRetained evidence from 7 November 2026. This reconciliation performs no reproduction, tests, source traffic, downloads, browser interaction or production edits. Source files: docs/gcsp/evidence/fucq60/otd-qualification-review-2026-11-07.md.",
+        "labels": [
+          "backlog",
+          "kind:code"
+        ],
+        "priority": "Low",
+        "parent": "FUCQ-20"
+      },
+      "nativeLinks": [
+        {
+          "type": "Relates",
+          "story": "FUCQ-60",
+          "blocking": false,
+          "basis": "owning delivery boundary; verify current server issue type and link before writing"
+        }
+      ],
+      "secondaryContext": [],
+      "jira": {
+        "key": "FUCQ-163",
+        "id": "1501433",
+        "status": "To Do",
+        "issueType": "Bug",
+        "priority": "Low",
+        "verifiedAt": "2026-11-07T12:49:31.209Z",
+        "nativeLinks": [
+          {
+            "id": "340016",
+            "type": "Relates",
+            "story": "FUCQ-60"
+          }
+        ],
+        "descriptionMarkerVerified": true,
+        "acceptedOrDone": false
+      }
+    },
+    {
+      "marker": "f62-onedrive-intermittent-semantic-validation-20261107",
+      "summary": "Retain and diagnose intermittent semantic validation failures on OneDrive scratch",
+      "severity": "Medium",
+      "classification": "open-independent-backlog",
+      "sourcePins": [
+        {
+          "path": "docs/gcsp/evidence/fucq62/public-artifacts-publication-2026-11-07/deferred-onedrive-validation.md",
+          "sha256": "2d4b6a994a26be204f0b3d9d8c1c63c7491639236653c15225879caf2e7acf92",
+          "bytes": 3685
+        }
+      ],
+      "dedupSearchPhrases": [
+        "f62-onedrive-intermittent-semantic-validation-20261107",
+        "Retain and diagnose intermittent semantic validation failures on OneDrive scratch"
+      ],
+      "deduplication": {
+        "status": "complete",
+        "scope": "Complete pre-create search of17existingBug identities/summaries; complete post-create full27Bug description/marker/link readback. F146/151/152/153/155 are distinct bounded causes; no duplicate identified.",
+        "reused": false
+      },
+      "proposedCreate": {
+        "projectKey": "FUCQ",
+        "issueTypeName": "Bug",
+        "summary": "Retain and diagnose intermittent semantic validation failures on OneDrive scratch",
+        "description": "## Goal\n\nMake complete exact artifact cold restores validate consistently, or retain the first specific semantic validation failure without weakening guards.\n\n## Acceptance criteria\n\n- [ ] Reproduce or identify the first semantic validator/history failure under bounded cloud scratch.\n- [ ] Preserve strict byte/history/source guards and prior readable selection.\n- [ ] Verify correction with exact matching identity and measured cleanup.\n\n## Files or areas\n\nfleet-artifacts.js; synthetic-registry.js; corpus-publisher.js; indexed-jsonl.js under file-provider-managed scratch.\n\n## Decided\n\nintake_marker: f62-onedrive-intermittent-semantic-validation-20261107\nwork_item_type: bug\nkind: code\nseverity: Medium\npriority: Medium\nrelated_story: FUCQ-62\nepic: FUCQ-20\nevidence: []\n\ndiagnosis: On macOS Node26.7.0 at2540479c, .4 exact byte/hash-valid artifacts failed cached then staged semantic validation under owned OneDrive scratch. Later cloud-local invocation passed without functional fix and post-failure cached validators loaded successfully. Cause is unverified; file-provider metadata timing is a hypothesis. This symptom is not assumed identical to FUCQ-153 ctime drift.\n\nDisposition: independently deferred below Critical/High under the collaborator delivery policy; no build/merge dependency, no Story scope expansion or acceptance waiver, and no repair claimed. Fails closed on optional cloud scratch. No corrupt-byte acceptance, source call, data loss or retained identity change observed. Local build path works; remote dedup must compare FUCQ-153 exact scope.\n\n## Out of scope\n\nStory transitions/acceptance, new source allocations, additional proof runs, unrelated repairs and widened source/approval/trust boundaries.\n\n## Validate\n\nPlanned/unrun for this open finding: bounded failure-only capture and local/cloud comparison after independent authorisation. No blind public replay or full suite.\n\n## Related story\n\nFUCQ-62; established Epic FUCQ-20.\n\n## Story link basis\n\nObserved during the existing FUCQ-58\u201363 delivery. The FUCQ-62 contract owns the affected boundary described above. Verify current server Story type before writing; native Relates is nonblocking. Candidate secondary context: none.\n\n## Steps to reproduce\n\n1. Use independently authorised owned cloud scratch and the existing retained exact pack, with no blind repeated public downloads.\n2. Capture bounded first failing registry/history/corpus semantic result before teardown.\n3. Compare exact bytes and metadata with the passing local path.\n\n## Expected behaviour\n\nExact complete bytes validate consistently or a precise bounded failure reason survives; prior selection remains readable.\n\n## Actual behaviour\n\nPublic cold restore failed cached validation in8.319s; network-free cloud-local restore failed staged validation in4.498s; later cloud-local passed in8.057s without functional fix. Later local/tmp public restore passed351direct/351HTTP. Third receipt public label is historical mislabel: it used local pack/zero public requests.\n\n## Environment\n\nRetained evidence from 7 November 2026. This reconciliation performs no reproduction, tests, source traffic, downloads, browser interaction or production edits. Source files: docs/gcsp/evidence/fucq62/public-artifacts-publication-2026-11-07/deferred-onedrive-validation.md.",
+        "labels": [
+          "backlog",
+          "kind:code"
+        ],
+        "priority": "Medium",
+        "parent": "FUCQ-20"
+      },
+      "nativeLinks": [
+        {
+          "type": "Relates",
+          "story": "FUCQ-62",
+          "blocking": false,
+          "basis": "owning delivery boundary; verify current server issue type and link before writing"
+        }
+      ],
+      "secondaryContext": [],
+      "jira": {
+        "key": "FUCQ-164",
+        "id": "1501434",
+        "status": "To Do",
+        "issueType": "Bug",
+        "priority": "Medium",
+        "verifiedAt": "2026-11-07T12:49:31.209Z",
+        "nativeLinks": [
+          {
+            "id": "340017",
+            "type": "Relates",
+            "story": "FUCQ-62"
+          }
+        ],
+        "descriptionMarkerVerified": true,
+        "acceptedOrDone": false
+      }
+    },
+    {
+      "marker": "f59-source-event-history-conflict-persistence-20261107",
+      "summary": "Preserve canonical source event history during cloud file conflicts",
+      "severity": "Medium",
+      "classification": "open-independent-backlog",
+      "sourcePins": [
+        {
+          "path": "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/README.md",
+          "sha256": "135139fe2864f6a9928a9807939a21e31d5df34ba42623c324bdaa5111511de1",
+          "bytes": 9059
+        },
+        {
+          "path": "docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/actual-series.json",
+          "sha256": "137d2eb6029058be379e8a8397961ee72c795c0e3a13b61c1d0b2f849d916c2d",
+          "bytes": 30747
+        }
+      ],
+      "dedupSearchPhrases": [
+        "f59-source-event-history-conflict-persistence-20261107",
+        "Preserve canonical source event history during cloud file conflicts"
+      ],
+      "deduplication": {
+        "status": "complete",
+        "scope": "Complete pre-create search of17existingBug identities/summaries; complete post-create full27Bug description/marker/link readback. F146/151/152/153/155 are distinct bounded causes; no duplicate identified.",
+        "reused": false
+      },
+      "proposedCreate": {
+        "projectKey": "FUCQ",
+        "issueTypeName": "Bug",
+        "summary": "Preserve canonical source event history during cloud file conflicts",
+        "description": "## Goal\n\nKeep a complete durable canonical source-event history so strict retained proof can reconcile actual spent requests without conflict-file recovery.\n\n## Acceptance criteria\n\n- [ ] Identify and fix the bounded persistence path without synthesizing events.\n- [ ] Keep exact event/accounting identities and reject contradictory observations.\n- [ ] Preserve original failed/copy evidence and prove complete canonical persistence with proportionate fixtures.\n\n## Files or areas\n\nSource event append persistence and strict retained event/reconciliation boundary.\n\n## Decided\n\nintake_marker: f59-source-event-history-conflict-persistence-20261107\nwork_item_type: bug\nkind: code\nseverity: Medium\npriority: Medium\nrelated_story: FUCQ-59\nepic: FUCQ-20\nevidence: []\n\ndiagnosis: Actual OneDrive append conflict split source event history between canonical and conflict copies. Chunk07 canonical history lacked attempt29header present in actual conflict copy; canonical-only event proof failed. Chunk09 canonical-only reconciler also stopped. Actual-row union readers recover actual starts/headers/solver rows, reject contradictions and preserve originals; this is mitigation/evidence and no persistence fix. Distinct from optional cloud semantic registry validation.\n\nDisposition: independently deferred below Critical/High under the collaborator delivery policy; no build/merge dependency, no Story scope expansion or acceptance waiver, and no repair claimed. Native Jira linkage was pending. No loss of source accounting or repeated actual requests is established; source event persistence remains open.\n\n## Out of scope\n\nStory transitions/acceptance, new source allocations, additional proof runs, unrelated repairs and widened source/approval/trust boundaries.\n\n## Validate\n\nPlanned/unrun for repair: bounded persistence/conflict fixture and strict reconciliation. Existing actual union evidence is reused only at its recorded identity; no source replay or full suite.\n\n## Related story\n\nFUCQ-59; established Epic FUCQ-20.\n\n## Story link basis\n\nObserved during the existing FUCQ-58\u201363 delivery. The FUCQ-59 contract owns the affected boundary described above. Verify current server Story type before writing; native Relates is nonblocking. Candidate secondary context: none.\n\n## Steps to reproduce\n\n1. Use retained actual chunk07/chunk09 event files offline; do not replay spent source requests.\n2. Compare canonical-only event proof/reconciliation with exact retained conflict rows.\n3. Check consistency of actual-row union and preserved original hashes.\n\n## Expected behaviour\n\nCanonical event persistence retains every actual event needed by strict proof without relying on conflict copies.\n\n## Actual behaviour\n\nChunk07 original event check failed and chunk09 canonical-only reconciliation stopped; retained actual-row union recovered evidence. All1024solver/1152GETs remained spent once, with390admissions/374duplicates/260rejections;160required retained checks are covered with the explicit replacement history, not by rewriting original failures.\n\n## Environment\n\nRetained evidence from 7 November 2026. This reconciliation performs no reproduction, tests, source traffic, downloads, browser interaction or production edits. Source files: docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/README.md; docs/gcsp/evidence/fucq59/f70-typed-axis1024-series-2026-11-07/actual-series.json.",
+        "labels": [
+          "backlog",
+          "kind:code"
+        ],
+        "priority": "Medium",
+        "parent": "FUCQ-20"
+      },
+      "nativeLinks": [
+        {
+          "type": "Relates",
+          "story": "FUCQ-59",
+          "blocking": false,
+          "basis": "owning delivery boundary; verify current server issue type and link before writing"
+        }
+      ],
+      "secondaryContext": [],
+      "jira": {
+        "key": "FUCQ-165",
+        "id": "1501435",
+        "status": "To Do",
+        "issueType": "Bug",
+        "priority": "Medium",
+        "verifiedAt": "2026-11-07T12:49:31.209Z",
+        "nativeLinks": [
+          {
+            "id": "340018",
+            "type": "Relates",
+            "story": "FUCQ-59"
+          }
+        ],
+        "descriptionMarkerVerified": true,
+        "acceptedOrDone": false
+      }
+    }
+  ],
+  "historicalRepairedOrSuperseded": [
+    {
+      "finding": "Proof request-key JSON property ordering",
+      "source": "docs/gcsp/evidence/fucq62/fleet-dot8-1923-public/proof-request-key-bug-draft.md",
+      "disposition": "Canonical helper explicitly serializes {kind,id} and checked both input property orders; subsequent offline proof passed1925DTO/HTTP with469knownconsumer failures. Preserve original23asset cold-restore attempt/88.79s failed result. No new open Bug for corrected helper.",
+      "relatedStory": "FUCQ-62",
+      "sourceSha256": "f3fe2792f51636d5477b4a97d4b05618107bf745532eecb77dd835632e874f81"
+    },
+    {
+      "finding": "Nested offline guard preload collision",
+      "source": "docs/gcsp/evidence/fucq62/fleet-dot8-1923-public/proof-request-key-bug-draft.md",
+      "disposition": "First continuation active-audit-unavailable remains failed; v2 removed proof-child preload collision. No new open defect; do not convert failed attempt to pass.",
+      "relatedStory": "FUCQ-62",
+      "sourceSha256": "f3fe2792f51636d5477b4a97d4b05618107bf745532eecb77dd835632e874f81"
+    },
+    {
+      "finding": "Overbroad ordinary-store pin selection",
+      "source": "docs/gcsp/evidence/fucq62/fleet-dot8-1923-public/proof-request-key-bug-draft.md",
+      "disposition": "Offline v2 proof itself passed; supervisor asserted against three unrelated ordinary-store pins changed by authorised concurrent activation. Retain historical failed wrapper and used-input stability. No new open Bug inferred.",
+      "relatedStory": "FUCQ-62",
+      "sourceSha256": "f3fe2792f51636d5477b4a97d4b05618107bf745532eecb77dd835632e874f81"
+    },
+    {
+      "finding": "Recovery descriptor byte limit discarded for predecessor",
+      "source": "docs/gcsp/evidence/fucq62/recovery-byte-limit-2026-11-07/README.md",
+      "disposition": "Small repair made releaseLimits use selected descriptor; one red then3focused passes/0skips. Keep pending historical Jira-capture note without creating a new open repair task; no Done or whole-story acceptance.",
+      "relatedStory": "FUCQ-62",
+      "sourceSha256": "7abbe505ac77f8672c4ff272a8dcc549f1ba18f4a1ba5147992427662d1a9a30"
+    },
+    {
+      "finding": "F63 default-corpus parity fixture implicitly selected new default",
+      "source": "docs/gcsp/evidence/fucq63/default-corpus-fixture-regression-2026-11-07.md",
+      "disposition": "Repaired a753bd8c; first wrong candidate-root attempt8fail/4pass, final published-store fixture12/12pass/0skip. Historical fullsuite1872/1848pass/19fail/5skip remains unchanged; remaining16 mapped F144/F145/F146. No new open defect.",
+      "relatedStory": "FUCQ-63",
+      "sourceSha256": "736f439a9521d9b46241e1db5630908604febc1e0a5a6317f5e5e11c5e4073c2"
+    },
+    {
+      "finding": "F63 PostgreSQL proof omitted authoritative inventory snapshot",
+      "source": "docs/gcsp/evidence/fucq63/linux-postgres-diagnostic-result-2026-11-07/README.md",
+      "successor": "docs/gcsp/evidence/fucq63/linux-postgres-corrected-result-2026-11-07/README.md",
+      "disposition": "Corrected f5670617; actual CI42372886620 at8c76c963 passed3native/direct/configured-consumer/HTTP samples, snapshot version3 after reopen. Earlier failed run42371231686 remains immutable. No production reset defect or new open harness repair task;2707configuration-consumer failures remain open.",
+      "relatedStory": "FUCQ-63",
+      "sourceSha256": "0d530c1623249ecfa1fb35c0f3546f53779cf27d6002fe85b7e422a5d3a4c39d"
+    },
+    {
+      "finding": "dot10 Linux build exited124 without retained phase identity",
+      "source": "docs/gcsp/evidence/fucq62/dot10-linux-timeout-2026-11-07/README.md",
+      "disposition": "Medium historical tooling observation; actual run42347409603 failed124, exact timeout phase unknown because cleanup removed redirected output. Proposed60\u2192120s cap and bounded diagnostics were only a proposal in this packet. Passing later .12 successor diagnostics do not establish the original phase/cause. Root disposition: retain historical failed receipt with passing successor; no current build failure or active outage inferred, no new repair allocation.",
+      "relatedStory": "FUCQ-62",
+      "sourceSha256": "08bd0108aedcd4d593764406e8c709a549174480d415e88702a9816656cf4dc2"
+    },
+    {
+      "finding": "Historical live first lookup30second timeout",
+      "source": "docs/gcsp/evidence/fucq62/vehicle-evidence-readiness-2026-11-07/diagnosis.md",
+      "disposition": "Original observed High lookup availability incident at .9 remains exact historical evidence; cause was unresolved. Dedicated readiness mitigation and actual .12 diagnostic2 run42372746118 returned3GET200/exact manifest3b2a883c. No active outage is claimed; root owns current severity/state disposition, not a new inferred production repair.",
+      "relatedStory": "FUCQ-62",
+      "secondaryContext": "FUCQ-63",
+      "sourceSha256": "4c11fe4cc5607bb2e60ebb5b3c31f07d23ae134ccbf65fe2ad128c05c696c468"
+    },
+    {
+      "finding": "FUCQ-155 None/process-sentinel bool process inspection",
+      "jiraKey": "FUCQ-155",
+      "disposition": "Root current-Jira readback found exact supervised continuation341 issue; two-line b556ee34 correction independently reviewed, server metadata stillToDo. Parent may add evidence; no Done/acceptance inference. Distinct from unknown retained-check finalization failure.",
+      "relatedStory": "FUCQ-62"
+    },
+    {
+      "finding": "Existing FUCQ-153 ctime-only identity issue",
+      "jiraKey": "FUCQ-153",
+      "source": "docs/gcsp/evidence/fucq62/scale-precheck-repair-2026-11-07.json",
+      "disposition": "Root should compare exact current description before deduplicating optional cloud semantic-validation symptom. Existing repair and passing synthetic byte proof do not prove same cause or repair all cloud behavior.",
+      "relatedStory": "FUCQ-62",
+      "sourceSha256": "4c0aa3af905ded04d7f3f4d3da4d85d3a434a658866a1d3e68393536face15c3"
+    }
+  ],
+  "existingContext": {
+    "FUCQ-144": "Two Greg price-row focus failures; current historical suite19fail unchanged.",
+    "FUCQ-145": "One Resume focus failure.",
+    "FUCQ-146": "Thirteen composed fixture/scanner failures; root readback says expanded imageCLI fixture is absent.",
+    "FUCQ-151": "Repeated source binding/checkpoint cost; existing Medium; not the safe-cache refetch finding.",
+    "FUCQ-152": "Competing continuation allocations fork predecessor; existing Medium; distinct from sequential safe-cache refetch.",
+    "FUCQ-154": "Fixed scratch basename abandoned reconciliation; existing Medium deferred; no new duplicate."
+  },
+  "actions": {
+    "created": [
+      {
+        "marker": "f59-continuation-safe-bootstrap-cache-refetch-2026-11-07",
+        "key": "FUCQ-156",
+        "id": "1501426",
+        "at": "2026-11-07T12:48:23.994Z"
+      },
+      {
+        "marker": "f59-retained-check-finalization-publication-20261107",
+        "key": "FUCQ-157",
+        "id": "1501427",
+        "at": "2026-11-07T12:48:25.289Z"
+      },
+      {
+        "marker": "f63-configured-consumer-empty-mandatory-elements-20261107",
+        "key": "FUCQ-158",
+        "id": "1501428",
+        "at": "2026-11-07T12:48:26.238Z"
+      },
+      {
+        "marker": "gcsp-image-cli-expanded-registry-fixture-20261107",
+        "key": "FUCQ-159",
+        "id": "1501429",
+        "at": "2026-11-07T12:48:27.240Z"
+      },
+      {
+        "marker": "f62-proof-grant-template-receipt-filter-20261107",
+        "key": "FUCQ-160",
+        "id": "1501430",
+        "at": "2026-11-07T12:48:28.088Z"
+      },
+      {
+        "marker": "f59-g42-inventory-line-key-grammar-20261107",
+        "key": "FUCQ-161",
+        "id": "1501431",
+        "at": "2026-11-07T12:48:29.006Z"
+      },
+      {
+        "marker": "f60-technical-options-session-owned-substitution-20261107",
+        "key": "FUCQ-162",
+        "id": "1501432",
+        "at": "2026-11-07T12:48:29.906Z"
+      },
+      {
+        "marker": "f60-all-unknown-technical-completeness-20261107",
+        "key": "FUCQ-163",
+        "id": "1501433",
+        "at": "2026-11-07T12:48:31.220Z"
+      },
+      {
+        "marker": "f62-onedrive-intermittent-semantic-validation-20261107",
+        "key": "FUCQ-164",
+        "id": "1501434",
+        "at": "2026-11-07T12:48:32.186Z"
+      },
+      {
+        "marker": "f59-source-event-history-conflict-persistence-20261107",
+        "key": "FUCQ-165",
+        "id": "1501435",
+        "at": "2026-11-07T12:48:33.468Z"
+      }
+    ],
+    "links": [
+      {
+        "bug": "FUCQ-156",
+        "story": "FUCQ-59",
+        "type": "Relates",
+        "at": "2026-11-07T12:48:49.657Z"
+      },
+      {
+        "bug": "FUCQ-157",
+        "story": "FUCQ-59",
+        "type": "Relates",
+        "at": "2026-11-07T12:48:50.351Z"
+      },
+      {
+        "bug": "FUCQ-158",
+        "story": "FUCQ-63",
+        "type": "Relates",
+        "at": "2026-11-07T12:48:50.959Z"
+      },
+      {
+        "bug": "FUCQ-159",
+        "story": "FUCQ-62",
+        "type": "Relates",
+        "at": "2026-11-07T12:48:51.841Z"
+      },
+      {
+        "bug": "FUCQ-160",
+        "story": "FUCQ-62",
+        "type": "Relates",
+        "at": "2026-11-07T12:48:52.476Z"
+      },
+      {
+        "bug": "FUCQ-161",
+        "story": "FUCQ-59",
+        "type": "Relates",
+        "at": "2026-11-07T12:48:53.177Z"
+      },
+      {
+        "bug": "FUCQ-162",
+        "story": "FUCQ-60",
+        "type": "Relates",
+        "at": "2026-11-07T12:48:53.886Z"
+      },
+      {
+        "bug": "FUCQ-163",
+        "story": "FUCQ-60",
+        "type": "Relates",
+        "at": "2026-11-07T12:48:54.462Z"
+      },
+      {
+        "bug": "FUCQ-164",
+        "story": "FUCQ-62",
+        "type": "Relates",
+        "at": "2026-11-07T12:48:55.237Z"
+      },
+      {
+        "bug": "FUCQ-165",
+        "story": "FUCQ-59",
+        "type": "Relates",
+        "at": "2026-11-07T12:48:56.000Z"
+      }
+    ],
+    "readbackVerified": true
+  },
+  "resources": {
+    "testsRun": 0,
+    "sourceRequests": 0,
+    "downloads": 0,
+    "browserOperations": 0,
+    "productionEdits": 0,
+    "scratchCreated": false,
+    "removedAllocationBytes": 0,
+    "ownedDisposableLeftovers": [],
+    "retainedReceipt": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/f58-63-jira-reconciliation-2026-11-07/defects.json"
+  },
+  "state": "synced-to-jira-and-readback-verified"
+}

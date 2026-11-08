@@ -1,0 +1,239 @@
+{
+  "status": "immutable-public-prerelease-published",
+  "releaseId": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+  "target": "d45da2c1ee14aad9e61138faa7dfc0f12f172d5c",
+  "tag": "fleet-2026-11-07-10",
+  "verifiedTag": {
+    "object": {
+      "sha": "d45da2c1ee14aad9e61138faa7dfc0f12f172d5c",
+      "type": "commit",
+      "url": "https://api.github.com/repos/garyscarter-ibm/vehicle-matcher/git/commits/d45da2c1ee14aad9e61138faa7dfc0f12f172d5c"
+    },
+    "ref": "refs/tags/fleet-2026-11-07-10"
+  },
+  "githubRelease": {
+    "assets": [
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/sources--00a7db972439971fe87060c4e58e3228875ce7f1ea8e204b715521808d530064.jsonl",
+        "digest": "sha256:00a7db972439971fe87060c4e58e3228875ce7f1ea8e204b715521808d530064",
+        "id": 719824029,
+        "name": "sources--00a7db972439971fe87060c4e58e3228875ce7f1ea8e204b715521808d530064.jsonl",
+        "size": 11435963,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/sources--00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a.jsonl",
+        "digest": "sha256:00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a",
+        "id": 719822899,
+        "name": "sources--00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a.jsonl",
+        "size": 6832119,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/sources--14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6.jsonl",
+        "digest": "sha256:14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6",
+        "id": 719823013,
+        "name": "sources--14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6.jsonl",
+        "size": 689844,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/sources--1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802.jsonl",
+        "digest": "sha256:1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802",
+        "id": 719822858,
+        "name": "sources--1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802.jsonl",
+        "size": 21408,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/sources--34b8befe36cee454171e72dbcea4b67a947a69990098a190d327c033dccbd8b3.jsonl",
+        "digest": "sha256:34b8befe36cee454171e72dbcea4b67a947a69990098a190d327c033dccbd8b3",
+        "id": 719824119,
+        "name": "sources--34b8befe36cee454171e72dbcea4b67a947a69990098a190d327c033dccbd8b3.jsonl",
+        "size": 33542272,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/sources--4d5d0766342d817d06f3e60aed1ae87ba4446c4510cf00c18cb32798f56aeeda.jsonl",
+        "digest": "sha256:4d5d0766342d817d06f3e60aed1ae87ba4446c4510cf00c18cb32798f56aeeda",
+        "id": 719823874,
+        "name": "sources--4d5d0766342d817d06f3e60aed1ae87ba4446c4510cf00c18cb32798f56aeeda.jsonl",
+        "size": 16411688,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/sources--5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7.jsonl",
+        "digest": "sha256:5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7",
+        "id": 719822993,
+        "name": "sources--5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7.jsonl",
+        "size": 689849,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/sources--6d1df1e9dde9d019e9f3a7dc3e22727d9df11b655ef0128e81c5ed75551a5b11.jsonl",
+        "digest": "sha256:6d1df1e9dde9d019e9f3a7dc3e22727d9df11b655ef0128e81c5ed75551a5b11",
+        "id": 719823408,
+        "name": "sources--6d1df1e9dde9d019e9f3a7dc3e22727d9df11b655ef0128e81c5ed75551a5b11.jsonl",
+        "size": 8697624,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/sources--845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080.jsonl",
+        "digest": "sha256:845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080",
+        "id": 719822960,
+        "name": "sources--845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080.jsonl",
+        "size": 409709,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/sources--a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265.jsonl",
+        "digest": "sha256:a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265",
+        "id": 719822827,
+        "name": "sources--a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265.jsonl",
+        "size": 603088,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/sources--acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d.jsonl",
+        "digest": "sha256:acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d",
+        "id": 719823126,
+        "name": "sources--acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d.jsonl",
+        "size": 323364,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/sources--c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06.jsonl",
+        "digest": "sha256:c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06",
+        "id": 719823071,
+        "name": "sources--c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06.jsonl",
+        "size": 689836,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/sources--da1eb59e4e5f8dee9dd06e8877da275c2eb79e541dea90c793559fac6cd188ff.jsonl",
+        "digest": "sha256:da1eb59e4e5f8dee9dd06e8877da275c2eb79e541dea90c793559fac6cd188ff",
+        "id": 719824364,
+        "name": "sources--da1eb59e4e5f8dee9dd06e8877da275c2eb79e541dea90c793559fac6cd188ff.jsonl",
+        "size": 16909795,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/sources--f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8.jsonl",
+        "digest": "sha256:f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8",
+        "id": 719822876,
+        "name": "sources--f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8.jsonl",
+        "size": 159220,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/sources--fd8d384e60b2058e27ee0b95c089cb7f7183bfd2d511761e39e566a6fc8cde9c.jsonl",
+        "digest": "sha256:fd8d384e60b2058e27ee0b95c089cb7f7183bfd2d511761e39e566a6fc8cde9c",
+        "id": 719823800,
+        "name": "sources--fd8d384e60b2058e27ee0b95c089cb7f7183bfd2d511761e39e566a6fc8cde9c.jsonl",
+        "size": 5985315,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/store--active.json",
+        "digest": "sha256:34bd35dbda9a984dc6d38ad443326ad021e520f24d87c8152b18e7c0d7e7539e",
+        "id": 719821618,
+        "name": "store--active.json",
+        "size": 374,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/store--identity-inventory.json",
+        "digest": "sha256:f5d33165ec35d27e9140e465139940b25f1b9a5c124ca067ba2433599db9e20f",
+        "id": 719821666,
+        "name": "store--identity-inventory.json",
+        "size": 2670623,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/store--last-good.json",
+        "digest": "sha256:f638f7d9efe40afb3d27e54a3795cda77e6ce735d1409c25caf5e5f317464206",
+        "id": 719821642,
+        "name": "store--last-good.json",
+        "size": 198,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/store--versions--0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a--configurations.jsonl",
+        "digest": "sha256:b801d60721b315c9922e543440a83a6cb3c6090e120cbd973e7ae64496e0f685",
+        "id": 719821881,
+        "name": "store--versions--0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a--configurations.jsonl",
+        "size": 88304767,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/store--versions--0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a--images.jsonl",
+        "digest": "sha256:eb04f0dca3046b045dd000ef4312eabc3d4b9af59b141cb0bd0e26a32230588a",
+        "id": 719822417,
+        "name": "store--versions--0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a--images.jsonl",
+        "size": 1410,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/store--versions--0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a--manifest.json",
+        "digest": "sha256:0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+        "id": 719821840,
+        "name": "store--versions--0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a--manifest.json",
+        "size": 8255,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/store--versions--0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a--vins.jsonl",
+        "digest": "sha256:8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
+        "id": 719822404,
+        "name": "store--versions--0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a--vins.jsonl",
+        "size": 2565,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/store--versions--28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884--configurations.jsonl",
+        "digest": "sha256:355b05a93af83b60f6801470fff5dbe082f3c3ec662a45a1f2c17e7cf90496ea",
+        "id": 719822446,
+        "name": "store--versions--28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884--configurations.jsonl",
+        "size": 45277494,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/store--versions--28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884--images.jsonl",
+        "digest": "sha256:eb04f0dca3046b045dd000ef4312eabc3d4b9af59b141cb0bd0e26a32230588a",
+        "id": 719822801,
+        "name": "store--versions--28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884--images.jsonl",
+        "size": 1410,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/store--versions--28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884--manifest.json",
+        "digest": "sha256:28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884",
+        "id": 719822428,
+        "name": "store--versions--28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884--manifest.json",
+        "size": 8254,
+        "state": "uploaded"
+      },
+      {
+        "browser_download_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-10/store--versions--28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884--vins.jsonl",
+        "digest": "sha256:8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
+        "id": 719822764,
+        "name": "store--versions--28374a10e989560f036c912c4b3d6d6b22d69d5ec212aecfc3921bc202af7884--vins.jsonl",
+        "size": 2565,
+        "state": "uploaded"
+      }
+    ],
+    "draft": false,
+    "html_url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/tag/fleet-2026-11-07-10",
+    "id": 437382270,
+    "prerelease": true,
+    "tag_name": "fleet-2026-11-07-10",
+    "target_commitish": "d45da2c1ee14aad9e61138faa7dfc0f12f172d5c"
+  },
+  "files": 26,
+  "bytes": 239679009,
+  "previousReleaseAndTagUnchanged": true,
+  "apiCalls": 35,
+  "sourceTraffic": 0,
+  "ordinaryPublicationExecuted": false,
+  "acceptance": false
+}

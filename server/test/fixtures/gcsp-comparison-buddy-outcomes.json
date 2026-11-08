@@ -1,0 +1,462 @@
+{
+  "schemaVersion": 1,
+  "evidenceStatus": "the mixed cohort is authored; outcomeRecord is computed by replayBuddyRoute and asserted equal by gcsp-comparison-buddy.test.js",
+  "purpose": "tiny fictional synthetic cohort for the buddy-route outcome record shape: two participants and two non-participants, an accept, declines with a typed reason, and today's route for the others; no BMW constructibility claim",
+  "seed": "fucq135-20",
+  "overlay": {
+    "comparison.cohortSize": 4,
+    "comparison.carsPerEmployee": 1,
+    "comparison.renewalDays": {
+      "min": 30,
+      "max": 30
+    },
+    "comparison.modelLineMix": [
+      {
+        "modelLine": "G21 Touring|320i",
+        "weight": 1
+      }
+    ],
+    "comparison.releaseCadence": {
+      "firstReleaseDay": 0,
+      "intervalDays": 1,
+      "batchSize": 2
+    },
+    "comparison.accessGroups": [
+      {
+        "id": "mechanics-access",
+        "weight": 1,
+        "accessSeconds": {
+          "min": 0,
+          "max": 0
+        },
+        "responseSeconds": {
+          "min": 600,
+          "max": 600
+        }
+      }
+    ],
+    "comparison.needs.v1": {
+      "essentials": [
+        {
+          "weight": 1,
+          "value": {
+            "seats": {
+              "operator": "gte",
+              "value": 4,
+              "unit": "count"
+            }
+          }
+        }
+      ],
+      "preferences": {
+        "body": [
+          {
+            "value": "estate",
+            "weight": 1
+          },
+          {
+            "value": "saloon",
+            "weight": 1
+          }
+        ],
+        "fuel": [
+          {
+            "value": "petrol",
+            "weight": 1
+          }
+        ]
+      }
+    },
+    "comparison.importanceDistribution": [
+      {
+        "value": 100,
+        "weight": 1
+      }
+    ],
+    "comparison.briefNoise.v1": {
+      "accuratePreferenceProbability": 0.5,
+      "preserveEssentials": true
+    },
+    "comparison.buddyUptake": 0.5
+  },
+  "outcomeRecord": {
+    "schemaVersion": 1,
+    "route": "buddy",
+    "seed": "fucq135-20",
+    "policyVersion": "gcsp-policy-v1",
+    "inputHash": "92cf99c87ceb6b49b1bdbdaa4a608ac64d8345f748e5a4573a1f07a5b0b526e1",
+    "generatorVersion": "comparison-inputs.sha256.v1",
+    "policyHash": "90da819d8ae50fb0a09073e34403abc6c2f411198e8eaaf514302afd014e96b4",
+    "codeRevision": "fucq135-test",
+    "threshold": 70,
+    "thresholdKey": "comparison.acceptableFitThreshold",
+    "assumptions": [
+      {
+        "key": "allocation.tieBreak.rule",
+        "value": "renewalDueThenFitThenSeededLottery",
+        "unit": "enum",
+        "status": "assumed",
+        "basis": "Assumed demo fairness: earlier renewal due, then higher eligible fit, then seeded tie-break. Not employee iteration/mail speed or verified BMW policy.",
+        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "brief.slider.maximum",
+        "value": 100,
+        "unit": "integer slider units",
+        "status": "assumed",
+        "basis": "Assumed `brief.slider.scale`; dimensions declare categorical alternatives where required.",
+        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "comparison.acceptableFitThreshold",
+        "value": 70,
+        "unit": "calculated fit, 0-100",
+        "status": "assumed",
+        "basis": "Plausible demonstration boundary for an acceptable car, revisable. A missing fit never passes. Calculated fit is not observed satisfaction.",
+        "source": "docs/gcsp/shared-contracts.md#comparison-route-replay--fucq-134",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "comparison.buddyRoute.v1",
+        "value": {
+          "schemaVersion": 1,
+          "participation": "generated-buddyParticipation",
+          "consent": "search-and-hold-given-through-brief-service-with-stated-brief",
+          "allocation": "at-each-release-through-allocation-service",
+          "orderingWindow": "participant-pauses-when-manual-ordering-closes",
+          "response": "offer-creation-plus-generated-responseSeconds",
+          "offerExpiry": "buddy-hold-deadline",
+          "acceptance": "underlying-gates-and-fit-at-or-above-threshold",
+          "declineReason": "registered-reason-for-largest-importance-weighted-shortfall",
+          "declineReasonFallback": "size",
+          "afterDeclineOrExpiry": "no-trigger-until-next-release-or-brief-change",
+          "nonParticipants": "comparison.manualRoute.v1"
+        },
+        "unit": "versioned synthetic buddy behaviour",
+        "status": "assumed",
+        "basis": "Plausible model of preference-led buddy offers: consenting participants get offers at each release, answer at their generated response time or let the offer lapse at the hold deadline, accept only a car that passes their underlying needs, and decline naming the attribute where it falls shortest. The fallback reason applies when that attribute has no registered reason; size is the most general of the four. Revisable; not observed BMW behaviour.",
+        "source": "docs/gcsp/shared-contracts.md#comparison-buddy-route--fucq-135",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "comparison.manualRoute.v1",
+        "value": {
+          "schemaVersion": 1,
+          "participation": "every-employee-in-the-current-route; buddy non-participants reuse it",
+          "accessEvent": "once-per-release-at-generated-accessSeconds-until-taken-or-renewal",
+          "accessTies": "employeeId-ascending",
+          "eventOrder": [
+            "release",
+            "expiry",
+            "access",
+            "claim",
+            "decision"
+          ],
+          "candidateGate": "stated-brief-eligible-and-fit-at-or-above-threshold",
+          "candidateOrder": "stated-fit-descending-then-orderUuid",
+          "listingToClaimSeconds": 30,
+          "decisionSeconds": 60,
+          "conflict": "refresh-listing-and-claim-next-candidate",
+          "acceptance": "underlying-gates-and-fit-at-or-above-threshold",
+          "acceptedHold": "order-review-then-allocate",
+          "unacceptableHold": "expire-without-taking",
+          "abandonedCar": "not-claimed-again-by-that-employee",
+          "expiryReentry": "next-modelled-access-event",
+          "renewalDeadline": "inclusive",
+          "responseSeconds": "not-used; the manual decision happens in the portal session"
+        },
+        "unit": "versioned synthetic manual behaviour",
+        "status": "assumed",
+        "basis": "Plausible model of today's first-come-first-served release: employees check the portal after each release at their modelled access time, take 30 s to claim from the listing and decide within the 120 s cart hold. Revisable; not observed BMW behaviour.",
+        "source": "docs/gcsp/shared-contracts.md#comparison-route-replay--fucq-134",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "hold.buddy.durationSeconds",
+        "value": 7200,
+        "unit": "seconds",
+        "status": "assumed",
+        "basis": "Assumed new capability; roughly 2-hour proposal in demo brief/Q15.",
+        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "hold.cart.durationSeconds",
+        "value": 120,
+        "unit": "seconds",
+        "status": "assumed",
+        "basis": "Assumed exact value; target has about 2 minutes (Q15, round-1 findings).",
+        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "hold.cart.orderReview.durationSeconds",
+        "value": 600,
+        "unit": "seconds",
+        "status": "assumed",
+        "basis": "Assumed separate form-review phase, FUCQ-66/SAN-017; test in manual trials.",
+        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "offer.declineReasons.v1",
+        "value": {
+          "schemaVersion": 1,
+          "reasons": [
+            {
+              "code": "body-style",
+              "label": "Body style",
+              "attribute": "body"
+            },
+            {
+              "code": "size",
+              "label": "Size",
+              "attribute": "sizeClass"
+            },
+            {
+              "code": "fuel",
+              "label": "Fuel type",
+              "attribute": "fuel"
+            },
+            {
+              "code": "equipment",
+              "label": "Equipment",
+              "attribute": "equipment"
+            }
+          ]
+        },
+        "unit": "reason-registry",
+        "status": "assumed",
+        "basis": "FUCQ-106 fixed typed decline list and HLD blueprint 06/07; plausible demo categories, not verified BMW policy.",
+        "source": "docs/gcsp/offer-decisions-contract.md",
+        "policyVersion": "gcsp-policy-v1"
+      },
+      {
+        "key": "offer.declinedCar.exclusion",
+        "value": "untilRelevantConfirmedBriefChange",
+        "unit": "enum",
+        "status": "assumed",
+        "basis": "Assumed employee policy per HLD; unchanged declined `orderUuid` excluded, expiry excluded from dislike history.",
+        "source": "docs/gcsp/shared-contracts.md#policy-catalogue-and-provenance",
+        "policyVersion": "gcsp-policy-v1"
+      }
+    ],
+    "limitations": [
+      "Calculated fit is not observed satisfaction.",
+      "People, cars and behaviour are fictional and assumed; not BMW employee data or observed BMW operations.",
+      "Fictional facts for mechanics; not observed BMW configurations, insurance, licence or employee behaviour.",
+      "Underlying needs are synthetic latent inputs, not a real employee confirmation.",
+      "Equipment and ISOFIX facts are unknown; no factory-option or constructibility inference.",
+      "Live corpus realism/integration is separate acceptance evidence.",
+      "Acceptance is recorded as a local offer decision; the ordering handoff is not replayed."
+    ],
+    "employees": [
+      {
+        "seed": "fucq135-20",
+        "policyVersion": "gcsp-policy-v1",
+        "route": "buddy",
+        "employeeId": "fictional-employee-0880d7140e3e8288a74d95d0",
+        "accessGroup": "mechanics-access",
+        "outcome": "taken",
+        "orderUuid": "7681091f-329f-4cf1-bb17-bbaf5aa3dc0c",
+        "takenAt": "2026-11-05T09:10:00.000Z",
+        "takenDate": "2026-11-05",
+        "renewalAt": "2026-12-05T09:00:00.000Z",
+        "fit": {
+          "stated": 100,
+          "underlying": 100
+        },
+        "orderingClosedAt": null,
+        "claims": 0,
+        "retries": 0,
+        "expiries": 0,
+        "sessions": 0,
+        "participant": true,
+        "offers": 1,
+        "declines": 0,
+        "offerExpiries": 0,
+        "termsLapsed": 0
+      },
+      {
+        "seed": "fucq135-20",
+        "policyVersion": "gcsp-policy-v1",
+        "route": "buddy",
+        "employeeId": "fictional-employee-8836fa4c4da05f98086b6117",
+        "accessGroup": "mechanics-access",
+        "outcome": "none-by-renewal",
+        "orderUuid": null,
+        "takenAt": null,
+        "takenDate": null,
+        "renewalAt": "2026-12-05T09:00:00.000Z",
+        "fit": null,
+        "orderingClosedAt": null,
+        "claims": 0,
+        "retries": 0,
+        "expiries": 0,
+        "sessions": 0,
+        "participant": true,
+        "offers": 2,
+        "declines": 2,
+        "offerExpiries": 0,
+        "termsLapsed": 0
+      },
+      {
+        "seed": "fucq135-20",
+        "policyVersion": "gcsp-policy-v1",
+        "route": "buddy",
+        "employeeId": "fictional-employee-9a4d3618017e8c0fc57b8df9",
+        "accessGroup": "mechanics-access",
+        "outcome": "taken",
+        "orderUuid": "a1ecaf23-bd44-4e07-9f30-9249d5645d54",
+        "takenAt": "2026-11-06T09:01:30.000Z",
+        "takenDate": "2026-11-06",
+        "renewalAt": "2026-12-05T09:00:00.000Z",
+        "fit": {
+          "stated": 100,
+          "underlying": 100
+        },
+        "orderingClosedAt": null,
+        "claims": 1,
+        "retries": 0,
+        "expiries": 0,
+        "sessions": 2,
+        "participant": false,
+        "offers": 0,
+        "declines": 0,
+        "offerExpiries": 0,
+        "termsLapsed": 0
+      },
+      {
+        "seed": "fucq135-20",
+        "policyVersion": "gcsp-policy-v1",
+        "route": "buddy",
+        "employeeId": "fictional-employee-ac5ea68ad1ed1b450242800d",
+        "accessGroup": "mechanics-access",
+        "outcome": "none-by-renewal",
+        "orderUuid": null,
+        "takenAt": null,
+        "takenDate": null,
+        "renewalAt": "2026-12-05T09:00:00.000Z",
+        "fit": null,
+        "orderingClosedAt": null,
+        "claims": 1,
+        "retries": 1,
+        "expiries": 1,
+        "sessions": 2,
+        "participant": false,
+        "offers": 0,
+        "declines": 0,
+        "offerExpiries": 0,
+        "termsLapsed": 0
+      }
+    ],
+    "cars": [
+      {
+        "seed": "fucq135-20",
+        "policyVersion": "gcsp-policy-v1",
+        "route": "buddy",
+        "orderUuid": "7681091f-329f-4cf1-bb17-bbaf5aa3dc0c",
+        "releaseId": "fictional-release-0880d7140e3e8288a74d95d0",
+        "outcome": "allocated",
+        "allocatedTo": "fictional-employee-0880d7140e3e8288a74d95d0",
+        "allocatedAt": "2026-11-05T09:10:00.000Z",
+        "holdsNotTaken": 0,
+        "heldNotTakenSeconds": 0,
+        "heldNotTakenDays": 0,
+        "offers": 1,
+        "declines": 0,
+        "offerExpiries": 0,
+        "buddyHeldNotTakenSeconds": 0,
+        "buddyHeldNotTakenHours": 0
+      },
+      {
+        "seed": "fucq135-20",
+        "policyVersion": "gcsp-policy-v1",
+        "route": "buddy",
+        "orderUuid": "a1ecaf23-bd44-4e07-9f30-9249d5645d54",
+        "releaseId": "fictional-release-ac5ea68ad1ed1b450242800d",
+        "outcome": "allocated",
+        "allocatedTo": "fictional-employee-9a4d3618017e8c0fc57b8df9",
+        "allocatedAt": "2026-11-06T09:01:30.000Z",
+        "holdsNotTaken": 0,
+        "heldNotTakenSeconds": 0,
+        "heldNotTakenDays": 0,
+        "offers": 0,
+        "declines": 0,
+        "offerExpiries": 0,
+        "buddyHeldNotTakenSeconds": 0,
+        "buddyHeldNotTakenHours": 0
+      },
+      {
+        "seed": "fucq135-20",
+        "policyVersion": "gcsp-policy-v1",
+        "route": "buddy",
+        "orderUuid": "c73009eb-8ab9-4015-a94a-2cc5f0e505c6",
+        "releaseId": "fictional-release-0880d7140e3e8288a74d95d0",
+        "outcome": "held-not-taken",
+        "allocatedTo": null,
+        "allocatedAt": null,
+        "holdsNotTaken": 1,
+        "heldNotTakenSeconds": 120,
+        "heldNotTakenDays": 0.001389,
+        "offers": 1,
+        "declines": 1,
+        "offerExpiries": 0,
+        "buddyHeldNotTakenSeconds": 600,
+        "buddyHeldNotTakenHours": 0.166667
+      },
+      {
+        "seed": "fucq135-20",
+        "policyVersion": "gcsp-policy-v1",
+        "route": "buddy",
+        "orderUuid": "d352498f-fd52-488d-99b7-606b0cd5f445",
+        "releaseId": "fictional-release-ac5ea68ad1ed1b450242800d",
+        "outcome": "held-not-taken",
+        "allocatedTo": null,
+        "allocatedAt": null,
+        "holdsNotTaken": 0,
+        "heldNotTakenSeconds": 0,
+        "heldNotTakenDays": 0,
+        "offers": 1,
+        "declines": 1,
+        "offerExpiries": 0,
+        "buddyHeldNotTakenSeconds": 600,
+        "buddyHeldNotTakenHours": 0.166667
+      }
+    ],
+    "totals": {
+      "employees": 4,
+      "taken": 2,
+      "noneByRenewal": 2,
+      "claims": 2,
+      "retries": 1,
+      "expiries": 1,
+      "carsAllocated": 2,
+      "carsHeldNotTaken": 2,
+      "carsUnused": 0,
+      "participants": 2,
+      "offersMade": 3,
+      "offersAccepted": 1,
+      "declines": 2,
+      "declinesByReason": {
+        "body-style": 2,
+        "size": 0,
+        "fuel": 0,
+        "equipment": 0
+      },
+      "offerExpiries": 0,
+      "termsLapsed": 0,
+      "notificationsCaptured": 3,
+      "buddyHeldNotTakenHours": 0.333333,
+      "heldNotTakenHours": 0.366667
+    },
+    "holdDuration": {
+      "key": "hold.buddy.durationSeconds",
+      "holdDurationSeconds": 7200,
+      "overlay": false,
+      "baselineValue": 7200
+    }
+  }
+}

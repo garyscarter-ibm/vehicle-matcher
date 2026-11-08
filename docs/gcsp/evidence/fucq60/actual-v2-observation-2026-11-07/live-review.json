@@ -1,0 +1,199 @@
+{
+  "status": "observed-unqualified",
+  "codeCommit": "f19e8faaee708d9a3cc3b3f6c8551278cf5d2835",
+  "allocationId": "f60-1f7e-four-get-observation-20261107.v1",
+  "allocationSha256": "e43fbbc06fd5529014c71069812e10f61f3f55e038c9d28c2de74a93bb188d23",
+  "at": "2026-11-07T03:14:24.369Z",
+  "checks": {
+    "primaryContentDigest": true,
+    "artifactBytesAndHashes": true,
+    "codeAndSourceAllocationPinsUnchanged": true,
+    "exactRequestScope": true,
+    "fourCallsNoRetry": true,
+    "byteCeilings": true,
+    "noApiHeaderOrOpaqueAssetUrlRetained": true,
+    "cleanupAbsenceVerified": true
+  },
+  "primarySha256": "9994f182cebe9e116c7060e776e4cbfed2db357e739e71199f1e6290633f9d17",
+  "artifacts": {
+    "technical": "b9faeb98e45ee770d24db8f85881f6c9145f9abfb2939c71ab24c738de9e4735",
+    "image-manifest": "4d43aa678373ab808a5303dea1519ad8f273cd8008be175a8a0a6172279724bc"
+  },
+  "counts": {
+    "sourceCalls": 4,
+    "operations": {
+      "image-manifest": 1,
+      "page": 1,
+      "settings": 1,
+      "technical": 1
+    },
+    "cacheHits": {
+      "image-manifest": 0,
+      "page": 0,
+      "settings": 0,
+      "technical": 0
+    },
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "cacheEvictions": 0,
+    "httpAttempts": 4,
+    "decodedBytes": 714234,
+    "operationBytes": {
+      "image-manifest": 70173,
+      "page": 17763,
+      "settings": 620646,
+      "technical": 5652
+    }
+  },
+  "runnerElapsedMs": 2651,
+  "supervisor": {
+    "issue": null,
+    "issue_kind": null,
+    "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/live/command-0.log",
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/live/ownership/4c950f80581e46f0b3fb6c082a862889.json",
+    "peak_rss": 83296256,
+    "peak_scratch": 0,
+    "rc": 0,
+    "wall": 2.970276417
+  },
+  "cleanup": {
+    "compatibilityException": null,
+    "dependencyLinkAbsent": true,
+    "groupsAbsent": true,
+    "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/live/ownership/4c950f80581e46f0b3fb6c082a862889.json",
+    "primaryExists": true,
+    "removedScratchBytes": 0,
+    "reservationAbsent": true,
+    "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/observation-capability/live/retained-output-ownership.json",
+    "retainedPrimary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq60/actual-v2-observation-2026-11-07/observer-checkpoint.json",
+    "retainedWriterMetadata": [],
+    "scratch": "/private/tmp/test-stamp-shard-4c950f80581e46f0b3fb6c082a862889",
+    "scratchAbsent": true
+  },
+  "technical": {
+    "sourceKeys": 80,
+    "businessKey": "120610284",
+    "sourceStatus": 1,
+    "preConfigurationOptions": [
+      "S01CB",
+      "S01CE",
+      "S01DF",
+      "S02TE",
+      "S02VF"
+    ],
+    "existingMetricCandidates": [
+      {
+        "sourceCode": "N_SITZE",
+        "rawValue": 5,
+        "candidateMetric": "seats",
+        "existingDefinition": "SEATS",
+        "existingUnit": "COUNT",
+        "mappingAuthority": "server/vehicle-evidence/bmw-catalogue-adapter.js:MEASUREMENTS",
+        "sourceExplicitUnit": false,
+        "admitted": false
+      },
+      {
+        "sourceCode": "A_GEPR_V211",
+        "rawValue": 300,
+        "candidateMetric": "luggageNormal",
+        "existingDefinition": "NORMAL",
+        "existingUnit": "LITRES",
+        "mappingAuthority": "server/vehicle-evidence/bmw-catalogue-adapter.js:MEASUREMENTS",
+        "sourceExplicitUnit": false,
+        "admitted": false
+      },
+      {
+        "sourceCode": "A_GEPR_V214",
+        "rawValue": 1135,
+        "candidateMetric": "luggageExpanded",
+        "existingDefinition": "EXPANDED",
+        "existingUnit": "LITRES",
+        "mappingAuthority": "server/vehicle-evidence/bmw-catalogue-adapter.js:MEASUREMENTS",
+        "sourceExplicitUnit": false,
+        "admitted": false
+      },
+      {
+        "sourceCode": "E_0_100KMH",
+        "rawValue": 7.8,
+        "candidateMetric": "acceleration",
+        "existingDefinition": "0–100 KM/H",
+        "existingUnit": "SECONDS",
+        "mappingAuthority": "server/vehicle-evidence/bmw-catalogue-adapter.js:MEASUREMENTS",
+        "sourceExplicitUnit": false,
+        "admitted": false
+      }
+    ],
+    "unmappedBodyLength": 4361,
+    "explicitUnits": 0,
+    "valuesDeliberatelyNotRetained": [
+      "VERBRMOT_BZEIUNG",
+      "E_ABGAS",
+      "VERBRMOT_KRAFTSTART",
+      "SCR_JA_NEIN",
+      "GETR_ART"
+    ]
+  },
+  "image": {
+    "views": 79,
+    "desktopViews": 39,
+    "desktopHeroFrontCandidates": 8,
+    "viewpoints": {
+      "HEROFRONT": 14,
+      "FRONTRIGHT": 16,
+      "WHEEL": 10,
+      "HEROREAR": 7,
+      "REARLEFT": 5,
+      "SIDELEFT": 5,
+      "SIDERIGHT": 2,
+      "FRONTLEFT": 8,
+      "DASH": 4,
+      "INTERIORSIDE": 4,
+      "FRONTSEATS": 4
+    },
+    "dimensions": [
+      {
+        "pointer": "/stage-fullscreen-views-legacy-newnames/thumbnails/metaData",
+        "value": {
+          "width": 170,
+          "height": 100
+        }
+      },
+      {
+        "pointer": "/stage-fullscreen-views-legacy-newnames/mobile/metaData",
+        "value": {
+          "width": 1280,
+          "height": 1152
+        }
+      },
+      {
+        "pointer": "/stage-fullscreen-views-legacy-newnames/tablet/metaData",
+        "value": {
+          "width": 1280,
+          "height": 1152
+        }
+      },
+      {
+        "pointer": "/stage-fullscreen-views-legacy-newnames/desktop/metaData",
+        "value": {
+          "width": 2560,
+          "height": 1646
+        }
+      }
+    ],
+    "structureNodes": 180,
+    "fidelity": "all unknown",
+    "urlsRetained": false,
+    "assetsDownloaded": 0
+  },
+  "remaining": [
+    "mapping semantics/units authority and qualification",
+    "versioned optional technical operation in existing enrichment stage",
+    "v2 imagery identity plus exact image variant selection",
+    "immutable technical publication boundary",
+    "original F60 acceptance and target capacity"
+  ],
+  "noAdditionalTraffic": true,
+  "compatibilityException": null,
+  "leftovers": []
+}

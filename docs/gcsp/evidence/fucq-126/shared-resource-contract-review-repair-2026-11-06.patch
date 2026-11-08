@@ -1,0 +1,301 @@
+--- a/_tools/test_resources.py
++++ b/_tools/test_resources.py
+@@ -14,0 +15 @@
++import stat
+@@ -23,0 +25,2 @@
++RESOURCE_REVIEW_CONTRACT = 1
++LEDGER_BYTES = 2 * 1024 ** 2
+@@ -41 +44 @@
+-    """Let the supervisor's normal finalizers run for SIGTERM as well as Ctrl-C."""
++    """Let normal finalizers run for SIGTERM/SIGHUP and Python's normal Ctrl-C."""
+@@ -43 +46 @@
+-    previous = signal.getsignal(signal.SIGTERM) if main else None
++    previous = {}
+@@ -46,4 +49,2 @@
+-        raise KeyboardInterrupt("test supervisor received SIGTERM")
+-
+-    if main:
+-        signal.signal(signal.SIGTERM, interrupt)
++        raise KeyboardInterrupt("test supervisor received signal %d" % signum)
++
+@@ -50,0 +52,4 @@
++        if main:
++            for signum in (signal.SIGTERM, signal.SIGHUP):
++                previous[signum] = signal.getsignal(signum)
++                signal.signal(signum, interrupt)
+@@ -53,2 +58,2 @@
+-        if main:
+-            signal.signal(signal.SIGTERM, previous)
++        for signum, handler in previous.items():
++            signal.signal(signum, handler)
+@@ -97 +102 @@
+-            yield
++            yield f
+@@ -213,0 +219,100 @@
++    def _read_ledger(self, lock_file):
++        """Hold the existing stable lock; parse one bounded, no-follow ledger descriptor.
++
++        Keep reservations.lock as the shared lock identity across atomic ledger replacement.
++        Only ENOENT means a new empty ledger; uncertainty never erases foreign rows.
++        """
++        if lock_file.closed:
++            raise ResourceError("reservation lock descriptor is closed")
++        try:
++            fd = os.open(self.path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
++        except FileNotFoundError:
++            return {}
++        except OSError as error:
++            raise ResourceError("cannot read shared reservations: %s" % error)
++        try:
++            info = os.fstat(fd)
++            if not stat.S_ISREG(info.st_mode) or info.st_size > LEDGER_BYTES:
++                raise ResourceError("shared reservation ledger is not a bounded regular file")
++            with os.fdopen(fd, "rb", closefd=False) as stream:
++                raw = stream.read(LEDGER_BYTES + 1)
++            if len(raw) > LEDGER_BYTES:
++                raise ResourceError("shared reservation ledger exceeded its bound")
++            data = json.loads(raw, object_pairs_hook=self._unique_object)
++            if not isinstance(data, dict) or len(data) > 10000:
++                raise ValueError("invalid reservation object")
++            for token, row in data.items():
++                if not isinstance(token, str) or not token or not isinstance(row, dict):
++                    raise ValueError("invalid reservation row")
++                identity = row.get("owner")
++                if not isinstance(identity, dict) or type(identity.get("pid")) is not int or identity["pid"] <= 0:
++                    raise ValueError("invalid reservation owner")
++                if identity.get("start") is not None and not isinstance(identity["start"], str):
++                    raise ValueError("invalid owner start")
++                for name in ("disk", "ram", "used", "rss"):
++                    if type(row.get(name)) is not int or row[name] < 0:
++                        raise ValueError("invalid reservation accounting")
++                if row.get("root") is not None and (not isinstance(row["root"], str) or not Path(row["root"]).is_absolute()):
++                    raise ValueError("invalid reservation root")
++                if row.get("parent") is not None and not isinstance(row["parent"], str):
++                    raise ValueError("invalid reservation parent")
++                children = row.get("children", [])
++                if not isinstance(children, list) or len(children) > 1000:
++                    raise ValueError("invalid reservation children")
++                if "launchPending" in row and type(row["launchPending"]) is not bool:
++                    raise ValueError("invalid launch state")
++                for child in children:
++                    if (not isinstance(child, dict) or type(child.get("pid")) is not int or child["pid"] <= 0
++                            or type(child.get("pgid")) is not int or child["pgid"] <= 0
++                            or not isinstance(child.get("start"), str) or not child["start"]):
++                        raise ValueError("invalid owned child identity")
++            for token in data:
++                seen = set(); current = token
++                while current in data:
++                    if current in seen:
++                        raise ValueError("cyclic reservation parent")
++                    seen.add(current); current = data[current].get("parent")
++            return data
++        except (OSError, ValueError, UnicodeError) as error:
++            raise ResourceError("shared reservation ledger is unreadable or corrupt; preserved: %s" % error)
++        finally:
++            os.close(fd)
++
++    @staticmethod
++    def _unique_object(pairs):
++        result = {}
++        for key, value in pairs:
++            if key in result:
++                raise ValueError("duplicate ledger key")
++            result[key] = value
++        return result
++
++    def _write_ledger(self, data):
++        if len(json.dumps(data).encode()) > LEDGER_BYTES:
++            raise ResourceError("shared reservation ledger exceeds its bound; preserved")
++        atomic_json(self.path, data)
++
++    @staticmethod
++    def _resources_absent(row):
++        # Legacy rows with no root/child-state evidence remain charged for explicit reconciliation.
++        if not row.get("root") or "children" not in row or row.get("launchPending") is not False:
++            return False
++        try:
++            os.lstat(row["root"])
++        except FileNotFoundError:
++            # Missing ancestors or an unresolved/symlink parent are not definite scratch absence.
++            try:
++                parent = os.lstat(Path(row["root"]).parent)
++            except (OSError, ValueError):
++                return False
++            if not stat.S_ISDIR(parent.st_mode):
++                return False
++        except (OSError, ValueError):
++            return False
++        else:
++            return False
++        for child in row["children"]:
++            if process_alive(child) or group_has_live_members(child["pgid"]) is not False:
++                return False
++        return True
++
+@@ -215,8 +320,42 @@
+-        """Probe process identities outside the reservation lock; an OS query can take seconds."""
+-        data = read_json(self.path, {}) or {}
+-        return {k: v["owner"] for k, v in data.items() if not process_alive(v["owner"])}
+-
+-    def _live(self, dead):
+-        data = read_json(self.path, {}) or {}
+-        # A reservation created or replaced after the probe must remain charged.
+-        return {k: v for k, v in data.items() if k not in dead or v["owner"] != dead[k]}
++        # Snapshot under the shared lock, then perform bounded OS probes outside it.
++        with locked(self.directory / "reservations.lock") as lock_file:
++            data = self._read_ledger(lock_file)
++        return {k: row for k, row in data.items()
++                if not process_alive(row["owner"]) and self._resources_absent(row)}
++
++    def _live(self, dead, lock_file):
++        data = self._read_ledger(lock_file)
++        # Retain every row whose identity, child binding or charge changed after the snapshot.
++        return {k: row for k, row in data.items() if k not in dead or row != dead[k]}
++
++    def begin_child(self, token):
++        identity = owner()
++        with locked(self.directory / "reservations.lock") as lock_file:
++            live = self._read_ledger(lock_file)
++            if token not in live or live[token]["owner"] != identity:
++                raise ResourceError("cannot bind a foreign or missing reservation")
++            live[token]["launchPending"] = True
++            self._write_ledger(live)
++
++    def bind_child(self, token, child):
++        identity = owner()
++        if (type(child.get("pid")) is not int or child["pid"] <= 0
++                or child.get("pgid") != child["pid"] or not child.get("start")):
++            raise ResourceError("require exact owned PID/start/group identity")
++        with locked(self.directory / "reservations.lock") as lock_file:
++            live = self._read_ledger(lock_file)
++            if token not in live or live[token]["owner"] != identity or not live[token].get("launchPending"):
++                raise ResourceError("child creation is not owned by this reservation")
++            live[token].setdefault("children", []).append({key: child[key] for key in ("pid", "start", "pgid")})
++            live[token]["launchPending"] = False
++            self._write_ledger(live)
++
++    def cancel_child_launch(self, token):
++        """Caller requires actual guard no-child-created or verified local-handle cleanup, never an empty registry."""
++        identity = owner()
++        with locked(self.directory / "reservations.lock") as lock_file:
++            live = self._read_ledger(lock_file)
++            if token not in live or live[token]["owner"] != identity:
++                raise ResourceError("cannot clear a foreign or missing launch")
++            live[token]["launchPending"] = False
++            self._write_ledger(live)
+@@ -262,3 +401,2 @@
+-        with locked(self.directory / "reservations.lock"):
+-            live = self._live(dead)
+-            atomic_json(self.path, live)
++        with locked(self.directory / "reservations.lock") as lock_file:
++            live = self._live(dead, lock_file)
+@@ -268,0 +407,2 @@
++        if not identity.get("start"):
++            raise ResourceError("cannot establish reservation owner start identity")
+@@ -270,2 +410,4 @@
+-        with locked(self.directory / "reservations.lock"):
+-            live = self._live(dead)
++        with locked(self.directory / "reservations.lock") as lock_file:
++            live = self._live(dead, lock_file)
++            if token in live:
++                raise ResourceError("reservation token already exists")
+@@ -284,2 +426,3 @@
+-                           "parent": capacity["parent"], "root": str(root) if root else None}
+-            atomic_json(self.path, live)
++                           "parent": capacity["parent"], "root": str(root) if root else None,
++                           "children": [], "launchPending": False}
++            self._write_ledger(live)
+@@ -289,10 +432,10 @@
+-        try:
+-            with locked(self.directory / "reservations.lock"):
+-                live = read_json(self.path, {}) or {}
+-                if token in live:
+-                    live[token].update(used=used, rss=rss)
+-                    atomic_json(self.path, live)
+-                return True
+-        except ResourceError:
+-            # The reservation stays fully charged. Retry telemetry at the next sample without aborting owned work.
+-            return False
++        identity = owner()
++        if any(type(value) is not int or value < 0 for value in (used, rss)):
++            raise ResourceError("refuse uncertain resource telemetry")
++        with locked(self.directory / "reservations.lock") as lock_file:
++            live = self._read_ledger(lock_file)
++            if token not in live or live[token]["owner"] != identity:
++                raise ResourceError("telemetry reservation is missing or foreign")
++            live[token].update(used=used, rss=rss)
++            self._write_ledger(live)
++            return True
+@@ -301,4 +444,15 @@
+-        with locked(self.directory / "reservations.lock"):
+-            live = read_json(self.path, {}) or {}
+-            live.pop(token, None)
+-            atomic_json(self.path, live)
++        # Probe outside the lock, and retain the charge on any uncertainty or concurrent row change.
++        identity = owner()
++        with locked(self.directory / "reservations.lock") as lock_file:
++            data = self._read_ledger(lock_file)
++        row = data.get(token)
++        if row is None:
++            raise ResourceError("reservation disappeared before release")
++        if row["owner"] != identity or not self._resources_absent(row):
++            raise ResourceError("reservation release lacks owned child/scratch absence")
++        with locked(self.directory / "reservations.lock") as lock_file:
++            live = self._read_ledger(lock_file)
++            if live.get(token) != row:
++                raise ResourceError("reservation changed during release; charge retained")
++            del live[token]
++            self._write_ledger(live)
+@@ -327,2 +481,3 @@
+-def stop_group(process):
+-    """Each supervised process owns a session, including its normally spawned descendants."""
++def stop_group(process, timeout=9):
++    """Bound leader waits; callers still verify the exact identity and full group absence."""
++    deadline = time.monotonic() + timeout
+@@ -335 +489,0 @@
+-            # macOS returns EPERM for zombie-only groups. Never hide denied signals to live/unknown groups.
+@@ -340 +494 @@
+-            process.wait(timeout=3)
++            process.wait(timeout=max(0.001, min(3, deadline - time.monotonic())))
+@@ -343,4 +497,4 @@
+-        if sig == signal.SIGTERM:
+-            # The leader may exit before one of its children; the owned group still needs the second signal.
+-            continue
+-    process.wait()
++    try:
++        process.wait(timeout=max(0.001, deadline - time.monotonic()))
++    except subprocess.TimeoutExpired as error:
++        raise ResourceError("owned child did not join before cleanup deadline") from error
+@@ -352,2 +506,10 @@
+-        return sum(int(parts[1]) * 1024 for line in p.stdout.splitlines()
+-                   if len(parts := line.split()) == 2 and parts[0] == str(pgid))
++        if p.returncode != 0 or p.stderr or not p.stdout.strip():
++            return None
++        total = 0
++        for line in p.stdout.splitlines():
++            parts = line.split()
++            if len(parts) != 2 or not all(value.isascii() and value.isdigit() for value in parts) or int(parts[0]) <= 0:
++                return None
++            if int(parts[0]) == pgid:
++                total += int(parts[1]) * 1024
++        return total
+@@ -355 +517,12 @@
+-        return 0
++        return None
++
++
++def verify_no_open_files(root, timeout=5):
++    if not os.path.lexists(root):
++        return
++    try:
++        result = subprocess.run(["/usr/sbin/lsof", "-t", "+D", str(root)], capture_output=True, timeout=timeout)
++    except (OSError, subprocess.TimeoutExpired) as error:
++        raise ResourceError("cannot establish open-file absence; scratch retained: %s" % root) from error
++    if result.returncode != 1 or result.stdout or result.stderr:
++        raise ResourceError("open files or uncertain status; scratch retained: %s" % root)
+@@ -411,0 +585 @@
++            verify_no_open_files(self.root)
+@@ -502,0 +677,3 @@
++                if rss is None:
++                    issue = "RAM observation uncertain; full reservation stays charged"
++                    rss = ram_limit

@@ -1,0 +1,260 @@
+{
+  "schemaVersion": "fleet-dot6-package-handoff.v1",
+  "status": "scoped-offline-package-ready",
+  "releaseId": "421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d",
+  "previousManifestDigest": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+  "tag": "fleet-2026-11-07-6",
+  "descriptorPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/descriptor.json",
+  "descriptorSha256": "40300d27cd612e709887c0cf6f5c4cdb0c3c68133fa0b5ea428a37296cd01a4c",
+  "codeOwnedDescriptorPath": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/fleet-releases.json",
+  "packDirectory": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d",
+  "isolatedStore": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/isolated-store",
+  "files": 21,
+  "bytes": 44787324,
+  "assets": [
+    {
+      "name": "store--active.json",
+      "path": "store/active.json",
+      "bytes": 374,
+      "sha256": "24f662947b4ca490ae3c3eedfcc72f2a83e1715d83823e1f9a9bd2ff89f5e3f3",
+      "role": "corpus",
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-6/store--active.json",
+      "localPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/store/active.json"
+    },
+    {
+      "name": "store--last-good.json",
+      "path": "store/last-good.json",
+      "bytes": 198,
+      "sha256": "e1dab16065050450bc8635702623f3e881c15c641a06933bf44bdb6a08471331",
+      "role": "corpus",
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-6/store--last-good.json",
+      "localPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/store/last-good.json"
+    },
+    {
+      "name": "store--identity-inventory.json",
+      "path": "store/identity-inventory.json",
+      "bytes": 504129,
+      "sha256": "de151e509d55d674fe8fb094e77728a7c3e2665bb8f96ea28bc2df2ce9301f3f",
+      "role": "corpus",
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-6/store--identity-inventory.json",
+      "localPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/store/identity-inventory.json"
+    },
+    {
+      "name": "store--versions--421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d--manifest.json",
+      "path": "store/versions/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/manifest.json",
+      "bytes": 3539,
+      "sha256": "421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d",
+      "role": "corpus",
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-6/store--versions--421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d--manifest.json",
+      "localPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/store/versions/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/manifest.json"
+    },
+    {
+      "name": "store--versions--421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d--configurations.jsonl",
+      "path": "store/versions/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/configurations.jsonl",
+      "bytes": 16260738,
+      "sha256": "d208b4cb2af18af8e9b31dcff4344edc4e5f5deb848011d79cb92373333475bd",
+      "role": "corpus",
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-6/store--versions--421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d--configurations.jsonl",
+      "localPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/store/versions/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/configurations.jsonl"
+    },
+    {
+      "name": "store--versions--421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d--vins.jsonl",
+      "path": "store/versions/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/vins.jsonl",
+      "bytes": 2565,
+      "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
+      "role": "corpus",
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-6/store--versions--421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d--vins.jsonl",
+      "localPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/store/versions/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/vins.jsonl"
+    },
+    {
+      "name": "store--versions--421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d--images.jsonl",
+      "path": "store/versions/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/images.jsonl",
+      "bytes": 691,
+      "sha256": "09cb58f5e660c3ba3fa723feb65cd85187788889799a84da853b58302f5546a8",
+      "role": "corpus",
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-6/store--versions--421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d--images.jsonl",
+      "localPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/store/versions/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/images.jsonl"
+    },
+    {
+      "name": "store--versions--7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431--manifest.json",
+      "path": "store/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/manifest.json",
+      "bytes": 3539,
+      "sha256": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+      "role": "corpus",
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-6/store--versions--7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431--manifest.json",
+      "localPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/store/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/manifest.json"
+    },
+    {
+      "name": "store--versions--7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431--configurations.jsonl",
+      "path": "store/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/configurations.jsonl",
+      "bytes": 8892234,
+      "sha256": "864878c9e93913f2fceef0ad2272933a0c3555cf71f07164b9ddd2f1582c6d84",
+      "role": "corpus",
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-6/store--versions--7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431--configurations.jsonl",
+      "localPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/store/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/configurations.jsonl"
+    },
+    {
+      "name": "store--versions--7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431--vins.jsonl",
+      "path": "store/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/vins.jsonl",
+      "bytes": 2565,
+      "sha256": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd",
+      "role": "corpus",
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-6/store--versions--7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431--vins.jsonl",
+      "localPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/store/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/vins.jsonl"
+    },
+    {
+      "name": "store--versions--7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431--images.jsonl",
+      "path": "store/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/images.jsonl",
+      "bytes": 691,
+      "sha256": "09cb58f5e660c3ba3fa723feb65cd85187788889799a84da853b58302f5546a8",
+      "role": "corpus",
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-6/store--versions--7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431--images.jsonl",
+      "localPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/store/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/images.jsonl"
+    },
+    {
+      "name": "sources--a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265.jsonl",
+      "path": "sources/a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265.jsonl",
+      "bytes": 603088,
+      "sha256": "a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265",
+      "role": "source",
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-6/sources--a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265.jsonl",
+      "origin": "batch32-2026-11-07.jsonl",
+      "localPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/sources/a99f3000b9e8cc9ec369fc5133ce0cde990f8fc80a628b4ad1469e89c9ee2265.jsonl"
+    },
+    {
+      "name": "sources--1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802.jsonl",
+      "path": "sources/1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802.jsonl",
+      "bytes": 21408,
+      "sha256": "1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802",
+      "role": "source",
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-6/sources--1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802.jsonl",
+      "origin": "continuation1-2026-11-07.jsonl",
+      "localPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/sources/1fedb63c1a6a3adcabcbf91d5803b8693821e153964be1b54a26efdd8929e802.jsonl"
+    },
+    {
+      "name": "sources--f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8.jsonl",
+      "path": "sources/f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8.jsonl",
+      "bytes": 159220,
+      "sha256": "f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8",
+      "role": "source",
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-6/sources--f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8.jsonl",
+      "origin": "f70-first8-2026-11-07.jsonl",
+      "localPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/sources/f02212941e47b69cad6d567eba5203b6602733613958910bea821897ce7d37b8.jsonl"
+    },
+    {
+      "name": "sources--00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a.jsonl",
+      "path": "sources/00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a.jsonl",
+      "bytes": 6832119,
+      "sha256": "00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a",
+      "role": "source",
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-6/sources--00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a.jsonl",
+      "origin": "pilot311-2026-11-07.jsonl",
+      "localPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/sources/00c1d0217caae766b235fc33ca7e7b694e89cf33092825245668adf3348ff35a.jsonl"
+    },
+    {
+      "name": "sources--845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080.jsonl",
+      "path": "sources/845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080.jsonl",
+      "bytes": 409709,
+      "sha256": "845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080",
+      "role": "source",
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-6/sources--845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080.jsonl",
+      "origin": "f70-1f7e-first32-2026-11-07.jsonl",
+      "localPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/sources/845f2e1d0471ecead7e826ebf1c7e592478da6bc7d67fa4c10aa5b35dcad3080.jsonl"
+    },
+    {
+      "name": "sources--5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7.jsonl",
+      "path": "sources/5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7.jsonl",
+      "bytes": 689849,
+      "sha256": "5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7",
+      "role": "source",
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-6/sources--5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7.jsonl",
+      "origin": "f70-1f7e-core01-2026-11-07.jsonl",
+      "localPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/sources/5439c8dd277f05fc8233db79d0f892f076dce75c27af82134ad8d87d6c5e1ef7.jsonl"
+    },
+    {
+      "name": "sources--14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6.jsonl",
+      "path": "sources/14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6.jsonl",
+      "bytes": 689844,
+      "sha256": "14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6",
+      "role": "source",
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-6/sources--14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6.jsonl",
+      "origin": "f70-1f7e-core02-2026-11-07.jsonl",
+      "localPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/sources/14686f1d146d452e826501e108171902427b65ffa9632f388bf0d729b39bece6.jsonl"
+    },
+    {
+      "name": "sources--c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06.jsonl",
+      "path": "sources/c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06.jsonl",
+      "bytes": 689836,
+      "sha256": "c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06",
+      "role": "source",
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-6/sources--c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06.jsonl",
+      "origin": "f70-1f7e-core03-2026-11-07.jsonl",
+      "localPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/sources/c9db7e090ad41be9f3ac6c26c75984a7147a0641c5f1b264e02ea9d057dacc06.jsonl"
+    },
+    {
+      "name": "sources--acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d.jsonl",
+      "path": "sources/acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d.jsonl",
+      "bytes": 323364,
+      "sha256": "acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d",
+      "role": "source",
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-6/sources--acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d.jsonl",
+      "origin": "f70-1f7e-core04-2026-11-07.jsonl",
+      "localPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/sources/acc2f464d8a10707eff3adb9355ea3874f57bcc8d583c638bc1631b748e91a1d.jsonl"
+    },
+    {
+      "name": "sources--6d1df1e9dde9d019e9f3a7dc3e22727d9df11b655ef0128e81c5ed75551a5b11.jsonl",
+      "path": "sources/6d1df1e9dde9d019e9f3a7dc3e22727d9df11b655ef0128e81c5ed75551a5b11.jsonl",
+      "bytes": 8697624,
+      "sha256": "6d1df1e9dde9d019e9f3a7dc3e22727d9df11b655ef0128e81c5ed75551a5b11",
+      "role": "source",
+      "url": "https://github.com/garyscarter-ibm/vehicle-matcher/releases/download/fleet-2026-11-07-6/sources--6d1df1e9dde9d019e9f3a7dc3e22727d9df11b655ef0128e81c5ed75551a5b11.jsonl",
+      "origin": "f70-typed-axis390-2026-11-07.jsonl",
+      "localPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot6-package-20261107/pack/421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d/sources/6d1df1e9dde9d019e9f3a7dc3e22727d9df11b655ef0128e81c5ed75551a5b11.jsonl"
+    }
+  ],
+  "receiptHashes": {
+    "publication-receipt.json": "4caa0f10dc5ff567c824208454f995a89886ce9fa5025bd20d9310c1735df3a1",
+    "pack-receipt.json": "175983dc45e0793fa921dfd0da773a9215718088a1ed37bc5278ef76450fa10e"
+  },
+  "ordinaryStoreInputPins": {
+    "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/active.json": "538c5cc8643e51a3946bfd142d0e42168695fe93d63fc887d9a3178048e82203",
+    "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/identity-inventory.json": "f5ec5791161b9fd3cfe0894f899401fe793cdaefbc3971381bab5e23d71c2549",
+    "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/last-good.json": "cc97c981fe2d62cb145916781cc95b0188e9a87ccf3996cab8b29ef7ea109dc8",
+    "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/configurations.jsonl": "864878c9e93913f2fceef0ad2272933a0c3555cf71f07164b9ddd2f1582c6d84",
+    "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/images.jsonl": "09cb58f5e660c3ba3fa723feb65cd85187788889799a84da853b58302f5546a8",
+    "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/manifest.json": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+    "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1/versions/7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431/vins.jsonl": "8e9c7d5f34d4843aeb9de5b7a707c53c339c9a1f64e5675fe04e73e2417cbccd"
+  },
+  "nextBoundary": {
+    "owner": "root",
+    "publicUploadExecuted": false,
+    "restoreModule": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/gcsp/vehicle-evidence/fleet-artifacts.js",
+    "restoreFunction": "restoreFleetRelease",
+    "restoreCli": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/server/scripts/fleet-artifacts.mjs",
+    "restoreCliFlags": [
+      "restore",
+      "--release",
+      "421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d",
+      "--store",
+      "<owned absolute empty restored-store path>",
+      "--cache",
+      "<owned absolute public-download cache>",
+      "--network",
+      "download"
+    ],
+    "auditModule": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/scripts/gcsp/verify-fleet.mjs",
+    "auditFunction": "verifyActiveFleet",
+    "auditOptions": {
+      "requiredDistinct": 10000,
+      "http": true,
+      "endpoint": "http://127.0.0.1:0",
+      "offline": true,
+      "concurrency": 1,
+      "sampleSize": 1024
+    },
+    "requiredEvidence": "actual anonymous restore then fresh 871 direct + 871 HTTP checks; no reuse of local pack as public evidence",
+    "ordinaryActivationExecuted": false,
+    "yamlChanged": false
+  },
+  "acceptance": false
+}

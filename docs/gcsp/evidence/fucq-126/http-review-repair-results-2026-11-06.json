@@ -1,0 +1,72 @@
+{
+  "date": "2026-11-06",
+  "state": "authored-statically-validated-HOLD-unexecuted",
+  "candidateManifest": "docs/gcsp/evidence/fucq-126/http-physical-candidate-review-repair-2026-11-06.json",
+  "candidateSha256": "9206c77bf0fbcd4132974bbfe44d400b620936ce72d944bc2946015d1e706314",
+  "staticChecks": 2216,
+  "fileEntriesVerified": 2115,
+  "counts": {
+    "sourceDataHelperReferenceFiles": 140,
+    "installedDependencyFiles": 1975,
+    "allFiles": 2115,
+    "distinctResolvedFiles": 2113,
+    "literalEdges": 267,
+    "classifiedSites": 29
+  },
+  "coordinatorPatch": {
+    "date": "2026-11-06",
+    "kind": "Exact coordinator patch only; shared helper remains untouched",
+    "basePath": "_tools/test_resources.py",
+    "baseSha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "resultSha256": "85a46c1db9390feaf733b96e4f8877306629247810070c64a8c108f960b4db39",
+    "resultBytes": 45006,
+    "patchPath": "docs/gcsp/evidence/fucq-126/shared-resource-contract-review-repair-2026-11-06.patch",
+    "patchSha256": "9e901954d31ce12eb71aef301622ebda5c7c0dc413dae51e89bdef315b00d3f2",
+    "requiredContract": 1,
+    "patchFormat": "Zero-context unified diff; require exact base hash and --unidiff-zero if using Git apply.",
+    "covers": [
+      "R1",
+      "R2",
+      "R3",
+      "R4 bounded wait",
+      "R7 helper open-file check"
+    ],
+    "validation": "Exact baseline hash, unique edit anchors, resulting Python AST and unified diff authoring only.",
+    "remaining": [
+      "Coordinator review/adoption and shared caller compatibility validation",
+      "No helper behavior, signal, corrupt-ledger, process, lsof or cancellation checks executed",
+      "Legacy rows lacking new child-state evidence stay charged for explicit reconciliation",
+      "Existing generic run_process still has its separate launch-registration gap; this126 supervisor uses its own guard",
+      "Apply the helper rollout to all participating launchers; an old unpatched copy can still rewrite the common ledger"
+    ],
+    "applied": false,
+    "executed": false
+  },
+  "patchHunksReconstructedInMemory": 24,
+  "independentReview": {
+    "commit": "5adba2eac990028eda5113cea5a118c67818d131",
+    "manifest": "docs/gcsp/evidence/fucq-126/http-physical-candidate-f179ae6-2026-11-06.json",
+    "sha256": "efdb32a33413919315b4dbcc9a09c6b5e5be0d27602b1a9c2d8ac51801b84437",
+    "independentReport": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/reviews/fucq126-claude-review-2026-11-06.md",
+    "reportBytes": 11779,
+    "reportSha256": "7bb9ed97476951bdc12ba43a217e5df740c28a6d67b10bd3f7bcbe7ee132c216",
+    "verdict": "HOLD retained; repairs are authored and unexecuted"
+  },
+  "preserved": [
+    "Nine accepted product leaves",
+    "44 exact canonical adoptions",
+    "1975 dependency files and both preexisting links",
+    "Original physical manifest and C5 proposal",
+    "All map states, Jira and worker observations; only own evidence and story observation change"
+  ],
+  "coverage": "Metadata hashes/targets/memberships, JSON/Python AST, exact patch byte reconstruction and whitespace; no behavioral checks.",
+  "executionAuthorized": false,
+  "executed": false,
+  "resourceAllocation": false,
+  "agents": "Parent only; no new agents or rerouting. No gateway/credit error occurred.",
+  "remaining": [
+    "Coordinator review/adoption of shared helper patch, caller compatibility validation and exact helper refreeze",
+    "Independent review of replacement candidate/harness/static classification",
+    "Explicit six-case execution admission, refreshed host budget and absolute external output/impact/ownership plan"
+  ]
+}

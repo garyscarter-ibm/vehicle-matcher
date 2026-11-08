@@ -4,6 +4,7 @@ import { validInstant } from '../policy/file-provider.js';
 import { loadClockConfiguration, buildScenarioSeed } from '../fixtures/scenario-v1.js';
 import { randomUUID } from 'node:crypto';
 import { isPreparedScenarioFixture } from '../fixtures/scenarios/index.js';
+import { composePresenterTick, readPresenterClockConfiguration } from '../presenter-controls/commands.js';
 
 const text = (value) => typeof value === 'string' && value.length > 0 && value.length <= 128;
 const persistedClock = (run) => validInstant(run.clockInstant) && text(run.clockVersion)
@@ -128,6 +129,21 @@ export class DemoClock {
     });
   }
 
+  async readControlsConfiguration(context) {
+    const allowed = await this.#identity.requireRole(context, 'presenter');
+    if (allowed.status !== 'ok') return allowed;
+    const current = await this.#current(context);
+    return current.status === 'ok' ? readPresenterClockConfiguration(this.#policy, current.value) : current;
+  }
+
+  async advanceAndTick(context, input) {
+    const allowed = await this.#identity.requireRole(context, 'presenter');
+    if (allowed.status !== 'ok') return allowed;
+    const current = await this.#current(context);
+    if (current.status !== 'ok') return current;
+    return composePresenterTick({ repository: this.#repository, policy: this.#policy, clock: this }, context, input);
+  }
+
   async reset(context, input = {}, preparedFixture) {
     const allowed = await this.#identity.requireRole(context, 'presenter');
     // requireRole checks the adapter-owned context before returning stale-run. Such a previously
@@ -158,14 +174,19 @@ export class DemoClock {
     }
     const configuration = preparedFixture?.configuration ?? configured.value;
     const { scenario } = configuration;
-    if (input.scenarioVersion !== scenario.scenarioVersion || input.fixtureVersion !== scenario.fixtureVersion) return invalid('fixtureVersion', 'This scenario/fixture version is not available.');
+    // A prepared journey names its own versions; the seed still uses the canonical clock configuration.
+    const expected = preparedFixture ?? scenario;
+    if (input.scenarioVersion !== expected.scenarioVersion || input.fixtureVersion !== expected.fixtureVersion) return invalid('fixtureVersion', 'This scenario/fixture version is not available.');
     const previous = found.value.versions?.syntheticIdentityInventory;
     if (!previous?.snapshot || previous.snapshot.contentDigest !== previous.contentDigest || previous.snapshot.revision !== previous.revision) return unavailable();
     const runId = `demo-${inputDigest([this.#environmentId, context.runId, input.commandId]).slice(0, 32)}`;
     const seed = await buildScenarioSeed({ policy: this.#policy, read: this.#read(found.value), configuration, runId, inventory: previous.snapshot });
     if (seed.status !== 'ok') return seed;
+    // Policy publications are per run, so the new run starts on the version its own store resolves.
+    const active = await this.#policy.getActiveVersion({ runId, asOf: configuration.scenario.startsAt });
+    if (active.status !== 'ok') return unavailable();
     return publicReset(await this.#repository.resetRun(context, cmd, { expectedCurrentRunId: input.expectedRunId, expectedRunVersion: input.expectedRunVersion,
-      nextRun: this.#runRow(runId, found.value.policyVersion, configuration, { ...seed.value.versions,
+      nextRun: this.#runRow(runId, active.policyVersion, configuration, { ...seed.value.versions, policy: active.policyVersion,
         ...(selection ? { scenarioSelection: selection } : {}) }), rows: seed.value.rows }));
   }
 
@@ -302,11 +323,11 @@ export class DemoClock {
         const tick = await tx.get(tickRef);
         if (tick.status !== 'ok') return tick;
         const outcomes = tick.value.outcomes.filter((row) => row.handlerId !== entry.handlerId);
-        outcomes.push({ ...entry, outcome: unavailable() });
+        outcomes.push({ ...entry, outcome });
         return tx.compareAndSwap(tickRef, tick.value.version, { state: 'interrupted', outcomes });
       });
     return marked.status === 'ok' ? result('unavailable', { tickId: tickRef.key.tickId, handlerId: entry.handlerId,
-      reason: 'A registered clock handler did not complete. Retry this event ID.', retryable: true }) : marked;
+      reason: 'A registered clock handler did not complete. Retry this event ID.', retryable: true, handlerOutcome: outcome }) : marked;
   }
 }
 

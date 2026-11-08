@@ -1,0 +1,554 @@
+{
+  "admittedSource": 6998,
+  "breadthParentAuditPin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/breadth30-phase01-parent-audit.json",
+    "sha256": "dd952b83783445f14f6609ecc30f4cfba9f6f6edc9b9d45300963f0fb0c593eb"
+  },
+  "canonical": 7001,
+  "canonicalPin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union6998-20261107/final-canonical-index.json",
+    "sha256": "cc83002cb9ca7c45543dda61347fe714f202d943393ec1a5002a5f70dea864b6"
+  },
+  "checks": 46785,
+  "errors": [],
+  "failedSourceSessionsCapacityCredit": 0,
+  "independentCleanup": {
+    "allGroupsAbsent": true,
+    "allReservationsAbsent": true,
+    "compatibilityException": null,
+    "groupsChecked": 238,
+    "leftovers": [],
+    "scratchRootsAbsent": 238
+  },
+  "lanes": [
+    {
+      "canonicalSha256": "f5d8b3155c83a85c5bff733496858c0429c3145fa0523a476bbd4b7bb56d1ca7",
+      "counts": {
+        "GET": 1200,
+        "admitted": 592,
+        "rejected": 208,
+        "removedScratchBytes": 52848000,
+        "solver": 800,
+        "strictChecks": 500
+      },
+      "label": "F70-100",
+      "proofPins": [
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session001/live-validation.json",
+          "sha256": "325cbe02b6fd49ecf95c26024106987fa72fa158456c006aa0b6377df984e2e8"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session002/live-validation.json",
+          "sha256": "145949be642b3b348bb9bed9dcd00c9e0a0c8768f6a4dc3f5d9f552871665f3f"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session003/live-validation.json",
+          "sha256": "4a627f2fc51d97d0985367e3389c4129977eb321ed7b321ff481de088530461f"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session004/live-validation.json",
+          "sha256": "36a10b2efd4a3b6881bb615f64cd1ee5ebc7b66ee4cc8fa27145a785698802de"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session005/live-validation.json",
+          "sha256": "f9a96c82f8102e4dd7d39f5fc4bc2437a94c7a26c43c27ebc422d5176441ae38"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session006/live-validation.json",
+          "sha256": "9cf2667ece16a067ac6ae35dd75a9957706ab51275e07c86c7fbe5732a6fae87"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session007/live-validation.json",
+          "sha256": "f7e46f0e81dff09c4ebab59f39c32f53cc21abf250860c5ebef5d3c3a99fd99f"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session008/live-validation.json",
+          "sha256": "924643e909d53043cc74f184dce7d07079ee9d39dfa77b8e0ffb1e444c99c9a8"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session009/live-validation.json",
+          "sha256": "a6da75d77cafcbad1464b414bae76070ba250deb3d9a83bdad0889959b21c020"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session010/live-validation.json",
+          "sha256": "0ba90c99dfc4be5d3ec6b8a7bc32b06d3ba15f70494c0fc5386bf3650f317950"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session011/live-validation.json",
+          "sha256": "5be3870594b49ad3135ef5de50f349b331643578149fead045dd91ff3049fff5"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session012/live-validation.json",
+          "sha256": "ffb75b9550669eedb54713c0c3f0e7169c0ffbe472b25e9320e055dafccc1b53"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session013/live-validation.json",
+          "sha256": "2354c662a2c37b9887f6549e3293f35d25d5e41d45f38b2d1012e3b5da5469d2"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session014/live-validation.json",
+          "sha256": "e326bf290c294bf9f47700eec235c6162c4f74f0e9bcc7bcd3242c129c7c47f0"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session015/live-validation.json",
+          "sha256": "3c3452f4cc5dbd4f516303a05cc8a64974847443d8944944f96d4bc0fe844703"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session016/live-validation.json",
+          "sha256": "ff24a8ead6ee608fe972b854067a2be563bd324aa66c9fa8de811e66a060ec4e"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session017/live-validation.json",
+          "sha256": "f21ea334b750e20509c5230e4124a2ef6ee9148f5445ecd697827e2022a04be3"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session018/live-validation.json",
+          "sha256": "699b654f0b526a842667dbdbef894cc33b530a6026a18fe26a25b655e48c9f17"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session019/live-validation.json",
+          "sha256": "ceba3ee071158174bb208269ef22019b36ea91db3394a3e75d9727a76a9b44cb"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session020/live-validation.json",
+          "sha256": "da967576c053ae5b1c5ba7ed54b28c5181309b0092c3e4616ddb11893ef64071"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session021/live-validation.json",
+          "sha256": "d05ac13683894092c522036ac800df8725e599f742f8243498176877ac95c1af"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session022/live-validation.json",
+          "sha256": "183d684c855fb45031e9024b5833d785215efc2c43fc942fff7fc3738058da39"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session023/live-validation.json",
+          "sha256": "d32d67ddcb82579175ed6ca0237b659b404b7a0103749e8e3e86ba598e8d5d73"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session024/live-validation.json",
+          "sha256": "8d354a1641010fb87cd4ec106ca935b3fb759a60caec79b2f0e0189440f4b5f4"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session025/live-validation.json",
+          "sha256": "43d1f8fa4a3f1175f6da5f3c34d0c7288e977635a0c4a1e80f3977b1ee1d55b1"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session026/live-validation.json",
+          "sha256": "20c6d8c20a5a5403c90b7e491535f8a95516cdb45a77e4fb7f9e76e3fbfbc3f1"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session027/live-validation.json",
+          "sha256": "efc4493ff778ecc96831e2dd3964dd3cec0ae8319b307db181059825d296d19a"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session028/live-validation.json",
+          "sha256": "fc9b0b1ba5d78d1cfe8085cea953263199935617be372c6d3f1a4a4efd99140f"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session029/live-validation.json",
+          "sha256": "9410f5d4c2e5438582f63dd7f8e14b87dfdfd136fffc2488cf209bc1d3dbe24e"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session030/live-validation.json",
+          "sha256": "124cb03af7c8035660ed4cdb5df42da720acd9f0da56f6651f3ade4730603279"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session031/live-validation.json",
+          "sha256": "3f6547437a067400570994eb432704aa71d886fc077dcc8b55ec253dc0170ab6"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session032/live-validation.json",
+          "sha256": "a3bc801dea53a191a09904da6664afd8e3b56ae6c783f133519d51ad827d1b59"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session033/live-validation.json",
+          "sha256": "d0f3c5062bc0746ba89a67ac32c63f7faa5225c6158c07203b73b52b4f8eddef"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session034/live-validation.json",
+          "sha256": "cdf702b231ab968e84e782a9f5382232028088b564c6e30e29e837bc463b564d"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session035/live-validation.json",
+          "sha256": "89be7d582f04167485f398ee3ae84af9cc0005bf3a6158f036743f551e35fe73"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session036/live-validation.json",
+          "sha256": "4efefcfc47d35bbeaeb782c1d78fe52aaacd44f7c4310b51d0152abae519d782"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session037/live-validation.json",
+          "sha256": "30a26275d317fe426e0390343588765876dcca84bf1df870595c6cc76f007409"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session038/live-validation.json",
+          "sha256": "527f97304c35729e4f57a3f63c957041d6d3ba7b7eb45391c8a9fdc8a199dfae"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session039/live-validation.json",
+          "sha256": "d18e5fc06e3a649e48199e2a36ba51aebddd76d8e5061c4aaba5e77d1f352393"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session040/live-validation.json",
+          "sha256": "6f9148140f52a998e3cc1c447f7c9cd29e40ce5c4d5e8e3a04a3ab2cfb12a1ee"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session041/live-validation.json",
+          "sha256": "bf9db9214c1feb613610da71672de1c5ac76233463b25a53af436d24baa6e055"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session042/live-validation.json",
+          "sha256": "f2bc5444114600fb8031f4dac1d95d1175b47feaf346781e2bb42a811d0cb6fd"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session043/live-validation.json",
+          "sha256": "c89c2d24685ba272dbbcc9d5ed7f6b90b8c005b9bab027102ccc655867e46432"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session044/live-validation.json",
+          "sha256": "00798177d7216ee8e5cfb23fd83e88626f3ef0b51eaece6e5a34b67ed9a599ec"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session045/live-validation.json",
+          "sha256": "3f686651575399f6ad85e221ea13b0b6025dbb973df075f093365d5de229073b"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session046/live-validation.json",
+          "sha256": "790120d99ce069f43a9e825818b594a3a19f98fbfd4eeaf8d988368a6058e5b9"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session047/live-validation.json",
+          "sha256": "4e0c4f0825892864832001e7c924c5c42a43c4f5b97cbd8e3bb628ab061c978e"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session048/live-validation.json",
+          "sha256": "8216489227b0ad2dd0d75c360fb4069b49a61e72991ae98ae14dc0e9a32cad40"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session049/live-validation.json",
+          "sha256": "68208fb2c20b44e962b10365bf1cb432f1b0eccaa16775dec7680734fb5c5570"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session050/live-validation.json",
+          "sha256": "a9e688a8d643f16f7f156a490f0ca14c8ffd3aeb98beae04e3a2c57346e55019"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session051/live-validation.json",
+          "sha256": "04338392fce3de81706774b88d5782358a3a9738ff731cf9af27a37991903f36"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session052/live-validation.json",
+          "sha256": "c2161d1a6a936db579d73e07d367eaae1121bc0e65acd4dcc5aa95642ac9c95d"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session053/live-validation.json",
+          "sha256": "f1aa38a39caafae6a8bb7ce0f81969975f434fe5b9bcca12a3a3411767c81e59"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session054/live-validation.json",
+          "sha256": "0cb91551875371aab331cae3d9ad52c865a470c7214d98c9fb2b540563c4f1fe"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session055/live-validation.json",
+          "sha256": "a4ff24b306855168960c98db1fe54a8b16853b70ce7056f69464c262c6f3f571"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session056/live-validation.json",
+          "sha256": "32f1809015921bf62b6d9e72c146b3e7725fc11e528b04ffd8298315270d9917"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session057/live-validation.json",
+          "sha256": "c671ea0fc65f26efca3641b8e0ef2a05abf97203adf6ce78b5c070ed4a27d89e"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session058/live-validation.json",
+          "sha256": "729acd15eb5d70864b65700878bd6cf8b24e197f3446103a15e9a3cb7d86881c"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session059/live-validation.json",
+          "sha256": "a697f39006bf839ef3b70f8f29fc7e025b741adc32d9b757facba0545131cad4"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session060/live-validation.json",
+          "sha256": "43b961e09a686e7ac10fc49d93c4ffe9424379c33136fefd1187659898a95d77"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session061/live-validation.json",
+          "sha256": "0d85ccd09a7a1860a03915d320a085bc161f806dd1810949e3d2af3e805464a2"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session062/live-validation.json",
+          "sha256": "a4a3a1b115d9ea9dd2f79c9d14f7f28f6ed8716b529a48c417bb10ecd2efad95"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session063/live-validation.json",
+          "sha256": "4c332eb5d78e6fe93a090dd2785ea976e194386ead337302fe03d9aa4afcbe4c"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session064/live-validation.json",
+          "sha256": "13567da882647d34f837f4fe1ae7afcf8148ed9c3dea25adee31d39210e9cbc7"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session065/live-validation.json",
+          "sha256": "245d1908dbae1245ec7dc9d64610337841a8b0cee1cb1c4cea3a788c90864ae2"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session066/live-validation.json",
+          "sha256": "8f2196ae7cc5729d7f662b478eb7ad89fdee28bf428e7ef415f842f6ea879e71"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session067/live-validation.json",
+          "sha256": "fd3ebaa1a9e36d2294e4941c1632d13c3a9d036a3ce456bcb268e86574c2d1ea"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session068/live-validation.json",
+          "sha256": "7d9f3508676ec6fbcd6f7bd2bbb4d01426a193276e0963e09017fc9d7c67bc14"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session069/live-validation.json",
+          "sha256": "380d3cff39c5a641caf95c2edd4d265631875c41cc6462a2bc9fc5b591455bd8"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session070/live-validation.json",
+          "sha256": "72d764dfd650eff618d58096d03fdadfd532703b36302716f7f549e02f5b95d3"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session071/live-validation.json",
+          "sha256": "c2b039843c5adf8f11a3a91440b4427207fe502fa189ab0097204d4077b46240"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session072/live-validation.json",
+          "sha256": "39e3e5aed141e41fd5ccac0534d3138624ef892dd6fded46dd4860e1ab1c1b87"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session073/live-validation.json",
+          "sha256": "b5aa035c024cc4bbc0d3697906e4367fa7c4876b5fd744f800799a2791ea6023"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session074/live-validation.json",
+          "sha256": "542ee6617dbc2f6ad2ef5c66de089e5ee2bf3c97183f6ccb18d4d97935aa8bc3"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session075/live-validation.json",
+          "sha256": "a1005888f121d8a2832e878beb3ee4c784e0818b58e85a6743eaab853739d449"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session076/live-validation.json",
+          "sha256": "cf82d35ef3ab23d1171da0a24714e2e65e867f89768cf7b09f70f247ce5a5ce3"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session077/live-validation.json",
+          "sha256": "2961d22b409298d890d19cf7c4fafda8e0e2fd6e8c5c9422981759413d6cf889"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session078/live-validation.json",
+          "sha256": "e2ebfddf48fcdf09779ff3b0e824ed22f2774f4fa302aa13c4af69adafb77459"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session079/live-validation.json",
+          "sha256": "401b28efaf28eead5489b446a35dcf77b8877be0770e42a0c13bbca04bfdee2a"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session080/live-validation.json",
+          "sha256": "238cac73458bc59eefade6c6aeed4ade870d2c068125914fb34bc4c3ff08b720"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session081/live-validation.json",
+          "sha256": "61b5a3404ca776c39e5d381f5fd9ed7d0075b885b9db32fa1b00c010e151b6b2"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session082/live-validation.json",
+          "sha256": "0e8109f3cc866214327404625358d4104b0ca657e3f09f061d3601e46f7bbe43"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session083/live-validation.json",
+          "sha256": "a6fc91f9556090bab74884fddf881033779abddf7f74da97388355c79055eb54"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session084/live-validation.json",
+          "sha256": "9150db746a533f6adc03d2e12003f7eb985e6c17ec46440ae7da5896023be6a7"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session085/live-validation.json",
+          "sha256": "6feb6f63a7fc209ced1afba0cb8086a02ace38b4745ae6682907542879ff54ad"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session086/live-validation.json",
+          "sha256": "7ff27269c9cf9ab8ca16f507c4f682695de26510fef88efba2d4a0a79c5a0ef2"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session087/live-validation.json",
+          "sha256": "c344912062c7c6b839288a13ebc9b3069c224abd6c0849d77ffe897249f40624"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session088/live-validation.json",
+          "sha256": "54e04ff45f2430f32384ba985f7ac1da99b666ab0fccc49fe2dfafcde10e5e65"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session089/live-validation.json",
+          "sha256": "b6088862eb688da079032b6772aa9f86f22fc20c0b64324fe86cb147ddab73a7"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session090/live-validation.json",
+          "sha256": "d14cb4bcf81ea251a6a0f943f924b75b0a27387af46788ca29043fc3ebb1773a"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session091/live-validation.json",
+          "sha256": "37b1faae31fc3b82a8d72979de844c6fa74a72b494ed4b4f12e8ddd86bb04372"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session092/live-validation.json",
+          "sha256": "3882917a9cdfd6e8d6c2d328c26c28b487c8c503be1f18b6a5e28b3c12f976a6"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session093/live-validation.json",
+          "sha256": "b9b70c59f40ff1f14e392df066e81c5975c5af4248e05dfcc3430442537bd83f"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session094/live-validation.json",
+          "sha256": "8db28ba7cafdf40feea63effc24327d12104002fa34fbedfc16f1abbd399a7aa"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session095/live-validation.json",
+          "sha256": "0092acaa338cc60907360a847cb76d82ac69b834e532c4371f24682f00502f1d"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session096/live-validation.json",
+          "sha256": "d9edb0bd07d2e037811a03fe05c78c6b5be7ad40730210975cef663522a854cd"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session097/live-validation.json",
+          "sha256": "30a2775135b4ead93eaeb32e98e8bd0687e14e4d6310f50eba39a013baee7aca"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session098/live-validation.json",
+          "sha256": "461ddea88b0731069d5c04137198d709daafe7ac08ef33abfd7af8491ccc2d24"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session099/live-validation.json",
+          "sha256": "6134e5cd371c4d19f1e66dc0ccedfe6c728d7c832a2f58b0df8e374379db7bb1"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session100/live-validation.json",
+          "sha256": "1ebba12d409da6ff09d6464e57597e3eb3d3dc23fb340d2f166b1caf6396bd33"
+        }
+      ],
+      "spentSha256": "0b3892d1d0fcef77de6dd4054704a74f37a35ba6f6cc64dc4b8b4e0fee58f2f6"
+    },
+    {
+      "canonicalSha256": "e698dec733782d7b8d38cabd62d2f1ba523d84cdf5ac6721ddf3d13266460dba",
+      "counts": {
+        "GET": 223,
+        "admitted": 100,
+        "rejected": 47,
+        "removedScratchBytes": 10041120,
+        "solver": 147,
+        "strictChecks": 95
+      },
+      "label": "F70-19",
+      "proofPins": [
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session001/live-validation.json",
+          "sha256": "5a510605132ba177d56fcf7abd9f08017b0f0b662a1518f27407e0c2ed20c675"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session002/live-validation.json",
+          "sha256": "c6d288ffc4ac258092c54da91d7579d068969c30b776f5ae35d962352253fcc0"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session003/live-validation.json",
+          "sha256": "2cb07592a1d21de1d230b038b95349ca9977210313c3ac29461010517b23cdcf"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session004/live-validation.json",
+          "sha256": "f32054e5433db60e989541235d0d48484258b4a430c17b5aa41b67214f1d8690"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session005/live-validation.json",
+          "sha256": "c3f662e230937c342c681d643f7a92ad75473ff69669a7806eea2c2af1b4b4eb"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session006/live-validation.json",
+          "sha256": "45d2d2a0cf92fc7e048c4a9cfab89e88f43586ef4a0f51e11798962c1147db5b"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session007/live-validation.json",
+          "sha256": "f300c7c08daada9e3f2a103b5871bb6e636573051824f3933ee168a436079795"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session008/live-validation.json",
+          "sha256": "c75f4291664ced1b302a6afaa095bc678c475fd542b904911fd80d76651e2aa0"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session009/live-validation.json",
+          "sha256": "baff8c0c2d273904fe57f57154c4d2825af46b21ac27ad26809a76512a5a3302"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session010/live-validation.json",
+          "sha256": "d7c8b07c77c1ef3507a9e8a1b14a00ff7631d91be9f15e5f8164a868c1e09811"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session011/live-validation.json",
+          "sha256": "1e6fbbf78255cd8e747bcf1f25a4aae8a8e2c8ab445c6b9eb8c1aeea4813ced9"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session012/live-validation.json",
+          "sha256": "2a325b7b86a62092a69c8c32a403a8e99575c6813d9c95ea2ace700691c30c89"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session013/live-validation.json",
+          "sha256": "315ecc055a1646da1e4c56609ab18ec18fa493f19cfd070fae7b87e45d8d7cf6"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session014/live-validation.json",
+          "sha256": "db2f3c8b4894a232394eeff8ed48b59f99d21cdb9322aba5b1a462b2ca756beb"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session015/live-validation.json",
+          "sha256": "be21a3c382b0807c0435f90d1abe5f18d46e41fc639ec938b049a7fd5c012312"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session016/live-validation.json",
+          "sha256": "fff7cc1c5612380ec4a78fa733dd7998fe9a529d264c3945796624cdd5a29866"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session017/live-validation.json",
+          "sha256": "80a67408c41f963ac7330a3ec289211e4506960c8c1e0bfc79df740a69cb486a"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session018/live-validation.json",
+          "sha256": "e1183d727b3bff616aa9fee635d012486f964dd0278ea556bc493496418e7b45"
+        },
+        {
+          "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session019/live-validation.json",
+          "sha256": "691623211b87b776517c3fb4011d9f10a34204d9c1c9582e73be6264019b04b1"
+        }
+      ],
+      "spentSha256": "c96ff5b17c1deeeb20e8110118d46c041bc7fb62de44c6bdec1f309a9126239c"
+    }
+  ],
+  "newSourceCapacity": 1169,
+  "remaining10000": 3002,
+  "retainedLogicalBytes": 6863180,
+  "schemaVersion": "actual-global-union-candidate.v1",
+  "scratchCreated": false,
+  "sourceAcceptance": false,
+  "sourceRequestsDuringAudit": 0,
+  "spent": 9031,
+  "spentPin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union6998-20261107/final-spent-request-index.json",
+    "sha256": "1b3b7c652432eb32f4df8996447e376891508e02ef70eb5d29feeb36101f8f4e"
+  },
+  "status": "parent-proved",
+  "testsReplayed": 0,
+  "time": "2026-11-07T06:02:44.005765+00:00",
+  "totals": {
+    "GET": 1423,
+    "admitted": 692,
+    "rejected": 255,
+    "removedScratchBytes": 62889120,
+    "solver": 947,
+    "strictChecks": 595
+  }
+}

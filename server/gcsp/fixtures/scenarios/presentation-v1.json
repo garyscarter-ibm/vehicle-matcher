@@ -1,7 +1,7 @@
 {
-  "description": "Verified backend projection for later presenter controls. Fictional mechanics succeeds; six real journey service preparations remain unavailable.",
+  "description": "Verified backend projection for later presenter controls. Fictional mechanics succeeds; main-successful-journey, no-suitable-match, decline-then-change, its waiting variant, offer-expires, data-unavailable and both uncertain-handoff entries have reviewed start loaders. The unavailable sample is the refusal shape for a journey without one.",
   "catalogueVersion": "gcsp-scenario-catalogue-v1",
-  "journeyIds": ["main-successful-journey", "no-suitable-match", "decline-then-change", "offer-expires", "data-unavailable", "uncertain-handoff"],
+  "journeyIds": ["main-successful-journey", "no-suitable-match", "decline-then-change", "offer-expires", "data-unavailable", "uncertain-handoff", "uncertain-handoff-rejected", "decline-then-change-waiting"],
   "mechanics": {
     "scenarioId": "gcsp-clock-scenario-v1",
     "kind": "mechanics",
@@ -14,8 +14,8 @@
     "code": "scenario-not-available-yet",
     "reason": "not available yet",
     "retryable": false,
-    "scenarioId": "no-suitable-match",
-    "missingCapabilities": ["brief-confirmation", "stock-release", "buddy-allocation", "buddy-activity", "greg-demand"],
+    "scenarioId": "offer-expires",
+    "missingCapabilities": ["brief-confirmation", "stock-release", "buddy-allocation", "buddy-offers", "captured-notifications", "offer-expiry"],
     "contractVersion": "1.0.0"
   },
   "resetFields": ["previousRunId", "runId", "now", "versions"],

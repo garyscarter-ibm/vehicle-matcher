@@ -129,6 +129,16 @@ test('no stock released shows an explicit stock message and still shows the unme
   assert.ok(tileByLabel(root, 'Active briefs'));
 });
 
+test('FUCQ-213: unmet table says the stock source is unavailable, not that no stock was released', async () => {
+  for (const [source, wording] of [[{ status: 'unavailable' }, 'Stock source unavailable'], [{ status: 'unavailable', reason: 'stale' }, 'Stock data too old to use']]) {
+    document.body.replaceChildren();
+    const projection = fixtures.fixtureProjection('no-stock'); projection.stock.source = source;
+    const { root } = await mountFixture('no-stock', { loadDemand: async () => ({ status: 'ready', projection }) });
+    const gates = cellsOf(root, 'Briefs with no suitable car, by gate').map((r) => r[0]);
+    assert.ok(gates.includes(wording), gates.join('|')); assert.ok(!gates.includes('No stock has been released yet'));
+  }
+});
+
 test('conflict shows its message and Refresh reloads', async () => {
   const { root } = await mountFixture('conflict');
   assert.match(root.querySelector('.vm-status').textContent, /figures changed while they were loading/);
@@ -182,7 +192,9 @@ test('refused shows no figures, no Retry and hides the reserved regions', async 
   assert.equal(status.getAttribute('role'), 'alert');
   assert.match(status.textContent, /Only the scheme ordering lead/);
   assert.equal(status.querySelector('.vm-btn'), null);
-  assert.equal(root.querySelectorAll('table, .gcsp-tile, dl').length, 0);
+  // The shell's presenter bar (112fdfe2) holds an empty, hidden dl until a presenter session authorises it.
+  assert.equal([...root.querySelectorAll('table, .gcsp-tile, dl')].filter((n) => !n.closest('.gcsp-presenter-region')).length, 0);
+  assert.equal(root.querySelector('.gcsp-presenter-controls').hidden, true);
   assert.equal(root.querySelector('.gcsp-greg-regions').hidden, true);
 });
 
@@ -330,7 +342,7 @@ test('dataTable: caption, scopes, numeric columns, scroll region, band cells and
 const walk = (dir) => readdirSync(dir).sort().map((n) => join(dir, n)).filter((p) => statSync(p).isFile());
 const sources = () => [...walk(join(ROOT, 'blocks/gcsp/greg')), ...walk(join(ROOT, 'blocks/gcsp/kit')), join(ROOT, 'gcsp-greg.html')];
 const selectorsOf = (rel) => {
-  const css = read(rel).replace(/\/\*[\s\S]*?\*\//g, '').replace(/@media[^{]*\{/g, '');
+  const css = read(rel).replace(/\/\*[\s\S]*?\*\//g, '').replace(/@import\s+[^;]+;/g, '').replace(/@media[^{]*\{/g, '');
   return [...css.matchAll(/(?:^|[}\s])([^{}@]+)\{/g)].flatMap((m) => m[1].split(',')).map((s) => s.trim()).filter(Boolean);
 };
 
@@ -421,4 +433,12 @@ test('the gallery shows both kit components; the catalogue and ratchet record th
     assert.ok(entry, path);
     assert.equal(entry.max_lines, read(path).split('\n').length, path);
   }
+});
+
+test('a lapsed access key shows the restart screen with Reload and hides the reserved regions', async () => {
+  const root = host(); const teardown = dash.mountGregDashboard(root, { loadDemand: async () => ({ status: 'access-required' }) }); await tick();
+  const status = root.querySelector('.gcsp-greg-body .vm-status');
+  assert.equal(status.getAttribute('role'), 'alert'); assert.match(status.textContent, /Demo restarted/);
+  assert.deepEqual([...status.querySelectorAll('.vm-btn')].map((b) => b.textContent), ['Reload']);
+  assert.equal(root.querySelector('.gcsp-greg-regions').hidden, true); assert.doesNotMatch(root.textContent, /demand figures are unavailable/); teardown();
 });

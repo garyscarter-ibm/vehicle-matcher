@@ -1,0 +1,35 @@
+{
+  "at": "2026-11-06T01:05:30.178080+00:00",
+  "grant": "fucq106-typed-90cb70c-0033",
+  "observerAbsent": true,
+  "observerPid": 29156,
+  "observerOriginalStart": "Fri Nov  6 01:03:43 2026",
+  "supervisorPid": 29258,
+  "testProcesses": [
+    {
+      "pid": 29351,
+      "recordedStart": "Fri Nov  6 01:03:49 2026",
+      "currentStart": null
+    },
+    {
+      "pid": 29354,
+      "recordedStart": "Fri Nov  6 01:03:49 2026",
+      "currentStart": null
+    }
+  ],
+  "groups": [
+    {
+      "group": 29351,
+      "hasLiveMembers": false
+    }
+  ],
+  "scratchRoot": "/private/tmp/test-stamp-shard-46653d6063ad4099a399403dea212fe9",
+  "scratchAbsent": true,
+  "reservationReleased": true,
+  "existingDependencyPreserved": true,
+  "dependencyLinksCreated": 0,
+  "openFileAudit": {
+    "status": "not-established",
+    "limitation": "Reviewed supervisor calls lsof after deletion and ignores its error status; openFiles=[] is not a successful scan. Recorded process/group/PID, reservation, scratch and dependency facts were independently rechecked after the observer exited."
+  }
+}

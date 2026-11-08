@@ -1,0 +1,169 @@
+{
+  "schemaVersion": "f59-optional-axis-independent-review.v1",
+  "reviewer": "Lego Batman",
+  "reviewedAtUtc": "2026-11-07T04:22:07.499061+00:00",
+  "model": {
+    "requested": "gpt-6.1-sol",
+    "selected": "gpt-6.1-sol",
+    "reasoningEffort": "high",
+    "fallback": null,
+    "effectiveRuntimeIndependentlyVerified": false
+  },
+  "repository": "/Users/usget/Claude/vehicle-matcher",
+  "worktree": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+  "branch": "dev/DEV-2026-11-04-032",
+  "base": "672353948745e5dc3ceea1768c6711f0b5fbbc1a",
+  "tip": "faae01395415121d4a7659b778f4722f0d1578ae",
+  "diffSha256": "5c01bc639892f43fee0dc1e206bcd0a5a7a9f6a5d982443b67a71ad65e1ac45e",
+  "scope": "Independent exact-range code and security review of the separately registered bounded optional typed-axis source route, its existing collector/executor/capture/binder callers, retained replay and canonical identity.",
+  "verdict": "passed",
+  "blockingFindings": [],
+  "newNonblockingFindings": [],
+  "controlsReviewed": [
+    {
+      "control": "Separate route and finite exact request authority",
+      "evidence": [
+        "scripts/gcsp/bmw-public-registration.mjs:120",
+        "scripts/gcsp/bmw-public-registration.mjs:203",
+        "scripts/gcsp/bmw-public-registration.mjs:215"
+      ],
+      "result": "The new f59-model-axis-batch-20261107.v1 route requires one to eight explicit distinct candidates. Exact observed line mandatory input or explicit empty mandatory semantics are preserved; the old strict model-batch default retains its three/four-input validator."
+    },
+    {
+      "control": "Fresh and retained typed optional axes",
+      "evidence": [
+        "scripts/gcsp/bmw-public-registration.mjs:131",
+        "scripts/gcsp/public-bmw-source.mjs:951",
+        "scripts/gcsp/bmw-selection-binding.mjs:205"
+      ],
+      "result": "Requested nonmandatory inputs require exactly one direct paint/fabric/rim, at most one trim and one package, and at least one optional extra. Missing, unknown, other and transmission extras cannot establish an axis. Source-added selections do not classify requested axes."
+    },
+    {
+      "control": "Requested optional survival and complete source selection",
+      "evidence": [
+        "scripts/gcsp/public-bmw-source.mjs:973",
+        "scripts/gcsp/bmw-selection-binding.mjs:219",
+        "scripts/gcsp/capture-bmw-selection.mjs:29",
+        "scripts/gcsp/bmw-selection-binding.mjs:117"
+      ],
+      "result": "Fresh solving and retained binding require requested optional codes in the resolved factory selection. Complete typed source additions and explicit changes remain retained; accessories remain separate from factory identity."
+    },
+    {
+      "control": "Outbound network and secret boundary",
+      "evidence": [
+        "scripts/gcsp/collection-session.mjs:37",
+        "scripts/gcsp/collection-session.mjs:196",
+        "scripts/gcsp/collection-session.mjs:259",
+        "scripts/gcsp/public-bmw-source.mjs:914"
+      ],
+      "result": "Only exact registered HTTPS GET route/query membership reaches the injected transport. Source version and registration are pinned in checkpoint identity. Existing finite allocations, byte/attempt/deadline budgets, redirect refusal, credential omission and memory-only bootstrap-header projection controls remain active."
+    },
+    {
+      "control": "Retained semantic revalidation and no implicit replay",
+      "evidence": [
+        "scripts/gcsp/collect-fleet.mjs:310",
+        "scripts/gcsp/collect-fleet.mjs:325",
+        "scripts/gcsp/collect-fleet.mjs:441",
+        "scripts/gcsp/bmw-selection-binding.mjs:239"
+      ],
+      "result": "Persisted captures, records and continuation caches resolve back to exact planned requests and the full binder. A recreated spent process stops rather than recovering ephemeral headers by replay. Existing continuation requires separate explicit allocation and preserves predecessor outcomes."
+    },
+    {
+      "control": "Canonical equivalence and honest admission",
+      "evidence": [
+        "scripts/gcsp/collect-fleet.mjs:486",
+        "scripts/gcsp/configuration-key.mjs:38",
+        "server/test/gcsp-bmw-model-batch.test.js:233"
+      ],
+      "result": "The existing PolicyService-derived VG plus complete normalized factory selection key remains authoritative. Different requests resolving to one selection remain one canonical record; fixture observations do not become live admissions."
+    }
+  ],
+  "retainedValidation": {
+    "path": "docs/gcsp/evidence/fucq59/f70-optional-axis-implementation-2026-11-07/validation.json",
+    "sha256": "cb20fc881627a483e43354f89b8efad686e1b45dacd99ed0919bd5537fd11336",
+    "identityPins": {
+      "scripts/gcsp/bmw-public-registration.mjs": "1ad1acc2a8589afb083241cf1b544364b441c6c26d77d5dc284da793c37638ce",
+      "scripts/gcsp/bmw-selection-binding.mjs": "480f1e3d1496bcb8d808ec75839634808a2923cdbf8411df61b0f819bdec3f38",
+      "scripts/gcsp/capture-bmw-selection.mjs": "14c255be3696d8d0512d9d4ddc03f24bae138d83f4d548bd813b07d1a5eb9892",
+      "scripts/gcsp/collection-session.mjs": "e4ba55ee7fcc540df735903348ea4cf08df14645cc0344754b930a9e5c58e6a1",
+      "scripts/gcsp/public-bmw-source.mjs": "76716b642c0056eb45200995e64089a47723b3c026de4b5e8fdf645a269ade84",
+      "server/test/gcsp-bmw-model-batch.test.js": "818bb46fc261093d1e5dd70c2c5c5e27f172e654f67fa80db9d3e4c2b6cdfa1a",
+      "server/test/gcsp-bmw-source-batch.test.js": "2aeadfd650d8b8c79c7e559753d9530dcf885054d66c6e0fe9c8508ad2f6b252",
+      "server/test/gcsp-bmw-selection-binding.test.js": "218d6e173140b65ec54455b59d858e663a944bea34cd24972c994ea9bf401c51",
+      "server/test/gcsp-fleet-collector.test.js": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88"
+    },
+    "identityPinsMatched": {
+      "scripts/gcsp/bmw-public-registration.mjs": true,
+      "scripts/gcsp/bmw-selection-binding.mjs": true,
+      "scripts/gcsp/capture-bmw-selection.mjs": true,
+      "scripts/gcsp/collection-session.mjs": true,
+      "scripts/gcsp/public-bmw-source.mjs": true,
+      "server/test/gcsp-bmw-model-batch.test.js": true,
+      "server/test/gcsp-bmw-source-batch.test.js": true,
+      "server/test/gcsp-bmw-selection-binding.test.js": true,
+      "server/test/gcsp-fleet-collector.test.js": true
+    },
+    "finalScoped": {
+      "tests": 141,
+      "pass": 141,
+      "fail": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "wallSeconds": 30.692438958009006
+    },
+    "earlierResultsPreserved": {
+      "red": {
+        "tests": 20,
+        "pass": 1,
+        "fail": 19,
+        "skipped": 0,
+        "reason": "new source version refused at public-source-plan-refused before production changes",
+        "wallSeconds": 0.25971533299889416
+      },
+      "firstScoped": {
+        "tests": 140,
+        "pass": 139,
+        "fail": 1,
+        "reason": "synthetic eight-candidate helper left maxCandidates at1; corrected helper, no production defect",
+        "wallSeconds": 28.886283707994153
+      }
+    },
+    "environment": {
+      "node": "v26.7.0",
+      "workerCount": 1,
+      "transport": "injected synthetic HTTP"
+    },
+    "scope": "Four selected source/model-batch/selection-binding/collector boundary test files; retained evidence only, no reviewer rerun. Full suite and live source traffic excluded.",
+    "cleanupReceipt": {
+      "scratchRoot": "/private/tmp/test-stamp-shard-b673efdc27f046598bd735a0d5d2e67a",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f58/f70-optional-axis/green2/ownership/b673efdc27f046598bd735a0d5d2e67a.json",
+      "groupsAbsent": true,
+      "openFilesAbsent": true,
+      "scratchAbsent": true,
+      "dependencyLinkAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 2232544,
+      "compatibilityException": null,
+      "cleanupErrors": []
+    },
+    "scratchAbsentAtReview": true
+  },
+  "presentationContract": "Internal source-pipeline change with no screen, component or user interaction change. Existing dated-snapshot/synthetic provenance, unknown unsupported facts, source selection versus verified-fitting distinctions and canonical identity remain in the shared binder. No new screenshot required.",
+  "limitations": [
+    "No live optional-axis source request was run or independently observed by this reviewer. Actual constructibility and cumulative canonical novelty remain unproved until the separately authorized finite pilot.",
+    "Scoped retained fixture validation does not establish enrichment, publication/application integration, full scheme breadth or original story acceptance.",
+    "This review grants no source traffic, changes no acceptance criterion and authorizes no Done transition."
+  ],
+  "acceptanceEstablished": false,
+  "reviewExecution": {
+    "testsRun": false,
+    "networkUsed": false,
+    "browserUsed": false,
+    "sourceRequests": 0,
+    "scratchCreated": false,
+    "trackedOrGitMutations": false,
+    "descendants": 0,
+    "onlyWrite": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f59-optional-axis-independent-review.json",
+    "leftovers": []
+  }
+}

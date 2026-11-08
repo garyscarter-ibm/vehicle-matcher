@@ -13,7 +13,8 @@ export async function renewPresenterAfterReset({ clock, identity, context, outco
     action: 'The reset completed. Reissue the presenter session through trusted backend bootstrap.' } });
 }
 
-export function createClockRoutes(clock) {
+// afterReset is the runtime's per-run preparation (stock source, reviewed policy sets), as for scenario resets.
+export function createClockRoutes(clock, { afterReset } = {}) {
   const route = (path, method, operation) => ({ method, path: `/api/gcsp/presenter/clock${path}`, role: 'presenter',
     purpose: 'presenter-control', ...(operation === 'reset' ? { resetReplay: true } : {}),
     async handle({ context, body, searchParams, identity, setCookie }) {
@@ -23,6 +24,7 @@ export function createClockRoutes(clock) {
       if (!clock) return result('unavailable', { reason: 'Demo clock has not been configured.', retryable: true });
       const outcome = await clock[operation](context, body);
       if (operation !== 'reset' || outcome.status !== 'ok') return outcome;
+      if (typeof afterReset === 'function') { try { await afterReset(outcome.value.runId); } catch { /* as a mechanics scenario reset */ } }
       return renewPresenterAfterReset({ clock, identity, context, outcome, setCookie });
     } });
   return [route('', 'GET', 'readState'), route('/advance', 'POST', 'advance'), route('/tick', 'POST', 'tick'), route('/reset', 'POST', 'reset')];

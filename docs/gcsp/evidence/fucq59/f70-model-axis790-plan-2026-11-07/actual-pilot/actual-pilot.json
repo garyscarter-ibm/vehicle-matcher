@@ -1,0 +1,353 @@
+{
+  "schemaVersion": "f70-model-axis790-pilot-actual-summary.v1",
+  "proposalCommit": "93250bb1cb5adabdce8efb2008ace1e544b3244f",
+  "scope": "exact released32 pilot only",
+  "receiptSha256": "c50abd33c258f91af3f8bd66295d25f2ab0d1a3ecfea73964df4aa3af368fedd",
+  "actual": {
+    "acceptance": false,
+    "activeSession": null,
+    "aggregateDecodedBytes": 3642984,
+    "aggregateGets": 48,
+    "aggregateSolverRequests": 32,
+    "allocationId": "f70-model-axis790-20261107-once",
+    "completedSessions": [
+      {
+        "accepted": 8,
+        "allocationId": "f70-model-axis790-20261107-once-session001",
+        "cohort": 1,
+        "cumulativeAdmitted": 1141,
+        "decodedBytes": 896812,
+        "duplicates": 0,
+        "gets": 12,
+        "model": "1F7A",
+        "primarySha256": "c9bb86e821e75adaee68c76a250834b734877f2e45712b60f637c74efea0c499",
+        "proofSha256": "6411bf4c500b122e7f810c11ae80bfe0943a3270382763d9c235b3f8788cff20",
+        "rejected": 0,
+        "retainedShardBytes": 3923957,
+        "session": 1,
+        "solverRequests": 8
+      },
+      {
+        "accepted": 8,
+        "allocationId": "f70-model-axis790-20261107-once-session002",
+        "cohort": 1,
+        "cumulativeAdmitted": 1149,
+        "decodedBytes": 912701,
+        "duplicates": 0,
+        "gets": 12,
+        "model": "1F7C",
+        "primarySha256": "363e7cf265d7ba1b77f8b0a00ac78fb8c18889dc3016df2fa078dc9c468a1469",
+        "proofSha256": "ba3c67be315f509c66f89f2568e3b398605dff6647fa6a69332fd30fa954f9ab",
+        "rejected": 0,
+        "retainedShardBytes": 4090227,
+        "session": 2,
+        "solverRequests": 8
+      },
+      {
+        "accepted": 8,
+        "allocationId": "f70-model-axis790-20261107-once-session003",
+        "cohort": 1,
+        "cumulativeAdmitted": 1157,
+        "decodedBytes": 910730,
+        "duplicates": 0,
+        "gets": 12,
+        "model": "1F7D",
+        "primarySha256": "304b34b43268e4ec40dbb8eaf2feed8bbc96b2b6c9ee5cf49e6dae8fedcce4d6",
+        "proofSha256": "16253355fbfe96c8eba561992ace36bd604de578d1cb466e6c8b53bffe79d1ce",
+        "rejected": 0,
+        "retainedShardBytes": 4070687,
+        "session": 3,
+        "solverRequests": 8
+      },
+      {
+        "accepted": 8,
+        "allocationId": "f70-model-axis790-20261107-once-session004",
+        "cohort": 1,
+        "cumulativeAdmitted": 1165,
+        "decodedBytes": 922741,
+        "duplicates": 0,
+        "gets": 12,
+        "model": "1F7F",
+        "primarySha256": "b69a70e2aad4bdcdeae7aa55f4db329873310308ab4d365117d58fb56388991e",
+        "proofSha256": "39549d60c71591dcf2bbc1ac741ba871401c9e538a8e138065ccdaf9b3631533",
+        "rejected": 0,
+        "retainedShardBytes": 4211858,
+        "session": 4,
+        "solverRequests": 8
+      }
+    ],
+    "duplicates": 0,
+    "elapsedSeconds": 35.699694083,
+    "newlyAccepted": 32,
+    "phase": "pilot",
+    "reason": "finite-pilot-exhausted",
+    "rejected": 0,
+    "remaining": [
+      "actual scheme model-line catalogue context beyond F70",
+      "qualified physical model-year/plant/WMI profiles",
+      "actual strict source outcomes and canonical admission",
+      "F60 enrichment/publication/application integration",
+      "post12November F61 target10000 acceptance"
+    ],
+    "stoppedErrorType": null
+  },
+  "perModel": [
+    {
+      "model": "1F7A",
+      "session": 1,
+      "proof": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session001/live-validation.json",
+      "proofSha256": "6411bf4c500b122e7f810c11ae80bfe0943a3270382763d9c235b3f8788cff20",
+      "primary": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session001/collector-checkpoint.json",
+      "primarySha256": "c9bb86e821e75adaee68c76a250834b734877f2e45712b60f637c74efea0c499",
+      "summary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "counts": {
+        "sourceCalls": 12,
+        "operations": {
+          "discover": 1,
+          "options": 1,
+          "page": 1,
+          "settings": 1,
+          "solve": 8
+        },
+        "cacheHits": {
+          "discover": 0,
+          "options": 0,
+          "page": 0,
+          "settings": 0,
+          "solve": 0
+        },
+        "failures": 0,
+        "timeouts": 0,
+        "substitutions": 0,
+        "cacheEvictions": 0,
+        "httpAttempts": 12,
+        "decodedBytes": 896812,
+        "operationBytes": {
+          "discover": 113259,
+          "options": 119566,
+          "page": 17763,
+          "settings": 620646,
+          "solve": 25578
+        }
+      },
+      "newlyAccepted": 8,
+      "duplicates": 0,
+      "rejected": 0,
+      "sourcePeakRssBytes": 214269952,
+      "retainedPeakRssBytes": 135004160
+    },
+    {
+      "model": "1F7C",
+      "session": 2,
+      "proof": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session002/live-validation.json",
+      "proofSha256": "ba3c67be315f509c66f89f2568e3b398605dff6647fa6a69332fd30fa954f9ab",
+      "primary": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session002/collector-checkpoint.json",
+      "primarySha256": "363e7cf265d7ba1b77f8b0a00ac78fb8c18889dc3016df2fa078dc9c468a1469",
+      "summary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "counts": {
+        "sourceCalls": 12,
+        "operations": {
+          "discover": 1,
+          "options": 1,
+          "page": 1,
+          "settings": 1,
+          "solve": 8
+        },
+        "cacheHits": {
+          "discover": 0,
+          "options": 0,
+          "page": 0,
+          "settings": 0,
+          "solve": 0
+        },
+        "failures": 0,
+        "timeouts": 0,
+        "substitutions": 0,
+        "cacheEvictions": 0,
+        "httpAttempts": 12,
+        "decodedBytes": 912701,
+        "operationBytes": {
+          "discover": 113259,
+          "options": 129753,
+          "page": 17763,
+          "settings": 620646,
+          "solve": 31280
+        }
+      },
+      "newlyAccepted": 8,
+      "duplicates": 0,
+      "rejected": 0,
+      "sourcePeakRssBytes": 201031680,
+      "retainedPeakRssBytes": 139345920
+    },
+    {
+      "model": "1F7D",
+      "session": 3,
+      "proof": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session003/live-validation.json",
+      "proofSha256": "16253355fbfe96c8eba561992ace36bd604de578d1cb466e6c8b53bffe79d1ce",
+      "primary": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session003/collector-checkpoint.json",
+      "primarySha256": "304b34b43268e4ec40dbb8eaf2feed8bbc96b2b6c9ee5cf49e6dae8fedcce4d6",
+      "summary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "counts": {
+        "sourceCalls": 12,
+        "operations": {
+          "discover": 1,
+          "options": 1,
+          "page": 1,
+          "settings": 1,
+          "solve": 8
+        },
+        "cacheHits": {
+          "discover": 0,
+          "options": 0,
+          "page": 0,
+          "settings": 0,
+          "solve": 0
+        },
+        "failures": 0,
+        "timeouts": 0,
+        "substitutions": 0,
+        "cacheEvictions": 0,
+        "httpAttempts": 12,
+        "decodedBytes": 910730,
+        "operationBytes": {
+          "discover": 113259,
+          "options": 128974,
+          "page": 17763,
+          "settings": 620646,
+          "solve": 30088
+        }
+      },
+      "newlyAccepted": 8,
+      "duplicates": 0,
+      "rejected": 0,
+      "sourcePeakRssBytes": 210780160,
+      "retainedPeakRssBytes": 138117120
+    },
+    {
+      "model": "1F7F",
+      "session": 4,
+      "proof": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session004/live-validation.json",
+      "proofSha256": "39549d60c71591dcf2bbc1ac741ba871401c9e538a8e138065ccdaf9b3631533",
+      "primary": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/sessions/session004/collector-checkpoint.json",
+      "primarySha256": "b69a70e2aad4bdcdeae7aa55f4db329873310308ab4d365117d58fb56388991e",
+      "summary": {
+        "tests": 5,
+        "pass": 5,
+        "fail": 0,
+        "cancelled": 0,
+        "skipped": 0,
+        "todo": 0
+      },
+      "counts": {
+        "sourceCalls": 12,
+        "operations": {
+          "discover": 1,
+          "options": 1,
+          "page": 1,
+          "settings": 1,
+          "solve": 8
+        },
+        "cacheHits": {
+          "discover": 0,
+          "options": 0,
+          "page": 0,
+          "settings": 0,
+          "solve": 0
+        },
+        "failures": 0,
+        "timeouts": 0,
+        "substitutions": 0,
+        "cacheEvictions": 0,
+        "httpAttempts": 12,
+        "decodedBytes": 922741,
+        "operationBytes": {
+          "discover": 113259,
+          "options": 134425,
+          "page": 17763,
+          "settings": 620646,
+          "solve": 36648
+        }
+      },
+      "newlyAccepted": 8,
+      "duplicates": 0,
+      "rejected": 0,
+      "sourcePeakRssBytes": 213106688,
+      "retainedPeakRssBytes": 143802368
+    }
+  ],
+  "baseline": {
+    "canonical": 1136,
+    "admittedSource": 1133,
+    "spent": 1846
+  },
+  "final": {
+    "canonical": 1168,
+    "admittedSource": 1165,
+    "spent": 1878,
+    "canonicalSha256": "45939c372e6676f58390dd78dd7e2a2fb7110c3489b3d2610d9da807ec296fd3",
+    "spentSha256": "9b2586fb301ec7a5982a33c08baa1ef33ca9966f8a4560f456a17b21710885a8"
+  },
+  "retainedChecks": {
+    "tests": 20,
+    "pass": 20,
+    "fail": 0,
+    "skipped": 0
+  },
+  "filesystemAudit": {
+    "scope": "fresh read-only final filesystem evidence; no source replay",
+    "scratchManifests": 8,
+    "scratchAbsent": true,
+    "outerChildren": 16,
+    "allOuterChildrenJoined": true,
+    "allOuterGroupsAbsent": true,
+    "allNestedGroupsAbsent": true,
+    "dependencyLinkAbsent": true,
+    "reservationAbsent": true,
+    "removedAllocationBytes": 2097536,
+    "retainedAllocatedBytes": 16753088,
+    "retainedLogicalBytes": 16447385,
+    "retainedRoot": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once",
+    "compatibilityException": null,
+    "leftovers": [],
+    "suffixMarkerAbsent": true,
+    "sourcePeakRssBytes": 214269952
+  },
+  "impactPath": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/impact/f70-model-axis790-pilot-actual.json",
+  "impactSha256": "e7a31ec5add256c3724cf3bf36b1b09f85930dd626ddfba86b89aa5b7fc6d7fd",
+  "suffix": {
+    "released": false,
+    "candidates": 758,
+    "maximumGets": 1146,
+    "solverRequests": 0
+  },
+  "acceptance": false,
+  "remaining": [
+    "actual scheme model-line catalogue context beyond F70",
+    "qualified physical model-year/plant/WMI profiles",
+    "actual strict source outcomes and canonical admission",
+    "F60 enrichment/publication/application integration",
+    "post12November F61 target10000 acceptance"
+  ]
+}

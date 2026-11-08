@@ -1,0 +1,61 @@
+name: GCSP native three-order proof
+
+on:
+  push:
+    branches: [gcsp-poc]
+    paths:
+      - .github/workflows/gcsp-native-orders.yml
+      - docs/gcsp/evidence/fucq63/linux-postgres-proof-2026-11-07/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gcsp-native-three-order-proof
+  cancel-in-progress: false
+
+jobs:
+  postgres-orders:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: gcsp_ci_fixture
+          POSTGRES_DB: gcsp_ci_fixture
+          POSTGRES_HOST_AUTH_METHOD: trust
+          POSTGRES_INITDB_ARGS: --wal-segsize=1
+        ports:
+          - '127.0.0.1:5432:5432'
+        options: >-
+          --memory=512m --memory-swap=512m --cpus=1 --shm-size=32m
+          --tmpfs /var/lib/postgresql/data:rw,size=192m
+          --health-cmd "pg_isready -U gcsp_ci_fixture -d gcsp_ci_fixture"
+          --health-interval 5s --health-timeout 3s --health-retries 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Restore exact .12 and prove three native order references
+        env:
+          PG_SERVICE_ID: ${{ job.services.postgres.id }}
+        run: python3 -I -B docs/gcsp/evidence/fucq63/linux-postgres-proof-2026-11-07/run.py
+      - name: Verify owned scratch and service absent
+        if: always()
+        env:
+          PG_SERVICE_ID: ${{ job.services.postgres.id }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          proof=docs/gcsp/evidence/fucq63/linux-postgres-proof-2026-11-07/run.py
+          if test -f "$proof"; then
+            python3 -I -B "$proof" --cleanup-only
+          else
+            docker rm --force --volumes "$PG_SERVICE_ID"
+            test -z "$(docker ps -a --no-trunc --filter "id=$PG_SERVICE_ID" --format '{{.ID}}')"
+          fi

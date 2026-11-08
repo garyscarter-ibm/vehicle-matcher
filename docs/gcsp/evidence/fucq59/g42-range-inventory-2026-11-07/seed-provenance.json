@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "bmw-range-inventory-seed-provenance.v1",
+  "source": "Parent-supplied official BMW UK configurator page link in a historical Parallel extract",
+  "historicalExtractAcquiredDate": "2026-10-18",
+  "pageUrl": "https://configure.bmw.co.uk/en_GB/configure/G42/2PMC",
+  "currentSourceVerified": false,
+  "originalExtractIndependentlyFetched": false,
+  "requestScope": {
+    "schemaVersion": "bmw-public-range-inventory-registration.v1",
+    "market": "GB",
+    "locale": "en-GB",
+    "catalogueRangeKey": "G42",
+    "pageModelCode": "2PMC",
+    "treeEffectDate": "2026-11-01",
+    "treeOrderDate": "2026-11-01"
+  },
+  "queryDatesBasis": "Explicit request inputs retained from the existing corpus query window, reviewed by the parent; not returned-model dates.",
+  "unknownReturnedFacts": [
+    "agModelCode",
+    "rawModelRange",
+    "aliases",
+    "steering",
+    "modelOrderDate",
+    "modelEffectDate",
+    "lineRelationships"
+  ],
+  "boundary": "Historical seed is a request lead only. Direct actual facts, including any future model effect date, must come from the new response. No guessed AG or construction capability."
+}

@@ -1,0 +1,450 @@
+{
+  "story": "FUCQ-69",
+  "source": "5147ba439680f623173e3ef607177edf95230a2a",
+  "chunk": "smoke-desktop",
+  "width": 1280,
+  "scope": "Desktop smoke only: fonts, overview and one native series filter",
+  "input": "Dated synthetic read-only gallery fixtures; no stock producer or claim service integration",
+  "cases": [
+    {
+      "name": "density-heading-font",
+      "fixture": "available",
+      "faces": [
+        {
+          "family": "BMWGroupTNCondensedPro-Medium",
+          "status": "loaded"
+        },
+        {
+          "family": "BMWGroupTNCondensedPro-Medium",
+          "status": "loaded"
+        }
+      ]
+    },
+    {
+      "name": "keyboard-series",
+      "method": "native observed-label typeahead",
+      "expected": "3 Series",
+      "keys": [
+        "Space",
+        {
+          "type": "3"
+        },
+        "Enter",
+        "Tab"
+      ],
+      "steps": [
+        {
+          "phase": 0,
+          "key": "Space",
+          "method": "press",
+          "redrawn": false,
+          "observed": {
+            "index": 0,
+            "value": ""
+          },
+          "events": [
+            {
+              "phase": 0,
+              "type": "keydown",
+              "key": " ",
+              "trusted": true,
+              "index": 0,
+              "value": ""
+            },
+            {
+              "phase": 0,
+              "type": "keyup",
+              "key": " ",
+              "trusted": true,
+              "index": 0,
+              "value": ""
+            }
+          ]
+        },
+        {
+          "phase": 1,
+          "key": "3",
+          "method": "type",
+          "redrawn": false,
+          "observed": {
+            "index": 1,
+            "value": "3 Series"
+          },
+          "events": [
+            {
+              "phase": 1,
+              "type": "keydown",
+              "key": "3",
+              "trusted": true,
+              "index": 0,
+              "value": ""
+            },
+            {
+              "phase": 1,
+              "type": "input",
+              "key": null,
+              "trusted": true,
+              "index": 1,
+              "value": "3 Series"
+            },
+            {
+              "phase": 1,
+              "type": "change",
+              "key": null,
+              "trusted": true,
+              "index": 1,
+              "value": "3 Series"
+            },
+            {
+              "phase": 1,
+              "type": "keyup",
+              "key": "3",
+              "trusted": true,
+              "index": 1,
+              "value": "3 Series"
+            }
+          ]
+        },
+        {
+          "phase": 2,
+          "key": "Enter",
+          "method": "press",
+          "redrawn": false,
+          "observed": {
+            "index": 1,
+            "value": "3 Series"
+          },
+          "events": [
+            {
+              "phase": 2,
+              "type": "keydown",
+              "key": "Enter",
+              "trusted": true,
+              "index": 1,
+              "value": "3 Series"
+            },
+            {
+              "phase": 2,
+              "type": "keyup",
+              "key": "Enter",
+              "trusted": true,
+              "index": 1,
+              "value": "3 Series"
+            }
+          ]
+        },
+        {
+          "phase": 3,
+          "key": "Tab",
+          "method": "press",
+          "redrawn": false,
+          "observed": {
+            "index": 1,
+            "value": "3 Series"
+          },
+          "events": [
+            {
+              "phase": 3,
+              "type": "keydown",
+              "key": "Tab",
+              "trusted": true,
+              "index": 1,
+              "value": "3 Series"
+            }
+          ]
+        }
+      ],
+      "events": [
+        {
+          "phase": 0,
+          "type": "keydown",
+          "key": " ",
+          "trusted": true,
+          "index": 0,
+          "value": ""
+        },
+        {
+          "phase": 0,
+          "type": "keyup",
+          "key": " ",
+          "trusted": true,
+          "index": 0,
+          "value": ""
+        },
+        {
+          "phase": 1,
+          "type": "keydown",
+          "key": "3",
+          "trusted": true,
+          "index": 0,
+          "value": ""
+        },
+        {
+          "phase": 1,
+          "type": "input",
+          "key": null,
+          "trusted": true,
+          "index": 1,
+          "value": "3 Series"
+        },
+        {
+          "phase": 1,
+          "type": "change",
+          "key": null,
+          "trusted": true,
+          "index": 1,
+          "value": "3 Series"
+        },
+        {
+          "phase": 1,
+          "type": "keyup",
+          "key": "3",
+          "trusted": true,
+          "index": 1,
+          "value": "3 Series"
+        },
+        {
+          "phase": 2,
+          "type": "keydown",
+          "key": "Enter",
+          "trusted": true,
+          "index": 1,
+          "value": "3 Series"
+        },
+        {
+          "phase": 2,
+          "type": "keyup",
+          "key": "Enter",
+          "trusted": true,
+          "index": 1,
+          "value": "3 Series"
+        },
+        {
+          "phase": 3,
+          "type": "keydown",
+          "key": "Tab",
+          "trusted": true,
+          "index": 1,
+          "value": "3 Series"
+        }
+      ],
+      "focusRoutes": [
+        {
+          "method": "Tab",
+          "presses": 10
+        },
+        {
+          "method": "Tab",
+          "presses": 0
+        },
+        {
+          "method": "Tab",
+          "presses": 0
+        },
+        {
+          "method": "Tab",
+          "presses": 0
+        },
+        {
+          "method": "Tab",
+          "presses": 0
+        }
+      ],
+      "optionLabel": "3 Series",
+      "previous": {
+        "index": 0,
+        "value": ""
+      },
+      "observedAfterCommit": {
+        "index": 1,
+        "value": "3 Series"
+      },
+      "observedAfterTab": {
+        "index": 1,
+        "value": "3 Series"
+      }
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "01-overview.png",
+      "bytes": 353705,
+      "sha256": "464a7343614656441046b8d7f000e781f5d69895d0427ac744e02f8f82f40c3c",
+      "overflow": false,
+      "labelledControls": true,
+      "visibleScores": 0,
+      "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""
+    },
+    {
+      "file": "02-smoke-series-filter.png",
+      "bytes": 288072,
+      "sha256": "3e1f0d42affe8f4cde24e557454999e1b8d39418636b5a795bc2bc8188a581a9",
+      "overflow": false,
+      "labelledControls": true,
+      "visibleScores": 0,
+      "font": "-apple-system, \"system-ui\", \"Segoe UI\", Roboto, Helvetica, Arial, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\""
+    }
+  ],
+  "errors": [],
+  "externalRequests": [],
+  "pageErrors": [],
+  "responseErrors": [],
+  "resources": {
+    "nodePid": 95154,
+    "profile": "/private/tmp/test-stamp-shard-5f3c7ae114474a36a9e90301fd07f244/profile",
+    "cache": "/private/tmp/test-stamp-shard-5f3c7ae114474a36a9e90301fd07f244/cache",
+    "crashpad": "/private/tmp/test-stamp-shard-5f3c7ae114474a36a9e90301fd07f244/crashpad",
+    "httpPort": 64933,
+    "chromeTransport": "owned pipe; no CDP listener",
+    "processes": [
+      {
+        "pid": 95167,
+        "ppid": 95154,
+        "pgid": 95167
+      },
+      {
+        "pid": 95208,
+        "ppid": 95167,
+        "pgid": 95167
+      },
+      {
+        "pid": 95209,
+        "ppid": 95167,
+        "pgid": 95167
+      },
+      {
+        "pid": 95211,
+        "ppid": 95167,
+        "pgid": 95167
+      },
+      {
+        "pid": 95213,
+        "ppid": 95167,
+        "pgid": 95167
+      },
+      {
+        "pid": 95214,
+        "ppid": 95167,
+        "pgid": 95167
+      },
+      {
+        "pid": 95215,
+        "ppid": 95167,
+        "pgid": 95167
+      },
+      {
+        "pid": 95167,
+        "ppid": 95154,
+        "pgid": 95167
+      },
+      {
+        "pid": 95208,
+        "ppid": 95167,
+        "pgid": 95167
+      },
+      {
+        "pid": 95209,
+        "ppid": 95167,
+        "pgid": 95167
+      },
+      {
+        "pid": 95211,
+        "ppid": 95167,
+        "pgid": 95167
+      },
+      {
+        "pid": 95213,
+        "ppid": 95167,
+        "pgid": 95167
+      },
+      {
+        "pid": 95214,
+        "ppid": 95167,
+        "pgid": 95167
+      },
+      {
+        "pid": 95215,
+        "ppid": 95167,
+        "pgid": 95167
+      },
+      {
+        "pid": 95167,
+        "ppid": 95154,
+        "pgid": 95167
+      },
+      {
+        "pid": 95208,
+        "ppid": 95167,
+        "pgid": 95167
+      },
+      {
+        "pid": 95209,
+        "ppid": 95167,
+        "pgid": 95167
+      },
+      {
+        "pid": 95211,
+        "ppid": 95167,
+        "pgid": 95167
+      },
+      {
+        "pid": 95213,
+        "ppid": 95167,
+        "pgid": 95167
+      },
+      {
+        "pid": 95214,
+        "ppid": 95167,
+        "pgid": 95167
+      },
+      {
+        "pid": 95215,
+        "ppid": 95167,
+        "pgid": 95167
+      }
+    ]
+  },
+  "cleanup": {
+    "browserClosed": true,
+    "serverClosed": true
+  },
+  "state": "passed",
+  "servedSources": {
+    "assets/brand-hero/bmw.jpg": "674a6adc350ce39dde798acda7279f8c1e1c0a5a91daa7a1d1c843616a2b442d",
+    "assets/brand-logos/bmwgroup-bmw-mini.svg": "703c69d19aa0d2eda773a1b4022af2bf474c1058a4bafb84468abf7df63557ac",
+    "blocks/gcsp/account/account-view.js": "c2e71ea6e5b15a1d905e33ab72d78eb0f45039fe2508cad89b11654801749dee",
+    "blocks/gcsp/account/http-adapter.js": "eb89226f9ab8ff04b5c43dfc3c91b6e57c233ef88e273eaf8985895e79106453",
+    "blocks/gcsp/employee/fixtures.js": "e63cf63076f7bfa718b23b3e2a0d39ef6e57c58c4003f238b0059ce560ba0881",
+    "blocks/gcsp/employee/gcsp-employee.css": "3cab6080aa52605d92b5f616151087fe289e72c43045a7f396a8bffca7112b6f",
+    "blocks/gcsp/employee/gcsp-employee.js": "2f35c7983aafef2c8f1eb72f6c78341cbf1c76269110f6a25dca1b775f11df2b",
+    "blocks/gcsp/employee/representative-body.js": "a9146fc18cac0346a20b12c603df65a84dffc7bd46d267f2706f4e2c63b76af4",
+    "blocks/gcsp/kit/form-controls.css": "0dec8818344defbe8b5718cdeef131d71faae782515f8ea3dce56b9e43002057",
+    "blocks/gcsp/kit/form-controls.js": "4df9e86f3d51f33397bd524b95f35a40240c931b441f91a7b8b05ef89fe508b4",
+    "blocks/gcsp/manual-gallery/claim-controller.js": "f53923f660fcb1222431c6500342e75065d10552a38f343900ef7cf234574dc8",
+    "blocks/gcsp/manual-gallery/fixtures.js": "d410598f5d8ce64ea08a56fcdb688229fe76d3211550e65889e924473375ee74",
+    "blocks/gcsp/manual-gallery/gallery-controller.js": "0e11d30e5e31a5b2811b8fe4e84c87c11c66966656af79a8ca64d5ab23f2700f",
+    "blocks/gcsp/manual-gallery/gallery-model.js": "6cc5cfa1483d963038472ddc05227c2368a3ad07ca7a4ab25c6a324bf7f863bf",
+    "blocks/gcsp/manual-gallery/gcsp-manual-gallery.css": "04830129917aa8c43caf135bc333e76b8a1ec3ed030a3fbf00bb945b1385b759",
+    "blocks/gcsp/manual-gallery/gcsp-manual-gallery.js": "f450a71818ee5db9522c314f213c32b98f5b6ad119932cf2daa6ddf0c694ff88",
+    "blocks/gcsp/manual-gallery/harness.js": "4ce3024f2c7303cb6d263d690c55db5dc208caf7945d277d93d2479f78d08ab8",
+    "blocks/gcsp/manual-gallery/http-adapter.js": "5e3dcc8d024ad2cdb3190e4862e4a99ef35a7995623c492ce9e4aff8883eb7de",
+    "blocks/gcsp/shell/density-theme.css": "c2a680854e05bf88edc335308797b636038ff5bdd980f101e8f32edd451f3593",
+    "blocks/gcsp/shell/density-typography.css": "6d238b5c4dee9058e9fd32e0e5704e95a94eb7e5cdc82c9fb051534d6ea44641",
+    "blocks/gcsp/shell/fonts/BMWGroupTNCondensedPro-Medium.woff2": "66ecd7139a12627c60c78755cbf664cdca10df33f22a6426ec2693a38d8a5286",
+    "blocks/gcsp/shell/fonts/density-fonts.css": "bf13d49ea7fc1d75888a06881e2ce1a0151875a69177c937045ea86ce4ac1e7c",
+    "blocks/gcsp/shell/gcsp-shell.css": "347fd90e22ea14fcdceda92c9da095da86fc1164ebb0926577d6e5cb9068014e",
+    "blocks/gcsp/shell/gcsp-tokens.css": "3a4b773eb4e67734cead53956e39323d3050af6e35465b6c275084096ed93cde",
+    "blocks/gcsp/shell/portal-shell.js": "7e62088d69bfa43ff0ccff2678931fe1e48c7a0b3814184f449f308cf4ebaa01",
+    "blocks/vehicle-matcher/decision-card.css": "340bded6c89fb3f7635835167cfb8192e6e2fb1ec75c89a37cc48b053a669def",
+    "blocks/vehicle-matcher/gcsp-kit.css": "ac08fa1725a878af7a6c4c3f1659b934274b4a6ad181aaa66452db4da845c210",
+    "blocks/vehicle-matcher/modes/brand-copy.js": "485098aea61944c5fd62047164b4aabfdd1c95c2ff2be9aacf5dae211d195ec9",
+    "blocks/vehicle-matcher/modes/result-card.js": "cc5d50468f45f1c751c597ece89ca5d7dfe88f70d98dd606104ad3504007f948",
+    "blocks/vehicle-matcher/question-controls.css": "cf6c9f81ad4bdb8f2543c93dc4dbd7eca60ea851af8d4a287c2930fbef8a17ec",
+    "blocks/vehicle-matcher/tokens.css": "30d971de3fd89d456b7bc819621ff9f11888da1ca73e8bd80dc70c58a411b1fa",
+    "blocks/vehicle-matcher/ui.js": "49107097a7927e388ff78949045827f3a8903fea0bd758dbe1aa597bec82d8b2",
+    "blocks/vehicle-matcher/vehicle-matcher.css": "11d7af7f3f05766c9c32c107f75f31d269d5531de4040938b34cea8b3854ea94",
+    "gcsp-employee.css": "d4e9c4f51aa326777a623a3072efb5a6c8dd30a9f6266786bbc19f6dc3f96b57",
+    "gcsp-manual-gallery.html": "3de5c38b570970c19679fea41d5216a622387da8c57c2082f50defe3ccae6987"
+  },
+  "servedSourcesUnchanged": true
+}

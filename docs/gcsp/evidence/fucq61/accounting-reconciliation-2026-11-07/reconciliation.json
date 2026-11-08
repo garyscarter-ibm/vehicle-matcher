@@ -1,0 +1,3444 @@
+{
+ "schemaVersion": "f61-accounting-reconciliation.v1",
+ "runIdentity": "f61-accounting-metadata-20261107-minnie032",
+ "date": "2026-11-07",
+ "status": "reconciled-declared-collection-scopes-with-named-exact-gaps",
+ "assessmentBase": "b80b76ec16f603e0420eea7d7e5d7387ab0b7159",
+ "scope": "Read existing small receipts, counters, lineage and published proof metadata only. No raw/source bodies, collector, verifier, tests, network, SQL, browser or runtime executed.",
+ "operationScope": {
+  "selectedSeriesReceiptObservations": 20,
+  "selectedSeriesAllocations": 19,
+  "completedSessionOrChunkIdentities": 1511,
+  "duplicateCompletedIdentityCount": 0,
+  "selectedChildCounterReceipts": 1523,
+  "childCounterBytesRead": 2516921,
+  "additionalEarlierReceiptScopes": 12,
+  "additionalInterrupted200Scope": 1,
+  "independentLiveAllocationScopes": 32,
+  "counterSnapshotCount": 1559,
+  "counts": {
+   "sourceCalls": 19978,
+   "httpAttempts": 19978,
+   "decodedBytes": 1478961751,
+   "failures": 6,
+   "timeouts": 2,
+   "substitutions": 0,
+   "operations": {
+    "discover": 1558,
+    "options": 1558,
+    "page": 1559,
+    "settings": 1559,
+    "solve": 13744
+   }
+  },
+  "knownSolverOutcomes": {
+   "accepted": 10417,
+   "rejected": 2946,
+   "duplicates": 375,
+   "failedSolverOperationsWithNoResolvedOutcome": 5,
+   "missingInterrupted200CallbackOutcome": 1
+  },
+  "spentIndexEntries": 13747,
+  "spentIndexIsOperationCount": false,
+  "notIncluded": "Acquisition traffic for the initial dated source capture and earlier source diagnostics is not established by this collection-scope sum. The capture admission replay itself reports zero source calls. This is an exact sum for the32named live allocations, not an unlimited historical network total."
+ },
+ "mainSeriesReceiptSelection": [
+  {
+   "reference": "E022",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/pilot-receipt.json",
+    "bytes": 2262,
+    "sha256": "c50abd33c258f91af3f8bd66295d25f2ab0d1a3ecfea73964df4aa3af368fedd"
+   },
+   "allocationId": "f70-model-axis790-20261107-once",
+   "phase": "pilot",
+   "completedCount": 4,
+   "activeSession": null,
+   "metrics": {
+    "aggregateGets": 48,
+    "aggregateSolverRequests": 32,
+    "aggregateDecodedBytes": 3642984,
+    "newlyAccepted": 32,
+    "rejected": 0,
+    "duplicates": 0,
+    "elapsedSeconds": 35.699694083,
+    "reason": "finite-pilot-exhausted"
+   }
+  },
+  {
+   "reference": "E023",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/suffix-receipt.json",
+    "bytes": 40649,
+    "sha256": "e9c42a5848b115efc8746bdc542a6054d1a0b6de25df5af3be7aaba05044378d"
+   },
+   "allocationId": "f70-model-axis790-20261107-once",
+   "phase": "suffix",
+   "completedCount": 97,
+   "activeSession": null,
+   "metrics": {
+    "aggregateGets": 1146,
+    "aggregateSolverRequests": 758,
+    "aggregateDecodedBytes": 88302293,
+    "newlyAccepted": 758,
+    "rejected": 0,
+    "duplicates": 0,
+    "elapsedSeconds": 1130.89812775,
+    "reason": "finite-suffix-exhausted"
+   }
+  },
+  {
+   "reference": "E024",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-pilot32-20261107-once/pilot-receipt.json",
+    "bytes": 2301,
+    "sha256": "5dba09dca76a291dca69f299cc56bdbf3c319abfd25ea2318f34261105c969f7"
+   },
+   "allocationId": "f70-optional-axis-pilot32-20261107-once",
+   "phase": "pilot",
+   "completedCount": 4,
+   "activeSession": null,
+   "metrics": {
+    "aggregateGets": 48,
+    "aggregateSolverRequests": 32,
+    "aggregateDecodedBytes": 3656678,
+    "newlyAccepted": 32,
+    "rejected": 0,
+    "duplicates": 0,
+    "elapsedSeconds": 81.83154816599999,
+    "reason": "finite-pilot-exhausted"
+   }
+  },
+  {
+   "reference": "E025",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix1156-20261107-once/suffix-receipt.json",
+    "bytes": 62966,
+    "sha256": "f06d7b56640d842a12bea9a25cbaabe1e6c2264be2ca22e0a3de3ae7c92d93ec"
+   },
+   "allocationId": "f70-optional-axis-suffix1156-20261107-once",
+   "phase": "suffix",
+   "completedCount": 145,
+   "activeSession": null,
+   "metrics": {
+    "aggregateGets": 1736,
+    "aggregateSolverRequests": 1156,
+    "aggregateDecodedBytes": 132918128,
+    "newlyAccepted": 822,
+    "rejected": 334,
+    "duplicates": 0,
+    "elapsedSeconds": 1078.7245378750001,
+    "reason": "finite-suffix-exhausted"
+   }
+  },
+  {
+   "reference": "E026",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix1556-20261107-once/suffix-receipt.json",
+    "bytes": 22116,
+    "sha256": "efdb9af4486c72f5446e0224e094639fb608e51de52727c1f8dbb93af25fefca"
+   },
+   "allocationId": "f70-optional-axis-suffix1556-20261107-once",
+   "phase": "suffix",
+   "completedCount": 49,
+   "activeSession": 50,
+   "metrics": {
+    "aggregateGets": 600,
+    "aggregateSolverRequests": 400,
+    "aggregateDecodedBytes": 45787692,
+    "newlyAccepted": 249,
+    "rejected": 143,
+    "duplicates": 0,
+    "elapsedSeconds": 336.198200667,
+    "reason": "phase-incomplete"
+   }
+  },
+  {
+   "reference": "E027",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2660-20261107-once/suffix-receipt.json",
+    "bytes": 59553,
+    "sha256": "0ef6b11bee72e3565bcab2f58a869cd07395e0dbee130dc7df0b4c0daef3b38c"
+   },
+   "allocationId": "f70-optional-axis-suffix2660-20261107-once",
+   "phase": "suffix",
+   "completedCount": 137,
+   "activeSession": 138,
+   "metrics": {
+    "aggregateGets": 1649,
+    "aggregateSolverRequests": 1097,
+    "aggregateDecodedBytes": 126731554,
+    "newlyAccepted": 749,
+    "rejected": 347,
+    "duplicates": 0,
+    "elapsedSeconds": 957.628254916,
+    "reason": "phase-incomplete"
+   }
+  },
+  {
+   "reference": "E028",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/suffix-receipt.json",
+    "bytes": 9377,
+    "sha256": "932541536f5cba93088f66a3428fbf2f79aa499f57225a1d77c0b97e063c70c9"
+   },
+   "allocationId": "f70-optional-axis-suffix2815-20261107-once",
+   "phase": "suffix",
+   "completedCount": 19,
+   "activeSession": 20,
+   "metrics": {
+    "aggregateGets": 231,
+    "aggregateSolverRequests": 151,
+    "aggregateDecodedBytes": 18257422,
+    "newlyAccepted": 100,
+    "rejected": 47,
+    "duplicates": 0,
+    "elapsedSeconds": 123.97292445800001,
+    "reason": "phase-incomplete"
+   }
+  },
+  {
+   "reference": "E029",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/suffix-receipt.json",
+    "bytes": 43702,
+    "sha256": "00c68f39a446ce4fd1eb5065898cbafe05697c3552f69b495c899e41731863f7"
+   },
+   "allocationId": "f70-optional-axis-suffix3623-20261107-once",
+   "phase": "suffix",
+   "completedCount": 100,
+   "activeSession": 101,
+   "metrics": {
+    "aggregateGets": 1206,
+    "aggregateSolverRequests": 802,
+    "aggregateDecodedBytes": 92333394,
+    "newlyAccepted": 592,
+    "rejected": 208,
+    "duplicates": 0,
+    "elapsedSeconds": 701.107029916,
+    "reason": "phase-incomplete"
+   }
+  },
+  {
+   "reference": "E030",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix5535-20261107-once/suffix-receipt.json",
+    "bytes": 101575,
+    "sha256": "37d3bff987eda29c4df5e7e55fdcfb04b62e2d12ddef85f3789adc6e63ac8657"
+   },
+   "allocationId": "f70-optional-axis-suffix5535-20261107-once",
+   "phase": "suffix",
+   "completedCount": 238,
+   "activeSession": 239,
+   "metrics": {
+    "aggregateGets": 2868,
+    "aggregateSolverRequests": 1912,
+    "aggregateDecodedBytes": 218554602,
+    "newlyAccepted": 1428,
+    "rejected": 476,
+    "duplicates": 0,
+    "elapsedSeconds": 1558.768572041,
+    "reason": "phase-incomplete"
+   }
+  },
+  {
+   "reference": "E031",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-trim-package260-20261107-once/suffix-receipt.json",
+    "bytes": 3401,
+    "sha256": "125d715c4f055523727df74ad8de72b097f828ccd814c6e7eb6db9980b1f1011"
+   },
+   "allocationId": "f70-trim-package260-20261107-once",
+   "phase": null,
+   "completedCount": 8,
+   "activeSession": null,
+   "metrics": {
+    "aggregateGets": 296,
+    "aggregateDecodedBytes": 9214530,
+    "newlyAccepted": 252,
+    "rejected": 0,
+    "duplicates": 0,
+    "elapsedSeconds": 622.4834815834577,
+    "includesPilotGetsAndBytes": true,
+    "reason": "finite-trim-package252-suffix-exhausted"
+   }
+  },
+  {
+   "reference": "E035",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-typed-axis1024-20261107-once/resume15-receipt.json",
+    "bytes": 11832,
+    "sha256": "b5ef19e593f0f7927b1df9529e2f10a818bc97c6ae144947199f781beb0c6d42"
+   },
+   "allocationId": "f70-typed-axis1024-20261107-once",
+   "phase": null,
+   "completedCount": 32,
+   "activeSession": null,
+   "metrics": {
+    "aggregateGets": 1152,
+    "aggregateDecodedBytes": 32992292,
+    "newlyAccepted": 390,
+    "rejected": 260,
+    "duplicates": 374,
+    "elapsedSinceOriginalReservationSeconds": 1225.7653777599335,
+    "resumeElapsedSeconds": 269.624591042,
+    "reason": "finite-typed-axis1024-series-exhausted"
+   }
+  },
+  {
+   "reference": "E037",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-remaining-typed-pool-20261107-once/continuation-receipt.json",
+    "bytes": 25359,
+    "sha256": "361f0f64b1c9555350f20c070ea534c59c8c7a09693120a5ecb83ba2490c1d2c"
+   },
+   "allocationId": "g42-remaining-typed-pool-20261107-once",
+   "phase": "continuation",
+   "completedCount": 59,
+   "activeSession": 60,
+   "metrics": {
+    "aggregateGets": 720,
+    "aggregateSolverRequests": 480,
+    "aggregateDecodedBytes": 50982294,
+    "newlyAccepted": 380,
+    "rejected": 92,
+    "duplicates": 0,
+    "elapsedSeconds": 334.201660625,
+    "reason": "phase-incomplete"
+   }
+  },
+  {
+   "reference": "E038",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-1304-20261107-once/continuation-receipt.json",
+    "bytes": 69624,
+    "sha256": "bdfde569c7effadac2d3f1baf0403c2343a331eea1343c9b842d7cc3ee973419"
+   },
+   "allocationId": "g42-unspent-typed-pool-1304-20261107-once",
+   "phase": "continuation",
+   "completedCount": 163,
+   "activeSession": null,
+   "metrics": {
+    "aggregateGets": 1956,
+    "aggregateSolverRequests": 1304,
+    "aggregateDecodedBytes": 139808430,
+    "newlyAccepted": 1163,
+    "rejected": 141,
+    "duplicates": 0,
+    "elapsedSeconds": 1074.4082363750001,
+    "reason": "finite-continuation-exhausted"
+   }
+  },
+  {
+   "reference": "E039",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-20261107-once/continuation-receipt.json",
+    "bytes": 2279,
+    "sha256": "ba54818086661fee855fc53650f8b6b4796263a5b0dab0d57408953fc5a1e28c"
+   },
+   "allocationId": "g42-unspent-typed-pool-20261107-once",
+   "phase": "continuation",
+   "completedCount": 4,
+   "activeSession": 5,
+   "metrics": {
+    "aggregateGets": 60,
+    "aggregateSolverRequests": 40,
+    "aggregateDecodedBytes": 4257244,
+    "newlyAccepted": 27,
+    "rejected": 5,
+    "duplicates": 0,
+    "elapsedSeconds": 31.886194541,
+    "reason": "phase-incomplete"
+   }
+  },
+  {
+   "reference": "E040",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-2248-20261107-once/continuation-receipt.json",
+    "bytes": 50095,
+    "sha256": "66e63f3bf55ce244c46dfb4762741ffcfc29bfb187c1f9baebf3e788babc745f"
+   },
+   "allocationId": "g42-unspent-typed-pool-2248-20261107-once",
+   "phase": "continuation",
+   "completedCount": 117,
+   "activeSession": 118,
+   "metrics": {
+    "aggregateGets": 1416,
+    "aggregateSolverRequests": 944,
+    "aggregateDecodedBytes": 101113201,
+    "newlyAccepted": 770,
+    "rejected": 166,
+    "duplicates": 0,
+    "elapsedSeconds": 734.046743417,
+    "reason": "phase-incomplete"
+   }
+  },
+  {
+   "reference": "E041",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase01-960-20261107-once/phase01-receipt.json",
+    "bytes": 34211,
+    "sha256": "bcfa8f2f53eff48f7b5e159aa6d32848ef517bb4560142113f6f0916c96febc6"
+   },
+   "allocationId": "scheme-breadth30-phase01-960-20261107-once",
+   "phase": "phase01",
+   "completedCount": 79,
+   "activeSession": 80,
+   "metrics": {
+    "aggregateGets": 950,
+    "aggregateSolverRequests": 632,
+    "aggregateDecodedBytes": 88745127,
+    "newlyAccepted": 477,
+    "rejected": 155,
+    "duplicates": 0,
+    "elapsedSeconds": 537.649572833,
+    "reason": "phase-incomplete"
+   }
+  },
+  {
+   "reference": "E042",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase01c-320-20261107-once/phase01c-receipt.json",
+    "bytes": 17650,
+    "sha256": "7645e73a9a9cc30d33f6328db923dd98448843cd46a919d1d9951c78a929ccfc"
+   },
+   "allocationId": "scheme-breadth30-phase01c-320-20261107-once",
+   "phase": "phase01c",
+   "completedCount": 40,
+   "activeSession": null,
+   "metrics": {
+    "aggregateGets": 480,
+    "aggregateSolverRequests": 320,
+    "aggregateDecodedBytes": 43701911,
+    "newlyAccepted": 238,
+    "rejected": 82,
+    "duplicates": 0,
+    "elapsedSeconds": 1586.7015685840001,
+    "reason": "finite-phase01c-exhausted"
+   }
+  },
+  {
+   "reference": "E043",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02-960-20261107-once/phase02-receipt.json",
+    "bytes": 5283,
+    "sha256": "5af459fd6fc48273ac49552a267a84da13f151dc29a13f0a34842565d8a56915"
+   },
+   "allocationId": "scheme-breadth30-phase02-960-20261107-once",
+   "phase": "phase02",
+   "completedCount": 11,
+   "activeSession": 12,
+   "metrics": {
+    "aggregateGets": 143,
+    "aggregateSolverRequests": 95,
+    "aggregateDecodedBytes": 13461449,
+    "newlyAccepted": 66,
+    "rejected": 22,
+    "duplicates": 0,
+    "elapsedSeconds": 110.270482125,
+    "reason": "phase-incomplete"
+   }
+  },
+  {
+   "reference": "E044",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02c-864-20261107-once/phase02c-receipt.json",
+    "bytes": 36851,
+    "sha256": "e98d04197ceb9f4fb2f6f4748c18868974be10e085d85051c060521c57180962"
+   },
+   "allocationId": "scheme-breadth30-phase02c-864-20261107-once",
+   "phase": "phase02c",
+   "completedCount": 85,
+   "activeSession": 86,
+   "metrics": {
+    "aggregateGets": 1031,
+    "aggregateSolverRequests": 687,
+    "aggregateDecodedBytes": 95347775,
+    "newlyAccepted": 513,
+    "rejected": 167,
+    "duplicates": 0,
+    "elapsedSeconds": 1074.821964083,
+    "reason": "phase-incomplete"
+   }
+  },
+  {
+   "reference": "E045",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/phase03-receipt.json",
+    "bytes": 51684,
+    "sha256": "baf6bc57a241c981961957a9db46f3a1bc184b7233bf7d09ffa6efb36b0bb6a5"
+   },
+   "allocationId": "scheme-breadth30-phase03-960-20261107-once",
+   "phase": "phase03",
+   "completedCount": 120,
+   "activeSession": null,
+   "metrics": {
+    "aggregateGets": 1440,
+    "aggregateSolverRequests": 960,
+    "aggregateDecodedBytes": 133631076,
+    "newlyAccepted": 716,
+    "rejected": 244,
+    "duplicates": 0,
+    "elapsedSeconds": 964.023106375,
+    "reason": "finite-phase03-exhausted"
+   }
+  }
+ ],
+ "mainCounterReceiptSets": [
+  {
+   "allocationId": "f70-model-axis790-20261107-once",
+   "root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once",
+   "receiptReferences": [
+    "E022",
+    "E023"
+   ],
+   "counterReceiptCount": 101,
+   "counterReceiptBytes": 165395,
+   "counterReceiptSetCanonicalSha256": "ce66423d5a9bc63e9aa63fa43652107a8dd64f8f0738ca0ff35ee2015770e3e0",
+   "counts": {
+    "sourceCalls": 1194,
+    "httpAttempts": 1194,
+    "decodedBytes": 91945277,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 101,
+     "options": 101,
+     "page": 101,
+     "settings": 101,
+     "solve": 790
+    }
+   },
+   "rawSolverOutcomes": {
+    "accepted": 790,
+    "rejected": 0,
+    "duplicates": 0
+   },
+   "summedCollectorElapsedMs": 418804,
+   "reportedTimeFields": [
+    {
+     "phase": "pilot",
+     "elapsedSeconds": 35.699694083
+    },
+    {
+     "phase": "suffix",
+     "elapsedSeconds": 1130.89812775
+    }
+   ]
+  },
+  {
+   "allocationId": "f70-optional-axis-pilot32-20261107-once",
+   "root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-pilot32-20261107-once",
+   "receiptReferences": [
+    "E024"
+   ],
+   "counterReceiptCount": 4,
+   "counterReceiptBytes": 6613,
+   "counterReceiptSetCanonicalSha256": "e92b0d1f1abaac65016ebbc09eb241dd121747710b9436285f082370dd57bb90",
+   "counts": {
+    "sourceCalls": 48,
+    "httpAttempts": 48,
+    "decodedBytes": 3656678,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 4,
+     "options": 4,
+     "page": 4,
+     "settings": 4,
+     "solve": 32
+    }
+   },
+   "rawSolverOutcomes": {
+    "accepted": 32,
+    "rejected": 0,
+    "duplicates": 0
+   },
+   "summedCollectorElapsedMs": 18679,
+   "reportedTimeFields": [
+    {
+     "phase": "pilot",
+     "elapsedSeconds": 81.83154816599999
+    }
+   ]
+  },
+  {
+   "allocationId": "f70-optional-axis-suffix1156-20261107-once",
+   "root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix1156-20261107-once",
+   "receiptReferences": [
+    "E025"
+   ],
+   "counterReceiptCount": 145,
+   "counterReceiptBytes": 240921,
+   "counterReceiptSetCanonicalSha256": "27e11ccb7629141cee6501bcb3ba4c887bcab571f646b1236510234a340d9a52",
+   "counts": {
+    "sourceCalls": 1736,
+    "httpAttempts": 1736,
+    "decodedBytes": 132918128,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 145,
+     "options": 145,
+     "page": 145,
+     "settings": 145,
+     "solve": 1156
+    }
+   },
+   "rawSolverOutcomes": {
+    "accepted": 822,
+    "rejected": 334,
+    "duplicates": 0
+   },
+   "summedCollectorElapsedMs": 628753,
+   "reportedTimeFields": [
+    {
+     "phase": "suffix",
+     "elapsedSeconds": 1078.7245378750001
+    }
+   ]
+  },
+  {
+   "allocationId": "f70-optional-axis-suffix1556-20261107-once",
+   "root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix1556-20261107-once",
+   "receiptReferences": [
+    "E026"
+   ],
+   "counterReceiptCount": 50,
+   "counterReceiptBytes": 83062,
+   "counterReceiptSetCanonicalSha256": "beb1cdb5ee4897f593cfa9ce75d5d07ddd065af78fa2a43631f3d0f9f479bac6",
+   "counts": {
+    "sourceCalls": 600,
+    "httpAttempts": 600,
+    "decodedBytes": 45787692,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 50,
+     "options": 50,
+     "page": 50,
+     "settings": 50,
+     "solve": 400
+    }
+   },
+   "rawSolverOutcomes": {
+    "accepted": 252,
+    "rejected": 148,
+    "duplicates": 0
+   },
+   "summedCollectorElapsedMs": 195274,
+   "reportedTimeFields": [
+    {
+     "phase": "suffix",
+     "elapsedSeconds": 336.198200667
+    }
+   ]
+  },
+  {
+   "allocationId": "f70-optional-axis-suffix2660-20261107-once",
+   "root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2660-20261107-once",
+   "receiptReferences": [
+    "E027"
+   ],
+   "counterReceiptCount": 138,
+   "counterReceiptBytes": 229298,
+   "counterReceiptSetCanonicalSha256": "032bd258595d2d04a389b2f7b0011543fa3385cc309402c1230074f3202fd655",
+   "counts": {
+    "sourceCalls": 1649,
+    "httpAttempts": 1649,
+    "decodedBytes": 126731554,
+    "failures": 1,
+    "timeouts": 1,
+    "substitutions": 0,
+    "operations": {
+     "discover": 138,
+     "options": 138,
+     "page": 138,
+     "settings": 138,
+     "solve": 1097
+    }
+   },
+   "rawSolverOutcomes": {
+    "accepted": 749,
+    "rejected": 347,
+    "duplicates": 0
+   },
+   "summedCollectorElapsedMs": 582574,
+   "reportedTimeFields": [
+    {
+     "phase": "suffix",
+     "elapsedSeconds": 957.628254916
+    }
+   ]
+  },
+  {
+   "allocationId": "f70-optional-axis-suffix2815-20261107-once",
+   "root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once",
+   "receiptReferences": [
+    "E028"
+   ],
+   "counterReceiptCount": 20,
+   "counterReceiptBytes": 33215,
+   "counterReceiptSetCanonicalSha256": "0708502c3004e32e77b853f65d0cbd5b8c9e5a0f8939b985684be1897a63910f",
+   "counts": {
+    "sourceCalls": 231,
+    "httpAttempts": 231,
+    "decodedBytes": 18257422,
+    "failures": 1,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 20,
+     "options": 20,
+     "page": 20,
+     "settings": 20,
+     "solve": 151
+    }
+   },
+   "rawSolverOutcomes": {
+    "accepted": 102,
+    "rejected": 48,
+    "duplicates": 0
+   },
+   "summedCollectorElapsedMs": 72916,
+   "reportedTimeFields": [
+    {
+     "phase": "suffix",
+     "elapsedSeconds": 123.97292445800001
+    }
+   ]
+  },
+  {
+   "allocationId": "f70-optional-axis-suffix3623-20261107-once",
+   "root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once",
+   "receiptReferences": [
+    "E029"
+   ],
+   "counterReceiptCount": 101,
+   "counterReceiptBytes": 167750,
+   "counterReceiptSetCanonicalSha256": "3b89daebee4ba152ddfafaf58442516431019e9f1cc83ff6f846c33a045c7742",
+   "counts": {
+    "sourceCalls": 1206,
+    "httpAttempts": 1206,
+    "decodedBytes": 92333394,
+    "failures": 1,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 101,
+     "options": 101,
+     "page": 101,
+     "settings": 101,
+     "solve": 802
+    }
+   },
+   "rawSolverOutcomes": {
+    "accepted": 593,
+    "rejected": 208,
+    "duplicates": 0
+   },
+   "summedCollectorElapsedMs": 414825,
+   "reportedTimeFields": [
+    {
+     "phase": "suffix",
+     "elapsedSeconds": 701.107029916
+    }
+   ]
+  },
+  {
+   "allocationId": "f70-optional-axis-suffix5535-20261107-once",
+   "root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix5535-20261107-once",
+   "receiptReferences": [
+    "E030"
+   ],
+   "counterReceiptCount": 239,
+   "counterReceiptBytes": 396976,
+   "counterReceiptSetCanonicalSha256": "b86c075fed1cdef013d703cf85709cf4e84cb2dac5238092c3051948f98612ef",
+   "counts": {
+    "sourceCalls": 2868,
+    "httpAttempts": 2868,
+    "decodedBytes": 218554602,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 239,
+     "options": 239,
+     "page": 239,
+     "settings": 239,
+     "solve": 1912
+    }
+   },
+   "rawSolverOutcomes": {
+    "accepted": 1434,
+    "rejected": 478,
+    "duplicates": 0
+   },
+   "summedCollectorElapsedMs": 943416,
+   "reportedTimeFields": [
+    {
+     "phase": "suffix",
+     "elapsedSeconds": 1558.768572041
+    }
+   ]
+  },
+  {
+   "allocationId": "f70-trim-package260-20261107-once",
+   "root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-trim-package260-20261107-once",
+   "receiptReferences": [
+    "E031"
+   ],
+   "counterReceiptCount": 9,
+   "counterReceiptBytes": 14530,
+   "counterReceiptSetCanonicalSha256": "154699794d16e8ad3739c1161caf90c527a83d6f7e68990a47ee9732659119c8",
+   "counts": {
+    "sourceCalls": 296,
+    "httpAttempts": 296,
+    "decodedBytes": 9214530,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 9,
+     "options": 9,
+     "page": 9,
+     "settings": 9,
+     "solve": 260
+    }
+   },
+   "rawSolverOutcomes": {
+    "accepted": 260,
+    "rejected": 0,
+    "duplicates": 0
+   },
+   "summedCollectorElapsedMs": 317323,
+   "reportedTimeFields": [
+    {
+     "elapsedSeconds": 622.4834815834577
+    }
+   ]
+  },
+  {
+   "allocationId": "f70-typed-axis1024-20261107-once",
+   "root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-typed-axis1024-20261107-once",
+   "receiptReferences": [
+    "E035"
+   ],
+   "counterReceiptCount": 32,
+   "counterReceiptBytes": 52512,
+   "counterReceiptSetCanonicalSha256": "9439472e8c5f2d2fdd2c8288b11e720ffa9e65bbc868c476eec00677e4412b66",
+   "counts": {
+    "sourceCalls": 1152,
+    "httpAttempts": 1152,
+    "decodedBytes": 32992292,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 32,
+     "options": 32,
+     "page": 32,
+     "settings": 32,
+     "solve": 1024
+    }
+   },
+   "rawSolverOutcomes": {
+    "accepted": 390,
+    "rejected": 260,
+    "duplicates": 374
+   },
+   "summedCollectorElapsedMs": 543395,
+   "reportedTimeFields": [
+    {
+     "elapsedSinceOriginalReservationSeconds": 1225.7653777599335,
+     "resumeElapsedSeconds": 269.624591042
+    }
+   ]
+  },
+  {
+   "allocationId": "g42-remaining-typed-pool-20261107-once",
+   "root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-remaining-typed-pool-20261107-once",
+   "receiptReferences": [
+    "E037"
+   ],
+   "counterReceiptCount": 60,
+   "counterReceiptBytes": 98620,
+   "counterReceiptSetCanonicalSha256": "f1bc05875c93824916b230db37462b93e3407b400f166cd12a0dd770104d9971",
+   "counts": {
+    "sourceCalls": 720,
+    "httpAttempts": 720,
+    "decodedBytes": 50982294,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 60,
+     "options": 60,
+     "page": 60,
+     "settings": 60,
+     "solve": 480
+    }
+   },
+   "rawSolverOutcomes": {
+    "accepted": 387,
+    "rejected": 93,
+    "duplicates": 0
+   },
+   "summedCollectorElapsedMs": 211411,
+   "reportedTimeFields": [
+    {
+     "phase": "continuation",
+     "elapsedSeconds": 334.201660625
+    }
+   ]
+  },
+  {
+   "allocationId": "g42-unspent-typed-pool-1304-20261107-once",
+   "root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-1304-20261107-once",
+   "receiptReferences": [
+    "E038"
+   ],
+   "counterReceiptCount": 163,
+   "counterReceiptBytes": 268077,
+   "counterReceiptSetCanonicalSha256": "983b012ee00f512b2dfee781a9c7adfa8397b98051bdf40e7500b26c64954527",
+   "counts": {
+    "sourceCalls": 1956,
+    "httpAttempts": 1956,
+    "decodedBytes": 139808430,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 163,
+     "options": 163,
+     "page": 163,
+     "settings": 163,
+     "solve": 1304
+    }
+   },
+   "rawSolverOutcomes": {
+    "accepted": 1163,
+    "rejected": 141,
+    "duplicates": 0
+   },
+   "summedCollectorElapsedMs": 639740,
+   "reportedTimeFields": [
+    {
+     "phase": "continuation",
+     "elapsedSeconds": 1074.4082363750001
+    }
+   ]
+  },
+  {
+   "allocationId": "g42-unspent-typed-pool-20261107-once",
+   "root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-20261107-once",
+   "receiptReferences": [
+    "E039"
+   ],
+   "counterReceiptCount": 5,
+   "counterReceiptBytes": 8198,
+   "counterReceiptSetCanonicalSha256": "629a779c94f69c3cca2b31c3059f83fffdbc920642bc81183029e939cee00f8d",
+   "counts": {
+    "sourceCalls": 60,
+    "httpAttempts": 60,
+    "decodedBytes": 4257244,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 5,
+     "options": 5,
+     "page": 5,
+     "settings": 5,
+     "solve": 40
+    }
+   },
+   "rawSolverOutcomes": {
+    "accepted": 34,
+    "rejected": 6,
+    "duplicates": 0
+   },
+   "summedCollectorElapsedMs": 20510,
+   "reportedTimeFields": [
+    {
+     "phase": "continuation",
+     "elapsedSeconds": 31.886194541
+    }
+   ]
+  },
+  {
+   "allocationId": "g42-unspent-typed-pool-2248-20261107-once",
+   "root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-2248-20261107-once",
+   "receiptReferences": [
+    "E040"
+   ],
+   "counterReceiptCount": 118,
+   "counterReceiptBytes": 194039,
+   "counterReceiptSetCanonicalSha256": "7c31b3df35ed9391fd897979771c755b62f168571ca28f513276f6cc4a6354d7",
+   "counts": {
+    "sourceCalls": 1416,
+    "httpAttempts": 1416,
+    "decodedBytes": 101113201,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 118,
+     "options": 118,
+     "page": 118,
+     "settings": 118,
+     "solve": 944
+    }
+   },
+   "rawSolverOutcomes": {
+    "accepted": 776,
+    "rejected": 168,
+    "duplicates": 0
+   },
+   "summedCollectorElapsedMs": 442575,
+   "reportedTimeFields": [
+    {
+     "phase": "continuation",
+     "elapsedSeconds": 734.046743417
+    }
+   ]
+  },
+  {
+   "allocationId": "scheme-breadth30-phase01-960-20261107-once",
+   "root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase01-960-20261107-once",
+   "receiptReferences": [
+    "E041"
+   ],
+   "counterReceiptCount": 80,
+   "counterReceiptBytes": 131908,
+   "counterReceiptSetCanonicalSha256": "af2c52e4eee46d22108aeb7546a1277d97080a45275997b149e08c54de18e366",
+   "counts": {
+    "sourceCalls": 950,
+    "httpAttempts": 950,
+    "decodedBytes": 88745127,
+    "failures": 1,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 79,
+     "options": 79,
+     "page": 80,
+     "settings": 80,
+     "solve": 632
+    }
+   },
+   "rawSolverOutcomes": {
+    "accepted": 477,
+    "rejected": 155,
+    "duplicates": 0
+   },
+   "summedCollectorElapsedMs": 329177,
+   "reportedTimeFields": [
+    {
+     "phase": "phase01",
+     "elapsedSeconds": 537.649572833
+    }
+   ]
+  },
+  {
+   "allocationId": "scheme-breadth30-phase01c-320-20261107-once",
+   "root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase01c-320-20261107-once",
+   "receiptReferences": [
+    "E042"
+   ],
+   "counterReceiptCount": 40,
+   "counterReceiptBytes": 66054,
+   "counterReceiptSetCanonicalSha256": "750d8114b6e05b16ecf7d86fb6be6dcdc04d2a51d463d8c03b7a0877767611e2",
+   "counts": {
+    "sourceCalls": 480,
+    "httpAttempts": 480,
+    "decodedBytes": 43701911,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 40,
+     "options": 40,
+     "page": 40,
+     "settings": 40,
+     "solve": 320
+    }
+   },
+   "rawSolverOutcomes": {
+    "accepted": 238,
+    "rejected": 82,
+    "duplicates": 0
+   },
+   "summedCollectorElapsedMs": 174388,
+   "reportedTimeFields": [
+    {
+     "phase": "phase01c",
+     "elapsedSeconds": 1586.7015685840001
+    }
+   ]
+  },
+  {
+   "allocationId": "scheme-breadth30-phase02-960-20261107-once",
+   "root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02-960-20261107-once",
+   "receiptReferences": [
+    "E043"
+   ],
+   "counterReceiptCount": 12,
+   "counterReceiptBytes": 19796,
+   "counterReceiptSetCanonicalSha256": "9cc61f3ab8512dc03c877f4a77bb79cf0121a43bfc8ab3c6000e3ab018c82f86",
+   "counts": {
+    "sourceCalls": 143,
+    "httpAttempts": 143,
+    "decodedBytes": 13461449,
+    "failures": 1,
+    "timeouts": 1,
+    "substitutions": 0,
+    "operations": {
+     "discover": 12,
+     "options": 12,
+     "page": 12,
+     "settings": 12,
+     "solve": 95
+    }
+   },
+   "rawSolverOutcomes": {
+    "accepted": 71,
+    "rejected": 23,
+    "duplicates": 0
+   },
+   "summedCollectorElapsedMs": 74578,
+   "reportedTimeFields": [
+    {
+     "phase": "phase02",
+     "elapsedSeconds": 110.270482125
+    }
+   ]
+  },
+  {
+   "allocationId": "scheme-breadth30-phase02c-864-20261107-once",
+   "root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02c-864-20261107-once",
+   "receiptReferences": [
+    "E044"
+   ],
+   "counterReceiptCount": 86,
+   "counterReceiptBytes": 142022,
+   "counterReceiptSetCanonicalSha256": "0d51dd471985f5ba248aebdaf2a63ab109536c1faf30e9aec6a69cffefabf5f1",
+   "counts": {
+    "sourceCalls": 1031,
+    "httpAttempts": 1031,
+    "decodedBytes": 95347775,
+    "failures": 1,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 86,
+     "options": 86,
+     "page": 86,
+     "settings": 86,
+     "solve": 687
+    }
+   },
+   "rawSolverOutcomes": {
+    "accepted": 517,
+    "rejected": 169,
+    "duplicates": 0
+   },
+   "summedCollectorElapsedMs": 376345,
+   "reportedTimeFields": [
+    {
+     "phase": "phase02c",
+     "elapsedSeconds": 1074.821964083
+    }
+   ]
+  },
+  {
+   "allocationId": "scheme-breadth30-phase03-960-20261107-once",
+   "root": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once",
+   "receiptReferences": [
+    "E045"
+   ],
+   "counterReceiptCount": 120,
+   "counterReceiptBytes": 197935,
+   "counterReceiptSetCanonicalSha256": "a8afa2f02dab04f7ef672a61d873ec3120b31d382c3f85f2d3e71e43c593850f",
+   "counts": {
+    "sourceCalls": 1440,
+    "httpAttempts": 1440,
+    "decodedBytes": 133631076,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 120,
+     "options": 120,
+     "page": 120,
+     "settings": 120,
+     "solve": 960
+    }
+   },
+   "rawSolverOutcomes": {
+    "accepted": 716,
+    "rejected": 244,
+    "duplicates": 0
+   },
+   "summedCollectorElapsedMs": 555451,
+   "reportedTimeFields": [
+    {
+     "phase": "phase03",
+     "elapsedSeconds": 964.023106375
+    }
+   ]
+  }
+ ],
+ "activeInterruptedCounterReceipts": [
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix1556-20261107-once/sessions/session050/receipt.json",
+   "pinSha256": "b66947e8a21707a1f13293a62c9a9648ef92288ea2a16c066c136d53c195cd4f",
+   "counts": {
+    "sourceCalls": 12,
+    "operations": {
+     "discover": 1,
+     "options": 1,
+     "page": 1,
+     "settings": 1,
+     "solve": 8
+    },
+    "cacheHits": {
+     "discover": 0,
+     "options": 0,
+     "page": 0,
+     "settings": 0,
+     "solve": 0
+    },
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "cacheEvictions": 0,
+    "httpAttempts": 12,
+    "decodedBytes": 918013,
+    "operationBytes": {
+     "discover": 113259,
+     "options": 129753,
+     "page": 17763,
+     "settings": 620646,
+     "solve": 36592
+    }
+   },
+   "accepted": 3,
+   "rejected": 5,
+   "duplicates": 0,
+   "reason": "queue-exhausted",
+   "elapsedMs": 3036
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2660-20261107-once/sessions/session138/receipt.json",
+   "pinSha256": "d696cd8db0d0fb2efff4512373c4d014c63ea0d8c3fdd44982c43a778d0aecfd",
+   "counts": {
+    "sourceCalls": 5,
+    "operations": {
+     "discover": 1,
+     "options": 1,
+     "page": 1,
+     "settings": 1,
+     "solve": 1
+    },
+    "cacheHits": {
+     "discover": 0,
+     "options": 0,
+     "page": 0,
+     "settings": 0,
+     "solve": 0
+    },
+    "failures": 1,
+    "timeouts": 1,
+    "substitutions": 0,
+    "cacheEvictions": 0,
+    "httpAttempts": 5,
+    "decodedBytes": 881421,
+    "operationBytes": {
+     "discover": 113259,
+     "options": 129753,
+     "page": 17763,
+     "settings": 620646,
+     "solve": 0
+    }
+   },
+   "accepted": 0,
+   "rejected": 0,
+   "duplicates": 0,
+   "reason": "operation-timeout",
+   "elapsedMs": 11038
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/sessions/session020/receipt.json",
+   "pinSha256": "89721e62c9953b243e0b0a46877159649f6e3d6555af0c8cb4ce7141526c5854",
+   "counts": {
+    "sourceCalls": 8,
+    "operations": {
+     "discover": 1,
+     "options": 1,
+     "page": 1,
+     "settings": 1,
+     "solve": 4
+    },
+    "cacheHits": {
+     "discover": 0,
+     "options": 0,
+     "page": 0,
+     "settings": 0,
+     "solve": 0
+    },
+    "failures": 1,
+    "timeouts": 0,
+    "substitutions": 0,
+    "cacheEvictions": 0,
+    "httpAttempts": 8,
+    "decodedBytes": 893869,
+    "operationBytes": {
+     "discover": 113259,
+     "options": 129753,
+     "page": 17763,
+     "settings": 620646,
+     "solve": 12448
+    }
+   },
+   "accepted": 2,
+   "rejected": 1,
+   "duplicates": 0,
+   "reason": "source-failure",
+   "elapsedMs": 2040
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/sessions/session101/receipt.json",
+   "pinSha256": "280be712b9efa6ace678c02f9aa485a7b36557e7b9286aa949d1823916036fa0",
+   "counts": {
+    "sourceCalls": 6,
+    "operations": {
+     "discover": 1,
+     "options": 1,
+     "page": 1,
+     "settings": 1,
+     "solve": 2
+    },
+    "cacheHits": {
+     "discover": 0,
+     "options": 0,
+     "page": 0,
+     "settings": 0,
+     "solve": 0
+    },
+    "failures": 1,
+    "timeouts": 0,
+    "substitutions": 0,
+    "cacheEvictions": 0,
+    "httpAttempts": 6,
+    "decodedBytes": 890633,
+    "operationBytes": {
+     "discover": 113259,
+     "options": 134425,
+     "page": 17763,
+     "settings": 620646,
+     "solve": 4540
+    }
+   },
+   "accepted": 1,
+   "rejected": 0,
+   "duplicates": 0,
+   "reason": "source-failure",
+   "elapsedMs": 1891
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix5535-20261107-once/sessions/session239/receipt.json",
+   "pinSha256": "e86e2a2f828152334e9265b59fdc804be314124e45b55b2843643e425d98a7ce",
+   "counts": {
+    "sourceCalls": 12,
+    "operations": {
+     "discover": 1,
+     "options": 1,
+     "page": 1,
+     "settings": 1,
+     "solve": 8
+    },
+    "cacheHits": {
+     "discover": 0,
+     "options": 0,
+     "page": 0,
+     "settings": 0,
+     "solve": 0
+    },
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "cacheEvictions": 0,
+    "httpAttempts": 12,
+    "decodedBytes": 915077,
+    "operationBytes": {
+     "discover": 113259,
+     "options": 128974,
+     "page": 17763,
+     "settings": 620646,
+     "solve": 34435
+    }
+   },
+   "accepted": 6,
+   "rejected": 2,
+   "duplicates": 0,
+   "reason": "queue-exhausted",
+   "elapsedMs": 4078
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-remaining-typed-pool-20261107-once/sessions/session060/receipt.json",
+   "pinSha256": "017e260317ff8397b428852bb24207778319d5a22ada7cea55f6a61d3eae38bc",
+   "counts": {
+    "sourceCalls": 12,
+    "operations": {
+     "discover": 1,
+     "options": 1,
+     "page": 1,
+     "settings": 1,
+     "solve": 8
+    },
+    "cacheHits": {
+     "discover": 0,
+     "options": 0,
+     "page": 0,
+     "settings": 0,
+     "solve": 0
+    },
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "cacheEvictions": 0,
+    "httpAttempts": 12,
+    "decodedBytes": 851707,
+    "operationBytes": {
+     "discover": 118726,
+     "options": 56301,
+     "page": 17763,
+     "settings": 620646,
+     "solve": 38271
+    }
+   },
+   "accepted": 7,
+   "rejected": 1,
+   "duplicates": 0,
+   "reason": "queue-exhausted",
+   "elapsedMs": 3671
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-20261107-once/sessions/session005/receipt.json",
+   "pinSha256": "0bd9c32cd431d22fd8766304f8ccc81e5d3ff2f1b44d8241be7c597b73cb9daa",
+   "counts": {
+    "sourceCalls": 12,
+    "operations": {
+     "discover": 1,
+     "options": 1,
+     "page": 1,
+     "settings": 1,
+     "solve": 8
+    },
+    "cacheHits": {
+     "discover": 0,
+     "options": 0,
+     "page": 0,
+     "settings": 0,
+     "solve": 0
+    },
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "cacheEvictions": 0,
+    "httpAttempts": 12,
+    "decodedBytes": 851051,
+    "operationBytes": {
+     "discover": 118726,
+     "options": 56301,
+     "page": 17763,
+     "settings": 620646,
+     "solve": 37615
+    }
+   },
+   "accepted": 7,
+   "rejected": 1,
+   "duplicates": 0,
+   "reason": "queue-exhausted",
+   "elapsedMs": 4270
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-2248-20261107-once/sessions/session118/receipt.json",
+   "pinSha256": "ba892405d4d05cd49d098eddf3b2dae78e951e44b4afdec6fb0567f2f3fe4a4a",
+   "counts": {
+    "sourceCalls": 12,
+    "operations": {
+     "discover": 1,
+     "options": 1,
+     "page": 1,
+     "settings": 1,
+     "solve": 8
+    },
+    "cacheHits": {
+     "discover": 0,
+     "options": 0,
+     "page": 0,
+     "settings": 0,
+     "solve": 0
+    },
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "cacheEvictions": 0,
+    "httpAttempts": 12,
+    "decodedBytes": 861717,
+    "operationBytes": {
+     "discover": 118726,
+     "options": 60304,
+     "page": 17763,
+     "settings": 620646,
+     "solve": 44278
+    }
+   },
+   "accepted": 6,
+   "rejected": 2,
+   "duplicates": 0,
+   "reason": "queue-exhausted",
+   "elapsedMs": 3602
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase01-960-20261107-once/sessions/session080/receipt.json",
+   "pinSha256": "7cf584c12a0dcf9731c949e8abc3d67b24e04d752b5756683c166607a9ac0c2e",
+   "counts": {
+    "sourceCalls": 2,
+    "operations": {
+     "discover": 0,
+     "options": 0,
+     "page": 1,
+     "settings": 1,
+     "solve": 0
+    },
+    "cacheHits": {
+     "discover": 0,
+     "options": 0,
+     "page": 0,
+     "settings": 0,
+     "solve": 0
+    },
+    "failures": 1,
+    "timeouts": 0,
+    "substitutions": 0,
+    "cacheEvictions": 0,
+    "httpAttempts": 2,
+    "decodedBytes": 17763,
+    "operationBytes": {
+     "discover": 0,
+     "options": 0,
+     "page": 17763,
+     "settings": 0,
+     "solve": 0
+    }
+   },
+   "accepted": 0,
+   "rejected": 0,
+   "duplicates": 0,
+   "reason": "source-failure",
+   "elapsedMs": 396
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02-960-20261107-once/sessions/session012/receipt.json",
+   "pinSha256": "0ae3046af1377e92f986d76002a064270377f3a9b6c828396208c5ef46a14a1f",
+   "counts": {
+    "sourceCalls": 11,
+    "operations": {
+     "discover": 1,
+     "options": 1,
+     "page": 1,
+     "settings": 1,
+     "solve": 7
+    },
+    "cacheHits": {
+     "discover": 0,
+     "options": 0,
+     "page": 0,
+     "settings": 0,
+     "solve": 0
+    },
+    "failures": 1,
+    "timeouts": 1,
+    "substitutions": 0,
+    "cacheEvictions": 0,
+    "httpAttempts": 11,
+    "decodedBytes": 1209386,
+    "operationBytes": {
+     "discover": 411062,
+     "options": 135770,
+     "page": 17763,
+     "settings": 620646,
+     "solve": 24145
+    }
+   },
+   "accepted": 5,
+   "rejected": 1,
+   "duplicates": 0,
+   "reason": "operation-timeout",
+   "elapsedMs": 18369
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02c-864-20261107-once/sessions/session086/receipt.json",
+   "pinSha256": "4efb3ca40b7dbcb0ff7a03549341d47874895c7dfcc474e90edbc5e4ecb5cdfa",
+   "counts": {
+    "sourceCalls": 11,
+    "operations": {
+     "discover": 1,
+     "options": 1,
+     "page": 1,
+     "settings": 1,
+     "solve": 7
+    },
+    "cacheHits": {
+     "discover": 0,
+     "options": 0,
+     "page": 0,
+     "settings": 0,
+     "solve": 0
+    },
+    "failures": 1,
+    "timeouts": 0,
+    "substitutions": 0,
+    "cacheEvictions": 0,
+    "httpAttempts": 11,
+    "decodedBytes": 1205115,
+    "operationBytes": {
+     "discover": 411062,
+     "options": 133514,
+     "page": 17763,
+     "settings": 620646,
+     "solve": 22130
+    }
+   },
+   "accepted": 4,
+   "rejected": 2,
+   "duplicates": 0,
+   "reason": "source-failure",
+   "elapsedMs": 3217
+  }
+ ],
+ "earlierAndLostScopes": [
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/receipt.json",
+   "pin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/receipt.json",
+    "bytes": 1632,
+    "sha256": "f6c356779bdba539ce0a4d2cac1b90a64adcd6693092f161e71f8fc4f8b12547"
+   },
+   "metrics": {
+    "allocationId": "f61-source-batch32-20261107-once",
+    "accepted": 28,
+    "rejected": 4,
+    "duplicates": 0,
+    "elapsedMs": 23639,
+    "startedAt": "2026-11-07T00:39:37.026Z",
+    "completedAt": "2026-11-07T00:40:00.665Z"
+   },
+   "counts": {
+    "sourceCalls": 36,
+    "httpAttempts": 36,
+    "decodedBytes": 1048876,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 1,
+     "options": 1,
+     "page": 1,
+     "settings": 1,
+     "solve": 32
+    }
+   },
+   "counterSnapshots": 1
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-first8-solver-2026-11-07/receipt.json",
+   "pin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-first8-solver-2026-11-07/receipt.json",
+    "bytes": 1616,
+    "sha256": "f60e0f3ddb9e323577c8aae555f38d90ee10698db16444e17c93b91d4fdd9dc8"
+   },
+   "metrics": {
+    "allocationId": "f70-1f7b-first8-20261107-once",
+    "accepted": 8,
+    "rejected": 0,
+    "duplicates": 0,
+    "elapsedMs": 3677,
+    "startedAt": "2026-11-07T01:51:15.981Z",
+    "completedAt": "2026-11-07T01:51:19.658Z"
+   },
+   "counts": {
+    "sourceCalls": 12,
+    "httpAttempts": 12,
+    "decodedBytes": 908961,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 1,
+     "options": 1,
+     "page": 1,
+     "settings": 1,
+     "solve": 8
+    }
+   },
+   "counterSnapshots": 1
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-1f7e-first32-solver-2026-11-07/receipt.json",
+   "pin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-1f7e-first32-solver-2026-11-07/receipt.json",
+    "bytes": 1636,
+    "sha256": "7b266e483c985e84af14ed77e3df726bc76b9fdd0e5c8384d7a6527e9f9c4b28"
+   },
+   "metrics": {
+    "allocationId": "f70-1f7e-first32-20261107-once",
+    "accepted": 19,
+    "rejected": 13,
+    "duplicates": 0,
+    "elapsedMs": 19271,
+    "startedAt": "2026-11-07T02:15:12.257Z",
+    "completedAt": "2026-11-07T02:15:31.529Z"
+   },
+   "counts": {
+    "sourceCalls": 36,
+    "httpAttempts": 36,
+    "decodedBytes": 1027073,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 1,
+     "options": 1,
+     "page": 1,
+     "settings": 1,
+     "solve": 32
+    }
+   },
+   "counterSnapshots": 1
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-1f7e-core01-solver-2026-11-07/receipt.json",
+   "pin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-1f7e-core01-solver-2026-11-07/receipt.json",
+    "bytes": 1631,
+    "sha256": "2fe74753c797bebb342f98aba0029753fb776f81ab4e00a60354739d94f2d6bf"
+   },
+   "metrics": {
+    "allocationId": "f70-1f7e-core01-20261107-once",
+    "accepted": 32,
+    "rejected": 0,
+    "duplicates": 0,
+    "elapsedMs": 30784,
+    "startedAt": "2026-11-07T02:24:34.497Z",
+    "completedAt": "2026-11-07T02:25:05.282Z"
+   },
+   "counts": {
+    "sourceCalls": 36,
+    "httpAttempts": 36,
+    "decodedBytes": 1025734,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 1,
+     "options": 1,
+     "page": 1,
+     "settings": 1,
+     "solve": 32
+    }
+   },
+   "counterSnapshots": 1
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-1f7e-core02-solver-2026-11-07/receipt.json",
+   "pin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-1f7e-core02-solver-2026-11-07/receipt.json",
+    "bytes": 1631,
+    "sha256": "343ab0c3c461126a07a84179ec132f3e37a2dd5797be5c2b4c269c7fef1edb9c"
+   },
+   "metrics": {
+    "allocationId": "f70-1f7e-core02-20261107-once",
+    "accepted": 32,
+    "rejected": 0,
+    "duplicates": 0,
+    "elapsedMs": 31214,
+    "startedAt": "2026-11-07T02:25:08.259Z",
+    "completedAt": "2026-11-07T02:25:39.474Z"
+   },
+   "counts": {
+    "sourceCalls": 36,
+    "httpAttempts": 36,
+    "decodedBytes": 1025734,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 1,
+     "options": 1,
+     "page": 1,
+     "settings": 1,
+     "solve": 32
+    }
+   },
+   "counterSnapshots": 1
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-1f7e-core03-solver-2026-11-07/receipt.json",
+   "pin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-1f7e-core03-solver-2026-11-07/receipt.json",
+    "bytes": 1631,
+    "sha256": "13d37fe30d6ab67c421105f3b388e5b2f4c0c1057fde0c576991f1f8b05e363d"
+   },
+   "metrics": {
+    "allocationId": "f70-1f7e-core03-20261107-once",
+    "accepted": 32,
+    "rejected": 0,
+    "duplicates": 0,
+    "elapsedMs": 31279,
+    "startedAt": "2026-11-07T02:25:42.108Z",
+    "completedAt": "2026-11-07T02:26:13.388Z"
+   },
+   "counts": {
+    "sourceCalls": 36,
+    "httpAttempts": 36,
+    "decodedBytes": 1025734,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 1,
+     "options": 1,
+     "page": 1,
+     "settings": 1,
+     "solve": 32
+    }
+   },
+   "counterSnapshots": 1
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-1f7e-core04-solver-2026-11-07/receipt.json",
+   "pin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-1f7e-core04-solver-2026-11-07/receipt.json",
+    "bytes": 1628,
+    "sha256": "24288a5d8cf9c3e323c48625552b260b16582a0ed3d085d016e2c70938439f76"
+   },
+   "metrics": {
+    "allocationId": "f70-1f7e-core04-20261107-once",
+    "accepted": 15,
+    "rejected": 0,
+    "duplicates": 0,
+    "elapsedMs": 8796,
+    "startedAt": "2026-11-07T02:26:16.019Z",
+    "completedAt": "2026-11-07T02:26:24.815Z"
+   },
+   "counts": {
+    "sourceCalls": 19,
+    "httpAttempts": 19,
+    "decodedBytes": 950645,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 1,
+     "options": 1,
+     "page": 1,
+     "settings": 1,
+     "solve": 15
+    }
+   },
+   "counterSnapshots": 1
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/final-receipt.json",
+   "pin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/final-receipt.json",
+    "bytes": 6399,
+    "sha256": "f3d8b32a55d9fb5299de7bc7c6b857853c078889b4071c262a6d283f3e21d707"
+   },
+   "metrics": {
+    "accepted": 311,
+    "rejected": 9,
+    "duplicates": 0,
+    "sourceSeconds": 278.404,
+    "chunkReceiptPins": [
+     {
+      "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/receipt.json",
+      "bytes": 1640,
+      "sha256": "1f4243c7c542ade61770361318178cd31aa3609acf7153f395270d88c82d4bcc"
+     },
+     {
+      "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/receipt.json",
+      "bytes": 1639,
+      "sha256": "3b72bf16419235ddc59629ad801f2b4de4bebdca30b07e8c649a00888fa1e2a3"
+     },
+     {
+      "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/receipt.json",
+      "bytes": 1641,
+      "sha256": "a119358851bb0491c43481853dc17e1ed1cf1bb168704bf071cde5bb5addf974"
+     },
+     {
+      "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk04/receipt.json",
+      "bytes": 1643,
+      "sha256": "dbba7c13f4b01714675fe1bf83ab1028bc910a71e15176aaa293b53f4b2809db"
+     },
+     {
+      "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk05/receipt.json",
+      "bytes": 1643,
+      "sha256": "28a0f69bd40bd29b8f606431f83b1820d5ed74f3d4c748a1babd108975d05b05"
+     },
+     {
+      "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk06/receipt.json",
+      "bytes": 1641,
+      "sha256": "a774231d66ed684c806f79f69eefe0e7cb57993720dc4ff83b3c37f929c67b23"
+     },
+     {
+      "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk07/receipt.json",
+      "bytes": 1643,
+      "sha256": "57fa994f78decde3734a5fdcd9e679cae06c5743b98d69f92c3648cbf83cd85c"
+     },
+     {
+      "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk08/receipt.json",
+      "bytes": 1643,
+      "sha256": "3643f556cf92cd6ac55efcf667a761c4b0a6a3b2e364f65e7d54e2664e6a7b24"
+     },
+     {
+      "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk09/receipt.json",
+      "bytes": 1643,
+      "sha256": "06a82dac181ddfe02d067279dd3ce50127ea2068fd339882b7675debde45fddc"
+     },
+     {
+      "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk10/receipt.json",
+      "bytes": 1643,
+      "sha256": "b121c15e4bad015f248b21fc934136f553b6d180682fa827d42a2a5cc93d2c83"
+     }
+    ]
+   },
+   "counts": {
+    "sourceCalls": 360,
+    "httpAttempts": 360,
+    "decodedBytes": 10528822,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 10,
+     "options": 10,
+     "page": 10,
+     "settings": 10,
+     "solve": 320
+    }
+   },
+   "counterSnapshots": 10
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/continuation-live-proof-2026-11-07/final-receipt.json",
+   "pin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/continuation-live-proof-2026-11-07/final-receipt.json",
+    "bytes": 14701,
+    "sha256": "e4fae0fdb86df0a8302b2b9ab0bf3a0c1dbc75d9524b55ff1a67e795aec6b910"
+   },
+   "metrics": {
+    "accepted": 1,
+    "rejected": 0,
+    "duplicates": 1,
+    "phaseSourceSeconds": [
+     1.556609291,
+     2.787466416
+    ],
+    "phaseCounterBasis": "allocationCounts only; cumulativeCounts excluded"
+   },
+   "counts": {
+    "sourceCalls": 10,
+    "httpAttempts": 10,
+    "decodedBytes": 1841762,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 2,
+     "options": 2,
+     "page": 2,
+     "settings": 2,
+     "solve": 2
+    }
+   },
+   "counterSnapshots": 2
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-model-breadth-pilot-plan-2026-11-07/series-receipt.json",
+   "pin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-model-breadth-pilot-plan-2026-11-07/series-receipt.json",
+    "bytes": 12301,
+    "sha256": "631868bd49c1aa356b00e255525abb29ba4ab0d56185b96f8e8a59f1f900a84f"
+   },
+   "metrics": {
+    "allocationId": "f70-model-breadth-20261107-a29846efc0977283",
+    "accepted": 4,
+    "rejected": 0,
+    "duplicates": 0,
+    "reportedSeriesSeconds": 6.672,
+    "originalCapacityCredit": null,
+    "capacityMeaning": "Original local credit is not replaced; later admitted union evidence determines retained final capacity."
+   },
+   "counts": {
+    "sourceCalls": 20,
+    "httpAttempts": 20,
+    "decodedBytes": 3534788,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 4,
+     "options": 4,
+     "page": 4,
+     "settings": 4,
+     "solve": 4
+    }
+   },
+   "counterSnapshots": 4
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/series-receipt.json",
+   "pin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/series-receipt.json",
+    "bytes": 18104,
+    "sha256": "1920c6f25f8d43d68e849f1c37e08b0c027b2687d5d884169db18b5c1868fe00"
+   },
+   "metrics": {
+    "allocationId": "g42-typed-pilot48-20261107-once",
+    "accepted": 48,
+    "rejected": 0,
+    "duplicates": 0,
+    "reportedSeriesSeconds": 27.809,
+    "originalCapacityCredit": 0,
+    "capacityMeaning": "Original local credit is not replaced; later admitted union evidence determines retained final capacity."
+   },
+   "counts": {
+    "sourceCalls": 72,
+    "httpAttempts": 72,
+    "decodedBytes": 5135881,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 6,
+     "options": 6,
+     "page": 6,
+     "settings": 6,
+     "solve": 48
+    }
+   },
+   "counterSnapshots": 6
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-typed-pilot48-2026-11-07/series-receipt.json",
+   "pin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-typed-pilot48-2026-11-07/series-receipt.json",
+    "bytes": 18471,
+    "sha256": "2a9d412eda97c0ef120d2a40af5d027c48704efd345d45daa4e88a8da200b14f"
+   },
+   "metrics": {
+    "allocationId": "scheme-breadth-typed-pilot48-20261107-once",
+    "accepted": 32,
+    "rejected": 16,
+    "duplicates": 0,
+    "reportedSeriesSeconds": 33.642,
+    "originalCapacityCredit": 0,
+    "capacityMeaning": "Original local credit is not replaced; later admitted union evidence determines retained final capacity."
+   },
+   "counts": {
+    "sourceCalls": 72,
+    "httpAttempts": 72,
+    "decodedBytes": 6326538,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 6,
+     "options": 6,
+     "page": 6,
+     "settings": 6,
+     "solve": 48
+    }
+   },
+   "counterSnapshots": 6
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-batch200-2026-11-07/receipt.json",
+   "pin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-batch200-2026-11-07/receipt.json",
+    "bytes": 1944,
+    "sha256": "7f4c8f0ce6bfdacdbcbb8618c6a184896c62bbf88f402ceaeb4db613caf35e26"
+   },
+   "metrics": {
+    "allocationId": "f61-source-batch200-20261107-once",
+    "knownAcceptedCallbacks": 52,
+    "unclassifiedMissingCallbackOutcomes": 1,
+    "retainedCapacity": 0,
+    "elapsedSupervisorSeconds": 119.241270666,
+    "exitCode": -15,
+    "checkpointRetained": false,
+    "outcomeCountsExact": false
+   },
+   "counts": {
+    "sourceCalls": 57,
+    "httpAttempts": 57,
+    "decodedBytes": 1141127,
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "operations": {
+     "discover": 1,
+     "options": 1,
+     "page": 1,
+     "settings": 1,
+     "solve": 53
+    }
+   },
+   "counterSnapshots": 1
+  }
+ ],
+ "nonOverlapRules": [
+  "Use final typed resume15 E035 once; exclude cumulative E032/E033/E034/E036.",
+  "790 pilot sessions001-004 and suffix005-101 are disjoint; use both, but one original1194-GET allowance.",
+  "Trim suffix parentGET/bytes already include pilot; add chunk01 only to its child-counter reconstruction, never add pilotGETs to the parent296. Its252newlyAccepted excludes pilot8.",
+  "Use continuation phase allocationCounts, never add cumulativeCounts.",
+  "Use each embedded pilot context once; final pilot totals compare with disjoint child counters instead of being an extra scope.",
+  "Parent union snapshots are lineage evidence, never operation-addends. Active source counters are included once even when later retained admissions are proved."
+ ],
+ "retainedAdmissionBridge": {
+  "receiptNewAdmissionsMain": 9754,
+  "earlierRetainedAdmissionsIncludingOneDatedCapture": 563,
+  "trimPilotAdmissionsOmittedFromSuffixAccepted": 8,
+  "independentlyProvedActiveSessionAdmissions": 26,
+  "total": 10351,
+  "rawAcceptedOperationBridge": {
+   "knownAcceptedLiveOutcomes": 10417,
+   "lostInterrupted200AcceptedCallbacksExcluded": 52,
+   "otherActiveSessionRawAdmissionsWithheld": 15,
+   "datedCaptureAdmissionWithZeroReplayTrafficAdded": 1,
+   "retainedAdmittedSource": 10351
+  },
+  "activeAdmissionsProved": {
+   "g42-remaining/session060": 7,
+   "g42-unspent/session005": 7,
+   "g42-unspent2248/session118": 6,
+   "f70-optional5535/session239": 6
+  },
+  "withheldRawAdmissions": {
+   "f70-optional1556/session050": 3,
+   "f70-optional2815/session020": 2,
+   "f70-optional3623/session101": 1,
+   "breadthPhase02/session012": 5,
+   "breadthPhase02c/session086": 4
+  },
+  "selectedSource": 10000,
+  "surplusExcluded": 351,
+  "nonqualifyingReferenceExcluded": 1,
+  "vinAssociationsDoNotIncreaseSourceCount": 1,
+  "shortfall": 0
+ },
+ "declaredPlanActualBudgetMapping": [
+  {
+   "reference": "E047",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/suffix-released-plan.json",
+    "bytes": 139313,
+    "sha256": "cf17aaa976b81b0c310948b2a51879fff9e1d1c9ed442d7c411e67d07aa304f8"
+   },
+   "allocationId": "f70-model-axis790-20261107-once",
+   "candidateAllowance": 790,
+   "attemptAllowance": 1194,
+   "decodedByteAllowance": 423624704,
+   "resources": {
+    "childRamBytes": 469762048,
+    "expectedRetainedBytes": 335544320,
+    "hostRamBytes": 536870912,
+    "peakIncludingRetainedBudgetBytes": 1140850688,
+    "perCohortSeconds": 600,
+    "perSessionRetainedShardBytes": 16777216,
+    "perSessionSeconds": 120,
+    "retainedBudgetBytes": 1073741824,
+    "retainedCheckSeconds": 30,
+    "scratchBytes": 67108864,
+    "scratchRootPolicy": "resource-helper-owned-default",
+    "workers": 1
+   },
+   "actualGetAttempts": 1194,
+   "actualSolverOperations": 790,
+   "rawSolverOutcomes": {
+    "accepted": 790,
+    "rejected": 0,
+    "duplicates": 0
+   }
+  },
+  {
+   "reference": "E048",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-pilot32-20261107-once/pilot-released-plan.json",
+    "bytes": 82207,
+    "sha256": "e7ed66ca38b213df3724455488c839ca1317eead348f675bbb40d63806e329bc"
+   },
+   "allocationId": "f70-optional-axis-pilot32-20261107-once",
+   "candidateAllowance": 32,
+   "attemptAllowance": 48,
+   "decodedByteAllowance": null,
+   "resources": {
+    "childRamBytes": 469762048,
+    "expectedRetainedBytes": 33554432,
+    "hostRamBytes": 536870912,
+    "peakIncludingRetainedBudgetBytes": 201326592,
+    "perCohortSeconds": 300,
+    "perSessionRetainedShardBytes": 16777216,
+    "perSessionSeconds": 120,
+    "retainedBudgetBytes": 134217728,
+    "retainedCheckSeconds": 30,
+    "scratchBytes": 67108864,
+    "scratchRootPolicy": "resource-helper-owned-default",
+    "workers": 1
+   },
+   "actualGetAttempts": 48,
+   "actualSolverOperations": 32,
+   "rawSolverOutcomes": {
+    "accepted": 32,
+    "rejected": 0,
+    "duplicates": 0
+   }
+  },
+  {
+   "reference": "E049",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix1156-20261107-once/suffix-released-plan.json",
+    "bytes": 406733,
+    "sha256": "fc27061f97dcd11dba56ec9163551b48b19d93f9166c11d8210d9b3d90fdc143"
+   },
+   "allocationId": "f70-optional-axis-suffix1156-20261107-once",
+   "candidateAllowance": 1156,
+   "attemptAllowance": 1736,
+   "decodedByteAllowance": null,
+   "resources": {
+    "childRamBytes": 469762048,
+    "combinedOriginalAndContinuationRetainedCeilingBytes": 12884901888,
+    "expectedRetainedBytes": 5368709120,
+    "hostRamBytes": 536870912,
+    "peakIncludingRetainedBudgetBytes": 7931644681,
+    "perCohortSeconds": 600,
+    "perSessionRetainedShardBytes": 33554432,
+    "perSessionSeconds": 120,
+    "priorStoppedRetainedBytes": 5020366071,
+    "retainedBudgetBytes": 7864535817,
+    "retainedCheckSeconds": 30,
+    "scratchBytes": 67108864,
+    "scratchRootPolicy": "resource-helper-owned-default",
+    "workers": 1
+   },
+   "actualGetAttempts": 1736,
+   "actualSolverOperations": 1156,
+   "rawSolverOutcomes": {
+    "accepted": 822,
+    "rejected": 334,
+    "duplicates": 0
+   }
+  },
+  {
+   "reference": "E050",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix1556-20261107-once/suffix-released-plan.json",
+    "bytes": 471757,
+    "sha256": "4a73e30b87098727c6d3f4c699e81c3e7d686565aad7fd8029b5f02b10f22d12"
+   },
+   "allocationId": "f70-optional-axis-suffix1556-20261107-once",
+   "candidateAllowance": 1556,
+   "attemptAllowance": 2336,
+   "decodedByteAllowance": null,
+   "resources": {
+    "childRamBytes": 469762048,
+    "combinedOriginalAndContinuationRetainedCeilingBytes": 12884901888,
+    "expectedRetainedBytes": 5368709120,
+    "hostRamBytes": 536870912,
+    "peakIncludingRetainedBudgetBytes": 8519362629,
+    "perCohortSeconds": 600,
+    "perSessionRetainedShardBytes": 33554432,
+    "perSessionSeconds": 120,
+    "priorStoppedRetainedBytes": 4432648123,
+    "retainedBudgetBytes": 8452253765,
+    "retainedCheckSeconds": 30,
+    "scratchBytes": 67108864,
+    "scratchRootPolicy": "resource-helper-owned-default",
+    "workers": 1
+   },
+   "actualGetAttempts": 600,
+   "actualSolverOperations": 400,
+   "rawSolverOutcomes": {
+    "accepted": 252,
+    "rejected": 148,
+    "duplicates": 0
+   }
+  },
+  {
+   "reference": "E051",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2660-20261107-once/suffix-released-plan.json",
+    "bytes": 658270,
+    "sha256": "24d4931a994e5a1eafe4b326480f14f08541b57a9d15664aa0b04970b44d4051"
+   },
+   "allocationId": "f70-optional-axis-suffix2660-20261107-once",
+   "candidateAllowance": 2660,
+   "attemptAllowance": 3992,
+   "decodedByteAllowance": null,
+   "resources": {
+    "childRamBytes": 469762048,
+    "combinedOriginalAndContinuationRetainedCeilingBytes": 12884901888,
+    "expectedRetainedBytes": 5368709120,
+    "hostRamBytes": 536870912,
+    "peakIncludingRetainedBudgetBytes": 10024953194,
+    "perCohortSeconds": 600,
+    "perSessionRetainedShardBytes": 33554432,
+    "perSessionSeconds": 120,
+    "priorStoppedRetainedBytes": 2927057558,
+    "retainedBudgetBytes": 9957844330,
+    "retainedCheckSeconds": 30,
+    "scratchBytes": 67108864,
+    "scratchRootPolicy": "resource-helper-owned-default",
+    "workers": 1
+   },
+   "actualGetAttempts": 1649,
+   "actualSolverOperations": 1097,
+   "rawSolverOutcomes": {
+    "accepted": 749,
+    "rejected": 347,
+    "duplicates": 0
+   }
+  },
+  {
+   "reference": "E052",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/suffix-released-plan.json",
+    "bytes": 681667,
+    "sha256": "4c9784554578ab3f68c7d8d4c70eb21bc167f1a9012f5b6c528b1192b70d28fa"
+   },
+   "allocationId": "f70-optional-axis-suffix2815-20261107-once",
+   "candidateAllowance": 2815,
+   "attemptAllowance": 4227,
+   "decodedByteAllowance": null,
+   "resources": {
+    "childRamBytes": 469762048,
+    "combinedOriginalAndContinuationRetainedCeilingBytes": 12884901888,
+    "expectedRetainedBytes": 5368709120,
+    "hostRamBytes": 536870912,
+    "peakIncludingRetainedBudgetBytes": 10225167602,
+    "perCohortSeconds": 600,
+    "perSessionRetainedShardBytes": 33554432,
+    "perSessionSeconds": 120,
+    "priorStoppedRetainedBytes": 2726843150,
+    "retainedBudgetBytes": 10158058738,
+    "retainedCheckSeconds": 30,
+    "scratchBytes": 67108864,
+    "scratchRootPolicy": "resource-helper-owned-default",
+    "workers": 1
+   },
+   "actualGetAttempts": 231,
+   "actualSolverOperations": 151,
+   "rawSolverOutcomes": {
+    "accepted": 102,
+    "rejected": 48,
+    "duplicates": 0
+   }
+  },
+  {
+   "reference": "E053",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/suffix-released-plan.json",
+    "bytes": 801258,
+    "sha256": "9b73f4af6a67bade3451af46f6af70c311eefa06b1e84d73e9719b94b3657af9"
+   },
+   "allocationId": "f70-optional-axis-suffix3623-20261107-once",
+   "candidateAllowance": 3623,
+   "attemptAllowance": 5439,
+   "decodedByteAllowance": null,
+   "resources": {
+    "childRamBytes": 469762048,
+    "combinedOriginalAndContinuationRetainedCeilingBytes": 12884901888,
+    "expectedRetainedBytes": 6442450944,
+    "hostRamBytes": 536870912,
+    "peakIncludingRetainedBudgetBytes": 11170245503,
+    "perCohortSeconds": 600,
+    "perSessionRetainedShardBytes": 33554432,
+    "perSessionSeconds": 120,
+    "priorStoppedRetainedBytes": 1781765249,
+    "retainedBudgetBytes": 11103136639,
+    "retainedCheckSeconds": 30,
+    "scratchBytes": 67108864,
+    "scratchRootPolicy": "resource-helper-owned-default",
+    "workers": 1
+   },
+   "actualGetAttempts": 1206,
+   "actualSolverOperations": 802,
+   "rawSolverOutcomes": {
+    "accepted": 593,
+    "rejected": 208,
+    "duplicates": 0
+   }
+  },
+  {
+   "reference": "E054",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix5535-20261107-once/suffix-released-plan.json",
+    "bytes": 1086028,
+    "sha256": "60fb10a0ccd82b533914a443328d9dc6072e025e63eb7d22b6f5ccfa92a7a746"
+   },
+   "allocationId": "f70-optional-axis-suffix5535-20261107-once",
+   "candidateAllowance": 5535,
+   "attemptAllowance": 8307,
+   "decodedByteAllowance": null,
+   "resources": {
+    "childRamBytes": 469762048,
+    "expectedRetainedBytes": 9663676416,
+    "hostRamBytes": 536870912,
+    "peakIncludingRetainedBudgetBytes": 12952010752,
+    "perCohortSeconds": 600,
+    "perSessionRetainedShardBytes": 33554432,
+    "perSessionSeconds": 120,
+    "retainedBudgetBytes": 12884901888,
+    "retainedCheckSeconds": 30,
+    "scratchBytes": 67108864,
+    "scratchRootPolicy": "resource-helper-owned-default",
+    "workers": 1
+   },
+   "actualGetAttempts": 2868,
+   "actualSolverOperations": 1912,
+   "rawSolverOutcomes": {
+    "accepted": 1434,
+    "rejected": 478,
+    "duplicates": 0
+   }
+  },
+  {
+   "reference": "E055",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-trim-package260-20261107-once/released-suffix-plan.json",
+    "bytes": 30696,
+    "sha256": "02ac91bc2109830afa2cb5b4c3b52751be75d81f27d0f0f48871df54cefa367d"
+   },
+   "allocationId": "f70-trim-package260-20261107-once",
+   "candidateAllowance": 252,
+   "attemptAllowance": 284,
+   "decodedByteAllowance": 75497472,
+   "resources": {
+    "peakIncludingRetainedBudgetBytes": 402653184,
+    "perChunkRetainedShardBytes": 33554432,
+    "retainedBudgetBytes": 335544320
+   },
+   "actualGetAttempts": 296,
+   "actualSolverOperations": 260,
+   "rawSolverOutcomes": {
+    "accepted": 260,
+    "rejected": 0,
+    "duplicates": 0
+   },
+   "comparison": "Suffix allowance252 candidates/284GETs plus separately completed pilot8 candidates/12GETs; actual whole260solves/296GETs."
+  },
+  {
+   "reference": "E060",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-typed-axis1024-20261107-once/released-series-plan.json",
+    "bytes": 105424,
+    "sha256": "a4a6143b379475bd644f607c73a6715474dd3650d3c3ea23bfcaf1d7429ff501"
+   },
+   "allocationId": "f70-typed-axis1024-20261107-once",
+   "candidateAllowance": 1024,
+   "attemptAllowance": 1152,
+   "decodedByteAllowance": 268435456,
+   "resources": {
+    "expectedRetainedBytes": 402653184,
+    "forecastCheckSecondsPer32": 1.25,
+    "forecastSeriesSeconds": 1100,
+    "forecastSourceSecondsPer32": 31.5,
+    "parallelChunks": false,
+    "peakHostRamBytes": 536870912,
+    "peakIncludingRetainedBudgetBytes": 1140850688,
+    "peakScratchBytes": 67108864,
+    "perChunkChildRamBytes": 469762048,
+    "perChunkChildSeconds": 165,
+    "perChunkHostRamBytes": 536870912,
+    "perChunkRetainedChecksSeconds": 30,
+    "perChunkRetainedShardBytes": 33554432,
+    "perChunkScratchBytes": 67108864,
+    "perChunkSeconds": 180,
+    "perChunkSourceSeconds": 120,
+    "retainedBudgetBytes": 1073741824,
+    "workers": 1
+   },
+   "actualGetAttempts": 1152,
+   "actualSolverOperations": 1024,
+   "rawSolverOutcomes": {
+    "accepted": 390,
+    "rejected": 260,
+    "duplicates": 374
+   }
+  },
+  {
+   "reference": "E061",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-remaining-typed-pool-20261107-once/continuation-released-plan.json",
+    "bytes": 452731,
+    "sha256": "7d9115de6679fb8ea48960457ab4d9c4a8d9dd63cb871190b650e8d0041bfc4e"
+   },
+   "allocationId": "g42-remaining-typed-pool-20261107-once",
+   "candidateAllowance": 2768,
+   "attemptAllowance": 4152,
+   "decodedByteAllowance": 1451229184,
+   "resources": {
+    "childRamBytes": 469762048,
+    "childSeconds": 105,
+    "expectedRetainedBytes": 2684354560,
+    "hostRamBytes": 536870912,
+    "peakIncludingRetainedBudgetBytes": 4362076160,
+    "perCohortSeconds": 600,
+    "perSessionRetainedShardBytes": 16777216,
+    "perSessionSeconds": 120,
+    "retainedBudgetBytes": 4294967296,
+    "retainedCheckSeconds": 30,
+    "scratchBytes": 67108864,
+    "scratchRootPolicy": "resource-helper-owned-default",
+    "sourceSeconds": 90,
+    "workers": 1
+   },
+   "actualGetAttempts": 720,
+   "actualSolverOperations": 480,
+   "rawSolverOutcomes": {
+    "accepted": 387,
+    "rejected": 93,
+    "duplicates": 0
+   }
+  },
+  {
+   "reference": "E062",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-1304-20261107-once/continuation-released-plan.json",
+    "bytes": 228602,
+    "sha256": "d4ababa11f992ede63e79ea27359ddd1d9c66d6327669cb385c26bbc9e709cdd"
+   },
+   "allocationId": "g42-unspent-typed-pool-1304-20261107-once",
+   "candidateAllowance": 1304,
+   "attemptAllowance": 1956,
+   "decodedByteAllowance": 683671552,
+   "resources": {
+    "childRamBytes": 469762048,
+    "childSeconds": 105,
+    "expectedRetainedBytes": 1500000000,
+    "hostRamBytes": 536870912,
+    "peakIncludingRetainedBudgetBytes": 4362076160,
+    "perCohortSeconds": 600,
+    "perSessionRetainedShardBytes": 16777216,
+    "perSessionSeconds": 120,
+    "retainedBudgetBytes": 4294967296,
+    "retainedCheckSeconds": 30,
+    "scratchBytes": 67108864,
+    "scratchRootPolicy": "resource-helper-owned-default",
+    "sourceSeconds": 90,
+    "workers": 1
+   },
+   "actualGetAttempts": 1956,
+   "actualSolverOperations": 1304,
+   "rawSolverOutcomes": {
+    "accepted": 1163,
+    "rejected": 141,
+    "duplicates": 0
+   }
+  },
+  {
+   "reference": "E063",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-20261107-once/continuation-released-plan.json",
+    "bytes": 384239,
+    "sha256": "acd62146c0be06a26014feae543d07beb86650b854c1c5d1b1c7c288d92a469c"
+   },
+   "allocationId": "g42-unspent-typed-pool-20261107-once",
+   "candidateAllowance": 2288,
+   "attemptAllowance": 3432,
+   "decodedByteAllowance": 1199570944,
+   "resources": {
+    "childRamBytes": 469762048,
+    "childSeconds": 105,
+    "expectedRetainedBytes": 2300000000,
+    "hostRamBytes": 536870912,
+    "peakIncludingRetainedBudgetBytes": 4362076160,
+    "perCohortSeconds": 600,
+    "perSessionRetainedShardBytes": 16777216,
+    "perSessionSeconds": 120,
+    "retainedBudgetBytes": 4294967296,
+    "retainedCheckSeconds": 30,
+    "scratchBytes": 67108864,
+    "scratchRootPolicy": "resource-helper-owned-default",
+    "sourceSeconds": 90,
+    "workers": 1
+   },
+   "actualGetAttempts": 60,
+   "actualSolverOperations": 40,
+   "rawSolverOutcomes": {
+    "accepted": 34,
+    "rejected": 6,
+    "duplicates": 0
+   }
+  },
+  {
+   "reference": "E064",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-2248-20261107-once/continuation-released-plan.json",
+    "bytes": 379810,
+    "sha256": "d90978c3f0607daca8c243f8de33002e1d335f5024ac70d258d343863df2622f"
+   },
+   "allocationId": "g42-unspent-typed-pool-2248-20261107-once",
+   "candidateAllowance": 2248,
+   "attemptAllowance": 3372,
+   "decodedByteAllowance": 1178599424,
+   "resources": {
+    "childRamBytes": 469762048,
+    "childSeconds": 105,
+    "expectedRetainedBytes": 2300000000,
+    "hostRamBytes": 536870912,
+    "peakIncludingRetainedBudgetBytes": 4362076160,
+    "perCohortSeconds": 600,
+    "perSessionRetainedShardBytes": 16777216,
+    "perSessionSeconds": 120,
+    "retainedBudgetBytes": 4294967296,
+    "retainedCheckSeconds": 30,
+    "scratchBytes": 67108864,
+    "scratchRootPolicy": "resource-helper-owned-default",
+    "sourceSeconds": 90,
+    "workers": 1
+   },
+   "actualGetAttempts": 1416,
+   "actualSolverOperations": 944,
+   "rawSolverOutcomes": {
+    "accepted": 776,
+    "rejected": 168,
+    "duplicates": 0
+   }
+  },
+  {
+   "reference": "E065",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase01-960-20261107-once/phase01-released-plan.json",
+    "bytes": 222859,
+    "sha256": "8ef9190a5e5a1943cc8b9f9e8b2728c41085d3bc502541cda5920a5f170c0f0f"
+   },
+   "allocationId": "scheme-breadth30-phase01-960-20261107-once",
+   "candidateAllowance": 960,
+   "attemptAllowance": 1440,
+   "decodedByteAllowance": 503316480,
+   "resources": {
+    "childRamBytes": 469762048,
+    "childSeconds": 105,
+    "expectedRetainedBytes": 1800000000,
+    "hostRamBytes": 536870912,
+    "peakIncludingRetainedBudgetBytes": 4362076160,
+    "perCohortSeconds": 600,
+    "perSessionRetainedShardBytes": 33554432,
+    "perSessionSeconds": 120,
+    "retainedBudgetBytes": 4294967296,
+    "retainedCheckSeconds": 30,
+    "scratchBytes": 67108864,
+    "scratchRootPolicy": "resource-helper-owned-default",
+    "sourceSeconds": 90,
+    "workers": 1
+   },
+   "actualGetAttempts": 950,
+   "actualSolverOperations": 632,
+   "rawSolverOutcomes": {
+    "accepted": 477,
+    "rejected": 155,
+    "duplicates": 0
+   }
+  },
+  {
+   "reference": "E066",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase01c-320-20261107-once/phase01c-released-plan.json",
+    "bytes": 107221,
+    "sha256": "37ae77dd22b7fd9bc6ce656ba630ab71536bcd5d399e7bb8a4db73ff21707eed"
+   },
+   "allocationId": "scheme-breadth30-phase01c-320-20261107-once",
+   "candidateAllowance": 320,
+   "attemptAllowance": 480,
+   "decodedByteAllowance": 167772160,
+   "resources": {
+    "childRamBytes": 469762048,
+    "childSeconds": 105,
+    "expectedRetainedBytes": 650000000,
+    "hostRamBytes": 536870912,
+    "peakIncludingRetainedBudgetBytes": 1677721600,
+    "perCohortSeconds": 600,
+    "perSessionRetainedShardBytes": 33554432,
+    "perSessionSeconds": 120,
+    "retainedBudgetBytes": 1610612736,
+    "retainedCheckSeconds": 30,
+    "scratchBytes": 67108864,
+    "scratchRootPolicy": "resource-helper-owned-default",
+    "sourceSeconds": 90,
+    "workers": 1
+   },
+   "actualGetAttempts": 480,
+   "actualSolverOperations": 320,
+   "rawSolverOutcomes": {
+    "accepted": 238,
+    "rejected": 82,
+    "duplicates": 0
+   }
+  },
+  {
+   "reference": "E067",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02-960-20261107-once/phase02-released-plan.json",
+    "bytes": 223794,
+    "sha256": "a9eab779b2dbcfac07f1409cf5f81a3ef0abecfc69b7bc558c5680f96b8cf39d"
+   },
+   "allocationId": "scheme-breadth30-phase02-960-20261107-once",
+   "candidateAllowance": 960,
+   "attemptAllowance": 1440,
+   "decodedByteAllowance": 503316480,
+   "resources": {
+    "childRamBytes": 469762048,
+    "childSeconds": 105,
+    "expectedRetainedBytes": 1800000000,
+    "hostRamBytes": 536870912,
+    "peakIncludingRetainedBudgetBytes": 4362076160,
+    "perCohortSeconds": 600,
+    "perSessionRetainedShardBytes": 33554432,
+    "perSessionSeconds": 120,
+    "retainedBudgetBytes": 4294967296,
+    "retainedCheckSeconds": 30,
+    "scratchBytes": 67108864,
+    "scratchRootPolicy": "resource-helper-owned-default",
+    "sourceSeconds": 90,
+    "workers": 1
+   },
+   "actualGetAttempts": 143,
+   "actualSolverOperations": 95,
+   "rawSolverOutcomes": {
+    "accepted": 71,
+    "rejected": 23,
+    "duplicates": 0
+   }
+  },
+  {
+   "reference": "E068",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02c-864-20261107-once/phase02c-released-plan.json",
+    "bytes": 211226,
+    "sha256": "5e9fdc2416eef1ebd0f5575d8d465e8d06e39ef4667ff6f3bfbc3bc98bba6b90"
+   },
+   "allocationId": "scheme-breadth30-phase02c-864-20261107-once",
+   "candidateAllowance": 864,
+   "attemptAllowance": 1296,
+   "decodedByteAllowance": 452984832,
+   "resources": {
+    "childRamBytes": 469762048,
+    "childSeconds": 105,
+    "expectedRetainedBytes": 1800000000,
+    "hostRamBytes": 536870912,
+    "peakIncludingRetainedBudgetBytes": 3288334336,
+    "perCohortSeconds": 600,
+    "perSessionRetainedShardBytes": 33554432,
+    "perSessionSeconds": 120,
+    "retainedBudgetBytes": 3221225472,
+    "retainedCheckSeconds": 30,
+    "scratchBytes": 67108864,
+    "scratchRootPolicy": "resource-helper-owned-default",
+    "sourceSeconds": 90,
+    "workers": 1
+   },
+   "actualGetAttempts": 1031,
+   "actualSolverOperations": 687,
+   "rawSolverOutcomes": {
+    "accepted": 517,
+    "rejected": 169,
+    "duplicates": 0
+   }
+  },
+  {
+   "reference": "E069",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/phase03-released-plan.json",
+    "bytes": 223602,
+    "sha256": "e5f0e1682f114bbeb06e0d8c8d1884cbf36f2f5d67a02726dbfd3838fd1059b7"
+   },
+   "allocationId": "scheme-breadth30-phase03-960-20261107-once",
+   "candidateAllowance": 960,
+   "attemptAllowance": 1440,
+   "decodedByteAllowance": 503316480,
+   "resources": {
+    "childRamBytes": 469762048,
+    "childSeconds": 105,
+    "expectedRetainedBytes": 2000000000,
+    "hostRamBytes": 536870912,
+    "peakIncludingRetainedBudgetBytes": 4362076160,
+    "perCohortSeconds": 600,
+    "perSessionRetainedShardBytes": 33554432,
+    "perSessionSeconds": 120,
+    "retainedBudgetBytes": 4294967296,
+    "retainedCheckSeconds": 30,
+    "scratchBytes": 67108864,
+    "scratchRootPolicy": "resource-helper-owned-default",
+    "sourceSeconds": 90,
+    "workers": 1
+   },
+   "actualGetAttempts": 1440,
+   "actualSolverOperations": 960,
+   "rawSolverOutcomes": {
+    "accepted": 716,
+    "rejected": 244,
+    "duplicates": 0
+   }
+  }
+ ],
+ "distributionScope": {
+  "source": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/coverage.json",
+  "basis": "Exact observed source VG/AG/context/paint/upholstery/selection categories; finite issued plans, not an invented advance semantic quota.",
+  "vgCodes": 43,
+  "agCodes": 26,
+  "groupsPreserved": 1562,
+  "observedTokensPreserved": 4522,
+  "paintCodes": 22,
+  "upholsteryCodes": 33,
+  "selectedRangeCounts": {
+   "F70": 5396,
+   "G21": 430,
+   "G26": 214,
+   "G42": 2408,
+   "G61": 341,
+   "U10": 222,
+   "U11": 989
+  },
+  "semanticModelBodyPowertrain": "unknown across the10000source inventory; raw range spelling does not establish semantic classes.",
+  "q13": "No corpus VIN/five-WMI distribution requirement; VIN qualification belongs to delivered/current cars. F77 scheme-model-line coverage is separate.",
+  "selection": "Preserve8051baseline;366novelty additions plus1583hash-ordered additions=1949; retain all1562observed groups and4522tokens."
+ },
+ "exactRecoveryLimits": [
+  {
+   "measure": "53rd interrupted200solver outcome and its accepted/rejected/duplicate classification",
+   "status": "irrecoverable from retained run evidence",
+   "evidence": "receipt.json records53solver attempts,52accepted callbacks,1missing callback; source checkpoint and full binding artifacts were lost. Never replace this outcome with zero or grant capacity.",
+   "reference": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-batch200-2026-11-07/receipt.json"
+  },
+  {
+   "measure": "Exact overall historical source traffic including original dated capture acquisition and earlier diagnostics",
+   "status": "outside reconciled32-allocation scope; not asserted",
+   "evidence": "admission-proof.json is a zero-source replay/capture admission and does not supply the original acquisition traffic. Earlier bootstrap-only diagnostics were not counted as cohort collection scopes."
+  },
+  {
+   "measure": "One exact whole-run source-active elapsed duration, wall duration and combined budget percentage",
+   "status": "not recoverable as one comparable value from these retained timing fields",
+   "evidence": "Main child elapsedMs sums6960134 but excludes some preparation/proof/reservation time. phase01c receipt1586.701568584 is original global-phase time; independent continuation time294.666675584. phase02c original1074.821964083 versus continuation629.599782083. Typed1225.7653777599335 is since original reservation. Interrupted200retains supervisor119.241270666s but loses final source checkpoint. Fields stay named and scoped; no sum or renewed aggregate allowance."
+  }
+ ],
+ "failureAndReplayReferences": [
+  {
+   "reference": "E017",
+   "pin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/breadth30-phase01-actual-interruption-audit.json",
+    "bytes": 31004,
+    "sha256": "cbb46cf59de1dcf372be9264fe23aff401b08cc166a3d736af948b121b4f9d3c"
+   }
+  },
+  {
+   "reference": "E018",
+   "pin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/breadth30-phase01c-actual-completion-audit.json",
+    "bytes": 16716,
+    "sha256": "43aaa42d7fd709b53089abfe59ff91b6692f625adb048807849ef9bbad29391d"
+   }
+  },
+  {
+   "reference": "E019",
+   "pin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/breadth30-phase02-actual-interruption-audit.json",
+    "bytes": 9654,
+    "sha256": "5f7a5614f53828bd3b94a5ef5eafe52d4f6cc43306610dfe2fba43917d2139ad"
+   }
+  },
+  {
+   "reference": "E020",
+   "pin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/breadth30-phase02c-actual-interruption-audit.json",
+    "bytes": 34146,
+    "sha256": "6af7d6cffcac3b81c00b5958c5e105f84e0fe4c07a892bc82255bd8cae53eb2b"
+   }
+  },
+  {
+   "reference": "E021",
+   "pin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/breadth30-phase03-actual-completion-audit.json",
+    "bytes": 42572,
+    "sha256": "c8a002ba7f78790c2ccf919c04ba355c753fe25ab05c8f7202fb41c228714b27"
+   }
+  },
+  {
+   "reference": "E072",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/staged-semantic-receipt.json",
+    "bytes": 5116,
+    "sha256": "664d49a02c18f11623b6197ccf848ce844e54ec2cc619ed0a36e2ab47a7e4d9a"
+   }
+  },
+  {
+   "reference": "E073",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/publish-restart-receipt.json",
+    "bytes": 822,
+    "sha256": "d571c0f65efe45143a95c9926e6af9845286a1ea515a57fc2f03f7d99dcdbcaa"
+   }
+  },
+  {
+   "reference": "E074",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/rollback-receipt.json",
+    "bytes": 1269,
+    "sha256": "46068f60a1b029b902452151eccc39b532a26bd9187660ebfa44c77a56e5c7a4"
+   }
+  },
+  {
+   "reference": "E075",
+   "pin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/offline-proof-summary.json",
+    "bytes": 1304,
+    "sha256": "2c0f3241701cc0f89b20c6d6207f09ccb096e8d31b145f8ffc3924fa14b208f5"
+   }
+  },
+  {
+   "reference": "E078",
+   "pin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/receipt.json",
+    "bytes": 2037,
+    "sha256": "28992fba7569333ac12b88baabef9a148d1787c3e591cc0e739c8209c2d63c6a"
+   }
+  },
+  {
+   "reference": "E079",
+   "pin": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/continuation-live-proof-2026-11-07/final-receipt.json",
+    "bytes": 14701,
+    "sha256": "e4fae0fdb86df0a8302b2b9ab0bf3a0c1dbc75d9524b55ff1a67e795aec6b910"
+   }
+  }
+ ],
+ "existingIdentityEvidence": {
+  "pins": [
+   {
+    "path": "/Users/usget/Claude/vehicle-matcher/scripts/gcsp/collect-fleet.mjs",
+    "bytes": 61807,
+    "sha256": "ba3864cee32f480facde57a2d2c9dbf944d571878bb2a9cece220955357ab1de"
+   },
+   {
+    "path": "/Users/usget/Claude/vehicle-matcher/scripts/gcsp/collection-session.mjs",
+    "bytes": 34621,
+    "sha256": "bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790"
+   },
+   {
+    "path": "/Users/usget/Claude/vehicle-matcher/server/test/gcsp-fleet-collector.test.js",
+    "bytes": 88994,
+    "sha256": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88"
+   },
+   {
+    "path": "/Users/usget/Claude/vehicle-matcher/server/test/gcsp-bmw-source-batch.test.js",
+    "bytes": 25172,
+    "sha256": "2aeadfd650d8b8c79c7e559753d9530dcf885054d66c6e0fe9c8508ad2f6b252"
+   },
+   {
+    "path": "/Users/usget/Claude/vehicle-matcher/server/test/gcsp-fleet-integration.test.js",
+    "bytes": 7187,
+    "sha256": "04cd2865d5417ae76936a444927307ce2adabf88b724af48b8847a7c00e99acb"
+   }
+  ],
+  "compositeScopedTestEvidence": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-optional-axis-implementation-2026-11-07/integration-validation.json",
+  "collectorAndSourceTestsReused": 133,
+  "currentTestAndSessionPinsMatchRecordedIdentity": true,
+  "testsRunNow": 0,
+  "401403429Boundary": "server/test/gcsp-fleet-collector.test.js:198 and:598; durable stop/no retry/no advancing candidate. Source-batch continuation durable refusal test:261. These are retained scoped test evidence, not an actual expired upstream capability run.",
+  "failedActivation": "Existing .12publish/restart and rollback receipts retain8052priorrows/identities; corrupt-current-manifest and changed-supplement recover exact.11manifest77f4dc0ad4b88d0c3d233e4e5f8634b07f105461a52ef7d534ffa8fe5b6155ab and then restore exact.12.",
+  "cachedReplay": "Existing offline-proof-summary matches10002direct/retained/localHTTPreferences with0errors at those boundaries;2707configured-consumer failures remain deferred/unfixed. StrictCLI incomplete; native proof unrun.",
+  "expiredAccessLimit": "No real expired-access run against the published10kstore is retained here. Existing refusal tests plus separate immutable-stage/rollback proofs establish component boundaries; a combined live expiry assertion is not invented.",
+  "cacheDefectPreserved": "Existing F59Medium bootstrap cache-refetch defect remains deferred/unfixed; actual continuation has10GETs/0cachehits and completed restart0calls. This does not undo exact canonical identity replay evidence."
+ },
+ "metadataPins": [
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/breadth30-phase01-actual-interruption-audit.json",
+   "bytes": 31004,
+   "sha256": "cbb46cf59de1dcf372be9264fe23aff401b08cc166a3d736af948b121b4f9d3c"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/breadth30-phase01c-actual-completion-audit.json",
+   "bytes": 16716,
+   "sha256": "43aaa42d7fd709b53089abfe59ff91b6692f625adb048807849ef9bbad29391d"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/breadth30-phase02-actual-interruption-audit.json",
+   "bytes": 9654,
+   "sha256": "5f7a5614f53828bd3b94a5ef5eafe52d4f6cc43306610dfe2fba43917d2139ad"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/breadth30-phase02c-actual-interruption-audit.json",
+   "bytes": 34146,
+   "sha256": "6af7d6cffcac3b81c00b5958c5e105f84e0fe4c07a892bc82255bd8cae53eb2b"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/breadth30-phase03-actual-completion-audit.json",
+   "bytes": 42572,
+   "sha256": "c8a002ba7f78790c2ccf919c04ba355c753fe25ab05c8f7202fb41c228714b27"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/continuation-live-proof-2026-11-07/final-receipt.json",
+   "bytes": 14701,
+   "sha256": "e4fae0fdb86df0a8302b2b9ab0bf3a0c1dbc75d9524b55ff1a67e795aec6b910"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/receipt.json",
+   "bytes": 2037,
+   "sha256": "28992fba7569333ac12b88baabef9a148d1787c3e591cc0e739c8209c2d63c6a"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/completion-assessment-2026-11-07/assessment.json",
+   "bytes": 20769,
+   "sha256": "41694e671306a01c138d203ab74ab9470023a4389b66c49ccff88b07d462a501"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/continuation-live-proof-2026-11-07/final-receipt.json",
+   "bytes": 14701,
+   "sha256": "e4fae0fdb86df0a8302b2b9ab0bf3a0c1dbc75d9524b55ff1a67e795aec6b910"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-1f7e-core01-solver-2026-11-07/receipt.json",
+   "bytes": 1631,
+   "sha256": "2fe74753c797bebb342f98aba0029753fb776f81ab4e00a60354739d94f2d6bf"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-1f7e-core02-solver-2026-11-07/receipt.json",
+   "bytes": 1631,
+   "sha256": "343ab0c3c461126a07a84179ec132f3e37a2dd5797be5c2b4c269c7fef1edb9c"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-1f7e-core03-solver-2026-11-07/receipt.json",
+   "bytes": 1631,
+   "sha256": "13d37fe30d6ab67c421105f3b388e5b2f4c0c1057fde0c576991f1f8b05e363d"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-1f7e-core04-solver-2026-11-07/receipt.json",
+   "bytes": 1628,
+   "sha256": "24288a5d8cf9c3e323c48625552b260b16582a0ed3d085d016e2c70938439f76"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-1f7e-first32-solver-2026-11-07/receipt.json",
+   "bytes": 1636,
+   "sha256": "7b266e483c985e84af14ed77e3df726bc76b9fdd0e5c8384d7a6527e9f9c4b28"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-first8-solver-2026-11-07/receipt.json",
+   "bytes": 1616,
+   "sha256": "f60e0f3ddb9e323577c8aae555f38d90ee10698db16444e17c93b91d4fdd9dc8"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-model-breadth-pilot-plan-2026-11-07/series-receipt.json",
+   "bytes": 12301,
+   "sha256": "631868bd49c1aa356b00e255525abb29ba4ab0d56185b96f8e8a59f1f900a84f"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/f70-optional-axis-implementation-2026-11-07/integration-validation.json",
+   "bytes": 8543,
+   "sha256": "caac2cbc4b216d4224e49f2667f4aa11196a0f57610660e5a051cf3add4769c8"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/g42-typed-pilot48-2026-11-07/series-receipt.json",
+   "bytes": 18104,
+   "sha256": "1920c6f25f8d43d68e849f1c37e08b0c027b2687d5d884169db18b5c1868fe00"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/scheme-breadth-typed-pilot48-2026-11-07/series-receipt.json",
+   "bytes": 18471,
+   "sha256": "2a9d412eda97c0ef120d2a40af5d027c48704efd345d45daa4e88a8da200b14f"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq59/source-admission-2026-11-07/admission-proof.json",
+   "bytes": 3097,
+   "sha256": "7152bd019ef6f0e6c246888983b72ce895bdac515b992c33b09327c8621b2819"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/README.md",
+   "bytes": 19737,
+   "sha256": "7cace25cb92b5755682a35fa09976c0610eb5396a9760e9d1f9e9adf2efbe726"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/coverage.json",
+   "bytes": 45015,
+   "sha256": "7cd8ed13aeee81a9f5719457ef1101c68e40e8a0ac9cb2a1ead77e03b69a7801"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/evidence.json",
+   "bytes": 24239,
+   "sha256": "2c8a7490aa23c603ac60b099f67b746976f48e51f5fe03ac49cf8a9bbc846ad7"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/operations.json",
+   "bytes": 75173,
+   "sha256": "32d3b29e740a23662073e335dc23c84e68d079be3a83982e5686c4085d251e89"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/references.json",
+   "bytes": 34395,
+   "sha256": "e369161fd7c4b8b4e033ff0efdfabf574122bf968cd350a37e8b7bdc844d4a9a"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/exact10000-closeout-2026-11-07/validation.json",
+   "bytes": 9938,
+   "sha256": "10c2fd622dcf9b23130bc3d8574d49bdf74159850ef2d9033c41771aa7d01f28"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-batch200-2026-11-07/receipt.json",
+   "bytes": 1944,
+   "sha256": "7f4c8f0ce6bfdacdbcbb8618c6a184896c62bbf88f402ceaeb4db613caf35e26"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-batch32-2026-11-07/receipt.json",
+   "bytes": 1632,
+   "sha256": "f6c356779bdba539ce0a4d2cac1b90a64adcd6693092f161e71f8fc4f8b12547"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk01/receipt.json",
+   "bytes": 1640,
+   "sha256": "1f4243c7c542ade61770361318178cd31aa3609acf7153f395270d88c82d4bcc"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk02/receipt.json",
+   "bytes": 1639,
+   "sha256": "3b72bf16419235ddc59629ad801f2b4de4bebdca30b07e8c649a00888fa1e2a3"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk03/receipt.json",
+   "bytes": 1641,
+   "sha256": "a119358851bb0491c43481853dc17e1ed1cf1bb168704bf071cde5bb5addf974"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk04/receipt.json",
+   "bytes": 1643,
+   "sha256": "dbba7c13f4b01714675fe1bf83ab1028bc910a71e15176aaa293b53f4b2809db"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk05/receipt.json",
+   "bytes": 1643,
+   "sha256": "28a0f69bd40bd29b8f606431f83b1820d5ed74f3d4c748a1babd108975d05b05"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk06/receipt.json",
+   "bytes": 1641,
+   "sha256": "a774231d66ed684c806f79f69eefe0e7cb57993720dc4ff83b3c37f929c67b23"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk07/receipt.json",
+   "bytes": 1643,
+   "sha256": "57fa994f78decde3734a5fdcd9e679cae06c5743b98d69f92c3648cbf83cd85c"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk08/receipt.json",
+   "bytes": 1643,
+   "sha256": "3643f556cf92cd6ac55efcf667a761c4b0a6a3b2e364f65e7d54e2664e6a7b24"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk09/receipt.json",
+   "bytes": 1643,
+   "sha256": "06a82dac181ddfe02d067279dd3ce50127ea2068fd339882b7675debde45fddc"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/chunk10/receipt.json",
+   "bytes": 1643,
+   "sha256": "b121c15e4bad015f248b21fc934136f553b6d180682fa827d42a2a5cc93d2c83"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq61/source-pilot10x32-2026-11-07/final-receipt.json",
+   "bytes": 6399,
+   "sha256": "f3d8b32a55d9fb5299de7bc7c6b857853c078889b4071c262a6d283f3e21d707"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/scripts/gcsp/collect-fleet.mjs",
+   "bytes": 61807,
+   "sha256": "ba3864cee32f480facde57a2d2c9dbf944d571878bb2a9cece220955357ab1de"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/scripts/gcsp/collection-session.mjs",
+   "bytes": 34621,
+   "sha256": "bf86e5b92b35aae44d093f50c4085ed3628faac0592182092a5124cb04210790"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/server/test/gcsp-bmw-source-batch.test.js",
+   "bytes": 25172,
+   "sha256": "2aeadfd650d8b8c79c7e559753d9530dcf885054d66c6e0fe9c8508ad2f6b252"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/server/test/gcsp-fleet-collector.test.js",
+   "bytes": 88994,
+   "sha256": "b9b05f9fb7a0564d486c17ecb0be731c8af2ddb0d177543f9608b3a952739c88"
+  },
+  {
+   "path": "/Users/usget/Claude/vehicle-matcher/server/test/gcsp-fleet-integration.test.js",
+   "bytes": 7187,
+   "sha256": "04cd2865d5417ae76936a444927307ce2adabf88b724af48b8847a7c00e99acb"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/pilot-receipt.json",
+   "bytes": 2262,
+   "sha256": "c50abd33c258f91af3f8bd66295d25f2ab0d1a3ecfea73964df4aa3af368fedd"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/suffix-receipt.json",
+   "bytes": 40649,
+   "sha256": "e9c42a5848b115efc8746bdc542a6054d1a0b6de25df5af3be7aaba05044378d"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-model-axis790-20261107-once/suffix-released-plan.json",
+   "bytes": 139313,
+   "sha256": "cf17aaa976b81b0c310948b2a51879fff9e1d1c9ed442d7c411e67d07aa304f8"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-pilot32-20261107-once/pilot-receipt.json",
+   "bytes": 2301,
+   "sha256": "5dba09dca76a291dca69f299cc56bdbf3c319abfd25ea2318f34261105c969f7"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-pilot32-20261107-once/pilot-released-plan.json",
+   "bytes": 82207,
+   "sha256": "e7ed66ca38b213df3724455488c839ca1317eead348f675bbb40d63806e329bc"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix1156-20261107-once/suffix-receipt.json",
+   "bytes": 62966,
+   "sha256": "f06d7b56640d842a12bea9a25cbaabe1e6c2264be2ca22e0a3de3ae7c92d93ec"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix1156-20261107-once/suffix-released-plan.json",
+   "bytes": 406733,
+   "sha256": "fc27061f97dcd11dba56ec9163551b48b19d93f9166c11d8210d9b3d90fdc143"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix1556-20261107-once/suffix-receipt.json",
+   "bytes": 22116,
+   "sha256": "efdb9af4486c72f5446e0224e094639fb608e51de52727c1f8dbb93af25fefca"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix1556-20261107-once/suffix-released-plan.json",
+   "bytes": 471757,
+   "sha256": "4a73e30b87098727c6d3f4c699e81c3e7d686565aad7fd8029b5f02b10f22d12"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2660-20261107-once/suffix-receipt.json",
+   "bytes": 59553,
+   "sha256": "0ef6b11bee72e3565bcab2f58a869cd07395e0dbee130dc7df0b4c0daef3b38c"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2660-20261107-once/suffix-released-plan.json",
+   "bytes": 658270,
+   "sha256": "24d4931a994e5a1eafe4b326480f14f08541b57a9d15664aa0b04970b44d4051"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/suffix-receipt.json",
+   "bytes": 9377,
+   "sha256": "932541536f5cba93088f66a3428fbf2f79aa499f57225a1d77c0b97e063c70c9"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix2815-20261107-once/suffix-released-plan.json",
+   "bytes": 681667,
+   "sha256": "4c9784554578ab3f68c7d8d4c70eb21bc167f1a9012f5b6c528b1192b70d28fa"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/suffix-receipt.json",
+   "bytes": 43702,
+   "sha256": "00c68f39a446ce4fd1eb5065898cbafe05697c3552f69b495c899e41731863f7"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix3623-20261107-once/suffix-released-plan.json",
+   "bytes": 801258,
+   "sha256": "9b73f4af6a67bade3451af46f6af70c311eefa06b1e84d73e9719b94b3657af9"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix5535-20261107-once/suffix-receipt.json",
+   "bytes": 101575,
+   "sha256": "37d3bff987eda29c4df5e7e55fdcfb04b62e2d12ddef85f3789adc6e63ac8657"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-optional-axis-suffix5535-20261107-once/suffix-released-plan.json",
+   "bytes": 1086028,
+   "sha256": "60fb10a0ccd82b533914a443328d9dc6072e025e63eb7d22b6f5ccfa92a7a746"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-trim-package260-20261107-once/released-suffix-plan.json",
+   "bytes": 30696,
+   "sha256": "02ac91bc2109830afa2cb5b4c3b52751be75d81f27d0f0f48871df54cefa367d"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-trim-package260-20261107-once/suffix-receipt.json",
+   "bytes": 3401,
+   "sha256": "125d715c4f055523727df74ad8de72b097f828ccd814c6e7eb6db9980b1f1011"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-typed-axis1024-20261107-once/released-series-plan.json",
+   "bytes": 105424,
+   "sha256": "a4a6143b379475bd644f607c73a6715474dd3650d3c3ea23bfcaf1d7429ff501"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/f70-typed-axis1024-20261107-once/resume15-receipt.json",
+   "bytes": 11832,
+   "sha256": "b5ef19e593f0f7927b1df9529e2f10a818bc97c6ae144947199f781beb0c6d42"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/offline-proof-summary.json",
+   "bytes": 1304,
+   "sha256": "2c0f3241701cc0f89b20c6d6207f09ccb096e8d31b145f8ffc3924fa14b208f5"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/publish-restart-receipt.json",
+   "bytes": 822,
+   "sha256": "d571c0f65efe45143a95c9926e6af9845286a1ea515a57fc2f03f7d99dcdbcaa"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/rollback-receipt.json",
+   "bytes": 1269,
+   "sha256": "46068f60a1b029b902452151eccc39b532a26bd9187660ebfa44c77a56e5c7a4"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-10000-20261107/staged-semantic-receipt.json",
+   "bytes": 5116,
+   "sha256": "664d49a02c18f11623b6197ccf848ce844e54ec2cc619ed0a36e2ab47a7e4d9a"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-remaining-typed-pool-20261107-once/continuation-receipt.json",
+   "bytes": 25359,
+   "sha256": "361f0f64b1c9555350f20c070ea534c59c8c7a09693120a5ecb83ba2490c1d2c"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-remaining-typed-pool-20261107-once/continuation-released-plan.json",
+   "bytes": 452731,
+   "sha256": "7d9115de6679fb8ea48960457ab4d9c4a8d9dd63cb871190b650e8d0041bfc4e"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-1304-20261107-once/continuation-receipt.json",
+   "bytes": 69624,
+   "sha256": "bdfde569c7effadac2d3f1baf0403c2343a331eea1343c9b842d7cc3ee973419"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-1304-20261107-once/continuation-released-plan.json",
+   "bytes": 228602,
+   "sha256": "d4ababa11f992ede63e79ea27359ddd1d9c66d6327669cb385c26bbc9e709cdd"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-20261107-once/continuation-receipt.json",
+   "bytes": 2279,
+   "sha256": "ba54818086661fee855fc53650f8b6b4796263a5b0dab0d57408953fc5a1e28c"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-20261107-once/continuation-released-plan.json",
+   "bytes": 384239,
+   "sha256": "acd62146c0be06a26014feae543d07beb86650b854c1c5d1b1c7c288d92a469c"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-2248-20261107-once/continuation-receipt.json",
+   "bytes": 50095,
+   "sha256": "66e63f3bf55ce244c46dfb4762741ffcfc29bfb187c1f9baebf3e788babc745f"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/g42-unspent-typed-pool-2248-20261107-once/continuation-released-plan.json",
+   "bytes": 379810,
+   "sha256": "d90978c3f0607daca8c243f8de33002e1d335f5024ac70d258d343863df2622f"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase01-960-20261107-once/phase01-receipt.json",
+   "bytes": 34211,
+   "sha256": "bcfa8f2f53eff48f7b5e159aa6d32848ef517bb4560142113f6f0916c96febc6"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase01-960-20261107-once/phase01-released-plan.json",
+   "bytes": 222859,
+   "sha256": "8ef9190a5e5a1943cc8b9f9e8b2728c41085d3bc502541cda5920a5f170c0f0f"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase01c-320-20261107-once/phase01c-receipt.json",
+   "bytes": 17650,
+   "sha256": "7645e73a9a9cc30d33f6328db923dd98448843cd46a919d1d9951c78a929ccfc"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase01c-320-20261107-once/phase01c-released-plan.json",
+   "bytes": 107221,
+   "sha256": "37ae77dd22b7fd9bc6ce656ba630ab71536bcd5d399e7bb8a4db73ff21707eed"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02-960-20261107-once/phase02-receipt.json",
+   "bytes": 5283,
+   "sha256": "5af459fd6fc48273ac49552a267a84da13f151dc29a13f0a34842565d8a56915"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02-960-20261107-once/phase02-released-plan.json",
+   "bytes": 223794,
+   "sha256": "a9eab779b2dbcfac07f1409cf5f81a3ef0abecfc69b7bc558c5680f96b8cf39d"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02c-864-20261107-once/phase02c-receipt.json",
+   "bytes": 36851,
+   "sha256": "e98d04197ceb9f4fb2f6f4748c18868974be10e085d85051c060521c57180962"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02c-864-20261107-once/phase02c-released-plan.json",
+   "bytes": 211226,
+   "sha256": "5e9fdc2416eef1ebd0f5575d8d465e8d06e39ef4667ff6f3bfbc3bc98bba6b90"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/phase03-receipt.json",
+   "bytes": 51684,
+   "sha256": "baf6bc57a241c981961957a9db46f3a1bc184b7233bf7d09ffa6efb36b0bb6a5"
+  },
+  {
+   "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase03-960-20261107-once/phase03-released-plan.json",
+   "bytes": 223602,
+   "sha256": "e5f0e1682f114bbeb06e0d8c8d1884cbf36f2f5d67a02726dbfd3838fd1059b7"
+  }
+ ],
+ "validation": {
+  "jsonParsedAndCounterSumsReconciled": true,
+  "all20ParentGETAndByteAggregatesExactlyMatchSelectedChildCounters": true,
+  "all19AllocationAttemptBudgetsRespectedOnStatedPilotSuffixBasis": true,
+  "noPrimaryReceiptHashAssumption": "primarySha256 was initially tried as a receipt hash and rejected as the wrong artifact meaning; final proof uses newly observed exact receipt-byte pins and deterministic receipt-set digests, plus exact aggregate equality. No historical artifact corruption is asserted.",
+  "selectedChecks": "Metadata JSON parse, source-byte stability/hash, deterministic receipt selection/deduplication, counter arithmetic, admission bridge, plan budget basis, existing identity comparison, local links and git diff--check. No runtime tests.",
+  "changedPaths": "This new evidence directory only; existing closeout, plans, source, supervisor, root, status and map untouched.",
+  "scratchAllocatedBytes": 0,
+  "removedAllocationBytes": 0,
+  "compatibilityException": null,
+  "ownedChildren": 0,
+  "disposableLeftovers": [],
+  "unownedPycPreserved": true,
+  "storyAcceptance": false,
+  "newBuildGate": false,
+  "metadataFilesRead": 1610,
+  "metadataBytesRead": 10784900,
+  "status": "passed-scoped",
+  "metadataPinsRechecked": 87,
+  "metadataPinBytesRechecked": 8267979,
+  "childReceiptSetDigestsRechecked": 19,
+  "childReceiptBytesRechecked": 2516921,
+  "childReceiptFilesRechecked": 1523,
+  "localMarkdownLinksResolved": 2,
+  "jsonParseReadback": "passed",
+  "counterAndAdmissionArithmetic": "passed",
+  "retainedOutputLimitBytes": 131072
+ },
+ "reviewedAssessment": {
+  "commit": "b80b76ec16f603e0420eea7d7e5d7387ab0b7159",
+  "path": "docs/gcsp/evidence/f61-f63-readiness-2026-11-07/F61.md",
+  "bytes": 7143,
+  "sha256": "53a4a1e7c7f844bdacb87218594aba6ed6cb0dc721e2a79e74532881105c4288"
+ },
+ "counterReceiptSetRecipe": "For each root, canonical compact JSON of sorted objects{path(relative to root),bytes,sha256} for receipt.json selected from completed IDs, activeSession and implicit trim pilot. Session folders sessionNNN; chunk folders chunkNN. SHA-256 of that JSON is the per-root set digest. primarySha256 in parent rows is not assumed to hash receipt.json."
+}

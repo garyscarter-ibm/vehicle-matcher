@@ -42,6 +42,18 @@ test('representative keeps independent axes, typed practical answers, unknown ch
   assert.equal(saves[0].brief.essentials.charging.value, null);
   assert.match(main.textContent, /Technology Plus and Comfort Pack/); assert.match(main.textContent, /Needs confirmation/);
 });
+test('an accepted selection shows the saved brief read-only with labelled values and an order progress link', async (t) => {
+  const main = document.createElement('main'); document.body.append(main);
+  const editor = { ...structuredClone(fixture.edited.value), selection: { state: 'accepted', briefVersion: 1 } };
+  const teardown = mountBriefBody(main, { editor, transport: {} }); t.after(() => { teardown(); main.remove(); });
+  assert.equal(main.querySelector('h1').textContent, 'Your buddy found your car');
+  assert.equal(main.querySelectorAll('input, button, form, select, textarea').length, 0);
+  const text = main.textContent;
+  assert.match(text, /Comfort/); assert.match(text, /Do you need a towbar\?/); assert.match(text, /Not confirmed|Needs confirmation|Yes|No/);
+  assert.doesNotMatch(text, /\bseats\b|\bboot\b|could not be loaded|\u2014/);
+  assert.equal(main.querySelector('a').getAttribute('href'), '/gcsp-order-progress-live.html');
+  assert.ok(main.querySelector('[role=status]'));
+});
 test('teardown cancels late load and missing adapter gives unavailable body', async () => {
   const main = document.createElement('main'); let resolve;
   const teardown = mountBriefBody(main, { loadEditor: () => new Promise((r) => { resolve = r; }) }); await Promise.resolve(); teardown();
@@ -105,4 +117,43 @@ test('exact card projection preserves service evidence, identity and sourced ima
   assert.equal(member.media.caption, decision.snapshot.display.images[0].caption); assert.equal(member.actions.length, 0);
   assert.equal(member.terms[0].value, decision.terms.points.value); assert.equal(member.terms[0].allowance, decision.terms.allowanceInputs.allowance.value);
   assert.equal(member.decision.tradeOffs[0].score, decision.tradeOffs[0].score); assert.match(member.decision.tradeOffs[0].text, /Sportiness: 23%/);
+});
+const stale = { status: 'stale-run', reason: 'This request belongs to an earlier demonstration run.' };
+function assertRestarted(main, reloads) {
+  assert.match(main.textContent, /Demo restarted/); assert.match(main.textContent, /Reload the page to continue/);
+  assert.doesNotMatch(main.textContent, /stale-run|—|could not be loaded|Save failed|Preview unavailable/);
+  const buttons = main.querySelectorAll('button'); assert.equal(buttons.length, 1);
+  const [reload] = buttons; assert.equal(reload.type, 'button'); assert.equal(reload.disabled, false); assert.ok(reload.tabIndex >= 0);
+  reload.focus(); assert.equal(document.activeElement, reload); reload.click(); assert.equal(reloads.length, 1);
+}
+test('a stale-run editor load shows the restarted screen, not the load failure', async (t) => {
+  const main = document.createElement('main'); document.body.append(main); const reloads = []; let loads = 0;
+  const teardown = mountBriefBody(main, { reload: () => reloads.push(1), loadEditor: async () => { loads += 1; return stale; } });
+  t.after(() => { teardown(); main.remove(); }); await new Promise((r) => setTimeout(r, 0));
+  assertRestarted(main, reloads); assert.equal(loads, 1);
+});
+test('a stale-run preview shows the restarted screen and schedules no more previews', async (t) => {
+  const main = document.createElement('main'); document.body.append(main); const reloads = []; let previews = 0;
+  const teardown = mountBriefBody(main, { reload: () => reloads.push(1), editor: fixture.edited.value, transport: {
+    preview: async () => { previews += 1; return stale; }, saveDraft: async () => ({ status: 'unavailable' }), confirm: async () => ({ status: 'unavailable' }) } });
+  t.after(() => { teardown(); main.remove(); }); await settle();
+  assertRestarted(main, reloads); await settle(); assert.equal(previews, 1);
+});
+test('a stale-run save shows the restarted screen and never sends the confirmation', async (t) => {
+  const main = document.createElement('main'); document.body.append(main); const reloads = []; const drafts = []; let confirms = 0;
+  const teardown = mountBriefBody(main, { reload: () => reloads.push(1), editor: fixture.editor.value, transport: {
+    preview: async () => ({ status: 'unavailable' }), saveDraft: async (v) => { drafts.push(v); return stale; }, confirm: async () => { confirms += 1; return stale; } },
+    createCommandId: (kind) => `${kind}:test` });
+  t.after(() => { teardown(); main.remove(); }); await settle();
+  main.querySelector('[data-save-brief]').click(); await settle();
+  assertRestarted(main, reloads); await settle(); assert.equal(drafts.length, 1); assert.equal(confirms, 0);
+});
+test('a stale-run confirmation shows the restarted screen after one draft and one confirm', async (t) => {
+  const main = document.createElement('main'); document.body.append(main); const reloads = []; let drafts = 0; let confirms = 0;
+  const teardown = mountBriefBody(main, { reload: () => reloads.push(1), editor: fixture.editor.value, transport: {
+    preview: async () => ({ status: 'unavailable' }), saveDraft: async () => { drafts += 1; return { status: 'ok', value: { draftVersion: 1, baseBriefVersion: 0 } }; },
+    confirm: async () => { confirms += 1; return stale; } }, createCommandId: (kind) => `${kind}:test` });
+  t.after(() => { teardown(); main.remove(); }); await settle();
+  main.querySelector('[data-save-brief]').click(); await settle();
+  assertRestarted(main, reloads); await settle(); assert.deepEqual([drafts, confirms], [1, 1]);
 });

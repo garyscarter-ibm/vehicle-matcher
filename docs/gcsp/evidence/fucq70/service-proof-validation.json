@@ -1,0 +1,313 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-70",
+  "date": "2026-11-06",
+  "status": "PASS scoped exact actual66 memory service/HTTP/controller proof; story acceptance open",
+  "grant": {
+    "id": "fucq70-post-tally-73c6457-0033",
+    "dispatcherChat": "01a1ab10-6556-7211-92a0-0dd0345e3f0d",
+    "reviewReceipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq70-post-tally-grant-review-0033.json",
+    "scope": "Exactly one sanitised published supervisor command, fresh HostBudget/external ownership, independent strict cleanup/PID/listener audits; no automatic rerun or source repair."
+  },
+  "testedCommit": "73c645719f0536ff82e8004ade9b8844846ccef9",
+  "harnessSha256": "7a10812da0248ebedb1bd7f79e4a7e8970ee7ecb92feb46c6b07e1ea32eff4c2",
+  "probeSha256": "d5a629d1b34d2b8ed384e837b9c39822ad2c939b95f169fe28549949bb10e658",
+  "runToken": "9ec433dfe1b45edaad89566fa9931d66",
+  "launchArgv": [
+    "/usr/bin/env",
+    "-i",
+    "PATH=/usr/bin:/bin:/opt/homebrew/bin",
+    "TZ=UTC",
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-supervisor.py",
+    "run",
+    "--commit",
+    "73c645719f0536ff82e8004ade9b8844846ccef9",
+    "--harness-sha256",
+    "7a10812da0248ebedb1bd7f79e4a7e8970ee7ecb92feb46c6b07e1ea32eff4c2"
+  ],
+  "exitCode": 0,
+  "childExitCode": 0,
+  "counts": {
+    "cancelled": 0,
+    "fail": 0,
+    "pass": 6,
+    "skipped": 0,
+    "tests": 6,
+    "todo": 0
+  },
+  "namedCases": [
+    {
+      "number": 1,
+      "name": "actual66 issued claim \u2192 actual69 confirmed readback callback \u2192 review without another claim",
+      "passed": true
+    },
+    {
+      "number": 2,
+      "name": "actual66 confirmed release remains available with invalid local contacts for cancel/back/change",
+      "passed": true
+    },
+    {
+      "number": 3,
+      "name": "actual66 historical success replay cannot authorise continuation after exact clock expiry",
+      "passed": true
+    },
+    {
+      "number": 4,
+      "name": "actual66 HTTP202 pending claim/replay reconciles before same-operation resend and actual GET confirmation",
+      "passed": true
+    },
+    {
+      "number": 5,
+      "name": "actual66 HTTP202 release stays occupied past deadline until matching terminal GET, retaining invalid edits",
+      "passed": true
+    },
+    {
+      "number": 6,
+      "name": "actual identity/session isolation and competing review metadata readback fail closed without a new claim",
+      "passed": true
+    }
+  ],
+  "namedCaseEvidence": "Exact six-case manifest selection and complete checkpoint plus supervisor-verified TAP6/6, no skipped/cancelled/todo. Eight-setup marker was enforced by supervisor. Successful raw TAP was disposable and is not reconstructed; no per-case duration is claimed.",
+  "runtimeSetups": {
+    "planned": 8,
+    "verified": 8,
+    "marker": "FUCQ70_SETUPS=8",
+    "afterHook": "unchanged and passed"
+  },
+  "verifiedBehaviors": [
+    "Genuine browse-issued input, actual69 confirmed GET callback to actual70 review with one claim; metadata save/review/reopen without deadline renewal.",
+    "Cancel/back/change remain available with invalid contacts, confirmed terminal authority and released stock.",
+    "Historical claim/review replay cannot authorise continuation after exact presenter-clock expiry; immutable lost-response retry preserves command.",
+    "Actual202 pending claim, malformed acknowledgement refusal, reconcile-before-same-operation resend and current GET confirmation.",
+    "Pending release remains occupying beyond deadline until matching terminal readback; local invalid input retained.",
+    "Genuine session/origin/forged-input/privacy checks plus real competing metadata save fail closed; exact POST statuses[403], no continuation, unchanged domain/one claim and occupancy."
+  ],
+  "inputs": {
+    "applicationModules": 46,
+    "fileInputs": 6,
+    "producerCopies": 8,
+    "dependencyPackages": 14,
+    "dependencyFiles": 68,
+    "sourcePins": {
+      "FUCQ-66": "eb5a677b37c486e3da7c4547803f739e22df8ac3",
+      "FUCQ-69": "8a3e3bf1c7df44f13f8d432ffc4e9b8598161bbf"
+    },
+    "applicationGraphMatches": true,
+    "strictLoaderRejections": 0,
+    "copiedProducerHashesUnchanged": true,
+    "sourceAndDependenciesUnchanged": true,
+    "runtimeInputsUnchanged": true
+  },
+  "resources": {
+    "limits": {
+      "workers": 1,
+      "wallSeconds": 120,
+      "rssBytes": 805306368,
+      "scratchBytes": 134217728,
+      "logBytes": 2097152,
+      "scratchRoot": "/private/tmp/test-stamp-shard-9ec433dfe1b45edaad89566fa9931d66",
+      "externalReceiptDirectory": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66",
+      "allocation": "none; deterministic root is planned, not created or reserved"
+    },
+    "headroom": {
+      "active": 0,
+      "disk": 209867816960,
+      "free": 215236526080,
+      "low": false,
+      "parent": null,
+      "ram": 2938830848
+    },
+    "supervisorWallSeconds": 3.3541458749999995,
+    "childWallSeconds": 2.254755459,
+    "sampledAggregateRssBytes": 286687232,
+    "scratchPeakBytes": 201760,
+    "cleanup": {
+      "groupsAbsent": true,
+      "pidsAbsent": true,
+      "reservationAbsent": true,
+      "scratchAbsent": true
+    },
+    "independentAudit": {
+      "cleanupVerified": true,
+      "groupsAbsent": true,
+      "independentAuditProcess": {
+        "pid": 41119,
+        "start": "Fri Nov  6 01:22:05 2026"
+      },
+      "pidsAbsent": true,
+      "proofPassed": true,
+      "receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/9ec433dfe1b45edaad89566fa9931d66/receipt.json",
+      "reservationAbsent": true,
+      "scratchAbsent": true,
+      "sourceAndDependenciesStillMatch": true
+    },
+    "extendedAudit": {
+      "auditor": {
+        "pid": 41136,
+        "start": "Fri Nov  6 01:22:06 2026"
+      },
+      "boundListenerCheck": {
+        "absent": true,
+        "argv": [
+          "/usr/sbin/lsof",
+          "-nP",
+          "-a",
+          "-p",
+          "40469,40495,40499",
+          "-iTCP",
+          "-sTCP:LISTEN"
+        ],
+        "rc": 1,
+        "stderr": "",
+        "stdoutEmpty": true
+      },
+      "groups": [
+        {
+          "absent": true,
+          "pgid": 40495
+        }
+      ],
+      "kind": "fucq70-extended-cleanup-audit-v1",
+      "localSourceDependencyHashesMatch": true,
+      "pids": [
+        {
+          "currentStart": null,
+          "expectedStart": "Fri Nov  6 01:21:01 2026",
+          "numericPidAbsent": true,
+          "pid": 40469,
+          "startWasUnknown": false
+        },
+        {
+          "currentStart": null,
+          "expectedStart": "Fri Nov  6 01:21:02 2026",
+          "numericPidAbsent": true,
+          "pid": 40495,
+          "startWasUnknown": false
+        },
+        {
+          "currentStart": null,
+          "expectedStart": "Fri Nov  6 01:21:03 2026",
+          "numericPidAbsent": true,
+          "pid": 40499,
+          "startWasUnknown": false
+        }
+      ],
+      "proofCounts": {
+        "cancelled": 0,
+        "fail": 0,
+        "pass": 6,
+        "skipped": 0,
+        "tests": 6,
+        "todo": 0
+      },
+      "proofPassed": true,
+      "receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/9ec433dfe1b45edaad89566fa9931d66/receipt.json",
+      "registry": {
+        "lockHeldForRead": true,
+        "otherReservations": 0,
+        "path": "/Users/garycarter/.cache/agent-scaffolding/test-resources/reservations.json",
+        "strictJson": true,
+        "tokenAbsent": true
+      },
+      "scope": "All retained ownership, import-journal and process-group-leader PIDs, including any without a retained start identity. Listener inspection is limited to those owned/observed PIDs.",
+      "scratchAbsent": true,
+      "verified": true
+    },
+    "retainedAllocation": "Compact receipt/journal/checkpoint only; disposable scratch and process group removed, reservation released."
+  },
+  "exports": [
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106-passed/receipt.json",
+      "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/9ec433dfe1b45edaad89566fa9931d66/receipt.json",
+      "sha256": "8f505fc8124293779c94e28c7a39b3a4c2847a70ab45bafa8c012cf5ed40d1e3",
+      "bytes": 60194
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106-passed/independent-cleanup-audit.json",
+      "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/9ec433dfe1b45edaad89566fa9931d66/independent-cleanup-audit.json",
+      "sha256": "127831eb2f4c1ff703deb8898b00b31878067bcef3ac192405cd5c4abd90cb04",
+      "bytes": 380
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106-passed/extended-cleanup-audit.json",
+      "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/9ec433dfe1b45edaad89566fa9931d66/extended-cleanup-audit.json",
+      "sha256": "d1f942661a3e5b1852de566ae3f574c679a44e7824d24856348c40353d1b3393",
+      "bytes": 1370
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106-passed/observed-imports.json",
+      "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/9ec433dfe1b45edaad89566fa9931d66/observed-imports.json",
+      "sha256": "fd850ad969e46a2c961d1c0677d94fec3a6da62a2db82552cb5770cc760d10c5",
+      "bytes": 35658
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106-passed/checkpoint.json",
+      "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/9ec433dfe1b45edaad89566fa9931d66/checkpoints/bfa177529055a7c4fb9101d3032b09d65ba09f03a4a00154a50100cf29df6727.json",
+      "sha256": "d9e4236e2667b524942b5802fbc6641004713bd0fa5d671e6944eb1f41ddcf78",
+      "bytes": 1272
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106-passed/launch-plan.json",
+      "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/9ec433dfe1b45edaad89566fa9931d66/launch-plan.json",
+      "sha256": "ffa6820c55573bf2819a04beebb59efd0213f49b6367a0773c93ebcf18e38901",
+      "bytes": 9266
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106-passed/copied-source-after.json",
+      "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/9ec433dfe1b45edaad89566fa9931d66/copied-source-after.json",
+      "sha256": "09b1643d530851fafdf88bd1a7a765cc4ad1d0847160f3ac02c80cb26ea8047a",
+      "bytes": 859
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106-passed/ownership.json",
+      "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/9ec433dfe1b45edaad89566fa9931d66/ownership/9ec433dfe1b45edaad89566fa9931d66.json",
+      "sha256": "51ff95f1157091e9ccaad5a46112cc2521e358e230aa47badcd937d6964003eb",
+      "bytes": 723
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106-passed/dispatcher-final-audit.json",
+      "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq70-focused-pass-audit-0033.json",
+      "sha256": "4f3191be5ca574199592ee7aef8056ec7a7aeed63ae7fe4e79e90ebb453b4be7",
+      "bytes": 20423
+    }
+  ],
+  "retainedRunDirectory": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/9ec433dfe1b45edaad89566fa9931d66",
+  "priorRunResults": [
+    "docs/gcsp/evidence/fucq70/service-proof-result.json",
+    "docs/gcsp/evidence/fucq70/service-proof-registration-result.json",
+    "docs/gcsp/evidence/fucq70/service-proof-occupancy-result.json"
+  ],
+  "scopeLimits": [
+    "Synthetic locally released stock and controlled remote-stock protocol; not actual FUCQ-92 release production or a live provider.",
+    "Actual DOM-free69 onConfirmed callback only; rendered public callback/event and host wiring remain unproved.",
+    "No FUCQ-71 transactional intake/freeze/submission/order readback, FUCQ-103 central pending/clock/session composition, browser desktop/320px/keyboard evidence, native PostgreSQL or full-suite proof."
+  ],
+  "serviceIntegrationSlice": "complete only at its declared frozen66 memory-service/HTTP/controller boundary",
+  "remainingAcceptanceSlices": [
+    "submission-integration",
+    "visual",
+    "full",
+    "delivery"
+  ],
+  "dispatcherFinalReview": {
+    "status": "PASS accepted scoped actual66/69 memory-service/HTTP/controller boundary; story acceptance remains open",
+    "checks": 131,
+    "auditAt": "2026-11-06T01:24:18.903706+00:00",
+    "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq70-focused-pass-audit-0033.json",
+    "export": "docs/gcsp/evidence/fucq70/service-proof-run-20261106-passed/dispatcher-final-audit.json",
+    "sha256": "4f3191be5ca574199592ee7aef8056ec7a7aeed63ae7fe4e79e90ebb453b4be7",
+    "rawSuccessTapRetained": false,
+    "evidenceLimit": "Receipt/counts, exact selected case names, checkpoint and unchanged admitted supervisor enforcement retained. Original successful raw TAP was not retained and was not independently reparsed. No rerun to recreate it.",
+    "remainingAuthority": "Root retains final story acceptance, execution grants, Jira, claims and merges."
+  },
+  "priorScopedCounts": {
+    "metadata": "15/15",
+    "controller": "14/14",
+    "form": "7/7",
+    "uiRatchet": "44/44"
+  },
+  "storyBuilt": false
+}

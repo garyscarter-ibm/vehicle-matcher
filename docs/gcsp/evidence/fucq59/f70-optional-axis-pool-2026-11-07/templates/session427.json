@@ -1,0 +1,181 @@
+{
+  "schemaVersion": "1",
+  "planId": "f70-optional-axis5567-20261107-once-session427",
+  "version": "1",
+  "seed": "f70-actual790-optional-axis-direct-product-20261107",
+  "policyRead": {
+    "asOf": "2026-11-06T00:00:00.000Z",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "source": {
+    "id": "bmw-uk-public",
+    "version": "f59-model-axis-batch-20261107.v1",
+    "kind": "public-bmw-uk"
+  },
+  "context": {
+    "catalogueDate": "2026-11-01",
+    "market": "GB",
+    "locale": "en-GB",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05"
+  },
+  "models": [
+    "1F7C"
+  ],
+  "target": 8,
+  "candidateCount": 8,
+  "limits": {
+    "maxCandidates": 8,
+    "requestBudgets": {
+      "page": 1,
+      "settings": 1,
+      "discover": 1,
+      "options": 1,
+      "solve": 8
+    },
+    "maxAttempts": 1,
+    "operationTimeoutMs": 10000,
+    "deadlineMs": 120000,
+    "retryDelayMs": 0,
+    "concurrency": 1,
+    "cacheEntries": 16,
+    "cacheRetentionMs": 86400000,
+    "checkpointBytes": 4194304,
+    "imageRequests": 0,
+    "sourceAttempts": 12,
+    "sourceBytes": 4194304,
+    "responseBytes": 1048576
+  },
+  "captureVersion": "bmw-complete-selection.v1",
+  "qualificationDate": "2026-11-07",
+  "modelRegistration": {
+    "schemaVersion": "bmw-public-model-registration.v1",
+    "modelCode": "1F7C",
+    "agModelCode": "22GE",
+    "catalogueRangeKey": "F70",
+    "rawModelRange": "F70",
+    "aliases": [
+      "1"
+    ],
+    "market": "GB",
+    "locale": "en-GB",
+    "steering": "RL",
+    "catalogueDate": "2026-11-01",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05"
+  },
+  "lineRegistration": {
+    "lineKey": "M_PERFORMANCE_LINE",
+    "defaultModel": {
+      "modelCode": "1F7C",
+      "agModelCode": "22GE"
+    },
+    "includedIndex": 0,
+    "optionsQuery": {
+      "kind": "untrimmed"
+    }
+  },
+  "candidates": [
+    {
+      "candidateId": "candidate-d3620ecce0407df3844a7312",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0300",
+          "S01H5",
+          "S033F",
+          "S043U"
+        ],
+        "mandatoryElements": []
+      }
+    },
+    {
+      "candidateId": "candidate-326bb6b6e8956dba206e14cd",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C4W",
+          "S01HA",
+          "S043U"
+        ],
+        "mandatoryElements": []
+      }
+    },
+    {
+      "candidateId": "candidate-3cd634764055d3c796652838",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0490",
+          "S03NA",
+          "S043U",
+          "S07EV"
+        ],
+        "mandatoryElements": []
+      }
+    },
+    {
+      "candidateId": "candidate-96318c8e68231683d640c5f4",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C4P",
+          "S01H5",
+          "S07EW"
+        ],
+        "mandatoryElements": []
+      }
+    },
+    {
+      "candidateId": "candidate-807b008ff36e8a02209feb95",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0475",
+          "S01H8",
+          "S043U",
+          "S07EW"
+        ],
+        "mandatoryElements": []
+      }
+    },
+    {
+      "candidateId": "candidate-817122f64da08862287b39b7",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0C3Z",
+          "S01H8",
+          "S043U",
+          "S07EW"
+        ],
+        "mandatoryElements": []
+      }
+    },
+    {
+      "candidateId": "candidate-55639f7c4f7f2c635e726ecd",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0490",
+          "S01H8",
+          "S043U"
+        ],
+        "mandatoryElements": []
+      }
+    },
+    {
+      "candidateId": "candidate-31abfa03d33e60052ed74cb8",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C68",
+          "S01H5",
+          "S043U",
+          "S07EW"
+        ],
+        "mandatoryElements": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-70",
+  "date": "2026-11-06",
+  "status": "scoped 5/6 passed; final case failed probe POST tally; no retry",
+  "grant": {
+    "id": "fucq70-occupancy-b9ff9f0-0033",
+    "dispatcherChat": "01a1ab10-6556-7211-92a0-0dd0345e3f0d",
+    "reviewReceipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq70-occupancy-review-0033.json",
+    "scope": "One exact published supervisor run with fresh bounded HostBudget and independent cleanup audit; no source repair or automatic retry."
+  },
+  "testedCommit": "b9ff9f009ccb2d7469cfb87f5f543366c34d369f",
+  "harnessSha256": "ef9d883bb2d03b7d5d93d819f4bfd65e80130a7d515022313c33f2b874e8b354",
+  "runToken": "be80489a39220fe62ed2d08592a093a8",
+  "launchArgv": [
+    "/usr/bin/env",
+    "-i",
+    "PATH=/usr/bin:/bin:/opt/homebrew/bin",
+    "TZ=UTC",
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-supervisor.py",
+    "run",
+    "--commit",
+    "b9ff9f009ccb2d7469cfb87f5f543366c34d369f",
+    "--harness-sha256",
+    "ef9d883bb2d03b7d5d93d819f4bfd65e80130a7d515022313c33f2b874e8b354"
+  ],
+  "exitCode": 2,
+  "childExitCode": 1,
+  "supervisorIssue": "RuntimeError: Node proof process failed before acceptance: rc=1; see bounded failure log and observed-imports when present",
+  "counts": {
+    "cancelled": 0,
+    "fail": 1,
+    "pass": 5,
+    "skipped": 0,
+    "tests": 6,
+    "todo": 0
+  },
+  "namedCases": [
+    {
+      "number": 1,
+      "name": "actual66 issued claim \u2192 actual69 confirmed readback callback \u2192 review without another claim",
+      "passed": true
+    },
+    {
+      "number": 2,
+      "name": "actual66 confirmed release remains available with invalid local contacts for cancel/back/change",
+      "passed": true
+    },
+    {
+      "number": 3,
+      "name": "actual66 historical success replay cannot authorise continuation after exact clock expiry",
+      "passed": true
+    },
+    {
+      "number": 4,
+      "name": "actual66 HTTP202 pending claim/replay reconciles before same-operation resend and actual GET confirmation",
+      "passed": true
+    },
+    {
+      "number": 5,
+      "name": "actual66 HTTP202 release stays occupied past deadline until matching terminal GET, retaining invalid edits",
+      "passed": true
+    },
+    {
+      "number": 6,
+      "name": "actual identity/session isolation and competing review metadata readback fail closed without a new claim",
+      "passed": false
+    }
+  ],
+  "runtimeSetups": {
+    "planned": 8,
+    "observedMarker": "FUCQ70_SETUPS=8",
+    "afterHookPassed": true
+  },
+  "reached": {
+    "applicationModules": 46,
+    "applicationGraphMatches": true,
+    "strictRejections": 0,
+    "registrationEvents": [
+      {
+        "parent": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/",
+        "pid": 33134,
+        "sha256": "96933bd1378aa6b243865bb81b9dd8ce9aec2823e42cadfec5610dd81a530052",
+        "specifier": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-loader.mjs",
+        "stage": "resolve-loader-registration",
+        "target": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-loader.mjs"
+      }
+    ],
+    "copiedProducerHashesUnchanged": true
+  },
+  "diagnosis": {
+    "reproduction": "Exact b9ff9f0 command once: first five named cases passed, all eight setups completed, sixth failed posts(claim/review).length expected0/actual1 at probe line340.",
+    "verifiedEvidence": "The sixth case deliberately issued one unapproved-origin claim/review POST and asserted 403 before the race. posts() counts every matching POST regardless of response status. The subsequent real competing save ran, continue returned conflict, conflict flag was true, local input remained and canContinue was false before the failed count.",
+    "conclusion": "The observed total of one is already accounted for by that deliberately denied 403 request. This is a probe tally error; it does not establish an extra successful transition or product regression. Full sixth-case acceptance remains failed.",
+    "sourceEvidence": [
+      {
+        "path": "server/test/gcsp-manual-review-actual66.proof.mjs",
+        "function": "posts(f,path)",
+        "observation": "Filters only method and path, without response-status or baseline distinction."
+      },
+      {
+        "path": "server/test/gcsp-manual-review-actual66.proof.mjs",
+        "test": 6,
+        "observation": "Deliberate forbidden-origin POST to claim/review returns403 before competing-metadata-save portion; later zero-total assertion includes it."
+      },
+      {
+        "path": "blocks/gcsp/manual-review/review-controller.js",
+        "observation": "continueReview stops when saveWithin returns conflict; no controller change authored."
+      }
+    ],
+    "unreachedAssertions": [
+      "onContinue length0 assertion following the failed POST count",
+      "stableDomain equality assertion following the failed POST count",
+      "final claim POST count and occupancy helper"
+    ],
+    "nextCheck": "Dispatcher review of exact evidence. Any separately authorised tally correction must preserve deliberate403, immutable commands, no allowed review transition on the raced save, no continuation, stable domain and all six cases/eight setups. No correction or new run is part of this checkpoint.",
+    "basis": "Exact retained log/receipt and read-only probe/controller source inspection; unchanged product/helper bytes."
+  },
+  "resources": {
+    "limits": {
+      "workers": 1,
+      "wallSeconds": 120,
+      "rssBytes": 805306368,
+      "scratchBytes": 134217728,
+      "logBytes": 2097152,
+      "scratchRoot": "/private/tmp/test-stamp-shard-be80489a39220fe62ed2d08592a093a8",
+      "externalReceiptDirectory": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66",
+      "allocation": "none; deterministic root is planned, not created or reserved"
+    },
+    "headroom": {
+      "active": 0,
+      "disk": 209816186880,
+      "free": 215184896000,
+      "low": false,
+      "parent": null,
+      "ram": 3123625984
+    },
+    "supervisorWallSeconds": 3.3671324160000005,
+    "childWallSeconds": 2.2617505830000004,
+    "sampledAggregateRssBytes": 273383424,
+    "scratchPeakBytes": 201760,
+    "cleanup": {
+      "groupsAbsent": true,
+      "pidsAbsent": true,
+      "reservationAbsent": true,
+      "scratchAbsent": true
+    },
+    "independentAudit": {
+      "cleanupVerified": true,
+      "groupsAbsent": true,
+      "independentAuditProcess": {
+        "pid": 33405,
+        "start": "Fri Nov  6 01:09:18 2026"
+      },
+      "pidsAbsent": true,
+      "proofPassed": false,
+      "receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/be80489a39220fe62ed2d08592a093a8/receipt.json",
+      "reservationAbsent": true,
+      "scratchAbsent": true,
+      "sourceAndDependenciesStillMatch": true
+    }
+  },
+  "integrity": {
+    "sourceAndDependenciesUnchanged": true,
+    "runtimeInputsUnchanged": true,
+    "priorFailureEvidence": "Both original failed-run exports and result records preserved unchanged."
+  },
+  "exports": [
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106-occupancy/receipt.json",
+      "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/be80489a39220fe62ed2d08592a093a8/receipt.json",
+      "sha256": "51c434b356d89a15c5544ae9e2857a7387a2cdd5144660a472e5c051a762d29a",
+      "bytes": 60559
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106-occupancy/independent-cleanup-audit.json",
+      "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/be80489a39220fe62ed2d08592a093a8/independent-cleanup-audit.json",
+      "sha256": "59f360addf689c753df53711116c867920acdc7e3ad1a212ce2145abc5f3a4e4",
+      "bytes": 381
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106-occupancy/failure.txt",
+      "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/be80489a39220fe62ed2d08592a093a8/failure.log",
+      "sha256": "2942d57d3cc1e1036adf3ef7aa9443e914b3f1056478569e9abc4f031f7a1ccc",
+      "bytes": 3167
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106-occupancy/observed-imports.json",
+      "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/be80489a39220fe62ed2d08592a093a8/observed-imports.json",
+      "sha256": "3979b659bb72ed014dd208eaecd5328002eae90665e1c47bb29e80833ceec3d4",
+      "bytes": 33898
+    }
+  ],
+  "retainedRunDirectory": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/be80489a39220fe62ed2d08592a093a8",
+  "priorRunResults": [
+    "docs/gcsp/evidence/fucq70/service-proof-result.json",
+    "docs/gcsp/evidence/fucq70/service-proof-registration-result.json"
+  ],
+  "scopeLimits": [
+    "Five passes cover only the exact pinned genuine memory-service/HTTP/controller boundary with synthetic stock and controlled external-stock protocol.",
+    "No actual FUCQ-92 release producer, live provider, rendered callback/event, host/clock composition, FUCQ-71 transactional intake/submission, native PostgreSQL, network/listener, browser or full-suite proof."
+  ],
+  "priorScopedCounts": {
+    "metadata": "15/15",
+    "controller": "14/14",
+    "form": "7/7",
+    "uiRatchet": "44/44"
+  },
+  "storyBuilt": false,
+  "acceptanceSlicesStillOpen": 5
+}

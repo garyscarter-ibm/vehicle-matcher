@@ -1,6 +1,8 @@
 import { createHash, randomBytes } from 'node:crypto';
 import { inputDigest, ok, result } from '../repository/index.js';
 import { loadDemoPrincipalSeed } from '../fixtures/principals.js';
+import { activateRunPolicy } from '../policy/activation.js';
+import { validInstant } from '../policy/file-provider.js';
 
 export const SESSION_COOKIE = 'gcsp_session';
 export const PRESENTER_COOKIE = 'gcsp_presenter';
@@ -49,8 +51,16 @@ export class DemoIdentityAdapter {
       if (found.value.current !== true || found.value.status === 'historical') return { error: refused('stale-run') };
       const instant = this.#sessionNow();
       if (typeof instant !== 'string' || !Number.isFinite(Date.parse(instant))) return { error: unavailable() };
-      return { scope, run: found.value, instant, read: { runId: current.runId, asOf: instant, policyVersion: found.value.policyVersion } };
+      return { scope, run: found.value, instant, read: { runId: current.runId, asOf: validInstant(found.value.clockInstant) ? found.value.clockInstant : instant, policyVersion: found.value.policyVersion } };
     } catch { return { error: unavailable() }; }
+  }
+
+  async #adoptPolicy(state) {
+    if (state.error || state.run.status === 'historical' || state.run.clockInstant === undefined) return state;
+    const activated = await activateRunPolicy({ repository: this.#repository, policy: this.#policy }, state.scope);
+    if (activated.status !== 'ok') return { error: activated };
+    return { ...state, run: activated.value.run, read: { runId: state.scope.runId,
+      asOf: activated.value.asOf, policyVersion: activated.value.policyVersion } };
   }
 
   async #configuration(state) {
@@ -61,7 +71,8 @@ export class DemoIdentityAdapter {
   }
 
   async seedPrincipals() {
-    const state = await this.#run();
+    // Activate first: a reset can carry a run-published policy version the new run does not hold.
+    const state = await this.#adoptPolicy(await this.#run());
     if (state.error) return state.error;
     const config = await this.#configuration(state);
     if (config.error) return config.error;
@@ -124,7 +135,7 @@ export class DemoIdentityAdapter {
   async createPresenterSession(commandId) {
     const seeded = await this.seedPrincipals();
     if (seeded.status !== 'ok') return seeded;
-    const state = await this.#run();
+    const state = await this.#adoptPolicy(await this.#run());
     if (state.error) return state.error;
     const config = await this.#configuration(state);
     if (config.error) return config.error;
@@ -163,6 +174,8 @@ export class DemoIdentityAdapter {
     if (session.environmentId !== state.scope.environmentId) return refused('forbidden');
     if (!Number.isFinite(Date.parse(session.expiresAt))) return unavailable();
     if (Date.parse(state.instant) >= Date.parse(session.expiresAt)) return refused('expired-session');
+    state = await this.#adoptPolicy(state);
+    if (state.error) return state.error;
     const config = await this.#configuration(state);
     if (config.error) return config.error;
     const principal = config.principals.find((p) => p.principalId === session.actingPrincipalId);
@@ -185,7 +198,10 @@ export class DemoIdentityAdapter {
   }
 
   async switchPrincipal(context, principalId, commandId) {
-    const state = await this.#guard(context);
+    const guarded = await this.#guard(context);
+    if (guarded.error) return guarded.error;
+    if (!context.roles.includes('presenter')) return refused('forbidden');
+    const state = await this.#adoptPolicy(guarded);
     if (state.error) return state.error;
     const config = await this.#configuration(state);
     if (config.error) return config.error;
@@ -196,10 +212,38 @@ export class DemoIdentityAdapter {
     return this.#issue(state, presenter, principal, commandId);
   }
 
+  async readPresenterPrincipals(context) {
+    const state = await this.#guard(context);
+    if (state.error) return state.error;
+    if (!context.roles.includes('presenter')) return refused('forbidden');
+    const config = await this.#configuration(state);
+    if (config.error) return config.error;
+    return ok(config.principals.map(({ principalId, name, roles }) => ({ principalId, name, roles: [...roles] })));
+  }
+
   async requireRole(context, role) {
     const guarded = await this.#guard(context);
     if (guarded.error) return guarded.error;
     return context.roles.includes(role) ? ok({ authorized: true }) : refused('forbidden');
+  }
+
+  // Trusted in-process cohort work only. Never exposed as an employee-ID login route.
+  async resolveEmployeeContext(controller, employeeId) {
+    const state = await this.#guard(controller);
+    if (state.error) return state.error;
+    if (!controller.roles.includes('presenter')) return refused('forbidden');
+    const config = await this.#configuration(state);
+    if (config.error) return config.error;
+    const principal = config.principals.find((p) => p.employeeId === employeeId && p.roles.includes('employee'));
+    if (!principal) return refused('unknown-principal');
+    const seeded = await this.#repository.read(state.scope, { table: 'employees', key: { runId: state.scope.runId, employeeId } });
+    if (seeded.status !== 'ok') return seeded.status === 'not-found' ? refused('unknown-principal') : unavailable();
+    if (!seeded.value.roles?.includes('employee')
+      || ['principalId', 'companyId', 'schemeId', 'gradeId', 'entitlementSlotId'].some((key) => seeded.value[key] !== principal[key])) return refused('forbidden');
+    const slot = await this.#repository.read(state.scope, { table: 'entitlement_slots', key: { runId: state.scope.runId, entitlementSlotId: principal.entitlementSlotId } });
+    if (slot.status !== 'ok' || slot.value.employeeId !== employeeId) return refused('forbidden');
+    return ok(this.#context(state, state.auth, { ...principal,
+      ...(seeded.value.renewalId ? { renewalId: seeded.value.renewalId } : {}) }));
   }
 
   async authorizeResource(context, resourceRef, action = 'read') {

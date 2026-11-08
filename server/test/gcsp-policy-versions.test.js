@@ -173,9 +173,12 @@ else test('PostgreSQL native parity: NOT RUN; GCSP_DATABASE_URL unset, Render in
 
 test('additive migration discovery retains existing 0001 and 0003 and includes dated policy tables', async () => {
   const migrations = await loadMigrations();
-  assert.deepEqual(migrations.map(({ version }) => version), ['0001', '0002', '0003']);
+  // 0004 is FUCQ-104's supply records, 0005 FUCQ-136's comparison results, 0006 FUCQ-220's order reference index, 0007 FUCQ-78's observed aggregate status.
+  assert.deepEqual(migrations.map(({ version }) => version), ['0001', '0002', '0003', '0004', '0005', '0006', '0007']);
   const sql = migrations.find(({ version }) => version === '0002').sql;
   for (const table of ['policy_versions', ...Object.values(POLICY_TABLES)]) assert.ok(sql.includes(`CREATE TABLE ${table} (`));
+  // Unexercised natively here; this pins the text only.
+  assert.match(migrations.find(({ version }) => version === '0007').sql, /^-- FUCQ-78.*\n[\s\S]*ADD CONSTRAINT policy_assumptions_status_check\s+CHECK \(data->>'status' IN \('assumed', 'verified', 'observed aggregate'\)\)/);
 });
 
 test('configured database errors never fall back to file values or expose driver diagnostics', async () => {
@@ -192,8 +195,9 @@ test('configured database errors never fall back to file values or expose driver
 test('PostgreSQL driver double round-trips complete typed rows and rolls back failed publication (not native SQL proof)', async () => {
   const migrations = await loadMigrations();
   let tables = Object.fromEntries(['policy_versions', ...Object.values(POLICY_TABLES)].map((table) => [table, []]));
-  let previous; let failTable; let releases = 0;
+  let previous; let failTable; let releases = 0; let queryCount = 0;
   const client = { release() { releases += 1; }, async query(sql, values = []) {
+    queryCount += 1;
     if (sql === 'BEGIN') { previous = structuredClone(tables); return { rows: [] }; }
     if (sql === 'ROLLBACK') { tables = previous; return { rows: [] }; }
     if (sql === 'COMMIT' || sql.includes('pg_advisory_xact_lock')) return { rows: [] };
@@ -201,8 +205,11 @@ test('PostgreSQL driver double round-trips complete typed rows and rolls back fa
     if (sql.includes('schema_migrations')) return { rows: migrations.map(({ version, filename, checksum }) => ({ version, filename, checksum })) };
     const table = sql.match(/"unit"\."([a-z_]+)"/)?.[1];
     assert.ok(table && Object.hasOwn(tables, table), sql);
-    if (sql.startsWith('SELECT data')) return { rows: tables[table].filter(({ data }) => data.runId === values[0])
-      .sort((a, b) => a.ordinal - b.ordinal).map(({ data }) => ({ data: structuredClone(data) })) };
+    if (sql.startsWith('SELECT data')) {
+      const found = tables[table].filter(({ data }) => data.runId === values[0]).sort((a, b) => a.ordinal - b.ordinal);
+      if (sql.includes('AS "seedDigest"')) return { rows: found.map(({ data }) => ({ policyVersion: data.seed.policyVersion, seedDigest: data.seedDigest })) };
+      return { rows: found.map(({ data }) => ({ data: structuredClone(data) })) };
+    }
     if (sql.startsWith('INSERT')) {
       if (table === failTable) { failTable = undefined; throw new Error('private driver password must never escape'); }
       if (table === 'policy_versions') tables[table].push({ data: JSON.parse(values[0]), ordinal: tables[table].length });
@@ -217,6 +224,9 @@ test('PostgreSQL driver double round-trips complete typed rows and rolls back fa
     f = await setup(provider);
     const seed = await new FilePolicyProvider().loadVersions(await f.read());
     assert.deepEqual(await provider.loadVersions(await f.read()), seed);
+    const warm = await provider.loadVersions(await f.read()); const counted = queryCount;
+    assert.equal(await provider.loadVersions(await f.read()), warm);
+    assert.equal(queryCount - counted, 1, 'a cached policy read is one header query');
     failTable = 'price_plans';
     const failed = await f.policy.publishPolicyVersion(f.greg, change());
     assert.equal(failed.status, 'unavailable'); assert.doesNotMatch(JSON.stringify(failed), /private|password/);

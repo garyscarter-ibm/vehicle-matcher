@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-107",
+  "at": "2026-11-06T07:08:09.697758+00:00",
+  "status": "author-static-PASS-no-execution-grant",
+  "basePublication": "1b0bbb5ba6e941fb5d840984c3cf11e99c2aeda0",
+  "admissionSHA256": "d5893900496e23cc5d38907af05bb92672b6b9125b11ca7f4b2dceeea66ad866",
+  "checksPassed": 7983,
+  "checksSHA256": "289d96ec690e308ae0359d445724379bfbda42b7e9ce2e2ef6752c8245e20fcc",
+  "validation": "Stdlib JSON, AST and finite frozen-inventory catalogue only; no validator/helper import or execution, journal replay, current input re-audit, process/ledger probe, tests or resource reservation. Git adapter used for scope.",
+  "nodes": {
+    "total": 2112,
+    "unchangedMetadata": 2110,
+    "replacedControls": 2,
+    "absentDeclarationsUnchanged": 129,
+    "currentAdmission": "Not performed; dispatcher must recheck current pins/absences and host budget before a new grant."
+  },
+  "urlCatalogue": {
+    "declaredDistinctPaths": 1896,
+    "distinctKeys": 1896,
+    "dependencyRows": 1850,
+    "dependencyUniqueKeys": 1833,
+    "dependencyChangedKeys": 203,
+    "hintKeys": 205,
+    "hintChangedKeys": 0,
+    "packageRootKeys": 38,
+    "packageChangedKeys": 10,
+    "onlyEncodingChange": "%40 -> @ on expected frozen paths; all other encodings preserved; observed journal URLs untouched",
+    "sourceRowsAlreadyCorrect": 22,
+    "schemaAndAllOtherValidatorAST": "Identical after reversing the four expected-key calls, added helper and admission-selection constant in each validator."
+  },
+  "argvCatalogue": {
+    "supervisor": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-uri1-supervisor.py",
+    "auditor": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-uri1-audit.py",
+    "admissionFile": "renderer-94e05ff-uri1-admission.json",
+    "unchangedInputPrefix": "renderer-94e05ff-cjs1-",
+    "supervisorChild": [
+      "/usr/bin/python3",
+      "-I",
+      "-B",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-launch.py",
+      "/opt/homebrew/Cellar/node/26.5.0/bin/node",
+      "--import",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-loader.mjs",
+      "--test",
+      "--test-reporter=tap",
+      "--test-concurrency=1",
+      "server/test/gcsp-second-offer-render.test.js"
+    ],
+    "launcherEXPECTED": [
+      "/opt/homebrew/Cellar/node/26.5.0/bin/node",
+      "--import",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-loader.mjs",
+      "--test",
+      "--test-reporter=tap",
+      "--test-concurrency=1",
+      "server/test/gcsp-second-offer-render.test.js"
+    ],
+    "nodeExecve": "os.execve(EXPECTED[0], EXPECTED, dict(os.environ))",
+    "gate": "Parent retains admission checks and writes one byte; unchanged launcher validates argv and consumes b1 before execve.",
+    "sameNodeArgv": true,
+    "ownedCwd": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085"
+  },
+  "preservedPriorCaptures": [
+    {
+      "path": "renderer-94e05ff-cjs1-source.json",
+      "bytes": 17693,
+      "sha256": "fb9cb018534ca934ebb74582a440f0fab3d2ab4b6ccfa05880d9f1f5f103cda8"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-dependencies.json",
+      "bytes": 597255,
+      "sha256": "59838f3f60cc54ffffd4150aad7d9fbfdeef0bfc3408de3e7b1c76929a852597"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-node.json",
+      "bytes": 486,
+      "sha256": "0e7261d7c74fb4048118f2c78403ab00bda93ef51ce7d3f51a5c30576460bd10"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-impact.json",
+      "bytes": 4505,
+      "sha256": "b00cba9056131efc6189a1acc1273dc6e9ffb73f3572ed2d5090d7bd9c2f9af7"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-formats.json",
+      "bytes": 105535,
+      "sha256": "5c5188be909988c0a7d19b6df1f4a7a3eaea8e120acb9008ac8a3bd971cf288e"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-loader.mjs",
+      "bytes": 8696,
+      "sha256": "42d43f59e9dfee71a2176c58988dfeeeda679fc68cdc27cedcd12da934042376"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-launch.py",
+      "bytes": 825,
+      "sha256": "9e80006cf1969dec2dd7d34396536e36e28b62250f967c787b8392710a345eb0"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-resources.py",
+      "bytes": 30601,
+      "sha256": "1c19f35495cd5a186dfcb75490a314814a9b37be594acaa51dcfbdcfae445790"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-supervisor.py",
+      "bytes": 18581,
+      "sha256": "80ed784913b831069593c7725805f5909c2a3b71596c24f43c964d36ee0c3be7"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-audit.py",
+      "bytes": 17596,
+      "sha256": "72bdb97e370ba70ebb47f47c14c907f2d7b39421339e46e7c2b022696c8e836e"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-freeze.py",
+      "bytes": 10495,
+      "sha256": "5f9718615c78c1e148a582826354e3de9775ff91f858d020e80690c1ee03d9c9"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-admission.json",
+      "bytes": 1099504,
+      "sha256": "a9ce7ec7f13b94f677ab74c3a61fa945be2ab6dec18930cb6ba133b1de569524"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-author-static-review.json",
+      "bytes": 3884,
+      "sha256": "dd5e821782bb7fa02ca6d701804c8c27a30ebba97dbf4c4e4e96236608b06708"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-vs-ed9.diff",
+      "bytes": 14147,
+      "sha256": "2d5ba07276be91e3db8ad13cce767b22bb21014b2141b839164c1d603a1b5919"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-launcher-argv-repair.json",
+      "bytes": 3054,
+      "sha256": "f1a9cc3d66f3bd306ab2636ae86966f0e8ecb549b77de01d1d09f0805a318dac"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-author-static-review-c1eb265.json",
+      "bytes": 2372,
+      "sha256": "23675b6640a9213070d6803b23308da94f23ba8ddf01c332d473f0a6e3c28e9d"
+    },
+    {
+      "path": "renderer-94e05ff-cjs1-vs-c1-argv.diff",
+      "bytes": 1446,
+      "sha256": "f861be7586585b818688de5ffd30d1930271165f498deff229a97161db9d3ec3"
+    }
+  ],
+  "failedRunReceiptReference": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq107-cjs1-failed-run-root-0655-corrected.json",
+    "sha256": "e56c7287f809223166b9706f1d4683f55c43c8b8e4cc70780711b12ed48ce113",
+    "inheritedChecks": 3893,
+    "rendererProofAccepted": false,
+    "replayed": false
+  },
+  "rendererAcceptance": "Unproved; independent review and a new exact execution grant required. FUCQ-107 remains incomplete.",
+  "agents": "Lego Batman requested/selected gpt-6.1-sol/high; no fallback or descendants."
+}

@@ -1,0 +1,12 @@
+[
+  {
+    "observedAt": "2026-11-07T11:59:47.776987+00:00",
+    "status": "in_progress",
+    "conclusion": ""
+  },
+  {
+    "observedAt": "2026-11-07T12:01:08.816928+00:00",
+    "status": "completed",
+    "conclusion": "failure"
+  }
+]

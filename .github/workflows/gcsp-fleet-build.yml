@@ -1,0 +1,87 @@
+name: GCSP pinned fleet build
+
+on:
+  push:
+    branches: [gcsp-poc]
+    paths: [.github/workflows/gcsp-fleet-build.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  fleet-node20:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Restore exact31 assets and scoped5 runtime boundaries; prior10002 evidence retained
+        shell: bash
+        env:
+          RELEASE: 3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30
+        run: |
+          set -euo pipefail
+          task_root="$RUNNER_TEMP/gcsp-fleet-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          manifest="$GITHUB_WORKSPACE/.claude/test-runs/ci-fleet-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.json"
+          test ! -e "$task_root"
+          mkdir -p "$(dirname "$manifest")"
+          printf '{"root":"%s","owner":"%s","workers":1,"scratchBudgetMiB":2048,"seconds":690,"scope":"Node20Linux exact31asset restore and5scoped runtime references; full10002 proof not replayed;2707 original consumer failures; acceptance false"}\n' "$task_root" "$GITHUB_RUN_ID" > "$manifest"
+          phase=initializing
+          phase_started=$SECONDS
+          phase_start() { phase="$1"; phase_started=$SECONDS; printf 'phase=%s state=start elapsed_s=%s\n' "$phase" "$SECONDS"; }
+          phase_done() { printf 'phase=%s state=passed seconds=%s elapsed_s=%s\n' "$phase" "$((SECONDS-phase_started))" "$SECONDS"; }
+          cleanup() {
+            result=$?
+            printf 'phase=%s state=exit exit=%s phase_seconds=%s elapsed_s=%s\n' "$phase" "$result" "$((SECONDS-phase_started))" "$SECONDS"
+            for evidence in download offline; do
+              if test -f "$task_root/$evidence.json"; then
+                printf 'phase_evidence=%s bytes=%s\n' "$evidence" "$(wc -c < "$task_root/$evidence.json")"
+                head -c 8192 "$task_root/$evidence.json"
+                printf '\n'
+              fi
+            done
+            if test -d "$task_root"; then
+              du -sk "$task_root"
+              rm -rf -- "$task_root"
+            fi
+            test ! -e "$task_root"
+            printf 'Owned scratch absent; no retained archive; exit=%s\n' "$result"
+            exit "$result"
+          }
+          trap cleanup EXIT
+          mkdir "$task_root"
+          export TMPDIR="$task_root" TMP="$task_root" TEMP="$task_root"
+          node --version
+          cd server
+          phase_start npm-ci
+          timeout 90s npm ci --ignore-scripts --no-audit --no-fund
+          phase_done
+          phase_start download
+          timeout 240s node --max-old-space-size=512 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network download > "$task_root/download.json"
+          phase_done
+          phase_start offline
+          timeout 180s node --max-old-space-size=512 scripts/fleet-artifacts.mjs restore --release "$RELEASE" --store "$task_root/store" --cache "$task_root/cache" --network offline > "$task_root/offline.json"
+          phase_done
+          cd ..
+          proof=docs/gcsp/evidence/fucq62/fleet-dot12-10000-restore-plan
+          phase_start verify-assets
+          timeout 60s node --max-old-space-size=512 "$proof/verify-assets.mjs" "$task_root/store" "$task_root/cache/$RELEASE"
+          phase_done
+          phase_start boundary
+          timeout 120s node --max-old-space-size=512 "$proof/boundary.mjs" "$task_root/store" "$task_root/cache/$RELEASE" "$task_root"
+          phase_done
+          node --input-type=module - "$task_root" <<'JS'
+          import assert from 'node:assert/strict';
+          import {readFile} from 'node:fs/promises';
+          const root=process.argv[2];const read=async name=>JSON.parse(await readFile(`${root}/${name}.json`));
+          const downloaded=await read('download'),offline=await read('offline'),boundary=await read('boundary-receipt');
+          assert.equal(downloaded.status,'ok');assert.equal(downloaded.mode,'cold-restore');assert.equal(downloaded.active.manifestDigest,process.env.RELEASE);assert.ok(downloaded.externalCalls<=124);
+          assert.equal(offline.status,'ok');assert.equal(offline.idempotent,true);assert.equal(offline.externalCalls,0);
+          assert.equal(boundary.count,5);assert.equal(boundary.consumerErrors,2);assert.equal(boundary.sourceCalls+boundary.externalCalls,0);assert.equal(boundary.serverClosed,true);
+          console.log(JSON.stringify({scope:'Linux scoped5boundary+exact31assets',runtime:process.version,platform:process.platform,manifestDigest:process.env.RELEASE,scopedReferences:5,scopedConsumerFailures:2,historical10002ProofReplayed:false,originalConsumerFailures:2707,buildHTTPSCalls:downloaded.externalCalls,fullSuiteRun:false,acceptance:false}));
+          JS

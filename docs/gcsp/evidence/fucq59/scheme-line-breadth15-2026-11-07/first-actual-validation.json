@@ -1,0 +1,122 @@
+{
+  "scope": "actual G21 first3GET exact once diagnostic only",
+  "seriesPlanSha256": "3e93d0e074c3e813fd5a8299dba9e7e69013c3a794b6ce4f57b0cb30834da62f",
+  "parentReleaseSha256": "01ab57ed163ac9c2e584a29128fd30b1ca98226e391d809b75ce021b262c62b9",
+  "phaseReceipt": {
+    "acceptance": false,
+    "activeContext": null,
+    "actualGets": 3,
+    "admitted": 0,
+    "attemptedContexts": [
+      {
+        "context": "g21",
+        "counts": {
+          "cacheEvictions": 0,
+          "cacheHits": {
+            "discover": 0,
+            "page": 0,
+            "settings": 0
+          },
+          "decodedBytes": 811124,
+          "failures": 0,
+          "httpAttempts": 3,
+          "operationBytes": {
+            "discover": 172715,
+            "page": 17763,
+            "settings": 620646
+          },
+          "operations": {
+            "discover": 1,
+            "page": 1,
+            "settings": 1
+          },
+          "sourceCalls": 3,
+          "substitutions": 0,
+          "timeouts": 0
+        },
+        "primaryPreserved": true,
+        "receivedHeaders": 3,
+        "startedGets": 3
+      }
+    ],
+    "completedContexts": [
+      {
+        "acceptance": false,
+        "admitted": 0,
+        "checks": [
+          "primary-plan-zero-admission-identity",
+          "safe-export-seal",
+          "real-three-GET-events",
+          "copied-primary-zero-fetch-resume",
+          "unchanged-primary"
+        ],
+        "checksPassed": 5,
+        "context": "g21",
+        "decodedBytes": 811124,
+        "diagnosticBytes": 15738,
+        "diagnosticSha256": "83493194da9bbd27d0e0186f175907ddb14e27af93f3774868dbf988dcc37590",
+        "gets": 3,
+        "modelNodes": 8,
+        "observedAliases": [
+          "3"
+        ],
+        "originalRefusal": "source-inventory-line-key",
+        "primarySha256": "9a6d47820aa93ee6dafc41679a043680b31b077e0d379d1c0d432bfdf6ec4384",
+        "proofSha256": "3b7a25b735ed3ea4097c618ff8e3d600a9839ac2c4443a16d104a2f6ff32bd63",
+        "relationships": 80,
+        "seedPresent": true,
+        "sourceCapacityCredit": 0
+      }
+    ],
+    "decodedBytes": 811124,
+    "elapsedSeconds": 2.381371792,
+    "errorType": null,
+    "phase": "first",
+    "reason": "finite-first-exhausted",
+    "sourceCapacityCredit": 0
+  },
+  "phaseCleanup": {
+    "allChildrenJoined": true,
+    "allStageGroupsAbsent": true,
+    "compatibilityException": null,
+    "leftovers": [],
+    "reservationAbsent": true,
+    "retainedBytes": 57042,
+    "retainedOutput": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual",
+    "scratchAbsent": true,
+    "scratchRoots": [
+      "/private/tmp/test-stamp-shard-6240d9001fe94530ad47abfb268b4d62",
+      "/private/tmp/test-stamp-shard-aa682df2aa62400c97afb6dc8515d870"
+    ]
+  },
+  "independentlyVerifiedResources": [
+    {
+      "stage": "source",
+      "result": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth15/g21-source/result.json",
+      "cleanup": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth15/g21-source/cleanup.json",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth15/g21-source/ownership/6240d9001fe94530ad47abfb268b4d62.json",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 0
+    },
+    {
+      "stage": "proof",
+      "result": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth15/g21-proof/result.json",
+      "cleanup": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth15/g21-proof/cleanup.json",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/scheme-breadth15/g21-proof/ownership/aa682df2aa62400c97afb6dc8515d870.json",
+      "scratchAbsent": true,
+      "groupsAbsent": true,
+      "reservationAbsent": true,
+      "removedBytes": 0
+    }
+  ],
+  "allPhaseChildrenJoined": true,
+  "phaseReservationAbsent": true,
+  "firstProofSha256": "3b7a25b735ed3ea4097c618ff8e3d600a9839ac2c4443a16d104a2f6ff32bd63",
+  "sourceHeadersAndUrlsOmittedFromEvents": true,
+  "newAdmissions": 0,
+  "capacityCredit": 0,
+  "acceptance": false,
+  "remaining12Grant": false
+}

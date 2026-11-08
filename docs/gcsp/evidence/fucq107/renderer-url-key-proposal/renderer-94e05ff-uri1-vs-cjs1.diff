@@ -1,0 +1,197 @@
+--- renderer-94e05ff-cjs1-supervisor.py
++++ renderer-94e05ff-uri1-supervisor.py
+@@ -19,8 +19,15 @@
+ ROOT = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085')
+ OUT = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107')
+ PREFIX = 'renderer-94e05ff-cjs1-'
++ADMISSION_FILE = 'renderer-94e05ff-uri1-admission.json'
+ MIB = 1024 ** 2
+ SOURCE_COMMIT = '94e05ff9070aa19f5deb3e9997dfed96cc268473'
++
++
++def frozen_file_url(path):
++    # Declared frozen paths only; journal URLs are never normalised.
++    # Node preserves '@'; keep every other Path.as_uri() encoding.
++    return Path(path).as_uri().replace('%40', '@')
+ 
+ 
+ def sha(data):
+@@ -59,7 +66,7 @@
+ def admit(expected_sha):
+     if not sys.flags.isolated or not sys.dont_write_bytecode:
+         raise RuntimeError('Use /usr/bin/python3 -I -B')
+-    data = (OUT / (PREFIX + 'admission.json')).read_bytes()
++    data = (OUT / ADMISSION_FILE).read_bytes()
+     if sha(data) != expected_sha:
+         raise RuntimeError('Admission SHA differs from exact reviewed command')
+     plan = strict_json(data)
+@@ -117,9 +124,9 @@
+     journal = [strict_json(line) for line in journal_bytes.splitlines()]
+     dependencies = strict_json((OUT / (PREFIX + 'dependencies.json')).read_bytes())
+     wanted = {row['url']: row['sha256'] for row in source['rows'] if row['kind'] == 'module'}
+-    dependency = {Path(row['path']).as_uri(): row for row in dependencies['files']}
++    dependency = {frozen_file_url(row['path']): row for row in dependencies['files']}
+     formats = strict_json((OUT / (PREFIX + 'formats.json')).read_bytes())
+-    hints = {Path(row['path']).as_uri(): row for row in formats['rows']}
++    hints = {frozen_file_url(row['path']): row for row in formats['rows']}
+     if len(hints) != len(formats['rows']) or len(hints) != 205:
+         raise RuntimeError('Reviewed finite CommonJS hints differ')
+     def format_permitted(row):
+@@ -140,7 +147,7 @@
+                 incoming == {'type': 'string', 'value': 'commonjs'} and row['formatHint'] is None))
+     roots = sorted((row['path'] for row in dependencies['packages']), key=len, reverse=True)
+     def package(url):
+-        return next((root for root in roots if url.startswith(Path(root).as_uri() + '/')), None)
++        return next((root for root in roots if url.startswith(frozen_file_url(root) + '/')), None)
+     def permitted(row):
+         parent, specifier, target = row['parentURL'], row['specifier'], row.get('url')
+         if parent not in dependency:
+@@ -182,7 +189,7 @@
+         else:
+             raise RuntimeError('Refused or unknown loader journal event')
+     dependency_loads = {row['url'] for row in journal if row['kind'] == 'dependency-load'}
+-    if Path(dependencies['entry']).as_uri() not in dependency_loads:
++    if frozen_file_url(dependencies['entry']) not in dependency_loads:
+         raise RuntimeError('Exact JSDOM dependency entry was not observed')
+     return {'counts': counts, 'names': names, 'applicationModules': len(loads), 'edges': len(edges),
+             'dependencyModules': len(dependency_loads),
+--- renderer-94e05ff-cjs1-audit.py
++++ renderer-94e05ff-uri1-audit.py
+@@ -17,6 +17,13 @@
+ ROOT = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085')
+ OUT = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107')
+ PREFIX = 'renderer-94e05ff-cjs1-'
++ADMISSION_FILE = 'renderer-94e05ff-uri1-admission.json'
++
++
++def frozen_file_url(path):
++    # Declared frozen paths only; journal URLs are never normalised.
++    # Node preserves '@'; keep every other Path.as_uri() encoding.
++    return Path(path).as_uri().replace('%40', '@')
+ 
+ 
+ def digest(data):
+@@ -66,7 +73,7 @@
+     parser.add_argument('--run', required=True)
+     args = parser.parse_args()
+     require(sys.flags.isolated and sys.dont_write_bytecode and Path.cwd() == ROOT, 'isolated-owned-worktree')
+-    data = (OUT / (PREFIX + 'admission.json')).read_bytes()
++    data = (OUT / ADMISSION_FILE).read_bytes()
+     require(digest(data) == args.admission_sha, 'reviewed-admission')
+     plan = strict(data)
+     require(plan['pythonExecutable'] == sys.executable and plan['pythonVersion'] == sys.version, 'interpreter')
+@@ -111,9 +118,9 @@
+     journal = [strict(line) for line in journal_data.splitlines()]
+     wanted = {row['url']: row for row in source['rows'] if row['kind'] == 'module'}
+     dependencies = strict((OUT / (PREFIX + 'dependencies.json')).read_bytes())
+-    pinned = {Path(row['path']).as_uri(): row for row in dependencies['files']}
++    pinned = {frozen_file_url(row['path']): row for row in dependencies['files']}
+     formats = strict((OUT / (PREFIX + 'formats.json')).read_bytes())
+-    hints = {Path(row['path']).as_uri(): row for row in formats['rows']}
++    hints = {frozen_file_url(row['path']): row for row in formats['rows']}
+     require(len(hints) == len(formats['rows']) == 205, 'finite205-CommonJS-hints')
+     def validate_format(row):
+         require(set(row) == {'kind', 'url', 'sha256', 'bytes', 'format', 'inputFormat', 'formatHint'}, 'load-format-fields')
+@@ -133,7 +140,7 @@
+                 require(incoming == {'type': 'string', 'value': 'commonjs'} and row['formatHint'] is None, 'explicit-CommonJS-preserved')
+     package_roots = sorted([row['path'] for row in dependencies['packages']], key=len, reverse=True)
+     def owning(url):
+-        return next((root for root in package_roots if url.startswith(Path(root).as_uri() + '/')), None)
++        return next((root for root in package_roots if url.startswith(frozen_file_url(root) + '/')), None)
+     loads = [row for row in journal if row['kind'] == 'application-load']
+     require({row['url'] for row in loads} == set(wanted) and len(wanted) == 17, 'all17-application-modules')
+     for row in loads:
+@@ -149,7 +156,7 @@
+     require(all(row['kind'] in ['application-load', 'application-resolution', 'dependency-load', 'dependency-resolution', 'optional-miss']
+         for row in journal), 'no-refused-or-unknown-imports')
+     dependency_loads = [row for row in journal if row['kind'] == 'dependency-load']
+-    require(Path(dependencies['entry']).as_uri() in {row['url'] for row in dependency_loads}, 'exact-jsdom-entry-observed')
++    require(frozen_file_url(dependencies['entry']) in {row['url'] for row in dependency_loads}, 'exact-jsdom-entry-observed')
+     for row in dependency_loads:
+         validate_format(row)
+         expected = pinned.get(row['url'])
+--- renderer-94e05ff-cjs1-admission.json
++++ renderer-94e05ff-uri1-admission.json
+@@ -2,7 +2,7 @@
+   "schemaVersion": 1,
+   "story": "FUCQ-107",
+   "status": "proposal-awaiting-independent-review-and-new-execution-grant",
+-  "variant": "strict-renderer9-94e05ff-cjs1",
++  "variant": "strict-renderer9-94e05ff-uri1",
+   "sourceCommit": "94e05ff9070aa19f5deb3e9997dfed96cc268473",
+   "sourceFiles": 22,
+   "applicationModules": 17,
+@@ -63,17 +63,6 @@
+       "targetDevice": 16777232,
+       "targetInode": 173127493
+     },
+-    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-audit.py": {
+-      "kind": "file",
+-      "device": 16777232,
+-      "inode": 173191872,
+-      "mode": 420,
+-      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-audit.py",
+-      "targetDevice": 16777232,
+-      "targetInode": 173191872,
+-      "bytes": 17596,
+-      "sha256": "72bdb97e370ba70ebb47f47c14c907f2d7b39421339e46e7c2b022696c8e836e"
+-    },
+     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-dependencies.json": {
+       "kind": "file",
+       "device": 16777232,
+@@ -173,16 +162,27 @@
+       "bytes": 17693,
+       "sha256": "fb9cb018534ca934ebb74582a440f0fab3d2ab4b6ccfa05880d9f1f5f103cda8"
+     },
+-    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-supervisor.py": {
+-      "kind": "file",
+-      "device": 16777232,
+-      "inode": 173191871,
+-      "mode": 420,
+-      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-supervisor.py",
+-      "targetDevice": 16777232,
+-      "targetInode": 173191871,
+-      "bytes": 18581,
+-      "sha256": "80ed784913b831069593c7725805f5909c2a3b71596c24f43c964d36ee0c3be7"
++    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-uri1-audit.py": {
++      "kind": "file",
++      "device": 16777232,
++      "inode": 173288374,
++      "mode": 420,
++      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-uri1-audit.py",
++      "targetDevice": 16777232,
++      "targetInode": 173288374,
++      "bytes": 17863,
++      "sha256": "078a112bbc0334f7beb5814dc97df756780d038577994ef0137d635ef1e23eaf"
++    },
++    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-uri1-supervisor.py": {
++      "kind": "file",
++      "device": 16777232,
++      "inode": 173288371,
++      "mode": 420,
++      "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-uri1-supervisor.py",
++      "targetDevice": 16777232,
++      "targetInode": 173288371,
++      "bytes": 18848,
++      "sha256": "65cfba09576ceae17e7ba93004695b7dfa5d6308edecbc6ad9432e9277f710ef"
+     },
+     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085": {
+       "kind": "directory",
+@@ -25716,7 +25716,7 @@
+       "/usr/bin/python3",
+       "-I",
+       "-B",
+-      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-supervisor.py",
++      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-uri1-supervisor.py",
+       "--execute",
+       "--admission-sha",
+       "<exact-reviewed-SHA>",
+@@ -25727,7 +25727,7 @@
+       "/usr/bin/python3",
+       "-I",
+       "-B",
+-      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-audit.py",
++      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-uri1-audit.py",
+       "--admission-sha",
+       "<exact-reviewed-SHA>",
+       "--run",

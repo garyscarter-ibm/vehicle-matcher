@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-70",
+  "date": "2026-11-06",
+  "status": "failed-harness-bootstrap; six application cases unexecuted; no retry",
+  "grant": {
+    "id": "fucq70-actual66-eba14ad-0033",
+    "dispatcherChat": "01a1ab10-6556-7211-92a0-0dd0345e3f0d",
+    "scope": "one exact published sanitised supervisor command, fresh HostBudget, separate-process audit, publish outcome; no automatic retry",
+    "reviewReceipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq70-harness-review-0033.json"
+  },
+  "testedCommit": "eba14ad2405542deefa9ace761a54af4258c24d9",
+  "harnessSha256": "e5b4bd89af346a49c21aea6e3bd00dca808f070b7a98681f651c75bc928965aa",
+  "runToken": "afeca82c8ac84cf78a272ce8c66121e3",
+  "launchArgv": [
+    "/usr/bin/env",
+    "-i",
+    "PATH=/usr/bin:/bin:/opt/homebrew/bin",
+    "TZ=UTC",
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-supervisor.py",
+    "run",
+    "--commit",
+    "eba14ad2405542deefa9ace761a54af4258c24d9",
+    "--harness-sha256",
+    "e5b4bd89af346a49c21aea6e3bd00dca808f070b7a98681f651c75bc928965aa"
+  ],
+  "exitCode": 2,
+  "childExitCode": 1,
+  "supervisorIssue": "RuntimeError: Observed application import graph differs from reviewed graph",
+  "nodeFailure": "Error: Unplanned relative or entry module at actual66-loader.mjs:54:51 during Node ESM hook registration",
+  "diagnosis": {
+    "reproduction": "One execution of the approved exact command failed during Node module bootstrap; no automatic retry.",
+    "verifiedCause": "The strict resolver threw before recording the rejected relative/entry import. No observed-imports.json exists. The supervisor then rejected the incomplete application import graph.",
+    "hypothesis": "Node loader bootstrap or hook re-registration requested a module outside the admitted application/probe map. The exact specifier and parent remain unknown.",
+    "affectedBoundary": "Evidence-owned loader/bootstrap; no application case reached. No application/foreign source defect established.",
+    "nextCheck": "Dispatcher review of the preserved failure and any separately authorised loader diagnostic/change with fresh hashes, command review and unused run identity.",
+    "basis": "Exact published source, Node 26.5.0 and retained failure log; no source repair or fallback."
+  },
+  "result": {
+    "passed": false,
+    "nodeFileLevelCounts": {
+      "cancelled": 0,
+      "fail": 1,
+      "pass": 0,
+      "skipped": 0,
+      "tests": 1,
+      "todo": 0
+    },
+    "selectedCasesExecuted": 0,
+    "plannedCases": 6,
+    "plannedRuntimeSetups": 8,
+    "actualSetupMarkerObserved": false,
+    "observedImportJournalPresent": false,
+    "applicationAcceptanceEvidence": "none from this run"
+  },
+  "resources": {
+    "limits": {
+      "workers": 1,
+      "wallSeconds": 120,
+      "rssBytes": 805306368,
+      "scratchBytes": 134217728,
+      "logBytes": 2097152,
+      "scratchRoot": "/private/tmp/test-stamp-shard-afeca82c8ac84cf78a272ce8c66121e3",
+      "externalReceiptDirectory": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66",
+      "allocation": "none; deterministic root is planned, not created or reserved"
+    },
+    "headroom": {
+      "active": 0,
+      "disk": 209866055680,
+      "free": 215234764800,
+      "low": false,
+      "parent": null,
+      "ram": 2800451584
+    },
+    "supervisorWallSeconds": 1.015406541,
+    "childWallSeconds": 0.38858004200000007,
+    "sampledAggregateRssBytes": 52363264,
+    "scratchPeakBytes": 164896,
+    "cleanup": {
+      "groupsAbsent": true,
+      "pidsAbsent": true,
+      "reservationAbsent": true,
+      "scratchAbsent": true
+    },
+    "independentAudit": {
+      "cleanupVerified": true,
+      "groupsAbsent": true,
+      "independentAuditProcess": {
+        "pid": 15706,
+        "start": "Fri Nov  6 00:46:55 2026"
+      },
+      "pidsAbsent": true,
+      "proofPassed": false,
+      "receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/afeca82c8ac84cf78a272ce8c66121e3/receipt.json",
+      "reservationAbsent": true,
+      "scratchAbsent": true,
+      "sourceAndDependenciesStillMatch": true
+    }
+  },
+  "integrity": {
+    "sourceAndDependenciesUnchanged": true,
+    "ownedRuntimeInputsUnchanged": true,
+    "copiedProducerHashes": {
+      "blocks/gcsp/manual-gallery/claim-controller.js": "f53923f660fcb1222431c6500342e75065d10552a38f343900ef7cf234574dc8",
+      "blocks/gcsp/manual-gallery/gallery-model.js": "6cc5cfa1483d963038472ddc05227c2368a3ad07ca7a4ab25c6a324bf7f863bf",
+      "blocks/gcsp/manual-gallery/http-adapter.js": "5e3dcc8d024ad2cdb3190e4862e4a99ef35a7995623c492ce9e4aff8883eb7de",
+      "server/gcsp/adapters/manual-stock.js": "66e8d7de1662ac778ebc789aa9f93085abb9d2fafed528baf0fd90a9cb6bc771",
+      "server/gcsp/identity/http.js": "86d3aa6bfc13ae6773c3861b7ef6c72fecfd31270b7c4f0609e240bd017b713e",
+      "server/gcsp/manual-claims/http.js": "909926cc334b74b1d000fa12987fa8541d66eb445499d7fdaf03b241a29be6b7",
+      "server/gcsp/manual-claims/index.js": "32c80ef72d8329fcdbc4a208d9ab911f68156e6234d3917975754415d04ef059",
+      "server/gcsp/manual-context/index.js": "3e694f3a68b9d3c9f40b44ddb785bec2edce3b3ada43d491995be77a2930fd43"
+    }
+  },
+  "exports": [
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106/receipt.json",
+      "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/afeca82c8ac84cf78a272ce8c66121e3/receipt.json",
+      "sha256": "3156b4e5251b9c4d838e0b48a625985e5e7cc421d2d6e72cc04eb3aadc8b3dd5",
+      "bytes": 59442
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106/independent-cleanup-audit.json",
+      "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/afeca82c8ac84cf78a272ce8c66121e3/independent-cleanup-audit.json",
+      "sha256": "f7f329b1b8bf7b6e4582976839b790c4746473bf3239199a9adcff39d20a6edc",
+      "bytes": 381
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106/failure.txt",
+      "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/afeca82c8ac84cf78a272ce8c66121e3/failure.log",
+      "sha256": "a0d9db8d0fb4f09823db45b97dd79566191bbc95cecac5990ec52b71c1077843",
+      "bytes": 1640
+    }
+  ],
+  "retainedRunDirectory": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/afeca82c8ac84cf78a272ce8c66121e3",
+  "impactEvidence": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/impact/fucq70-actual66-proof.json",
+  "scopeLimits": [
+    "Two synthetic released-stock records and a controlled remote-stock protocol are planned fixtures; this run reached neither.",
+    "No actual FUCQ-92 release producer, rendered callback/event, host/clock composition, FUCQ-71 transactional intake/submission, native PostgreSQL, network/listener, browser or full-suite proof."
+  ],
+  "priorScopedCounts": {
+    "metadata": "15/15",
+    "controller": "14/14",
+    "form": "7/7",
+    "uiRatchet": "44/44"
+  },
+  "storyBuilt": false,
+  "serviceIntegrationSlice": "not-started",
+  "acceptanceSlicesStillOpen": 5
+}

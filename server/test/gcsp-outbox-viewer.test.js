@@ -47,7 +47,7 @@ test('the shell shows a presenter account, the Captured emails destination and h
   assert.equal(root.querySelector('.gcsp-account-name').textContent, 'Presenter');
   assert.equal(root.querySelector('.gcsp-nav-btn[aria-current="page"]').dataset.key, 'outbox');
   assert.ok(root.querySelectorAll('.gcsp-nav-btn[aria-disabled="true"]').length >= 2);
-  assert.match(root.querySelector('main').textContent, /Captured demonstration emails\. No email has been sent\./);
+  assert.match(root.querySelector('main').textContent, /Captured messages and delivery status\./);
   assert.equal(root.querySelectorAll('main h1').length, 1);
 });
 
@@ -307,4 +307,47 @@ test('the gallery shows messageList and the catalogue and ratchet record the new
   const entry = ratchet.stylesheets.find((s) => s.path === 'blocks/gcsp/presenter/gcsp-presenter.css');
   assert.ok(entry);
   assert.equal(entry.max_lines, read('blocks/gcsp/presenter/gcsp-presenter.css').split('\n').length);
+});
+
+
+test('provider uncertainty has truthful fixed copy alongside captured real message bodies', async () => {
+  for (const error of ['provider-timeout', 'provider-unconfirmed', 'provider-window-expired']) {
+    const base = fixtures.fixtureMessages()[0];
+    const root = host();
+    const message = { ...base, state: error === 'provider-window-expired' ? 'failed' : 'retrying', error, attempts: 1,
+      textBody: 'Demonstration message. Provider acceptance does not confirm inbox delivery.',
+      htmlBody: '<p>Demonstration message. Provider acceptance does not confirm inbox delivery.</p>' };
+    const teardown = out.mountOutbox(root, { loadMessages: async () => ({ status: 'ready', messages: [message] }) });
+    await tick(); rows(root)[0].click();
+    assert.match(root.querySelector('.gcsp-mail-detail').textContent, /not confirmed|not confirm/);
+    assert.doesNotMatch(root.querySelector('.gcsp-mail-detail').textContent, /Delivery failed|Delivery did not work|could not be delivered/);
+    assert.match(root.querySelector('pre').textContent, /Provider acceptance does not confirm inbox delivery/);
+    assert.equal(root.querySelector('iframe').getAttribute('sandbox'), ''); teardown();
+  }
+});
+
+
+test('safe provider error copy does not assert a new retry or deny an earlier ambiguous send', () => {
+  assert.doesNotMatch(copy.errorSentence('provider-rate-limited'), /scheduled|another attempt/i);
+  for (const code of ['mail-configuration-invalid', 'recipient-not-allowed', 'offer-link-invalid']) {
+    assert.doesNotMatch(copy.errorSentence(code), /nothing was sent|no email was sent/i);
+  }
+});
+
+test('a 401 with no status (lapsed access key) reads access-required; a status keeps its refusal', async () => {
+  const { outcomeToState } = adapterMod;
+  for (const body of [{ error: 'Unauthorized' }, undefined, null]) assert.deepEqual(outcomeToState(401, body), { status: 'access-required' });
+  assert.equal(outcomeToState(403, { error: 'Forbidden' }).status, 'refused');
+  for (const body of [{ error: 'Unauthorized' }, undefined]) {
+    const adapter = adapterMod.createOutboxHttpAdapter({ fetchImpl: async () => ({ status: 401, json: async () => { if (body === undefined) throw new Error('bad json'); return body; } }) });
+    assert.deepEqual(await adapter.loadMessages(), { status: 'access-required' });
+  }
+});
+
+test('a lapsed access key shows the restart screen with Reload and no Retry', async () => {
+  const root = host(); const teardown = out.mountOutbox(root, { loadMessages: async () => ({ status: 'access-required' }) }); await tick();
+  const screen = root.querySelector('.gcsp-presenter-body .vm-status, .vm-status');
+  assert.equal(screen.getAttribute('role'), 'alert'); assert.match(screen.textContent, /Demo restarted/);
+  assert.deepEqual([...screen.querySelectorAll('.vm-btn')].map((b) => b.textContent), ['Reload']);
+  assert.doesNotMatch(root.textContent, /Captured emails are unavailable/); teardown();
 });

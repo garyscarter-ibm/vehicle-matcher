@@ -1,0 +1,34 @@
+{
+  "issues": [
+    {
+      "key": "FUCQ-77",
+      "fields": {
+        "summary": "Verify scheme coverage using the collected BMW configuration corpus",
+        "status": {
+          "name": "In Progress"
+        },
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        }
+      }
+    },
+    {
+      "key": "FUCQ-78",
+      "fields": {
+        "summary": "Shape synthetic scheme stock from real stock-locator aggregates",
+        "status": {
+          "name": "In Progress"
+        },
+        "assignee": {
+          "displayName": "Russell Gowers"
+        },
+        "issuetype": {
+          "name": "Story"
+        }
+      }
+    }
+  ]
+}

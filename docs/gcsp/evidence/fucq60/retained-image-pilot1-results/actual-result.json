@@ -1,0 +1,31 @@
+{
+  "identity": {
+    "docs/gcsp/evidence/fucq60/reproduce-retained-image-pilot1.mjs": "a6839060fba8d3b713233c51d77ef203cc475ab63ff29287d05e44d8c424e38d",
+    "scripts/gcsp/enrich-fleet.mjs": "29301f1b077b0f5b171f103a82174bd9e7e430a5e800fb31c796a8fe698f0519",
+    "scripts/gcsp/verify-fleet.mjs": "12a8bbd3c104f1f0afb131b8733d51bc82251122b856191dc41a9f49bc97217e",
+    "server/gcsp/vehicle-evidence/corpus-publisher.js": "9d86e1397aa74d1a1b096aaf6cba2149499a81a524e54eecd2ff83c80b2e6c96",
+    "server/gcsp/vehicle-evidence/fleet-artifacts.js": "4373eed82a61b25144ba5b39f35bd6f1ef1dba0abdc7eb6fa38dd56c77acf4e8",
+    "server/gcsp/vehicle-evidence/fleet-release.js": "8f9febd9d6e8dafba19ceea7b61795dcd48b540b5c17918708491cd9e13f5ca5",
+    "server/gcsp/vehicle-evidence/fleet-releases.json": "bab0e7ee96e90f0622651f527278b07a60b58f14c33dd094a26f7c552319c942",
+    "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "2c0045c82241dac3a5ac1dcc6c447174cad2eb66d413d9cbe98ece62ed573255",
+    "server/gcsp/vehicle-evidence/registered-catalogue-sources.js": "24b5cd1540b284789cf23a4a985af5c216f18412814387f139528c3fa1bb4fbc",
+    "server/gcsp/vehicle-evidence/registered-corpus-images.js": "1180911ff4e19e54b2dfeb997549d5c52f8c07421d6f31e0b6f45da8bf85a544",
+    "server/gcsp/vehicle-evidence/synthetic-registry.js": "4411a122f0a245dd65b58e8753ed1181afd6dd114474b60134adaf5e27febe47",
+    "server/test/gcsp-corpus-indexed.test.js": "468b84d3bf59d135b58225b8cd155d9c771e2118305f6c91d9faf363a74100c4",
+    "server/test/gcsp-fleet-artifacts.test.js": "710e5292b77e5af98ead97b930eca24b39380d5b89223a39970b4269f037fd63",
+    "server/test/gcsp-fleet-verifier.test.js": "c7bd5a82bd784e32fdbcb356ab8c548e464ae1f8eaaae6b299f7b9e87e44539a",
+    "server/test/gcsp-retained-image.test.js": "db2ce55cc6948b4ae2dae849723eab7b0745f0cbf637d0fd43f9268d1d396271",
+    "server/test/gcsp-vin-publication.test.js": "9231d22a886f91ea6a29178634c9fb5b75679c5ea5594874b035ca5ee0459fee",
+    "server/test/gcsp-vin-registry.test.js": "497b9373d00180fef826833c9e67e9762216a47224c0f1f79160bca63e0f5809",
+    "server/vehicle-evidence/bmw-image-adapter.js": "56753ac7e47e4790159e7d50fb4deafe1658730e803912f064e6ed09326774ef",
+    "server/vehicle-evidence/snapshots/bmw-gb-i5-images-2026-11-01.v1.json": "b6bbe8e39b018b1a38551d818e1dfe9b6504283c95dedd033d59d4df8395d393"
+  },
+  "issue": null,
+  "issue_kind": null,
+  "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/actual.log",
+  "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f60/retained-image-pilot1/ownership/3e79e46302514ec6ad9585ea6b28e76e.json",
+  "peak_rss": 240533504,
+  "peak_scratch": 35973120,
+  "rc": 0,
+  "wall": 13.94420016600634
+}

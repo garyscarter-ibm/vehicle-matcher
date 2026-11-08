@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "g42-2768-parent-release.v1",
+  "observedAt": "2026-11-07T04:22:35.116490+00:00",
+  "scope": "one finite2768request continuation; actual qualified distinct records only",
+  "branchTip": "fb3506a5",
+  "seriesPlanSha256": "2d434573479c3e208109667dbc6dd8dfe5d6520ed3f1fa7082a4f6ee3b9a306e",
+  "validationSha256": "eeb7a14c53570c1c3db1a3f4fcf6b99473ef9661c2c2be181746d1284b8bb3bf",
+  "pinsVerified": 421,
+  "decision": "released-once",
+  "grant": "g42-remaining-typed-pool-20261107-once-continuation2768",
+  "limits": {
+    "GET": 4152,
+    "solver": 2768,
+    "sourceWorkers": 1,
+    "phaseSeconds": 4000,
+    "cohortSeconds": 600,
+    "scratchBytes": 67108864,
+    "hostRamBytes": 536870912,
+    "retainedBudgetBytes": 4294967296
+  },
+  "baseline": {
+    "canonical": 1974,
+    "admittedSource": 1971,
+    "spent": 2684
+  },
+  "parentReview": "read full seriesrunner,stage supervisor,sessionfreeze,strictproof and retained validation; reused unchanged generic collector and actual48pilot audit; no source or tests rerun",
+  "parallelism": "other lanes may publish .8 and prepare optionalpilot; any overlap requires disjointrequests and explicit prefix-preserving reconciliation before credit",
+  "acceptance": false,
+  "sourceCapacityCredited": 0,
+  "preserveFailuresAndSpentPrefix": true
+}

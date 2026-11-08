@@ -1,0 +1,17 @@
+{
+  "authorized": true,
+  "phase": "phase01c",
+  "reviewedAt": "2026-11-07T06:08:06.389511+00:00",
+  "seriesSha256": "d8dd8f5bcf6a6f6e084a45b58bd8f50844b418e248bd17e9d04140a9e484edc6",
+  "candidateManifestSha256": "571124e2128695af1bf4e3199c4a04dea5963dab67d16e578469fdac14502ee2",
+  "independentCodeAndSecurityReview": "root and Mike; original clock preserved; fresh cohort monotonic clock fixed and actual run regression green",
+  "pinsCheckedNow": 284,
+  "parentPrefixAuditSha256": "dd952b83783445f14f6609ecc30f4cfba9f6f6edc9b9d45300963f0fb0c593eb",
+  "maximumGET": 480,
+  "maximumSolver": 320,
+  "originalAbsoluteDeadline": "2026-11-07T06:16:57.228279+00:00",
+  "grantEnvironment": {
+    "BREADTH30_PHASE01C_PHASE_GRANT": "scheme-breadth30-phase01c-320-20261107-once-phase01c"
+  },
+  "acceptance": false
+}

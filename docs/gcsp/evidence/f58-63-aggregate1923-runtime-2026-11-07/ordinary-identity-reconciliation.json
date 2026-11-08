@@ -1,0 +1,17 @@
+{
+  "time": "2026-11-07T04:36:21.411640+00:00",
+  "scope": "actualordinarypublisher success retained; supervisoridentityfailure reconciled without repeatingmutation",
+  "publisherResult": 0,
+  "supervisorResult": 1,
+  "reason": "CI proofpath changed duringrun to correctedcanonicalhelper; workflow is not read bypublisher; actualpublicationcode+inputpinsunchanged",
+  "changedIdentity": {
+    ".github/workflows/gcsp-fleet-build.yml": {
+      "before": "f6f34a2b5f152a9aaa438a9fe1bdaa639d8a6713d9d608b2ee156b56ffd0f5ce",
+      "after": "99de470f80e38c0ad091d0fcfc80376ad0bea6bf8acd5325e3ed5fbf695d98f0"
+    }
+  },
+  "ordinaryPublicationReceiptSha256": "da052910cf1066bc7126e4c23deb573b82e9202b142bc83d0a3e65208b9847a6",
+  "currentWorkflowValidation": "separatelyscopedYAML/bashsyntax next",
+  "originalResultAndCleanupPreserved": true,
+  "acceptance": false
+}

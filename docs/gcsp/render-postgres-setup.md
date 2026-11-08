@@ -15,15 +15,43 @@ GitHub Pages demo on `main`. Don't apply it, edit it or rename that service. Thi
 |---|---|---|
 | PostgreSQL | `gcsp-db` | Durable GCSP store. Unblocks FUCQ-83 and FUCQ-66. |
 | Web service | `gcsp-api` | The Node backend, from `server/`. Its `GCSP_DATABASE_URL` is filled in from `gcsp-db` automatically. |
-| Static site | `gcsp-site` | The launcher, the GCSP pages and the component gallery, pointed at `gcsp-api`. |
+| Static site | `gcsp-site` | The retail launcher and the component gallery, pointed at `gcsp-api`. Its live GCSP page addresses redirect to `gcsp-api`. |
 
 All three build from `gcsp-poc` in Frankfurt, on free plans, and redeploy on every push to `gcsp-poc`.
 
-**What works once it's live.** The GCSP pages (`gcsp-employee.html`, `gcsp-greg.html`, `gcsp-outbox.html`) and the
-gallery run on built-in sample data (`?fixture=...`). The backend starts, passes its health check and serves the retail
-matching API. It doesn't yet connect GCSP sign-in or the database to those pages, so `/api/gcsp/*` answers "GCSP
-identity has not been configured". Connecting them is later stories' work. The database's job today is the PostgreSQL
-proof that FUCQ-83 and FUCQ-66 need.
+**What works once it's live (FUCQ-180, 7 November 2026).** `gcsp-api` runs the whole GCSP demo runtime, the same
+composition as the local launcher (`server/gcsp/host.js`), and serves the live GCSP pages from its own address:
+`https://gcsp-api.onrender.com/gcsp-presenter.html` for the presenter, `/gcsp-account.html` for Paula, `/gcsp-greg.html`
+for Greg, `/gcsp-outbox.html` for the captured emails and `/gcsp/offer` for emailed offer links. One origin keeps the
+server-issued session cookies first-party; `gcsp-site` and `gcsp-api` are different sites on `onrender.com`, and Safari
+would drop cross-site cookies. `gcsp-site` redirects those page addresses to `gcsp-api`. The demo runs in memory mode;
+the database stays for the PostgreSQL proofs (FUCQ-83, FUCQ-66) and for `GCSP_REPOSITORY_MODE=postgres`.
+
+`DEMO_ACCESS_KEY` is required with `GCSP_RUNTIME=1`. The first live page in each browser asks for it once ("Open the demo"), then remembers it
+for 12 hours in an HttpOnly cookie. Emailed offer links (`/gcsp/offer`) never ask: they carry their own offer token.
+
+### Backend settings on `gcsp-api`
+
+| Setting | Where it is set | Value |
+|---|---|---|
+| `GCSP_RUNTIME` | Blueprint | `1` turns the GCSP runtime on. Without it the backend is the retail API only, and `/api/gcsp/*` answers 503. |
+| `GCSP_REPOSITORY_MODE` | Blueprint | `memory` (default for the demo). `postgres` uses `gcsp-db`, at about 15 s a clock tick. |
+| `GCSP_PUBLIC_ORIGIN` | Blueprint | `gcsp-api`'s own address, exactly. Pages and cookies are served on it. |
+| `GCSP_PUBLIC_BASE_URL` | Blueprint | The same address: the base of emailed offer links. |
+| `GCSP_ALLOWED_ORIGINS` | Blueprint | Extra origins allowed to call `/api/gcsp/*` (`gcsp-site`). `GCSP_PUBLIC_ORIGIN` is always allowed. |
+| `GCSP_OFFLINE` | Blueprint | `1`: no live retailer warmers at boot. |
+| `GCSP_DATABASE_URL` | Blueprint, from `gcsp-db` | Used only in postgres mode and by vehicle evidence. |
+| `DEMO_ACCESS_KEY` | Dashboard only | The demo key. Required: without it `gcsp-api` refuses to start (`access-key-required`). |
+| `GCSP_MAIL_TRANSPORT` | Dashboard only | `brevo` sends real email. Unset keeps every email captured in the outbox. |
+| `GCSP_MAIL_FROM`, `GCSP_MAIL_FROM_NAME` | Dashboard only | The verified Brevo sender. |
+| `GCSP_MAIL_RECIPIENTS` | Dashboard only | JSON map of demo principal to address. |
+| `GCSP_BREVO_API_KEY` | Dashboard only | The Brevo API key. Never in git. |
+| `GCSP_ENVIRONMENT_ID`, `GCSP_STOCK_SOURCE` | Optional, dashboard | Default `gcsp-hosted-demo`; stock chosen per run. |
+
+**Free plan and memory mode.** The free instance sleeps after 15 minutes without traffic and takes about a minute to
+wake. In memory mode a sleep or redeploy starts a fresh run, so any demo state is lost. Before presenting, open
+`/health`, wait for `{"ok":true}`, then open the presenter page and press Reset so the run starts from the scenario's
+beginning, and keep the page in use. A paid `starter` instance does not sleep; whether to pay is Gary's call.
 
 ## Before you start
 
@@ -46,8 +74,8 @@ proof that FUCQ-83 and FUCQ-66 need.
    - **Blueprint Path:** `render.gcsp.yaml`. This field matters most: left empty, Render reads the retail `render.yaml`.
 4. Render lists what it will create: `gcsp-db`, `gcsp-api` and `gcsp-site`. If you see `bmw-matcher-api`, stop: the
    Blueprint Path is wrong.
-5. It asks for one value, `DEMO_ACCESS_KEY`. Enter the demo password you want on the GCSP API, or leave it empty for
-   an open API. You can change it later on `gcsp-api`'s **Environment** page.
+5. It asks for one value, `DEMO_ACCESS_KEY`. Enter the demo password you want on the GCSP API. It is required: without
+   it `gcsp-api` refuses to start. You can change it later on `gcsp-api`'s **Environment** page.
 6. Click **Apply**. Render creates the database first, then builds both services. Wait until all three show **Live**
    or **Available** (5 to 10 minutes).
 
@@ -65,7 +93,8 @@ Open `gcsp-api` and `gcsp-site`, and read the address under each name.
 The two services name each other, so the file's guesses must match the real addresses. In `render.gcsp.yaml` on
 `gcsp-poc`, change one or both of these:
 - `GCSP_ALLOWED_ORIGINS`, under `gcsp-api`, to `gcsp-site`'s exact address: `https://` included, no trailing slash;
-- `GCSP_API_URL`, under `gcsp-site`, to `gcsp-api`'s exact address.
+- `GCSP_API_URL`, under `gcsp-site`, to `gcsp-api`'s exact address, and the same address in `gcsp-site`'s redirect
+  `destination` lines and in `GCSP_PUBLIC_ORIGIN` and `GCSP_PUBLIC_BASE_URL` under `gcsp-api`.
 
 Commit and push. Render syncs the Blueprint and redeploys both. Or tell me the two addresses, and I'll make the change.
 
@@ -107,23 +136,29 @@ database's external address. Render filled in the internal one for `gcsp-api`.
 3. **Pages**, on `gcsp-site`:
    - `/` shows the launcher. Choosing Used cars runs the retail matcher against `gcsp-api`.
    - `/gcsp-employee.html` shows the employee shell and reviewed body.
-   - `/gcsp-greg.html?fixture=populated` shows Greg's dashboard (FUCQ-101).
-   - `/gcsp-outbox.html` shows the presenter outbox (FUCQ-97).
    - `/components.html` shows the component gallery.
+   - `/gcsp-presenter.html` redirects to `gcsp-api`, asks for the demo key once, and opens the presenter workspace.
 
-   If you set `DEMO_ACCESS_KEY`, the first page that calls the API asks for it once.
-4. Then tell me "Render is set up". I'll check that the database connects without printing the URL, and tell Russell's
+4. **Live demo**, on `gcsp-api`: Reset on the presenter page, a tick, Paula's offer and the outbox. The smoke steps
+   are in the FUCQ-180 result.
+5. Then tell me "Render is set up". I'll check that the database connects without printing the URL, and tell Russell's
    poller that FUCQ-83 and FUCQ-66 can resume.
+
+## Fleet artifact restore (7 November 2026)
+
+The GCSP API uses the complete repository checkout so its pinned root image assets and operator modules are available. Its build and start commands enter `server` explicitly. The build restores the checksum-pinned fleet release after `npm install`. The build downloads public immutable artifacts into its local cache; runtime lookup and restart use local files offline. The `.4` release contains349 admitted source configurations,350 total records and1 preserved VIN, with no images. See [actual CLI proof](evidence/fucq62/render-build-restore-2026-11-07/README.md). The original public tag predates the empty-asset transport repair, so use the current application checkout with the immutable descriptor. A newer release must update the descriptor and Blueprint digest together.
+
+The command has passed with actual public assets and an offline restart locally. Confirm the deployed build separately; a Blueprint commit does not itself prove Render executed it. Native PostgreSQL setup remains a separate credential-dependent step.
 
 ## Keeping it up to date
 
 - Every push to `gcsp-poc`, which is every merge the pollers make, redeploys `gcsp-api` and `gcsp-site`. To control
   timing, change `autoDeployTrigger: commit` to `off` for each service in the file, and use **Manual Deploy**.
-- Build filters skip commits that can't change what runs. `gcsp-api` redeploys only for `server/` changes outside
-  its tests and markdown. `gcsp-site` redeploys only for the files its build copies, so `_dev/` and `docs/` commits
+- Build filters skip commits that can't change what runs. `gcsp-api` redeploys for API code, GCSP operator modules and pinned vehicle-image assets, excluding
+  its tests and server markdown. `gcsp-site` redeploys only for the files its build copies, so `_dev/` and `docs/` commits
   deploy nothing. If you add a file to the site's `cp` list, add it to `buildFilter.paths` too (a test checks).
-- Change GCSP's Render settings by editing `render.gcsp.yaml` and pushing. The exception is `DEMO_ACCESS_KEY`, which
-  lives only in the dashboard.
+- Change GCSP's Render settings by editing `render.gcsp.yaml` and pushing. The exceptions are `DEMO_ACCESS_KEY` and
+  the mail settings (`GCSP_MAIL_*`, `GCSP_BREVO_API_KEY`), which live only in the dashboard.
 - `main`, GitHub Pages and `bmw-matcher-api` are unaffected.
 
 ## If something goes wrong
@@ -135,7 +170,10 @@ database's external address. Render filled in the internal one for `gcsp-api`.
 | `gcsp-site` build fails at its first command | `GCSP_API_URL` isn't reaching the build | Check it's on `gcsp-site`'s **Environment** page. The command refuses to publish a site with no backend address. |
 | A page says the API can't be reached | `GCSP_API_URL` doesn't match `gcsp-api`'s address, or the backend is asleep | Do step 3, then retry after a minute. |
 | `/api/gcsp/*` returns "This origin is not allowed" | `GCSP_ALLOWED_ORIGINS` doesn't exactly match `gcsp-site`'s address | Do step 3. |
-| `/api/gcsp/*` returns "GCSP identity has not been configured" | Expected today: the entry point doesn't connect GCSP yet | Nothing to fix. Later stories connect it. |
+| `/api/gcsp/*` returns "GCSP identity has not been configured" | `GCSP_RUNTIME` isn't `1` on `gcsp-api` | Check the Blueprint synced; redeploy. |
+| Deploy fails with "GCSP hosted startup: invalid (public-origin-required)" | `GCSP_PUBLIC_ORIGIN` is missing or not an exact `https://` origin | Set it to `gcsp-api`'s address, no trailing slash.
+| Deploy fails with "GCSP hosted startup: invalid (access-key-required)" | `DEMO_ACCESS_KEY` is empty on `gcsp-api` | Add it on the **Environment** page; redeploy. | |
+| Live pages show stale or empty state after a break | The free instance slept, so memory mode started a new run | Wait for `/health`, then Reset on the presenter page. |
 | Contract tests can't connect | URL is missing `?sslmode=require` | Add it to `.claude/gcsp-database-url`. |
 
 ## Rotating or removing

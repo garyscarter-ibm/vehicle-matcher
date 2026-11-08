@@ -1,0 +1,42 @@
+{
+  "scope": "Independent lead post-stop immutable source/dependency/Node/process/owner/scratch/strict reservation/log audit",
+  "allPassed": true,
+  "checksPassed": 208,
+  "frozenCommit": "c536ab490fbed3d1bb96a0b6fa007cdc85d139a8",
+  "testCounts": {
+    "cancelled": 0,
+    "fail": 0,
+    "pass": 7,
+    "skipped": 0,
+    "suites": 0,
+    "tests": 7,
+    "todo": 0
+  },
+  "names": [
+    "ok 1 - reads all five canonical assumptions through PolicyService at the same pinned version",
+    "ok 2 - projects one question for every canonical typed reason and binds the current value and brief version",
+    "ok 3 - missing, malformed and mixed-version canonical policy reads fail closed",
+    "ok 4 - unregistered reasons are invalid and absent or unconfirmed targets are unavailable",
+    "ok 5 - option and slider changes accept only projected values and leave input brief unchanged",
+    "ok 6 - equipment changes preserve the registered essential shape and compare sets for no-op answers",
+    "ok 7 - provider exceptions are sanitized to a typed unavailable result"
+  ],
+  "originalLog": {
+    "bytes": 2352,
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/20261106T011314999686Z/output.log",
+    "reporter": "tap",
+    "retained": true,
+    "sha256": "f162841c4f7b38705a6abc462c5cc4b20f027f593bc463785bba161053179113"
+  },
+  "moduleJournalSHA256": "8a97084c4d6046ccfd381678e2b6f78dbc88a52cd746cb9eb5b0c1d37ccf7781",
+  "observedApplicationModules": 10,
+  "cleanup": {
+    "scratchRemoved": true,
+    "supervisorOwnerDead": true,
+    "childProcessesMatch": true,
+    "childrenDead": true,
+    "registryValid": true,
+    "reservationAbsent": true
+  },
+  "limitations": "Scoped test inputs, not actual103/106/102/105/100/96 producer integration, browser/native/full-suite proof."
+}

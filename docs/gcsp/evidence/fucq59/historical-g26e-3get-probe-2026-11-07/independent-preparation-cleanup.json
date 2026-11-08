@@ -1,0 +1,14 @@
+{
+  "scope": "independent allfour offline chunk cleanup; active breadth link is untouched",
+  "time": "2026-11-07T05:51:38.167722+00:00",
+  "groupsChecked": 4,
+  "groupsAbsent": true,
+  "scratchRootsAbsent": 4,
+  "reservationTokensAbsent": 4,
+  "removedAllocationBytes": 2818592,
+  "finalPeakRssBytes": 121716736,
+  "dependencyPathTouched": false,
+  "historicalActualOutputAbsent": true,
+  "compatibilityException": null,
+  "leftovers": []
+}

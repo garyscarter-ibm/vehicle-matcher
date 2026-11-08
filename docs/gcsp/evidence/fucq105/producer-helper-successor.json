@@ -1,0 +1,201 @@
+{
+  "status": "prepared and syntax/static checked; awaiting root review and fresh execution grant",
+  "at": "2026-11-06T00:25:26.006227+00:00",
+  "failed_checkpoint": "b19bfa66f0aa0aa921f9119bad5f65f7b1825820",
+  "failure_receipt": {
+    "path": "docs/gcsp/evidence/fucq105/producer-scoped.json",
+    "sha256": "5411d53cb279ba75ac255f762a48921187af9bd134322e1e2e8ca94f6371ce2b",
+    "counts": {
+      "tests": 1,
+      "pass": 0,
+      "fail": 1,
+      "skipped": 0
+    },
+    "product_modules_observed": 0,
+    "overlays_observed": 0,
+    "strict_receipt": null
+  },
+  "authority": {
+    "scope": "Dispatcher approved owned-helper correction only, then immutable successor publication/hashes/argv for root review before any fresh integration allocation. No retry under consumed first grant.",
+    "readonly_reference": {
+      "ref": "189ffa5",
+      "path": "docs/gcsp/evidence/fucq106/integration-loader.mjs",
+      "sha256": "47553e3ccb690a6482aedb2b8487d66ba4a0c76e054a7e170e1bf289dc52601a"
+    }
+  },
+  "diagnosis": {
+    "verified_observation": "First selected run failed during ESM loader registration; empty product journal and no test phase. No producer allocation or credentials created.",
+    "cause": "The allowlist admitted the45 product modules and test entry but rejected its own registration URL under projectRoot. Node registration may supply an absolute path, now normalized to a file URL before exact matching.",
+    "change": "Resolve admits only import.meta.url after matching plan.loader.url. Load verifies that exact URL and SHA-256. node: builtins delegate explicitly. Supervisor records loader URL/hash outside the45 product rows. Existing undeclared-project, source/dependency hash and singleton guards remain unchanged.",
+    "next_check": "Root review of this published successor and separate fresh bounded execution grant; syntax/static checks do not prove loader bootstrap or product integration."
+  },
+  "composition": {
+    "source_plan_sha256": "a18f823423405897b558eadb363f749f89410a791c3bf7542685cbe021dcf9f8",
+    "canonical_product_modules": 45,
+    "worktree_identical": 37,
+    "immutable_overlays": 8,
+    "static_import_edges": 81,
+    "file_inputs": 5,
+    "retained_dependencies": {
+      "pg": {
+        "version": "8.23.1",
+        "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/package.json",
+        "packageJsonSha256": "b1e53333a3d0c2c47c49a5cb919d221135dc03145df740925b899bc2baacc435",
+        "entry": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/index.js",
+        "entrySha256": "3fad6e6d3d976edbabe0cbc9e1d39f4340bcb719bbbb186a0d3a24f3dbd4a94c",
+        "installedRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg",
+        "installationDevice": 16777232,
+        "installationInode": 172770739,
+        "rule": "Retained read-only installed dependency; no install, download, DB connection or mutation. Verify before/after; lockfiles identify transitive versions; this is not a byte audit of all third-party transitive packages."
+      },
+      "jsdom": {
+        "version": "30.0.1",
+        "packageJson": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/jsdom/package.json",
+        "packageJsonSha256": "e87940b12f720a5b735a5df82108b634a238b8c6ebced71050a346a1675575b9",
+        "entry": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/jsdom/lib/api.js",
+        "entrySha256": "22a63aa40bad13ea909a115b0c49fbae3493a291414765221942fc5d4396356f",
+        "installedRoot": "/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/jsdom",
+        "installationDevice": 16777232,
+        "installationInode": 153860785,
+        "rule": "Retained read-only installed dependency; no install, download, DB connection or mutation. Verify before/after; lockfiles identify transitive versions; this is not a byte audit of all third-party transitive packages."
+      }
+    },
+    "loader_is_product_module": false,
+    "loader_journalled_as_product": false
+  },
+  "harness_sha256": {
+    "docs/gcsp/evidence/fucq105/producer-loader.mjs": "62cb952c0aa7bb26652ee1c865f615174b39a155841ed380b411b25835c9e19b",
+    "docs/gcsp/evidence/fucq105/producer-supervisor.py": "6834637121d8c4799784fa7b207ba20279593e173c557da2d62c9e2775aa4c84",
+    "server/test/gcsp-offer-view-producer.test.js": "47fb714470258239360e245caf5999f7f1de00fa37daa84d685820c7bc778d91"
+  },
+  "proposed_execution": {
+    "cwd": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-080",
+    "supervisor_argv": [
+      "python3",
+      "-B",
+      "docs/gcsp/evidence/fucq105/producer-supervisor.py"
+    ],
+    "supervised_node_argv": [
+      "node",
+      "--no-warnings",
+      "--loader",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-080/docs/gcsp/evidence/fucq105/producer-loader.mjs",
+      "--test",
+      "--test-concurrency=1",
+      "--test-reporter=tap",
+      "server/test/gcsp-offer-view-producer.test.js"
+    ],
+    "mapping_addition": {
+      "loader": {
+        "url": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-080/docs/gcsp/evidence/fucq105/producer-loader.mjs",
+        "sha256": "62cb952c0aa7bb26652ee1c865f615174b39a155841ed380b411b25835c9e19b"
+      }
+    },
+    "limits": {
+      "workers": 1,
+      "seconds": 120,
+      "ramMiB": 768,
+      "combinedScratchOutputMiB": 128,
+      "logMiB": 2
+    },
+    "requires_new_execution_grant": true,
+    "executed": false
+  },
+  "preparation": {
+    "summary": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/producer-helper-preparation-1793924695521517000/summary.json",
+    "summary_sha256": "995362cca820b79a879e363fc9f5a5316112b3715fbd9d27980798a472b23ecc",
+    "checks": {
+      "all45_product_source_identities": true,
+      "approved_source_plan_unchanged": true,
+      "file_inputs5": true,
+      "hashes_unchanged_after": true,
+      "loader_exact_admission_delta_and_existing_guards_preserved": true,
+      "product_module_count45_overlay8": true,
+      "supervisor_exact_loader_metadata_delta": true,
+      "supervisor_python_ast": true,
+      "test_unchanged": true,
+      "timing73_sources_unchanged": true
+    },
+    "cleanup": {
+      "dependency_links": [],
+      "groups_absent": true,
+      "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/producer-helper-preparation-1793924695521517000/ownership/bc3b66db0d1549a09bd9e88ef05ee59c.json",
+      "ports": [],
+      "profiles": [],
+      "reservation_released": true,
+      "scratch_absent": true,
+      "scratch_root": "/private/tmp/test-stamp-shard-bc3b66db0d1549a09bd9e88ef05ee59c"
+    },
+    "failure": null,
+    "hashes": {
+      "docs/gcsp/evidence/fucq105/producer-loader.mjs": "62cb952c0aa7bb26652ee1c865f615174b39a155841ed380b411b25835c9e19b",
+      "docs/gcsp/evidence/fucq105/producer-source-plan.json": "a18f823423405897b558eadb363f749f89410a791c3bf7542685cbe021dcf9f8",
+      "docs/gcsp/evidence/fucq105/producer-supervisor.py": "6834637121d8c4799784fa7b207ba20279593e173c557da2d62c9e2775aa4c84",
+      "server/test/gcsp-offer-view-producer.test.js": "47fb714470258239360e245caf5999f7f1de00fa37daa84d685820c7bc778d91"
+    },
+    "integration_retry": false,
+    "plan": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/producer-helper-preparation-1793924695521517000/plan.json",
+    "product_execution": false,
+    "results": [
+      {
+        "command": [
+          "node",
+          "--check",
+          "docs/gcsp/evidence/fucq105/producer-loader.mjs"
+        ],
+        "issue": null,
+        "issue_kind": null,
+        "log": "/private/tmp/test-stamp-shard-bc3b66db0d1549a09bd9e88ef05ee59c/syntax-0.log",
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/producer-helper-preparation-1793924695521517000/ownership/bc3b66db0d1549a09bd9e88ef05ee59c.json",
+        "peak_rss": 2588672,
+        "peak_scratch": 0,
+        "rc": 0,
+        "wall": 0.273612666
+      },
+      {
+        "command": [
+          "node",
+          "--check",
+          "server/test/gcsp-offer-view-producer.test.js"
+        ],
+        "issue": null,
+        "issue_kind": null,
+        "log": "/private/tmp/test-stamp-shard-bc3b66db0d1549a09bd9e88ef05ee59c/syntax-1.log",
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/producer-helper-preparation-1793924695521517000/ownership/bc3b66db0d1549a09bd9e88ef05ee59c.json",
+        "peak_rss": 2473984,
+        "peak_scratch": 0,
+        "rc": 0,
+        "wall": 0.26768658300000003
+      }
+    ],
+    "scratch_peak": 0,
+    "status": "passed",
+    "strict_receipt": null,
+    "independent_audit": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq105/producer-helper-preparation-1793924695521517000/parent-audit.json",
+      "sha256": "478d4652ea8bb1c01c7c0c2d3318df80c9eea7fc5f3dc577a2a3c9b8cb44c52d",
+      "receipt": {
+        "status": "PASS",
+        "read_only": true,
+        "checks": {
+          "successor_harness_hashes": true,
+          "original_plan_unchanged": true,
+          "failure_receipts_and_test_unchanged": true,
+          "scratch_absent": true,
+          "groups_absent": true,
+          "reservation_released": true,
+          "manifest_removed": true,
+          "retained_package_entry_installation_identities": true,
+          "other136stories_unchanged": true,
+          "slice_ids6_preserved": true,
+          "worker_parked": true,
+          "diff_whitespace": true
+        },
+        "strict_receipt": null,
+        "integration_retry": false
+      }
+    }
+  },
+  "unchanged_scope": "Saved consumer73/73 identities preserved. No product/central/native/full/browser scope expansion. Actual producer/access/view,106/host, full comparison, browser journeys and authored full acceptance remain open.",
+  "worker": "parked; ownership retained; no descendants"
+}

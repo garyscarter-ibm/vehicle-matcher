@@ -1,0 +1,1416 @@
+{
+  "story": "FUCQ-104",
+  "scope": "real supply/demand/routes, actual pinned release/allocation/hold, published F96 identity; controlled synthetic memory inputs, dedicated HTTPS harness; shared runtime/native SQL separate",
+  "checks": [
+    "Single dashboard,orders panel,h1 and header in live DOM at both widths; document geometry and viewport/fullPage comparison captured"
+  ],
+  "screenshots": [
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/browser-shell/shell-viewport-1440.png",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/browser-shell/orders-in-shell-1440.png",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/browser-shell/fullpage-diagnostic-1440.png",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/browser-shell/shell-viewport-390.png",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/browser-shell/orders-in-shell-390.png",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-089/docs/gcsp/evidence/fucq104/browser-shell/fullpage-diagnostic-390.png"
+  ],
+  "pageErrors": [],
+  "consoleErrors": [],
+  "external": [],
+  "api": [
+    {
+      "path": "/api/gcsp/greg/demand",
+      "status": 200
+    },
+    {
+      "path": "/api/gcsp/greg/orders",
+      "status": 200
+    }
+  ],
+  "cleanup": {
+    "browserClosed": true,
+    "serverClosed": true,
+    "repositoryClosed": true
+  },
+  "geometry": [
+    {
+      "when": "top",
+      "viewport": {
+        "width": 1440,
+        "height": 844
+      },
+      "scroll": {
+        "x": 0,
+        "y": 0,
+        "height": 2370,
+        "bodyHeight": 2370
+      },
+      "nodes": {
+        "gcsp-greg-dashboard": [
+          {
+            "text": "Skip to contentGroup Car Schemes PortalGRGregGregScheme ordering lead, synthetic demo runDemand and ",
+            "box": {
+              "x": 0,
+              "y": 0,
+              "width": 1440,
+              "height": 2369.890625,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "gcsp-greg-orders": [
+          {
+            "text": "Order requestsRefresh ordersOrders up to date.Synthetic production · as of 5 Nov 2026. Only released",
+            "box": {
+              "x": 72,
+              "y": 1657.609375,
+              "width": 1280,
+              "height": 556.53125,
+              "position": "relative",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        ".gcsp-portal": [],
+        ".gcsp-header": [
+          {
+            "text": "Group Car Schemes PortalGRGregGregScheme ordering lead, synthetic demo run",
+            "box": {
+              "x": 0,
+              "y": 0,
+              "width": 1440,
+              "height": 56,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        ".gcsp-greg": [
+          {
+            "text": "Scheme orderingDemand and supplyWhat employees have saved and confirmed they need, set against relea",
+            "box": {
+              "x": 72,
+              "y": 104.796875,
+              "width": 1280,
+              "height": 2233.09375,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "h1": [
+          {
+            "text": "Demand and supply",
+            "box": {
+              "x": 72,
+              "y": 131.1875,
+              "width": 1280,
+              "height": 40.796875,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "main": [
+          {
+            "text": "Scheme orderingDemand and supplyWhat employees have saved and confirmed they need, set against relea",
+            "box": {
+              "x": 72,
+              "y": 104.796875,
+              "width": 1344,
+              "height": 2233.09375,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "header": [
+          {
+            "text": "Group Car Schemes PortalGRGregGregScheme ordering lead, synthetic demo run",
+            "box": {
+              "x": 0,
+              "y": 0,
+              "width": 1440,
+              "height": 56,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ]
+      },
+      "headings": [
+        {
+          "text": "Demand and supply",
+          "box": {
+            "x": 72,
+            "y": 131.1875,
+            "width": 1280,
+            "height": 40.796875,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "At a glance",
+          "box": {
+            "x": 72,
+            "y": 472.484375,
+            "width": 1280,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Demand",
+          "box": {
+            "x": 72,
+            "y": 613.671875,
+            "width": 1280,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Unmet needs",
+          "box": {
+            "x": 72,
+            "y": 978.671875,
+            "width": 628,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Stock",
+          "box": {
+            "x": 724,
+            "y": 978.671875,
+            "width": 628,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Offers",
+          "box": {
+            "x": 72,
+            "y": 1224.671875,
+            "width": 1280,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Publishing",
+          "box": {
+            "x": 87,
+            "y": 1567.859375,
+            "width": 173.328125,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Order requests",
+          "box": {
+            "x": 72,
+            "y": 1666.609375,
+            "width": 163.3125,
+            "height": 30,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Prediction",
+          "box": {
+            "x": 87,
+            "y": 2239.140625,
+            "width": 173.328125,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Route comparison",
+          "box": {
+            "x": 302.328125,
+            "y": 2239.140625,
+            "width": 173.328125,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Case queue",
+          "box": {
+            "x": 517.65625,
+            "y": 2239.140625,
+            "width": 173.328125,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        }
+      ]
+    },
+    {
+      "when": "orders",
+      "viewport": {
+        "width": 1440,
+        "height": 844
+      },
+      "scroll": {
+        "x": 0,
+        "y": 1514,
+        "height": 2370,
+        "bodyHeight": 2370
+      },
+      "nodes": {
+        "gcsp-greg-dashboard": [
+          {
+            "text": "Skip to contentGroup Car Schemes PortalGRGregGregScheme ordering lead, synthetic demo runDemand and ",
+            "box": {
+              "x": 0,
+              "y": -1514,
+              "width": 1440,
+              "height": 2369.890625,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "gcsp-greg-orders": [
+          {
+            "text": "Order requestsRefresh ordersOrders up to date.Synthetic production · as of 5 Nov 2026. Only released",
+            "box": {
+              "x": 72,
+              "y": 143.609375,
+              "width": 1280,
+              "height": 556.53125,
+              "position": "relative",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        ".gcsp-portal": [],
+        ".gcsp-header": [
+          {
+            "text": "Group Car Schemes PortalGRGregGregScheme ordering lead, synthetic demo run",
+            "box": {
+              "x": 0,
+              "y": -1514,
+              "width": 1440,
+              "height": 56,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        ".gcsp-greg": [
+          {
+            "text": "Scheme orderingDemand and supplyWhat employees have saved and confirmed they need, set against relea",
+            "box": {
+              "x": 72,
+              "y": -1409.203125,
+              "width": 1280,
+              "height": 2233.09375,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "h1": [
+          {
+            "text": "Demand and supply",
+            "box": {
+              "x": 72,
+              "y": -1382.8125,
+              "width": 1280,
+              "height": 40.796875,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "main": [
+          {
+            "text": "Scheme orderingDemand and supplyWhat employees have saved and confirmed they need, set against relea",
+            "box": {
+              "x": 72,
+              "y": -1409.203125,
+              "width": 1344,
+              "height": 2233.09375,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "header": [
+          {
+            "text": "Group Car Schemes PortalGRGregGregScheme ordering lead, synthetic demo run",
+            "box": {
+              "x": 0,
+              "y": -1514,
+              "width": 1440,
+              "height": 56,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ]
+      },
+      "headings": [
+        {
+          "text": "Demand and supply",
+          "box": {
+            "x": 72,
+            "y": -1382.8125,
+            "width": 1280,
+            "height": 40.796875,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "At a glance",
+          "box": {
+            "x": 72,
+            "y": -1041.515625,
+            "width": 1280,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Demand",
+          "box": {
+            "x": 72,
+            "y": -900.328125,
+            "width": 1280,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Unmet needs",
+          "box": {
+            "x": 72,
+            "y": -535.328125,
+            "width": 628,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Stock",
+          "box": {
+            "x": 724,
+            "y": -535.328125,
+            "width": 628,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Offers",
+          "box": {
+            "x": 72,
+            "y": -289.328125,
+            "width": 1280,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Publishing",
+          "box": {
+            "x": 87,
+            "y": 53.859375,
+            "width": 173.328125,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Order requests",
+          "box": {
+            "x": 72,
+            "y": 152.609375,
+            "width": 163.3125,
+            "height": 30,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Prediction",
+          "box": {
+            "x": 87,
+            "y": 725.140625,
+            "width": 173.328125,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Route comparison",
+          "box": {
+            "x": 302.328125,
+            "y": 725.140625,
+            "width": 173.328125,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Case queue",
+          "box": {
+            "x": 517.65625,
+            "y": 725.140625,
+            "width": 173.328125,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        }
+      ]
+    },
+    {
+      "when": "afterFullPage",
+      "viewport": {
+        "width": 1440,
+        "height": 844
+      },
+      "scroll": {
+        "x": 0,
+        "y": 1514,
+        "height": 2370,
+        "bodyHeight": 2370
+      },
+      "nodes": {
+        "gcsp-greg-dashboard": [
+          {
+            "text": "Skip to contentGroup Car Schemes PortalGRGregGregScheme ordering lead, synthetic demo runDemand and ",
+            "box": {
+              "x": 0,
+              "y": -1514,
+              "width": 1440,
+              "height": 2369.890625,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "gcsp-greg-orders": [
+          {
+            "text": "Order requestsRefresh ordersOrders up to date.Synthetic production · as of 5 Nov 2026. Only released",
+            "box": {
+              "x": 72,
+              "y": 143.609375,
+              "width": 1280,
+              "height": 556.53125,
+              "position": "relative",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        ".gcsp-portal": [],
+        ".gcsp-header": [
+          {
+            "text": "Group Car Schemes PortalGRGregGregScheme ordering lead, synthetic demo run",
+            "box": {
+              "x": 0,
+              "y": -1514,
+              "width": 1440,
+              "height": 56,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        ".gcsp-greg": [
+          {
+            "text": "Scheme orderingDemand and supplyWhat employees have saved and confirmed they need, set against relea",
+            "box": {
+              "x": 72,
+              "y": -1409.203125,
+              "width": 1280,
+              "height": 2233.09375,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "h1": [
+          {
+            "text": "Demand and supply",
+            "box": {
+              "x": 72,
+              "y": -1382.8125,
+              "width": 1280,
+              "height": 40.796875,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "main": [
+          {
+            "text": "Scheme orderingDemand and supplyWhat employees have saved and confirmed they need, set against relea",
+            "box": {
+              "x": 72,
+              "y": -1409.203125,
+              "width": 1344,
+              "height": 2233.09375,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "header": [
+          {
+            "text": "Group Car Schemes PortalGRGregGregScheme ordering lead, synthetic demo run",
+            "box": {
+              "x": 0,
+              "y": -1514,
+              "width": 1440,
+              "height": 56,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ]
+      },
+      "headings": [
+        {
+          "text": "Demand and supply",
+          "box": {
+            "x": 72,
+            "y": -1382.8125,
+            "width": 1280,
+            "height": 40.796875,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "At a glance",
+          "box": {
+            "x": 72,
+            "y": -1041.515625,
+            "width": 1280,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Demand",
+          "box": {
+            "x": 72,
+            "y": -900.328125,
+            "width": 1280,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Unmet needs",
+          "box": {
+            "x": 72,
+            "y": -535.328125,
+            "width": 628,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Stock",
+          "box": {
+            "x": 724,
+            "y": -535.328125,
+            "width": 628,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Offers",
+          "box": {
+            "x": 72,
+            "y": -289.328125,
+            "width": 1280,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Publishing",
+          "box": {
+            "x": 87,
+            "y": 53.859375,
+            "width": 173.328125,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Order requests",
+          "box": {
+            "x": 72,
+            "y": 152.609375,
+            "width": 163.3125,
+            "height": 30,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Prediction",
+          "box": {
+            "x": 87,
+            "y": 725.140625,
+            "width": 173.328125,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Route comparison",
+          "box": {
+            "x": 302.328125,
+            "y": 725.140625,
+            "width": 173.328125,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Case queue",
+          "box": {
+            "x": 517.65625,
+            "y": 725.140625,
+            "width": 173.328125,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        }
+      ]
+    },
+    {
+      "when": "top",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scroll": {
+        "x": 0,
+        "y": 0,
+        "height": 3890,
+        "bodyHeight": 3890
+      },
+      "nodes": {
+        "gcsp-greg-dashboard": [
+          {
+            "text": "Skip to contentGroup Car Schemes PortalGRGregGregScheme ordering lead, synthetic demo runDemand and ",
+            "box": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 3890.421875,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "gcsp-greg-orders": [
+          {
+            "text": "Order requestsRefresh ordersOrders up to date.Synthetic production · as of 5 Nov 2026. Only released",
+            "box": {
+              "x": 12,
+              "y": 2840.46875,
+              "width": 366,
+              "height": 759.703125,
+              "position": "relative",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        ".gcsp-portal": [],
+        ".gcsp-header": [
+          {
+            "text": "Group Car Schemes PortalGRGregGregScheme ordering lead, synthetic demo run",
+            "box": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 56,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        ".gcsp-greg": [
+          {
+            "text": "Scheme orderingDemand and supplyWhat employees have saved and confirmed they need, set against relea",
+            "box": {
+              "x": 12,
+              "y": 100.796875,
+              "width": 366,
+              "height": 3765.625,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "h1": [
+          {
+            "text": "Demand and supply",
+            "box": {
+              "x": 12,
+              "y": 127.1875,
+              "width": 366,
+              "height": 33.59375,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "main": [
+          {
+            "text": "Scheme orderingDemand and supplyWhat employees have saved and confirmed they need, set against relea",
+            "box": {
+              "x": 12,
+              "y": 100.796875,
+              "width": 366,
+              "height": 3765.625,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "header": [
+          {
+            "text": "Group Car Schemes PortalGRGregGregScheme ordering lead, synthetic demo run",
+            "box": {
+              "x": 0,
+              "y": 0,
+              "width": 390,
+              "height": 56,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ]
+      },
+      "headings": [
+        {
+          "text": "Demand and supply",
+          "box": {
+            "x": 12,
+            "y": 127.1875,
+            "width": 366,
+            "height": 33.59375,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "At a glance",
+          "box": {
+            "x": 12,
+            "y": 775.28125,
+            "width": 366,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Demand",
+          "box": {
+            "x": 12,
+            "y": 1028.15625,
+            "width": 366,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Unmet needs",
+          "box": {
+            "x": 12,
+            "y": 1684.15625,
+            "width": 366,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Stock",
+          "box": {
+            "x": 12,
+            "y": 1960.15625,
+            "width": 366,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Offers",
+          "box": {
+            "x": 12,
+            "y": 2227.15625,
+            "width": 366,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Publishing",
+          "box": {
+            "x": 27,
+            "y": 2771.71875,
+            "width": 336,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Order requests",
+          "box": {
+            "x": 12,
+            "y": 2849.46875,
+            "width": 163.3125,
+            "height": 30,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Prediction",
+          "box": {
+            "x": 27,
+            "y": 3625.171875,
+            "width": 336,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Route comparison",
+          "box": {
+            "x": 27,
+            "y": 3706.921875,
+            "width": 336,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Case queue",
+          "box": {
+            "x": 27,
+            "y": 3788.671875,
+            "width": 336,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        }
+      ]
+    },
+    {
+      "when": "orders",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scroll": {
+        "x": 0,
+        "y": 2798,
+        "height": 3890,
+        "bodyHeight": 3890
+      },
+      "nodes": {
+        "gcsp-greg-dashboard": [
+          {
+            "text": "Skip to contentGroup Car Schemes PortalGRGregGregScheme ordering lead, synthetic demo runDemand and ",
+            "box": {
+              "x": 0,
+              "y": -2798,
+              "width": 390,
+              "height": 3890.421875,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "gcsp-greg-orders": [
+          {
+            "text": "Order requestsRefresh ordersOrders up to date.Synthetic production · as of 5 Nov 2026. Only released",
+            "box": {
+              "x": 12,
+              "y": 42.46875,
+              "width": 366,
+              "height": 759.703125,
+              "position": "relative",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        ".gcsp-portal": [],
+        ".gcsp-header": [
+          {
+            "text": "Group Car Schemes PortalGRGregGregScheme ordering lead, synthetic demo run",
+            "box": {
+              "x": 0,
+              "y": -2798,
+              "width": 390,
+              "height": 56,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        ".gcsp-greg": [
+          {
+            "text": "Scheme orderingDemand and supplyWhat employees have saved and confirmed they need, set against relea",
+            "box": {
+              "x": 12,
+              "y": -2697.203125,
+              "width": 366,
+              "height": 3765.625,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "h1": [
+          {
+            "text": "Demand and supply",
+            "box": {
+              "x": 12,
+              "y": -2670.8125,
+              "width": 366,
+              "height": 33.59375,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "main": [
+          {
+            "text": "Scheme orderingDemand and supplyWhat employees have saved and confirmed they need, set against relea",
+            "box": {
+              "x": 12,
+              "y": -2697.203125,
+              "width": 366,
+              "height": 3765.625,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "header": [
+          {
+            "text": "Group Car Schemes PortalGRGregGregScheme ordering lead, synthetic demo run",
+            "box": {
+              "x": 0,
+              "y": -2798,
+              "width": 390,
+              "height": 56,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ]
+      },
+      "headings": [
+        {
+          "text": "Demand and supply",
+          "box": {
+            "x": 12,
+            "y": -2670.8125,
+            "width": 366,
+            "height": 33.59375,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "At a glance",
+          "box": {
+            "x": 12,
+            "y": -2022.71875,
+            "width": 366,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Demand",
+          "box": {
+            "x": 12,
+            "y": -1769.84375,
+            "width": 366,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Unmet needs",
+          "box": {
+            "x": 12,
+            "y": -1113.84375,
+            "width": 366,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Stock",
+          "box": {
+            "x": 12,
+            "y": -837.84375,
+            "width": 366,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Offers",
+          "box": {
+            "x": 12,
+            "y": -570.84375,
+            "width": 366,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Publishing",
+          "box": {
+            "x": 27,
+            "y": -26.28125,
+            "width": 336,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Order requests",
+          "box": {
+            "x": 12,
+            "y": 51.46875,
+            "width": 163.3125,
+            "height": 30,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Prediction",
+          "box": {
+            "x": 27,
+            "y": 827.171875,
+            "width": 336,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Route comparison",
+          "box": {
+            "x": 27,
+            "y": 908.921875,
+            "width": 336,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Case queue",
+          "box": {
+            "x": 27,
+            "y": 990.671875,
+            "width": 336,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        }
+      ]
+    },
+    {
+      "when": "afterFullPage",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scroll": {
+        "x": 0,
+        "y": 2798,
+        "height": 3890,
+        "bodyHeight": 3890
+      },
+      "nodes": {
+        "gcsp-greg-dashboard": [
+          {
+            "text": "Skip to contentGroup Car Schemes PortalGRGregGregScheme ordering lead, synthetic demo runDemand and ",
+            "box": {
+              "x": 0,
+              "y": -2798,
+              "width": 390,
+              "height": 3890.421875,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "gcsp-greg-orders": [
+          {
+            "text": "Order requestsRefresh ordersOrders up to date.Synthetic production · as of 5 Nov 2026. Only released",
+            "box": {
+              "x": 12,
+              "y": 42.46875,
+              "width": 366,
+              "height": 759.703125,
+              "position": "relative",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        ".gcsp-portal": [],
+        ".gcsp-header": [
+          {
+            "text": "Group Car Schemes PortalGRGregGregScheme ordering lead, synthetic demo run",
+            "box": {
+              "x": 0,
+              "y": -2798,
+              "width": 390,
+              "height": 56,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        ".gcsp-greg": [
+          {
+            "text": "Scheme orderingDemand and supplyWhat employees have saved and confirmed they need, set against relea",
+            "box": {
+              "x": 12,
+              "y": -2697.203125,
+              "width": 366,
+              "height": 3765.625,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "h1": [
+          {
+            "text": "Demand and supply",
+            "box": {
+              "x": 12,
+              "y": -2670.8125,
+              "width": 366,
+              "height": 33.59375,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "main": [
+          {
+            "text": "Scheme orderingDemand and supplyWhat employees have saved and confirmed they need, set against relea",
+            "box": {
+              "x": 12,
+              "y": -2697.203125,
+              "width": 366,
+              "height": 3765.625,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ],
+        "header": [
+          {
+            "text": "Group Car Schemes PortalGRGregGregScheme ordering lead, synthetic demo run",
+            "box": {
+              "x": 0,
+              "y": -2798,
+              "width": 390,
+              "height": 56,
+              "position": "static",
+              "overflowY": "visible"
+            }
+          }
+        ]
+      },
+      "headings": [
+        {
+          "text": "Demand and supply",
+          "box": {
+            "x": 12,
+            "y": -2670.8125,
+            "width": 366,
+            "height": 33.59375,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "At a glance",
+          "box": {
+            "x": 12,
+            "y": -2022.71875,
+            "width": 366,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Demand",
+          "box": {
+            "x": 12,
+            "y": -1769.84375,
+            "width": 366,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Unmet needs",
+          "box": {
+            "x": 12,
+            "y": -1113.84375,
+            "width": 366,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Stock",
+          "box": {
+            "x": 12,
+            "y": -837.84375,
+            "width": 366,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Offers",
+          "box": {
+            "x": 12,
+            "y": -570.84375,
+            "width": 366,
+            "height": 25,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Publishing",
+          "box": {
+            "x": 27,
+            "y": -26.28125,
+            "width": 336,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Order requests",
+          "box": {
+            "x": 12,
+            "y": 51.46875,
+            "width": 163.3125,
+            "height": 30,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Prediction",
+          "box": {
+            "x": 27,
+            "y": 827.171875,
+            "width": 336,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Route comparison",
+          "box": {
+            "x": 27,
+            "y": 908.921875,
+            "width": 336,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        },
+        {
+          "text": "Case queue",
+          "box": {
+            "x": 27,
+            "y": 990.671875,
+            "width": 336,
+            "height": 18.75,
+            "position": "static",
+            "overflowY": "visible"
+          }
+        }
+      ]
+    }
+  ],
+  "state": "passed"
+}

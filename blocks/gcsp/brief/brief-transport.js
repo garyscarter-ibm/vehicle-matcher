@@ -1,3 +1,4 @@
+import { isAccessLapsed } from '../kit/run-restarted.js';
 const unavailable = () => ({ status: 'unavailable', retryable: true });
 const object = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
 const commands = {
@@ -17,7 +18,8 @@ export function createBriefTransport({ fetch: request = globalThis.fetch, baseUR
         headers: { Accept: 'application/json', ...(payload === undefined ? {} : { 'Content-Type': 'application/json' }) },
         ...(payload === undefined ? {} : { body: JSON.stringify(payload) }),
       });
-      const result = await response.json();
+      const result = await response.json().catch(() => null);
+      if (isAccessLapsed(response.status, result)) return { status: 'access-required' };
       if (!object(result) || typeof result.status !== 'string') return unavailable();
       if (response.ok && result.status === 'ok') {
         if (!object(result.value)) return unavailable();

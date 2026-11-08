@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "f61-request-selection-basis.v1",
+  "sourceDefinitionsSha256": "f8907c8da54a377c90092bc9cee6d3d122bf8503dcd0e6661762839764e279f1",
+  "inputOnly": true,
+  "excludedRim": {
+    "code": "S03G1",
+    "basis": "All4 actual32 requests using this rim with mandatoryMSport were source-not-constructible; other five rims accepted in this pinned context."
+  },
+  "optionalInputSets": [
+    [],
+    [
+      {
+        "code": "S0248",
+        "label": "Heated Steering Wheel"
+      }
+    ],
+    [
+      {
+        "code": "S0402",
+        "label": "Panoramic glass roof"
+      }
+    ],
+    [
+      {
+        "code": "S03AC",
+        "label": "Towbar"
+      }
+    ],
+    [
+      {
+        "code": "S0417",
+        "label": "Roller sunblinds"
+      }
+    ],
+    [
+      {
+        "code": "S0456",
+        "label": "Front Comfort Seats"
+      }
+    ],
+    [
+      {
+        "code": "S0248",
+        "label": "Heated Steering Wheel"
+      },
+      {
+        "code": "S0402",
+        "label": "Panoramic glass roof"
+      }
+    ],
+    [
+      {
+        "code": "S03AC",
+        "label": "Towbar"
+      },
+      {
+        "code": "S0402",
+        "label": "Panoramic glass roof"
+      }
+    ],
+    [
+      {
+        "code": "S0417",
+        "label": "Roller sunblinds"
+      },
+      {
+        "code": "S0248",
+        "label": "Heated Steering Wheel"
+      }
+    ],
+    [
+      {
+        "code": "S05DN",
+        "label": "Parking Assistant Plus"
+      },
+      {
+        "code": "S0402",
+        "label": "Panoramic glass roof"
+      }
+    ]
+  ],
+  "note": "Candidates are source-listed request inputs, not evidence of an accepted configuration; fresh tree/options and actual complete solver results remain required.600 paint/fabric/rim candidates exclude one observed nonconstructible rim, optional sets expand request diversity; no10kcapacity inference."
+}

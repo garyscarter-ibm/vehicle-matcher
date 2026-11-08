@@ -1,0 +1,939 @@
+{
+  "allOwnedRootsOwnersGroupsReservationsAbsent": true,
+  "at": "2026-11-06T14:38:39.459908+00:00",
+  "compatibilityException": null,
+  "dependencyInstall": false,
+  "finalSwap": "vm.swapusage: total = 3072.00M  used = 2649.06M  free = 422.94M  (encrypted)",
+  "greenLog": {
+    "absent": true,
+    "bytes": 111,
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/fix1/logs/green/chunk-0001.log",
+    "sha256": "fae00f739ab8f3bde21a5332137661985b4ac7fd366ec3d6e905d73deca68d9e",
+    "summary": "Ran12tests;OK"
+  },
+  "initialSwap": "vm.swapusage: total = 3072.00M  used = 2657.06M  free = 414.94M  (encrypted)",
+  "injectedFaultResolution": "Receipt intentionally names unresolved reservation at supervisor boundary. Independent test finally releases only its captured owned token; audit proves absence after finalization. No unresolved actual host token remains.",
+  "largeOutput": false,
+  "leftovers": [],
+  "nestedCount": 9,
+  "outerCount": 2,
+  "overlay": false,
+  "owned": [
+    {
+      "groupsAbsent": {
+        "64303": true
+      },
+      "kind": "outer",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/fix1/test-runs/ownership/a647d72b96bc45b78834c31baa9b2bd2.json",
+      "ownerIdentityAbsent": true,
+      "ownership": {
+        "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/fix1/test-runs/checkpoints/86024f9b898f64bb0a73bb347d9b7785a611fa14879f26f25baaa765591d1af1.json",
+        "created": 1793975790.131056,
+        "device": 16777230,
+        "groups": [
+          64303
+        ],
+        "inode": 248389319,
+        "local_scratch_reason": "",
+        "location": "local",
+        "owner": {
+          "pid": 64284,
+          "start": "Fri Nov  6 14:36:29 2026"
+        },
+        "peak": 67456,
+        "removed": 1793975792.1192021,
+        "root": "/private/tmp/test-stamp-shard-a647d72b96bc45b78834c31baa9b2bd2",
+        "state": "removed",
+        "token": "a647d72b96bc45b78834c31baa9b2bd2",
+        "version": 1
+      },
+      "reservationAbsent": true,
+      "rootAbsent": true
+    },
+    {
+      "groupsAbsent": {
+        "64574": true
+      },
+      "kind": "outer",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/fix1/test-runs/ownership/dc1479887a15428aa1f32b5afbbe678a.json",
+      "ownerIdentityAbsent": true,
+      "ownership": {
+        "checkpoint": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/fix1/test-runs/checkpoints/883e921f5caf7802b62e6d04305a0e59b0625197b117232373c4916d5959f513.json",
+        "created": 1793975820.076957,
+        "device": 16777230,
+        "groups": [
+          64574
+        ],
+        "inode": 248389616,
+        "local_scratch_reason": "",
+        "location": "local",
+        "owner": {
+          "pid": 64558,
+          "start": "Fri Nov  6 14:36:59 2026"
+        },
+        "peak": 118594,
+        "removed": 1793975822.357594,
+        "root": "/private/tmp/test-stamp-shard-dc1479887a15428aa1f32b5afbbe678a",
+        "state": "removed",
+        "token": "dc1479887a15428aa1f32b5afbbe678a",
+        "version": 1
+      },
+      "reservationAbsent": true,
+      "rootAbsent": true
+    },
+    {
+      "case": "raises",
+      "cleanup": "Independent test finalizer released only its captured token after injecting the supervisor fault",
+      "groupsAbsent": {
+        "64312": true
+      },
+      "kind": "nested-regression-proof",
+      "ownerIdentityAbsent": true,
+      "ownership": {
+        "checkpoint": null,
+        "created": 1793975790.293258,
+        "device": 16777230,
+        "groups": [
+          64312
+        ],
+        "inode": 248389335,
+        "local_scratch_reason": "",
+        "location": "local",
+        "owner": {
+          "pid": 64303,
+          "start": "Fri Nov  6 14:36:30 2026"
+        },
+        "peak": 0,
+        "removed": 1793975790.595356,
+        "root": "/private/tmp/test-stamp-shard-0aea18df403b4fdb88665d3d9408950a",
+        "state": "removed",
+        "token": "0aea18df403b4fdb88665d3d9408950a",
+        "version": 1
+      },
+      "proofPath": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/fix1/red-proof-summary.json",
+      "receipt": {
+        "accepted": [],
+        "admission": false,
+        "allocation": "f59-settings-shape-observation-20261106.v1",
+        "allocationState": "reserved-and-consumed",
+        "compatibilityException": null,
+        "completedAt": "2026-11-06T14:36:30.670457+00:00",
+        "failure": null,
+        "finalizerRegisteredBeforeScratch": true,
+        "groups": [
+          {
+            "absent": true,
+            "pgid": 64312
+          }
+        ],
+        "launcherAbsent": false,
+        "launcherOwner": {
+          "pid": 64303,
+          "start": "Fri Nov  6 14:36:30 2026"
+        },
+        "leftovers": [],
+        "limits": {
+          "logBytes": 1048576,
+          "sampledRssBytes": 134217728,
+          "scratchBytes": 8388608,
+          "seconds": 10,
+          "workers": 1
+        },
+        "manifestState": "removed",
+        "markerPresent": false,
+        "observation": {
+          "counts": null,
+          "receiptStatus": "absent-or-invalid",
+          "settingsExport": {
+            "bytes": null,
+            "sha256": null,
+            "status": "unavailable"
+          }
+        },
+        "ownershipManifest": "/private/tmp/test-stamp-shard-a647d72b96bc45b78834c31baa9b2bd2/settings-supervisor-u9rvoclb/supervision-raises/ownership/0aea18df403b4fdb88665d3d9408950a.json",
+        "process": {
+          "returnCode": 0,
+          "sampledRssBytes": 32768,
+          "sampledScratchBytes": 0,
+          "stopIssue": null,
+          "wallSeconds": 0.25541050000174437
+        },
+        "qualification": "unqualified-structural-observation",
+        "removedAllocationBytes": 0,
+        "removedLogBytes": 0,
+        "reservationReleaseIssue": "unresolved-owned-token-only",
+        "sampledScratchRemovedBytes": 0,
+        "schemaVersion": "f59-settings-supervisor-receipt.v1",
+        "scratchAbsent": true,
+        "scratchRoot": "/private/tmp/test-stamp-shard-0aea18df403b4fdb88665d3d9408950a",
+        "sourceAllocationAttempts": 2,
+        "sourceRetry": 0
+      },
+      "reservationAbsent": true,
+      "rootAbsent": true
+    },
+    {
+      "case": "retains-token",
+      "cleanup": "Independent test finalizer released only its captured token after injecting the supervisor fault",
+      "groupsAbsent": {
+        "64330": true
+      },
+      "kind": "nested-regression-proof",
+      "ownerIdentityAbsent": true,
+      "ownership": {
+        "checkpoint": null,
+        "created": 1793975790.700021,
+        "device": 16777230,
+        "groups": [
+          64330
+        ],
+        "inode": 248389354,
+        "local_scratch_reason": "",
+        "location": "local",
+        "owner": {
+          "pid": 64303,
+          "start": "Fri Nov  6 14:36:30 2026"
+        },
+        "peak": 0,
+        "removed": 1793975791.010752,
+        "root": "/private/tmp/test-stamp-shard-c34620a1a3c34023acca2b721912331d",
+        "state": "removed",
+        "token": "c34620a1a3c34023acca2b721912331d",
+        "version": 1
+      },
+      "proofPath": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/fix1/red-proof-summary.json",
+      "receipt": {
+        "accepted": [],
+        "admission": false,
+        "allocation": "f59-settings-shape-observation-20261106.v1",
+        "allocationState": "reserved-and-consumed",
+        "compatibilityException": null,
+        "completedAt": "2026-11-06T14:36:31.081762+00:00",
+        "failure": null,
+        "finalizerRegisteredBeforeScratch": true,
+        "groups": [
+          {
+            "absent": true,
+            "pgid": 64330
+          }
+        ],
+        "launcherAbsent": false,
+        "launcherOwner": {
+          "pid": 64303,
+          "start": "Fri Nov  6 14:36:30 2026"
+        },
+        "leftovers": [],
+        "limits": {
+          "logBytes": 1048576,
+          "sampledRssBytes": 134217728,
+          "scratchBytes": 8388608,
+          "seconds": 10,
+          "workers": 1
+        },
+        "manifestState": "removed",
+        "markerPresent": false,
+        "observation": {
+          "counts": null,
+          "receiptStatus": "absent-or-invalid",
+          "settingsExport": {
+            "bytes": null,
+            "sha256": null,
+            "status": "unavailable"
+          }
+        },
+        "ownershipManifest": "/private/tmp/test-stamp-shard-a647d72b96bc45b78834c31baa9b2bd2/settings-supervisor-m0zcwqg5/supervision-retains-token/ownership/c34620a1a3c34023acca2b721912331d.json",
+        "process": {
+          "returnCode": 0,
+          "sampledRssBytes": 32768,
+          "sampledScratchBytes": 0,
+          "stopIssue": null,
+          "wallSeconds": 0.26164720799715724
+        },
+        "qualification": "unqualified-structural-observation",
+        "removedAllocationBytes": 0,
+        "removedLogBytes": 0,
+        "sampledScratchRemovedBytes": 0,
+        "schemaVersion": "f59-settings-supervisor-receipt.v1",
+        "scratchAbsent": true,
+        "scratchRoot": "/private/tmp/test-stamp-shard-c34620a1a3c34023acca2b721912331d",
+        "sourceAllocationAttempts": 2,
+        "sourceRetry": 0
+      },
+      "reservationAbsent": true,
+      "rootAbsent": true
+    },
+    {
+      "case": "unreadable-ledger",
+      "cleanup": "Independent test finalizer released only its captured token after injecting the supervisor fault",
+      "groupsAbsent": {
+        "64350": true
+      },
+      "kind": "nested-regression-proof",
+      "ownerIdentityAbsent": true,
+      "ownership": {
+        "checkpoint": null,
+        "created": 1793975791.116031,
+        "device": 16777230,
+        "groups": [
+          64350
+        ],
+        "inode": 248389375,
+        "local_scratch_reason": "",
+        "location": "local",
+        "owner": {
+          "pid": 64303,
+          "start": "Fri Nov  6 14:36:30 2026"
+        },
+        "peak": 0,
+        "removed": 1793975791.414058,
+        "root": "/private/tmp/test-stamp-shard-35fc4e76d6c74c29892ff1397a5e64bc",
+        "state": "removed",
+        "token": "35fc4e76d6c74c29892ff1397a5e64bc",
+        "version": 1
+      },
+      "proofPath": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/fix1/red-proof-summary.json",
+      "receipt": {
+        "accepted": [],
+        "admission": false,
+        "allocation": "f59-settings-shape-observation-20261106.v1",
+        "allocationState": "reserved-and-consumed",
+        "compatibilityException": null,
+        "completedAt": "2026-11-06T14:36:31.463937+00:00",
+        "failure": null,
+        "finalizerRegisteredBeforeScratch": true,
+        "groups": [
+          {
+            "absent": true,
+            "pgid": 64350
+          }
+        ],
+        "launcherAbsent": false,
+        "launcherOwner": {
+          "pid": 64303,
+          "start": "Fri Nov  6 14:36:30 2026"
+        },
+        "leftovers": [],
+        "limits": {
+          "logBytes": 1048576,
+          "sampledRssBytes": 134217728,
+          "scratchBytes": 8388608,
+          "seconds": 10,
+          "workers": 1
+        },
+        "manifestState": "removed",
+        "markerPresent": false,
+        "observation": {
+          "counts": null,
+          "receiptStatus": "absent-or-invalid",
+          "settingsExport": {
+            "bytes": null,
+            "sha256": null,
+            "status": "unavailable"
+          }
+        },
+        "ownershipManifest": "/private/tmp/test-stamp-shard-a647d72b96bc45b78834c31baa9b2bd2/settings-supervisor-yxc5k4bm/supervision-unreadable-ledger/ownership/35fc4e76d6c74c29892ff1397a5e64bc.json",
+        "process": {
+          "returnCode": 0,
+          "sampledRssBytes": 32768,
+          "sampledScratchBytes": 0,
+          "stopIssue": null,
+          "wallSeconds": 0.24919616599800065
+        },
+        "qualification": "unqualified-structural-observation",
+        "removedAllocationBytes": 0,
+        "removedLogBytes": 0,
+        "sampledScratchRemovedBytes": 0,
+        "schemaVersion": "f59-settings-supervisor-receipt.v1",
+        "scratchAbsent": true,
+        "scratchRoot": "/private/tmp/test-stamp-shard-35fc4e76d6c74c29892ff1397a5e64bc",
+        "sourceAllocationAttempts": 2,
+        "sourceRetry": 0
+      },
+      "reservationAbsent": true,
+      "rootAbsent": true
+    },
+    {
+      "case": "success",
+      "cleanup": "Independent test finalizer released only its captured token after injecting the supervisor fault",
+      "groupsAbsent": {
+        "64365": true
+      },
+      "kind": "nested-regression-proof",
+      "ownerIdentityAbsent": true,
+      "ownership": {
+        "checkpoint": null,
+        "created": 1793975791.48927,
+        "device": 16777230,
+        "groups": [
+          64365
+        ],
+        "inode": 248389394,
+        "local_scratch_reason": "",
+        "location": "local",
+        "owner": {
+          "pid": 64303,
+          "start": "Fri Nov  6 14:36:30 2026"
+        },
+        "peak": 0,
+        "removed": 1793975791.7912772,
+        "root": "/private/tmp/test-stamp-shard-d1166145300e4eeeb0d007cb0f446872",
+        "state": "removed",
+        "token": "d1166145300e4eeeb0d007cb0f446872",
+        "version": 1
+      },
+      "proofPath": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/fix1/red-proof-summary.json",
+      "receipt": {
+        "accepted": [],
+        "admission": false,
+        "allocation": "f59-settings-shape-observation-20261106.v1",
+        "allocationState": "reserved-and-consumed",
+        "compatibilityException": null,
+        "completedAt": "2026-11-06T14:36:31.866176+00:00",
+        "failure": null,
+        "finalizerRegisteredBeforeScratch": true,
+        "groups": [
+          {
+            "absent": true,
+            "pgid": 64365
+          }
+        ],
+        "launcherAbsent": false,
+        "launcherOwner": {
+          "pid": 64303,
+          "start": "Fri Nov  6 14:36:30 2026"
+        },
+        "leftovers": [],
+        "limits": {
+          "logBytes": 1048576,
+          "sampledRssBytes": 134217728,
+          "scratchBytes": 8388608,
+          "seconds": 10,
+          "workers": 1
+        },
+        "manifestState": "removed",
+        "markerPresent": false,
+        "observation": {
+          "counts": null,
+          "receiptStatus": "absent-or-invalid",
+          "settingsExport": {
+            "bytes": null,
+            "sha256": null,
+            "status": "unavailable"
+          }
+        },
+        "ownershipManifest": "/private/tmp/test-stamp-shard-a647d72b96bc45b78834c31baa9b2bd2/settings-supervisor-ovtkg6vt/supervision-success/ownership/d1166145300e4eeeb0d007cb0f446872.json",
+        "process": {
+          "returnCode": 0,
+          "sampledRssBytes": 32768,
+          "sampledScratchBytes": 0,
+          "stopIssue": null,
+          "wallSeconds": 0.25316679100797046
+        },
+        "qualification": "unqualified-structural-observation",
+        "removedAllocationBytes": 0,
+        "removedLogBytes": 0,
+        "sampledScratchRemovedBytes": 0,
+        "schemaVersion": "f59-settings-supervisor-receipt.v1",
+        "scratchAbsent": true,
+        "scratchRoot": "/private/tmp/test-stamp-shard-d1166145300e4eeeb0d007cb0f446872",
+        "sourceAllocationAttempts": 2,
+        "sourceRetry": 0
+      },
+      "reservationAbsent": true,
+      "rootAbsent": true
+    },
+    {
+      "groupsAbsent": {
+        "64584": true
+      },
+      "kind": "nested-regression-proof",
+      "ownerIdentityAbsent": true,
+      "ownership": {
+        "checkpoint": null,
+        "created": 1793975820.250131,
+        "device": 16777230,
+        "groups": [
+          64584
+        ],
+        "inode": 248389632,
+        "local_scratch_reason": "",
+        "location": "local",
+        "owner": {
+          "pid": 64574,
+          "start": "Fri Nov  6 14:37:00 2026"
+        },
+        "peak": 4096,
+        "removed": 1793975820.6178381,
+        "root": "/private/tmp/test-stamp-shard-00d475245aed4d58a19c02dc042a282a",
+        "state": "removed",
+        "token": "00d475245aed4d58a19c02dc042a282a",
+        "version": 1
+      },
+      "proofPath": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/fix1/supervisor-proof-summary.json",
+      "receipt": {
+        "accepted": [],
+        "admission": false,
+        "allocation": "f59-settings-shape-observation-20261106.v1",
+        "allocationState": "reserved-and-consumed",
+        "compatibilityException": null,
+        "completedAt": "2026-11-06T14:37:00.647673+00:00",
+        "failure": null,
+        "finalizerRegisteredBeforeScratch": true,
+        "groups": [
+          {
+            "absent": true,
+            "pgid": 64584
+          }
+        ],
+        "launcherAbsent": true,
+        "launcherOwner": {
+          "pid": 64577,
+          "start": "Fri Nov  6 14:37:00 2026"
+        },
+        "leftovers": [],
+        "limits": {
+          "logBytes": 1048576,
+          "sampledRssBytes": 134217728,
+          "scratchBytes": 8388608,
+          "seconds": 10,
+          "workers": 1
+        },
+        "manifestState": "removed",
+        "markerPresent": false,
+        "observation": {
+          "counts": null,
+          "receiptStatus": "absent-or-invalid",
+          "settingsExport": {
+            "bytes": null,
+            "sha256": null,
+            "status": "unavailable"
+          }
+        },
+        "ownershipManifest": "/private/tmp/test-stamp-shard-dc1479887a15428aa1f32b5afbbe678a/settings-supervisor-4dihr3he/supervision/ownership/00d475245aed4d58a19c02dc042a282a.json",
+        "process": {
+          "returnCode": -15,
+          "sampledRssBytes": 15319040,
+          "sampledScratchBytes": 4096,
+          "stopIssue": "bounded-process-stop",
+          "wallSeconds": 0.32100854099553544
+        },
+        "qualification": "unqualified-structural-observation",
+        "removedAllocationBytes": 4096,
+        "removedLogBytes": 0,
+        "reservationRelease": {
+          "absent": true,
+          "status": "released"
+        },
+        "sampledScratchRemovedBytes": 4096,
+        "schemaVersion": "f59-settings-supervisor-receipt.v1",
+        "scratchAbsent": true,
+        "scratchRoot": "/private/tmp/test-stamp-shard-00d475245aed4d58a19c02dc042a282a",
+        "sourceAllocationAttempts": 2,
+        "sourceRetry": 0
+      },
+      "reservationAbsent": true,
+      "rootAbsent": true
+    },
+    {
+      "case": "raises",
+      "cleanup": "Independent test finalizer released only its captured token after injecting the supervisor fault",
+      "groupsAbsent": {
+        "64602": true
+      },
+      "kind": "nested-regression-proof",
+      "ownerIdentityAbsent": true,
+      "ownership": {
+        "checkpoint": null,
+        "created": 1793975820.6811478,
+        "device": 16777230,
+        "groups": [
+          64602
+        ],
+        "inode": 248389674,
+        "local_scratch_reason": "",
+        "location": "local",
+        "owner": {
+          "pid": 64574,
+          "start": "Fri Nov  6 14:37:00 2026"
+        },
+        "peak": 0,
+        "removed": 1793975821.001502,
+        "root": "/private/tmp/test-stamp-shard-2ba1a90e20364ca5a2abe28d4b5038d4",
+        "state": "removed",
+        "token": "2ba1a90e20364ca5a2abe28d4b5038d4",
+        "version": 1
+      },
+      "proofPath": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/fix1/supervisor-proof-summary.json",
+      "receipt": {
+        "accepted": [],
+        "admission": false,
+        "allocation": "f59-settings-shape-observation-20261106.v1",
+        "allocationState": "reserved-and-consumed",
+        "compatibilityException": null,
+        "completedAt": "2026-11-06T14:37:01.061843+00:00",
+        "failure": "reservation-cleanup-failed",
+        "finalizerRegisteredBeforeScratch": true,
+        "groups": [
+          {
+            "absent": true,
+            "pgid": 64602
+          }
+        ],
+        "launcherAbsent": false,
+        "launcherOwner": {
+          "pid": 64574,
+          "start": "Fri Nov  6 14:37:00 2026"
+        },
+        "leftovers": [
+          "reservation:2ba1a90e20364ca5a2abe28d4b5038d4"
+        ],
+        "limits": {
+          "logBytes": 1048576,
+          "sampledRssBytes": 134217728,
+          "scratchBytes": 8388608,
+          "seconds": 10,
+          "workers": 1
+        },
+        "manifestState": "removed",
+        "markerPresent": false,
+        "observation": {
+          "counts": null,
+          "receiptStatus": "absent-or-invalid",
+          "settingsExport": {
+            "bytes": null,
+            "sha256": null,
+            "status": "unavailable"
+          }
+        },
+        "ownershipManifest": "/private/tmp/test-stamp-shard-dc1479887a15428aa1f32b5afbbe678a/settings-supervisor-2ksfxb4a/supervision-raises/ownership/2ba1a90e20364ca5a2abe28d4b5038d4.json",
+        "process": {
+          "returnCode": 0,
+          "sampledRssBytes": 32768,
+          "sampledScratchBytes": 0,
+          "stopIssue": null,
+          "wallSeconds": 0.25908283299941104
+        },
+        "qualification": "unqualified-structural-observation",
+        "removedAllocationBytes": 0,
+        "removedLogBytes": 0,
+        "reservationRelease": {
+          "absent": false,
+          "status": "failed"
+        },
+        "sampledScratchRemovedBytes": 0,
+        "schemaVersion": "f59-settings-supervisor-receipt.v1",
+        "scratchAbsent": true,
+        "scratchRoot": "/private/tmp/test-stamp-shard-2ba1a90e20364ca5a2abe28d4b5038d4",
+        "sourceAllocationAttempts": 2,
+        "sourceRetry": 0
+      },
+      "reservationAbsent": true,
+      "rootAbsent": true
+    },
+    {
+      "case": "retains-token",
+      "cleanup": "Independent test finalizer released only its captured token after injecting the supervisor fault",
+      "groupsAbsent": {
+        "64619": true
+      },
+      "kind": "nested-regression-proof",
+      "ownerIdentityAbsent": true,
+      "ownership": {
+        "checkpoint": null,
+        "created": 1793975821.0887082,
+        "device": 16777230,
+        "groups": [
+          64619
+        ],
+        "inode": 248389693,
+        "local_scratch_reason": "",
+        "location": "local",
+        "owner": {
+          "pid": 64574,
+          "start": "Fri Nov  6 14:37:00 2026"
+        },
+        "peak": 0,
+        "removed": 1793975821.3893929,
+        "root": "/private/tmp/test-stamp-shard-341403c1aace46d3a9911b04ae31a144",
+        "state": "removed",
+        "token": "341403c1aace46d3a9911b04ae31a144",
+        "version": 1
+      },
+      "proofPath": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/fix1/supervisor-proof-summary.json",
+      "receipt": {
+        "accepted": [],
+        "admission": false,
+        "allocation": "f59-settings-shape-observation-20261106.v1",
+        "allocationState": "reserved-and-consumed",
+        "compatibilityException": null,
+        "completedAt": "2026-11-06T14:37:01.428412+00:00",
+        "failure": "reservation-cleanup-failed",
+        "finalizerRegisteredBeforeScratch": true,
+        "groups": [
+          {
+            "absent": true,
+            "pgid": 64619
+          }
+        ],
+        "launcherAbsent": false,
+        "launcherOwner": {
+          "pid": 64574,
+          "start": "Fri Nov  6 14:37:00 2026"
+        },
+        "leftovers": [
+          "reservation:341403c1aace46d3a9911b04ae31a144"
+        ],
+        "limits": {
+          "logBytes": 1048576,
+          "sampledRssBytes": 134217728,
+          "scratchBytes": 8388608,
+          "seconds": 10,
+          "workers": 1
+        },
+        "manifestState": "removed",
+        "markerPresent": false,
+        "observation": {
+          "counts": null,
+          "receiptStatus": "absent-or-invalid",
+          "settingsExport": {
+            "bytes": null,
+            "sha256": null,
+            "status": "unavailable"
+          }
+        },
+        "ownershipManifest": "/private/tmp/test-stamp-shard-dc1479887a15428aa1f32b5afbbe678a/settings-supervisor-2oebw2je/supervision-retains-token/ownership/341403c1aace46d3a9911b04ae31a144.json",
+        "process": {
+          "returnCode": 0,
+          "sampledRssBytes": 32768,
+          "sampledScratchBytes": 0,
+          "stopIssue": null,
+          "wallSeconds": 0.25371612499293406
+        },
+        "qualification": "unqualified-structural-observation",
+        "removedAllocationBytes": 0,
+        "removedLogBytes": 0,
+        "reservationRelease": {
+          "absent": false,
+          "status": "still-present"
+        },
+        "sampledScratchRemovedBytes": 0,
+        "schemaVersion": "f59-settings-supervisor-receipt.v1",
+        "scratchAbsent": true,
+        "scratchRoot": "/private/tmp/test-stamp-shard-341403c1aace46d3a9911b04ae31a144",
+        "sourceAllocationAttempts": 2,
+        "sourceRetry": 0
+      },
+      "reservationAbsent": true,
+      "rootAbsent": true
+    },
+    {
+      "case": "unreadable-ledger",
+      "cleanup": "Independent test finalizer released only its captured token after injecting the supervisor fault",
+      "groupsAbsent": {
+        "64636": true
+      },
+      "kind": "nested-regression-proof",
+      "ownerIdentityAbsent": true,
+      "ownership": {
+        "checkpoint": null,
+        "created": 1793975821.456924,
+        "device": 16777230,
+        "groups": [
+          64636
+        ],
+        "inode": 248389714,
+        "local_scratch_reason": "",
+        "location": "local",
+        "owner": {
+          "pid": 64574,
+          "start": "Fri Nov  6 14:37:00 2026"
+        },
+        "peak": 0,
+        "removed": 1793975821.7724302,
+        "root": "/private/tmp/test-stamp-shard-f1657b5d35a04b0ba437f807299b294d",
+        "state": "removed",
+        "token": "f1657b5d35a04b0ba437f807299b294d",
+        "version": 1
+      },
+      "proofPath": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/fix1/supervisor-proof-summary.json",
+      "receipt": {
+        "accepted": [],
+        "admission": false,
+        "allocation": "f59-settings-shape-observation-20261106.v1",
+        "allocationState": "reserved-and-consumed",
+        "compatibilityException": null,
+        "completedAt": "2026-11-06T14:37:01.860834+00:00",
+        "failure": "reservation-cleanup-failed",
+        "finalizerRegisteredBeforeScratch": true,
+        "groups": [
+          {
+            "absent": true,
+            "pgid": 64636
+          }
+        ],
+        "launcherAbsent": false,
+        "launcherOwner": {
+          "pid": 64574,
+          "start": "Fri Nov  6 14:37:00 2026"
+        },
+        "leftovers": [
+          "reservation:f1657b5d35a04b0ba437f807299b294d"
+        ],
+        "limits": {
+          "logBytes": 1048576,
+          "sampledRssBytes": 134217728,
+          "scratchBytes": 8388608,
+          "seconds": 10,
+          "workers": 1
+        },
+        "manifestState": "removed",
+        "markerPresent": false,
+        "observation": {
+          "counts": null,
+          "receiptStatus": "absent-or-invalid",
+          "settingsExport": {
+            "bytes": null,
+            "sha256": null,
+            "status": "unavailable"
+          }
+        },
+        "ownershipManifest": "/private/tmp/test-stamp-shard-dc1479887a15428aa1f32b5afbbe678a/settings-supervisor-1v825jta/supervision-unreadable-ledger/ownership/f1657b5d35a04b0ba437f807299b294d.json",
+        "process": {
+          "returnCode": 0,
+          "sampledRssBytes": 32768,
+          "sampledScratchBytes": 0,
+          "stopIssue": null,
+          "wallSeconds": 0.2563220000010915
+        },
+        "qualification": "unqualified-structural-observation",
+        "removedAllocationBytes": 0,
+        "removedLogBytes": 0,
+        "reservationRelease": {
+          "absent": null,
+          "status": "unverified"
+        },
+        "sampledScratchRemovedBytes": 0,
+        "schemaVersion": "f59-settings-supervisor-receipt.v1",
+        "scratchAbsent": true,
+        "scratchRoot": "/private/tmp/test-stamp-shard-f1657b5d35a04b0ba437f807299b294d",
+        "sourceAllocationAttempts": 2,
+        "sourceRetry": 0
+      },
+      "reservationAbsent": true,
+      "rootAbsent": true
+    },
+    {
+      "case": "success",
+      "cleanup": "Independent test finalizer released only its captured token after injecting the supervisor fault",
+      "groupsAbsent": {
+        "64654": true
+      },
+      "kind": "nested-regression-proof",
+      "ownerIdentityAbsent": true,
+      "ownership": {
+        "checkpoint": null,
+        "created": 1793975821.889119,
+        "device": 16777230,
+        "groups": [
+          64654
+        ],
+        "inode": 248389738,
+        "local_scratch_reason": "",
+        "location": "local",
+        "owner": {
+          "pid": 64574,
+          "start": "Fri Nov  6 14:37:00 2026"
+        },
+        "peak": 0,
+        "removed": 1793975822.199879,
+        "root": "/private/tmp/test-stamp-shard-4cdfe50e505b408ab222e6a5088aec40",
+        "state": "removed",
+        "token": "4cdfe50e505b408ab222e6a5088aec40",
+        "version": 1
+      },
+      "proofPath": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/fix1/supervisor-proof-summary.json",
+      "receipt": {
+        "accepted": [],
+        "admission": false,
+        "allocation": "f59-settings-shape-observation-20261106.v1",
+        "allocationState": "reserved-and-consumed",
+        "compatibilityException": null,
+        "completedAt": "2026-11-06T14:37:02.278293+00:00",
+        "failure": null,
+        "finalizerRegisteredBeforeScratch": true,
+        "groups": [
+          {
+            "absent": true,
+            "pgid": 64654
+          }
+        ],
+        "launcherAbsent": false,
+        "launcherOwner": {
+          "pid": 64574,
+          "start": "Fri Nov  6 14:37:00 2026"
+        },
+        "leftovers": [],
+        "limits": {
+          "logBytes": 1048576,
+          "sampledRssBytes": 134217728,
+          "scratchBytes": 8388608,
+          "seconds": 10,
+          "workers": 1
+        },
+        "manifestState": "removed",
+        "markerPresent": false,
+        "observation": {
+          "counts": null,
+          "receiptStatus": "absent-or-invalid",
+          "settingsExport": {
+            "bytes": null,
+            "sha256": null,
+            "status": "unavailable"
+          }
+        },
+        "ownershipManifest": "/private/tmp/test-stamp-shard-dc1479887a15428aa1f32b5afbbe678a/settings-supervisor-ssrvy9ig/supervision-success/ownership/4cdfe50e505b408ab222e6a5088aec40.json",
+        "process": {
+          "returnCode": 0,
+          "sampledRssBytes": 32768,
+          "sampledScratchBytes": 0,
+          "stopIssue": null,
+          "wallSeconds": 0.25209495799208526
+        },
+        "qualification": "unqualified-structural-observation",
+        "removedAllocationBytes": 0,
+        "removedLogBytes": 0,
+        "reservationRelease": {
+          "absent": true,
+          "status": "released"
+        },
+        "sampledScratchRemovedBytes": 0,
+        "schemaVersion": "f59-settings-supervisor-receipt.v1",
+        "scratchAbsent": true,
+        "scratchRoot": "/private/tmp/test-stamp-shard-4cdfe50e505b408ab222e6a5088aec40",
+        "sourceAllocationAttempts": 2,
+        "sourceRetry": 0
+      },
+      "reservationAbsent": true,
+      "rootAbsent": true
+    }
+  ],
+  "packagingScratchAllocated": false,
+  "peakSemantics": "Per-root sampled peaks, not actual or simultaneous peaks; nested measurements may overlap outer allocation.",
+  "priorSevenOwnedResourcesRecheckedAbsent": true,
+  "redLog": {
+    "bytes": 4823,
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/fix1/logs/red/chunk-0001.log",
+    "retained": true,
+    "sha256": "9d0ee3b9613b9dbb7dfc9d95d7dc5acdf6e7dacc84fb4da63281d5f5cfaccede"
+  },
+  "removedCheckpointLockFiles": [
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/fix1/test-runs/checkpoints/86024f9b898f64bb0a73bb347d9b7785a611fa14879f26f25baaa765591d1af1.json.lock",
+    "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/settings-shape-live/fix1/test-runs/checkpoints/883e921f5caf7802b62e6d04305a0e59b0625197b117232373c4916d5959f513.json.lock"
+  ],
+  "run": "devpoller-pass1423-f59-settings-supervisor-fix1",
+  "schemaVersion": "f59-settings-supervisor-fix1-resource-audit.v1",
+  "sumNestedSampledScratchPeaks": 4096,
+  "sumOuterSampledScratchPeaks": 186050,
+  "swapAttribution": "Shared host, no owned test process remains; no attribution.",
+  "unownedBytecodePreserved": true
+}

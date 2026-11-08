@@ -1,0 +1,537 @@
+{
+  "schemaVersion": "scheme-breadth-six-options-source-basis.v1",
+  "poolPath": "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/pool.json",
+  "poolSha256": "e1199ee2ace13730c2e58ef18095fadbff765cbc48f45b93602d9ccf91f3ec3e",
+  "contexts": [
+    {
+      "id": "g21-t3mk",
+      "inventoryContext": "g21",
+      "modelCode": "T3MK",
+      "derivative": "320I",
+      "qualificationPlanPath": "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/g21-t3mk/qualification-plan.json",
+      "qualificationPlanSha256": "ece0b484c00b3debb36ac818c4c8a15f6a67b5ae09abdfdc89d671ff261acac8",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "T3MK",
+        "agModelCode": "22FY",
+        "catalogueRangeKey": "G21",
+        "rawModelRange": "G21",
+        "aliases": [
+          "3"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "T3MK",
+          "agModelCode": "22FY"
+        },
+        "includedIndex": 2,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "actualBasis": {
+        "diagnosticPath": "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g21/diagnostic.json",
+        "diagnosticSha256": "83493194da9bbd27d0e0186f175907ddb14e27af93f3774868dbf988dcc37590",
+        "strictProofSha256": "3b7a25b735ed3ea4097c618ff8e3d600a9839ac2c4443a16d104a2f6ff32bd63",
+        "modelPointers": [
+          "/3/modelRanges/G21/models/T3MK"
+        ],
+        "alias": "3",
+        "lineOptionPointer": "/3/modelRanges/G21/lines/S0337/option",
+        "includedModelPointer": "/3/modelRanges/G21/lines/S0337/includedTransmissionVariants/2/configuration/modelCode"
+      },
+      "allObservedExplicitLineChoices": [
+        {
+          "lineKey": "S0337",
+          "defaultModel": {
+            "modelCode": "T3MK",
+            "agModelCode": "22FY"
+          },
+          "includedIndex": 2,
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "basis": {
+            "alias": "3",
+            "lineOptionPointer": "/3/modelRanges/G21/lines/S0337/option",
+            "includedModelPointer": "/3/modelRanges/G21/lines/S0337/includedTransmissionVariants/2/configuration/modelCode"
+          }
+        }
+      ],
+      "sourceGrant": false,
+      "admissions": 0
+    },
+    {
+      "id": "u11-x1m0",
+      "inventoryContext": "u11",
+      "modelCode": "X1M0",
+      "derivative": "X1 20I",
+      "qualificationPlanPath": "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u11-x1m0/qualification-plan.json",
+      "qualificationPlanSha256": "c7fae156a4a3f8478b230681e5fd9a24160ce2a463783d4d5ba9109db7b18dd9",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "X1M0",
+        "agModelCode": "32EE",
+        "catalogueRangeKey": "U11",
+        "rawModelRange": "U11",
+        "aliases": [
+          "X"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "IX1I",
+          "agModelCode": "12HM"
+        },
+        "includedIndex": 4,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "actualBasis": {
+        "diagnosticPath": "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/diagnostic.json",
+        "diagnosticSha256": "6f9144a4f4e2a55f762c0b1b256fe37918c06a1799d38d11fa63042f8cea0920",
+        "strictProofSha256": "48abe1c5f9ef5d8bb319e3134161a26ddc448ca27835b288bc3f9ef0d346d244",
+        "modelPointers": [
+          "/X/modelRanges/U11/models/X1M0"
+        ],
+        "alias": "X",
+        "lineOptionPointer": "/X/modelRanges/U11/lines/S0337/option",
+        "includedModelPointer": "/X/modelRanges/U11/lines/S0337/includedTransmissionVariants/4/configuration/modelCode"
+      },
+      "allObservedExplicitLineChoices": [
+        {
+          "lineKey": "S0337",
+          "defaultModel": {
+            "modelCode": "IX1I",
+            "agModelCode": "12HM"
+          },
+          "includedIndex": 4,
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "basis": {
+            "alias": "X",
+            "lineOptionPointer": "/X/modelRanges/U11/lines/S0337/option",
+            "includedModelPointer": "/X/modelRanges/U11/lines/S0337/includedTransmissionVariants/4/configuration/modelCode"
+          }
+        },
+        {
+          "lineKey": "S033B",
+          "defaultModel": {
+            "modelCode": "IX1I",
+            "agModelCode": "12HM"
+          },
+          "includedIndex": 5,
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S033B"
+          },
+          "basis": {
+            "alias": "X",
+            "lineOptionPointer": "/X/modelRanges/U11/lines/S033B/option",
+            "includedModelPointer": "/X/modelRanges/U11/lines/S033B/includedTransmissionVariants/5/configuration/modelCode"
+          }
+        }
+      ],
+      "sourceGrant": false,
+      "admissions": 0
+    },
+    {
+      "id": "u11-ix1i",
+      "inventoryContext": "u11",
+      "modelCode": "IX1I",
+      "derivative": "IX1 20",
+      "qualificationPlanPath": "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u11-ix1i/qualification-plan.json",
+      "qualificationPlanSha256": "2a0a96d91d45158c89f14ec1518959bc80d651b84d2d791b8e25b0df75688e9d",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "IX1I",
+        "agModelCode": "12HM",
+        "catalogueRangeKey": "U11",
+        "rawModelRange": "U11",
+        "aliases": [
+          "X"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "IX1I",
+          "agModelCode": "12HM"
+        },
+        "includedIndex": 0,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "actualBasis": {
+        "diagnosticPath": "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u11/diagnostic.json",
+        "diagnosticSha256": "6f9144a4f4e2a55f762c0b1b256fe37918c06a1799d38d11fa63042f8cea0920",
+        "strictProofSha256": "48abe1c5f9ef5d8bb319e3134161a26ddc448ca27835b288bc3f9ef0d346d244",
+        "modelPointers": [
+          "/X/modelRanges/U11/models/IX1I"
+        ],
+        "alias": "X",
+        "lineOptionPointer": "/X/modelRanges/U11/lines/S0337/option",
+        "includedModelPointer": "/X/modelRanges/U11/lines/S0337/includedTransmissionVariants/0/configuration/modelCode"
+      },
+      "allObservedExplicitLineChoices": [
+        {
+          "lineKey": "S0337",
+          "defaultModel": {
+            "modelCode": "IX1I",
+            "agModelCode": "12HM"
+          },
+          "includedIndex": 0,
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "basis": {
+            "alias": "X",
+            "lineOptionPointer": "/X/modelRanges/U11/lines/S0337/option",
+            "includedModelPointer": "/X/modelRanges/U11/lines/S0337/includedTransmissionVariants/0/configuration/modelCode"
+          }
+        },
+        {
+          "lineKey": "S033B",
+          "defaultModel": {
+            "modelCode": "IX1I",
+            "agModelCode": "12HM"
+          },
+          "includedIndex": 0,
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S033B"
+          },
+          "basis": {
+            "alias": "X",
+            "lineOptionPointer": "/X/modelRanges/U11/lines/S033B/option",
+            "includedModelPointer": "/X/modelRanges/U11/lines/S033B/includedTransmissionVariants/0/configuration/modelCode"
+          }
+        }
+      ],
+      "sourceGrant": false,
+      "admissions": 0
+    },
+    {
+      "id": "u10-x2ms",
+      "inventoryContext": "u10",
+      "modelCode": "X2MS",
+      "derivative": "X2 20I",
+      "qualificationPlanPath": "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u10-x2ms/qualification-plan.json",
+      "qualificationPlanSha256": "6d2942766662bb3463aed520e395cdc2ac981a56ec241ca2cdbf9cfa008e31ef",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "X2MS",
+        "agModelCode": "22GM",
+        "catalogueRangeKey": "U10",
+        "rawModelRange": "U10",
+        "aliases": [
+          "X"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "IX24",
+          "agModelCode": "72GN"
+        },
+        "includedIndex": 2,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "actualBasis": {
+        "diagnosticPath": "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u10/diagnostic.json",
+        "diagnosticSha256": "40ef6ac391372269b07908c52fcdddce301019dfabc8e6469bd932c753d62be5",
+        "strictProofSha256": "e5277353ad63eb339b3c210e217751a8633bd7088393c007eec4041f4f019963",
+        "modelPointers": [
+          "/X/modelRanges/U10/models/X2MS"
+        ],
+        "alias": "X",
+        "lineOptionPointer": "/X/modelRanges/U10/lines/S0337/option",
+        "includedModelPointer": "/X/modelRanges/U10/lines/S0337/includedTransmissionVariants/2/configuration/modelCode"
+      },
+      "allObservedExplicitLineChoices": [
+        {
+          "lineKey": "S0337",
+          "defaultModel": {
+            "modelCode": "IX24",
+            "agModelCode": "72GN"
+          },
+          "includedIndex": 2,
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "basis": {
+            "alias": "X",
+            "lineOptionPointer": "/X/modelRanges/U10/lines/S0337/option",
+            "includedModelPointer": "/X/modelRanges/U10/lines/S0337/includedTransmissionVariants/2/configuration/modelCode"
+          }
+        },
+        {
+          "lineKey": "S033B",
+          "defaultModel": {
+            "modelCode": "IX24",
+            "agModelCode": "72GN"
+          },
+          "includedIndex": 3,
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S033B"
+          },
+          "basis": {
+            "alias": "X",
+            "lineOptionPointer": "/X/modelRanges/U10/lines/S033B/option",
+            "includedModelPointer": "/X/modelRanges/U10/lines/S033B/includedTransmissionVariants/3/configuration/modelCode"
+          }
+        }
+      ],
+      "sourceGrant": false,
+      "admissions": 0
+    },
+    {
+      "id": "u10-ix24",
+      "inventoryContext": "u10",
+      "modelCode": "IX24",
+      "derivative": "IX2 20",
+      "qualificationPlanPath": "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/u10-ix24/qualification-plan.json",
+      "qualificationPlanSha256": "e0aa939818926799a7c0de2a143fdca6281b0d4b7872fb29faaf97364f8a0d0c",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "IX24",
+        "agModelCode": "72GN",
+        "catalogueRangeKey": "U10",
+        "rawModelRange": "U10",
+        "aliases": [
+          "X"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "IX24",
+          "agModelCode": "72GN"
+        },
+        "includedIndex": 1,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "actualBasis": {
+        "diagnosticPath": "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/u10/diagnostic.json",
+        "diagnosticSha256": "40ef6ac391372269b07908c52fcdddce301019dfabc8e6469bd932c753d62be5",
+        "strictProofSha256": "e5277353ad63eb339b3c210e217751a8633bd7088393c007eec4041f4f019963",
+        "modelPointers": [
+          "/X/modelRanges/U10/models/IX24"
+        ],
+        "alias": "X",
+        "lineOptionPointer": "/X/modelRanges/U10/lines/S0337/option",
+        "includedModelPointer": "/X/modelRanges/U10/lines/S0337/includedTransmissionVariants/1/configuration/modelCode"
+      },
+      "allObservedExplicitLineChoices": [
+        {
+          "lineKey": "S0337",
+          "defaultModel": {
+            "modelCode": "IX24",
+            "agModelCode": "72GN"
+          },
+          "includedIndex": 1,
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "basis": {
+            "alias": "X",
+            "lineOptionPointer": "/X/modelRanges/U10/lines/S0337/option",
+            "includedModelPointer": "/X/modelRanges/U10/lines/S0337/includedTransmissionVariants/1/configuration/modelCode"
+          }
+        },
+        {
+          "lineKey": "S033B",
+          "defaultModel": {
+            "modelCode": "IX24",
+            "agModelCode": "72GN"
+          },
+          "includedIndex": 1,
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S033B"
+          },
+          "basis": {
+            "alias": "X",
+            "lineOptionPointer": "/X/modelRanges/U10/lines/S033B/option",
+            "includedModelPointer": "/X/modelRanges/U10/lines/S033B/includedTransmissionVariants/1/configuration/modelCode"
+          }
+        }
+      ],
+      "sourceGrant": false,
+      "admissions": 0
+    },
+    {
+      "id": "g26e-i4mf",
+      "inventoryContext": "g26e",
+      "modelCode": "I4MF",
+      "derivative": "I4 35",
+      "qualificationPlanPath": "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/qualification-pool/g26e-i4mf/qualification-plan.json",
+      "qualificationPlanSha256": "31bf9ba146afe56972cb1b7f9a5d1b8e1c9c14300211df5fd4a5048b7f2d35b2",
+      "modelRegistration": {
+        "schemaVersion": "bmw-public-model-registration.v1",
+        "modelCode": "I4MF",
+        "agModelCode": "52HD",
+        "catalogueRangeKey": "G26E",
+        "rawModelRange": "G26",
+        "aliases": [
+          "4",
+          "I"
+        ],
+        "market": "GB",
+        "locale": "en-GB",
+        "steering": "RL",
+        "catalogueDate": "2026-11-01",
+        "orderDate": "2026-11-01",
+        "effectDate": "2027-01-05"
+      },
+      "lineRegistration": {
+        "lineKey": "S0337",
+        "defaultModel": {
+          "modelCode": "I4MF",
+          "agModelCode": "52HD"
+        },
+        "includedIndex": 1,
+        "optionsQuery": {
+          "kind": "trim",
+          "code": "S0337"
+        }
+      },
+      "actualBasis": {
+        "diagnosticPath": "docs/gcsp/evidence/fucq59/scheme-line-breadth15-2026-11-07/actual/g26e/diagnostic.json",
+        "diagnosticSha256": "ba82cee74dcca5fc713cdd23264017ee561c15a0c42c4dbad0dea2e0fdf88cd5",
+        "strictProofSha256": "6d84b2a4253eb3f83594c20dcaeb176125214767de7059f43e6cc88161d2d307",
+        "modelPointers": [
+          "/4/modelRanges/G26E/models/I4MF",
+          "/I/modelRanges/G26E/models/I4MF"
+        ],
+        "alias": "4",
+        "lineOptionPointer": "/4/modelRanges/G26E/lines/S0337/option",
+        "includedModelPointer": "/4/modelRanges/G26E/lines/S0337/includedTransmissionVariants/1/configuration/modelCode"
+      },
+      "allObservedExplicitLineChoices": [
+        {
+          "lineKey": "S0337",
+          "defaultModel": {
+            "modelCode": "I4MF",
+            "agModelCode": "52HD"
+          },
+          "includedIndex": 1,
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "basis": {
+            "alias": "4",
+            "lineOptionPointer": "/4/modelRanges/G26E/lines/S0337/option",
+            "includedModelPointer": "/4/modelRanges/G26E/lines/S0337/includedTransmissionVariants/1/configuration/modelCode"
+          }
+        },
+        {
+          "lineKey": "S0337",
+          "defaultModel": {
+            "modelCode": "I4MF",
+            "agModelCode": "52HD"
+          },
+          "includedIndex": 1,
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S0337"
+          },
+          "basis": {
+            "alias": "I",
+            "lineOptionPointer": "/I/modelRanges/G26E/lines/S0337/option",
+            "includedModelPointer": "/I/modelRanges/G26E/lines/S0337/includedTransmissionVariants/1/configuration/modelCode"
+          }
+        },
+        {
+          "lineKey": "S033B",
+          "defaultModel": {
+            "modelCode": "I4MF",
+            "agModelCode": "52HD"
+          },
+          "includedIndex": 1,
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S033B"
+          },
+          "basis": {
+            "alias": "4",
+            "lineOptionPointer": "/4/modelRanges/G26E/lines/S033B/option",
+            "includedModelPointer": "/4/modelRanges/G26E/lines/S033B/includedTransmissionVariants/1/configuration/modelCode"
+          }
+        },
+        {
+          "lineKey": "S033B",
+          "defaultModel": {
+            "modelCode": "I4MF",
+            "agModelCode": "52HD"
+          },
+          "includedIndex": 1,
+          "optionsQuery": {
+            "kind": "trim",
+            "code": "S033B"
+          },
+          "basis": {
+            "alias": "I",
+            "lineOptionPointer": "/I/modelRanges/G26E/lines/S033B/option",
+            "includedModelPointer": "/I/modelRanges/G26E/lines/S033B/includedTransmissionVariants/1/configuration/modelCode"
+          }
+        }
+      ],
+      "sourceGrant": false,
+      "admissions": 0
+    }
+  ],
+  "boundary": "Actual complete full model/AG/raw range/alias/date and literal line relationships justify request inputs only; fresh options must establish typed definitions. No scheme join, source construction, admission or capacity credit."
+}

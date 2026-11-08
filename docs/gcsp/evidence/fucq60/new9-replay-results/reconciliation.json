@@ -1,0 +1,19 @@
+{
+  "status": "independently-reconciled",
+  "checkedAt": "2026-11-07T02:04:14.119177+00:00",
+  "contractSha256": "efd0262c1e79e4d8d13a496196c88c8e3016c88cefb6f02b9746045b59856366",
+  "codePinsUnchanged": 19,
+  "sourcePinsUnchanged": 18,
+  "sourceBytes": 1743718,
+  "selectedRecords": 9,
+  "activeCorpusUnchangedFromPublicationCheckpoint": true,
+  "activeManifestDigest": "8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9",
+  "allCleanupAbsent": true,
+  "progressAbsent": true,
+  "retainedReceiptHashes": {
+    "receipt.json": "8751b523ce5c32711aaba4a377d0b2bb492bfd15736eb3122063950221fb4910",
+    "result.json": "9cbd348ac6ee0dd2753ae256d380c19bb5d631b762ae78c7758a3efbc834f758",
+    "cleanup.json": "66d2caf0d457023933aab999ef99be4f044a9bf9fbd243dcc154256ad0336910",
+    "selection.json": "2216ab3375cbf01aef5b77b938b841ec8d8e0ada3374b16583e9994f921e2bc0"
+  }
+}

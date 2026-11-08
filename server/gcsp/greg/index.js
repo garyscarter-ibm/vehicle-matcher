@@ -1,9 +1,11 @@
 import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.js';
 import { validInstant } from '../policy/file-provider.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
+import { projectRecommendationFacts } from '../manual-context/recommendation-facts.js';
+import { readStockSourceStatus } from '../stock/source-status.js';
 
 const THRESHOLD_KEY = 'greg.demand.smallCountThreshold';
-const tables = ['briefs', 'employees', 'stock', 'holds', 'offers', 'decisions', 'quotes'];
+const tables = ['briefs', 'employees', 'entitlement_slots', 'stock', 'holds', 'offers', 'decisions', 'quotes'];
 const unavailable = (code) => result('unavailable', { code, reason: 'The saved-demand projection is unavailable.', retryable: true });
 const factValue = (fact) => fact?.status === 'known' ? fact.value : null;
 const modelLine = (row) => factValue(row.facts?.facts?.modelLine)
@@ -74,18 +76,21 @@ export function createGregDemandService({ repository, policy, clock, identity } 
         for (const brief of briefs) {
           const employee = rows.employees.find((row) => row.employeeId === brief.employeeId);
           if (!employee || !employee.roles?.includes('employee')) return unavailable('brief-owner-unavailable');
+          const employeeContext = { ...context, ...Object.fromEntries(['employeeId', 'companyId', 'schemeId', 'gradeId', 'entitlementSlotId'].map((key) => [key, employee[key]])), roles: ['employee'] };
+          const facts = projectRecommendationFacts({ context: employeeContext, employee, brief,
+            slots: rows.entitlement_slots, now: time.value.now });
+          if (facts.status !== 'ok') return unavailable('source-invalid');
+          const supplied = facts.value.employeeFacts;
           const released = rows.stock.filter((row) => ['released', 'held', 'allocated'].includes(row.state));
           const available = released.filter((row) => visible(row, employee));
           if (!available.length) { unmet.push({ brief, gates: [released.length ? 'stock-not-visible' : 'no-released-stock'] }); continue; }
-          const supplied = structuredClone(employee.contract?.manualContext?.employeeFacts ?? {});
           const charging = brief.essentials?.charging;
           if (charging) supplied.charging = { status: charging.state === 'confirmed' && charging.value !== null ? 'known' : 'unknown',
             value: charging.value, unit: null, provenance: { sourceRef: 'saved-brief', version: String(brief.briefVersion),
               observedAt: brief.confirmedAt, assurance: 'synthetic-scenario' } };
-          const employeeContext = { ...context, ...Object.fromEntries(['employeeId', 'companyId', 'schemeId', 'gradeId', 'entitlementSlotId'].map((key) => [key, employee[key]])), roles: ['employee'] };
           const evaluator = createEmployeeRecommendationService({ policy, time: { async now() { return time; } },
             provider: { async resolve() { return ok({ runId: context.runId, environmentId: context.environmentId, employeeId: employee.employeeId,
-              factsVersion: `employee:${employee.version}`, stockVersion: inputDigest(available), employeeFacts: supplied, stock: available.map(candidate) }); } } });
+              factsVersion: facts.value.factsVersion, stockVersion: inputDigest(available), employeeFacts: supplied, stock: available.map(candidate) }); } } });
           const evaluated = await evaluator.recommend(employeeContext, { schemaVersion: brief.schemaVersion, briefVersion: brief.briefVersion,
             preferences: brief.preferences, essentials: Object.fromEntries(Object.entries(brief.essentials).filter(([key]) => key !== 'charging')) });
           if (evaluated.status !== 'ok') return unavailable('evaluation-unavailable');
@@ -151,7 +156,7 @@ export function createGregDemandService({ repository, policy, clock, identity } 
           offers: { made: aggregate(rows.offers, rows.offers.flatMap(offerVersions)), accepted: aggregate(accepted, accepted.flatMap(offerVersions)),
             declined: aggregate(declined, declined.flatMap(offerVersions)), expired: aggregate(expired, expired.flatMap(offerVersions)),
             selected: aggregate(selected, selected.flatMap(offerVersions)), declinedByReason: group(declined, reason, offerVersions) },
-          stock: { byModelLine: stocks } });
+          stock: { byModelLine: stocks, source: await readStockSourceStatus(repository, context) } });
       } catch { return unavailable('source-invalid'); }
     },
   };

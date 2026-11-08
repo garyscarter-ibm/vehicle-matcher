@@ -12,6 +12,16 @@ const implementation = await import('../gcsp/brief/index.js').catch(() => ({}));
 test('BriefService exposes a repository-backed lifecycle', () => assert.equal(typeof implementation.BriefService, 'function'));
 const lifecycle = (name, fn) => test(name, { skip: !implementation.BriefService }, fn);
 const cmd = (commandId, input = {}) => ({ commandId, inputDigest: inputDigest(input) });
+// The reviewed follow-up questions are adopted per run; FUCQ-183 add tests supply them over the canonical seed.
+async function followupPolicy() {
+  const policy = createPolicyService(); const canonical = policy.getAssumption.bind(policy);
+  const bundle = JSON.parse(await readFile(new URL('../gcsp/policy/reviewed/offer-followup-questions-v1.json', import.meta.url), 'utf8'));
+  const row = bundle.definitions.find((d) => d.key === 'offer.followupQuestions.v1');
+  policy.getAssumption = async (key, read) => key === row.key ? { status: 'ok', policyVersion: read.policyVersion,
+    value: { key, value: structuredClone(row.value), status: 'assumed', basis: 'Reviewed follow-up set.', source: 'test', sourceDate: '2026-11-08' } }
+    : canonical(key, read);
+  return policy;
+}
 async function setup({ policy = createPolicyService() } = {}) {
   const store = createMemoryStore();
   const repository = createMemoryRepository({ store });
@@ -139,6 +149,65 @@ lifecycle('one post-decline field change is audited, idempotent and preserves al
   assert.deepEqual(await f.service.changeAfterDecline(f.context, input), changed);
   assert.equal((await f.service.changeAfterDecline(f.context, { ...input, commandId: 'again', expectedBriefVersion: 2 })).status, 'conflict');
   assert.equal((await f.service.changeAfterDecline(f.context, { ...input, commandId: 'forged', expectedBriefVersion: 2, change: { path: 'buddy.enabled', value: true } })).status, 'invalid');
+});
+
+lifecycle('FUCQ-183: a post-decline change adds a registered preference or essential the brief lacks, and refuses unregistered keys', async () => {
+  const f = await setup({ policy: await followupPolicy() }); await save(f); const initial = (await confirm(f)).value.brief;
+  await f.repository.transaction(f.context, cmd('add-decline'), (tx) => tx.insert('decisions', { runId: f.context.runId, decisionId: 'add-decline',
+    offerId: 'add-offer', employeeId: f.context.employeeId, decision: 'decline', versions: { brief: 1 } }));
+  const base = { decisionId: 'add-decline', expectedBriefVersion: 1 };
+  for (const [commandId, path] of [['ghost-pref', 'preferences.warp.value'], ['ghost-essential', 'essentials.warp']]) {
+    const refused = await f.service.changeAfterDecline(f.context, { ...base, commandId,
+      change: { path, value: path.startsWith('prefer') ? 5 : essential(['towbar'], 'includes', 'equipment-key') } });
+    assert.equal(refused.status, 'invalid', JSON.stringify(refused)); assert.equal(refused.reasons[0].field, 'change.path');
+  }
+  const bad = await f.service.changeAfterDecline(f.context, { ...base, commandId: 'bad-equipment',
+    change: { path: 'essentials.equipment', value: { ...essential(['towbar'], 'includes', 'equipment-key'), state: 'draft' } } });
+  assert.equal(bad.status, 'invalid');
+  assert.equal((await f.service.readHistory(f.context)).value.versions.length, 1);
+  const editor = (await f.policy.getAssumption('brief.editor.v1', { runId: f.context.runId, asOf: initial.confirmedAt,
+    policyVersion: f.context.policyVersion })).value.value.preferences.size.importance;
+  const size = await f.service.changeAfterDecline(f.context, { ...base, commandId: 'add-size', change: { path: 'preferences.size.value', value: 60 } });
+  assert.equal(size.status, 'ok', JSON.stringify(size));
+  assert.deepEqual(size.value.brief.preferences.size, { value: 60, importance: editor, valueState: 'confirmed',
+    importanceState: 'confirmed', source: 'employee', confirmedAt: size.value.brief.postDeclineChange.confirmedAt });
+  assert.equal(size.value.brief.briefVersion, 2); assert.equal(size.value.brief.postDeclineChange.before, null);
+  assert.equal(size.value.brief.postDeclineChange.after, 60);
+  assert.deepEqual(size.value.brief.preferences.body, initial.preferences.body);
+  await f.repository.transaction(f.context, cmd('add-decline-2'), (tx) => tx.insert('decisions', { runId: f.context.runId, decisionId: 'add-decline-2',
+    offerId: 'add-offer-2', employeeId: f.context.employeeId, decision: 'decline', versions: { brief: 2 } }));
+  const equipment = await f.service.changeAfterDecline(f.context, { commandId: 'add-equipment', decisionId: 'add-decline-2',
+    expectedBriefVersion: 2, change: { path: 'essentials.equipment', value: essential(['towbar'], 'includes', 'equipment-key') } });
+  assert.equal(equipment.status, 'ok', JSON.stringify(equipment));
+  const stored = equipment.value.brief.essentials.equipment;
+  assert.deepEqual(stored.value, ['towbar']); assert.equal(stored.state, 'confirmed'); assert.equal(stored.source, 'employee');
+  assert.equal(equipment.value.brief.postDeclineChange.before, null); assert.deepEqual(equipment.value.brief.postDeclineChange.after, stored);
+});
+
+lifecycle('FUCQ-183: a direct post-decline add refuses values outside the registered control and keeps the version', async () => {
+  const f = await setup({ policy: await followupPolicy() }); await save(f); await confirm(f);
+  await f.repository.transaction(f.context, cmd('bad-add'), (tx) => tx.insert('decisions', { runId: f.context.runId, decisionId: 'bad-add',
+    offerId: 'bad-offer', employeeId: f.context.employeeId, decision: 'decline', versions: { brief: 1 } }));
+  const list = (value, operator = 'includes', unit = 'equipment-key') => essential(value, operator, unit);
+  const cases = [['preferences.fuel.value', 'banana'], ['preferences.fuel.value', { value: 'ev' }], ['preferences.size.value', 101],
+    ['preferences.size.value', 50.5], ['preferences.size.value', '60'], ['essentials.equipment', list([])],
+    ['essentials.equipment', list(['towbar', 'towbar'])], ['essentials.equipment', list([' towbar'])],
+    ['essentials.equipment', list([{ name: 'towbar' }])], ['essentials.equipment', list(['towbar'], 'equals')],
+    ['essentials.equipment', list(['x'.repeat(81)])], ['essentials.equipment', list(Array.from({ length: 9 }, (_, i) => `item-${i}`))],
+    ['preferences.sportiness.value', 60]];
+  for (const [index, [path, value]] of cases.entries()) {
+    const refused = await f.service.changeAfterDecline(f.context, { commandId: `bad-${index}`, decisionId: 'bad-add',
+      expectedBriefVersion: 1, change: { path, value } });
+    assert.equal(refused.status, 'invalid', `${path} ${JSON.stringify(value).slice(0, 60)}: ${JSON.stringify(refused)}`);
+  }
+  assert.equal((await f.service.readHistory(f.context)).value.versions.length, 1);
+  assert.equal((await f.service.readCurrent(f.context)).value.brief.briefVersion, 1);
+  const g = await setup(); await save(g); await confirm(g);
+  await g.repository.transaction(g.context, cmd('bad-add'), (tx) => tx.insert('decisions', { runId: g.context.runId, decisionId: 'bad-add',
+    offerId: 'bad-offer', employeeId: g.context.employeeId, decision: 'decline', versions: { brief: 1 } }));
+  const unadopted = await g.service.changeAfterDecline(g.context, { commandId: 'no-set', decisionId: 'bad-add', expectedBriefVersion: 1,
+    change: { path: 'preferences.size.value', value: 60 } });
+  assert.equal(unadopted.status, 'invalid'); assert.equal(unadopted.reasons[0].field, 'change.path');
 });
 
 lifecycle('invalid fields, contribution, forged known facts and inferred inputs cannot become approved defaults', async () => {

@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-70",
+  "date": "2026-11-06",
+  "status": "narrow probe correction authored, not executed",
+  "authorization": "Dispatcher0033 authorised only probe correction against actual stock-state contract, preserving six business cases/eight setups and all prior failures; exact static review before execution.",
+  "diagnosis": {
+    "reproduction": "Published0645d37 reached all46 application modules and six cases, then failed each at occupancy helper raw stock.held; after-hook failed6vs8 because first release variant aborted.",
+    "verifiedCause": "The probe expected raw held/available booleans to track claim authority. Pinned conditionalClaim updates stock.state to held and creates occupying hold/claim rows, preserving other stock fields. This mismatch was in the proof expectation; no product repair is needed or authorised by this checkpoint.",
+    "affectedWritersReaders": "Only probe occupancy assertions and their manifest hashes/planned run identity. No production writer, reader, schema, adapter or claim source changes.",
+    "nextCheck": "Dispatcher verifies this exact helper-only delta/new hashes/unused token. A separately admitted command must still pass all six business cases and exactly eight setups.",
+    "basis": "Original reached log and receipt at9d743b5, pinned repository source and shared hold-state contract; no new execution."
+  },
+  "sourceEvidence": [
+    {
+      "path": "server/gcsp/repository/core.js",
+      "ref": "16a83dde4bfbd48721bce5c26f98b482f4f5db40",
+      "sha256": "c55c93c543886108f67aa12bc5c7519d50063e90ba4ec78df37aa0df56d6f311",
+      "line": 218,
+      "statement": "conditionalClaim writes only stock state:held; CAS preserves other row fields."
+    },
+    {
+      "path": "server/gcsp/repository/schema.js",
+      "sha256": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+      "statement": "OCCUPYING_STATES is active,claim-pending,release-pending,selection-pending."
+    },
+    {
+      "path": "docs/gcsp/shared-contracts.md",
+      "sha256": "32c493aa27d8fa808bb46cbc011e8e20362c3b4356932e549647bff1ba11052e",
+      "statement": "Exact-stock authority joins holds/claims by run/order/hold; pending states occupy, terminal states do not revive."
+    }
+  ],
+  "delta": {
+    "path": "server/test/gcsp-manual-review-actual66.proof.mjs",
+    "function": "occupancy(f, occupied)",
+    "removed": "Assertions that raw stock.held and stock.available mirror occupancy.",
+    "replacement": "Assert actual stock.state is held while occupying or released after release/expiry. Preserve exact one-hold/one-claim/one-quote counts and OCCUPYING_STATES counts.",
+    "additionalBindingChecks": "Claim state equals hold state; claim references same hold; both reference same quote; quote names exact order/configuration. Hold,claim,quote retain genuine run/employee/slot/policy scope. Capture a cloned binding and quote at first check and compare unchanged identity and full quote at later checks.",
+    "noDomainWrites": "Only local proof fields retain cloned snapshots; no stock booleans set, no alias/transform/product write and no bypass added.",
+    "scopeProof": "Probe bytes before occupancy() and from stableDomain() to EOF exactly equal HEAD. Thus all six business test bodies, expiry/pending/privacy assertions, three release variants and eight-setup after-hook are untouched."
+  },
+  "unchanged": {
+    "applicationModules": 46,
+    "fileInputs": 6,
+    "producerCopies": 8,
+    "loaderSha256": "96933bd1378aa6b243865bb81b9dd8ce9aec2823e42cadfec5610dd81a530052",
+    "supervisorSha256": "4a1766de4b8e11f59749877241913eb2e032d59abb5c44b8c250c560216944b3",
+    "dependencyManifestSha256": "6812e8aa4d1ac0f92d31c9bd7fbde994dbf1fb9f5a0c3703566f8072ccd1a812",
+    "sixCaseNames": [
+      "actual66 issued claim \u2192 actual69 confirmed readback callback \u2192 review without another claim",
+      "actual66 confirmed release remains available with invalid local contacts for cancel/back/change",
+      "actual66 historical success replay cannot authorise continuation after exact clock expiry",
+      "actual66 HTTP202 pending claim/replay reconciles before same-operation resend and actual GET confirmation",
+      "actual66 HTTP202 release stays occupied past deadline until matching terminal GET, retaining invalid edits",
+      "actual identity/session isolation and competing review metadata readback fail closed without a new claim"
+    ],
+    "plannedSetups": 8,
+    "firstFailure": "docs/gcsp/evidence/fucq70/service-proof-result.json",
+    "secondFailure": "docs/gcsp/evidence/fucq70/service-proof-registration-result.json"
+  },
+  "newHashes": {
+    "probe": "778594a8cfbde994438bbde08b7193b9cd7a4b6f3e8add343add5f0393f61bd6",
+    "sourceManifest": "80f4ff4244a508a0e97789c044d31216f51a152874b085299b78db574305c96c",
+    "harnessManifest": "ef9d883bb2d03b7d5d93d819f4bfd65e80130a7d515022313c33f2b874e8b354"
+  },
+  "plannedScratch": "/private/tmp/test-stamp-shard-be80489a39220fe62ed2d08592a093a8",
+  "plannedRecords": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/be80489a39220fe62ed2d08592a093a8",
+  "validation": "Static authoring checks only; no Node syntax/probe/loader run or resource allocation.",
+  "storyBuilt": false
+}

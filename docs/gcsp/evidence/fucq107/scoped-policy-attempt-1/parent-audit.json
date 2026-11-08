@@ -1,0 +1,41 @@
+{
+  "scope": "Independent lead post-stop source/dependency/Node/process/owner/scratch/reservation/log audit",
+  "checksPassed": 203,
+  "allPassed": true,
+  "frozenCommit": "7fd4c6f218285b0a1a4eb22b9a115f8fe68f9ef7",
+  "failedTest": "missing, malformed and mixed-version canonical policy reads fail closed",
+  "diagnosis": "At line124 expected unavailable; testPolicy mixedVersion only applied inside overrides branch. The chosen brief.slider.maximum key is not overridden, so canonical PolicyService returns same pin and helper correctly accepts it. Fixture fault; product mixed-version path not exercised.",
+  "counts": {
+    "cancelled": 0,
+    "fail": 1,
+    "pass": 6,
+    "skipped": 0,
+    "suites": 0,
+    "tests": 7,
+    "todo": 0
+  },
+  "names": [
+    "ok 1 - reads all five canonical assumptions through PolicyService at the same pinned version",
+    "ok 2 - projects one question for every canonical typed reason and binds the current value and brief version",
+    "not ok 3 - missing, malformed and mixed-version canonical policy reads fail closed",
+    "ok 4 - unregistered reasons are invalid and absent or unconfirmed targets are unavailable",
+    "ok 5 - option and slider changes accept only projected values and leave input brief unchanged",
+    "ok 6 - equipment changes preserve the registered essential shape and compare sets for no-op answers",
+    "ok 7 - provider exceptions are sanitized to a typed unavailable result"
+  ],
+  "cleanup": {
+    "scratchRemoved": true,
+    "supervisorOwnerDead": true,
+    "childProcessesMatch": true,
+    "childrenDead": true,
+    "reservationAbsent": true
+  },
+  "nextChunk": "Not run; grant stopped at first failing policy chunk",
+  "originalLog": {
+    "bytes": 3094,
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/20261106T010938413961Z/output.log",
+    "reporter": "tap",
+    "retained": true,
+    "sha256": "f533e62e6fce336b50b1888b973d7294207825e9db72d9817424af1b798db166"
+  }
+}

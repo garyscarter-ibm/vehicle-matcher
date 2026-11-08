@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "f62-measured-candidate.v1",
+  "status": "isolated-only-awaiting-parent-task3-release",
+  "version": "2026-11-07.5",
+  "candidateManifestDigest": "7f4396b8fcddf14eb0d7386a47cbc41f58e1385d8ee30a0bda95f292c016e431",
+  "manifestPath": "docs/gcsp/evidence/fucq62/fleet-dot5-candidate-results/candidate-manifest.json",
+  "counts": {
+    "configurations": 480,
+    "distinctConfigurations": 480,
+    "vinMappings": 1,
+    "images": 1,
+    "sourceConfigurations": 479,
+    "qualifyingCompleteDistinctSourceConfigurations": 479
+  },
+  "baselineManifestDigest": "8af582cf0dc60488daa6a6bf105d0eb80bcda98d77958960f98abd5e2e15c3e9",
+  "planPath": "docs/gcsp/evidence/fucq62/fleet-2026-11-07-5-plan.json",
+  "planSha256": "aab9e4c90c42343edba8a70e7fee3b14b8a3ddf684b03a2e1450d415c5346c25",
+  "reproducerPath": "docs/gcsp/evidence/fucq62/prepare-fleet-dot5.mjs",
+  "reproducerSha256": "3d3d02fa60c5b6e324a5c9d6180bd513f97ed4b1726cd04b9fd0b37a8b44923b",
+  "candidateRetained": false,
+  "reprepareBeforeTask3": "Use identical pinned sources/baseline/version/asOf/code and require exact retained manifest bytes/digest before publication. Measure actual candidate file lengths for new descriptor.",
+  "ordinaryPublicationExecuted": false,
+  "publicUploadExecuted": false,
+  "renderChanged": false
+}

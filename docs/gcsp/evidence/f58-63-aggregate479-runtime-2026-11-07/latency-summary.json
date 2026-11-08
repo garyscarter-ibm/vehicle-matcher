@@ -1,0 +1,10 @@
+{
+  "scope": "actual 481 successful existingrequests only; no extra benchmark requests or SLA claim",
+  "unit": "ms",
+  "count": 481,
+  "median": 50.01691700000083,
+  "p95": 75.33020899999974,
+  "p99": 138.74412500000017,
+  "max": 360.6983330000003,
+  "totalProbeSeconds": 28.598522749999997
+}

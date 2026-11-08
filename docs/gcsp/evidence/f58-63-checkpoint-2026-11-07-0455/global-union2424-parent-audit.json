@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "actual-global-union.v1",
+  "time": "2026-11-07T04:43:36.541986+00:00",
+  "scope": "G42actual60+unspent5+F70optionalpilot32; no source/test replay",
+  "status": "proved",
+  "admittedSource": 2424,
+  "canonical": 2427,
+  "spent": 3236,
+  "F70new": 32,
+  "G42newSince1971": 421,
+  "G42First5ParentAudit": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-unspent2288-first5-parent-audit.json",
+    "sha256": "b1915edf8293811236fe8a04e36c122ed79b8f501394fda9ec297d5393a11ae7"
+  },
+  "F70strictProofs": [
+    {
+      "session": 1,
+      "proofSha256": "5e6354f4901682db23673eb222046254a201ba7ac37565b09e945951530e610b",
+      "primarySha256": "c8904620974ae18cf16c67a6e6358c1bc25e45880f5454f01b507d04a5e500d8"
+    },
+    {
+      "session": 2,
+      "proofSha256": "b4fa178154ef5a8bb753d5f124de1d2c9199c26cb634406da8f5372848d63d57",
+      "primarySha256": "e9d0484f63844aea0cf5d2f32b01e4049fa71f051ebbd1e77b2c830a348671e8"
+    },
+    {
+      "session": 3,
+      "proofSha256": "b597f8ca317fba5b002580165b2db738cc7ff13ce387a7bf5fc22abb2f11c007",
+      "primarySha256": "06720a5e468b7ee37c1c0e053c5aa389dd5511e81c6a9e8a44aabf2bfab33b70"
+    },
+    {
+      "session": 4,
+      "proofSha256": "f8b75868af28090f0cfb5a367894ce90025e8f7f458869e1f20b5302ee334da1",
+      "primarySha256": "b6a48fa440bf17f85e84032f4b6ecacb6c178ccf3dfe7b7b56d78e8953b230b3"
+    }
+  ],
+  "F70independentCleanupSha256": "d79239aee791b31d4c14c67baa090e6851742ef43fec074bafb8213f5851c60b",
+  "canonicalPin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union2424-20261107/final-canonical-index.json",
+    "sha256": "bb9b7f7b7b8304fa498001a92b0085a520412e5d10a8c4c1007f4e703efe5e30"
+  },
+  "spentPin": {
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union2424-20261107/final-spent-request-index.json",
+    "sha256": "5dc884be54f868b906500f0d8feed9706922f8747fc04a8f946fc1d2cb0aeac2"
+  },
+  "prefix": "sharedcanonicalidentities+origins retained regardlessofsortorder; shared3156spentprefix andbothorderedextensions preserved; noduplicateunion",
+  "originalFailuresPreserved": true,
+  "sourceAcceptance": false,
+  "remaining10000": 7576,
+  "scratchCreated": false,
+  "retainedLogicalBytes": 2313852,
+  "initialParentAuditAttempt": "strict orderedcanonicalprefix comparison failed becauseoptionalindexes sortedIDs; corrected toidentity/originpreservation; nosource/proofrerun"
+}

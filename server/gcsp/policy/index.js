@@ -1,6 +1,7 @@
 import { FilePolicyProvider, PolicySourceError, snapshotVersions, validInstant } from './file-provider.js';
 import { PostgresPolicyProvider } from './postgres-provider.js';
 import { publishPolicyVersion } from './publish.js';
+import { adoptReviewedAssumptions } from './adoption.js';
 
 export { FilePolicyProvider } from './file-provider.js';
 export { PostgresPolicyProvider } from './postgres-provider.js';
@@ -15,12 +16,12 @@ const ok = (version, value) => outcome('ok', version, { value });
 
 export class PolicyService {
   #provider;
-  #identity; #clock;
-  #snapshots = new WeakMap();
+  #identity; #clock; #repository;
+  #snapshots = new WeakMap(); #pinnedRows = new WeakMap();
 
-  constructor({ provider = new FilePolicyProvider(), identity, clock } = {}) {
+  constructor({ provider = new FilePolicyProvider(), identity, clock, repository } = {}) {
     this.#provider = provider;
-    this.#identity = identity; this.#clock = clock;
+    this.#identity = identity; this.#clock = clock; this.#repository = repository;
   }
 
   async #resolve(read) {
@@ -52,7 +53,10 @@ export class PolicyService {
     if (!seed) return { error: outcome('not-found', null, { code: 'policy-version-not-found', resourceType: 'policy-version', reasons: [{ field: 'policyVersion', reason: 'No matching retained policy version.' }] }) };
     // A pin preserves the rows effective when that immutable version began, including after their expiry.
     const at = pinned ? Date.parse(seed.effectiveFrom) : instant;
-    return { seed, rows: (table) => seed[table].filter((row) => activeAt(row, at)) };
+    if (!pinned) return { seed, rows: (table) => seed[table].filter((row) => activeAt(row, at)) };
+    // A pinned version's effective rows never change, so each table is filtered once (read-only to callers).
+    const cache = this.#pinnedRows.get(seed) ?? new Map(); this.#pinnedRows.set(seed, cache);
+    return { seed, rows: (table) => { if (!cache.has(table)) cache.set(table, seed[table].filter((row) => activeAt(row, at))); return cache.get(table); } };
   }
 
   #context(context, read, resolved) {
@@ -66,6 +70,18 @@ export class PolicyService {
     if (scheme.companyId !== context.companyId) return invalid(version, 'unknown-company', 'companyId', 'Company is not mapped to this scheme.');
     if (!scheme.gradeIds.includes(context.gradeId)) return invalid(version, 'unknown-grade', 'gradeId', 'Grade is not mapped to this scheme.');
     return null;
+  }
+
+  // Trusted server composition only; never serialize this seed through an HTTP route.
+  async getPolicySnapshot(read) {
+    const resolved = await this.#resolve(read);
+    if (resolved.error) return resolved.error;
+    const snapshot = ok(resolved.seed.policyVersion, resolved.seed);
+    const freeze = (value) => {
+      if (value && typeof value === 'object') { Object.values(value).forEach(freeze); Object.freeze(value); }
+      return value;
+    };
+    return freeze(snapshot);
   }
 
   async getActiveVersion(read) {
@@ -122,7 +138,8 @@ export class PolicyService {
       return invalid(version, 'unsupported-rule-selection', 'eligibility.rule', 'Unsupported or ineffective rule field/precedence selection.');
     }
     const links = resolved.rows('schemeRuleLinks').filter((row) => row.schemeId === context.schemeId);
-    const rules = resolved.rows('eligibilityRules').filter((rule) => links.some((link) => link.ruleId === rule.ruleId));
+    const linked = new Set(links.map((link) => link.ruleId));
+    const rules = resolved.rows('eligibilityRules').filter((rule) => linked.has(rule.ruleId));
     if (rules.some((rule) => rule.matchField !== field.value || rule.operator !== 'equals')) {
       return invalid(version, 'unsupported-rule-selection', 'eligibility.rule.matchField', 'The selected field does not match the scheme rules.');
     }
@@ -138,6 +155,15 @@ export class PolicyService {
     });
   }
 
+  withPublicationPorts({ identity, clock, repository } = {}) {
+    return new PolicyService({ provider: this.#provider, identity, clock, repository });
+  }
+
+  async adoptReviewedAssumptions(context, input) {
+    return adoptReviewedAssumptions({ provider: this.#provider, identity: this.#identity, clock: this.#clock,
+      repository: this.#repository, policy: this }, context, input);
+  }
+
   async publishPolicyVersion(context, changeSet) {
     return publishPolicyVersion({ provider: this.#provider, identity: this.#identity, clock: this.#clock }, context, changeSet);
   }
@@ -145,9 +171,9 @@ export class PolicyService {
   async close() { return this.#provider?.close?.() ?? ok(null, { closed: true }); }
 }
 
-export function createPolicyService({ provider, identity, clock, ...options } = {}) {
+export function createPolicyService({ provider, identity, clock, repository, ...options } = {}) {
   const explicitFile = Object.hasOwn(options, 'filePath') || Object.hasOwn(options, 'retainedFilePaths');
   const configured = Object.hasOwn(options, 'connectionString') || Object.hasOwn(options, 'pool') || Object.hasOwn(process.env, 'GCSP_DATABASE_URL');
   const selected = provider === undefined ? configured && !explicitFile ? new PostgresPolicyProvider(options) : new FilePolicyProvider(options) : provider;
-  return new PolicyService({ provider: selected, identity, clock });
+  return new PolicyService({ provider: selected, identity, clock, repository });
 }

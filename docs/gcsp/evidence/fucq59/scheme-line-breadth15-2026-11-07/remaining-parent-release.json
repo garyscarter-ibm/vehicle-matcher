@@ -1,0 +1,19 @@
+{
+  "observedAt": "2026-11-07T04:28:47.721820+00:00",
+  "decision": "release-remaining12-once",
+  "grant": "scheme-five-range-inventory15-20261107-once-remaining12",
+  "firstProofSha256": "3b7a25b735ed3ea4097c618ff8e3d600a9839ac2c4443a16d104a2f6ff32bd63",
+  "firstPrimarySha256": "9a6d47820aa93ee6dafc41679a043680b31b077e0d379d1c0d432bfdf6ec4384",
+  "planSha256": "3e93d0e074c3e813fd5a8299dba9e7e69013c3a794b6ce4f57b0cb30834da62f",
+  "limits": {
+    "GET": 12,
+    "phaseSeconds": 450,
+    "workers": 1,
+    "decodedBytes": 16777216,
+    "scratchBytes": 67108864,
+    "hostRamBytes": 536870912
+  },
+  "review": "actualfirst3primary/proof/receipt/cleanuphashes andnamedownedrootabsence; originallinegrammarrefusal preserved; no options/solver/admission inference",
+  "capacityCredit": 0,
+  "acceptance": false
+}

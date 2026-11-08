@@ -1,0 +1,1755 @@
+{
+  "state": "completed-with-failures",
+  "chunk": "desktop",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "boundary": "Real buildServer routes, memory repository and canonical services over loopback HTTP. Offer read routes only are stubbed in section C.",
+  "cookieMode": "fallback: Secure and SameSite=None refused on http://127.0.0.1, bootstrap cookie stored Lax, not Secure",
+  "checks": [
+    {
+      "id": "01-no-order:layout",
+      "name": "01-no-order: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "01-no-order:copy",
+      "name": "01-no-order: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "01-no-order:console",
+      "name": "01-no-order: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "01-no-order:reads \"No order yet\"",
+      "name": "01-no-order: reads \"No order yet\"",
+      "pass": true
+    },
+    {
+      "id": "02a-real-account-after-order:layout",
+      "name": "02a-real-account-after-order: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "02a-real-account-after-order:copy",
+      "name": "02a-real-account-after-order: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "02a-real-account-after-order:console",
+      "name": "02a-real-account-after-order: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "A2:real-account-ready",
+      "name": "A2: the standalone live page shows the order after a real order, using the real account read (no stub anywhere)",
+      "pass": true,
+      "detail": {
+        "accountState": "no-entitlement",
+        "pageText": "Skip to content Group Car Schemes Portal P Paula (fictional) Your car brief Buddy activity Order progress Show labels Presenter controls ORDER PROGRESS Order progress All times are demo time (UTC). Your order No image fo"
+      }
+    },
+    {
+      "id": "02-approval-in-progress:layout",
+      "name": "02-approval-in-progress: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "02-approval-in-progress:copy",
+      "name": "02-approval-in-progress: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "02-approval-in-progress:console",
+      "name": "02-approval-in-progress: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "02-approval-in-progress:order number has 7 digits",
+      "name": "02-approval-in-progress: order number has 7 digits",
+      "pass": true
+    },
+    {
+      "id": "02-approval-in-progress:current stage shown (Selection received)",
+      "name": "02-approval-in-progress: current stage shown (Selection received)",
+      "pass": true
+    },
+    {
+      "id": "02-approval-in-progress:owner shown on the current stage (\"With ...\")",
+      "name": "02-approval-in-progress: owner shown on the current stage (\"With ...\")",
+      "pass": true
+    },
+    {
+      "id": "02-approval-in-progress:next step shown on the current stage (\"Next: ...\")",
+      "name": "02-approval-in-progress: next step shown on the current stage (\"Next: ...\")",
+      "pass": true
+    },
+    {
+      "id": "02-approval-in-progress:approval in progress, no handover yet",
+      "name": "02-approval-in-progress: approval in progress, no handover yet",
+      "pass": true
+    },
+    {
+      "id": "A2:current-step",
+      "name": "A2 OBSERVATION: some stage carries the \"Current step\" state (aria-current); the server current stage is already Done here",
+      "pass": false,
+      "detail": {
+        "count": 0
+      }
+    },
+    {
+      "id": "A2:owner-copy",
+      "name": "A2: owner written as \"With ...\"",
+      "pass": true,
+      "detail": "With ordering Next"
+    },
+    {
+      "id": "03-documents-outstanding:layout",
+      "name": "03-documents-outstanding: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "03-documents-outstanding:copy",
+      "name": "03-documents-outstanding: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "03-documents-outstanding:console",
+      "name": "03-documents-outstanding: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "03-documents-outstanding:documents section lists \"Your tasks\"",
+      "name": "03-documents-outstanding: documents section lists \"Your tasks\"",
+      "pass": true
+    },
+    {
+      "id": "03-documents-outstanding:handover not requested, times offered",
+      "name": "03-documents-outstanding: handover not requested, times offered",
+      "pass": true
+    },
+    {
+      "id": "03-documents-outstanding:not ready for handover yet",
+      "name": "03-documents-outstanding: not ready for handover yet",
+      "pass": true
+    },
+    {
+      "id": "A3:tasks-first",
+      "name": "A3: \"Your tasks\" comes before \"Being handled by others\" and carries an action button",
+      "pass": true,
+      "detail": {
+        "mine": 159,
+        "others": 301,
+        "buttons": [
+          "Acknowledge the agreement"
+        ]
+      }
+    },
+    {
+      "id": "A3:slots",
+      "name": "A3: handover not requested, offered slots are buttons",
+      "pass": true,
+      "detail": [
+        "Request 7 Nov 2026, 09:00",
+        "Request 7 Nov 2026, 13:00",
+        "Request 8 Nov 2026, 09:00",
+        "Request 8 Nov 2026, 13:00",
+        "Request 9 Nov 2026, 09:00",
+        "Request 9 Nov 2026, 13:00"
+      ]
+    },
+    {
+      "id": "A3:stage",
+      "name": "A3: sent to ordering is the current stage",
+      "pass": true
+    },
+    {
+      "id": "08-account-state3:layout",
+      "name": "08-account-state3: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "08-account-state3:copy",
+      "name": "08-account-state3: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "08-account-state3:console",
+      "name": "08-account-state3: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "08-account-state3:\"Your order\" area present",
+      "name": "08-account-state3: \"Your order\" area present",
+      "pass": true
+    },
+    {
+      "id": "08-account-state3:order number",
+      "name": "08-account-state3: order number",
+      "pass": true
+    },
+    {
+      "id": "08-account-state3:stage names",
+      "name": "08-account-state3: stage names",
+      "pass": true
+    },
+    {
+      "id": "A4:tab-task",
+      "name": "A4: Tab reaches the employee task action",
+      "pass": true,
+      "detail": {
+        "tabs": 14,
+        "trail": [
+          "Skip to content",
+          "PPaula (fictional)",
+          "Your car brief",
+          "Buddy activity",
+          "Order progress",
+          "Show labels",
+          "Presenter controls",
+          "Request 7 Nov 2026, 09:00",
+          "Request 7 Nov 2026, 13:00",
+          "Request 8 Nov 2026, 09:00",
+          "Request 8 Nov 2026, 13:00",
+          "Request 9 Nov 2026, 09:00",
+          "Request 9 Nov 2026, 13:00",
+          "Acknowledge the agreement"
+        ]
+      }
+    },
+    {
+      "id": "A4:task-focus-visible",
+      "name": "A4: task action shows a visible keyboard focus ring (:focus-visible with outline or box-shadow)",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "role": null,
+        "label": "Acknowledge the agreement",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "04a-task-focus:layout",
+      "name": "04a-task-focus: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "04a-task-focus:copy",
+      "name": "04a-task-focus: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "04a-task-focus:console",
+      "name": "04a-task-focus: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "A4:task-status",
+      "name": "A4: Enter completes the task and a status message \"Task completed.\" is announced (role=status)",
+      "pass": true,
+      "detail": [
+        "status:Presenter controls ready",
+        "status:",
+        "status:Task completed."
+      ]
+    },
+    {
+      "id": "A4:task-focus-kept",
+      "name": "A4: focus stays on a sensible element after the repaint (not lost to body)",
+      "pass": true,
+      "detail": {
+        "tag": "p",
+        "role": "status",
+        "label": "Task completed.",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "04b-task-completed:layout",
+      "name": "04b-task-completed: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "04b-task-completed:copy",
+      "name": "04b-task-completed: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "04b-task-completed:console",
+      "name": "04b-task-completed: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "04b-task-completed:task shows Complete",
+      "name": "04b-task-completed: task shows Complete",
+      "pass": true
+    },
+    {
+      "id": "A4:tab-slot",
+      "name": "A4: Tab reaches a handover slot button",
+      "pass": true,
+      "detail": {
+        "tabs": 1,
+        "trail": [
+          "Request 7 Nov 2026, 09:00"
+        ]
+      }
+    },
+    {
+      "id": "A4:slot-focus-visible",
+      "name": "A4: slot button shows a visible keyboard focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "role": null,
+        "label": "Request 7 Nov 2026, 09:00",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "A4:slot-status",
+      "name": "A4: Enter requests the slot and \"Handover time requested.\" is announced",
+      "pass": true,
+      "detail": [
+        "status:Presenter controls ready",
+        "status:",
+        "status:Handover time requested."
+      ]
+    },
+    {
+      "id": "A4:requested-not-booked",
+      "name": "A4: handover reads \"Requested ... Not booked yet.\" and never \"Booked\"",
+      "pass": true,
+      "detail": "Handover Requested 7 Nov 2026, 09:00. Not booked yet. Owner Retailer Next step Waiting for the retailer to confirm your slot."
+    },
+    {
+      "id": "04c-handover-requested:layout",
+      "name": "04c-handover-requested: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "04c-handover-requested:copy",
+      "name": "04c-handover-requested: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "04c-handover-requested:console",
+      "name": "04c-handover-requested: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "A5:booked",
+      "name": "A5: after the tick the handover reads \"Booked:\"",
+      "pass": true,
+      "detail": "Handover Booked: 7 Nov 2026, 09:00 Owner Retailer Next step The retailer prepares your car for the handover. Handover history All dates are demo time (UTC). 5 Nov 2026, 12:00 Requested 5 Nov 2026, 12:30 Booked"
+    },
+    {
+      "id": "05-handover-booked:layout",
+      "name": "05-handover-booked: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "05-handover-booked:copy",
+      "name": "05-handover-booked: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "05-handover-booked:console",
+      "name": "05-handover-booked: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "A5:tab-return",
+      "name": "A5: Tab reaches a return slot button",
+      "pass": true,
+      "detail": {
+        "tabs": 8,
+        "trail": [
+          "Skip to content",
+          "PPaula (fictional)",
+          "Your car brief",
+          "Buddy activity",
+          "Order progress",
+          "Show labels",
+          "Presenter controls",
+          "Request return at handover, 7 Nov 2026, "
+        ]
+      }
+    },
+    {
+      "id": "A5:return-focus-visible",
+      "name": "A5: return slot button shows a visible keyboard focus ring",
+      "pass": true
+    },
+    {
+      "id": "A5:return-status",
+      "name": "A5: Enter requests the return and \"Return requested.\" is announced",
+      "pass": true,
+      "detail": [
+        "status:Presenter controls ready",
+        "status:",
+        "status:Return requested."
+      ]
+    },
+    {
+      "id": "A5:return-requested",
+      "name": "A5: return requested, not booked",
+      "pass": true,
+      "detail": "Returning your current car Current car Fictional BMW 320i Touring Configuration G21 320i M Sport Touring Your current car stays yours until it is returned. Return requested 7 Nov 2026, 09:00. Not booked yet. Owner Retailer Next step Waiting for the retailer to confirm your return slot."
+    },
+    {
+      "id": "A5:separate-section",
+      "name": "A5: return is its own section, separate from Handover, with its own heading",
+      "pass": true,
+      "detail": "Returning your current car"
+    },
+    {
+      "id": "A5:current-car",
+      "name": "A5: current car shown in the return section",
+      "pass": true,
+      "detail": "Returning your current car Current car Fictional BMW 320i Touring Configuration G21 320i M Sport Touring Your current car stays yours until it is returned. Return requested 7 Nov 2026, 09:00. Not booked yet. Owner Retailer Next step Waiting for the retailer to confirm your return slot."
+    },
+    {
+      "id": "A5:handover-untouched",
+      "name": "A5: handover stays Booked while the return is only requested",
+      "pass": true
+    },
+    {
+      "id": "05b-return-requested:layout",
+      "name": "05b-return-requested: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "05b-return-requested:copy",
+      "name": "05b-return-requested: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "05b-return-requested:console",
+      "name": "05b-return-requested: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "06-return-booked:layout",
+      "name": "06-return-booked: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "06-return-booked:copy",
+      "name": "06-return-booked: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "06-return-booked:console",
+      "name": "06-return-booked: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "06-return-booked:return booked",
+      "name": "06-return-booked: return booked",
+      "pass": true
+    },
+    {
+      "id": "A6:readback",
+      "name": "A6: reload reads back the same state",
+      "pass": true
+    },
+    {
+      "id": "A6:text",
+      "name": "A6: both handover and return are booked",
+      "pass": true
+    },
+    {
+      "id": "09-account-state6:layout",
+      "name": "09-account-state6: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "09-account-state6:copy",
+      "name": "09-account-state6: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "09-account-state6:console",
+      "name": "09-account-state6: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "09-account-state6:\"Your order\" area present",
+      "name": "09-account-state6: \"Your order\" area present",
+      "pass": true
+    },
+    {
+      "id": "09-account-state6:order number",
+      "name": "09-account-state6: order number",
+      "pass": true
+    },
+    {
+      "id": "09-account-state6:stages shown",
+      "name": "09-account-state6: stages shown",
+      "pass": true
+    },
+    {
+      "id": "09-account-state6:return booked shown",
+      "name": "09-account-state6: return booked shown",
+      "pass": true
+    },
+    {
+      "id": "C:stub",
+      "name": "C: offer read stubbed (accepted offer; quote.orderUuid is the real order). Order progress routes are real",
+      "pass": true,
+      "detail": {
+        "attempts": 1,
+        "stubbedRoutes": [
+          "GET /api/gcsp/offers/buddy-offer%3A6a617ef0d42fa32b788b34e00a684d0037382fad83db7e4b03a499cd4e5a1cdf"
+        ],
+        "note": "offer read stubbed page served at a stubbed https origin because the offer transport requires https"
+      }
+    },
+    {
+      "id": "10-offer-accepted:layout",
+      "name": "10-offer-accepted: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "10-offer-accepted:copy",
+      "name": "10-offer-accepted: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "10-offer-accepted:console",
+      "name": "10-offer-accepted: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "10-offer-accepted:offer shows accepted",
+      "name": "10-offer-accepted: offer shows accepted",
+      "pass": true
+    },
+    {
+      "id": "10-offer-accepted:embedded order progress shows order number",
+      "name": "10-offer-accepted: embedded order progress shows order number",
+      "pass": true
+    },
+    {
+      "id": "10-offer-accepted:embedded stages shown",
+      "name": "10-offer-accepted: embedded stages shown",
+      "pass": true
+    },
+    {
+      "id": "C:embedded",
+      "name": "C: embedded progress is inside the \"Your order progress\" region",
+      "pass": true
+    },
+    {
+      "id": "11-fixture-declined:layout",
+      "name": "11-fixture-declined: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "11-fixture-declined:copy",
+      "name": "11-fixture-declined: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "11-fixture-declined:console",
+      "name": "11-fixture-declined: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "11-fixture-declined:shows the expected state",
+      "name": "11-fixture-declined: shows the expected state",
+      "pass": true
+    },
+    {
+      "id": "12-fixture-provider-unsupported:layout",
+      "name": "12-fixture-provider-unsupported: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "12-fixture-provider-unsupported:copy",
+      "name": "12-fixture-provider-unsupported: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "12-fixture-provider-unsupported:console",
+      "name": "12-fixture-provider-unsupported: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "13-fixture-appointment-pending:layout",
+      "name": "13-fixture-appointment-pending: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "13-fixture-appointment-pending:copy",
+      "name": "13-fixture-appointment-pending: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "13-fixture-appointment-pending:console",
+      "name": "13-fixture-appointment-pending: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "13-fixture-appointment-pending:shows the expected state",
+      "name": "13-fixture-appointment-pending: shows the expected state",
+      "pass": true
+    },
+    {
+      "id": "14-fixture-documents-overdue:layout",
+      "name": "14-fixture-documents-overdue: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "14-fixture-documents-overdue:copy",
+      "name": "14-fixture-documents-overdue: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "14-fixture-documents-overdue:console",
+      "name": "14-fixture-documents-overdue: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "14-fixture-documents-overdue:shows the expected state",
+      "name": "14-fixture-documents-overdue: shows the expected state",
+      "pass": true
+    },
+    {
+      "id": "15-fixture-documents-failed:layout",
+      "name": "15-fixture-documents-failed: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "15-fixture-documents-failed:copy",
+      "name": "15-fixture-documents-failed: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "15-fixture-documents-failed:console",
+      "name": "15-fixture-documents-failed: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "15-fixture-documents-failed:shows the expected state",
+      "name": "15-fixture-documents-failed: shows the expected state",
+      "pass": true
+    },
+    {
+      "id": "16-fixture-ready-for-handover:layout",
+      "name": "16-fixture-ready-for-handover: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "16-fixture-ready-for-handover:copy",
+      "name": "16-fixture-ready-for-handover: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "16-fixture-ready-for-handover:console",
+      "name": "16-fixture-ready-for-handover: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "16-fixture-ready-for-handover:shows the expected state",
+      "name": "16-fixture-ready-for-handover: shows the expected state",
+      "pass": true
+    },
+    {
+      "id": "17-fixture-return-unavailable:layout",
+      "name": "17-fixture-return-unavailable: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "17-fixture-return-unavailable:copy",
+      "name": "17-fixture-return-unavailable: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "17-fixture-return-unavailable:console",
+      "name": "17-fixture-return-unavailable: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "18-fixture-unavailable:layout",
+      "name": "18-fixture-unavailable: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "18-fixture-unavailable:copy",
+      "name": "18-fixture-unavailable: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "18-fixture-unavailable:console",
+      "name": "18-fixture-unavailable: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "18-fixture-unavailable:shows the expected state",
+      "name": "18-fixture-unavailable: shows the expected state",
+      "pass": true
+    },
+    {
+      "id": "19-fixture-loading:layout",
+      "name": "19-fixture-loading: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "19-fixture-loading:copy",
+      "name": "19-fixture-loading: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "19-fixture-loading:console",
+      "name": "19-fixture-loading: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "19-fixture-loading:shows the expected state",
+      "name": "19-fixture-loading: shows the expected state",
+      "pass": true
+    },
+    {
+      "id": "20-fixture-partial-failure:layout",
+      "name": "20-fixture-partial-failure: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "20-fixture-partial-failure:copy",
+      "name": "20-fixture-partial-failure: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "20-fixture-partial-failure:console",
+      "name": "20-fixture-partial-failure: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "20-fixture-partial-failure:shows the expected state",
+      "name": "20-fixture-partial-failure: shows the expected state",
+      "pass": true
+    },
+    {
+      "id": "B-kbd:tab",
+      "name": "B-kbd: Tab alone reaches the employee task action in the embedded \"Your order\" area",
+      "pass": true,
+      "detail": {
+        "tabs": 9,
+        "lastStops": [
+          "Request 7 Nov 2026, 13:00",
+          "Request 8 Nov 2026, 09:00",
+          "Request 8 Nov 2026, 13:00",
+          "Request 9 Nov 2026, 09:00",
+          "Request 9 Nov 2026, 13:00",
+          "Acknowledge the agreement"
+        ]
+      }
+    },
+    {
+      "id": "B-kbd:focus-visible",
+      "name": "B-kbd: the control shows a visible keyboard focus ring (:focus-visible with outline or box-shadow)",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "role": null,
+        "label": "Acknowledge the agreement",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "B-kbd:status",
+      "name": "B-kbd: Enter produces the role=status message \"Task completed.\"",
+      "pass": true,
+      "detail": [
+        "status:Presenter controls ready",
+        "status:",
+        "status:No ordering entitlementScheme support can check your entitlement.Contact support",
+        "status:Task completed."
+      ]
+    },
+    {
+      "id": "B-kbd:focus-kept",
+      "name": "B-kbd: focus is not lost to the page body after the repaint",
+      "pass": true,
+      "detail": {
+        "tag": "p",
+        "role": "status",
+        "label": "Task completed.",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "12-account-keyboard:layout",
+      "name": "12-account-keyboard: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "12-account-keyboard:copy",
+      "name": "12-account-keyboard: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "12-account-keyboard:console",
+      "name": "12-account-keyboard: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "12-account-keyboard:embedded order shown",
+      "name": "12-account-keyboard: embedded order shown",
+      "pass": true
+    },
+    {
+      "id": "12-account-keyboard:task now complete",
+      "name": "12-account-keyboard: task now complete",
+      "pass": true
+    },
+    {
+      "id": "C-kbd:shown",
+      "name": "C-kbd: offer host (offer read stubbed) shows the embedded order progress",
+      "pass": true
+    },
+    {
+      "id": "C-kbd:tab",
+      "name": "C-kbd: Tab alone reaches a handover slot button in the embedded order progress",
+      "pass": true,
+      "detail": {
+        "tabs": 5,
+        "lastStops": [
+          "Skip to content",
+          "Retry",
+          "Show labels",
+          "Presenter controls",
+          "Request 7 Nov 2026, 09:00"
+        ]
+      }
+    },
+    {
+      "id": "C-kbd:focus-visible",
+      "name": "C-kbd: the control shows a visible keyboard focus ring (:focus-visible with outline or box-shadow)",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "role": null,
+        "label": "Request 7 Nov 2026, 09:00",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "C-kbd:status",
+      "name": "C-kbd: Enter produces the role=status message \"Handover time requested.\"",
+      "pass": true,
+      "detail": [
+        "status:Presenter controls ready",
+        "status:",
+        "status:Handover time requested.",
+        "status:Offer accepted"
+      ]
+    },
+    {
+      "id": "C-kbd:focus-kept",
+      "name": "C-kbd: focus is not lost to the page body after the repaint",
+      "pass": true,
+      "detail": {
+        "tag": "p",
+        "role": "status",
+        "label": "Handover time requested.",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "13-offer-keyboard:layout",
+      "name": "13-offer-keyboard: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "13-offer-keyboard:copy",
+      "name": "13-offer-keyboard: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "13-offer-keyboard:console",
+      "name": "13-offer-keyboard: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "13-offer-keyboard:handover requested, not booked",
+      "name": "13-offer-keyboard: handover requested, not booked",
+      "pass": true
+    },
+    {
+      "id": "07a-change-proposed:layout",
+      "name": "07a-change-proposed: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "07a-change-proposed:copy",
+      "name": "07a-change-proposed: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "07a-change-proposed:console",
+      "name": "07a-change-proposed: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "07a-change-proposed:New time proposed",
+      "name": "07a-change-proposed: New time proposed",
+      "pass": true
+    },
+    {
+      "id": "07a-change-proposed:\"Accept new time\" offered",
+      "name": "07a-change-proposed: \"Accept new time\" offered",
+      "pass": true
+    },
+    {
+      "id": "07a-change-proposed:not booked yet",
+      "name": "07a-change-proposed: not booked yet",
+      "pass": true
+    },
+    {
+      "id": "A7:not-booked",
+      "name": "A7: proposed time is not shown as Booked",
+      "pass": true
+    },
+    {
+      "id": "A7:help",
+      "name": "A7: help entry shown beside the proposed time",
+      "pass": true,
+      "detail": {
+        "present": true,
+        "text": "Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Help i"
+      }
+    },
+    {
+      "id": "A7:tab-accept",
+      "name": "A7: Tab reaches \"Accept new time\"",
+      "pass": true,
+      "detail": {
+        "tabs": 8,
+        "trail": [
+          "Skip to content",
+          "PPaula (fictional)",
+          "Your car brief",
+          "Buddy activity",
+          "Order progress",
+          "Show labels",
+          "Presenter controls",
+          "Accept new time"
+        ]
+      }
+    },
+    {
+      "id": "A7:accept-focus-visible",
+      "name": "A7: Accept new time shows a visible keyboard focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "role": null,
+        "label": "Accept new time",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "A7:accept-status",
+      "name": "A7: Enter accepts and \"New handover time accepted.\" is announced",
+      "pass": true,
+      "detail": [
+        "status:Presenter controls ready",
+        "status:",
+        "status:New handover time accepted."
+      ]
+    },
+    {
+      "id": "A7:booked",
+      "name": "A7: after acceptance the handover reads \"Booked:\"",
+      "pass": true,
+      "detail": "Handover Booked: 7 Nov 2026, 13:00 Owner Retailer Next step The retailer prepares your car for the handover. Handover history All dates are demo time (UTC). 5 Nov 2026, 12:00 Requested 5 Nov 2026, 12:30 New time proposed 5 Nov 2026, 12:30 Booked"
+    },
+    {
+      "id": "07b-change-accepted:layout",
+      "name": "07b-change-accepted: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 1280,
+        "innerWidth": 1280,
+        "wide": []
+      }
+    },
+    {
+      "id": "07b-change-accepted:copy",
+      "name": "07b-change-accepted: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "07b-change-accepted:console",
+      "name": "07b-change-accepted: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    }
+  ],
+  "captures": [
+    {
+      "name": "1280-01-no-order",
+      "file": "1280-01-no-order.png",
+      "bytesPng": 27116,
+      "evidence": false,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-02a-real-account-after-order",
+      "file": "1280-02a-real-account-after-order.png",
+      "bytesPng": 123112,
+      "evidence": false,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-02-approval-in-progress",
+      "file": "1280-02-approval-in-progress.png",
+      "bytesPng": 123112,
+      "bytesJpeg": 76712,
+      "evidence": true,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-03-documents-outstanding",
+      "file": "1280-03-documents-outstanding.png",
+      "bytesPng": 195001,
+      "bytesJpeg": 136547,
+      "evidence": true,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-08-account-state3",
+      "file": "1280-08-account-state3.png",
+      "bytesPng": 382819,
+      "evidence": false,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-04a-task-focus",
+      "file": "1280-04a-task-focus.png",
+      "bytesPng": 195336,
+      "evidence": false,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-04b-task-completed",
+      "file": "1280-04b-task-completed.png",
+      "bytesPng": 190376,
+      "evidence": false,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-04c-handover-requested",
+      "file": "1280-04c-handover-requested.png",
+      "bytesPng": 183723,
+      "evidence": false,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-05-handover-booked",
+      "file": "1280-05-handover-booked.png",
+      "bytesPng": 243919,
+      "evidence": false,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-05b-return-requested",
+      "file": "1280-05b-return-requested.png",
+      "bytesPng": 196609,
+      "bytesJpeg": 132552,
+      "evidence": true,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-06-return-booked",
+      "file": "1280-06-return-booked.png",
+      "bytesPng": 203856,
+      "bytesJpeg": 132141,
+      "evidence": true,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-09-account-state6",
+      "file": "1280-09-account-state6.png",
+      "bytesPng": 392166,
+      "bytesJpeg": 262729,
+      "evidence": true,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-10-offer-accepted",
+      "file": "1280-10-offer-accepted.png",
+      "bytesPng": 319512,
+      "bytesJpeg": 210928,
+      "evidence": true,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-11-fixture-declined",
+      "file": "1280-11-fixture-declined.png",
+      "bytesPng": 210645,
+      "evidence": false,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "excerpt": "Skip to content Group Car Schemes Portal P Paula (synthetic) Your cars New order Order history Drivers and licences Scheme guidelines Order progress Show labels Presenter controls ORDER PROGRESS Order progress All times are demo time (UTC). Your order No image for this car yet FICTIONAL EXAMPLE Fictional BMW i4 eDrive40 M Sport Order no. 1000001 Steps Selection received Done 5 Nov 2026, 09:00 HR a"
+    },
+    {
+      "name": "1280-12-fixture-provider-unsupported",
+      "file": "1280-12-fixture-provider-unsupported.png",
+      "bytesPng": 144025,
+      "evidence": false,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "excerpt": "Skip to content Group Car Schemes Portal P Paula (synthetic) Your cars New order Order history Drivers and licences Scheme guidelines Order progress Show labels Presenter controls ORDER PROGRESS Order progress All times are demo time (UTC). Your order No image for this car yet FICTIONAL EXAMPLE Fictional BMW i4 eDrive40 M Sport Order no. 1000001 Steps Selection received Done 5 Nov 2026, 09:00 HR a"
+    },
+    {
+      "name": "1280-13-fixture-appointment-pending",
+      "file": "1280-13-fixture-appointment-pending.png",
+      "bytesPng": 199989,
+      "evidence": false,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "excerpt": "Skip to content Group Car Schemes Portal P Paula (synthetic) Your cars New order Order history Drivers and licences Scheme guidelines Order progress Show labels Presenter controls ORDER PROGRESS Order progress All times are demo time (UTC). Your order No image for this car yet FICTIONAL EXAMPLE Fictional BMW i4 eDrive40 M Sport Order no. 1000001 Steps Selection received Done 5 Nov 2026, 09:00 HR a"
+    },
+    {
+      "name": "1280-14-fixture-documents-overdue",
+      "file": "1280-14-fixture-documents-overdue.png",
+      "bytesPng": 215404,
+      "evidence": false,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "excerpt": "Skip to content Group Car Schemes Portal P Paula (synthetic) Your cars New order Order history Drivers and licences Scheme guidelines Order progress Show labels Presenter controls ORDER PROGRESS Order progress All times are demo time (UTC). Your order No image for this car yet FICTIONAL EXAMPLE Fictional BMW i4 eDrive40 M Sport Order no. 1000001 Steps Selection received Done 5 Nov 2026, 09:00 HR a"
+    },
+    {
+      "name": "1280-15-fixture-documents-failed",
+      "file": "1280-15-fixture-documents-failed.png",
+      "bytesPng": 210801,
+      "evidence": false,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "excerpt": "Skip to content Group Car Schemes Portal P Paula (synthetic) Your cars New order Order history Drivers and licences Scheme guidelines Order progress Show labels Presenter controls ORDER PROGRESS Order progress All times are demo time (UTC). Your order No image for this car yet FICTIONAL EXAMPLE Fictional BMW i4 eDrive40 M Sport Order no. 1000001 Steps Selection received Done 5 Nov 2026, 09:00 HR a"
+    },
+    {
+      "name": "1280-16-fixture-ready-for-handover",
+      "file": "1280-16-fixture-ready-for-handover.png",
+      "bytesPng": 192501,
+      "evidence": false,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "excerpt": "Skip to content Group Car Schemes Portal P Paula (synthetic) Your cars New order Order history Drivers and licences Scheme guidelines Order progress Show labels Presenter controls ORDER PROGRESS Order progress All times are demo time (UTC). Your order No image for this car yet FICTIONAL EXAMPLE Fictional BMW i4 eDrive40 M Sport Order no. 1000001 Steps Selection received Done 5 Nov 2026, 09:00 HR a"
+    },
+    {
+      "name": "1280-17-fixture-return-unavailable",
+      "file": "1280-17-fixture-return-unavailable.png",
+      "bytesPng": 222373,
+      "evidence": false,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "excerpt": "Skip to content Group Car Schemes Portal P Paula (synthetic) Your cars New order Order history Drivers and licences Scheme guidelines Order progress Show labels Presenter controls ORDER PROGRESS Order progress All times are demo time (UTC). Your order No image for this car yet FICTIONAL EXAMPLE Fictional BMW i4 eDrive40 M Sport Order no. 1000001 Steps Selection received Done 5 Nov 2026, 09:00 HR a"
+    },
+    {
+      "name": "1280-18-fixture-unavailable",
+      "file": "1280-18-fixture-unavailable.png",
+      "bytesPng": 75113,
+      "evidence": false,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "excerpt": "Skip to content Group Car Schemes Portal P Paula (synthetic) Your cars New order Order history Drivers and licences Scheme guidelines Order progress Show labels Presenter controls ORDER PROGRESS Order progress Order progress unavailable Your order could not be loaded. Try again. Retry Waiting for HR Waiting for sales manager No HR step Declined Update not supported Choose handover time Handover re"
+    },
+    {
+      "name": "1280-19-fixture-loading",
+      "file": "1280-19-fixture-loading.png",
+      "bytesPng": 66254,
+      "evidence": false,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "excerpt": "Skip to content Group Car Schemes Portal P Paula (synthetic) Your cars New order Order history Drivers and licences Scheme guidelines Order progress Show labels Presenter controls ORDER PROGRESS Order progress Loading your order Waiting for HR Waiting for sales manager No HR step Declined Update not supported Choose handover time Handover requested New handover time Handover update pending Handove"
+    },
+    {
+      "name": "1280-20-fixture-partial-failure",
+      "file": "1280-20-fixture-partial-failure.png",
+      "bytesPng": 140109,
+      "evidence": false,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "excerpt": "Skip to content Group Car Schemes Portal P Paula (synthetic) Your cars New order Order history Drivers and licences Scheme guidelines Order progress Show labels Presenter controls ORDER PROGRESS Order progress All times are demo time (UTC). Your order No image for this car yet FICTIONAL EXAMPLE Fictional BMW i4 eDrive40 M Sport Order no. 1000001 Steps Selection received Done 5 Nov 2026, 09:00 HR a"
+    },
+    {
+      "name": "1280-12-account-keyboard",
+      "file": "1280-12-account-keyboard.png",
+      "bytesPng": 378232,
+      "bytesJpeg": 265653,
+      "evidence": true,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-13-offer-keyboard",
+      "file": "1280-13-offer-keyboard.png",
+      "bytesPng": 299392,
+      "bytesJpeg": 203409,
+      "evidence": true,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-07a-change-proposed",
+      "file": "1280-07a-change-proposed.png",
+      "bytesPng": 234303,
+      "bytesJpeg": 158842,
+      "evidence": true,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "1280-07b-change-accepted",
+      "file": "1280-07b-change-accepted.png",
+      "bytesPng": 253431,
+      "evidence": false,
+      "innerWidth": 1280,
+      "scrollWidth": 1280,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    }
+  ],
+  "errors": [],
+  "requests": {
+    "GET /api/gcsp/presenter/controls 200 ok": 24,
+    "GET /api/gcsp/manual/account 200 ok": 14,
+    "GET /api/gcsp/context 200 ok": 24,
+    "GET /api/gcsp/presenter/scenarios 200 ok": 24,
+    "GET /api/gcsp/orders/progress/all 200 ok": 12,
+    "GET /api/gcsp/orders/progress 200 ok": 19,
+    "GET /api/gcsp/documents 200 ok": 19,
+    "GET /api/gcsp/appointments 200 ok": 19,
+    "GET /api/gcsp/return-plan 200 ok": 19,
+    "GET /api/gcsp/manual/draft 200 ok": 3,
+    "GET /api/gcsp/offers/current 200 ok": 3,
+    "GET /api/gcsp/manual/order 200 ok": 3,
+    "POST /api/gcsp/documents/tasks/complete 200 ok": 2,
+    "POST /api/gcsp/appointments/request 200 ok": 2,
+    "POST /api/gcsp/return-plan/request 200 ok": 1,
+    "GET /api/gcsp/offers/buddy-offer%3A6a617ef0d42fa32b788b34e00a684d0037382fad83db7e4b03a499cd4e5a1cdf 200 ok": 2,
+    "GET /api/gcsp/help 200 ok": 2,
+    "GET /api/gcsp/cases 200 ok": 2,
+    "POST /api/gcsp/appointments/accept 200 ok": 1
+  },
+  "processes": {
+    "chrome": {
+      "pid": 15398,
+      "group": 15398
+    },
+    "server-main": {
+      "pid": 15388,
+      "port": 64983
+    },
+    "server-proposed": {
+      "pid": 15388,
+      "port": 65039
+    }
+  },
+  "notes": [],
+  "failedRequests": [
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED",
+    "GET /api/gcsp/presenter/controls net::ERR_ABORTED"
+  ],
+  "summary": {
+    "checks": 157,
+    "failed": [
+      "A2:current-step"
+    ],
+    "captures": 27
+  }
+}

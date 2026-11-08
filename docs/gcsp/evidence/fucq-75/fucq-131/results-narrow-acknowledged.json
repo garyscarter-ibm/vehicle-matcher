@@ -1,0 +1,458 @@
+{
+  "chunk": "narrow",
+  "entry": "hosted",
+  "viewport": {
+    "width": 375,
+    "height": 812
+  },
+  "stockMode": "default",
+  "state": "passed",
+  "startedAt": "2026-11-08T17:53:10.044Z",
+  "runIds": {
+    "previous": "demo-ea3b050919d5058adfbcb7852fc98722",
+    "new": "demo-c9dba290532ceb4b85d20fd5febb09ab"
+  },
+  "steps": [
+    {
+      "id": "access-key",
+      "name": "The demo key form opens the hosted demo, key typed by keyboard once",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Presenter page opened"
+    },
+    {
+      "id": "scenario-reset",
+      "name": "Scenario \"Uncertain handoff, acknowledged\" chosen with arrow keys and reset confirmed by keyboard",
+      "pass": true,
+      "screenshots": [
+        "reset-done-375-acknowledged.png"
+      ],
+      "detail": {
+        "previousRun": "demo-ea3b050919d5058adfbcb7852fc98722",
+        "newRun": "demo-c9dba290532ceb4b85d20fd5febb09ab",
+        "clock": "2026-11-05T09:30:00.000Z",
+        "fault": {
+          "adapter": "ordering",
+          "runId": "demo-c9dba290532ceb4b85d20fd5febb09ab",
+          "mode": "timeout-acknowledged",
+          "modes": [
+            "none",
+            "timeout-acknowledged",
+            "timeout-rejected",
+            "uncertain-acknowledged",
+            "uncertain-rejected"
+          ],
+          "handoffs": []
+        }
+      },
+      "overflowPx": 0,
+      "state": "Presenter controls Scenario Uncertain handoff, acknowledged Run demo-c9dba290532ceb4b85d20fd5febb09ab DemoClock (UTC) 2026-11-05T09:30:00.000Z Acting principal Presenter (fictional) (presenter) Tick (60 seconds) Named time or UTC target Tick to target Next release Next release unavailable: No future release cue is configured. Scenario Main successful journey Available No suitable match Available D"
+    },
+    {
+      "id": "offer-open",
+      "name": "Paula opens her offer from Buddy activity by keyboard",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "before": "Context unavailable",
+        "after": "Paula (fictional) (employee)"
+      },
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Presenter controls YOUR OFFER Your car offer No image for this car yet ORDER NO. 6117982 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied O"
+    },
+    {
+      "id": "offer-accepted-pending",
+      "name": "Paula accepts by keyboard; the handoff times out and the offer shows it pending",
+      "pass": true,
+      "screenshots": [
+        "offer-pending-375-acknowledged.png"
+      ],
+      "detail": {
+        "handoffs": [
+          {
+            "operationId": "selection:92fcafcdab4dca720fea1c9e10b69949b87e6183aa6281040ef7756070fe43ff",
+            "response": "timeout",
+            "resolution": "acknowledged"
+          }
+        ],
+        "words": {
+          "pending": false,
+          "success": false
+        }
+      },
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Presenter controls YOUR OFFER Offer accepted Sending your selection. Check again shortly. Your selection Selection received Sending HR approval Not started Sales-manager approval Not started Sent to ordering Not started Order number 6117982 No image for this car yet ORDER NO. 6117982 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 Boot 500 litres 0 to 62 mph 7.4 s "
+    },
+    {
+      "id": "activity-pending",
+      "name": "Paula's Buddy activity while the handoff is pending",
+      "pass": true,
+      "screenshots": [
+        "activity-after-offer-page-375-acknowledged.png",
+        "activity-pending-375-acknowledged.png"
+      ],
+      "detail": {
+        "direct": "Skip to content Group Car Schemes Portal Account unavailable Your account could not be loaded. Retry Presenter controls BUDDY ACTIVITY Your buddy Activity unavailable Search status and offers are unavailable. Try again. Retry",
+        "switched": {
+          "before": "Context unavailable",
+          "after": "Paula (fictional) (employee)"
+        }
+      },
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal Account unavailable Your account could not be loaded. Retry Presenter controls BUDDY ACTIVITY Your buddy Activity unavailable Search status and offers are unavailable. Try again. Retry"
+    },
+    {
+      "id": "reconcile",
+      "name": "One presenter Tick: reconciliation resolves the pending handoff without a second write",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "strip": "Event presenter-fac90670bb4dcfb02f839dac0800e49d56a9192021d3d5375d09fde7b80c997d State completed release-pull / stock-release: {\"status\":\"ok\",\"value\":{\"kind\":\"no-release\",\"runId\":\"demo-c9dba290532ceb4b85d20fd5febb09ab\",\"tickId\":\"presenter-fac90670bb4dcfb02f839dac0800e49d56a9192021d3d5375d09fde7b80c997d\",\"orderUuids\":[]},\"contractVersion\":\"1.0.0\"} manual-expiry / manual-claim-expiry: {\"status\":\"ok\"",
+        "handoffs": [
+          {
+            "operationId": "selection:92fcafcdab4dca720fea1c9e10b69949b87e6183aa6281040ef7756070fe43ff",
+            "response": "timeout",
+            "resolution": "acknowledged"
+          }
+        ]
+      },
+      "overflowPx": 0,
+      "state": "Event presenter-fac90670bb4dcfb02f839dac0800e49d56a9192021d3d5375d09fde7b80c997d State completed release-pull / stock-release: {\"status\":\"ok\",\"value\":{\"kind\":\"no-release\",\"runId\":\"demo-c9dba290532ceb4b85d20fd5febb09ab\",\"tickId\":\"presenter-fac90670bb4dcfb02f839dac0800e49d56a9192021d3d5375d09fde7b80c997d\",\"orderUuids\":[]},\"contractVersion\":\"1.0.0\"} manual-expiry / manual-claim-expiry: {\"status\":\"ok\""
+    },
+    {
+      "id": "offer-resolved",
+      "name": "Paula's offer after reconciliation (acknowledged)",
+      "pass": true,
+      "screenshots": [
+        "offer-resolved-375-acknowledged.png"
+      ],
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal Account unavailable Your account could not be loaded. Retry Presenter controls YOUR OFFER Offer accepted Selection received. Waiting for HR approval. Your selection Selection received Done HR approval Waiting Sales-manager approval Not started Sent to ordering Not started Order number 6117982 No image for this car yet ORDER NO. 6117982 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 B"
+    }
+  ],
+  "keyboard": [
+    {
+      "page": "access",
+      "check": "Tab reaches the demo key field; typing the key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Uncertain handoff, acknowledged\" in \"Scenario\"",
+      "pass": true,
+      "detail": "Uncertain handoff, acknowledged Available"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Reset scenario\" then \"Confirm reset\" resets the run",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Paula\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Paula (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Switch principal\" switches to Paula",
+      "pass": true
+    },
+    {
+      "page": "activity",
+      "check": "Enter on \"View offer\" opens the offer",
+      "pass": true
+    },
+    {
+      "page": "offer",
+      "check": "Space ticks each declaration",
+      "pass": true
+    },
+    {
+      "page": "offer",
+      "check": "Enter on \"Accept this offer\" sends the decision",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Paula\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Paula (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Switch principal\" switches to Paula",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Tick\" runs the tick",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Paula\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Paula (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Switch principal\" switches to Paula",
+      "pass": true
+    }
+  ],
+  "variant": "acknowledged",
+  "paula": {
+    "pendingOffer": "Skip to content\nGroup Car Schemes Portal\nP\nPaula (fictional)\nPresenter controls\nYOUR OFFER\nOffer accepted\n\nSending your selection. Check again shortly.\n\nYour selection\nSelection received\nSending\nHR approval\nNot started\nSales-manager approval\nNot started\nSent to ordering\nNot started\nOrder number\n6117982\nNo image for this car yet\nORDER NO. 6117982\nSynthetic 3 Series Touring 320i\n\n1,100 points a month · 1,300 points a month allowance\n\nModel\nNot supplied\nDerivative\nNot supplied\nColour\nNot supplied\nOptions\nFitted equipment unknown\nBody style\nEstate\nFuel\nPetrol\nSeats\n5\nBoot\n500 litres\n0 to 62 mph\n7.4 s\nFuel economy\n44 mpg\nInterior\nNot supplied\nGearbox\nNot supplied\n\nEligible\n\nWHY IT SUITS YOU\n\nAvailable by 1 December 2026.\nBody style: 100% fit.\nYour current car\nFictional BMW 320i Touring\nNo image for this car yet\nConfiguration\nG21 320i M Sport Touring\nBody\nEstate\nFuel\nPetrol\nSeats\n5\nBoot\n500 litres\nMPG\n42.8 mpg\n0–62 mph\n7.6 s\nPoints a month\n1,100 points\n\nSynthetic source: manual-records-v1. Observed 2026-11-05T09:00:00.000Z.\n\nOrder progress\nOrder progress unavailable\n\nYour order could not be loaded. Try again.\n\nRetry\nCheck current state\n\nOffer accepted",
+    "pendingActivity": {
+      "direct": "Skip to content\nGroup Car Schemes Portal\nAccount unavailable\nYour account could not be loaded.\nRetry\nPresenter controls\nBUDDY ACTIVITY\nYour buddy\nActivity unavailable\n\nSearch status and offers are unavailable. Try again.\n\nRetry",
+      "switched": "Skip to content\nGroup Car Schemes Portal\nAccount unavailable\nYour account could not be loaded.\nRetry\nPresenter controls\nBUDDY ACTIVITY\nYour buddy\nActivity unavailable\n\nSearch status and offers are unavailable. Try again.\n\nRetry"
+    },
+    "resolvedOffer": "Skip to content\nGroup Car Schemes Portal\nAccount unavailable\nYour account could not be loaded.\nRetry\nPresenter controls\nYOUR OFFER\nOffer accepted\n\nSelection received. Waiting for HR approval.\n\nYour selection\nSelection received\nDone\nHR approval\nWaiting\nSales-manager approval\nNot started\nSent to ordering\nNot started\nOrder number\n6117982\nNo image for this car yet\nORDER NO. 6117982\nSynthetic 3 Series Touring 320i\n\n1,100 points a month · 1,300 points a month allowance\n\nModel\nNot supplied\nDerivative\nNot supplied\nColour\nNot supplied\nOptions\nFitted equipment unknown\nBody style\nEstate\nFuel\nPetrol\nSeats\n5\nBoot\n500 litres\n0 to 62 mph\n7.4 s\nFuel economy\n44 mpg\nInterior\nNot supplied\nGearbox\nNot supplied\n\nEligible\n\nWHY IT SUITS YOU\n\nAvailable by 1 December 2026.\nBody style: 100% fit.\nYour current car\nFictional BMW 320i Touring\nNo image for this car yet\nConfiguration\nG21 320i M Sport Touring\nBody\nEstate\nFuel\nPetrol\nSeats\n5\nBoot\n500 litres\nMPG\n42.8 mpg\n0–62 mph\n7.6 s\nPoints a month\n1,100 points\n\nSynthetic source: manual-records-v1. Observed 2026-11-05T09:00:00.000Z.\n\nOrder progress\n\nAll times are demo time (UTC).\n\nYour order\nNo image for this car yet\nSynthetic 3 Series Touring 320i\n\nOrder no. 6117982\n\nSteps\n\nSelection received\nDone\n\n5 Nov 2026, 09:30\n\nWith ordering\n\nNext: Approval checks start\n\nHR approval\nNot started\n\nSales-manager approval\nNot started\n\nSent to ordering\nNot started\n\nHandover\n\nHandover times open once your order is sent to ordering.\n\nDocuments and checks\n\nDocuments and checks open once your order is sent to ordering.\n\nReturning your current car\nCurrent car\nFictional BMW 320i Touring\nConfiguration\nG21 320i M Sport Touring\nCollection from your home address\n1 Fictional Way, Example Town, ZZ1 1ZZ\n\nYour current car stays yours until it is returned.\n\nReturn it when the new car is handed over\n\nConfirm your new car's handover first.\n\nReturn it on a separate day\n\nConfirm your new car's handover first.\n\nCheck current state\n\nOffer accepted"
+  },
+  "faults": [
+    {
+      "at": "after-reset",
+      "fault": {
+        "adapter": "ordering",
+        "runId": "demo-c9dba290532ceb4b85d20fd5febb09ab",
+        "mode": "timeout-acknowledged",
+        "modes": [
+          "none",
+          "timeout-acknowledged",
+          "timeout-rejected",
+          "uncertain-acknowledged",
+          "uncertain-rejected"
+        ],
+        "handoffs": []
+      }
+    },
+    {
+      "at": "after-accept",
+      "fault": {
+        "adapter": "ordering",
+        "runId": "demo-c9dba290532ceb4b85d20fd5febb09ab",
+        "mode": "none",
+        "modes": [
+          "none",
+          "timeout-acknowledged",
+          "timeout-rejected",
+          "uncertain-acknowledged",
+          "uncertain-rejected"
+        ],
+        "handoffs": [
+          {
+            "operationId": "selection:92fcafcdab4dca720fea1c9e10b69949b87e6183aa6281040ef7756070fe43ff",
+            "response": "timeout",
+            "resolution": "acknowledged"
+          }
+        ]
+      }
+    },
+    {
+      "at": "after-tick",
+      "fault": {
+        "adapter": "ordering",
+        "runId": "demo-c9dba290532ceb4b85d20fd5febb09ab",
+        "mode": "none",
+        "modes": [
+          "none",
+          "timeout-acknowledged",
+          "timeout-rejected",
+          "uncertain-acknowledged",
+          "uncertain-rejected"
+        ],
+        "handoffs": [
+          {
+            "operationId": "selection:92fcafcdab4dca720fea1c9e10b69949b87e6183aa6281040ef7756070fe43ff",
+            "response": "timeout",
+            "resolution": "acknowledged"
+          }
+        ]
+      }
+    }
+  ],
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8962/favicon.ico",
+      "page": "http://127.0.0.1:8962/gcsp/access"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+      "url": "http://127.0.0.1:8962/api/gcsp/orders/progress",
+      "page": "http://127.0.0.1:8962/gcsp/offer"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+      "url": "http://127.0.0.1:8962/api/gcsp/return-plan",
+      "page": "http://127.0.0.1:8962/gcsp/offer"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "url": "http://127.0.0.1:8962/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8962/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8962/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8962/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8962/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8962/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8962/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8962/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8962/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-activity-live.html"
+    }
+  ],
+  "badResponses": [
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    },
+    {
+      "status": 503,
+      "url": "http://127.0.0.1:8962/api/gcsp/orders/progress",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp/offer",
+      "body": "{\"status\":\"unavailable\",\"code\":\"selection-pending\",\"reason\":\"The selection is still being sent on.\",\"retryable\":true,\"state\":\"not-ready\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 503,
+      "url": "http://127.0.0.1:8962/api/gcsp/return-plan",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp/offer",
+      "body": "{\"status\":\"unavailable\",\"code\":\"selection-pending\",\"reason\":\"The selection is still being sent on.\",\"retryable\":true,\"state\":\"not-ready\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8962/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8962/gcsp-presenter.html"
+    }
+  ],
+  "notes": [],
+  "origin": "http://127.0.0.1:8962",
+  "finishedAt": "2026-11-08T17:57:00.115Z",
+  "counts": {
+    "steps": 7,
+    "passed": 7,
+    "screenshots": 5,
+    "keyboardChecks": 14,
+    "keyboardPassed": 14
+  }
+}

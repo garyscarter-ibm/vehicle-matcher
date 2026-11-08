@@ -29,3 +29,7 @@ services:
       # no frontend redeploy needed.
       - key: DEMO_ACCESS_KEY
         sync: false
+      # GCSP offer-email landing page (full HTTPS URL of the GCSP static site's offer
+      # page). Unset keeps the same-origin /gcsp/offer path used by the local demo.
+      - key: GCSP_OFFER_LANDING_URL
+        sync: false

@@ -1,0 +1,53 @@
+{
+  "passed": true,
+  "origin": "http://127.0.0.1:8983",
+  "runtime": "memory (GCSP_RUNTIME=1)",
+  "runs": [
+    {
+      "viewport": 1280,
+      "rawFound": [],
+      "savedJourney": "Replacement journey saved\n\nYour starting context is saved. No car has been selected or ordered.\n\nCurrent car\nFictional BMW 320i Touring\nResume saved journey",
+      "footer": "Synthetic example data. Account as of 5 November 2026 at 09:00.",
+      "historySummaries": [
+        "Scheme 1 (1 record)",
+        "Order, collection and vehicle details",
+        "Technical specification and options",
+        "Scheme 2 (1 record)",
+        "Order, collection and vehicle details",
+        "Technical specification and options",
+        "Scheme 3 (0 records)"
+      ],
+      "overflow": 0,
+      "screenshots": [
+        "docs/gcsp/evidence/fucq-197/1280-saved-journey.png",
+        "docs/gcsp/evidence/fucq-197/1280-order-history.png",
+        "docs/gcsp/evidence/fucq-197/1280-footer.png"
+      ],
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "viewport": 375,
+      "rawFound": [],
+      "savedJourney": "Replacement journey saved\n\nYour starting context is saved. No car has been selected or ordered.\n\nCurrent car\nFictional BMW 320i Touring\nResume saved journey",
+      "footer": "Synthetic example data. Account as of 5 November 2026 at 09:00.",
+      "historySummaries": [
+        "Scheme 1 (1 record)",
+        "Order, collection and vehicle details",
+        "Technical specification and options",
+        "Scheme 2 (1 record)",
+        "Order, collection and vehicle details",
+        "Technical specification and options",
+        "Scheme 3 (0 records)"
+      ],
+      "overflow": 0,
+      "screenshots": [
+        "docs/gcsp/evidence/fucq-197/375-saved-journey.png",
+        "docs/gcsp/evidence/fucq-197/375-order-history.png",
+        "docs/gcsp/evidence/fucq-197/375-footer.png"
+      ],
+      "pageErrors": [],
+      "passed": true
+    }
+  ]
+}

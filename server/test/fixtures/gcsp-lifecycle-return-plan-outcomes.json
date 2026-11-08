@@ -1,0 +1,25 @@
+{
+  "readModelKeys": ["contractVersion", "runId", "orderUuid", "employeeId", "applicable", "state", "scheduled", "oldContractId", "vehicleSlotId", "currentCar", "returnMileage", "choice", "location", "appointment", "handover", "slot", "requestedSlot", "proposedSlot", "proposalId", "providerReference", "history", "owner", "nextStep", "pending", "blocked", "choices", "offeredSlots", "policyVersion", "assumptions", "fictional"],
+  "historyKeys": ["state", "appointmentState", "at", "providerReference"],
+  "currentCarKeys": ["contractId", "slotId", "status", "model", "vehicle", "source"],
+  "returnMileageKeys": ["value", "unit", "recordedAt", "source"],
+  "locationKeys": ["locationId", "kind", "label", "rule"],
+  "handoverKeys": ["state", "booked", "slot", "providerReference"],
+  "appointmentKeys": ["contractVersion", "purpose", "runId", "orderUuid", "employeeId", "state", "booked", "slot", "requestedSlot", "proposedSlot", "proposalId", "history", "owner", "nextStep", "pending", "blocked", "eligibility", "plan", "provider", "fictional"],
+  "choiceKeys": ["id", "label", "available", "reason", "selected"],
+  "offeredSlotsKeys": ["same-visit", "separate"],
+  "slotKeys": ["slotId", "start", "end"],
+  "states": {
+    "not-planned": { "state": "not-planned", "scheduled": false, "choice": null, "history": [], "owner": "employee", "nextStep": "Confirm your new car's handover first, then plan the return." },
+    "return-requested": { "state": "return-requested", "scheduled": false, "choice": "separate", "history": ["return-requested"], "owner": "retailer", "nextStep": "Waiting for the retailer to confirm your return slot." },
+    "return-scheduled": { "state": "return-scheduled", "scheduled": true, "choice": "separate", "history": ["return-requested", "return-scheduled"], "owner": "retailer", "nextStep": "Keep driving your current car until the return." }
+  },
+  "newOrder": { "applicable": false, "state": null, "scheduled": false },
+  "errors": {
+    "newOrder": { "status": "conflict", "code": "return-not-applicable", "keys": ["status", "contractVersion", "code", "reason"] },
+    "handoverNotReady": { "status": "conflict", "code": "handover-not-ready", "keys": ["status", "contractVersion", "code", "reason", "reasons"] },
+    "alreadyRequested": { "status": "conflict", "code": "appointment-already-requested", "keys": ["status", "contractVersion", "code", "reason"] },
+    "unknownChoice": { "status": "invalid", "code": "invalid-return-command", "keys": ["status", "contractVersion", "code", "reasons", "action"] },
+    "forbidden": { "status": "forbidden", "code": null, "keys": ["status", "contractVersion", "reason"] }
+  }
+}

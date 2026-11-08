@@ -25,7 +25,8 @@ export const inputDigest = (value) => {
   if (!jsonValue(value)) throw new TypeError('Digest input must be JSON data');
   return createHash('sha256').update(JSON.stringify(canonical(value))).digest('hex');
 };
-const equal = (a, b) => JSON.stringify(canonical(a)) === JSON.stringify(canonical(b));
+// Two strings are canonically equal exactly when identical; this keeps key scans cheap.
+const equal = (a, b) => typeof a === 'string' && typeof b === 'string' ? a === b : JSON.stringify(canonical(a)) === JSON.stringify(canonical(b));
 const matches = (row, filter) => Object.entries(filter).every(([key, value]) => equal(row[key], value));
 const occupied = (row) => OCCUPYING_STATES.includes(row.state);
 const summary = (row) => Object.fromEntries(['state', 'version', 'orderUuid', 'entitlementSlotId', 'capacity'].filter((key) => row[key] !== undefined).map((key) => [key, row[key]]));
@@ -141,7 +142,15 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
     const replayId = inputDigest(Object.fromEntries(schema.key.map((key) => [key, input[key]])));
     const digest = inputDigest(contentRow(input));
     const original = rows('event_receipts').find((item) => item.consumerId === `repository:insert:${table}` && item.eventId === replayId);
-    if (original) return original.inputDigest === digest ? structuredClone(original.outcome) : conflict('idempotency-input-changed');
+    if (original) {
+      if (original.inputDigest !== digest) return conflict('idempotency-input-changed');
+      const outcome = structuredClone(original.outcome);
+      // Rehydrate only from the digest-validated original command, never the mutable job.
+      if (table === 'notification_outbox' && original.inputVersions?.offerLinkFromInsertInput === 1) {
+        outcome.value.payload.offerLink = structuredClone(input.payload.offerLink);
+      }
+      return outcome;
+    }
     const existing = rows(table).find((row) => schema.key.every((key) => equal(row[key], input[key])));
     if (existing) return equal(contentRow(existing), contentRow(input)) ? ok(existing) : conflict('duplicate-key', summary(existing));
     const timestamp = now();
@@ -149,7 +158,14 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
     const violation = constraint(table, row);
     if (violation) return violation;
     state.tables[table].push(row);
-    if (table !== 'event_receipts') state.tables.event_receipts.push({ runId: context.runId, consumerId: `repository:insert:${table}`, eventId: replayId, inputDigest: digest, state: 'completed', outcome: structuredClone(ok(row)), version: 1, createdAt: timestamp, updatedAt: timestamp });
+    if (table !== 'event_receipts') {
+      const outcome = structuredClone(ok(row));
+      const omitLink = table === 'notification_outbox' && plain(row.payload) && Object.hasOwn(row.payload, 'offerLink');
+      if (omitLink) delete outcome.value.payload.offerLink;
+      state.tables.event_receipts.push({ runId: context.runId, consumerId: `repository:insert:${table}`, eventId: replayId,
+        inputDigest: digest, state: 'completed', outcome, ...(omitLink ? { inputVersions: { offerLinkFromInsertInput: 1 } } : {}),
+        version: 1, createdAt: timestamp, updatedAt: timestamp });
+    }
     return ok(row);
   };
   const cas = (ref, expectedVersion, patch) => {
@@ -229,11 +245,14 @@ export function createTransaction(context, state, now = () => new Date().toISOSt
   };
 }
 
+// Callers still get only `unavailable`; the log names the operation and a class-like error name, never messages or rows.
+const diagnose = (operation, error) => { try { const name = error?.name;
+  console.error(`gcsp-repository unavailable: operation=${operation} error=${typeof name === 'string' && /^[A-Za-z][\w.]{0,63}$/.test(name) ? name : 'unrecognised'}`); } catch { /* never mask the safe result */ } };
 export function createRepository(backend) {
   let opened = false;
   const commitObservers = new Set();
   const unavailable = () => result('unavailable', { reason: 'Repository is unavailable', retryable: true });
-  const safe = async (work) => { try { return await work(); } catch { return unavailable(); } };
+  const safe = async (operation, work) => { try { return await work(); } catch (error) { diagnose(operation, error); return unavailable(); } };
   return Object.freeze({
     // Backend composition only. Observers run after the provider releases its
     // transaction/lock; their failures cannot undo or replace committed results.
@@ -243,13 +262,13 @@ export function createRepository(backend) {
       return () => commitObservers.delete(observer);
     },
     async open(options = {}) {
-      return safe(async () => { const outcome = await backend.open(options); opened = outcome.status === 'ok'; return outcome; });
+      return safe('open', async () => { const outcome = await backend.open(options); opened = outcome.status === 'ok'; return outcome; });
     },
-    async migrationStatus() { return opened ? safe(() => backend.migrationStatus()) : unavailable(); },
+    async migrationStatus() { return opened ? safe('migrationStatus', () => backend.migrationStatus()) : unavailable(); },
     async currentRun(environmentId) {
       if (!opened) return unavailable();
       if (!identifier(environmentId)) return invalid('invalid-environment', 'environmentId', 'Supply an environment');
-      return safe(() => backend.read({ environmentId, runId: 'repository:current-run' }, async (state) => {
+      return safe('currentRun', () => backend.read({ environmentId, runId: 'repository:current-run' }, async (state) => {
         const current = state.tables.runs.filter((row) => row.environmentId === environmentId && row.current === true && row.status === 'active');
         return current.length === 1 ? ok(current[0]) : current.length ? conflict('multiple-current-runs') : notFound('runs');
       }));
@@ -266,7 +285,7 @@ export function createRepository(backend) {
           || !['employees', 'entitlement_slots', 'stock'].includes(entry[0]) || !plain(entry[1]))) {
         return invalid('invalid-reset', 'reset', 'Supply a complete run transition and fixture rows');
       }
-      return safe(() => backend.transaction(context, async (state) => {
+      return safe('resetRun', () => backend.transaction(context, async (state) => {
         const refused = contextError(context, state);
         if (refused) return { commit: false, outcome: refused };
         const receipt = state.tables.event_receipts.find((row) => row.runId === context.runId
@@ -312,7 +331,7 @@ export function createRepository(backend) {
       if (!opened) return unavailable();
       if (!plain(command) || !identifier(command.commandId) || !identifier(command.inputDigest) || typeof work !== 'function') return invalid('invalid-command', 'command', 'Command ID, digest and callback are required');
       let committed = false;
-      const outcome = await safe(() => backend.transaction(context, async (state) => {
+      const outcome = await safe('transaction', () => backend.transaction(context, async (state) => {
         const refused = contextError(context, state);
         if (refused) return { commit: false, outcome: refused };
         const consumerId = 'command:transaction';
@@ -322,7 +341,7 @@ export function createRepository(backend) {
         if (historical) return { commit: false, outcome: historical };
         const session = createTransaction(context, state, backend.now, backend.supportedTables);
         let outcome;
-        try { outcome = await work(session.tx); } catch { session.finish(); return { commit: false, outcome: unavailable() }; }
+        try { outcome = await work(session.tx); } catch (error) { diagnose('transaction.work', error); session.finish(); return { commit: false, outcome: unavailable() }; }
         const failure = session.finish();
         if (failure) return { commit: false, outcome: failure };
         if (!plain(outcome) || !identifier(outcome.status) || !jsonValue(outcome)) return { commit: false, outcome: invalid('invalid-outcome', 'work', 'Callback must return a contract outcome') };
@@ -344,7 +363,7 @@ export function createRepository(backend) {
     },
     async read(context, ref) {
       if (!opened) return unavailable();
-      return safe(() => backend.read(context, async (state) => {
+      return safe('read', () => backend.read(context, async (state) => {
         const error = contextError(context, state);
         if (error) return error;
         const session = createTransaction(context, state, backend.now, backend.supportedTables);
@@ -353,13 +372,13 @@ export function createRepository(backend) {
     },
     async query(context, table, filter = {}) {
       if (!opened) return unavailable();
-      return safe(() => backend.read(context, async (state) => {
+      return safe('query', () => backend.read(context, async (state) => {
         const error = contextError(context, state);
         if (error) return error;
         const session = createTransaction(context, state, backend.now, backend.supportedTables);
         const outcome = await session.tx.list(table, filter); session.finish(); return outcome;
       }));
     },
-    async close() { return safe(async () => { opened = false; commitObservers.clear(); return backend.close(); }); },
+    async close() { return safe('close', async () => { opened = false; commitObservers.clear(); return backend.close(); }); },
   });
 }

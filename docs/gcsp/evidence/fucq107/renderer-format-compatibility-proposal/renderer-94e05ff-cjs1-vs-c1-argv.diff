@@ -1,0 +1,24 @@
+--- c1eb265/launch.py
++++ repaired/launch.py
+@@ -4,7 +4,7 @@
+ """
+ import os
+ import sys
+-EXPECTED = ['/opt/homebrew/Cellar/node/26.5.0/bin/node', '--import', '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-loader.mjs', '--test', '--test-reporter=tap', '--test-concurrency=1', 'server/test/gcsp-second-offer-render.test.js']
++EXPECTED = ['/opt/homebrew/Cellar/node/26.5.0/bin/node', '--import', '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-loader.mjs', '--test', '--test-reporter=tap', '--test-concurrency=1', 'server/test/gcsp-second-offer-render.test.js']
+ if not sys.flags.isolated or not sys.dont_write_bytecode or sys.argv[1:] != EXPECTED:
+     raise RuntimeError('Reviewed launch command differs')
+ if os.read(0, 1) != b'1':
+--- c1eb265/admission.json
++++ repaired/admission.json
+@@ -126,8 +126,8 @@
+       "resolved": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-launch.py",
+       "targetDevice": 16777232,
+       "targetInode": 173191869,
+-      "bytes": 820,
+-      "sha256": "3f20c1e2b1915efebf76ef6e16f90ad344d72232c74a7c9ca3e6071ae32a89f3"
++      "bytes": 825,
++      "sha256": "9e80006cf1969dec2dd7d34396536e36e28b62250f967c787b8392710a345eb0"
+     },
+     "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-cjs1-loader.mjs": {
+       "kind": "file",

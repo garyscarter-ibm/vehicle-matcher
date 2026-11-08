@@ -1,0 +1,119 @@
+TAP version 13
+# (node:36684) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:
+# --import 'data:text/javascript,import { register } from "node:module"; import { pathToFileURL } from "node:url"; register("/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/pg-loader-c536ab4.proposal.mjs", pathToFileURL("./")); register("/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/pg-loader-c536ab4.proposal.mjs", pathToFileURL("./"));'
+# (Use `node --trace-warnings ...` to show where the warning was created)
+# Subtest: reading a policy question writes nothing and projects only the one existing target
+ok 1 - reading a policy question writes nothing and projects only the one existing target
+  ---
+  duration_ms: 49.727542
+  type: 'test'
+  ...
+# Subtest: confirmation uses real BriefService, preserves other inputs, replays and retains save on reload
+ok 2 - confirmation uses real BriefService, preserves other inputs, replays and retains save on reload
+  ---
+  duration_ms: 75.543042
+  type: 'test'
+  ...
+# Subtest: a second command cannot consume the decline and stale concurrent confirmations cannot overwrite
+ok 3 - a second command cannot consume the decline and stale concurrent confirmations cannot overwrite
+  ---
+  duration_ms: 49.837167
+  type: 'test'
+  ...
+# Subtest: unchanged, invalid, forged and stale question inputs never write
+ok 4 - unchanged, invalid, forged and stale question inputs never write
+  ---
+  duration_ms: 49.829875
+  type: 'test'
+  ...
+# Subtest: question versions cannot cross a different completed decline
+not ok 5 - question versions cannot cross a different completed decline
+  ---
+  duration_ms: 30.101708
+  type: 'test'
+  location: '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085/server/test/gcsp-second-offer.test.js:155:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    + actual - expected
+    
+    + 'unavailable'
+    - 'stale-version'
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: 'stale-version'
+  actual: 'unavailable'
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085/server/test/gcsp-second-offer.test.js:165:10)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: missing, pending, mismatched, future and bad-digest completed decline inputs fail closed
+ok 6 - missing, pending, mismatched, future and bad-digest completed decline inputs fail closed
+  ---
+  duration_ms: 290.478958
+  type: 'test'
+  ...
+# Subtest: missing canonical policy and absent target fields never create a question or change
+ok 7 - missing canonical policy and absent target fields never create a question or change
+  ---
+  duration_ms: 55.844
+  type: 'test'
+  ...
+# Subtest: fuel, size and equipment questions use the same canonical change reducer
+ok 8 - fuel, size and equipment questions use the same canonical change reducer
+  ---
+  duration_ms: 98.193167
+  type: 'test'
+  ...
+# Subtest: forged, other employee and stale run sessions cannot follow or change the brief
+ok 9 - forged, other employee and stale run sessions cannot follow or change the brief
+  ---
+  duration_ms: 31.546084
+  type: 'test'
+  ...
+# Subtest: BriefService failures remain safe and never become a saved response
+ok 10 - BriefService failures remain safe and never become a saved response
+  ---
+  duration_ms: 33.315667
+  type: 'test'
+  ...
+# Subtest: two persisted quotes and the safe account port produce a comparison with explicit current inputs
+not ok 11 - two persisted quotes and the safe account port produce a comparison with explicit current inputs
+  ---
+  duration_ms: 40.8025
+  type: 'test'
+  location: '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085/server/test/gcsp-second-offer.test.js:229:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    Expected values to be strictly equal:
+    
+    true !== false
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: false
+  actual: true
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085/server/test/gcsp-second-offer.test.js:276:10)
+    async Test.run (node:internal/test_runner/test:1389:7)
+    async Test.processPendingSubtests (node:internal/test_runner/test:960:7)
+  ...
+# Subtest: HTTP descriptors require employee context, exact selector and delegated strict confirmation
+ok 12 - HTTP descriptors require employee context, exact selector and delegated strict confirmation
+  ---
+  duration_ms: 34.418125
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 10
+# fail 2
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 1013.212083

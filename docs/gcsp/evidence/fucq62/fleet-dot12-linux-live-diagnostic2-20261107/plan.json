@@ -1,0 +1,118 @@
+{
+  "schemaVersion": "linux-live-three-get-diagnostic.v1",
+  "status": "prepared-unexecuted-root-review-and-narrow-integration-push-required",
+  "diagnosticId": "fleet-dot12-linux-live-20261107-2",
+  "executionEnvironment": "GitHubActions ubuntu-latest Linux Node20; distinct second observation after the build-selector fix, not a replay of consumed requests",
+  "origin": "https://gcsp-api.onrender.com",
+  "deployment": {
+    "code": "c87b6f075c4e79bee93b71e1965ad23310ab8473",
+    "githubDeploymentId": 7620961777,
+    "actualDeploymentId": "dep-dbnhane8bjmc73a7v5qg",
+    "state": "success",
+    "createdAt": "2026-11-07T12:11:09Z",
+    "stateCreatedAt": "2026-11-07T12:11:10Z",
+    "completedAt": "2026-11-07T12:28:04Z",
+    "evidenceFile": "deployment-success.json",
+    "evidenceSha256": "bcef1530370d5a4316392f7b856e731d2cc8b848d772a9d65de70a898a2d4c17",
+    "targetEvidenceFile": "deployment-target.json",
+    "targetEvidenceSha256": "c4856c264b45f046663ea031cae89a85e81993981a85f14b8fb5a4d69af74a43",
+    "executionRequires": "Actual exact-target success observed and pinned. Root reviews and integrates this packet once; local GET/dispatch prohibited. This packet has not executed.",
+    "githubDeploymentStatusId": 21650333270,
+    "observedAt": "2026-11-07T12:28:20Z"
+  },
+  "manifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "firstReference": {
+    "request": {
+      "kind": "configuration",
+      "id": "MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIQyxTMDIzMCxTMDJQQSxTMDJUNCxTMDJUQixTMDJWQixTMDJWRCxTMDJWTCxTMDMwMixTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzMSxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRHUSxTMDRNQyxTMDRVUixTMDUzNCxTMDU0NCxTMDU1MixTMDVBQyxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDY3NixTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxNSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNVSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNQ=="
+    },
+    "rowKey": "d72c05557861bb646f57484e60d26c3f1f35df5c20b0dd18e01256188c7d0ca2",
+    "encodedPath": "/api/gcsp/vehicle-evidence/configurations/MlBCQzpGRVBNSSxQMDMwMCxTMDFDQixTMDFDRSxTMDFERixTMDFIQyxTMDIzMCxTMDJQQSxTMDJUNCxTMDJUQixTMDJWQixTMDJWRCxTMDJWTCxTMDMwMixTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzMSxTMDQ5MSxTMDQ5MyxTMDQ5NCxTMDRHUSxTMDRNQyxTMDRVUixTMDUzNCxTMDU0NCxTMDU1MixTMDVBQyxTMDVBUSxTMDVEQSxTMDVEQyxTMDVETSxTMDY1NCxTMDY3NixTMDZBRSxTMDZBRixTMDZBSyxTMDZDNCxTMDZDUCxTMDZQQSxTMDZVMixTMDZWQixTMDZXQyxTMDcwNCxTMDcxNSxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNVSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4MCxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDhXRCxTMDhXTSxTMDkyNQ%3D%3D",
+    "pathSha256": "0b4003eaeb1b378106ce349a0494b2c051a384e401496c54d3521c6c5fe1b79d",
+    "expectedDtoSha256": "82712c8d703e6546d6c4298fa3a168b2ea48f09c73931ee9eb061ee36f98e2e4",
+    "priorOfflineDirectAndHttpPassed": true
+  },
+  "expectedObservationFile": "expected-observation.json",
+  "expectedObservationSha256": "87914bdc9d27f8121c46d73e27dd7992d093fd56d20c1616674ed46aa5c685f1",
+  "rootReviewedInput": {
+    "sealedPlanPath": "/Users/usget/Claude/vehicle-matcher/docs/gcsp/evidence/fucq62/fleet-dot12-live-three-get-plan/plan.json",
+    "sealedPlanBytes": 23688,
+    "sealedPlanSha256": "b9ac9cf4b0bc1451edb6c448b83511760f3b924650696dc1a80b6eb5319c3d3f",
+    "dependencyReviewComplete": true,
+    "rootCodePinCount": 108,
+    "closureNotReplayed": "Reuse the prior reviewed runtime facts and current three-file build-selector delta. No108-pin closure refresh or native replay is a build/live gate."
+  },
+  "originalLocalAttempt": {
+    "receiptPath": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot12-live-three-get-20261107/receipt.json",
+    "receiptSha256": "d3681c7d72498191d006f56e4409feb4ff6875462810a9682fa075c665773a6b",
+    "rootResultsSha256": "e3623f93b8442f7a5cb6ee6730f032be34fd95a74210c5b524c1bd45175290c8",
+    "requests": 1,
+    "healthDeadlineMs": 30000,
+    "healthReceivedBytes": 0,
+    "outcome": "health request timed out; readiness/configuration unrun; proves neither service failure nor .12 readiness; no retry in that packet"
+  },
+  "limits": {
+    "newGETs": 3,
+    "healthMilliseconds": 90000,
+    "laterRequestMilliseconds": 30000,
+    "totalMilliseconds": 150000,
+    "retries": 0,
+    "redirects": 0,
+    "responseBodyBytes": 1048576,
+    "responseHeaderBytes": 16384,
+    "headerValueBytes": 2048,
+    "bodyLogPrefixBytes": 2048,
+    "headerLogPrefixBytes": 1024,
+    "totalRetainedLogBytes": 65536
+  },
+  "wakeupBasis": "Root-authorized90s health ceiling for possible Render free-service wake-up; no claim this timeout cause was proved. This is a new Linux environment/input/run identity, not an automatic replay of the local packet.",
+  "resources": {
+    "workers": 1,
+    "nodeHeapMiB": 256,
+    "groupRssMiB": 320,
+    "supervisorRssMiB": 64,
+    "hostMiB": 384,
+    "scratchMiB": 16,
+    "supervisorSeconds": 160,
+    "jobMinutes": 4,
+    "archives": false
+  },
+  "dispatchRequirement": "After actual success is confirmed for the exact target and root review is complete, root integration push to gcsp-poc triggers this distinct diagnostic only for the existing workflow or the new diagnostic2 packet paths. Optional manual dispatch uses the same final reviewed plan SHA, runAttempt1 only. No duplicate, retry or rerun. Actual run results belong outside these trigger paths.",
+  "serverBoundary": "Agent sends only unauthenticated application GETs, no SQL/source/provider/image calls or credentials. Application handling may use server policyDB internally.",
+  "runtimePins": {
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic2-20261107/probe.mjs": "fd45a268d184fbe55494d0695005889d85de6a97c70204d7dd557186089e5060",
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic2-20261107/supervise.py": "5694b56230f9ae26e5b7a5bf95f8c9f46e4353e7dcb8de2a056c36026f31a3bb",
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic2-20261107/expected-observation.json": "87914bdc9d27f8121c46d73e27dd7992d093fd56d20c1616674ed46aa5c685f1",
+    "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-diagnostic2-20261107/deployment-success.json": "bcef1530370d5a4316392f7b856e731d2cc8b848d772a9d65de70a898a2d4c17"
+  },
+  "acceptance": false,
+  "done": false,
+  "originalLocalTimeoutCauseProved": false,
+  "workflowHashSeparation": "Actual success receipt is pinned. This plan pins4runtime packet files; workflow embeds this exact final reviewed plan SHA; static-review receipt separately pins workflow to avoid circular hash dependency.",
+  "reviewedCodeDelta": {
+    "fromCode": "e7cf50acd58bda6b0f2b3738c4408f1f374682f8",
+    "targetCode": "c87b6f075c4e79bee93b71e1965ad23310ab8473",
+    "changedCodePaths": [
+      "server/scripts/fleet-artifacts.mjs",
+      "server/scripts/prepare-fleet-build.mjs",
+      "server/test/gcsp-fleet-build-entry.test.js"
+    ],
+    "scope": "Shared approved Blueprint selector for known GCSP Render download restore; lazy import preserves offline/pack dependency surface. Runtime lookup, artifact restore/publisher and policy semantics unchanged.",
+    "sourceReceiptPath": "docs/gcsp/evidence/fucq62/build-selector-stale-command-2026-11-07/receipt.json",
+    "sourceReceiptSha256": "6831291aa0c9947ba4ff5a9a30c396f26f7326ded5f6f636e586a735219ec636",
+    "sourceCommit": "e33b6c9a1f9c127fcd720dafbe12011b268d557a",
+    "review": "Root reports Mike independently passed the exact integrated source bytes. Source fix scoped9checks pass; existing image fixture2pre-CLI failures remain deferred in the linked payload.",
+    "no108PinRefreshGate": true
+  },
+  "priorLinuxObservation": {
+    "codeEvidenceCommit": "c87b6f075c4e79bee93b71e1965ad23310ab8473",
+    "runId": 42370480081,
+    "receiptPath": "docs/gcsp/evidence/fucq62/fleet-dot12-linux-live-run42370480081/probe-receipt.json",
+    "receiptSha256": "cfb6bf969f8d92a8bdd37eeff49c7222ce44b073d3f3ea87bc36b98a695e287d",
+    "diagnosticId": "fleet-dot12-linux-live-20261107-1",
+    "status": "failed",
+    "requests": 2,
+    "observedAt": "2026-11-07T11:59:45.775Z",
+    "outcome": "Health200; readiness200/ready with .10 digest; exact .12 readiness failed and configuration GET remained unrun. Prior receipt immutable; no retry/relabel."
+  }
+}

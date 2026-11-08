@@ -2,6 +2,7 @@ import { el, screenIntro, button, factList, statusScreen } from '../../vehicle-m
 import { renderRangeSlider, renderOptionList } from '../../vehicle-matcher/modes/question-ui.js';
 import { matchCard, previewTile, SPEC_LABELS, FUEL_SPEC } from '../../vehicle-matcher/modes/result-card.js';
 import { createBriefController } from './brief-controller.js';
+import { isRunRestarted, runRestartedScreen } from '../kit/run-restarted.js';
 import { decisionView, previewSummary } from './brief-view-model.js';
 
 let sequence = 0;
@@ -25,8 +26,37 @@ export function mountBriefBody(main, adapters = {}) {
     main.replaceChildren(statusScreen({ title: 'Your brief could not be loaded', message: 'Your account and brief are unavailable. Try loading them again.',
       actions: [button({ label: 'Try again', onClick: () => load() })] }));
   }
+  function restarted() {
+    const hadFocus = main.contains(main.ownerDocument.activeElement);
+    unsubscribe?.(); unsubscribe = undefined; controller?.destroy(); controller = undefined;
+    const screen = runRestartedScreen({ reload: adapters.reload }); main.replaceChildren(screen);
+    if (hadFocus) screen.querySelector('button')?.focus();
+  }
+  function acceptedPage(editor) {
+    const { context, initial } = editor; const brief = initial.brief;
+    const page = el('div', 'vm gcsp-brief');
+    page.append(screenIntro({ title: 'Your buddy found your car', level: 1, lede: 'You accepted a car, so your brief can no longer be changed.' }));
+    const note = el('p', 'gcsp-note', 'This is your saved brief. It is read only.'); note.setAttribute('role', 'status');
+    const level = (v) => Number.isFinite(v) ? `${v} out of ${context.slider.maximum}` : 'Not set';
+    const prefs = Object.entries(context.preferences).filter(([key]) => brief.preferences[key]).map(([key, d]) => {
+      const p = brief.preferences[key];
+      const shown = d.type === 'slider' ? level(p.value) : SPEC_LABELS[p.value] || FUEL_SPEC[p.value] || (typeof p.value === 'string' ? titleCase(p.value) : p.value);
+      return { label: d.label, value: `${shown}, importance ${p.importance === context.slider.minimum ? "I don't mind" : level(p.importance)}` };
+    });
+    const answer = (question, e) => {
+      const v = e?.value;
+      if (v === null || v === undefined) return context.unconfirmedLabel;
+      if (same(v, question.no)) return 'No';
+      return Array.isArray(question.yes) && !Array.isArray(v) && question.yes.includes(v) ? `Yes, ${v === 'either' ? 'home or work' : v}` : 'Yes';
+    };
+    const needs = Object.entries(context.practicalQuestions).filter(([key]) => brief.essentials[key]).map(([key, q]) => ({ label: q.label, value: answer(q, brief.essentials[key]) }));
+    page.append(note, el('h2', null, 'What matters to you'), factList(prefs), el('h2', null, 'What your car needs to do'), factList(needs),
+      button({ label: 'See your order progress', href: '/gcsp-order-progress-live.html' }));
+    main.replaceChildren(page);
+  }
   function draw(editor) {
     if (!alive) return;
+    if (editor.selection?.state === 'accepted') { acceptedPage(editor); return; }
     const context = editor.context;
     try {
       const transport = Object.fromEntries(['preview', 'saveDraft', 'confirm'].map((key) => [key, (input) => adapters.transport[key](input, { signal: abort.signal })]));
@@ -150,6 +180,7 @@ export function mountBriefBody(main, adapters = {}) {
     preview.append(status, retry, cards); layout.append(form, preview); page.append(layout, live); main.replaceChildren(page);
     let lastPreview;
     const patch = (state) => {
+      if (state.restarted) { restarted(); return; }
       for (const [key, h] of handles) {
         const p = state.brief.preferences[key]; if (!p) continue;
         h.value.update({ value: p.value, valueState: Number.isFinite(p.value) || typeof p.value === 'string' ? 'confirmed' : 'unknown' });
@@ -200,7 +231,7 @@ export function mountBriefBody(main, adapters = {}) {
     if (useInitial && adapters.editor) { draw(adapters.editor); return; }
     if (typeof adapters.loadEditor !== 'function') { unavailable(); return; }
     Promise.resolve().then(() => alive && current === generation ? adapters.loadEditor({ signal: abort.signal }) : null).then((outcome) => {
-      if (alive && current === generation) { if (outcome?.status === 'ok') draw(outcome.value); else unavailable(); }
+      if (alive && current === generation) { if (outcome?.status === 'ok') draw(outcome.value); else if (isRunRestarted(outcome)) restarted(); else unavailable(); }
     }).catch(() => { if (alive && current === generation) unavailable(); });
   }
   if (adapters.signal?.aborted) { finish(); return finish; }

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "f58-63-progress-checkpoint.v1",
+  "time": "2026-11-07T04:53:10.663151+00:00",
+  "head": "5176cbab3dcb34c6e2d1aa3a4636830984b81384",
+  "actualParentProvedSource": 2424,
+  "canonical": 2427,
+  "spent": 3236,
+  "shortfall10000": 7576,
+  "ordinaryPublishedSource": 1923,
+  "publicRelease": "fleet-2026-11-07-8",
+  "live": {
+    "deployment": 7616644897,
+    "code": "f76498aa2a82aaff866b22b6ca3cd01a77ea23b9",
+    "platformStatus": "success",
+    "actualHealth": "503 at2026-11-07T04:50:39.318Z",
+    "DTOCompared": 0,
+    "GETAttempts": 3,
+    "cause": "unestablished",
+    "liveParity": false
+  },
+  "technicalIntegration": "reviewed/merged/pushed5176cbab; fourfacts for one exactselection, no activated supplementyet",
+  "runningSource": {
+    "G42": "exact2248unspent suffix; actual stages awaiting parent union",
+    "F70": "exact5535unspent optional suffix; actual stages awaiting parent union"
+  },
+  "plannedPoolCredit": 0,
+  "completeStories": [],
+  "remaining": [
+    "GB/RHD descriptor/year/plant/era and five-WMI qualification",
+    "every scheme/model scope",
+    "actual10000 distinct",
+    "applicable enrichment/images",
+    "configured consumer failures",
+    "native/current-run order reference evidence",
+    "working live deployment exact parity"
+  ],
+  "install": {
+    "doctor": "Codex gatewayPASS; Claude gatewayFAIL unrelated activeharness",
+    "install": "staged plan8153684bbdcedcbc only; apply requires password/restart and is deferred during AFK active work"
+  }
+}

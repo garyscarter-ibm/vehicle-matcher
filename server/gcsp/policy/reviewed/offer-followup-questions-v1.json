@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "definitionSetId": "offer-followup-questions-v1",
+  "revision": "1",
+  "definitions": [
+    {
+      "key": "offer.followupQuestions.v1",
+      "value": {
+        "schemaVersion": 1,
+        "questions": [
+          {
+            "reasonCode": "body-style",
+            "path": "preferences.body.value",
+            "prompt": "Which body style would you prefer?",
+            "control": {
+              "kind": "options",
+              "options": [
+                {
+                  "value": "hatchback",
+                  "label": "Hatchback"
+                },
+                {
+                  "value": "saloon",
+                  "label": "Saloon"
+                },
+                {
+                  "value": "estate",
+                  "label": "Estate"
+                },
+                {
+                  "value": "suv",
+                  "label": "SUV"
+                },
+                {
+                  "value": "coupe",
+                  "label": "Coupe"
+                },
+                {
+                  "value": "convertible",
+                  "label": "Convertible"
+                },
+                {
+                  "value": "mpv",
+                  "label": "MPV"
+                }
+              ]
+            }
+          },
+          {
+            "reasonCode": "size",
+            "path": "preferences.size.value",
+            "prompt": "What size would you prefer?",
+            "control": {
+              "kind": "slider",
+              "unit": "percent"
+            }
+          },
+          {
+            "reasonCode": "fuel",
+            "path": "preferences.fuel.value",
+            "prompt": "Which fuel type would you prefer?",
+            "control": {
+              "kind": "options",
+              "options": [
+                {
+                  "value": "petrol",
+                  "label": "Petrol"
+                },
+                {
+                  "value": "diesel",
+                  "label": "Diesel"
+                },
+                {
+                  "value": "phev",
+                  "label": "Plug-in hybrid"
+                },
+                {
+                  "value": "ev",
+                  "label": "Electric"
+                }
+              ]
+            }
+          },
+          {
+            "reasonCode": "equipment",
+            "path": "essentials.equipment",
+            "prompt": "Which equipment is essential for your next car?",
+            "control": {
+              "kind": "equipment",
+              "maximumItems": 8,
+              "maximumItemLength": 80
+            }
+          }
+        ]
+      },
+      "unit": "reason-question-registry",
+      "status": "assumed",
+      "basis": "FUCQ-107 and agreed HLD Q16/blueprint07: one fixed typed-reason question, explicit confirmation, no inferred preference. Equipment text bounds are provisional demo input limits.",
+      "source": "docs/gcsp/offer-followup-contract.md",
+      "sourceDate": "2026-11-06"
+    }
+  ],
+  "digest": "bb05e490f85e9f6fd9aa1c424c849740ad2884cc62e9d9a2b98ee8f739f8b7ed"
+}

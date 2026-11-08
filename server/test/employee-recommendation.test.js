@@ -244,3 +244,20 @@ test('conflicting canonical slider scales are explicitly unavailable for Brief s
   const result = await recommend({ policy: new PolicyService({ provider: { loadVersions: async () => [seed] } }) });
   assert.equal(result.status, 'unavailable'); assert.equal(result.code, 'policy-configuration-invalid');
 });
+
+test('preview gallery lists eligible cars best fit first, ties by stock id, without reordering stored evaluations', async () => {
+  const mpg = (value) => ({ mpg: fact(value, 'mpg-imperial') });
+  const cars = [stock(5, { seats: fact(2, 'count') }), stock(3, mpg(25)), stock(4, mpg(45)), stock(2, mpg(60)), stock(1, mpg(45))];
+  const ports = { provider: provider(providerValue(cars)) };
+  const request = { schemaVersion: 1, preferences: { economy: preference(100) }, essentials: { seats: essential(5) } };
+  const preview = await service(ports).previewUnsaved(context, { brief: request, baseBriefVersion: 1, baseDraftVersion: 0 });
+  assert.equal(preview.status, 'ok');
+  const order = preview.value.decisions.map((d) => d.orderUuid);
+  assert.deepEqual(order, [2, 1, 4, 3, 5].map((id) => stock(id).orderUuid));
+  const [best, tieA, tieB, worst] = preview.value.decisions;
+  assert.ok(best.score > tieA.score && tieA.score === tieB.score && tieB.score > worst.score);
+  assert.equal(preview.value.decisions[4].gateStatus, 'ineligible');
+  const stored = await recommend(ports, { ...request, briefVersion: 1 });
+  assert.deepEqual(stored.value.decisions.map((d) => d.orderUuid), cars.map((c) => c.orderUuid));
+  assert.deepEqual(stored.value.recommendations.map((d) => d.orderUuid), order.slice(0, 3));
+});

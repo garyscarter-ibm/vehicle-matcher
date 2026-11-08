@@ -1,0 +1,64 @@
+TAP version 13
+# Subtest: shared options preserve keyboard focus and do not confirm on selection
+ok 1 - shared options preserve keyboard focus and do not confirm on selection
+  ---
+  duration_ms: 17.249083
+  type: 'test'
+  ...
+# Subtest: shared slider and labelled equipment textarea retain focused controls across edits
+ok 2 - shared slider and labelled equipment textarea retain focused controls across edits
+  ---
+  duration_ms: 41.437708
+  type: 'test'
+  ...
+# Subtest: invalid, busy and saved states disable confirmation and move completed focus to the heading
+ok 3 - invalid, busy and saved states disable confirmation and move completed focus to the heading
+  ---
+  duration_ms: 3.634459
+  type: 'test'
+  ...
+# Subtest: uncertain state offers the same-command retry; unavailable keeps saved receipt without a no-match claim
+ok 4 - uncertain state offers the same-command retry; unavailable keeps saved receipt without a no-match claim
+  ---
+  duration_ms: 1.922709
+  type: 'test'
+  ...
+# Subtest: comparison uses the supplied offer projector, shared cards/table and exact units/unknown/source evidence
+ok 5 - comparison uses the supplied offer projector, shared cards/table and exact units/unknown/source evidence
+  ---
+  duration_ms: 9.811542
+  type: 'test'
+  ...
+# Subtest: absent or failed canonical offer projection never paints an unverified ready page
+ok 6 - absent or failed canonical offer projection never paints an unverified ready page
+  ---
+  duration_ms: 1.182916
+  type: 'test'
+  ...
+# Subtest: body teardown suppresses a late read; aborted mount performs no work
+ok 7 - body teardown suppresses a late read; aborted mount performs no work
+  ---
+  duration_ms: 3.275333
+  type: 'test'
+  ...
+# Subtest: standard element retains a pre-upgrade adapter and disconnect cleans its pending body
+ok 8 - standard element retains a pre-upgrade adapter and disconnect cleans its pending body
+  ---
+  duration_ms: 9.958083
+  type: 'test'
+  ...
+# Subtest: owned block sources have no inline handlers, unsafe execution or stylesheet changes inside kit controls
+ok 9 - owned block sources have no inline handlers, unsafe execution or stylesheet changes inside kit controls
+  ---
+  duration_ms: 3.59
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 979.016542

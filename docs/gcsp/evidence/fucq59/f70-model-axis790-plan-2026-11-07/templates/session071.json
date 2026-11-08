@@ -1,0 +1,193 @@
+{
+  "schemaVersion": "1",
+  "planId": "f70-model-axis790-20261107-once-session071",
+  "version": "1",
+  "seed": "f70-model-axis790-direct-sorted-digests-20261107",
+  "policyRead": {
+    "asOf": "2026-11-06T00:00:00.000Z",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "source": {
+    "id": "bmw-uk-public",
+    "version": "f59-model-batch-20261107.v1",
+    "kind": "public-bmw-uk"
+  },
+  "context": {
+    "catalogueDate": "2026-11-01",
+    "market": "GB",
+    "locale": "en-GB",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05"
+  },
+  "models": [
+    "1F7D"
+  ],
+  "target": 8,
+  "candidateCount": 8,
+  "limits": {
+    "maxCandidates": 8,
+    "requestBudgets": {
+      "page": 1,
+      "settings": 1,
+      "discover": 1,
+      "options": 1,
+      "solve": 8
+    },
+    "maxAttempts": 1,
+    "operationTimeoutMs": 10000,
+    "deadlineMs": 120000,
+    "retryDelayMs": 0,
+    "concurrency": 1,
+    "cacheEntries": 16,
+    "cacheRetentionMs": 86400000,
+    "checkpointBytes": 4194304,
+    "imageRequests": 0,
+    "sourceAttempts": 12,
+    "sourceBytes": 4194304,
+    "responseBytes": 1048576
+  },
+  "captureVersion": "bmw-complete-selection.v1",
+  "qualificationDate": "2026-11-07",
+  "modelRegistration": {
+    "schemaVersion": "bmw-public-model-registration.v1",
+    "modelCode": "1F7D",
+    "agModelCode": "62GE",
+    "catalogueRangeKey": "F70",
+    "rawModelRange": "F70",
+    "aliases": [
+      "1"
+    ],
+    "market": "GB",
+    "locale": "en-GB",
+    "steering": "RL",
+    "catalogueDate": "2026-11-01",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05"
+  },
+  "lineRegistration": {
+    "lineKey": "S0337",
+    "defaultModel": {
+      "modelCode": "1F7B",
+      "agModelCode": "82GE"
+    },
+    "includedIndex": 2,
+    "optionsQuery": {
+      "kind": "trim",
+      "code": "S0337"
+    }
+  },
+  "candidates": [
+    {
+      "candidateId": "candidate-742fffb8e57171dc95d0404a",
+      "request": {
+        "includedElements": [
+          "FKUMY",
+          "P0C4P",
+          "S01H8",
+          "S0337"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-3d090637dc5c4b68a7020028",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C4W",
+          "S0337",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-59d99fd2f335e0c8a2c2235a",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0C31",
+          "S01H5",
+          "S0337"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-2d3fa76439358ed0696b762f",
+      "request": {
+        "includedElements": [
+          "FKUCX",
+          "P0C4W",
+          "S0337",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-d4cdfc5b678ff0d214825169",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0C5Y",
+          "S0337",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-618cba386731bb7a7244fb7e",
+      "request": {
+        "includedElements": [
+          "FKUSW",
+          "P0C4W",
+          "S01H5",
+          "S0337"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-0678491cc15af1181153ca98",
+      "request": {
+        "includedElements": [
+          "FKTNL",
+          "P0C5A",
+          "S0337",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    },
+    {
+      "candidateId": "candidate-04bc1bfdad67f1e443be7ef6",
+      "request": {
+        "includedElements": [
+          "FKUKP",
+          "P0C31",
+          "S0337",
+          "S03NA"
+        ],
+        "mandatoryElements": [
+          "S0337"
+        ]
+      }
+    }
+  ]
+}

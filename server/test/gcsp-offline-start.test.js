@@ -64,6 +64,14 @@ function request(base, path) {
   });
 }
 
+// The activated corpus (f76498aa, 41d4f872) loads in ~9 s; wait on the readiness route, not the 5 s request deadline.
+async function corpusReadiness(base) {
+  const deadline = Date.now() + 30000; let health;
+  do { health = await request(base, '/health/vehicle-evidence'); if (health.body?.vehicleEvidence?.status !== 'loading') break; await delay(100); }
+  while (Date.now() < deadline);
+  return health.body?.vehicleEvidence?.status;
+}
+
 async function start({ scratch, guard, corpusRoot, stops }) {
   let output = ''; let spawnError;
   const child = spawn(process.execPath, ['--import', guard, join(project, 'server/index.js')], {
@@ -121,6 +129,7 @@ test('the real same-entry offline profile cold-starts and restarts selected loca
   for (let attempt = 0; attempt < 2; attempt++) {
     const server = await start({ scratch, guard, stops });
     assert.deepEqual(await request(server.base, '/health'), { code: 200, body: { ok: true } });
+    assert.equal(await corpusReadiness(server.base), 'ready');
     const vin = await request(server.base, `/api/gcsp/vehicle-evidence/vins/${vehicle.vin17}`);
     assert.equal(vin.code, 200); assert.equal(vin.body.identity.identityKind, 'synthetic');
     assert.equal(vin.body.routing.liveEligible, false);
@@ -132,6 +141,7 @@ test('the real same-entry offline profile cold-starts and restarts selected loca
     await server.stop();
   }
   const missing = await start({ scratch, guard, stops, corpusRoot: join(scratch, 'missing-selected-store') });
+  assert.equal(await corpusReadiness(missing.base), 'unavailable');
   assert.equal((await request(missing.base, `/api/gcsp/vehicle-evidence/vins/${vehicle.vin17}`)).code, 503);
   await missing.stop();
   assert.deepEqual(await Promise.all(['active.json', 'identity-inventory.json'].map((name) => readFile(new URL(name, selected), 'utf8'))), before);

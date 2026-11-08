@@ -1,0 +1,85 @@
+{
+  "checkpoint": "isolated backend reader",
+  "sourceCommit": "2ceba84",
+  "scope": "targeted",
+  "passed": 113,
+  "failed": 0,
+  "skipped": 2,
+  "skipReason": "GCSP_DATABASE_URL unset; live PostgreSQL explicitly unvalidated",
+  "codeIdentity": "8ebfcdf70e45f1357b683a47a55925c4188e6b4d75b854ac2031304e012c642e",
+  "headAtRun": "dda80202d29aadfe1caf48bc80eed24822665024",
+  "treeAtRun": "228c2287e11ee2b6fea0dadcd19568032d58ac40",
+  "baseCommit": "18b3c1349d1b731a73e1f028e37df7b86372fb9d",
+  "variant": "default",
+  "coverage": {
+    "linePercent": 100,
+    "branchPercent": 93.28,
+    "functionPercent": 96.43
+  },
+  "wallSeconds": 3.7,
+  "peakScratchBytes": 2572448,
+  "peakRecursiveRssBytes": 259129344,
+  "cleanup": [
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/39461b05460e45d5a1d0240bdcb99ee1.json",
+      "removedBytes": 0,
+      "scratchAbsent": true,
+      "liveGroups": false,
+      "reservationReleased": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/806231bbfb5e4b258e7e9889df52d1c5.json",
+      "removedBytes": 0,
+      "scratchAbsent": true,
+      "liveGroups": false,
+      "reservationReleased": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/6013c0eb04be41d8b22771ac39dd47f5.json",
+      "removedBytes": 0,
+      "scratchAbsent": true,
+      "liveGroups": false,
+      "reservationReleased": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/d462ac4359b345e794507c9110539c55.json",
+      "removedBytes": 2572448,
+      "scratchAbsent": true,
+      "liveGroups": false,
+      "reservationReleased": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/c257628e511a4faba3c8fc7890e7791e.json",
+      "removedBytes": 0,
+      "scratchAbsent": true,
+      "liveGroups": false,
+      "reservationReleased": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/9f554dcdb30c48b09ee37fc2a5407059.json",
+      "removedBytes": 0,
+      "scratchAbsent": true,
+      "liveGroups": false,
+      "reservationReleased": true
+    },
+    {
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/test-runs/ownership/e2e8e81f2e034a078e1936eb0a295f75.json",
+      "removedBytes": 0,
+      "scratchAbsent": true,
+      "liveGroups": false,
+      "reservationReleased": true
+    }
+  ],
+  "exception": null,
+  "largeOutput": null,
+  "fullSuite": "not run; deferred to integration",
+  "searchProducer": "missing, no successful check/source-delay proof",
+  "successfulVerboseLogsRemovedBytes": 20480,
+  "scratchBaseAbsent": true,
+  "dependencyLinkCleanup": {
+    "link": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-083/server/node_modules",
+    "target": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-069/server/node_modules",
+    "linkAbsent": true,
+    "targetPresentAndUnchanged": true
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "passed": true,
+  "accountState": "no-entitlement",
+  "briefEditor": {
+    "status": "stale-version",
+    "reason": null
+  },
+  "origin": "https://localhost:8986",
+  "runtime": "memory",
+  "runs": [
+    {
+      "viewport": 1280,
+      "page": "activity",
+      "header": "Group Car Schemes Portal P Paula (fictional)",
+      "body": "Your buddy Active Your offer Image unavailable Accepted View offer Activity All dates are demo time (UTC). Last check 5 Nov 2026, 12:00: 8 cars checked, 6 suitable. Found a car for you. 5 Nov 2026, 09:00 Search confirmed 5 Nov 2026, 09:30 Search updated after a decline Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your ",
+      "screenshot": "docs/gcsp/evidence/fucq-212/1280-activity.png",
+      "headerUnavailable": false,
+      "activityUnavailable": false,
+      "paula": true,
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "viewport": 1280,
+      "page": "brief",
+      "header": "Group Car Schemes Portal P Paula (fictional)",
+      "body": "Your brief could not be loaded Your account and brief are unavailable. Try loading them again. Try again",
+      "screenshot": "docs/gcsp/evidence/fucq-212/1280-brief.png",
+      "headerUnavailable": false,
+      "activityUnavailable": false,
+      "paula": true,
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "viewport": 375,
+      "page": "activity",
+      "header": "Group Car Schemes Portal P Paula (fictional)",
+      "body": "Your buddy Active Your offer Image unavailable Accepted View offer Activity All dates are demo time (UTC). Last check 5 Nov 2026, 12:00: 8 cars checked, 6 suitable. Found a car for you. 5 Nov 2026, 09:00 Search confirmed 5 Nov 2026, 09:30 Search updated after a decline Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your ",
+      "screenshot": "docs/gcsp/evidence/fucq-212/375-activity.png",
+      "headerUnavailable": false,
+      "activityUnavailable": false,
+      "paula": true,
+      "overflow": 0,
+      "errors": []
+    },
+    {
+      "viewport": 375,
+      "page": "brief",
+      "header": "Group Car Schemes Portal P Paula (fictional)",
+      "body": "Your brief could not be loaded Your account and brief are unavailable. Try loading them again. Try again",
+      "screenshot": "docs/gcsp/evidence/fucq-212/375-brief.png",
+      "headerUnavailable": false,
+      "activityUnavailable": false,
+      "paula": true,
+      "overflow": 0,
+      "errors": []
+    }
+  ]
+}

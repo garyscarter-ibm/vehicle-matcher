@@ -1,0 +1,8 @@
+{
+  "schemaVersion": "f70-retained-context-deliverables.v1",
+  "primary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-context-qualification-2026-11-07/context01/collector-checkpoint.json",
+  "disposable": false,
+  "retainOnInterruption": true,
+  "exportBeforeScratchCleanup": true,
+  "exporter": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py"
+}
