@@ -86,7 +86,11 @@ test('all difficult account states retain typed failures and support ownership',
     if (envelope.status !== 'ok') assert.deepEqual(view.failure, envelope);
   }
   assert.equal(accountFixture('unknown'), null);
-  assert.equal(toAccountView({ status: 'stale-run', view: { supportOwner: 'employee', action: 'reopen-session' } }).state, 'refused');
+  for (const status of ['stale-run', 'unknown-session', 'access-required']) {
+    assert.equal(toAccountView({ status, view: { supportOwner: 'employee', action: 'reopen-session' } }).state, 'restarted');
+    assert.equal(toDraftView({ status }).state, 'restarted');
+  }
+  assert.equal(toAccountView({ status: 'forbidden' }).state, 'refused');
   assert.equal(toAccountView({ status: 'ok', value: { state: 'unknown-grade', actions: [] } }).state, 'unsupported-scheme');
 });
 
@@ -133,6 +137,17 @@ test('HTTP journey start refuses missing actions and refuses stale or failed rel
   assert.equal((await adapter.startJourney({ account, action, draft: { status: 'ok', value: { requiresRefresh: true } } })).status, 'stale-version');
   assert.equal((await adapter.startJourney({ account, action, draft: { status: 'unavailable' } })).status, 'unavailable');
   assert.equal(writes, 0);
+});
+
+test('FUCQ-198: a 401 without a status becomes access-required; one with a status passes through', async () => {
+  const gate = createAccountHttpAdapter({ fetchImpl: async () => response({ error: 'Unauthorized' }, 401) });
+  assert.deepEqual(await gate.readAccount(), { status: 'access-required' });
+  assert.deepEqual(await gate.readDraft(), { status: 'access-required' });
+  assert.deepEqual(await gate.saveDraft({ commandId: 'c' }), { status: 'access-required' });
+  const unknown = createAccountHttpAdapter({ fetchImpl: async () => response({ status: 'unknown-session' }, 401) });
+  assert.deepEqual(await unknown.readAccount(), { status: 'unknown-session' });
+  const broken = createAccountHttpAdapter({ fetchImpl: async () => response({ error: 'x' }, 500) });
+  assert.equal((await broken.readAccount()).status, 'unavailable');
 });
 
 test('transport and malformed HTTP failures never claim success; cancellation remains cancellation', async () => {
@@ -345,12 +360,12 @@ test('failed draft reads and stale writes never emit success and refresh recover
     assert.equal(findButton(root, 'Choose a replacement').disabled, true);
     available = true; await destroy.refresh(); assert.equal(findButton(root, 'Choose a replacement').disabled, false);
     findButton(root, 'Choose a replacement').click(); await tick(); await tick();
-    assert.equal(starts, 1); assert.equal(events, 0); assert.match(root.querySelector('[role="alert"]').textContent, /context has changed/);
+    assert.equal(starts, 1); assert.equal(events, 0); assert.match(root.querySelector('.gcsp-account-body [role="alert"]').textContent, /context has changed/);
     assert.match(root.textContent, /Refresh and review/);
     const changed = accountFixture(); changed.value.account.name = 'Changed fictional employee';
     adapter.readAccount = async () => changed; await destroy.refresh();
     assert.match(root.querySelector('.gcsp-account-name').textContent, /Changed fictional employee/);
-    assert.equal(root.querySelector('[role="alert"]'), null);
+    assert.equal(root.querySelector('.gcsp-account-body [role="alert"]'), null);
   } finally { destroy(); root.remove(); }
 });
 
@@ -400,7 +415,7 @@ test('fresh account review can replace a stale intent using current source and d
     });
     findButton(root, 'Back to account').click();
     findButton(root, 'Choose a replacement').click(); await tick(); await tick();
-    assert.equal(events, 1); assert.match(root.querySelector('[role="alert"]').textContent, /context has changed/);
+    assert.equal(events, 1); assert.match(root.querySelector('.gcsp-account-body [role="alert"]').textContent, /context has changed/);
     assert.equal(calls.filter((call) => call.method === 'POST').length, 1);
     await destroy.refresh();
     assert.equal(findButton(root, 'Resume saved journey'), undefined);
@@ -424,7 +439,7 @@ test('new-order action retains the exact permitted scheme and empty slot intent 
     findButton(root, 'Start a new order').click(); await tick(); await tick();
     assert.deepEqual(request.action, accountFixture('no-current-car').value.actions[0]);
     assert.equal(request.action.action, 'order'); assert.equal(request.action.oldContractId, null);
-    assert.equal(events, 0); assert.match(root.querySelector('[role="alert"]').textContent, /could not be saved/);
+    assert.equal(events, 0); assert.match(root.querySelector('.gcsp-account-body [role="alert"]').textContent, /could not be saved/);
     assert.equal(root.querySelectorAll('.gcsp-feature').length, 0);
   } finally { destroy(); root.remove(); }
 });
@@ -571,4 +586,34 @@ test('FUCQ-195: the current-car card shows readable labels and no raw identifier
   const second = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
   try { assert.match(second.root.querySelector('.gcsp-feature').textContent, /Vehicle slotCompany car 1/); }
   finally { second.destroy(); second.root.remove(); }
+});
+
+function assertRestartedPage(root, reloads) {
+  const body = root.querySelector('.gcsp-account-body'); const press = (label) => [...body.querySelectorAll('button')].find((node) => node.textContent === label);
+  assert.equal(body.querySelector('h1').textContent, 'Your cars'); assert.match(body.textContent, /Demo restarted/);
+  assert.match(body.textContent, /Reload the page to continue/);
+  assert.doesNotMatch(body.textContent, /This account cannot be opened|Your account is unavailable|Journey could not be saved|stale-run|unknown-session|\u2014/);
+  assert.equal(press('Refresh account'), undefined); assert.equal(press('Choose a replacement'), undefined);
+  const reload = press('Reload'); assert.ok(reload); reload.click(); assert.equal(reloads(), 1);
+}
+test('FUCQ-198: a stale-run or unknown-session account read shows the restart screen with a working Reload', async () => {
+  for (const status of ['stale-run', 'unknown-session', 'access-required']) {
+    let reloads = 0;
+    const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => ({ status, reason: 'x' }) }, { reload: () => reloads++ });
+    try { assertRestartedPage(root, () => reloads); } finally { destroy(); root.remove(); }
+  }
+});
+test('FUCQ-198: a restarted draft read shows the restart screen', async () => {
+  let reloads = 0;
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readDraft: async () => ({ status: 'unknown-session' }) }, { reload: () => reloads++ });
+  try { assertRestartedPage(root, () => reloads); } finally { destroy(); root.remove(); }
+});
+test('FUCQ-198: a start journey reply of stale-run shows the restart screen, not a save failure', async () => {
+  let reloads = 0;
+  const adapter = { ...readOnlyAdapter(), startJourney: async () => ({ status: 'stale-run' }) };
+  const { root, destroy } = await domMount(adapter, { reload: () => reloads++ });
+  try {
+    findButton(root, 'Choose a replacement').click(); await tick(); await tick();
+    assertRestartedPage(root, () => reloads);
+  } finally { destroy(); root.remove(); }
 });

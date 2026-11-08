@@ -3,8 +3,9 @@ import { el, button, statusScreen } from '../../vehicle-matcher/ui.js';
 export const RUN_RESTARTED_TITLE = 'Demo restarted';
 export const RUN_RESTARTED_MESSAGE = 'The demo was restarted. Reload the page to continue.';
 
-// A restarted demo refuses the old session with status 'stale-run'; a reload starts a fresh one.
-export const isRunRestarted = (reply) => reply?.status === 'stale-run';
+// A restart refuses the old run or session; a lapsed access key reads 'access-required'. A reload recovers.
+const RESTARTED = ['stale-run', 'unknown-session', 'access-required'];
+export const isRunRestarted = (reply) => RESTARTED.includes(reply?.status);
 // An empty href resolves to this page without its fragment, so the click is a full reload.
 const defaultReload = () => { const link = el('a'); link.setAttribute('href', ''); link.click(); };
 

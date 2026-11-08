@@ -1,12 +1,15 @@
 // Pure account projection. Authority, policy and the display clock come from the server.
+import { isRunRestarted } from '../kit/run-restarted.js';
 const copy = (value) => value == null ? null : structuredClone(value);
 const list = (value) => Array.isArray(value) ? value : [];
 const fact = (label, value, unit = null) => ({ label, value: copy(value), unit, missingLabel: 'Not supplied' });
-const failureStates = { unavailable: 'source-failure', forbidden: 'refused', 'stale-run': 'refused',
+const failureStates = { unavailable: 'source-failure', forbidden: 'refused',
   conflict: 'conflict', 'stale-version': 'conflict', invalid: 'validation', 'not-found': 'not-found' };
 
+const failState = (envelope) => isRunRestarted(envelope) ? 'restarted' : failureStates[envelope?.status] ?? 'source-failure';
+
 export function toDraftView(envelope) {
-  if (envelope?.status !== 'ok') return { state: failureStates[envelope?.status] ?? 'source-failure',
+  if (envelope?.status !== 'ok') return { state: failState(envelope),
     draft: null, failure: copy(envelope), view: copy(envelope?.view) };
   const draft = copy(envelope.value);
   return { state: draft.requiresRefresh ? 'context-changed' : draft.draftStage === 'intent' ? 'intent' : 'complete',
@@ -35,7 +38,7 @@ function contractView(contract, asOf, drivers, actions) {
 
 export function toAccountView(envelope, { draft = null } = {}) {
   if (envelope?.status !== 'ok' || !envelope.value || typeof envelope.value !== 'object') return {
-    state: failureStates[envelope?.status] ?? 'source-failure', backendState: null,
+    state: failState(envelope), backendState: null,
     account: null, currentContracts: [], slots: [], histories: [], actions: [],
     failure: copy(envelope), view: copy(envelope?.view), supportOwner: envelope?.view?.supportOwner ?? 'scheme-support',
   };

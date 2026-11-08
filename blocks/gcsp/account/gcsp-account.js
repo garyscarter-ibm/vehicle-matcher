@@ -2,6 +2,7 @@
 import { el, screenIntro, button, statusScreen, factList, formatTerm } from '../../vehicle-matcher/ui.js';
 import { mediaWell } from '../../vehicle-matcher/modes/result-card.js';
 import { mountEmployee } from '../employee/gcsp-employee.js';
+import { runRestartedScreen, isRunRestarted } from '../kit/run-restarted.js';
 import { countdown } from '../employee/representative-body.js';
 import { toAccountView, journeyIntent } from './account-view.js';
 import { createAccountHttpAdapter } from './http-adapter.js';
@@ -155,10 +156,14 @@ function orderStatus(order, host) {
 }
 
 // This is page layout rather than a stock decision card: a delivered car has no stock eligibility decision.
-export function renderAccountBody(main, { model, draft, offers = [], pending = false, message, journey = false, controls, orderHost, order } = {}) {
+export function renderAccountBody(main, { model, draft, offers = [], pending = false, message, journey = false, controls, orderHost, order, restarted = false, reload } = {}) {
   const wrap = el('div', 'vm gcsp-rep gcsp-account-body');
   wrap.setAttribute('aria-busy', String(pending));
   wrap.append(screenIntro({ title: journey ? 'Your saved journey' : 'Your cars', level: 1, className: 'gcsp-intro' }));
+  // A restarted demo needs a reload, so nothing else on the page can work.
+  if (restarted || model.state === 'restarted' || isRunRestarted(draft)) {
+    wrap.append(runRestartedScreen({ reload })); main.replaceChildren(wrap); return () => wrap.remove();
+  }
   const toolbar = el('div', 'gcsp-actions');
   toolbar.append(button({ label: 'Refresh account', variant: 'ghost', disabled: pending, onClick: controls.refresh }));
   wrap.append(toolbar);
@@ -242,10 +247,10 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
   return () => wrap.remove();
 }
 
-export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', onSupport, print, orderAdapter, helpAdapter } = {}) {
+export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', onSupport, print, orderAdapter, helpAdapter, reload } = {}) {
   const abort = new AbortController();
   let envelope; let draft; let offers; let main; let pending = false; let message = null; let journey = false; let disposed = false;
-  let generation = 0; let teardown; let loading; let finishPrint; let orderHost; let orderRow; let stopOrder;
+  let generation = 0; let teardown; let loading; let finishPrint; let orderHost; let orderRow; let stopOrder; let restarted = false;
   const notify = (type, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(type,
     { detail, bubbles: true, composed: true }));
   const read = async (name) => {
@@ -286,7 +291,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   };
   function draw(focus = false) {
     if (!main || disposed) return;
-    renderAccountBody(main, { model: toAccountView(envelope), draft, offers, pending, message, journey, controls, orderHost, order: orderRow });
+    renderAccountBody(main, { model: toAccountView(envelope), draft, offers, pending, message, journey, controls, orderHost, order: orderRow, restarted, reload });
     if (focus) { const title = main.querySelector('h1'); title.tabIndex = -1; title.focus(); }
   }
   // Only a listed order shows the area; a failed list leaves the account as it was.
@@ -318,7 +323,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   }
   async function refresh() {
     if (pending || disposed) return;
-    pending = true; message = null; draw();
+    pending = true; message = null; restarted = false; draw();
     teardown(); main = null;
     teardown = mountEmployee(root, { brand, ...shellAdapter });
     try { await loading; } finally { pending = false; draw(true); }
@@ -331,6 +336,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
       draftVersion: value.draftVersion, contextVersion: value.contextVersion });
   }
   function failed(result) {
+    if (isRunRestarted(result)) { restarted = true; message = null; return; }
     if (result?.code === 'read-only-visual-fixture') {
       message = { title: 'Read-only account preview', text: 'This example cannot save a journey. Open the connected demo to continue.' }; return;
     }
