@@ -124,7 +124,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     if (!faultRows.has(row.adapter)) {
       const pick = picker(adapterLabel(row.adapter));
       const set = action(`Set ${adapterLabel(row.adapter).toLowerCase()}`, () => {
-        if (pick.value) start('setFault', { adapter: row.adapter, mode: pick.value });
+        if (pick.value) setFaultMode(row.adapter, pick.value);
       });
       faultRows.set(row.adapter, { pick, set, mode: undefined });
     }
@@ -167,7 +167,9 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     if (disposed || !authorized) return;
     root.hidden = false; root.setAttribute('aria-busy', String(busy));
     if (busy && !focusAfterBusy && root.contains(root.ownerDocument.activeElement)) focusAfterBusy = root.ownerDocument.activeElement;
-    controls.forEach((node) => { node.disabled = busy || restarted || uncertain && ![retry, fresh, refresh].includes(node); });
+    // Fault changes are side commands: they stay usable while a refused action awaits its retry.
+    const sideSet = (node) => [...faultRows.values()].some((row) => row.set === node);
+    controls.forEach((node) => { node.disabled = busy || restarted || uncertain && ![retry, fresh, refresh].includes(node) && !sideSet(node); });
     if (!state) return;
     bar.setReadback([
       { label: 'Scenario', value: state.currentScenario?.name, missingLabel: 'Scenario not supplied' },
@@ -179,7 +181,7 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     scenario.project((catalogue?.scenarios || []).map((row) => ({ value: row.scenarioId, label: row.name,
       sub: row.availability?.available ? 'Available' : `Not available yet: ${row.availability?.missingCapabilities?.join(', ') || 'Capabilities not supplied'}`,
     })), state.currentScenario?.scenarioId, busy || restarted || uncertain);
-    projectFaults(busy || restarted || uncertain);
+    projectFaults(busy || restarted);
     named.replaceChildren(...Object.keys(state.controls?.namedTimes || {}).map((name) => { const option = el('option'); option.value = name; return option; }));
     tick.textContent = `Tick (${state.controls?.step?.value ?? 'unavailable'} ${state.controls?.step?.unit ?? ''})`;
     tick.disabled ||= !state.controls?.step; to.disabled ||= !target.input.value.trim();
@@ -247,6 +249,23 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
     } catch { if (!disposed && authorized) readMessage.textContent = 'Backend unavailable'; }
     finally { busy = false; update(); }
   }
+  async function setFaultMode(adapterId, mode) {
+    if (busy || disposed || restarted || !authorized) return;
+    busy = true; message.textContent = 'Action in progress'; update();
+    let note = '';
+    try {
+      const reply = await adapter.setFault({ commandId: commandId(), adapter: adapterId, mode }, options); if (disposed) return;
+      if (isRunRestarted(reply)) { enterRestarted(); return; }
+      if (reply.status === 'ok') {
+        note = faultChange(adapterId, reply.value?.faults?.find((row) => row?.adapter === adapterId)?.mode || mode);
+        const Event = host.ownerDocument?.defaultView?.CustomEvent;
+        if (Event) host.dispatchEvent(new Event('gcsp:presenter-action', { bubbles: true, detail: { kind: 'setFault' } }));
+      } else note = reply.lostResponse ? 'Fault change not confirmed. Press Set again.' : `Action not completed: ${why(reply)}`;
+      message.textContent = note;
+      if (reply.status === 'ok') { busy = false; await refreshState(); if (!disposed && !restarted) message.textContent = note; }
+    } catch { if (!disposed) message.textContent = 'Fault change not confirmed. Press Set again.'; }
+    finally { busy = false; update(); }
+  }
   function start(kind, payload) {
     if (busy || disposed || uncertain || restarted || !authorized) return;
     startStopped = false;
@@ -277,11 +296,6 @@ export function mountPresenterControls(host, { adapter = createPresenterHttpAdap
       if (reply.lostResponse) message.textContent = 'Backend unavailable or response lost. Retry the original action.';
       if (command.kind === 'reset' && value.presenterSession?.status === 'unavailable') {
         message.textContent += ` Presenter session unavailable. ${value.presenterSession.action || 'Use trusted backend bootstrap.'}`;
-      }
-      if (command.kind === 'setFault' && reply.status === 'ok') {
-        const adapterId = command.payload.adapter;
-        const mode = value.faults?.find((row) => row?.adapter === adapterId)?.mode || command.payload.mode;
-        message.textContent = faultChange(adapterId, mode);
       }
       if (reply.handlerOutcome) message.textContent += ` Handler: ${why(reply.handlerOutcome)}`;
       if (command.kind === 'reset' && reply.status === 'ok' && !stopped) {

@@ -623,16 +623,35 @@ test('fault success projects the returned mode, dispatches gcsp:presenter-action
   assert.match(f.host.textContent, /Stock feed fault cleared/); assert.equal(selected(f, 'Stock feed fault'), 'none');
   assert.deepEqual(seen, ['setFault', 'setFault', 'setFault']); f.control.destroy();
 });
-test('fault change retries the identical body after a lost response and refusals use plain wording', async () => {
+test('a lost fault response is not uncertain: Set stays usable, a fresh commandId is sent and refusals use plain wording', async () => {
   const calls = []; let reply = { status: 'unavailable', lostResponse: true, retryable: true };
   const f = setup({ readFaults: async () => ok({ runId: 'run-a', faults: faultRows() }), setFault: async (payload) => { calls.push(payload); return reply; } }); await settle();
   choice(f, 'Stock feed fault', 'stale').click(); f.click('Set stock feed fault'); await settle();
-  assert.match(f.host.textContent, /Retry the original action/); f.click('Retry original action'); await settle();
-  assert.equal(calls.length, 2); assert.strictEqual(calls[0], calls[1]);
-  reply = { status: 'forbidden', code: 'raw-code' }; calls.length = 0; await f.control.refresh();
-  f.click('Retry original action'); await settle();
+  assert.match(f.host.textContent, /Fault change not confirmed\. Press Set again\./);
+  assert.equal([...f.host.querySelectorAll('button')].some((b) => b.textContent === 'Retry original action' && !b.hidden), false);
+  assert.equal(choice(f, 'Stock feed fault', 'stale').disabled, false);
+  f.click('Set stock feed fault'); await settle(); assert.equal(calls.length, 2); assert.notEqual(calls[0].commandId, calls[1].commandId);
+  assert.equal(calls[1].mode, 'stale');
+  reply = { status: 'forbidden', code: 'raw-code' }; f.click('Set stock feed fault'); await settle();
   assert.match(f.host.textContent, /Action not completed: Not permitted/); assert.doesNotMatch(f.host.textContent, /raw-code|forbidden:/);
   f.control.destroy();
+});
+const refusedTick = { status: 'unavailable', retryable: true, reason: 'A registered clock handler did not complete. Retry this event ID.' };
+test('after a retryable refused tick the fault control stays enabled and clearing it keeps the original retry', async () => {
+  const ticks = []; const faultCalls = []; let rows = faultRows('unavailable'); let tickReply = refusedTick;
+  const f = setup({ tick: async (payload) => { ticks.push(payload); return tickReply; }, readFaults: async () => ok({ runId: 'run-a', faults: rows }),
+    setFault: async (payload) => { faultCalls.push(payload); rows = faultRows(payload.mode); return ok({ runId: 'run-a', faults: rows }); } }); await settle();
+  f.click('Next release'); await settle();
+  const retry = [...f.host.querySelectorAll('button')].find((b) => b.textContent === 'Retry original action'); assert.equal(retry.hidden, false);
+  assert.equal(choice(f, 'Stock feed fault', 'none').disabled, false);
+  assert.equal([...f.host.querySelectorAll('button')].find((b) => b.textContent === 'Set stock feed fault').disabled, false);
+  assert.equal(f.click('Tick').disabled, true);
+  choice(f, 'Stock feed fault', 'none').click(); f.click('Set stock feed fault'); await settle();
+  assert.deepEqual(faultCalls, [{ commandId: 'command-2', adapter: 'stock', mode: 'none' }]);
+  assert.match(f.host.textContent, /Stock feed fault cleared/); assert.equal(retry.hidden, false); assert.equal(selected(f, 'Stock feed fault'), 'none');
+  tickReply = ok({}); retry.click(); await settle();
+  assert.equal(ticks.length, 2); assert.strictEqual(ticks[0], ticks[1]); assert.equal(ticks[1].commandId, 'command-1');
+  assert.equal(retry.hidden, true); f.control.destroy();
 });
 test('fault group is hidden when the read fails or reports no faults, and unknown modes fall back to the id', async () => {
   for (const readFaults of [async () => ({ status: 'unavailable' }), async () => ok({ runId: 'run-a', faults: [] }), undefined]) {
