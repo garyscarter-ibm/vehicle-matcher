@@ -41,3 +41,15 @@ Entries are added as work merges.
   - FUCQ-223, Medium: layout at 320 px.
   - FUCQ-224, Low: the account says "journey saved" after an order, and no default principal can start a new order.
 - **Question:** should the default scenario get a fictional new-order principal, so presenters can show the new-order route? My recommendation is yes. It's a fixture change, which I'd route with FUCQ-224.
+- **22:00, FUCQ-220 (S) merged** at dd738202, scoped 981/1,003 with 0 failures. Order references now read `GCSP-000001`.
+- **22:05, FUCQ-73 merged** locally at 8e2b2982. It's pushed after the merged-base tests pass.
+- **FUCQ-145 is built.** FUCQ-187 had already fixed the cause, so this branch adds the reproduction, a regression test and keyboard evidence. It merges after FUCQ-73.
+- **FUCQ-217 (bug, not in MoSCoW, High) is built but only partly meets its target.** Merged outcomes are unchanged at 60, 150 and 300 employees. 300 employees now finishes in 103 s instead of running out of memory, and 150 takes 13.4 s instead of 82 s. 1,000 employees still doesn't finish inside 30 minutes, because of FUCQ-225.
+- **Recommendation built: FUCQ-225 (bug, not in MoSCoW, High), new.** Allocation and the hold service judged charging differently.
+  - The hold refused 399 of 511 plug-in attempts at 150 employees.
+  - I'm building the chain's recommendation: allocation judges charging the way the hold service does.
+  - Visible effect: for an employee with no charging answer, plug-in cars show as needing confirmation, the "suitable cars" count can fall, and follow-up can say no match.
+  - Reversing it means the hold service accepts the stored charging fact instead, which changes offers and comparison results.
+  - **For Gary:** confirm the direction.
+- **FUCQ-226 (bug, not in MoSCoW, Medium), new:** even with charging aligned, 1,000 employees takes 15 min and 3.9 GB. It's parked until after FUCQ-137/138, because the demo uses a stored, offline result.
+- **Recommendation built: FUCQ-224.** A fictional new-order principal is being added to the default scenario, so presenters can walk the new-order route. It's a fixture addition that doesn't change any existing principal.
