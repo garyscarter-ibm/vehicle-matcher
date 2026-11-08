@@ -127,3 +127,13 @@ test('a stale-run resume shows the restarted screen',async () => {
   node.querySelector('.gcsp-action-trigger').click();node.querySelector('[role="menuitem"]').click();
   await settle(node,(r) => r.textContent.includes('Demo restarted'));assertRestarted(node,reloads);assert.equal(resumes,1);
 });
+
+test('FUCQ-219: Review your brief hands the brief destination to the host; without a host it stays disabled',async () => {
+  const go=[];const node=root();
+  mount(node,{onNavigate:(to) => go.push(to),adapter:{loadAccount:async () => account,readActivity:async () => snapshot('no-match-one')}});
+  await settle(node,(r) => r.querySelector('.gcsp-activity-why'));
+  [...node.querySelectorAll('button')].find((b) => b.textContent==='Review your brief').click();assert.deepEqual(go,['brief']);
+  const bare=root();mount(bare,{adapter:{loadAccount:async () => account,readActivity:async () => snapshot('no-match-one')}});
+  await settle(bare,(r) => r.querySelector('.gcsp-activity-why'));
+  assert.equal([...bare.querySelectorAll('button')].find((b) => b.textContent==='Review your brief').disabled,true);
+});

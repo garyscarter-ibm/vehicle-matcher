@@ -4,9 +4,27 @@ import { svgIcon } from '../shell/portal-shell.js';
 import { activityTimeline } from '../kit/activity-timeline.js';
 import { actionMenu } from '../kit/action-menu.js';
 import { activityOffer } from './activity-offer.js';
-import { activityCopy as copy, activityEvents, searchLines } from './activity-copy.js';
+import { activityCopy as copy, activityEvents, searchLines, exclusionLines } from './activity-copy.js';
 
-export function activityBody({ result, onRetry, onPause, onResume, pending = false, offerDisplay, level = 1 } = {}) {
+let noteIds = 0;
+// Names the excluding essentials and offers two next steps; neither changes the brief.
+function nextSteps(lines, onReviewBrief) {
+  const box = el('div', 'gcsp-activity-why'); box.setAttribute('aria-live', 'polite');
+  box.append(...lines.map((line) => el('p', '', line)));
+  const actions = el('div', 'gcsp-activity-next'); const reviewable = typeof onReviewBrief === 'function';
+  const review = button({ label: copy.reviewBrief, variant: 'ghost', onClick: reviewable ? () => onReviewBrief() : undefined, disabled: !reviewable });
+  const keep = button({ label: copy.keepSearching, variant: 'ghost', onClick: () => {
+    const note = el('p', 'gcsp-activity-secondary', copy.keepNote); note.setAttribute('role', 'status');
+    keep.replaceWith(note); if (!reviewable) note.tabIndex = -1; (reviewable ? review : note).focus();
+  } });
+  if (!reviewable) {
+    const reason = el('span', 'gcsp-vh', copy.previewOnly); reason.id = `gcsp-activity-preview-${noteIds += 1}`;
+    review.setAttribute('aria-describedby', reason.id); actions.append(keep, review, reason);
+  } else actions.append(keep, review);
+  box.append(actions); return box;
+}
+
+export function activityBody({ result, onRetry, onPause, onResume, onReviewBrief, pending = false, offerDisplay, level = 1 } = {}) {
   const root = el('div', 'vm gcsp-activity'); root.destroy = () => {};
   const header = el('div', 'gcsp-activity-header');
   header.append(screenIntro({ title: copy.title, level, className: 'gcsp-activity-intro' })); root.append(header);
@@ -42,6 +60,9 @@ export function activityBody({ result, onRetry, onPause, onResume, pending = fal
   const lines = searchLines(value, paused);
   if (lines.length) { const checks = el('div', 'gcsp-activity-check-status'); checks.append(...lines.map((line) => el('p', '', line)));
     feed.querySelector('.gcsp-timeline-note').after(checks); }
+  const why = exclusionLines(value, paused);
+  if (why.length) { const checks = feed.querySelector('.gcsp-activity-check-status');
+    if (checks) checks.after(nextSteps(why, onReviewBrief)); else feed.append(nextSteps(why, onReviewBrief)); }
   root.append(feed);
   if (value.stateChangesEvidence?.status === 'incomplete') feed.append(el('p', 'gcsp-activity-secondary', 'Some activity could not be verified.'));
   return root;
