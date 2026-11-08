@@ -220,12 +220,22 @@ test('real FUCQ-71 producer: ManualOrderService manual and buddy selections prog
   assert.equal(start.source.operationType, 'selection-order'); assert.equal(start.source.operationId, manual.submitted.value.operationId);
   assert.equal(start.policyVersion, 'gcsp-policy-v1'); assert.equal(start.entitlementSlotId, 'slot-paula');
   assert.deepEqual([start.renewalAuthority, start.renewalId], ['missing', null], 'no renewal authority was supplied'); assert.deepEqual(start.source.approvalStages, ['HR approval', 'sales-manager approval', 'sent to ordering']);
+  // FUCQ-220: each order carries its own sequential reference through the lifecycle source.
+  assert.equal(start.source.orderReference, 'GCSP-000001');
+  assert.equal((await f.service.read(f.greg, { orderUuid: buddy.orderUuid })).value.source.orderReference, 'GCSP-000002');
   const a = await until(f, manual.orderUuid, (v) => v.outcome !== 'in-progress', 16);
   const b = await until(f, buddy.orderUuid, (v) => v.outcome !== 'in-progress', 16);
   assert.deepEqual([a.route, a.outcome, b.route, b.outcome], ['manual', 'sent-to-ordering', 'buddy', 'sent-to-ordering']);
+  assert.deepEqual([a.source.orderReference, b.source.orderReference], ['GCSP-000001', 'GCSP-000002']);
   assert.ok(a.stages.every((s) => s.state === 'approved' && s.providerReference));
   const acknowledged = await f.repository.query(f.greg, 'event_receipts', { consumerId: 'synthetic-ordering:v1' });
   assert.equal(acknowledged.value.length, 2, 'FUCQ-71 acknowledgement receipts stay untouched');
+});
+
+test('FUCQ-220: an order from before the reference existed reports a null reference and none is invented', async (t) => {
+  const f = await setup(t); const legacy = await f.seed(f.paula, { sourceType: 'cart' });
+  assert.equal((await f.service.read(f.greg, { orderUuid: legacy.orderUuid })).value.source.orderReference, null);
+  assert.equal((await until(f, legacy.orderUuid, (v) => v.outcome !== 'in-progress')).source.orderReference, null);
 });
 
 test('one failing order is recorded and skipped while another order advances, and the tick replays identically', async (t) => {

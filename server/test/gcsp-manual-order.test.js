@@ -19,11 +19,14 @@ const cmd = (commandId, value = {}) => ({ commandId, inputDigest: inputDigest(va
 const ref = (f, table, key) => ({ table, key: { runId: f.context.runId, ...key } });
 const termsValue = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'))
   .assumptions.find((row) => row.key === 'ordering.terms.v1').value;
-async function policyWith({ hr = true, terms = termsValue, missing = false } = {}) {
+async function policyWith({ hr = true, terms = termsValue, missing = false, reference } = {}) {
   const seed = JSON.parse(await readFile(new URL('../gcsp/policy/seed-v1.json', import.meta.url), 'utf8'));
   const metadata = { unit: 'versioned synthetic ordering contract', status: 'assumed', basis: 'Explicit test-only policy inputs, no deployed fallback.',
     source: 'server/test/gcsp-manual-order.test.js', sourceDate: '2026-11-05', policyVersion: seed.policyVersion, effectiveFrom: seed.effectiveFrom };
   seed.assumptions = seed.assumptions.filter((row) => !['ordering.terms.v1', 'ordering.approvalStages.v1'].includes(row.key));
+  // reference: undefined keeps the canonical entry, null removes it, any other value replaces it.
+  if (reference !== undefined) { seed.assumptions = seed.assumptions.filter((row) => row.key !== 'ordering.reference.v1');
+    if (reference !== null) seed.assumptions.push({ ...metadata, key: 'ordering.reference.v1', value: reference }); }
   if (!missing) seed.assumptions.push({ ...metadata, key: 'ordering.terms.v1', value: terms }, { ...metadata, key: 'ordering.approvalStages.v1',
     value: [...(hr ? ['HR approval'] : []), 'sales-manager approval', 'sent to ordering'] });
   return new PolicyService({ provider: { async loadVersions() { return [seed]; } } });
@@ -80,7 +83,7 @@ async function setup(options = {}) {
   } };
   f.adapter = options.adapter?.(f) ?? createSyntheticOrderingAdapter(f);
   f.converters = { [options.type ?? 'cart']: f.converter };
-  f.service = new ManualOrderService({ ...f, converters: f.converters });
+  f.service = new ManualOrderService({ ...f, repository: options.wrap?.(f.repository) ?? f.repository, converters: f.converters });
   assert.equal((await f.service.registerClockHandler()).status, 'ok');
   const terms = await f.service.readTerms(f.context); assert.equal(terms.status, 'ok', JSON.stringify(terms));
   f.input = { commandId: 'submit', source: { type: options.type ?? 'cart', holdId: 'hold', expectedHoldVersion: 1, expectedDraftVersion: 1 },
@@ -435,4 +438,88 @@ test('actual manual claims refusal inside conversion leaves no selection, histor
   assert.equal((await f.repository.read(f.context, ref(f, 'stock', { orderUuid }))).value.state, 'held');
   const corrected = await service.submit(f.context, { ...input, commandId: 'corrected' });
   assert.equal(corrected.status, 'ok', JSON.stringify(corrected)); assert.equal(corrected.value.order.orderNumber, '7654321');
+});
+
+const REFERENCE = /^GCSP-\d{6}$/;
+test('FUCQ-220: the order gets one server reference from policy, stored on the selection and the row, same on every repeat', async (t) => {
+  const f = await setup(); t.after(() => f.repository.close());
+  // A reference already used in this run is only a floor: the next one is the highest number plus one.
+  const prior = await f.repository.transaction(f.context, cmd('prior-order'), (tx) => tx.insert('pending_operations', { runId: f.context.runId,
+    operationId: 'other-order', operationType: 'selection-order', idempotencyKey: 'other-order', inputDigest: 'x', state: 'pending',
+    lastKnownState: 'allocation-pending', attempts: 0, orderReference: 'GCSP-000041', payload: {} }));
+  assert.equal(prior.status, 'ok', JSON.stringify(prior));
+  const first = await f.service.submit(f.context, f.input); assert.equal(first.status, 'ok', JSON.stringify(first));
+  assert.equal(first.value.orderReference, 'GCSP-000042');
+  assert.equal(first.value.selection.orderReference, 'GCSP-000042');
+  const row = (await f.repository.query(f.context, 'pending_operations', { operationType: 'selection-order', operationId: first.value.operationId })).value[0];
+  assert.equal(row.orderReference, 'GCSP-000042');
+  const receipt = (await f.repository.query(f.context, 'event_receipts', { eventType: 'selection-received' })).value[0];
+  assert.equal(receipt.outcome.value.selection.orderReference, 'GCSP-000042');
+  for (const again of [f.input, { ...f.input, commandId: 'retry' }]) assert.equal((await f.service.submit(f.context, again)).value.orderReference, 'GCSP-000042');
+  assert.equal((await f.service.readOrder(f.context)).value.orderReference, 'GCSP-000042');
+  assert.equal((await f.repository.query(f.context, 'pending_operations', { operationType: 'selection-order' })).value.filter((o) => o.operationId !== 'other-order').length, 1);
+  // Uniqueness is enforced in the repository; an absent reference on other rows never collides.
+  const clash = await f.repository.transaction(f.context, cmd('clash'), (tx) => tx.insert('pending_operations', { runId: f.context.runId,
+    operationId: 'clash', operationType: 'selection-order', idempotencyKey: 'clash', inputDigest: 'x', orderReference: 'GCSP-000042', payload: {} }));
+  assert.equal(clash.status, 'conflict');
+  const plain = await f.repository.transaction(f.context, cmd('plain'), (tx) => tx.insert('pending_operations', { runId: f.context.runId,
+    operationId: 'plain', operationType: 'other', idempotencyKey: 'plain', inputDigest: 'x', payload: {} }));
+  assert.equal(plain.status, 'ok', JSON.stringify(plain));
+});
+
+test('FUCQ-220: the first order of a run is GCSP-000001 and the policy sets the format', async (t) => {
+  const f = await setup({ reference: { schemaVersion: 1, prefix: 'ORD-', digits: 4, first: 7 } }); t.after(() => f.repository.close());
+  assert.equal((await f.service.submit(f.context, f.input)).value.orderReference, 'ORD-0007');
+  const canonical = await setup(); t.after(() => canonical.repository.close());
+  const submitted = await canonical.service.submit(canonical.context, canonical.input);
+  assert.equal(submitted.value.orderReference, 'GCSP-000001'); assert.match(submitted.value.orderReference, REFERENCE);
+});
+
+test('FUCQ-220: a missing or invalid reference policy fails closed and creates no order', async (t) => {
+  for (const reference of [null, { schemaVersion: 2, prefix: 'GCSP-', digits: 6, first: 1 }, { schemaVersion: 1, prefix: '', digits: 6, first: 1 },
+    { schemaVersion: 1, prefix: 'GCSP-', digits: 0, first: 1 }, { schemaVersion: 1, prefix: 'GCSP-', digits: 6, first: 0 }]) {
+    const f = await setup({ reference }); t.after(() => f.repository.close());
+    const refused = await f.service.submit(f.context, f.input);
+    assert.equal(refused.status, 'unavailable', JSON.stringify(reference));
+    assert.equal((await f.repository.query(f.context, 'pending_operations', { operationType: 'selection-order' })).value.length, 0);
+    assert.equal(f.allocateCalls, 0);
+  }
+});
+
+test('FUCQ-220: a lost response retried later, or after a restart, returns the same reference and one row', async (t) => {
+  // The submit transaction commits, then the caller is told it failed, as if the response never arrived.
+  let lose = true;
+  const wrap = (repository) => ({ ...repository, async transaction(context, command, work) {
+    const done = await repository.transaction(context, command, work);
+    if (lose && command.commandId.startsWith('ordering:submit:')) { lose = false; return result('unavailable', { reason: 'lost-response' }); }
+    return done; } });
+  const f = await setup({ wrap }); t.after(() => f.repository.close());
+  assert.equal((await f.service.submit(f.context, f.input)).status, 'unavailable');
+  const stored = await readOperation(f); assert.match(stored.orderReference, REFERENCE);
+  const retried = await f.service.submit(f.context, f.input);
+  assert.equal(retried.value.orderReference, stored.orderReference);
+  assert.equal((await f.repository.query(f.context, 'pending_operations', { operationType: 'selection-order' })).value.length, 1);
+  assert.equal((await f.repository.query(f.context, 'event_receipts', { eventType: 'selection-received' })).value.length, 1);
+  await f.repository.close(); assert.equal((await f.repository.open()).status, 'ok');
+  const boot = await createDemoRuntime({ repository: f.repository, policy: f.policy, environmentId: 'manual-order-test',
+    environmentKind: 'synthetic', policyAsOf: instant, commandId: 'reopen', sessionNow: () => instant });
+  const reopened = new ManualOrderService({ ...f, clock: boot.value.clock, converters: f.converters });
+  assert.equal((await reopened.registerClockHandler()).status, 'ok');
+  assert.equal((await reopened.readOrder(f.context)).value.orderReference, stored.orderReference);
+  assert.equal((await reopened.submit(f.context, f.input)).value.orderReference, stored.orderReference);
+});
+
+test('FUCQ-220: an order created before the reference existed projects null and invents none', async (t) => {
+  const f = await setup(); t.after(() => f.repository.close());
+  assert.equal((await f.service.submit(f.context, f.input)).status, 'ok');
+  const { operationId } = await readOperation(f);
+  const legacy = await f.repository.transaction(f.context, cmd('legacy'), async (tx) => {
+    const current = await tx.get(ref(f, 'pending_operations', { operationId }));
+    const { orderReference, ...selection } = current.value.payload.selection;
+    return tx.compareAndSwap(ref(f, 'pending_operations', { operationId: current.value.operationId }), current.value.version,
+      { orderReference: { __delete__: true }, payload: { ...current.value.payload, selection } });
+  });
+  assert.equal(legacy.status, 'ok', JSON.stringify(legacy));
+  const read = await f.service.readOrder(f.context);
+  assert.equal(read.value.orderReference, null); assert.equal(read.value.selection.orderReference, undefined);
 });

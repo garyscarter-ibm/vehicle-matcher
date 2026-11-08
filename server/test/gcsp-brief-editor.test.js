@@ -218,6 +218,23 @@ test('current base and draft versions reject stale requests and stale unmatched 
   assert.equal(stale.status, 'stale-version'); assert.equal(stale.action, 'refresh');
 });
 
+test('a draft already confirmed into an earlier version is consumed, not stale, after a later change', async (t) => {
+  const f = await setup(t); await draftSave(f);
+  await f.brief.confirm(f.context, { commandId: 'confirm', expectedBriefVersion: 0, expectedDraftVersion: 1 });
+  await f.repository.transaction(f.context, { commandId: 'decline', inputDigest: 'decline' }, (tx) => tx.insert('decisions', { runId: f.context.runId,
+    decisionId: 'decline', offerId: 'offer-old', employeeId: f.context.employeeId, decision: 'decline', versions: { brief: 1 } }));
+  const changed = await f.brief.changeAfterDecline(f.context, { commandId: 'change', decisionId: 'decline', expectedBriefVersion: 1,
+    change: { path: 'preferences.comfort.value', value: 55 } });
+  assert.equal(changed.status, 'ok', JSON.stringify(changed));
+  const read = await f.editor.readEditor(f.context);
+  assert.equal(read.status, 'ok', JSON.stringify(read));
+  assert.equal(read.value.provenance.initial, 'approved-brief'); assert.equal(read.value.initial.briefVersion, 2);
+  assert.equal(read.value.initial.brief.preferences.comfort.value, 55); assert.equal(read.value.selection, null);
+  const failing = createBriefEditorService({ ...f, brief: { readCurrent: (c) => f.brief.readCurrent(c), readDraft: (c) => f.brief.readDraft(c),
+    readHistory: async () => ({ status: 'unavailable' }) } });
+  assert.equal((await failing.readEditor(f.context)).status, 'unavailable');
+});
+
 test('forged authority, malformed typed inputs and accessors fail closed without repository effects', async (t) => {
   const f = await setup(t); const before = structuredClone(f.store.state);
   for (const key of ['employeeId', 'runId', 'context', 'knownFacts', 'policy', 'clock', 'cash', 'contribution', 'buddy']) {
