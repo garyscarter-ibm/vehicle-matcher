@@ -337,7 +337,7 @@ test('allocation and demand update after a release from a confirmed request', as
 
   // Greg requests 3, production confirms 2, Greg queues: confirmed with a date and nothing released.
   const view = await tracking();
-  assert.deepEqual(view.adapter.choices.map((c) => c.model), ['3 Series Saloon', '3 Series Touring', 'i5 Touring']);
+  assert.deepEqual(view.adapter.choices.map((c) => c.model), ['3 Series Saloon', '3 Series Touring', 'i5 Touring', '1 Series Sports Hatch']);
   const { request } = good(await runtime.supply.submit(greg, { commandId: 'orders-submit', model: '3 Series Touring', derivative: '320i',
     quantity: 3, expectedPolicyVersion: view.versions.policy, expectedStockVersion: view.versions.stock }));
   const { supply } = good(await runtime.supply.stepProduction(presenter, { commandId: 'orders-confirm', requestId: request.requestId,
