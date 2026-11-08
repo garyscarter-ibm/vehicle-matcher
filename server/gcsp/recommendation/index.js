@@ -161,7 +161,9 @@ async function evaluateRecommendation({ provider, policy, time }, context, reque
           ...(preview ? { preview: preview.metadata, brief: preview.original } : {}),
           state: !decisions.length ? 'no-stock' : ranked.length ? 'recommendations' : 'no-viable-stock', evaluatedAt: now,
           versions: { brief: briefVersion, facts: source.factsVersion, policy: allowance.policyVersion, stock: source.stockVersion, clock: clock.value.clockVersion },
-          decisions, recommendations: ranked.slice(0, config.displayLimit), eligibleCount: ranked.length } }));
+          // The brief gallery shows best fit first; stored evaluations keep provider order for allocation records.
+          decisions: preview ? [...ranked, ...decisions.filter((entry) => entry.gateStatus !== 'eligible')] : decisions,
+          recommendations: ranked.slice(0, config.displayLimit), eligibleCount: ranked.length } }));
       } catch { return unavailable('employee-source-invalid'); }
 }
 
