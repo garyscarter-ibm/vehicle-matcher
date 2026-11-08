@@ -160,9 +160,9 @@ test('missing policy, unsupported coverage and registry changes fail without pub
   const env = await setup({ seeds: [missing] }); const before = structuredClone(env.store.state);
   assert.notEqual((await env.generator.generateStock('run-a', 'fixture', missing.policyVersion)).status, 'ok');
   assert.deepEqual(env.store.state, before);
-  const plan = structuredClone(configurationPlan); plan.configurations = plan.configurations.filter((row) => row.colour !== 'Black');
+  const plan = structuredClone(configurationPlan); plan.configurations = plan.configurations.filter((row) => row.modelLineId !== 'fixture-b');
   const unsupported = await setup({ plan });
-  assert.notEqual((await unsupported.generator.generateStock('run-a', 'fixture', 'fixture-policy-v1')).status, 'ok');
+  assert.equal((await unsupported.generator.generateStock('run-a', 'fixture', 'fixture-policy-v1')).code, 'unsupported-configuration-coverage');
   assert.equal((await stock(unsupported.repository, 'run-a')).length, 0);
   const unavailable = await setup({ registryPort: { getConfiguration() { return { status: 'source-unavailable' }; } } });
   assert.notEqual((await unavailable.generator.generateStock('run-a', 'fixture', 'fixture-policy-v1')).status, 'ok');
@@ -354,8 +354,9 @@ test('seeded stock from the real seed and corpus is reproducible, seed-sensitive
   assert.equal(report.totalCars, rows.length);
   for (const model of report.models) {
     const aggregate = (await a.policy.getAssumption(`stock.aggregate.${model.modelLineId}`, { runId: 'run-a', asOf: at, policyVersion: a.policyVersion })).value;
-    assert.equal(aggregate.status, 'assumed'); assert.equal(model.sourceKind, 'assumed-aggregate');
-    assert.equal(Object.hasOwn(model.observed, 'sampleDate'), false); assert.equal(Object.hasOwn(model.observed, 'requestCount'), false);
+    assert.equal(aggregate.status, 'observed aggregate'); assert.equal(model.sourceKind, 'observed-aggregate');
+    assert.equal(model.observed.sampleDate, '2026-11-08'); assert.ok(model.observed.requestCount > 0);
+    assert.ok(model.coveredColourShare > 0 && model.coveredColourShare <= 1 && model.uncoveredColourCount >= 0);
     const own = rows.filter((row) => fact(row, 'modelLine') === a.plan.titles[model.modelLineId]);
     assert.equal(own.length, model.cars);
     for (const row of own) {
@@ -364,12 +365,33 @@ test('seeded stock from the real seed and corpus is reproducible, seed-sensitive
     }
     if (model.cars < 20) continue;
     assert.ok(Math.abs(model.actualShare - model.observedShare) <= 0.05);
-    for (const [colour, share] of Object.entries(model.observed.colourShares)) {
+    for (const [colour, share] of Object.entries(model.plannedColourShares)) {
       const actual = own.filter((row) => fact(row, 'colour') === colour).length / own.length;
       assert.ok(Math.abs(actual - share) <= 0.05, `${model.modelLineId} ${colour}`);
       assert.ok(Math.abs(model.colourShares[colour] - share) <= 0.05);
     }
   }
+});
+
+test('observed colours without a configuration are dropped, the rest renormalised and reported', async () => {
+  const seed = await policyFixture();
+  seed.assumptions.find((row) => row.key === 'stock.aggregate.fixture-a').value.colourShares = { White: 0.5, Black: 0.3, Red: 0.2 };
+  const env = await setup({ seeds: [seed] });
+  const result = await env.generator.generateStock('run-a', 'fixture', 'fixture-policy-v1');
+  assert.equal(result.status, 'ok', JSON.stringify(result));
+  const model = result.value.report.models.find((row) => row.modelLineId === 'fixture-a');
+  assert.deepEqual(Object.keys(model.plannedColourShares).sort(), ['Black', 'White']);
+  assert.ok(Math.abs(model.plannedColourShares.White - 0.625) < 1e-9 && Math.abs(model.plannedColourShares.Black - 0.375) < 1e-9);
+  assert.equal(model.coveredColourShare, 0.8); assert.equal(model.uncoveredColourCount, 1);
+  assert.equal(Object.hasOwn(model.colourShares, 'Red'), false);
+  for (const [colour, share] of Object.entries(model.plannedColourShares)) assert.ok(Math.abs(model.colourShares[colour] - share) <= 0.05);
+  const other = result.value.report.models.find((row) => row.modelLineId === 'fixture-b');
+  assert.equal(other.coveredColourShare, 1); assert.equal(other.uncoveredColourCount, 0);
+  const none = await policyFixture();
+  none.assumptions.find((row) => row.key === 'stock.aggregate.fixture-a').value.colourShares = { Red: 0.5, Green: 0.5 };
+  const refused = await setup({ seeds: [none] });
+  assert.equal((await refused.generator.generateStock('run-a', 'fixture', 'fixture-policy-v1')).code, 'unsupported-configuration-coverage');
+  assert.equal((await stock(refused.repository, 'run-a')).length, 0);
 });
 
 test('a retained-corpus assumed aggregate may not claim a sample, and fixtures cannot pose as assumed aggregates', async () => {
@@ -383,6 +405,21 @@ test('a retained-corpus assumed aggregate may not claim a sample, and fixtures c
   for (const row of claimed.assumptions.filter((entry) => entry.key.startsWith('stock.aggregate.'))) { delete row.value.sampleDate; delete row.value.requestCount; }
   const assumed = await setup({ seeds: [claimed], plan });
   assert.equal((await assumed.generator.generateStock('run-a', 'fixture', 'fixture-policy-v1')).status, 'ok');
+});
+
+test('a retained-corpus observed aggregate needs the observed aggregate status and sourceKind together', async () => {
+  const plan = { ...structuredClone(configurationPlan), kind: 'retained-corpus' };
+  const seed = await policyFixture();
+  const rows = seed.assumptions.filter((entry) => entry.key.startsWith('stock.aggregate.'));
+  for (const row of rows) row.value.sourceKind = 'observed-aggregate';
+  const mismatched = await setup({ seeds: [seed], plan });
+  assert.equal((await mismatched.generator.generateStock('run-a', 'fixture', 'fixture-policy-v1')).code, 'aggregate-provenance-mismatch');
+  for (const row of rows) row.status = 'observed aggregate';
+  const observed = await setup({ seeds: [seed], plan });
+  const result = await observed.generator.generateStock('run-a', 'fixture', 'fixture-policy-v1');
+  assert.equal(result.status, 'ok', JSON.stringify(result));
+  assert.ok(result.value.report.models.every((model) => model.sourceKind === 'observed-aggregate'));
+  assert.ok(result.value.report.policyProvenance.filter((row) => row.key.startsWith('stock.aggregate.')).every((row) => row.status === 'observed aggregate'));
 });
 
 // ---- Generated rows on the existing release path (FUCQ-92 service, pull port) ----

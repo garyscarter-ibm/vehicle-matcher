@@ -52,7 +52,7 @@ export function validateChangeSet(input) {
     }
     seen.add(JSON.stringify([change.table, change.key]));
     if (!['basis', 'source', 'sourceDate', 'status'].every((key) => text(change.patch[key]))) {
-      return publishInvalid('changes.provenance', 'Every changed entry requires basis, source, sourceDate and assumed/verified status.');
+      return publishInvalid('changes.provenance', 'Every changed entry requires basis, source, sourceDate and assumed, verified or observed aggregate status.');
     }
   }
   return null;
