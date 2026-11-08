@@ -32,8 +32,31 @@ export function mountBriefBody(main, adapters = {}) {
     const screen = runRestartedScreen({ reload: adapters.reload }); main.replaceChildren(screen);
     if (hadFocus) screen.querySelector('button')?.focus();
   }
+  function acceptedPage(editor) {
+    const { context, initial } = editor; const brief = initial.brief;
+    const page = el('div', 'vm gcsp-brief');
+    page.append(screenIntro({ title: 'Your buddy found your car', level: 1, lede: 'You accepted a car, so your brief can no longer be changed.' }));
+    const note = el('p', 'gcsp-note', 'This is your saved brief. It is read only.'); note.setAttribute('role', 'status');
+    const level = (v) => Number.isFinite(v) ? `${v} out of ${context.slider.maximum}` : 'Not set';
+    const prefs = Object.entries(context.preferences).filter(([key]) => brief.preferences[key]).map(([key, d]) => {
+      const p = brief.preferences[key];
+      const shown = d.type === 'slider' ? level(p.value) : SPEC_LABELS[p.value] || FUEL_SPEC[p.value] || (typeof p.value === 'string' ? titleCase(p.value) : p.value);
+      return { label: d.label, value: `${shown}, importance ${p.importance === context.slider.minimum ? "I don't mind" : level(p.importance)}` };
+    });
+    const answer = (question, e) => {
+      const v = e?.value;
+      if (v === null || v === undefined) return context.unconfirmedLabel;
+      if (same(v, question.no)) return 'No';
+      return Array.isArray(question.yes) && !Array.isArray(v) && question.yes.includes(v) ? `Yes, ${v === 'either' ? 'home or work' : v}` : 'Yes';
+    };
+    const needs = Object.entries(context.practicalQuestions).filter(([key]) => brief.essentials[key]).map(([key, q]) => ({ label: q.label, value: answer(q, brief.essentials[key]) }));
+    page.append(note, el('h2', null, 'What matters to you'), factList(prefs), el('h2', null, 'What your car needs to do'), factList(needs),
+      button({ label: 'See your order progress', href: '/gcsp-order-progress-live.html' }));
+    main.replaceChildren(page);
+  }
   function draw(editor) {
     if (!alive) return;
+    if (editor.selection?.state === 'accepted') { acceptedPage(editor); return; }
     const context = editor.context;
     try {
       const transport = Object.fromEntries(['preview', 'saveDraft', 'confirm'].map((key) => [key, (input) => adapters.transport[key](input, { signal: abort.signal })]));
