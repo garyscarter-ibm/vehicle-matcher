@@ -174,4 +174,6 @@ test('owned block sources have no inline handlers, unsafe execution or styleshee
   }
   const css = await readFile(new URL('gcsp-offer-followup.css', base), 'utf8');
   assert.doesNotMatch(css, /\.vm-(?:option|card|slider|btn|facts)/); assert.match(css, /max-width: 800px/);
+  // FUCQ-189: the question title sits inside the card padding rather than across its top border.
+  assert.match(css, /\.gcsp-followup-field > legend \{[^}]*float: left; width: 100%/);
 });
