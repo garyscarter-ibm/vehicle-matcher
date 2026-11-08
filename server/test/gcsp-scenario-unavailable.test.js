@@ -110,7 +110,7 @@ test('data unavailable: failed and stale pulls change nothing, read as unavailab
   // Any other scenario's reset starts with no synthetic fault.
   await resetIntoScenario(client, 'main-successful-journey', 'third-reset');
   const faults = route(await client.request('/api/gcsp/presenter/scenarios/faults')).faults;
-  assert.deepEqual(faults.map((row) => [row.adapter, row.mode]), [['stock', 'none']]);
+  assert.deepEqual(faults.map((row) => [row.adapter, row.mode]), [['stock', 'none'], ['ordering', 'none']]);
 });
 
 test('the synthetic stock fault is run-scoped and never alters an operational provider pull', async () => {
