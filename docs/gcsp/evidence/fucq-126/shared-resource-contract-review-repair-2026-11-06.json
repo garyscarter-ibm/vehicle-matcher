@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-06",
+  "kind": "Exact coordinator patch only; shared helper remains untouched",
+  "basePath": "_tools/test_resources.py",
+  "baseSha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+  "resultSha256": "fb6fa9130b4f379ac956178944afc30bc723f7243b6a36a54a5da8c6fe137ea5",
+  "resultBytes": 45463,
+  "patchPath": "docs/gcsp/evidence/fucq-126/shared-resource-contract-review-repair-2026-11-06.patch",
+  "patchSha256": "782e558285c4c5eaa6669b5a8a82194ae48dde9f7dda044a4026e560f75bd45e",
+  "requiredContract": 1,
+  "patchFormat": "Zero-context unified diff; require exact base hash and --unidiff-zero if using Git apply.",
+  "covers": [
+    "R1",
+    "R2",
+    "R3",
+    "R4 bounded wait",
+    "R7 helper open-file check"
+  ],
+  "validation": "Narrow follow-up: static text/hash reconstruction only; no generator/helper imports, AST/syntax execution, tests, probes or ledger reads.",
+  "remaining": [
+    "Coordinator review/adoption and shared caller compatibility validation",
+    "No helper behavior, signal, corrupt-ledger, process, lsof or cancellation checks executed",
+    "Legacy rows lacking new child-state evidence stay charged for explicit reconciliation",
+    "Existing generic run_process still has its separate launch-registration gap; this126 supervisor uses its own guard",
+    "Apply the helper rollout to all participating launchers; an old unpatched copy can still rewrite the common ledger"
+  ],
+  "applied": false,
+  "executed": false,
+  "previousReviewedResult": {
+    "resultSha256": "85a46c1db9390feaf733b96e4f8877306629247810070c64a8c108f960b4db39",
+    "resultBytes": 45006,
+    "patchSha256": "9e901954d31ce12eb71aef301622ebda5c7c0dc413dae51e89bdef315b00d3f2"
+  },
+  "absenceRule": "Explicit lstat; only FileNotFoundError plus successfully resolved directory parent can pass. All other errors, missing/symlink parents and existing roots retain the charge; owner/children/pending gates unchanged."
+}

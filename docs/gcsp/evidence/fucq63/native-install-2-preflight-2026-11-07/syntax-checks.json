@@ -1,0 +1,15 @@
+{
+  "scope": "static preparation only",
+  "pythonInMemoryCompile": 3,
+  "codePinsChecked": 4,
+  "inputPinsChecked": 5,
+  "aliasPinsChecked": 4,
+  "nativeOriginalCodePinsUnchanged": 167,
+  "dot11OriginalCodePinsUnchanged": 144,
+  "planSha256": "5453c8680cf2302bca7dfc9ba9491abcb1f3dcd973a3b07788daa38bfdc1c8a5",
+  "networkExecuted": false,
+  "installationInvoked": false,
+  "nativeAttempted": false,
+  "scratchAllocated": false,
+  "acceptance": false
+}

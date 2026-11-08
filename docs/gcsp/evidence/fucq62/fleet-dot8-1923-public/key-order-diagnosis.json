@@ -1,0 +1,22 @@
+{
+  "acceptance": false,
+  "cause": "Expected request keys were derived from sorted summary JSON with id then kind; runtime used kind then id. JSON.stringify preserves insertion order.",
+  "failedLogSha256": "7b2b4a2f1712dc5cd819b9623f3589edbb3f6bb0983ee6b5b6f342f5b3da7e48",
+  "nativeBugKey": "unverified; root owns independent backlog capture",
+  "networkReplayExecuted": false,
+  "offlineReproducedRuntimeOrderSha256": "eddd7b0020e53f028039de74494c3f4b495f0fa5486837fafb5578da02eca78c",
+  "offlineReproducedSummaryOrderSha256": "daa4913aa1e987416df546c38d48b6cc58340ce6c260f2d93d26c327948d7119",
+  "originalExpectedSha256": "daa4913aa1e987416df546c38d48b6cc58340ce6c260f2d93d26c327948d7119",
+  "originalFailedLog": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot8-1923-public/download/command.log",
+  "originalPlanSha256": "1ff235ad7ee2ea333d7a85aca0aad235b373629201af679f0d2ab803df04533e",
+  "originalProofHelperSha256": "4ebf509f9f3e175a6d5da22cb20dae58cd5c9fe38d518180de6100ad0499ecba",
+  "originalReviewedFilesUnchanged": true,
+  "publicDownloadReceiptSha256": "ce9e4100aecc4cdba613e612f2e3a0f24881dd3d4a683164c77e1aa0050a71da",
+  "rawAuditSha256": "3858b587698a18e55b3dd0eee8278cfd5349f14395138b8f7904587bd43a44f4",
+  "requestCount": 469,
+  "runtimeActualSha256": "eddd7b0020e53f028039de74494c3f4b495f0fa5486837fafb5578da02eca78c",
+  "sameLogicalFailureSet": true,
+  "schemaVersion": "fleet-dot8-request-key-diagnosis.v1",
+  "severity": "Medium",
+  "status": "root-cause-confirmed-offline"
+}

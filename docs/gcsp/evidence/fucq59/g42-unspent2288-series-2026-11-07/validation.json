@@ -1,0 +1,73 @@
+{
+  "scope": "scoped exact unspent2288 continuation preparation;zero source traffic",
+  "seriesPlanSha256": "e2b92e3f3f4444cd0731fa491603b266ecf2bf8ba75b26a115d94aa2468cf8b1",
+  "candidateManifestSha256": "9f989b80a3314d91f7fa3139e0a71c564a3a0d5a3519d0211a448fbf753efdfa",
+  "codePins": 43,
+  "sourcePins": 33,
+  "runtimePins": 2,
+  "templatePinsVerified": 286,
+  "indexPinsVerified": 2,
+  "parentAuditPinVerified": true,
+  "parentAuditSha256": "24a711eda891e6ac150b95b3fbd1aaf5761296d2a235091bf2a657e58a339ff0",
+  "base": {
+    "canonical": 2361,
+    "admittedSource": 2358,
+    "spent": 3164
+  },
+  "tests": {
+    "fail": 0,
+    "pass": 6,
+    "skipped": 0,
+    "tests": 6
+  },
+  "embeddedCopiedActualStrictChecks": {
+    "tests": 5,
+    "pass": 5,
+    "fail": 0,
+    "skipped": 0
+  },
+  "wallSeconds": 1.702117667,
+  "sampledPeakRssBytes": 325255168,
+  "removedScratchBytes": 6231903,
+  "identityUnchanged": true,
+  "allPinsVerified": true,
+  "resultPath": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-unspent2288/preparation/result.json",
+  "cleanupPath": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-unspent2288/preparation/cleanup.json",
+  "scratchAbsent": true,
+  "groupsAbsent": true,
+  "reservationAbsent": true,
+  "dependencyLinkAbsent": true,
+  "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/g42-unspent2288/preparation/ownership/9c82142bd34b4506bb58fc39cd399abe.json",
+  "liveOutputAndSpentMarkerAbsent": true,
+  "compatibilityException": null,
+  "leftovers": [],
+  "sourceGrant": false,
+  "newAdmissions": 0,
+  "capacityCredit": 0,
+  "acceptance": false,
+  "originalPhaseRemainsConsumed": true,
+  "originalSession60FailurePreserved": true,
+  "reusedEvidence": [
+    "original unchanged strict protocol and pilot evidence",
+    "first60source strict checks and independent494check parent audit",
+    "supplementary exact24actualevent union, no synthesized rows"
+  ],
+  "exclusions": [
+    "full suite: evidence-local suffix input/protocol, production unchanged",
+    "source traffic before separate exact release",
+    "production MediumBug repair",
+    "UI/publication/distribution acceptance"
+  ],
+  "agents": [
+    {
+      "name": "Charlie Dog",
+      "requestedModel": "gpt-6.1-sol",
+      "requestedEffort": "high",
+      "selectedModel": "gpt-6.1-sol",
+      "selectedEffort": "high",
+      "effectiveRuntimeVerified": false,
+      "fallback": null,
+      "descendants": 0
+    }
+  ]
+}

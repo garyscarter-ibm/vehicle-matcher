@@ -1,0 +1,456 @@
+{
+  "schemaVersion": "f70-first32-source-execution-plan.v1",
+  "id": "f70-1f7e-core03-20261107-once",
+  "status": "prepared-unspent; no traffic grant",
+  "codeCommit": "89576947f193bc63c1ec5f1cec0912a26953f85c",
+  "planDigest": "f67974fb557e447a29573a649bf60e115c7ff18bb933546a2878ff61de8ba556",
+  "priorIndexDigest": "044acde5615622abbfb11abc9a3ebac3c0b9bc1f1be9f3ac74086d8a0b6bae34",
+  "spentIndexDigest": "ca82a17b0c65e7f7a9b7ff12f9c3abe360b6f4c9e60fa50ca5f81ab39d32444a",
+  "sourceVersion": "f59-batch-20261107.v1",
+  "codePins": {
+    "scripts/gcsp/bmw-public-registration.mjs": "61d9d5283c6995a55556e767f9a722954becd8899c73c5bd784bb796d728c206",
+    "scripts/gcsp/bmw-selection-binding.mjs": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+    "scripts/gcsp/capture-bmw-selection.mjs": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+    "scripts/gcsp/collect-fleet.mjs": "76107aea09f14f6baaf32417f00f7acbc86d77413e18b8a01f289195d0d443bf",
+    "scripts/gcsp/collection-session.mjs": "ba4e5b1bf632cb05993fa0b0b4d24de7559f80baed1111999911a3e713ec6a8c",
+    "scripts/gcsp/public-bmw-source.mjs": "3a3172eb5b854784c44b08bcad28ead4f45393d362c026eb802fb643ce04276e",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "scripts/gcsp/bmw-source-qualification.mjs": "042340afc391eb04e8628d92def308c1ded5d682675205b75a2f2e2d4ea4b0b4",
+    "scripts/gcsp/settings-shape-report.mjs": "605f85e40ac1a997ca150754c522b62cf19c7f866415baca8f2a16f3a5bfbc1e",
+    "server/gcsp/repository/core.js": "a6a5ae5f9fe4fd9a9e2d31a4aa38cd99a2ab3a4015c5abefd9a0a229983ad1b0",
+    "server/gcsp/repository/schema.js": "7c3ad03892f66530d47b52b4a514a29fa5df97ed4e374f56d702f0d36023ed6a",
+    "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+    "server/gcsp/policy/file-provider.js": "3b2662d3ac93346f07b07399401835d7138f85c32ef65443a9685a6c370d64ad",
+    "server/gcsp/policy/seed-v1.json": "ab86586f417995e3fc95ddb9b3b609dd93ef1a8fb96999e9dbdb1375e263b775",
+    "server/vehicle-evidence/bmw-catalogue-adapter.js": "a7b55ea6e02944c820a78d18fd9efbf903769b9a835f4ad2a8b9de3e45ad1027",
+    "server/vehicle-evidence/bmw-catalogue-v2.js": "5d227400fb788e95a5dfef058b867a7ff241b9621740e9daa7ad135b080a6e56",
+    "_tools/test_resources.py": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py": "85554378ab33cc178e3ba600c60edaff91dfcbca940587323dbf518928e0c03f",
+    "server/test/gcsp-bmw-options-qualification.test.js": "f2788898e10027366df4fbd4dd1682385dc549c5867b32b2a1210c1aa493146e",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-core03-solver-2026-11-07/run-live.mjs": "4d81a45c6d433cde65c3771981b48fa29884ffdd09e28e9a4d1952377e5714c0",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-core03-solver-2026-11-07/supervise.py": "0730a4db72596f679cbc30c96c61d19b673503096ebbcffb6c4861849bdd618f",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-core03-solver-2026-11-07/reconcile-retained.py": "a3296be69327d13477e7b781c0cdefafbc89513bd6f97e0e125a12b0a89a17ec",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-core03-solver-2026-11-07/live-check.test.mjs": "7d8acaa2956f4e21840d86b77a98bd5106b0db5d43ad0d50f806693b885dbc0d",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-core03-solver-2026-11-07/retained-deliverables.json": "eb28d5ce9f172aedfa7bc9049c455d35f891d53d4149ec935f1975663b6e8757",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-core03-solver-2026-11-07/collection-plan.template.json": "1ce1edc3bf483082ce5169a474b3935b1f0cc9131f6cc26a89abc46729456a37",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-core-continuation-2026-11-07/prepare-core.py": "d94cb909cc38bec5929f1c5fb29f1c78e3dba3d525069c6b18fb12cc8cba7479",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-core-continuation-2026-11-07/continuation-plan.json": "0e0c765a53b1954fb47455ee691723bfc494f1a8a373a263b8aa10bcc690333d",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-core03-solver-2026-11-07/collection-plan.json": "1ce1edc3bf483082ce5169a474b3935b1f0cc9131f6cc26a89abc46729456a37",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-core03-solver-2026-11-07/prior-canonical-index.json": "e09c50e269ae43fc5fba5d42b2d78d4c13c9a76e2e63d14bbad359c7641b6fb2",
+    "docs/gcsp/evidence/fucq59/f70-1f7e-core03-solver-2026-11-07/spent-request-index.json": "82a394be773504ff7231e55949150e575046c2ac33074c6df9fac572af47588f"
+  },
+  "preparerSha256": "d94cb909cc38bec5929f1c5fb29f1c78e3dba3d525069c6b18fb12cc8cba7479",
+  "producerPins": {
+    "projectorSha256": "0a7f2306d482f315ffc997071c7daf381ee6d24d55225b279b666b8ed27f90b0",
+    "qualifierSha256": "304012f17841e970569ecda226ddccf870a000fb98be084d6401445f6b24f427",
+    "sessionSha256": "ba4e5b1bf632cb05993fa0b0b4d24de7559f80baed1111999911a3e713ec6a8c",
+    "policyVersion": "gcsp-policy-v1"
+  },
+  "snapshotVersion": "bmw-gb-1f7e-core03-2026-11-07.v2",
+  "attempts": 36,
+  "requestSequence": [
+    "page",
+    "settings",
+    "discover",
+    "options",
+    "solve x32"
+  ],
+  "optionsAllowance": 1,
+  "solverAllowance": 32,
+  "candidateAllowance": 32,
+  "decodedBytes": 8388608,
+  "responseBytes": 1048576,
+  "sourceDeadlineSeconds": 120,
+  "supervisorChildSeconds": 165,
+  "supervisorChunkSeconds": 180,
+  "forecast": {
+    "decodedBytes": 1048576,
+    "retainedBytes": 8388608,
+    "childRamBytes": 268435456,
+    "sourceSeconds": 45
+  },
+  "resources": {
+    "workers": 1,
+    "retries": 0,
+    "scratchBytes": 67108864,
+    "hostRamBytes": 536870912,
+    "childRamBytes": 469762048
+  },
+  "scratchRoot": "/tmp/vehicle-matcher-f58-63-20261106/f58/f70-1f7e-core03-solver",
+  "supervisorOutput": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/f70-1f7e-core03-solver",
+  "artifactDestination": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-1f7e-core03-solver-2026-11-07",
+  "checkpointFile": "collector-checkpoint.json",
+  "retainedPrimary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-1f7e-core03-solver-2026-11-07/collector-checkpoint.json",
+  "retainedDeliverables": {
+    "schemaVersion": "f70-first8-retained-deliverables.v1",
+    "primary": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-1f7e-core03-solver-2026-11-07/collector-checkpoint.json",
+    "disposable": false,
+    "retainOnInterruption": true,
+    "exportBeforeScratchCleanup": true,
+    "exporter": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq61/source-interruption-retention-2026-11-07/export_checkpoint.py",
+    "embeddedArtifacts": [
+      "batchEvidence",
+      "sourceCaptures",
+      "records",
+      "accepted",
+      "rejected",
+      "duplicates"
+    ],
+    "boundary": "Primary persists from first write outside scratch. Join child and use existing exporter before cleanup. Never credit missing callbacks or lost response bodies."
+  },
+  "oneShotMarker": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-1f7e-core03-solver-2026-11-07/execution-once.json",
+  "sourceCapacityCreditBeforeExecution": 0,
+  "acceptance": false,
+  "sourceGrantEnvironment": {
+    "F70_FIRST32_SOURCE_GRANT": "f70-1f7e-core03-20261107-once"
+  },
+  "commandAfterSeparateRelease": [
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/docs/gcsp/evidence/fucq59/f70-1f7e-core03-solver-2026-11-07/supervise.py",
+    "live"
+  ],
+  "actualSourceBasis": {
+    "finiteCoreContinuation": "docs/gcsp/evidence/fucq59/f70-1f7e-core-continuation-2026-11-07/continuation-plan.json",
+    "previousProof": "docs/gcsp/evidence/fucq59/f70-1f7e-core02-solver-2026-11-07/live-validation.json",
+    "previousProofSha256": "c2f05681e8faece7a057ef6e9108bf88c22311e3a310364be961a3b5ba9c237a",
+    "actualTypedBasis": {
+      "schemaVersion": "f70-first32-candidate-provenance.v1",
+      "actualOptionsPath": "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/options.json",
+      "actualOptionsSha256": "fab360cfec369b7ff19f3341e9bb6efb108a5d1bc70b1e657eea750ac67fe3ee",
+      "actualOptionsResponseSha256": "bad4ba4c52e3995380d13bd7a27a1390fa17e9b1be2cbd87d6c5093f5355cc89",
+      "actualOptionsObservedAt": "2026-11-07T01:58:32.085Z",
+      "fullContextPath": "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/tree.json",
+      "fullContextSha256": "13599fc81a0253e56d2bd078539e94bb69184b39e8b0f7b649f517d3ab181a9c",
+      "trimRelationshipsPath": "docs/gcsp/evidence/fucq59/f70-1f7e-options-qualification-2026-11-07/trim-relationships.json",
+      "trimRelationshipsSha256": "356a0e0d722038cec34061ba531c2485ae032f7c318c1fb8dfed6e660c831a5f",
+      "pools": {
+        "paint": [
+          "P0300",
+          "P0475",
+          "P0490",
+          "P0C31",
+          "P0C3N",
+          "P0C3Z",
+          "P0C4P",
+          "P0C4W",
+          "P0C56",
+          "P0C5A",
+          "P0C5Y",
+          "P0C68",
+          "P0C6R"
+        ],
+        "fabric": [
+          "FKTNL",
+          "FKUCX",
+          "FKUKP",
+          "FKUMY",
+          "FKUSW"
+        ],
+        "rim": [
+          "S01H0",
+          "S01H8",
+          "S03NA"
+        ]
+      },
+      "definitions": [
+        {
+          "code": "P0C6R",
+          "type": "paint",
+          "retainedPointer": "/report/candidates/0/definitions/1",
+          "sourcePointer": "/P0C6R"
+        },
+        {
+          "code": "P0490",
+          "type": "paint",
+          "retainedPointer": "/report/candidates/0/definitions/12",
+          "sourcePointer": "/P0490"
+        },
+        {
+          "code": "P0C5Y",
+          "type": "paint",
+          "retainedPointer": "/report/candidates/0/definitions/13",
+          "sourcePointer": "/P0C5Y"
+        },
+        {
+          "code": "P0C68",
+          "type": "paint",
+          "retainedPointer": "/report/candidates/0/definitions/15",
+          "sourcePointer": "/P0C68"
+        },
+        {
+          "code": "FKUMY",
+          "type": "fabric",
+          "retainedPointer": "/report/candidates/0/definitions/17",
+          "sourcePointer": "/FKUMY"
+        },
+        {
+          "code": "S033B",
+          "type": "package",
+          "retainedPointer": "/report/candidates/0/definitions/25",
+          "sourcePointer": "/S033B"
+        },
+        {
+          "code": "P0C5A",
+          "type": "paint",
+          "retainedPointer": "/report/candidates/0/definitions/27",
+          "sourcePointer": "/P0C5A"
+        },
+        {
+          "code": "P0C4W",
+          "type": "paint",
+          "retainedPointer": "/report/candidates/0/definitions/30",
+          "sourcePointer": "/P0C4W"
+        },
+        {
+          "code": "P0C56",
+          "type": "paint",
+          "retainedPointer": "/report/candidates/0/definitions/33",
+          "sourcePointer": "/P0C56"
+        },
+        {
+          "code": "P0C4P",
+          "type": "paint",
+          "retainedPointer": "/report/candidates/0/definitions/39",
+          "sourcePointer": "/P0C4P"
+        },
+        {
+          "code": "P0475",
+          "type": "paint",
+          "retainedPointer": "/report/candidates/0/definitions/43",
+          "sourcePointer": "/P0475"
+        },
+        {
+          "code": "P0C3Z",
+          "type": "paint",
+          "retainedPointer": "/report/candidates/0/definitions/47",
+          "sourcePointer": "/P0C3Z"
+        },
+        {
+          "code": "P0C3N",
+          "type": "paint",
+          "retainedPointer": "/report/candidates/0/definitions/60",
+          "sourcePointer": "/P0C3N"
+        },
+        {
+          "code": "FKUKP",
+          "type": "fabric",
+          "retainedPointer": "/report/candidates/0/definitions/64",
+          "sourcePointer": "/FKUKP"
+        },
+        {
+          "code": "P0C31",
+          "type": "paint",
+          "retainedPointer": "/report/candidates/0/definitions/85",
+          "sourcePointer": "/P0C31"
+        },
+        {
+          "code": "S01H8",
+          "type": "rim",
+          "retainedPointer": "/report/candidates/0/definitions/140",
+          "sourcePointer": "/S01H8"
+        },
+        {
+          "code": "FKUCX",
+          "type": "fabric",
+          "retainedPointer": "/report/candidates/0/definitions/159",
+          "sourcePointer": "/FKUCX"
+        },
+        {
+          "code": "S03NA",
+          "type": "rim",
+          "retainedPointer": "/report/candidates/0/definitions/163",
+          "sourcePointer": "/S03NA"
+        },
+        {
+          "code": "FKUSW",
+          "type": "fabric",
+          "retainedPointer": "/report/candidates/0/definitions/171",
+          "sourcePointer": "/FKUSW"
+        },
+        {
+          "code": "FKTNL",
+          "type": "fabric",
+          "retainedPointer": "/report/candidates/0/definitions/219",
+          "sourcePointer": "/FKTNL"
+        },
+        {
+          "code": "S01H0",
+          "type": "rim",
+          "retainedPointer": "/report/candidates/0/definitions/223",
+          "sourcePointer": "/S01H0"
+        },
+        {
+          "code": "P0300",
+          "type": "paint",
+          "retainedPointer": "/report/candidates/0/definitions/233",
+          "sourcePointer": "/P0300"
+        }
+      ],
+      "requestDigestExpression": "inputDigest({modelRegistration, request})",
+      "candidates": [
+        {
+          "candidateId": "candidate-000e533e828cefd2614aa826",
+          "requestDigest": "000e533e828cefd2614aa8261eac4b77aa9735c201556e8087bb943b5a3b3d30"
+        },
+        {
+          "candidateId": "candidate-0286093206de85017d937fd2",
+          "requestDigest": "0286093206de85017d937fd2161f4b6bae306f0732a4aef93a318817e4a90c26"
+        },
+        {
+          "candidateId": "candidate-02963a3b3b6499f6622220b0",
+          "requestDigest": "02963a3b3b6499f6622220b06aa81598a5d18f28165d31461531f298288c0f26"
+        },
+        {
+          "candidateId": "candidate-036444ff169d1627dd25a49e",
+          "requestDigest": "036444ff169d1627dd25a49e278c2e48840d217d0e90049d2b63123205a6223e"
+        },
+        {
+          "candidateId": "candidate-0546fdc105d351d947cb3f7a",
+          "requestDigest": "0546fdc105d351d947cb3f7ad298fdf0297078eb9bbb5d13fb41cdf757d2850a"
+        },
+        {
+          "candidateId": "candidate-089bf2c4dd43d22af1280a81",
+          "requestDigest": "089bf2c4dd43d22af1280a817da5904ba0ed11280c8afca8124e94e1815a9122"
+        },
+        {
+          "candidateId": "candidate-08a07165df30a8c79681020f",
+          "requestDigest": "08a07165df30a8c79681020fcce9d3b80750d012380b7ced6f9c32facc8879c4"
+        },
+        {
+          "candidateId": "candidate-0920b912a02cd003d1e0b3ef",
+          "requestDigest": "0920b912a02cd003d1e0b3ef195b2db396870d6fa13bfb7c9f5942ccd06c26ea"
+        },
+        {
+          "candidateId": "candidate-09881255d2a8a8004d0cd475",
+          "requestDigest": "09881255d2a8a8004d0cd4751de13f2e46acb4e822d4124a41ebd2e6ba8942c1"
+        },
+        {
+          "candidateId": "candidate-0a6e101c94b0b031dad9e869",
+          "requestDigest": "0a6e101c94b0b031dad9e8690ffff58101e708b7dc043a8490aa5ace05a81545"
+        },
+        {
+          "candidateId": "candidate-0a8cca67b69ff171112afa10",
+          "requestDigest": "0a8cca67b69ff171112afa10cdbb73a0513d45ea5aac6a442348bd9a091b5ead"
+        },
+        {
+          "candidateId": "candidate-0b773b51d81bd8025796f7dd",
+          "requestDigest": "0b773b51d81bd8025796f7dda4ee73c89a9cbfb3e781bb6d3f11519483834805"
+        },
+        {
+          "candidateId": "candidate-0b8b18f44e41fc10ac47464b",
+          "requestDigest": "0b8b18f44e41fc10ac47464b1bfa2c9f9f9c78dc13688cc89122837156b794d7"
+        },
+        {
+          "candidateId": "candidate-0c275c8eb88d40a0a4e56b19",
+          "requestDigest": "0c275c8eb88d40a0a4e56b1939b6af659d338dbdbb77bb9ccb044c42041c18a9"
+        },
+        {
+          "candidateId": "candidate-0f24f7740c65aa9d9916e7cc",
+          "requestDigest": "0f24f7740c65aa9d9916e7ccef3917fbcd55e24867fc3843fb8b11c2c6ffdd22"
+        },
+        {
+          "candidateId": "candidate-0f37d379ab6b89f3d4b3da89",
+          "requestDigest": "0f37d379ab6b89f3d4b3da89dd05c7f0890b18b5007db327e8f8de2f02b967a9"
+        },
+        {
+          "candidateId": "candidate-112911a1f4b47b45c786f0d2",
+          "requestDigest": "112911a1f4b47b45c786f0d25e19fac66951504c3aa8c025bd065cff426ae71f"
+        },
+        {
+          "candidateId": "candidate-11536d62e3e7c770f61d6fef",
+          "requestDigest": "11536d62e3e7c770f61d6fef5ac46649826019eac629966b90d65f8d94796193"
+        },
+        {
+          "candidateId": "candidate-1195248176b716959d8150ea",
+          "requestDigest": "1195248176b716959d8150eac0a2bd2e85bb4e448cd74f411ff6b18b5f69e303"
+        },
+        {
+          "candidateId": "candidate-1275e7475b0367500f6257b5",
+          "requestDigest": "1275e7475b0367500f6257b553bfb3d74bfc935f6cf35b36cf74a166e44a2f1a"
+        },
+        {
+          "candidateId": "candidate-1323a56216532e1fca212539",
+          "requestDigest": "1323a56216532e1fca212539b7f56b776f0413ddd482f98707e59f1dac6caafd"
+        },
+        {
+          "candidateId": "candidate-1500dade9e6de4d01ba0e8dd",
+          "requestDigest": "1500dade9e6de4d01ba0e8dd8fbdf13a86a0217b5ac7d0aeaaffeabf24a78fda"
+        },
+        {
+          "candidateId": "candidate-173f388e9c863aad3b651b9c",
+          "requestDigest": "173f388e9c863aad3b651b9ce4c710e54eca24da4c8dc3789a8c71cc2c7f7efb"
+        },
+        {
+          "candidateId": "candidate-1a40fd24925464d74cb7ecb2",
+          "requestDigest": "1a40fd24925464d74cb7ecb2953f2ebaab6fac7a335d2de0f54857188719b2fa"
+        },
+        {
+          "candidateId": "candidate-1ab63325015384e5f580cbc2",
+          "requestDigest": "1ab63325015384e5f580cbc26221da93a925b0833acaad3a67bf4f16c254b8a0"
+        },
+        {
+          "candidateId": "candidate-1b32dd9576f15bcdaf4b6472",
+          "requestDigest": "1b32dd9576f15bcdaf4b647211e0081bc3ed30e6cd9e751fbe47162be28991ca"
+        },
+        {
+          "candidateId": "candidate-1c1f820b18f55a6a67b66ff4",
+          "requestDigest": "1c1f820b18f55a6a67b66ff40312c6c3ff206fca4e5bddc07caa8fc6e304a117"
+        },
+        {
+          "candidateId": "candidate-1d4e42d0d95dcd8ec2888e0b",
+          "requestDigest": "1d4e42d0d95dcd8ec2888e0b00e5cac1cc4f4eb8ba21813678bf22a58b622c7b"
+        },
+        {
+          "candidateId": "candidate-2046d3f03e16a3487dfd4cc4",
+          "requestDigest": "2046d3f03e16a3487dfd4cc4161e64bff2f625d6999796501f1a99e25ef97a59"
+        },
+        {
+          "candidateId": "candidate-216106d64499670bc740a377",
+          "requestDigest": "216106d64499670bc740a37770ec6f7d16628733cff75d1409011f9a86ed53ee"
+        },
+        {
+          "candidateId": "candidate-21a59c6199313d606a4c9794",
+          "requestDigest": "21a59c6199313d606a4c97946d56a7aa71b79c8ce5e6d6ae846e257e7be5f23e"
+        },
+        {
+          "candidateId": "candidate-2213c845ff64ab30707edc26",
+          "requestDigest": "2213c845ff64ab30707edc268c8bf7c978ea4e3c79fee6aa2a062b36aae67303"
+        }
+      ],
+      "cumulativeIndexInputs": [
+        {
+          "commit": "82bbf9837fa12b46cc0dc22812880c4ca19f6dc9",
+          "path": "docs/gcsp/evidence/fucq59/f70-first8-solver-2026-11-07/final-canonical-index.json",
+          "sha256": "55f1a6259784e1b2b13a3f31a0bb6e501ca667814c87d8f8e5ab1456acb1d0ed",
+          "retainedCopy": "prior-canonical-index.json"
+        },
+        {
+          "commit": "82bbf9837fa12b46cc0dc22812880c4ca19f6dc9",
+          "path": "docs/gcsp/evidence/fucq59/f70-first8-solver-2026-11-07/final-spent-request-index.json",
+          "sha256": "11f9a06885ba6aa7a300d933fd05a841aa6d6b5b38deee831d109e82d4d14caf",
+          "retainedCopy": "spent-request-index.json"
+        }
+      ],
+      "priorCanonicalEntries": 352,
+      "priorAdmittedSourceConfigurations": 349,
+      "priorSpentSolverRequests": 415,
+      "coreRequestSpace": 195,
+      "selectedRequestCount": 32,
+      "ordering": "ascending exact modelRegistration/request digest; spent excluded before selection",
+      "boundary": "195 source-defined core combinations are candidate requests only. Constructibility, canonical uniqueness and admission require durable fresh actual solver evidence. No source traffic grant."
+    }
+  },
+  "stop": [
+    "access/rate/HTTP/shape/substitution/date/definition failure",
+    "resource or deadline ceiling",
+    "identity mismatch",
+    "checkpoint export or cleanup failure"
+  ],
+  "knownDefects": [
+    "FUCQ-151 Medium throughput; independently prioritised.",
+    "FUCQ-154 Medium fixed-scratch reconciliation; explicitly deferred, parent owns manual reconciliation if killed."
+  ],
+  "boundary": "Only durable constructible source captures that pass existing strict binding and cumulative canonical deduplication count. Unknown optional model facts remain unknown. No full-story, publication or runtime acceptance."
+}

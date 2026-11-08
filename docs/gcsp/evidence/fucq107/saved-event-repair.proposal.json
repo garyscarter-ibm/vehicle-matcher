@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "status": "proposal-awaiting-root-repair-review; not applied or executed",
+  "basedOn": "c536ab490fbed3d1bb96a0b6fa007cdc85d139a8",
+  "diagnosis": [
+    {
+      "failure": "question versions cannot cross a different completed decline",
+      "evidence": "scoped-service-attempt-1/output.log case5,line165",
+      "cause": "The second decision fixture changes decisionId/commandId but retains outcome.value.decisionId from the first decline. prepare() correctly returns decline-source-unavailable before token binding.",
+      "repair": "Set the new fixture outcome decisionId to its own actualdecisionId; keep stale-version assertion and all other acceptance assertions."
+    },
+    {
+      "failure": "two persisted quotes and the safe account port produce a comparison with explicit current inputs",
+      "evidence": "scoped-service-attempt-1/output.log case11,line276",
+      "cause": "savedProjection copies canonical BriefService eventId, whose brief:<employeeId>:<version> format embeds internal employeeId. Ready comparison otherwise passed current-inputs/unknowns/units/provenance/private-context checks.",
+      "repair": "Replace raw public eventId with explicitly named opaque receiptReference derived from the actual immutable canonical receipt primary key; retain eventType,briefVersion,occurredAt and internal raweventId. Keep privacy assertion; add deterministic reference/no eventId/privacy assertions to the existing save/replay/reload case."
+    }
+  ],
+  "publicDTO": {
+    "currentEventFields": [
+      "eventId",
+      "eventType",
+      "briefVersion",
+      "occurredAt"
+    ],
+    "proposedEventFields": [
+      "receiptReference",
+      "eventType",
+      "briefVersion",
+      "occurredAt"
+    ],
+    "receiptReferenceDerivation": "'brief-change:' + inputDigest({consumerId:'brief:changes',runId:event.runId,eventId:event.eventId})",
+    "semantics": "Stable public reference to actual recorded receipt. Not a new canonical event ID and not a capability. No repository writes, ID migration or alternate event store."
+  },
+  "callerImpact": {
+    "producer": "BriefService/brief:changes canonical rows and event IDs unchanged, read through existing internal references.",
+    "followupOutputs": [
+      "confirm.value.event",
+      "read.unavailable.savedChange.event",
+      "read.ready.savedChange.event"
+    ],
+    "http": "Descriptors forward owned service outputs; no event-coordinate input is accepted.",
+    "client": "Draft untracked blocks/gcsp/offer-followup/followup-controller.js saved() checks eventType and briefVersion, not eventId; accepts new explicitly named reference. Existing105/102 and first-offer modules consume no107save-event field.",
+    "test": "Only main gcsp-second-offer.test.js changes. All12case identities and existing acceptance assertions are preserved; add guards inside an existing case. Policy7pass code/input graph remains unchanged and distinct scoped evidence."
+  },
+  "paths": [
+    {
+      "path": "server/gcsp/offers/followup.js",
+      "currentSHA256": "527f0a50bbd44f1454a010ae2911f0e2aa91b6dc43cc12fdbe92c770da80cbea",
+      "proposedSHA256": "bdd9dc0c57e62a08b866b9e204bbbb17b148a0534b65c37be92d3d8d7e49d875"
+    },
+    {
+      "path": "server/test/gcsp-second-offer.test.js",
+      "currentSHA256": "bf65c4f140005ea69fe7cbe7650f93a88da53f3ec4469be204cfca88d73b430e",
+      "proposedSHA256": "f29ac7a1acc4243b0772d25846375b1332a2e1f12bc12b9b1fe0d9c24a2cd13f"
+    }
+  ],
+  "patch": "saved-event-repair.proposal.patch",
+  "execution": "No execution now. After root repair review, apply exact patch, commit/push/refreeze45row source/input/helper catalogue plus new reviewed loader/supervisor pins. Seek main12 scoped grant only;7policyPASS reusable by unchanged module/input/helper/dependency identity.",
+  "excluded": "No producer/schema/BriefService/102/103 edits, actual producer/browser/native/full-suite proof or allocator96."
+}

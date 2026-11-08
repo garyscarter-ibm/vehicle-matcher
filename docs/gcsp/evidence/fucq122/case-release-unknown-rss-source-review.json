@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "kind": "independent consequential SOURCE review; no runtime safety approval",
+  "observedAt": "2026-11-06T14:33:53.359496+00:00",
+  "runIdentity": "fucq122-unknown-rss-source-review-lego-batman",
+  "base": "df5491859db6a11c8913c32e28b09e715c04935f",
+  "branch": "dev/DEV-2026-11-04-084",
+  "result": "PASS \u2014 no blocking or major issues found.",
+  "agents": {
+    "name": "Lego Batman",
+    "taskName": "/root/lego_batman",
+    "namingSession": "01a1adbb-d057-7e13-a9dd-6556deee47dd",
+    "requested": {
+      "model": "gpt-6.1-sol",
+      "effort": "high"
+    },
+    "selectedByAuthoritativeTiers": {
+      "model": "gpt-6.1-sol",
+      "effort": "high"
+    },
+    "effectiveLaunchConfiguration": {
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "forkTurns": "none",
+      "basis": "Explicit model and reasoning_effort arguments accepted by collaboration.spawn_agent; no fallback. Reviewer confirms supplied requested/selected pair."
+    },
+    "independentServedModelAndEffortIntrospection": "not observable by reviewer; no claim of separate backend introspection",
+    "fallback": null,
+    "descendants": 0,
+    "titleToolConfirmed": true
+  },
+  "rawReview": {
+    "path": ".claude/results/fucq122-unknown-rss-source-review-lego-batman.md",
+    "bytes": 3307,
+    "sha256": "ee799bff78244c086cabe84f4bc6568898ec6b023b014ddea6c6fe08d10de4ec"
+  },
+  "exactReviewedPins": {
+    "case-release-bounds.py": {
+      "bytes": 55772,
+      "sha256": "3beef34a973e0436a05009e9bb0f83d906e16214a2c890577e9cef2c866daf15"
+    },
+    "case-release-resources.py": {
+      "bytes": 21543,
+      "sha256": "d09ee09afda2412a4a79d246856ce80ef6f35e9e25393520a7f4d5498d7da8be"
+    },
+    "case-release-supervisor.py": {
+      "bytes": 33416,
+      "sha256": "1c6f69119cffbbff1727866a7c96760707eb9e631badab9bb7713c5f8ae06210"
+    },
+    "case-release-admission.json": {
+      "bytes": 16835,
+      "sha256": "cc95560d7df8f80f18b96e8eb7e308d0127800b5a9c801809bc34ff665ce3012"
+    },
+    "case-release-source-plan.json": {
+      "bytes": 2485861,
+      "sha256": "e509ec368b0f5888e3623e9cb17f75af5f351653351a7c0d5b5979262f8d5d87"
+    },
+    "case-release-freeze-audit.json": {
+      "bytes": 7509,
+      "sha256": "5eabfc4f2dceaf6d2e7861c5d7d45ca462768fb4afca0e2e14b810b416a7c7be"
+    },
+    "case-release-unknown-rss-repair.md": {
+      "bytes": 7807,
+      "sha256": "9be15451b24eced7bb42c112869472a9be38f46e8bc12b735c495754a89e24ea"
+    }
+  },
+  "consumers": [
+    "process_rows including duplicate None diagnostics and same-snapshot time condition",
+    "Processes.observe/capture/absence and Captures",
+    "Aggregate selection and sum",
+    "ProcessTree.observe/register/proof/_stop_join/stop_join exception fallback",
+    "process_identity and supervisor binding",
+    "make_scratch and Finalizer",
+    "unchanged ledger owner/cleanup/release",
+    "supervisor final sealing"
+  ],
+  "refreeze": {
+    "nodes": 25,
+    "changedNodes": [
+      "case-release-bounds.py",
+      "case-release-resources.py",
+      "case-release-supervisor.py"
+    ],
+    "allNonNodeFieldsExact": true,
+    "allCurrentPhysicalNodeIdentitiesMatched": true,
+    "oldAdmissionAndAuditRetainedExactly": true,
+    "allManifestBoundHistoricalDocumentsExact": true,
+    "sourcePlanAndImmutableTestExact": true
+  },
+  "findings": [],
+  "resources": {
+    "selectedChecks": "read-only static source, diff and metadata/hash comparisons",
+    "targetImports": 0,
+    "targetExecution": 0,
+    "syntaxOrASTChecks": 0,
+    "fixturesRun": 0,
+    "c4CasesRun": 0,
+    "runtimeProbes": 0,
+    "ledgerContentAccess": false,
+    "ownedTestScratch": null,
+    "testAllocations": 0,
+    "testChildren": 0,
+    "fileWritesByReviewer": 0,
+    "cleanupScope": "No new test scratch or children existed; historical runtime artifacts were not reconciled or changed"
+  },
+  "limits": [
+    "source-only PASS",
+    "does not establish runtime safety, historical cleanup, visual acceptance or final story acceptance",
+    "reviewed source/admission unchanged by final evidence-only metadata update; candidate audit/note hashes above bind reviewer inputs"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "workflow-static-validation.v1",
+  "status": "passed",
+  "scope": "YAML parse, extracted bash syntax and exact timing-only diff against actual run commit; no runtime",
+  "workflowBeforeSha256": "f918b16ecd7aaa5c7d00cf4e0518300ab1d8a01c9f632036918af84fdc15d34d",
+  "workflowAfterSha256": "c4daf45e49ec149a8f2eb205101810fd62ed53eb554acbf918c3efa7023f4cc9",
+  "yamlParser": "macOS Ruby YAML.load_file",
+  "bashSyntax": "/bin/bash -n on extracted run body via stdin",
+  "gitDiffCheck": true,
+  "exactFourTimingChangesOnlyComparedWithActualRun": true,
+  "phaseCeilingsSumSeconds": 690,
+  "outerJobSeconds": 720,
+  "remote12MinuteException": "explicit root authorization preserved in result-and-adjustment.json",
+  "originalEvidencePinsUnchanged": true,
+  "localScratchAbsent": true,
+  "testsRun": 0,
+  "newRuntimeExecutions": 0,
+  "newSourceRequests": 0,
+  "newApplicationGETs": 0,
+  "newWorkflowDispatches": 0,
+  "visualReview": "No screen or user-visible behavior changed; timing-only CI validation requires no screenshots.",
+  "acceptance": false
+}

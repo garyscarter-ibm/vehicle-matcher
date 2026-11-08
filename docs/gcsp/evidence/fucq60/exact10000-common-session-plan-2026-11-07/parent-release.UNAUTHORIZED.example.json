@@ -1,0 +1,13 @@
+{
+  "authorized": false,
+  "phase": "collector-bridge",
+  "planSha256": "27452f15da2cc3900832815efb811387a982e7197a0d4bcfa67694b10e6cddcc",
+  "codeIdentity": "2395d383cd8d075377b79d5b6c072d3cb56c5171c653722c78a68c4eb941eaf2",
+  "selectionManifestSha256": "216359c111a5169d15a98de1c476a5c62714a3b3a7ee71431c325a45c90f096f",
+  "selectedEntriesSha256": "ce38c29af728d86db6fbfa20c3e8ea53a3a98964c07421b674870fea7967aaca",
+  "sourceCalls": 0,
+  "networkCalls": 0,
+  "acceptance": false,
+  "priorReceiptPins": [],
+  "warning": "Unauthorized example only; parent creates exact reviewed release outside packet."
+}

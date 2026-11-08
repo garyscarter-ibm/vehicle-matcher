@@ -1,0 +1,45 @@
+{
+  "status": "ordinary-dot7-published-known-consumer-limitation",
+  "releaseId": "86ec3769dd55631007974869264f6d8a25671d9cf041f715e107b1435c297f4f",
+  "previousManifestDigest": "421ccd4ec6377e7e97d61f9017d76643ddbeaa76c2ebd5e4cf7f1d88d48a039d",
+  "counts": {
+    "configurations": 1134,
+    "distinctConfigurations": 1134,
+    "images": 2,
+    "qualifyingCompleteDistinctSourceConfigurations": 1133,
+    "sourceConfigurations": 1133,
+    "vinMappings": 1
+  },
+  "oldVersionFilesRehashed": 34,
+  "oldHistoryConfigurationsUnchanged": 870,
+  "oldHistoryIdentitiesUnchanged": 1,
+  "oldHistoryDatasetsUnchanged": 7,
+  "addedConfigurations": 264,
+  "addedDatasets": 1,
+  "allPublicCorpusAssetBytesIdentical": true,
+  "idempotentRepeat": true,
+  "coldRepresentativeImages": 2,
+  "egress": {
+    "control": "blocked",
+    "calls": 0
+  },
+  "publicEvidence": {
+    "exactAnonymousAssetsAndColdRestore": true,
+    "completePublicProof": false,
+    "firstParityFailure": "unregistered-source",
+    "retryRestoreFailure": "artifact-release-failed",
+    "cause": "unestablished"
+  },
+  "offline1135DtoAndHttpProofReused": true,
+  "offlineChangedSourceAndImageRollbackReused": true,
+  "linuxPublicBuildAndActualDeploymentProof": "pending",
+  "configuredConsumer": {
+    "passed": 1133,
+    "failed": 2,
+    "severity": "Medium",
+    "acceptanceWaiver": false
+  },
+  "ordinaryStore": "/Users/usget/Claude/vehicle-matcher/server/data/gcsp/vehicle-evidence/fleet-source.v1",
+  "pushOrDeployExecuted": false,
+  "acceptance": false
+}

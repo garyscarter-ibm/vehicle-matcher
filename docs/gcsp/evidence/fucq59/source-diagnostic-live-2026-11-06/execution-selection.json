@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "f59-parent-execution-selection.v1",
+  "executable": true,
+  "qualificationDate": "2026-11-06",
+  "authority": "ACTIVE explicit human resume + F58 public read-only source/pilot/retention authorisation; one bounded engineering allocation; no renewed approval required",
+  "producerRoot": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032",
+  "producerCommit": "0937991c1335b2b1bfe9b5ea62a949655e382097",
+  "remoteVerifiedCommit": "0937991c1335b2b1bfe9b5ea62a949655e382097",
+  "codeTestIdentity": "19ac7ff91412b993630659ae1d01f77a1b4b682b5418af9d6ca241e85f2a4b18",
+  "supervisorSha256": "2a109f4c9fa453a675458c45563a8f384dc387c5e120cd1dc0aa2f19b43b8cce",
+  "fileHashes": {
+    "diagnostic-plan.json": "b7b37c394a06e7e9d42cd13aca2cc852c095e11802c8fb7d55ba599925142631",
+    "run-live.mjs": "5cb5adafd7d1826fc5a953984863c21aca499a402b8f7e5b61521905018e87f7",
+    "execution-handoff.json": "cd404f42058d3e40158c1657b6060356836d47ea0ad287ff8fdb2c40b0e54889"
+  },
+  "reviews": {
+    "code": {
+      "verdict": "passed",
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/pass-1255/runner-code-round1.json",
+      "sha256": "12dbc49e939b6f79afb19ba4bfb7135c70a8828f1ff63973fa343795555d836d"
+    },
+    "security": {
+      "verdict": "passed",
+      "path": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/pass-1255/runner-security-round1.json",
+      "sha256": "fb283380d46579c64e7c21e6a1879a464316ed606d1ea2818cd040bc7311f72b"
+    }
+  },
+  "resourceToolSha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+  "gitToolSha256": "ef8db3e5aab5494c6cdd2b6f7d272b325fc15436348cb7724a9f47b37fbc019a",
+  "nodeRuntime": "/opt/homebrew/Cellar/node/26.7.0/bin/node",
+  "runtimeSha256": "1ef99ea25fe70c9b67e7efe768ef8ee22148d3cabc703db6131b57aeb617d040",
+  "resources": {
+    "workers": 1,
+    "expectedSeconds": 45,
+    "expectedScratchBytes": 2097152,
+    "expectedRssBytes": 201326592,
+    "maximumSeconds": 120,
+    "scratchBytes": 67108864,
+    "rssBytes": 402653184,
+    "logBytes": 1048576
+  },
+  "network": {
+    "totalGetAttempts": 4,
+    "perOperation": 1,
+    "concurrency": 1,
+    "retries": 0,
+    "sourceBytes": 2097152,
+    "responseBytes": 1048576,
+    "requestTimeoutMs": 10000,
+    "persistedDeadlineMs": 45000,
+    "solver": 0,
+    "sourceWrites": 0,
+    "imageRequests": 0,
+    "browser": 0,
+    "sql": 0,
+    "credentialLookups": 0
+  },
+  "finalizers": "trusted one-invocation supervisor; ownership manifest before scratch creation; reservation; owned group stop/join; scratch identity cleanup; retained consumed marker; safe final receipt even on handled cancellation",
+  "qualification": "observation-only; admissionfalse; accepted0; mandatory actual root/pointer/definition review before later classification"
+}

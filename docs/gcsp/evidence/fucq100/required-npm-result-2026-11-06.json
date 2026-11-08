@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-100",
+  "recordedAt": "2026-11-06T16:34:06.256401+00:00",
+  "kind": "Required npm test; failed, not an acceptance pass",
+  "testedCommit": "ef777c365b1d9d9e9aeed20bba5a0a6a2eb2decd",
+  "testedTree": "8a8edc30e148715c48e3041fc2da9dce47314118",
+  "integratedBase": "ecce0b34ffcce2c978d000c76995693ba78a52d4",
+  "command": "npm test",
+  "script": "node --test --test-concurrency=1 server/test/**/*.test.js",
+  "oneWorker": true,
+  "attempts": 1,
+  "nodeVersion": "v26.5.0",
+  "reporter": "Node default spec; original output is retained locally as raw.tap; counts are the six original Node totals",
+  "counts": {
+    "cancelled": 0,
+    "fail": 63,
+    "pass": 564,
+    "skipped": 0,
+    "tests": 627,
+    "todo": 0
+  },
+  "commandExit": 1,
+  "supervisorExit": 1,
+  "workerSeconds": 25.523118083,
+  "wholeSeconds": 28.949997791999998,
+  "peakSampledGroupAndSupervisorRssBytes": 405864448,
+  "peakCombinedChargedDiskBytes": 9525504,
+  "limits": {
+    "aggregateRssBytes": 2147483648,
+    "combinedDiskBytes": 268435456,
+    "logBytes": 4194304,
+    "metadataBytes": 1048576,
+    "totalSeconds": 660,
+    "workSeconds": 600
+  },
+  "sourceUnchanged": true,
+  "dependenciesUnchanged": true,
+  "executionIdentity": {
+    "code": "9555ffeb6c3ea14229f414a534f0f775856979fb5f7197c26d0036b6f1091428",
+    "environment": "8dc86332772203726a868da186dd7dc9589a4dc4ae9f729f3331db44a9998d40",
+    "inputs": {},
+    "interpreter": [
+      "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/bin/python3.9",
+      "3.9.6 (default, Nov 11 2024, 03:15:38) \n[Clang 16.0.0 (clang-1600.0.26.6)]"
+    ],
+    "platform": "macOS-26.5.1-arm64-arm-64bit",
+    "scope": "full",
+    "selected": [
+      "npm test"
+    ],
+    "settings": "d5f5836572255f12f18f45c5b5f5b4d4ec5726b86f21c0bcebd04c88175ac197",
+    "variant": "default",
+    "version": 1
+  },
+  "failureClassification": {
+    "missingPg": {
+      "count": 57,
+      "fileLoadFailures": 56,
+      "namedCaseFailures": 1,
+      "message": "ERR_MODULE_NOT_FOUND: Cannot find package 'pg'",
+      "meaning": "Those file bodies/named integration did not validate their behavior. Shared installed pg inventory remained unchanged; normal Node resolution from this worktree did not find it."
+    },
+    "assertionFailures": [
+      {
+        "file": "server/test/gcsp-greg-dashboard.test.js",
+        "line": 179,
+        "title": "refused shows no figures, no Retry and hides the reserved regions",
+        "actual": "1",
+        "expected": "0"
+      },
+      {
+        "file": "server/test/gcsp-greg-dashboard.test.js",
+        "line": 377,
+        "title": "stylesheets: every selector starts with .gcsp, tokens only, no side stripe, reduced motion honoured",
+        "actual": "CSS scanner treats publish @import text plus .gcsp selector as an unscoped selector",
+        "expected": "no unscoped selectors"
+      },
+      {
+        "file": "server/test/gcsp-greg-publish-render.test.js",
+        "line": 90,
+        "title": "an invalid hidden price row is selected and focused from the error summary",
+        "actual": "price:gallery-cost",
+        "expected": "price:second"
+      },
+      {
+        "file": "server/test/gcsp-greg-publish-render.test.js",
+        "line": 98,
+        "title": "each invalid price summary link selects its own row while retaining the real native focus target",
+        "actual": "price:gallery-cost",
+        "expected": "price:second"
+      },
+      {
+        "file": "server/test/gcsp-shell.test.js",
+        "line": 729,
+        "title": "harness page loads the harness module and the body stylesheet; the element never reads location",
+        "actual": "blocks/gcsp/offer/entry.js uses globalThis.location and globalThis.history",
+        "expected": "doesNotMatch location/history source pattern"
+      },
+      {
+        "file": "server/test/launcher-package.test.js",
+        "line": 48,
+        "title": "a future offer block and its own nested direct page are discovered without assembler edits",
+        "actual": "gcsp-offer.html",
+        "expected": "blocks/gcsp/offer/preview.html"
+      }
+    ],
+    "diagnosis": "Six assertion mismatches are observed. Product-vs-fixture/scanner cause and severity remain untriaged; this lane did not downgrade, repair or waive them."
+  },
+  "cleanup": {
+    "scratchAbsent": true,
+    "ownedProcessesAbsent": true,
+    "ownedGroupsAbsent": true,
+    "launcherPidAbsent": true,
+    "reservationAbsent": true,
+    "finalizerOpenFileProof": true,
+    "cleanupMutation": false
+  },
+  "cleanupEvidence": "Lane postrun read-only collection; root independent collection still separate. Original manifest states direct handles joined, groups/processes/open files absent before exact scratch removal and exact-row release. Locked raw ledger had zero rows at postrun collection.",
+  "records": {
+    "directory": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/required-npm-61c9513623224f00b24dee01083e29b0",
+    "receipt": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/required-npm-61c9513623224f00b24dee01083e29b0/receipt.json",
+      "sha256": "6369dc18b4e4624cc26434b9c36504ffdd5a5a3549c108a0ce0d189c47618bbd"
+    },
+    "originalOutput": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/required-npm-61c9513623224f00b24dee01083e29b0/raw.tap",
+      "sha256": "3cf196c668f168ce88c1c40526bec41c3b30bd78d6380ff59ce4931a8f505ba8"
+    },
+    "ownership": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/required-npm-61c9513623224f00b24dee01083e29b0/ownership/67286d809a8b4caf9ec486da07e2694b.json",
+      "sha256": "a73541cb39fb42949b129c24d379b4123ee39efcb93527f28e67cde6538215d8"
+    },
+    "laneCollection": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq100/required-npm-61c9513623224f00b24dee01083e29b0/lane-collection.json",
+      "sha256": "4da265bbd73c5e6811e59f13efe87ce96128268c86ab70b12b50a25b441b7691"
+    }
+  },
+  "grant": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/coordination/fucq100-required-validation-amendment-20261106.json",
+    "sha256": "4ed7c28abf547d7da3bd4e8db3d633031386aebb1788f54a4731a217801760d7",
+    "state": "single npm test attempt consumed; no retry authorised"
+  },
+  "adapter": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/coordination/fucq100-required-npm-adapter-20261106.py",
+    "sha256": "a8432c6c47921fd0c224a6525be3354f76f298e014466dbeaab5c51ff2a6aaa8",
+    "tracked": false,
+    "basis": "Existing test_stamp.run_command/run_process plus reused StrictBudget and small local ALL-row/final-cleanup adapter; no shared framework changes"
+  },
+  "measurementBoundary": "Normal polling supervision under the amended grant; transient synchronous native children in the owned group were not individually instrumented. Samples do not measure every millisecond RSS peak.",
+  "accepted": false,
+  "rerun": false,
+  "productRepairs": false,
+  "newJiraWrites": false,
+  "remaining": "Required full suite is failing; Resume7/current backend behavior was not validated where import failed; rendered desktop/narrow/keyboard acceptance remains open. Root owns separate defect intake and merge decision."
+}

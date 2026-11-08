@@ -1,0 +1,143 @@
+{
+  "date": "2026-11-06",
+  "state": "HOLD-source-only-cleanup-repair-unexecuted",
+  "claim": "DEV-2026-11-04-096",
+  "branch": "dev/DEV-2026-11-04-096",
+  "authoringBase": "ee405af10c5c1459cdcbe8591652e2a93c57a820",
+  "review": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/results/claude-assist-fucq126-2026-11-06-02.md",
+    "sha256": "bcaddfcfbd0b9d3430d9c8f770b376a70115b87edfec94436f5735b541a70a08",
+    "reviewedRevision": "ee405af10c5c1459cdcbe8591652e2a93c57a820",
+    "reviewer": "Granny",
+    "model": "claude-opus-5-5",
+    "reportedEffort": "LOW",
+    "verdict": "HOLD",
+    "blockingFinding": "N1 MAJOR",
+    "replacementIndependentlyReviewed": false
+  },
+  "candidate": {
+    "path": "docs/gcsp/evidence/fucq-126/http-physical-candidate-cleanup-repair-2026-11-06.json",
+    "sha256": "79252c795eb2bdffcfeac429183587b6c9f831ff2f11270c823e8e2300555071",
+    "counts": {
+      "sourceDataHelperReferenceFiles": 138,
+      "installedDependencyFiles": 1975,
+      "allFiles": 2113,
+      "distinctResolvedFiles": 2111,
+      "literalEdges": 267,
+      "classifiedSites": 29
+    },
+    "method": {
+      "method": "Manual text/hash/JSON metadata refresh; no collector or preparation script executed",
+      "authoringBase": "ee405af10c5c1459cdcbe8591652e2a93c57a820",
+      "previousCandidate": "docs/gcsp/evidence/fucq-126/http-physical-candidate-isolated-2026-11-06.json",
+      "previousCandidateSha256": "e5070237d174a7bf5f4ffe547b881f00d1808c11681c6d831f3e00a9c8368fb9",
+      "newOrChangedPins": [
+        "docs/gcsp/evidence/fucq-126/strict-http-resources.py",
+        "docs/gcsp/evidence/fucq-126/http-release-supervisor.py",
+        "docs/gcsp/evidence/fucq-126/prepare-reviewed-http-candidate.py"
+      ],
+      "retiredExecutionInputs": [],
+      "dependencyPinsCarriedForward": 1975,
+      "dependencyPinsRevalidated": false,
+      "graphAndReadClassification": "Exact previous 267 product edges,29 static sites and six names carried forward unchanged",
+      "preparationHelperExecuted": false,
+      "reproducibleByReferencePreparation": false,
+      "sharedPatchAdopted": false,
+      "executionAuthorized": false
+    },
+    "preparationSource": {
+      "path": "docs/gcsp/evidence/fucq-126/prepare-reviewed-http-candidate.py",
+      "role": "reference-only full recollection outline; not a reproducer or author of this manual candidate",
+      "executed": false,
+      "reproducesThisCandidate": false,
+      "destinationIfSeparatelyAdmitted": "docs/gcsp/evidence/fucq-126/http-physical-candidate-reference-recollection-2026-11-06.json"
+    }
+  },
+  "sources": [
+    {
+      "path": ".product-map/work.json",
+      "sha256": "d263528a5eb0ec712bd2965b2b4712793a70aa6c13592faf25969659fe995aca",
+      "bytes": 52396
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-126/strict-http-resources.py",
+      "sha256": "e0c63effd13622961d32606954870185daf64e056806328225e600cc58784858",
+      "bytes": 44761
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-126/http-release-supervisor.py",
+      "sha256": "18758a02e4dfe68404e0739e18df8e53a28717bc7e43dff29c003e3025f0b554",
+      "bytes": 23970
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-126/prepare-reviewed-http-candidate.py",
+      "sha256": "c93e2238c1c6c6f52a271dea6e24a4e9b4d8204b89cce170653265d4e807c1c6",
+      "bytes": 18824
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-126/http-physical-candidate-cleanup-repair-2026-11-06.json",
+      "sha256": "79252c795eb2bdffcfeac429183587b6c9f831ff2f11270c823e8e2300555071",
+      "bytes": 910818
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-126/http-release-harness-authoring-2026-11-06.json",
+      "sha256": "17cae8fbb85107e4c0079cf9e12de3f5bd10b32a97e9f76e1a5e872f7953651d",
+      "bytes": 16850
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-126/http-isolated-resource-authoring-2026-11-06.md",
+      "sha256": "b0e473b531700ebd5aafa9e5dc76469537bda785f45fd7e6e4e1f43d859aebdd",
+      "bytes": 8492
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-126/http-cleanup-authoring-repair-2026-11-06.md",
+      "sha256": "58a53a1fd8f15880d4cda7e3e00d7e6f23adb86abc3cb971c9aeec8be21ea121",
+      "bytes": 6913
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq-126/product-map-input.json",
+      "sha256": "f00b2e28ac7ccf8ae8fa7f159c5d3ddf5804799839c8c72afbe8261d76facff4",
+      "bytes": 4449
+    }
+  ],
+  "repairs": {
+    "N1": "768-work/1024-total allowance with256 cleanup reserve; monotone cleanup transition,0.5s work sampling, actual-handle anchored group stop before queries/waits",
+    "N2": "First identify/register/body/stop/absence failure retained; full-charge and guard errors separately recorded",
+    "N3": "Kill attempt precedes deadline-dependent wait; zero-time wait possible on expiry; no unsafe stored-PGID authority",
+    "N4": "Manual source-pin refresh accurately labeled; pinned preparation source explicitly reference-only and nonreproducing, not executed",
+    "N5": "OPEN/unverified: actual ps size/latency must be measured only at later explicit admission; future journal records numeric counts/time and locale values/hashes"
+  },
+  "groupAuthority": "Only main-thread default-SIGCHLD own child with WNOHANG-zero unreaped proof and fresh getpgid==getsid==child PID can authorize group SIGKILL. Already-reaped/unknown/changed-group targets never authorize a numeric group kill; retain uncertainty. Actual Popen direct join remains mandatory.",
+  "staticChecks": [
+    "Changed wrapper/supervisor/preparation hashes match exact three changed candidate pins; no added/removed source/dependency rows",
+    "All other candidate pins/counts, six names, product graph/read sites, memberships/link/Node records, resource limits and admission flags carried forward unchanged as metadata",
+    "Budget class text byte-identical to ee405af; raw ALL-row seven-key/no-pruning/foreign-readback contract unchanged",
+    "Unchanged helper, cancellation guard, harness and transport hashes match prior pins",
+    "Source reading and literal text checks of phase reserve, throttle, first-failure retention, group authority and bounded wait; no import/AST/syntax execution",
+    "Named JSON/whitespace and Git diff; only owned map integration evidence/time changed, all states, source/worker/Jira observations and foreign rows preserved"
+  ],
+  "validationLimit": "Static text/hash/JSON/Git metadata only. No reviewed-code/helper imports or execution, AST/syntax tests, runtime/probe/ledger/listener/browser/native/live/full allocation.1975 dependency pins carried forward, not revalidated. Prior2216/root936 retain historical scope; Granny LOW review remains HOLD for ee405af, not a review of replacement bytes.",
+  "executionAuthorized": false,
+  "executionReady": false,
+  "outputRoot": null,
+  "hostAnchors": null,
+  "executed": false,
+  "sharedHelper": {
+    "path": "_tools/test_resources.py",
+    "sha256": "3e2b4d05b1809e5ec481d7ace3d4dcd286e026b31c3a6f6a7673c6184483d32d",
+    "modified": false
+  },
+  "reviewPending": true,
+  "pending": [
+    "Independent consequential source review of N1-N4 repair, ownership/PID-reuse safety and exact manual candidate",
+    "Separately admitted private-ledger wrapper lifecycle validation; no runtime grant exists",
+    "Fresh strict ALL-row host/lock anchors, locale and bounded ps bytes/latency observation; N5 unverified",
+    "Explicit unchanged-six-case admission, absolute external output/impact/ownership plan and final admitted manifest hash"
+  ],
+  "fleetRisk": "Other unpatched launchers can still reap a dead supervisor owner row while its child/scratch survives. The story wrapper never reaps; only a coordinated upstream fleet rollout closes this risk.",
+  "preexistingUntrackedPreserved": [
+    "node_modules",
+    "server/node_modules"
+  ],
+  "validationProposal": "Independent authoritative-tier static review, then only if separately admitted: four private-ledger child/grandchild lifecycle cases, one worker,32MiB scratch/64MiB RAM/20s per case/1MiB logs, external ownership/checkpoint and independent cleanup. Follow with fresh strict host/locale/ps metrics and exact six-case admission at120/90/30s,768MiB RAM/128MiB disk/2MiB TAP, one worker. No grant implied."
+}

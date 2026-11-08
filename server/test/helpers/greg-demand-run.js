@@ -6,21 +6,22 @@ import { PolicyService } from '../../gcsp/policy/index.js';
 import { createDemoRuntime } from '../../gcsp/clock/index.js';
 import { BriefService } from '../../gcsp/brief/index.js';
 import { createGregDemandService } from '../../gcsp/greg/index.js';
-import { preference, essential, stock, fact, providerValue } from './employee-recommendation.js';
+import { seedManualDemoContext } from '../../gcsp/manual-context/fixtures.js';
+import { preference, essential, stock, fact } from './employee-recommendation.js';
 
 export { fact };
 const seed = JSON.parse(await readFile(new URL('../../gcsp/policy/seed-v1.json', import.meta.url)));
 
 /** Fresh in-memory run. `threshold` is an explicit alternative; `canonical` keeps the seed value (5). */
-export async function setup({ threshold = 1, canonical = false } = {}) {
+export async function setup({ threshold = 1, canonical = false, policyProvider, wrapRepository = (repository) => repository } = {}) {
   const source = structuredClone(seed);
   if (!canonical) {
     source.assumptions = source.assumptions.filter((a) => a.key !== 'greg.demand.smallCountThreshold');
     source.assumptions.push({ ...source.assumptions[0], key: 'greg.demand.smallCountThreshold', value: threshold,
       unit: 'count', status: 'assumed', basis: 'Explicit alternative fixture privacy threshold.' });
   }
-  const policy = new PolicyService({ provider: { async loadVersions() { return [source]; } } });
-  const repository = createMemoryRepository({ store: createMemoryStore() });
+  const policy = new PolicyService({ provider: policyProvider ? policyProvider(source) : { async loadVersions() { return [source]; } } });
+  const repository = wrapRepository(createMemoryRepository({ store: createMemoryStore() }));
   assert.equal((await repository.open()).status, 'ok');
   const runtime = await createDemoRuntime({ repository, policy, environmentId: 'greg-test', environmentKind: 'synthetic',
     policyAsOf: '2026-11-05T00:00:00.000Z', commandId: 'bootstrap', sessionNow: () => '2026-11-05T00:00:00.000Z' });
@@ -38,11 +39,7 @@ export async function setup({ threshold = 1, canonical = false } = {}) {
     const value = await repository.transaction(context, { commandId, inputDigest: inputDigest(commandId) }, work);
     assert.equal(value.status, 'ok', JSON.stringify(value)); return value;
   };
-  await write(async (tx) => {
-    const row = await tx.get({ table: 'employees', key: { runId: context.runId, employeeId: employee.employeeId } });
-    return tx.compareAndSwap({ table: 'employees', key: { runId: context.runId, employeeId: employee.employeeId } }, row.value.version,
-      { contract: { manualContext: { employeeFacts: providerValue().employeeFacts } } });
-  });
+  assert.equal((await seedManualDemoContext({ repository, identity, clock, context: employee })).status, 'ok');
   return { repository, policy, clock, identity, presenter, acting, context, employee, service, brief, write };
 }
 

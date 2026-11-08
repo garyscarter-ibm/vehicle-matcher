@@ -1,0 +1,1462 @@
+{
+  "at": "2026-11-06T02:31:28.977793+00:00",
+  "result": "SCOPED_11_OF_11_PASS",
+  "passed": true,
+  "checks": [
+    {
+      "name": "exact grant",
+      "pass": true
+    },
+    {
+      "name": "passed original summary",
+      "pass": true
+    },
+    {
+      "name": "pins preserved",
+      "pass": true
+    },
+    {
+      "name": "exact admission identity",
+      "pass": true
+    },
+    {
+      "name": "exact source identity",
+      "pass": true
+    },
+    {
+      "name": "source plan immutable",
+      "pass": true
+    },
+    {
+      "name": "original11names exact",
+      "pass": true
+    },
+    {
+      "name": "original totals exact",
+      "pass": true
+    },
+    {
+      "name": "eleven ok lines",
+      "pass": true
+    },
+    {
+      "name": "original log SHA and bytes",
+      "pass": true
+    },
+    {
+      "name": "exit0",
+      "pass": true
+    },
+    {
+      "name": "observed exactly44modules",
+      "pass": true
+    },
+    {
+      "name": "module journal server/test/gcsp-offer-access-followup.test.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/repository/index.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/repository/memory.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/repository/core.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/repository/schema.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/repository/postgres.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/migrations/index.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/policy/index.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/policy/file-provider.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/policy/postgres-provider.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/policy/publish.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/policy/adoption.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/policy/reviewed-definitions.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/policy/activation.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/policy/memory-provider.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/clock/index.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/identity/index.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/fixtures/principals.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/fixtures/scenario-v1.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/vehicle-evidence/vin-allocation.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/vehicle-evidence/vin-generator.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/vehicle-evidence/vin-profiles.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/fixtures/scenarios/index.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/fixtures/scenarios/catalogue-v1.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/brief/index.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/scenarios/employee/index.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/engine.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/questions.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/brands.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/recommendation/index.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/vehicles/index.js",
+      "pass": true
+    },
+    {
+      "name": "module journal blocks/vehicle-matcher/feedback-actions.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/manual-context/fixtures.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/offers/buddy-hold.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/manual-context/ports.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/offers/offer-token.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/offers/buddy-remote.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/offers/current-car-comparison.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/offers/access.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/offers/decision.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/offers/followup.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/offers/followup-policy.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/gcsp/offers/followup-comparison.js",
+      "pass": true
+    },
+    {
+      "name": "module journal server/test/helpers/employee-recommendation.js",
+      "pass": true
+    },
+    {
+      "name": "immutable blocks/vehicle-matcher/feedback-actions.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/brands.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/engine.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/brief/index.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/clock/index.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/fixtures/principals.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/fixtures/scenario-v1.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/fixtures/scenarios/catalogue-v1.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/fixtures/scenarios/index.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/identity/index.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/manual-context/fixtures.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/manual-context/ports.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/migrations/index.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/offers/access.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/offers/buddy-hold.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/offers/buddy-remote.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/offers/current-car-comparison.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/offers/decision.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/offers/followup-comparison.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/offers/followup-policy.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/offers/followup.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/offers/offer-token.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/policy/activation.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/policy/adoption.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/policy/file-provider.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/policy/index.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/policy/memory-provider.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/policy/postgres-provider.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/policy/publish.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/policy/reviewed-definitions.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/recommendation/index.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/repository/core.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/repository/index.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/repository/memory.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/repository/postgres.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/repository/schema.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/vehicle-evidence/vin-allocation.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/vehicle-evidence/vin-generator.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/vehicle-evidence/vin-profiles.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/questions.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/scenarios/employee/index.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/test/gcsp-offer-access-followup.test.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/test/helpers/employee-recommendation.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/vehicles/index.js",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/policy/seed-v1.json",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/policy/reviewed/presenter-controls-v1.json",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/policy/reviewed/greg-publish-editor-v1.json",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/predict/records/policy-definitions.json",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/policy/reviewed/offer-decline-reasons-v1.json",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/policy/reviewed/fucq115-choice-model-v1.json",
+      "pass": true
+    },
+    {
+      "name": "immutable server/gcsp/offers/followup-policy-definitions.json",
+      "pass": true
+    },
+    {
+      "name": "physical /Library/Developer/CommandLineTools/usr/bin/python3",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/.cache/agent-scaffolding/test-resources",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/.cache/agent-scaffolding/test-resources/reservations.lock",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/_tools/scaffold_git.py",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/_tools/test_resources.py",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-execution-source-plan.json",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-freeze.py",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-launch.mjs",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-loader.mjs",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-resources.py",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-supervisor.py",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/package-lock.json",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/server/gcsp/offers/access.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/server/package-lock.json",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/server/test/gcsp-offer-access-followup.test.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/package-lock.json",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/.package-lock.json",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/LICENSE",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/README.md",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/empty.d.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/empty.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/empty.js.map",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/index.d.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/index.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/dist/index.js.map",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/esm",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/esm/index.mjs",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/package.json",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/src",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/src/empty.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/src/index.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-cloudflare/src/types.d.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/LICENSE",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/README.md",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/esm",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/esm/index.mjs",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/index.d.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/index.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-connection-string/package.json",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/LICENSE",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/README.md",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/index.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-int8/package.json",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/LICENSE",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/README.md",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/esm",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/esm/index.mjs",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/index.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/package.json",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/LICENSE",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/README.md",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/b.d.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/b.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/b.js.map",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-reader.d.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-reader.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-reader.js.map",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-writer.d.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-writer.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/buffer-writer.js.map",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/inbound-parser.test.d.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/inbound-parser.test.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/inbound-parser.test.js.map",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/index.d.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/index.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/index.js.map",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/messages.d.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/messages.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/messages.js.map",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/outbound-serializer.test.d.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/outbound-serializer.test.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/outbound-serializer.test.js.map",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/parser.d.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/parser.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/parser.js.map",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/serializer.d.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/serializer.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/dist/serializer.js.map",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/esm",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/esm/index.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/package.json",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/b.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/buffer-reader.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/buffer-writer.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/inbound-parser.test.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/index.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/messages.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/outbound-serializer.test.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/parser.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/serializer.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/testing",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/testing/buffer-list.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-protocol/src/testing/test-buffers.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/.travis.yml",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/Makefile",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/README.md",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/index.d.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/index.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/index.test-d.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/arrayParser.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/binaryParsers.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/builtins.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/lib/textParsers.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/package.json",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/test",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/test/index.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/test/types.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/LICENSE",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/README.md",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/esm",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/esm/index.mjs",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/client.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/connection-parameters.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/connection.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/cert-signatures.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/sasl.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/crypto/utils.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/defaults.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/index.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/client.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/index.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/native/query.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/query.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/result.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/stream.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/type-overrides.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/lib/utils.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/package.json",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/README.md",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/lib",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/lib/helper.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/lib/index.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/package.json",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/index.d.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/index.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/license",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/package.json",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-array/readme.md",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/index.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/license",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/package.json",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-bytea/readme.md",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/index.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/license",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/package.json",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-date/readme.md",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/index.d.ts",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/index.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/license",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/package.json",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/readme.md",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/LICENSE",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/README.md",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/bench.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/index.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/package.json",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/split2/test.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/.jshintrc",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/LICENSE",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/README.md",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/immutable.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/mutable.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/package.json",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/xtend/test.js",
+      "pass": true
+    },
+    {
+      "name": "physical /Users/garycarter/Code/GitHub/vehicle-matcher/server/package-lock.json",
+      "pass": true
+    },
+    {
+      "name": "physical /bin/ps",
+      "pass": true
+    },
+    {
+      "name": "physical /opt/homebrew/bin/node",
+      "pass": true
+    },
+    {
+      "name": "physical /usr/bin/git",
+      "pass": true
+    },
+    {
+      "name": "physical /usr/bin/python3",
+      "pass": true
+    },
+    {
+      "name": "physical /usr/bin/vm_stat",
+      "pass": true
+    },
+    {
+      "name": "physical /usr/sbin/lsof",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/node_modules/pg-native",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/server/node_modules",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/node_modules/pg-native",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg-cloudflare",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg-connection-string",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg-int8",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg-native",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg-pool",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg-protocol",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pg-types",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/pgpass",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/postgres-array",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/postgres-bytea",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/postgres-date",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/postgres-interval",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/split2",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/node_modules/xtend",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-native",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-pool/node_modules/pg",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/node_modules/pg-int8",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/node_modules/postgres-array",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/node_modules/postgres-bytea",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/node_modules/postgres-date",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg-types/node_modules/postgres-interval",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/node_modules/pg-cloudflare",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/node_modules/pg-connection-string",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/node_modules/pg-native",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/node_modules/pg-pool",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/node_modules/pg-protocol",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/node_modules/pg-types",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pg/node_modules/pgpass",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/pgpass/node_modules/split2",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/GitHub/vehicle-matcher/server/node_modules/postgres-interval/node_modules/xtend",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/Code/node_modules/pg-native",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/garycarter/node_modules/pg-native",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /Users/node_modules/pg-native",
+      "pass": true
+    },
+    {
+      "name": "resolution absence /node_modules/pg-native",
+      "pass": true
+    },
+    {
+      "name": "scratch absent",
+      "pass": true
+    },
+    {
+      "name": "state removed",
+      "pass": true
+    },
+    {
+      "name": "dependency links absent",
+      "pass": true
+    },
+    {
+      "name": "fresh host admission",
+      "pass": true
+    },
+    {
+      "name": "RAM within reserved ceiling",
+      "pass": true
+    },
+    {
+      "name": "combined within ceiling",
+      "pass": true
+    },
+    {
+      "name": "duration within ceiling",
+      "pass": true
+    },
+    {
+      "name": "log within cap",
+      "pass": true
+    },
+    {
+      "name": "ps snapshot available",
+      "pass": true
+    },
+    {
+      "name": "owner PID/start absent 2084",
+      "pass": true
+    },
+    {
+      "name": "owner PID/start absent 2278",
+      "pass": true
+    },
+    {
+      "name": "group snapshot absent 2278",
+      "pass": true
+    },
+    {
+      "name": "group signal0 absent 2278",
+      "pass": true
+    },
+    {
+      "name": "ledger regular",
+      "pass": true
+    },
+    {
+      "name": "reservation absent",
+      "pass": true
+    },
+    {
+      "name": "lead cleanup passed",
+      "pass": true
+    },
+    {
+      "name": "lead cleanup joined",
+      "pass": true
+    },
+    {
+      "name": "lead cleanup groupsAbsent",
+      "pass": true
+    },
+    {
+      "name": "lead cleanup pidsAbsent",
+      "pass": true
+    },
+    {
+      "name": "lead cleanup scratchAbsent",
+      "pass": true
+    },
+    {
+      "name": "lead cleanup reservationAbsent",
+      "pass": true
+    },
+    {
+      "name": "checkpoint complete",
+      "pass": true
+    }
+  ],
+  "failed": [],
+  "originalRun": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/followup-aeaff9d663d44e669821185ecfc96497",
+  "counts": {
+    "tests": 11,
+    "pass": 11,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "sourcePlanSHA256": "983a85e1e4630065d2fc1af428697d04b38a6277a52240a703746316244e1ebe",
+  "admissionSHA256": "418f8f5361a1717f38fb84e62b4f875466e4255109f1f0668a1971a9565c5344",
+  "peakAggregateRSS": 255672320,
+  "wall": 15.849328875000001,
+  "boundary": "Actual in-memory100/102/103/106/107 native-decline account-reload followup; explicit question-policy injection. No client/runtime/deployed/nativeDB/browser/full acceptance."
+}

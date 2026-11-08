@@ -34,6 +34,31 @@ const safeSourceReference = (v) => {
     url.search = ''; return safeReference(url.href);
   } catch { return false; }
 };
+// Retained v2 public catalogue citations keep their documented GET context.
+// These rules apply only to source citations, never executable/image references.
+const safeV2SourceReference = (value) => {
+  if (safeSourceReference(value)) return true;
+  try {
+    const url = new URL(value);
+    if (!text(value) || url.protocol !== 'https:' || url.hostname !== 'prod.ucp.bmw.cloud'
+      || url.port || url.username || url.password || url.hash) return false;
+    const day = '[0-9]{4}-[0-9]{2}-[0-9]{2}';
+    const context = `brands/bmwCar/countries/[a-z]{2}/effect-dates/${day}/order-dates/${day}`;
+    let allowed;
+    if (new RegExp(`^/localisations/overridden-vehicle-data/sources/pcaso/${context}/applications/connext/models/[A-Z0-9]{4,12}/options/languages/[a-z]{2}$`).test(url.pathname)) {
+      allowed = { trim: /^[A-Z0-9]{4,12}$/ };
+    } else if (new RegExp(`^/model-matrices/vehicle-trees/connext-bmw/sources/pcaso/${context}$`).test(url.pathname)) {
+      allowed = { 'gfs-policy': /^none$/, cluster: /^default$/, 'model-ranges': /^[A-Z0-9]{3,12}$/,
+        'future-models': /^(true|false)$/, 'closest-fallback': /^(true|false)$/ };
+    } else if (new RegExp(`^/rulesolver/constructibility-check/rule-sets/pcaso,con/${context}/models/[A-Z0-9]{4,12}$`).test(url.pathname)) {
+      allowed = { application: /^connext$/, 'add-rules-for-mandatory-element-classes': /^(fabric|paint|rim)(,(fabric|paint|rim))*$/,
+        'included-elements': /^[A-Z0-9]{4,12}(,[A-Z0-9]{4,12})*$/, 'mandatory-elements': /^[A-Z0-9]{4,12}(,[A-Z0-9]{4,12})*$/ };
+    } else return false;
+    const entries = [...url.searchParams];
+    return entries.length > 0 && new Set(entries.map(([name]) => name)).size === entries.length
+      && entries.every(([name, entry]) => Object.hasOwn(allowed, name) && allowed[name].test(entry));
+  } catch { return false; }
+};
 const states = ['complete', 'partial', 'unknown'];
 const failureStatuses = ['invalid-input', 'not-found', 'unsupported', 'source-unavailable', 'identity-mismatch'];
 const expectedFields = ['configurationId', 'vehicleId', 'datasetId', 'originatingDatasetId', 'corpusVersion',
@@ -48,7 +73,7 @@ const measurements = { seats: ['SEATS', 'COUNT'], luggageNormal: ['NORMAL', 'LIT
 function provenance(p) {
   return keys(p, ['kind', 'source', 'observedDate']) && ['observed', 'reference', 'unknown'].includes(p.kind)
     && date(p.observedDate) && (p.kind === 'unknown' ? p.source === null && p.observedDate === null
-      : (text(p.source) && safeSourceReference(p.source) || stringList(p.source) && p.source.length > 0 && p.source.every(safeSourceReference))
+      : (text(p.source) && safeV2SourceReference(p.source) || stringList(p.source) && p.source.length > 0 && p.source.every(safeV2SourceReference))
         && p.observedDate !== null);
 }
 function fact(f, numeric = false) {
@@ -64,25 +89,45 @@ function appearance(a) {
     && a.selections.every((s) => keys(s, ['code', 'label', 'claim']) && text(s.code)
       && fact(s.label) && s.claim === 'selected-catalogue-equipment');
 }
-function equipment(e) {
+function quantity(q) {
+  if (!keys(q, ['state', 'value', 'reason', 'evidenceRefs']) || !Array.isArray(q.evidenceRefs) || q.evidenceRefs.length > 32) return false;
+  return q.state === 'known' ? Number.isSafeInteger(q.value) && q.value > 0 && q.reason === null
+    && q.evidenceRefs.length > 0 && q.evidenceRefs.every((ref) => keys(ref, ['evidenceId', 'locatorName']) && text(ref.evidenceId) && text(ref.locatorName))
+    : q.state === 'unknown' && q.value === null && q.reason === 'quantity-not-exposed' && q.evidenceRefs.length === 0;
+}
+function boundCatalogueIdentity(i) {
+  return keys(i, ['snapshotVersion', 'bindingDigest', 'configurationId']) && text(i.snapshotVersion)
+    && typeof i.bindingDigest === 'string' && /^[a-f0-9]{64}$/.test(i.bindingDigest)
+    && !!canonicalVehicleIdentifier('configuration', i.configurationId);
+}
+function equipment(e, v2 = false) {
   if (!keys(e, ['definitions', 'available', 'selected', 'verifiedFitted']) || !Array.isArray(e.definitions)
     || !e.definitions.every((d) => keys(d, ['code', 'category', 'label']) && text(d.code) && text(d.category) && fact(d.label))
     || !only(e.available, ['state', 'codes', 'complete', 'completeness', 'provenance'])
-    || !only(e.selected, ['state', 'options', 'accessories', 'complete', 'completeness', 'provenance'])
+    || !only(e.selected, v2 ? ['state', 'options', 'accessories', 'factoryComplete', 'accessoryCodesComplete', 'accessoryQuantitiesComplete', 'provenance'] : ['state', 'options', 'accessories', 'complete', 'completeness', 'provenance'])
     || !keys(e.verifiedFitted, ['state', 'codes', 'reason'])) return false;
+  const selected = e.selected;
+  const validSelected = v2 ? keys(selected, ['state', 'options', 'accessories', 'factoryComplete', 'accessoryCodesComplete', 'accessoryQuantitiesComplete', 'provenance'])
+    && selected.state === 'known' && stringList(selected.options) && Array.isArray(selected.accessories)
+    && selected.factoryComplete === true && selected.accessoryCodesComplete === true
+    && selected.accessories.every((a) => keys(a, ['code', 'type', 'quantity']) && text(a.code) && a.type === 'accessory' && quantity(a.quantity))
+    && selected.accessoryQuantitiesComplete === selected.accessories.every((a) => a.quantity.state === 'known')
+    : ['known', 'unknown'].includes(selected.state) && states.includes(selected.completeness)
+      && typeof selected.complete === 'boolean'
+      && (selected.state === 'known' ? stringList(selected.options) && Array.isArray(selected.accessories)
+        && selected.accessories.every((a) => keys(a, ['code', 'type', 'quantity']) && text(a.code)
+          && a.type === 'accessory' && Number.isSafeInteger(a.quantity) && a.quantity > 0)
+        : selected.options === null && selected.accessories === null && !selected.complete);
   return ['known', 'unknown'].includes(e.available.state) && states.includes(e.available.completeness)
-    && (e.available.state === 'known' ? stringList(e.available.codes) : e.available.codes === null)
-    && ['known', 'unknown'].includes(e.selected.state) && states.includes(e.selected.completeness)
-    && typeof e.selected.complete === 'boolean'
-    && (e.selected.state === 'known' ? stringList(e.selected.options) && Array.isArray(e.selected.accessories)
-      && e.selected.accessories.every((a) => keys(a, ['code', 'type', 'quantity']) && text(a.code)
-        && a.type === 'accessory' && Number.isSafeInteger(a.quantity) && a.quantity > 0)
-      : e.selected.options === null && e.selected.accessories === null && !e.selected.complete)
-    && (e.selected.provenance === undefined || provenance(e.selected.provenance))
+    && (e.available.state === 'known' ? stringList(e.available.codes) : v2
+      ? Array.isArray(e.available.codes) && e.available.codes.length === 0 && e.available.complete === false && e.available.completeness === 'unknown'
+      : e.available.codes === null)
+    && validSelected && (selected.provenance === undefined || provenance(selected.provenance))
     && (e.available.provenance === undefined || provenance(e.available.provenance))
     && e.verifiedFitted.state === 'unknown' && e.verifiedFitted.codes === null
     && e.verifiedFitted.reason === 'source-does-not-verify-fitting';
 }
+
 function imageEvidence(i) {
   return keys(i, ['state', 'label', 'items']) && Array.isArray(i.items)
     && (i.items.length ? i.state === 'representative' && i.label === 'Representative imagery'
@@ -98,7 +143,7 @@ function sourceEvidence(s) {
     'vgModelCode', 'modelYear', 'productionEra', 'productionDate', 'registrationDate', 'profile', 'profileSources',
     'profileConfidence', 'completeVinDecoded', 'unresolvedFacts', 'identityProvenance'];
   return keys(s, names) && ['dated-snapshot', 'north-american-reference'].includes(s.kind)
-    && stringList(s.references) && s.references.every(safeSourceReference) && s.references.length > 0 && text(s.confidence)
+    && stringList(s.references) && s.references.every(boundCatalogueIdentity(s.resolvedIdentity) ? safeV2SourceReference : safeSourceReference) && s.references.length > 0 && text(s.confidence)
     && ['observedDate', 'retrievedDate', 'catalogueDate', 'productionDate', 'registrationDate'].every((k) => date(s[k]))
     && s.observedDate !== null && text(s.market) && s.completeVinDecoded === false
     && ['region', 'steering', 'agModelCode', 'vgModelCode', 'productionEra', 'profileConfidence'].every((k) => nullableText(s[k]))
@@ -120,6 +165,7 @@ function sourceEvidence(s) {
       && Object.values(s.catalogueValidity).every((v) => date(v) && v !== null));
 }
 function catalogueIdentity(i) {
+  if (boundCatalogueIdentity(i)) return true;
   const dates = ['catalogueDate', 'effectDate', 'orderDate', 'productionDate', 'taxDate'];
   const names = ['agModelCode', 'locale', 'market', 'modelCode', 'modelRange', 'rawModelRange', 'trim'];
   return keys(i, [...dates, ...names, 'selectedOptions', 'selectedAccessories'])
@@ -146,7 +192,7 @@ function validSuccess(w) {
     && appearance(d.paint) && appearance(d.upholstery) && keys(w.technical, Object.keys(measurements))
     && Object.entries(measurements).every(([k, [meaning, unit]]) => fact(w.technical[k], true)
       && w.technical[k].definition === meaning && w.technical[k].unit === unit)
-    && equipment(w.equipment) && imageEvidence(w.images) && sourceEvidence(w.source)
+    && equipment(w.equipment, boundCatalogueIdentity(w.source?.resolvedIdentity)) && imageEvidence(w.images) && sourceEvidence(w.source)
     && keys(w.completeness, ['record', 'selectedOptions', 'measurements', 'optionDefinitions', 'availableOptions', 'verifiedFitted', 'images'])
     && w.completeness.record === w.status && w.completeness.verifiedFitted === 'unknown'
     && ['selectedOptions', 'measurements', 'optionDefinitions', 'availableOptions'].every((k) => states.includes(w.completeness[k]))
@@ -171,7 +217,10 @@ function matches(request, w) {
   if (!isDeepStrictEqual(s.requestedIdentity, s.resolvedIdentity)) return false;
   const config = s.configurationIdentity;
   if (Buffer.from(`${config.vgModelCode}:${config.factoryOptionCodes.join(',')}`).toString('base64') !== i.configurationId) return false;
-  if (s.resolvedIdentity && (s.resolvedIdentity.modelCode !== s.vgModelCode || s.resolvedIdentity.market !== s.market
+  if (boundCatalogueIdentity(s.resolvedIdentity)) {
+    if (s.resolvedIdentity.configurationId !== i.configurationId || s.resolvedIdentity.snapshotVersion !== w.versions.snapshot
+      || !isDeepStrictEqual(config.factoryOptionCodes, w.equipment.selected.options)) return false;
+  } else if (s.resolvedIdentity && (s.resolvedIdentity.modelCode !== s.vgModelCode || s.resolvedIdentity.market !== s.market
     || s.resolvedIdentity.agModelCode !== s.agModelCode || s.resolvedIdentity.catalogueDate !== s.catalogueDate
     || !isDeepStrictEqual(s.resolvedIdentity.selectedOptions, w.equipment.selected.options)
     || !['effectDate', 'orderDate', 'productionDate', 'taxDate'].every((k) => s.resolvedIdentity[k] === s.catalogueValidity?.[k]))) return false;

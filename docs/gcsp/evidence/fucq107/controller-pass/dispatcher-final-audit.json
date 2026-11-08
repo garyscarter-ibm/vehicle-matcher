@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "at": "2026-11-06T02:06:47.745123+00:00",
+  "checks": 1313,
+  "source": "94e05ff9070aa19f5deb3e9997dfed96cc268473",
+  "harness": "00900926ee86d380f706726b91892fa6376837ed",
+  "publishedEvidence": "0f81ef4a9e1ec4bc90630acc0b3ad7522ede7c34",
+  "originalRun": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/controller14-d26530673e474ed69caaa21443acc7ea",
+  "counts": {
+    "tests": 14,
+    "suites": 0,
+    "pass": 14,
+    "fail": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "todo": 0
+  },
+  "originalTAPSHA256": "c1afb64e3721a906362c3d7ba61ed7db0bff6cc33a6111b35be7eac0c8d1fbdd",
+  "originalJournalSHA256": "5c30afb8276fdef33aa8f240e53897608c8aa28304a61e2c90dc9afccf9a50a2",
+  "sourceRows": 7,
+  "observedPidsAbsent": [
+    {
+      "direct": true,
+      "owned": true,
+      "pgid": 79064,
+      "pid": 79064,
+      "ppid": 78998,
+      "start": "Fri Nov  6 02:02:35 2026"
+    },
+    {
+      "owned": true,
+      "pgid": 79064,
+      "pid": 79076,
+      "ppid": 79064,
+      "start": "Fri Nov  6 02:02:35 2026"
+    }
+  ],
+  "supervisorAbsent": {
+    "pid": 78998,
+    "start": "Fri Nov  6 02:02:33 2026"
+  },
+  "groupsAbsent": [
+    79064
+  ],
+  "scratchAbsent": "/private/tmp/test-stamp-shard-a549946fa3d6419b934450b44a079e3b",
+  "strictReservationAbsent": "a549946fa3d6419b934450b44a079e3b",
+  "scope": "controller14 only; no rendered/producer/native/full acceptance"
+}

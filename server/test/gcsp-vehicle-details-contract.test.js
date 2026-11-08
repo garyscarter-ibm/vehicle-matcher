@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
 import { createLocalVehicleEvidenceLookup } from '../gcsp/vehicle-evidence/local-vehicle-lookup.js';
 import { createVehicleDetailsConsumer, createConfiguredVehicleDetails as configureVehicleDetails } from '../gcsp/vehicle-evidence/application-vehicle-details.js';
 import { createLookupVehicleAdapter } from '../gcsp/vehicle-evidence/lookup-adapter.js';
@@ -29,7 +30,9 @@ const stock = { runId: context.runId, orderUuid, orderNumber: '0000123', configu
     originatingDatasetId: 'consumer-fixture', snapshotVersion: vehicle.snapshotVersion, configurationHash: vehicle.configurationHash } } };
 const repository = { currentRun: async () => ({ status: 'ok', value: { runId: context.runId } }),
   read: async (_context, { key }) => key.orderUuid === orderUuid ? { status: 'ok', value: stock } : { status: 'not-found' } };
-const lookup = createLocalVehicleEvidenceLookup({ repository, asOf: '2026-11-05T00:00:00.000Z' });
+// The alternate cards are pinned to this retained reference corpus, independent of the runtime default.
+const lookup = createLocalVehicleEvidenceLookup({ root: fileURLToPath(new URL('../data/gcsp/vehicle-evidence/lookup-reference.v1/', import.meta.url)),
+  repository, asOf: '2026-11-05T00:00:00.000Z' });
 function offlineRead(key, options) {
   const entry = fixture.entries.find((e) => e.key.category === key.category && e.key.token === key.token);
   const document = !entry ? { edition: 'offline-cards/1', result: 'missing' }

@@ -1,0 +1,48 @@
+{
+  "version": "fleet-full-model-selection.v1",
+  "selection": {
+    "modelCode": "T5MJ",
+    "agModelCode": "72HH",
+    "catalogueRangeKey": "G61E",
+    "modelRangeField": "G61",
+    "orderDate": "2026-11-01",
+    "effectDate": "2027-01-05",
+    "steeringLiteral": "RL"
+  },
+  "evidencePaths": [
+    [
+      "5",
+      "modelRanges",
+      "G61E",
+      "models",
+      "T5MJ"
+    ],
+    [
+      "I",
+      "modelRanges",
+      "G61E",
+      "models",
+      "T5MJ"
+    ]
+  ],
+  "aliasAppearances": 2,
+  "distinctSelectedModels": 1,
+  "qualification": {
+    "constructibility": "not-established",
+    "vinProfile": "unqualified",
+    "additionalConfigurations": 0
+  },
+  "selectedAt": "2026-11-05T16:15:37.595Z",
+  "sourceObservedAt": "2026-11-05T16:03:36.375Z",
+  "source": "public-bmw-uk-configurator",
+  "providerStatus": "unsupported-public-website",
+  "inputProjection": "docs/gcsp/evidence/fucq-58/steering-diagnostic-2026-11-05/evidence/projection.json",
+  "inputProjectionSha256": "0da1ccbfed44b62f94000eb96e32022e3967a331f9bff9a2b4c9f92fda98dc8b",
+  "inputDiagnosticSha256": "487bf989d25362077cad25cd2bffd4168b1ea3e4f80983d34572949adc39d29b",
+  "planSha256": "6044e3a8747dd96d6454f15ef6ca9736522dce48df4848c26c917a5ca1b70fed",
+  "selectorSha256": "f3accdd334a64d9c0eabcfde35a4b26d81dba64fbe6a48558f2daab8f3032b13",
+  "testsSha256": "e7bb479dcc76f122207359e7ac7d43b0e2245852fb3f125d89985d0c86b6cb16",
+  "entrypointSha256": "424b4114da76447ad49edb4b7ce7462aeef137d8c571fb098db51c12bd6fe32c",
+  "networkAttempts": 0,
+  "explanation": "Offline selection from the retained actual observation; no fresh source observation, steering-code translation, constructibility or VIN-profile claim."
+}

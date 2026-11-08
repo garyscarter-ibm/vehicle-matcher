@@ -1,0 +1,17 @@
+{
+  "authorized": true,
+  "phase": "phase02c",
+  "reviewedAt": "2026-11-07T06:24:54.882131+00:00",
+  "seriesSha256": "2a163c6592a3a6c9e31269d638017c118a0c294552744dc067842f7788b02793",
+  "candidateManifestSha256": "5d4bf9efde7450c15c55cd7f86cbdd63a5cced16f2c0bab54de375afe08a697f",
+  "pinsChecked": 369,
+  "codeReview": "pass; actual runner diff from released phase02 preserves strict stop, finalizers and cohort clock; inherits original phase age and exact untouched133-240 templates",
+  "securityReview": "pass; public boundedGET only, no credentials/browser/images/writes; all864 disjoint spent, failed012 and fullF70 lane",
+  "maximumGET": 1296,
+  "maximumSolver": 864,
+  "originalAbsoluteDeadline": "2026-11-07T06:48:01.823979+00:00",
+  "grantEnvironment": {
+    "BREADTH30_PHASE02C_PHASE_GRANT": "scheme-breadth30-phase02c-864-20261107-once-phase02c"
+  },
+  "acceptance": false
+}

@@ -1,0 +1,10 @@
+/* Shared chronological activity. Consumers own surrounding page layout. */
+.gcsp .gcsp-timeline-heading { margin: 0 0 6px; font-size: 24px; font-weight: 600; line-height: 1.25; }
+.gcsp .gcsp-timeline-note, .gcsp .gcsp-timeline-empty { margin: 0; color: var(--gcsp-text-muted); font-size: 14px; }
+.gcsp .gcsp-timeline-empty { margin-top: 20px; }
+.gcsp .gcsp-timeline-list { list-style: none; padding: 0; margin: 20px 0 0; }
+.gcsp .gcsp-timeline-event { display: grid; grid-template-columns: minmax(150px, 180px) minmax(0, 1fr); gap: 24px; padding: 18px 0; border-top: 1px solid var(--gcsp-divider); }
+.gcsp .gcsp-timeline-time { color: var(--gcsp-text-muted); font-size: 14px; line-height: 1.5; font-variant-numeric: tabular-nums; }
+.gcsp .gcsp-timeline-label { margin: 0; font-size: 16px; font-weight: 600; overflow-wrap: anywhere; }
+.gcsp .gcsp-timeline-description { margin: 4px 0 0; color: var(--gcsp-text-muted); font-size: 14px; overflow-wrap: anywhere; }
+@media (max-width: 640px) { .gcsp .gcsp-timeline-event { grid-template-columns: minmax(0, 1fr); gap: 6px; padding: 16px 0; } }

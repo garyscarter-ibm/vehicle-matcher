@@ -1,0 +1,40 @@
+✔ exact40original81to120templates has320unspent requests and480GET against8076spent strictprefix (99.279292ms)
+✔ allcode/source/runtime/base/audit pins and the31target gap boundary are exact (43.034584ms)
+✔ series/session preparation/source supervisor/runner refuse absent grants before output or marker creation (616.7925ms)
+✔ actual safe event history accepts exact ordered real rows and refuses URL leakage (11.601208ms)
+✔ first exact session freeze uses audited base and refuses already spent input without creating target (514.719625ms)
+✔ adopted reconciliation and five strict checks validate a copied actual pilot shard without network or source mutation (708.714583ms)
+✔ group proof retains unknown rechecks and never accepts live or persistent unknown (207.81425ms)
+✔ phase refuses even a matching grant while its cumulative base requires final active-source refresh (170.57975ms)
+✔ base refresh preserves an exact audited union, refuses missing spent source history and never grants source (768.10625ms)
+✖ continuation preserves the original consumed clock and refuses an expired deadline before ownership or source creation (170.479458ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 9
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3427.340167
+
+✖ failing tests:
+
+test at docs/gcsp/evidence/fucq59/scheme-breadth30-phase01c-320-series-2026-11-07/prepared-check.test.mjs:60:1
+✖ continuation preserves the original consumed clock and refuses an expired deadline before ownership or source creation (170.479458ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /original-absolute-deadline-expired/. Input:
+  
+  'Traceback (most recent call last):\n' +
+    '  File "/private/tmp/test-stamp-shard-5c3d85a51a254f4196f9d4c431b898bb/g42-continuation-protocol-4l3Lw4/docs/gcsp/evidence/fucq59/scheme-breadth30-phase01c-320-series-2026-11-07/run-series.py", line 26, in <module>\n' +
+    '    assert cloud.is_dir() and cloud in output.resolve().parents\n' +
+    'AssertionError\n'
+  
+      at TestContext.<anonymous> (file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-035/docs/gcsp/evidence/fucq59/scheme-breadth30-phase01c-320-series-2026-11-07/prepared-check.test.mjs:68:38)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Traceback (most recent call last):\n  File "/private/tmp/test-stamp-shard-5c3d85a51a254f4196f9d4c431b898bb/g42-continuation-protocol-4l3Lw4/docs/gcsp/evidence/fucq59/scheme-breadth30-phase01c-320-series-2026-11-07/run-series.py", line 26, in <module>\n    assert cloud.is_dir() and cloud in output.resolve().parents\nAssertionError\n',
+    expected: /original-absolute-deadline-expired/,
+    operator: 'match',
+    diff: 'simple'
+  }

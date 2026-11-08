@@ -1,0 +1,8 @@
+{
+  "canonical": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union2424-20261107/final-canonical-index.json",
+  "spent": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/global-union2424-20261107/final-spent-request-index.json",
+  "requiresRefreshBeforeRelease": false,
+  "parentReviewReference": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f58/global-union2424-parent-audit.json",
+  "parentReviewSha256": "ca6384931b9fe1433177f93f2630394257c6c2f686c4aa9b84c427ed89c5a942",
+  "purpose": "Frozen audited baseline; breadth six model contexts disjoint from activeG42/F70. Final actual global union mandatory."
+}

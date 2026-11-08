@@ -1,0 +1,190 @@
+{
+  "agents": "Mike Wazowski; requested/selected/effective gpt-6.1-sol medium; no fallback; no descendants",
+  "browser": "No browser/server launched during correction. Required frozen full revision and fresh parent grant; planned output browser-after-repair and distinct corrected receipts.",
+  "checks": {
+    "controls": {
+      "cleanup": {
+        "groupsAbsent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-ui-20261105/ownership/d51c85ab6e054799a8a66508344fbee0.json",
+        "removedBytes": 3154016,
+        "reservationAbsent": true,
+        "scratch": "/private/tmp/test-stamp-shard-d51c85ab6e054799a8a66508344fbee0",
+        "scratchAbsent": true
+      },
+      "peakRssBytes": 275660800,
+      "receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-ui-20261105/controls.json",
+      "state": "passed",
+      "summary": [
+        "\u2139 tests 23",
+        "\u2139 pass 23",
+        "\u2139 fail 0",
+        "\u2139 skipped 0",
+        "\u2139 duration_ms 1108.032708"
+      ],
+      "wallSeconds": 1.300160333
+    },
+    "copy": {
+      "cleanup": {
+        "groupsAbsent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-ui-20261105/ownership/e0edfa6b03154b539b3a95c4daeb4807.json",
+        "removedBytes": 3252320,
+        "reservationAbsent": true,
+        "scratch": "/private/tmp/test-stamp-shard-e0edfa6b03154b539b3a95c4daeb4807",
+        "scratchAbsent": true
+      },
+      "peakRssBytes": 245432320,
+      "receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-ui-20261105/copy.json",
+      "state": "passed",
+      "summary": [
+        "\u2139 tests 1",
+        "\u2139 pass 1",
+        "\u2139 fail 0",
+        "\u2139 skipped 0",
+        "\u2139 duration_ms 1089.883833"
+      ],
+      "wallSeconds": 1.204850667
+    },
+    "shell": {
+      "cleanup": {
+        "groupsAbsent": true,
+        "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-ui-20261105/ownership/79cbc2bbd9be4fa1add82512124f0278.json",
+        "removedBytes": 3276896,
+        "reservationAbsent": true,
+        "scratch": "/private/tmp/test-stamp-shard-79cbc2bbd9be4fa1add82512124f0278",
+        "scratchAbsent": true
+      },
+      "peakRssBytes": 277331968,
+      "receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-ui-20261105/shell.json",
+      "state": "passed",
+      "summary": [
+        "\u2139 tests 41",
+        "\u2139 pass 41",
+        "\u2139 fail 0",
+        "\u2139 skipped 0",
+        "\u2139 duration_ms 5133.046416"
+      ],
+      "wallSeconds": 5.455986708999999
+    }
+  },
+  "excluded": [
+    "Full suite",
+    "Native database",
+    "Backend reset/identity changes",
+    "Real business release/count/full scenario reset"
+  ],
+  "headBeforeParentReview": "68eded507a82fc7dc95add9fd6125ea57ae3553c",
+  "limitations": [
+    "Backend renewed-cookie reset replay may return stale-run after response body loss. UI reconciles only authoritative agreeing current controls/context and never claims original reset success.",
+    "Fresh browser proof and parent final visual review remain outstanding."
+  ],
+  "scope": "Scoped correction for two confirmed FUCQ-126 UI faults and narrow stale-run reset-retry reconciliation",
+  "shellReuse": "Shell41 and client-copy1 ran after initial reset/selection/recovery fix. The later guarded stale-run reconciliation adds no shell structure or displayed copy; its agreement/failure branches are exercised by controls23.",
+  "sourceSha256": {
+    "blocks/gcsp/presenter-controls/controls.js": "6949e3dc394b3da0392864cde322854a6522a2fa60b824dc7edb0ee6a90c77e6",
+    "blocks/gcsp/presenter-controls/workspace.js": "cc8130f5708781c45afb5fdcd88fd10cffaf002c2d35224c0393b523c6efafc3",
+    "docs/gcsp/evidence/fucq-126/browser-runner.mjs": "8f5cce752ceb40f2fa4ea7611e3454f980ea8b28450175db3ac4c53c48bde181",
+    "docs/gcsp/evidence/fucq-126/browser-supervisor.py": "8c171a3742ecdbaf265a0ff254259389a9e899a7cee0f2e3fe99afa94935bebe",
+    "docs/gcsp/presenter-controls-contract.md": "3849bb1436bd6b83cb19c022b82e679a0cf5ad0784bd019af1d3e8685af5494c",
+    "server/test/gcsp-presenter-controls-render.test.js": "716992a6c863c904b2ee4eca9bfba507dab0a74ec141b853c944994120f01d7a"
+  },
+  "state": "scoped tests passed; refreshed browser held",
+  "parentIndependentControls": {
+    "summary": [
+      "\u2139 tests 23",
+      "\u2139 pass 23",
+      "\u2139 fail 0",
+      "\u2139 skipped 0",
+      "\u2139 duration_ms 1000.163917"
+    ],
+    "cleanup": {
+      "groupsAbsent": true,
+      "manifest": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-096/.claude/test-runs/fucq126-ui-20261105/ownership/62e95191b69a4ba0b6453143f4514389.json",
+      "removedBytes": 3154016,
+      "reservationAbsent": true,
+      "scratch": "/private/tmp/test-stamp-shard-62e95191b69a4ba0b6453143f4514389",
+      "scratchAbsent": true
+    },
+    "identity": {
+      "base": "a083e28609172a83bbe3d8de31feec48a183f909",
+      "command": [
+        "node",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-presenter-controls-render.test.js"
+      ],
+      "hashes": {
+        "COMPONENTS.md": "a6b813467b397b2aba81e7e25b11cd489c3fc635ae765d832979f89133786757",
+        "blocks/gcsp/account/account-view.js": "c2e71ea6e5b15a1d905e33ab72d78eb0f45039fe2508cad89b11654801749dee",
+        "blocks/gcsp/account/fixtures.js": "bf735ff779fea67afe99bb4da467e7ccbced0c60218182314eeb9d98d874f5cc",
+        "blocks/gcsp/account/gcsp-account.css": "e445f913f913a94048388fc4a3d0fb5b937055ac4a6219fd8abb167e0d15eae3",
+        "blocks/gcsp/account/gcsp-account.js": "6e55cfc13a86b715584ce85a76315248d61ae33bd5526399b64f87ad2b53c80c",
+        "blocks/gcsp/account/harness.js": "606ec0b4b0f489d4e65340be292a4f2f5350c7ca81883393b7672f5fcd5c3991",
+        "blocks/gcsp/account/http-adapter.js": "eb89226f9ab8ff04b5c43dfc3c91b6e57c233ef88e273eaf8985895e79106453",
+        "blocks/gcsp/account/register.js": "56db1bc105c38a63b7972a847a938b551869e15fe9ee928fd393af00847dc9b5",
+        "blocks/gcsp/brief/brief-controller.js": "724120f45ad1fb8c14ee6de1a82c3579fe97c075254b6ce8032d712abe6c82aa",
+        "blocks/gcsp/brief/brief-transport.js": "47be97d58fb59aa6bf668aa7e66e9e257bb362ee1a83d6ef1f76d7f011f17aa7",
+        "blocks/gcsp/brief/brief-view-model.js": "7eea953d26aaeded1f6fe5ac219ebcc0f0c739f8f003b7ca61414dc4da1aa366",
+        "blocks/gcsp/brief/brief-view.js": "ff27df853d46d825d859a9a6a9d988fe91221de28530648c529df28d84875f61",
+        "blocks/gcsp/brief/gcsp-brief.css": "950084879028886d5598f47c7e640999565a2bea5fef329b4a86bd66565c9462",
+        "blocks/gcsp/brief/gcsp-brief.js": "943c4cbc99f1063328b68dcdb0c3ebf024e1cff75699e4a5b04cdc6eb5091c88",
+        "blocks/gcsp/brief/harness.js": "fa5f92fb53d217a9f1b200e2e1efb32231166d175c03411d2e1710cdaa9405ff",
+        "blocks/gcsp/brief/runtime.js": "a4686c9b8006eb637e45245a0e8b848671dc37b230258d1f5d7bfb480b68679d",
+        "blocks/gcsp/employee/fixtures.js": "e63cf63076f7bfa718b23b3e2a0d39ef6e57c58c4003f238b0059ce560ba0881",
+        "blocks/gcsp/employee/gcsp-employee.css": "3cab6080aa52605d92b5f616151087fe289e72c43045a7f396a8bffca7112b6f",
+        "blocks/gcsp/employee/gcsp-employee.js": "fae4437b83d48338ee4435738e3b65efc9b4955f1b0279255ed185a17ab1082b",
+        "blocks/gcsp/employee/harness.js": "f16e17c55d356605d453835a76bb3fc9dc04d94c06d753e6e94e1bb92f4af310",
+        "blocks/gcsp/employee/register.js": "6c9ccf063b829bc8e0034032030d08a6c4236687b2b67276497d4cbfa8c52446",
+        "blocks/gcsp/employee/representative-body.js": "a9146fc18cac0346a20b12c603df65a84dffc7bd46d267f2706f4e2c63b76af4",
+        "blocks/gcsp/greg/demand-copy.js": "431b55ff3e20eb618410c8fa76b52ac0f9f6e2e4fb3761dd219ba969a20152ee",
+        "blocks/gcsp/greg/demand-view.js": "e1ec735bcf7c5435400c335835ace4fa1195552ce3682993eb7cedb6d3b22725",
+        "blocks/gcsp/greg/fixtures.js": "6469fe209b50779115b3603c82cd38c5a9bf27a0e7090cb21e3179eeff8fe59f",
+        "blocks/gcsp/greg/gcsp-greg.css": "c5ae9b0df04d042f633a5ed78efc75554cd6d0e108aeea07366bbb7e8b41ed5e",
+        "blocks/gcsp/greg/gcsp-greg.js": "4ee58cc5bdc8d6e3d44ba7fcb1e9934e9a024bf5803e5c720df0ec9ae11c2031",
+        "blocks/gcsp/greg/harness.js": "381140e113ca7b4c146a65755758b77a826db648175a656c5894fc20bfaee265",
+        "blocks/gcsp/greg/http-adapter.js": "23cca7bdbc8da355fbdda9faba0c037bee564fc6eb1be1710929a0ad707a1cb4",
+        "blocks/gcsp/greg/register.js": "436fa5954592c1b14896f8db776b8c582c0826ee3f02be8e4a75c410098eda1e",
+        "blocks/gcsp/kit/data-table.js": "d2fb64ed87b088d3f6f72d078c3cdf6ae37a18ade4e22236428e141acda4dc4b",
+        "blocks/gcsp/kit/form-controls-gallery.js": "070682778524022ad32bf2c50b84e59a9e58ae5ed22359abb58c6a853273672e",
+        "blocks/gcsp/kit/form-controls.css": "0dec8818344defbe8b5718cdeef131d71faae782515f8ea3dce56b9e43002057",
+        "blocks/gcsp/kit/form-controls.js": "4df9e86f3d51f33397bd524b95f35a40240c931b441f91a7b8b05ef89fe508b4",
+        "blocks/gcsp/kit/gcsp-kit.css": "c75262dc7247cfee3e4fe179690254c8e79d59234dab4508bf8dde039286d0fa",
+        "blocks/gcsp/kit/metric-tile.js": "4679c5eb20710c4083540106efbcf2c1e6a64b11ebe331f89c02db2c4c2e9161",
+        "blocks/gcsp/manual-setup/gcsp-manual-setup.css": "544a3d8ca9f38d5e934ca1172aca864a9c18063f88b947bf69fe1a5c01846b26",
+        "blocks/gcsp/manual-setup/gcsp-manual-setup.js": "6b03e4ba4b271e230b4259fcc92fb5d60651f899d55f3c0faf235782a7dae0a1",
+        "blocks/gcsp/manual-setup/harness.js": "403b82f895f73378b51fca57975db467bb2a9709015b43002d318f71c22a1ded",
+        "blocks/gcsp/manual-setup/journey.js": "c1adbe8c11e0a6e3dbe4ea3a0a4d67f591eef288051d6768aeb2068f5a033eb7",
+        "blocks/gcsp/manual-setup/register.js": "403b82f895f73378b51fca57975db467bb2a9709015b43002d318f71c22a1ded",
+        "blocks/gcsp/manual-setup/setup-controller.js": "7c3b809d710906ac6c2963ef2519be5c8325ee980bc9cedcfb50caf1d09eb110",
+        "blocks/gcsp/manual-setup/setup-model.js": "a69de6fc54f458a4fa73a7527f45c405c9da0fb12e37dd078bec04c0b7f62afe",
+        "blocks/gcsp/presenter-controls/controls.js": "6949e3dc394b3da0392864cde322854a6522a2fa60b824dc7edb0ee6a90c77e6",
+        "blocks/gcsp/presenter-controls/harness.js": "dabc7b77abea5c5a9fbfcadb7545f88e61a63dc3785c2e027babbf66e2d0a8a6",
+        "blocks/gcsp/presenter-controls/http-adapter.js": "3f4aa95412149f1f987024d6f755b6c02852c81ae561db0ff784dc3317121ab4",
+        "blocks/gcsp/presenter-controls/presenter-controls.css": "16019729302a04dad227e8f378bee9ca42a8ed64df29db7c404733386a5965d0",
+        "blocks/gcsp/presenter-controls/register.js": "b11469473660d995585032d8a2eaa5aa3c106c302f303224864245b191b72573",
+        "blocks/gcsp/presenter-controls/workspace.js": "cc8130f5708781c45afb5fdcd88fd10cffaf002c2d35224c0393b523c6efafc3",
+        "blocks/gcsp/presenter/fixtures.js": "5e9544b338860b823619c86b3e10687f29f04f5be567a8c799cc2349e1aa7719",
+        "blocks/gcsp/presenter/gcsp-outbox.js": "df0ff1834a97a60f19f5c91e67ae0884b230dec90608abc1009e2f2857dfbffd",
+        "blocks/gcsp/presenter/gcsp-presenter.css": "7a846ceded45a3ef47ea63df492282916c664185e28163c3da4f3c4d78be288d",
+        "blocks/gcsp/presenter/harness.js": "ec7ddc6f79b94d23aa487052bef7d9c783c2198e65eb4abbb513d0df8ab87800",
+        "blocks/gcsp/presenter/http-adapter.js": "ff165c79814edfcbfbc39185a314618fb69fdc71f1705a1c307e38e48a289edd",
+        "blocks/gcsp/presenter/message-list.js": "93c9574c00f270ca96bedace1a0014617089443df46ef08bc4e2816b26ef68e7",
+        "blocks/gcsp/presenter/outbox-copy.js": "a42807da17980b770408e6d1f83e470fec30ebe09aed3ffd40e230cc05ab779d",
+        "blocks/gcsp/presenter/register.js": "a057ab7ab4a4612e05177c608c55aaf1d2d46dede7535ea9912494a9d090d7e8",
+        "blocks/gcsp/shell/account-runtime.js": "bb6258837173db7965900b147f533e1e2d1a1a5c5152677ebfb826c0efea6ff4",
+        "blocks/gcsp/shell/density-theme.css": "c2a680854e05bf88edc335308797b636038ff5bdd980f101e8f32edd451f3593",
+        "blocks/gcsp/shell/density-typography.css": "6d238b5c4dee9058e9fd32e0e5704e95a94eb7e5cdc82c9fb051534d6ea44641",
+        "blocks/gcsp/shell/fonts/BMWGroupTNCondensedPro-Medium.woff": "1db2f9dca559860c9519307cbae5cd0bcf557f0b80b6666e580c1492e49f3aee",
+        "blocks/gcsp/shell/fonts/BMWGroupTNCondensedPro-Medium.woff2": "66ecd7139a12627c60c78755cbf664cdca10df33f22a6426ec2693a38d8a5286",
+        "blocks/gcsp/shell/fonts/density-fonts.css": "bf13d49ea7fc1d75888a06881e2ce1a0151875a69177c937045ea86ce4ac1e7c",
+        "blocks/gcsp/shell/gcsp-shell.css": "31a210429d8e8c645acba67f159ca054c72228a83fc39d1b6a3f36a65e2b823a",
+        "blocks/gcsp/shell/gcsp-tokens.css": "3a4b773eb4e67734cead53956e39323d3050af6e35465b6c275084096ed93cde",
+        "blocks/gcsp/shell/portal-shell.js": "3ab99dadb1c5b58e038474339b2759c7cbcb118cbdff79cbb44e050b7a2ad64e",
+        "blocks/vehicle-matcher/component-gallery.js": "dee0ea9a567ba9cb459c7c77b4ad896af9ff2f38c7040ddcbd902fa5ea517aa0",
+        "gcsp-presenter.html": "ff00a6784b38e8142dfe90d7ccf3af510a1c95ce32477a65af71b70f0b23e71e",
+        "server/test/gcsp-presenter-controls-render.test.js": "716992a6c863c904b2ee4eca9bfba507dab0a74ec141b853c944994120f01d7a",
+        "server/test/ui-ratchet.json": "a2fec2e0bb9ddd86362792f65501436b5ec325cdb21b10d9973f72e3b81fe327"
+      },
+      "head": "68eded507a82fc7dc95add9fd6125ea57ae3553c"
+    }
+  }
+}

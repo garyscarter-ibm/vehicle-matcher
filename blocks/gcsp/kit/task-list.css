@@ -1,0 +1,15 @@
+/* Shared owned task list. Overdue and failed carry their own text; the outline only reinforces it. */
+.gcsp .gcsp-task-heading { margin: 0 0 12px; font-size: 20px; font-weight: 600; line-height: 1.25; }
+.gcsp .gcsp-task-group + .gcsp-task-group { margin-top: 24px; }
+.gcsp .gcsp-task-group-heading { margin: 0 0 8px; font-size: 16px; font-weight: 600; }
+.gcsp .gcsp-task-items { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.gcsp .gcsp-task { display: grid; justify-items: start; gap: 4px; padding: 14px 16px; background: var(--gcsp-surface-raised); border: 1px solid var(--gcsp-divider); border-radius: var(--gcsp-radius); min-width: 0; }
+.gcsp .gcsp-task.is-overdue { border-color: var(--gcsp-warning); }
+.gcsp .gcsp-task.is-failed { border: 2px dashed var(--gcsp-danger); }
+.gcsp .gcsp-task.is-done .gcsp-task-label { color: var(--gcsp-text-muted); }
+.gcsp .gcsp-task-label { margin: 0; font-size: 16px; font-weight: 600; overflow-wrap: anywhere; }
+.gcsp .gcsp-task-flag { margin: 0; font-size: 14px; font-weight: 600; overflow-wrap: anywhere; }
+.gcsp .gcsp-task.is-overdue .gcsp-task-flag { color: var(--gcsp-warning); }
+.gcsp .gcsp-task.is-failed .gcsp-task-flag { color: var(--gcsp-danger); }
+.gcsp .gcsp-task-meta, .gcsp .gcsp-task-detail, .gcsp .gcsp-task-reason, .gcsp .gcsp-task-empty { margin: 0; font-size: 14px; color: var(--gcsp-text-muted); overflow-wrap: anywhere; }
+.gcsp .gcsp-task .vm-btn { margin-top: 8px; max-width: 100%; }

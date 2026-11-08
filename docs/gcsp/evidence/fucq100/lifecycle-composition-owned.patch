@@ -1,0 +1,46 @@
+--- a/server/gcsp/runtime.js
++++ b/server/gcsp/runtime.js
+@@ -26,0 +27,6 @@
++import { createSyntheticOrderingAdapter } from './adapters/synthetic-ordering.js';
++import { createSyntheticOrderingStatus } from './adapters/synthetic-ordering-status.js';
++import { createSyntheticDocumentStatus } from './adapters/synthetic-ordering-documents.js';
++import { createLifecycleApprovalService } from './lifecycle/approvals/index.js';
++import { createLifecycleDocumentService } from './lifecycle/documents/index.js';
++import { createManualOrderService, createManualOrderConversion } from './manual-order/index.js';
+@@ -93,0 +100,8 @@
++    const orderingAdapter = createSyntheticOrderingAdapter({ repository });
++    orderingAdapter.status = createSyntheticOrderingStatus({ repository });
++    orderingAdapter.documentStatus = createSyntheticDocumentStatus({ repository });
++    const manualOrder = createManualOrderService({ repository, policy, clock, identity, adapter: orderingAdapter,
++      converters: { cart: createManualOrderConversion({ claims: manualClaims, manual: account }) } });
++    const lifecycle = createLifecycleApprovalService({ repository, policy, clock, identity, status: orderingAdapter.status });
++    const documents = createLifecycleDocumentService({ repository, policy, clock, identity,
++      lifecycleStages: lifecycle.stagePort(), provider: orderingAdapter.documentStatus });
+@@ -109 +123,3 @@
+-      gcspStockRelease: stockRelease, gcspCases: cases, gcspBuddy: buddy, gcspOfferAccess: offerAccess,
++      gcspStockRelease: stockRelease, gcspCases: cases, gcspManualOrder: manualOrder,
++      gcspLifecycle: lifecycle, gcspDocuments: documents,
++      gcspBuddy: buddy, gcspOfferAccess: offerAccess,
+@@ -130 +146 @@
+-    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, manualRead, manualReview, stockRelease, releaseHistory, cases, buddy, offerAccess, offerDecisions, offerFollowup, resolveOfferAccess, notify, dependencies, createLocalSession, close });
++    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, manualRead, manualReview, manualOrder, stockRelease, releaseHistory, cases, orderingAdapter, lifecycle, documents, buddy, offerAccess, offerDecisions, offerFollowup, resolveOfferAccess, notify, dependencies, createLocalSession, close });
+--- a/server/index.js
++++ b/server/index.js
+@@ -61,0 +62,2 @@
++import { createLifecycleApprovalRoutes } from './gcsp/lifecycle/approvals/http.js';
++import { createDocumentRoutes } from './gcsp/lifecycle/documents/http.js';
+@@ -881,0 +884 @@
++    ...createLifecycleApprovalRoutes(deps.gcspLifecycle), ...createDocumentRoutes(deps.gcspDocuments),
+@@ -913,0 +917,12 @@
++    }
++    if (deps.gcspManualOrder) {
++      const ordering = await deps.gcspManualOrder.registerClockHandler();
++      if (ordering.status !== 'ok') return ordering;
++    }
++    if (deps.gcspLifecycle) {
++      const lifecycle = await deps.gcspLifecycle.start();
++      if (lifecycle.status !== 'ok') return lifecycle;
++    }
++    if (deps.gcspDocuments) {
++      const documents = await deps.gcspDocuments.start();
++      if (documents.status !== 'ok') return documents;

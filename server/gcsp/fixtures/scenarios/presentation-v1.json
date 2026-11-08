@@ -1,5 +1,5 @@
 {
-  "description": "Verified backend projection for later presenter controls. Fictional mechanics succeeds; six real journey service preparations remain unavailable.",
+  "description": "Verified backend projection for later presenter controls. Fictional mechanics succeeds; main-successful-journey and decline-then-change have reviewed start loaders and four journey service preparations remain unavailable.",
   "catalogueVersion": "gcsp-scenario-catalogue-v1",
   "journeyIds": ["main-successful-journey", "no-suitable-match", "decline-then-change", "offer-expires", "data-unavailable", "uncertain-handoff"],
   "mechanics": {

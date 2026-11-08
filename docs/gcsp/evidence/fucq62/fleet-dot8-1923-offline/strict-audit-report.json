@@ -1,0 +1,220 @@
+{
+  "acceptanceLimits": [
+    "Actual full-target source corpus and declared coverage remain required for story acceptance.",
+    "Stock references are supplied through the repository seam; no native PostgreSQL or stock generation proof is inferred.",
+    "Restart, activation interruption and rollback are tested in owned fixtures; this command does not mutate the active store."
+  ],
+  "activation": {
+    "loaderStatus": "ok",
+    "recovered": false
+  },
+  "activeStore": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot8-1923-20261107/isolated-store",
+  "actual": {
+    "completeResolvedDistinct": 1923,
+    "completeness": {
+      "imagesMissing": 1922,
+      "selectedOptions": {
+        "complete": 1923,
+        "unknown": 1
+      },
+      "sourceKinds": {
+        "dated-snapshot": 1923,
+        "north-american-reference": 1
+      }
+    },
+    "configurations": 1924,
+    "coverage": {
+      "markets": {
+        "GB": 1923,
+        "US": 1
+      },
+      "models": {
+        "430i": 1,
+        "unknown": 1923
+      },
+      "steering": {
+        "LHD": 1,
+        "unknown": 1923
+      },
+      "wmis": {
+        "WBA": 1
+      }
+    },
+    "distinctConfigurations": 1924,
+    "distributions": {
+      "body": {
+        "omittedCategories": 0,
+        "values": {
+          "Convertible": 1,
+          "unknown": 1923
+        }
+      },
+      "factoryOptionCount": {
+        "omittedCategories": 0,
+        "values": {
+          "1": 1,
+          "35": 48,
+          "36": 96,
+          "42": 8,
+          "43": 195,
+          "45": 325,
+          "47": 49,
+          "48": 73,
+          "49": 23,
+          "50": 23,
+          "51": 332,
+          "52": 44,
+          "53": 170,
+          "54": 9,
+          "56": 268,
+          "58": 260
+        }
+      },
+      "imageFidelity": {
+        "omittedCategories": 0,
+        "values": {
+          "representative-configuration": 2
+        }
+      },
+      "model": {
+        "omittedCategories": 0,
+        "values": {
+          "430i": 1,
+          "unknown": 1923
+        }
+      },
+      "powertrain": {
+        "omittedCategories": 0,
+        "values": {
+          "petrol": 1,
+          "unknown": 1923
+        }
+      },
+      "sourceKind": {
+        "omittedCategories": 0,
+        "values": {
+          "dated-snapshot": 1923,
+          "north-american-reference": 1
+        }
+      },
+      "unresolvedFacts": {
+        "omittedCategories": 0,
+        "values": {
+          "agModelCode": 1,
+          "body": 1923,
+          "derivative": 1923,
+          "drive": 1923,
+          "engineCode": 1924,
+          "exactEquipment": 1,
+          "exactTrim": 1,
+          "model": 1923,
+          "modelYear": 1923,
+          "plant": 1923,
+          "powertrain": 1923,
+          "productionDate": 1924,
+          "productionEra": 1923,
+          "region": 1923,
+          "registrationDate": 1,
+          "steering": 1923,
+          "transmission": 1924,
+          "vgModelCode": 1
+        }
+      }
+    },
+    "images": 2,
+    "nonQualifyingConfigurations": 1,
+    "omittedCoverageCategories": {
+      "markets": 0,
+      "models": 0,
+      "steering": 0,
+      "wmis": 0
+    },
+    "qualifyingCompleteDistinctSourceConfigurations": 1923,
+    "sourceConfigurations": 1923,
+    "vinMappings": 1
+  },
+  "audit": {
+    "checked": 1925,
+    "concurrency": 1,
+    "elapsedMs": 13249.239291999998,
+    "environment": {
+      "arch": "arm64",
+      "node": "v26.7.0",
+      "platform": "darwin"
+    },
+    "errors": 469,
+    "latencyMs": {
+      "count": 1925,
+      "max": 16.50762499999837,
+      "min": 6.299667000002955,
+      "p50": 6.738582999998471,
+      "p95": 7.713208000001032,
+      "p99": 9.02716600000349
+    },
+    "records": {
+      "configurations": 1924,
+      "stockReferences": 0,
+      "vinMappings": 1
+    },
+    "scope": "all-records",
+    "stockScope": "not-supplied",
+    "throughputPerSecond": 145.29136032453812
+  },
+  "egress": {
+    "control": "blocked",
+    "externalCalls": 0,
+    "scope": "this-audit-process",
+    "sourceCalls": 0
+  },
+  "http": {
+    "concurrency": 1,
+    "elapsedMs": 418.401249999999,
+    "endpoint": "http://127.0.0.1:63665",
+    "errors": 0,
+    "latencyMs": {
+      "count": 1024,
+      "max": 5.6556670000027225,
+      "min": 0.29470800000126474,
+      "p50": 0.3934159999989788,
+      "p95": 0.44741699999940465,
+      "p99": 0.5631250000005821
+    },
+    "requests": 1024,
+    "scope": "deterministic-even-sample",
+    "serverClosed": true,
+    "throughputPerSecond": 2447.4114262325998,
+    "totalRecords": 1925
+  },
+  "limitations": [
+    "Compatible profile-family coverage is not inferred from configuration IDs or VIN spelling.",
+    "Staged verification does not establish source-operation budgets, collection replay or full story acceptance.",
+    "Unknown measurements, missing images and representative image fidelity remain explicit; no stock, eligibility or points facts are inferred."
+  ],
+  "manifest": {
+    "datasetId": "gcsp-source-fleet",
+    "generatorVersion": "synthetic-identities.sha256-v1",
+    "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/fleet-dot8-1923-20261107/isolated-store/versions/9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043/manifest.json",
+    "profileRegistryVersion": "vin-profiles.v1",
+    "schemaVersion": "1",
+    "sha256": "9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043",
+    "signaturePolicyVersion": "gcsp-policy-v1",
+    "version": "2026-11-07.8"
+  },
+  "planned": {
+    "exclusions": [],
+    "families": [],
+    "familyCount": 0,
+    "omittedFamilies": 0,
+    "provided": false
+  },
+  "qualification": "bounded-fixture-or-partial-corpus",
+  "reason": {
+    "code": "active-reconciliation-failed",
+    "message": "Actual loaded records, consuming port, HTTP parity or offline boundaries failed."
+  },
+  "requiredDistinct": 1923,
+  "shortfall": 0,
+  "status": "invalid-active",
+  "storyAcceptance": "not-established",
+  "targetMet": false
+}

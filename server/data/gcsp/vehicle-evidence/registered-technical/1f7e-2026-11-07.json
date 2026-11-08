@@ -1,0 +1,129 @@
+{
+  "schemaVersion": "bmw-technical-supplement.v1",
+  "configurationId": "MUY3RTpGS1VLUCxQMEM0UCxTMDFDQixTMDFDRSxTMDFERixTMDFIOCxTMDIzMCxTMDJQQSxTMDJURSxTMDJWQixTMDJWRCxTMDJWRixTMDMwMixTMDMzNyxTMDMzQixTMDNNMixTMDNNRixTMDQyMCxTMDQyOCxTMDQzWixTMDQ3OCxTMDQ4MSxTMDQ5NCxTMDRHUSxTMDUzNCxTMDU1MixTMDVBQyxTMDVBUyxTMDVBVixTMDVETSxTMDY1NCxTMDZBRSxTMDZBRixTMDZQQSxTMDcxMCxTMDc1NCxTMDc2MCxTMDc3NSxTMDdNOSxTMDgxMixTMDg1MCxTMDg1MyxTMDg4SyxTMDhLQSxTMDhSMyxTMDhSOSxTMDhTTSxTMDhURixTMDhURyxTMDlUMSxTMDlUMg==",
+  "bindingDigest": "e6b76de9ba2560c6805021b3968fd9c99710674c702addd2182039ea19e1a77f",
+  "catalogueDigest": "704064fb5bdbfe908f887eac3fb807ef55e4df44750c19968d0a2c39de510bc6",
+  "facts": {
+    "seats": {
+      "state": "known",
+      "value": 5,
+      "definition": "SEATS",
+      "unit": "COUNT",
+      "reason": null,
+      "completeness": "complete",
+      "provenance": {
+        "kind": "observed",
+        "source": "BMW UK OTD",
+        "observedDate": "2026-11-07"
+      }
+    },
+    "luggageNormal": {
+      "state": "known",
+      "value": 300,
+      "definition": "NORMAL",
+      "unit": "LITRES",
+      "reason": null,
+      "completeness": "complete",
+      "provenance": {
+        "kind": "observed",
+        "source": "BMW UK OTD",
+        "observedDate": "2026-11-07"
+      }
+    },
+    "luggageExpanded": {
+      "state": "known",
+      "value": 1135,
+      "definition": "EXPANDED",
+      "unit": "LITRES",
+      "reason": null,
+      "completeness": "complete",
+      "provenance": {
+        "kind": "observed",
+        "source": "BMW UK OTD",
+        "observedDate": "2026-11-07"
+      }
+    },
+    "acceleration": {
+      "state": "known",
+      "value": 7.8,
+      "definition": "0–100 KM/H",
+      "unit": "SECONDS",
+      "reason": null,
+      "completeness": "complete",
+      "provenance": {
+        "kind": "observed",
+        "source": "BMW UK OTD",
+        "observedDate": "2026-11-07"
+      }
+    }
+  },
+  "measurementEvidence": {
+    "seats": {
+      "sourceCode": "N_SITZE",
+      "sourcePointer": "/values/N_SITZE",
+      "sourceUnit": null,
+      "unitAuthority": "approved-reference-code-mapping",
+      "meaningAuthority": "approved-reference-code-mapping",
+      "mappingVersion": "bmw-otd-reference-code-mapping.v1",
+      "mappingDigest": "df2b37a06501d5c0fe03c29193b99d0755cb9c0254f22936e934c7e77705b5ac",
+      "retainedSha256": "b9faeb98e45ee770d24db8f85881f6c9145f9abfb2939c71ab24c738de9e4735",
+      "responseSha256": "a11eaf979cbfeedbcc639b9367937fd08ddfbfb866855fdddd4cca5c4634ca68"
+    },
+    "luggageNormal": {
+      "sourceCode": "A_GEPR_V211",
+      "sourcePointer": "/values/A_GEPR_V211",
+      "sourceUnit": null,
+      "unitAuthority": "approved-reference-code-mapping",
+      "meaningAuthority": "approved-reference-code-mapping",
+      "mappingVersion": "bmw-otd-reference-code-mapping.v1",
+      "mappingDigest": "df2b37a06501d5c0fe03c29193b99d0755cb9c0254f22936e934c7e77705b5ac",
+      "retainedSha256": "b9faeb98e45ee770d24db8f85881f6c9145f9abfb2939c71ab24c738de9e4735",
+      "responseSha256": "a11eaf979cbfeedbcc639b9367937fd08ddfbfb866855fdddd4cca5c4634ca68"
+    },
+    "luggageExpanded": {
+      "sourceCode": "A_GEPR_V214",
+      "sourcePointer": "/values/A_GEPR_V214",
+      "sourceUnit": null,
+      "unitAuthority": "approved-reference-code-mapping",
+      "meaningAuthority": "approved-reference-code-mapping",
+      "mappingVersion": "bmw-otd-reference-code-mapping.v1",
+      "mappingDigest": "df2b37a06501d5c0fe03c29193b99d0755cb9c0254f22936e934c7e77705b5ac",
+      "retainedSha256": "b9faeb98e45ee770d24db8f85881f6c9145f9abfb2939c71ab24c738de9e4735",
+      "responseSha256": "a11eaf979cbfeedbcc639b9367937fd08ddfbfb866855fdddd4cca5c4634ca68"
+    },
+    "acceleration": {
+      "sourceCode": "E_0_100KMH",
+      "sourcePointer": "/values/E_0_100KMH",
+      "sourceUnit": null,
+      "unitAuthority": "approved-reference-code-mapping",
+      "meaningAuthority": "approved-reference-code-mapping",
+      "mappingVersion": "bmw-otd-reference-code-mapping.v1",
+      "mappingDigest": "df2b37a06501d5c0fe03c29193b99d0755cb9c0254f22936e934c7e77705b5ac",
+      "retainedSha256": "b9faeb98e45ee770d24db8f85881f6c9145f9abfb2939c71ab24c738de9e4735",
+      "responseSha256": "a11eaf979cbfeedbcc639b9367937fd08ddfbfb866855fdddd4cca5c4634ca68"
+    }
+  },
+  "source": {
+    "provider": "bmw-uk-public-otd",
+    "sourceVersion": "f60-enrichment-observation-20261107.v1",
+    "outcome": "ok",
+    "sourceKind": "dated-snapshot",
+    "transportKind": "live",
+    "observedDate": "2026-11-07",
+    "retrievedDate": "2026-11-07",
+    "responseSha256": "a11eaf979cbfeedbcc639b9367937fd08ddfbfb866855fdddd4cca5c4634ca68",
+    "retainedSha256": "b9faeb98e45ee770d24db8f85881f6c9145f9abfb2939c71ab24c738de9e4735",
+    "requestRegistrationDigest": "30d599e2d9dda6aa2b06baaff2048708892ac191ed1833ef1dc02b2b2de41b0c",
+    "acceptedLineSha256": "cf62b45203b45bc00bf6562141c7df28c3527490ef6a7886da0c981548e5317c",
+    "bindingDigest": "e6b76de9ba2560c6805021b3968fd9c99710674c702addd2182039ea19e1a77f",
+    "mappingAuthority": {
+      "version": "bmw-otd-reference-code-mapping.v1",
+      "digest": "df2b37a06501d5c0fe03c29193b99d0755cb9c0254f22936e934c7e77705b5ac",
+      "source": "existing-bmw-catalogue-adapter-reference-code-mapping"
+    }
+  },
+  "qualification": {
+    "path": "docs/gcsp/evidence/fucq60/qualified-image-boundary-2026-11-07/qualified-enrichment.json",
+    "sha256": "0d41ae157a325a00851af87b6314fb06f4d707aee1d726e1500243cb54d8ff79"
+  }
+}

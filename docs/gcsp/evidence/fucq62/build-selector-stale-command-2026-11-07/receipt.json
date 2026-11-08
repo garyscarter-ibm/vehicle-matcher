@@ -1,0 +1,409 @@
+{
+  "acceptance": false,
+  "agents": [
+    {
+      "descendants": 0,
+      "effectiveRuntimeVerified": false,
+      "name": "Minnie Mouse",
+      "requestedEffort": "medium",
+      "requestedModel": "gpt-6.1-sol",
+      "selectedEffort": "medium",
+      "selectedModel": "gpt-6.1-sol"
+    }
+  ],
+  "baseCommit": "df3f3f43",
+  "change": "Share existing code-approved Blueprint selector with known GCSP Render restore/download CLI. Other service/operator/offline/pack selection remains explicit. No production artifact restore or runtime lookup change.",
+  "changedPaths": [
+    "server/scripts/prepare-fleet-build.mjs",
+    "server/scripts/fleet-artifacts.mjs",
+    "server/test/gcsp-fleet-build-entry.test.js"
+  ],
+  "codeIdentity": "f0052f5858af5a2474570d42cede5d7dd63005145d60b0f8e6e9804c38403b24",
+  "codeIdentityAlgorithm": "SHA256 of UTF-8 JSON codePins with sorted keys and compact separators",
+  "codePins": {
+    "render.gcsp.yaml": "973657b5de11dbbf341156a8f8a2abaf70f0e81bf8e5adcd555239aa9580aa60",
+    "scripts/gcsp/fleet-offline-guard.mjs": "881926639dfab681a917212696e50c6420a0a2b0dcd66dd1a126950283239e59",
+    "server/gcsp/policy/index.js": "710f500ac7a601a2f08ed9b76f883917878826c25f069bcfc5275ba7460a8ff0",
+    "server/gcsp/vehicle-evidence/corpus-publisher.js": "fa1618642c137c8aa2c0d7749d91e749554bcca6608bac71ae527b147c9ef9bc",
+    "server/gcsp/vehicle-evidence/fleet-artifacts.js": "0bb5079b92a0a8df997708a6f266a2de84603ebd53efdf291a15edffd0d92811",
+    "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "600691740887daee2e4380189872b76a62273d6629c0bba0b25f46ff6921d774",
+    "server/gcsp/vehicle-evidence/registered-corpus-images.js": "47d27d11406e5ffe05790be8893395b6399b142d8befd268d30b5c60407b9e8e",
+    "server/package.json": "2f4a5fb161b15aa241fbd1d23e82fd319f916fffd30bb7167fae0b71f68044e8",
+    "server/scripts/fleet-artifacts.mjs": "172957a2ba83223190ce83f9dfa175162d899ca86e527d731b6e93bd88fe33bc",
+    "server/scripts/prepare-fleet-build.mjs": "5b56c3d58ee17052d2232050b7c23b4f1395a8cbf1b9ee5c6d181ea4926ec39c",
+    "server/test/gcsp-fleet-build-entry.test.js": "4a7bd852ef1a3938bd4806c4a4475b43c5b0e949fe7a1ee1c845dedd1d31f06d",
+    "server/test/gcsp-fleet-image-cli.test.js": "0b38050a176b55fb7b5c2f83b6c9c5bda7a2dfdc62483e5a8374f7788a8052de",
+    "server/test/helpers/vin-corpus-fixture.js": "d4c0d32fc502ea8b4fa8bf63cc6103c18f83ca2a8db28eefe83e3d71df09e4de",
+    "server/test/render-blueprint.test.js": "e798fc156851afb60d0d378feb8f9d22d69fe9ee686a049e6e31c2c118d16358"
+  },
+  "control": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f62/build-selector-stale-command-032-20261107",
+  "coverage": {
+    "functions": {
+      "scripts/fleet-artifacts.mjs": [
+        "<module>"
+      ],
+      "scripts/prepare-fleet-build.mjs": [
+        "<module>",
+        "prepareFleetBuild",
+        "resolveFleetBuildRelease"
+      ],
+      "test/gcsp-fleet-build-entry.test.js": [
+        "<module>",
+        "restore",
+        "runArtifactCommand"
+      ],
+      "test/render-blueprint.test.js": [
+        "<module>"
+      ]
+    },
+    "scope": "aggregate V8 process/function contexts from the required scoped run; per-test attribution unsupported"
+  },
+  "deployed": false,
+  "diagnosis": {
+    "paths": "Build and runtime default stores are both module-relative server/data/gcsp/vehicle-evidence/fleet-source.v1. No cwd/port defect identified.",
+    "policyBoundary": "Actual Render build still uses its configured policy/database through unchanged restore code; local CLI fixtures do not establish native policy or deployment success.",
+    "provenCodePath": "Explicit build flag skips install restore; prior CLI accepted stale dashboard --release verbatim. Healthy runtime checks valid active corpus, not expected release.",
+    "remoteCause": "Stale dashboard command is a hypothesis; authenticated Render logs/settings were not obtained."
+  },
+  "finalPhase": "green3",
+  "finalSelectedChecks": [
+    "server/test/gcsp-fleet-build-entry.test.js",
+    "server/test/render-blueprint.test.js"
+  ],
+  "fullRestoreExecuted": false,
+  "fullSuiteExecuted": false,
+  "historicalCodeIdentity": "2315d796d71890337da49acebf6fb6ec6dd7075a1607877575b4c9171e5bb5f8",
+  "impactMap": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/test-runs/impact/f62-stale-render-selector-f0052f5858af5a24.json",
+  "limitations": [
+    "Live .10 mismatch remains an actual blocker until root merges/deploys and expected .12 is observed.",
+    "The candidate stale-command path is locally reproduced but not established as the actual remote configuration.",
+    "No source/corpus restore, network, native database, browser or deployment operation ran.",
+    "Existing deferred consumer/cache defects and historical failed/skipped/unrun results remain unchanged.",
+    "No Q13 identity/profile scope or acceptance requirement changes.",
+    "The two owning image CLI tests failed before their CLI boundary at unchanged fixture line35; owning cold/repeated restore and verifier checks remain unproved by this run. Medium Bug payload is queued, not created in Jira while OAuth is blocked."
+  ],
+  "observedLiveBlocker": {
+    "actualManifestDigest": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+    "expectedManifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+    "healthStatus": 200,
+    "observedAt": "2026-11-07T11:59:45Z",
+    "readiness": "ready",
+    "readinessStatus": 200,
+    "remainsUnresolvedByThisTask": true,
+    "runCommit": "df3f3f43",
+    "runId": 42370480081,
+    "source": "Root-provided actual Linux public readback result; no remote log/settings access by this task"
+  },
+  "originalSupervisorSha256": "23a3090d2d47a74d11a7d6f47433c80637c1afd179b1a38cc590ab9d83aea2fe",
+  "phases": [
+    {
+      "cleanup": {
+        "compatibilityException": null,
+        "groups": [
+          {
+            "liveMembers": false,
+            "pgid": 52665
+          }
+        ],
+        "groupsAbsent": true,
+        "leftovers": [],
+        "ownedDependencyLinkAbsent": true,
+        "removedScratchBytes": 1360224,
+        "reservationAbsent": true,
+        "scratchAbsent": true,
+        "vendorDirectoryIdentityUnchanged": true
+      },
+      "counts": {
+        "fail": 2,
+        "pass": 7,
+        "skipped": 0,
+        "tests": 9
+      },
+      "issue": null,
+      "issue_kind": null,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f62/build-selector-stale-command-032-20261107/red/command.log",
+      "logSha256": "a0d4f18a25d54a9d527fcb48c6bbd0e952a9525ee7948a7b4ab8cc9d3980a70a",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f62/build-selector-stale-command-032-20261107/red/ownership/f6fe78b58fb84b1397e0bc67bb6f3cb6.json",
+      "ownershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f62/build-selector-stale-command-032-20261107/red/ownership/f6fe78b58fb84b1397e0bc67bb6f3cb6.json",
+      "peak_rss": 107659264,
+      "peak_scratch": 1360224,
+      "phase": "red",
+      "rc": 1,
+      "scratchRoot": "/private/tmp/test-stamp-shard-f6fe78b58fb84b1397e0bc67bb6f3cb6",
+      "wall": 0.7235892089956906
+    },
+    {
+      "cleanup": {
+        "compatibilityException": null,
+        "groups": [
+          {
+            "liveMembers": false,
+            "pgid": 52932
+          }
+        ],
+        "groupsAbsent": true,
+        "leftovers": [],
+        "ownedDependencyLinkAbsent": true,
+        "removedScratchBytes": 2105792,
+        "reservationAbsent": true,
+        "scratchAbsent": true,
+        "vendorDirectoryIdentityUnchanged": true
+      },
+      "counts": {
+        "fail": 0,
+        "pass": 9,
+        "skipped": 0,
+        "tests": 9
+      },
+      "issue": null,
+      "issue_kind": null,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f62/build-selector-stale-command-032-20261107/green/command.log",
+      "logSha256": "d862caae7d710adf5ac2f66215d6fe82d878c9fa590f0383616d2337da7bd98a",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f62/build-selector-stale-command-032-20261107/green/ownership/457d478fceed4d6c90c88411ee9afa71.json",
+      "ownershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f62/build-selector-stale-command-032-20261107/green/ownership/457d478fceed4d6c90c88411ee9afa71.json",
+      "peak_rss": 136658944,
+      "peak_scratch": 2105792,
+      "phase": "green",
+      "rc": 0,
+      "scratchRoot": "/private/tmp/test-stamp-shard-457d478fceed4d6c90c88411ee9afa71",
+      "wall": 0.9502419999917038
+    },
+    {
+      "cleanup": {
+        "compatibilityException": null,
+        "groups": [
+          {
+            "liveMembers": false,
+            "pgid": 54408
+          }
+        ],
+        "groupsAbsent": true,
+        "leftovers": [],
+        "ownedDependencyLinkAbsent": true,
+        "removedScratchBytes": 4872380,
+        "reservationAbsent": true,
+        "scratchAbsent": true,
+        "vendorDirectoryIdentityUnchanged": true
+      },
+      "counts": {
+        "fail": 2,
+        "pass": 9,
+        "skipped": 0,
+        "tests": 11
+      },
+      "issue": null,
+      "issue_kind": null,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f62/build-selector-stale-command-032-20261107/green2/command.log",
+      "logSha256": "e26e247c762b6a1195e36309ec36ffc68a25f97e5d0a0ed85580801e279b2f0f",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f62/build-selector-stale-command-032-20261107/green2/ownership/bd011132b0664a5fa00bd0cffd4dde4e.json",
+      "ownershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f62/build-selector-stale-command-032-20261107/green2/ownership/bd011132b0664a5fa00bd0cffd4dde4e.json",
+      "peak_rss": 158826496,
+      "peak_scratch": 4872380,
+      "phase": "green2",
+      "rc": 1,
+      "scratchRoot": "/private/tmp/test-stamp-shard-bd011132b0664a5fa00bd0cffd4dde4e",
+      "selectedCommand": [
+        "/opt/homebrew/bin/node",
+        "--max-old-space-size=256",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-fleet-build-entry.test.js",
+        "server/test/render-blueprint.test.js",
+        "server/test/gcsp-fleet-image-cli.test.js"
+      ],
+      "testedPins": {
+        "render.gcsp.yaml": "973657b5de11dbbf341156a8f8a2abaf70f0e81bf8e5adcd555239aa9580aa60",
+        "scripts/gcsp/fleet-offline-guard.mjs": "881926639dfab681a917212696e50c6420a0a2b0dcd66dd1a126950283239e59",
+        "server/gcsp/vehicle-evidence/fleet-artifacts.js": "0bb5079b92a0a8df997708a6f266a2de84603ebd53efdf291a15edffd0d92811",
+        "server/gcsp/vehicle-evidence/fleet-release.js": "1cadb13cbd9851eea93be14096328353970e3210b4f00e1ecf5ae8362f6289b4",
+        "server/gcsp/vehicle-evidence/fleet-releases.json": "e13a5f99167bea65cc9a04e6eae41cec56b55caaa229b640e0e47b20f44301e0",
+        "server/gcsp/vehicle-evidence/registered-corpus-images.js": "47d27d11406e5ffe05790be8893395b6399b142d8befd268d30b5c60407b9e8e",
+        "server/package.json": "2f4a5fb161b15aa241fbd1d23e82fd319f916fffd30bb7167fae0b71f68044e8",
+        "server/scripts/fleet-artifacts.mjs": "172957a2ba83223190ce83f9dfa175162d899ca86e527d731b6e93bd88fe33bc",
+        "server/scripts/prepare-fleet-build.mjs": "5b56c3d58ee17052d2232050b7c23b4f1395a8cbf1b9ee5c6d181ea4926ec39c",
+        "server/test/gcsp-fleet-build-entry.test.js": "b70df015fbe1f4a8e1f4f69fea8a93a78b9aa3a6eaae0c90520fbbe66f5b01aa",
+        "server/test/gcsp-fleet-image-cli.test.js": "0b38050a176b55fb7b5c2f83b6c9c5bda7a2dfdc62483e5a8374f7788a8052de",
+        "server/test/helpers/vin-corpus-fixture.js": "d4c0d32fc502ea8b4fa8bf63cc6103c18f83ca2a8db28eefe83e3d71df09e4de",
+        "server/test/render-blueprint.test.js": "e798fc156851afb60d0d378feb8f9d22d69fe9ee686a049e6e31c2c118d16358"
+      },
+      "wall": 1.204160374996718
+    },
+    {
+      "cleanup": {
+        "compatibilityException": null,
+        "groups": [
+          {
+            "liveMembers": false,
+            "pgid": 54864
+          }
+        ],
+        "groupsAbsent": true,
+        "leftovers": [],
+        "ownedDependencyLinkAbsent": true,
+        "removedScratchBytes": 2044352,
+        "reservationAbsent": true,
+        "scratchAbsent": true,
+        "vendorDirectoryIdentityUnchanged": true
+      },
+      "counts": {
+        "fail": 0,
+        "pass": 9,
+        "skipped": 0,
+        "tests": 9
+      },
+      "issue": null,
+      "issue_kind": null,
+      "log": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f62/build-selector-stale-command-032-20261107/green3/command.log",
+      "logSha256": "01e2b5ff479a625ea2a037ea3e5a80a895726cd75d51945a81d8ed5714ee1ac5",
+      "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f62/build-selector-stale-command-032-20261107/green3/ownership/b2e00d6cd6d14e9e8654fdebba5824b6.json",
+      "ownershipManifest": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f62/build-selector-stale-command-032-20261107/green3/ownership/b2e00d6cd6d14e9e8654fdebba5824b6.json",
+      "peak_rss": 152846336,
+      "peak_scratch": 2044352,
+      "phase": "green3",
+      "rc": 0,
+      "scratchRoot": "/private/tmp/test-stamp-shard-b2e00d6cd6d14e9e8654fdebba5824b6",
+      "selectedCommand": [
+        "/opt/homebrew/bin/node",
+        "--max-old-space-size=256",
+        "--test",
+        "--test-concurrency=1",
+        "server/test/gcsp-fleet-build-entry.test.js",
+        "server/test/render-blueprint.test.js"
+      ],
+      "testedPins": {
+        "render.gcsp.yaml": "973657b5de11dbbf341156a8f8a2abaf70f0e81bf8e5adcd555239aa9580aa60",
+        "scripts/gcsp/fleet-offline-guard.mjs": "881926639dfab681a917212696e50c6420a0a2b0dcd66dd1a126950283239e59",
+        "server/gcsp/vehicle-evidence/fleet-artifacts.js": "0bb5079b92a0a8df997708a6f266a2de84603ebd53efdf291a15edffd0d92811",
+        "server/gcsp/vehicle-evidence/fleet-release.js": "1cadb13cbd9851eea93be14096328353970e3210b4f00e1ecf5ae8362f6289b4",
+        "server/gcsp/vehicle-evidence/fleet-releases.json": "e13a5f99167bea65cc9a04e6eae41cec56b55caaa229b640e0e47b20f44301e0",
+        "server/gcsp/vehicle-evidence/registered-corpus-images.js": "47d27d11406e5ffe05790be8893395b6399b142d8befd268d30b5c60407b9e8e",
+        "server/package.json": "2f4a5fb161b15aa241fbd1d23e82fd319f916fffd30bb7167fae0b71f68044e8",
+        "server/scripts/fleet-artifacts.mjs": "172957a2ba83223190ce83f9dfa175162d899ca86e527d731b6e93bd88fe33bc",
+        "server/scripts/prepare-fleet-build.mjs": "5b56c3d58ee17052d2232050b7c23b4f1395a8cbf1b9ee5c6d181ea4926ec39c",
+        "server/test/gcsp-fleet-build-entry.test.js": "4a7bd852ef1a3938bd4806c4a4475b43c5b0e949fe7a1ee1c845dedd1d31f06d",
+        "server/test/gcsp-fleet-image-cli.test.js": "0b38050a176b55fb7b5c2f83b6c9c5bda7a2dfdc62483e5a8374f7788a8052de",
+        "server/test/helpers/vin-corpus-fixture.js": "d4c0d32fc502ea8b4fa8bf63cc6103c18f83ca2a8db28eefe83e3d71df09e4de",
+        "server/test/render-blueprint.test.js": "e798fc156851afb60d0d378feb8f9d22d69fe9ee686a049e6e31c2c118d16358"
+      },
+      "wall": 0.9838847499922849
+    }
+  ],
+  "redReason": "The real CLI returned .10 instead of .12 and did not refuse an absent selector; no import/syntax/dependency failure.",
+  "resource": {
+    "childRamBytes": 503316480,
+    "compatibilityException": null,
+    "hostRamBytes": 536870912,
+    "leftovers": [],
+    "maxSampledGroupRssBytes": 158826496,
+    "nodeHeapMiB": 256,
+    "reportedRemovedScratchBytes": 10382748,
+    "scratchBytes": 16777216,
+    "secondsPerChunk": 60,
+    "workers": 1
+  },
+  "reviewCorrection": {
+    "baseCodeEvidence": {
+      "baseCommit": "df3f3f439ba0aa2c4f464beaded903709e970ea1",
+      "command": "git diff --exit-code HEAD -- server/test/gcsp-fleet-image-cli.test.js server/test/helpers/vin-corpus-fixture.js server/gcsp/vehicle-evidence/registered-corpus-images.js server/gcsp/vehicle-evidence/corpus-publisher.js",
+      "conclusion": "Responsible fixture/input/registry/publisher code is unchanged from base. Both failures occur at fixture line35 before CLI invocation, so they do not test the corrected CLI boundary.",
+      "rc": 0,
+      "separateBaseCheckoutExecuted": false
+    },
+    "defect": "image-registration-fixture-bug-draft.md",
+    "finding": "Independent review found the unconditional helper import expanded pack/offline dependency surface. Selector import is now lazy inside restore/download only. Existing offline/pack subprocess regressions omit the helper to preserve that boundary.",
+    "owningImageBoundary": {
+      "bytesPerCopiedApp": 2494723,
+      "finalPhase": "green3",
+      "finalRegression": "Existing offline/pack tiny CLI fixtures omit prepare-fleet-build.mjs, checking standalone module surface directly; owning image boundary failures remain recorded and are not rerun unchanged.",
+      "finalSelectedChecks": [
+        "server/test/gcsp-fleet-build-entry.test.js",
+        "server/test/render-blueprint.test.js"
+      ],
+      "finding": "Unconditional helper import expanded offline/pack dependency surface and broke the owning image CLI fixture, which copies the CLI without prepare helper. Corrected by lazy restore/download import.",
+      "fitsExistingScratchBytes": 16777216,
+      "fixtureInputs": [
+        {
+          "bytes": 1628124,
+          "files": 125,
+          "path": "server/gcsp"
+        },
+        {
+          "bytes": 309693,
+          "files": 12,
+          "path": "server/vehicle-evidence"
+        },
+        {
+          "bytes": 436409,
+          "files": 19,
+          "path": "scripts/gcsp"
+        },
+        {
+          "bytes": 457,
+          "files": 1,
+          "path": "server/package.json"
+        },
+        {
+          "bytes": 683,
+          "files": 1,
+          "path": "package.json"
+        },
+        {
+          "bytes": 1670,
+          "files": 1,
+          "path": "server/scripts/fleet-artifacts.mjs"
+        },
+        {
+          "bytes": 34889,
+          "files": 1,
+          "path": "server/data/gcsp/vehicle-evidence/vin-profiles.v1.json"
+        },
+        {
+          "bytes": 82798,
+          "files": 1,
+          "path": "assets/gcsp-vehicle-evidence/fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe.webp"
+        }
+      ],
+      "historicalGreenIsFinal": false,
+      "noSourceDownload": true,
+      "noSql": true,
+      "oneWorker": true,
+      "owningBoundaryResult": {
+        "fail": 2,
+        "failure": "Both unchanged image CLI tests fail at fixture line35 with invalid-corpus/unapproved-image, before invoking CLI. Fixture passes both approved images to its single-image input.",
+        "pass": 9,
+        "phase": "green2",
+        "skipped": 0,
+        "tests": 11
+      },
+      "tests": 2
+    },
+    "parentDirection": "Do not repair existing image fixture failure in this build fix; preserve failures and queue/reuse Medium Bug. No additional build gate."
+  },
+  "runId": "build-selector-stale-command-032-20261107",
+  "schemaVersion": "f62-stale-render-build-selector.v1",
+  "selectedChecks": [
+    "server/test/gcsp-fleet-build-entry.test.js",
+    "server/test/render-blueprint.test.js",
+    "server/test/gcsp-fleet-image-cli.test.js"
+  ],
+  "selectedCommand": [
+    "/opt/homebrew/bin/node",
+    "--max-old-space-size=256",
+    "--test",
+    "--test-concurrency=1",
+    "server/test/gcsp-fleet-build-entry.test.js",
+    "server/test/render-blueprint.test.js"
+  ],
+  "selectionReason": [
+    "Build-entry real CLI fixtures cover stale known-service selection and refusal with only artifact transfer replaced; offline/pack omit the prepare helper to check module dependency surface.",
+    "Blueprint checks cover adjacent install/start readiness contract.",
+    "The owning image CLI file was selected after independent review, measured at 2,494,723 copied input bytes per fixture and run once. Its two tests fail before CLI invocation in unchanged image registration setup; preserved separately.",
+    "After the existing fixture changed to omit the helper for offline/pack, only the affected nine entry/Blueprint checks reran and passed.",
+    "Repository JavaScript affected-selector fallback is full npm test; collaborator selected explicit direct callers and excluded unchanged transfer suites."
+  ],
+  "sourceRequests": 0,
+  "sqlCalls": 0,
+  "status": "scoped-regression-passed-with-separate-pre-cli-fixture-failures",
+  "supervisor": "/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-032/.claude/f58-63-overnight-20261106/f62/build-selector-stale-command-032-20261107/supervise.py",
+  "supervisorSha256": "394f0e947465e2b6992b6f58c8beb3e10293d837e65adabe02fa10fe9f739b41"
+}

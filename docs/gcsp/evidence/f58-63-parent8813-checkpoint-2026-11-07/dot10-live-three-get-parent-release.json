@@ -1,0 +1,19 @@
+{
+  "authorized": true,
+  "phase": "readiness-first-dto",
+  "planSha256": "774a4fc2eae5f827cc540cf6c86bcd4b9508871ecfed0db87054c4b0dc4bc8b0",
+  "code": "e3fd747dab2765e314633908e99d3c0c31283606",
+  "manifestDigest": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+  "actualDeploymentId": "7617678535",
+  "deploymentSucceeded": true,
+  "freshReadinessDeployment": true,
+  "newGetCeiling": 3,
+  "sourceCalls": 0,
+  "deploymentEvidence": {
+    "path": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/dot10-e3fd-deployment-success.json",
+    "sha256": "67f223e33186bb4d7022fc9ad1be1339d33ec953d88fca85635c786e6c9eac7b"
+  },
+  "rootReviewedAt": "2026-11-07T06:49:23.886299+00:00",
+  "codeReview": "pass; actual probe/supervisor read; exact frozen DTO hash, actual successful e3fd deployment, finite3GET90s, no local/source replay",
+  "securityReview": "pass; fixed origin no redirects/auth; bounded bodies/headers with sensitive values redacted; owned output and cleanup"
+}

@@ -1,0 +1,264 @@
+{
+  "scope": "scoped CLI image-composition regression; actual image-bearing fixture, no ordinary publication",
+  "results": {
+    "cli-boundary": {
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-boundary/command.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-boundary/ownership/7cdb13be677241ddba4be795cd7fc612.json",
+        "peak_rss": 248463360,
+        "peak_scratch": 45856,
+        "rc": 0,
+        "wall": 1.722650458003045
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-boundary/ownership/7cdb13be677241ddba4be795cd7fc612.json",
+        "removedScratchBytes": 45856,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-boundary/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-7cdb13be677241ddba4be795cd7fc612",
+        "scratchAbsent": true
+      },
+      "codeIdentity": {
+        "docs/gcsp/evidence/fucq62/public-artifacts-proof.mjs": "488a9229b61ae2e74d2638bd1bf1cf5e585938784893fbe7f528384bccdb82e1",
+        "scripts/gcsp/verify-fleet.mjs": "540f5314a58cc061b0bbc052942613263a6ea84a112b0fdea5f3769818133a4b",
+        "server/gcsp/vehicle-evidence/corpus-publisher.js": "9d86e1397aa74d1a1b096aaf6cba2149499a81a524e54eecd2ff83c80b2e6c96",
+        "server/gcsp/vehicle-evidence/fleet-artifacts.js": "8567ef55e6cf914c1ea8d6f8c7bbb7797f96116030163d58b46eb594feb05de6",
+        "server/gcsp/vehicle-evidence/fleet-release.js": "d6081dc483d9d28da4cce712c8ad762ff275c07ae012d216893d85963d495ff0",
+        "server/gcsp/vehicle-evidence/fleet-releases.json": "bab0e7ee96e90f0622651f527278b07a60b58f14c33dd094a26f7c552319c942",
+        "server/gcsp/vehicle-evidence/indexed-jsonl.js": "0bb27219a621b101b9dbc629f2bb198785d57ee2da7ec642ff0b9472804ad55a",
+        "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "2c0045c82241dac3a5ac1dcc6c447174cad2eb66d413d9cbe98ece62ed573255",
+        "server/gcsp/vehicle-evidence/registered-catalogue-sources.js": "24b5cd1540b284789cf23a4a985af5c216f18412814387f139528c3fa1bb4fbc",
+        "server/gcsp/vehicle-evidence/registered-corpus-images.js": "1180911ff4e19e54b2dfeb997549d5c52f8c07421d6f31e0b6f45da8bf85a544",
+        "server/gcsp/vehicle-evidence/synthetic-registry.js": "4411a122f0a245dd65b58e8753ed1181afd6dd114474b60134adaf5e27febe47",
+        "server/scripts/fleet-artifacts.mjs": "ffb51fe9e9fb892af4e67cb3ff2edbd561a01fd1f77482842a01030f92fde194",
+        "server/test/gcsp-fleet-artifacts.test.js": "371a9eff19a9824ef1fecd3985a0bcffda91472b2a6577c3d521bfdd1a75588c",
+        "server/test/gcsp-fleet-image-cli.test.js": "0b38050a176b55fb7b5c2f83b6c9c5bda7a2dfdc62483e5a8374f7788a8052de"
+      }
+    },
+    "cli-green": {
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-green/command.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-green/ownership/adf8da41bfe54f778db4a6318435dcfc.json",
+        "peak_rss": 281133056,
+        "peak_scratch": 2914780,
+        "rc": 0,
+        "wall": 1.7135529579973081
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-green/ownership/adf8da41bfe54f778db4a6318435dcfc.json",
+        "removedScratchBytes": 2914780,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-green/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-adf8da41bfe54f778db4a6318435dcfc",
+        "scratchAbsent": true
+      },
+      "codeIdentity": {
+        "docs/gcsp/evidence/fucq62/public-artifacts-proof.mjs": "488a9229b61ae2e74d2638bd1bf1cf5e585938784893fbe7f528384bccdb82e1",
+        "scripts/gcsp/verify-fleet.mjs": "540f5314a58cc061b0bbc052942613263a6ea84a112b0fdea5f3769818133a4b",
+        "server/gcsp/vehicle-evidence/corpus-publisher.js": "9d86e1397aa74d1a1b096aaf6cba2149499a81a524e54eecd2ff83c80b2e6c96",
+        "server/gcsp/vehicle-evidence/fleet-artifacts.js": "8567ef55e6cf914c1ea8d6f8c7bbb7797f96116030163d58b46eb594feb05de6",
+        "server/gcsp/vehicle-evidence/fleet-release.js": "d6081dc483d9d28da4cce712c8ad762ff275c07ae012d216893d85963d495ff0",
+        "server/gcsp/vehicle-evidence/fleet-releases.json": "bab0e7ee96e90f0622651f527278b07a60b58f14c33dd094a26f7c552319c942",
+        "server/gcsp/vehicle-evidence/indexed-jsonl.js": "0bb27219a621b101b9dbc629f2bb198785d57ee2da7ec642ff0b9472804ad55a",
+        "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "2c0045c82241dac3a5ac1dcc6c447174cad2eb66d413d9cbe98ece62ed573255",
+        "server/gcsp/vehicle-evidence/registered-catalogue-sources.js": "24b5cd1540b284789cf23a4a985af5c216f18412814387f139528c3fa1bb4fbc",
+        "server/gcsp/vehicle-evidence/registered-corpus-images.js": "1180911ff4e19e54b2dfeb997549d5c52f8c07421d6f31e0b6f45da8bf85a544",
+        "server/gcsp/vehicle-evidence/synthetic-registry.js": "4411a122f0a245dd65b58e8753ed1181afd6dd114474b60134adaf5e27febe47",
+        "server/scripts/fleet-artifacts.mjs": "ffb51fe9e9fb892af4e67cb3ff2edbd561a01fd1f77482842a01030f92fde194",
+        "server/test/gcsp-fleet-artifacts.test.js": "371a9eff19a9824ef1fecd3985a0bcffda91472b2a6577c3d521bfdd1a75588c",
+        "server/test/gcsp-fleet-image-cli.test.js": "0b38050a176b55fb7b5c2f83b6c9c5bda7a2dfdc62483e5a8374f7788a8052de"
+      }
+    },
+    "cli-red": {
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-red/command.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-red/ownership/bd556a21d5e8440ca1e6fcb4e04c5baa.json",
+        "peak_rss": 164741120,
+        "peak_scratch": 2860448,
+        "rc": 1,
+        "wall": 0.730830665997928
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-red/ownership/bd556a21d5e8440ca1e6fcb4e04c5baa.json",
+        "removedScratchBytes": 2860448,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-red/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-bd556a21d5e8440ca1e6fcb4e04c5baa",
+        "scratchAbsent": true
+      },
+      "codeIdentity": {
+        "docs/gcsp/evidence/fucq62/public-artifacts-proof.mjs": "488a9229b61ae2e74d2638bd1bf1cf5e585938784893fbe7f528384bccdb82e1",
+        "scripts/gcsp/verify-fleet.mjs": "12a8bbd3c104f1f0afb131b8733d51bc82251122b856191dc41a9f49bc97217e",
+        "server/gcsp/vehicle-evidence/corpus-publisher.js": "9d86e1397aa74d1a1b096aaf6cba2149499a81a524e54eecd2ff83c80b2e6c96",
+        "server/gcsp/vehicle-evidence/fleet-artifacts.js": "6ae30cd36339da14b602a9aaa1f5e665602f68a854aadc5fe84a65dc08a676de",
+        "server/gcsp/vehicle-evidence/fleet-release.js": "d6081dc483d9d28da4cce712c8ad762ff275c07ae012d216893d85963d495ff0",
+        "server/gcsp/vehicle-evidence/fleet-releases.json": "bab0e7ee96e90f0622651f527278b07a60b58f14c33dd094a26f7c552319c942",
+        "server/gcsp/vehicle-evidence/indexed-jsonl.js": "0bb27219a621b101b9dbc629f2bb198785d57ee2da7ec642ff0b9472804ad55a",
+        "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "2c0045c82241dac3a5ac1dcc6c447174cad2eb66d413d9cbe98ece62ed573255",
+        "server/gcsp/vehicle-evidence/registered-catalogue-sources.js": "24b5cd1540b284789cf23a4a985af5c216f18412814387f139528c3fa1bb4fbc",
+        "server/gcsp/vehicle-evidence/registered-corpus-images.js": "1180911ff4e19e54b2dfeb997549d5c52f8c07421d6f31e0b6f45da8bf85a544",
+        "server/gcsp/vehicle-evidence/synthetic-registry.js": "4411a122f0a245dd65b58e8753ed1181afd6dd114474b60134adaf5e27febe47",
+        "server/scripts/fleet-artifacts.mjs": "ffb51fe9e9fb892af4e67cb3ff2edbd561a01fd1f77482842a01030f92fde194",
+        "server/test/gcsp-fleet-artifacts.test.js": "371a9eff19a9824ef1fecd3985a0bcffda91472b2a6577c3d521bfdd1a75588c",
+        "server/test/gcsp-fleet-image-cli.test.js": "ced54f99b58e79e80f3088454a92f97134b323e4649d53461e7c7fd4e6a26e96"
+      }
+    },
+    "cli-red-final": {
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-red-final/command.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-red-final/ownership/2967822bc447422eb17bdcd8112e9f55.json",
+        "peak_rss": 260603904,
+        "peak_scratch": 2910684,
+        "rc": 1,
+        "wall": 0.9856372919894056
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-red-final/ownership/2967822bc447422eb17bdcd8112e9f55.json",
+        "removedScratchBytes": 2910684,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-red-final/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-2967822bc447422eb17bdcd8112e9f55",
+        "scratchAbsent": true
+      },
+      "codeIdentity": {
+        "docs/gcsp/evidence/fucq62/public-artifacts-proof.mjs": "488a9229b61ae2e74d2638bd1bf1cf5e585938784893fbe7f528384bccdb82e1",
+        "scripts/gcsp/verify-fleet.mjs": "12a8bbd3c104f1f0afb131b8733d51bc82251122b856191dc41a9f49bc97217e",
+        "server/gcsp/vehicle-evidence/corpus-publisher.js": "9d86e1397aa74d1a1b096aaf6cba2149499a81a524e54eecd2ff83c80b2e6c96",
+        "server/gcsp/vehicle-evidence/fleet-artifacts.js": "6ae30cd36339da14b602a9aaa1f5e665602f68a854aadc5fe84a65dc08a676de",
+        "server/gcsp/vehicle-evidence/fleet-release.js": "d6081dc483d9d28da4cce712c8ad762ff275c07ae012d216893d85963d495ff0",
+        "server/gcsp/vehicle-evidence/fleet-releases.json": "bab0e7ee96e90f0622651f527278b07a60b58f14c33dd094a26f7c552319c942",
+        "server/gcsp/vehicle-evidence/indexed-jsonl.js": "0bb27219a621b101b9dbc629f2bb198785d57ee2da7ec642ff0b9472804ad55a",
+        "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "2c0045c82241dac3a5ac1dcc6c447174cad2eb66d413d9cbe98ece62ed573255",
+        "server/gcsp/vehicle-evidence/registered-catalogue-sources.js": "24b5cd1540b284789cf23a4a985af5c216f18412814387f139528c3fa1bb4fbc",
+        "server/gcsp/vehicle-evidence/registered-corpus-images.js": "1180911ff4e19e54b2dfeb997549d5c52f8c07421d6f31e0b6f45da8bf85a544",
+        "server/gcsp/vehicle-evidence/synthetic-registry.js": "4411a122f0a245dd65b58e8753ed1181afd6dd114474b60134adaf5e27febe47",
+        "server/scripts/fleet-artifacts.mjs": "ffb51fe9e9fb892af4e67cb3ff2edbd561a01fd1f77482842a01030f92fde194",
+        "server/test/gcsp-fleet-artifacts.test.js": "371a9eff19a9824ef1fecd3985a0bcffda91472b2a6577c3d521bfdd1a75588c",
+        "server/test/gcsp-fleet-image-cli.test.js": "0b38050a176b55fb7b5c2f83b6c9c5bda7a2dfdc62483e5a8374f7788a8052de"
+      }
+    },
+    "cli-red-fixed": {
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-red-fixed/command.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-red-fixed/ownership/147fa6798f8c4843b270c27478b658db.json",
+        "peak_rss": 166248448,
+        "peak_scratch": 2893628,
+        "rc": 1,
+        "wall": 0.7272925410070457
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-red-fixed/ownership/147fa6798f8c4843b270c27478b658db.json",
+        "removedScratchBytes": 2893628,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-red-fixed/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-147fa6798f8c4843b270c27478b658db",
+        "scratchAbsent": true
+      },
+      "codeIdentity": {
+        "docs/gcsp/evidence/fucq62/public-artifacts-proof.mjs": "488a9229b61ae2e74d2638bd1bf1cf5e585938784893fbe7f528384bccdb82e1",
+        "scripts/gcsp/verify-fleet.mjs": "12a8bbd3c104f1f0afb131b8733d51bc82251122b856191dc41a9f49bc97217e",
+        "server/gcsp/vehicle-evidence/corpus-publisher.js": "9d86e1397aa74d1a1b096aaf6cba2149499a81a524e54eecd2ff83c80b2e6c96",
+        "server/gcsp/vehicle-evidence/fleet-artifacts.js": "6ae30cd36339da14b602a9aaa1f5e665602f68a854aadc5fe84a65dc08a676de",
+        "server/gcsp/vehicle-evidence/fleet-release.js": "d6081dc483d9d28da4cce712c8ad762ff275c07ae012d216893d85963d495ff0",
+        "server/gcsp/vehicle-evidence/fleet-releases.json": "bab0e7ee96e90f0622651f527278b07a60b58f14c33dd094a26f7c552319c942",
+        "server/gcsp/vehicle-evidence/indexed-jsonl.js": "0bb27219a621b101b9dbc629f2bb198785d57ee2da7ec642ff0b9472804ad55a",
+        "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "2c0045c82241dac3a5ac1dcc6c447174cad2eb66d413d9cbe98ece62ed573255",
+        "server/gcsp/vehicle-evidence/registered-catalogue-sources.js": "24b5cd1540b284789cf23a4a985af5c216f18412814387f139528c3fa1bb4fbc",
+        "server/gcsp/vehicle-evidence/registered-corpus-images.js": "1180911ff4e19e54b2dfeb997549d5c52f8c07421d6f31e0b6f45da8bf85a544",
+        "server/gcsp/vehicle-evidence/synthetic-registry.js": "4411a122f0a245dd65b58e8753ed1181afd6dd114474b60134adaf5e27febe47",
+        "server/scripts/fleet-artifacts.mjs": "ffb51fe9e9fb892af4e67cb3ff2edbd561a01fd1f77482842a01030f92fde194",
+        "server/test/gcsp-fleet-artifacts.test.js": "371a9eff19a9824ef1fecd3985a0bcffda91472b2a6577c3d521bfdd1a75588c",
+        "server/test/gcsp-fleet-image-cli.test.js": "27731cc62d67b29fd5e004b8024cfee6ef21be007af35ff741654d7a05e5cb9a"
+      }
+    },
+    "cli-red-intended": {
+      "result": {
+        "issue": null,
+        "issue_kind": null,
+        "log": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-red-intended/command.log",
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-red-intended/ownership/6edc9b7d76e74576a121348b3ef9ec45.json",
+        "peak_rss": 232636416,
+        "peak_scratch": 2910684,
+        "rc": 1,
+        "wall": 0.9678983340127161
+      },
+      "cleanup": {
+        "compatibilityException": null,
+        "dependencyLinkAbsent": true,
+        "groupsAbsent": true,
+        "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-red-intended/ownership/6edc9b7d76e74576a121348b3ef9ec45.json",
+        "removedScratchBytes": 2910684,
+        "reservationAbsent": true,
+        "retainedOutputOwnership": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/fleet-dot5/cli-red-intended/retained-output-ownership.json",
+        "scratch": "/private/tmp/test-stamp-shard-6edc9b7d76e74576a121348b3ef9ec45",
+        "scratchAbsent": true
+      },
+      "codeIdentity": {
+        "docs/gcsp/evidence/fucq62/public-artifacts-proof.mjs": "488a9229b61ae2e74d2638bd1bf1cf5e585938784893fbe7f528384bccdb82e1",
+        "scripts/gcsp/verify-fleet.mjs": "12a8bbd3c104f1f0afb131b8733d51bc82251122b856191dc41a9f49bc97217e",
+        "server/gcsp/vehicle-evidence/corpus-publisher.js": "9d86e1397aa74d1a1b096aaf6cba2149499a81a524e54eecd2ff83c80b2e6c96",
+        "server/gcsp/vehicle-evidence/fleet-artifacts.js": "6ae30cd36339da14b602a9aaa1f5e665602f68a854aadc5fe84a65dc08a676de",
+        "server/gcsp/vehicle-evidence/fleet-release.js": "d6081dc483d9d28da4cce712c8ad762ff275c07ae012d216893d85963d495ff0",
+        "server/gcsp/vehicle-evidence/fleet-releases.json": "bab0e7ee96e90f0622651f527278b07a60b58f14c33dd094a26f7c552319c942",
+        "server/gcsp/vehicle-evidence/indexed-jsonl.js": "0bb27219a621b101b9dbc629f2bb198785d57ee2da7ec642ff0b9472804ad55a",
+        "server/gcsp/vehicle-evidence/local-vehicle-lookup.js": "2c0045c82241dac3a5ac1dcc6c447174cad2eb66d413d9cbe98ece62ed573255",
+        "server/gcsp/vehicle-evidence/registered-catalogue-sources.js": "24b5cd1540b284789cf23a4a985af5c216f18412814387f139528c3fa1bb4fbc",
+        "server/gcsp/vehicle-evidence/registered-corpus-images.js": "1180911ff4e19e54b2dfeb997549d5c52f8c07421d6f31e0b6f45da8bf85a544",
+        "server/gcsp/vehicle-evidence/synthetic-registry.js": "4411a122f0a245dd65b58e8753ed1181afd6dd114474b60134adaf5e27febe47",
+        "server/scripts/fleet-artifacts.mjs": "ffb51fe9e9fb892af4e67cb3ff2edbd561a01fd1f77482842a01030f92fde194",
+        "server/test/gcsp-fleet-artifacts.test.js": "371a9eff19a9824ef1fecd3985a0bcffda91472b2a6577c3d521bfdd1a75588c",
+        "server/test/gcsp-fleet-image-cli.test.js": "2f36f1044b5d5e0362a0d33164a867962f0d23150b9c344649cae7fd7f965af4"
+      }
+    }
+  },
+  "passedTests": 20,
+  "failedTests": {
+    "cli-red": 2,
+    "cli-red-fixed": 2,
+    "cli-red-intended": 2,
+    "cli-red-final": 2
+  },
+  "failedRunInterpretation": {
+    "cli-red": "fixture missing pg dependency link",
+    "cli-red-fixed": "fixture descriptor incorrectly included publication-owner.json",
+    "cli-red-intended": "restore fails as expected; verifier double guard setup error",
+    "cli-red-final": "both intended missing-approvedImages regressions"
+  },
+  "skipped": 0,
+  "removedSampledAllocationBytes": 14536080,
+  "compatibilityException": null,
+  "leftovers": [],
+  "unrun": [
+    "full suite",
+    "SQL",
+    "source collection",
+    "Node20",
+    "Render build/deploy",
+    "ordinary .5 publication"
+  ]
+}

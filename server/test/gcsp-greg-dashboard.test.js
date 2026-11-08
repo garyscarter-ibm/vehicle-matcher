@@ -182,7 +182,9 @@ test('refused shows no figures, no Retry and hides the reserved regions', async 
   assert.equal(status.getAttribute('role'), 'alert');
   assert.match(status.textContent, /Only the scheme ordering lead/);
   assert.equal(status.querySelector('.vm-btn'), null);
-  assert.equal(root.querySelectorAll('table, .gcsp-tile, dl').length, 0);
+  // The shell's presenter bar (112fdfe2) holds an empty, hidden dl until a presenter session authorises it.
+  assert.equal([...root.querySelectorAll('table, .gcsp-tile, dl')].filter((n) => !n.closest('.gcsp-presenter-region')).length, 0);
+  assert.equal(root.querySelector('.gcsp-presenter-controls').hidden, true);
   assert.equal(root.querySelector('.gcsp-greg-regions').hidden, true);
 });
 
@@ -330,7 +332,7 @@ test('dataTable: caption, scopes, numeric columns, scroll region, band cells and
 const walk = (dir) => readdirSync(dir).sort().map((n) => join(dir, n)).filter((p) => statSync(p).isFile());
 const sources = () => [...walk(join(ROOT, 'blocks/gcsp/greg')), ...walk(join(ROOT, 'blocks/gcsp/kit')), join(ROOT, 'gcsp-greg.html')];
 const selectorsOf = (rel) => {
-  const css = read(rel).replace(/\/\*[\s\S]*?\*\//g, '').replace(/@media[^{]*\{/g, '');
+  const css = read(rel).replace(/\/\*[\s\S]*?\*\//g, '').replace(/@import\s+[^;]+;/g, '').replace(/@media[^{]*\{/g, '');
   return [...css.matchAll(/(?:^|[}\s])([^{}@]+)\{/g)].flatMap((m) => m[1].split(',')).map((s) => s.trim()).filter(Boolean);
 };
 

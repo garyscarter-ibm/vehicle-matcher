@@ -1,0 +1,15 @@
+{
+  "compatibility_exception": null,
+  "dependency_link_absent": true,
+  "groups": [
+    {
+      "live": false,
+      "pgid": 60553
+    }
+  ],
+  "leftovers": [],
+  "removed_bytes": 35973120,
+  "reservation_released": true,
+  "scratch": "/private/tmp/test-stamp-shard-3e79e46302514ec6ad9585ea6b28e76e",
+  "scratch_absent": true
+}

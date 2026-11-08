@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "linux-live-diagnostic-result.v1",
+  "status": "failed-exact-release-readiness-boundary",
+  "runId": 42370480081,
+  "attempt": 1,
+  "trigger": "integration push only",
+  "integrationCode": "df3f3f439ba0aa2c4f464beaded903709e970ea1",
+  "deploymentCode": "e7cf50acd58bda6b0f2b3738c4408f1f374682f8",
+  "actualDeploymentId": "dep-dbnf8g3hf81s73b22ee0",
+  "githubDeploymentId": 7619569590,
+  "startedAt": "2026-11-07T11:59:45.249Z",
+  "finishedAt": "2026-11-07T11:59:45.775Z",
+  "runCompletedAt": "2026-11-07T11:59:48Z",
+  "expectedManifestDigest": "3b2a883cd85a2d0c3f89e36e14561d15996affec972e19bbba0d962cf79cce30",
+  "observedManifestDigest": "0bfe3139491826c5605c0a22918ec58c687b7922bd00650d9dddeaf40860399a",
+  "observedReleaseLabel": ".10",
+  "expectedReleaseLabel": ".12",
+  "requests": 2,
+  "health": {
+    "status": 200,
+    "ok": true,
+    "elapsedMs": 355.015132,
+    "bodyBytes": 11
+  },
+  "readiness": {
+    "status": 200,
+    "ok": true,
+    "state": "ready",
+    "elapsedMs": 163.88485699999995,
+    "bodyBytes": 169,
+    "reportedLoadElapsedMs": 339493,
+    "recovered": false,
+    "exactManifestMatch": false
+  },
+  "configurationGET": "unrun; readiness gate prevented third request",
+  "expectedDtoSha256": "82712c8d703e6546d6c4298fa3a168b2ea48f09c73931ee9eb061ee36f98e2e4",
+  "diagnosis": "Public service responded successfully from Linux at11:59:45Z but served older .10 manifest. The exact .12 readiness gate failed and correctly stopped after2GETs. This is a concrete release mismatch blocking the F62 live boundary; runtime/config/deployment cause remains for root investigation. It does not prove why the earlier local health request timed out.",
+  "cleanup": {
+    "rc": 1,
+    "elapsedSeconds": 0.6454866500000094,
+    "scratchAbsent": true,
+    "groupsAbsent": true,
+    "removedScratchPeakBytes": 4447,
+    "peakGroupRssBytes": 72683520,
+    "peakSupervisorRssBytes": 18018304,
+    "aggregateRssUpperBoundBytes": 90701824,
+    "retainedArchive": false,
+    "retainedLogBytesBeforeCleanupLine": 5675,
+    "leftovers": []
+  },
+  "originalLocalAttemptPreserved": {
+    "receiptSha256": "d3681c7d72498191d006f56e4409feb4ff6875462810a9682fa075c665773a6b",
+    "requests": 1,
+    "outcome": "health30s timeout/0bytes; readiness andDTO unrun"
+  },
+  "existingLinuxBuildProof": {
+    "runId": 42361586991,
+    "status": "passed-scoped",
+    "distinctBoundary": "cold/offline/assets/scoped5 proof; does not override actual live .10 response"
+  },
+  "newRequestsDuringEvidenceReadback": 0,
+  "sourceCalls": 0,
+  "consumerParityObserved": false,
+  "fullReferenceProofReplayed": false,
+  "historicalConsumerFailures": 2707,
+  "originalLocalTimeoutCauseProved": false,
+  "scriptOrProductionChanges": false,
+  "rerunPerformed": false,
+  "acceptance": false,
+  "done": false,
+  "agent": {
+    "name": "Mike Wazowski",
+    "requestedModel": "gpt-6.1-sol",
+    "requestedEffort": "medium",
+    "selectedModel": "gpt-6.1-sol",
+    "selectedEffort": "medium",
+    "effectiveRuntimeVerified": false,
+    "fallback": false,
+    "descendants": 0
+  }
+}

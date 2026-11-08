@@ -1,0 +1,27 @@
+@import "../../vehicle-matcher/gcsp-kit.css";
+@import "../kit/activity-timeline.css";
+@import "../kit/action-menu.css";
+@import "./activity-offer.css";
+
+.gcsp .gcsp-activity { max-width: 1120px; display: flex; flex-direction: column; gap: 40px; }
+.gcsp .gcsp-activity-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.gcsp .gcsp-activity-intro .vm-title { margin: 0; font-size: 34px; line-height: 1.15; }
+.gcsp .gcsp-activity-state { display: flex; align-items: center; gap: 24px; }
+.gcsp .gcsp-activity-status { margin: 0; display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 600; color: var(--gcsp-success); }
+.gcsp .gcsp-activity-status.is-inactive { color: var(--gcsp-text-muted); }
+.gcsp .gcsp-activity-status .gcsp-icon { width: 28px; height: 28px; }
+.gcsp .gcsp-activity-consequence { margin: -20px 0 0; font-size: 14px; color: var(--gcsp-text-muted); }
+.gcsp .gcsp-activity-section-title { margin: 0 0 16px; font-size: 24px; line-height: 1.25; font-weight: 600; }
+.gcsp .gcsp-activity-secondary { margin: 16px 0 0; font-size: 14px; color: var(--gcsp-text-muted); }
+.gcsp .gcsp-activity-check-status { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px 32px; color: var(--gcsp-text-muted); font-size: 14px; }
+.gcsp .gcsp-activity-check-status p { margin: 0; }
+.gcsp .gcsp-activity .vm-screen { animation: none; }
+.gcsp .gcsp-activity-help, .gcsp .gcsp-activity-preview-controls { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--gcsp-divider); } .gcsp .gcsp-activity-preview-controls { display: flex; flex-wrap: wrap; gap: 8px; }
+.gcsp .gcsp-activity-preview-controls [aria-pressed="true"] { background: var(--gcsp-accent-soft); }
+.gcsp .gcsp-activity-preview-status { margin: 12px 0 0; font-size: 13px; color: var(--gcsp-text-muted); }
+@media (max-width: 700px) {
+  .gcsp .gcsp-activity { gap: 32px; }
+  .gcsp .gcsp-activity-header { flex-wrap: wrap; gap: 16px; }
+  .gcsp .gcsp-activity-state { gap: 16px; }
+  .gcsp .gcsp-activity-intro .vm-title { font-size: 30px; }
+}

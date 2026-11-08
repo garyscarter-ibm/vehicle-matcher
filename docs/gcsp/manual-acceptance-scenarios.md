@@ -82,15 +82,96 @@ Feedback is recorded in this repository document and committed through the norma
 
 ### Main successful journey · `main-successful-journey` · FUCQ-109
 
-- **Start:** versioned `main-successful-journey-inputs-v1`; canonical Paula with a confirmed estate preference, five-seat input, explicit search/hold consent and the declared published-stock release. Greg and the presenter resolve from FUCQ-84's canonical principal fixture. Runtime policy/start/release cues come from read-back. No winner is named in the fixture.
-- **Reset/tick:** use the named reset above. If available, advance to the returned `release` cue with the existing clock advance route and a fresh command/version, then issue a fresh event ID/digest through the existing tick route. Inspect missing handlers and actual outcomes. A later pending handoff is reconciled by an explicit tick.
-- **Planned click-through:** act as Paula; review saved brief and delegation; inspect the calculated offer/captured notification; decline with a typed reason; confirm one change; trigger the next release; inspect and intentionally accept a later suitable offer. Read truthful handoff/lifecycle status.
-- **Expected visible/state result:** actual matching, exclusive hold/offer/outbox, separate decline and brief-change records, then the authoritative accepted or pending state. Email delivery or a countdown cannot establish allocation or order success.
-- **Provisional assumptions:** synthetic input preference/consent, `hold.buddy.durationSeconds`, `allocation.tieBreak.rule`, `offer.declinedCar.exclusion` and ordering provider behaviour remain inspectable canonical policy/adapter choices. The mechanics configuration references are not eligible proof of the published real-stock corpus.
+8 November 2026 (FUCQ-109): the journey is available and replayed in the browser. The start loader (`server/gcsp/scenarios/main-successful-journey.js`) confirms Paula's brief through BriefService in the new run; the presenter then releases stock and ticks. No offer, hold or winner is written by the fixture.
+
+- **Start state:** a freshly started hosted entry (memory repository), demo clock 5 November 2026 09:00 UTC. Paula (fictional) holds a Fictional BMW 320i Touring whose contract ends on 1 December 2026. After the reset her brief is confirmed: estate preferred, five seats, search and hold consent given. Nothing is released and she has no offer.
+- **Start the host:** from the repository root, `cd server && GCSP_RUNTIME=1 GCSP_REPOSITORY_MODE=memory GCSP_PUBLIC_ORIGIN=http://127.0.0.1:8813 DEMO_ACCESS_KEY=<a key you choose> PORT=8813 node index.js`. Wait for the line `GCSP hosted demo`. This is the Render start command with a local key; nothing is stubbed. A different free port works if `GCSP_PUBLIC_ORIGIN` names the same one.
+- **Reset:** step 3 below. **Ticks:** step 7 (Next release, the 09:30 cue) and step 15 (one Tick of 60 seconds, because the generated run has one release window).
+- **Keyboard:** every step can be done with Tab, arrow keys, Space and Enter alone; the automated walkthrough does exactly that.
+
+| # | Action | Expected result |
+|---|---|---|
+| 1 | Open `http://127.0.0.1:8813/gcsp-presenter.html`. Type the demo key and press **Open the demo**. | First the "Open the demo" page with one Demo key field. Then the portal opens with **Presenter controls** collapsed at the top. |
+| 2 | Open **Presenter controls**. | The strip shows the run ID, the demo clock, the acting person and the next release cue. Note the run ID. |
+| 3 | In **Scenario** choose **Main successful journey**. Press **Reset scenario**, then **Confirm reset**. | A new run ID, different from the one noted. Clock 5 Nov 2026, 09:00 UTC. The scenario reads Main successful journey. |
+| 4 | In **Acting principal** choose **Paula**, then press **Switch principal**. | The header now reads Paula (fictional). |
+| 5 | Open **Your car brief** (`/gcsp-brief-live.html`). | "Brief version 1": body style Estate at importance 80; "carry five people" Yes; carrying space and towbar Not sure yet; charging No; "Search for cars for me" and "Hold a suitable car for me" selected. "0 eligible cars." |
+| 6 | Open **Buddy activity** (`/gcsp-activity-live.html`). | "Your buddy Active", "No current offer", "Not searched yet" and "Search confirmed" at 09:00. |
+| 7 | Back on `/gcsp-presenter.html`, open Presenter controls and press **Next release**. | Clock moves to 09:30 and the strip reports 5 cars released. |
+| 8 | Reopen the brief page. | The preview reads 3 eligible cars, none needing confirmation: two Synthetic 3 Series Saloon 320i and one Synthetic 3 Series Touring 320i (100% fit). |
+| 9 | Reopen Buddy activity. | "Your offer: Waiting for you", respond by 5 Nov 2026, 11:30. "Last check 5 Nov 2026, 09:30: 5 cars checked, 4 suitable. Found a car for you." |
+| 10 | Open the outbox viewer (`/gcsp-outbox.html`) and choose the newest captured email. | "1 captured email, newest first." Paula's "Your vehicle offer is ready to review", status Sent, with the email as received and its plain-text version. |
+| 11 | Press **Open the offer** (or the link in the email). | Paula's offer page: Synthetic 3 Series Touring 320i, body style Estate, five seats, Eligible, with her current car beside it. Note the order number. |
+| 12 | Press **Decline this offer**. Choose the reason **Body style** and press **Confirm decline**. | The reasons offered are Body style, Size, Fuel type and Equipment, with one free-text field. The page reads "Offer declined" and asks one question: "Which body style would you prefer?" |
+| 13 | Choose **Saloon** and press **Confirm this change**. | "Change saved in brief version 2." Only the body style changed. |
+| 14 | (Optional) Reopen the brief page. | Brief version 2 shows Saloon; the other answers are unchanged. |
+| 15 | On the presenter page press **Tick** once. | Next release reads "No future release cue is configured." The Tick moves the clock from 09:30 to 09:31. |
+| 16 | Reopen Buddy activity. | A new offer, waiting for you, respond by 11:31. The activity shows "Search updated after a decline". |
+| 17 | Open the outbox viewer again and choose the newest email. | "2 captured emails, newest first." The newest is the second offer. |
+| 18 | Open that offer. | Synthetic 3 Series Saloon 320i, body style Saloon (100% fit), with a different order number from step 11. The declined Touring is not offered again. |
+| 19 | Tick the three declarations (terms, driver and licence, old contract and return mileage) and press **Accept this offer**. | The page asks for each declaration to be ticked before accepting. Afterwards it reads "Offer accepted. Selection received. Waiting for HR approval." |
+| 20 | Open **Order progress** (`/gcsp-order-progress-live.html`). | Order number from step 18. Step 1 "Selection received: Done", 5 Nov 2026, 09:31, "With ordering". HR approval, sales-manager approval and sent to ordering read "Not started". |
+| 21 | Repeat steps 2 to 20 after a second reset. | The same models and outcome, with a new run ID and new order numbers. An offer link copied from the first run is refused as stale. |
+
+- **Known gaps on 8 November (not failures of this journey):** Order progress read "Car details not supplied" for the accepted car (FUCQ-185) and "Returning your current car" read "Return plan unavailable" (the return-plan route answered 503, FUCQ-184); both are fixed under FUCQ-124 and the continuation section below shows the corrected screens. The offer email shows its expiry as a raw ISO time. Declining for Size, Fuel type or Equipment dead-ends with a 503 (FUCQ-183, being fixed separately); use **Body style** here.
+- **Expected state, not only screen text:** each decline is its own decision record, the change is brief version 2, the second offer is a separate offer on that version, and acceptance hands the selection to the synthetic ordering adapter once. Email capture does not establish allocation or ordering.
+- **Provisional assumptions:** synthetic input preference/consent, `hold.buddy.durationSeconds`, `allocation.tieBreak.rule`, `offer.declinedCar.exclusion` and ordering provider behaviour remain inspectable canonical policy/adapter choices. Changing one (for example the hold duration) changes the respond-by times consistently; `server/test/gcsp-critical-path.test.js` checks that.
+- **Automated replay:** `server/test/gcsp-critical-path.test.js` (backend, two resets, stale link, one central change) and `evidence/fucq-89/browser-walkthrough.mjs` (this table at 1280 and 375 px, keyboard only; results and screenshots in `evidence/fucq-89/`).
+
+Observations from a hand trial go in a new row below.
 
 | Date UTC | Variant/fixture | Run ID | Build | Result | Feedback / next revision |
 |---|---|---|---|---|---|
 | 2026-11-05 | main / v1 input manifest | No new run (refused) | `96bc997` | Automated named preparation returns missing domain capabilities before reset; business/manual replay not run. | Integrate FUCQ-109's real services and replay evidence before enabling. |
+| 2026-11-08 | main / v1; hosted entry, memory, generated run stock; headless Chrome, keyboard only, 1280 and 375 | `demo-eaec536c…` (1280), `demo-2f40e329…` (375), each from its own reset | `b2f98871` | Steps 1 to 20 passed at both widths (22/22 steps, 23/23 keyboard checks each). First release: 3 eligible, 3 cards. Touring declined for body style, Saloon chosen, one Tick, Saloon offered and accepted; order progress shows Selection received. PNGs: `evidence/fucq-89/browser/`. | Low: order progress "Car details not supplied"; raw ISO expiry in the email; "Image unavailable" on activity beside "No image for this car yet" on the offer. Medium: return plan 503. Hand trial for Russell still to record. |
+
+### Lifecycle after selection · FUCQ-124
+
+8 November 2026 (FUCQ-124): scenario `main-successful-journey`, continued. It follows Paula's main successful journey from its last step, on the same run, through approval, the replacement handover appointment, documents, readiness and a separate return plan, and stops at a confirmed plan. The retained difficult cases follow the table. Physical completion, no-show, a returned or missed return and Greg's remedy for Paula are FUCQ-171 and are not covered.
+
+- **Start state:** step 19 of the FUCQ-109 section is done: Paula (acting principal) has accepted the second offer, demo clock 5 November 2026 09:31 UTC, no approval has started. Her current car is the Fictional BMW 320i Touring (current, contract ends 1 December 2026).
+- **Start the host and reset:** as in the FUCQ-109 section, then its steps 1 to 19 (or its step 3 reset first). To restart this scenario at any time, reset the scenario (FUCQ-85) and replay from there; a reset gives a new run ID and new order numbers. Port `8840` is used by the automated run so it does not clash with other local hosts.
+- **Ticks:** the approval steps use **Tick** (60 demo seconds each). The delays use **Tick to target**: type the UTC time into "Named time or UTC target" and press **Tick to target**. Each page below shows the new state after you reopen it (Order progress, `/gcsp-order-progress-live.html`); it does not refresh itself.
+- **Keyboard:** every step can be done with Tab, arrow keys, Space and Enter alone; the automated walkthrough does exactly that.
+
+| # | Action | Expected result |
+|---|---|---|
+| 1 | Open **Order progress**. | The accepted car's name (for example Synthetic 3 Series Saloon 320i) and its order number. Steps: Selection received **Done**, 5 Nov 2026, 09:31, "With ordering"; HR approval, Sales-manager approval and Sent to ordering **Not started**. |
+| 2 | Open **Presenter controls** and press **Tick** once. Reopen Order progress. | HR approval **Current step**, 5 Nov 2026, 09:32, "With HR", "Next: HR decision". |
+| 3 | Press **Tick** twice. Reopen Order progress. | HR approval **Done** 09:34. Sales-manager approval **Current step** 09:34, "With the sales manager". |
+| 4 | Press **Tick** twice. Reopen. | Sales-manager approval **Done** 09:36. Sent to ordering **Current step**, "With ordering". |
+| 5 | Press **Tick** once. Reopen. | Sent to ordering **Done** 09:37, "Next: Appointment to be arranged". The Handover and Documents and checks sections open. |
+| 6 | In **Handover** ("Choose a handover time.") press **Request 7 Nov 2026, 09:00**. Six times are offered: 09:00 and 13:00 on 7, 8 and 9 Nov. | "Requested 7 Nov 2026, 09:00. Not booked yet." Owner Retailer. Next step "Waiting for the retailer to confirm your slot." |
+| 7 | In Presenter controls type `2026-11-05T10:06:00.000Z` in the target field and press **Tick to target**. Reopen Order progress. | Still requested and not booked: the retailer answers after the keyed 30 minutes (1,800 seconds). |
+| 8 | Press **Tick** once (10:07). Reopen. | "Booked: 7 Nov 2026, 09:00". Owner Retailer. Next step "The retailer prepares your car for the handover." Handover history: Requested 5 Nov 09:37, Booked 5 Nov 10:07. |
+| 9 | In **Documents and checks** read the list, then press **Acknowledge the agreement**. | Before: "Not ready for handover. Still to do: Vehicle agreement, Driving licence check, Vehicle preparation, Delivery to the retailer." Vehicle agreement "Waiting for you. Due 7 Nov 2026, 09:37." After: Vehicle agreement **Complete** ("Synthetic acknowledgement. Not a signature."); still not ready because the other three items are in progress. |
+| 10 | Type `2026-11-07T09:37:00.000Z` in the target field and press **Tick to target**. Reopen. | **Ready for handover**. All four items Complete. |
+| 11 | In **Returning your current car** read the choices, then press **Request return 9 Nov 2026, 09:00** under "Return it on a separate day". | Current car Fictional BMW 320i Touring (G21 320i M Sport Touring), "Your current car stays yours until it is returned." Two choices: at handover (7 Nov 2026, 09:00) or a separate day (9 to 14 Nov). After the request: "Return requested 9 Nov 2026, 09:00. Not booked yet." Owner Retailer. Next step "Waiting for the retailer to confirm your return slot." |
+| 12 | Type `2026-11-07T10:06:00.000Z` and press **Tick to target**, reopen (still requested), then press **Tick** once (10:07) and reopen. | "Return booked: 9 Nov 2026, 09:00". Next step "Keep driving your current car until the return." Return history: Return requested 7 Nov 09:37, Return booked 7 Nov 10:07. |
+| 13 | Open **Your cars** (`/gcsp-account.html`). | The current-car card still reads Fictional BMW 320i Touring, Status **current**, "Contract ends in 24 days, on 1 December 2026". Nothing says returned. This is the confirmed plan; stop here. |
+
+- **Basic help (browser, any time after acceptance):** open **Renewal help** from the left menu (`/gcsp-help.html`), press **Ask for help**, type a reason, press **Review help request**, then **Confirm help request**. Expected: "Your help request was recorded." and a Renewal case **Open** with Owner **Scheme team**, Next action "Scheme team to review your renewal and contact you.", due on the keyed response time (24 demo hours after opening, for example 2026-11-08 10:07:00 UTC when opened at 7 Nov 10:07). Reopen Your cars: the current car is unchanged. Opening help gives no priority in the allocation; `server/test/gcsp-lifecycle-e2e.test.js` ("help request: opens one case with a named owner and status, and changes no allocation input") checks that.
+- **Overdue document (browser):** repeat steps 1 to 9 but do not press **Acknowledge the agreement**. Type `2026-11-07T09:37:00.000Z`, press **Tick to target**, reopen Order progress: the agreement is due now and is not flagged. Press **Tick** once (09:38) and reopen: Vehicle agreement shows **Overdue** ("Waiting for you. Due 7 Nov 2026, 09:37."), the order reads "Not ready for handover. Still to do: Vehicle agreement." and the acknowledge button is still there. The recorded renewal exception is checked once by the automated test ("an overdue employee document shows overdue with its owner and records the keyed exception once"). Browser run: `evidence/fucq-110/results-overdue-desktop.json`.
+
+**Retained difficult cases that the browser cannot set up.** The running app has no control for these, so each is repeatable only through its automated test in `server/test/gcsp-lifecycle-e2e.test.js`:
+
+| Case | Why it cannot be set up from the browser | Repeatable evidence |
+|---|---|---|
+| HR approval off, and one changed delay | It is a policy edit (`ordering.approvalStages.v1`, `lifecycle.approval.ticks.v1`, `lifecycle.appointments.confirmation.v1`). Greg's publish screen edits only price plans and recommendation weights, and there is no environment variable for these keys. | "policy change: dropping HR approval and lengthening two delays changes stages and timing consistently across the retained reads" |
+| Approval declined with a named renewal-risk case | The decline is a seed policy value (`lifecycle.approval.declineScenario.v1`, disabled by default) with no presenter control. | "approval declined with a named renewal-risk case: the stage, the lifecycle exception and the owned case are all visible" |
+| Live-shaped ordering stub reports unsupported | The hosted entry cannot boot a live ordering adapter; the test swaps in the live-shaped stub. | "live-shaped ordering stub: approval reports unsupported, claims no success and opens nothing downstream" |
+| Manual (cart) order through the same services | The full manual walkthrough is FUCQ-73's route, not replayed in this browser run. | "shared lifecycle entry: the manual cart selection is accepted by approvals, documents, handover and return plan" |
+
+- **Known gaps on 8 November (observations, not failures of this walkthrough):** see the observations in `evidence/fucq-110/README.md`; they cover the Your cars page still reading "No ordering entitlement" and "View your offer" after acceptance, and the absence of a help control on the order progress page when nothing has been declined.
+- **Expected state, not only screen text:** each approval stage is decided on its keyed tick in the policy order; the handover and the return are separate requests, each confirmed by the retailer after the keyed delay with its own provider reference; the return plan never changes the current contract or any allocation input.
+- **Provisional assumptions:** the approval stages and tick counts, the 1,800 second confirmation delay, the slot rules, the document items and due times, the case response time and the synthetic provider behaviour are inspectable canonical policy values (`lifecycle.*`, `ordering.approvalStages.v1`, `renewalCase.*`); changing one changes the stages and times consistently, which the policy-change test checks.
+- **Automated replay:** `server/test/gcsp-lifecycle-e2e.test.js` (backend) and `evidence/fucq-110/browser-walkthrough.mjs` (steps 1 to 13, help and the overdue variant at 1280 and 375 px, keyboard only; results and screenshots in `evidence/fucq-110/`). The PostgreSQL provider was not run for this story.
+
+Observations from a hand trial go in a new row below, in the same format.
+
+| Date UTC | Variant/fixture | Run ID | Build | Result | Feedback / next revision |
+|---|---|---|---|---|---|
+| 2026-11-08 | main / v1 continued to a confirmed plan; hosted entry, memory, generated run stock; headless Chrome, keyboard only, 1280 and 375; plus an overdue-document variant at 1280 | `demo-727fe469…` (1280), `demo-ee81f6b1…` (375), `demo-93410cfc…` (overdue, 1280), each from its own reset | `95af5708` | Steps 1 to 13, help and the current-car checks passed at both widths (39/39 steps, 43/43 keyboard checks each); overdue variant 32/32. No horizontal overflow, no page errors. PNGs and results: `evidence/fucq-110/`. | Medium: Your cars keeps the "No ordering entitlement" banner and the "View your offer" card after acceptance. Low: no help control on the happy-path Order progress, flat history headings, raw case reference and ISO due time, 404 on `/api/gcsp/manual/draft`. Hand trial for Russell still to record. |
 
 ### No suitable match · `no-suitable-match` · FUCQ-127
 
@@ -106,15 +187,19 @@ Feedback is recorded in this repository document and committed through the norma
 
 ### Decline then change · `decline-then-change` · FUCQ-128
 
-- **Start:** `decline-then-change-inputs-v1`; Paula's first offer must be produced by actual release/allocation services from her versioned brief, never inserted as a chosen winner. The declared one-change input changes `preferences.body.value` to `suv`. Variants are `later-suitable-stock` and `waiting-for-suitable-stock`; later owning fixtures supply their concrete service-backed stock difference.
-- **Reset/tick:** reset into the selected owning variant when integrated; confirm the real first offer exists. After decline/change advance and tick a later release using returned clock versions/cues.
-- **Planned click-through:** decline with a typed reason, review and confirm the one change, then inspect the changed brief, released car and either second suitable offer or waiting activity.
-- **Expected visible/state result:** decline, change and any satisfaction remain separate records; unchanged declined exact stock is excluded until a relevant confirmed change. The real matcher determines whether a later offer exists. Waiting remains a useful successful state, not a synthetic second offer.
-- **Provisional assumptions:** one-change limit and declined-car exclusion use `brief.lifecycle.v1` and `offer.declinedCar.exclusion`; durations and consent remain canonical. Fixture stock differences are inputs, not proof of policy outcomes.
+7 November 2026 (FUCQ-128): the retained successful variant is available. The no-second-match waiting variant moved to FUCQ-173 under the authorised 7 November split; its v1 row below is history.
+
+- **Start:** `decline-then-change-inputs-v2`, variant `later-suitable-stock`. Paula's versioned brief (estate preference at importance 80, five seats, charging not ready, search and hold consent) and the synthetic demo stock (`server/gcsp/stock/demo-provider.js`). v2 changes the declared one change to `preferences.body.value` = `saloon`, because the reviewed demo stock has no SUV and v1's `suv` could never yield a matching second offer. After the reset, the start loader (`server/gcsp/scenarios/decline-then-change.js`) applies these inputs through the actual services in the new run: BriefService draft and confirmation, the presenter release cue (09:30 UTC) and one tick, so stock release and the FUCQ-96 allocator give Paula her first offer. No brief, hold or offer is written by the fixture. The reset response's `startState` names the first offer, or the step that failed.
+- **Reset:** launch the demo (`node scripts/gcsp-demo.mjs`, see the presenter strip section below), open `gcsp-presenter.html`, open **Presenter controls**, choose **Decline then change** and press **Reset scenario**, then confirm. A journey reset takes a few seconds because it runs the real release and allocation. Read back the new run and DemoClock time (09:30 UTC).
+- **Click-through:** switch the acting principal to Paula. Open her offer (a 3 Series Touring estate). Decline it with the typed reason *body style*. The follow-up asks one question: choose **Saloon** and confirm. The page reads *waiting*. As presenter, press **Tick** (one step). Paula's page, after **Check current state**, shows the second offer: a 3 Series Saloon, compared with the declined estate.
+- **Expected visible/state result:** the decline is its own decision record (offer rejected, not expired); the confirmed change is brief version 2 with the other essentials kept; the second offer is a separate offer on brief version 2. The declined Touring is never offered to Paula again while her brief is unchanged and returns to the pool for others. Nothing is accepted or marked satisfied. Reset again and the same models appear in the new run (order identifiers differ).
+- **Provisional assumptions:** one-change limit and declined-car exclusion use `brief.lifecycle.v1` and `offer.declinedCar.exclusion`; decline reasons and the follow-up question come from the adopted `offer-journey-v1` set, re-adopted after each scenario reset. Fixture stock differences are inputs, not proof of policy outcomes.
+- **Automated replay:** `server/test/gcsp-scenario-decline-change.test.js` drives this route through the actual presenter and employee HTTP routes after reset, twice across two resets (`server/test/helpers/gcsp-decline-change-route.js` is the reusable route for FUCQ-109).
 
 | Date UTC | Variant/fixture | Run ID | Build | Result | Feedback / next revision |
 |---|---|---|---|---|---|
 | 2026-11-05 | later-suitable-stock / waiting-for-suitable-stock; v1 | No new run (refused) | `96bc997` | Catalogue declares both variants; actual service preparation/replays unavailable. | FUCQ-128 integrates both variants and records real waiting/offer behaviour. |
+| 2026-11-07 | later-suitable-stock; v2 | `demo-cfd9f03e…` (1280), `demo-d8f0868e…` (375), each from its own reset | `ff69c9f4` | Launched memory demo over a scratch loopback front, headless Chrome. Reset read back 09:30 UTC; Paula's first offer Touring 320i; declined by keyboard (reason select, Enter), chose Saloon, change saved in brief version 2 (waiting); one 60 s Tick (09:31); Check current state showed the Saloon 320i as the next offer beside the declined Touring. PNGs: `evidence/fucq-75/fucq-128/`. | Low: duplicate "Check current state", raw ISO times, slow first loads of presenter controls; an unstyled duplicate "Next offer" block seen once at 375. Waiting variant: FUCQ-173. |
 
 ### Offer expires · `offer-expires` · FUCQ-129
 
@@ -152,6 +237,65 @@ Feedback is recorded in this repository document and committed through the norma
 |---|---|---|---|---|---|
 | 2026-11-05 | acknowledged / rejected; v1 | No new run (refused) | `96bc997` | Missing offer/ordering/reconciliation/fault capabilities; no pending or acknowledged state fabricated. | FUCQ-131 supplies real pending operation and both-resolution replay evidence. |
 
+### Greg's next order · `greg-next-order` · FUCQ-121
+
+- **Start:** the `decline-then-change` reset (above): one confirmed brief (Paula, renewal 1 Dec 2026), DemoClock 5 Nov 2026 09:30 GMT, and synthetic stock. Greg's plan reads that saved demand only ("Expressed demand (deterministic baseline)"). Policy values (limits, budget £200,000) come from the policy service.
+- **Reset and tick:** launch the demo (`node scripts/gcsp-demo.mjs`), open `gcsp-presenter.html`, open **Presenter controls**, choose **Decline then change**, press **Reset scenario** then **Confirm reset** (about 20 seconds; the page reloads as the presenter). Open **Presenter controls** again, choose **Greg (fictional) (greg)**, press **Switch principal**. **Tick** moves the clock 60 seconds and reloads the plan by itself.
+- **Planned click-through:** (1) On Greg's dashboard read the **Next order** panel: heading "No new order recommended", Forecast source, Policy version, Plan for, then proposed order, coverage, unallocated-stock risk, unmet needs, binding constraints and alternative plans. (2) Under **Change limits**, set **Min** to 2 for "3 Series Touring 320i" and press ArrowRight once on its "maximum slider" (3 to 4). (3) Press **Preview with these limits**: "Order 2 vehicles: 3 Series Touring 320i", the **Preview** banner ("Preview only. Nothing is saved, published or ordered."), **Differences from the current plan** (0 to 2, +2) and **Outcome before and after**. **Back to current plan** returns. For the infeasible case press **Reset limits**, set that Min to 2 and the "3 Series Touring" model **Max** to 0, then preview: "No plan meets these limits" and **Limits that conflict**. (4) For **Replan needed**, with a preview showing, open `gcsp-presenter.html` in a second window (same session), press **Tick** there, return and press **Request 2 vehicles from Production**: the changed inputs are listed. Press **Replan with the latest inputs**. (5) Press **Request 2 vehicles from Production** (a separate button; "Nothing is ordered until Production confirms."). The banner reads "Requested from Production" and **Order requests** shows "3 Series Touring 320i, Requested, 2" without pressing **Refresh orders**. (6) In **Order requests** open **Synthetic production controls**, choose the request, **Production response** "Confirm now", **Quantity to confirm** 2, **Save production response**. The plan reloads itself and shows "Replanned after a Production response".
+- **Expected visible/state result:** nothing is ordered by a preview, an infeasible preview or a stale request. One submit creates one request with the previewed limits, shown in Order tracking as requested 2, confirmed 0. After the confirmation the row reads Confirmed 2 and the plan names the response it replanned after, with a new "Plan for" time. A single window never shows "Replan needed" after Tick because the plan reloads; the two-window step is the deliberate way to hold an older plan.
+- **Provisional assumptions:** the forecast is expressed demand, not a prediction; the order budget, model and derivative limits and lead time are `orderPlan.*` policy assumptions; the production confirmation is the synthetic adapter's, not a real Production response. The plan's binding-constraint rows include minimums at 0.
+
+| Date UTC | Variant/fixture | Run ID | Build | Result | Feedback / next revision |
+|---|---|---|---|---|---|
+| 2026-11-08 | decline-then-change v2; headless Chrome, keyboard only, 1280 and 375 | `demo-7d3d82a9…` (reset) | `9066cb5f` plus the FUCQ-121 evidence commit | All steps above ran (script `evidence/fucq121/capture.mjs`): plan ready, limits edit and slider, preview, infeasible, stale, replan, submit, confirm, replanned; 403 for an employee on the plan route. PNGs: `evidence/fucq121/`. | Low: unmatched supply rows repeat "Vehicle already in stock" (now merged); alternatives table scrolls sideways at 375. |
+
 ### Integrated automated evidence · 5 November 2026
 
 FUCQ-125's integrated source `87c0b4ec86312887c7f807746b143e7eb2074b98` passed the 63-case scenario/Greg/clock/outbox regression and the required full suite (794 total, 792 passed, two configured-PostgreSQL skips). The checked catalogue/refusal/reset/current projection remains `server/gcsp/fixtures/scenarios/presentation-v1.json`. All six business preparations still return `not available yet` before mutation; these runs establish backend guards and fictional mechanics reset behaviour. No durable manual business run, screen trial or later journey replay is recorded by this automated checkpoint. Retained execution and cleanup evidence is described in the FUCQ-125 story Result.
+
+## Presenter strip and live workspace · FUCQ-126
+
+Start the local host: `GCSP_REPOSITORY_MODE=memory GCSP_TLS_KEY_FILE=... GCSP_TLS_CERT_FILE=... node scripts/gcsp-demo.mjs`
+(see `local-https.md`; the certificate must be trusted by the browser). Opening `gcsp-presenter.html` issues the
+trusted backend bootstrap with the separate presenter-control and acting cookies.
+Open `gcsp-presenter.html` through the packaged same-origin static/API host. The runtime selects
+its employee, Greg or presenter surface from actual `/api/gcsp/context`; no person belongs in the URL.
+A shared-key gate, where configured, must already be satisfied by the host. A missing control
+cookie hides the strip entirely even when the acting person is an employee or Greg.
+
+1. Open **Presenter controls**. Check scenario, run, DemoClock UTC time, actual acting person and
+   last tick in the shared presenter bar. Collapse/reopen with the keyboard; Escape closes the
+   strip and focuses its summary. Scenario and Acting principal are named radio groups: Tab enters
+   each group once, arrows wrap, and Home/End choose its first/last option. Refresh readback while
+   a radio has focus; its mounted node, selected choice and focus must remain stable. During busy
+   or uncertain commands both groups are disabled.
+2. Choose **Tick**, a server-projected named cue or a future UTC ISO target, or **Next release**.
+   Check actual new time and handler results in server order. Missing release handlers say release
+   unavailable; they do not report zero cars. A future cue does not establish release capability.
+   The launcher composes synthetic demo stock (`server/gcsp/stock/demo-provider.js`): from 09:00, **Next release**
+   moves to the 09:30 cue and reports 5 cars released; a repeat shows "No future release cue is configured".
+3. Select an unavailable scenario radio; the choice remains enabled and inspectable. Its missing
+   capabilities appear and Reset is disabled. Ordinary readbacks preserve a deliberate choice. Choose
+   the available clock-mechanics scenario, press **Reset scenario**, then cancel once. Confirm a
+   second reset and check the returned new run plus fresh server/context readback. The mechanics
+   scenario is not evidence of any full business journey.
+4. Select an employee or Greg from the server-projected choices and press **Switch principal**.
+   A confirmed actual context navigates to `gcsp-presenter.html` and loads that person's HTTP surface.
+   Switch back through the same controls. `gcsp-greg.html` is not live-principal proof.
+   Paula, Alex and, after a reset, the new run's employees open a prepared account (Sam's scheme is unsupported).
+5. For a deliberately dropped command response, choose **Retry original action**. Verify the request
+   body and command ID match exactly; rapid duplicate clicks must produce only one request.
+   If session issuance cannot replay its raw cookie, actual context decides whether installation
+   succeeded. Unknown/different context stays uncertain/refused. **Issue selected principal again**
+   is a deliberate fresh issuance with a new ID.
+
+Current authored scope, 5 November 2026: UI/DOM and HTTP-boundary checks cover these behaviors.
+The corrected browser matrix at `393dedc` passed 17 checks at both desktop and 375px, including
+Tab, Enter, Escape, radio arrows/Home/End, visible focus and readback focus preservation. The lead
+personally inspected all 50 original captures and independently verified cleanup. This is the actual
+HTTP memory composition with explicitly synthetic account inputs, not a delivered business journey.
+The isolated gallery example demonstrates pending/missing-release presentation only. 7 November: live HTTPS smoke on the composed launcher read back a 5-car release, idempotent tick/release replays,
+employee/Greg switches with ready accounts and a mechanics reset into a new run. Journey scenarios, including the main
+walkthrough, remain "not available yet" in the FUCQ-125 catalogue.
+The browser runner matrix is `evidence/fucq-126/ui-browser-plan.md`; dated observations and captures
+must be added after execution, without relabelling mock failure states as real integration proof.

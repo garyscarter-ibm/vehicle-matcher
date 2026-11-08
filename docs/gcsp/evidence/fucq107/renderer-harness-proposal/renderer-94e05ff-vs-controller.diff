@@ -1,0 +1,425 @@
+--- accepted-controller/controller-94e05ff-launch.py
++++ proposed-renderer/renderer-94e05ff-launch.py
+@@ -4,9 +4,9 @@
+ """
+ import os
+ import sys
+-EXPECTED = ['/opt/homebrew/Cellar/node/26.5.0/bin/node', '--loader', '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/controller-94e05ff-loader.mjs', '--test', '--test-reporter=tap', '--test-concurrency=1', 'server/test/gcsp-second-offer-controller.test.js']
++EXPECTED = ['/opt/homebrew/Cellar/node/26.5.0/bin/node', '--import', '/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107/renderer-94e05ff-loader.mjs', '--test', '--test-reporter=tap', '--test-concurrency=1', 'server/test/gcsp-second-offer-render.test.js']
+ if not sys.flags.isolated or not sys.dont_write_bytecode or sys.argv[1:] != EXPECTED:
+     raise RuntimeError('Reviewed launch command differs')
+ if os.read(0, 1) != b'1':
+-    raise RuntimeError('Controller launch gate refused')
++    raise RuntimeError('Renderer launch gate refused')
+ os.execve(EXPECTED[0], EXPECTED, dict(os.environ))
+--- accepted-controller/controller-94e05ff-supervisor.py
++++ proposed-renderer/renderer-94e05ff-supervisor.py
+@@ -1,4 +1,4 @@
+-"""Unexecuted FUCQ-107 controller14 proposal; exact external review is required.
++"""Unexecuted FUCQ-107 renderer9 proposal; exact external review is required.
+ 
+ No custom imports, ledger access, scratch or child before complete admission.
+ Shared test_resources remains unchanged; its permissive lifecycle is never used.
+@@ -18,7 +18,7 @@
+ 
+ ROOT = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085')
+ OUT = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107')
+-PREFIX = 'controller-94e05ff-'
++PREFIX = 'renderer-94e05ff-'
+ MIB = 1024 ** 2
+ SOURCE_COMMIT = '94e05ff9070aa19f5deb3e9997dfed96cc268473'
+ 
+@@ -50,6 +50,8 @@
+     if 'sha256' in expected:
+         data = path.read_bytes()
+         row.update(bytes=len(data), sha256=sha(data))
++    if 'entries' in expected:
++        row['entries'] = sorted(item.name for item in path.iterdir())
+     if row != expected:
+         raise RuntimeError('Frozen physical/content identity differs: ' + str(path))
+ 
+@@ -61,14 +63,17 @@
+     if sha(data) != expected_sha:
+         raise RuntimeError('Admission SHA differs from exact reviewed command')
+     plan = strict_json(data)
+-    if plan['sourceCommit'] != SOURCE_COMMIT or plan['sourceFiles'] != 7 or plan['expectedCases'] != 14:
+-        raise RuntimeError('Controller14 source boundary differs')
++    if plan['sourceCommit'] != SOURCE_COMMIT or plan['sourceFiles'] != 22 or plan['expectedCases'] != 9:
++        raise RuntimeError('Renderer9 source boundary differs')
+     if plan['pythonExecutable'] != sys.executable or plan['pythonVersion'] != sys.version:
+         raise RuntimeError('Running interpreter differs')
+     if Path.cwd() != ROOT or not ROOT.is_dir():
+         raise RuntimeError('Run only in the owned worktree')
+     for name, expected in plan['nodes'].items():
+         physical(Path(name), expected)
++    for path in plan['absentPaths']:
++        if os.path.lexists(path):
++            raise RuntimeError('Frozen absent resolution candidate appeared: ' + path)
+     for variable, expected in plan['environment'].items():
+         if not isinstance(variable, str) or not isinstance(expected, str):
+             raise RuntimeError('Environment schema differs')
+@@ -100,31 +105,74 @@
+     data = (dest / 'output.log').read_bytes()
+     text = data.decode('utf-8', errors='strict')
+     names = re.findall(r'^(?:not )?ok \d+ - (.*)$', text, re.M)
+-    counts = {m.group(1): int(m.group(2)) for m in re.finditer(r'^# (tests|suites|pass|fail|cancelled|skipped|todo)\s+(\d+)\s*$', text, re.M)}
+-    expected = {'tests': 14, 'suites': 0, 'pass': 14, 'fail': 0, 'cancelled': 0, 'skipped': 0, 'todo': 0}
++    counts = {}
++    for match in re.finditer(r'^# (tests|suites|pass|fail|cancelled|skipped|todo)\s+(\d+)\s*$', text, re.M):
++        if match[1] in counts:
++            raise RuntimeError('Duplicate TAP count')
++        counts[match[1]] = int(match[2])
++    expected = {'tests': 9, 'suites': 0, 'pass': 9, 'fail': 0, 'cancelled': 0, 'skipped': 0, 'todo': 0}
+     if counts != expected or names != source['expectedNames'] or re.search(r'^not ok|^Bail out!|# (?:SKIP|TODO)', text, re.M):
+-        raise RuntimeError('Original TAP does not prove all exact controller14 cases')
++        raise RuntimeError('Original TAP does not prove all exact renderer9 cases')
+     journal_bytes = (dest / 'modules.jsonl').read_bytes()
+     journal = [strict_json(line) for line in journal_bytes.splitlines()]
++    dependencies = strict_json((OUT / (PREFIX + 'dependencies.json')).read_bytes())
+     wanted = {row['url']: row['sha256'] for row in source['rows'] if row['kind'] == 'module'}
++    dependency = {Path(row['path']).as_uri(): row for row in dependencies['files']}
++    roots = sorted((row['path'] for row in dependencies['packages']), key=len, reverse=True)
++    def package(url):
++        return next((root for root in roots if url.startswith(Path(root).as_uri() + '/')), None)
++    def permitted(row):
++        parent, specifier, target = row['parentURL'], row['specifier'], row.get('url')
++        if parent not in dependency:
++            return False
++        if row['kind'] == 'optional-miss':
++            name = '/'.join(specifier.split('/')[:2]) if specifier.startswith('@') else specifier.split('/')[0]
++            return row['code'] in ['MODULE_NOT_FOUND', 'ERR_MODULE_NOT_FOUND'] and any(edge['from'] == package(parent)
++                and edge['name'] == name and not edge['required'] and edge['target'] is None for edge in dependencies['resolutionEdges'])
++        if target.startswith('node:'):
++            return specifier == target or 'node:' + specifier == target
++        if target not in dependency:
++            return False
++        if specifier.startswith(('.', '/', 'file:')):
++            return package(parent) == package(target)
++        name = '/'.join(specifier.split('/')[:2]) if specifier.startswith('@') else specifier.split('/')[0]
++        if any(row['path'] == package(parent) and row['name'] == name for row in dependencies['packages']):
++            return package(parent) == package(target)
++        return any(edge['from'] == package(parent) and edge['name'] == name and edge['target'] == package(target)
++            for edge in dependencies['resolutionEdges'])
+     loads = {row['url']: row['sha256'] for row in journal if row['kind'] == 'application-load'}
+     paths = {row['path']: row['url'] for row in source['rows']}
+-    wanted_edges = {(paths[edge['from']], edge['specifier'], edge['to'] if edge['to'].startswith('node:') else paths[edge['to']]) for edge in source['edges']}
++    wanted_edges = {(paths[edge['from']], edge['specifier'], edge['to'] if edge['to'].startswith(('node:', 'file:')) else paths[edge['to']]) for edge in source['edges']}
+     edges = {(row['parentURL'], row['specifier'], row['url']) for row in journal if row['kind'] == 'application-resolution'}
+-    if (loads != wanted or edges != wanted_edges
+-        or any(row['url'] not in wanted or row['sha256'] != wanted[row['url']] for row in journal if row['kind'] == 'application-load')
+-        or any(row['kind'] not in ['application-load', 'application-resolution'] for row in journal)):
+-        raise RuntimeError('Original module journal differs from exact controller graph')
++    if loads != wanted or edges != wanted_edges:
++        raise RuntimeError('Original module journal differs from exact renderer source graph')
++    for row in journal:
++        kind = row['kind']
++        if kind in ['application-load', 'dependency-load']:
++            expected_row = next((value for value in source['rows'] if value['url'] == row['url'] and value['kind'] == 'module'), None) if kind == 'application-load' else dependency.get(row['url'])
++            if not expected_row or row['sha256'] != expected_row['sha256'] or row['bytes'] != expected_row['bytes'] or row['format'] not in ['commonjs', 'module', 'json']:
++                raise RuntimeError('Unlisted/changed executable load')
++        elif kind in ['dependency-resolution', 'optional-miss']:
++            if not permitted(row):
++                raise RuntimeError('Dependency resolve/miss differs from reviewed inventory')
++        elif kind == 'application-resolution':
++            if (row['parentURL'], row['specifier'], row['url']) not in wanted_edges:
++                raise RuntimeError('Unlisted application resolution')
++        else:
++            raise RuntimeError('Refused or unknown loader journal event')
++    dependency_loads = {row['url'] for row in journal if row['kind'] == 'dependency-load'}
++    if Path(dependencies['entry']).as_uri() not in dependency_loads:
++        raise RuntimeError('Exact JSDOM dependency entry was not observed')
+     return {'counts': counts, 'names': names, 'applicationModules': len(loads), 'edges': len(edges),
++            'dependencyModules': len(dependency_loads),
+             'output': {'bytes': len(data), 'sha256': sha(data)},
+             'journal': {'bytes': len(journal_bytes), 'sha256': sha(journal_bytes)}}
+-
+ 
+ def execute(frozen, args, tr, guard, sg, source, environment):
+     started = time.monotonic()
+     policy = tr.Policy({'chunk_seconds': 120, 'chunk_ram_mib': 384, 'chunk_scratch_mib': 128,
+                         'log_mib': 2, 'reserve_free_gib': 5, 'ram_reserve_mib': 512})
+-    dest = OUT / ('controller14-' + uuid.uuid4().hex)
++    dest = OUT / ('renderer9-' + uuid.uuid4().hex)
+     # Scratch construction establishes the absolute root; finalizer registration
+     # precedes retained-directory creation, ledger mutation and scratch creation.
+     scratch = guard.make_scratch(tr, dest, ROOT, policy)
+@@ -184,7 +232,7 @@
+                 if written + journal.stat().st_size > 2 * MIB:
+                     raise RuntimeError('Combined original log/journal cap reached')
+                 if time.monotonic() - started > 120:
+-                    raise RuntimeError('Controller14 chunk exceeded120seconds')
++                    raise RuntimeError('Renderer9 chunk exceeded120seconds')
+                 if guard.shutil.disk_usage(scratch.root).free < 5 * 1024 ** 3:
+                     raise RuntimeError('Host5GiB disk emergency reserve reached')
+ 
+@@ -205,7 +253,7 @@
+                 pass
+             result.update(rc=process.returncode, logBytes=written)
+         if process.returncode != 0:
+-            raise RuntimeError('Controller14 failed; no repair/retry authorised')
++            raise RuntimeError('Renderer9 failed; no repair/retry authorised')
+         result['tests'] = report_tests(dest, source)
+     except BaseException as error:
+         failure = {'type': type(error).__name__, 'message': str(error)[:1024]}
+@@ -232,7 +280,7 @@
+     except BaseException as error:
+         failure = failure or {'type': type(error).__name__, 'message': str(error)[:1024]}
+     passed = failure is None and cleanup['passed'] and pins_preserved and result.get('rc') == 0
+-    summary = {'schemaVersion': 1, 'story': 'FUCQ-107', 'scope': 'controller14-only',
++    summary = {'schemaVersion': 1, 'story': 'FUCQ-107', 'scope': 'renderer9-only',
+         'admissionSHA256': args.admission_sha, 'grant': args.dispatcher_grant, 'sourceCommit': SOURCE_COMMIT,
+         'passed': passed, 'failure': failure, 'result': result, 'cleanup': cleanup, 'pinsPreserved': pins_preserved,
+         'manifest': str(scratch.manifest), 'ownedRoot': str(scratch.root), 'owner': scratch.record['owner'],
+@@ -254,8 +302,8 @@
+     parser.add_argument('--admission-sha', required=True)
+     parser.add_argument('--dispatcher-grant', required=True)
+     args = parser.parse_args()
+-    if not re.fullmatch('[a-f0-9]{64}', args.admission_sha) or not args.dispatcher_grant.startswith('fucq107-controller14-'):
+-        parser.error('Supply the exact reviewed admission SHA and new controller14 grant')
++    if not re.fullmatch('[a-f0-9]{64}', args.admission_sha) or not args.dispatcher_grant.startswith('fucq107-renderer9-'):
++        parser.error('Supply the exact reviewed admission SHA and new renderer9 grant')
+     frozen = admit(args.admission_sha)
+     environment = dict(frozen['environment'])
+     os.environ.clear()
+--- accepted-controller/controller-94e05ff-audit.py
++++ proposed-renderer/renderer-94e05ff-audit.py
+@@ -16,7 +16,7 @@
+ 
+ ROOT = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085')
+ OUT = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107')
+-PREFIX = 'controller-94e05ff-'
++PREFIX = 'renderer-94e05ff-'
+ 
+ 
+ def digest(data):
+@@ -46,6 +46,8 @@
+     if 'sha256' in expected:
+         data = path.read_bytes()
+         actual.update(bytes=len(data), sha256=digest(data))
++    if 'entries' in expected:
++        actual['entries'] = sorted(item.name for item in path.iterdir())
+     require(actual == expected, 'physical:' + str(path))
+ 
+ 
+@@ -70,10 +72,12 @@
+     require(plan['pythonExecutable'] == sys.executable and plan['pythonVersion'] == sys.version, 'interpreter')
+     for name, expected in plan['nodes'].items():
+         physical(Path(name), expected)
++    for path in plan['absentPaths']:
++        require(not os.path.lexists(path), 'absent-resolution:' + path)
+     os.environ.clear()
+     os.environ.update(plan['environment'])
+     run = Path(args.run)
+-    require(run.parent == OUT and re.fullmatch('controller14-[a-f0-9]{32}', run.name)
++    require(run.parent == OUT and re.fullmatch('renderer9-[a-f0-9]{32}', run.name)
+         and not run.is_symlink() and run.resolve() == run, 'owned-run')
+     source = strict((OUT / (PREFIX + 'source.json')).read_bytes())
+     summary = strict((run / 'summary.json').read_bytes())
+@@ -94,26 +98,64 @@
+     text = output.decode('utf-8')
+     require(not re.search(r'^not ok|^Bail out!|# (?:SKIP|TODO)', text, re.M), 'no-negative-or-skipped-TAP')
+     names = re.findall(r'^ok \d+ - (.*)$', text, re.M)
+-    require(names == source['expectedNames'] and len(names) == 14, 'all14-original-names')
+-    expected_counts = {'tests': 14, 'suites': 0, 'pass': 14, 'fail': 0, 'cancelled': 0, 'skipped': 0, 'todo': 0}
++    require(names == source['expectedNames'] and len(names) == 9, 'all9-original-names')
++    expected_counts = {'tests': 9, 'suites': 0, 'pass': 9, 'fail': 0, 'cancelled': 0, 'skipped': 0, 'todo': 0}
+     counts = {}
+     for match in re.finditer(r'^# (tests|suites|pass|fail|cancelled|skipped|todo)\s+(\d+)\s*$', text, re.M):
+         require(match[1] not in counts, 'unique-TAP-count:' + match[1])
+         counts[match[1]] = int(match[2])
+-    require(counts == expected_counts == summary['result']['tests']['counts'], 'exact14-counts')
++    require(counts == expected_counts == summary['result']['tests']['counts'], 'exact9-counts')
+     require(names == summary['result']['tests']['names'], 'reported-names')
+     require(summary['result']['tests']['output'] == {'bytes': len(output), 'sha256': digest(output)}, 'original-TAP-hash')
+     journal_data = (run / 'modules.jsonl').read_bytes()
+     journal = [strict(line) for line in journal_data.splitlines()]
+-    wanted = {row['url']: row['sha256'] for row in source['rows'] if row['kind'] == 'module'}
++    wanted = {row['url']: row for row in source['rows'] if row['kind'] == 'module'}
++    dependencies = strict((OUT / (PREFIX + 'dependencies.json')).read_bytes())
++    pinned = {Path(row['path']).as_uri(): row for row in dependencies['files']}
++    package_roots = sorted([row['path'] for row in dependencies['packages']], key=len, reverse=True)
++    def owning(url):
++        return next((root for root in package_roots if url.startswith(Path(root).as_uri() + '/')), None)
+     loads = [row for row in journal if row['kind'] == 'application-load']
+-    require({row['url']: row['sha256'] for row in loads} == wanted, 'all3-module-bytes')
+-    require(all(row['url'] in wanted and row['sha256'] == wanted[row['url']] for row in loads), 'every-load-declared')
++    require({row['url'] for row in loads} == set(wanted) and len(wanted) == 17, 'all17-application-modules')
++    for row in loads:
++        expected = wanted.get(row['url'])
++        require(expected is not None and row['sha256'] == expected['sha256'] and row['bytes'] == expected['bytes']
++            and row['format'] == 'module', 'every-application-load-pinned')
+     paths = {row['path']: row['url'] for row in source['rows']}
+-    expected_edges = {(paths[row['from']], row['specifier'], row['to'] if row['to'].startswith('node:') else paths[row['to']]) for row in source['edges']}
++    expected_edges = {(paths[row['from']], row['specifier'], row['to'] if row['to'].startswith(('node:', 'file:')) else paths[row['to']]) for row in source['edges']}
+     edges = [row for row in journal if row['kind'] == 'application-resolution']
+-    require({(row['parentURL'], row['specifier'], row['url']) for row in edges} == expected_edges, 'all4-edges')
+-    require(all(row['kind'] in ['application-load', 'application-resolution'] for row in journal), 'no-other-imports')
++    require({(row['parentURL'], row['specifier'], row['url']) for row in edges} == expected_edges
++        and len(expected_edges) == 33, 'all33-source-edges')
++    require(all(row['kind'] in ['application-load', 'application-resolution', 'dependency-load', 'dependency-resolution', 'optional-miss']
++        for row in journal), 'no-refused-or-unknown-imports')
++    dependency_loads = [row for row in journal if row['kind'] == 'dependency-load']
++    require(Path(dependencies['entry']).as_uri() in {row['url'] for row in dependency_loads}, 'exact-jsdom-entry-observed')
++    for row in dependency_loads:
++        expected = pinned.get(row['url'])
++        require(expected is not None and row['sha256'] == expected['sha256'] and row['bytes'] == expected['bytes']
++            and row['format'] in ['commonjs', 'module', 'json'] and not row['url'].endswith('.node'), 'every-dependency-load-pinned')
++    for row in journal:
++        if row['kind'] not in ['dependency-resolution', 'optional-miss']:
++            continue
++        parent, specifier = row['parentURL'], row['specifier']
++        require(parent in pinned, 'dependency-parent-pinned')
++        name = '/'.join(specifier.split('/')[:2]) if specifier.startswith('@') else specifier.split('/')[0]
++        declared = [edge for edge in dependencies['resolutionEdges'] if edge['from'] == owning(parent) and edge['name'] == name]
++        if row['kind'] == 'optional-miss':
++            require(any(not edge['required'] and edge['target'] is None for edge in declared)
++                and row['code'] in ['MODULE_NOT_FOUND', 'ERR_MODULE_NOT_FOUND'], 'declared-optional-miss')
++            continue
++        target = row['url']
++        if target.startswith('node:'):
++            require(specifier == target or 'node:' + specifier == target, 'builtin-resolution')
++        else:
++            require(target in pinned, 'dependency-target-pinned')
++            require(owning(parent) == owning(target) if specifier.startswith(('.', '/', 'file:'))
++                else any(edge['target'] == owning(target) for edge in declared) or
++                any(package['path'] == owning(parent) == owning(target) and package['name'] == name
++                    for package in dependencies['packages']), 'dependency-package-edge')
++    require(summary['result']['tests']['applicationModules'] == 17 and summary['result']['tests']['edges'] == 33
++        and summary['result']['tests']['dependencyModules'] == len({row['url'] for row in dependency_loads}), 'observed-module-counts')
+     require(summary['result']['tests']['journal'] == {'bytes': len(journal_data), 'sha256': digest(journal_data)}, 'original-journal-hash')
+     require(len(output) + len(journal_data) <= 2 * 1024 ** 2, 'combined-log-cap')
+     # The single full snapshot is fail-closed. Unknown/partial observations never
+--- accepted-controller/controller-94e05ff-freeze.py
++++ proposed-renderer/renderer-94e05ff-freeze.py
+@@ -11,7 +11,7 @@
+ 
+ ROOT = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-085')
+ OUT = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq107')
+-PREFIX = 'controller-94e05ff-'
++PREFIX = 'renderer-94e05ff-'
+ SOURCE_COMMIT = '94e05ff9070aa19f5deb3e9997dfed96cc268473'
+ 
+ 
+@@ -24,6 +24,8 @@
+         'resolved': str(path.resolve(strict=True)), 'targetDevice': followed.st_dev, 'targetInode': followed.st_ino}
+     if kind == 'symlink':
+         row['link'] = os.readlink(path)
++    if kind == 'directory':
++        row['entries'] = sorted(item.name for item in path.iterdir())
+     if stat.S_ISREG(followed.st_mode) and content:
+         data = path.read_bytes()
+         row.update(bytes=len(data), sha256=hashlib.sha256(data).hexdigest())
+@@ -35,8 +37,8 @@
+         raise RuntimeError('Use /usr/bin/python3 -I -B in the owned worktree')
+     source = json.loads((OUT / (PREFIX + 'source.json')).read_bytes())
+     node = json.loads((OUT / (PREFIX + 'node.json')).read_bytes())
+-    if source['sourceCommit'] != SOURCE_COMMIT or len(source['rows']) != 7 or len(source['expectedNames']) != 14:
+-        raise RuntimeError('Source14 boundary differs')
++    if source['sourceCommit'] != SOURCE_COMMIT or len(source['rows']) != 22 or len(source['expectedNames']) != 9:
++        raise RuntimeError('Renderer9 boundary differs')
+     nodes = {}
+     for row in source['rows']:
+         path = ROOT / row['path']
+@@ -44,7 +46,45 @@
+         if item['kind'] != 'file' or item['sha256'] != row['sha256'] or item['bytes'] != row['bytes']:
+             raise RuntimeError('Current source differs: ' + row['path'])
+         nodes[str(path)] = item
+-    external = ['source.json', 'node.json', 'loader.mjs', 'launch.py', 'resources.py', 'supervisor.py', 'audit.py', 'freeze.py']
++    dependencies = json.loads((OUT / (PREFIX + 'dependencies.json')).read_bytes())
++    expected_files = {}
++    for row in dependencies['files'] + dependencies['lockInputs']:
++        path = Path(row['path'])
++        item = identity(path)
++        if item['kind'] != 'file' or any(item[key] != row[key] for key in ['sha256', 'bytes', 'device', 'inode']):
++            raise RuntimeError('Installed inventory changed: ' + str(path))
++        if path.suffix == '.node':
++            raise RuntimeError('Native addon refused')
++        if str(path) in expected_files and expected_files[str(path)] != item:
++            raise RuntimeError('Duplicate inventory identity differs')
++        expected_files[str(path)] = item
++        nodes[str(path)] = item
++    observed = set()
++    for package in dependencies['packages']:
++        root = Path(package['path'])
++        item = identity(root)
++        if item['kind'] != 'directory' or any(item[key] != package[key] for key in ['device', 'inode']):
++            raise RuntimeError('Installed package root differs')
++        for folder, dirs, files in os.walk(root, followlinks=False):
++            directory = Path(folder)
++            nodes[str(directory)] = identity(directory)
++            if nodes[str(directory)]['kind'] != 'directory':
++                raise RuntimeError('Dependency directory is not regular')
++            for name in dirs:
++                if (directory / name).is_symlink():
++                    raise RuntimeError('Dependency directory symlink refused')
++            for name in files:
++                path = str(directory / name)
++                if path not in expected_files:
++                    raise RuntimeError('Uninventoried installed file: ' + path)
++                observed.add(path)
++    wanted = {row['path'] for row in dependencies['files']}
++    if observed != wanted or len(wanted) != 1833 or len(dependencies['files']) != 1850:
++        raise RuntimeError('Full installed inventory differs')
++    absent = dependencies['absentResolutionCandidates']
++    if len(absent) != 129 or any(os.path.lexists(path) for path in absent):
++        raise RuntimeError('Optional/resolution absence differs')
++    external = ['dependencies.json', 'impact.json', 'source.json', 'node.json', 'loader.mjs', 'launch.py', 'resources.py', 'supervisor.py', 'audit.py', 'freeze.py']
+     for name in external:
+         path = OUT / (PREFIX + name)
+         nodes[str(path)] = identity(path)
+@@ -60,40 +100,44 @@
+     ledger = Path('/Users/garycarter/.cache/agent-scaffolding/test-resources')
+     for path in [ROOT, OUT, Path('/private/tmp'), ledger, ledger / 'reservations.lock']:
+         nodes[str(path)] = identity(path, content=False)
++        nodes[str(path)].pop('entries', None)
+     if nodes[str(ledger / 'reservations.lock')]['kind'] != 'file':
+         raise RuntimeError('Shared lock must be an existing regular file')
+     environment = {'HOME': '/Users/garycarter', 'USER': 'garycarter', 'LOGNAME': 'garycarter',
+         'PATH': '/usr/bin:/bin:/usr/sbin:/sbin', 'LANG': 'C', 'LC_ALL': 'C', 'TZ': 'UTC'}
+     test = source['tests'][0]
+     child = ['/usr/bin/python3', '-I', '-B', str(OUT / (PREFIX + 'launch.py')),
+-        expected_node['path'], '--loader', str(OUT / (PREFIX + 'loader.mjs')),
++        expected_node['path'], '--import', str(OUT / (PREFIX + 'loader.mjs')),
+         '--test', '--test-reporter=tap', '--test-concurrency=1', test]
+     plan = {'schemaVersion': 1, 'story': 'FUCQ-107', 'status': 'proposal-awaiting-independent-review-and-new-execution-grant',
+-        'variant': 'strict-controller14-94e05ff', 'sourceCommit': SOURCE_COMMIT, 'sourceFiles': 7,
+-        'applicationModules': 3, 'applicationEdges': 2, 'builtinEdges': 2, 'expectedCases': 14,
++        'variant': 'strict-renderer9-94e05ff', 'sourceCommit': SOURCE_COMMIT, 'sourceFiles': 22,
++        'applicationModules': 17, 'applicationSourceEdges': 33, 'expectedCases': 9,
+         'expectedNames': source['expectedNames'], 'sourceBytes': sum(row['bytes'] for row in source['rows']),
+         'sourcePlanSHA256': hashlib.sha256((OUT / (PREFIX + 'source.json')).read_bytes()).hexdigest(),
+         'pythonExecutable': sys.executable, 'pythonVersion': sys.version,
+-        'nodes': dict(sorted(nodes.items())), 'installedPackages': [], 'environment': environment,
++        'nodes': dict(sorted(nodes.items())), 'installedPackages': dependencies['packages'], 'environment': environment,
++        'dependencyInventoryRows': 1850, 'dependencyUniqueFiles': 1833, 'dependencyUniqueBytes': sum(nodes[path]['bytes'] for path in wanted),
++        'dependencyPlanSHA256': hashlib.sha256((OUT / (PREFIX + 'dependencies.json')).read_bytes()).hexdigest(),
++        'absentPaths': sorted(absent),
+         'ledgerDirectory': str(ledger), 'retainedChargedRoot': str(OUT),
+         'limits': {'seconds': 120, 'ramBytes': 384 * 1024 ** 2, 'scratchAndEntireRetainedBytes': 128 * 1024 ** 2,
+             'combinedOriginalLogAndJournalBytes': 2 * 1024 ** 2, 'workerCount': 1,
+             'emergencyFreeBytes': 5 * 1024 ** 3, 'ramReserveBytes': 512 * 1024 ** 2, 'receiptHeadroomBytes': 128 * 1024},
+         'commands': {'child': child,
+             'execute': ['/usr/bin/python3', '-I', '-B', str(OUT / (PREFIX + 'supervisor.py')),
+-                '--execute', '--admission-sha', '<exact-reviewed-SHA>', '--dispatcher-grant', '<new-exact-controller14-grant>'],
++                '--execute', '--admission-sha', '<exact-reviewed-SHA>', '--dispatcher-grant', '<new-exact-renderer9-grant>'],
+             'audit': ['/usr/bin/python3', '-I', '-B', str(OUT / (PREFIX + 'audit.py')),
+                 '--admission-sha', '<exact-reviewed-SHA>', '--run', '<original-run-directory>']},
+-        'patternReference': {'commit': '918ce04510fd327e860809e7de53bd636d1cf7da',
+-            'resourcesSHA256': '2ef0823acaf59764c3c9e0e3cb662f0bd72637f7ee569807c61c537d0b742949',
+-            'supervisorSHA256': '1e5a0811b8cad6cf449905f72c1da49c59d9f6f486c95c791e40b3d496deefe9',
+-            'status': 'Dispatcher reports independent static admission PASS; this107 adaptation is unreviewed and unexecuted.'},
+-        'excluded': 'No controller rerun yet, renderer, jsdom, producers, canonical policy, server/backend45, PostgreSQL, network, listener, browser, native or full-suite execution. Paused96 is untouched.',
++        'patternReference': {'commit': '00900926ee86d380f706726b91892fa6376837ed',
++            'resourcesSHA256': '1c19f35495cd5a186dfcb75490a314814a9b37be594acaa51dcfbdcfae445790',
++            'supervisorSHA256': 'a065e2f38318f3dcd1053a8e4439fcd88ac2b42199b9531c85723f58426ce147',
++            'status': 'Accepted controller14 lifecycle at the pinned commit; renderer9 adaptation remains unreviewed and unexecuted.'},
++        'excluded': 'Renderer9 only with pre-existing exact JSDOM inventory. No controller/backend rerun, producer composition, canonical103 runtime, PostgreSQL, network, listener, browser, native or full-suite execution. Paused96 is untouched.',
+         'allocation': 'none; metadata only; no custom helper import, process probe, ledger mutation, reservation, scratch or tests'}
+     output = OUT / (PREFIX + 'admission.json')
+     output.write_text(json.dumps(plan, indent=2) + '\n')
+     print(json.dumps({'path': str(output), 'sha256': hashlib.sha256(output.read_bytes()).hexdigest(),
+-        'nodes': len(nodes), 'sourceRows': 7, 'cases': 14, 'allocation': plan['allocation']}))
++        'nodes': len(nodes), 'sourceRows': 22, 'cases': 9, 'allocation': plan['allocation']}))
+ 
+ 
+ if __name__ == '__main__':

@@ -1,0 +1,31 @@
+{
+  "scope": "scoped exact refreshed release metadata; no source traffic",
+  "seriesPlanSha256": "a2d5c1aafca767d15fee7034a538b3bbfa40e39890a411fce9a84efe28d63b56",
+  "candidateManifestSha256": "dbde2b4ee904087e32cb0dab2019d7521350b24199c192fafc43779fa6b710c3",
+  "baseline": {
+    "canonical": 8099,
+    "admittedSource": 8096,
+    "spent": 10527
+  },
+  "indexPins": {
+    "canonical": {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02c-864-20261107-once/sessions/session085/final-canonical-index.json",
+      "sha256": "ea3a525d1bee5045520fe1c11fb8da5929158e05d3c226fefdfb08b35febed1c",
+      "digest": "f6578f3f615536e53406ca96091df130bb8779d2d000c277b089754aeae5ad07",
+      "entries": 8099
+    },
+    "spent": {
+      "path": "/Users/usget/Library/CloudStorage/OneDrive-IBM/Claude/vehicle-matcher/.agent-output/scheme-breadth30-phase02c-864-20261107-once/sessions/session085/final-spent-request-index.json",
+      "sha256": "bd71d7b419558a23fd1c02b052491262446898a6d4d67440f39034b1b8d24fe3",
+      "digest": "eade71202b30ca8bd772ba0f0f69a5360107b88ea6e7c3ca6636187ab0d57d8e",
+      "entries": 10527
+    }
+  },
+  "codePins": 46,
+  "sourcePins": 321,
+  "solver": 960,
+  "GET": 1440,
+  "sourceTraffic": 0,
+  "sourceGrant": false,
+  "requiresSeparateExactParentRelease": true
+}

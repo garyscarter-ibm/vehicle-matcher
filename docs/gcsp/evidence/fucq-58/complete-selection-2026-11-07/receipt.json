@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "bmw-complete-selection-receipt.v1",
+  "allocationId": "f58-complete-selection-20261107-once",
+  "planDigest": "5ccbd0db795e36908bc889bd855e0f3be68fde378fc174da3d849f99cc4f3e91",
+  "startedAt": "2026-11-07T00:03:12.611Z",
+  "completedAt": "2026-11-07T00:03:14.036Z",
+  "status": "observed",
+  "reason": "source-selection-observed",
+  "counts": {
+    "sourceCalls": 4,
+    "operations": {
+      "discover": 1,
+      "page": 1,
+      "settings": 1,
+      "solve": 1
+    },
+    "cacheHits": {
+      "discover": 0,
+      "page": 0,
+      "settings": 0,
+      "solve": 0
+    },
+    "failures": 0,
+    "timeouts": 0,
+    "substitutions": 0,
+    "cacheEvictions": 0,
+    "httpAttempts": 4,
+    "decodedBytes": 782059,
+    "operationBytes": {
+      "discover": 139586,
+      "page": 17763,
+      "settings": 620646,
+      "solve": 4064
+    }
+  },
+  "artifacts": {
+    "tree": {
+      "path": "tree.json",
+      "bytes": 7299,
+      "artifactSha256": "c78e90f7abd0a7f012738f7ccb8e349f7a54e056bff3be5cb9711ad91eed2eb7",
+      "responseSha256": "6d300daa2d53e8531f54431ab07a880e1f1431b593b056d4523f8cc1eab7fd78",
+      "responseBytes": 139586,
+      "observedAt": "2026-11-07T00:03:13.775Z",
+      "retrievedAt": "2026-11-07T00:03:14.036Z"
+    },
+    "solver": {
+      "path": "solver.json",
+      "bytes": 5936,
+      "artifactSha256": "dc3157ca59fa1c4f23e86f94cf6540e5dc4ac386eb1f413ca156fe6ce0f21411",
+      "responseSha256": "b4527ca2b70e6110c5407db038eee6ce5912011806404e41d2b1c3adfdf5c6b3",
+      "responseBytes": 4064,
+      "observedAt": "2026-11-07T00:03:13.998Z",
+      "retrievedAt": "2026-11-07T00:03:14.036Z"
+    }
+  },
+  "admission": false,
+  "accepted": [],
+  "rawBodiesRetained": false,
+  "sourceWrites": 0,
+  "images": 0,
+  "retries": 0,
+  "browser": 0
+}

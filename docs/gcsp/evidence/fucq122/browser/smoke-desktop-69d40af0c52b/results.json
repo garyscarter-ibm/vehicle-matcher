@@ -1,0 +1,194 @@
+{
+  "state": "passed",
+  "chunk": "smoke-desktop",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "source": "95b731353b422a34b45fda02d837a45818dc70d5",
+  "checks": [
+    {
+      "name": "Smoke: actual account/help/empty queue are read-only, assets loaded and keyboard focus visible"
+    }
+  ],
+  "captures": [
+    {
+      "name": "smoke-paula-account-help-keyboard",
+      "file": "smoke-paula-account-help-keyboard.png",
+      "boundary": "actual API and renderer",
+      "source": "95b731353b422a34b45fda02d837a45818dc70d5",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "status": [
+        "",
+        "No renewal caseHelp is available if you need the scheme team to review your renewal."
+      ],
+      "text": "Skip to content\nGroup Car Schemes Portal\nP\nPaula (fictional)\nYour cars\nNew order\nOrder history\nDrivers and licences\nRenewal help\nShow labels\nRENEWAL HELP\nRenewal help\n\nRemedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.\n\nGet help with your renewal\n\nThe scheme team can review a delayed or uncertain renewal and explain the next action. Opening help changes nothing.\n\nAsk for help\nNo renewal case\n\nHelp is available if you need the scheme team to review your renewal.",
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Ask for help",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 248.796875,
+          "width": 140.484375,
+          "height": 48
+        },
+        "inViewport": true
+      },
+      "keyboardTraceThrough": 3
+    },
+    {
+      "name": "smoke-greg-empty-queue",
+      "file": "smoke-greg-empty-queue.png",
+      "boundary": "actual API and renderer",
+      "source": "95b731353b422a34b45fda02d837a45818dc70d5",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "status": [
+        "0 renewal cases loaded.",
+        "No renewal casesThere are no renewal-risk cases in this demonstration run."
+      ],
+      "text": "Renewal cases\n\nRemedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.\n\n0 renewal cases loaded.\n\nRefresh queue\nNo renewal cases\n\nThere are no renewal-risk cases in this demonstration run.",
+      "focus": {
+        "tag": "BODY",
+        "id": "",
+        "text": "Renewal casesRemedies need the scheme team’s decision. No specific next car or greater priority is g",
+        "outlineStyle": "none",
+        "outlineWidth": "3px",
+        "outlineColor": "rgb(0, 0, 0)",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 900
+        },
+        "inViewport": true
+      },
+      "keyboardTraceThrough": 3
+    }
+  ],
+  "keyboard": [
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 9,
+      "focus": {
+        "tag": "SUMMARY",
+        "id": "",
+        "text": "Get help with your renewal",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 160.796875,
+          "width": 982,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Open help disclosure",
+      "key": "Space",
+      "focus": {
+        "tag": "SUMMARY",
+        "id": "",
+        "text": "Get help with your renewal",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 160.796875,
+          "width": 982,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 1,
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Ask for help",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 248.796875,
+          "width": 140.484375,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    }
+  ],
+  "errors": [],
+  "network": [
+    {
+      "type": "browser",
+      "actor": "Paula",
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "request": null,
+      "status": "ok"
+    },
+    {
+      "type": "browser",
+      "actor": "Paula",
+      "method": "GET",
+      "path": "/api/gcsp/help",
+      "httpStatus": 200,
+      "request": null,
+      "status": "ok"
+    },
+    {
+      "type": "browser",
+      "actor": "Paula",
+      "method": "GET",
+      "path": "/api/gcsp/cases",
+      "httpStatus": 200,
+      "request": null,
+      "status": "ok",
+      "caseCount": 0
+    },
+    {
+      "type": "browser",
+      "actor": "Greg",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases",
+      "httpStatus": 200,
+      "request": null,
+      "status": "ok",
+      "caseCount": 0
+    }
+  ],
+  "expectedTransportFailures": [
+    {
+      "actor": "Paula",
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "error": "net::ERR_ABORTED",
+      "boundary": "navigation or element cancellation"
+    }
+  ],
+  "setup": [
+    "Trusted backend bootstrap issues separate actual presenter, Paula and Greg sessions; synthetic manual-records-v1 supplies account/contract facts. Cookies are never retained in evidence."
+  ],
+  "boundary": "Actual isolated memory-services HTTP and repository assets. Delivered runtime/Greg host and offer/lifecycle producers remain separate acceptance.",
+  "cookieOverride": "localhost only: identity.session.sameSite=Lax, secureCookies=false",
+  "apiPort": 58509,
+  "chromeDebugPort": 58511,
+  "listenerClosed": true,
+  "chromeJoined": true
+}

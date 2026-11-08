@@ -1,0 +1,20 @@
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: {"status":"invalid-corpus","failure":{"code":"artifact-changed","message":"Indexed artifact bytes or identity changed."}}
++ actual - expected
+
++ 'invalid-corpus'
+- 'ok'
+
+    at file:///Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-036/docs/gcsp/evidence/fucq62/fleet-dot11-8051-external-plan/prepare-candidate.mjs:39:252 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 'invalid-corpus',
+  expected: 'ok',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v26.7.0

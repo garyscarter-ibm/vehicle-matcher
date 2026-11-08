@@ -1,0 +1,88 @@
+{
+  "artifacts": [
+    {
+      "bytes": 2835,
+      "path": "plan.json",
+      "role": "unchanged original",
+      "sha256": "769fc72e7df56f0b6f6884d6916147e5f3811660699f05cc74bdf28ad279acc9"
+    },
+    {
+      "bytes": 233322,
+      "path": "receipt.json",
+      "role": "unchanged original",
+      "sha256": "022b47a2aecd62d9332cc94fc8a6679203b3316ea5d19048cae07d2c94c6920a"
+    },
+    {
+      "bytes": 1183,
+      "path": "test.tap",
+      "role": "unchanged original",
+      "sha256": "5806821e269e3350ef1d67968c0f5780020b449617ab9ea4c75652aa881c3b1c"
+    },
+    {
+      "bytes": 987,
+      "path": "checkpoint.json",
+      "role": "unchanged original",
+      "sha256": "713bcb5edff7bd96730eea718d23216eb5007b7d3d06153ee44a18250ca944e5"
+    },
+    {
+      "bytes": 844,
+      "path": "ownership/175ff499186c4dd988fb5680c110ecb5.json",
+      "role": "unchanged original",
+      "sha256": "01122b88096372197a67df0d0a1de185c74114a9b1b0468cf323998c2c0f20f2"
+    },
+    {
+      "bytes": 2802,
+      "path": "root-audit.json",
+      "role": "unchanged independent root audit",
+      "sha256": "a04062fa4e27f3640434922a55a804138b46e057c2881a116cdd4d55337851ef"
+    }
+  ],
+  "controllerExit": 0,
+  "counts": {
+    "cancelled": 0,
+    "fail": 0,
+    "pass": 4,
+    "skipped": 0,
+    "suites": 0,
+    "tests": 4,
+    "todo": 0
+  },
+  "date": "2026-11-06",
+  "grant": "fucq69-history-back-1ca7ad5-0655",
+  "impactPlan": {
+    "path": "../../history-back-plan.md",
+    "sha256": "599e4dc4ebf3a526bf84381e7d4dbb4f8cba33f1155cc4206bb98d51bd314c87"
+  },
+  "leadAuditChecks": 7639,
+  "originalRunDirectory": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq69-history-back/history-back-7517c4bd5590",
+  "priorConsumedFailure": {
+    "grant": "fucq69-history-back-606726c-0644",
+    "path": "../../history-back-preflight-failure-0644.json",
+    "result": "preflight Python identity failure before allocation; no cases ran; not retried under that grant",
+    "sha256": "692c105b7f0d47ca7740fdce1fef5ca32bc01af3b615ab468bc40bde2daa5414"
+  },
+  "productRevision": "0fa03f5eaced52eea7dbb8e3628a0a34318c8f41",
+  "remainingGates": [
+    "actual delivered producer/HTTP/host/claim-to-F70 composition",
+    "desktop/320px/keyboard/recovery/image-failure rendered matrices for current source",
+    "native/live-source/deployed integration where required",
+    "authored final serial full-suite acceptance"
+  ],
+  "rootAuditChecks": 8181,
+  "schema": 1,
+  "scope": "Four frozen controlled history/Back component cases only; no host, HTTP, browser, native or full-story acceptance. No measured coverage. No grant for another run.",
+  "sourceFreeze": {
+    "dependencyRows": 1833,
+    "materializedRows": 1854,
+    "path": "../../history-back-closure.json",
+    "sha256": "845e2d69dbfb9aabfead8629463b14d0945978bf6bd0b7ccfe94a23acf6b3021",
+    "sourceRows": 21
+  },
+  "state": "accepted scoped component evidence only",
+  "story": "FUCQ-69",
+  "supervisor": {
+    "path": "../../history-back-supervisor.py",
+    "sha256": "742da7f150c0b78b426a980350de295a704e3d4051400366e9328afbb752acdf"
+  },
+  "testedRevision": "1ca7ad523b30d40b3fbe573454fdc4c465ae8fc4"
+}

@@ -1,0 +1,26 @@
+{
+  "status": "reviewed-code-security-identity-scoped",
+  "planSha256": "1b329e5b0e8e45097e4753467a4d8a061cdee8e10bbbe421bde1e31555cf2f79",
+  "reviewedScripts": [
+    "common.mjs",
+    "publish-restart.mjs",
+    "audit-direct.mjs",
+    "http-chunk.mjs",
+    "rollback.mjs",
+    "summarize.mjs",
+    "descriptor.mjs",
+    "supervise.py",
+    "group-proof.py"
+  ],
+  "verifiedPins": 162,
+  "sourceCalls": 0,
+  "ordinaryMutation": false,
+  "resources": "one worker,384MiBheap,768MiBhost/672MiBgroup,180sphase;320MiBpublish/rollbackdisk;others64MiB;allownedgroupsjoinedandteardownproved",
+  "scope": "actual ordinary52files/10versions copied to cloud; all4668references disjoint; exactcandidate; retainedconsumerfailures; descriptorproposalonly",
+  "limitations": [
+    "Native stock/order UUID proof unrun",
+    "Consumer errors retained; summary reconciles error count, exact per-reference observations retained; no acceptance waiver",
+    "No runtime registration/package/upload authorized"
+  ],
+  "acceptance": false
+}

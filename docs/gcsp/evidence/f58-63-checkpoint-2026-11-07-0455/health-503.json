@@ -1,0 +1,15 @@
+{
+  "time": "2026-11-07T04:50:39.318Z",
+  "GET": 1,
+  "overallGETIncludingPrior": 3,
+  "scope": "single longer health diagnostic after two preserved short failures",
+  "timeoutMs": 55000,
+  "status": 503,
+  "body": "",
+  "responseHeaders": {
+    "date": "Sat, 07 Nov 2026 04:50:39 GMT",
+    "content-type": null,
+    "rndr-id": "4a8da59f-4432-4840"
+  },
+  "elapsedMs": 235.49525
+}

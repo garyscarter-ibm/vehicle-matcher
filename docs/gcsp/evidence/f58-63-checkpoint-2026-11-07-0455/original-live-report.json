@@ -1,0 +1,36 @@
+{
+  "status": "incomplete",
+  "startedAt": "2026-11-07T04:44:18.196Z",
+  "finishedAt": "2026-11-07T04:44:18.413Z",
+  "code": "f76498aa2a82aaff866b22b6ca3cd01a77ea23b9",
+  "deployment": 7616644897,
+  "manifestDigest": "9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043",
+  "requests": 1,
+  "decodedBytes": 0,
+  "limits": {
+    "GET": 1950,
+    "decodedBytes": 33554432,
+    "responseBytes": 1048576,
+    "requestMs": 30000,
+    "wallMs": 240000,
+    "workers": 1,
+    "retries": 0
+  },
+  "compared": 0,
+  "completedFromPrior": 0,
+  "cumulativeCompared": 0,
+  "priorReports": [],
+  "cumulativeRequests": 1,
+  "cumulativeDecodedBytes": 0,
+  "expected": 1925,
+  "errors": 0,
+  "failure": "live-health-unavailable",
+  "failureDetail": {
+    "name": "Error",
+    "code": null
+  },
+  "results": [],
+  "sourceQualifiedDistinct": 1923,
+  "target10000Met": false,
+  "scope": "Every active configuration and retained VIN; prior exact matches are preserved without replay; exact JSON parity with the local loader. Read-only production GETs."
+}

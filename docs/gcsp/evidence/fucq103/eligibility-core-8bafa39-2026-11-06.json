@@ -1,0 +1,186 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-06",
+  "scope": "once-granted-core25-attempt-and-independent-lead-cleanup-audit",
+  "run": "fucq103-backend-92caa85ed92c4db6abc3404480df6ca0",
+  "revision": "8bafa39a0113839ef744987df212c2a5221d4177",
+  "sourcePlanSHA256": "8ba30f9b6dba4bfe33048705137f098036debeb8801a1cfb30af2b21db3967ac",
+  "grant": "fucq103-eligibility-core-8bafa39-0236",
+  "grantStatus": "consumed-once-stopped-no-retry",
+  "command": [
+    "/Users/garycarter/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node",
+    "--test",
+    "--test-concurrency=1",
+    "server/test/gcsp-greg-driver-eligibility.test.js",
+    "server/test/gcsp-greg-demand.test.js"
+  ],
+  "supervisorCommand": [
+    "/Library/Developer/CommandLineTools/usr/bin/python3",
+    "-I",
+    "-B",
+    "docs/gcsp/evidence/fucq103/scoped-supervisor.py",
+    "eligibility-core",
+    "--execute",
+    "--source-plan-sha",
+    "8ba30f9b6dba4bfe33048705137f098036debeb8801a1cfb30af2b21db3967ac",
+    "--revision",
+    "8bafa39a0113839ef744987df212c2a5221d4177",
+    "--dispatcher-grant",
+    "fucq103-eligibility-core-8bafa39-0236"
+  ],
+  "expectedCases": 25,
+  "observedSuccessfulCaseCount": 15,
+  "observedSuccessfulCaseNames": [
+    "saved current brief, not draft/history/current-car/retail sample, drives model/body/fuel/essentials",
+    "unspecified model and indifferent/unconfirmed preferences remain explicit instead of inferred demand",
+    "unmet demand distinguishes no released stock, shared essential gate, and sufficient actual release",
+    "unknown employee authority stays needs-confirmation and stock visibility cannot widen eligibility",
+    "real offer/decision/hold/allocation records drive outcomes with typed declines and versions",
+    "all counts below canonical threshold are bands without a raw count or personal fields",
+    "threshold policy alternatives change every projection consistently; absent or invalid threshold fails closed",
+    "Greg service refuses employees, presenters and forged server context; old run after reset is stale",
+    "registered HTTP route enforces role and rejects browser run selectors under server identity",
+    "successive brief/release/decline/selection inputs change actual projection identity and figures",
+    "canonical optional model-line essential persists through BriefService and gates an actual wrong model",
+    "same declined exact car remains blocked until a relevant confirmed brief change, including pause/resume",
+    "a concurrent repository revision causes refresh conflict instead of a mixed projection",
+    "unmet evaluation reads all repository candidates beyond a retail-sized display limit",
+    "unregistered decline types and free text are replaced with a counted unclassified reason"
+  ],
+  "completeMatchedCountEvidence": null,
+  "finalTestSummaryPresent": false,
+  "assertionVerdict": "15 original successful case lines; no complete suite result or observed assertion failure",
+  "supervisorExitCode": 2,
+  "outcome": "harness-observation-stop-incomplete",
+  "failure": {
+    "message": "Malformed listener observation",
+    "type": "RuntimeError"
+  },
+  "peakAggregateRSSBytes": 917487616,
+  "peakAggregateRSSMiB": 874.984375,
+  "aggregateRSSCapBytes": 1073741824,
+  "peakCombinedBytes": 4348451,
+  "wallSeconds": 6.960658917,
+  "environmentSHA256": "75f674ca94ecfb5cbe2dd88f40f1f03bdd587311114e2211397094051352f361",
+  "admissionHeadroom": {
+    "availableRamBytes": 2997518336,
+    "freeBytes": 214274842624,
+    "lowDiskHeadroom": false,
+    "outsideDiskPending": 0,
+    "outsideRamPending": 0
+  },
+  "runtimeCleanup": {
+    "groupsAbsent": true,
+    "joined": true,
+    "observedPids": 3,
+    "passed": true,
+    "pidsAbsent": true,
+    "ports": [],
+    "portsClosed": true,
+    "removedBytes": 4338401,
+    "reservationAbsent": true,
+    "sampledAt": 1793932481.439268,
+    "scratchAbsent": true
+  },
+  "independentCleanup": {
+    "passed": true,
+    "sampledAt": 1793932603.302718,
+    "ownedPidStarts": [
+      {
+        "pid": 6182,
+        "start": "Fri Nov 6 02:34:35 2026",
+        "absent": true,
+        "currentPidReused": false,
+        "killZeroESRCH": true
+      },
+      {
+        "pid": 6189,
+        "start": "Fri Nov 6 02:34:35 2026",
+        "absent": true,
+        "currentPidReused": false,
+        "killZeroESRCH": true
+      },
+      {
+        "pid": 6190,
+        "start": "Fri Nov 6 02:34:35 2026",
+        "absent": true,
+        "currentPidReused": false,
+        "killZeroESRCH": true
+      },
+      {
+        "pid": 6159,
+        "start": "Fri Nov 6 02:34:33 2026",
+        "absent": true,
+        "currentPidReused": false,
+        "killZeroESRCH": true
+      }
+    ],
+    "groupsAbsent": [
+      6182
+    ],
+    "processSnapshot": {
+      "returncode": 0,
+      "bytes": 257504,
+      "sha256": "6af657626532aa3b8f850fd2481354b1cf6a8d863dcc2c72e66d0ffa05087833",
+      "rows": 648
+    },
+    "scratchAbsent": "/private/tmp/test-stamp-shard-358c55b8ecde41d4941f0bc7c56ef2ca",
+    "worktreeDependencyLinksAbsent": true,
+    "ownedProcessOpenFilesQuery": {
+      "returncode": 1,
+      "stdoutBytes": 0,
+      "stderrBytes": 0
+    },
+    "predeleteOpenFilesGate": "Admitted Finalizer requires successful lsof +D absence before deletion; runtime cleanup passed. No separate raw lsof output is retained.",
+    "reservationTokenAbsent": "358c55b8ecde41d4941f0bc7c56ef2ca",
+    "ledgerRead": "Strict read-only JSON under admitted physical O_NOFOLLOW lock; no foreign reservations mutated",
+    "ledgerSHA256AtAudit": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "remainingReservationCount": 0,
+    "checksPassed": 505
+  },
+  "retainedOriginals": {
+    "summary": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-92caa85ed92c4db6abc3404480df6ca0-summary.json",
+      "bytes": 2814,
+      "sha256": "d18925bb093e432f313b949a4dc08c07dad460c142f08a7a31f3e7089529c5a7"
+    },
+    "manifest": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-backend-92caa85ed92c4db6abc3404480df6ca0-manifest.json",
+      "bytes": 2122,
+      "sha256": "0517af581d480a23caad98a52625e2d1c2055782ba1a0aa016d4331091f3eef0"
+    },
+    "originalMergedLog": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-92caa85ed92c4db6abc3404480df6ca0/test.log",
+      "bytes": 1717,
+      "sha256": "e515856e2058c8f9c0df1c74c87ca822860ee81bb333c938dbb598d7d744493d"
+    },
+    "checkpoint": {
+      "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq103-backend/fucq103-backend-92caa85ed92c4db6abc3404480df6ca0/checkpoint.json",
+      "bytes": 321,
+      "sha256": "e9925784e17b2309129661824364c388c8008535fc0d7b883a09091dce46345b"
+    }
+  },
+  "sourceIdentityBeforeAfter": {
+    "sameExactHeadUpstream": true,
+    "runtimeSourcesPreserved": true,
+    "leadVerifiedAllSourcePins": 219,
+    "installedBytePins": 251,
+    "executablePins": 8,
+    "dependencyMembershipEntries": 307,
+    "resolverAbsences": 163,
+    "productTestFrozenRevision": "f80fc61ca151cb46ad21cb2b19e704f4012d53de"
+  },
+  "diagnosis": {
+    "verified": "Runtime raised Malformed listener observation; scoped-resources.py sample_ports accepts only owned pPID and numeric-suffix n endpoint lines. Full original output has 15 successful demand cases and no final25 count.",
+    "unknown": "The raw failed lsof response is not retained, so its exact unexpected record and root cause remain unverified.",
+    "next": "Preserve this attempt; dispatcher independent audit and a separately authorised diagnosis/repair and fresh exact grant are required before any new execution.",
+    "basis": "Exact frozen helper/product/test pins and original summary, manifest and merged test.log; no repair or reproduction launched."
+  },
+  "limitsAndExclusions": "No retry/registry16/browser/native/full/central100/mixed execution. Core25 remains incomplete. Fifteen observed successes do not establish the full25-case result. Earlier8568dae attempt remains immutable.",
+  "nextAuthorisedWork": "Evidence-only publication and dispatcher independent audit; no source change or further runtime grant.",
+  "independentAuditArtifact": {
+    "path": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq103-core-8bafa39-lead-2026-11-06.json",
+    "bytes": 77709,
+    "sha256": "6c6e0c13ec8396499471befa0dfd2818b397a051d66143e20c0ea24b3e5f2249"
+  }
+}

@@ -1,0 +1,6 @@
+{"attempt":1,"phase":"started","method":"GET","at":"2026-11-07T03:46:03.393Z"}
+{"attempt":1,"phase":"headers-received","status":200,"at":"2026-11-07T03:46:03.759Z"}
+{"attempt":2,"phase":"started","method":"GET","at":"2026-11-07T03:46:03.799Z"}
+{"attempt":2,"phase":"headers-received","status":200,"at":"2026-11-07T03:46:03.925Z"}
+{"attempt":3,"phase":"started","method":"GET","at":"2026-11-07T03:46:04.345Z"}
+{"attempt":3,"phase":"headers-received","status":200,"at":"2026-11-07T03:46:04.680Z"}

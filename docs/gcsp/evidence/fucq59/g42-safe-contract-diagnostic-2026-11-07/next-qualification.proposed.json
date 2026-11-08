@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "bmw-next-range-qualification-proposal.v1",
+  "status": "proposal-no-source-grant",
+  "purpose": "Qualify one newly observed G42 220I model/line against existing model-options boundaries; no inventory grammar repair",
+  "diagnosticSha256": "76711bca1cfbd20b44ba4aa66c860c8cf1513b92f68a27bb70977fe9f798d743",
+  "sourcePlan": {
+    "schemaVersion": "bmw-source-model-options-plan.v1",
+    "planId": "g42-2pma-s0337-options-proposed-20261107",
+    "qualificationDate": "2026-11-07",
+    "source": {
+      "id": "bmw-uk-public",
+      "kind": "public-bmw-uk",
+      "version": "f59-model-options-qualification-20261107.v1"
+    },
+    "modelRegistration": {
+      "schemaVersion": "bmw-public-model-registration.v1",
+      "modelCode": "2PMA",
+      "agModelCode": "12CM",
+      "catalogueRangeKey": "G42",
+      "rawModelRange": "G42",
+      "aliases": [
+        "2"
+      ],
+      "market": "GB",
+      "locale": "en-GB",
+      "steering": "RL",
+      "catalogueDate": "2026-11-01",
+      "orderDate": "2026-11-01",
+      "effectDate": "2027-01-05"
+    },
+    "lineRegistration": {
+      "lineKey": "S0337",
+      "defaultModel": {
+        "modelCode": "2PMA",
+        "agModelCode": "12CM"
+      },
+      "includedIndex": 1,
+      "optionsQuery": {
+        "kind": "trim",
+        "code": "S0337"
+      }
+    },
+    "limits": {
+      "maxAttempts": 1,
+      "retryDelayMs": 0,
+      "concurrency": 1,
+      "imageRequests": 0,
+      "sourceAttempts": 4,
+      "sourceBytes": 4194304,
+      "responseBytes": 1048576,
+      "operationTimeoutMs": 10000,
+      "deadlineMs": 90000,
+      "checkpointBytes": 4194304,
+      "cacheEntries": 8,
+      "cacheRetentionMs": 86400000,
+      "requestBudgets": {
+        "page": 1,
+        "settings": 1,
+        "discover": 1,
+        "options": 1
+      }
+    }
+  },
+  "basis": {
+    "fullModelPointer": "/2/modelRanges/G42/models/2PMA",
+    "linePointer": "/2/modelRanges/G42/lines/S0337",
+    "defaultModelPointer": "/2/modelRanges/G42/lines/S0337/defaultModel",
+    "includedModelPointer": "/2/modelRanges/G42/lines/S0337/includedTransmissionVariants/1/configuration/modelCode",
+    "literalTrimPresencePointer": "/2/modelRanges/G42/lines/S0337/includedTransmissionVariants/1/configuration/elements/S0337",
+    "catalogueDateRole": "preserved explicit tree request date; not inferred model effect date"
+  },
+  "requiredBeforeTraffic": [
+    "Prepare separate immutable allocation/runner/finalizer and freeze its executable/input/runtime pins",
+    "Review the same-response model/line basis and exact four-GET budget with root",
+    "Obtain a separate exact once-only source release; this proposal grants no requests"
+  ],
+  "mustBeFreshlyCorroborated": [
+    "all registered model facts and complete aliases",
+    "exact literal line option/default/included index",
+    "elements object count within existing 320 ceiling",
+    "typed options shape and all existing source-binding/privacy gates"
+  ],
+  "laterSeparateWork": "Only qualified actual typed axes may support a separately allocated finite batch; no guessed option axis or configuration capacity",
+  "solver": 0,
+  "images": 0,
+  "admissions": 0,
+  "sourceCapacityCredit": 0,
+  "productionBugFixed": false,
+  "acceptance": false
+}

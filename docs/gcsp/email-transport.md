@@ -68,10 +68,10 @@ Use a bounded network timeout. Brevo's documented success is HTTP 201 with `mess
 
 The offer producer/landing-page stories retain ownership of tokens, link authorization and current offer state. A real inbox needs an absolute public application URL, including any GitHub Pages project path. Use a configured frontend base URL and the existing offer link; do not derive it from the request Host header, send localhost links or mint a second token in the mail adapter. Preserve FUCQ-102's run binding and access boundary.
 
-## GCSP integration that the poller must preserve
+## Implemented GCSP integration
 
 - **FUCQ-93:** `server/gcsp/notify/index.js` already dispatches committed jobs through an injected transport. Retain repository/run scope, retry policy from `notify.delivery.v1`, DemoClock scheduling, reset/stale-job refusal and the rule that delivery never changes stock, holds or allocation priority. Keep the captured transport as the unconfigured default.
-- **Capture with real sending:** `CapturedTransport.send` currently stores the message and marks the job sent in the same transaction. The dispatcher currently does not persist arbitrary provider acknowledgement fields. FUCQ-98 must integrate capture and provider-ID persistence deliberately: retain the rendered message for the viewer even on real-send failure, and mark real sending successful only after provider acknowledgement. Calling the current captured transport first and then Brevo would mark a failed external send as sent. A plain replacement transport would lose capture. Use the existing repository, not a second message store; update `shared-contracts.md` if the persisted acknowledgement shape changes.
+- **Capture with real sending:** `CapturedTransport.send` retains its capture-only behavior. The Brevo adapter instead stores the rendered message and private provider attempt state in the existing outbox outcome before network access, then records a confirmed message ID before the dispatcher marks the job sent. Refusals, errors and timeouts retain their captured body. There is no second message store; the additive shape is recorded in [shared-contracts.md](shared-contracts.md).
 - **Retry safety:** allocate and durably retain one UUID provider idempotency key for the environment/run/job before the first attempt. The existing `offer:<offerId>:notification:offer:1` job key is not itself a UUID. Reuse the stored UUID across concurrent dispatchers, timeouts and restart. Persist a confirmed provider acknowledgement and reuse it rather than resending. Brevo's current guide documents a 30-minute key window, measured by provider time, not DemoClock. A `duplicate_parameter` response is not itself a recovered message ID or proof of delivery. Do not blindly replay an ambiguously acknowledged send outside that window; keep an explicit safe failed/unconfirmed outcome rather than risk a second email. Exercise these cases with a stubbed provider.
 - **FUCQ-97:** the presenter viewer continues to work without Brevo. Preserve its presenter-only access, sandboxed HTML, plain-text view and current-run filtering. Any acknowledgement/status projection changes belong in the existing presentation contract and require the relevant viewer checks; existing capture evidence does not prove external delivery.
 - **FUCQ-109:** its critical-path proof continues to use captured notifications. Brevo setup must not become a new dependency of the end-to-end demonstration or the 1,000-employee simulation.
@@ -80,15 +80,15 @@ Read `docs/gcsp/README.md`, `demo-brief.md`, `build-rules.md`, `experience-quali
 
 ## Backend configuration and remaining setup
 
-These are **proposed FUCQ-98 names**, not settings already implemented in GCSP. The implementer documents the final names in the backend README:
+These settings are implemented by `server/gcsp/notify/config.js` and documented in the [backend README](../../README.md). Only trusted backend composition can supply them; browser requests cannot select a transport:
 
-| Proposed setting | Purpose |
+| Setting | Purpose |
 |---|---|
-| `GCSP_MAIL_TRANSPORT` | Explicit `brevo` opt-in; absent configuration retains capture only. A partial/invalid Brevo configuration must not claim real delivery. |
+| `GCSP_MAIL_TRANSPORT` | Explicit `brevo` opt-in; absent or empty transport retains capture only. Any other nonempty selection or partial/invalid Brevo configuration produces a captured safe refusal and makes no provider request. |
 | `GCSP_BREVO_API_KEY` | Brevo API key supplied privately as a Render backend secret. |
-| `GCSP_MAIL_FROM`, `GCSP_MAIL_FROM_NAME` | Sender accepted by the existing Brevo account and the display name. Verify the actual address/account before use; the domain notes alone are insufficient. |
-| `GCSP_MAIL_RECIPIENTS` | Backend-only mapping of demo employee IDs to approved test addresses; its values are the recipient allow-list. |
-| `GCSP_PUBLIC_BASE_URL` | Reachable public frontend base, preserving the deployed project path and compatible with the existing offer routes. |
+| `GCSP_MAIL_FROM`, `GCSP_MAIL_FROM_NAME` | Required sender address accepted by the existing Brevo account and required display name. Verify the actual address/account before use; the domain notes alone are insufficient. |
+| `GCSP_MAIL_RECIPIENTS` | JSON object mapping fictional demo employee IDs to approved test addresses; its values form the server-owned allow-list. An unmapped recipient is refused before network access. |
+| `GCSP_PUBLIC_BASE_URL` | Required public HTTPS frontend base, preserving the deployed project path. Existing `/gcsp/offer` links are resolved under it; external origins, credentials, localhost and incompatible routes are refused. |
 
 No new PAT is needed to document or implement this HTTP method. The send credential is a **Brevo API key**, not a GitHub PAT, IBM inference key or Microsoft token. The existing local keychain helper establishes a retrieval pattern, not the presence or validity of a key for the GCSP Render process. Do not extract Deckhead's settings database or copy credentials into source, stories, chat, ordinary config files or shell arguments. A collaborator can privately configure an existing suitable key in Render; generate a new Brevo key only if the existing one is unavailable, revoked or unsuitable.
 
@@ -98,14 +98,16 @@ FUCQ-98's existing sender-setup boundary remains: provisioning a sender/domain/t
 
 ## Selected validation
 
-For the later implementation, start with `node --test server/test/gcsp-mail-transport.test.js` (the proposed FUCQ-98 deliverable), then the affected FUCQ-93 dispatcher and FUCQ-97 route/viewer checks. Cover payload mapping, 201/message ID, safe refusal/error/timeout outcomes, allow-list enforcement before network access, capture during success and failure, stable-key retry/restart/concurrency, ambiguous acknowledgement beyond the provider window, canonical absolute offer links, stale-run handling and secret/token-free diagnostics. Preserve the story's remaining required validation and apply the repository's test-resource rules before running it. No live sends from automated tests.
+Start with `node --test server/test/gcsp-mail-transport.test.js`, then the affected FUCQ-93 dispatcher, FUCQ-97 route/viewer, repository and runtime boundary checks. Cover payload mapping, 201/message ID, safe refusal/error/timeout outcomes, allow-list enforcement before network access, capture during success and failure, stable-key retry/restart/concurrency, ambiguous acknowledgement beyond the provider window, canonical absolute offer links, stale-run handling and secret/token-free diagnostics. Preserve the story's remaining required validation and apply the repository's test-resource rules before running it. No live sends from automated tests.
 
-This documentation change runs story-format, link/reference, mirror-consistency and whitespace checks only. Runtime source, templates, screens and dependencies are unchanged, so application suites and browser captures are excluded. No test worker, scratch directory, archive, credential operation or external send is needed.
+The story explicitly requires the full server test command once the code is stable. Run it only after dispatcher admission, using `node --test --test-concurrency=1 'server/test/**/*.test.js'`; keep native PostgreSQL skips explicit. A passing stubbed transport or provider acknowledgment does not establish inbox delivery. The dated [local setup gate](evidence/fucq98/live-setup-gate.json) records the unverified live prerequisites; it does not inspect Render's actual secret state.
+
+A confirmed private acknowledgment is recovered after restart without re-rendering or resending, including when the offer later expires. The current-run check still applies. Provider timeouts and duplicate-key responses without a message ID remain unconfirmed; after 30 minutes of wall time the adapter fails safely rather than replaying. DemoClock continues to control the existing retry schedule. Runtime shutdown waits for the bounded active dispatcher drain before closing its repository.
+
+The existing presenter outbox now uses neutral introductory copy and fixed safe provider-error sentences. Capture-only message bodies retain their original no-send footer; Brevo bodies distinguish provider acceptance from actual inbox delivery. No screen layout or component was added. Synthetic desktop/narrow screenshots and keyboard evidence are retained under `evidence/fucq98/`; these are presentation checks, not live-send evidence.
 
 ## Primary API references
 
 Checked 5 November 2026: [send a transactional email](https://developers.brevo.com/reference/send-transac-email), [retrieve account](https://developers.brevo.com/reference/get-account), [email idempotency](https://developers.brevo.com/docs/heterogenous-versions-batch-emails). These verify the API method and current provider window, not the state of Russell's account.
 
-Agent allocation: the required capacity check returned `can_start=0`; the parent completed discovery and documentation without spawning agents or creating scratch.
-
-Handoff verification, 5 November: the story-format check passed; all 97 local Markdown references across the five changed documents/story files resolved; the local handoff and precondition matched the story mirror; the five existing acceptance criteria, dependency and pause were retained. FUCQ-98's Jira description read-back matched the update. Related notes were recorded on FUCQ-88 (comment `132477`), FUCQ-93 (`132478`) and FUCQ-97 (`132479`), without changing their statuses. No runtime validation or live delivery is claimed.
+Historical handoff verification (before implementation), 5 November: story-format, local Markdown references and mirror consistency passed. Jira notes were recorded on FUCQ-88 (`132477`), FUCQ-93 (`132478`) and FUCQ-97 (`132479`) without changing their statuses. Subsequent resumption reconciliation remains pending connector reauthentication as recorded above. The final implementation results are recorded in the FUCQ-98 story Result block.

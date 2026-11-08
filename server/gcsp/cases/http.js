@@ -8,5 +8,5 @@ export function createCaseRoutes(service) {
       return service[operation](context, method === 'GET' ? own && searchParams.has('caseId') ? { caseId: searchParams.get('caseId') } : {} : body);
     } });
   return [route('/help', 'GET', 'readHelp'),route('/cases', 'GET', 'readOwn', true),route('/cases', 'POST', 'requestHelp'),
-    route('/scheme-team/cases','GET','list'),route('/scheme-team/cases/update','POST','update')];
+    route('/scheme-team/cases','GET','list'),route('/scheme-team/cases/options','GET','readOptions',true),route('/scheme-team/cases/update','POST','update')];
 }

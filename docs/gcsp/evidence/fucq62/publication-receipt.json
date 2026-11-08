@@ -1,0 +1,35 @@
+{
+  "status": "published-partial",
+  "output": "server/data/gcsp/vehicle-evidence/fleet-source.v1",
+  "manifestDigest": "eaeda01c2121e35634ca932a0cc4bf640fae91239498e19edd362899234f6bf3",
+  "counts": {
+    "configurations": 30,
+    "distinctConfigurations": 30,
+    "vinMappings": 1,
+    "images": 0,
+    "sourceConfigurations": 29,
+    "qualifyingCompleteDistinctSourceConfigurations": 29
+  },
+  "sourceRowsAdded": 28,
+  "newVinAllocations": 0,
+  "sourceRequests": 0,
+  "directProjection": true,
+  "f60EnrichmentExecuted": false,
+  "previousVersion": {
+    "directory": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709",
+    "manifestDigest": "c1f8040107f03fa1c25e88d23065bdef3f92a55ca086cd1894655a6c0b0b1709"
+  },
+  "idempotent": true,
+  "freshProcessLoad": "ok",
+  "previousVinBytesIdentical": true,
+  "serializedConfigurationBytes": 527502,
+  "serializedBytesPerRow": 17583.4,
+  "forecast10000ConfigurationBytes": 175834000,
+  "loaderPerFileLimitBytes": 67108864,
+  "limitations": [
+    "29 complete distinct source configurations; 200 and 10000 targets remain unmet",
+    "One model code T5MJ only; full scheme model coverage not established",
+    "No new VINs, stock, image assets or physical build facts",
+    "Forecast is serialized data only; runtime peak must be measured before increasing bounds"
+  ]
+}

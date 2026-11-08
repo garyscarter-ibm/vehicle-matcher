@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "dot8-offline-parent-review.v1",
+  "observedAt": "2026-11-07T04:24:55.842743+00:00",
+  "tip": "f175d3648d199057fc62b67f823214cae84f31e0",
+  "manifest": "9b514af9f883ce360fe7f42de16bd19d7a74f570e77cc9b6fb094f559aef9043",
+  "descriptorSha256": "4bdd52141fc37fa85faca210da96789b8775f6a31c8b004abf4f80c7f58e7305",
+  "checks": 12,
+  "review": "newdataanchors only; exact790source and release descriptor, pinned receipt integrity, unchanged engine/recovery APIs, independent sourceaudit3656checks reused; scoped1925DTO/1925HTTP evidence retained",
+  "verdict": "no blocking finding; ship next immutable release",
+  "configuredFailures": 469,
+  "strictVerifier": "invalid-active",
+  "knownDefect": "Mediumdeferred/no waiver; nativeJirakeyunverified",
+  "acceptance": false,
+  "newTestsRun": false,
+  "newNetwork": false,
+  "scratch": false,
+  "leftovers": []
+}

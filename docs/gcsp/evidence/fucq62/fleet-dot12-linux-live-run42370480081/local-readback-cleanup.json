@@ -1,0 +1,33 @@
+{
+  "scope": "Two metadata snapshots and one final job-log API read only",
+  "ownedScratch": [
+    {
+      "manifestPath": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/linux-live-integration-df3f3f43-monitor/ownership.json",
+      "scratchRoot": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/linux-live-integration-df3f3f43-monitor/owned-tmp",
+      "cleanup": {
+        "asOf": "2026-11-07T12:01:08.816928+00:00",
+        "scratchAbsent": true,
+        "removedBytes": 0,
+        "leftovers": []
+      }
+    },
+    {
+      "manifestPath": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/linux-live-integration-df3f3f43-monitor/log-ownership.json",
+      "scratchRoot": "/Users/usget/Claude/vehicle-matcher/.claude/f58-63-overnight-20261106/f62/linux-live-integration-df3f3f43-monitor/log-owned-tmp",
+      "cleanup": {
+        "scratchAbsent": true,
+        "removedBytes": 0,
+        "retainedBytes": 24644,
+        "leftovers": []
+      }
+    }
+  ],
+  "allScratchAbsent": true,
+  "allSubprocessesJoined": true,
+  "removedBytes": 0,
+  "sourceRequests": 0,
+  "applicationGETs": 0,
+  "manualDispatches": 0,
+  "reruns": 0,
+  "leftovers": []
+}

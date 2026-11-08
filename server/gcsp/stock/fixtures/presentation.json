@@ -1,0 +1,27 @@
+{
+  "label": "TEST FIXTURE — backend presentation contract; no new screen",
+  "event": {
+    "consumerId": "stock-release",
+    "eventType": "stock-released",
+    "handlerId": "stock-release",
+    "state": "completed",
+    "outcomeKind": "stock-released",
+    "trancheId": "fucq92-small-test-v1:test-weekly-window:0",
+    "orderUuids": [
+      "00000000-0000-4000-8000-000000000001",
+      "00000000-0000-4000-8000-000000000002",
+      "00000000-0000-4000-8000-000000000003",
+      "00000000-0000-4000-8000-000000000004",
+      "00000000-0000-4000-8000-000000000005"
+    ]
+  },
+  "releasedCar": {
+    "state": "released", "status": "available", "available": true,
+    "held": false, "allocated": false, "availableFrom": "2026-11-05T09:00:00.000Z",
+    "availableUntil": null,
+    "availabilityUnknown": "No end supplied by this minimal source; FUCQ-29 timing remains needs-confirmation."
+  },
+  "empty": { "kind": "no-release", "orderUuids": [] },
+  "failure": { "status": "unavailable", "handlerId": "stock-release", "retryable": true },
+  "earlierRun": { "status": "stale-run" }
+}

@@ -1,0 +1,43 @@
+{
+  "tests": 1289,
+  "suites": 0,
+  "pass": 1284,
+  "fail": 0,
+  "cancelled": 0,
+  "skipped": 5,
+  "todo": 0,
+  "scope": "complete authored npm-script test manifest, exact expansion with one worker",
+  "sourceCommit": "fdb71c2a34b3501ed0549424947ec67c1145f433",
+  "sourceUnchanged": true,
+  "node": "v26.7.0",
+  "testFiles": 68,
+  "sourceFiles": 1423,
+  "command": [
+    "node",
+    "--test",
+    "--test-concurrency=1",
+    "server/test/**/*.test.js"
+  ],
+  "wallSeconds": 73.43215041600342,
+  "peakScratchBytes": 7517120,
+  "peakRssBytes": 392069120,
+  "scratchAbsent": true,
+  "dependencyOverlayAbsent": true,
+  "receipt": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/receipt-full-npm-expanded.json",
+  "manifest": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/manifest-full-npm-expanded.json",
+  "nativeStamp": "none; complete manifest/unchanged source evidence retained by supervisor, no stamp fabricated",
+  "sourceQualification": "blocked; no live source allocation or observations",
+  "resourceProbeFailures": "/Users/usget/Claude/vehicle-matcher/.claude/dev-poller-resume-20261106/lead59/probe-cleanup-summary.json",
+  "nativeExclusions": [
+    "native PostgreSQL parity",
+    "native PostgreSQL publication/reopen/rollback",
+    "native PostgreSQL constraints/repository contract"
+  ],
+  "testedSourceHashes": {
+    "scripts/gcsp/collect-fleet.mjs": "1656b49e2423ab95ebe3e3987c6988f7099f3fe5f590c888dcf324c9e31ee019",
+    "scripts/gcsp/collection-session.mjs": "aed978263f9c904c9c5f75daf9d1ff254bdd02ec177d5cd04421c5e8cfa70881",
+    "scripts/gcsp/configuration-key.mjs": "2527393ebb3c0221595200283293ec88c584a1a7178ed1060e2313c0e1998b60",
+    "server/test/gcsp-fleet-collector.test.js": "45ef544fa672e3645e342b84c326a073aaecc354e7d1e29825c3505ca182a544"
+  },
+  "applicability": "Historical pre-HTTP source/test identity only. Current scoped result and pilot: source-executor-2026-11-06/validation-and-cleanup.json"
+}

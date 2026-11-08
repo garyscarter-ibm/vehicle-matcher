@@ -1,0 +1,145 @@
+{
+  "story": "FUCQ-102",
+  "status": "UNEXECUTED combined source/admission candidate; root static delta review and fresh exact once-grant required",
+  "observedAt": "2026-11-06T02:26:41.300870+00:00",
+  "originalFailedHarness": "da78f25d2214b60f34f8c2b2c18992c43592cfb4",
+  "evidenceCheckpoint": "4362c7667b38ec1f4d518be629d3e79e4ec286d9",
+  "originalGrantConsumed": "fucq102-followup-da78f25-0159",
+  "originalRun": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq102/followup-9d6eec0b291741f1ba7fa06a4586a751",
+  "owned": {
+    "server/gcsp/offers/access.js": {
+      "sha256": "63fac0a89e50b8b4bd5c8bed581dd49bed42519c76b2b6232de155533d37fb3c",
+      "bytes": 29034
+    },
+    "server/test/gcsp-offer-access-followup.test.js": {
+      "sha256": "9933ccf247bbf87fe5bd02441375668dec2a4b83570d8e4e0525657a49cb2b16",
+      "bytes": 23434
+    },
+    "docs/gcsp/offer-access-contract.md": {
+      "sha256": "48d51bcc1616c5f1ef964950f0275958e7092a4c9f36b8109796813ec4b0e656",
+      "bytes": 17858
+    },
+    "docs/gcsp/evidence/fucq102/followup-entry-launch.mjs": {
+      "sha256": "7b182a799d14d32a5afa321aa00944be5ead16cb720cb257c3c6a5c9c0502116",
+      "bytes": 2997
+    },
+    "docs/gcsp/evidence/fucq102/followup-entry-resources.py": {
+      "sha256": "2972e0bcbf00439aec34fcb26e7686a63f70b9be1d290aede2851f2fe42f52ad",
+      "bytes": 29295
+    },
+    "docs/gcsp/evidence/fucq102/followup-entry-supervisor.py": {
+      "sha256": "ceb9d401ade02bcfd8e3bb42706fdc0e6ed4c05e3268d737eeaea7d1c2177c66",
+      "bytes": 16941
+    },
+    "docs/gcsp/evidence/fucq102/followup-entry-freeze.py": {
+      "sha256": "ce1863a6f98815abe7497dadd688deced8703c6dbee3ff5eacab8bea0ba6ab35",
+      "bytes": 6533
+    }
+  },
+  "selectedCases": [
+    "actual 100/106 decline survives a lost response and cookie/account reload into employee-only 107",
+    "follow-up entry keeps the existing private instance, owner, selector and run authority",
+    "active, accepted, expired, superseded and pending releases never query a follow-up selector",
+    "confirmed historical decline brief can differ from the immutable quoted brief",
+    "terminal outcome versions survive quote expiry and later car reuse without extending the hold",
+    "missing, duplicate or malformed decision sources preserve declined status with no handle",
+    "only one complete native decline receipt with valid digest and pins supplies a handle",
+    "valid digests cannot substitute a different employee, run, slot, renewal, car or brief",
+    "pre-write revisions, inconsistent outcome pins and future source times cannot supply a handle",
+    "repository query failures and unavailable history return typed unavailable without writes",
+    "decision membership, receipt membership, history and clock races refuse a mixed follow-up read"
+  ],
+  "runner": "Frozen callback registry, serial execution and awaited after hooks; direct TAP; break before next case on failure. Parent TAP gate retained.",
+  "sourceClosure": {
+    "baselineSourcePlanSHA256": "fd2eb341905bba23414e799bb011c0d415564c0c4ac656a0b0047d82a8111c3a",
+    "modules": 44,
+    "relativeImportEdges": 100,
+    "dataFiles": 7,
+    "change": "Owned848a16f access/test correction plus reviewed17e7fe1 followup service; unchanged reviewed runner/direct-join.44 modules/121 literal occurrences/118 unique edges;11 original callback names.",
+    "importEdges": 121,
+    "uniqueImportEdges": 118
+  },
+  "validation": {
+    "pythonAST": [
+      "followup-entry-resources.py",
+      "followup-entry-supervisor.py",
+      "followup-entry-freeze.py"
+    ],
+    "caseNames": 11,
+    "runtimeImports": 0,
+    "testsExecuted": 0,
+    "probes": 0,
+    "testAllocations": 0,
+    "limits": {
+      "seconds": 120,
+      "ramBytes": 805306368,
+      "combinedBytes": 134217728,
+      "logBytes": 2097152,
+      "workers": 1
+    },
+    "diskReserveBytes": 5368709120,
+    "ramReserveBytes": 536870912,
+    "immutableSourceReadbacks": 51,
+    "physicalIdentityReadbacks": 193,
+    "absentCandidates": 38,
+    "allReadbacksMatch": true,
+    "literalImportOccurrences": 121,
+    "uniqueImportEdges": 118,
+    "literalImportGraphMatches": true
+  },
+  "nextGate": "Root static delta review of exact combined composition and frozen admission, then fresh once-grant and strict HostBudget admission before any execution. Original grant cannot be reused.",
+  "ownedRepairCommit": "848a16f8ceda2053e5441ded4ce0c5378df5b30f",
+  "candidateSourcePlanSHA256": "983a85e1e4630065d2fc1af428697d04b38a6277a52240a703746316244e1ebe",
+  "candidateAdmissionSHA256": "418f8f5361a1717f38fb84e62b4f875466e4255109f1f0668a1971a9565c5344",
+  "candidateAdmissionStatus": "Reviewed107 source adopted for authoring; pending107 hold cleared in this stable refreeze; combined review/new grant still required.",
+  "renewalRevisionCorrection": "Positive current slot revision >= historical pin; absent slot renewal falls back to verified hold/event; explicit populated conflicts/malformed values refuse; all-null preserved. Actual repository CAS positive controls authored, not executed.",
+  "reviewDisposition": {
+    "runnerAndDirectJoin": "Dispatcher retained scoped static PASS of b3079eb unchanged runner/direct-join delta; no runtime evidence.",
+    "107": "Dispatcher released exact17e7fe19029c2cb1c41711f48bf6fd4413ee96d6 narrow SOURCE static PASS for combined authoring. No runtime proof.",
+    "access": "848a16f authored compatible-revision/nullable-slot correction; combined source review still required.",
+    "execution": "No fresh grant; original once-grant consumed."
+  },
+  "prior107Holds": {
+    "currentSource": {
+      "sourceCommit": "16839323f070f7c0ab81eb1ebf728627d283c71d",
+      "sha256": "bdd9dc0c57e62a08b866b9e204bbbb17b148a0534b65c37be92d3d8d7e49d875",
+      "bytes": 16389
+    },
+    "blocker": "Event renewal copied from persisted slot differs from genuine context absent renewal;107 lead owns persisted-slot correction. Positive case unchanged.",
+    "publishedCandidate": {
+      "sourceCommit": "4b91d4bb14103ac5a98f68900a540913f4cacf78",
+      "path": "server/gcsp/offers/followup.js",
+      "sha256": "54399693253ae9640dde77b70b54f073b08e634d6babb69ea129b0414a6cebd2",
+      "status": "Independent static review HOLD: missing positive decision.versions.slot and current>=historical guard. Do not adopt this pin; await corrected reviewed pin."
+    }
+  },
+  "adopted107": {
+    "story": "FUCQ-107",
+    "sourceCommit": "17e7fe19029c2cb1c41711f48bf6fd4413ee96d6",
+    "path": "server/gcsp/offers/followup.js",
+    "sha256": "29a439ef9b14b84b43dbb3a5ac91e4e4421866d94ab03bf03c5e463fc8a72028",
+    "bytes": 18500,
+    "review": "Dispatcher released exact narrow107 SOURCE static PASS for combined authoring; no execution approval or runtime proof.",
+    "selectedTest": "Existing FUCQ-102 eleven callback cases only. FUCQ-107 second-offer test is outside this source graph and is not adopted.",
+    "scope": "Nullable slot/hold/event binding, explicit populated-source agreement, positive historical slot pin and current>=historical revision, slot-content reread. No identity/brief/106 changes."
+  },
+  "combinedDelta": {
+    "fromCheckpoint": "367916a8c33dd2df1bdff985befdf6c14f53819b",
+    "replacedModule": "server/gcsp/offers/followup.js",
+    "fromSource": "16839323f070f7c0ab81eb1ebf728627d283c71d",
+    "toSource": "17e7fe19029c2cb1c41711f48bf6fd4413ee96d6",
+    "unchanged107Dependencies": [
+      "server/gcsp/offers/followup-policy.js",
+      "server/gcsp/offers/followup-comparison.js",
+      "server/gcsp/offers/followup-policy-definitions.json"
+    ],
+    "frozenNodesChanged": [
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-execution-source-plan.json",
+      "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-061/docs/gcsp/evidence/fucq102/followup-entry-supervisor.py"
+    ],
+    "applicationEdits": 0,
+    "newCases": 0,
+    "107SecondOfferTestAdopted": false,
+    "originalFailureArtifactsChanged": false
+  }
+}

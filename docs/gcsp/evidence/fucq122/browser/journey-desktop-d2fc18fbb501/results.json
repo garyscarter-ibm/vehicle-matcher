@@ -1,0 +1,1446 @@
+{
+  "state": "incomplete",
+  "chunk": "journey-desktop",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "source": "0e8cb1fc6c7520b047fbd639b9b47c9d00c520cc",
+  "checks": [
+    {
+      "name": "Opening, review and keyboard cancel are read-only"
+    }
+  ],
+  "captures": [
+    {
+      "name": "01-paula-no-case",
+      "file": "01-paula-no-case.png",
+      "boundary": "actual API and renderer",
+      "source": "0e8cb1fc6c7520b047fbd639b9b47c9d00c520cc",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "status": [
+        "",
+        "No renewal caseHelp is available if you need the scheme team to review your renewal."
+      ],
+      "text": "Skip to content\nGroup Car Schemes Portal\nP\nPaula (fictional)\nYour cars\nNew order\nOrder history\nDrivers and licences\nRenewal help\nShow labels\nRENEWAL HELP\nRenewal help\n\nRemedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.\n\nGet help with your renewal\nNo renewal case\n\nHelp is available if you need the scheme team to review your renewal.",
+      "focus": {
+        "tag": "BODY",
+        "id": "",
+        "text": "Skip to contentGroup Car Schemes PortalPPaula (fictional)Paula (fictional)demo-bmw-fs-uk, G7Your car",
+        "outlineStyle": "none",
+        "outlineWidth": "3px",
+        "outlineColor": "rgb(0, 0, 0)",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 1036.796875
+        },
+        "inViewport": true
+      },
+      "keyboardTraceThrough": 0
+    },
+    {
+      "name": "02-help-review",
+      "file": "02-help-review.png",
+      "boundary": "actual API and renderer",
+      "source": "0e8cb1fc6c7520b047fbd639b9b47c9d00c520cc",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "status": [
+        "",
+        "No renewal caseHelp is available if you need the scheme team to review your renewal."
+      ],
+      "text": "Skip to content\nGroup Car Schemes Portal\nP\nPaula (fictional)\nYour cars\nNew order\nOrder history\nDrivers and licences\nRenewal help\nShow labels\nRENEWAL HELP\nRenewal help\n\nRemedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.\n\nGet help with your renewal\n\nThe scheme team can review a delayed or uncertain renewal and explain the next action. Opening help changes nothing.\n\nConfirm your help request\n\nThis opens a scheme-team case or adds to your existing case and shares the reason below.\n\nPlease review my replacement before the contract ends.\n\nConfirm help request\nCancel\nNo renewal case\n\nHelp is available if you need the scheme team to review your renewal.",
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Confirm help request",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 198,
+          "y": 417.796875,
+          "width": 210.015625,
+          "height": 48
+        },
+        "inViewport": true
+      },
+      "keyboardTraceThrough": 8
+    },
+    {
+      "name": "03-help-confirmed-status",
+      "file": "03-help-confirmed-status.png",
+      "boundary": "actual API and renderer",
+      "source": "0e8cb1fc6c7520b047fbd639b9b47c9d00c520cc",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "status": [
+        "Your help request was recorded."
+      ],
+      "text": "Skip to content\nGroup Car Schemes Portal\nP\nPaula (fictional)\nYour cars\nNew order\nOrder history\nDrivers and licences\nRenewal help\nShow labels\nRENEWAL HELP\nRenewal help\n\nRemedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.\n\nYour help request was recorded.\n\nGet help with your renewal\n\nThe scheme team can review a delayed or uncertain renewal and explain the next action. Opening help changes nothing.\n\nAsk for help\n\nRENEWAL CASE\n\nOpen\nCase reference\nrenewal-8a6d047e95b05f19bcd3e952b1f33210d609c7af\nOwner\nScheme team\nOwner role\nscheme-team\nReason\nPlease review my replacement before the contract ends.\nLatest update\nPlease review my replacement before the contract ends.\nOpened from\nemployee-request\nNext action\nScheme team to review your renewal and contact you.\nDue, demo clock (UTC)\n2026-11-06 09:00:00 UTC\nRenewal deadline (calendar date)\n2026-12-01\n\nSynthetic demonstration case.\n\nDated case history",
+      "focus": {
+        "tag": "P",
+        "id": "",
+        "text": "Your help request was recorded.",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 148,
+          "y": 232.796875,
+          "width": 1032,
+          "height": 24
+        },
+        "inViewport": true
+      },
+      "keyboardTraceThrough": 18
+    },
+    {
+      "name": "04-greg-queue",
+      "file": "04-greg-queue.png",
+      "boundary": "actual API and renderer",
+      "source": "0e8cb1fc6c7520b047fbd639b9b47c9d00c520cc",
+      "width": 1280,
+      "scrollWidth": 1280,
+      "status": [
+        "Current case options loaded."
+      ],
+      "text": "Renewal cases\n\nRemedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.\n\nCurrent case options loaded.\n\nRefresh queue\nSort cases\nDeadline, then status\nStatus, then deadline\nRenewal-risk cases\nEmployee\tRenewal deadline (calendar date)\tTrigger or request\tReason\tStatus\tOwner\tNext action due, demo clock (UTC)\nPaula (fictional)\t2026-12-01\tHelp request\tPlease review my replacement before the contract ends.\tOpen\tScheme team · scheme-team\t2026-11-06 09:00:00 UTC\nCase to work\nChoose a case\nPaula (fictional) · Open · 2026-12-01\nOpen selected case\nClose case details\nPaula (fictional)\n\nRENEWAL CASE\n\nOpen\nCase reference\nrenewal-8a6d047e95b05f19bcd3e952b1f33210d609c7af\nOwner\nScheme team\nOwner role\nscheme-team\nReason\nPlease review my replacement before the contract ends.\nLatest update\nPlease review my replacement before the contract ends.\nOpened from\nemployee-request\nNext action\nScheme team to review your renewal and contact you.\nDue, demo clock (UTC)\n2026-11-06 09:00:00 UTC\nRenewal deadline (calendar date)\n2026-12-01\n\nSynthetic demonstration case.\n\nDated case history\nOptions as of, demo clock (UTC)\n2026-11-05 09:00:00 UTC\nPolicy version\ngcsp-policy-v1\nRecord next action\nNext case status\nChoose the next status\nIn progress\nClosed\nReason for this update\nNext action\nNext action due, demo clock (UTC)\n\nCurrent demo time: 2026-11-05 09:00:00 UTC.\n\nRemedy to record\nKeep the current remedy, if any\nManual decision\n\nSuitable available cars: A confirmed brief is required to evaluate suitable available cars.\n\nOne preference change: A current confirmed brief and an unused recorded decline are required.\n\nReviewed later release: No reviewed future release date and source are recorded for this case.\n\nContract extension: The current policy does not permit a contract extension.\n\nReview case update",
+      "focus": {
+        "tag": "DIV",
+        "id": "",
+        "text": "Renewal-risk casesEmployeeRenewal deadline (calendar date)Trigger or requestReasonStatusOwnerNext ac",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 332,
+          "width": 1232,
+          "height": 159.5
+        },
+        "inViewport": true
+      },
+      "keyboardTraceThrough": 35
+    }
+  ],
+  "keyboard": [
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 9,
+      "focus": {
+        "tag": "SUMMARY",
+        "id": "",
+        "text": "Get help with your renewal",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 160.796875,
+          "width": 982,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Open help disclosure",
+      "key": "Space",
+      "focus": {
+        "tag": "SUMMARY",
+        "id": "",
+        "text": "Get help with your renewal",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 160.796875,
+          "width": 982,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 1,
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Ask for help",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 248.796875,
+          "width": 140.484375,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Ask for help",
+      "key": "Enter",
+      "before": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Ask for help",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 248.796875,
+          "width": 140.484375,
+          "height": 48
+        },
+        "inViewport": true
+      },
+      "after": {
+        "tag": "TEXTAREA",
+        "id": "gcsp-help-1-reason",
+        "text": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 300.796875,
+          "width": 982,
+          "height": 100
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "TEXTAREA",
+        "id": "gcsp-help-1-reason",
+        "text": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 300.796875,
+          "width": 982,
+          "height": 100
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "What do you need help with?",
+      "method": "automated native text/date entry through fill",
+      "after": {
+        "tag": "TEXTAREA",
+        "id": "gcsp-help-1-reason",
+        "text": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 300.796875,
+          "width": 982,
+          "height": 100
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 1,
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Review help request",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 461.796875,
+          "width": 202.890625,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Review help request",
+      "key": "Enter",
+      "before": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Review help request",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 461.796875,
+          "width": 202.890625,
+          "height": 48
+        },
+        "inViewport": true
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Confirm help request",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 198,
+          "y": 417.796875,
+          "width": 210.015625,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Shift+Tab",
+      "presses": 11,
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Cancel",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 420.015625,
+          "y": 554.796875,
+          "width": 102.09375,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Cancel",
+      "key": "Enter",
+      "before": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Cancel",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 420.015625,
+          "y": 554.796875,
+          "width": 102.09375,
+          "height": 48
+        },
+        "inViewport": true
+      },
+      "after": {
+        "tag": "SUMMARY",
+        "id": "",
+        "text": "Get help with your renewal",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 297.796875,
+          "width": 982,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 1,
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Ask for help",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 385.796875,
+          "width": 140.484375,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Ask for help",
+      "key": "Enter",
+      "before": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Ask for help",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 385.796875,
+          "width": 140.484375,
+          "height": 48
+        },
+        "inViewport": true
+      },
+      "after": {
+        "tag": "TEXTAREA",
+        "id": "gcsp-help-1-reason",
+        "text": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 437.796875,
+          "width": 982,
+          "height": 100
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "TEXTAREA",
+        "id": "gcsp-help-1-reason",
+        "text": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 437.796875,
+          "width": 982,
+          "height": 100
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "What do you need help with?",
+      "method": "automated native text/date entry through fill",
+      "after": {
+        "tag": "TEXTAREA",
+        "id": "gcsp-help-1-reason",
+        "text": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 437.796875,
+          "width": 982,
+          "height": 100
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 1,
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Review help request",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 598.796875,
+          "width": 202.890625,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Review help request",
+      "key": "Enter",
+      "before": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Review help request",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 173,
+          "y": 598.796875,
+          "width": 202.890625,
+          "height": 48
+        },
+        "inViewport": true
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Confirm help request",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 198,
+          "y": 554.796875,
+          "width": 210.015625,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Confirm help request",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 198,
+          "y": 554.796875,
+          "width": 210.015625,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Confirm help request",
+      "key": "Enter",
+      "before": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Confirm help request",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 198,
+          "y": 554.796875,
+          "width": 210.015625,
+          "height": 48
+        },
+        "inViewport": true
+      },
+      "after": {
+        "tag": "P",
+        "id": "",
+        "text": "Saving your confirmed request.",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 148,
+          "y": 232.796875,
+          "width": 1032,
+          "height": 24
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 4,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-selection",
+        "text": "Choose a casePaula (fictional) · Open · 2026-12-01",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 543.5,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Case to work",
+      "method": "native observed-label typeahead",
+      "selectedValue": "renewal-8a6d047e95b05f19bcd3e952b1f33210d609c7af",
+      "optionLabel": "Paula (fictional) · Open · 2026-12-01",
+      "observedOptionIndex": 1,
+      "previous": {
+        "index": 0,
+        "value": ""
+      },
+      "keys": [
+        "Space",
+        {
+          "type": "P"
+        },
+        "Enter",
+        "Tab"
+      ],
+      "steps": [
+        {
+          "character": 0,
+          "key": "P",
+          "redrawn": false,
+          "observed": {
+            "index": 1,
+            "value": "renewal-8a6d047e95b05f19bcd3e952b1f33210d609c7af"
+          }
+        }
+      ],
+      "events": [
+        {
+          "type": "input",
+          "trusted": true,
+          "index": 1,
+          "value": "renewal-8a6d047e95b05f19bcd3e952b1f33210d609c7af"
+        },
+        {
+          "type": "change",
+          "trusted": true,
+          "index": 1,
+          "value": "renewal-8a6d047e95b05f19bcd3e952b1f33210d609c7af"
+        }
+      ],
+      "observedAfterCommit": {
+        "index": 1,
+        "value": "renewal-8a6d047e95b05f19bcd3e952b1f33210d609c7af"
+      },
+      "observedAfterTab": {
+        "index": 1,
+        "value": "renewal-8a6d047e95b05f19bcd3e952b1f33210d609c7af"
+      },
+      "after": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Open selected case",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 607.5,
+          "width": 199.09375,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-selection",
+        "text": "Choose a casePaula (fictional) · Open · 2026-12-01",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 543.5,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-selection",
+        "text": "Choose a casePaula (fictional) · Open · 2026-12-01",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 543.5,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-selection",
+        "text": "Choose a casePaula (fictional) · Open · 2026-12-01",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 543.5,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Open selected case",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 607.5,
+          "width": 199.09375,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Open selected case",
+      "key": "Enter",
+      "before": {
+        "tag": "BUTTON",
+        "id": "",
+        "text": "Open selected case",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 607.5,
+          "width": 199.09375,
+          "height": 48
+        },
+        "inViewport": true
+      },
+      "after": {
+        "tag": "BODY",
+        "id": "",
+        "text": "Renewal casesRemedies need the scheme team’s decision. No specific next car or greater priority is g",
+        "outlineStyle": "none",
+        "outlineWidth": "3px",
+        "outlineColor": "rgb(0, 0, 0)",
+        "box": {
+          "x": 0,
+          "y": 0,
+          "width": 1280,
+          "height": 935.890625
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 2,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-sort",
+        "text": "Deadline, then statusStatus, then deadline",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 268,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Sort cases",
+      "method": "native observed-label typeahead",
+      "selectedValue": "status",
+      "optionLabel": "Status, then deadline",
+      "observedOptionIndex": 1,
+      "previous": {
+        "index": 0,
+        "value": "deadline"
+      },
+      "keys": [
+        "Space",
+        {
+          "type": "S"
+        },
+        "Enter",
+        "Tab"
+      ],
+      "steps": [
+        {
+          "character": 0,
+          "key": "S",
+          "redrawn": true,
+          "observed": {
+            "index": 1,
+            "value": "status"
+          }
+        }
+      ],
+      "events": [
+        {
+          "type": "input",
+          "trusted": true,
+          "index": 1,
+          "value": "status"
+        },
+        {
+          "type": "change",
+          "trusted": true,
+          "index": 1,
+          "value": "status"
+        }
+      ],
+      "observedAfterCommit": {
+        "index": 1,
+        "value": "status"
+      },
+      "observedAfterTab": {
+        "index": 1,
+        "value": "status"
+      },
+      "after": {
+        "tag": "DIV",
+        "id": "",
+        "text": "Renewal-risk casesEmployeeRenewal deadline (calendar date)Trigger or requestReasonStatusOwnerNext ac",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 332,
+          "width": 1232,
+          "height": 159.5
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-sort",
+        "text": "Deadline, then statusStatus, then deadline",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 268,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-sort",
+        "text": "Deadline, then statusStatus, then deadline",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 268,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-sort",
+        "text": "Deadline, then statusStatus, then deadline",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 268,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 19,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-sort",
+        "text": "Deadline, then statusStatus, then deadline",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 268,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Sort cases",
+      "method": "native observed-label typeahead",
+      "selectedValue": "deadline",
+      "optionLabel": "Deadline, then status",
+      "observedOptionIndex": 0,
+      "previous": {
+        "index": 1,
+        "value": "status"
+      },
+      "keys": [
+        "Space",
+        {
+          "type": "D"
+        },
+        "Enter",
+        "Tab"
+      ],
+      "steps": [
+        {
+          "character": 0,
+          "key": "D",
+          "redrawn": true,
+          "observed": {
+            "index": 0,
+            "value": "deadline"
+          }
+        }
+      ],
+      "events": [
+        {
+          "type": "input",
+          "trusted": true,
+          "index": 0,
+          "value": "deadline"
+        },
+        {
+          "type": "change",
+          "trusted": true,
+          "index": 0,
+          "value": "deadline"
+        }
+      ],
+      "observedAfterCommit": {
+        "index": 0,
+        "value": "deadline"
+      },
+      "observedAfterTab": {
+        "index": 0,
+        "value": "deadline"
+      },
+      "after": {
+        "tag": "DIV",
+        "id": "",
+        "text": "Renewal-risk casesEmployeeRenewal deadline (calendar date)Trigger or requestReasonStatusOwnerNext ac",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 332,
+          "width": 1232,
+          "height": 159.5
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-sort",
+        "text": "Deadline, then statusStatus, then deadline",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 268,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-sort",
+        "text": "Deadline, then statusStatus, then deadline",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 268,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-sort",
+        "text": "Deadline, then statusStatus, then deadline",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 268,
+          "width": 1232,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 5,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-status",
+        "text": "Choose the next statusIn progressClosed",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 700.390625,
+          "width": 800,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Next case status",
+      "method": "native observed-label typeahead",
+      "selectedValue": "in-progress",
+      "optionLabel": "In progress",
+      "observedOptionIndex": 1,
+      "previous": {
+        "index": 0,
+        "value": ""
+      },
+      "keys": [
+        "Space",
+        {
+          "type": "I"
+        },
+        "Enter",
+        "Tab"
+      ],
+      "steps": [
+        {
+          "character": 0,
+          "key": "I",
+          "redrawn": false,
+          "observed": {
+            "index": 1,
+            "value": "in-progress"
+          }
+        }
+      ],
+      "events": [
+        {
+          "type": "input",
+          "trusted": true,
+          "index": 1,
+          "value": "in-progress"
+        },
+        {
+          "type": "change",
+          "trusted": true,
+          "index": 1,
+          "value": "in-progress"
+        }
+      ],
+      "observedAfterCommit": {
+        "index": 1,
+        "value": "in-progress"
+      },
+      "observedAfterTab": {
+        "index": 1,
+        "value": "in-progress"
+      },
+      "after": {
+        "tag": "TEXTAREA",
+        "id": "gcsp-case-queue-1-reason",
+        "text": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 796.390625,
+          "width": 800,
+          "height": 96
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-status",
+        "text": "Choose the next statusIn progressClosed",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 700.390625,
+          "width": 800,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-status",
+        "text": "Choose the next statusIn progressClosed",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 700.390625,
+          "width": 800,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-status",
+        "text": "Choose the next statusIn progressClosed",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 700.390625,
+          "width": 800,
+          "height": 44
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 0,
+      "focus": {
+        "tag": "TEXTAREA",
+        "id": "gcsp-case-queue-1-reason",
+        "text": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 796.390625,
+          "width": 800,
+          "height": 96
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Reason for this update",
+      "method": "automated native text/date entry through fill",
+      "after": {
+        "tag": "TEXTAREA",
+        "id": "gcsp-case-queue-1-reason",
+        "text": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 796.390625,
+          "width": 800,
+          "height": 96
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 1,
+      "focus": {
+        "tag": "TEXTAREA",
+        "id": "gcsp-case-queue-1-nextAction",
+        "text": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 426.390625,
+          "width": 800,
+          "height": 96
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "Next action",
+      "method": "automated native text/date entry through fill",
+      "after": {
+        "tag": "TEXTAREA",
+        "id": "gcsp-case-queue-1-nextAction",
+        "text": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 426.390625,
+          "width": 800,
+          "height": 96
+        },
+        "inViewport": true
+      }
+    },
+    {
+      "action": "tab-to-control",
+      "direction": "Tab",
+      "presses": 1,
+      "focus": {
+        "tag": "INPUT",
+        "id": "gcsp-case-queue-1-dueAt",
+        "text": "",
+        "outlineStyle": "solid",
+        "outlineWidth": "2px",
+        "outlineColor": "rgb(2, 145, 183)",
+        "box": {
+          "x": 24,
+          "y": 574.390625,
+          "width": 800,
+          "height": 48
+        },
+        "inViewport": true
+      }
+    }
+  ],
+  "errors": [
+    {
+      "type": "assertion-or-runner",
+      "message": "locator.fill: Error: Malformed value\nCall log:\n\u001b[2m  - waiting for getByLabel('Next action due, demo clock (UTC)', { exact: true })\u001b[22m\n\u001b[2m    - locator resolved to <input step=\"1\" aria-invalid=\"false\" type=\"datetime-local\" id=\"gcsp-case-queue-1-dueAt\" aria-describedby=\"gcsp-case-queue-1-dueAt-hint\"/>\u001b[22m\n\u001b[2m    - fill(\"2026-11-07T12:00:00\")\u001b[22m\n\u001b[2m  - attempting fill action\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and editable\u001b[22m\n\n    at enterText (/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/browser-runner.mjs:157:102)\n    at async updateForm (/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/browser-runner.mjs:197:3)\n    at async confirmUpdate (/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/browser-runner.mjs:208:3)\n    at async journey (/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/browser-runner.mjs:234:50)\n    at async file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-084/docs/gcsp/evidence/fucq122/browser-runner.mjs:562:42"
+    }
+  ],
+  "network": [
+    {
+      "type": "browser",
+      "actor": "Paula",
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "httpStatus": 200,
+      "request": null,
+      "status": "ok"
+    },
+    {
+      "type": "browser",
+      "actor": "Paula",
+      "method": "GET",
+      "path": "/api/gcsp/help",
+      "httpStatus": 200,
+      "request": null,
+      "status": "ok"
+    },
+    {
+      "type": "browser",
+      "actor": "Paula",
+      "method": "GET",
+      "path": "/api/gcsp/cases",
+      "httpStatus": 200,
+      "request": null,
+      "status": "ok",
+      "caseCount": 0
+    },
+    {
+      "type": "browser",
+      "actor": "Paula",
+      "method": "POST",
+      "path": "/api/gcsp/cases",
+      "httpStatus": 200,
+      "request": {
+        "commandId": "case-2e85890d-fc3d-4e31-9203-e730359e3a37",
+        "reason": "Please review my replacement before the contract ends."
+      },
+      "status": "ok",
+      "case": {
+        "caseId": "renewal-8a6d047e95b05f19bcd3e952b1f33210d609c7af",
+        "version": 1,
+        "status": "open"
+      }
+    },
+    {
+      "type": "browser",
+      "actor": "Paula",
+      "method": "GET",
+      "path": "/api/gcsp/help",
+      "httpStatus": 200,
+      "request": null,
+      "status": "ok"
+    },
+    {
+      "type": "browser",
+      "actor": "Paula",
+      "method": "GET",
+      "path": "/api/gcsp/cases",
+      "httpStatus": 200,
+      "request": null,
+      "status": "ok",
+      "caseCount": 1
+    },
+    {
+      "type": "setup-or-assertion-api",
+      "actor": "Greg",
+      "method": "GET",
+      "path": "/scheme-team/cases",
+      "status": "ok",
+      "caseCount": 1
+    },
+    {
+      "type": "browser",
+      "actor": "Greg",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases",
+      "httpStatus": 200,
+      "request": null,
+      "status": "ok",
+      "caseCount": 1
+    },
+    {
+      "type": "browser",
+      "actor": "Greg",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases/options",
+      "httpStatus": 200,
+      "request": null,
+      "status": "ok",
+      "case": {
+        "caseId": "renewal-8a6d047e95b05f19bcd3e952b1f33210d609c7af",
+        "version": 1,
+        "status": "open"
+      },
+      "nextStatuses": [
+        "in-progress",
+        "closed"
+      ],
+      "availability": {
+        "alternativeCars": false,
+        "preferenceRelaxations": false,
+        "laterRelease": false,
+        "manualDecision": true,
+        "contractExtension": false
+      }
+    }
+  ],
+  "expectedTransportFailures": [
+    {
+      "actor": "Paula",
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "error": "net::ERR_ABORTED",
+      "boundary": "navigation or element cancellation"
+    }
+  ],
+  "setup": [
+    "Trusted backend bootstrap issues separate actual presenter, Paula and Greg sessions; synthetic manual-records-v1 supplies account/contract facts. Cookies are never retained in evidence."
+  ],
+  "boundary": "Actual isolated memory-services HTTP and repository assets. Delivered runtime/Greg host and offer/lifecycle producers remain separate acceptance.",
+  "cookieOverride": "localhost only: identity.session.sameSite=Lax, secureCookies=false",
+  "apiPort": 62625,
+  "chromeDebugPort": 62628,
+  "listenerClosed": true,
+  "chromeJoined": true
+}

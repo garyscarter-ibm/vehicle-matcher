@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "final-publish-actions-checkpoint.v1",
+  "observedAt": "2026-11-07T13:04:24.916753+00:00",
+  "run": 42374040814,
+  "attempt": 1,
+  "testedHead": "9b13ba2be2ed7feea767ab20e08dc6c048aef30f",
+  "status": "completed",
+  "job": 128407873432,
+  "publishedDocumentationHead": "693844ae9ffbb00763c2a1e50fe35f866176e164",
+  "verifiedEarlierRuns": {
+    "fleet": 42361586991,
+    "native": 42372886620,
+    "live": 42372746118,
+    "refresh": 42373649444,
+    "pages": 42373661221
+  },
+  "earlierAudit": {
+    "observedAt": "2026-11-07T12:44:33Z",
+    "currentFailures": [],
+    "historicalFailedRuns": {
+      "42371231686": "three native consumer source-unavailable failures before snapshot setup correction",
+      "42370440771": "native proof assertion failure with discarded comparison diagnostics",
+      "42370480081": "actual .10 readiness manifest mismatch",
+      "42360886351": "offline restore90secondtimeout124",
+      "42347409603": "historical timeout124",
+      "42339281451": "historical timeout124",
+      "42347421602": "GitHub Pages create-deployment HTTP502"
+    },
+    "successorRunsPassed": true,
+    "readOnlyAuditLocalScratchBytes": 0
+  },
+  "noSuccessInferred": true,
+  "conclusion": "success",
+  "result": "result.json",
+  "completedAt": "2026-11-07T12:53:58Z",
+  "publishedPagesRun": 42375092002,
+  "publishedMainHead": "9ab7e1729a08ac0a35da4b3684d2ad143e3551c6",
+  "publicMap": "six In Review/progress100/no conflicts verified",
+  "jira": "six In Review states and final publication comments read back",
+  "deferredPublicationBug": "FUCQ-166, To Do, Relates340019; cause unconfirmed",
+  "stopCondition": "met; no further story/defect pickup"
+}

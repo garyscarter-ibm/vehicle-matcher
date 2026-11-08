@@ -1,0 +1,53 @@
+{
+  "scope": "scoped syntax and read-only identity checks only",
+  "planSha256": "1b329e5b0e8e45097e4753467a4d8a061cdee8e10bbbe421bde1e31555cf2f79",
+  "js": [
+    {
+      "file": "audit-direct.mjs",
+      "rc": 0,
+      "stderr": ""
+    },
+    {
+      "file": "common.mjs",
+      "rc": 0,
+      "stderr": ""
+    },
+    {
+      "file": "descriptor.mjs",
+      "rc": 0,
+      "stderr": ""
+    },
+    {
+      "file": "http-chunk.mjs",
+      "rc": 0,
+      "stderr": ""
+    },
+    {
+      "file": "publish-restart.mjs",
+      "rc": 0,
+      "stderr": ""
+    },
+    {
+      "file": "rollback.mjs",
+      "rc": 0,
+      "stderr": ""
+    },
+    {
+      "file": "summarize.mjs",
+      "rc": 0,
+      "stderr": ""
+    }
+  ],
+  "python": "in-memory compilation passed; no bytecode",
+  "codePinsVerified": 160,
+  "candidatePinsVerified": true,
+  "proofExecuted": false,
+  "scratchCreated": false,
+  "sourceCalls": 0,
+  "acceptance": false,
+  "additionalChecks": {
+    "chunkSumAndExactBoundaries": true,
+    "noFixedConsumer485Assertion": true,
+    "initialOverbroadSubstringCheck": "failed because 1048576 contains 485; corrected to check consumer count assertions; no proof executed"
+  }
+}
