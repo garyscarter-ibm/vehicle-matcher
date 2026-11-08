@@ -18,6 +18,7 @@ export function clockTime(value) {
     ? new Date(value).toISOString().replace('T', ' ').replace(/\.000Z$/, ' UTC').replace(/Z$/, ' UTC') : 'Not supplied';
 }
 const facts = (rows) => factList(rows.map(([label, value]) => ({ label, value: shown(value) })), { className: 'gcsp-case-facts' });
+export const carNameText = (name) => typeof name === 'string' && name.trim() ? name : 'Car details not supplied';
 export const caseNotice = 'Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.';
 
 export function renderCaseContent(c, { onReviewRelaxation, pending = false, headingLevel = 2, audience = 'employee' } = {}) {
@@ -53,7 +54,8 @@ export function renderCaseContent(c, { onReviewRelaxation, pending = false, head
     } else if (remedy.type === 'manual-decision') section.append(facts([['Scheme-team decision', remedy.decision]]));
     else if (remedy.type === 'later-release') section.append(facts([['Reviewed release, demo clock (UTC)', clockTime(remedy.releaseAt)], ['Source', remedy.source]]));
     else if (remedy.type === 'contract-extension') section.append(facts([['Proposed contract end (calendar date)', remedy.until]]));
-    else if (remedy.type === 'alternative-car') section.append(facts([['Alternative car reference', remedy.orderUuid]]));
+    else if (remedy.type === 'alternative-car') section.append(facts([[['resolved', 'closed'].includes(c.status) ? 'Recorded car' : 'Proposed car', carNameText(remedy.carName)],
+      ...(audience === 'scheme-team' ? [['Exact car reference', remedy.orderUuid]] : [])]));
     root.append(section);
   }
   const history = el('details', 'gcsp-case-history');

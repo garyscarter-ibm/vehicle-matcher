@@ -1,7 +1,7 @@
 import { el, screenIntro, button, statusScreen, factList } from '../../vehicle-matcher/ui.js';
 import { labelledField, errorSummary } from '../kit/form-controls.js';
 import { dataTable } from '../kit/data-table.js';
-import { caseStatus, clockTime, preferenceLabel, renderCaseContent, caseNotice, shown } from './case-content.js';
+import { caseStatus, clockTime, preferenceLabel, renderCaseContent, caseNotice, shown, carNameText } from './case-content.js';
 import { caseFailure } from './gcsp-help.js';
 import { createCaseHttpAdapter, isCaseRecord, isCaseOptionsProjection } from './http-adapter.js';
 
@@ -9,10 +9,15 @@ let serial = 0;
 const unavailable = { status: 'unavailable', reason: 'The renewal-case source could not be reached. Try again.' };
 const triggerLabel = (c) => c.trigger?.type === 'employee-request' ? 'Help request' : shown(c.trigger?.type);
 const deadlineKey = (c) => c.renewalDeadline ?? '9999-99-99';
+const ranks = ['open', 'in-progress', 'remedy-proposed'];
+const terminal = (c) => ['resolved', 'closed'].includes(c.status);
+// Actionable statuses first, unknown ones next, then resolved and closed.
+const statusRank = (c) => ranks.includes(c.status) ? ranks.indexOf(c.status) : c.status === 'resolved' ? 4 : c.status === 'closed' ? 5 : 3;
 export function sortCases(cases, order = 'deadline') {
   const deadline = (a, b) => deadlineKey(a).localeCompare(deadlineKey(b));
-  const status = (a, b) => caseStatus(a.status).localeCompare(caseStatus(b.status));
-  return [...cases].sort((a, b) => (order === 'status' ? status(a, b) || deadline(a, b) : deadline(a, b) || status(a, b))
+  const rank = (a, b) => statusRank(a) - statusRank(b);
+  const active = (a, b) => Number(terminal(a)) - Number(terminal(b));
+  return [...cases].sort((a, b) => (order === 'status' ? rank(a, b) || deadline(a, b) : active(a, b) || deadline(a, b) || rank(a, b))
     || a.caseId.localeCompare(b.caseId));
 }
 function nativeSelect(items, value, placeholder) {
@@ -24,9 +29,12 @@ function nativeSelect(items, value, placeholder) {
 const facts = (rows) => factList(rows.map(([label, value]) => ({ label, value: shown(value) })), { className: 'gcsp-case-facts' });
 const remedyLabels = { alternativeCars: 'Suitable available cars', preferenceRelaxations: 'One preference change', laterRelease: 'Reviewed later release',
   manualDecision: 'Manual decision', contractExtension: 'Contract extension' };
-function remedyReview(remedy) {
+function remedyReview(remedy, options) {
   if (!remedy) return [['Remedy', 'Current remedy retained']];
-  if (remedy.type === 'alternative-car') return [['Remedy', 'Alternative car'], ['Exact car reference', remedy.orderUuid]];
+  if (remedy.type === 'alternative-car') {
+    const item = options?.alternativeCars?.items?.find((car) => car.orderUuid === remedy.orderUuid);
+    return [['Remedy', 'Alternative car'], ['Proposed car', carNameText(item?.snapshot?.display?.name)], ['Exact car reference', remedy.orderUuid]];
+  }
   if (remedy.type === 'preference-relaxation') return [['Remedy', 'One preference change'], ['Preference', preferenceLabel(remedy.path)],
     ['Proposed value', remedy.value], ['Employee confirmation', 'Required through the employee brief']];
   if (remedy.type === 'later-release') return [['Remedy', 'Reviewed later release'], ['Reviewed release, demo clock (UTC)', clockTime(remedy.releaseAt)], ['Source', remedy.source]];
@@ -117,7 +125,8 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
     else if (choice?.type === 'contract-extension') form.append(inputField('until', 'Proposed contract end (calendar date)', 'date',
       `Actual contract end: ${shown(projection.options.contractExtension.contractEndDate)}. The server checks the permitted extension date.`));
     else if (choice?.type === 'later-release') form.append(facts([['Reviewed release, demo clock (UTC)', clockTime(choice.releaseAt)], ['Source', choice.source]]));
-    else if (choice?.type === 'alternative-car') form.append(facts([['Exact car reference', choice.orderUuid], ['Configuration', choice.configurationId]]));
+    else if (choice?.type === 'alternative-car') form.append(facts([['Proposed car', carNameText(choice.snapshot?.display?.name)],
+      ['Exact car reference', choice.orderUuid], ['Configuration', choice.configurationId]]));
     for (const [key, label] of Object.entries(remedyLabels)) if (projection.options[key]?.available === false)
       form.append(el('p', 'gcsp-note', `${label}: ${projection.options[key].reason ?? 'Unavailable.'}`));
     const actions = el('div', 'gcsp-case-actions'); actions.append(button({ label: 'Review case update', disabled: saving || blocked(), onClick: prepare }));
@@ -133,7 +142,7 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
     if (queueLoading) { content.append(statusScreen({ title: 'Loading renewal cases', message: 'Reading the current demonstration run.' })); return; }
     if (queueError) { content.append(failureNode(queueError, 'Renewal cases are unavailable', { label: 'Retry queue', action: () => refresh() })); return; }
     if (!rows.length) { content.append(statusScreen({ title: 'No renewal cases', message: 'There are no renewal-risk cases in this demonstration run.' })); return; }
-    const sort = nativeSelect([['deadline', 'Deadline, then status'], ['status', 'Status, then deadline']], order);
+    const sort = nativeSelect([['deadline', 'Deadline, active cases first'], ['status', 'Status, then deadline']], order);
     sort.disabled = saving; sort.addEventListener('change', () => { order = sort.value; draw(); content.querySelector(`#${id}-sort`)?.focus(); });
     content.append(labelledField({ id: `${id}-sort`, label: 'Sort cases', control: sort }).root);
     const sorted = sortCases(rows, order);
@@ -166,7 +175,7 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
           confirmation.append(screenIntro({ title: 'Confirm case update', level: headingLevel + 2 }),
             el('p', 'gcsp-note', 'This records the update and any remedy for the employee to see on reload.'),
             facts([['Next status', caseStatus(review.status)], ['Reason', review.reason], ['Next action', review.nextAction], ['Due, demo clock (UTC)', clockTime(review.dueAt)],
-              ...remedyReview(review.remedy)]));
+              ...remedyReview(review.remedy, projection.options)]));
           const confirmActions = el('div', 'gcsp-case-actions'); confirmActions.append(
             button({ label: 'Confirm case update', disabled: saving, onClick: save }),
             button({ label: 'Cancel update', variant: 'ghost', disabled: saving, onClick: () => { review = null; draw(); content.querySelector(`#${id}-status`)?.focus(); } }));
