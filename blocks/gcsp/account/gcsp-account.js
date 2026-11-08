@@ -43,6 +43,21 @@ function shown(value) {
 const label = (key) => key.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (letter) => letter.toUpperCase());
 const row = (name, value, unit) => ({ label: name, value: shown(value), ...(value != null && unit ? { unit } : {}) });
 const facts = (rows) => factList(rows, { className: 'gcsp-facts' });
+// Raw ids are not copy (FUCQ-195): statuses read as words, and a slot shows only with a supplied label.
+const statusLabels = { current: 'Current car', returned: 'Returned' };
+const status = (value) => statusLabels[value] ?? (/^[a-z]+(-[a-z]+)*$/.test(value ?? '') ? sentence(value.replace(/-/g, ' ')) : value);
+const slotRows = (model, slotId) => {
+  const name = model?.slots?.find((slot) => slot.entitlementSlotId === slotId)?.label;
+  return name ? [row('Vehicle slot', name)] : [];
+};
+const sourceLabel = (source) => typeof source === 'string' ? source
+  : source?.label ?? (source?.mode === 'synthetic' ? 'Synthetic example data' : null);
+const technicalLabels = { insuranceGroup: 'Insurance group', nedcCo2: 'NEDC CO2', wltpCo2: 'WLTP CO2',
+  fuelConsumptionLow: 'Fuel consumption, low', fuelConsumptionMedium: 'Fuel consumption, medium',
+  fuelConsumptionHigh: 'Fuel consumption, high', fuelConsumptionExtraHigh: 'Fuel consumption, extra high',
+  fuelConsumptionCombinedWeighted: 'Fuel consumption, combined weighted', electricityConsumption: 'Electricity consumption',
+  electricRange: 'Electric range', electricCityRange: 'Electric city range' };
+const technicalLabel = (key) => technicalLabels[key] ?? label(key);
 const date = (value) => /^\d{4}-\d{2}-\d{2}$/.test(value ?? '')
   ? new Date(`${value}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : shown(value);
 
@@ -52,14 +67,13 @@ function details(title, ...content) {
   return node;
 }
 
-function contractDetails(contract) {
+function contractDetails(contract, model) {
   const technical = contract.technical ?? {};
   const standard = ['insuranceGroup', 'transmission', 'nedcCo2', 'wltpCo2', 'fuelConsumptionLow', 'fuelConsumptionMedium',
     'fuelConsumptionHigh', 'fuelConsumptionExtraHigh', 'fuelConsumptionCombinedWeighted', 'electricityConsumption',
     'electricRange', 'electricCityRange', 'exterior', 'interior', 'price', 'options'];
   return details('Order, collection and vehicle details', facts([
-    row('Current contract', contract.contractId), row('Vehicle slot', contract.slotId), row('Scheme', contract.schemeId),
-    row('Order reference', contract.orderNumber ?? contract.orderReference), row('Order date', date(contract.orderDate)),
+    ...slotRows(model, contract.slotId), row('Order reference', contract.orderNumber ?? contract.orderReference), row('Order date', date(contract.orderDate)),
     row('Order status', contract.orderStatus), row('Registration', contract.registration),
     row('Delivered VIN', contract.vin), row('Chassis number', contract.chassisNumber), row('Registration date', date(contract.registrationDate)),
     row('Requested collection', date(contract.requestedCollectionDate)), row('Collection location', contract.collectionLocation),
@@ -71,9 +85,10 @@ function contractDetails(contract) {
     row('Special requirements', contract.specialRequirements),
   ]), details('Technical specification and options',
     el('p', 'gcsp-note', 'Model or handbook evidence does not confirm the fitted equipment on your car.'),
-    facts([...standard.map((key) => row(label(key), technical[key] ?? contract[key])),
-      ...Object.entries(technical).filter(([key]) => !standard.includes(key)).map(([key, value]) => row(label(key), value)),
-      row('Specification provenance', technical.provenance ?? technical.source ?? contract.source)])));
+    facts([...standard.map((key) => row(technicalLabel(key), technical[key] ?? contract[key])),
+      ...Object.entries(technical).filter(([key]) => !['provenance', 'source', ...standard].includes(key))
+        .map(([key, value]) => row(technicalLabel(key), value)),
+      row('Specification provenance', sourceLabel(technical.provenance ?? technical.source ?? contract.source))])));
 }
 
 function driverDetails(driver) {
@@ -95,6 +110,8 @@ function driverDetails(driver) {
 
 function currentCar(contract, model, controls) {
   const terms = { kind: 'points-monthly', ...contract.terms };
+  // The contract's vehicle record carries its monthly points (points-per-month in the offer comparison).
+  if (!Object.hasOwn(terms, 'value') && Number.isFinite(contract.vehicle?.points)) terms.value = contract.vehicle.points;
   if (!Object.hasOwn(terms, 'allowance') && contract.schemeId === model.choices?.schemeId) {
     terms.allowance = model.allowance?.monthlyPoints ?? model.allowance?.value;
   }
@@ -111,16 +128,16 @@ function currentCar(contract, model, controls) {
   copy.append(el('p', 'gcsp-eyebrow', 'Your current car'), heading,
     el('p', 'gcsp-countdown', contract.daysRemaining == null ? 'Contract end: Not supplied'
       : `Contract ${countdown(model.asOf.slice(0, 10), contract.contractEndDate)}, on ${date(contract.contractEndDate)}`),
-    facts([row('Status', contract.status), row('Driver', contract.driver?.name), row('Scheme', contract.schemeId),
+    facts([row('Status', status(contract.status)), row('Driver', contract.driver?.name),
       row('Contract end', date(contract.contractEndDate)), row('Term', contract.months, 'months'),
-      row('Annual mileage', contract.annualMileage, contract.mileageUnit), row('Vehicle slot', contract.slotId),
+      row('Annual mileage', contract.annualMileage, contract.mileageUnit), ...slotRows(model, contract.slotId),
       row('Registration', contract.registration)]),
     el('p', 'gcsp-account-terms', formatTerm(terms)),
     el('p', 'gcsp-note', 'Exact specification is not supplied unless confirmed by delivered-car evidence.'));
   if (source?.provenance) copy.append(el('p', 'gcsp-synthetic', `Image source: ${shown(source.provenance)}`));
   if (contract.action) copy.append(controls.startButton(contract.action));
   else copy.append(el('p', 'gcsp-note', 'Replacement is unavailable for this contract and slot.'));
-  copy.append(contractDetails(contract));
+  copy.append(contractDetails(contract, model));
   feature.append(media, copy);
   return feature;
 }
@@ -205,9 +222,9 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
       for (const contract of history.entries) {
         const entry = el('article', 'gcsp-account-history');
         entry.append(el('h3', 'gcsp-h2', contract.model ?? 'Model not supplied'),
-          facts([row('Status', contract.status), row('Driver', contract.driver?.name), row('Vehicle slot', contract.slotId),
+          facts([row('Status', status(contract.status)), row('Driver', contract.driver?.name), ...slotRows(model, contract.slotId),
             row('Registration', contract.registration), row('Actual collection', date(contract.actualCollectionDate)),
-            row('Contract end', date(contract.contractEndDate)), row('Returned', date(contract.returnedDate))]), contractDetails(contract),
+            row('Contract end', date(contract.contractEndDate)), row('Returned', date(contract.returnedDate))]), contractDetails(contract, model),
           button({ label: `Print record ${contract.orderNumber ?? contract.contractId}`, variant: 'ghost',
             onClick: () => controls.print(entry) }));
         const action = model.actions.find((item) => item.oldContractId === contract.contractId && item.slotId === contract.slotId

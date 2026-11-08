@@ -216,8 +216,7 @@ test('account composition preserves complete supplied facts, labelled details an
     const otherScheme = root.querySelectorAll('.gcsp-feature')[1];
     assert.doesNotMatch(otherScheme.querySelector('.gcsp-account-terms').textContent, /1,300/);
     assert.match(otherScheme.querySelector('.gcsp-account-terms').textContent, /allowance not supplied/i);
-    assert.match(current.textContent, /Current contractcurrent:employee-paula/);
-    assert.match(current.textContent, /Vehicle slotslot-paula/);
+    assert.doesNotMatch(current.textContent, /current:employee-paula|slot-paula|choices-fs-uk/);
     for (const text of ['7654321', '1 May 2026', '30 May 2026', '1 June 2026', '6,500', '6,420',
       'ZZSYNTHETIC000001', '156 g/km (WLTP combined)', '£55,295 (List price)', 'SYN01', 'Fictional option']) assert.ok(current.textContent.includes(text), text);
     assert.equal(root.querySelectorAll('.gcsp-feature > .gcsp-feature-copy > button').length, 1);
@@ -550,4 +549,26 @@ test('FUCQ-192: an in-progress order on the slot replaces "No ordering entitleme
   } finally { other.destroy(); }
   const none = await domMount(readOnlyAdapter('no-entitlement'), { orderAdapter: orderAdapter('appointment-requested', []) }); await tick();
   assert.match(none.root.textContent, /No ordering entitlement/); none.destroy();
+});
+
+test('FUCQ-195: the current-car card shows readable labels and no raw identifiers', async () => {
+  const input = accountFixture('ready'); const value = input.value;
+  const raw = [value.currentContract.contractId, value.currentContract.slotId, value.currentContract.schemeId,
+    value.currentContract.source.sourceRef, value.currentContract.source.sourceVersion];
+  const first = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
+  try {
+    const card = first.root.querySelector('.gcsp-feature');
+    const shownText = [...card.querySelectorAll('dd, p, h2, summary, button')].map((node) => node.textContent);
+    for (const id of raw) assert.ok(!shownText.some((text) => text.includes(id)), id);
+    assert.ok(![...card.querySelectorAll('dd')].some((node) => node.textContent === value.currentContract.status));
+    assert.match(card.textContent, /StatusCurrent car/);
+    assert.match(card.querySelector('.gcsp-account-terms').textContent, /^1,100 points a month · 1,300 points a month allowance$/);
+    assert.match(card.textContent, /Specification provenanceSynthetic example data/);
+    assert.match(card.textContent, /WLTP CO2/);
+    assert.doesNotMatch(card.textContent, /Vehicle slot|Scheme|Current contract|points cost not supplied|Wltp/);
+  } finally { first.destroy(); first.root.remove(); }
+  value.slots[0].label = 'Company car 1';
+  const second = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
+  try { assert.match(second.root.querySelector('.gcsp-feature').textContent, /Vehicle slotCompany car 1/); }
+  finally { second.destroy(); second.root.remove(); }
 });
