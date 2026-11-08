@@ -22,7 +22,9 @@ export async function createLocalHttpsFixture(t) {
   const fetch = (input, init = {}) => new Promise((done, reject) => {
     const url = new URL(input);
     if (url.protocol !== 'https:' || url.hostname !== 'localhost') { reject(new Error('Expected local HTTPS.')); return; }
-    const req = request(url, { ca, servername: url.hostname, rejectUnauthorized: true, agent: false, method: init.method || 'GET',
+    // One address, the first lookup result, as the server's listen('localhost') took: no 500 ms ::1 attempt timer
+    // to expire under load and fall back to a refused 127.0.0.1 (FUCQ-216).
+    const req = request(url, { ca, servername: url.hostname, rejectUnauthorized: true, agent: false, autoSelectFamily: false, method: init.method || 'GET',
       headers: init.headers, signal: init.signal }, (res) => {
       const chunks = []; let bytes = 0;
       res.on('data', (chunk) => {
