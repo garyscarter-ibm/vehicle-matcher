@@ -70,3 +70,11 @@ Entries are added as work merges.
   - That's raised as **FUCQ-227 (bug, not in MoSCoW, High)**, queued for the comparison chain after FUCQ-225 and before FUCQ-137/138.
   - The alternative was to hold FUCQ-129 until FUCQ-227 lands.
   - Also raised: **FUCQ-228 (bug, not in MoSCoW, Low):** the expired offer page still shows "Eligible", and the stale-link copy needs work.
+- **About 23:30, FUCQ-77 live steps.**
+  - All 20 headless configurator round trips passed, and that gate is closed.
+  - F60 enrichment observed 239 of 240 rows, using 956 requests.
+  - BMW requests overall: 2,016 of 3,000 (FUCQ-78 173, round trips 887, enrichment 956), with no 401, 403, 429 or challenge.
+  - The round trips loaded the real configurator pages, so they also reached BMW's own back-ends: prod.ucp/cosy.bmw.cloud and a few telemetry hosts the page calls. The receipt lists every host.
+  - Enrichment facts are in an additive sidecar composition, `demo-enrichment.v1`. That's my recommendation, built; F54 caps technical supplements at 32 per manifest, and the sidecar leaves F54 unchanged.
+  - 99 rows are rejected with `technical-evidence-mismatch`, which is being diagnosed offline.
+  - **Question for Gary:** range/economy and CO2 stay unknown for every car, because no approved meaning mapping exists for those OTD codes. The raw codes are kept, so if the demo needs these figures, approve the mappings and they can be added offline with no new requests.
