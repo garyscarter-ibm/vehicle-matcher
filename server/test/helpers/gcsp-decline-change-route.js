@@ -34,7 +34,7 @@ export async function resetIntoScenario(client, scenarioId, commandId) {
     fixtureVersion: entry.fixtureVersion, policyVersion: entry.policyVersion }));
   return { entry, reset };
 }
-export const resetIntoDecline = (client, commandId) => resetIntoScenario(client, 'decline-then-change', commandId);
+export const resetIntoDecline = (client, commandId, scenarioId = 'decline-then-change') => resetIntoScenario(client, scenarioId, commandId);
 
 // Presenter tick through the presenter controls route (advance then tick, one command).
 export async function presenterTick(client, commandId, mode = { mode: 'step' }) {
@@ -42,9 +42,10 @@ export async function presenterTick(client, commandId, mode = { mode: 'step' }) 
   return good(await client.request('/api/gcsp/presenter/controls/tick', { commandId, expectedClockVersion: state.clockVersion, ...mode }));
 }
 
-/** Reset, then Paula declines, confirms one change, the presenter ticks and the second offer arrives. */
-export async function runDeclineChangeRoute(client, { label, tick = { mode: 'step' }, change }) {
-  const { entry, reset } = await resetIntoDecline(client, `${label}-reset`);
+/** Reset, then Paula declines, confirms the entry's one change and the presenter ticks (second offer or waiting). */
+export async function runDeclineChangeRoute(client, { label, tick = { mode: 'step' }, change, scenarioId }) {
+  const { entry, reset } = await resetIntoDecline(client, `${label}-reset`, scenarioId);
+  const reasonCode = entry.inputs.change.reasonCode ?? 'body-style';
   assert.equal(reset.startState.status, 'ok', JSON.stringify(reset.startState));
   const runId = reset.runId;
   good(await client.request('/api/gcsp/session/switch', { principalId: 'demo-paula', commandId: `${label}-paula` }));
@@ -54,10 +55,10 @@ export async function runDeclineChangeRoute(client, { label, tick = { mode: 'ste
   const query = `?runId=${encodeURIComponent(runId)}`; const path = `/api/gcsp/offers/${encodeURIComponent(firstOffer.offerId)}`;
   const before = good(await client.request(path + query));
   const reasons = good(await client.request(`${path}/decision-reasons${query}`));
-  assert.ok(reasons.reasons.some((reason) => reason.code === 'body-style'));
+  assert.ok(reasons.reasons.some((reason) => reason.code === reasonCode));
   const decision = good(await client.request(`${path}/decision`, { commandId: `${label}-decline`, runId, decision: 'decline',
     expectedOfferVersion: before.offerVersion, expectedHoldVersion: before.holdVersion,
-    expectedQuoteVersion: before.quote.revisions.quote, reasonCode: 'body-style' }));
+    expectedQuoteVersion: before.quote.revisions.quote, reasonCode }));
   const reloaded = good(await client.request(path + query));
   const selector = `?decisionId=${encodeURIComponent(reloaded.followup.decisionId)}`;
   const question = good(await client.request(`/api/gcsp/offer-followup${selector}`));
