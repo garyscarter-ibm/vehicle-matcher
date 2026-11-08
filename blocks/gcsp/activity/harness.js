@@ -1,6 +1,8 @@
 // Design harness only: selection changes a supplied synthetic snapshot, never a saved search.
 import { el, button } from '../../vehicle-matcher/ui.js';
 import { mountEmployee, EMPLOYEE_NAVIGATION } from '../employee/gcsp-employee.js';
+import { mountHelp } from '../cases/gcsp-help.js';
+import { fixtureAdapter } from '../cases/fixtures.js';
 import { activityBody } from './activity-body.js';
 import { activityFixtures } from './activity-fixtures.js';
 
@@ -34,7 +36,9 @@ if (root) mountEmployee(root, {
       buttons.forEach((control) => control.setAttribute('aria-pressed', String(control.dataset.fixture === selected)));
       status.textContent = retry ? 'Still unavailable.' : '';
     }
-    main.replaceChildren(body, controls, status); show(initial);
-    return () => { body.firstElementChild?.destroy?.(); body.remove(); controls.remove(); status.remove(); };
+    const help = el('section', 'gcsp-activity-help'); help.setAttribute('aria-label', 'Renewal help');
+    const stopHelp = mountHelp(help, { embedded: true, adapter: fixtureAdapter('request'), headingLevel: 2 });
+    main.replaceChildren(body, help, controls, status); show(initial);
+    return () => { stopHelp(); body.firstElementChild?.destroy?.(); body.remove(); help.remove(); controls.remove(); status.remove(); };
   },
 });

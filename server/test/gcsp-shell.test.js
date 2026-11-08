@@ -741,7 +741,7 @@ test('harness page loads the harness module and the body stylesheet; the element
 test('the activity live host navigates only to the fixed Brief page without URL-selected state', () => {
   const host = read('blocks/gcsp/activity/live.js');
   assert.deepEqual([...host.matchAll(/^import .*? from '([^']+)';$/gm)].map((match) => match[1]), [
-    '../shell/account-runtime.js', './activity-http.js', './gcsp-activity.js',
+    '../shell/account-runtime.js', './activity-http.js', '../cases/http-adapter.js', './gcsp-activity.js',
   ]);
   assert.match(host, /globalThis\.location\.assign\('\/gcsp-brief-live\.html'\)/);
   assert.equal((host.match(/\blocation\b/g) || []).length, 1);
