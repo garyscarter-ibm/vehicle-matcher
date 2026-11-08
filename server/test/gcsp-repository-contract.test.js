@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import pg from 'pg';
 import { createMemoryRepository, createMemoryStore } from '../gcsp/repository/memory.js';
 import { createPostgresRepository } from '../gcsp/repository/postgres.js';
-import { ok, result, inputDigest, TABLES, FOUNDATION_TABLES } from '../gcsp/repository/core.js';
+import { ok, result, inputDigest, TABLES, FOUNDATION_TABLES, createRepository } from '../gcsp/repository/core.js';
 import { migrate, migrationStatus, loadMigrations } from '../gcsp/migrations/index.js';
 const responseFixtures = JSON.parse(readFileSync(new URL('./fixtures/gcsp-repository-outcomes.json', import.meta.url), 'utf8'));
 
@@ -422,6 +422,24 @@ repositoryContract('memory', async () => {
   return { repository: createMemoryRepository({ store }), reopen: () => createMemoryRepository({ store }) };
 });
 
+test('FUCQ-210: a swallowed failure keeps the safe unavailable result and logs only the operation and error name', async (t) => {
+  const lines = []; t.mock.method(console, 'error', (...args) => lines.push(args.map(String).join(' ')));
+  const secret = 'row-employee-secret postgres://user:pw@host';
+  const repository = createMemoryRepository({ store: createMemoryStore() }); await repository.open();
+  const thrown = await repository.transaction(ctx(), command(), () => { throw new RangeError(`Invalid string length ${secret}`); });
+  assert.deepEqual(thrown, responseFixtures.unavailable);
+  const digest = createRepository({ now: () => '2026-11-08T00:00:00.000Z', async open() { return ok({}); },
+    async transaction() { throw new RangeError(`Invalid string length ${secret}`); }, async read() { throw new TypeError(secret); } });
+  await digest.open();
+  assert.deepEqual(await digest.transaction(ctx(), command(), async () => ok({})), responseFixtures.unavailable);
+  assert.deepEqual(await digest.query(ctx(), 'stock'), responseFixtures.unavailable);
+  assert.deepEqual(lines, ['gcsp-repository unavailable: operation=transaction.work error=RangeError',
+    'gcsp-repository unavailable: operation=transaction error=RangeError', 'gcsp-repository unavailable: operation=query error=TypeError']);
+  for (const name of ['X'.repeat(200), `Bad ${secret}`]) await createRepository({ now: () => '', async open() { throw Object.assign(new Error(secret), { name }); } }).open();
+  await createRepository({ now: () => '', async open() { throw secret; } }).open();
+  assert.deepEqual(lines.slice(3), Array(3).fill('gcsp-repository unavailable: operation=open error=unrecognised'));
+  await repository.close();
+});
 test('memory: explicit store and complete foundation vocabulary', async () => {
   assert.equal((await createMemoryRepository().open()).code, 'missing-store');
   assert.equal(FOUNDATION_TABLES.length, 21);
