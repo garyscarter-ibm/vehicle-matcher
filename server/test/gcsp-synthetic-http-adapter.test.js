@@ -42,6 +42,8 @@ async function setup(t, replacement) {
     const inserted = await tx.insert('stock', stock); return inserted.status === 'ok' ? ok(true) : inserted;
   })).status, 'ok');
   const lookup = replacement || createLocalVehicleEvidenceLookup({ repository, asOf: '2026-11-05T00:00:00.000Z' });
+  // The activated corpus (f76498aa, 41d4f872) loads in ~9 s, past the 3 s HTTP deadline; load it before serving.
+  if (!replacement) assert.equal((await lookup.classifyRequest({ kind: 'vin', id: vin.vin17 }, { context })).status, 'ok');
   let external = 0; const forbidden = async () => { external++; throw new Error('Unexpected outbound call'); };
   const server = buildServer({ fetchRetailerStock: forbidden, fetchNearbyStock: forbidden, enrichColours: forbidden,
     fetchDealerDirectory: forbidden, geocodePostcode: forbidden,
