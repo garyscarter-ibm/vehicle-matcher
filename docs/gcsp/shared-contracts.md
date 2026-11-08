@@ -857,6 +857,58 @@ All three are `assumed`, sourced here, dated 8 November 2026, and read through P
 Known input limitation: with the three structural fixture configurations, grade `G1-6` is eligible for none, so
 those generated employees cannot take a car in either route. Backend only; no screen.
 
+## Comparison buddy route · FUCQ-135
+
+The buddy route, replayed for the same seed's cohort, stock, release schedule, policy version and cached evaluation as
+today's route. It is a stated model, not a reproduction of BMW operations. Calculated fit is not observed satisfaction.
+
+**What it composes.** `openComparisonRun({ ..., route: 'buddy' })` adds the services `server/gcsp/runtime.js` composes,
+on the run's own repository, clock and policy: FUCQ-100 `createBuddyHoldService` (its `buddy-expiry` clock handler is
+started), FUCQ-96 `createAllocationService` with that hold port, the FUCQ-106 offer access and decision services, the
+brief service, and a `NotificationDispatcher` on the run's `CapturedTransport` (not started, so no clock handler or commit
+observer). `replayBuddyRoute(run)` in `routes/buddy.js` calls them and holds no copy of their rules. Route `current` is
+unchanged. Accept stays a local FUCQ-106 decision (the isolated composition without an ordering service); the ordering
+handoff is not replayed and the record says so in `limitations`.
+
+**Flow.** Participants (`buddyParticipation`) confirm their stated brief with search and hold consent through the brief
+service. Each release applies, then the route calls FUCQ-96 `allocate` at that instant with a `stock-released` event
+(the harness release writes no stock-release receipt for the clock stage to read, so it calls the method the stage calls).
+Allocation runs before any non-participant acts on that release. Offer emails go to the captured transport only.
+Non-participants run `createManualReplay` with `comparison.manualRoute.v1` for the same releases and compete for cars the
+buddy has not held. After a decline or an expiry nothing re-runs allocation: the live triggers are stock release and
+brief change, so the car rejoins the pool at the next release (and the manual listing meanwhile).
+
+**Responses.** An employee answers at offer creation plus their generated `responseSeconds`. A response at or after the
+hold deadline never happens: the offer expires through FUCQ-100's clock handler, counted as an offer expiry. They accept
+(FUCQ-106 `decide`) only when the car passes their **underlying** gates with fit at or above
+`comparison.acceptableFitThreshold`; otherwise they decline with the registered reason whose `attribute` appears in the facts
+of the underlying component with the largest `(slider maximum - score) x importance`, else the keyed fallback reason.
+FUCQ-96 excludes a declined car for that employee until a relevant confirmed brief change; an expiry excludes nothing and
+gives no priority. The pinned quote lapses after `employee.recommendation.v1.termValiditySeconds`; an employee who would
+accept but answers after that can only decline, so the offer lapses at its deadline (`termsLapsed`, also an expiry). A
+participant is paused through the brief service once FUCQ-66 reports ordering closed (`orderingClosedAt`), as in today's route.
+
+| Policy key | Unit / purpose |
+|---|---|
+| `comparison.buddyRoute.v1` | Versioned buddy behaviour: the rules above and `declineReasonFallback` (`size`). |
+
+It is `assumed`, sourced here, dated 8 November 2026, and read through PolicyService; any other rule value is refused.
+`offer.declineReasons.v1` is a reviewed definition, not a canonical seed row: the run's policy supplies it at the run's
+pinned version from the reviewed set and records it in `assumptions`; nothing is published.
+
+**Hold-duration override.** `hold.buddy.durationSeconds` resolves to the manifest overlay value inside the run's policy
+only. The record carries `holdDuration: { key, holdDurationSeconds, overlay, baselineValue }`; the canonical policy still
+reads 7200 afterwards.
+
+**Outcome record.** The FUCQ-134 shape with `route: 'buddy'`. Additions: top-level `holdDuration`; each `employees[]` row
+`participant`, `offers`, `declines`, `offerExpiries`, `termsLapsed`; each `cars[]` row `offers`, `declines`, `offerExpiries`,
+`buddyHeldNotTakenSeconds`, `buddyHeldNotTakenHours` (expired plus declined buddy holds); `totals` `participants`,
+`offersMade`, `offersAccepted`, `declines`, `declinesByReason` (every registered code), `offerExpiries`, `termsLapsed`,
+`notificationsCaptured`, `buddyHeldNotTakenHours` and `heldNotTakenHours` (every hold not taken: cart and buddy expiries
+plus buddy declines). Cart-route `claims`, `retries` and `expiries` count non-participants only; a car's
+`holdsNotTaken`/`heldNotTakenSeconds` include buddy expiries. The computed small record is `outcomeRecord` in
+`server/test/fixtures/gcsp-comparison-buddy-outcomes.json`, for the measures Story.
+
 ## Named scenario catalogue and preparation · FUCQ-125
 
 `createScenarioService({ repository, policy, clock, identity })` uses the opened application repository and the actual `PolicyService`, `DemoClock` and `DemoIdentityAdapter` instances. `readCatalogue(context)`, `readState(context)` and `reset(context, command)` are presenter-only. No schema, policy seed or runtime dependency is added. The catalogue is `gcsp-scenario-catalogue-v1`; its first six stable IDs are `main-successful-journey`, `no-suitable-match`, `decline-then-change`, `offer-expires`, `data-unavailable`, and `uncertain-handoff`. FUCQ-109 and FUCQ-127–131 own their business replays. A seventh `gcsp-clock-scenario-v1` entry is explicitly fictional clock/reset mechanics support, never evidence of those six journeys or the real corpus.

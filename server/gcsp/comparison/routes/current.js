@@ -6,7 +6,7 @@ const ROUTE_KEY = 'comparison.manualRoute.v1';
 const THRESHOLD_KEY = 'comparison.acceptableFitThreshold';
 const HOLD_KEY = 'hold.cart.durationSeconds';
 const REVIEW_KEY = 'hold.cart.orderReview.durationSeconds';
-const RANK = Object.freeze({ release: 0, expiry: 1, access: 2, claim: 3, decision: 4 });
+export const RANK = Object.freeze({ release: 0, expiry: 1, access: 2, claim: 3, decision: 4 });
 // The route rules this replay implements; any other policy value is refused, never approximated.
 const SUPPORTED = Object.freeze({ accessEvent: 'once-per-release-at-generated-accessSeconds-until-taken-or-renewal',
   accessTies: 'employeeId-ascending', candidateGate: 'stated-brief-eligible-and-fit-at-or-above-threshold',
@@ -16,14 +16,14 @@ const SUPPORTED = Object.freeze({ accessEvent: 'once-per-release-at-generated-ac
   expiryReentry: 'next-modelled-access-event', renewalDeadline: 'inclusive' });
 const EVENT_ORDER = Object.freeze(['release', 'expiry', 'access', 'claim', 'decision']);
 
-const refuse = (code, boundary) => { throw new ComparisonRunError(code, boundary); };
-const must = (outcome, boundary) => {
+export const refuse = (code, boundary) => { throw new ComparisonRunError(code, boundary); };
+export const must = (outcome, boundary) => {
   if (outcome?.status !== 'ok') refuse(outcome?.status ?? 'unavailable', boundary);
   return outcome.value;
 };
 const posInt = (value) => Number.isSafeInteger(value) && value > 0;
-const byId = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
-const iso = (ms) => new Date(ms).toISOString();
+export const byId = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
+export const iso = (ms) => new Date(ms).toISOString();
 
 /** Reads and validates every policy value the manual route and acceptance consume. */
 export async function readRouteAssumptions(run) {
@@ -44,10 +44,10 @@ export async function readRouteAssumptions(run) {
 }
 
 /**
- * Manual-employee event loop over one run. `actors` are the employee ids who act through the portal;
- * other routes may schedule their own events on the same loop with `schedule`.
+ * Manual-employee event loop: `actors` act through the portal. Other routes add events with `schedule` and run
+ * `afterRelease(release, at)` once a release has applied, before anyone acts on it.
  */
-export function createManualReplay(run, assumptions, actors) {
+export function createManualReplay(run, assumptions, actors, { afterRelease } = {}) {
   const { evaluation, inputs } = run;
   const route = run.metadata.route;
   const people = new Map(inputs.employees.filter((e) => actors.includes(e.employeeId)).map((employee) => [employee.employeeId, {
@@ -157,6 +157,7 @@ export function createManualReplay(run, assumptions, actors) {
       schedule(Date.parse(release.at), RANK.release, '', async (at) => {
         must(await run.release(release.releaseId), 'release');
         for (const orderUuid of release.orderUuids) cars.get(orderUuid).released = true;
+        await afterRelease?.(release, at);
         for (const person of [...people.values()].sort((a, b) => byId(a.employee.employeeId, b.employee.employeeId))) {
           const when = at + person.employee.accessSeconds * 1000;
           if (!person.taken && when <= Date.parse(person.employee.renewalAt)) {
@@ -184,7 +185,7 @@ export function createManualReplay(run, assumptions, actors) {
 }
 
 /** Builds the frozen outcome record and checks it against the run's persisted stock and holds. */
-export async function buildOutcomeRecord(run, assumptions, replay, route = run.metadata.route) {
+export async function buildOutcomeRecord(run, assumptions, replay, route = run.metadata.route, extend = (record) => record) {
   const { manifest } = run.inputs;
   const common = { seed: manifest.seed, policyVersion: manifest.policyVersion, route };
   const persisted = await run.snapshot();
@@ -206,7 +207,7 @@ export async function buildOutcomeRecord(run, assumptions, replay, route = run.m
   });
   const sum = (key) => employees.reduce((total, row) => total + row[key], 0);
   const count = (rows, outcome) => rows.filter((row) => row.outcome === outcome).length;
-  return freezeVehicleData({ schemaVersion: 1, route, seed: manifest.seed, policyVersion: manifest.policyVersion,
+  return freezeVehicleData(extend({ schemaVersion: 1, route, seed: manifest.seed, policyVersion: manifest.policyVersion,
     inputHash: run.metadata.inputHash, generatorVersion: manifest.generatorVersion, policyHash: manifest.policyHash,
     codeRevision: run.metadata.codeRevision, threshold: assumptions.threshold, thresholdKey: THRESHOLD_KEY,
     assumptions: assumptions.rows.map((row) => ({ key: row.key, value: structuredClone(row.value), unit: row.unit,
@@ -217,7 +218,7 @@ export async function buildOutcomeRecord(run, assumptions, replay, route = run.m
     employees, cars,
     totals: { employees: employees.length, taken: count(employees, 'taken'), noneByRenewal: count(employees, 'none-by-renewal'),
       claims: sum('claims'), retries: sum('retries'), expiries: sum('expiries'), carsAllocated: count(cars, 'allocated'),
-      carsHeldNotTaken: count(cars, 'held-not-taken'), carsUnused: count(cars, 'unused') } });
+      carsHeldNotTaken: count(cars, 'held-not-taken'), carsUnused: count(cars, 'unused') } }));
 }
 
 /** Replays today's first-come-first-served release for the whole cohort and returns the outcome record. */

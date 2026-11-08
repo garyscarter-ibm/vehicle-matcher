@@ -5,7 +5,16 @@ import { DemoClock } from '../clock/index.js';
 import { ManualContextService, createRepositoryManualPorts } from '../manual-context/index.js';
 import { createManualClaimsService } from '../manual-claims/index.js';
 import { createSyntheticManualStockAdapter } from '../adapters/manual-stock.js';
+import { createBriefService } from '../brief/index.js';
+import { createBuddyHoldService } from '../offers/buddy-hold.js';
+import { createAllocationService } from '../allocation/index.js';
+import { createOfferAccessService } from '../offers/access.js';
+import { createOfferDecisionService } from '../offers/decision.js';
+import { verifyOfferToken, resolveOfferLandingUrl } from '../offers/offer-token.js';
+import { createStoredSubjectRecommendationEvaluator } from '../recommendation/index.js';
+import { getReviewedDefinitionSet } from '../policy/reviewed-definitions.js';
 import { CapturedTransport } from '../notify/captured.js';
+import { NotificationDispatcher } from '../notify/index.js';
 import { createVehicleSnapshot, freezeVehicleData } from '../../vehicles/index.js';
 import { validInstant } from '../policy/file-provider.js';
 
@@ -47,7 +56,19 @@ function underlyingEssentials(employee) {
   return Object.fromEntries(Object.entries(employee.underlyingNeeds.essentials).map(([key, requirement]) => [key,
     { ...structuredClone(requirement), state: 'confirmed', source: 'synthetic-underlying-needs' }]));
 }
-function isolatedIdentityPolicy(policy, template, employees) {
+const HOLD_KEY = 'hold.buddy.durationSeconds';
+const DECLINE_REASONS_KEY = 'offer.declineReasons.v1';
+// Keys the buddy services read that a run resolves itself; nothing here is published or written to policy.
+function buddyOverrides(manifest, adapterRow) {
+  const hold = manifest.assumptions.find((row) => row.key === HOLD_KEY);
+  const reasons = getReviewedDefinitionSet('offer-decline-reasons-v1')?.definitions.find((row) => row.key === DECLINE_REASONS_KEY);
+  check(hold && reasons, 'buddy-overrides');
+  return { [HOLD_KEY]: (row) => (hold.overlay === true ? { ...row, value: structuredClone(hold.value), overlay: true,
+    baselineValue: structuredClone(hold.baselineValue) } : row),
+  [DECLINE_REASONS_KEY]: (row, read) => row ?? { ...structuredClone(reasons), policyVersion: read.policyVersion,
+    effectiveFrom: adapterRow.effectiveFrom } };
+}
+function isolatedIdentityPolicy(policy, template, employees, overrides = {}) {
   const presenter = template.value.filter((person) => person.roles?.includes('presenter'));
   check(presenter.length === 1, 'identity.demo.principals');
   const principals = [...structuredClone(presenter), ...employees.map((employee) => ({
@@ -60,8 +81,15 @@ function isolatedIdentityPolicy(policy, template, employees) {
     getEligibility: policy.getEligibility.bind(policy), getPointsCost: policy.getPointsCost.bind(policy),
     async getAssumption(key, read) {
       const result = await policy.getAssumption(key, read);
-      return key === 'identity.demo.principals' && result.status === 'ok'
-        ? { ...result, value: { ...result.value, value: structuredClone(principals) } } : result;
+      if (key === 'identity.demo.principals' && result.status === 'ok') {
+        return { ...result, value: { ...result.value, value: structuredClone(principals) } };
+      }
+      const override = overrides[key];
+      if (!override) return result;
+      if (result.status === 'ok') return { ...result, value: override(result.value, read) };
+      // Only an absent key is supplied from the reviewed set, at the run's own pinned version.
+      return result.code === 'unknown-assumption' && read?.policyVersion === result.policyVersion
+        ? { ...result, status: 'ok', value: override(null, read) } : result;
     } };
 }
 // Employee facts shared by the manual records and the per-seed evaluation.
@@ -145,7 +173,7 @@ export async function openComparisonRun(options = {}) {
     check(allowance.policyVersion === manifest.policyVersion && allowance.monthlyPoints === employee.pointsAllowance
       && allowance.unit === employee.pointsUnit, 'coherent-allowance-variant');
   }
-  const runPolicy = isolatedIdentityPolicy(policy, principals, employees);
+  const runPolicy = isolatedIdentityPolicy(policy, principals, employees, route === 'buddy' ? buddyOverrides(manifest, adapterRow) : {});
   const repository = createMemoryRepository({ store: createMemoryStore(), now: () => manifest.startsAt, snapshot: 'shallow' });
   value(await repository.open(), 'repository.open');
   let closed = false;
@@ -182,8 +210,8 @@ export async function openComparisonRun(options = {}) {
     }
     const manual = new ManualContextService({ repository, policy: runPolicy, clock, identity,
       ports: createRepositoryManualPorts({ repository, policy: runPolicy }) });
-    const claims = createManualClaimsService({ repository, policy: runPolicy, clock, identity, manual,
-      adapter: createSyntheticManualStockAdapter() });
+    const stockAdapter = createSyntheticManualStockAdapter();
+    const claims = createManualClaimsService({ repository, policy: runPolicy, clock, identity, manual, adapter: stockAdapter });
     value(await claims.registerClockHandler(), 'manual-expiry-handler');
     for (const employee of employees) {
       const context = contexts.get(employee.employeeId);
@@ -204,8 +232,24 @@ export async function openComparisonRun(options = {}) {
       value(await claims.saveDraft(context, { commandId: 'comparison-initial-draft', expectedDraftVersion: 0,
         expectedContextVersion: account.contextVersion, choices }), 'manual-draft');
     }
-    return Object.freeze({ repository, clock, identity, claims, presenter, evaluation,
-      transport: new CapturedTransport({ repository }), policy: runPolicy, inputs,
+    // The same service composition as server/gcsp/runtime.js; allocation is called per release, not on a clock stage.
+    const transport = new CapturedTransport({ repository });
+    let buddy;
+    if (route === 'buddy') {
+      const brief = createBriefService({ repository, policy: runPolicy, clock, identity });
+      const hold = createBuddyHoldService({ repository, policy: runPolicy, clock, identity, adapter: stockAdapter, offerLandingUrl: resolveOfferLandingUrl() });
+      value(await hold.start(), 'buddy-expiry-handler');
+      const access = createOfferAccessService({ repository, policy: runPolicy, clock, identity, environmentId,
+        sessionNow: () => manifest.startsAt, verifyOfferToken });
+      // Not started: no clock handler or commit observer; the route drains the outbox once per release.
+      const dispatcher = new NotificationDispatcher({ repository, policy: runPolicy, clock, environmentId, transport });
+      buddy = Object.freeze({ brief, hold, access, dispatcher,
+        allocation: createAllocationService({ repository, policy: runPolicy, clock, identity, claim: hold }),
+        decisions: createOfferDecisionService({ repository, policy: runPolicy, clock, access,
+          createStoredSubjectEvaluator: createStoredSubjectRecommendationEvaluator, mode: stockAdapter.mode }) });
+    }
+    return Object.freeze({ repository, clock, identity, claims, buddy, presenter, evaluation,
+      transport, policy: runPolicy, inputs,
       metadata: freezeVehicleData({ seed: manifest.seed, policyVersion: manifest.policyVersion, route,
         runId: scope.runId, environmentId, identityDigest, inputHash: manifest.inputHash, codeRevision,
         adapter: adapterRow, limitations: adapter.limitations }),
