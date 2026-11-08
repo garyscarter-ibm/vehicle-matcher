@@ -167,7 +167,7 @@ function orderStatus(order, host) {
     message: order.currentStage ? `Current step: ${sentence(order.currentStage)}.` : null, actions: [link] });
   node.classList.add('gcsp-account-order-status');
   const { orderReference, orderNumber } = order.source ?? {};
-  if (orderNumber || orderReferenceOf(orderReference)) link.before(facts(orderIdentityRows(orderReference, orderNumber)));
+  if (orderNumber || orderReferenceOf(orderReference)) node.querySelector('.vm-title').after(facts(orderIdentityRows(orderReference, orderNumber)));
   return node;
 }
 
