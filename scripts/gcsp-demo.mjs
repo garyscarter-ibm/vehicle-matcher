@@ -12,7 +12,7 @@ const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css', '.json': 'application/json',
   '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff': 'font/woff', '.woff2': 'font/woff2' };
 const sessionPage = (path) => ['/gcsp-brief-live.html', '/gcsp-activity-live.html', '/gcsp-order-progress-live.html', '/gcsp-account.html',
-  '/gcsp-help.html', '/gcsp-greg.html', '/gcsp-case-queue.html', '/gcsp-presenter.html'].includes(path);
+  '/gcsp-help.html', '/gcsp-greg.html', '/gcsp-case-queue.html', '/gcsp-presenter.html', '/gcsp-outbox-live.html'].includes(path);
 const navigationCookie = 'GCSP_LOCAL_BOOTSTRAP';
 const publicPath = (path) => sessionPage(path) || ['/gcsp/offer', '/gcsp-offer.html', '/gcsp-employee.css', '/favicon.ico'].includes(path)
   || path.startsWith('/blocks/') || path.startsWith('/assets/');
@@ -41,6 +41,7 @@ export async function startGcspDemo({ runtime = {}, port = 0, root = ROOT, acces
         api.emit('request', req, res); return;
       }
       if (req.method !== 'GET' || !publicPath(path)) { res.writeHead(404).end('Not found'); return; }
+      if (path === '/favicon.ico') { res.writeHead(204).end(); return; }
       const assetPath = path === '/gcsp/offer' ? '/gcsp-offer.html' : path;
       const file = resolve(root, `.${assetPath}`);
       const canonicalPath = `/${relative(resolve(root), file).split(sep).join('/')}`;

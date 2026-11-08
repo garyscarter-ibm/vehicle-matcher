@@ -38,7 +38,7 @@ export async function createLocalHttpsFixture(t) {
           { status: res.statusCode, headers }));
       });
     });
-    req.setTimeout(5000, () => req.destroy(new Error('Local HTTPS request timed out.')));
+    req.setTimeout(init.timeoutMs ?? 5000, () => req.destroy(new Error('Local HTTPS request timed out.')));
     req.on('error', reject); req.end(init.body);
   });
   return { configuration: { keyFile, certFile }, ca, fetch };

@@ -96,8 +96,15 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const contextForRun = (runId) => ({ runId, environmentId, principalId: 'gcsp-stock-source', roles: ['presenter'] });
     const pullProvider = typeof stockProvider === 'function' ? stockProvider({ policy, repository, contextForRun, environmentId }) : stockProvider;
     // Prepared scenario fixtures are branded by the exact policy instance used by the clock.
-    const scenarios = createScenarioService({ repository, policy: readPolicy, clock, identity,
-      afterReset: typeof pullProvider?.prepareRun === 'function' ? (runId) => pullProvider.prepareRun(runId) : undefined });
+    // Policy stores are per run, so a reset re-adopts the offer journey sets before the new run's stock source is chosen.
+    const afterReset = adoptOfferJourney || typeof pullProvider?.prepareRun === 'function' ? async (runId) => {
+      if (adoptOfferJourney) {
+        const adopted = await adoptOfferJourneyPolicy({ policy, identity, clock });
+        if (adopted.status !== 'ok') console.warn(`GCSP policy: adopting the offer journey after a reset failed (${adopted.code ?? adopted.status}).`);
+      }
+      if (typeof pullProvider?.prepareRun === 'function') await pullProvider.prepareRun(runId);
+    } : undefined;
+    const scenarios = createScenarioService({ repository, policy: readPolicy, clock, identity, afterReset });
     const stockRelease = pullProvider === undefined ? undefined
       : createStockReleaseService({ repository, policy, clock, identity, provider: pullProvider });
     // Greg's order requests need both the production port and the F92 queue; neither is invented here.

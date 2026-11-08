@@ -178,10 +178,14 @@ export class DemoClock {
     const previous = found.value.versions?.syntheticIdentityInventory;
     if (!previous?.snapshot || previous.snapshot.contentDigest !== previous.contentDigest || previous.snapshot.revision !== previous.revision) return unavailable();
     const runId = `demo-${inputDigest([this.#environmentId, context.runId, input.commandId]).slice(0, 32)}`;
-    const seed = await buildScenarioSeed({ policy: this.#policy, read: this.#read(found.value), configuration, runId, inventory: previous.snapshot });
+    // The new run pins the version its own policy store resolves; a per-run store may not hold the old run's adopted one.
+    const active = await this.#policy.getActiveVersion({ runId, asOf: scenario.startsAt });
+    if (active.status !== 'ok') return active;
+    const nextRead = { runId, asOf: scenario.startsAt, policyVersion: active.policyVersion };
+    const seed = await buildScenarioSeed({ policy: this.#policy, read: nextRead, configuration, runId, inventory: previous.snapshot });
     if (seed.status !== 'ok') return seed;
     return publicReset(await this.#repository.resetRun(context, cmd, { expectedCurrentRunId: input.expectedRunId, expectedRunVersion: input.expectedRunVersion,
-      nextRun: this.#runRow(runId, found.value.policyVersion, configuration, { ...seed.value.versions,
+      nextRun: this.#runRow(runId, active.policyVersion, configuration, { ...seed.value.versions,
         ...(selection ? { scenarioSelection: selection } : {}) }), rows: seed.value.rows }));
   }
 
