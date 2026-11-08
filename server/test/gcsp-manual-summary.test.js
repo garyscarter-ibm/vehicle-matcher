@@ -98,7 +98,7 @@ test('replacement readback shows every section with human labels and no raw ids'
     /20 November 2026/, /12 November 2026/, /1,100 points a month/, /1,300 points a month/, /Cash contribution/, /6 months/, /requested, not a confirmed appointment/]) {
     assert.match(text, expected);
   }
-  assert.doesNotMatch(text, RAW); assert.doesNotMatch(text, /—/);
+  assert.doesNotMatch(text, RAW); assert.doesNotMatch(text, /—/); assert.equal(text.includes(terms.termsVersion), false);
   assert.match(text, /Order review: \d+:\d\d remaining/);
   assert.equal(f.root.querySelector('.gcsp-review-countdown').closest('[aria-live]'), null);
 });

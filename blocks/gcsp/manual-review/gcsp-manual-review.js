@@ -8,6 +8,8 @@ import { createManualReviewHttpAdapter } from './http-adapter.js';
 
 let serial = 0;
 const label = (key) => key.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (c) => c.toUpperCase());
+// Data codes that are not words: the label already names them (FUCQ-197).
+const HIDDEN_UNITS = new Set(['insurance-group']);
 function shown(value) {
   if (value == null || value === '' || value?.status === 'unknown') return null;
   if (typeof value === 'boolean') return value ? 'Yes' : 'No';
@@ -15,7 +17,7 @@ function shown(value) {
   if (typeof value === 'object') {
     if ('value' in value) {
       const amount = shown(value.value);
-      return amount == null ? null : [amount, value.unit, value.basis].filter(Boolean).join(' ');
+      return amount == null ? null : [amount, HIDDEN_UNITS.has(value.unit) ? null : value.unit, value.basis].filter(Boolean).join(' ');
     }
     return Object.entries(value).filter(([key]) => !['provenance', 'source'].includes(key))
       .map(([key, item]) => `${label(key)}: ${shown(item) ?? 'Not supplied'}`).join('; ') || null;
@@ -121,17 +123,14 @@ export function mountManualReviewBody(root, { adapter = createManualReviewHttpAd
       lastVehicle = signature;
       const technical = el('details', 'gcsp-details'); technical.append(el('summary', '', 'Pinned vehicle details'),
         rows(Object.entries(model.quote.facts?.facts ?? {}).map(([key, value]) => [label(key), value])),
-        rows([['Quote reference', model.quote.quoteId], ['Quote valid until', model.quote.validUntil],
-          ['Scheme contribution', model.quote.terms?.contribution], ['Terms source', model.quote.terms?.provenance?.sourceRef]]));
+        rows([['Quote valid until', model.quote.validUntil], ['Scheme contribution', model.quote.terms?.contribution]]));
       nodes.vehicle.replaceChildren(el('p', 'gcsp-field-hint', 'Vehicle details, eligibility and points are pinned to your claim.'),
         matchCard(null, { view: reviewVehicleView(model), showScore: false }), technical);
     }
     nodes.context.replaceChildren(el('h2', 'gcsp-h2', 'Collection and current contract'), rows([
-      ['Journey', model.mode === 'replacement' ? 'Replacement' : 'New order'], ['Vehicle slot', model.binding.entitlementSlotId],
-      ['Requested collection date', model.requestedCollection?.date], ['Collection location', model.requestedCollection?.locationId],
+      ['Journey', model.mode === 'replacement' ? 'Replacement' : 'New order'], ['Requested collection date', model.requestedCollection?.date],
       ['Contract term', model.contract?.months, 'months'], ['Annual mileage', model.contract?.annualMileage, model.contract?.mileageUnit],
-      ...(model.mode === 'replacement' ? [['Returning car', model.currentContract?.model], ['Current contract', model.oldContractId],
-        ['Registration', model.currentContract?.registration]] : [])]),
+      ...(model.mode === 'replacement' ? [['Returning car', model.currentContract?.model], ['Registration', model.currentContract?.registration]] : [])]),
     el('p', 'gcsp-field-hint', 'Collection is requested, not a confirmed appointment.'));
     const errors = new Map((state.errors ?? []).map((entry) => [entry.field, entry.reason]));
     for (const [key, control] of Object.entries(controls)) {

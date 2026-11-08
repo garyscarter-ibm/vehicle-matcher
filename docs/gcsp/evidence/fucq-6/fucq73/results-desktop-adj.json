@@ -1,0 +1,146 @@
+{
+  "story": "fucq73",
+  "chunk": "desktop",
+  "entry": "hosted-offline",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "state": "passed",
+  "startedAt": "2026-11-08T21:39:49.197Z",
+  "steps": [
+    {
+      "id": "adj-hosted-entry",
+      "name": "Same origin as the GCSP host: which retail and gallery pages it serves",
+      "pass": true,
+      "screenshots": [],
+      "detail": [
+        {
+          "path": "/",
+          "status": 401
+        },
+        {
+          "path": "/block.html?brand=bmw",
+          "status": 401
+        },
+        {
+          "path": "/components.html",
+          "status": 401
+        }
+      ],
+      "overflowPx": 0,
+      "state": "[{\"path\":\"/\",\"status\":401},{\"path\":\"/block.html?brand=bmw\",\"status\":401},{\"path\":\"/components.html\",\"status\":401}] (401 or 404: not served by the hosted GCSP entry)"
+    },
+    {
+      "id": "adj-home",
+      "name": "Static / (retail demo picker, block harness, GCSP component gallery)",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-01-adj-static-home.png"
+      ],
+      "detail": {
+        "path": "/",
+        "status": 200,
+        "title": "Find Your Car — in place",
+        "h1": "Where would you like to go?",
+        "consoleErrors": [],
+        "blockedExternal": 0
+      },
+      "overflowPx": 0,
+      "state": "{\"path\":\"/\",\"status\":200,\"title\":\"Find Your Car — in place\",\"h1\":\"Where would you like to go?\",\"consoleErrors\":[],\"blockedExternal\":0}"
+    },
+    {
+      "id": "adj-block-html-brand-bmw",
+      "name": "Static /block.html?brand=bmw (retail demo picker, block harness, GCSP component gallery)",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-02-adj-static-block-html-brand-bmw.png"
+      ],
+      "detail": {
+        "path": "/block.html?brand=bmw",
+        "status": 200,
+        "title": "Find Your Car",
+        "h1": "",
+        "consoleErrors": [
+          "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector @ http://localhost:8787/api/questions"
+        ],
+        "blockedExternal": 1
+      },
+      "overflowPx": 0,
+      "state": "{\"path\":\"/block.html?brand=bmw\",\"status\":200,\"title\":\"Find Your Car\",\"h1\":\"\",\"consoleErrors\":[\"Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector @ http://localhost:8787/api/questions\"],\"blockedExternal\":1}"
+    },
+    {
+      "id": "adj-components-html",
+      "name": "Static /components.html (retail demo picker, block harness, GCSP component gallery)",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-03-adj-static-components-html.png"
+      ],
+      "detail": {
+        "path": "/components.html",
+        "status": 200,
+        "title": "Vehicle Matcher Components",
+        "h1": "FEEDBACK ACTIONS",
+        "consoleErrors": [],
+        "blockedExternal": 0
+      },
+      "overflowPx": 0,
+      "state": "{\"path\":\"/components.html\",\"status\":200,\"title\":\"Vehicle Matcher Components\",\"h1\":\"FEEDBACK ACTIONS\",\"consoleErrors\":[],\"blockedExternal\":0}"
+    }
+  ],
+  "keyboard": [],
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: net::ERR_BLOCKED_BY_CLIENT.Inspector",
+      "url": "http://localhost:8787/api/questions",
+      "page": "http://127.0.0.1:8937/block.html"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "url": "http://localhost:8787/api/questions",
+      "error": "net::ERR_BLOCKED_BY_CLIENT.Inspector",
+      "method": "GET"
+    }
+  ],
+  "badResponses": [],
+  "notes": [],
+  "screens": [
+    {
+      "screen": "1280-01-adj-static-home.png",
+      "h1": "Where would you like to go?",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-02-adj-static-block-html-brand-bmw.png",
+      "h1": "",
+      "rawIds": []
+    },
+    {
+      "screen": "1280-03-adj-static-components-html.png",
+      "h1": "FEEDBACK ACTIONS",
+      "rawIds": [],
+      "kebabCaseText": [
+        "gallery-policy-v1",
+        "gcsp-policy-v1",
+        "return-buddy-home",
+        "return-buddy-no-address"
+      ]
+    }
+  ],
+  "rawIdFailures": [],
+  "defects": [],
+  "motion": [],
+  "focus": [],
+  "contrast": [],
+  "origin": "http://127.0.0.1:8936",
+  "orderPosts": [],
+  "finishedAt": "2026-11-08T21:41:17.092Z",
+  "counts": {
+    "steps": 4,
+    "passed": 4,
+    "screenshots": 3,
+    "keyboardChecks": 0
+  }
+}

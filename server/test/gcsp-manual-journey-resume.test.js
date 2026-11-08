@@ -25,7 +25,9 @@ async function expectReview(f) {
     node.textContent === 'Continue to order review' && !node.disabled));
   assert.equal(f.root.querySelector('main h1')?.textContent, 'Review your car');
   const vehicle = f.root.querySelector('.gcsp-review-vehicle'); assert.ok(vehicle);
-  for (const value of [f.car.facts.display.name, f.car.orderNumber, f.claim.quote.quoteId, f.claim.quote.validUntil]) {
+  // The quote id is a raw reference, so it stays off screen (FUCQ-197).
+  assert.ok(f.claim.quote.quoteId); assert.equal(vehicle.textContent.includes(f.claim.quote.quoteId), false);
+  for (const value of [f.car.facts.display.name, f.car.orderNumber, f.claim.quote.validUntil]) {
     assert.ok(value); assert.ok(vehicle.textContent.includes(value), 'Expected pinned claim detail.');
   }
   const contact = f.root.querySelector('[name="contact.phone"]'); assert.ok(contact);

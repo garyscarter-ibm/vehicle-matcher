@@ -50,7 +50,7 @@ export function mountManualJourney(root, options = {}) {
         async loadAccount({ signal }) {
           const result = await (shared.adapter ?? claimAdapter).readAccount({ signal });
           return result?.status === 'ok' ? { status: 'ready', name: result.value.account?.name,
-            context: [result.value.account?.companyId, result.value.account?.gradeId].filter(Boolean).join(', ') }
+            context: [result.value.account?.company, result.value.account?.gradeId && `Grade ${result.value.account.gradeId}`].filter(Boolean).join(', ') }
             : { status: 'unavailable' };
         },
         renderBody(main) {
