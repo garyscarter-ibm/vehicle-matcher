@@ -764,7 +764,7 @@ test('the order progress pages load the custom element through external modules 
   assert.deepEqual([...host.matchAll(/'(\/gcsp-[a-z-]+\.html)'/g)].map((m) => m[1]), ['/gcsp-brief-live.html', '/gcsp-activity-live.html']);
   assert.doesNotMatch(host, /URLSearchParams|location\.(?:search|hash)|\bhistory\./);
   assert.equal(read('blocks/gcsp/order-progress/register.js').includes('defineGcspOrderProgress()'), true);
-  assert.match(read('scripts/gcsp-demo.mjs'), /'\/gcsp-order-progress-live\.html'/);
+  assert.match(read('server/gcsp/host.js'), /'\/gcsp-order-progress-live\.html'/);
 });
 
 test('the single gallery shows the GCSP section with primitives and shell states', async () => {
