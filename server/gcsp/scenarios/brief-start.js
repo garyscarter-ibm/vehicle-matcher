@@ -1,6 +1,6 @@
 import { inputDigest } from '../repository/core.js';
 
-// Shared start step for journeys: Paula's confirmed brief, through actual services only.
+// Shared start step for journeys: a principal's confirmed brief, through actual services only.
 // Never writes briefs, offers or holds itself; failures are a truthful startState, not a success.
 export const fail = (step, reason) => ({ status: 'unavailable', step, reason });
 export const failed = (step, outcome) => fail(step, outcome?.reason ?? outcome?.status ?? 'unavailable');
@@ -26,15 +26,16 @@ async function briefContent(policy, read, input, source) {
 
 
 // Returns { ok: true, controller, context, key, time } after the brief is confirmed, else a failed startState.
-export async function confirmPaulaBrief({ identity, clock, brief, policy, prepareEmployee, scenario, runId }) {
+export async function confirmScenarioBrief({ identity, clock, brief, policy, prepareEmployee, scenario, runId }, principalId) {
   const key = inputDigest(runId).slice(0, 32);
-  const presenter = await identity.createPresenterSession(`scenario-start:${key}`);
+  const tag = principalId === 'demo-paula' ? key : `${key}:${principalId}`; // Paula's ids are unchanged
+  const presenter = await identity.createPresenterSession(`scenario-start:${tag}`);
   if (presenter.status !== 'ok') return failed('presenter-session', presenter);
   const controller = presenter.value.context;
   if (controller.runId !== runId) return fail('presenter-session', 'The new run is not current.');
-  const input = scenario.inputs.briefs.find((entry) => entry.principalId === 'demo-paula');
-  const person = scenario.principals.find((entry) => entry.principalId === 'demo-paula');
-  if (!input || !person) return fail('brief', 'The scenario has no brief for Paula.');
+  const input = scenario.inputs.briefs.find((entry) => entry.principalId === principalId);
+  const person = scenario.principals.find((entry) => entry.principalId === principalId);
+  if (!input || !person) return fail('brief', `The scenario has no brief for ${principalId}.`);
   const employee = await identity.resolveEmployeeContext(controller, person.employeeId);
   if (employee.status !== 'ok') return failed('employee-context', employee);
   const context = employee.value;
@@ -45,11 +46,13 @@ export async function confirmPaulaBrief({ identity, clock, brief, policy, prepar
   if (time.status !== 'ok') return failed('clock', time);
   const content = await briefContent(policy, { runId, asOf: time.value.now, policyVersion: context.policyVersion }, input, `scenario:${scenario.scenarioId}`);
   if (!content) return fail('brief', 'The brief policy is unavailable.');
-  const draft = await brief.saveDraft(context, { commandId: `scenario-start:${key}:draft`,
+  const draft = await brief.saveDraft(context, { commandId: `scenario-start:${tag}:draft`,
     expectedBriefVersion: 0, expectedDraftVersion: 0, brief: content });
   if (draft.status !== 'ok') return failed('brief-draft', draft);
-  const confirmed = await brief.confirm(context, { commandId: `scenario-start:${key}:confirm`,
+  const confirmed = await brief.confirm(context, { commandId: `scenario-start:${tag}:confirm`,
     expectedBriefVersion: 0, expectedDraftVersion: 1, consent: input.consent });
   if (confirmed.status !== 'ok') return failed('brief-confirm', confirmed);
   return { ok: true, controller, context, key, time: time.value, briefVersion: 1 };
 }
+
+export const confirmPaulaBrief = (services) => confirmScenarioBrief(services, 'demo-paula');
