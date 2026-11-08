@@ -14,6 +14,7 @@ from test_resources import HostBudget, Policy, Scratch, allocated_bytes, atomic_
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--name', required=True)
+parser.add_argument('--rss-mib', type=int, choices=(384, 512, 768), default=768)
 parser.add_argument('command', nargs=argparse.REMAINDER)
 args = parser.parse_args()
 command = args.command[1:] if args.command[:1] == ['--'] else args.command
@@ -23,7 +24,8 @@ shared = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/f
 run_id = args.name + '-' + uuid.uuid4().hex[:10]
 run = shared / run_id
 run.mkdir(parents=True)
-policy = Policy({'chunk_scratch_mib': 128, 'chunk_ram_mib': 768, 'chunk_seconds': 120, 'log_mib': 2})
+rss_bytes = args.rss_mib * 1024 * 1024
+policy = Policy({'chunk_scratch_mib': 128, 'chunk_ram_mib': args.rss_mib, 'chunk_seconds': 120, 'log_mib': 2})
 host = HostBudget(policy)
 scratch = Scratch(shared, ROOT, policy, expected=128 * 1024 * 1024)
 scratch.root = Path('/tmp/fucq122-options-' + run_id)
@@ -33,16 +35,17 @@ env = {key: value for key, value in os.environ.items()
 dependency = Path('/Users/garycarter/Code/GitHub/vehicle-matcher/node_modules').resolve()
 dependency_stat = dependency.stat()
 lock = ROOT / 'package-lock.json'
-receipt = {'runId': run_id, 'command': command, 'cwd': str(ROOT), 'limits': {'seconds': 120, 'rssMiB': 768, 'scratchMiB': 128, 'logMiB': 2, 'workers': 1},
+receipt = {'runId': run_id, 'command': command, 'cwd': str(ROOT), 'limits': {'seconds': 120, 'rssMiB': args.rss_mib, 'scratchMiB': 128, 'logMiB': 2, 'workers': 1},
            'dependencyAdoption': {'path': str(dependency), 'allocatedBytes': allocated_bytes(dependency), 'device': dependency_stat.st_dev, 'inode': dependency_stat.st_ino, 'packageLockSha256': hashlib.sha256(lock.read_bytes()).hexdigest()},
-           'databaseEnvironmentRemoved': True, 'scope': 'Explicit named checks only; no full suite or live integration.'}
+           'serverDependencyAdoption': {'path': str((ROOT / 'server/node_modules').resolve()), 'allocatedBytes': allocated_bytes((ROOT / 'server/node_modules').resolve()), 'device': (ROOT / 'server/node_modules').stat().st_dev, 'inode': (ROOT / 'server/node_modules').stat().st_ino},
+           'databaseEnvironmentRemoved': True, 'scope': 'Explicit named checks; synthetic loopback HTTP permitted, no external live integration or full suite.'}
 try:
     with handled_termination():
-        host.acquire(scratch.token, 128 * 1024 * 1024, 768 * 1024 * 1024, '/tmp', root=scratch.root)
+        host.acquire(scratch.token, 128 * 1024 * 1024, rss_bytes, '/tmp', root=scratch.root)
         try:
             with scratch:
                 receipt['result'] = run_process(command, ROOT, env, run / 'check.log', scratch, policy,
-                                                128 * 1024 * 1024, 768 * 1024 * 1024, 120, host=host)
+                                                128 * 1024 * 1024, rss_bytes, 120, host=host)
         finally:
             host.release(scratch.token)
 finally:

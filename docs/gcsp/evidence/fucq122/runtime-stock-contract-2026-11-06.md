@@ -1,0 +1,32 @@
+# FUCQ-122 released-stock integration handoff, 6 November 2026
+
+Prepared after the single narrow browser grant completed and its evidence was published as `aedc5e63cd6cc7c5bb6c9ec424d5018d2f87b639`. This is a static source assessment requested by the dispatcher for FUCQ-100. No application import/source, test, runtime composition, shared contract, Jira record or claim was changed. The current defects skill was re-read. FUCQ-122 remains the case-module writer; FUCQ-100 retains the central runtime writer role.
+
+The related-story basis is the existing FUCQ-122 alternative-car remedy and its authored feasible-options acceptance, at the published source below. This is an integration diagnosis within that story, not a newly created Bug or authorisation to change the backlog.
+
+| Role | Exact source |
+| --- | --- |
+| Case implementation and isolated proof | `aedc5e63cd6cc7c5bb6c9ec424d5018d2f87b639` |
+| Canonical runtime/manual/buddy consumer assessment | `95d77416361f54eb558bbcb40b382cbb45149c27` |
+| Case service SHA-256 | `2c62c96bd07cc1dbf57b76dfb0fddc4dc9e77fe22ca689f89d471bd14842ffd3` |
+| Case HTTP SHA-256 | `d1b48cf2b47e2d19f80c61c90fdd234098d1ae480a591878ebb38f9fb51f0d65` |
+| Canonical runtime SHA-256 | `6ac589363f8a6c5abc67e7d63d861389265a942b8da8cfa721bb6942a1461fa7` |
+| Canonical manual ports SHA-256 | `c1e7db5012f6d3212b79ad989e6cde5a0e390e2f4bfe50f91ee4c79c8a7a1267` |
+
+**Diagnosis.** Static reproduction: take a canonical released-stock row admitted by `manual-context/ports.js:49–64` and present its exact order UUID to case `readOptions()` or an alternative-car update. Case `index.js:242` rejects every state except `available`, before suitability evaluation. On projection, `readOptions():128–130` skips that `invalid` result, so released stock cannot become an alternative; a submitted alternative is refused. Independently, `index.js:245–247` expects `facts.recommendationCandidate`, whereas the canonical port projects `snapshot: row.facts` and `availability: row.release.availability`. These control-flow consequences are source-derived; no new runtime reproduction was launched.
+
+The isolated option tests insert `state: 'available'` with `facts: { recommendationCandidate: candidate }` (`gcsp-case-options.test.js:51–55`; the renewal-case tests use the same shape). They prove the case service against that supplied fixture contract. Desktop/narrow journey proof establishes actual help, manual/preference changes and case state reload in isolated memory-service composition. Neither proves alternative-car capability against a canonical producer.
+
+The canonical row lifecycle and the evaluator's availability status are distinct fields. `manual-context/ports.js:49–64`, `greg/publish/fit.js:24–37` and `offers/buddy-hold.js:220–243` agree on released rows and exact normalized snapshots. The port admits visible released/held/allocated records, projecting unavailable states for the latter; buddy mutation requires `released`, `available === true`, `held !== true` and `allocated !== true`. Recommendation input contains exact `orderUuid`, `configurationId`, `snapshot` and versioned `availability`, with the current policy/clock gates deciding suitability (`recommendation/index.js:23–54`). Company/scheme/employee visibility is employee-scoped in the canonical port. The case path currently has no equivalent visibility projection, so merely accepting `released` or unpacking `facts` is insufficient.
+
+Recommended case-side contract for review, not an implemented or newly agreed shared interface:
+
+1. Preserve the repository row lifecycle and normalized immutable snapshot. Project an exact evaluator candidate from `orderUuid`, `configurationId`, `snapshot: facts` and `release.availability`; never persist an `available` state alias or a nested duplicate candidate.
+2. Reuse the canonical released-stock projection and employee visibility semantics. For command validation, bind its repository reads to the existing transaction/reader (`get`/`list`) rather than calling the global repository outside that transaction. Read-only options and update/revalidation must use the same mapping and current case employee, run, environment, policy and clock. A transaction-bound repository facade for the existing read port is one possible implementation; it needs review before code changes.
+3. Require explicit released/available/not-held/not-allocated state, current occupancy checks, exact snapshot identity/provenance and versioned availability. Keep recommendation eligibility, essential, points and timing gates authoritative. Unknown or failed source data must not be fabricated into suitability or a successful empty-source claim.
+4. Continue recording only an alternative proposal referencing its exact order UUID. A case remedy does not claim/hold/allocate a car and must not manufacture or repurpose manual `claimInput`, duplicate policy defaults, or bypass the actual claim/offer services.
+5. A later authorised validation should use output from the actual canonical release path through case options and confirmed update, then cover unavailable/held/allocated, visibility, missing facts/timing and a concurrent state change. Canonical-shaped fixtures can cover local invariants but cannot establish the unavailable actual producer/integration evidence.
+
+There is no new constructor dependency needed for basic case composition: `RenewalCaseService({ repository, policy, clock, identity })` already accepts the shared runtime objects. At the canonical pin, `runtime.js:75–79` omits `gcspCases`; `server/index.js:876` already binds optional routes and `:905–907` starts the service before clock sealing. FUCQ-100 can assess that bounded composition independently, without calling the alternative-car boundary accepted. It does not require altering the shared stock state/shape to fit cases.
+
+Remaining unknowns are the reviewed case adaptation choice and the exact current canonical producer/output after the supplied runtime pin, plus integrated employee facts, visibility, release timing and ownership-race evidence. No actual alternative-car release/claim proof is claimed here. Actual FUCQ-106 decision and lifecycle-exception producer proof, delivered host placement, remaining browser matrix and full/native gates remain separate. Source pins must be reassessed against a later integration checkpoint; Jira dependency links alone are not admission gates.

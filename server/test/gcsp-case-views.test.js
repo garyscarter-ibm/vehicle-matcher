@@ -48,7 +48,9 @@ test('each employee state renders owner, reasons, dates, next action, remedy and
     assert.match(root.textContent, /Review the renewal options with Paula/);
     assert.match(root.textContent, /Due, demo clock \(UTC\)/); assert.match(root.textContent, /2026-11-06 12:00:00 UTC/);
     assert.match(root.textContent, /Renewal deadline \(calendar date\)/); assert.match(root.textContent, /2026-11-20/);
-    assert.match(root.textContent, /Dated case history/); assert.match(root.textContent, /synthetic-paula/);
+    assert.match(root.textContent, /Dated case history/); assert.match(root.textContent, /Actor(You|Automatic check)/);
+    assert.match(root.textContent, name === 'trigger' ? /Opened fromRenewal deadline approaching/ : /Opened fromHelp request/);
+    assert.match(root.textContent, /Owner roleScheme team/);
     assert.ok(root.querySelector('.vm-facts')); assert.equal(root.querySelectorAll('h1').length, 1);
     if (name === 'waiting') { assert.match(root.textContent, /estate/); assert.match(root.textContent, /suv/); assert.match(root.textContent, /Waiting for your confirmation/); }
     assert.equal(root.textContent.includes('—'), false);
