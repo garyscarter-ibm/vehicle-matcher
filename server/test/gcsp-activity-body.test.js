@@ -103,6 +103,15 @@ test('FUCQ-212: an accepted offer never reads still searching, while a declined 
   const declined = view('offer-declined'); assert.equal(lines(declined)[0], 'Still searching. No match yet.'); declined.destroy?.(); declined.remove();
 });
 
+test('FUCQ-215: after an accept the search reads finished and offers no pause or resume', () => {
+  const accepted = structuredClone(fixtures['offer-declined']); accepted.value.currentOffer.state = 'accepted';
+  const node = activityBody({ result: accepted, onPause: () => {}, onResume: () => {} }); document.body.append(node);
+  const status = node.querySelector('.gcsp-activity-status');
+  assert.equal(status.textContent.trim(), 'Finished. You accepted a car.'); assert.equal(status.getAttribute('role'), 'status');
+  assert.equal(node.querySelector('[aria-haspopup="menu"]'), null); assert.doesNotMatch(node.textContent, /Pause Search|Resume Search|\bActive\b|\u2014/);
+  node.destroy?.(); node.remove();
+});
+
 test('searching with no offer and a healthy source says still searching, with the last check counts', () => {
   const node = view('searching');
   assert.deepEqual(lines(node), ['Still searching. No match yet.', 'Last check 4 Nov 2026, 23:30: 12 cars checked, 0 suitable.']);
