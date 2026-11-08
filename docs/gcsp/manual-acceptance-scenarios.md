@@ -232,6 +232,7 @@ Observations from a hand trial go in a new row below, in the same format.
 | Date UTC | Variant/fixture | Run ID | Build | Result | Feedback / next revision |
 |---|---|---|---|---|---|
 | 2026-11-05 | unavailable / stale; v1 | No new run (refused) | `96bc997` | Missing source/activity/fault capabilities reported; no fake empty result or run mutation. | FUCQ-130 implements the real run-scoped fault, recovery and screen replay. |
+| 2026-11-08 | unavailable then stale / v1; hosted entry, memory, demo stock; headless Chrome, keyboard operation, 1280 and 375 | `demo-5c5ceeee4…` (1280), `demo-84f5ecdff…` (375), each from its own reset | `4a1c5c21` + walkthrough | Reset, Next release (tick interrupted at `release-pull`, no cars released), Paula *Couldn't check for new cars. Stock source unavailable.* with no last check, Greg *Stock source unavailable* and *Couldn't check for new stock*, stale fault and Tick (*Stock data too old to use*), cleared and Tick (Paula offered a car, *5 cars checked, 4 suitable*). 7/7 steps and 14/14 keyboard checks at each width; no page errors, no horizontal overflow. Evidence: `docs/gcsp/evidence/fucq-75/fucq-130/`. | The fault is switched through the faults route; the presenter strip shows the refused tick as raw handler JSON and has no fault switch. Greg's unmet-by-gate table still reads *No stock has been released yet* during the outage. |
 
 ### Uncertain handoff · `uncertain-handoff` · FUCQ-131
 
