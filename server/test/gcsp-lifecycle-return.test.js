@@ -13,6 +13,7 @@ import { createGcspHandler } from '../gcsp/identity/http.js';
 import { createLifecycleApprovalService } from '../gcsp/lifecycle/approvals/index.js';
 import { createSyntheticOrderingStatus } from '../gcsp/adapters/synthetic-ordering-status.js';
 import { createSyntheticAppointments, APPOINTMENT_CONSUMER } from '../gcsp/adapters/synthetic-appointments.js';
+import { prepareBuddySelection } from '../gcsp/offers/buddy-conversion.js';
 import { createRealProducer, acknowledgedSelection } from './helpers/gcsp-lifecycle-approval.js';
 
 const shapes = JSON.parse(await readFile(new URL('./fixtures/gcsp-lifecycle-return-plan-outcomes.json', import.meta.url), 'utf8'));
@@ -75,12 +76,15 @@ async function setup(t, { policy, order = 'replacement' } = {}) {
   };
   f.before = await f.car();
   const contract = f.before.current[0];
+  const buddy = order === 'buddy' ? await prepareBuddySelection({ repository, clock }, ctx, { expectedDraftVersion: 1 }) : null;
+  if (buddy) assert.equal(buddy.status, 'ok', JSON.stringify(buddy));
   const choices = order === 'replacement'
     ? { mode: 'replacement', oldContractId: contract.contractId, collectionLocationId: 'demo-collection-centre', expectedReturnMileage: MILEAGE,
       contact: { email: 'paula@example.invalid' }, driverId: 'fictional-driver' }
-    : undefined;
-  const sent = await producer.submit(ctx, { id: 911, choices, oldContract: order === 'replacement' ? contract : undefined,
-    declarations: order === 'replacement' ? { terms: true, driver: true, return: true } : undefined });
+    : buddy?.value.draft.choices;
+  const replacement = order !== 'new';
+  const sent = await producer.submit(ctx, { id: 911, type: buddy ? 'buddy-offer' : 'cart', choices, oldContract: replacement ? contract : undefined,
+    declarations: replacement ? { terms: true, driver: true, return: true } : undefined });
   assert.equal(sent.submitted.status, 'ok', JSON.stringify(sent.submitted));
   f.orderUuid = sent.orderUuid; f.contract = contract;
   f.sameCar = async (step) => assert.deepEqual(await f.car(), f.before, `current car unchanged after ${step}`);
@@ -134,6 +138,41 @@ test('a replacement order has a return plan linked to the old contract and slot;
   const broken = await acknowledgedSelection(h.repository, h.paula, { selection: { draft: { choices: { mode: 'replacement', oldContractId: 'current:employee-paula' } } } });
   const bad = await h.returns.read(h.paula, { orderUuid: broken.orderUuid });
   assert.deepEqual([bad.status, bad.code], ['unavailable', 'return-plan-source-invalid']);
+});
+
+test('FUCQ-184: a buddy replacement reads its old car and odometer, has no collection place, and plans a separate return', async (t) => {
+  const f = await setup(t, { order: 'buddy' }); await f.approve();
+  const selection = (await f.repository.query(f.paula, 'pending_operations', { operationType: 'selection-order' })).value[0].payload.selection;
+  assert.equal(selection.source.type, 'buddy-offer'); assert.equal(selection.draft.choices.expectedReturnMileage, undefined, 'the buddy draft has no manual fields');
+  const odometer = selection.draft.choices.returnOdometer;
+  const plan = await f.plan();
+  assert.deepEqual([plan.applicable, plan.state, plan.oldContractId, plan.vehicleSlotId], [true, 'not-planned', f.contract.contractId, f.paula.entitlementSlotId]);
+  assert.deepEqual([plan.currentCar.contractId, plan.currentCar.status, plan.currentCar.source], [f.contract.contractId, 'current', 'account']);
+  assert.deepEqual(plan.returnMileage, { value: odometer.value, unit: odometer.unit, recordedAt: selection.receivedAt, source: 'selection' });
+  assert.deepEqual(plan.location, { locationId: null, label: null, rule: null });
+  await f.scheduleHandover();
+  const open = await f.plan();
+  const asked = await f.ask('separate', open.offeredSlots.separate[0].slotId);
+  assert.equal(asked.status, 'ok', JSON.stringify(asked));
+  assert.equal(asked.value.location.label, null); assert.equal(asked.value.location.rule, 'handover-retailer');
+  await f.advance(DELAY); await f.tick();
+  assert.deepEqual([(await f.plan()).state, (await f.plan()).scheduled], ['return-scheduled', true]);
+  await f.sameCar('buddy return scheduled');
+
+  // A malformed buddy record is still an explicit source error, never a guess.
+  const h = await setup(t, { order: 'new' });
+  const good = { draft: { choices: { mode: 'replacement', returnOdometer: { value: 5200, unit: 'mi' } } }, oldContract: h.contract,
+    vehicleSlot: { entitlementSlotId: 'slot-paula' } };
+  const variants = { 'no odometer': { draft: { choices: { mode: 'replacement' } } }, 'negative odometer': { draft: { choices: { mode: 'replacement', returnOdometer: { value: -1, unit: 'mi' } } } },
+    'fractional odometer': { draft: { choices: { mode: 'replacement', returnOdometer: { value: 1.5, unit: 'mi' } } } },
+    'no unit': { draft: { choices: { mode: 'replacement', returnOdometer: { value: 5200 } } } }, 'no old contract': { oldContract: null }, 'no slot': { vehicleSlot: null } };
+  const ok = await acknowledgedSelection(h.repository, h.paula, { sourceType: 'buddy-offer', selection: good });
+  assert.equal((await h.returns.read(h.paula, { orderUuid: ok.orderUuid })).value.applicable, true, 'the well-formed control reads');
+  for (const [name, patch] of Object.entries(variants)) {
+    const row = await acknowledgedSelection(h.repository, h.paula, { sourceType: 'buddy-offer', selection: { ...good, ...patch } });
+    const bad = await h.returns.read(h.paula, { orderUuid: row.orderUuid });
+    assert.deepEqual([bad.status, bad.code], ['unavailable', 'return-plan-source-invalid'], name);
+  }
 });
 
 test('return states: requested is never scheduled, then a separate appointment is scheduled with its own reference', async (t) => {
