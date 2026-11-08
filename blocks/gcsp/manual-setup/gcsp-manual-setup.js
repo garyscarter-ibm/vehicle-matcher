@@ -106,7 +106,7 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
       ['Employee number', a.account?.employeeNumber]]));
     select('driverId', o.drivers, 'driverId', (d) => `${d.kind === 'employee' ? 'You' : 'Nominated'}: ${text(d.name)}`);
     select('contractOptionId', o.contractOptions, 'contractOptionId', (d) => `${d.months} months, ${d.annualMileage} ${d.mileageUnit}`);
-    select('collectionLocationId', o.collectionLocations, 'locationId', (d) => text(d.label ?? d.locationId));
+    select('collectionLocationId', o.collectionLocations, 'locationId', (d) => text(d.label)); // never the raw location id
     select('brand', o.brands.map((value) => ({ value })), 'value', (d) => d.value.toUpperCase());
     for (const [key, control] of Object.entries(controls)) {
       const value = ['phone', 'email'].includes(key) ? c.contact?.[key] : c[key];

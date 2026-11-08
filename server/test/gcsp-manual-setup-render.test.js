@@ -133,3 +133,12 @@ test('setup facts show no raw scheme, slot, contract or company ids (FUCQ-197)',
   const f = await setup(t); const shown = f.root.textContent;
   for (const id of [f.context.schemeId, f.context.entitlementSlotId, f.context.companyId, 'current:']) assert.equal(shown.includes(id), false, id);
 });
+
+test('an unlabelled collection location never shows its raw id (FUCQ-197)', async (t) => {
+  const f = await setup(t, { beforeMount: (fx) => { const read = fx.adapter.readAccount;
+    fx.adapter.readAccount = async () => { const r = structuredClone(await read());
+      for (const l of r.value?.choices?.collectionLocations ?? []) { fx.locationId = l.locationId; delete l.label; } return r; }; } });
+  await waitFor(() => control(f, 'collectionLocationId')?.options.length);
+  assert.ok(f.locationId); const text = [...control(f, 'collectionLocationId').options].map((o) => o.textContent).join('|');
+  assert.equal(text.includes(f.locationId), false); assert.match(text, /Not supplied/);
+});
