@@ -4,6 +4,7 @@ import { dataTable } from '../kit/data-table.js';
 import { caseStatus, clockTime, preferenceLabel, renderCaseContent, caseNotice, shown, carNameText, roleLabel } from './case-content.js';
 import { caseFailure } from './gcsp-help.js';
 import { createCaseHttpAdapter, isCaseRecord, isCaseOptionsProjection } from './http-adapter.js';
+import { isRunRestarted, runRestartedNotice, runRestartedScreen } from '../kit/run-restarted.js';
 
 let serial = 0;
 const unavailable = { status: 'unavailable', reason: 'The renewal-case source could not be reached. Try again.' };
@@ -134,6 +135,11 @@ export function mountCaseQueue(root, { adapter = createCaseHttpAdapter(), embedd
   }
   function draw() {
     if (done) return;
+    // A lapsed access key or restarted run needs a reload, as on the rest of Greg's dashboard.
+    if ([queueError, detailError].some(isRunRestarted)) {
+      status.textContent = 'Demo restarted.'; content.removeAttribute('aria-busy');
+      content.replaceChildren(embedded ? runRestartedNotice().root : runRestartedScreen()); return;
+    }
     status.textContent = saving ? 'Recording the confirmed case update.' : queueLoading ? 'Loading renewal cases.'
       : detailLoading ? 'Loading current case options.' : queueError || detailError ? caseFailure(queueError ?? detailError).title : message;
     content.setAttribute('aria-busy', String(queueLoading || detailLoading || saving)); content.replaceChildren();

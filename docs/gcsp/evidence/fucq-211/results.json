@@ -1,0 +1,52 @@
+{
+  "passed": true,
+  "origin": "http://127.0.0.1:8985",
+  "runtime": "memory (GCSP_RUNTIME=1)",
+  "lapse": "server restarted with a new access key",
+  "runs": [
+    {
+      "viewport": 1280,
+      "before": "Renewal cases Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. You cannot open these cases Refresh queue You cannot open these cases This person cannot",
+      "lapsed": {
+        "notice": true,
+        "status": true,
+        "unavailableCopy": false,
+        "refreshButton": 0,
+        "overflow": 0,
+        "text": "Renewal cases Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Demo restarted. The demo was restarted. Reload the page to continue. Reload",
+        "screenshot": "docs/gcsp/evidence/fucq-211/1280-greg-queue-lapsed.png"
+      },
+      "recover": {
+        "accessForm": true,
+        "landed": "/gcsp-greg.html",
+        "noRestartCopy": true,
+        "text": "Renewal cases Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Loading renewal cases. Refresh queue Loading renewal cases Reading the current demonstra",
+        "screenshot": "docs/gcsp/evidence/fucq-211/1280-greg-queue-recovered.png"
+      },
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "viewport": 375,
+      "before": "Renewal cases Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. You cannot open these cases Refresh queue You cannot open these cases This person cannot",
+      "lapsed": {
+        "notice": true,
+        "status": true,
+        "unavailableCopy": false,
+        "refreshButton": 0,
+        "overflow": 0,
+        "text": "Renewal cases Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Demo restarted. The demo was restarted. Reload the page to continue. Reload",
+        "screenshot": "docs/gcsp/evidence/fucq-211/375-greg-queue-lapsed.png"
+      },
+      "recover": {
+        "accessForm": true,
+        "landed": "/gcsp-greg.html",
+        "noRestartCopy": true,
+        "text": "Renewal cases Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Loading renewal cases. Refresh queue Loading renewal cases Reading the current demonstra",
+        "screenshot": "docs/gcsp/evidence/fucq-211/375-greg-queue-recovered.png"
+      },
+      "pageErrors": [],
+      "passed": true
+    }
+  ]
+}
