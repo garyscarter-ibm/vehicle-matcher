@@ -1,0 +1,4637 @@
+{
+  "story": "DEV-2026-11-07-004 / FUCQ-170",
+  "commit": "8fa143a4b576dff8767d485b64dfc4d443fe0fc4",
+  "startedAt": "2026-11-08T16:35:15.987Z",
+  "fixtureOrigin": "http://127.0.0.1:8971",
+  "liveOrigin": "http://127.0.0.1:8972",
+  "sections": {
+    "A": [
+      {
+        "name": "A-queue-populated-desktop",
+        "fixture": "populated",
+        "width": "desktop",
+        "pass": true,
+        "file": "A-queue-populated-desktop.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: 5 renewal cases loaded."
+        ],
+        "body": "Refresh queue Sort cases Deadline, active cases first Status, then deadline Renewal-risk cases Employee Renewal deadline (calendar date) Trigger or request Reason Status Owner Next action due, demo clock (UTC) Synthetic employee 3 2026-11-18 Help request My replacement may miss my contract end. Remedy proposed Scheme team 2026-11-06 12:00:00 UTC Synthetic employee 2 2026-11-19 Help request My repl",
+        "rows": [
+          "Synthetic employee 3 | Remedy proposed | 2026-11-18",
+          "Synthetic employee 2 | In progress | 2026-11-19",
+          "Synthetic employee 1 | Open | 2026-11-20",
+          "Synthetic employee 5 | Closed | 2026-11-16",
+          "Synthetic employee 4 | Resolved | 2026-11-17"
+        ]
+      },
+      {
+        "name": "A-queue-empty-desktop",
+        "fixture": "empty",
+        "width": "desktop",
+        "pass": true,
+        "file": "A-queue-empty-desktop.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: 0 renewal cases loaded.",
+          "status: No renewal casesThere are no renewal-risk cases in this demonstration run."
+        ],
+        "body": "Refresh queue No renewal cases There are no renewal-risk cases in this demonstration run."
+      },
+      {
+        "name": "A-queue-loading-desktop",
+        "fixture": "loading",
+        "width": "desktop",
+        "pass": true,
+        "file": "A-queue-loading-desktop.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Loading renewal cases.",
+          "status: Loading renewal casesReading the current demonstration run."
+        ],
+        "busy": "true",
+        "text": "Refresh queue\nLoading renewal cases\n\nReading the current demonstration run."
+      },
+      {
+        "name": "A-queue-unavailable-desktop",
+        "fixture": "unavailable",
+        "width": "desktop",
+        "pass": true,
+        "file": "A-queue-unavailable-desktop.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Renewal help is unavailable",
+          "alert: Renewal cases are unavailableSynthetic unavailable example.Retry queue"
+        ],
+        "body": "Refresh queue Renewal cases are unavailable Synthetic unavailable example. Retry queue"
+      },
+      {
+        "name": "A-queue-forbidden-desktop",
+        "fixture": "forbidden",
+        "width": "desktop",
+        "pass": true,
+        "file": "A-queue-forbidden-desktop.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: You cannot open these cases",
+          "alert: You cannot open these casesSynthetic forbidden example.Retry queue"
+        ],
+        "body": "Refresh queue You cannot open these cases Synthetic forbidden example. Retry queue"
+      },
+      {
+        "name": "A-queue-stale-run-desktop",
+        "fixture": "stale-run",
+        "width": "desktop",
+        "pass": true,
+        "file": "A-queue-stale-run-desktop.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Your demo run has changed",
+          "alert: Your demo run has changedSynthetic stale-run example.Retry queue"
+        ],
+        "body": "Refresh queue Your demo run has changed Synthetic stale-run example. Retry queue"
+      },
+      {
+        "name": "A-queue-unavailable-options-desktop",
+        "fixture": "unavailable-options",
+        "width": "desktop",
+        "pass": true,
+        "file": "A-queue-unavailable-options-desktop.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Current case options loaded."
+        ],
+        "body": "Refresh queue Sort cases Deadline, active cases first Status, then deadline Renewal-risk cases Employee Renewal deadline (calendar date) Trigger or request Reason Status Owner Next action due, demo clock (UTC) Synthetic employee 3 2026-11-18 Help request My replacement may miss my contract end. Remedy proposed Scheme team 2026-11-06 12:00:00 UTC Synthetic employee 2 2026-11-19 Help request My repl",
+        "rows": [
+          "Synthetic employee 3 | Remedy proposed | 2026-11-18",
+          "Synthetic employee 2 | In progress | 2026-11-19",
+          "Synthetic employee 1 | Open | 2026-11-20",
+          "Synthetic employee 5 | Closed | 2026-11-16",
+          "Synthetic employee 4 | Resolved | 2026-11-17"
+        ],
+        "unavailableNotes": [
+          "Suitable available cars: Unavailable in this synthetic example.",
+          "One preference change: Unavailable in this synthetic example.",
+          "Reviewed later release: Unavailable in this synthetic example.",
+          "Contract extension: Unavailable in this synthetic example."
+        ],
+        "remedyOptions": [
+          "Keep the current remedy, if any",
+          "Manual decision"
+        ]
+      },
+      {
+        "name": "A-queue-populated-narrow",
+        "fixture": "populated",
+        "width": "narrow",
+        "pass": true,
+        "file": "A-queue-populated-narrow.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: 5 renewal cases loaded."
+        ],
+        "body": "Refresh queue Sort cases Deadline, active cases first Status, then deadline Renewal-risk cases Employee Renewal deadline (calendar date) Trigger or request Reason Status Owner Next action due, demo clock (UTC) Synthetic employee 3 2026-11-18 Help request My replacement may miss my contract end. Remedy proposed Scheme team 2026-11-06 12:00:00 UTC Synthetic employee 2 2026-11-19 Help request My repl",
+        "rows": [
+          "Synthetic employee 3 | Remedy proposed | 2026-11-18",
+          "Synthetic employee 2 | In progress | 2026-11-19",
+          "Synthetic employee 1 | Open | 2026-11-20",
+          "Synthetic employee 5 | Closed | 2026-11-16",
+          "Synthetic employee 4 | Resolved | 2026-11-17"
+        ]
+      },
+      {
+        "name": "A-queue-empty-narrow",
+        "fixture": "empty",
+        "width": "narrow",
+        "pass": true,
+        "file": "A-queue-empty-narrow.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: 0 renewal cases loaded.",
+          "status: No renewal casesThere are no renewal-risk cases in this demonstration run."
+        ],
+        "body": "Refresh queue No renewal cases There are no renewal-risk cases in this demonstration run."
+      },
+      {
+        "name": "A-queue-loading-narrow",
+        "fixture": "loading",
+        "width": "narrow",
+        "pass": true,
+        "file": "A-queue-loading-narrow.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Loading renewal cases.",
+          "status: Loading renewal casesReading the current demonstration run."
+        ],
+        "busy": "true",
+        "text": "Refresh queue\nLoading renewal cases\n\nReading the current demonstration run."
+      },
+      {
+        "name": "A-queue-unavailable-narrow",
+        "fixture": "unavailable",
+        "width": "narrow",
+        "pass": true,
+        "file": "A-queue-unavailable-narrow.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Renewal help is unavailable",
+          "alert: Renewal cases are unavailableSynthetic unavailable example.Retry queue"
+        ],
+        "body": "Refresh queue Renewal cases are unavailable Synthetic unavailable example. Retry queue"
+      },
+      {
+        "name": "A-queue-forbidden-narrow",
+        "fixture": "forbidden",
+        "width": "narrow",
+        "pass": true,
+        "file": "A-queue-forbidden-narrow.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: You cannot open these cases",
+          "alert: You cannot open these casesSynthetic forbidden example.Retry queue"
+        ],
+        "body": "Refresh queue You cannot open these cases Synthetic forbidden example. Retry queue"
+      },
+      {
+        "name": "A-queue-stale-run-narrow",
+        "fixture": "stale-run",
+        "width": "narrow",
+        "pass": true,
+        "file": "A-queue-stale-run-narrow.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Your demo run has changed",
+          "alert: Your demo run has changedSynthetic stale-run example.Retry queue"
+        ],
+        "body": "Refresh queue Your demo run has changed Synthetic stale-run example. Retry queue"
+      },
+      {
+        "name": "A-queue-unavailable-options-narrow",
+        "fixture": "unavailable-options",
+        "width": "narrow",
+        "pass": true,
+        "file": "A-queue-unavailable-options-narrow.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Current case options loaded."
+        ],
+        "body": "Refresh queue Sort cases Deadline, active cases first Status, then deadline Renewal-risk cases Employee Renewal deadline (calendar date) Trigger or request Reason Status Owner Next action due, demo clock (UTC) Synthetic employee 3 2026-11-18 Help request My replacement may miss my contract end. Remedy proposed Scheme team 2026-11-06 12:00:00 UTC Synthetic employee 2 2026-11-19 Help request My repl",
+        "rows": [
+          "Synthetic employee 3 | Remedy proposed | 2026-11-18",
+          "Synthetic employee 2 | In progress | 2026-11-19",
+          "Synthetic employee 1 | Open | 2026-11-20",
+          "Synthetic employee 5 | Closed | 2026-11-16",
+          "Synthetic employee 4 | Resolved | 2026-11-17"
+        ],
+        "unavailableNotes": [
+          "Suitable available cars: Unavailable in this synthetic example.",
+          "One preference change: Unavailable in this synthetic example.",
+          "Reviewed later release: Unavailable in this synthetic example.",
+          "Contract extension: Unavailable in this synthetic example."
+        ],
+        "remedyOptions": [
+          "Keep the current remedy, if any",
+          "Manual decision"
+        ]
+      },
+      {
+        "name": "A-flow-desktop",
+        "width": "desktop",
+        "steps": [
+          "table region focusable (tabindex 0); at 1280px scrollWidth 1230, clientWidth 1230 (no scrolling needed); ArrowRight x4 moved scrollLeft 0 -> 0; ArrowLeft x4 -> 0",
+          "sort changed by keyboard both ways",
+          "alternative car reviewed and cancelled"
+        ],
+        "pass": true,
+        "tableRegion": {
+          "presses": 3,
+          "sl": 0,
+          "sw": 1230,
+          "cw": 1230,
+          "tabindex": 0,
+          "label": "region",
+          "focus": {
+            "tag": "DIV",
+            "id": null,
+            "text": "Renewal-risk casesEmployeeRenewal deadline (calendar date)Trigger or requestReas",
+            "outline": "solid 2px rgb(2, 145, 183)",
+            "boxShadow": "none",
+            "visibleIndicator": true
+          },
+          "scrollLeftAfter4Right": 0,
+          "scrollLeftAfter4Left": 0,
+          "scrollable": false
+        },
+        "sort": {
+          "options": [
+            "Deadline, active cases first",
+            "Status, then deadline"
+          ],
+          "orders": {
+            "Deadline, active cases first (default)": [
+              "Synthetic employee 3 | Remedy proposed | 2026-11-18",
+              "Synthetic employee 2 | In progress | 2026-11-19",
+              "Synthetic employee 1 | Open | 2026-11-20",
+              "Synthetic employee 5 | Closed | 2026-11-16",
+              "Synthetic employee 4 | Resolved | 2026-11-17"
+            ],
+            "Status, then deadline": [
+              "Synthetic employee 1 | Open | 2026-11-20",
+              "Synthetic employee 2 | In progress | 2026-11-19",
+              "Synthetic employee 3 | Remedy proposed | 2026-11-18",
+              "Synthetic employee 4 | Resolved | 2026-11-17",
+              "Synthetic employee 5 | Closed | 2026-11-16"
+            ]
+          },
+          "returnedToDeadlineMatches": true,
+          "focusAfterSort": {
+            "tag": "SELECT",
+            "id": "gcsp-case-queue-1-sort",
+            "text": "Sort cases",
+            "outline": "solid 2px rgb(2, 145, 183)",
+            "boxShadow": "none",
+            "visibleIndicator": true
+          }
+        },
+        "openFocus": {
+          "tag": "P",
+          "id": null,
+          "text": "Current case options loaded.",
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "visibleIndicator": true
+        },
+        "statusAfterOpen": "Current case options loaded.",
+        "errorSummary": {
+          "focus": {
+            "tag": "H2",
+            "id": "gcsp-case-queue-1-errors-title",
+            "text": "Check your choices",
+            "outline": "solid 2px rgb(2, 145, 183)",
+            "boxShadow": "none",
+            "visibleIndicator": true
+          },
+          "text": "Check your choices Choose a status supplied by the server. Describe why this case is changing.",
+          "focusOnSummaryHeading": true
+        },
+        "editor": {
+          "statusOptions": [
+            "Choose the next status",
+            "In progress",
+            "Remedy proposed"
+          ],
+          "remedyOptions": [
+            "Keep the current remedy, if any",
+            "Alternative car: Synthetic BMW iX1",
+            "Change body",
+            "Change range",
+            "Later release: 2026-11-10 09:15:00 UTC",
+            "Manual decision",
+            "Contract extension"
+          ],
+          "due": "2026-11-07T12:00",
+          "editorFacts": [
+            "Proposed car: Synthetic BMW iX1",
+            "Exact car reference: synthetic-exact-car",
+            "Configuration: synthetic-configuration"
+          ]
+        },
+        "reviewAlternativeCar": {
+          "focus": {
+            "tag": "BUTTON",
+            "id": null,
+            "text": "Confirm case update",
+            "outline": "solid 2px rgb(2, 145, 183)",
+            "boxShadow": "none",
+            "visibleIndicator": true
+          },
+          "confirmationFacts": [
+            "Next status: Remedy proposed",
+            "Reason: Scheme team reviewed the synthetic renewal and found a suitable car.",
+            "Next action: Contact the employee about the proposed car.",
+            "Due, demo clock (UTC): 2026-11-07 12:00:00 UTC",
+            "Remedy: Alternative car",
+            "Proposed car: Synthetic BMW iX1",
+            "Exact car reference: synthetic-exact-car"
+          ],
+          "heading": "Confirm case update"
+        },
+        "cancelAlternativeCar": {
+          "focusAfter": {
+            "tag": "SELECT",
+            "id": "gcsp-case-queue-1-status",
+            "text": "Next case status",
+            "outline": "solid 2px rgb(2, 145, 183)",
+            "boxShadow": "none",
+            "visibleIndicator": true
+          },
+          "confirmationGone": true,
+          "editorStillShown": true,
+          "requestsDuringReviewAndCancel": 0,
+          "writesDuringReviewAndCancel": 0
+        },
+        "reviewPreference": {
+          "remedyOptions": [
+            "Keep the current remedy, if any",
+            "Alternative car: Synthetic BMW iX1",
+            "Change body",
+            "Change range",
+            "Later release: 2026-11-10 09:15:00 UTC",
+            "Manual decision",
+            "Contract extension"
+          ],
+          "valueOptions": [
+            "Choose the proposed value",
+            "estate",
+            "suv"
+          ],
+          "notes": [
+            "Body is currently estate. The employee must confirm this single change through their brief."
+          ],
+          "confirmationFacts": [
+            "Next status: Remedy proposed",
+            "Reason: Scheme team reviewed the synthetic renewal and found a suitable car.",
+            "Next action: Contact the employee about the proposed car.",
+            "Due, demo clock (UTC): 2026-11-07 12:00:00 UTC",
+            "Remedy: One preference change",
+            "Preference: Body",
+            "Proposed value: suv",
+            "Employee confirmation: Required through the employee brief"
+          ]
+        },
+        "cancelPreference": {
+          "focusAfter": {
+            "tag": "SELECT",
+            "id": "gcsp-case-queue-1-status",
+            "text": "Next case status",
+            "outline": "solid 2px rgb(2, 145, 183)",
+            "boxShadow": "none",
+            "visibleIndicator": true
+          },
+          "confirmationGone": true
+        },
+        "networkAfterPageLoad": [],
+        "writeRequests": 0,
+        "writeNote": "Fixture adapter updateCase is not exposed for call counting; evidence is zero POST/PUT/PATCH/DELETE and no fetch/XHR traffic during the flow (the fixture adapter makes no requests), plus no confirmation reached the Confirm button."
+      },
+      {
+        "name": "A-flow-narrow",
+        "width": "narrow",
+        "steps": [
+          "table region focusable (tabindex 0); at 375px scrollWidth 1050, clientWidth 341 (scrolls); ArrowRight x4 moved scrollLeft 0 -> 158; ArrowLeft x4 -> 160"
+        ],
+        "pass": false,
+        "tableRegion": {
+          "presses": 3,
+          "sl": 0,
+          "sw": 1050,
+          "cw": 341,
+          "tabindex": 0,
+          "label": "region",
+          "focus": {
+            "tag": "DIV",
+            "id": null,
+            "text": "Renewal-risk casesEmployeeRenewal deadline (calendar date)Trigger or requestReas",
+            "outline": "solid 2px rgb(2, 145, 183)",
+            "boxShadow": "none",
+            "visibleIndicator": true
+          },
+          "scrollLeftAfter4Right": 158,
+          "scrollLeftAfter4Left": 160,
+          "scrollable": true
+        },
+        "error": "table region did not scroll with arrow keys at 375"
+      }
+    ],
+    "B": [
+      {
+        "name": "B-help-waiting-desktop",
+        "fixture": "waiting",
+        "width": "desktop",
+        "pass": true,
+        "text": "Get help with your renewal RENEWAL CASE Remedy proposed Case reference synthetic-renewal-paula Owner Scheme team Owner role Scheme team Reason My replacement may miss my contract end. Latest update My replacement may miss my contract end. Opened from Help request Next action Review the renewal options with Paula. Due, demo clock (UTC) 2026-11-06 12:00:00 UTC Renewal deadline (calendar date) 2026-11-20 Synthetic demonstration case. Proposed remedy Preference Body Current value estate Proposed value suv Current brief version 3 Waiting for your confirmation. Only this preference value will change",
+        "reviewButton": "Review body change",
+        "confirmation": {
+          "focus": {
+            "tag": "BUTTON",
+            "id": null,
+            "text": "Confirm preference change",
+            "outline": "solid 2px rgb(2, 145, 183)",
+            "boxShadow": "none",
+            "visibleIndicator": true
+          },
+          "notes": [
+            "Body: estate → suv.",
+            "This confirms only this preference value in a new brief version. All other preferences, essentials and importance weights stay the same. It does not resolve your case or guarantee a car."
+          ],
+          "heading": "Confirm one preference change"
+        },
+        "beforeAfterLine": "Body: estate → suv.",
+        "onlyThisPreferenceNote": "This confirms only this preference value in a new brief version. All other preferences, essentials and importance weights stay the same. It does not resolve your case or guarantee a car.",
+        "cancel": {
+          "focusAfter": {
+            "tag": "BUTTON",
+            "id": null,
+            "text": "Review body change",
+            "outline": "solid 2px rgb(2, 145, 183)",
+            "boxShadow": "none",
+            "visibleIndicator": true
+          },
+          "confirmationGone": true,
+          "writes": 0
+        },
+        "file": "B-help-waiting-desktop.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Loading presenter controls",
+          "alert: The demo was restarted. Reload the page to continue.Reload",
+          "status: Loading readback"
+        ]
+      },
+      {
+        "name": "B-help-in-progress-desktop",
+        "fixture": "in-progress",
+        "width": "desktop",
+        "pass": true,
+        "text": "Get help with your renewal RENEWAL CASE In progress Case reference synthetic-renewal-paula Owner Scheme team Owner role Scheme team Reason My replacement may miss my contract end. Latest update My replacement may miss my contract end. Opened from Help request Next action Review the renewal options with Paula. Due, demo clock (UTC) 2026-11-06 12:00:00 UTC Renewal deadline (calendar date) 2026-11-20 Synthetic demonstration case. Dated case history",
+        "file": "B-help-in-progress-desktop.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Loading presenter controls",
+          "alert: The demo was restarted. Reload the page to continue.Reload",
+          "status: Loading readback"
+        ]
+      },
+      {
+        "name": "B-help-resolved-desktop",
+        "fixture": "resolved",
+        "width": "desktop",
+        "pass": true,
+        "text": "Get help with your renewal RENEWAL CASE Resolved Case reference synthetic-renewal-paula Owner Scheme team Owner role Scheme team Reason My replacement may miss my contract end. Latest update My replacement may miss my contract end. Opened from Help request Next action Review the renewal options with Paula. Due, demo clock (UTC) 2026-11-06 12:00:00 UTC Renewal deadline (calendar date) 2026-11-20 Synthetic demonstration case. Dated case history",
+        "historyOpen": true,
+        "historyEvents": 1,
+        "historyFocus": {
+          "tag": "SUMMARY",
+          "id": null,
+          "text": "Dated case history",
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "visibleIndicator": true
+        },
+        "file": "B-help-resolved-desktop.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Loading presenter controls",
+          "alert: The demo was restarted. Reload the page to continue.Reload",
+          "status: Loading readback"
+        ]
+      },
+      {
+        "name": "B-help-closed-desktop",
+        "fixture": "closed",
+        "width": "desktop",
+        "pass": true,
+        "text": "Get help with your renewal RENEWAL CASE Closed Case reference synthetic-renewal-paula Owner Scheme team Owner role Scheme team Reason My replacement may miss my contract end. Latest update My replacement may miss my contract end. Opened from Help request Next action Review the renewal options with Paula. Due, demo clock (UTC) 2026-11-06 12:00:00 UTC Renewal deadline (calendar date) 2026-11-20 Synthetic demonstration case. Dated case history",
+        "historyOpen": true,
+        "historyEvents": 1,
+        "historyFocus": {
+          "tag": "SUMMARY",
+          "id": null,
+          "text": "Dated case history",
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "visibleIndicator": true
+        },
+        "file": "B-help-closed-desktop.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Loading presenter controls",
+          "alert: The demo was restarted. Reload the page to continue.Reload",
+          "status: Loading readback"
+        ]
+      },
+      {
+        "name": "B-help-trigger-desktop",
+        "fixture": "trigger",
+        "width": "desktop",
+        "pass": true,
+        "text": "Get help with your renewal RENEWAL CASE Open Case reference synthetic-renewal-paula Owner Scheme team Owner role Scheme team Reason Your renewal deadline is approaching. Latest update Your renewal deadline is approaching. Opened from Renewal deadline approaching Next action Review the renewal options with Paula. Due, demo clock (UTC) 2026-11-06 12:00:00 UTC Renewal deadline (calendar date) 2026-11-20 Synthetic demonstration case. Dated case history",
+        "file": "B-help-trigger-desktop.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Loading presenter controls",
+          "alert: The demo was restarted. Reload the page to continue.Reload",
+          "status: Loading readback"
+        ]
+      },
+      {
+        "name": "B-help-loading-desktop",
+        "fixture": "loading",
+        "width": "desktop",
+        "pass": true,
+        "text": "Loading your cases Reading the current demonstration run.",
+        "file": "B-help-loading-desktop.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Loading presenter controls",
+          "alert: The demo was restarted. Reload the page to continue.Reload",
+          "status: Loading readback",
+          "status: Loading renewal help.",
+          "status: Loading your casesReading the current demonstration run."
+        ]
+      },
+      {
+        "name": "B-help-unavailable-desktop",
+        "fixture": "unavailable",
+        "width": "desktop",
+        "pass": true,
+        "text": "Renewal help is unavailable Synthetic unavailable example. Refresh cases",
+        "file": "B-help-unavailable-desktop.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Loading presenter controls",
+          "alert: The demo was restarted. Reload the page to continue.Reload",
+          "status: Loading readback",
+          "status: Renewal help is unavailable",
+          "alert: Renewal help is unavailableSynthetic unavailable example.Refresh cases"
+        ]
+      },
+      {
+        "name": "B-help-forbidden-desktop",
+        "fixture": "forbidden",
+        "width": "desktop",
+        "pass": true,
+        "text": "You cannot open these cases Synthetic forbidden example. Refresh cases",
+        "file": "B-help-forbidden-desktop.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Loading presenter controls",
+          "alert: The demo was restarted. Reload the page to continue.Reload",
+          "status: Loading readback",
+          "status: You cannot open these cases",
+          "alert: You cannot open these casesSynthetic forbidden example.Refresh cases"
+        ]
+      },
+      {
+        "name": "B-help-waiting-narrow",
+        "fixture": "waiting",
+        "width": "narrow",
+        "pass": true,
+        "text": "Get help with your renewal RENEWAL CASE Remedy proposed Case reference synthetic-renewal-paula Owner Scheme team Owner role Scheme team Reason My replacement may miss my contract end. Latest update My replacement may miss my contract end. Opened from Help request Next action Review the renewal options with Paula. Due, demo clock (UTC) 2026-11-06 12:00:00 UTC Renewal deadline (calendar date) 2026-11-20 Synthetic demonstration case. Proposed remedy Preference Body Current value estate Proposed value suv Current brief version 3 Waiting for your confirmation. Only this preference value will change",
+        "reviewButton": "Review body change",
+        "confirmation": {
+          "focus": {
+            "tag": "BUTTON",
+            "id": null,
+            "text": "Confirm preference change",
+            "outline": "solid 2px rgb(2, 145, 183)",
+            "boxShadow": "none",
+            "visibleIndicator": true
+          },
+          "notes": [
+            "Body: estate → suv.",
+            "This confirms only this preference value in a new brief version. All other preferences, essentials and importance weights stay the same. It does not resolve your case or guarantee a car."
+          ],
+          "heading": "Confirm one preference change"
+        },
+        "beforeAfterLine": "Body: estate → suv.",
+        "onlyThisPreferenceNote": "This confirms only this preference value in a new brief version. All other preferences, essentials and importance weights stay the same. It does not resolve your case or guarantee a car.",
+        "cancel": {
+          "focusAfter": {
+            "tag": "BUTTON",
+            "id": null,
+            "text": "Review body change",
+            "outline": "solid 2px rgb(2, 145, 183)",
+            "boxShadow": "none",
+            "visibleIndicator": true
+          },
+          "confirmationGone": true,
+          "writes": 0
+        },
+        "file": "B-help-waiting-narrow.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Loading presenter controls",
+          "alert: The demo was restarted. Reload the page to continue.Reload",
+          "status: Loading readback"
+        ]
+      },
+      {
+        "name": "B-help-in-progress-narrow",
+        "fixture": "in-progress",
+        "width": "narrow",
+        "pass": true,
+        "text": "Get help with your renewal RENEWAL CASE In progress Case reference synthetic-renewal-paula Owner Scheme team Owner role Scheme team Reason My replacement may miss my contract end. Latest update My replacement may miss my contract end. Opened from Help request Next action Review the renewal options with Paula. Due, demo clock (UTC) 2026-11-06 12:00:00 UTC Renewal deadline (calendar date) 2026-11-20 Synthetic demonstration case. Dated case history",
+        "file": null,
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Loading presenter controls",
+          "alert: The demo was restarted. Reload the page to continue.Reload",
+          "status: Loading readback"
+        ]
+      },
+      {
+        "name": "B-help-resolved-narrow",
+        "fixture": "resolved",
+        "width": "narrow",
+        "pass": true,
+        "text": "Get help with your renewal RENEWAL CASE Resolved Case reference synthetic-renewal-paula Owner Scheme team Owner role Scheme team Reason My replacement may miss my contract end. Latest update My replacement may miss my contract end. Opened from Help request Next action Review the renewal options with Paula. Due, demo clock (UTC) 2026-11-06 12:00:00 UTC Renewal deadline (calendar date) 2026-11-20 Synthetic demonstration case. Dated case history",
+        "historyOpen": true,
+        "historyEvents": 1,
+        "historyFocus": {
+          "tag": "SUMMARY",
+          "id": null,
+          "text": "Dated case history",
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "visibleIndicator": true
+        },
+        "file": "B-help-resolved-narrow.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Loading presenter controls",
+          "alert: The demo was restarted. Reload the page to continue.Reload",
+          "status: Loading readback"
+        ]
+      },
+      {
+        "name": "B-help-closed-narrow",
+        "fixture": "closed",
+        "width": "narrow",
+        "pass": true,
+        "text": "Get help with your renewal RENEWAL CASE Closed Case reference synthetic-renewal-paula Owner Scheme team Owner role Scheme team Reason My replacement may miss my contract end. Latest update My replacement may miss my contract end. Opened from Help request Next action Review the renewal options with Paula. Due, demo clock (UTC) 2026-11-06 12:00:00 UTC Renewal deadline (calendar date) 2026-11-20 Synthetic demonstration case. Dated case history",
+        "historyOpen": true,
+        "historyEvents": 1,
+        "historyFocus": {
+          "tag": "SUMMARY",
+          "id": null,
+          "text": "Dated case history",
+          "outline": "solid 2px rgb(2, 145, 183)",
+          "boxShadow": "none",
+          "visibleIndicator": true
+        },
+        "file": "B-help-closed-narrow.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Loading presenter controls",
+          "alert: The demo was restarted. Reload the page to continue.Reload",
+          "status: Loading readback"
+        ]
+      },
+      {
+        "name": "B-help-trigger-narrow",
+        "fixture": "trigger",
+        "width": "narrow",
+        "pass": true,
+        "text": "Get help with your renewal RENEWAL CASE Open Case reference synthetic-renewal-paula Owner Scheme team Owner role Scheme team Reason Your renewal deadline is approaching. Latest update Your renewal deadline is approaching. Opened from Renewal deadline approaching Next action Review the renewal options with Paula. Due, demo clock (UTC) 2026-11-06 12:00:00 UTC Renewal deadline (calendar date) 2026-11-20 Synthetic demonstration case. Dated case history",
+        "file": null,
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Loading presenter controls",
+          "alert: The demo was restarted. Reload the page to continue.Reload",
+          "status: Loading readback"
+        ]
+      },
+      {
+        "name": "B-help-loading-narrow",
+        "fixture": "loading",
+        "width": "narrow",
+        "pass": true,
+        "text": "Loading your cases Reading the current demonstration run.",
+        "file": "B-help-loading-narrow.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Loading presenter controls",
+          "alert: The demo was restarted. Reload the page to continue.Reload",
+          "status: Loading readback",
+          "status: Loading renewal help.",
+          "status: Loading your casesReading the current demonstration run."
+        ]
+      },
+      {
+        "name": "B-help-unavailable-narrow",
+        "fixture": "unavailable",
+        "width": "narrow",
+        "pass": true,
+        "text": "Renewal help is unavailable Synthetic unavailable example. Refresh cases",
+        "file": "B-help-unavailable-narrow.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Loading presenter controls",
+          "alert: The demo was restarted. Reload the page to continue.Reload",
+          "status: Loading readback",
+          "status: Renewal help is unavailable",
+          "alert: Renewal help is unavailableSynthetic unavailable example.Refresh cases"
+        ]
+      },
+      {
+        "name": "B-help-forbidden-narrow",
+        "fixture": "forbidden",
+        "width": "narrow",
+        "pass": true,
+        "text": "You cannot open these cases Synthetic forbidden example. Refresh cases",
+        "file": "B-help-forbidden-narrow.png",
+        "noOverflow": true,
+        "statusRegions": [
+          "status: Loading presenter controls",
+          "alert: The demo was restarted. Reload the page to continue.Reload",
+          "status: Loading readback",
+          "status: You cannot open these cases",
+          "alert: You cannot open these casesSynthetic forbidden example.Refresh cases"
+        ]
+      }
+    ],
+    "C": [
+      {
+        "name": "C-live",
+        "pass": true,
+        "steps": {
+          "askFocus": {
+            "tag": "TEXTAREA",
+            "id": "gcsp-help-1-reason",
+            "text": "What do you need help with?",
+            "outline": "solid 2px rgb(2, 145, 183)",
+            "boxShadow": "none",
+            "visibleIndicator": true
+          },
+          "reviewFocus": {
+            "tag": "BUTTON",
+            "id": null,
+            "text": "Confirm help request",
+            "outline": "solid 2px rgb(2, 145, 183)",
+            "boxShadow": "none",
+            "visibleIndicator": true
+          },
+          "step1": {
+            "card": {
+              "heading": "Open",
+              "facts": [
+                "Case reference: renewal-6a15573151e079ae656c29d6c6a307294bf0b9ee",
+                "Owner: Scheme team",
+                "Owner role: Scheme team",
+                "Reason: My replacement car may not arrive before my contract ends. Please review my options.",
+                "Latest update: My replacement car may not arrive before my contract ends. Please review my options.",
+                "Opened from: Help request",
+                "Next action: Scheme team to review your renewal and contact you.",
+                "Due, demo clock (UTC): 2026-11-06 09:30:00 UTC",
+                "Renewal deadline (calendar date): 2026-12-01",
+                "Demo clock (UTC): 2026-11-05 09:30:00 UTC",
+                "Actor: You",
+                "Role: Employee"
+              ],
+              "remedyFacts": [],
+              "remedyHeading": null,
+              "historyEvents": 1,
+              "historyDates": [
+                "2026-11-05 09:30:00 UTC"
+              ],
+              "historyActors": [
+                "Actor: You / Role: Employee / Status: Open"
+              ]
+            },
+            "status": "Your help request was recorded.",
+            "focus": {
+              "tag": "P",
+              "id": null,
+              "text": "Your help request was recorded.",
+              "outline": "solid 2px rgb(2, 145, 183)",
+              "boxShadow": "none",
+              "visibleIndicator": true
+            },
+            "writes": [
+              "POST /api/gcsp/cases 200"
+            ],
+            "step": "C1-paula-help-request",
+            "requests": 12,
+            "setupWrites": [
+              "POST /gcsp/access 303"
+            ],
+            "nonOk": []
+          },
+          "options": {
+            "statusOptions": [
+              "Choose the next status",
+              "In progress",
+              "Closed"
+            ],
+            "remedyOptions": [
+              "Keep the current remedy, if any",
+              "Alternative car: Synthetic 3 Series Saloon 320i",
+              "Alternative car: Synthetic 3 Series Touring 320i",
+              "Alternative car: Synthetic 3 Series Saloon 320i",
+              "Manual decision"
+            ],
+            "unavailableAndExplanatoryNotes": [
+              "One preference change: A current confirmed brief and an unused recorded decline are required.",
+              "Reviewed later release: No reviewed future release date and source are recorded for this case.",
+              "Contract extension: The current policy does not permit a contract extension."
+            ]
+          },
+          "step2a": {
+            "confirmation": [
+              "Next status: In progress",
+              "Reason: Scheme team has started reviewing the renewal.",
+              "Next action: Review remedies for Paula.",
+              "Due, demo clock (UTC): 2026-11-06 12:00:00 UTC",
+              "Remedy: Current remedy retained"
+            ],
+            "statusMessage": "The case update was recorded.",
+            "focus": {
+              "tag": "P",
+              "id": null,
+              "text": "The case update was recorded.",
+              "outline": "solid 2px rgb(2, 145, 183)",
+              "boxShadow": "none",
+              "visibleIndicator": true
+            },
+            "posts": [
+              "POST /api/gcsp/scheme-team/cases/update 200"
+            ],
+            "writes": [
+              "POST /api/gcsp/scheme-team/cases/update 200"
+            ],
+            "step": "C2a-greg-in-progress",
+            "requests": 3,
+            "setupWrites": [],
+            "nonOk": []
+          },
+          "options2b": {
+            "statusOptions": [
+              "Choose the next status",
+              "Remedy proposed",
+              "Resolved",
+              "Closed"
+            ],
+            "remedyOptions": [
+              "Keep the current remedy, if any",
+              "Alternative car: Synthetic 3 Series Saloon 320i",
+              "Alternative car: Synthetic 3 Series Touring 320i",
+              "Alternative car: Synthetic 3 Series Saloon 320i",
+              "Manual decision"
+            ],
+            "notes": [
+              "One preference change: A current confirmed brief and an unused recorded decline are required.",
+              "Reviewed later release: No reviewed future release date and source are recorded for this case.",
+              "Contract extension: The current policy does not permit a contract extension."
+            ]
+          },
+          "chosenRemedy": "Alternative car: Synthetic 3 Series Saloon 320i",
+          "step2": {
+            "confirmation": [
+              "Next status: Remedy proposed",
+              "Reason: Scheme team reviewed the renewal and proposed a remedy.",
+              "Next action: Contact Paula about the proposed remedy.",
+              "Due, demo clock (UTC): 2026-11-07 12:00:00 UTC",
+              "Remedy: Alternative car",
+              "Proposed car: Synthetic 3 Series Saloon 320i",
+              "Exact car reference: 56bb28f6-1708-4d86-87c3-226c8f928886"
+            ],
+            "statusMessage": "The case update was recorded.",
+            "focus": {
+              "tag": "P",
+              "id": null,
+              "text": "The case update was recorded.",
+              "outline": "solid 2px rgb(2, 145, 183)",
+              "boxShadow": "none",
+              "visibleIndicator": true
+            },
+            "posts": [
+              "POST /api/gcsp/scheme-team/cases/update 200"
+            ],
+            "writes": [
+              "POST /api/gcsp/scheme-team/cases/update 200"
+            ],
+            "step": "C2b-greg-remedy",
+            "requests": 3,
+            "setupWrites": [],
+            "nonOk": [],
+            "queueRows": [
+              "Paula (fictional) | Remedy proposed | 2026-12-01"
+            ],
+            "workCard": {
+              "heading": "Remedy proposed",
+              "facts": [
+                "Case reference: renewal-6a15573151e079ae656c29d6c6a307294bf0b9ee",
+                "Owner: Scheme team",
+                "Owner role: Scheme team",
+                "Reason: My replacement car may not arrive before my contract ends. Please review my options.",
+                "Latest update: Scheme team reviewed the renewal and proposed a remedy.",
+                "Opened from: Help request",
+                "Next action: Contact Paula about the proposed remedy.",
+                "Due, demo clock (UTC): 2026-11-07 12:00:00 UTC",
+                "Renewal deadline (calendar date): 2026-12-01",
+                "Proposed car: Synthetic 3 Series Saloon 320i",
+                "Exact car reference: 56bb28f6-1708-4d86-87c3-226c8f928886",
+                "Demo clock (UTC): 2026-11-05 09:30:00 UTC"
+              ],
+              "remedyFacts": [
+                "Proposed car: Synthetic 3 Series Saloon 320i",
+                "Exact car reference: 56bb28f6-1708-4d86-87c3-226c8f928886"
+              ],
+              "remedyHeading": null,
+              "historyEvents": 3,
+              "historyDates": [
+                "2026-11-05 09:30:00 UTC",
+                "2026-11-05 09:30:00 UTC",
+                "2026-11-05 09:30:00 UTC"
+              ],
+              "historyActors": [
+                "Actor: demo-paula / Role: Employee / Status: Open",
+                "Actor: demo-greg / Role: Scheme team / Status: In progress",
+                "Actor: demo-greg / Role: Scheme team / Status: Remedy proposed"
+              ]
+            }
+          },
+          "step3": {
+            "card": {
+              "heading": "Remedy proposed",
+              "facts": [
+                "Case reference: renewal-6a15573151e079ae656c29d6c6a307294bf0b9ee",
+                "Owner: Scheme team",
+                "Owner role: Scheme team",
+                "Reason: My replacement car may not arrive before my contract ends. Please review my options.",
+                "Latest update: Scheme team reviewed the renewal and proposed a remedy.",
+                "Opened from: Help request",
+                "Next action: Contact Paula about the proposed remedy.",
+                "Due, demo clock (UTC): 2026-11-07 12:00:00 UTC",
+                "Renewal deadline (calendar date): 2026-12-01",
+                "Proposed car: Synthetic 3 Series Saloon 320i",
+                "Demo clock (UTC): 2026-11-05 09:30:00 UTC",
+                "Actor: You"
+              ],
+              "remedyFacts": [
+                "Proposed car: Synthetic 3 Series Saloon 320i"
+              ],
+              "remedyHeading": "Proposed remedy",
+              "historyEvents": 3,
+              "historyDates": [
+                "2026-11-05 09:30:00 UTC",
+                "2026-11-05 09:30:00 UTC",
+                "2026-11-05 09:30:00 UTC"
+              ],
+              "historyActors": [
+                "Actor: You / Role: Employee / Status: Open",
+                "Actor: Scheme team / Role: Scheme team / Status: In progress",
+                "Actor: Scheme team / Role: Scheme team / Status: Remedy proposed"
+              ]
+            },
+            "step": "C3-paula-reload",
+            "requests": 7,
+            "writes": [],
+            "setupWrites": [],
+            "nonOk": [],
+            "rawIdInRemedyFacts": false
+          },
+          "narrowQueueRows": [
+            "Paula (fictional) | Remedy proposed | 2026-12-01"
+          ],
+          "step4Options": {
+            "statusOptions": [
+              "Choose the next status",
+              "In progress",
+              "Resolved",
+              "Closed"
+            ]
+          },
+          "step4Confirmation": [
+            "Next status: Resolved",
+            "Reason: The scheme team recorded the remedy and resolved the case.",
+            "Next action: No further action needed.",
+            "Due, demo clock (UTC): 2026-11-08 12:00:00 UTC",
+            "Remedy: Current remedy retained"
+          ],
+          "step4": {
+            "statusMessage": "The case update was recorded.",
+            "posts": [
+              "POST /api/gcsp/scheme-team/cases/update 200"
+            ],
+            "writes": [
+              "POST /api/gcsp/scheme-team/cases/update 200"
+            ],
+            "rows": [
+              "Paula (fictional) | Resolved | 2026-12-01"
+            ],
+            "step": "C4-greg-resolve-narrow",
+            "requests": 11,
+            "setupWrites": [
+              "POST /gcsp/access 303",
+              "POST /api/gcsp/session/switch 200"
+            ],
+            "nonOk": [
+              "GET /api/gcsp/scheme-team/cases 403"
+            ]
+          },
+          "step5": {
+            "card": {
+              "heading": "Resolved",
+              "facts": [
+                "Case reference: renewal-6a15573151e079ae656c29d6c6a307294bf0b9ee",
+                "Owner: Scheme team",
+                "Owner role: Scheme team",
+                "Reason: My replacement car may not arrive before my contract ends. Please review my options.",
+                "Latest update: The scheme team recorded the remedy and resolved the case.",
+                "Opened from: Help request",
+                "Next action: No further action needed.",
+                "Due, demo clock (UTC): 2026-11-08 12:00:00 UTC",
+                "Renewal deadline (calendar date): 2026-12-01",
+                "Recorded car: Synthetic 3 Series Saloon 320i",
+                "Demo clock (UTC): 2026-11-05 09:30:00 UTC",
+                "Actor: You"
+              ],
+              "remedyFacts": [
+                "Recorded car: Synthetic 3 Series Saloon 320i"
+              ],
+              "remedyHeading": "Recorded remedy",
+              "historyEvents": 4,
+              "historyDates": [
+                "2026-11-05 09:30:00 UTC",
+                "2026-11-05 09:30:00 UTC",
+                "2026-11-05 09:30:00 UTC",
+                "2026-11-05 09:30:00 UTC"
+              ],
+              "historyActors": [
+                "Actor: You / Role: Employee / Status: Open",
+                "Actor: Scheme team / Role: Scheme team / Status: In progress",
+                "Actor: Scheme team / Role: Scheme team / Status: Remedy proposed",
+                "Actor: Scheme team / Role: Scheme team / Status: Resolved"
+              ]
+            },
+            "step": "C5-paula-reload-resolved",
+            "requests": 7,
+            "writes": [],
+            "setupWrites": [],
+            "nonOk": []
+          },
+          "step5Narrow": {
+            "card": {
+              "heading": "Resolved",
+              "facts": [
+                "Case reference: renewal-6a15573151e079ae656c29d6c6a307294bf0b9ee",
+                "Owner: Scheme team",
+                "Owner role: Scheme team",
+                "Reason: My replacement car may not arrive before my contract ends. Please review my options.",
+                "Latest update: The scheme team recorded the remedy and resolved the case.",
+                "Opened from: Help request",
+                "Next action: No further action needed.",
+                "Due, demo clock (UTC): 2026-11-08 12:00:00 UTC",
+                "Renewal deadline (calendar date): 2026-12-01",
+                "Recorded car: Synthetic 3 Series Saloon 320i",
+                "Demo clock (UTC): 2026-11-05 09:30:00 UTC",
+                "Actor: You"
+              ],
+              "remedyFacts": [
+                "Recorded car: Synthetic 3 Series Saloon 320i"
+              ],
+              "remedyHeading": "Recorded remedy",
+              "historyEvents": 4,
+              "historyDates": [
+                "2026-11-05 09:30:00 UTC",
+                "2026-11-05 09:30:00 UTC",
+                "2026-11-05 09:30:00 UTC",
+                "2026-11-05 09:30:00 UTC"
+              ],
+              "historyActors": [
+                "Actor: You / Role: Employee / Status: Open",
+                "Actor: Scheme team / Role: Scheme team / Status: In progress",
+                "Actor: Scheme team / Role: Scheme team / Status: Remedy proposed",
+                "Actor: Scheme team / Role: Scheme team / Status: Resolved"
+              ]
+            },
+            "step": "C5-paula-reload-resolved-narrow",
+            "requests": 17,
+            "writes": [],
+            "setupWrites": [
+              "POST /gcsp/access 303",
+              "POST /api/gcsp/session/switch 200"
+            ],
+            "nonOk": []
+          },
+          "forbidden": {
+            "text": "Refresh queue You cannot open these cases This person cannot perform that action. Retry queue",
+            "step": "C6-forbidden",
+            "requests": 4,
+            "writes": [],
+            "setupWrites": [
+              "POST /gcsp/access 303"
+            ],
+            "nonOk": [
+              "GET /api/gcsp/scheme-team/cases 403"
+            ]
+          }
+        },
+        "setup": {
+          "scenario": "main-successful-journey",
+          "resetStatus": "ok",
+          "startState": {
+            "status": "ok",
+            "briefVersion": 1,
+            "now": "2026-11-05T09:00:00.000Z"
+          },
+          "briefConfirmed": true,
+          "note": "Setup via API: access key, scenario reset (confirmed brief for Paula), principal switch. Every case interaction below is keyboard only.",
+          "releaseTick": {
+            "status": "ok",
+            "now": "2026-11-05T09:30:00.000Z",
+            "handlers": [
+              "stock-release",
+              "manual-claim-expiry",
+              "buddy-expiry",
+              "lifecycle-appointments",
+              "lifecycle-approvals",
+              "lifecycle-documents",
+              "lifecycle-return-appointments",
+              "renewal-risk-cases",
+              "selection-order-reconciliation",
+              "buddy-allocation",
+              "captured-outbox"
+            ]
+          }
+        },
+        "fucq150": {
+          "viewport": 1280,
+          "dashboardWidth": 1184,
+          "regionWidth": 1184,
+          "queueWidth": 1142,
+          "regionClass": "gcsp-greg-section gcsp-greg-region",
+          "regionParentClass": "gcsp-greg-regions",
+          "parentDisplay": "grid",
+          "parentColumns": "227.188px 227.203px 227.203px 227.203px 227.203px",
+          "regionGridColumn": "1 / -1",
+          "regionSpansDashboard": true
+        },
+        "caseId": "renewal-6a15573151e079ae656c29d6c6a307294bf0b9ee",
+        "fucq150Pass": true,
+        "perStep": [
+          {
+            "step": "C1-paula-help-request",
+            "requests": 12,
+            "writes": [
+              "POST /api/gcsp/cases 200"
+            ],
+            "setupWrites": [
+              "POST /gcsp/access 303"
+            ],
+            "nonOk": []
+          },
+          {
+            "step": "C2a-greg-in-progress",
+            "requests": 3,
+            "writes": [
+              "POST /api/gcsp/scheme-team/cases/update 200"
+            ],
+            "setupWrites": [],
+            "nonOk": []
+          },
+          {
+            "step": "C2b-greg-remedy",
+            "requests": 3,
+            "writes": [
+              "POST /api/gcsp/scheme-team/cases/update 200"
+            ],
+            "setupWrites": [],
+            "nonOk": []
+          },
+          {
+            "step": "C3-paula-reload",
+            "requests": 7,
+            "writes": [],
+            "setupWrites": [],
+            "nonOk": []
+          },
+          {
+            "step": "C4-greg-resolve-narrow",
+            "requests": 11,
+            "writes": [
+              "POST /api/gcsp/scheme-team/cases/update 200"
+            ],
+            "setupWrites": [
+              "POST /gcsp/access 303",
+              "POST /api/gcsp/session/switch 200"
+            ],
+            "nonOk": [
+              "GET /api/gcsp/scheme-team/cases 403"
+            ]
+          },
+          {
+            "step": "C5-paula-reload-resolved",
+            "requests": 7,
+            "writes": [],
+            "setupWrites": [],
+            "nonOk": []
+          },
+          {
+            "step": "C5-paula-reload-resolved-narrow",
+            "requests": 17,
+            "writes": [],
+            "setupWrites": [
+              "POST /gcsp/access 303",
+              "POST /api/gcsp/session/switch 200"
+            ],
+            "nonOk": []
+          },
+          {
+            "step": "C6-forbidden",
+            "requests": 4,
+            "writes": [],
+            "setupWrites": [
+              "POST /gcsp/access 303"
+            ],
+            "nonOk": [
+              "GET /api/gcsp/scheme-team/cases 403"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "captures": [
+    {
+      "name": "A-queue-populated-desktop",
+      "file": "A-queue-populated-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: 5 renewal cases loaded."
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Renewal casesRemedies need the scheme team’s decision. No specific next car or g",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "body": "Refresh queue Sort cases Deadline, active cases first Status, then deadline Renewal-risk cases Employee Renewal deadline (calendar date) Trigger or request Reason Status Owner Next action due, demo clock (UTC) Synthetic employee 3 2026-11-18 Help request My replacement may miss my contract end. Remedy proposed Scheme team 2026-11-06 12:00:00 UTC Synthetic employee 2 2026-11-19 Help request My repl",
+      "rows": [
+        "Synthetic employee 3 | Remedy proposed | 2026-11-18",
+        "Synthetic employee 2 | In progress | 2026-11-19",
+        "Synthetic employee 1 | Open | 2026-11-20",
+        "Synthetic employee 5 | Closed | 2026-11-16",
+        "Synthetic employee 4 | Resolved | 2026-11-17"
+      ]
+    },
+    {
+      "name": "A-queue-empty-desktop",
+      "file": "A-queue-empty-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: 0 renewal cases loaded.",
+        "status: No renewal casesThere are no renewal-risk cases in this demonstration run."
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Renewal casesRemedies need the scheme team’s decision. No specific next car or g",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "body": "Refresh queue No renewal cases There are no renewal-risk cases in this demonstration run."
+    },
+    {
+      "name": "A-queue-loading-desktop",
+      "file": "A-queue-loading-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Loading renewal cases.",
+        "status: Loading renewal casesReading the current demonstration run."
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Renewal casesRemedies need the scheme team’s decision. No specific next car or g",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "busy": "true",
+      "text": "Refresh queue\nLoading renewal cases\n\nReading the current demonstration run."
+    },
+    {
+      "name": "A-queue-unavailable-desktop",
+      "file": "A-queue-unavailable-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Renewal help is unavailable",
+        "alert: Renewal cases are unavailableSynthetic unavailable example.Retry queue"
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Renewal casesRemedies need the scheme team’s decision. No specific next car or g",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "body": "Refresh queue Renewal cases are unavailable Synthetic unavailable example. Retry queue"
+    },
+    {
+      "name": "A-queue-forbidden-desktop",
+      "file": "A-queue-forbidden-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: You cannot open these cases",
+        "alert: You cannot open these casesSynthetic forbidden example.Retry queue"
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Renewal casesRemedies need the scheme team’s decision. No specific next car or g",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "body": "Refresh queue You cannot open these cases Synthetic forbidden example. Retry queue"
+    },
+    {
+      "name": "A-queue-stale-run-desktop",
+      "file": "A-queue-stale-run-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Your demo run has changed",
+        "alert: Your demo run has changedSynthetic stale-run example.Retry queue"
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Renewal casesRemedies need the scheme team’s decision. No specific next car or g",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "body": "Refresh queue Your demo run has changed Synthetic stale-run example. Retry queue"
+    },
+    {
+      "name": "A-queue-unavailable-options-desktop",
+      "file": "A-queue-unavailable-options-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Current case options loaded."
+      ],
+      "focus": {
+        "tag": "P",
+        "id": null,
+        "text": "Current case options loaded.",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "body": "Refresh queue Sort cases Deadline, active cases first Status, then deadline Renewal-risk cases Employee Renewal deadline (calendar date) Trigger or request Reason Status Owner Next action due, demo clock (UTC) Synthetic employee 3 2026-11-18 Help request My replacement may miss my contract end. Remedy proposed Scheme team 2026-11-06 12:00:00 UTC Synthetic employee 2 2026-11-19 Help request My repl",
+      "rows": [
+        "Synthetic employee 3 | Remedy proposed | 2026-11-18",
+        "Synthetic employee 2 | In progress | 2026-11-19",
+        "Synthetic employee 1 | Open | 2026-11-20",
+        "Synthetic employee 5 | Closed | 2026-11-16",
+        "Synthetic employee 4 | Resolved | 2026-11-17"
+      ],
+      "unavailableNotes": [
+        "Suitable available cars: Unavailable in this synthetic example.",
+        "One preference change: Unavailable in this synthetic example.",
+        "Reviewed later release: Unavailable in this synthetic example.",
+        "Contract extension: Unavailable in this synthetic example."
+      ],
+      "remedyOptions": [
+        "Keep the current remedy, if any",
+        "Manual decision"
+      ]
+    },
+    {
+      "name": "A-queue-populated-narrow",
+      "file": "A-queue-populated-narrow.png",
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: 5 renewal cases loaded."
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Renewal casesRemedies need the scheme team’s decision. No specific next car or g",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "body": "Refresh queue Sort cases Deadline, active cases first Status, then deadline Renewal-risk cases Employee Renewal deadline (calendar date) Trigger or request Reason Status Owner Next action due, demo clock (UTC) Synthetic employee 3 2026-11-18 Help request My replacement may miss my contract end. Remedy proposed Scheme team 2026-11-06 12:00:00 UTC Synthetic employee 2 2026-11-19 Help request My repl",
+      "rows": [
+        "Synthetic employee 3 | Remedy proposed | 2026-11-18",
+        "Synthetic employee 2 | In progress | 2026-11-19",
+        "Synthetic employee 1 | Open | 2026-11-20",
+        "Synthetic employee 5 | Closed | 2026-11-16",
+        "Synthetic employee 4 | Resolved | 2026-11-17"
+      ]
+    },
+    {
+      "name": "A-queue-empty-narrow",
+      "file": "A-queue-empty-narrow.png",
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: 0 renewal cases loaded.",
+        "status: No renewal casesThere are no renewal-risk cases in this demonstration run."
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Renewal casesRemedies need the scheme team’s decision. No specific next car or g",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "body": "Refresh queue No renewal cases There are no renewal-risk cases in this demonstration run."
+    },
+    {
+      "name": "A-queue-loading-narrow",
+      "file": "A-queue-loading-narrow.png",
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Loading renewal cases.",
+        "status: Loading renewal casesReading the current demonstration run."
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Renewal casesRemedies need the scheme team’s decision. No specific next car or g",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "busy": "true",
+      "text": "Refresh queue\nLoading renewal cases\n\nReading the current demonstration run."
+    },
+    {
+      "name": "A-queue-unavailable-narrow",
+      "file": "A-queue-unavailable-narrow.png",
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Renewal help is unavailable",
+        "alert: Renewal cases are unavailableSynthetic unavailable example.Retry queue"
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Renewal casesRemedies need the scheme team’s decision. No specific next car or g",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "body": "Refresh queue Renewal cases are unavailable Synthetic unavailable example. Retry queue"
+    },
+    {
+      "name": "A-queue-forbidden-narrow",
+      "file": "A-queue-forbidden-narrow.png",
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: You cannot open these cases",
+        "alert: You cannot open these casesSynthetic forbidden example.Retry queue"
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Renewal casesRemedies need the scheme team’s decision. No specific next car or g",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "body": "Refresh queue You cannot open these cases Synthetic forbidden example. Retry queue"
+    },
+    {
+      "name": "A-queue-stale-run-narrow",
+      "file": "A-queue-stale-run-narrow.png",
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Your demo run has changed",
+        "alert: Your demo run has changedSynthetic stale-run example.Retry queue"
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Renewal casesRemedies need the scheme team’s decision. No specific next car or g",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "body": "Refresh queue Your demo run has changed Synthetic stale-run example. Retry queue"
+    },
+    {
+      "name": "A-queue-unavailable-options-narrow",
+      "file": "A-queue-unavailable-options-narrow.png",
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Current case options loaded."
+      ],
+      "focus": {
+        "tag": "P",
+        "id": null,
+        "text": "Current case options loaded.",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "body": "Refresh queue Sort cases Deadline, active cases first Status, then deadline Renewal-risk cases Employee Renewal deadline (calendar date) Trigger or request Reason Status Owner Next action due, demo clock (UTC) Synthetic employee 3 2026-11-18 Help request My replacement may miss my contract end. Remedy proposed Scheme team 2026-11-06 12:00:00 UTC Synthetic employee 2 2026-11-19 Help request My repl",
+      "rows": [
+        "Synthetic employee 3 | Remedy proposed | 2026-11-18",
+        "Synthetic employee 2 | In progress | 2026-11-19",
+        "Synthetic employee 1 | Open | 2026-11-20",
+        "Synthetic employee 5 | Closed | 2026-11-16",
+        "Synthetic employee 4 | Resolved | 2026-11-17"
+      ],
+      "unavailableNotes": [
+        "Suitable available cars: Unavailable in this synthetic example.",
+        "One preference change: Unavailable in this synthetic example.",
+        "Reviewed later release: Unavailable in this synthetic example.",
+        "Contract extension: Unavailable in this synthetic example."
+      ],
+      "remedyOptions": [
+        "Keep the current remedy, if any",
+        "Manual decision"
+      ]
+    },
+    {
+      "name": "A-sort-status-desktop",
+      "file": "A-sort-status-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: 5 renewal cases loaded."
+      ],
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-sort",
+        "text": "Sort cases",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "rows": [
+        "Synthetic employee 1 | Open | 2026-11-20",
+        "Synthetic employee 2 | In progress | 2026-11-19",
+        "Synthetic employee 3 | Remedy proposed | 2026-11-18",
+        "Synthetic employee 4 | Resolved | 2026-11-17",
+        "Synthetic employee 5 | Closed | 2026-11-16"
+      ],
+      "focusAfterSort": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-sort",
+        "text": "Sort cases",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      }
+    },
+    {
+      "name": "A-editor-empty-error-summary-desktop",
+      "file": "A-editor-empty-error-summary-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Current case options loaded."
+      ],
+      "focus": {
+        "tag": "H2",
+        "id": "gcsp-case-queue-1-errors-title",
+        "text": "Check your choices",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "summary": "Check your choices Choose a status supplied by the server. Describe why this case is changing."
+    },
+    {
+      "name": "A-editor-alternative-car-desktop",
+      "file": "A-editor-alternative-car-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Current case options loaded."
+      ],
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-remedyKey",
+        "text": "Remedy to record",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "remedyOptions": [
+        "Keep the current remedy, if any",
+        "Alternative car: Synthetic BMW iX1",
+        "Change body",
+        "Change range",
+        "Later release: 2026-11-10 09:15:00 UTC",
+        "Manual decision",
+        "Contract extension"
+      ],
+      "statusOptions": [
+        "Choose the next status",
+        "In progress",
+        "Remedy proposed"
+      ],
+      "editorFacts": [
+        "Proposed car: Synthetic BMW iX1",
+        "Exact car reference: synthetic-exact-car",
+        "Configuration: synthetic-configuration"
+      ],
+      "due": "2026-11-07T12:00"
+    },
+    {
+      "name": "A-review-alternative-car-desktop",
+      "file": "A-review-alternative-car-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Current case options loaded."
+      ],
+      "focus": {
+        "tag": "BUTTON",
+        "id": null,
+        "text": "Confirm case update",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "confirmationFacts": [
+        "Next status: Remedy proposed",
+        "Reason: Scheme team reviewed the synthetic renewal and found a suitable car.",
+        "Next action: Contact the employee about the proposed car.",
+        "Due, demo clock (UTC): 2026-11-07 12:00:00 UTC",
+        "Remedy: Alternative car",
+        "Proposed car: Synthetic BMW iX1",
+        "Exact car reference: synthetic-exact-car"
+      ]
+    },
+    {
+      "name": "A-review-preference-desktop",
+      "file": null,
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Current case options loaded."
+      ],
+      "focus": {
+        "tag": "BUTTON",
+        "id": null,
+        "text": "Confirm case update",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "confirmationFacts": [
+        "Next status: Remedy proposed",
+        "Reason: Scheme team reviewed the synthetic renewal and found a suitable car.",
+        "Next action: Contact the employee about the proposed car.",
+        "Due, demo clock (UTC): 2026-11-07 12:00:00 UTC",
+        "Remedy: One preference change",
+        "Preference: Body",
+        "Proposed value: suv",
+        "Employee confirmation: Required through the employee brief"
+      ]
+    },
+    {
+      "name": "A-table-keyboard-scroll-narrow",
+      "file": "A-table-keyboard-scroll-narrow.png",
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: 5 renewal cases loaded."
+      ],
+      "focus": {
+        "tag": "DIV",
+        "id": null,
+        "text": "Renewal-risk casesEmployeeRenewal deadline (calendar date)Trigger or requestReas",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "scrollLeft": 238
+    },
+    {
+      "name": "A-flow-failure-narrow",
+      "file": "A-flow-failure-narrow.png",
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: 5 renewal cases loaded."
+      ],
+      "focus": {
+        "tag": "DIV",
+        "id": null,
+        "text": "Renewal-risk casesEmployeeRenewal deadline (calendar date)Trigger or requestReas",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "error": "table region did not scroll with arrow keys at 375"
+    },
+    {
+      "name": "B-help-waiting-confirm-desktop",
+      "file": "B-help-waiting-confirm-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Loading presenter controls",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Loading readback"
+      ],
+      "focus": {
+        "tag": "BUTTON",
+        "id": null,
+        "text": "Confirm preference change",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "notes": [
+        "Body: estate → suv.",
+        "This confirms only this preference value in a new brief version. All other preferences, essentials and importance weights stay the same. It does not resolve your case or guarantee a car."
+      ]
+    },
+    {
+      "name": "B-help-waiting-desktop",
+      "file": "B-help-waiting-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Loading presenter controls",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Loading readback"
+      ],
+      "focus": {
+        "tag": "BUTTON",
+        "id": null,
+        "text": "Review body change",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "fixture": "waiting"
+    },
+    {
+      "name": "B-help-in-progress-desktop",
+      "file": "B-help-in-progress-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Loading presenter controls",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Loading readback"
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Skip to contentGroup Car Schemes PortalPRPaula RobinsonPaula RobinsonSynthetic r",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "fixture": "in-progress"
+    },
+    {
+      "name": "B-help-resolved-desktop",
+      "file": "B-help-resolved-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Loading presenter controls",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Loading readback"
+      ],
+      "focus": {
+        "tag": "SUMMARY",
+        "id": null,
+        "text": "Dated case history",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "fixture": "resolved"
+    },
+    {
+      "name": "B-help-closed-desktop",
+      "file": "B-help-closed-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Loading presenter controls",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Loading readback"
+      ],
+      "focus": {
+        "tag": "SUMMARY",
+        "id": null,
+        "text": "Dated case history",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "fixture": "closed"
+    },
+    {
+      "name": "B-help-trigger-desktop",
+      "file": "B-help-trigger-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Loading presenter controls",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Loading readback"
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Skip to contentGroup Car Schemes PortalPRPaula RobinsonPaula RobinsonSynthetic r",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "fixture": "trigger"
+    },
+    {
+      "name": "B-help-loading-desktop",
+      "file": "B-help-loading-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Loading presenter controls",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Loading readback",
+        "status: Loading renewal help.",
+        "status: Loading your casesReading the current demonstration run."
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Skip to contentGroup Car Schemes PortalPRPaula RobinsonPaula RobinsonSynthetic r",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "fixture": "loading"
+    },
+    {
+      "name": "B-help-unavailable-desktop",
+      "file": "B-help-unavailable-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Loading presenter controls",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Loading readback",
+        "status: Renewal help is unavailable",
+        "alert: Renewal help is unavailableSynthetic unavailable example.Refresh cases"
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Skip to contentGroup Car Schemes PortalPRPaula RobinsonPaula RobinsonSynthetic r",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "fixture": "unavailable"
+    },
+    {
+      "name": "B-help-forbidden-desktop",
+      "file": "B-help-forbidden-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Loading presenter controls",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Loading readback",
+        "status: You cannot open these cases",
+        "alert: You cannot open these casesSynthetic forbidden example.Refresh cases"
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Skip to contentGroup Car Schemes PortalPRPaula RobinsonPaula RobinsonSynthetic r",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "fixture": "forbidden"
+    },
+    {
+      "name": "B-help-waiting-confirm-narrow",
+      "file": "B-help-waiting-confirm-narrow.png",
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Loading presenter controls",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Loading readback"
+      ],
+      "focus": {
+        "tag": "BUTTON",
+        "id": null,
+        "text": "Confirm preference change",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "notes": [
+        "Body: estate → suv.",
+        "This confirms only this preference value in a new brief version. All other preferences, essentials and importance weights stay the same. It does not resolve your case or guarantee a car."
+      ]
+    },
+    {
+      "name": "B-help-waiting-narrow",
+      "file": "B-help-waiting-narrow.png",
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Loading presenter controls",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Loading readback"
+      ],
+      "focus": {
+        "tag": "BUTTON",
+        "id": null,
+        "text": "Review body change",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "fixture": "waiting"
+    },
+    {
+      "name": "B-help-in-progress-narrow",
+      "file": null,
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Loading presenter controls",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Loading readback"
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Skip to contentGroup Car Schemes PortalPRPaula RobinsonPaula RobinsonSynthetic r",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "fixture": "in-progress"
+    },
+    {
+      "name": "B-help-resolved-narrow",
+      "file": "B-help-resolved-narrow.png",
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Loading presenter controls",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Loading readback"
+      ],
+      "focus": {
+        "tag": "SUMMARY",
+        "id": null,
+        "text": "Dated case history",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "fixture": "resolved"
+    },
+    {
+      "name": "B-help-closed-narrow",
+      "file": "B-help-closed-narrow.png",
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Loading presenter controls",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Loading readback"
+      ],
+      "focus": {
+        "tag": "SUMMARY",
+        "id": null,
+        "text": "Dated case history",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "fixture": "closed"
+    },
+    {
+      "name": "B-help-trigger-narrow",
+      "file": null,
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Loading presenter controls",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Loading readback"
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Skip to contentGroup Car Schemes PortalPRPaula RobinsonPaula RobinsonSynthetic r",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "fixture": "trigger"
+    },
+    {
+      "name": "B-help-loading-narrow",
+      "file": "B-help-loading-narrow.png",
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Loading presenter controls",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Loading readback",
+        "status: Loading renewal help.",
+        "status: Loading your casesReading the current demonstration run."
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Skip to contentGroup Car Schemes PortalPRPaula RobinsonPaula RobinsonSynthetic r",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "fixture": "loading"
+    },
+    {
+      "name": "B-help-unavailable-narrow",
+      "file": "B-help-unavailable-narrow.png",
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Loading presenter controls",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Loading readback",
+        "status: Renewal help is unavailable",
+        "alert: Renewal help is unavailableSynthetic unavailable example.Refresh cases"
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Skip to contentGroup Car Schemes PortalPRPaula RobinsonPaula RobinsonSynthetic r",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "fixture": "unavailable"
+    },
+    {
+      "name": "B-help-forbidden-narrow",
+      "file": "B-help-forbidden-narrow.png",
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Loading presenter controls",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Loading readback",
+        "status: You cannot open these cases",
+        "alert: You cannot open these casesSynthetic forbidden example.Refresh cases"
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Skip to contentGroup Car Schemes PortalPRPaula RobinsonPaula RobinsonSynthetic r",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "fixture": "forbidden"
+    },
+    {
+      "name": "C1-paula-help-before",
+      "file": null,
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Presenter controls ready",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: No renewal caseHelp is available if you need the scheme team to review your renewal."
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Skip to contentGroup Car Schemes PortalPPaula (fictional)Paula (fictional)demo-b",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "note": "no case yet"
+    },
+    {
+      "name": "C1-paula-help-confirm",
+      "file": "C1-paula-help-confirm.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Presenter controls ready",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: No renewal caseHelp is available if you need the scheme team to review your renewal."
+      ],
+      "focus": {
+        "tag": "BUTTON",
+        "id": null,
+        "text": "Confirm help request",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0
+    },
+    {
+      "name": "C1-paula-help-confirmed",
+      "file": "C1-paula-help-confirmed.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Presenter controls ready",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Your help request was recorded."
+      ],
+      "focus": {
+        "tag": "P",
+        "id": null,
+        "text": "Your help request was recorded.",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "card": {
+        "heading": "Open",
+        "facts": [
+          "Case reference: renewal-6a15573151e079ae656c29d6c6a307294bf0b9ee",
+          "Owner: Scheme team",
+          "Owner role: Scheme team",
+          "Reason: My replacement car may not arrive before my contract ends. Please review my options.",
+          "Latest update: My replacement car may not arrive before my contract ends. Please review my options.",
+          "Opened from: Help request",
+          "Next action: Scheme team to review your renewal and contact you.",
+          "Due, demo clock (UTC): 2026-11-06 09:30:00 UTC",
+          "Renewal deadline (calendar date): 2026-12-01",
+          "Demo clock (UTC): 2026-11-05 09:30:00 UTC",
+          "Actor: You",
+          "Role: Employee"
+        ],
+        "remedyFacts": [],
+        "remedyHeading": null,
+        "historyEvents": 1,
+        "historyDates": [
+          "2026-11-05 09:30:00 UTC"
+        ],
+        "historyActors": [
+          "Actor: You / Role: Employee / Status: Open"
+        ]
+      }
+    },
+    {
+      "name": "C2-greg-dashboard-queue-desktop",
+      "file": "C2-greg-dashboard-queue-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Loading presenter controls",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Loading readback",
+        "status: Figures updated for 5 Nov 2026, 09:30 GMT.",
+        "status: Draft. Change values, then preview their effect.",
+        "status: Loading order requests.",
+        "status: Order plan updated for 5 Nov 2026, 09:30 GMT.",
+        "status: 1 renewal case loaded."
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Skip to contentGroup Car Schemes PortalGRGregGregScheme ordering lead, synthetic",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "fucq150": {
+        "viewport": 1280,
+        "dashboardWidth": 1184,
+        "regionWidth": 1184,
+        "queueWidth": 1142,
+        "regionClass": "gcsp-greg-section gcsp-greg-region",
+        "regionParentClass": "gcsp-greg-regions",
+        "parentDisplay": "grid",
+        "parentColumns": "227.188px 227.203px 227.203px 227.203px 227.203px",
+        "regionGridColumn": "1 / -1",
+        "regionSpansDashboard": true
+      }
+    },
+    {
+      "name": "C2a-greg-review-in-progress-desktop",
+      "file": null,
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Presenter controls ready",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Figures updated for 5 Nov 2026, 09:30 GMT.",
+        "status: Draft. Change values, then preview their effect.",
+        "status: Orders up to date.",
+        "status: Order plan updated for 5 Nov 2026, 09:30 GMT.",
+        "status: Current case options loaded."
+      ],
+      "focus": {
+        "tag": "BUTTON",
+        "id": null,
+        "text": "Confirm case update",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "confirmation": [
+        "Next status: In progress",
+        "Reason: Scheme team has started reviewing the renewal.",
+        "Next action: Review remedies for Paula.",
+        "Due, demo clock (UTC): 2026-11-06 12:00:00 UTC",
+        "Remedy: Current remedy retained"
+      ]
+    },
+    {
+      "name": "C2b-greg-editor-remedy-desktop",
+      "file": null,
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Presenter controls ready",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Figures updated for 5 Nov 2026, 09:30 GMT.",
+        "status: Draft. Change values, then preview their effect.",
+        "status: Orders up to date.",
+        "status: Order plan updated for 5 Nov 2026, 09:30 GMT.",
+        "status: The case update was recorded."
+      ],
+      "focus": {
+        "tag": "SELECT",
+        "id": "gcsp-case-queue-1-remedyKey",
+        "text": "Remedy to record",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "remedyOptions": [
+        "Keep the current remedy, if any",
+        "Alternative car: Synthetic 3 Series Saloon 320i",
+        "Alternative car: Synthetic 3 Series Touring 320i",
+        "Alternative car: Synthetic 3 Series Saloon 320i",
+        "Manual decision"
+      ]
+    },
+    {
+      "name": "C2b-greg-review-remedy-desktop",
+      "file": "C2b-greg-review-remedy-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Presenter controls ready",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Figures updated for 5 Nov 2026, 09:30 GMT.",
+        "status: Draft. Change values, then preview their effect.",
+        "status: Orders up to date.",
+        "status: Order plan updated for 5 Nov 2026, 09:30 GMT.",
+        "status: The case update was recorded."
+      ],
+      "focus": {
+        "tag": "BUTTON",
+        "id": null,
+        "text": "Confirm case update",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "confirmation": [
+        "Next status: Remedy proposed",
+        "Reason: Scheme team reviewed the renewal and proposed a remedy.",
+        "Next action: Contact Paula about the proposed remedy.",
+        "Due, demo clock (UTC): 2026-11-07 12:00:00 UTC",
+        "Remedy: Alternative car",
+        "Proposed car: Synthetic 3 Series Saloon 320i",
+        "Exact car reference: 56bb28f6-1708-4d86-87c3-226c8f928886"
+      ]
+    },
+    {
+      "name": "C2b-greg-after-confirm-desktop",
+      "file": "C2b-greg-after-confirm-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Presenter controls ready",
+        "alert: The demo was restarted. Reload the page to continue.Reload",
+        "status: Figures updated for 5 Nov 2026, 09:30 GMT.",
+        "status: Draft. Change values, then preview their effect.",
+        "status: Orders up to date.",
+        "status: Order plan updated for 5 Nov 2026, 09:30 GMT.",
+        "status: The case update was recorded."
+      ],
+      "focus": {
+        "tag": "P",
+        "id": null,
+        "text": "The case update was recorded.",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "statusMessage": "The case update was recorded."
+    },
+    {
+      "name": "C3-paula-reload-persisted-desktop",
+      "file": "C3-paula-reload-persisted-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Presenter controls ready",
+        "alert: The demo was restarted. Reload the page to continue.Reload"
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Skip to contentGroup Car Schemes PortalPPaula (fictional)Paula (fictional)demo-b",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "card": {
+        "heading": "Remedy proposed",
+        "facts": [
+          "Case reference: renewal-6a15573151e079ae656c29d6c6a307294bf0b9ee",
+          "Owner: Scheme team",
+          "Owner role: Scheme team",
+          "Reason: My replacement car may not arrive before my contract ends. Please review my options.",
+          "Latest update: Scheme team reviewed the renewal and proposed a remedy.",
+          "Opened from: Help request",
+          "Next action: Contact Paula about the proposed remedy.",
+          "Due, demo clock (UTC): 2026-11-07 12:00:00 UTC",
+          "Renewal deadline (calendar date): 2026-12-01",
+          "Proposed car: Synthetic 3 Series Saloon 320i",
+          "Demo clock (UTC): 2026-11-05 09:30:00 UTC",
+          "Actor: You"
+        ],
+        "remedyFacts": [
+          "Proposed car: Synthetic 3 Series Saloon 320i"
+        ],
+        "remedyHeading": "Proposed remedy",
+        "historyEvents": 3,
+        "historyDates": [
+          "2026-11-05 09:30:00 UTC",
+          "2026-11-05 09:30:00 UTC",
+          "2026-11-05 09:30:00 UTC"
+        ],
+        "historyActors": [
+          "Actor: You / Role: Employee / Status: Open",
+          "Actor: Scheme team / Role: Scheme team / Status: In progress",
+          "Actor: Scheme team / Role: Scheme team / Status: Remedy proposed"
+        ]
+      }
+    },
+    {
+      "name": "C4-greg-queue-narrow",
+      "file": "C4-greg-queue-narrow.png",
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: 1 renewal case loaded."
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Renewal casesRemedies need the scheme team’s decision. No specific next car or g",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "rows": [
+        "Paula (fictional) | Remedy proposed | 2026-12-01"
+      ]
+    },
+    {
+      "name": "C4-greg-editor-narrow",
+      "file": "C4-greg-editor-narrow.png",
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Current case options loaded."
+      ],
+      "focus": {
+        "tag": "INPUT",
+        "id": "gcsp-case-queue-1-dueAt",
+        "text": "Next action due, demo clock (UTC)",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0
+    },
+    {
+      "name": "C4-greg-review-resolved-narrow",
+      "file": null,
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Current case options loaded."
+      ],
+      "focus": {
+        "tag": "BUTTON",
+        "id": null,
+        "text": "Confirm case update",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "confirmation": [
+        "Next status: Resolved",
+        "Reason: The scheme team recorded the remedy and resolved the case.",
+        "Next action: No further action needed.",
+        "Due, demo clock (UTC): 2026-11-08 12:00:00 UTC",
+        "Remedy: Current remedy retained"
+      ]
+    },
+    {
+      "name": "C4-greg-after-resolve-narrow",
+      "file": "C4-greg-after-resolve-narrow.png",
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: The case update was recorded."
+      ],
+      "focus": {
+        "tag": "P",
+        "id": null,
+        "text": "The case update was recorded.",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "statusMessage": "The case update was recorded."
+    },
+    {
+      "name": "C5-paula-reload-resolved-desktop",
+      "file": "C5-paula-reload-resolved-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Presenter controls ready",
+        "alert: The demo was restarted. Reload the page to continue.Reload"
+      ],
+      "focus": {
+        "tag": "SUMMARY",
+        "id": null,
+        "text": "Dated case history",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "card": {
+        "heading": "Resolved",
+        "facts": [
+          "Case reference: renewal-6a15573151e079ae656c29d6c6a307294bf0b9ee",
+          "Owner: Scheme team",
+          "Owner role: Scheme team",
+          "Reason: My replacement car may not arrive before my contract ends. Please review my options.",
+          "Latest update: The scheme team recorded the remedy and resolved the case.",
+          "Opened from: Help request",
+          "Next action: No further action needed.",
+          "Due, demo clock (UTC): 2026-11-08 12:00:00 UTC",
+          "Renewal deadline (calendar date): 2026-12-01",
+          "Recorded car: Synthetic 3 Series Saloon 320i",
+          "Demo clock (UTC): 2026-11-05 09:30:00 UTC",
+          "Actor: You"
+        ],
+        "remedyFacts": [
+          "Recorded car: Synthetic 3 Series Saloon 320i"
+        ],
+        "remedyHeading": "Recorded remedy",
+        "historyEvents": 4,
+        "historyDates": [
+          "2026-11-05 09:30:00 UTC",
+          "2026-11-05 09:30:00 UTC",
+          "2026-11-05 09:30:00 UTC",
+          "2026-11-05 09:30:00 UTC"
+        ],
+        "historyActors": [
+          "Actor: You / Role: Employee / Status: Open",
+          "Actor: Scheme team / Role: Scheme team / Status: In progress",
+          "Actor: Scheme team / Role: Scheme team / Status: Remedy proposed",
+          "Actor: Scheme team / Role: Scheme team / Status: Resolved"
+        ]
+      }
+    },
+    {
+      "name": "C5-paula-reload-resolved-narrow",
+      "file": "C5-paula-reload-resolved-narrow.png",
+      "viewport": "375x812",
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: Presenter controls ready",
+        "alert: The demo was restarted. Reload the page to continue.Reload"
+      ],
+      "focus": {
+        "tag": "SUMMARY",
+        "id": null,
+        "text": "Dated case history",
+        "outline": "solid 2px rgb(2, 145, 183)",
+        "boxShadow": "none",
+        "visibleIndicator": true
+      },
+      "consoleErrors": 0,
+      "pageErrors": 0,
+      "card": {
+        "heading": "Resolved",
+        "facts": [
+          "Case reference: renewal-6a15573151e079ae656c29d6c6a307294bf0b9ee",
+          "Owner: Scheme team",
+          "Owner role: Scheme team",
+          "Reason: My replacement car may not arrive before my contract ends. Please review my options.",
+          "Latest update: The scheme team recorded the remedy and resolved the case.",
+          "Opened from: Help request",
+          "Next action: No further action needed.",
+          "Due, demo clock (UTC): 2026-11-08 12:00:00 UTC",
+          "Renewal deadline (calendar date): 2026-12-01",
+          "Recorded car: Synthetic 3 Series Saloon 320i",
+          "Demo clock (UTC): 2026-11-05 09:30:00 UTC",
+          "Actor: You"
+        ],
+        "remedyFacts": [
+          "Recorded car: Synthetic 3 Series Saloon 320i"
+        ],
+        "remedyHeading": "Recorded remedy",
+        "historyEvents": 4,
+        "historyDates": [
+          "2026-11-05 09:30:00 UTC",
+          "2026-11-05 09:30:00 UTC",
+          "2026-11-05 09:30:00 UTC",
+          "2026-11-05 09:30:00 UTC"
+        ],
+        "historyActors": [
+          "Actor: You / Role: Employee / Status: Open",
+          "Actor: Scheme team / Role: Scheme team / Status: In progress",
+          "Actor: Scheme team / Role: Scheme team / Status: Remedy proposed",
+          "Actor: Scheme team / Role: Scheme team / Status: Resolved"
+        ]
+      }
+    },
+    {
+      "name": "C6-paula-at-greg-queue-forbidden-desktop",
+      "file": "C6-paula-at-greg-queue-forbidden-desktop.png",
+      "viewport": "1280x900",
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "noOverflow": true,
+      "statusRegions": [
+        "status: You cannot open these cases",
+        "alert: You cannot open these casesThis person cannot perform that action.Retry queue"
+      ],
+      "focus": {
+        "tag": "BODY",
+        "id": null,
+        "text": "Renewal casesRemedies need the scheme team’s decision. No specific next car or g",
+        "outline": "none 3px rgb(0, 0, 0)",
+        "boxShadow": "none",
+        "visibleIndicator": false
+      },
+      "consoleErrors": 1,
+      "pageErrors": 0,
+      "text": "Refresh queue You cannot open these cases This person cannot perform that action. Retry queue"
+    }
+  ],
+  "keyboard": [
+    {
+      "step": "A-state-unavailable-options-desktop",
+      "to": "Case to work",
+      "presses": 4,
+      "dir": "Tab"
+    },
+    {
+      "step": "A-state-unavailable-options-desktop",
+      "select": "Case to work",
+      "chose": "Synthetic employee 1 · Open · 2026-11-20",
+      "typeaheadKeys": "SSS"
+    },
+    {
+      "step": "A-state-unavailable-options-desktop",
+      "to": "Open selected case",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "A-state-unavailable-options-narrow",
+      "to": "Case to work",
+      "presses": 4,
+      "dir": "Tab"
+    },
+    {
+      "step": "A-state-unavailable-options-narrow",
+      "select": "Case to work",
+      "chose": "Synthetic employee 1 · Open · 2026-11-20",
+      "typeaheadKeys": "SSS"
+    },
+    {
+      "step": "A-state-unavailable-options-narrow",
+      "to": "Open selected case",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "A-flow-desktop",
+      "to": "table scroll region",
+      "presses": 3,
+      "dir": "Tab"
+    },
+    {
+      "step": "A-flow-desktop",
+      "to": "Sort cases",
+      "presses": 4,
+      "dir": "Tab"
+    },
+    {
+      "step": "A-flow-desktop",
+      "select": "Sort cases",
+      "chose": "Status, then deadline",
+      "typeaheadKeys": "S"
+    },
+    {
+      "step": "A-flow-desktop",
+      "to": "Sort cases",
+      "presses": 0,
+      "dir": "Tab"
+    },
+    {
+      "step": "A-flow-desktop",
+      "select": "Sort cases",
+      "chose": "Deadline, active cases first",
+      "typeaheadKeys": "D"
+    },
+    {
+      "step": "A-flow-desktop",
+      "to": "Case to work",
+      "presses": 2,
+      "dir": "Tab"
+    },
+    {
+      "step": "A-flow-desktop",
+      "select": "Case to work",
+      "chose": "Synthetic employee 1 · Open · 2026-11-20",
+      "typeaheadKeys": "SSS"
+    },
+    {
+      "step": "A-flow-desktop",
+      "to": "Open selected case",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "A-flow-desktop",
+      "to": "Review case update (empty)",
+      "presses": 19,
+      "dir": "Tab"
+    },
+    {
+      "step": "A-flow-desktop",
+      "to": "Next case status",
+      "presses": 3,
+      "dir": "Tab"
+    },
+    {
+      "step": "A-flow-desktop",
+      "select": "Next case status",
+      "chose": "Remedy proposed",
+      "typeaheadKeys": "R"
+    },
+    {
+      "step": "A-flow-desktop",
+      "to": "Reason",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "A-flow-desktop",
+      "to": "Next action",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "A-flow-desktop",
+      "to": "Due",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "A-flow-desktop",
+      "to": "Remedy to record",
+      "presses": 2,
+      "dir": "Tab"
+    },
+    {
+      "step": "A-flow-desktop",
+      "select": "Remedy to record",
+      "chose": "Alternative car: Synthetic BMW iX1",
+      "typeaheadKeys": "A"
+    },
+    {
+      "step": "A-flow-desktop",
+      "to": "Review case update",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "A-flow-desktop",
+      "to": "Cancel update",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "A-flow-desktop",
+      "to": "Remedy to record",
+      "presses": 10,
+      "dir": "Tab"
+    },
+    {
+      "step": "A-flow-desktop",
+      "select": "Remedy to record",
+      "chose": "Change body",
+      "typeaheadKeys": "C"
+    },
+    {
+      "step": "A-flow-desktop",
+      "to": "Proposed preference value",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "A-flow-desktop",
+      "select": "Proposed preference value",
+      "chose": "suv",
+      "typeaheadKeys": "s"
+    },
+    {
+      "step": "A-flow-desktop",
+      "to": "Review case update (preference)",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "A-flow-desktop",
+      "to": "Cancel update (preference)",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "A-flow-narrow",
+      "to": "table scroll region",
+      "presses": 3,
+      "dir": "Tab"
+    },
+    {
+      "step": "B-waiting-desktop",
+      "to": "Review body change",
+      "presses": 10,
+      "dir": "Tab"
+    },
+    {
+      "step": "B-waiting-desktop",
+      "to": "Cancel preference change",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "B-resolved-desktop",
+      "to": "Dated case history",
+      "presses": 10,
+      "dir": "Tab"
+    },
+    {
+      "step": "B-closed-desktop",
+      "to": "Dated case history",
+      "presses": 10,
+      "dir": "Tab"
+    },
+    {
+      "step": "B-waiting-narrow",
+      "to": "Review body change",
+      "presses": 5,
+      "dir": "Tab"
+    },
+    {
+      "step": "B-waiting-narrow",
+      "to": "Cancel preference change",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "B-resolved-narrow",
+      "to": "Dated case history",
+      "presses": 5,
+      "dir": "Tab"
+    },
+    {
+      "step": "B-closed-narrow",
+      "to": "Dated case history",
+      "presses": 5,
+      "dir": "Tab"
+    },
+    {
+      "step": "C1-paula-help-request",
+      "to": "Get help with your renewal",
+      "presses": 10,
+      "dir": "Tab"
+    },
+    {
+      "step": "C1-paula-help-request",
+      "to": "Ask for help",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "C1-paula-help-request",
+      "to": "Review help request",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "C1-paula-help-request",
+      "to": "Confirm help request",
+      "presses": 0,
+      "dir": "Tab"
+    },
+    {
+      "step": "C2-greg-remedy",
+      "to": "Case to work",
+      "presses": 63,
+      "dir": "Tab"
+    },
+    {
+      "step": "C2-greg-remedy",
+      "select": "Case to work",
+      "chose": "Paula (fictional) · Open · 2026-12-01",
+      "typeaheadKeys": "P"
+    },
+    {
+      "step": "C2-greg-remedy",
+      "to": "Open selected case",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "C2a-greg-in-progress",
+      "to": "Next case status",
+      "presses": 8,
+      "dir": "Tab"
+    },
+    {
+      "step": "C2a-greg-in-progress",
+      "select": "Next case status",
+      "chose": "In progress",
+      "typeaheadKeys": "I"
+    },
+    {
+      "step": "C2a-greg-in-progress",
+      "to": "Reason",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "C2a-greg-in-progress",
+      "to": "Next action",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "C2a-greg-in-progress",
+      "to": "Due",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "C2a-greg-in-progress",
+      "to": "Review case update",
+      "presses": 3,
+      "dir": "Tab"
+    },
+    {
+      "step": "C2a-greg-in-progress",
+      "to": "Confirm case update",
+      "presses": 0,
+      "dir": "Tab"
+    },
+    {
+      "step": "C2b-greg-remedy",
+      "to": "Next case status",
+      "presses": 8,
+      "dir": "Tab"
+    },
+    {
+      "step": "C2b-greg-remedy",
+      "select": "Next case status",
+      "chose": "Remedy proposed",
+      "typeaheadKeys": "R"
+    },
+    {
+      "step": "C2b-greg-remedy",
+      "to": "Reason",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "C2b-greg-remedy",
+      "to": "Next action",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "C2b-greg-remedy",
+      "to": "Due",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "C2b-greg-remedy",
+      "to": "Remedy to record",
+      "presses": 2,
+      "dir": "Tab"
+    },
+    {
+      "step": "C2b-greg-remedy",
+      "select": "Remedy to record",
+      "chose": "Alternative car: Synthetic 3 Series Saloon 320i",
+      "typeaheadKeys": "A"
+    },
+    {
+      "step": "C2b-greg-remedy",
+      "to": "Review case update",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "C2b-greg-remedy",
+      "to": "Confirm case update",
+      "presses": 0,
+      "dir": "Tab"
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "to": "Case to work",
+      "presses": 4,
+      "dir": "Tab"
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "select": "Case to work",
+      "chose": "Paula (fictional) · Remedy proposed · 2026-12-01",
+      "typeaheadKeys": "P"
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "to": "Open selected case",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "to": "Next case status",
+      "presses": 8,
+      "dir": "Tab"
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "select": "Next case status",
+      "chose": "Resolved",
+      "typeaheadKeys": "R"
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "to": "Reason",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "to": "Next action",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "to": "Due",
+      "presses": 1,
+      "dir": "Tab"
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "to": "Review case update",
+      "presses": 3,
+      "dir": "Tab"
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "to": "Confirm case update",
+      "presses": 0,
+      "dir": "Tab"
+    },
+    {
+      "step": "C5-paula-reload-resolved",
+      "to": "Dated case history",
+      "presses": 11,
+      "dir": "Tab"
+    },
+    {
+      "step": "C5-paula-reload-resolved-narrow",
+      "to": "Dated case history",
+      "presses": 6,
+      "dir": "Tab"
+    }
+  ],
+  "network": [
+    {
+      "step": "A-state-populated-desktop",
+      "label": "A-queue-populated-desktop",
+      "method": "GET",
+      "path": "/gcsp-case-queue.html?fixture=populated",
+      "status": 200
+    },
+    {
+      "step": "A-state-empty-desktop",
+      "label": "A-queue-empty-desktop",
+      "method": "GET",
+      "path": "/gcsp-case-queue.html?fixture=empty",
+      "status": 200
+    },
+    {
+      "step": "A-state-loading-desktop",
+      "label": "A-queue-loading-desktop",
+      "method": "GET",
+      "path": "/gcsp-case-queue.html?fixture=loading",
+      "status": 200
+    },
+    {
+      "step": "A-state-unavailable-desktop",
+      "label": "A-queue-unavailable-desktop",
+      "method": "GET",
+      "path": "/gcsp-case-queue.html?fixture=unavailable",
+      "status": 200
+    },
+    {
+      "step": "A-state-forbidden-desktop",
+      "label": "A-queue-forbidden-desktop",
+      "method": "GET",
+      "path": "/gcsp-case-queue.html?fixture=forbidden",
+      "status": 200
+    },
+    {
+      "step": "A-state-stale-run-desktop",
+      "label": "A-queue-stale-run-desktop",
+      "method": "GET",
+      "path": "/gcsp-case-queue.html?fixture=stale-run",
+      "status": 200
+    },
+    {
+      "step": "A-state-unavailable-options-desktop",
+      "label": "A-queue-unavailable-options-desktop",
+      "method": "GET",
+      "path": "/gcsp-case-queue.html?fixture=unavailable-options",
+      "status": 200
+    },
+    {
+      "step": "A-state-populated-narrow",
+      "label": "A-queue-populated-narrow",
+      "method": "GET",
+      "path": "/gcsp-case-queue.html?fixture=populated",
+      "status": 200
+    },
+    {
+      "step": "A-state-empty-narrow",
+      "label": "A-queue-empty-narrow",
+      "method": "GET",
+      "path": "/gcsp-case-queue.html?fixture=empty",
+      "status": 200
+    },
+    {
+      "step": "A-state-loading-narrow",
+      "label": "A-queue-loading-narrow",
+      "method": "GET",
+      "path": "/gcsp-case-queue.html?fixture=loading",
+      "status": 200
+    },
+    {
+      "step": "A-state-unavailable-narrow",
+      "label": "A-queue-unavailable-narrow",
+      "method": "GET",
+      "path": "/gcsp-case-queue.html?fixture=unavailable",
+      "status": 200
+    },
+    {
+      "step": "A-state-forbidden-narrow",
+      "label": "A-queue-forbidden-narrow",
+      "method": "GET",
+      "path": "/gcsp-case-queue.html?fixture=forbidden",
+      "status": 200
+    },
+    {
+      "step": "A-state-stale-run-narrow",
+      "label": "A-queue-stale-run-narrow",
+      "method": "GET",
+      "path": "/gcsp-case-queue.html?fixture=stale-run",
+      "status": 200
+    },
+    {
+      "step": "A-state-unavailable-options-narrow",
+      "label": "A-queue-unavailable-options-narrow",
+      "method": "GET",
+      "path": "/gcsp-case-queue.html?fixture=unavailable-options",
+      "status": 200
+    },
+    {
+      "step": "A-flow-desktop",
+      "label": "A-flow-desktop",
+      "method": "GET",
+      "path": "/gcsp-case-queue.html?fixture=populated",
+      "status": 200
+    },
+    {
+      "step": "A-flow-narrow",
+      "label": "A-flow-narrow",
+      "method": "GET",
+      "path": "/gcsp-case-queue.html?fixture=populated",
+      "status": 200
+    },
+    {
+      "step": "B-waiting-desktop",
+      "label": "B-help-waiting-desktop",
+      "method": "GET",
+      "path": "/gcsp-help.html?fixture=waiting",
+      "status": 200
+    },
+    {
+      "step": "B-waiting-desktop",
+      "label": "B-help-waiting-desktop",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-in-progress-desktop",
+      "label": "B-help-in-progress-desktop",
+      "method": "GET",
+      "path": "/gcsp-help.html?fixture=in-progress",
+      "status": 200
+    },
+    {
+      "step": "B-in-progress-desktop",
+      "label": "B-help-in-progress-desktop",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-resolved-desktop",
+      "label": "B-help-resolved-desktop",
+      "method": "GET",
+      "path": "/gcsp-help.html?fixture=resolved",
+      "status": 200
+    },
+    {
+      "step": "B-resolved-desktop",
+      "label": "B-help-resolved-desktop",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-closed-desktop",
+      "label": "B-help-closed-desktop",
+      "method": "GET",
+      "path": "/gcsp-help.html?fixture=closed",
+      "status": 200
+    },
+    {
+      "step": "B-closed-desktop",
+      "label": "B-help-closed-desktop",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-trigger-desktop",
+      "label": "B-help-trigger-desktop",
+      "method": "GET",
+      "path": "/gcsp-help.html?fixture=trigger",
+      "status": 200
+    },
+    {
+      "step": "B-trigger-desktop",
+      "label": "B-help-trigger-desktop",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-loading-desktop",
+      "label": "B-help-loading-desktop",
+      "method": "GET",
+      "path": "/gcsp-help.html?fixture=loading",
+      "status": 200
+    },
+    {
+      "step": "B-loading-desktop",
+      "label": "B-help-loading-desktop",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-unavailable-desktop",
+      "label": "B-help-unavailable-desktop",
+      "method": "GET",
+      "path": "/gcsp-help.html?fixture=unavailable",
+      "status": 200
+    },
+    {
+      "step": "B-unavailable-desktop",
+      "label": "B-help-unavailable-desktop",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-forbidden-desktop",
+      "label": "B-help-forbidden-desktop",
+      "method": "GET",
+      "path": "/gcsp-help.html?fixture=forbidden",
+      "status": 200
+    },
+    {
+      "step": "B-forbidden-desktop",
+      "label": "B-help-forbidden-desktop",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-waiting-narrow",
+      "label": "B-help-waiting-narrow",
+      "method": "GET",
+      "path": "/gcsp-help.html?fixture=waiting",
+      "status": 200
+    },
+    {
+      "step": "B-waiting-narrow",
+      "label": "B-help-waiting-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-in-progress-narrow",
+      "label": "B-help-in-progress-narrow",
+      "method": "GET",
+      "path": "/gcsp-help.html?fixture=in-progress",
+      "status": 200
+    },
+    {
+      "step": "B-in-progress-narrow",
+      "label": "B-help-in-progress-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-resolved-narrow",
+      "label": "B-help-resolved-narrow",
+      "method": "GET",
+      "path": "/gcsp-help.html?fixture=resolved",
+      "status": 200
+    },
+    {
+      "step": "B-resolved-narrow",
+      "label": "B-help-resolved-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-closed-narrow",
+      "label": "B-help-closed-narrow",
+      "method": "GET",
+      "path": "/gcsp-help.html?fixture=closed",
+      "status": 200
+    },
+    {
+      "step": "B-closed-narrow",
+      "label": "B-help-closed-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-trigger-narrow",
+      "label": "B-help-trigger-narrow",
+      "method": "GET",
+      "path": "/gcsp-help.html?fixture=trigger",
+      "status": 200
+    },
+    {
+      "step": "B-trigger-narrow",
+      "label": "B-help-trigger-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-loading-narrow",
+      "label": "B-help-loading-narrow",
+      "method": "GET",
+      "path": "/gcsp-help.html?fixture=loading",
+      "status": 200
+    },
+    {
+      "step": "B-loading-narrow",
+      "label": "B-help-loading-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-unavailable-narrow",
+      "label": "B-help-unavailable-narrow",
+      "method": "GET",
+      "path": "/gcsp-help.html?fixture=unavailable",
+      "status": 200
+    },
+    {
+      "step": "B-unavailable-narrow",
+      "label": "B-help-unavailable-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-forbidden-narrow",
+      "label": "B-help-forbidden-narrow",
+      "method": "GET",
+      "path": "/gcsp-help.html?fixture=forbidden",
+      "status": 200
+    },
+    {
+      "step": "B-forbidden-narrow",
+      "label": "B-help-forbidden-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "C-setup",
+      "label": "presenter",
+      "method": "GET",
+      "path": "/gcsp/access?next=%2Fgcsp-presenter.html",
+      "status": 200
+    },
+    {
+      "step": "C-setup",
+      "label": "presenter",
+      "method": "POST",
+      "path": "/gcsp/access",
+      "status": 303
+    },
+    {
+      "step": "C-setup",
+      "label": "presenter",
+      "method": "GET",
+      "path": "/gcsp-presenter.html",
+      "status": 200
+    },
+    {
+      "step": "C-setup",
+      "label": "presenter",
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "status": 200
+    },
+    {
+      "step": "C-setup",
+      "label": "presenter",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 200
+    },
+    {
+      "step": "C-setup",
+      "label": "presenter",
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "status": 200
+    },
+    {
+      "step": "C-setup",
+      "label": "presenter",
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "status": 404
+    },
+    {
+      "step": "C-setup",
+      "label": "presenter",
+      "method": "GET",
+      "path": "/api/gcsp/offers/current",
+      "status": 200
+    },
+    {
+      "step": "C-setup",
+      "label": "presenter",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 200
+    },
+    {
+      "step": "C-setup",
+      "label": "presenter",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "status": 200
+    },
+    {
+      "step": "C-setup",
+      "label": "presenter",
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "status": 200
+    },
+    {
+      "step": "C-setup",
+      "label": "presenter",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "status": 200
+    },
+    {
+      "step": "C-setup",
+      "label": "presenter",
+      "method": "POST",
+      "path": "/api/gcsp/presenter/scenarios/reset",
+      "status": 200
+    },
+    {
+      "step": "C-setup",
+      "label": "presenter",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 200
+    },
+    {
+      "step": "C-setup",
+      "label": "presenter",
+      "method": "POST",
+      "path": "/api/gcsp/presenter/controls/tick",
+      "status": 200
+    },
+    {
+      "step": "C1-paula-help-request",
+      "label": "paula",
+      "method": "GET",
+      "path": "/gcsp/access?next=%2Fgcsp-help.html",
+      "status": 200
+    },
+    {
+      "step": "C1-paula-help-request",
+      "label": "paula",
+      "method": "POST",
+      "path": "/gcsp/access",
+      "status": 303
+    },
+    {
+      "step": "C1-paula-help-request",
+      "label": "paula",
+      "method": "GET",
+      "path": "/gcsp-help.html",
+      "status": 200
+    },
+    {
+      "step": "C1-paula-help-request",
+      "label": "paula",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 200
+    },
+    {
+      "step": "C1-paula-help-request",
+      "label": "paula",
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "status": 200
+    },
+    {
+      "step": "C1-paula-help-request",
+      "label": "paula",
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "status": 200
+    },
+    {
+      "step": "C1-paula-help-request",
+      "label": "paula",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "status": 200
+    },
+    {
+      "step": "C1-paula-help-request",
+      "label": "paula",
+      "method": "GET",
+      "path": "/api/gcsp/help",
+      "status": 200
+    },
+    {
+      "step": "C1-paula-help-request",
+      "label": "paula",
+      "method": "GET",
+      "path": "/api/gcsp/cases",
+      "status": 200
+    },
+    {
+      "step": "C1-paula-help-request",
+      "label": "paula",
+      "method": "POST",
+      "path": "/api/gcsp/cases",
+      "status": 200
+    },
+    {
+      "step": "C1-paula-help-request",
+      "label": "paula",
+      "method": "GET",
+      "path": "/api/gcsp/help",
+      "status": 200
+    },
+    {
+      "step": "C1-paula-help-request",
+      "label": "paula",
+      "method": "GET",
+      "path": "/api/gcsp/cases",
+      "status": 200
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/gcsp/access?next=%2Fgcsp-presenter.html",
+      "status": 200
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "POST",
+      "path": "/gcsp/access",
+      "status": 303
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/gcsp-presenter.html",
+      "status": 200
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "status": 200
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 200
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "status": 200
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "status": 404
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/offers/current",
+      "status": 200
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "status": 200
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "status": 200
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "POST",
+      "path": "/api/gcsp/session/switch",
+      "status": 200
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/offers/buddy-offer%3Ac62bc49612e55926a1ed31cd3bd59bdceecd3684bb02056f8e12c26ce1ac68d4?runId=demo-fdf4ae39515bcef2719e746e2e53c809",
+      "status": 200
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/gcsp-presenter.html",
+      "status": 200
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "status": 200
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 200
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/greg/policy",
+      "status": 200
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/greg/order-plan",
+      "status": 200
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/greg/demand",
+      "status": 200
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases",
+      "status": 200
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/greg/orders",
+      "status": 200
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "status": 200
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "status": 200
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases/options?caseId=renewal-6a15573151e079ae656c29d6c6a307294bf0b9ee",
+      "status": 200
+    },
+    {
+      "step": "C2a-greg-in-progress",
+      "label": "greg",
+      "method": "POST",
+      "path": "/api/gcsp/scheme-team/cases/update",
+      "status": 200
+    },
+    {
+      "step": "C2a-greg-in-progress",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases",
+      "status": 200
+    },
+    {
+      "step": "C2a-greg-in-progress",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases/options?caseId=renewal-6a15573151e079ae656c29d6c6a307294bf0b9ee",
+      "status": 200
+    },
+    {
+      "step": "C2b-greg-remedy",
+      "label": "greg",
+      "method": "POST",
+      "path": "/api/gcsp/scheme-team/cases/update",
+      "status": 200
+    },
+    {
+      "step": "C2b-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases",
+      "status": 200
+    },
+    {
+      "step": "C2b-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases/options?caseId=renewal-6a15573151e079ae656c29d6c6a307294bf0b9ee",
+      "status": 200
+    },
+    {
+      "step": "C3-paula-reload",
+      "label": "paula",
+      "method": "GET",
+      "path": "/gcsp-help.html",
+      "status": 200
+    },
+    {
+      "step": "C3-paula-reload",
+      "label": "paula",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 200
+    },
+    {
+      "step": "C3-paula-reload",
+      "label": "paula",
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "status": 200
+    },
+    {
+      "step": "C3-paula-reload",
+      "label": "paula",
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "status": 200
+    },
+    {
+      "step": "C3-paula-reload",
+      "label": "paula",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "status": 200
+    },
+    {
+      "step": "C3-paula-reload",
+      "label": "paula",
+      "method": "GET",
+      "path": "/api/gcsp/help",
+      "status": 200
+    },
+    {
+      "step": "C3-paula-reload",
+      "label": "paula",
+      "method": "GET",
+      "path": "/api/gcsp/cases",
+      "status": 200
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "label": "greg-narrow",
+      "method": "GET",
+      "path": "/gcsp/access?next=%2Fgcsp-case-queue.html",
+      "status": 200
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "label": "greg-narrow",
+      "method": "POST",
+      "path": "/gcsp/access",
+      "status": 303
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "label": "greg-narrow",
+      "method": "GET",
+      "path": "/gcsp-case-queue.html",
+      "status": 200
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "label": "greg-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases",
+      "status": 403
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "label": "greg-narrow",
+      "method": "POST",
+      "path": "/api/gcsp/session/switch",
+      "status": 200
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "label": "greg-narrow",
+      "method": "GET",
+      "path": "/gcsp-case-queue.html",
+      "status": 200
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "label": "greg-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases",
+      "status": 200
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "label": "greg-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases/options?caseId=renewal-6a15573151e079ae656c29d6c6a307294bf0b9ee",
+      "status": 200
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "label": "greg-narrow",
+      "method": "POST",
+      "path": "/api/gcsp/scheme-team/cases/update",
+      "status": 200
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "label": "greg-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases",
+      "status": 200
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "label": "greg-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases/options?caseId=renewal-6a15573151e079ae656c29d6c6a307294bf0b9ee",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved",
+      "label": "paula",
+      "method": "GET",
+      "path": "/gcsp-help.html",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved",
+      "label": "paula",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved",
+      "label": "paula",
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved",
+      "label": "paula",
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved",
+      "label": "paula",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved",
+      "label": "paula",
+      "method": "GET",
+      "path": "/api/gcsp/help",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved",
+      "label": "paula",
+      "method": "GET",
+      "path": "/api/gcsp/cases",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved-narrow",
+      "label": "paula-narrow",
+      "method": "GET",
+      "path": "/gcsp/access?next=%2Fgcsp-help.html",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved-narrow",
+      "label": "paula-narrow",
+      "method": "POST",
+      "path": "/gcsp/access",
+      "status": 303
+    },
+    {
+      "step": "C5-paula-reload-resolved-narrow",
+      "label": "paula-narrow",
+      "method": "GET",
+      "path": "/gcsp-help.html",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved-narrow",
+      "label": "paula-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved-narrow",
+      "label": "paula-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved-narrow",
+      "label": "paula-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved-narrow",
+      "label": "paula-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved-narrow",
+      "label": "paula-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/help",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved-narrow",
+      "label": "paula-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/cases",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved-narrow",
+      "label": "paula-narrow",
+      "method": "POST",
+      "path": "/api/gcsp/session/switch",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved-narrow",
+      "label": "paula-narrow",
+      "method": "GET",
+      "path": "/gcsp-help.html",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved-narrow",
+      "label": "paula-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved-narrow",
+      "label": "paula-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/manual/account",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved-narrow",
+      "label": "paula-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/context",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved-narrow",
+      "label": "paula-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/scenarios",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved-narrow",
+      "label": "paula-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/help",
+      "status": 200
+    },
+    {
+      "step": "C5-paula-reload-resolved-narrow",
+      "label": "paula-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/cases",
+      "status": 200
+    },
+    {
+      "step": "C6-forbidden",
+      "label": "paula-forbidden",
+      "method": "GET",
+      "path": "/gcsp/access?next=%2Fgcsp-case-queue.html",
+      "status": 200
+    },
+    {
+      "step": "C6-forbidden",
+      "label": "paula-forbidden",
+      "method": "POST",
+      "path": "/gcsp/access",
+      "status": 303
+    },
+    {
+      "step": "C6-forbidden",
+      "label": "paula-forbidden",
+      "method": "GET",
+      "path": "/gcsp-case-queue.html",
+      "status": 200
+    },
+    {
+      "step": "C6-forbidden",
+      "label": "paula-forbidden",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases",
+      "status": 403
+    }
+  ],
+  "external": [],
+  "consoleErrors": [
+    {
+      "step": "B-waiting-desktop",
+      "label": "B-help-waiting-desktop",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": "/api/gcsp/presenter/controls"
+    },
+    {
+      "step": "B-in-progress-desktop",
+      "label": "B-help-in-progress-desktop",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": "/api/gcsp/presenter/controls"
+    },
+    {
+      "step": "B-resolved-desktop",
+      "label": "B-help-resolved-desktop",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": "/api/gcsp/presenter/controls"
+    },
+    {
+      "step": "B-closed-desktop",
+      "label": "B-help-closed-desktop",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": "/api/gcsp/presenter/controls"
+    },
+    {
+      "step": "B-trigger-desktop",
+      "label": "B-help-trigger-desktop",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": "/api/gcsp/presenter/controls"
+    },
+    {
+      "step": "B-loading-desktop",
+      "label": "B-help-loading-desktop",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": "/api/gcsp/presenter/controls"
+    },
+    {
+      "step": "B-unavailable-desktop",
+      "label": "B-help-unavailable-desktop",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": "/api/gcsp/presenter/controls"
+    },
+    {
+      "step": "B-forbidden-desktop",
+      "label": "B-help-forbidden-desktop",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": "/api/gcsp/presenter/controls"
+    },
+    {
+      "step": "B-waiting-narrow",
+      "label": "B-help-waiting-narrow",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": "/api/gcsp/presenter/controls"
+    },
+    {
+      "step": "B-in-progress-narrow",
+      "label": "B-help-in-progress-narrow",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": "/api/gcsp/presenter/controls"
+    },
+    {
+      "step": "B-resolved-narrow",
+      "label": "B-help-resolved-narrow",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": "/api/gcsp/presenter/controls"
+    },
+    {
+      "step": "B-closed-narrow",
+      "label": "B-help-closed-narrow",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": "/api/gcsp/presenter/controls"
+    },
+    {
+      "step": "B-trigger-narrow",
+      "label": "B-help-trigger-narrow",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": "/api/gcsp/presenter/controls"
+    },
+    {
+      "step": "B-loading-narrow",
+      "label": "B-help-loading-narrow",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": "/api/gcsp/presenter/controls"
+    },
+    {
+      "step": "B-unavailable-narrow",
+      "label": "B-help-unavailable-narrow",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": "/api/gcsp/presenter/controls"
+    },
+    {
+      "step": "B-forbidden-narrow",
+      "label": "B-help-forbidden-narrow",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": "/api/gcsp/presenter/controls"
+    },
+    {
+      "step": "C-setup",
+      "label": "presenter",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": "/api/gcsp/manual/draft"
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "location": "/api/gcsp/manual/draft"
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "label": "greg-narrow",
+      "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)",
+      "location": "/api/gcsp/scheme-team/cases"
+    },
+    {
+      "step": "C6-forbidden",
+      "label": "paula-forbidden",
+      "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)",
+      "location": "/api/gcsp/scheme-team/cases"
+    }
+  ],
+  "pageErrors": [],
+  "defects": [],
+  "notes": [],
+  "finishedAt": "2026-11-08T16:37:16.288Z",
+  "totals": {
+    "screenshots": 55,
+    "external": 0,
+    "consoleErrors": 20,
+    "pageErrors": 0,
+    "nonOk": 20
+  },
+  "nonOkResponses": [
+    {
+      "step": "B-waiting-desktop",
+      "label": "B-help-waiting-desktop",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-in-progress-desktop",
+      "label": "B-help-in-progress-desktop",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-resolved-desktop",
+      "label": "B-help-resolved-desktop",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-closed-desktop",
+      "label": "B-help-closed-desktop",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-trigger-desktop",
+      "label": "B-help-trigger-desktop",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-loading-desktop",
+      "label": "B-help-loading-desktop",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-unavailable-desktop",
+      "label": "B-help-unavailable-desktop",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-forbidden-desktop",
+      "label": "B-help-forbidden-desktop",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-waiting-narrow",
+      "label": "B-help-waiting-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-in-progress-narrow",
+      "label": "B-help-in-progress-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-resolved-narrow",
+      "label": "B-help-resolved-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-closed-narrow",
+      "label": "B-help-closed-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-trigger-narrow",
+      "label": "B-help-trigger-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-loading-narrow",
+      "label": "B-help-loading-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-unavailable-narrow",
+      "label": "B-help-unavailable-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "B-forbidden-narrow",
+      "label": "B-help-forbidden-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/presenter/controls",
+      "status": 404
+    },
+    {
+      "step": "C-setup",
+      "label": "presenter",
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "status": 404
+    },
+    {
+      "step": "C2-greg-remedy",
+      "label": "greg",
+      "method": "GET",
+      "path": "/api/gcsp/manual/draft",
+      "status": 404
+    },
+    {
+      "step": "C4-greg-resolve-narrow",
+      "label": "greg-narrow",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases",
+      "status": 403
+    },
+    {
+      "step": "C6-forbidden",
+      "label": "paula-forbidden",
+      "method": "GET",
+      "path": "/api/gcsp/scheme-team/cases",
+      "status": 403
+    }
+  ]
+}
