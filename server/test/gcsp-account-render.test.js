@@ -501,3 +501,29 @@ test('account shows no order area without an order, on a failed list, or for ano
     assert.doesNotMatch(other.root.textContent, /Not this car/);
   } finally { other.destroy(); }
 });
+
+test('FUCQ-193: an accepted offer with its order in progress no longer offers "View your offer"', async () => {
+  const offers = (state) => async () => ({ status: 'ok', value: { offers: [{ offerId: 'offer-2', runId: 'run-1', state }, { offerId: 'offer-1', runId: 'run-1', state: 'declined' }] } });
+  const orders = orderAdapter();
+  const accepted = await domMount({ ...readOnlyAdapter('no-entitlement'), readOffers: offers('accepted'), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders });
+  try {
+    await settleOrder(accepted.root, (node) => node.querySelector('.gcsp-account-order .gcsp-order-number'));
+    assert.ok(accepted.root.querySelector('.gcsp-account-order'), 'order progress is shown');
+    assert.equal(findButton(accepted.root, 'View your offer'), undefined);
+    assert.equal(accepted.root.querySelector('[aria-label="Your car offer"]'), null);
+  } finally { accepted.destroy(); }
+  const pending = await domMount({ ...readOnlyAdapter(), readOffers: offers('pending') });
+  assert.ok(findButton(pending.root, 'View your offer'), 'a pending newest offer keeps its link'); pending.destroy();
+});
+
+test('FUCQ-193: the HTTP adapter reads the newest listed offer state, and a failed read keeps the link', async () => {
+  const listed = { status: 'ok', value: { offers: [{ offerId: 'offer-2', runId: 'run-1', createdAt: null }, { offerId: 'offer-1', runId: 'run-1', createdAt: null }] } };
+  const adapterFor = (offer) => { const urls = [];
+    return { urls, adapter: createAccountHttpAdapter({ fetchImpl: async (url) => { urls.push(url);
+      const body = url === '/api/gcsp/offers/current' ? listed : offer; return { ok: body.status === 'ok', status: 200, json: async () => body }; } }) }; };
+  const read = adapterFor({ status: 'ok', value: { offerId: 'offer-2', state: 'accepted' } });
+  assert.deepEqual(await read.adapter.readOffers(), { status: 'ok', value: { offers: [{ offerId: 'offer-2', runId: 'run-1', state: 'accepted' }, { offerId: 'offer-1', runId: 'run-1' }] } });
+  assert.deepEqual(read.urls, ['/api/gcsp/offers/current', '/api/gcsp/offers/offer-2?runId=run-1']);
+  const failed = adapterFor({ status: 'unavailable' });
+  assert.deepEqual(await failed.adapter.readOffers(), { status: 'ok', value: { offers: [{ offerId: 'offer-2', runId: 'run-1' }, { offerId: 'offer-1', runId: 'run-1' }] } });
+});
