@@ -134,3 +134,17 @@ test('decision and reason ports require explicit trusted-host opt-in', () => {
   const adapter = createOfferHttpAdapter({ enableDecisions: true, location: { href: 'https://example.test/gcsp/offer?offerId=one' } });
   assert.equal(typeof adapter.decide, 'function'); assert.equal(typeof adapter.readReasons, 'function');
 });
+
+test('a 401 with no status (lapsed access key) reads access-required; a status keeps its own result', async () => {
+  const href = 'https://example.test/gcsp/offer?offerId=one&runId=run';
+  for (const reply of [{ ok: false, status: 401, headers: { get: () => 'application/json' }, json: async () => ({ error: 'Unauthorized' }) },
+    { ok: false, status: 401, headers: { get: () => 'text/html' }, json: async () => { throw new SyntaxError('not json'); } }]) {
+    const { transport } = setup(href, async () => reply);
+    assert.deepEqual(await transport.read(), { status: 'access-required' });
+  }
+  for (const code of [401, 403]) {
+    const { transport } = setup(href, async () => ({ ...response({ status: 'forbidden' }, false), status: code }));
+    assert.equal((await transport.read()).status, 'forbidden');
+  }
+  assert.equal((await setup(href, async () => ({ ...response({ error: 'x' }, false), status: 500 })).transport.read()).status, 'unavailable');
+});

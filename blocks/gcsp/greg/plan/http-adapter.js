@@ -1,5 +1,7 @@
 // Browser transport for Greg's order plan (FUCQ-119 routes). The server owns role, run and numbers; this maps replies to view states.
 
+import { isAccessLapsed } from '../../kit/run-restarted.js';
+
 export const PLAN_MESSAGES = Object.freeze({
   unavailable: 'The order plan could not be loaded. Try again in a moment.',
   refused: 'Only the scheme ordering lead can open this dashboard. Switch to that session and try again.',
@@ -16,6 +18,7 @@ const validValue = (v) => object(v) && (text(v.submissionId) || (object(v.plan) 
 /** Pure: HTTP status and parsed JSON body -> { status: 'ready' | 'refused' | 'replan-needed' | 'invalid' | 'unavailable', ... }. */
 export function planOutcome(httpStatus, body) {
   if (httpStatus === 200 && body?.status === 'ok' && validValue(body.value)) return { status: 'ready', value: body.value };
+  if (isAccessLapsed(httpStatus, body)) return { status: 'access-required' };
   if (httpStatus === 401 || httpStatus === 403) return { status: 'refused', message: PLAN_MESSAGES.refused };
   if (body?.status === 'stale-run') return { status: 'refused', message: PLAN_MESSAGES.reset };
   if (httpStatus === 409 && body?.status === 'conflict' && body.code === 'replan-needed') {

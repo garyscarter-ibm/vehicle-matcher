@@ -150,3 +150,14 @@ test('a ticked accept sends the server digest and exactly the required declarati
   assert.equal(sent.length, 1); assert.equal(sent[0].termsDigest, 'digest-1'); assert.deepEqual(sent[0].declarations, { terms: true, return: true });
   assert.equal(c.snapshot().state, 'accepted'); c.destroy();
 });
+
+test('a lapsed access key reads access-lapsed, an unknown session restarted, with no actions; stale-run stays earlier-run', async () => {
+  for (const [status, expected] of [['access-required', 'access-lapsed'], ['unknown-session', 'restarted']]) {
+    let reads = 0;
+    const c = createOfferController({ read: async () => ++reads === 1 ? pending() : { status }, decide: async () => {} });
+    await c.refresh(); const state = await c.refresh();
+    assert.equal(state.state, expected); assert.equal(state.reference, undefined); assert.equal(state.canAccept, false); assert.equal(state.canDecline, false); c.destroy();
+  }
+  const c = createOfferController({ read: async () => ({ status: 'stale-run' }) });
+  assert.equal((await c.refresh()).state, 'earlier-run'); c.destroy();
+});

@@ -1,3 +1,5 @@
+import { isAccessLapsed } from '../../kit/run-restarted.js';
+
 // Browser transport for the bounded server-owned policy projection. No policy values originate here.
 const text = (v) => typeof v === 'string' && v.trim().length > 0;
 const integer = (v) => Number.isSafeInteger(v) && v >= 0;
@@ -35,6 +37,7 @@ const unavailable = () => ({ status: 'unavailable', message: 'Policy controls ar
 export function policyOutcome(httpStatus, body, action) {
   const validate = { readPolicy: validPolicy, preview: validPreview, publish: validPublished }[action];
   if (httpStatus === 200 && body?.status === 'ok' && validate?.(body.value)) return { status: 'ready', value: body.value };
+  if (isAccessLapsed(httpStatus, body)) return { status: 'access-required' };
   if ([401, 403].includes(httpStatus)) return { status: 'refused', message: 'Only Greg can preview or publish policy. Reopen the scheme ordering lead session.' };
   if (body?.status === 'stale-run') return { status: 'refused', message: 'The demo was reset. Reopen the scheme ordering lead session.' };
   if (['invalid', 'conflict', 'stale-version'].includes(body?.status)) {
@@ -52,7 +55,7 @@ export function createGregPublishHttpAdapter({ base = '', fetchImpl = globalThis
         headers: { Accept: 'application/json', ...(read ? {} : { 'Content-Type': 'application/json' }) },
         ...(read ? {} : { body: JSON.stringify(input) }),
       });
-      let body; try { body = await response.json(); } catch { return unavailable(); }
+      let body; try { body = await response.json(); } catch { if (response.status !== 401) return unavailable(); }
       return policyOutcome(response.status, body, action);
     } catch (error) { if (signal?.aborted) throw error; return unavailable(); }
   };

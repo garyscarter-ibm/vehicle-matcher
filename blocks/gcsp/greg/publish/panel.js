@@ -3,6 +3,7 @@ import { renderRangeSlider, formatSliderValue } from '../../../vehicle-matcher/m
 import { labelledField, errorSummary } from '../../kit/form-controls.js';
 import { dataTable } from '../../kit/data-table.js';
 import { metricTile } from '../../kit/metric-tile.js';
+import { isRunRestarted, runRestartedNotice } from '../../kit/run-restarted.js';
 import { validPolicy, validPreview, validPublished } from './http-adapter.js';
 
 let sequence = 0;
@@ -151,8 +152,10 @@ export function mountGregPublish(root, { adapter, commandId = () => globalThis.c
     catch { return { status: 'unavailable', message: 'The request could not be confirmed. Retry in a moment.' }; }
   }
   function failure(reply) {
-    const name = ['refused', 'rejected'].includes(reply?.status) ? reply.status : 'unavailable';
-    if (name === 'refused') { policy = null; form.hidden = true; }
+    const restarted = isRunRestarted(reply);
+    const name = restarted ? 'restarted' : ['refused', 'rejected'].includes(reply?.status) ? reply.status : 'unavailable';
+    if (name === 'refused' || restarted) { policy = null; form.hidden = true; }
+    if (restarted) { state(name, 'Demo restarted.'); results.replaceChildren(runRestartedNotice().root); return; }
     state(name, reply?.message || 'Policy controls are unavailable. Retry in a moment.');
     if (!policy) results.replaceChildren(statusScreen({ kicker: 'Policy', title: name === 'refused' ? 'Access refused' : 'Policy unavailable',
       message: message.textContent, role: 'alert' }));
@@ -234,7 +237,7 @@ export function mountGregPublish(root, { adapter, commandId = () => globalThis.c
         policyVersion: value.policyVersion, activation: value.activation.status } }));
     } else if (reply?.status === 'rejected') {
       original = null; preview = null; failure(reply);
-    } else if (reply?.status === 'refused') {
+    } else if (reply?.status === 'refused' || isRunRestarted(reply)) {
       preview = null; failure(reply);
     } else {
       state('unavailable', 'The publication could not be confirmed. Keep these values and retry the original publication safely.');

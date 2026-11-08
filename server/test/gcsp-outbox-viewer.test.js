@@ -333,3 +333,21 @@ test('safe provider error copy does not assert a new retry or deny an earlier am
     assert.doesNotMatch(copy.errorSentence(code), /nothing was sent|no email was sent/i);
   }
 });
+
+test('a 401 with no status (lapsed access key) reads access-required; a status keeps its refusal', async () => {
+  const { outcomeToState } = adapterMod;
+  for (const body of [{ error: 'Unauthorized' }, undefined, null]) assert.deepEqual(outcomeToState(401, body), { status: 'access-required' });
+  assert.equal(outcomeToState(403, { error: 'Forbidden' }).status, 'refused');
+  for (const body of [{ error: 'Unauthorized' }, undefined]) {
+    const adapter = adapterMod.createOutboxHttpAdapter({ fetchImpl: async () => ({ status: 401, json: async () => { if (body === undefined) throw new Error('bad json'); return body; } }) });
+    assert.deepEqual(await adapter.loadMessages(), { status: 'access-required' });
+  }
+});
+
+test('a lapsed access key shows the restart screen with Reload and no Retry', async () => {
+  const root = host(); const teardown = out.mountOutbox(root, { loadMessages: async () => ({ status: 'access-required' }) }); await tick();
+  const screen = root.querySelector('.gcsp-presenter-body .vm-status, .vm-status');
+  assert.equal(screen.getAttribute('role'), 'alert'); assert.match(screen.textContent, /Demo restarted/);
+  assert.deepEqual([...screen.querySelectorAll('.vm-btn')].map((b) => b.textContent), ['Reload']);
+  assert.doesNotMatch(root.textContent, /Captured emails are unavailable/); teardown();
+});

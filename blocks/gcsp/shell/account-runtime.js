@@ -1,4 +1,4 @@
-import { isRunRestarted } from '../kit/run-restarted.js';
+import { isAccessLapsed, isRunRestarted } from '../kit/run-restarted.js';
 
 // DOM-free projection of the existing trusted account endpoint for any GCSP shell.
 // `states` widens which account states identify the person; an ordered car leaves the slot `no-entitlement`.
@@ -10,7 +10,7 @@ export function createAccountHttpAdapter({ fetch: request = globalThis.fetch, ba
       });
       const found = await response.json();
       // A restart, or a lapsed access key (401 with no status), passes through so the shell stays quiet.
-      if (response.status === 401 && typeof found?.status !== 'string') return { status: 'access-required' };
+      if (isAccessLapsed(response.status, found)) return { status: 'access-required' };
       if (isRunRestarted(found)) return { status: found.status };
       if (!response.ok || found.status !== 'ok' || !states.includes(found.value?.state) || typeof found.value.account?.name !== 'string') return { status: 'unavailable' };
       return { status: 'ready', name: found.value.account.name,

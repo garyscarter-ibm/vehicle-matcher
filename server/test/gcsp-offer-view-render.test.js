@@ -323,3 +323,23 @@ test('mountOffer forwards the host order port to an accepted offer only', async 
   }
   assert.deepEqual(seen, [['accepted', sample.quote.orderUuid]]);
 });
+
+test('the restarted state shows the restart screen with a single Reload button and no Try again', () => {
+  const root = document.createElement('div'); document.body.append(root);
+  const view = createOfferView(root, {}); view.update({ state: 'restarted', canAccept: false, canDecline: false });
+  assert.match(root.textContent, /Demo restarted/); assert.deepEqual([...root.querySelectorAll('button')].map((b) => b.textContent), ['Reload']);
+  assert.doesNotMatch(root.textContent, /could not be loaded|Try again|Check current state/); assert.equal(root.querySelector('.vm-card'), null);
+  view.update({ state: 'error', canAccept: false, canDecline: false }); root.querySelector('[data-offer-action="refresh"]').focus();
+  view.update({ state: 'restarted', canAccept: false, canDecline: false });
+  assert.equal(document.activeElement?.textContent, 'Reload'); view.destroy(); root.remove();
+});
+
+test('a lapsed access key links to the access form, back to the account, since a reload of the open offer page cannot recover', () => {
+  const root = document.createElement('div'); document.body.append(root);
+  const view = createOfferView(root, {}); view.update({ state: 'error', canAccept: false, canDecline: false }); root.querySelector('[data-offer-action="refresh"]').focus();
+  view.update({ state: 'access-lapsed', canAccept: false, canDecline: false });
+  assert.match(root.textContent, /Demo access needed/); assert.match(root.textContent, /open this offer from your account/);
+  const link = root.querySelector('a.vm-btn'); assert.equal(link.textContent, 'Enter the access key'); assert.equal(link.getAttribute('href'), '/gcsp/access?next=%2Fgcsp-account.html');
+  assert.equal(document.activeElement, link); assert.equal(root.querySelectorAll('button').length, 0); assert.doesNotMatch(root.textContent, /Reload|could not be loaded|Try again/);
+  view.destroy(); root.remove();
+});

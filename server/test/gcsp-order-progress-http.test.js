@@ -65,3 +65,14 @@ test('the account loader is passed through unchanged for the shell', () => {
   const loadAccount = () => ({ status: 'ready' });
   assert.equal(createOrderProgressHttpAdapter({ fetch: async () => ({}), loadAccount }).loadAccount, loadAccount);
 });
+
+const lapsed = (status = 401, body = { error: 'Unauthorized' }) => async () => ({ ok: false, status, json: async () => { if (body === undefined) throw new SyntaxError('not json'); return body; } });
+test('a 401 with no status (lapsed access key) reads access-required; a status keeps its own result', async () => {
+  for (const body of [{ error: 'Unauthorized' }, undefined]) {
+    const adapter = createOrderProgressHttpAdapter({ fetch: lapsed(401, body) });
+    assert.deepEqual(await adapter.listOrders(), { status: 'access-required' });
+    assert.deepEqual(await adapter.requestAppointment({ orderUuid: 'o', slotId: 's' }), { status: 'access-required' });
+  }
+  for (const status of [401, 403]) assert.deepEqual(await createOrderProgressHttpAdapter({ fetch: lapsed(status, { status: 'forbidden' }) }).readDocuments(), { status: 'forbidden' });
+  assert.deepEqual(await createOrderProgressHttpAdapter({ fetch: lapsed(500, undefined) }).readDocuments(), { status: 'unavailable' });
+});

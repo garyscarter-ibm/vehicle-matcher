@@ -13,6 +13,7 @@ export function createManualReviewHttpAdapter({ base = '', fetchImpl = globalThi
     } catch { return unavailable('manual-review-transport-unavailable', write); }
     let envelope;
     try { envelope = await response.json(); } catch { return unavailable('manual-review-response-invalid', write, response.status); }
+    if (response.status === 401 && typeof envelope?.status !== 'string') return { status: 'access-required' };
     if (!envelope || typeof envelope !== 'object' || Array.isArray(envelope) || !statuses.has(envelope.status)
       || envelope.status === 'ok' && (response.status !== 200 || !envelope.value || typeof envelope.value !== 'object')
       || envelope.status === 'pending' && response.status !== 202
