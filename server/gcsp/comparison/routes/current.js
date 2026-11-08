@@ -96,7 +96,7 @@ export function createManualReplay(run, assumptions, actors, { afterRelease } = 
     if (!open.length) return [];
     const outcome = await run.claims.browseStock(person.context);
     // FUCQ-66 refuses ordering once no collection date fits its lead time before the contract end.
-    if (outcome.status === 'conflict' && outcome.reason === 'not-yet-eligible') { person.orderingClosedAt ??= iso(state.now); return []; }
+    if (outcome.status === 'conflict' && ['ordering-closed', 'not-yet-eligible'].includes(outcome.reason)) { person.orderingClosedAt ??= iso(state.now); return []; }
     const browsed = must(outcome, 'browse-stock');
     session.listing = new Map(browsed.cars.map((car) => [car.orderUuid, car.claimInput]));
     return open.filter((id) => session.listing.has(id));

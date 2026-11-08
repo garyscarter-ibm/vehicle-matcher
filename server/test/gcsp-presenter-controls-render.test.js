@@ -511,6 +511,31 @@ test('a stale-run acting context gives the restarted notice', async () => {
     { reload: () => reloads++ });
   await settle(); await f.control.refresh(); await settle(); assertRestarted(f, () => reloads); f.control.destroy();
 });
+test('an unknown-session readback after an authorized read shows the notice, keeps the controls visible and disabled', async () => {
+  let reads = 0; let reloads = 0;
+  const f = setup({ readControls: async () => ++reads === 1 ? ok(state()) : { status: 'unknown-session', reason: 'This session is not recognised.' } },
+    { reload: () => reloads++ });
+  await settle(); await f.control.refresh(); await settle();
+  assert.equal(f.control.root.hidden, false); assertRestarted(f, () => reloads);
+  assert.doesNotMatch(f.host.textContent, /unknown-session|not recognised/); f.control.destroy();
+});
+test('an unknown-session action reply shows the notice, never resends and reloads on request', async () => {
+  let reloads = 0; const f = setup({ tick: async (payload) => { f.calls.push(payload); return { status: 'unknown-session', reason: 'This session is not recognised.' }; } },
+    { reload: () => reloads++ });
+  await settle(); f.click('Tick'); await settle();
+  assert.equal(f.calls.length, 1); assertRestarted(f, () => reloads); await f.control.refresh(); await settle();
+  assert.equal(f.calls.length, 1); f.control.destroy();
+});
+test('FUCQ-198: the presenter adapter maps a status-less 401 to access-required and a later readback shows the notice', async () => {
+  const lapsed = http({ fetchImpl: async () => ({ ok: false, status: 401, json: async () => ({ error: 'Unauthorized' }) }) });
+  assert.deepEqual(await lapsed.readControls(), { status: 'access-required' });
+  assert.deepEqual(await lapsed.tick({ commandId: 'c' }), { status: 'access-required' });
+  const failed = http({ fetchImpl: async () => ({ ok: false, status: 500, json: async () => ({ error: 'x' }) }) });
+  assert.equal((await failed.readControls()).status, 'unavailable');
+  let reads = 0; let reloads = 0;
+  const f = setup({ readControls: async () => ++reads === 1 ? ok(state()) : lapsed.readControls() }, { reload: () => reloads++ });
+  await settle(); await f.control.refresh(); await settle(); assertRestarted(f, () => reloads); f.control.destroy();
+});
 test('failure messages lead with plain wording, never a raw status or code', async () => {
   for (const [reply, expected] of [[{ status: 'forbidden', code: 'raw-code' }, /Action not completed: Not permitted/],
     [{ status: 'conflict' }, /Changed elsewhere\. Refresh readback\./], [{ status: 'weird' }, /Action not completed: Not completed/]]) {

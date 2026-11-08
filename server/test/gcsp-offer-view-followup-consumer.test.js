@@ -206,7 +206,7 @@ test('current105 reload opens actual102 persisted decline in employee-only107 an
       mount(body, input) {
         assert.deepEqual(Object.keys(input).sort(), ['decisionId', 'signal']); assert.equal(input.decisionId, declined.followup.decisionId);
         signals.push(input.signal); mountCount += 1;
-        const cleanup = mountFollowupBody(body, { ...input, fetchImpl: employeeFetch, createCommandId: () => 'one-confirmed-change' });
+        const cleanup = mountFollowupBody(body, { ...input, hostRefresh: true, fetchImpl: employeeFetch, createCommandId: () => 'one-confirmed-change' });
         return () => { teardownCount += 1; cleanup(); };
       } } });
   };
@@ -215,7 +215,8 @@ test('current105 reload opens actual102 persisted decline in employee-only107 an
   assert.equal(mounted.snapshot().state, 'declined'); assert.deepEqual(mounted.snapshot().followup, declined.followup);
   assert.equal(publicOffer.expiresAt, deadline); assert.equal(digest(), beforeMount);
   assert.ok(calls.some((call) => call.path === '/api/gcsp/manual/account'));
-  assert.equal(mountCount, 1); const questionNode = root.querySelector('.gcsp-followup-question');
+  const refreshes = () => [...root.querySelectorAll('button')].filter((node) => node.textContent === 'Check current state').length;
+  assert.equal(refreshes(), 1); assert.equal(mountCount, 1); const questionNode = root.querySelector('.gcsp-followup-question');
   const option = [...questionNode.querySelectorAll('[role="radio"]')].find((node) => /SUV/i.test(node.textContent));
   assert.ok(option); option.click(); option.focus();
   const beforePoll = digest(); await mounted.refresh();
@@ -237,7 +238,7 @@ test('current105 reload opens actual102 persisted decline in employee-only107 an
   const afterSave = digest(); mount();
   await until(() => root.querySelector('[data-followup-saved]'));
   assert.equal(signals[0].aborted, true); assert.equal(teardownCount, 1); assert.equal(confirmations.length, 1);
-  assert.match(root.querySelector('[data-followup-saved]').textContent, /brief version 3/);
+  assert.match(root.querySelector('[data-followup-saved]').textContent, /brief version 3/); assert.equal(refreshes(), 1);
   assert.deepEqual(mounted.snapshot().followup, declined.followup); assert.equal(digest(), afterSave);
   assert.equal(calls.filter((call) => call.path.endsWith('/decision') && call.method === 'POST').length, 1);
   await checkpoint('confirmed-change-public-receipt-and-original-coordinate-saved-reload');

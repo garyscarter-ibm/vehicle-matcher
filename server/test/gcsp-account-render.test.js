@@ -86,7 +86,11 @@ test('all difficult account states retain typed failures and support ownership',
     if (envelope.status !== 'ok') assert.deepEqual(view.failure, envelope);
   }
   assert.equal(accountFixture('unknown'), null);
-  assert.equal(toAccountView({ status: 'stale-run', view: { supportOwner: 'employee', action: 'reopen-session' } }).state, 'refused');
+  for (const status of ['stale-run', 'unknown-session', 'access-required']) {
+    assert.equal(toAccountView({ status, view: { supportOwner: 'employee', action: 'reopen-session' } }).state, 'restarted');
+    assert.equal(toDraftView({ status }).state, 'restarted');
+  }
+  assert.equal(toAccountView({ status: 'forbidden' }).state, 'refused');
   assert.equal(toAccountView({ status: 'ok', value: { state: 'unknown-grade', actions: [] } }).state, 'unsupported-scheme');
 });
 
@@ -133,6 +137,17 @@ test('HTTP journey start refuses missing actions and refuses stale or failed rel
   assert.equal((await adapter.startJourney({ account, action, draft: { status: 'ok', value: { requiresRefresh: true } } })).status, 'stale-version');
   assert.equal((await adapter.startJourney({ account, action, draft: { status: 'unavailable' } })).status, 'unavailable');
   assert.equal(writes, 0);
+});
+
+test('FUCQ-198: a 401 without a status becomes access-required; one with a status passes through', async () => {
+  const gate = createAccountHttpAdapter({ fetchImpl: async () => response({ error: 'Unauthorized' }, 401) });
+  assert.deepEqual(await gate.readAccount(), { status: 'access-required' });
+  assert.deepEqual(await gate.readDraft(), { status: 'access-required' });
+  assert.deepEqual(await gate.saveDraft({ commandId: 'c' }), { status: 'access-required' });
+  const unknown = createAccountHttpAdapter({ fetchImpl: async () => response({ status: 'unknown-session' }, 401) });
+  assert.deepEqual(await unknown.readAccount(), { status: 'unknown-session' });
+  const broken = createAccountHttpAdapter({ fetchImpl: async () => response({ error: 'x' }, 500) });
+  assert.equal((await broken.readAccount()).status, 'unavailable');
 });
 
 test('transport and malformed HTTP failures never claim success; cancellation remains cancellation', async () => {
@@ -225,7 +240,7 @@ test('account composition preserves complete supplied facts, labelled details an
     for (const text of ['Approved', '2 February 1992', '2 Fictional Avenue', 'FAKE-CAR-BIKE', 'Car licence type', 'Bike licence type', '2032']) {
       assert.ok(drivers.textContent.includes(text), text);
     }
-    assert.ok(findDetail(root, 'pcs-ukfs-bmw (2 records)'));
+    assert.ok(findDetail(root, 'Scheme 2 (2 records)'));
     assert.match(root.textContent, /Not supplied/);
     assert.doesNotMatch(root.textContent, /\[object Object\]|undefined|NaN|Invalid Date/);
     // The shell's presenter bar (112fdfe2) stays hidden without a presenter session; the account itself has no controls.
@@ -282,8 +297,8 @@ test('distinct entitlement, HR, empty and failure states provide truthful action
       assert.equal(Boolean(findButton(root, 'Start a new order')), name === 'no-current-car');
       if (!['no-current-car', 'no-history'].includes(name)) assert.equal(findButton(root, 'Choose a replacement'), undefined);
       if (name === 'unsupported-scheme') {
-        const history = findDetail(root, 'choices-rr-production (1 record)');
-        assert.match(history.textContent, /current/);
+        const history = findDetail(root, 'Scheme 1 (1 record)');
+        assert.match(history.textContent, /StatusCurrent car/);
         assert.ok(history.querySelector('summary')); assert.equal(history.querySelectorAll('button').length, 1);
         assert.match(history.querySelector('button').textContent, /Print record/);
       }
@@ -295,6 +310,24 @@ test('distinct entitlement, HR, empty and failure states provide truthful action
       }
     } finally { destroy(); root.remove(); }
   }
+});
+
+test('a closed renewal window says it is too late to order, not to wait (FUCQ-200)', async () => {
+  const f = await setup();
+  const ref = { table: 'employees', key: { runId: f.context.runId, employeeId: f.context.employeeId } };
+  // Clock 2026-11-05 plus the 7-day minimum lead is past this window's last date.
+  assert.equal((await f.repository.transaction(f.context, { commandId: 'closed-window', inputDigest: inputDigest('closed-window') }, async (tx) => {
+    const found = await tx.get(ref); const manual = structuredClone(found.value.contract.manualContext);
+    Object.assign(manual.contracts[0], { earliestCollectionDate: '2026-11-01', latestCollectionDate: '2026-11-11' });
+    return tx.compareAndSwap(ref, found.value.version, { contract: { manualContext: manual } });
+  })).status, 'ok');
+  const { root, destroy } = await domMount(serviceAdapter(f));
+  try {
+    assert.match(root.textContent, /Too late to order before renewal/);
+    assert.match(root.textContent, /No collection date fits before your contract ends\./);
+    assert.doesNotMatch(root.textContent, /Replacement is not available yet/);
+    assert.equal(findButton(root, 'Choose a replacement'), undefined); assert.ok(findButton(root, 'Contact support'));
+  } finally { destroy(); root.remove(); }
 });
 
 test('guarded replacement reconciles draft, suppresses duplicate writes, emits exact saved context, and survives Back and reload', async () => {
@@ -330,7 +363,7 @@ test('guarded replacement reconciles draft, suppresses duplicate writes, emits e
     assert.equal((await f.service.readAccount(f.context)).value.currentContract.contractEndDate, '2026-12-01');
   } finally { destroy(); root.remove(); document.body.removeEventListener('gcsp:journey-start', listen); }
   const reloaded = await domMount(serviceAdapter(f));
-  try { assert.ok(findButton(reloaded.root, 'Resume saved journey')); assert.match(reloaded.root.textContent, /slot-paula/); }
+  try { assert.ok(findButton(reloaded.root, 'Resume saved journey')); assert.match(reloaded.root.querySelector('.gcsp-summary').textContent, /Current carFictional BMW 320i Touring/); }
   finally { reloaded.destroy(); reloaded.root.remove(); }
 });
 
@@ -345,12 +378,12 @@ test('failed draft reads and stale writes never emit success and refresh recover
     assert.equal(findButton(root, 'Choose a replacement').disabled, true);
     available = true; await destroy.refresh(); assert.equal(findButton(root, 'Choose a replacement').disabled, false);
     findButton(root, 'Choose a replacement').click(); await tick(); await tick();
-    assert.equal(starts, 1); assert.equal(events, 0); assert.match(root.querySelector('[role="alert"]').textContent, /context has changed/);
+    assert.equal(starts, 1); assert.equal(events, 0); assert.match(root.querySelector('.gcsp-account-body [role="alert"]').textContent, /context has changed/);
     assert.match(root.textContent, /Refresh and review/);
     const changed = accountFixture(); changed.value.account.name = 'Changed fictional employee';
     adapter.readAccount = async () => changed; await destroy.refresh();
     assert.match(root.querySelector('.gcsp-account-name').textContent, /Changed fictional employee/);
-    assert.equal(root.querySelector('[role="alert"]'), null);
+    assert.equal(root.querySelector('.gcsp-account-body [role="alert"]'), null);
   } finally { destroy(); root.remove(); }
 });
 
@@ -362,7 +395,7 @@ test('pending reads cannot render or emit after teardown; native history details
   let printed;
   const active = await domMount(readOnlyAdapter(), { print: (entry) => { printed = entry; assert.ok(entry.querySelector('details').open); } });
   try {
-    const history = findDetail(active.root, 'choices-fs-uk (1 record)'); history.open = true;
+    const history = findDetail(active.root, 'Scheme 1 (1 record)'); history.open = true;
     const entry = history.querySelector('article'); const print = [...entry.querySelectorAll('button')].find((node) => /Print/.test(node.textContent));
     print.focus(); assert.equal(document.activeElement, print); print.click();
     assert.equal(printed, entry); assert.equal(entry.querySelector('details').open, false);
@@ -400,7 +433,7 @@ test('fresh account review can replace a stale intent using current source and d
     });
     findButton(root, 'Back to account').click();
     findButton(root, 'Choose a replacement').click(); await tick(); await tick();
-    assert.equal(events, 1); assert.match(root.querySelector('[role="alert"]').textContent, /context has changed/);
+    assert.equal(events, 1); assert.match(root.querySelector('.gcsp-account-body [role="alert"]').textContent, /context has changed/);
     assert.equal(calls.filter((call) => call.method === 'POST').length, 1);
     await destroy.refresh();
     assert.equal(findButton(root, 'Resume saved journey'), undefined);
@@ -424,7 +457,7 @@ test('new-order action retains the exact permitted scheme and empty slot intent 
     findButton(root, 'Start a new order').click(); await tick(); await tick();
     assert.deepEqual(request.action, accountFixture('no-current-car').value.actions[0]);
     assert.equal(request.action.action, 'order'); assert.equal(request.action.oldContractId, null);
-    assert.equal(events, 0); assert.match(root.querySelector('[role="alert"]').textContent, /could not be saved/);
+    assert.equal(events, 0); assert.match(root.querySelector('.gcsp-account-body [role="alert"]').textContent, /could not be saved/);
     assert.equal(root.querySelectorAll('.gcsp-feature').length, 0);
   } finally { destroy(); root.remove(); }
 });
@@ -442,7 +475,7 @@ test('default print exposes only the chosen complete record and cleans its tempo
     assert.equal(record.querySelectorAll('button').length, 0);
   };
   try {
-    const history = findDetail(root, 'choices-fs-uk (1 record)'); history.open = true;
+    const history = findDetail(root, 'Scheme 1 (1 record)'); history.open = true;
     [...history.querySelectorAll('button')].find((item) => /Print/.test(item.textContent)).click();
     assert.equal(printCalls, 1); window.dispatchEvent(new window.Event('afterprint'));
     assert.equal(root.querySelector('.gcsp-account-print-record'), null);
@@ -571,4 +604,61 @@ test('FUCQ-195: the current-car card shows readable labels and no raw identifier
   const second = await domMount({ ...readOnlyAdapter(), readAccount: async () => input });
   try { assert.match(second.root.querySelector('.gcsp-feature').textContent, /Vehicle slotCompany car 1/); }
   finally { second.destroy(); second.root.remove(); }
+});
+
+function assertRestartedPage(root, reloads) {
+  const body = root.querySelector('.gcsp-account-body'); const press = (label) => [...body.querySelectorAll('button')].find((node) => node.textContent === label);
+  assert.equal(body.querySelector('h1').textContent, 'Your cars'); assert.match(body.textContent, /Demo restarted/);
+  assert.match(body.textContent, /Reload the page to continue/);
+  assert.doesNotMatch(body.textContent, /This account cannot be opened|Your account is unavailable|Journey could not be saved|stale-run|unknown-session|\u2014/);
+  assert.equal(press('Refresh account'), undefined); assert.equal(press('Choose a replacement'), undefined);
+  const reload = press('Reload'); assert.ok(reload); reload.click(); assert.equal(reloads(), 1);
+}
+test('FUCQ-198: a stale-run or unknown-session account read shows the restart screen with a working Reload', async () => {
+  for (const status of ['stale-run', 'unknown-session', 'access-required']) {
+    let reloads = 0;
+    const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => ({ status, reason: 'x' }) }, { reload: () => reloads++ });
+    try { assertRestartedPage(root, () => reloads); } finally { destroy(); root.remove(); }
+  }
+});
+test('FUCQ-198: a restarted draft read shows the restart screen', async () => {
+  let reloads = 0;
+  const { root, destroy } = await domMount({ ...readOnlyAdapter(), readDraft: async () => ({ status: 'unknown-session' }) }, { reload: () => reloads++ });
+  try { assertRestartedPage(root, () => reloads); } finally { destroy(); root.remove(); }
+});
+test('FUCQ-198: a start journey reply of stale-run shows the restart screen, not a save failure', async () => {
+  let reloads = 0;
+  const adapter = { ...readOnlyAdapter(), startJourney: async () => ({ status: 'stale-run' }) };
+  const { root, destroy } = await domMount(adapter, { reload: () => reloads++ });
+  try {
+    findButton(root, 'Choose a replacement').click(); await tick(); await tick();
+    assertRestartedPage(root, () => reloads);
+  } finally { destroy(); root.remove(); }
+});
+
+test('FUCQ-197: order history, saved journey and footer show words, not raw identifiers', async () => {
+  const input = accountFixture('multi-slot'); const value = input.value;
+  const entries = value.histories.flatMap((history) => history.entries);
+  const raw = [...new Set([...value.histories.map((history) => history.schemeId), ...entries.flatMap((entry) => [entry.contractId, entry.slotId]),
+    value.versions.employeeContract.sourceRef, value.versions.employeeContract.sourceVersion, value.asOf])];
+  const draft = { status: 'ok', value: { draftStage: 'intent', draftVersion: 3, choices: { mode: 'replacement',
+    oldContractId: value.currentContract.contractId, slotId: value.currentContract.slotId, schemeId: value.currentContract.schemeId } } };
+  const mounted = await domMount({ ...readOnlyAdapter(), readAccount: async () => input, readDraft: async () => draft });
+  try {
+    const body = mounted.root.querySelector('.gcsp-account-body');
+    const parts = ['.gcsp-summary', '.gcsp-account-histories', ':scope > .gcsp-synthetic'].map((selector) => body.querySelector(selector));
+    const shownText = parts.flatMap((part) => [...part.querySelectorAll('dd, p, h2, h3, summary, button'), part]).map((node) => node.textContent);
+    for (const id of raw) assert.ok(!shownText.some((text) => text.includes(id)), id);
+    const saved = parts[0].textContent;
+    assert.match(saved, /Current car/); assert.match(saved, new RegExp(value.currentContract.model));
+    assert.doesNotMatch(saved, /Mode|Scheme|Draft version|replacement\b/);
+    assert.ok(findDetail(body, 'Scheme 1 (1 record)')); assert.ok(findDetail(body, 'Scheme 2 (2 records)'));
+    assert.equal(parts[2].textContent, 'Synthetic example data. Account as of 5 November 2026 at 09:00.');
+  } finally { mounted.destroy(); mounted.root.remove(); }
+  value.histories[0].label = 'Fictional car scheme'; value.slots[0].label = 'Company car 1';
+  const labelled = await domMount({ ...readOnlyAdapter(), readAccount: async () => input, readDraft: async () => draft });
+  try {
+    assert.ok(findDetail(labelled.root, 'Fictional car scheme (1 record)'));
+    assert.match(labelled.root.querySelector('.gcsp-summary').textContent, /Vehicle slotCompany car 1/);
+  } finally { labelled.destroy(); labelled.root.remove(); }
 });

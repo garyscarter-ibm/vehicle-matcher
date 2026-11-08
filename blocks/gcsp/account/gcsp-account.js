@@ -2,6 +2,7 @@
 import { el, screenIntro, button, statusScreen, factList, formatTerm } from '../../vehicle-matcher/ui.js';
 import { mediaWell } from '../../vehicle-matcher/modes/result-card.js';
 import { mountEmployee } from '../employee/gcsp-employee.js';
+import { runRestartedScreen, isRunRestarted } from '../kit/run-restarted.js';
 import { countdown } from '../employee/representative-body.js';
 import { toAccountView, journeyIntent } from './account-view.js';
 import { createAccountHttpAdapter } from './http-adapter.js';
@@ -16,6 +17,7 @@ const failure = { status: 'unavailable', code: 'account-transport-unavailable' }
 const states = {
   'absent-hr-account': ['Your HR account is missing', 'Contact HR support to check your employee account.'],
   'not-yet-eligible': ['Replacement is not available yet', 'Your supplied collection window does not permit a replacement now.'],
+  'ordering-closed': ['Too late to order before renewal', 'No collection date fits before your contract ends. Scheme support can help with your renewal.'],
   'no-entitlement': ['No ordering entitlement', 'Scheme support can check your entitlement.'],
   'unsupported-scheme': ['Ordering is not supported for this scheme', 'Your supplied contracts and history remain available below.'],
   'no-contract': ['Your current contract is missing', 'Scheme support must check the contract linked to your vehicle slot.'],
@@ -43,7 +45,7 @@ function shown(value) {
 const label = (key) => key.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (letter) => letter.toUpperCase());
 const row = (name, value, unit) => ({ label: name, value: shown(value), ...(value != null && unit ? { unit } : {}) });
 const facts = (rows) => factList(rows, { className: 'gcsp-facts' });
-// Raw ids are not copy (FUCQ-195): statuses read as words, and a slot shows only with a supplied label.
+// Raw ids are not copy (FUCQ-195/197): statuses read as words; slots, schemes and sources show only a supplied label.
 const statusLabels = { current: 'Current car', returned: 'Returned' };
 const status = (value) => statusLabels[value] ?? (/^[a-z]+(-[a-z]+)*$/.test(value ?? '') ? sentence(value.replace(/-/g, ' ')) : value);
 const slotRows = (model, slotId) => {
@@ -58,6 +60,10 @@ const technicalLabels = { insuranceGroup: 'Insurance group', nedcCo2: 'NEDC CO2'
   fuelConsumptionCombinedWeighted: 'Fuel consumption, combined weighted', electricityConsumption: 'Electricity consumption',
   electricRange: 'Electric range', electricCityRange: 'Electric city range' };
 const technicalLabel = (key) => technicalLabels[key] ?? label(key);
+const asOf = (value) => Number.isNaN(Date.parse(value ?? '')) ? MISSING
+  : new Date(value).toLocaleString('en-GB', { dateStyle: 'long', timeStyle: 'short', timeZone: 'UTC' });
+const contractModel = (model, id) => [...model.currentContracts, ...model.histories.flatMap((history) => history.entries)]
+  .find((contract) => contract.contractId === id)?.model;
 const date = (value) => /^\d{4}-\d{2}-\d{2}$/.test(value ?? '')
   ? new Date(`${value}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : shown(value);
 
@@ -74,7 +80,7 @@ function contractDetails(contract, model) {
     'electricRange', 'electricCityRange', 'exterior', 'interior', 'price', 'options'];
   return details('Order, collection and vehicle details', facts([
     ...slotRows(model, contract.slotId), row('Order reference', contract.orderNumber ?? contract.orderReference), row('Order date', date(contract.orderDate)),
-    row('Order status', contract.orderStatus), row('Registration', contract.registration),
+    row('Order status', status(contract.orderStatus)), row('Registration', contract.registration),
     row('Delivered VIN', contract.vin), row('Chassis number', contract.chassisNumber), row('Registration date', date(contract.registrationDate)),
     row('Requested collection', date(contract.requestedCollectionDate)), row('Collection location', contract.collectionLocation),
     row('Actual collection', date(contract.actualCollectionDate)), row('Contract end', date(contract.contractEndDate)),
@@ -155,10 +161,14 @@ function orderStatus(order, host) {
 }
 
 // This is page layout rather than a stock decision card: a delivered car has no stock eligibility decision.
-export function renderAccountBody(main, { model, draft, offers = [], pending = false, message, journey = false, controls, orderHost, order } = {}) {
+export function renderAccountBody(main, { model, draft, offers = [], pending = false, message, journey = false, controls, orderHost, order, restarted = false, reload } = {}) {
   const wrap = el('div', 'vm gcsp-rep gcsp-account-body');
   wrap.setAttribute('aria-busy', String(pending));
   wrap.append(screenIntro({ title: journey ? 'Your saved journey' : 'Your cars', level: 1, className: 'gcsp-intro' }));
+  // A restarted demo needs a reload, so nothing else on the page can work.
+  if (restarted || model.state === 'restarted' || isRunRestarted(draft)) {
+    wrap.append(runRestartedScreen({ reload })); main.replaceChildren(wrap); return () => wrap.remove();
+  }
   const toolbar = el('div', 'gcsp-actions');
   toolbar.append(button({ label: 'Refresh account', variant: 'ghost', disabled: pending, onClick: controls.refresh }));
   wrap.append(toolbar);
@@ -186,8 +196,7 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
     saved.append(el('h2', 'gcsp-h2', choices.mode === 'replacement' ? 'Replacement journey saved' : 'New order journey saved'),
       el('p', 'gcsp-note', value.draftStage === 'intent' ? 'Your starting context is saved. No car has been selected or ordered.'
         : 'Your order choices are saved. This is not an order confirmation.'),
-      facts([row('Mode', choices.mode), row('Current contract', choices.oldContractId), row('Vehicle slot', choices.slotId),
-        row('Scheme', choices.schemeId), row('Draft version', value.draftVersion)]));
+      facts([row('Current car', contractModel(model, choices.oldContractId)), ...slotRows(model, choices.slotId)]));
     if (value.requiresRefresh) saved.append(el('p', 'gcsp-note', 'Your saved context has changed. Refresh, review the account below, then start the permitted journey again.'));
     else saved.append(button({ label: 'Resume saved journey', disabled: pending, onClick: controls.resume }));
     if (journey) saved.append(button({ label: 'Back to account', variant: 'ghost', disabled: pending, onClick: controls.back }));
@@ -215,8 +224,8 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
     const histories = el('section', 'gcsp-account-histories');
     histories.append(el('h2', 'gcsp-h2', 'Order history'));
     if (model.historyState === 'no-history') histories.append(el('p', 'gcsp-note', 'No order history.'));
-    for (const history of model.histories) {
-      const group = details(`${history.schemeId} (${history.count} record${history.count === 1 ? '' : 's'})`);
+    for (const [index, history] of model.histories.entries()) {
+      const group = details(`${history.label ?? `Scheme ${index + 1}`} (${history.count} record${history.count === 1 ? '' : 's'})`);
       if (!history.orderingSupported) group.append(el('p', 'gcsp-note', 'History is available. Ordering is not supported for this scheme.'));
       if (!history.count) group.append(el('p', 'gcsp-note', 'No orders in this scheme.'));
       for (const contract of history.entries) {
@@ -225,7 +234,7 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
           facts([row('Status', status(contract.status)), row('Driver', contract.driver?.name), ...slotRows(model, contract.slotId),
             row('Registration', contract.registration), row('Actual collection', date(contract.actualCollectionDate)),
             row('Contract end', date(contract.contractEndDate)), row('Returned', date(contract.returnedDate))]), contractDetails(contract, model),
-          button({ label: `Print record ${contract.orderNumber ?? contract.contractId}`, variant: 'ghost',
+          button({ label: contract.orderNumber ? `Print record ${contract.orderNumber}` : 'Print record', variant: 'ghost',
             onClick: () => controls.print(entry) }));
         const action = model.actions.find((item) => item.oldContractId === contract.contractId && item.slotId === contract.slotId
           && item.schemeId === history.schemeId);
@@ -236,16 +245,16 @@ export function renderAccountBody(main, { model, draft, offers = [], pending = f
     }
     wrap.append(histories);
     const provenance = model.versions?.employeeContract;
-    if (provenance) wrap.append(el('p', 'gcsp-synthetic', `${provenance.mode === 'synthetic' ? 'Synthetic example data. ' : ''}Source: ${provenance.sourceRef ?? MISSING}. Account as of ${model.asOf ?? MISSING}.`));
+    if (provenance) wrap.append(el('p', 'gcsp-synthetic', `${provenance.mode === 'synthetic' ? 'Synthetic example data. ' : ''}${provenance.label ? `Source: ${provenance.label}. ` : ''}Account as of ${asOf(model.asOf)}.`));
   }
   main.replaceChildren(wrap);
   return () => wrap.remove();
 }
 
-export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', onSupport, print, orderAdapter, helpAdapter } = {}) {
+export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand = 'bmw', onSupport, print, orderAdapter, helpAdapter, reload } = {}) {
   const abort = new AbortController();
   let envelope; let draft; let offers; let main; let pending = false; let message = null; let journey = false; let disposed = false;
-  let generation = 0; let teardown; let loading; let finishPrint; let orderHost; let orderRow; let stopOrder;
+  let generation = 0; let teardown; let loading; let finishPrint; let orderHost; let orderRow; let stopOrder; let restarted = false;
   const notify = (type, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(type,
     { detail, bubbles: true, composed: true }));
   const read = async (name) => {
@@ -286,7 +295,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   };
   function draw(focus = false) {
     if (!main || disposed) return;
-    renderAccountBody(main, { model: toAccountView(envelope), draft, offers, pending, message, journey, controls, orderHost, order: orderRow });
+    renderAccountBody(main, { model: toAccountView(envelope), draft, offers, pending, message, journey, controls, orderHost, order: orderRow, restarted, reload });
     if (focus) { const title = main.querySelector('h1'); title.tabIndex = -1; title.focus(); }
   }
   // Only a listed order shows the area; a failed list leaves the account as it was.
@@ -318,7 +327,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
   }
   async function refresh() {
     if (pending || disposed) return;
-    pending = true; message = null; draw();
+    pending = true; message = null; restarted = false; draw();
     teardown(); main = null;
     teardown = mountEmployee(root, { brand, ...shellAdapter });
     try { await loading; } finally { pending = false; draw(true); }
@@ -331,6 +340,7 @@ export function mountAccount(root, { adapter = createAccountHttpAdapter(), brand
       draftVersion: value.draftVersion, contextVersion: value.contextVersion });
   }
   function failed(result) {
+    if (isRunRestarted(result)) { restarted = true; message = null; return; }
     if (result?.code === 'read-only-visual-fixture') {
       message = { title: 'Read-only account preview', text: 'This example cannot save a journey. Open the connected demo to continue.' }; return;
     }

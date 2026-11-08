@@ -881,7 +881,7 @@ export function buildServer(deps = {}) {
     identity: deps.gcspIdentity, prepareEmployee: deps.gcspPrepareEmployee,
     routes: [...createEmployeeRecommendationRoutes(deps.gcspClock && deps.gcspRecommendations
       ? { ...deps.gcspRecommendations, time: deps.gcspClock } : deps.gcspRecommendations),
-    ...createClockRoutes(deps.gcspClock), ...createOutboxRoutes(deps.gcspOutbox), ...createScenarioRoutes(deps.gcspScenarios, deps.gcspClock),
+    ...createClockRoutes(deps.gcspClock, { afterReset: deps.gcspAfterReset }), ...createOutboxRoutes(deps.gcspOutbox), ...createScenarioRoutes(deps.gcspScenarios, deps.gcspClock),
     ...createPresenterControlsRoutes({ clock: deps.gcspClock, identity: deps.gcspIdentity, scenarios: deps.gcspScenarios }),
     ...createBriefRoutes(deps.gcspBrief, deps.gcspBriefEditor), ...createActivityRoutes(deps.gcspActivity), ...createCaseRoutes(deps.gcspCases), ...createManualContextRoutes(deps.gcspManualRead || deps.gcspManualClaims || deps.gcspManual), ...createManualClaimsRoutes(deps.gcspManualClaims), ...createManualOrderRoutes(deps.gcspManualOrder),
     ...createManualReviewDetailsRoutes(deps.gcspManualReview),

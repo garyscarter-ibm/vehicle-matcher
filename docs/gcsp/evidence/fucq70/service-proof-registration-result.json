@@ -1,0 +1,181 @@
+{
+  "schemaVersion": 1,
+  "story": "FUCQ-70",
+  "date": "2026-11-06",
+  "status": "failed-at-shared-probe-occupancy-expectation; no case passed; no retry",
+  "grant": {
+    "id": "fucq70-registration-0645d37-0033",
+    "dispatcherChat": "01a1ab10-6556-7211-92a0-0dd0345e3f0d",
+    "reviewReceipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/ownership/fucq70-loader-review-0033.json",
+    "scope": "One exact revised command, fresh bounded HostBudget, independent cleanup audit and publish reached evidence. No automatic retry or source repair."
+  },
+  "testedCommit": "0645d373b1f6049616423ef14a67910a5f6afa1b",
+  "harnessSha256": "e16cc7d9f1c426d21fbfd0c7e601eb73b009521ae781124019ccc5a8e5508c96",
+  "runToken": "52a55a02e3bef795332d9f0cc4467671",
+  "launchArgv": [
+    "/usr/bin/env",
+    "-i",
+    "PATH=/usr/bin:/bin:/opt/homebrew/bin",
+    "TZ=UTC",
+    "/usr/bin/python3",
+    "-I",
+    "-B",
+    "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-supervisor.py",
+    "run",
+    "--commit",
+    "0645d373b1f6049616423ef14a67910a5f6afa1b",
+    "--harness-sha256",
+    "e16cc7d9f1c426d21fbfd0c7e601eb73b009521ae781124019ccc5a8e5508c96"
+  ],
+  "exitCode": 2,
+  "childExitCode": 1,
+  "supervisorIssue": "RuntimeError: Node proof process failed before acceptance: rc=1; see bounded failure log and observed-imports when present",
+  "reached": {
+    "plannedApplicationModules": 46,
+    "observedApplicationModules": 46,
+    "applicationGraphMatches": true,
+    "plannedProducerCopies": 8,
+    "copiedProducerHashesUnchanged": true,
+    "registrationEvents": [
+      {
+        "parent": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/",
+        "pid": 24083,
+        "sha256": "96933bd1378aa6b243865bb81b9dd8ce9aec2823e42cadfec5610dd81a530052",
+        "specifier": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-loader.mjs",
+        "stage": "resolve-loader-registration",
+        "target": "file:///Users/garycarter/Code/GitHub/vehicle-matcher/.claude/worktrees/DEV-2026-11-04-070/docs/gcsp/evidence/fucq70/actual66-loader.mjs"
+      }
+    ],
+    "strictRejections": 0,
+    "selectedCasesEntered": 6,
+    "selectedCasesPassed": 0,
+    "runtimeSetupsObserved": 6,
+    "runtimeSetupsPlanned": 8,
+    "nodeCountsIncludingAfterHook": {
+      "cancelled": 0,
+      "fail": 7,
+      "pass": 0,
+      "skipped": 0,
+      "tests": 7,
+      "todo": 0
+    }
+  },
+  "diagnosis": {
+    "reproduction": "One execution of the exact revised 0645d37 command. Registration succeeded and all six selected cases failed in occupancy() at probe line47. The after hook added the seventh failure because 6 rather than8 setups were reached.",
+    "verified": "For occupied=true, car.held was false where the helper expected true. Each case had already passed one hold/one claim/one quote and the OCCUPYING_STATES row-count assertions in that helper. The release case stopped at its first reason variant, explaining the six instead of eight setups.",
+    "sourceEvidence": [
+      {
+        "path": "server/test/gcsp-manual-review-actual66.proof.mjs",
+        "lines": [
+          37,
+          47
+        ],
+        "observation": "Shared helper asserts raw stock held/available booleans after checking exact occupying hold/claim rows."
+      },
+      {
+        "path": "server/gcsp/repository/core.js",
+        "ref": "16a83dde4bfbd48721bce5c26f98b482f4f5db40",
+        "line": 218,
+        "observation": "conditionalClaim compare-and-swap writes stock state:held, preserving other raw row fields; it does not set held:true or available:false."
+      },
+      {
+        "path": "server/gcsp/manual-claims/index.js",
+        "ref": "eb5a677b37c486e3da7c4547803f739e22df8ac3",
+        "line": 293,
+        "observation": "Actual claims path invokes repository conditionalClaim after normalising stock state."
+      }
+    ],
+    "conclusion": "The shared probe expects raw stock booleans that the pinned repository conditionalClaim does not update. This is a probe expectation mismatch; the failures do not establish missing ledger occupancy or a product regression. The intended release/replay/pending/revision behaviors remain unproved.",
+    "nextCheck": "Dispatcher reviews this reached checkpoint. Any probe correction should assert actual repository state, occupying ledger rows and authoritative browse exclusion/release behavior, with new exact identities and admission. No correction or new run is included here.",
+    "registrationBoundary": "The new retained journal now proves one exact pinned self-loader resolution from the exact cwd parent during this run. The original first-run rejected values remain unavailable."
+  },
+  "resources": {
+    "limits": {
+      "workers": 1,
+      "wallSeconds": 120,
+      "rssBytes": 805306368,
+      "scratchBytes": 134217728,
+      "logBytes": 2097152,
+      "scratchRoot": "/private/tmp/test-stamp-shard-52a55a02e3bef795332d9f0cc4467671",
+      "externalReceiptDirectory": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66",
+      "allocation": "none; deterministic root is planned, not created or reserved"
+    },
+    "headroom": {
+      "active": 0,
+      "disk": 209845178368,
+      "free": 215213887488,
+      "low": false,
+      "parent": null,
+      "ram": 3154788352
+    },
+    "supervisorWallSeconds": 1.8031139999999999,
+    "childWallSeconds": 1.081029,
+    "sampledAggregateRssBytes": 229425152,
+    "scratchPeakBytes": 209952,
+    "cleanup": {
+      "groupsAbsent": true,
+      "pidsAbsent": true,
+      "reservationAbsent": true,
+      "scratchAbsent": true
+    },
+    "independentAudit": {
+      "cleanupVerified": true,
+      "groupsAbsent": true,
+      "independentAuditProcess": {
+        "pid": 24278,
+        "start": "Fri Nov  6 00:56:53 2026"
+      },
+      "pidsAbsent": true,
+      "proofPassed": false,
+      "receipt": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/52a55a02e3bef795332d9f0cc4467671/receipt.json",
+      "reservationAbsent": true,
+      "scratchAbsent": true,
+      "sourceAndDependenciesStillMatch": true
+    }
+  },
+  "integrity": {
+    "sourceAndDependenciesUnchanged": true,
+    "ownedRuntimeInputsUnchanged": true,
+    "originalFailureEvidence": "Preserved unchanged at docs/gcsp/evidence/fucq70/service-proof-result.json and service-proof-run-20261106/."
+  },
+  "exports": [
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106-registration/receipt.json",
+      "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/52a55a02e3bef795332d9f0cc4467671/receipt.json",
+      "sha256": "baad7777b81e5c936b15b4dcd177eff621bf7f4b41caa1845eb1f79e2d7826a5",
+      "bytes": 60250
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106-registration/independent-cleanup-audit.json",
+      "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/52a55a02e3bef795332d9f0cc4467671/independent-cleanup-audit.json",
+      "sha256": "c5e2e71c445571af52dfe97bbb0dac17ccb2cccae624ce400208e6ba02df468b",
+      "bytes": 381
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106-registration/failure.txt",
+      "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/52a55a02e3bef795332d9f0cc4467671/failure.log",
+      "sha256": "ac9fb250956824f714111b3fe5fb09edb2c80c5243dd9b2565fa14f31fed886b",
+      "bytes": 9969
+    },
+    {
+      "path": "docs/gcsp/evidence/fucq70/service-proof-run-20261106-registration/observed-imports.json",
+      "source": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/52a55a02e3bef795332d9f0cc4467671/observed-imports.json",
+      "sha256": "686ba08e15cd0d72cae0290ce03ed8265a85b70f0397283d4e9c1dbd168ffece",
+      "bytes": 33898
+    }
+  ],
+  "retainedRunDirectory": "/Users/garycarter/Code/GitHub/vehicle-matcher/.claude/test-runs/fucq70/actual66/52a55a02e3bef795332d9f0cc4467671",
+  "priorRunResult": "docs/gcsp/evidence/fucq70/service-proof-result.json",
+  "scopeLimits": [
+    "Synthetic stock and controlled external-stock protocol only; no live provider or actual FUCQ-92 release-production proof.",
+    "No rendered callback/event, host/clock composition, FUCQ-71 transactional intake/submission, native PostgreSQL, network/listener, browser or full suite."
+  ],
+  "priorScopedCounts": {
+    "metadata": "15/15",
+    "controller": "14/14",
+    "form": "7/7",
+    "uiRatchet": "44/44"
+  },
+  "storyBuilt": false,
+  "acceptanceSlicesStillOpen": 5
+}
