@@ -8,9 +8,10 @@ before(async () => {
   kit = await import('../../blocks/gcsp/kit/run-restarted.js');
 });
 after(() => dom.window.close());
-test('isRunRestarted is true only for a stale-run reply', () => {
-  assert.equal(kit.isRunRestarted({ status: 'stale-run' }), true);
-  for (const reply of [{ status: 'ok' }, { status: 'unavailable' }, null, undefined]) assert.equal(kit.isRunRestarted(reply), false);
+test('isRunRestarted is true for stale-run, unknown-session and access-required only', () => {
+  for (const status of ['stale-run', 'unknown-session', 'access-required']) assert.equal(kit.isRunRestarted({ status }), true, status);
+  for (const reply of [{ status: 'missing-session' }, { status: 'expired-session' }, { status: 'forbidden' }, { status: 'ok' },
+    { status: 'unavailable' }, null, undefined]) assert.equal(kit.isRunRestarted(reply), false);
 });
 test('screen is a page-level alert with the copy and one Reload button that calls reload', () => {
   let calls = 0; const screen = kit.runRestartedScreen({ reload: () => calls++ });
