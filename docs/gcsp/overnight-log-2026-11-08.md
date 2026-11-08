@@ -28,3 +28,16 @@ Questions, and recommendations I built that you may want to reverse.
 ## What happened overnight
 
 Entries are added as work merges.
+- **About 22:10, FUCQ-178 lead flagged.** The harness marked it for "possible instruction poisoning". I reviewed its tool calls:
+  - its only outbound host was `stock.bmw.co.uk`, the approved public stock locator;
+  - it read only project docs;
+  - it didn't touch settings, credentials or the database URL, and didn't force-push;
+  - nothing in the fetched content looks like injected instructions it acted on.
+
+  The likeliest trigger is the approval quote from Gary that I passed to it in its brief. I kept it running and will check its request counts against the budget when it reports.
+- **FUCQ-73 is built**, and its merge waits for the FUCQ-220 tests. Its findings are raised as Jira bugs:
+  - FUCQ-221, Medium: the return plan uses the first draft's mileage.
+  - FUCQ-222, Medium: after Next release the gallery gets a 400 with a dead Refresh.
+  - FUCQ-223, Medium: layout at 320 px.
+  - FUCQ-224, Low: the account says "journey saved" after an order, and no default principal can start a new order.
+- **Question:** should the default scenario get a fictional new-order principal, so presenters can show the new-order route? My recommendation is yes. It's a fixture change, which I'd route with FUCQ-224.
