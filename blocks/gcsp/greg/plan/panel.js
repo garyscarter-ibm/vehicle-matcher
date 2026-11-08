@@ -161,7 +161,7 @@ export function mountGregOrderPlan(root, { adapter, signal, onSubmitted, command
       : view.kind === 'infeasible' ? 'Change the limits to get a plan you can request.'
         : view.kind === 'no-demand' ? 'There is nothing to request yet.'
           : view.submission?.status === 'submitted' ? 'Already requested. Track it under Order tracking.'
-            : !view.canSubmit ? 'No new order is needed, so there is nothing to request.' : '';
+            : !view.canSubmit ? 'The plan recommends no new order, so there is nothing to request.' : '';
     const text = note(reason || 'Nothing is ordered until Production confirms.', 'gcsp-plan-consequence'); text.id = `${base}-consequence`;
     submitOk = !reason;
     submitButton = button({ label: view.canSubmit ? `Request ${quantityLabel(view.orderQuantity)} from Production` : 'Request from Production',

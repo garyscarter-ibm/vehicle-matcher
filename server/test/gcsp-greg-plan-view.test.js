@@ -89,7 +89,7 @@ test('toPlanView states: no demand, no order needed, infeasible, submitted and r
   assert.deepEqual([none.kind, none.action, none.canSubmit, none.coverage.label], ['no-demand', 'No saved demand to plan for yet', false, 'No renewals to cover yet']);
   assert.ok(none.note && none.alternatives[0].sameAsRecommended);
   const noOrder = toPlanView(Object.assign(value('ready'), { plan: Object.assign(value('ready').plan, { orderQuantity: 0, quantities: value('ready').plan.quantities.map((q) => ({ ...q, quantity: 0 })) }) }));
-  assert.deepEqual([noOrder.action, noOrder.canSubmit], ['No new order needed', false]);
+  assert.deepEqual([noOrder.action, noOrder.canSubmit], ['No new order recommended', false]);
   const bad = toPlanView(value('infeasible'));
   assert.deepEqual([bad.kind, bad.preview, bad.action, bad.canSubmit, bad.lines, bad.alternatives, bad.coverage, bad.spend], ['infeasible', true, 'No plan meets these limits', false, [], [], null, null]);
   assert.deepEqual(bad.conflicts.map((c) => [c.label, c.detail]), [['Budget', 'Spend £62,000 is over the £50,000 budget.'], ['i5 Touring minimum', 'Minimum 1.']]);
