@@ -1,0 +1,355 @@
+{
+  "chunk": "desktop",
+  "entry": "hosted",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "stockMode": "default",
+  "state": "passed",
+  "startedAt": "2026-11-08T19:05:12.706Z",
+  "runIds": {
+    "previous": "demo-ea3b050919d5058adfbcb7852fc98722",
+    "new": "demo-4b437c197e9cd9bab2a6bc960d17ff45"
+  },
+  "steps": [
+    {
+      "id": "access-key",
+      "name": "The demo key form opens the hosted demo, key typed by keyboard once",
+      "pass": true,
+      "screenshots": [],
+      "overflowPx": 0,
+      "state": "Presenter page opened"
+    },
+    {
+      "id": "scenario-reset",
+      "name": "Scenario \"Decline then change, no second car yet\" chosen with arrow keys and reset confirmed by keyboard",
+      "pass": true,
+      "screenshots": [
+        "reset-done-1280.png"
+      ],
+      "detail": {
+        "previousRun": "demo-ea3b050919d5058adfbcb7852fc98722",
+        "newRun": "demo-4b437c197e9cd9bab2a6bc960d17ff45",
+        "clock": "2026-11-05T09:30:00.000Z"
+      },
+      "overflowPx": 0,
+      "state": "Presenter controls Scenario Decline then change, no second car yet Run demo-4b437c197e9cd9bab2a6bc960d17ff45 DemoClock (UTC) 2026-11-05T09:30:00.000Z Acting principal Presenter (fictional) (presenter) Tick (60 seconds) Named time or UTC target Tick to target Next release Next release unavailable: No future release cue is configured. Scenario Main successful journey Available No suitable match Avai"
+    },
+    {
+      "id": "first-offer",
+      "name": "Paula opens her first offer from Buddy activity by keyboard",
+      "pass": true,
+      "screenshots": [
+        "first-offer-1280.png"
+      ],
+      "detail": {
+        "before": "Context unavailable",
+        "after": "Paula (fictional) (employee)"
+      },
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Your car offer No image for this car yet ORDER NO. 4477458 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 Boot 500 litres 0 to 62 mph 7.4 s Fuel economy 44 mpg Interior Not supplied Gearbox Not supplied Eligible WHY IT SUITS YOU Available by 1 December 2026. Body style: 100% fit. Your current car Fictional BMW 320i Touring"
+    },
+    {
+      "id": "decline-reason",
+      "name": "Paula presses Decline and chooses the reason Equipment by keyboard",
+      "pass": true,
+      "screenshots": [
+        "decline-reason-1280.png"
+      ],
+      "detail": {
+        "options": [
+          "Choose a reason",
+          "Body style",
+          "Size",
+          "Fuel type",
+          "Equipment"
+        ],
+        "chosen": "Equipment"
+      },
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Your car offer No image for this car yet ORDER NO. 4477458 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 Boot 500 litres 0 to 62 mph 7.4 s Fuel economy 44 mpg Interior Not supplied Gearbox Not supplied Eligible WHY IT SUITS YOU Available by 1 December 2026. Body style: 100% fit. Your current car Fictional BMW 320i Touring"
+    },
+    {
+      "id": "decline-submit",
+      "name": "Paula confirms the decline; the follow-up asks which equipment is essential",
+      "pass": true,
+      "screenshots": [
+        "question-equipment-1280.png"
+      ],
+      "detail": {
+        "followup": "One change to your brief Which equipment is essential for your next car? Not in your brief yet. Your answer adds it. Required equipment One name per line, up to 8 names and 80 characters per name. Choose an answer, then confirm. Confirm this change Which equipment is essential for your next car?"
+      },
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Show labels Presenter controls YOUR OFFER Offer declined Your decline is recorded. No image for this car yet ORDER NO. 4477458 Synthetic 3 Series Touring 320i 1,100 points a month · 1,300 points a month allowance Model Not supplied Derivative Not supplied Colour Not supplied Options Fitted equipment unknown Body style Estate Fuel Petrol Seats 5 Boot 500 litres 0 to 62 mph 7.4 s Fuel economy 44 mpg Interior Not supplied Gearbox Not supplied Eligible WHY IT SUITS YOU Available by 1 December 2026. Body style: 100% fit. Your current car "
+    },
+    {
+      "id": "change-saved",
+      "name": "Paula adds Tow bar and confirms by keyboard; the page reads waiting",
+      "pass": true,
+      "screenshots": [
+        "waiting-1280.png"
+      ],
+      "overflowPx": 0,
+      "state": "Your change is saved in brief version 2. Change saved Check whether your next offer is ready. Change saved"
+    },
+    {
+      "id": "tick",
+      "name": "One presenter Tick (60 s) from the strip, by keyboard",
+      "pass": true,
+      "screenshots": [],
+      "detail": {
+        "strip": "Tick completed. 11 steps: 11 done. Step results (11) 0 cars released",
+        "clock": "2026-11-05T09:31:00.000Z"
+      },
+      "overflowPx": 0,
+      "state": "Tick completed. 11 steps: 11 done. Step results (11) 0 cars released"
+    },
+    {
+      "id": "after-tick",
+      "name": "Paula presses Check current state; no second offer, no claim a car was found",
+      "pass": true,
+      "screenshots": [
+        "after-tick-1280.png"
+      ],
+      "detail": {
+        "claimsCar": false
+      },
+      "overflowPx": 0,
+      "state": "Your change is saved in brief version 2. Nothing suitable yet None of the 5 cars checked fit your updated brief. We will check again at the next release. Nothing suitable yet"
+    },
+    {
+      "id": "activity-after-tick",
+      "name": "Paula's Buddy activity after the tick",
+      "pass": true,
+      "screenshots": [
+        "activity-after-tick-1280.png"
+      ],
+      "detail": {
+        "offerWordsSeen": 1,
+        "noMatchWords": true
+      },
+      "overflowPx": 0,
+      "state": "Skip to content Group Car Schemes Portal P Paula (fictional) Your car brief Buddy activity Show labels Presenter controls BUDDY ACTIVITY Your buddy Active Your offer Image unavailable Declined View offer Activity All dates are demo time (UTC). Still searching. No match yet. Last check 5 Nov 2026, 09:31: 5 cars checked, 0 suitable. 5 Nov 2026, 09:00 Search confirmed 5 Nov 2026, 09:30 Search updated after a decline Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal No renewal case Help is available if you need"
+    }
+  ],
+  "keyboard": [
+    {
+      "page": "access",
+      "check": "Tab reaches the demo key field; typing the key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Presenter controls\" opens the strip",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Decline then change, no second car yet\" in \"Scenario\"",
+      "pass": true,
+      "detail": "Decline then change, no second car yet Available"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Reset scenario\" then \"Confirm reset\" resets the run",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Paula\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Paula (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Switch principal\" switches to Paula",
+      "pass": true
+    },
+    {
+      "page": "activity",
+      "check": "Enter on \"View offer\" opens the offer",
+      "pass": true
+    },
+    {
+      "page": "offer",
+      "check": "Enter on \"Decline this offer\" opens the reason choice",
+      "pass": true
+    },
+    {
+      "page": "offer",
+      "check": "Typing \"Equipment\" on the reason list chooses it",
+      "pass": true,
+      "detail": "Equipment"
+    },
+    {
+      "page": "offer",
+      "check": "Enter on \"Confirm decline\" records the decline",
+      "pass": true
+    },
+    {
+      "page": "follow-up",
+      "check": "Typing \"Tow bar\" in the equipment box adds the item",
+      "pass": true
+    },
+    {
+      "page": "follow-up",
+      "check": "Enter on \"Confirm this change\" saves the change",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Tick\" runs the tick",
+      "pass": true
+    },
+    {
+      "page": "presenter",
+      "check": "arrow keys choose \"Paula\" in \"Acting principal\"",
+      "pass": true,
+      "detail": "Paula (fictional) (employee)"
+    },
+    {
+      "page": "presenter",
+      "check": "Enter on \"Switch principal\" switches to Paula",
+      "pass": true
+    },
+    {
+      "page": "offer",
+      "check": "Enter on \"Check current state\" rechecks the offer and follow-up",
+      "pass": true
+    }
+  ],
+  "paula": {
+    "firstOffer": "Skip to content\nGroup Car Schemes Portal\nP\nPaula (fictional)\nShow labels\nPresenter controls\nYOUR OFFER\nYour car offer\nNo image for this car yet\nORDER NO. 4477458\nSynthetic 3 Series Touring 320i\n\n1,100 points a month · 1,300 points a month allowance\n\nModel\nNot supplied\nDerivative\nNot supplied\nColour\nNot supplied\nOptions\nFitted equipment unknown\nBody style\nEstate\nFuel\nPetrol\nSeats\n5\nBoot\n500 litres\n0 to 62 mph\n7.4 s\nFuel economy\n44 mpg\nInterior\nNot supplied\nGearbox\nNot supplied\n\nEligible\n\nWHY IT SUITS YOU\n\nAvailable by 1 December 2026.\nBody style: 100% fit.\nYour current car\nFictional BMW 320i Touring\nNo image for this car yet\nConfiguration\nG21 320i M Sport Touring\nBody\nEstate\nFuel\nPetrol\nSeats\n5\nBoot\n500 litres\nMPG\n42.8 mpg\n0–62 mph\n7.6 s\nPoints a month\n1,100 points\n\nSynthetic source: manual-records-v1. Observed 2026-11-05T09:00:00.000Z.\n\nBefore you accept\nContact phone\n01632 960000\nContact email\nemployee-paula@example.invalid\nCar to return\nFictional BMW 320i Touring\nContract end date\n1 December 2026\nRecorded odometer\n5,200 mi\n\nFictional demonstration terms: selection requests allocation of this exact scheme stock order under the recorded quote. The nominated driver and licence details must be correct. For a replacement, the recorded old contract and expected return mileage must be correct. Approval, appointment and collection are separate decisions; submission does not end the current contract.\n\nI accept these fictional scheme terms.\nThe nominated driver and licence details are correct.\nThe old contract and expected return mileage are correct.\n\n2 hours remaining\n\nDemo time at last check: 5 Nov 2026, 09:30 UTC\n\nTick each declaration to accept this offer.\n\nAccept this offer\nDecline this offer\nCheck current state\n\nYour car offer",
+    "declined": "Skip to content\nGroup Car Schemes Portal\nP\nPaula (fictional)\nShow labels\nPresenter controls\nYOUR OFFER\nOffer declined\n\nYour decline is recorded.\n\nNo image for this car yet\nORDER NO. 4477458\nSynthetic 3 Series Touring 320i\n\n1,100 points a month · 1,300 points a month allowance\n\nModel\nNot supplied\nDerivative\nNot supplied\nColour\nNot supplied\nOptions\nFitted equipment unknown\nBody style\nEstate\nFuel\nPetrol\nSeats\n5\nBoot\n500 litres\n0 to 62 mph\n7.4 s\nFuel economy\n44 mpg\nInterior\nNot supplied\nGearbox\nNot supplied\n\nEligible\n\nWHY IT SUITS YOU\n\nAvailable by 1 December 2026.\nBody style: 100% fit.\nYour current car\nFictional BMW 320i Touring\nNo image for this car yet\nConfiguration\nG21 320i M Sport Touring\nBody\nEstate\nFuel\nPetrol\nSeats\n5\nBoot\n500 litres\nMPG\n42.8 mpg\n0–62 mph\n7.6 s\nPoints a month\n1,100 points\n\nSynthetic source: manual-records-v1. Observed 2026-11-05T09:00:00.000Z.\n\nYour next offer\nOne change to your brief\nWhich equipment is essential for your next car?\n\nNot in your brief yet. Your answer adds it.\n\nRequired equipment\n\nOne name per line, up to 8 names and 80 characters per name.\n\nChoose an answer, then confirm.\n\nConfirm this change\n\nWhich equipment is essential for your next car?\n\nCheck current state\n\nOffer declined",
+    "waitingFollowup": "Your change is saved in brief version 2.\n\nChange saved\n\nCheck whether your next offer is ready.\n\nChange saved",
+    "waitingPage": "Skip to content\nGroup Car Schemes Portal\nP\nPaula (fictional)\nShow labels\nPresenter controls\nYOUR OFFER\nOffer declined\n\nYour decline is recorded.\n\nNo image for this car yet\nORDER NO. 4477458\nSynthetic 3 Series Touring 320i\n\n1,100 points a month · 1,300 points a month allowance\n\nModel\nNot supplied\nDerivative\nNot supplied\nColour\nNot supplied\nOptions\nFitted equipment unknown\nBody style\nEstate\nFuel\nPetrol\nSeats\n5\nBoot\n500 litres\n0 to 62 mph\n7.4 s\nFuel economy\n44 mpg\nInterior\nNot supplied\nGearbox\nNot supplied\n\nEligible\n\nWHY IT SUITS YOU\n\nAvailable by 1 December 2026.\nBody style: 100% fit.\nYour current car\nFictional BMW 320i Touring\nNo image for this car yet\nConfiguration\nG21 320i M Sport Touring\nBody\nEstate\nFuel\nPetrol\nSeats\n5\nBoot\n500 litres\nMPG\n42.8 mpg\n0–62 mph\n7.6 s\nPoints a month\n1,100 points\n\nSynthetic source: manual-records-v1. Observed 2026-11-05T09:00:00.000Z.\n\nYour next offer\n\nYour change is saved in brief version 2.\n\nChange saved\n\nCheck whether your next offer is ready.\n\nChange saved\n\nCheck current state\n\nOffer declined",
+    "reloadedFollowup": "Your change is saved in brief version 2.\n\nNothing suitable yet\n\nNone of the 5 cars checked fit your updated brief. We will check again at the next release.\n\nNothing suitable yet",
+    "afterTickFollowup": "Your change is saved in brief version 2.\n\nNothing suitable yet\n\nNone of the 5 cars checked fit your updated brief. We will check again at the next release.\n\nNothing suitable yet",
+    "afterTickPage": "Skip to content\nGroup Car Schemes Portal\nP\nPaula (fictional)\nShow labels\nPresenter controls\nYOUR OFFER\nOffer declined\n\nYour decline is recorded.\n\nNo image for this car yet\nORDER NO. 4477458\nSynthetic 3 Series Touring 320i\n\n1,100 points a month · 1,300 points a month allowance\n\nModel\nNot supplied\nDerivative\nNot supplied\nColour\nNot supplied\nOptions\nFitted equipment unknown\nBody style\nEstate\nFuel\nPetrol\nSeats\n5\nBoot\n500 litres\n0 to 62 mph\n7.4 s\nFuel economy\n44 mpg\nInterior\nNot supplied\nGearbox\nNot supplied\n\nEligible\n\nWHY IT SUITS YOU\n\nAvailable by 1 December 2026.\nBody style: 100% fit.\nYour current car\nFictional BMW 320i Touring\nNo image for this car yet\nConfiguration\nG21 320i M Sport Touring\nBody\nEstate\nFuel\nPetrol\nSeats\n5\nBoot\n500 litres\nMPG\n42.8 mpg\n0–62 mph\n7.6 s\nPoints a month\n1,100 points\n\nSynthetic source: manual-records-v1. Observed 2026-11-05T09:00:00.000Z.\n\nYour next offer\n\nYour change is saved in brief version 2.\n\nNothing suitable yet\n\nNone of the 5 cars checked fit your updated brief. We will check again at the next release.\n\nNothing suitable yet\n\nCheck current state\n\nOffer declined",
+    "activityAfterTick": "Skip to content\nGroup Car Schemes Portal\nP\nPaula (fictional)\nYour car brief\nBuddy activity\nShow labels\nPresenter controls\nBUDDY ACTIVITY\nYour buddy\n\nActive\n\nYour offer\nImage unavailable\n\nDeclined\n\nView offer\nActivity\n\nAll dates are demo time (UTC).\n\nStill searching. No match yet.\n\nLast check 5 Nov 2026, 09:31: 5 cars checked, 0 suitable.\n\n5 Nov 2026, 09:00\n\nSearch confirmed\n\n5 Nov 2026, 09:30\n\nSearch updated after a decline\n\nRenewal help\n\nRemedies need the scheme team’s decision. No specific next car or greater priority is guaranteed.\n\nGet help with your renewal\nNo renewal case\n\nHelp is available if you need the scheme team to review your renewal."
+  },
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/favicon.ico",
+      "page": "http://127.0.0.1:8950/gcsp/access"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8950/api/gcsp/offers/buddy-offer%3Aaa3962617602b0b3d2ea54421573e6da4eb2925056060d8ad13f93f38e69a266",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp/offer"
+    },
+    {
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-activity-live.html"
+    },
+    {
+      "url": "http://127.0.0.1:8950/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-activity-live.html"
+    }
+  ],
+  "badResponses": [
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8950/api/gcsp/manual/draft",
+      "method": "GET",
+      "page": "http://127.0.0.1:8950/gcsp-presenter.html"
+    }
+  ],
+  "notes": [],
+  "origin": "http://127.0.0.1:8950",
+  "finishedAt": "2026-11-08T19:08:55.154Z",
+  "counts": {
+    "steps": 9,
+    "passed": 9,
+    "screenshots": 7,
+    "keyboardChecks": 16,
+    "keyboardPassed": 16
+  },
+  "overflow": {
+    "horizontal": false,
+    "maxPx": 0
+  }
+}
