@@ -329,14 +329,14 @@ export class RenewalCaseService {
       const fresh = await this.#fresh(tx, context, p); if (fresh.status !== 'ok') return fresh;
       const employees = await tx.list('employees'); if (employees.status !== 'ok') return employees;
       const events = await tx.list('event_receipts'); if (events.status !== 'ok') return events;
-      let opened = 0;
+      let opened = 0; let unsupported = 0;
       for (const employee of employees.value.filter((e) => e.roles?.includes('employee'))) {
         const renewal = await this.#renewal(tx,context,employee.employeeId);
         if (renewal.status === 'invalid' && renewal.code === 'renewal-context-required') continue;
         if (renewal.status !== 'ok') return renewal;
-        const belongs = (r) => r.state === 'completed' && r.outcome?.status === 'ok' && r.outcome.value?.employeeId === employee.employeeId
-          && r.outcome.value.renewalId === renewal.value.renewalId && text(r.outcome.value.orderUuid,128) && validInstant(r.outcome.value.occurredAt)
-          && Date.parse(r.outcome.value.occurredAt) <= Date.parse(now);
+        const valid = (r) => r.state === 'completed' && r.outcome?.status === 'ok' && r.outcome.value?.employeeId === employee.employeeId
+          && text(r.outcome.value.orderUuid,128) && validInstant(r.outcome.value.occurredAt) && Date.parse(r.outcome.value.occurredAt) <= Date.parse(now);
+        const belongs = (r) => valid(r) && r.outcome.value.renewalId === renewal.value.renewalId;
         const triggers = [];
         const actual = deadline(employee);
         if (p.config.deadlineEnabled && actual && Date.parse(actual.instant)-Date.parse(now) <= p.config.withinDays*86400000
@@ -355,8 +355,27 @@ export class RenewalCaseService {
           if (recorded.status !== 'ok') return recorded;
           opened += 1;
         }
+        if (p.config.lifecycleEnabled) {
+          const slots = await tx.list('entitlement_slots', { employeeId: employee.employeeId }); if (slots.status !== 'ok') return slots;
+          // Another owned renewal has no agreed case semantics: keep a durable refusal rather than dropping the event.
+          const other = (r) => { const v = r.outcome?.value; return valid(r) && text(v.renewalId,128) && v.renewalId !== renewal.value.renewalId
+            && slots.value.some((s) => s.renewalId === v.renewalId && (v.entitlementSlotId == null || v.entitlementSlotId === s.entitlementSlotId)); };
+          for (const event of events.value.filter((e) => p.config.eventTypes.includes(e.eventType) && other(e))) {
+            const v = event.outcome.value; const sourceId = `${event.consumerId}:${event.eventId}`;
+            const eventId = inputDigest([employee.employeeId,v.renewalId,sourceId]);
+            const receipt = await tx.getReceipt('renewal-case-trigger',eventId);
+            if (receipt.status === 'ok') continue;
+            if (receipt.status !== 'not-found') return receipt;
+            const recorded = await tx.recordReceipt({ consumerId: 'renewal-case-trigger',eventId,inputDigest: inputDigest({ unsupported: sourceId,renewalId: v.renewalId }),
+              eventType: 'renewal-case-unsupported-renewal',state: 'completed',inputVersions: { policy: p.read.policyVersion },createdAt: now,updatedAt: now,
+              outcome: result('invalid',{ code: 'renewal-not-supported',reason: 'This lifecycle exception is for another renewal of this employee. Renewal cases cover only the current renewal, so the scheme team must review it.',
+                employeeId: employee.employeeId,renewalId: v.renewalId,orderUuid: v.orderUuid,eventType: event.eventType }) });
+            if (recorded.status !== 'ok') return recorded;
+            unsupported += 1;
+          }
+        }
       }
-      return ok({ opened });
+      return ok(unsupported ? { opened, unsupported } : { opened });
     });
   }
 }

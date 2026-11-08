@@ -112,6 +112,40 @@ caseTest('keyed lifecycle event types open once, reject foreign renewal/employee
   await event(g, 'custom', 'custom-reviewed-event'); await tick(g, 'custom');
   assert.equal((await g.service.readOwn(g.context)).value.cases.length, 1);
 });
+const unsupported = (f) => f.repository.query(f.context, 'event_receipts', { consumerId: 'renewal-case-trigger' })
+  .then((r) => r.value.filter((x) => x.eventType === 'renewal-case-unsupported-renewal'));
+const counts = (r) => r.value.outcomes.find((o) => o.handlerId === 'renewal-risk-cases').outcome.value;
+async function slotB(f, renewalId = 'renewal-b') {
+  return f.repository.transaction(f.context, cmd('slot-b'), (tx) => tx.insert('entitlement_slots', { runId: f.context.runId,
+    employeeId: f.context.employeeId, entitlementSlotId: 'slot-b', capacity: 1, employeeCapacity: 1, renewalId }));
+}
+caseTest('a policy-selected exception for another owned renewal records one refusal receipt, opens no case and replays idempotently', async (t) => {
+  const f = await setup(t); assert.equal((await slotB(f)).status, 'ok');
+  await event(f, 'b-before', 'approval-declined', { renewalId: 'renewal-b', entitlementSlotId: 'slot-b' });
+  await f.service.start(); const first = await tick(f, 'b-first'); assert.equal(first.status, 'ok', JSON.stringify(first));
+  assert.equal((await f.service.readOwn(f.context)).value.cases.length, 0);
+  const receipts = await unsupported(f); assert.equal(receipts.length, 1); assert.equal(counts(first).unsupported, 1); assert.equal(counts(first).opened, 0);
+  assert.equal(receipts[0].state, 'completed'); assert.equal(receipts[0].outcome.status, 'invalid'); assert.equal(receipts[0].outcome.code, 'renewal-not-supported');
+  assert.equal(receipts[0].outcome.renewalId, 'renewal-b'); assert.equal(receipts[0].outcome.orderUuid, 'order-fixture');
+  assert.equal(receipts[0].outcome.employeeId, f.context.employeeId); assert.doesNotMatch(receipts[0].outcome.reason, /—/);
+  const again = await tick(f, 'b-second'); assert.equal(again.status, 'ok'); assert.equal(counts(again).unsupported ?? 0, 0); assert.equal(counts(again).opened, 0);
+  assert.equal((await unsupported(f)).length, 1);
+  // Control: an A exception still opens exactly A's case, and B stays refused without touching it.
+  await event(f, 'a-event', 'appointment-no-show'); await tick(f, 'a-tick');
+  const cases = (await f.service.readOwn(f.context)).value.cases; assert.equal(cases.length, 1); assert.equal(cases[0].renewalId, `renewal:${f.context.employeeId}`);
+  assert.equal((await unsupported(f)).length, 1);
+});
+caseTest('exceptions on a renewal the employee does not own, another employee, a null renewal or an unselected type leave no receipt or case', async (t) => {
+  const f = await setup(t); assert.equal((await slotB(f)).status, 'ok');
+  await event(f, 'not-owned', 'approval-declined', { renewalId: 'renewal-elsewhere' }); await event(f, 'null-renewal', 'approval-declined', { renewalId: null });
+  await event(f, 'other-employee', 'approval-declined', { employeeId: 'another', renewalId: 'renewal-b' });
+  await event(f, 'unselected', 'made-up-exception', { renewalId: 'renewal-b' });
+  await event(f, 'wrong-slot', 'approval-declined', { renewalId: 'renewal-b', entitlementSlotId: 'slot-other' });
+  await event(f, 'future', 'approval-declined', { renewalId: 'renewal-b', occurredAt: '2026-12-01T00:00:00.000Z' });
+  await f.service.start(); const out = await tick(f, 'negative'); assert.equal(out.status, 'ok', JSON.stringify(out));
+  assert.equal((await unsupported(f)).length, 0); assert.equal(counts(out).unsupported ?? 0, 0);
+  assert.equal((await f.service.readOwn(f.context)).value.cases.length, 0);
+});
 caseTest('unknown actual contract dates stay unknown and no deadline case is invented', async (t) => {
   const f = await setup(t); await employee(f, { contract: {} }); await f.service.start(); await tick(f, 'unknown');
   assert.equal((await f.service.readOwn(f.context)).value.cases.length, 0);
