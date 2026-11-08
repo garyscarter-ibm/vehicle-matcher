@@ -1485,7 +1485,87 @@
       "assignee": "Gary Carter",
       "type": "Story",
       "observed_at": "2026-11-07T14:07:07Z",
-      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-122"
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-122",
+      "slices": [
+        {
+          "id": "employee-help",
+          "status": "complete",
+          "title": "Employee help and single-change confirmation",
+          "observed_at": "2026-11-05T23:02:24Z",
+          "evidence": "Lead reviewed employee request/review/cancel/confirmation and one-change persisted readback; 83/83 scoped then combined 98/98 actual Greg/Paula HTTP renderers. docs/gcsp/evidence/fucq122/README.md; queue-parent-4410c0e715/summary.json. Host placement is separate."
+        },
+        {
+          "id": "server-options",
+          "status": "complete",
+          "title": "Server feasible case options",
+          "observed_at": "2026-11-05T23:02:24Z",
+          "evidence": "Lead reviewed side-effect-free projection through existing evaluation and canonical policy gates; 28/28 server checks, included in combined 98/98. docs/gcsp/evidence/fucq122/README.md; server-parent-f71f000f8c/summary.json."
+        },
+        {
+          "id": "greg-queue",
+          "status": "complete",
+          "title": "Greg case queue and confirmed updates",
+          "observed_at": "2026-11-05T23:02:24Z",
+          "evidence": "Lead reviewed queue, native controls, actual HTTP adapters, review/confirm, retry/conflict/readback and shared kit use; combined 98/98 including actual queue renderer. docs/gcsp/evidence/fucq122/README.md; queue-parent-4410c0e715/summary.json. Delivered dashboard remains separate."
+        },
+        {
+          "id": "host-runtime",
+          "status": "blocked",
+          "title": "Delivered host and runtime integration",
+          "observed_at": "2026-11-05T23:02:24Z",
+          "evidence": "Actual base lacks case registration/CSS in Greg HTML and RenewalCaseService in createGcspRuntime; FUCQ-103 owns released composition/runtime lane. Employee activity/order-progress placement remains with external host owner. Interfaces support isolated HTTP; delivered integration not proved."
+        },
+        {
+          "id": "producer-integration",
+          "status": "blocked",
+          "title": "Actual lifecycle producer integration",
+          "observed_at": "2026-11-05T23:02:24Z",
+          "evidence": "Actual authenticated DemoClock deadline handler and replay proved by gcsp-case-journey.test.js. Lifecycle exception producer integration remains unavailable; no synthetic receipt counts as live integration. Preserve external lifecycle/activity ownership."
+        },
+        {
+          "id": "browser-validation",
+          "status": "in-progress",
+          "title": "Desktop and narrow browser validation",
+          "observed_at": "2026-11-05T23:02:24Z",
+          "evidence": "Nine sequential chunks prepared and syntax checked, not executed. 77f3812; docs/gcsp/evidence/fucq122/browser-plan.md. Existing implementer finished preparation. Await explicit dispatcher browser lane grant and parent capture inspection."
+        },
+        {
+          "id": "authored-full-suite",
+          "status": "not-started",
+          "title": "Authored full suite and same-source stamp",
+          "observed_at": "2026-11-05T23:02:24Z",
+          "evidence": "Exact npm test and strict same-source stamp require dispatcher serial lane after browser/current-base readiness. Scoped 98/98 is not a full-suite result."
+        },
+        {
+          "id": "delivery-cleanup",
+          "status": "not-started",
+          "title": "Final story acceptance and resource cleanup",
+          "observed_at": "2026-11-05T23:02:24Z",
+          "evidence": "Final acceptance, result and parent audit remain. Scoped checkpoint audit clean; exact owned server/node_modules symlink remains until final proof. Story is In Progress; root owns Jira reconciliation."
+        }
+      ],
+      "unsliced": false,
+      "branch": "dev/DEV-2026-11-04-084",
+      "workers": [
+        {
+          "name": "01a1adbb-d057-7e13-a9dd-6556deee47dd",
+          "harness": "codex",
+          "role": "story lead",
+          "observed_at": "2026-11-05T23:02:24Z",
+          "expires_at": "2026-11-05T23:12:24Z",
+          "source": "Live collaboration.list_agents: /root running; FUCQ-122 checkpoint",
+          "status": "reviewing frozen browser harness and shared map integration"
+        },
+        {
+          "name": "/root/case_options",
+          "harness": "codex",
+          "role": "implementer",
+          "observed_at": "2026-11-05T23:02:24Z",
+          "expires_at": "2026-11-05T23:02:24Z",
+          "source": "Live collaboration.list_agents: case_options completed; final syntax receipt",
+          "status": "completed browser harness preparation; gpt-6.1-sol/medium"
+        }
+      ]
     },
     {
       "id": "FUCQ-123",
