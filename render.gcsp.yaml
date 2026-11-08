@@ -16,7 +16,7 @@ services:
   - type: web
     name: gcsp-api
     runtime: node
-    plan: free             # sleeps after 15 min idle, about a minute to wake; starter avoids it
+    plan: standard         # 2 GB: the hosted runtime peaks near 500 MB at start (FUCQ-190); a Blueprint sync applies this
     region: frankfurt
     branch: gcsp-poc
     # Restore the code-pinned corpus at build time; runtime lookup stays offline.
