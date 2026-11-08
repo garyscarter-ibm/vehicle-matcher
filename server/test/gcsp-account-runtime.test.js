@@ -36,3 +36,12 @@ test('shared account adapter accepts a widened state list only when the caller a
   assert.deepEqual(await createAccountHttpAdapter({ fetch }).loadAccount(), { status: 'unavailable' });
   assert.deepEqual(await createAccountHttpAdapter({ fetch, states: ['ready', 'no-entitlement'] }).loadAccount(), { status: 'ready', name: 'Paula', context: '' });
 });
+
+test('FUCQ-201: shared account adapter passes a restart through and reads a bare 401 as access-required', async () => {
+  for (const status of ['stale-run', 'unknown-session', 'access-required']) {
+    const adapter = createAccountHttpAdapter({ fetch: async () => ({ ok: false, status: 409, json: async () => ({ status, reason: 'x' }) }) });
+    assert.deepEqual(await adapter.loadAccount(), { status });
+  }
+  const lapsed = createAccountHttpAdapter({ fetch: async () => ({ ok: false, status: 401, json: async () => ({ error: 'Unauthorized' }) }) });
+  assert.deepEqual(await lapsed.loadAccount(), { status: 'access-required' });
+});

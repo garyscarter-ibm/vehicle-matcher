@@ -1,0 +1,69 @@
+{
+  "passed": true,
+  "origin": "http://127.0.0.1:8983",
+  "runtime": "memory (GCSP_RUNTIME=1)",
+  "runs": [
+    {
+      "viewport": 1280,
+      "page": "account",
+      "steps": [
+        "opened",
+        "server restarted"
+      ],
+      "restarted": {
+        "notice": true,
+        "reloadVisible": true,
+        "reloadEnabled": true,
+        "refusedCopy": false,
+        "headerAccountUnavailable": false,
+        "overflow": 0,
+        "header": {
+          "status": "restarted",
+          "text": "",
+          "retry": false
+        },
+        "screenshot": "docs/gcsp/evidence/fucq-201/1280-account-restarted.png"
+      },
+      "reload": {
+        "landed": "/gcsp-account.html",
+        "back": true,
+        "noticeGone": true,
+        "afterHasRestartCopy": false,
+        "screenshot": "docs/gcsp/evidence/fucq-201/1280-account-reloaded.png"
+      },
+      "pageErrors": [],
+      "passed": true
+    },
+    {
+      "viewport": 375,
+      "page": "account",
+      "steps": [
+        "opened",
+        "server restarted"
+      ],
+      "restarted": {
+        "notice": true,
+        "reloadVisible": true,
+        "reloadEnabled": true,
+        "refusedCopy": false,
+        "headerAccountUnavailable": false,
+        "overflow": 0,
+        "header": {
+          "status": "restarted",
+          "text": "",
+          "retry": false
+        },
+        "screenshot": "docs/gcsp/evidence/fucq-201/375-account-restarted.png"
+      },
+      "reload": {
+        "landed": "/gcsp-account.html",
+        "back": true,
+        "noticeGone": true,
+        "afterHasRestartCopy": false,
+        "screenshot": "docs/gcsp/evidence/fucq-201/375-account-reloaded.png"
+      },
+      "pageErrors": [],
+      "passed": true
+    }
+  ]
+}

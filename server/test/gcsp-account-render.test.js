@@ -603,6 +603,17 @@ test('FUCQ-198: a stale-run or unknown-session account read shows the restart sc
     try { assertRestartedPage(root, () => reloads); } finally { destroy(); root.remove(); }
   }
 });
+test('FUCQ-201: after a restart the shell account header stays quiet and leaves the page its Reload', async () => {
+  for (const status of ['stale-run', 'unknown-session', 'access-required']) {
+    const { root, destroy } = await domMount({ ...readOnlyAdapter(), readAccount: async () => ({ status, reason: 'x' }) }, { reload: () => {} });
+    try {
+      const header = root.querySelector('.gcsp-account');
+      assert.equal(header.dataset.status, 'restarted'); assert.equal(header.textContent, '');
+      assert.equal(header.querySelector('.gcsp-account-retry'), null); assert.equal(header.hasAttribute('aria-label'), false);
+      assert.doesNotMatch(root.textContent, /Account unavailable/); assert.match(root.textContent, /Demo restarted/);
+    } finally { destroy(); root.remove(); }
+  }
+});
 test('FUCQ-198: a restarted draft read shows the restart screen', async () => {
   let reloads = 0;
   const { root, destroy } = await domMount({ ...readOnlyAdapter(), readDraft: async () => ({ status: 'unknown-session' }) }, { reload: () => reloads++ });

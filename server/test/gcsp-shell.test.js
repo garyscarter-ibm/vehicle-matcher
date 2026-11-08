@@ -148,6 +148,19 @@ test('account control: loading, ready, unavailable with Retry, long name keeps i
   shell.destroy();
 });
 
+test('FUCQ-201: a restarted account state keeps the header quiet, with no unavailable label or Retry', () => {
+  for (const status of ['stale-run', 'unknown-session', 'access-required']) {
+    const shell = shellMod.portalShell({ navigation: items, account: { status: 'loading' } });
+    shell.setAccount({ status });
+    const box = shell.root.querySelector('.gcsp-account');
+    assert.equal(box.dataset.status, 'restarted'); assert.equal(box.textContent, '');
+    assert.equal(box.hasAttribute('aria-label'), false); assert.equal(box.getAttribute('aria-busy'), 'false');
+    shell.setAccount({ status: 'ready', name: 'New Person' });
+    assert.equal(box.getAttribute('aria-label'), 'Account: New Person');
+    shell.destroy();
+  }
+});
+
 test('shell destroy removes its DOM and listeners', () => {
   let retries = 0;
   const shell = shellMod.portalShell({ navigation: items, account: { status: 'unavailable' }, onRetryAccount: () => { retries += 1; } });
