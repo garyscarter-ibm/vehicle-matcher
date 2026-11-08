@@ -7,10 +7,11 @@ import { startMainSuccessfulJourney } from './main-successful-journey.js';
 import { startNoSuitableMatch } from './no-suitable-match.js';
 import { startDataUnavailable } from './data-unavailable.js';
 import { startUncertainHandoff } from './uncertain-handoff.js';
+import { startOfferExpires } from './offer-expires.js';
 import { inputDigest, ok, result } from '../repository/core.js';
 
 const START_BY_SCENARIO = { 'main-successful-journey': startMainSuccessfulJourney, 'decline-then-change': startDeclineThenChange,
-  'decline-then-change-waiting': startDeclineThenChange,
+  'decline-then-change-waiting': startDeclineThenChange, 'offer-expires': startOfferExpires,
   'no-suitable-match': startNoSuitableMatch, 'data-unavailable': startDataUnavailable,
   'uncertain-handoff': startUncertainHandoff, 'uncertain-handoff-rejected': startUncertainHandoff };
 

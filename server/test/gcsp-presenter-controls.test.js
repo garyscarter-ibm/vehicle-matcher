@@ -119,7 +119,7 @@ test('next-release and named times advance honestly without inventing release co
   assert.equal((await f.controls.readState(f.presenter)).value.lastTick.tickId, named.value.tick.tickId);
   const catalogue = (await f.scenarios.readCatalogue(f.presenter)).value;
   // Only journeys with a reviewed start loader are available; the others stay "not available yet".
-  assert.deepEqual(catalogue.scenarios.filter((entry) => entry.kind === 'journey' && entry.availability.available).map((entry) => entry.scenarioId), ['main-successful-journey', 'no-suitable-match', 'decline-then-change', 'data-unavailable', 'uncertain-handoff', 'uncertain-handoff-rejected', 'decline-then-change-waiting']);
+  assert.deepEqual(catalogue.scenarios.filter((entry) => entry.kind === 'journey' && entry.availability.available).map((entry) => entry.scenarioId), ['main-successful-journey', 'no-suitable-match', 'decline-then-change', 'offer-expires', 'data-unavailable', 'uncertain-handoff', 'uncertain-handoff-rejected', 'decline-then-change-waiting']);
 });
 
 test('pending and refused handler outcomes stay ordered and truthful after time has advanced', async () => {

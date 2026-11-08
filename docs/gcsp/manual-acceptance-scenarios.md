@@ -222,15 +222,20 @@ Observations from a hand trial go in a new row below, in the same format.
 
 ### Offer expires · `offer-expires` · FUCQ-129
 
-- **Start:** `offer-expires-inputs-v1`; canonical Paula and Alex have confirmed briefs, with a first active offer and captured email created through the actual services during preparation. No exact recipient or offer ID is prescribed by the input manifest.
-- **Reset/tick:** after successful preparation read the actual offer `expiresAt`. Advance the existing clock to that instant (not a separately maintained duration), then tick expiry/reconciliation/allocation in the canonical stage order. Read back resulting state.
-- **Planned click-through:** reopen Paula's same captured-email link after expiry, inspect its backend state, then inspect the competing employee and Greg's supply picture. Try a previous-run link after a further reset.
-- **Expected visible/state result:** actual expiry frees/reassigns only under the real authority; the old page remains expired and an old-run link is stale. No browser refresh/countdown revives a hold. Expiry is recorded separately from decline and gives no priority.
-- **Provisional assumptions:** `hold.buddy.durationSeconds`, `hold.deadline.inclusive`, pending blocks and tie-break rules come from PolicyService. The next holder is calculated, not fixture-selected.
+8 November 2026 (FUCQ-129): available. Paula's buddy offer runs out on a presenter tick, and her old email link tells the truth.
+
+- **Start:** `offer-expires-inputs-v1`. The start loader (`server/gcsp/scenarios/offer-expires.js`) confirms Paula's and Alex's briefs through BriefService, advances to the release cue (09:30 UTC) and ticks once through the real release and allocation. Paula then holds an active buddy offer, and the notification service has captured its email (FUCQ-102). Nothing is expired, declined or accepted by the fixture. The offer's `expiresAt` is the release time plus `hold.buddy.durationSeconds` (11:30 UTC on this base).
+- **Reset:** launch the demo (`node scripts/gcsp-demo.mjs`), open `gcsp-presenter.html`, open **Presenter controls**, choose **Offer expires**, press **Reset scenario**, then **Confirm reset**. The reset takes a few seconds because it runs the real release and allocation. DemoClock reads 09:30 UTC.
+- **Click-through:** switch to Paula, open **Buddy activity** and read the time her offer is available until. Open `/gcsp-outbox.html`, choose her captured email and keep its offer link. As presenter, type that time (UTC ISO, for example `2026-11-05T11:30:00.000Z`) into **Named time or UTC target** and press **Tick to target**; there is no named cue for it. Read the `buddy-expiry` step in the tick result. Switch to Paula and open the captured-email link: the page reads **Offer expired**. Reload it, and press **Tick** once more, then reload again. Switch to Alex and read his **Buddy activity**.
+- **Expected visible/state result:** the clock moves to the offer's own deadline and the `buddy-expiry` handler marks the offer, its claim and its hold *expired* (release reason `buddy-expired`) before `buddy-allocation` runs; the car goes back to *released* stock. The old link opens from the backend as *expired*, with no accept or decline, and no reload, later tick or late accept from the old page revives it. The expiry is its own record: no decline or dislike decision exists, and Paula's brief, renewal and entitlement slot are unchanged, so she gets no priority. Reset again: the new run has a new offer and link; the first run's link and cookie are refused as stale.
+- **Provisional assumptions:** `hold.buddy.durationSeconds` (assumed 7200 s, a proposed new capability) and `hold.deadline.inclusive` (an offer expires at its deadline) come from PolicyService, and expiry runs on a tick, not a timer. The `offer.declinedCar.exclusion` assumption keeps expiry out of the dislike history.
+- **Known gap (not patched in the fixture):** the expired car is not offered on to another employee. Allocation re-evaluates only on stock releases and brief changes, so expiry does not trigger it, and Alex (grade G1-6, 1,000 points a month allowance) is over allowance for every demo car, so no second holder exists on this base. The acceptance step "the waiting employee is offered it on the same or next tick" is unmet and is recorded as a `todo` test in the replay.
+- **Automated replay:** `server/test/gcsp-scenario-expiry.test.js` drives the entry through the actual presenter and employee HTTP routes after reset, twice across two resets: Paula's active offer and captured email; the tick to the offer's own `expiresAt` (read from the offer, and equal to the start time plus the policy duration); the expiry handler and the released car; the old link, re-reads, further ticks and a late accept all leaving it expired; no decision record and unchanged brief, renewal and slot; and the first run's link refused as stale after the second reset.
 
 | Date UTC | Variant/fixture | Run ID | Build | Result | Feedback / next revision |
 |---|---|---|---|---|---|
 | 2026-11-05 | expiry / v1 input manifest | No new run (refused) | `96bc997` | Automated pre-reset missing expiry/offer capabilities; no expiry walkthrough claimed. | FUCQ-129 supplies actual offer-deadline and stale-link replay. |
+| 2026-11-08 | expiry / v1; replay only (memory, demo stock) | two generated runs, each from its own reset | FUCQ-129 slice 1 | Automated replay passes twice across two resets (expiry on tick, old link expired and not revived, no decline record, no priority change, stale after reset). Reallocation to a waiting employee not observed (known gap above). | Browser walkthrough at 1280 and 375 follows in FUCQ-129 slice 2. |
 
 ### Data unavailable · `data-unavailable` · FUCQ-130
 
@@ -309,8 +314,8 @@ cookie hides the strip entirely even when the acting person is an employee or Gr
    second reset and check the returned new run plus fresh server/context readback. The mechanics
    scenario is not evidence of any full business journey.
    Since FUCQ-172 the same picker lists the whole versioned catalogue: the main journey, *Decline then change*
-   and its waiting variant, *No suitable match*, *Data unavailable* and both *Uncertain handoff* entries are
-   available; *Offer expires* reads "Not available yet" with its missing capabilities and cannot be reset into.
+   and its waiting variant, *Offer expires*, *No suitable match*, *Data unavailable* and both *Uncertain handoff*
+   entries are available (FUCQ-129). A journey without a reviewed start loader would read "Not available yet" with its missing capabilities and cannot be reset into.
    The line under the picker names the selected entry: "Selected: <name>. Ready to reset." or its missing capabilities.
    Choose another entry, **Reset scenario**, **Confirm reset**: a journey reset runs its start loader through the
    actual services (a few seconds), then the page reloads and the bar reads back the new scenario, run, DemoClock
