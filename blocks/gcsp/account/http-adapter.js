@@ -38,7 +38,18 @@ export function createAccountHttpAdapter({ base = '', fetchImpl = globalThis.fet
       const envelope = await response.json();
       const offers = envelope?.status === 'ok' && response.ok ? envelope.value?.offers : null;
       if (!Array.isArray(offers) || offers.some((row) => typeof row?.offerId !== 'string' || typeof row.runId !== 'string')) return { status: 'unavailable' };
-      return { status: 'ok', value: { offers: offers.map(({ offerId, runId }) => ({ offerId, runId })) } };
+      const listed = offers.map(({ offerId, runId }) => ({ offerId, runId }));
+      // The link opens the newest offer, so read its state; a failed read leaves the link as it was.
+      if (listed.length) {
+        const [{ offerId, runId }] = listed;
+        try {
+          const read = await fetchImpl(`${base}/api/gcsp/offers/${encodeURIComponent(offerId)}?runId=${encodeURIComponent(runId)}`,
+            { credentials: 'include', signal, headers: { Accept: 'application/json' } });
+          const offer = await read.json();
+          if (read.ok && offer?.status === 'ok' && typeof offer.value?.state === 'string') listed[0].state = offer.value.state;
+        } catch (error) { if (signal?.aborted) throw error; }
+      }
+      return { status: 'ok', value: { offers: listed } };
     } catch (error) { if (signal?.aborted) throw error; return { status: 'unavailable' }; }
   }
   return { readAccount, readDraft, saveDraft, browseStock, readOffers, readOrder,
