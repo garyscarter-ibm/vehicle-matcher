@@ -9,11 +9,12 @@ import { mountGregOrders } from '../greg-orders/greg-orders.js';
 import { createGregOrdersHttpAdapter } from '../greg-orders/http-adapter.js';
 import { createPresenterHttpAdapter } from './http-adapter.js';
 import { subscribePresenterActions } from './controls.js';
+import { isRunRestarted, runRestartedScreen } from '../kit/run-restarted.js';
 
 // Context is read again after cookie issuance; neither query parameters nor fixtures select a person.
 export function mountPresenterWorkspace(host, { adapter = createPresenterHttpAdapter(), accountAdapter = createAccountHttpAdapter(),
   gregAdapter = createGregHttpAdapter(), mountEmployee = mountManualJourney, mountGreg = mountGregDashboard,
-  mountOrders = mountGregOrders, ordersAdapter = createGregOrdersHttpAdapter() } = {}) {
+  mountOrders = mountGregOrders, ordersAdapter = createGregOrdersHttpAdapter(), reload } = {}) {
   const abort = new AbortController(); let disposed = false; let teardown;
   host.replaceChildren(statusScreen({ title: 'Loading workspace', message: 'Reading the acting session.' }));
   const ready = (async () => {
@@ -48,9 +49,10 @@ export function mountPresenterWorkspace(host, { adapter = createPresenterHttpAda
     }
     else {
       const shell = portalShell({ account: context?.name ? { status: 'ready', name: context.name } : { status: 'unavailable' },
-        presenterControls: { adapter } });
-      shell.main.append(statusScreen({ title: context ? 'Presenter workspace' : 'Workspace unavailable',
-        message: context ? 'Choose an acting principal in Presenter controls.' : `Context ${reply.status}. Try again. If the session cannot be recovered, use trusted backend presenter-session bootstrap and reopen this workspace.` }));
+        presenterControls: { adapter, reload } });
+      shell.main.append(!context && isRunRestarted(reply) ? runRestartedScreen({ reload })
+        : statusScreen({ title: context ? 'Presenter workspace' : 'Workspace unavailable',
+          message: context ? 'Choose an acting principal in Presenter controls.' : 'Presenter context could not be read. Try again. If the session cannot be recovered, use trusted backend presenter-session bootstrap and reopen this workspace.' }));
       host.replaceChildren(shell.root); teardown = () => shell.destroy();
     }
   })();
