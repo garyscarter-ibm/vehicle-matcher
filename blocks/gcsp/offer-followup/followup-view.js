@@ -56,8 +56,9 @@ function sources(comparison) {
   return section;
 }
 
-/** Shared controls remain mounted while an answer changes. projectOffer is FUCQ-105's public projector. */
-export function createFollowupView(root, { choose, confirm, refresh, projectOffer, openOffer } = {}) {
+/** Shared controls remain mounted while an answer changes. projectOffer is FUCQ-105's public projector.
+ * hostRefresh: the embedding page already shows "Check current state", so this view omits its own. */
+export function createFollowupView(root, { choose, confirm, refresh, projectOffer, openOffer, hostRefresh = false } = {}) {
   const prefix = `gcsp-followup-${++sequence}`;
   const page = el('div', 'vm gcsp-followup'); const content = el('div', 'gcsp-followup-content');
   const live = el('p', 'gcsp-followup-live'); live.setAttribute('role', 'status');
@@ -67,6 +68,7 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
   const action = (name, text, onClick, variant = 'ghost') => {
     const node = button({ label: text, onClick, variant }); node.dataset.followupAction = name; return node;
   };
+  const refreshAction = () => (hostRefresh ? [] : [action('refresh', 'Check current state', () => refresh?.())]);
   function drawQuestion(model) {
     content.append(screenIntro({ title: 'One change to your brief', level: 1 }));
     const form = el('form', 'gcsp-followup-question'); form.addEventListener('submit', (event) => { event.preventDefault(); confirm?.(); });
@@ -97,8 +99,7 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
     field.setAttribute('aria-describedby', error.id);
     confirmButton = button({ label: 'Confirm this change', disabled: true, describedBy: reason.id,
       onClick: () => confirm?.() }); confirmButton.dataset.followupAction = 'confirm';
-    form.append(field, error, reason, confirmButton); content.append(form);
-    content.append(action('refresh', 'Check current state', () => refresh?.()));
+    form.append(field, error, reason, confirmButton); content.append(form, ...refreshAction());
   }
   function drawComparison(model) {
     const comparison = model.comparison; let previous; let next;
@@ -122,7 +123,7 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
         { key: 'previous', label: 'Declined offer' }, { key: 'next', label: 'Next offer' }],
       rows: requirementRows(comparison), emptyText: 'No confirmed requirements were supplied for comparison.' }), sources(comparison));
     if (typeof openOffer === 'function') content.append(action('open', 'Open this offer', () => openOffer(structuredClone(next.value.reference)), 'primary'));
-    content.append(action('refresh', 'Check current state', () => refresh?.())); return true;
+    content.append(...refreshAction()); return true;
   }
   function draw(model) {
     const hadFocus = content.contains(root.ownerDocument.activeElement); content.replaceChildren();
@@ -139,7 +140,7 @@ export function createFollowupView(root, { choose, confirm, refresh, projectOffe
       const [title, message] = messages[key] || messages.unavailable;
       const actions = [];
       if (key === 'confirmation-uncertain') actions.push(action('retry', 'Retry the same change', () => confirm?.(), 'primary'));
-      if (!['idle', 'loading', 'forbidden', 'stale-run'].includes(key)) actions.push(action('refresh', 'Check current state', () => refresh?.()));
+      if (!['idle', 'loading', 'forbidden', 'stale-run'].includes(key)) actions.push(...refreshAction());
       const checked = model.evaluation?.carsChecked;
       const head = checked === 1 ? 'The 1 car checked does not fit your updated brief.'
         : `None of the ${checked} cars checked fit your updated brief.`;
