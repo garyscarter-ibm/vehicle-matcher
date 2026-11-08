@@ -131,7 +131,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const orderingAdapter = createSyntheticOrderingAdapter({ repository, faults: orderingFaults });
     orderingAdapter.status = createSyntheticOrderingStatus({ repository });
     orderingAdapter.documentStatus = createSyntheticDocumentStatus({ repository });
-    const manualOrder = createManualOrderService({ repository, policy, clock, identity, adapter: orderingAdapter,
+    const manualOrder = createManualOrderService({ repository, policy, clock, identity, adapter: orderingAdapter, reviewDetails: manualReview,
       converters: { cart: createManualOrderConversion({ claims: manualClaims, manual: account }) } });
     const lifecycle = createLifecycleApprovalService({ repository, policy, clock, identity, status: orderingAdapter.status });
     const documents = createLifecycleDocumentService({ repository, policy, clock, identity,

@@ -1,5 +1,5 @@
-// FUCQ-70 browser walkthrough of the manual claimed-car review screen, one viewport per run (FUCQ70_CHUNK=desktop|narrow).
-// Spawns `node index.js` in server/ offline (GCSP_OFFLINE=1, memory repository). Nothing is stubbed except the one aborted claim read in step g.
+// Browser walkthrough of the manual journey, one viewport per run (WALK_CHUNK=desktop|narrow), story by WALK_STORY=fucq70|fucq72.
+// Spawns `node index.js` in server/ offline (GCSP_OFFLINE=1, memory repository). FUCQ70_* names still work as fallbacks for WALK_*.
 import { spawn, spawnSync } from 'node:child_process';
 import { once } from 'node:events';
 import { randomBytes } from 'node:crypto';
@@ -10,24 +10,29 @@ import { chromium } from '/Users/garycarter/.cache/codex-runtimes/codex-primary-
 
 const HERE = fileURLToPath(new URL('.', import.meta.url));
 const SERVER_DIR = resolve(HERE, '../../../../server');
-const chunk = process.env.FUCQ70_CHUNK;
-if (!['desktop', 'narrow'].includes(chunk)) throw new Error('Set FUCQ70_CHUNK=desktop|narrow');
-const scratch = resolve(process.env.FUCQ70_SCRATCH || process.env.TMPDIR || '');
-if (!scratch || scratch === '/') throw new Error('Set FUCQ70_SCRATCH (or TMPDIR) to an owned scratch directory');
+const env = (name) => process.env[`WALK_${name}`] ?? process.env[`FUCQ70_${name}`];
+const story = process.env.WALK_STORY || 'fucq70';
+if (!['fucq70', 'fucq72'].includes(story)) throw new Error('Set WALK_STORY=fucq70|fucq72');
+const chunk = env('CHUNK');
+if (!['desktop', 'narrow'].includes(chunk)) throw new Error('Set WALK_CHUNK=desktop|narrow');
+const scratch = resolve(env('SCRATCH') || process.env.TMPDIR || '');
+if (!scratch || scratch === '/') throw new Error('Set WALK_SCRATCH (or TMPDIR) to an owned scratch directory');
 const viewport = chunk === 'narrow' ? { width: 320, height: 720 } : { width: 1280, height: 900 };
 const vp = String(viewport.width);
-const port = Number(process.env.FUCQ70_PORT) || (chunk === 'narrow' ? 8933 : 8932);
-if (port < 8930 || port > 8949) throw new Error('FUCQ70_PORT must be within 8930-8949');
-const shotDir = join(HERE, 'browser');
-const resultsFile = join(HERE, `results-${chunk}.json`);
+const port = Number(env('PORT')) || (chunk === 'narrow' ? 8933 : 8932);
+if (port < 8930 || port > 8949) throw new Error('WALK_PORT must be within 8930-8949');
+const outDir = story === 'fucq70' ? HERE : resolve(HERE, '..', story);
+const only = env('ONLY') ? `-${env('ONLY')}` : ''; // a partial run never overwrites the full run's files
+const shotDir = join(outDir, `browser${only}`);
+const resultsFile = join(outDir, `results-${chunk}${only}.json`);
 const profile = join(scratch, `chrome-${chunk}`);
 const CHROME = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
 const ACCESS_KEY = `walk-${randomBytes(9).toString('hex')}`;
-const report = { chunk, entry: 'hosted-offline', viewport, state: 'incomplete', startedAt: new Date().toISOString(), steps: [], keyboard: [],
+const report = { ...(story === 'fucq70' ? {} : { story }), chunk, entry: 'hosted-offline', viewport, state: 'incomplete', startedAt: new Date().toISOString(), steps: [], keyboard: [],
   consoleErrors: [], pageErrors: [], failedRequests: [], badResponses: [], notes: [] };
-let shots = 0; let context; let page; let app; let child; let halted = null; let origin;
+let shots = 0; let reviewedOrder = null; const orderPosts = []; let context; let page; let app; let child; let halted = null; let origin;
 const wait = (ms) => new Promise((done) => setTimeout(done, ms));
-const save = () => writeFile(resultsFile, `${JSON.stringify(report, null, 2)}\n`);
+const save = () => { if (story === 'fucq72') report.orderPosts = orderPosts; if (env('TRACE')) report.trace = trace; return writeFile(resultsFile, `${JSON.stringify(report, null, 2)}\n`); };
 const killChrome = () => { try { spawnSync('/usr/bin/pkill', ['-f', `user-data-dir=${profile}`]); } catch { /* already gone */ } };
 const killServer = () => { try { if (child && child.exitCode === null) child.kill('SIGKILL'); } catch { /* already gone */ } };
 process.on('SIGALRM', () => { killChrome(); killServer(); report.state = 'timeout'; process.exit(124); });
@@ -52,7 +57,7 @@ const overflow = () => page.evaluate(() => document.documentElement.scrollWidth 
 // A step records pass/fail, observed text, page overflow and its screenshot. A failed critical step blocks the rest.
 async function step(id, name, run, { critical = false } = {}) {
   const row = { id, name, pass: false, screenshots: [] };
-  if (process.env.FUCQ70_LOG) console.error(`${new Date().toISOString().slice(11, 19)} step ${id}`);
+  if (env('LOG')) console.error(`${new Date().toISOString().slice(11, 19)} step ${id}`);
   report.steps.push(row);
   if (halted) { row.blocked = `Blocked by failed step ${halted}`; await save(); return; }
   try {
@@ -94,7 +99,8 @@ async function startHost() {
   });
   await ready;
   report.origin = origin;
-  return { stop: async () => { if (child.exitCode === null) { const gone = once(child, 'exit'); child.kill('SIGTERM'); setTimeout(killServer, 5000).unref(); await gone; } } };
+  const own = child;
+  return { stop: async () => { if (own.exitCode === null) { const gone = once(own, 'exit'); own.kill('SIGTERM'); setTimeout(() => { try { own.kill('SIGKILL'); } catch { /* gone */ } }, 5000).unref(); await gone; } } };
 }
 
 // ---- Presenter strip ----
@@ -114,7 +120,7 @@ async function presenterPress(name) {
   const after = await until(async () => { const t = await stripText(); return !/Action in progress/.test(t) && (clockOf(t) !== clockOf(before) || /Last tick/.test(t) && t !== before) ? t : null; }, { timeout: 120000, what: `${name} to finish` });
   return { before, after };
 }
-async function tick() { const r = await presenterPress(/^Tick \(/); await wait(Number(process.env.FUCQ70_SETTLE) || 1500); return clockOf(r.after); }
+async function tick() { const r = await presenterPress(/^Tick \(/); await wait(Number(env('SETTLE')) || 1500); return clockOf(r.after); }
 
 // ---- Review helpers ----
 const body = () => page.locator('.gcsp-review-body');
@@ -167,7 +173,7 @@ async function enterAccessKey(row) {
   kb('access', 'Typing the demo key and Enter opens the demo', typed);
   return typed;
 }
-async function fillSetup() {
+async function fillSetup(driverLabel = 'You: Paula (fictional)') {
   await page.getByRole('heading', { name: 'Your order choices', exact: true }).waitFor({ timeout: 60000 });
   const pick = async (name) => {
     const select = page.locator(`select[name="${name}"]`);
@@ -178,7 +184,7 @@ async function fillSetup() {
   const chosen = {};
   const driver = page.locator('select[name="driverId"]');
   await until(async () => (await driver.locator('option').count()) > 1 && !(await driver.isDisabled()), { what: 'driver options' });
-  await driver.selectOption({ label: 'You: Paula (fictional)' }).catch(async () => { await pick('driverId'); });
+  await driver.selectOption({ label: driverLabel }).catch(async () => { await pick('driverId'); });
   chosen.driver = clip(await driver.evaluate((s) => s.selectedOptions[0]?.textContent), 60);
   chosen.contract = await pick('contractOptionId');
   const date = page.locator('input[name="requestedCollectionDate"]');
@@ -207,38 +213,22 @@ async function claimNow() {
   return page.evaluate(async () => { const r = await fetch('/api/gcsp/manual/claim', { credentials: 'same-origin' }); const j = await r.json(); return { status: r.status, hold: j.value?.hold ?? j.hold ?? null }; });
 }
 
-async function run() {
-  await mkdir(shotDir, { recursive: true }); await mkdir(scratch, { recursive: true });
-  await rm(join(scratch, 'gcsp-stock-inventory'), { recursive: true, force: true }); // a killed earlier run can leave a torn inventory file
-  for (const old of await readdir(shotDir)) if (old.startsWith(`${vp}-`)) await rm(join(shotDir, old), { force: true });
-  app = await startHost();
-  context = await chromium.launchPersistentContext(profile, { executablePath: CHROME, headless: true, viewport });
-  const watch = (p) => {
-    p.on('console', (m) => { if (m.type() === 'error') report.consoleErrors.push({ text: clip(m.text(), 200), url: bare(m.location().url || p.url()), page: bare(p.url()) }); });
-    p.on('pageerror', (e) => report.pageErrors.push(clip(e.message, 200)));
-    p.on('requestfailed', (r) => report.failedRequests.push({ url: bare(r.url()), error: r.failure()?.errorText, method: r.method() }));
-    p.on('response', async (r) => {
-      if (r.status() < 400) return;
-      report.badResponses.push({ status: r.status(), url: bare(r.url()), method: r.request().method(), body: clip(await r.text().catch(() => ''), 200) });
-    });
-  };
-  context.on('page', watch);
-  page = await context.newPage();
-  let reviewedOrder = null;
-
-  await step('access-key', 'Demo key form opens the offline hosted demo', async () => {
+const DEFAULT_DRIVER = 'You: Paula (fictional)';
+// Demo key, Choose a replacement, setup saved, Next release, Continue to the gallery. `tag` prefixes step ids for later runs.
+async function reachGallery({ driverLabel = DEFAULT_DRIVER, tag = '' } = {}) {
+  await step(`${tag}access-key`, 'Demo key form opens the offline hosted demo', async () => {
     const typed = await enterAccessKey();
     await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 90000 });
     return { pass: typed, state: await bodyText(), shot: false };
   }, { critical: true });
 
-  await step('setup-saved', 'Choose a replacement; setup choices saved for Paula', async () => {
+  await step(`${tag}setup-saved`, driverLabel === DEFAULT_DRIVER ? 'Choose a replacement; setup choices saved for Paula' : `Choose a replacement; setup choices saved for ${driverLabel}`, async () => {
     await page.getByRole('button', { name: 'Choose a replacement' }).click();
-    const chosen = await fillSetup();
+    const chosen = await fillSetup(driverLabel);
     return { state: `${await heading()} | ${JSON.stringify(chosen)}`, detail: chosen, full: false };
   }, { critical: true });
 
-  await step('release-and-gallery', 'Next release, Continue, Released cars gallery', async () => {
+  await step(`${tag}release-and-gallery`, 'Next release, Continue, Released cars gallery', async () => {
     const { after } = await presenterPress('Next release');
     // The release moves the collection window, so the saved date is re-picked from the refreshed window before Continue.
     const date = page.locator('input[name="requestedCollectionDate"]');
@@ -256,6 +246,257 @@ async function run() {
     const cards = await page.getByRole('button', { name: 'Review this car' }).count();
     return { state: `${await heading()}; ${cards} review buttons; ${clip(after, 160)}`, detail: { cards }, full: false };
   }, { critical: true });
+}
+
+// WALK_TRACE=1 records every /api/ request with timing, outcome and the claim/review-details envelope fields into report.trace.
+const trace = []; const T0 = Date.now(); const mark = (label) => trace.push({ at: Date.now() - T0, mark: label });
+function traceRequests(p) {
+  const rows = new Map();
+  p.on('request', (r) => { if (!/\/api\//.test(r.url())) return; const row = { at: Date.now() - T0, method: r.method(), path: bare(r.url()).replace(/^https?:\/\/[^/]+/, '').replace('/api/gcsp/manual', '') , done: null }; rows.set(r, row); trace.push(row); });
+  p.on('requestfailed', (r) => { const row = rows.get(r); if (row) row.done = `failed ${r.failure()?.errorText}`; });
+  p.on('response', async (r) => {
+    const row = rows.get(r.request()); if (!row) return; row.http = r.status(); row.done = `done +${Date.now() - T0 - row.at}ms`;
+    if (row.method === 'GET' && /^\/(claim|review-details)$/.test(row.path)) {
+      const j = await r.json().catch(() => null); const v = j?.value ?? {}; const h = v.hold ?? v.claim?.hold ?? {};
+      row.env = j?.status; row.v = { state: h.state, phase: h.phase, expiresAt: h.expiresAt, now: v.now ?? j?.now ?? v.hold?.now, pendingOperation: v.pendingOperation === undefined ? undefined : (v.pendingOperation === null ? null : 'set'),
+        frozen: v.frozen, editable: v.editable ?? j?.view?.editable, view: v.view?.state ?? v.view ?? j?.view?.state, vstate: v.state };
+    }
+  });
+}
+// ---- FUCQ-72: manual order review, declarations, submit and outcome ----
+const RAW_IDS = ['slot-paula', 'demo-collection-centre', 'current:employee-paula', 'insurance-group'];
+const ORDER_ROUTE = /\/api\/gcsp\/manual\/order(\?.*)?$/;
+const summaryText = () => text(page.locator('.gcsp-summary-body'));
+const boxes = () => page.locator('input[type="checkbox"][data-declaration]');
+const submitButton = () => page.getByRole('button', { name: /^(Submit order|Retry the same submission|Submitting order)$/ });
+const countdown72 = async () => clip(await text(page.locator('.gcsp-review-countdown')), 80);
+const OUTCOME_H1 = /^(Order received|Order saved|Order not sent)$/;
+const waitOutcome = () => until(async () => OUTCOME_H1.test((await heading()).trim()), { timeout: 60000, what: 'order outcome heading' });
+const rawIdsIn = (t) => RAW_IDS.filter((id) => t.includes(id));
+const sectionText = (title) => text(page.locator('.gcsp-summary-section').filter({ has: page.locator('h2', { hasText: title }) }));
+
+async function toSummary() {
+  await tabTo(page.getByRole('button', { name: 'Continue to order review' }));
+  await page.keyboard.press('Enter');
+  await page.getByRole('heading', { name: 'Review your order', exact: true }).waitFor({ timeout: 60000 });
+  await until(async () => /Order review: \d+:\d{2} remaining/.test(await summaryText()), { what: 'order review countdown' });
+  await until(async () => (await boxes().count()) > 0, { what: 'declaration checkboxes' });
+}
+async function declarationLabels() {
+  return boxes().evaluateAll((list) => list.map((b) => (b.closest('label') ?? document.querySelector(`label[for="${b.id}"]`))?.innerText.replace(/\s+/g, ' ').trim() ?? ''));
+}
+async function tickAll() {
+  const total = await boxes().count();
+  for (let i = 0; i < total; i += 1) if (!(await boxes().nth(i).isChecked())) await boxes().nth(i).check();
+  await until(async () => submitButton().isEnabled(), { timeout: 15000, what: 'Submit enabled' }).catch(() => {});
+}
+async function checkedCount() { return boxes().evaluateAll((list) => list.filter((b) => b.checked).length); }
+async function outcomeFacts() {
+  const t = await text(page.locator('.gcsp-summary-outcome'));
+  return { heading: (await heading()).trim(), orderNumber: /Order number\s*:?\s*(\d+)/.exec(t)?.[1] ?? null, status: /Status\s*:?\s*([^\n]+)/.exec(t)?.[1]?.trim() ?? null,
+    stages: await page.locator('.gcsp-stage-items li').allInnerTexts().then((l) => l.map((x) => clip(x, 80))),
+    nextSteps: await page.locator('.gcsp-summary-steps li').allInnerTexts(), requestedCollection: clip(await sectionText('Requested collection'), 240),
+    forbiddenWording: (t.match(/\b(approved|collected|booked)\b/gi) ?? []), rawIds: rawIdsIn(t), text: clip(t, 900) };
+}
+// A fresh in-memory host (new run) and a clean page in the same Chrome context.
+async function freshHost() {
+  const old = page; page = await context.newPage(); await old.close().catch(() => {});
+  await app.stop(); await rm(join(scratch, 'gcsp-stock-inventory'), { recursive: true, force: true });
+  app = await startHost(); await context.clearCookies(); halted = null;
+}
+
+async function walk72() {
+  const only = env('ONLY') === 's10';
+  // Segment 1: Paula, lost response, outcome, print, reload, finish.
+  if (!only) {
+  await reachGallery();
+  await step('review-loaded', 'Review loaded (FUCQ-70 route)', async () => {
+    await reviewFirstCar(); return { state: `${await heading()} | ${await countdownOf()}`, full: false, shot: false };
+  }, { critical: true });
+
+  await step('s01-summary', 'Tab+Enter on Continue to order review shows the summary', async (row) => {
+    await toSummary();
+    const t = await summaryText(); const h2 = await page.locator('.gcsp-summary-body h2').allInnerTexts();
+    const f = { heading: await heading(), countdown: await countdown72(), sections: h2, rawIds: rawIdsIn(t), requestedWording: /Collection is requested, not a confirmed appointment/.test(t) && /Requested collection date/.test(t),
+      vehicleHasPoints: /points/i.test(await text(page.locator('.gcsp-review-vehicle'))), allowance: /Monthly allowance/.test(t), returnInfo: /Returning car/.test(t) && /Expected return mileage/.test(t),
+      contact: /Contact phone/.test(t) && /Contact email/.test(t), employeeDriver: /Name/.test(t) && /Licence number/.test(t), emDash: /—/.test(t) };
+    const rawNode = await page.evaluate((id) => { const w = document.createTreeWalker(document.querySelector('.gcsp-summary-body'), NodeFilter.SHOW_TEXT); let n; while ((n = w.nextNode())) if (n.textContent.includes(id)) return `${n.parentElement.outerHTML}`.slice(0, 300); return null; }, 'insurance-group');
+    row.detail = { ...f, rawIdElement: rawNode, text: clip(t, 1500) };
+    kb('review', 'Tab reaches Continue to order review; Enter opens the order summary', f.heading === 'Review your order');
+    const wanted = ['Your replacement order', 'Driver and licence', 'Points and contract', 'Collection', 'Contact and requirements', 'Car you are returning'];
+    const ok = f.heading === 'Review your order' && /^Order review: \d+:\d{2} remaining$/.test(f.countdown) && wanted.every((w) => h2.includes(w)) && !f.rawIds.length && f.requestedWording
+      && f.vehicleHasPoints && f.allowance && f.returnInfo && f.contact && f.employeeDriver && !f.emDash;
+    return { pass: ok, state: `${f.heading} | ${f.countdown} | sections ${h2.join(', ')} | raw ids ${f.rawIds.join(',') || 'none'} | requested wording ${f.requestedWording}` };
+  }, { critical: true });
+
+  await step('s02-declaration-gating', 'Keyboard-only declarations gate Submit', async (row) => {
+    const total = await boxes().count(); const labels = await declarationLabels();
+    const initial = { checked: await checkedCount(), enabled: await submitButton().isEnabled() };
+    for (let i = 0; i < total - 1; i += 1) { await tabTo(boxes().nth(i)); await page.keyboard.press('Space'); }
+    const partial = { checked: await checkedCount(), enabled: await submitButton().isEnabled() };
+    await tabTo(boxes().nth(total - 1)); await page.keyboard.press('Space');
+    const full = { checked: await checkedCount(), enabled: await until(async () => submitButton().isEnabled(), { timeout: 5000, what: 'Submit enabled' }).catch(() => false) };
+    row.detail = { total, labels, initial, partial, full, hint: clip(await text(page.locator('.gcsp-summary-body .gcsp-field-hint').last()), 120) };
+    kb('summary', 'Space ticks each declaration; Submit enables only after the last', !initial.enabled && !partial.enabled && full.enabled === true);
+    return { pass: total > 0 && !initial.enabled && !partial.enabled && full.enabled === true, state: `${total} declarations; Submit enabled: none ticked ${initial.enabled}, ${partial.checked}/${total} ticked ${partial.enabled}, all ticked ${full.enabled}; labels ${labels.join(' | ')}`, shotName: 's02-all-ticked' };
+  });
+
+  await step('s03-edit-details', 'Change contact or requirements returns to review; Continue returns to summary', async (row) => {
+    const before = await checkedCount();
+    await tabTo(page.getByRole('button', { name: 'Change contact or requirements' })); await page.keyboard.press('Enter');
+    await page.getByRole('heading', { name: 'Review your car', exact: true }).waitFor({ timeout: 60000 });
+    const area = page.locator('textarea[name="specialRequirements"]'); await area.waitFor({ timeout: 30000 });
+    const note = 'Walkthrough edit'; await area.fill(note);
+    await toSummary();
+    const after = await checkedCount(); const contact = await sectionText('Contact and requirements');
+    row.detail = { ticksBefore: before, ticksAfter: after, ticks: after === 0 ? 'reset' : after === before ? 'retained' : 'partial', editShown: contact.includes(note), submitEnabled: await submitButton().isEnabled() };
+    return { pass: after === 0 && contact.includes(note), state: `ticks ${row.detail.ticks} (${before} before, ${after} after); edited note on summary ${contact.includes(note)}; Submit enabled ${row.detail.submitEnabled}` };
+  });
+
+  await step('s04-lost-response', 'Lost response: Submit shows could not confirm; Check order status finds the order; one POST', async (row) => {
+    await tickAll();
+    const posts0 = orderPosts.length; let reached = null;
+    await page.route(ORDER_ROUTE, async (route) => {
+      if (route.request().method() !== 'POST') return route.continue();
+      try { const r = await route.fetch(); reached = { status: r.status(), body: clip(await r.text(), 160) }; } catch (e) { reached = { error: clip(e.message, 100) }; }
+      return route.abort('failed');
+    });
+    try {
+      await tabTo(submitButton()); await page.keyboard.press('Enter');
+      await until(async () => /could not confirm whether your order was placed/.test(await summaryText()), { timeout: 30000, what: 'could-not-confirm notice' });
+      const unconfirmed = { notice: clip(await text(page.locator('.gcsp-summary-body .gcsp-note').first()), 240), submitLabel: clip(await text(submitButton()), 60),
+        statusButton: await page.getByRole('button', { name: 'Check order status' }).count() };
+      row.screenshots.push(await shot('s04-could-not-confirm'));
+      await page.unroute(ORDER_ROUTE);
+      await page.getByRole('button', { name: 'Check order status' }).click(); await waitOutcome();
+      const outcome = await outcomeFacts(); const posts = orderPosts.length - posts0; reviewedOrder = outcome.orderNumber;
+      row.detail = { postsFromPage: posts, serverReceived: reached, unconfirmed, outcome: { heading: outcome.heading, orderNumber: outcome.orderNumber, status: outcome.status } };
+      return { pass: posts === 1 && Boolean(reached?.status) && /could not confirm/.test(unconfirmed.notice) && unconfirmed.statusButton > 0 && /^\d{7}$/.test(outcome.orderNumber ?? ''),
+        state: `page POSTs ${posts}; server answered ${JSON.stringify(reached)}; notice "${unconfirmed.notice}"; submit label "${unconfirmed.submitLabel}"; outcome "${outcome.heading}" order ${outcome.orderNumber}`, shotName: 's04-outcome-after-check' };
+    } finally { await page.unroute(ORDER_ROUTE).catch(() => {}); }
+  });
+
+  await step('s05-outcome', 'Outcome: heading, 7-digit order number, status without approved/collected/booked, stages, next steps, requested collection', async (row) => {
+    const o = await outcomeFacts(); row.detail = o;
+    const ok = /^\d{7}$/.test(o.orderNumber ?? '') && Boolean(o.status) && !o.forbiddenWording.length && o.stages.length > 0 && o.nextSteps.length > 0 && /requested/i.test(o.requestedCollection);
+    return { pass: ok, state: `${o.heading} | order ${o.orderNumber} | status ${o.status} | stages ${o.stages.join('; ')} | next ${o.nextSteps.join(' / ')} | forbidden words ${o.forbiddenWording.join(',') || 'none'}` };
+  });
+
+  await step('s06-print', 'Print media hides buttons and presenter controls', async (row) => {
+    await page.emulateMedia({ media: 'print' });
+    try {
+      const hidden = await page.evaluate(() => {
+        const info = (el) => el ? { display: getComputedStyle(el).display, wrapperDisplay: getComputedStyle(el.closest('.gcsp-print-hidden') ?? el).display, rects: el.getClientRects().length } : null;
+        const btn = (name) => info([...document.querySelectorAll('button')].find((b) => b.textContent.trim() === name));
+        return { finish: btn('Finish'), print: btn('Print order'), check: btn('Check order status'), presenter: info(document.querySelector('.gcsp-presenter-controls')),
+          anyButtonVisible: [...document.querySelectorAll('.gcsp-summary-outcome button')].some((b) => b.getClientRects().length > 0) };
+      });
+      row.detail = hidden; row.screenshots.push(await shot('s06-print'));
+      const gone = (x) => x === null || x.rects === 0 || x.wrapperDisplay === 'none';
+      return { pass: gone(hidden.finish) && gone(hidden.print) && gone(hidden.presenter) && !hidden.anyButtonVisible, state: JSON.stringify(hidden), shot: false };
+    } finally { await page.emulateMedia({ media: 'screen' }); }
+  });
+
+  await step('s08-finish', 'Finish returns to the account screen showing the order', async (row) => {
+    await page.getByRole('button', { name: 'Finish', exact: true }).click();
+    await page.getByRole('heading', { name: 'Your cars' }).first().waitFor({ timeout: 60000 });
+    await wait(1000); const t = await bodyText(); const shown = reviewedOrder ? t.includes(reviewedOrder) : false;
+    row.detail = { orderShown: shown, text: clip(t, 900) };
+    return { pass: shown, state: `heading "${await heading()}"; order ${reviewedOrder} shown ${shown}; ${clip(t, 400)}` };
+  });
+
+  await step('s07-reload', 'Reload and reopen: same order, no second POST (run after Finish, which has no outcome to leave from afterwards)', async (row) => {
+    const posts0 = orderPosts.length;
+    await page.reload({ waitUntil: 'load' });
+    await page.getByRole('heading').first().waitFor({ timeout: 60000 });
+    await until(async () => (await page.getByRole('button').count()) > 0, { what: 'account buttons' });
+    await wait(4000);
+    const resume = page.getByRole('button', { name: /Resume saved journey/ });
+    const resumeOffered = await resume.count();
+    const afterReload = { heading: await heading(), resumeOffered, buttons: await page.getByRole('button').evaluateAll((b) => b.map((x) => x.textContent.trim()).filter(Boolean).slice(0, 12)),
+      orderShown: (await bodyText()).includes(reviewedOrder ?? '#none'), orderProgress: /Your order is in progress|View order progress/.test(await bodyText()),
+      savedJourneyCard: clip((await bodyText()).match(/(Replacement|New order) journey saved[^]*?(start the permitted journey again\.|Resume saved journey)/)?.[0], 400) };
+    if (resumeOffered) { await resume.first().click(); await until(async () => OUTCOME_H1.test((await heading()).trim()), { timeout: 60000, what: 'outcome after resume' }).catch(() => {}); }
+    const reopened = OUTCOME_H1.test((await heading()).trim()); const o = reopened ? await outcomeFacts() : null; const posts = orderPosts.length - posts0;
+    const claimOrder = await page.evaluate(async () => { const r = await fetch('/api/gcsp/manual/order', { credentials: 'same-origin' }); const j = await r.json(); return { status: r.status, operationState: j.value?.operationState, orderNumber: j.value?.selection?.stock?.orderNumber ?? null }; });
+    row.detail = { afterReload, reopened, outcome: o && { heading: o.heading, orderNumber: o.orderNumber, status: o.status }, postsAfterReload: posts, serverStillHasOrder: claimOrder };
+    return { pass: reopened && o.orderNumber === reviewedOrder && posts === 0, state: `after reload "${afterReload.heading}" [${afterReload.buttons.join(' | ')}]; Resume offered ${resumeOffered}; order progress on account ${afterReload.orderProgress}; reopened outcome ${reopened} order ${o?.orderNumber ?? 'none'} (expected ${reviewedOrder}); server GET order ${JSON.stringify(claimOrder)}; POSTs since reload ${posts}` };
+  });
+
+  }
+  // Segment 2: nominated driver.
+  if (!only) {
+  await freshHost();
+  await reachGallery({ driverLabel: 'Nominated: Casey (fictional)', tag: 'nom-' });
+  await step('nom-review-loaded', 'Nominated run: review loaded', async () => {
+    await reviewFirstCar(); return { state: `${await heading()} | ${await countdownOf()}`, full: false, shot: false };
+  }, { critical: true });
+  await step('s09-nominated-driver', 'Nominated driver: summary shows Casey and the driver declaration; submit gives an outcome', async (row) => {
+    await toSummary();
+    const driver = await sectionText('Driver and licence'); const labels = await declarationLabels();
+    row.screenshots.push(await shot('s09-nominated-summary'));
+    await tickAll(); await submitButton().click(); await waitOutcome();
+    const o = await outcomeFacts(); const outDriver = await sectionText('Driver and licence');
+    row.detail = { driverSection: clip(driver, 400), declarationLabels: labels, outcome: { heading: o.heading, orderNumber: o.orderNumber, status: o.status }, outcomeDriverSection: clip(outDriver, 400) };
+    return { pass: /Casey/.test(driver) && labels.some((l) => /driver/i.test(l)) && /Casey/.test(outDriver) && /^\d{7}$/.test(o.orderNumber ?? ''),
+      state: `driver section "${clip(driver, 200)}"; declarations ${labels.join(' | ')}; outcome "${o.heading}" order ${o.orderNumber} status ${o.status}`, shotName: 's09-nominated-outcome', shot: true };
+  });
+
+  }
+  // Segment 3: expiry at the summary.
+  if (!only) await freshHost();
+  await reachGallery({ tag: 'exp-' });
+  await step('exp-review-loaded', 'Expiry run: review loaded', async () => {
+    await reviewFirstCar(); return { state: `${await heading()} | ${await countdownOf()}`, full: false, shot: false };
+  }, { critical: true });
+  await step('s10-expired-at-summary', 'Presenter ticks expire the order-review hold: Submit disabled, expiry message, Refresh stock', async (row) => {
+    await toSummary(); await tickAll();
+    const countdowns = [await countdown72()]; let ticks = 0;
+    const expiredShown = async () => /Your reservation has expired|This deadline has passed/.test(await bodyText());
+    while (ticks < 60 && !(await expiredShown())) {
+      mark(`tick ${ticks + 1} start, countdown ${countdowns.at(-1)}`); await tick(); ticks += 1; mark(`tick ${ticks} end`);
+      await until(expiredShown, { timeout: 6000, what: 'expiry' }).catch(() => {});
+      countdowns.push(await countdown72());
+    }
+    await until(expiredShown, { timeout: 30000, what: 'expired message' });
+    const snap = async () => ({ submitPresent: await submitButton().count(), submitDisabled: await submitButton().count() ? await submitButton().isDisabled() : null, refreshStock: await page.getByRole('button', { name: 'Refresh stock' }).count(),
+      notice: clip(await text(page.locator('.gcsp-summary-body .gcsp-note').first()), 240), hint: clip(await text(page.locator('.gcsp-summary-body .gcsp-field-hint').last()), 120), heading: await heading(), countdown: await countdown72() });
+    mark('expired text shown'); await wait(1000); const atExpiry = await snap();
+    // The claim is re-read on presenter ticks, so give it a settle period, then one more tick if Refresh stock is still absent.
+    await until(async () => page.getByRole('button', { name: 'Refresh stock' }).count(), { timeout: 8000, what: 'Refresh stock' }).catch(() => {});
+    mark('settle end (8s after expiry)'); const afterSettle = await snap(); let extraTick = null;
+    if (!afterSettle.refreshStock) { mark('extra tick start'); extraTick = await tick(); mark('extra tick end'); await until(async () => page.getByRole('button', { name: 'Refresh stock' }).count(), { timeout: 8000, what: 'Refresh stock' }).catch(() => {}); }
+    mark('final settle end');
+    const f = { ticks, countdowns: countdowns.slice(-6), atExpiry, afterSettle, extraTick, final: await snap() };
+    row.detail = f; const fin = f.final;
+    return { pass: (!fin.submitPresent || fin.submitDisabled) && /expired/.test(await bodyText()) && fin.refreshStock >= 1,
+      state: `ticks ${ticks}; at expiry: notice "${atExpiry.notice}", Refresh stock ${atExpiry.refreshStock}; after settle${extraTick ? ' and one more tick' : ''}: Submit present ${Boolean(fin.submitPresent)} disabled ${fin.submitDisabled}, Refresh stock ${fin.refreshStock}, notice "${fin.notice}", hint "${fin.hint}"`, shotName: 's10-expired' };
+  });
+  report.orderPosts = orderPosts;
+}
+
+async function run() {
+  await mkdir(shotDir, { recursive: true }); await mkdir(scratch, { recursive: true });
+  await rm(join(scratch, 'gcsp-stock-inventory'), { recursive: true, force: true }); // a killed earlier run can leave a torn inventory file
+  for (const old of await readdir(shotDir)) if (old.startsWith(`${vp}-`)) await rm(join(shotDir, old), { force: true });
+  app = await startHost();
+  context = await chromium.launchPersistentContext(profile, { executablePath: CHROME, headless: true, viewport });
+  const watch = (p) => {
+    p.on('console', (m) => { if (m.type() === 'error') report.consoleErrors.push({ text: clip(m.text(), 200), url: bare(m.location().url || p.url()), page: bare(p.url()) }); });
+    p.on('request', (r) => { if (r.method() === 'POST' && /\/api\/gcsp\/manual\/order$/.test(bare(r.url()))) orderPosts.push(new Date().toISOString().slice(11, 23)); });
+    p.on('pageerror', (e) => report.pageErrors.push(clip(e.message, 200)));
+    p.on('requestfailed', (r) => report.failedRequests.push({ url: bare(r.url()), error: r.failure()?.errorText, method: r.method() }));
+    p.on('response', async (r) => {
+      if (r.status() < 400) return;
+      report.badResponses.push({ status: r.status(), url: bare(r.url()), method: r.request().method(), body: clip(await r.text().catch(() => ''), 200) });
+    });
+  };
+  context.on('page', watch);
+  if (env('TRACE')) context.on('page', traceRequests);
+  page = await context.newPage();
+  if (story === 'fucq72') { await walk72(); return; }
+
+  await reachGallery();
 
   // a. Review loaded
   await step('a-review-loaded', 'Review loaded with vehicle, facts, countdown and prefilled fields', async (row) => {
@@ -319,7 +560,7 @@ async function run() {
       // The review reconciles a moment after each tick, so give the expired state a few seconds before ticking again.
       await until(async () => /Your reservation has expired/.test(await bodyText()), { timeout: 6000, what: 'expiry' }).catch(() => {});
       countdowns.push(await countdownOf());
-      if (process.env.FUCQ70_LOG) console.error(`${new Date().toISOString().slice(11, 19)} tick ${ticks} clock ${clockAt} countdown ${countdowns.at(-1)} notice ${clip(await text(page.locator('.gcsp-review-body > .gcsp-note')), 120)} status ${clip(await text(page.locator('.gcsp-review-announcement')), 100)} hold ${(await claimNow()).hold?.state}`);
+      if (env('LOG')) console.error(`${new Date().toISOString().slice(11, 19)} tick ${ticks} clock ${clockAt} countdown ${countdowns.at(-1)} notice ${clip(await text(page.locator('.gcsp-review-body > .gcsp-note')), 120)} status ${clip(await text(page.locator('.gcsp-review-announcement')), 100)} hold ${(await claimNow()).hold?.state}`);
     }
     await until(async () => /Your reservation has expired/.test(await bodyText()), { timeout: 30000, what: 'expired message' });
     const live = await liveStats();
