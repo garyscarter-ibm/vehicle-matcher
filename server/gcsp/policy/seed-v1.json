@@ -13295,6 +13295,21 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "orderPlan.gregEditableKeys",
+      "value": [
+        "orderPlan.modelBounds",
+        "orderPlan.derivativeBounds",
+        "orderPlan.budgetMinor"
+      ],
+      "unit": "policy keys",
+      "status": "assumed",
+      "basis": "Greg may edit order quantity bounds and the budget envelope; eligibility, essentials, catalogue and objective weights are not editable.",
+      "source": "docs/gcsp/shared-contracts.md#order-plan--fucq-117",
+      "sourceDate": "2026-11-07",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "orderPlan.catalog.v1",
       "value": {
         "version": "order-plan-catalog.v1",
@@ -13305,7 +13320,7 @@
             "derivativeId": "g20-saloon-320i",
             "modelId": "g20-saloon",
             "production": {
-              "model": "G20 Saloon",
+              "model": "3 Series Saloon",
               "derivative": "320i"
             },
             "unitCostMinor": 3900000,
@@ -13317,7 +13332,7 @@
             "derivativeId": "g20-saloon-330e",
             "modelId": "g20-saloon",
             "production": {
-              "model": "G20 Saloon",
+              "model": "3 Series Saloon",
               "derivative": "330e"
             },
             "unitCostMinor": 4600000,
@@ -13329,7 +13344,7 @@
             "derivativeId": "g21-touring-320i",
             "modelId": "g21-touring",
             "production": {
-              "model": "G21 Touring",
+              "model": "3 Series Touring",
               "derivative": "320i"
             },
             "unitCostMinor": 4200000,
@@ -13341,8 +13356,8 @@
             "derivativeId": "g61-i5-40",
             "modelId": "g61-i5",
             "production": {
-              "model": "G61 i5",
-              "derivative": "i5 40"
+              "model": "i5 Touring",
+              "derivative": "eDrive40"
             },
             "unitCostMinor": 6200000,
             "configurationIds": [

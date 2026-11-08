@@ -5,7 +5,7 @@ export const OFFER_JOURNEY_SET = 'offer-journey-v1';
 const KEYS = ['offer.declineReasons.v1', 'offer.followupQuestions.v1'];
 
 // Demo startup adopts the reviewed decline/follow-up sets once, as Greg, through PolicyService.
-// Policy stores are per run, so a reset drops these keys; the runtime re-adopts them after each reset.
+// Policy is per run: a reset starts on the base version, so ScenarioService re-adopts after each reset.
 export async function adoptOfferJourneyPolicy({ policy, identity, clock }) {
   const presenter = await identity.createPresenterSession(`offer-journey-policy:${randomUUID()}`);
   if (presenter.status !== 'ok') return presenter;

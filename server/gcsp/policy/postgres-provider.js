@@ -5,7 +5,7 @@ import { inputDigest } from '../repository/core.js';
 import { POLICY_TABLES, policyUnavailable, policyOutcome } from './publish.js';
 
 export class PostgresPolicyProvider {
-  #options; #pool; #owned = false; #startup; #schema; #seedProvider;
+  #options; #pool; #owned = false; #startup; #schema; #seedProvider; #cache = new Map();
   constructor({ schema = 'public', seedProvider = new FilePolicyProvider(), ...options } = {}) {
     this.#options = options; this.#pool = options.pool; this.#schema = schema; this.#seedProvider = seedProvider;
   }
@@ -20,7 +20,7 @@ export class PostgresPolicyProvider {
           const parsed = new URL(connectionString);
           if (!['postgres:', 'postgresql:'].includes(parsed.protocol)) return policyUnavailable();
           this.#pool = new pg.Pool({ connectionString, max: 2, connectionTimeoutMillis: 5000,
-            idleTimeoutMillis: 1000, statement_timeout: 10000, query_timeout: 15000 });
+            keepAlive: true, allowExitOnIdle: true, idleTimeoutMillis: 300000, statement_timeout: 10000, query_timeout: 15000 });
           this.#pool.on('error', () => {}); this.#owned = true;
         }
         const status = await (this.#options.migrate === false ? migrationStatus : migrate)(this.#pool,
@@ -90,12 +90,33 @@ export class PostgresPolicyProvider {
     } finally { client?.release(); }
   }
 
+  // Policy rows are immutable and publish only appends, so matching version and digest headers prove the cache.
+  async #headerKey(runId) {
+    let client;
+    try {
+      client = await this.#pool.connect();
+      const { rows } = await client.query(`SELECT data->'seed'->>'policyVersion' AS "policyVersion", data->>'seedDigest' AS "seedDigest"
+        FROM ${this.#table('policy_versions')} WHERE run_id = $1 ORDER BY effective_from`, [runId]);
+      return rows.length ? rows.map((row) => `${row.policyVersion}:${row.seedDigest}`).join('|') : undefined;
+    } catch { return undefined; } finally { client?.release(); }
+  }
+
   async loadVersions(read) {
-    return this.#transaction(read, async (records) => ({ value: snapshotVersions(records.map(({ seed }) => {
-      const value = structuredClone(seed);
-      for (const table of Object.keys(POLICY_TABLES)) for (const row of value[table]) delete row.runId;
-      return value;
-    })) }));
+    if ((await this.open()).status !== 'ok') throw new PolicySourceError('source-unavailable');
+    const cached = this.#cache.get(read.runId);
+    if (cached && cached.key === await this.#headerKey(read.runId)) return cached.value;
+    let key;
+    const value = await this.#transaction(read, async (records) => {
+      key = records.map(({ seed, seedDigest }) => `${seed.policyVersion}:${seedDigest}`).join('|');
+      return { value: snapshotVersions(records.map(({ seed }) => {
+        const copy = structuredClone(seed);
+        for (const table of Object.keys(POLICY_TABLES)) for (const row of copy[table]) delete row.runId;
+        return copy;
+      })) };
+    });
+    this.#cache.delete(read.runId); this.#cache.set(read.runId, { key, value });
+    if (this.#cache.size > 8) this.#cache.delete(this.#cache.keys().next().value);
+    return value;
   }
 
   async publish(read, build) {
@@ -105,13 +126,13 @@ export class PostgresPolicyProvider {
         for (const record of clean) for (const table of Object.keys(POLICY_TABLES)) for (const row of record.seed[table]) delete row.runId;
         return build(clean);
       });
-    } catch { return policyUnavailable(); }
+    } catch { return policyUnavailable(); } finally { this.#cache.delete(read.runId); }
   }
 
   async close() {
     try {
       if (this.#owned) { await this.#pool.end(); this.#pool = undefined; this.#owned = false; }
-      this.#startup = undefined;
+      this.#startup = undefined; this.#cache.clear();
       return policyOutcome('ok', null, { value: { closed: true } });
     } catch { return policyUnavailable(); }
   }

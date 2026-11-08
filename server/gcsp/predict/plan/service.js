@@ -53,7 +53,7 @@ export function createOrderPlanService({ policy, identity, clock, forecast, supp
         const end = await clock.now(context); if (end.status !== 'ok') return end;
         if (inputDigest(first) !== inputDigest(second) || inputDigest(time.value) !== inputDigest(end.value)) return { status: 'conflict', code: 'planning-inputs-changed', contractVersion: CONTRACT_VERSION };
         const final = await identity.requireRole(context, 'greg'); if (final.status !== 'ok') return final;
-        return { ...plan, policyProvenance: provenance };
+        return { ...plan, policyProvenance: provenance, supplyActivity: { requests: availability.requests ?? [], responses: availability.responses ?? [] } };
       } catch { return unavailable('planning-source-unavailable'); }
     },
   });

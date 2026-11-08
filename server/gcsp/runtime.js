@@ -9,6 +9,7 @@ import { createBriefEditorService } from './brief/editor.js';
 import { createActivityService } from './brief/activity.js';
 import { createGregDemandService } from './greg/index.js';
 import { createGregPublishService } from './greg/publish/index.js';
+import { createOrderPlanOperations } from './predict/plan/index.js';
 import { createScenarioService } from './scenarios/index.js';
 import { adoptOfferJourneyPolicy } from './policy/offer-journey-adoption.js';
 import { createSyntheticManualStockAdapter } from './adapters/manual-stock.js';
@@ -96,20 +97,21 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
     const contextForRun = (runId) => ({ runId, environmentId, principalId: 'gcsp-stock-source', roles: ['presenter'] });
     const pullProvider = typeof stockProvider === 'function' ? stockProvider({ policy, repository, contextForRun, environmentId }) : stockProvider;
     // Prepared scenario fixtures are branded by the exact policy instance used by the clock.
-    // Policy stores are per run, so a reset re-adopts the offer journey sets before the new run's stock source is chosen.
-    const afterReset = adoptOfferJourney || typeof pullProvider?.prepareRun === 'function' ? async (runId) => {
-      if (adoptOfferJourney) {
-        const adopted = await adoptOfferJourneyPolicy({ policy, identity, clock });
-        if (adopted.status !== 'ok') console.warn(`GCSP policy: adopting the offer journey after a reset failed (${adopted.code ?? adopted.status}).`);
-      }
-      if (typeof pullProvider?.prepareRun === 'function') await pullProvider.prepareRun(runId);
-    } : undefined;
-    const scenarios = createScenarioService({ repository, policy: readPolicy, clock, identity, afterReset });
+    // After a reset: choose the new run's stock source (a failure defers it to the first pull), then
+    // re-adopt the reviewed offer-journey sets, because policy publications are per run.
+    const afterReset = async (runId) => {
+      if (typeof pullProvider?.prepareRun === 'function') { try { await pullProvider.prepareRun(runId); } catch { /* deferred */ } }
+      return adoptOfferJourney ? adoptOfferJourneyPolicy({ policy, identity, clock }) : ok({});
+    };
+    const scenarios = createScenarioService({ repository, policy: readPolicy, clock, identity, brief, afterReset,
+      prepareEmployee: (context) => seedManualDemoContext({ repository, identity, clock, context }) });
     const stockRelease = pullProvider === undefined ? undefined
       : createStockReleaseService({ repository, policy, clock, identity, provider: pullProvider });
     // Greg's order requests need both the production port and the F92 queue; neither is invented here.
     const supply = production && stockRelease
       ? createSupplyService({ repository, policy, clock, identity, production, releases: stockRelease }) : undefined;
+    // FUCQ-104's submit is the only request path; without a production source submit stays unavailable.
+    const orderPlan = createOrderPlanOperations({ repository, policy, identity, clock, requests: supply });
     const releaseHistory = createStockReleaseHistoryPort({ repository, identity, clock });
     const galleryRead = createManualGalleryStockRead({ manual: manualClaims, releaseHistory, identity, clock });
     // Route reads through this facade; lifecycle and mutations keep the original instance.
@@ -150,7 +152,7 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
       return resolved.status === 'ok' ? offerAccess.fromAccount(resolved.value, selector) : session ?? resolved;
     };
     notify = createNotificationDispatcher({ repository, policy, clock, environmentId, mail });
-    const dependencies = { gcspRepository: repository, gcspPolicy: policy, gcspGreg: greg, gcspGregPublish: gregPublish,
+    const dependencies = { gcspRepository: repository, gcspPolicy: policy, gcspGreg: greg, gcspGregPublish: gregPublish, gcspOrderPlan: orderPlan,
       gcspScenarios: scenarios, gcspManualClaims: manualClaims, gcspManualRead: manualRead, gcspManualReview: manualReview,
       gcspStockRelease: stockRelease, gcspSupply: supply, gcspCases: cases, gcspManualOrder: manualOrder,
       gcspLifecycle: lifecycle, gcspDocuments: documents, gcspAppointments: appointments, gcspReturnPlan: returnPlan,
@@ -189,6 +191,6 @@ export async function createGcspRuntime({ mode = 'postgres', repository, reposit
         if (current.status === 'ok') await pullProvider.prepareRun(current.value.runId);
       } catch (error) { console.warn(`GCSP stock: preparing the first run failed (${error?.message ?? 'error'}).`); }
     }
-    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, scenarios, manualClaims, manualRead, manualReview, manualOrder, stockRelease, supply, releaseHistory, cases, orderingAdapter, lifecycle, documents, appointments, returnPlan, buddy, allocation, offerAccess, offerDecisions, offerFollowup, resolveOfferAccess, notify, dependencies, createLocalSession, close });
+    return ok({ mode, repository, policy, clock, identity, account, brief, editor, activity, provider, greg, gregPublish, orderPlan, scenarios, manualClaims, manualRead, manualReview, manualOrder, stockRelease, supply, releaseHistory, cases, orderingAdapter, lifecycle, documents, appointments, returnPlan, buddy, allocation, offerAccess, offerDecisions, offerFollowup, resolveOfferAccess, notify, dependencies, createLocalSession, close });
   } catch { await close(); return unavailable(); }
 }

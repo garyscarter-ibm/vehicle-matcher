@@ -1,8 +1,8 @@
 // Inputs for later journey loaders, never calculated outcomes or a second policy source.
 const actors = ['demo-paula', 'demo-alex', 'demo-greg', 'demo-presenter'];
-const journey = (scenarioId, name, ownerStory, epics, stories, capabilities, inputs, steps, variants = []) => ({
+const journey = (scenarioId, name, ownerStory, epics, stories, capabilities, inputs, steps, variants = [], fixtureVersion = `${scenarioId}-inputs-v1`) => ({
   scenarioId, name, ownerStory, kind: 'journey', scenarioVersion: 'gcsp-acceptance-scenarios-v1',
-  fixtureVersion: `${scenarioId}-inputs-v1`, epics, stories, requiredCapabilities: capabilities,
+  fixtureVersion, epics, stories, requiredCapabilities: capabilities,
   principalIds: actors, inputs, steps, variants,
 });
 const brief = (principalId, essentials = { seats: 5, charging: 'not-ready' }) => ({
@@ -24,8 +24,10 @@ export const SCENARIO_INPUTS_V1 = [
     ['FUCQ-96', 'FUCQ-100', 'FUCQ-106', 'FUCQ-107', 'FUCQ-128'],
     ['brief-confirmation', 'stock-release', 'buddy-allocation', 'buddy-offers', 'offer-decisions', 'brief-change'],
     { briefs: [brief('demo-paula')], stockTranches: [{ source: 'published-demo-stock', cue: 'release' }], pendingOperations: [],
-      prepare: ['release-through-service', 'allocate-through-service'], change: { path: 'preferences.body.value', value: 'suv' } },
-    [{ operation: 'employee', purpose: 'decline-and-confirm-one-change' }, { operation: 'advance', to: 'release' }, { operation: 'tick', purpose: 'recompute-from-changed-brief' }], ['later-suitable-stock', 'waiting-for-suitable-stock']),
+      prepare: ['release-through-service', 'allocate-through-service'], change: { path: 'preferences.body.value', value: 'saloon' } },
+    [{ operation: 'employee', purpose: 'decline-and-confirm-one-change' }, { operation: 'advance', to: 'release' }, { operation: 'tick', purpose: 'recompute-from-changed-brief' }],
+    // v2: the reviewed demo stock has no SUV, so the change is to saloon. The waiting variant moved to FUCQ-173.
+    ['later-suitable-stock'], 'decline-then-change-inputs-v2'),
   journey('offer-expires', 'Offer expires', 'FUCQ-129', ['FUCQ-87', 'FUCQ-88', 'FUCQ-89', 'FUCQ-75'],
     ['FUCQ-96', 'FUCQ-100', 'FUCQ-102', 'FUCQ-106', 'FUCQ-129'],
     ['brief-confirmation', 'stock-release', 'buddy-allocation', 'buddy-offers', 'captured-notifications', 'offer-expiry'],

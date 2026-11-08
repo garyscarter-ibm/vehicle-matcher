@@ -8,3 +8,4 @@ export { createFutureChoiceEvaluator } from './future-choices.js';
 export { createPolicyOrderPlanCatalog } from './catalog.js';
 export { createPolicyFutureTermsProvider } from './terms.js';
 export { createCanonicalOrderPlanService } from './compose.js';
+export { createOrderPlanOperations } from './operations.js';

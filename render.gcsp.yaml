@@ -29,12 +29,15 @@ services:
     startCommand: cd server && npm start
     healthCheckPath: /health/vehicle-evidence
     autoDeployTrigger: commit
-    buildFilter:           # API code plus its pinned source, image and operator artifacts
+    buildFilter:           # API code, its pinned artifacts, and the GCSP pages it serves (GCSP_RUNTIME=1)
       paths:
         - server/**
         - scripts/gcsp/**
-        - assets/gcsp-vehicle-evidence/**
         - render.gcsp.yaml
+        - gcsp-*.html
+        - gcsp-*.css
+        - blocks/**
+        - assets/**
       ignoredPaths:
         - server/test/**
         - server/**/*.md
@@ -49,7 +52,26 @@ services:
         value: "1"
       - key: GCSP_ALLOWED_ORIGINS  # must equal gcsp-site's address exactly; change here if Render adds a suffix
         value: https://gcsp-site.onrender.com
-      - key: DEMO_ACCESS_KEY       # demo password for /api/*; Render asks for it when the Blueprint is created
+      - key: DEMO_ACCESS_KEY       # demo password for /api/* and the GCSP pages' one-time key form
+        sync: false
+      # FUCQ-180: the full GCSP runtime and its pages on this one origin (server/gcsp/host.js).
+      - key: GCSP_RUNTIME
+        value: "1"
+      - key: GCSP_REPOSITORY_MODE  # memory for the demo (state resets on restart); postgres stays available
+        value: memory
+      - key: GCSP_PUBLIC_ORIGIN    # this service's own address, exactly; change here if Render adds a suffix
+        value: https://gcsp-api.onrender.com
+      - key: GCSP_PUBLIC_BASE_URL  # base for emailed offer links; the pages are served by this service
+        value: https://gcsp-api.onrender.com
+      - key: GCSP_MAIL_TRANSPORT   # brevo for real email; unset keeps mail captured in the outbox only
+        sync: false
+      - key: GCSP_MAIL_FROM
+        sync: false
+      - key: GCSP_MAIL_FROM_NAME
+        sync: false
+      - key: GCSP_MAIL_RECIPIENTS  # JSON map of demo principal to address
+        sync: false
+      - key: GCSP_BREVO_API_KEY
         sync: false
 
   - type: web
@@ -63,8 +85,6 @@ services:
         - block.html
         - components.html
         - gcsp-employee.html
-        - gcsp-greg.html
-        - gcsp-outbox.html
         - gcsp-employee.css
         - blocks/**
         - assets/**
@@ -72,13 +92,48 @@ services:
     buildCommand: >-
       test -n "$GCSP_API_URL" &&
       mkdir -p _site &&
-      cp -R index.html block.html components.html gcsp-employee.html gcsp-greg.html gcsp-outbox.html
+      cp -R index.html block.html components.html gcsp-employee.html
       gcsp-employee.css blocks assets _site/ &&
       sed -i "s|https://bmw-matcher-api.onrender.com|$GCSP_API_URL|" _site/blocks/demo-launcher/boot.js &&
       sed -i "s|data-api=\"http://localhost:8787\"|data-api=\"$GCSP_API_URL\"|" _site/block.html &&
       grep -q "$GCSP_API_URL" _site/blocks/demo-launcher/boot.js &&
       grep -q "$GCSP_API_URL" _site/block.html
     staticPublishPath: _site
+    # The live GCSP pages run on gcsp-api's origin with its session cookies; keep in step with server/gcsp/host.js.
+    routes:
+      - type: redirect
+        source: /gcsp-presenter.html
+        destination: https://gcsp-api.onrender.com/gcsp-presenter.html
+      - type: redirect
+        source: /gcsp-account.html
+        destination: https://gcsp-api.onrender.com/gcsp-account.html
+      - type: redirect
+        source: /gcsp-greg.html
+        destination: https://gcsp-api.onrender.com/gcsp-greg.html
+      - type: redirect
+        source: /gcsp-outbox.html
+        destination: https://gcsp-api.onrender.com/gcsp-outbox.html
+      - type: redirect
+        source: /gcsp-brief-live.html
+        destination: https://gcsp-api.onrender.com/gcsp-brief-live.html
+      - type: redirect
+        source: /gcsp-activity-live.html
+        destination: https://gcsp-api.onrender.com/gcsp-activity-live.html
+      - type: redirect
+        source: /gcsp-order-progress-live.html
+        destination: https://gcsp-api.onrender.com/gcsp-order-progress-live.html
+      - type: redirect
+        source: /gcsp-case-queue.html
+        destination: https://gcsp-api.onrender.com/gcsp-case-queue.html
+      - type: redirect
+        source: /gcsp-help.html
+        destination: https://gcsp-api.onrender.com/gcsp-help.html
+      - type: redirect
+        source: /gcsp-offer.html
+        destination: https://gcsp-api.onrender.com/gcsp-offer.html
+      - type: redirect
+        source: /gcsp/offer
+        destination: https://gcsp-api.onrender.com/gcsp/offer
     envVars:
       - key: GCSP_API_URL          # gcsp-api's public address; change here if Render adds a suffix
         value: https://gcsp-api.onrender.com

@@ -118,7 +118,8 @@ test('next-release and named times advance honestly without inventing release co
   assert.equal(named.value.advance.now, '2026-11-05T11:00:00.000Z');
   assert.equal((await f.controls.readState(f.presenter)).value.lastTick.tickId, named.value.tick.tickId);
   const catalogue = (await f.scenarios.readCatalogue(f.presenter)).value;
-  assert.ok(catalogue.scenarios.filter((entry) => entry.kind === 'journey').every((entry) => !entry.availability.available));
+  // Only a journey with a reviewed start loader is available; the others stay "not available yet".
+  assert.deepEqual(catalogue.scenarios.filter((entry) => entry.kind === 'journey' && entry.availability.available).map((entry) => entry.scenarioId), ['decline-then-change']);
 });
 
 test('pending and refused handler outcomes stay ordered and truthful after time has advanced', async () => {
