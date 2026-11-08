@@ -10,6 +10,7 @@ import { startUncertainHandoff } from './uncertain-handoff.js';
 import { inputDigest, ok, result } from '../repository/core.js';
 
 const START_BY_SCENARIO = { 'main-successful-journey': startMainSuccessfulJourney, 'decline-then-change': startDeclineThenChange,
+  'decline-then-change-waiting': startDeclineThenChange,
   'no-suitable-match': startNoSuitableMatch, 'data-unavailable': startDataUnavailable,
   'uncertain-handoff': startUncertainHandoff, 'uncertain-handoff-rejected': startUncertainHandoff };
 
