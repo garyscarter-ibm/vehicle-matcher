@@ -120,3 +120,11 @@ Additive changes for the live BMW UK stock locator; `fixture` and `accepted-f77`
 - **F. Pacing.** `minIntervalMs` (0 to 5000, default 0) is waited between consecutive requests, not before the first.
 - **G. Byte cap** raised to 96 MiB (about 185 KB a page). Page cap 1 MiB, 400 requests, concurrency 1 and no
   retries are unchanged; 401, 403 and 429 still stop at once without reading a body.
+
+## Publication, 8 November 2026
+
+The hold above is superseded. The authorised live sample (`stock-aggregates-2026-11-08.json`, 165 requests) was
+converted by `scripts/gcsp/convert-stock-aggregates.mjs` into `stock.aggregate.*` seed entries with status
+`observed aggregate`. The policy validators (`file-provider.js`, `reviewed-definitions.js`) and migration
+`0007_policy_observed_aggregate_status.sql` accept that status additively. Capped ranges (`complete: false`)
+give a lower-bound car count, so model shares between capped and complete ranges are biased toward complete ones.
