@@ -315,6 +315,17 @@ test('order changes refresh the dashboard demand figures', async () => {
   let changed; const f = gregFixture({ mountOrders: (_root, options) => { changed = options.onChanged; assert.equal(options.productionControls, true); return () => {}; } });
   await f.done.ready; changed(); assert.equal(f.counts.dashboard, 1); f.done();
 });
+test('the order plan and order tracking refresh each other, and the plan arrives through the Greg adapter', async () => {
+  let ctx; let changed; const counts = { plan: 0, orders: 0 };
+  const f = gregFixture({ gregAdapter: { orderPlan: { marker: 1 } },
+    mountGreg: (_host, options) => { ctx = options; const t = () => {}; t.refresh = () => {}; t.orderPlan = { refresh: () => { counts.plan++; } }; t.regions = { orderTracking: document.createElement('section') }; return t; },
+    mountOrders: (_root, options) => { changed = options.onChanged; const t = () => {}; t.refresh = () => { counts.orders++; }; return t; } });
+  await f.done.ready; assert.deepEqual(ctx.orderPlan, { marker: 1 });
+  ctx.onOrderPlanSubmitted(); assert.deepEqual(counts, { plan: 0, orders: 1 });
+  changed(); assert.equal(counts.plan, 1);
+  f.host.dispatchEvent(new window.CustomEvent('gcsp:presenter-action', { bubbles: true, detail: { kind: 'tick' } })); assert.deepEqual(counts, { plan: 2, orders: 2 });
+  f.done();
+});
 test('a successful clock action announces gcsp:presenter-action; reset and failures do not', async () => {
   const seen = []; let fail = false;
   const f = setup({ tick: async () => (fail ? { status: 'forbidden' } : ok({})) }); await settle();
