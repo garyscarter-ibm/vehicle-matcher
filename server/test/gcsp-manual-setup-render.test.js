@@ -128,3 +128,8 @@ test('custom element registration is repeatable and disconnect tears down its sh
   const element = document.createElement('gcsp-manual-setup'); element.adapter = f.adapter; document.body.append(element);
   await waitFor(() => element.querySelector('form')); element.remove(); assert.equal(element.childNodes.length, 0);
 });
+
+test('setup facts show no raw scheme, slot, contract or company ids (FUCQ-197)', async (t) => {
+  const f = await setup(t); const shown = f.root.textContent;
+  for (const id of [f.context.schemeId, f.context.entitlementSlotId, f.context.companyId, 'current:']) assert.equal(shown.includes(id), false, id);
+});

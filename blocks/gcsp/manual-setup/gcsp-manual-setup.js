@@ -93,14 +93,16 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
     }
     if (!panel || !panel.isConnected) build();
     const { choices: c, options: o, account: a } = state;
-    nodes.context.replaceChildren(facts([['Journey', c.mode === 'replacement' ? 'Replacement' : 'New order'], ['Scheme', c.schemeId],
-      ['Vehicle slot', c.slotId], ...(c.mode === 'replacement' ? [['Current car', a.currentContract?.model], ['Current contract', c.oldContractId]] : [])]));
+    // Raw ids are not copy (FUCQ-197): a slot shows only with a supplied label; scheme and contract ids are omitted.
+    const slot = (a.slots ?? []).find((s) => s.entitlementSlotId === c.slotId)?.label;
+    nodes.context.replaceChildren(facts([['Journey', c.mode === 'replacement' ? 'Replacement' : 'New order'],
+      ...(slot ? [['Vehicle slot', slot]] : []), ...(c.mode === 'replacement' ? [['Current car', a.currentContract?.model]] : [])]));
     nodes.allowance.replaceChildren(el('h2', 'gcsp-h2', 'Your monthly allowance'),
       facts([['Monthly allowance', o.allowanceReady ? o.allowance.monthlyPoints : null, 'points a month']]),
       el('p', 'gcsp-note', 'Cars must fit your monthly points allowance. Monthly points are checked before selection.'),
       el('p', 'gcsp-field-hint', o.allowance?.basis ?? 'Allowance needs confirmation.'));
     nodes.employeeFacts.replaceChildren(el('p', 'gcsp-field-hint', 'Employee facts are read-only. Contact details below are editable.'),
-      facts([['Name', a.account?.name], ['Company', a.account?.companyId], ['Grade', a.account?.gradeId],
+      facts([['Name', a.account?.name], ...(a.account?.company ? [['Company', a.account.company]] : []), ['Grade', a.account?.gradeId],
       ['Employee number', a.account?.employeeNumber]]));
     select('driverId', o.drivers, 'driverId', (d) => `${d.kind === 'employee' ? 'You' : 'Nominated'}: ${text(d.name)}`);
     select('contractOptionId', o.contractOptions, 'contractOptionId', (d) => `${d.months} months, ${d.annualMileage} ${d.mileageUnit}`);
@@ -166,7 +168,7 @@ export function mountManualSetup(root, { adapter = createAccountHttpAdapter(), b
   const teardown = mountEmployee(root, { brand, loadAccount: async () => {
     state = await controller.load({ hint }); const account = state.account?.account;
     return { status: account ? 'ready' : 'unavailable', name: account?.name ?? 'Account unavailable',
-      context: [account?.companyId, account?.gradeId].filter(Boolean).join(', ') };
+      context: [account?.company, account?.gradeId && `Grade ${account.gradeId}`].filter(Boolean).join(', ') };
   }, renderBody(target) { main = target; draw(); } });
   const destroy = () => { disposed = true; controller.destroy(); teardown(); };
   destroy.controller = controller; destroy.refresh = (options) => controller.refresh(options);

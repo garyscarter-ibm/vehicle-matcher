@@ -20,10 +20,13 @@ const issuedClaim = (input, orderUuid) => input?.orderUuid === orderUuid
 const labels = { model: 'Model', body: 'Body style', engine: 'Engine', exterior: 'Exterior', interior: 'Interior',
   transmission: 'Transmission', insuranceGroup: 'Insurance group', earliestCollection: 'Earliest collection' };
 
+const HIDDEN_UNITS = new Set(['insurance-group']);
 function row(key, label, source, fallback = null) {
   const value = first(valueOf(source), fallback);
-  return { key, label, value, status: value === null ? 'unknown' : 'known', unit: source?.unit ?? null,
-    missingLabel: `Not supplied${source?.unit ? ` (${source.unit})` : ''}`, provenance: clone(source?.provenance), source: clone(source) };
+  // Some units are data codes the label already names (FUCQ-197); they are not shown.
+  const unit = source?.unit && !HIDDEN_UNITS.has(source.unit) ? source.unit : null;
+  return { key, label, value, status: value === null ? 'unknown' : 'known', unit,
+    missingLabel: `Not supplied${unit ? ` (${unit})` : ''}`, provenance: clone(source?.provenance), source: clone(source) };
 }
 
 function emission(key, label, source, expected) {
