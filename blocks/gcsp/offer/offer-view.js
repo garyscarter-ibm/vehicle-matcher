@@ -52,7 +52,6 @@ function comparison(currentCar) {
   section.append(mediaWell(null, '', { placeholder: 'No image for this car yet', view: {
     display: { name }, media: currentCar.media || {} } }).media);
   section.append(factList(currentCar.facts || []));
-  section.append(el('p', 'gcsp-note', currentCar.provenance || 'Source not supplied. Equipment is unknown unless confirmed.'));
   return section;
 }
 

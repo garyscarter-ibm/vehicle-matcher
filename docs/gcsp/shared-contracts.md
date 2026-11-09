@@ -612,6 +612,11 @@ These ranges never narrow the legal safe-integer validation above. Missing/inval
 editing available; exact values outside a range remain unchanged and explicitly explained. The shared single
 slider is callback-owned, and the browser supplies no policy ranges/defaults. See `greg-publish.md`.
 
+Assumed `policy.displayLabels.v1` (unit `display-labels`) is the one source of the plain names Greg sees: `models` maps
+the model part of a price row's `matchValue` to a template (`{engine}` is the text after `|`), `weights`, `units` and
+`versions` name the other keys. `readPolicy` projects `label`, `unitLabel`, `schemeLabel` (from `scheme.displayNames.v1`),
+`activeVersionLabel` and `versionNames`; the panel shows no raw key outside its "Sources and assumptions" disclosure.
+
 The server-only snapshot read supports a disposable what-if PolicyService over the same validated source. A preview
 returns active and draft aggregates, their differences and explicit preview status without writing a policy, run,
 brief, offer or quote. Publication sends the permitted patches and provenance through `publishPolicyVersion` and
@@ -1181,7 +1186,7 @@ Presenter-run preparation only. Nothing runs at startup or on a timer, and the b
 
 **Result file.** `{ format: 'gcsp-process-comparison-result-v1', digest, result }`. Import refuses a changed digest, another format, or a result this version does not understand (kind, experiment, schema version or caveat), and stores nothing.
 
-**Runtime load.** `GCSP_COMPARISON_RESULT_FILE=<file>` opts in to loading a file when the runtime opens. It stores through the same immutable path, so reopening changes nothing. A missing or refused file logs one warning and startup continues.
+**Runtime load.** `GCSP_COMPARISON_RESULT_FILE=<file>` opts in to loading a file when the runtime opens. It stores through the same immutable path, so reopening changes nothing. A missing or refused file logs one warning and startup continues. The hosted config (`render.gcsp.yaml`) and the local launcher (`scripts/gcsp-demo.mjs`) point it at `server/data/gcsp/comparison/process-only.json`.
 
 **Read route.** `GET /api/gcsp/comparison/process/latest` serves Greg and presenter; other roles get 403 `forbidden`, and any query gets 400 `unsupported-query`. Success is `200 { status: 'ok', value: { result, resultId, storedAt, policyVersion, activePolicyVersion, policyCurrent } }`; `policyCurrent` is false once the active policy version at `asOf` differs from the stored one. `404 not-found` means nothing is stored; `503 unavailable` is a read failure. `asOf` comes from the demo clock.
 

@@ -1,9 +1,10 @@
 import { CapturedTransport } from './captured.js';
 import { BrevoMailTransport } from './brevo.js';
+import { publicOrigin } from '../public-origin.js';
 
 // Only trusted backend composition supplies options; browser input never selects a transport.
 export function createMailTransport({ repository, env = process.env, fetchImpl, wallNow, timeoutMs } = {}) {
-  if (!env.GCSP_MAIL_TRANSPORT) return new CapturedTransport({ repository });
+  if (!env.GCSP_MAIL_TRANSPORT) return new CapturedTransport({ repository, publicOrigin: publicOrigin(env.GCSP_PUBLIC_ORIGIN ?? '') });
   let recipients;
   try { recipients = JSON.parse(env.GCSP_MAIL_RECIPIENTS); } catch { /* Invalid settings become a captured, safe refusal. */ }
   return new BrevoMailTransport({ repository, apiKey: env.GCSP_BREVO_API_KEY,

@@ -3,6 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { Readable } from 'node:stream';
 import { JSDOM } from 'jsdom';
+import { demoTime } from '../../blocks/gcsp/kit/activity-timeline.js';
 import { createGcspRuntime } from '../gcsp/runtime.js';
 import { buildServer } from '../index.js';
 import { inputDigest } from '../gcsp/repository/index.js';
@@ -27,7 +28,8 @@ async function expectReview(f) {
   const vehicle = f.root.querySelector('.gcsp-review-vehicle'); assert.ok(vehicle);
   // The quote id is a raw reference, so it stays off screen (FUCQ-197).
   assert.ok(f.claim.quote.quoteId); assert.equal(vehicle.textContent.includes(f.claim.quote.quoteId), false);
-  for (const value of [f.car.facts.display.name, f.car.orderNumber, f.claim.quote.validUntil]) {
+  // Expiry shows in words, not raw ISO (FUCQ-267).
+  for (const value of [f.car.facts.display.name, f.car.orderNumber, `${demoTime(f.claim.quote.validUntil)} (demo time)`]) {
     assert.ok(value); assert.ok(vehicle.textContent.includes(value), 'Expected pinned claim detail.');
   }
   const contact = f.root.querySelector('[name="contact.phone"]'); assert.ok(contact);

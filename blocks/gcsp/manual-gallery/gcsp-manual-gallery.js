@@ -4,6 +4,7 @@ import { renderOptionList } from '../../vehicle-matcher/modes/question-ui.js';
 import { mountEmployee } from '../employee/gcsp-employee.js';
 import { labelledField } from '../kit/form-controls.js';
 import { showMore } from '../kit/show-more.js';
+import { bodyStyleLabel } from '../kit/plain-copy.js';
 import { createManualGalleryController } from './gallery-controller.js';
 import { createManualClaimController } from './claim-controller.js';
 import { createManualGalleryHttpAdapter } from './http-adapter.js';
@@ -82,12 +83,12 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     heading.id = `${prefix}-${name}-label`; wrap.append(heading, slot); controls[name] = { wrap, slot, heading, signature: null }; return wrap;
   }
   // Visual series/body navigation: shared radiogroup chips with counts over every released car.
-  function updateNav(name, values, all, read) {
+  function updateNav(name, values, all, read, labelOf = (value) => value) {
     const nav = controls[name]; const selected = galleryState.controls[name] ?? ''; const cars = galleryState.allCars;
     nav.wrap.hidden = !cars.length;
     const options = [{ value: '', label: all, sub: carCount(cars.length) },
-      ...values.map((value) => ({ value, label: value, sub: carCount(cars.filter((car) => read(car) === value).length) })),
-      ...(selected && !values.includes(selected) ? [{ value: selected, label: `${selected} (not currently available)`, sub: carCount(0) }] : [])];
+      ...values.map((value) => ({ value, label: labelOf(value), sub: carCount(cars.filter((car) => read(car) === value).length) })),
+      ...(selected && !values.includes(selected) ? [{ value: selected, label: `${labelOf(selected)} (not currently available)`, sub: carCount(0) }] : [])];
     const signature = JSON.stringify(options);
     if (nav.signature === signature) { nav.update({ value: selected }); return; }
     const hadFocus = nav.slot.contains(root.ownerDocument.activeElement);
@@ -153,7 +154,7 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     drawHistory();
     for (const key of ['query', 'sort']) { const value = galleryState.controls[key] ?? (key === 'sort' ? 'name' : ''); if (controls[key].value !== value) controls[key].value = value; }
     updateNav('series', galleryState.series, 'All series', (car) => car.series.value);
-    updateNav('body', galleryState.bodies, 'All body styles', (car) => car.fields.body.value);
+    updateNav('body', galleryState.bodies, 'All body styles', (car) => car.fields.body.value, bodyStyleLabel);
     const c = galleryState.counts;
     nodes.counts.textContent = `${c.records} released cars · ${c.eligible} eligible · ${c.visible} matching · ${c.visibleEligible} eligible matching`;
     const allowances = [...new Set(galleryState.allCars.map((car) => car.cost.allowance).filter((value) => value != null))];

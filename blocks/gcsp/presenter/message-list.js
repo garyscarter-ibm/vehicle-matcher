@@ -6,8 +6,8 @@ import { statusOf, explain, formatDemoTime, recipientName, isSafeOfferLink, erro
 
 const NO_SUBJECT = 'Email not created yet';
 
-function statusChip(state) {
-  const status = statusOf(state);
+function statusChip(message) {
+  const status = statusOf(message.state, message.transport);
   const chip = el('span', `gcsp-mail-status is-${status.tone}`);
   chip.append(svgIcon(status.icon), el('span', undefined, status.label));
   return chip;
@@ -20,7 +20,7 @@ function rowButton(message, selected) {
   btn.dataset.id = message.jobId;
   if (selected) btn.setAttribute('aria-current', 'true');
   const meta = el('span', 'gcsp-mail-meta');
-  meta.append(el('span', 'gcsp-mail-time', formatDemoTime(message.time) || 'No time yet'), statusChip(message.state));
+  meta.append(el('span', 'gcsp-mail-time', formatDemoTime(message.time) || 'No time yet'), statusChip(message));
   btn.append(el('span', 'gcsp-mail-to', recipientName(message)), el('span', 'gcsp-mail-subject', message.subject || NO_SUBJECT), meta);
   if (message.state === 'retrying' || message.state === 'failed') {
     btn.append(el('span', 'gcsp-mail-hint', `${plural(message.attempts ?? 0, 'attempt')}. ${errorSentence(message.error) || ''}`.trim()));
@@ -57,7 +57,7 @@ function renderDetail(message) {
   heading.tabIndex = -1;
   const facts = [
     { label: 'To', value: recipientName(message) },
-    { label: 'Status', value: statusOf(message.state).label },
+    { label: 'Status', value: statusOf(message.state, message.transport).label },
     { label: 'Demo clock', value: formatDemoTime(message.time) || 'No attempt yet' },
     { label: 'Attempts', value: String(message.attempts ?? 0) },
   ];

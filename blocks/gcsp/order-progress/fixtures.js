@@ -126,7 +126,7 @@ const apptOutcomePending = () => env(appointmentValue({ state: 'scheduled', key:
 
 // Return plan (FUCQ-118). A replacement order only; the handover must be scheduled before a choice opens.
 const CURRENT_CAR = { contractId: 'current:employee-paula', slotId: 'slot-paula', status: 'current', model: 'Fictional BMW 320i Touring',
-  vehicle: { configuration: 'G21 320i M Sport Touring', body: 'estate', fuel: 'petrol', seats: 5 }, source: 'account' };
+  vehicle: { configuration: '320i M Sport Touring', body: 'estate', fuel: 'petrol', seats: 5 }, source: 'account' };
 const CHOICES = [{ id: 'same-visit', label: 'Return it when the new car is handed over' }, { id: 'separate', label: 'Return it on a separate day' }];
 const RETURN_OWNERS = { 'not-planned': ['employee', "Confirm your new car's handover first, then plan the return."], requested: ['retailer', 'Waiting for the retailer to confirm your return slot.'],
   'change-proposed': ['employee', 'Accept the new time to confirm your return.'], scheduled: ['retailer', 'Keep driving your current car until the return.'] };

@@ -15,6 +15,20 @@ const unavailable = () => result('unavailable', { code: 'publish-source-unavaila
   reason: 'The policy controls are unavailable.' });
 const effective = (row, now) => Date.parse(row.effectiveFrom) <= Date.parse(now)
   && (row.effectiveTo === undefined || Date.parse(now) < Date.parse(row.effectiveTo));
+const labelsOf = (seed, key, now) => {
+  const value = seed.assumptions.find((row) => row.key === key && effective(row, now))?.value;
+  return value !== null && typeof value === 'object' && !Array.isArray(value) ? value : {};
+};
+const named = (map, key) => map !== null && typeof map === 'object' && Object.hasOwn(map, key) && text(map[key]) ? map[key] : undefined;
+// Plain version name: known id parts by name, Greg's own publications as "Greg's change", anything else "Unnamed update".
+export const versionLabel = (id, versions) => String(id).split('+').map((part) => named(versions, part)
+  ?? (part.startsWith('greg-') ? "Greg's change" : 'Unnamed update')).join(' with ');
+const priceLabel = (row, models) => {
+  if (row.configurationId) return row.configurationId.replace(/\|/g, ' ');
+  const [model, ...rest] = String(row.matchValue).split('|'); const engine = rest.join('|');
+  const template = named(models, model);
+  return (template ? template.replace('{engine}', engine) : `${model} ${engine}`).trim();
+};
 const provenance = (row) => Object.fromEntries(['source', 'sourceDate', 'basis', 'status', 'unit'].map((key) => [key, row[key]]));
 const editorRanges = (seed, now) => {
   const row = seed.assumptions.find((entry) => entry.key === 'greg.publish.editor.v1' && effective(entry, now));
@@ -28,6 +42,8 @@ const editorRanges = (seed, now) => {
 };
 const fields = (seed, now) => {
   const ranges = editorRanges(seed, now);
+  const display = labelsOf(seed, 'policy.displayLabels.v1', now); const schemes = labelsOf(seed, 'scheme.displayNames.v1', now).names;
+  const unitLabel = (unit) => named(display.units, unit) ?? unit;
   const calibration = seed.assumptions.find((row) => row.key === RECOMMENDATION && effective(row, now));
   if (!calibration) throw Error('Missing recommendation policy');
   const keys = Object.keys(calibration.value.preferences);
@@ -37,9 +53,11 @@ const fields = (seed, now) => {
     || keys.some((key) => !Number.isSafeInteger(weights[key]) || weights[key] < 0)) throw Error('Invalid weights');
   return [...seed.pricePlans.filter((row) => effective(row, now)).map((row) => ({ id: `price:${row.key}`,
     kind: 'price', ...(ranges.price ? { presentationRange: ranges.price } : {}), key: row.key, value: row.monthlyPoints, ...provenance(row), schemeId: row.schemeId,
+    label: priceLabel(row, display.models), unitLabel: unitLabel(row.unit), schemeLabel: named(schemes, row.schemeId) ?? row.schemeId,
     ...(row.configurationId ? { configurationId: row.configurationId } : { matchField: row.matchField, matchValue: row.matchValue }), step: 1, minimum: 0 })),
   ...keys.map((key) => ({ id: `weight:${key}`, kind: 'weight', ...(ranges.weight ? { presentationRange: ranges.weight } : {}), key, value: weights[key],
-    ...provenance(calibration), unit: 'relative-weight', step: 1, minimum: 0, adoptionRequired }))];
+    ...provenance(calibration), unit: 'relative-weight', unitLabel: unitLabel('relative-weight'),
+    label: `${named(display.weights, key) ?? `${key[0].toUpperCase()}${key.slice(1)}`} weight`, step: 1, minimum: 0, adoptionRequired }))];
 };
 function changesFor(seed, now, input, publishing) {
   if (!only(input, publishing ? ['expectedActiveVersion', 'changes', 'commandId', 'policyVersion', 'effectiveFrom']
@@ -89,7 +107,9 @@ const heldSummary = (rows, now, version) => {
     if (!hold || !quote) return false;
     return pending.includes(offer.state) || hold.state !== 'active' || unexpired(offer) && unexpired(hold);
   });
-  return { count: active.length, unit: 'offers', message: `${active.length} held offers keep their earlier terms.` };
+  const n = active.length;
+  return { count: n, unit: 'offers', message: n === 0 ? 'No held offers are affected.'
+    : `${n} held ${n === 1 ? 'offer keeps its' : 'offers keep their'} earlier terms.` };
 };
 
 export function createGregPublishService({ repository, policy, clock, identity } = {}) {
@@ -123,7 +143,9 @@ export function createGregPublishService({ repository, policy, clock, identity }
         const final = await stable(context, time, rows); if (final.status !== 'ok') return final;
         if (final.policyVersion !== seed.policyVersion) return result('stale-version', { action: 'refresh' });
         const allowed = await identity.requireRole(context, 'greg'); if (allowed.status !== 'ok') return allowed;
-        return ok({ state: 'draft', activeVersion: seed.policyVersion, effectiveFrom: seed.effectiveFrom,
+        const versionNames = labelsOf(seed, 'policy.displayLabels.v1', time.value.now).versions ?? {};
+        return ok({ state: 'draft', activeVersion: seed.policyVersion, activeVersionLabel: versionLabel(seed.policyVersion, versionNames),
+          versionNames, effectiveFrom: seed.effectiveFrom,
           asOf: time.value.now, clockVersion: time.value.clockVersion, fields: fields(seed, time.value.now),
           weightsAdoptionRequired: seed.assumptions.find((row) => row.key === RECOMMENDATION).value.preferenceWeights === undefined,
           heldOffers: heldSummary(rows, time.value.now, null), historyMessage: 'Published versions preserve existing quotes and offers.' });

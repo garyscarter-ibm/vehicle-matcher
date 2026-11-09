@@ -3,6 +3,8 @@ import { matchCard } from '../../vehicle-matcher/modes/result-card.js';
 import { mountEmployee } from '../employee/gcsp-employee.js';
 import { createAccountHttpAdapter } from '../account/http-adapter.js';
 import { labelledField, errorSummary } from '../kit/form-controls.js';
+import { bodyStyleLabel, longDate } from '../kit/plain-copy.js';
+import { demoTime } from '../kit/activity-timeline.js';
 import { createManualReviewController } from './review-controller.js';
 import { createManualReviewHttpAdapter } from './http-adapter.js';
 
@@ -26,6 +28,7 @@ function shown(value) {
 }
 const rows = (values) => factList(values.map(([name, value, unit]) => ({ label: name, value: shown(value), unit })));
 const known = (value) => value?.status === 'known' ? shown(value) : null;
+const bodyFact = (fact) => fact?.status === 'known' && typeof fact.value === 'string' ? { ...fact, value: bodyStyleLabel(fact.value) } : fact;
 
 // Display the pinned quote, with no selection or claim action.
 export function reviewVehicleView(model) {
@@ -37,7 +40,7 @@ export function reviewVehicleView(model) {
     display: { name: display.name || 'Car name not supplied', line: `Car order ${model.orderNumber}` },
     media: { src: display.photo || '', alt: image?.alt || `${display.name || 'Car'}: representative image`,
       caption: image?.caption || 'Representative image, not your exact car' },
-    facts: [['Model', facts.model ?? facts.marketingModelRange ?? facts.modelRange], ['Body style', facts.body ?? facts.bodyType],
+    facts: [['Model', facts.model ?? facts.marketingModelRange ?? facts.modelRange], ['Body style', bodyFact(facts.body ?? facts.bodyType)],
       ['Engine', facts.engine], ['Exterior', facts.exterior ?? facts.colour], ['Interior', facts.interior ?? facts.upholsteryCode],
       ['Transmission', facts.transmission], ['Insurance group', facts.insuranceGroup]]
       .map(([name, value]) => ({ label: name, value: known(value) })).concat([{ label: 'Car order number', value: model.orderNumber }]),
@@ -122,13 +125,13 @@ export function mountManualReviewBody(root, { adapter = createManualReviewHttpAd
     if (lastVehicle !== signature || !nodes.vehicle.childNodes.length) {
       lastVehicle = signature;
       const technical = el('details', 'gcsp-details'); technical.append(el('summary', '', 'Pinned vehicle details'),
-        rows(Object.entries(model.quote.facts?.facts ?? {}).map(([key, value]) => [label(key), value])),
-        rows([['Quote valid until', model.quote.validUntil], ['Scheme contribution', model.quote.terms?.contribution]]));
+        rows(Object.entries(model.quote.facts?.facts ?? {}).map(([key, value]) => [label(key), ['body', 'bodyType'].includes(key) ? bodyFact(value) : value])),
+        rows([['Quote valid until', Number.isFinite(Date.parse(model.quote.validUntil)) ? `${demoTime(model.quote.validUntil)} (demo time)` : model.quote.validUntil], ['Scheme contribution', model.quote.terms?.contribution]]));
       nodes.vehicle.replaceChildren(el('p', 'gcsp-field-hint', 'Vehicle details, eligibility and points are pinned to your claim.'),
         matchCard(null, { view: reviewVehicleView(model), showScore: false }), technical);
     }
     nodes.context.replaceChildren(el('h2', 'gcsp-h2', 'Collection and current contract'), rows([
-      ['Journey', model.mode === 'replacement' ? 'Replacement' : 'New order'], ['Requested collection date', model.requestedCollection?.date],
+      ['Journey', model.mode === 'replacement' ? 'Replacement' : 'New order'], ['Requested collection date', longDate(model.requestedCollection?.date) ?? model.requestedCollection?.date],
       ['Contract term', model.contract?.months, 'months'], ['Annual mileage', model.contract?.annualMileage, model.contract?.mileageUnit],
       ...(model.mode === 'replacement' ? [['Returning car', model.currentContract?.model], ['Registration', model.currentContract?.registration]] : [])]),
     el('p', 'gcsp-field-hint', 'Collection is requested, not a confirmed appointment.'));

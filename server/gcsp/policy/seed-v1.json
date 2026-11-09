@@ -13439,20 +13439,23 @@
       "value": {
         "F70": {
           "modelLineId": "f70-sports-hatch",
-          "title": "F70 Sports Hatch"
+          "title": "F70 Sports Hatch",
+          "displayName": "1 Series Sports Hatch"
         },
         "G42": {
           "modelLineId": "g42-coupe",
-          "title": "G42 Coupe"
+          "title": "G42 Coupe",
+          "displayName": "2 Series Coupé"
         },
         "G61": {
           "modelLineId": "g61-i5",
-          "title": "G61 i5"
+          "title": "G61 i5",
+          "displayName": "i5 Touring"
         }
       },
       "unit": "scheme model line by corpus generation",
       "status": "assumed",
-      "basis": "The retained corpus carries a generation code but no model names. F70 and G42 map to the scheme lines of the same name; G61 is taken as the G61 i5 line because fleet-plan.json maps T5MJ (G61E) to it. Other lines have no retained corpus rows (FUCQ-77 coverage gap).",
+      "basis": "The retained corpus carries a generation code but no model names. F70 and G42 map to the scheme lines of the same name; G61 is taken as the G61 i5 line because fleet-plan.json maps T5MJ (G61E) to it. Other lines have no retained corpus rows (FUCQ-77 coverage gap). Display names drop the generation code.",
       "source": "server/data/gcsp/vehicle-evidence/fleet-plan.json",
       "sourceDate": "2026-11-07",
       "policyVersion": "gcsp-policy-v1",
@@ -14546,6 +14549,62 @@
       "unit": "display-names",
       "status": "assumed",
       "basis": "Stand-in scheme names approved by Gary Carter on 9 Nov 2026, each read plainly from its scheme id, until Russell supplies the real names. Order history and the account page show a name only when this entry supplies one.",
+      "source": "docs/gcsp/shared-contracts.md",
+      "sourceDate": "2026-11-09",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
+      "key": "policy.displayLabels.v1",
+      "value": {
+        "schemaVersion": 1,
+        "models": {
+          "F44 Gran Coupe": "2 Series Gran Coupe {engine}",
+          "F70 Sports Hatch": "1 Series Sports Hatch {engine}",
+          "G01 X3": "X3 {engine}",
+          "G02 X4": "X4 {engine}",
+          "G05 X5": "X5 {engine}",
+          "G06 X6": "X6 {engine}",
+          "G20 Saloon": "3 Series Saloon {engine}",
+          "G21 Touring": "3 Series Touring {engine}",
+          "G22 Coupe": "4 Series Coupe {engine}",
+          "G23 Convertible": "4 Series Convertible {engine}",
+          "G26 Gran Coupe": "4 Series Gran Coupe {engine}",
+          "G26 i4": "{engine} Gran Coupe",
+          "G29 Z4": "Z4 {engine}",
+          "G42 Coupe": "2 Series Coupe {engine}",
+          "G60 Saloon": "5 Series Saloon {engine}",
+          "G60 i5": "{engine} Saloon",
+          "G61 Touring": "5 Series Touring {engine}",
+          "G61 i5": "{engine} Touring",
+          "M Power": "{engine}",
+          "U06 Active Tourer": "2 Series Active Tourer {engine}",
+          "U10 X2": "X2 {engine}",
+          "U10 iX2": "{engine}",
+          "U11 X1": "X1 {engine}",
+          "U11 iX1": "{engine}",
+          "i20 iX": "{engine}"
+        },
+        "weights": {
+          "body": "Body style",
+          "fuel": "Fuel type",
+          "sportiness": "Sportiness",
+          "comfort": "Comfort",
+          "economy": "Running costs",
+          "size": "Size"
+        },
+        "units": {
+          "points/month": "points a month",
+          "relative-weight": "weight"
+        },
+        "versions": {
+          "gcsp-policy-v1": "Demo policy 1",
+          "offer-journey-v1": "offer journey"
+        }
+      },
+      "unit": "display-labels",
+      "status": "assumed",
+      "basis": "Plain names for policy keys Greg sees, read from public BMW model naming. Not verified BMW copy.",
       "source": "docs/gcsp/shared-contracts.md",
       "sourceDate": "2026-11-09",
       "policyVersion": "gcsp-policy-v1",

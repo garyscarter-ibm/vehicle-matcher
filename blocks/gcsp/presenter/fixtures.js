@@ -5,25 +5,29 @@ export const FIXTURE_NAMES = Object.freeze(['messages', 'empty', 'retrying', 'fa
 
 const NOTE = 'This is a captured demonstration message for a fictional employee. No email has been sent.';
 
-function offerHtml({ subject, name, vehicle, status, link }) {
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${subject}</title></head><body style="margin:0;background:#f4f5f5;color:#202526;font-family:Arial,sans-serif;line-height:1.6"><main style="max-width:600px;margin:0 auto;padding:24px;background:#fff;overflow-wrap:anywhere"><p>GCSP employee vehicle scheme</p><h1 style="font-size:26px;line-height:1.25">${subject}</h1><p>Hello ${name},</p><h2 style="font-size:20px">${vehicle}</h2><p>${status}</p><p><a style="color:#00636b;text-decoration:underline" href="${link}">Review your vehicle offer and its current status</a></p><p>If you cannot use the link, copy this address:</p><p>${link}</p><hr><p>${NOTE}</p></main></body></html>`;
+function offerHtml({ subject, greeting, vehicle, points, status, link }) {
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${subject}</title></head><body style="margin:0;background:#f4f5f5;color:#202526;font-family:Arial,sans-serif;line-height:1.6"><main style="max-width:600px;margin:0 auto;padding:24px;background:#fff;overflow-wrap:anywhere"><p>GCSP employee vehicle scheme</p><h1 style="font-size:26px;line-height:1.25">${subject}</h1><p>${greeting}</p><h2 style="font-size:20px">${vehicle}</h2><p>${points}</p><p>${status}</p><p><a style="color:#00636b;text-decoration:underline" href="${link}">Review your vehicle offer and its current status</a></p><p>If you cannot use the link, copy this address:</p><p>${link}</p><hr><p>${NOTE}</p></main></body></html>`;
 }
 
-function offerMessage({ jobId, employeeId, name, vehicle, time, link = '/gcsp/offer', expiresAt = '2026-11-05T11:00:00.000Z' }) {
+// Bodies carry the absolute link a captured email shows; offerLink stays relative like the stored message.
+function offerMessage({ jobId, employeeId, name, vehicle, points = '1,250 points a month', time, path = '/gcsp/offer',
+  deadline = '11:00 on Thursday 5 November' }) {
   const subject = 'Your vehicle offer is ready to review';
-  const status = `Your offer is available until ${expiresAt}. Open the offer to review the vehicle and make your decision.`;
+  const greeting = `Hello ${name.replace(/\s*\(fictional\)\s*$/i, '')},`;
+  const status = `Respond by ${deadline}.`;
+  const link = `https://demo.example.test${path}`;
   return {
-    jobId, messageKind: 'offer', state: 'sent', attempts: 1, error: null, nextAttemptAt: null, time,
+    jobId, messageKind: 'offer', state: 'sent', transport: 'captured', attempts: 1, error: null, nextAttemptAt: null, time,
     recipient: { employeeId, name },
     subject,
-    textBody: [`Hello ${name},`, subject, vehicle, status, `Review your offer: ${link}`, NOTE].join('\n\n'),
-    htmlBody: offerHtml({ subject, name, vehicle, status, link }),
-    offerLink: link,
+    textBody: [greeting, subject, vehicle, points, status, `Review your offer: ${link}`, NOTE].join('\n\n'),
+    htmlBody: offerHtml({ subject, greeting, vehicle, points, status, link }),
+    offerLink: path,
   };
 }
 
 const unrendered = (fields) => ({
-  messageKind: 'offer', subject: null, textBody: null, htmlBody: null, offerLink: null, ...fields,
+  messageKind: 'offer', transport: null, subject: null, textBody: null, htmlBody: null, offerLink: null, ...fields,
 });
 
 /** Fresh fixture messages, newest first as the server returns them. */

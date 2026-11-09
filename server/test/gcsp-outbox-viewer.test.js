@@ -60,7 +60,7 @@ test('the messages fixture lists rows newest first with recipient, subject, demo
   assert.match(first.querySelector('.gcsp-mail-to').textContent, /Paula/);
   assert.match(first.querySelector('.gcsp-mail-subject').textContent, /vehicle offer is ready/);
   assert.match(first.querySelector('.gcsp-mail-time').textContent, /5 Nov 2026, 09:20 GMT/);
-  assert.equal(first.querySelector('.gcsp-mail-status').textContent, 'Sent');
+  assert.equal(first.querySelector('.gcsp-mail-status').textContent, 'Captured, not sent');
   assert.equal(items[1].querySelector('.gcsp-mail-status').textContent, 'Retrying');
   assert.equal(items[2].querySelector('.gcsp-mail-status').textContent, 'Failed');
   assert.ok(items.every((b) => b.querySelector('.gcsp-mail-status svg')), 'status has an icon as well as text');
@@ -100,7 +100,7 @@ test('an opened sent message shows a script-less sandboxed frame via srcdoc, the
   assert.equal(root.querySelectorAll('main iframe').length, 1);
   assert.equal(root.querySelector('main h1').textContent, 'Captured emails', 'email markup is not injected into the page');
   const text = root.querySelector('pre.gcsp-mail-text');
-  assert.match(text.textContent, /Review your offer: \/gcsp\/offer/);
+  assert.match(text.textContent, /Review your offer: https:\/\/demo\.example\.test\/gcsp\/offer/);
   assert.match(text.textContent, /No email has been sent/);
   const link = root.querySelector('.gcsp-mail-offer a');
   assert.equal(link.getAttribute('href'), '/gcsp/offer');
@@ -236,6 +236,10 @@ test('every documented safe error code has a plain sentence and unknown codes ar
   assert.match(copy.errorSentence('something-new'), /reason the demo does not list/);
   assert.equal(copy.errorSentence(null), null);
   assert.equal(copy.statusOf('pending').label, 'Sending');
+  assert.equal(copy.statusOf('sent', 'captured').label, 'Captured, not sent');
+  assert.equal(copy.statusOf('sent', 'configured').label, 'Sent');
+  assert.equal(copy.statusOf('sent', null).label, 'Sent');
+  assert.equal(copy.statusOf('failed', 'captured').label, 'Failed');
   assert.equal(copy.formatDemoTime('nonsense'), null);
 });
 
@@ -350,4 +354,27 @@ test('a lapsed access key shows the restart screen with Reload and no Retry', as
   assert.equal(screen.getAttribute('role'), 'alert'); assert.match(screen.textContent, /Demo restarted/);
   assert.deepEqual([...screen.querySelectorAll('.vm-btn')].map((b) => b.textContent), ['Reload']);
   assert.doesNotMatch(root.textContent, /Captured emails are unavailable/); teardown();
+});
+
+test('a captured message reads "Captured, not sent" in the row and the detail Status; a configured send reads "Sent"', () => {
+  const base = fixtures.fixtureMessages()[0];
+  assert.equal(base.transport, 'captured');
+  const status = (message) => {
+    const handle = list.messageList({ messages: [message], selectedId: message.jobId });
+    const chip = handle.root.querySelector('.gcsp-mail-status').textContent;
+    const fact = [...handle.root.querySelectorAll('.gcsp-mail-facts > *')].find((node) => /^Status/.test(node.textContent)).textContent;
+    return { chip, fact };
+  };
+  const captured = status(base);
+  assert.equal(captured.chip, 'Captured, not sent');
+  assert.match(captured.fact, /Captured, not sent/);
+  const configured = status({ ...base, transport: 'configured' });
+  assert.equal(configured.chip, 'Sent');
+  assert.match(configured.fact, /^StatusSent$/);
+});
+
+test('the email preview frame has a visible focus outline in the presenter stylesheet', () => {
+  const css = readFileSync(join(DIR, 'gcsp-presenter.css'), 'utf8');
+  assert.match(css, /\.gcsp-mail-frame:focus-visible\s*\{[^}]*outline:\s*2px solid var\(--gcsp-focus\)/);
+  assert.match(css, /\.gcsp-mail-frame:focus,/);
 });

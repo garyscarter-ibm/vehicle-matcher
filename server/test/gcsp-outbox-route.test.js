@@ -79,6 +79,7 @@ test('presenter reads the run captured messages as a safe projection, newest fir
   const sent = messages.find((m) => m.jobId === 'job-one');
   const retrying = messages.find((m) => m.jobId === 'job-two');
   assert.equal(sent.state, 'sent');
+  assert.equal(sent.transport, 'captured');
   assert.deepEqual(sent.recipient, { employeeId: 'employee-paula', name: 'Paula (fictional)' });
   assert.equal(sent.offerLink, link);
   assert.match(sent.subject, /vehicle offer/);
@@ -86,6 +87,7 @@ test('presenter reads the run captured messages as a safe projection, newest fir
   assert.match(sent.textBody, /No email has been sent/);
   assert.equal(sent.time, '2026-11-05T09:00:00.000Z');
   assert.equal(retrying.state, 'retrying');
+  assert.equal(retrying.transport, null);
   assert.equal(retrying.attempts, 1);
   assert.equal(retrying.error, 'transport-unavailable');
   assert.ok(retrying.nextAttemptAt);
@@ -94,7 +96,7 @@ test('presenter reads the run captured messages as a safe projection, newest fir
   assert.equal(retrying.recipient.employeeId, 'employee-alex');
   assert.equal(typeof retrying.recipient.name, 'string');
   for (const message of messages) {
-    assert.deepEqual(Object.keys(message).sort(), ['attempts', 'error', 'htmlBody', 'jobId', 'messageKind', 'nextAttemptAt', 'offerLink', 'recipient', 'state', 'subject', 'textBody', 'time']);
+    assert.deepEqual(Object.keys(message).sort(), ['attempts', 'error', 'htmlBody', 'jobId', 'messageKind', 'nextAttemptAt', 'offerLink', 'recipient', 'state', 'subject', 'textBody', 'time', 'transport']);
   }
   const raw = JSON.stringify(response.body);
   for (const secret of ['payload', 'idempotencyKey', 'inputDigest']) assert.ok(!raw.includes(secret), secret);

@@ -334,13 +334,13 @@ test('start scenarios answer invalid, conflict and refused', async () => {
 
 test('all new on-screen copy is free of em dashes', () => {
   const strings = [copy.WHAT_IF, copy.PREPARING, ...Object.values(copy.JOB_STATUS), ...Object.values(copy.EXPERIMENT_VERDICTS),
-    ...Object.values(copy.EXPERIMENTS).flatMap((e) => [e.label, e.summary, e.command]), copy.experimentVerdict('variant-better', '15 min'),
+    ...Object.values(copy.EXPERIMENTS).flatMap((e) => [e.label, e.summary]), copy.experimentVerdict('variant-better', '15 min'),
     copy.experimentDifferenceText('count', { mean: 1, min: 0, max: 2 }, '15 min'), copy.jobProgressText({ seedsDone: 1, seedsTotal: 3, stepsDone: 2, stepsTotal: 6 }),
     ...[900, 5400].map(copy.formatHold), copy.formatExperimentValue('points', 2)];
   for (const s of strings) assert.ok(!s.includes('—'), s);
   assert.deepEqual(Object.keys(copy.EXPERIMENTS), EXPERIMENT_IDS);
-  assert.equal(copy.EXPERIMENTS['process-only'].command, copy.EMPTY_COMMAND);
-  for (const id of EXPERIMENT_IDS.slice(1)) assert.match(copy.EXPERIMENTS[id].command, new RegExp(`--experiment ${id} --change '\\{\\.\\.\\.\\}'$`));
+  for (const s of [copy.EMPTY_TITLE, copy.EMPTY_NOTE]) assert.ok(!s.includes('—') && !s.includes('scripts/'), s);
+  for (const id of EXPERIMENT_IDS) assert.equal(copy.EXPERIMENTS[id].command, undefined);
   const view = ev.toExperimentView(stored); const text = JSON.stringify(view, (k, v) => (typeof v === 'function' ? undefined : v));
   assert.ok(!text.includes('—') || stored.result.assumptions.some((a) => JSON.stringify(a).includes('—')), 'view adds no em dash');
 });

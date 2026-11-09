@@ -44,12 +44,12 @@ test('draft uses projected fields, native integer constraints, units/provenance,
   const { root, calls } = await setup();
   assert.equal(state(root), 'draft'); assert.equal(root.querySelectorAll('input[type=number]').length, 7);
   for (const input of root.querySelectorAll('input')) { assert.equal(input.min, '0'); assert.equal(input.step, '1'); assert.ok(input.labels.length); }
-  assert.match(root.textContent, /points\/month/); assert.match(root.textContent, /Synthetic component gallery/);
+  assert.match(root.textContent, /Now 1100 points a month/); assert.match(root.textContent, /Synthetic component gallery/);
   assert.equal(action(root, 'Publish this preview').disabled, true); assert.equal(calls.publish.length, 0);
 });
 
 test('switching the native price selector preserves every pending edit with one points input', async () => {
-  const policy = gallery.galleryPolicy(); policy.fields.unshift({ ...policy.fields[0], id: 'price:second', key: 'second', configurationId: 'Second car', value: 900 });
+  const policy = gallery.galleryPolicy(); policy.fields.unshift({ ...policy.fields[0], id: 'price:second', key: 'second', configurationId: 'Second car', label: 'Second car', value: 900 });
   const { root, calls } = await setup({}, policy); const points = root.querySelector('input'); const select = root.querySelector('select');
   edit(points, '950'); select.value = 'price:gallery-cost'; select.dispatchEvent(new window.Event('change')); edit(points, '1250');
   select.value = 'price:second'; select.dispatchEvent(new window.Event('change'));
@@ -88,7 +88,7 @@ for (const invalid of ['', '-1', '1.5', '9007199254740992']) test(`invalid integ
 });
 
 test('an invalid hidden price row is selected and focused from the error summary', async () => {
-  const policy = gallery.galleryPolicy(); policy.fields.unshift({ ...policy.fields[0], id: 'price:second', key: 'second', configurationId: 'Second car' });
+  const policy = gallery.galleryPolicy(); policy.fields.unshift({ ...policy.fields[0], id: 'price:second', key: 'second', configurationId: 'Second car', label: 'Second car' });
   const { root } = await setup({}, policy); const input = root.querySelector('input'); edit(input, '-1');
   const select = root.querySelector('select'); select.value = 'price:gallery-cost'; select.dispatchEvent(new window.Event('change'));
   action(root, 'Preview changes').click(); root.querySelector('.gcsp-error-summary a').click();
@@ -96,7 +96,7 @@ test('an invalid hidden price row is selected and focused from the error summary
 });
 
 test('each invalid price summary link selects its own row while retaining the real native focus target', async () => {
-  const policy = gallery.galleryPolicy(); policy.fields.unshift({ ...policy.fields[0], id: 'price:second', key: 'second', configurationId: 'Second car' });
+  const policy = gallery.galleryPolicy(); policy.fields.unshift({ ...policy.fields[0], id: 'price:second', key: 'second', configurationId: 'Second car', label: 'Second car' });
   const { root, calls } = await setup({}, policy); const input = root.querySelector('input'); const select = root.querySelector('select');
   edit(input, '-1'); select.value = 'price:gallery-cost'; select.dispatchEvent(new window.Event('change')); edit(input, '1.5');
   action(root, 'Preview changes').click(); const links = root.querySelectorAll('.gcsp-error-summary a');
@@ -122,16 +122,16 @@ test('shared error summary passes field and row identity while one-argument and 
 
 test('price switching updates visible and accessible slider row, units, bounds and provenance without replacing inputs', async () => {
   const policy = gallery.galleryPolicy({ ranges: true });
-  policy.fields.unshift({ ...structuredClone(policy.fields[0]), id: 'price:second', key: 'second', configurationId: 'Second car',
-    unit: 'second-points/month', presentationRange: { ...policy.fields[0].presentationRange, maximum: 5000, source: 'synthetic:second-range' } });
+  policy.fields.unshift({ ...structuredClone(policy.fields[0]), id: 'price:second', key: 'second', configurationId: 'Second car', label: 'Second car',
+    unit: 'second-points/month', unitLabel: 'second points a month', presentationRange: { ...policy.fields[0].presentationRange, maximum: 5000, source: 'synthetic:second-range' } });
   const { root } = await setup({}, policy); const input = root.querySelector('input[type=number]'); const slider = root.querySelector('input[type=range]');
-  const label = slider.labels[0]; assert.match(label.textContent, /Second car/); assert.match(slider.getAttribute('aria-valuetext'), /second-points\/month/);
+  const label = slider.labels[0]; assert.match(label.textContent, /Second car/); assert.match(slider.getAttribute('aria-valuetext'), /second points a month/);
   const select = root.querySelector('select'); select.value = 'price:gallery-cost'; select.dispatchEvent(new window.Event('change'));
   assert.equal(root.querySelector('input[type=number]'), input); assert.equal(root.querySelector('input[type=range]'), slider);
   assert.match(label.textContent, /Gallery car/); assert.doesNotMatch(label.textContent, /Second car/);
   assert.equal(slider.getAttribute('aria-label'), label.textContent); assert.equal(slider.max, '4000');
-  assert.doesNotMatch(slider.getAttribute('aria-valuetext'), /second-points/);
-  assert.match(slider.closest('.gcsp-publish-control').textContent, /4,000 points\/month/);
+  assert.doesNotMatch(slider.getAttribute('aria-valuetext'), /second points/);
+  assert.match(slider.closest('.gcsp-publish-control').textContent, /4,000 points a month/);
   assert.doesNotMatch(slider.closest('.gcsp-publish-control').textContent, /synthetic:second-range/);
 });
 
@@ -148,7 +148,7 @@ test('network uncertainty retains the original command/version/effective date an
   assert.equal(state(root), 'unavailable'); assert.equal(input.disabled, true); assert.equal(action(root, 'Refresh policy').disabled, true);
   action(root, 'Retry original publication').click(); await tick(); assert.deepEqual(inputs[0], inputs[1]);
   assert.equal(inputs[0].commandId, 'stable-command'); assert.equal(state(root), 'published');
-  assert.match(root.textContent, /greg-stable-command/); assert.match(root.textContent, /2 held offers keep their earlier terms/);
+  assert.match(root.textContent, /Greg's change/); assert.doesNotMatch(root.textContent, /greg-stable-command/); assert.match(root.textContent, /2 held offers keep their earlier terms/);
 });
 
 test('saved pending activation is accurately shown and retries the original publication', async () => {
@@ -321,7 +321,7 @@ test('canonical projected slider-range changes update all controls while missing
   const { root } = await setup({}, policy);
   assert.deepEqual([...root.querySelectorAll('input[type=range]')].map((i) => i.max), ['4500', ...Array(6).fill('12')]);
   const fallback = await setup(); assert.equal(fallback.root.querySelector('input[type=range]'), null);
-  assert.match(fallback.root.textContent, /Slider ranges are not supplied by this policy/);
+  assert.doesNotMatch(fallback.root.textContent, /Use exact values/); assert.equal(fallback.root.querySelectorAll('input[type=number]').length, 7);
 });
 
 
@@ -372,4 +372,39 @@ test('policy and published facts show readable dates, never raw ISO timestamps',
   await preview(root); action(root, 'Publish this preview').click(); await tick();
   assert.equal(calls.publish.length, 1); assert.match(root.textContent, /Effective from.*5 Nov 2026, 10:00 GMT/);
   assert.doesNotMatch(root.textContent, /\d{4}-\d{2}-\d{2}T\d{2}:/);
+});
+
+test('panel text is plain: labels and version names outside one closed Sources and assumptions disclosure', async () => {
+  const { root, policy } = await setup({}, gallery.galleryPolicy({ ranges: true }));
+  const details = root.querySelectorAll('details'); assert.equal(details.length, 1);
+  assert.equal(details[0].open, false); assert.equal(details[0].querySelector('summary').textContent, 'Sources and assumptions');
+  const outside = (node) => { const copy = node.cloneNode(true); copy.querySelector('details').remove(); return copy.textContent; };
+  const visible = outside(root);
+  for (const raw of ['relative-weight', 'points/month', 'docs/gcsp', 'Synthetic component gallery', 'Interaction example only', 'gallery-policy-v1', 'Gallery scheme · ', 'eligibilityModelKey', 'choices-fs-uk']) {
+    assert.ok(!visible.includes(raw), raw);
+  }
+  assert.match(visible, /Gallery policy 1/); assert.match(visible, /Body style weight/); assert.match(visible, /Now 1100 points a month/);
+  assert.equal(root.textContent.split('Interaction example only').length - 1, 1);
+  assert.ok(details[0].textContent.includes('gallery-policy-v1')); assert.match(details[0].textContent, /Slider ranges/);
+  assert.equal(root.querySelectorAll('select optgroup').length, 1); assert.equal(root.querySelector('select optgroup').label, policy.fields[0].schemeLabel);
+  assert.equal(root.querySelector('select option').textContent, 'Gallery car');
+});
+
+test('preview and publish outcomes follow the action buttons, and published versions use names', async () => {
+  const { root } = await setup({}, gallery.galleryPolicy({ ranges: true }));
+  const order = (a, b) => a.compareDocumentPosition(b) & window.Node.DOCUMENT_POSITION_FOLLOWING;
+  const form = root.querySelector('.gcsp-publish-form'); const sources = root.querySelector('details'); const buttons = root.querySelector('.gcsp-publish-actions');
+  const results = root.querySelector('.gcsp-publish-results'); const status = root.querySelector('[role=status]');
+  assert.ok(order(form, sources) && order(sources, buttons) && order(buttons, status) && order(status, results));
+  await preview(root); assert.match(results.textContent, /Preview: eligible stock cohort/);
+  assert.match(results.textContent, /Gallery car/); assert.match(results.textContent, /points a month/); assert.doesNotMatch(results.textContent, /points\/month/);
+  action(root, 'Publish this preview').click(); await tick();
+  assert.match(results.textContent, /Published version.*Greg's change/); assert.doesNotMatch(root.textContent.replace(/Version reference.*$/, ''), /greg-stable-command/);
+});
+
+test('policy projection without labels is rejected by the transport check', () => {
+  const policy = gallery.galleryPolicy(); assert.equal(transport.validPolicy(policy), true);
+  for (const mutate of [(p) => delete p.fields[0].label, (p) => delete p.fields[0].unitLabel, (p) => delete p.fields[0].schemeLabel, (p) => delete p.activeVersionLabel]) {
+    const copy = structuredClone(policy); mutate(copy); assert.equal(transport.validPolicy(copy), false);
+  }
 });

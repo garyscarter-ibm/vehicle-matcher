@@ -64,6 +64,8 @@ async function firstDeadlines(t, label, edit) {
   const offer = (await rows(f, 'offers')).find((row) => row.holdId === hold.holdId);
   const messages = good((await f.api('/api/gcsp/presenter/outbox')).json, 'outbox viewer').messages;
   const message = messages.find((row) => row.recipient.employeeId === 'employee-paula');
+  assert.doesNotMatch(message.textBody, /Your scheme vehicle/, 'the real buddy quote names the car');
+  assert.match(message.textBody, /\n\d[\d,]* points a month\n/, 'and its monthly points');
   const opened = await openLink(f, message.offerLink);
   const view = await readOffer(f, opened.session, opened.selector);
   const activity = await activityOf(f, sessions.paula);
@@ -71,8 +73,13 @@ async function firstDeadlines(t, label, edit) {
   const windows = (await assumption(f, 'supply.release.windows')).windows;
   return { f, cue, duration: await assumption(f, 'hold.buddy.durationSeconds'), alexHold, windows,
     shown: { hold: hold.expiresAt, offer: offer.expiresAt, view: view.expiresAt, activity: activity.currentOffer.expiresAt,
-      message: /available until (\S+?)\./.exec(message.textBody)?.[1] } };
+      message: /Respond by (.+?)\./.exec(message.textBody)?.[1] } };
 }
+const inWords = (iso) => {
+  const p = Object.fromEntries(new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/London', hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
+    weekday: 'long', day: 'numeric', month: 'long' }).formatToParts(new Date(iso)).map(({ type, value }) => [type, value]));
+  return `${p.hour}:${p.minute} on ${p.weekday} ${p.day} ${p.month}`;
+};
 const lapsesAtSecondRelease = async (run) => {
   const at = add(run.cue, run.windows[1].offsetMinutes);
   const tick = await tickTo(run.f, 'central', { mode: 'to', to: at });
@@ -89,8 +96,8 @@ test('one central change: the buddy hold duration moves the stored deadline, eve
   assert.equal(gap, longer.windows[1].offsetMinutes * 60, 'PolicyService returns the changed duration');
   for (const run of [base, longer]) {
     const deadline = add(run.cue, run.duration / 60);
-    // The message prints the deadline without milliseconds or zone.
-    assert.deepEqual(run.shown, { hold: deadline, offer: deadline, view: deadline, activity: deadline, message: deadline.slice(0, 19) },
+    // The message prints the deadline in words, in UK time.
+    assert.deepEqual(run.shown, { hold: deadline, offer: deadline, view: deadline, activity: deadline, message: inWords(deadline) },
       'hold, offer, offer view, activity and message all show cue plus the policy duration');
   }
   assert.equal(Date.parse(longer.shown.view) - Date.parse(base.shown.view), gap * 1000, 'the page deadline moves by the change');

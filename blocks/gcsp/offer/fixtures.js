@@ -38,7 +38,7 @@ export function offerFixture(name) {
     reference: { offerId: 'presentation-example', runId: 'presentation-example', offerVersion: 1, holdVersion: 1, quoteVersion: 1 },
     now: '2026-11-05T12:00:00.000Z', expiresAt: name === 'checking-expiry' ? '2026-11-05T12:00:00.000Z'
       : name === 'low-time' ? '2026-11-05T12:03:00.000Z' : '2026-11-05T14:00:00.000Z',
-    currentCar: { display: { name: 'G21 320i M Sport Touring' }, media: {},
+    currentCar: { display: { name: '320i M Sport Touring' }, media: {},
       facts: [{ label: 'Derivative', value: 'M Sport Touring' }, { label: 'Colour', value: null, missingLabel: 'Not supplied' },
         { label: 'Options', value: null, missingLabel: 'Fitted equipment unknown' }],
       provenance: 'Scenario name from the HLD. Presentation example; current-car equipment is unknown.' },

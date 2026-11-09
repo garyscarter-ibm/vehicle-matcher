@@ -13,6 +13,7 @@ function project(job, names) {
     jobId: job.jobId,
     messageKind: text(job.messageKind),
     state: job.state,
+    transport: job.transport === 'captured' || job.transport === 'configured' ? job.transport : null,
     attempts: Number.isSafeInteger(job.attempts) ? job.attempts : 0,
     error: CODE.test(outcome.error ?? '') ? outcome.error : (outcome.error ? 'unknown' : null),
     nextAttemptAt: instant(outcome.nextAttemptAt),

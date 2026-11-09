@@ -11,7 +11,10 @@ export const STATUS = Object.freeze({
   sending: Object.freeze({ label: 'Sending', icon: CLOCK, tone: 'wait' }),
 });
 const STATUS_ALIAS = { pending: 'sending' };
-export const statusOf = (state) => STATUS[STATUS_ALIAS[state] || state] || Object.freeze({ label: 'Unknown', icon: CLOCK, tone: 'wait' });
+const CAPTURED = Object.freeze({ ...STATUS.sent, label: 'Captured, not sent' });
+// An offline (captured) message was never emailed, so "sent" would contradict the footer.
+export const statusOf = (state, transport) => (state === 'sent' && transport === 'captured' ? CAPTURED
+  : STATUS[STATUS_ALIAS[state] || state] || Object.freeze({ label: 'Unknown', icon: CLOCK, tone: 'wait' }));
 
 // One table: safe error code from docs/gcsp/captured-outbox.md to a sentence for the presenter.
 export const ERROR_COPY = Object.freeze({

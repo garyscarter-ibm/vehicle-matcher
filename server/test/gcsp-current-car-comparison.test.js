@@ -51,11 +51,11 @@ test('snapshot copies and freezes its metadata instead of retaining a mutable so
 });
 
 test('recorded current-contract facts are copied, giving an available comparison', () => {
-  const x = input(); x.employee.contract.manualContext.contracts[0].vehicle = { configuration: 'G21 320i M Sport Touring', body: 'estate',
+  const x = input(); x.employee.contract.manualContext.contracts[0].vehicle = { configuration: '320i M Sport Touring', body: 'estate',
     fuel: 'petrol', seats: 5, boot: 500, mpg: 42.8, zeroTo62: 7.6, points: 1100 };
   const pin = createCurrentCarComparison(x);
   assert.equal(pin.comparisonAvailable, true); assert.equal(pin.display.state, 'available'); assert.deepEqual(pin.display.unknowns, []);
-  assert.deepEqual(pin.display.facts.boot, { value: 500, unit: 'L' }); assert.equal(pin.display.facts.configuration.value, 'G21 320i M Sport Touring');
+  assert.deepEqual(pin.display.facts.boot, { value: 500, unit: 'L' }); assert.equal(pin.display.facts.configuration.value, '320i M Sport Touring');
 });
 
 test('invalid recorded facts are dropped to unknown and a valid subset gives a partial comparison', () => {
