@@ -1,7 +1,7 @@
 """Supervise five pure strict retained checks for one declared core chunk. No HTTP."""
 import sys
 sys.dont_write_bytecode = True
-import atexit, hashlib, importlib.util, json, os, pathlib, re, subprocess
+import atexit, hashlib, importlib.util, json, os, pathlib, re, subprocess, time, traceback
 
 BASE = pathlib.Path(__file__).resolve().parent
 ROOT = BASE.parents[4]
@@ -21,6 +21,8 @@ assert not (DIRECTORY / 'live-validation.json').exists(), 'preserve an existing 
 spec = importlib.util.spec_from_file_location('resources', ROOT / '_tools/test_resources.py')
 R = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(R)
+spec = importlib.util.spec_from_file_location('group_proof', BASE / 'group-proof.py')
+G = importlib.util.module_from_spec(spec); spec.loader.exec_module(G)
 OUT = pathlib.Path(allocation['supervisorOutput'])
 paths = sorted(set(allocation['codePins']) | {str(p) for p in DIRECTORY.rglob('*') if p.is_file()})
 hashes = lambda: {p: sha(ROOT / p) for p in paths}
@@ -39,11 +41,33 @@ vendor = pathlib.Path('/Users/usget/Claude/vehicle-matcher/.claude/worktrees/DEV
 entered = reserved = finished = False
 link_identity = None
 result = {}
+first_error = None
+attempts = 0
+def retain_first(stage, error):
+    # Write-once receipt: later failures and retries never replace the first diagnostic.
+    global first_error
+    if first_error is not None:
+        return
+    first_error = {'stage': stage, 'type': type(error).__name__, 'message': str(error)[:2000], 'recordedAt': time.time(),
+                   'traceback': ''.join(traceback.format_exception(type(error), error, error.__traceback__))[-8000:]}
+    try:
+        if not (OUT / 'retained-first-error.json').exists():
+            R.atomic_json(OUT / 'retained-first-error.json', first_error)
+    except OSError:
+        pass
 def finalize():
-    global entered, reserved, finished, link_identity
+    global attempts
     if finished:
         return
-    groups_absent = all(R.group_has_live_members(pid) is False for pid in scratch.record['groups'])
+    attempts += 1
+    try:
+        finalize_once(attempts)
+    except BaseException as error:
+        retain_first('finalize', error)
+        raise
+def finalize_once(attempt):
+    global entered, reserved, finished, link_identity
+    groups_absent = G.prove_groups_absent(R, scratch.record['groups'], OUT / ('retained-group-queries.json' if attempt == 1 else 'retained-group-queries-%d.json' % attempt))
     if not groups_absent:
         raise RuntimeError('owned retained-check process group absence not proved')
     if entered:
@@ -67,6 +91,7 @@ def finalize():
         'dependency_link_absent': not os.path.lexists(link), 'groups_absent': groups_absent,
         'reservation_absent': scratch.token not in rows, 'removed_allocation_bytes': scratch.record['peak'],
         'code_identity_unchanged': hashes() == identity, 'compatibility_exception': None,
+        'first_lifecycle_error': first_error, 'finalize_attempts': attempt,
         'retained_summary': str(OUT / 'retained-result.json')})
     finished = True
 atexit.register(finalize)
@@ -99,25 +124,36 @@ with R.handled_termination():
             print(log[-12000:], flush=True)
         else:
             (OUT / 'retained.log').unlink()
+    except BaseException as error:
+        retain_first('retained-checks', error)
+        raise
     finally:
-        finalize()
-summary = result.get('summary', {})
-assert result.get('rc') == 0 and not result.get('issue') and summary.get('tests') == summary.get('pass') == 5
-assert summary.get('fail') == summary.get('skipped') == 0
-receipt = read(DIRECTORY / 'receipt.json')
-canonical = read(DIRECTORY / 'final-canonical-index.json')
-spent = read(DIRECTORY / 'final-spent-request-index.json')
-proof = {'schemaVersion': 'f70-typed-axis-chunk-actual-validation.v1', 'scope': 'scoped actual source and five pure strict retained checks',
-    'sourceTrafficDuringValidation': 0, 'primarySha256': sha(DIRECTORY / 'collector-checkpoint.json'),
-    'receiptSha256': sha(DIRECTORY / 'receipt.json'),
-    'finalCanonicalIndexSha256': sha(DIRECTORY / 'final-canonical-index.json'),
-    'finalSpentRequestIndexSha256': sha(DIRECTORY / 'final-spent-request-index.json'),
-    'retainedChecks': result, 'retainedCleanup': read(OUT / 'retained-cleanup.json'), 'cleanup': source_cleanup,
-    'actualSource': {'attempts': receipt['actualAttempts'], 'solverRequests': receipt['counts']['operations']['solve'],
-        'decodedBytes': receipt['counts']['decodedBytes'], 'accepted': receipt['newlyAccepted'],
-        'duplicates': receipt['duplicates'], 'rejected': receipt['rejected'], 'reason': receipt['reason'], 'status': receipt['status']},
-    'cumulativeCanonicalEntries': len(canonical['entries']),
-    'cumulativeAdmittedSourceConfigurations': sum(any(origin['kind'] == 'admitted-source' for origin in row['origins']) for row in canonical['entries']),
-    'cumulativeSpentSolverRequests': len(spent['entries']), 'sourceCapacityCredit': receipt['newlyAccepted'], 'acceptance': False}
-with (DIRECTORY / 'live-validation.json').open('x') as stream:
-    stream.write(json.dumps(proof, indent=2) + '\n')
+        try:
+            finalize()
+        except Exception:
+            time.sleep(1)  # one bounded retry; finalize steps are flag-guarded and idempotent
+            finalize()
+try:
+    summary = result.get('summary', {})
+    assert result.get('rc') == 0 and not result.get('issue') and summary.get('tests') == summary.get('pass') == 5
+    assert summary.get('fail') == summary.get('skipped') == 0
+    receipt = read(DIRECTORY / 'receipt.json')
+    canonical = read(DIRECTORY / 'final-canonical-index.json')
+    spent = read(DIRECTORY / 'final-spent-request-index.json')
+    proof = {'schemaVersion': 'f70-typed-axis-chunk-actual-validation.v1', 'scope': 'scoped actual source and five pure strict retained checks',
+        'sourceTrafficDuringValidation': 0, 'primarySha256': sha(DIRECTORY / 'collector-checkpoint.json'),
+        'receiptSha256': sha(DIRECTORY / 'receipt.json'),
+        'finalCanonicalIndexSha256': sha(DIRECTORY / 'final-canonical-index.json'),
+        'finalSpentRequestIndexSha256': sha(DIRECTORY / 'final-spent-request-index.json'),
+        'retainedChecks': result, 'retainedCleanup': read(OUT / 'retained-cleanup.json'), 'cleanup': source_cleanup,
+        'actualSource': {'attempts': receipt['actualAttempts'], 'solverRequests': receipt['counts']['operations']['solve'],
+            'decodedBytes': receipt['counts']['decodedBytes'], 'accepted': receipt['newlyAccepted'],
+            'duplicates': receipt['duplicates'], 'rejected': receipt['rejected'], 'reason': receipt['reason'], 'status': receipt['status']},
+        'cumulativeCanonicalEntries': len(canonical['entries']),
+        'cumulativeAdmittedSourceConfigurations': sum(any(origin['kind'] == 'admitted-source' for origin in row['origins']) for row in canonical['entries']),
+        'cumulativeSpentSolverRequests': len(spent['entries']), 'sourceCapacityCredit': receipt['newlyAccepted'], 'acceptance': False}
+    with (DIRECTORY / 'live-validation.json').open('x') as stream:
+        stream.write(json.dumps(proof, indent=2) + '\n')
+except BaseException as error:
+    retain_first('proof-assembly', error)
+    raise
