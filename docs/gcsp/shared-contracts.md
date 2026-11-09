@@ -1785,9 +1785,11 @@ fictional}`. `currentCar` is `{kind: 'order', orderUuid, vin}` once collected, e
 while the old car is held, else `null`. The account's contract records are not rewritten; their consumers move to this
 relationship in a later story.
 
-Handover completion (FUCQ-167) calls `applyCurrentCarEvent(tx, runId, event)` inside its completion transaction, or
-`recordCurrentCarEvent(repository, systemContext, event)` outside one, with `{type: 'handover-completed', orderUuid,
-employeeId, occurredAt, providerReference, appointment: {purpose: 'handover', slotId, providerReference}, vin?}`.
+FUCQ-167's handover completion calls `applyCurrentCarEvent(tx, runId, event)` in the same transaction as the `completed`
+outcome (handover purpose only), with `{type: 'handover-completed', orderUuid, employeeId, occurredAt, providerReference,
+appointment: {purpose: 'handover', slotId, providerReference}, vin?}`; a refused, uncertain or not-ready completion changes
+nothing. An order with no selection record has no relationship and completes unchanged. Callers outside a transaction use
+`recordCurrentCarEvent(repository, systemContext, event)`.
 
 | Key | Assumed default (synthetic demo assumption) |
 |---|---|

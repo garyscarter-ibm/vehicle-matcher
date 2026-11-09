@@ -17,6 +17,8 @@ import { createSyntheticReturnOutcomes, createLiveReturnOutcomesStub, RETURN_OUT
 import { RETURN_EXCEPTION_CONSUMER, RETURN_OUTCOME_STATE } from '../gcsp/lifecycle/return-plan/outcomes.js';
 import { applyCurrentCarEvent, recordCurrentCarEvent, readCurrentCar, CURRENT_CAR_EVENTS } from '../gcsp/lifecycle/current-car/index.js';
 import { RenewalCaseService } from '../gcsp/cases/index.js';
+import { createLifecycleDocumentService } from '../gcsp/lifecycle/documents/index.js';
+import { createSyntheticDocumentStatus } from '../gcsp/adapters/synthetic-ordering-documents.js';
 import { prepareBuddySelection } from '../gcsp/offers/buddy-conversion.js';
 import { createRealProducer, acknowledgedSelection } from './helpers/gcsp-lifecycle-approval.js';
 
@@ -38,7 +40,7 @@ async function policyWith(mutate = () => {}) {
 
 // Real FUCQ-71 producer and FUCQ-111 approvals feed the real handover (FUCQ-114) and return services.
 // `outcomes` builds the return outcome step from the repository (synthetic by default); `cases` adds the renewal-risk trigger.
-async function setup(t, { policy, order = 'replacement', outcomes = (repository) => createSyntheticReturnOutcomes({ repository }), cases = false } = {}) {
+async function setup(t, { policy, order = 'replacement', outcomes = (repository) => createSyntheticReturnOutcomes({ repository }), cases = false, documents = false, wrapProvider = (p) => p } = {}) {
   policy ??= await policyWith();
   const repository = createMemoryRepository({ store: createMemoryStore() }); await repository.open();
   t.after(() => repository.close());
@@ -53,9 +55,12 @@ async function setup(t, { policy, order = 'replacement', outcomes = (repository)
   for (const who of [paula, alex]) assert.equal((await seedManualDemoContext({ repository, identity, clock, context: who.value.context })).status, 'ok');
   const approvals = createLifecycleApprovalService({ repository, policy, clock, identity, status: createSyntheticOrderingStatus({ repository }) });
   assert.equal((await approvals.start()).status, 'ok');
-  const provider = createSyntheticAppointments({ repository });
+  const provider = wrapProvider(createSyntheticAppointments({ repository }));
   const common = { repository, policy, clock, identity, lifecycleStages: approvals.stagePort(), provider };
-  const handover = createLifecycleAppointmentService(common);
+  // `documents` composes the real FUCQ-116 service as the handover readiness port, so FUCQ-167 completion can run.
+  const docs = documents ? createLifecycleDocumentService({ ...common, provider: createSyntheticDocumentStatus({ repository }) }) : null;
+  if (docs) assert.equal((await docs.start()).status, 'ok');
+  const handover = createLifecycleAppointmentService({ ...common, readiness: docs ?? undefined });
   const outcomeProvider = outcomes(repository);
   const returns = createLifecycleReturnPlanService({ ...common, handover, outcomes: outcomeProvider });
   assert.equal((await handover.start()).status, 'ok'); assert.equal((await returns.start()).status, 'ok');
@@ -63,7 +68,7 @@ async function setup(t, { policy, order = 'replacement', outcomes = (repository)
   if (renewalCases) assert.equal((await renewalCases.start()).status, 'ok');
   const producer = await createRealProducer({ repository, policy, clock, identity });
   const p = presenter.value.context; const ctx = paula.value.context; let n = 0;
-  const f = { repository, clock, identity, policy, handover, returns, producer, provider, outcomeProvider, renewalCases, presenter: p, paula: ctx, alex: alex.value.context, greg: greg.value.context,
+  const f = { repository, clock, identity, policy, handover, returns, producer, provider, outcomeProvider, renewalCases, docs, presenter: p, paula: ctx, alex: alex.value.context, greg: greg.value.context,
     sessions: { paula, alex, greg, presenter } };
   f.tick = async () => {
     const now = await clock.now(p); const eventId = `tick-${++n}`;
@@ -589,4 +594,39 @@ test('FUCQ-168: recorded returned and missed response shapes match real service 
     for (const c of plan.relationship.changes) assert.deepEqual(keys(c), sorted(shapes.relationshipChangeKeys));
     assert.deepEqual([plan.relationship.currentCar?.kind ?? null, plan.relationship.oldCar.status], [want.currentCar, want.oldCarStatus], name);
   }
+});
+
+// FUCQ-167 x FUCQ-168: the real handover completion, gated by real FUCQ-116 readiness, is what makes the new car current.
+const ACK = (orderUuid) => ({ commandId: 'ack', orderUuid, itemId: 'agreement-acknowledgement', acknowledgement: 'synthetic' });
+test('FUCQ-168: a ready handover completed through the real appointment service makes the new order her current car; not-ready and refused completions do not', async (t) => {
+  const f = await setup(t, { documents: true }); await f.approve(); await f.scheduleHandover();
+  const held = (await readCurrentCar(f.repository, f.paula, f.orderUuid)).value;
+  assert.deepEqual([held.currentCar.kind, held.oldCar.status, held.newCar.status], ['contract', 'held', 'on-order']);
+  const early = await f.handover.complete(f.presenter, { orderUuid: f.orderUuid });
+  assert.deepEqual([early.status, early.code], ['conflict', 'handover-not-ready']);
+  assert.deepEqual([(await readCurrentCar(f.repository, f.paula, f.orderUuid)).value, (await rows(f, CURRENT_CAR_EVENTS)).length], [held, 0], 'a not-ready completion changes nothing');
+  await f.advance(2 * DAY / 1000); await f.tick();
+  assert.equal((await f.docs.completeTask(f.paula, ACK(f.orderUuid))).status, 'ok');
+  assert.equal((await f.docs.readReadiness(f.greg, { orderUuid: f.orderUuid })).value.ready, true);
+  const at = await f.now();
+  const done = await f.handover.complete(f.greg, { orderUuid: f.orderUuid }); assert.equal(done.status, 'ok', JSON.stringify(done));
+  assert.equal(done.value.state, 'completed');
+  const r = (await readCurrentCar(f.repository, f.paula, f.orderUuid)).value;
+  assert.deepEqual([r.currentCar, r.oldCar.status, r.newCar.status, r.newCar.collectedAt], [{ kind: 'order', orderUuid: f.orderUuid, vin: null }, 'held', 'collected', at]);
+  assert.deepEqual(r.changes.map((c) => [c.type, c.at, c.providerReference, c.appointment.purpose, c.appointment.slotId]),
+    [['handover-completed', at, done.value.outcome.providerReference, 'handover', done.value.slot.slotId]]);
+  assert.deepEqual((await f.plan()).relationship, r, 'the return plan reads the same relationship');
+  assert.equal((await f.handover.complete(f.greg, { orderUuid: f.orderUuid })).status, 'ok');
+  assert.equal((await rows(f, CURRENT_CAR_EVENTS)).length, 1, 'a repeated completion records nothing more');
+
+  const refuse = (p) => ({ ...p, async complete(op) { return { status: 'unsupported', operationId: op.operationId, orderUuid: op.payload.orderUuid, step: 'complete',
+    code: 'live-appointments-unsupported', reason: 'Live appointment booking is not connected in this demonstration.' }; } });
+  const g = await setup(t, { documents: true, wrapProvider: refuse }); await g.approve(); await g.scheduleHandover();
+  await g.advance(2 * DAY / 1000); await g.tick();
+  assert.equal((await g.docs.completeTask(g.paula, ACK(g.orderUuid))).status, 'ok');
+  const refused = await g.handover.complete(g.greg, { orderUuid: g.orderUuid });
+  assert.deepEqual([refused.status, refused.code], ['unsupported', 'live-appointments-unsupported']);
+  const still = (await readCurrentCar(g.repository, g.paula, g.orderUuid)).value;
+  assert.deepEqual([still.currentCar.kind, still.newCar.status, (await rows(g, CURRENT_CAR_EVENTS)).length], ['contract', 'on-order', 0], 'a refused completion changes nothing');
+  await g.sameCar('refused completion');
 });
