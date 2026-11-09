@@ -129,3 +129,16 @@ Entries are added as work merges.
 - **FUCQ-123 started** (S, learned forecast beside the baseline plan). FUCQ-115 adopted no model, so in the demo the panel will normally show the baseline alone with the limitation stated. The learned path is being proved with a fixture-activated model in tests.
 - **Left to Russell's poller:** FUCQ-226 and FUCQ-232 are unclaimed, and three of my leads are already running. His poller takes unclaimed ready stories.
 - **FUCQ-98's test email still needs you.** It needs the hosted demo key, which my poller won't use. Russell's section above has the steps.
+- **About 01:40, merged, pushed and In Review:**
+  - **FUCQ-227** (bug, not in MoSCoW, High): an expired buddy hold now re-allocates its car on the same tick. A new assumed key, `offer.expiredHold.reallocation`, makes the lapsed holder sit out, and nobody is re-offered a car they let lapse until the next release; without it, two non-responders passed one car back and forth. Scoped tests: 352, 0 failed. The comparison route deliberately doesn't re-offer, and says so as a limitation (modelling it cost more than 5 times the run time).
+  - **FUCQ-231** (bug, not in MoSCoW, Medium): an expired, unreleased car no longer voids the whole stock pull.
+  - **FUCQ-228** (bug, not in MoSCoW, Low): expired and stale-link offer copy. Keyboard checked at 1280 and 375.
+- **FUCQ-230 merged but not closed.** Its date-pin fix works, but the v2 image capture test then fails on `allocation-mismatch` (plan limits). It failed before too, so this isn't a regression. The lead is fixing it in the test harness.
+- **New bugs filed:** FUCQ-233 (Medium): a declined buddy car never re-triggers allocation. FUCQ-234 (Low): the offer page's live announcement shows as visible text.
+- **Started:** FUCQ-137, then FUCQ-138 (S). **Recommendation built:** the comparison result is stored through the runtime's repository (PostgreSQL on the hosted demo), and memory mode gets an explicit import path.
+- **Questions for Gary:**
+  1. FUCQ-227: is the expiry rule above the behaviour you want?
+  2. FUCQ-227: should the comparison model the immediate re-offer? That would be a new story.
+  3. FUCQ-228: is "Open your account to check for a new offer" the right next step?
+  4. FUCQ-230: is it OK that the fixture test re-pins code pins only in its temporary copy?
+- **Flake seen:** render.test.js "no em dashes in painted copy" hit its 5 s limit once under load; it passes on its own.
