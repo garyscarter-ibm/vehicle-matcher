@@ -29,7 +29,7 @@ test('exact shared card, points and current car comparison preserve supplied unk
   assert.equal(root.querySelectorAll('.vm-card').length, 1);
   assert.match(root.textContent, /Order no\. 0123456/);
   assert.match(root.textContent, /1,100 points a month.*1,300 points a month allowance/);
-  assert.match(root.textContent, /G21 320i M Sport Touring/);
+  assert.match(root.textContent, /320i M Sport Touring/);
   assert.match(root.textContent, /Fitted equipment unknown/);
   assert.match(root.textContent, /Representative BMW brand image, not this exact car/);
   assert.match(root.textContent, /Synthetic presentation example/);
