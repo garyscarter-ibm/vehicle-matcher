@@ -33,9 +33,9 @@ export function createGcspHandler({ identity, routes = [], allowedOrigins = [], 
       'Access-Control-Allow-Origin': originAllowed && origin ? origin : 'null',
       'Access-Control-Allow-Credentials': 'true', Vary: 'Origin',
     };
-    const send = (outcome) => {
+    const send = (outcome, code = statusCode(outcome.status)) => {
       res.setHeader('Cache-Control', 'no-store');
-      return sendJson(res, statusCode(outcome.status), outcome, credentialHeaders);
+      return sendJson(res, code, outcome, credentialHeaders);
     };
     if (!originAllowed) return send({ status: 'forbidden', reason: 'This origin is not allowed to use GCSP.', contractVersion: '1.0.0' });
     if (req.method === 'OPTIONS') {
@@ -101,8 +101,10 @@ export function createGcspHandler({ identity, routes = [], allowedOrigins = [], 
         const allowed = await identity.authorizeResource(context, await route.resource({ context, body, searchParams }), route.action || 'read');
         if (allowed.status !== 'ok') return send(allowed);
       }
-      return send(await route.handle({ context, body, searchParams, identity,
-        setCookie: (cookies) => res.setHeader('Set-Cookie', cookies) }));
+      const outcome = await route.handle({ context, body, searchParams, identity,
+        setCookie: (cookies) => res.setHeader('Set-Cookie', cookies) });
+      // A route that reads something not yet created answers 200 with the unchanged not-found envelope.
+      return send(outcome, route.absentIs200 && outcome.status === 'not-found' ? 200 : undefined);
     } catch {
       // Never include request URLs, cookies or parser exception text in responses or logs.
       return send({ status: 'unavailable', reason: 'GCSP service is unavailable.', retryable: true, contractVersion: '1.0.0' });

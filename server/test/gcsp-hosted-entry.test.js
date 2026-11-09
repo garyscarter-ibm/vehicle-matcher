@@ -159,6 +159,20 @@ test('the hosted entry serves the gated demo and drives Paula to a captured offe
   assert.equal(outboxPage.status, 200); assert.match(outboxPage.text, /<gcsp-outbox>/);
 });
 
+test('a fresh session reads its absent draft as 200 not-found, so sign-in logs no 404', { timeout: 90000 }, async (t) => {
+  const app = await launch(t, (port) => ({ GCSP_RUNTIME: '1', GCSP_PUBLIC_ORIGIN: `http://localhost:${port}`, DEMO_ACCESS_KEY: KEY }), '/gcsp-presenter.html');
+  const browser = client(app.base);
+  const signedIn = await browser.request('/gcsp/access', { method: 'POST', body: new URLSearchParams({ key: KEY, next: '/gcsp-presenter.html' }).toString(),
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
+  assert.equal(signedIn.status, 303);
+  assert.equal((await browser.request('/gcsp-presenter.html')).status, 200);
+  const draft = await browser.request('/api/gcsp/manual/draft');
+  assert.equal(draft.status, 200, draft.text.slice(0, 300));
+  assert.equal(draft.json.status, 'not-found'); assert.equal(draft.json.resourceType, 'manual-draft');
+  // Other absent reads keep their 404.
+  assert.equal((await browser.request('/api/gcsp/manual/no-such-route')).status, 404);
+});
+
 test('without GCSP_RUNTIME the entry still answers GCSP routes as unconfigured', { timeout: 90000 }, async (t) => {
   const app = await launch(t, () => ({}), 'Matcher API listening');
   const reply = await client(app.base).request('/api/gcsp/context');
