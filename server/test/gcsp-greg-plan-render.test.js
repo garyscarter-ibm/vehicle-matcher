@@ -328,6 +328,8 @@ test('an available learned plan shows beside the recommended plan with differenc
   const table = tableOf(sec, 'Plan comparison'); assert.ok(table);
   assert.deepEqual([...table.tHead.rows[0].cells].map((c) => c.textContent), ['Vehicle or measure', 'Recommended plan', 'Synthetic-trained model', 'Difference']);
   assert.equal(table.closest('[role="region"]').tabIndex, 0);
+  assert.ok(table.closest('.gcsp-table-wrap').classList.contains('is-stack'));
+  assert.equal(table.tBodies[0].rows[0].cells[3].dataset.label, 'Difference');
   const rows = Object.fromEntries([...table.tBodies[0].rows].map((r) => [r.cells[0].textContent, r]));
   assert.deepEqual(cells(rows['3 Series Saloon 320i']), ['3 Series Saloon 320i', '0', '1', '+1']);
   assert.deepEqual(cells(rows['3 Series Touring 320i']), ['3 Series Touring 320i', '2', '1', '-1']);

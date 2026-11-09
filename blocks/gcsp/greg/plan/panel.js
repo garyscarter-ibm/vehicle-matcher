@@ -35,7 +35,7 @@ function learnedSection(l, base) {
   if (!l.comparable) section.append(note('The plans cannot be compared because one of them has no plan inside the limits.'));
   else {
     const cell = (value, changed) => (changed ? { label: value, emphasis: true } : value);
-    section.append(dataTable({ caption: 'Plan comparison', emptyText: 'No vehicles to compare',
+    section.append(dataTable({ caption: 'Plan comparison', emptyText: 'No vehicles to compare', stack: true,
       columns: [{ key: 'name', label: 'Vehicle or measure' }, { key: 'baseline', label: 'Recommended plan', numeric: true },
         { key: 'learned', label: l.label, numeric: true }, { key: 'difference', label: 'Difference', numeric: true }],
       rows: l.rows.map((r) => ({ name: cell(r.name, r.changed), baseline: r.baseline, learned: cell(r.learned, r.changed), difference: cell(r.difference, r.changed) })) }));
