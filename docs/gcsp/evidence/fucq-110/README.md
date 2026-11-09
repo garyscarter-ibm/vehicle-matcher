@@ -94,5 +94,5 @@ Known and not re-raised: "No image for this car yet" on synthetic stock.
 
 - The PostgreSQL provider was not run for this story; the evidence is the memory repository. This is recorded as unrun, not passed.
 - Headless Chrome only (one version), one fixture and the default generated stock; no hand trial by Russell or a BMW representative is claimed.
-- Physical completion, no-show, a missed return and Greg's remedy for Paula are FUCQ-171 and not covered.
+- Physical completion, no-show, a missed return and Greg's remedy for Paula are FUCQ-171 and not covered here; see `fucq171/README.md`.
 - The run's page reads are reloads: the order progress page does not refresh itself after a Tick (the walkthrough reopens it, and the manual steps say so).

@@ -1,11 +1,12 @@
-// FUCQ-124: the buddy order on the launcher, then the manual order and the retained difficult cases on the composed runtime.
+// FUCQ-124 and FUCQ-171: the buddy order on the launcher, the manual order on the composed runtime, then the later handover, return and help cases.
 // Every expected value is read through PolicyService; alternative policies are explicit seed edits before boot.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { assumption, jar, launch, rows, stepper, tickTo, walkPaulasPath } from './helpers/gcsp-journey.js';
+import { actAs, assumption, confirmed, jar, launch, offerPath, openLink, readOffer, resetRun, rows, saveBrief, stepper, tickTo, walkPaulasPath } from './helpers/gcsp-journey.js';
 import { good, setupManualRuntime, selectManualOrder } from './helpers/gcsp-manual-order.js';
 import { EXCEPTION_CONSUMER } from '../gcsp/lifecycle/approvals/index.js';
+import { CURRENT_CAR_EVENTS, readCurrentCar } from '../gcsp/lifecycle/current-car/index.js';
 import { createLiveOrderingStatusStub } from '../gcsp/adapters/synthetic-ordering-status.js';
 
 const DAY = 86400000;
@@ -215,7 +216,7 @@ test('FUCQ-124 happy path, buddy route: approvals, handover, documents and a sep
 async function manualRun(t, edit) {
   const f = await setupManualRuntime(t, { edit }); good(f.startup);
   const picked = await selectManualOrder(f); const order = picked.car.orderUuid;
-  return { f, order, picked, ...reads(f, order, f.session) };
+  return { f, order, picked, session: f.session, ...reads(f, order, f.session) };
 }
 /** Switches the presenter to a demo principal over the route the browser uses and returns that principal's cookie. */
 async function asPrincipal(f, name) {
@@ -418,4 +419,473 @@ test('FUCQ-124 live-shaped ordering stub: approval reports unsupported, claims n
   const refused = await f.api('/api/gcsp/appointments/request', { session: f.session, body: { orderUuid: order, slotId: 'slot-any' } });
   assert.notEqual(refused.status, 200, JSON.stringify(refused.json));
   assert.equal((await m.handover()).state, 'not-requested', 'a refused request books nothing');
+});
+
+// FUCQ-171: the later physical handover, return, no-show and advanced-help scenarios, over the same routes and runtimes as FUCQ-124.
+const APPOINTMENT_EXCEPTIONS = 'lifecycle-appointments:exceptions:v1';
+const RETURN_EXCEPTIONS = 'lifecycle-return:exceptions:v1';
+const APPOINTMENTS = '/api/gcsp/appointments';
+/** Policy edit (before boot) that turns on the synthetic return outcome; the delay and copy still come from the key. */
+const returnOutcome = (outcome, delaySecondsAfterSlotEnd) => (seed, byKey) => {
+  Object.assign(byKey('lifecycle.return.outcome.v1').value, { enabled: true, outcome, ...(delaySecondsAfterSlotEnd ? { delaySecondsAfterSlotEnd } : {}) });
+};
+const receiptsOf = async (f, consumerId) => (await rows(f, 'event_receipts')).filter((row) => row.consumerId === consumerId);
+const policyVersions = new WeakMap();
+/** Records the policy version a read exposes, per runtime; every read of one run must name the same one. */
+const seenPolicy = (f, view) => { assert.ok(view.policyVersion, 'the read exposes its policy version'); policyVersions.set(f, (policyVersions.get(f) ?? new Set()).add(view.policyVersion)); return view; };
+const heldOldCar = (contractId, slotId) => ({ kind: 'contract', contractId, slotId });
+
+/** Books the first offered slot (or the first other than `not`) and lets the retailer confirm it on the keyed delay; accepts a keyed proposed change. */
+async function bookHandover(f, r, { not } = {}) {
+  const confirmation = await assumption(f, 'lifecycle.appointments.confirmation.v1'); const scenario = await assumption(f, 'lifecycle.appointments.scenario.v1');
+  const chosen = (await r.handover()).offeredSlots.find((slot) => slot.slotId !== not);
+  await r.post(`${APPOINTMENTS}/request`, { orderUuid: r.order, slotId: chosen.slotId });
+  await tickTo(f, 'book', { mode: 'to', to: later(await r.clockNow(), confirmation.confirmDelaySeconds) });
+  let view = await r.handover();
+  if (scenario.proposeChange) { await r.post(`${APPOINTMENTS}/accept`, { orderUuid: r.order, proposalId: view.proposalId }); view = await r.handover(); }
+  assert.deepEqual([view.state, view.booked], ['scheduled', true]);
+  assert.match(view.history.at(-1).providerReference, /^SYN-APT-/);
+  return seenPolicy(f, view);
+}
+/** Paula's own document tasks, then a tick to the last keyed progress time (or one step if that time has passed); the order must read ready. */
+async function finishDocuments(f, r, items) {
+  for (const task of items.filter((item) => item.owner === 'employee' && item.kind === 'document')) {
+    await r.post('/api/gcsp/documents/tasks/complete', { commandId: `e2e-171-${task.itemId}`, orderUuid: r.order, itemId: task.itemId, acknowledgement: 'synthetic' });
+  }
+  const opened = await r.documents(); const target = later(opened.openedAt, Math.max(...items.filter((item) => item.progressSeconds).map((item) => item.progressSeconds)));
+  await tickTo(f, 'docs-171', Date.parse(target) > Date.parse(await r.clockNow()) ? { mode: 'to', to: target } : { mode: 'step' });
+  const done = await r.documents();
+  assert.deepEqual(done.readiness, { ready: true, state: 'ready', documentsComplete: true, vehicleReady: true, blocking: [], failed: [] });
+  return done;
+}
+/** Paula's current-car relationship read two ways that must agree: the service and the return plan's read model. */
+async function currentCar(f, r) {
+  const context = good(await f.services.identity.resolveSession({ authorized: true, cookie: r.session }));
+  const direct = good(await readCurrentCar(f.services.repository, context, r.order));
+  assert.deepEqual((await r.returnPlan()).relationship, direct, 'the return plan reads the service relationship');
+  return direct;
+}
+/** The two cars stay separate: the old one by contract and slot, the new one by order. */
+function expectSeparateCars(car, oldContractId, slotId, order) {
+  assert.deepEqual([car.oldCar.contractId, car.oldCar.slotId, car.newCar.orderUuid, car.orderUuid], [oldContractId, slotId, order, order]);
+  assert.notEqual(car.oldCar.contractId, car.newCar.orderUuid); assert.notEqual(car.oldCar.slotId, car.newCar.orderUuid);
+}
+/** A completion before readiness is refused as a conflict and changes nothing: not the appointment, the current car, an operation or a receipt. */
+async function expectNotReady(f, r, session) {
+  const outcomes = await assumption(f, 'lifecycle.appointments.outcomes.v1'); const snapshot = async () => ({ appointment: await r.handover(), car: await currentCar(f, r),
+    events: await receiptsOf(f, CURRENT_CAR_EVENTS), operations: (await rows(f, 'pending_operations')).map((row) => row.operationId).sort(), inputs: await allocatorInputs(f) });
+  const before = await snapshot(); const documents = await r.documents();
+  const reply = await f.api(`${APPOINTMENTS}/complete`, { body: { orderUuid: r.order }, session });
+  assert.equal(reply.status, 409, JSON.stringify(reply.json));
+  const refusal = reply.json;
+  assert.deepEqual([refusal.status, refusal.code, refusal.owner, refusal.nextStep], ['conflict', 'handover-not-ready', outcomes.notReady.owner, outcomes.notReady.nextStep]);
+  assert.deepEqual([refusal.readiness.ready ?? false, refusal.readiness.documentsComplete, refusal.readiness.blocking], [false, false, documents.readiness.blocking]);
+  assert.ok(refusal.readiness.blocking.length > 0, 'something still blocks the handover');
+  assert.deepEqual(await snapshot(), before, 'a refused completion changes nothing');
+  return refusal;
+}
+/** The presenter's completion over the route; returns the read model. */
+async function completeHandover(f, r, session) {
+  const reply = await f.api(`${APPOINTMENTS}/complete`, { body: { orderUuid: r.order }, session });
+  assert.equal(reply.status, 200, JSON.stringify(reply.json));
+  return seenPolicy(f, reply.json.value);
+}
+
+test('FUCQ-171 manual handoff lifecycle: completion waits for readiness, then the new order becomes the current car and the old one stays held', async (t) => {
+  const m = await manualRun(t); const { f, order, picked } = m; const step = stepper(t); const state = {};
+  const old = picked.operation.payload.selection.oldContract.contractId; const slotId = f.employee.entitlementSlotId;
+  const outcomes = await assumption(f, 'lifecycle.appointments.outcomes.v1');
+
+  await step('approvals and documents: the manual order reaches sent to ordering and its documents open', async () => {
+    await walkApprovals(f, m, 'manual'); state.items = (await expectDocumentsOpened(f, m)).items;
+  });
+  await step('handover scheduled: the current car is still the old contract and the new order is only on order', async () => {
+    state.scheduled = await bookHandover(f, m); state.before = await currentCar(f, m);
+    assert.deepEqual([state.before.currentCar, state.before.oldCar.status, state.before.newCar.status, state.before.changes], [heldOldCar(old, slotId), 'held', 'on-order', []]);
+    expectSeparateCars(state.before, old, slotId, order);
+    assert.equal((await receiptsOf(f, CURRENT_CAR_EVENTS)).length, 0, 'scheduling records no current-car event');
+  });
+  await step('completion before readiness is refused for the presenter and the scheme team, and Paula and Alex cannot attempt it', async () => {
+    await expectNotReady(f, m); await expectNotReady(f, m, await asPrincipal(f, 'greg'));
+    for (const session of [m.session, await asPrincipal(f, 'alex')]) assert.equal((await f.api(`${APPOINTMENTS}/complete`, { body: { orderUuid: order }, session })).status, 403);
+    assert.equal((await m.handover()).state, 'scheduled');
+  });
+  await step('documents and car preparation finish, then the scheme team records a confirmed synthetic completion', async () => {
+    await finishDocuments(f, m, state.items);
+    state.inputs = await allocatorInputs(f);
+    const at = await m.clockNow(); const done = await completeHandover(f, m, await asPrincipal(f, 'greg'));
+    assert.deepEqual([done.state, done.booked, done.owner, done.nextStep, done.pending, done.blocked], ['completed', false, outcomes.states.completed.owner, outcomes.states.completed.nextStep, null, null]);
+    assert.deepEqual([done.outcome.state, done.outcome.at], ['completed', at]);
+    assert.match(done.outcome.providerReference, /^SYN-APT-/);
+    assert.deepEqual(done.history.map((row) => row.state), ['requested', 'scheduled', 'completed']);
+    assert.deepEqual(await completeHandover(f, m), done, 'the presenter repeating it reads the same outcome');
+    assert.deepEqual(await m.handover(), done, 'Paula reads the same completed appointment');
+    state.done = done; state.at = at;
+  });
+  await step('the current car changes: the new order is collected, the old contract stays held and the two identities stay apart', async () => {
+    const car = await currentCar(f, m);
+    assert.deepEqual([car.currentCar, car.oldCar.status, car.oldCar.returnedAt, car.newCar.status, car.newCar.collectedAt], [{ kind: 'order', orderUuid: order, vin: null }, 'held', null, 'collected', state.at]);
+    expectSeparateCars(car, old, slotId, order);
+    assert.deepEqual(car.changes.map((row) => [row.type, row.at, row.providerReference, row.appointment.purpose, row.appointment.slotId]),
+      [['handover-completed', state.at, state.done.outcome.providerReference, 'handover', state.done.slot.slotId]]);
+    assert.equal((await receiptsOf(f, CURRENT_CAR_EVENTS)).length, 1, 'one confirmed event, however often completion is repeated');
+    const plan = await m.returnPlan();
+    assert.deepEqual([plan.handover.state, plan.state, plan.oldContractId, plan.vehicleSlotId], ['completed', 'not-planned', old, slotId], 'the old car still has a return to plan');
+  });
+  await step('completion changes no allocation input, and the order stays allocated', async () => {
+    assert.deepEqual(await allocatorInputs(f), state.inputs, 'the allocator reads exactly what it read before the completion');
+    assert.equal((await rows(f, 'entitlement_slots')).find((row) => row.entitlementSlotId === slotId).state, 'allocated');
+    assert.equal((await rows(f, 'stock')).find((row) => row.orderUuid === order).allocated, true);
+    assert.equal(policyVersions.get(f).size, 1, 'every read named one policy version');
+  });
+});
+
+/** The owned renewal-risk cases Greg's queue and Paula's own read both show, each with its trigger. */
+async function casesFor(f, r) {
+  const own = (await r.get('/api/gcsp/cases')).cases; const listed = await f.api('/api/gcsp/scheme-team/cases', { session: await asPrincipal(f, 'greg') });
+  assert.equal(listed.status, 200, JSON.stringify(listed.json));
+  assert.deepEqual(listed.json.value.cases.map((row) => row.caseId), own.map((row) => row.caseId), 'the scheme team queue holds the same cases');
+  return own;
+}
+
+test('FUCQ-171 no-show then rebooking: the miss opens a case and changes nothing else, then attempt 2 completes and changes the current car', async (t) => {
+  const m = await manualRun(t); const { f, order, picked } = m; const step = stepper(t); const state = {};
+  const old = picked.operation.payload.selection.oldContract.contractId; const slotId = f.employee.entitlementSlotId;
+  const outcomes = await assumption(f, 'lifecycle.appointments.outcomes.v1');
+
+  await step('a scheduled handover on the manual order, with its documents open', async () => {
+    await walkApprovals(f, m, 'manual'); state.items = (await expectDocumentsOpened(f, m)).items;
+    state.first = await bookHandover(f, m); state.held = await currentCar(f, m);
+  });
+  await step('the presenter records a no-show: the keyed state, owner and next step, a fresh slot list and the missed slot kept on record', async () => {
+    state.inputs = await allocatorInputs(f); const at = await m.clockNow();
+    const reply = await f.api(`${APPOINTMENTS}/no-show`, { body: { orderUuid: order } });
+    assert.equal(reply.status, 200, JSON.stringify(reply.json));
+    const view = seenPolicy(f, reply.json.value); const keyed = outcomes.states['no-show'];
+    assert.deepEqual([view.state, view.booked, view.owner, view.nextStep, view.attempt, view.previousAttempts, view.pending, view.blocked],
+      ['no-show', false, keyed.owner, keyed.nextStep, 1, [], null, null]);
+    assert.deepEqual([view.outcome.state, view.outcome.at], ['no-show', at]);
+    assert.match(view.outcome.providerReference, /^SYN-APT-/);
+    assert.deepEqual(view.history.map((row) => row.state), ['requested', 'scheduled', 'no-show']);
+    assert.deepEqual([view.slot, view.eligibility.eligible], [state.first.slot, true], 'the missed slot stays on the record');
+    assert.ok(view.offeredSlots.length > 0 && view.offeredSlots.every((slot) => Date.parse(slot.start) > Date.parse(at)), 'Paula is offered fresh slots, all after the miss');
+    assert.deepEqual((await f.api(`${APPOINTMENTS}/no-show`, { body: { orderUuid: order }, session: await asPrincipal(f, 'greg') })).json.value, view, 'a repeat returns the same outcome');
+    assert.equal((await f.api(`${APPOINTMENTS}/no-show`, { body: { orderUuid: order }, session: m.session })).status, 403, 'Paula cannot record her own no-show');
+    state.noShow = view; state.at = at;
+  });
+  await step('the exception receipt is the keyed appointment-no-show once; the order stays allocated and the current car is unchanged', async () => {
+    const [receipt, ...more] = await receiptsOf(f, APPOINTMENT_EXCEPTIONS); assert.equal(more.length, 0);
+    assert.deepEqual([receipt.eventType, receipt.outcome.status], [outcomes.exceptionTypes.noShow, 'ok']);
+    assert.deepEqual(receipt.outcome.value, { employeeId: 'employee-paula', renewalId: receipt.outcome.value.renewalId, orderUuid: order, occurredAt: state.at, entitlementSlotId: slotId,
+      renewalAuthority: 'validated', exceptionType: outcomes.exceptionTypes.noShow, policyVersion: state.noShow.policyVersion, providerReference: state.noShow.outcome.providerReference, attempt: 1, fictional: true });
+    assert.deepEqual(await allocatorInputs(f), state.inputs, 'a no-show gives no recovery priority: every allocation input is unchanged');
+    assert.equal((await rows(f, 'entitlement_slots')).find((row) => row.entitlementSlotId === slotId).state, 'allocated');
+    assert.deepEqual(await currentCar(f, m), state.held, 'the current car is still the old contract');
+    assert.equal((await receiptsOf(f, CURRENT_CAR_EVENTS)).length, 0);
+  });
+  await step('the next tick opens one owned lifecycle-exception case for the missed handover, and later ticks add none', async () => {
+    const owner = await assumption(f, 'renewalCase.owner.role'); const dueHours = await assumption(f, 'renewalCase.response.dueHours');
+    assert.deepEqual(await casesFor(f, m), [], 'no case before the renewal-risk tick');
+    await tickTo(f, 'no-show-case', { mode: 'step' });
+    const [opened, ...more] = await casesFor(f, m); assert.equal(more.length, 0);
+    assert.deepEqual([opened.status, opened.owner.role, opened.trigger.type, opened.trigger.eventType, opened.trigger.orderUuid, opened.renewalId],
+      ['open', owner, 'lifecycle-exception', outcomes.exceptionTypes.noShow, order, 'renewal:employee-paula']);
+    assert.equal(opened.dueAt, later(opened.openedAt, dueHours * 3600));
+    await tickTo(f, 'no-show-case-again', { mode: 'step' });
+    assert.equal((await casesFor(f, m)).length, 1); assert.equal((await receiptsOf(f, APPOINTMENT_EXCEPTIONS)).length, 1);
+  });
+  await step('rebooking: Paula picks another slot as attempt 2, the missed attempt stays on record and the retailer confirms on the keyed delay', async () => {
+    const missed = state.first.slot; const previousRefs = state.noShow.history.map((row) => row.providerReference);
+    const booked = await bookHandover(f, m, { not: missed.slotId });
+    assert.deepEqual([booked.attempt, booked.previousAttempts.length, booked.previousAttempts[0].attempt, booked.previousAttempts[0].state, booked.previousAttempts[0].slot, booked.previousAttempts[0].outcome.state],
+      [2, 1, 1, 'no-show', missed, 'no-show']);
+    assert.deepEqual(booked.history.map((row) => row.state), ['requested', 'scheduled', 'no-show', 'requested', 'scheduled'], 'history is append-only');
+    assert.notEqual(booked.slot.slotId, missed.slotId);
+    const ids = (await rows(f, 'pending_operations')).map((row) => row.operationId).filter((id) => id.startsWith('appointment:'));
+    assert.ok(ids.some((id) => /:a2:request$/.test(id)) && ids.some((id) => /:a2:confirm$/.test(id)), 'attempt 2 uses its own operation IDs');
+    assert.ok(booked.history.slice(3).every((row) => !previousRefs.includes(row.providerReference)), 'attempt 2 never reuses a provider reference');
+    assert.deepEqual(await currentCar(f, m), state.held, 'rebooking does not change the current car');
+  });
+  await step('completion is refused until readiness, then the rebooked handover completes and the new order becomes the current car', async () => {
+    await expectNotReady(f, m); await finishDocuments(f, m, state.items);
+    const done = await completeHandover(f, m, await asPrincipal(f, 'greg'));
+    assert.deepEqual([done.state, done.attempt, done.previousAttempts.length, done.outcome.state], ['completed', 2, 1, 'completed']);
+    assert.match(done.outcome.providerReference, /^SYN-APT-/); assert.notEqual(done.outcome.providerReference, state.noShow.outcome.providerReference);
+    const car = await currentCar(f, m);
+    assert.deepEqual([car.currentCar, car.oldCar.status, car.newCar.status, car.changes.map((row) => row.type)], [{ kind: 'order', orderUuid: order, vin: null }, 'held', 'collected', ['handover-completed']]);
+    expectSeparateCars(car, old, slotId, order);
+    assert.equal((await receiptsOf(f, APPOINTMENT_EXCEPTIONS)).length, 1, 'only the missed attempt raised an exception');
+    assert.equal((await casesFor(f, m)).length, 1, 'the completion opens no further case');
+    assert.equal(policyVersions.get(f).size, 1, 'every read named one policy version');
+  });
+});
+
+test('FUCQ-171 missed return: the keyed delay decides when it is missed, the old car stays held and the exception opens one case', async (t) => {
+  const m = await manualRun(t, (seed, byKey) => { returnOutcome('missed', 5400)(seed, byKey); }); const { f, order, picked } = m; const step = stepper(t); const state = {};
+  const old = picked.operation.payload.selection.oldContract.contractId; const slotId = f.employee.entitlementSlotId;
+
+  await step('a scheduled handover and a scheduled separate return, with the policy-keyed outcome enabled', async () => {
+    const policy = await assumption(f, 'lifecycle.return.outcome.v1');
+    assert.deepEqual([policy.enabled, policy.outcome, policy.delaySecondsAfterSlotEnd], [true, 'missed', 5400]);
+    state.policy = policy;
+    await walkApprovals(f, m, 'manual'); await bookHandover(f, m);
+    const confirmation = await assumption(f, 'lifecycle.appointments.confirmation.v1');
+    const open = await m.returnPlan(); const chosen = open.offeredSlots.separate[0];
+    await m.post('/api/gcsp/return-plan/request', { orderUuid: order, choice: 'separate', slotId: chosen.slotId });
+    await tickTo(f, 'return-171', { mode: 'to', to: later(await m.clockNow(), confirmation.confirmDelaySeconds) });
+    state.scheduled = seenPolicy(f, await m.returnPlan());
+    assert.deepEqual([state.scheduled.state, state.scheduled.slot.slotId, state.scheduled.outcome], ['return-scheduled', chosen.slotId, null]);
+    state.held = await currentCar(f, m);
+    assert.deepEqual([state.held.currentCar, state.held.oldCar.status, state.held.newCar.status], [heldOldCar(old, slotId), 'held', 'on-order']);
+  });
+  await step('before the keyed time the retailer has not reported; at it the return is missed with the keyed owner and next step', async () => {
+    const due = Date.parse(state.scheduled.slot.end) + state.policy.delaySecondsAfterSlotEnd * 1000;
+    await tickTo(f, 'return-early', { mode: 'to', to: iso(due - 60000) });
+    const early = await m.returnPlan();
+    assert.deepEqual([early.state, early.outcome, early.relationship.currentCar], ['return-scheduled', null, heldOldCar(old, slotId)]);
+    assert.equal((await receiptsOf(f, RETURN_EXCEPTIONS)).length, 0);
+    state.inputs = await allocatorInputs(f);
+    await tickTo(f, 'return-missed', { mode: 'to', to: iso(due) });
+    const missed = seenPolicy(f, await m.returnPlan()); const keyed = state.policy.ownership.missed;
+    assert.deepEqual([missed.state, missed.scheduled, missed.owner, missed.nextStep], ['return-missed', false, keyed.owner, keyed.nextStep]);
+    assert.deepEqual([missed.outcome.state, missed.outcome.at, missed.outcome.location, missed.outcome.oldContractId, missed.outcome.appointment.purpose, missed.outcome.appointment.slotId, missed.outcome.appointment.providerReference],
+      ['return-missed', iso(due), state.scheduled.location, old, 'return', state.scheduled.slot.slotId, state.scheduled.providerReference]);
+    assert.match(missed.outcome.providerReference, /^SYN-RET-/); assert.match(missed.outcome.appointment.providerReference, /^SYN-APT-/);
+    state.missed = missed;
+  });
+  await step('the old car is still the current car: no relationship change, no current-car event, allocation untouched', async () => {
+    const car = await currentCar(f, m);
+    assert.deepEqual([car.currentCar, car.oldCar.status, car.oldCar.returnedAt, car.newCar.status, car.changes], [heldOldCar(old, slotId), 'held', null, 'on-order', []]);
+    expectSeparateCars(car, old, slotId, order);
+    assert.equal((await receiptsOf(f, CURRENT_CAR_EVENTS)).length, 0);
+    assert.deepEqual(await allocatorInputs(f), state.inputs, 'a missed return gives no recovery priority');
+  });
+  await step('the keyed exception receipt is recorded once and the next tick opens one owned case from it', async () => {
+    const [receipt, ...more] = await receiptsOf(f, RETURN_EXCEPTIONS); assert.equal(more.length, 0);
+    assert.deepEqual([receipt.eventId, receipt.eventType, receipt.state, receipt.outcome.status], [`${order}:return-missed`, state.policy.exceptionType, 'completed', 'ok']);
+    assert.ok((await assumption(f, 'renewalCase.lifecycle.eventTypes')).includes(receipt.eventType), 'the renewal-risk rule selects this exception type');
+    assert.deepEqual([receipt.outcome.value.employeeId, receipt.outcome.value.orderUuid, receipt.outcome.value.occurredAt, receipt.outcome.value.oldContractId, receipt.outcome.value.entitlementSlotId, receipt.outcome.value.providerReference],
+      ['employee-paula', order, state.missed.outcome.at, old, slotId, state.missed.outcome.providerReference]);
+    const owner = await assumption(f, 'renewalCase.owner.role');
+    await tickTo(f, 'return-case', { mode: 'step' });
+    const [opened, ...rest] = await casesFor(f, m); assert.equal(rest.length, 0);
+    assert.deepEqual([opened.status, opened.owner.role, opened.trigger.type, opened.trigger.eventType, opened.trigger.orderUuid, opened.trigger.sourceId], ['open', owner, 'lifecycle-exception', state.policy.exceptionType, order, `${RETURN_EXCEPTIONS}:${order}:return-missed`]);
+    await tickTo(f, 'return-case-again', { mode: 'step' });
+    assert.deepEqual([(await casesFor(f, m)).length, (await receiptsOf(f, RETURN_EXCEPTIONS)).length], [1, 1], 'repeat ticks add neither a receipt nor a case');
+    assert.deepEqual((await currentCar(f, m)).currentCar, heldOldCar(old, slotId));
+    assert.equal(policyVersions.get(f).size, 1, 'every read named one policy version');
+  });
+});
+
+test('FUCQ-171 buddy lifecycle: from the confirmed plan to a completed handover, a separate confirmed return and the current car at each point', async (t) => {
+  const f = await launch(t, { environmentId: 'lifecycle-e2e-171', edit: returnOutcome('returned') });
+  const before = {};
+  const seen = await walkPaulasPath(t, f, 'e2e171', { beforeAccept: async (walk) => { before.inputs = await allocationInputs(f, walk); } });
+  const step = stepper(t, () => !seen.operationId);
+  const order = seen.second.orderUuid; const session = seen.sessions.paula; const r = { ...reads(f, order, session), order, session }; const slotId = 'slot-paula';
+  const outcomes = await assumption(f, 'lifecycle.appointments.outcomes.v1'); const outcomePolicy = await assumption(f, 'lifecycle.return.outcome.v1');
+  const state = {};
+
+  await step('approvals, documents and a scheduled handover: the current car is still the old contract', async () => {
+    await walkApprovals(f, r, 'buddy'); state.items = (await expectDocumentsOpened(f, r)).items;
+    state.scheduled = await bookHandover(f, r);
+    const paula = (await rows(f, 'employees')).find((row) => row.employeeId === 'employee-paula');
+    state.contract = paula.contract; state.old = paula.contract.manualContext.contracts.find((row) => row.status === 'current').contractId;
+    state.held = await currentCar(f, r);
+    assert.deepEqual([state.held.currentCar, state.held.oldCar.status, state.held.newCar.status], [heldOldCar(state.old, slotId), 'held', 'on-order']);
+    expectSeparateCars(state.held, state.old, slotId, order);
+  });
+  await step('completion is refused before readiness and changes nothing, then succeeds once documents and the car are ready', async () => {
+    await expectNotReady(f, r); await finishDocuments(f, r, state.items);
+    state.inputs = await allocationInputs(f, seen); const at = await r.clockNow();
+    const done = await completeHandover(f, r);
+    assert.deepEqual([done.state, done.owner, done.nextStep, done.outcome.state, done.outcome.at], ['completed', outcomes.states.completed.owner, outcomes.states.completed.nextStep, 'completed', at]);
+    assert.match(done.outcome.providerReference, /^SYN-APT-/);
+    state.done = done; state.at = at;
+  });
+  await step('the current car is now the new order, the old contract is still held, and the account contract and allocation inputs are untouched', async () => {
+    const car = await currentCar(f, r);
+    assert.deepEqual([car.currentCar, car.oldCar.status, car.newCar.status, car.newCar.collectedAt], [{ kind: 'order', orderUuid: order, vin: null }, 'held', 'collected', state.at]);
+    expectSeparateCars(car, state.old, slotId, order);
+    assert.deepEqual(car.changes.map((row) => [row.type, row.providerReference]), [['handover-completed', state.done.outcome.providerReference]]);
+    assert.deepEqual((await rows(f, 'employees')).find((row) => row.employeeId === 'employee-paula').contract, state.contract, 'the account contract records are not rewritten');
+    assert.deepEqual(await allocationInputs(f, seen), state.inputs, 'completion changes no allocation input');
+  });
+  await step('a separate return is planned after collection (FUCQ-251), by the keyed choices', async () => {
+    const options = await assumption(f, 'lifecycle.return.options.v1'); const confirmation = await assumption(f, 'lifecycle.appointments.confirmation.v1');
+    const plan = await r.returnPlan();
+    assert.deepEqual(plan.choices.map((row) => [row.id, row.available]), options.choices.map((row) => [row.id, options.rules[row.id].requiresHandoverStates.includes('completed')]));
+    const chosen = plan.offeredSlots.separate[0]; assert.ok(Date.parse(chosen.start) >= Date.parse(state.done.slot.end), 'the return follows the handover slot');
+    await r.post('/api/gcsp/return-plan/request', { orderUuid: order, choice: 'separate', slotId: chosen.slotId });
+    await tickTo(f, 'return-171', { mode: 'to', to: later(await r.clockNow(), confirmation.confirmDelaySeconds) });
+    state.plan = seenPolicy(f, await r.returnPlan());
+    assert.deepEqual([state.plan.state, state.plan.slot.slotId, state.plan.handover.state, state.plan.outcome], ['return-scheduled', chosen.slotId, 'completed', null]);
+    assert.deepEqual((await currentCar(f, r)).currentCar, { kind: 'order', orderUuid: order, vin: null }, 'planning the return never changes the current car');
+  });
+  await step('a confirmed return at the keyed time marks the old car returned and keeps the new order as the current car', async () => {
+    const due = Date.parse(state.plan.slot.end) + outcomePolicy.delaySecondsAfterSlotEnd * 1000;
+    await tickTo(f, 'return-early', { mode: 'to', to: iso(due - 60000) });
+    assert.deepEqual([(await r.returnPlan()).state, (await r.returnPlan()).outcome], ['return-scheduled', null], 'before the keyed time the retailer has not confirmed');
+    await tickTo(f, 'return-done', { mode: 'to', to: iso(due) });
+    const done = seenPolicy(f, await r.returnPlan()); const keyed = outcomePolicy.ownership.returned;
+    assert.deepEqual([done.state, done.scheduled, done.owner, done.nextStep], ['returned', false, keyed.owner, keyed.nextStep]);
+    assert.deepEqual([done.outcome.state, done.outcome.at, done.outcome.location, done.outcome.oldContractId, done.outcome.appointment.providerReference],
+      ['returned', iso(due), state.plan.location, state.old, state.plan.providerReference]);
+    assert.match(done.outcome.providerReference, /^SYN-RET-/);
+    const car = await currentCar(f, r);
+    assert.deepEqual([car.currentCar, car.oldCar.status, car.oldCar.returnedAt, car.oldCar.providerReference, car.newCar.status], [{ kind: 'order', orderUuid: order, vin: null }, 'returned', iso(due), done.outcome.providerReference, 'collected']);
+    assert.deepEqual(car.changes.map((row) => row.type), ['handover-completed', 'return-confirmed']);
+    const refs = [...state.scheduled.history, ...state.plan.history, state.done.outcome, done.outcome].map((row) => row.providerReference);
+    assert.equal(new Set(refs).size, refs.length, 'the new car and the old car never share a provider reference');
+    assert.equal((await receiptsOf(f, RETURN_EXCEPTIONS)).length, 0, 'a confirmed return raises no exception');
+  });
+  await step('through the whole lifecycle no allocation input moved and the order stayed allocated', async () => {
+    assert.deepEqual(await allocationInputs(f, seen), state.inputs);
+    assert.equal((await rows(f, 'entitlement_slots')).find((row) => row.entitlementSlotId === slotId).state, 'allocated');
+    assert.equal(policyVersions.get(f).size, 1, 'every read named one policy version');
+  });
+});
+
+/** Paula's brief as the editor saves it with the charging essential confirmed (the shared helper omits it), over the brief routes. */
+async function saveConfirmedBrief(f, label, session, body) {
+  const brief = { schemaVersion: 1, preferences: { body: confirmed(body) }, essentials: { seats: { value: 5, operator: 'gte', unit: 'count', state: 'confirmed', source: 'employee' },
+    charging: { value: 'home', operator: 'equals', unit: null, state: 'confirmed', source: 'employee' } } };
+  good((await f.api('/api/gcsp/brief/draft', { session, body: { commandId: `${label}-paula-draft`, expectedBriefVersion: 0, expectedDraftVersion: 0, brief } })).json, 'save draft');
+  return good((await f.api('/api/gcsp/brief/confirm', { session, body: { commandId: `${label}-paula-confirm`, expectedBriefVersion: 0, expectedDraftVersion: 1, consent: { search: true, hold: true } } })).json, 'confirm brief');
+}
+
+/** Paula's real first offer, declined for its body style over the offer routes: a confirmed brief (version 1) and one decline decision, with no follow-up change yet. */
+async function declinedFirstOffer(t, f, label) {
+  await resetRun(f, label);
+  const paula = await actAs(f, label, 'paula'); const alex = await actAs(f, label, 'alex');
+  await saveConfirmedBrief(f, label, paula, 'estate'); await saveBrief(f, label, 'alex', alex, 'estate');
+  await tickTo(f, label, { mode: 'next-release' });
+  const offer = (await rows(f, 'offers')).find((row) => row.employeeId === 'employee-paula' && row.state === 'active'); assert.ok(offer, 'Paula holds a pending offer');
+  const job = (await rows(f, 'notification_outbox')).find((row) => row.offerId === offer.offerId);
+  const message = good((await f.api('/api/gcsp/presenter/outbox')).json, 'outbox viewer').messages.find((row) => row.jobId === job.jobId);
+  const { reply, selector, session } = await openLink(f, message.offerLink); assert.equal(reply.status, 200, JSON.stringify(reply.json));
+  const reason = (await assumption(f, 'offer.declineReasons.v1')).reasons.find((row) => row.attribute === 'body'); const view = await readOffer(f, session, selector);
+  const declined = await f.api(`${offerPath(selector)}/decision`, { session, body: { commandId: `${label}-decline`, runId: selector.runId, decision: 'decline', reasonCode: reason.code,
+    expectedOfferVersion: view.offerVersion, expectedHoldVersion: view.holdVersion, expectedQuoteVersion: view.quote.revisions.quote } });
+  assert.equal(declined.status, 200, JSON.stringify(declined.json));
+  const decision = (await rows(f, 'decisions')).find((row) => row.employeeId === 'employee-paula' && row.decision === 'decline');
+  return { paula, alex, decisionId: decision.decisionId, declinedOrder: offer.orderUuid };
+}
+
+const SCHEME = '/api/gcsp/scheme-team/cases';
+/** The tables and rows that differ between two allocator-input reads, by table and row key (employee or id), so a diff can be asserted exactly. */
+function inputDiff(a, b) {
+  const out = {};
+  for (const table of Object.keys(a.tables)) {
+    const key = (row) => JSON.stringify([row.employeeId, row.briefVersion, row.entitlementSlotId, row.orderUuid, row.holdId, row.claimId, row.offerId, row.decisionId]);
+    const was = new Map(a.tables[table].map((row) => [key(row), row])); const now = new Map(b.tables[table].map((row) => [key(row), row]));
+    const changed = [...new Set([...was.keys(), ...now.keys()])].filter((k) => JSON.stringify(was.get(k)) !== JSON.stringify(now.get(k)))
+      .map((k) => ({ row: JSON.parse(k).filter((v) => v !== undefined && v !== null), change: !was.has(k) ? 'added' : !now.has(k) ? 'removed' : changedKeys(was.get(k), now.get(k)) }));
+    if (changed.length) out[table] = changed;
+  }
+  if (JSON.stringify(a.policy) !== JSON.stringify(b.policy)) out.policy = 'changed';
+  return out;
+}
+
+test('FUCQ-171 advanced help: Paula asks near the deadline, Greg proposes a feasible remedy, and the proposal, her confirmation and the applied brief stay distinct', async (t) => {
+  const f = await launch(t, { environmentId: 'lifecycle-e2e-171h' }); const step = stepper(t); const state = {}; const asked = 'My contract ends on 1 December and I have no car yet.';
+  const owner = await assumption(f, 'renewalCase.owner.role'); const dueHours = await assumption(f, 'renewalCase.response.dueHours');
+  const paulaGet = async (path) => { const reply = await f.api(path, { session: state.paula }); assert.equal(reply.status, 200, JSON.stringify(reply.json)); return reply.json.value; };
+  const gregGet = async (path) => { const reply = await f.api(path, { session: state.greg }); assert.equal(reply.status, 200, JSON.stringify(reply.json)); return reply.json.value; };
+  const update = (c, status, extra = {}) => f.api(`${SCHEME}/update`, { session: state.greg, body: { commandId: `e2e-171-${status}-${++f.counter}`, caseId: c.caseId, expectedVersion: c.version,
+    status, reason: `Scheme team set ${status}.`, nextAction: `Next after ${status}.`, dueAt: later(state.now, dueHours * 3600), ...extra } });
+  const ownCase = async () => (await paulaGet('/api/gcsp/cases')).cases.find((row) => row.caseId === state.caseId);
+
+  await step('setup: Paula has a confirmed brief and one declined offer, and the clock enters the keyed deadline window', async () => {
+    Object.assign(state, await declinedFirstOffer(t, f, 'help171')); state.greg = await asPrincipal(f, 'greg');
+    state.end = (await rows(f, 'employees')).find((row) => row.employeeId === 'employee-paula').contract.manualContext.contracts.find((row) => row.status === 'current').contractEndDate;
+    const within = await assumption(f, 'renewalCase.deadline.withinDays'); assert.ok(7 < within, 'one week before the end is inside the keyed window');
+    state.now = iso(Date.parse(`${state.end}T09:00:00.000Z`) - 7 * DAY); await tickTo(f, 'near-deadline', { mode: 'to', to: state.now });
+    state.brief1 = (await paulaGet('/api/gcsp/brief')).brief; state.inputs = await allocatorInputs(f);
+    assert.deepEqual([state.brief1.briefVersion, state.brief1.preferences.body.value, state.brief1.status], [1, 'estate', 'confirmed']);
+  });
+  await step('the keyed deadline rule has opened the owned case; Paula\'s request appends to it rather than opening a second', async () => {
+    const [auto, ...none] = (await paulaGet('/api/gcsp/cases')).cases; assert.equal(none.length, 0);
+    assert.deepEqual([auto.status, auto.owner.role, auto.trigger.type, auto.renewalDeadline, auto.remedy, auto.version], ['open', owner, 'renewal-deadline', state.end, null, 1]);
+    assert.equal(auto.dueAt, later(auto.openedAt, dueHours * 3600)); state.caseId = auto.caseId;
+    const body = { commandId: 'e2e-171-help', reason: asked };
+    const helped = await f.api('/api/gcsp/cases', { session: state.paula, body }); assert.equal(helped.status, 200, JSON.stringify(helped.json));
+    const c = helped.json.value.case;
+    assert.deepEqual([c.caseId, c.version, c.status, c.history.length], [auto.caseId, 2, 'open', 2]);
+    assert.deepEqual([c.history[1].actorRole, c.history[1].reason, c.history[1].trigger.type], ['employee', asked, 'employee-request']);
+    assert.deepEqual((await f.api('/api/gcsp/cases', { session: state.paula, body })).json, helped.json, 'the same command ID replays the same outcome');
+    assert.equal((await paulaGet('/api/gcsp/cases')).cases.length, 1);
+    assert.equal((await f.api(`/api/gcsp/cases?caseId=${auto.caseId}`, { session: state.alex })).status, 403, 'another employee cannot read the case');
+    assert.deepEqual(await allocatorInputs(f), state.inputs, 'asking for help gives no recovery priority');
+  });
+  await step('Greg reads the case with feasible options; the read changes nothing and promises no car', async () => {
+    const listed = (await gregGet(SCHEME)).cases.find((row) => row.caseId === state.caseId);
+    assert.deepEqual([listed.status, listed.owner.role, listed.employeeName.startsWith('Paula')], ['open', owner, true]);
+    const cases = await rows(f, 'renewal_cases');
+    const read = await gregGet(`${SCHEME}/options?caseId=${state.caseId}`); state.options = read;
+    assert.deepEqual([read.automaticRecoveryPriority, read.case.caseId, read.nextStatuses.includes('in-progress'), read.policyVersion], [false, state.caseId, true, read.case.policyVersion]);
+    const item = read.options.preferenceRelaxations.items.find((row) => row.path === 'preferences.body.value'); assert.ok(item, 'body style is an editable single preference');
+    assert.deepEqual([read.options.preferenceRelaxations.available, item.decisionId, item.expectedBriefVersion, item.before, item.values.includes('estate')], [true, state.decisionId, 1, 'estate', false]);
+    assert.equal(read.options.contractExtension.available, await assumption(f, 'renewalCase.extension.permitted'), 'extension follows the keyed permission');
+    assert.equal(read.options.manualDecision.requiresDecision, true);
+    state.item = item; state.value = item.values[0];
+    assert.deepEqual([await rows(f, 'renewal_cases'), await allocatorInputs(f)], [cases, state.inputs], 'reading options changes no case and no allocation input');
+  });
+  await step('Greg starts work: the case moves to in-progress by the scheme team and Paula sees it', async () => {
+    const moved = await update((await ownCase()), 'in-progress'); assert.equal(moved.status, 200, JSON.stringify(moved.json));
+    const c = moved.json.value.case;
+    assert.deepEqual([c.status, c.nextAction, c.dueAt, c.history.at(-1).actorRole], ['in-progress', 'Next after in-progress.', later(state.now, dueHours * 3600), 'scheme-team']);
+    assert.deepEqual([(await ownCase()).status, (await ownCase()).nextAction], ['in-progress', 'Next after in-progress.']);
+  });
+  await step('Greg proposes one preference change: the case records the proposal and no brief changes', async () => {
+    const remedy = { type: 'preference-relaxation', decisionId: state.decisionId, expectedBriefVersion: 1, path: state.item.path, value: state.value };
+    const proposed = await update(await ownCase(), 'remedy-proposed', { remedy }); assert.equal(proposed.status, 200, JSON.stringify(proposed.json));
+    const c = proposed.json.value.case;
+    assert.deepEqual([c.status, c.remedy.type, c.remedy.path, c.remedy.value, c.remedy.confirmationState], ['remedy-proposed', 'preference-relaxation', state.item.path, state.value, 'employee-confirmation-required']);
+    assert.deepEqual((await paulaGet('/api/gcsp/brief')).brief, state.brief1, 'the proposal changes no brief');
+    assert.deepEqual(await allocatorInputs(f), state.inputs, 'a proposal changes no allocation input');
+    const mine = await ownCase();
+    assert.deepEqual(mine.relaxation, { currentBriefVersion: 1, before: 'estate', applicable: true, confirmed: false });
+    state.remedy = remedy;
+  });
+  await step('the case cannot be resolved on a proposal alone, even with browser-supplied confirmation fields', async () => {
+    const before = await ownCase();
+    const forged = { ...state.remedy, confirmationState: 'employee-confirmed', confirmedBy: 'demo-paula', confirmedAt: state.now, briefVersion: 2 };
+    for (const remedy of [state.remedy, forged]) {
+      const refused = await update(before, 'resolved', { remedy });
+      assert.notEqual(refused.status, 200, JSON.stringify(refused.json)); assert.equal(refused.json.code, 'employee-confirmation-required');
+    }
+    assert.deepEqual(await ownCase(), before, 'the refused resolution changed nothing');
+    assert.deepEqual(await allocatorInputs(f), state.inputs);
+  });
+  await step('Paula explicitly confirms the single change: only then does a new confirmed brief version exist', async () => {
+    const input = { decisionId: state.decisionId, expectedBriefVersion: 1, change: { path: state.item.path, value: state.value } };
+    const confirmedChange = await f.api('/api/gcsp/brief/change-after-decline', { session: state.paula, body: { commandId: 'e2e-171-confirm', ...input } });
+    assert.equal(confirmedChange.status, 200, JSON.stringify(confirmedChange.json));
+    assert.deepEqual((await f.api('/api/gcsp/brief/change-after-decline', { session: state.paula, body: { commandId: 'e2e-171-confirm', ...input } })).json, confirmedChange.json, 'replay is idempotent');
+    const brief = (await paulaGet('/api/gcsp/brief')).brief;
+    assert.deepEqual([brief.briefVersion, brief.status, brief.preferences.body.value], [2, 'confirmed', state.value]);
+    assert.deepEqual({ ...brief.preferences, body: state.brief1.preferences.body }, state.brief1.preferences, 'no other preference moved');
+    assert.deepEqual(brief.essentials, state.brief1.essentials, 'essentials are unchanged');
+    const mine = await ownCase();
+    assert.deepEqual([mine.status, mine.relaxation.confirmed, mine.remedy.confirmationState], ['remedy-proposed', true, 'employee-confirmation-required'], 'her confirmation does not itself resolve or rewrite the proposal');
+    state.briefDiff = inputDiff(state.inputs, await allocatorInputs(f));
+    assert.deepEqual(Object.keys(state.briefDiff), ['briefs'], 'the confirmed brief is the only allocation input that moved');
+    assert.deepEqual(state.briefDiff.briefs.map((row) => [row.row[0], row.row[1], row.change]), [['employee-paula', 2, 'added']], 'exactly one new row: Paula\'s version 2');
+  });
+  await step('Greg resolves the case on the verified confirmation, and Paula reads the persisted outcome', async () => {
+    const resolved = await update(await ownCase(), 'resolved', { remedy: state.remedy }); assert.equal(resolved.status, 200, JSON.stringify(resolved.json));
+    const c = resolved.json.value.case;
+    assert.deepEqual([c.status, c.remedy.confirmationState, c.remedy.confirmedBy, c.remedy.briefVersion], ['resolved', 'employee-confirmed', 'demo-paula', 2]);
+    const mine = await ownCase();
+    const { relaxation, ...persisted } = mine;
+    assert.deepEqual(persisted, c, 'Paula reads exactly what was persisted');
+    assert.deepEqual([relaxation.confirmed, relaxation.applicable, relaxation.currentBriefVersion], [true, false, 2], 'and her own read shows the applied, confirmed change');
+    assert.deepEqual(mine.history.map((row) => [row.actorRole, row.status]), [['system', 'open'], ['employee', 'open'], ['scheme-team', 'in-progress'], ['scheme-team', 'remedy-proposed'], ['scheme-team', 'resolved']]);
+    assert.deepEqual((await gregGet(SCHEME)).cases.find((row) => row.caseId === state.caseId).status, 'resolved');
+    assert.equal(mine.policyVersion, state.options.policyVersion, 'the case records the policy version it was read under');
+  });
+  await step('across the whole case no allocation input moved except the one confirmed brief change', async () => {
+    assert.deepEqual(inputDiff(state.inputs, await allocatorInputs(f)), state.briefDiff, 'opening, progressing, proposing and resolving added nothing beyond the confirmed change');
+  });
 });

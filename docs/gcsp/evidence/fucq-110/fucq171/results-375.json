@@ -1,0 +1,2385 @@
+{
+  "state": "passed",
+  "chunk": "narrow",
+  "viewport": {
+    "width": 375,
+    "height": 812
+  },
+  "startedAt": "2026-11-09T14:09:19.177Z",
+  "boundary": "Real buildServer routes, canonical services and the memory repository over loopback HTTP; the runner serves the same HTML, CSS and blocks from a plain file server. No live external calls, no PostgreSQL.",
+  "cookieMode": {
+    "handover:paula": "fallback: Secure and SameSite=None refused on http://127.0.0.1, session cookie stored Lax, not Secure",
+    "noshow:paula": "fallback: Secure and SameSite=None refused on http://127.0.0.1, session cookie stored Lax, not Secure",
+    "returned:paula": "fallback: Secure and SameSite=None refused on http://127.0.0.1, session cookie stored Lax, not Secure",
+    "missed:paula": "fallback: Secure and SameSite=None refused on http://127.0.0.1, session cookie stored Lax, not Secure",
+    "missed:greg": "fallback: Secure and SameSite=None refused on http://127.0.0.1, session cookie stored Lax, not Secure",
+    "help:paula": "fallback: Secure and SameSite=None refused on http://127.0.0.1, session cookie stored Lax, not Secure",
+    "help:greg": "fallback: Secure and SameSite=None refused on http://127.0.0.1, session cookie stored Lax, not Secure"
+  },
+  "checks": [
+    {
+      "id": "01:refused",
+      "name": "01: completing before readiness is refused as a conflict \"handover-not-ready\" with the keyed owner and next step",
+      "pass": true,
+      "detail": {
+        "status": 409,
+        "body": {
+          "status": "conflict",
+          "code": "handover-not-ready",
+          "reason": "The retailer finishes the documents and car preparation before the handover.",
+          "owner": "retailer",
+          "nextStep": "The retailer finishes the documents and car preparation before the handover.",
+          "readiness": {
+            "state": "waiting",
+            "documentsComplete": false,
+            "vehicleReady": false,
+            "blocking": [
+              "agreement-acknowledgement",
+              "licence-check",
+              "vehicle-preparation",
+              "delivery-to-retailer"
+            ]
+          },
+          "appointment": {
+            "contractVersion": "lifecycle.appointments.v1",
+            "runId": "demo-bdd3cc59c0a75137b927dc3cdf2b2c51",
+            "orderUuid": "f1000000-0000-4000-8000-000000000001",
+            "employeeId": "employee-paula",
+            "state": "scheduled",
+            "booked": true,
+            "slot": {
+              "slotId": "slot-20261107T0900Z",
+              "start": "2026-11-07T09:00:00.000Z",
+              "end": "2026-11-07T10:00:00.000Z"
+            },
+            "requestedSlot": {
+              "slotId": "slot-20261107T0900Z",
+              "start": "2026-11-07T09:00:00.000Z",
+              "end": "2026-11-07T10:00:00.000Z"
+            },
+            "proposedSlot": null,
+            "proposalId": null,
+            "history": [
+              {
+                "state": "requested",
+                "at": "2026-11-05T12:00:00.000Z",
+                "providerReference": "SYN-APT-3CE806FBCC18"
+              },
+              {
+                "state": "scheduled",
+                "at": "2026-11-05T12:30:00.000Z",
+                "providerReference": "SYN-APT-0C1F89413196"
+              }
+            ],
+            "owner": "retailer",
+            "nextStep": "The retailer prepares your car for the handover.",
+            "pending": null,
+            "blocked": null,
+            "offeredSlots": [],
+            "eligibility": {
+              "eligible": true,
+              "code": null,
+              "reason": null
+            },
+            "policyVersion": "gcsp-policy-v1",
+            "assumptions": [
+              {
+                "key": "lifecycle.appointments.slots.v1",
+                "status": "assumed",
+                "unit": "days from the demo clock date; minutes; UTC HH:MM daily start times",
+                "basis": "Plausible synthetic handover slots: two clear days to prepare the car, three days of choice and hour-long slots at two daily times. Not retailer calendar data; revisable here.",
+                "source": "docs/gcsp/shared-contracts.md#lifecycle-appointments--fucq-114",
+                "sourceDate": "2026-11-07",
+                "policyVersion": "gcsp-policy-v1"
+              },
+              {
+                "key": "lifecycle.appointments.confirmation.v1",
+                "status": "assumed",
+                "unit": "seconds of demo-clock time; milliseconds",
+                "basis": "A half hour of demo time before the synthetic retailer answers a request makes the wait visible on a presenter tick. The call timeout bounds a stalled provider. Revisable demo assumptions.",
+                "source": "docs/gcsp/shared-contracts.md#lifecycle-appointments--fucq-114",
+                "sourceDate": "2026-11-07",
+                "policyVersion": "gcsp-policy-v1"
+              },
+              {
+                "key": "lifecycle.appointments.scenario.v1",
+                "status": "assumed",
+                "unit": "difficult-case switch; alternative slot rule; reason text",
+                "basis": "Difficult-case switch for the synthetic provider. Off by default; when on, the provider answers with the next daily slot instead of the requested one and Paula must accept it.",
+                "source": "docs/gcsp/shared-contracts.md#lifecycle-appointments--fucq-114",
+                "sourceDate": "2026-11-07",
+                "policyVersion": "gcsp-policy-v1"
+              },
+              {
+                "key": "lifecycle.appointments.ownership.v1",
+                "status": "assumed",
+                "unit": "owner and next-step label per appointment state",
+                "basis": "Who acts next at each appointment state (HLD review Q19). Owners are Paula (employee), the retailer or the scheme team; labels are concise demo copy, not BMW workflow text.",
+                "source": "docs/gcsp/shared-contracts.md#lifecycle-appointments--fucq-114",
+                "sourceDate": "2026-11-07",
+                "policyVersion": "gcsp-policy-v1"
+              },
+              {
+                "key": "lifecycle.appointments.outcomes.v1",
+                "status": "assumed",
+                "unit": "lifecycle exception type key; owner and next-step label per terminal appointment state and per not-ready refusal",
+                "basis": "Terminal handover outcomes (FUCQ-167): completion is allowed only when documents and car readiness are complete, and a missed appointment is reported with the keyed exception type. Owners and copy are concise demo wording, not BMW workflow text.",
+                "source": "docs/gcsp/shared-contracts.md#lifecycle-appointments--fucq-114",
+                "sourceDate": "2026-11-09",
+                "policyVersion": "gcsp-policy-v1"
+              }
+            ],
+            "outcome": null,
+            "attempt": 1,
+            "previousAttempts": [],
+            "provider": {
+              "mode": "synthetic",
+              "synthetic": true
+            },
+            "fictional": true
+          },
+          "contractVersion": "1.0.0"
+        }
+      }
+    },
+    {
+      "id": "01:still-scheduled",
+      "name": "01: the appointment is still scheduled after the refusal",
+      "pass": true
+    },
+    {
+      "id": "01-handover-blocked:layout",
+      "name": "01-handover-blocked: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "wide": []
+      }
+    },
+    {
+      "id": "01-handover-blocked:copy",
+      "name": "01-handover-blocked: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "01-handover-blocked:console",
+      "name": "01-handover-blocked: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "01-handover-blocked:\"Booked: <time>\"",
+      "name": "01-handover-blocked: \"Booked: <time>\"",
+      "pass": true
+    },
+    {
+      "id": "01-handover-blocked:\"Not ready for handover. Still to do:\"",
+      "name": "01-handover-blocked: \"Not ready for handover. Still to do:\"",
+      "pass": true
+    },
+    {
+      "id": "01-handover-blocked:no-\"Handover complete\"",
+      "name": "01-handover-blocked: absent: \"Handover complete\"",
+      "pass": true
+    },
+    {
+      "id": "02:acknowledge:tab",
+      "name": "02:acknowledge: Tab alone reaches the control (3 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 3
+      }
+    },
+    {
+      "id": "02:acknowledge:focus-ring",
+      "name": "02:acknowledge: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "id": null,
+        "label": "Acknowledge the agreement",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "02:acknowledge:status",
+      "name": "02:acknowledge: Enter produces the status message \"Task completed.\"",
+      "pass": true,
+      "detail": [
+        "status:Presenter controls ready",
+        "alert:The demo was restarted. Reload the page to continue.Reload",
+        "status:",
+        "status:Your order is in progressOrder referenceGCSP-000001Car order number9100001Current step: Sent to ordering.View order progress",
+        "status:Task completed."
+      ]
+    },
+    {
+      "id": "02:acknowledge:focus-kept",
+      "name": "02:acknowledge: focus is not lost to the page body",
+      "pass": true,
+      "detail": {
+        "tag": "p",
+        "id": null,
+        "label": "Task completed.",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "02:ready",
+      "name": "02: after the keyed document and preparation times the order is ready",
+      "pass": true
+    },
+    {
+      "id": "02:completed",
+      "name": "02: the presenter completion route answers 200 with state completed and the keyed owner and next step",
+      "pass": true,
+      "detail": {
+        "status": 200,
+        "state": "completed"
+      }
+    },
+    {
+      "id": "02:current-car",
+      "name": "02: the current car is now the new order; the old contract is held and separate",
+      "pass": true,
+      "detail": {
+        "contractVersion": "lifecycle.current-car.v1",
+        "runId": "demo-bdd3cc59c0a75137b927dc3cdf2b2c51",
+        "orderUuid": "f1000000-0000-4000-8000-000000000001",
+        "employeeId": "employee-paula",
+        "currentCar": {
+          "kind": "order",
+          "orderUuid": "f1000000-0000-4000-8000-000000000001",
+          "vin": null
+        },
+        "oldCar": {
+          "contractId": "current:employee-paula",
+          "slotId": "slot-paula",
+          "status": "held",
+          "returnedAt": null,
+          "providerReference": null,
+          "location": null
+        },
+        "newCar": {
+          "orderUuid": "f1000000-0000-4000-8000-000000000001",
+          "configurationId": "RjcwOlMx",
+          "status": "collected",
+          "collectedAt": "2026-11-07T12:30:00.000Z",
+          "vin": null,
+          "providerReference": "SYN-APT-5308DBBEF9CC"
+        },
+        "changes": [
+          {
+            "type": "handover-completed",
+            "at": "2026-11-07T12:30:00.000Z",
+            "providerReference": "SYN-APT-5308DBBEF9CC",
+            "appointment": {
+              "purpose": "handover",
+              "slotId": "slot-20261107T0900Z",
+              "providerReference": "SYN-APT-0C1F89413196"
+            }
+          }
+        ],
+        "fictional": true
+      }
+    },
+    {
+      "id": "02-handover-completed:layout",
+      "name": "02-handover-completed: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "wide": []
+      }
+    },
+    {
+      "id": "02-handover-completed:copy",
+      "name": "02-handover-completed: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "02-handover-completed:console",
+      "name": "02-handover-completed: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "02-handover-completed:\"Handover complete: <time>\"",
+      "name": "02-handover-completed: \"Handover complete: <time>\"",
+      "pass": true
+    },
+    {
+      "id": "02-handover-completed:completion sentence",
+      "name": "02-handover-completed: completion sentence",
+      "pass": true
+    },
+    {
+      "id": "02-handover-completed:readiness \"Ready for handover\"",
+      "name": "02-handover-completed: readiness \"Ready for handover\"",
+      "pass": true
+    },
+    {
+      "id": "02-handover-completed:no-\"Booked:\" or \"Not booked yet\" (live state)",
+      "name": "02-handover-completed: absent: \"Booked:\" or \"Not booked yet\" (live state)",
+      "pass": true
+    },
+    {
+      "id": "02:no-handover-buttons",
+      "name": "02: no handover buttons after completion",
+      "pass": true
+    },
+    {
+      "id": "03:no-show",
+      "name": "03: the presenter no-show route answers 200 with state no-show",
+      "pass": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "id": "03:rebook:tab",
+      "name": "03:rebook: Tab alone reaches the control (3 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 3
+      }
+    },
+    {
+      "id": "03:rebook:focus-ring",
+      "name": "03:rebook: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "id": null,
+        "label": "Request 9 Nov 2026, 09:00",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "03:first-button",
+      "name": "03: the focused control is the first \"Request <time>\" button",
+      "pass": true,
+      "detail": "Request 9 Nov 2026, 09:00"
+    },
+    {
+      "id": "03-no-show-rebook-focus:layout",
+      "name": "03-no-show-rebook-focus: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "wide": []
+      }
+    },
+    {
+      "id": "03-no-show-rebook-focus:copy",
+      "name": "03-no-show-rebook-focus: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "03-no-show-rebook-focus:console",
+      "name": "03-no-show-rebook-focus: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "03-no-show-rebook-focus:\"Handover missed: <time>\"",
+      "name": "03-no-show-rebook-focus: \"Handover missed: <time>\"",
+      "pass": true
+    },
+    {
+      "id": "03-no-show-rebook-focus:owner row",
+      "name": "03-no-show-rebook-focus: owner row",
+      "pass": true
+    },
+    {
+      "id": "03-no-show-rebook-focus:rebook buttons \"Request <time>\"",
+      "name": "03-no-show-rebook-focus: rebook buttons \"Request <time>\"",
+      "pass": true
+    },
+    {
+      "id": "03-no-show-rebook-focus:no-\"Booked:\" or \"Not booked yet\" (live state)",
+      "name": "03-no-show-rebook-focus: absent: \"Booked:\" or \"Not booked yet\" (live state)",
+      "pass": true
+    },
+    {
+      "id": "03:rebook:status",
+      "name": "03:rebook: Enter produces the status message \"Handover time requested.\"",
+      "pass": true,
+      "detail": [
+        "status:Presenter controls ready",
+        "alert:The demo was restarted. Reload the page to continue.Reload",
+        "status:",
+        "status:Your order is in progressOrder referenceGCSP-000001Car order number9100001Current step: Sent to ordering.View order progress",
+        "status:Handover time requested."
+      ]
+    },
+    {
+      "id": "03:rebook:focus-kept",
+      "name": "03:rebook: focus is not lost to the page body",
+      "pass": true,
+      "detail": {
+        "tag": "p",
+        "id": null,
+        "label": "Handover time requested.",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "04-rebooked:layout",
+      "name": "04-rebooked: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "wide": []
+      }
+    },
+    {
+      "id": "04-rebooked:copy",
+      "name": "04-rebooked: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "04-rebooked:console",
+      "name": "04-rebooked: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "04-rebooked:\"Requested ... Not booked yet.\"",
+      "name": "04-rebooked: \"Requested ... Not booked yet.\"",
+      "pass": true
+    },
+    {
+      "id": "04-rebooked:\"Earlier handover missed: <time>\"",
+      "name": "04-rebooked: \"Earlier handover missed: <time>\"",
+      "pass": true
+    },
+    {
+      "id": "04-rebooked:no-\"Booked:\"",
+      "name": "04-rebooked: absent: \"Booked:\"",
+      "pass": true
+    },
+    {
+      "id": "04b:attempt2",
+      "name": "04b: the retailer confirms attempt 2 on the keyed delay, with the missed attempt kept on record",
+      "pass": true,
+      "detail": {
+        "state": "scheduled",
+        "attempt": 2
+      }
+    },
+    {
+      "id": "04b:completed",
+      "name": "04b: attempt 2 completes (200)",
+      "pass": true,
+      "detail": {
+        "status": 200
+      }
+    },
+    {
+      "id": "04b:current-car",
+      "name": "04b: the new order is the current car after attempt 2",
+      "pass": true,
+      "detail": {
+        "kind": "order",
+        "orderUuid": "f1000000-0000-4000-8000-000000000001",
+        "vin": null
+      }
+    },
+    {
+      "id": "04c-attempt2-completed:layout",
+      "name": "04c-attempt2-completed: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "wide": []
+      }
+    },
+    {
+      "id": "04c-attempt2-completed:copy",
+      "name": "04c-attempt2-completed: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "04c-attempt2-completed:console",
+      "name": "04c-attempt2-completed: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "04c-attempt2-completed:\"Handover complete: <time>\"",
+      "name": "04c-attempt2-completed: \"Handover complete: <time>\"",
+      "pass": true
+    },
+    {
+      "id": "04c-attempt2-completed:\"Earlier handover missed: <time>\"",
+      "name": "04c-attempt2-completed: \"Earlier handover missed: <time>\"",
+      "pass": true
+    },
+    {
+      "id": "05:relationship",
+      "name": "05: old car returned, new order the current car",
+      "pass": true,
+      "detail": {
+        "contractVersion": "lifecycle.current-car.v1",
+        "runId": "demo-429dd544086a6cb9cea3450f3b9cd5bb",
+        "orderUuid": "f1000000-0000-4000-8000-000000000001",
+        "employeeId": "employee-paula",
+        "currentCar": {
+          "kind": "order",
+          "orderUuid": "f1000000-0000-4000-8000-000000000001",
+          "vin": null
+        },
+        "oldCar": {
+          "contractId": "current:employee-paula",
+          "slotId": "slot-paula",
+          "status": "returned",
+          "returnedAt": "2026-11-09T14:30:01.000Z",
+          "providerReference": "SYN-RET-0D4D866BBA91",
+          "location": {
+            "locationId": "demo-collection-centre",
+            "kind": "collection-location",
+            "label": "Fictional collection centre",
+            "rule": "handover-retailer"
+          }
+        },
+        "newCar": {
+          "orderUuid": "f1000000-0000-4000-8000-000000000001",
+          "configurationId": "RjcwOlMx",
+          "status": "collected",
+          "collectedAt": "2026-11-07T13:00:00.000Z",
+          "vin": null,
+          "providerReference": "SYN-APT-E680552EF5F4"
+        },
+        "changes": [
+          {
+            "type": "handover-completed",
+            "at": "2026-11-07T13:00:00.000Z",
+            "providerReference": "SYN-APT-E680552EF5F4",
+            "appointment": {
+              "purpose": "handover",
+              "slotId": "slot-20261109T0900Z",
+              "providerReference": "SYN-APT-470AC0277CE5"
+            }
+          },
+          {
+            "type": "return-confirmed",
+            "at": "2026-11-09T14:30:01.000Z",
+            "providerReference": "SYN-RET-0D4D866BBA91",
+            "appointment": {
+              "purpose": "return",
+              "slotId": "slot-20261109T1300Z",
+              "providerReference": "SYN-APT-A9059FC495B9"
+            }
+          }
+        ],
+        "fictional": true
+      }
+    },
+    {
+      "id": "05-returned:layout",
+      "name": "05-returned: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "wide": []
+      }
+    },
+    {
+      "id": "05-returned:copy",
+      "name": "05-returned: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "05-returned:console",
+      "name": "05-returned: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "05-returned:\"Returned: <time>\"",
+      "name": "05-returned: \"Returned: <time>\"",
+      "pass": true
+    },
+    {
+      "id": "05-returned:\"Return reference (synthetic)\" SYN-RET-",
+      "name": "05-returned: \"Return reference (synthetic)\" SYN-RET-",
+      "pass": true
+    },
+    {
+      "id": "05-returned:\"Current car\" row",
+      "name": "05-returned: \"Current car\" row",
+      "pass": true
+    },
+    {
+      "id": "05-returned:\"Returned car\" row",
+      "name": "05-returned: \"Returned car\" row",
+      "pass": true
+    },
+    {
+      "id": "05-returned:handover also complete",
+      "name": "05-returned: handover also complete",
+      "pass": true
+    },
+    {
+      "id": "05-returned:no-\"Return missed\"",
+      "name": "05-returned: absent: \"Return missed\"",
+      "pass": true
+    },
+    {
+      "id": "05:separate",
+      "name": "05: the Returning section names the new car as current and a different returned car",
+      "pass": true,
+      "detail": "Returning your current car Current car Synthetic TEST composition car Returned car Fictional BMW 320i Touring Return place Fictional collection centre Returned: 9 Nov 2026, 14:30 Owner Retailer Next step Your current car has been returned. Nothing more is needed from you. Return reference (synthetic) SYN-RET-0D4D866BBA91 Return history All dates are demo time (UTC). 7 Nov 2026, 12:30 Return requested 7 Nov 2026, 13:00 Return booked 9 Nov 2026, 14:30 Returned"
+    },
+    {
+      "id": "06a-return-missed-paula:layout",
+      "name": "06a-return-missed-paula: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "wide": []
+      }
+    },
+    {
+      "id": "06a-return-missed-paula:copy",
+      "name": "06a-return-missed-paula: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "06a-return-missed-paula:console",
+      "name": "06a-return-missed-paula: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "06a-return-missed-paula:\"Return missed: <time>\"",
+      "name": "06a-return-missed-paula: \"Return missed: <time>\"",
+      "pass": true
+    },
+    {
+      "id": "06a-return-missed-paula:owner \"Scheme team\"",
+      "name": "06a-return-missed-paula: owner \"Scheme team\"",
+      "pass": true
+    },
+    {
+      "id": "06a-return-missed-paula:old car stays yours",
+      "name": "06a-return-missed-paula: old car stays yours",
+      "pass": true
+    },
+    {
+      "id": "06a-return-missed-paula:handover still booked",
+      "name": "06a-return-missed-paula: handover still booked",
+      "pass": true
+    },
+    {
+      "id": "06a-return-missed-paula:no-\"Returned:\"",
+      "name": "06a-return-missed-paula: absent: \"Returned:\"",
+      "pass": true
+    },
+    {
+      "id": "06a-return-missed-paula:no-\"Return reference\"",
+      "name": "06a-return-missed-paula: absent: \"Return reference\"",
+      "pass": true
+    },
+    {
+      "id": "06:row",
+      "name": "06: Greg's queue lists one open lifecycle-exception case for Paula",
+      "pass": true,
+      "detail": "Renewal cases Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. 1 renewal case loaded. Refresh queue Sort cases Deadline, active cases first Status, then deadline Renewal-risk cases Employee Renewal deadline (calendar date) Trigger or request Reason Status Owner Next action due, demo clock (UTC) Paula (fictional) 2026-12-01 lifecycle-exception A configured lifecycle exception needs scheme-team review. Open Scheme team 2026-11-10 14:30:01 UTC Case t"
+    },
+    {
+      "id": "06:pick:tab",
+      "name": "06:pick: Tab alone reaches the control (4 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 4
+      }
+    },
+    {
+      "id": "06:pick:focus-ring",
+      "name": "06:pick: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "select",
+        "id": "gcsp-case-queue-1-selection",
+        "label": "Choose a casePaula (fictional) · Open · 2026-12-01",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "06:pick:chosen",
+      "name": "06:pick: the select reads \"Paula (fictional) · Open · 2026-12-01\"",
+      "pass": true,
+      "detail": "Paula (fictional) · Open · 2026-12-01"
+    },
+    {
+      "id": "06:open:tab",
+      "name": "06:open: Tab alone reaches the control (1 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 1
+      }
+    },
+    {
+      "id": "06:open:focus-ring",
+      "name": "06:open: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "id": null,
+        "label": "Open selected case",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "06-missed-case-greg-queue:layout",
+      "name": "06-missed-case-greg-queue: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "wide": []
+      }
+    },
+    {
+      "id": "06-missed-case-greg-queue:copy",
+      "name": "06-missed-case-greg-queue: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "06-missed-case-greg-queue:console",
+      "name": "06-missed-case-greg-queue: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "06-missed-case-greg-queue:case table \"Renewal-risk cases\"",
+      "name": "06-missed-case-greg-queue: case table \"Renewal-risk cases\"",
+      "pass": true
+    },
+    {
+      "id": "06-missed-case-greg-queue:lifecycle-exception trigger",
+      "name": "06-missed-case-greg-queue: lifecycle-exception trigger",
+      "pass": true
+    },
+    {
+      "id": "06-missed-case-greg-queue:Paula",
+      "name": "06-missed-case-greg-queue: Paula",
+      "pass": true
+    },
+    {
+      "id": "07a:auto-case",
+      "name": "07a: the keyed deadline rule has opened one owned case for Paula",
+      "pass": true,
+      "detail": [
+        [
+          "open",
+          "renewal-deadline"
+        ]
+      ]
+    },
+    {
+      "id": "07:auto-visible",
+      "name": "07: before asking, Paula already sees the Open case from the deadline rule, owned by the scheme team",
+      "pass": true,
+      "detail": "Skip to content Group Car Schemes Portal Paula (fictional) RENEWAL HELP Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal RENEWAL CASE Open Case reference renewal-ff2e22135f01bf5484b595d18eddfaf61d780c98 Owner Scheme team Reason The renewal deadline is close and no selection has been acknowledged. Latest update"
+    },
+    {
+      "id": "07:summary:tab",
+      "name": "07:summary: Tab alone reaches the control (4 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 4
+      }
+    },
+    {
+      "id": "07:summary:focus-ring",
+      "name": "07:summary: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "summary",
+        "id": null,
+        "label": "Get help with your renewal",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "07:ask:tab",
+      "name": "07:ask: Tab alone reaches the control (1 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 1
+      }
+    },
+    {
+      "id": "07:ask:focus-ring",
+      "name": "07:ask: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "id": null,
+        "label": "Ask for help",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "07:review:tab",
+      "name": "07:review: Tab alone reaches the control (1 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 1
+      }
+    },
+    {
+      "id": "07:review:focus-ring",
+      "name": "07:review: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "id": null,
+        "label": "Review help request",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "07:confirm:tab",
+      "name": "07:confirm: Tab alone reaches the control (8 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 8
+      }
+    },
+    {
+      "id": "07:confirm:focus-ring",
+      "name": "07:confirm: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "id": null,
+        "label": "Confirm help request",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "07:confirm:status",
+      "name": "07:confirm: Enter produces the status message \"Your help request was recorded.\"",
+      "pass": true,
+      "detail": [
+        "status:Loading presenter controls",
+        "alert:The demo was restarted. Reload the page to continue.Reload",
+        "status:Loading readback",
+        "status:Your help request was recorded."
+      ]
+    },
+    {
+      "id": "07:confirm:focus-kept",
+      "name": "07:confirm: focus is not lost to the page body",
+      "pass": true,
+      "detail": {
+        "tag": "p",
+        "id": null,
+        "label": "Your help request was recorded.",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "07-paula-help-requested:layout",
+      "name": "07-paula-help-requested: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "wide": []
+      }
+    },
+    {
+      "id": "07-paula-help-requested:copy",
+      "name": "07-paula-help-requested: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "07-paula-help-requested:console",
+      "name": "07-paula-help-requested: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "07-paula-help-requested:\"Your help request was recorded.\"",
+      "name": "07-paula-help-requested: \"Your help request was recorded.\"",
+      "pass": true
+    },
+    {
+      "id": "07-paula-help-requested:her reason in the history",
+      "name": "07-paula-help-requested: her reason in the history",
+      "pass": true
+    },
+    {
+      "id": "07-paula-help-requested:owner \"Scheme team\"",
+      "name": "07-paula-help-requested: owner \"Scheme team\"",
+      "pass": true
+    },
+    {
+      "id": "07-paula-help-requested:status Open",
+      "name": "07-paula-help-requested: status Open",
+      "pass": true
+    },
+    {
+      "id": "07:one-case",
+      "name": "07: her request appended to the existing case rather than opening a second",
+      "pass": true,
+      "detail": [
+        2
+      ]
+    },
+    {
+      "id": "08a:pick:tab",
+      "name": "08a:pick: Tab alone reaches the control (4 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 4
+      }
+    },
+    {
+      "id": "08a:pick:focus-ring",
+      "name": "08a:pick: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "select",
+        "id": "gcsp-case-queue-1-selection",
+        "label": "Choose a caseAlex (fictional) · Open · 2026-12-01Paula (fictional) · Open · 2026",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "08a:pick:chosen",
+      "name": "08a:pick: the select reads \"Paula (fictional) · Open · 2026-12-01\"",
+      "pass": true,
+      "detail": "Paula (fictional) · Open · 2026-12-01"
+    },
+    {
+      "id": "08a:open:tab",
+      "name": "08a:open: Tab alone reaches the control (1 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 1
+      }
+    },
+    {
+      "id": "08a:open:focus-ring",
+      "name": "08a:open: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "id": null,
+        "label": "Open selected case",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "08a:status:tab",
+      "name": "08a:status: Tab alone reaches the control (8 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 8
+      }
+    },
+    {
+      "id": "08a:status:focus-ring",
+      "name": "08a:status: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "select",
+        "id": "gcsp-case-queue-1-status",
+        "label": "Choose the next statusIn progressClosed",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "08a:status:chosen",
+      "name": "08a:status: the select reads \"In progress\"",
+      "pass": true,
+      "detail": "In progress"
+    },
+    {
+      "id": "08a:reason:tab",
+      "name": "08a:reason: Tab alone reaches the control (1 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 1
+      }
+    },
+    {
+      "id": "08a:reason:focus-ring",
+      "name": "08a:reason: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "textarea",
+        "id": "gcsp-case-queue-1-reason",
+        "label": "",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "08a:next:tab",
+      "name": "08a:next: Tab alone reaches the control (1 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 1
+      }
+    },
+    {
+      "id": "08a:next:focus-ring",
+      "name": "08a:next: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "textarea",
+        "id": "gcsp-case-queue-1-nextAction",
+        "label": "",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "08a:review:tab",
+      "name": "08a:review: Tab alone reaches the control (9 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 9
+      }
+    },
+    {
+      "id": "08a:review:focus-ring",
+      "name": "08a:review: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "id": null,
+        "label": "Review case update",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "08a:confirm:tab",
+      "name": "08a:confirm: Tab alone reaches the control (10 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 10
+      }
+    },
+    {
+      "id": "08a:confirm:focus-ring",
+      "name": "08a:confirm: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "id": null,
+        "label": "Confirm case update",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "08a:confirm:status",
+      "name": "08a:confirm: Enter produces the status message \"The case update was recorded.\"",
+      "pass": true,
+      "detail": [
+        "status:The case update was recorded."
+      ]
+    },
+    {
+      "id": "08a:confirm:focus-kept",
+      "name": "08a:confirm: focus is not lost to the page body",
+      "pass": true,
+      "detail": {
+        "tag": "p",
+        "id": null,
+        "label": "The case update was recorded.",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "08a:in-progress",
+      "name": "08a: the case is In progress after Greg's first update",
+      "pass": true,
+      "detail": "Confirm case update This records the update and any remedy for the employee to see on reload. Next status In progress Reason Scheme team has started work on this renewal. Next action Review options and propose a remedy. Due, demo clock (UTC) 2026-11-25 09:00:00 UTC Remedy Current remedy retained Con"
+    },
+    {
+      "id": "08:pick:tab",
+      "name": "08:pick: Tab alone reaches the control (4 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 4
+      }
+    },
+    {
+      "id": "08:pick:focus-ring",
+      "name": "08:pick: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "select",
+        "id": "gcsp-case-queue-1-selection",
+        "label": "Choose a caseAlex (fictional) · Open · 2026-12-01Paula (fictional) · In progress",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "08:pick:chosen",
+      "name": "08:pick: the select reads \"Paula (fictional) · In progress · 2026-12-01\"",
+      "pass": true,
+      "detail": "Paula (fictional) · In progress · 2026-12-01"
+    },
+    {
+      "id": "08:open:tab",
+      "name": "08:open: Tab alone reaches the control (1 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 1
+      }
+    },
+    {
+      "id": "08:open:focus-ring",
+      "name": "08:open: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "id": null,
+        "label": "Open selected case",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "08:status:tab",
+      "name": "08:status: Tab alone reaches the control (8 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 8
+      }
+    },
+    {
+      "id": "08:status:focus-ring",
+      "name": "08:status: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "select",
+        "id": "gcsp-case-queue-1-status",
+        "label": "Choose the next statusRemedy proposedResolvedClosed",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "08:status:chosen",
+      "name": "08:status: the select reads \"Remedy proposed\"",
+      "pass": true,
+      "detail": "Remedy proposed"
+    },
+    {
+      "id": "08:reason:tab",
+      "name": "08:reason: Tab alone reaches the control (1 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 1
+      }
+    },
+    {
+      "id": "08:reason:focus-ring",
+      "name": "08:reason: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "textarea",
+        "id": "gcsp-case-queue-1-reason",
+        "label": "",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "08:next:tab",
+      "name": "08:next: Tab alone reaches the control (1 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 1
+      }
+    },
+    {
+      "id": "08:next:focus-ring",
+      "name": "08:next: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "textarea",
+        "id": "gcsp-case-queue-1-nextAction",
+        "label": "",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "08:remedy:tab",
+      "name": "08:remedy: Tab alone reaches the control (8 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 8
+      }
+    },
+    {
+      "id": "08:remedy:focus-ring",
+      "name": "08:remedy: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "select",
+        "id": "gcsp-case-queue-1-remedyKey",
+        "label": "Keep the current remedy, if anyAlternative car: Synthetic 3 Series Saloon 320i, ",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "08:remedy:chosen",
+      "name": "08:remedy: the select reads \"Change body\"",
+      "pass": true,
+      "detail": "Change body"
+    },
+    {
+      "id": "08:value:tab",
+      "name": "08:value: Tab alone reaches the control (1 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 1
+      }
+    },
+    {
+      "id": "08:value:focus-ring",
+      "name": "08:value: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "select",
+        "id": "gcsp-case-queue-1-preferenceValue",
+        "label": "Choose the proposed valuehatchbacksaloonsuvcoupeconvertiblempv",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "08:value:chosen",
+      "name": "08:value: ArrowDown selects the first real option",
+      "pass": true,
+      "detail": "hatchback"
+    },
+    {
+      "id": "08:review:tab",
+      "name": "08:review: Tab alone reaches the control (1 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 1
+      }
+    },
+    {
+      "id": "08:review:focus-ring",
+      "name": "08:review: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "id": null,
+        "label": "Review case update",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "08:confirm:tab",
+      "name": "08:confirm: Tab alone reaches the control (9 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 9
+      }
+    },
+    {
+      "id": "08:confirm:focus-ring",
+      "name": "08:confirm: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "id": null,
+        "label": "Confirm case update",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "08:confirm:status",
+      "name": "08:confirm: Enter produces the status message \"The case update was recorded.\"",
+      "pass": true,
+      "detail": [
+        "status:The case update was recorded."
+      ]
+    },
+    {
+      "id": "08:confirm:focus-kept",
+      "name": "08:confirm: focus is not lost to the page body",
+      "pass": true,
+      "detail": {
+        "tag": "p",
+        "id": null,
+        "label": "The case update was recorded.",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "08:review",
+      "name": "08: the review screen names a one-preference change that the employee must confirm",
+      "pass": true,
+      "detail": "Confirm case update This records the update and any remedy for the employee to see on reload. Next status Remedy proposed Reason A different body style is available; proposing one body style change. Next action Employee to confirm the body style change. Due, demo clock (UTC) 2026-11-25 09:00:00 UTC Remedy One preference change Preference Body Proposed value hatchback Employee confirmation Required through the employee brief Confirm case update Cancel update"
+    },
+    {
+      "id": "08:proposal-only",
+      "name": "08: the case holds a proposal and Paula's brief is still version 1 (estate): proposal and applied change stay distinct",
+      "pass": true,
+      "detail": {
+        "status": "remedy-proposed",
+        "remedy": {
+          "type": "preference-relaxation",
+          "decisionId": "offer-decision:03a16e3b3ca08331274c3f1261508343b6614a22ad8a54ee6a44a8ea73243b28",
+          "expectedBriefVersion": 1,
+          "path": "preferences.body.value",
+          "value": "hatchback",
+          "confirmationState": "employee-confirmation-required"
+        }
+      }
+    },
+    {
+      "id": "08-greg-remedy-proposed:layout",
+      "name": "08-greg-remedy-proposed: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "wide": []
+      }
+    },
+    {
+      "id": "08-greg-remedy-proposed:copy",
+      "name": "08-greg-remedy-proposed: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "08-greg-remedy-proposed:console",
+      "name": "08-greg-remedy-proposed: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "08-greg-remedy-proposed:status \"Remedy proposed\"",
+      "name": "08-greg-remedy-proposed: status \"Remedy proposed\"",
+      "pass": true
+    },
+    {
+      "id": "08-greg-remedy-proposed:proposed remedy section",
+      "name": "08-greg-remedy-proposed: proposed remedy section",
+      "pass": true
+    },
+    {
+      "id": "08-greg-remedy-proposed:\"Employee confirmation is recorded\" absent yet or confirmation required text",
+      "name": "08-greg-remedy-proposed: \"Employee confirmation is recorded\" absent yet or confirmation required text",
+      "pass": true
+    },
+    {
+      "id": "09:waiting",
+      "name": "09: Paula sees the proposed remedy waiting for her confirmation, not yet applied",
+      "pass": true,
+      "detail": "Skip to content Group Car Schemes Portal Paula (fictional) RENEWAL HELP Renewal help Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Get help with your renewal RENEWAL CASE Remedy proposed Case reference renewal-ff2e22135f01bf5484b595d18eddfaf61d780c98 Owner Scheme team Reason The renewal deadline is close and no selection has been acknowledged. Latest update A different body style is available; proposing one body style change. Opened from Renewal deadline approaching Next action Employee to confirm the body style change. Due, demo clock (UTC) "
+    },
+    {
+      "id": "09:review:tab",
+      "name": "09:review: Tab alone reaches the control (5 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 5
+      }
+    },
+    {
+      "id": "09:review:focus-ring",
+      "name": "09:review: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "id": null,
+        "label": "Review body change",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "09:confirm:tab",
+      "name": "09:confirm: Tab alone reaches the control (8 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 8
+      }
+    },
+    {
+      "id": "09:confirm:focus-ring",
+      "name": "09:confirm: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "id": null,
+        "label": "Confirm preference change",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "09:confirm:status",
+      "name": "09:confirm: Enter produces the status message \"Your preference change was confirmed. The scheme team will review the current case.\"",
+      "pass": true,
+      "detail": [
+        "status:Loading presenter controls",
+        "alert:The demo was restarted. Reload the page to continue.Reload",
+        "status:Loading readback",
+        "status:Your preference change was confirmed. The scheme team will review the current case."
+      ]
+    },
+    {
+      "id": "09:confirm:focus-kept",
+      "name": "09:confirm: focus is not lost to the page body",
+      "pass": true,
+      "detail": {
+        "tag": "p",
+        "id": null,
+        "label": "Your preference change was confirmed. The scheme team will review the current ca",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "09-paula-confirmed-change:layout",
+      "name": "09-paula-confirmed-change: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "wide": []
+      }
+    },
+    {
+      "id": "09-paula-confirmed-change:copy",
+      "name": "09-paula-confirmed-change: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "09-paula-confirmed-change:console",
+      "name": "09-paula-confirmed-change: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "09-paula-confirmed-change:\"You confirmed this preference change\"",
+      "name": "09-paula-confirmed-change: \"You confirmed this preference change\"",
+      "pass": true
+    },
+    {
+      "id": "09-paula-confirmed-change:status still \"Remedy proposed\"",
+      "name": "09-paula-confirmed-change: status still \"Remedy proposed\"",
+      "pass": true
+    },
+    {
+      "id": "09-paula-confirmed-change:no-\"Resolved\"",
+      "name": "09-paula-confirmed-change: absent: \"Resolved\"",
+      "pass": true
+    },
+    {
+      "id": "09:brief2",
+      "name": "09: only now is there a confirmed brief version 2, with only the body style changed",
+      "pass": true,
+      "detail": {
+        "v": 2,
+        "body": "hatchback"
+      }
+    },
+    {
+      "id": "10:pick:tab",
+      "name": "10:pick: Tab alone reaches the control (4 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 4
+      }
+    },
+    {
+      "id": "10:pick:focus-ring",
+      "name": "10:pick: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "select",
+        "id": "gcsp-case-queue-1-selection",
+        "label": "Choose a caseAlex (fictional) · Open · 2026-12-01Paula (fictional) · Remedy prop",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "10:pick:chosen",
+      "name": "10:pick: the select reads \"Paula (fictional) · Remedy proposed · 2026-12-01\"",
+      "pass": true,
+      "detail": "Paula (fictional) · Remedy proposed · 2026-12-01"
+    },
+    {
+      "id": "10:open:tab",
+      "name": "10:open: Tab alone reaches the control (1 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 1
+      }
+    },
+    {
+      "id": "10:open:focus-ring",
+      "name": "10:open: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "id": null,
+        "label": "Open selected case",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "10:status:tab",
+      "name": "10:status: Tab alone reaches the control (8 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 8
+      }
+    },
+    {
+      "id": "10:status:focus-ring",
+      "name": "10:status: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "select",
+        "id": "gcsp-case-queue-1-status",
+        "label": "Choose the next statusIn progressResolvedClosed",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "10:status:chosen",
+      "name": "10:status: the select reads \"Resolved\"",
+      "pass": true,
+      "detail": "Resolved"
+    },
+    {
+      "id": "10:reason:tab",
+      "name": "10:reason: Tab alone reaches the control (1 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 1
+      }
+    },
+    {
+      "id": "10:reason:focus-ring",
+      "name": "10:reason: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "textarea",
+        "id": "gcsp-case-queue-1-reason",
+        "label": "",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "10:next:tab",
+      "name": "10:next: Tab alone reaches the control (1 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 1
+      }
+    },
+    {
+      "id": "10:next:focus-ring",
+      "name": "10:next: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "textarea",
+        "id": "gcsp-case-queue-1-nextAction",
+        "label": "",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "10:review:tab",
+      "name": "10:review: Tab alone reaches the control (9 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 9
+      }
+    },
+    {
+      "id": "10:review:focus-ring",
+      "name": "10:review: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "id": null,
+        "label": "Review case update",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "10:confirm:tab",
+      "name": "10:confirm: Tab alone reaches the control (10 presses)",
+      "pass": true,
+      "detail": {
+        "tabs": 10
+      }
+    },
+    {
+      "id": "10:confirm:focus-ring",
+      "name": "10:confirm: the focused control shows a visible focus ring",
+      "pass": true,
+      "detail": {
+        "tag": "button",
+        "id": null,
+        "label": "Confirm case update",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "10:confirm:status",
+      "name": "10:confirm: Enter produces the status message \"The case update was recorded.\"",
+      "pass": true,
+      "detail": [
+        "status:The case update was recorded."
+      ]
+    },
+    {
+      "id": "10:confirm:focus-kept",
+      "name": "10:confirm: focus is not lost to the page body",
+      "pass": true,
+      "detail": {
+        "tag": "p",
+        "id": null,
+        "label": "The case update was recorded.",
+        "focusVisible": true,
+        "outline": "solid 2px",
+        "boxShadow": "none",
+        "ring": true
+      }
+    },
+    {
+      "id": "10:resolved",
+      "name": "10: the case is resolved with the employee-confirmed remedy at brief version 2",
+      "pass": true,
+      "detail": {
+        "status": "resolved",
+        "remedy": {
+          "type": "preference-relaxation",
+          "decisionId": "offer-decision:03a16e3b3ca08331274c3f1261508343b6614a22ad8a54ee6a44a8ea73243b28",
+          "expectedBriefVersion": 1,
+          "path": "preferences.body.value",
+          "value": "hatchback",
+          "confirmationState": "employee-confirmed",
+          "confirmedBy": "demo-paula",
+          "confirmedAt": "2026-11-24T09:00:00.000Z",
+          "briefVersion": 2
+        }
+      }
+    },
+    {
+      "id": "10-greg-resolved:layout",
+      "name": "10-greg-resolved: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "wide": []
+      }
+    },
+    {
+      "id": "10-greg-resolved:copy",
+      "name": "10-greg-resolved: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "10-greg-resolved:console",
+      "name": "10-greg-resolved: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "10-greg-resolved:Paula's case \"Resolved\" in the queue",
+      "name": "10-greg-resolved: Paula's case \"Resolved\" in the queue",
+      "pass": true
+    },
+    {
+      "id": "11-paula-resolved:layout",
+      "name": "11-paula-resolved: no horizontal scroll, nothing wider than the viewport",
+      "pass": true,
+      "detail": {
+        "scrollWidth": 375,
+        "innerWidth": 375,
+        "wide": []
+      }
+    },
+    {
+      "id": "11-paula-resolved:copy",
+      "name": "11-paula-resolved: no em dash in body text",
+      "pass": true
+    },
+    {
+      "id": "11-paula-resolved:console",
+      "name": "11-paula-resolved: no console errors, failed resources or CSP violations",
+      "pass": true,
+      "detail": {
+        "consoleErrors": [],
+        "resourceErrors": [],
+        "csp": []
+      }
+    },
+    {
+      "id": "11-paula-resolved:status \"Resolved\"",
+      "name": "11-paula-resolved: status \"Resolved\"",
+      "pass": true
+    },
+    {
+      "id": "11-paula-resolved:\"Recorded remedy\"",
+      "name": "11-paula-resolved: \"Recorded remedy\"",
+      "pass": true
+    },
+    {
+      "id": "11-paula-resolved:\"You confirmed this preference change\"",
+      "name": "11-paula-resolved: \"You confirmed this preference change\"",
+      "pass": true
+    },
+    {
+      "id": "11-paula-resolved:no-\"Waiting for your confirmation\"",
+      "name": "11-paula-resolved: absent: \"Waiting for your confirmation\"",
+      "pass": true
+    },
+    {
+      "id": "11:history",
+      "name": "11: the dated history shows system, employee and scheme-team entries in order",
+      "pass": true,
+      "detail": [
+        [
+          "system",
+          "open"
+        ],
+        [
+          "employee",
+          "open"
+        ],
+        [
+          "scheme-team",
+          "in-progress"
+        ],
+        [
+          "scheme-team",
+          "remedy-proposed"
+        ],
+        [
+          "scheme-team",
+          "resolved"
+        ]
+      ]
+    },
+    {
+      "id": "11:allocation",
+      "name": "11: across the whole case the only allocation input that moved is Paula's brief (the confirmed version 2)",
+      "pass": true,
+      "detail": [
+        "briefs"
+      ]
+    }
+  ],
+  "captures": [
+    {
+      "name": "375-01-handover-blocked",
+      "as": "paula",
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "scrollContained": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "file": "browser/375-01-handover-blocked.png",
+      "bytesPng": 418612
+    },
+    {
+      "name": "375-02-handover-completed",
+      "as": "paula",
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "scrollContained": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "file": "browser/375-02-handover-completed.png",
+      "bytesPng": 380331
+    },
+    {
+      "name": "375-03-no-show-rebook-focus",
+      "as": "paula",
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "scrollContained": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "file": "browser/375-03-no-show-rebook-focus.png",
+      "bytesPng": 362714
+    },
+    {
+      "name": "375-04-rebooked",
+      "as": "paula",
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "scrollContained": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "file": "browser/375-04-rebooked.png",
+      "bytesPng": 346415
+    },
+    {
+      "name": "375-04c-attempt2-completed",
+      "as": "paula",
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "scrollContained": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "375-05-returned",
+      "as": "paula",
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "scrollContained": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "file": "browser/375-05-returned.png",
+      "bytesPng": 352575
+    },
+    {
+      "name": "375-06a-return-missed-paula",
+      "as": "paula",
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "scrollContained": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": []
+    },
+    {
+      "name": "375-06-missed-case-greg-queue",
+      "as": "greg",
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "scrollContained": [
+        "table.gcsp-table 1050px"
+      ],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "file": "browser/375-06-missed-case-greg-queue.png",
+      "bytesPng": 196369
+    },
+    {
+      "name": "375-07-paula-help-requested",
+      "as": "paula",
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "scrollContained": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "file": "browser/375-07-paula-help-requested.png",
+      "bytesPng": 95936
+    },
+    {
+      "name": "375-08-greg-remedy-proposed",
+      "as": "greg",
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "scrollContained": [
+        "table.gcsp-table 1050px"
+      ],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "file": "browser/375-08-greg-remedy-proposed.png",
+      "bytesPng": 212998
+    },
+    {
+      "name": "375-09-paula-confirmed-change",
+      "as": "paula",
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "scrollContained": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "file": "browser/375-09-paula-confirmed-change.png",
+      "bytesPng": 114018
+    },
+    {
+      "name": "375-10-greg-resolved",
+      "as": "greg",
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "scrollContained": [
+        "table.gcsp-table 1050px"
+      ],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "file": "browser/375-10-greg-resolved.png",
+      "bytesPng": 48569
+    },
+    {
+      "name": "375-11-paula-resolved",
+      "as": "paula",
+      "innerWidth": 375,
+      "scrollWidth": 375,
+      "horizontalScroll": false,
+      "wideElements": [],
+      "scrollContained": [],
+      "emDash": false,
+      "consoleErrors": [],
+      "resourceErrors": [],
+      "cspViolations": [],
+      "file": "browser/375-11-paula-resolved.png",
+      "bytesPng": 100421
+    }
+  ],
+  "steps": [
+    {
+      "id": "01",
+      "via": "api",
+      "what": "Presenter route POST /api/gcsp/appointments/complete refused (409). The browser has no completion control.",
+      "repeatedBy": "'FUCQ-171 manual handoff lifecycle' step 3 and 'no-show then rebooking' step 6"
+    },
+    {
+      "id": "02a",
+      "via": "browser",
+      "what": "Paula acknowledges the agreement with Tab and Enter (the only document task she owns)."
+    },
+    {
+      "id": "02b",
+      "via": "api",
+      "what": "Presenter route POST /api/gcsp/appointments/complete (200). The readiness time is reached by a service tick in this runner; the presenter strip Tick controls drive the same clock (the FUCQ-124 walkthrough clicks them).",
+      "repeatedBy": "'FUCQ-171 manual handoff lifecycle' steps 4 and 5"
+    },
+    {
+      "id": "03a",
+      "via": "api",
+      "what": "Presenter route POST /api/gcsp/appointments/no-show (200). The browser has no no-show control.",
+      "repeatedBy": "'FUCQ-171 no-show then rebooking' step 2"
+    },
+    {
+      "id": "03b",
+      "via": "browser",
+      "what": "Paula rebooks with Tab and Enter on the first offered slot."
+    },
+    {
+      "id": "04b",
+      "via": "api",
+      "what": "Retailer confirmation is a service tick; completion is the presenter route. No PNG: the completed state is captured in 02.",
+      "repeatedBy": "'FUCQ-171 no-show then rebooking' steps 5 and 6"
+    },
+    {
+      "id": "05",
+      "via": "api",
+      "what": "Return outcome is the policy key lifecycle.return.outcome.v1 (enabled and set to returned before boot) acting on the keyed delay after the slot; handover completion is the presenter route. The browser has neither.",
+      "repeatedBy": "'FUCQ-171 buddy lifecycle' steps 4 and 5"
+    },
+    {
+      "id": "06a",
+      "via": "api",
+      "what": "The missed outcome is the policy key lifecycle.return.outcome.v1 (enabled, missed, before boot) acting on its keyed delay; no browser control.",
+      "repeatedBy": "'FUCQ-171 missed return' steps 2 and 3"
+    },
+    {
+      "id": "06b",
+      "via": "api",
+      "what": "One service tick runs the renewal-risk rule that opens the owned case (renewalCase.lifecycle.eventTypes).",
+      "repeatedBy": "'FUCQ-171 missed return' step 4"
+    },
+    {
+      "id": "06c",
+      "via": "browser",
+      "what": "Greg picks the case and opens it with Tab, a type-ahead select and Enter on /gcsp-case-queue.html."
+    },
+    {
+      "id": "07a",
+      "via": "api",
+      "what": "Setup: reset, briefs, release, the real first offer opened from its outbox link and declined for body style over the offer routes, then a presenter tick to one week before the contract end. These are the setup steps of the e2e test.",
+      "repeatedBy": "'FUCQ-171 advanced help' step 1"
+    },
+    {
+      "id": "07",
+      "via": "browser",
+      "what": "Paula asks, reviews and confirms on /gcsp-help.html with Tab and Enter."
+    },
+    {
+      "id": "08",
+      "via": "browser",
+      "what": "Greg moves the case to In progress, then to Remedy proposed with one body-style change, with Tab, type-ahead selects and Enter on /gcsp-case-queue.html (FUCQ-122 remainder)."
+    },
+    {
+      "id": "09",
+      "via": "browser",
+      "what": "Paula reviews and confirms the single change on /gcsp-help.html (POST /api/gcsp/brief/change-after-decline). The control exists.",
+      "repeatedBy": "'FUCQ-171 advanced help' step 7"
+    },
+    {
+      "id": "10",
+      "via": "browser",
+      "what": "Greg resolves the confirmed case on /gcsp-case-queue.html with Tab, type-ahead selects and Enter, keeping the confirmed remedy."
+    },
+    {
+      "id": "11",
+      "via": "browser",
+      "what": "Paula reloads /gcsp-help.html and reads the persisted outcome."
+    }
+  ],
+  "observations": [
+    {
+      "id": "current-car-card-after-completion",
+      "severity": "Medium (same area as FUCQ-252)",
+      "text": "After the handover is completed (before any return) the Your cars current-car card still shows the old contract car as current, while the return plan relationship names the new order.",
+      "detail": {
+        "card": "YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 24 days, on 1 December 2026 Status Current car Driver Paula (fictional) Contract end 1 December 202",
+        "newCar": "Synthetic TEST composition car"
+      }
+    },
+    {
+      "id": "FUCQ-252",
+      "severity": "Medium (known, FUCQ-252)",
+      "text": "After the confirmed return the Your cars current-car card still shows the old car (Fictional BMW 320i Touring) as current.",
+      "detail": {
+        "card": "YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 22 days, on 1 December 2026 Status Current car Driver Paula (fictional) Contract end 1 December 202",
+        "newCar": "Synthetic TEST composition car"
+      }
+    },
+    {
+      "id": "missed-return-case-label",
+      "severity": "Medium",
+      "text": "The case opened by a missed RETURN reads \"Opened from Missed handover appointment\" and the queue trigger shows the raw \"lifecycle-exception\": lifecycle.return.outcome.v1 reuses exceptionType \"appointment-no-show\", and the label and reason text are keyed to that type alone.",
+      "detail": {
+        "reason": "A configured lifecycle exception needs scheme-team review."
+      }
+    },
+    {
+      "id": "presenter-controls-403",
+      "severity": "Low",
+      "text": "Pages with the presenter strip read /api/gcsp/presenter/controls as an employee-only session and log a 403 in the console on each load; nothing shows on screen.",
+      "detail": {
+        "firstSeen": "07-paula-help-requested"
+      }
+    }
+  ],
+  "errors": [],
+  "requests": {
+    "paula GET /api/gcsp/presenter/controls 200 ok": 7,
+    "paula GET /api/gcsp/manual/account 200 ok": 10,
+    "paula GET /api/gcsp/manual/draft 200 ok": 7,
+    "paula GET /api/gcsp/offers/current 200 ok": 7,
+    "paula GET /api/gcsp/orders/progress/all 200 ok": 7,
+    "paula GET /api/gcsp/context 200 ok": 7,
+    "paula GET /api/gcsp/presenter/scenarios 200 ok": 7,
+    "paula GET /api/gcsp/presenter/scenarios/faults 200 ok": 7,
+    "paula GET /api/gcsp/manual/order 200 ok": 7,
+    "paula GET /api/gcsp/orders/progress 200 ok": 9,
+    "paula GET /api/gcsp/documents 200 ok": 9,
+    "paula GET /api/gcsp/appointments 200 ok": 9,
+    "paula GET /api/gcsp/return-plan 200 ok": 9,
+    "paula POST /api/gcsp/documents/tasks/complete 200 ok": 1,
+    "paula POST /api/gcsp/appointments/request 200 ok": 1,
+    "greg GET /api/gcsp/scheme-team/cases 200 ok": 8,
+    "greg GET /api/gcsp/scheme-team/cases/options 200 ok": 7,
+    "paula GET /api/gcsp/presenter/controls 403 forbidden:A presenter control session is required.": 3,
+    "paula GET /api/gcsp/help 200 ok": 5,
+    "paula GET /api/gcsp/cases 200 ok": 5,
+    "paula POST /api/gcsp/cases 200 ok": 1,
+    "greg POST /api/gcsp/scheme-team/cases/update 200 ok": 3,
+    "paula POST /api/gcsp/brief/change-after-decline 200 ok": 1
+  },
+  "failedRequests": [],
+  "processes": {
+    "chrome": {
+      "pid": 47099,
+      "group": 47099,
+      "debugPort": 9169
+    },
+    "server-handover": {
+      "pid": 47094,
+      "port": 9160,
+      "note": "in-process loopback server"
+    },
+    "server-noshow": {
+      "pid": 47094,
+      "port": 9161,
+      "note": "in-process loopback server"
+    },
+    "server-returned": {
+      "pid": 47094,
+      "port": 9162,
+      "note": "in-process loopback server"
+    },
+    "server-missed": {
+      "pid": 47094,
+      "port": 9163,
+      "note": "in-process loopback server"
+    },
+    "server-help": {
+      "pid": 47094,
+      "port": 9164,
+      "note": "in-process loopback server"
+    }
+  },
+  "notes": [
+    "08:value: ArrowDown did not change the select, used selectOption index 1"
+  ],
+  "facts": {
+    "01": {
+      "refused": {
+        "status": "conflict",
+        "code": "handover-not-ready",
+        "owner": "retailer",
+        "nextStep": "The retailer finishes the documents and car preparation before the handover.",
+        "blocking": [
+          "agreement-acknowledgement",
+          "licence-check",
+          "vehicle-preparation",
+          "delivery-to-retailer"
+        ]
+      },
+      "handover": "Handover Booked: 7 Nov 2026, 09:00 Owner Retailer Next step The retailer prepares your car for the handover. Handover history All dates are demo time (UTC). 5 Nov 2026, 12:00 Requested 5 Nov 2026, 12:30 Booked",
+      "documents": "Documents and checks Not ready for handover. Still to do: Vehicle agreement, Driving licence check, Vehicle preparation, Delivery to the retailer. Checklist Your tasks Vehicle agreement Waiting for you. Due 7 Nov 2026, 12:00. Synthetic acknowledgement, not a signature Acknowledge the agreement Being handled by others Driving licence check Scheme team. In progress. Due 6 Nov 2026, 12:00. Vehicle preparation Retailer. In progress. Due 8 Nov 2026, 12:00. Delivery to the retailer Retailer. In progress. Due 10 Nov 2026, 12:00."
+    },
+    "02": {
+      "newCar": "Synthetic TEST composition car",
+      "currentCarCard": "YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 24 days, on 1 December 2026 Status Current car Driver Paula (fictional) Contract end 1 December 202",
+      "returnSection": "Returning your current car Current car Synthetic TEST composition car Car to return Fictional BMW 320i Touring Return place Fictional collection centre Choose when to return your current car. Return it when the new car is handed over Your new car has already been handed over. Return it on a separate day Request return 9 Nov 2026, 09:00 Request return 9 Nov 2026, 13:00 Request return 10 Nov 2026, 09:00 Request return 10 Nov 2026, 13:00 Request return 11 Nov 2026, 09:00 Request return 11 Nov 2026, 13:00 Request return 12 Nov 2026, 09:00 Request return 12 Nov 2026, 13:00 Request return 13 Nov 2026, 09:00 Request return 13 Nov 2026, 13:00 Request return 14 Nov 2026, 09:00"
+    },
+    "04": {
+      "announced": true,
+      "handover": "Handover Requested 9 Nov 2026, 09:00. Not booked yet. Owner Retailer Next step Waiting for the retailer to confirm your slot. Earlier handover missed: 9 Nov 2026, 09:00 Handover history All dates are demo time (UTC). 7 Nov 2026, 12:00 Requested 7 Nov 2026, 12:30 Booked 7 Nov 2026, 12:30 Handover missed 7 Nov 2026, 12:30 Requested"
+    },
+    "05": {
+      "newCar": "Synthetic TEST composition car",
+      "returnSection": "Returning your current car Current car Synthetic TEST composition car Returned car Fictional BMW 320i Touring Return place Fictional collection centre Returned: 9 Nov 2026, 14:30 Owner Retailer Next step Your current car has been returned. Nothing more is needed from you. Return reference (synthetic) SYN-RET-0D4D866BBA91 Return history All dates are demo time (UTC). 7 Nov 2026, 12:30 Return requested 7 Nov 2026, 13:00 Return booked 9 Nov 2026, 14:30 Returned",
+      "currentCarCard": "YOUR CURRENT CAR Fictional BMW 320i Touring Contract ends in 22 days, on 1 December 2026 Status Current car Driver Paula (fictional) Contract end 1 December 202"
+    },
+    "06": {
+      "opened": true,
+      "text": "Renewal cases Remedies need the scheme team’s decision. No specific next car or greater priority is guaranteed. Current case options loaded. Refresh queue Sort cases Deadline, active cases first Status, then deadline Renewal-risk cases Employee Renewal deadline (calendar date) Trigger or request Reason Status Owner Next action due, demo clock (UTC) Paula (fictional) 2026-12-01 lifecycle-exception A configured lifecycle exception needs scheme-team review. Open Scheme team 2026-11-10 14:30:01 UTC Case to work Choose a case Paula (fictional) · Open · 2026-12-01 Open selected case Close case details Paula (fictional) RENEWAL CASE Open Case reference renewal-1d7476342e48f165f1c328e703ebfc375daf9d7f Owner Scheme team Reason A configured lifecycle exception needs scheme-team review. Latest update A configured lifecycle exception needs scheme-team review. Opened from Missed handover appointment "
+    }
+  },
+  "finishedAt": "2026-11-09T14:10:32.013Z",
+  "summary": {
+    "checks": 199,
+    "passed": 199,
+    "failed": [],
+    "captures": 13,
+    "pngs": 11
+  }
+}
