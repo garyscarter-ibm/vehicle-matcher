@@ -1,12 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, readFile, rm, writeFile, stat } from 'node:fs/promises';
-import { join } from 'node:path';
+import { mkdir, mkdtemp, readFile, readdir, rm, writeFile, stat } from 'node:fs/promises';
+import { dirname, join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { createHash } from 'node:crypto';
 import { pathToFileURL } from 'node:url';
 import { validateRelease, releaseLimits } from '../gcsp/vehicle-evidence/fleet-release.js';
-import { downloadAsset } from '../gcsp/vehicle-evidence/fleet-artifacts.js';
+import { downloadAsset, restoreFleetRelease, validationFailed } from '../gcsp/vehicle-evidence/fleet-artifacts.js';
+import { createSyntheticRegistry } from '../gcsp/vehicle-evidence/synthetic-registry.js';
 import { writeCorpusCandidate, validateCorpusDirectory } from '../gcsp/vehicle-evidence/corpus-publisher.js';
 import { corpusInput, options } from './helpers/vin-corpus-fixture.js';
 const hash = (s) => createHash('sha256').update(s).digest('hex');
@@ -89,4 +90,25 @@ test('zero-byte exact assets materialize exclusively without transport; other di
   await writeFile(p, 'existing caller file');
   await assert.rejects(downloadAsset({ ...asset, bytes: 0, sha256: hash('') }, p, { fetchImpl }));
   assert.equal(await readFile(p, 'utf8'), 'existing caller file'); assert.equal(calls, 0);
+});
+// FUCQ-164: a real failing store load keeps its first specific reason on the restore error.
+test('a cached store validation failure carries the stage and first specific reason', async (t) => {
+  const root = await mkdtemp(join(tmpdir(), 'restore-validation-')); t.after(() => rm(root, { recursive: true, force: true }));
+  const source = join(root, 'source'); assert.equal((await writeCorpusCandidate(source, await corpusInput(), options)).status, 'ok');
+  const store = join(root, 'store'); const registry = createSyntheticRegistry({ root: store, ...options });
+  assert.equal((await registry.publish(source)).status, 'ok');
+  const digest = registry.status().active.manifestDigest; const vins = join(store, 'versions', digest, 'vins.jsonl');
+  await writeFile(vins, (await readFile(vins, 'utf8')) + '{}\n');
+  const loaded = await createSyntheticRegistry({ root: store, ...options }).load();
+  const error = validationFailed('Cached store failed full validation', 'cached', loaded, { manifestDigest: digest });
+  assert.equal(error.artifactCode, 'validation-failed'); assert.equal(error.message, 'Cached store failed full validation');
+  assert.equal(error.validation.stage, 'cached'); assert.equal(error.validation.status, 'source-unavailable');
+  assert.equal(error.validation.failure.code, 'selected-corpus-invalid'); assert.equal(error.validation.manifestDigestMatches, false);
+  assert.equal(error.validation.diagnostic.cause.code, 'checksum-mismatch'); assert.equal(error.validation.diagnostic.phase, 'index:vins.jsonl');
+  assert.equal(JSON.stringify(error.validation).includes(root), false);
+});
+test('restore accepts no caller-supplied release list; unapproved ids fail closed', async (t) => {
+  const root = await mkdtemp(join(tmpdir(), 'restore-approval-')); t.after(() => rm(root, { recursive: true, force: true }));
+  await assert.rejects(restoreFleetRelease({ releaseId: 'c'.repeat(64), store: join(root, 'store'), cacheRoot: join(root, 'cache'),
+    releases: [{ releaseId: 'c'.repeat(64) }] }), { artifactCode: 'release-not-approved' });
 });
