@@ -19,8 +19,9 @@ const blockerText = { 'contact-required': 'A valid contact phone and email are n
   'driver-review-required': 'Your driver details need review before you can accept.',
   'return-data-required': 'The details of the car you return are incomplete.',
   'ordering-terms-unavailable': 'The ordering terms are unavailable right now.' };
-const selectionHeadline = (selection) => selection.selectionState === 'acknowledged'
-  ? `Selection received. Waiting for ${selection.stages.find((stage) => stage.state === 'waiting')?.name ?? selection.current}.`
+const selectionHeadline = (selection, hostsOrder) => selection.selectionState === 'acknowledged'
+  ? (hostsOrder ? 'Selection received. Your order is with ordering.'
+    : `Selection received. Waiting for ${selection.stages.find((stage) => stage.state === 'waiting')?.name ?? selection.current}.`)
   : selection.selectionState === 'handoff-pending' ? 'Sending your selection to ordering. Ordering owns the next step. You do not need to do anything.'
     : 'Your selection was not accepted for ordering. The car stays reserved. Contact scheme support.';
 // One line from the projected card, so a declined offer needs no second copy of the car.
@@ -30,7 +31,7 @@ function declinedSummary(card) {
   const points = member.terms?.find((term) => term.kind === 'points-monthly')?.value;
   return `You declined the ${name}${Number.isFinite(points) ? `, ${points.toLocaleString('en-GB')} points a month` : ''}.`;
 }
-const messageFor = (model) => model.message || (model.state === 'accepted' && model.selection ? selectionHeadline(model.selection) : messages[model.state]);
+const messageFor = (model, hostsOrder) => model.message || (model.state === 'accepted' && model.selection ? selectionHeadline(model.selection, hostsOrder) : messages[model.state]);
 const longDate = (value) => /^\d{4}-\d\d-\d\d$/.test(value ?? '') && Number.isFinite(Date.parse(value))
   ? new Date(`${value}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }) : value;
 // Readable demo time such as "6 Nov 2026, 11:30 UTC"; anything unparsable shows as given.
@@ -97,6 +98,8 @@ function selectionGroup(selection) {
 export function createOfferView(root, { refresh, decide, tickDeclaration, selectReason, cancelDecline, refreshReasons, mountFollowup, mountOrder, links } = {}) {
   const page = el('div', 'vm gcsp-offer-body');
   page.id = `gcsp-offer-${++sequence}`;
+  // Once ordering holds the order its tracker is the one source of progress, so selection stages give way.
+  const hostsOrderFor = (model) => model.state === 'accepted' && typeof model.orderUuid === 'string' && typeof mountOrder === 'function' && model.card?.members?.length === 1;
   const content = el('div', 'gcsp-offer-content');
   // FUCQ-234: screen-reader only; the heading already shows the state.
   const announcement = el('p', 'gcsp-vh'); announcement.setAttribute('role', 'status');
@@ -137,8 +140,9 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
       if (focused || followupFocused) screen.querySelector('.vm-btn')?.focus(); return;
     }
     content.append(screenIntro({ title: titles[state] || titles.error, level: 1 }));
-    messageNode = el('p', 'gcsp-note', messageFor(model));
-    messageNode.hidden = !messageFor(model); content.append(messageNode);
+    const hostsOrder = hostsOrderFor(model);
+    messageNode = el('p', 'gcsp-note', messageFor(model, hostsOrder));
+    messageNode.hidden = !messageFor(model, hostsOrder); content.append(messageNode);
     if (model.fixtureNotice) content.append(el('p', 'gcsp-note', model.fixtureNotice));
     if (state === 'accepted' && (links?.orderProgress || links?.cars)) {
       const leadOn = el('div', 'gcsp-offer-actions');
@@ -146,8 +150,6 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
       if (links.cars) leadOn.append(button({ label: 'Back to Your cars', variant: 'ghost', href: links.cars }));
       content.append(leadOn);
     }
-    // Once ordering holds the order its tracker is the one source of progress, so the selection stages give way.
-    const hostsOrder = state === 'accepted' && typeof model.orderUuid === 'string' && typeof mountOrder === 'function' && model.card?.members?.length === 1;
     if (state === 'accepted' && model.selection && !hostsOrder) content.append(selectionGroup(model.selection));
     if (['pending', 'accepted', 'superseded', 'uncertain'].includes(state) && model.card?.members?.length === 1) {
       const columns = el('div', 'gcsp-offer-comparison');
@@ -269,10 +271,10 @@ export function createOfferView(root, { refresh, decide, tickDeclaration, select
     lastError = reason.error; wasOpen = reason.open;
   }
   function update(model) {
-    const nextStructure = JSON.stringify([model.state, model.card, model.currentCar, model.fixtureNotice, model.handoff, model.selection]);
+    const nextStructure = JSON.stringify([model.state, model.card, model.currentCar, model.fixtureNotice, model.handoff, model.selection, model.orderUuid]);
     // Keep the kit's own decision live region and keyboard controls mounted across clock reads.
     if (structure !== nextStructure) { draw(model); structure = nextStructure; }
-    messageNode.textContent = messageFor(model) || '';
+    messageNode.textContent = messageFor(model, hostsOrderFor(model)) || '';
     messageNode.hidden = !messageNode.textContent;
     if (model.state === 'pending') accepting = false;
     updateFollowup(model);
