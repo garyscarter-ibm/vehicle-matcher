@@ -25,5 +25,5 @@ gcsp-manual-gallery { display: block; }
 @media (max-width: 600px) {
   .gcsp .gcsp-gallery-grid, .gcsp .gcsp-gallery-filters { grid-template-columns: minmax(0, 1fr); }
   .gcsp .gcsp-gallery-detail { padding: 16px; }
-  .gcsp .gcsp-gallery-grid .vm-card-actions .vm-btn { width: 100%; }
+  .gcsp .gcsp-gallery-grid .vm-card-actions .vm-btn { width: 100%; } .gcsp .gcsp-gallery-grid .gcsp-card .vm-card-media { aspect-ratio: 2 / 1; }
 }

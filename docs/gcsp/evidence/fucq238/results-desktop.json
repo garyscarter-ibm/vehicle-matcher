@@ -1,0 +1,259 @@
+{
+  "story": "fucq238",
+  "chunk": "desktop",
+  "entry": "hosted-offline",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "state": "passed",
+  "startedAt": "2026-11-09T04:20:40.125Z",
+  "steps": [
+    {
+      "id": "s238-setup",
+      "name": "Demo key, Choose a replacement: setup screen",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-01-setup.png"
+      ],
+      "detail": {
+        "chosen": {
+          "driver": "Nominated: Casey (fictional)",
+          "contract": "six-month-8000",
+          "date": "2026-11-12",
+          "location": "demo-collection-centre"
+        }
+      },
+      "overflowPx": 0,
+      "state": "{\"driver\":\"Nominated: Casey (fictional)\",\"contract\":\"six-month-8000\",\"date\":\"2026-11-12\",\"location\":\"demo-collection-centre\"}"
+    },
+    {
+      "id": "s238-gallery-first-page",
+      "name": "Next release, Continue: first page height, card height and Car facts disclosure state",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-02-gallery-first-page.png"
+      ],
+      "detail": {
+        "pageHeight": 3214,
+        "cards": 6,
+        "cardHeight": 832,
+        "mediaRatio": "16 / 9",
+        "headerHeight": 56,
+        "gridTop": 1183,
+        "gridHeight": 1787,
+        "parts": [
+          "vm-card-media:194",
+          "vm-card-body:636",
+          "vm-card-head:64",
+          "gcsp-note:24",
+          "vm-card-terms:63",
+          "vm-card-facts:226",
+          "vm-card-decision:24",
+          "vm-pick:0",
+          "vm-card-actions:108"
+        ],
+        "sections": 6,
+        "open": 6,
+        "summaries": [
+          "Car facts"
+        ]
+      },
+      "overflowPx": 0,
+      "state": "{\"pageHeight\":3214,\"cards\":6,\"cardHeight\":832,\"mediaRatio\":\"16 / 9\",\"headerHeight\":56,\"gridTop\":1183,\"gridHeight\":1787,\"parts\":[\"vm-card-media:194\",\"vm-card-body:636\",\"vm-card-head:64\",\"gcsp-note:24\",\"vm-card-terms:63\",\"vm-card-facts:226\",\"vm-card-decision:24\",\"vm-pick:0\",\"vm-card-actions:108\"],\"sections\":6,\"open\":6,\"summaries\":[\"Car facts\"]}"
+    },
+    {
+      "id": "s238-facts-keyboard",
+      "name": "Tab to the first Car facts summary, Enter toggles it",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-03-facts-keyboard.png"
+      ],
+      "detail": {
+        "before": true,
+        "after": false,
+        "hops": 5,
+        "firstCardHeightAfter": 832
+      },
+      "overflowPx": 0,
+      "state": "{\"before\":true,\"after\":false,\"hops\":5,\"firstCardHeightAfter\":832}"
+    },
+    {
+      "id": "s238-show-more-keyboard",
+      "name": "Tab to Show more cars, Enter: next page and focus on the first new card",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-04-show-more-keyboard.png"
+      ],
+      "detail": {
+        "before": 6,
+        "after": {
+          "cards": 12,
+          "count": "Showing 12 of 20 cars",
+          "more": [
+            "Show more cars"
+          ],
+          "pageHeight": 5123,
+          "focusIndex": 6
+        }
+      },
+      "overflowPx": 0,
+      "state": "6 -> 12 cards, focus index 6"
+    },
+    {
+      "id": "s238-greg-renewal-cases",
+      "name": "Greg's harness: Renewal cases region ends at its content",
+      "pass": true,
+      "screenshots": [
+        "browser/1280-05-greg-renewal-cases.png"
+      ],
+      "detail": {
+        "regionHeight": 442,
+        "regionBottom": 900,
+        "lastContentBottom": 879,
+        "gapBelowContent": 21,
+        "wrapper": {
+          "tag": "div",
+          "className": "gcsp",
+          "minHeight": "0px",
+          "background": "rgba(0, 0, 0, 0)",
+          "height": 400
+        },
+        "viewportHeight": 900
+      },
+      "overflowPx": 0,
+      "state": "{\"regionHeight\":442,\"regionBottom\":900,\"lastContentBottom\":879,\"gapBelowContent\":21,\"wrapper\":{\"tag\":\"div\",\"className\":\"gcsp\",\"minHeight\":\"0px\",\"background\":\"rgba(0, 0, 0, 0)\",\"height\":400},\"viewportHeight\":900}"
+    }
+  ],
+  "keyboard": [
+    {
+      "page": "access",
+      "check": "Typing the demo key and Enter opens the demo",
+      "pass": true
+    },
+    {
+      "page": "gallery",
+      "check": "Tab to Car facts and Enter toggles the disclosure",
+      "pass": true,
+      "detail": {
+        "before": true,
+        "after": false,
+        "hops": 5
+      }
+    },
+    {
+      "page": "gallery",
+      "check": "Tab to Show more cars and Enter reveals the next page and focuses its first card",
+      "pass": true,
+      "detail": {
+        "hops": 15
+      }
+    }
+  ],
+  "consoleErrors": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8933/favicon.ico",
+      "page": "http://127.0.0.1:8933/gcsp/access"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8933/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8933/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8933/api/gcsp/manual/draft",
+      "page": "http://127.0.0.1:8933/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8933/api/gcsp/manual/order",
+      "page": "http://127.0.0.1:8933/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8933/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8933/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8933/api/gcsp/manual/claim",
+      "page": "http://127.0.0.1:8933/gcsp-presenter.html"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 403 (Forbidden)",
+      "url": "http://127.0.0.1:8933/api/gcsp/scheme-team/cases",
+      "page": "http://127.0.0.1:8933/gcsp-greg.html"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [
+    {
+      "url": "http://127.0.0.1:8933/api/gcsp/manual/stock",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:8933/api/gcsp/presenter/controls",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    },
+    {
+      "url": "http://127.0.0.1:8933/api/gcsp/scheme-team/cases",
+      "error": "net::ERR_ABORTED",
+      "method": "GET"
+    }
+  ],
+  "badResponses": [
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8933/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8933/api/gcsp/manual/draft",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8933/api/gcsp/manual/order",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8933/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 404,
+      "url": "http://127.0.0.1:8933/api/gcsp/manual/claim",
+      "method": "GET",
+      "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+    },
+    {
+      "status": 403,
+      "url": "http://127.0.0.1:8933/api/gcsp/scheme-team/cases",
+      "method": "GET",
+      "body": "{\"status\":\"forbidden\",\"reason\":\"This person cannot perform that action.\",\"contractVersion\":\"1.0.0\"}"
+    }
+  ],
+  "notes": [
+    "1280px gallery first page height 3214px, first card 832px, header 56px, 6/6 Car facts open",
+    "1280px Renewal cases: region bottom minus last content bottom 21px, wrapper {\"tag\":\"div\",\"className\":\"gcsp\",\"minHeight\":\"0px\",\"background\":\"rgba(0, 0, 0, 0)\",\"height\":400}"
+  ],
+  "origin": "http://127.0.0.1:8933",
+  "orderPosts": [],
+  "finishedAt": "2026-11-09T04:21:37.427Z",
+  "counts": {
+    "steps": 5,
+    "passed": 5,
+    "screenshots": 5,
+    "keyboardChecks": 3
+  }
+}
