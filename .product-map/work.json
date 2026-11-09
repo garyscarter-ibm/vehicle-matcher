@@ -3798,13 +3798,13 @@
     {
       "id": "FUCQ-155",
       "title": "Publication supervisor treats uncertain process inspection as cleanup success",
-      "status": "In Progress",
+      "status": "In Review",
       "original_status": "In Progress",
       "assignee": "Russell Gowers",
       "type": "Bug",
       "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-155",
       "branch": "dev/DEV-2026-11-07-GC-005",
-      "observed_at": "2026-11-09T00:59:30Z",
+      "observed_at": "2026-11-09T01:24:00Z",
       "slices": [
         {
           "id": "uncertainty-gate-verify",
@@ -3812,6 +3812,34 @@
           "title": "Verify is-False gates, truth table and supervisor/contract pins",
           "observed_at": "2026-11-09T00:59:30Z",
           "evidence": "No new code: b556ee34 (ancestor of gcsp-poc a6a213f3) already has both gates at lines 37/44 as 'is False'. Verified at a6a213f3: py_compile OK; truth table False->allow/groupsAbsent true, True->refuse/false, None->refuse/false (old not-x allowed None); supervisor sha 48fc3c4f matches pin in contract 715a5ad2, the contract the 2026-11-07 publication ran under."
+        }
+      ],
+      "unsliced": false
+    },
+    {
+      "id": "FUCQ-153",
+      "title": "Indexed corpus falsely rejects unchanged bytes after ctime metadata drift",
+      "status": "In Review",
+      "original_status": "In Progress",
+      "assignee": "Russell Gowers",
+      "type": "Bug",
+      "url": "https://ibm-consulting.atlassian.net/browse/FUCQ-153",
+      "branch": "dev/DEV-2026-11-07-GC-003",
+      "observed_at": "2026-11-09T01:24:00Z",
+      "slices": [
+        {
+          "id": "ctime-drift-regressions",
+          "status": "complete",
+          "title": "Verify repair and add guard regressions (AC1-4)",
+          "observed_at": "2026-11-09T01:24:00Z",
+          "evidence": "Repair 2c9ca8ba/234d75b7 already on base; pre-fix loader fails 5/13 on ctime-only drift; 4 new guard tests; targeted 45/45 on f2c6b4ae; merged f762fd31."
+        },
+        {
+          "id": "scale-proof-rerun",
+          "status": "not-started",
+          "title": "Reviewed rerun of the >64 MiB proof (AC5)",
+          "observed_at": "2026-11-09T01:24:00Z",
+          "evidence": "Needs a separately reviewed run of docs/gcsp/evidence/fucq62/scale-proof-plan-2026-11-07.json; not run overnight."
         }
       ],
       "unsliced": false
