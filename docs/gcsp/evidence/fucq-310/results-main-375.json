@@ -1,0 +1,681 @@
+[
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp/access?next=%2Fgcsp-presenter.html"
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "failed": "GET /api/gcsp/manual/draft 404",
+  "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "failed": "GET /api/gcsp/manual/draft 404",
+  "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-draft\",\"contractVersion\":\"1.0.0\"}"
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "failed": "GET /api/gcsp/manual/order 404",
+  "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "failed": "GET /api/gcsp/manual/claim 404",
+  "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "failed": "GET /api/gcsp/manual/claim 404",
+  "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "failed": "GET /api/gcsp/manual/stock 400",
+  "body": "{\"status\":\"invalid\",\"code\":\"invalid-manual-draft\",\"reasons\":[{\"field\":\"requestedCollectionDate\",\"reason\":\"Choose a date inside the supplied collection and renewal window.\"}],\"view\":{\"state\":\"validation\",\"editable\":true,\"supportOwner\":\"employee\",\"action\":\"correct-fields\"},\"contractVersion\":\"1.0.0\"}"
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "failed": "GET /api/gcsp/manual/claim 404",
+  "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 400 (Bad Request)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "failed": "GET /api/gcsp/manual/stock 400",
+  "body": "{\"status\":\"invalid\",\"code\":\"invalid-manual-draft\",\"reasons\":[{\"field\":\"requestedCollectionDate\",\"reason\":\"Choose a date inside the supplied collection and renewal window.\"}],\"view\":{\"state\":\"validation\",\"editable\":true,\"supportOwner\":\"employee\",\"action\":\"correct-fields\"},\"contractVersion\":\"1.0.0\"}"
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "failed": "GET /api/gcsp/manual/claim 404",
+  "body": "{\"status\":\"not-found\",\"resourceType\":\"manual-claim\",\"view\":{\"state\":\"no-claim\",\"editable\":false,\"supportOwner\":\"employee\",\"action\":\"browse-stock\"},\"contractVersion\":\"1.0.0\"}"
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "failed": "GET /api/gcsp/manual/order 404",
+  "body": "{\"status\":\"not-found\",\"resourceType\":\"pending_operations\",\"contractVersion\":\"1.0.0\"}"
+ },
+ {
+  "step": "paula-ordered",
+  "h1": "Order received"
+ },
+ {
+  "shot": {
+   "file": "main-375-01-paula-order-outcome.png",
+   "url": "/gcsp-presenter.html",
+   "h1": "Order received",
+   "audit": {
+    "title": "GCSP presenter workspace",
+    "lang": "en-GB",
+    "overflowX": 0,
+    "h1Count": 1,
+    "headings": [
+     "H3:Synthetic faults",
+     "H3:Last tick",
+     "H1:Order received",
+     "H3:F70 Sports Hatch in Alpine White",
+     "H2:Points and contract",
+     "H2:Requested collection",
+     "H2:Order",
+     "H2:Order progress",
+     "H2:Next steps",
+     "H2:Employee",
+     "H2:Driver and licence",
+     "H2:Contact and requirements",
+     "H2:Car you are returning"
+    ],
+    "landmarks": [
+     "header:",
+     "nav:Portal",
+     "nav:Breadcrumb",
+     "main:",
+     "section:Order progress"
+    ],
+    "live": [
+     "grouppolite:\"PPaula (fictional)Paula (fictional)Grade G7\"",
+     "status:\"Presenter controls ready\"",
+     "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+     "status:\"\"",
+     "status:\"Order received. Awaiting approval. Order reference GCSP-0000\"",
+     "polite:\"Eligible\""
+    ],
+    "imgsNoAlt": 0,
+    "unnamed": [],
+    "small": [],
+    "under44": 0,
+    "lowContrast": [],
+    "lowContrastCount": 0,
+    "emDash": [],
+    "focusableCount": 38
+   }
+  }
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "failed": "GET /api/gcsp/comparison/jobs/latest 404",
+  "body": "{\"status\":\"not-found\",\"resourceType\":\"comparison_jobs\",\"contractVersion\":\"1.0.0\"}"
+ },
+ {
+  "consoleError": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+  "at": "/gcsp-presenter.html"
+ },
+ {
+  "failed": "GET /api/gcsp/comparison/jobs/latest 404",
+  "body": "{\"status\":\"not-found\",\"resourceType\":\"comparison_jobs\",\"contractVersion\":\"1.0.0\"}"
+ },
+ {
+  "step": "plan",
+  "text": "NEXT ORDER No saved demand to plan for yet Cars left out of this plan 19 new cars aren't in the ordering list yet, so this plan leaves them out: F70 Sports Hatch, G42 Coupe, G61 i5. Order plan updated for 6 Nov 2026, 11:30 GMT. Request from Production There is nothing to request yet. Forecast source Expressed demand (deterministic baseline) Policy version gcsp-policy-v1+offer-journey-v1 Plan for 6 Nov 2026, 11:30 GMT Built from what employees have saved and confirmed they need. It is not a prediction. Employees need to save and confirm a brief with a renewal date before a plan can be made. Change limits Change a limit, then preview the effect. Previewing saves and orders nothing. Model limits 1 Series Sports Hatch Min Max 3 Series Saloon Min Max 3 Series Touring Min Max i5 Touring Min Max "
+ },
+ {
+  "shot": {
+   "file": "main-375-02-next-order.png",
+   "url": "/gcsp-presenter.html",
+   "h1": "Demand and supply",
+   "audit": {
+    "title": "GCSP presenter workspace",
+    "lang": "en-GB",
+    "overflowX": 0,
+    "h1Count": 1,
+    "headings": [
+     "H3:Synthetic faults",
+     "H3:Last tick",
+     "H1:Demand and supply",
+     "H2:No briefs yet",
+     "H2:Stock",
+     "H2:Preview and publish",
+     "H2:Order requests",
+     "H3:Request cars",
+     "H2:No saved demand to plan for yet",
+     "H3:Cars left out of this plan",
+     "H3:Change limits",
+     "H4:Model limits",
+     "H4:Derivative limits",
+     "H2:Route comparison",
+     "H3:No stored result yet",
+     "H2:Renewal cases",
+     "H2:No renewal cases"
+    ],
+    "landmarks": [
+     "header:",
+     "nav:Portal",
+     "nav:Breadcrumb",
+     "main:",
+     "section:Stock",
+     "section:Preview and publish policy",
+     "section:Check your choices",
+     "section:Order requests",
+     "section:Next order plan",
+     "section:Check your choices",
+     "section:Route comparison",
+     "section:Renewal cases"
+    ],
+    "live": [
+     "grouppolite:\"GRGregGregScheme ordering lead, synthetic demo run\"",
+     "status:\"Presenter controls ready\"",
+     "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+     "status:\"\"",
+     "status:\"Figures updated for 6 Nov 2026, 11:30 GMT.\"",
+     "status:\"DemandNo briefs yetNo employee has confirmed a brief yet, so\"",
+     "status:\"Draft. Change values, then preview their effect.\"",
+     "statuspolite:\"Orders up to date.\"",
+     "status:\"Order plan updated for 6 Nov 2026, 11:30 GMT.\"",
+     "status:\"Stored comparisons loaded.\""
+    ],
+    "imgsNoAlt": 0,
+    "unnamed": [],
+    "small": [],
+    "under44": 6,
+    "lowContrast": [],
+    "lowContrastCount": 0,
+    "emDash": [],
+    "focusableCount": 94
+   }
+  }
+ },
+ {
+  "leftOutNotice": "Cars left out of this plan 19 new cars aren't in the ordering list yet, so this plan leaves them out: F70 Sports Hatch, G42 Coupe, G61 i5.",
+  "found": true
+ },
+ {
+  "shot": {
+   "file": "main-375-03-left-out-notice.png",
+   "url": "/gcsp-presenter.html",
+   "h1": "Demand and supply",
+   "audit": {
+    "title": "GCSP presenter workspace",
+    "lang": "en-GB",
+    "overflowX": 0,
+    "h1Count": 1,
+    "headings": [
+     "H3:Synthetic faults",
+     "H3:Last tick",
+     "H1:Demand and supply",
+     "H2:No briefs yet",
+     "H2:Stock",
+     "H2:Preview and publish",
+     "H2:Order requests",
+     "H3:Request cars",
+     "H2:No saved demand to plan for yet",
+     "H3:Cars left out of this plan",
+     "H3:Change limits",
+     "H4:Model limits",
+     "H4:Derivative limits",
+     "H2:Route comparison",
+     "H3:No stored result yet",
+     "H2:Renewal cases",
+     "H2:No renewal cases"
+    ],
+    "landmarks": [
+     "header:",
+     "nav:Portal",
+     "nav:Breadcrumb",
+     "main:",
+     "section:Stock",
+     "section:Preview and publish policy",
+     "section:Check your choices",
+     "section:Order requests",
+     "section:Next order plan",
+     "section:Check your choices",
+     "section:Route comparison",
+     "section:Renewal cases"
+    ],
+    "live": [
+     "grouppolite:\"GRGregGregScheme ordering lead, synthetic demo run\"",
+     "status:\"Presenter controls ready\"",
+     "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+     "status:\"\"",
+     "status:\"Figures updated for 6 Nov 2026, 11:30 GMT.\"",
+     "status:\"DemandNo briefs yetNo employee has confirmed a brief yet, so\"",
+     "status:\"Draft. Change values, then preview their effect.\"",
+     "statuspolite:\"Orders up to date.\"",
+     "status:\"Order plan updated for 6 Nov 2026, 11:30 GMT.\"",
+     "status:\"Stored comparisons loaded.\""
+    ],
+    "imgsNoAlt": 0,
+    "unnamed": [],
+    "small": [],
+    "under44": 6,
+    "lowContrast": [],
+    "lowContrastCount": 0,
+    "emDash": [],
+    "focusableCount": 94
+   }
+  }
+ },
+ {
+  "leftOutNoticeEmDash": false
+ },
+ {
+  "step": "plan-preview",
+  "text": "PREVIEW Order 2 vehicles: 1 Series Sports Hatch 120 Preview Preview only. Nothing is saved, published or ordered. Back to current plan Cars left out of this plan 19 new cars aren't in the ordering list yet, so this plan leaves them out: F70 Sports Hatch, G42 Coupe, G61 i5. Preview ready. Nothing is saved or ordered. Request 2 vehicles from Production Nothing is ordered until Production confirms. Forecast source Expressed demand (deterministic baseline) Policy version preview-09781888adee6b3a6e7aff9f Plan for 6 Nov 2026, 11:30 GMT Built from what employees have saved and confirmed they need. It is not a prediction. Differences from the current plan Derivative Current Preview Change 1 Series Sports Hatch 120 0 2 +2 Outcome before and after Measure Current Preview Acceptable coverage 0 of 0 0 of 0 Unmatched supply 0 vehicles 2 vehicles Spend £0 £66,000 This preview differs from the current plan. Proposed order Model Derivative Quantity 1 Series Sports Hatch 120 2 3 Series Saloon 320i 0 3 Series Saloon 330e 0 3 Series Touring 320i 0 i5 Touring eDrive40 0 Order totals by model Model Quantity 1 Series Sports Hatch 2 3 Series Saloon 0 3 Series Touring 0 i5 Touring 0 Acceptable coverage before renewal 0 of 0 No renewals to cover yet Unallocated-stock risk 2 vehicles 2 of 2 vehicles in supply not matched to a renewal Spend £66,000 2 vehicles in this order Unmatched supply by source Source Vehicles New order: 1 Series Sports Hatch 120 2 Unmet needs No unmet needs at this time Binding constraints Constraint Detail 1 Series Sports Hatch 120 maximum Quantity meets maximum 2. 3 Series Saloon 320i minimum Quantity meets minimum 0. 3 Series Saloon 330e minimum Quantity meets minimum 0. 3 Series Touring 320i minimum Quantity meets minimum 0. i5 Touring eDrive40 minimum Quantity meets minimum 0. 1 Series Sports Hatch minimum Quantity meets minimum 2. 1 Series Sports Hatch maximum Quantity meets maximum 2. 3 Series Saloon minimum Quantity meets minimum 0. 3 Series Touring minimum Quantity meets minimum 0. i5 Touring minimum Quantity meets minimum 0. Alternative plans Plan Compared What it does No new orders Not possible Not possible inside these limits: 1 Series Sports Hatch minimum. Next best plan Different Order 3 vehicles: 2 × 1 Series Sports Hatch 120, 1 × 3 Series Saloon 320i. Covers 0 of 0 renewals. Spend £105,000. 3 vehicles unmatched. Synthetic-trained model No learned model is active, so only the baseline plan from expressed demand is shown. Change limits Change a l"
+ },
+ {
+  "shot": {
+   "file": "main-375-04-next-order-preview.png",
+   "url": "/gcsp-presenter.html",
+   "h1": "Demand and supply",
+   "audit": {
+    "title": "GCSP presenter workspace",
+    "lang": "en-GB",
+    "overflowX": 0,
+    "h1Count": 1,
+    "headings": [
+     "H3:Synthetic faults",
+     "H3:Last tick",
+     "H1:Demand and supply",
+     "H2:No briefs yet",
+     "H2:Stock",
+     "H2:Preview and publish",
+     "H2:Order requests",
+     "H3:Request cars",
+     "H2:Order 2 vehicles: 1 Series Sports Hatch 120",
+     "H3:Preview",
+     "H3:Cars left out of this plan",
+     "H3:Unmet needs",
+     "H3:Synthetic-trained model",
+     "H3:Change limits",
+     "H4:Model limits",
+     "H4:Derivative limits",
+     "H2:Route comparison",
+     "H3:No stored result yet",
+     "H2:Renewal cases",
+     "H2:No renewal cases"
+    ],
+    "landmarks": [
+     "header:",
+     "nav:Portal",
+     "nav:Breadcrumb",
+     "main:",
+     "section:Stock",
+     "section:Preview and publish policy",
+     "section:Check your choices",
+     "section:Order requests",
+     "section:Next order plan",
+     "section:Unmet needs",
+     "section:Synthetic-trained model",
+     "section:Check your choices",
+     "section:Route comparison",
+     "section:Renewal cases"
+    ],
+    "live": [
+     "grouppolite:\"GRGregGregScheme ordering lead, synthetic demo run\"",
+     "status:\"Presenter controls ready\"",
+     "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+     "status:\"\"",
+     "status:\"Figures updated for 6 Nov 2026, 11:30 GMT.\"",
+     "status:\"DemandNo briefs yetNo employee has confirmed a brief yet, so\"",
+     "status:\"Draft. Change values, then preview their effect.\"",
+     "statuspolite:\"Orders up to date.\"",
+     "status:\"Preview ready. Nothing is saved or ordered.\"",
+     "status:\"Stored comparisons loaded.\""
+    ],
+    "imgsNoAlt": 0,
+    "unnamed": [],
+    "small": [],
+    "under44": 6,
+    "lowContrast": [],
+    "lowContrastCount": 0,
+    "emDash": [],
+    "focusableCount": 102
+   }
+  }
+ },
+ {
+  "submit": "Request 2 vehicles from Production",
+  "enabled": true
+ },
+ {
+  "step": "plan-submitted",
+  "text": "NEXT ORDER No saved demand to plan for yet Cars left out of this plan 19 new cars aren't in the ordering list yet, so this plan leaves them out: F70 Sports Hatch, G42 Coupe, G61 i5. Requested from Production Requested at 6 Nov 2026, 11:30 GMT. Production has not confirmed anything yet. See Order tracking. Requested. Production has not confirmed any of this yet. Request from Production There is nothing to request yet. Forecast source Expressed demand (deterministic baseline) Policy version gcsp-policy-v1+offer-journey-v1 Plan for 6 Nov 2026, 11:30 GMT Built from what employees have saved and confirmed they need. It is not a prediction. Employees need to save and confirm a brief with a renewal date before a plan can be made. Change limits Change a limit, then preview the effect. Previewing saves and orders nothing. Model limits 1 Series Sports Hatch Min Max 3 Series Saloon Min Max 3 Series Touring Min Max i5 Touring Min Max Derivative limits 1 Series Sports Hatch 120 Min Max 2 vehicles 0 vehicles 10 vehicles 3 Series Saloon 320i Min Max 3 vehicles 0 vehicles 10 vehicles 3 Series Saloon 330e Min Max 2 vehicles 0 vehicles 10 vehicles 3 Series Touring 320i Min Max 3 vehicles 0 vehicles 10 vehicles i5 Touring eDrive40 Min Max 2 vehicles 0 vehicles 10 vehicles Order budget (pounds) Preview with these limits Reset limits"
+ },
+ {
+  "shot": {
+   "file": "main-375-05-next-order-submitted.png",
+   "url": "/gcsp-presenter.html",
+   "h1": "Demand and supply",
+   "audit": {
+    "title": "GCSP presenter workspace",
+    "lang": "en-GB",
+    "overflowX": 0,
+    "h1Count": 1,
+    "headings": [
+     "H3:Synthetic faults",
+     "H3:Last tick",
+     "H1:Demand and supply",
+     "H2:No briefs yet",
+     "H2:Stock",
+     "H2:Preview and publish",
+     "H2:Order requests",
+     "H3:Request cars",
+     "H2:No saved demand to plan for yet",
+     "H3:Cars left out of this plan",
+     "H3:Requested from Production",
+     "H3:Change limits",
+     "H4:Model limits",
+     "H4:Derivative limits",
+     "H2:Route comparison",
+     "H3:No stored result yet",
+     "H2:Renewal cases",
+     "H2:No renewal cases"
+    ],
+    "landmarks": [
+     "header:",
+     "nav:Portal",
+     "nav:Breadcrumb",
+     "main:",
+     "section:Stock",
+     "section:Preview and publish policy",
+     "section:Check your choices",
+     "section:Order requests",
+     "section:Next order plan",
+     "section:Check your choices",
+     "section:Route comparison",
+     "section:Renewal cases"
+    ],
+    "live": [
+     "grouppolite:\"GRGregGregScheme ordering lead, synthetic demo run\"",
+     "status:\"Presenter controls ready\"",
+     "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+     "status:\"\"",
+     "status:\"Figures updated for 6 Nov 2026, 11:30 GMT.\"",
+     "status:\"DemandNo briefs yetNo employee has confirmed a brief yet, so\"",
+     "status:\"Draft. Change values, then preview their effect.\"",
+     "statuspolite:\"Orders up to date.\"",
+     "status:\"Requested. Production has not confirmed any of this yet.\"",
+     "status:\"Stored comparisons loaded.\""
+    ],
+    "imgsNoAlt": 0,
+    "unnamed": [],
+    "small": [],
+    "under44": 6,
+    "lowContrast": [],
+    "lowContrastCount": 0,
+    "emDash": [],
+    "focusableCount": 94
+   }
+  }
+ },
+ {
+  "productionRequestOptions": [
+   "1 Series Sports Hatch 120: 2 outstanding"
+  ]
+ },
+ {
+  "responseOptions": [
+   "Confirm now",
+   "Delay outstanding quantity"
+  ]
+ },
+ {
+  "step": "production-saved",
+  "orders": "Order requests Refresh orders Production confirmed; release is queued for its expected date. Synthetic production · as of 6 Nov 2026. Only released cars enter supply. Requested, confirmed and released cars Car Stage Requested Confirmed Released Expected / delayed 1 Series Sports Hatch 120 Partly confirmed 2 1 0 Confirmed: 1 due 1 Jan 2027 Request cars Model 3 Series Saloon 3 Series Touring i5 Touring 1 Series Sports Hatch Derivative 320i Quantity Submit request Synthetic production controls Request 1 Series Sports Hatch 120: 1 outstanding Production response Confirm now Delay outstanding quantity Quantity to confirm Save production response",
+  "plan": "NEXT ORDER No saved demand to plan for yet Cars left out of this plan 19 new cars aren't in the ordering list yet, so this plan leaves them out: F70 Sports Hatch, G42 Coupe, G61 i5. Replanned after a Production response Replanned after Production partly confirmed 1 vehicle at 6 Nov 2026, 11:30 GMT. Order plan updated for 6 Nov 2026, 11:30 GMT. Request from Production There is nothing to request yet. Forecast source Expressed demand (deterministic baseline) Policy version gcsp-policy-v1+offer-journey-v1 Plan for 6 Nov 2026, 11:30 GMT Built from what employees have saved and confirmed they need. It is not a prediction. Employees need to save and confirm a brief with a renewal date before a plan can be made. Change limits Change a limit, then preview the effect. Previewing saves and orders nothing. Model limits 1 Series Sports Hatch Min Max 3 Series Saloon Min Max 3 Series Touring Min Max i5 Touring Min Max Derivative limits 1 Series Sports Hatch 120 Min Max 2 vehicles 0 vehicles 10 vehicles 3 Series Saloon 320i Min Max 3 vehicles 0 vehicles 10 vehicles 3 Series Saloon 330e Min Max 2 vehicles 0 vehicles 10 vehicles 3 Series Touring 320i Min Max 3 vehicles 0 vehicles 10 vehicles i5 Tou"
+ },
+ {
+  "shot": {
+   "file": "main-375-06-production-saved.png",
+   "url": "/gcsp-presenter.html",
+   "h1": "Demand and supply",
+   "audit": {
+    "title": "GCSP presenter workspace",
+    "lang": "en-GB",
+    "overflowX": 0,
+    "h1Count": 1,
+    "headings": [
+     "H3:Synthetic faults",
+     "H3:Last tick",
+     "H1:Demand and supply",
+     "H2:No briefs yet",
+     "H2:Stock",
+     "H2:Preview and publish",
+     "H2:Order requests",
+     "H3:Request cars",
+     "H2:No saved demand to plan for yet",
+     "H3:Cars left out of this plan",
+     "H3:Replanned after a Production response",
+     "H3:Change limits",
+     "H4:Model limits",
+     "H4:Derivative limits",
+     "H2:Route comparison",
+     "H3:No stored result yet",
+     "H2:Renewal cases",
+     "H2:No renewal cases"
+    ],
+    "landmarks": [
+     "header:",
+     "nav:Portal",
+     "nav:Breadcrumb",
+     "main:",
+     "section:Stock",
+     "section:Preview and publish policy",
+     "section:Check your choices",
+     "section:Order requests",
+     "section:Next order plan",
+     "section:Check your choices",
+     "section:Route comparison",
+     "section:Renewal cases"
+    ],
+    "live": [
+     "grouppolite:\"GRGregGregScheme ordering lead, synthetic demo run\"",
+     "status:\"Presenter controls ready\"",
+     "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+     "status:\"\"",
+     "status:\"Figures updated for 6 Nov 2026, 11:30 GMT.\"",
+     "status:\"DemandNo briefs yetNo employee has confirmed a brief yet, so\"",
+     "status:\"Draft. Change values, then preview their effect.\"",
+     "statuspolite:\"Production confirmed; release is queued for its expected dat\"",
+     "status:\"Order plan updated for 6 Nov 2026, 11:30 GMT.\"",
+     "status:\"Stored comparisons loaded.\""
+    ],
+    "imgsNoAlt": 0,
+    "unnamed": [],
+    "small": [],
+    "under44": 6,
+    "lowContrast": [],
+    "lowContrastCount": 0,
+    "emDash": [],
+    "focusableCount": 94
+   }
+  }
+ },
+ {
+  "shot": {
+   "file": "main-375-07-next-order-replanned.png",
+   "url": "/gcsp-presenter.html",
+   "h1": "Demand and supply",
+   "audit": {
+    "title": "GCSP presenter workspace",
+    "lang": "en-GB",
+    "overflowX": 0,
+    "h1Count": 1,
+    "headings": [
+     "H3:Synthetic faults",
+     "H3:Last tick",
+     "H1:Demand and supply",
+     "H2:No briefs yet",
+     "H2:Stock",
+     "H2:Preview and publish",
+     "H2:Order requests",
+     "H3:Request cars",
+     "H2:No saved demand to plan for yet",
+     "H3:Cars left out of this plan",
+     "H3:Replanned after a Production response",
+     "H3:Change limits",
+     "H4:Model limits",
+     "H4:Derivative limits",
+     "H2:Route comparison",
+     "H3:No stored result yet",
+     "H2:Renewal cases",
+     "H2:No renewal cases"
+    ],
+    "landmarks": [
+     "header:",
+     "nav:Portal",
+     "nav:Breadcrumb",
+     "main:",
+     "section:Stock",
+     "section:Preview and publish policy",
+     "section:Check your choices",
+     "section:Order requests",
+     "section:Next order plan",
+     "section:Check your choices",
+     "section:Route comparison",
+     "section:Renewal cases"
+    ],
+    "live": [
+     "grouppolite:\"GRGregGregScheme ordering lead, synthetic demo run\"",
+     "status:\"Presenter controls ready\"",
+     "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+     "status:\"\"",
+     "status:\"Figures updated for 6 Nov 2026, 11:30 GMT.\"",
+     "status:\"DemandNo briefs yetNo employee has confirmed a brief yet, so\"",
+     "status:\"Draft. Change values, then preview their effect.\"",
+     "statuspolite:\"Production confirmed; release is queued for its expected dat\"",
+     "status:\"Order plan updated for 6 Nov 2026, 11:30 GMT.\"",
+     "status:\"Stored comparisons loaded.\""
+    ],
+    "imgsNoAlt": 0,
+    "unnamed": [],
+    "small": [],
+    "under44": 6,
+    "lowContrast": [],
+    "lowContrastCount": 0,
+    "emDash": [],
+    "focusableCount": 94
+   }
+  }
+ },
+ {
+  "replanned": true,
+  "api": [
+   "GET /api/gcsp/greg/order-plan 200 ok",
+   "GET /api/gcsp/greg/order-plan 200 ok",
+   "POST /api/gcsp/greg/order-plan/preview 200 ok",
+   "POST /api/gcsp/greg/order-plan/submit 200 ok",
+   "GET /api/gcsp/greg/order-plan 200 ok",
+   "GET /api/gcsp/greg/order-plan 200 ok"
+  ]
+ },
+ {
+  "shot": {
+   "file": "main-375-08-dashboard-end.png",
+   "url": "/gcsp-presenter.html",
+   "h1": "Demand and supply",
+   "audit": {
+    "title": "GCSP presenter workspace",
+    "lang": "en-GB",
+    "overflowX": 0,
+    "h1Count": 1,
+    "headings": [
+     "H3:Synthetic faults",
+     "H3:Last tick",
+     "H1:Demand and supply",
+     "H2:No briefs yet",
+     "H2:Stock",
+     "H2:Preview and publish",
+     "H2:Order requests",
+     "H3:Request cars",
+     "H2:No saved demand to plan for yet",
+     "H3:Cars left out of this plan",
+     "H3:Replanned after a Production response",
+     "H3:Change limits",
+     "H4:Model limits",
+     "H4:Derivative limits",
+     "H2:Route comparison",
+     "H3:No stored result yet",
+     "H2:Renewal cases",
+     "H2:No renewal cases"
+    ],
+    "landmarks": [
+     "header:",
+     "nav:Portal",
+     "nav:Breadcrumb",
+     "main:",
+     "section:Stock",
+     "section:Preview and publish policy",
+     "section:Check your choices",
+     "section:Order requests",
+     "section:Next order plan",
+     "section:Check your choices",
+     "section:Route comparison",
+     "section:Renewal cases"
+    ],
+    "live": [
+     "grouppolite:\"GRGregGregScheme ordering lead, synthetic demo run\"",
+     "status:\"Presenter controls ready\"",
+     "alert:\"The demo was restarted. Reload the page to continue.Reload\"",
+     "status:\"\"",
+     "status:\"Figures updated for 6 Nov 2026, 11:30 GMT.\"",
+     "status:\"DemandNo briefs yetNo employee has confirmed a brief yet, so\"",
+     "status:\"Draft. Change values, then preview their effect.\"",
+     "statuspolite:\"Production confirmed; release is queued for its expected dat\"",
+     "status:\"Order plan updated for 6 Nov 2026, 11:30 GMT.\"",
+     "status:\"Stored comparisons loaded.\""
+    ],
+    "imgsNoAlt": 0,
+    "unnamed": [],
+    "small": [],
+    "under44": 6,
+    "lowContrast": [],
+    "lowContrastCount": 0,
+    "emDash": [],
+    "focusableCount": 94
+   }
+  }
+ },
+ {
+  "done": true
+ }
+]
