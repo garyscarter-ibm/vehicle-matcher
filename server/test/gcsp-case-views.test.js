@@ -243,6 +243,8 @@ test('FUCQ-261: the queue stacks at narrow widths with every column labelled, an
   assert.ok(labels.every((label) => label.split(' · ').length === 2), labels.join()); destroy();
   const css = readFileSync(new URL('../../blocks/gcsp/cases/gcsp-case-queue.css', import.meta.url), 'utf8');
   assert.match(css, /@media \(min-width: 641px\) \{ \.gcsp \.gcsp-case-queue \.gcsp-table \{ min-width: 1050px; \} \}/);
+  const kit = readFileSync(new URL('../../blocks/gcsp/kit/gcsp-kit.css', import.meta.url), 'utf8');
+  assert.match(kit, /\.is-stack \.gcsp-table-td::before \{[^}]*min-width: min\(6em, 40%\)/, 'a stacked label cannot be squeezed by a long value');
 });
 test('FUCQ-261: a resolved case with a confirmed change promises no further review, for Paula or Greg', () => {
   const remedy = { type: 'preference-relaxation', path: 'preferences.body.value', value: 'hatchback', expectedBriefVersion: 1, confirmationState: 'employee-confirmed' };
