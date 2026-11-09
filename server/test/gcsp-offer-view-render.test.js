@@ -452,7 +452,7 @@ test('the offer-hosted progress shows completed and missed handovers, rebooks th
   const missed = await host('appointment-no-show', (rebooked) => ({ requestAppointment: async (input) => { requests.push(input.slotId); rebooked(); return { status: 'ok', value: {} }; } }));
   assert.match(missed.area().textContent, /Handover missed: 8 Nov 2026, 09:00/);
   const offered = all['appointment-no-show'].appointment.value.offeredSlots;
-  const buttons = [...missed.area().querySelectorAll('button')]; assert.equal(buttons.length, offered.length); assert.equal(buttons[0].textContent, 'Request 9 Nov 2026, 09:00');
+  const buttons = [...missed.area().querySelectorAll('button')]; assert.equal(buttons.length, offered.length); assert.equal(buttons[0].getAttribute('aria-label'), 'Request 9 Nov 2026, 09:00');
   buttons[0].click();
   for (let n = 0; n < 60 && !/Not booked yet/.test(missed.area()?.textContent ?? ''); n += 1) await new Promise((done) => setTimeout(done, 15));
   assert.deepEqual(requests, [offered[0].slotId]);

@@ -192,7 +192,8 @@ for (const name of ['window', 'document', 'HTMLElement', 'Node', 'CustomEvent', 
 }
 const { mountAccount, defineGcspAccount } = await import('../../blocks/gcsp/account/gcsp-account.js');
 const tick = () => new Promise((done) => setTimeout(done, 0));
-const findButton = (root, text) => [...root.querySelectorAll('button')].find((node) => node.textContent === text);
+// Matches the accessible name: slot buttons show the time and carry the full name in aria-label (FUCQ-299).
+const findButton = (root, text) => [...root.querySelectorAll('button')].find((node) => (node.getAttribute('aria-label') ?? node.textContent) === text);
 const findDetail = (root, text) => [...root.querySelectorAll('details')].find((node) => node.firstElementChild.textContent === text);
 // Fixtures carry the policy stand-in scheme names; most render tests cover the unnamed "Scheme N" fallback.
 const unnamed = (name) => { const input = accountFixture(name); for (const history of input.value.histories) delete history.label; return input; };
