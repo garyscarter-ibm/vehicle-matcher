@@ -16,7 +16,8 @@ export const EXPERIMENT_IDS = Object.freeze(['process-only', 'order-mix', 'point
 export const EXPERIMENTS_KEY = 'comparison.experiments.v1';
 const POINTS_KEY = 'comparison.pointsAllowanceMultiplier';
 const WHAT_IF_LIMITATION = 'What-if experiment: the changed values were never published as live policy.';
-const EXPECTED_KEY = Object.freeze({ 'order-mix': 'comparison.modelLineMix', points: POINTS_KEY, 'hold-sweep': 'hold.buddy.durationSeconds' });
+/** The policy key each what-if experiment changes. */
+export const EXPERIMENT_KEYS = Object.freeze({ 'order-mix': 'comparison.modelLineMix', points: POINTS_KEY, 'hold-sweep': 'hold.buddy.durationSeconds' });
 const ROUTES = Object.freeze({ current: replayCurrentRoute, buddy: replayBuddyRoute });
 const refuse = (boundary) => { throw new ComparisonRunError('invalid-input', boundary); };
 const byKey = (a, b) => (a.key < b.key ? -1 : a.key > b.key ? 1 : 0);
@@ -75,7 +76,7 @@ async function prepare(experiment, { policy, now = () => new Date().toISOString(
 
   const definitionRow = await comparisonAssumption(policy, EXPERIMENTS_KEY, read);
   const definition = definitionRow.value?.experiments?.[id];
-  if (definitionRow.value?.schemaVersion !== 1 || !plain(definition) || definition.key !== EXPECTED_KEY[id] || !text(definition.unit)
+  if (definitionRow.value?.schemaVersion !== 1 || !plain(definition) || definition.key !== EXPERIMENT_KEYS[id] || !text(definition.unit)
     || (id !== 'order-mix' && !(Number.isFinite(definition.minimum) && Number.isFinite(definition.maximum) && definition.minimum <= definition.maximum))
     || (id === 'hold-sweep' && !(Number.isSafeInteger(definition.maximumValues) && definition.maximumValues >= 1))) refuse(EXPERIMENTS_KEY);
   const baseline = snapshot.assumptions[definition.key];

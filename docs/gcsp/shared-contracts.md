@@ -1174,6 +1174,8 @@ Presenter-run preparation only. Nothing runs at startup or on a timer, and the b
 
 **Command.** `node scripts/gcsp-comparison.mjs --experiment process [--seeds a,b,c] [--out <file>]` runs FUCQ-136's shared runner, prints the measures table and stores the immutable result through the configured repository (`GCSP_REPOSITORY_MODE`: memory by default, or `postgres` with `GCSP_DATABASE_URL`). The replay always runs in memory in the command's own process, with policy from the reviewed repository seed, in either mode; only the result goes to the configured repository, so a PostgreSQL run makes no policy queries and gives the same measures and digests as a memory run (FUCQ-241). `--out` writes the verified file after a successful run and before storing, so a storage failure keeps it. `--import <file>` stores an existing file without running anything. Exit codes: 0 stored, 2 refused input or file, 1 execution or storage failure. A failed run stores nothing; memory mode keeps nothing after the command ends.
 
+**What-if experiments.** The command line now runs the what-if experiments too; see "Command line" under Comparison worker jobs · FUCQ-175.
+
 **Result file.** `{ format: 'gcsp-process-comparison-result-v1', digest, result }`. Import refuses a changed digest, another format, or a result this version does not understand (kind, experiment, schema version or caveat), and stores nothing.
 
 **Runtime load.** `GCSP_COMPARISON_RESULT_FILE=<file>` opts in to loading a file when the runtime opens. It stores through the same immutable path, so reopening changes nothing. A missing or refused file logs one warning and startup continues.
@@ -1208,6 +1210,118 @@ What-if experiments that sit beside the process-only comparison: each changes on
 **Storage and reads.** No migration: the `comparison_results` table (`0005`) already carries `experiment_id` and keeps the whole result in `data`. `storeComparisonResult` accepts an experiment result and stores it once, immutably, in the same results environment; `resultId` is `<experimentId>-comparison-` plus a digest of `completedAt`, manifest and arms (process results keep `process-comparison-` and their digest). A live demo reset cannot reach them. `readLatestComparisonResult(repository, context, policy, { asOf, experimentId })` defaults to `process-only` and returns the same `{ result, resultId, storedAt, policyVersion, activePolicyVersion, policyCurrent }` for any known id (unknown id is `invalid`, no result is `not-found`). `readLatestComparisonResults(repository, context, policy, { asOf })` returns `{ activePolicyVersion, experiments: [{ experimentId, latest }] }` in `EXPERIMENT_IDS` order, `latest` being that same object or `null`; FUCQ-176's picker reads it. Older runs stay readable by query.
 
 **Fixture.** The small-overlay hold-sweep result, in its stored read shape, is `storedResult` in `server/test/fixtures/gcsp-comparison-experiment-result.json`. The process-only comparison, its route `GET /api/gcsp/comparison/process/latest`, the job and the process fixtures are unchanged.
+
+## Comparison worker jobs · FUCQ-175
+
+Greg or the presenter starts a what-if or process comparison from the browser and watches it run. The comparison runs in a Node `worker_threads` worker, so the backend keeps answering other requests (measured: a hold sweep running for about 2.5 s left `process/latest` and `jobs/latest` answering in 5 ms or less). One job runs at a time. Fictional cohort; calculated fit is not observed satisfaction. FUCQ-176 (the dashboard picker) builds on these routes.
+
+**Code.** `createComparisonJobService({ repository, policy, clock, identity, ... })` (`jobs.js`), `parseExperimentRequest(body)` (`requests.js`, shape checks, shared with the CLI) and `createComparisonJobRoutes(jobService, resultService)` (`http.js`). The runtime composes the service as `dependencies.gcspComparisonJobs` and closes it first. Creating it spawns and schedules nothing. `overlay`, `fixedNow` and `codeRevision` are test seams the browser never supplies.
+
+| Policy key | Unit / purpose |
+|---|---|
+| `comparison.jobs.v1` | `{ schemaVersion: 1, timeoutSeconds: 1800, workerHeapMb: 128, workerYoungGenerationMb: 16 }`: the wall-clock limit for one job, the worker's old-generation heap allowance and its young-generation cap (peak process memory of the default 1,000-employee job fell from 510 MB to 428 MB with it). |
+
+`assumed`, read through PolicyService when a job starts (missing or malformed is `unavailable`, naming the key). The worker replays against the reviewed seed held in memory, as the FUCQ-137 command does, and stores the FUCQ-137/174 result shape through `storeComparisonResult`.
+
+### Routes
+
+All are Greg or presenter only (an employee gets 403, checked before the body is described), use the server-owned context, and answer `Cache-Control: no-store`. Every body also carries `contractVersion`, left out of the examples below.
+
+| Method and path | Input | Answers |
+|---|---|---|
+| `POST /api/gcsp/comparison/jobs` | `{ experimentId, change? }` | 202 `pending` job view; 400 `invalid`; 403; 409 `conflict`; 503 `unavailable` |
+| `GET /api/gcsp/comparison/jobs/latest` | optional `?jobId=` | 200 job view (the active job first, else the most recent); 400; 403; 404 when no job exists |
+| `GET /api/gcsp/comparison/results/latest` | optional `?experimentId=` | 200 stored result(s); 400; 403; 404 when that experiment has none |
+
+`GET /api/gcsp/comparison/process/latest` (FUCQ-137) is unchanged.
+
+**Start body.** `experimentId` is one of `process-only`, `order-mix`, `points`, `hold-sweep`. `process-only` takes no `change`. `order-mix` and `points` take `change: { value, basis }` (a model-line mix, or an allowance multiplier); `hold-sweep` takes `change: { values: [whole seconds], basis }`. `basis` is a non-empty string of at most 500 characters. Seeds and shared settings cannot be sent: the policy's are used, and `seeds` or `overlay` is refused by name. Nothing is started, and no worker spawned, for a shape failure; the worker then checks range, unit, count and "same as today" against PolicyService, still before a job is stored.
+
+**Job view.** `{ jobId, experimentId, status, progress: { seedsDone, seedsTotal, stepsDone, stepsTotal }, startedAt, finishedAt, resultId, reason, request: { experimentId, change } }`. `status` is `starting` (before the plan; seen only by `jobs/latest`), `running`, `succeeded`, `failed` or `interrupted`. `seedsDone` counts seeds with every arm and both routes finished. `resultId` is set on success and matches `results/latest`. `reason` is short plain text for `failed` and `interrupted`. In these examples `startedAt` is the fixed test clock.
+
+**Polling.** After a 202, poll `GET jobs/latest?jobId=<jobId>` about every 2 seconds while `status` is `starting` or `running`, show `stepsDone` of `stepsTotal`, and stop on `succeeded`, `failed` or `interrupted`. On `succeeded`, read `results/latest?experimentId=<experimentId>` and check its `resultId` equals the job's. A page that was closed can resume with `jobs/latest` (no id), which returns the running job first.
+
+**Examples** (captured from `server/test/gcsp-comparison-job-routes.test.js` runs; ids shortened where marked).
+
+202 on start (`hold-sweep`, `change` as sent):
+
+```json
+{ "status": "pending", "value": { "jobId": "comparison-job-db195101-...", "experimentId": "hold-sweep", "status": "running",
+  "progress": { "seedsDone": 0, "seedsTotal": 3, "stepsDone": 0, "stepsTotal": 36 },
+  "startedAt": "2026-11-08T12:00:00.000Z", "finishedAt": null, "resultId": null, "reason": null,
+  "request": { "experimentId": "hold-sweep", "change": { "values": [3600, 10800, 21600, 43200, 86400], "basis": "Does a longer hold help?" } } } }
+```
+
+`jobs/latest` before the plan (`status: "starting"`, all progress counts 0), running with progress, then succeeded (only the changing fields shown; the rest as above):
+
+```json
+{ "status": "ok", "value": { "status": "running", "progress": { "seedsDone": 0, "seedsTotal": 3, "stepsDone": 4, "stepsTotal": 36 }, "finishedAt": null, "resultId": null, "reason": null } }
+{ "status": "ok", "value": { "status": "succeeded", "progress": { "seedsDone": 3, "seedsTotal": 3, "stepsDone": 36, "stepsTotal": 36 },
+  "finishedAt": "2026-11-08T12:00:00.000Z", "resultId": "hold-sweep-comparison-999835b7de06fd9aa8abee00d4a1afea", "reason": null } }
+```
+
+Failed and interrupted (a process-only job; `request.change` is `null`; no result is stored for either):
+
+```json
+{ "status": "ok", "value": { "status": "failed", "resultId": null, "reason": "The comparison could not be completed." } }
+{ "status": "ok", "value": { "status": "interrupted", "resultId": null, "reason": "The backend stopped before the comparison finished." } }
+```
+
+Other failure reasons: `The comparison was stopped at its limit of 1800 seconds.`, `The comparison used more than its 128 MB memory allowance and was stopped.`, `The comparison worker stopped before it finished.`, and `The backend restarted before the comparison finished.` (a row left running by another backend instance, marked when next read or started).
+
+409 when a job is already active (`jobId` is the running job):
+
+```json
+{ "status": "conflict", "code": "job-running", "jobId": "comparison-job-c8e368e2-...", "reason": "A comparison is already running. Wait for it to finish." }
+```
+
+400 for the shape, one reason per field and every problem at once (`key` is the policy key the field changes, else `null`):
+
+```json
+{ "status": "invalid", "code": "invalid-experiment", "reasons": [
+  { "field": "seeds", "key": null, "reason": "The seeds and shared settings are not chosen here. The policy values are used." },
+  { "field": "overlay", "key": null, "reason": "The seeds and shared settings are not chosen here. The policy values are used." },
+  { "field": "change.extra", "key": null, "reason": "This field is not recognised for this experiment." },
+  { "field": "change.value", "key": "comparison.pointsAllowanceMultiplier", "reason": "Give a number." },
+  { "field": "change.basis", "key": null, "reason": "Say why this change is worth trying." } ] }
+```
+
+400 from the worker's canonical check (a hold of 7200 s is today's value; 100 s is below the minimum). `change.value` is used for `order-mix` and `points`:
+
+```json
+{ "status": "invalid", "code": "invalid-experiment", "reasons": [ { "field": "change.values", "key": "hold.buddy.durationSeconds",
+  "reason": "Give no more holds than the policy allows, each within the allowed range, different from the others and from the hold used today." } ] }
+```
+
+Other 400s: `{ "status": "invalid", "code": "unsupported-query", "reasons": [{ "field": "view", "reason": "Only jobId can be given here." }] }` for a query field a route does not take, and `{ "code": "invalid-experiment", "reasons": [{ "field": "experimentId", "key": null, "reason": "Choose one of the known comparison experiments." }] }` for a bad `?experimentId=`. 403: `{ "status": "forbidden", "reason": "This person cannot perform that action." }`. 404: `{ "status": "not-found", "resourceType": "comparison_jobs" }` (no job) or `"comparison_results"` (nothing stored for that experiment). 503 `unavailable` carries `reason` and `retryable: true`.
+
+`results/latest?experimentId=hold-sweep` (`result` is the stored FUCQ-137/174 result, omitted here):
+
+```json
+{ "status": "ok", "value": { "result": { "...": "..." }, "resultId": "hold-sweep-comparison-999835b7de06fd9aa8abee00d4a1afea",
+  "storedAt": "2026-11-08T12:00:00.000Z", "policyVersion": "gcsp-policy-v1", "activePolicyVersion": "gcsp-policy-v1", "policyCurrent": true } }
+```
+
+`results/latest` with no query lists every experiment in `EXPERIMENT_IDS` order, `latest: null` where none is stored:
+
+```json
+{ "status": "ok", "value": { "activePolicyVersion": "gcsp-policy-v1", "experiments": [
+  { "experimentId": "process-only", "latest": null }, { "experimentId": "order-mix", "latest": null }, { "experimentId": "points", "latest": null },
+  { "experimentId": "hold-sweep", "latest": { "result": { "...": "..." }, "resultId": "hold-sweep-comparison-999835b7de06fd9aa8abee00d4a1afea",
+    "storedAt": "2026-11-08T12:00:00.000Z", "policyVersion": "gcsp-policy-v1", "activePolicyVersion": "gcsp-policy-v1", "policyCurrent": true } } ] } }
+```
+
+Show `policyCurrent: false` as "from an earlier policy version".
+
+**Outcomes.** Success stores the result and sets `resultId`. A worker error, a heap overrun, a failed message or the timeout marks the job `failed` and stores nothing. `close()` (the runtime's first step on close) marks the active job `interrupted`.
+
+**Storage.** Additive migration `0008_comparison_jobs.sql` adds the mutable `comparison_jobs` table (`runId jobId`; `experimentId status request progress startedAt finishedAt resultId reason requestedBy instanceId`). Rows live in the comparison results run, so a live demo reset does not remove them. Progress writes are serialised per job and coalesced. Backend-only: no screen was built, so no screenshots; the response shapes above are the record.
+
+### Command line
+
+`node scripts/gcsp-comparison.mjs --experiment <process|order-mix|points|hold-sweep> [--change <json>] [--seeds a,b,c] [--out <file>]` runs the same experiments as the browser worker. `--change` is the browser body's `change` as JSON (required for the three what-ifs, refused for `process`, which means `process-only`); it goes through `parseExperimentRequest`, so a bad request prints every problem as `<field> (<policy key>): <reason>` and exits 2 with nothing stored. A value the runner refuses (out of range, repeated, the same as today, too many values) reads the same way, through the shared `refusalFor`. `--seeds` is CLI-only and joins after that check. The replay uses `createReplayPolicy` and `runComparison`, and the result goes through `storeComparisonResult`, so the CLI and the worker store identical results for the same request. Exit codes: 0 stored, 1 failed, 2 refused input or file. The command prints the change (key, unit, value used today, value or values tried, basis) and one table per tried value and route, then the caveat and limitations. `--import <file>` cannot be combined with the run options.
+
+**Result files.** `--out` writes `{ format, digest, result }` with format `gcsp-process-comparison-result-v1` for a process result or `gcsp-experiment-comparison-result-v1` for a what-if result. `--import` and `GCSP_COMPARISON_RESULT_FILE` accept either, check the digest, and refuse a file whose kind, experiment id, schema version or caveat this version does not understand. Importing again changes nothing.
 
 ## Named scenario catalogue and preparation · FUCQ-125
 

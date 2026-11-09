@@ -12824,6 +12824,22 @@
       "effectiveFrom": "2026-11-04T00:00:00.000Z"
     },
     {
+      "key": "comparison.jobs.v1",
+      "value": {
+        "schemaVersion": 1,
+        "timeoutSeconds": 1800,
+        "workerHeapMb": 128,
+        "workerYoungGenerationMb": 16
+      },
+      "unit": "versioned comparison worker job limits",
+      "basis": "A 128 MB worker heap keeps the backend inside a 512 MiB host after about 350 MiB of start-up (FUCQ-190). Thirty minutes bounds one presenter-started run; a longer run is stopped and reported as failed. A 16 MB young generation cut the default 1,000-employee job's peak process memory from 510 MB to 428 MB in a probe.",
+      "status": "assumed",
+      "source": "docs/gcsp/shared-contracts.md#comparison-worker-jobs--fucq-175",
+      "sourceDate": "2026-11-09",
+      "policyVersion": "gcsp-policy-v1",
+      "effectiveFrom": "2026-11-04T00:00:00.000Z"
+    },
+    {
       "key": "renewalCase.deadline.enabled",
       "value": true,
       "unit": "boolean",
