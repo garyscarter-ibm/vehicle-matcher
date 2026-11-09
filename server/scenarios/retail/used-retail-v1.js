@@ -6,7 +6,7 @@
  */
 
 import {
-  weightTotal, evaluateDimensions, blendScore, percent, compareBy, descending, ascending, byLocale,
+  weightTotal, evaluateDimensions, blendScore, percent, compareBy, descending, ascending, byLocale, buildResultView,
 } from '../../recommendation/index.js';
 import {
   DEFAULT_TUNING, SCORERS, WEIGHTS, PRIORITY_BOOSTS, STRETCH_FACTOR, budgetRange, mileageFraction, fuelPrefs, gbp,
@@ -305,65 +305,46 @@ export const ALTERNATIVES = 6;
 // spread and equipment union still describe the full group — see groupListings.
 export const LISTING_SAMPLE = 24;
 
-/*
- * Collapse repeat listings of the same car into one match.
- *
- * A retailer holding four iX2 eDrive20 M Sports produced four cards, all at
- * 96%, the top two in the same colour and £1,400 apart. The page said "six of
- * these fit you equally well" when it meant two models and six listings, which
- * reads as the page stuttering rather than as a choice. It also suppressed the
- * taste pick entirely: the top two matches were usually the SAME model, which
- * scores identically on character, performance and trim by definition, so
- * there was never a taste gap to name a winner on.
- *
- * Grouped on line + body + fuel + 0-62 + trim, which is "the same car" as a
- * buyer means it — deliberately not on `name`, because the feed writes the
- * same car two ways ("BMW iX2 eDrive20 M Sport" and "BMW iX2 20 66.5kWh M
- * Sport SUV 5dr Electric Auto"). The best-scoring listing represents the
- * group and carries the spread: how many, what price range, which colours.
- *
- * The union of the group's equipment goes on the representative so the refine
- * chips filter on what's actually AVAILABLE in that model, not on whichever
- * listing happened to rank first.
- */
+// Retail display grouping: line + body + fuel + 0-62 + trim, never `name` (see groupListings).
+// Aggregates describe the WHOLE group, computed before the LISTING_SAMPLE cut.
+export const USED_RETAIL_V1_PRESENTATION = Object.freeze({
+  groupOf: ({ car: c }) => [c.line, c.body, c.fuel, c.zeroTo62, c.styleLine ?? ''].join('|'),
+  sample: LISTING_SAMPLE,
+  summarise(members) {
+    const cars = members.map((m) => m.car);
+    const prices = cars.map((c) => c.priceMin).filter(Number.isFinite);
+    return {
+      // The feed's tidiest name for this car wins the card.
+      name: cars.reduce((a, b) => (b.name.length < a.length ? b.name : a), cars[0].name),
+      listingCount: cars.length,
+      priceFrom: prices.length ? Math.min(...prices) : cars[0].priceMin,
+      priceTo: prices.length ? Math.max(...prices) : cars[0].priceMin,
+      colours: [...new Set(cars.map((c) => c.colour?.manufacturerColour || c.colour?.colour).filter(Boolean))],
+      features: [...new Set(cars.flatMap((c) => c.features || []))],
+    };
+  },
+});
+
+// Collapses repeat listings of one car (same line/body/fuel/0-62/trim) into one card via the
+// shared result view; the best-scoring listing represents it. See USED_RETAIL_V1_PRESENTATION.
 export function groupListings(ranked) {
-  const key = (c) => [c.line, c.body, c.fuel, c.zeroTo62, c.styleLine ?? ''].join('|');
-  const groups = new Map();
-  for (const match of ranked) {
-    const k = key(match.car);
-    if (!groups.has(k)) groups.set(k, { match, listings: [] });
+  // Feeds can repeat an id; suffix repeats so the core never merges exact cars.
+  const seen = new Set();
+  const keys = ranked.map((match, i) => {
+    let key = String(match.car.id ?? `index:${i}`);
+    for (let n = 2; seen.has(key); n += 1) key = `${match.car.id ?? `index:${i}`}#${n}`;
+    seen.add(key);
+    return key;
+  });
+  const view = buildResultView(ranked, { ...USED_RETAIL_V1_PRESENTATION, keyOf: (_m, i) => keys[i] });
+  return view.groups.map(({ members, aggregate }) => {
+    const match = members[0];
     // Keep the evaluator's decision with its exact car. Group summaries may
     // describe all members, but selecting one must never reuse another score.
-    const { score, fit, taste, stretch, reasons, tradeOffs } = match;
-    groups.get(k).listings.push({ ...match.car,
-      decision: { score, fit, taste, stretch, reasons, tradeOffs } });
-  }
-  return [...groups.values()].map(({ match, listings }) => {
-    const prices = listings.map((c) => c.priceMin).filter(Number.isFinite);
-    const colours = [...new Set(listings
-      .map((c) => c.colour?.manufacturerColour || c.colour?.colour)
-      .filter(Boolean))];
-    return {
-      ...match,
-      car: {
-        ...match.car,
-        // The feed's tidiest name for this car wins the card.
-        name: listings.reduce((a, b) => (b.name.length < a.length ? b.name : a), match.car.name),
-        // Aggregates describe the WHOLE group, deliberately computed before the
-        // sample below: a national pool really does hold 392 of a given Cooper,
-        // and the card should say so even though it only carries a few examples.
-        listingCount: listings.length,
-        priceFrom: prices.length ? Math.min(...prices) : match.car.priceMin,
-        priceTo: prices.length ? Math.max(...prices) : match.car.priceMin,
-        colours,
-        features: [...new Set(listings.flatMap((c) => c.features || []))],
-      },
-      // Only a sample travels. `ranked` is score-ordered, so these are the
-      // group's best examples, and every one costs a PDP fetch to colour plus
-      // its own slice of the response — 392 of them buys the buyer nothing and
-      // guarantees the paint budget is spent before the queue is drained.
-      listings: listings.slice(0, LISTING_SAMPLE),
-    };
+    const listings = members.map(({ car, score, fit, taste, stretch, reasons, tradeOffs }) =>
+      ({ ...car, decision: { score, fit, taste, stretch, reasons, tradeOffs } }));
+    const { scope, ...summary } = aggregate;
+    return { ...match, car: { ...match.car, ...summary }, listings };
   });
 }
 
@@ -439,6 +420,7 @@ export const USED_RETAIL_V1 = Object.freeze({
   rankCars,
   matchCars,
   groupListings,
+  presentation: USED_RETAIL_V1_PRESENTATION,
   unmetWants,
   tradeOffs,
   budgetRange,
