@@ -6,6 +6,7 @@ import { createMemoryRepository, createMemoryStore, inputDigest } from '../gcsp/
 import { PolicyService } from '../gcsp/policy/index.js';
 import { createDemoRuntime } from '../gcsp/clock/index.js';
 import { seedManualDemoContext } from '../gcsp/manual-context/fixtures.js';
+import { ManualContextService, createRepositoryManualPorts } from '../gcsp/manual-context/index.js';
 import { createLifecycleAppointmentService } from '../gcsp/lifecycle/appointments/index.js';
 import { createLifecycleReturnPlanService } from '../gcsp/lifecycle/return-plan/index.js';
 import { createReturnPlanRoutes } from '../gcsp/lifecycle/return-plan/http.js';
@@ -675,4 +676,21 @@ test('FUCQ-251: after the handover is completed Paula can still plan a separate 
   assert.deepEqual([none.applicable, none.state, none.choices, none.offeredSlots], [false, null, [], {}]);
   const refused = await g.ask('separate', slot.slotId);
   assert.deepEqual([refused.status, refused.code], ['conflict', 'return-not-applicable']);
+});
+
+test('FUCQ-252: the account projection reports the confirmed current-car relationship, and nothing while none is confirmed', async (t) => {
+  const f = await setup(t, { documents: true, policy: await outcomePolicy('returned') });
+  const manual = new ManualContextService({ ...f, ports: createRepositoryManualPorts(f) });
+  const account = async (context = f.paula) => { const r = await manual.readAccount(context); assert.equal(r.status, 'ok', JSON.stringify(r)); return r.value; };
+  const scheduled = await scheduledReturn(f);
+  assert.equal(Object.hasOwn(await account(), 'currentCarRelationships'), false, 'acceptance, approval and scheduling add nothing to the account');
+  const done = await passReturn(f, scheduled); assert.equal(done.state, 'returned');
+  const returned = await account();
+  assert.deepEqual(returned.currentCarRelationships, [done.relationship]);
+  assert.deepEqual(returned.contracts, (await f.car()).contracts, 'the contract records are not rewritten');
+  assert.equal(Object.hasOwn(await account(f.alex), 'currentCarRelationships'), false, 'another employee sees none of Paula\'s');
+  const g = await setup(t, { documents: true });
+  await completeHandover(g);
+  const collected = await new ManualContextService({ ...g, ports: createRepositoryManualPorts(g) }).readAccount(g.paula);
+  assert.deepEqual(collected.value.currentCarRelationships.map((r) => r.currentCar), [{ kind: 'order', orderUuid: g.orderUuid, vin: null }]);
 });

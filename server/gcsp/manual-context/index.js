@@ -2,6 +2,7 @@ import { inputDigest, ok, result, OCCUPYING_STATES } from '../repository/index.j
 import { validInstant } from '../policy/file-provider.js';
 import { createEmployeeRecommendationService } from '../recommendation/index.js';
 import { confirmedFact } from '../../scenarios/employee/index.js';
+import { listCurrentCars } from '../lifecycle/current-car/index.js';
 
 const object = (v) => v && typeof v === 'object' && !Array.isArray(v);
 const only = (v, keys) => object(v) && Object.keys(v).every((key) => keys.includes(key));
@@ -144,7 +145,7 @@ export class ManualContextService {
     const names = row.status === 'ok' && object(row.value?.value?.names) ? row.value.value.names : {};
     return Object.fromEntries(Object.entries(names).filter(([, name]) => text(name)));
   }
-  #projection(context, p) {
+  #projection(context, p, relationships = []) {
     const view = this.#presentation(p);
     if (!p.account) return { state: p.state, asOf: p.now, account: null, drivers: [], contracts: [], slots: [], histories: [], actions: [], view };
     const actions = p.state === 'ready' ? [{ action: p.contract ? 'replace' : 'order', slotId: p.slot.entitlementSlotId,
@@ -154,7 +155,9 @@ export class ManualContextService {
         enabled: slot.entitlementSlotId === context.entitlementSlotId && p.state === 'ready',
         reason: slot.entitlementSlotId !== context.entitlementSlotId ? 'outside-trusted-context'
           : p.state === 'ready' ? null : p.state } })),
-      currentContract: p.contract ?? null, contractState: p.contract ? 'current-contract' : 'no-contract', histories: p.account.histories.map((h) => ({ ...h, ...(p.schemeNames?.[h.schemeId] ? { label: p.schemeNames[h.schemeId] } : {}),
+      currentContract: p.contract ?? null, contractState: p.contract ? 'current-contract' : 'no-contract',
+      // FUCQ-252: confirmed current-car changes (FUCQ-168); absent until a handover or return is confirmed.
+      ...(relationships.length ? { currentCarRelationships: relationships } : {}), histories: p.account.histories.map((h) => ({ ...h, ...(p.schemeNames?.[h.schemeId] ? { label: p.schemeNames[h.schemeId] } : {}),
         state: h.entries.length ? 'history' : 'empty-history', count: h.entries.length,
         orderingSupported: p.rules?.enabledSchemes.includes(h.schemeId) ?? false })), actions,
       choices: p.rules ? { schemeId: context.schemeId, slotId: p.slot?.entitlementSlotId ?? null,
@@ -166,8 +169,11 @@ export class ManualContextService {
         slot: p.slot?.version ?? null, clock: p.clockVersion }, view };
   }
   async readAccount(context) {
-    const p = await this.#prepare(context);
-    return p.error ?? ok(this.#projection(context, p));
+    const p = await this.#prepare(context); if (p.error) return p.error;
+    if (!p.account) return ok(this.#projection(context, p));
+    let cars;
+    try { cars = await listCurrentCars(this.#repository, context); } catch { cars = null; }
+    return cars?.status === 'ok' ? ok(this.#projection(context, p, cars.value)) : unavailable('current-car');
   }
   async readDraft(context) {
     const p = await this.#prepare(context); if (p.error) return p.error;

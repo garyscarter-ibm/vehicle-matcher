@@ -720,6 +720,43 @@ test('FUCQ-237: an order in progress replaces "No current car" for an employee w
   } finally { declined.destroy(); }
 });
 
+test('FUCQ-252: after a confirmed handover or return the current-car card follows the server relationship, not the old contract', async () => {
+  const listed = (slot) => { const row = structuredClone(orderProgressFixtures().states['appointment-requested'].stages.value); row.entitlementSlotId = slot; return [row]; };
+  const orders = orderAdapter('appointment-requested', listed('slot-paula')); const VIN = 'WBA00000000000252';
+  const relationship = (oldStatus, collected) => ({ contractVersion: 'lifecycle.current-car.v1', orderUuid: orders.uuid,
+    currentCar: collected ? { kind: 'order', orderUuid: orders.uuid, vin: VIN } : oldStatus === 'held' ? { kind: 'contract', contractId: 'current:employee-paula', slotId: 'slot-paula' } : null,
+    oldCar: { contractId: 'current:employee-paula', slotId: 'slot-paula', status: oldStatus, returnedAt: oldStatus === 'returned' ? '2026-11-09T14:30:00.000Z' : null },
+    newCar: { orderUuid: orders.uuid, status: collected ? 'collected' : 'on-order', collectedAt: collected ? '2026-11-07T13:00:00.000Z' : null, vin: collected ? VIN : null } });
+  const account = (rel) => { const envelope = accountFixture('no-entitlement'); for (const slot of envelope.value.slots) slot.state = 'allocated';
+    if (rel) envelope.value.currentCarRelationships = [rel]; return envelope; };
+  const mount = (rel) => domMount({ ...readOnlyAdapter(), readAccount: async () => account(rel), readOrder: selection(orders.uuid, { name: 'Synthetic 3 Series Saloon 320i' }) }, { orderAdapter: orders });
+  const cards = (root) => [...root.querySelectorAll('.gcsp-account-body > .gcsp-feature')];
+  for (const [label, rel] of [['nothing confirmed', null], ['relationship still on the old contract', relationship('held', false)]]) {
+    const view = await mount(rel);
+    try {
+      await settleOrder(view.root, (node) => node.querySelector('.gcsp-account-order-status'));
+      assert.deepEqual(cards(view.root).map((card) => card.dataset.contractId), ['current:employee-paula'], label);
+    } finally { view.destroy(); }
+  }
+  for (const oldStatus of ['returned', 'held']) {
+    const view = await mount(relationship(oldStatus, true));
+    try {
+      await settleOrder(view.root, (node) => node.querySelector('.gcsp-account-order-status'));
+      const [card, ...rest] = cards(view.root);
+      assert.equal(rest.length, 0, `${oldStatus}: one current-car card`); assert.equal(card.dataset.contractId, undefined);
+      assert.equal(card.dataset.orderUuid, orders.uuid); assert.equal(card.querySelector('h2').textContent, 'Synthetic 3 Series Saloon 320i');
+      assert.deepEqual(factPairs(card).slice(0, 3), [['Status', 'Current car'], ['Collected', '7 November 2026'], ['Delivered VIN', VIN]]);
+      assert.doesNotMatch(view.root.textContent, /No current car|Choose a replacement/);
+    } finally { view.destroy(); }
+  }
+  const returned = await mount(relationship('returned', false));
+  try {
+    await settleOrder(returned.root, (node) => node.querySelector('.gcsp-account-order-status'));
+    assert.equal(cards(returned.root).length, 0, 'the returned car is no longer shown as current');
+    assert.match(returned.root.textContent, /No current car/); assert.match(returned.root.textContent, /Your previous car has been returned\./);
+  } finally { returned.destroy(); }
+});
+
 test('FUCQ-239: Order history lists a placed order and no longer says "No order history"', async () => {
   const listed = (name) => { const row = structuredClone(orderProgressFixtures().states[name].stages.value); row.entitlementSlotId = 'slot-paula'; return [row]; };
   const noCarAllocated = () => { const envelope = accountFixture('no-current-car'); Object.assign(envelope.value, { state: 'no-entitlement', actions: [] });

@@ -1797,6 +1797,11 @@ fictional}`. `currentCar` is `{kind: 'order', orderUuid, vin}` once collected, e
 while the old car is held, else `null`. The account's contract records are not rewritten; their consumers move to this
 relationship in a later story.
 
+FUCQ-252: `GET /api/gcsp/manual/account` adds `currentCarRelationships` (every recorded relationship for the employee, by
+`listCurrentCars(repository, context)`, in this shape) only once a handover or return is confirmed; otherwise the field is
+absent and the account is unchanged. The account page's current-car card follows it: a contract the relationship no longer
+holds as current is not shown as current, a collected order is, and a return before handover shows "No current car".
+
 FUCQ-167's handover completion calls `applyCurrentCarEvent(tx, runId, event)` in the same transaction as the `completed`
 outcome (handover purpose only), with `{type: 'handover-completed', orderUuid, employeeId, occurredAt, providerReference,
 appointment: {purpose: 'handover', slotId, providerReference}, vin?}`; a refused, uncertain or not-ready completion changes

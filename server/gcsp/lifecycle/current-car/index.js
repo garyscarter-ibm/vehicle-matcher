@@ -104,3 +104,11 @@ export async function readCurrentCar(repository, context, orderUuid) {
   const id = await identities(reader, context.runId, orderUuid); if (id.status !== 'ok') return id;
   return ok(present(baseline(context.runId, id.value)));
 }
+
+// Every recorded relationship for the context's employee (FUCQ-252), for the account page; none until an event is confirmed.
+export async function listCurrentCars(repository, context) {
+  const rows = await repository.query(context, 'event_receipts', { consumerId: CURRENT_CAR_STATE });
+  if (rows.status !== 'ok') return rows;
+  return ok(rows.value.map((row) => row.outcome?.value).filter((r) => object(r) && r.employeeId === context.employeeId)
+    .sort((a, b) => (a.orderUuid < b.orderUuid ? -1 : a.orderUuid > b.orderUuid ? 1 : 0)).map(present));
+}

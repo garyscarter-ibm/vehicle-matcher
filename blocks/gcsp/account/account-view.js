@@ -39,15 +39,20 @@ function contractView(contract, asOf, drivers, actions) {
 export function toAccountView(envelope, { draft = null } = {}) {
   if (envelope?.status !== 'ok' || !envelope.value || typeof envelope.value !== 'object') return {
     state: failState(envelope), backendState: null,
-    account: null, currentContracts: [], slots: [], histories: [], actions: [],
+    account: null, currentContracts: [], currentOrders: [], slots: [], histories: [], actions: [],
     failure: copy(envelope), view: copy(envelope?.view), supportOwner: envelope?.view?.supportOwner ?? 'scheme-support',
   };
   const value = envelope.value;
   const actions = value.state === 'ready' ? list(value.actions).filter((row) => row.enabled === true
     && ['order', 'replace'].includes(row.action)).map(copy) : [];
   const drivers = list(value.drivers).map(copy);
+  // FUCQ-252: the server's current-car relationship (FUCQ-168) decides which car is current once a change is confirmed.
+  const relationships = list(value.currentCarRelationships).filter((r) => r && typeof r === 'object');
+  const moved = new Set(relationships.filter((r) => r.oldCar?.contractId && r.currentCar?.kind !== 'contract').map((r) => r.oldCar.contractId));
   const contracts = list(value.contracts ?? (value.currentContract ? [value.currentContract] : []))
-    .map((row) => contractView(row, value.asOf, drivers, actions));
+    .filter((row) => !moved.has(row?.contractId)).map((row) => contractView(row, value.asOf, drivers, actions));
+  const currentOrders = relationships.filter((r) => r.currentCar?.kind === 'order' && typeof r.currentCar.orderUuid === 'string')
+    .map((r) => ({ orderUuid: r.currentCar.orderUuid, vin: r.currentCar.vin ?? null, collectedAt: r.newCar?.collectedAt ?? null }));
   const histories = list(value.histories).map((history) => ({ ...copy(history),
     count: list(history.entries).length, state: list(history.entries).length ? 'history' : 'empty-history',
     entries: list(history.entries).map((entry) => contractView(entry, value.asOf, drivers, [])) }));
@@ -62,8 +67,9 @@ export function toAccountView(envelope, { draft = null } = {}) {
     fact('Band or grade', account?.grade ?? account?.gradeId), fact('Phone', account?.contact?.phone),
     fact('Email', account?.contact?.email), fact('Allowance override', account?.allowanceOverride),
     fact('Override end', account?.allowanceOverrideEndDate)],
-  currentContracts: contracts, primaryContract: contracts.find((row) => row.contractId === value.currentContract?.contractId) ?? null,
-  contractState: contracts.length ? 'current-contract' : 'no-current-car',
+  currentContracts: contracts, currentOrders, primaryContract: contracts.find((row) => row.contractId === value.currentContract?.contractId) ?? null,
+  contractState: contracts.length || currentOrders.length ? 'current-contract' : 'no-current-car',
+  carReturned: relationships.some((r) => r.currentCar === null && r.oldCar?.status === 'returned'),
   slots: list(value.slots).map((slot) => ({ ...copy(slot),
     action: copy(actions.find((row) => row.slotId === slot.entitlementSlotId)) })),
   histories, historyState: histories.some((history) => history.count > 0) ? 'history' : 'no-history', actions,
