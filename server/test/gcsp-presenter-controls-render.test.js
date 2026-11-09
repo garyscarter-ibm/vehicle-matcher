@@ -618,6 +618,17 @@ test('FUCQ-204: every step the hosted runtime registers has a label, so none rea
   }
 });
 
+test('FUCQ-240: buddy allocation names how many employees were left out for want of a renewal date', async () => {
+  const { stepLine } = await import('../../blocks/gcsp/presenter-controls/tick-copy.js');
+  const row = (limitations) => ({ handlerId: 'buddy-allocation', outcome: { status: 'ok', value: { allocations: [], ...(limitations ? { limitations } : {}) } } });
+  const left = (n) => stepLine({ handlerId: 'buddy-allocation' }, row([{ code: 'renewal-deadline-unknown', employees: n }]));
+  assert.equal(left(1), 'Buddy allocation: Done. 1 employee is left out: no renewal date to set their place in the queue.');
+  assert.equal(left(3), 'Buddy allocation: Done. 3 employees are left out: no renewal date to set their place in the queue.');
+  for (const bad of [0, -1, 1.5, '2', null]) assert.equal(left(bad), 'Buddy allocation: Done.');
+  assert.equal(stepLine({ handlerId: 'buddy-allocation' }, row(null)), 'Buddy allocation: Done.');
+  assert.equal(stepLine({ handlerId: 'stock-release' }, row([{ code: 'renewal-deadline-unknown', employees: 2 }])), 'Stock release: Done.');
+  assert.doesNotMatch(left(2), /\u2014/);
+});
 
 // FUCQ-172: synthetic fault control, truthful journey start, wider catalogue rows.
 const faultRows = (stock = 'none', ordering = 'none') => [

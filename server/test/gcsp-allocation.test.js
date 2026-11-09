@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { ok } from '../gcsp/repository/index.js';
 import { allocationFixture } from './helpers/gcsp-allocation.js';
-import { expandEvaluation } from '../gcsp/allocation/evaluation-rows.js';
+import { expandEvaluation, readAllocationEvaluation } from '../gcsp/allocation/evaluation-rows.js';
 
 test('three employees compete deterministically for scarce exact cars, one each', async () => {
   const f = await allocationFixture(); const reversed = await allocationFixture({ reverse: true });
@@ -89,20 +89,61 @@ test('uncertain claim retains pending plan and retries the same operation and qu
 
 test('same-event retry reads repaired source after a rejected pre-plan snapshot', async () => {
   const f = await allocationFixture({ cars: 1 }); const employee = f.employees[0];
-  const ref = { table: 'employees', key: { runId: f.context.runId, employeeId: employee.employeeId } };
+  const ref = { table: 'entitlement_slots', key: { runId: f.context.runId, entitlementSlotId: employee.entitlementSlotId } };
   const original = (await f.repository.read(f.context, ref)).value;
-  const incomplete = structuredClone(original.contract);
-  delete incomplete.manualContext.contracts[0].contractEndDate;
-  await f.write((tx) => tx.compareAndSwap(ref, original.version, { contract: incomplete }));
+  // A brief whose slot belongs to another employee rejects the snapshot before any plan is written.
+  await f.write((tx) => tx.compareAndSwap(ref, original.version, { employeeId: f.employees[1].employeeId }));
   const rejected = await f.service.allocate(f.context, f.event);
-  assert.equal(rejected.code, 'renewal-deadline-unavailable'); assert.equal(f.calls.length, 0);
+  assert.equal(rejected.code, 'brief-owner-unavailable'); assert.equal(f.calls.length, 0);
   assert.equal((await f.repository.query(f.context, 'event_receipts', { consumerId: 'buddy-allocation' })).value.length, 0);
   const current = (await f.repository.read(f.context, ref)).value;
-  await f.write((tx) => tx.compareAndSwap(ref, current.version, { contract: original.contract }));
+  await f.write((tx) => tx.compareAndSwap(ref, current.version, { employeeId: original.employeeId }));
   const retried = await f.create().allocate(f.context, f.event);
   assert.equal(retried.status, 'ok', JSON.stringify(retried));
   assert.equal(retried.value.assignments[0].employeeId, employee.employeeId);
-  assert.equal(retried.value.assignments[0].expectedVersions.employee, current.version + 1);
+  assert.equal(retried.value.assignments[0].expectedVersions.slot, current.version + 1);
+});
+
+test('FUCQ-240: an employee without exactly one current contract date is left out; the batch and everyone else are unaffected', async () => {
+  const withContracts = async (f, employee, change) => {
+    const ref = { table: 'employees', key: { runId: f.context.runId, employeeId: employee.employeeId } };
+    const row = (await f.repository.read(f.context, ref)).value; const contract = structuredClone(row.contract);
+    contract.manualContext.contracts = change(contract.manualContext.contracts);
+    await f.write((tx) => tx.compareAndSwap(ref, row.version, { contract }));
+  };
+  const f = await allocationFixture({ cars: 1 }); await withContracts(f, f.employees[0], () => []);
+  // The same run with the first employee absent (paused) is the reference for "exactly as before".
+  const absent = await allocationFixture({ cars: 1 });
+  await absent.write(async (tx) => {
+    const current = await tx.get({ table: 'briefs', key: { runId: absent.context.runId, employeeId: absent.employees[0].employeeId, briefVersion: 1 } });
+    return tx.insert('briefs', { ...current.value, briefVersion: 2, buddy: { ...current.value.buddy, permissionVersion: 2, paused: true } });
+  });
+  const out = await f.service.allocate(f.context, f.event); const reference = await absent.service.allocate(absent.context, absent.event);
+  assert.equal(out.status, 'ok', JSON.stringify(out)); assert.equal(reference.status, 'ok', JSON.stringify(reference));
+  assert.equal(out.value.assignments.length, 1); assert.equal(out.value.assignments[0].employeeId, f.employees[1].employeeId);
+  assert.deepEqual(out.value.assignments, reference.value.assignments);
+  assert.deepEqual(out.value.excluded, [{ employeeId: f.employees[0].employeeId, code: 'renewal-deadline-unknown' }]);
+  assert.equal(Object.hasOwn(reference.value, 'excluded'), false);
+  assert.ok(f.calls.length > 0 && f.calls.every((call) => call.employee.employeeId !== f.employees[0].employeeId), 'no claim for the excluded employee');
+  const stored = (await f.repository.query(f.context, 'event_receipts', { consumerId: 'buddy-allocation' })).value[0];
+  assert.deepEqual(stored.outcome.value.excluded, out.value.excluded);
+  const row = await readAllocationEvaluation(f.repository, { ...f.employees[0], runId: f.context.runId }, stored);
+  assert.equal(row.status, 'ok', JSON.stringify(row));
+  const decision = expandEvaluation(row.value).decisions[0];
+  assert.equal(decision.gateStatus, 'eligible');
+  assert.deepEqual(decision.blockers.filter((b) => b.code === 'renewal-deadline-unknown'), [{ code: 'renewal-deadline-unknown', currentContracts: 0 }]);
+  // Two current contracts are as ambiguous as none: still excluded, never a batch failure.
+  const twice = await allocationFixture({ cars: 1 });
+  await withContracts(twice, twice.employees[0], (rows) => [rows[0], rows[0]]);
+  const ambiguous = await twice.service.allocate(twice.context, twice.event);
+  assert.equal(ambiguous.status, 'ok', JSON.stringify(ambiguous));
+  assert.deepEqual(ambiguous.value.excluded.map((e) => e.employeeId), [twice.employees[0].employeeId]);
+  const kept = await twice.repository.query(twice.context, 'event_receipts', { consumerId: 'buddy-allocation' });
+  const both = expandEvaluation((await readAllocationEvaluation(twice.repository, { ...twice.employees[0], runId: twice.context.runId }, kept.value[0])).value);
+  assert.equal(both.decisions[0].blockers.find((b) => b.code === 'renewal-deadline-unknown').currentContracts, 2);
+  // Nobody excluded leaves the outcome without the key.
+  const all = await allocationFixture({ cars: 1 }); const plain = await all.service.allocate(all.context, all.event);
+  assert.equal(plain.status, 'ok'); assert.equal(Object.hasOwn(plain.value, 'excluded'), false);
 });
 
 test('absent dependency, forged controller and unsupported policy fail closed', async () => {

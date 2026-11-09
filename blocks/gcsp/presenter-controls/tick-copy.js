@@ -19,9 +19,18 @@ const resultWord = (row) => (row ? own(RESULT, row.outcome?.status) ?? OTHER : N
 export const findOutcome = (tick, descriptor) => (Array.isArray(tick?.outcomes) ? tick.outcomes : []).find((row) => row?.handlerId === descriptor.handlerId);
 const descriptors = (tick) => (Array.isArray(tick?.handlerOrder) ? tick.handlerOrder : []).filter((row) => row && typeof row === 'object');
 
+// FUCQ-240: buddy allocation reports how many employees it left out for want of a renewal date; shown from the supplied count only.
+function leftOut(descriptor, row) {
+  const found = descriptor?.handlerId === 'buddy-allocation' && Array.isArray(row?.outcome?.value?.limitations)
+    ? row.outcome.value.limitations.find((limit) => limit?.code === 'renewal-deadline-unknown') : null;
+  const n = found?.employees;
+  if (!Number.isSafeInteger(n) || n < 1) return '';
+  return ` ${n === 1 ? '1 employee is' : `${n} employees are`} left out: no renewal date to set their place in the queue.`;
+}
+
 export function stepLine(descriptor, row) {
   const said = [row?.outcome?.reason, row?.outcome?.message].find(text)?.trim();
-  return `${own(STEP, descriptor?.handlerId) ?? 'Another step'}: ${resultWord(row)}.${said ? ` ${said}` : ''}`;
+  return `${own(STEP, descriptor?.handlerId) ?? 'Another step'}: ${resultWord(row)}.${said ? ` ${said}` : ''}${leftOut(descriptor, row)}`;
 }
 
 export function tickSummary(tick) {
