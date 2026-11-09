@@ -13838,7 +13838,8 @@
           },
           "separate": {
             "requiresHandoverStates": [
-              "scheduled"
+              "scheduled",
+              "completed"
             ],
             "location": "handover-retailer",
             "slot": "after-handover",
@@ -13857,7 +13858,7 @@
         }
       },
       "unit": "choice IDs with labels; handover states; days from the demo clock date and from the handover; minutes; UTC HH:MM daily start times",
-      "basis": "Synthetic demo assumption: Paula may return the old car at the new car's handover or on a separate day within a week after it, once the handover is scheduled. Not BMW policy; revisable here.",
+      "basis": "Synthetic demo assumption: Paula may return the old car at the new car's handover or on a separate day within a week after it, once the handover is scheduled. A separate-day return can still be planned after the handover is completed (FUCQ-251). Not BMW policy; revisable here.",
       "status": "assumed",
       "source": "docs/gcsp/shared-contracts.md#lifecycle-return-plan--fucq-118",
       "sourceDate": "2026-11-07",

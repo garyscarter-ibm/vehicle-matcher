@@ -1696,7 +1696,8 @@ IDs (`return-appointment:`) and provider references, so it can never be mistaken
 
 Request rule: Paula chooses `same-visit` (the return books the handover's own scheduled slot) or `separate` (a slot the adapter
 offers from the keyed days, filtered to start after the handover ends and within the keyed days after it). Both need the
-handover `scheduled`. A new order, or a handover not yet in a required state, is a `conflict`; an unknown choice or an unoffered
+handover `scheduled`; `separate` also accepts `completed`, so the return can still be planned after collection (FUCQ-251;
+`same-visit` then shows "Your new car has already been handed over."). A new order, or a handover not yet in a required state, is a `conflict`; an unknown choice or an unoffered
 slot is `invalid`. Repeating the same request returns the same plan; a different choice or slot is a `conflict`. On the manual
 route the return location is the new car's collection location from the selection (`kind: 'collection-location'`, rule
 `handover-retailer` once a choice is made). On the buddy route (Gary, 8 November 2026, FUCQ-194) the old car is collected from
@@ -1720,7 +1721,7 @@ Routes (browser identity and run claims discarded; context is server-owned): `GE
 
 | Key | Assumed default (synthetic demo assumption) |
 |---|---|
-| `lifecycle.return.options.v1` | choices `same-visit` and `separate` with labels; both need the handover `scheduled`; separate slots from 2 clear days, 10 days offered, 60-minute slots at 09:00 and 13:00 UTC, starting after the handover and within 7 days of it; location `handover-retailer` |
+| `lifecycle.return.options.v1` | choices `same-visit` and `separate` with labels; both need the handover `scheduled`, and `separate` also accepts `completed` (FUCQ-251); separate slots from 2 clear days, 10 days offered, 60-minute slots at 09:00 and 13:00 UTC, starting after the handover and within 7 days of it; location `handover-retailer` |
 | `lifecycle.return.ownership.v1` | owner and next-step copy per return state, plus ineligible, pending and blocked |
 | `lifecycle.appointments.slots.v1`, `.confirmation.v1`, `.scenario.v1` | reused unchanged (HLD review Q19) |
 

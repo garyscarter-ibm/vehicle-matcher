@@ -114,7 +114,9 @@ export class LifecycleReturnPlanService {
 
   // Slots for one choice from the keyed rules; the handover must already be in a required state.
   async #choiceOffer(rule, handover, now) {
-    if (!rule.requiresHandoverStates.includes(handover.state)) return { available: false, slots: [], reason: 'Confirm your new car\'s handover first.' };
+    if (!rule.requiresHandoverStates.includes(handover.state)) {
+      return { available: false, slots: [], reason: handover.state === 'completed' ? 'Your new car has already been handed over.' : 'Confirm your new car\'s handover first.' };
+    }
     if (!handover.slot) return { available: false, slots: [], reason: 'Your new car\'s handover has no confirmed time yet.' };
     if (rule.slot === 'handover-slot') return { available: true, slots: [handover.slot], reason: null };
     const offer = await this.#provider?.offerSlots({ now, ...rule.slots });

@@ -1,5 +1,8 @@
 import { result } from '../../repository/index.js';
-import { loadAppointmentPolicy, STATES as APPOINTMENT_STATES } from '../appointments/policy.js';
+import { loadAppointmentPolicy, STATES, OUTCOME_STATES } from '../appointments/policy.js';
+
+// Every handover state a rule may name; the key chooses which ones open each choice (FUCQ-251 adds `completed`).
+const APPOINTMENT_STATES = Object.freeze([...STATES, ...OUTCOME_STATES]);
 
 export const RETURN_KEYS = Object.freeze({ options: 'lifecycle.return.options.v1', ownership: 'lifecycle.return.ownership.v1', outcome: 'lifecycle.return.outcome.v1' });
 export const CHOICES = Object.freeze(['same-visit', 'separate']);
