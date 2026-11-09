@@ -241,3 +241,8 @@ For Russell or Gary:
 - FUCQ-174 (Could) merged 35bcebe6, closed, In Review: order-mix, points and hold-sweep experiments; process baseline byte-identical. It adds policy key `comparison.experiments.v1` to seed-v1.json; all 59 seed-reading test files are rerunning to check. FUCQ-175 (Could, 8 pts) is building on it; FUCQ-176 follows.
 - For Gary: FUCQ-174's new bounds are assumptions (hold 900 to 86,400 s with at most 5 values; points 0 to 3).
 - 11:30 9 Nov: Gary answered the FUCQ-241 security note: rotating the database password is **not needed**. FUCQ-245 merged 2df50162 (re-pinned after proving byte-identical historical output), closed, In Review. All 59 seed-reading test files pass on 35bcebe6 (962 tests, 940 pass, 20 skipped). FUCQ-175 (Could, 8 pts) still building; FUCQ-176 waits for it.
+- **11:40 9 Nov, Gary: "Close it and start to pick up the remaining todos, let's see if we can clear the backlog today."**
+  - FUCQ-175 (C) merged d19bb3f0: merged-base scoped 323 tests, 314 pass, 0 fail, 9 skipped. Closed, In Review. For Gary: the default 1,000-employee job fails at its 128 MB worker heap and still peaks at about 428 MB; use prepared results in the demo, or raise the instance and `workerHeapMb` together.
+  - FUCQ-176 (C) lead started on d19bb3f0.
+  - FUCQ-178 closed as partly met (merged aa4f9879), In Review. The 984 unused BMW requests lapse; the 46 pending model lines would need a new story and approval.
+  - Started: FUCQ-150 (bug, not in MoSCoW, P3; verifying 3712a143) and FUCQ-166 (bug, not in MoSCoW, P3; offline only, no Pages publish). Next by capacity: FUCQ-167, 168, then 169, 171 (W, after demo), FUCQ-27 then 28, FUCQ-218.

@@ -30,3 +30,5 @@ FUCQ-155, 153, 154 and 151 are merged, closed, cleaned up and In Review. Details
 
 ## Read first
 `AGENTS.md`, `docs/gcsp/build-rules.md` ("Demo delivery and scope control"), `docs/HANDOVER-2026-11-09-OVERNIGHT-POLLER.md`, and the overnight log above.
+
+- **Update 11:40:** Gary has asked for the whole backlog to be cleared today, so Gary's poller has claimed FUCQ-166 (DEV-2026-11-07-GC-016) and FUCQ-150 (DEV-2026-11-06-GC-012, verifying 3712a143). Neither will publish to Pages or deploy; anything needing a real publication run comes back to you as a "for Russell" note. Gary's poller will also take the after-demo handover/return stories (FUCQ-167, 168, 169, 171) and FUCQ-27/28 in capacity batches. Check `dev_mail.py queue` before claiming anything.
