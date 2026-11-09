@@ -258,6 +258,21 @@ test('FUCQ-261: a resolved case with a confirmed change promises no further revi
   assert.match(text({ ...base, status: 'remedy-proposed' }, 'employee'), /The scheme team will review the case\./);
   assert.match(text({ ...base, status: 'remedy-proposed' }, 'scheme-team'), /Review the case before resolving it\./);
 });
+test('FUCQ-263: a closed case with an unconfirmed change asks Paula for nothing and offers no review', () => {
+  const remedy = { type: 'preference-relaxation', path: 'preferences.body.value', value: 'hatchback', expectedBriefVersion: 1, confirmationState: 'employee-confirmation-required' };
+  const render = (status, applicable) => { const root = host(); root.append(renderCaseContent({ ...queueCaseFixtures()[0], status, remedy,
+    relaxation: { applicable, confirmed: false, before: 'saloon', currentBriefVersion: applicable ? 1 : 2 } }, { onReviewRelaxation: () => {} })); return root; };
+  for (const status of ['resolved', 'closed']) for (const applicable of [true, false]) {
+    const root = render(status, applicable);
+    assert.doesNotMatch(root.textContent, /Waiting for your confirmation|no longer matches your current brief/);
+    assert.equal(findButton(root, 'Review body change'), undefined);
+    assert.match(root.textContent, /Recorded remedy.*Proposed valuehatchback/s);
+    assert.match(root.textContent, /This change was not confirmed before the case (closed|was resolved)\./);
+  }
+  const open = render('remedy-proposed', true);
+  assert.match(open.textContent, /Waiting for your confirmation\. Only this preference value will change\./);
+  assert.ok(findButton(open, 'Review body change')); assert.doesNotMatch(open.textContent, /was not confirmed before/);
+});
 test('embedded queue spans the Greg dashboard grid like the publish panel', () => {
   const css = readFileSync(new URL('../../blocks/gcsp/cases/gcsp-case-queue.css', import.meta.url), 'utf8');
   assert.match(css, /\.gcsp-greg-region:has\(\.gcsp-case-queue\.is-embedded\) \{[^}]*grid-column: 1 \/ -1/);
