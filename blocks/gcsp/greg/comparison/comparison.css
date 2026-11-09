@@ -1,4 +1,4 @@
-@import '../../kit/range-bar.css';
+@import '../../kit/range-bar.css'; @import './experiments.css';
 /* Greg route comparison: dense operational body, same tokens. Every selector is .gcsp scoped. Whitespace and hairlines only: no stripes, no tinted verdicts. */
 .gcsp .gcsp-comparison, .gcsp .gcsp-comparison-body, .gcsp .gcsp-comparison-omits { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
 .gcsp .gcsp-comparison-head { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 12px 24px; }
