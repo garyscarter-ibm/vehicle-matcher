@@ -136,6 +136,8 @@ function validReleaseHistory(value) {
 /** History describes employee-visible releases, independently of current suitability. */
 export function toManualGallery(envelope, controls = {}) {
   const empty = { cars: [], allCars: [], counts: { records: 0, eligible: 0, visible: 0, visibleEligible: 0 }, series: [], bodies: [], controls: { ...controls }, envelope: clone(envelope), releaseHistory: null };
+  // A saved choice the server now refuses (a date past its window) needs the employee, not a retry (FUCQ-222).
+  if (envelope?.status === 'invalid') return { ...empty, state: 'choices-invalid', invalidField: envelope.reasons?.[0]?.field ?? null };
   if (envelope?.status !== 'ok') return { ...empty, state: envelope?.status === 'stale-version' || envelope?.status === 'stale-run'
     ? 'context-refresh' : envelope?.view?.state === 'car-taken' ? 'car-taken' : 'source-unavailable' };
   const source = envelope.value;

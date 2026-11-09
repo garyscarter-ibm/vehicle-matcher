@@ -33,7 +33,9 @@ const states = {
   'source-unavailable': ['Availability cannot be checked right now', 'Retry to check current released cars.'],
   'context-refresh': ['Your choices need refreshing', 'Return to your choices or refresh availability.'],
   'car-taken': ['This car is no longer available', 'Refresh to see the current released cars.'],
+  'choices-invalid': ['Your saved choices need updating', 'One of your saved choices is no longer available. Go back to your choices to update it.'],
 };
+const invalidMessages = { requestedCollectionDate: 'Your requested collection date is no longer available. Go back to your choices and pick a new date.' };
 const claimMessages = { checking: 'Checking your current reservation.', claiming: 'Reserving this exact car for review.',
   pending: 'Your reservation is still being checked. Check its status before choosing another car.',
   uncertain: 'The reservation status is unavailable. Check its status before choosing another car.',
@@ -46,7 +48,7 @@ claimMessages.released = 'Your previous reservation has ended. Availability has 
 export function mountManualGallery(root, { adapter = createManualGalleryHttpAdapter(), brand = 'bmw', onBack,
   onClaimConfirmed, onClaimState, commandId } = {}) {
   const prefix = `gcsp-gallery-${++sequence}`; const controls = {}; const cards = new Map();
-  let nodes; let panel; let disposed = false; let started = false; let galleryState; let claimState; let detailId; let detailOrigin;
+  let nodes; let statusKey = null; let panel; let disposed = false; let started = false; let galleryState; let claimState; let detailId; let detailOrigin;
   const notify = (name, detail) => root.dispatchEvent(new root.ownerDocument.defaultView.CustomEvent(name, { detail, bubbles: true, composed: true }));
   const canGoBack = () => !disposed && (adapter.readOnly === true || claimState?.blocked === false);
   const claim = createManualClaimController({ adapter, onChange(next) { claimState = next; onClaimState?.(next); draw(); },
@@ -142,12 +144,16 @@ export function mountManualGallery(root, { adapter = createManualGalleryHttpAdap
     const allowances = [...new Set(galleryState.allCars.map((car) => car.cost.allowance).filter((value) => value != null))];
     nodes.allowance.textContent = allowances.length === 1 ? `Your allowance: ${allowances[0].toLocaleString('en-GB')} points a month` : 'Your allowance: see the terms for each car';
     const message = states[galleryState.state];
-    nodes.status.replaceChildren();
-    if (message && galleryState.state !== 'idle') {
+    // Rebuild the status only when it changes, so a re-render never drops focus from its button (FUCQ-222).
+    const key = `${galleryState.state}|${galleryState.invalidField ?? ''}`;
+    if (key !== statusKey) { statusKey = key; nodes.status.replaceChildren(); }
+    if (message && galleryState.state !== 'idle' && !nodes.status.childElementCount) {
+      const invalid = galleryState.state === 'choices-invalid';
       const actions = galleryState.state === 'loading' ? [] : galleryState.state === 'empty-search'
         ? [button({ label: 'Clear filters', variant: 'ghost', onClick() { controls.query.value = ''; gallery.setControls({ query: '', series: '', body: '' }); } })]
-        : [button({ label: 'Refresh availability', variant: 'ghost', onClick: () => gallery.refresh() })];
-      nodes.status.append(statusScreen({ title: message[0], message: message[1], actions }));
+        : invalid ? [button({ label: 'Back to your choices', variant: 'primary', onClick: () => nodes.back.click() })]
+          : [button({ label: 'Refresh availability', variant: 'ghost', onClick: () => gallery.refresh() })];
+      nodes.status.append(statusScreen({ title: message[0], message: (invalid && invalidMessages[galleryState.invalidField]) || message[1], actions }));
     }
     const desired = [];
     for (const car of galleryState.cars) {
