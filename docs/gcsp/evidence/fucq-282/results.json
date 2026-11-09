@@ -1,0 +1,130 @@
+[
+ {
+  "screen": "setup-validation",
+  "file": "1280-setup-validation.png",
+  "viewport": "1280x900",
+  "url": "/gcsp-presenter.html",
+  "h1": "Your order choices",
+  "forbiddenCopyFound": null,
+  "syntheticFooter": false,
+  "overflowX": 0,
+  "openFacts": 0,
+  "factSections": 0,
+  "checks": [
+   "plain error summary and field messages",
+   "no list of reasons under Brand"
+  ]
+ },
+ {
+  "screen": "contact-hint",
+  "email": "employee-paula@example.invalid",
+  "hint": "Made-up demo address."
+ },
+ {
+  "screen": "setup-contact-hint",
+  "file": "1280-setup-contact-hint.png",
+  "viewport": "1280x900",
+  "url": "/gcsp-presenter.html",
+  "h1": "Your order choices",
+  "forbiddenCopyFound": null,
+  "syntheticFooter": false,
+  "overflowX": 0,
+  "openFacts": 0,
+  "factSections": 0,
+  "checks": [
+   "Made-up demo address. under the email field",
+   "disabled options carry their reason in the option text"
+  ]
+ },
+ {
+  "screen": "contract-options",
+  "options": [
+   "Choose an option",
+   "6 months, 8000 mi/year",
+   "12 months, 12000 mi/year"
+  ]
+ },
+ {
+  "screen": "gallery-choices-invalid",
+  "backButtons": 1
+ },
+ {
+  "screen": "gallery-choices-invalid",
+  "file": "1280-gallery-choices-invalid.png",
+  "viewport": "1280x900",
+  "url": "/gcsp-presenter.html",
+  "h1": "Released cars",
+  "forbiddenCopyFound": null,
+  "syntheticFooter": false,
+  "overflowX": 0,
+  "openFacts": 0,
+  "factSections": 0,
+  "checks": [
+   "Back to your choices appears once"
+  ]
+ },
+ {
+  "screen": "setup-validation",
+  "file": "375-setup-validation.png",
+  "viewport": "375x812",
+  "url": "/gcsp-presenter.html",
+  "h1": "Your order choices",
+  "forbiddenCopyFound": null,
+  "syntheticFooter": false,
+  "overflowX": 0,
+  "openFacts": 0,
+  "factSections": 0,
+  "checks": [
+   "plain error summary and field messages",
+   "no list of reasons under Brand"
+  ]
+ },
+ {
+  "screen": "contact-hint",
+  "email": "employee-paula@example.invalid",
+  "hint": "Made-up demo address."
+ },
+ {
+  "screen": "setup-contact-hint",
+  "file": "375-setup-contact-hint.png",
+  "viewport": "375x812",
+  "url": "/gcsp-presenter.html",
+  "h1": "Your order choices",
+  "forbiddenCopyFound": null,
+  "syntheticFooter": false,
+  "overflowX": 0,
+  "openFacts": 0,
+  "factSections": 0,
+  "checks": [
+   "Made-up demo address. under the email field",
+   "disabled options carry their reason in the option text"
+  ]
+ },
+ {
+  "screen": "contract-options",
+  "options": [
+   "Choose an option",
+   "6 months, 8000 mi/year",
+   "12 months, 12000 mi/year"
+  ]
+ },
+ {
+  "screen": "gallery-choices-invalid",
+  "backButtons": 1
+ },
+ {
+  "screen": "gallery-choices-invalid",
+  "file": "375-gallery-choices-invalid.png",
+  "viewport": "375x812",
+  "url": "/gcsp-presenter.html",
+  "h1": "Released cars",
+  "forbiddenCopyFound": null,
+  "syntheticFooter": false,
+  "overflowX": 0,
+  "openFacts": 0,
+  "factSections": 0,
+  "checks": [
+   "Back to your choices appears once"
+  ]
+ }
+]

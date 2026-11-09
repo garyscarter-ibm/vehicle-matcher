@@ -85,7 +85,7 @@ export function deriveSetupModel(account, choices) {
     .filter((location) => !selectedContract || (location.contractOptionIds?.includes(selectedContract.contractOptionId)
       && location.driverKinds?.includes(selectedDriver?.kind)))
     .map((location) => {
-      const reason = !selectedContract ? 'Choose a permitted term and mileage first.'
+      const reason = !selectedContract ? 'Choose a contract length and annual mileage first.'
         : location.closedDates?.includes(choices?.requestedCollectionDate) ? 'Closed on the requested collection date.' : null;
       return { ...location, disabled: !!reason, reason };
     });
