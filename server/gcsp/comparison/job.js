@@ -299,7 +299,7 @@ export async function runComparisonCli({ argv = [], env = process.env, stdout = 
         const { exitCode, reason } = describeFailure(error);
         // The seeds are the CLI's own option, so they keep their own reason; any other refused key reads as the browser's does.
         const boundary = reason === seedsReason ? null : refusedBoundary(error);
-        return boundary && request.change ? refuse(refusalFor(boundary, request.experimentId).reasons) : fail(exitCode, `${reason} Nothing was stored.`);
+        return boundary && request.change ? refuse(refusalFor(boundary, request.experimentId, request.change).reasons) : fail(exitCode, `${reason} Nothing was stored.`);
       }
       if (args.out) {
         try { await writeComparisonResultFile(args.out, result); }

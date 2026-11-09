@@ -241,12 +241,12 @@ test('an experiment is checked like the browser request, naming every field at o
   assert.equal(lines.at(-1), 'Nothing was stored.');
   const same = await cli(['--experiment', 'hold-sweep', '--change', '{"values":[7200],"basis":"The current value"}'], { repository, policy });
   assert.equal(same.exitCode, 2, same.err);
-  assert.match(same.err, /^change\.values \(hold\.buddy\.durationSeconds\): Each hold must be within the allowed range/);
+  assert.match(same.err, /^change\.values \(hold\.buddy\.durationSeconds\): Give no more holds than the policy allows/);
   assert.equal(same.out, '');
   const tooMany = await cli(['--experiment', 'hold-sweep', '--change', JSON.stringify({ values: Array.from({ length: 40 }, (_, i) => 3600 + i), basis: 'x' })],
     { repository, policy });
   assert.equal(tooMany.exitCode, 2);
-  assert.match(tooMany.err, /^change: Give the change in the shape this experiment takes\./);
+  assert.match(tooMany.err, /^change\.values \(hold\.buddy\.durationSeconds\): Give no more holds than the policy allows/);
   const badSeeds = await cli([...sweepArgs, '--seeds', 'a,a'], { repository, policy });
   assert.equal(badSeeds.exitCode, 2);
   assert.match(badSeeds.err, /seeds are not valid/);

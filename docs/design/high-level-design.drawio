@@ -3278,8 +3278,8 @@
             <mxGeometry height="244" width="3631" x="1148" y="236" as="geometry" />
           </mxCell>
         </UserObject>
-        <UserObject label="Comparison job / presenter-started worker / CLI runs same module" type="service" status="proposed" feature="employee-comparison" id="cmp-job">
-          <mxCell parent="cmp-backend" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#9673a6;dashed=1;fillColor=#e1d5e7;" vertex="1">
+        <UserObject label="Comparison job / presenter-started worker / CLI runs same module" type="service" status="built" feature="employee-comparison" id="cmp-job">
+          <mxCell parent="cmp-backend" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#6c8ebf;fillColor=#dae8fc;" vertex="1">
             <mxGeometry height="70" width="260" x="10" y="45.67" as="geometry" />
           </mxCell>
         </UserObject>

@@ -1290,7 +1290,7 @@ Other failure reasons: `The comparison was stopped at its limit of 1800 seconds.
 
 ```json
 { "status": "invalid", "code": "invalid-experiment", "reasons": [ { "field": "change.values", "key": "hold.buddy.durationSeconds",
-  "reason": "Each hold must be within the allowed range, different from the others and from the hold used today." } ] }
+  "reason": "Give no more holds than the policy allows, each within the allowed range, different from the others and from the hold used today." } ] }
 ```
 
 Other 400s: `{ "status": "invalid", "code": "unsupported-query", "reasons": [{ "field": "view", "reason": "Only jobId can be given here." }] }` for a query field a route does not take, and `{ "code": "invalid-experiment", "reasons": [{ "field": "experimentId", "key": null, "reason": "Choose one of the known comparison experiments." }] }` for a bad `?experimentId=`. 403: `{ "status": "forbidden", "reason": "This person cannot perform that action." }`. 404: `{ "status": "not-found", "resourceType": "comparison_jobs" }` (no job) or `"comparison_results"` (nothing stored for that experiment). 503 `unavailable` carries `reason` and `retryable: true`.

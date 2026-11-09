@@ -255,6 +255,7 @@ test('invalid requests name the key, start nothing, store no job and never touch
     [change({ values: [100] }), ...hold],
     [change({ values: [7200] }), ...hold],
     [change({ values: [3600, 100000] }), ...hold],
+    [change({ values: [900, 1800, 3600, 10800, 21600, 43200] }), ...hold],
     [{ experimentId: 'points', change: { value: 5, basis: 'Trying it' } }, 'change.value', 'comparison.pointsAllowanceMultiplier'],
     [{ experimentId: 'order-mix', change: { value: [], basis: 'Trying it' } }, 'change.value', 'comparison.modelLineMix'],
     [{ experimentId: 'hold-sweep', change: { values: [3600] } }, 'change.basis', null],

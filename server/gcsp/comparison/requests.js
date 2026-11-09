@@ -71,7 +71,7 @@ const BOUNDARY_REASONS = Object.freeze({
 });
 const KEY_REASON = 'This value is outside its allowed range, repeated, or the same as the value used today.';
 const KEY_REASONS = Object.freeze({
-  [EXPERIMENT_KEYS['hold-sweep']]: 'Each hold must be within the allowed range, different from the others and from the hold used today.',
+  [EXPERIMENT_KEYS['hold-sweep']]: 'Give no more holds than the policy allows, each within the allowed range, different from the others and from the hold used today.',
   [EXPERIMENT_KEYS.points]: 'The multiplier must be within the allowed range and different from the one used today.',
   [EXPERIMENT_KEYS['order-mix']]: 'This mix is not valid, or is the same as the one used today.',
 });
@@ -80,9 +80,11 @@ const KEY_REASONS = Object.freeze({
  * The invalid outcome for a boundary the runner refused (ComparisonRunError.boundary or ComparisonInputError.key).
  * A policy key is reported on the change field that carries it; the browser never sends an overlay.
  */
-export function refusalFor(boundary, experimentId) {
+export function refusalFor(boundary, experimentId, change) {
+  // A well-formed hold list refused as 'change' has more values than the policy's maximum.
   const key = Object.values(EXPERIMENT_KEYS).includes(boundary) ? boundary
-    : boundary === 'overlay' && experimentId === 'order-mix' ? EXPERIMENT_KEYS['order-mix'] : null;
+    : boundary === 'overlay' && experimentId === 'order-mix' ? EXPERIMENT_KEYS['order-mix']
+      : boundary === 'change' && experimentId === 'hold-sweep' && Array.isArray(change?.values) ? EXPERIMENT_KEYS['hold-sweep'] : null;
   if (key) return result('invalid', { code: 'invalid-experiment', reasons: [{
     field: key === EXPERIMENT_KEYS['hold-sweep'] ? 'change.values' : 'change.value', key, reason: KEY_REASONS[key] }] });
   const field = boundary === 'basis' ? 'change.basis' : boundary;

@@ -135,7 +135,7 @@ export function createComparisonJobService({ repository, policy, clock, identity
     if (job.settled || !plain(message)) return;
     if (job.phase === 'recording') { job.backlog.push(message); return; }
     if (message.type === 'invalid' && job.phase === 'starting') {
-      return abandon(job, refusalFor(typeof message.boundary === 'string' ? message.boundary : 'overlay', job.request.experimentId));
+      return abandon(job, refusalFor(typeof message.boundary === 'string' ? message.boundary : 'overlay', job.request.experimentId, job.request.change));
     }
     if (message.type === 'plan' && job.phase === 'starting') return onPlan(job, message);
     if (job.phase === 'starting') return abandon(job, unavailable(message.type === 'failed' ? reasonOf(message) : FAILED));
