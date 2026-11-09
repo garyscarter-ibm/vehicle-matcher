@@ -630,3 +630,49 @@ test('FUCQ-168: a ready handover completed through the real appointment service 
   assert.deepEqual([still.currentCar.kind, still.newCar.status, (await rows(g, CURRENT_CAR_EVENTS)).length], ['contract', 'on-order', 0], 'a refused completion changes nothing');
   await g.sameCar('refused completion');
 });
+
+// FUCQ-251: a completed handover must not close the separate-day return; the keyed rule names the states it accepts.
+async function completeHandover(f) {
+  await f.approve(); await f.scheduleHandover(); await f.advance(2 * DAY / 1000); await f.tick();
+  assert.equal((await f.docs.completeTask(f.paula, ACK(f.orderUuid))).status, 'ok');
+  const done = await f.handover.complete(f.greg, { orderUuid: f.orderUuid }); assert.equal(done.status, 'ok', JSON.stringify(done));
+  assert.equal(done.value.state, 'completed'); return done.value;
+}
+test('FUCQ-251: after the handover is completed Paula can still plan a separate return, and the current car follows FUCQ-168', async (t) => {
+  const f = await setup(t, { documents: true, policy: await outcomePolicy('returned') });
+  const handover = await completeHandover(f);
+  const collected = { kind: 'order', orderUuid: f.orderUuid, vin: null };
+  const plan = await f.plan();
+  assert.deepEqual([plan.applicable, plan.state, plan.handover.state, plan.relationship.currentCar], [true, 'not-planned', 'completed', collected]);
+  const rules = seedRow('lifecycle.return.options.v1').value.rules;
+  const open = Object.fromEntries(plan.choices.map((c) => [c.id, c.available]));
+  assert.deepEqual(open, { 'same-visit': rules['same-visit'].requiresHandoverStates.includes('completed'), separate: rules.separate.requiresHandoverStates.includes('completed') });
+  assert.deepEqual(open, { 'same-visit': false, separate: true }, 'the keyed rules open only the separate-day return once the car is collected');
+  assert.equal(plan.choices.find((c) => c.id === 'same-visit').reason, 'Your new car has already been handed over.');
+  assert.ok(plan.offeredSlots.separate.length > 0 && plan.offeredSlots.separate.every((s) => Date.parse(s.start) >= Date.parse(handover.slot.end)));
+  const slot = plan.offeredSlots.separate[0];
+  const asked = await f.ask('separate', slot.slotId); assert.equal(asked.status, 'ok', JSON.stringify(asked));
+  assert.deepEqual([asked.value.state, asked.value.requestedSlot], ['return-requested', slot]);
+  await f.advance(DELAY); await f.tick();
+  const scheduled = await f.plan(); assert.deepEqual([scheduled.state, scheduled.slot], ['return-scheduled', slot]);
+  assert.deepEqual(scheduled.relationship.currentCar, collected, 'scheduling the return never changes the current car');
+  const done = await passReturn(f, scheduled);
+  assert.equal(done.state, 'returned');
+  const r = done.relationship;
+  assert.deepEqual([r.currentCar, r.oldCar.status, r.newCar.status], [collected, 'returned', 'collected']);
+  assert.deepEqual(r.changes.map((c) => c.type), ['handover-completed', 'return-confirmed']);
+
+  // A keyed change is a one-place change: without `completed` the separate return closes again.
+  const strict = await setup(t, { documents: true, policy: await policyWith((get) => { get('lifecycle.return.options.v1').rules.separate.requiresHandoverStates = ['scheduled']; }) });
+  await completeHandover(strict);
+  const closed = await strict.plan();
+  assert.ok(closed.choices.every((c) => !c.available), 'no choice is open when the key accepts only a scheduled handover');
+
+  // A new order still has no return plan once its handover is completed.
+  const g = await setup(t, { documents: true, order: 'new' });
+  await completeHandover(g);
+  const none = await g.plan();
+  assert.deepEqual([none.applicable, none.state, none.choices, none.offeredSlots], [false, null, [], {}]);
+  const refused = await g.ask('separate', slot.slotId);
+  assert.deepEqual([refused.status, refused.code], ['conflict', 'return-not-applicable']);
+});
