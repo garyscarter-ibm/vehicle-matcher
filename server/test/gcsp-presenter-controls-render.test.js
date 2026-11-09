@@ -613,7 +613,7 @@ test('FUCQ-204: every step the hosted runtime registers has a label, so none rea
   const { stepLine } = await import('../../blocks/gcsp/presenter-controls/tick-copy.js');
   // Ids from the hosted memory runtime's lastTick readback (docs/gcsp/evidence/fucq-204/results.json).
   for (const handlerId of ['stock-release', 'manual-claim-expiry', 'buddy-expiry', 'lifecycle-appointments', 'lifecycle-approvals', 'lifecycle-documents',
-    'lifecycle-return-appointments', 'renewal-risk-cases', 'selection-order-reconciliation', 'buddy-allocation', 'captured-outbox']) {
+    'lifecycle-return-appointments', 'lifecycle-return-outcomes', 'renewal-risk-cases', 'selection-order-reconciliation', 'buddy-allocation', 'captured-outbox']) {
     assert.doesNotMatch(stepLine({ handlerId }, { handlerId, outcome: { status: 'ok' } }), /Another step/, handlerId);
   }
 });

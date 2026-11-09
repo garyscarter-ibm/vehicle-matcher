@@ -13,11 +13,11 @@ test('actual manual conversion and shared runtime progress approvals into docume
   assert.equal(typeof f.orderingAdapter.status.requestDecision, 'function');
   assert.equal(typeof f.orderingAdapter.documentStatus.start, 'function');
   assert.deepEqual(f.registrations, ['stock-release', 'manual-claim-expiry', 'buddy-expiry', 'buddy-allocation', 'selection-order-reconciliation',
-    'lifecycle-approvals', 'lifecycle-documents', 'lifecycle-appointments', 'lifecycle-return-appointments', 'renewal-risk-cases', 'captured-outbox']);
+    'lifecycle-approvals', 'lifecycle-documents', 'lifecycle-appointments', 'lifecycle-return-appointments', 'lifecycle-return-outcomes', 'renewal-risk-cases', 'captured-outbox']);
   assert.equal(f.reconciliations(), 1);
   good(await f.manualOrder.registerClockHandler()); good(await f.lifecycle.start()); good(await f.documents.start()); good(await f.appointments.start());
   good(await f.returnPlan.start());
-  assert.equal(f.registrations.length, 11);
+  assert.equal(f.registrations.length, 12);
   assert.equal((await f.clock.registerHandler({ handlerId: 'too-late', stage: 'pending-reconciliation', handle: async () => ({ status: 'ok', value: {} }) })).status, 'invalid');
   const { car, operation } = await select(f); const query = `?orderUuid=${encodeURIComponent(car.orderUuid)}`;
   const initial = good((await f.request('/api/gcsp/orders/progress' + query)).json);
@@ -35,7 +35,7 @@ test('actual manual conversion and shared runtime progress approvals into docume
   for (let index = 0; index < maxTicks; index += 1) {
     const next = await tick(f, `lifecycle-progress-${index}`); const value = good(next.outcome);
     assert.deepEqual(value.handlerOrder.filter((row) => row.stage === 'pending-reconciliation').map((row) => row.handlerId),
-      ['lifecycle-appointments', 'lifecycle-approvals', 'lifecycle-documents', 'lifecycle-return-appointments', 'renewal-risk-cases', 'selection-order-reconciliation']);
+      ['lifecycle-appointments', 'lifecycle-approvals', 'lifecycle-documents', 'lifecycle-return-appointments', 'lifecycle-return-outcomes', 'renewal-risk-cases', 'selection-order-reconciliation']);
     if (index === 0) assert.deepEqual(await f.clock.tick(f.presenter, next.input), next.outcome);
     completed = good((await f.request('/api/gcsp/orders/progress' + query)).json);
     if (completed.outcome === 'sent-to-ordering') break;

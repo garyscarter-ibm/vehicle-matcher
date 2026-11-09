@@ -2,7 +2,7 @@
 const STATE = { completed: 'Tick completed', pending: 'Tick still running' };
 const STEP = { 'stock-release': 'Stock release', 'manual-claim-expiry': 'Manual claim expiry', 'buddy-expiry': 'Buddy expiry',
   'buddy-pending-operations': 'Buddy pending operations', 'lifecycle-appointments': 'Appointments', 'lifecycle-approvals': 'Approvals',
-  'lifecycle-documents': 'Documents', 'lifecycle-return-appointments': 'Return appointments', 'renewal-risk-cases': 'Renewal risk cases',
+  'lifecycle-documents': 'Documents', 'lifecycle-return-appointments': 'Return appointments', 'lifecycle-return-outcomes': 'Return outcomes', 'renewal-risk-cases': 'Renewal risk cases',
   'selection-order-reconciliation': 'Selection order reconciliation', 'captured-outbox': 'Outbox dispatch',
   'buddy-allocation': 'Buddy allocation' };
 const STAGE = { 'release-pull': 'Stock release', 'manual-expiry': 'Manual claim expiry', 'buddy-expiry': 'Buddy expiry',

@@ -1741,3 +1741,69 @@ Read model: `contractVersion`, `runId`, `orderUuid`, `employeeId`, `applicable`,
 
 A refused write returns `unsupported` with `code`, `reason` and, once a slot was offered, the unchanged `plan`. This
 backend-only story adds no screen.
+
+## Lifecycle return outcomes · FUCQ-168
+
+The return plan (FUCQ-118) gains the terminal outcomes of a scheduled return, recorded apart from the return appointment
+and from the new car's handover. Physical return stays outside the main walkthrough, so the confirmation comes from the
+synthetic adapter, and only when `lifecycle.return.outcome.v1` is enabled (off by default; the default journey is unchanged).
+
+Port: the outcome step of `ordering.appointments.v1` (`server/gcsp/adapters/synthetic-return-outcomes.js`), passed to
+`LifecycleReturnPlanService` as `outcomes`, with `confirmOutcome(operation, now)` and `reconcile(operation)`. The synthetic
+provider answers `in-progress` before the keyed time, then the pinned outcome once (receipts `synthetic-return-outcomes:v1`,
+references `SYN-RET-`). The live-shaped stub refuses with `live-return-outcomes-unsupported` and nothing changes.
+
+Recording: tick handler `lifecycle-return-outcomes` (`pending-reconciliation`, registered after
+`lifecycle-return-appointments` and before `renewal-risk-cases`). On a presenter tick, once the return appointment is
+`scheduled` with no pending write, it opens one `pending_operations` row (`lifecycle-return-outcome`, stable ID
+`return-outcome:<digest>:outcome`) and one projection (`event_receipts`, consumer `lifecycle-return-outcomes:state:v1`,
+event = orderUuid). The operation pins the outcome and the time (slot end plus the keyed delay). An uncertain or timed-out
+write stays pending under the same operation ID and is reconciled first; only `not-found` allows the write again, and the
+startup tick only reconciles. In the same transaction as the outcome:
+
+* `returned` applies `return-confirmed` to the current-car relationship (below);
+* `missed` leaves the current car alone and records the keyed lifecycle-exception receipt: consumer
+  `lifecycle-return:exceptions:v1`, event `<orderUuid>:return-missed`, event type from the key (`appointment-no-show`,
+  selected by `renewalCase.lifecycle.eventTypes`), value `{employeeId, renewalId, orderUuid, occurredAt, exceptionType,
+  oldContractId, entitlementSlotId, renewalAuthority, location, appointment, providerReference, policyVersion, fictional}`.
+  The renewal-risk trigger opens one case from it.
+
+Read model additions (`GET /api/gcsp/return-plan`, no new route): states `returned` and `return-missed` (`scheduled` false);
+`outcome` `{state, at, location, appointment: {purpose: 'return', slotId, slot, providerReference}, providerReference,
+oldContractId}` or `null`; a history row `{state, appointmentState: null, at, providerReference}`; `relationship` (below);
+owner and next step from the key. An uncertain outcome shows `pending.step: 'outcome'`; a refused one shows `blocked`.
+Shapes are in `server/test/fixtures/gcsp-lifecycle-return-plan-outcomes.json`:
+
+| Case | `state` | `owner` | Next step | `relationship.currentCar` |
+|---|---|---|---|---|
+| returned | `returned` | retailer | Your current car has been returned. Nothing more is needed from you. | the new car once its handover is confirmed, else `null` |
+| missed | `return-missed` | scheme-team | The scheme team will contact you to rearrange the return of your current car. | the old contract, still held |
+
+### Current-car relationship
+
+`server/gcsp/lifecycle/current-car/` holds Paula's relationship per exact order: the old car by contract and slot (none for a
+new order), the new car by `orderUuid` until delivery (VIN only when a completion supplies one). Only two confirmed events
+change it: `handover-completed` and `return-confirmed`. Acceptance, approval and scheduling never call it. Storage adds no
+migration: a projection (consumer `lifecycle-current-car:state:v1`, event = orderUuid) and one receipt per event
+(`lifecycle-current-car:events:v1`, event `<type>:<orderUuid>`). A repeat is a no-op; changed input is a `conflict`
+(`idempotency-input-changed`). Another employee is `forbidden`; another contract is `conflict`
+(`current-car-identity-mismatch`); a return on a new order is `conflict` (`return-not-applicable`).
+
+Shape: `{contractVersion: 'lifecycle.current-car.v1', runId, orderUuid, employeeId, currentCar, oldCar: {contractId, slotId,
+status: 'held' | 'returned', returnedAt, providerReference, location} | null, newCar: {orderUuid, configurationId, status:
+'on-order' | 'collected', collectedAt, vin, providerReference}, changes: [{type, at, providerReference, appointment}],
+fictional}`. `currentCar` is `{kind: 'order', orderUuid, vin}` once collected, else `{kind: 'contract', contractId, slotId}`
+while the old car is held, else `null`. The account's contract records are not rewritten; their consumers move to this
+relationship in a later story.
+
+FUCQ-167's handover completion calls `applyCurrentCarEvent(tx, runId, event)` in the same transaction as the `completed`
+outcome (handover purpose only), with `{type: 'handover-completed', orderUuid, employeeId, occurredAt, providerReference,
+appointment: {purpose: 'handover', slotId, providerReference}, vin?}`; a refused, uncertain or not-ready completion changes
+nothing. An order with no selection record has no relationship and completes unchanged. Callers outside a transaction use
+`recordCurrentCarEvent(repository, systemContext, event)`.
+
+| Key | Assumed default (synthetic demo assumption) |
+|---|---|
+| `lifecycle.return.outcome.v1` | off; outcome `returned` (or `missed`); 1800 seconds of demo time after the slot ends; exception type `appointment-no-show`; owner and next step per outcome |
+
+This backend-only story adds no screen.

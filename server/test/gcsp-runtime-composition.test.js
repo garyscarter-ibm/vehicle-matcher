@@ -19,6 +19,7 @@ const expectedRegistrations = [
   { handlerId: 'lifecycle-documents', stage: 'pending-reconciliation' },
   { handlerId: 'lifecycle-appointments', stage: 'pending-reconciliation' },
   { handlerId: 'lifecycle-return-appointments', stage: 'pending-reconciliation' },
+  { handlerId: 'lifecycle-return-outcomes', stage: 'pending-reconciliation' },
   { handlerId: 'renewal-risk-cases', stage: 'pending-reconciliation' },
   { handlerId: 'captured-outbox', stage: 'outbox-dispatch' },
 ];

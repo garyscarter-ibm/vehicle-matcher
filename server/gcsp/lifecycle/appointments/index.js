@@ -3,6 +3,7 @@ import { validInstant } from '../../policy/file-provider.js';
 import { OPERATION_TYPES } from '../../adapters/synthetic-appointments.js';
 import { observeStage } from '../documents/index.js';
 import { APPOINTMENT_KEYS, loadAppointmentPolicy } from './policy.js';
+import { applyCurrentCarEvent } from '../current-car/index.js';
 
 export const APPOINTMENT_CONTRACT = 'lifecycle.appointments.v1';
 export const APPOINTMENT_HANDLER_ID = 'lifecycle-appointments';
@@ -483,6 +484,12 @@ export class LifecycleAppointmentService {
         const recorded = await tx.recordReceipt({ consumerId: EXCEPTION_CONSUMER, eventId: operation.operationId, eventType: exceptionType, handlerId: this.#cfg.handlerId,
           inputDigest: inputDigest({ eventId: operation.operationId, occurredAt: response.at }), inputVersions: { policy: p.policyVersion }, state: 'completed', outcome: ok(value) });
         if (recorded.status !== 'ok') return recorded;
+      }
+      // FUCQ-168: a confirmed handover completion makes the new car current, in the same transaction; an order with no selection record has no relationship.
+      if (good && step === 'complete' && this.#cfg.purpose === 'handover') {
+        const changed = await applyCurrentCarEvent(tx, context.runId, { type: 'handover-completed', orderUuid, employeeId: p.employeeId, occurredAt: response.at,
+          providerReference: response.providerReference, appointment: { purpose: 'handover', slotId: p.slot?.slotId, providerReference: p.history.at(-1)?.providerReference } });
+        if (changed.status !== 'ok' && changed.status !== 'not-found') return changed;
       }
       return ok(label);
     });
