@@ -612,6 +612,11 @@ These ranges never narrow the legal safe-integer validation above. Missing/inval
 editing available; exact values outside a range remain unchanged and explicitly explained. The shared single
 slider is callback-owned, and the browser supplies no policy ranges/defaults. See `greg-publish.md`.
 
+Assumed `policy.displayLabels.v1` (unit `display-labels`) is the one source of the plain names Greg sees: `models` maps
+the model part of a price row's `matchValue` to a template (`{engine}` is the text after `|`), `weights`, `units` and
+`versions` name the other keys. `readPolicy` projects `label`, `unitLabel`, `schemeLabel` (from `scheme.displayNames.v1`),
+`activeVersionLabel` and `versionNames`; the panel shows no raw key outside its "Sources and assumptions" disclosure.
+
 The server-only snapshot read supports a disposable what-if PolicyService over the same validated source. A preview
 returns active and draft aggregates, their differences and explicit preview status without writing a policy, run,
 brief, offer or quote. Publication sends the permitted patches and provenance through `publishPolicyVersion` and

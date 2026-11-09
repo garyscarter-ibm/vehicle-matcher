@@ -6,10 +6,13 @@ export function galleryPolicy({ ranges = false } = {}) {
   const provenance = { source: 'Synthetic component gallery', sourceDate: '2026-11-05', basis: 'Interaction example only', status: 'assumed' };
   const range = (kind) => ranges ? { presentationRange: { minimum: 0, maximum: kind === 'price' ? 4000 : 10, step: 1,
     assumptionKey: 'gallery.editor.range', unit: 'editor-presentation-range', ...provenance } } : {};
-  return { activeVersion: 'gallery-policy-v1', effectiveFrom: '2026-11-05T09:00:00.000Z', asOf: '2026-11-05T10:00:00.000Z',
+  const labels = { body: 'Body style', fuel: 'Fuel type', sportiness: 'Sportiness', comfort: 'Comfort', economy: 'Running costs', size: 'Size' };
+  return { activeVersion: 'gallery-policy-v1', activeVersionLabel: 'Gallery policy 1', versionNames: { 'gallery-policy-v1': 'Gallery policy 1' },
+    effectiveFrom: '2026-11-05T09:00:00.000Z', asOf: '2026-11-05T10:00:00.000Z',
     heldOffers: { count: 2, message: 'Fixture: 2 held offers keep their earlier terms.' }, fields: [
-      { id: 'price:gallery-cost', kind: 'price', ...range('price'), key: 'gallery-cost', value: 1100, unit: 'points/month', schemeId: 'Gallery scheme', configurationId: 'Gallery car', ...provenance },
-      ...['body', 'fuel', 'sportiness', 'comfort', 'economy', 'size'].map((key) => ({ id: `weight:${key}`, kind: 'weight', ...range('weight'), key, value: 1, unit: 'relative-weight', ...provenance })),
+      { id: 'price:gallery-cost', kind: 'price', ...range('price'), key: 'gallery-cost', value: 1100, unit: 'points/month', unitLabel: 'points a month', label: 'Gallery car',
+        schemeId: 'Gallery scheme', schemeLabel: 'Gallery scheme', configurationId: 'Gallery car', ...provenance },
+      ...['body', 'fuel', 'sportiness', 'comfort', 'economy', 'size'].map((key) => ({ id: `weight:${key}`, kind: 'weight', ...range('weight'), key, value: 1, unit: 'relative-weight', unitLabel: 'weight', label: `${labels[key]} weight`, ...provenance })),
     ] };
 }
 export function galleryPreview(input, policy = galleryPolicy()) {
