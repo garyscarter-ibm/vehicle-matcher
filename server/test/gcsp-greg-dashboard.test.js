@@ -171,10 +171,12 @@ test('refresh fixture: Refresh changes figures, as-of and versions, keeps focus 
 
 test('reserved regions are labelled, empty of figures and tables, and returned by teardown.regions', async () => {
   const { root, teardown } = await mountFixture('populated');
-  const names = ['publish', 'order-tracking', 'prediction', 'route-comparison', 'case-queue'];
+  const names = ['publish', 'prediction', 'order-tracking', 'route-comparison', 'case-queue'];
   const nodes = names.map((n) => root.querySelector(`section[data-region="${n}"]`));
   assert.ok(nodes.every(Boolean));
-  assert.deepEqual(Object.keys(teardown.regions), ['publish', 'orderTracking', 'prediction', 'routeComparison', 'caseQueue']);
+  assert.deepEqual(Object.keys(teardown.regions), ['publish', 'prediction', 'orderTracking', 'routeComparison', 'caseQueue']);
+  assert.deepEqual([...root.querySelectorAll('section[data-region]')].map((n) => n.dataset.region), names, 'Next order comes before Order requests');
+  assert.equal(nodes[2].id, 'gcsp-order-requests', 'the request link has a stable target');
   assert.deepEqual(Object.values(teardown.regions), nodes);
   for (const node of nodes) {
     assert.equal(node.querySelectorAll('table, .gcsp-tile, dl, svg').length, 0);

@@ -44,7 +44,7 @@ export function mountPresenterWorkspace(host, { adapter = createPresenterHttpAda
         ordersRegion.classList.remove('gcsp-greg-region'); ordersRegion.classList.add('gcsp-orders-host');
         ordersRegion.replaceChildren();
         orders = mountOrders(ordersRegion, { adapter: ordersAdapter, productionControls: true, signal: abort.signal,
-          onChanged: () => { dashboard.refresh?.(); dashboard.orderPlan?.refresh?.(); } });
+          onChanged: (action) => { dashboard.refresh?.(); dashboard.orderPlan?.refresh?.({ focus: action === 'stepProduction' }); } });
       }
       // Presenter clock actions change supply, so both figures reload without a manual Refresh.
       const onAction = () => { dashboard.refresh?.(); orders?.refresh?.(); dashboard.orderPlan?.refresh?.(); };

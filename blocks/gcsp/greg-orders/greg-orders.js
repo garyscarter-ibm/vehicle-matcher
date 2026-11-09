@@ -143,7 +143,7 @@ export function mountGregOrders(root, { adapter, productionControls = false, onC
     }
     notice.textContent = out.status === 'ok' ? success : message(out); busy = false;
     await load({ keepNotice: true });
-    if (!stopped) { availability(); if (out.status === 'ok') onChanged?.(); }
+    if (!stopped) { availability(); if (out.status === 'ok') onChanged?.(method); }
   }
   requestForm.addEventListener('submit', (event) => {
     event.preventDefault(); if (!projection || !requestForm.reportValidity()) return;
@@ -174,7 +174,7 @@ export class GcspGregOrdersElement extends HTMLElement {
   get adapter() { return this._adapter; }
   set adapter(value) { this._adapter = value; if (this.isConnected) this.connectedCallback(); }
   connectedCallback() { this._teardown?.(); this._teardown = mountGregOrders(this, { adapter: this._adapter,
-    productionControls: this.hasAttribute('presenter-controls'), onChanged: () => this.dispatchEvent(new CustomEvent('gcsp:orders-changed', { bubbles: true, composed: true })) }); }
+    productionControls: this.hasAttribute('presenter-controls'), onChanged: (action) => this.dispatchEvent(new CustomEvent('gcsp:orders-changed', { bubbles: true, composed: true, detail: { action } })) }); }
   disconnectedCallback() { this._teardown?.(); }
   refresh() { return this._teardown?.refresh(); }
 }

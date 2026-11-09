@@ -128,3 +128,19 @@ test('a lapsed access key shows the restart screen on load and after a failed co
   form.dispatchEvent(new window.Event('submit', { bubbles: true, cancelable: true })); await tick(); await tick();
   assert.match(next.root.textContent, /Demo restarted/); assert.doesNotMatch(next.root.textContent, /are unavailable/); next.teardown();
 });
+
+// FUCQ-290: the plan panel takes focus only after a Production response, so onChanged says which action changed the orders.
+test('onChanged names the action: a request, and a saved Production response', async () => {
+  const seen = []; let value = view('requested');
+  const { root, teardown } = await setup(value, { submit: async () => ok({}), stepProduction: async () => { value = view('partly-confirmed'); return ok({}); }, queueConfirmed: async () => ok({}),
+    loadTracking: async () => ok(value) }, { productionControls: true, onChanged: (action) => seen.push(action) });
+  const fire = (form) => { form.dispatchEvent(new window.Event('submit', { bubbles: true, cancelable: true })); };
+  const quantity = root.querySelector('input[type="number"]'); quantity.value = '1'; fire(quantity.closest('form')); await tick(); await tick();
+  const details = root.querySelector('details'); details.open = true; fire(details.querySelector('form')); await tick(); await tick(); await tick();
+  assert.deepEqual(seen, ['submit', 'stepProduction']); teardown();
+  const element = document.createElement('gcsp-greg-orders'); const details2 = []; defineGcspGregOrders();
+  element.adapter = { loadTracking: async () => ok(view()), submit: async () => ok({}) }; document.body.append(element); await tick();
+  element.addEventListener('gcsp:orders-changed', (event) => details2.push(event.detail.action));
+  const q = element.querySelector('input[type="number"]'); q.value = '1'; fire(q.closest('form')); await tick(); await tick();
+  assert.deepEqual(details2, ['submit']);
+});

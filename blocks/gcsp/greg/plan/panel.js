@@ -4,8 +4,9 @@ import { labelledField, errorSummary } from '../../kit/form-controls.js';
 import { dataTable } from '../../kit/data-table.js';
 import { isRunRestarted, runRestartedNotice } from '../../kit/run-restarted.js';
 import { metricTile } from '../../kit/metric-tile.js';
+import { presenterBar } from '../../kit/presenter-bar.js';
 import { toPlanView, toChanges, staleView } from './plan-view.js';
-import { quantityLabel } from './plan-copy.js';
+import { quantityLabel, requestedNotice, REQUEST_LINK, ORDER_REQUESTS_ID } from './plan-copy.js';
 
 let sequence = 0;
 const UNAVAILABLE = 'The order plan could not be loaded. Try again in a moment.';
@@ -70,15 +71,17 @@ export function mountGregOrderPlan(root, { adapter, signal, onSubmitted, command
   const base = `gcsp-plan-${++sequence}`;
   let disposed = false; let gen = 0; let busy = false;
   let current = null; let shown = null; let previewChanges = []; let stale = null; let pending = null; let submitOk = false;
-  let heading; let staleHeading; let lockable = [];
-  let draft = []; let fields = []; let meta = []; let sliders = []; let summary; let limitsHeading; let previewButton; let resetButton; let submitButton;
+  let heading; let staleHeading; let replannedHeading; let lockable = [];
+  const limitsBar = presenterBar({ label: 'Change limits' }); limitsBar.readback.remove(); limitsBar.root.classList.add('gcsp-plan-limits');
+  const limitsHeading = limitsBar.summary; limitsHeading.id = `${base}-limits`;
+  let draft = []; let fields = []; let meta = []; let sliders = []; let summary; let previewButton; let resetButton; let submitButton;
   const page = el('div', 'vm gcsp-plan');
   const top = el('div', 'gcsp-plan-top');
   const message = note('', 'gcsp-plan-message'); message.setAttribute('role', 'status');
   const submitHost = el('div', 'gcsp-plan-submit');
   const content = el('div', 'gcsp-plan-content');
   const editor = el('div', 'gcsp-plan-editor');
-  page.append(top, message, submitHost, content, editor); root.replaceChildren(page);
+  page.append(top, editor, message, submitHost, content); root.replaceChildren(page);
 
   function sync() {
     for (const f of fields) f.input.disabled = busy;
@@ -145,16 +148,17 @@ export function mountGregOrderPlan(root, { adapter, signal, onSubmitted, command
     fields = []; meta = []; sliders = [];
     draft = current.limits.map((g) => (g.kind === 'budget' ? { ...g, pounds: String(g.pounds) }
       : { ...g, rows: g.rows.map((r) => ({ ...r, min: String(r.min), max: String(r.max) })) }));
-    limitsHeading = el('h3', 'gcsp-plan-h3', 'Change limits'); limitsHeading.id = `${base}-limits`; limitsHeading.tabIndex = -1;
-    summary = errorSummary({ id: `${base}-errors`, onSelect: (id) => (fields.find((f) => f.input.id === id)?.input ?? limitsHeading).focus() });
+    summary = errorSummary({ id: `${base}-errors`, onSelect: (id) => { limitsBar.root.open = true; (fields.find((f) => f.input.id === id)?.input ?? limitsHeading).focus(); } });
     previewButton = resetButton = null;
-    if (!draft.length) { editor.replaceChildren(limitsHeading, note('No limits can be changed for this plan.')); return; }
+    if (!editor.contains(limitsBar.root)) editor.replaceChildren(limitsBar.root);
+    const inner = el('div', 'gcsp-plan-editor-body');
+    if (!draft.length) { inner.append(note('No limits can be changed for this plan.')); limitsBar.panel.replaceChildren(inner); return; }
     const actions = el('div', 'gcsp-plan-actions');
     previewButton = button({ label: 'Preview with these limits', variant: 'ghost', onClick: () => runPreview() });
     resetButton = button({ label: 'Reset limits', variant: 'ghost', onClick: () => { buildEditor(); resetButton.focus(); setState(page.dataset.state, 'Limits reset to the current plan.'); } });
     actions.append(previewButton, resetButton);
-    editor.replaceChildren(limitsHeading, note('Change a limit, then preview the effect. Previewing saves and orders nothing.'), summary.root,
-      ...draft.map((g, gi) => (g.kind === 'budget' ? budgetGroup(g, gi) : boundsGroup(g, gi))), actions);
+    inner.append(note('Change a limit, then preview the effect. Previewing saves and orders nothing.'), summary.root,
+      ...draft.map((g, gi) => (g.kind === 'budget' ? budgetGroup(g, gi) : boundsGroup(g, gi))), actions); limitsBar.panel.replaceChildren(inner);
     sync();
   }
   function validate() {
@@ -166,11 +170,12 @@ export function mountGregOrderPlan(root, { adapter, signal, onSubmitted, command
       for (const edge of ['min', 'max']) if (!ok[edge]) bad(m[edge], `${m.row.label} ${edge === 'min' ? 'minimum' : 'maximum'}: enter a whole number, zero or more.`);
       if (ok.min && ok.max && Number(m.row.min) > Number(m.row.max)) bad(m.max, `${m.row.label}: the minimum is higher than the maximum.`);
     }
+    if (errors.length) limitsBar.root.open = true;
     summary.update(errors); return errors.length === 0;
   }
   function showReasons(reply) {
     const reasons = reply.reasons?.length ? reply.reasons.map((r) => r.reason) : [reply.message];
-    summary.update(reasons.map((text) => ({ id: limitsHeading.id, message: text }))); summary.focus();
+    limitsBar.root.open = true; summary.update(reasons.map((text) => ({ id: limitsHeading.id, message: text }))); summary.focus();
     setState(page.dataset.state, reply.message);
   }
 
@@ -178,6 +183,12 @@ export function mountGregOrderPlan(root, { adapter, signal, onSubmitted, command
   function banner(kind, title, ...children) {
     const box = el('div', `gcsp-plan-banner is-${kind}`); const h = el('h3', 'gcsp-plan-h3', title); h.tabIndex = -1;
     box.append(h, ...children); return { box, h };
+  }
+  // The one notice after a request: the headline says how many, this says when and links to the request.
+  function requestedBox(s) {
+    const box = el('div', 'gcsp-plan-banner is-info'); const link = el('a', 'gcsp-plan-link', REQUEST_LINK); link.href = `#${ORDER_REQUESTS_ID}`;
+    link.addEventListener('click', () => { const target = root.ownerDocument.getElementById(ORDER_REQUESTS_ID); if (target) { target.tabIndex = -1; target.focus(); } });
+    box.append(note(requestedNotice(s.submittedAtLabel)), link); return box;
   }
   function banners(view) {
     const out = [];
@@ -191,12 +202,10 @@ export function mountGregOrderPlan(root, { adapter, signal, onSubmitted, command
     }
     if (view.unbound) out.push(banner('info', view.unbound.title, note(view.unbound.message)).box);
     const s = view.submission;
-    if (s) {
-      const done = s.status === 'replanned';
-      out.push(banner('info', done ? 'Replanned after a Production response' : 'Requested from Production',
-        note(done ? `Replanned after ${s.after ?? 'a Production response'}${s.afterAtLabel ? ` at ${s.afterAtLabel}` : ''}.`
-          : `Requested${s.submittedAtLabel ? ` at ${s.submittedAtLabel}` : ''}. Production has not confirmed anything yet. See Order tracking.`)).box);
-    }
+    if (s?.status === 'replanned') {
+      const made = banner('info', 'Replanned after a Production response', note(`Replanned after ${s.after ?? 'a Production response'}${s.afterAtLabel ? ` at ${s.afterAtLabel}` : ''}.`));
+      replannedHeading = made.h; out.push(made.box);
+    } else if (s) out.push(requestedBox(s));
     if (stale) {
       const made = banner('warning', stale.title, note(stale.message), bullets(stale.changed.map((c) => c.label)),
         locked(button({ label: stale.replanLabel, variant: 'primary', onClick: replan })));
@@ -208,13 +217,15 @@ export function mountGregOrderPlan(root, { adapter, signal, onSubmitted, command
     const reason = stale ? 'Replan before requesting.'
       : view.kind === 'infeasible' ? 'Change the limits to get a plan you can request.'
         : view.kind === 'no-demand' ? 'There is nothing to request yet.'
-          : view.submission?.status === 'submitted' ? 'Already requested. Track it under Order tracking.'
+          : view.submission?.status === 'submitted' ? 'requested'
             : !view.canSubmit ? 'The plan recommends no new order, so there is nothing to request.' : '';
-    const text = note(reason || 'Nothing is ordered until Production confirms.', 'gcsp-plan-consequence'); text.id = `${base}-consequence`;
+    // Already requested: the notice above says so, so the disabled button carries no second note.
+    const text = reason === 'requested' ? null : note(reason || 'Nothing is ordered until Production confirms.', 'gcsp-plan-consequence');
+    if (text) text.id = `${base}-consequence`;
     submitOk = !reason;
     submitButton = button({ label: view.canSubmit ? `Request ${quantityLabel(view.orderQuantity)} from Production` : 'Request from Production',
-      variant: 'primary', describedBy: text.id, onClick: () => runSubmit() });
-    const row = el('div', 'gcsp-plan-submit-row'); row.append(submitButton, text); return [row];
+      variant: 'primary', describedBy: text?.id, onClick: () => runSubmit() });
+    const row = el('div', 'gcsp-plan-submit-row'); row.append(submitButton, ...(text ? [text] : [])); return [row];
   }
   function body(view) {
     const v = view.versions;
@@ -253,20 +264,21 @@ export function mountGregOrderPlan(root, { adapter, signal, onSubmitted, command
       if (need.blockedBy.length) item.append(note(`Held back by: ${need.blockedBy.join(', ')}`));
       unmet.append(item);
     }
-    out.push(unmet,
-      dataTable({ caption: 'Binding constraints', emptyText: 'No limit is holding this plan back', columns: [{ key: 'label', label: 'Constraint' }, { key: 'detail', label: 'Detail' }],
-        rows: view.binding.map((c) => ({ label: c.label, detail: c.detail })) }),
-      wideTable(dataTable({ caption: 'Alternative plans', emptyText: 'No alternative plan is available', columns: [{ key: 'label', label: 'Plan' }, { key: 'same', label: 'Compared' }, { key: 'summary', label: 'What it does' }],
+    out.push(unmet);
+    // Only limits that hold the plan back; with none, the table is left out.
+    if (view.binding.length) out.push(dataTable({ caption: 'Binding constraints', columns: [{ key: 'label', label: 'Constraint' }, { key: 'detail', label: 'Detail' }],
+      rows: view.binding.map((c) => ({ label: c.label, detail: c.detail })) }));
+    out.push(wideTable(dataTable({ caption: 'Alternative plans', emptyText: 'No alternative plan is available', columns: [{ key: 'label', label: 'Plan' }, { key: 'same', label: 'Compared' }, { key: 'summary', label: 'What it does' }],
         rows: view.alternatives.map((a) => ({ label: a.label, summary: a.summary, same: a.status !== 'feasible' ? 'Not possible' : a.sameAsRecommended ? 'Same as the recommendation' : 'Different' })) })));
     if (view.learned) out.push(learnedSection(view.learned, base));
     return out;
   }
   function draw(focus) {
-    const view = shown; lockable = []; staleHeading = null;
-    const intro = screenIntro({ kicker: view.preview ? 'Preview' : 'Next order', title: view.action, level: 2 });
+    const view = shown; lockable = []; staleHeading = null; replannedHeading = null;
+    const intro = screenIntro({ kicker: view.preview ? 'Preview' : 'Next order', title: view.action, lede: view.recommendation ?? undefined, level: 2 });
     heading = intro.querySelector('h2'); heading.tabIndex = -1;
     top.replaceChildren(intro, ...banners(view)); submitHost.replaceChildren(...submitRow(view)); content.replaceChildren(...body(view));
-    setState(nameOf(view)); if (focus) (staleHeading ?? heading).focus();
+    setState(nameOf(view)); if (focus) (staleHeading ?? (focus === 'notice' ? replannedHeading : null) ?? heading).focus();
   }
 
   // Loading, previewing and submitting. A generation counter drops answers that a newer request has replaced.
@@ -279,7 +291,7 @@ export function mountGregOrderPlan(root, { adapter, signal, onSubmitted, command
       message: reply?.message || UNAVAILABLE, actions: retry, role: 'alert' }));
     if (restarted) setState('restarted', 'Demo restarted.'); else setState(refused ? 'refused' : 'unavailable', refused ? 'Access refused.' : 'Order plan unavailable.');
   }
-  async function load(announce) {
+  async function load(announce, focus = Boolean(announce)) {
     const mine = begin('Loading the order plan.');
     if (!current) {
       top.replaceChildren(screenIntro({ kicker: 'Next order', title: 'Loading the next order', level: 2 }));
@@ -290,8 +302,8 @@ export function mountGregOrderPlan(root, { adapter, signal, onSubmitted, command
     busy = false;
     const view = reply.status === 'ready' ? readView(reply.value) : null;
     if (!view || view.preview) { failure(reply.status === 'ready' ? { status: 'unavailable', message: UNAVAILABLE } : reply); return; }
-    current = shown = view; previewChanges = []; stale = null; buildEditor(); draw(Boolean(announce));
-    message.textContent = announce || `Order plan updated for ${view.versions.asOfLabel ?? 'now'}.`;
+    current = shown = view; previewChanges = []; stale = null; buildEditor(); draw(focus);
+    message.textContent = announce ?? `Order plan updated for ${view.versions.asOfLabel ?? 'now'}.`;
   }
   async function previewWith(changes) {
     const mine = begin('Calculating the preview. Nothing is saved or ordered.');
@@ -326,7 +338,7 @@ export function mountGregOrderPlan(root, { adapter, signal, onSubmitted, command
     if (disposed || abort.signal.aborted) return;
     if (reply.status === 'ready') {
       onSubmitted?.(reply.value);
-      if (mine === gen) await load(reply.value?.message || 'Requested. Production has not confirmed any of this yet.');
+      if (mine === gen) await load('', true);
       return;
     }
     if (mine !== gen) return;
@@ -337,5 +349,5 @@ export function mountGregOrderPlan(root, { adapter, signal, onSubmitted, command
   }
 
   load();
-  return Object.assign(() => { disposed = true; gen += 1; abort.abort(); signal?.removeEventListener('abort', stop); root.replaceChildren(); }, { refresh: () => load() });
+  return Object.assign(() => { disposed = true; gen += 1; abort.abort(); signal?.removeEventListener('abort', stop); root.replaceChildren(); }, { refresh: (options) => load(undefined, options?.focus ? 'notice' : false) });
 }

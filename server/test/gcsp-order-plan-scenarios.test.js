@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { startGcspDemo } from '../../scripts/gcsp-demo.mjs';
 import { createPolicyService } from '../gcsp/policy/index.js';
 import { createPolicyOrderPlanCatalog } from '../gcsp/predict/plan/index.js';
-import { createDemoStockProvider, createDemoUpstream } from '../gcsp/stock/demo-provider.js';
+import { createDemoStockProvider, createDemoUpstream, withConfirmedSupply } from '../gcsp/stock/demo-provider.js';
 import { createLocalHttpsFixture } from './helpers/local-https.js';
 import { createRouteClient, resetIntoScenario } from './helpers/gcsp-decline-change-route.js';
 import { cap, DERIVATIVES } from './helpers/order-plan-fixture.js';
@@ -18,10 +18,11 @@ const good = (outcome) => { assert.equal(outcome?.status, 'ok', JSON.stringify(o
 const okRoute = (label, out) => { assert.equal(out.status, 200, `${label}: HTTP ${out.status} ${JSON.stringify(out.json)}`);
   assert.equal(out.json.status, 'ok', `${label}: ${JSON.stringify(out.json)}`); return out.json.value; };
 
-async function setup(t, scenarioId) {
+async function setup(t, scenarioId, { requests = false } = {}) {
+  const upstream = createDemoUpstream();
   const https = await createLocalHttpsFixture(t);
   const app = good(await startGcspDemo({ port: 0, accessKey: '', tls: https.configuration, runtime: { mode: 'memory',
-    stockProvider: (deps) => createDemoStockProvider(deps), environmentId: `order-plan-${scenarioId}`, policyAsOf: '2026-11-05T09:00:00.000Z',
+    ...(requests ? { stockProvider: (deps) => withConfirmedSupply(createDemoStockProvider(deps), upstream), production: upstream.production } : { stockProvider: (deps) => createDemoStockProvider(deps) }), environmentId: `order-plan-${scenarioId}`, policyAsOf: '2026-11-05T09:00:00.000Z',
     commandId: `order-plan-${scenarioId}-bootstrap`, sessionNow: () => '2026-11-06T00:00:00.000Z', adoptOfferJourney: true } }));
   t.after(() => app.close());
   const client = createRouteClient({ fetch: https.fetch, origin: app.origin });
@@ -62,4 +63,35 @@ test('every demo stock configuration and production choice maps to exactly one c
     const found = derivatives.filter((row) => row.production.model === model && row.production.derivative === derivative);
     assert.equal(found.length, 1, `production choice ${model} ${derivative}`);
   }
+});
+
+// FUCQ-290: Min 2 is set only in the draft that is submitted, so the plan under the active limits orders nothing afterwards.
+test('decline-then-change: after Min 2, preview and submit, the panel says 2 vehicles were requested, not "No new order recommended"', async (t) => {
+  const { JSDOM } = await import('jsdom');
+  const { window } = new JSDOM('<!doctype html><body></body>', { url: 'https://example.test/', pretendToBeVisual: true });
+  for (const key of ['window', 'document', 'HTMLElement', 'Node', 'CustomEvent', 'customElements', 'DOMException', 'MutationObserver']) {
+    Object.defineProperty(globalThis, key, { value: key === 'window' ? window : window[key] ?? globalThis[key], configurable: true, writable: true });
+  }
+  const { mountGregOrderPlan } = await import('../../blocks/gcsp/greg/plan/panel.js');
+  const { createOrderPlanHttpAdapter } = await import('../../blocks/gcsp/greg/plan/http-adapter.js');
+  const client = await setup(t, 'decline-then-change', { requests: true });
+  const fetchImpl = async (path, init) => { const out = await client.request(path, init.body ? JSON.parse(init.body) : undefined); return { status: out.status, json: async () => out.json }; };
+  const root = document.createElement('div'); root.className = 'gcsp'; document.body.append(root);
+  const teardown = mountGregOrderPlan(root, { adapter: createOrderPlanHttpAdapter({ fetchImpl }), commandId: () => 'regression-submit' });
+  t.after(() => teardown());
+  const until = async (done) => { for (let i = 0; i < 200 && !done(); i += 1) await new Promise((resolve) => setTimeout(resolve, 50)); assert.ok(done(), `${root.querySelector('.gcsp-plan')?.dataset.state}: ${root.querySelector('.gcsp-plan-message')?.textContent}`); };
+  const stateIs = (name) => () => root.querySelector('.gcsp-plan')?.dataset.state === name;
+  const headline = () => root.querySelector('.gcsp-plan-top h2').textContent;
+  await until(() => ['ready', 'no-demand'].includes(root.querySelector('.gcsp-plan')?.dataset.state)); assert.equal(headline(), 'No new order recommended');
+  const row = [...root.querySelectorAll('.gcsp-plan-limit')].find((r) => r.querySelector('.gcsp-plan-limit-name').textContent === '1 Series Sports Hatch 120');
+  const min = row.querySelector('input[type="number"]'); min.value = '2'; min.dispatchEvent(new window.Event('input', { bubbles: true }));
+  [...root.querySelectorAll('button')].find((b) => b.textContent === 'Preview with these limits').click();
+  await until(stateIs('preview')); assert.equal(headline(), 'Order 2 vehicles: 1 Series Sports Hatch 120');
+  [...root.querySelectorAll('button')].find((b) => b.textContent.startsWith('Request ')).click();
+  await until(stateIs('submitted'));
+  assert.equal(headline(), '2 vehicles requested from Production'); assert.doesNotMatch(root.textContent, /No new order recommended/);
+  assert.equal(root.querySelector('.gcsp-plan-top a').getAttribute('href'), '#gcsp-order-requests'); assert.equal(document.activeElement, root.querySelector('.gcsp-plan-top h2'));
+  const read = okRoute('GET after submit', await client.request(BASE));
+  assert.equal(read.replan.status, 'unchanged-since-submission'); assert.equal(read.plan.orderQuantity, 0, 'requests are intent, never supply');
+  assert.equal(read.replan.requests.reduce((n, r) => n + r.quantity, 0), 2);
 });

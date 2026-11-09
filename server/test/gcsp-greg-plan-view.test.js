@@ -95,7 +95,8 @@ test('toPlanView states: no demand, no order needed, infeasible, submitted and r
   assert.deepEqual(bad.conflicts.map((c) => [c.label, c.detail]), [['Budget', 'Spend £62,000 is over the £50,000 budget.'], ['i5 Touring minimum', 'Minimum 1.']]);
   const sent = view('submitted');
   assert.deepEqual([sent.kind, sent.submission.status, sent.submission.after, sent.submission.submittedAtLabel], ['ready', 'submitted', null, '5 Nov 2026, 09:00 GMT']);
-  assert.deepEqual(sent.submission.requests, [{ name: '3 Series Touring 320i', quantity: 2, state: 'requested', stateLabel: 'Requested' }]);
+  assert.deepEqual(sent.submission.requests.map((r) => [r.derivativeId, r.name, r.quantity, r.state, r.stateLabel]),
+    [['g21-touring-320i', '3 Series Touring 320i', 2, 'requested', 'Requested'], ['g61-i5-40', 'i5 Touring eDrive40 M Sport Pro with Technology Plus and Comfort Packs', 1, 'requested', 'Requested']]);
   const again = view('replanned');
   assert.deepEqual([again.submission.status, again.submission.after, again.submission.afterAtLabel], ['replanned', 'Production partly confirmed 1 vehicle', '5 Nov 2026, 09:01 GMT']);
   assert.throws(() => toPlanView({}), PlanViewError); assert.throws(() => toPlanView({ plan: { planId: 3 } }), PlanViewError);
@@ -310,4 +311,30 @@ test('the learned fixtures reach the adapter by name and the learned preview car
   assert.equal((await planFixtureAdapter('learned').previewPlan()).value.learned.status, 'available');
   assert.equal((await planFixtureAdapter('ready').previewPlan()).value.learned.status, 'fallback');
   for (const name of ['learned', 'learned-coverage']) assert.equal(JSON.stringify(value(name)).includes('—'), false);
+});
+
+test('after a request the headline counts the requested vehicles, not the plan under the active limits (FUCQ-290)', () => {
+  const same = view('submitted');
+  assert.equal(same.action, '3 vehicles requested from Production'); assert.equal(same.recommendation, null, 'the plan orders what was requested');
+  const none = view('requested-no-order');
+  assert.deepEqual([none.action, none.recommendation, none.orderQuantity, none.canSubmit, none.submission.status], ['2 vehicles requested from Production', null, 0, false, 'submitted']);
+  const one = value('requested-no-order'); one.replan.requests[0].quantity = 1;
+  assert.equal(toPlanView(one).action, '1 vehicle requested from Production');
+  const differs = value('submitted'); differs.replan.requests = differs.replan.requests.slice(0, 1);
+  const other = toPlanView(differs);
+  assert.equal(other.action, '2 vehicles requested from Production');
+  assert.equal(other.recommendation, 'Under the current limits the plan recommends 3 vehicles: 2 × 3 Series Touring 320i, 1 × i5 Touring eDrive40 M Sport Pro with Technology Plus and Comfort Packs.');
+  // A Production response replans: the plan's own headline returns, and a preview never shows the request.
+  assert.match(view('replanned').action, /^Order /);
+  const previewing = value('preview'); previewing.replan = value('submitted').replan;
+  assert.equal(toPlanView(previewing).submission, null); assert.match(toPlanView(previewing).action, /^Order /);
+});
+
+test('binding constraints leave out a minimum of 0 and keep every real limit', () => {
+  assert.deepEqual(view('ready').binding.map((c) => c.id), ['derivative:g61-i5-40:max', 'model:g61-i5:max']);
+  assert.deepEqual(view('requested-no-order').binding, []);
+  const real = value('ready'); real.plan.bindingConstraints = [{ id: 'derivative:g21-touring-320i:min', detail: 'Quantity meets minimum 2.' },
+    { id: 'model:g20-saloon:min', detail: 'Quantity meets minimum 0.' }, { id: 'budget', detail: 'Order spend meets the budget.' },
+    { id: 'derivative:g20-saloon-330e:max', detail: 'Quantity meets maximum 0.' }];
+  assert.deepEqual(toPlanView(real).binding.map((c) => c.id), ['derivative:g21-touring-320i:min', 'budget', 'derivative:g20-saloon-330e:max']);
 });

@@ -347,7 +347,7 @@ export function employeeControlsExample() {
   section.setAttribute('aria-label', 'Employee question controls and preview');
   const scope = el('div', 'vm vm-gallery-decision-body');
   scope.append(screenIntro({ kicker: 'Shared controls', title: 'Preference, importance and indifference', level: 2,
-    lede: 'Display-only controls. These local callbacks do not save a brief or recalculate the unchanged decision snapshot.' }));
+    lede: 'Display-only controls. These local callbacks do not save a brief or recalculate the unchanged decision snapshot. Tab to a slider to see its focus ring.' }));
   let draft = { position: 70, importance: 50, preferenceMode: 'consider' };
   const controls = el('div', 'vm-gallery-control-grid');
   const ranges = new Map();
