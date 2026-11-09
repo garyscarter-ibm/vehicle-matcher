@@ -9,6 +9,7 @@ import { toDashboardView } from './demand-view.js';
 import { fixtureAdapter } from './fixtures.js';
 import { mountGregPublish } from './publish/panel.js';
 import { mountGregOrderPlan } from './plan/panel.js';
+import { mountGregComparison } from './comparison/panel.js';
 
 const NOT_BUILT = 'Not available in this demo';
 const item = (key, label, icon, available = false) => Object.freeze({
@@ -150,7 +151,7 @@ function reservedRegions() {
 /**
  * Mount the dashboard in root. ctx: { loadDemand({ signal }) -> state, signal, onUnavailable(reason) }.
  * State: { status: 'ready', projection } | { status: 'conflict' | 'unavailable' | 'refused', message }.
- * Optional: orderPlanAdapter mounts the order plan panel (teardown.orderPlan.refresh()). Returns a teardown function with refresh() and regions { publish, orderTracking, prediction, routeComparison, caseQueue }.
+ * Optional: orderPlanAdapter mounts the order plan panel (teardown.orderPlan.refresh()); comparisonAdapter mounts the route comparison (teardown.comparison.refresh()). Returns a teardown function with refresh() and regions { publish, orderTracking, prediction, routeComparison, caseQueue }.
  */
 export function mountGregDashboard(root, ctx = {}) {
   const abort = new AbortController();
@@ -275,6 +276,12 @@ export function mountGregDashboard(root, ctx = {}) {
     reserved.regions.prediction.removeAttribute('aria-labelledby');
     reserved.regions.prediction.setAttribute('aria-label', 'Next order plan');
   }
+  const comparisonAdapter = ctx.comparisonAdapter || ctx.comparison;
+  const comparisonTeardown = comparisonAdapter ? mountGregComparison(reserved.regions.routeComparison, { adapter: comparisonAdapter, signal: abort.signal }) : null;
+  if (comparisonTeardown) {
+    reserved.regions.routeComparison.removeAttribute('aria-labelledby');
+    reserved.regions.routeComparison.setAttribute('aria-label', 'Route comparison');
+  }
   const published = () => { load(); planTeardown?.refresh(); };
   root.addEventListener('gcsp:policy-published', published);
   load();
@@ -286,6 +293,7 @@ export function mountGregDashboard(root, ctx = {}) {
     ctx.signal?.removeEventListener('abort', onExternalAbort);
     publishTeardown?.();
     planTeardown?.();
+    comparisonTeardown?.();
     root.removeEventListener('gcsp:policy-published', published);
     shell.destroy();
     root.replaceChildren();
@@ -293,6 +301,7 @@ export function mountGregDashboard(root, ctx = {}) {
   teardown.refresh = load;
   teardown.regions = reserved.regions;
   teardown.orderPlan = planTeardown;
+  teardown.comparison = comparisonTeardown;
   return teardown;
 }
 
@@ -337,6 +346,7 @@ export class GcspGregDashboardElement extends HTMLElement {
     this._teardown = mountGregDashboard(this, {
       publishAdapter: this._adapter?.publish,
       orderPlanAdapter: this._adapter?.orderPlan,
+      comparisonAdapter: this._adapter?.comparison,
       loadDemand: adapter ? (options) => adapter.loadDemand(options) : undefined,
       onUnavailable: (reason) => {
         this._emit('gcsp:unavailable', { reason: reason === 'no-adapter' && fixtureName ? 'unknown-fixture' : reason });
