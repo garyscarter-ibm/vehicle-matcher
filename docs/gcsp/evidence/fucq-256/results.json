@@ -1,0 +1,79 @@
+{
+  "state": "passed",
+  "note": "API responses are page.route fixtures built from repo code and data (activity-fixtures, representative-access.json envelope, demo stock provider i5 display); this is not an end-to-end buddy run.",
+  "viewports": {
+    "375": {
+      "imgSrc": "/assets/gcsp-vehicle-evidence/fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe.webp",
+      "naturalWidth": 2560,
+      "alt": "Synthetic i5 eDrive40 Touring: representative image",
+      "caption": "Representative image; exact appearance and equipment unconfirmed.",
+      "placeholderPresent": false,
+      "title": "Synthetic i5 eDrive40 Touring",
+      "horizontalOverflow": false,
+      "scrollWidth": 375,
+      "innerWidth": 375,
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_FAILED",
+        "Failed to load resource: net::ERR_FAILED",
+        "Failed to load resource: net::ERR_FAILED"
+      ],
+      "abortedApi": [
+        "/api/gcsp/presenter/controls",
+        "/api/gcsp/presenter/controls",
+        "/api/gcsp/presenter/controls",
+        "/api/gcsp/presenter/controls",
+        "/api/gcsp/help",
+        "/api/gcsp/cases"
+      ],
+      "screenshot": "375-activity-offer-i5.png",
+      "screenshotBytes": 48969
+    },
+    "1280": {
+      "imgSrc": "/assets/gcsp-vehicle-evidence/fb2fe89a07cdc8129d0ff56747671006ce0e72380991af3e81e6c59b23f69afe.webp",
+      "naturalWidth": 2560,
+      "alt": "Synthetic i5 eDrive40 Touring: representative image",
+      "caption": "Representative image; exact appearance and equipment unconfirmed.",
+      "placeholderPresent": false,
+      "title": "Synthetic i5 eDrive40 Touring",
+      "horizontalOverflow": false,
+      "scrollWidth": 1280,
+      "innerWidth": 1280,
+      "consoleErrors": [
+        "Failed to load resource: net::ERR_FAILED",
+        "Failed to load resource: net::ERR_FAILED",
+        "Failed to load resource: net::ERR_FAILED"
+      ],
+      "abortedApi": [
+        "/api/gcsp/presenter/controls",
+        "/api/gcsp/presenter/controls",
+        "/api/gcsp/presenter/controls",
+        "/api/gcsp/presenter/controls",
+        "/api/gcsp/help",
+        "/api/gcsp/cases"
+      ],
+      "screenshot": "1280-activity-offer-i5.png",
+      "screenshotBytes": 118716
+    }
+  },
+  "abortedApi": [
+    "/api/gcsp/presenter/controls",
+    "/api/gcsp/presenter/controls",
+    "/api/gcsp/presenter/controls",
+    "/api/gcsp/presenter/controls",
+    "/api/gcsp/help",
+    "/api/gcsp/cases",
+    "/api/gcsp/presenter/controls",
+    "/api/gcsp/presenter/controls",
+    "/api/gcsp/presenter/controls",
+    "/api/gcsp/presenter/controls",
+    "/api/gcsp/help",
+    "/api/gcsp/cases"
+  ],
+  "errors": [],
+  "cleanup": {
+    "chromePid": 40544,
+    "scratchRemoved": true,
+    "chromeAlive": false,
+    "serverClosed": true
+  }
+}
