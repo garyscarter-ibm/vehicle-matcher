@@ -67,8 +67,11 @@ test('startOutcomeToState maps started, invalid, conflict, refused, lapsed acces
 });
 
 test('jobOutcomeToState maps ok, none, refused, lapsed access and unavailable', () => {
-  assert.deepEqual(adapterMod.jobOutcomeToState(200, { status: 'ok', value: job() }), { status: 'ok', job: job() });
-  assert.deepEqual(adapterMod.jobOutcomeToState(404, { status: 'not-found', resourceType: 'comparison_jobs' }), { status: 'none' });
+  assert.deepEqual(adapterMod.jobOutcomeToState(200, { status: 'ok', value: job() }), { status: 'ok', job: job(), reruns: false });
+  assert.deepEqual(adapterMod.jobOutcomeToState(404, { status: 'not-found', resourceType: 'comparison_jobs' }), { status: 'none', reruns: false });
+  assert.deepEqual(adapterMod.jobOutcomeToState(200, { status: 'ok', value: job(), reruns: true }), { status: 'ok', job: job(), reruns: true });
+  assert.deepEqual(adapterMod.jobOutcomeToState(404, { status: 'not-found', reruns: true }), { status: 'none', reruns: true });
+  for (const reruns of ['true', 1, null]) assert.equal(adapterMod.jobOutcomeToState(404, { status: 'not-found', reruns }).reruns, false);
   assert.deepEqual(adapterMod.jobOutcomeToState(403, { status: 'forbidden' }), { status: 'refused' });
   assert.deepEqual(adapterMod.jobOutcomeToState(401, {}), { status: 'access-required' });
   assert.equal(adapterMod.jobOutcomeToState(200, { status: 'ok', value: { status: 'running' } }).status, 'unavailable');
@@ -286,7 +289,7 @@ const REQUEST = { experimentId: 'hold-sweep', change: { values: [3600, 10800], b
 
 test('job-succeeds advances one step per read and then stores a matching new result', async () => {
   const adapter = fixtures.experimentFixtureAdapter('job-succeeds');
-  assert.deepEqual(await adapter.readJob({}), { status: 'none' });
+  assert.deepEqual(await adapter.readJob({}), { status: 'none', reruns: true });
   const started = await adapter.start(REQUEST);
   assert.equal(started.status, 'started'); const first = ev.toJobView(started.job);
   assert.deepEqual([first.statusLabel, first.progressText], ['Running', 'Seeds done: 0 of 3. Steps: 0 of 18.']);
@@ -303,7 +306,7 @@ test('job-succeeds advances one step per read and then stores a matching new res
   assert.deepEqual(view.change.values, [3600, 10800]); assert.deepEqual(view.change.texts, ['1 h', '3 h']); assert.equal(view.change.basis, 'Does a longer hold help?');
   assert.deepEqual(view.routes[0].measures[0].rows.map((r) => r.label), ['2 h (today)', '1 h', '3 h']);
   assert.equal(latestOf(await adapter.loadAll(), 'hold-sweep').resultId, last.resultId);
-  assert.deepEqual(await adapter.readJob({ jobId: 'another' }), { status: 'none' });
+  assert.deepEqual(await adapter.readJob({ jobId: 'another' }), { status: 'none', reruns: true });
 });
 
 test('job-running, job-fails and job-interrupted never produce a new result', async () => {
@@ -359,4 +362,25 @@ test('FUCQ-295: the change shows a plain parameter label, with a humanised fallb
   for (const route of view.routes) for (const m of route.measures.filter((x) => x.key === 'heldNotTakenCarDays')) {
     assert.ok(['hours', 'days'].includes(m.kind)); assert.ok(unit(m).every((t) => t === 'Not observed' || new RegExp(m.kind === 'hours' ? ' h' : 'days?').test(t)), m.kind);
   }
+});
+
+// Gary, FUCQ-321: no on-screen word "demo", "demonstration", "synthetic", "fictional" or "example"; no em dashes.
+test('the comparison block static copy has no banned word and no em dash', async () => {
+  const base = '../../blocks/gcsp/greg/comparison/';
+  const BANNED = /demo|synthetic|fictional|example/i;
+  const strings = (value, path, out = []) => {
+    if (typeof value === 'string') out.push([path, value]);
+    else if (value && typeof value === 'object') for (const [k, v] of Object.entries(value)) strings(v, `${path}.${k}`, out);
+    return out;
+  };
+  const found = [];
+  for (const file of ['comparison-copy.js', 'experiment-copy.js']) {
+    for (const [name, value] of Object.entries(await import(`${base}${file}`))) found.push(...strings(value, `${file}:${name}`));
+  }
+  assert.ok(found.length > 40, 'copy was collected');
+  for (const [path, value] of found) {
+    assert.doesNotMatch(value, BANNED, path);
+    assert.ok(!value.includes('—'), `${path} has an em dash`);
+  }
+  assert.match(found.find(([p]) => p.endsWith(':NO_RESULT_NOTE'))[1], /prepared offline/);
 });

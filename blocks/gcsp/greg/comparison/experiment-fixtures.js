@@ -97,9 +97,10 @@ export function experimentFixtureAdapter(name) {
       return startOutcomeToState(202, { status: 'pending', value: current() });
     },
     readJob: async ({ jobId } = {}) => {
-      if (!started || (jobId && jobId !== JOB_ID)) return jobOutcomeToState(404, { status: 'not-found', resourceType: 'comparison_jobs' });
+      // These scenarios model a server with reruns on, so the hold form shows.
+      if (!started || (jobId && jobId !== JOB_ID)) return jobOutcomeToState(404, { status: 'not-found', resourceType: 'comparison_jobs', reruns: true });
       index = Math.min(index + 1, frames.length - 1);
-      return jobOutcomeToState(200, { status: 'ok', value: current() });
+      return jobOutcomeToState(200, { status: 'ok', value: current(), reruns: true });
     },
   };
 }

@@ -3,7 +3,7 @@ import { humanise, formatDemoTime } from '../demand-copy.js';
 
 export { formatDemoTime };
 export const TITLE = 'Route comparison';
-export const LEDE = 'Stored result of the fictional process comparison. Both routes get the same employees, cars and releases.';
+export const LEDE = 'Stored result of the process comparison. Both routes get the same employees, cars and releases.';
 export const BASELINE = "Today's release route";
 export const BUDDY = 'Buddy route';
 export const FALLBACK_CAVEAT = 'Calculated fit is not observed satisfaction.';
@@ -13,8 +13,8 @@ export const LEAVES_OUT = 'What this replay leaves out';
 export const DETAILS = 'Assumptions, seeds and provenance';
 export const UNAVAILABLE = 'The stored comparison could not be loaded. Try again in a moment.';
 export const REFUSED = 'Only the scheme ordering lead or the presenter can see the route comparison.';
-export const EMPTY_TITLE = 'No comparison has been run for this demo yet';
-export const EMPTY_NOTE = 'The presenter prepares it before the demo. Reload to check again.';
+export const EMPTY_TITLE = 'No stored comparison yet';
+export const EMPTY_NOTE = 'The comparison is prepared offline and has not been run here. Reload to check again.';
 export const OLD_POLICY_TITLE = 'Older policy version';
 export const oldPolicyText = (made, active) => `Made under policy ${made}. The active policy is ${active}. Prepare a new comparison to use it.`;
 
@@ -91,7 +91,7 @@ export const statusLabel = (s) => STATUS_LABELS[s] ?? String(s ?? '');
 // Experiments (FUCQ-176). Labels and plain descriptions; the stored result owns every figure.
 export const EXPERIMENTS = Object.freeze({
   'process-only': { label: 'Process only', summary: 'Compares the buddy route with today\'s release route. Nothing else changes.' },
-  'order-mix': { label: 'Order mix', summary: 'Changes which model lines the fictional employees order.' },
+  'order-mix': { label: 'Order mix', summary: 'Changes which model lines the employees order.' },
   points: { label: 'Points allowance', summary: 'Scales every employee\'s points allowance by one multiplier.' },
   'hold-sweep': { label: 'Hold duration', summary: 'Changes how long the buddy route holds a car, one run per chosen duration.' },
 });

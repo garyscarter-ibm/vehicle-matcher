@@ -6,8 +6,8 @@ export const PICKER_LABEL = 'Experiment';
 export const NO_STORED = 'not run yet';
 export const UNREADABLE = 'stored result could not be read';
 export const stateText = (made) => `stored ${made}`;
-export const NO_RESULT_TITLE = 'No comparison has been run for this demo yet';
-export const NO_RESULT_NOTE = 'The presenter prepares it before the demo.';
+export const NO_RESULT_TITLE = 'No stored result yet';
+export const NO_RESULT_NOTE = 'This comparison is prepared offline and has not been run here.';
 export const NO_PREVIOUS = 'No previous result';
 export const NO_PREVIOUS_NOTE = 'The new result appears here when the run finishes.';
 export const UNREADABLE_NOTE = 'The stored result for this experiment could not be read. Reload to try again.';
@@ -52,7 +52,7 @@ export const LOADING = 'Loading the stored comparisons';
 export const LOADED = 'Stored comparisons loaded.';
 export const jobLine = (v) => `${v.label}: ${v.statusLabel.toLowerCase()}.${v.requested?.text ? ` Trying ${v.requested.text}.` : ''}`;
 export const STARTING = 'Starting the comparison.';
-export const LEDE = 'Stored results of the fictional comparison. Both routes get the same employees, cars and releases.';
+export const LEDE = 'Stored results of the comparison. Both routes get the same employees, cars and releases.';
 export const CONFLICT = 'A comparison is already running. Wait for it to finish.';
 
 // Plain names for policy and experiment keys. The raw key stays in the details table as provenance.

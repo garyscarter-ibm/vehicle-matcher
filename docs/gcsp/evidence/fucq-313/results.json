@@ -1,0 +1,53 @@
+{
+  "note": "GCSP_COMPARISON_RERUNS unset, offline, memory repository",
+  "shots": [
+    {
+      "shot": "greg-1280-hold-duration.png",
+      "url": "/gcsp-presenter.html",
+      "width": 1280,
+      "experiment": "Hold duration",
+      "rerunForm": false,
+      "runButton": false,
+      "stageText": "Changes how long the buddy route holds a car, one run per chosen duration. No stored result yet This comparison is prepared offline and has not been run here.",
+      "bannedInStage": null,
+      "bannedInRegion": null,
+      "emDash": false
+    },
+    {
+      "shot": "greg-1280-order-mix.png",
+      "url": "/gcsp-presenter.html",
+      "width": 1280,
+      "experiment": "Order mix",
+      "rerunForm": false,
+      "runButton": false,
+      "stageText": "Changes which model lines the employees order. No stored result yet This comparison is prepared offline and has not been run here.",
+      "bannedInStage": null,
+      "bannedInRegion": null,
+      "emDash": false
+    },
+    {
+      "shot": "greg-375-hold-duration.png",
+      "url": "/gcsp-presenter.html",
+      "width": 375,
+      "experiment": "Hold duration",
+      "rerunForm": false,
+      "runButton": false,
+      "stageText": "Changes how long the buddy route holds a car, one run per chosen duration. No stored result yet This comparison is prepared offline and has not been run here.",
+      "bannedInStage": null,
+      "bannedInRegion": null,
+      "emDash": false
+    },
+    {
+      "shot": "greg-375-order-mix.png",
+      "url": "/gcsp-presenter.html",
+      "width": 375,
+      "experiment": "Order mix",
+      "rerunForm": false,
+      "runButton": false,
+      "stageText": "Changes which model lines the employees order. No stored result yet This comparison is prepared offline and has not been run here.",
+      "bannedInStage": null,
+      "bannedInRegion": null,
+      "emDash": false
+    }
+  ]
+}
